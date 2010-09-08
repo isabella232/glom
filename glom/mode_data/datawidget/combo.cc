@@ -38,8 +38,7 @@ namespace DataWidgetChildren
 {
 
 ComboGlom::ComboGlom()
-: ComboChoicesWithTreeModel(),
-  m_cell_second(0)
+: ComboChoicesWithTreeModel()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
@@ -50,10 +49,7 @@ ComboGlom::ComboGlom()
 
 void ComboGlom::init()
 {
-  #ifndef GLOM_ENABLE_MAEMO
-  set_model(m_refModel);
-  pack_start(m_Columns.m_col_first);
-  #else
+  #ifdef GLOM_ENABLE_MAEMO
   //Maemo:
   set_selector(m_maemo_selector);
   m_maemo_selector.set_model(0, m_refModel);
@@ -73,40 +69,25 @@ ComboGlom::~ComboGlom()
 {
 }
 
-void ComboGlom::set_choices_related(const Document* document)
+void ComboGlom::create_model(guint columns_count)
 {
-  //TODO: Remove duplication with ComboEntry:
-  sharedptr<LayoutItem_Field> layout_item = 
-    sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
-  bool choice_show_all = false;
-  bool choice_has_second = false;
-  layout_item->get_formatting_used().get_has_related_choices(choice_show_all, choice_has_second);
-  
-  //Add the extra cell if necessary:
-  if(!m_cell_second && choice_has_second)
-  {
-    #ifndef GLOM_ENABLE_MAEMO
-    //We don't use this convenience method, because we want more control over the renderer.
-    //and CellLayout gives no way to get the renderer back afterwards.
-    //(well, maybe set_cell_data_func(), but that's a bit awkward.)
-    //pack_start(m_Columns.m_col_second);
+  //Create the model itself:
+  ComboChoicesWithTreeModel::create_model(columns_count);
 
-    m_cell_second = Gtk::manage(new Gtk::CellRendererText);
-    m_cell_second->set_property("xalign", 0.0);
+  //Show the model in the view:
+  set_model(m_refModel);
+
+  for(guint i = 0; i < columns_count; ++i)
+  {
+    Gtk::CellRendererText* cell = Gtk::manage(new Gtk::CellRendererText);
+    cell->set_property("xalign", 0.0);
 
     //Use the renderer:
-    pack_start(*m_cell_second);
+    pack_start(*cell);
 
     //Make the renderer render the column:
-    add_attribute(m_cell_second->_property_renderable(), m_Columns.m_col_second);
-    std::cout << "debug: Added second column." << std::endl;
-    #else
-    //Maemo:
-    column->pack_start(m_Columns.m_col_second);
-    #endif //GLOM_ENABLE_MAEMO
+    add_attribute(*cell, "text", i);
   }
-
-  ComboChoicesWithTreeModel::set_choices_related(document);
 }
 
 void ComboGlom::check_for_change()
@@ -177,7 +158,9 @@ void ComboGlom::set_text(const Glib::ustring& text)
 
   for(Gtk::TreeModel::iterator iter = m_refModel->children().begin(); iter != m_refModel->children().end(); ++iter)
   {
-    Glib::ustring this_text = (*iter)[m_Columns.m_col_first];
+    const Gtk::TreeModel::Row row = *iter;
+    Glib::ustring this_text;
+    row.get_value(0, this_text);
 
     if(this_text == text)
     {
@@ -225,8 +208,10 @@ Glib::ustring ComboGlom::get_text() const
 
   if(iter)
   {
-    Gtk::TreeModel::Row row = *iter;
-    return row[m_Columns.m_col_first];
+    const Gtk::TreeModel::Row row = *iter;
+    Glib::ustring text;
+    row.get_value(0, text);
+    return text;
   }
 
   return Glib::ustring();

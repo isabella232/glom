@@ -71,10 +71,9 @@ public:
 
   virtual void set_read_only(bool read_only = true);
 
-  virtual void set_choices_related(const Document* document);
-
 private:
   void init();
+  virtual void create_model(guint columns_count);
 
 
   //Overrides of default signal handlers:
@@ -110,8 +109,6 @@ private:
   #ifdef GLOM_ENABLE_MAEMO
   Hildon::TouchSelectorEntry m_maemo_selector;
   #endif
-
-  Gtk::CellRenderer* m_cell_second;
 };
 
 } //namespace DataWidetChildren

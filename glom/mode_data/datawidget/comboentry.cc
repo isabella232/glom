@@ -42,8 +42,7 @@ namespace DataWidgetChildren
 {
 
 ComboEntry::ComboEntry()
-: ComboChoicesWithTreeModel(),
-  m_cell_second(0)
+: ComboChoicesWithTreeModel()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
@@ -72,10 +71,7 @@ const Gtk::Entry* ComboEntry::get_entry() const
 
 void ComboEntry::init()
 {
-#ifndef GLOM_ENABLE_MAEMO
-  set_model(m_refModel);
-  set_text_column(m_Columns.m_col_first);
-#else
+#ifdef GLOM_ENABLE_CLIENT_ONLY
   //Maemo:
   set_selector(m_maemo_selector);
 
@@ -112,36 +108,26 @@ ComboEntry::~ComboEntry()
 {
 }
 
-void ComboEntry::set_choices_related(const Document* document)
+void ComboEntry::create_model(guint columns_count)
 {
-  sharedptr<LayoutItem_Field> layout_item = 
-    sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
-  bool choice_show_all = false;
-  bool choice_has_second = false;
-  layout_item->get_formatting_used().get_has_related_choices(choice_show_all, choice_has_second);
-  
-  if(!m_cell_second && choice_has_second) //Use a more efficient way of discovering if there is a second column.
-  {
-    #ifndef GLOM_ENABLE_MAEMO
-    //We don't use this convenience method, because we want more control over the renderer.
-    //and CellLayout gives no way to get the renderer back afterwards.
-    //(well, maybe set_cell_data_func(), but that's a bit awkward.)
-    //pack_start(m_Columns.m_col_second);
+  //Create the model itself:
+  ComboChoicesWithTreeModel::create_model(columns_count);
 
-    m_cell_second = Gtk::manage(new Gtk::CellRendererText);
-    m_cell_second->set_property("xalign", 0.0);
+  //Show model in the view:
+  set_model(m_refModel);
+  set_text_column(0);
+
+  for(guint i = 1; i < columns_count; ++i)
+  {
+    Gtk::CellRendererText* cell = Gtk::manage(new Gtk::CellRendererText);
+    cell->set_property("xalign", 0.0);
 
     //Use the renderer:
-    pack_start(*m_cell_second);
+    pack_start(*cell);
 
     //Make the renderer render the column:
-    add_attribute(m_cell_second->_property_renderable(), m_Columns.m_col_second);
-    #else //GLOM_ENABLE_MAEMO
-    column->pack_start(m_Columns.m_col_second, false);
-    #endif //GLOM_ENABLE_MAEMO
+    add_attribute(*cell, "text", i);
   }
-
-  ComboChoicesWithTreeModel::set_choices_related(document);
 }
 
 void ComboEntry::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
@@ -189,7 +175,7 @@ void ComboEntry::check_for_change()
     bool success = false;
 
     sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
-    Gnome::Gda::Value value = Conversions::parse_value(layout_item->get_glom_type(), get_entry()->get_text(), layout_item->get_formatting_used().m_numeric_format, success);
+    const Gnome::Gda::Value value = Conversions::parse_value(layout_item->get_glom_type(), get_entry()->get_text(), layout_item->get_formatting_used().m_numeric_format, success);
 
     if(success)
     {

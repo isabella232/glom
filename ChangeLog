@@ -1,3 +1,19 @@
+2010-09-08  Murray Cumming  <murrayc@murrayc.com>
+
+	Combo widgets: Support multiple extra fields.
+
+	* glom/libglom/utils.cc: get_choice_values(): Actually get extra values other
+  than than the first one, by actually using the index instead of just 1.
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.[h|cc]:
+  Added a virtual create_model(), to create model columns dynamically. So far
+  they are just text columns.
+  set_choices_with_second(): Recreate the model here each time.
+	* glom/mode_data/datawidget/combo.[h|cc]:
+	* glom/mode_data/datawidget/comboentry.[h|cc]: Override create_model() to
+  also set up the view columns using the widgets' specific API.
+	* glom/mode_data/datawidget/combochoices.h: set_choices_related():
+  Stop this from being virtual because we no longer override it.
+
 2010-09-07  Murray Cumming  <murrayc@murrayc.com>
 
 	Dialog_Properties: Remove the unnecessary virtual keywords.

@@ -2020,7 +2020,6 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
         xmlpp::Element* nodeExtraLayout = get_node_child_named(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_EXTRA_LAYOUT);
         if(nodeExtraLayout)
         {
-          std::cout << "debuga1" << std::endl;
           xmlpp::Element* nodeGroups = get_node_child_named(nodeExtraLayout, GLOM_NODE_DATA_LAYOUT_GROUPS);
           if(nodeGroups)
           {
