@@ -23,7 +23,7 @@
 #include <glom/utility_widgets/adddel/adddel.h>
 #include <algorithm> //For std::find.
 #include <glibmm/i18n.h>
-#include <glom/utility_widgets/cellrendererlist/cellrendererlist.h>
+#include <glom/utility_widgets/cellrendererlist.h>
 #include <glom/utility_widgets/adddel/treeviewcolumn_glom.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/dialog_invalid_data.h>

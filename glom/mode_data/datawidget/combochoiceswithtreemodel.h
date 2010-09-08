@@ -47,11 +47,11 @@ protected:
 
   Glib::RefPtr<Gtk::ListStore> m_refModel;
 
-private:
   typedef Gtk::TreeModelColumn<Glib::ustring> type_model_column;
   typedef std::vector< type_model_column* > type_vec_model_columns;
   type_vec_model_columns m_vec_model_columns;
 
+private:
   void delete_model();
 };
 

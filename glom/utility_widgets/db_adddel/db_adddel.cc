@@ -21,7 +21,8 @@
 #include "db_adddel.h"
 #include <algorithm> //For std::find.
 #include <glibmm/i18n.h>
-#include "../cellrendererlist/cellrendererlist.h"
+#include <glom/utility_widgets/cellrendererlist.h>
+#include <glom/utility_widgets/db_adddel/cellrenderer_dblist.h>
 #include "db_treeviewcolumn_glom.h"
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/dialog_invalid_data.h>
@@ -714,7 +715,8 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
       {
         if(item_field->get_formatting_used().get_has_choices())
         {
-          CellRendererList* rendererList = Gtk::manage( new CellRendererList() );
+          CellRendererDbList* rendererList = Gtk::manage( new CellRendererDbList() );
+          rendererList->set_layout_item(item_field, m_table_name);
           bool as_radio_buttons = false; //Can't really be done in a list, so we ignore it.
           rendererList->set_restrict_values_to_list(
             item_field->get_formatting_used().get_choices_restricted(as_radio_buttons));
@@ -812,24 +814,26 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
     #endif //GLOM_ENABLE_MAEMO
 
     //Choices:
-    CellRendererList* pCellRendererCombo = dynamic_cast<CellRendererList*>(pCellRenderer);
-    if(pCellRendererCombo)
+    CellRendererList* pCellRendererList = dynamic_cast<CellRendererList*>(pCellRenderer);
+    CellRendererDbList* pCellRendererDbList = dynamic_cast<CellRendererDbList*>(pCellRenderer);
+    if(pCellRendererList) //Used for custom choices:
     {
-      pCellRendererCombo->remove_all_list_items();
+      pCellRendererList->remove_all_list_items();
 
       if(item_field && item_field->get_formatting_used().get_has_custom_choices())
       {
-        pCellRendererCombo->set_use_second(false); //Custom choices have only one column.
-
         //set_choices() needs this, for the numeric layout:
         //pCellRendererCombo->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
         const FieldFormatting::type_list_values list_values = item_field->get_formatting_used().get_choices_custom();
         for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
         {
-          pCellRendererCombo->append_list_item( Conversions::get_text_for_gda_value(item_field->get_glom_type(), *iter, item_field->get_formatting_used().m_numeric_format) );
+          pCellRendererList->append_list_item( Conversions::get_text_for_gda_value(item_field->get_glom_type(), *iter, item_field->get_formatting_used().m_numeric_format) );
         }
       }
-      else if(item_field && item_field->get_formatting_used().get_has_related_choices())
+    }
+    else if(pCellRendererDbList) //Used for related choices:
+    {
+      if(item_field && item_field->get_formatting_used().get_has_related_choices())
       {
         sharedptr<const Relationship> choice_relationship;
         sharedptr<const LayoutItem_Field> choice_field;
@@ -841,15 +845,13 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
         {
           const Glib::ustring to_table = choice_relationship->get_to_table();
 
-          const bool use_second = choice_extras;
-          pCellRendererCombo->set_use_second(use_second);
-
           //TODO: Update this when the relationship's field value changes:
           if(choice_show_all) //Otherwise it must change whenever the relationships's ID value changes.
           {
-            const Utils::type_list_values_with_second list_values = 
+            const Utils::type_list_values_with_second list_values =
               Utils::get_choice_values_all(get_document(), item_field);
-            set_cell_choices(pCellRendererCombo, choice_field, choice_extras, list_values);
+            std::cout << G_STRFUNC << ": debug: values size=" << list_values.size() << std::endl;
+            pCellRendererDbList->set_choices_with_second(list_values);
           }
         }
       }
@@ -1236,54 +1238,6 @@ void DbAddDel::set_value_selected(const sharedptr<const LayoutItem_Field>& layou
   set_value(get_item_selected(), layout_item, value);
 }
 
-void DbAddDel::set_cell_choices(CellRendererList* cell, const sharedptr<const LayoutItem_Field>& layout_choice_first,  const sharedptr<const LayoutGroup>& layout_choice_extras, const Utils::type_list_values_with_second& list_values)
-{
-  if(!cell)
-    return;
-
-  //Set the choices:
-  cell->remove_all_list_items();
-
-  for(Utils::type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
-  {
-    const Glib::ustring first =
-      Conversions::get_text_for_gda_value(
-        layout_choice_first->get_glom_type(), iter->first, layout_choice_first->get_formatting_used().m_numeric_format);
-
-    //TODO: Support multiple extra fields:
-    //For now, use only the first extra field:
-    sharedptr<const LayoutItem_Field> layout_choice_second;
-    if(layout_choice_extras)
-    {
-      const LayoutGroup::type_list_const_items extra_fields
-        = layout_choice_extras->get_items_recursive();
-
-      for(LayoutGroup::type_list_const_items::const_iterator iterExtra = extra_fields.begin();
-          iterExtra != extra_fields.end(); ++iterExtra)
-      {
-        const sharedptr<const LayoutItem> item = *iterExtra;
-        const sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
-        if(item_field)
-        {
-          layout_choice_second = item_field;
-          break;
-        }
-      }
-    }
-        
-    Glib::ustring second;
-    const Utils::type_list_values extra_values = iter->second;
-    if(layout_choice_second && !extra_values.empty())
-    {
-      const Gnome::Gda::Value value = *(extra_values.begin()); //TODO: Use a vector instead?
-      second = Conversions::get_text_for_gda_value(
-        layout_choice_second->get_glom_type(), value, layout_choice_second->get_formatting_used().m_numeric_format);
-    }
-
-    cell->append_list_item(first, second);
-  }
-}
-
 void DbAddDel::refresh_cell_choices_data_from_database_with_foreign_key(guint model_index, const Gnome::Gda::Value& foreign_key_value)
 {
   if(m_ColumnTypes.size() <= model_index)
@@ -1308,8 +1262,8 @@ void DbAddDel::refresh_cell_choices_data_from_database_with_foreign_key(guint mo
     return;
   }
 
-  CellRendererList* cell =
-    dynamic_cast<CellRendererList*>( m_TreeView.get_column_cell_renderer(view_column_index) );
+  CellRendererDbList* cell =
+    dynamic_cast<CellRendererDbList*>( m_TreeView.get_column_cell_renderer(view_column_index) );
   if(!cell)
   {
     std::cerr << G_STRFUNC << ": cell renderer not found for model_column=" << model_index << std::endl;
@@ -1318,14 +1272,7 @@ void DbAddDel::refresh_cell_choices_data_from_database_with_foreign_key(guint mo
 
   const Utils::type_list_values_with_second list_values =
     Utils::get_choice_values(get_document(), layout_field, foreign_key_value);
-
-  sharedptr<const Relationship> choice_relationship;
-  sharedptr<const LayoutItem_Field> layout_choice_first;
-  sharedptr<const LayoutGroup> layout_choice_extras;
-  bool choice_show_all = false;
-  layout_field->get_formatting_used().get_choices_related(choice_relationship, layout_choice_first, layout_choice_extras, choice_show_all); 
-    
-  set_cell_choices(cell, layout_choice_first, layout_choice_extras, list_values);
+  cell->set_choices_with_second(list_values);
 }
 
 void DbAddDel::remove_all_columns()
@@ -1505,6 +1452,7 @@ void DbAddDel::set_prevent_user_signals(bool bVal)
   m_bPreventUserSignals = bVal;
 }
 
+/*
 //This is generally used for non-database-data lists.
 void DbAddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
 {
@@ -1521,10 +1469,10 @@ void DbAddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
     g_assert(column);
     std::vector<Gtk::CellRenderer*> list_renderers = column->get_cells();
     g_assert(!list_renderers.empty());
-    CellRendererList* pCellRenderer = dynamic_cast<CellRendererList*>(list_renderers[0]);
+    CellRendererDbList* pCellRenderer = dynamic_cast<CellRendererDbList*>(list_renderers[0]);
     #else
-    CellRendererList* pCellRenderer =
-      dynamic_cast<CellRendererList*>( m_TreeView.get_column_cell_renderer(view_column_index) );
+    CellRendererDbList* pCellRenderer =
+      dynamic_cast<CellRendererDbList*>( m_TreeView.get_column_cell_renderer(view_column_index) );
     #endif //GLOM_ENABLE_MAEMO
     if(pCellRenderer)
     {
@@ -1543,6 +1491,7 @@ void DbAddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
     }
   }
 }
+*/
 
 void DbAddDel::set_allow_add(bool val)
 {

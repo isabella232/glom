@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef ADDDEL_CELLRENDERERLIST_H
-#define ADDDEL_CELLRENDERERLIST_H
+#ifndef GLOM_UTILITY_WIDGETS_CELLRENDERERLIST_H
+#define GLOM_UTILITY_WIDGETS_CELLRENDERERLIST_H
 
 #include <gtkmm.h>
 //#include <gtkmm/cellrenderercombo.h>
@@ -29,6 +29,8 @@
 namespace Glom
 {
 
+/** A CellRendererCombo with a single (text) column.
+ */
 class CellRendererList : public Gtk::CellRendererCombo
 {
 public:
@@ -36,15 +38,11 @@ public:
   virtual ~CellRendererList();
 
   void remove_all_list_items();
-  void append_list_item(const Glib::ustring& text, const Glib::ustring& extra = Glib::ustring());
-
-  ///Whether the second column will be shown.
-  void set_use_second(bool use_second = true);
+  void append_list_item(const Glib::ustring& text);
 
   void set_restrict_values_to_list(bool val = true);
 
 private:
-  void on_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& path);
 
   //Tree model columns for the Combo CellRenderer in the TreeView column:
   class ModelColumns : public Gtk::TreeModel::ColumnRecord
@@ -52,18 +50,16 @@ private:
   public:
 
     ModelColumns()
-    { add(m_col_choice); add(m_col_extra); }
+    { add(m_col_choice); }
 
     Gtk::TreeModelColumn<Glib::ustring> m_col_choice;
-    Gtk::TreeModelColumn<Glib::ustring> m_col_extra;
   };
 
   ModelColumns m_model_columns;
 
   Glib::RefPtr<Gtk::ListStore> m_refModel;
-  bool m_use_second;
 };
 
 } //namespace Glom
 
-#endif //ADDDEL_CELLRENDERERLIST_H
+#endif //GLOM_UTILITY_WIDGETS_CELLRENDERERLIST_H

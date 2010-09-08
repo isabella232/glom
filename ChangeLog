@@ -1,3 +1,18 @@
+2010-09-09  Murray Cumming  <murrayc@murrayc.com>>
+
+	List view: Support multiple extra fields in choices here too.
+
+  * glom/utility_widgets/cellrendererlist/cellrendererlist.[h|cc]:
+  Split this into:
+	* glom/utility_widgets/cellrendererlist.[h|cc]: with no extra/second-column
+  functionality. It is now just a convenience class for a string-based combo
+  cell.
+  And into this:
+	* glom/utility_widgets/db_adddel/cellrenderer_dblist.[h|cc]: deriving from
+  ComboChoicesWithTreeModel, like the regular combo widgets. Remove non-DB
+  API.
+	* glom/utility_widgets/db_adddel/db_adddel.cc: Adapted.
+
 2010-09-08  Murray Cumming  <murrayc@murrayc.com>
 
 	Combo widgets: Support multiple extra fields.
