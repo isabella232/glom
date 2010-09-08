@@ -39,20 +39,68 @@ ComboChoicesWithTreeModel::ComboChoicesWithTreeModel()
   init();
 }
 
+ComboChoicesWithTreeModel::~ComboChoicesWithTreeModel()
+{
+  delete_model();
+}
+
 void ComboChoicesWithTreeModel::init()
 {
   ComboChoices::init();
-  m_refModel = Gtk::ListStore::create(m_Columns);
 }
 
-ComboChoicesWithTreeModel::~ComboChoicesWithTreeModel()
+void ComboChoicesWithTreeModel::create_model(guint columns_count)
 {
+  delete_model();
+
+  Gtk::TreeModel::ColumnRecord record;
+
+  //Create the TreeModelColumns, adding them to the ColumnRecord:
+  m_vec_model_columns.resize(columns_count, 0);
+  for(guint i = 0; i < columns_count; ++i)
+  {
+    type_model_column* model_column = new type_model_column();
+
+    //Store it so we can use it and delete it later:
+    m_vec_model_columns[i] = model_column;
+
+    record.add(*model_column);
+  }
+
+  //Create the model:
+  m_refModel = Gtk::ListStore::create(record);
+}
+
+void ComboChoicesWithTreeModel::delete_model()
+{
+  //Delete the vector's items:
+  for(type_vec_model_columns::iterator iter = m_vec_model_columns.begin(); iter != m_vec_model_columns.end(); ++iter)
+  {
+    type_model_column* model_column = *iter;
+     if(model_column)
+       delete model_column;
+  }
+  m_vec_model_columns.clear();
+
+  m_refModel.reset();
 }
 
 void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_with_second& list_values)
 {
-  m_refModel->clear();
+  //Recreate the entire model:
+  guint columns_count = 1; //For the main field.
+  if(!list_values.empty())
+  {
+    type_list_values_with_second::const_iterator iter= list_values.begin();
+    if(iter != list_values.end())
+    {
+      const type_list_values& second = iter->second;
+      columns_count += second.size();
+    }
+  }
+  create_model(columns_count);
 
+  //Fill the model with data:
   //TODO: Remove duplication with ComboEntry:
   sharedptr<LayoutItem_Field> layout_item =
     sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
@@ -74,24 +122,36 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
 
     if(layout_choice_first)
     {
-      row[m_Columns.m_col_first] = Conversions::get_text_for_gda_value(layout_choice_first->get_glom_type(), iter->first, layout_choice_first->get_formatting_used().m_numeric_format);
+      const Glib::ustring text =
+        Conversions::get_text_for_gda_value(layout_choice_first->get_glom_type(), iter->first, layout_choice_first->get_formatting_used().m_numeric_format);
+      row.set_value(0, text);
 
-      //TODO: Support multiple extra fields:
-      //For now, use only the first extra field:
       const type_list_values extra_values = iter->second;
       if(layout_choice_extra && !extra_values.empty())
       {
+        guint model_index = 1; //0 is for the main field.
+        type_list_values::const_iterator iterValues = extra_values.begin();
         for(LayoutGroup::type_list_const_items::const_iterator iterExtra = extra_fields.begin();
           iterExtra != extra_fields.end(); ++iterExtra)
         {
+          if(model_index >= columns_count)
+            break;
+
+          if(iterValues == extra_values.end())
+            break;
+
           const sharedptr<const LayoutItem> item = *iterExtra;
           const sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
           if(item_field)
           {
-            const Gnome::Gda::Value value = *(extra_values.begin()); //TODO: Use a vector instead?
-            row[m_Columns.m_col_second] = Conversions::get_text_for_gda_value(item_field->get_glom_type(), value, item_field->get_formatting_used().m_numeric_format);
-            break;
+            const Gnome::Gda::Value value = *iterValues;
+            const Glib::ustring text =
+              Conversions::get_text_for_gda_value(item_field->get_glom_type(), value, item_field->get_formatting_used().m_numeric_format);
+            row.set_value(model_index, text);
           }
+
+          ++model_index;
+          ++iterValues;
         }
       }
     }
@@ -101,7 +161,7 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
 
 void ComboChoicesWithTreeModel::set_choices(const FieldFormatting::type_list_values& list_values)
 {
-  m_refModel->clear();
+  create_model(1);
 
   for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
   {
@@ -113,8 +173,7 @@ void ComboChoicesWithTreeModel::set_choices(const FieldFormatting::type_list_val
     {
       const Gnome::Gda::Value value = *iter;
       const Glib::ustring text = Conversions::get_text_for_gda_value(layout_item->get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format);
-
-      row[m_Columns.m_col_first] = text;
+      row.set_value(0, text);
     }
   }
 }

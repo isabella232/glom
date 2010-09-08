@@ -405,9 +405,6 @@ private:
   Gtk::TreeView m_TreeView;
   #endif
 
-
-  Gtk::TreeModel::ColumnRecord m_ColumnRecord;
-
   //typedef Gtk::ListStore type_model_store;
   typedef DbTreeModel type_model_store;
   Glib::RefPtr<type_model_store> m_refListStore;
@@ -492,14 +489,6 @@ private:
     DbAddDel* m_pOuter;
     bool m_bPreventUserSignals, m_bIgnoreTreeViewSignals;
   };
-
-/*
-  class DynamicColumnRecord : public Gtk::TreeModel::ColumnRecord
-  {
-    typedef std::vector<Gtk::TreeModelColumnBase> type_vecColumns;
-    type_vecColumns m_vecColumns;
-  };
-*/
 
   //When no columns have been chosen in the layout editor,
   //show this model to give the user a hint about what to do:

@@ -72,10 +72,9 @@ public:
 
   virtual Gnome::Gda::Value get_value() const;
 
-  virtual void set_choices_related(const Document* document);
-
 private:
   void init();
+  virtual void create_model(guint columns_count);
 
   #ifndef GLOM_ENABLE_MAEMO
   // Note that this is a normal signal handler when glibmm was complied
@@ -100,8 +99,6 @@ private:
   #ifdef GLOM_ENABLE_MAEMO
   Hildon::TouchSelector m_maemo_selector;
   #endif
-
-  Gtk::CellRenderer* m_cell_second;
 };
 
 } //namespace DataWidetChildren

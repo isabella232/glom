@@ -51,7 +51,7 @@ public:
   /**
    * See also refresh_data_from_database_with_foreign_key().
    */
-  virtual void set_choices_related(const Document* document);
+  void set_choices_related(const Document* document);
 
   /** Update a choices widget's list of related choices if a relevant value in its parent table has changed.
    *

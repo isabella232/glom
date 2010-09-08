@@ -41,28 +41,21 @@ public:
 
 protected:
   void init();
+  virtual void create_model(guint columns_count);
 
   virtual void set_choices_with_second(const type_list_values_with_second& list_values);
 
-  //Tree model columns:
-  class ModelColumns : public Gtk::TreeModel::ColumnRecord
-  {
-  public:
-
-    ModelColumns()
-    { add(m_col_first); add(m_col_second); }
-
-    Gtk::TreeModelColumn<Glib::ustring> m_col_first; //The data to choose - this must be text.
-    Gtk::TreeModelColumn<Glib::ustring> m_col_second;
-  };
-
-  ModelColumns m_Columns;
-
   Glib::RefPtr<Gtk::ListStore> m_refModel;
+
+private:
+  typedef Gtk::TreeModelColumn<Glib::ustring> type_model_column;
+  typedef std::vector< type_model_column* > type_vec_model_columns;
+  type_vec_model_columns m_vec_model_columns;
+
+  void delete_model();
 };
 
 } //namespace DataWidetChildren
 } //namespace Glom
 
 #endif //GLOM_UTILITY_WIDGETS_COMBO_CHOICES_WITH_TREE_MODEL_H
-
