@@ -27,8 +27,6 @@ namespace Glom
 {
 
 CellRendererDbList::CellRendererDbList()
-:  Glib::ObjectBase(0) //Mark this class as gtkmmproc-generated, rather than a custom class, to allow vfunc optimisations.
-   //TODO: This should not be necessary - our gtkmm callbacks are somehow preventing the popup from
 {
 }
 

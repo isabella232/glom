@@ -1218,9 +1218,8 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<c
   }
 
   /// Get indexes of any columns with choices with !show_all relationships that have @a from_key as the from_key.
-  type_list_indexes list_choice_cells = get_choice_index(layout_item /* from_key field name */);
-  std::cout << "debug: list_choice_cells.size() == " << list_choice_cells.size() << std::endl;
-  for(type_list_indexes::iterator iter = list_choice_cells.begin(); iter != list_choice_cells.end(); ++iter)
+  const type_list_indexes list_choice_cells = get_choice_index(layout_item /* from_key field name */);
+  for(type_list_indexes::const_iterator iter = list_choice_cells.begin(); iter != list_choice_cells.end(); ++iter)
   {
     const guint model_index = *iter;
     refresh_cell_choices_data_from_database_with_foreign_key(model_index, value /* foreign key value */);

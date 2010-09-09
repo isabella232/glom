@@ -1,3 +1,12 @@
+2010-09-09  Murray Cumming  <murrayc@murrayc.com>>
+
+	Choices drop-down: Remove hack to fix the list view choices.
+
+	* glom/utility_widgets/db_adddel/cellrenderer_dblist.cc: Constructor:
+  Remove the hacky call to Glib::ObjectBase(0) because it stopped
+  on_start_editing() from being called, stopping the extra columns from being
+  shown.
+
 2010-09-09  Murray Cumming  <murrayc@murrayc.com>
 
   Choices drop-downs: Improve the column alignment.
