@@ -850,7 +850,6 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
           {
             const Utils::type_list_values_with_second list_values =
               Utils::get_choice_values_all(get_document(), item_field);
-            std::cout << G_STRFUNC << ": debug: values size=" << list_values.size() << std::endl;
             pCellRendererDbList->set_choices_with_second(list_values);
           }
         }

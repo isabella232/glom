@@ -524,7 +524,6 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
       iter != extra_fields.end(); ++iter)
     {
       const sharedptr<const LayoutItem> item = *iter;
-      std::cout << "debug: item=" << item->get_name() << std::endl;
       const sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
       if(item_field)
          fields.push_back(item_field); //TODO: Don't ignore other usable items such as static text.
