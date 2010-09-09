@@ -124,27 +124,25 @@ void ComboEntry::create_model(guint columns_count)
     {
       //Get the default column, created by set_text_column():
       cell = dynamic_cast<Gtk::CellRendererText*>(get_first_cell());
+      
+      //Unpack and repack it with expand=false instead of expand=true:
+      //We don't expand the first column, so we can align the other columns.
+      cell->reference();
+      clear();
+      pack_start(*cell, false);
+      cell->unreference();
     }
-
-    if(!cell)
+    else
     {
       //Create the cell:
       cell = Gtk::manage(new Gtk::CellRendererText);
-
-      //Use the renderer:
-      //We don't expand the first column, so we can align the other columns.
-      //Otherwise the other columns appear center-aligned.
-      //This bug is relevant: https://bugzilla.gnome.org/show_bug.cgi?id=629133
-      if(i == 0) //Impossible anyway, because we use set_text_column().
-        pack_start(*cell, false); //Unfortunately gtk_combo_box_entry_set_text_column() has already used true, making our xalign=0.0 useless.
-      else
-        pack_start(*cell, true);
+      pack_start(*cell, true);
     }
-
-    cell->property_xalign() = 0.0f;
 
     //Make the renderer render the column:
     add_attribute(*cell, "text", i);
+    
+    cell->property_xalign() = 0.0f;
   }
 }
 

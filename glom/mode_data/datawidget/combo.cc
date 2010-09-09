@@ -76,6 +76,8 @@ void ComboGlom::create_model(guint columns_count)
 
   //Show the model in the view:
   set_model(m_refModel);
+  
+  clear();
 
   for(guint i = 0; i < columns_count; ++i)
   {

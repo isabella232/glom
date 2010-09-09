@@ -27,6 +27,7 @@ namespace Glom
 {
 
 CellRendererDbList::CellRendererDbList()
+: m_repacked_first_cell(false)
 {
 }
 
@@ -61,35 +62,41 @@ void CellRendererDbList::on_editing_started(Gtk::CellEditable* cell_editable, co
   if(!combobox)
     return;
 
+  if(!m_repacked_first_cell)
+  {
+    //Get the default column, created by set_text_column():
+    Gtk::CellRendererText* cell = dynamic_cast<Gtk::CellRendererText*>(combobox->get_first_cell());
+        
+    //Unpack and repack it with expand=false instead of expand=true:
+    //We don't expand the first column, so we can align the other columns.
+    cell->reference();
+    combobox->clear();
+    combobox->pack_start(*cell, false);
+    cell->unreference();
+  
+    //Make the renderer render the column:
+    combobox->add_attribute(*cell, "text", 0);
+      
+    cell->property_xalign() = 0.0f;  
+    
+    m_repacked_first_cell = true; //Avoid doing this again.
+  }
+   
+  //Add extra cells:     
   Glib::ListHandle<Gtk::CellRenderer*> cells = combobox->get_cells();
   if(cells.size() < m_vec_model_columns.size())
   {
     for(guint col = cells.size(); col != m_vec_model_columns.size(); ++col)
     {
-      Gtk::CellRendererText* cell = 0;
-      if(col == 0)
-      {
-        //Get the default column, created by set_text_column()?
-        cell = dynamic_cast<Gtk::CellRendererText*>(combobox->get_first_cell());
-      }
+      Gtk::CellRendererText* cell = Gtk::manage(new Gtk::CellRendererText);
 
-      if(!cell)
-      {
-        //Create the cell:
-        cell = Gtk::manage(new Gtk::CellRendererText);
-
-        //Use the renderer:
-        //We don't expand the first column, so we can align the other columns.
-        //Otherwise the other columns appear center-aligned.
-        //This bug is relevant: https://bugzilla.gnome.org/show_bug.cgi?id=629133
-        if(col == 0) //Impossible anyway, because we use the text-column property.
-          combobox->pack_start(*cell, false); //Unfortunately gtk_combo_box_entry_set_text_column() has already used true, making our xalign=0.0 useless.
-        else
-          combobox->pack_start(*cell, true);
-      }
-
+      //Use the renderer:
+      combobox->pack_start(*cell, true);
+      
       //Make the renderer render the column:
       combobox->add_attribute(*cell, "text", col);
+      
+      cell->property_xalign() = 0.0f;
     }
   }
 

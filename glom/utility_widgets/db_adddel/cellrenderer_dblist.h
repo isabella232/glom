@@ -55,6 +55,8 @@ private:
 
   void set_text(const Glib::ustring& text);
   Glib::ustring get_text() const;
+  
+  bool m_repacked_first_cell;
 };
 
 } //namespace Glom

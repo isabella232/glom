@@ -1,3 +1,12 @@
+2010-09-09  Murray Cumming  <murrayc@murrayc.com>
+
+	Choices drop-downs: More improvement of the column alignment.
+
+	* glom/mode_data/datawidget/comboentry.cc: create_model():
+	* glom/utility_widgets/db_adddel/cellrenderer_dblist.[h|cc]: 
+	on_editing_started(): Remove (with clear) the automatically-added 
+	CellRenderer and re-pack it, so we can specify expand=false.
+
 2010-09-09  David King  <davidk@openismus.com>
 
 	Initial dialog: Really try to load examples from each path.
