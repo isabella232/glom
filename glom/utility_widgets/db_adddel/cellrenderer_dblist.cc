@@ -43,16 +43,16 @@ void CellRendererDbList::create_model(guint columns_count)
   DataWidgetChildren::ComboChoicesWithTreeModel::create_model(columns_count);
 
   //Show model in the view:
-  set_property("model", m_refModel);
-  set_property("text-column", 0); //This must be a text column, in m_refModel.
-  set_property("editable", true); //It would be useless if we couldn't edit it.
+  property_model() = m_refModel;
+  property_text_column() = 0; //This must be a text column, in m_refModel.
+  property_editable() = true; //It would be useless if we couldn't edit it.
 
   //The other cells are added in on_editing_started().
 }
 
 void CellRendererDbList::set_restrict_values_to_list(bool val)
 {
-  set_property("has-entry", static_cast<gboolean>(!val));
+  property_has_entry() = !val;
 }
 
 void CellRendererDbList::on_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& path)
@@ -68,11 +68,27 @@ void CellRendererDbList::on_editing_started(Gtk::CellEditable* cell_editable, co
   {
     for(guint col = cells.size(); col != m_vec_model_columns.size(); ++col)
     {
-      Gtk::CellRendererText* cell = Gtk::manage(new Gtk::CellRendererText);
-      cell->set_property("xalign", 0.0);
+      Gtk::CellRendererText* cell = 0;
+      if(col == 0)
+      {
+        //Get the default column, created by set_text_column()?
+        cell = dynamic_cast<Gtk::CellRendererText*>(combobox->get_first_cell());
+      }
 
-      //Use the renderer:
-      combobox->pack_start(*cell);
+      if(!cell)
+      {
+        //Create the cell:
+        cell = Gtk::manage(new Gtk::CellRendererText);
+
+        //Use the renderer:
+        //We don't expand the first column, so we can align the other columns.
+        //Otherwise the other columns appear center-aligned.
+        //This bug is relevant: https://bugzilla.gnome.org/show_bug.cgi?id=629133
+        if(col == 0) //Impossible anyway, because we use the text-column property.
+          combobox->pack_start(*cell, false); //Unfortunately gtk_combo_box_entry_set_text_column() has already used true, making our xalign=0.0 useless.
+        else
+          combobox->pack_start(*cell, true);
+      }
 
       //Make the renderer render the column:
       combobox->add_attribute(*cell, "text", col);

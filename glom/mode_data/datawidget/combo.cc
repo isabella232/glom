@@ -80,10 +80,16 @@ void ComboGlom::create_model(guint columns_count)
   for(guint i = 0; i < columns_count; ++i)
   {
     Gtk::CellRendererText* cell = Gtk::manage(new Gtk::CellRendererText);
-    cell->set_property("xalign", 0.0);
+    cell->property_xalign() = 0.0f;
 
     //Use the renderer:
-    pack_start(*cell);
+    //We don't expand the first column, so we can align the other columns.
+    //Otherwise the other columns appear center-aligned.
+    //This bug is relevant: https://bugzilla.gnome.org/show_bug.cgi?id=629133
+    if(i == 0)
+      pack_start(*cell, false);
+    else
+      pack_start(*cell, false);
 
     //Make the renderer render the column:
     add_attribute(*cell, "text", i);

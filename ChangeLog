@@ -1,3 +1,17 @@
+2010-09-09  Murray Cumming  <murrayc@murrayc.com>
+
+  Choices drop-downs: Improve the column alignment.
+
+	* glom/mode_data/datawidget/combo.cc: create_model():
+	* glom/mode_data/datawidget/comboentry.cc: create_model():
+  * glom/utility_widgets/db_adddel.cc: on_start_editing():
+  Use expand=false with pack_start() with the first column, plus xalign=0,
+  so we can actually align the columns, though it only really works if the
+  previous columns have values all of a similar width.
+  And this doesn't work with ComboEntry or the cell renderer because
+  GtkComboBoxEntry and GtkCellRendererCombo do the pack_start() of the first
+  column automatically - see the comments.
+
 2010-09-09  Murray Cumming  <murrayc@murrayc.com>>
 
 	List view: Support multiple extra fields in choices here too.
