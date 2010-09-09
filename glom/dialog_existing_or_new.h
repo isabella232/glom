@@ -95,10 +95,8 @@ private:
 
   
   bool list_examples_at_path(const std::string& path);
-  void on_enumerate_children(const Glib::RefPtr<Gio::AsyncResult>& res);
-  void on_next_files(const Glib::RefPtr<Gio::AsyncResult>& res);
-  void on_read(const Glib::RefPtr<Gio::AsyncResult>& res);
-  void on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& res);
+  Glib::ustring get_title_from_example(const Glib::RefPtr<Gio::FileInfo>& info, const Glib::RefPtr<Gio::File>& examples_dir);
+  void append_example(const Glib::ustring& title, const Glib::RefPtr<Gio::File>& file);
 #endif /* !GLOM_ENABLE_CLIENT_ONLY */
     
 #ifndef G_OS_WIN32
@@ -197,11 +195,6 @@ private:
 
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  Glib::RefPtr<Gio::File> m_examples_dir;
-  Glib::RefPtr<Gio::FileEnumerator> m_examples_enumerator;
-  Glib::RefPtr<Gio::File> m_current_example;
-  Glib::RefPtr<Gio::InputStream> m_current_stream;
-    
   struct buffer { static const guint SIZE = 1024; char buf[SIZE]; };
   std::auto_ptr<buffer> m_current_buffer;
 #endif /* !GLOM_ENABLE_CLIENT_ONLY */
@@ -216,5 +209,5 @@ private:
 
 } //namespace Glom
 
-#endif //GLOM_DIALOG_DATABASE_PREFERENCES_H
+#endif //GLOM_DIALOG_EXISTING_OR_NEW_H
 

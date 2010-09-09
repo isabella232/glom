@@ -1,3 +1,12 @@
+2010-09-09  David King  <davidk@openismus.com>
+
+	Initial dialog: Really try to load examples from each path.
+
+	* glom/dialog_existing_or_new.[h|cc]: list_examples_at_path():
+  Use synchronous IO rather than asynchronous, to solve bug #626417.
+  This means that we really check the result of trying the first directory,
+  so we can try the other location too.
+
 2010-09-09  Murray Cumming  <murrayc@murrayc.com>>
 
 	Choices drop-down: Remove hack to fix the list view choices.
