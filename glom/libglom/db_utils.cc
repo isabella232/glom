@@ -1472,7 +1472,14 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
   }
   catch(const Gnome::Gda::ServerProviderError& ex)
   {
-    std::cerr << G_STRFUNC << ": code=" << ex.code() << "message=" << ex.what() << std::endl;
+    if(ex.code() == Gnome::Gda::ServerProviderError::SERVER_PROVIDER_STATEMENT_EXEC_ERROR)
+    {
+      std::cerr << G_STRFUNC << ": code=SERVER_PROVIDER_STATEMENT_EXEC_ERROR, message=" << ex.what() << std::endl;
+    }
+    else
+    {
+      std::cerr << G_STRFUNC << ": code=" << ex.code() << "message=" << ex.what() << std::endl;
+    }
   }
   catch(const Gnome::Gda::SqlError& ex) //TODO: Make sure that statement_execute_select_builder() is documented as throwing this.
   {
