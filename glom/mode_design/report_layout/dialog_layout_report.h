@@ -124,6 +124,7 @@ private:
 
   Glib::ustring m_name_original;
   sharedptr<Report> m_report;
+  sigc::connection m_signal_connection;
 };
 
 } //namespace Glom

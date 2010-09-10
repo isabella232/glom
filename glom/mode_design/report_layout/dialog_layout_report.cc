@@ -178,11 +178,15 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
 
   show_all_children();
 
-  m_notebook_parts->signal_switch_page().connect(sigc::mem_fun(*this, &Dialog_Layout_Report::on_notebook_switch_page));
+  //We save the connection, so we can disconnect it in the destructor,
+  //because, for some reason, this signal handler is still called _after_ the destructor.
+  //TODO: Fix that problem in GTK+ or gtkmm?
+  m_signal_connection = m_notebook_parts->signal_switch_page().connect(sigc::mem_fun(*this, &Dialog_Layout_Report::on_notebook_switch_page));
 }
 
 Dialog_Layout_Report::~Dialog_Layout_Report()
 {
+  m_signal_connection.disconnect();
 }
 
 void Dialog_Layout_Report::setup_model(Gtk::TreeView& treeview, Glib::RefPtr<type_model>& model)
@@ -203,7 +207,7 @@ void Dialog_Layout_Report::setup_model(Gtk::TreeView& treeview, Glib::RefPtr<typ
 
   Gtk::CellRendererText* renderer_part = Gtk::manage(new Gtk::CellRendererText);
   column_part->pack_start(*renderer_part);
-  column_part->set_cell_data_func(*renderer_part, 
+  column_part->set_cell_data_func(*renderer_part,
     sigc::bind( sigc::mem_fun(*this, &Dialog_Layout_Report::on_cell_data_part), model));
 
   //Details column:
@@ -212,7 +216,7 @@ void Dialog_Layout_Report::setup_model(Gtk::TreeView& treeview, Glib::RefPtr<typ
 
   Gtk::CellRendererText* renderer_details = Gtk::manage(new Gtk::CellRendererText);
   column_details->pack_start(*renderer_details);
-  column_details->set_cell_data_func(*renderer_details, 
+  column_details->set_cell_data_func(*renderer_details,
     sigc::bind( sigc::mem_fun(*this, &Dialog_Layout_Report::on_cell_data_details), model));
 
 
@@ -345,7 +349,7 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const sha
   //Set the table name and title:
   m_label_table_name->set_text(table_name);
 
-  m_entry_name->set_text(report->get_name()); 
+  m_entry_name->set_text(report->get_name());
   m_entry_title->set_text(report->get_title());
   m_checkbutton_table_title->set_active(report->get_show_table_title());
 
@@ -445,7 +449,7 @@ void Dialog_Layout_Report::enable_buttons()
       bool enable_formatting = false;
       sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item_parent);
       if(item_field)
-        enable_formatting = true; 
+        enable_formatting = true;
 
       m_button_formatting->set_sensitive(enable_formatting);
 
@@ -891,10 +895,10 @@ void Dialog_Layout_Report::on_button_edit()
                 add_view(dialog);
                 dialog->set_item(group_by, m_table_name);
                 dialog->set_transient_for(*this);
-  
+
                 const int response = dialog->run();
                 dialog->hide();
-  
+
                 if(response == Gtk::RESPONSE_OK)
                 {
                   //Get the chosen relationship:
@@ -906,7 +910,7 @@ void Dialog_Layout_Report::on_button_edit()
                     m_modified = true;
                   }
                 }
-  
+
                 remove_view(dialog);
                 delete dialog;
               }

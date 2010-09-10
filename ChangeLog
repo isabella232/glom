@@ -1,10 +1,19 @@
+2010-09-10  Murray Cumming  <murrayc@murrayc.com>
+
+	Dialog_Layout_Report: Fix a crash, making all tests pass.
+
+	* glom/mode_design/report_layout/dialog_layout_report.[h|cc]:
+  Disconnect a signal handler in the destructor to avoid a crash when the
+  GtkNotebook signal handler is called later, though we should fix that in
+  GtkNotebook.
+
 2010-09-09  Murray Cumming  <murrayc@murrayc.com>
 
 	Choices drop-downs: More improvement of the column alignment.
 
 	* glom/mode_data/datawidget/comboentry.cc: create_model():
-	* glom/utility_widgets/db_adddel/cellrenderer_dblist.[h|cc]: 
-	on_editing_started(): Remove (with clear) the automatically-added 
+	* glom/utility_widgets/db_adddel/cellrenderer_dblist.[h|cc]:
+	on_editing_started(): Remove (with clear) the automatically-added
 	CellRenderer and re-pack it, so we can specify expand=false.
 
 2010-09-09  David King  <davidk@openismus.com>
