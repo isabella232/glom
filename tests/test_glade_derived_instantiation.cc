@@ -59,14 +59,14 @@ bool instantiate_widget()
 {
   //Test that the widget can be instantiated with its own glade ID.
   T_Widget* widget = 0;
-  Glom::Utils::get_glade_widget_derived_with_warning(widget);    
+  Glom::Utils::get_glade_widget_derived_with_warning(widget);
   if(!widget)
   {
     std::cerr << "Test: Failed to instantiate widget of type: " << typeid(T_Widget).name() << std::endl;
     exit(EXIT_FAILURE); //Make sure that our test case fails.
     return false;
   }
-    
+
   delete widget;
   return true;
 }
@@ -85,8 +85,8 @@ int main(int argc, char *argv[])
   instantiate_widget<Dialog_Import_CSV>();
   instantiate_widget<Dialog_Import_CSV_Progress>();
   instantiate_widget<DataWidgetChildren::Dialog_ChooseID>();
-  instantiate_widget<DataWidgetChildren::Dialog_ChooseDate>(); 
-  instantiate_widget<Dialog_InvalidData>();   
+  instantiate_widget<DataWidgetChildren::Dialog_ChooseDate>();
+  instantiate_widget<Dialog_InvalidData>();
   instantiate_widget<Dialog_Image_Progress>();
   instantiate_widget<Dialog_ProgressCreating>();
 
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
   instantiate_widget<Dialog_Layout_Calendar_Related>();
   instantiate_widget<Dialog_Layout_Details>();
   instantiate_widget<Dialog_Layout_List>();
-  //TODO: instantiate_widget<Dialog_Layout_List_Related>();
+  instantiate_widget<Dialog_Layout_List_Related>();
   instantiate_widget<Dialog_ButtonScript>();
   instantiate_widget<Dialog_FlowTable>();
   instantiate_widget<Dialog_ChooseRelationship>();
@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
   instantiate_widget<Dialog_NewGroup>();
   instantiate_widget<Dialog_UsersList>();
   instantiate_widget<Dialog_GroupsList>();
-  instantiate_widget<Dialog_ChooseUser>(); 
+  instantiate_widget<Dialog_ChooseUser>();
   instantiate_widget<Dialog_User>();
   instantiate_widget<Dialog_TextFormatting>();
   instantiate_widget<Dialog_Layout_Export>();
@@ -130,6 +130,6 @@ int main(int argc, char *argv[])
   instantiate_widget<Dialog_Database_Preferences>();
   instantiate_widget<Dialog_Fields>();
   instantiate_widget<Dialog_InitialPassword>();
-   
+
   return EXIT_SUCCESS;
 }

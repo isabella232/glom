@@ -1,3 +1,12 @@
+2010-09-10  Murray Cumming  <murrayc@murrayc.com>
+
+	Tests: derived instantiation: Test an extra dialog.
+
+	* glom/mode_design/layout/dialog_layout_calendar_related.h: Correct the
+  name of the header guard, to avoid a clash.
+	* tests/test_glade_derived_instantiation.cc: Enable the test for this
+  dialog.
+
 2010-09-10  David King  <davidk@openismus.com>
 
 	Make pc.in file unversioned
