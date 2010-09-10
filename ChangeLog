@@ -1,3 +1,14 @@
+2010-09-10  David King  <davidk@openismus.com>
+
+	Use GLOM_ABI_VERSION where possible
+
+	* Makefile.am:
+	* Makefile_libglom.am:
+	* configure.ac: Use GLOM_ABI_VERSION to avoid duplication.
+	* glom/libglom/glom-1.16.pc.in: Move to unversioned
+	glom/libglom/glom.pc.in, which will be moved to a versioned file by
+	configure.
+
 2010-09-10  Murray Cumming  <murrayc@murrayc.com>
 
 	Use libosso instead of libossomm on Maemo
