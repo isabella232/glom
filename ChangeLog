@@ -1,5 +1,12 @@
 2010-09-10  Murray Cumming  <murrayc@murrayc.com>
 
+	Moved the Db_AddDel code.
+
+	* glom/utility_widgets/db_adddel/*.[h|cc]: Moved this to 
+	* glom/mode_data/db_adddel/ because that is where it is used.
+
+2010-09-10  Murray Cumming  <murrayc@murrayc.com>
+
 	DbUtils: Improve debug output.
 
 	* glom/libglom/db_utils.cc: query_execute_select(): Try to get more

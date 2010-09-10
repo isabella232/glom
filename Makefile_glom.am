@@ -93,6 +93,20 @@ glom_source_files = \
 	glom/mode_data/box_data_portal.h				\
 	glom/mode_data/buttonglom.cc				\
 	glom/mode_data/buttonglom.h				\
+	glom/mode_data/db_adddel/cellrenderer_buttonimage.cc	\
+	glom/mode_data/db_adddel/cellrenderer_buttonimage.h	\
+	glom/mode_data/db_adddel/cellrenderer_buttontext.cc	\
+	glom/mode_data/db_adddel/cellrenderer_buttontext.h	\
+	glom/mode_data/db_adddel/db_adddel.cc			\
+	glom/mode_data/db_adddel/db_adddel.h			\
+	glom/mode_data/db_adddel/db_adddel_withbuttons.cc		\
+	glom/mode_data/db_adddel/db_adddel_withbuttons.h		\
+	glom/mode_data/db_adddel/cellrenderer_dblist.cc	\
+	glom/mode_data/db_adddel/cellrenderer_dblist.h	\
+	glom/mode_data/db_adddel/db_treeviewcolumn_glom.cc	\
+	glom/mode_data/db_adddel/db_treeviewcolumn_glom.h		\
+	glom/mode_data/db_adddel/glom_db_treemodel.cc		\
+	glom/mode_data/db_adddel/glom_db_treemodel.h \
 	glom/mode_data/flowtablewithfields.cc				\
 	glom/mode_data/flowtablewithfields.h				\
 	glom/mode_data/notebook_data.cc					\
@@ -188,21 +202,7 @@ glom_source_files = \
 	glom/utility_widgets/canvas/canvas_text_movable.cc		\
 	glom/utility_widgets/canvas/canvas_text_movable.h		\
 	glom/utility_widgets/cellrendererlist.cc	\
-	glom/utility_widgets/cellrendererlist.h	\
-	glom/utility_widgets/db_adddel/cellrenderer_buttonimage.cc	\
-	glom/utility_widgets/db_adddel/cellrenderer_buttonimage.h	\
-	glom/utility_widgets/db_adddel/cellrenderer_buttontext.cc	\
-	glom/utility_widgets/db_adddel/cellrenderer_buttontext.h	\
-	glom/utility_widgets/db_adddel/db_adddel.cc			\
-	glom/utility_widgets/db_adddel/db_adddel.h			\
-	glom/utility_widgets/db_adddel/db_adddel_withbuttons.cc		\
-	glom/utility_widgets/db_adddel/db_adddel_withbuttons.h		\
-	glom/utility_widgets/db_adddel/cellrenderer_dblist.cc	\
-	glom/utility_widgets/db_adddel/cellrenderer_dblist.h	\
-	glom/utility_widgets/db_adddel/db_treeviewcolumn_glom.cc	\
-	glom/utility_widgets/db_adddel/db_treeviewcolumn_glom.h		\
-	glom/utility_widgets/db_adddel/glom_db_treemodel.cc		\
-	glom/utility_widgets/db_adddel/glom_db_treemodel.h
+	glom/utility_widgets/cellrendererlist.h
 
 if !GLOM_ENABLE_CLIENT_ONLY
 glom_source_files +=							\
