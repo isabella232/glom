@@ -1,5 +1,15 @@
 2010-09-10  David King  <davidk@openismus.com>
 
+	Make pc.in file unversioned
+
+	* configure.ac: Additionally specify source file for unversioned
+	glom.pc.in.
+	* glom/libglom/glom-1.16.pc.in: Move to unversioned
+	glom/libglom/glom.pc.in, which will be moved to a versioned file by
+	configure.
+
+2010-09-10  David King  <davidk@openismus.com>
+
 	Use GLOM_ABI_VERSION in Makefiles and configure.ac
 
 	* Makefile.am:

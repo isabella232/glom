@@ -280,7 +280,7 @@ AC_CONFIG_FILES([Makefile
                  docs/user-guide/Makefile
                  po/Makefile.in
                  glom.desktop.in
-                 glom/libglom/glom-$(GLOM_ABI_VERSION).pc
+                 glom/libglom/glom-${GLOM_ABI_VERSION}.pc:glom/libglom/glom.pc.in
                  docs/libglom_reference/Makefile
                  docs/libglom_reference/Doxyfile
                  docs/pyglom_reference/Makefile
