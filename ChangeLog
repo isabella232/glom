@@ -1,5 +1,13 @@
 2010-09-10  Murray Cumming  <murrayc@murrayc.com>
 
+	Use libosso instead of libossomm on Maemo
+
+	* configure.ac:
+	* glom/main.cc: Use libosso instead of libossomm, because we just use
+	one function.
+
+2010-09-10  Murray Cumming  <murrayc@murrayc.com>
+
 	Dialog_Layout_Report: Fix a crash, making all tests pass.
 
 	* glom/mode_design/report_layout/dialog_layout_report.[h|cc]:
