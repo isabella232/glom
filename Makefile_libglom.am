@@ -85,7 +85,7 @@ libglom_d_b_view_include_HEADERS =				\
 	glom/libglom/document/bakery/view/view_composite.h	\
 	glom/libglom/document/bakery/view/viewbase.h
 
-glom_libglom_libglom_1_14_la_SOURCES =					\
+glom_libglom_libglom_@GLOM_ABI_VERSION@_la_SOURCES =					\
 	glom/libglom/appstate.cc					\
 	glom/libglom/calcinprogress.cc					\
 	glom/libglom/calcinprogress.h					\
@@ -154,25 +154,25 @@ glom_libglom_libglom_1_14_la_SOURCES =					\
 	glom/libglom/python_embed/pygdavalue_conversions.cc		\
 	glom/libglom/python_embed/pygdavalue_conversions.h
 
-glom_libglom_libglom_1_14_la_SOURCES +=				\
+glom_libglom_libglom_@GLOM_ABI_VERSION@_la_SOURCES +=				\
 	glom/libglom/connectionpool_backends/postgres.cc	\
 	glom/libglom/connectionpool_backends/postgres.h		\
 	glom/libglom/connectionpool_backends/postgres_central.cc\
 	glom/libglom/connectionpool_backends/postgres_central.h
 
 if !GLOM_ENABLE_CLIENT_ONLY
-glom_libglom_libglom_1_14_la_SOURCES +=				\
+glom_libglom_libglom_@GLOM_ABI_VERSION@_la_SOURCES +=				\
 	glom/libglom/connectionpool_backends/postgres_self.cc	\
 	glom/libglom/connectionpool_backends/postgres_self.h
 endif
 
-glom_libglom_libglom_1_14_la_SOURCES +=				\
+glom_libglom_libglom_@GLOM_ABI_VERSION@_la_SOURCES +=				\
 	glom/libglom/connectionpool_backends/sqlite.cc		\
 	glom/libglom/connectionpool_backends/sqlite.h
 
-glom_libglom_libglom_1_14_la_LIBADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS) $(BOOST_PYTHON_LIBS)
+glom_libglom_libglom_@GLOM_ABI_VERSION@_la_LIBADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS) $(BOOST_PYTHON_LIBS)
 if HOST_WIN32
-glom_libglom_libglom_1_14_la_LIBADD += -lws2_32
+glom_libglom_libglom_@GLOM_ABI_VERSION@_la_LIBADD += -lws2_32
 endif
 
-glom_libglom_libglom_1_14_la_LDFLAGS = -no-undefined
+glom_libglom_libglom_@GLOM_ABI_VERSION@_la_LDFLAGS = -no-undefined
