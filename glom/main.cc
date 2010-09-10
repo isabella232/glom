@@ -51,7 +51,7 @@
 #include <glibmm/i18n.h>
 
 #ifdef GLOM_ENABLE_MAEMO
-#include <libossomm/init.h>
+#include <libosso.h>
 #include <hildonmm/init.h>
 #include <hildonmm/note.h>
 #include <hildonmm/program.h>
@@ -451,7 +451,7 @@ main(int argc, char* argv[])
   Glom::libglom_init(); //Also initializes python.
 
 #ifdef GLOM_ENABLE_MAEMO
-  if(!(Osso::initialize("org.maemo.glom", PACKAGE_NAME)))
+  if(!(osso_initialize("org.maemo.glom", PACKAGE_NAME, FALSE /* obsolete */, 0)))
   {
     std::cerr << "Glom: Error while initializing libossomm" << std::endl;
     return 0;
