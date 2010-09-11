@@ -24,7 +24,7 @@
 #include <gtkmm.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <libgdamm.h>
-#include <glom/mode_data/db_adddel/glom_db_treemodel.h>
+#include <glom/mode_data/db_adddel/treemodel_db.h>
 #include <libglom/document/document.h>
 #include <glom/base_db_table_data.h>
 

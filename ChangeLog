@@ -1,5 +1,13 @@
 2010-09-11  Murray Cumming  <murrayc@murrayc.com>
 
+	DbAddDel: Cleanup: Rename glom_db_treemodel.[h|cc] to treemodel_db.[h|cc].
+
+	* glom/mode_data/db_adddel/glom_db_treemodel.[h|cc]:
+	* glom/mode_data/db_adddel/treemodel_db.[h|cc]: Also rename the class from 
+	DbTreeModel to TreeModelDb to match.
+
+2010-09-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Choices combo widgets: Improve the API.
 
 	* glom/mode_data/datawidget/combochoiceswithtreemodel.[h|cc]: 

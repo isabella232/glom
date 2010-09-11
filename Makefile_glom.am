@@ -105,8 +105,8 @@ glom_source_files = \
 	glom/mode_data/db_adddel/cellrenderer_dblist.h	\
 	glom/mode_data/db_adddel/db_treeviewcolumn_glom.cc	\
 	glom/mode_data/db_adddel/db_treeviewcolumn_glom.h		\
-	glom/mode_data/db_adddel/glom_db_treemodel.cc		\
-	glom/mode_data/db_adddel/glom_db_treemodel.h \
+	glom/mode_data/db_adddel/treemodel_db.cc		\
+	glom/mode_data/db_adddel/treemodel_db.h \
 	glom/mode_data/flowtablewithfields.cc				\
 	glom/mode_data/flowtablewithfields.h				\
 	glom/mode_data/notebook_data.cc					\

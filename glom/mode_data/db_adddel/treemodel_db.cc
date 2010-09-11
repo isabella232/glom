@@ -19,7 +19,7 @@
  */
 
 #include <iostream>
-#include "glom_db_treemodel.h"
+#include "treemodel_db.h"
 
 #include <libglom/connectionpool.h>
 #include <libglom/data_structure/glomconversions.h> //For util_build_sql
