@@ -1,3 +1,15 @@
+2010-09-11  Murray Cumming  <murrayc@murrayc.com>
+
+	Choices combo widgets: Initial work to make the model generic.
+
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.[h|cc]: Change 
+	m_refModel to a generic TreeModel, make it private ,and add a 
+	get_choices_model() accessor, as a step to optionally using a db-based 
+	treemodel like Db_AddDel.
+	* glom/mode_data/datawidget/combo.cc:
+	* glom/mode_data/datawidget/comboentry.cc:
+	* glom/mode_data/db_adddel/cellrenderer_dblist.cc: Adapted.
+
 2010-09-10  Murray Cumming  <murrayc@murrayc.com>
 
 	Moved the Db_AddDel code.

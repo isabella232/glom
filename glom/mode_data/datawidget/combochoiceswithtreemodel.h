@@ -39,19 +39,22 @@ public:
 
   virtual void set_choices(const FieldFormatting::type_list_values& list_values);
 
+  //Not named get_model(), to avoid clashing with ComboBox::get_model().
+  Glib::RefPtr<Gtk::TreeModel> get_choices_model();
+  
 protected:
   void init();
   virtual void create_model(guint columns_count);
 
   virtual void set_choices_with_second(const type_list_values_with_second& list_values);
 
-  Glib::RefPtr<Gtk::ListStore> m_refModel;
-
   typedef Gtk::TreeModelColumn<Glib::ustring> type_model_column;
   typedef std::vector< type_model_column* > type_vec_model_columns;
   type_vec_model_columns m_vec_model_columns;
 
 private:
+  Glib::RefPtr<Gtk::TreeModel> m_refModel;
+  
   void delete_model();
 };
 

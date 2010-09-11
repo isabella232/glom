@@ -115,9 +115,16 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
   if(layout_choice_extra)
     extra_fields = layout_choice_extra->get_items_recursive();
 
+  Glib::RefPtr<Gtk::ListStore> list_store = Glib::RefPtr<Gtk::ListStore>::cast_dynamic(m_refModel);
+  if(!list_store)
+  {
+    std::cerr << G_STRFUNC << ": list_store is null." << std::endl;
+    return;
+  }
+  
   for(type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
   {
-    Gtk::TreeModel::iterator iterTree = m_refModel->append();
+    Gtk::TreeModel::iterator iterTree = list_store->append();
     Gtk::TreeModel::Row row = *iterTree;
 
     if(layout_choice_first)
@@ -163,9 +170,16 @@ void ComboChoicesWithTreeModel::set_choices(const FieldFormatting::type_list_val
 {
   create_model(1);
 
+  Glib::RefPtr<Gtk::ListStore> list_store = Glib::RefPtr<Gtk::ListStore>::cast_dynamic(m_refModel);
+  if(!list_store)
+  {
+    std::cerr << G_STRFUNC << ": list_store is null." << std::endl;
+    return;
+  }
+  
   for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
   {
-    Gtk::TreeModel::iterator iterTree = m_refModel->append();
+    Gtk::TreeModel::iterator iterTree = list_store->append();
     Gtk::TreeModel::Row row = *iterTree;
 
     sharedptr<const LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
@@ -176,6 +190,11 @@ void ComboChoicesWithTreeModel::set_choices(const FieldFormatting::type_list_val
       row.set_value(0, text);
     }
   }
+}
+
+Glib::RefPtr<Gtk::TreeModel> ComboChoicesWithTreeModel::get_choices_model()
+{
+  return m_refModel;
 }
 
 } //namespace DataWidetChildren

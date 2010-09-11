@@ -114,7 +114,7 @@ void ComboEntry::create_model(guint columns_count)
   ComboChoicesWithTreeModel::create_model(columns_count);
 
   //Show model in the view:
-  set_model(m_refModel);
+  set_model(get_choices_model());
   set_text_column(0);
 
   for(guint i = 0; i < columns_count; ++i)

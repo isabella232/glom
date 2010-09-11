@@ -75,7 +75,7 @@ void ComboGlom::create_model(guint columns_count)
   ComboChoicesWithTreeModel::create_model(columns_count);
 
   //Show the model in the view:
-  set_model(m_refModel);
+  set_model(get_choices_model());
   
   clear();
 
@@ -164,7 +164,8 @@ void ComboGlom::set_text(const Glib::ustring& text)
 {
   m_old_text = text;
 
-  for(Gtk::TreeModel::iterator iter = m_refModel->children().begin(); iter != m_refModel->children().end(); ++iter)
+  Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
+  for(Gtk::TreeModel::iterator iter = model->children().begin(); iter != model->children().end(); ++iter)
   {
     const Gtk::TreeModel::Row row = *iter;
     Glib::ustring this_text;

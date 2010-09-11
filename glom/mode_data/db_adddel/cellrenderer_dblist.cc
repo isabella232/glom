@@ -42,7 +42,7 @@ void CellRendererDbList::create_model(guint columns_count)
   DataWidgetChildren::ComboChoicesWithTreeModel::create_model(columns_count);
 
   //Show model in the view:
-  property_model() = m_refModel;
+  property_model() = get_choices_model();
   property_text_column() = 0; //This must be a text column, in m_refModel.
   property_editable() = true; //It would be useless if we couldn't edit it.
 
