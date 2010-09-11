@@ -61,7 +61,6 @@ public:
 };
 
 class DbTreeViewColumnGlom;
-class CellRendererDbList;
 
 /** For adding/deleting/selecting record rows.
  */
