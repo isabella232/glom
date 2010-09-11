@@ -69,16 +69,16 @@ ComboGlom::~ComboGlom()
 {
 }
 
-void ComboGlom::create_model(guint columns_count)
+void ComboGlom::use_model()
 {
-  //Create the model itself:
-  ComboChoicesWithTreeModel::create_model(columns_count);
+  Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
 
   //Show the model in the view:
-  set_model(get_choices_model());
+  set_model(model);
   
   clear();
 
+  const guint columns_count = model->get_n_columns();
   for(guint i = 0; i < columns_count; ++i)
   {
     Gtk::CellRendererText* cell = Gtk::manage(new Gtk::CellRendererText);

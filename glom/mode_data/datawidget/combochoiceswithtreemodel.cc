@@ -69,6 +69,9 @@ void ComboChoicesWithTreeModel::create_model(guint columns_count)
 
   //Create the model:
   m_refModel = Gtk::ListStore::create(record);
+  
+  //Call the derived class's (virtual) implementation of this:
+  use_model();
 }
 
 void ComboChoicesWithTreeModel::delete_model()

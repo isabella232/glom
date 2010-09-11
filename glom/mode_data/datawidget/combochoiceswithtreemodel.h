@@ -44,7 +44,12 @@ public:
   
 protected:
   void init();
-  virtual void create_model(guint columns_count);
+  void create_model(guint columns_count);
+  
+  /** Derived classes should implement this to present the model in their view,
+   * for instance by adding Gtk::CellRenderers.
+   */
+  virtual void use_model() = 0;
 
   virtual void set_choices_with_second(const type_list_values_with_second& list_values);
 

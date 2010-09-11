@@ -47,7 +47,7 @@ public:
 
 private:
 
-  virtual void create_model(guint columns_count);
+  virtual void use_model();
   virtual void on_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& path);
 
   virtual void set_value(const Gnome::Gda::Value& value);

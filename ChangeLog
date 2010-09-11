@@ -1,5 +1,16 @@
 2010-09-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Choices combo widgets: Improve the API.
+
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.[h|cc]: 
+	Make create_model() non virtual, instead adding a pure virtual use_model().
+	* glom/mode_data/datawidget/combo.[h|cc]: 
+	* glom/mode_data/datawidget/comboentry.[h|cc]: 
+	* glom/mode_data/db_adddel/cellrenderer_dblist.[h|cc]: Change the 
+	create_model() overrides to use_model() overrides.
+
+2010-09-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Choices combo widgets: Initial work to make the model generic.
 
 	* glom/mode_data/datawidget/combochoiceswithtreemodel.[h|cc]: Change 

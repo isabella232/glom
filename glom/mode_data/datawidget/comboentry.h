@@ -73,7 +73,7 @@ public:
 
 private:
   void init();
-  virtual void create_model(guint columns_count);
+  virtual void use_model();
 
 
   //Overrides of default signal handlers:

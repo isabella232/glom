@@ -108,15 +108,14 @@ ComboEntry::~ComboEntry()
 {
 }
 
-void ComboEntry::create_model(guint columns_count)
+void ComboEntry::use_model()
 {
-  //Create the model itself:
-  ComboChoicesWithTreeModel::create_model(columns_count);
-
   //Show model in the view:
-  set_model(get_choices_model());
+  Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
+  set_model(model);
   set_text_column(0);
 
+  const guint columns_count = model->get_n_columns();
   for(guint i = 0; i < columns_count; ++i)
   {
     Gtk::CellRendererText* cell = 0;

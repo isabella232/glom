@@ -74,7 +74,7 @@ public:
 
 private:
   void init();
-  virtual void create_model(guint columns_count);
+  virtual void use_model();
 
   #ifndef GLOM_ENABLE_MAEMO
   // Note that this is a normal signal handler when glibmm was complied

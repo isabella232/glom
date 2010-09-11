@@ -36,13 +36,12 @@ CellRendererDbList::~CellRendererDbList()
 }
 
 
-void CellRendererDbList::create_model(guint columns_count)
+void CellRendererDbList::use_model()
 {
-  //Create the model itself:
-  DataWidgetChildren::ComboChoicesWithTreeModel::create_model(columns_count);
+  Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
 
   //Show model in the view:
-  property_model() = get_choices_model();
+  property_model() = model;
   property_text_column() = 0; //This must be a text column, in m_refModel.
   property_editable() = true; //It would be useless if we couldn't edit it.
 
