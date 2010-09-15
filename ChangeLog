@@ -1,3 +1,11 @@
+2010-09-15  Murray Cumming  <murrayc@murrayc.com>
+
+	Replace use of ALIGN_LEFT/RIGHT/TOP/BOTTOM with START/END.
+
+	* glom/mode_data/flowtablewithfields.cc:
+	* glom/print_layout/canvas_layout_item.cc: Use only the non-deprecated 
+	enum values.
+
 2010-09-11  Murray Cumming  <murrayc@murrayc.com>
 
 	DbAddDel: Cleanup: Rename glom_db_treemodel.[h|cc] to treemodel_db.[h|cc].

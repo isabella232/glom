@@ -529,7 +529,7 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
   info.m_first = label;
   if(label && !label->get_text().empty())
   {
-    label->set_property("xalign", 0.0); //Equivalent to Gtk::ALIGN_LEFT, but we can't use that here.
+    label->set_property("xalign", 0.0); //Equivalent to Gtk::ALIGN_START, but we can't use that here.
     label->set_property("yalign", 0.5); //Equivalent ot Gtk::ALIGN_CENTER, but we can't use that here.;
 
     label->show();
@@ -543,12 +543,12 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
   {
     expand_second = true;
     if(label)
-      label->set_property("yalign", 0.0); //Equivalent to Gtk::ALIGN_TOP. Center is neater next to entries, but center is silly next to multi-line text boxes.
+      label->set_property("yalign", 0.0); //Equivalent to Gtk::ALIGN_START. Center is neater next to entries, but center is silly next to multi-line text boxes.
   }
   else if(layoutitem_field->get_glom_type() == Field::TYPE_IMAGE)
   {
     if(label)
-      label->set_property("yalign", 0.0); //Equivalent to Gtk::ALIGN_TOP. Center is neater next to entries, but center is silly next to large images.
+      label->set_property("yalign", 0.0); //Equivalent to Gtk::ALIGN_START. Center is neater next to entries, but center is silly next to large images.
   }
 
   Gtk::EventBox* eventbox = Gtk::manage(new Gtk::EventBox());
@@ -628,7 +628,7 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
 
   const FieldFormatting::HorizontalAlignment alignment =
     layoutitem_text->get_formatting_used_horizontal_alignment();
-  const Gtk::AlignmentEnum x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::ALIGN_LEFT : Gtk::ALIGN_RIGHT);
+  const Gtk::Align x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::ALIGN_START : Gtk::ALIGN_END);
   Gtk::Alignment* alignment_label = Gtk::manage(new Gtk::Alignment());
   alignment_label->set(x_align, Gtk::ALIGN_CENTER);
   alignment_label->show();
@@ -655,7 +655,7 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
   else
   {
     Gtk::Alignment* alignment_title = Gtk::manage(new Gtk::Alignment());
-    alignment_title->set(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER);
+    alignment_title->set(Gtk::ALIGN_END, Gtk::ALIGN_CENTER);
     alignment_title->show();
 
     DataWidgetChildren::Label* title_label = Gtk::manage(new DataWidgetChildren::Label(title, 0, 0, false));
@@ -683,7 +683,7 @@ void FlowTableWithFields::add_placeholder_at_position(const sharedptr<LayoutItem
 
   //Add the widget:
   m_placeholder = Gtk::manage(new Gtk::Alignment());
-  m_placeholder->set(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
+  m_placeholder->set(Gtk::ALIGN_START, Gtk::ALIGN_CENTER);
   m_placeholder->show();
 
   PlaceholderGlom* preview = Gtk::manage(new PlaceholderGlom);
@@ -724,7 +724,7 @@ void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem
   else
   {
     Gtk::Alignment* alignment_title = Gtk::manage(new Gtk::Alignment());
-    alignment_title->set(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER);
+    alignment_title->set(Gtk::ALIGN_END, Gtk::ALIGN_CENTER);
     alignment_title->show();
 
     Gtk::Label* title_label = Gtk::manage(new Gtk::Label(title));
