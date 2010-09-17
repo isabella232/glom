@@ -1,3 +1,10 @@
+2010-09-17  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build with gtkmm 3 from git master.
+
+	* glom/utility_widgets/flowtable.cc: Use SizeRequest::get_size() instead 
+	Gtk::Widget::size_request(), removed in gtkmm 3.
+
 2010-09-15  Murray Cumming  <murrayc@murrayc.com>
 
 	Replace use of ALIGN_LEFT/RIGHT/TOP/BOTTOM with START/END.

@@ -229,17 +229,19 @@ void FlowTable::get_item_requested_width(const FlowTableItem& item, int& first, 
     if(child_is_visible(first_widget))
     {
       //Discover how much space this child needs:
-      Gtk::Requisition child_requisition_request;
-      child_requisition_request = first_widget->size_request();
-      first = child_requisition_request.width;
+      //TODO: Which one should we use?
+      Gtk::Requisition child_requisition_request_min, child_requisition_request_natural;
+      first_widget->get_size(child_requisition_request_min, child_requisition_request_natural);
+      first = child_requisition_request_natural.width;
     }
 
     if(child_is_visible(second_widget))
     {
       //Discover how much space this child needs:
-      Gtk::Requisition child_requisition_request;
-      child_requisition_request = second_widget->size_request();
-      second = child_requisition_request.width;
+      //TODO: Which one should we use?
+      Gtk::Requisition child_requisition_request_min, child_requisition_request_natural;
+      second_widget->get_size(child_requisition_request_min, child_requisition_request_natural);
+      second = child_requisition_request_min.width;
     }
   }
 }
@@ -257,19 +259,21 @@ int FlowTable::get_item_requested_height(const FlowTableItem& item) const
     if(child_is_visible(first))
     {
       // Ask the child how much space it needs:
-      Gtk::Requisition child_requisition;
-      child_requisition = first->size_request();
+      //TODO: Which one should we use?
+      Gtk::Requisition child_requisition_request_min, child_requisition_request_natural;
+      first->get_size(child_requisition_request_min, child_requisition_request_natural);
 
-      max_child_height = child_requisition.height;
+      max_child_height = child_requisition_request_min.height;
     }
 
     if(child_is_visible(second))
-    {
+    {   
       // Ask the child how much space it needs:
-      Gtk::Requisition child_requisition;
-      child_requisition = second->size_request();
+      //TODO: Which one should we use?
+      Gtk::Requisition child_requisition_request_min, child_requisition_request_natural;
+      second->get_size(child_requisition_request_min, child_requisition_request_natural);
 
-      max_child_height = MAX(max_child_height, child_requisition.height);
+      max_child_height = MAX(max_child_height, child_requisition_request_min.height);
     }
 
     //Use the largest height (they are next to each other, horizontally):
@@ -444,12 +448,13 @@ Gtk::Allocation FlowTable::assign_child(Gtk::Widget* widget, int x, int y, int w
 //Give it whatever height/width it wants, at this location:
 Gtk::Allocation FlowTable::assign_child(Gtk::Widget* widget, int x, int y)
 {
-  //Discover how much space this child needs:
-  Gtk::Requisition child_requisition_request;
-  child_requisition_request = widget->size_request();
+  //Discover how much space this child needs:;
+  //TODO: Which one should we use?
+  Gtk::Requisition child_requisition_request_min, child_requisition_request_natural;
+  widget->get_size(child_requisition_request_min, child_requisition_request_natural);
 
   //Give it as much space as it wants:
-  return assign_child(widget, x, y, child_requisition_request.width, child_requisition_request.height);
+  return assign_child(widget, x, y, child_requisition_request_min.width, child_requisition_request_min.height);
 }
 
 void FlowTable::get_item_max_width_requested(guint start, guint height, guint& first_max_width, guint& second_max_width, guint& singles_max_width, bool& is_last_column) const
@@ -482,34 +487,36 @@ void FlowTable::get_item_max_width_requested(guint start, guint height, guint& f
     guint item_first_width = 0;
     guint singles_width = 0;
     if(child_is_visible(first))
-    {
-      Gtk::Requisition child_requisition;
-      child_requisition = first->size_request();
+    {      
+      //TODO: Which one should we use?
+      Gtk::Requisition child_requisition_request_min, child_requisition_request_natural;
+      first->get_size(child_requisition_request_min, child_requisition_request_natural);
 
       if(child_is_visible(second))
       {
         //There are 2 widgets so put one in each sub-column, lined up with the widgets in the other rows:
-        item_first_width = child_requisition.width;
+        item_first_width = child_requisition_request_min.width;
       }
       else
       {
         //There is only one widget, so let it take up the whole space and not affect the widths of the sub-columns:
-        singles_width = child_requisition.width;
+        singles_width = child_requisition_request_min.width;
       }
 
-      height_item = MAX(height_item, (guint)child_requisition.height);
+      height_item = MAX(height_item, (guint)child_requisition_request_min.height);
       first_item_added = true;
     }
 
     guint item_second_width = 0;
     if(child_is_visible(second))
     {
-      Gtk::Requisition child_requisition;
-      child_requisition = second->size_request();
+      //TODO: Which one should we use?
+      Gtk::Requisition child_requisition_request_min, child_requisition_request_natural;
+      second->get_size(child_requisition_request_min, child_requisition_request_natural);
 
-      item_second_width = child_requisition.width;
+      item_second_width = child_requisition_request_min.width;
       //g_warning("item_second_width=%d", item_second_width);
-      height_item = MAX(height_item, (guint)child_requisition.height);
+      height_item = MAX(height_item, (guint)child_requisition_request_min.height);
       first_item_added = true;
     }
 
