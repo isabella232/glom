@@ -22,9 +22,7 @@
 #ifndef BASE_DB_TABLE_DATA_H
 #define BASE_DB_TABLE_DATA_H
 
-#include "base_db_table.h"
-#include <libglom/data_structure/field.h>
-#include <algorithm> //find_if used in various places.
+#include "base_db_table_data_readonly.h"
 
 namespace Glom
 {
@@ -32,13 +30,11 @@ namespace Glom
 /** A base class some database functionality 
  * for use with a specific database table, showing data from the table.
  */
-class Base_DB_Table_Data : public Base_DB_Table
+class Base_DB_Table_Data : public Base_DB_Table_Data_ReadOnly
 {
 public: 
   Base_DB_Table_Data();
   virtual ~Base_DB_Table_Data();
-
-  virtual bool refresh_data_from_database();
     
   /** Tell the parent widget that something has changed in one of the shown records,
    * or a record was added or deleted.
@@ -58,18 +54,18 @@ protected:
 
   Gnome::Gda::Value get_entered_field_data_field_only(const sharedptr<const Field>& field) const;
   virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
-    
-  virtual sharedptr<Field> get_field_primary_key() const = 0;
-  virtual Gnome::Gda::Value get_primary_key_value_selected() const = 0;
+
+  //Gets the row being edited, for derived classes that have rows.
+  virtual Gtk::TreeModel::iterator get_row_selected();
+  
   virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value) = 0;
-  virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const = 0;
 
   virtual void refresh_related_fields(const LayoutFieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value);
 
   /** Get the fields that are in related tables, via a relationship using @a field_name changes.
    */
   type_vecLayoutFields get_related_fields(const sharedptr<const LayoutItem_Field>& field) const;
-      
+  
   /** Ask the user if he really wants to delete the record.
    */  
   bool confirm_delete_record();
@@ -84,16 +80,8 @@ protected:
   virtual void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row); //Overridden by derived classes.
   virtual void on_record_deleted(const Gnome::Gda::Value& primary_key_value); //Overridden by derived classes.
 
-  //Gets the row being edited, for derived classes that have rows.
-  virtual Gtk::TreeModel::iterator get_row_selected();
-      
-  FoundSet m_found_set;
-
-  type_vec_fields m_TableFields; //A cache, so we don't have to repeatedly get them from the Document.
-  type_vecLayoutFields m_FieldsShown; //And any extra keys needed by shown fields.
-
   type_signal_record_changed m_signal_record_changed;
-    
+  
 private:
   bool get_related_record_exists(const sharedptr<const Relationship>& relationship, const Gnome::Gda::Value& key_value);
 };

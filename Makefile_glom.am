@@ -24,6 +24,8 @@ glom_source_files = \
 	glom/base_db_table.h						\
 	glom/base_db_table_data.cc					\
 	glom/base_db_table_data.h					\
+	glom/base_db_table_data_readonly.cc \
+	glom/base_db_table_data_readonly.h \
 	glom/box_db_table.cc						\
 	glom/box_db_table.h						\
 	glom/box_reports.cc						\

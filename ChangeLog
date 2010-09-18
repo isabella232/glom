@@ -1,3 +1,15 @@
+2010-09-18  Murray Cumming  <murrayc@murrayc.com>
+
+	Split Base_DB_Table_Data into a read-only base class.
+
+	* glom/Makefile_glom.am:
+	* po/POTFILES.in:
+	* glom/base_db_table_data_readonly.[h|cc]: Created this new class from 
+	parts of:
+	* glom/base_db_table_data.[h|cc]: which now derives from it.
+	This let us use it for classes that do not allow the user to change the data.
+	For instance, choice combo boxes.
+
 2010-09-17  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the build with gtkmm 3 from git master.

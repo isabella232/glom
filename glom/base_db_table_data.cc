@@ -39,14 +39,6 @@ Base_DB_Table_Data::~Base_DB_Table_Data()
 {
 }
 
-bool Base_DB_Table_Data::refresh_data_from_database()
-{
-  if(!ConnectionPool::get_instance()->get_ready_to_connect())
-    return false;
-
-  return fill_from_database();
-}
-
 Gnome::Gda::Value Base_DB_Table_Data::get_entered_field_data_field_only(const sharedptr<const Field>& field) const
 {
   sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
@@ -61,6 +53,7 @@ Gnome::Gda::Value Base_DB_Table_Data::get_entered_field_data(const sharedptr<con
 
   return Gnome::Gda::Value(); //null
 }
+
 
 Gtk::TreeModel::iterator Base_DB_Table_Data::get_row_selected()
 {
@@ -240,45 +233,6 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
     std::cerr << G_STRFUNC << ": Empty field names or values." << std::endl;
 
   return false; //Failed.
-}
-
-
-bool Base_DB_Table_Data::get_related_record_exists(const sharedptr<const Relationship>& relationship, const Gnome::Gda::Value& key_value)
-{
-  BusyCursor cursor(Application::get_application());
-
-  bool result = false;
-
-  //Don't try doing a NULL=NULL or ""="" relationship:
-  if(Glom::Conversions::value_is_empty(key_value))
-    return false;
-
-  //TODO_Performance: It's very possible that this is slow.
-  //We don't care how many records there are, only whether there are more than zero.
-  const Glib::ustring to_field = relationship->get_to_field();
-  const Glib::ustring related_table = relationship->get_to_table();
-
-  //TODO_Performance: Is this the best way to just find out whether there is one record that meets this criteria? 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
-      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-  builder->select_add_field(to_field, related_table);
-  builder->select_add_target(related_table);
-  builder->set_where(
-    builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-      builder->add_field_id(to_field, related_table),
-      builder->add_expr(key_value)));
-                                               
-  Glib::RefPtr<Gnome::Gda::DataModel> records = DbUtils::query_execute_select(builder);
-  if(!records)
-    handle_error();
-  else
-  {
-    //Field contents:
-    if(records->get_n_rows())
-      result = true;
-  }
-
-  return result;
 }
 
 bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Field>& layout_item_parent,
@@ -484,6 +438,79 @@ Base_DB_Table_Data::type_signal_record_changed Base_DB_Table_Data::signal_record
 }
 
 
+bool Base_DB_Table_Data::get_related_record_exists(const sharedptr<const Relationship>& relationship, const Gnome::Gda::Value& key_value)
+{
+  BusyCursor cursor(Application::get_application());
+
+  bool result = false;
+
+  //Don't try doing a NULL=NULL or ""="" relationship:
+  if(Glom::Conversions::value_is_empty(key_value))
+    return false;
+
+  //TODO_Performance: It's very possible that this is slow.
+  //We don't care how many records there are, only whether there are more than zero.
+  const Glib::ustring to_field = relationship->get_to_field();
+  const Glib::ustring related_table = relationship->get_to_table();
+
+  //TODO_Performance: Is this the best way to just find out whether there is one record that meets this criteria? 
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  builder->select_add_field(to_field, related_table);
+  builder->select_add_target(related_table);
+  builder->set_where(
+    builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+      builder->add_field_id(to_field, related_table),
+      builder->add_expr(key_value)));
+                                               
+  Glib::RefPtr<Gnome::Gda::DataModel> records = DbUtils::query_execute_select(builder);
+  if(!records)
+    handle_error();
+  else
+  {
+    //Field contents:
+    if(records->get_n_rows())
+      result = true;
+  }
+
+  return result;
+}
+
+
+/** Get the shown fields that are in related tables, via a relationship using @a field_name changes.
+ */
+Base_DB_Table_Data::type_vecLayoutFields Base_DB_Table_Data::get_related_fields(const sharedptr<const LayoutItem_Field>& field) const
+{
+  type_vecLayoutFields result;
+
+  const Document* document = dynamic_cast<const Document*>(get_document());
+  if(document)
+  {
+    const Glib::ustring field_name = field->get_name(); //At the moment, relationships can not be based on related fields on the from side.
+    for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end();  ++iter)
+    {
+      sharedptr<LayoutItem_Field> layout_field = *iter;
+      //Examine each field that looks up its data from a relationship:
+      if(layout_field->get_has_relationship_name())
+      {
+        //Get the relationship information:
+        sharedptr<const Relationship> relationship = document->get_relationship(m_table_name, layout_field->get_relationship_name());
+        if(relationship)
+        {
+          //If the relationship uses the specified field:
+          if(relationship->get_from_field() == field_name)
+          {
+            //Add it:
+            result.push_back(layout_field);
+          }
+        }
+      }
+    }
+  }
+
+  return result;
+}
+
 void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& /* field_value */)
 {
   //std::cout << "DEBUG: Base_DB_Table_Data::refresh_related_fields()" << std::endl;
@@ -543,40 +570,6 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
         std::cerr << G_STRFUNC << ": no records found." << std::endl;
     }
   }
-}
-
-/** Get the shown fields that are in related tables, via a relationship using @a field_name changes.
- */
-Base_DB_Table_Data::type_vecLayoutFields Base_DB_Table_Data::get_related_fields(const sharedptr<const LayoutItem_Field>& field) const
-{
-  type_vecLayoutFields result;
-
-  const Document* document = dynamic_cast<const Document*>(get_document());
-  if(document)
-  {
-    const Glib::ustring field_name = field->get_name(); //At the moment, relationships can not be based on related fields on the from side.
-    for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end();  ++iter)
-    {
-      sharedptr<LayoutItem_Field> layout_field = *iter;
-      //Examine each field that looks up its data from a relationship:
-      if(layout_field->get_has_relationship_name())
-      {
-        //Get the relationship information:
-        sharedptr<const Relationship> relationship = document->get_relationship(m_table_name, layout_field->get_relationship_name());
-        if(relationship)
-        {
-          //If the relationship uses the specified field:
-          if(relationship->get_from_field() == field_name)
-          {
-            //Add it:
-            result.push_back(layout_field);
-          }
-        }
-      }
-    }
-  }
-
-  return result;
 }
 
 } //namespace Glom
