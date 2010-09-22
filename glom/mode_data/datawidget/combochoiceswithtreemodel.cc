@@ -169,7 +169,7 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
 }
 
 
-void ComboChoicesWithTreeModel::set_choices(const FieldFormatting::type_list_values& list_values)
+void ComboChoicesWithTreeModel::set_choices_fixed(const FieldFormatting::type_list_values& list_values)
 {
   create_model(1);
 

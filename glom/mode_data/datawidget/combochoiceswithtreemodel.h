@@ -37,7 +37,7 @@ public:
 
   virtual ~ComboChoicesWithTreeModel();
 
-  virtual void set_choices(const FieldFormatting::type_list_values& list_values);
+  virtual void set_choices_fixed(const FieldFormatting::type_list_values& list_values);
 
   //Not named get_model(), to avoid clashing with ComboBox::get_model().
   Glib::RefPtr<Gtk::TreeModel> get_choices_model();

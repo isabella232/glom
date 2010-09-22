@@ -120,10 +120,10 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
 
       if(field->get_formatting_used().get_has_custom_choices())
       {
-        //set_choices() needs this, for the numeric layout:
+        //set_choices_fixed() needs this, for the numeric layout:
         combo->set_layout_item( get_layout_item(), table_name);
 
-        combo->set_choices( field->get_formatting_used().get_choices_custom() );
+        combo->set_choices_fixed( field->get_formatting_used().get_choices_custom() );
       }
       else if(field->get_formatting_used().get_has_related_choices())
       {

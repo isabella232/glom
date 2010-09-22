@@ -46,9 +46,15 @@ public:
 
   virtual ~ComboChoices();
 
-  virtual void set_choices(const FieldFormatting::type_list_values& list_values) = 0;
+  /** Set a list of choice values, for instance for a list of custom choices.
+   * You should first call set_layout_item() to provide formatting details.
+   */
+  virtual void set_choices_fixed(const FieldFormatting::type_list_values& list_values) = 0;
 
-  /**
+  /** Show the list of related chocie values based on the LayoutItem's formatting choices.
+   * You should first call set_layout_item() to provide that formatting detail,
+   * so the widget knows what choices to show, and how to format them.
+   *
    * See also refresh_data_from_database_with_foreign_key().
    */
   void set_choices_related(const Document* document);

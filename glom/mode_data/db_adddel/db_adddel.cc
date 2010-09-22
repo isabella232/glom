@@ -822,7 +822,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
 
       if(item_field && item_field->get_formatting_used().get_has_custom_choices())
       {
-        //set_choices() needs this, for the numeric layout:
+        //set_choices_fixed() needs this, for the numeric layout:
         //pCellRendererCombo->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
         const FieldFormatting::type_list_values list_values = item_field->get_formatting_used().get_choices_custom();
         for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)

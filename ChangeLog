@@ -1,10 +1,21 @@
+2010-09-22  Murray Cumming  <murrayc@murrayc.com>
+
+	ComboChoices: Renamed set_choices() to set_choices_fixed()
+
+	* glom/mode_data/datawidget/combochoices.h: Rename set_choices() to
+  set_choices_fixed() to make code clearer.
+	* glom/mode_data/datawidget/combo_as_radio_buttons.[h|cc]
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.[h|cc]
+	* glom/mode_data/datawidget/datawidget.cc:
+	* glom/mode_data/db_adddel/db_adddel.cc: Adapted.
+
 2010-09-18  Murray Cumming  <murrayc@murrayc.com>
 
 	Split Base_DB_Table_Data into a read-only base class.
 
 	* glom/Makefile_glom.am:
 	* po/POTFILES.in:
-	* glom/base_db_table_data_readonly.[h|cc]: Created this new class from 
+	* glom/base_db_table_data_readonly.[h|cc]: Created this new class from
 	parts of:
 	* glom/base_db_table_data.[h|cc]: which now derives from it.
 	This let us use it for classes that do not allow the user to change the data.
@@ -14,7 +25,7 @@
 
 	Fix the build with gtkmm 3 from git master.
 
-	* glom/utility_widgets/flowtable.cc: Use SizeRequest::get_size() instead 
+	* glom/utility_widgets/flowtable.cc: Use SizeRequest::get_size() instead
 	Gtk::Widget::size_request(), removed in gtkmm 3.
 
 2010-09-15  Murray Cumming  <murrayc@murrayc.com>
@@ -22,7 +33,7 @@
 	Replace use of ALIGN_LEFT/RIGHT/TOP/BOTTOM with START/END.
 
 	* glom/mode_data/flowtablewithfields.cc:
-	* glom/print_layout/canvas_layout_item.cc: Use only the non-deprecated 
+	* glom/print_layout/canvas_layout_item.cc: Use only the non-deprecated
 	enum values.
 
 2010-09-11  Murray Cumming  <murrayc@murrayc.com>
@@ -30,27 +41,27 @@
 	DbAddDel: Cleanup: Rename glom_db_treemodel.[h|cc] to treemodel_db.[h|cc].
 
 	* glom/mode_data/db_adddel/glom_db_treemodel.[h|cc]:
-	* glom/mode_data/db_adddel/treemodel_db.[h|cc]: Also rename the class from 
+	* glom/mode_data/db_adddel/treemodel_db.[h|cc]: Also rename the class from
 	DbTreeModel to TreeModelDb to match.
 
 2010-09-11  Murray Cumming  <murrayc@murrayc.com>
 
 	Choices combo widgets: Improve the API.
 
-	* glom/mode_data/datawidget/combochoiceswithtreemodel.[h|cc]: 
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.[h|cc]:
 	Make create_model() non virtual, instead adding a pure virtual use_model().
-	* glom/mode_data/datawidget/combo.[h|cc]: 
-	* glom/mode_data/datawidget/comboentry.[h|cc]: 
-	* glom/mode_data/db_adddel/cellrenderer_dblist.[h|cc]: Change the 
+	* glom/mode_data/datawidget/combo.[h|cc]:
+	* glom/mode_data/datawidget/comboentry.[h|cc]:
+	* glom/mode_data/db_adddel/cellrenderer_dblist.[h|cc]: Change the
 	create_model() overrides to use_model() overrides.
 
 2010-09-11  Murray Cumming  <murrayc@murrayc.com>
 
 	Choices combo widgets: Initial work to make the model generic.
 
-	* glom/mode_data/datawidget/combochoiceswithtreemodel.[h|cc]: Change 
-	m_refModel to a generic TreeModel, make it private ,and add a 
-	get_choices_model() accessor, as a step to optionally using a db-based 
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.[h|cc]: Change
+	m_refModel to a generic TreeModel, make it private ,and add a
+	get_choices_model() accessor, as a step to optionally using a db-based
 	treemodel like Db_AddDel.
 	* glom/mode_data/datawidget/combo.cc:
 	* glom/mode_data/datawidget/comboentry.cc:
@@ -60,7 +71,7 @@
 
 	Moved the Db_AddDel code.
 
-	* glom/utility_widgets/db_adddel/*.[h|cc]: Moved this to 
+	* glom/utility_widgets/db_adddel/*.[h|cc]: Moved this to
 	* glom/mode_data/db_adddel/ because that is where it is used.
 
 2010-09-10  Murray Cumming  <murrayc@murrayc.com>

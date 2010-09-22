@@ -48,7 +48,7 @@ public:
 
   virtual ~ComboAsRadioButtons();
   
-  virtual void set_choices(const FieldFormatting::type_list_values& list_values);
+  virtual void set_choices_fixed(const FieldFormatting::type_list_values& list_values);
 
   virtual void set_read_only(bool read_only = true);
 
