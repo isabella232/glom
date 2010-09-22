@@ -1044,11 +1044,9 @@ void DbAddDel::construct_specified_columns()
     m_treeviewcolumn_button = Gtk::manage(new Gtk::TreeViewColumn());
     m_treeviewcolumn_button->pack_start(*pCellButton);
 
-    int x_offset = 0;
-    int y_offset = 0;
-    int width = 0;
-    int height = 0;
-    pCellButton->get_size(m_TreeView, x_offset, y_offset, width, height);
+
+    Gtk::Requisition requistion_min, requistion_natural; //TODO: Really support natural size.
+    pCellButton->get_size(m_TreeView, requistion_min, requistion_natural);
 
     m_treeviewcolumn_button->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Needed by fixed-height mode.
 
@@ -1057,7 +1055,7 @@ void DbAddDel::construct_specified_columns()
     // the spacing property of the treeviewcolumn.
     int horizontal_separator = 0;
     m_TreeView.get_style_property("horizontal-separator", horizontal_separator);
-    const int button_width = width + horizontal_separator*2;
+    const int button_width = requistion_min.width + horizontal_separator*2;
     if(button_width > 0) //Otherwise an assertion fails.
       m_treeviewcolumn_button->set_fixed_width(button_width);
 

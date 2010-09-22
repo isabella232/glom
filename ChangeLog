@@ -1,5 +1,11 @@
 2010-09-22  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix the build with latest unstable gtkmm 3.
+
+	* glom/mode_data/db_adddel/db_adddel.cc: Adapt to CellSizeRequest::get_size().
+
+2010-09-22  Murray Cumming  <murrayc@murrayc.com>
+
 	ComboChoices: Renamed set_choices() to set_choices_fixed()
 
 	* glom/mode_data/datawidget/combochoices.h: Rename set_choices() to
