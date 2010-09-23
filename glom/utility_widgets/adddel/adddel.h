@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef ADDDEL_H
-#define ADDDEL_H
+#ifndef GLOM_UTLITY_WIDGETS_ADDDEL_H
+#define GLOM_UTLITY_WIDGETS_ADDDEL_H
 
 #include <gtkmm.h>
 #include <libglom/data_structure/field.h>
@@ -330,4 +330,4 @@ guint AddDel::treeview_append_column(const Glib::ustring& title, const Gtk::Tree
 } //namespace Glom
 
 
-#endif //ADDDEL_H
+#endif // GLOM_UTLITY_WIDGETS_ADDDEL_H

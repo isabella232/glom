@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef ADDDEL_WITHBUTTONS_H
-#define ADDDEL_WITHBUTTONS_H
+#ifndef GLOM_UTILITY_WIDGETS_ADDDEL_WITHBUTTONS_H
+#define GLOM_UTILITY_WIDGETS_ADDDEL_WITHBUTTONS_H
 
 #include "adddel.h"
 
@@ -54,4 +54,4 @@ private:
 
 } //namespace Glom
 
-#endif //ADDDEL_WITHBUTTONS_H
+#endif // GLOM_UTLITY_WIDGETS_ADDDEL_WITHBUTTONS_H

@@ -16,8 +16,8 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PARAMETERNAMEGENERATOR_H_
-#define _PARAMETERNAMEGENERATOR_H_
+#ifndef GLOM_DATA_STRUCTURE_PARAMETERNAMEGENERATOR_H
+#define GLOM_DATA_STRUCTURE_PARAMETERNAMEGENERATOR_H
 
 #include <map>
 #include <glibmm/ustring.h>
@@ -39,6 +39,6 @@ private:
     unsigned int m_id;
 };
 
-#endif // _PARAMETERNAMEGENERATOR_H_
-
 }
+
+#endif // GLOM_DATA_STRUCTURE_PARAMETERNAMEGENERATOR_H

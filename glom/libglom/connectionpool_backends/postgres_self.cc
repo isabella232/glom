@@ -90,10 +90,6 @@ namespace ConnectionPoolBackends
 "# IPv6 local connections:\n" \
 "host    all         all         ::1/128               md5\n"
 
-#define PORT_POSTGRESQL_SELF_HOSTED_START 5433
-#define PORT_POSTGRESQL_SELF_HOSTED_END 5500
-
-
 #define DEFAULT_CONFIG_PG_HBA_REMOTE_8p3 \
 DEFAULT_CONFIG_PG_HBA_LOCAL_8p3 \
 DEFAULT_CONFIG_PG_HBA_REMOTE_EXTRA
@@ -102,12 +98,12 @@ DEFAULT_CONFIG_PG_HBA_REMOTE_EXTRA
 DEFAULT_CONFIG_PG_HBA_LOCAL_8p3 \
 DEFAULT_CONFIG_PG_HBA_REMOTE_EXTRA
 
-#define PORT_POSTGRESQL_SELF_HOSTED_START 5433
-#define PORT_POSTGRESQL_SELF_HOSTED_END 5500
+static const int PORT_POSTGRESQL_SELF_HOSTED_START = 5433;
+static const int PORT_POSTGRESQL_SELF_HOSTED_END = 5500;
 
-static const char* DEFAULT_CONFIG_PG_IDENT = "";
-static const char* FILENAME_DATA = "data";
-static const char* FILENAME_BACKUP = "backup";
+static const char DEFAULT_CONFIG_PG_IDENT[] = "";
+static const char FILENAME_DATA[] = "data";
+static const char FILENAME_BACKUP[] = "backup";
 
 PostgresSelfHosted::PostgresSelfHosted()
 : m_network_shared(false)

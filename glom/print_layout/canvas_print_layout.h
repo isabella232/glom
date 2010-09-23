@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_CANVAS_PRINT_LAYOUT_EDIT_H
-#define GLOM_CANVAS_PRINT_LAYOUT_EDIT_H
+#ifndef GLOM_PRINT_LAYOUT_CANVAS_PRINT_LAYOUT_H
+#define GLOM_PRINT_LAYOUT_CANVAS_PRINT_LAYOUT_H
 
 #include <glom/base_db.h>
 #include <glom/utility_widgets/canvas/canvas_editable.h>
@@ -123,5 +123,4 @@ private:
 
 } //namespace Glom
 
-#endif //GLOM_CANVAS_PRINT_LAYOUT_EDIT_H
-
+#endif // GLOM_PRINT_LAYOUT_CANVAS_PRINT_LAYOUT_H

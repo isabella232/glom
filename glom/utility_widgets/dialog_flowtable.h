@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef DIALOG_FLOWTABLE_H
-#define DIALOG_FLOWTABLE_H
+#ifndef GLOM_DIALOG_FLOWTABLE_H
+#define GLOM_DIALOG_FLOWTABLE_H
 
 #include <gtkmm.h>
 #include <gtkmm/builder.h>
@@ -56,4 +56,4 @@ private:
 
 } //namespace Glom
 
-#endif //DIALOG_TEXTOBJECT_H
+#endif // GLOM_DIALOG_FLOWTABLE_H

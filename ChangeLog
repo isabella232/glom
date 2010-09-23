@@ -1,3 +1,13 @@
+2010-09-23  David King  <davidk@openismus.com>
+
+	Improve use of defines
+
+	* *.h: Be more consistent with include guards.
+	* glom/dialog_existing_or_new.cc:
+	* glom/libglom/connectionpool_backends/postrgres_self.cc:
+	* glom/libglom/document/document.cc: Convert defines to static const
+	data.
+
 2010-09-10  David King  <davidk@openismus.com>
 
 	Use GLOM_ABI_VERSION where possible

@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef BOX_DATA_PORTAL_H
-#define BOX_DATA_PORTAL_H
+#ifndef GLOM_MODE_DATA_BOX_DATA_PORTAL_H
+#define GLOM_MODE_DATA_BOX_DATA_PORTAL_H
 
 #include "config.h" // GLOM_ENABLE_CLIENT_ONLY
 
@@ -140,4 +140,4 @@ private:
 
 } //namespace Glom
 
-#endif //BOX_DATA_PORTAL_H
+#endif // GLOM_MODE_DATA_BOX_DATA_PORTAL_H

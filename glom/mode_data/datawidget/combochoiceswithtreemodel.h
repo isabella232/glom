@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITY_WIDGETS_COMBO_CHOICES_WITH_TREE_MODEL_H
-#define GLOM_UTILITY_WIDGETS_COMBO_CHOICES_WITH_TREE_MODEL_H
+#ifndef GLOM_MODE_DATA_COMBO_CHOICES_WITH_TREE_MODEL_H
+#define GLOM_MODE_DATA_COMBO_CHOICES_WITH_TREE_MODEL_H
 
 #include <glom/mode_data/datawidget/combochoices.h>
 
@@ -66,5 +66,4 @@ protected:
 } //namespace DataWidetChildren
 } //namespace Glom
 
-#endif //GLOM_UTILITY_WIDGETS_COMBO_CHOICES_WITH_TREE_MODEL_H
-
+#endif // GLOM_MODE_DATA_COMBO_CHOICES_WITH_TREE_MODEL_H

@@ -30,8 +30,8 @@ namespace Glom
   //JPEG seems to give ugly results when saved to the database and shown again.
   //#define GLOM_IMAGE_FORMAT "jpeg"
   //#define GLOM_IMAGE_FORMAT_MIME_TYPE "image/jpeg"
-  #define GLOM_IMAGE_FORMAT "png"
-  #define GLOM_IMAGE_FORMAT_MIME_TYPE "image/png"
+  const char GLOM_IMAGE_FORMAT[] = "png";
+  const char GLOM_IMAGE_FORMAT_MIME_TYPE[] = "image/png";
 
 class LayoutItem_Image 
  : public LayoutItem

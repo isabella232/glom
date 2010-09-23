@@ -19,8 +19,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_IMPORT_CSV_H
-#define GLOM_IMPORT_CSV_H
+#ifndef GLOM_CSV_PARSER_H
+#define GLOM_CSV_PARSER_H
 
 #include "base_db.h"
 
@@ -209,6 +209,4 @@ private:
 
 } //namespace Glom
 
-#endif //GLOM_IMPORT_CSV_H
-
-
+#endif //GLOM_CSV_PARSER_H

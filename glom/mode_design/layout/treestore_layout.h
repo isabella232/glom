@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_MODE_DATA_TREESTORE_LAYOUT_H
-#define GLOM_MODE_DATA_TREESTORE_LAYOUT_H
+#ifndef GLOM_MODE_DESIGN_TREESTORE_LAYOUT_H
+#define GLOM_MODE_DESIGN_TREESTORE_LAYOUT_H
 
 #include <gtkmm/treestore.h>
 #include <libglom/data_structure/layout/layoutitem_portal.h>
@@ -63,5 +63,4 @@ private:
 
 } //namespace Glom
 
-#endif //GLOM_MODE_DATA_TREESTORE_LAYOUT_H
-
+#endif // GLOM_MODE_DESIGN_TREESTORE_LAYOUT_H

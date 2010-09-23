@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef DOCUMENT_GLOM_VIEW_H
-#define DOCUMENT_GLOM_VIEW_H
+#ifndef GLOM_DOCUMENT_VIEW_H
+#define GLOM_DOCUMENT_VIEW_H
 
 #include <libglom/document/document.h>
 #include <libglom/document/bakery/view/view_composite.h>
@@ -34,4 +34,4 @@ typedef GlomBakery::View_Composite<Document> View_Composite_Glom;
 
 } //namespace Glom
 
-#endif //DOCUMENT_GLOM_VIEW_H
+#endif // GLOM_DOCUMENT_VIEW_H

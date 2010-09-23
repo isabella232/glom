@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef COMBO_FIELDTYPE_HH
-#define COMBO_FIELDTYPE_HH
+#ifndef GLOM_MODE_DESIGN_COMBO_FIELDTYPE_H
+#define GLOM_MODE_DESIGN_COMBO_FIELDTYPE_H
 
 #include <libglom/data_structure/field.h>
 #include <gtkmm/combobox.h>
@@ -90,6 +90,6 @@ private:
   Glib::RefPtr<Gtk::ListStore> m_refTreeModel;
 };
 
-#endif //COMBO_FIELDTYPE_HH
-
 } //namespace Glom
+
+#endif // GLOM_MODE_DESIGN_COMBO_FIELDTYPE_H

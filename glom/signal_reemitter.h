@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_PRIVS_H
-#define GLOM_PRIVS_H
+#ifndef GLOM_SIGNAL_REEMITTER_H
+#define GLOM_SIGNAL_REEMITTER_H
 
 #include <sigc++/sigc++.h>
 
@@ -64,5 +64,4 @@ void signal_connect_for_reemit_1arg(sigc::signal1<void, T_arg1> sig_to_catch, co
 
 } //namespace Glom
 
-#endif //GLOM_PRIVS_H
-
+#endif //GLOM_SIGNAL_REEMITTER_H

@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef DIALOG_FIELDCALCULATION_H
-#define DIALOG_FIELDCALCULATION_H
+#ifndef GLOM_MODE_DESIGN_DIALOG_FIELDCALCULATION_H
+#define GLOM_MODE_DESIGN_DIALOG_FIELDCALCULATION_H
 
 #include <gtkmm.h>
 #include <gtkmm/builder.h>
@@ -59,4 +59,4 @@ private:
 
 } //namespace Glom
 
-#endif //DIALOG_FIELDCALCULATION_H
+#endif // GLOM_MODE_DESIGN_DIALOG_FIELDCALCULATION_H

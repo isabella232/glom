@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_MODE_DESIGN_COMBO_SUMMARYTYPE_HH
-#define GLOM_MODE_DESIGN_COMBO_SUMMARYTYPE_HH
+#ifndef GLOM_MODE_DESIGN_COMBO_SUMMARYTYPE_H
+#define GLOM_MODE_DESIGN_COMBO_SUMMARYTYPE_H
 
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <gtkmm/combobox.h>
@@ -59,5 +59,4 @@ private:
 
 } //namespace Glom
 
-#endif //GLOM_MODE_DESIGN_COMBO_SUMMARYTYPE_HH
-
+#endif //GLOM_MODE_DESIGN_COMBO_SUMMARYTYPE_H

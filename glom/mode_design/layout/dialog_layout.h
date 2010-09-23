@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_MODE_DATA_DIALOG_LAYOUT_H
-#define GLOM_MODE_DATA_DIALOG_LAYOUT_H
+#ifndef GLOM_MODE_DESIGN_DIALOG_LAYOUT_H
+#define GLOM_MODE_DESIGN_DIALOG_LAYOUT_H
 
 #include <gtkmm/dialog.h>
 #include <glom/utility_widgets/dialog_properties.h>
@@ -77,4 +77,4 @@ protected:
 
 } //namespace Glom
 
-#endif //GLOM_MODE_DATA_DIALOG_LAYOUT_H
+#endif // GLOM_MODE_DESIGN_DIALOG_LAYOUT_H

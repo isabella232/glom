@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef BOX_REPORTS_H
-#define BOX_REPORTS_H
+#ifndef GLOM_BOX_REPORTS_H
+#define GLOM_BOX_REPORTS_H
 
 #include "box_db_table.h"
 #include <libglom/data_structure/report.h>
@@ -61,5 +61,4 @@ private:
 
 } //namespace Glom
 
-#endif //BOX_REPORTS_H
-
+#endif // GLOM_BOX_REPORTS_H

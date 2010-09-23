@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_MODE_DATA_DIALOG_CHOOSE_FIELD_H
-#define GLOM_MODE_DATA_DIALOG_CHOOSE_FIELD_H
+#ifndef GLOM_MODE_DESIGN_DIALOG_CHOOSE_FIELD_H
+#define GLOM_MODE_DESIGN_DIALOG_CHOOSE_FIELD_H
 
 #include <gtkmm.h>
 #include <glom/utility_widgets/dialog_properties.h>
@@ -93,4 +93,4 @@ private:
 
 } //namespace Glom
 
-#endif //GLOM_MODE_DATA_DIALOG_CHOOSE_FIELD_H
+#endif // GLOM_MODE_DESIGN_DIALOG_CHOOSE_FIELD_H

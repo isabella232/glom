@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_BOX_FORMATTING_H
-#define GLOM_BOX_FORMATTING_H
+#ifndef GLOM_MODE_DESIGN_BOX_FORMATTING_H
+#define GLOM_MODE_DESIGN_BOX_FORMATTING_H
 
 #include <gtkmm.h>
 #include <glom/utility_widgets/dialog_properties.h>
@@ -129,4 +129,4 @@ private:
 
 } //namespace Glom
 
-#endif //GLOM_BOX_FORMATTING_H
+#endif // GLOM_MODE_DESIGN_BOX_FORMATTING_H

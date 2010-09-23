@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_MODE_DATA_DIALOG_NOTEBOOK_HH
-#define GLOM_MODE_DATA_DIALOG_NOTEBOOK_HH
+#ifndef GLOM_MODE_DESIGN_DIALOG_NOTEBOOK_H
+#define GLOM_MODE_DESIGN_DIALOG_NOTEBOOK_H
 
 #include <glom/base_db.h>
 #include <glom/mode_design/layout/dialog_layout.h>
@@ -85,4 +85,4 @@ private:
 
 } //namespace Glom
 
-#endif //GLOM_MODE_DATA_DIALOG_NOTEBOOK_HH
+#endif // GLOM_MODE_DESIGN_DIALOG_NOTEBOOK_H

@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef NOTEBOOK_GLOM_H
-#define NOTEBOOK_GLOM_H
+#ifndef GLOM_NOTEBOOK_GLOM_H
+#define GLOM_NOTEBOOK_GLOM_H
 
 #include <glom/box_withbuttons.h>
 #include <libglom/document/document.h>
@@ -67,4 +67,4 @@ protected:
 
 } //namespace Glom
 
-#endif
+#endif // GLOM_NOTEBOOK_GLOM_H

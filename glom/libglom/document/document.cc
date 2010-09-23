@@ -45,180 +45,180 @@
 namespace Glom
 {
 
-#define GLOM_NODE_CONNECTION "connection"
-#define GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED "self_hosted" //deprecated.
-#define GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE "hosting_mode"
-#define GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL "postgres_central"
-#define GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF "postgres_self"
-#define GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE "sqlite"
-#define GLOM_ATTRIBUTE_CONNECTION_NETWORK_SHARED "network_shared"
-#define GLOM_ATTRIBUTE_CONNECTION_SERVER "server"
-#define GLOM_ATTRIBUTE_CONNECTION_PORT "port"
-#define GLOM_ATTRIBUTE_CONNECTION_TRY_OTHER_PORTS "try_other_ports"
-#define GLOM_ATTRIBUTE_CONNECTION_USER "user"
-#define GLOM_ATTRIBUTE_CONNECTION_DATABASE "database"
+static const char GLOM_NODE_CONNECTION[] = "connection";
+static const char GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED[] = "self_hosted"; //deprecated.
+static const char GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE[] = "hosting_mode";
+static const char GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL[] = "postgres_central";
+static const char GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF[] = "postgres_self";
+static const char GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE[] = "sqlite";
+static const char GLOM_ATTRIBUTE_CONNECTION_NETWORK_SHARED[] = "network_shared";
+static const char GLOM_ATTRIBUTE_CONNECTION_SERVER[] = "server";
+static const char GLOM_ATTRIBUTE_CONNECTION_PORT[] = "port";
+static const char GLOM_ATTRIBUTE_CONNECTION_TRY_OTHER_PORTS[] = "try_other_ports";
+static const char GLOM_ATTRIBUTE_CONNECTION_USER[] = "user";
+static const char GLOM_ATTRIBUTE_CONNECTION_DATABASE[] = "database";
 
-#define GLOM_NODE_DATA_LAYOUT_GROUPS "data_layout_groups"
-#define GLOM_NODE_DATA_LAYOUT_GROUP "data_layout_group"
-#define GLOM_ATTRIBUTE_COLUMNS_COUNT "columns_count"
-#define GLOM_ATTRIBUTE_BORDER_WIDTH "border_width"
+static const char GLOM_NODE_DATA_LAYOUT_GROUPS[] = "data_layout_groups";
+static const char GLOM_NODE_DATA_LAYOUT_GROUP[] = "data_layout_group";
+static const char GLOM_ATTRIBUTE_COLUMNS_COUNT[] = "columns_count";
+static const char GLOM_ATTRIBUTE_BORDER_WIDTH[] = "border_width";
 
-#define GLOM_NODE_DATA_LAYOUTS "data_layouts"
-#define GLOM_NODE_DATA_LAYOUT "data_layout"
-#define GLOM_ATTRIBUTE_LAYOUT_PLATFORM "platform"
-#define GLOM_ATTRIBUTE_PARENT_TABLE_NAME "parent_table"
+static const char GLOM_NODE_DATA_LAYOUTS[] = "data_layouts";
+static const char GLOM_NODE_DATA_LAYOUT[] = "data_layout";
+static const char GLOM_ATTRIBUTE_LAYOUT_PLATFORM[] = "platform";
+static const char GLOM_ATTRIBUTE_PARENT_TABLE_NAME[] = "parent_table";
 
-#define GLOM_NODE_DATA_LAYOUT_NOTEBOOK "data_layout_notebook"
+static const char GLOM_NODE_DATA_LAYOUT_NOTEBOOK[] = "data_layout_notebook";
 
-#define GLOM_NODE_DATA_LAYOUT_PORTAL "data_layout_portal"
-#define GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP "portal_navigation_relationship"
-#define GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE "navigation_type"
-#define GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_AUTOMATIC "automatic"
-#define GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_SPECIFIC "specific"
-#define GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_NONE "none"
+static const char GLOM_NODE_DATA_LAYOUT_PORTAL[] = "data_layout_portal";
+static const char GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP[] = "portal_navigation_relationship";
+static const char GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE[] = "navigation_type";
+static const char GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_AUTOMATIC[] = "automatic";
+static const char GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_SPECIFIC[] = "specific";
+static const char GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_NONE[] = "none";
 
-#define GLOM_NODE_DATA_LAYOUT_CALENDAR_PORTAL "data_layout_calendar_portal"
-#define GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT "row_height"
-#define GLOM_ATTRIBUTE_PORTAL_CALENDAR_DATE_FIELD "date_field"
-#define GLOM_NODE_DATA_LAYOUT_ITEM "data_layout_item" //A field.
-#define GLOM_NODE_LAYOUT_ITEM_CUSTOM_TITLE "title_custom"
-#define GLOM_NODE_TABLE_TITLE_SINGULAR "title_singular" //such as "Customer" instead of "Customers".
-#define GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE_USE "use_custom"
-#define GLOM_ATTRIBUTE_LAYOUT_ITEM_COLUMN_WIDTH "column_width"
-#define GLOM_NODE_DATA_LAYOUT_BUTTON "data_layout_button"
-#define GLOM_NODE_DATA_LAYOUT_TEXTOBJECT "data_layout_text"
-#define GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT "text"
-#define GLOM_NODE_DATA_LAYOUT_IMAGEOBJECT "data_layout_image"
-#define GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE "text"
-#define GLOM_NODE_DATA_LAYOUT_LINE "data_layout_line"
-#define GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_X "start_x"
-#define GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_Y "start_y"
-#define GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_X "end_x"
-#define GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_Y "end_y"
-#define GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING "use_default_formatting"
-#define GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY "data_layout_item_groupby"
-#define GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS "secondary_fields"
-#define GLOM_NODE_DATA_LAYOUT_ITEM_VERTICALGROUP "data_layout_item_verticalgroup"
-#define GLOM_NODE_DATA_LAYOUT_ITEM_SUMMARY "data_layout_item_summary"
-#define GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY "data_layout_item_fieldsummary"
-#define GLOM_NODE_DATA_LAYOUT_ITEM_HEADER "data_layout_item_header"
-#define GLOM_NODE_DATA_LAYOUT_ITEM_FOOTER "data_layout_item_footer"
-#define GLOM_NODE_TABLE "table"
-#define GLOM_NODE_FIELDS "fields"
-#define GLOM_NODE_FIELD "field"
-#define GLOM_ATTRIBUTE_PRIMARY_KEY "primary_key"
-#define GLOM_ATTRIBUTE_DEFAULT_VALUE "default_value"
-#define GLOM_ATTRIBUTE_UNIQUE "unique"
-#define GLOM_ATTRIBUTE_AUTOINCREMENT "auto_increment"
-#define GLOM_DEPRECATED_ATTRIBUTE_CALCULATION "calculation"
-#define GLOM_NODE_CALCULATION "calculation"
-#define GLOM_ATTRIBUTE_TYPE "type"
+static const char GLOM_NODE_DATA_LAYOUT_CALENDAR_PORTAL[] = "data_layout_calendar_portal";
+static const char GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT[] = "row_height";
+static const char GLOM_ATTRIBUTE_PORTAL_CALENDAR_DATE_FIELD[] = "date_field";
+static const char GLOM_NODE_DATA_LAYOUT_ITEM[] = "data_layout_item"; //A field.
+static const char GLOM_NODE_LAYOUT_ITEM_CUSTOM_TITLE[] = "title_custom";
+static const char GLOM_NODE_TABLE_TITLE_SINGULAR[] = "title_singular"; //such as "Customer" instead of "Customers".
+static const char GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE_USE[] = "use_custom";
+static const char GLOM_ATTRIBUTE_LAYOUT_ITEM_COLUMN_WIDTH[] = "column_width";
+static const char GLOM_NODE_DATA_LAYOUT_BUTTON[] = "data_layout_button";
+static const char GLOM_NODE_DATA_LAYOUT_TEXTOBJECT[] = "data_layout_text";
+static const char GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT[] = "text";
+static const char GLOM_NODE_DATA_LAYOUT_IMAGEOBJECT[] = "data_layout_image";
+static const char GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE[] = "text";
+static const char GLOM_NODE_DATA_LAYOUT_LINE[] = "data_layout_line";
+static const char GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_X[] = "start_x";
+static const char GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_Y[] = "start_y";
+static const char GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_X[] = "end_x";
+static const char GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_Y[] = "end_y";
+static const char GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING[] = "use_default_formatting";
+static const char GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY[] = "data_layout_item_groupby";
+static const char GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS[] = "secondary_fields";
+static const char GLOM_NODE_DATA_LAYOUT_ITEM_VERTICALGROUP[] = "data_layout_item_verticalgroup";
+static const char GLOM_NODE_DATA_LAYOUT_ITEM_SUMMARY[] = "data_layout_item_summary";
+static const char GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY[] = "data_layout_item_fieldsummary";
+static const char GLOM_NODE_DATA_LAYOUT_ITEM_HEADER[] = "data_layout_item_header";
+static const char GLOM_NODE_DATA_LAYOUT_ITEM_FOOTER[] = "data_layout_item_footer";
+static const char GLOM_NODE_TABLE[] = "table";
+static const char GLOM_NODE_FIELDS[] = "fields";
+static const char GLOM_NODE_FIELD[] = "field";
+static const char GLOM_ATTRIBUTE_PRIMARY_KEY[] = "primary_key";
+static const char GLOM_ATTRIBUTE_DEFAULT_VALUE[] = "default_value";
+static const char GLOM_ATTRIBUTE_UNIQUE[] = "unique";
+static const char GLOM_ATTRIBUTE_AUTOINCREMENT[] = "auto_increment";
+static const char GLOM_DEPRECATED_ATTRIBUTE_CALCULATION[] = "calculation";
+static const char GLOM_NODE_CALCULATION[] = "calculation";
+static const char GLOM_ATTRIBUTE_TYPE[] = "type";
 
-#define GLOM_NODE_FIELD_LOOKUP "field_lookup"
-#define GLOM_NODE_RELATIONSHIPS "relationships"
-#define GLOM_NODE_RELATIONSHIP "relationship"
-#define GLOM_ATTRIBUTE_KEY "key"
-#define GLOM_ATTRIBUTE_OTHER_TABLE "other_table"
-#define GLOM_ATTRIBUTE_OTHER_KEY "other_key"
-#define GLOM_ATTRIBUTE_AUTO_CREATE "auto_create"
-#define GLOM_ATTRIBUTE_ALLOW_EDIT "allow_edit"
+static const char GLOM_NODE_FIELD_LOOKUP[] = "field_lookup";
+static const char GLOM_NODE_RELATIONSHIPS[] = "relationships";
+static const char GLOM_NODE_RELATIONSHIP[] = "relationship";
+static const char GLOM_ATTRIBUTE_KEY[] = "key";
+static const char GLOM_ATTRIBUTE_OTHER_TABLE[] = "other_table";
+static const char GLOM_ATTRIBUTE_OTHER_KEY[] = "other_key";
+static const char GLOM_ATTRIBUTE_AUTO_CREATE[] = "auto_create";
+static const char GLOM_ATTRIBUTE_ALLOW_EDIT[] = "allow_edit";
 
-#define GLOM_NODE_GROUPS "groups"
-#define GLOM_NODE_GROUP "group"
-#define GLOM_ATTRIBUTE_DEVELOPER "developer"
-#define GLOM_NODE_TABLE_PRIVS "table_privs"
-#define GLOM_ATTRIBUTE_TABLE_NAME "table_name"
-#define GLOM_ATTRIBUTE_PRIV_VIEW "priv_view"
-#define GLOM_ATTRIBUTE_PRIV_EDIT "priv_edit"
-#define GLOM_ATTRIBUTE_PRIV_CREATE "priv_create"
-#define GLOM_ATTRIBUTE_PRIV_DELETE "priv_delete"
+static const char GLOM_NODE_GROUPS[] = "groups";
+static const char GLOM_NODE_GROUP[] = "group";
+static const char GLOM_ATTRIBUTE_DEVELOPER[] = "developer";
+static const char GLOM_NODE_TABLE_PRIVS[] = "table_privs";
+static const char GLOM_ATTRIBUTE_TABLE_NAME[] = "table_name";
+static const char GLOM_ATTRIBUTE_PRIV_VIEW[] = "priv_view";
+static const char GLOM_ATTRIBUTE_PRIV_EDIT[] = "priv_edit";
+static const char GLOM_ATTRIBUTE_PRIV_CREATE[] = "priv_create";
+static const char GLOM_ATTRIBUTE_PRIV_DELETE[] = "priv_delete";
 
-#define GLOM_ATTRIBUTE_FORMAT_VERSION "format_version"
-#define GLOM_ATTRIBUTE_IS_EXAMPLE "is_example"
-#define GLOM_ATTRIBUTE_IS_BACKUP "is_backup"
-#define GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE "database_title"
-#define GLOM_NODE_STARTUP_SCRIPT "startup_script"
-#define GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE "translation_original_locale"
-#define GLOM_ATTRIBUTE_NAME "name"
-#define GLOM_ATTRIBUTE_TITLE "title"
-#define GLOM_ATTRIBUTE_HIDDEN "hidden"
-#define GLOM_ATTRIBUTE_DEFAULT "default"
-#define GLOM_ATTRIBUTE_OVERVIEW_X "overview_x"
-#define GLOM_ATTRIBUTE_OVERVIEW_Y "overview_y"
-#define GLOM_ATTRIBUTE_FIELD "field"
-#define GLOM_ATTRIBUTE_EDITABLE "editable"
-#define GLOM_NODE_EXAMPLE_ROWS "example_rows"
-#define GLOM_NODE_EXAMPLE_ROW "example_row"
-#define GLOM_NODE_VALUE "value"
-#define GLOM_ATTRIBUTE_COLUMN "column"
-#define GLOM_DEPRECATED_ATTRIBUTE_BUTTON_SCRIPT "script"
-#define GLOM_NODE_BUTTON_SCRIPT "script"
-#define GLOM_ATTRIBUTE_SORT_ASCENDING "sort_ascending"
+static const char GLOM_ATTRIBUTE_FORMAT_VERSION[] = "format_version";
+static const char GLOM_ATTRIBUTE_IS_EXAMPLE[] = "is_example";
+static const char GLOM_ATTRIBUTE_IS_BACKUP[] = "is_backup";
+static const char GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE[] = "database_title";
+static const char GLOM_NODE_STARTUP_SCRIPT[] = "startup_script";
+static const char GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE[] = "translation_original_locale";
+static const char GLOM_ATTRIBUTE_NAME[] = "name";
+static const char GLOM_ATTRIBUTE_TITLE[] = "title";
+static const char GLOM_ATTRIBUTE_HIDDEN[] = "hidden";
+static const char GLOM_ATTRIBUTE_DEFAULT[] = "default";
+static const char GLOM_ATTRIBUTE_OVERVIEW_X[] = "overview_x";
+static const char GLOM_ATTRIBUTE_OVERVIEW_Y[] = "overview_y";
+static const char GLOM_ATTRIBUTE_FIELD[] = "field";
+static const char GLOM_ATTRIBUTE_EDITABLE[] = "editable";
+static const char GLOM_NODE_EXAMPLE_ROWS[] = "example_rows";
+static const char GLOM_NODE_EXAMPLE_ROW[] = "example_row";
+static const char GLOM_NODE_VALUE[] = "value";
+static const char GLOM_ATTRIBUTE_COLUMN[] = "column";
+static const char GLOM_DEPRECATED_ATTRIBUTE_BUTTON_SCRIPT[] = "script";
+static const char GLOM_NODE_BUTTON_SCRIPT[] = "script";
+static const char GLOM_ATTRIBUTE_SORT_ASCENDING[] = "sort_ascending";
 
 
 
-#define GLOM_ATTRIBUTE_RELATIONSHIP_NAME "relationship"
-#define GLOM_ATTRIBUTE_RELATED_RELATIONSHIP_NAME "related_relationship"
+static const char GLOM_ATTRIBUTE_RELATIONSHIP_NAME[] = "relationship";
+static const char GLOM_ATTRIBUTE_RELATED_RELATIONSHIP_NAME[] = "related_relationship";
 
-#define GLOM_NODE_REPORTS "reports"
-#define GLOM_NODE_REPORT "report"
-#define GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE "show_table_title"
-#define GLOM_NODE_REPORT_ITEM_GROUPBY_GROUPBY "groupby"
-#define GLOM_NODE_REPORT_ITEM_GROUPBY_SORTBY "sortby"
-#define GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE "summarytype"
+static const char GLOM_NODE_REPORTS[] = "reports";
+static const char GLOM_NODE_REPORT[] = "report";
+static const char GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE[] = "show_table_title";
+static const char GLOM_NODE_REPORT_ITEM_GROUPBY_GROUPBY[] = "groupby";
+static const char GLOM_NODE_REPORT_ITEM_GROUPBY_SORTBY[] = "sortby";
+static const char GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE[] = "summarytype";
 
-#define GLOM_NODE_PRINT_LAYOUTS "print_layouts"
-#define GLOM_NODE_PRINT_LAYOUT "print_layout"
+static const char GLOM_NODE_PRINT_LAYOUTS[] = "print_layouts";
+static const char GLOM_NODE_PRINT_LAYOUT[] = "print_layout";
 
-#define GLOM_NODE_FORMAT "formatting"
-#define GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR "format_thousands_separator"
-#define GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED "format_decimal_places_restricted"
-#define GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES "format_decimal_places"
-#define GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL "format_currency_symbol"
-#define GLOM_ATTRIBUTE_FORMAT_USE_ALT_NEGATIVE_COLOR "format_use_alt_negative_color" //Just a  bool, not a color.
+static const char GLOM_NODE_FORMAT[] = "formatting";
+static const char GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR[] = "format_thousands_separator";
+static const char GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED[] = "format_decimal_places_restricted";
+static const char GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES[] = "format_decimal_places";
+static const char GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL[] = "format_currency_symbol";
+static const char GLOM_ATTRIBUTE_FORMAT_USE_ALT_NEGATIVE_COLOR[] = "format_use_alt_negative_color"; //Just a  bool, not a color.
 
-#define GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE "format_text_multiline"
-#define GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES "format_text_multiline_height_lines"
-#define GLOM_ATTRIBUTE_FORMAT_TEXT_FONT "font"
-#define GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_FOREGROUND "color_fg"
-#define GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_BACKGROUND "color_bg"
+static const char GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE[] = "format_text_multiline";
+static const char GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES[] = "format_text_multiline_height_lines";
+static const char GLOM_ATTRIBUTE_FORMAT_TEXT_FONT[] = "font";
+static const char GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_FOREGROUND[] = "color_fg";
+static const char GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_BACKGROUND[] = "color_bg";
 
-#define GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT "alignment_horizontal"
-#define GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_AUTO "auto"
-#define GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_LEFT "left"
-#define GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_RIGHT "right"
+static const char GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT[] = "alignment_horizontal";
+static const char GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_AUTO[] = "auto";
+static const char GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_LEFT[] = "left";
+static const char GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_RIGHT[] = "right";
 
-#define GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED "choices_restricted"
-#define GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED_AS_RADIO_BUTTONS "choices_restricted_radiobuttons"
-#define GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM "choices_custom"
-#define GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM_LIST "custom_choice_list"
-#define GLOM_NODE_FORMAT_CUSTOM_CHOICE "custom_choice"
-#define GLOM_ATTRIBUTE_VALUE "value"
-#define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED "choices_related"
-#define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP "choices_related_relationship"
-#define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD "choices_related_field"
-#define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND "choices_related_second"
+static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED[] = "choices_restricted";
+static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED_AS_RADIO_BUTTONS[] = "choices_restricted_radiobuttons";
+static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM[] = "choices_custom";
+static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM_LIST[] = "custom_choice_list";
+static const char GLOM_NODE_FORMAT_CUSTOM_CHOICE[] = "custom_choice";
+static const char GLOM_ATTRIBUTE_VALUE[] = "value";
+static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED[] = "choices_related";
+static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP[] = "choices_related_relationship";
+static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD[] = "choices_related_field";
+static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND[] = "choices_related_second";
 
-#define GLOM_NODE_TRANSLATIONS_SET "trans_set"
-#define GLOM_NODE_TRANSLATION "trans"
-#define GLOM_ATTRIBUTE_TRANSLATION_LOCALE "loc"
-#define GLOM_ATTRIBUTE_TRANSLATION_VALUE "val"
+static const char GLOM_NODE_TRANSLATIONS_SET[] = "trans_set";
+static const char GLOM_NODE_TRANSLATION[] = "trans";
+static const char GLOM_ATTRIBUTE_TRANSLATION_LOCALE[] = "loc";
+static const char GLOM_ATTRIBUTE_TRANSLATION_VALUE[] = "val";
 
-#define GLOM_NODE_POSITION "position"
-#define GLOM_ATTRIBUTE_POSITION_X "x"
-#define GLOM_ATTRIBUTE_POSITION_Y "y"
-#define GLOM_ATTRIBUTE_POSITION_WIDTH "width"
-#define GLOM_ATTRIBUTE_POSITION_HEIGHT "height"
+static const char GLOM_NODE_POSITION[] = "position";
+static const char GLOM_ATTRIBUTE_POSITION_X[] = "x";
+static const char GLOM_ATTRIBUTE_POSITION_Y[] = "y";
+static const char GLOM_ATTRIBUTE_POSITION_WIDTH[] = "width";
+static const char GLOM_ATTRIBUTE_POSITION_HEIGHT[] = "height";
 
-#define GLOM_NODE_PAGE_SETUP "page_setup" //Its text child is the keyfile for a GtkPageSetup
+static const char GLOM_NODE_PAGE_SETUP[] = "page_setup"; //Its text child is the keyfile for a GtkPageSetup
 
-#define GLOM_NODE_LIBRARY_MODULES "library_modules"
-#define GLOM_NODE_LIBRARY_MODULE "module"
-#define GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME "name"
-#define GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT "script" //deprecated
+static const char GLOM_NODE_LIBRARY_MODULES[] = "library_modules";
+static const char GLOM_NODE_LIBRARY_MODULE[] = "module";
+static const char GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME[] = "name";
+static const char GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT[] = "script"; //deprecated
 
 //A built-in relationship that is available for every table:
-#define GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES "system_properties"
+static const char GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES[] = "system_properties";
 
 
 /// Can be used with std::find_if() to find a layout with the same parent_table and layout_name.

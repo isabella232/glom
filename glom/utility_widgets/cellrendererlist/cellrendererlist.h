@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef ADDDEL_CELLRENDERERLIST_H
-#define ADDDEL_CELLRENDERERLIST_H
+#ifndef GLOM_UTILITY_WIDGETS_CELLRENDERERLIST_H
+#define GLOM_UTILITY_WIDGETS_CELLRENDERERLIST_H
 
 #include <gtkmm.h>
 //#include <gtkmm/cellrenderercombo.h>
@@ -71,4 +71,4 @@ private:
 
 } //namespace Glom
 
-#endif //ADDDEL_CELLRENDERERLIST_H
+#endif // GLOM_UTLITY_WIDGETS_CELLRENDERERLIST_H

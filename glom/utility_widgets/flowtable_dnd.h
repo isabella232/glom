@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITYWIDGETS_FLOWTABLE_DND_H
-#define GLOM_UTILITYWIDGETS_FLOWTABLE_DND_H
+#ifndef GLOM_UTILITY_WIDGETS_FLOWTABLE_DND_H
+#define GLOM_UTILITY_WIDGETS_FLOWTABLE_DND_H
 
 #include <gtkmm.h>
 #include "flowtable.h"
@@ -85,4 +85,4 @@ private:
 
 } // namespace Glom
 
-#endif // GLOM_UTILITYWIDGETS_FLOWTABLE_DND_H
+#endif // GLOM_UTILITY_WIDGETS_FLOWTABLE_DND_H

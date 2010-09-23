@@ -19,8 +19,8 @@
  */
 
 
-#ifndef BOX_DB_TABLE_H
-#define BOX_DB_TABLE_H
+#ifndef GLOM_BOX_DB_TABLE_H
+#define GLOM_BOX_DB_TABLE_H
 
 #include <glom/box_withbuttons.h>
 #include <glom/base_db_table.h>
@@ -48,4 +48,4 @@ public:
 
 } //namespace Glom
 
-#endif //BOX_DB_TABLE_H
+#endif // GLOM_BOX_DB_TABLE_H

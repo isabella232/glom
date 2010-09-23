@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef RELATIONSHIP_H
-#define RELATIONSHIP_H
+#ifndef GLOM_RELATIONSHIP_H
+#define GLOM_RELATIONSHIP_H
 
 #include <libglom/data_structure/translatable_item.h>
 #include <libglom/data_structure/has_title_singular.h>
@@ -80,4 +80,4 @@ private:
 
 } //namespace Glom
 
-#endif
+#endif // GLOM_RELATIONSHIP_H

@@ -19,8 +19,8 @@
  */
 
 
-#ifndef BASE_DB_TABLE_H
-#define BASE_DB_TABLE_H
+#ifndef GLOM_BASE_DB_TABLE_H
+#define GLOM_BASE_DB_TABLE_H
 
 #include <glom/base_db.h>
 #include <libglom/data_structure/field.h>
@@ -48,4 +48,4 @@ protected:
 
 } //namespace Glom
 
-#endif //BASE_DB_TABLE_H
+#endif // GLOM_BASE_DB_TABLE_H

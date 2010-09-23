@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef HEADER_APP_GLOM
-#define HEADER_APP_GLOM
+#ifndef GLOM_APPLICATION_H
+#define GLOM_APPLICATION_H
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
@@ -288,4 +288,4 @@ private:
 
 } //namespace Glom
 
-#endif //HEADER_APP_GLOM
+#endif // GLOM_APPLICATION_H

@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef BOX_DB_TABLE_DEFINITION_H
-#define BOX_DB_TABLE_DEFINITION_H
+#ifndef GLOM_MODE_DESIGN_BOX_DB_TABLE_DEFINITION_H
+#define GLOM_MODE_DESIGN_BOX_DB_TABLE_DEFINITION_H
 
 #include "../../box_db_table.h"
 #include "dialog_fielddefinition.h"
@@ -69,4 +69,5 @@ private:
 
 } //namespace Glom
 
-#endif
+#endif // GLOM_MODE_DESIGN_BOX_DB_TABLE_DEFINITION_H
+
