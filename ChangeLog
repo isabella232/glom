@@ -1,5 +1,13 @@
 2010-09-23  Murray Cumming  <murrayc@murrayc.com>
 
+	DbAddDel: Some code rearrangement.
+
+	* glom/base_db_table_data_readonly.h:
+	* glom/mode_data/db_adddel/db_adddel.[h|cc]: Split the db treemodel creation
+  up into a separate function, ready for reuse by choices combo widgets.
+
+2010-09-23  Murray Cumming  <murrayc@murrayc.com>
+
 	DbAddDel: Replace add_columns() with set_columns(), simplifying the code.
 
 	* glom/libglom/data_structure/layout/layoutgroup.[h|cc]: Added non-const

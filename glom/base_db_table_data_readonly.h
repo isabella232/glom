@@ -29,12 +29,12 @@
 namespace Glom
 {
 
-/** A base class some database functionality 
+/** A base class some database functionality
  * for use with a specific database table, showing data from the table.
  */
 class Base_DB_Table_Data_ReadOnly : public Base_DB_Table
 {
-public: 
+public:
   Base_DB_Table_Data_ReadOnly();
   virtual ~Base_DB_Table_Data_ReadOnly();
 
@@ -45,12 +45,12 @@ protected:
   //TODO: Move these to Base_DB_Table_Data too?
   virtual sharedptr<Field> get_field_primary_key() const = 0;
   virtual Gnome::Gda::Value get_primary_key_value_selected() const = 0;
-  virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const = 0;   
-      
+  virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const = 0;
+
   FoundSet m_found_set;
 
   type_vec_fields m_TableFields; //A cache, so we don't have to repeatedly get them from the Document.
-  type_vecLayoutFields m_FieldsShown; //And any extra keys needed by shown fields.
+  type_vecLayoutFields m_FieldsShown; //And any extra keys needed by shown fields. //TODO: Move to the non-read-only class?
 };
 
 } //namespace Glom

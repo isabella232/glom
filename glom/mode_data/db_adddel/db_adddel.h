@@ -382,9 +382,7 @@ private:
   Gtk::TreeView m_TreeView;
   #endif
 
-  //typedef Gtk::ListStore type_model_store;
-  typedef DbTreeModel type_model_store;
-  Glib::RefPtr<type_model_store> m_refListStore;
+  Glib::RefPtr<DbTreeModel> m_refListStore;
 
   //Columns, not including the hidden internal columns:
   typedef LayoutGroup::type_list_items type_column_items;
