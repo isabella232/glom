@@ -199,6 +199,26 @@ LayoutGroup::type_list_const_items LayoutGroup::get_items_recursive() const
   return result;
 }
 
+LayoutGroup::type_list_items LayoutGroup::get_items_recursive()
+{
+  type_list_items result;
+
+  for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
+  {
+    const sharedptr<LayoutItem> item = *iter;
+    sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(item);
+    if(group)
+    {
+      const type_list_items sub_result = group->get_items_recursive();
+      result.insert(result.end(), sub_result.begin(), sub_result.end());
+    }
+    else
+      result.push_back(item);
+  }
+
+  return result;
+}
+
 void LayoutGroup::remove_relationship(const sharedptr<const Relationship>& relationship)
 {
   LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin();

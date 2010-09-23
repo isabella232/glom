@@ -105,6 +105,10 @@ public:
    */
   type_list_const_items get_items_recursive() const;
 
+  /** Get the items recursively, depth-first, not returning any groups.
+   */
+  type_list_items get_items_recursive();
+
   virtual Glib::ustring get_part_type_name() const;
   virtual Glib::ustring get_report_part_id() const;
 

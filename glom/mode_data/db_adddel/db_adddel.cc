@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2001-2004 Murray Cumming
+ * Copyright (C) 2001-2010 Murray Cumming
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -43,31 +43,6 @@
 namespace Glom
 {
 
-DbAddDelColumnInfo::DbAddDelColumnInfo()
-:
-  m_editable(true),
-  m_visible(true)
-{
-}
-
-DbAddDelColumnInfo::DbAddDelColumnInfo(const DbAddDelColumnInfo& src)
-: m_item(src.m_item),
-  m_choices(src.m_choices),
-  m_editable(src.m_editable),
-  m_visible(src.m_visible)
-{
-}
-
-DbAddDelColumnInfo& DbAddDelColumnInfo::operator=(const DbAddDelColumnInfo& src)
-{
-  m_item = src.m_item;
-  m_choices = src.m_choices;
-  m_editable = src.m_editable;
-  m_visible = src.m_visible;
-
-  return *this;
-}
-
 DbAddDel::DbAddDel()
 : m_column_is_sorted(false),
   m_column_sorted_direction(false),
@@ -82,7 +57,6 @@ DbAddDel::DbAddDel()
   m_allow_delete(true),
   m_find_mode(false),
   m_allow_only_one_related_record(false),
-  m_columns_ready(false),
   m_allow_view(true),
   m_allow_view_details(false),
 #ifndef GLOM_ENABLE_MAEMO
@@ -491,14 +465,11 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, bool start_edit
 {
   //Find the first column with a layout_item:
   sharedptr<const LayoutItem> layout_item;
-  for(type_ColumnTypes::iterator iter_columns = m_ColumnTypes.begin(); iter_columns != m_ColumnTypes.end(); ++iter_columns)
+  for(type_column_items::const_iterator iter_columns = m_column_items.begin(); iter_columns != m_column_items.end(); ++iter_columns)
   {
-    const DbAddDelColumnInfo& column_info = *iter_columns;
-    if(column_info.m_item)
-    {
-      layout_item = column_info.m_item;
+    layout_item = *iter_columns;
+    if(layout_item)
       break;
-    }
   }
 
   return select_item(iter, layout_item, start_editing);
@@ -614,29 +585,6 @@ guint DbAddDel::get_columns_count() const
   #endif //GLOM_ENABLE_MAEMO
 }
 
-/*
-void DbAddDel::set_columns_count(guint count)
-{
-  m_ColumnTypes.resize(count, STYLE_Text);
-  m_vecColumnNames.resize(count);
-}
-*/
-
-/*
-void DbAddDel::set_column_title(guint col, const Glib::ustring& strText)
-{
-  bool bPreventUserSignals = get_prevent_user_signals();
-  set_prevent_user_signals(true);
-
-  Gtk::TreeViewColumn* pColumn = m_TreeView.get_column(col);
-  if(pColumn)
-    pColumn->set_title(strText);
-
-
-  set_prevent_user_signals(bPreventUserSignals);
-}
-*/
-
 int DbAddDel::get_fixed_cell_height()
 {
   if(m_fixed_cell_height <= 0)
@@ -654,11 +602,11 @@ int DbAddDel::get_fixed_cell_height()
     m_fixed_cell_height = height;
 
     //Look at each column:
-    for(type_ColumnTypes::iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
+    for(type_column_items::iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
     {
       Glib::ustring font_name;
 
-      sharedptr<LayoutItem_WithFormatting> item_withformatting = sharedptr<LayoutItem_WithFormatting>::cast_dynamic(iter->m_item);
+      sharedptr<const LayoutItem_WithFormatting> item_withformatting = sharedptr<const LayoutItem_WithFormatting>::cast_dynamic(*iter);
       if(item_withformatting)
       {
          const FieldFormatting& formatting = item_withformatting->get_formatting_used();
@@ -762,7 +710,7 @@ void DbAddDel::construct_specified_columns()
 
   //Delay actual use of set_column_*() stuff until this method is called.
 
-  if(m_ColumnTypes.empty())
+  if(m_column_items.empty())
   {
     //std::cout << "debug: " << G_STRFUNC << ": showing hint model: m_find_mode=" << m_find_mode << std::endl;
 
@@ -784,7 +732,7 @@ void DbAddDel::construct_specified_columns()
 
   typedef Gtk::TreeModelColumn<Gnome::Gda::Value> type_modelcolumn_value;
   typedef std::vector< type_modelcolumn_value* > type_vecModelColumns;
-  type_vecModelColumns vecModelColumns(m_ColumnTypes.size(), 0);
+  type_vecModelColumns vecModelColumns(m_column_items.size(), 0);
 
   //Create the Gtk ColumnRecord:
 
@@ -794,9 +742,9 @@ void DbAddDel::construct_specified_columns()
   type_model_store::type_vec_fields fields;
   {
     type_vecModelColumns::size_type i = 0;
-    for(type_ColumnTypes::iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
+    for(type_column_items::iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
     {
-      sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(iter->m_item);
+      sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(*iter);
       if(item_field)
       {
         type_modelcolumn_value* pModelColumn = new type_modelcolumn_value;
@@ -805,9 +753,6 @@ void DbAddDel::construct_specified_columns()
         vecModelColumns[i] = pModelColumn;
 
         record.add( *pModelColumn );
-
-        //if(iter->m_item->get_has_relationship_name())
-        //  std::cout << "  DEBUG: relationship=" << iter->m_item->get_relationship()->get_name() << std::endl;
 
         fields.push_back(item_field);
 
@@ -916,18 +861,17 @@ void DbAddDel::construct_specified_columns()
 
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
-    const DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
-    if(column_info.m_visible)
+    const sharedptr<LayoutItem> layout_item = m_column_items[model_column_index];
+    if(layout_item) //column_info.m_visible)
     {
       no_columns_used = false;
 
-      const Glib::ustring column_name = column_info.m_item->get_title_or_name();
-      const Glib::ustring column_id = column_info.m_item->get_name();
+      const Glib::ustring column_name = layout_item->get_title_or_name();
+      const Glib::ustring column_id = layout_item->get_name();
 
       // Whenever we are dealing with real database fields,
       // we need to know the index of the field in the query:
       int item_data_model_column_index = -1;
-      sharedptr<const LayoutItem> layout_item = m_ColumnTypes[model_column_index].m_item;
       sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
       if(item_field)
       {
@@ -936,7 +880,7 @@ void DbAddDel::construct_specified_columns()
       }
 
       //Add the ViewColumn
-      Gtk::CellRenderer* pCellRenderer = construct_specified_columns_cellrenderer(column_info.m_item, model_column_index, item_data_model_column_index);
+      Gtk::CellRenderer* pCellRenderer = construct_specified_columns_cellrenderer(layout_item, model_column_index, item_data_model_column_index);
       if(pCellRenderer)
       {
         //Get the index of the field in the query, if it is a field:
@@ -947,10 +891,12 @@ void DbAddDel::construct_specified_columns()
           model_column_index, item_data_model_column_index,
           expand);
 
+        /* TODO:
         if(column_info.m_editable)
         {
 
         }
+        */
 
         ++view_column_index;
       }
@@ -1076,13 +1022,13 @@ void DbAddDel::set_value_selected(const sharedptr<const LayoutItem_Field>& layou
 
 void DbAddDel::refresh_cell_choices_data_from_database_with_foreign_key(guint model_index, const Gnome::Gda::Value& foreign_key_value)
 {
-  if(m_ColumnTypes.size() <= model_index)
+  if(m_column_items.size() <= model_index)
   {
-    std::cerr << G_STRFUNC << ": model_index is out of range: model_index=" << model_index << ", size=" << m_ColumnTypes.size() << std::endl;
+    std::cerr << G_STRFUNC << ": model_index is out of range: model_index=" << model_index << ", size=" << m_column_items.size() << std::endl;
     return;
   }
 
-  sharedptr<const LayoutItem> item = m_ColumnTypes[model_index].m_item;
+  sharedptr<const LayoutItem> item = m_column_items[model_index];
   sharedptr<const LayoutItem_Field> layout_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
   if(!layout_field)
   {
@@ -1113,10 +1059,9 @@ void DbAddDel::refresh_cell_choices_data_from_database_with_foreign_key(guint mo
 
 void DbAddDel::remove_all_columns()
 {
-  m_ColumnTypes.clear();
+  m_column_items.clear();
 
   m_fixed_cell_height = 0; //Force it to be recalculated.
-  m_columns_ready = false;
 }
 
 void DbAddDel::set_table_name(const Glib::ustring& table_name)
@@ -1125,40 +1070,36 @@ void DbAddDel::set_table_name(const Glib::ustring& table_name)
   Base_DB_Table::m_table_name = table_name;
 }
 
-guint DbAddDel::add_column(const sharedptr<LayoutItem>& layout_item)
+void DbAddDel::set_columns(const LayoutGroup::type_list_items& layout_items)
 {
-  if(!layout_item)
-    return 0; //TODO: Do something more sensible.
-
   InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add a new column.
 
-  DbAddDelColumnInfo column_info;
-  column_info.m_item = layout_item;
-  //column_info.m_editable = editable;
-  //column_info.m_visible = visible;
-
-  //Make it non-editable if it is auto-generated:
-
-  sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
-  if(field)
+  for(LayoutGroup::type_list_items::const_iterator iter = layout_items.begin(); iter != layout_items.end(); ++iter)
   {
-    sharedptr<const Field> field_full = field->get_full_field_details();
-    if(field_full && field_full->get_auto_increment())
-      column_info.m_editable = false;
-    else
-      column_info.m_editable = field->get_editable_and_allowed();
+    sharedptr<LayoutItem> layout_item = *iter;
+
+    if(!layout_item)
+      continue; //TODO: Do something more sensible.
+
+    //Make it non-editable if it is auto-generated:
+    //TODO: Actually use this bool:
+    /*
+    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+    if(field)
+    {
+      sharedptr<const Field> field_full = field->get_full_field_details();
+      if(field_full && field_full->get_auto_increment())
+        column_info.m_editable = false;
+      else
+        column_info.m_editable = field->get_editable_and_allowed();
+    }
+    */
+
+    m_column_items.push_back(layout_item);
   }
 
-  m_ColumnTypes.push_back(column_info);
-
   //Generate appropriate model columns:
-  if(m_columns_ready)
-    construct_specified_columns();
-
-  //Tell the View to use the model:
-  //m_TreeView.set_model(m_refListStore);
-
-  return m_ColumnTypes.size() - 1;
+  construct_specified_columns();
 }
 
 void DbAddDel::set_found_set(const FoundSet& found_set)
@@ -1171,12 +1112,6 @@ FoundSet DbAddDel::get_found_set() const
   return m_found_set;
 }
 
-void DbAddDel::set_columns_ready()
-{
-  m_columns_ready = true;
-  construct_specified_columns();
-}
-
 DbAddDel::type_list_indexes DbAddDel::get_data_model_column_index(const sharedptr<const LayoutItem_Field>& layout_item_field, bool including_specified_field_layout) const
 {
   //TODO_Performance: Replace all this looping by a cache/map:
@@ -1187,9 +1122,9 @@ DbAddDel::type_list_indexes DbAddDel::get_data_model_column_index(const sharedpt
     return list_indexes;
 
   guint data_model_column_index = 0;
-  for(type_ColumnTypes::const_iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
+  for(type_column_items::const_iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
   {
-    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(iter->m_item); //TODO_Performance: This would be unnecessary if !layout_item_field
+    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(*iter); //TODO_Performance: This would be unnecessary if !layout_item_field
     if(field)
     {
       if(field->is_same_field(layout_item_field)
@@ -1214,14 +1149,15 @@ DbAddDel::type_list_indexes DbAddDel::get_column_index(const sharedptr<const Lay
   sharedptr<const LayoutItem_Field> layout_item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
 
   guint i = 0;
-  for(type_ColumnTypes::const_iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
+  for(type_column_items::const_iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
   {
-    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(iter->m_item); //TODO_Performance: This would be unnecessary if !layout_item_field
+    const sharedptr<const LayoutItem> item = *iter;
+    const sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(item); //TODO_Performance: This would be unnecessary if !layout_item_field
     if(field && layout_item_field && field->is_same_field(layout_item_field))
     {
       list_indexes.push_back(i);
     }
-    else if(*(iter->m_item) == *(layout_item))
+    else if(*(item) == *(layout_item))
     {
       list_indexes.push_back(i);
     }
@@ -1242,9 +1178,9 @@ DbAddDel::type_list_indexes DbAddDel::get_choice_index(const sharedptr<const Lay
   const Glib::ustring from_key_name = from_key->get_name();
 
   guint index = 0;
-  for(type_ColumnTypes::const_iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
+  for(type_column_items::const_iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
   {
-    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(iter->m_item);
+    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(*iter);
     if(!field)
        continue;
 
@@ -1268,9 +1204,9 @@ DbAddDel::type_list_indexes DbAddDel::get_choice_index(const sharedptr<const Lay
 
 sharedptr<const LayoutItem_Field> DbAddDel::get_column_field(guint column_index) const
 {
-  if(column_index < m_ColumnTypes.size())
+  if(column_index < m_column_items.size())
   {
-    sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic( m_ColumnTypes[column_index].m_item );
+    sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic( m_column_items[column_index] );
     if(field)
       return field;
   }
@@ -1294,7 +1230,7 @@ void DbAddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
 {
   InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add new columns.
 
-  m_ColumnTypes[col].m_choices = vecStrings;
+  m_column_items[col].m_choices = vecStrings;
 
   guint view_column_index = 0;
   const bool test = get_view_column_index(col, view_column_index);
@@ -1497,7 +1433,7 @@ void DbAddDel::on_cell_layout_button_clicked(const Gtk::TreeModel::Path& path, i
   Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
   if(iter)
   {
-    sharedptr<const LayoutItem> layout_item = m_ColumnTypes[model_column_index].m_item;
+    sharedptr<const LayoutItem> layout_item = m_column_items[model_column_index];
     sharedptr<const LayoutItem_Button> item_button = sharedptr<const LayoutItem_Button>::cast_dynamic(layout_item);
     if(item_button)
     {
@@ -1643,7 +1579,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
     }
 
 
-    sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(m_ColumnTypes[model_column_index].m_item);
+    sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(m_column_items[model_column_index]);
     if(!item_field)
       return;
 
@@ -1779,7 +1715,7 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
   if(n_view_columns && (view_column == m_TreeView.get_column(n_view_columns -1)))
     return;
 
-  DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
+  const sharedptr<LayoutItem>& layout_item = m_column_items[model_column_index];
 
   const int width = view_column->get_width();
   //std::cout << "debug: " << G_STRFUNC << ": width=" << width << std::endl;
@@ -1787,18 +1723,18 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
   if(width == -1) //Means automatic.
     return;
 
-  if(column_info.m_item)
-      column_info.m_item->set_display_width(width);
+  if(layout_item)
+    layout_item->set_display_width(width);
 }
 
 void DbAddDel::on_treeview_column_clicked(int model_column_index)
 {
   BusyCursor busy_cursor(get_application());
 
-  if(model_column_index >= (int)m_ColumnTypes.size())
+  if(model_column_index >= (int)m_column_items.size())
     return;
 
-  sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(m_ColumnTypes[model_column_index].m_item); //We can only sort on fields, not on other layout item.
+  sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(m_column_items[model_column_index]); //We can only sort on fields, not on other layout item.
   if(layout_item && layout_item->get_name_not_empty())
   {
     bool ascending = true;
@@ -1858,9 +1794,9 @@ bool DbAddDel::get_column_to_expand(guint& column_to_expand) const
 
   //Discover the right-most text column:
   guint i = 0;
-  for(type_ColumnTypes::const_iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
+  for(type_column_items::const_iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
   {
-    sharedptr<LayoutItem> layout_item = iter->m_item;
+    sharedptr<LayoutItem> layout_item = *iter;
 
     sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
     if(layout_item_field)
@@ -1910,7 +1846,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   guint cols_count = get_columns_count();
   #endif //GLOM_ENABLE_MAEMO
 
-  sharedptr<const LayoutItem> layout_item = m_ColumnTypes[model_column_index].m_item;
+  sharedptr<const LayoutItem> layout_item = m_column_items[model_column_index];
   sharedptr<const LayoutItem_Field> layout_item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
 
   //Tell the Treeview.how to render the Gnome::Gda::Values:
@@ -1963,7 +1899,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   //This property is read only: pViewColumn->property_width() = column_width;
 
   //Save the extra ID, using the title if the column_id is empty:
-  const Glib::ustring column_id = m_ColumnTypes[model_column_index].m_item->get_name();
+  const Glib::ustring column_id = m_column_items[model_column_index]->get_name();
   pViewColumn->set_column_id( (column_id.empty() ? title : column_id) );
 
   //TODO pViewColumn->signal_button_press_event().connect( sigc::mem_fun(*this, &DbAddDel::on_treeview_columnheader_button_press_event) );
@@ -2091,10 +2027,7 @@ bool DbAddDel::get_view_column_index(guint model_column_index, guint& view_colum
   //Initialize output parameter:
   view_column_index = 0;
 
-  if(model_column_index >=  m_ColumnTypes.size())
-    return false;
-
-  if( !(m_ColumnTypes[model_column_index].m_visible) )
+  if(model_column_index >=  m_column_items.size())
     return false;
 
   view_column_index = model_column_index;
@@ -2145,9 +2078,9 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
 
   if(iter)
   {
-    const DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
+    const sharedptr<LayoutItem>& layout_item = m_column_items[model_column_index];
 
-    sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(column_info.m_item);
+    sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
     if(field)
     {
       const guint col_real = data_model_column_index + get_count_hidden_system_columns();
@@ -2312,9 +2245,9 @@ bool DbAddDel::start_new_record()
   if(fieldPrimaryKey && fieldPrimaryKey->get_auto_increment())
   {
     //Start editing in the first cell that is not auto_increment:
-    for(type_ColumnTypes::iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
+    for(type_column_items::iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
     {
-      sharedptr<LayoutItem> layout_item = iter->m_item;
+      sharedptr<LayoutItem> layout_item = *iter;
       sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
       if(!(layout_item_field->get_full_field_details()->get_auto_increment()))
       {

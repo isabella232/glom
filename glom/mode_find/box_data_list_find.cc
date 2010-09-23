@@ -63,9 +63,6 @@ bool Box_Data_List_Find::fill_from_database()
 
   m_FieldsShown = get_fields_to_show();
 
-  m_AddDel.set_columns_ready(); //Actually create the columns.
-  //m_AddDel.add_item(Glib::ValueBase("find"));
-
   return result;
 }
 

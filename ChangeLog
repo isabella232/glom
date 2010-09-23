@@ -1,5 +1,20 @@
 2010-09-23  Murray Cumming  <murrayc@murrayc.com>
 
+	DbAddDel: Replace add_columns() with set_columns(), simplifying the code.
+
+	* glom/libglom/data_structure/layout/layoutgroup.[h|cc]: Added non-const
+  version of get_items_recursive().
+	* glom/mode_data/db_adddel/db_adddel.[h|cc]: Remove add_columns() and
+  set_columns_ready(), replacing them with set_columsn() which takes a list
+  of layout items. Remove DbAddDelColumnInfo because we do not use its other
+  member variables, replacing it with the simple list of layout items.
+	* glom/mode_data/db_adddel/treemodel_db.[h|cc]: Improve debug out.
+	* glom/mode_find/box_data_list_find.cc:
+	* glom/mode_data/box_data_list.[h|cc]:
+	* glom/mode_data/box_data_list_related.[h|cc]: Adapted.
+
+2010-09-23  Murray Cumming  <murrayc@murrayc.com>
+
 	Move code into a create_cell() utility function.
 
   * glom/mode_data/db_adddel/cellrenderer*.[h|cc]: Move to

@@ -69,7 +69,7 @@ public:
   typedef unsigned int size_type;
 
   //typedef std::vector<LayoutItem_Field> type_vec_fields;
-  typedef Base_DB::type_vecLayoutFields type_vec_fields;
+  typedef Base_DB::type_vecLayoutFields type_vec_fields; //TODO: Use const items instead?
 
   friend class DbTreeModelRow;
 

@@ -43,23 +43,6 @@ namespace Glom
 
 class Application;
 
-class DbAddDelColumnInfo
-{
-public:
-  DbAddDelColumnInfo();
-  DbAddDelColumnInfo(const DbAddDelColumnInfo& src);
-  DbAddDelColumnInfo& operator=(const DbAddDelColumnInfo& src);
-
-  sharedptr<LayoutItem> m_item;
-
-  //For fields with choices:
-  typedef std::vector<Glib::ustring> type_vec_strings;
-  type_vec_strings m_choices;
-
-  bool m_editable;
-  bool m_visible;
-};
-
 class DbTreeViewColumnGlom;
 
 /** For adding/deleting/selecting record rows.
@@ -167,23 +150,19 @@ public:
   bool get_allow_view_details() const;
 
 
-  /** @result The index of the new column.
-   */
-  guint add_column(const sharedptr<LayoutItem>& layout_item);
+  //The items are not const, so that their display widths can be changed in the UI.
+  void set_columns(const LayoutGroup::type_list_items& layout_items);
 
   /// Specify which records to show:
   void set_found_set(const FoundSet& found_set);
 
   FoundSet get_found_set() const;
 
-  /// Start using the added columns.
-  void set_columns_ready();
-
   guint get_columns_count() const;
 
   sharedptr<const LayoutItem_Field> get_column_field(guint column_index) const;
 
-  typedef DbAddDelColumnInfo::type_vec_strings type_vec_strings;
+  typedef std::vector<Glib::ustring> type_vec_strings;
 
   /** Retrieves the column order, even after they have been reordered by the user.
    * @result a vector of column_id. These column_ids were provided in the call to add_column().
@@ -408,8 +387,8 @@ private:
   Glib::RefPtr<type_model_store> m_refListStore;
 
   //Columns, not including the hidden internal columns:
-  typedef std::vector<DbAddDelColumnInfo> type_ColumnTypes;
-  type_ColumnTypes m_ColumnTypes;
+  typedef LayoutGroup::type_list_items type_column_items;
+  type_column_items m_column_items;
   FoundSet m_found_set; //table, where_clause, sort_clause.
 
   bool m_column_is_sorted; //If empty, then m_column_sorted and m_column_sorted_direction should not be used.
@@ -451,7 +430,6 @@ private:
   /// The primary key for the table:
   sharedptr<Field> m_key_field;
 
-  bool m_columns_ready;
   bool m_allow_view;
   bool m_allow_view_details;
 

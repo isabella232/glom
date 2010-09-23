@@ -38,33 +38,33 @@ Box_Data_List_Related::Box_Data_List_Related()
   add_view(&m_AddDel); //Give it access to the document.
   m_AddDel.show();
   m_Alignment.show();
-  
-  //Connect signals:  
+
+  //Connect signals:
   m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Data_List_Related::on_adddel_user_requested_edit));
   m_AddDel.signal_record_changed().connect(sigc::mem_fun(*this, &Box_Data_List_Related::on_adddel_record_changed));
 
   m_AddDel.signal_script_button_clicked().connect(sigc::mem_fun(*this, &Box_Data_List_Related::on_adddel_script_button_clicked));
   m_AddDel.signal_record_added().connect(sigc::mem_fun(*this, &Box_Data_List_Related::on_adddel_record_added));
-  
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_AddDel.signal_user_requested_layout().connect(sigc::mem_fun(*this, &Box_Data_List_Related::on_adddel_user_requested_layout));
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  //We do not actually use this, 
+  //We do not actually use this,
   //so it is a bug if this appears in the .glom file:
   m_layout_name = "list_related";
 }
 
 void Box_Data_List_Related::enable_buttons()
 {
-  const bool view_details_possible = 
-    get_has_suitable_record_to_view_details() && 
+  const bool view_details_possible =
+    get_has_suitable_record_to_view_details() &&
     (m_portal->get_navigation_type() != LayoutItem_Portal::NAVIGATION_NONE);
 
   #ifndef GLOM_ENABLE_MAEMO
   // Don't allow the user to go to a record in a hidden table.
   // Unless we are on Maemo - then we want to allow editing in a separate window only.
-  m_AddDel.set_allow_view_details(view_details_possible); 
+  m_AddDel.set_allow_view_details(view_details_possible);
   #endif //GLOM_ENABLE_MAEMO
 }
 
@@ -79,7 +79,7 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
   m_parent_table = parent_table;
 
   if(m_portal)
-    LayoutWidgetBase::m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table_name, not used. */); 
+    LayoutWidgetBase::m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table_name, not used. */);
   else
     LayoutWidgetBase::m_table_name = Glib::ustring();
 
@@ -95,7 +95,7 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
       //Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
       relationship_title = _("Undefined Table");
     }
-  
+
     m_Label.set_markup(Utils::bold_message(relationship_title));
     m_Label.show();
 
@@ -118,7 +118,7 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
   //Prevent impossible multiple related records:
   const bool single_related = (m_key_field && (m_key_field->get_unique_key() || m_key_field->get_primary_key()));
   m_AddDel.set_allow_only_one_related_record(single_related);
-  
+
   enable_buttons();
 
   FoundSet found_set;
@@ -162,7 +162,7 @@ bool Box_Data_List_Related::fill_from_database()
     allow_add = m_portal->get_relationship()->get_auto_create();
 
   m_AddDel.set_allow_add(allow_add);
-  
+
   m_AddDel.set_found_set(m_found_set);
   result = m_AddDel.refresh_from_database();
 
@@ -183,7 +183,7 @@ void Box_Data_List_Related::on_adddel_user_requested_edit(const Gtk::TreeModel::
   }
 
   //Call base class:
-  
+
   const Gnome::Gda::Value primary_key_value = m_AddDel.get_value_key(row); //The primary key is in the key.
   //std::cout << "debug: " << G_STRFUNC << ": Requesting edit for primary_key=" << primary_key_value.to_string() << std::endl;
   signal_user_requested_details().emit(primary_key_value);
@@ -207,10 +207,10 @@ void Box_Data_List_Related::on_adddel_script_button_clicked(const sharedptr<cons
 {
   if(!layout_item)
     return;
-  
+
   const Gnome::Gda::Value primary_key_value = get_primary_key_value(row);
 
-  // TODO: Calling refresh_data_from_database(), 
+  // TODO: Calling refresh_data_from_database(),
   // or navigating to a different table from inside the Python script,
   // causes a crash somewhere down in GTK+, so it is done in an idle handler here.
   // We are currently in a callback from the CellRendererButton_Text cell
@@ -218,7 +218,7 @@ void Box_Data_List_Related::on_adddel_script_button_clicked(const sharedptr<cons
   // Probably this causes issues somewhere.
   Glib::signal_idle().connect(
     sigc::bind(
-      sigc::mem_fun(*this, &Box_Data_List_Related::on_script_button_idle), 
+      sigc::mem_fun(*this, &Box_Data_List_Related::on_script_button_idle),
       layout_item,
       primary_key_value));
 }
@@ -245,9 +245,9 @@ bool Box_Data_List_Related::on_script_button_idle(const sharedptr<const LayoutIt
 
 void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& primary_key_value)
 {
-  //Note that on_record_added() would only be called on the AddDel itself, 
+  //Note that on_record_added() would only be called on the AddDel itself,
   //so we need to handle this AddDel signal.
-  
+
   //primary_key_value is a new autogenerated or human-entered key for the row.
   //It has already been added to the database.
   //Gnome::Gda::Value primary_key_value = m_AddDel.get_value_key(row);
@@ -266,7 +266,7 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
     layout_item->set_full_field_details(m_key_field);
     key_value = m_AddDel.get_value(row, layout_item);
   }
-  
+
 
   //Make sure that the new related record is related,
   //by setting the foreign key:
@@ -288,22 +288,22 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
     if(m_key_field && m_portal)
     {
       make_record_related(primary_key_value);
-      
+
       //Show it on the view, if it's visible:
       sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
       layout_item->set_full_field_details(m_key_field);
 
-      //TODO: Although the to-field value is visible on the new related record, get_value() returns NULL so you can't immediately navigate to the new record: 
-      //std::cout << "debug: " << G_STRFUNC << ": setting field=" << layout_item->get_name() << "m_key_value=" << m_key_value.to_string() << std::endl; 
+      //TODO: Although the to-field value is visible on the new related record, get_value() returns NULL so you can't immediately navigate to the new record:
+      //std::cout << "debug: " << G_STRFUNC << ": setting field=" << layout_item->get_name() << "m_key_value=" << m_key_value.to_string() << std::endl;
       m_AddDel.set_value(row, layout_item, m_key_value);
     }
     else
       std::cerr << G_STRFUNC << ": m_key_field is NULL" << std::endl;
-  
+
 
     //on_adddel_user_changed(row, iKey); //Update the database.
   }
-  
+
   on_record_added(key_value, row);
 }
 
@@ -316,7 +316,7 @@ void Box_Data_List_Related::on_dialog_layout_hide()
 
 
   //Update the UI:
-  init_db_details(m_portal); 
+  init_db_details(m_portal);
 
   Box_Data::on_dialog_layout_hide();
 
@@ -370,98 +370,60 @@ Document::type_list_layout_groups Box_Data_List_Related::create_layout_get_layou
   //instead do this:
   if(m_portal)
     result.push_back(m_portal);
-  
+
   return result;
 }
 
-//These create_layout*() methods are actually copy/pasted from Box_Data_List().
+//These create_layout*() methods are actually copy/pasted from Box_Data_List(),
+//because we do not derived from Box_Data_List.
 //TODO: Reduce the copy/pasting of these?
 void Box_Data_List_Related::create_layout()
 {
   Box_Data::create_layout(); //Fills m_TableFields.
 
   const Document* pDoc = dynamic_cast<const Document*>(get_document());
-  if(pDoc)
-  {
-    //Field Names:
-    m_AddDel.remove_all_columns();
-    //m_AddDel.set_columns_count(m_Fields.size());
-
-    m_AddDel.set_table_name(Base_DB_Table::m_table_name);
-
-
-    sharedptr<Field> field_primary_key = get_field_primary_key_for_table(Base_DB_Table::m_table_name);
-    if(!field_primary_key)
-    {
-      //g_warning("%s: primary key not found.", __FUNCTION__);
-    }
-    else
-    {
-      m_AddDel.set_key_field(field_primary_key);
- 
-      //This map of layout groups will also contain the field information from the database:
-      Document::type_list_layout_groups layout_groups = create_layout_get_layout();
-      
-      //int debug_count = 0;
-      for(Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
-      {
-        //std::cout << "Box_Data_List::create_layout() group number=" << debug_count;
-        //debug_count++;
-        //iter->second->debug();
-
-        create_layout_add_group(*iter);
-      }
-    }
-
-
-    m_FieldsShown = get_fields_to_show();
-
-    //Add extra possibly-non-visible columns that we need:
-    //TODO: Only add it if it is not already there.
-    if(field_primary_key)
-    {
-      sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
-      layout_item->set_hidden();
-      layout_item->set_full_field_details(m_AddDel.get_key_field());
-      m_FieldsShown.push_back(layout_item);
-
-      m_AddDel.add_column(layout_item);
-    }
-
-    m_AddDel.set_found_set(m_found_set);
-
-    //Column-creation happens in fill_database() instead:
-    //otherwise the treeview will be filled twice.
-    //m_AddDel.set_columns_ready();
-  }
-
-}
-
-void Box_Data_List_Related::create_layout_add_group(const sharedptr<LayoutGroup>& layout_group)
-{
-  if(!layout_group)
+  if(!pDoc)
     return;
 
-  LayoutGroup::type_list_items child_items = layout_group->get_items();
-  for(LayoutGroup::type_list_items::const_iterator iter = child_items.begin(); iter != child_items.end(); ++iter)
-  {
-    sharedptr<LayoutItem> child_item = *iter;
 
-    sharedptr<LayoutGroup> child_group = sharedptr<LayoutGroup>::cast_dynamic(child_item);
-    if(child_group)
+  //Field Names:
+  m_AddDel.remove_all_columns();
+  //m_AddDel.set_columns_count(m_Fields.size());
+
+  m_AddDel.set_table_name(Base_DB_Table::m_table_name);
+
+
+  sharedptr<Field> field_primary_key = get_field_primary_key_for_table(Base_DB_Table::m_table_name);
+  if(!field_primary_key)
+  {
+    std::cerr << G_STRFUNC << ": primary key not found." << std::endl;
+    return;
+  }
+
+   m_AddDel.set_key_field(field_primary_key);
+
+
+
+  LayoutGroup::type_list_items items_to_use;
+
+  //This map of layout groups will also contain the field information from the database:
+  Document::type_list_layout_groups layout_groups = create_layout_get_layout();
+  for(Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
+  {
+    const sharedptr<LayoutGroup> layout_group = *iter;
+    if(!layout_group)
+      continue;
+
+    const LayoutGroup::type_list_items child_items = layout_group->get_items_recursive();
+    for(LayoutGroup::type_list_items::const_iterator iterItems = child_items.begin(); iterItems != child_items.end(); ++iterItems)
     {
-      //std::cout << "debug: Start Adding child group." << std::endl;
-      create_layout_add_group(child_group);
-      //std::cout << "debug: End Adding child group." << std::endl;
-    }
-    else
-    {
+      sharedptr<LayoutItem> child_item = *iterItems;
+
+      //TODO: Set the whole thing as read-only instead:
       if(m_read_only)
         child_item->set_editable(false);
 
-      //std::cout << "debug: adding column: " << child_item->get_name() << std::endl;
-
-      sharedptr<LayoutItem_Field> child_field = sharedptr<LayoutItem_Field>::cast_dynamic(child_item);
+      sharedptr<const LayoutItem_Field> child_field = sharedptr<const LayoutItem_Field>::cast_dynamic(child_item);
       if(child_field)
       {
         //Check that the field really exists, to avoid SQL errors.
@@ -473,9 +435,27 @@ void Box_Data_List_Related::create_layout_add_group(const sharedptr<LayoutGroup>
         }
       }
 
-      m_AddDel.add_column(child_item);
+      items_to_use.push_back(child_item);
     }
   }
+
+
+  //Add extra possibly-non-visible columns that we need:
+  //TODO: Only add it if it is not already there.
+  if(field_primary_key)
+  {
+    sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+    layout_item->set_hidden();
+    layout_item->set_full_field_details(m_AddDel.get_key_field());
+    m_FieldsShown.push_back(layout_item);
+
+    items_to_use.push_back(layout_item);
+  }
+
+  m_AddDel.set_columns(items_to_use);
+  m_AddDel.set_found_set(m_found_set);
+
+  m_FieldsShown = get_fields_to_show();
 }
 
 } //namespace Glom

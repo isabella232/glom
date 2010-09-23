@@ -394,47 +394,6 @@ bool Box_Data_List::get_showing_multiple_records() const
   return m_AddDel.get_count() > 1;
 }
 
-void Box_Data_List::create_layout_add_group(const sharedptr<LayoutGroup>& layout_group)
-{
-  if(!layout_group)
-    return;
-
-  LayoutGroup::type_list_items child_items = layout_group->get_items();
-  for(LayoutGroup::type_list_items::const_iterator iter = child_items.begin(); iter != child_items.end(); ++iter)
-  {
-    sharedptr<LayoutItem> child_item = *iter;
-
-    sharedptr<LayoutGroup> child_group = sharedptr<LayoutGroup>::cast_dynamic(child_item);
-    if(child_group)
-    {
-      //std::cout << "debug: Start Adding child group." << std::endl;
-      create_layout_add_group(child_group);
-      //std::cout << "debug: End Adding child group." << std::endl;
-    }
-    else
-    {
-      if(m_read_only)
-        child_item->set_editable(false);
-
-      //std::cout << "debug: adding column: " << child_item->get_name() << std::endl;
-
-      sharedptr<LayoutItem_Field> child_field = sharedptr<LayoutItem_Field>::cast_dynamic(child_item);
-      if(child_field)
-      {
-        //Check that the field really exists, to avoid SQL errors.
-        //This could probably only happen if we have failed to rename something everywhere, when the user has renamed something.
-        if(!DbUtils::get_field_exists_in_database(child_field->get_table_used(m_table_name), child_field->get_name()))
-        {
-          std::cerr << G_STRFUNC << ": Field does not exist in database: table_name=" << child_field->get_table_used(m_table_name) << ", field_name=" << child_field->get_name() << std::endl;
-          continue;
-        }
-      }
-
-      m_AddDel.add_column(child_item);
-    }
-  }
-}
-
 Document::type_list_layout_groups Box_Data_List::create_layout_get_layout()
 {
   //This method is overriden in Box_Data_List_Related.
@@ -447,62 +406,80 @@ void Box_Data_List::create_layout()
   Box_Data::create_layout(); //Fills m_TableFields.
 
   const Document* pDoc = dynamic_cast<const Document*>(get_document());
-  if(pDoc)
+  if(!pDoc)
+    return;
+
+
+  //Field Names:
+  m_AddDel.remove_all_columns();
+  //m_AddDel.set_columns_count(m_Fields.size());
+
+  m_AddDel.set_table_name(m_table_name);
+
+
+  sharedptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
+  if(!field_primary_key)
   {
-    //Field Names:
-    m_AddDel.remove_all_columns();
-    //m_AddDel.set_columns_count(m_Fields.size());
-
-    m_AddDel.set_table_name(m_table_name);
-
-
-    sharedptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
-    if(!field_primary_key)
-    {
-      std::cerr << G_STRFUNC << ": primary key not found." << std::endl;
-    }
-    else
-    {
-      //std::cout << "debug: " << G_STRFUNC << ": primary_key=" << field_primary_key->get_name() << std::endl;
-
-      m_AddDel.set_key_field(field_primary_key);
-
-      //This map of layout groups will also contain the field information from the database:
-      Document::type_list_layout_groups layout_groups = create_layout_get_layout();
-
-      //int debug_count = 0;
-      for(Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
-      {
-        //std::cout << "Box_Data_List::create_layout() group number=" << debug_count;
-        //debug_count++;
-        //iter->second->debug();
-
-        create_layout_add_group(*iter);
-      }
-    }
-
-
-    m_FieldsShown = get_fields_to_show();
-
-    //Add extra possibly-non-visible columns that we need:
-    //TODO: Only add it if it is not already there.
-    if(field_primary_key)
-    {
-      sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
-      layout_item->set_hidden();
-      layout_item->set_full_field_details(m_AddDel.get_key_field());
-      m_FieldsShown.push_back(layout_item);
-
-      m_AddDel.add_column(layout_item);
-    }
-
-    m_AddDel.set_found_set(m_found_set);
-
-    //Column-creation happens in fill_database() instead:
-    //otherwise the treeview will be filled twice.
-    //m_AddDel.set_columns_ready();
+    std::cerr << G_STRFUNC << ": primary key not found." << std::endl;
+    return;
   }
 
+   m_AddDel.set_key_field(field_primary_key);
+
+
+
+  LayoutGroup::type_list_items items_to_use;
+
+  //This map of layout groups will also contain the field information from the database:
+  Document::type_list_layout_groups layout_groups = create_layout_get_layout();
+  for(Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
+  {
+    const sharedptr<LayoutGroup> layout_group = *iter;
+    if(!layout_group)
+      continue;
+
+    const LayoutGroup::type_list_items child_items = layout_group->get_items_recursive();
+    for(LayoutGroup::type_list_items::const_iterator iterItems = child_items.begin(); iterItems != child_items.end(); ++iterItems)
+    {
+      sharedptr<LayoutItem> child_item = *iterItems;
+
+      //TODO: Set the whole thing as read-only instead:
+      if(m_read_only)
+        child_item->set_editable(false);
+
+      sharedptr<const LayoutItem_Field> child_field = sharedptr<const LayoutItem_Field>::cast_dynamic(child_item);
+      if(child_field)
+      {
+        //Check that the field really exists, to avoid SQL errors.
+        //This could probably only happen if we have failed to rename something everywhere, when the user has renamed something.
+        if(!DbUtils::get_field_exists_in_database(child_field->get_table_used(m_table_name), child_field->get_name()))
+        {
+          std::cerr << G_STRFUNC << ": Field does not exist in database: table_name=" << child_field->get_table_used(m_table_name) << ", field_name=" << child_field->get_name() << std::endl;
+          continue;
+        }
+      }
+
+      items_to_use.push_back(child_item);
+    }
+  }
+
+
+  //Add extra possibly-non-visible columns that we need:
+  //TODO: Only add it if it is not already there.
+  if(field_primary_key)
+  {
+    sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+    layout_item->set_hidden();
+    layout_item->set_full_field_details(m_AddDel.get_key_field());
+    m_FieldsShown.push_back(layout_item);
+
+    items_to_use.push_back(layout_item);
+  }
+
+  m_AddDel.set_columns(items_to_use);
+  m_AddDel.set_found_set(m_found_set);
+
+  m_FieldsShown = get_fields_to_show();
 }
 
 sharedptr<Field> Box_Data_List::get_field_primary_key() const
