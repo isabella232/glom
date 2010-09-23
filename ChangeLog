@@ -1,3 +1,17 @@
+2010-09-23  Murray Cumming  <murrayc@murrayc.com>
+
+	Move code into a create_cell() utility function.
+
+  * glom/mode_data/db_adddel/cellrenderer*.[h|cc]: Move to
+  * glom/mode_data/datawidget/.
+  * glom/mode_data/db_adddel/db_adddel.[h|cc]:
+  construct_specified_columns_cellrenderer(): Move some code into:
+	* glom/mode_data/datawidget/cellcreation.[h|cc]: Added create_cell().
+  This is less efficient, because we repeat some dynamic casts, but it
+  makes construct_specified_columns_cellrenderer() less awfully huge by
+  separating the code that supports cell editing. And it makes the code
+  available to ComboChoices widgets later.
+
 2010-09-22  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the build with latest unstable gtkmm 3.

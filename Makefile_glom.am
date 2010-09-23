@@ -95,16 +95,10 @@ glom_source_files = \
 	glom/mode_data/box_data_portal.h				\
 	glom/mode_data/buttonglom.cc				\
 	glom/mode_data/buttonglom.h				\
-	glom/mode_data/db_adddel/cellrenderer_buttonimage.cc	\
-	glom/mode_data/db_adddel/cellrenderer_buttonimage.h	\
-	glom/mode_data/db_adddel/cellrenderer_buttontext.cc	\
-	glom/mode_data/db_adddel/cellrenderer_buttontext.h	\
 	glom/mode_data/db_adddel/db_adddel.cc			\
 	glom/mode_data/db_adddel/db_adddel.h			\
 	glom/mode_data/db_adddel/db_adddel_withbuttons.cc		\
 	glom/mode_data/db_adddel/db_adddel_withbuttons.h		\
-	glom/mode_data/db_adddel/cellrenderer_dblist.cc	\
-	glom/mode_data/db_adddel/cellrenderer_dblist.h	\
 	glom/mode_data/db_adddel/db_treeviewcolumn_glom.cc	\
 	glom/mode_data/db_adddel/db_treeviewcolumn_glom.h		\
 	glom/mode_data/db_adddel/treemodel_db.cc		\
@@ -117,6 +111,14 @@ glom_source_files = \
 	glom/mode_data/placeholder-glom.h				\
 	glom/mode_data/datawidget/datawidget.cc				\
 	glom/mode_data/datawidget/datawidget.h				\
+	glom/mode_data/datawidget/cellcreation.cc				\
+	glom/mode_data/datawidget/cellcreation.h				\
+	glom/mode_data/datawidget/cellrenderer_buttonimage.cc	\
+	glom/mode_data/datawidget/cellrenderer_buttonimage.h	\
+	glom/mode_data/datawidget/cellrenderer_buttontext.cc	\
+	glom/mode_data/datawidget/cellrenderer_buttontext.h	\
+	glom/mode_data/datawidget/cellrenderer_dblist.cc	\
+	glom/mode_data/datawidget/cellrenderer_dblist.h	\
 	glom/mode_data/datawidget/checkbutton.cc				\
 	glom/mode_data/datawidget/checkbutton.h				\
 	glom/mode_data/datawidget/entry.cc				\

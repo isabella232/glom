@@ -51,13 +51,14 @@ public:
    */
   virtual void set_choices_fixed(const FieldFormatting::type_list_values& list_values) = 0;
 
+  //This is not pure virtual, so some widgets can (temporarily) use a default inefficient implementation.
   /** Show the list of related chocie values based on the LayoutItem's formatting choices.
    * You should first call set_layout_item() to provide that formatting detail,
    * so the widget knows what choices to show, and how to format them.
    *
    * See also refresh_data_from_database_with_foreign_key().
    */
-  void set_choices_related(const Document* document);
+  virtual void set_choices_related(const Document* document);
 
   /** Update a choices widget's list of related choices if a relevant value in its parent table has changed.
    *
