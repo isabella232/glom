@@ -44,7 +44,7 @@ public:
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  virtual void set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields);
+  virtual void set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecConstLayoutFields& table_fields);
 
   virtual bool get_modified() const;
 
@@ -71,7 +71,7 @@ protected:
 
   Glib::ustring m_table_name;
   Glib::ustring m_layout_name, m_layout_platform; //As in the document.
- 
+
   bool m_modified;
 };
 

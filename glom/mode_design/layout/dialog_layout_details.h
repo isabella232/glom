@@ -32,7 +32,7 @@ class Dialog_Layout_Details : public Dialog_Layout
 public:
   static const char* glade_id;
   static const bool glade_developer;
-  
+
   Dialog_Layout_Details(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_Layout_Details();
 
@@ -43,7 +43,7 @@ public:
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  virtual void set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields);
+  virtual void set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecConstLayoutFields& table_fields);
 
 protected:
 
@@ -72,7 +72,7 @@ protected:
   void on_button_up();
   void on_button_down();
   void on_button_field_delete();
-  virtual void on_button_add_field(); //overridden in derived class. 
+  virtual void on_button_add_field(); //overridden in derived class.
   void on_button_add_group();
   void on_button_add_notebook();
   void on_button_add_related();

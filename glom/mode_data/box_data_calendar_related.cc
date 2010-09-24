@@ -310,9 +310,9 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
   }
 }
 
-Box_Data_Calendar_Related::type_vecLayoutFields Box_Data_Calendar_Related::get_fields_to_show() const
+Box_Data_Calendar_Related::type_vecConstLayoutFields Box_Data_Calendar_Related::get_fields_to_show() const
 {
-  type_vecLayoutFields layout_fields = Box_Data_Portal::get_fields_to_show();
+  type_vecConstLayoutFields layout_fields = Box_Data_Portal::get_fields_to_show();
 
   sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
   if(!derived_portal)

@@ -86,10 +86,10 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
   if(!key_file_text.empty())
   {
     Glib::KeyFile key_file;
-    
+
     //TODO: Catch an exception
     key_file.load_from_data(key_file_text);
-    
+
     //TODO: Use this when gtkmm and GTK+ have been fixed: page_setup = Gtk::PageSetup::create(key_file);
     page_setup = Glib::wrap(gtk_page_setup_new_from_key_file(key_file.gobj(), 0, 0));
   }
@@ -107,11 +107,11 @@ sharedptr<PrintLayout> Canvas_PrintLayout::get_print_layout()
   //Page Setup:
   Glib::KeyFile key_file;
   m_page_setup->save_to_key_file(key_file);
- 
+
   Glib::ustring data;
   //TODO: Catch an exception
   data = key_file.to_data();
-  
+
   result->set_page_setup(data);
 
   return result;
@@ -162,10 +162,10 @@ void Canvas_PrintLayout::add_canvas_layout_item(const Glib::RefPtr<CanvasLayoutI
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Connect signals handlers:
-  //TODO: Avoid the bind of a RefPtr. It has been known to cause memory/ref-counting problems: 
+  //TODO: Avoid the bind of a RefPtr. It has been known to cause memory/ref-counting problems:
   item->signal_show_context().connect(
     sigc::bind(
-      sigc::mem_fun(*this, &Canvas_PrintLayout::on_item_show_context_menu), 
+      sigc::mem_fun(*this, &Canvas_PrintLayout::on_item_show_context_menu),
       item) );
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
@@ -256,7 +256,7 @@ void Canvas_PrintLayout::setup_context_menu()
 
   try
   {
-    Glib::ustring ui_info = 
+    Glib::ustring ui_info =
       "<ui>"
       "  <popup name='ContextMenu'>"
       "    <menuitem action='ContextMenuEdit' />"
@@ -273,7 +273,7 @@ void Canvas_PrintLayout::setup_context_menu()
   }
 
   //Get the menu:
-  m_context_menu = dynamic_cast<Gtk::Menu*>( m_context_menu_uimanager->get_widget("/ContextMenu") ); 
+  m_context_menu = dynamic_cast<Gtk::Menu*>( m_context_menu_uimanager->get_widget("/ContextMenu") );
 }
 
 
@@ -362,7 +362,7 @@ void Canvas_PrintLayout::on_context_menu_formatting()
 {
   if(!m_context_item)
     return;
-  
+
   sharedptr<LayoutItem> layout_item = m_context_item->get_layout_item();
   update_layout_position_from_canvas(layout_item, m_context_item);
 
@@ -441,12 +441,12 @@ void Canvas_PrintLayout::update_layout_position_from_canvas(const sharedptr<Layo
   double width = 0;
   double height = 0;
   canvas_item->get_width_height(width, height);
-  layout_item->set_print_layout_position(x, y, width, height); 
+  layout_item->set_print_layout_position(x, y, width, height);
 }
 
 Glib::RefPtr<Goocanvas::Polyline> Canvas_PrintLayout::create_margin_line(double x1, double y1, double x2, double y2)
 {
-  Glib::RefPtr<Goocanvas::Polyline> line = 
+  Glib::RefPtr<Goocanvas::Polyline> line =
     Goocanvas::Polyline::create(x1, y1, x2, y2);
   line->property_line_width() = 0.5;
   line->property_stroke_color() = "light gray";
@@ -497,18 +497,18 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
   Glib::RefPtr<Goocanvas::Item> root = get_root_item();
   m_bounds_group = Goocanvas::Group::create();
   root->add_child(m_bounds_group);
-  
- 
+
+
   m_bounds_rect = Goocanvas::Rect::create(bounds.get_x1(), bounds.get_y1(), bounds.get_x2(), bounds.get_y2());
   m_bounds_rect->property_fill_color() = "white";
   m_bounds_rect->property_line_width() = 0;
   m_bounds_group->add_child(m_bounds_rect);
 
-  //Make sure that the bounds rect is at the bottom, 
+  //Make sure that the bounds rect is at the bottom,
   //and that the grid and margins are just above it:
   if(m_grid)
     m_grid->lower();
-  
+
   m_margin_left = create_margin_line(page_setup->get_left_margin(units), bounds.get_y1(), page_setup->get_left_margin(units), bounds.get_y2());
   m_margin_right = create_margin_line(bounds.get_x2() - page_setup->get_right_margin(units), bounds.get_y1(), bounds.get_x2() - page_setup->get_right_margin(units), bounds.get_y2());
   m_margin_top = create_margin_line(bounds.get_x1(), page_setup->get_top_margin(units), bounds.get_x2(), page_setup->get_top_margin(units));
@@ -535,7 +535,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
 
   typedef std::list< sharedptr<LayoutItem_Portal> > type_list_portals;
   type_list_portals list_portals;
-  
+
   //Get list of fields to get from the database.
   Utils::type_vecLayoutFields fieldsToGet;
   const int count = canvas_group->get_n_children();
@@ -546,17 +546,17 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
     Glib::RefPtr<CanvasLayoutItem> canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
     if(!canvas_item)
       continue;
-      
+
     sharedptr<LayoutItem> layout_item = canvas_item->get_layout_item();
     if(!layout_item)
       continue;
-      
+
     sharedptr<LayoutItem_Field> layoutitem_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
     if(layoutitem_field && !(layoutitem_field->get_name().empty()))
     {
       fieldsToGet.push_back(layoutitem_field);
-      
-      //Remember the index so we can use it later, 
+
+      //Remember the index so we can use it later,
       //to get the data for this column from the query results:
       map_fields_index[ layoutitem_field->get_layout_display_name() ] = field_i;
       ++field_i;
@@ -585,7 +585,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
     fieldsToGet,
     found_set.m_where_clause, sharedptr<const Relationship>() /* extra_join */, found_set.m_sort_clause,
     1);
-  
+
   bool records_found = false;
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel;
   try
@@ -607,7 +607,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
     if(rows_count > 0)
       records_found = true;
   }
-  
+
   if(!records_found)
     return;
 
@@ -619,14 +619,14 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
     Glib::RefPtr<CanvasLayoutItem> canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
     if(!canvas_item)
       continue;
-      
+
     sharedptr<LayoutItem> layout_item = canvas_item->get_layout_item();
     if(!layout_item)
       continue;
-      
+
     sharedptr<LayoutItem_Field> layoutitem_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
     if(layoutitem_field)
-    { 
+    {
       type_map_layout_fields_index::const_iterator iterFind = map_fields_index.find( layoutitem_field->get_layout_display_name() );
       if(iterFind != map_fields_index.end())
       {
@@ -670,9 +670,9 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
   //TODO: Move the child stuff into group in goocanvas.
 
   LayoutGroup::type_list_items child_layout_items = portal->get_items();
-  
+
   //Build and run the SQL query for this portal:
-  type_vecLayoutFields fields_shown = get_portal_fields_to_show(portal);
+  type_vecConstLayoutFields fields_shown = get_portal_fields_to_show(portal);
 
   FoundSet found_set;
   found_set.m_table_name = portal->get_table_used(Glib::ustring() /* parent table_name, not used. */);
@@ -683,11 +683,11 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(sql_query);
   if(!(datamodel))
     return;
-    
+
   const int db_rows_count = datamodel->get_n_rows();
   if(!(db_rows_count > 0))
     return;
-    
+
   const int db_columns_count = datamodel->get_n_columns();
   if(!db_columns_count)
     return;
@@ -710,7 +710,7 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
 
       if(iter_child_layout_items == child_layout_items.end())
         continue;
-      
+
       sharedptr<LayoutItem> child_layout_item = *iter_child_layout_items;
       sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(child_layout_item);
       if(field)
@@ -721,7 +721,7 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
           //TODO: Actually catch exception.
           db_value = datamodel->get_value_at(db_col, row);
         }
-          
+
         set_canvas_item_field_value(canvas_child, field, db_value);
         ++db_col;
       }
@@ -757,7 +757,7 @@ void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanva
 
     //FieldFormatting& formatting = field->m_formatting;
     //apply_formatting(canvas_item, formatting);
-    const Glib::ustring text = 
+    const Glib::ustring text =
       Conversions::get_text_for_gda_value(field->get_glom_type(), value, field->m_formatting.m_numeric_format);
     canvas_text->set_text(text);
   }
@@ -789,7 +789,7 @@ void Canvas_PrintLayout::set_grid_gap(double gap)
 {
   CanvasEditable::set_grid_gap(gap);
 
-  //Make sure that the bounds rect is at the bottom, 
+  //Make sure that the bounds rect is at the bottom,
   //and that the grid and margins are just above it:
   if(m_grid)
     m_grid->lower();
@@ -816,7 +816,7 @@ Glib::RefPtr<Goocanvas::Item> Canvas_PrintLayout::get_canvas_table_cell_child(co
     table->get_child_property(child, "column", column_value);
     int row_value = 0;
     table->get_child_property(child, "row", row_value);
-       
+
     //This assumes that all items occupy only one cell:
     if( (column_value == col) &&
         (row_value == row) )
@@ -830,7 +830,7 @@ Glib::RefPtr<Goocanvas::Item> Canvas_PrintLayout::get_canvas_table_cell_child(co
 
 
 
-Base_DB::type_vecLayoutFields Canvas_PrintLayout::get_portal_fields_to_show(const sharedptr<LayoutItem_Portal>& portal)
+Base_DB::type_vecConstLayoutFields Canvas_PrintLayout::get_portal_fields_to_show(const sharedptr<LayoutItem_Portal>& portal)
 {
   const Document* document = get_document();
   if(!document)
@@ -844,27 +844,27 @@ Base_DB::type_vecLayoutFields Canvas_PrintLayout::get_portal_fields_to_show(cons
     sharedptr<const Relationship> relationship = portal->get_relationship();
     if(relationship)
     {
-      type_vecLayoutFields result = get_table_fields_to_show_for_sequence(portal->get_table_used(Glib::ustring() /* not relevant */), mapGroups);
+      type_vecConstLayoutFields result = get_table_fields_to_show_for_sequence(portal->get_table_used(Glib::ustring() /* not relevant */), mapGroups);
 
       //If the relationship does not allow editing, then mark all these fields as non-editable:
+      /* TODO: Find a better way to do this.
       if(!(portal->get_relationship_used_allows_edit()))
       {
-        for(type_vecLayoutFields::iterator iter = result.begin(); iter != result.end(); ++iter)
+        for(type_vecConstLayoutFields::iterator iter = result.begin(); iter != result.end(); ++iter)
         {
-          sharedptr<LayoutItem_Field> item = *iter;
+          sharedptr<const LayoutItem_Field> item = *iter;
           if(item)
             item->set_editable(false);
         }
       }
+      */
 
       return result;
     }
   }
 
-  return type_vecLayoutFields();
+  return type_vecConstLayoutFields();
 }
 
 
 } //namespace Glom
-
-

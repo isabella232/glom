@@ -93,7 +93,7 @@ Gnome::Gda::SqlExpr Box_Data::get_find_where_clause() const
   guint where_cond_id = 0;
 
   //Look at each field entry and build e.g. 'Name = "Bob"'
-  for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
+  for(type_vecConstLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
   {
     const Gnome::Gda::Value data = get_entered_field_data(*iter);
 
@@ -236,17 +236,17 @@ void Box_Data::on_dialog_layout_hide()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-Box_Data::type_vecLayoutFields Box_Data::get_fields_to_show() const
+Box_Data::type_vecConstLayoutFields Box_Data::get_fields_to_show() const
 {
   if(m_table_name.empty())
   {
-    return type_vecLayoutFields();
+    return type_vecConstLayoutFields();
   }
   else
     return get_table_fields_to_show(m_table_name);
 }
 
-Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::ustring& table_name) const
+Box_Data::type_vecConstLayoutFields Box_Data::get_table_fields_to_show(const Glib::ustring& table_name) const
 {
   const Document* pDoc = dynamic_cast<const Document*>(get_document());
   if(pDoc)
@@ -255,7 +255,7 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
     return get_table_fields_to_show_for_sequence(table_name, mapGroupSequence);
   }
   else
-    return type_vecLayoutFields();
+    return type_vecConstLayoutFields();
 }
 
 Document::type_list_layout_groups Box_Data::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& layout_platform)

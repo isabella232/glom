@@ -69,7 +69,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
 
   const Glib::ustring primary_key_name = fieldPrimaryKey->get_name();
 
-  type_vecLayoutFields fieldsToAdd = m_FieldsShown;
+  type_vecConstLayoutFields fieldsToAdd = m_FieldsShown;
   if(m_TableFields.empty())
     m_TableFields = get_fields_for_table(m_table_name);
 
@@ -78,7 +78,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   for(type_vec_fields::const_iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
   {
     //TODO: Search for the non-related field with the name, not just the field with the name:
-    type_vecLayoutFields::const_iterator iterFind = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<LayoutItem_Field>((*iter)->get_name()));
+    type_vecConstLayoutFields::const_iterator iterFind = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<LayoutItem_Field>((*iter)->get_name()));
     if(iterFind == fieldsToAdd.end())
     {
       sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
@@ -91,9 +91,9 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   Document* document = get_document();
 
   //Calculate any necessary field values and enter them:
-  for(type_vecLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
+  for(type_vecConstLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
   {
-    sharedptr<LayoutItem_Field> layout_item = *iter;
+    sharedptr<const LayoutItem_Field> layout_item = *iter;
 
     //If the user did not enter something in this field:
     Gnome::Gda::Value value = get_entered_field_data(layout_item);
@@ -151,9 +151,9 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   type_map_added map_added;
   Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
 
-  for(type_vecLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
+  for(type_vecConstLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
   {
-    sharedptr<LayoutItem_Field> layout_item = *iter;
+    sharedptr<const LayoutItem_Field> layout_item = *iter;
     const Glib::ustring field_name = layout_item->get_name();
     if(!layout_item->get_has_relationship_name()) //TODO: Allow people to add a related record also by entering new data in a related field of the related record.
     {
@@ -208,7 +208,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
       set_primary_key_value(row, primary_key_value); //Needed by Box_Data_List::on_adddel_user_changed().
 
       //Update any lookups, related fields, or calculations:
-      for(type_vecLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
+      for(type_vecConstLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
       {
         sharedptr<const LayoutItem_Field> layout_item = *iter;
 
@@ -354,8 +354,8 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
           }
           else
           {
-            const Glib::ustring target_table = relationship->get_from_table();             
-            Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = 
+            const Glib::ustring target_table = relationship->get_from_table();
+            Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
               Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
             builder->set_table(target_table);
             builder->add_field_value_as_value(relationship->get_from_field(), primary_key_value);
@@ -363,7 +363,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
               builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
                 builder->add_field_id(parent_primary_key_field->get_name(), target_table),
                 builder->add_expr(parent_primary_key_value)) );
-          
+
             const bool test = DbUtils::query_execute(builder);
             if(!test)
             {
@@ -417,7 +417,7 @@ bool Base_DB_Table_Data::record_delete(const Gnome::Gda::Value& primary_key_valu
   sharedptr<Field> field_primary_key = get_field_primary_key();
   if(field_primary_key && !Conversions::value_is_empty(primary_key_value))
   {
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = 
+    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_DELETE);
     builder->set_table(m_table_name);
     builder->set_where(
@@ -453,7 +453,7 @@ bool Base_DB_Table_Data::get_related_record_exists(const sharedptr<const Relatio
   const Glib::ustring to_field = relationship->get_to_field();
   const Glib::ustring related_table = relationship->get_to_table();
 
-  //TODO_Performance: Is this the best way to just find out whether there is one record that meets this criteria? 
+  //TODO_Performance: Is this the best way to just find out whether there is one record that meets this criteria?
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_field(to_field, related_table);
@@ -462,7 +462,7 @@ bool Base_DB_Table_Data::get_related_record_exists(const sharedptr<const Relatio
     builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
       builder->add_field_id(to_field, related_table),
       builder->add_expr(key_value)));
-                                               
+
   Glib::RefPtr<Gnome::Gda::DataModel> records = DbUtils::query_execute_select(builder);
   if(!records)
     handle_error();
@@ -479,17 +479,17 @@ bool Base_DB_Table_Data::get_related_record_exists(const sharedptr<const Relatio
 
 /** Get the shown fields that are in related tables, via a relationship using @a field_name changes.
  */
-Base_DB_Table_Data::type_vecLayoutFields Base_DB_Table_Data::get_related_fields(const sharedptr<const LayoutItem_Field>& field) const
+Base_DB_Table_Data::type_vecConstLayoutFields Base_DB_Table_Data::get_related_fields(const sharedptr<const LayoutItem_Field>& field) const
 {
-  type_vecLayoutFields result;
+  type_vecConstLayoutFields result;
 
   const Document* document = dynamic_cast<const Document*>(get_document());
   if(document)
   {
     const Glib::ustring field_name = field->get_name(); //At the moment, relationships can not be based on related fields on the from side.
-    for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end();  ++iter)
+    for(type_vecConstLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end();  ++iter)
     {
-      sharedptr<LayoutItem_Field> layout_field = *iter;
+      const sharedptr<const LayoutItem_Field> layout_field = *iter;
       //Examine each field that looks up its data from a relationship:
       if(layout_field->get_has_relationship_name())
       {
@@ -521,7 +521,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
   //Get values for lookup fields, if this field triggers those relationships:
   //TODO_performance: There is a LOT of iterating and copying here.
   //const Glib::ustring strFieldName = field_in_record_changed.m_field->get_name();
-  type_vecLayoutFields fieldsToGet = get_related_fields(field_in_record_changed.m_field);
+  type_vecConstLayoutFields fieldsToGet = get_related_fields(field_in_record_changed.m_field);
 
   if(!fieldsToGet.empty())
   {
@@ -539,7 +539,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
       //Field contents:
       if(result->get_n_rows())
       {
-        type_vecLayoutFields::const_iterator iterFields = fieldsToGet.begin();
+        type_vecConstLayoutFields::const_iterator iterFields = fieldsToGet.begin();
 
         const guint cols_count = result->get_n_columns();
         if(cols_count <= 0)
@@ -550,7 +550,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
         for(guint uiCol = 0; uiCol < cols_count; ++uiCol)
         {
           const Gnome::Gda::Value value = result->get_value_at(uiCol, 0 /* row */);
-          sharedptr<LayoutItem_Field> layout_item = *iterFields;
+          sharedptr<const LayoutItem_Field> layout_item = *iterFields;
           if(!layout_item)
             std::cerr << G_STRFUNC << ": The layout_item was null." << std::endl;
           else

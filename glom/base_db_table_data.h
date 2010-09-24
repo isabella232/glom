@@ -27,15 +27,15 @@
 namespace Glom
 {
 
-/** A base class some database functionality 
+/** A base class some database functionality
  * for use with a specific database table, showing data from the table.
  */
 class Base_DB_Table_Data : public Base_DB_Table_Data_ReadOnly
 {
-public: 
+public:
   Base_DB_Table_Data();
   virtual ~Base_DB_Table_Data();
-    
+
   /** Tell the parent widget that something has changed in one of the shown records,
    * or a record was added or deleted.
    * This is only emitted for widgets for which it would be useful.
@@ -50,38 +50,38 @@ protected:
   /** Create a new record with all the entered field values from the currently-active details/row.
    * @result true if the record was added to the database.
    */
-  bool record_new(bool use_entered_data = true, const Gnome::Gda::Value& primary_key_value = Gnome::Gda::Value()); 
+  bool record_new(bool use_entered_data = true, const Gnome::Gda::Value& primary_key_value = Gnome::Gda::Value());
 
   Gnome::Gda::Value get_entered_field_data_field_only(const sharedptr<const Field>& field) const;
   virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
 
   //Gets the row being edited, for derived classes that have rows.
   virtual Gtk::TreeModel::iterator get_row_selected();
-  
+
   virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value) = 0;
 
   virtual void refresh_related_fields(const LayoutFieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value);
 
   /** Get the fields that are in related tables, via a relationship using @a field_name changes.
    */
-  type_vecLayoutFields get_related_fields(const sharedptr<const LayoutItem_Field>& field) const;
-  
+  type_vecConstLayoutFields get_related_fields(const sharedptr<const LayoutItem_Field>& field) const;
+
   /** Ask the user if he really wants to delete the record.
-   */  
+   */
   bool confirm_delete_record();
-    
+
   /** Delete a record from the database table.
    * @param primary_key_value A primary key to indentify the record to delete.
    */
   bool record_delete(const Gnome::Gda::Value& primary_key_value);
-    
+
   bool add_related_record_for_field(const sharedptr<const LayoutItem_Field>& layout_item_parent, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided, Gnome::Gda::Value& primary_key_value_used);
 
   virtual void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row); //Overridden by derived classes.
   virtual void on_record_deleted(const Gnome::Gda::Value& primary_key_value); //Overridden by derived classes.
 
   type_signal_record_changed m_signal_record_changed;
-  
+
 private:
   bool get_related_record_exists(const sharedptr<const Relationship>& relationship, const Gnome::Gda::Value& key_value);
 };

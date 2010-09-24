@@ -50,7 +50,7 @@ protected:
   FoundSet m_found_set;
 
   type_vec_fields m_TableFields; //A cache, so we don't have to repeatedly get them from the Document.
-  type_vecLayoutFields m_FieldsShown; //And any extra keys needed by shown fields. //TODO: Move to the non-read-only class?
+  type_vecConstLayoutFields m_FieldsShown; //And any extra keys needed by shown fields. //TODO: Move to the non-read-only class?
 };
 
 } //namespace Glom

@@ -65,11 +65,11 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   m_box_table_widgets->show();
   builder->get_widget("hbox_related_table_widgets", m_box_related_table_widgets);
   m_box_related_table_widgets->hide();
-  builder->get_widget("frame_related_table_navigation", m_box_related_navigation); 
+  builder->get_widget("frame_related_table_navigation", m_box_related_navigation);
   m_box_related_navigation->hide();
 
   Gtk::Frame* box_calendar = 0;
-  builder->get_widget("frame_calendar", box_calendar); 
+  builder->get_widget("frame_calendar", box_calendar);
   box_calendar->hide();
 
   builder->get_widget("label_table_name", m_label_table_name);
@@ -319,7 +319,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
   }
 }
 
-void Dialog_Layout_Details::set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields)
+void Dialog_Layout_Details::set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecConstLayoutFields& table_fields)
 {
   m_modified = false;
 
@@ -344,7 +344,7 @@ void Dialog_Layout_Details::set_document(const Glib::ustring& layout_name, const
       group->set_columns_count(1);
 
       list_groups.push_back(group);
-    }      
+    }
 
     //Show the field layout
     //typedef std::list< Glib::ustring > type_listStrings;
@@ -519,7 +519,7 @@ void Dialog_Layout_Details::on_button_down()
 void Dialog_Layout_Details::on_button_add_field()
 {
   type_list_field_items fields_list = offer_field_list(m_table_name, this);
-  for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); ++iter_chosen) 
+  for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); ++iter_chosen)
   {
     sharedptr<LayoutItem_Field> layout_item = *iter_chosen;
     if(!layout_item)
@@ -933,7 +933,7 @@ void Dialog_Layout_Details::on_button_edit()
         if(relationship)
         {
           layout_portal->set_relationship(relationship);
- 
+
           //This is unnecessary and seems to cause a crash.
           //row[m_model_items->m_columns.m_col_layout_item] = layout_portal;
 
@@ -1221,11 +1221,11 @@ void Dialog_Layout_Details::on_cell_data_column_width(Gtk::CellRenderer* rendere
         sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
         const bool editable = (layout_field || layout_button || layout_text); //Only these have column widths that can be edited.
         renderer_text->property_editable() = editable;
-      
+
         column_width = layout_item->get_display_width();
       }
 
-      Glib::ustring text; 
+      Glib::ustring text;
       if(column_width) //Show nothing if no width has been specified, meaning that it's automatic.
         text = Utils::string_from_decimal(column_width);
 
@@ -1389,12 +1389,3 @@ Glib::ustring Dialog_Layout_Details::get_fields_table() const
 }
 
 } //namespace Glom
-
-
-
-
-
-
-
-
-

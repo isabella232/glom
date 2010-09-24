@@ -35,7 +35,7 @@ Box_Data_ManyRecords::Box_Data_ManyRecords()
 : m_has_one_or_more_records(false),
   m_read_only(false)
 {
-  //We do not actually use this, 
+  //We do not actually use this,
   //so it is a bug if this appears in the .glom file:
   m_layout_name = "manyrecords"; //Set by derived classes.
 
@@ -57,7 +57,7 @@ void Box_Data_ManyRecords::refresh_data_from_database_blank()
 Document::type_list_layout_groups Box_Data_ManyRecords::create_layout_get_layout()
 {
   //Overriden in Box_Data_ManyRecords_Related:
-  return get_data_layout_groups(m_layout_name); 
+  return get_data_layout_groups(m_layout_name);
 }
 */
 
@@ -83,9 +83,11 @@ void Box_Data_ManyRecords::print_layout()
     report_temp->set_title(_("List"));
 
     //Add all the fields from the layout:
-    for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
+    for(type_vecConstLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
     {
-      report_temp->m_layout_group->add_item(*iter);
+      sharedptr<const LayoutItem> item = *iter;
+      sharedptr<LayoutItem> unconst = sharedptr<LayoutItem>::cast_const(item); //TODO: Avoid this?
+      report_temp->m_layout_group->add_item(unconst);
     }
 
     ReportBuilder report_builder;
@@ -104,4 +106,3 @@ void Box_Data_ManyRecords::set_primary_key_value_selected(const Gnome::Gda::Valu
 }
 
 } //namespace Glom
-

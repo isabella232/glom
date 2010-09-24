@@ -702,8 +702,10 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
   return pCellRenderer;
 }
 
+typedef std::vector< sharedptr<const LayoutItem> > type_vec_const_layout_items;
 typedef std::vector< sharedptr<LayoutItem> > type_vec_layout_items;
-static Glib::RefPtr<DbTreeModel> create_model_db(const FoundSet& found_set, const type_vec_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecLayoutFields& fields_shown)
+
+static Glib::RefPtr<DbTreeModel> create_model_db(const FoundSet& found_set, const type_vec_const_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecConstLayoutFields& fields_shown)
 {
   Glib::RefPtr<DbTreeModel> result;
 
@@ -716,12 +718,12 @@ static Glib::RefPtr<DbTreeModel> create_model_db(const FoundSet& found_set, cons
   Gtk::TreeModel::ColumnRecord record;
 
   //Database columns:
-  DbTreeModel::type_vec_fields fields;
+  Base_DB::type_vecConstLayoutFields fields;
   {
     type_vecModelColumns::size_type i = 0;
-    for(type_vec_layout_items::const_iterator iter = layout_items.begin(); iter != layout_items.end(); ++iter)
+    for(type_vec_const_layout_items::const_iterator iter = layout_items.begin(); iter != layout_items.end(); ++iter)
     {
-      sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(*iter);
+      sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(*iter);
       if(item_field)
       {
         type_modelcolumn_value* pModelColumn = new type_modelcolumn_value;
@@ -744,9 +746,9 @@ static Glib::RefPtr<DbTreeModel> create_model_db(const FoundSet& found_set, cons
     //Find the primary key:
     int column_index_key = 0;
     bool key_found = false;
-    for(DbTreeModel::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    for(Base_DB::type_vecConstLayoutFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
-      sharedptr<LayoutItem_Field> layout_item = *iter;
+      sharedptr<const LayoutItem_Field> layout_item = *iter;
       if( !(layout_item->get_has_relationship_name()) )
       {
         sharedptr<const Field> field_full = layout_item->get_full_field_details();
@@ -770,7 +772,7 @@ static Glib::RefPtr<DbTreeModel> create_model_db(const FoundSet& found_set, cons
     else
     {
       g_warning("%s: no primary key field found.", __FUNCTION__);
-      //for(DbTreeModel::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+      //for(DbTreeModel::type_vec_const_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
       //{
       //  g_warning("  field: %s", (iter->get_name().c_str());
       //}
@@ -786,6 +788,39 @@ static Glib::RefPtr<DbTreeModel> create_model_db(const FoundSet& found_set, cons
   }
 
   return result;
+}
+
+/*
+static Glib::RefPtr<DbTreeModel> create_model_db(const FoundSet& found_set, const type_vec_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecLayoutFields& fields_shown)
+{
+  //Create a const version of the input, because C++ can't convert it automatically:
+  type_vec_const_layout_items const_items;
+  const_items.insert(const_items.end(), layout_items.begin(), layout_items.end());
+
+  Base_DB::type_vecConstLayoutFields fields_shown_const;
+  Glib::RefPtr<DbTreeModel> result = create_model_db(found_set, const_items, get_records, find_mode, fields_shown_const);
+
+  //Create a non-const version of the output parameter,
+  //because we know it just contains copies of layout_items elements, which were non-const:
+  fields_shown.clear();
+  for(Base_DB::type_vecConstLayoutFields::const_iterator iter = fields_shown_const.begin(); iter != fields_shown_const.end(); ++iter)
+  {
+     sharedptr<const LayoutItem_Field> field = *iter;
+     sharedptr<LayoutItem_Field> unconst = sharedptr<LayoutItem_Field>::cast_const(field);
+     fields_shown.push_back(unconst);
+  }
+
+  return result;
+}
+*/
+
+static Glib::RefPtr<DbTreeModel> create_model_db(const FoundSet& found_set, const type_vec_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecConstLayoutFields& fields_shown)
+{
+  //Create a const version of the input, because C++ can't convert it automatically:
+  type_vec_const_layout_items const_items;
+  const_items.insert(const_items.end(), layout_items.begin(), layout_items.end());
+
+  return create_model_db(found_set, const_items, get_records, find_mode, fields_shown);
 }
 
 void DbAddDel::construct_specified_columns()

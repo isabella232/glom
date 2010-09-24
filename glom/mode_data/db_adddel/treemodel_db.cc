@@ -166,7 +166,7 @@ DbTreeModelRow::DbValue DbTreeModelRow::get_value(DbTreeModel& model, int column
 //Intialize static variable:
 bool DbTreeModel::m_iface_initialized = false;
 
-DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_fields& column_fields, int column_index_key, bool get_records, bool find_mode)
+DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_const_fields& column_fields, int column_index_key, bool get_records, bool find_mode)
 : Glib::ObjectBase( typeid(DbTreeModel) ), //register a custom GType.
   Glib::Object(), //The custom GType is actually registered here.
   m_columns_count(0),
@@ -204,7 +204,7 @@ DbTreeModel::~DbTreeModel()
 }
 
 //static:
-Glib::RefPtr<DbTreeModel> DbTreeModel::create(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_fields& column_fields, int column_index_key, bool get_records, bool find_mode)
+Glib::RefPtr<DbTreeModel> DbTreeModel::create(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_const_fields& column_fields, int column_index_key, bool get_records, bool find_mode)
 {
   return Glib::RefPtr<DbTreeModel>( new DbTreeModel(columns, found_set, column_fields, column_index_key, get_records, find_mode) );
 }
@@ -230,7 +230,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     m_gda_datamodel = model_array;
 
     int col = 0;
-    for(type_vec_fields::const_iterator iter = m_column_fields.begin(); iter != m_column_fields.end(); ++iter)
+    for(type_vec_const_fields::const_iterator iter = m_column_fields.begin(); iter != m_column_fields.end(); ++iter)
     {
       sharedptr<const LayoutItem_Field> layout_item = *iter;
       if(layout_item)

@@ -1,3 +1,9 @@
+2010-09-24  Murray Cumming  <murrayc@murrayc.com>
+
+	Const corrections in use of LayoutItem and LayoutItem_Field in vectors.
+
+  This allows DbTreeModel to take a vector of const items.
+
 2010-09-24  David King  <davidk@openismus.com>
 
 	Improve use of defines

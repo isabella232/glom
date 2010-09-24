@@ -54,7 +54,7 @@ Dialog_Layout_Calendar_Related::Dialog_Layout_Calendar_Related(BaseObjectType* c
   builder->get_widget("checkbutton_show_child_relationships", m_checkbutton_show_child_relationships);
   m_checkbutton_show_child_relationships->signal_toggled().connect(sigc::mem_fun(*this, &Dialog_Layout_Calendar_Related::on_checkbutton_show_child_relationships));
 
-  
+
 
   builder->get_widget("radiobutton_navigation_automatic", m_radio_navigation_automatic);
   builder->get_widget("label_navigation_automatic", m_label_navigation_automatic);
@@ -68,7 +68,7 @@ Dialog_Layout_Calendar_Related::Dialog_Layout_Calendar_Related(BaseObjectType* c
   builder->get_widget_derived("combobox_date_field", m_combobox_date_field);
   m_combobox_date_field->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_Calendar_Related::on_combo_date_field_changed));
 
-  
+
   m_modified = false;
 
   //show_all_children();
@@ -76,9 +76,9 @@ Dialog_Layout_Calendar_Related::Dialog_Layout_Calendar_Related(BaseObjectType* c
   //The base class hid this, but we do want it here:
   //(We share one glade definition for several dialogs.)
   Gtk::Frame* box_calendar = 0;
-  builder->get_widget("frame_calendar", box_calendar); 
+  builder->get_widget("frame_calendar", box_calendar);
   box_calendar->show();
-  
+
   //This entry must be in the Glade file, because it's used by the base class,
   //but we don't want it here, because it is confusing when dealing with relationships:
   if(m_entry_table_title)
@@ -96,7 +96,7 @@ Dialog_Layout_Calendar_Related::~Dialog_Layout_Calendar_Related()
 void Dialog_Layout_Calendar_Related::set_document(const Glib::ustring& layout, const Glib::ustring& layout_platform, Document* document, const sharedptr<const LayoutItem_CalendarPortal>& portal)
 {
   m_portal = glom_sharedptr_clone(portal);
-  
+
   Glib::ustring from_table;
   if(portal)
     from_table = portal->get_from_table();
@@ -111,9 +111,9 @@ void Dialog_Layout_Calendar_Related::set_document(const Glib::ustring& layout_na
     m_portal = sharedptr<LayoutItem_CalendarPortal>::create(); //The rest of the class assumes that this is not null.
   }
 
-  type_vecLayoutFields empty_fields; //Just to satisfy the base class.
+  type_vecConstLayoutFields empty_fields; //Just to satisfy the base class.
 
-  
+
   Dialog_Layout::set_document(layout_name, layout_platform, document, from_table, empty_fields);
   //m_table_name is now actually the parent_table_name.
 
@@ -134,7 +134,7 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
     if(including_relationship_list)
     {
       bool show_child_relationships = m_checkbutton_show_child_relationships->get_active();
-        
+
       //For the showing of child relationships if necessary:
       if(!show_child_relationships && m_portal && m_portal->get_related_relationship())
       {
@@ -157,7 +157,7 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
 
     //Set the table name and title:
     //sharedptr<LayoutItem_CalendarPortal> portal_temp = m_portal;
-    m_combo_relationship->set_selected_relationship(m_portal->get_relationship(), m_portal->get_related_relationship()); 
+    m_combo_relationship->set_selected_relationship(m_portal->get_relationship(), m_portal->get_related_relationship());
 
     Document::type_list_layout_groups mapGroups;
     if(m_portal)
@@ -218,8 +218,8 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
 
   //Set the appropriate radio button:
   //std::cout << "debug: navigation_is_automatic=" << navigation_is_automatic << std::endl;
-  m_radio_navigation_automatic->set_active(navigation_is_automatic); 
-  m_radio_navigation_specify->set_active(!navigation_is_automatic); 
+  m_radio_navigation_automatic->set_active(navigation_is_automatic);
+  m_radio_navigation_specify->set_active(!navigation_is_automatic);
 
 
   //Describe the automatic navigation:
@@ -253,10 +253,10 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
     std::cout << "debug: " << G_STRFUNC << ": date field is NULL" << std::endl;
   else
     std::cout << "debug: " << G_STRFUNC << ": date field:" << debugfield->get_name() << std::endl;
-  
+
   m_combobox_date_field->set_fields(document, related_table_name, Field::TYPE_DATE);
   m_combobox_date_field->set_selected_field(m_portal->get_date_field());
-    
+
   m_modified = false;
 }
 
@@ -309,9 +309,9 @@ void Dialog_Layout_Calendar_Related::save_to_document()
       sharedptr<UsesRelationship> none;
       m_portal->set_navigation_relationship_specific(none);
     }
-    
+
     m_portal->set_date_field( m_combobox_date_field->get_selected_field() );
-    
+
     sharedptr<Field> debugfield = m_portal->get_date_field();
     if(!debugfield)
       std::cout << "debug: " << G_STRFUNC << ": date field is NULL" << std::endl;
@@ -379,7 +379,7 @@ void Dialog_Layout_Calendar_Related::on_button_add_field()
   //std::cout << "debug table used =" << m_portal->get_table_used(m_table_name) << std::endl;
 
   type_list_field_items fields_list = offer_field_list(m_table_name, this);
-  for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); ++iter_chosen) 
+  for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); ++iter_chosen)
   {
     sharedptr<LayoutItem_Field> field = *iter_chosen;
     if(!field)
@@ -445,4 +445,3 @@ sharedptr<LayoutItem_CalendarPortal> Dialog_Layout_Calendar_Related::get_portal_
 
 
 } //namespace Glom
-

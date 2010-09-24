@@ -365,7 +365,7 @@ void Box_Data_Portal::on_record_added(const Gnome::Gda::Value& /* primary_key_va
   signal_portal_record_changed().emit(m_portal->get_relationship_name());
 }
 
-Box_Data_Portal::type_vecLayoutFields Box_Data_Portal::get_fields_to_show() const
+Box_Data_Portal::type_vecConstLayoutFields Box_Data_Portal::get_fields_to_show() const
 {
   const Document* document = get_document();
   if(document && m_portal)
@@ -376,24 +376,27 @@ Box_Data_Portal::type_vecLayoutFields Box_Data_Portal::get_fields_to_show() cons
     sharedptr<const Relationship> relationship = m_portal->get_relationship();
     if(relationship)
     {
-      type_vecLayoutFields result = get_table_fields_to_show_for_sequence(m_portal->get_table_used(Glib::ustring() /* not relevant */), mapGroups);
+      type_vecConstLayoutFields result = get_table_fields_to_show_for_sequence(m_portal->get_table_used(Glib::ustring() /* not relevant */), mapGroups);
 
       //If the relationship does not allow editing, then mark all these fields as non-editable:
+      //TODO: Prevent this in some other way:
+      /*
       if(!(m_portal->get_relationship_used_allows_edit()))
       {
-        for(type_vecLayoutFields::iterator iter = result.begin(); iter != result.end(); ++iter)
+        for(type_vecConstLayoutFields::iterator iter = result.begin(); iter != result.end(); ++iter)
         {
-          sharedptr<LayoutItem_Field> item = *iter;
+          sharedptr<const LayoutItem_Field> item = *iter;
           if(item)
             item->set_editable(false);
         }
       }
+      */
 
       return result;
     }
   }
 
-  return type_vecLayoutFields();
+  return type_vecConstLayoutFields();
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

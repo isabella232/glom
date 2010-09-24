@@ -68,18 +68,17 @@ class DbTreeModel
 public:
   typedef unsigned int size_type;
 
-  //typedef std::vector<LayoutItem_Field> type_vec_fields;
-  typedef Base_DB::type_vecLayoutFields type_vec_fields; //TODO: Use const items instead?
+  typedef Base_DB::type_vecConstLayoutFields type_vec_const_fields;
 
   friend class DbTreeModelRow;
 
 private:
   //Create a TreeModel with @a columns_count number of columns, each of type Glib::ustring.
-  DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_fields& column_fields, int column_index_key, bool get_records = true, bool find_mode = false);
+  DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_const_fields& column_fields, int column_index_key, bool get_records = true, bool find_mode = false);
   virtual ~DbTreeModel();
 
 public:
-  static Glib::RefPtr<DbTreeModel> create(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_fields& column_fields, int column_index_key, bool get_records = true, bool find_mode = false);
+  static Glib::RefPtr<DbTreeModel> create(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_const_fields& column_fields, int column_index_key, bool get_records = true, bool find_mode = false);
 
   typedef DbTreeModelRow::DbValue DbValue;
 
@@ -161,7 +160,7 @@ private:
    //Structure:
    unsigned int m_columns_count;
    FoundSet m_found_set;
-   type_vec_fields m_column_fields;
+   type_vec_const_fields m_column_fields;
    int m_column_index_key;
 
    //Data:

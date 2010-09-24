@@ -81,7 +81,7 @@ private:
 
   static Glib::RefPtr<Goocanvas::Item> get_canvas_table_cell_child(const Glib::RefPtr<Goocanvas::Table>& table, int row, int col); //TODO: Add this to Goocanvas::Table.
   
-  type_vecLayoutFields get_portal_fields_to_show(const sharedptr<LayoutItem_Portal>& portal);
+  type_vecConstLayoutFields get_portal_fields_to_show(const sharedptr<LayoutItem_Portal>& portal);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   sharedptr<LayoutItem_Portal> offer_related_records(const sharedptr<LayoutItem_Portal>& portal, Gtk::Window* parent);

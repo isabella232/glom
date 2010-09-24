@@ -504,9 +504,11 @@ void Box_Data_List::print_layout() //TODO: Is this a duplicate of the one in box
     report_temp->set_title(_("List"));
 
     //Add all the fields from the layout:
-    for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
+    for(type_vecConstLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
     {
-      report_temp->m_layout_group->add_item(*iter);
+      sharedptr<const LayoutItem> item = *iter;
+      sharedptr<LayoutItem> unconst = sharedptr<LayoutItem>::cast_const(item); //TODO: Avoid this?
+      report_temp->m_layout_group->add_item(unconst);
     }
 
     ReportBuilder report_builder;

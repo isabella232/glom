@@ -50,7 +50,7 @@ public:
 
 private:
   virtual bool fill_from_database(); //Override.
-  virtual type_vecLayoutFields get_fields_to_show() const; //override
+  virtual type_vecConstLayoutFields get_fields_to_show() const; //override
     
     
   //Implementations of pure virtual methods from Base_DB_Table_Data:

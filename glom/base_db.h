@@ -302,8 +302,8 @@ protected:
 
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 
-  type_vecLayoutFields get_table_fields_to_show_for_sequence(const Glib::ustring& table_name, const Document::type_list_layout_groups& mapGroupSequence) const;
-  void get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vec_fields& all_db_fields, const sharedptr<LayoutGroup>& group, type_vecLayoutFields& vecFields) const;
+  type_vecConstLayoutFields get_table_fields_to_show_for_sequence(const Glib::ustring& table_name, const Document::type_list_layout_groups& mapGroupSequence) const;
+  void get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vec_fields& all_db_fields, const sharedptr<LayoutGroup>& group, type_vecConstLayoutFields& vecFields) const;
 
   /** Get the relationship into which the row button should navigate,
    * or the relationship itself, if the navigation_main output parameter is set to true after calling this method.

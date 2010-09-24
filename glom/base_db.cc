@@ -709,7 +709,7 @@ sharedptr<Field> Base_DB::get_field_primary_key_for_table(const Glib::ustring& t
   return sharedptr<Field>();
 }
 
-void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vec_fields& all_db_fields, const sharedptr<LayoutGroup>& group, Base_DB::type_vecLayoutFields& vecFields) const
+void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vec_fields& all_db_fields, const sharedptr<LayoutGroup>& group, Base_DB::type_vecConstLayoutFields& vecFields) const
 {
   //g_warning("Box_Data::get_table_fields_to_show_for_sequence_add_group(): table_name=%s, all_db_fields.size()=%d, group->name=%s", table_name.c_str(), all_db_fields.size(), group->get_name().c_str());
 
@@ -787,7 +787,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
   }
 }
 
-Base_DB::type_vecLayoutFields Base_DB::get_table_fields_to_show_for_sequence(const Glib::ustring& table_name, const Document::type_list_layout_groups& mapGroupSequence) const
+Base_DB::type_vecConstLayoutFields Base_DB::get_table_fields_to_show_for_sequence(const Glib::ustring& table_name, const Document::type_list_layout_groups& mapGroupSequence) const
 {
   //Get field definitions from the database, with corrections from the document:
   type_vec_fields all_fields = get_fields_for_table(table_name);
@@ -795,7 +795,7 @@ Base_DB::type_vecLayoutFields Base_DB::get_table_fields_to_show_for_sequence(con
   const Privileges table_privs = Privs::get_current_privs(table_name);
 
   //Get fields that the document says we should show:
-  type_vecLayoutFields result;
+  type_vecConstLayoutFields result;
   const Document* pDoc = dynamic_cast<const Document*>(get_document());
   if(pDoc)
   {

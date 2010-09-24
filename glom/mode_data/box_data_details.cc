@@ -291,7 +291,7 @@ bool Box_Data_Details::fill_from_database()
     bResult = Box_Data::fill_from_database();
 
     m_FieldsShown = get_fields_to_show();
-    type_vecLayoutFields fieldsToGet = m_FieldsShown;
+    type_vecConstLayoutFields fieldsToGet = m_FieldsShown;
 
     if(!fieldsToGet.empty())
     {
@@ -314,7 +314,7 @@ bool Box_Data_Details::fill_from_database()
         //TODO_Performance: Do this for create_layout() only, instead of repeating it for each refresh?:
         int index_primary_key = -1; //Arbitrary default.
         //g_warning("primary_key name = %s", m_field_primary_key->get_name().c_str());
-        const type_vecLayoutFields::const_iterator iterFind = std::find_if(fieldsToGet.begin(), fieldsToGet.end(), predicate_LayoutItem_Field_IsSameField<LayoutItem_Field>(layout_item));
+        const type_vecConstLayoutFields::const_iterator iterFind = std::find_if(fieldsToGet.begin(), fieldsToGet.end(), predicate_LayoutItem_Field_IsSameField<LayoutItem_Field>(layout_item));
         if(iterFind == fieldsToGet.end())
         {
           fieldsToGet.push_back(layout_item);
@@ -379,7 +379,7 @@ bool Box_Data_Details::fill_from_database()
             //Get field values to show:
             for(int i = 0; i < cols_count; ++i)
             {
-              sharedptr<LayoutItem_Field> layout_item = fieldsToGet[i];
+              sharedptr<const LayoutItem_Field> layout_item = fieldsToGet[i];
 
               //Field value:
               Gnome::Gda::Value value;

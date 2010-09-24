@@ -55,7 +55,7 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   builder->get_widget("checkbutton_show_child_relationships", m_checkbutton_show_child_relationships);
   m_checkbutton_show_child_relationships->signal_toggled().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_checkbutton_show_child_relationships));
 
-  
+
 
   builder->get_widget("radiobutton_navigation_automatic", m_radio_navigation_automatic);
   builder->get_widget("label_navigation_automatic", m_label_navigation_automatic);
@@ -68,7 +68,7 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   make_sensitivity_depend_on_toggle_button(*m_radio_navigation_specify, *m_combo_navigation_specify);
   m_combo_navigation_specify->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_combo_navigation_specific_changed));
 
- 
+
   m_modified = false;
 
   //show_all_children();
@@ -97,7 +97,7 @@ void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout_name, 
     if(portal_from_table.empty())
       actual_from_table = portal_from_table;
   }
-  
+
   if(actual_from_table.empty())
     actual_from_table = from_table;
 
@@ -105,8 +105,8 @@ void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout_name, 
     m_portal = glom_sharedptr_clone(portal);
   else
     m_portal = sharedptr<LayoutItem_Portal>::create(); //The rest of the class assumes that this is not null.
-  
-  type_vecLayoutFields empty_fields; //Just to satisfy the base class.
+
+  type_vecConstLayoutFields empty_fields; //Just to satisfy the base class.
   Dialog_Layout::set_document(layout_name, layout_platform, document, actual_from_table, empty_fields);
   //m_table_name is now actually the parent_table_name.
 
@@ -130,7 +130,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
     if(including_relationship_list)
     {
       bool show_child_relationships = m_checkbutton_show_child_relationships->get_active();
-        
+
       //For the showing of child relationships if necessary:
       if(!show_child_relationships && m_portal->get_related_relationship())
       {
@@ -156,7 +156,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
     Document::type_list_layout_groups mapGroups;
     if(m_portal)
     {
-      m_combo_relationship->set_selected_relationship(m_portal->get_relationship(), m_portal->get_related_relationship()); 
+      m_combo_relationship->set_selected_relationship(m_portal->get_relationship(), m_portal->get_related_relationship());
 
       mapGroups.push_back(m_portal);
       document->fill_layout_field_details(related_table_name, mapGroups); //Update with full field information.
@@ -231,7 +231,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
   bool navigation_automatic_main = false;
   relationship_navigation_automatic = get_portal_navigation_relationship_automatic(m_portal, navigation_automatic_main);
   Glib::ustring automatic_navigation_description;
-  
+
   if(navigation_automatic_main)
     automatic_navigation_description = m_portal->get_relationship_name_used();
   else if(relationship_navigation_automatic)
@@ -336,45 +336,45 @@ void Dialog_Layout_List_Related::on_combo_relationship_changed()
   sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship(relationship_related);
   if(!relationship)
     return;
-    
+
   //Check that the relationship is appropriate for use in a related records portal.
-  //The relationship's to field may not be a unique field, because that would 
+  //The relationship's to field may not be a unique field, because that would
   //prevent the portal from having multiple records.
-  sharedptr<Field> to_key_field = 
-    get_fields_for_table_one_field(relationship->get_to_table(), 
+  sharedptr<Field> to_key_field =
+    get_fields_for_table_one_field(relationship->get_to_table(),
       relationship->get_to_field());
   bool relationship_invalid = false;
   if(!to_key_field)
   {
-    Utils::show_ok_dialog(_("Invalid Relationship"), 
+    Utils::show_ok_dialog(_("Invalid Relationship"),
       _("The relationship may not be used to show related records because the relationship does not specify a field in the related table."),
      *this, Gtk::MESSAGE_ERROR);
     relationship_invalid = true;
   }
   else if(to_key_field->get_primary_key())
   {
-    Utils::show_ok_dialog(_("Relationship Uses a Related Primary Key"), 
+    Utils::show_ok_dialog(_("Relationship Uses a Related Primary Key"),
       _("The relationship may not be used to show related records because the relationship uses a primary key field in the related table, which must contain unique values. This would prevent the relationship from specifying multiple related records."),
      *this, Gtk::MESSAGE_ERROR);
     relationship_invalid = true;
   }
   else if(to_key_field->get_unique_key())
   {
-    Utils::show_ok_dialog(_("Relationship Uses a Related Unique Field"), 
+    Utils::show_ok_dialog(_("Relationship Uses a Related Unique Field"),
       _("The relationship may not be used to show related records because the relationship uses a unique-values field in the related table. This would prevent the relationship from specifying multiple related records."),
      *this, Gtk::MESSAGE_ERROR);
     relationship_invalid = true;
   }
-  
+
   //Reset the previous value if the choice was bad:
   if(relationship_invalid)
   {
     m_combo_relationship->set_selected_relationship(
-       m_portal->get_relationship(), m_portal->get_related_relationship()); 
+       m_portal->get_relationship(), m_portal->get_related_relationship());
     return;
   }
 
-  //Clear the list of fields if the relationship has changed, 
+  //Clear the list of fields if the relationship has changed,
   //because the fields could not possible be correct for the new table:
   bool relationship_changed = false;
   const Glib::ustring old_relationship_name = glom_get_sharedptr_name(m_portal->get_relationship());
@@ -422,7 +422,7 @@ void Dialog_Layout_List_Related::on_button_add_field()
   //std::cout << "debug table used =" << m_portal->get_table_used(m_table_name) << std::endl;
 
   type_list_field_items fields_list = offer_field_list(m_portal->get_table_used(m_table_name), this);
-  for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); ++iter_chosen) 
+  for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); ++iter_chosen)
   {
     sharedptr<LayoutItem_Field> field = *iter_chosen;
     if(!field)
@@ -490,4 +490,3 @@ Glib::ustring Dialog_Layout_List_Related::get_fields_table() const
 }
 
 } //namespace Glom
-

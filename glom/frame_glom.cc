@@ -679,7 +679,7 @@ void Frame_Glom::on_menu_file_export()
 //TODO: Reduce copy/pasting in these export_data_to_*() methods:
 void Frame_Glom::export_data_to_vector(Document::type_example_rows& the_vector, const FoundSet& found_set, const Document::type_list_layout_groups& sequence)
 {
-  type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(found_set.m_table_name, sequence);
+  type_vecConstLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(found_set.m_table_name, sequence);
 
   if(fieldsSequence.empty())
   {
@@ -708,7 +708,7 @@ void Frame_Glom::export_data_to_vector(Document::type_example_rows& the_vector, 
         {
           const Gnome::Gda::Value value = result->get_value_at(col_index, row_index);
 
-          sharedptr<LayoutItem_Field> layout_item = fieldsSequence[col_index];
+          sharedptr<const LayoutItem_Field> layout_item = fieldsSequence[col_index];
           //if(layout_item->m_field.get_glom_type() != Field::TYPE_IMAGE) //This is too much data.
           //{
 
@@ -729,7 +729,7 @@ void Frame_Glom::export_data_to_vector(Document::type_example_rows& the_vector, 
 
 void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet& found_set, const Document::type_list_layout_groups& sequence)
 {
-  type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(found_set.m_table_name, sequence);
+  type_vecConstLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(found_set.m_table_name, sequence);
 
   if(fieldsSequence.empty())
   {
@@ -758,7 +758,7 @@ void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet
         {
           const Gnome::Gda::Value value = result->get_value_at(col_index, row_index);
 
-          sharedptr<LayoutItem_Field> layout_item = fieldsSequence[col_index];
+          sharedptr<const LayoutItem_Field> layout_item = fieldsSequence[col_index];
           //if(layout_item->m_field.get_glom_type() != Field::TYPE_IMAGE) //This is too much data.
           //{
             if(!row_string.empty())
@@ -781,7 +781,7 @@ void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet
 
 void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet& found_set, const Document::type_list_layout_groups& sequence)
 {
-  type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(found_set.m_table_name, sequence);
+  type_vecConstLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(found_set.m_table_name, sequence);
 
   if(fieldsSequence.empty())
   {
@@ -810,7 +810,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
         {
           const Gnome::Gda::Value value = result->get_value_at(col_index, row_index);
 
-          sharedptr<LayoutItem_Field> layout_item = fieldsSequence[col_index];
+          sharedptr<const LayoutItem_Field> layout_item = fieldsSequence[col_index];
           //if(layout_item->m_field.get_glom_type() != Field::TYPE_IMAGE) //This is too much data.
           //{
             if(!row_string.empty())
@@ -2156,13 +2156,13 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   }
 
   // Do startup, such as starting the self-hosting database server
-  const ConnectionPool::StartupErrors started = 
+  const ConnectionPool::StartupErrors started =
     connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
   if(started != ConnectionPool::Backend::STARTUPERROR_NONE)
   {
     std::cerr << G_STRFUNC << ": startup() failed." << std::endl;
     return false;
-  }  
+  }
 
   if(m_dialog_progess_connection_startup)
   {
@@ -2324,7 +2324,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
   //Start a self-hosted server if necessary:
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   connection_pool->setup_from_document(document);
-  const ConnectionPool::StartupErrors started = 
+  const ConnectionPool::StartupErrors started =
     connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
   if(started != ConnectionPool::Backend::STARTUPERROR_NONE)
   {

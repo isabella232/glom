@@ -97,9 +97,9 @@ protected:
   ///Fill the existing layout with data from the database.
   virtual bool fill_from_database(); //override.
 
-  virtual type_vecLayoutFields get_fields_to_show() const;
+  virtual type_vecConstLayoutFields get_fields_to_show() const;
 
-  type_vecLayoutFields get_table_fields_to_show(const Glib::ustring& table_name) const;
+  type_vecConstLayoutFields get_table_fields_to_show(const Glib::ustring& table_name) const;
 
   /** Get the layout groups, with the Field information filled in.
    */

@@ -81,7 +81,7 @@ public:
   void get_suitable_record_to_view_details(const Gnome::Gda::Value& primary_key_value, Glib::ustring& table_name, Gnome::Gda::Value& table_primary_key_value) const;
 
 protected:
-  virtual type_vecLayoutFields get_fields_to_show() const; //override
+  virtual type_vecConstLayoutFields get_fields_to_show() const; //override
     
   //Implementations of pure virtual methods from Base_DB_Table_Data:
   virtual sharedptr<Field> get_field_primary_key() const;
