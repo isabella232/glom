@@ -197,7 +197,9 @@ static const char GLOM_ATTRIBUTE_VALUE[] = "value";
 static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED[] = "choices_related";
 static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP[] = "choices_related_relationship";
 static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD[] = "choices_related_field";
-static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND[] = "choices_related_second";
+static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_EXTRA_LAYOUT[] = "choices_related_extra_layout";
+static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND[] = "choices_related_second"; //deprecated
+static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SHOW_ALL[] = "choices_related_show_all";
 
 static const char GLOM_NODE_TRANSLATIONS_SET[] = "trans_set";
 static const char GLOM_NODE_TRANSLATION[] = "trans";
