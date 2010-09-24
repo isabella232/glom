@@ -1,3 +1,13 @@
+2010-09-24  David King  <davidk@openismus.com>
+
+	Improve use of defines
+
+	* *.h: Be more consistent with include guards.
+	* glom/dialog_existing_or_new.cc:
+	* glom/libglom/connectionpool_backends/postgres_self.cc:
+	* glom/libglom/document/document.cc: Convert defines to static const
+	data.
+
 2010-09-23  Murray Cumming  <murrayc@murrayc.com>
 
 	DbAddDel: Some code rearrangement.

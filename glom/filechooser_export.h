@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef FILECHOOSER_EXPORT_GLOM_H
-#define FILECHOOSER_EXPORT_GLOM_H
+#ifndef GLOM_FILECHOOSER_EXPORT_H
+#define GLOM_FILECHOOSER_EXPORT_H
 
 #include <libglom/document/document.h>
 #include <gtkmm/filechooserdialog.h>
@@ -63,4 +63,4 @@ private:
 
 } //namespace Glom
 
-#endif
+#endif // GLOM_FILESCHOOSER_EXPORT_H

@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_TRANSLATION_COMBOBOX_LOCALE_HH
-#define GLOM_TRANSLATION_COMBOBOX_LOCALE_HH
+#ifndef GLOM_TRANSLATION_COMBOBOX_LOCALE_H
+#define GLOM_TRANSLATION_COMBOBOX_LOCALE_H
 
 #include <glom/mode_design/iso_codes.h>
 #include <gtkmm/combobox.h>
@@ -61,5 +61,4 @@ private:
 
 } //namespace Glom
 
-#endif //GLOM_TRANSLATION_COMBOBOX_LOCALE_HH
-
+#endif //GLOM_TRANSLATION_COMBOBOX_LOCALE_H

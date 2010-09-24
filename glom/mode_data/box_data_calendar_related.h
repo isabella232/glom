@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef BOX_DATA_CALENDAR_RELATED_H
-#define BOX_DATA_CALENDAR_RELATED_H
+#ifndef GLOM_DATA_BOX_DATA_CALENDAR_RELATED_H
+#define GLOM_DATA_BOX_DATA_CALENDAR_RELATED_H
 
 #include "config.h" // GLOM_ENABLE_CLIENT_ONLY
 
@@ -114,4 +114,4 @@ private:
 
 } //namespace Glom
 
-#endif
+#endif // GLOM_MODE_DATA_BOX_DATA_CALENDAR_RELATED_H

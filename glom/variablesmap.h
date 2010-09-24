@@ -17,8 +17,8 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#ifndef _GLOM_VARIABLESMAP_H
-#define _GLOM_VARIABLESMAP_H
+#ifndef GLOM_VARIABLESMAP_H
+#define GLOM_VARIABLESMAP_H
 
 #include <gtkmm/builder.h>
 #include <map>
@@ -85,6 +85,4 @@ protected:
 } /* namespace Glom */
 
 
-#endif /* _GLOM_VARIABLESMAP_H */
-
-
+#endif /* GLOM_VARIABLESMAP_H */

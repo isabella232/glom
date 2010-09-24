@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_DIALOG_NEWSELFHOSTEDCONNECTION_H
-#define GLOM_DIALOG_NEWSELFHOSTEDCONNECTION_H
+#ifndef GLOM_DIALOG_INITIAL_PASSWORD_H
+#define GLOM_DIALOG_INITIAL_PASSWORD_H
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/builder.h>
@@ -59,4 +59,4 @@ private:
 
 } //namespace Glom
 
-#endif //GLOM_DIALOG_NEWSELFHOSTEDCONNECTION_H
+#endif //GLOM_DIALOG_INITIAL_PASSWORD_H

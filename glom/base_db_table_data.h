@@ -19,8 +19,8 @@
  */
 
 
-#ifndef BASE_DB_TABLE_DATA_H
-#define BASE_DB_TABLE_DATA_H
+#ifndef GLOM_BASE_DB_TABLE_DATA_H
+#define GLOM_BASE_DB_TABLE_DATA_H
 
 #include "base_db_table_data_readonly.h"
 
@@ -88,4 +88,4 @@ private:
 
 } //namespace Glom
 
-#endif //BASE_DB_TABLE__DATAH
+#endif // GLOM_BASE_DB_TABLE_DATA_H

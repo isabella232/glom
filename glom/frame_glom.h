@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef FRAME_GLOM_H
-#define FRAME_GLOM_H
+#ifndef GLOM_FRAME_GLOM_H
+#define GLOM_FRAME_GLOM_H
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
@@ -313,4 +313,4 @@ private:
 
 } //namespace Glom
 
-#endif //FRAME_GLOM_H
+#endif // GLOM_FRAME_GLOM_H

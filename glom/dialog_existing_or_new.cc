@@ -43,7 +43,7 @@
 #include <iostream>
 
 #ifdef GLOM_ENABLE_CLIENT_ONLY
-#define NEW_PAGE 1
+static const int NEW_PAGE = 1;
 #endif /* GLOM_ENABLE_CLIENT_ONLY */
 
 namespace

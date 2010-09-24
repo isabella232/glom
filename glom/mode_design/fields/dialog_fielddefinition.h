@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef DIALOG_FIELDDEFINITION_H
-#define DIALOG_FIELDDEFINITION_H
+#ifndef GLOM_MODE_DESIGN_DIALOG_FIELDDEFINITION_H
+#define GLOM_MODE_DESIGN_DIALOG_FIELDDEFINITION_H
 
 #include <gtkmm.h>
 #include "../../utility_widgets/combo_textglade.h"
@@ -100,4 +100,4 @@ private:
 
 } //namespace Glom
 
-#endif //DIALOG_FIELDDEFINITION_H
+#endif // GLOM_MODE_DESIGN_DIALOG_FIELDDEFINITION_H

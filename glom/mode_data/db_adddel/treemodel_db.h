@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_MODE_DATA_DB_TREEMODEL_H
-#define GLOM_MODE_DATA_DB_TREEMODEL_H
+#ifndef GLOM_UTILITY_WIDGETS_DB_TREEMODEL_H
+#define GLOM_UTILITY_WIDGETS_DB_TREEMODEL_H
 
 #include <gtkmm.h>
 //#include <gtkmm/treemodel.h>
@@ -195,4 +195,4 @@ private:
 
 } //namespace Glom
 
-#endif //GLOM_MODE_DATA_DB_TREEMODEL_H
+#endif // GLOM_UTILITY_WIDGETS_DB_TREEMODEL_H

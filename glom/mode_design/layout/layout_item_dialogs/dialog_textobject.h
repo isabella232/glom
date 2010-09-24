@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef DIALOG_TEXTOBJECT_H
-#define DIALOG_TEXTOBJECT_H
+#ifndef GLOM_MODE_DESIGN_DIALOG_TEXTOBJECT_H
+#define GLOM_MODE_DESIGN_DIALOG_TEXTOBJECT_H
 
 #include <gtkmm.h>
 #include <gtkmm/builder.h>
@@ -56,4 +56,4 @@ private:
 
 } //namespace Glom
 
-#endif //DIALOG_TEXTOBJECT_H
+#endif // GLOM_MODE_DESIGN_DIALOG_TEXTOBJECT_H

@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef NOTEBOOK_DATA_H
-#define NOTEBOOK_DATA_H
+#ifndef GLOM_MODE_DATA_NOTEBOOK_DATA_H
+#define GLOM_MODE_DATA_NOTEBOOK_DATA_H
 
 #include <glom/notebook_glom.h>
 #include <glom/mode_data/box_data_list.h>
@@ -114,4 +114,4 @@ protected:
 
 } //namespace Glom
 
-#endif
+#endif // GLOM_MODE_DATA_NOTEBOOK_DATA_H

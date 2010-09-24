@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITY_WIDGETS_DRAGBAR_H
-#define GLOM_UTILITY_WIDGETS_DRAGBAR_H
+#ifndef GLOM_PRINT_LAYOUT_TOOLBAR_H
+#define GLOM_PRINT_LAYOUT_TOOLBAR_H
 
 #include <gtkmm/box.h>
 #include <glom/mode_design/print_layouts/print_layout_toolbar_button.h>
@@ -46,4 +46,4 @@ private:
 
 } //namespace Glom
 
-#endif // GLOM_UTILITY_WIDGETS_DRAGBAR_H
+#endif // GLOM_PRINT_LAYOUT_TOOLBAR_H

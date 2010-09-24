@@ -22,8 +22,8 @@
  *   Boston, MA  02110-1301, USA.
  */
 
-#ifndef _LAYOUTITEM_PLACEHOLDER_H_
-#define _LAYOUTITEM_PLACEHOLDER_H_
+#ifndef GLOM_LAYOUTITEM_PLACEHOLDER_H
+#define GLOM_LAYOUTITEM_PLACEHOLDER_H
 
 #include <libglom/data_structure/layout/layoutitem.h>
 
@@ -51,4 +51,4 @@ public:
 
 }
 
-#endif // _LAYOUTITEM_PLACEHOLDER_H_
+#endif // GLOM_LAYOUTITEM_PLACEHOLDER_H

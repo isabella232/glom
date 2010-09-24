@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef DOCUMENT_GLOM_H
-#define DOCUMENT_GLOM_H
+#ifndef GLOM_DOCUMENT_H
+#define GLOM_DOCUMENT_H
 
 #include <libglom/libglom_config.h>
 
@@ -631,4 +631,4 @@ private:
 
 } //namespace Glom
 
-#endif //DOCUMENT_GLOM_H
+#endif // GLOM_DOCUMENT_H
