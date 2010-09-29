@@ -118,30 +118,17 @@ void PlaceholderGlom::on_unrealize()
   Gtk::Widget::on_unrealize();
 }
 
-bool PlaceholderGlom::on_expose_event(GdkEventExpose* event)
+bool PlaceholderGlom::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-  if(m_refGdkWindow)
-  {
-    Cairo::RefPtr<Cairo::Context> cr = m_refGdkWindow->create_cairo_context();
-    if(event)
-    {
-      // clip to the area that needs to be re-exposed so we don't draw any
-      // more than we need to.
-      cr->rectangle(event->area.x, event->area.y,
-              event->area.width, event->area.height);
-      cr->clip();
-    }
+  // Paint the background:
+  Gdk::Cairo::set_source_color(cr, get_style()->get_bg(Gtk::STATE_NORMAL));
+  cr->paint();
 
-    // Paint the background:
-    Gdk::Cairo::set_source_color(cr, get_style()->get_bg(Gtk::STATE_NORMAL));
-    cr->paint();
-
-    // Draw the foreground:
-    Gdk::Cairo::set_source_color(cr, get_style()->get_fg(Gtk::STATE_NORMAL));
-    cr->set_line_width(4);
-    cr->rectangle(0, 0,  get_allocation().get_width(), get_allocation().get_height());
-    cr->stroke();
-  }
+  // Draw the foreground:
+  Gdk::Cairo::set_source_color(cr, get_style()->get_fg(Gtk::STATE_NORMAL));
+  cr->set_line_width(4);
+  cr->rectangle(0, 0,  get_allocation().get_width(), get_allocation().get_height());
+  cr->stroke();
 
   return true;
 }

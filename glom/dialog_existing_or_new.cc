@@ -827,9 +827,9 @@ void Dialog_ExistingOrNew::on_select_clicked()
     dialog.set_default_response(Gtk::RESPONSE_OK);
     #endif // GLOM_ENABLE_MAEMO
 
-    Gtk::FileFilter filter;
-    filter.add_mime_type("application/x-glom");
-    filter.set_name("Glom files");
+    Glib::RefPtr<Gtk::FileFilter> filter = Gtk::FileFilter::create();
+    filter->add_mime_type("application/x-glom");
+    filter->set_name("Glom files");
     dialog.add_filter(filter);
 
     const int response_id = dialog.run();

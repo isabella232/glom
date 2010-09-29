@@ -61,7 +61,7 @@ private:
 
   // Note that these are normal signal handlers when glibmm was compiled
   // without default signal handler API.
-  virtual bool on_expose_event(GdkEventExpose* event);
+  virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
 
   virtual bool on_button_press_event(GdkEventButton *event);
 

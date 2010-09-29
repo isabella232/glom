@@ -883,7 +883,7 @@ void DbAddDel::construct_specified_columns()
 
 
     Gtk::Requisition requistion_min, requistion_natural; //TODO: Really support natural size.
-    pCellButton->get_size(m_TreeView, requistion_min, requistion_natural);
+    pCellButton->get_preferred_size(m_TreeView, requistion_min, requistion_natural);
 
     m_treeviewcolumn_button->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Needed by fixed-height mode.
 

@@ -231,7 +231,7 @@ void FlowTable::get_item_requested_width(const FlowTableItem& item, int& first, 
       //Discover how much space this child needs:
       //TODO: Which one should we use?
       Gtk::Requisition child_requisition_request_min, child_requisition_request_natural;
-      first_widget->get_size(child_requisition_request_min, child_requisition_request_natural);
+      first_widget->get_preferred_size(child_requisition_request_min, child_requisition_request_natural);
       first = child_requisition_request_natural.width;
     }
 
@@ -240,7 +240,7 @@ void FlowTable::get_item_requested_width(const FlowTableItem& item, int& first, 
       //Discover how much space this child needs:
       //TODO: Which one should we use?
       Gtk::Requisition child_requisition_request_min, child_requisition_request_natural;
-      second_widget->get_size(child_requisition_request_min, child_requisition_request_natural);
+      second_widget->get_preferred_size(child_requisition_request_min, child_requisition_request_natural);
       second = child_requisition_request_min.width;
     }
   }
@@ -261,17 +261,17 @@ int FlowTable::get_item_requested_height(const FlowTableItem& item) const
       // Ask the child how much space it needs:
       //TODO: Which one should we use?
       Gtk::Requisition child_requisition_request_min, child_requisition_request_natural;
-      first->get_size(child_requisition_request_min, child_requisition_request_natural);
+      first->get_preferred_size(child_requisition_request_min, child_requisition_request_natural);
 
       max_child_height = child_requisition_request_min.height;
     }
 
     if(child_is_visible(second))
-    {   
+    {
       // Ask the child how much space it needs:
       //TODO: Which one should we use?
       Gtk::Requisition child_requisition_request_min, child_requisition_request_natural;
-      second->get_size(child_requisition_request_min, child_requisition_request_natural);
+      second->get_preferred_size(child_requisition_request_min, child_requisition_request_natural);
 
       max_child_height = MAX(max_child_height, child_requisition_request_min.height);
     }
@@ -451,7 +451,7 @@ Gtk::Allocation FlowTable::assign_child(Gtk::Widget* widget, int x, int y)
   //Discover how much space this child needs:;
   //TODO: Which one should we use?
   Gtk::Requisition child_requisition_request_min, child_requisition_request_natural;
-  widget->get_size(child_requisition_request_min, child_requisition_request_natural);
+  widget->get_preferred_size(child_requisition_request_min, child_requisition_request_natural);
 
   //Give it as much space as it wants:
   return assign_child(widget, x, y, child_requisition_request_min.width, child_requisition_request_min.height);
@@ -487,10 +487,10 @@ void FlowTable::get_item_max_width_requested(guint start, guint height, guint& f
     guint item_first_width = 0;
     guint singles_width = 0;
     if(child_is_visible(first))
-    {      
+    {
       //TODO: Which one should we use?
       Gtk::Requisition child_requisition_request_min, child_requisition_request_natural;
-      first->get_size(child_requisition_request_min, child_requisition_request_natural);
+      first->get_preferred_size(child_requisition_request_min, child_requisition_request_natural);
 
       if(child_is_visible(second))
       {
@@ -512,7 +512,7 @@ void FlowTable::get_item_max_width_requested(guint start, guint height, guint& f
     {
       //TODO: Which one should we use?
       Gtk::Requisition child_requisition_request_min, child_requisition_request_natural;
-      second->get_size(child_requisition_request_min, child_requisition_request_natural);
+      second->get_preferred_size(child_requisition_request_min, child_requisition_request_natural);
 
       item_second_width = child_requisition_request_min.width;
       //g_warning("item_second_width=%d", item_second_width);
@@ -551,7 +551,7 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
 
   set_allocation(allocation);
 
-  //This will be used in on_expose_event():
+  //This will be used in on_draw():
   m_lines_horizontal.clear();
   m_lines_vertical.clear();
 
@@ -878,7 +878,7 @@ void FlowTable::on_unrealize()
   Gtk::Container::on_unrealize();
 }
 
-bool FlowTable::on_expose_event(GdkEventExpose* event)
+bool FlowTable::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
   if(m_design_mode)
   {
@@ -909,7 +909,7 @@ bool FlowTable::on_expose_event(GdkEventExpose* event)
     }
   }
 
-  return Gtk::Container::on_expose_event(event);
+  return Gtk::Container::on_draw(cr);
 }
 
 bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& column)

@@ -220,7 +220,7 @@ void App_WithDoc_Gtk::init_menus_file_recentfiles(const Glib::ustring& path)
     Gtk::MenuItem* pMenuItem = dynamic_cast<Gtk::MenuItem*>(m_refUIManager->get_widget(path));
     if(pMenuItem)
     {
-      Gtk::RecentFilter filter;
+      Glib::RefPtr<Gtk::RecentFilter> filter = Gtk::RecentFilter::create();
 
       //Add the mime-types, so that it only shows those documents:
       for(type_list_strings::iterator iter = m_mime_types.begin(); iter != m_mime_types.end(); ++iter)
@@ -228,7 +228,7 @@ void App_WithDoc_Gtk::init_menus_file_recentfiles(const Glib::ustring& path)
         const Glib::ustring mime_type = *iter;
 
         //TODO: Find a gio equivalent for gnome_vfs_mime_type_is_known(). murrayc.
-        filter.add_mime_type(mime_type);
+        filter->add_mime_type(mime_type);
       }
 
       Gtk::RecentChooserMenu* menu = Gtk::manage(new Gtk::RecentChooserMenu);

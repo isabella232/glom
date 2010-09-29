@@ -2837,10 +2837,10 @@ void Application::on_menu_developer_restore_backup()
   file_dlg.set_transient_for(*this);
   file_dlg.set_local_only(); //Because we can't untar remote files.
 
-  Gtk::FileFilter filter;
-  filter.set_name(_(".tar.gz Backup files"));
-  filter.add_pattern("*.tar.gz");
-  filter.add_pattern("*.tgz");
+  Glib::RefPtr<Gtk::FileFilter> filter = Gtk::FileFilter::create();
+  filter->set_name(_(".tar.gz Backup files"));
+  filter->add_pattern("*.tar.gz");
+  filter->add_pattern("*.tgz");
   file_dlg.add_filter(filter);
 
   file_dlg.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);

@@ -1,3 +1,19 @@
+2010-09-29  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build with the latest gtkmm 3 API.
+
+	* glom/application.cc:
+	* glom/dialog_existing_or_new.cc:
+	* glom/frame_glom.cc:
+	* glom/mode_design/translation/window_translations.cc:
+  Use FileFilter via RefPtr.
+	* glom/bakery/app_withdoc_gtk.cc: Use RecentFilter via RefPtr.
+	* glom/mode_data/db_adddel/db_adddel.cc:
+	* glom/mode_data/placeholder-glom[h|cc]:
+	* glom/utility_widgets/flowtable[h|cc]:
+	* glom/utility_widgets/imageglom.[h|cc]: Change use of get_size() to
+  get_preferred_size() and change on_expose_event() to on_draw().
+
 2010-09-24  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the build.

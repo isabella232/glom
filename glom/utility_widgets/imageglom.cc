@@ -264,9 +264,9 @@ Gnome::Gda::Value ImageGlom::get_value() const
   return Gnome::Gda::Value();
 }
 
-bool ImageGlom::on_expose_event(GdkEventExpose* event)
+bool ImageGlom::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-  const bool result = Gtk::EventBox::on_expose_event(event);
+  const bool result = Gtk::EventBox::on_draw(cr);
 
   scale();
   return result;
@@ -319,9 +319,9 @@ void ImageGlom::on_menupopup_activate_select_file()
   Gtk::FileChooserDialog dialog(_("Choose Image"), Gtk::FILE_CHOOSER_ACTION_OPEN);
 
   //Get image formats only:
-  Gtk::FileFilter filter;
-  filter.set_name(_("Images"));
-  filter.add_pixbuf_formats();
+  Glib::RefPtr<Gtk::FileFilter> filter = Gtk::FileFilter::create();
+  filter->set_name(_("Images"));
+  filter->add_pixbuf_formats();
   dialog.add_filter(filter);
 
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);

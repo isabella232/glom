@@ -98,7 +98,7 @@ protected:
   //Virtual method overrides:
   void on_realize();
   void on_unrealize();
-  bool on_expose_event(GdkEventExpose* event);
+  bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
 
   int get_column_height(guint start_widget, guint widget_count, int& total_width) const;
 

@@ -878,13 +878,13 @@ void Frame_Glom::on_menu_file_import()
     Gtk::FileChooserDialog file_chooser(*get_app_window(), _("Open CSV Document"), Gtk::FILE_CHOOSER_ACTION_OPEN);
     file_chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     file_chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
-    Gtk::FileFilter filter_csv;
-    filter_csv.set_name(_("CSV files"));
-    filter_csv.add_mime_type("text/csv");
+    Glib::RefPtr<Gtk::FileFilter> filter_csv = Gtk::FileFilter::create();
+    filter_csv->set_name(_("CSV files"));
+    filter_csv->add_mime_type("text/csv");
     file_chooser.add_filter(filter_csv);
-    Gtk::FileFilter filter_any;
-    filter_any.set_name(_("All files"));
-    filter_any.add_pattern("*");
+    Glib::RefPtr<Gtk::FileFilter> filter_any = Gtk::FileFilter::create();
+    filter_any->set_name(_("All files"));
+    filter_any->add_pattern("*");
     file_chooser.add_filter(filter_any);
 
     if(file_chooser.run() == Gtk::RESPONSE_ACCEPT)

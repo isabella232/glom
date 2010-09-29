@@ -49,7 +49,7 @@ private:
   virtual void on_size_allocate(Gtk::Allocation& allocation);
   virtual void on_realize();
   virtual void on_unrealize();
-  virtual bool on_expose_event(GdkEventExpose* event);
+  virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
 
   Glib::RefPtr<Gdk::Window> m_refGdkWindow;
 };
