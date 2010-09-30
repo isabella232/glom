@@ -50,8 +50,9 @@ ComboChoices::~ComboChoices()
 {
 }
 
-bool ComboChoices::refresh_data_from_database_with_foreign_key(const Document* document, const Gnome::Gda::Value& foreign_key_value)
+bool ComboChoices::refresh_data_from_database_with_foreign_key(const Document* /* document */, const Gnome::Gda::Value& /* foreign_key_value */)
 {
+  /** TODO:
   sharedptr<LayoutItem_Field> layout_item =
     sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
 
@@ -68,11 +69,13 @@ bool ComboChoices::refresh_data_from_database_with_foreign_key(const Document* d
   set_choices_with_second(list_values);
   set_value(old_value); //Try to preserve the value, even in iter-based ComboBoxes.
 
+  */
   return true;
 }
 
-void ComboChoices::set_choices_related(const Document* document)
+void ComboChoices::set_choices_related(const Document* /* document */, const sharedptr<const LayoutItem_Field>& /* layout_field */, const Gnome::Gda::Value& /* foreign_key_value */)
 {
+  /* TODO:
   type_list_values_with_second list_values;
 
   sharedptr<LayoutItem_Field> layout_item =
@@ -94,6 +97,7 @@ void ComboChoices::set_choices_related(const Document* document)
   const Gnome::Gda::Value old_value = get_value();
   set_choices_with_second(list_values);
   set_value(old_value); //Try to preserve the value, even in iter-based ComboBoxes.
+  */
 }
 
 } //namespace DataWidgetChildren

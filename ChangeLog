@@ -1,3 +1,34 @@
+2010-10-02  Murray Cumming  <murrayc@murrayc.com>
+
+	Choices combos: Reuse the list view implementation. Only works for Combo now.
+
+	* glom/mode_data/db_adddel/treemodel_db.[h|cc]: Moved to:
+	* glom/mode_data/datawidget/treemodel_db.[h|cc]: so we can use it for the 
+	choices combo widgets too.
+	* glom/mode_data/datawidget/combochoices.[h|cc]:
+	set_choices_related(): Make this pure virtual.
+	Remove set_choices_with_second().
+	* glom/mode_data/datawidget/cellcreation.[h|cc]: create_cell():
+	Use set_choices_related() instead of getting all rows as a list and 
+	using set_choices_with_second().
+	* glom/datawidget/combochoiceswithtreemodel.[h|cc]:
+	Override set_choices_related() and cell_connect_cell_data_func().
+	Remove the use_model() pure virtual method.
+	* glom/mode_data/datawidget/cellrenderer_dblist.[h|cc]:
+	* glom/mode_data/datawidget/combo.[h|cc]:
+	* glom/mode_data/datawidget/comboentry.[h|cc]:
+	* glom/mode_data/datawidget/combo_as_radio_buttons.[h|cc]: Adapt, 
+	setting up the view in overrides of set_choices_fixed() and 
+	set_choices_related() instead of use_model(), and being value-based 
+	where possible instead of converting values to and from text.
+
+	* glom/mode_data/db_adddel/db_adddel.[h|cc]: Move create_model_db() to 
+	DbTreeModel::create_from_items() so we can use it for the combo choice 
+	widgets too.
+	refresh_cell_choices_data_from_database_with_foreign_key(): 
+	Use set_choices_related() instead of getting all rows as a list and 
+	using set_choices_with_second().
+	
 2010-10-01  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix (unlikely) possible null dereferences shown by cppcheck.

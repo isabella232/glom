@@ -26,7 +26,6 @@
 #include <libglom/privs.h>
 #include <libglom/db_utils.h>
 #include <libglom/utils.h> //For bold_message()).
-//#include <../utility_widgets/db_adddel/treemodel_db.h> //For DbTreeModel.
 #include <sstream> //For stringstream
 #include <glibmm/i18n.h>
 

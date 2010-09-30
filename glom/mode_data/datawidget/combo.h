@@ -57,14 +57,13 @@ public:
 
   virtual ~ComboGlom();
 
+  //This creates a simple ListStore, with a text cell renderer.
+  virtual void set_choices_fixed(const FieldFormatting::type_list_values& list_values);
+
+  //This creates a db-based tree model, with appropriate cell renderers:
+  virtual void set_choices_related(const Document* document, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value);
+
   virtual void set_read_only(bool read_only = true);
-
-
-  //Override this so we can store the text to compare later.
-  //This is not virtual, so you must not use it via Gtk::Entry.
-  void set_text(const Glib::ustring& text); //override
-
-  Glib::ustring get_text() const;
 
   /** Set the text from a Gnome::Gda::Value.
    */
@@ -74,7 +73,6 @@ public:
 
 private:
   void init();
-  virtual void use_model();
 
   #ifndef GLOM_ENABLE_MAEMO
   // Note that this is a normal signal handler when glibmm was complied
@@ -93,7 +91,7 @@ private:
   virtual Application* get_application();
 
 
-  Glib::ustring m_old_text;
+  Gnome::Gda::Value m_old_value; //TODO: Only useful for navigation, which currently has no implementation.
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
 
   #ifdef GLOM_ENABLE_MAEMO

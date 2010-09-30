@@ -73,12 +73,31 @@ public:
   friend class DbTreeModelRow;
 
 private:
-  //Create a TreeModel with @a columns_count number of columns, each of type Glib::ustring.
+
   DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_const_fields& column_fields, int column_index_key, bool get_records = true, bool find_mode = false);
   virtual ~DbTreeModel();
 
-public:
+ /** Create a new model, using the specified fields.
+   * The LayoutItem_Fields should already have their full field details.
+   */
   static Glib::RefPtr<DbTreeModel> create(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_const_fields& column_fields, int column_index_key, bool get_records = true, bool find_mode = false);
+
+public:
+
+  typedef std::vector< sharedptr<LayoutItem> > type_vec_layout_items;
+  typedef std::vector< sharedptr<const LayoutItem> > type_vec_const_layout_items;
+
+
+  /** A convenience method, creating the model from a list of LayoutItems,
+   * instead of a list of LayoutItem_Fields.
+   */
+  static Glib::RefPtr<DbTreeModel> create_from_items(const FoundSet& found_set, const type_vec_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecConstLayoutFields& fields_shown);
+
+  /** A convenience method, creating the model from a list of LayoutItems,
+   * instead of a list of LayoutItem_Fields.
+   * Any LayoutItem_Fields should already have their full field details.
+   */
+  static Glib::RefPtr<DbTreeModel> create_from_items(const FoundSet& found_set, const type_vec_const_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecConstLayoutFields& fields_shown);
 
   typedef DbTreeModelRow::DbValue DbValue;
 

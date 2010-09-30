@@ -37,30 +37,45 @@ public:
 
   virtual ~ComboChoicesWithTreeModel();
 
+  //This creates a simple ListStore, with a text cell renderer.
   virtual void set_choices_fixed(const FieldFormatting::type_list_values& list_values);
+
+  //This creates a db-based tree model, with appropriate cell renderers:
+  virtual void set_choices_related(const Document* document, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value);
+
 
   //Not named get_model(), to avoid clashing with ComboBox::get_model().
   Glib::RefPtr<Gtk::TreeModel> get_choices_model();
-  
+
 protected:
   void init();
-  void create_model(guint columns_count);
-  
-  /** Derived classes should implement this to present the model in their view,
-   * for instance by adding Gtk::CellRenderers.
+  void create_model_non_db(guint columns_count);
+
+  /** Get a suitable fixed height for cells, so we can display them more efficiently.
+   * This caches the result to avoid repeated recalculation.
    */
-  virtual void use_model() = 0;
-
-  virtual void set_choices_with_second(const type_list_values_with_second& list_values);
-
+  int get_fixed_cell_height(Gtk::Widget& widget);
+  
   typedef Gtk::TreeModelColumn<Glib::ustring> type_model_column;
   typedef std::vector< type_model_column* > type_vec_model_columns;
   type_vec_model_columns m_vec_model_columns;
 
+  typedef std::vector< sharedptr<const LayoutItem_Field> > type_vec_const_layout_items;
+  type_vec_const_layout_items m_db_layout_items; //If set_choices_related() was used.
+
+  //This avoids us making on_cell_data() public just so that derived classes can use it,
+  //though that shouldn't be necessary anyway.
+  void cell_connect_cell_data_func(Gtk::CellLayout* celllayout, Gtk::CellRenderer* cell, guint model_column_index);
+
 private:
+  /// Render the model data to the cells in the view.
+  void on_cell_data(const Gtk::TreeModel::iterator& iter, Gtk::CellRenderer* cell, guint model_column_index);
+
   Glib::RefPtr<Gtk::TreeModel> m_refModel;
-  
+
   void delete_model();
+  
+  int m_fixed_cell_height;
 };
 
 } //namespace DataWidetChildren

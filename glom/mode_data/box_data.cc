@@ -269,7 +269,7 @@ Document::type_list_layout_groups Box_Data::get_data_layout_groups(const Glib::u
     {
       //Get the layout information from the document:
       layout_groups = document->get_data_layout_groups_plus_new_fields(layout_name, m_table_name, layout_platform);
-
+      document->fill_layout_field_details(m_table_name, layout_groups); //TODO: Do this automatically in Document?
       const Privileges table_privs = Privs::get_current_privs(m_table_name);
 
       //Fill in the field information for the fields mentioned in the layout:

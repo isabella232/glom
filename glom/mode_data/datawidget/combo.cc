@@ -21,9 +21,12 @@
 #include "combo.h"
 #include <libglom/data_structure/glomconversions.h>
 #include <gtkmm/messagedialog.h>
+#include <glom/mode_data/datawidget/cellcreation.h>
 #include <glom/dialog_invalid_data.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <libglom/db_utils.h>
 #include <glom/application.h>
+#include <glom/utils_ui.h>
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream
 
@@ -69,13 +72,20 @@ ComboGlom::~ComboGlom()
 {
 }
 
-void ComboGlom::use_model()
+void ComboGlom::set_choices_fixed(const FieldFormatting::type_list_values& list_values)
 {
+  ComboChoicesWithTreeModel::set_choices_fixed(list_values);
+
   Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
+  if(!model)
+  {
+    std::cerr << G_STRFUNC << ": model is null." << std::endl;
+    return;
+  }
 
   //Show the model in the view:
   set_model(model);
-  
+
   clear();
 
   const guint columns_count = model->get_n_columns();
@@ -98,35 +108,49 @@ void ComboGlom::use_model()
   }
 }
 
+void ComboGlom::set_choices_related(const Document* document, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value)
+{
+  ComboChoicesWithTreeModel::set_choices_related(document, layout_field, foreign_key_value);
+
+  Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
+  if(!model)
+  {
+    std::cerr << G_STRFUNC << ": model is null." << std::endl;
+    return;
+  }
+
+  //Show the model in the view:
+  set_model(model);
+
+  clear();
+
+  guint model_column_index = 0;
+  for(type_vec_const_layout_items::const_iterator iter = m_db_layout_items.begin(); iter != m_db_layout_items.end(); ++iter)
+  {
+    const sharedptr<const LayoutItem> layout_item = *iter;
+    if(!layout_item) //column_info.m_visible)
+      continue;
+
+    //Add the ViewColumn
+    Gtk::CellRenderer* cell = create_cell(layout_item, m_table_name, document, get_fixed_cell_height(*this));
+    if(cell)
+    {
+      //Use the renderer:
+      //We don't expand the first column, so we can align the other columns.
+      //Otherwise the other columns appear center-aligned.
+      //This bug is relevant: https://bugzilla.gnome.org/show_bug.cgi?id=629133
+      pack_start(*cell, false);
+
+      cell_connect_cell_data_func(this, cell, model_column_index);
+
+      ++model_column_index;
+    }
+  } //for
+}
+
 void ComboGlom::check_for_change()
 {
-  Glib::ustring new_text = get_text();
-  if(new_text != m_old_text)
-  {
-    //Validate the input:
-    bool success = false;
-
-    sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
-    const Gnome::Gda::Value value = Conversions::parse_value(layout_item->get_glom_type(), new_text, layout_item->get_formatting_used().m_numeric_format, success);
-
-    if(success)
-    {
-      //Actually show the canonical text:
-      set_value(value);
-      m_signal_edited.emit(); //The text was edited, so tell the client code.
-    }
-    else
-    {
-      //Tell the user and offer to revert or try again:
-      bool revert = glom_show_dialog_invalid_data(layout_item->get_glom_type());
-      if(revert)
-      {
-        set_text(m_old_text);
-      }
-      else
-        grab_focus(); //Force the user back into the same field, so that the field can be checked again and eventually corrected or reverted.
-    }
-  }
+  m_signal_edited.emit();
 }
 
 void ComboGlom::set_value(const Gnome::Gda::Value& value)
@@ -134,8 +158,44 @@ void ComboGlom::set_value(const Gnome::Gda::Value& value)
   sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
   if(!layout_item)
     return;
+ 
+  m_old_value = value;
 
-  set_text(Conversions::get_text_for_gda_value(layout_item->get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format));
+  Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
+  if(!model)
+  {
+    std::cerr << G_STRFUNC << ": model is null." << std::endl;
+    return;
+  }
+
+  bool found = false;
+  for(Gtk::TreeModel::iterator iter = model->children().begin(); iter != model->children().end(); ++iter)
+  {
+    const Gtk::TreeModel::Row row = *iter;
+    Gnome::Gda::Value this_value;
+    row.get_value(0, this_value);
+
+    if(this_value == value)
+    {
+      found = true;
+      #ifndef GLOM_ENABLE_MAEMO
+      set_active(iter);
+      #else
+      set_selected(iter);
+      #endif //GLOM_ENABLE_MAEMO
+      break;
+    }
+  }
+
+  if(!found)
+  {
+    //Not found, so mark it as blank:
+    #ifndef GLOM_ENABLE_MAEMO
+    unset_active();
+    #else
+    unselect();
+    #endif
+  }
 
   //Show a different color if the value is numeric, if that's specified:
   if(layout_item->get_glom_type() == Field::TYPE_NUMERIC)
@@ -160,70 +220,25 @@ void ComboGlom::set_value(const Gnome::Gda::Value& value)
   }
 }
 
-void ComboGlom::set_text(const Glib::ustring& text)
-{
-  m_old_text = text;
-
-  Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
-  for(Gtk::TreeModel::iterator iter = model->children().begin(); iter != model->children().end(); ++iter)
-  {
-    const Gtk::TreeModel::Row row = *iter;
-    Glib::ustring this_text;
-    row.get_value(0, this_text);
-
-    if(this_text == text)
-    {
-      #ifndef GLOM_ENABLE_MAEMO
-      set_active(iter);
-      #else
-      set_selected(iter);
-      #endif //GLOM_ENABLE_MAEMO
-      return; //success
-    }
-  }
-
-  //It's OK to pass "" to this method to unset any items:
-  if(!text.empty())
-  {
-    g_warning("ComboGlom::set_text(): no item found for: %s", text.c_str());
-  }
-
-  //Not found, so mark it as blank:
-  #ifndef GLOM_ENABLE_MAEMO
-  unset_active();
-  #else
-  unselect();
-  #endif
-}
-
 Gnome::Gda::Value ComboGlom::get_value() const
 {
-  sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
-  bool success = false;
+   //Get the active row:
+   #ifndef GLOM_ENABLE_MAEMO
+   Gtk::TreeModel::iterator iter = get_active();
+   #else
+   ComboGlom* unconst = const_cast<ComboGlom*>(this);
+   Gtk::TreeModel::iterator iter = unconst->get_selected();
+   #endif //GLOM_ENABLE_MAEMO
 
-  const Glib::ustring text = get_text();
-  return Conversions::parse_value(layout_item->get_glom_type(), text, layout_item->get_formatting_used().m_numeric_format, success);
-}
-
-Glib::ustring ComboGlom::get_text() const
-{
-  //Get the active row:
-  #ifndef GLOM_ENABLE_MAEMO
-  Gtk::TreeModel::iterator iter = get_active();
-  #else
-  ComboGlom* unconst = const_cast<ComboGlom*>(this);
-  Gtk::TreeModel::iterator iter = unconst->get_selected();
-  #endif //GLOM_ENABLE_MAEMO
-
-  if(iter)
-  {
-    const Gtk::TreeModel::Row row = *iter;
-    Glib::ustring text;
-    row.get_value(0, text);
-    return text;
+   if(iter)
+   {
+     const Gtk::TreeModel::Row row = *iter;
+     Gnome::Gda::Value value;
+     row.get_value(0, value);
+     return value;
   }
-
-  return Glib::ustring();
+  
+  return Gnome::Gda::Value();
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

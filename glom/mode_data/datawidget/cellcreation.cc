@@ -63,7 +63,7 @@ static void apply_formatting(Gtk::CellRenderer* renderer, const sharedptr<const 
     text_renderer->property_background() = bg;
 }
 
-Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, const Glib::ustring& table_name, Document* document, guint fixed_cell_height)
+Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, const Glib::ustring& table_name, const Document* document, guint fixed_cell_height)
 {
   Gtk::CellRenderer* cell = 0;
 
@@ -213,9 +213,7 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
         //TODO: Update this when the relationship's field value changes:
         if(choice_show_all) //Otherwise it must change whenever the relationships's ID value changes.
         {
-          const Utils::type_list_values_with_second list_values =
-            Utils::get_choice_values_all(document, item_field);
-          pCellRendererDbList->set_choices_with_second(list_values);
+          pCellRendererDbList->set_choices_related(document, item_field, Gnome::Gda::Value() /* TODO: Makes no sense */);
         }
       }
     }

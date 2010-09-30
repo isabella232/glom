@@ -37,7 +37,7 @@ namespace DataWidgetChildren
  * Use this only when the user should only be allowed to enter values that are in the choices.
  */
 class ComboAsRadioButtons
-: 
+:
   public Gtk::VBox,
   public ComboChoices
 {
@@ -47,11 +47,12 @@ public:
   ComboAsRadioButtons();
 
   virtual ~ComboAsRadioButtons();
-  
+
   virtual void set_choices_fixed(const FieldFormatting::type_list_values& list_values);
 
-  virtual void set_read_only(bool read_only = true);
+  virtual void set_choices_related(const Document* document, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value);
 
+  virtual void set_read_only(bool read_only = true);
 
   //Override this so we can store the text to compare later.
   //This is not virtual, so you must not use it via Gtk::Entry.
@@ -68,7 +69,11 @@ public:
 private:
   void init();
 
-  virtual void set_choices_with_second(const type_list_values_with_second& list_values);
+  typedef std::list<Gnome::Gda::Value> type_list_values;
+  typedef std::list< std::pair<Gnome::Gda::Value, type_list_values> > type_list_values_with_second;
+
+  //A utility function that's needed because we don't use a real db model:
+  void set_choices_with_second(const type_list_values_with_second& list_values);
 
   void on_radiobutton_toggled();
 
@@ -94,4 +99,3 @@ private:
 } //namespace Glom
 
 #endif //GLOM_UTILITY_WIDGETS_COMBOENTRY_GLOM_H
-

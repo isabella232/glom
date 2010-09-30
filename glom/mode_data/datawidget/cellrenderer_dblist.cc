@@ -19,6 +19,7 @@
  */
 
 #include "cellrenderer_dblist.h"
+#include <glom/mode_data/datawidget/cellcreation.h>
 #include <gtkmm.h>
 #include <libglom/data_structure/glomconversions.h>
 
@@ -27,7 +28,8 @@ namespace Glom
 {
 
 CellRendererDbList::CellRendererDbList()
-: m_repacked_first_cell(false)
+: m_repacked_first_cell(false),
+  m_document(0)
 {
 }
 
@@ -36,8 +38,10 @@ CellRendererDbList::~CellRendererDbList()
 }
 
 
-void CellRendererDbList::use_model()
+void CellRendererDbList::set_choices_fixed(const FieldFormatting::type_list_values& list_values)
 {
+  ComboChoicesWithTreeModel::set_choices_fixed(list_values);
+
   Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
 
   //Show model in the view:
@@ -47,6 +51,23 @@ void CellRendererDbList::use_model()
 
   //The other cells are added in on_editing_started().
 }
+
+void CellRendererDbList::set_choices_related(const Document* document, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value)
+{
+  ComboChoicesWithTreeModel::set_choices_related(document, layout_field, foreign_key_value);
+
+  Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
+
+  //Show model in the view:
+  property_model() = model;
+  property_text_column() = 0; //TODO: This must be a text column, in m_refModel.
+  property_editable() = true; //It would be useless if we couldn't edit it.
+
+  //The other cells are added in on_editing_started(),
+  //which uses the document.
+  m_document = document;
+}
+
 
 void CellRendererDbList::set_restrict_values_to_list(bool val)
 {
@@ -65,36 +86,46 @@ void CellRendererDbList::on_editing_started(Gtk::CellEditable* cell_editable, co
   {
     //Get the default column, created by set_text_column():
     Gtk::CellRendererText* cell = dynamic_cast<Gtk::CellRendererText*>(combobox->get_first_cell());
-        
+
     //Unpack and repack it with expand=false instead of expand=true:
     //We don't expand the first column, so we can align the other columns.
     cell->reference();
     combobox->clear();
     combobox->pack_start(*cell, false);
     cell->unreference();
-  
+
     //Make the renderer render the column:
     combobox->add_attribute(*cell, "text", 0);
-      
-    cell->property_xalign() = 0.0f;  
-    
+
+    cell->property_xalign() = 0.0f;
+
     m_repacked_first_cell = true; //Avoid doing this again.
   }
-   
-  //Add extra cells:     
+
+  //Add extra cells:
   Glib::ListHandle<Gtk::CellRenderer*> cells = combobox->get_cells();
   if(cells.size() < m_vec_model_columns.size())
   {
     for(guint col = cells.size(); col != m_vec_model_columns.size(); ++col)
     {
-      Gtk::CellRendererText* cell = Gtk::manage(new Gtk::CellRendererText);
+      Gtk::CellRenderer* cell = 0;
+      if(m_db_layout_items.empty())
+        cell = Gtk::manage(new Gtk::CellRendererText);
+      else if(col < m_db_layout_items.size())
+      {
+        sharedptr<const LayoutItem_Field> layout_item = m_db_layout_items[col];
+        cell = create_cell(layout_item, m_table_name, m_document, 0 /* fixed_cell_height */);
+      }
+
+      if(!cell)
+        continue;
 
       //Use the renderer:
       combobox->pack_start(*cell, true);
-      
+
       //Make the renderer render the column:
       combobox->add_attribute(*cell, "text", col);
-      
+
       cell->property_xalign() = 0.0f;
     }
   }
@@ -152,11 +183,6 @@ void CellRendererDbList::set_text(const Glib::ustring& text)
 Glib::ustring CellRendererDbList::get_text() const
 {
   return property_text();
-}
-
-void CellRendererDbList::set_choices_with_second(const type_list_values_with_second& list_values)
-{
-  DataWidgetChildren::ComboChoicesWithTreeModel::set_choices_with_second(list_values);
 }
 
 

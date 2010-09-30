@@ -100,7 +100,7 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
 
             title += " - " + value_second; //TODO: Find a better way to join them?
           }
-          
+
           ++iterValues;
         }
       }
@@ -149,7 +149,12 @@ void ComboAsRadioButtons::set_choices_fixed(const FieldFormatting::type_list_val
   }
 }
 
-
+void ComboAsRadioButtons::set_choices_related(const Document* document, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value)
+{
+  const Utils::type_list_values_with_second list_values =
+    Utils::get_choice_values(document, layout_field, foreign_key_value);
+  set_choices_with_second(list_values);
+}
 
 ComboAsRadioButtons::~ComboAsRadioButtons()
 {

@@ -130,7 +130,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
         combo = create_combo_widget_for_field(field);
         combo->set_layout_item( get_layout_item(), table_name);
 
-        combo->set_choices_related(document);
+        combo->set_choices_related(document, field, Gnome::Gda::Value() /* TODO: Doesn't make sense */);
       }
       else
       {

@@ -57,6 +57,12 @@ public:
 
   virtual ~ComboEntry();
 
+  //This creates a simple ListStore, with a text cell renderer.
+  virtual void set_choices_fixed(const FieldFormatting::type_list_values& list_values);
+
+  //This creates a db-based tree model, with appropriate cell renderers:
+  virtual void set_choices_related(const Document* document, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value);
+
   //Override this so we can store the text to compare later.
   //This is not virtual, so you must not use it via Gtk::Entry.
   void set_text(const Glib::ustring& text); //override
@@ -73,8 +79,6 @@ public:
 
 private:
   void init();
-  virtual void use_model();
-
 
   //Overrides of default signal handlers:
   //TODO: Are these really default signal handlers?

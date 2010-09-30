@@ -41,13 +41,16 @@ public:
   CellRendererDbList();
   virtual ~CellRendererDbList();
 
-  void set_choices_with_second(const type_list_values_with_second& list_values);
+  //This creates a simple ListStore, with a text cell renderer.
+  virtual void set_choices_fixed(const FieldFormatting::type_list_values& list_values);
+
+  //This creates a db-based tree model, with appropriate cell renderers:
+  virtual void set_choices_related(const Document* document, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value);
 
   void set_restrict_values_to_list(bool val = true);
 
 private:
 
-  virtual void use_model();
   virtual void on_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& path);
 
   virtual void set_value(const Gnome::Gda::Value& value);
@@ -55,8 +58,10 @@ private:
 
   void set_text(const Glib::ustring& text);
   Glib::ustring get_text() const;
-  
+
   bool m_repacked_first_cell;
+
+  const Document* m_document;
 };
 
 } //namespace Glom

@@ -51,14 +51,15 @@ public:
    */
   virtual void set_choices_fixed(const FieldFormatting::type_list_values& list_values) = 0;
 
-  //This is not pure virtual, so some widgets can (temporarily) use a default inefficient implementation.
   /** Show the list of related chocie values based on the LayoutItem's formatting choices.
    * You should first call set_layout_item() to provide that formatting detail,
    * so the widget knows what choices to show, and how to format them.
    *
+   * The LayoutItem_Fields should already have their full field details
+   *
    * See also refresh_data_from_database_with_foreign_key().
    */
-  virtual void set_choices_related(const Document* document);
+  virtual void set_choices_related(const Document* document, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value) = 0;
 
   /** Update a choices widget's list of related choices if a relevant value in its parent table has changed.
    *
@@ -68,10 +69,6 @@ public:
 
 protected:
   void init();
-
-  typedef std::list<Gnome::Gda::Value> type_list_values;
-  typedef std::list< std::pair<Gnome::Gda::Value, type_list_values> > type_list_values_with_second;
-  virtual void set_choices_with_second(const type_list_values_with_second& list_values) = 0;
 
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
 };

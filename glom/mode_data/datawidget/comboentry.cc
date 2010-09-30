@@ -22,6 +22,7 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <gtkmm/messagedialog.h>
 #include <glom/dialog_invalid_data.h>
+#include <glom/mode_data/datawidget/cellcreation.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/application.h>
 #include <glibmm/i18n.h>
@@ -108,10 +109,19 @@ ComboEntry::~ComboEntry()
 {
 }
 
-void ComboEntry::use_model()
+
+void ComboEntry::set_choices_fixed(const FieldFormatting::type_list_values& list_values)
 {
+  ComboChoicesWithTreeModel::set_choices_fixed(list_values);
+
   //Show model in the view:
   Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
+  if(!model)
+  {
+    std::cerr << G_STRFUNC << ": model is null." << std::endl;
+    return;
+  }
+
   set_model(model);
   set_text_column(0);
 
@@ -123,7 +133,7 @@ void ComboEntry::use_model()
     {
       //Get the default column, created by set_text_column():
       cell = dynamic_cast<Gtk::CellRendererText*>(get_first_cell());
-      
+
       //Unpack and repack it with expand=false instead of expand=true:
       //We don't expand the first column, so we can align the other columns.
       cell->reference();
@@ -140,8 +150,58 @@ void ComboEntry::use_model()
 
     //Make the renderer render the column:
     add_attribute(*cell, "text", i);
-    
+
     cell->property_xalign() = 0.0f;
+  }
+}
+
+void ComboEntry::set_choices_related(const Document* document, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value)
+{
+  ComboChoicesWithTreeModel::set_choices_related(document, layout_field, foreign_key_value);
+
+  Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
+  if(!model)
+  {
+    std::cerr << G_STRFUNC << ": model is null." << std::endl;
+    return;
+  }
+
+  //Show the model in the view:
+  set_model(model);
+  //clear() breaks GtkComboBoxEntry. TODO: Fix the C code? clear();
+  set_text_column(0); //TODO: Add a virtual model to TreeModelDb so we always have a text model?
+
+  const guint columns_count = model->get_n_columns();
+  for(guint i = 0; i < columns_count; ++i)
+  for(type_vec_const_layout_items::const_iterator iter = m_db_layout_items.begin(); iter != m_db_layout_items.end(); ++iter)
+  {
+    const sharedptr<const LayoutItem> layout_item = *iter;
+    Gtk::CellRenderer* cell = 0;
+
+    if(i == 0)
+    {
+      //Get the default column, created by set_text_column():
+      cell = get_first_cell();
+      if(!cell)
+        std::cerr << G_STRFUNC << ": get_first_cell() returned null." << std::endl;
+      else
+      {
+        //Unpack and repack it with expand=false instead of expand=true:
+        //We don't expand the first column, so we can align the other columns.
+        cell->reference();
+        clear();
+        pack_start(*cell, false);
+        cell->unreference();
+      }
+    }
+    else
+    {
+      //Create the cell:
+      cell = create_cell(layout_item, m_table_name, document, get_fixed_cell_height(*this));
+      pack_start(*cell, true);
+      
+      cell_connect_cell_data_func(this, cell, i);
+    }
   }
 }
 
@@ -183,7 +243,7 @@ void ComboEntry::check_for_change()
     get_entry()->set_text(m_old_text);
   }
 
-  Glib::ustring new_text = get_entry()->get_text();
+  const Glib::ustring new_text = get_entry()->get_text();
   if(new_text != m_old_text)
   {
     //Validate the input:

@@ -101,8 +101,6 @@ glom_source_files = \
 	glom/mode_data/db_adddel/db_adddel_withbuttons.h		\
 	glom/mode_data/db_adddel/db_treeviewcolumn_glom.cc	\
 	glom/mode_data/db_adddel/db_treeviewcolumn_glom.h		\
-	glom/mode_data/db_adddel/treemodel_db.cc		\
-	glom/mode_data/db_adddel/treemodel_db.h \
 	glom/mode_data/flowtablewithfields.cc				\
 	glom/mode_data/flowtablewithfields.h				\
 	glom/mode_data/notebook_data.cc					\
@@ -141,6 +139,8 @@ glom_source_files = \
 	glom/mode_data/datawidget/combochoiceswithtreemodel.h			\
 	glom/mode_data/datawidget/combo_as_radio_buttons.cc			\
 	glom/mode_data/datawidget/combo_as_radio_buttons.h			\
+	glom/mode_data/datawidget/treemodel_db.cc		\
+	glom/mode_data/datawidget/treemodel_db.h \
 	glom/mode_find/box_data_details_find.cc				\
 	glom/mode_find/box_data_details_find.h				\
 	glom/mode_find/box_data_list_find.cc				\

@@ -672,7 +672,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
         #ifndef GLOM_ENABLE_MAEMO //There's no direct editing via the list view on Maemo.
         //Connect to its signal:
         pCellRendererToggle->signal_toggled().connect(
-        sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_edited_bool), model_column_index, data_model_column_index ) );
+          sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_edited_bool), model_column_index, data_model_column_index ) );
         #endif //GLOM_ENABLE_MAEMO
       }
     }
@@ -700,127 +700,6 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
   }
 
   return pCellRenderer;
-}
-
-typedef std::vector< sharedptr<const LayoutItem> > type_vec_const_layout_items;
-typedef std::vector< sharedptr<LayoutItem> > type_vec_layout_items;
-
-static Glib::RefPtr<DbTreeModel> create_model_db(const FoundSet& found_set, const type_vec_const_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecConstLayoutFields& fields_shown)
-{
-  Glib::RefPtr<DbTreeModel> result;
-
-  typedef Gtk::TreeModelColumn<Gnome::Gda::Value> type_modelcolumn_value;
-  typedef std::vector< type_modelcolumn_value* > type_vecModelColumns;
-  type_vecModelColumns vecModelColumns(layout_items.size(), 0);
-
-  //Create the Gtk ColumnRecord:
-
-  Gtk::TreeModel::ColumnRecord record;
-
-  //Database columns:
-  Base_DB::type_vecConstLayoutFields fields;
-  {
-    type_vecModelColumns::size_type i = 0;
-    for(type_vec_const_layout_items::const_iterator iter = layout_items.begin(); iter != layout_items.end(); ++iter)
-    {
-      sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(*iter);
-      if(item_field)
-      {
-        type_modelcolumn_value* pModelColumn = new type_modelcolumn_value;
-
-        //Store it so we can use it and delete it later:
-        vecModelColumns[i] = pModelColumn;
-
-        record.add( *pModelColumn );
-
-        fields.push_back(item_field);
-
-        i++;
-      }
-    }
-  }
-
-  fields_shown = fields;
-
-  {
-    //Find the primary key:
-    int column_index_key = 0;
-    bool key_found = false;
-    for(Base_DB::type_vecConstLayoutFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
-    {
-      sharedptr<const LayoutItem_Field> layout_item = *iter;
-      if( !(layout_item->get_has_relationship_name()) )
-      {
-        sharedptr<const Field> field_full = layout_item->get_full_field_details();
-        if(field_full && field_full->get_primary_key() )
-        {
-          key_found = true;
-          break;
-        }
-      }
-
-      ++column_index_key;
-    }
-
-    if(key_found)
-    {
-      //Create the model from the ColumnRecord:
-      //Note that the model will use a dummy Gda DataModel if m_find_mode is true.
-      //std::cout << "debug: Creating new DbTreeModel() for table=" << m_found_set.m_table_name << std::endl;
-      result =  DbTreeModel::create(record, found_set, fields, column_index_key, get_records, find_mode);
-    }
-    else
-    {
-      g_warning("%s: no primary key field found.", __FUNCTION__);
-      //for(DbTreeModel::type_vec_const_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
-      //{
-      //  g_warning("  field: %s", (iter->get_name().c_str());
-      //}
-    }
-  }
-
-  //Delete the vector's items:
-  for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
-  {
-     type_modelcolumn_value* pModelColumn = *iter;
-     if(pModelColumn)
-       delete pModelColumn;
-  }
-
-  return result;
-}
-
-/*
-static Glib::RefPtr<DbTreeModel> create_model_db(const FoundSet& found_set, const type_vec_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecLayoutFields& fields_shown)
-{
-  //Create a const version of the input, because C++ can't convert it automatically:
-  type_vec_const_layout_items const_items;
-  const_items.insert(const_items.end(), layout_items.begin(), layout_items.end());
-
-  Base_DB::type_vecConstLayoutFields fields_shown_const;
-  Glib::RefPtr<DbTreeModel> result = create_model_db(found_set, const_items, get_records, find_mode, fields_shown_const);
-
-  //Create a non-const version of the output parameter,
-  //because we know it just contains copies of layout_items elements, which were non-const:
-  fields_shown.clear();
-  for(Base_DB::type_vecConstLayoutFields::const_iterator iter = fields_shown_const.begin(); iter != fields_shown_const.end(); ++iter)
-  {
-     sharedptr<const LayoutItem_Field> field = *iter;
-     sharedptr<LayoutItem_Field> unconst = sharedptr<LayoutItem_Field>::cast_const(field);
-     fields_shown.push_back(unconst);
-  }
-
-  return result;
-}
-*/
-
-static Glib::RefPtr<DbTreeModel> create_model_db(const FoundSet& found_set, const type_vec_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecConstLayoutFields& fields_shown)
-{
-  //Create a const version of the input, because C++ can't convert it automatically:
-  type_vec_const_layout_items const_items;
-  const_items.insert(const_items.end(), layout_items.begin(), layout_items.end());
-
-  return create_model_db(found_set, const_items, get_records, find_mode, fields_shown);
 }
 
 void DbAddDel::construct_specified_columns()
@@ -851,7 +730,7 @@ void DbAddDel::construct_specified_columns()
     return;
   }
 
-  m_refListStore = create_model_db(m_found_set, m_column_items, m_allow_view, m_find_mode, m_FieldsShown);
+  m_refListStore = DbTreeModel::create_from_items(m_found_set, m_column_items, m_allow_view, m_find_mode, m_FieldsShown);
   //m_FieldsShown is needed by Base_DB_Table_Data::record_new().
 
   #ifdef GLOM_ENABLE_MAEMO
@@ -1096,9 +975,7 @@ void DbAddDel::refresh_cell_choices_data_from_database_with_foreign_key(guint mo
     return;
   }
 
-  const Utils::type_list_values_with_second list_values =
-    Utils::get_choice_values(get_document(), layout_field, foreign_key_value);
-  cell->set_choices_with_second(list_values);
+  cell->set_choices_related(get_document(), layout_field, foreign_key_value);
 }
 
 void DbAddDel::remove_all_columns()
