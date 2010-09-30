@@ -1,3 +1,9 @@
+2010-10-04  Jon Nordby  <jonn@openismus.com>
+
+	Set programming language explicitly around --enable-warnings macros
+
+	* configure.ac:
+
 2010-09-23  David King  <davidk@openismus.com>
 
 	Improve use of defines
