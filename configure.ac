@@ -184,10 +184,12 @@ AC_DEFINE_UNQUOTED([ISO_CODES_PREFIX], ["$ISO_CODES_PREFIX"],
 
 # Evaluate the --enable-warnings=level option.
 MM_PREREQ([0.8])
+AC_LANG([C])
 MM_ARG_ENABLE_WARNINGS([GLOM_WFLAGS],
                        [-Wall],
                        [-Wall -Wextra -Wno-missing-field-initializers -DGSEAL_ENABLE],
                        [G GDK GDK_PIXBUF GTK])
+AC_LANG([C++])
 MM_ARG_ENABLE_WARNINGS([GLOM_WXXFLAGS],
                        [-Wall],
                        [-Wall -Wextra -Wno-missing-field-initializers -DGSEAL_ENABLE],
