@@ -1388,16 +1388,51 @@ void Document::set_tables(const type_listTableInfo& tables)
 
 void Document::fill_layout_field_details(const Glib::ustring& parent_table_name, const sharedptr<LayoutGroup>& layout_group) const
 {
+  if(!layout_group)
+    return;
+
   //Get the full field information for the LayoutItem_Fields in this group:
 
   for(LayoutGroup::type_list_items::iterator iter = layout_group->m_list_items.begin(); iter != layout_group->m_list_items.end(); ++iter)
   {
     sharedptr<LayoutItem> layout_item = *iter;
 
+    //Check custom Field Formatting:
+    sharedptr<LayoutItem_WithFormatting> layout_withformatting = 
+      sharedptr<LayoutItem_WithFormatting>::cast_dynamic(layout_item);
+    if(layout_withformatting)
+    {
+      sharedptr<const Relationship> choice_relationship;
+      sharedptr<LayoutItem_Field> choice_layout_first;
+      sharedptr<LayoutGroup> choice_extra_layouts;
+      bool choice_show_all = false;
+      layout_withformatting->m_formatting.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_show_all);
+      
+      const Glib::ustring table_name = (choice_relationship ? choice_relationship->get_to_table() : Glib::ustring());
+      if(choice_layout_first)
+        choice_layout_first->set_full_field_details( get_field(table_name, choice_layout_first->get_name()) );
+      fill_layout_field_details(parent_table_name, choice_extra_layouts); //recurse
+    }
+
     sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
     if(layout_field)
     {
-      layout_field->set_full_field_details( get_field(layout_field->get_table_used(parent_table_name), layout_field->get_name()) );
+      const sharedptr<Field> field = get_field(layout_field->get_table_used(parent_table_name), layout_field->get_name());
+      layout_field->set_full_field_details(field);
+      if(field)
+      {
+        //Check default Field Formatting:
+        sharedptr<const Relationship> choice_relationship;
+        sharedptr<LayoutItem_Field> choice_layout_first;
+        sharedptr<LayoutGroup> choice_extra_layouts;
+        bool choice_show_all = false;
+        field->m_default_formatting.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_show_all);
+        
+        const Glib::ustring table_name = (choice_relationship ? choice_relationship->get_to_table() : Glib::ustring());
+        if(choice_layout_first)
+          choice_layout_first->set_full_field_details( get_field(table_name, choice_layout_first->get_name()) );
+        fill_layout_field_details(parent_table_name, choice_extra_layouts); //recurse
+      }
     }
     else
     {
@@ -2082,7 +2117,16 @@ void Document::load_after_layout_item_field(const xmlpp::Element* element, const
   load_after_layout_item_usesrelationship(element, table_name, item);
 
   //Needed to decide what formatting to load/save:
-  item->set_full_field_details( get_field(item->get_table_used(table_name), name) );
+  const sharedptr<const Field> field = get_field(item->get_table_used(table_name), name);
+  
+  // This is not unusual, because tables often refer to tables that have not been loaded yet.
+  // Code should sometimes check this before returning the layout items.
+  //
+  //if(!field)
+  //{
+  //  std::cerr << G_STRFUNC << ": Could not find field details for field=" << name << ", table=" << table_name << std::endl;
+  //}
+  item->set_full_field_details(field);
 
   item->set_editable( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_EDITABLE) );
 
@@ -2154,7 +2198,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
     const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
     if(element)
     {
-      if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM)
+      if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM) //TODO: Rename this to GLOM_NODE_DATA_LAYOUT_ITEM_FIELD
       {
         sharedptr<LayoutItem_Field> item = sharedptr<LayoutItem_Field>::create();
         //item.set_full_field_details_empty();

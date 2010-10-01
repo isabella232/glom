@@ -1,3 +1,14 @@
+2010-10-01  Murray Cumming  <murrayc@murrayc.com>
+
+	Document: fill_layout_field_details(): Handle choices layouts too.
+
+	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]:
+	set_choices_related(): Take non-const parameters.
+	Added a non-const version of get_choices_related() so we can update the 
+	full field details later.
+	* glom/libglom/document/document.cc: fill_layout_field_details():
+	Also try to update the field details in the choices lists.
+
 2010-09-29  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the build with the latest gtkmm 3 API.

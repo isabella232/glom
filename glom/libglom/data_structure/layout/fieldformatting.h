@@ -69,8 +69,9 @@ public:
    */
   void set_choices_restricted(bool val = true, bool as_radio_buttons = false);
 
+  void get_choices_related(sharedptr<const Relationship>& relationship_name, sharedptr<LayoutItem_Field>& field, sharedptr<LayoutGroup>& extra_layout, bool& show_all);
   void get_choices_related(sharedptr<const Relationship>& relationship_name, sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutGroup>& extra_layout, bool& show_all) const;
-  void set_choices_related(const sharedptr<const Relationship>& relationship_name, const sharedptr<const LayoutItem_Field>& field, const sharedptr<LayoutGroup>& extra_layout, bool show_all);
+  void set_choices_related(const sharedptr<const Relationship>& relationship_name, const sharedptr<LayoutItem_Field>& field, const sharedptr<LayoutGroup>& extra_layout, bool show_all);
 
   //Just for convenience:
   sharedptr<const Relationship> get_choices_related_relationship(bool& show_all) const;
@@ -168,7 +169,7 @@ private:
   Glib::ustring m_text_color_foreground, m_text_color_background;
   HorizontalAlignment m_horizontal_alignment;
 
-  sharedptr<const LayoutItem_Field> m_choices_related_field;
+  sharedptr<LayoutItem_Field> m_choices_related_field;
   sharedptr<LayoutGroup> m_choices_extra_layout_group;
   bool m_choices_related_show_all;
 };

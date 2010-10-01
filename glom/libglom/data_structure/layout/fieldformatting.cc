@@ -243,7 +243,7 @@ void FieldFormatting::set_has_related_choices(bool val)
   m_choices_related = val;
 }
 
-void FieldFormatting::set_choices_related(const sharedptr<const Relationship>& relationship, const sharedptr<const LayoutItem_Field>& field, const sharedptr<LayoutGroup>& extra_layout, bool show_all)
+void FieldFormatting::set_choices_related(const sharedptr<const Relationship>& relationship, const sharedptr<LayoutItem_Field>& field, const sharedptr<LayoutGroup>& extra_layout, bool show_all)
 {
   set_relationship(relationship);
 
@@ -253,6 +253,16 @@ void FieldFormatting::set_choices_related(const sharedptr<const Relationship>& r
 }
 
 void FieldFormatting::get_choices_related(sharedptr<const Relationship>& relationship, sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutGroup>& extra_layout, bool& show_all) const
+{
+  relationship = get_relationship();
+
+  field = m_choices_related_field;
+  extra_layout = m_choices_extra_layout_group;
+  show_all = m_choices_related_show_all;
+}
+
+
+void FieldFormatting::get_choices_related(sharedptr<const Relationship>& relationship, sharedptr<LayoutItem_Field>& field, sharedptr<LayoutGroup>& extra_layout, bool& show_all)
 {
   relationship = get_relationship();
 
