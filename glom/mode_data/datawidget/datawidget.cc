@@ -501,6 +501,8 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_layout(const sharedptr<const
 
   Dialog_FieldLayout* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return result;
 
   add_view(dialog); //Give it access to the document.
   dialog->set_field(start_field, m_table_name);

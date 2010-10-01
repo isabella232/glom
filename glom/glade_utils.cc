@@ -35,6 +35,9 @@ Dialog_ProgressCreating* get_and_show_pulse_dialog(const Glib::ustring& message,
 
   Dialog_ProgressCreating* dialog_progress = 0;
   Utils::get_glade_widget_derived_with_warning(dialog_progress);
+  if(!dialog_progress) //Unlikely and it already warns on stderr.
+    return 0;
+    
   dialog_progress->set_message(_("Processing"), message);
   dialog_progress->set_modal();
 

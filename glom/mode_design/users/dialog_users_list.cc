@@ -184,6 +184,8 @@ void Dialog_UsersList::on_button_user_add()
 {
   Dialog_ChooseUser* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return;
 
   dialog->set_transient_for(*this);
 
@@ -226,6 +228,8 @@ void Dialog_UsersList::on_button_user_new()
 {
   Dialog_User* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return;
 
   dialog->set_transient_for(*this);
   dialog->m_combo_group->set_sensitive(false); //It is being added to the current group, so don't offer a different group.
@@ -272,6 +276,8 @@ void Dialog_UsersList::on_button_user_edit()
 
       Dialog_User* dialog = 0;
       Utils::get_glade_widget_derived_with_warning(dialog);
+      if(!dialog) //Unlikely and it already warns on stderr.
+        return;
 
       dialog->set_transient_for(*this);
 

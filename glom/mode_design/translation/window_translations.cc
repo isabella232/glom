@@ -134,6 +134,9 @@ void Window_Translations::on_button_identify()
 {
   Dialog_IdentifyOriginal* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return;
+
   add_view(dialog);
   dialog->load_from_document(); //Doesn't seem to happen otherwise.
   dialog->set_transient_for(*this);
@@ -357,6 +360,9 @@ void Window_Translations::on_button_copy_translation()
 {
   Dialog_CopyTranslation* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return;
+
   dialog->set_transient_for(*this);
   const int response = Glom::Utils::dialog_run_with_help(dialog);
   dialog->hide();

@@ -2660,6 +2660,9 @@ void Application::on_menu_developer_changelanguage()
 {
   Dialog_ChangeLanguage* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return;
+    
   dialog->set_transient_for(*this);
   const int response = Glom::Utils::dialog_run_with_help(dialog);
   dialog->hide();

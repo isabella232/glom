@@ -698,6 +698,8 @@ sharedptr<Relationship> Dialog_Layout_Report::offer_relationship_list()
 
   Dialog_ChooseRelationship* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return result;
 
   dialog->set_document(get_document(), m_table_name);
   dialog->set_transient_for(*this);

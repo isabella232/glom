@@ -1,3 +1,12 @@
+2010-10-01  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix (unlikely) possible null dereferences shown by cppcheck.
+
+	* Several files: Check the output parameter when getting widgets from glade.
+	When this fails there is already a stderr warning and we could not recover 
+	anyway, but this helps cppcheck or maybe other chekers to only tell us 
+	interesting things.
+
 2010-10-01  Murray Cumming  <murrayc@murrayc-x61>
 
 	DbUtils: Move fill_full_field_details() here from Base_DB.

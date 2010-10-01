@@ -36,6 +36,9 @@ bool glom_show_dialog_invalid_data(Field::glom_field_type glom_type)
 {
   Dialog_InvalidData* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return false;
+    
   dialog->set_example_data(glom_type);
   //dialog->set_transient_for(*this);
   const int response = Glom::Utils::dialog_run_with_help(dialog);

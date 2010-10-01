@@ -65,6 +65,8 @@ void ButtonGlom::on_menu_properties_activate()
 {
   Dialog_ButtonScript* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return;
 
   sharedptr<LayoutItem_Button> layout_item = 
     sharedptr<LayoutItem_Button>::cast_dynamic(get_layout_item());

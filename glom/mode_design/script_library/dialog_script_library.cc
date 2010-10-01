@@ -94,6 +94,9 @@ void Dialog_ScriptLibrary::on_button_add()
 
   Dialog_NewScript* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return;
+    
   dialog->set_transient_for(*this);
   const int response = Glom::Utils::dialog_run_with_help(dialog);
   dialog->hide();

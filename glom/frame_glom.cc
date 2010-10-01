@@ -893,6 +893,9 @@ void Frame_Glom::on_menu_file_import()
 
       Dialog_Import_CSV* dialog = 0;
       Glom::Utils::get_glade_widget_derived_with_warning(dialog);
+      if(!dialog) //Unlikely and it already warns on stderr.
+        return;
+
       add_view(dialog);
 
       dialog->import(file_chooser.get_uri(), m_table_name);
@@ -1683,6 +1686,9 @@ void Frame_Glom::on_menu_developer_database_preferences()
 {
   Dialog_Database_Preferences* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return;
+        
   dialog->set_transient_for(*(get_app_window()));
   add_view(dialog);
   dialog->load_from_document();
@@ -1779,13 +1785,18 @@ void Frame_Glom::on_menu_developer_relationships()
   if(m_table_name.empty())
     return;
 
-  do_menu_developer_relationships(*get_app_window(), m_table_name);
+  Gtk::Window* app = get_app_window();
+  if(app)
+    do_menu_developer_relationships(*app, m_table_name);
 }
 
 void Frame_Glom::on_menu_developer_users()
 {
   Dialog_GroupsList* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return;
+    
   dialog->set_transient_for(*get_app_window());
 
   add_view(dialog); //Give it access to the document.
@@ -1871,6 +1882,9 @@ void Frame_Glom::on_menu_developer_script_library()
 {
   Dialog_ScriptLibrary* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return;
+    
   dialog->set_transient_for(*(get_app_window()));
   add_view(dialog); //Give it access to the document.
   dialog->load_from_document();

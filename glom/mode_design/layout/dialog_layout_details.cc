@@ -553,6 +553,9 @@ sharedptr<LayoutItem_Button> Dialog_Layout_Details::offer_button_script_edit(con
 
   Dialog_ButtonScript* dialog = 0;
   Glom::Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return result;
+        
   dialog->set_script(button, m_table_name);
   dialog->set_transient_for(*this);
   const int response = Glom::Utils::dialog_run_with_help(dialog);
@@ -579,6 +582,8 @@ sharedptr<Relationship> Dialog_Layout_Details::offer_relationship_list(const sha
 
   Dialog_ChooseRelationship* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return result;
 
   dialog->set_document(get_document(), m_table_name);
   dialog->select_item(item);

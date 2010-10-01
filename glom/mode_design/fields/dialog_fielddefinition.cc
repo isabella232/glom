@@ -88,14 +88,19 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
 
   //Get the formatting stuff:
   Utils::get_glade_widget_derived_with_warning(m_box_formatting);
-  m_box_formatting_placeholder->pack_start(*m_box_formatting);
+    
+  if(m_box_formatting) ////Unlikely to fail and it already warns on stderr.
+    m_box_formatting_placeholder->pack_start(*m_box_formatting);
+
   add_view(m_box_formatting);
 
 
   on_foreach_connect(*this);
   on_foreach_connect(*m_pBox_DefaultValueSimple);
   on_foreach_connect(*m_pBox_ValueTab);
-  on_foreach_connect(*m_box_formatting);
+  
+  if(m_box_formatting) ////Unlikely to fail and it already warns on stderr.
+    on_foreach_connect(*m_box_formatting);
 
   //Plus an extra signal for the related extra show-also fields:
   m_box_formatting->signal_modified().connect(
@@ -376,6 +381,8 @@ void Dialog_FieldDefinition::on_button_edit_calculation()
   //TODO: Share a global instance, to make this quicker?
   Dialog_FieldCalculation* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return;
 
   add_view(dialog); //Give it access to the document.
 

@@ -80,6 +80,8 @@ void Label::on_menu_properties_activate()
 
   Dialog_TextObject* dialog = 0;
   Glom::Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return;
 
   dialog->set_textobject(textobject, m_table_name);
   const int response = dialog->run();

@@ -293,6 +293,8 @@ sharedptr<LayoutItem_Portal> Canvas_PrintLayout::offer_related_records(const sha
 
   Dialog_Layout_List_Related* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return result;
 
   add_view(dialog); //Give it access to the document.
 

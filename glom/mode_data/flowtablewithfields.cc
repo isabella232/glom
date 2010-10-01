@@ -1632,6 +1632,8 @@ void FlowTableWithFields::on_menu_properties_activate()
 {
   Dialog_FlowTable* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return;
 
   dialog->set_flowtable(this);
   const int response = dialog->run();
@@ -1691,10 +1693,13 @@ bool FlowTableWithFields::on_button_press_event(GdkEventButton *event)
   return Gtk::Widget::on_button_press_event(event);
 }
 
+//TODO: Rename this? It's not a simpler getter. It does UI.
 sharedptr<LayoutItem_Portal> FlowTableWithFields::get_portal_relationship()
 {
   Dialog_ChooseRelationship* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return sharedptr<LayoutItem_Portal>();
 
   Document* pDocument = static_cast<Document*>(get_document());
   dialog->set_document(pDocument, m_table_name);

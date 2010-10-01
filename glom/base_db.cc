@@ -421,6 +421,8 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_list_select_one_field(const sha
 
   Dialog_ChooseField* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return result;
 
   if(dialog)
   {
@@ -449,6 +451,8 @@ Base_DB::type_list_field_items Base_DB::offer_field_list(const Glib::ustring& ta
 
   Dialog_ChooseField* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return result;
 
   if(dialog)
   {
@@ -501,7 +505,9 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_formatting(const sharedptr<cons
 
   Dialog_FieldLayout* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
-
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return result;
+  
   if(transient_for)
     dialog->set_transient_for(*transient_for);
 
@@ -531,6 +537,8 @@ sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_
 
   Dialog_TextObject* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return result;
 
   if(transient_for)
     dialog->set_transient_for(*transient_for);
@@ -555,6 +563,8 @@ sharedptr<LayoutItem_Image> Base_DB::offer_imageobject(const sharedptr<LayoutIte
 
   Dialog_ImageObject* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return result;
 
   if(transient_for)
     dialog->set_transient_for(*transient_for);
@@ -579,6 +589,8 @@ sharedptr<LayoutItem_Notebook> Base_DB::offer_notebook(const sharedptr<LayoutIte
 
   Dialog_Notebook* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return result;
 
   if(transient_for)
     dialog->set_transient_for(*transient_for);
