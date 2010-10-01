@@ -1607,6 +1607,24 @@ bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
   return (exec_retval >= 0);
 }
 
+void layout_item_fill_field_details(Document* document, const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item)
+{
+  if(!document)
+  {
+    std::cerr << G_STRFUNC << ": document was null." << std::endl;
+    return;
+  }
+
+  if(!layout_item)
+  {
+    std::cerr << G_STRFUNC << ": layout_item was null." << std::endl;
+  }
+
+  const Glib::ustring table_name = layout_item->get_table_used(parent_table_name);
+  layout_item->set_full_field_details( document->get_field(table_name, layout_item->get_name()) );
+}
+
+
 } //namespace DbUtils
 
 } //namespace Glom

@@ -121,8 +121,6 @@ protected:
   sharedptr<LayoutItem_Notebook> offer_notebook(const sharedptr<LayoutItem_Notebook>& start_notebook, Gtk::Window* transient_for = 0);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  void fill_full_field_details(const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item);
-
   bool get_relationship_exists(const Glib::ustring& table_name, const Glib::ustring& relationship_name);
 
   /** Get all the fields for a table, including any from the datasbase that are not yet known in the document.

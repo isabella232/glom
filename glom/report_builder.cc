@@ -173,7 +173,7 @@ void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
   if(group_by->get_has_field_group_by())
   {
     sharedptr<LayoutItem_Field> field_group_by = group_by->get_field_group_by();
-    fill_full_field_details(found_set_parent.m_table_name, field_group_by);
+    DbUtils::layout_item_fill_field_details(get_document(), found_set_parent.m_table_name, field_group_by);
 
     //Get the possible group values, ignoring repeats by using GROUP BY.
     const Glib::ustring group_field_table_name = field_group_by->get_table_used(found_set_parent.m_table_name);

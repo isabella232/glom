@@ -599,24 +599,6 @@ sharedptr<LayoutItem_Notebook> Base_DB::offer_notebook(const sharedptr<LayoutIte
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-void Base_DB::fill_full_field_details(const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item)
-{
-  if(!layout_item)
-  {
-    std::cerr << G_STRFUNC << ": layout_item was null." << std::endl;
-  }
-
-  const Glib::ustring table_name = layout_item->get_table_used(parent_table_name);
-
-  Document* document = get_document();
-  if(!document)
-  {
-    std::cerr << G_STRFUNC << ": document was null." << std::endl;
-  }
-
-  layout_item->set_full_field_details( get_document()->get_field(table_name, layout_item->get_name()) );
-}
-
 sharedptr<Field> Base_DB::get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name) const
 {
   //Initialize output parameter:

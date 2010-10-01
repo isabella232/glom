@@ -1,3 +1,13 @@
+2010-10-01  Murray Cumming  <murrayc@murrayc-x61>
+
+	DbUtils: Move fill_full_field_details() here from Base_DB.
+
+	* glom/base_db.[h|cc]: Move fill_full_field_details() from here to:
+	* glom/libglom/db_utils.[h|cc]: here, so it can be used more generally, 
+	and because it isn't actually used much now, so it's just making Base_DB 
+	look even more complicated than it is.
+	* glom/report_builder.cc: Adapted.
+
 2010-10-01  Murray Cumming  <murrayc@murrayc.com>
 
 	Document: fill_layout_field_details(): Handle choices layouts too.
