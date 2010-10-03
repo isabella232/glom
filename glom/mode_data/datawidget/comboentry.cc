@@ -183,8 +183,8 @@ void ComboEntry::set_choices_related(const Document* document, const sharedptr<c
     return;
   }
   
-  const guint columns_count = model->get_n_columns();
-  for(guint i = 0; i < columns_count; ++i)
+  //const guint columns_count = model->get_n_columns();
+  guint i = 0;
   for(type_vec_const_layout_items::const_iterator iter = m_db_layout_items.begin(); iter != m_db_layout_items.end(); ++iter)
   {
     const sharedptr<const LayoutItem> layout_item = *iter;
@@ -214,6 +214,8 @@ void ComboEntry::set_choices_related(const Document* document, const sharedptr<c
       
       cell_connect_cell_data_func(this, cell, i);
     }
+    
+    ++i;
   }
 }
 

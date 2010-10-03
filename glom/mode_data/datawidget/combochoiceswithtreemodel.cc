@@ -340,6 +340,12 @@ void ComboChoicesWithTreeModel::on_cell_data(const Gtk::TreeModel::iterator& ite
 
 void ComboChoicesWithTreeModel::cell_connect_cell_data_func(Gtk::CellLayout* celllayout, Gtk::CellRenderer* cell, guint model_column_index)
 {
+  if(model_column_index >= m_db_layout_items.size())
+  {
+    std::cerr << G_STRFUNC << ": model_column_index (" << model_column_index << ") is out of range. size=" << m_db_layout_items.size() << std::endl;
+    return;
+  }
+  
   celllayout->set_cell_data_func(*cell,
     sigc::bind( sigc::mem_fun(*this, &ComboChoicesWithTreeModel::on_cell_data), cell, model_column_index));
 }
