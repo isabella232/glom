@@ -19,7 +19,7 @@
  */
 
 #include "combochoiceswithtreemodel.h"
-#include <glom/mode_data/datawidget/treemodel_db.h>
+#include <glom/mode_data/datawidget/treemodel_db_withextratext.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/utils_ui.h>
 #include <glibmm/i18n.h>
@@ -233,10 +233,13 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
 
 
   m_db_layout_items.clear();
-  m_refModel = DbTreeModel::create_from_items(found_set, layout_items, true /* allow_view */, false /* find mode */, m_db_layout_items);
+
+  //We create DbTreeModelWithExtraText rather than just DbTreeModel, 
+  //because ComboEntry needs it.
+  m_refModel = DbTreeModelWithExtraText::create(found_set, layout_items, true /* allow_view */, false /* find mode */, m_db_layout_items);
   if(!m_refModel)
   {
-    std::cerr << G_STRFUNC << ": DbTreeModel::create_from_items() returned a null model." << std::endl;
+    std::cerr << G_STRFUNC << ": DbTreeModel::create() returned a null model." << std::endl;
   }
 
   //The derived class's (virtual) implementation calls this base method and

@@ -4,6 +4,23 @@
 
 	* configure.ac:
 
+2010-10-03  Murray Cumming  <murrayc@murrayc.com>
+
+	Choices combos: Fix ComboBoxEntry by using a virtual text column.
+
+	* glom/mode_data/datawidget/treemodel_db.[h|cc]: Simplify the create() 
+	methods, removing the one that takes TreeModelColumns.
+	* Makefile_glom.am:
+	* glom/mode_data/datawidget/treemodel_db_withextratext.[h|cc]: A derived 
+	model (actually always used, but it keeps the code separate) that has an 
+	extra virtual text model, because GtkComboBoxEntry requires a text column.
+	( https://bugzilla.gnome.org/show_bug.cgi?id=631167 )
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.cc:
+	set_choices_related(): Use the new derived model instead.
+	* glom/mode_data/db_adddel/db_adddel.cc: Adapted.
+	* glom/mode_data/datawidget/comboentry.cc: set_choices_related(): 
+	Use the virtual text column.
+
 2010-10-02  Murray Cumming  <murrayc@murrayc.com>
 
 	Choices combos: Reuse the list view implementation. Only works for Combo now.
