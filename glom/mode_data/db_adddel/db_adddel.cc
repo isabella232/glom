@@ -730,7 +730,7 @@ void DbAddDel::construct_specified_columns()
     return;
   }
 
-  m_refListStore = DbTreeModel::create_from_items(m_found_set, m_column_items, m_allow_view, m_find_mode, m_FieldsShown);
+  m_refListStore = DbTreeModel::create(m_found_set, m_column_items, m_allow_view, m_find_mode, m_FieldsShown);
   //m_FieldsShown is needed by Base_DB_Table_Data::record_new().
 
   #ifdef GLOM_ENABLE_MAEMO

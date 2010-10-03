@@ -23,6 +23,7 @@
 #include <gtkmm/messagedialog.h>
 #include <glom/dialog_invalid_data.h>
 #include <glom/mode_data/datawidget/cellcreation.h>
+#include <glom/mode_data/datawidget/treemodel_db_withextratext.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/application.h>
 #include <glibmm/i18n.h>
@@ -169,8 +170,19 @@ void ComboEntry::set_choices_related(const Document* document, const sharedptr<c
   //Show the model in the view:
   set_model(model);
   //clear() breaks GtkComboBoxEntry. TODO: Fix the C code? clear();
-  set_text_column(0); //TODO: Add a virtual model to TreeModelDb so we always have a text model?
-
+  
+  //The DB model has a special virtual text column,
+  //and the simple model just has text in all columns:
+  Glib::RefPtr<DbTreeModelWithExtraText> model_db = 
+    Glib::RefPtr<DbTreeModelWithExtraText>::cast_dynamic(model);
+  if(model_db)
+    set_text_column(model_db->get_text_column());
+  else
+  {
+    std::cerr << G_STRFUNC << ": The model is not a DbTreeModelWithExtraText." << std::endl;
+    return;
+  }
+  
   const guint columns_count = model->get_n_columns();
   for(guint i = 0; i < columns_count; ++i)
   for(type_vec_const_layout_items::const_iterator iter = m_db_layout_items.begin(); iter != m_db_layout_items.end(); ++iter)

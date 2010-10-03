@@ -141,6 +141,8 @@ glom_source_files = \
 	glom/mode_data/datawidget/combo_as_radio_buttons.h			\
 	glom/mode_data/datawidget/treemodel_db.cc		\
 	glom/mode_data/datawidget/treemodel_db.h \
+	glom/mode_data/datawidget/treemodel_db_withextratext.cc		\
+	glom/mode_data/datawidget/treemodel_db_withextratext.h \
 	glom/mode_find/box_data_details_find.cc				\
 	glom/mode_find/box_data_details_find.h				\
 	glom/mode_find/box_data_list_find.cc				\

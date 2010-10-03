@@ -166,13 +166,11 @@ DbTreeModelRow::DbValue DbTreeModelRow::get_value(DbTreeModel& model, int column
 //Intialize static variable:
 bool DbTreeModel::m_iface_initialized = false;
 
-DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_const_fields& column_fields, int column_index_key, bool get_records, bool find_mode)
+DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecConstLayoutFields& fields_shown)
 : Glib::ObjectBase( typeid(DbTreeModel) ), //register a custom GType.
   Glib::Object(), //The custom GType is actually registered here.
   m_columns_count(0),
   m_found_set(found_set),
-  m_column_fields(column_fields),
-  m_column_index_key(column_index_key),
   m_data_model_rows_count(0),
   m_data_model_columns_count(0),
   m_count_extra_rows(0),
@@ -189,39 +187,6 @@ DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const FoundS
     m_iface_initialized = true; //Prevent us from calling add_interface() on the same gtype again.
   }
 
-
-  //The Column information that can be used with TreeView::append(), TreeModel::iterator[], etc.
-  m_columns_count = columns.size(); //1 extra for the key.
-
-  g_assert(m_columns_count == column_fields.size());
-
-  refresh_from_database(m_found_set);
-}
-
-DbTreeModel::~DbTreeModel()
-{
-  clear();
-}
-
-
-Glib::RefPtr<DbTreeModel> DbTreeModel::create(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_const_fields& column_fields, int column_index_key, bool get_records, bool find_mode)
-{
-  return Glib::RefPtr<DbTreeModel>( new DbTreeModel(columns, found_set, column_fields, column_index_key, get_records, find_mode) );
-}
-
-Glib::RefPtr<DbTreeModel> DbTreeModel::create_from_items(const FoundSet& found_set, const type_vec_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecConstLayoutFields& fields_shown)
-{
-  //Create a const version of the input, because C++ can't convert it automatically:
-  type_vec_const_layout_items const_items;
-  const_items.insert(const_items.end(), layout_items.begin(), layout_items.end());
-
-  return create_from_items(found_set, const_items, get_records, find_mode, fields_shown);
-}
-
-Glib::RefPtr<DbTreeModel> DbTreeModel::create_from_items(const FoundSet& found_set, const type_vec_const_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecConstLayoutFields& fields_shown)
-{
-  Glib::RefPtr<DbTreeModel> result;
-
   typedef Gtk::TreeModelColumn<Gnome::Gda::Value> type_modelcolumn_value;
   typedef std::vector< type_modelcolumn_value* > type_vecModelColumns;
   type_vecModelColumns vecModelColumns(layout_items.size(), 0);
@@ -233,22 +198,12 @@ Glib::RefPtr<DbTreeModel> DbTreeModel::create_from_items(const FoundSet& found_s
   //Database columns:
   DbTreeModel::type_vec_const_fields fields;
   {
-    type_vecModelColumns::size_type i = 0;
     for(type_vec_const_layout_items::const_iterator iter = layout_items.begin(); iter != layout_items.end(); ++iter)
     {
       sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(*iter);
       if(item_field)
       {
-        type_modelcolumn_value* pModelColumn = new type_modelcolumn_value;
-
-        //Store it so we can use it and delete it later:
-        vecModelColumns[i] = pModelColumn;
-
-        record.add( *pModelColumn );
-
         fields.push_back(item_field);
-
-        i++;
       }
     }
   }
@@ -280,14 +235,7 @@ Glib::RefPtr<DbTreeModel> DbTreeModel::create_from_items(const FoundSet& found_s
       ++column_index_key;
     }
 
-    if(key_found)
-    {
-      //Create the model from the ColumnRecord:
-      //Note that the model will use a dummy Gda DataModel if m_find_mode is true.
-      //std::cout << "debug: Creating new DbTreeModel() for table=" << m_found_set.m_table_name << std::endl;
-      result =  DbTreeModel::create(record, found_set, fields, column_index_key, get_records, find_mode);
-    }
-    else
+    if(!key_found)
     {
       std::cerr << G_STRFUNC << ": no primary key field found in the list of items:" << std::endl;
       for(DbTreeModel::type_vec_const_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
@@ -296,18 +244,37 @@ Glib::RefPtr<DbTreeModel> DbTreeModel::create_from_items(const FoundSet& found_s
         if(layout_item)
           std::cerr << "  field: " << layout_item->get_name() << std::endl;
       }
+      
+      return;
     }
+      
+    m_column_index_key = column_index_key;
+      
+    //The Column information that can be used with TreeView::append(), TreeModel::iterator[], etc.
+    m_columns_count = fields.size();
+    refresh_from_database(m_found_set);
   }
+}
 
-  //Delete the vector's items:
-  for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
-  {
-     type_modelcolumn_value* pModelColumn = *iter;
-     if(pModelColumn)
-       delete pModelColumn;
-  }
 
-  return result;
+DbTreeModel::~DbTreeModel()
+{
+  clear();
+}
+
+
+Glib::RefPtr<DbTreeModel> DbTreeModel::create(const FoundSet& found_set, const type_vec_const_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecConstLayoutFields& fields_shown)
+{
+  return Glib::RefPtr<DbTreeModel>( new DbTreeModel(found_set, layout_items, get_records, find_mode, fields_shown) );
+}
+
+Glib::RefPtr<DbTreeModel> DbTreeModel::create(const FoundSet& found_set, const type_vec_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecConstLayoutFields& fields_shown)
+{
+  //Create a const version of the input, because C++ can't convert it automatically:
+  type_vec_const_layout_items const_items;
+  const_items.insert(const_items.end(), layout_items.begin(), layout_items.end());
+
+  return create(found_set, const_items, get_records, find_mode, fields_shown);
 }
 
 bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
