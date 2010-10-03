@@ -1,3 +1,9 @@
+2010-10-04  Murray Cumming  <murrayc@murrayc.com>
+
+	ComboEntry: Fix silly typo.
+
+	* glom/mode_data/datawidget/comboentry.cc: Remove left-over for() loop.
+
 2010-10-03  Murray Cumming  <murrayc@murrayc.com>
 
 	Choices: Fix the custom tree model.
