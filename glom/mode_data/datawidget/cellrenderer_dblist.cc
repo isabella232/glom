@@ -20,6 +20,7 @@
 
 #include "cellrenderer_dblist.h"
 #include <glom/mode_data/datawidget/cellcreation.h>
+#include <glom/mode_data/datawidget/treemodel_db_withextratext.h>
 #include <gtkmm.h>
 #include <libglom/data_structure/glomconversions.h>
 
@@ -57,10 +58,24 @@ void CellRendererDbList::set_choices_related(const Document* document, const sha
   ComboChoicesWithTreeModel::set_choices_related(document, layout_field, foreign_key_value);
 
   Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
+  if(!model)
+  {
+    std::cerr << G_STRFUNC << ": model is null" << std::endl;
+  }
 
   //Show model in the view:
   property_model() = model;
-  property_text_column() = 0; //TODO: This must be a text column, in m_refModel.
+
+  Glib::RefPtr<DbTreeModelWithExtraText> model_db = 
+    Glib::RefPtr<DbTreeModelWithExtraText>::cast_dynamic(model);
+  if(model_db)
+    property_text_column() = model_db->get_text_column();
+  else
+  {
+    std::cerr << G_STRFUNC << ": The model is not a DbTreeModelWithExtraText." << std::endl;
+    return;
+  }
+  
   property_editable() = true; //It would be useless if we couldn't edit it.
 
   //The other cells are added in on_editing_started(),

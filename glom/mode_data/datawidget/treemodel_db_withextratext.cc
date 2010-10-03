@@ -34,7 +34,8 @@ namespace Glom
 typedef Glib::Value<Glib::ustring> type_value_string;
 
 DbTreeModelWithExtraText::DbTreeModelWithExtraText(const FoundSet& found_set, const type_vec_const_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecConstLayoutFields& fields_shown)
-: DbTreeModel(found_set, layout_items, get_records, find_mode, fields_shown)
+: Glib::ObjectBase( typeid(DbTreeModel) ), //register a custom GType.
+  DbTreeModel(found_set, layout_items, get_records, find_mode, fields_shown)
 {
   //Remember the key field details so we can use it later to get a text representation.
   if(m_column_index_key > 0 && (guint)m_column_index_key < fields_shown.size())

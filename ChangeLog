@@ -1,5 +1,15 @@
 2010-10-03  Murray Cumming  <murrayc@murrayc.com>
 
+	Choices: Fix the custom tree model.
+
+	* glom/mode_data/datawidget/cellrenderer_dblist.cc: Use the virtual text 
+	column here too.
+	* glom/mode_data/datawidget/treemodel_db_withextratext.cc: Call the 
+	ObjectBase constructor with a custom typename, as in the base class. This is 
+	necessary because ObjectBase is a virtual base class.
+
+2010-10-03  Murray Cumming  <murrayc@murrayc.com>
+
 	Fix the previous commit.
 
 	* glom/mode_data/datawidget/treemodel_db.cc: Constructor: Actually fill
