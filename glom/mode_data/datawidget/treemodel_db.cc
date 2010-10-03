@@ -179,8 +179,6 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
   m_find_mode(find_mode),
   m_stamp(1) //When the model's stamp != the iterator's stamp then that iterator is invalid and should be ignored. Also, 0=invalid
 {
-  std::cout << "debug: layout_items.size()=" << layout_items.size() << std::endl;
-
   if(!m_iface_initialized)
   {
     //GType gtype = G_OBJECT_TYPE(gobj());  //The custom GType created in the Object constructor, from the typeid.

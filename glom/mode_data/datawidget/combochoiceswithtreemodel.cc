@@ -256,7 +256,7 @@ void ComboChoicesWithTreeModel::on_cell_data(const Gtk::TreeModel::iterator& ite
   //std::cout << G_STRFUNC << ": DEBUG: model_column_index=" << model_column_index << std::endl;
   if(model_column_index >= m_db_layout_items.size())
   {
-    std::cerr << G_STRFUNC << ": model_column_index is out of range." << std::endl;
+    std::cerr << G_STRFUNC << ": model_column_index (" << model_column_index << ") is out of range. size=" << m_db_layout_items.size() << std::endl;
     return;
   }
    
