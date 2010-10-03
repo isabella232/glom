@@ -6,6 +6,13 @@
 
 2010-10-03  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix the previous commit.
+
+	* glom/mode_data/datawidget/treemodel_db.cc: Constructor: Actually fill
+	m_column_fields so there are some columns in the tree model.
+
+2010-10-03  Murray Cumming  <murrayc@murrayc.com>
+
 	Choices combos: Fix ComboBoxEntry by using a virtual text column.
 
 	* glom/mode_data/datawidget/treemodel_db.[h|cc]: Simplify the create() 

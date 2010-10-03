@@ -179,6 +179,8 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
   m_find_mode(find_mode),
   m_stamp(1) //When the model's stamp != the iterator's stamp then that iterator is invalid and should be ignored. Also, 0=invalid
 {
+  std::cout << "debug: layout_items.size()=" << layout_items.size() << std::endl;
+
   if(!m_iface_initialized)
   {
     //GType gtype = G_OBJECT_TYPE(gobj());  //The custom GType created in the Object constructor, from the typeid.
@@ -187,34 +189,25 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
     m_iface_initialized = true; //Prevent us from calling add_interface() on the same gtype again.
   }
 
-  typedef Gtk::TreeModelColumn<Gnome::Gda::Value> type_modelcolumn_value;
-  typedef std::vector< type_modelcolumn_value* > type_vecModelColumns;
-  type_vecModelColumns vecModelColumns(layout_items.size(), 0);
-
-  //Create the Gtk ColumnRecord:
-
-  Gtk::TreeModel::ColumnRecord record;
-
-  //Database columns:
-  DbTreeModel::type_vec_const_fields fields;
+  //Database columns:;
   {
     for(type_vec_const_layout_items::const_iterator iter = layout_items.begin(); iter != layout_items.end(); ++iter)
     {
       sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(*iter);
       if(item_field)
       {
-        fields.push_back(item_field);
+        m_column_fields.push_back(item_field);
       }
     }
   }
 
-  fields_shown = fields;
+  fields_shown = m_column_fields;
 
   {
     //Find the primary key:
     int column_index_key = 0;
     bool key_found = false;
-    for( DbTreeModel::type_vec_const_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    for( DbTreeModel::type_vec_const_fields::const_iterator iter = m_column_fields.begin(); iter != m_column_fields.end(); ++iter)
     {
       const sharedptr<const LayoutItem_Field> layout_item = *iter;
       if(!layout_item)
@@ -222,7 +215,7 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
 
       if( !(layout_item->get_has_relationship_name()) )
       {
-        sharedptr<const Field> field_full = layout_item->get_full_field_details();
+        const sharedptr<const Field> field_full = layout_item->get_full_field_details();
         if(!field_full)
           std::cerr << G_STRFUNC << ": The layout item (" << layout_item->get_name() << ") has no field details." << std::endl;
         else if(field_full->get_primary_key() )
@@ -238,7 +231,7 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
     if(!key_found)
     {
       std::cerr << G_STRFUNC << ": no primary key field found in the list of items:" << std::endl;
-      for(DbTreeModel::type_vec_const_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+      for(DbTreeModel::type_vec_const_fields::const_iterator iter = m_column_fields.begin(); iter != m_column_fields.end(); ++iter)
       {
         const sharedptr<const LayoutItem_Field> layout_item = *iter;
         if(layout_item)
@@ -251,7 +244,7 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
     m_column_index_key = column_index_key;
       
     //The Column information that can be used with TreeView::append(), TreeModel::iterator[], etc.
-    m_columns_count = fields.size();
+    m_columns_count = m_column_fields.size();
     refresh_from_database(m_found_set);
   }
 }
