@@ -156,6 +156,7 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   {
     Utils::get_glade_widget_derived_with_warning(m_dialog_choices_extra_fields);
     add_view(m_dialog_choices_extra_fields); //Give it access to the document.
+    m_dialog_choices_extra_fields->set_title(_("Extra Fields"));
   }
 
   show_all_children();

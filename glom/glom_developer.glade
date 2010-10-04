@@ -5742,7 +5742,7 @@ Which user should be added to this group?</property>
     </action-widgets>
   </object>
   <object class="GtkDialog" id="dialog_fieldslist">
-    <property name="title" translatable="yes">Group By - Secondary Fields</property>
+    <property name="title" translatable="no"></property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox8">

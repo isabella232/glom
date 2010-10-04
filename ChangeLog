@@ -6,6 +6,16 @@
 
 2010-10-04  Murray Cumming  <murrayc@murrayc.com>
 
+	Combo Choices: Extra fields dialog: Fix the title. 
+
+	* glom/glom_developer.glade: dialog_fieldslist: Remove the title, which 
+	was the old title left over from when this was just for secondary sort fields.
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc:
+	Set the title manually so it is appropriate to each use.
+
+2010-10-04  Murray Cumming  <murrayc@murrayc.com>
+
 	CellRendererDbList: Show related choices.
 
 	* glom/mode_data/datawidget/combochoiceswithtreemodel.[h|cc]: 
