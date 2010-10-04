@@ -221,6 +221,27 @@ void Dialog_FieldsList::on_treeview_fields_selection_changed()
   enable_buttons();
 }
 
+Gtk::TreeModel::iterator Dialog_FieldsList::append_appropriate_row()
+{
+  Gtk::TreeModel::iterator result;
+
+  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
+  Gtk::TreeModel::iterator selected = refTreeSelection->get_selected();
+
+  //Add the field details to the layout treeview:
+  if(selected)
+  {
+    //TODO: This doesn't work because it's the sequence ID that really affects the order.
+    result = m_model_fields->insert_after(selected);
+  }
+  else
+  {
+    result = m_model_fields->append(); 
+  }
+  
+  return result;
+}
+
 void Dialog_FieldsList::on_button_add_field()
 {
   //Get the chosen fields:
@@ -232,7 +253,7 @@ void Dialog_FieldsList::on_button_add_field()
       continue;
 
     //Add the field details to the layout treeview:
-    Gtk::TreeModel::iterator iter =  m_model_fields->append();
+    Gtk::TreeModel::iterator iter = append_appropriate_row();
 
     if(iter)
     {

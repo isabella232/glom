@@ -48,14 +48,16 @@ private:
   virtual void enable_buttons();
 
   //signal handlers:
-  virtual void on_button_field_up();
-  virtual void on_button_field_down();
-  virtual void on_button_add_field();
-  virtual void on_button_delete();
-  virtual void on_button_edit_field();
-  virtual void on_button_formatting();
-  virtual void on_treeview_fields_selection_changed();
-  virtual void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void on_button_field_up();
+  void on_button_field_down();
+  void on_button_add_field();
+  void on_button_delete();
+  void on_button_edit_field();
+  void on_button_formatting();
+  void on_treeview_fields_selection_changed();
+  void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+
+  Gtk::TreeModel::iterator append_appropriate_row();
 
   //Tree model columns:
   class ModelColumns_Fields : public Gtk::TreeModel::ColumnRecord
