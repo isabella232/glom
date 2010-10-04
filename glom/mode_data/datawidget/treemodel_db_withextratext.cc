@@ -85,16 +85,21 @@ void DbTreeModelWithExtraText::get_value_vfunc(const TreeModel::iterator& iter, 
   {
     Glib::ustring text;
     
-    if(!m_item_key)
+    if(m_column_index_key == -1)
     {
-      std::cerr << G_STRFUNC << ": m_item_key is null." << std::endl;
+      std::cerr << G_STRFUNC << ": m_column_index_key is not set." << std::endl;
     }
     else
     {
-      const DbValue dbvalue = get_key_value(iter);
+      Glib::Value<Gnome::Gda::Value> value_db;
+      get_value_vfunc(iter, m_column_index_key, value_db);
+      const DbValue dbvalue = value_db.get();
+      
       text =
         Conversions::get_text_for_gda_value(m_item_key->get_glom_type(), dbvalue, m_item_key->get_formatting_used().m_numeric_format);
-      
+      //std::cout << "debug: text=" << text << std::endl;
+      //std::cout << "  debug: m_item_key name=" << m_item_key->get_name() << std::endl;
+      //std::cout << "  debug: dbvalue=" << dbvalue.to_string() << std::endl;
     }
   
     type_value_string value_specific;

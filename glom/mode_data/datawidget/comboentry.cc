@@ -183,6 +183,7 @@ void ComboEntry::set_choices_related(const Document* document, const sharedptr<c
         clear();
         pack_start(*cell, false);
         cell->unreference();
+        cell_connect_cell_data_func(this, cell, i);
       }
     }
     else

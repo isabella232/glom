@@ -6,6 +6,19 @@
 
 2010-10-04  Murray Cumming  <murrayc@murrayc.com>
 
+	ComboEntry: Actually show the text value in the drop-down.
+
+	* glom/mode_data/datawidget/treemodel_db_withextratext.cc:
+	get_value_vfunc(): Use m_column_index_key instead of get_value_key() because 
+	that is not set, because we do not call set_value_key() for each row. I 
+	will try to remove that maybe-unused API.
+	* glom/mode_data/datawidget/comboentry.cc: set_choices_related():
+	Set up a cell_data_func for the automaticaly-added cell when we 
+	repack it, because calling clear() (to unpack it) disconnects the 
+	model-view association for that cell.
+
+2010-10-04  Murray Cumming  <murrayc@murrayc.com>
+
 	TreeModelDbWithExtraText: Fix the use of Glib::Value.
 
 	* glom/mode_data/datawidget/treemodel_db.cc: Intialize m_column_index_key 
