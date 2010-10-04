@@ -38,8 +38,12 @@ DbTreeModelWithExtraText::DbTreeModelWithExtraText(const FoundSet& found_set, co
   DbTreeModel(found_set, layout_items, get_records, find_mode, fields_shown)
 {
   //Remember the key field details so we can use it later to get a text representation.
-  if(m_column_index_key > 0 && (guint)m_column_index_key < fields_shown.size())
+  if(m_column_index_key != -1 && (guint)m_column_index_key < fields_shown.size())
     m_item_key = fields_shown[m_column_index_key];
+  else
+  {
+    std::cerr << G_STRFUNC << ": m_column_index_key is not set, or is out of range. m_column_index_key=" << m_column_index_key << ", size=" << fields_shown.size() << std::endl;
+  }
 }
 
 DbTreeModelWithExtraText::~DbTreeModelWithExtraText()
@@ -76,21 +80,27 @@ GType DbTreeModelWithExtraText::get_column_type_vfunc(int index) const
 
 void DbTreeModelWithExtraText::get_value_vfunc(const TreeModel::iterator& iter, int column, Glib::ValueBase& value) const
 {
+  //std::cout << G_STRFUNC << ": Debug: column=" << column << std::endl;
   if(column == get_text_column())
   {
+    Glib::ustring text;
+    
     if(!m_item_key)
     {
       std::cerr << G_STRFUNC << ": m_item_key is null." << std::endl;
-      return;
     }
-
-    const DbValue dbvalue = get_key_value(iter);
-    const Glib::ustring text =
-      Conversions::get_text_for_gda_value(m_item_key->get_glom_type(), dbvalue, m_item_key->get_formatting_used().m_numeric_format);
+    else
+    {
+      const DbValue dbvalue = get_key_value(iter);
+      text =
+        Conversions::get_text_for_gda_value(m_item_key->get_glom_type(), dbvalue, m_item_key->get_formatting_used().m_numeric_format);
       
+    }
+  
     type_value_string value_specific;
     value_specific.init( type_value_string::value_type() );  //TODO: Is there any way to avoid this step?
     value_specific.set(text);
+    value.init( type_value_string::value_type() );  //TODO: Is there any way to avoid this step?
     value = value_specific;
   }
   else
