@@ -78,7 +78,7 @@ void DbTreeModelWithExtraText::get_value_vfunc(const TreeModel::iterator& iter, 
 {
   if(column == get_text_column())
   {
-    if(m_item_key)
+    if(!m_item_key)
     {
       std::cerr << G_STRFUNC << ": m_item_key is null." << std::endl;
       return;
