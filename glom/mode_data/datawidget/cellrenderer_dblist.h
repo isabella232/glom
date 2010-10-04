@@ -55,6 +55,9 @@ private:
 
   virtual void set_value(const Gnome::Gda::Value& value);
   virtual Gnome::Gda::Value get_value() const;
+  
+  void repack_cells_fixed(Gtk::CellLayout* combobox);
+  void repack_cells_related(Gtk::CellLayout* combobox);
 
   void set_text(const Glib::ustring& text);
   Glib::ustring get_text() const;
