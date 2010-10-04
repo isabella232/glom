@@ -1,5 +1,14 @@
 2010-10-04  Murray Cumming  <murrayc@murrayc.com>
 
+	TreeModelDbWithExtraText: Fix the use of Glib::Value.
+
+	* glom/mode_data/datawidget/treemodel_db.cc: Intialize m_column_index_key 
+	to -1 so we can really check that it is uninitialized.
+	* glom/mode_data/datawidget/treemodel_db_withextratext.cc: get_value_vfunc():
+	Initialize both value instances and always set the output value.
+
+2010-10-04  Murray Cumming  <murrayc@murrayc.com>
+
 	ComboEntry: Fix silly typo.
 
 	* glom/mode_data/datawidget/comboentry.cc: Remove left-over for() loop.

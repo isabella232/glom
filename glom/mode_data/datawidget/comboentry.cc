@@ -73,37 +73,11 @@ const Gtk::Entry* ComboEntry::get_entry() const
 
 void ComboEntry::init()
 {
-#ifdef GLOM_ENABLE_CLIENT_ONLY
-  //Maemo:
-  set_selector(m_maemo_selector);
-
-  //We don't use append_text_column(), because we want to specify no expand.
-  //Glib::RefPtr<Hildon::TouchSelectorColumn> column =
-  //  m_maemo_selector.append_text_column(m_refModel);
-  // Only in the latest hildonmm: Glib::RefPtr<Hildon::TouchSelectorColumn> column =
-  //  m_maemo_selector.append_column(m_refModel);
-  Glib::RefPtr<Hildon::TouchSelectorColumn> column = Glib::wrap(hildon_touch_selector_append_column(
-    HILDON_TOUCH_SELECTOR(m_maemo_selector.gobj()), GTK_TREE_MODEL(Glib::unwrap(m_refModel)), 0, static_cast<char*>(0)), true);
-
-  column->pack_start(m_Columns.m_col_first, false);
-  //Only in the latest hildonmm: column->set_text_column(m_Columns.m_col_first);
-  column->set_property("text_column", 0);
-
-  //Only in the latest hildonmm: m_maemo_selector->set_text_column(m_Columns.m_col_first);
-  m_maemo_selector.set_text_column(0);
-
-
-  //m_maemo_selector.set_model(0, m_refModel);
-  //m_maemo_selector.set_text_column(0);
-#endif
-
   //We use connect(slot, false) to connect before the default signal handler, because the default signal handler prevents _further_ handling.
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  get_entry()->signal_button_press_event().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_button_press_event), false);
-#endif // GLOM_ENABLE_CLIENT_ONLY
-
-  get_entry()->signal_focus_out_event().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_focus_out_event), false);
-  get_entry()->signal_activate().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_activate));
+  Gtk::Entry* entry = get_entry();
+  entry->signal_button_press_event().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_button_press_event), false);
+  entry->signal_focus_out_event().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_focus_out_event), false);
+  entry->signal_activate().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_activate));
 }
 
 ComboEntry::~ComboEntry()
@@ -176,7 +150,12 @@ void ComboEntry::set_choices_related(const Document* document, const sharedptr<c
   Glib::RefPtr<DbTreeModelWithExtraText> model_db = 
     Glib::RefPtr<DbTreeModelWithExtraText>::cast_dynamic(model);
   if(model_db)
-    set_text_column(model_db->get_text_column());
+  {
+    const int text_col = model_db->get_text_column();
+    //const GType debug_type = model_db->get_column_type(text_col);
+    //std::cout << "DEBUG: text_col=" << text_col << ", debug_type=" << g_type_name(debug_type) << std::endl;
+    set_text_column(text_col);
+  }
   else
   {
     std::cerr << G_STRFUNC << ": The model is not a DbTreeModelWithExtraText." << std::endl;

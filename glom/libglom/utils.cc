@@ -132,7 +132,7 @@ Glib::ustring Utils::trim_whitespace(const Glib::ustring& text)
   return result;
 }
 
-Glib::ustring Utils::string_replace(const Glib::ustring& src, const Glib::ustring search_for, const Glib::ustring& replace_with)
+Glib::ustring Utils::string_replace(const Glib::ustring& src, const Glib::ustring& search_for, const Glib::ustring& replace_with)
 {
   if(search_for.empty())
   {

@@ -171,6 +171,7 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
   Glib::Object(), //The custom GType is actually registered here.
   m_columns_count(0),
   m_found_set(found_set),
+  m_column_index_key(-1), //means it's not set yet.
   m_data_model_rows_count(0),
   m_data_model_columns_count(0),
   m_count_extra_rows(0),
