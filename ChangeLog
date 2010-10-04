@@ -1,5 +1,16 @@
 2010-10-04  Murray Cumming  <murrayc@murrayc.com>
 
+	CellRendererDbList: Show related choices.
+
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.[h|cc]: 
+	Rename type_model_columns and co with a _fixed suffix, to avoid using them 
+	for the related case.
+	* glom/mode_data/datawidget/cellrenderer_dblist.[h|cc]: on_editing_started():
+	Pack extra cells for the related case too, separating the fixed and related 
+	cases into separate methods.
+
+2010-10-04  Murray Cumming  <murrayc@murrayc.com>
+
 	ComboEntry: Actually show the text value in the drop-down.
 
 	* glom/mode_data/datawidget/treemodel_db_withextratext.cc:

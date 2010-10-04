@@ -56,9 +56,9 @@ protected:
    */
   int get_fixed_cell_height(Gtk::Widget& widget);
   
-  typedef Gtk::TreeModelColumn<Glib::ustring> type_model_column;
-  typedef std::vector< type_model_column* > type_vec_model_columns;
-  type_vec_model_columns m_vec_model_columns;
+  typedef Gtk::TreeModelColumn<Glib::ustring> type_model_column_fixed;
+  typedef std::vector< type_model_column_fixed* > type_vec_model_columns_fixed;
+  type_vec_model_columns_fixed m_vec_model_columns_fixed; //If set_choices_fixed() was used.
 
   typedef std::vector< sharedptr<const LayoutItem_Field> > type_vec_const_layout_items;
   type_vec_const_layout_items m_db_layout_items; //If set_choices_related() was used.

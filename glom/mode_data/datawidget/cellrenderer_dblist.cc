@@ -89,14 +89,15 @@ void CellRendererDbList::set_restrict_values_to_list(bool val)
   property_has_entry() = !val;
 }
 
-void CellRendererDbList::on_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& path)
+void CellRendererDbList::repack_cells_fixed(Gtk::CellLayout* combobox)
 {
-  g_assert(cell_editable);
-
-  Gtk::CellLayout* combobox = dynamic_cast<Gtk::CellLayout*>(cell_editable);
-  if(!combobox)
-    return;
-
+  //We need an actual widget, to guess the fixed cell height.
+  Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(combobox);
+  if(!widget)
+  {
+    std::cerr << G_STRFUNC << ": widget is null." << std::endl;
+  }
+  
   if(!m_repacked_first_cell)
   {
     //Get the default column, created by set_text_column():
@@ -119,9 +120,9 @@ void CellRendererDbList::on_editing_started(Gtk::CellEditable* cell_editable, co
 
   //Add extra cells:
   Glib::ListHandle<Gtk::CellRenderer*> cells = combobox->get_cells();
-  if(cells.size() < m_vec_model_columns.size())
+  if(cells.size() < m_vec_model_columns_fixed.size())
   {
-    for(guint col = cells.size(); col != m_vec_model_columns.size(); ++col)
+    for(guint col = cells.size(); col != m_vec_model_columns_fixed.size(); ++col)
     {
       Gtk::CellRenderer* cell = 0;
       if(m_db_layout_items.empty())
@@ -129,7 +130,7 @@ void CellRendererDbList::on_editing_started(Gtk::CellEditable* cell_editable, co
       else if(col < m_db_layout_items.size())
       {
         sharedptr<const LayoutItem_Field> layout_item = m_db_layout_items[col];
-        cell = create_cell(layout_item, m_table_name, m_document, 0 /* fixed_cell_height */);
+        cell = create_cell(layout_item, m_table_name, m_document, get_fixed_cell_height(*widget));
       }
 
       if(!cell)
@@ -144,6 +145,74 @@ void CellRendererDbList::on_editing_started(Gtk::CellEditable* cell_editable, co
       cell->property_xalign() = 0.0f;
     }
   }
+}
+
+void CellRendererDbList::repack_cells_related(Gtk::CellLayout* combobox)
+{
+  //We need an actual widget, to guess the fixed cell height.
+  Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(combobox);
+  if(!widget)
+  {
+    std::cerr << G_STRFUNC << ": widget is null." << std::endl;
+  }
+  
+  const std::list<Gtk::CellRenderer*> cells = combobox->get_cells();
+  const guint initial_cells_count = cells.size();
+  
+  guint i = 0;
+  for(type_vec_const_layout_items::const_iterator iter = m_db_layout_items.begin(); iter != m_db_layout_items.end(); ++iter)
+  {
+    const sharedptr<const LayoutItem> layout_item = *iter;
+    Gtk::CellRenderer* cell = 0;
+
+    if(i == 0 && !m_repacked_first_cell)
+    {
+      //Get the default column, created by set_text_column():
+      cell = combobox->get_first_cell();
+      if(!cell)
+        std::cerr << G_STRFUNC << ": get_first_cell() returned null." << std::endl;
+      else
+      {
+        //Unpack and repack it with expand=false instead of expand=true:
+        //We don't expand the first column, so we can align the other columns.
+        cell->reference();
+        combobox->clear();
+        combobox->pack_start(*cell, false);
+        cell->unreference();
+        cell_connect_cell_data_func(combobox, cell, i);
+        
+         m_repacked_first_cell = true;
+      }
+    }
+    else if(i >= initial_cells_count)
+    {
+      //Create the cell:
+      cell = create_cell(layout_item, m_table_name, m_document, get_fixed_cell_height(*widget));
+      combobox->pack_start(*cell, true);
+      
+      cell_connect_cell_data_func(combobox, cell, i);
+    }
+    
+    ++i;
+  }
+}
+
+void CellRendererDbList::on_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& path)
+{
+  g_assert(cell_editable);
+
+  Gtk::CellLayout* combobox = dynamic_cast<Gtk::CellLayout*>(cell_editable);
+  if(!combobox)
+    return;
+
+  //The DB model has a special virtual text column,
+  //and the simple model just has text in all columns:
+  Glib::RefPtr<DbTreeModelWithExtraText> model_db = 
+    Glib::RefPtr<DbTreeModelWithExtraText>::cast_dynamic(get_choices_model());
+  if(model_db)
+    repack_cells_related(combobox);
+  else
+    repack_cells_fixed(combobox); 
 
   Gtk::CellRenderer::on_editing_started(cell_editable, path);
 }

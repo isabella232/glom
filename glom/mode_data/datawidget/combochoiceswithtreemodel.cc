@@ -59,13 +59,13 @@ void ComboChoicesWithTreeModel::create_model_non_db(guint columns_count)
   Gtk::TreeModel::ColumnRecord record;
 
   //Create the TreeModelColumns, adding them to the ColumnRecord:
-  m_vec_model_columns.resize(columns_count, 0);
+  m_vec_model_columns_fixed.resize(columns_count, 0);
   for(guint i = 0; i < columns_count; ++i)
   {
-    type_model_column* model_column = new type_model_column();
+    type_model_column_fixed* model_column = new type_model_column_fixed();
 
     //Store it so we can use it and delete it later:
-    m_vec_model_columns[i] = model_column;
+    m_vec_model_columns_fixed[i] = model_column;
 
     record.add(*model_column);
   }
@@ -77,13 +77,13 @@ void ComboChoicesWithTreeModel::create_model_non_db(guint columns_count)
 void ComboChoicesWithTreeModel::delete_model()
 {
   //Delete the vector's items:
-  for(type_vec_model_columns::iterator iter = m_vec_model_columns.begin(); iter != m_vec_model_columns.end(); ++iter)
+  for(type_vec_model_columns_fixed::iterator iter = m_vec_model_columns_fixed.begin(); iter != m_vec_model_columns_fixed.end(); ++iter)
   {
-    type_model_column* model_column = *iter;
+    type_model_column_fixed* model_column = *iter;
      if(model_column)
        delete model_column;
   }
-  m_vec_model_columns.clear();
+  m_vec_model_columns_fixed.clear();
 
   m_refModel.reset();
 }
