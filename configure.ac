@@ -62,10 +62,13 @@ AS_IF([test "x$glom_enable_maemo" != xyes],
           [Define if libgettextpo provides the new po_xerror_handler struct.])])
 ])
 
+# i18n
 IT_PROG_INTLTOOL([0.35])
+
+AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION([0.17])
+
 AC_SUBST([GETTEXT_PACKAGE], [glom])
-AM_GNU_GETTEXT_VERSION([0.11])
-AM_GLIB_GNU_GETTEXT
 AC_DEFINE([GETTEXT_PACKAGE], [PACKAGE_TARNAME], [Define to the gettext package name.])
 
 AC_MSG_CHECKING([whether to enable Windows specific options])

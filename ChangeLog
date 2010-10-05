@@ -1,3 +1,11 @@
+2010-11-17  Javier Jardón  <jjardon@gnome.org>
+
+	Use upstream gettext instead Glib one
+
+	* configure.ac: Do not use AM_GLIB_GNU_GETTEXT() because it is no longer 
+	maintained/recommended.
+	This fixes bug #631367
+
 2010-11-17  Murray Cumming  <murrayc@murrayc.com>
 
 	Import tests: Uncomment some tests and make them test what we really want.
