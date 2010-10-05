@@ -1,3 +1,10 @@
+2010-10-05  David King  <davidk@openismus.com>
+
+	Avoid uninitialized variables in CanvasGroupGrid
+
+	* glom/utility_widgets/canvas/canvas_group_grid.cc: Initialize
+	variables at declaration.
+
 2010-10-04  Murray Cumming  <murrayc@murrayc.com>
 
 	Choices Layout: Fields List: Slight improvement.
