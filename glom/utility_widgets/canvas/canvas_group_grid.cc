@@ -226,7 +226,10 @@ void CanvasGroupGrid::create_lines()
     m_grid_rules_group->remove_child(0);
 
   //Fill the parent canvas with lines:
-  double left, top, right, bottom = 0.0;
+  double left = 0.0;
+  double top = 0.0;
+  double right = 0.0;
+  double bottom = 0.0;
   Goocanvas::Canvas* canvas = get_canvas();
   if(canvas)
     canvas->get_bounds(left, top, right, bottom);
