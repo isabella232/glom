@@ -452,8 +452,8 @@ void Box_Data_List_Related::create_layout()
     items_to_use.push_back(layout_item);
   }
 
-  m_AddDel.set_columns(items_to_use);
   m_AddDel.set_found_set(m_found_set);
+  m_AddDel.set_columns(items_to_use);
 
   m_FieldsShown = get_fields_to_show();
 }

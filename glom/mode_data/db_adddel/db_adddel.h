@@ -149,12 +149,18 @@ public:
   virtual void set_allow_view_details(bool val = true);
   bool get_allow_view_details() const;
 
+  //TODO: Just add this as a parameter to a different method?
+  /** Specify which records to show.
+   * This does not actually request the data from the database - it just
+   * sets the found set to use when that happens later.
+   */
+  void set_found_set(const FoundSet& found_set);
 
-  //The items are not const, so that their display widths can be changed in the UI.
+  /** Set the items to show, and actually get and show the data from the database.
+   * The items are not const, so that their display widths can be changed in the UI.
+   */
   void set_columns(const LayoutGroup::type_list_items& layout_items);
 
-  /// Specify which records to show:
-  void set_found_set(const FoundSet& found_set);
 
   FoundSet get_found_set() const;
 

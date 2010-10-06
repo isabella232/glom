@@ -1,3 +1,12 @@
+2010-10-06  Murray Cumming  <murrayc@murrayc.com>
+
+	Avoid SQL errors about invalid ORDER BY fields.
+
+	* glom/mode_data/box_data_list.cc: create_layout():
+	* glom/mode_data/box_data_list_related.cc: create_layout(): Don't call
+  set_columns() before set_found_set(), to avoid SQL parsing errors due to
+  using invalid fields for sort (ORDER BY) clauses.
+
 2010-10-05  David King  <davidk@openismus.com>
 
 	Avoid uninitialized variables in CanvasGroupGrid
@@ -20,9 +29,9 @@
 
 2010-10-04  Murray Cumming  <murrayc@murrayc.com>
 
-	Combo Choices: Extra fields dialog: Fix the title. 
+	Combo Choices: Extra fields dialog: Fix the title.
 
-	* glom/glom_developer.glade: dialog_fieldslist: Remove the title, which 
+	* glom/glom_developer.glade: dialog_fieldslist: Remove the title, which
 	was the old title left over from when this was just for secondary sort fields.
 	* glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:
 	* glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc:
@@ -32,11 +41,11 @@
 
 	CellRendererDbList: Show related choices.
 
-	* glom/mode_data/datawidget/combochoiceswithtreemodel.[h|cc]: 
-	Rename type_model_columns and co with a _fixed suffix, to avoid using them 
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.[h|cc]:
+	Rename type_model_columns and co with a _fixed suffix, to avoid using them
 	for the related case.
 	* glom/mode_data/datawidget/cellrenderer_dblist.[h|cc]: on_editing_started():
-	Pack extra cells for the related case too, separating the fixed and related 
+	Pack extra cells for the related case too, separating the fixed and related
 	cases into separate methods.
 
 2010-10-04  Murray Cumming  <murrayc@murrayc.com>
@@ -44,19 +53,19 @@
 	ComboEntry: Actually show the text value in the drop-down.
 
 	* glom/mode_data/datawidget/treemodel_db_withextratext.cc:
-	get_value_vfunc(): Use m_column_index_key instead of get_value_key() because 
-	that is not set, because we do not call set_value_key() for each row. I 
+	get_value_vfunc(): Use m_column_index_key instead of get_value_key() because
+	that is not set, because we do not call set_value_key() for each row. I
 	will try to remove that maybe-unused API.
 	* glom/mode_data/datawidget/comboentry.cc: set_choices_related():
-	Set up a cell_data_func for the automaticaly-added cell when we 
-	repack it, because calling clear() (to unpack it) disconnects the 
+	Set up a cell_data_func for the automaticaly-added cell when we
+	repack it, because calling clear() (to unpack it) disconnects the
 	model-view association for that cell.
 
 2010-10-04  Murray Cumming  <murrayc@murrayc.com>
 
 	TreeModelDbWithExtraText: Fix the use of Glib::Value.
 
-	* glom/mode_data/datawidget/treemodel_db.cc: Intialize m_column_index_key 
+	* glom/mode_data/datawidget/treemodel_db.cc: Intialize m_column_index_key
 	to -1 so we can really check that it is uninitialized.
 	* glom/mode_data/datawidget/treemodel_db_withextratext.cc: get_value_vfunc():
 	Initialize both value instances and always set the output value.
@@ -71,10 +80,10 @@
 
 	Choices: Fix the custom tree model.
 
-	* glom/mode_data/datawidget/cellrenderer_dblist.cc: Use the virtual text 
+	* glom/mode_data/datawidget/cellrenderer_dblist.cc: Use the virtual text
 	column here too.
-	* glom/mode_data/datawidget/treemodel_db_withextratext.cc: Call the 
-	ObjectBase constructor with a custom typename, as in the base class. This is 
+	* glom/mode_data/datawidget/treemodel_db_withextratext.cc: Call the
+	ObjectBase constructor with a custom typename, as in the base class. This is
 	necessary because ObjectBase is a virtual base class.
 
 2010-10-03  Murray Cumming  <murrayc@murrayc.com>
@@ -88,17 +97,17 @@
 
 	Choices combos: Fix ComboBoxEntry by using a virtual text column.
 
-	* glom/mode_data/datawidget/treemodel_db.[h|cc]: Simplify the create() 
+	* glom/mode_data/datawidget/treemodel_db.[h|cc]: Simplify the create()
 	methods, removing the one that takes TreeModelColumns.
 	* Makefile_glom.am:
-	* glom/mode_data/datawidget/treemodel_db_withextratext.[h|cc]: A derived 
-	model (actually always used, but it keeps the code separate) that has an 
+	* glom/mode_data/datawidget/treemodel_db_withextratext.[h|cc]: A derived
+	model (actually always used, but it keeps the code separate) that has an
 	extra virtual text model, because GtkComboBoxEntry requires a text column.
 	( https://bugzilla.gnome.org/show_bug.cgi?id=631167 )
 	* glom/mode_data/datawidget/combochoiceswithtreemodel.cc:
 	set_choices_related(): Use the new derived model instead.
 	* glom/mode_data/db_adddel/db_adddel.cc: Adapted.
-	* glom/mode_data/datawidget/comboentry.cc: set_choices_related(): 
+	* glom/mode_data/datawidget/comboentry.cc: set_choices_related():
 	Use the virtual text column.
 
 2010-10-02  Murray Cumming  <murrayc@murrayc.com>
@@ -106,13 +115,13 @@
 	Choices combos: Reuse the list view implementation. Only works for Combo now.
 
 	* glom/mode_data/db_adddel/treemodel_db.[h|cc]: Moved to:
-	* glom/mode_data/datawidget/treemodel_db.[h|cc]: so we can use it for the 
+	* glom/mode_data/datawidget/treemodel_db.[h|cc]: so we can use it for the
 	choices combo widgets too.
 	* glom/mode_data/datawidget/combochoices.[h|cc]:
 	set_choices_related(): Make this pure virtual.
 	Remove set_choices_with_second().
 	* glom/mode_data/datawidget/cellcreation.[h|cc]: create_cell():
-	Use set_choices_related() instead of getting all rows as a list and 
+	Use set_choices_related() instead of getting all rows as a list and
 	using set_choices_with_second().
 	* glom/datawidget/combochoiceswithtreemodel.[h|cc]:
 	Override set_choices_related() and cell_connect_cell_data_func().
@@ -120,25 +129,25 @@
 	* glom/mode_data/datawidget/cellrenderer_dblist.[h|cc]:
 	* glom/mode_data/datawidget/combo.[h|cc]:
 	* glom/mode_data/datawidget/comboentry.[h|cc]:
-	* glom/mode_data/datawidget/combo_as_radio_buttons.[h|cc]: Adapt, 
-	setting up the view in overrides of set_choices_fixed() and 
-	set_choices_related() instead of use_model(), and being value-based 
+	* glom/mode_data/datawidget/combo_as_radio_buttons.[h|cc]: Adapt,
+	setting up the view in overrides of set_choices_fixed() and
+	set_choices_related() instead of use_model(), and being value-based
 	where possible instead of converting values to and from text.
 
-	* glom/mode_data/db_adddel/db_adddel.[h|cc]: Move create_model_db() to 
-	DbTreeModel::create_from_items() so we can use it for the combo choice 
+	* glom/mode_data/db_adddel/db_adddel.[h|cc]: Move create_model_db() to
+	DbTreeModel::create_from_items() so we can use it for the combo choice
 	widgets too.
-	refresh_cell_choices_data_from_database_with_foreign_key(): 
-	Use set_choices_related() instead of getting all rows as a list and 
+	refresh_cell_choices_data_from_database_with_foreign_key():
+	Use set_choices_related() instead of getting all rows as a list and
 	using set_choices_with_second().
-	
+
 2010-10-01  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix (unlikely) possible null dereferences shown by cppcheck.
 
 	* Several files: Check the output parameter when getting widgets from glade.
-	When this fails there is already a stderr warning and we could not recover 
-	anyway, but this helps cppcheck or maybe other chekers to only tell us 
+	When this fails there is already a stderr warning and we could not recover
+	anyway, but this helps cppcheck or maybe other chekers to only tell us
 	interesting things.
 
 2010-10-01  Murray Cumming  <murrayc@murrayc-x61>
@@ -146,8 +155,8 @@
 	DbUtils: Move fill_full_field_details() here from Base_DB.
 
 	* glom/base_db.[h|cc]: Move fill_full_field_details() from here to:
-	* glom/libglom/db_utils.[h|cc]: here, so it can be used more generally, 
-	and because it isn't actually used much now, so it's just making Base_DB 
+	* glom/libglom/db_utils.[h|cc]: here, so it can be used more generally,
+	and because it isn't actually used much now, so it's just making Base_DB
 	look even more complicated than it is.
 	* glom/report_builder.cc: Adapted.
 
@@ -157,7 +166,7 @@
 
 	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]:
 	set_choices_related(): Take non-const parameters.
-	Added a non-const version of get_choices_related() so we can update the 
+	Added a non-const version of get_choices_related() so we can update the
 	full field details later.
 	* glom/libglom/document/document.cc: fill_layout_field_details():
 	Also try to update the field details in the choices lists.
