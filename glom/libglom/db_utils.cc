@@ -1494,7 +1494,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
   if(!result)
   {
     const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
-    std::cerr << "Glom  query_execute_select(): Error while executing SQL: "
+    std::cerr << G_STRFUNC << ": Error while executing SQL: "
       << std::endl << "  " << full_query << std::endl << std::endl;
     handle_error();
   }
@@ -1519,7 +1519,7 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
   }
   catch(const Gnome::Gda::SqlParserError& error)
   {
-    std::cerr << "DEBUG: DbUtils::query_execute: SqlParserError: " << error.what() << std::endl;
+    std::cerr << G_STRFUNC << ":  SqlParserError: " << error.what() << std::endl;
     return false;
   }
 
@@ -1536,7 +1536,7 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
     }
     catch(const Glib::Exception& ex)
     {
-      std::cerr << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << ": Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
     }
   }
 
@@ -1548,7 +1548,7 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
   }
   catch(const Glib::Error& error)
   {
-    std::cerr << "DbUtils::query_execute: ConnectionError: " << error.what() << std::endl;
+    std::cerr << G_STRFUNC << ":  ConnectionError: " << error.what() << std::endl;
     const Glib::ustring full_query = stmt->to_sql(params);
     std::cerr << "  full_query: " << full_query << std::endl;
     return false;
