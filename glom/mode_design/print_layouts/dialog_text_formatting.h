@@ -29,6 +29,7 @@
 namespace Glom
 {
 
+//TODO: Rename this? It seems to be only used for Print Layouts. Or why not use Dialog_Formatting instead?
 /** A dialog with a titled frame, a label for the table title, and a close button.
  */
 class Dialog_TextFormatting
@@ -42,7 +43,7 @@ public:
   Dialog_TextFormatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_TextFormatting();
 
-  //Allow direct access, for convenience:  
+  //Allow direct access, for convenience:
   Gtk::VBox* m_box_formatting_placeholder;
   Box_Formatting* m_box_formatting;
 

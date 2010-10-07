@@ -28,6 +28,10 @@
 namespace Glom
 {
 
+/** This dialog allows the user to specify a list of non-editable fields,
+ * with field formatting.
+ * For instance, for related choice lists, or for sort criteria.
+ */
 class Dialog_FieldsList
  : public Dialog_Layout //It has some useful stuff
 {

@@ -363,7 +363,7 @@ void Dialog_FieldsList::on_button_formatting()
       sharedptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
       if(field)
       {
-        field = offer_field_formatting(field, m_table_name, this);
+        field = offer_field_formatting(field, m_table_name, this, false /* no editing options */);
         row[m_ColumnsFields.m_col_layout_item] = field;
       }
     }

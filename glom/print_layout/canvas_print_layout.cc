@@ -387,13 +387,18 @@ void Canvas_PrintLayout::on_context_menu_formatting()
 
   //We need an if here, because they have no common base class.
   //TODO: Maybe they should.
-  FieldFormatting formatting;
   if(layout_item_field)
-    formatting = layout_item_field->m_formatting;
+  {
+    const FieldFormatting& formatting = layout_item_field->m_formatting;
+    m_dialog_format->m_box_formatting->set_formatting_for_field(formatting, m_table_name, layout_item_field->get_full_field_details());
+  }
   else
-    formatting = layout_item_text->m_formatting;
+  {
+    const FieldFormatting& formatting = layout_item_text->m_formatting;
+    m_dialog_format->m_box_formatting->set_formatting_for_non_field(formatting);
+  }
 
-  m_dialog_format->m_box_formatting->set_formatting(formatting);
+  m_dialog_format->m_box_formatting->set_is_for_non_editable();
 
   m_dialog_format->show();
 }

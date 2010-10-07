@@ -120,7 +120,7 @@ void Dialog_GroupBy::on_button_formatting_group_by()
 {
   if(m_layout_item)
   {
-    sharedptr<LayoutItem_Field> field = offer_field_formatting(m_layout_item->get_field_group_by(), m_table_name, this);
+    sharedptr<LayoutItem_Field> field = offer_field_formatting(m_layout_item->get_field_group_by(), m_table_name, this, false /* no editing options. */);
     if(field)
     {
       m_layout_item->set_field_group_by(field);

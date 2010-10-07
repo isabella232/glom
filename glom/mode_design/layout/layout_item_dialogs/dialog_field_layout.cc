@@ -68,7 +68,7 @@ Dialog_FieldLayout::~Dialog_FieldLayout()
   remove_view(m_box_formatting);
 }
 
-void Dialog_FieldLayout::set_field(const sharedptr<const LayoutItem_Field>& field, const Glib::ustring& table_name)
+void Dialog_FieldLayout::set_field(const sharedptr<const LayoutItem_Field>& field, const Glib::ustring& table_name, bool show_editable_options)
 {
   m_layout_item = glom_sharedptr_clone(field);
 
@@ -83,6 +83,9 @@ void Dialog_FieldLayout::set_field(const sharedptr<const LayoutItem_Field>& fiel
   const bool editable_allowed = field_details && !field_details->get_has_calculation();
   m_checkbutton_editable->set_sensitive(editable_allowed);
 
+  if(!show_editable_options)
+    m_checkbutton_editable->hide();
+
   //Custom title:
   Glib::ustring title_custom;
   if(field->get_title_custom())
@@ -94,7 +97,9 @@ void Dialog_FieldLayout::set_field(const sharedptr<const LayoutItem_Field>& fiel
 
   //Formatting:
   m_radiobutton_custom_formatting->set_active( !field->get_formatting_use_default() );
-  m_box_formatting->set_formatting(field->m_formatting, table_name, field->get_full_field_details());
+  m_box_formatting->set_formatting_for_field(field->m_formatting, table_name, field->get_full_field_details());
+  if(!show_editable_options)
+    m_box_formatting->set_is_for_non_editable();
 
   enforce_constraints();
 }
@@ -128,5 +133,3 @@ void Dialog_FieldLayout::enforce_constraints()
 }
 
 } //namespace Glom
-
-

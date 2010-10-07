@@ -473,7 +473,7 @@ Base_DB::type_list_field_items Base_DB::offer_field_list(const Glib::ustring& ta
   return result;
 }
 
-bool Base_DB::offer_item_formatting(const sharedptr<LayoutItem_WithFormatting>& layout_item, Gtk::Window* transient_for)
+bool Base_DB::offer_non_field_item_formatting(const sharedptr<LayoutItem_WithFormatting>& layout_item, Gtk::Window* transient_for)
 {
   bool result = false;
 
@@ -483,7 +483,7 @@ bool Base_DB::offer_item_formatting(const sharedptr<LayoutItem_WithFormatting>& 
 
   add_view(&dialog);
 
-  dialog.set_item(layout_item);
+  dialog.set_item(layout_item, false);
 
   const int response = dialog.run();
   if(response == Gtk::RESPONSE_OK)
@@ -499,7 +499,7 @@ bool Base_DB::offer_item_formatting(const sharedptr<LayoutItem_WithFormatting>& 
   return result;
 }
 
-sharedptr<LayoutItem_Field> Base_DB::offer_field_formatting(const sharedptr<const LayoutItem_Field>& start_field, const Glib::ustring& table_name, Gtk::Window* transient_for)
+sharedptr<LayoutItem_Field> Base_DB::offer_field_formatting(const sharedptr<const LayoutItem_Field>& start_field, const Glib::ustring& table_name, Gtk::Window* transient_for, bool show_editable_options)
 {
   sharedptr<LayoutItem_Field> result;
 
@@ -507,14 +507,13 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_formatting(const sharedptr<cons
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return result;
-  
+
   if(transient_for)
     dialog->set_transient_for(*transient_for);
 
   add_view(dialog);
 
-  dialog->set_field(start_field, table_name);
-
+  dialog->set_field(start_field, table_name, show_editable_options);
 
   const int response = dialog->run();
   if(response == Gtk::RESPONSE_OK)

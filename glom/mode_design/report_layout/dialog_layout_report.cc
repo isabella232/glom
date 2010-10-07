@@ -790,7 +790,7 @@ void Dialog_Layout_Report::on_button_formatting()
       sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
       if(field)
       {
-        sharedptr<LayoutItem_Field> field_chosen = offer_field_formatting(field, m_table_name, this);
+        sharedptr<LayoutItem_Field> field_chosen = offer_field_formatting(field, m_table_name, this, false /* no editing options */);
         if(field_chosen)
         {
           *field = *field_chosen;

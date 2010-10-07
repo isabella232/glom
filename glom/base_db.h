@@ -109,12 +109,12 @@ protected:
   type_list_field_items offer_field_list(const Glib::ustring& table_name, Gtk::Window* transient_for = 0);
 
 
-  sharedptr<LayoutItem_Field> offer_field_formatting(const sharedptr<const LayoutItem_Field>& start_field, const Glib::ustring& table_name, Gtk::Window* transient_for = 0);
+  sharedptr<LayoutItem_Field> offer_field_formatting(const sharedptr<const LayoutItem_Field>& start_field, const Glib::ustring& table_name, Gtk::Window* transient_for, bool show_editable_options = true);
 
   /** Offer generic formatting for a @a layout_item, starting with its current options.
    * @result true if the user changed some formatting for the items.
    */
-  bool offer_item_formatting(const sharedptr<LayoutItem_WithFormatting>& layout_item, Gtk::Window* transient_for = 0);
+  bool offer_non_field_item_formatting(const sharedptr<LayoutItem_WithFormatting>& layout_item, Gtk::Window* transient_for = 0);
 
   sharedptr<LayoutItem_Text> offer_textobject(const sharedptr<LayoutItem_Text>& start_textobject, Gtk::Window* transient_for = 0, bool show_title = true);
   sharedptr<LayoutItem_Image> offer_imageobject(const sharedptr<LayoutItem_Image>& start_imageobject, Gtk::Window* transient_for = 0, bool show_title = true);

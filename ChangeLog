@@ -1,3 +1,29 @@
+2010-10-07  Murray Cumming  <murrayc@murrayc.com>
+
+	Choices: Do not offer editing formatting features when choosign extra fields.
+
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.[h|cc]:
+  Rename the two set_formatting() methods to set_formatting_for_non_field(),
+  without the show_choices option and set_formatting_for_field(). This avoids
+  using the wrong one at the wrong time.
+  set_is_for_print_layout(): Rename to set_is_for_non_editable() and change
+  the implementation to make it more generic.
+	* glom/base_db.[h|cc]: offer_field_formatting(): Rename one overload to
+  offer_non_field_item_formatting() and add a show_editable_options parameter
+  to the field one.
+	* glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.[h|cc]:
+  set_field(): Added a show_editable_options bool parameter. Hide the editable
+  checkbox and tell Box_Formatting not to show editing options.
+
+	* glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.[h|cc]:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_formatting.[h|cc]:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc:
+	* glom/mode_design/print_layouts/dialog_text_formatting.[h|cc]:
+	* glom/mode_design/report_layout/dialog_layout_report.cc:
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	* glom/mode_design/layout/dialog_layout_details.cc:
+	* glom/print_layout/canvas_print_layout.cc: Adapted.
+
 2010-10-06  Murray Cumming  <murrayc@murrayc.com>
 
 	Avoid SQL errors about invalid ORDER BY fields.

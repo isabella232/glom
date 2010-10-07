@@ -39,7 +39,7 @@ class Dialog_FieldLayout
 public:
   static const char* glade_id;
   static const bool glade_developer;
-  
+
   Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_FieldLayout();
 
@@ -48,7 +48,7 @@ public:
    * @param field The starting field information.
    * @param table_name The field's table.
    */
-  virtual void set_field(const sharedptr<const LayoutItem_Field>& field, const Glib::ustring& table_name);
+  virtual void set_field(const sharedptr<const LayoutItem_Field>& field, const Glib::ustring& table_name, bool show_editable_options = true);
 
   sharedptr<LayoutItem_Field> get_field_chosen() const;
 

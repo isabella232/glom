@@ -88,7 +88,7 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
 
   //Get the formatting stuff:
   Utils::get_glade_widget_derived_with_warning(m_box_formatting);
-    
+
   if(m_box_formatting) ////Unlikely to fail and it already warns on stderr.
     m_box_formatting_placeholder->pack_start(*m_box_formatting);
 
@@ -98,7 +98,7 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
   on_foreach_connect(*this);
   on_foreach_connect(*m_pBox_DefaultValueSimple);
   on_foreach_connect(*m_pBox_ValueTab);
-  
+
   if(m_box_formatting) ////Unlikely to fail and it already warns on stderr.
     on_foreach_connect(*m_box_formatting);
 
@@ -215,7 +215,7 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
   m_pEntry_Title->set_text(field->get_title());
 
   //Formatting:
-  m_box_formatting->set_formatting(field->m_default_formatting, m_table_name, field);
+  m_box_formatting->set_formatting_for_field(field->m_default_formatting, m_table_name, field);
 
   set_blocked(false);
 

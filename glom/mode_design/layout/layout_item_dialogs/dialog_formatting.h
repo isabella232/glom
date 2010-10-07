@@ -32,6 +32,9 @@
 namespace Glom
 {
 
+/** This dialog lets the user choose the formatting for non-field items.
+ * Field items should use Dialog_FieldLayout instead.
+ */
 class Dialog_Formatting
  : public Gtk::Dialog,
    public View_Composite_Glom //Give it access to the document.
@@ -44,9 +47,9 @@ public:
    * @param document The document, so that the dialog can load the previous layout, and save changes.
    * @param field The starting item information.
    */
-  void set_item(const sharedptr<const LayoutItem_WithFormatting>& field);
+  void set_item(const sharedptr<const LayoutItem_WithFormatting>& field, bool show_numeric);
 
-  /** Set the @a layout_item's formatting to the formatting specified in the 
+  /** Set the @a layout_item's formatting to the formatting specified in the
    * dialog by the user.
    */
   void use_item_chosen(const sharedptr<LayoutItem_WithFormatting>& layout_item);

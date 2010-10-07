@@ -69,7 +69,7 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   m_dialog_choices_extra_fields(0),
   m_for_print_layout(false),
   m_show_numeric(true),
-  m_show_choices(true)
+  m_show_editable_options(true)
 {
   //Numeric formatting:
   builder->get_widget("vbox_numeric_format", m_vbox_numeric_format);
@@ -171,10 +171,10 @@ Box_Formatting::~Box_Formatting()
   }
 }
 
-void Box_Formatting::set_is_for_print_layout()
+void Box_Formatting::set_is_for_non_editable()
 {
   m_for_print_layout = true;
-  m_show_choices = false;
+  m_show_editable_options = false;
 
   //Add labels (because we will hide the checkboxes):
   Gtk::Label* label = Gtk::manage(new Gtk::Label(_("Font")));
@@ -190,21 +190,23 @@ void Box_Formatting::set_is_for_print_layout()
   enforce_constraints();
 }
 
-void Box_Formatting::set_formatting(const FieldFormatting& format, const Glib::ustring& table_name, const sharedptr<const Field>& field)
+void Box_Formatting::set_formatting_for_field(const FieldFormatting& format, const Glib::ustring& table_name, const sharedptr<const Field>& field)
 {
   //Used for choices and some extra text formatting:
   m_table_name = table_name;
   m_field = field;
 
-  set_formatting(format);
+  set_formatting_for_non_field(format,
+    true /* show_numeric, ignoring anyway when m_field is set */);
 }
 
-void Box_Formatting::set_formatting(const FieldFormatting& format, bool show_numeric, bool show_choices)
+void Box_Formatting::set_formatting_for_non_field(const FieldFormatting& format, bool show_numeric)
 {
+  //TODO: Split this into a private method, so that previously-set m_table_name and m_field (from set_formatting_for_field()) will not stay set.
+
   m_format = format;
 
   m_show_numeric = show_numeric;
-  m_show_choices = show_choices;
 
   //Numeric formatting:
   m_checkbox_format_use_thousands->set_active( format.m_numeric_format.m_use_thousands_separator );
@@ -488,7 +490,7 @@ void Box_Formatting::enforce_constraints()
   else
     m_vbox_numeric_format->hide();
 
-  if(m_show_choices)
+  if(m_field && m_show_editable_options)
     m_vbox_choices->show();
   else
     m_vbox_choices->hide();

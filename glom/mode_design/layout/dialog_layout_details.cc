@@ -555,7 +555,7 @@ sharedptr<LayoutItem_Button> Dialog_Layout_Details::offer_button_script_edit(con
   Glom::Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
     return result;
-        
+
   dialog->set_script(button, m_table_name);
   dialog->set_transient_for(*this);
   const int response = Glom::Utils::dialog_run_with_help(dialog);
@@ -906,7 +906,7 @@ void Dialog_Layout_Details::on_button_formatting()
         sharedptr<LayoutItem_WithFormatting> withformatting = sharedptr<LayoutItem_WithFormatting>::cast_dynamic(layout_item);
         if(withformatting)
         {
-          const bool changed = offer_item_formatting(withformatting, this);
+          const bool changed = offer_non_field_item_formatting(withformatting, this);
           if(changed)
             m_modified = true;
         }

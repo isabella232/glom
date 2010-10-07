@@ -49,9 +49,9 @@ Dialog_Formatting::~Dialog_Formatting()
   remove_view(m_box_formatting);
 }
 
-void Dialog_Formatting::set_item(const sharedptr<const LayoutItem_WithFormatting>& layout_item)
+void Dialog_Formatting::set_item(const sharedptr<const LayoutItem_WithFormatting>& layout_item, bool show_numeric)
 {
-  m_box_formatting->set_formatting(layout_item->m_formatting, false, false);
+  m_box_formatting->set_formatting_for_non_field(layout_item->m_formatting, show_numeric);
 
   enforce_constraints();
 }
@@ -69,5 +69,3 @@ void Dialog_Formatting::enforce_constraints()
 }
 
 } //namespace Glom
-
-

@@ -49,19 +49,21 @@ public:
   /**
    * @param format The starting information.
    */
-  void set_formatting(const FieldFormatting& format, bool show_numeric = true, bool show_choices = true);
+  void set_formatting_for_non_field(const FieldFormatting& format, bool show_numeric = true);
 
   /**
    * @param format The starting information.
    * @param table_name The field's table.
    * @param The field that will have this formatting, so we know what formatting options to allow.
    */
-  void set_formatting(const FieldFormatting& format, const Glib::ustring& table_name, const sharedptr<const Field>& field);
+  void set_formatting_for_field(const FieldFormatting& format, const Glib::ustring& table_name, const sharedptr<const Field>& field);
   bool get_formatting(FieldFormatting& format) const;
 
-  //When used for print layout items,
-  //we hide some stuff:
-  void set_is_for_print_layout();
+  /** When used, for instance, for print layout items or choice lists,
+   * where the user could not edit the field anyway.
+   * This hides some UI.
+   */
+  void set_is_for_non_editable();
 
   typedef sigc::signal<void> type_signal_modified;
   type_signal_modified signal_modified();
@@ -121,7 +123,7 @@ private:
   bool m_for_print_layout;
 
   bool m_show_numeric;
-  bool m_show_choices;
+  bool m_show_editable_options;
 
   type_signal_modified m_signal_modified;
 
