@@ -203,11 +203,11 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     add_view(flow_table); //Allow these sub-flowtables to access the document too.
     flow_table->set_table(m_table_name);
 
-    flow_table->set_columns_count(group->get_columns_count());
+    flow_table->set_lines(group->get_columns_count());
 
     //Use the parent table's padding:
-    flow_table->set_column_padding(get_column_padding());
-    flow_table->set_row_padding(get_row_padding());
+    flow_table->set_horizontal_spacing(get_horizontal_spacing());
+    flow_table->set_vertical_spacing(get_vertical_spacing());
     flow_table->show();
 
     Gtk::EventBox* event_box = Gtk::manage( new Gtk::EventBox() ); //TODO_Leak: Valgrind says this is possibly leaked.
@@ -393,9 +393,9 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
         add_view(flow_table); //Allow these sub-flowtables to access the document too.
         flow_table->set_table(m_table_name);
 
-        flow_table->set_columns_count(group->get_columns_count());
-        flow_table->set_column_padding(get_column_padding());
-        flow_table->set_row_padding(get_row_padding());
+        flow_table->set_lines(group->get_columns_count());
+        flow_table->set_horizontal_spacing(get_horizontal_spacing());
+        flow_table->set_vertical_spacing(get_vertical_spacing());
         flow_table->show();
 
         // Put the new flowtable in an event box to catch events
@@ -482,8 +482,8 @@ void FlowTableWithFields::add_group(const Glib::ustring& group_name, const Glib:
 
     FlowTableWithFields* flow_table = Gtk::manage( new FlowTableWithFields() );
 
-    flow_table->set_columns_count(1);
-    flow_table->set_column_padding(get_column_padding());
+    flow_table->set_line(1);
+    flow_table->set_horizontal_spacing(get_column_padding());
     flow_table->set_row_padding(get_row_padding());
     flow_table->show();
     alignment->add(*flow_table);
@@ -1131,7 +1131,7 @@ void FlowTableWithFields::on_flowtable_entry_open_details_requested(const shared
 void FlowTableWithFields::set_design_mode(bool value)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  FlowTableDnd::set_design_mode(value);
+  FlowTable::set_design_mode(value);
 #else
   FlowTable::set_design_mode(value);
 #endif
@@ -1325,6 +1325,7 @@ void FlowTableWithFields::apply_size_groups_to_labels(const type_vec_sizegroups&
     //Only align labels in the first column, because items in separate columns
     //couldn't be aligned vertically anyway, and this would cause extra space.
     //TODO: Use a different SizeGroup for items in 2nd columns?
+    /* TODO:
     guint column = 0;
     const bool column_allocated = get_column_for_first_widget(*label_parent, column);
     if(!column_allocated)
@@ -1338,6 +1339,7 @@ void FlowTableWithFields::apply_size_groups_to_labels(const type_vec_sizegroups&
       size_group->add_widget(*label);
       info.m_first_in_sizegroup = size_group; //Remember it so we can remove it later.
     }
+    */
   }
 }
 
@@ -1365,14 +1367,14 @@ void FlowTableWithFields::align_child_group_labels()
 
 guint FlowTableWithFields::get_sub_flowtables_max_columns() const
 {
-  guint result = get_columns_count();
+  guint result = get_lines();
 
   for(type_sub_flow_tables::const_iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
   {
     const FlowTableWithFields* subtable = *iter;
     if(subtable)
     {
-      const guint count = subtable->get_columns_count();
+      const guint count = subtable->get_lines();
       if(count > result)
           result = count;
     }
@@ -1381,252 +1383,7 @@ guint FlowTableWithFields::get_sub_flowtables_max_columns() const
   return result;
 }
 
-
-void FlowTableWithFields::on_size_allocate(Gtk::Allocation& allocation)
-{
-  FlowTable::on_size_allocate(allocation);
-
-  sharedptr<const LayoutGroup> group = get_layout_group();
-  Glib::ustring group_name;
-  if(group)
-     group_name = group->get_name();
-
-  //The widgets have now been allocated their sizes and columns,
-  //so this should be able to work:
-  if(m_columns_allocated_changed)
-  {
-    apply_size_groups_to_labels(m_vec_size_groups);
-
-    //Prevent unnecessary repeated (endless?) size allocation requested:
-    m_columns_allocated_changed = false;
-  }
-}
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-
-void FlowTableWithFields::on_dnd_add_layout_item_by_type(int item_type_num, Gtk::Widget* above_widget)
-{
-  LayoutWidgetBase::enumType item_type = static_cast<LayoutWidgetBase::enumType>(item_type_num);
-  LayoutWidgetBase* above = dynamic_cast<LayoutWidgetBase*>(above_widget);
-  if(!above)
-    return;
-
-  switch(item_type)
-  {
-    case LayoutWidgetBase::TYPE_FIELD:
-      on_dnd_add_layout_item_field(above);
-      break;
-    case LayoutWidgetBase::TYPE_BUTTON:
-      on_dnd_add_layout_item_button(above);
-      break;
-    case LayoutWidgetBase::TYPE_TEXT:
-      on_dnd_add_layout_item_text(above);
-      break;
-    case LayoutWidgetBase::TYPE_IMAGE:
-      on_dnd_add_layout_item_image(above);
-      break;
-    case LayoutWidgetBase::TYPE_GROUP:
-      on_dnd_add_layout_group(above);
-      break;
-    case LayoutWidgetBase::TYPE_NOTEBOOK:
-      on_dnd_add_layout_notebook(above);
-      break;
-    case LayoutWidgetBase::TYPE_PORTAL:
-      on_dnd_add_layout_portal(above);
-      break;
-    default:
-      std::cerr << G_STRFUNC << ": Unknown drop type: " << item_type << std::endl;
-   }
-}
-
-void FlowTableWithFields::on_dnd_add_layout_item_field(LayoutWidgetBase* above)
-{
-  //Ask the user to choose the layout item
-  sharedptr<LayoutItem_Field> layout_item_field =
-    DataWidget::offer_field_list(m_table_name, sharedptr<LayoutItem_Field>(),
-      get_document(), Application::get_application());
-  if(!layout_item_field)
-  {
-    realize();
-    return;
-  }
-
-  sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(layout_item_field);
-  dnd_add_to_layout_group(item, above);
-
-  //Tell the parent to tell the document to save the layout
-  signal_layout_changed().emit();
-}
-
-void FlowTableWithFields::on_dnd_add_layout_notebook (LayoutWidgetBase* above)
-{
-  sharedptr<LayoutItem_Notebook> notebook(new LayoutItem_Notebook);
-  sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(notebook);
-  notebook->set_name(_("Notebook"));
-  // Add a group to the notebook
-  sharedptr<LayoutGroup> group(new LayoutGroup ());
-  group->set_title(_("New Group"));
-  group->set_name(_("Group"));
-  notebook->m_list_items.push_back(group);
-
-  dnd_add_to_layout_group(item, above);
-
-  //Tell the parent to tell the document to save the layout
-  signal_layout_changed().emit();
-}
-
-void FlowTableWithFields::on_dnd_add_layout_portal (LayoutWidgetBase* above)
-{
-  sharedptr<LayoutItem_Portal> portal = get_portal_relationship();
-
-  if(portal)
-  {
-    sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(portal);
-    dnd_add_to_layout_group(item, above);
-
-    //Tell the parent to tell the document to save the layout
-    signal_layout_changed().emit();
-  }
-}
-
-void FlowTableWithFields::on_dnd_add_layout_group(LayoutWidgetBase* above)
-{
-  sharedptr<LayoutGroup> group(new LayoutGroup());
-  group->set_title(_("New Group"));
-  group->set_name(_("Group"));
-
-  sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(group);
-  dnd_add_to_layout_group (item, above);
-
-  //Tell the parent to tell the document to save the layout
-  signal_layout_changed().emit();
-}
-
-void FlowTableWithFields::on_dnd_add_layout_item_button(LayoutWidgetBase* above)
-{
-  // create the button
-  sharedptr<LayoutItem_Button> layout_item_button = sharedptr<LayoutItem_Button>::create();
-  layout_item_button->set_title(_("New Button")); //Give the button a default title, so it is big enough, and so people see that they should change it.
-  layout_item_button->set_name("new_button");
-
-  dnd_add_to_layout_group(layout_item_button, above);
-  //Tell the parent to tell the document to save the layout:
-  signal_layout_changed().emit();
-}
-
-void FlowTableWithFields::on_dnd_add_layout_item_text(LayoutWidgetBase* above)
-{
-  // create the text label
-  sharedptr<LayoutItem_Text> textobject = sharedptr<LayoutItem_Text>::create();
-  textobject->set_name(_("text"));
-  textobject->set_text(_("New Text"));
-  sharedptr<LayoutItem> layout_item = sharedptr<LayoutItem>::cast_dynamic(textobject);
-
-  dnd_add_to_layout_group(layout_item, above);
-  //Tell the parent to tell the document to save the layout
-
-  signal_layout_changed().emit();
-}
-
-void FlowTableWithFields::on_dnd_add_layout_item_image(LayoutWidgetBase* above)
-{
-  // create the text label
-  sharedptr<LayoutItem_Image> image_object = sharedptr<LayoutItem_Image>::create();
-  sharedptr<LayoutItem> layout_item = sharedptr<LayoutItem>::cast_dynamic(image_object);
-
-  dnd_add_to_layout_group(layout_item, above);
-  //Tell the parent to tell the document to save the layout
-
-  signal_layout_changed().emit();
-}
-
-void FlowTableWithFields::on_dnd_add_layout_item(LayoutWidgetBase* above, const sharedptr<LayoutItem>& item)
-{
-  dnd_add_to_layout_group(item, above);
-
-  // Don't do this here - it's done in the drag_end handler
-  // signal_layout_changed().emit();
-}
-
-void FlowTableWithFields::on_dnd_add_placeholder(Gtk::Widget* above_widget)
-{
-  LayoutWidgetBase* above = dynamic_cast<LayoutWidgetBase*>(above_widget);
-  if(!above)
-    return;
-
-  if(m_placeholder)
-  {
-    if(dynamic_cast<Glom::PlaceholderGlom*>(above))
-      return;
-
-    on_dnd_remove_placeholder();
-  }
-  type_list_layoutwidgets::iterator cur_widget = std::find (m_list_layoutwidgets.begin(),
-                                                            m_list_layoutwidgets.end(),
-                                                            above);
-  sharedptr<LayoutItem_Placeholder> placeholder_field(new LayoutItem_Placeholder);
-  sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(placeholder_field);
-  add_layout_item_at_position(placeholder_field, cur_widget);
-
-  dnd_add_to_layout_group(item, above, true /* ignore error*/);
-}
-
-void FlowTableWithFields::on_dnd_remove_placeholder()
-{
-  if(m_placeholder)
-  {
-    //Get the layout group that the "above" widget's layout item is in
-    sharedptr<LayoutGroup> layout_group = get_layout_group();
-    if(layout_group)
-    {
-      LayoutGroup::type_list_items items = layout_group->get_items();
-      for (LayoutGroup::type_list_items::iterator item = items.begin();
-           item != items.end(); ++item)
-      {
-        sharedptr<LayoutItem_Placeholder> placeholder =
-          sharedptr<LayoutItem_Placeholder>::cast_dynamic(*item);
-
-        if(placeholder)
-        {
-          layout_group->remove_item(*item);
-        }
-      }
-    }
-
-    remove(*m_placeholder);
-  }
-
-  m_placeholder = 0;
-}
-
-void FlowTableWithFields::dnd_notify_failed_drop()
-{
-  // TODO: Avoid this error message, maybe by adding a group.
-  // TODO: At least avoid losing the dragged item.
-  Gtk::MessageDialog dialog(_("You cannot drop anything here. Try to add a group first"),
-                      false, Gtk::MESSAGE_ERROR);
-  dialog.run();
-}
-
-bool FlowTableWithFields::dnd_add_to_layout_group(const sharedptr<LayoutItem>& item,  LayoutWidgetBase* layoutwidget, bool ignore_error)
-{
-  //Get the layout group that the "above" widget's layout item is in:
-  sharedptr<LayoutGroup> layout_group = get_layout_group();
-  if(!layout_group)
-  {
-    if(!ignore_error)
-      dnd_notify_failed_drop();
-
-    return false;
-  }
-
-  if(layoutwidget && layoutwidget->get_layout_item())
-    layout_group->add_item(item, layoutwidget->get_layout_item());
-  else
-    layout_group->add_item(item);
-
-  return true;
-}
 
 void FlowTableWithFields::on_menu_properties_activate()
 {
@@ -1723,24 +1480,6 @@ sharedptr<LayoutItem_Portal> FlowTableWithFields::get_portal_relationship()
   return sharedptr<LayoutItem_Portal>();
 }
 
-void FlowTableWithFields::set_child_widget_dnd_in_progress(Gtk::Widget* child, bool in_progress)
-{
-  //To be reimplemented by derived classes.
-  LayoutWidgetBase* base = dynamic_cast<LayoutWidgetBase*>(child);
-  if(!child)
-    return;
-
-  base->set_dnd_in_progress(in_progress);
-}
-
-bool FlowTableWithFields::get_child_widget_dnd_in_progress(Gtk::Widget* child) const
-{
-  LayoutWidgetBase* base = dynamic_cast<LayoutWidgetBase*>(child);
-  if(!base)
-    return false;
-  else
-    return base->get_dnd_in_progress();
-}
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

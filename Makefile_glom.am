@@ -332,8 +332,6 @@ glom_source_files +=							\
 	glom/mode_design/translation/window_translations.h				\
 	glom/utility_widgets/filechooserdialog_saveextras.cc		\
 	glom/utility_widgets/filechooserdialog_saveextras.h		\
-	glom/utility_widgets/flowtable_dnd.cc				\
-	glom/utility_widgets/flowtable_dnd.h				\
 	glom/utility_widgets/layouttoolbar.cc				\
 	glom/utility_widgets/layouttoolbar.h				\
 	glom/utility_widgets/layouttoolbarbutton.cc			\

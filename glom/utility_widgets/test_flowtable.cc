@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 #include <gtkmm.h>
 #include "flowtable.h"
 
@@ -44,9 +44,9 @@ main(int argc, char* argv[])
   Gtk::Window window;
   //Gtk::VBox flowtable;
   Glom::FlowTable flowtable;
-  flowtable.set_columns_count(3);
-  flowtable.set_column_padding(100);
-  flowtable.set_row_padding(0);
+  flowtable.set_lines(2);
+  flowtable.set_horizontal_spacing(6);
+  flowtable.set_vertical_spacing(6);
 
   Gtk::Entry button7; button7.set_text("seven");
   button7.show();
@@ -69,20 +69,15 @@ main(int argc, char* argv[])
   Gtk::Entry button12; button11.set_text("eleven");
   flowtable.add(button11, button12);
   button11.show(); button12.show();
-  
+
   window.add(flowtable);
   flowtable.set_design_mode();
   flowtable.show();
 
 //  Glom::DragWindow drag_window;
 //  drag_window.show();
-  
+
   Gtk::Main::run(window);
 
   return 0;
 }
-
-
-
-
-

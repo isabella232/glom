@@ -23,11 +23,7 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
-#ifdef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/utility_widgets/flowtable.h>
-#else
-#include <glom/utility_widgets/flowtable_dnd.h>
-#endif
 #include <libglom/data_structure/layout/layoutgroup.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <libglom/data_structure/layout/layoutitem_notebook.h>
@@ -54,11 +50,9 @@ class DataWidget;
 
 class FlowTableWithFields
   :
-#ifdef GLOM_ENABLE_CLIENT_ONLY
     public FlowTable,
+#ifndef GLOM_ENABLE_CLIENT_ONLY
     public LayoutWidgetUtils,
-#else
-    public FlowTableDnd,
 #endif
     public View_Composite_Glom
 {
@@ -243,30 +237,9 @@ private:
   void add_layout_notebook_at_position(const sharedptr<LayoutItem_Notebook>& notebook, const type_list_layoutwidgets::iterator& add_before);
   void add_layout_portal_at_position(const sharedptr<LayoutItem_Portal>& portal, const type_list_layoutwidgets::iterator& add_before);
 
-  virtual void on_size_allocate(Gtk::Allocation& allocation);
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 
-  virtual void on_dnd_add_layout_item_by_type(int item_type_num, Gtk::Widget* above);
-  virtual void on_dnd_add_placeholder(Gtk::Widget* above);
-  virtual void on_dnd_remove_placeholder();
-  virtual void set_child_widget_dnd_in_progress(Gtk::Widget* child, bool in_progress);
-  virtual bool get_child_widget_dnd_in_progress(Gtk::Widget* child) const;
-
-
-  void on_dnd_add_layout_item_field(LayoutWidgetBase* above);
-  void on_dnd_add_layout_group(LayoutWidgetBase* above);
-  void on_dnd_add_layout_item_button(LayoutWidgetBase* above);
-  void on_dnd_add_layout_item_text(LayoutWidgetBase* above);
-  void on_dnd_add_layout_item_image(LayoutWidgetBase* above);
-  void on_dnd_add_layout_notebook(LayoutWidgetBase* above);
-  void on_dnd_add_layout_portal(LayoutWidgetBase* above);
-  void on_dnd_add_layout_item(LayoutWidgetBase* above, const sharedptr<LayoutItem>& item);
-
   sharedptr<LayoutItem_Portal> get_portal_relationship();
-
-  void dnd_notify_failed_drop();
-  bool dnd_add_to_layout_group(const sharedptr<LayoutItem>& item, LayoutWidgetBase* layoutwidget, bool ignore_error = false);
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

@@ -1,3 +1,17 @@
+2010-10-08  Murray Cumming  <murrayc@murrayc.com>
+
+	Details: FlowTable: Initial use of GtkSpreadTable instead of custom code.
+
+  * glom/utility_widgets/flowtable.[h|cc]: Derive from GtkSpreadTable,
+  removing API and implementation that is then provided by that base class.
+	* glom/utility_widgets/flowtable_dnd.[h|cc]: Remove FlowTable_DND (and its
+  use for now. We will need to reimplement it somehow with GtkSpreadTable,
+  hopefully in a simpler way.
+
+  * glom/mode_data/box_data_details.cc
+  * glom/mode_data/flowtablewithfieldse.[h|cc]:
+  * glom/utility_widgets/test_flowtable.cc: Adapted.
+
 2010-10-07  Murray Cumming  <murrayc@murrayc.com>
 
 	Choices: Do not offer editing formatting features when choosign extra fields.

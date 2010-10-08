@@ -58,14 +58,14 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 
   add_view(&m_FlowTable); //Allow this to access the document too.
 
-  m_FlowTable.set_columns_count(1); //Sub-groups will have multiple columns (by default, there is one sub-group, with 2 columns).
+  m_FlowTable.set_lines(1); //Sub-groups will have multiple columns (by default, there is one sub-group, with 2 columns).
 
   #ifndef GLOM_ENABLE_MAEMO
-  m_FlowTable.set_column_padding(Utils::DEFAULT_SPACING_SMALL); //The default anyway.
-  m_FlowTable.set_row_padding(Utils::DEFAULT_SPACING_SMALL); //The default anyway.
+  m_FlowTable.set_horizontal_spacing(Utils::DEFAULT_SPACING_SMALL); //The default anyway.
+  m_FlowTable.set_vertical_spacing(Utils::DEFAULT_SPACING_SMALL); //The default anyway.
   #else
-  m_FlowTable.set_row_padding(0); //The hildon buttons and entries have their own default padding.
-  m_FlowTable.set_column_padding(HILDON_MARGIN_DOUBLE); //As per the UI specs.
+  m_FlowTable.set_vertical_spacing(0); //The hildon buttons and entries have their own default padding.
+  m_FlowTable.set_horizontal_spacing(HILDON_MARGIN_DOUBLE); //As per the UI specs.
   #endif
 
   //m_strHint = _("When you change the data in a field the database is updated immediately.\n Click [New] to add a new record.\n Leave automatic ID fields empty - they will be filled for you.");

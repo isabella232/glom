@@ -27,7 +27,7 @@
 namespace Glom
 {
 
-class FlowTable : public Gtk::Container
+class FlowTable : public Gtk::SpreadTable
 {
 public:
   FlowTable();
@@ -42,70 +42,17 @@ public:
 
   virtual void remove(Gtk::Widget& first); //override
 
-  void set_columns_count(guint value);
-
-  guint get_columns_count() const;
-
-  /** Sets the padding to put between the columns of widgets.
-   */
-  void set_column_padding(guint padding);
-
-  /** Gets the padding between the columns of widgets.
-   */
-  guint get_column_padding() const;
-
-  /** Sets the padding to put between the rows of widgets.
-   */
-  void set_row_padding(guint padding);
-
-  /** Gets the padding between the rows of widgets.
-   */
-  guint get_row_padding() const;
-
   /** Show extra UI that is useful in RAD tools:
    */
   virtual void set_design_mode(bool value = true);
 
   void remove_all();
 
-  // Implement forall which is not implemented in gtkmm:
-  typedef sigc::slot<void, Widget&> ForallSlot;
-  void forall(const ForallSlot& slot);
-
-  /** Get the column in which the specified "first" widget is placed.
-   * result false if the widget is not one of the "first" widgets, or
-   * if has not yet been placed in a column, because the size has not yet been requested.
-   */
-  bool get_column_for_first_widget(const Gtk::Widget& first, guint& column);
-
 private:
 
   //Overrides:
 
-  //Handle child widgets:
-  virtual void on_size_request(Gtk::Requisition* requisition);
-  virtual GType child_type_vfunc() const;
-  virtual void on_add(Gtk::Widget* child);
-  virtual void forall_vfunc(gboolean include_internals, GtkCallback callback, gpointer callback_data);
-  virtual void on_remove(Gtk::Widget* child);
-
-
 protected:
-
-  virtual void on_size_allocate(Gtk::Allocation& allocation);
-
-  //Do extra drawing:
-  //Virtual method overrides:
-  void on_realize();
-  void on_unrealize();
-  bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
-
-  int get_column_height(guint start_widget, guint widget_count, int& total_width) const;
-
-  /**
-   * @result The height when the children are arranged optimally (so that the height is minimum).
-   */
-  int get_minimum_column_height(guint start_widget, guint columns_count, int& total_width) const;
 
   class FlowTableItem
   {
@@ -137,30 +84,17 @@ private:
 
   int get_item_requested_height(const FlowTableItem& item) const;
   void get_item_requested_width(const FlowTableItem& item, int& first, int& second) const;
-  void get_item_max_width_requested(guint start, guint height, guint& first_max_width, guint& second_max_width, guint& singles_max_width, bool& is_last_column) const; //TODO: maybe combine this with code in get_minimum_column_height().
 
   bool child_is_visible(const Gtk::Widget* widget) const;
 
-  Gtk::Allocation assign_child(Gtk::Widget* widget, int x, int y);
-  Gtk::Allocation assign_child(Gtk::Widget* widget, int x, int y, int width, int height);
 
 protected:
   typedef std::vector<FlowTableItem> type_vecChildren;
   type_vecChildren m_children;
 
-  //Reset this and check it later to see if the layout of items has changed.
-  bool m_columns_allocated_changed;
 
 private:
-  guint m_columns_count;
-  guint m_column_padding, m_row_padding;
   bool m_design_mode;
-
-  //Lines to draw in on_expose_event:
-  typedef std::pair<Gdk::Point, Gdk::Point> type_line;
-  typedef std::vector<type_line> type_vecLines;
-  type_vecLines m_lines_vertical;
-  type_vecLines m_lines_horizontal;
 
   //For drawing:
   Glib::RefPtr<Gdk::Window> m_refGdkWindow;
