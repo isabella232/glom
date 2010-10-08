@@ -22,6 +22,8 @@
 #include <libglom/standard_table_prefs_fields.h>
 #include <glom/application.h>
 
+#include <iostream>
+
 namespace Glom
 {
 

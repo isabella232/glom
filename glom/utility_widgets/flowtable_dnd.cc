@@ -25,6 +25,8 @@
 #include "layouttoolbarbutton.h"
 #include <glom/mode_data/buttonglom.h>
 
+#include <iostream>
+
 namespace Glom
 {
 

@@ -22,8 +22,6 @@
 #include <glibmm/object.h>
 
 #include <vector>
-#include <list>
-#include <map>
 
 namespace GlomBakery
 {

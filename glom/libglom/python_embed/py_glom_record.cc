@@ -32,6 +32,8 @@
 #include <libglom/data_structure/field.h>
 #include <glibmm/ustring.h>
 
+#include <iostream>
+
 namespace Glom
 {
 

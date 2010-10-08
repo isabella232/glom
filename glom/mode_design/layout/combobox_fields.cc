@@ -21,6 +21,8 @@
 #include <glom/mode_design/layout/combobox_fields.h>
 #include <glibmm/i18n.h>
 
+#include <iostream>
+
 namespace Glom
 {
 

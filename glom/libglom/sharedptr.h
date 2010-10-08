@@ -23,7 +23,8 @@
 #ifndef GLOM_SHAREDPTR_H
 #define GLOM_SHAREDPTR_H
 
-#include <iostream> //Just for debugging.
+//#include <iostream> //Just for debugging.
+#include <cstddef> // For size_t.
 
 namespace Glom
 {

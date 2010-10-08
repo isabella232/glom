@@ -40,6 +40,8 @@
 
 #include <glibmm/i18n.h>
 
+#include <iostream>
+
 
 #ifndef G_OS_WIN32
 static EpcProtocol publish_protocol = EPC_PROTOCOL_HTTPS;

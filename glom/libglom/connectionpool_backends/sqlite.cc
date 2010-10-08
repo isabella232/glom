@@ -24,6 +24,8 @@
 
 #include <giomm/file.h>
 
+#include <iostream>
+
 namespace Glom
 {
 

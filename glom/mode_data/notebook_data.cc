@@ -22,6 +22,8 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
 
+#include <iostream>
+
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/program.h>
 #endif

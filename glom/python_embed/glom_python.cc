@@ -37,6 +37,8 @@
 
 #include <gtkmm/messagedialog.h>
 
+#include <iostream>
+
 namespace Glom
 {
 
