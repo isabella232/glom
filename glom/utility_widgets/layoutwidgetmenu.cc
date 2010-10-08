@@ -22,6 +22,7 @@
 #include <glibmm/i18n.h>
 #include <glom/application.h>
 #include "../mode_data/flowtablewithfields.h"
+#include <iostream>
 
 namespace Glom
 {

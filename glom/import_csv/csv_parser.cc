@@ -22,6 +22,7 @@
 #include "csv_parser.h"
 
 #include <cerrno>
+#include <iostream>
 
 // On Windows, "iconv" seems to be a define for "libiconv", breaking the Glib::IConv::iconv() call.
 #ifdef iconv

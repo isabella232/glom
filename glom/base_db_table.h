@@ -24,7 +24,6 @@
 
 #include <glom/base_db.h>
 #include <libglom/data_structure/field.h>
-#include <algorithm> //find_if used in various places.
 
 namespace Glom
 {

@@ -25,7 +25,6 @@
 #include <gtkmm/combobox.h>
 #include <gtkmm/liststore.h>
 #include <libgdamm.h>
-#include <algorithm> //For std::find_if
 #include <gtkmm/builder.h>
 
 namespace Glom

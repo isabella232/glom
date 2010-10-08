@@ -17,7 +17,7 @@
  */
 
 #include <libglom/document/bakery/document_xml.h>
-
+#include <iostream>
 
 namespace GlomBakery
 {

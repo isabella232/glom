@@ -41,6 +41,7 @@
 //#include <libglom/libglom_config.h> //To get GLOM_DTD_INSTALL_DIR - dependent on configure prefix.
 #include <algorithm> //For std::find_if().
 #include <sstream> //For stringstream
+#include <iostream>
 
 namespace Glom
 {

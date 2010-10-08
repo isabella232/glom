@@ -25,6 +25,8 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
 
+#include <iostream>
+
 namespace Glom
 {
 

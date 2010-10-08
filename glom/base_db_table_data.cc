@@ -26,6 +26,7 @@
 #include <glom/utils_ui.h>
 #include <libglom/db_utils.h>
 #include <sstream>
+#include <iostream>
 #include <glibmm/i18n.h>
 
 namespace Glom
