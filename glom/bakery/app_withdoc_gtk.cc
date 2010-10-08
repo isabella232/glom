@@ -28,6 +28,7 @@
 #include <gtkmm/aboutdialog.h>
 #include <giomm.h>
 #include <algorithm>
+#include <iostream>
 
 #include "config.h"
 

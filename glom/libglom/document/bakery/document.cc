@@ -19,7 +19,7 @@
 #include "config.h"
 #include <libglom/document/bakery/document.h>
 #include <giomm.h>
-//#include <fstream>
+#include <iostream>
 #include <glibmm/i18n-lib.h>
 
 namespace GlomBakery

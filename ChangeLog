@@ -1,3 +1,47 @@
+2010-10-08  David King  <davidk@openismus.com>
+
+	Remove some unnecessary includes
+
+	* glom/bakery/app.h:
+	* glom/base_db_table.h:
+	* glom/base_db_table_data.h:
+	* glom/box_db_table.h:
+	* glom/libglom/sharedptr.h:
+	* glom/mode_design/fields/combo_fieldtype.h:
+	* glom/mode_design/relationships_overview/
+	  dialog_relationships_overview.cc: Remove some unnecessary includes.
+
+	* glom/bakery/app_withdoc_gtk.cc:
+	* glom/base_db_table_data.cc:
+	* glom/glom_privs.cc:
+	* glom/import_csv/csv_parser.cc:
+	* glom/import_csv/dialog_import_csv.cc:
+	* glom/import_csv/dialog_import_csv_progress.cc:
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool_backends/postgres.cc:
+	* glom/libglom/connectionpool_backends/postgres_self.cc:
+	* glom/libglom/connectionpool_backends/sqlite.cc:
+	* glom/libglom/data_structure/field.cc:
+	* glom/libglom/document/bakery/document.cc:
+	* glom/libglom/document/bakery/document_xml.cc:
+	* glom/libglom/document/document.cc:
+	* glom/libglom/python_embed/py_glom_record.cc:
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_design/dialog_database_preferences.cc:
+	* glom/mode_design/iso_codes.cc:
+	* glom/mode_design/layout/combobox_fields.cc:
+	* glom/mode_design/layout/dialog_layout_calendar_related.cc:
+	* glom/mode_design/layout/dialog_layout_list_related.cc:
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	* glom/mode_design/translation/combobox_locale.cc:
+	* glom/mode_design/translation/dialog_identify_original.cc:
+	* glom/navigation/box_tables.cc:
+	* glom/print_layout/canvas_layout_item.cc:
+	* glom/python_embed/glom_python.cc:
+	* glom/utility_widgets/flowtable_dnd.cc:
+	* glom/utility_widgets/layoutwidgetmenu.cc:
+	* glom/utility_widgets/notebooklabelglom.cc: Add iostream include.
+
 2010-10-07  Murray Cumming  <murrayc@murrayc.com>
 
 	Choices: Do not offer editing formatting features when choosign extra fields.

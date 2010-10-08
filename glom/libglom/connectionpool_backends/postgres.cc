@@ -28,6 +28,8 @@
 #include <glib/gstdio.h> /* For g_rename(). TODO: Wrap this in glibmm? */
 #include <glibmm/i18n.h>
 
+#include <iostream>
+
 // Uncomment to see debug messages
 //#define GLOM_CONNECTION_DEBUG
 

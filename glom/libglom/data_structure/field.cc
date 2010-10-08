@@ -24,6 +24,8 @@
 #include <libglom/utils.h>
 #include <glibmm/i18n.h>
 
+#include <iostream>
+
 namespace Glom
 {
 

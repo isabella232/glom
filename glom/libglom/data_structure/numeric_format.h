@@ -22,7 +22,6 @@
 #define GLOM_DATA_STRUCTURE_NUMERIC_FORMAT_H
 
 #include <glibmm/ustring.h>
-#include <map>
 
 namespace Glom
 {

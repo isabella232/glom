@@ -28,6 +28,7 @@
 
 #include <libglom/gst-package.h>
 #include <sstream> //For stringstream
+#include <iostream>
 
 #ifdef G_OS_WIN32
 # include <windows.h>
