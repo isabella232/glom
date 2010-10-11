@@ -566,7 +566,7 @@ Glib::ustring Utils::create_local_image_uri(const Gnome::Gda::Value& value)
 
   if(value.get_value_type() == GDA_TYPE_BINARY)
   {
-    glong size = 0;
+    std::streamsize size = 0;
     gconstpointer pData = value.get_binary(size);
     if(size && pData)
     {

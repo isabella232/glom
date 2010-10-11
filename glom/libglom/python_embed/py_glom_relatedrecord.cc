@@ -46,7 +46,7 @@ static void RelatedRecord_HandlePythonError()
     PyErr_Print();
 }
 
-long PyGlomRelatedRecord::len() const
+PyGlomRelatedRecord::type_map_field_values::size_type PyGlomRelatedRecord::len() const
 {
   return m_map_field_values.size();
 }

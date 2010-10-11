@@ -39,7 +39,7 @@ PyGlomRelated::~PyGlomRelated()
 }
 
 
-long PyGlomRelated::len() const
+PyGlomRelated::type_map_relationships::size_type PyGlomRelated::len() const
 {
   return m_map_relationships.size();
 }

@@ -45,8 +45,11 @@ public:
   boost::python::object min(const std::string& field_name) const;
   boost::python::object max(const std::string& field_name) const;
 
+  //Available, for instance, in python via record["name_first"]
+  typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_field_values;
+
   //[] notation:
-  long len() const;
+  type_map_field_values::size_type len() const;
   boost::python::object getitem(const boost::python::object& item);
 
 private:
@@ -60,8 +63,6 @@ private:
   sharedptr<const Relationship> m_relationship;
   Glib::ustring m_from_key_value_sqlized;
 
-  //Available, for instance, in python via record["name_first"]
-  typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_field_values;
   mutable type_map_field_values m_map_field_values; //A cache.
 };
 
