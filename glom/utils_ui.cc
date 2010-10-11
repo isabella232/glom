@@ -134,9 +134,9 @@ void Utils::show_help(const Glib::ustring& id)
 
   try
   {
-    const char *const path = GLOM_DATADIR G_DIR_SEPARATOR_S "gnome"
-                                          G_DIR_SEPARATOR_S "help"
-                                          G_DIR_SEPARATOR_S "glom";
+    const char path[] = GLOM_DATADIR G_DIR_SEPARATOR_S "gnome"
+                                     G_DIR_SEPARATOR_S "help"
+                                     G_DIR_SEPARATOR_S "glom";
     std::string help_file = locate_help_file(path, "glom.xml");
     if(help_file.empty())
     {

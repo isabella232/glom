@@ -262,7 +262,7 @@ Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgres
   Glib::RefPtr<Glib::Regex> regex;
 
   //We want the characters at the end:
-  const gchar* VERSION_REGEX = "pg_ctl \\(PostgreSQL\\) (.*)";
+  const gchar VERSION_REGEX[] = "pg_ctl \\(PostgreSQL\\) (.*)";
 
   #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
@@ -314,7 +314,7 @@ float PostgresSelfHosted::get_postgresql_utils_version_as_number(const SlotProgr
   Glib::RefPtr<Glib::Regex> regex;
 
   //We want the characters at the end:
-  const gchar* VERSION_REGEX = "^(\\d*)\\.(\\d*)";
+  const gchar VERSION_REGEX[] = "^(\\d*)\\.(\\d*)";
 
   #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try

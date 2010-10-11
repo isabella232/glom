@@ -49,11 +49,11 @@ static const int NEW_PAGE = 1;
 namespace
 {
 
-const char* RECENT_DUMMY_TEXT = N_("No recently used documents available.");
-const char* NETWORK_DUMMY_TEXT = N_("No sessions found on the local network.");
+const char RECENT_DUMMY_TEXT[] = N_("No recently used documents available.");
+const char NETWORK_DUMMY_TEXT[] = N_("No sessions found on the local network.");
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-const char* TEMPLATE_DUMMY_TEXT = N_("No templates available.");
+const char TEMPLATE_DUMMY_TEXT[] = N_("No templates available.");
 #endif
 
 //TODO_Performance: A DomParser or XmlReader might be faster, or even a regex.
@@ -101,7 +101,7 @@ private:
 namespace Glom
 {
 
-const char* Dialog_ExistingOrNew::glade_id("dialog_existing_or_new");
+const char Dialog_ExistingOrNew::glade_id[] = "dialog_existing_or_new";
 const bool Dialog_ExistingOrNew::glade_developer(false);
 
 Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
@@ -166,7 +166,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   if(!Glib::file_test(path, Glib::FILE_TEST_EXISTS))
     path = GLOM_DOCDIR_EXAMPLES;
 #else
-  const char *const path = GLOM_DOCDIR_EXAMPLES;
+  const char path[] = GLOM_DOCDIR_EXAMPLES;
 #endif //G_OS_WIN32
 
   //Show the installed example files,

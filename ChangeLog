@@ -1,3 +1,17 @@
+2010-10-11  David King  <davidk@openismus.com>
+
+	Use array notation where appropriate
+
+	* glom/dialog_connection.[cc|h]:
+	* glom/dialog_existing_or_new.[cc|h]:
+	* glom/dialog_invalid_data.[cc|h]:
+	* glom/libglom/connectionpool_backends/backend.cc:
+	* glom/libglom/connectionpool_backends/postgres.cc:
+	* glom/libglom/connectionpool_backends/postgres_self.cc:
+	* glom/libglom/connectionpool_backends/sqlite.cc:
+	* glom/utils_ui.cc: Use array notation when initializing constant
+	character arrays.
+
 2010-10-08  David King  <davidk@openismus.com>
 
 	Remove some unnecessary includes
