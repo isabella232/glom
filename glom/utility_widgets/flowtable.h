@@ -40,8 +40,6 @@ public:
   void insert_before(Gtk::Widget& first, Gtk::Widget& second, Gtk::Widget& before, bool expand_second);
   void insert_before(Gtk::Widget& first, Gtk::Widget& before, bool expand);
 
-  virtual void remove(Gtk::Widget& first); //override
-
   /** Show extra UI that is useful in RAD tools:
    */
   virtual void set_design_mode(bool value = true);
@@ -56,37 +54,8 @@ protected:
    */
   bool get_column_for_first_widget(const Gtk::Widget& first, guint& column) const;
 
-  class FlowTableItem
-  {
-  public:
-    FlowTableItem(Gtk::Widget* first, FlowTable* flowtable);
-    FlowTableItem(Gtk::Widget* first, Gtk::Widget* second, FlowTable* flowtable);
-
-    Gtk::HBox* m_hbox;
-    Gtk::Widget* m_first;
-    Gtk::Widget* m_second;
-
-    bool operator==(Gtk::Widget* child) const
-    {
-      return (child == m_first || child == m_second);
-    }
-  };
-
 private:
-  void insert_before(FlowTableItem& item, Gtk::Widget& before, bool expand_rightmost);
 
-  int get_item_requested_height(const FlowTableItem& item) const;
-  void get_item_requested_width(const FlowTableItem& item, int& first, int& second) const;
-
-  bool child_is_visible(const Gtk::Widget* widget) const;
-
-
-protected:
-  typedef std::vector<FlowTableItem> type_vecChildren;
-  type_vecChildren m_children;
-
-
-private:
   bool m_design_mode;
 
   //For drawing:

@@ -27,23 +27,6 @@
 namespace Glom
 {
 
-FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, FlowTable* /* flowtable */)
-: m_hbox(0),
-  m_first(first),
-  m_second(0)
-{
-
-}
-
-FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, Gtk::Widget* second, FlowTable* /* flowtable */)
-: m_hbox(0),
-  m_first(first),
-  m_second(second)
-{
-
-}
-
-
 FlowTable::FlowTable()
 :
   m_design_mode(false)
@@ -63,11 +46,7 @@ void FlowTable::set_design_mode(bool value)
 
 void FlowTable::add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second)
 {
-  FlowTableItem item(&first, &second, this);
-
   Gtk::HBox* hbox = Gtk::manage(new Gtk::HBox(false, get_horizontal_spacing()));
-  item.m_hbox = hbox;
-  m_children.push_back(item);
 
   hbox->pack_start(first, Gtk::PACK_SHRINK);
   hbox->pack_start(second, expand_second ? Gtk::PACK_EXPAND_WIDGET : Gtk::PACK_SHRINK);
@@ -79,131 +58,34 @@ void FlowTable::add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second)
 
 void FlowTable::add(Gtk::Widget& first, bool expand)
 {
-  FlowTableItem item(&first, this);
-
-  m_children.push_back(item);
-
   first.set_halign(expand ? Gtk::ALIGN_FILL : Gtk::ALIGN_START);
   append_child(first);
 }
 
-void FlowTable::insert_before(Gtk::Widget& first, Gtk::Widget& before, bool expand)
+void FlowTable::insert_before(Gtk::Widget& /* first */, Gtk::Widget& /* before */, bool /* expand */)
 {
-  FlowTableItem item(&first, this);
-  insert_before(item, before, expand);
+  std::cerr << G_STRFUNC << ": Unimplemented." << std::endl;
+  //FlowTableItem item(&first, this);
+  //TODO: insert_before(item, before, expand);
 }
 
-void FlowTable::insert_before(Gtk::Widget& first, Gtk::Widget& second, Gtk::Widget& before, bool expand_second)
+void FlowTable::insert_before(Gtk::Widget& /* first */, Gtk::Widget& /* second */, Gtk::Widget& /* before */, bool /* expand_second */)
 {
-  FlowTableItem item(&first, &second, this);
-  insert_before(item, before, expand_second);
-}
-
-void FlowTable::insert_before(FlowTableItem& /* item */, Gtk::Widget& /* before */, bool /* expand_rightmost */)
-{
-  std::cerr << G_STRFUNC << ": Not implemented" << std::endl;
-  //TODO:
-  /*
-  bool found = false;
-  std::vector<FlowTableItem>::iterator pos;
-  for(pos = m_children.begin(); pos != m_children.end(); ++pos)
-  {
-    FlowTableItem* item = &(*pos);
-    if(item->m_first)
-    {
-      if(item->m_first->gobj() == before.gobj())
-      {
-        found = true;
-        break;
-      }
-
-      Gtk::Alignment* alignment = dynamic_cast<Gtk::Alignment*>(item->m_first);
-      if(alignment && alignment->get_child()->gobj() == before.gobj())
-      {
-        found = true;
-        break;
-      }
-    }
-
-    if(item->m_second)
-    {
-      if(item->m_second->gobj() == before.gobj())
-      {
-        found = true;
-        break;
-      }
-      Gtk::Alignment* alignment = dynamic_cast<Gtk::Alignment*>(item->m_second);
-      if(alignment && alignment->get_child()->gobj() == before.gobj())
-      {
-        found = true;
-        break;
-      }
-    }
-  }
-
-  gtk_widget_set_parent(GTK_WIDGET(item.m_first->gobj()), GTK_WIDGET(gobj()));
-  if(item.m_second)
-  {
-    gtk_widget_set_parent(GTK_WIDGET(item.m_second->gobj()), GTK_WIDGET(gobj()));
-  }
-
-  if(pos == m_children.end())
-    m_children.push_back(item);
-  else
-    m_children.insert(pos, item);
-  */
-}
-
-bool FlowTable::child_is_visible(const Gtk::Widget* widget) const
-{
-  #if GTKMM_MINOR_VERSION >= 18
-  return widget && widget->get_visible();
-  #else
-  return widget && widget->is_visible();
-  #endif
-}
-
-void FlowTable::remove(Gtk::Widget& first)
-{
-  //Gtk::Container::remove() does this too. We need to do it here too:
-  if(first.is_managed_())
-    first.reference();
-
-  for(type_vecChildren::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
-  {
-    if((iter->m_first == &first) && (iter->m_second == 0))
-    {
-      //g_warning("FlowTable::remove(): removing %10X", (guint)&first);
-
-      m_children.erase(iter);
-      break;
-    }
-  }
+  std::cerr << G_STRFUNC << ": Unimplemented." << std::endl;
+  //FlowTableItem item(&first, &second, this);
+  //TODO: insert_before(item, before, expand_second);
 }
 
 void FlowTable::remove_all()
 {
-  for(type_vecChildren::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+  typedef std::vector<Widget*> type_children;
+  type_children children = get_children();
+  while(!children.empty())
   {
-    if(iter->m_first)
-    {
-      Gtk::Widget* widget = iter->m_first;
-
-      if(widget->is_managed_())
-        widget->reference();
-    }
-
-    if(iter->m_second)
-    {
-      Gtk::Widget* widget = iter->m_second;
-
-      if(widget->is_managed_())
-        widget->reference();
-    }
-
+    Gtk::Widget* widget = children[0];
+    remove(*widget);
+    children = get_children();
   }
-
-  m_children.clear();
 }
 
 bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& column) const
@@ -214,29 +96,37 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
   if(get_lines() == 0)
     return false;
 
-  for(type_vecChildren::const_iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+  typedef std::vector<const Widget*> type_children;
+  type_children children = get_children();
+  for(type_children::const_iterator iter = children.begin(); iter != children.end(); ++iter)
   {
-    const FlowTableItem& item = *iter;
+    const Gtk::Widget* widget = *iter;
+    if(!widget)
+      continue;
 
-    if((&first == item.m_first))
+    const Gtk::Widget* child = 0;
+
+    if(widget == &first) //It must be a single item.
+      child = widget;
+    else
     {
-      Gtk::Widget* child = 0;
-      if(item.m_hbox) //The first and second widgets are inside an HBox
+      const Gtk::HBox* hbox = dynamic_cast<const Gtk::HBox*>(widget);
+      if(hbox) //The first and second widgets are inside an HBox
       {
-        child = item.m_hbox;
+        type_children box_children = hbox->get_children();
+        if(!box_children.empty())
+          child = box_children[0]; //TODO: Is this definitely the left-most one?
       }
-      else //It must be a single item.
-        child = item.m_first;
 
-      if(!child)
-        return false;
+      if(child)
+      {
+        int width_min = 0;
+        int width_natural = 0;
+        child->get_preferred_width(width_min, width_natural);
+        column = get_child_line(*child, width_natural);
 
-      int width_min = 0;
-      int width_natural = 0;
-      child->get_preferred_width(width_min, width_natural);
-      column = get_child_line(*child, width_natural);
-
-      return true;
+        return true;
+      }
     }
   }
 

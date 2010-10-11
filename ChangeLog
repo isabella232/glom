@@ -1,5 +1,12 @@
 2010-10-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Details: Use of GtkSpreadTable: Remove FlowTable:m_children.
+
+	* glom/utility_widgets/flowtable.[h|cc]: Remove m_children and remove the
+  remove() override, simplifying things.
+
+2010-10-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Details: Use of GtkSpreadTable: Use specified alignement again.
 
 	* glom/mode_data/flowtablewithfields.cc:
