@@ -41,7 +41,7 @@ public:
 
 
   //[] notation:
-  long len() const;
+  type_map_relationships::size_type len() const;
   boost::python::object getitem(const boost::python::object& item);
 
   friend class PyGlomRecord;

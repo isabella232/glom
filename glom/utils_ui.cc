@@ -280,7 +280,7 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_pixbuf_for_gda_value(const Gnome::Gda::Valu
         guint8* puiData = (guint8*)buffer_binary;
         try
         {
-          refPixbufLoader->write(puiData, (glong)buffer_binary_length);
+          refPixbufLoader->write(puiData, static_cast<gsize>(buffer_binary_length));
           result = refPixbufLoader->get_pixbuf();
 
           refPixbufLoader->close(); //This throws if write() threw, so it must be inside the try block.
