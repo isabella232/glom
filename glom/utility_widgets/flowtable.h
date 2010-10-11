@@ -65,8 +65,6 @@ protected:
     Gtk::HBox* m_hbox;
     Gtk::Widget* m_first;
     Gtk::Widget* m_second;
-    bool m_expand_first_full;
-    bool m_expand_second;
 
     bool operator==(Gtk::Widget* child) const
     {
@@ -75,7 +73,7 @@ protected:
   };
 
 private:
-  void insert_before(FlowTableItem& item, Gtk::Widget& before);
+  void insert_before(FlowTableItem& item, Gtk::Widget& before, bool expand_rightmost);
 
   int get_item_requested_height(const FlowTableItem& item) const;
   void get_item_requested_width(const FlowTableItem& item, int& first, int& second) const;

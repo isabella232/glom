@@ -614,7 +614,7 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
 
   Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
   if(widget)
-    insert_before (*widget_to_add, *widget, expand);
+    insert_before(*widget_to_add, *widget, expand);
   else
     add(*widget_to_add, expand);
 

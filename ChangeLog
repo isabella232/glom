@@ -1,5 +1,16 @@
 2010-10-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Details: Use of GtkSpreadTable: Use specified alignement again.
+
+	* glom/mode_data/flowtablewithfields.cc:
+	* glom/utility_widgets/flowtable.[h|cc]: FlowTableItem: Remove the
+  m_expand_first_full and m_expand_second members, because we no longer need
+  to remember that information.
+  add(): Use set_halign() to specify fill/left depending on the expand
+  choice.
+
+2010-10-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Details: Use of GtkSpreadTable: Align widgets again.
 
 	* glom/mode_data/flowtablewithfields.cc: apply_size_groups_to_labels():

@@ -30,9 +30,7 @@ namespace Glom
 FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, FlowTable* /* flowtable */)
 : m_hbox(0),
   m_first(first),
-  m_second(0),
-  m_expand_first_full(false),
-  m_expand_second(false)
+  m_second(0)
 {
 
 }
@@ -40,9 +38,7 @@ FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, FlowTable* /* flowta
 FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, Gtk::Widget* second, FlowTable* /* flowtable */)
 : m_hbox(0),
   m_first(first),
-  m_second(second),
-  m_expand_first_full(false),
-  m_expand_second(false)
+  m_second(second)
 {
 
 }
@@ -71,8 +67,6 @@ void FlowTable::add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second)
 
   Gtk::HBox* hbox = Gtk::manage(new Gtk::HBox(false, get_horizontal_spacing()));
   item.m_hbox = hbox;
-
-  item.m_expand_second = expand_second; //Expand to fill the width for all of the second item.
   m_children.push_back(item);
 
   hbox->pack_start(first, Gtk::PACK_SHRINK);
@@ -87,28 +81,25 @@ void FlowTable::add(Gtk::Widget& first, bool expand)
 {
   FlowTableItem item(&first, this);
 
-  item.m_expand_first_full = expand; //Expand to fill the width for first and second.
   m_children.push_back(item);
 
-  first.set_halign(Gtk::ALIGN_FILL);
-  append_child(first); //TODO: expand
+  first.set_halign(expand ? Gtk::ALIGN_FILL : Gtk::ALIGN_START);
+  append_child(first);
 }
 
 void FlowTable::insert_before(Gtk::Widget& first, Gtk::Widget& before, bool expand)
 {
   FlowTableItem item(&first, this);
-  item.m_expand_first_full = expand;
-  insert_before(item, before);
+  insert_before(item, before, expand);
 }
 
 void FlowTable::insert_before(Gtk::Widget& first, Gtk::Widget& second, Gtk::Widget& before, bool expand_second)
 {
   FlowTableItem item(&first, &second, this);
-  item.m_expand_second = expand_second;
-  insert_before(item, before);
+  insert_before(item, before, expand_second);
 }
 
-void FlowTable::insert_before(FlowTableItem& /* item */, Gtk::Widget& /* before */)
+void FlowTable::insert_before(FlowTableItem& /* item */, Gtk::Widget& /* before */, bool /* expand_rightmost */)
 {
   std::cerr << G_STRFUNC << ": Not implemented" << std::endl;
   //TODO:
@@ -229,7 +220,14 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
 
     if((&first == item.m_first))
     {
-      Gtk::Widget* child = item.m_hbox;
+      Gtk::Widget* child = 0;
+      if(item.m_hbox) //The first and second widgets are inside an HBox
+      {
+        child = item.m_hbox;
+      }
+      else //It must be a single item.
+        child = item.m_first;
+
       if(!child)
         return false;
 
