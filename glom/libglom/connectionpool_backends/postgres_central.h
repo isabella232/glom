@@ -40,11 +40,11 @@ public:
    * Other ports will be tried if the specified port fails.
    */
   void set_host(const Glib::ustring& value);
-  void set_port(unsigned int port);
+  void set_port(int port);
   void set_try_other_ports(bool val);
 
   Glib::ustring get_host() const;
-  unsigned int get_port() const;
+  int get_port() const;
   bool get_try_other_ports() const;
 
 private:

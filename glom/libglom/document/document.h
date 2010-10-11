@@ -127,7 +127,7 @@ public:
 
   void set_connection_server(const Glib::ustring& strVal);
   void set_connection_database(const Glib::ustring& strVal);
-  void set_connection_port(unsigned int port_number);
+  void set_connection_port(int port_number);
   void set_connection_try_other_ports(bool val);
 
  /** Temporarily set a username in the document.
@@ -147,7 +147,7 @@ public:
 
   Glib::ustring get_connection_server() const;
   Glib::ustring get_connection_database() const;
-  unsigned int get_connection_port() const;
+  int get_connection_port() const;
   bool get_connection_try_other_ports() const;
 
   /** Retrieve a username previously set in the document.
@@ -514,7 +514,7 @@ private:
 
   Glib::ustring m_connection_server, m_connection_database;
   Glib::ustring m_connection_user; //Don't save the user.
-  unsigned int m_connection_port; //0 means any port. Ignored when self-hosting (which may use a different port each time).
+  int m_connection_port; //0 means any port. Ignored when self-hosting (which may use a different port each time).
   bool m_connection_try_other_ports; //Set to false for self-hosted or browsed-from-network documents.
 
   class LayoutInfo

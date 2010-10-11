@@ -1,14 +1,3 @@
-2010-10-11  David King  <davidk@openismus.com>
-
-	Use unsigned integers where appropriate
-
-	* glom/libglom/connectionpool_backends/postgres.[cc|h]:
-	* glom/libglom/connectionpool_backends/postgres_central.[cc|h]:
-	* glom/libglom/connectionpool_backends/postgres_self.[cc|h]:
-	* glom/libglom/data_structure/glomconversions.[cc|h]:
-	* glom/libglom/document/document.[cc|h]: Use unsigned integers where
-	the variable cannot be negative.
-
 2010-10-08  David King  <davidk@openismus.com>
 
 	Remove some unnecessary includes

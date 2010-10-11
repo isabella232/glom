@@ -56,9 +56,9 @@ namespace Glom
 {
 
 
-unsigned int Conversions::get_stringstream_precision_default()
+int Conversions::get_stringstream_precision_default()
 {
-    static const unsigned int stringstream_precision_default = 15;
+    static const int stringstream_precision_default = 15;
     return stringstream_precision_default;
 }
 

@@ -32,7 +32,7 @@ namespace Glom
 
 namespace Conversions
 {
-  unsigned int get_stringstream_precision_default();
+  int get_stringstream_precision_default();
 
   ///Get text for display to the user.
   Glib::ustring get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const NumericFormat& numeric_format = NumericFormat());
