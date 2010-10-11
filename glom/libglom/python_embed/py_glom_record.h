@@ -52,13 +52,13 @@ public:
 
   boost::python::object get_related();
 
-  //[] notation:
-  long len() const;
-  boost::python::object getitem(const boost::python::object& item);
-  void setitem(const boost::python::object& /* key */, const boost::python::object& /* value */);
-
   //Available, for instance, in python via record["name_first"]
   typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_field_values;
+
+  //[] notation:
+  type_map_field_values::size_type len() const;
+  boost::python::object getitem(const boost::python::object& item);
+  void setitem(const boost::python::object& /* key */, const boost::python::object& /* value */);
 
   void set_fields(const PyGlomRecord::type_map_field_values& field_values,
     Document* document,

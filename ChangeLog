@@ -1,5 +1,16 @@
 2010-10-11  David King  <davidk@openismus.com>
 
+	Change some uses of long to more appropriate types
+
+	* glom/libglom/python_embed/py_glom_record.[cc|h]:
+	* glom/libglom/python_embed/py_glom_related.[cc|h]:
+	* glom/libglom/python_embed/py_glom_relatedrecord.[cc|h]:
+	* glom/libglom/utils.cc:
+	* glom/utility_widgets/db_addel/glom_db_treemodel.cc:
+	* glom/utils_ui.cc: Use other types than long where appropriate.
+
+2010-10-11  David King  <davidk@openismus.com>
+
 	Use array notation where appropriate
 
 	* glom/dialog_connection.[cc|h]:
