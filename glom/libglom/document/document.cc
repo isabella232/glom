@@ -378,7 +378,7 @@ Glib::ustring Document::get_connection_database() const
   return m_connection_database;
 }
 
-int Document::get_connection_port() const
+unsigned int Document::get_connection_port() const
 {
   return m_connection_port;
 }
@@ -425,7 +425,7 @@ void Document::set_connection_database(const Glib::ustring& strVal)
   }
 }
 
-void Document::set_connection_port(int port_number)
+void Document::set_connection_port(unsigned int port_number)
 {
   if(port_number != m_connection_port)
   {

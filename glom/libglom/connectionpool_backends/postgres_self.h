@@ -47,7 +47,7 @@ public:
    * @result The port number of the self-hosted server, or 0 if it is not
    * running.
    */
-  int get_port() const;
+  unsigned int get_port() const;
 
   /** Try to install postgres on the distro, though this will require a
    * distro-specific patch to the implementation.
@@ -69,7 +69,7 @@ private:
   /** Examine ports one by one, starting at @a starting_port, in increasing
    * order, and return the first one that is available.
    */
-  static int discover_first_free_port(int start_port, int end_port);
+  static unsigned int discover_first_free_port(unsigned int start_port, unsigned int end_port);
 
   /** Run the command-line with the --version option to discover what version
    * of PostgreSQL is installed, so we can use the appropriate configuration
