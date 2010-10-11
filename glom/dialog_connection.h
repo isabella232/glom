@@ -36,7 +36,7 @@ class Dialog_Connection
     public Base_DB
 {
 public:
-  static const char* glade_id;
+  static const char glade_id[];
   static const bool glade_developer;
 
   Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);

@@ -247,8 +247,8 @@ bool Backend::drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection
 //this once instead of twice when changing the primary key. armin.
 bool Backend::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields, std::auto_ptr<Glib::Error>& error)
 {
-  static const char* TRANSACTION_NAME = "glom_change_columns_transaction";
-  static const gchar* TEMP_COLUMN_NAME = "glom_temp_column"; // TODO: Find a unique name.
+  static const char TRANSACTION_NAME[] = "glom_change_columns_transaction";
+  static const char TEMP_COLUMN_NAME[] = "glom_temp_column"; // TODO: Find a unique name.
 
   if(!begin_transaction(connection, TRANSACTION_NAME, Gnome::Gda::TRANSACTION_ISOLATION_UNKNOWN, error)) return false; // TODO: What does the transaction isolation do?
 
