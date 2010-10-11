@@ -56,7 +56,7 @@ void PostgresCentralHosted::set_host(const Glib::ustring& value)
   }
 }
 
-void PostgresCentralHosted::set_port(int port)
+void PostgresCentralHosted::set_port(unsigned int port)
 {
   m_port = port;
 }
@@ -71,7 +71,7 @@ Glib::ustring PostgresCentralHosted::get_host() const
   return m_host;
 }
 
-int PostgresCentralHosted::get_port() const
+unsigned int PostgresCentralHosted::get_port() const
 {
   return m_port;
 }

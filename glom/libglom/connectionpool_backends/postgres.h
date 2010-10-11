@@ -111,10 +111,10 @@ protected:
   bool save_password_to_pgpass(const Glib::ustring username, const Glib::ustring& password, std::string& filepath_previous, std::string& filepath_original);
 
 protected:
-  static Glib::ustring port_as_string(int port_num);
+  static Glib::ustring port_as_string(unsigned int port_num);
 
   Glib::ustring m_host;
-  int m_port;
+  unsigned int m_port;
 
 private:
   float m_postgres_server_version;

@@ -541,10 +541,10 @@ std::string Postgres::get_path_to_postgres_executable(const std::string& program
 }
 
 
-Glib::ustring Postgres::port_as_string(int port_num)
+Glib::ustring Postgres::port_as_string(unsigned int port_num)
 {
   Glib::ustring result;
-  char* cresult = g_strdup_printf("%d", port_num);
+  char* cresult = g_strdup_printf("%u", port_num);
   if(cresult)
     result = cresult;
   g_free(cresult);
