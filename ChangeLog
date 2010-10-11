@@ -1,3 +1,13 @@
+2010-10-11  Murray Cumming  <murrayc@murrayc.com>
+
+	Details: Use of GtkSpreadTable: Align widgets again.
+
+	* glom/mode_data/flowtablewithfields.cc: apply_size_groups_to_labels():
+  Re-enable the code to align adjacent widgets.
+	* glom/utility_widgets/flowtable.[h|cc]: get_column_for_first_widget():
+  Bring this code back, this time using the new
+  gtk_spread_table_get_child_line() function.
+
 2010-10-08  Murray Cumming  <murrayc@murrayc.com>
 
 	Details: FlowTable: Initial use of GtkSpreadTable instead of custom code.

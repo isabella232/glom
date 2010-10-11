@@ -28,7 +28,8 @@ namespace Glom
 {
 
 FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, FlowTable* /* flowtable */)
-: m_first(first),
+: m_hbox(0),
+  m_first(first),
   m_second(0),
   m_expand_first_full(false),
   m_expand_second(false)
@@ -37,7 +38,8 @@ FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, FlowTable* /* flowta
 }
 
 FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, Gtk::Widget* second, FlowTable* /* flowtable */)
-: m_first(first),
+: m_hbox(0),
+  m_first(first),
   m_second(second),
   m_expand_first_full(false),
   m_expand_second(false)
@@ -68,6 +70,7 @@ void FlowTable::add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second)
   FlowTableItem item(&first, &second, this);
 
   Gtk::HBox* hbox = Gtk::manage(new Gtk::HBox(false, get_horizontal_spacing()));
+  item.m_hbox = hbox;
 
   item.m_expand_second = expand_second; //Expand to fill the width for all of the second item.
   m_children.push_back(item);
@@ -175,8 +178,6 @@ void FlowTable::remove(Gtk::Widget& first)
   if(first.is_managed_())
     first.reference();
 
-  gtk_widget_unparent(first.gobj());
-
   for(type_vecChildren::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
   {
     if((iter->m_first == &first) && (iter->m_second == 0))
@@ -191,7 +192,6 @@ void FlowTable::remove(Gtk::Widget& first)
 
 void FlowTable::remove_all()
 {
-
   for(type_vecChildren::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
   {
     if(iter->m_first)
@@ -200,8 +200,6 @@ void FlowTable::remove_all()
 
       if(widget->is_managed_())
         widget->reference();
-
-      gtk_widget_unparent(GTK_WIDGET(iter->m_first->gobj()));
     }
 
     if(iter->m_second)
@@ -210,8 +208,6 @@ void FlowTable::remove_all()
 
       if(widget->is_managed_())
         widget->reference();
-
-      gtk_widget_unparent(GTK_WIDGET(iter->m_second->gobj()));
     }
 
   }
@@ -219,5 +215,34 @@ void FlowTable::remove_all()
   m_children.clear();
 }
 
+bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& column) const
+{
+  //Initialize output parameter:
+  column = 0;
+
+  if(get_lines() == 0)
+    return false;
+
+  for(type_vecChildren::const_iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+  {
+    const FlowTableItem& item = *iter;
+
+    if((&first == item.m_first))
+    {
+      Gtk::Widget* child = item.m_hbox;
+      if(!child)
+        return false;
+
+      int width_min = 0;
+      int width_natural = 0;
+      child->get_preferred_width(width_min, width_natural);
+      column = get_child_line(*child, width_natural);
+
+      return true;
+    }
+  }
+
+  return false;
+}
 
 } //namespace Glom

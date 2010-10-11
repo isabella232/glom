@@ -56,7 +56,6 @@ FlowTableWithFields::FlowTableWithFields(const Glib::ustring& table_name)
   m_placeholder(0),
   m_table_name(table_name)
 {
-
 }
 
 FlowTableWithFields::~FlowTableWithFields()
@@ -1325,10 +1324,10 @@ void FlowTableWithFields::apply_size_groups_to_labels(const type_vec_sizegroups&
     //Only align labels in the first column, because items in separate columns
     //couldn't be aligned vertically anyway, and this would cause extra space.
     //TODO: Use a different SizeGroup for items in 2nd columns?
-    /* TODO:
     guint column = 0;
-    const bool column_allocated = get_column_for_first_widget(*label_parent, column);
-    if(!column_allocated)
+    const bool ready = get_column_for_first_widget(*label_parent, column);
+    if(!ready)
+      continue;
 
     if(column >= m_vec_size_groups.size())
       continue;
@@ -1339,7 +1338,6 @@ void FlowTableWithFields::apply_size_groups_to_labels(const type_vec_sizegroups&
       size_group->add_widget(*label);
       info.m_first_in_sizegroup = size_group; //Remember it so we can remove it later.
     }
-    */
   }
 }
 

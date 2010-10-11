@@ -48,11 +48,13 @@ public:
 
   void remove_all();
 
-private:
-
-  //Overrides:
-
 protected:
+
+  /** Get the column in which the specified "first" widget is placed.
+   * result false if the widget is not one of the "first" widgets, or
+   * if has not yet been placed in a column, because the size has not yet been requested.
+   */
+  bool get_column_for_first_widget(const Gtk::Widget& first, guint& column) const;
 
   class FlowTableItem
   {
@@ -60,23 +62,16 @@ protected:
     FlowTableItem(Gtk::Widget* first, FlowTable* flowtable);
     FlowTableItem(Gtk::Widget* first, Gtk::Widget* second, FlowTable* flowtable);
 
+    Gtk::HBox* m_hbox;
     Gtk::Widget* m_first;
     Gtk::Widget* m_second;
     bool m_expand_first_full;
     bool m_expand_second;
 
-    //The column that the widgets are currently in, due to the size/allocation.
-    bool m_has_allocated_column;
-    guint m_allocated_column;
-
     bool operator==(Gtk::Widget* child) const
     {
       return (child == m_first || child == m_second);
     }
-
-    //Cache the positions, so we can use them in on_expose_event:
-    Gtk::Allocation m_first_allocation;
-    Gtk::Allocation m_second_allocation;
   };
 
 private:
