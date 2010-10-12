@@ -1,3 +1,10 @@
+2010-10-12  Murray Cumming  <murrayc@murrayc.com>
+
+	FlowTable: Implement insert_before().
+
+	* glom/utility_widgets/flowtable.[h|cc]: Re-added insert_before() which
+  we will need for drag and drop support.
+
 2010-10-11  Murray Cumming  <murrayc@murrayc.com>
 
 	Details: Use of GtkSpreadTable: Remove FlowTable:m_children.

@@ -46,34 +46,83 @@ void FlowTable::set_design_mode(bool value)
 
 void FlowTable::add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second)
 {
-  Gtk::HBox* hbox = Gtk::manage(new Gtk::HBox(false, get_horizontal_spacing()));
-
-  hbox->pack_start(first, Gtk::PACK_SHRINK);
-  hbox->pack_start(second, expand_second ? Gtk::PACK_EXPAND_WIDGET : Gtk::PACK_SHRINK);
-  hbox->show();
-
-  hbox->set_halign(Gtk::ALIGN_FILL);
-  append_child(*hbox);
+  insert(&first, &second, -1, expand_second);
 }
 
 void FlowTable::add(Gtk::Widget& first, bool expand)
 {
-  first.set_halign(expand ? Gtk::ALIGN_FILL : Gtk::ALIGN_START);
-  append_child(first);
+  insert(&first, 0 /* second */, -1, expand);
 }
 
-void FlowTable::insert_before(Gtk::Widget& /* first */, Gtk::Widget& /* before */, bool /* expand */)
+void FlowTable::insert(Gtk::Widget* first, Gtk::Widget* second, int index, bool expand)
 {
-  std::cerr << G_STRFUNC << ": Unimplemented." << std::endl;
-  //FlowTableItem item(&first, this);
-  //TODO: insert_before(item, before, expand);
+  if(first && second)
+  {
+    Gtk::HBox* hbox = Gtk::manage(new Gtk::HBox(false, get_horizontal_spacing()));
+
+    hbox->pack_start(*first, Gtk::PACK_SHRINK);
+    hbox->pack_start(*second, expand ? Gtk::PACK_EXPAND_WIDGET : Gtk::PACK_SHRINK);
+    hbox->show();
+
+    hbox->set_halign(Gtk::ALIGN_FILL);
+    insert_child(*hbox, index);
+  }
+  else if(first)
+  {
+    first->set_halign(expand ? Gtk::ALIGN_FILL : Gtk::ALIGN_START);
+    append_child(*first);
+  }
+  else
+  {
+    std::cerr << G_STRFUNC << ": first was null" << std::endl;
+  }
 }
 
-void FlowTable::insert_before(Gtk::Widget& /* first */, Gtk::Widget& /* second */, Gtk::Widget& /* before */, bool /* expand_second */)
+int FlowTable::get_child_index(const Gtk::Widget& first) const
 {
-  std::cerr << G_STRFUNC << ": Unimplemented." << std::endl;
-  //FlowTableItem item(&first, &second, this);
-  //TODO: insert_before(item, before, expand_second);
+  int index = 0;
+
+  typedef std::vector<const Widget*> type_children;
+  const type_children children = get_children();
+  for(type_children::const_iterator iter = children.begin(); iter != children.end(); ++iter)
+  {
+    const Gtk::Widget* widget = *iter;
+    if(!widget)
+      continue;
+
+    if(widget == &first) //It must be a single item.
+      break;
+    else
+    {
+      const Gtk::HBox* hbox = dynamic_cast<const Gtk::HBox*>(widget);
+      if(hbox) //The first and second widgets are inside an HBox
+      {
+        const type_children box_children = hbox->get_children();
+        if(!box_children.empty())
+        {
+          const Gtk::Widget* child_widget = box_children[0]; //TODO: Is this definitely the left-most one?
+          if(child_widget == &first)
+            break;
+        }
+      }
+    }
+
+    ++index;
+  }
+
+  return index;
+}
+
+void FlowTable::insert_before(Gtk::Widget& first, Gtk::Widget& before, bool expand)
+{
+  const int index = get_child_index(before);
+  insert(&first, 0 /* second */, index - 1, expand);
+}
+
+void FlowTable::insert_before(Gtk::Widget& first, Gtk::Widget& second, Gtk::Widget& before, bool expand_second)
+{
+  const int index = get_child_index(before);
+  insert(&first, &second, index - 1, expand_second);
 }
 
 void FlowTable::remove_all()
@@ -97,7 +146,7 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
     return false;
 
   typedef std::vector<const Widget*> type_children;
-  type_children children = get_children();
+  const type_children children = get_children();
   for(type_children::const_iterator iter = children.begin(); iter != children.end(); ++iter)
   {
     const Gtk::Widget* widget = *iter;
@@ -113,7 +162,7 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
       const Gtk::HBox* hbox = dynamic_cast<const Gtk::HBox*>(widget);
       if(hbox) //The first and second widgets are inside an HBox
       {
-        type_children box_children = hbox->get_children();
+        const type_children box_children = hbox->get_children();
         if(!box_children.empty())
           child = box_children[0]; //TODO: Is this definitely the left-most one?
       }

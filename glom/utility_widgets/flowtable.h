@@ -54,7 +54,10 @@ protected:
    */
   bool get_column_for_first_widget(const Gtk::Widget& first, guint& column) const;
 
+  void insert(Gtk::Widget* first, Gtk::Widget* second, int index, bool expand);
+
 private:
+  int get_child_index(const Gtk::Widget& first) const;
 
   bool m_design_mode;
 
