@@ -1034,6 +1034,8 @@ void FlowTableWithFields::change_group(const Glib::ustring& /* id */, const Glib
 
 void FlowTableWithFields::remove_all()
 {
+  FlowTable::remove_all();
+
   m_listFields.clear();
 
   for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
@@ -1042,7 +1044,6 @@ void FlowTableWithFields::remove_all()
     if(pSub)
     {
       remove_view(*iter);
-      remove(*pSub);
 
       delete pSub;
     }
@@ -1055,7 +1056,6 @@ void FlowTableWithFields::remove_all()
   {
     Box_Data_Portal* pPortal = *iter;
     remove_view(pPortal);
-    remove(*pPortal);
     delete pPortal;
   }
   m_portals.clear();

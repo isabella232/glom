@@ -1,5 +1,15 @@
 2010-10-12  Murray Cumming  <murrayc@murrayc.com>
 
+	FlowTable: Avoid some runtime warnings.
+
+	* glom/utility_widgets/flowtable.[h|cc]: Re-add remove().
+  get_column_for_first_widget(): Fix the implementation when it deals with
+  children of the hbox.
+	* glom/mode_data/flowtablewithfields.cc: Destructor: Avoid use of
+  remove(widget), because it is complicated.
+
+2010-10-12  Murray Cumming  <murrayc@murrayc.com>
+
 	FlowTable: Implement insert_before().
 
 	* glom/utility_widgets/flowtable.[h|cc]: Re-added insert_before() which

@@ -44,6 +44,7 @@ public:
    */
   virtual void set_design_mode(bool value = true);
 
+  void remove(Gtk::Widget& first);
   void remove_all();
 
 protected:

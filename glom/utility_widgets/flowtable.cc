@@ -137,6 +137,19 @@ void FlowTable::remove_all()
   }
 }
 
+void FlowTable::remove(Gtk::Widget& first)
+{
+  const int index = get_child_index(first);
+  typedef std::vector<Widget*> type_children;
+  type_children children = get_children();
+  if((index >= 0) && ((guint)index < children.size()))
+  {
+    Gtk::Widget* child = children[index];
+    if(child)
+      Gtk::SpreadTable::remove(*child);
+  }
+}
+
 bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& column) const
 {
   //Initialize output parameter:
@@ -153,6 +166,7 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
     if(!widget)
       continue;
 
+    //Get the widget that GtkSpreadTable thinks of as the child:
     const Gtk::Widget* child = 0;
 
     if(widget == &first) //It must be a single item.
@@ -164,7 +178,11 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
       {
         const type_children box_children = hbox->get_children();
         if(!box_children.empty())
-          child = box_children[0]; //TODO: Is this definitely the left-most one?
+        {
+          const Gtk::Widget* child_widget = box_children[0]; //TODO: Is this definitely the left-most one?
+          if(child_widget == &first)
+            child = hbox;
+        }
       }
 
       if(child)
