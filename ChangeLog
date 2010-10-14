@@ -1,3 +1,11 @@
+2010-10-14  Murray Cumming  <murrayc@murrayc.com>
+
+	FlowTable: Fix child HBox memory management.
+
+	* glom/utility_widgets/flowtable.[h|cc]: insert(), remove_all(), remove(),
+  destructor: Remember the implementation-only Gtk::HBox widgets and delete
+  them when appropriate. A simple Gtk::manage() was not enough for this.
+
 2010-10-12  Murray Cumming  <murrayc@murrayc.com>
 
 	FlowTable: Avoid some runtime warnings.

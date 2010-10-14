@@ -35,6 +35,55 @@ FlowTable::FlowTable()
 
 FlowTable::~FlowTable()
 {
+  for(type_list_hboxes::iterator iter = m_list_hboxes.begin(); iter != m_list_hboxes.end(); ++iter)
+  {
+    Gtk::HBox* hbox = *iter;
+    delete hbox;
+  }
+}
+
+Gtk::HBox* FlowTable::get_parent_hbox(Gtk::Widget* first)
+{
+  typedef std::vector<Widget*> type_children;
+  type_children children = get_children();
+  for(type_children::iterator iter = children.begin(); iter != children.end(); ++iter)
+  {
+    Gtk::Widget* widget = *iter;
+    if(!widget)
+      continue;
+
+    if(widget == first) //It must be a single item.
+      return 0; //It has no HBox parent.
+    else
+    {
+      Gtk::HBox* hbox = dynamic_cast<Gtk::HBox*>(widget);
+      if(hbox) //The first and second widgets are inside an HBox
+      {
+        const type_children box_children = hbox->get_children();
+        if(!box_children.empty())
+        {
+          const Gtk::Widget* child_widget = box_children[0]; //TODO: Is this definitely the left-most one?
+          if(child_widget == first)
+            return hbox;
+        }
+      }
+    }
+  }
+
+  return 0;
+}
+
+void FlowTable::delete_and_forget_hbox(Gtk::HBox* hbox)
+{
+  for(type_list_hboxes::iterator iter = m_list_hboxes.begin(); iter != m_list_hboxes.end(); ++iter)
+  {
+    Gtk::HBox* this_hbox = *iter;
+    if(hbox == this_hbox)
+    {
+      delete hbox;
+      m_list_hboxes.erase(iter);
+    }
+  }
 }
 
 void FlowTable::set_design_mode(bool value)
@@ -58,7 +107,8 @@ void FlowTable::insert(Gtk::Widget* first, Gtk::Widget* second, int index, bool 
 {
   if(first && second)
   {
-    Gtk::HBox* hbox = Gtk::manage(new Gtk::HBox(false, get_horizontal_spacing()));
+    Gtk::HBox* hbox = new Gtk::HBox(false, get_horizontal_spacing());
+    m_list_hboxes.push_back(hbox); //So we can delete it whenever necessary.
 
     hbox->pack_start(*first, Gtk::PACK_SHRINK);
     hbox->pack_start(*second, expand ? Gtk::PACK_EXPAND_WIDGET : Gtk::PACK_SHRINK);
@@ -139,15 +189,27 @@ void FlowTable::remove_all()
 
 void FlowTable::remove(Gtk::Widget& first)
 {
-  const int index = get_child_index(first);
-  typedef std::vector<Widget*> type_children;
-  type_children children = get_children();
-  if((index >= 0) && ((guint)index < children.size()))
+  //Handle widgets that were added to an HBox:
+  Gtk::HBox* parent = get_parent_hbox(&first);
+  if(parent)
   {
-    Gtk::Widget* child = children[index];
-    if(child)
-      Gtk::SpreadTable::remove(*child);
+    //Remove its children because the API hides the fact that they are inside the HBox.
+    //Otherwise they could even be deleted by the HBox.
+    typedef std::vector<Widget*> type_children;
+    type_children children = parent->get_children();
+    while(!children.empty())
+    {
+      Gtk::Widget* widget = children[0];
+      remove(*widget);
+      children = get_children();
+    }
+
+    Gtk::SpreadTable::remove(*parent);
+    delete_and_forget_hbox(parent);
+    return;
   }
+
+  Gtk::SpreadTable::remove(first);
 }
 
 bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& column) const

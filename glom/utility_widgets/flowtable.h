@@ -60,10 +60,17 @@ protected:
 private:
   int get_child_index(const Gtk::Widget& first) const;
 
+  Gtk::HBox* get_parent_hbox(Gtk::Widget* first);
+  void delete_and_forget_hbox(Gtk::HBox* hbox);
+
   bool m_design_mode;
 
   //For drawing:
   Glib::RefPtr<Gdk::Window> m_refGdkWindow;
+
+  //We remember the HBoxes so we can delete them when the are no longer used.
+  typedef std::list<Gtk::HBox*> type_list_hboxes;
+  type_list_hboxes m_list_hboxes;
 };
 
 } //namespace Glom
