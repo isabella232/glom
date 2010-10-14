@@ -1,3 +1,12 @@
+2010-10-14  Murray Cumming  <murrayc@murrayc.com>
+
+	Build fixes after recent commits.
+
+	* glom/libglom/db_utils.cc:
+	* glom/libglom/utils.cc:
+	* glom/mode_data/datawidget/cellrenderer_dblist.cc: Adde back some
+  includes of iostream and fix a size type.
+
 2010-10-11  David King  <davidk@openismus.com>
 
 	Change some uses of long to more appropriate types

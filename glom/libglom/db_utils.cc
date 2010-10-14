@@ -25,8 +25,12 @@
 #include <libglom/privs.h>
 #include <libglom/data_structure/parameternamegenerator.h>
 #include <libglom/utils.h>
+#include <libgdamm/value.h>
 #include <libgda/libgda.h> // For gda_g_type_from_string
 #include <glibmm/i18n.h>
+
+
+#include <iostream>
 
 namespace Glom
 {

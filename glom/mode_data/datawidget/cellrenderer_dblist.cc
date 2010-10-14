@@ -23,6 +23,7 @@
 #include <glom/mode_data/datawidget/treemodel_db_withextratext.h>
 #include <gtkmm.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <iostream>
 
 
 namespace Glom
@@ -66,7 +67,7 @@ void CellRendererDbList::set_choices_related(const Document* document, const sha
   //Show model in the view:
   property_model() = model;
 
-  Glib::RefPtr<DbTreeModelWithExtraText> model_db = 
+  Glib::RefPtr<DbTreeModelWithExtraText> model_db =
     Glib::RefPtr<DbTreeModelWithExtraText>::cast_dynamic(model);
   if(model_db)
     property_text_column() = model_db->get_text_column();
@@ -75,7 +76,7 @@ void CellRendererDbList::set_choices_related(const Document* document, const sha
     std::cerr << G_STRFUNC << ": The model is not a DbTreeModelWithExtraText." << std::endl;
     return;
   }
-  
+
   property_editable() = true; //It would be useless if we couldn't edit it.
 
   //The other cells are added in on_editing_started(),
@@ -97,7 +98,7 @@ void CellRendererDbList::repack_cells_fixed(Gtk::CellLayout* combobox)
   {
     std::cerr << G_STRFUNC << ": widget is null." << std::endl;
   }
-  
+
   if(!m_repacked_first_cell)
   {
     //Get the default column, created by set_text_column():
@@ -155,10 +156,10 @@ void CellRendererDbList::repack_cells_related(Gtk::CellLayout* combobox)
   {
     std::cerr << G_STRFUNC << ": widget is null." << std::endl;
   }
-  
+
   const std::list<Gtk::CellRenderer*> cells = combobox->get_cells();
   const guint initial_cells_count = cells.size();
-  
+
   guint i = 0;
   for(type_vec_const_layout_items::const_iterator iter = m_db_layout_items.begin(); iter != m_db_layout_items.end(); ++iter)
   {
@@ -180,7 +181,7 @@ void CellRendererDbList::repack_cells_related(Gtk::CellLayout* combobox)
         combobox->pack_start(*cell, false);
         cell->unreference();
         cell_connect_cell_data_func(combobox, cell, i);
-        
+
          m_repacked_first_cell = true;
       }
     }
@@ -189,10 +190,10 @@ void CellRendererDbList::repack_cells_related(Gtk::CellLayout* combobox)
       //Create the cell:
       cell = create_cell(layout_item, m_table_name, m_document, get_fixed_cell_height(*widget));
       combobox->pack_start(*cell, true);
-      
+
       cell_connect_cell_data_func(combobox, cell, i);
     }
-    
+
     ++i;
   }
 }
@@ -207,12 +208,12 @@ void CellRendererDbList::on_editing_started(Gtk::CellEditable* cell_editable, co
 
   //The DB model has a special virtual text column,
   //and the simple model just has text in all columns:
-  Glib::RefPtr<DbTreeModelWithExtraText> model_db = 
+  Glib::RefPtr<DbTreeModelWithExtraText> model_db =
     Glib::RefPtr<DbTreeModelWithExtraText>::cast_dynamic(get_choices_model());
   if(model_db)
     repack_cells_related(combobox);
   else
-    repack_cells_fixed(combobox); 
+    repack_cells_fixed(combobox);
 
   Gtk::CellRenderer::on_editing_started(cell_editable, path);
 }
