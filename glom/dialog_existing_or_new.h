@@ -46,7 +46,7 @@ class Dialog_ExistingOrNew
   : public Gtk::Dialog
 {
 public:
-  static const char* glade_id;
+  static const char glade_id[];
   static const bool glade_developer;
 
   enum Action {

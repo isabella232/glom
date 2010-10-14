@@ -37,7 +37,7 @@ bool glom_show_dialog_invalid_data(Field::glom_field_type glom_type);
 class Dialog_InvalidData : public Gtk::Dialog
 {
 public:
-  static const char* glade_id;
+  static const char glade_id[];
   static const bool glade_developer;
 
   Dialog_InvalidData(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);

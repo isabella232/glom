@@ -35,8 +35,9 @@
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
-#include <math.h>
+#include <cmath>
 #include <algorithm> //For std::max().
+#include <iostream>
 
 namespace Glom
 {

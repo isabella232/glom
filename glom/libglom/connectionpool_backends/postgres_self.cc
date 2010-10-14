@@ -28,6 +28,7 @@
 
 #include <libglom/gst-package.h>
 #include <sstream> //For stringstream
+#include <iostream>
 
 #ifdef G_OS_WIN32
 # include <windows.h>
@@ -116,7 +117,7 @@ bool PostgresSelfHosted::get_self_hosting_active() const
   return m_port != 0;
 }
 
-int PostgresSelfHosted::get_port() const
+unsigned int PostgresSelfHosted::get_port() const
 {
   return m_port;
 }
@@ -261,7 +262,7 @@ Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgres
   Glib::RefPtr<Glib::Regex> regex;
 
   //We want the characters at the end:
-  const gchar* VERSION_REGEX = "pg_ctl \\(PostgreSQL\\) (.*)";
+  const gchar VERSION_REGEX[] = "pg_ctl \\(PostgreSQL\\) (.*)";
 
   try
   {
@@ -303,7 +304,7 @@ float PostgresSelfHosted::get_postgresql_utils_version_as_number(const SlotProgr
   Glib::RefPtr<Glib::Regex> regex;
 
   //We want the characters at the end:
-  const gchar* VERSION_REGEX = "^(\\d*)\\.(\\d*)";
+  const gchar VERSION_REGEX[] = "^(\\d*)\\.(\\d*)";
 
   try
   {
@@ -399,8 +400,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
   //Attempt to ensure that the config files are correct:
   set_network_shared(slot_progress, m_network_shared); //Creates pg_hba.conf and pg_ident.conf
 
-
-  const int available_port = discover_first_free_port(PORT_POSTGRESQL_SELF_HOSTED_START, PORT_POSTGRESQL_SELF_HOSTED_END);
+  const unsigned int available_port = discover_first_free_port(PORT_POSTGRESQL_SELF_HOSTED_START, PORT_POSTGRESQL_SELF_HOSTED_END);
   //std::cout << "debug: " << G_STRFUNC << ":() : debug: Available port for self-hosting: " << available_port << std::endl;
   if(available_port == 0)
   {
@@ -609,7 +609,7 @@ bool PostgresSelfHosted::create_database(const Glib::ustring& database_name, con
   return attempt_create_database(database_name, "localhost", port_as_string(m_port), username, password);
 }
 
-int PostgresSelfHosted::discover_first_free_port(int start_port, int end_port)
+unsigned int PostgresSelfHosted::discover_first_free_port(unsigned int start_port, unsigned int end_port)
 {
   //Open a socket so we can try to bind it to a port:
   const int fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -629,7 +629,7 @@ int PostgresSelfHosted::discover_first_free_port(int start_port, int end_port)
   memset(&sa, 0, sizeof(sa));
   sa.sin_family = AF_INET;
 
-  int port_to_try = start_port;
+  guint16 port_to_try = start_port;
   while (port_to_try <= end_port)
   {
     sa.sin_port = htons(port_to_try);

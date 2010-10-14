@@ -32,6 +32,8 @@
 #include <libglom/data_structure/field.h>
 #include <glibmm/ustring.h>
 
+#include <iostream>
+
 namespace Glom
 {
 
@@ -100,7 +102,7 @@ boost::python::object PyGlomRecord::get_related()
   return m_related;
 }
 
-long PyGlomRecord::len() const
+PyGlomRecord::type_map_field_values::size_type PyGlomRecord::len() const
 {
   return m_map_field_values.size();
 }

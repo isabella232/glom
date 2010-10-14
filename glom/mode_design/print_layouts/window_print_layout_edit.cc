@@ -24,10 +24,11 @@
 #include <glom/print_layout/canvas_layout_item.h>
 #include <libglom/data_structure/layout/layoutitem_line.h>
 #include <libglom/data_structure/layout/layoutitem_portal.h>
-//#include <libgnome/gnome-i18n.h>
 #include <libglom/utils.h> //For bold_message()).
 #include <gtkmm/scrolledwindow.h>
 #include <glibmm/i18n.h>
+
+#include <iostream>
 
 namespace Glom
 {

@@ -24,6 +24,8 @@
 #include <libglom/utils.h>
 //#include <glom/application.h>
 
+#include <iostream>
+
 namespace Glom
 {
 

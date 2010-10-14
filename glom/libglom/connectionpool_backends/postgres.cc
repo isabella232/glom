@@ -28,6 +28,8 @@
 #include <glib/gstdio.h> /* For g_rename(). TODO: Wrap this in glibmm? */
 #include <glibmm/i18n.h>
 
+#include <iostream>
+
 // Uncomment to see debug messages
 //#define GLOM_CONNECTION_DEBUG
 
@@ -146,8 +148,8 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
 
 bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) throw()
 {
-  static const char* TRANSACTION_NAME = "glom_change_columns_transaction";
-  static const gchar* TEMP_COLUMN_NAME = "glom_temp_column"; // TODO: Find a unique name.
+  static const char TRANSACTION_NAME[] = "glom_change_columns_transaction";
+  static const char TEMP_COLUMN_NAME[] = "glom_temp_column"; // TODO: Find a unique name.
 
   try
   {
@@ -463,10 +465,10 @@ std::string Postgres::get_path_to_postgres_executable(const std::string& program
 }
 
 
-Glib::ustring Postgres::port_as_string(int port_num)
+Glib::ustring Postgres::port_as_string(unsigned int port_num)
 {
   Glib::ustring result;
-  char* cresult = g_strdup_printf("%d", port_num);
+  char* cresult = g_strdup_printf("%u", port_num);
   if(cresult)
     result = cresult;
   g_free(cresult);

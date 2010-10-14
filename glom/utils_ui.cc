@@ -135,9 +135,9 @@ void Utils::show_help(const Glib::ustring& id)
 
   try
   {
-    const char *const path = GLOM_DATADIR G_DIR_SEPARATOR_S "gnome"
-                                          G_DIR_SEPARATOR_S "help"
-                                          G_DIR_SEPARATOR_S "glom";
+    const char path[] = GLOM_DATADIR G_DIR_SEPARATOR_S "gnome"
+                                     G_DIR_SEPARATOR_S "help"
+                                     G_DIR_SEPARATOR_S "glom";
     std::string help_file = locate_help_file(path, "glom.xml");
     if(help_file.empty())
     {
@@ -280,7 +280,7 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_pixbuf_for_gda_value(const Gnome::Gda::Valu
         guint8* puiData = (guint8*)buffer_binary;
         try
         {
-          refPixbufLoader->write(puiData, (glong)buffer_binary_length);
+          refPixbufLoader->write(puiData, static_cast<gsize>(buffer_binary_length));
           result = refPixbufLoader->get_pixbuf();
 
           refPixbufLoader->close(); //This throws if write() threw, so it must be inside the try block.

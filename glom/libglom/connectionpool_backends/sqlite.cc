@@ -24,6 +24,8 @@
 
 #include <giomm/file.h>
 
+#include <iostream>
+
 namespace Glom
 {
 
@@ -133,8 +135,8 @@ bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::Serve
 
 bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_strings& fields_removed, const type_vec_const_fields& fields_added, const type_mapFieldChanges& fields_changed) throw()
 {
-  static const gchar* TEMPORARY_TABLE_NAME = "GLOM_TEMP_TABLE"; // TODO: Make sure this is unique.
-  static const gchar* TRANSACTION_NAME = "GLOM_RECREATE_TABLE_TRANSACTION";
+  static const gchar TEMPORARY_TABLE_NAME[] = "GLOM_TEMP_TABLE"; // TODO: Make sure this is unique.
+  static const gchar TRANSACTION_NAME[] = "GLOM_RECREATE_TABLE_TRANSACTION";
 
   Glib::RefPtr<Gnome::Gda::MetaStore> store = connection->get_meta_store();
   Glib::RefPtr<Gnome::Gda::MetaStruct> metastruct = Gnome::Gda::MetaStruct::create(store, Gnome::Gda::META_STRUCT_FEATURE_NONE);

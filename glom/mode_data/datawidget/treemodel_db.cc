@@ -968,7 +968,8 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
         if(datamodel->get_n_rows())
         {
           Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
-          total = (gulong)value.get_int64(); //I discovered that it's a int64 by trying it.
+	  // This will probably fail on Windows, where a long is only 32 bits wide.
+          total = static_cast<gulong>(value.get_int64()); //I discovered that it's a int64 by trying it.
         }
       }
     }

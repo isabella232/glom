@@ -28,7 +28,7 @@
 #include "glom/application.h"
 #include <goocanvas.h>
 #include <glibmm/i18n.h>
-#include <algorithm>
+#include <iostream>
 
 namespace Glom
 {

@@ -23,6 +23,8 @@
 #include <glom/utils_ui.h> //For bold_message()).
 #include <glibmm/i18n.h>
 
+#include <iostream>
+
 namespace Glom
 {
 

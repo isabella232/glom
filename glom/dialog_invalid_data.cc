@@ -26,7 +26,7 @@
 namespace Glom
 {
 
-const char* Dialog_InvalidData::glade_id("dialog_data_invalid_format");
+const char Dialog_InvalidData::glade_id[] = "dialog_data_invalid_format";
 const bool Dialog_InvalidData::glade_developer(false);
 
 /** Show the dialog.

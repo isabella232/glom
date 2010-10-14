@@ -21,7 +21,6 @@
 
 #include <glibmm.h>
 #include <libglom/document/bakery/view/viewbase.h>
-#include <iostream>
 
 namespace GlomBakery
 {
