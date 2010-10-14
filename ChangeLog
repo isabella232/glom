@@ -1,3 +1,10 @@
+2010-10-14  Murray Cumming  <murrayc@murrayc.com>>
+
+	FlowTable: More fixes for child HBox memory management.
+
+	* glom/utility_widgets/flowtable.cc: Added checks and corrections, though
+  there is still an odd warning about a refcount.
+
 2010-10-14  Murray Cumming  <murrayc@murrayc.com>
 
 	FlowTable: Fix child HBox memory management.
