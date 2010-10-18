@@ -467,7 +467,7 @@
                                 <property name="column_spacing">12</property>
                                 <property name="row_spacing">6</property>
                                 <child>
-                                  <object class="GtkComboBox" id="combobox_lookup_field">
+                                  <object class="GtkComboBoxText" id="combobox_lookup_field">
                                     <property name="visible">True</property>
                                   </object>
                                   <packing>
@@ -2950,7 +2950,7 @@ Glom could not create the new database. Maybe you do not have the necessary acce
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBox" id="combobox_group">
+                  <object class="GtkComboBoxText" id="combobox_group">
                     <property name="visible">True</property>
                   </object>
                   <packing>
@@ -3208,7 +3208,7 @@ Glom could not create the new database. Maybe you do not have the necessary acce
                             <property name="column_spacing">6</property>
                             <property name="row_spacing">6</property>
                             <child>
-                              <object class="GtkComboBox" id="combobox_group">
+                              <object class="GtkComboBoxText" id="combobox_group">
                                 <property name="visible">True</property>
                               </object>
                               <packing>
@@ -3693,7 +3693,7 @@ Which user should be added to this group?</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBox" id="combo_user_name">
+                  <object class="GtkComboBoxText" id="combo_user_name">
                     <property name="visible">True</property>
                   </object>
                   <packing>
@@ -5481,7 +5481,8 @@ Which user should be added to this group?</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkComboBoxEntry" id="comboboxentry_border_width">
+                              <object class="GtkComboBox" id="comboboxentry_border_width">
+                                <property name="has-entry">True</property>
                                 <property name="visible">True</property>
                               </object>
                               <packing>
@@ -6408,7 +6409,8 @@ Which user should be added to this group?</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkComboBoxEntry" id="entry_currency_symbol">
+                      <object class="GtkComboBox" id="entry_currency_symbol">
+                        <property name="has-entry">True</property>
                         <property name="visible">True</property>
                       </object>
                       <packing>
@@ -8035,7 +8037,7 @@ If a suitable related table already exists then you should instead cancel and ju
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBox" id="combobox_from_key">
+                  <object class="GtkComboBoxText" id="combobox_from_key">
                     <property name="visible">True</property>
                   </object>
                   <packing>

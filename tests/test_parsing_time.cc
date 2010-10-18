@@ -1,4 +1,5 @@
 #include <libglom/data_structure/glomconversions.h>
+#include <iostream>
 
 int main()
 {
@@ -9,9 +10,9 @@ int main()
 
   bool success = false;
 
-  //We try parse_time() though parse_value() calls it anyway, 
+  //We try parse_time() though parse_value() calls it anyway,
   //to give us a clue if parse_value would fail.
-  struct tm value_as_tm = 
+  struct tm value_as_tm =
     Glom::Conversions::parse_time(time_text_input, success);
   if(!success)
   {
@@ -20,7 +21,7 @@ int main()
   }
 
   success = false;
-  const Gnome::Gda::Value value = 
+  const Gnome::Gda::Value value =
     Glom::Conversions::parse_value(Glom::Field::TYPE_TIME, time_text_input, success);
 
   if(!success)
@@ -44,7 +45,7 @@ int main()
     return EXIT_FAILURE;
   }
 
-  const Glib::ustring time_text_parsed = 
+  const Glib::ustring time_text_parsed =
     Glom::Conversions::get_text_for_gda_value(Glom::Field::TYPE_TIME, value);
 
 

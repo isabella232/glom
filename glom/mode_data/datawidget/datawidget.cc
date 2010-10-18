@@ -23,7 +23,6 @@
 #include "entry.h"
 #include "checkbutton.h"
 #include "label.h"
-#include <glom/mode_data/datawidget/comboentry.h>
 #include <glom/mode_data/datawidget/combo.h>
 #include <glom/mode_data/datawidget/combo_as_radio_buttons.h>
 #include <glom/mode_data/datawidget/textview.h>
@@ -59,7 +58,7 @@ static DataWidgetChildren::ComboChoices* create_combo_widget_for_field(const sha
       result = Gtk::manage(new DataWidgetChildren::ComboGlom());
   }
   else
-    result = Gtk::manage(new DataWidgetChildren::ComboEntry());
+    result = Gtk::manage(new DataWidgetChildren::ComboGlom(true /* has_entry */));
 
   return result;
 }

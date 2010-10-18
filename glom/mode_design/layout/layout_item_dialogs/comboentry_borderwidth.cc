@@ -25,7 +25,7 @@ namespace Glom
 {
 
 ComboEntry_BorderWidth::ComboEntry_BorderWidth(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
-: Gtk::ComboBoxEntry(cobject)
+: Gtk::ComboBox(cobject)
 {
   m_model = Gtk::ListStore::create(m_model_columns);
 
@@ -42,7 +42,7 @@ ComboEntry_BorderWidth::ComboEntry_BorderWidth(BaseObjectType* cobject, const Gl
   (*iter)[m_model_columns.m_value] = string_for_number(1.0);
 
   set_model(m_model);
-  set_text_column(m_model_columns.m_value);
+  set_entry_text_column(m_model_columns.m_value);
 }
 
 
@@ -60,7 +60,3 @@ Glib::ustring ComboEntry_BorderWidth::string_for_number(double number)
 }
 
 } //namespace Glom
-
-
-
-

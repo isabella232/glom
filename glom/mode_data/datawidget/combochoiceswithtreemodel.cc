@@ -105,7 +105,6 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
   create_model(columns_count);
 
   //Fill the model with data:
-  //TODO: Remove duplication with ComboEntry:
   sharedptr<LayoutItem_Field> layout_item =
     sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
   const FieldFormatting& format = layout_item->get_formatting_used();
@@ -235,7 +234,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
   m_db_layout_items.clear();
 
   //We create DbTreeModelWithExtraText rather than just DbTreeModel, 
-  //because ComboEntry needs it.
+  //because Combo(has_entry) needs it.
   m_refModel = DbTreeModelWithExtraText::create(found_set, layout_items, true /* allow_view */, false /* find mode */, m_db_layout_items);
   if(!m_refModel)
   {

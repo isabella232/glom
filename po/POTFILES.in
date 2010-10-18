@@ -119,7 +119,6 @@ glom/mode_design/translation/dialog_change_language.cc
 glom/mode_design/translation/window_translations.cc
 glom/utility_widgets/adddel/adddel.cc
 glom/mode_data/datawidget/combochoiceswithtreemodel.cc
-glom/mode_data/datawidget/comboentry.cc
 glom/mode_data/datawidget/datawidget.cc
 glom/mode_data/db_adddel/db_adddel.cc
 glom/mode_data/datawidget/dialog_choose_id.cc

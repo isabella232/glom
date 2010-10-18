@@ -23,6 +23,7 @@
 #include <gtkmm/messagedialog.h>
 #include <glom/mode_data/datawidget/cellcreation.h>
 #include <glom/dialog_invalid_data.h>
+#include <glom/mode_data/datawidget/treemodel_db_withextratext.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
 #include <glom/application.h>
@@ -40,18 +41,14 @@ namespace Glom
 namespace DataWidgetChildren
 {
 
-ComboGlom::ComboGlom()
-: ComboChoicesWithTreeModel()
+ComboGlom::ComboGlom(bool has_entry)
+: Gtk::ComboBox(has_entry),
+  ComboChoicesWithTreeModel()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  init();
-}
-
-void ComboGlom::init()
-{
   #ifdef GLOM_ENABLE_MAEMO
   //Maemo:
   set_selector(m_maemo_selector);
@@ -87,6 +84,11 @@ void ComboGlom::set_choices_fixed(const FieldFormatting::type_list_values& list_
   set_model(model);
 
   clear();
+
+  if(get_has_entry())
+  {
+    set_entry_text_column(0);
+  }
 
   const guint columns_count = model->get_n_columns();
   for(guint i = 0; i < columns_count; ++i)
@@ -124,6 +126,24 @@ void ComboGlom::set_choices_related(const Document* document, const sharedptr<co
 
   clear();
 
+  if(get_has_entry())
+  {
+    Glib::RefPtr<DbTreeModelWithExtraText> model_db =
+      Glib::RefPtr<DbTreeModelWithExtraText>::cast_dynamic(model);
+    if(model_db)
+    {
+      const int text_col = model_db->get_text_column();
+      //const GType debug_type = model_db->get_column_type(text_col);
+      //std::cout << "DEBUG: text_col=" << text_col << ", debug_type=" << g_type_name(debug_type) << std::endl;
+      set_entry_text_column(text_col);
+    }
+    else
+    {
+      std::cerr << G_STRFUNC << ": The model is not a DbTreeModelWithExtraText." << std::endl;
+      return;
+    }
+  }
+
   guint model_column_index = 0;
   for(type_vec_const_layout_items::const_iterator iter = m_db_layout_items.begin(); iter != m_db_layout_items.end(); ++iter)
   {
@@ -158,7 +178,7 @@ void ComboGlom::set_value(const Gnome::Gda::Value& value)
   sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
   if(!layout_item)
     return;
- 
+
   m_old_value = value;
 
   Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
@@ -237,7 +257,7 @@ Gnome::Gda::Value ComboGlom::get_value() const
      row.get_value(0, value);
      return value;
   }
-  
+
   return Gnome::Gda::Value();
 }
 

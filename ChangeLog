@@ -1,3 +1,13 @@
+2010-10-18  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build with the latest gtkmm.
+
+  * Makefile_glom.am:
+  * po/POTFILES.in:
+	* glom/mode_data/datawidget/comboentry.[h|cc]: Removed this.
+  * glom/mode_data/datawidget/combo.cc: Add a has_entry parameter to the
+  constructor and handle that in set_choices_related().
+
 2010-10-14  Murray Cumming  <murrayc@murrayc.com>
 
 	Build fixes after recent commits.

@@ -17,18 +17,18 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 #include <libglom/data_structure/layout/layoutgroup.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
 
+#include <iostream>
 
-int
-main()
+int main()
 {
   Glom::sharedptr<Glom::LayoutItem_Field> field_copy;
   {
     Glom::sharedptr<Glom::LayoutGroup> group;
-  
+
     {
        Glom::sharedptr<Glom::LayoutGroup> group_inscope = Glom::sharedptr<Glom::LayoutGroup>::create();
        std::cout << "group_inscope refcount = " << *(group_inscope._get_refcount()) << std::endl; //Should be 1.
@@ -38,7 +38,7 @@ main()
        Glom::sharedptr<Glom::LayoutItem> itemgroup = group_inscope;
        std::cout << "itemgroup refcount = " << *(itemgroup._get_refcount()) << std::endl; //Should be 2.
 
-       Glom::sharedptr<Glom::LayoutGroup> group_casted = Glom::sharedptr<Glom::LayoutGroup>::cast_dynamic(itemgroup); 
+       Glom::sharedptr<Glom::LayoutGroup> group_casted = Glom::sharedptr<Glom::LayoutGroup>::cast_dynamic(itemgroup);
 
        std::cout << "itemgroup refcount = " << *(itemgroup._get_refcount()) << std::endl; //Should be 3.
        std::cout << "group_casted refcount = " << *(group_casted._get_refcount()) << std::endl; //Should be 3
@@ -67,7 +67,7 @@ main()
 
       Glom::sharedptr<Glom::LayoutItem_Field> item_casted = Glom::sharedptr<Glom::LayoutItem_Field>::cast_dynamic(item);
       std::cout << "group item_casted refcount = " << *(item_casted._get_refcount()) << std::endl; //Should be 4.
- 
+
       std::cout << "group item_casted name = " << item_casted->get_name() << std::endl;
 
       field_copy = item_casted;
@@ -79,8 +79,3 @@ main()
 
   return 0;
 }
-
-
-
-
-
