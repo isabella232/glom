@@ -4,9 +4,9 @@
 
 int main()
 {
-  // Attempt to dynamically load the python module, 
+  // Attempt to dynamically load the python module,
   // attempting to resolve all symbols immediately:
-  const char* path = "glom/python_embed/python_module/.libs/glom_1_16.so";
+  const char* path = "glom/python_embed/python_module/.libs/glom_1.16.so";
   void* lib = dlopen(path, RTLD_NOW);
 
   if(!lib)
