@@ -1,6 +1,6 @@
 1.16.0: (stable)
 
-New features in Glom 1.14, compared to Glom 1.12:
+New features in Glom 1.16, compared to Glom 1.14:
 
 * Field Formatting: Related Choices: Add a Show All checkbox, so that
   the list of choices can be restricted according to the relationship,
@@ -23,7 +23,7 @@ Changes in 1.16.0:
 Build:
 - Do not use deprecated gtkmm API (requires gtkmm 2.22).
   (Murray Cumming)
-- Varisous small improvements
+- Various small improvements
   (David King)
 
 1.15.2 (unstable):
