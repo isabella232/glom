@@ -1,3 +1,10 @@
+2010-10-18  Murray Cumming  <murrayc@murrayc.com>>
+
+	Tests: Fix a typo to fix make check.
+
+	* tests/test_load_python_library.cc: Fix a typo to properly load the
+  correct library name.
+
 2010-10-18  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the build.
