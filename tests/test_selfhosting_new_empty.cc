@@ -25,6 +25,7 @@
 #include <libglom/privs.h>
 #include <libglom/utils.h>
 #include <giomm/file.h>
+#include <iostream>
 
 static void on_initialize_progress()
 {

@@ -1,14 +1,14 @@
 #include <glom/libglom/init.h>
 #include <glom/python_embed/glom_python.h>
 #include <libglom/data_structure/glomconversions.h>
-
 #include <boost/python.hpp>
+#include <iostream>
 
 int main()
 {
   Glom::libglom_init(); //Also initializes python.
 
-  const char* calculation = 
+  const char* calculation =
     "count = 0\n"
     "return cownt";
   Glom::type_map_fields field_values;
@@ -40,10 +40,10 @@ int main()
 
   //std::cout << "type=" << g_type_name(value.get_value_type()) << std::endl;
   //std::cout << "value=" << value.to_string() << std::endl;
-  
+
   //Check that we received a traceback error:
   g_assert(!error_message.empty());
-  
+
   //Check that the return value is of the expected type:
   g_assert(value.get_value_type() == GDA_TYPE_NUMERIC);
 

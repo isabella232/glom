@@ -635,7 +635,7 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
 
   const FieldFormatting::HorizontalAlignment alignment =
     layoutitem_text->get_formatting_used_horizontal_alignment();
-  const Gtk::Align x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::ALIGN_START : Gtk::ALIGN_END);
+  const Gtk::AlignmentEnum x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::ALIGN_START : Gtk::ALIGN_END);
   Gtk::Alignment* alignment_label = Gtk::manage(new Gtk::Alignment());
   alignment_label->set(x_align, Gtk::ALIGN_CENTER);
   alignment_label->show();

@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 #include <libgdamm/init.h>
 #include <libglom/connectionpool.h>
 
@@ -29,9 +29,9 @@
 #include <libglom/connectionpool_backends/sqlite.h>
 #endif //#GLOM_ENABLE_POSTGRESQL
 
+#include <iostream>
 
-int
-main()
+int main()
 {
   Gnome::Gda::init();
 
@@ -71,6 +71,7 @@ main()
     connection = Glom::ConnectionPool::get_and_connect(error);
     #endif
 
+
     if(connection)
       std::cout << "Connected" << std::endl;
     else
@@ -86,8 +87,3 @@ main()
 
   return 0;
 }
-
-
-
-
-

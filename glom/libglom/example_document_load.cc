@@ -24,6 +24,8 @@
 #include <libglom/document/document.h>
 #include <libglom/init.h>
 
+#include <iostream>
+
 void print_layout_group(const Glom::sharedptr<Glom::LayoutGroup>& layout_group, const Glib::ustring& indent)
 {
   if(!layout_group)
@@ -76,20 +78,15 @@ int main()
   // Get a URI for a test file:
   Glib::ustring uri;
 
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     uri = Glib::filename_to_uri("/usr/share/glom/doc/examples/example_music_collection.glom");
   }
   catch(const Glib::ConvertError& ex)
   {
-    std::cerr << "Exception from Glib::filename_to_uri(): " << ex.what();
+    std::cerr << G_STRFUNC << ": " << ex.what();
     return 1;
   }
-  #else
-  std::auto_ptr<Glib::Error> ex;
-  uri = Glib::filename_to_uri("/usr/share/glom/doc/examples/example_music_collection.glom", ex);
-  #endif
 
   std::cout << "URI=" << uri << std::endl;
 

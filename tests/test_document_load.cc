@@ -22,10 +22,12 @@
 #include <libglom/init.h>
 #include <giomm/file.h>
 
+#include <iostream>
+
 template<typename T_Container>
 bool contains(const T_Container& container, const Glib::ustring& name)
 {
-  typename T_Container::const_iterator iter = 
+  typename T_Container::const_iterator iter =
     std::find(container.begin(), container.end(), name);
   return iter != container.end();
 }
@@ -34,8 +36,8 @@ template<typename T_Container>
 bool contains_named(const T_Container& container, const Glib::ustring& name)
 {
   typedef typename T_Container::value_type::object_type type_item;
-  typename T_Container::const_iterator iter = 
-    std::find_if(container.begin(), container.end(), 
+  typename T_Container::const_iterator iter =
+    std::find_if(container.begin(), container.end(),
       Glom::predicate_FieldHasName<type_item>(name));
   return iter != container.end();
 }
@@ -47,23 +49,18 @@ int main()
   // Get a URI for a test file:
   Glib::ustring uri;
 
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    const std::string path = 
-       Glib::build_filename(GLOM_DOCDIR_EXAMPLES_NOTINSTALLED, 
+    const std::string path =
+       Glib::build_filename(GLOM_DOCDIR_EXAMPLES_NOTINSTALLED,
          "example_music_collection.glom");
     uri = Glib::filename_to_uri(path);
   }
   catch(const Glib::ConvertError& ex)
   {
-    std::cerr << "Exception from Glib::filename_to_uri(): " << ex.what();
+    std::cerr << G_STRFUNC << ": " << ex.what();
     return EXIT_FAILURE;
   }
-  #else
-  std::auto_ptr<Glib::Error> ex;
-  uri = Glib::filename_to_uri("/usr/share/glom/doc/examples/example_music_collection.glom", ex);
-  #endif
 
   //std::cout << "URI=" << uri << std::endl;
 
@@ -115,14 +112,14 @@ int main()
   g_assert(field->get_glom_type() == Glom::Field::TYPE_NUMERIC);
   g_assert(!field->get_auto_increment());
   g_assert(!field->get_unique_key());
-    
+
   //Check a relationship:
   const Glom::sharedptr<const Glom::Relationship> relationship = document.get_relationship("albums", "artist");
   g_assert(relationship);
   g_assert(relationship->get_from_field() == "artist_id");
   g_assert(relationship->get_to_table() == "artists");
   g_assert(relationship->get_to_field() == "artist_id");
-  
+
   Glom::libglom_deinit();
 
   return EXIT_SUCCESS;
