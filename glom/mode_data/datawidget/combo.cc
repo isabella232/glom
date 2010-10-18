@@ -63,6 +63,9 @@ ComboGlom::ComboGlom(bool has_entry)
 
   //if(m_glom_type == Field::TYPE_NUMERIC)
    // get_entry()->set_alignment(1.0); //Align numbers to the right.
+
+  //Let the combo be big enough:
+  set_popup_fixed_width(false);
 }
 
 ComboGlom::~ComboGlom()

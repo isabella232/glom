@@ -1,3 +1,10 @@
+2010-10-18  Murray Cumming  <murrayc@murrayc-desktop>
+
+	Details: Let the combo drop-down be wide enough.
+
+	* glom/mode_data/datawidget/combo.cc: Constructor: Use the new
+  set_popup_fixed_width() method.
+
 2010-10-18  Murray Cumming  <murrayc@murrayc.com>>
 
 	Tests: Fix a typo to fix make check.
