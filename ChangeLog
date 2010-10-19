@@ -1,3 +1,5 @@
+1.16.1:
+
 2010-10-19  Murray Cumming  <murrayc@murrayc.com>
 
 	Python module: Use _ instead of . in the .so file name.
