@@ -5,7 +5,9 @@
 	* configure.ac:
 	* glom/libglom/init.h:
 	* glom/python_embed/python_module/py_glom_module.cc:
-	* tests/test_load_python_library.cc: Change it everywhere.
+	* tests/test_load_python_library.cc: Change it everywhere, also correcting
+	the python library name, which should have _ instead of . That was broken
+	recently.
 
 2010-10-19  Murray Cumming  <murrayc@murrayc.com>
 
