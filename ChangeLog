@@ -1,4 +1,13 @@
-2010-10-19  Murray Cumming  <murrayc@murrayc-desktop>
+2010-10-19  Murray Cumming  <murrayc@murrayc.com>
+
+	libglom: Change the ABI to 1.20, to avoid clashing with 1.16.
+
+	* configure.ac:
+	* glom/libglom/init.h:
+	* glom/python_embed/python_module/py_glom_module.cc:
+	* tests/test_load_python_library.cc: Change it everywhere.
+
+2010-10-19  Murray Cumming  <murrayc@murrayc.com>
 
 	distcheck: Remove check for NEWS update.
 
