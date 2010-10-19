@@ -86,17 +86,28 @@ void ComboGlom::set_choices_fixed(const FieldFormatting::type_list_values& list_
   //Show the model in the view:
   set_model(model);
 
-  clear();
-
   if(get_has_entry())
   {
     set_entry_text_column(0);
+  }
+  else
+  {
+    clear(); //This breaks GtkCombo with has-entry.
   }
 
   const guint columns_count = model->get_n_columns();
   for(guint i = 0; i < columns_count; ++i)
   {
-    Gtk::CellRendererText* cell = Gtk::manage(new Gtk::CellRendererText);
+    Gtk::CellRendererText* cell = 0;
+
+    //set_entry_text_column() adds its own CellRenderer,
+    //which we cannot replace without confusing (and crashing) GtkComboBox.
+    if(i == 0 && get_has_entry())
+      cell = dynamic_cast<Gtk::CellRendererText*>(get_first_cell());
+
+    if(!cell)
+      cell = Gtk::manage(new Gtk::CellRendererText);
+
     cell->property_xalign() = 0.0f;
 
     //Use the renderer:
@@ -127,8 +138,6 @@ void ComboGlom::set_choices_related(const Document* document, const sharedptr<co
   //Show the model in the view:
   set_model(model);
 
-  clear();
-
   if(get_has_entry())
   {
     Glib::RefPtr<DbTreeModelWithExtraText> model_db =
@@ -146,6 +155,10 @@ void ComboGlom::set_choices_related(const Document* document, const sharedptr<co
       return;
     }
   }
+  else
+  {
+    clear(); //This breaks GtkCombo with has-entry.
+  }
 
   guint model_column_index = 0;
   for(type_vec_const_layout_items::const_iterator iter = m_db_layout_items.begin(); iter != m_db_layout_items.end(); ++iter)
@@ -154,8 +167,17 @@ void ComboGlom::set_choices_related(const Document* document, const sharedptr<co
     if(!layout_item) //column_info.m_visible)
       continue;
 
-    //Add the ViewColumn
-    Gtk::CellRenderer* cell = create_cell(layout_item, m_table_name, document, get_fixed_cell_height(*this));
+    Gtk::CellRenderer* cell = 0;
+
+    //set_entry_text_column() adds its own CellRenderer,
+    //which we cannot replace without confusing (and crashing) GtkComboBox.
+    if(model_column_index == 0 && get_has_entry())
+      cell = get_first_cell();
+
+    if(!cell)
+      cell  = create_cell(layout_item, m_table_name, document, get_fixed_cell_height(*this));
+
+    //Add the ViewColumn:
     if(cell)
     {
       //Use the renderer:

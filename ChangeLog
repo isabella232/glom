@@ -1,4 +1,13 @@
-2010-10-18  Murray Cumming  <murrayc@murrayc-desktop>
+2010-10-19  Murray Cumming  <murrayc@murrayc.com>
+
+	Choices Combo: Fix a segfault.
+
+	* glom/mode_data/datawidget/combo.cc: set_choices_fixed(),
+	set_choices_related(): Handle the has-entry case better, not calling clear(),
+	because that breaks GtkComboBox, which then tries to use a removed
+	GtkCellRenderer.
+
+2010-10-18  Murray Cumming  <murrayc@murrayc.com>
 
 	Details: Let the combo drop-down be wide enough.
 
