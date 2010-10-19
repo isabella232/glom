@@ -1,3 +1,10 @@
+2010-10-19  Murray Cumming  <murrayc@murrayc-desktop>
+
+	distcheck: Remove check for NEWS update.
+
+	* configure.ac: AM_INIT_AUTOMAKE(): Remove check-news because it is not
+	clever enough and because it prevents checking that distcheck works.
+
 2010-10-19  Murray Cumming  <murrayc@murrayc.com>
 
 	Choices Combo: Fix a warning.
