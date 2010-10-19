@@ -1,5 +1,12 @@
 2010-10-19  Murray Cumming  <murrayc@murrayc.com>
 
+	Choices Combo: Fix a warning.
+
+	* glom/mode_data/datawidget/combo.cc: set_choices_fixed(),
+	set_choices_related(): Do not try to re-pack the existing cell.
+
+2010-10-19  Murray Cumming  <murrayc@murrayc.com>
+
 	Choices Combo: Fix a segfault.
 
 	* glom/mode_data/datawidget/combo.cc: set_choices_fixed(),

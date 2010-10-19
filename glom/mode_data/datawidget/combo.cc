@@ -98,16 +98,14 @@ void ComboGlom::set_choices_fixed(const FieldFormatting::type_list_values& list_
   const guint columns_count = model->get_n_columns();
   for(guint i = 0; i < columns_count; ++i)
   {
-    Gtk::CellRendererText* cell = 0;
+
 
     //set_entry_text_column() adds its own CellRenderer,
     //which we cannot replace without confusing (and crashing) GtkComboBox.
     if(i == 0 && get_has_entry())
-      cell = dynamic_cast<Gtk::CellRendererText*>(get_first_cell());
+      continue;
 
-    if(!cell)
-      cell = Gtk::manage(new Gtk::CellRendererText);
-
+    Gtk::CellRendererText* cell = Gtk::manage(new Gtk::CellRendererText);
     cell->property_xalign() = 0.0f;
 
     //Use the renderer:
@@ -165,17 +163,20 @@ void ComboGlom::set_choices_related(const Document* document, const sharedptr<co
   {
     const sharedptr<const LayoutItem> layout_item = *iter;
     if(!layout_item) //column_info.m_visible)
+    {
+      ++model_column_index;
       continue;
-
-    Gtk::CellRenderer* cell = 0;
+    }
 
     //set_entry_text_column() adds its own CellRenderer,
     //which we cannot replace without confusing (and crashing) GtkComboBox.
     if(model_column_index == 0 && get_has_entry())
-      cell = get_first_cell();
+    {
+       ++model_column_index;
+      continue;
+    }
 
-    if(!cell)
-      cell  = create_cell(layout_item, m_table_name, document, get_fixed_cell_height(*this));
+    Gtk::CellRenderer* cell = create_cell(layout_item, m_table_name, document, get_fixed_cell_height(*this));
 
     //Add the ViewColumn:
     if(cell)
@@ -187,9 +188,9 @@ void ComboGlom::set_choices_related(const Document* document, const sharedptr<co
       pack_start(*cell, false);
 
       cell_connect_cell_data_func(this, cell, model_column_index);
-
-      ++model_column_index;
     }
+
+     ++model_column_index;
   } //for
 }
 
