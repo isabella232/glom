@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dlfcn.h>
+#include "config.h"
 
 int main()
 {
   // Attempt to dynamically load the python module,
   // attempting to resolve all symbols immediately:
-  const char* path = "glom/python_embed/python_module/.libs/glom_1.16.so";
+  const char* path = "glom/python_embed/python_module/.libs/glom_" GLOM_ABI_VERSION_UNDERLINED ".so";
   void* lib = dlopen(path, RTLD_NOW);
 
   if(!lib)
