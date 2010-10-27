@@ -1,3 +1,13 @@
+2010-10-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build with latest gtkmm 2.91.2
+
+	* glom/mode_design/dialog_add_related_table.cc:
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	* glom/mode_design/script_library/dialog_script_library.cc:
+	* glom/mode_design/users/dialog_users_list.cc: Use ComboBoxText::remove_all()
+	instead of clear_items().
+
 2010-10-19  Murray Cumming  <murrayc@murrayc.com>
 
 	libglom: Change the ABI to 1.20, to avoid clashing with 1.16.

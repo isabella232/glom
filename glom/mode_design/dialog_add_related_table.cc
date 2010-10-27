@@ -72,7 +72,7 @@ void Dialog_AddRelatedTable::set_fields(const Glib::ustring& table_name)
   const type_vec_fields fields = DbUtils::get_fields_for_table_from_database(table_name);
 
   //Show the fields:
-  m_combo_from_field->clear_items();
+  m_combo_from_field->remove_all();
   for(type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
   {
      sharedptr<Field> item = *iter;
