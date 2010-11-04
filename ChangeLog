@@ -156,7 +156,7 @@
 
 2010-10-07  Murray Cumming  <murrayc@murrayc.com>
 
-	Choices: Do not offer editing formatting features when choosign extra fields.
+	Choices: Do not offer editing formatting features when choosing extra fields.
 
 	* glom/mode_design/layout/layout_item_dialogs/box_formatting.[h|cc]:
   Rename the two set_formatting() methods to set_formatting_for_non_field(),
@@ -727,10 +727,6 @@
   * tests/test_glade_derived_instantiation.cc:
   Adapted.
   This lets me use it for other things too.
-
-2010-09-06  Murray Cumming  <murrayc@murrayc-desktop>
-
-	get_choices_related
 
 2010-09-06  Murray Cumming  <murrayc@murrayc.com>
 

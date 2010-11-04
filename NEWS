@@ -1,11 +1,22 @@
-1.6.1 (stable);
+1.9.1 (unstable):
+
+* Choices: Allow multiple extra fields, and allow them to be related fields
+  or even doubly-related fields.
+  See http://www.murrayc.com/blog/permalink/2010/10/07/glom-choice-drop-downs-can-show-related-fields/
+* Added a --stop-auto-server-shutdown command-line option for debugging.
+* Build:
+  - Use gtkmm-3.0 instead of gtkmm-2.4.
+  - Use goocanvasmm-2.0 instead of goocanvasmm-1.0.
+  - Use gtksourceviewmm-3.0 instead of gtksourceviewmm-2.0.
+
+1.6.1 (stable):
 
 * Prevent crash when all fields have been deleted from a table, also when
   then trying to reopen the file. (Murray Cumming)
 * Find: prevent duplicate error dialog when no find criteria was entered.
   (Armin Burgeier)
 
-1.16.0: (stable)
+1.16.0 (stable):
 
 New features in Glom 1.16, compared to Glom 1.14:
 
