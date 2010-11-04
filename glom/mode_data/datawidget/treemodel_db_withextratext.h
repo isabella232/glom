@@ -28,7 +28,7 @@ namespace Glom
 
 /** This awkward class is just a version of DbTreeModel that has an 
  * extra text column that is a text representation of the primary key,
- * for use in a GtkComboEntry, which requires a text column in the model.
+ * for use in a GtkCombo with has_entry, which requires a text column in the model.
  */
 class DbTreeModelWithExtraText
   : public DbTreeModel

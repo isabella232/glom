@@ -1,301 +1,3751 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Simplified Chinese translation for the glom package.
+# Copyright (C) 2004, 2010 Free Software Foundation, Inc.
+# This file is distributed under the same license as the glom package.
 # Funda Wang <fundawang@linux.net.cn>, 2004.
+# Yinghua Wang <wantinghard@gmail.com>, 2010.
+# Aron Xu <aronxu@gnome.org>, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glom HEAD\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-05 10:19+0100\n"
-"PO-Revision-Date: 2004-12-04 16:04+0800\n"
-"Last-Translator: Funda Wang <fundawang@linux.net.cn>\n"
-"Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
+"Project-Id-Version: glom master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glom&component=general\n"
+"POT-Creation-Date: 2010-10-18 11:24+0000\n"
+"PO-Revision-Date: 2010-10-25 17:42+0800\n"
+"Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
+"Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: glom/glom.glade.h:1
-msgid "*"
-msgstr "*"
+#: ../glom/application.cc:173
+msgid "Glom: Generating Encryption Certificates"
+msgstr "Glom：生成加密证书"
 
-#: glom/glom.glade.h:2
-msgid "<b>Connection</b>"
-msgstr "<b>连接</b>"
-
-#: glom/glom.glade.h:3
-msgid "<b>Field Definitions</b>"
-msgstr ""
-
-#: glom/glom.glade.h:4
-msgid "<b>Fields</b>"
-msgstr "<b>字段</b>"
-
-#: glom/glom.glade.h:5
-msgid "<b>Mode: </b>"
-msgstr "<b>模式：</b>"
-
-#: glom/glom.glade.h:6
-msgid "<b>Select Field</b>"
-msgstr "<b>选择字段</b>"
-
-#: glom/glom.glade.h:7
-#, fuzzy
-msgid "<b>Select Relationship</b>"
-msgstr "<b>选择字段</b>"
-
-#: glom/glom.glade.h:8
-msgid "<b>Table: </b>"
-msgstr "<b>表：</b>"
-
-#: glom/glom.glade.h:9
-msgid "<b>Tables in database</b>"
-msgstr "<b>数据库中的表</b>"
-
-#: glom/glom.glade.h:10
-msgid "<b>Title:</b>"
-msgstr "<b>标题：</b>"
-
-#: glom/glom.glade.h:11
-msgid "<b>User Level: </b>"
-msgstr "<b>用户级别：</b>"
-
-#: glom/glom.glade.h:12
-msgid "<b>def calculate_field_value():</b>"
-msgstr "<b>def calculate_field_value()：</b>"
-
-#: glom/glom.glade.h:13
+#: ../glom/application.cc:174
 msgid ""
-"<span weight=\"bold\" size=\"larger\">Connect to Server</span>\n"
-"\n"
-"Please enter the connection details for your database server."
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">连接到服务器</span>\n"
-"\n"
-"请输入您数据库服务器的连接细节。"
+"Please wait while Glom prepares your system for publishing over the network."
+msgstr "请稍等，Glom 正在为网络发布准备您的系统。"
 
-#: glom/glom.glade.h:16
+#: ../glom/application.cc:206
+msgid "© 2000-2010 Murray Cumming"
+msgstr "© 2000-2010 Murray Cumming"
+
+#: ../glom/application.cc:206
+msgid "A Database GUI"
+msgstr "一个数据库图形用户界面"
+
+#: ../glom/application.cc:305 ../glom/bakery/app_withdoc_gtk.cc:261
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:126
+#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:58
+msgid "_File"
+msgstr "文件(_F)"
+
+#: ../glom/application.cc:306 ../glom/bakery/app_withdoc_gtk.cc:262
+msgid "_Recent Files"
+msgstr "最近的文件(_R)"
+
+#: ../glom/application.cc:314
+msgid "_Save as Example"
+msgstr "保存为示例(_S)"
+
+#: ../glom/application.cc:321 ../glom/filechooser_export.cc:41
+msgid "_Export"
+msgstr "导出(_E)"
+
+#: ../glom/application.cc:325 ../glom/glom.glade.h:30
+msgid "I_mport"
+msgstr "导入(_M)"
+
+#: ../glom/application.cc:330
+msgid "S_hared on Network"
+msgstr "在网络上共享(_H)"
+
+#: ../glom/application.cc:344
+msgid "_Standard"
+msgstr "标准(_S)"
+
+#: ../glom/application.cc:348
+msgid "_Edit Print Layouts"
+msgstr "编辑打印布局(_E)"
+
+#: ../glom/application.cc:432 ../glom/frame_glom.cc:152
+#: ../glom/frame_glom.cc:492 ../glom/mode_data/datawidget/datawidget.cc:250
+msgid "Find"
+msgstr "查找"
+
+#: ../glom/application.cc:432
+msgid "Search for records in the table"
+msgstr "在表中搜索记录"
+
+#: ../glom/application.cc:436
+msgid "Add Record"
+msgstr "添加记录"
+
+#: ../glom/application.cc:436
+msgid "Create a new record in the table"
+msgstr "在表中创建一条新记录"
+
+#. "Tables" menu:
+#: ../glom/application.cc:452
+msgid "_Tables"
+msgstr "表(_T)"
+
+#: ../glom/application.cc:462
+msgid "_Edit Tables"
+msgstr "编辑表(_E)"
+
+#: ../glom/application.cc:467
+msgid "Add _Related Table"
+msgstr "添加相关表(_R)"
+
+#. "Reports" menu:
+#: ../glom/application.cc:474
+msgid "_Reports"
+msgstr "报表(_R)"
+
+#: ../glom/application.cc:477
+msgid "_Edit Reports"
+msgstr "编辑报表(_E)"
+
+#. "UserLevel" menu:
+#: ../glom/application.cc:486
+msgid "_User Level"
+msgstr "<b>用户级别(_U)</b>"
+
+#: ../glom/application.cc:489
+msgctxt "User-level menu item"
+msgid "_Developer"
+msgstr "开发者(_D)"
+
+#: ../glom/application.cc:493
+msgctxt "User-level menu item"
+msgid "_Operator"
+msgstr "操作员(_O)"
+
+#. "Mode" menu:
+#: ../glom/application.cc:499
+msgid "_Mode"
+msgstr "模式(_M)"
+
+#. We remember this action, so that it can be explicitly activated later.
+#: ../glom/application.cc:503 ../glom/frame_glom.cc:149
+msgid "_Find"
+msgstr "查找(_F)"
+
+#: ../glom/application.cc:509
+msgctxt "Developer menu title"
+msgid "_Developer"
+msgstr "开发者(_D)"
+
+#: ../glom/application.cc:513
+msgid "_Database Preferences"
+msgstr "数据库首选项(_D)"
+
+#: ../glom/application.cc:518
+msgid "_Fields"
+msgstr "字段(_F)"
+
+#: ../glom/application.cc:523
+msgid "Relationships _Overview"
+msgstr "关系概览(_O)"
+
+#: ../glom/application.cc:528
+msgid "_Relationships for this Table"
+msgstr "该表的关系(_R)"
+
+#: ../glom/application.cc:533
+msgid "_Users"
+msgstr "用户(_U)"
+
+#: ../glom/application.cc:537
+msgid "_Print Layouts"
+msgstr "打印布局(_P)"
+
+#: ../glom/application.cc:542
+msgid "R_eports"
+msgstr "报告(_E)"
+
+#: ../glom/application.cc:547
+msgid "Script _Library"
+msgstr "脚本库(_L)"
+
+#: ../glom/application.cc:552
+msgid "_Layout"
+msgstr "布局(_L)"
+
+#: ../glom/application.cc:557
+msgid "Test Tra_nslation"
+msgstr "测试翻译(_N)"
+
+#: ../glom/application.cc:561
+msgid "_Translations"
+msgstr "翻译(_T)"
+
+#. "Active Platform" menu:
+#: ../glom/application.cc:567
+msgid "_Active Platform"
+msgstr "活动平台(_A)"
+
+#: ../glom/application.cc:572
+msgid "_Normal"
+msgstr "正常(_N)"
+
+#: ../glom/application.cc:572
+msgid "The layout to use for normal desktop environments."
+msgstr "用于正常的桌面环境的布局。"
+
+#: ../glom/application.cc:577
+msgid "_Maemo"
+msgstr "_Maemo"
+
+#: ../glom/application.cc:577
+msgid "The layout to use for Maemo devices."
+msgstr "用于 Maemo 设备的布局。"
+
+#: ../glom/application.cc:582
+msgid "_Export Backup"
+msgstr "导出备份(_E)"
+
+#: ../glom/application.cc:586
+msgid "_Restore Backup"
+msgstr "恢复备份(_R)"
+
+#: ../glom/application.cc:590
+msgid "_Show Layout Toolbar"
+msgstr "显示布局工具栏(_S)"
+
+#. TODO: Put this in the generic bakery code.
+#: ../glom/application.cc:736 ../glom/application.cc:745
+msgid "Open Failed"
+msgstr "打开字段"
+
+#: ../glom/application.cc:737
+msgid "The document could not be found."
+msgstr "找不到该文档。"
+
+#: ../glom/application.cc:746
 msgid ""
-"<span weight=\"bold\" size=\"larger\">Connection Failed</span>\n"
-"\n"
+"The document could not be opened because it was created or modified by a "
+"newer version of Glom."
+msgstr "无法打开该文档，因为它是新版本的 Glom 创建或修改过的。"
+
+#. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
+#. Warn the user, and let him try again:
+#: ../glom/application.cc:796 ../glom/frame_glom.cc:2232
+#: ../glom/frame_glom.cc:2308
+msgid "Connection Failed"
+msgstr "连接失败"
+
+#: ../glom/application.cc:796 ../glom/frame_glom.cc:2232
+#: ../glom/frame_glom.cc:2308
+msgid ""
 "Glom could not connect to the database server. Maybe you entered an "
 "incorrect user name or password, or maybe the postgres database server is "
 "not running."
 msgstr ""
+"Glom 无法连接到数据库服务器。可能您输入了错误的用户名或密码，或者 postgres 数"
+"据库服务器没有运行。"
 
-#: glom/glom.glade.h:19
+#: ../glom/application.cc:984
+msgid ""
+"The file cannot be opened because this version of Glom does not support self-"
+"hosting of databases."
+msgstr ""
+"无法打开该文件，因为此版本的 Glom 不支持数据库的自我宿主(self-hosting)。"
+
+#: ../glom/application.cc:989 ../glom/application.cc:998
+msgid ""
+"The file cannot be opened because this version of Glom does not support "
+"PostgreSQL databases."
+msgstr "无法打开该文件，因为此版本的 Glom 不支持 PostgreSQL 数据库。"
+
+#: ../glom/application.cc:1006
+msgid ""
+"The file cannot be opened because this version of Glom does not support "
+"SQLite databases."
+msgstr "无法打开该文件，因为此版本的 Glom 不支持 SQLite 数据库。"
+
+#. Warn the user.
+#: ../glom/application.cc:1024
+msgid "File Uses Unsupported Database Backend"
+msgstr "文件使用了不支持的数据库后端"
+
+#: ../glom/application.cc:1090
+msgid "Creating From Example File"
+msgstr "从示例文件创建"
+
+#: ../glom/application.cc:1091
+msgid ""
+"To use this example file you must save an editable copy of the file. A new "
+"database will also be created on the server."
+msgstr ""
+"要使用该示例文件，您必须保存一份可编辑的文件副本。服务器上也会创建一个新数据"
+"库。"
+
+#: ../glom/application.cc:1095
+msgid "Creating From Backup File"
+msgstr "从备份文件创建"
+
+#: ../glom/application.cc:1096
+msgid ""
+"To use this backup file you must save an editable copy of the file. A new "
+"database will also be created on the server."
+msgstr ""
+"要使用该备份文件，您必须保存一份可编辑的文件副本。服务器上也会创建一个新数据"
+"库。"
+
+#: ../glom/application.cc:1157
+msgid "Opening Read-Only File."
+msgstr "打开只读文件。"
+
+#: ../glom/application.cc:1158
+msgid ""
+"This file is read only, so you will not be able to enter Developer mode to "
+"make design changes."
+msgstr "该文件是只读的。因此您不能进入开发者模式修改设计。"
+
+#: ../glom/application.cc:1161
+msgid "Continue without Developer Mode"
+msgstr "继续而不使用开发者模式"
+
+#. The connection to the server is OK, but the database is not there yet.
+#: ../glom/application.cc:1219
+msgid "Database Not Found On Server"
+msgstr "服务器上找不到数据库"
+
+#: ../glom/application.cc:1219
+msgid ""
+"The database could not be found on the server. Please consult your system "
+"administrator."
+msgstr "服务器上找不到该数据库。请咨询您的系统管理员。"
+
+#. std::cerr might show some hints, but we don't want to confront the user with them:
+#. TODO: Actually complain about specific stuff such as missing data, because the user might really play with the file system.
+#: ../glom/application.cc:1229
+msgid "Problem Loading Document"
+msgstr "载入文档出现问题"
+
+#: ../glom/application.cc:1229
+msgid "Glom could not load the document."
+msgstr "Glom 无法载入该文档。"
+
+#: ../glom/application.cc:1320
+msgid "Exporting Backup"
+msgstr "导出备份"
+
+#: ../glom/application.cc:1328
+msgid "Restoring Backup"
+msgstr "恢复备份"
+
+#: ../glom/application.cc:1644
+msgid "_Contents"
+msgstr "内容(_C)"
+
+#: ../glom/application.cc:1644
+msgid "Help with the application"
+msgstr "此应用程序的帮助"
+
+#: ../glom/application.cc:1679 ../glom/application.cc:1759
+#: ../glom/application.cc:1947
+msgid "Creating Glom Database"
+msgstr "正在创建 Glom 数据库"
+
+#: ../glom/application.cc:1679 ../glom/application.cc:1759
+msgid "Creating Glom database from example file."
+msgstr "正在从示例文件创建 Glom 数据库。"
+
+#: ../glom/application.cc:1947
+msgid "Creating Glom database from backup file."
+msgstr "正在从备份文件创建 Glom 数据库。"
+
+#. The save failed. Tell the user and don't do anything else:
+#: ../glom/application.cc:2413 ../glom/bakery/app_withdoc.cc:241
+#: ../glom/bakery/app_withdoc.cc:292
+msgid "Save failed."
+msgstr "保存失败。"
+
+#: ../glom/application.cc:2413
+msgid "There was an error while saving the example file."
+msgstr "在保存示例文件时出现了一个错误。"
+
+#: ../glom/application.cc:2454 ../glom/application.cc:2459
+#: ../glom/bakery/app_withdoc_gtk.cc:565
+msgid "Save Document"
+msgstr "保存文档"
+
+#. Warn the user:
+#: ../glom/application.cc:2547 ../glom/bakery/app_withdoc_gtk.cc:614
+msgid "Read-only File."
+msgstr "只读文件。"
+
+#: ../glom/application.cc:2547 ../glom/bakery/app_withdoc_gtk.cc:614
+msgid ""
+"You may not overwrite the existing file, because you do not have sufficient "
+"access rights."
+msgstr "您不能覆盖已存在的文件，因为您没有足够的访问权限。"
+
+#. Warn the user:
+#: ../glom/application.cc:2561 ../glom/bakery/app_withdoc_gtk.cc:628
+msgid "Read-only Directory."
+msgstr "只读目录。"
+
+#: ../glom/application.cc:2561 ../glom/bakery/app_withdoc_gtk.cc:628
+msgid ""
+"You may not create a file in this directory, because you do not have "
+"sufficient access rights."
+msgstr "您不能在此目录中创建文件，因为您没有足够的访问权限。"
+
+#: ../glom/application.cc:2578
+msgid "Database Title missing"
+msgstr "数据库标题缺失"
+
+#: ../glom/application.cc:2578
+msgid "You must specify a title for the new database."
+msgstr "您必须为这个新数据库指定一个标题。"
+
+#: ../glom/application.cc:2607 ../glom/frame_glom.cc:1983
+msgid "Directory Already Exists"
+msgstr "目录已存在"
+
+#: ../glom/application.cc:2607 ../glom/frame_glom.cc:1984
+msgid ""
+"There is an existing directory with the same name as the directory that "
+"should be created for the new database files. You should specify a different "
+"filename to use a new directory instead."
+msgstr ""
+"已经有一个与要用于新数据库文件的目录同名的目录了。您应该指定一个其他的文件名"
+"来使用一个新目录。"
+
+#. This actually creates the directory:
+#: ../glom/application.cc:2746
+msgid "Save Backup"
+msgstr "保存备份"
+
+#: ../glom/application.cc:2834
+msgid "Export Backup failed."
+msgstr "导出备份失败。"
+
+#: ../glom/application.cc:2834
+msgid "There was an error while exporting the backup."
+msgstr "在导出备份时出现了一个错误。"
+
+#: ../glom/application.cc:2839
+msgid "Choose a backup file"
+msgstr "选择备份文件"
+
+#: ../glom/application.cc:2844
+msgid ".tar.gz Backup files"
+msgstr ".tar.gz 备份文件"
+
+#: ../glom/application.cc:2850
+msgid "Restore"
+msgstr "恢复"
+
+#: ../glom/application.cc:2924 ../glom/application.cc:2930
+msgid "Restore Backup failed."
+msgstr "恢复备份失败。"
+
+#: ../glom/application.cc:2924
+msgid ""
+"There was an error while restoring the backup. The tar utility failed to "
+"extract the archive."
+msgstr "在恢复备份时出现了一个错误。tar 无法提取档案。"
+
+#: ../glom/application.cc:2930
+msgid ""
+"There was an error while restoring the backup. The .glom file could not be "
+"found."
+msgstr "在恢复备份时出现了一个错误。找不到 .glom 文件。"
+
+#: ../glom/application.cc:3034 ../glom/bakery/app_withdoc_gtk.cc:475
+msgid " (read-only)"
+msgstr " (只读)"
+
+#: ../glom/base_db.cc:132 ../glom/base_db.cc:145
+msgid "Internal error"
+msgstr "内部错误"
+
+#: ../glom/base_db.cc:1609
+msgid "Value Is Not Unique"
+msgstr "值不惟一"
+
+#: ../glom/base_db.cc:1609
+msgid ""
+"The field's value must be unique, but a record with this value already "
+"exists."
+msgstr "字段的值必须惟一，而已经有一个含有这个值的记录了。"
+
+#. Warn the user:
+#. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
+#: ../glom/base_db_table_data.cc:261
+msgid ""
+"Data may not be entered into this related field, because the related record "
+"does not yet exist, and the relationship does not allow automatic creation "
+"of new related records."
+msgstr ""
+"数据不能填入此相关字段中，因为该相关字段尚不存在，关系也不允许自动创建新的相"
+"关记录。"
+
+#: ../glom/base_db_table_data.cc:266
+msgid "Related Record Does Not Exist"
+msgstr "相关记录不存在"
+
+#. Warn the user:
+#. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
+#: ../glom/base_db_table_data.cc:286
+msgid ""
+"Data may not be entered into this related field, because the related record "
+"does not yet exist, and the key in the related record is auto-generated and "
+"therefore can not be created with the key value in this record."
+msgstr ""
+"数据不能填入此相关字段中，因为该相关字段尚不存在，而且相关记录中的键是自动生"
+"成的，因而不能使用此记录中的键值创建。"
+
+#: ../glom/base_db_table_data.cc:291
+msgid "Related Record Cannot Be Created"
+msgstr "相关记录无法创建"
+
+#. Ask the user for confirmation:
+#: ../glom/base_db_table_data.cc:401
+msgid ""
+"Are you sure that you would like to delete this record? The data in this "
+"record will then be permanently lost."
+msgstr "您确定要删除此记录吗？删除后记录中的数据将永远丢失。"
+
+#: ../glom/base_db_table_data.cc:405
+msgid "Delete record"
+msgstr "删除记录"
+
+#. Append the View columns:
+#. Use set_cell_data_func() to give more control over the cell attributes depending on the row:
+#. Name column:
+#. Append the View columns:
+#: ../glom/box_reports.cc:90
+#: ../glom/mode_design/box_db_table_relationships.cc:44
+#: ../glom/mode_design/fields/box_db_table_definition.cc:52
+#: ../glom/mode_design/layout/dialog_choose_field.cc:54
+#: ../glom/mode_design/layout/dialog_choose_relationship.cc:55
+#: ../glom/mode_design/layout/dialog_layout_details.cc:91
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.cc:53
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_groupby_sortfields.cc:52
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc:48
+#: ../glom/mode_design/print_layouts/box_print_layouts.cc:90
+#: ../glom/mode_design/users/dialog_groups_list.cc:64
+msgid "Name"
+msgstr "名称"
+
+#. Don't allow a relationship to be added twice.
+#: ../glom/box_reports.cc:92
+msgid "This report already exists. Please choose a different report name"
+msgstr "此报表已经存在。请另选一个报表名称"
+
+#. Title column:
+#: ../glom/box_reports.cc:94
+#: ../glom/mode_design/box_db_table_relationships.cc:48
+#: ../glom/mode_design/fields/box_db_table_definition.cc:56
+#: ../glom/mode_design/layout/dialog_choose_field.cc:55
+#: ../glom/mode_design/layout/dialog_layout_details.cc:104
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc:49
+#: ../glom/mode_design/print_layouts/box_print_layouts.cc:94
+#: ../glom/navigation/box_tables.cc:136
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:105
+msgid "Title"
+msgstr "标题"
+
+#: ../glom/box_reports.cc:222
+msgid "Are you sure that you want to rename this report?"
+msgstr "您确定要重命名报表吗？"
+
+#. TODO: Show old and new names?
+#: ../glom/box_reports.cc:223
+msgid "Rename Report"
+msgstr "重命名报表"
+
+#. namespace Glom
+#: ../glom.desktop.in.in.h:1
+msgid "A user-friendly database environment."
+msgstr "一个易操作的数据库环境。"
+
+#: ../glom.desktop.in.in.h:2 ../glom/glom.glade.h:28
+msgid "Glom"
+msgstr "Glom"
+
+#: ../glom/dialog_connection.cc:209
+msgid "Not yet created."
+msgstr "尚未创建。"
+
+#: ../glom/dialog_existing_or_new.cc:52
+msgid "No recently used documents available."
+msgstr "没有最近使用的文档。"
+
+#: ../glom/dialog_existing_or_new.cc:53
+msgid "No sessions found on the local network."
+msgstr "局域网中未找到会话。"
+
+#: ../glom/dialog_existing_or_new.cc:56
+msgid "No templates available."
+msgstr "没有模板可用。"
+
+#: ../glom/dialog_existing_or_new.cc:114
+msgid "Open a Document"
+msgstr "打开文档"
+
+#: ../glom/dialog_existing_or_new.cc:133
+msgid "Select File"
+msgstr "选择文件"
+
+#: ../glom/dialog_existing_or_new.cc:137
+msgid "Local Network"
+msgstr "局域网"
+
+#: ../glom/dialog_existing_or_new.cc:141
+msgid "Recently Opened"
+msgstr "最近打开的"
+
+#: ../glom/dialog_existing_or_new.cc:214
+msgid "New Empty Document"
+msgstr "新的空文档"
+
+#: ../glom/dialog_existing_or_new.cc:217
+msgid "New From Template"
+msgstr "从模板新建"
+
+#. Translator hint: This is <Service Name> on <Host> (via Network Interface such as eth0).
+#: ../glom/dialog_existing_or_new.cc:744
+#, c-format
+msgid "%s on %s (via %s)"
+msgstr "%2$s 上的 %1$s(使用 %3$s)"
+
+#: ../glom/filechooser_export.cc:32
+msgid "Export to File"
+msgstr "导出为文件"
+
+#: ../glom/filechooser_export.cc:35
+msgid "Define Data _Format"
+msgstr "定义数据格式(_F)"
+
+#: ../glom/frame_glom.cc:134 ../glom/glom.glade.h:43
+msgid "Quick _search:"
+msgstr "快速搜索(_S)："
+
+#: ../glom/frame_glom.cc:152
+msgid "Search for records"
+msgstr "搜索记录"
+
+#: ../glom/frame_glom.cc:195
+msgid "Glom: Find"
+msgstr "Glom：查找"
+
+#. TODO: Obviously this document should have been deleted when the database-creation was cancelled.
+#. Note that "canceled" is the correct US spelling.
+#: ../glom/frame_glom.cc:402
+msgid "No table"
+msgstr "没有表"
+
+#: ../glom/frame_glom.cc:402
+msgid "This database has no tables yet."
+msgstr "此数据库中还没有表。"
+
+#: ../glom/frame_glom.cc:441 ../glom/glom.glade.h:20
+msgid "Data"
+msgstr "数据"
+
+#: ../glom/frame_glom.cc:500
+#: ../glom/libglom/data_structure/translatable_item.cc:320
+#: ../glom/mode_design/translation/window_translations.cc:217
+msgid "Unknown"
+msgstr "未知"
+
+#. TODO: Obviously this could be possible but it would require a network protocol and some work:
+#: ../glom/frame_glom.cc:573
+msgid "Developer mode not available."
+msgstr "开发者模式不可用。"
+
+#: ../glom/frame_glom.cc:574
+msgid ""
+"Developer mode is not available because the file was opened over the network "
+"from a running Glom. Only the original file may be edited."
+msgstr ""
+"开发者模式不可用，因为文件未通过网络中运行的 Glom 打开。只有原文件可以编辑。"
+
+#: ../glom/frame_glom.cc:580
+msgid "Developer mode not available"
+msgstr "开发者模式不可用"
+
+#: ../glom/frame_glom.cc:581
+msgid ""
+"Developer mode is not available. Check that you have sufficient database "
+"access rights and that the glom file is not read-only."
+msgstr ""
+"开发者模式不可用。检查您是否有足够的数据库访问权限以及 glom 文件是否为只读。"
+
+#: ../glom/frame_glom.cc:588
+msgid "Saving in new document format"
+msgstr "以新文档格式保存"
+
+#: ../glom/frame_glom.cc:589
+msgid ""
+"The document was created by an earlier version of the application. Making "
+"changes to the document will mean that the document cannot be opened by some "
+"earlier versions of the application."
+msgstr ""
+"该文档是早期版本的应用程序创建的。修改文档意味着它将无法使用以前版本的程序打"
+"开。"
+
+#: ../glom/frame_glom.cc:592
+msgid "Continue"
+msgstr "继续"
+
+#: ../glom/frame_glom.cc:641
+msgid "Export Not Allowed."
+msgstr "不允许导出。"
+
+#: ../glom/frame_glom.cc:641
+msgid ""
+"You do not have permission to view the data in this table, so you may not "
+"export the data."
+msgstr "您没有查看此表中数据的权限，因此您不能导出这些数据。"
+
+#: ../glom/frame_glom.cc:672
+msgid "Could Not Create File."
+msgstr "无法创建文件。"
+
+#: ../glom/frame_glom.cc:672
+msgid "Glom could not create the specified file."
+msgstr "Glom 无法创建指定的文件。"
+
+#: ../glom/frame_glom.cc:874
+msgid "No Table"
+msgstr "没有表"
+
+#: ../glom/frame_glom.cc:874
+msgid "There is no table in to which data could be imported."
+msgstr "没有可供导入数据的表。"
+
+#: ../glom/frame_glom.cc:878
+msgid "Open CSV Document"
+msgstr "打开 CSV 文档"
+
+#: ../glom/frame_glom.cc:882
+msgid "CSV files"
+msgstr "CSV 文件"
+
+#: ../glom/frame_glom.cc:886
+msgid "All files"
+msgstr "所有文件"
+
+#: ../glom/frame_glom.cc:961
+msgid "Share on the network"
+msgstr "在网络中共享"
+
+#: ../glom/frame_glom.cc:962
+msgid "This will allow other users on the network to use this database."
+msgstr "这会允许网络中的其他用户使用该数据库。"
+
+#: ../glom/frame_glom.cc:965
+msgid "_Share"
+msgstr "共享(_S)"
+
+#. TODO: Warn about connected users if possible.
+#: ../glom/frame_glom.cc:1060
+msgid "Stop sharing on the network"
+msgstr "停止在网络中共享"
+
+#: ../glom/frame_glom.cc:1061
+msgid "This will prevent other users on the network from using this database."
+msgstr "这会阻止网络中的其他用户使用该数据库。"
+
+#: ../glom/frame_glom.cc:1064
+msgid "_Stop Sharing"
+msgstr "停止共享(_S)"
+
+#: ../glom/frame_glom.cc:1292
+msgid "Table Exists Already"
+msgstr "表已存在"
+
+#: ../glom/frame_glom.cc:1292
+msgid ""
+"A table with this name already exists in the database. Please choose a "
+"different table name."
+msgstr "数据库中同名的表已经存在。请另选一个表名。"
+
+#: ../glom/frame_glom.cc:1296
+msgid "Relationship Exists Already"
+msgstr "关系已存在"
+
+#: ../glom/frame_glom.cc:1296
+msgid ""
+"A relationship with this name already exists for this table. Please choose a "
+"different relationship name."
+msgstr "表中同名的关系已经存在。请另选一个关系名。"
+
+#: ../glom/frame_glom.cc:1300
+msgid "More information needed"
+msgstr "需要更多信息"
+
+#: ../glom/frame_glom.cc:1300
+msgid "You must specify a field, a table name, and a relationship name."
+msgstr "您必须指定一个字段、表名及关系名。"
+
+#: ../glom/frame_glom.cc:1354
+msgid "Related Table Created"
+msgstr "相关表已创建"
+
+#: ../glom/frame_glom.cc:1354
+msgid "The new related table has been created."
+msgstr "新相关表已创建。"
+
+#: ../glom/frame_glom.cc:1384 ../glom/glom.glade.h:23
+msgid "Edit Tables"
+msgstr "编辑表"
+
+#: ../glom/frame_glom.cc:1463
+#: ../glom/mode_data/datawidget/dialog_choose_id.cc:111
+msgid "You have not entered any quick find criteria."
+msgstr ""
+
+#: ../glom/frame_glom.cc:1468
+msgid "No find criteria"
+msgstr ""
+
+#. show user level:
+#. The _C macro provides translator context.
+#: ../glom/frame_glom.cc:1528
+msgctxt "Mode"
+msgid "Operator"
+msgstr "操作员"
+
+#: ../glom/frame_glom.cc:1530
+msgctxt "Mode"
+msgid "Developer"
+msgstr "开发者"
+
+#: ../glom/frame_glom.cc:1838 ../glom/glom_developer.glade.h:159
+msgid "Reports"
+msgstr "报表"
+
+#: ../glom/frame_glom.cc:1869 ../glom/glom_developer.glade.h:153
+msgid "Print Layouts"
+msgstr "打印布局"
+
+#: ../glom/frame_glom.cc:1952
+msgid "Initializing Database Data"
+msgstr "正在初始化数据库数据"
+
+#: ../glom/frame_glom.cc:1961
+msgid "Starting Database Server"
+msgstr "正在启动数据库服务器"
+
+#: ../glom/frame_glom.cc:1969
+msgid "Stopping Database Server"
+msgstr "正在停止数据库服务器"
+
+#: ../glom/frame_glom.cc:1988
+msgid "Could Not Create Directory"
+msgstr "无法创建目录"
+
+#: ../glom/frame_glom.cc:1989
+msgid ""
+"There was an error when attempting to create the directory for the new "
+"database files."
+msgstr "在尝试为新数据库文件创建目录时出现了一个错误。"
+
+#: ../glom/frame_glom.cc:1993
+msgid "Could Not Start Database Server"
+msgstr "无法启动数据库服务器"
+
+#: ../glom/frame_glom.cc:1994
+msgid "There was an error when attempting to start the database server."
+msgstr "在尝试启动数据库服务器时出现了一个错误。"
+
+#. Show 0 instead of "all" when all of no records are found, to avoid confusion.
+#: ../glom/frame_glom.cc:2694
+msgid "All"
+msgstr "所有"
+
+#. namespace Glom
+#: ../glom/glom_developer.glade.h:1
+msgid "<b>Address</b>"
+msgstr "<b>地址</b>"
+
+#: ../glom/glom_developer.glade.h:2
+msgid "<b>Available Parts</b>"
+msgstr "<b>可用部分</b>"
+
+#: ../glom/glom_developer.glade.h:3
+msgid "<b>Choices</b>"
+msgstr "<b>选择</b>"
+
+#: ../glom/glom_developer.glade.h:4
+msgid "<b>Dates</b>"
+msgstr "<b>日期</b>"
+
+#: ../glom/glom_developer.glade.h:5
+msgid "<b>English</b>"
+msgstr "<b>英语</b>"
+
+#: ../glom/glom_developer.glade.h:6
+msgid "<b>Field:</b>"
+msgstr "<b>字段：</b>"
+
+#: ../glom/glom_developer.glade.h:7
+msgid "<b>Fields</b>"
+msgstr "<b>字段</b>"
+
+#: ../glom/glom_developer.glade.h:8
+msgid "<b>Formatting</b>"
+msgstr "<b>格式化</b>"
+
+#: ../glom/glom_developer.glade.h:9
+msgid "<b>Group By</b>"
+msgstr "<b>分组依据</b>"
+
+#: ../glom/glom_developer.glade.h:10
+msgid "<b>Group:</b>"
+msgstr "<b>组：</b>"
+
+#: ../glom/glom_developer.glade.h:11
+msgid "<b>Groups</b>"
+msgstr "<b>组</b>"
+
+#: ../glom/glom_developer.glade.h:12
+msgid "<b>Image:</b>"
+msgstr "<b>图像：</b>"
+
+#: ../glom/glom_developer.glade.h:13
+msgid "<b>Label:</b>"
+msgstr "<b>标签：</b>"
+
+#: ../glom/glom_developer.glade.h:14
+msgid "<b>Layout name:</b>"
+msgstr "<b>布局名称：</b>"
+
+#: ../glom/glom_developer.glade.h:15
+msgid "<b>Navigation</b>"
+msgstr "<b>导航</b>"
+
+#: ../glom/glom_developer.glade.h:16
+msgid "<b>Notebook Tabs</b>"
+msgstr "<b>笔记本标签页</b>"
+
+#: ../glom/glom_developer.glade.h:17
+msgid "<b>Numeric Formatting</b>"
+msgstr "<b>数字格式</b>"
+
+#: ../glom/glom_developer.glade.h:18
+msgid "<b>Parts</b>"
+msgstr "<b>部分</b>"
+
+#: ../glom/glom_developer.glade.h:19
+msgid "<b>Relationship:</b>"
+msgstr "<b>关系：</b>"
+
+#: ../glom/glom_developer.glade.h:20
+msgid "<b>Select Relationship</b>"
+msgstr "<b>选择关系</b>"
+
+#: ../glom/glom_developer.glade.h:21
+msgid "<b>Sort Fields</b>"
+msgstr "<b>排序字段</b>"
+
+#: ../glom/glom_developer.glade.h:22
+msgid "<b>Source Language:</b>"
+msgstr "<b>源语言：</b>"
+
+#: ../glom/glom_developer.glade.h:23
+msgid "<b>Summary Field</b>"
+msgstr "<b>汇总字段</b>"
+
+#: ../glom/glom_developer.glade.h:24 ../glom/glom.glade.h:7
+msgid "<b>Table:</b>"
+msgstr "<b>表：</b>"
+
+#: ../glom/glom_developer.glade.h:25
+msgid "<b>Tables</b>"
+msgstr "<b>表：</b>"
+
+#: ../glom/glom_developer.glade.h:26
+msgid "<b>Target Language:</b>"
+msgstr "<b>目标语言：</b>"
+
+#: ../glom/glom_developer.glade.h:27
+msgid "<b>Text Formatting</b>"
+msgstr "<b>文本格式</b>"
+
+#: ../glom/glom_developer.glade.h:28
+msgid "<b>Text:</b>"
+msgstr "<b>文本：</b>"
+
+#: ../glom/glom_developer.glade.h:29
+msgid "<b>Title:</b>"
+msgstr "<b>标题：</b>"
+
+#: ../glom/glom_developer.glade.h:30
+msgid "<b>Title</b>"
+msgstr "<b>标题：</b>"
+
+#: ../glom/glom_developer.glade.h:31
+msgid "<b>Translations</b>"
+msgstr "<b>翻译</b>"
+
+#: ../glom/glom_developer.glade.h:32
+msgid "<b>User</b>"
+msgstr "<b>用户</b>"
+
+#: ../glom/glom_developer.glade.h:33
+msgid "<b>Users</b>"
+msgstr "<b>用户</b>"
+
+#: ../glom/glom_developer.glade.h:34
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Add Module</span>\n"
+"\n"
+"What name should this module have?"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">添加模块</span>\n"
+"\n"
+"这个模块的名称是什么？"
+
+#: ../glom/glom_developer.glade.h:37
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Add User To Group</span>\n"
+"\n"
+"Which user should be added to this group?"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">将用户添加到组</span>\n"
+"\n"
+"将哪位用户添加到这个组？"
+
+#: ../glom/glom_developer.glade.h:40
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Copy Translation</span>\n"
+"\n"
+"From what language would you like to copy the translations to use as the "
+"start of the current translation?"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">复制翻译</span>\n"
+"\n"
+"您想将哪种语言的翻译复制作为当前翻译的起始？"
+
+#: ../glom/glom_developer.glade.h:43
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Create Group</span>\n"
+"\n"
+"What name should this group have?"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">创建组</span>\n"
+"\n"
+"这个组的名称是什么？"
+
+#: ../glom/glom_developer.glade.h:46
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
 "\n"
 "Glom could not create the new database. Maybe you do not have the necessary "
 "access rights. Please contact your system administrator."
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">数据库创建失败</span>\n"
+"\n"
+"Glom 无法创建新数据库。或许您不具备访问权限。请联系您的系统管理员。"
 
-#: glom/glom.glade.h:22
+#: ../glom/glom_developer.glade.h:49
 msgid ""
-"<span weight=\"bold\" size=\"larger\">Database does not exist</span>\n"
+"<span weight=\"bold\" size=\"larger\">Identify Original</span>\n"
 "\n"
-"The database does not yet exist on the database server. Would you like to "
-"create the database with an empty structure?"
+"The language of the original text is currently identified as:"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">标识原语言</span>\n"
+"\n"
+"原文的语言现在标识为："
 
-#: glom/glom.glade.h:25
+#: ../glom/glom_developer.glade.h:52
 msgid ""
-"<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
+"<span weight=\"bold\" size=\"larger\">Test Translation</span>\n"
 "\n"
-"The data in the field was not recognised. Please try to correct the data or "
-"revert to the previous value. Here is an example of correctly-formatted data "
-"for this field.\n"
+"Choose a language to use temporarily to test the translations. These "
+"translations are normally used automatically when the application is started "
+"on a computer that uses the language.\n"
+"\n"
+"Note that the standard parts of the Glom user interface, such as menus and "
+"dialog windows, will only be translated when you start Glom on a computer "
+"that uses that language."
 msgstr ""
-
-#: glom/glom.glade.h:29
-msgid ""
-"<span weight=\"bold\" size=\"larger\">New Database</span>\n"
+"<span weight=\"bold\" size=\"larger\">测试翻译</span>\n"
 "\n"
-"Please choose a name and title for the new database. The name should not "
-"contain any spaces."
-msgstr ""
-
-#: glom/glom.glade.h:32
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Open existing document, or create new "
-"document</span>\n"
+"选择一个用来临时测试翻译的语言。通常这些翻译会在使用该语言的计算机中启动应用"
+"程序时自动应用。\n"
 "\n"
-"Would you like to open an existing document, to connect to an existing "
-"database?\n"
-"\n"
-"Or would you like to create a new document, to design a new database?\n"
-msgstr ""
+"注意，Glom 的用户界面的标准部分如菜单和对话框窗口只有在使用该语言的计算机上启"
+"动时才会翻译。"
 
-#: glom/glom.glade.h:38
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Title</span>\n"
-"\n"
-"Information text.\n"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">标题</span>\n"
-"\n"
-"信息文本。\n"
+#: ../glom/glom_developer.glade.h:57
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:45
+msgid "Add Button"
+msgstr "添加按钮"
 
-#: glom/glom.glade.h:42
-msgid "Add Related"
-msgstr ""
+#: ../glom/glom_developer.glade.h:58
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:43
+msgid "Add Notebook"
+msgstr "添加笔记本"
 
-#: glom/glom.glade.h:43
+#: ../glom/glom_developer.glade.h:59
+msgid "Add Related Calendar"
+msgstr "添加相关日历"
+
+#: ../glom/glom_developer.glade.h:60
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:42
+msgid "Add Related Records"
+msgstr "添加相关记录"
+
+#: ../glom/glom_developer.glade.h:61
+msgid "Add Related Table"
+msgstr "添加相关表"
+
+#: ../glom/glom_developer.glade.h:62
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:46
+msgid "Add Text"
+msgstr "添加文本"
+
+#: ../glom/glom_developer.glade.h:63
 msgid "Add _Group"
 msgstr "添加组(_G)"
 
-#: glom/glom.glade.h:44
-msgid "Auto-increment"
-msgstr "自动增加"
+#: ../glom/glom_developer.glade.h:64
+msgid ""
+"Add a button. Edit the button to define the script that will be run when the "
+"button is clicked."
+msgstr "添加一个按钮。编辑按钮来定义在点击按键时运行的脚本。"
 
-#: glom/glom.glade.h:45
-msgid "Calculate value"
-msgstr "计算值"
+#: ../glom/glom_developer.glade.h:65
+msgid ""
+"Add a group which can contain other layout items. Use this to group items "
+"together, such as fields."
+msgstr "添加一个包含其他布局项的分组。用它将项目归为一组，如字段。"
 
-#: glom/glom.glade.h:46
-msgid "Connect"
-msgstr "连接"
+#: ../glom/glom_developer.glade.h:66
+msgid ""
+"Add a layout item that shows the data from a field in the record, and allows "
+"the user to edit that value."
+msgstr "添加一个显示记录中其他字段数据的布局项，并允许用户编辑该值。"
 
-#: glom/glom.glade.h:47
-msgid "Create"
+#: ../glom/glom_developer.glade.h:67
+msgid ""
+"Add a related records calendar portal. This is a calendar showing records "
+"from a related table. Remember to edit this layout item to specify the "
+"relationship to use, and the fields to show from the related table."
 msgstr ""
+"添加一个相关记录日历入口。这是一个显示相关表中记录的日历。记得编辑此布局项，"
+"指定要使用的关系和要显示的相关表中的字段。"
 
-#: glom/glom.glade.h:48
-msgid "Data"
-msgstr "数据"
+#: ../glom/glom_developer.glade.h:68
+msgid ""
+"Add a related records portal. This is a list of records in a related table. "
+"Remember to edit this layout item to specify the relationship to use, and "
+"the fields to show from the related table."
+msgstr ""
+"添加一个相关记录入口。这是一个相关表中记录的列表。记得编辑此布局项，指定要使"
+"用的关系及要显示的相关表中的字段。"
 
-#: glom/glom.glade.h:49
-msgid "Database"
-msgstr "数据库"
+#: ../glom/glom_developer.glade.h:69
+msgid ""
+"Add a tabbed notebook. Each page of the notebook may contain several other "
+"layout items, but only one page will be visible at one time."
+msgstr ""
+"添加一个标签页式的笔记本。笔记本的每一页可以包含若干其他布局项，但同时只能显"
+"示一页。"
 
-#: glom/glom.glade.h:50
-msgid "Default Value"
-msgstr "默认值"
+#: ../glom/glom_developer.glade.h:70
+msgid ""
+"Add an image to the layout, such as a logo. The image will be the same for "
+"every record viewed. To show an image field from a record, to show different "
+"images for each field, use the field layout item."
+msgstr ""
+"向该布局添加一张图像，如徽标(logo)。该图像对于每条查看记录都相同。要显示一条"
+"记录中的图像字段、为各字段显示不同的图像，请使用字段布局项目。"
 
-#: glom/glom.glade.h:51
-msgid "Details Layout"
-msgstr "细节布局"
+#: ../glom/glom_developer.glade.h:71
+msgid ""
+"Add text to a layout, such as an explanation or a warning. The text will be "
+"the same for every record viewed."
+msgstr "向布局中添加文本，如解释或警告。该文本对于每条查看记录都相同。"
 
-#: glom/glom.glade.h:52
-msgid "Edit"
-msgstr "编辑"
+#: ../glom/glom_developer.glade.h:72
+#: ../glom/mode_design/box_db_table_relationships.cc:54
+msgid "Allow Editing"
+msgstr "允许编辑"
 
-#: glom/glom.glade.h:53
-msgid "Edit Definition"
-msgstr "编辑定义"
+#: ../glom/glom_developer.glade.h:73
+msgid "Also show:"
+msgstr "也显示："
 
-#: glom/glom.glade.h:54
-msgid "Extra"
-msgstr "额外"
+#: ../glom/glom_developer.glade.h:74
+msgid "Alternative Color for Negative Values"
+msgstr "负值的备选颜色"
 
-#: glom/glom.glade.h:55
+#: ../glom/glom_developer.glade.h:75
+msgid "Auto-increment values"
+msgstr "自动增加值"
+
+#: ../glom/glom_developer.glade.h:76
+msgid "Automatic:"
+msgstr "自动："
+
+#: ../glom/glom_developer.glade.h:77
+msgid "Background Color:"
+msgstr "背景色："
+
+#: ../glom/glom_developer.glade.h:78
+msgid "Border Width (ems)"
+msgstr "边框宽度(单位 em)"
+
+#: ../glom/glom_developer.glade.h:79
+msgid "Button Script"
+msgstr "按钮脚本"
+
+#: ../glom/glom_developer.glade.h:80
+msgid "C_reate"
+msgstr "创建(_R)"
+
+#: ../glom/glom_developer.glade.h:81
+msgid "Choices From Related Records"
+msgstr "相关记录中的选择"
+
+#: ../glom/glom_developer.glade.h:82
+msgid "Choose User"
+msgstr "选择用户"
+
+#: ../glom/glom_developer.glade.h:83
+msgid ""
+"Click this check box to use a different foreground color to display negative "
+"values."
+msgstr "点击此复选框来使用不同的前景色显示负值。"
+
+#: ../glom/glom_developer.glade.h:84
+msgid "Click this check box to use a non-standard background color."
+msgstr "点击此复选框来使用非标准的背景色。"
+
+#: ../glom/glom_developer.glade.h:85
+msgid "Click this check box to use a non-standard font."
+msgstr "点击此复选框来使用非标准字体。"
+
+#: ../glom/glom_developer.glade.h:86
+msgid "Click this check box to use a non-standard foreground color."
+msgstr "点击此复选框来使用非标准的前景色。"
+
+#: ../glom/glom_developer.glade.h:87
+msgid ""
+"Clicking the row button takes the user to the table specified by this "
+"relationship:"
+msgstr "点击行按钮时将用户带到此关系指定的表："
+
+#: ../glom/glom_developer.glade.h:88
+msgid "Columns:"
+msgstr "列："
+
+#: ../glom/glom_developer.glade.h:89
+msgid "Confirm Password"
+msgstr "确认密码"
+
+#: ../glom/glom_developer.glade.h:90
+msgid "Copy From Existing Translation"
+msgstr "从现有翻译复制"
+
+#: ../glom/glom_developer.glade.h:91
+msgid "Country:"
+msgstr "国家："
+
+#: ../glom/glom_developer.glade.h:92
+msgid "Create Group"
+msgstr "创建组"
+
+#: ../glom/glom_developer.glade.h:93
+msgid "Currency Symbol"
+msgstr "货币符号"
+
+#: ../glom/glom_developer.glade.h:94
+msgid "Custom Choice List"
+msgstr "自选列表"
+
+#: ../glom/glom_developer.glade.h:95
+msgid "Database Preferences"
+msgstr "数据库首选项"
+
+#: ../glom/glom_developer.glade.h:96
+msgid "Database User"
+msgstr "数据库用户"
+
+#: ../glom/glom_developer.glade.h:97
+msgid "Date Field:"
+msgstr "日期字段："
+
+#: ../glom/glom_developer.glade.h:98
+msgid "Decimal Places"
+msgstr "小数点位置"
+
+#: ../glom/glom_developer.glade.h:99
+msgid "Default Formatting"
+msgstr "默认格式"
+
+#: ../glom/glom_developer.glade.h:100
+#, fuzzy
+msgid "Display as radio buttons"
+msgstr "显示为单选按钮"
+
+#: ../glom/glom_developer.glade.h:101
+msgid "English"
+msgstr "英语"
+
+#: ../glom/glom_developer.glade.h:102
+#: ../glom/mode_design/translation/window_translations.cc:514
+msgid "Export"
+msgstr "导出"
+
+#: ../glom/glom_developer.glade.h:103
+msgid "Export Format"
+msgstr "导出格式"
+
+#: ../glom/glom_developer.glade.h:104
+#: ../glom/libglom/data_structure/layout/layoutitem_field.cc:193
+#: ../glom/libglom/data_structure/translatable_item.cc:296
+#: ../glom/mode_design/dialog_database_preferences.cc:62
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:605
 msgid "Field"
 msgstr "字段"
 
-#: glom/glom.glade.h:56
+#: ../glom/glom_developer.glade.h:105
 msgid "Field Calculation"
 msgstr "字段计算"
 
-#: glom/glom.glade.h:57
+#: ../glom/glom_developer.glade.h:106
 msgid "Field Definition"
 msgstr "字段定义"
 
-#: glom/glom.glade.h:58
+#: ../glom/glom_developer.glade.h:107
 msgid "Field Definitions"
 msgstr "字段定义"
 
-#: glom/glom.glade.h:59
-msgid "Glom"
-msgstr "Glom"
+#: ../glom/glom_developer.glade.h:108
+msgid "Field Layout"
+msgstr "字段布局"
 
-#: glom/glom.glade.h:60
-msgid "Host"
-msgstr "主机"
+#: ../glom/glom_developer.glade.h:109
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:71
+msgid "Field Summary"
+msgstr "字段汇总"
 
-#: glom/glom.glade.h:61
-msgid "List Layout"
-msgstr "列表布局"
+#: ../glom/glom_developer.glade.h:110
+msgid "Field:"
+msgstr "字段："
 
-#: glom/glom.glade.h:62
-msgid "Lookup value when a field changes."
-msgstr "字段更改时查阅值。"
+#: ../glom/glom_developer.glade.h:111
+msgid "Font:"
+msgstr "字体："
 
-#: glom/glom.glade.h:63
-msgid "Name"
-msgstr "名称"
+#: ../glom/glom_developer.glade.h:112
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc:55
+msgid "Footer"
+msgstr "页脚"
 
-#: glom/glom.glade.h:64
+#: ../glom/glom_developer.glade.h:113
+msgid "Foreground Color:"
+msgstr "前景色："
+
+#: ../glom/glom_developer.glade.h:114
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:32
+msgid "Formatting"
+msgstr "格式"
+
+#. Translators: FROM as in SQL's FROM
+#: ../glom/glom_developer.glade.h:116
+msgid "From field:"
+msgstr "From 字段："
+
+#: ../glom/glom_developer.glade.h:117
+#: ../glom/libglom/data_structure/layout/layoutgroup.cc:415
+#: ../glom/mode_data/flowtablewithfields.cc:1469
+#: ../glom/mode_data/flowtablewithfields.cc:1496
+#: ../glom/utility_widgets/layouttoolbar.cc:53
+#: ../glom/utility_widgets/layouttoolbar.cc:63
+#: ../glom/utility_widgets/notebooklabelglom.cc:76
+msgid "Group"
+msgstr "组"
+
+#: ../glom/glom_developer.glade.h:118
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.cc:102
+msgid "Group By"
+msgstr "分组依据"
+
+#: ../glom/glom_developer.glade.h:119
+msgid "Group By - Sort Fields"
+msgstr "分组依据 - 排序字段"
+
+#: ../glom/glom_developer.glade.h:120
+msgid "Group Properties"
+msgstr "组属性"
+
+#: ../glom/glom_developer.glade.h:121
+msgid "Group name:"
+msgstr "组名："
+
+#: ../glom/glom_developer.glade.h:122
+msgid "Groups"
+msgstr "组"
+
+#: ../glom/glom_developer.glade.h:123
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc:55
+msgid "Header"
+msgstr "页眉"
+
+#: ../glom/glom_developer.glade.h:124
+msgid "Height (lines)"
+msgstr "高度(行)"
+
+#: ../glom/glom_developer.glade.h:125
+msgid "Horizontal Alignment:"
+msgstr "水平对齐："
+
+#: ../glom/glom_developer.glade.h:126
+#, fuzzy
+msgid "Identify Original"
+msgstr "标识原点"
+
+#: ../glom/glom_developer.glade.h:127
+#, fuzzy
+msgid "Identify Source"
+msgstr "标识源"
+
+#: ../glom/glom_developer.glade.h:128
+msgid ""
+"If the text is not actually in this language, please choose the correct "
+"language."
+msgstr "如果该文本不是这种语言，请选择正确的语言。"
+
+#: ../glom/glom_developer.glade.h:129
+msgid ""
+"If this is not selected then a thousands separator will not be used, even if "
+"your locale would normally use one. If it is selected then a thousands "
+"separator will be used only if your locale normally uses one."
+msgstr ""
+"如果不选择此项，将不使用千位分隔符，即使您所在区域习惯上使用它。如果选择，则"
+"只有在您所在区域通常使用千位分隔符时才会使用它。"
+
+#: ../glom/glom_developer.glade.h:130
+msgid ""
+"If this is selected then the field value will be shown in a multi-line box "
+"with a scrollbar."
+msgstr "如果选择此项，则字段值会显示在带滚动条的多行框中。"
+
+#: ../glom/glom_developer.glade.h:131
+msgid ""
+"If this option is selected then the choices will list values from all "
+"records in the related table. If this option is not selected then the "
+"choices will list values only from related records."
+msgstr ""
+"如果选择此项，列出选择时将包含相关表中所有记录的值。如果不选，列出选择时将只"
+"显示相关表中的值。"
+
+#: ../glom/glom_developer.glade.h:132
+msgid "Image Object"
+msgstr "图像对象"
+
+#. Note to translators: "Import" here is an action verb - it's a button.
+#: ../glom/glom_developer.glade.h:133
+#: ../glom/mode_design/translation/window_translations.cc:594
+msgid "Import"
+msgstr "导入"
+
+#: ../glom/glom_developer.glade.h:134
+msgid "Language:"
+msgstr "语言："
+
+#. Don't add ContextLayout in client only mode because it would never
+#. be sensitive anyway
+#: ../glom/glom_developer.glade.h:135
+#: ../glom/mode_data/box_data_calendar_related.cc:496
+#: ../glom/mode_data/db_adddel/db_adddel.cc:250
+msgid "Layout"
+msgstr "布局"
+
+#: ../glom/glom_developer.glade.h:136
+msgid "Locale:"
+msgstr "区域："
+
+#: ../glom/glom_developer.glade.h:137
+msgid "Logo"
+msgstr "徽标"
+
+#. Translators: The Main part of the report (not the footer or header)
+#: ../glom/glom_developer.glade.h:139
+msgid "Main"
+msgstr "主体"
+
+#: ../glom/glom_developer.glade.h:140
+msgid "Module name:"
+msgstr "模块名："
+
+#: ../glom/glom_developer.glade.h:141
+msgid "Multi-line"
+msgstr "多行"
+
+#: ../glom/glom_developer.glade.h:142
+msgid "Name of new related table:"
+msgstr "新相关表的名称："
+
+#: ../glom/glom_developer.glade.h:143
+msgid "Name of new relationship:"
+msgstr "新关系名："
+
+#: ../glom/glom_developer.glade.h:144
+msgid "Name:"
+msgstr "名称："
+
+#: ../glom/glom_developer.glade.h:145
+msgid "No Choices"
+msgstr "没有选择"
+
+#: ../glom/glom_developer.glade.h:146
+msgid "None"
+msgstr "无"
+
+#: ../glom/glom_developer.glade.h:147 ../glom/glom.glade.h:36
+#: ../glom/mode_design/dialog_design.cc:52
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:496
 msgid "None selected"
 msgstr "没有选中"
 
-#: glom/glom.glade.h:65
+#: ../glom/glom_developer.glade.h:148
+#: ../glom/mode_design/layout/dialog_layout_details.cc:953
+msgid "Notebook Tabs"
+msgstr "笔记本标签页"
+
+#: ../glom/glom_developer.glade.h:149
+msgid "Organisation"
+msgstr "组织"
+
+#: ../glom/glom_developer.glade.h:150 ../glom/glom.glade.h:39
 msgid "Password"
 msgstr "密码"
 
-#: glom/glom.glade.h:66
-msgid "Primary Key"
-msgstr "主键"
-
-#: glom/glom.glade.h:67
-msgid "Relationship"
-msgstr "关系"
-
-#: glom/glom.glade.h:68
-msgid "Revert"
+#: ../glom/glom_developer.glade.h:151
+msgid ""
+"Please enter the initial connection details for your database. You may add "
+"additional users later. Remember to keep this password secret because it "
+"allows access to your data from other computers on the network."
 msgstr ""
+"请填写您数据库的初始连接细节。您可以稍后添加其他用户。注意保护好此密码，因为"
+"可以使用它通过网络中的其他计算机访问您的数据。"
 
-#: glom/glom.glade.h:69
+#: ../glom/glom_developer.glade.h:152
+msgid "Print Layout Editor"
+msgstr "打印布局编辑器"
+
+#: ../glom/glom_developer.glade.h:154
+#: ../glom/utility_widgets/layoutwidgetutils.cc:37
+msgid "Properties"
+msgstr "属性"
+
+#: ../glom/glom_developer.glade.h:155
+msgid "Relationship:"
+msgstr "关系："
+
+#: ../glom/glom_developer.glade.h:156
+msgid "Relationships Overview"
+msgstr "关系概览"
+
+#: ../glom/glom_developer.glade.h:157
+msgid ""
+"Remove the item from the layout. If you remove a field layout item, it will "
+"not remove the field from the table itself. It just will not be seen on the "
+"layout."
+msgstr ""
+"从布局中移除项目。如果您移除了一个字段项，它不会从表中移除，只是在布局中看不"
+"见它了而已。"
+
+#: ../glom/glom_developer.glade.h:158
+msgid "Report Layout"
+msgstr "报表布局"
+
+#: ../glom/glom_developer.glade.h:160
+#, fuzzy
+msgid "Restrict data to these choices"
+msgstr "将数据限制为这些选择"
+
+#: ../glom/glom_developer.glade.h:161
+msgid "Script Library"
+msgstr "脚本库"
+
+#: ../glom/glom_developer.glade.h:162
+msgid "Script name:"
+msgstr "脚本名称："
+
+#: ../glom/glom_developer.glade.h:163
+msgid "Secondary Fields:"
+msgstr "次要字段："
+
+#: ../glom/glom_developer.glade.h:164
+#: ../glom/mode_data/datawidget/dialog_choose_id.cc:94
+#: ../glom/utility_widgets/imageglom.cc:328
 msgid "Select"
 msgstr "选择"
 
-#: glom/glom.glade.h:70
+#: ../glom/glom_developer.glade.h:165
 msgid "Select Field"
 msgstr "选择字段"
 
-#: glom/glom.glade.h:71
-#, fuzzy
+#: ../glom/glom_developer.glade.h:166
 msgid "Select Relationship"
-msgstr "关系"
+msgstr "选择关系"
 
-#: glom/glom.glade.h:72
-msgid "Show hidden tables"
-msgstr "显示隐藏表"
+#: ../glom/glom_developer.glade.h:167
+msgid "Show _Related Relationships"
+msgstr "显示相关的关系(_R)"
 
-#: glom/glom.glade.h:73
+#: ../glom/glom_developer.glade.h:168
+msgid "Show all records"
+msgstr "显示所有记录"
+
+#: ../glom/glom_developer.glade.h:169
+msgid "Show child relationships"
+msgstr "显示次级关系"
+
+#: ../glom/glom_developer.glade.h:170
+msgid "Sort Fields:"
+msgstr "排序字段："
+
+#: ../glom/glom_developer.glade.h:171
+msgid ""
+"Start a translation for this target locale by copying the strings from "
+"another target locale."
+msgstr "通过从另一个目标区域复制字符串来开始此目标区域的翻译"
+
+#: ../glom/glom_developer.glade.h:172
+msgid "Startup Script"
+msgstr "启动脚本"
+
+#: ../glom/glom_developer.glade.h:173
+msgid "State/County:"
+msgstr "州/县"
+
+#: ../glom/glom_developer.glade.h:174
+msgid "Street (Line 2):"
+msgstr "街道(行 2)："
+
+#: ../glom/glom_developer.glade.h:175
+msgid "Street:"
+msgstr "街道："
+
+#: ../glom/glom_developer.glade.h:176
+msgid "Summary Type:"
+msgstr "汇总类型："
+
+#: ../glom/glom_developer.glade.h:177
+msgid "System Name:"
+msgstr "系统名称："
+
+#: ../glom/glom_developer.glade.h:178
+msgid "Table Name"
+msgstr "表名"
+
+#: ../glom/glom_developer.glade.h:179 ../glom/glom.glade.h:45
 msgid "Table:"
 msgstr "表："
 
-#: glom/glom.glade.h:74
+#: ../glom/glom_developer.glade.h:180
+msgid "Table: "
+msgstr "表："
+
+#: ../glom/glom_developer.glade.h:181
 msgid "Test"
 msgstr "测试"
 
-#: glom/glom.glade.h:75
+#: ../glom/glom_developer.glade.h:182
+msgid "Test Translation"
+msgstr "测试翻译"
+
+#: ../glom/glom_developer.glade.h:183
+msgid "Text Format"
+msgstr "文本格式"
+
+#: ../glom/glom_developer.glade.h:184
+msgid "Text Object"
+msgstr "文本对象"
+
+#: ../glom/glom_developer.glade.h:185
+#, fuzzy
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
+msgstr "字段值将是 python 函数的返回值，即此处填写的值。"
+
+#: ../glom/glom_developer.glade.h:186
+msgid ""
+"These modules will be available to your button scripts and field "
+"calculations via the python import keyword."
+msgstr "通过 python 导入关键词，您就可以在按钮脚本和字段计算中使用这些模块了。"
+
+#: ../glom/glom_developer.glade.h:187
+msgid ""
+"This field will be used to decide which records to show in the calendar."
+msgstr "该字段将用于决定哪些记录将显示在日历中。"
+
+#: ../glom/glom_developer.glade.h:188
+msgid ""
+"This will add a new table and add a relationship that refers to the new  "
+"table, as a convenient alternative to doing this in separate steps.\n"
+"\n"
+"If a suitable related table already exists then you should instead cancel "
+"and just add a relationship."
 msgstr ""
 
-#: glom/glom.glade.h:76
-msgid "Title"
-msgstr "标题"
+#: ../glom/glom_developer.glade.h:191
+msgid "Title:"
+msgstr "标题："
 
-#: glom/glom.glade.h:77
-msgid "Type"
-msgstr "类型"
+#: ../glom/glom_developer.glade.h:192
+msgid "Town:"
+msgstr "乡镇："
 
-#: glom/glom.glade.h:78
-msgid "Unique"
-msgstr "唯一"
+#: ../glom/glom_developer.glade.h:193
+msgid "Translations"
+msgstr "翻译"
 
-#: glom/glom.glade.h:79
+#: ../glom/glom_developer.glade.h:194
+msgid "Triggered by:"
+msgstr "触发条件："
+
+#: ../glom/glom_developer.glade.h:195
+msgid "Typ_e:"
+msgstr "类型(_E)："
+
+#: ../glom/glom_developer.glade.h:196
+msgid "Use 1000s separator"
+msgstr "使用千位分隔符"
+
+#: ../glom/glom_developer.glade.h:197
+msgid "Use custom formatting"
+msgstr "使用自定义格式"
+
+#: ../glom/glom_developer.glade.h:198
+msgid "Use custom title:"
+msgstr "使用自定义标题："
+
+#: ../glom/glom_developer.glade.h:199
+msgid "Use default field title: "
+msgstr "使用默认字段标题："
+
+#: ../glom/glom_developer.glade.h:200
+msgid "Use default formatting"
+msgstr "使用默认格式"
+
+#: ../glom/glom_developer.glade.h:201 ../glom/glom.glade.h:46
 msgid "User"
 msgstr "用户"
 
-#: glom/glom.glade.h:80
+#: ../glom/glom_developer.glade.h:202
+msgid "Users"
+msgstr "用户"
+
+#: ../glom/glom_developer.glade.h:203
+msgid "Value"
+msgstr "值"
+
+#: ../glom/glom_developer.glade.h:204
+#, fuzzy
+msgid ""
+"When the button is clicked it will run the python function which you "
+"implement here."
+msgstr "当点击按钮时，会执行您在此处指定的 python 命令。"
+
+#: ../glom/glom_developer.glade.h:205
+#, fuzzy
+msgid ""
+"When the database is opened the python function implemented here will run."
+msgstr "当打开数据库时，这里指定的 python 命令会执行。"
+
+#: ../glom/glom_developer.glade.h:206
+msgid ""
+"When this is checked the table's title will be shown at the top of the "
+"report in addition to the report title."
+msgstr "若选中它，表的标题会和报表标题一起显示在报表顶部。"
+
+#: ../glom/glom_developer.glade.h:207
+msgid "Zip/Postal Code:"
+msgstr "邮政编码："
+
+#: ../glom/glom_developer.glade.h:208
+msgid "_Auto-increment"
+msgstr "自动增加(_A)"
+
+#: ../glom/glom_developer.glade.h:209
+msgid "_Calculate Value"
+msgstr "计算值(_C)"
+
+#. Translators: This is the verb
+#: ../glom/glom_developer.glade.h:211
+msgid "_Check"
+msgstr "检查(_C)"
+
+#: ../glom/glom_developer.glade.h:212
+msgid "_Confirm Password:"
+msgstr "确认密码(_C)："
+
+#: ../glom/glom_developer.glade.h:213 ../glom/bakery/app_withdoc_gtk.cc:325
+msgid "_Edit"
+msgstr "编辑(_E)"
+
+#: ../glom/glom_developer.glade.h:214
+msgid "_Field:"
+msgstr "字段(_F)："
+
+#: ../glom/glom_developer.glade.h:215
+msgid "_Lookup value when a field changes."
+msgstr "字段更改时查阅值(_L)。"
+
+#: ../glom/glom_developer.glade.h:216
+msgid "_Name:"
+msgstr "名称(_N)："
+
+#: ../glom/glom_developer.glade.h:217 ../glom/glom.glade.h:52
+msgid "_Password:"
+msgstr "密码(_N)："
+
+#: ../glom/glom_developer.glade.h:218
+msgid "_Primary Key"
+msgstr "主键(_P)"
+
+#: ../glom/glom_developer.glade.h:219
+msgid "_Relationship:"
+msgstr "关系(_R)："
+
+#: ../glom/glom_developer.glade.h:220
+msgid "_Report name:"
+msgstr "报表名称(_R)："
+
+#: ../glom/glom_developer.glade.h:221 ../glom/glom.glade.h:53
+msgid "_Select"
+msgstr "选择(_S)"
+
+#: ../glom/glom_developer.glade.h:222
+msgid "_Show table title"
+msgstr "显示表标题(_S)"
+
+#: ../glom/glom_developer.glade.h:223
+msgid "_Table:"
+msgstr "表(_T)："
+
+#: ../glom/glom_developer.glade.h:224
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:101
+msgid "_Title:"
+msgstr "标题(_T)："
+
+#: ../glom/glom_developer.glade.h:225
+msgid "_Unique"
+msgstr "惟一(_U)"
+
+#: ../glom/glom_developer.glade.h:226
+msgid "_User Entry"
+msgstr "用户条目(_U)"
+
+#: ../glom/glom_developer.glade.h:227 ../glom/glom.glade.h:55
+msgid "_User:"
+msgstr "用户(_U)："
+
+#: ../glom/glom_developer.glade.h:228 ../glom/glom.glade.h:58
+msgid "label"
+msgstr "标签"
+
+#: ../glom/glom_developer.glade.h:229
+msgid "table name"
+msgstr "表名"
+
+#: ../glom/glom.glade.h:1
+msgid "0"
+msgstr "0"
+
+#: ../glom/glom.glade.h:2
+msgid "<b><span size=\"xx-large\">None selected</span></b>"
+msgstr "<b><span size=\"xx-large\">无选择</span></b>"
+
+#. Import is a noun here. This is the title for a list of fields to import.
+#: ../glom/glom.glade.h:4
+msgid "<b>Import Fields</b>"
+msgstr "<b>导入字段</b>"
+
+#. Import is a noun here. This is the title for a window showing options for an import operation.
+#: ../glom/glom.glade.h:6
+msgid "<b>Import Options</b>"
+msgstr "<b>导入选项</b>"
+
+#: ../glom/glom.glade.h:8
+msgid "<b>User Level:</b>"
+msgstr "<b>用户级别：</b>"
+
+#: ../glom/glom.glade.h:9
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Choose Date</span>\n"
+"\n"
+"Please select a date to enter in this field."
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">选择日期</span>\n"
+"\n"
+"请选择要填入该字段的日期。。"
+
+#: ../glom/glom.glade.h:12
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
+"\n"
+"The data in the field was not recognized. Please try to correct the data or "
+"revert to the previous value. Here is an example of correctly-formatted data "
+"for this field.\n"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">格式无效</span>\n"
+"\n"
+"不能识别字段中的数据。请更正数据或还原成先前的值。这有一个该字段正确格式数据"
+"的例子。\n"
+
+#: ../glom/glom.glade.h:16
+msgid "<span weight=\"bold\" size=\"larger\">Open or create a Document</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">打开或创建文档</span>"
+
+#: ../glom/glom.glade.h:17
+msgid "Choose Date"
+msgstr "选择日期"
+
+#: ../glom/glom.glade.h:18
+msgid "Connect to Server"
+msgstr "连接到服务器"
+
+#: ../glom/glom.glade.h:19
+msgid "Create New Document"
+msgstr "创建新文档"
+
+#: ../glom/glom.glade.h:21
+msgid "Database"
+msgstr "数据库"
+
+#: ../glom/glom.glade.h:22
+msgid "Database:"
+msgstr "数据库："
+
+#: ../glom/glom.glade.h:24
+msgid "Encoding detected as: UTF-8"
+msgstr "检测到的编码为：UTF-8"
+
+#: ../glom/glom.glade.h:25
+msgid "Find All"
+msgstr "查找所有"
+
+#: ../glom/glom.glade.h:26
+msgid "Find Related Record"
+msgstr "查找相关记录"
+
+#: ../glom/glom.glade.h:27
+msgid "Found:"
+msgstr "找到："
+
+#: ../glom/glom.glade.h:29
+msgid "Host"
+msgstr "主机"
+
+#: ../glom/glom.glade.h:31
+msgid "Import Into _Table:"
+msgstr "导入表(_T)："
+
+#. This is a status message for a progress dialog. It says that importing is currently happenning.
+#: ../glom/glom.glade.h:33
+msgid "Importing Data"
+msgstr "正在导入数据"
+
+#: ../glom/glom.glade.h:34
+msgid "Loading image"
+msgstr "正在载入图像"
+
+#: ../glom/glom.glade.h:35
+msgid "Mode:"
+msgstr "模式："
+
+#: ../glom/glom.glade.h:37
+msgid "Open Existing Document"
+msgstr "打开现有文档"
+
+#: ../glom/glom.glade.h:38
+msgid "Open or create Document"
+msgstr "打开或创建文档"
+
+#: ../glom/glom.glade.h:40
+msgid "Please enter the connection details for your database server."
+msgstr "请输入您数据库服务器的连接细节。"
+
+#: ../glom/glom.glade.h:41
+msgid "Please wait, your data is being imported…"
+msgstr "请稍候，正在导入您的数据..."
+
+#: ../glom/glom.glade.h:42 ../glom/glade_utils.cc:41
+msgid "Processing"
+msgstr "正在处理"
+
+#: ../glom/glom.glade.h:44
+msgid "Records: "
+msgstr "记录："
+
+#: ../glom/glom.glade.h:47
+msgid "Welcome to Glom"
+msgstr "欢迎使用 Glom"
+
+#: ../glom/glom.glade.h:48
+msgid "_Encoding:"
+msgstr "编码(_E)："
+
+#: ../glom/glom.glade.h:49
+msgid "_First line as title"
+msgstr "首行作为标题(_F)"
+
+#: ../glom/glom.glade.h:50
+msgid "_Host:"
+msgstr "主机(_H)："
+
+#: ../glom/glom.glade.h:51
+msgid "_Number of sample rows:"
+msgstr "示例行的数量(_N)："
+
+#: ../glom/glom.glade.h:54
+msgid "_Show hidden tables"
+msgstr "显示隐藏表(_S)"
+
+#: ../glom/glom.glade.h:56
+msgid "bla.blub - Import from CSV"
+msgstr "bla.blub - 从 CSV 导入"
+
+#: ../glom/glom.glade.h:57
 msgid "example data format"
 msgstr "示例数据格式"
 
-#: glom/glom.glade.h:81
-msgid "table name"
-msgstr "表名"
+#: ../glom/glom.glade.h:59
+msgid "table_name"
+msgstr "表名(_N)"
+
+#: ../glom/utils_ui.cc:144
+msgid "No help file available"
+msgstr "没有帮助文件"
+
+#: ../glom/utils_ui.cc:162
+msgid "Could not display help: "
+msgstr "无法显示帮助："
+
+#: ../glom/utils_ui.cc:485
+msgid "Your find criteria did not match any records in the table."
+msgstr ""
+
+#: ../glom/utils_ui.cc:490
+msgid "No Records Found"
+msgstr "未找到记录"
+
+#: ../glom/utils_ui.cc:497
+msgid "New Find"
+msgstr "新的查找"
+
+#: ../glom/bakery/app_withdoc_gtk.cc:368
+msgid "_Help"
+msgstr "帮助(_H)"
+
+#: ../glom/bakery/app_withdoc_gtk.cc:372
+msgid "_About"
+msgstr "关于(_A)"
+
+#: ../glom/bakery/app_withdoc_gtk.cc:372
+msgid "About the application"
+msgstr "关于该应用程序"
+
+#: ../glom/bakery/app_withdoc_gtk.cc:512
+msgid "Open Document"
+msgstr "打开文档"
+
+#: ../glom/bakery/app_withdoc.cc:241 ../glom/bakery/app_withdoc.cc:292
+msgid ""
+"There was an error while saving the file. Your changes have not been saved."
+msgstr "在保存文件时出现了一个错误。您的更改没有保存。"
+
+#: ../glom/bakery/app_withdoc.cc:502
+msgid "Open Failed."
+msgstr "打开失败。"
+
+#: ../glom/bakery/app_withdoc.cc:502
+msgid "The document could not be opened."
+msgstr "无法打开该文档。"
+
+#: ../glom/bakery/dialog_offersave.cc:30
+msgid "This document has unsaved changes. Would you like to save the document?"
+msgstr "该文档有未保存的更改。您想保存此文档吗？"
+
+#: ../glom/bakery/dialog_offersave.cc:32
+msgid ""
+"\n"
+"\n"
+"Document:\n"
+msgstr ""
+"\n"
+"\n"
+"文档：\n"
+
+#: ../glom/bakery/dialog_offersave.cc:45
+msgid "Close without Saving"
+msgstr "不保存关闭"
+
+#: ../glom/bakery/dialog_offersave.cc:54
+msgid "Discard"
+msgstr "丢弃"
+
+#: ../glom/import_csv/dialog_import_csv.cc:96
+msgid "Auto Detect"
+msgstr "自动检测"
+
+#. We mean 22nd November 2008:
+#. C years start are the AD year - 1900. So, 01 is 1901.
+#. C months start at 0.
+#. starts at 1
+#. Get the ISO (not current locale) text representation:
+#. ignored
+#. iso_format
+#: ../glom/import_csv/dialog_import_csv.cc:151
+msgid ""
+"Note that the source file should contain numbers and dates in international "
+"ISO format. For instance, 22nd November 2008 should be %1."
+msgstr ""
+"注意源文件中包含的数字和日期应为国际通用的 ISO 格式。如，2008年10月22日应表示"
+"为 %1。"
+
+#: ../glom/import_csv/dialog_import_csv.cc:180
+msgid "No Document Available"
+msgstr "没有可用的文档"
+
+#: ../glom/import_csv/dialog_import_csv.cc:180
+msgid "You need to open a document to import the data into a table."
+msgstr "要将数据导入表中，您需要打开一个文档。"
+
+#: ../glom/import_csv/dialog_import_csv.cc:191
+msgid "Import From CSV File"
+msgstr "从 CSV 文件导入"
+
+#: ../glom/import_csv/dialog_import_csv.cc:196
+#: ../glom/import_csv/dialog_import_csv.cc:578
+msgid "<None>"
+msgstr "<无>"
+
+#: ../glom/import_csv/dialog_import_csv.cc:276
+msgid "Error Importing CSV File"
+msgstr "导入 CSV 文件出错"
+
+#: ../glom/import_csv/dialog_import_csv.cc:430
+msgid "Encoding detected as: %1"
+msgstr "检测到的编码为：%1"
+
+#: ../glom/import_csv/dialog_import_csv.cc:469
+msgid "Encoding detection failed. Please manually choose one from the box."
+msgstr "编码检测失败。请从下拉框中手工选择一种。"
+
+#: ../glom/import_csv/dialog_import_csv.cc:473
+msgid ""
+"The file contains data not in the specified encoding. Please choose another "
+"one, or try \"Auto Detect\"."
+msgstr "文件中包含不是指定编码的数据。请另选一种编码，或尝试“自动检测”。"
+
+#. Note to translators: This is a straight line, not a database row.
+#: ../glom/import_csv/dialog_import_csv.cc:515
+#: ../glom/libglom/data_structure/layout/layoutitem_line.cc:82
+msgid "Line"
+msgstr "直线"
+
+#: ../glom/import_csv/dialog_import_csv.cc:558
+msgid "Target Field"
+msgstr "目标字段"
+
+#: ../glom/import_csv/dialog_import_csv.cc:603
+msgid "<Import Failure>"
+msgstr "<导入失败>"
+
+#: ../glom/import_csv/dialog_import_csv.cc:613
+msgid "<Picture>"
+msgstr "<图片>"
+
+#: ../glom/import_csv/dialog_import_csv.cc:712
+msgid ""
+"One column needs to be assigned the table's primary key (<b>%1</b>) as "
+"target field before importing"
+msgstr "在导入前，需要将某列指定为表的主键(<b>%1</b>)。"
+
+#: ../glom/import_csv/dialog_import_csv.cc:740
+msgid "Could Not Open file"
+msgstr "无法打开文件"
+
+#: ../glom/import_csv/dialog_import_csv.cc:741
+msgid "The file at \"%1\" could not be opened: %2"
+msgstr "位于“%1”的文件无法打开：%2"
+
+#: ../glom/import_csv/dialog_import_csv.cc:747
+msgid "Import From CSV File: "
+msgstr "从 CSV 文件导入："
+
+#: ../glom/import_csv/dialog_import_csv_progress.cc:82
+msgid "Parsing CSV file %1"
+msgstr "正在解析 CSV 文件 %1"
+
+#: ../glom/import_csv/dialog_import_csv_progress.cc:161
+msgid "Import complete\n"
+msgstr "导入完成\n"
+
+#: ../glom/import_csv/dialog_import_csv_progress.cc:190
+msgid ""
+"Warning: Importing row %1: The value for field %2 must be unique, but is "
+"already in use. The value will not be imported.\n"
+msgstr ""
+"警告：导入第 %1 列：%2 字段的值必须惟一，但它已在使用。值将不会导入。\n"
+
+#: ../glom/import_csv/dialog_import_csv_progress.cc:199
+msgid ""
+"Warning: Importing row %1: The value for field %2, \"%3\" could not be "
+"converted to the field's type. The value will not be imported.\n"
+msgstr ""
+"警告：导入第 %1 行：%2 字段的值“%3” 无法转换为字段的类型。值将不会导入。\n"
+
+#: ../glom/import_csv/dialog_import_csv_progress.cc:224
+msgid ""
+"Error importing row %1: Cannot import the row because the primary key is "
+"empty.\n"
+msgstr "导入第 %1 行出错：无法导入此行，因为主键为空。\n"
+
+#. TODO: Can we get this from anywhere else, such as iso-codes? murrayc
+#. TODO: Make this generally more efficient.
+#: ../glom/import_csv/file_encodings.cc:93
+#: ../glom/import_csv/file_encodings.cc:94
+#: ../glom/import_csv/file_encodings.cc:95
+#: ../glom/import_csv/file_encodings.cc:96
+#: ../glom/import_csv/file_encodings.cc:97
+#: ../glom/import_csv/file_encodings.cc:98
+#: ../glom/import_csv/file_encodings.cc:99
+#: ../glom/import_csv/file_encodings.cc:100
+msgid "Unicode"
+msgstr "Unicode"
+
+#. This just adds a separator in the combo box
+#: ../glom/import_csv/file_encodings.cc:102
+#: ../glom/import_csv/file_encodings.cc:115
+#: ../glom/import_csv/file_encodings.cc:120
+msgid "Western"
+msgstr "西方"
+
+#. This just adds a separator in the combo box
+#: ../glom/import_csv/file_encodings.cc:103
+#: ../glom/import_csv/file_encodings.cc:118
+msgid "Central European"
+msgstr "中欧"
+
+#: ../glom/import_csv/file_encodings.cc:104
+msgid "South European"
+msgstr "南欧"
+
+#: ../glom/import_csv/file_encodings.cc:105
+#: ../glom/import_csv/file_encodings.cc:113
+#: ../glom/import_csv/file_encodings.cc:125
+msgid "Baltic"
+msgstr "波罗的海"
+
+#: ../glom/import_csv/file_encodings.cc:106
+#: ../glom/import_csv/file_encodings.cc:119
+msgid "Cyrillic"
+msgstr "西里尔"
+
+#: ../glom/import_csv/file_encodings.cc:107
+#: ../glom/import_csv/file_encodings.cc:124
+msgid "Arabic"
+msgstr "阿拉伯"
+
+#: ../glom/import_csv/file_encodings.cc:108
+#: ../glom/import_csv/file_encodings.cc:121
+msgid "Greek"
+msgstr "德语"
+
+#: ../glom/import_csv/file_encodings.cc:109
+msgid "Hebrew Visual"
+msgstr ""
+
+#: ../glom/import_csv/file_encodings.cc:110
+#: ../glom/import_csv/file_encodings.cc:123
+msgid "Hebrew"
+msgstr "希伯来语"
+
+#: ../glom/import_csv/file_encodings.cc:111
+#: ../glom/import_csv/file_encodings.cc:122
+msgid "Turkish"
+msgstr "土耳其语"
+
+#: ../glom/import_csv/file_encodings.cc:112
+msgid "Nordic"
+msgstr ""
+
+#: ../glom/import_csv/file_encodings.cc:114
+msgid "Celtic"
+msgstr ""
+
+#: ../glom/import_csv/file_encodings.cc:116
+msgid "Romanian"
+msgstr ""
+
+#: ../glom/import_csv/file_encodings.cc:126
+msgid "Vietnamese"
+msgstr ""
+
+#: ../glom/libglom/data_structure/field.cc:640
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:143
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:151
+msgid "Invalid"
+msgstr "无效"
+
+#: ../glom/libglom/data_structure/field.cc:641
+msgid "Number"
+msgstr "数字"
+
+#: ../glom/libglom/data_structure/field.cc:642
+#: ../glom/libglom/data_structure/layout/layoutitem_text.cc:72
+#: ../glom/libglom/data_structure/translatable_item.cc:316
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1153
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:609
+msgid "Text"
+msgstr "文字"
+
+#: ../glom/libglom/data_structure/field.cc:643
+msgid "Time"
+msgstr "时间"
+
+#: ../glom/libglom/data_structure/field.cc:644
+msgid "Date"
+msgstr "日期"
+
+#: ../glom/libglom/data_structure/field.cc:645
+msgid "Boolean"
+msgstr "布尔型"
+
+#: ../glom/libglom/data_structure/field.cc:646
+#: ../glom/libglom/data_structure/layout/layoutitem_image.cc:69
+#: ../glom/libglom/data_structure/translatable_item.cc:318
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1160
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:39
+#: ../glom/utility_widgets/layouttoolbar.cc:65
+msgid "Image"
+msgstr "图像"
+
+#. TRANSLATORS: Please only translate this string if you know that strftime()
+#. * shows only 2 year digits when using format "x". We want to always display
+#. * 4 year digits. For instance, en_GB should translate it to "%d/%m/%Y".
+#. * Glom will show a warning in the terminal at startup if this is necessary
+#. * and default to %d/%m/%Y" if it detects a problem, but that might not be
+#. * correct for your locale.
+#. * Thanks.
+#: ../glom/libglom/data_structure/glomconversions.cc:103
+#, no-c-format
+msgid "%x"
+msgstr "%Y/%m/%d"
+
+#. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
+#: ../glom/libglom/data_structure/glomconversions.cc:150
+msgid ""
+"ERROR: sanity_check_date_parsing(): Sanity check failed: Glom could not "
+"parse a date's text representation that it generated itself, in this locale."
+msgstr ""
+"错误：sanity_check_date_parsing()：完整性检查失败：Glom 无法解析日期的文本表"
+"示，于是自己针对此区域生成了一个日期文本。"
+
+#. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
+#: ../glom/libglom/data_structure/glomconversions.cc:184
+msgid ""
+"ERROR: sanity_check_date_text_representation_uses_4_digit_year(): Sanity "
+"check failed: Glom does not seem to use 4 digits to display years in a "
+"date's text representation, in this locale. Defaulting to dd/mm/yyyy though "
+"this might be incorrect for your locale. This needs attention from a "
+"translator. Please file a bug - see http://www.glom.org"
+msgstr ""
+"错误：sanity_check_date_text_representation_uses_4_digit_year()：完整性检查失"
+"败。在此区域中，Glom 似乎未在日期的文本表示中使用 4 位年份显示。将默认表示成 "
+"dd/mm/yyyy 的形式，尽管这可能与您的区域不符。这需要翻译者留意。请提交一个 "
+"bug - 参见 http://www.glom.org"
+
+#: ../glom/libglom/data_structure/layout/layoutitem_button.cc:67
+#: ../glom/libglom/data_structure/translatable_item.cc:314
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1146
+#: ../glom/utility_widgets/layouttoolbar.cc:61
+msgid "Button"
+msgstr "按钮"
+
+#: ../glom/libglom/data_structure/layout/layoutitem_calendarportal.cc:57
+msgid "Calendar Portal"
+msgstr "日历入口"
+
+#. Note to translators: "Notebook" means a GtkNotebook-type widget.
+#: ../glom/libglom/data_structure/layout/layoutitem_notebook.cc:56
+#: ../glom/mode_data/flowtablewithfields.cc:1465
+#: ../glom/utility_widgets/layouttoolbar.cc:55
+msgid "Notebook"
+msgstr "笔记本"
+
+#: ../glom/libglom/data_structure/layout/layoutitem_placeholder.cc:59
+msgid "Placeholder"
+msgstr "占位符"
+
+#: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:68
+msgid "Portal"
+msgstr "入口"
+
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:126
+msgid "No summary chosen"
+msgstr "没有选择汇总"
+
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:145
+msgid "Sum"
+msgstr "和"
+
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:147
+msgid "Average"
+msgstr "平均值"
+
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:149
+msgid "Count"
+msgstr "计数"
+
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_summary.cc:61
+msgid "Summary"
+msgstr "汇总"
+
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.cc:55
+msgid "Vertical Group"
+msgstr "竖直组"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:298
+msgid "Custom Title"
+msgstr "自定义标题"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:300
+msgid "Relationship"
+msgstr "关系"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:302
+msgid "Layout Item"
+msgstr "布局项"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:304
+msgid "Print Layout"
+msgstr "打印布局"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:306
+msgid "Report"
+msgstr "报表"
+
+#. Tables:
+#: ../glom/libglom/data_structure/translatable_item.cc:308
+#: ../glom/mode_design/box_db_table_relationships.cc:52
+#: ../glom/mode_design/dialog_database_preferences.cc:61
+#: ../glom/mode_design/users/dialog_groups_list.cc:71
+#: ../glom/navigation/box_tables.cc:131
+#: ../glom/navigation/maemo/pickerbutton_table.cc:37
+msgid "Table"
+msgstr "表"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:310
+msgid "Layout Group"
+msgstr "布局组"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:312
+msgid "Field Title"
+msgstr "字段标题"
+
+#: ../glom/libglom/document/document.cc:480
+#: ../glom/libglom/document/document.cc:498
+msgid "System Preferences"
+msgstr "系统首选项"
+
+#: ../glom/libglom/document/document.cc:511
+msgid "System Name"
+msgstr "系统名称"
+
+#: ../glom/libglom/document/document.cc:517
+msgid "Organisation Name"
+msgstr "组织名称"
+
+#: ../glom/libglom/document/document.cc:523
+msgid "Organisation Logo"
+msgstr "组织徽标"
+
+#: ../glom/libglom/document/document.cc:529
+msgid "Street"
+msgstr "街道"
+
+#: ../glom/libglom/document/document.cc:535
+msgid "Street (line 2)"
+msgstr "街道 (第 2 行)"
+
+#: ../glom/libglom/document/document.cc:541
+msgid "City"
+msgstr "城市"
+
+#: ../glom/libglom/document/document.cc:547
+msgid "State"
+msgstr "州"
+
+#: ../glom/libglom/document/document.cc:553
+msgid "Country"
+msgstr "国家"
+
+#: ../glom/libglom/document/document.cc:559
+msgid "Zip Code"
+msgstr "邮编"
+
+#: ../glom/libglom/document/bakery/document.cc:404
+msgid "Untitled"
+msgstr "无标题"
+
+#: ../glom/libglom/gst-package.c:56
+msgid "Could not install package"
+msgstr "无法安装软件包"
+
+#: ../glom/libglom/gst-package.c:74
+msgid "The necessary applications to install the package could not be found."
+msgstr "找不到安装此软件包所需的应用程序。"
+
+#: ../glom/libglom/db_utils.cc:1053
+#: ../glom/mode_design/users/dialog_groups_list.cc:68
+msgid "Description"
+msgstr "描述"
+
+#: ../glom/libglom/db_utils.cc:1060
+msgid "Comments"
+msgstr "评论"
+
+#: ../glom/main.cc:198
+msgid "Glom options"
+msgstr "Glom 选项"
+
+#: ../glom/main.cc:198
+msgid "Command-line options for glom"
+msgstr "glom 的命令行选项"
+
+#: ../glom/main.cc:208
+msgid "The Filename"
+msgstr "文件名"
+
+#: ../glom/main.cc:214
+msgid "The version of this application."
+msgstr "此应用程序的版本"
+
+#: ../glom/main.cc:219
+msgid "Whether the filename is a .tar.gz backup to be restored."
+msgstr "此文件名是否为一个要恢复的 .tar.gz 备份。"
+
+#: ../glom/main.cc:224
+msgid ""
+"Do not automatically stop the database server if Glom quits. This is helpful "
+"for debugging with gdb."
+msgstr ""
+
+#: ../glom/main.cc:229
+msgid "Show the generated SQL queries on stdout, for debugging."
+msgstr "在标准输出(stdout)中显示生成的 SQL 查询语句，用于调试"
+
+#: ../glom/main.cc:234
+msgid "Show how Glom outputs a date in this locale, then stop."
+msgstr "显示 Glom 如何输出此区域中的日期，然后停止。"
+
+#: ../glom/main.cc:247
+msgid ""
+"You seem to be running Glom as a user with administrator privileges. Glom "
+"may not be run with such privileges for security reasons.\n"
+"Please login to your system as a normal user."
+msgstr ""
+"您似乎在以具有管理员权限的用户运行 Glom。为了安全，不要用这种权限运行Glom。\n"
+"请以普通用户身份登录您的系统。"
+
+#. Warn the user:
+#: ../glom/main.cc:261
+msgid ""
+"You seem to be running Glom as root. Glom may not be run as root.\n"
+"Please login to your system as a normal user."
+msgstr ""
+"您似乎在以 root 身份运行 Glom。Glom 不能以 root 身份运行。\n"
+"请以普通用户身份登录您的系统。"
+
+#: ../glom/main.cc:268
+msgid "Running As Root"
+msgstr "正以 root 身份运行"
+
+#. Show message to the user about the broken installation:
+#. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
+#. Show message to the user about the broken installation:
+#: ../glom/main.cc:315 ../glom/main.cc:328 ../glom/main.cc:571
+msgid "Incomplete Glom Installation"
+msgstr "Glom 安装不完整"
+
+#. use_markup
+#. modal
+#: ../glom/main.cc:316
+msgid ""
+"Your installation of Glom is not complete, because PostgreSQL is not "
+"available on your system. PostgreSQL is needed for self-hosting of Glom "
+"databases.\n"
+"\n"
+"You may now install PostgreSQL to complete the Glom installation."
+msgstr ""
+"您安装的 Glom 不完整。因为系统中没有 PostgreSQL。Glom 数据库的自我宿主(self-"
+"hosting)需要 PostgreSQL。\n"
+"\n"
+"您可以现在安装 PostgreSQL 来补全 Glom 安装。"
+
+#: ../glom/main.cc:318
+msgid "Install PostgreSQL"
+msgstr "安装 PostgreSQL"
+
+#. use_markup
+#. modal
+#: ../glom/main.cc:329
+msgid ""
+"Your installation of Glom is not complete, because PostgreSQL is not "
+"available on your system. PostgreSQL is needed for self-hosting of Glom "
+"databases.\n"
+"\n"
+"Please report this bug to your vendor, or your system administrator so it "
+"can be corrected."
+msgstr ""
+"您安装的 Glom 不完整，因为您的系统中没有 PostgreSQL。Glom 数据库的自我宿主"
+"(self-hosting)需要 PostgreSQL。\n"
+"\n"
+"请向您的厂商或您的系统管理员报告这个 bug，"
+
+#. The python module could not be imported by Glom, so warn the user:
+#: ../glom/main.cc:345
+msgid ""
+"Your installation of Glom is not complete, because the Glom Python module is "
+"not available on your system.\n"
+"\n"
+"Please report this bug to your vendor, or your system administrator so it "
+"can be corrected."
+msgstr ""
+"您安装的 Glom 不完整，因为您的系统中没有 Glom Python 模块。\n"
+"\n"
+"请向您的计算机厂商或您的系统管理员报告这个 bug，以便修复它。"
+
+#: ../glom/main.cc:348
+msgid "Glom Python Module Not Installed"
+msgstr "Glom Python 模块未安装"
+
+#. The python module could not be imported by Glom, so warn the user:
+#: ../glom/main.cc:365
+msgid ""
+"Your installation of Glom is not complete, because the gda Python module is "
+"not available on your system.\n"
+"\n"
+"Please report this bug to your vendor, or your system administrator so it "
+"can be corrected."
+msgstr ""
+"您安装的 Glom 不完整，因为系统中找不到 gda Python 模块。\n"
+"\n"
+"请向您的厂商或您的系统管理员报告这个 bug，以便修复它。"
+
+#: ../glom/main.cc:368
+msgid "gda Python Module Not Installed"
+msgstr "gda Python 模块未安装"
+
+#: ../glom/main.cc:494
+msgid "Error while parsing command-line options: "
+msgstr "解析命令行选项时出错："
+
+#: ../glom/main.cc:495
+msgid "Use --help to see a list of available command-line options."
+msgstr "使用 --help 查看可用命令行选项的清单。"
+
+#: ../glom/main.cc:537
+msgid "Glom: The file does not exist."
+msgstr "Glom：该文件不存在。"
+
+#: ../glom/main.cc:547
+msgid "Glom: The file path is a directory instead of a file."
+msgstr "Glom：该文件路径是一个目录而非一个文件。"
+
+#. The Postgres provider was not found, so warn the user:
+#: ../glom/main.cc:568
+msgid ""
+"Your installation of Glom is not complete, because the PostgreSQL libgda "
+"provider is not available on your system. This provider is needed to access "
+"Postgres database servers.\n"
+"\n"
+"Please report this bug to your vendor, or your system administrator so it "
+"can be corrected."
+msgstr ""
+"您安装的 Glom 不完整，因为系统中找不到 PostgreSQL libgda 提供器。访问 "
+"Postgres 数据库服务器需要这个提供器。\n"
+"\n"
+"请向您的计算机厂商或您的系统管理员报告这个 bug，以便修复它。"
+
+#. Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
+#: ../glom/mode_data/box_data_calendar_related.cc:98
+#: ../glom/mode_data/box_data_list_related.cc:96
+#: ../glom/mode_data/box_data_portal.cc:259
+#: ../glom/mode_data/box_data_portal.cc:273
+msgid "Undefined Table"
+msgstr "未定义的表"
+
+#: ../glom/mode_data/box_data.cc:149
+msgid ""
+"You have not entered any find criteria. Try entering information in the "
+"fields."
+msgstr ""
+
+#: ../glom/mode_data/box_data.cc:154
+#: ../glom/mode_data/datawidget/dialog_choose_id.cc:115
+msgid "No Find Criteria"
+msgstr ""
+
+#: ../glom/mode_data/box_data.cc:193
+msgid ""
+"This data cannot be stored in the database because you have not provided a "
+"primary key.\n"
+"Do you really want to discard this data?"
+msgstr ""
+
+#: ../glom/mode_data/box_data.cc:199
+msgid "No primary key value"
+msgstr ""
+
+#: ../glom/mode_data/box_data_details.cc:120
+msgid "Create a new record."
+msgstr "创建一个新记录"
+
+#: ../glom/mode_data/box_data_details.cc:121
+msgid "Remove this record."
+msgstr "移除此记录。"
+
+#: ../glom/mode_data/box_data_details.cc:122
+msgid "View the first record in the list."
+msgstr "查看列表中的第一条记录。"
+
+#: ../glom/mode_data/box_data_details.cc:123
+msgid "View the previous record in the list."
+msgstr "查看列表中的上一条记录。"
+
+#: ../glom/mode_data/box_data_details.cc:124
+msgid "View the next record in the list."
+msgstr "查看列表中的下一条记录。"
+
+#: ../glom/mode_data/box_data_details.cc:125
+msgid "View the last record in the list."
+msgstr "查看列表中的最后一条记录。"
+
+#: ../glom/mode_data/box_data_details.cc:428
+msgid "Layout Contains No Fields"
+msgstr "布局中未包含任何字段"
+
+#: ../glom/mode_data/box_data_details.cc:428
+msgid ""
+"There are no fields on the layout, so there is no way to enter data in a new "
+"record."
+msgstr "布局中没有任何字段，因此无法在新记录中输入数据。"
+
+#. Tell user that a primary key is needed to delete a record:
+#: ../glom/mode_data/box_data_details.cc:456
+msgid "No primary key value."
+msgstr "没有主键值。"
+
+#: ../glom/mode_data/box_data_details.cc:457
+msgid "This record cannot be deleted because there is no primary key."
+msgstr "该记录无法删除，因为没有主键。"
+
+#. Warn user that they can't choose their own primary key:
+#: ../glom/mode_data/box_data_details.cc:862
+msgid "Primary key auto increments"
+msgstr "主键自动增加"
+
+#: ../glom/mode_data/box_data_details.cc:863
+msgid ""
+"The primary key is auto-incremented.\n"
+" You may not enter your own primary key value."
+msgstr ""
+"主键是自动增加的。\n"
+"您不能自己输入主键值。"
+
+#. Add Pages:
+#: ../glom/mode_data/box_data_list.cc:503
+#: ../glom/mode_data/box_data_manyrecords.cc:83
+#: ../glom/mode_data/notebook_data.cc:42 ../glom/mode_find/notebook_find.cc:32
+msgid "List"
+msgstr "列表"
+
+#. On Maemo, we add the box to m_window_maemo_details instead:
+#. Details column:
+#: ../glom/mode_data/box_data_portal.cc:144
+#: ../glom/mode_data/notebook_data.cc:46 ../glom/mode_data/notebook_data.cc:50
+#: ../glom/mode_design/report_layout/dialog_layout_report.cc:214
+#: ../glom/mode_find/notebook_find.cc:41
+msgid "Details"
+msgstr "细节"
+
+#: ../glom/mode_data/box_data_portal.cc:159
+msgid "New Related %1"
+msgstr "新增相关 %1"
+
+#: ../glom/mode_data/box_data_portal.cc:201
+msgid "Add Related %1"
+msgstr "添加相关 %1"
+
+#: ../glom/mode_data/box_data_portal.cc:203
+msgid "Add related record"
+msgstr "添加相关记录"
+
+#: ../glom/mode_data/box_data_portal.cc:556
+msgid "No Corresponding Record Exists"
+msgstr "没有对应记录"
+
+#: ../glom/mode_data/box_data_portal.cc:556
+msgid ""
+"No record with this value exists. Therefore navigation to the related record "
+"is not possible."
+msgstr "没有含这个值的记录。因此不能导航到相关记录。"
+
+#: ../glom/mode_data/flowtablewithfields.cc:1211
+#: ../glom/mode_data/flowtablewithfields.cc:1468
+#: ../glom/mode_data/flowtablewithfields.cc:1495
+#: ../glom/utility_widgets/notebooklabelglom.cc:75
+#: ../glom/utility_widgets/notebooklabelglom.cc:115
+msgid "New Group"
+msgstr "新建组"
+
+#: ../glom/mode_data/flowtablewithfields.cc:1217
+#: ../glom/mode_design/layout/dialog_layout_details.cc:726
+msgid "notebook"
+msgstr "笔记本"
+
+#. Note to translators: This is the default name (not seen by most users) for a notebook tab.
+#: ../glom/mode_data/flowtablewithfields.cc:1223
+msgid "tab1"
+msgstr "页1"
+
+#. Note to translators: This is the default label text for a notebook tab.
+#: ../glom/mode_data/flowtablewithfields.cc:1226
+msgid "Tab One"
+msgstr "表一"
+
+#: ../glom/mode_data/flowtablewithfields.cc:1239
+msgid "button"
+msgstr "按钮"
+
+#: ../glom/mode_data/flowtablewithfields.cc:1240
+#: ../glom/mode_data/flowtablewithfields.cc:1509
+#: ../glom/mode_design/layout/dialog_layout_details.cc:650
+msgid "New Button"
+msgstr "新建按钮"
+
+#. Note to translators: This is the default contents of a text item on a print layout:
+#: ../glom/mode_data/flowtablewithfields.cc:1246
+#: ../glom/mode_data/flowtablewithfields.cc:1521
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:383
+msgid "text"
+msgstr "文本"
+
+#: ../glom/mode_data/flowtablewithfields.cc:1247
+#: ../glom/mode_data/flowtablewithfields.cc:1522
+msgid "New Text"
+msgstr "新建文本"
+
+#. TODO: Avoid this error message, maybe by adding a group.
+#. TODO: At least avoid losing the dragged item.
+#: ../glom/mode_data/flowtablewithfields.cc:1606
+msgid "You cannot drop anything here. Try to add a group first"
+msgstr "您不能把东西拖放到这里。尝试先添加一个组"
+
+#. TODO: Use a real English sentence here?
+#: ../glom/mode_data/flowtablewithfields.cc:1658
+msgid "Delete whole group \"%1\"?"
+msgstr "删除整个组“%1”吗？"
+
+#. TODO: Use a real English sentence here:
+#: ../glom/mode_data/flowtablewithfields.cc:1664
+msgid "Delete whole group?"
+msgstr "删除整个组？"
+
+#: ../glom/mode_data/notebook_data.cc:68
+msgid "List Or Details View"
+msgstr "列表或详细视图"
+
+#: ../glom/mode_data/notebook_data.cc:248
+msgid "%1 Details"
+msgstr "%1 详情"
+
+#. Don't allow a relationship to be added twice.
+#: ../glom/mode_design/box_db_table_relationships.cc:46
+msgid ""
+"This relationship already exists. Please choose a different relationship name"
+msgstr "此关系已存在。请另选一个关系名"
+
+#. Translators: FROM as in SQL's FROM
+#: ../glom/mode_design/box_db_table_relationships.cc:51
+msgid "From Field"
+msgstr "从字段"
+
+#: ../glom/mode_design/box_db_table_relationships.cc:53
+msgid "To Field"
+msgstr "到字段"
+
+#: ../glom/mode_design/box_db_table_relationships.cc:55
+msgid "Automatic Creation"
+msgstr "自动创建"
+
+#: ../glom/mode_design/box_db_table_relationships.cc:57
+#: ../glom/navigation/box_tables.cc:142
+msgid "Title (Singular Form)"
+msgstr "标题(单数形式)"
+
+#: ../glom/mode_design/dialog_database_preferences.cc:63
+msgid "Next Value"
+msgstr "下个值"
+
+#: ../glom/mode_design/dialog_initial_password.cc:83
+msgid "Username Is Empty"
+msgstr "用户名为空"
+
+#: ../glom/mode_design/dialog_initial_password.cc:83
+msgid "Please enter a login name for the new user."
+msgstr "请输入一个新用户的的登录名。"
+
+#: ../glom/mode_design/dialog_initial_password.cc:88
+#: ../glom/mode_design/users/dialog_user.cc:53
+msgid "Passwords Do Not Match"
+msgstr "密码不符"
+
+#: ../glom/mode_design/dialog_initial_password.cc:88
+#: ../glom/mode_design/users/dialog_user.cc:53
+msgid ""
+"The entered password does not match the entered password confirmation. "
+"Please try again."
+msgstr "输入的密码与确认密码不一致。请重试。"
+
+#: ../glom/mode_design/dialog_initial_password.cc:93
+#: ../glom/mode_design/users/dialog_user.cc:58
+msgid "Password Is Empty"
+msgstr "密码为空"
+
+#: ../glom/mode_design/dialog_initial_password.cc:93
+#: ../glom/mode_design/users/dialog_user.cc:58
+msgid "Please enter a password for this user."
+msgstr "请为此用户输入一个密码。"
+
+#. Don't allow adding of fields that already exist.
+#: ../glom/mode_design/fields/box_db_table_definition.cc:54
+#: ../glom/mode_design/fields/box_db_table_definition.cc:332
+msgid "This field already exists. Please choose a different field name"
+msgstr "此字段已存在。请另选一个字段名"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:58
+msgid "Type"
+msgstr "类型"
+
+#. TODO: Only show this when there are > 100 records?
+#: ../glom/mode_design/fields/box_db_table_definition.cc:262
+msgid "Recalculation Required"
+msgstr "需要重新计算"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:263
+msgid ""
+"You have changed the calculation used by this field so Glom must recalculate "
+"the value in all records. If the table contains many records then this could "
+"take a long time."
+msgstr ""
+"您修改了该字段使用的计算方法，因此 Glom 必须重新计算所有记录中的值。若表中包"
+"含大量记录，那么这可能会花很长时间。"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:268
+msgid "Recalculate"
+msgstr "重新计算"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:277
+msgid "Invalid database structure"
+msgstr "数据库结构无效"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:278
+msgid ""
+"This database field was created or edited outside of Glom. It has a data "
+"type that is not supported by Glom. Your system administrator may be able to "
+"correct this."
+msgstr ""
+"此数据库字段是在 Glom 外创建或编辑的。它含有 Glom 不支持的数据类型。您的系统"
+"管理员或许能修正此问题。"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:286
+msgid "Primary key required"
+msgstr "需要主键"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:287
+msgid ""
+"You may not unset the primary key because the table must have a primary key. "
+"You may set another field as the primary key instead."
+msgstr "您不能取消该主键，因为表必须有一个主键。您可以另选一个字段作为主键。"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:299
+msgid "Field contains empty values."
+msgstr "字段包含空的值。"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:299
+msgid ""
+"The field may not yet be used as a primary key because it contains empty "
+"values."
+msgstr "该字段尚不能作为主键，因为它包含空的值。"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:308
+msgid "Field contains non-unique values."
+msgstr "字段包含不惟一的值。"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:308
+msgid ""
+"The field may not yet be used as a primary key because it contains values "
+"that are not unique."
+msgstr "该字段尚不能作为主键，因为它包含某些不惟一的值。"
+
+#. Ask the user to confirm this major change:
+#: ../glom/mode_design/fields/box_db_table_definition.cc:313
+msgid "Change primary key"
+msgstr "更改主键"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:314
+msgid ""
+"Are you sure that you wish to set this field as the primary key, instead of "
+"the existing primary key?"
+msgstr "您确定要将现在的主键更改为这个字段吗？"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:319
+msgid "Change Primary Key"
+msgstr "更改主键"
+
+#. Warn the user and refuse to make the change:
+#: ../glom/mode_design/fields/box_db_table_definition.cc:331
+msgid "Field Name Already Exists"
+msgstr "字段名已存在"
+
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:102
+msgid "Calculation Error"
+msgstr "计算错误"
+
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:102
+msgid "The calculation does not have a return statement."
+msgstr "计算没有返回语句。"
+
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:144
+msgid "Calculation result"
+msgstr "计算结果"
+
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:144
+msgid "The result of the calculation is:\n"
+msgstr "计算结果为：\n"
+
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:146
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc:137
+msgid "Calculation failed"
+msgstr "计算失败"
+
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:146
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc:137
+msgid "The calculation failed with this error:\n"
+msgstr "计算失败，错误为：\n"
+
+#: ../glom/mode_design/fields/dialog_fielddefinition.cc:160
+msgid "Default Value"
+msgstr "默认值"
+
+#. A special "None" item, allowing the user to do the equivalent of clearing the combobox,
+#. which is not normally possible with the GtkComboBox UI:
+#. set_property() does not work with a const gchar*, so we explicitly create a ustring.
+#. otherwise we get this warning:
+#. " unable to set property `text' of type `gchararray' from value of type `glibmm__CustomPointer_Pc' "
+#. TODO: Add a template specialization to Glib::ObjectBase::set_property() to allow this?
+#: ../glom/mode_design/layout/combobox_fields.cc:216
+msgid "(None)"
+msgstr "(无)"
+
+#: ../glom/mode_design/layout/combobox_relationship.cc:267
+#: ../glom/mode_design/layout/combobox_relationship.cc:271
+msgid " Via: "
+msgstr "经由："
+
+#: ../glom/mode_design/layout/dialog_layout_calendar_related.cc:248
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:252
+msgid "None: No visible tables are specified by the fields."
+msgstr "无：该字段未指定可见的表。"
+
+#. Columns-count column:
+#. Note to translators: This is the number of columns in a group (group being a noun)
+#: ../glom/mode_design/layout/dialog_layout_details.cc:117
+msgid "Group Columns"
+msgstr "组的列数"
+
+#. Column-Width column: (only for list views)
+#. Note to translators: This is a name (the width of a UI element in the display), not an action.
+#: ../glom/mode_design/layout/dialog_layout_details.cc:130
+msgid "Display Width"
+msgstr "显示宽度"
+
+#: ../glom/mode_design/layout/dialog_layout_details.cc:675
+msgid "Text Title"
+msgstr "文本标题"
+
+#: ../glom/mode_design/layout/dialog_layout_details.cc:700
+msgid "Image Title"
+msgstr "图像标题"
+
+#: ../glom/mode_design/layout/dialog_layout_details.cc:861
+msgid "group"
+msgstr "组"
+
+#: ../glom/mode_design/layout/dialog_layout_details.cc:953
+msgid "Add child groups to the notebook to add tabs."
+msgstr "向笔记本添加子组来增加标签页"
+
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1116
+msgid "Related Calendar: "
+msgstr "相关日历："
+
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1118
+msgid "Related List: "
+msgstr "相关列表："
+
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1135
+msgid "Field: "
+msgstr "字段："
+
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1194
+msgid "(Notebook)"
+msgstr "(笔记本)"
+
+#. Append the View columns:
+#: ../glom/mode_design/layout/dialog_layout_export.cc:55
+msgid "Fields"
+msgstr "字段"
+
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:351
+msgid "Invalid Relationship"
+msgstr "关系无效"
+
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:352
+msgid ""
+"The relationship may not be used to show related records because the "
+"relationship does not specify a field in the related table."
+msgstr "该关系不能用来显示相关记录，因为此关系未指定相关表中的某个字段。"
+
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:358
+msgid "Relationship Uses a Related Primary Key"
+msgstr "关系使用了相关的主键"
+
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:359
+msgid ""
+"The relationship may not be used to show related records because the "
+"relationship uses a primary key field in the related table, which must "
+"contain unique values. This would prevent the relationship from specifying "
+"multiple related records."
+msgstr ""
+"该关系不能用来显示相关记录，因为此关系使用了相关表中的主键字段，该字段必须包"
+"含惟一的值。这可以防止此关系指定多个相关记录。"
+
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:365
+msgid "Relationship Uses a Related Unique Field"
+msgstr "关系使用相关的惟一字段"
+
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:366
+msgid ""
+"The relationship may not be used to show related records because the "
+"relationship uses a unique-values field in the related table. This would "
+"prevent the relationship from specifying multiple related records."
+msgstr ""
+"该关系不能用来显示相关记录，因为此关系使用了相关表中的值惟一的字段。这可以防"
+"止此关系指定多个相关记录。"
+
+#. Translators: This is Automatic text alignment.
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:112
+msgid "Automatic"
+msgstr "自动"
+
+#. Translators: This is Left text alignment.
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:116
+msgid "Left"
+msgstr "左对齐"
+
+#. Translators: This is Right text alignment.
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:120
+msgid "Right"
+msgstr "右对齐"
+
+#. Give it access to the document.
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:159
+msgid "Extra Fields"
+msgstr "额外字段"
+
+#. Add labels (because we will hide the checkboxes):
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:180
+msgid "Font"
+msgstr "字体"
+
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:183
+msgid "Foreground Color"
+msgstr "前景色"
+
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:186
+msgid "Background Color"
+msgstr "背景色"
+
+#. Give it access to the document.
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc:161
+msgid "Group By - Secondary Fields"
+msgstr "分组依据 - 次要字段"
+
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_groupby_sortfields.cc:59
+msgid "Ascending"
+msgstr "升序"
+
+#. Append the View columns:
+#. Use set_cell_data_func() to give more control over the cell attributes depending on the row:
+#. Name column:
+#: ../glom/mode_design/report_layout/dialog_layout_report.cc:154
+#: ../glom/mode_design/report_layout/dialog_layout_report.cc:205
+#, fuzzy
+msgid "Part"
+msgstr "部分"
+
+#. Don't allow a relationship to be added twice.
+#: ../glom/mode_design/print_layouts/box_print_layouts.cc:92
+msgid "This item already exists. Please choose a different item name"
+msgstr "该项已存在。请另选一个项目名"
+
+#: ../glom/mode_design/print_layouts/box_print_layouts.cc:220
+msgid "Are you sure that you want to rename this print layout?"
+msgstr "您确定要重命名此打印布局吗？"
+
+#. TODO: Show old and new names?
+#: ../glom/mode_design/print_layouts/box_print_layouts.cc:221
+msgid "<b>Rename Print Layout</b>"
+msgstr "<b>重命名打印布局</b>"
+
+#: ../glom/mode_design/print_layouts/box_print_layouts.cc:223
+#: ../glom/navigation/box_tables.cc:378
+msgid "Rename"
+msgstr "重命名"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:31
+#: ../glom/utility_widgets/layouttoolbar.cc:50
+msgid "Items"
+msgstr "项目"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:32
+msgid "Lines"
+msgstr "行"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:33
+msgid "Records"
+msgstr "记录"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:35
+#: ../glom/utility_widgets/layouttoolbar.cc:57
+msgid "Database Field"
+msgstr "数据库字段"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:35
+#: ../glom/utility_widgets/layouttoolbar.cc:57
+msgid "Drag this to the layout to add a new database field."
+msgstr "将它拖放到布局中来添加一个新数据库字段。"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
+#: ../glom/utility_widgets/layouttoolbar.cc:63
+msgid "Drag this to the layout to add a new static text box."
+msgstr "将它拖放到布局中来添加一个新静态文本框。"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:39
+#: ../glom/utility_widgets/layouttoolbar.cc:65
+msgid "Drag this to the layout to add a new static image."
+msgstr "将它拖放到布局中来添加一个新静态图像。"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:41
+msgid "Horizontal Line"
+msgstr "水平线"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:41
+msgid "Drag this to the layout to add a new horizontal line."
+msgstr "将它拖放到布局中来添加一个新的水平线。"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:43
+msgid "Vertical Line"
+msgstr "竖直线"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:43
+msgid "Drag this to the layout to add a new vertical line."
+msgstr "将它拖放到布局中来添加一个新的竖直线。"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:45
+#: ../glom/utility_widgets/layouttoolbar.cc:59
+msgid "Related Records"
+msgstr "相关记录"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:45
+msgid "Drag this to the layout to add a new related records portal."
+msgstr "将它拖放到布局中来添加一个新的相关记录入口。"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:127
+#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:59
+msgid "Page _Setup"
+msgstr "页面设置(_S)"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:136
+msgid "_Insert"
+msgstr "插入(_I)"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:137
+msgid "Insert _Field"
+msgstr "插入字段(_F)"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:139
+msgid "Insert _Text"
+msgstr "插入文本(_T)"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:141
+msgid "Insert _Image"
+msgstr "插入图像(_I)"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:143
+msgid "Insert _Related Records"
+msgstr "插入相关记录(_R)"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:145
+msgid "Insert _Horizontal Line"
+msgstr "插入水平线(_H)"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:147
+msgid "Insert _Vertical Line"
+msgstr "插入竖直线(_V)"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:150
+#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:64
+msgid "_View"
+msgstr "查看(_V)"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:151
+msgid "Show Grid"
+msgstr "显示网格"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:153
+msgid "Show Rules"
+msgstr "显示标尺"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:157
+msgid "Fit Page _Width"
+msgstr "适合页宽(_W)"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:160
+msgid "Zoom 200%"
+msgstr "缩放 200%"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:165
+msgid "Zoom 50%"
+msgstr "缩放 50%"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:170
+msgid "Zoom 25%"
+msgstr "缩放 25%"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:603
+msgid "Insert"
+msgstr "插入"
+
+#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:65
+msgid "Show _Grid"
+msgstr "显示网格(_G)"
+
+#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:481
+msgid "Edit _Fields"
+msgstr "编辑字段(_F)"
+
+#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:484
+msgid "Edit _Relationships"
+msgstr "编辑关系(_R)"
+
+#: ../glom/mode_design/script_library/dialog_script_library.cc:129
+msgid "Remove library script"
+msgstr "移除库脚本"
+
+#: ../glom/mode_design/script_library/dialog_script_library.cc:130
+msgid ""
+"Do you really want to delete this script? This data can not be recovered"
+msgstr "您真的想删除此脚本？这项数据将无法恢复。"
+
+#: ../glom/mode_design/users/dialog_groups_list.cc:74
+msgid "View"
+msgstr "查看"
+
+#: ../glom/mode_design/users/dialog_groups_list.cc:77
+msgid "Edit"
+msgstr "编辑"
+
+#: ../glom/mode_design/users/dialog_groups_list.cc:80
+msgid "Create"
+msgstr "创建"
+
+#: ../glom/mode_design/users/dialog_groups_list.cc:83
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:47
+#: ../glom/utility_widgets/layoutwidgetutils.cc:38
+#: ../glom/utility_widgets/notebooklabelglom.cc:116
+msgid "Delete"
+msgstr "删除"
+
+#. TODO: Prevent deletion of standard groups
+#: ../glom/mode_design/users/dialog_groups_list.cc:216
+msgid "Delete Group"
+msgstr "删除组"
+
+#: ../glom/mode_design/users/dialog_groups_list.cc:217
+msgid "Are your sure that you wish to delete this group?"
+msgstr "您确定要删除这个组吗？"
+
+#: ../glom/mode_design/users/dialog_groups_list.cc:368
+msgid "Full access."
+msgstr "完全访问权限。"
+
+#. Append the View columns:
+#: ../glom/mode_design/users/dialog_users_list.cc:68
+msgctxt "Users List"
+msgid "User"
+msgstr "用户"
+
+#: ../glom/mode_design/users/dialog_users_list.cc:163
+msgid "Delete User"
+msgstr "删除用户"
+
+#: ../glom/mode_design/users/dialog_users_list.cc:164
+msgid "Are your sure that you wish to delete this user?"
+msgstr "您确定要删除此用户吗？"
+
+#: ../glom/mode_design/users/dialog_users_list.cc:405
+msgid "Developer group may not be empty."
+msgstr "开发者组不能是空组。"
+
+#: ../glom/mode_design/users/dialog_users_list.cc:406
+msgid "The developer group must contain at least one user."
+msgstr "开发者组必须至少含有一位用户。"
+
+#. Prevent two tables with the same name from being added.
+#: ../glom/navigation/box_tables.cc:133
+msgid "This table already exists. Please choose a different table name"
+msgstr "此表已存在。请另选一个表名。"
+
+#: ../glom/navigation/box_tables.cc:135
+msgid "Hidden"
+msgstr "隐藏"
+
+#. TODO: This should really be a radio, but the use of AddDel makes it awkward to change that CellRenderer property.
+#: ../glom/navigation/box_tables.cc:139
+msgid "Default"
+msgstr "默认"
+
+#. Ask the user if they want us to try to cope with this:
+#: ../glom/navigation/box_tables.cc:235
+msgid "Table Already Exists"
+msgstr "表已存在"
+
+#: ../glom/navigation/box_tables.cc:236
+msgid ""
+"This table already exists on the database server, though it is not mentioned "
+"in the .glom file. This should not happen. Would you like Glom to attempt to "
+"use the existing table?"
+msgstr ""
+"数据库服务器中已经有这张表了，尽管 .glom 文件中没有提到它。这不应该发生。您想"
+"让 Glom 尝试使用现有表吗？"
+
+#. TODO: Do not show tables that are not in the document.
+#: ../glom/navigation/box_tables.cc:296
+msgid ""
+"You cannot delete this table, because there is no information about this "
+"table in the document."
+msgstr "您不能删除这个表，因为文档中没有关于此表的信息。"
+
+#. Ask the user to confirm:
+#: ../glom/navigation/box_tables.cc:303
+msgid ""
+"Are you sure that you want to delete this table?\n"
+"Table name: "
+msgstr ""
+"您确定要删除这张表？\n"
+"表名："
+
+#: ../glom/navigation/box_tables.cc:304
+msgid "Delete Table"
+msgstr "删除表"
+
+#: ../glom/navigation/box_tables.cc:375
+msgid "Are you sure that you want to rename this table?"
+msgstr "您确定要重命名这张表？"
+
+#. TODO: Show old and new names?
+#: ../glom/navigation/box_tables.cc:376
+msgid "<b>Rename Table</b>"
+msgstr "<b>重命名表</b>"
+
+#: ../glom/navigation/box_tables.cc:418
+msgid "Unknown Table"
+msgstr "未知表"
+
+#: ../glom/navigation/box_tables.cc:419
+msgid ""
+"You cannot open this table, because there is no information about this table "
+"in the document."
+msgstr "您不能打开这张表，因为文档中没有关于此表的信息。"
+
+#: ../glom/print_layout/canvas_layout_item.cc:270
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:39
+msgid "Choose Field"
+msgstr "选择字段"
+
+#: ../glom/print_layout/canvas_print_layout.cc:244
+msgid "_Formatting"
+msgstr "格式(_F)"
+
+#. Append the View columns:
+#: ../glom/mode_design/translation/window_translations.cc:69
+msgid "Original"
+msgstr ""
+
+#: ../glom/mode_design/translation/window_translations.cc:77
+msgid "Item"
+msgstr "项目"
+
+#: ../glom/mode_design/translation/window_translations.cc:85
+msgid "Translation"
+msgstr "翻译"
+
+#. Show only debug output
+#: ../glom/mode_design/translation/window_translations.cc:430
+msgid "Gettext-Warning: "
+msgstr "Gettext 警告："
+
+#: ../glom/mode_design/translation/window_translations.cc:446
+msgid "Gettext-Error: "
+msgstr "Gettext 错误："
+
+#. Show the file-chooser dialog, to select an output .po file:
+#: ../glom/mode_design/translation/window_translations.cc:503
+#: ../glom/mode_design/translation/window_translations.cc:582
+msgid "Choose .po File Name"
+msgstr "选择 .po 文件名"
+
+#: ../glom/mode_design/translation/window_translations.cc:509
+#: ../glom/mode_design/translation/window_translations.cc:587
+msgid "Po files"
+msgstr "Po 文件"
+
+#: ../glom/utility_widgets/adddel/adddel.cc:159
+msgid "This item already exists. Please try again."
+msgstr "此项已存在。请重试。"
+
+#: ../glom/utility_widgets/adddel/adddel.cc:166
+#, fuzzy
+msgid "Duplicate"
+msgstr "重复"
+
+#. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
+#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:384
+#: ../glom/mode_data/db_adddel/db_adddel.cc:620
+msgid "Example"
+msgstr "示例"
+
+#: ../glom/mode_data/datawidget/datawidget.cc:219
+#: ../glom/mode_data/datawidget/datawidget.cc:221
+msgid "..."
+msgstr "..."
+
+#: ../glom/mode_data/datawidget/datawidget.cc:223
+msgid "Choose a date from an on-screen calendar."
+msgstr "从屏幕上的日历中选择一个日期。"
+
+#: ../glom/mode_data/datawidget/datawidget.cc:235
+msgid "Open"
+msgstr "打开"
+
+#: ../glom/mode_data/datawidget/datawidget.cc:237
+msgid "Open the record identified by this ID, in the other table."
+msgstr "在另一张表中打开此标识指定的记录。"
+
+#: ../glom/mode_data/datawidget/datawidget.cc:252
+msgid ""
+"Enter search criteria to identify records in the other table, to choose an "
+"ID for this field."
+msgstr ""
+
+#: ../glom/mode_data/db_adddel/db_adddel.cc:80
+msgid "Table Content"
+msgstr "表内容"
+
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2138
+msgid "Right-click to layout, to specify the related fields."
+msgstr "在布局中右击来指定相关字段。"
+
+#. Tell user that they can't do that:
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2363
+#, fuzzy
+msgid "Extra Related Records Not Possible"
+msgstr "额外的相关记录不能用"
+
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2364
+msgid ""
+"You attempted to add a new related record, but there can only be one related "
+"record, because the relationship uses a unique key."
+msgstr ""
+"您尝试添加一个新的相关记录，但是只能有一个相关记录，因为该关系使用惟一的键。"
+
+#: ../glom/utility_widgets/dialog_image_progress.cc:117
+msgid "Not enough memory available to load the image"
+msgstr "没有足够的内存来载入此图像"
+
+#: ../glom/utility_widgets/dialog_image_progress.cc:165
+msgid "Error loading %1"
+msgstr "载入 %1 出错"
+
+#: ../glom/utility_widgets/dialog_image_progress.cc:166
+msgid "Error loading image"
+msgstr "载入图像出错"
+
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:78
+msgid "New Database"
+msgstr "新数据库"
+
+#. For instance, an extra hint when saving from an example, saying that a new file must be saved.
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:95
+msgid ""
+"Please choose a human-readable title for the new database. You can change "
+"this later in the database properties. It may contain any characters."
+msgstr ""
+"请为新数据库选择一个好理解的标题。您可以稍后在数据库属性中修改它。标题中可以"
+"包含任何字符。"
+
+#. Use titles that show the distinction between PostgreSQL and SQLite:
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:117
+msgid ""
+"Create PostgreSQL database in its own folder, to be hosted by this computer."
+msgstr "在它自己的文件夹中创建 PostgreSQL 数据库，以此计算机为宿主机。"
+
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:121
+msgid ""
+"Create database on an external PostgreSQL database server, to be specified "
+"in the next step."
+msgstr "在外部 PostgreSQL 数据库服务器上创建数据库，服务器在下一步中指定。"
+
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:127
+msgid ""
+"Create SQLite database in its own folder, to be hosted by this computer."
+msgstr "在它自己的文件夹中创建 SQLite 数据库，以此计算机为宿主机。"
+
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:128
+msgid ""
+"SQLite does not support authentication or remote access but is suitable for "
+"embedded devices."
+msgstr "SQLite 不支持认证和远程访问，但适合嵌入式设备。"
+
+#. TODO: Hide this because it's the only radio button, so it's not a choice:
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:138
+msgid ""
+"Create database in its own folder, to be hosted by this computer, using "
+"SQLite"
+msgstr "在它自己的文件夹中创建数据库，以此计算机为宿主机，使用 SQLite"
+
+#. Only PostgreSQL:
+#. Use titles that don't mention the boring name of the backend:
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:147
+msgid "Create database in its own folder, to be hosted by this computer."
+msgstr "在它自己的文件夹中创建数据库，以此计算机为宿主机。"
+
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:151
+msgid ""
+"Create database on an external database server, to be specified in the next "
+"step."
+msgstr "在外部数据库服务器上创建数据库，服务器在下一步中指定。"
+
+#. TODO: Use Hildon::FileChooser for Maemo.
+#: ../glom/utility_widgets/imageglom.cc:319
+msgid "Choose Image"
+msgstr "选择图像"
+
+#: ../glom/utility_widgets/imageglom.cc:323
+msgid "Images"
+msgstr "图像"
+
+#: ../glom/utility_widgets/imageglom.cc:463
+msgid "Choose File"
+msgstr "选择文件"
+
+#: ../glom/utility_widgets/layouttoolbar.cc:51
+msgid "Containers"
+msgstr "容器"
+
+#: ../glom/utility_widgets/layouttoolbar.cc:53
+msgid "Drag this to the layout to add a new group."
+msgstr "将它拖放到布局中来添加一个新组。"
+
+#: ../glom/utility_widgets/layouttoolbar.cc:55
+msgid "Drag this to the layout to add a new notebook."
+msgstr "将此项拖放到布局中来添加一个新的笔记本。"
+
+#: ../glom/utility_widgets/layouttoolbar.cc:59
+msgid "Drag this to the layout to add a new Related Record."
+msgstr "将它拖放到布局中来添加一个新的相关记录。"
+
+#: ../glom/utility_widgets/layouttoolbar.cc:61
+msgid "Drag this to the layout to add a new button."
+msgstr "将它拖放到布局中来添加一个新按钮。"
+
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:40
+msgid "Field Layout Properties"
+msgstr "字段布局属性"
+
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:41
+msgid "Add Field"
+msgstr "添加字段"
+
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:44
+msgid "Add Group"
+msgstr "添加组"
+
+#: ../glom/utility_widgets/notebooklabelglom.cc:89
+msgid "Delete whole notebook \"%1\"?"
+msgstr "删除整个笔记本“%1”吗？"
+
+#: ../glom/utility_widgets/notebooklabelglom.cc:94
+msgid "Delete whole notebook?"
+msgstr "删除整个笔记本？"
+
+#: ../glom/xsl_utils.cc:120
+msgid "Report Finished"
+msgstr "导入完成"
+
+#: ../glom/xsl_utils.cc:120
+msgid "The report will now be opened in your web browser."
+msgstr "现在报表将在您的网络浏览器中打开。"
+
+#~ msgid "Read-only field."
+#~ msgstr "只读字段。"
+
+#~ msgid "This field may not be edited here."
+#~ msgstr "这个字段不能在此编辑。"
+
+#~ msgid "*"
+#~ msgstr "*"
+
+#~ msgid "<b>Select Field</b>"
+#~ msgstr "<b>选择字段</b>"
+
+#~ msgid "<b>Tables in database</b>"
+#~ msgstr "<b>数据库中的表</b>"
+
+#~ msgid "<b>def calculate_field_value():</b>"
+#~ msgstr "<b>def calculate_field_value()：</b>"
+
+#~ msgid "Edit Definition"
+#~ msgstr "编辑定义"
+
+#~ msgid "Extra"
+#~ msgstr "额外"

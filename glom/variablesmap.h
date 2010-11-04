@@ -36,7 +36,7 @@ namespace Glom
  *
  * Gtk::Entry --> Glib::ustring
  * Gtk::SpinBox --> Glib::ustring
- * Gtk::ComboBoxEntry --> Glib::ustring
+ * Gtk::ComboBox --> Glib::ustring
  * Gtk::Scale --> double
  * Gtk::Calendar --> Glib::Date
  * Gtk::CheckBox --> bool
@@ -52,7 +52,7 @@ public:
   ///For ToggleButton (CheckBox and RadioButton)
   void connect_widget(const Glib::ustring& widget_name, bool& variable);
 
-  ///For Entry, ComboBoxEntry and SpinBox
+  ///For Entry, ComboBox and SpinBox
   void connect_widget(const Glib::ustring& widget_name, Glib::ustring& variable);
 
   ///For Scale (HScale and VScale)

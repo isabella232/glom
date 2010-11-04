@@ -1,8 +1,8 @@
 #include <glom/libglom/init.h>
 #include <glom/python_embed/glom_python.h>
 #include <libglom/data_structure/glomconversions.h>
-
 #include <boost/python.hpp>
+#include <iostream>
 
 int main()
 {
@@ -40,7 +40,7 @@ int main()
 
   //Check that there was no python error:
   g_assert(error_message.empty());
-  
+
   //Check that the return value is of the expected type:
   g_assert(value.get_value_type() == GDA_TYPE_NUMERIC);
 

@@ -21,7 +21,7 @@
 #ifndef GLOM_MODE_DESIGN_COMBOENTRY_BORDERWIDTH_H
 #define GLOM_MODE_DESIGN_COMBOENTRY_BORDERWIDTH_H
 
-#include <gtkmm/comboboxentry.h>
+#include <gtkmm/combobox.h>
 #include <gtkmm/builder.h>
 
 #include <gtkmm/liststore.h>
@@ -29,7 +29,7 @@
 namespace Glom
 {
 
-class ComboEntry_BorderWidth : public Gtk::ComboBoxEntry
+class ComboEntry_BorderWidth : public Gtk::ComboBox
 {
 public:
   ComboEntry_BorderWidth(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);

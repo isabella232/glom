@@ -15,14 +15,14 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([Glom],[1.15.2],[http://bugzilla.gnome.org/enter_bug.cgi?product=Glom],[glom])
+AC_INIT([Glom],[1.19.1],[http://bugzilla.gnome.org/enter_bug.cgi?product=Glom],[glom])
 AC_PREREQ(2.63)
 
 AC_CONFIG_SRCDIR([glom/main.cc])
 AC_CONFIG_MACRO_DIR([macros])
 AC_CONFIG_HEADERS([config.h glom/libglom/libglom_config.h])
 
-AM_INIT_AUTOMAKE([1.10 -Wno-portability check-news no-define nostdinc tar-pax])
+AM_INIT_AUTOMAKE([1.10 -Wno-portability no-define nostdinc tar-pax])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 AM_MAINTAINER_MODE
 AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
@@ -37,7 +37,7 @@ LT_INIT([disable-static win32-dll])
 # Used for the install directories for headers.  The same number is used in
 # the library name, which must be kept in sync, but variables can't be used
 # with that.
-AC_SUBST([GLOM_ABI_VERSION], [1.16])
+AC_SUBST([GLOM_ABI_VERSION], [1.20])
 AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION], ["$GLOM_ABI_VERSION"],
 		   [Define to the Glom ABI version string.])
 
@@ -151,7 +151,7 @@ AS_IF([test "x$glom_host_win32" != xyes],
       [REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS libepc-1.0 >= 0.3.1"])
 
 # Libraries used by Glom:
-REQUIRED_GLOM_LIBS="$REQUIRED_LIBGLOM_LIBS gtkmm-3.0 >= 2.19.7 gthread-2.0 gconfmm-2.6 libxml++-2.6 libxslt >= 1.1.10 goocanvasmm-2.0 >= 0.14.0"
+REQUIRED_GLOM_LIBS="$REQUIRED_LIBGLOM_LIBS gtkmm-3.0 >= 2.91.3 gthread-2.0 libxml++-2.6 libxslt >= 1.1.10 goocanvasmm-2.0 >= 1.9.2"
 
 # Do not require iso-codes in client-only mode, or on Windows:
 # TODO: Package iso-codes for Windows?
@@ -160,7 +160,7 @@ AS_IF([test "x$glom_enable_client_only" != xyes && test "x$glom_host_win32" != x
 
 # Do not require gtksourceviewmm in client only mode
 AS_IF([test "x$glom_enable_client_only" != xyes],
-      [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS gtksourceviewmm-3.0"])
+      [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS gtksourceviewmm-3.0 >= 2.91.1"])
 
 AS_IF([test "x$glom_enable_sqlite" = xyes],
       [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS libgda-sqlite-4.0"])

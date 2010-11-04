@@ -22,7 +22,7 @@
 #include <gtkmm/entry.h>
 #include <gtkmm/calendar.h>
 #include <gtkmm/scale.h>
-#include <gtkmm/comboboxentry.h>
+#include <gtkmm/combobox.h>
 
 namespace Glom
 {
@@ -53,14 +53,15 @@ void VariablesMap::connect_widget(const Glib::ustring& widget_name, Glib::ustrin
   m_builder->get_widget(widget_name, pWidget); 
 
   Gtk::Entry* pEntry = dynamic_cast<Gtk::Entry*>(pWidget); //it mange both Gtk::entry and Gtk::SpinButton
-  Gtk::ComboBoxEntry* pComboBoxEntry = dynamic_cast<Gtk::ComboBoxEntry*>(pWidget);
+  Gtk::ComboBox* pComboBox = dynamic_cast<Gtk::ComboBox*>(pWidget);
   if(pEntry)
   {
     m_mapWidgetsToVariables[pEntry] = (void*)(&variable);
   }
-  if(pComboBoxEntry)
+
+  if(pComboBox)
   {
-    m_mapWidgetsToVariables[pComboBoxEntry] = (void*)(&variable);
+    m_mapWidgetsToVariables[pComboBox] = (void*)(&variable);
   }
 }
 
@@ -120,7 +121,7 @@ void VariablesMap::transfer_one_widget(Gtk::Widget* pWidget, bool to_variable)
     {
       //Cast the variable appropriately and set it appropriately:
       Gtk::Entry* pEntry = dynamic_cast<Gtk::Entry*>(pWidget);
-      Gtk::ComboBoxEntry* pComboBoxEntry = dynamic_cast<Gtk::ComboBoxEntry*>(pWidget);
+      Gtk::ComboBox* pComboBox = dynamic_cast<Gtk::ComboBox*>(pWidget);
 
       Gtk::ToggleButton* pToggleButton = dynamic_cast<Gtk::ToggleButton*>(pWidget); //CheckButtons and RadioButtons.
       Gtk::Scale* pScale = dynamic_cast<Gtk::Scale*>(pWidget); 
@@ -136,10 +137,10 @@ void VariablesMap::transfer_one_widget(Gtk::Widget* pWidget, bool to_variable)
           pEntry->set_text(*pVar);
       }
       
-      if(pComboBoxEntry)
+      if(pComboBox)
       {
         Glib::ustring* pVar = (Glib::ustring*)(pVariable);
-	Gtk::Entry* pIEntry = dynamic_cast<Gtk::Entry*>(pComboBoxEntry->get_child());
+	Gtk::Entry* pIEntry = dynamic_cast<Gtk::Entry*>(pComboBox->get_child());
 
         if(to_variable)
         {

@@ -21,6 +21,7 @@
 #include <libglom/document/document.h>
 #include <libglom/init.h>
 #include <giomm/file.h>
+#include <iostream>
 
 Glib::ustring file_uri;
 

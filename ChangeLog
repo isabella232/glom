@@ -1,3 +1,80 @@
+2010-11-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Remove the gconfmm dependency, because we don't use it.
+
+	* configure.ac: Do not check for gconfmm.
+	* glom/bakery/app_withdoc.cc: Do not include gconfmm.h.
+
+1.19.1:
+
+2010-10-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build with latest gtkmm 2.91.2
+
+	* glom/mode_design/dialog_add_related_table.cc:
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	* glom/mode_design/script_library/dialog_script_library.cc:
+	* glom/mode_design/users/dialog_users_list.cc: Use ComboBoxText::remove_all()
+	instead of clear_items().
+
+2010-10-19  Murray Cumming  <murrayc@murrayc.com>
+
+	libglom: Change the ABI to 1.20, to avoid clashing with 1.16.
+
+	* configure.ac:
+	* glom/libglom/init.h:
+	* glom/python_embed/python_module/py_glom_module.cc:
+	* tests/test_load_python_library.cc: Change it everywhere, also correcting
+	the python library name, which should have _ instead of . That was broken
+	recently.
+
+2010-10-19  Murray Cumming  <murrayc@murrayc.com>
+
+	distcheck: Remove check for NEWS update.
+
+	* configure.ac: AM_INIT_AUTOMAKE(): Remove check-news because it is not
+	clever enough and because it prevents checking that distcheck works.
+
+2010-10-19  Murray Cumming  <murrayc@murrayc.com>
+
+	Choices Combo: Fix a warning.
+
+	* glom/mode_data/datawidget/combo.cc: set_choices_fixed(),
+	set_choices_related(): Do not try to re-pack the existing cell.
+
+2010-10-19  Murray Cumming  <murrayc@murrayc.com>
+
+	Choices Combo: Fix a segfault.
+
+	* glom/mode_data/datawidget/combo.cc: set_choices_fixed(),
+	set_choices_related(): Handle the has-entry case better, not calling clear(),
+	because that breaks GtkComboBox, which then tries to use a removed
+	GtkCellRenderer.
+
+2010-10-18  Murray Cumming  <murrayc@murrayc.com>
+
+	Details: Let the combo drop-down be wide enough.
+
+	* glom/mode_data/datawidget/combo.cc: Constructor: Use the new
+  set_popup_fixed_width() method.
+
+2010-10-18  Murray Cumming  <murrayc@murrayc.com>>
+
+	Tests: Fix a typo to fix make check.
+
+	* tests/test_load_python_library.cc: Fix a typo to properly load the
+  correct library name.
+
+2010-10-18  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build with the latest gtkmm.
+
+  * Makefile_glom.am:
+  * po/POTFILES.in:
+	* glom/mode_data/datawidget/comboentry.[h|cc]: Removed this.
+  * glom/mode_data/datawidget/combo.cc: Add a has_entry parameter to the
+  constructor and handle that in set_choices_related().
+
 2010-10-14  Murray Cumming  <murrayc@murrayc.com>
 
 	Build fixes after recent commits.
@@ -733,10 +810,6 @@
   * tests/test_glade_derived_instantiation.cc:
   Adapted.
   This lets me use it for other things too.
-
-2010-09-06  Murray Cumming  <murrayc@murrayc-desktop>
-
-	get_choices_related
 
 2010-09-06  Murray Cumming  <murrayc@murrayc.com>
 

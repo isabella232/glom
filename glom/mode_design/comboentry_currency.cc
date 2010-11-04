@@ -25,7 +25,7 @@ namespace Glom
 {
 
 ComboEntry_Currency::ComboEntry_Currency(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
-: Gtk::ComboBoxEntry(cobject)
+: Gtk::ComboBox(cobject)
 {
   m_model = Gtk::ListStore::create(m_model_columns);
 
@@ -42,7 +42,7 @@ ComboEntry_Currency::ComboEntry_Currency(BaseObjectType* cobject, const Glib::Re
   }
 
   set_model(m_model);
-  set_text_column(m_model_columns.m_symbol);
+  set_entry_text_column(m_model_columns.m_symbol);
 
   //Show this too.
   pack_start(m_model_columns.m_name);
@@ -55,7 +55,3 @@ ComboEntry_Currency::~ComboEntry_Currency()
 }
 
 } //namespace Glom
-
-
-
-

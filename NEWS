@@ -1,3 +1,49 @@
+1.9.1 (unstable):
+
+* Choices: Allow multiple extra fields, and allow them to be related fields
+  or even doubly-related fields.
+  See http://www.murrayc.com/blog/permalink/2010/10/07/glom-choice-drop-downs-can-show-related-fields/
+* Added a --stop-auto-server-shutdown command-line option for debugging.
+* Build:
+  - Use gtkmm-3.0 instead of gtkmm-2.4.
+  - Use goocanvasmm-2.0 instead of goocanvasmm-1.0.
+  - Use gtksourceviewmm-3.0 instead of gtksourceviewmm-2.0.
+
+1.6.1 (stable):
+
+* Prevent crash when all fields have been deleted from a table, also when
+  then trying to reopen the file. (Murray Cumming)
+* Find: prevent duplicate error dialog when no find criteria was entered.
+  (Armin Burgeier)
+
+1.16.0 (stable):
+
+New features in Glom 1.16, compared to Glom 1.14:
+
+* Field Formatting: Related Choices: Add a Show All checkbox, so that
+  the list of choices can be restricted according to the relationship,
+  instead of just showing all values in the related table.
+  This allows the Choices to be used to narrow down a choice based on a
+  choice in another field.
+*  Developer menu: Added Export Backup and Restore Backup menu items.
+  These use PostgreSQL's pg_dump and pg_restore utilities, wrapping the
+  dump and .glom file up in a .tar.gz.
+  As well as allowing backups of data, this should make it easier to upgrade
+  the PostgreSQL version, which some distros do automatically when upgrading
+  to new major versions of Glom. This is possible because pg_restore can
+  work with the pg_dump output of an older PostgreSQL version.
+  See also:
+  http://www.glom.org/wiki/index.php?title=Pg_dump_when_upgrading_PostgreSQL
+  (Murray Cumming)
+
+Changes in 1.16.0:
+
+Build:
+- Do not use deprecated gtkmm API (requires gtkmm 2.22).
+  (Murray Cumming)
+- Various small improvements
+  (David King)
+
 1.15.2 (unstable):
 
 * Field Formatting: Related Choices: Add a Show All checkbox, so that

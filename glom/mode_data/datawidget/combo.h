@@ -53,7 +53,7 @@ class ComboGlom
 public:
 
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
-  ComboGlom();
+  ComboGlom(bool has_entry = false);
 
   virtual ~ComboGlom();
 
@@ -72,7 +72,6 @@ public:
   virtual Gnome::Gda::Value get_value() const;
 
 private:
-  void init();
 
   #ifndef GLOM_ENABLE_MAEMO
   // Note that this is a normal signal handler when glibmm was complied

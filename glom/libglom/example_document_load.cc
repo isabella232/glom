@@ -24,6 +24,8 @@
 #include <libglom/document/document.h>
 #include <libglom/init.h>
 
+#include <iostream>
+
 void print_layout_group(const Glom::sharedptr<Glom::LayoutGroup>& layout_group, const Glib::ustring& indent)
 {
   if(!layout_group)

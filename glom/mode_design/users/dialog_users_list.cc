@@ -286,7 +286,7 @@ void Dialog_UsersList::on_button_user_edit()
       dialog->m_entry_user->set_sensitive(false); //They can edit the password, but not the name. TODO: Allow editing of name?
 
       //Fill groups:
-      dialog->m_combo_group->clear_items();
+      dialog->m_combo_group->remove_all();
 
       type_vec_strings group_list = Privs::get_database_groups();
       for(type_vec_strings::const_iterator iter = group_list.begin(); iter != group_list.end(); ++iter)
@@ -379,7 +379,7 @@ void Dialog_UsersList::fill_list()
 void Dialog_UsersList::set_group(const Glib::ustring& group_name)
 {
   //Fill the list of groups:
-  m_combo_group->clear_items();
+  m_combo_group->remove_all();
 
   type_vec_strings group_list = Privs::get_database_groups();
   for(type_vec_strings::const_iterator iter = group_list.begin(); iter != group_list.end(); ++iter)

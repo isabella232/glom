@@ -1,5 +1,6 @@
 #include <glom/libglom/init.h>
 #include <glom/python_embed/glom_python.h>
+#include <iostream>
 
 //Store results from the callbacks and check them later:
 Glib::ustring result_table_name_list;
@@ -94,7 +95,7 @@ int main()
   }
 
   g_assert(error_message.empty());
-  
+
   //Check that the callbacks received the expected values:
   g_assert(result_table_name_list == table_name_input);
   g_assert(result_table_name_details == table_name_details_input);
