@@ -22,12 +22,13 @@
 #define GLOM_UTILITYWIDGETS_FLOWTABLE_H
 
 #include <gtkmm.h>
+#include <glom/utility_widgets/eggspreadtablemm/eggspreadtablemm.h>
 #include "layoutwidgetbase.h"
 
 namespace Glom
 {
 
-class FlowTable : public Gtk::SpreadTable
+class FlowTable : public Egg::SpreadTable
 {
 public:
   FlowTable();

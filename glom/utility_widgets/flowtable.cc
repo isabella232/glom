@@ -99,7 +99,7 @@ void FlowTable::delete_and_forget_hbox(Gtk::HBox* hbox)
   std::cout << G_STRFUNC << "Removing: hbox=" << hbox << std::endl;
   if(hbox->get_parent() == this)
   {
-    Gtk::SpreadTable::remove(*hbox);
+    Egg::SpreadTable::remove(*hbox);
   }
   else
   {
@@ -231,7 +231,7 @@ void FlowTable::remove(Gtk::Widget& first)
     return;
   }
 
-  Gtk::SpreadTable::remove(first);
+  Egg::SpreadTable::remove(first);
 }
 
 bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& column) const
@@ -250,7 +250,7 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
     if(!widget)
       continue;
 
-    //Get the widget that GtkSpreadTable thinks of as the child:
+    //Get the widget that EggSpreadTable thinks of as the child:
     const Gtk::Widget* child = 0;
 
     if(widget == &first) //It must be a single item.

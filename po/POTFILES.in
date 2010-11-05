@@ -124,6 +124,7 @@ glom/mode_data/db_adddel/db_adddel.cc
 glom/mode_data/datawidget/dialog_choose_id.cc
 glom/utility_widgets/dialog_image_progress.cc
 glom/mode_data/datawidget/entry.cc
+glom/utility_widgets/eggspreadtable/eggspreadtable.c
 glom/utility_widgets/filechooserdialog_saveextras.cc
 glom/utility_widgets/imageglom.cc
 glom/utility_widgets/layouttoolbar.cc

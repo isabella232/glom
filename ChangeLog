@@ -1,3 +1,17 @@
+2010-11-05  Murray Cumming  <murrayc@murrayc.com>
+
+	Use EggSpreadTable instead of GtkSpreadTable (not added to GTK+).
+
+	* glom/utility_widgets/eggspreadtable/eggspreadtable.[h|cc]:
+	* glom/utility_widgets/eggspreadtable/testspreadtable.c
+	* glom/utility_widgets/eggspreadtablemm/eggspreadtablemm.[h|cc]:
+	* glom/utility_widgets/eggspreadtablemm/private/eggspreadtablemm_p.
+	h: New files.
+	* glom/Makefile_glom.am
+	* glom/Makefile_tests.am: Mention the new files.
+	* glom/utility_widgets/flowtable.[h|cc]: Use Egg::SpreadTable instead of
+	Gtk::SpreadTable.
+
 2010-11-04  Murray Cumming  <murrayc@murrayc.com>
 
 	Remove the gconfmm dependency, because we don't use it.
