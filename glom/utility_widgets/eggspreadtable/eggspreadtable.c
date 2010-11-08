@@ -873,7 +873,7 @@ egg_spread_table_forall (GtkContainer *container,
    */
   for (list = g_list_copy(priv->children); list; list = list->next)
   {
-    (* callback) (widget, callback_data);
+    (* callback) ((GtkWidget*) list->data, callback_data);
   }
 
   g_list_free(list);
