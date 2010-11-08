@@ -1,3 +1,10 @@
+2010-11-08  Murray Cumming  <murrayc@murrayc.com>
+
+	Call xmlCleanupParser() because libxml++ does not anywmore.
+
+	* glom/main.cc: main(): Call xmlCleanupParser() to clean up libxml to help
+	valgrind.
+
 2010-11-08  Murray Cumming  <murrayc@murrayc.com>>
 
 	FlowTableWithFields: Fix some widget expansion behaviour.

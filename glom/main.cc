@@ -648,6 +648,9 @@ main(int argc, char* argv[])
 
   Glom::libglom_deinit();
 
+  //Tell libxml to clean things up to make valgrind more useful:
+  xmlCleanupParser();
+
   //These fail, probably because of previous things that are causing leaks:
   //cairo_debug_reset_static_data(); //This crashes with _cairo_hash_table_destroy: Assertion `hash_table->live_entries == 0' failed.
   //FcFini(); //This crashes with "FcCacheFini: Assertion `fcCacheChains[i] == ((void *)0)' failed."
