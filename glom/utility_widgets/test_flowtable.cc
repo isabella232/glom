@@ -20,6 +20,7 @@
 
 #include <gtkmm.h>
 #include "flowtable.h"
+#include <iostream>
 
 
 //#include "dragwindow.h"
@@ -36,6 +37,62 @@ void on_drag_data_get_entry(const Glib::RefPtr<Gdk::DragContext>&, Gtk::Selectio
 }
 */
 
+typedef std::list<Gtk::Widget*> type_vec_widgets;
+type_vec_widgets vec_child_widgets;
+
+static void fill_flowtable(Glom::FlowTable& flowtable)
+{
+  Gtk::Entry* button1 = Gtk::manage(new Gtk::Entry());
+  button1->set_text("seven");
+  button1->show();
+  //button1->set_size_request(100, 100);
+  vec_child_widgets.push_back(button1);
+
+  Gtk::Entry* button2 = Gtk::manage(new Gtk::Entry());
+  button2->set_text("eight");
+  flowtable.add(*button1, *button2);
+  button2->show();
+  //button2->set_size_request(100, 100);
+  vec_child_widgets.push_back(button2);
+
+  Gtk::Label* button3 = Gtk::manage(new Gtk::Label());
+  button3->set_text("nine"); //TODO: valgrind says that something here is leaked.
+  button3->show();
+  //button1->set_size_request(100, 100);
+  vec_child_widgets.push_back(button3);
+
+  Gtk::Entry* button4 = Gtk::manage(new Gtk::Entry());
+  button4->set_text("ten");
+  flowtable.add(*button3, *button4);
+  button4->show();
+  vec_child_widgets.push_back(button4);
+
+  Gtk::Entry* button5 = Gtk::manage(new Gtk::Entry());
+  button5->set_text("eleven");
+  Gtk::Entry* button6 = Gtk::manage(new Gtk::Entry());
+  button5->set_text("eleven");
+  flowtable.add(*button5, *button6);
+  button5->show();
+  button6->show();
+  vec_child_widgets.push_back(button5);
+  vec_child_widgets.push_back(button6);
+}
+
+static void clear_flowtable(Glom::FlowTable& flowtable)
+{
+  //std::cout << G_STRFUNC << ": debug 1" << std::endl;
+  for(type_vec_widgets::iterator iter = vec_child_widgets.begin(); iter != vec_child_widgets.end(); ++iter)
+  {
+    Gtk::Widget* widget = *iter;
+    //std::cout << "  loop: widget=" << widget << std::endl;
+    delete widget;
+  }
+
+  vec_child_widgets.clear();
+
+  flowtable.remove_all();
+}
+
 int
 main(int argc, char* argv[])
 {
@@ -48,27 +105,9 @@ main(int argc, char* argv[])
   flowtable.set_horizontal_spacing(6);
   flowtable.set_vertical_spacing(6);
 
-  Gtk::Entry button7; button7.set_text("seven");
-  button7.show();
-  //button7.set_size_request(100, 100);
-
-  Gtk::Entry button8; button8.set_text("eight");
-  flowtable.add(button7, button8);
-  button8.show();
-  //button8.set_size_request(100, 100);
-
-  Gtk::Label button9; button9.set_text("nine"); //TODO: valgrind says that something here is leaked.
-  button9.show();
-  //button7.set_size_request(100, 100);
-
-  Gtk::Entry button10; button10.set_text("ten");
-  flowtable.add(button9, button10);
-  button10.show();
-
-  Gtk::Entry button11; button11.set_text("eleven");
-  Gtk::Entry button12; button11.set_text("eleven");
-  flowtable.add(button11, button12);
-  button11.show(); button12.show();
+  fill_flowtable(flowtable);
+  clear_flowtable(flowtable);
+  fill_flowtable(flowtable);
 
   window.add(flowtable);
   flowtable.set_design_mode();
