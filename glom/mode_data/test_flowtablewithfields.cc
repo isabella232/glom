@@ -43,34 +43,34 @@ type_vec_widgets vec_child_widgets;
 static void fill_flowtable(Glom::FlowTable& flowtable)
 {
   Gtk::Entry* button1 = Gtk::manage(new Gtk::Entry());
-  button1->set_text("one");
+  button1->set_text("seven");
   button1->show();
   //button1->set_size_request(100, 100);
   vec_child_widgets.push_back(button1);
 
   Gtk::Entry* button2 = Gtk::manage(new Gtk::Entry());
-  button2->set_text("two");
+  button2->set_text("eight");
   flowtable.add(*button1, *button2);
   button2->show();
   //button2->set_size_request(100, 100);
   vec_child_widgets.push_back(button2);
 
   Gtk::Label* button3 = Gtk::manage(new Gtk::Label());
-  button3->set_text("three"); //TODO: valgrind says that something here is leaked.
+  button3->set_text("nine"); //TODO: valgrind says that something here is leaked.
   button3->show();
   //button1->set_size_request(100, 100);
   vec_child_widgets.push_back(button3);
 
   Gtk::Entry* button4 = Gtk::manage(new Gtk::Entry());
-  button4->set_text("four");
+  button4->set_text("ten");
   flowtable.add(*button3, *button4);
   button4->show();
   vec_child_widgets.push_back(button4);
 
   Gtk::Entry* button5 = Gtk::manage(new Gtk::Entry());
-  button5->set_text("five");
+  button5->set_text("eleven");
   Gtk::Entry* button6 = Gtk::manage(new Gtk::Entry());
-  button6->set_text("size");
+  button5->set_text("eleven");
   flowtable.add(*button5, *button6);
   button5->show();
   button6->show();
