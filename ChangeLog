@@ -1,5 +1,17 @@
 2010-11-08  Murray Cumming  <murrayc@murrayc.com>
 
+	EggSpreadTable: forall(): Avoid use of invalid GList items.
+
+	* glom/utility_widgets/eggspreadtable/eggspreadtable.c
+	(egg_spread_table_forall):
+	Use (and later free) a copy of the list, because the callback could call
+	egg_spread_table_remove() which would change the list, causing us to use a
+	list->next that is no longer valid. This fixes a problem found by valgrind.
+	I don't know why other Gtk containers don't need to do this, though their
+	code seems to do the same thing.
+
+2010-11-08  Murray Cumming  <murrayc@murrayc.com>
+
 	Added test_flowtablewithfields.
 
 	* Makefile_tests.am:
