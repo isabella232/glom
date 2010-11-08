@@ -170,4 +170,14 @@ void Dialog_Image_Progress::error(const Glib::ustring& error_message)
   response(Gtk::RESPONSE_REJECT);
 }
 
+std::auto_ptr<GdaBinary> Dialog_Image_Progress::get_image_data()
+{
+  return m_data;
+}
+
+Glib::RefPtr<Gdk::Pixbuf> Dialog_Image_Progress::get_pixbuf() 
+{
+  return m_loader->get_pixbuf();
+}
+
 } // namespace Glom

@@ -44,8 +44,8 @@ public:
 
   void load(const Glib::ustring& uri);
 
-  std::auto_ptr<GdaBinary> get_image_data() { return m_data; }
-  Glib::RefPtr<Gdk::Pixbuf> get_pixbuf() { return m_loader->get_pixbuf(); }
+  std::auto_ptr<GdaBinary> get_image_data();
+  Glib::RefPtr<Gdk::Pixbuf> get_pixbuf();
 
 private:
   void error(const Glib::ustring& error_message);
