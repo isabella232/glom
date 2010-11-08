@@ -1,3 +1,16 @@
+2010-11-08  Murray Cumming  <murrayc@murrayc.com>>
+
+	FlowTableWithFields: Fix some widget expansion behaviour.
+
+	* glom/mode_data/datawidget/label.cc: Call Gtk::Label::set_line_wrap() to
+	prevent the label from sometimes making the window insanely wide by demainding
+	too much width for itself.
+	* glom/mode_data/flowtablewithfields.cc: add_field_at_position(): Tell
+	the field's widget to expand, so it uses more space if the user expands the
+	window, instead of just expanding the gap between columns.
+	Note that the old non-EggSpreadTable code only expanded the right-most column,
+	so exanding both is a real improvement.
+
 2010-11-08  Murray Cumming  <murrayc@murrayc.com>
 
 	EggSpreadTable: forall(): Avoid use of invalid GList items.

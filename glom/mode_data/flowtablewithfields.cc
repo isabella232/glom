@@ -537,10 +537,8 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
   //info.m_group = layoutitem_field.m_group;
 
   //Expand multiline text fields to take up the maximum possible width:
-  bool expand_second = false;
   if( (layoutitem_field->get_glom_type() == Field::TYPE_TEXT) && layoutitem_field->get_formatting_used().get_text_format_multiline())
   {
-    expand_second = true;
     if(label)
       label->set_property("yalign", 0.0); //Equivalent to Gtk::ALIGN_START. Center is neater next to entries, but center is silly next to multi-line text boxes.
   }
@@ -559,9 +557,9 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
 
   Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
   if(widget)
-    insert_before(*eventbox, *(info.m_second), *widget, expand_second);
+    insert_before(*eventbox, *(info.m_second), *widget, true);
   else
-    add(*eventbox, *(info.m_second), expand_second);
+    add(*eventbox, *(info.m_second), true);
 
   info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  ); //TODO:  Is it a good idea to bind the LayoutItem? sigc::bind() probably stores a copy at this point.
 
