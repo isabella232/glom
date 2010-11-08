@@ -1,3 +1,11 @@
+2010-11-08  Murray Cumming  <murrayc@murrayc.com>
+
+	Added test_flowtablewithfields.
+
+	* Makefile_tests.am:
+	* glom/mode_data/test_flowtablewithfields.cc: Added the beginnings of a test
+	of FlowTableWithFields.
+
 2010-11-05  Murray Cumming  <murrayc@murrayc.com>
 
 	Use EggSpreadTable instead of GtkSpreadTable (not added to GTK+).

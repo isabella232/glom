@@ -19,7 +19,7 @@
  */
 
 #include <gtkmm.h>
-#include "flowtable.h"
+#include <glom/mode_data/flowtablewithfields.h>
 #include <iostream>
 
 
@@ -37,59 +37,34 @@ void on_drag_data_get_entry(const Glib::RefPtr<Gdk::DragContext>&, Gtk::Selectio
 }
 */
 
-typedef std::list<Gtk::Widget*> type_vec_widgets;
-type_vec_widgets vec_child_widgets;
-
-static void fill_flowtable(Glom::FlowTable& flowtable)
+static void fill_flowtable(Glom::FlowTableWithFields& flowtable)
 {
-  Gtk::Entry* button1 = Gtk::manage(new Gtk::Entry());
-  button1->set_text("seven");
-  button1->show();
-  //button1->set_size_request(100, 100);
-  vec_child_widgets.push_back(button1);
-
-  Gtk::Entry* button2 = Gtk::manage(new Gtk::Entry());
-  button2->set_text("eight");
-  flowtable.add(*button1, *button2);
-  button2->show();
-  //button2->set_size_request(100, 100);
-  vec_child_widgets.push_back(button2);
-
-  Gtk::Label* button3 = Gtk::manage(new Gtk::Label());
-  button3->set_text("nine"); //TODO: valgrind says that something here is leaked.
-  button3->show();
-  //button1->set_size_request(100, 100);
-  vec_child_widgets.push_back(button3);
-
-  Gtk::Entry* button4 = Gtk::manage(new Gtk::Entry());
-  button4->set_text("ten");
-  flowtable.add(*button3, *button4);
-  button4->show();
-  vec_child_widgets.push_back(button4);
-
-  Gtk::Entry* button5 = Gtk::manage(new Gtk::Entry());
-  button5->set_text("eleven");
-  Gtk::Entry* button6 = Gtk::manage(new Gtk::Entry());
-  button5->set_text("eleven");
-  flowtable.add(*button5, *button6);
-  button5->show();
-  button6->show();
-  vec_child_widgets.push_back(button5);
-  vec_child_widgets.push_back(button6);
-}
-
-static void clear_flowtable(Glom::FlowTable& flowtable)
-{
-  //std::cout << G_STRFUNC << ": debug 1" << std::endl;
-  for(type_vec_widgets::iterator iter = vec_child_widgets.begin(); iter != vec_child_widgets.end(); ++iter)
   {
-    Gtk::Widget* widget = *iter;
-    //std::cout << "  loop: widget=" << widget << std::endl;
-    delete widget;
+    Glom::sharedptr<Glom::LayoutItem_Text> item =
+      Glom::sharedptr<Glom::LayoutItem_Text>::create();
+    item->set_text("test static text 1");
+    flowtable.add_layout_item(item);
   }
 
-  vec_child_widgets.clear();
+  {
+    Glom::sharedptr<Glom::LayoutItem_Text> item =
+      Glom::sharedptr<Glom::LayoutItem_Text>::create();
+    item->set_text("test static text 2");
+    item->set_title("title for text 2");
+    flowtable.add_layout_item(item);
+  }
 
+  {
+    Glom::sharedptr<Glom::LayoutItem_Image> item =
+      Glom::sharedptr<Glom::LayoutItem_Image>::create();
+    //item->set_image(somevalue);
+    item->set_title("title for image");
+    flowtable.add_layout_item(item);
+  }
+}
+
+static void clear_flowtable(Glom::FlowTableWithFields& flowtable)
+{
   flowtable.remove_all();
 }
 
@@ -100,7 +75,7 @@ main(int argc, char* argv[])
 
   Gtk::Window window;
   //Gtk::VBox flowtable;
-  Glom::FlowTable flowtable;
+  Glom::FlowTableWithFields flowtable;
   flowtable.set_lines(2);
   flowtable.set_horizontal_spacing(6);
   flowtable.set_vertical_spacing(6);
