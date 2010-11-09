@@ -1,3 +1,13 @@
+2010-11-11  Murray Cumming  <murrayc@murrayc.com>
+
+	List view: Make the retry option actually work afer entering invalid data.
+	
+	* glom/mode_data/db_adddel/db_adddel.[h|cc]: on_treeview_cell_edited():
+	If the user chooses to retry the edit, remember what he entered, and restart 
+	the editing (in an idle handler, to avoid confusing the treeview), with 
+	that text.
+	This fixes bug #167818
+
 2010-11-04  Murray Cumming  <murrayc@murrayc.com>
 
 	Remove the gconfmm dependency, because we don't use it.
