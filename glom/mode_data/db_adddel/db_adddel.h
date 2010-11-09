@@ -299,6 +299,7 @@ private:
   void on_maemo_touchselector_changed(int column);
   #else
   void treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index, int data_model_column_index);
+  void on_treeview_cell_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& path);
   #endif //GLOM_ENABLE_MAEMO
 
 
@@ -306,6 +307,7 @@ private:
   #ifndef GLOM_ENABLE_MAEMO
   virtual void on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index, int data_model_column_index);
   virtual void on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index, int data_model_column_index);
+  void on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& row, guint model_column_index);
 
   bool on_treeview_column_drop(Gtk::TreeView* treeview, Gtk::TreeViewColumn* column, Gtk::TreeViewColumn* prev_column, Gtk::TreeViewColumn* next_column);
   void on_treeview_columns_changed();
@@ -430,6 +432,10 @@ private:
 
   bool m_find_mode;
   bool m_allow_only_one_related_record;
+
+  //Used to revert the currently-edited cell.
+  bool m_validation_retry;
+  Glib::ustring m_validation_invalid_text_for_retry;
 
   /// The primary key for the table:
   sharedptr<Field> m_key_field;

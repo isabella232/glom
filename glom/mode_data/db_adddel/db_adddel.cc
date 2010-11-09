@@ -57,6 +57,7 @@ DbAddDel::DbAddDel()
   m_allow_delete(true),
   m_find_mode(false),
   m_allow_only_one_related_record(false),
+  m_validation_retry(false),
   m_allow_view(true),
   m_allow_view_details(false),
 #ifndef GLOM_ENABLE_MAEMO
@@ -651,6 +652,8 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
     //Connect to edited signal:
     if(item_field) //Only fields can be edited:
     {
+      pCellRendererText->signal_editing_started().connect(sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_editing_started));
+
       //Make it editable:
       pCellRendererText->set_property("editable", true);
 
@@ -1447,6 +1450,36 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
   }
 }
 
+void DbAddDel::on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& row, guint model_column_index)
+{
+  Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
+  if(!refTreeSelection)
+    return;
+    
+  refTreeSelection->select(row); //TODO: This does not seem to work.
+  
+  guint view_column_index = 0;
+  get_view_column_index(model_column_index, view_column_index);
+  Gtk::TreeView::Column* pColumn = m_TreeView.get_column(view_column_index);
+  if(!pColumn)
+  {
+    std::cerr << G_STRFUNC << ": pColumn is null." << std::endl;
+    return;
+  }
+  
+  Gtk::CellRendererText* pCell = dynamic_cast<Gtk::CellRendererText*>(pColumn->get_first_cell());
+  if(!pCell)
+  {
+    std::cerr << G_STRFUNC << ": pCell is null." << std::endl;
+    return;
+  }
+    
+  const Gtk::TreeModel::Path path = get_model()->get_path(row);
+  
+  //Highlights the cell, and start the editing:
+  m_TreeView.set_cursor(path, *pColumn, *pCell, true /* start_editing */);
+}
+
 void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index, int data_model_column_index)
 {
   //Note:: model_column_index is actually the AddDel column index, not the TreeModel column index.
@@ -1457,6 +1490,12 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
     return;
 
   const Gtk::TreeModel::Path path(path_string);
+ 
+  if(path.empty())
+  {
+    std::cerr << G_STRFUNC << ": path is empty." << std::endl;
+    return;
+  }
 
   //Get the row from the path:
   Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
@@ -1512,9 +1551,9 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
 
       const Gnome::Gda::Value value = Conversions::parse_value(field_type, new_text, item_field->get_formatting_used().m_numeric_format, success);
       if(!success)
-      {
+      {  
           //Tell the user and offer to revert or try again:
-          bool revert = glom_show_dialog_invalid_data(field_type);
+          const bool revert = glom_show_dialog_invalid_data(field_type);
           if(revert)
           {
             //Revert the data:
@@ -1523,44 +1562,17 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
           else
           {
             //Reactivate the cell so that the data can be corrected.
+            
+            //Set the text to be used in the start_editing signal handler:
+            m_validation_invalid_text_for_retry = new_text;
+            m_validation_retry = true;
 
-            Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
-            if(refTreeSelection)
-            {
-              refTreeSelection->select(row); //TODO: This does not seem to work.
-
-              if(!path.empty())
-              {
-                Gtk::TreeView::Column* pColumn = m_TreeView.get_column(model_column_index);
-                if(pColumn)
-                {
-                  Gtk::CellRendererText* pCell = dynamic_cast<Gtk::CellRendererText*>(pColumn->get_first_cell());
-                  if(pCell)
-                  {
-                    //TreeView::set_cursor(), or start_editing() would get the old value back from the model again
-                    //so we do something similar without getting the old value:
-                    m_TreeView.set_cursor(path, *pColumn, *pCell, true /* start_editing */); //This highlights the cell, and starts the editing.
-
-                    //This is based on gtk_tree_view_start_editing():
-                    //TODO: This does not actually work. I emailed gtk-list about how to do this.
-                    /*
-                    pCell->stop_editing();
-                    pCell->property_text() = "test"; //new_text; //Allow the user to start with the bad text that he entered so far.
-
-                    Gdk::Rectangle background_area;
-                    m_TreeView.get_background_area(path, *pColumn, background_area);
-
-                    Gdk::Rectangle cell_area;
-                    m_TreeView.get_cell_area(path, *pColumn, background_area);
-                    */
-                  }
-                }
-              }
-              else
-              {
-                g_warning("DbAddDel::on_treeview_cell_edited(): path is invalid.");
-              }
-            }
+            //But do this in an idle timout, so that the TreeView doesn't get 
+            //confused by us changing editing state in this signal handler.
+            Glib::signal_idle().connect_once(
+              sigc::bind(
+               sigc::mem_fun(*this, &DbAddDel::on_idle_treeview_cell_edited_revert),
+               row, model_column_index));
           }
 
           do_change = false;
@@ -2083,6 +2095,26 @@ Application* DbAddDel::get_application()
   return dynamic_cast<Application*>(pWindow);
 }
 
+void DbAddDel::on_treeview_cell_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& /* path */)
+{
+  //Start editing with previously-entered (but invalid) text, 
+  //if we are allowing the user to correct some invalid data. 
+  if(m_validation_retry)
+  {
+    //This is the CellEditable inside the CellRenderer. 
+    Gtk::CellEditable* celleditable_validated = cell_editable;
+
+    //It's usually an Entry, at least for a CellRendererText:
+    Gtk::Entry* pEntry = dynamic_cast<Gtk::Entry*>(celleditable_validated);
+    if(pEntry)
+    {
+      pEntry->set_text(m_validation_invalid_text_for_retry);
+      m_validation_retry = false;
+      m_validation_invalid_text_for_retry.clear();
+    }
+  }
+}
+
 void DbAddDel::set_allow_view(bool val)
 {
   m_allow_view = val;
@@ -2192,7 +2224,6 @@ bool DbAddDel::start_new_record()
   }
   else
   {
-    std::cout << "debug: " << G_STRFUNC << ": no editable rows." << std::endl;
     //The only keys are non-editable, so just add a row:
     select_item(iter); //without start_editing.
     //g_warning("start_new_record(): index_field_to_edit does not exist: %d", index_field_to_edit);
@@ -2353,8 +2384,6 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
 
 void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
 {
-  std::cout << "DEBUG: DbAddDel::user_added()" << std::endl;
-
   //Prevent impossible multiple related records:
   //The developer-mode UI now prevents the developer from using such a relationship anyway.
   if(m_allow_only_one_related_record && (get_count() > 0))
