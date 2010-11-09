@@ -57,6 +57,7 @@ DbAddDel::DbAddDel()
   m_allow_delete(true),
   m_find_mode(false),
   m_allow_only_one_related_record(false),
+  m_validation_retry(false),
   m_allow_view(true),
   m_allow_view_details(false),
 #ifndef GLOM_ENABLE_MAEMO
@@ -651,6 +652,8 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
     //Connect to edited signal:
     if(item_field) //Only fields can be edited:
     {
+      pCellRendererText->signal_editing_started().connect(sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_editing_started));
+
       //Make it editable:
       pCellRendererText->set_property("editable", true);
 
@@ -1537,22 +1540,12 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
                   Gtk::CellRendererText* pCell = dynamic_cast<Gtk::CellRendererText*>(pColumn->get_first_cell());
                   if(pCell)
                   {
-                    //TreeView::set_cursor(), or start_editing() would get the old value back from the model again
-                    //so we do something similar without getting the old value:
-                    m_TreeView.set_cursor(path, *pColumn, *pCell, true /* start_editing */); //This highlights the cell, and starts the editing.
-
-                    //This is based on gtk_tree_view_start_editing():
-                    //TODO: This does not actually work. I emailed gtk-list about how to do this.
-                    /*
-                    pCell->stop_editing();
-                    pCell->property_text() = "test"; //new_text; //Allow the user to start with the bad text that he entered so far.
-
-                    Gdk::Rectangle background_area;
-                    m_TreeView.get_background_area(path, *pColumn, background_area);
-
-                    Gdk::Rectangle cell_area;
-                    m_TreeView.get_cell_area(path, *pColumn, background_area);
-                    */
+                    //Set the text to be used in the start_editing signal handler:
+                    m_validation_invalid_text_for_retry = new_text;
+                    m_validation_retry = true;
+    
+                    //Highlights the cell, and start the editing:
+                    m_TreeView.set_cursor(path, *pColumn, *pCell, true /* start_editing */);
                   }
                 }
               }
@@ -2081,6 +2074,26 @@ Application* DbAddDel::get_application()
   //TODO: This only works when the child widget is already in its parent.
 
   return dynamic_cast<Application*>(pWindow);
+}
+
+void DbAddDel::on_treeview_cell_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& /* path */)
+{
+  //Start editing with previously-entered (but invalid) text, 
+  //if we are allowing the user to correct some invalid data. 
+  if(m_validation_retry)
+  {
+    //This is the CellEditable inside the CellRenderer. 
+    Gtk::CellEditable* celleditable_validated = cell_editable;
+
+    //It's usually an Entry, at least for a CellRendererText:
+    Gtk::Entry* pEntry = dynamic_cast<Gtk::Entry*>(celleditable_validated);
+    if(pEntry)
+    {
+      pEntry->set_text(m_validation_invalid_text_for_retry);
+      m_validation_retry = false;
+      m_validation_invalid_text_for_retry.clear();
+    }
+  }
 }
 
 void DbAddDel::set_allow_view(bool val)
