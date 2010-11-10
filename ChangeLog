@@ -1,3 +1,11 @@
+2010-11-10  Murray Cumming  <murrayc@murrayc.com>
+
+	Update EggSpreadTable from libegg.
+
+	* glom/utility_widgets/eggspreadtable/eggspreadtable.c: Copy from
+	libegg/libegg/spreadtable/ again, to use Tristan's corrections for the
+	forall() vfunc.
+
 2010-11-08  Murray Cumming  <murrayc@murrayc.com>
 
 	Call xmlCleanupParser() because libxml++ does not anywmore.
