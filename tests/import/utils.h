@@ -10,7 +10,6 @@ namespace ImportTests
 bool check(const std::string& name, bool test, std::stringstream& report);
 
 typedef sigc::slot<void, Glom::CsvParser&> FuncConnectParserSignals;
-typedef Glib::RefPtr<Glib::MainLoop> MainLoopRp;
 
 /**
  * @result Whether the parser finished without being killed by a timeout.
@@ -30,4 +29,3 @@ bool run_parser_on_file(const FuncConnectParserSignals& connect_parser_signals, 
 } // namespace ImportTests
 
 #endif //TEST_IMPORT_UTILS_H
-

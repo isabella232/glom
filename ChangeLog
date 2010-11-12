@@ -1,22 +1,29 @@
 2010-11-12  Murray Cumming  <murrayc@murrayc.com>
 
+	Import tests: Slight code-style change.
+
+	* tests/import/utils.[h|cc]: Remove the MainLoop typedef because it just
+	obscures things.
+
+2010-11-12  Murray Cumming  <murrayc@murrayc.com>
+
 	CSV Import: Actually preview and import the field values.
 
-	* glom/import_csv/csv_parser.cc: advance_field(): Remove an excess continue, 
-	so that we actually add the character to the field's text. This error 
+	* glom/import_csv/csv_parser.cc: advance_field(): Remove an excess continue,
+	so that we actually add the character to the field's text. This error
 	was probably introduced while removing the non-exceptions ifdefs.
 	This fixed bug #625693 (maximiliano).
-	
+
 	We really must fix those import unit tests so that something like this does
 	not happen again.
 
 2010-11-11  Murray Cumming  <murrayc@murrayc.com>
 
 	List view: Make the retry option actually work afer entering invalid data.
-	
+
 	* glom/mode_data/db_adddel/db_adddel.[h|cc]: on_treeview_cell_edited():
-	If the user chooses to retry the edit, remember what he entered, and restart 
-	the editing (in an idle handler, to avoid confusing the treeview), with 
+	If the user chooses to retry the edit, remember what he entered, and restart
+	the editing (in an idle handler, to avoid confusing the treeview), with
 	that text.
 	This fixes bug #167818
 

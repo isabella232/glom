@@ -26,9 +26,9 @@ static std::string create_file_from_buffer(const char* input, guint input_size)
   std::string file_uri;
   //TODO: Catch exception.
   file_uri = Glib::filename_to_uri(tmp_filename);
-  
+
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
-  
+
   gssize result = 0;
   //TODO: Catch exception.
   result = file->append_to()->write(input, input_size);
@@ -37,28 +37,28 @@ static std::string create_file_from_buffer(const char* input, guint input_size)
   return file_uri;
 }
 
-static void on_mainloop_killed_by_watchdog(MainLoopRp mainloop)
+static void on_mainloop_killed_by_watchdog(const Glib::RefPtr<Glib::MainLoop>& mainloop)
 {
   finished_parsing = false;
   //Quit the mainloop that we ran because the parser uses an idle handler.
   mainloop->quit();
 }
 
-static void on_parser_encoding_error(MainLoopRp mainloop)
+static void on_parser_encoding_error(const Glib::RefPtr<Glib::MainLoop>& mainloop)
 {
   finished_parsing = true;
   //Quit the mainloop that we ran because the parser uses an idle handler.
   mainloop->quit();
 }
 
-static void on_parser_finished(MainLoopRp mainloop)
+static void on_parser_finished(const Glib::RefPtr<Glib::MainLoop>& mainloop)
 {
   finished_parsing = true;
   //Quit the mainloop that we ran because the parser uses an idle handler.
   mainloop->quit();
 }
 
-static void on_file_read_error(const std::string& /*unused*/, MainLoopRp mainloop)
+static void on_file_read_error(const std::string& /*unused*/, const Glib::RefPtr<Glib::MainLoop>& mainloop)
 {
   finished_parsing = true;
   //Quit the mainloop that we ran because the parser uses an idle handler.
@@ -76,7 +76,7 @@ bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signa
 
   //Start a mainloop because the parser uses an idle handler.
   //TODO: Stop the parser from doing that.
-  MainLoopRp mainloop = Glib::MainLoop::create();
+  Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create();
   Glom::CsvParser parser("UTF-8");
 
   parser.signal_encoding_error().connect(sigc::bind(&on_parser_encoding_error, mainloop));
@@ -111,7 +111,7 @@ bool run_parser_on_file(const FuncConnectParserSignals& connect_parser_signals, 
 
   //Start a mainloop because the parser uses an idle handler.
   //TODO: Stop the parser from doing that.
-  MainLoopRp mainloop = Glib::MainLoop::create();
+  Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create();
   Glom::CsvParser parser("UTF-8");
 
   parser.signal_encoding_error().connect(sigc::bind(&on_parser_encoding_error, mainloop));
