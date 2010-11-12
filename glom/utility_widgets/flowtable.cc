@@ -39,8 +39,6 @@ FlowTable::~FlowTable()
   {
     type_list_hboxes::iterator iter = m_list_hboxes.begin();
     Gtk::HBox* hbox = *iter;
-
-    std::cout << G_STRFUNC << ": hbox=" << hbox << std::endl;
     delete_and_forget_hbox(hbox);
   }
 }
@@ -96,7 +94,6 @@ void FlowTable::delete_and_forget_hbox(Gtk::HBox* hbox)
     children = hbox->get_children();
   }
 
-  std::cout << G_STRFUNC << "Removing: hbox=" << hbox << std::endl;
   if(hbox->get_parent() == this)
   {
     Egg::SpreadTable::remove(*hbox);
@@ -226,7 +223,6 @@ void FlowTable::remove(Gtk::Widget& first)
   Gtk::HBox* parent = get_parent_hbox(&first);
   if(parent)
   {
-    std::cout << G_STRFUNC << ": parent=" << parent << std::endl;
     delete_and_forget_hbox(parent);
     return;
   }
