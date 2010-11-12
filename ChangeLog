@@ -1,3 +1,14 @@
+2010-11-12  Murray Cumming  <murrayc@murrayc.com>
+
+	CSV Import: Actually preview and import the field values.
+
+	* glom/import_csv/csv_parser.cc: advance_field(): Remove an excess continue, 
+	so that we actually add the character to the field's text. This error 
+	was probably introduced while removing the non-exceptions ifdefs.
+	
+	We really must fix those import unit tests so that something like this does
+	not happen again.
+
 2010-11-11  Murray Cumming  <murrayc@murrayc.com>
 
 	List view: Make the retry option actually work afer entering invalid data.

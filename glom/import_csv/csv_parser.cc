@@ -247,8 +247,6 @@ Glib::ustring::const_iterator CsvParser::advance_field(const Glib::ustring::cons
       {
         break;
       }
-
-      continue;
     }
 
     field += c; // Just so that we don't need to iterate through the field again, since there is no Glib::ustring::substr(iter, iter)
