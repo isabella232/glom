@@ -1,3 +1,14 @@
+2010-11-12  Murray Cumming  <murrayc@murrayc.com>
+
+	CSV Import: Actually preview and import the field values.
+
+	* glom/import_csv/csv_parser.cc: advance_field(): Remove an excess continue, 
+	so that we actually add the character to the field's text. This error 
+	was probably introduced while removing the non-exceptions ifdefs.
+	
+	We really must fix those import unit tests so that something like this does
+	not happen again.
+
 2010-11-04  Murray Cumming  <murrayc@murrayc.com>
 
 	Remove the gconfmm dependency, because we don't use it.
@@ -19959,7 +19970,7 @@ There is also a glom 1.0 branch for maintenance.
 
 	* Updated for changed gtkmm2 pack_start() and TreeView APIs.
 
-2002-03-19  Murray Cumming  <murrayc@usa.net
+2002-03-19  Murray Cumming  <murrayc@usa.net>
 
 	* Used pkg-config checks instead of the various old .m4 macros,
 	and changed Xerces C++ version to 1.7.
