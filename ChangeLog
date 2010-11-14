@@ -1,5 +1,13 @@
 2010-11-15  Murray Cumming  <murrayc@murrayc.com>
 
+	Import tests: Disable more tests that do not seem useful.
+
+	* tests/import/test_parsing.cc: Comment out the non-comma separators test and 
+	the ignoring-space-between-quoted-text test, because they don't seem to 
+	correspond to any specification.
+
+2010-11-15  Murray Cumming  <murrayc@murrayc.com>
+
 	Import tests: Disable tests that check for incorrect or useless behaviour.
 
 	* tests/import/test_parsing.cc: Comment out the test to ensure that we 
