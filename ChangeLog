@@ -1,3 +1,13 @@
+2010-11-15  Murray Cumming  <murrayc@murrayc.com>
+
+	Import tests: Disable tests that check for incorrect or useless behaviour.
+
+	* tests/import/test_parsing.cc: Comment out the test to ensure that we 
+	- Ignore rows with no ending newline.
+	- Ignore field values that are not quoted.
+	because we should not do that.
+	Also add comments explaining the regular expressions.
+
 2010-11-14  Murray Cumming  <murrayc@murrayc.com>
 
 	Re-enable the import tests and partially deal with their race condition.

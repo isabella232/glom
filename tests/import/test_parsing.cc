@@ -87,6 +87,7 @@ int main(int argc, char* argv[])
   bool result = true;
   std::stringstream report;
 
+  // Test parsing of escaped quotes (double quotes in .csv mean a single quote in the actual field value):
   // test_dquoted_string
   {
     const char* raw = "\"a \"\"quoted\"\" token\",\"sans quotes\"\n";
@@ -100,9 +101,9 @@ int main(int argc, char* argv[])
       result = false;
   }
 
+  // test_skip_on_no_ending_newline
   // Commented out, because why should we want to fail if there is no ending newline? murrayc.
   /*
-  // test_skip_on_no_ending_newline
   {
     const char* raw = "\"token in first line\"\n\"2nd token\", \"but\", \"this\",\"line\",\"will\",\"be\",\"skipped\"";
     const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
@@ -117,26 +118,32 @@ int main(int argc, char* argv[])
   */
 
   // test_skip_on_no_quotes_around_token
+  //  Commented out, because why should we want to only parse items with quotes?
+  //  The wikipedia page (see the class documentatoin) says that quotes are optional
+  //  murrayc.
+  /*
   {
     const char* raw = "this,line,contains,only,empty,tokens\n";
     const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
 
     const bool passed = (finished_parsing &&
-                         check_tokens("^$") &&
+                         check_tokens("^$") &&  //Matches empty strings.
                          6 == get_tokens_instance().size());
     get_tokens_instance().clear();
 
     if(!ImportTests::check("test_skip_on_no_quotes_around_token", passed, report))
       result = false;
   }
+  */
 
   // test_skip_spaces_around_separators
+  // TODO: This seems wise, but where is it specified? murrayc.
   {
     const char* raw = "\"spaces\" , \"around\", \"separators\"\n";
     const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
 
     const bool passed = (finished_parsing &&
-                         check_tokens("^(spaces|around|separators)$") &&
+                         check_tokens("^(spaces|around|separators)$") && //Matches these words with nothing else at the start or end.
                          3 == get_tokens_instance().size());
     get_tokens_instance().clear();
 
@@ -146,12 +153,13 @@ int main(int argc, char* argv[])
   }
 
   // test_fail_on_non_comma_separators
+  // TODO: Where is this behaviour (ignoring text between quoted text) specified?
   {
     const char* raw = "\"cannot\"\t\"tokenize\"\t\"this\"\n";
     const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
 
     const bool passed = (finished_parsing &&
-                         check_tokens("^cannottokenizethis$") &&
+                         check_tokens("^cannottokenizethis$") && //Matches this text with nothing else at the start or end.
                          1 == get_tokens_instance().size());
     get_tokens_instance().clear();
 
@@ -165,7 +173,7 @@ int main(int argc, char* argv[])
     const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
 
     const bool passed = (finished_parsing &&
-                         check_tokens("^(cell with\nnewline|token on next line)$") &&
+                         check_tokens("^(cell with\nnewline|token on next line)$") && //Matches these texts with nothing else at the start or end.
                          2 == get_tokens_instance().size());
     get_tokens_instance().clear();
 
