@@ -1,3 +1,15 @@
+2010-11-14  Murray Cumming  <murrayc@murrayc.com>
+
+	Re-enable the import tests and partially deal with their race condition.
+
+	* Makefile_tests.am: Re-enable the import tests.
+	* glom/import_csv/csv_parser.[h|cc]: Add ensure_idle_handler_connection(), 
+	moving the idle signal handler connection there. Also call it from the 
+	beginning and end of on_file_read(), in case it has been disconnected 
+	too early.
+	Use a priority less than PRIORITY_DEFAULT_IDLE, so that IO is likely to 
+	happen more often than the idle callback.
+
 2010-11-12  Murray Cumming  <murrayc@murrayc.com>
 
 	Import tests: Slight code-style change.

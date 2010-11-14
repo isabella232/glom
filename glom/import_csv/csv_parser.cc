@@ -190,7 +190,7 @@ void CsvParser::set_encoding(const Glib::ustring& encoding_charset)
     return;
 
   m_encoding = encoding_charset;
-  
+
   //Stop parsing if the encoding changes.
   //The caller should restart the parsing when wanted.
   clear();
@@ -330,7 +330,7 @@ bool CsvParser::on_idle_parse()
   const char* prev = prev_line_end;
 
   // Identify the record rows in the .csv file.
-  // We can't just search for newlines because they may be inside quotes too. 
+  // We can't just search for newlines because they may be inside quotes too.
   // TODO: Use a regex instead, to more easily handle quotes?
   bool in_quotes = false;
   while(true)
@@ -363,7 +363,7 @@ bool CsvParser::on_idle_parse()
     {
       // There is a null byte in the conversion. Because normal text files don't
       // contain null bytes this only occurs when converting, for example, a UTF-16
-      // file from ISO-8859-1 to UTF-8 (note that the UTF-16 file is valid ISO-8859-1 - 
+      // file from ISO-8859-1 to UTF-8 (note that the UTF-16 file is valid ISO-8859-1 -
       // it just contains lots of nullbytes). We therefore produce an error here.
       //std::cerr << G_STRFUNC << ": on_idle_parse(): Encoding error" << std::endl;
       set_state(STATE_ENCODING_ERROR);
@@ -419,7 +419,7 @@ bool CsvParser::on_idle_parse()
       prev = pos + 1;
 
       // Skip DOS-style linebreak (\r\n)
-      if(ch == '\r' 
+      if(ch == '\r'
          && prev != outbuf && *prev == '\n')
       {
          ++prev;
@@ -490,14 +490,19 @@ void CsvParser::do_line_scanned(const Glib::ustring& line, guint line_number)
   signal_line_scanned().emit(row, line_number);
 }
 
-void CsvParser::on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::RefPtr<Gio::File>& source)
+void CsvParser::ensure_idle_handler_connection()
 {
-  // TODO: Introduce CsvParser::is_idle_handler_connected() instead?
   if(!m_idle_connection.connected())
   {
     m_idle_connection = Glib::signal_idle().connect(
-      sigc::mem_fun(*this, &CsvParser::on_idle_parse));
+      sigc::mem_fun(*this, &CsvParser::on_idle_parse),
+      Glib::PRIORITY_DEFAULT_IDLE - 20);
   }
+}
+
+void CsvParser::on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::RefPtr<Gio::File>& source)
+{
+  ensure_idle_handler_connection();
 
   try
   {
@@ -528,6 +533,9 @@ void CsvParser::copy_buffer_and_continue_reading(gssize size)
     m_buffer.reset(0);
     m_stream.reset();
   }
+
+  //In case it has been disconnected too early due to timing problems:
+  ensure_idle_handler_connection();
 }
 
 void CsvParser::on_buffer_read(const Glib::RefPtr<Gio::AsyncResult>& result)

@@ -33,12 +33,12 @@ check_PROGRAMS =						\
 	tests/test_python_execute_func_date \
 	tests/test_python_execute_func_change_result_type \
 	tests/test_python_execute_script \
-	tests/import/test_parsing \
-	tests/import/test_signals \
 	tests/test_glade_derived_instantiation \
 	tests/glade_toplevels_instantiation \
 	tests/test_selfhosting_new_empty \
-	tests/test_selfhosting_new_from_example
+	tests/test_selfhosting_new_from_example \
+	tests/import/test_parsing \
+	tests/import/test_signals
 
 TESTS =	tests/test_document_load	\
   tests/test_document_autosave	\
@@ -56,11 +56,9 @@ TESTS =	tests/test_document_load	\
 	tests/test_python_execute_func_change_result_type \
 	tests/test_python_execute_script \
 	tests/test_selfhosting_new_empty \
-	tests/test_selfhosting_new_from_example
-
-# These hang most of the time, but not always:
-#	tests/import/test_parsing \
-#	tests/import/test_signals
+	tests/test_selfhosting_new_from_example \
+	tests/import/test_parsing \
+	tests/import/test_signals
 
 # We also set this in Makefile.am, with +=,
 # but this is the first use, where we must use =

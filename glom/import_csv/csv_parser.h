@@ -48,7 +48,7 @@ namespace Glom
  *
  * set_file_and_start_parsing() to start parsing.
  * The data can then be read via get_date(), with get_rows_count() and get_cols_count().
- * 
+ *
  * The signals offer feedback while the parsing is happening.
  */
 class CsvParser
@@ -64,7 +64,7 @@ public:
   ~CsvParser();
 
   enum State {
-    STATE_NONE, 
+    STATE_NONE,
     STATE_PARSING,  /**< Parsing is in progress. */
     STATE_ENCODING_ERROR, /**< An error happened while parsing. */
     STATE_PARSED /**< Finished parsing. */
@@ -99,8 +99,8 @@ public:
 
   typedef sigc::signal<void, const Glib::ustring&> type_signal_have_display_name;
 
-  /** This signal will be emitted when the parser has discovered the 
-   * display name for the file. This does not require any parsing of the contents, 
+  /** This signal will be emitted when the parser has discovered the
+   * display name for the file. This does not require any parsing of the contents,
    * but it is asynchronous, so CsvParser signals this as a convenience.
    */
   type_signal_have_display_name signal_have_display_name() const;
@@ -139,8 +139,8 @@ public:
   void clear();
 
   /** Change the encoding used when reading the file.
-   * This stop parsing. Call set_file_and_start_parsing() to restart the parser  
-   * with the specified encoding. 
+   * This stop parsing. Call set_file_and_start_parsing() to restart the parser
+   * with the specified encoding.
    * See the FileEncoding namespace.
    */
   void set_encoding(const Glib::ustring& encoding_charset);
@@ -163,6 +163,8 @@ private:
 
   //TODO: Document this:
   static Glib::ustring::const_iterator advance_field(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end, Glib::ustring& field);
+
+  void ensure_idle_handler_connection();
 
   void on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::RefPtr<Gio::File>& source);
   void copy_buffer_and_continue_reading(gssize size);
