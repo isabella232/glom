@@ -1,3 +1,10 @@
+2010-11-17  Murray Cumming  <murrayc@murrayc.com>
+
+	Import tests: Uncomment some tests and make them test what we really want.
+
+	* tests/import/test_parsing.cc: Check that we do _not_ require ending newlines 
+	and check that we do _not_ require quotes around items.
+
 2010-11-15  Murray Cumming  <murrayc@murrayc.com>
 
 	Import tests: Disable more tests that do not seem useful.

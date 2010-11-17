@@ -101,40 +101,35 @@ int main(int argc, char* argv[])
       result = false;
   }
 
-  // test_skip_on_no_ending_newline
-  // Commented out, because why should we want to fail if there is no ending newline? murrayc.
-  /*
+  // Allow a line to have no newline at the end.
+  // test_allow_no_ending_newline
   {
     const char* raw = "\"token in first line\"\n\"2nd token\", \"but\", \"this\",\"line\",\"will\",\"be\",\"skipped\"";
     const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
     const bool passed = (finished_parsing &&
                          check_tokens("token in first line") &&
-                         1 == get_tokens_instance().size());
+                         check_tokens("2nd token") &&
+                         8 == get_tokens_instance().size());
     get_tokens_instance().clear();
 
-    if(!ImportTests::check("test_skip_on_no_ending_newline", passed, report))
+    if(!ImportTests::check("test_allow_no_ending_newline", passed, report))
       result = false;
   }
-  */
 
-  // test_skip_on_no_quotes_around_token
-  //  Commented out, because why should we want to only parse items with quotes?
-  //  The wikipedia page (see the class documentatoin) says that quotes are optional
-  //  murrayc.
-  /*
+  //  Make sure that we do not demand quotes around items.
+  // test_allow_no_quotes
   {
-    const char* raw = "this,line,contains,only,empty,tokens\n";
+    const char* raw = "this,line,contains,some,tokens\n";
     const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
 
     const bool passed = (finished_parsing &&
-                         check_tokens("^$") &&  //Matches empty strings.
-                         6 == get_tokens_instance().size());
+                         !check_tokens("^$") &&  //Check that there are no empty strings
+                         5 == get_tokens_instance().size());
     get_tokens_instance().clear();
 
-    if(!ImportTests::check("test_skip_on_no_quotes_around_token", passed, report))
+    if(!ImportTests::check("test_allow_no_quotes", passed, report))
       result = false;
   }
-  */
 
   // test_skip_spaces_around_separators
   // TODO: This seems wise, but where is it specified? murrayc.
@@ -166,7 +161,6 @@ int main(int argc, char* argv[])
     const bool passed = (finished_parsing &&
                          check_tokens("^cannottokenizethis$") && //Matches this text with nothing else at the start or end.
                          1 == get_tokens_instance().size());
-              print_tokens();
     get_tokens_instance().clear();
 
     if(!ImportTests::check("test_fail_on_non_comma_separators", passed, report))
