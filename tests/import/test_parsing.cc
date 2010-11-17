@@ -182,15 +182,17 @@ int main(int argc, char* argv[])
       result = false;
   }
 
-  /* TODO: Re-enable this (and fix the problem) when we can get the tests to run consistently, 
-   * without timing problems.
   // test_fail_on_non_matching_quotes
+  // Commented out because it's not clear what we want to do here.
+  // In this case, the ending newline would just appear as a quoted newline. murrayc.
+  /*
   {
     const char* raw = "\"token1\"\nthis quote has no partner\",\"token2\"\n";
     const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
     const bool passed = (finished_parsing &&
                          check_tokens("token") &&
                          1 == get_tokens_instance().size());
+    print_tokens();
     get_tokens_instance().clear();
 
     if(!ImportTests::check("test_fail_on_non_matching_quotes", passed, report))
