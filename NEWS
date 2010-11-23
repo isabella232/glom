@@ -1,4 +1,4 @@
-1.9.1 (unstable):
+1.19.1 (unstable):
 
 * Choices: Allow multiple extra fields, and allow them to be related fields
   or even doubly-related fields.
@@ -9,7 +9,7 @@
   - Use goocanvasmm-2.0 instead of goocanvasmm-1.0.
   - Use gtksourceviewmm-3.0 instead of gtksourceviewmm-2.0.
 
-1.6.1 (stable):
+1.16.1 (stable):
 
 * Prevent crash when all fields have been deleted from a table, also when
   then trying to reopen the file. (Murray Cumming)
