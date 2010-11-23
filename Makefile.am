@@ -98,7 +98,8 @@ dist_example_DATA =				\
 	examples/example_project_manager.glom	\
 	examples/example_smallbusiness.glom
 
-dist_noinst_DATA = examples/sqlite/test_sqlite_music/test_sqlite_music.glom
+# We use += because we set this first in Makefile_tests.am:
+dist_noinst_DATA += examples/sqlite/test_sqlite_music/test_sqlite_music.glom
 
 iconthemedir = $(datadir)/icons/hicolor
 appicon16dir = $(iconthemedir)/16x16/apps
@@ -179,7 +180,9 @@ MAINTAINERCLEANFILES = \
 glom_localedir = $(prefix)/$(DATADIRNAME)/locale
 
 glom_includes = -I$(top_builddir)/glom -I$(top_srcdir)/glom -I$(top_builddir) -I$(top_srcdir)
-glom_defines = \
+
+# We use += because this is set first in Makefile_tests.am:
+glom_defines += \
 -DGLOM_DATADIR=\""$(datadir)"\" \
 -DGLOM_DOCDIR_EXAMPLES=\""$(docdir)/examples"\" \
 -DGLOM_DOCDIR_EXAMPLES_NOTINSTALLED=\""$(abs_top_srcdir)/examples"\" \

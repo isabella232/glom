@@ -1,8 +1,19 @@
+2010-11-23  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the tests build during distcheck
+
+	* Makefile_glom.am: Correct eggspreadtablemm.c to eggspreadtablemm.cc.
+	* Makefile.am:
+	* Makefile_tests.am: Distribute the albums.csv test file and put the
+	path to its directory in a define.
+	* tests/import/test_parsing.cc: Use the define here, instead of using
+	get_current_directory, which is not enough when builddir!=srcdir.
+
 2010-11-17  Javier Jardón  <jjardon@gnome.org>
 
 	Use upstream gettext instead Glib one
 
-	* configure.ac: Do not use AM_GLIB_GNU_GETTEXT() because it is no longer 
+	* configure.ac: Do not use AM_GLIB_GNU_GETTEXT() because it is no longer
 	maintained/recommended.
 	This fixes bug #631367
 
@@ -10,22 +21,22 @@
 
 	Import tests: Uncomment some tests and make them test what we really want.
 
-	* tests/import/test_parsing.cc: Check that we do _not_ require ending newlines 
+	* tests/import/test_parsing.cc: Check that we do _not_ require ending newlines
 	and check that we do _not_ require quotes around items.
 
 2010-11-15  Murray Cumming  <murrayc@murrayc.com>
 
 	Import tests: Disable more tests that do not seem useful.
 
-	* tests/import/test_parsing.cc: Comment out the non-comma separators test and 
-	the ignoring-space-between-quoted-text test, because they don't seem to 
+	* tests/import/test_parsing.cc: Comment out the non-comma separators test and
+	the ignoring-space-between-quoted-text test, because they don't seem to
 	correspond to any specification.
 
 2010-11-15  Murray Cumming  <murrayc@murrayc.com>
 
 	Import tests: Disable tests that check for incorrect or useless behaviour.
 
-	* tests/import/test_parsing.cc: Comment out the test to ensure that we 
+	* tests/import/test_parsing.cc: Comment out the test to ensure that we
 	- Ignore rows with no ending newline.
 	- Ignore field values that are not quoted.
 	because we should not do that.
@@ -36,11 +47,11 @@
 	Re-enable the import tests and partially deal with their race condition.
 
 	* Makefile_tests.am: Re-enable the import tests.
-	* glom/import_csv/csv_parser.[h|cc]: Add ensure_idle_handler_connection(), 
-	moving the idle signal handler connection there. Also call it from the 
-	beginning and end of on_file_read(), in case it has been disconnected 
+	* glom/import_csv/csv_parser.[h|cc]: Add ensure_idle_handler_connection(),
+	moving the idle signal handler connection there. Also call it from the
+	beginning and end of on_file_read(), in case it has been disconnected
 	too early.
-	Use a priority less than PRIORITY_DEFAULT_IDLE, so that IO is likely to 
+	Use a priority less than PRIORITY_DEFAULT_IDLE, so that IO is likely to
 	happen more often than the idle callback.
 
 2010-11-12  Murray Cumming  <murrayc@murrayc.com>

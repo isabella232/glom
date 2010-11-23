@@ -203,7 +203,9 @@ int main(int argc, char* argv[])
   // test_import_csv_file
   {
     // filename_to_uri expects absolute filenames
-    const std::string filename = Glib::build_filename(Glib::get_current_dir(), "tests/import/data/albums.csv");
+    const std::string filename =
+       Glib::build_filename(GLOM_TESTS_IMPORT_DATA_NOTINSTALLED,
+         "albums.csv");
     const bool finished_parsing = ImportTests::run_parser_on_file(&connect_signals, Glib::filename_to_uri(filename));
     const bool passed = (finished_parsing &&
                          8450 == get_tokens_instance().size());
@@ -219,4 +221,3 @@ int main(int argc, char* argv[])
 
   return result ? EXIT_SUCCESS : EXIT_FAILURE;
 }
-

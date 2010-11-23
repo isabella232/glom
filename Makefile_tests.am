@@ -92,12 +92,23 @@ tests_test_python_execute_func_change_result_type_SOURCES = tests/test_python_ex
 	glom/python_embed/glom_python.cc
 tests_test_python_execute_script_SOURCES = tests/test_python_execute_script.cc \
 	glom/python_embed/glom_python.cc
+
+
+# Distribute the tests data:
+dist_noinst_DATA = tests/import/data/albums.csv
+
+# Let the .cc source code know about this path:
+glom_defines = \
+-DGLOM_TESTS_IMPORT_DATA_NOTINSTALLED=\""$(abs_top_srcdir)/tests/import/data/"\"
+
 tests_import_test_parsing_SOURCES =	\
 	glom/import_csv/csv_parser.cc	\
 	glom/import_csv/csv_parser.h	\
 	tests/import/utils.cc\
 	tests/import/utils.h\
 	tests/import/test_parsing.cc
+
+
 tests_import_test_signals_SOURCES =	\
 	glom/import_csv/csv_parser.cc	\
 	glom/import_csv/csv_parser.h	\
@@ -117,7 +128,7 @@ glom_utility_widgets_test_flowtable_SOURCES =	\
 	glom/utility_widgets/flowtable.h	\
 	glom/utility_widgets/eggspreadtable/eggspreadtable.c \
 	glom/utility_widgets/eggspreadtable/eggspreadtable.h \
-	glom/utility_widgets/eggspreadtablemm/eggspreadtablemm.c \
+	glom/utility_widgets/eggspreadtablemm/eggspreadtablemm.cc \
 	glom/utility_widgets/eggspreadtablemm/eggspreadtablemm.h \
 	glom/utility_widgets/eggspreadtablemm/private/eggspreadtablemm_p.h \
 	glom/utility_widgets/test_flowtable.cc

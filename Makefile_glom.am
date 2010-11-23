@@ -167,7 +167,7 @@ glom_source_files = \
 	glom/utility_widgets/flowtable.h				\
 	glom/utility_widgets/eggspreadtable/eggspreadtable.c \
 	glom/utility_widgets/eggspreadtable/eggspreadtable.h \
-	glom/utility_widgets/eggspreadtablemm/eggspreadtablemm.c \
+	glom/utility_widgets/eggspreadtablemm/eggspreadtablemm.cc \
 	glom/utility_widgets/eggspreadtablemm/eggspreadtablemm.h \
 	glom/utility_widgets/eggspreadtablemm/private/eggspreadtablemm_p.h \
 	glom/utility_widgets/imageglom.cc				\
