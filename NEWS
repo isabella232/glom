@@ -1,3 +1,21 @@
+1.19.2 (unstable):
+
+* CSV Import: Actually preview and import the field values.
+  (Murray Cumming) Bug #625693 (maximiliano).
+* List view: Make the retry option actually work afer entering invalid data.
+  (Murray Cumming)
+* Details view: Solve some widget layout problems, by using
+  Use EggSpreadTable from libegg instead of Glom's own FlowTable widget.
+* Build:
+  - Remove the gconfmm dependency, because we don't use it.
+    (Murray Cumming)
+  - Use upstream gettext instead Glib one.
+    (Javier Jardón) Bug #631367
+  - (Hopefully) solve the timing problems in the import tests, which are
+    now active again.
+  - Call xmlCleanupParser() because libxml++ does not anywmore.
+    (Murray Cumming)
+
 1.19.1 (unstable):
 
 * Choices: Allow multiple extra fields, and allow them to be related fields
