@@ -81,8 +81,8 @@ DbAddDel::DbAddDel()
   m_allow_delete(true),
   m_find_mode(false),
   m_allow_only_one_related_record(false),
-  m_columns_ready(false),
   m_validation_retry(false),
+  m_columns_ready(false),
   m_allow_view(true),
   m_allow_view_details(false),
 #ifndef GLOM_ENABLE_MAEMO
@@ -296,7 +296,7 @@ void DbAddDel::setup_menu()
   try
   {
 #endif
-    Glib::ustring ui_info = 
+    Glib::ustring ui_info =
         "<ui>"
         "  <popup name='ContextMenu'>"
         "    <menuitem action='ContextEdit'/>"
@@ -911,9 +911,9 @@ void DbAddDel::apply_formatting(Gtk::CellRenderer* renderer, const sharedptr<con
   const FieldFormatting::HorizontalAlignment alignment =
     layout_item->get_formatting_used_horizontal_alignment();
   const float x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
-#ifdef GLIBMM_PROPERTIES_ENABLED  
+#ifdef GLIBMM_PROPERTIES_ENABLED
       text_renderer->property_xalign() = x_align;
-#else    
+#else
       text_renderer->set_property("xalign", alignment);
 #endif
 
@@ -921,25 +921,25 @@ void DbAddDel::apply_formatting(Gtk::CellRenderer* renderer, const sharedptr<con
 
   const Glib::ustring font_desc = formatting.get_text_format_font();
   if(!font_desc.empty())
-#ifdef GLIBMM_PROPERTIES_ENABLED  
+#ifdef GLIBMM_PROPERTIES_ENABLED
     text_renderer->property_font() = font_desc;
 #else
     text_renderer->set_property("font", font_desc);
-#endif        
+#endif
 
   const Glib::ustring fg = formatting.get_text_format_color_foreground();
   if(!fg.empty())
-#ifdef GLIBMM_PROPERTIES_ENABLED  
+#ifdef GLIBMM_PROPERTIES_ENABLED
     text_renderer->property_foreground() = fg;
-#else    
+#else
     text_renderer->set_property("foreground", fg);
 #endif
-    
+
   const Glib::ustring bg = formatting.get_text_format_color_background();
   if(!bg.empty())
 #ifdef GLIBMM_PROPERTIES_ENABLED
     text_renderer->property_background() = bg;
-#else    
+#else
     text_renderer->set_property("background", bg);
 #endif
 }
@@ -1817,9 +1817,9 @@ void DbAddDel::on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& ro
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
   if(!refTreeSelection)
     return;
-    
+
   refTreeSelection->select(row); //TODO: This does not seem to work.
-  
+
   guint view_column_index = 0;
   get_view_column_index(model_column_index, view_column_index);
   Gtk::TreeView::Column* pColumn = m_TreeView.get_column(view_column_index);
@@ -1828,16 +1828,16 @@ void DbAddDel::on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& ro
     std::cerr << G_STRFUNC << ": pColumn is null." << std::endl;
     return;
   }
-  
-  Gtk::CellRendererText* pCell = dynamic_cast<Gtk::CellRendererText*>(pColumn->get_first_cell());
+
+  Gtk::CellRendererText* pCell = dynamic_cast<Gtk::CellRendererText*>(pColumn->get_first_cell_renderer());
   if(!pCell)
   {
     std::cerr << G_STRFUNC << ": pCell is null." << std::endl;
     return;
   }
-    
+
   const Gtk::TreeModel::Path path = get_model()->get_path(row);
-  
+
   //Highlights the cell, and start the editing:
   m_TreeView.set_cursor(path, *pColumn, *pCell, true /* start_editing */);
 }
@@ -1852,7 +1852,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
     return;
 
   const Gtk::TreeModel::Path path(path_string);
- 
+
   if(path.empty())
   {
     std::cerr << G_STRFUNC << ": path is empty." << std::endl;
@@ -1913,7 +1913,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
 
       const Gnome::Gda::Value value = Conversions::parse_value(field_type, new_text, item_field->get_formatting_used().m_numeric_format, success);
       if(!success)
-      {  
+      {
           //Tell the user and offer to revert or try again:
           const bool revert = glom_show_dialog_invalid_data(field_type);
           if(revert)
@@ -1924,12 +1924,12 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
           else
           {
             //Reactivate the cell so that the data can be corrected.
-            
+
             //Set the text to be used in the start_editing signal handler:
             m_validation_invalid_text_for_retry = new_text;
             m_validation_retry = true;
 
-            //But do this in an idle timout, so that the TreeView doesn't get 
+            //But do this in an idle timout, so that the TreeView doesn't get
             //confused by us changing editing state in this signal handler.
             Glib::signal_idle().connect_once(
               sigc::bind(
@@ -2462,11 +2462,11 @@ Application* DbAddDel::get_application()
 
 void DbAddDel::on_treeview_cell_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& /* path */)
 {
-  //Start editing with previously-entered (but invalid) text, 
-  //if we are allowing the user to correct some invalid data. 
+  //Start editing with previously-entered (but invalid) text,
+  //if we are allowing the user to correct some invalid data.
   if(m_validation_retry)
   {
-    //This is the CellEditable inside the CellRenderer. 
+    //This is the CellEditable inside the CellRenderer.
     Gtk::CellEditable* celleditable_validated = cell_editable;
 
     //It's usually an Entry, at least for a CellRendererText:
@@ -2603,7 +2603,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
   const Gnome::Gda::Value parent_primary_key_value = get_value_key(row);
   //std::cout << "DbAddDel::user_changed(): parent_primary_key_value=" << parent_primary_key_value.to_string() << std::endl;
- 
+
   sharedptr<const LayoutItem_Field> layout_field = get_column_field(col);
 
   if(!Conversions::value_is_empty(parent_primary_key_value)) //If the record's primary key is filled in:
@@ -2788,14 +2788,14 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
     //This only works when the primary key is already stored: primary_key_value = get_value_key(row);
     //sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
     //layout_item->set_full_field_details(field);
-    
+
     primary_key_value = get_value_key_selected();
   }
 
   //If no primary key value is available yet, then don't add the record yet:
   if(Conversions::value_is_empty(primary_key_value))
     return;
-    
+
   #ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection = connect_to_server(get_application()); //Keep it alive while we need the data_model.
   #else

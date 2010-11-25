@@ -1,21 +1,33 @@
+2010-11-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build after a cherry-pick that I had not checked properly.
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc: Constructor: Reorder the
+	member variables in the initializer to avoid a warning, fixing the build
+	with --enable-warnings=fatal.
+	on_idle_treeview_cell_edited_revert(): Use the gtkmm-2.4 API
+	(get_first_cell_renderer) instead of gtkmm-3.0 API (get_first_cell).
+	I have also added get_first_cell() to gtkmm 2.23/24 to avoid the problem
+	in future.
+
 2010-11-12  Murray Cumming  <murrayc@murrayc.com>
 
 	CSV Import: Actually preview and import the field values.
 
-	* glom/import_csv/csv_parser.cc: advance_field(): Remove an excess continue, 
-	so that we actually add the character to the field's text. This error 
+	* glom/import_csv/csv_parser.cc: advance_field(): Remove an excess continue,
+	so that we actually add the character to the field's text. This error
 	was probably introduced while removing the non-exceptions ifdefs.
-	
+
 	We really must fix those import unit tests so that something like this does
 	not happen again.
 
 2010-11-11  Murray Cumming  <murrayc@murrayc.com>
 
 	List view: Make the retry option actually work afer entering invalid data.
-	
+
 	* glom/mode_data/db_adddel/db_adddel.[h|cc]: on_treeview_cell_edited():
-	If the user chooses to retry the edit, remember what he entered, and restart 
-	the editing (in an idle handler, to avoid confusing the treeview), with 
+	If the user chooses to retry the edit, remember what he entered, and restart
+	the editing (in an idle handler, to avoid confusing the treeview), with
 	that text.
 	This fixes bug #167818
 
