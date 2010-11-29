@@ -106,7 +106,8 @@ sharedptr<PrintLayout> Canvas_PrintLayout::get_print_layout()
 
   //Page Setup:
   Glib::KeyFile key_file;
-  m_page_setup->save_to_key_file(key_file);
+  if(m_page_setup)
+    m_page_setup->save_to_key_file(key_file);
 
   Glib::ustring data;
   //TODO: Catch an exception

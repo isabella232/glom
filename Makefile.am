@@ -181,6 +181,9 @@ glom_localedir = $(prefix)/$(DATADIRNAME)/locale
 
 glom_includes = -I$(top_builddir)/glom -I$(top_srcdir)/glom -I$(top_builddir) -I$(top_srcdir)
 
+#Let gimpruler build without changing the paths in its source code:
+glom_includes += -I$(top_srcdir)/glom/utility_widgets/gimpruler
+
 # We use += because this is set first in Makefile_tests.am:
 glom_defines += \
 -DGLOM_DATADIR=\""$(datadir)"\" \

@@ -1,3 +1,18 @@
+2010-11-29  Murray Cumming  <murrayc@murrayc.com>
+
+	Replaced GtkRuler with GimpRuler because GtkRuler was removed from GTK 3.
+
+	* glom/utility_widgets/gimpruler/: Added several source files from 
+	gimp, with small changes to make it build for us, to provide the GimpRuler 
+	widget.
+	* COPYING: Switch to GPL version 3 (instead of 2), because the GIMP source 
+	code uses it.
+	* Makefile_glom.am:
+	* glom/glom_developer.glade:
+	* glom/mode_design/print_layouts/window_print_layout_edit.[cc|cc]: Use 
+	GimpRuler instead of GtkRuler, creating and adding them in code instead of 
+	in the .glade file, to avoid Glade needing to know about that widget.
+
 1.19.2:
 
 2010-11-23  Murray Cumming  <murrayc@murrayc.com>

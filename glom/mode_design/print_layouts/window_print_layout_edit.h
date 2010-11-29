@@ -31,8 +31,8 @@
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
 #include <gtkmm/uimanager.h>
-//#include <gtkmm/toggleaction.h>
-#include <gtkmm/ruler.h>
+//TODO: #include <gtkmm/ruler.h>
+#include <glom/utility_widgets/gimpruler/gimpruler.h>
 #include <gtkmm/builder.h>
 
 namespace Glom
@@ -124,8 +124,8 @@ private:
   bool m_drag_preview_requested;
   Glib::RefPtr<CanvasLayoutItem> m_layout_item_dropping;
 
-  Gtk::VRuler* m_vruler;
-  Gtk::HRuler* m_hruler;
+  GimpRuler* m_vruler;
+  GimpRuler* m_hruler;
 
   //Main menu:
   Glib::RefPtr<Gtk::ActionGroup> m_action_group;
