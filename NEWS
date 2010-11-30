@@ -1,3 +1,11 @@
+1.14.7 (stable):
+
+* CSV Import: Actually preview and import the field values.
+  Murray Cumming) Bug #625693 (maximiliano).
+* Build:
+  - Remove the gconfmm dependency, because we don't use it.
+    (Murray Cumming)
+	
 1.14.6 (stable):
 
 * Import dialog, Text formatting:

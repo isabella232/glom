@@ -1,3 +1,5 @@
+1.14.7:
+
 2010-11-12  Murray Cumming  <murrayc@murrayc.com>
 
 	CSV Import: Actually preview and import the field values.
