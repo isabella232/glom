@@ -511,7 +511,7 @@ main(int argc, char* argv[])
   try
   {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    gtksourceview::init();
+    Gsv::init();
     Goocanvas::init(PACKAGE_NAME, PACKAGE_VERSION, argc, argv);
 #endif //!GLOM_ENABLE_CLIENT_ONLY
 

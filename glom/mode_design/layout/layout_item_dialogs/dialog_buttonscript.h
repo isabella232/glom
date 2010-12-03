@@ -51,7 +51,7 @@ private:
   void on_button_test_script();
 
   Gtk::Entry* m_entry_title;
-  gtksourceview::SourceView* m_text_view_script;
+  Gsv::SourceView* m_text_view_script;
   Gtk::Button* m_button_test_script;
 
   sharedptr<LayoutItem_Button> m_script;

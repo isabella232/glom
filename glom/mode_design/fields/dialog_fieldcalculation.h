@@ -49,7 +49,7 @@ private:
   void on_button_test();
   bool check_for_return_statement(const Glib::ustring& calculation);
 
-  gtksourceview::SourceView* m_text_view;
+  Gsv::SourceView* m_text_view;
   Gtk::Button* m_button_test;
   Gtk::Label* m_label_triggered_by;
 

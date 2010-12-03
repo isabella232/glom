@@ -89,7 +89,7 @@ static bool attempt_instantiation(const std::string& filepath, const xmlpp::Elem
 int main(int argc, char* argv[])
 {
   Gtk::Main kit(argc, argv);
-  gtksourceview::init(); //Our .glade files contain gtksourceview widgets too.
+  Gsv::init(); //Our .glade files contain gtksourceview widgets too.
 
   std::string filepath;
   if(argc > 1 )

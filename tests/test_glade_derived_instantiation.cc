@@ -74,7 +74,7 @@ bool instantiate_widget()
 int main(int argc, char *argv[])
 {
   Gtk::Main kit(argc, argv);
-  gtksourceview::init(); //Our .glade files contain gtksourceview widgets too.
+  Gsv::init(); //Our .glade files contain gtksourceview widgets too.
 
   using namespace Glom;
 

@@ -84,7 +84,7 @@ private:
 
   Gtk::RadioButton* m_pRadio_Calculate;
   Gtk::Alignment* m_pAlignment_Calculate;
-  gtksourceview::SourceView* m_pTextView_Calculation;
+  Gsv::SourceView* m_pTextView_Calculation;
   Gtk::Button* m_pButton_EditCalculation;
 
   Gtk::Entry* m_pEntry_Title;

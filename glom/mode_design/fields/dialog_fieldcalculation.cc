@@ -50,13 +50,13 @@ Dialog_FieldCalculation::Dialog_FieldCalculation(BaseObjectType* cobject, const 
   {
     m_text_view->set_highlight_current_line(true);
 
-    Glib::RefPtr<gtksourceview::SourceLanguageManager> languages_manager = gtksourceview::SourceLanguageManager::get_default();
+    Glib::RefPtr<Gsv::SourceLanguageManager> languages_manager = Gsv::SourceLanguageManager::get_default();
 
-    Glib::RefPtr<gtksourceview::SourceLanguage> language = languages_manager->get_language("python"); //This is the GtkSourceView language ID.
+    Glib::RefPtr<Gsv::SourceLanguage> language = languages_manager->get_language("python"); //This is the GtkSourceView language ID.
     if(language)
     {
        //Createa a new buffer and set it, instead of getting the default buffer, in case libglade has tried to set it, using the wrong buffer type:
-       Glib::RefPtr<gtksourceview::SourceBuffer> buffer = gtksourceview::SourceBuffer::create(language);
+       Glib::RefPtr<Gsv::SourceBuffer> buffer = Gsv::SourceBuffer::create(language);
        buffer->set_highlight_syntax();
        m_text_view->set_buffer(buffer);
     }

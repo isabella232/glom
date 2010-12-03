@@ -59,7 +59,7 @@ private:
 
   Combo_TextGlade* m_combobox_name;
 
-  gtksourceview::SourceView* m_text_view;
+  Gsv::SourceView* m_text_view;
   Gtk::Button* m_button_check;
   Gtk::Button* m_button_add;
   Gtk::Button* m_button_remove;

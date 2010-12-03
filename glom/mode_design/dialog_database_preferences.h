@@ -83,7 +83,7 @@ private:
   ImageGlom* m_image;
   Gtk::Button* m_button_choose_image;
 
-  gtksourceview::SourceView* m_text_view_script;
+  Gsv::SourceView* m_text_view_script;
   Gtk::Button* m_button_test_script;
 
   SystemPrefs m_system_prefs;
