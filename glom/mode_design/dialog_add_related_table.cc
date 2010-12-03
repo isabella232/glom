@@ -77,7 +77,7 @@ void Dialog_AddRelatedTable::set_fields(const Glib::ustring& table_name)
   {
      sharedptr<Field> item = *iter;
      if(item)
-       m_combo_from_field->append_text(item->get_name());
+       m_combo_from_field->append(item->get_name());
   }
 
 }

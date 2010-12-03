@@ -1,3 +1,14 @@
+2010-12-03  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build with latest gtkmm from git master.
+
+	* glom/mode_design/dialog_add_related_table.cc:
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	* glom/mode_design/script_library/dialog_script_library.cc:
+	* glom/mode_design/users/dialog_choose_user.cc:
+	* glom/mode_design/users/dialog_users_list.cc: Adapt to the ComoboBoxText
+	append_text() -> append() change.
+
 2010-11-29  Murray Cumming  <murrayc@murrayc.com>
 
 	Replaced GtkRuler with GimpRuler because GtkRuler was removed from GTK 3.

@@ -291,7 +291,7 @@ void Dialog_UsersList::on_button_user_edit()
       type_vec_strings group_list = Privs::get_database_groups();
       for(type_vec_strings::const_iterator iter = group_list.begin(); iter != group_list.end(); ++iter)
       {
-         dialog->m_combo_group->append_text(*iter);
+         dialog->m_combo_group->append(*iter);
       }
 
       dialog->m_combo_group->set_active_text(m_combo_group->get_active_text());
@@ -384,7 +384,7 @@ void Dialog_UsersList::set_group(const Glib::ustring& group_name)
   type_vec_strings group_list = Privs::get_database_groups();
   for(type_vec_strings::const_iterator iter = group_list.begin(); iter != group_list.end(); ++iter)
   {
-    m_combo_group->append_text(*iter);
+    m_combo_group->append(*iter);
   }
 
   m_combo_group->set_active_text(group_name);
