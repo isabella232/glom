@@ -45,7 +45,7 @@ Dialog_ButtonScript::Dialog_ButtonScript(BaseObjectType* cobject, const Glib::Re
   m_button_test_script->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_ButtonScript::on_button_test_script) );
 
   // Set a monospace font
-  m_text_view_script->modify_font(Pango::FontDescription("Monospace"));
+  m_text_view_script->override_font(Pango::FontDescription("Monospace"));
   //on_foreach_connect(*this);
 
   //Dialog_Properties::set_modified(false);

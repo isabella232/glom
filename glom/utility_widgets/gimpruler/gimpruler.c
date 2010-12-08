@@ -16,6 +16,8 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+#undef GTK_DISABLE_DEPRECATED //TODO: Remove this when the original gimp code has been ported fully. murrayc.
+
 #include "config.h"
 
 #include <string.h>

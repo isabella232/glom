@@ -82,7 +82,7 @@ Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject
     sigc::mem_fun(*this, &Dialog_Database_Preferences::on_button_test_script) );
 
   // Set a monospace font
-  m_text_view_script->modify_font(Pango::FontDescription("Monospace"));
+  m_text_view_script->override_font(Pango::FontDescription("Monospace"));
 
   //Dialog_Properties::set_modified(false);
 

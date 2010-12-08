@@ -132,7 +132,7 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
   const Glib::ustring font_desc = formatting.get_text_format_font();
   if(!font_desc.empty())
   {
-    widget_to_change->modify_font( Pango::FontDescription(font_desc) );
+    widget_to_change->override_font( Pango::FontDescription(font_desc) );
   }
 
   
@@ -140,11 +140,11 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
   if(!fg.empty())
   {
     // "text" is the text color. (Works for GtkEntry and GtkTextView, 
-    // for which modify_fg() doesn't seem to have any effect.
-    widget_to_change->modify_text(Gtk::STATE_NORMAL, Gdk::Color(fg));
+    // for which override_color() doesn't seem to have any effect.
+    widget_to_change->override_color(Gdk::RGBA(fg));
     
-    // This works for GtkLabel, for which modify_text() does not.
-    widget_to_change->modify_fg(Gtk::STATE_NORMAL, Gdk::Color(fg));
+    // This works for GtkLabel, for which override_color() does not.
+    widget_to_change->override_color(Gdk::RGBA(fg));
   }
 
 
@@ -154,20 +154,20 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
     if(!labelglom && !button)
     {
       // "base" is the background color for GtkEntry. "bg" seems to change the border:
-      widget_to_change->modify_base(Gtk::STATE_NORMAL, Gdk::Color(bg));
+      widget_to_change->override_background_color(Gdk::RGBA(bg));
     }
-    //According to the gtk_widget_modify_base() documentation, 
+    //According to the gtk_widget_override_background_color() documentation, 
     //a GtkLabel can only have a background color by, for instance, placing it 
     //in a GtkEventBox. Luckily Label is actually derived from EventBox.
     else if(labelglom)
     {
-      //label->modify_base(Gtk::STATE_NORMAL, Gdk::Color("bg"));
-      labelglom->modify_bg(Gtk::STATE_NORMAL, Gdk::Color(bg));
+      //label->override_background_color(Gdk::RGBA("bg"));
+      labelglom->override_background_color(Gdk::RGBA(bg));
     }
     else if(button)
     {
-      //button->modify_base(Gtk::STATE_NORMAL, Gdk::Color("bg"));
-      button->modify_bg(Gtk::STATE_NORMAL, Gdk::Color(bg));
+      //button->override_background_color(Gdk::RGBA("bg"));
+      button->override_background_color(Gdk::RGBA(bg));
     }
   }
 }
