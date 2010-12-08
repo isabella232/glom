@@ -264,7 +264,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
 #endif // GLOM_ENABLE_CLIENT_ONLY
 
   set_events(Gdk::BUTTON_PRESS_MASK);
-  signal_style_changed().connect(sigc::mem_fun(*this, &DataWidget::on_self_style_changed));
+  //TODO: signal_style_changed().connect(sigc::mem_fun(*this, &DataWidget::on_self_style_changed));
 }
 
 DataWidget::~DataWidget()

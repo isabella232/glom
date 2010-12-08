@@ -77,9 +77,6 @@ void PlaceholderGlom::on_realize()
   //Call base class:
   Gtk::Widget::on_realize();
 
-  ensure_style();
-
-
   if(!m_refGdkWindow)
   {
     //Create the GdkWindow:
@@ -105,7 +102,7 @@ void PlaceholderGlom::on_realize()
     set_window(m_refGdkWindow);
 
     //set colors
-    modify_fg(Gtk::STATE_NORMAL , Gdk::Color("black"));
+    override_color(Gdk::RGBA("black"));
 
     //make the widget receive expose events
     m_refGdkWindow->set_user_data(gobj());
@@ -121,11 +118,11 @@ void PlaceholderGlom::on_unrealize()
 bool PlaceholderGlom::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
   // Paint the background:
-  Gdk::Cairo::set_source_color(cr, get_style()->get_bg(Gtk::STATE_NORMAL));
+  Gdk::Cairo::set_source_rgba(cr, get_style_context()->get_background_color());
   cr->paint();
 
   // Draw the foreground:
-  Gdk::Cairo::set_source_color(cr, get_style()->get_fg(Gtk::STATE_NORMAL));
+  Gdk::Cairo::set_source_rgba(cr, get_style_context()->get_color());
   cr->set_line_width(4);
   cr->rectangle(0, 0,  get_allocation().get_width(), get_allocation().get_height());
   cr->stroke();

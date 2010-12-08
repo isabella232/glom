@@ -1,3 +1,14 @@
+2010-12-08  Murray Cumming  <murrayc@murrayc.com>
+
+	Partial port to recent gtkmm API changes from git master.
+
+	* glom/mode_data/datawidget/datawidget.cc: signal_style_changed was removed 
+	though it might come back later.
+	* glom/mode_data/datawidget/entry.cc: Use override_color() instead of 
+	modify_text().
+	* glom/mode_data/placeholder-glom.cc: Use set_source_rgba() instead of 
+	set_source_color(). Use get_style_context() instead of get_style().
+
 2010-12-03  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the build with latest gtksourceviewmm from git master.

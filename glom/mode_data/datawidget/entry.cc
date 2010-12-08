@@ -172,9 +172,9 @@ void Entry::set_value(const Gnome::Gda::Value& value)
     const Glib::ustring fg_color = 
     layout_item->get_formatting_used().get_text_format_color_foreground_to_use(value);
     if(!fg_color.empty())
-      modify_text(Gtk::STATE_NORMAL, Gdk::Color(fg_color));
+      override_color(Gdk::RGBA(fg_color));
     else
-      modify_text(Gtk::STATE_NORMAL, Gdk::Color());
+      override_color(Gdk::RGBA()); //TODO: Use an unset_*() method?
   }
 }
 
