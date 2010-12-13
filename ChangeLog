@@ -1,3 +1,10 @@
+2010-12-13  Murray Cumming  <murrayc@murrayc.com>
+
+  Fix the build with latest gtkmm.
+  
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	Use Widget::render_icon_pixbuf() instead of the old render_icon() method.
+	
 2010-12-08  Murray Cumming  <murrayc@murrayc.com>
 
 	Partial port to recent gtkmm API changes from git master.

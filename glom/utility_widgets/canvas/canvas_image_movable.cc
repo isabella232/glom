@@ -197,7 +197,7 @@ void CanvasImageMovable::set_image_empty()
 
   Glib::RefPtr<Gdk::Pixbuf> pixbuf;
   if(widget)
-    pixbuf = widget->render_icon(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
+    pixbuf = widget->render_icon_pixbuf(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
     property_pixbuf() = pixbuf;
 }
 
