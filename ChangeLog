@@ -1,5 +1,13 @@
 2010-12-13  Murray Cumming  <murrayc@murrayc.com>
 
+	Correct my previous commit.
+
+	* configure.ac: Correct the no/yes test for --enable-glom-ui and add a comma 
+	so it actually works.
+	* Makefile_tests.am: Restore the source file lists for the python tests.
+
+2010-12-13  Murray Cumming  <murrayc@murrayc.com>
+
 	Allow libglom to be built without building the Glom UI code too.
 	
 	* configure.ac: Added an --enable-glom-ui option, defaulting to yes.

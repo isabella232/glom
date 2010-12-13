@@ -153,6 +153,17 @@ glom_mode_data_test_flowtablewithfields_SOURCES =	\
 	glom/mode_data/test_flowtablewithfields.cc
 glom_mode_data_test_flowtablewithfields_LDADD = $(glom_all_libs)
 
+tests_test_python_execute_func_SOURCES = tests/test_python_execute_func.cc \
+  glom/python_embed/glom_python.cc
+tests_test_python_execute_func_bad_syntax_SOURCES = tests/test_python_execute_func_bad_syntax.cc \
+  glom/python_embed/glom_python.cc
+tests_test_python_execute_func_date_SOURCES = tests/test_python_execute_func_date.cc \
+  glom/python_embed/glom_python.cc
+tests_test_python_execute_func_change_result_type_SOURCES = tests/test_python_execute_func_change_result_type.cc \
+  glom/python_embed/glom_python.cc
+tests_test_python_execute_script_SOURCES = tests/test_python_execute_script.cc \
+  glom/python_embed/glom_python.cc
+
 tests_test_python_execute_func_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
 tests_test_python_execute_func_bad_syntax_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
 tests_test_python_execute_func_date_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)

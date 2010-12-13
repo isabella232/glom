@@ -187,7 +187,7 @@ AS_IF([test "x$glom_maemo_launcher" = xyes],
 PKG_CHECK_MODULES([LIBGLOM], [$REQUIRED_LIBGLOM_LIBS])
 
 #Disable the checks for UI dependencies if not building the UI:
-AS_IF([test "x$glom_enable_ui" != xno]
+AS_IF([test "x$glom_enable_ui" = xno],
       [REQUIRED_GLOM_LIBS="$REQUIRED_LIBGLOM_LIBS"])
 
 PKG_CHECK_MODULES([GLOM], [$REQUIRED_GLOM_LIBS])
