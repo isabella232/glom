@@ -15,6 +15,9 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+lib_LTLIBRARIES = glom/libglom/libglom-@GLOM_ABI_VERSION@.la
+pyexec_LTLIBRARIES = glom/python_embed/python_module/glom_@GLOM_ABI_VERSION_UNDERLINED@.la
+
 include $(top_srcdir)/glom/libglom/filelist.am
 
 libglom_includedir = $(includedir)/glom-$(GLOM_ABI_VERSION)/libglom

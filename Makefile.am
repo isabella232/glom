@@ -54,12 +54,12 @@ win_resfile =
 endif
 SUFFIXES = .rc .res
 
-bin_PROGRAMS = glom/glom
-lib_LTLIBRARIES = glom/libglom/libglom-@GLOM_ABI_VERSION@.la
-pyexec_LTLIBRARIES = glom/python_embed/python_module/glom_@GLOM_ABI_VERSION_UNDERLINED@.la
-
 include Makefile_libglom.am
+
+if GLOM_ENABLE_UI
 include Makefile_glom.am
+endif
+
 include Makefile_tests.am
 
 glom_python_embed_python_module_glom_@GLOM_ABI_VERSION_UNDERLINED@_la_SOURCES = \
