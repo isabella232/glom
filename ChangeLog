@@ -1,3 +1,28 @@
+2010-12-13  Murray Cumming  <murrayc@murrayc.com>
+
+	Correct my previous commit.
+
+	* configure.ac: Correct the no/yes test for --enable-glom-ui and add a comma 
+	so it actually works.
+	* Makefile_tests.am: Restore the source file lists for the python tests.
+
+2010-12-13  Murray Cumming  <murrayc@murrayc.com>
+
+	Allow libglom to be built without building the Glom UI code too.
+	
+	* configure.ac: Added an --enable-glom-ui option, defaulting to yes.
+	When using --enable-glom-ui=no then only libglom will be built. This is 
+	useful for deployment of libglom to servers where the UI dependencies are not 
+	wanted.
+	We still use GLOM_LIBS and GLOM_FLAGS even in libglom, instead of using 
+	LIBGLOM_LIBS and LIBGLOM_CFLAGS anywhere, but this does reduce duplication 
+	of the flags in glom's UI build.
+	* Makefile.am: Do not include Makefile_glom.am if the UI should not be built.
+	* Makefile_glom.am: Move the bin_programs definition to here.
+	* Makefile_libglom.am: Move the LTLIBRARIES definitions to here.
+	* Makefile_tests.am: Attempt, unsuccessfully, to build and run UI-dependent 
+	tests only when the UI was built, when running make check. 
+
 1.14.7:
 
 2010-11-12  Murray Cumming  <murrayc@murrayc.com>
