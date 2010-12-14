@@ -22,13 +22,13 @@
 #ifndef GLOM_CSV_PARSER_H
 #define GLOM_CSV_PARSER_H
 
-#include "base_db.h"
+//#include "base_db.h"
 
 #include <memory>
 #include <giomm/asyncresult.h>
 #include <giomm/file.h>
 #include <giomm/inputstream.h>
-#include <gtkmm/liststore.h>
+//#include <gtkmm/liststore.h>
 
 namespace Glom
 {

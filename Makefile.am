@@ -54,32 +54,23 @@ win_resfile =
 endif
 SUFFIXES = .rc .res
 
+glom_includes = -I$(top_builddir)/glom -I$(top_srcdir)/glom -I$(top_builddir) -I$(top_srcdir)
+
 include Makefile_libglom.am
+
+glom_defines = \
+-DGLOM_DATADIR=\""$(datadir)"\" \
+-DGLOM_DOCDIR_EXAMPLES=\""$(docdir)/examples"\" \
+-DGLOM_DOCDIR_EXAMPLES_NOTINSTALLED=\""$(abs_top_srcdir)/examples"\" \
+-DGLOM_LOCALEDIR=\""$(glom_localedir)"\" \
+-DGLOM_PKGDATADIR=\""$(pkgdatadir)"\" \
+-DGLOM_PKGDATADIR_NOTINSTALLED=\""$(top_srcdir)/glom"\"
 
 if GLOM_ENABLE_UI
 include Makefile_glom.am
 endif
 
 include Makefile_tests.am
-
-glom_python_embed_python_module_glom_@GLOM_ABI_VERSION_UNDERLINED@_la_SOURCES = \
-	glom/python_embed/python_module/py_glom_module.cc	\
-	glom/python_embed/python_module/py_glom_module.h
-
-glom_python_embed_python_module_glom_@GLOM_ABI_VERSION_UNDERLINED@_la_LIBADD = \
-	glom/libglom/libglom-$(GLOM_ABI_VERSION).la \
-	$(PYTHON_LIBS) $(BOOST_PYTHON_LIBS)
-
-if HOST_WIN32
-pymod_ldflags = -module -avoid-version -no-undefined -shrext .pyd
-else
-pymod_ldflags = -module -avoid-version -no-undefined
-endif
-glom_pyexport = -export-symbols-regex '^_*initglom'
-glom_python_embed_python_module_glom_@GLOM_ABI_VERSION_UNDERLINED@_la_LDFLAGS = $(pymod_ldflags) $(glom_pyexport)
-
-pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = glom/libglom/glom-@GLOM_ABI_VERSION@.pc
 
 dist_pkgdata_DATA = glom/glom_document.dtd
 
@@ -175,28 +166,6 @@ MAINTAINERCLEANFILES = \
 	macros/gnome-doc-utils.m4 macros/intltool.m4 \
 	macros/libtool.m4 macros/ltoptions.m4 macros/ltsugar.m4 \
 	macros/ltversion.m4 macros/lt~obsolete.m4
-
-# The location of the gettext catalogs as defined by intltool.
-glom_localedir = $(prefix)/$(DATADIRNAME)/locale
-
-glom_includes = -I$(top_builddir)/glom -I$(top_srcdir)/glom -I$(top_builddir) -I$(top_srcdir)
-
-#Let gimpruler build without changing the paths in its source code:
-glom_includes += -I$(top_srcdir)/glom/utility_widgets/gimpruler
-
-# We use += because this is set first in Makefile_tests.am:
-glom_defines += \
--DGLOM_DATADIR=\""$(datadir)"\" \
--DGLOM_DOCDIR_EXAMPLES=\""$(docdir)/examples"\" \
--DGLOM_DOCDIR_EXAMPLES_NOTINSTALLED=\""$(abs_top_srcdir)/examples"\" \
--DGLOM_LOCALEDIR=\""$(glom_localedir)"\" \
--DGLOM_PKGDATADIR=\""$(pkgdatadir)"\" \
--DGLOM_PKGDATADIR_NOTINSTALLED=\""$(top_srcdir)/glom"\"
-
-
-AM_CPPFLAGS = $(glom_includes) $(GLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(glom_defines)
-AM_CFLAGS   = $(GLOM_WFLAGS)
-AM_CXXFLAGS = $(GLOM_WXXFLAGS)
 
 update_mime_database = update-mime-database
 update_icon_cache = gtk-update-icon-cache --ignore-theme-index --force

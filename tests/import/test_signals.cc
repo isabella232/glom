@@ -1,6 +1,7 @@
 #include <glom/import_csv/csv_parser.h>
 #include <tests/import/utils.h>
-#include <gtkmm.h>
+#include <glibmm.h>
+#include <giomm.h>
 #include <iostream>
 #include <stdexcept>
 #include <cstdlib>
@@ -52,10 +53,11 @@ void connect_signals(Glom::CsvParser& parser)
 } // namespace
 
 // Testcases
-int main(int argc, char* argv[])
+int main()
 {
   Glib::thread_init();
-  Gtk::Main gtk(argc, argv);
+  Glib::init();
+  Gio::init();
 
   bool result = true;
   std::stringstream report;

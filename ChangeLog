@@ -1,3 +1,21 @@
+2010-12-14  Murray Cumming  <murrayc@murrayc.com>
+
+	Build: Avoid use of non-UI cflags/libs where not necessary. 
+
+	* Makefile.am: Do not use AM_CPPFLAGS, AM_CFLAGS or AM_CXXFLAGS.
+	* Makefile_glom.am:
+	* Makefile_libglom.am:
+	* Makefile_tests.am: Instead use individual variables for each target, 
+	making sure that we use only the necessary flags.
+	libglom may have been linking to some unnecessary UI libraries before.
+	* glom/import_csv/csv_parser.h: Avoid unnecessary UI includes.
+	* tests/import/test_parsing.cc:
+	* tests/import/test_signals.cc: Avoid including gtkmm.h.
+	
+	As a side-effect, the build is now longer, because some files are now 
+	compiled again separately for the tests, presumably because they now need 
+	to be built with different compiler flags. But that is a better test.
+
 2010-12-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Correct my previous commit.
