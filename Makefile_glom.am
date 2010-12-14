@@ -27,8 +27,6 @@ glom_includes += -I$(top_srcdir)/glom/utility_widgets/gimpruler
 bin_PROGRAMS = glom/glom
 
 glom_glom_CPPFLAGS = $(glom_includes) $(GLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(glom_defines)
-glom_glom_CFLAGS   = $(GLOM_WFLAGS)
-glom_glom_CXXFLAGS = $(GLOM_WXXFLAGS)
 
 glom_source_files = \
 	glom/application.cc						\

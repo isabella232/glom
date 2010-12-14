@@ -66,6 +66,12 @@ glom_defines = \
 -DGLOM_PKGDATADIR=\""$(pkgdatadir)"\" \
 -DGLOM_PKGDATADIR_NOTINSTALLED=\""$(top_srcdir)/glom"\"
 
+# We use these instead of individual variables,
+# to avoid repetition, becase we really want to use 
+# the same flags for everything:
+AM_CFLAGS   = $(GLOM_WFLAGS)
+AM_CXXFLAGS = $(GLOM_WXXFLAGS)
+
 if GLOM_ENABLE_UI
 include Makefile_glom.am
 endif

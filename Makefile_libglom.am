@@ -49,10 +49,6 @@ endif
 glom_libglom_libglom_@GLOM_ABI_VERSION@_la_LDFLAGS = -no-undefined
 
 glom_libglom_libglom_@GLOM_ABI_VERSION@_la_CPPFLAGS = $(glom_includes) $(LIBGLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS)
-glom_libglom_libglom_@GLOM_ABI_VERSION@_la_CFLAGS   = $(GLOM_WFLAGS)
-glom_libglom_libglom_@GLOM_ABI_VERSION@_la_CXXFLAGS = $(GLOM_WXXFLAGS)
-
-
 
 pyexec_LTLIBRARIES = glom/python_embed/python_module/glom_@GLOM_ABI_VERSION_UNDERLINED@.la
 
@@ -72,8 +68,6 @@ endif
 glom_pyexport = -export-symbols-regex '^_*initglom'
 glom_python_embed_python_module_glom_@GLOM_ABI_VERSION_UNDERLINED@_la_LDFLAGS = $(pymod_ldflags) $(glom_pyexport)
 glom_python_embed_python_module_glom_@GLOM_ABI_VERSION_UNDERLINED@_la_CPPFLAGS = $(glom_includes) $(LIBGLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS)
-glom_python_embed_python_module_glom_@GLOM_ABI_VERSION_UNDERLINED@_la_CFLAGS   = $(GLOM_WFLAGS)
-glom_python_embed_python_module_glom_@GLOM_ABI_VERSION_UNDERLINED@_la_CXXFLAGS = $(GLOM_WXXFLAGS)
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = glom/libglom/glom-@GLOM_ABI_VERSION@.pc

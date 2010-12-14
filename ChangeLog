@@ -1,5 +1,15 @@
 2010-12-14  Murray Cumming  <murrayc@murrayc.com>
 
+	Build: Reduce some duplication.
+
+	* Makefile.am:
+	* Makefile_glom.am:
+	* Makefile_libglom.am:
+	* Makefile_tests.am: Use AM_CPPFLAGS and AM_CFLAGS just to hold the 
+	(optional) warning flags, as we did previously.
+
+2010-12-14  Murray Cumming  <murrayc@murrayc.com>
+
 	Build: Avoid use of non-UI cflags/libs where not necessary. 
 
 	* Makefile.am: Do not use AM_CPPFLAGS, AM_CFLAGS or AM_CXXFLAGS.
