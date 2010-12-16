@@ -51,7 +51,6 @@ public:
   Glib::RefPtr<Gtk::PageSetup> get_page_setup();
 
   void set_zoom_percent(guint percent);
-  guint get_zoom_percent() const;
  
   /** Hide the bounds rectangle and the margin lines:
    */

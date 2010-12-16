@@ -223,11 +223,6 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
   }
 }
 
-guint Dialog_Import_CSV::get_column_count() const
-{
-  return m_cols_count;
-}
-
 sharedptr<const Field> Dialog_Import_CSV::get_field_for_column(guint col) const
 {
   if(col >= m_fields.size())

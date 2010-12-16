@@ -35,7 +35,6 @@ public:
   FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connection);
   virtual ~FieldTypes();
 
-  GType get_gdavalue_for_schema_type_string(const Glib::ustring& schema_type_string) const;
   Glib::ustring get_string_name_for_gdavaluetype(GType field_type) const;
 
   GType get_fallback_type_for_gdavaluetype(GType field_type) const;

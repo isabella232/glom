@@ -783,11 +783,6 @@ void Canvas_PrintLayout::set_zoom_percent(guint percent)
   set_scale(scale);
 }
 
-guint Canvas_PrintLayout::get_zoom_percent() const
-{
-  return (guint)(get_scale() * (double)100);
-}
-
 void Canvas_PrintLayout::hide_page_bounds()
 {
   m_bounds_group->property_visibility() = Goocanvas::ITEM_HIDDEN;

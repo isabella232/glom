@@ -37,13 +37,6 @@ class Postgres : public Backend
 public:
   Postgres();
 
-  /** Return the version number of the connected postgres server.
-   * This can be used to adapt to different server features.
-   *
-   * @result The version, or 0 if no connection has been made.
-   */
-  float get_postgres_server_version() const;
-
   /** Check whether the libgda postgres provider is really available,
    * so we can connect to postgres servers,
    * in case the distro package has incorrect dependencies.

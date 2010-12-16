@@ -58,11 +58,6 @@ Postgres::Postgres()
 {
 }
 
-float Postgres::get_postgres_server_version() const
-{
-  return m_postgres_server_version;
-}
-
 Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password)
 {
   //We must specify _some_ database even when we just want to create a database.

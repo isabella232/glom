@@ -1207,11 +1207,6 @@ void Frame_Glom::on_menu_Reports_EditReports()
   on_menu_developer_reports();
 }
 
-void Frame_Glom::on_menu_File_EditPrintLayouts()
-{
-  on_menu_developer_print_layouts();
-}
-
 void Frame_Glom::on_menu_Tables_EditTables()
 {
   do_menu_Navigate_Table();
@@ -2572,22 +2567,6 @@ void Frame_Glom::on_dialog_layout_print_hide()
     document->set_print_layout(m_table_name, print_layout);
   }
 
-  //Update the reports menu:
-  Application* pApp = dynamic_cast<Application*>(get_app_window());
-  if(pApp)
-    pApp->fill_menu_print_layouts(m_table_name);
-}
-
-void Frame_Glom::on_dialog_reports_hide()
-{
-  //Update the reports menu:
-  Application* pApp = dynamic_cast<Application*>(get_app_window());
-  if(pApp)
-    pApp->fill_menu_reports(m_table_name);
-}
-
-void Frame_Glom::on_dialog_print_layouts_hide()
-{
   //Update the reports menu:
   Application* pApp = dynamic_cast<Application*>(get_app_window());
   if(pApp)

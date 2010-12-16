@@ -105,21 +105,6 @@ FieldTypes::~FieldTypes()
 {
 }
 
-GType FieldTypes::get_gdavalue_for_schema_type_string(const Glib::ustring& schema_type_string) const
-{
-  // Special case varchar, because we also specialized it in
-  // get_string_name_for_gdavaluetype, so that we can properly convert back
-  // and forth between sql typename and gda type.
-  if(schema_type_string == "varchar")
-    return G_TYPE_STRING;
-
-  type_mapSchemaStringsToGdaTypes::const_iterator iterFind = m_mapSchemaStringsToGdaTypes.find(schema_type_string);
-  if(iterFind == m_mapSchemaStringsToGdaTypes.end())
-    return GDA_TYPE_NULL;
-  else
-    return iterFind->second;
-}
-
 Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(GType field_type) const
 {
   //Special-case gchararray (G_TYPE_STRING) because Gda reports this GType for several 

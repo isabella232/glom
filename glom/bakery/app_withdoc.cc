@@ -386,11 +386,6 @@ void App_WithDoc::offer_to_save_changes()
   }
 }
 
-void App_WithDoc::close_mark_or_destroy()
-{
-  ui_hide();
-}
-
 void App_WithDoc::cancel_close_or_exit()
 {
   set_operation_cancelled();

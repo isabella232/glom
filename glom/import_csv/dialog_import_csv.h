@@ -55,7 +55,7 @@ public:
   Glib::ustring get_target_table_name() const;
   const Glib::ustring& get_file_uri() const;
 
-  unsigned int get_column_count() const;
+
   sharedptr<const Field> get_field_for_column(unsigned int col) const;
   const Glib::ustring& get_data(unsigned int row, unsigned int col);
 

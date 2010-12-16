@@ -34,33 +34,8 @@
 #include <iomanip>
 #include <string.h> // for strlen, memset, strcmp
 
-namespace
-{
-  char hextochar(guint8 hex)
-  {
-    if(hex < 10) return '0' + hex;
-    if(hex < 16) return 'a' - 10 + hex;
-    return '\0';
-  }
-
-  guint8 chartohex(char c)
-  {
-    if(c >= '0' && c <= '9') return c - '0';
-    if(c >= 'a' && c <= 'f') return c - 'a' + 10;
-    if(c >= 'A' && c <= 'F') return c - 'A' + 10;
-    return 0;
-  }
-}
-
 namespace Glom
 {
-
-
-unsigned int Conversions::get_stringstream_precision_default()
-{
-    static const unsigned int stringstream_precision_default = 15;
-    return stringstream_precision_default;
-}
 
 Glib::ustring Conversions::format_time(const tm& tm_data)
 {

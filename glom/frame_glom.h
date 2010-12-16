@@ -113,7 +113,6 @@ public:
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_menu_Reports_EditReports();
-  void on_menu_File_EditPrintLayouts();
   void on_menu_developer_database_preferences();
   void on_menu_developer_fields();
   void do_menu_developer_fields(Gtk::Window& parent);
@@ -130,9 +129,7 @@ public:
   void on_developer_dialog_hide();
 
   void on_dialog_layout_report_hide();
-  void on_dialog_reports_hide();
   void on_dialog_layout_print_hide();
-  void on_dialog_print_layouts_hide();
 
   void on_dialog_add_related_table_request_edit_fields();
 #endif // !GLOM_ENABLE_CLIENT_ONLY

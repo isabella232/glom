@@ -140,9 +140,6 @@ protected:
   ///Stop the File|Close or the File|Exit.
   virtual void cancel_close_or_exit();
 
-  ///destroy it or mark it for destruction.
-  virtual void close_mark_or_destroy();
-
   virtual void update_window_title();
 
   virtual void after_successful_save(); //e.g. disable File|Save.
