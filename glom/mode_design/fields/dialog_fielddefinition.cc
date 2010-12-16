@@ -146,11 +146,8 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
     default_value = m_Field->get_default_value();
 
   //Create an appropriate DataWidget for the default value:
-  if(m_pDataWidget_DefaultValueSimple)
-  {
-    delete m_pDataWidget_DefaultValueSimple;
-    m_pDataWidget_DefaultValueSimple = 0;
-  }
+  delete m_pDataWidget_DefaultValueSimple;
+  m_pDataWidget_DefaultValueSimple = 0;
 
   //We use a regular DataWidget for the default value, so we can reuse its functionality,
   //but it's not a real field - hence the special title.

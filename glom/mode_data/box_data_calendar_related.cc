@@ -240,8 +240,7 @@ void Box_Data_Calendar_Related::clear_cached_database_values()
     for(type_list_vectors::iterator iter = vec.begin(); iter != vec.end(); ++iter)
     {
       type_vector_values* pValues = *iter;
-      if(pValues)
-        delete pValues;
+      delete pValues;
     }
   }
 
