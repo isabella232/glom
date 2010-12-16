@@ -80,8 +80,7 @@ void ComboChoicesWithTreeModel::delete_model()
   for(type_vec_model_columns_fixed::iterator iter = m_vec_model_columns_fixed.begin(); iter != m_vec_model_columns_fixed.end(); ++iter)
   {
     type_model_column_fixed* model_column = *iter;
-     if(model_column)
-       delete model_column;
+    delete model_column;
   }
   m_vec_model_columns_fixed.clear();
 

@@ -38,11 +38,8 @@ App_WithDoc::App_WithDoc(const Glib::ustring& appname)
 App_WithDoc::~App_WithDoc()
 {
   //Delete the document:
-  if(m_pDocument)
-  {
-    delete m_pDocument; //This will cause Document::signal_forget to be emitted, so the Views will then null their pointers as well. A smartpointer might be a better way to do this.
-    m_pDocument = 0;
-  }
+  delete m_pDocument; //This will cause Document::signal_forget to be emitted, so the Views will then null their pointers as well. A smartpointer might be a better way to do this.
+  m_pDocument = 0;
 }
 
 //static

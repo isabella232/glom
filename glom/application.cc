@@ -126,30 +126,16 @@ Application::~Application()
     delete m_window_translations;
   }
 
-  if(m_avahi_progress_dialog)
-  {
-    delete m_avahi_progress_dialog;
-    m_avahi_progress_dialog = 0;
-  }
+  delete m_avahi_progress_dialog;
+  m_avahi_progress_dialog = 0;
 
+  delete m_dialog_progress_creating;
+  m_dialog_progress_creating = 0;
 
-  if(m_dialog_progress_creating)
-  {
-    delete m_dialog_progress_creating;
-    m_dialog_progress_creating = 0;
-  }
+  delete m_dialog_progess_save_backup;
 
-  if(m_dialog_progess_save_backup)
-  {
-    delete m_dialog_progess_save_backup;
-    m_dialog_progess_save_backup = 0;
-  }
-
-  if(m_dialog_progess_convert_backup)
-  {
-    delete m_dialog_progess_convert_backup;
-    m_dialog_progess_convert_backup = 0;
-  }
+  delete m_dialog_progess_convert_backup;
+  m_dialog_progess_convert_backup = 0;
   #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   #ifdef GLOM_ENABLE_MAEMO
@@ -164,11 +150,8 @@ Application::~Application()
 void Application::on_connection_avahi_begin()
 {
   //Create the dialog:
-  if(m_avahi_progress_dialog)
-  {
-    delete m_avahi_progress_dialog;
-    m_avahi_progress_dialog = 0;
-  }
+  delete m_avahi_progress_dialog;
+  m_avahi_progress_dialog = 0;
 
   m_avahi_progress_dialog = new Gtk::MessageDialog(Utils::bold_message(_("Glom: Generating Encryption Certificates")), true, Gtk::MESSAGE_INFO);
   m_avahi_progress_dialog->set_secondary_text(_("Please wait while Glom prepares your system for publishing over the network."));
@@ -186,11 +169,7 @@ void Application::on_connection_avahi_progress()
 void Application::on_connection_avahi_done()
 {
   //Delete the dialog:
-  if(m_avahi_progress_dialog)
-  {
-    delete m_avahi_progress_dialog;
-    m_avahi_progress_dialog = 0;
-  }
+  delete m_avahi_progress_dialog;
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -2024,11 +2003,8 @@ bool Application::recreate_database_from_backup(const Glib::ustring& backup_uri,
   const bool restored = connection_pool->convert_backup(
     sigc::mem_fun(*this, &Application::on_connection_convert_backup_progress), original_dir_path);
 
-  if(m_dialog_progess_convert_backup)
-  {
-    delete m_dialog_progess_convert_backup;
-    m_dialog_progess_convert_backup = 0;
-  }
+  delete m_dialog_progess_convert_backup;
+  m_dialog_progess_convert_backup = 0;
 
   if(!restored)
   {
@@ -2775,11 +2751,8 @@ void Application::on_menu_developer_export_backup()
     ConnectionPool* connection_pool = ConnectionPool::get_instance();
     saved = connection_pool->save_backup(sigc::mem_fun(*this, &Application::on_connection_save_backup_progress), path_dir);
 
-    if(m_dialog_progess_save_backup)
-    {
-      delete m_dialog_progess_save_backup;
-      m_dialog_progess_save_backup = 0;
-    }
+    delete m_dialog_progess_save_backup;
+    m_dialog_progess_save_backup = 0;
   }
 
   //Compress the backup in a .tar.gz, so it is slightly more safe from changes:
@@ -2822,11 +2795,8 @@ void Application::on_menu_developer_export_backup()
         std::cerr << G_STRFUNC << "tar failed with command:" << command_tar << std::endl;
       }
 
-      if(m_dialog_progess_save_backup)
-      {
-        delete m_dialog_progess_save_backup;
-        m_dialog_progess_save_backup = 0;
-      }
+      delete m_dialog_progess_save_backup;
+      m_dialog_progess_save_backup = 0;
     }
   }
 
@@ -2914,11 +2884,8 @@ bool Application::do_restore_backup(const Glib::ustring& backup_uri)
     std::cerr << G_STRFUNC << ": tar failed with command:" << command_tar << std::endl;
   }
 
-  if(m_dialog_progess_convert_backup)
-  {
-    delete m_dialog_progess_convert_backup;
-    m_dialog_progess_convert_backup = 0;
-  }
+  delete m_dialog_progess_convert_backup;
+  m_dialog_progess_convert_backup = 0;
 
   if(!untarred)
     ui_warning(_("Restore Backup failed."), _("There was an error while restoring the backup. The tar utility failed to extract the archive."));

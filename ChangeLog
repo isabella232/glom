@@ -1,3 +1,21 @@
+2010-12-16  Murray Cumming  <murrayc@murrayc.com>
+
+	Remove unnecessary checks before use of delete.
+
+	* glom/application.cc:
+	* glom/bakery/app_withdoc.cc:
+	* glom/bakery/app_withdoc_gtk.cc:
+	* glom/frame_glom.cc:
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/data_structure/layout/layoutitem.cc:
+	* glom/libglom/sharedptr.h:
+	* glom/libglom/test_avahi_publisher.cc:
+	* glom/mode_data/box_data_portal.cc:
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.cc:
+	* glom/mode_data/flowtablewithfields.cc:
+	* glom/mode_data/notebook_data.cc: C++ doesn't mind if we call delete on a 
+	null pointer. Found by cppcheck.
+
 2010-12-15  Ben Konrath  <ben@bagu.org>
 
 	Add Eclipse 3.6 / CDT 7.0 configuration files.

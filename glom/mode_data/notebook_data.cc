@@ -111,8 +111,7 @@ Notebook_Data::~Notebook_Data()
   remove_view(&m_Box_Details);
 
 #ifdef GLOM_ENABLE_MAEMO
-  if(m_window_maemo_details)
-    delete m_window_maemo_details;
+  delete m_window_maemo_details;
 #endif //GLOM_ENABLE_MAEMO
 }
 

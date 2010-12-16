@@ -208,11 +208,8 @@ Frame_Glom::~Frame_Glom()
   if(m_pBox_Tables)
     remove_view(m_pBox_Tables);
 
-  if(m_pDialog_Tables)
-  {
-    delete m_pDialog_Tables;
-    m_pDialog_Tables = 0;
-  }
+  delete m_pDialog_Tables;
+  m_pDialog_Tables = 0;
 #endif //GLOM_ENABLE_MAEMO
 
   remove_view(&m_Notebook_Data); //Also a composite view.
@@ -227,24 +224,15 @@ Frame_Glom::~Frame_Glom()
   }
 
 
-  if(m_dialog_progess_connection_startup)
-  {
-    delete m_dialog_progess_connection_startup;
-    m_dialog_progess_connection_startup = 0;
-  }
+  delete m_dialog_progess_connection_startup;
+  m_dialog_progess_connection_startup = 0;
 
-  if(m_dialog_progess_connection_cleanup)
-  {
-    delete m_dialog_progess_connection_cleanup;
-    m_dialog_progess_connection_cleanup = 0;
-  }
+  delete m_dialog_progess_connection_cleanup;
+  m_dialog_progess_connection_cleanup = 0;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  if(m_dialog_progess_connection_initialize)
-  {
-    delete m_dialog_progess_connection_initialize;
-    m_dialog_progess_connection_initialize = 0;
-  }
+  delete m_dialog_progess_connection_initialize;
+  m_dialog_progess_connection_initialize = 0;
 
   if(m_pBox_Reports)
     remove_view(m_pBox_Reports);
@@ -1111,11 +1099,8 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
 
     connectionpool->cleanup( sigc::mem_fun(*this, &Frame_Glom::on_connection_cleanup_progress) );
 
-    if(m_dialog_progess_connection_cleanup)
-    {
-      delete m_dialog_progess_connection_cleanup;
-      m_dialog_progess_connection_cleanup = 0;
-    }
+    delete m_dialog_progess_connection_cleanup;
+    m_dialog_progess_connection_cleanup = 0;
 
     connectionpool->set_network_shared(sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress), shared);
     ConnectionPool::StartupErrors started = connectionpool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
@@ -1127,11 +1112,8 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
 
     connectionpool->set_ready_to_connect();
 
-    if(m_dialog_progess_connection_startup)
-    {
-      delete m_dialog_progess_connection_startup;
-      m_dialog_progess_connection_startup = 0;
-    }
+    delete m_dialog_progess_connection_startup;
+    m_dialog_progess_connection_startup = 0;
   }
 
   //Update the UI:
@@ -2099,11 +2081,8 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       const bool initialized = handle_connection_initialize_errors( connection_pool->initialize(
         sigc::mem_fun(*this, &Frame_Glom::on_connection_initialize_progress) ) );
 
-      if(m_dialog_progess_connection_initialize)
-      {
-        delete m_dialog_progess_connection_initialize;
-        m_dialog_progess_connection_initialize = 0;
-      }
+      delete m_dialog_progess_connection_initialize;
+      m_dialog_progess_connection_initialize = 0;
 
       if(!initialized)
         return false;
@@ -2178,11 +2157,8 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     return false;
   }
 
-  if(m_dialog_progess_connection_startup)
-  {
-    delete m_dialog_progess_connection_startup;
-    m_dialog_progess_connection_startup = 0;
-  }
+  delete m_dialog_progess_connection_startup;
+  m_dialog_progess_connection_startup = 0;
 
   const Glib::ustring database_name = document->get_connection_database();
 
@@ -2288,11 +2264,8 @@ void Frame_Glom::cleanup_connection()
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   connection_pool->cleanup( sigc::mem_fun(*this, &Frame_Glom::on_connection_cleanup_progress) );
 
-  if(m_dialog_progess_connection_cleanup)
-  {
-    delete m_dialog_progess_connection_cleanup;
-    m_dialog_progess_connection_cleanup = 0;
-  }
+  delete m_dialog_progess_connection_cleanup;
+  m_dialog_progess_connection_cleanup = 0;
 }
 
 bool Frame_Glom::handle_request_password_connection_error(bool asked_for_password, const ExceptionConnection& ex, bool& database_not_found)
@@ -2346,11 +2319,8 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
     return false;
   }
 
-  if(m_dialog_progess_connection_startup)
-  {
-    delete m_dialog_progess_connection_startup;
-    m_dialog_progess_connection_startup = 0;
-  }
+  delete m_dialog_progess_connection_startup;
+  m_dialog_progess_connection_startup = 0;
 
   //Only ask for the password if we are shared on the network, or we are using a centrally hosted server.
   //Otherwise, no password question is necessary, due to how our self-hosted database server is configured.
@@ -2358,11 +2328,8 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
     || document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_CENTRAL)
   {
     //We recreate the dialog each time to make sure it is clean of any changes:
-    if(m_pDialogConnection)
-    {
-      delete m_pDialogConnection;
-      m_pDialogConnection = 0;
-    }
+    delete m_pDialogConnection;
+    m_pDialogConnection = 0;
 
     Utils::get_glade_widget_derived_with_warning(m_pDialogConnection);
     add_view(m_pDialogConnection); //Also a composite view.
@@ -2380,7 +2347,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
     if(!known_password.empty())
       m_pDialogConnection->set_password(known_password);
   }
-  else if(m_pDialogConnection)
+  else
   {
     //Later, if m_pDialogConnection is null then we assume we should use the known user/password:
     delete m_pDialogConnection;

@@ -161,8 +161,8 @@ ComboAsRadioButtons::~ComboAsRadioButtons()
   for(type_map_buttons::iterator iter = m_map_buttons.begin();
     iter != m_map_buttons.end(); ++iter)
   {
-     Gtk::RadioButton* button = iter->second;
-     delete button;
+    Gtk::RadioButton* button = iter->second;
+    delete button;
   }
   m_map_buttons.clear();
 }

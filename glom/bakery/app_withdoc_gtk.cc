@@ -71,17 +71,11 @@ App_WithDoc_Gtk::App_WithDoc_Gtk(BaseObjectType* cobject, const Glib::ustring& a
   
 App_WithDoc_Gtk::~App_WithDoc_Gtk()
 {
-  if(m_pVBox)
-  {
-    delete m_pVBox;
-    m_pVBox = 0;
-  }
+  delete m_pVBox;
+  m_pVBox = 0;
   
-  if(m_pAbout)
-  {
-    delete m_pAbout;
-    m_pAbout = 0;
-  }
+  delete m_pAbout;
+  m_pAbout = 0;
 }
 
 
@@ -412,11 +406,8 @@ void App_WithDoc_Gtk::on_menu_help_about()
   else
   {
     //Re-create About box:
-    if(m_pAbout)
-    {
-      delete m_pAbout;
-      m_pAbout = 0;
-    }
+    delete m_pAbout;
+    m_pAbout = 0;
 
     Gtk::AboutDialog* pDerived = new Gtk::AboutDialog;
     m_pAbout = pDerived;

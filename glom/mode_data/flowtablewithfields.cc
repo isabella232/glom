@@ -672,11 +672,8 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
 void FlowTableWithFields::add_placeholder_at_position(const sharedptr<LayoutItem_Placeholder>& /* layoutitem_placeholder */, const Glib::ustring& /* table_name */, const type_list_layoutwidgets::iterator& add_before)
 {
   //Delete any existing placeholder (there can be only one):
-  if(m_placeholder)
-  {
-    delete m_placeholder;
-    m_placeholder = 0;
-  }
+  delete m_placeholder;
+  m_placeholder = 0;
 
   //Add the widget:
   m_placeholder = Gtk::manage(new Gtk::Alignment());

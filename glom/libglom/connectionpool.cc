@@ -113,11 +113,8 @@ ConnectionPool::ConnectionPool()
 
 ConnectionPool::~ConnectionPool()
 {
-  if(m_pFieldTypes)
-  {
-    delete m_pFieldTypes;
-    m_pFieldTypes = 0;
-  }
+  delete m_pFieldTypes;
+  m_pFieldTypes = 0;
 }
 
 //static
@@ -177,11 +174,8 @@ void ConnectionPool::setup_from_document(const Document* document)
 
 void ConnectionPool::delete_instance()
 {
-  if(m_instance)
-  {
-    delete m_instance;
-    m_instance = 0;
-  }
+  delete m_instance;
+  m_instance = 0;
 }
 
 bool ConnectionPool::get_ready_to_connect() const

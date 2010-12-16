@@ -91,8 +91,7 @@ LayoutItem& LayoutItem::operator=(const LayoutItem& src)
   m_editable = src.m_editable;
   m_display_width = src.m_display_width;
 
-  if(m_positions)
-    delete m_positions;
+  delete m_positions;
   m_positions = 0;
 
   if(src.m_positions)

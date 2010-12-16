@@ -44,8 +44,7 @@ TestWindow::TestWindow()
 
 TestWindow::~TestWindow()
 {
-  if(m_avahi_publisher)
-    delete m_avahi_publisher;
+  delete m_avahi_publisher;
 }
 
 void TestWindow::on_button_start()

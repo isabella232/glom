@@ -72,8 +72,7 @@ Box_Data_Portal::Box_Data_Portal()
 Box_Data_Portal::~Box_Data_Portal()
 {
   #ifdef GLOM_ENABLE_MAEMO
-  if(m_window_maemo_details)
-    delete m_window_maemo_details;
+  delete m_window_maemo_details;
 
   if(m_box_maemo_details)
   {
@@ -128,8 +127,7 @@ void Box_Data_Portal::on_maemo_appmenubutton_add()
   if(!m_portal)
     return;
 
-  if(m_window_maemo_details)
-    delete m_window_maemo_details;
+  delete m_window_maemo_details;
 
   if(m_box_maemo_details)
   {

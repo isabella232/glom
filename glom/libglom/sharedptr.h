@@ -369,11 +369,8 @@ void sharedptr<T_obj>::unref()
     //Unalloc if this is the last user of the obj:
     if(*m_pRefCount == 0)
     {
-      if(m_pobj)
-      {
-        delete m_pobj;
-        m_pobj = 0;
-      }
+      delete m_pobj;
+      m_pobj = 0;
 
        //Clear ref count:
        delete m_pRefCount;
