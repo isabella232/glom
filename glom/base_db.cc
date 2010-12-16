@@ -300,7 +300,6 @@ namespace
   sharedptr<Field> check_field_change_constraints(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field)
   {
     sharedptr<Field> result = glom_sharedptr_clone(field);
-    bool primary_key_was_set = false;
     bool primary_key_was_unset = false;
     if(field_old->get_primary_key() != field->get_primary_key())
     {
@@ -310,7 +309,6 @@ namespace
       if(field->get_primary_key())
       {
         result->set_unique_key();
-        primary_key_was_set = true;
       }
       else
       {

@@ -38,11 +38,13 @@ void reset_signal_counts()
   get_encoding_error_count_instance() = 0;
 }
 
+/*
 void print_signal_counts()
 {
   std::cout << "lines scanned: " << get_line_scanned_count_instance() << std::endl;
   std::cout << "encoding errors: " << get_encoding_error_count_instance() << std::endl;
 }
+*/
 
 void connect_signals(Glom::CsvParser& parser)
 {

@@ -13,8 +13,8 @@ typedef std::vector<std::string> type_tokens;
 
 type_tokens& get_tokens_instance()
 {
-  static type_tokens type_tokens;
-  return type_tokens;
+  static type_tokens tokens;
+  return tokens;
 }
 
 
@@ -30,6 +30,7 @@ void on_line_scanned(const std::vector<Glib::ustring>& row, guint /*line_number*
   }
 }
 
+/*
 void print_tokens()
 {
   for(type_tokens::const_iterator iter = get_tokens_instance().begin();
@@ -41,6 +42,7 @@ void print_tokens()
 
   std::cout << std::endl;
 }
+*/
 
 // Check that a string (or regex) exists in the parsed tokens.
 bool check_tokens(const std::string& regex)

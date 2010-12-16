@@ -52,12 +52,6 @@ public:
   
   Glib::ustring get_dtd_root_node_name() const;
 
-  /** Whether to add extra whitespace when writing the XML to disk.
-   * Do not use this if whitespace is significant in your XML format.
-   * See also add_indenting_white_space().
-   */
-  void set_write_formatted(bool formatted = true);
-
   /** Put each node on its own line and add white space for indenting,
    * even if there are child text nodes.
    * set_write_formatted() does not cause nodes to be indented if there are child text nodes,

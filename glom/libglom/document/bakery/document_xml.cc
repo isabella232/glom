@@ -230,12 +230,6 @@ xmlpp::Element* Document_XML::get_node_document()
   return nodeRoot;
 }
 
-void Document_XML::set_write_formatted(bool formatted)
-{
-  m_write_formatted = formatted;
-}
-
-
 void Document_XML::add_indenting_white_space_to_node(xmlpp::Node* node, const Glib::ustring& start_indent)
 {
   if(!node)

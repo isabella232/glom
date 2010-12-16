@@ -86,6 +86,9 @@ LayoutItem::~LayoutItem()
 
 LayoutItem& LayoutItem::operator=(const LayoutItem& src)
 {
+  if(this == &src)
+    return *this;
+
   TranslatableItem::operator=(src);
 
   m_editable = src.m_editable;

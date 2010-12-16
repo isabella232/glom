@@ -53,10 +53,4 @@ bool FoundSet::operator==(const FoundSet& src) const
       && (m_sort_clause == src.m_sort_clause);
 }
 
-bool FoundSet::has_no_criteria() const
-{
-  return m_where_clause.empty() &&
-    m_sort_clause.empty();
-}
-
 } //namespace Glom

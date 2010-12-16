@@ -715,58 +715,6 @@ void Frame_Glom::export_data_to_vector(Document::type_example_rows& the_vector, 
   }
 }
 
-void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet& found_set, const Document::type_list_layout_groups& sequence)
-{
-  type_vecConstLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(found_set.m_table_name, sequence);
-
-  if(fieldsSequence.empty())
-  {
-    std::cerr << G_STRFUNC << ": No fields in sequence." << std::endl;
-    return;
-  }
-
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause);
-
-  //TODO: Lock the database (prevent changes) during export.
-  Glib::RefPtr<const Gnome::Gda::DataModel> result = DbUtils::query_execute_select(query);
-
-  guint rows_count = 0;
-  if(result)
-    rows_count = result->get_n_rows();
-
-  if(rows_count)
-  {
-    const guint columns_count = result->get_n_columns();
-
-    for(guint row_index = 0; row_index < rows_count; ++row_index)
-    {
-        std::string row_string;
-
-        for(guint col_index = 0; col_index < columns_count; ++col_index)
-        {
-          const Gnome::Gda::Value value = result->get_value_at(col_index, row_index);
-
-          sharedptr<const LayoutItem_Field> layout_item = fieldsSequence[col_index];
-          //if(layout_item->m_field.get_glom_type() != Field::TYPE_IMAGE) //This is too much data.
-          //{
-            if(!row_string.empty())
-              row_string += ',';
-
-            //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
-            row_string += layout_item->get_full_field_details()->to_file_format(value);
-
-            //if(layout_item->m_field.get_glom_type() == Field::TYPE_IMAGE) //This is too much data.
-            //{
-             //std::cout << "  field name=" << layout_item->get_name() << ", value=" << layout_item->m_field.sql(value) << std::endl;
-            //}
-        }
-
-        //std::cout << " row_string=" << row_string << std::endl;
-        the_string += (row_string += "\n");
-    }
-  }
-}
-
 void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet& found_set, const Document::type_list_layout_groups& sequence)
 {
   type_vecConstLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(found_set.m_table_name, sequence);

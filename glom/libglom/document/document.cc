@@ -317,7 +317,7 @@ bool Document::get_network_shared() const
   else if(hosting_mode == HOSTING_MODE_SQLITE)
     shared = false; //sqlite does not allow network sharing.
 
-  return m_network_shared;
+  return shared;
 }
 
 std::string Document::get_connection_self_hosted_directory_uri() const

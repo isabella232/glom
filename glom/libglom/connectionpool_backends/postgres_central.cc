@@ -103,7 +103,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
   catch(const ExceptionConnection& ex)
   {
     // Remember port if only the database was missing
-    bool connection_possible = false;
+    connection_possible = false;
     if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE)
     {
       connection_possible = true;

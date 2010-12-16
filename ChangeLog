@@ -1,5 +1,24 @@
 2010-12-16  Murray Cumming  <murrayc@murrayc.com>
 
+	More dealing with cppcheck errors. 
+
+	* glom/libglom/data_structure/layout/layoutitem.cc: operator=(): Check for 
+	src=this.
+	* glom/base_db.cc:
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	* glom/libglom/connectionpool_backends/postgres_central.cc:
+	* glom/libglom/data_structure/foundset.cc:
+	* glom/libglom/data_structure/foundset.h:
+	* glom/libglom/document/bakery/document_xml.cc:
+	* glom/libglom/document/bakery/document_xml.h:
+	* glom/libglom/document/document.cc:
+	* glom/utility_widgets/adddel/adddel.cc:
+	* tests/import/test_parsing.cc:
+	* tests/import/test_signals.cc: Removed unused methods and unused variables.
+
+2010-12-16  Murray Cumming  <murrayc@murrayc.com>
+
 	Remove unused methods.
 	
 	* glom/libglom/data_structure/glomconversions.cc:

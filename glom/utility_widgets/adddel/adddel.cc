@@ -630,7 +630,6 @@ void AddDel::construct_specified_columns()
       const Glib::ustring column_name = m_ColumnTypes[model_column_index].m_name;
       const Glib::ustring column_id = m_ColumnTypes[model_column_index].m_id;
 
-      int cols_count = 0;
       switch(m_ColumnTypes[model_column_index].m_style)
       {
         case(AddDelColumnInfo::STYLE_Choices):
@@ -648,7 +647,7 @@ void AddDel::construct_specified_columns()
           // Append the View column.
           // We use a derived Gtk::TreeViewColumn so that we can store extra information in it.
           // This means that we must reimplement the code from the convenience template methods from gtkmm.
-          cols_count = treeview_append_column( Utils::string_escape_underscores(column_name), *pCellRenderer,  *pModelColumn, column_id);
+          treeview_append_column( Utils::string_escape_underscores(column_name), *pCellRenderer,  *pModelColumn, column_id);
 
           break;
         }
@@ -661,7 +660,7 @@ void AddDel::construct_specified_columns()
 
           Gtk::TreeModelColumn<bool>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<bool>* >(pModelColumn);
           if(pModelColumnDerived)
-            cols_count = treeview_append_column(Utils::string_escape_underscores(column_name), *pModelColumnDerived, column_id);
+            treeview_append_column(Utils::string_escape_underscores(column_name), *pModelColumnDerived, column_id);
 
           break;
         }
@@ -673,7 +672,7 @@ void AddDel::construct_specified_columns()
           //to use the correct specialization:
           Gtk::TreeModelColumn<Glib::ustring>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<Glib::ustring>* >(pModelColumn);
           if(pModelColumnDerived)
-            cols_count = treeview_append_column(Utils::string_escape_underscores(column_name), *pModelColumnDerived, column_id);
+            treeview_append_column(Utils::string_escape_underscores(column_name), *pModelColumnDerived, column_id);
 
           break;
         }
