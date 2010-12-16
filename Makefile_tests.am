@@ -119,11 +119,11 @@ tests_import_test_signals_LDADD = $(GLOM_LIBS)
 tests_import_test_signals_CPPFLAGS = $(tests_cppflags)
 
 tests_test_selfhosting_new_empty_SOURCES = tests/test_selfhosting_new_empty.cc
-tests_test_selfhosting_new_empty_LDADD = $(glom_all_libs)
+tests_test_selfhosting_new_empty_LDADD = $(tests_ldadd)
 tests_test_selfhosting_new_empty_CPPFLAGS = $(tests_cppflags)
 
 tests_test_selfhosting_new_from_example_SOURCES = tests/test_selfhosting_new_from_example.cc
-tests_test_selfhosting_new_from_example_LDADD = $(glom_all_libs)
+tests_test_selfhosting_new_from_example_LDADD = $(tests_ldadd)
 tests_test_selfhosting_new_from_example_CPPFLAGS = $(tests_cppflags)
 
 

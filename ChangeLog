@@ -1,3 +1,10 @@
+2010-12-16  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix make check when using --enable-glom-ui=no.
+
+	* Makefile_tests.am: Correct the LDADD flags for the selfhosting tests, so 
+	that make check still works when using --enable-glom-ui=no.
+
 2010-12-14  Murray Cumming  <murrayc@murrayc.com>
 
 	Build: Reduce some duplication.
