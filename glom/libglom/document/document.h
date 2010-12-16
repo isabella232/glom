@@ -320,7 +320,6 @@ public:
 
   typedef std::list<Glib::ustring> type_listReports;
   type_listReports get_report_names(const Glib::ustring& table_name) const;
-  void remove_all_reports(const Glib::ustring& table_name);
 
   void set_report(const Glib::ustring& table_name, const sharedptr<Report>& report);
   sharedptr<Report> get_report(const Glib::ustring& table_name, const Glib::ustring& report_name) const;
@@ -329,7 +328,6 @@ public:
   //Print Layouts are precisely positioned layouts for printing to a printer:
   typedef std::list<Glib::ustring> type_listPrintLayouts;
   type_listPrintLayouts get_print_layout_names(const Glib::ustring& table_name) const;
-  void remove_all_print_layouts(const Glib::ustring& table_name);
   void set_print_layout(const Glib::ustring& table_name, const sharedptr<PrintLayout>& print_layout);
   sharedptr<PrintLayout> get_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name) const;
   void remove_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name);

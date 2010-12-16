@@ -89,11 +89,6 @@ void Document::set_file_uri(const Glib::ustring& file_uri, bool bEnforceFileExte
     m_file_uri = get_file_uri_with_extension(m_file_uri);
 }
 
-void Document::set_contents(const Glib::ustring& strVal)
-{
-  m_strContents = strVal;
-}
-
 Glib::ustring Document::get_contents() const
 {
   return m_strContents;

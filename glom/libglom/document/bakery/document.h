@@ -74,7 +74,6 @@ public:
   void set_is_new(bool bVal);
 
   Glib::ustring get_contents() const;
-  void set_contents(const Glib::ustring& strVal);
 
   Glib::ustring get_file_uri_with_extension(const Glib::ustring& uri);
 

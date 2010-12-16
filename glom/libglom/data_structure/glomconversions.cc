@@ -256,9 +256,11 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
   */
 }
 
+
 namespace //anonymous
 {
 
+/*
 class numpunct_thousands_separator: public std::numpunct<char>
 {
   //Override
@@ -267,6 +269,7 @@ class numpunct_thousands_separator: public std::numpunct<char>
     return "\3";
   };
 };
+*/
 
 class numpunct_no_thousands_separator: public std::numpunct<char>
 {
@@ -278,6 +281,7 @@ class numpunct_no_thousands_separator: public std::numpunct<char>
 };
 
 } //anonymous namespace
+
 
 Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const NumericFormat& numeric_format)
 {

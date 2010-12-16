@@ -65,7 +65,6 @@ public:
    */
   void add_indenting_white_space();
   
-  bool set_xml(const Glib::ustring& strXML); //Parse the XML from the text.
   Glib::ustring get_xml() const; //Get the text for the XML.
 
 protected:

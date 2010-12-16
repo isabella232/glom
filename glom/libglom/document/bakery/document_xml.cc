@@ -88,33 +88,6 @@ bool Document_XML::save_before()
   }
 }
 
-//TODO: Why is this parameter here if it is not used?
-bool Document_XML::set_xml(const Glib::ustring& /* strXML */)
-{ 
-#ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
-  try
-#endif
-  {
-    if(m_strContents.empty())
-      g_warning("Document_XML::set_xml(): parsing empty document.");
-
-    m_DOM_Parser.parse_memory(m_strContents);
-    m_pDOM_Document = m_DOM_Parser.get_document();
-    if(!m_pDOM_Document)
-      return false;
-
-    return true;	
-  }
-#ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
-  catch(const std::exception& ex)
-  {
-    std::cerr << "XML Parser error: \n" << ex.what() << std::endl;
-    return false; //Failed.
-  }
-#endif
-} 
-
-
 Glib::ustring Document_XML::get_xml() const
 {
   //Write XML to string:

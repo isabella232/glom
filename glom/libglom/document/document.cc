@@ -3873,16 +3873,6 @@ Document::type_listReports Document::get_report_names(const Glib::ustring& table
     return type_listReports();
 }
 
-void Document::remove_all_reports(const Glib::ustring& table_name)
-{
-  type_tables::iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
-  {
-    iterFind->second.m_reports.clear();
-    set_modified();
-  }
-}
-
 void Document::set_report(const Glib::ustring& table_name, const sharedptr<Report>& report)
 {
   type_tables::iterator iterFind = m_tables.find(table_name);
@@ -3941,15 +3931,6 @@ Document::type_listPrintLayouts Document::get_print_layout_names(const Glib::ust
     return type_listReports();
 }
 
-void Document::remove_all_print_layouts(const Glib::ustring& table_name)
-{
-  type_tables::iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
-  {
-    iterFind->second.m_print_layouts.clear();
-    set_modified();
-  }
-}
 
 void Document::set_print_layout(const Glib::ustring& table_name, const sharedptr<PrintLayout>& print_layout)
 {

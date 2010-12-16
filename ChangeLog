@@ -1,5 +1,20 @@
 2010-12-16  Murray Cumming  <murrayc@murrayc.com>
 
+	Remove unused methods.
+	
+	* glom/libglom/data_structure/glomconversions.cc:
+	* glom/libglom/document/bakery/document.cc:
+	* glom/libglom/document/bakery/document.h:
+	* glom/libglom/document/bakery/document_xml.cc:
+	* glom/libglom/document/bakery/document_xml.h:
+	* glom/libglom/document/document.cc:
+	* glom/libglom/document/document.h:
+	* glom/utility_widgets/canvas/test_canvas_editable.cc:
+	Remove unused methods, found by cppcheck. Some other methods that cppcheck 
+	mentions seem to be virtual methods that are used.
+
+2010-12-16  Murray Cumming  <murrayc@murrayc.com>
+
 	Remove unnecessary checks before use of delete.
 
 	* glom/application.cc:

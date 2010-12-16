@@ -133,6 +133,7 @@ public:
 
 private:
   //This is an override:
+  /*
   virtual void on_show_context_menu(guint button, guint32 activate_time)
   {
     if(m_context_menu)
@@ -146,7 +147,8 @@ private:
   void on_context_menu_delete()
   {
   }
-
+  */
+  
   void setup_context_menu()
   {
     m_context_menu_action_group = Gtk::ActionGroup::create();
