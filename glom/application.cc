@@ -911,19 +911,21 @@ Glib::ustring Application::get_file_uri_without_extension(const Glib::ustring& u
   }
 }
 
+//TODO: Use Gio::Application? Is this even used?
 void Application::new_instance(const Glib::ustring& uri) //Override
 {
   Glib::ustring command = "glom";
   if(!uri.empty())
     command += ' ' + uri;
 
-  GError* gerror = 0;
-  gdk_spawn_command_line_on_screen(Glib::unwrap(get_screen()),
-    command.c_str(),
-    &gerror);
-  if(gerror)
+  try
   {
-    std::cerr << G_STRFUNC << ": " << gerror->message << std::endl;
+    Glib::spawn_command_line_sync(
+      command.c_str());
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
   }
 }
 
