@@ -196,25 +196,25 @@ CanvasItemMovable::type_signal_show_context CanvasItemMovable::signal_show_conte
   return m_signal_show_context;
 }
 
-void CanvasItemMovable::set_drag_cursor(const Gdk::Cursor& cursor)
+void CanvasItemMovable::set_drag_cursor(const Glib::RefPtr<Gdk::Cursor>& cursor)
 {
   m_drag_cursor = cursor;
 }
 
 void CanvasItemMovable::set_drag_cursor(Gdk::CursorType cursor)
 {
-  m_drag_cursor = Gdk::Cursor(cursor);
+  m_drag_cursor = Gdk::Cursor::create(cursor);
 }
 
-void CanvasItemMovable::set_cursor(const Gdk::Cursor& cursor)
+void CanvasItemMovable::set_cursor(const Glib::RefPtr<Gdk::Cursor>& cursor)
 {
    Goocanvas::Canvas* canvas = get_parent_canvas_widget();
-   if(canvas)
-   {
-     Glib::RefPtr<Gdk::Window> window = canvas->get_window();
-     if(window)
-       window->set_cursor(cursor);
-   }
+   if(!canvas)
+     return;
+     
+   Glib::RefPtr<Gdk::Window> window = canvas->get_window();
+   if(window)
+     window->set_cursor(cursor);
 }
 
 void CanvasItemMovable::unset_cursor()

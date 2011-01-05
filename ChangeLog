@@ -1,5 +1,13 @@
 2011-01-05  Murray Cumming  <murrayc@murrayc.com>
 
+	Use Gdk::Cursor via RefPtr.
+
+	* glom/bakery/busy_cursor.[h|cc]:
+	* glom/utility_widgets/canvas/canvas_item_movable.[h|cc]:
+	gtkmm 3 now requires Gdk::Cursor to be used via RefPtr.
+
+2011-01-05  Murray Cumming  <murrayc@murrayc.com>
+
 	Replace a used of (removed from GTK+) gdk_spawn_*() API.
 
 	* glom/application.cc: This partially fixes the build.

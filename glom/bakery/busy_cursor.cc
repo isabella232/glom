@@ -9,19 +9,16 @@ namespace Glom
 BusyCursor::type_map_cursors BusyCursor::m_map_cursors;
 
 BusyCursor::BusyCursor(Gtk::Window& window, Gdk::CursorType cursor_type)
-: m_Cursor(cursor_type),
-  m_old_cursor_valid(false)
+: m_Cursor( Gdk::Cursor::create(cursor_type) ),
+  m_pWindow(&window) //If this is a nested cursor then remember the previously-set cursor, so we can restore it.
 {
-  //If this is a nested cursor then remember the previously-set cursor, so we can restore it:
-  m_pWindow = &window;
   init();
 }
 
 BusyCursor::BusyCursor(Gtk::Window* window, Gdk::CursorType cursor_type)
-: m_Cursor(cursor_type),
-  m_old_cursor_valid(false)
+: m_Cursor( Gdk::Cursor::create(cursor_type) ),
+  m_pWindow(window) //If this is a nested cursor then remember the previously-set cursor, so we can restore it.
 {
-  m_pWindow = window;
   if(m_pWindow)
     init();
 }
@@ -39,7 +36,6 @@ void BusyCursor::init()
   if(iter != m_map_cursors.end())
   {
     m_old_cursor = iter->second; //Remember the existing cursor.
-    m_old_cursor_valid = true;
   }
 
   m_map_cursors[m_pWindow] = m_Cursor; //Let a further nested cursor know about the new cursor in use.
@@ -55,7 +51,7 @@ void BusyCursor::init()
 BusyCursor::~BusyCursor()
 {
   //Restore the old cursor:
-  if(m_old_cursor_valid)
+  if(m_old_cursor)
   {
     if(m_refWindow)
       m_refWindow->set_cursor(m_old_cursor);

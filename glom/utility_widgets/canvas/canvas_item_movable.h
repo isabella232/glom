@@ -58,7 +58,7 @@ public:
   virtual void set_width_height(double width, double height) = 0;
 
   void set_drag_cursor(Gdk::CursorType cursor);
-  void set_drag_cursor(const Gdk::Cursor& cursor);
+  void set_drag_cursor(const Glib::RefPtr<Gdk::Cursor>& cursor);
 
   typedef sigc::signal<void> type_signal_moved;
 
@@ -95,7 +95,7 @@ private:
 
   virtual Goocanvas::Canvas* get_parent_canvas_widget() = 0;
 
-  void set_cursor(const Gdk::Cursor& cursor);
+  void set_cursor(const Glib::RefPtr<Gdk::Cursor>& cursor);
   void unset_cursor();
 
 public:
@@ -111,7 +111,7 @@ private:
   bool m_dragging_vertical_only, m_dragging_horizontal_only; //Set by using Ctrl while dragging.
   double m_drag_start_cursor_x, m_drag_start_cursor_y;
   double m_drag_start_position_x, m_drag_start_position_y;
-  Gdk::Cursor m_drag_cursor;
+  Glib::RefPtr<Gdk::Cursor> m_drag_cursor;
 
 protected:
   Glib::RefPtr<const CanvasGroupGrid> m_grid;

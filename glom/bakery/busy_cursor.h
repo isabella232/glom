@@ -42,19 +42,18 @@ public:
 
   virtual ~BusyCursor();
 
-protected:
+private:
 
   void init();
   void force_gui_update();
 
-  Gdk::Cursor m_Cursor;
+  Glib::RefPtr<Gdk::Cursor> m_Cursor;
   Gtk::Window* m_pWindow;
   Glib::RefPtr<Gdk::Window> m_refWindow;
 
-  typedef std::map<Gtk::Window*, Gdk::Cursor> type_map_cursors;
+  typedef std::map<Gtk::Window*, Glib::RefPtr<Gdk::Cursor> > type_map_cursors;
   static type_map_cursors m_map_cursors;
-  Gdk::Cursor m_old_cursor;
-  bool m_old_cursor_valid;
+  Glib::RefPtr<Gdk::Cursor> m_old_cursor;
 };
 
 } //namespace Glom
