@@ -384,8 +384,8 @@ glom_glom_SOURCES =							\
 	$(glom_source_files)
 
 glom_all_libs = $(win_resfile) \
-	glom/libglom/libglom-$(GLOM_ABI_VERSION).la \
-	$(GLOM_LIBS) $(PYTHON_LIBS) $(BOOST_PYTHON_LIBS) $(INTLLIBS)
+	glom/libglom/libglom-$(GLOM_ABI_VERSION).la $(libglom_all_libs) \
+	$(GLOM_LIBS) $(INTLLIBS)
 if !GLOM_ENABLE_MAEMO
 glom_all_libs += -lgettextpo
 endif

@@ -1,3 +1,13 @@
+2011-01-06  Murray Cumming  <murrayc@murrayc.com>
+
+	tests: Link to all necessary libraries.
+
+	* Makefile_libglom.am: Define libglom_all_libs to avoid duplication.
+	* Makefile_glom.am: Use libglom_all_libs instead of repeating.
+	* Makefile_tests.am: Use libglom_all_libs to explicitly link against the 
+	dependencies of libglom. This seems to have been automatic with the linker in 
+	previous versions of Ubuntu, but not with Ubuntu Natty.
+
 2011-01-05  Murray Cumming  <murrayc@murrayc.com>
 
 	Use Gdk::Cursor via RefPtr.

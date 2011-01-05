@@ -51,8 +51,7 @@ dist_noinst_SCRIPTS = tests/test_dtd_file_validation.sh \
 
 #TESTS_ENVIRONMENT=which valgrind && valgrind --tool=memcheck --leak-check=full --leak-resolution=high --trace-children=yes --num-callers=30
 
-# This also links to the libraries in LIBGLOM_LIBS
-tests_ldadd = glom/libglom/libglom-$(GLOM_ABI_VERSION).la
+tests_ldadd = glom/libglom/libglom-$(GLOM_ABI_VERSION).la $(libglom_all_libs)
 tests_cppflags = $(glom_includes) $(LIBGLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(glom_defines)
 tests_cppflags_ui = $(glom_includes) $(GLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(glom_defines)
 
