@@ -1,3 +1,11 @@
+2011-01-06  Murray Cumming  <murrayc@murrayc.com>
+
+	get_current_locale(): Handle more complex setlocale(NULL) results.
+ 
+	* glom/libglom/utils.cc: locale_simplify(): On Ubuntu Natty, 
+	setlocale() has started returning a more complex string. Parse it, or the 
+	older simpler syntax.
+
 2010-12-15  Ben Konrath  <ben@bagu.org>
 
 	Add Eclipse 3.6 / CDT 7.0 configuration files.

@@ -107,7 +107,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
     typedef std::list<std::string> type_list_ids;
     type_list_ids list_ids;
 
-    Glib::ustring locales_path = "/usr/share/i18n/locales/";
+    const std::string locales_path = "/usr/share/i18n/locales/";
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
@@ -137,7 +137,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
     typedef std::map<Glib::ustring, Glib::ustring> type_map_language; //ID to language name.
     type_map_language map_languages;
 
-    const Glib::ustring filename_languages = ISO_CODES_PREFIX "/share/xml/iso-codes/iso_639.xml";
+    const std::string filename_languages = ISO_CODES_PREFIX "/share/xml/iso-codes/iso_639.xml";
 
 #ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
     try
@@ -242,7 +242,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
     }
 #endif // LIBXMLCPP_EXCEPTIONS_ENABLED
 
-      //Use a map so we can easily check for duplicates.
+    //Use a map so we can easily check for duplicates.
     for(type_list_ids::iterator iter = list_ids.begin(); iter != list_ids.end(); ++iter)
     {
       const Glib::ustring identifier = Utils::locale_simplify(*iter);
@@ -277,6 +277,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
             the_locale.m_identifier = identifier;
             the_locale.m_name = name;
             map_locales[identifier] = the_locale;
+            //std::cout << "DEBUG: id=" << identifier << ", name=" << name << std::endl;
           }
         }
       }
