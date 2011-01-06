@@ -207,8 +207,9 @@ Glib::ustring TranslatableItem::get_current_locale()
     const char* cLocale = setlocale(LC_ALL, 0); //Passing NULL means query, instead of set.
     if(cLocale)
     {
-      //std::cout << "debug: " << G_STRFUNC << ": locale=" << cLocale << std::endl;
+      //std::cout << "debug1: " << G_STRFUNC << ": locale=" << cLocale << std::endl;
       m_current_locale = Utils::locale_simplify(cLocale);
+      //std::cout << "debug2: " << G_STRFUNC << ": m_current_locale=" << m_current_locale << std::endl;
     }
     else
       m_current_locale = 'C';

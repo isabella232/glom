@@ -84,17 +84,23 @@ void ComboBox_Locale::set_selected_locale(const Glib::ustring& locale)
     for(Gtk::TreeModel::iterator iter = model->children().begin(); iter != model->children().end(); ++iter)
     {
       const Glib::ustring& this_text = (*iter)[m_model_columns.m_identifier];
-
+      //std::cout << G_STRFUNC << ": DEBUG: locale=" << locale << ", this_text=" << this_text << "." << std::endl;
+ 
       if(this_text == locale)
       {
         set_active(iter);
         return; //success
       }
     }
+
+    //Not found, so mark it as blank:
+    std::cerr << G_STRFUNC << ": locale not found in list: " << locale << ", list size=" << model->children().size() << std::endl;
+  }
+  else
+  {
+    std::cerr << G_STRFUNC << ": locale not found in list: " << locale << ". The model is empty." << std::endl;
   }
 
-  //Not found, so mark it as blank:
-  std::cerr << G_STRFUNC << ": locale not found in list: " << locale << std::endl;
   unset_active();
 }
 

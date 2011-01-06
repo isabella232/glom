@@ -631,19 +631,46 @@ Glib::ustring Utils::string_escape_underscores(const Glib::ustring& text)
 Glib::ustring Utils::locale_simplify(const Glib::ustring& locale_id)
 {
   Glib::ustring result = locale_id;
+  
+  //At least Ubuntu Natty provides a long string such as this: LC_CTYPE=en_US.UTF-8;LC_NUMERIC=en_US.UTF-8;LC_TIME=en_US.UTF-8;LC_COLLATE=en_US.UTF-8;LC_MONETARY=en_US.UTF-8;LC_MESSAGES=en_AG.utf8;LC_PAPER=en_US.UTF-8;LC_NAME=en_US.UTF-8;LC_ADDRESS=en_US.UTF-8;LC_TELEPHONE=en_US.UTF-8;LC_MEASUREMENT=en_US.UTF-8;LC_IDENTIFICATION=en_US.UTF-8
+  //In Ubuntu Maverick, and earlier, it was apparently a simple string such as en_US.UTF-8.
 
+  //Look for LC_ALL or LC_COLLATE
+  //(We use the locale name only to identify translations
+  //Otherwise just start with the whole string.
+  Glib::ustring::size_type posCategory = result.find("LC_ALL=");
+  if(posCategory != Glib::ustring::npos)
+  {
+    result = result.substr(posCategory);
+  }
+  else
+  {
+    posCategory = result.find("LC_COLLATE=");
+    if(posCategory != Glib::ustring::npos)
+    {
+      result = result.substr(posCategory);
+    }
+  }
+  
   //Get everything before the .:
-  Glib::ustring::size_type posDot = locale_id.find('.');
+  const Glib::ustring::size_type posDot = result.find('.');
   if(posDot != Glib::ustring::npos)
   {
     result = result.substr(0, posDot);
   }
 
   //Get everything before the @:
-  const Glib::ustring::size_type posAt = locale_id.find('@');
+  const Glib::ustring::size_type posAt = result.find('@');
   if(posAt != Glib::ustring::npos)
   {
     result = result.substr(0, posAt);
+  }
+  
+  //Get everything after the =, if any:
+  const Glib::ustring::size_type posEquals = result.find('=');
+  if(posEquals != Glib::ustring::npos)
+  {
+    result = result.substr(posEquals + 1);
   }
 
   return result;
