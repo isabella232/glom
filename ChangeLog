@@ -1,3 +1,10 @@
+2011-01-13  Murray Cumming  <murrayc@murrayc.com>
+
+	Require the appropriate goocanvasmm version.
+
+	* configure.ac: Use the latest goocanvasmm release. The code has already 
+	been ported.
+
 2011-01-06  Murray Cumming  <murrayc@murrayc.com>
 
 	get_current_locale(): Handle more complex setlocale(NULL) results.
