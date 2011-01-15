@@ -1,3 +1,10 @@
+2011-01-15  Murray Cumming  <murrayc@murrayc.com>
+
+	Require the appropriate gtksourceviewmm version.
+
+	* configure.ac: Use the latest gtksourceviewmm release. Older versions would 
+	not build with the newer versions of gtkmm 3, so this is a hint.
+
 2011-01-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Require the appropriate goocanvasmm version.
