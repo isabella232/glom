@@ -1,3 +1,9 @@
+2011-01-18  Murray Cumming  <murrayc@murrayc.com>
+
+	Disable more deprecated API.
+
+	* configure.ac: Add PANGO, PANGOMM, and CAIRO to the list.
+
 2011-01-15  Murray Cumming  <murrayc@murrayc.com>
 
 	Require the appropriate gtksourceviewmm version.
