@@ -1,3 +1,10 @@
+2011-01-27  Murray Cumming  <murrayc@murrayc.com>
+
+	GimpRuler: Use the GTK+-2.0 version of this code.
+
+	* glom/utility_widgets/gimpruler/gimpruler.[h|c]: Use the version of the code
+	that builds with GTK+-2.0 rather than GTK+-3.0.
+
 2010-09-02  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the build with latest gtkmm.
