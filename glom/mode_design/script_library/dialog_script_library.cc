@@ -199,12 +199,12 @@ void Dialog_ScriptLibrary::load_from_document()
     return;
 
   const std::vector<Glib::ustring> module_names = document->get_library_module_names();
-  m_combobox_name->clear_items();
+  m_combobox_name->remove_all();
  
   for(std::vector<Glib::ustring>::const_iterator iter = module_names.begin(); iter != module_names.end(); ++iter)
   {
     const Glib::ustring name = *iter;
-    m_combobox_name->append_text(name);
+    m_combobox_name->append(name);
   }
 
   //Show the current script, or the first one, if there is one:

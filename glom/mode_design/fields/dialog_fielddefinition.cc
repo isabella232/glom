@@ -342,7 +342,7 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
 {
   //Get the fields that are avaiable from the new relationship:
 
-  m_pCombo_LookupField->clear_items();
+  m_pCombo_LookupField->remove_all();
 
   //Get the relationship name:
   sharedptr<const Relationship> relationship = m_pCombo_LookupRelationship->get_selected_relationship();
@@ -359,7 +359,7 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
         const type_vec_fields fields_in_to_table = get_fields_for_table(to_table);
         for(type_vec_fields::const_iterator iter = fields_in_to_table.begin(); iter != fields_in_to_table.end(); ++iter)
         {
-          m_pCombo_LookupField->append_text((*iter)->get_name());
+          m_pCombo_LookupField->append((*iter)->get_name());
         }
       }
     }

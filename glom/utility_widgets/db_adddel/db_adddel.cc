@@ -1829,7 +1829,7 @@ void DbAddDel::on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& ro
     return;
   }
 
-  Gtk::CellRendererText* pCell = dynamic_cast<Gtk::CellRendererText*>(pColumn->get_first_cell_renderer());
+  Gtk::CellRendererText* pCell = dynamic_cast<Gtk::CellRendererText*>(pColumn->get_first_cell());
   if(!pCell)
   {
     std::cerr << G_STRFUNC << ": pCell is null." << std::endl;
