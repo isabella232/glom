@@ -22,7 +22,7 @@
 #include <gtkmm/entry.h>
 #include <gtkmm/calendar.h>
 #include <gtkmm/scale.h>
-#include <gtkmm/comboboxentry.h>
+#include <gtkmm/combobox.h>
 
 namespace Glom
 {

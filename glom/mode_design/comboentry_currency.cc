@@ -42,7 +42,7 @@ ComboEntry_Currency::ComboEntry_Currency(BaseObjectType* cobject, const Glib::Re
   }
 
   set_model(m_model);
-  set_text_column(m_model_columns.m_symbol);
+  set_entry_text_column(m_model_columns.m_symbol);
 
   //Show this too.
   pack_start(m_model_columns.m_name);

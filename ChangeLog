@@ -1,3 +1,13 @@
+2011-01-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix ComboBoxEntry removal.
+
+	* glom/mode_data/datawidget/comboentry.cc:
+	* glom/mode_design/comboentry_currency.cc:
+	* glom/mode_design/layout/layout_item_dialogs/comboentry_borderwidt
+	h.[h|cc]:
+	* glom/variablesmap.cc: Use only non-deprecated ComobBox API.
+
 2010-01-27  Murray Cumming  <murrayc@murrayc.com>
 
 	Replaced GtkRuler with GimpRuler because GtkRuler was removed from GTK 3.

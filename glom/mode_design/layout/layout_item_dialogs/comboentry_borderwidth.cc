@@ -42,7 +42,7 @@ ComboEntry_BorderWidth::ComboEntry_BorderWidth(BaseObjectType* cobject, const Gl
   (*iter)[m_model_columns.m_value] = string_for_number(1.0);
 
   set_model(m_model);
-  set_text_column(m_model_columns.m_value);
+  set_entry_text_column(m_model_columns.m_value);
 }
 
 

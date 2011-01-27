@@ -21,7 +21,7 @@
 #ifndef GLOM_MODE_DESIGN_COMBOENTRY_BORDERWIDTH_HH
 #define GLOM_MODE_DESIGN_COMBOENTRY_BORDERWIDTH_HH
 
-#include <gtkmm/comboboxentry.h>
+#include <gtkmm/combobox.h>
 #include <gtkmm/builder.h>
 
 #include <gtkmm/liststore.h>

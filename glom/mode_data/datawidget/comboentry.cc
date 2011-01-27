@@ -74,7 +74,7 @@ void ComboEntry::init()
 {
 #ifndef GLOM_ENABLE_MAEMO
   set_model(m_refModel);
-  set_text_column(m_Columns.m_col_first);
+  set_entry_text_column(m_Columns.m_col_first);
 #else
   //Maemo:
   set_selector(m_maemo_selector);
