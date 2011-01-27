@@ -131,6 +131,4 @@ glom/utility_widgets/layoutwidgetbase.cc
 glom/utility_widgets/layoutwidgetmenu.cc
 glom/utility_widgets/layoutwidgetutils.cc
 glom/utility_widgets/notebooklabelglom.cc
-glom/utility_widgets/gimpruler/libgimpbase/gimpbaseenums.c
-glom/utility_widgets/gimpruler/libgimpbase/gimputils.c
 glom/xsl_utils.cc
