@@ -25,7 +25,7 @@ namespace Glom
 {
 
 ComboEntry_Currency::ComboEntry_Currency(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
-: Gtk::ComboBoxEntry(cobject)
+: Gtk::ComboBox(cobject)
 {
   m_model = Gtk::ListStore::create(m_model_columns);
 

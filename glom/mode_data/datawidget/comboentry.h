@@ -38,14 +38,14 @@ class Application;
 namespace DataWidgetChildren
 {
 
-/** A Gtk::ComboBoxEntry that can show choices of field values.
+/** A Gtk::ComboBox that can show choices of field values.
  * Use this when the user should be allowed to enter values directly too,
  * including values that are not in the choices.
  */
 class ComboEntry
 :
 #ifndef GLOM_ENABLE_MAEMO
-  public Gtk::ComboBoxEntry,
+  public Gtk::ComboBox,
 #else
   public Hildon::PickerButton,
 #endif

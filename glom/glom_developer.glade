@@ -5496,8 +5496,9 @@ Which user should be added to this group?</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkComboBoxEntry" id="comboboxentry_border_width">
+                              <object class="GtkComboBox" id="comboboxentry_border_width">
                                 <property name="visible">True</property>
+                                <property name="has-entry">True</property>
                               </object>
                               <packing>
                                 <property name="position">1</property>
@@ -6424,8 +6425,9 @@ Which user should be added to this group?</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkComboBoxEntry" id="entry_currency_symbol">
+                      <object class="GtkComboBox" id="entry_currency_symbol">
                         <property name="visible">True</property>
+                        <property name="has-entry">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>

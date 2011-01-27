@@ -29,7 +29,7 @@
 namespace Glom
 {
 
-class ComboEntry_BorderWidth : public Gtk::ComboBoxEntry
+class ComboEntry_BorderWidth : public Gtk::ComboBox
 {
 public:
   ComboEntry_BorderWidth(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);

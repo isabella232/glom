@@ -1,3 +1,17 @@
+2011-01-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Do not use deprecated Gtk::ComboBoxEntry.
+
+	* glom/glom_developer.glade:
+	* glom/mode_data/datawidget/comboentry.[h|cc]:
+	* glom/mode_design/comboentry_currency.[h|cc]:
+	* glom/mode_design/layout/layout_item_dialogs/comboentry_borderwidt
+	h.[h|cc]:
+	* glom/variablesmap.[h|cc]: Replace use of (deprecated) Gtk::ComboboxEntry 
+	with ComboBox with has_entry=true.
+	
+This is the glom-1-18 branch, which uses gtkmm 2.24.
+
 2011-01-06  Murray Cumming  <murrayc@murrayc.com>
 
 	get_current_locale(): Handle more complex setlocale(NULL) results.

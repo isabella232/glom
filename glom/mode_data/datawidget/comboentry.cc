@@ -55,7 +55,7 @@ ComboEntry::ComboEntry()
 Gtk::Entry* ComboEntry::get_entry()
 {
   #ifndef GLOM_ENABLE_MAEMO
-  return Gtk::ComboBoxEntry::get_entry();
+  return Gtk::ComboBox::get_entry();
   #else
   return m_maemo_selector.get_entry();
   #endif
@@ -64,7 +64,7 @@ Gtk::Entry* ComboEntry::get_entry()
 const Gtk::Entry* ComboEntry::get_entry() const
 {
   #ifndef GLOM_ENABLE_MAEMO
-  return Gtk::ComboBoxEntry::get_entry();
+  return Gtk::ComboBox::get_entry();
   #else
   return m_maemo_selector.get_entry();
   #endif
@@ -207,7 +207,7 @@ void ComboEntry::check_for_change()
 
 bool ComboEntry::on_entry_focus_out_event(GdkEventFocus* /* event */)
 {
-  //bool result = Gtk::ComboBoxEntry::on_focus_out_event(event);
+  //bool result = Gtk::ComboBox::on_focus_out_event(event);
 
   //The user has finished editing.
   check_for_change();
@@ -336,7 +336,7 @@ void ComboEntry::on_changed(int /* column */)
 #endif
 {
   //Call base class:
-  Gtk::ComboBoxEntry::on_changed();
+  Gtk::ComboBox::on_changed();
 
   //This signal is emitted for every key press, but sometimes it's just to say that the active item has changed to "no active item",
   //if the text is not in the dropdown list:
