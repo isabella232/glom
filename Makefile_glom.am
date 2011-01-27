@@ -149,6 +149,17 @@ glom_source_files = \
 	glom/utility_widgets/dialog_properties.h			\
 	glom/utility_widgets/flowtable.cc				\
 	glom/utility_widgets/flowtable.h				\
+  glom/utility_widgets/gimpruler/gimpruler.c \
+  glom/utility_widgets/gimpruler/gimpruler.h \
+  glom/utility_widgets/gimpruler/libgimpbase/gimpbase.h \
+  glom/utility_widgets/gimpruler/libgimpbase/gimpbaseenums.h \
+  glom/utility_widgets/gimpruler/libgimpbase/gimpbasetypes.h \
+  glom/utility_widgets/gimpruler/libgimpbase/gimpbase-private.h \
+  glom/utility_widgets/gimpruler/libgimpbase/gimpbase-private.c \
+  glom/utility_widgets/gimpruler/libgimpbase/gimpparam.h \
+  glom/utility_widgets/gimpruler/libgimpbase/gimpunit.c \
+  glom/utility_widgets/gimpruler/libgimpbase/gimpunit.h \
+  glom/utility_widgets/gimpruler/libgimpmath/gimpmath.h \
 	glom/utility_widgets/imageglom.cc				\
 	glom/utility_widgets/imageglom.h				\
 	glom/utility_widgets/layoutwidgetbase.cc			\
@@ -367,3 +378,4 @@ glom_glom_LDFLAGS = -mwindows
 else
 glom_glom_LDFLAGS =
 endif
+

@@ -1964,41 +1964,11 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkTable" id="table1">
+                  <object class="GtkTable" id="table_canvas">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="n_rows">2</property>
                     <property name="n_columns">2</property>
-                    <child>
-                      <object class="GtkVRuler" id="vruler">
-                        <property name="visible">True</property>
-                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                        <property name="upper">10</property>
-                        <property name="position">5</property>
-                        <property name="max_size">10</property>
-                        <property name="metric">centimeters</property>
-                      </object>
-                      <packing>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                        <property name="x_options">GTK_SHRINK</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkHRuler" id="hruler">
-                        <property name="visible">True</property>
-                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                        <property name="upper">10</property>
-                        <property name="position">5</property>
-                        <property name="max_size">10</property>
-                        <property name="metric">centimeters</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="y_options">GTK_SHRINK</property>
-                      </packing>
-                    </child>
                     <child>
                       <object class="GtkVBox" id="vbox_canvas">
                         <property name="visible">True</property>

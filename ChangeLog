@@ -1,3 +1,32 @@
+2010-01-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Replaced GtkRuler with GimpRuler because GtkRuler was removed from GTK 3.
+
+	* glom/utility_widgets/gimpruler/: Added several source files from 
+	gimp, with small changes to make it build for us, to provide the GimpRuler 
+	widget.
+	* COPYING: Switch to GPL version 3 (instead of 2), because the GIMP source 
+	code uses it.
+	* Makefile_glom.am:
+	* glom/glom_developer.glade:
+	* glom/mode_design/print_layouts/window_print_layout_edit.[cc|cc]: Use 
+	GimpRuler instead of GtkRuler, creating and adding them in code instead of 
+	in the .glade file, to avoid Glade needing to know about that widget.
+
+2011-01-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Do not use deprecated Gtk::ComboBoxEntry.
+
+	* glom/glom_developer.glade:
+	* glom/mode_data/datawidget/comboentry.[h|cc]:
+	* glom/mode_design/comboentry_currency.[h|cc]:
+	* glom/mode_design/layout/layout_item_dialogs/comboentry_borderwidt
+	h.[h|cc]:
+	* glom/variablesmap.[h|cc]: Replace use of (deprecated) Gtk::ComboboxEntry 
+	with ComboBox with has_entry=true.
+	
+This is the glom-1-18 branch, which uses gtkmm 2.24.
+
 2011-01-27  Murray Cumming  <murrayc@murrayc.com>
 
 	Do not use deprecated Gtk::ComboBoxEntry.

@@ -62,12 +62,23 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   builder->get_widget("entry_name", m_entry_name);
   builder->get_widget("entry_title", m_entry_title);
 
-  builder->get_widget("vruler", m_vruler);
-  builder->get_widget("hruler", m_hruler);
+  //The rulers are not in the glade file because they use an unusual widget 
+  //that Glade wouldn't usually know about:
+  m_vruler = GIMP_RULER(gimp_ruler_new(GTK_ORIENTATION_VERTICAL));
+  gtk_widget_show(GTK_WIDGET(m_vruler));
+  m_hruler = GIMP_RULER(gimp_ruler_new(GTK_ORIENTATION_HORIZONTAL));
+  gtk_widget_show(GTK_WIDGET(m_hruler));
+ 
+  //Add the ruler widgets to the table at the left and top:
+  Gtk::Table* table = 0;
+  builder->get_widget("table_canvas", table);
+  gtk_table_attach(table->gobj(), GTK_WIDGET(m_vruler), 
+    0, 1, 1, 2, GTK_SHRINK, (GtkAttachOptions)(GTK_EXPAND | GTK_FILL), 0, 0);
+  gtk_table_attach(table->gobj(), GTK_WIDGET(m_hruler), 
+    1, 2, 0, 1, (GtkAttachOptions)(GTK_EXPAND | GTK_FILL), GTK_SHRINK, 0, 0);
 
-  //I'm not sure what set_metric() does, but using Gtk::CENTIMETERS leads to our max being ignored/used-weirdly. murrayc.
-  m_hruler->set_metric(Gtk::PIXELS);
-  m_vruler->set_metric(Gtk::PIXELS);
+  gimp_ruler_set_unit(m_hruler, GIMP_UNIT_MM);
+  gimp_ruler_set_unit(m_vruler, GIMP_UNIT_MM);
 
   builder->get_widget("handle_box", m_palette_handle_box);
 
@@ -845,16 +856,14 @@ void Window_PrintLayout_Edit::set_ruler_sizes()
   //Note: We should use the page size if we decide not to make the canvas bounds == page size.
   on_scroll_value_changed();
 
-  /*
   double x1 = 0;
   double y1 = 0;
   double x2 = 0;
   double y2 = 0;
   m_canvas.get_bounds(x1, y1, x2, y2);
 
-  m_hruler->set_range(x1, x2, 0, x2);
-  m_vruler->set_range(y1, y2, 0, y2);
-  */
+  gimp_ruler_set_range(m_hruler, x1, x2, x2);
+  gimp_ruler_set_range(m_vruler, y1, y2, x2);
 }
 
 void Window_PrintLayout_Edit::on_scroll_value_changed()
@@ -871,8 +880,8 @@ void Window_PrintLayout_Edit::on_scroll_value_changed()
 
   //std::cout << "DEBUG: Calling m_hruler->set_range(" << x << ", " << x + width << ", 0, " <<  x + width << std::endl;
 
-  m_hruler->set_range(x, x + width, 0, x + width);
-  m_vruler->set_range(y, y + height, 0, y + height);
+  gimp_ruler_set_range(m_hruler, x, x + width, x + width);
+  gimp_ruler_set_range(m_vruler, y, y + height, y + height);
 }
 
 bool Window_PrintLayout_Edit::on_configure_event(GdkEventConfigure* event)
