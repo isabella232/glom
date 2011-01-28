@@ -157,7 +157,7 @@ void CellRendererDbList::repack_cells_related(Gtk::CellLayout* combobox)
     std::cerr << G_STRFUNC << ": widget is null." << std::endl;
   }
 
-  const std::list<Gtk::CellRenderer*> cells = combobox->get_cells();
+  const std::vector<Gtk::CellRenderer*> cells = combobox->get_cells();
   const guint initial_cells_count = cells.size();
 
   guint i = 0;

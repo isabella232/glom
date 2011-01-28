@@ -135,7 +135,7 @@ private:
 
   //Toolbar:
   Gtk::HandleBox* m_palette_handle_box; //TODO: The toolbar is already a HandleBox.
-  std::list<Gtk::TargetEntry> m_drag_targets;
+  std::vector<Gtk::TargetEntry> m_drag_targets;
   PrintLayoutToolbar m_toolbar;
   
   //Context menu for clicking on empty space on the canvas:

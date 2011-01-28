@@ -51,7 +51,7 @@ PrintLayoutToolbarButton::PrintLayoutToolbarButton(const std::string& icon_name,
   m_type = type;
   g_object_set_data(G_OBJECT(gobj()), "glom-type", GINT_TO_POINTER(type));
 
-  std::list<Gtk::TargetEntry> targetentries;
+  std::vector<Gtk::TargetEntry> targetentries;
   targetentries.push_back(Gtk::TargetEntry(get_target()));
 
   drag_source_set(targetentries, Gdk::MODIFIER_MASK, 

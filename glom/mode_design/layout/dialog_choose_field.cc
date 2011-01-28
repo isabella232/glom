@@ -222,7 +222,7 @@ Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen(
   sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship(related_relationship);
 
     
-  typedef std::list<Gtk::TreeModel::Path> type_list_paths;
+  typedef std::vector<Gtk::TreeModel::Path> type_list_paths;
   type_list_paths list_paths = refTreeSelection->get_selected_rows();
   for(type_list_paths::const_iterator iter = list_paths.begin(); iter != list_paths.end(); ++iter)
   {
