@@ -2005,7 +2005,7 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
   //We do not save the column width if this is the last column,
   //because that must always be automatic,
   //because it must resize when the whole column resizes.
-  std::list<const Gtk::TreeView::Column*> columns = m_TreeView.get_columns();
+  std::vector<Gtk::TreeView::Column*> columns = m_TreeView.get_columns();
   const int n_view_columns = columns.size();
   if(n_view_columns && (view_column == m_TreeView.get_column(n_view_columns -1)))
     return;

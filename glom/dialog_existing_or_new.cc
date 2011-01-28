@@ -187,8 +187,9 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 #endif
 
   // Add recently used files
-  Gtk::RecentManager::ListHandle_RecentInfos infos = Gtk::RecentManager::get_default()->get_items();
-  for(Gtk::RecentManager::ListHandle_RecentInfos::const_iterator iter = infos.begin(); iter != infos.end(); ++ iter)
+  typedef std::vector< Glib::RefPtr<Gtk::RecentInfo> > type_vec_infos;
+  type_vec_infos infos = Gtk::RecentManager::get_default()->get_items();
+  for(type_vec_infos::const_iterator iter = infos.begin(); iter != infos.end(); ++ iter)
   {
     Glib::RefPtr<Gtk::RecentInfo> info = *iter;
     if(info->get_mime_type() == "application/x-glom")

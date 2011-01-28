@@ -1,3 +1,24 @@
+2011-01-28  Murray Cumming  <murrayc@murrayc.com>
+
+	Adapt to the gtkmm 3 change to using vectors.
+
+	* glom/mode_data/datawidget/cellrenderer_dblist.cc:
+	* glom/mode_data/db_adddel/db_adddel.cc:
+	* glom/mode_design/layout/dialog_choose_field.cc:
+	* glom/mode_design/print_layouts/print_layout_toolbar_button.cc:
+	* glom/mode_design/print_layouts/window_print_layout_edit.h:
+	* glom/utility_widgets/imageglom.cc:
+	* glom/utility_widgets/layouttoolbarbutton.cc: Use std::vector instead of 
+	std::list.
+	* glom/dialog_existing_or_new.cc: This one even used the intermediate type 
+	directly, showing how necessary this API change was.
+	
+2011-01-18  Murray Cumming  <murrayc@murrayc.com>
+
+	Disable more deprecated API.
+
+	* configure.ac: Add PANGO, PANGOMM, and CAIRO to the list.
+
 2011-01-27  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the build with gtkmm 2.23/24 with --enable-warnings=fatal.

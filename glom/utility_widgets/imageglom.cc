@@ -244,8 +244,8 @@ Gnome::Gda::Value ImageGlom::get_value() const
     {
       gchar* buffer = 0;
       gsize buffer_size = 0;
-      std::list<Glib::ustring> list_keys;
-      std::list<Glib::ustring> list_values;
+      std::vector<Glib::ustring> list_keys;
+      std::vector<Glib::ustring> list_values;
       //list_keys.push_back("quality"); //For jpeg only.
       //list_values.push_back("95");
 
@@ -430,8 +430,7 @@ void ImageGlom::on_menupopup_activate_copy()
   Glib::RefPtr<Gtk::Clipboard> refClipboard = Gtk::Clipboard::get();
 
   //Targets:
-  std::list<Gtk::TargetEntry> listTargets;
-
+  std::vector<Gtk::TargetEntry> listTargets;
   listTargets.push_back( Gtk::TargetEntry(GLOM_IMAGE_FORMAT_MIME_TYPE) );
 
   refClipboard->set( listTargets, sigc::mem_fun(*this, &ImageGlom::on_clipboard_get), sigc::mem_fun(*this, &ImageGlom::on_clipboard_clear) );
