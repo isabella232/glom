@@ -892,7 +892,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
     holder_table_name->set_value(quoted_table_name, error);
 #endif
 
-    std::list< Glib::RefPtr<Gnome::Gda::Holder> > holder_list;
+    std::vector< Glib::RefPtr<Gnome::Gda::Holder> > holder_list;
     holder_list.push_back(holder_table_name);
 
     Glib::RefPtr<Gnome::Gda::DataModel> data_model_fields;
@@ -1477,7 +1477,7 @@ static void recalculate_next_auto_increment_value(const Glib::ustring& table_nam
 
   //Get the max key value in the database:
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-  std::list<guint> args;
+  std::vector<guint> args;
   args.push_back(builder->add_field_id(field_name, table_name));
   builder->add_field_value_id(builder->add_function("MAX", args));
   builder->select_add_target(table_name);
