@@ -1,3 +1,11 @@
+2011-01-30  Murray Cumming  <murrayc@murrayc.com>
+
+	Adapt to libgdamm API changes.
+
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/db_utils.cc: libgdamm now uses std::vector instead of 
+	*Handle, like gtkmm.
+
 2011-01-28  Murray Cumming  <murrayc@murrayc.com>
 
 	Adapt to the gtkmm 3 change to using vectors.
