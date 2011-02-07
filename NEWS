@@ -1,3 +1,11 @@
+1.19.3 (unstable):
+
+* Build
+  - Build with the latest gtkmm, goocanvasmm, libgdamm and gtksourceviewmm.
+  - Fix the tests builds with changed linker behaviour on Ubuntu Natty.
+  - Allow libglom to be built without building the Glom UI code too.
+* Handle changed setlocale() behaviour on Ubuntu Natty.
+
 1.19.2 (unstable):
 
 * CSV Import: Actually preview and import the field values.
