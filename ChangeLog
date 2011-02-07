@@ -1,3 +1,10 @@
+2011-02-07  Murray Cumming  <murrayc@murrayc.com>
+
+	Require the correct gtksourceviewmm version.
+
+	* configure.ac: Use the gtksourceviewmm version with the API changes to use 
+	vector.
+
 2011-01-30  Murray Cumming  <murrayc@murrayc.com>
 
 	Adapt to libgdamm API changes.

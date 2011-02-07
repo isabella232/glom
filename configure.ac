@@ -156,13 +156,13 @@ AC_ARG_ENABLE([maemo-launcher],
 # Libraries used by libglom:
 # We require libgda >= 4.0.4 because previous versions had case-sensitivity or fatal metastore problems.
 # libgda >= 4.1.2 is also OK, but not 4.1.<2.
-REQUIRED_LIBGLOM_LIBS='gthread-2.0 giomm-2.4 libxml++-2.6 >= 2.23.1 pygda-4.0 >= 2.25.3 pygobject-2.0 >= 2.6.0 libgdamm-4.0 >= 3.99.21 libgda-4.0 >= 4.0.4 libgda-postgres-4.0'
+REQUIRED_LIBGLOM_LIBS='gthread-2.0 giomm-2.4 libxml++-2.6 >= 2.23.1 pygda-4.0 >= 2.25.3 pygobject-2.0 >= 2.6.0 libgdamm-4.0 >= 4.1.2 libgda-4.0 >= 4.0.4 libgda-postgres-4.0'
 
 AS_IF([test "x$glom_host_win32" != xyes],
       [REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS libepc-1.0 >= 0.3.1"])
 
 # Libraries used by Glom:
-REQUIRED_GLOM_LIBS="$REQUIRED_LIBGLOM_LIBS gtkmm-3.0 >= 2.99.1 gthread-2.0 libxml++-2.6 libxslt >= 1.1.10 goocanvasmm-2.0 >= 1.90.2"
+REQUIRED_GLOM_LIBS="$REQUIRED_LIBGLOM_LIBS gtkmm-3.0 >= 2.99.1 gthread-2.0 libxml++-2.6 libxslt >= 1.1.10 goocanvasmm-2.0 >= 1.90.3"
 
 # Do not require iso-codes in client-only mode, or on Windows:
 # TODO: Package iso-codes for Windows?
@@ -171,7 +171,7 @@ AS_IF([test "x$glom_enable_client_only" != xyes && test "x$glom_host_win32" != x
 
 # Do not require gtksourceviewmm in client only mode
 AS_IF([test "x$glom_enable_client_only" != xyes],
-      [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS gtksourceviewmm-3.0 >= 2.91.4"])
+      [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS gtksourceviewmm-3.0 >= 2.91.5"])
 
 AS_IF([test "x$glom_enable_sqlite" = xyes],
       [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS libgda-sqlite-4.0"])
