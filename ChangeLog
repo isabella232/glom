@@ -1,3 +1,11 @@
+2011-02-10  Murray Cumming  <murrayc@murrayc.com>
+
+	Use the new Gtk::ComboBox CellArea API to align columns properly.
+
+	* glom/mode_data/datawidget/combo.cc: Get the CellAreaBox and use its 
+	more-useful pack() method instead of the standard one, so that the columns 
+	really align.
+
 1.19.3:
 
 2011-02-07  Murray Cumming  <murrayc@murrayc.com>

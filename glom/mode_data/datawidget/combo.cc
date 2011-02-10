@@ -95,11 +95,17 @@ void ComboGlom::set_choices_fixed(const FieldFormatting::type_list_values& list_
     clear(); //This breaks GtkCombo with has-entry.
   }
 
+  Glib::RefPtr<Gtk::CellAreaBox> cell_area = 
+    Glib::RefPtr<Gtk::CellAreaBox>::cast_dynamic(get_area());
+  if(!cell_area)
+  {
+    std::cerr << G_STRFUNC << ": Unexpected or null CellArea type." << std::endl;
+    return;
+  }
+  
   const guint columns_count = model->get_n_columns();
   for(guint i = 0; i < columns_count; ++i)
   {
-
-
     //set_entry_text_column() adds its own CellRenderer,
     //which we cannot replace without confusing (and crashing) GtkComboBox.
     if(i == 0 && get_has_entry())
@@ -109,13 +115,7 @@ void ComboGlom::set_choices_fixed(const FieldFormatting::type_list_values& list_
     cell->property_xalign() = 0.0f;
 
     //Use the renderer:
-    //We don't expand the first column, so we can align the other columns.
-    //Otherwise the other columns appear center-aligned.
-    //This bug is relevant: https://bugzilla.gnome.org/show_bug.cgi?id=629133
-    if(i == 0)
-      pack_start(*cell, false);
-    else
-      pack_start(*cell, false);
+    cell_area->pack_start(*cell, true /* expand */, true /* align */, true /* fixed */);
 
     //Make the renderer render the column:
     add_attribute(*cell, "text", i);
