@@ -1,16 +1,16 @@
 # translation of glom.userguide.HEAD.po to Español
 # Spanish translation for glom manual
 #
-# Daniel Mustieles <daniel.mustieles@gmail.com, 2008.
 # Jorge González <jorgegonz@svn.gnome.org>, 2007, 2010.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2008, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glom.userguide.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-12 10:05+0000\n"
-"PO-Revision-Date: 2010-05-13 21:56+0200\n"
-"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
+"POT-Creation-Date: 2010-05-13 19:58+0000\n"
+"PO-Revision-Date: 2011-02-21 15:48+0100\n"
+"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -777,8 +777,8 @@ msgid ""
 "calculation in the <literal>Edit</literal> window."
 msgstr ""
 "También puede hacer cálculos para especificar el valor predeterminado de los "
-"campos, seleccionado la solapa <literal>Valor predeterminado</literal> de la "
-"ventana <literal>Detalles del campo</literal>, pulsando sobre la casilla "
+"campos, seleccionado la pestaña <literal>Valor predeterminado</literal> de "
+"la ventana <literal>Detalles del campo</literal>, pulsando sobre la casilla "
 "<literal>Calcular valor</literal> e introduciendo un cálculo en Python. "
 "Puede comprobar este cálculo en la ventana <literal>Editar</literal>."
 
