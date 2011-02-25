@@ -35,18 +35,11 @@
   - Use goocanvasmm-2.0 instead of goocanvasmm-1.0.
   - Use gtksourceviewmm-3.0 instead of gtksourceviewmm-2.0.
 
-1.16.1 (stable):
-
-* Prevent crash when all fields have been deleted from a table, also when
-  then trying to reopen the file. (Murray Cumming)
-* Find: prevent duplicate error dialog when no find criteria was entered.
-  (Armin Burgeier)
-
-1.18.0:
+1.18.0: (stable):
 
 * Builds with gtkmm-2.24 with no use of deprecated API.
 
-1.16.2:
+1.16.2: (stable):
 
 * CSV Import: Actually preview and import the field values.
   Bug #625693 (maximiliano).
@@ -55,9 +48,13 @@
 * Build: Remove the gconfmm dependency, because we don't use it.
   (Murray Cumming)
 	
-1.16.1:
+1.16.1 (stable):
 
-Build: Fix the python module's filename.
+* Prevent crash when all fields have been deleted from a table, also when
+  then trying to reopen the file. (Murray Cumming)
+* Find: prevent duplicate error dialog when no find criteria was entered.
+  (Armin Burgeier)
+* Build: Fix the python module's filename.
 (Murray Cumming)
 
 1.16.0 (stable):
