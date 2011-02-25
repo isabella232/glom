@@ -137,7 +137,7 @@ DbAddDel::DbAddDel()
   m_TreeView.add_events(Gdk::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
   m_TreeView.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &DbAddDel::on_treeview_button_press_event) );
   m_TreeView.signal_columns_changed().connect( sigc::mem_fun(*this, &DbAddDel::on_treeview_columns_changed) );
-  signal_button_press_event().connect(sigc::mem_fun(*this, &DbAddDel::on_button_press_event_Popup));
+  //signal_button_press_event().connect(sigc::mem_fun(*this, &DbAddDel::on_button_press_event_Popup));
   #endif //GLOM_ENABLE_MAEMO
   //add_blank();
 
@@ -184,6 +184,11 @@ void DbAddDel::do_user_requested_edit()
 
 #ifndef GLOM_ENABLE_MAEMO
 
+void DbAddDel::on_idle_row_edit()
+{
+  on_MenuPopup_activate_Edit();
+}
+
 void DbAddDel::on_cell_button_clicked(const Gtk::TreeModel::Path& path)
 {
   if(!m_refListStore)
@@ -195,7 +200,13 @@ void DbAddDel::on_cell_button_clicked(const Gtk::TreeModel::Path& path)
     select_item(iter, false /* start_editing */);
   }
 
-  on_MenuPopup_activate_Edit();
+  //This delayed action avoids a warning about a NULL GtkAdjustment.
+  //It's fairly understandable that GtkTreeView doesn't like to be destroyed 
+  //as a side-effect of a click on one of its GtkCellRenderers.
+  //That's unlikely to be fixed properly until GtkTreeView supports a real 
+  //button cell-renderer.
+  Glib::signal_idle().connect_once(
+    sigc::mem_fun(*this, &DbAddDel::on_idle_row_edit));
 }
 
 void DbAddDel::on_MenuPopup_activate_Edit()
