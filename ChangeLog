@@ -1,3 +1,11 @@
+2011-02-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Avoid GTK+ warning when clicking on the list button.
+
+	* glom/mode_data/db_adddel/db_adddel.[h|cc]: on_cell_button_clicked(): 
+	Delay the response to the click, to an idle handler, to avoid confusing 
+	GtkTreeView, which was showing a warning with GTK+ 3 about a NULL GtkAdjustment.
+
 2011-01-28  Murray Cumming  <murrayc@murrayc.com>
 
 	Adapt to the gtkmm 3 change to using vectors.
