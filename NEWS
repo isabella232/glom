@@ -42,6 +42,24 @@
 * Find: prevent duplicate error dialog when no find criteria was entered.
   (Armin Burgeier)
 
+1.18.0:
+
+* Builds with gtkmm-2.24 with no use of deprecated API.
+
+1.16.2:
+
+* CSV Import: Actually preview and import the field values.
+  Bug #625693 (maximiliano).
+* List view: Make the retry option actually work afer entering invalid data.
+  Bug #167818
+* Build: Remove the gconfmm dependency, because we don't use it.
+  (Murray Cumming)
+	
+1.16.1:
+
+Build: Fix the python module's filename.
+(Murray Cumming)
+
 1.16.0 (stable):
 
 New features in Glom 1.16, compared to Glom 1.14:
