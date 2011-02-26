@@ -1,5 +1,12 @@
 2011-02-26  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix the CSV import test.
+
+	* tests/import/test_parsing.cc: Correct the number of expected tokens.
+	This was previously just the number that was (incorrectly) parsed before.
+
+2011-02-26  Murray Cumming  <murrayc@murrayc.com>
+
 	CSV Import: Fix quoted-newline detection, so we don't drop rows.
 
 	* glom/import_csv/csv_parser.[h|cc]: on_idle_parse(): Make in_quotes a 

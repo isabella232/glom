@@ -213,8 +213,11 @@ int main()
        Glib::build_filename(GLOM_TESTS_IMPORT_DATA_NOTINSTALLED,
          "albums.csv");
     const bool finished_parsing = ImportTests::run_parser_on_file(&connect_signals, Glib::filename_to_uri(filename));
+    //std::cout << "tokens count=" << get_tokens_instance().size() << std::endl;
+    const guint expected_tokens = 1348.0 /* lines */ * 7.0 /* columns */;
+    //std::cout << "expected_tokens=" << expected_tokens << std::endl;
     const bool passed = (finished_parsing &&
-                         8450 == get_tokens_instance().size());
+                         expected_tokens == get_tokens_instance().size());
 
     get_tokens_instance().clear();
 
