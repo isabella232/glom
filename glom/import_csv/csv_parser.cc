@@ -56,6 +56,7 @@ CsvParser::CsvParser(const std::string& encoding_charset)
 : m_raw(0),
   m_encoding(encoding_charset),
   m_input_position(0),
+  m_in_quotes(false),
   m_idle_connection(),
   m_line_number(0),
   m_state(STATE_NONE),
@@ -268,6 +269,8 @@ void CsvParser::clear()
   //m_stream.reset();
   //m_raw.clear();
   m_rows.clear();
+  m_in_quotes = false;
+
   // Set to current encoding I guess ...
   //m_conv("UTF-8", encoding),
   m_input_position= 0;
@@ -336,7 +339,6 @@ bool CsvParser::on_idle_parse()
   // Identify the record rows in the .csv file.
   // We can't just search for newlines because they may be inside quotes too.
   // TODO: Use a regex instead, to more easily handle quotes?
-  bool in_quotes = false;
   while(true)
   {
     //std::cout << "debug: checking start: " << std::string(prev, 10) << std::endl;
@@ -374,14 +376,14 @@ bool CsvParser::on_idle_parse()
       signal_encoding_error().emit();
       return false;  //Stop calling the idle handler.
     }
-    else if(in_quotes)
+    else if(m_in_quotes)
     {
       // Ignore newlines inside quotes.
 
       // End quote:
       if(ch == (char)QUOTE)
       {
-        in_quotes = false;
+        m_in_quotes = false;
 
         /*
         const size_t len = pos - prev;
@@ -402,7 +404,7 @@ bool CsvParser::on_idle_parse()
       // Start quote:
       if(ch == (char)QUOTE)
       {
-        in_quotes = true;
+        m_in_quotes = true;
         prev = pos + 1;
         continue;
       }

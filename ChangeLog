@@ -1,3 +1,15 @@
+2011-02-26  Murray Cumming  <murrayc@murrayc.com>
+
+	CSV Import: Fix quoted-newline detection, so we don't drop rows.
+
+	* glom/import_csv/csv_parser.[h|cc]: on_idle_parse(): Make in_quotes a 
+	member variable, initialized in clear(), so we remember it across calls to 
+	on_idle_parse(), instead of thinking that we are in quotes just because we 
+	are parsing arbitrary chunks of bytes that look that way individually.
+	
+	This fixes bug #637529 (Darmon Xavier), so all rows should be imported 
+	instead of dropping some in the middle.
+
 2011-02-26  Murray Cumming  <murrayc@murrayc-x61>
 
 	Dialog_Import_CSV_Progress: Try to really show progress.
