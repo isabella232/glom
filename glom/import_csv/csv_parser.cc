@@ -73,6 +73,10 @@ void CsvParser::set_file_and_start_parsing(const std::string& file_uri)
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
 
   set_state(CsvParser::STATE_PARSING);
+  
+  //TODO Get a rough estimate of the number of rows (for showing progress),
+  //by counting the number of lines:
+  //guint lines_count = 0;
 
   // Query the display name of the file to set in the title:
   file->query_info_async(sigc::bind(sigc::mem_fun(*this, &CsvParser::on_file_query_info), file),

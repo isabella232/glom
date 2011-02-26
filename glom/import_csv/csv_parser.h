@@ -145,6 +145,14 @@ public:
    */
   void set_encoding(const Glib::ustring& encoding_charset);
 
+  //TODO: Add  @result A rough estimate of the number of rows that will be parsed.
+  /** Open the file and start parsing the rows.
+   * signal_line_scanned() will then be emitted when a row has been parsed.
+   * signal_finished_parsing() will be emitted when there are no more rows to parse.
+   * signal_file_read_error() will be emitted if there is a problem while parsing.
+   *
+   * @param uri The URI of the file containing the CSV data to parse.
+   */
   void set_file_and_start_parsing(const std::string& uri);
 
 private:
