@@ -1,3 +1,7 @@
+1.18.0:
+
+* Builds with gtkmm-2.24 with no use of deprecated API.
+
 1.16.2:
 
 * CSV Import: Actually preview and import the field values.
