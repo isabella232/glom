@@ -179,6 +179,7 @@ private:
   std::string m_encoding;
   std::vector<char>::size_type m_input_position;
   std::string m_current_line;
+  bool m_in_quotes;
 
   sigc::connection m_idle_connection;
   unsigned int m_line_number;
