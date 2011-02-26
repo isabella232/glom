@@ -1,3 +1,9 @@
+2011-02-26  Murray Cumming  <murrayc@murrayc.com>
+
+	Correct a (translatable) string.
+
+	* glom/glom.glade: Correct an English string. A comma is not a full stop.
+
 2011-02-25  Murray Cumming  <murrayc@murrayc.com>
 
 	Avoid GTK+ warning when clicking on the list button.
