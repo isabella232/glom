@@ -1,3 +1,11 @@
+2011-02-26  Murray Cumming  <murrayc@murrayc-x61>
+
+	Dialog_Import_CSV_Progress: Try to really show progress.
+
+	* glom/import_csv/dialog_import_csv_progress.cc: Try to call 
+	Main::events_pending() and iterate() to really show the text in the progress
+	bar, though it does not seem to work.
+
 2011-02-26  Murray Cumming  <murrayc@murrayc.com>
 
 	Correct a (translatable) string.

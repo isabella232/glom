@@ -145,11 +145,21 @@ void Dialog_Import_CSV_Progress::on_state_changed()
 bool Dialog_Import_CSV_Progress::on_idle_import()
 {
   //Note to translators: This is a progress indication, showing how many rows have been imported.
-  //TODO: replace with pulsing progress bar, or have a heuristic based on file size.
-  m_progress_bar->set_text(Glib::ustring::format(m_current_row));
+  //TODO: Have a heuristic based on file size or total rows count.
+  const Glib::ustring status_text = Glib::ustring::format(m_current_row);
+  m_progress_bar->set_text(status_text);
+  m_progress_bar->pulse();
+
+  std::cout << "debug: status_text=" << status_text << std::endl;
+  
+  //Allow GTK+ to process events, so that the UI is responsive.
+  //TODO: This does not seem to actually work.
+  while(Gtk::Main::events_pending())
+   Gtk::Main::iteration();
 
   const CsvParser::type_row_strings row = m_data_source->get_parser().fetch_next_row();
 
+  //If there are no more rows to import, then stop, by returning false:
   // TODO: Perhaps abort on 0 == row instead, so that we do not stop import on
   // empty rows that are in between other rows.
   if(row.empty())
@@ -221,19 +231,19 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
 
   if(Glom::Conversions::value_is_empty(primary_key_value))
   {
-    Glib::ustring message(Glib::ustring::compose(_("Error importing row %1: Cannot import the row because the primary key is empty.\n"), m_current_row + 1));
+    const Glib::ustring message(Glib::ustring::compose(_("Error importing row %1: Cannot import the row because the primary key is empty.\n"), m_current_row + 1));
     add_text(message);
   }
   else
   {
-    std::cout << "debug: " << G_STRFUNC << ": Calling record_new() with primary_key_value=" << primary_key_value.to_string() << " ..." << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": Calling record_new() with primary_key_value=" << primary_key_value.to_string() << " ..." << std::endl;
     record_new(true /* use_entered_data */, primary_key_value);
-    std::cout << "debug: " << G_STRFUNC << ": ... Finished calling record_new()" << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": ... Finished calling record_new()" << std::endl;
   }
 
   m_current_row_values.clear();
 
-  ++ m_current_row;
+  ++m_current_row;
   return true;
 }
 
