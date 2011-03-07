@@ -30,6 +30,7 @@ namespace Glom
 {
 
 class Application;
+class NotebookLabel;
 
 class NotebookGlom
 : public Gtk::Notebook,
@@ -40,6 +41,8 @@ public:
   explicit NotebookGlom();
   virtual ~NotebookGlom();
 
+protected:
+  friend class NotebookLabel;
   void delete_from_layout();  
   
 protected:
