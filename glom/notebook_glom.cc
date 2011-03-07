@@ -43,7 +43,7 @@ Notebook_Glom::~Notebook_Glom()
 
 void Notebook_Glom::on_show()
 {
-  Gtk::Notebook::on_show();
+  NotebookNoFrame::on_show();
 
   //We do this only in on_show() because otherwise GtkNotebook emits the signal (and we catch it) during show:
   if(!m_connection_switch_page)
@@ -99,7 +99,7 @@ void Notebook_Glom::on_switch_page_handler(Gtk::Widget* /* pPage */, guint uiPag
 void Notebook_Glom::on_leave_page(guint uiPageNumber)
 {
   //Call base class:
-  //Gtk::Notebook::on_leave_page(uiPageNumber);
+  //NotebookNoFrame::on_leave_page(uiPageNumber);
 
   //Tell the page to save itself:
   if(!m_destructor_in_progress)

@@ -31,6 +31,9 @@
 namespace Glom
 {
 
+static const gchar gNotebookCss[] = "gtkmm__GtkNotebook#glomnotebook { padding: 0 0 0 0; }";
+
+
 Notebook_Data::Notebook_Data()
 :
   #ifdef GLOM_ENABLE_MAEMO
@@ -38,6 +41,30 @@ Notebook_Data::Notebook_Data()
   #endif
   m_iPage_Details(0), m_iPage_List(0)
 {
+
+  //Hide the GtkNotebook border:
+  set_name("glomnotebook");
+
+  std::cout << G_OBJECT_TYPE_NAME(gobj()) << std::endl;
+  
+  GtkStyleContext *style_context;
+  GtkCssProvider *provider;
+  GError *error = NULL;
+
+  style_context = gtk_widget_get_style_context(GTK_WIDGET(gobj()));
+  provider = gtk_css_provider_new();
+  if (!gtk_css_provider_load_from_data(provider, gNotebookCss, -1,
+                                        &error)) {
+    g_error("%s", error->message);
+    g_error_free(error);
+    return;
+  }
+  gtk_style_context_add_provider(style_context,
+                                  GTK_STYLE_PROVIDER(provider),
+                                  GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+  g_object_unref(provider);
+   
+   
   //Add Pages:
   append_page(m_Box_List, _("List"));
   m_iPage_List = 0;

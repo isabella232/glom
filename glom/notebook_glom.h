@@ -21,6 +21,7 @@
 #ifndef GLOM_NOTEBOOK_GLOM_H
 #define GLOM_NOTEBOOK_GLOM_H
 
+#include <glom/utility_widgets/notebook_noframe.h>
 #include <glom/box_withbuttons.h>
 #include <libglom/document/document.h>
 
@@ -30,7 +31,7 @@ namespace Glom
 /** Notebook with document methods.
   */
 class Notebook_Glom :
-  public Gtk::Notebook,
+  public NotebookNoFrame,
   public Base_DB
 {
 public: 

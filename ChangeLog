@@ -1,3 +1,16 @@
+2011-03-08  Murray Cumming  <murrayc@murrayc.com>
+
+	Use a custom Notebook-like widget instead of Gtk::Notebook.
+
+	* glom/utility_widgets/notebook_noframe.[h|cc]: A new class with an API that
+	is as much like the Gtk::Notebook API as we need it to be.
+	Unlike GtkNotebook, this has no frame around the "page" at the bottom.
+	That was wasting space because the extra division was unnecessary when it
+	fills almost the whole window anyway.
+	* Makefile_glom.am: Mention the new files.
+	* glom/mode_data/notebook_data.cc: Derive from the new class instead of
+	Gtk::Notebook.
+
 2011-02-26  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the CSV import test.
@@ -9,19 +22,19 @@
 
 	CSV Import: Fix quoted-newline detection, so we don't drop rows.
 
-	* glom/import_csv/csv_parser.[h|cc]: on_idle_parse(): Make in_quotes a 
-	member variable, initialized in clear(), so we remember it across calls to 
-	on_idle_parse(), instead of thinking that we are in quotes just because we 
+	* glom/import_csv/csv_parser.[h|cc]: on_idle_parse(): Make in_quotes a
+	member variable, initialized in clear(), so we remember it across calls to
+	on_idle_parse(), instead of thinking that we are in quotes just because we
 	are parsing arbitrary chunks of bytes that look that way individually.
-	
-	This fixes bug #637529 (Darmon Xavier), so all rows should be imported 
+
+	This fixes bug #637529 (Darmon Xavier), so all rows should be imported
 	instead of dropping some in the middle.
 
 2011-02-26  Murray Cumming  <murrayc@murrayc-x61>
 
 	Dialog_Import_CSV_Progress: Try to really show progress.
 
-	* glom/import_csv/dialog_import_csv_progress.cc: Try to call 
+	* glom/import_csv/dialog_import_csv_progress.cc: Try to call
 	Main::events_pending() and iterate() to really show the text in the progress
 	bar, though it does not seem to work.
 
@@ -35,16 +48,16 @@
 
 	Avoid GTK+ warning when clicking on the list button.
 
-	* glom/mode_data/db_adddel/db_adddel.[h|cc]: on_cell_button_clicked(): 
-	Delay the response to the click, to an idle handler, to avoid confusing 
+	* glom/mode_data/db_adddel/db_adddel.[h|cc]: on_cell_button_clicked():
+	Delay the response to the click, to an idle handler, to avoid confusing
 	GtkTreeView, which was showing a warning with GTK+ 3 about a NULL GtkAdjustment.
 
 2011-02-10  Murray Cumming  <murrayc@murrayc.com>
 
 	Use the new Gtk::ComboBox CellArea API to align columns properly.
 
-	* glom/mode_data/datawidget/combo.cc: Get the CellAreaBox and use its 
-	more-useful pack() method instead of the standard one, so that the columns 
+	* glom/mode_data/datawidget/combo.cc: Get the CellAreaBox and use its
+	more-useful pack() method instead of the standard one, so that the columns
 	really align.
 
 1.19.3:
@@ -53,7 +66,7 @@
 
 	Require the correct gtksourceviewmm version.
 
-	* configure.ac: Use the gtksourceviewmm version with the API changes to use 
+	* configure.ac: Use the gtksourceviewmm version with the API changes to use
 	vector.
 
 2011-01-30  Murray Cumming  <murrayc@murrayc.com>
@@ -61,7 +74,7 @@
 	Adapt to libgdamm API changes.
 
 	* glom/libglom/connectionpool.cc:
-	* glom/libglom/db_utils.cc: libgdamm now uses std::vector instead of 
+	* glom/libglom/db_utils.cc: libgdamm now uses std::vector instead of
 	*Handle, like gtkmm.
 
 2011-01-28  Murray Cumming  <murrayc@murrayc.com>
@@ -74,11 +87,11 @@
 	* glom/mode_design/print_layouts/print_layout_toolbar_button.cc:
 	* glom/mode_design/print_layouts/window_print_layout_edit.h:
 	* glom/utility_widgets/imageglom.cc:
-	* glom/utility_widgets/layouttoolbarbutton.cc: Use std::vector instead of 
+	* glom/utility_widgets/layouttoolbarbutton.cc: Use std::vector instead of
 	std::list.
-	* glom/dialog_existing_or_new.cc: This one even used the intermediate type 
+	* glom/dialog_existing_or_new.cc: This one even used the intermediate type
 	directly, showing how necessary this API change was.
-	
+
 2011-01-18  Murray Cumming  <murrayc@murrayc.com>
 
 	Disable more deprecated API.
@@ -89,22 +102,22 @@
 
 	Require the appropriate gtksourceviewmm version.
 
-	* configure.ac: Use the latest gtksourceviewmm release. Older versions would 
+	* configure.ac: Use the latest gtksourceviewmm release. Older versions would
 	not build with the newer versions of gtkmm 3, so this is a hint.
 
 2011-01-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Require the appropriate goocanvasmm version.
 
-	* configure.ac: Use the latest goocanvasmm release. The code has already 
+	* configure.ac: Use the latest goocanvasmm release. The code has already
 	been ported.
 
 2011-01-06  Murray Cumming  <murrayc@murrayc.com>
 
 	get_current_locale(): Handle more complex setlocale(NULL) results.
- 
-	* glom/libglom/utils.cc: locale_simplify(): On Ubuntu Natty, 
-	setlocale() has started returning a more complex string. Parse it, or the 
+
+	* glom/libglom/utils.cc: locale_simplify(): On Ubuntu Natty,
+	setlocale() has started returning a more complex string. Parse it, or the
 	older simpler syntax.
 
 2011-01-06  Murray Cumming  <murrayc@murrayc.com>
@@ -113,8 +126,8 @@
 
 	* Makefile_libglom.am: Define libglom_all_libs to avoid duplication.
 	* Makefile_glom.am: Use libglom_all_libs instead of repeating.
-	* Makefile_tests.am: Use libglom_all_libs to explicitly link against the 
-	dependencies of libglom. This seems to have been automatic with the linker in 
+	* Makefile_tests.am: Use libglom_all_libs to explicitly link against the
+	dependencies of libglom. This seems to have been automatic with the linker in
 	previous versions of Ubuntu, but not with Ubuntu Natty.
 
 2011-01-05  Murray Cumming  <murrayc@murrayc.com>
@@ -133,9 +146,9 @@
 
 2010-12-16  Murray Cumming  <murrayc@murrayc.com>
 
-	More dealing with cppcheck errors. 
+	More dealing with cppcheck errors.
 
-	* glom/libglom/data_structure/layout/layoutitem.cc: operator=(): Check for 
+	* glom/libglom/data_structure/layout/layoutitem.cc: operator=(): Check for
 	src=this.
 	* glom/base_db.cc:
 	* glom/frame_glom.cc:
@@ -153,7 +166,7 @@
 2010-12-16  Murray Cumming  <murrayc@murrayc.com>
 
 	Remove unused methods.
-	
+
 	* glom/libglom/data_structure/glomconversions.cc:
 	* glom/libglom/document/bakery/document.cc:
 	* glom/libglom/document/bakery/document.h:
@@ -162,7 +175,7 @@
 	* glom/libglom/document/document.cc:
 	* glom/libglom/document/document.h:
 	* glom/utility_widgets/canvas/test_canvas_editable.cc:
-	Remove unused methods, found by cppcheck. Some other methods that cppcheck 
+	Remove unused methods, found by cppcheck. Some other methods that cppcheck
 	mentions seem to be virtual methods that are used.
 
 2010-12-16  Murray Cumming  <murrayc@murrayc.com>
@@ -180,7 +193,7 @@
 	* glom/mode_data/box_data_portal.cc:
 	* glom/mode_data/datawidget/combochoiceswithtreemodel.cc:
 	* glom/mode_data/flowtablewithfields.cc:
-	* glom/mode_data/notebook_data.cc: C++ doesn't mind if we call delete on a 
+	* glom/mode_data/notebook_data.cc: C++ doesn't mind if we call delete on a
 	null pointer. Found by cppcheck.
 
 2010-12-15  Ben Konrath  <ben@bagu.org>
@@ -194,7 +207,7 @@
 
 	Fix make check when using --enable-glom-ui=no.
 
-	* Makefile_tests.am: Correct the LDADD flags for the selfhosting tests, so 
+	* Makefile_tests.am: Correct the LDADD flags for the selfhosting tests, so
 	that make check still works when using --enable-glom-ui=no.
 
 2010-12-14  Murray Cumming  <murrayc@murrayc.com>
@@ -204,68 +217,68 @@
 	* Makefile.am:
 	* Makefile_glom.am:
 	* Makefile_libglom.am:
-	* Makefile_tests.am: Use AM_CPPFLAGS and AM_CFLAGS just to hold the 
+	* Makefile_tests.am: Use AM_CPPFLAGS and AM_CFLAGS just to hold the
 	(optional) warning flags, as we did previously.
 
 2010-12-14  Murray Cumming  <murrayc@murrayc.com>
 
-	Build: Avoid use of non-UI cflags/libs where not necessary. 
+	Build: Avoid use of non-UI cflags/libs where not necessary.
 
 	* Makefile.am: Do not use AM_CPPFLAGS, AM_CFLAGS or AM_CXXFLAGS.
 	* Makefile_glom.am:
 	* Makefile_libglom.am:
-	* Makefile_tests.am: Instead use individual variables for each target, 
+	* Makefile_tests.am: Instead use individual variables for each target,
 	making sure that we use only the necessary flags.
 	libglom may have been linking to some unnecessary UI libraries before.
 	* glom/import_csv/csv_parser.h: Avoid unnecessary UI includes.
 	* tests/import/test_parsing.cc:
 	* tests/import/test_signals.cc: Avoid including gtkmm.h.
-	
-	As a side-effect, the build is now longer, because some files are now 
-	compiled again separately for the tests, presumably because they now need 
+
+	As a side-effect, the build is now longer, because some files are now
+	compiled again separately for the tests, presumably because they now need
 	to be built with different compiler flags. But that is a better test.
 
 2010-12-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Correct my previous commit.
 
-	* configure.ac: Correct the no/yes test for --enable-glom-ui and add a comma 
+	* configure.ac: Correct the no/yes test for --enable-glom-ui and add a comma
 	so it actually works.
 	* Makefile_tests.am: Restore the source file lists for the python tests.
 
 2010-12-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Allow libglom to be built without building the Glom UI code too.
-	
+
 	* configure.ac: Added an --enable-glom-ui option, defaulting to yes.
-	When using --enable-glom-ui=no then only libglom will be built. This is 
-	useful for deployment of libglom to servers where the UI dependencies are not 
+	When using --enable-glom-ui=no then only libglom will be built. This is
+	useful for deployment of libglom to servers where the UI dependencies are not
 	wanted.
-	We still use GLOM_LIBS and GLOM_FLAGS even in libglom, instead of using 
-	LIBGLOM_LIBS and LIBGLOM_CFLAGS anywhere, but this does reduce duplication 
+	We still use GLOM_LIBS and GLOM_FLAGS even in libglom, instead of using
+	LIBGLOM_LIBS and LIBGLOM_CFLAGS anywhere, but this does reduce duplication
 	of the flags in glom's UI build.
 	* Makefile.am: Do not include Makefile_glom.am if the UI should not be built.
 	* Makefile_glom.am: Move the bin_programs definition to here.
 	* Makefile_libglom.am: Move the LTLIBRARIES definitions to here.
-	* Makefile_tests.am: Attempt, unsuccessfully, to build and run UI-dependent 
-	tests only when the UI was built, when running make check. 
+	* Makefile_tests.am: Attempt, unsuccessfully, to build and run UI-dependent
+	tests only when the UI was built, when running make check.
 
 2010-12-13  Murray Cumming  <murrayc@murrayc.com>
 
   Fix the build with latest gtkmm.
-  
+
 	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
 	Use Widget::render_icon_pixbuf() instead of the old render_icon() method.
-	
+
 2010-12-08  Murray Cumming  <murrayc@murrayc.com>
 
 	Partial port to recent gtkmm API changes from git master.
 
-	* glom/mode_data/datawidget/datawidget.cc: signal_style_changed was removed 
+	* glom/mode_data/datawidget/datawidget.cc: signal_style_changed was removed
 	though it might come back later.
-	* glom/mode_data/datawidget/entry.cc: Use override_color() instead of 
+	* glom/mode_data/datawidget/entry.cc: Use override_color() instead of
 	modify_text().
-	* glom/mode_data/placeholder-glom.cc: Use set_source_rgba() instead of 
+	* glom/mode_data/placeholder-glom.cc: Use set_source_rgba() instead of
 	set_source_color(). Use get_style_context() instead of get_style().
 
 2010-12-03  Murray Cumming  <murrayc@murrayc.com>
@@ -285,7 +298,7 @@
 	* glom/mode_design/script_library/dialog_script_library.cc:
 	* glom/mode_design/script_library/dialog_script_library.h:
 	* tests/glade_toplevels_instantiation.cc:
-	* tests/test_glade_derived_instantiation.cc: Change the gtksourceview 
+	* tests/test_glade_derived_instantiation.cc: Change the gtksourceview
 	namespace to Gsv.
 
 2010-12-03  Murray Cumming  <murrayc@murrayc.com>
@@ -303,15 +316,15 @@
 
 	Replaced GtkRuler with GimpRuler because GtkRuler was removed from GTK 3.
 
-	* glom/utility_widgets/gimpruler/: Added several source files from 
-	gimp, with small changes to make it build for us, to provide the GimpRuler 
+	* glom/utility_widgets/gimpruler/: Added several source files from
+	gimp, with small changes to make it build for us, to provide the GimpRuler
 	widget.
-	* COPYING: Switch to GPL version 3 (instead of 2), because the GIMP source 
+	* COPYING: Switch to GPL version 3 (instead of 2), because the GIMP source
 	code uses it.
 	* Makefile_glom.am:
 	* glom/glom_developer.glade:
-	* glom/mode_design/print_layouts/window_print_layout_edit.[cc|cc]: Use 
-	GimpRuler instead of GtkRuler, creating and adding them in code instead of 
+	* glom/mode_design/print_layouts/window_print_layout_edit.[cc|cc]: Use
+	GimpRuler instead of GtkRuler, creating and adding them in code instead of
 	in the .glade file, to avoid Glade needing to know about that widget.
 
 1.19.2:

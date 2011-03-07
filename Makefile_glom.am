@@ -206,6 +206,8 @@ glom_source_files = \
 	glom/utility_widgets/layoutwidgetutils.h			\
 	glom/utility_widgets/notebookglom.cc				\
 	glom/utility_widgets/notebookglom.h				\
+	glom/utility_widgets/notebook_noframe.cc \
+	glom/utility_widgets/notebook_noframe.h \
 	glom/utility_widgets/placeholder.cc				\
 	glom/utility_widgets/placeholder.h				\
 	glom/utility_widgets/adddel/adddel.cc				\
