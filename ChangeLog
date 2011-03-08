@@ -1,5 +1,16 @@
 2011-03-08  Murray Cumming  <murrayc@murrayc.com>
 
+	Remove some unnecessary padding/borders around the main window.
+
+	* glom/box_withbuttons.cc: Remove the border, because it is not useful.
+	It would be for the parent widget to decide that.
+	* glom/mode_data/flowtablewithfields.[h|cc]: add_group(): Add a with_indent
+	optional parameter.
+	* glom/mode_data/box_data_details.cc: create_layout(): Have no indent on
+	top-level groups.
+
+2011-03-08  Murray Cumming  <murrayc@murrayc.com>
+
 	Use a custom Notebook-like widget instead of Gtk::Notebook.
 
 	* glom/utility_widgets/notebook_noframe.[h|cc]: A new class with an API that

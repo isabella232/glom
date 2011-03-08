@@ -160,12 +160,12 @@ void FlowTableWithFields::add_layout_item_at_position(const sharedptr<LayoutItem
   }
 }
 
-void FlowTableWithFields::add_layout_group(const sharedptr<LayoutGroup>& group)
+void FlowTableWithFields::add_layout_group(const sharedptr<LayoutGroup>& group, bool with_indent)
 {
-  add_layout_group_at_position(group, m_list_layoutwidgets.end());
+  add_layout_group_at_position(group, m_list_layoutwidgets.end(), with_indent);
 }
 
-void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGroup>& group, const type_list_layoutwidgets::iterator& add_before)
+void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGroup>& group, const type_list_layoutwidgets::iterator& add_before, bool with_indent)
 {
   if(!group)
     return;
@@ -187,9 +187,9 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
 
     Gtk::Alignment* alignment = Gtk::manage( new Gtk::Alignment ); //TODO_leak: This is possibly leaked, according to valgrind.
 
-    if(!group->get_title().empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
+    if(!group->get_title().empty() && with_indent) //Don't indent if it has no title, to allow use of groups just for positioning.
     {
-      alignment->set_padding(Glom::Utils::DEFAULT_SPACING_SMALL, 0, 6, 0); //Use left-padding of 6 even on Maemo because indentation is important.
+      alignment->set_padding(Glom::Utils::DEFAULT_SPACING_SMALL, 0, Glom::Utils::DEFAULT_SPACING_SMALL, 0);
       #ifdef GLOM_ENABLE_MAEMO
       std::cerr << "DEBUG: Unexpected group with title causing extra spacing on Maemo." << std::endl;
       #endif

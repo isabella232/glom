@@ -75,7 +75,11 @@ public:
   //virtual void add_group(const Glib::ustring& group_name, const Glib::ustring& group_title, const type_map_field_sequence& fields);
 
   void add_layout_item(const sharedptr<LayoutItem>& item);
-  void add_layout_group(const sharedptr<LayoutGroup>& group);
+
+  /**
+   * @param with_indent Pass true for top-level groups, to avoid wasting extra space with an unnecessary indent.
+   */
+  void add_layout_group(const sharedptr<LayoutGroup>& group, bool with_indent = true);
 
   void set_field_editable(const sharedptr<const LayoutItem_Field>& field, bool editable = true);
 
@@ -233,7 +237,7 @@ private:
   void add_layoutwidgetbase(LayoutWidgetBase* layout_widget);
   void add_layoutwidgetbase(LayoutWidgetBase* layout_widget, const type_list_layoutwidgets::iterator& add_before);
   void add_layout_item_at_position(const sharedptr<LayoutItem>& item, const type_list_layoutwidgets::iterator& add_before);
-  void add_layout_group_at_position(const sharedptr<LayoutGroup>& group, const type_list_layoutwidgets::iterator& add_before);
+  void add_layout_group_at_position(const sharedptr<LayoutGroup>& group, const type_list_layoutwidgets::iterator& add_before, bool with_indent = true);
   void add_layout_notebook_at_position(const sharedptr<LayoutItem_Notebook>& notebook, const type_list_layoutwidgets::iterator& add_before);
   void add_layout_portal_at_position(const sharedptr<LayoutItem_Portal>& portal, const type_list_layoutwidgets::iterator& add_before);
 
