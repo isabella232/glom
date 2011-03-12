@@ -88,7 +88,7 @@ void ComboGlom::set_choices_fixed(const FieldFormatting::type_list_values& list_
 
   if(get_has_entry())
   {
-    set_entry_text_column(0);
+    set_entry_text_column( get_fixed_model_text_column() );
   }
   else
   {
@@ -103,11 +103,16 @@ void ComboGlom::set_choices_fixed(const FieldFormatting::type_list_values& list_
     return;
   }
   
-  const guint columns_count = model->get_n_columns();
+  guint columns_count = model->get_n_columns();
+  if(columns_count)
+    columns_count -= 1; //The last one is the just the extra text-equivalent of the first one, for GtkComboBox wth has-entry=true.
+
   for(guint i = 0; i < columns_count; ++i)
   {
     //set_entry_text_column() adds its own CellRenderer,
     //which we cannot replace without confusing (and crashing) GtkComboBox.
+    //We used the special get_fixed_model_text_column() column for that,
+    //so we don't need to add another cell renderer for the value-equivalent of that column:
     if(i == 0 && get_has_entry())
       continue;
 

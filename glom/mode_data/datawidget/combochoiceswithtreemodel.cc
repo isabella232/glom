@@ -52,6 +52,15 @@ void ComboChoicesWithTreeModel::init()
   ComboChoices::init();
 }
 
+int ComboChoicesWithTreeModel::get_fixed_model_text_column() const
+{
+  const int count = m_refModel->get_n_columns();
+  if(count > 0)
+    return count -1;
+  else
+   return 0; //An error, but better than a negative number.
+}
+
 void ComboChoicesWithTreeModel::create_model_non_db(guint columns_count)
 {
   delete_model();
@@ -59,13 +68,29 @@ void ComboChoicesWithTreeModel::create_model_non_db(guint columns_count)
   Gtk::TreeModel::ColumnRecord record;
 
   //Create the TreeModelColumns, adding them to the ColumnRecord:
-  m_vec_model_columns_fixed.resize(columns_count, 0);
+    
+  m_vec_model_columns_value_fixed.resize(columns_count, 0);
   for(guint i = 0; i < columns_count; ++i)
-  {
-    type_model_column_fixed* model_column = new type_model_column_fixed();
-
+  {    
+    //Create a value column for all columns
+    //for instance for later value comparison.
+    type_model_column_value_fixed* model_column = new type_model_column_value_fixed();
+   
     //Store it so we can use it and delete it later:
-    m_vec_model_columns_fixed[i] = model_column;
+    m_vec_model_columns_value_fixed[i] = model_column;
+
+    record.add(*model_column);
+  }
+  
+  //Create a text column, for use by a GtkComboBox with has-entry, which allows no other column type:
+  //Note that get_fixed_model_text_column() assumes that this is the last column:
+  m_vec_model_columns_string_fixed.resize(1, 0);
+  if(columns_count > 0)
+  {
+    type_model_column_string_fixed* model_column = new type_model_column_string_fixed();
+   
+    //Store it so we can use it and delete it later:
+    m_vec_model_columns_string_fixed.push_back(model_column);
 
     record.add(*model_column);
   }
@@ -77,12 +102,20 @@ void ComboChoicesWithTreeModel::create_model_non_db(guint columns_count)
 void ComboChoicesWithTreeModel::delete_model()
 {
   //Delete the vector's items:
-  for(type_vec_model_columns_fixed::iterator iter = m_vec_model_columns_fixed.begin(); iter != m_vec_model_columns_fixed.end(); ++iter)
+  for(type_vec_model_columns_string_fixed::iterator iter = m_vec_model_columns_string_fixed.begin(); iter != m_vec_model_columns_string_fixed.end(); ++iter)
   {
-    type_model_column_fixed* model_column = *iter;
+    type_model_column_string_fixed* model_column = *iter;
     delete model_column;
   }
-  m_vec_model_columns_fixed.clear();
+  m_vec_model_columns_string_fixed.clear();
+  
+  //Delete the vector's items:
+  for(type_vec_model_columns_value_fixed::iterator iter = m_vec_model_columns_value_fixed.begin(); iter != m_vec_model_columns_value_fixed.end(); ++iter)
+  {
+    type_model_column_value_fixed* model_column = *iter;
+    delete model_column;
+  }
+  m_vec_model_columns_value_fixed.clear();
 
   m_refModel.reset();
 }
@@ -189,8 +222,10 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const FieldFormatting::type_li
     if(layout_item)
     {
       const Gnome::Gda::Value value = *iter;
+      row.set_value(0, value);
+      
       const Glib::ustring text = Conversions::get_text_for_gda_value(layout_item->get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format);
-      row.set_value(0, text);
+      row.set_value(1, text);
     }
   }
 

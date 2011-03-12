@@ -48,7 +48,7 @@ void CellRendererDbList::set_choices_fixed(const FieldFormatting::type_list_valu
 
   //Show model in the view:
   property_model() = model;
-  property_text_column() = 0; //This must be a text column, in m_refModel.
+  property_text_column() = get_fixed_model_text_column(); //This must be a text column, in m_refModel.
   property_editable() = true; //It would be useless if we couldn't edit it.
 
   //The other cells are added in on_editing_started().
@@ -112,7 +112,7 @@ void CellRendererDbList::repack_cells_fixed(Gtk::CellLayout* combobox)
     cell->unreference();
 
     //Make the renderer render the column:
-    combobox->add_attribute(*cell, "text", 0);
+    combobox->add_attribute(*cell, "text", get_fixed_model_text_column());
 
     cell->property_xalign() = 0.0f;
 
@@ -121,9 +121,9 @@ void CellRendererDbList::repack_cells_fixed(Gtk::CellLayout* combobox)
 
   //Add extra cells:
   Glib::ListHandle<Gtk::CellRenderer*> cells = combobox->get_cells();
-  if(cells.size() < m_vec_model_columns_fixed.size())
+  if(cells.size() < m_vec_model_columns_value_fixed.size())
   {
-    for(guint col = cells.size(); col != m_vec_model_columns_fixed.size(); ++col)
+    for(guint col = cells.size(); col != m_vec_model_columns_value_fixed.size(); ++col)
     {
       Gtk::CellRenderer* cell = 0;
       if(m_db_layout_items.empty())
