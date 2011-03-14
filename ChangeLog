@@ -1,28 +1,34 @@
 2011-03-14  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix the build.
+
+	* glom/libglom/init.cc: Add an include so we can use std::cerr.
+
+2011-03-14  Murray Cumming  <murrayc@murrayc.com>
+
 	libglom_init(): Show the python exception when PyDateTime_IMPORT fails.
 
-	* glom/libglom/init.cc: The linker seems to behave differently when this 
+	* glom/libglom/init.cc: The linker seems to behave differently when this
 	code is run from inside a JVM in OnlineGlom. This gives us a clue.
 
 2011-03-12  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix crashes when using choices with fixed lists.
 
-	* glom/mode_data/datawidget/combochoiceswithtreemodel.[h|cc]: 
-	create_model_non_db(): Instead of creating just a text-based treemodel, 
-	create a Value-based one with an extra text column at the end. That is what 
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.[h|cc]:
+	create_model_non_db(): Instead of creating just a text-based treemodel,
+	create a Value-based one with an extra text column at the end. That is what
 	the related-records model has, though it uses a custom TreeModel.
 	The text column is needed for GtkComboBox when it has has-entry=true:
 	(See https://bugzilla.gnome.org/show_bug.cgi?id=631167 )
-	Add get_fixed_model_text_column() so that other code knows which column that 
+	Add get_fixed_model_text_column() so that other code knows which column that
 	is.
 	* glom/mode_data/datawidget/cellrenderer_dblist.cc: set_choices_fixed(),
 	repack_cells_fixed():
 	* glom/mode_data/datawidget/combo.cc:	set_choices_fixed():
-	Adapt to use the special column instead of assuming that column 0 is a text 
+	Adapt to use the special column instead of assuming that column 0 is a text
 	column.
-	Previously Glom::Combo::set_value() crashed because we tried to get a 
+	Previously Glom::Combo::set_value() crashed because we tried to get a
 	Value<Gnome::Gda::Value> where there was a Value<ustring>.
 
 2011-03-08  Murray Cumming  <murrayc@murrayc.com>

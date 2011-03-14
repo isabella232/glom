@@ -26,6 +26,7 @@
 #include <glom/libglom/connectionpool.h>
 #include <giomm.h>
 #include <libgdamm.h>
+#include <iostream>
 
 
 //TODO: Remove this redefine when Python fixes the compiler error in their macro:
@@ -51,9 +52,9 @@ void libglom_init()
   if(!PyDateTimeAPI)
   {
     //Give people a clue on stdout:
-    std::cerr << G_STRFUNC << ": PyDateTime_IMPORT (a python module import) failed." << std::endl; 
-    
-    //This gives more information. When this happens it is generally a linker 
+    std::cerr << G_STRFUNC << ": PyDateTime_IMPORT (a python module import) failed." << std::endl;
+
+    //This gives more information. When this happens it is generally a linker
     //failure while importing a python module:
     PyErr_Print();
   }
@@ -70,4 +71,3 @@ void libglom_deinit()
 }
 
 } //namespace Glom
-
