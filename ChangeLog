@@ -1,5 +1,15 @@
 2011-03-14  Murray Cumming  <murrayc@murrayc.com>
 
+	Make glom-1.18 parallel-installable with glom-1.16
+
+	* configure.ac: Increase the ABI version.
+	* glom/python_embed/python_module/py_glom_module.cc: Load the correct 
+	python version.
+	
+	I forgot to do this before.
+
+2011-03-14  Murray Cumming  <murrayc@murrayc.com>
+
 	Fix the build.
 
 	* glom/libglom/init.cc: Add an include so we can use std::cerr.
