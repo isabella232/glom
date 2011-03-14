@@ -48,6 +48,15 @@ void libglom_init()
 
   Py_Initialize();
   PyDateTime_IMPORT; //A macro, needed to use PyDate_Check(), PyDateTime_Check(), etc.
+  if(!PyDateTimeAPI)
+  {
+    //Give people a clue on stdout:
+    std::cerr << G_STRFUNC << ": PyDateTime_IMPORT (a python module import) failed." << std::endl; 
+    
+    //This gives more information. When this happens it is generally a linker 
+    //failure while importing a python module:
+    PyErr_Print();
+  }
   g_assert(PyDateTimeAPI); //This should have been set by the PyDateTime_IMPORT macro.
 }
 
