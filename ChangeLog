@@ -1,8 +1,14 @@
 2011-03-14  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix the build.
+
+	* glom/libglom/init.cc: Add an include so we can use std::cerr.
+
+2011-03-14  Murray Cumming  <murrayc@murrayc.com>
+
 	libglom_init(): Show the python exception when PyDateTime_IMPORT fails.
 
-	* glom/libglom/init.cc: The linker seems to behave differently when this 
+	* glom/libglom/init.cc: The linker seems to behave differently when this
 	code is run from inside a JVM in OnlineGlom. This gives us a clue.
 
 2011-02-26  Murray Cumming  <murrayc@murrayc.com>
@@ -16,12 +22,12 @@
 
 	CSV Import: Fix quoted-newline detection, so we don't drop rows.
 
-	* glom/import_csv/csv_parser.[h|cc]: on_idle_parse(): Make in_quotes a 
-	member variable, initialized in clear(), so we remember it across calls to 
-	on_idle_parse(), instead of thinking that we are in quotes just because we 
+	* glom/import_csv/csv_parser.[h|cc]: on_idle_parse(): Make in_quotes a
+	member variable, initialized in clear(), so we remember it across calls to
+	on_idle_parse(), instead of thinking that we are in quotes just because we
 	are parsing arbitrary chunks of bytes that look that way individually.
-	
-	This fixes bug #637529 (Darmon Xavier), so all rows should be imported 
+
+	This fixes bug #637529 (Darmon Xavier), so all rows should be imported
 	instead of dropping some in the middle.
 
 2011-01-06  Murray Cumming  <murrayc@murrayc.com>
@@ -30,8 +36,8 @@
 
 	* Makefile_libglom.am: Define libglom_all_libs to avoid duplication.
 	* Makefile_glom.am: Use libglom_all_libs instead of repeating.
-	* Makefile_tests.am: Use libglom_all_libs to explicitly link against the 
-	dependencies of libglom. This seems to have been automatic with the linker in 
+	* Makefile_tests.am: Use libglom_all_libs to explicitly link against the
+	dependencies of libglom. This seems to have been automatic with the linker in
 	previous versions of Ubuntu, but not with Ubuntu Natty.
 
 2011-02-25  Murray Cumming  <murrayc@murrayc.com>
@@ -39,15 +45,15 @@
 	Adapt to libgdamm API change.
 
 	* glom/libglom/connectionpool.cc:
-	* glom/libglom/db_utils.cc: Adapt to the libgdamm change to use vector 
+	* glom/libglom/db_utils.cc: Adapt to the libgdamm change to use vector
 	instead of list.
 
 2011-02-25  Murray Cumming  <murrayc@murrayc.com>
 
 	Avoid GTK+ warning when clicking on the list button.
 
-	* glom/mode_data/db_adddel/db_adddel.[h|cc]: on_cell_button_clicked(): 
-	Delay the response to the click, to an idle handler, to avoid confusing 
+	* glom/mode_data/db_adddel/db_adddel.[h|cc]: on_cell_button_clicked():
+	Delay the response to the click, to an idle handler, to avoid confusing
 	GtkTreeView, which was showing a warning with GTK+ 3 about a NULL GtkAdjustment.
 
 2011-01-28  Murray Cumming  <murrayc@murrayc.com>
@@ -60,11 +66,11 @@
 	* glom/mode_design/print_layouts/print_layout_toolbar_button.cc:
 	* glom/mode_design/print_layouts/window_print_layout_edit.h:
 	* glom/utility_widgets/imageglom.cc:
-	* glom/utility_widgets/layouttoolbarbutton.cc: Use std::vector instead of 
+	* glom/utility_widgets/layouttoolbarbutton.cc: Use std::vector instead of
 	std::list.
-	* glom/dialog_existing_or_new.cc: This one even used the intermediate type 
+	* glom/dialog_existing_or_new.cc: This one even used the intermediate type
 	directly, showing how necessary this API change was.
-	
+
 2011-01-18  Murray Cumming  <murrayc@murrayc.com>
 
 	Disable more deprecated API.
@@ -81,7 +87,7 @@
 	* glom/mode_design/script_library/dialog_script_library.cc:
 	* glom/mode_design/users/dialog_choose_user.cc:
 	* glom/mode_design/users/dialog_users_list.cc:
-	* glom/utility_widgets/db_adddel/db_adddel.cc: More use of the non-deprecated 
+	* glom/utility_widgets/db_adddel/db_adddel.cc: More use of the non-deprecated
 	version of some methods.
 
 2011-01-27  Murray Cumming  <murrayc@murrayc.com>
@@ -112,15 +118,15 @@
 
 	Replaced GtkRuler with GimpRuler because GtkRuler was removed from GTK 3.
 
-	* glom/utility_widgets/gimpruler/: Added several source files from 
-	gimp, with small changes to make it build for us, to provide the GimpRuler 
+	* glom/utility_widgets/gimpruler/: Added several source files from
+	gimp, with small changes to make it build for us, to provide the GimpRuler
 	widget.
-	* COPYING: Switch to GPL version 3 (instead of 2), because the GIMP source 
+	* COPYING: Switch to GPL version 3 (instead of 2), because the GIMP source
 	code uses it.
 	* Makefile_glom.am:
 	* glom/glom_developer.glade:
-	* glom/mode_design/print_layouts/window_print_layout_edit.[cc|cc]: Use 
-	GimpRuler instead of GtkRuler, creating and adding them in code instead of 
+	* glom/mode_design/print_layouts/window_print_layout_edit.[cc|cc]: Use
+	GimpRuler instead of GtkRuler, creating and adding them in code instead of
 	in the .glade file, to avoid Glade needing to know about that widget.
 
 2011-01-27  Murray Cumming  <murrayc@murrayc.com>
@@ -132,9 +138,9 @@
 	* glom/mode_design/comboentry_currency.[h|cc]:
 	* glom/mode_design/layout/layout_item_dialogs/comboentry_borderwidt
 	h.[h|cc]:
-	* glom/variablesmap.[h|cc]: Replace use of (deprecated) Gtk::ComboboxEntry 
+	* glom/variablesmap.[h|cc]: Replace use of (deprecated) Gtk::ComboboxEntry
 	with ComboBox with has_entry=true.
-	
+
 This is the glom-1-18 branch, which uses gtkmm 2.24.
 
 2011-01-27  Murray Cumming  <murrayc@murrayc.com>
@@ -146,17 +152,17 @@ This is the glom-1-18 branch, which uses gtkmm 2.24.
 	* glom/mode_design/comboentry_currency.[h|cc]:
 	* glom/mode_design/layout/layout_item_dialogs/comboentry_borderwidt
 	h.[h|cc]:
-	* glom/variablesmap.[h|cc]: Replace use of (deprecated) Gtk::ComboboxEntry 
+	* glom/variablesmap.[h|cc]: Replace use of (deprecated) Gtk::ComboboxEntry
 	with ComboBox with has_entry=true.
-	
+
 This is the glom-1-18 branch, which uses gtkmm 2.24.
 
 2011-01-06  Murray Cumming  <murrayc@murrayc.com>
 
 	get_current_locale(): Handle more complex setlocale(NULL) results.
- 
-	* glom/libglom/utils.cc: locale_simplify(): On Ubuntu Natty, 
-	setlocale() has started returning a more complex string. Parse it, or the 
+
+	* glom/libglom/utils.cc: locale_simplify(): On Ubuntu Natty,
+	setlocale() has started returning a more complex string. Parse it, or the
 	older simpler syntax.
 
 2010-12-15  Ben Konrath  <ben@bagu.org>
@@ -170,26 +176,26 @@ This is the glom-1-18 branch, which uses gtkmm 2.24.
 
 	Correct my previous commit.
 
-	* configure.ac: Correct the no/yes test for --enable-glom-ui and add a comma 
+	* configure.ac: Correct the no/yes test for --enable-glom-ui and add a comma
 	so it actually works.
 	* Makefile_tests.am: Restore the source file lists for the python tests.
 
 2010-12-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Allow libglom to be built without building the Glom UI code too.
-	
+
 	* configure.ac: Added an --enable-glom-ui option, defaulting to yes.
-	When using --enable-glom-ui=no then only libglom will be built. This is 
-	useful for deployment of libglom to servers where the UI dependencies are not 
+	When using --enable-glom-ui=no then only libglom will be built. This is
+	useful for deployment of libglom to servers where the UI dependencies are not
 	wanted.
-	We still use GLOM_LIBS and GLOM_FLAGS even in libglom, instead of using 
-	LIBGLOM_LIBS and LIBGLOM_CFLAGS anywhere, but this does reduce duplication 
+	We still use GLOM_LIBS and GLOM_FLAGS even in libglom, instead of using
+	LIBGLOM_LIBS and LIBGLOM_CFLAGS anywhere, but this does reduce duplication
 	of the flags in glom's UI build.
 	* Makefile.am: Do not include Makefile_glom.am if the UI should not be built.
 	* Makefile_glom.am: Move the bin_programs definition to here.
 	* Makefile_libglom.am: Move the LTLIBRARIES definitions to here.
-	* Makefile_tests.am: Attempt, unsuccessfully, to build and run UI-dependent 
-	tests only when the UI was built, when running make check. 
+	* Makefile_tests.am: Attempt, unsuccessfully, to build and run UI-dependent
+	tests only when the UI was built, when running make check.
 
 1.16.2:
 
