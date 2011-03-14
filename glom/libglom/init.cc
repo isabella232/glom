@@ -38,6 +38,30 @@
 namespace Glom
 {
 
+static bool pydatetime_imported = false;
+
+bool libglom_pydatetime_imported()
+{
+  return pydatetime_imported;
+}
+
+void libglom_pydatetime_import()
+{
+  PyDateTime_IMPORT; //A macro, needed to use PyDate_Check(), PyDateTime_Check(), etc.
+  if(!PyDateTimeAPI) //This should have been set by the PyDateTime_IMPORT macro.
+  {
+    //Give people a clue on stdout:
+    std::cerr << G_STRFUNC << ": PyDateTime_IMPORT (a python module import) failed." << std::endl;
+
+    //This gives more information. When this happens it is generally a linker
+    //failure while importing a python module.
+    //See https://bugzilla.gnome.org/show_bug.cgi?id=644702
+    PyErr_Print();
+  }
+  else
+    pydatetime_imported = true;
+}
+
 void libglom_init()
 {
   if (!Glib::thread_supported())
@@ -47,17 +71,7 @@ void libglom_init()
   Gio::init();
 
   Py_Initialize();
-  PyDateTime_IMPORT; //A macro, needed to use PyDate_Check(), PyDateTime_Check(), etc.
-  if(!PyDateTimeAPI)
-  {
-    //Give people a clue on stdout:
-    std::cerr << G_STRFUNC << ": PyDateTime_IMPORT (a python module import) failed." << std::endl;
-
-    //This gives more information. When this happens it is generally a linker
-    //failure while importing a python module:
-    PyErr_Print();
-  }
-  g_assert(PyDateTimeAPI); //This should have been set by the PyDateTime_IMPORT macro.
+  libglom_pydatetime_import();
 }
 
 void libglom_deinit()
