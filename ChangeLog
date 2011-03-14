@@ -1,8 +1,14 @@
 2011-03-14  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix the build.
+
+	* glom/libglom/init.cc: Add an include so we can use std::cerr.
+
+2011-03-14  Murray Cumming  <murrayc@murrayc.com>
+
 	libglom_init(): Show the python exception when PyDateTime_IMPORT fails.
 
-	* glom/libglom/init.cc: The linker seems to behave differently when this 
+	* glom/libglom/init.cc: The linker seems to behave differently when this
 	code is run from inside a JVM in OnlineGlom. This gives us a clue.
 
 2011-02-26  Murray Cumming  <murrayc@murrayc.com>
@@ -16,28 +22,28 @@
 
 	CSV Import: Fix quoted-newline detection, so we don't drop rows.
 
-	* glom/import_csv/csv_parser.[h|cc]: on_idle_parse(): Make in_quotes a 
-	member variable, initialized in clear(), so we remember it across calls to 
-	on_idle_parse(), instead of thinking that we are in quotes just because we 
+	* glom/import_csv/csv_parser.[h|cc]: on_idle_parse(): Make in_quotes a
+	member variable, initialized in clear(), so we remember it across calls to
+	on_idle_parse(), instead of thinking that we are in quotes just because we
 	are parsing arbitrary chunks of bytes that look that way individually.
-	
-	This fixes bug #637529 (Darmon Xavier), so all rows should be imported 
+
+	This fixes bug #637529 (Darmon Xavier), so all rows should be imported
 	instead of dropping some in the middle.
 
 2011-02-25  Murray Cumming  <murrayc@murrayc.com>
 
 	Avoid GTK+ warning when clicking on the list button.
 
-	* glom/mode_data/db_adddel/db_adddel.[h|cc]: on_cell_button_clicked(): 
-	Delay the response to the click, to an idle handler, to avoid confusing 
+	* glom/mode_data/db_adddel/db_adddel.[h|cc]: on_cell_button_clicked():
+	Delay the response to the click, to an idle handler, to avoid confusing
 	GtkTreeView, which was showing a warning with GTK+ 3 about a NULL GtkAdjustment.
 
 2011-01-06  Murray Cumming  <murrayc@murrayc.com>
 
 	get_current_locale(): Handle more complex setlocale(NULL) results.
- 
-	* glom/libglom/utils.cc: locale_simplify(): On Ubuntu Natty, 
-	setlocale() has started returning a more complex string. Parse it, or the 
+
+	* glom/libglom/utils.cc: locale_simplify(): On Ubuntu Natty,
+	setlocale() has started returning a more complex string. Parse it, or the
 	older simpler syntax.
 
 2010-12-15  Ben Konrath  <ben@bagu.org>
@@ -51,26 +57,26 @@
 
 	Correct my previous commit.
 
-	* configure.ac: Correct the no/yes test for --enable-glom-ui and add a comma 
+	* configure.ac: Correct the no/yes test for --enable-glom-ui and add a comma
 	so it actually works.
 	* Makefile_tests.am: Restore the source file lists for the python tests.
 
 2010-12-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Allow libglom to be built without building the Glom UI code too.
-	
+
 	* configure.ac: Added an --enable-glom-ui option, defaulting to yes.
-	When using --enable-glom-ui=no then only libglom will be built. This is 
-	useful for deployment of libglom to servers where the UI dependencies are not 
+	When using --enable-glom-ui=no then only libglom will be built. This is
+	useful for deployment of libglom to servers where the UI dependencies are not
 	wanted.
-	We still use GLOM_LIBS and GLOM_FLAGS even in libglom, instead of using 
-	LIBGLOM_LIBS and LIBGLOM_CFLAGS anywhere, but this does reduce duplication 
+	We still use GLOM_LIBS and GLOM_FLAGS even in libglom, instead of using
+	LIBGLOM_LIBS and LIBGLOM_CFLAGS anywhere, but this does reduce duplication
 	of the flags in glom's UI build.
 	* Makefile.am: Do not include Makefile_glom.am if the UI should not be built.
 	* Makefile_glom.am: Move the bin_programs definition to here.
 	* Makefile_libglom.am: Move the LTLIBRARIES definitions to here.
-	* Makefile_tests.am: Attempt, unsuccessfully, to build and run UI-dependent 
-	tests only when the UI was built, when running make check. 
+	* Makefile_tests.am: Attempt, unsuccessfully, to build and run UI-dependent
+	tests only when the UI was built, when running make check.
 
 1.16.2:
 
