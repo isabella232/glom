@@ -85,6 +85,16 @@ void libglom_init();
 
 void libglom_deinit();
 
+/** For some reason, we must call this repeatedly.
+ * Maybe it is happening in different processes somehow.
+ */
+void libglom_pydatetime_import();
+
+/** Whether libglom_init() successfully imported the python DateTime API.
+ * This lets other code work around it when it is broken.
+ */
+bool libglom_pydatetime_imported();
+
 } //namespace Glom
 
 #endif //GLOM_LIBGLOM_INIT_H

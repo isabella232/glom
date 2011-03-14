@@ -1,5 +1,19 @@
 2011-03-14  Murray Cumming  <murrayc@murrayc.com>
 
+	Do not crash if PyDateTime_IMPORT fails.
+
+	* glom/libglom/init.[h|cc]: Added libglom_pydatetime_import() and 
+	libglom_pydatetime_imported(). Remove the g_assert() when it fails.
+	* glom/libglom/python_embed/pygdavalue_conversions.cc: Use the new 
+	utility function instead of repeating our reimplementation here.
+	
+	There will now just be an error message on stderr. We must fix this properly
+	but in the meantime it is better than requiring the use of a separate glom 
+	branch just for OnlineGlom.
+	See https://bugzilla.gnome.org/show_bug.cgi?id=644702
+	
+2011-03-14  Murray Cumming  <murrayc@murrayc.com>
+
 	Project Manager example: Resave.
 
 	* examples/example_project_manager.glom: Edit the Teams list layout, so
