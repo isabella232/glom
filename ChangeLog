@@ -1,5 +1,14 @@
 2011-03-14  Murray Cumming  <murrayc@murrayc.com>
 
+	Project Manager example: Resave.
+
+	* examples/example_project_manager.glom: Edit the Teams list layout, so
+	that it actually has a layout in the file, and so that the fields order
+	makes more sense.
+	See http://gitorious.org/online-glom/gwt-glom/commit/1c860b7ad64f55809ecf7e6b340272800d586d35
+
+2011-03-14  Murray Cumming  <murrayc@murrayc.com>
+
 	Fix the build.
 
 	* glom/libglom/init.cc: Add an include so we can use std::cerr.
