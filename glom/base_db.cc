@@ -1799,7 +1799,7 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
     return false;
 }
 
-int Base_DB::count_rows_returned_by(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& sql_query)
+int Base_DB::count_rows_returned_by(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql_query)
 {
   if(!sql_query)
   {
@@ -1808,31 +1808,21 @@ int Base_DB::count_rows_returned_by(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& 
   }
 
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
-    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-
-  //Note that the alias is just because the SQL syntax requires it - we get an error if we don't use it.
-  //Be careful not to include ORDER BY clauses in this, because that would make it unnecessarily slow:
-  const guint target_id = builder->add_sub_select( sql_query->get_sql_statement() );
-  builder->select_add_target_id(target_id, "glomarbitraryalias");
-
-  const Gnome::Gda::SqlBuilder::Id id_function = builder->add_function("COUNT", builder->add_id("*"));
-  builder->add_field_value_id(id_function);
-
+    Utils::build_sql_select_count_rows(sql_query);
 
   int result = 0;
 
-  //TODO: Is this inefficient?
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
-    if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
-    {
-      Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
-      //This showed me that this contains a gint64: std::cerr << "DEBUG: value type=" << G_VALUE_TYPE_NAME(value.gobj()) << std::endl;
-      //For sqlite, this is an integer
-      if(value.get_value_type() == G_TYPE_INT64)
-        result = (int)value.get_int64();
-      else
-        result = value.get_int();
-    }
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
+  if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
+  {
+    const Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
+    //This showed me that this contains a gint64: std::cerr << "DEBUG: value type=" << G_VALUE_TYPE_NAME(value.gobj()) << std::endl;
+    //For sqlite, this is an integer
+    if(value.get_value_type() == G_TYPE_INT64)
+      result = (int)value.get_int64();
+    else
+      result = value.get_int();
+  }
 
   //std::cout << "debug: " << G_STRFUNC << ": Returning " << result << std::endl;
   return result;

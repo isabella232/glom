@@ -115,6 +115,16 @@ typedef std::list<Gnome::Gda::Value> type_list_values;
 typedef std::list< std::pair<Gnome::Gda::Value, type_list_values> > type_list_values_with_second; //TODO: Rename this now that we have more than just 1 extra field.
 type_list_values_with_second get_choice_values_all(const Document* document, const sharedptr<const LayoutItem_Field>& field);
 
+/** Build a SQL query to discover how many rows a SQL query would return if it was run.
+ *
+ * This uses a COUNT * on a the @a sql_query as a sub-statement.
+ * Be careful not to include ORDER BY clauses in the supplied SQL query, because that would make it unnecessarily slow.
+ *
+ * @sql_query A SQL query.
+ * @result The number of rows.
+ */
+Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_count_rows(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql_query);
+
 type_list_values_with_second get_choice_values(const Document* document, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value);
 
 /// Get the full query string suitable for use with std::cout.

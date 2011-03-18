@@ -631,7 +631,7 @@ Glib::ustring Utils::string_escape_underscores(const Glib::ustring& text)
 Glib::ustring Utils::locale_simplify(const Glib::ustring& locale_id)
 {
   Glib::ustring result = locale_id;
-  
+
   //At least Ubuntu Natty provides a long string such as this: LC_CTYPE=en_US.UTF-8;LC_NUMERIC=en_US.UTF-8;LC_TIME=en_US.UTF-8;LC_COLLATE=en_US.UTF-8;LC_MONETARY=en_US.UTF-8;LC_MESSAGES=en_AG.utf8;LC_PAPER=en_US.UTF-8;LC_NAME=en_US.UTF-8;LC_ADDRESS=en_US.UTF-8;LC_TELEPHONE=en_US.UTF-8;LC_MEASUREMENT=en_US.UTF-8;LC_IDENTIFICATION=en_US.UTF-8
   //In Ubuntu Maverick, and earlier, it was apparently a simple string such as en_US.UTF-8.
 
@@ -651,7 +651,7 @@ Glib::ustring Utils::locale_simplify(const Glib::ustring& locale_id)
       result = result.substr(posCategory);
     }
   }
-  
+
   //Get everything before the .:
   const Glib::ustring::size_type posDot = result.find('.');
   if(posDot != Glib::ustring::npos)
@@ -665,7 +665,7 @@ Glib::ustring Utils::locale_simplify(const Glib::ustring& locale_id)
   {
     result = result.substr(0, posAt);
   }
-  
+
   //Get everything after the =, if any:
   const Glib::ustring::size_type posEquals = result.find('=');
   if(posEquals != Glib::ustring::npos)
@@ -1093,6 +1093,31 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const Document* document,
     return Gnome::Gda::SqlExpr();
   }
 }
+
+
+Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_count_rows(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql_query)
+{
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> result;
+
+  if(!sql_query)
+  {
+    std::cerr << "Base_DB::count_rows_returned_by(): sql_query was null." << std::endl;
+    return result;
+  }
+
+  result = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+
+  //Note that the alias is just because the SQL syntax requires it - we get an error if we don't use it.
+  //Be careful not to include ORDER BY clauses in this, because that would make it unnecessarily slow:
+  const guint target_id = result->add_sub_select( sql_query->get_sql_statement() );
+  result->select_add_target_id(target_id, "glomarbitraryalias");
+
+  const Gnome::Gda::SqlBuilder::Id id_function = result->add_function("COUNT", result->add_id("*"));
+  result->add_field_value_id(id_function);
+
+  return result;
+}
+
 
 bool Utils::delete_directory(const Glib::RefPtr<Gio::File>& directory)
 {
