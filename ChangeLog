@@ -1,14 +1,24 @@
+2011-03-18  Murray Cumming  <murrayc@murrayc.com>
+
+	ComoboEntry: Check for a null Entry.
+
+	* glom/mode_data/datawidget/comboentry.cc: Always check the result of
+	Gtk::ComboBox::get_entry() for null before dereferencing it, to prevent a
+	crash.
+	However, this probably shouldn't happen, so I might investigate more.
+  This fixes bug #645041 (Ben Konrath)
+
 2011-03-14  Murray Cumming  <murrayc@murrayc.com>
 
 	Do not crash if PyDateTime_IMPORT fails.
 
-	* glom/libglom/init.[h|cc]: Added libglom_pydatetime_import() and 
+	* glom/libglom/init.[h|cc]: Added libglom_pydatetime_import() and
 	libglom_pydatetime_imported(). Remove the g_assert() when it fails.
-	* glom/libglom/python_embed/pygdavalue_conversions.cc: Use the new 
+	* glom/libglom/python_embed/pygdavalue_conversions.cc: Use the new
 	utility function instead of repeating our reimplementation here.
-	
+
 	There will now just be an error message on stderr. We must fix this properly
-	but in the meantime it is better than requiring the use of a separate glom 
+	but in the meantime it is better than requiring the use of a separate glom
 	branch just for OnlineGlom.
 	See https://bugzilla.gnome.org/show_bug.cgi?id=644702
 
@@ -23,9 +33,9 @@
 	Make glom-1.18 parallel-installable with glom-1.16
 
 	* configure.ac: Increase the ABI version.
-	* glom/python_embed/python_module/py_glom_module.cc: Load the correct 
+	* glom/python_embed/python_module/py_glom_module.cc: Load the correct
 	python version.
-	
+
 	I forgot to do this before.
 
 2011-03-14  Murray Cumming  <murrayc@murrayc.com>

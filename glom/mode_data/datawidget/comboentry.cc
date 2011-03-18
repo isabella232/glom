@@ -100,12 +100,20 @@ void ComboEntry::init()
 #endif
 
   //We use connect(slot, false) to connect before the default signal handler, because the default signal handler prevents _further_ handling.
+
+  Gtk::Entry* entry = get_entry();
+  if(!entry)
+  {
+    std::cerr << G_STRFUNC << ": get_entry() returned null." << std::endl;
+  } else
+  {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  get_entry()->signal_button_press_event().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_button_press_event), false);
+    signal_button_press_event().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_button_press_event), false);
 #endif // GLOM_ENABLE_CLIENT_ONLY
 
-  get_entry()->signal_focus_out_event().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_focus_out_event), false);
-  get_entry()->signal_activate().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_activate));
+    entry->signal_focus_out_event().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_focus_out_event), false);
+    entry->signal_activate().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_activate));
+  }
 }
 
 ComboEntry::~ComboEntry()
@@ -155,12 +163,26 @@ void ComboEntry::set_layout_item(const sharedptr<LayoutItem>& layout_item, const
     alignment = layout_field->get_formatting_used_horizontal_alignment();
 
   const float x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
-  get_entry()->set_alignment(x_align);
+
+  Gtk::Entry* entry = get_entry();
+  if(!entry)
+  {
+    std::cerr << G_STRFUNC << ": get_entry() returned null." << std::endl;
+  }
+  else
+    entry->set_alignment(x_align);
 }
 
 void ComboEntry::check_for_change()
 {
-  if(!(get_entry()->get_editable()))
+  Gtk::Entry* entry = get_entry();
+  if(!entry)
+  {
+    std::cerr << G_STRFUNC << ": get_entry() returned null." << std::endl;
+    return;
+  }
+
+  if(!(entry->get_editable()))
   {
     //Don't allow editing via the menu either, if the Entry is non-editable.
 
@@ -173,17 +195,17 @@ void ComboEntry::check_for_change()
       Frame_Glom::show_ok_dialog(_("Read-only field."), _("This field may not be edited here."), *top_level_window, Gtk::MESSAGE_INFO);
 
     //Change the entry back to the old value:
-    get_entry()->set_text(m_old_text);
+    entry->set_text(m_old_text);
   }
 
-  Glib::ustring new_text = get_entry()->get_text();
+  const Glib::ustring new_text = entry->get_text();
   if(new_text != m_old_text)
   {
     //Validate the input:
     bool success = false;
 
     sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
-    Gnome::Gda::Value value = Conversions::parse_value(layout_item->get_glom_type(), get_entry()->get_text(), layout_item->get_formatting_used().m_numeric_format, success);
+    Gnome::Gda::Value value = Conversions::parse_value(layout_item->get_glom_type(), entry->get_text(), layout_item->get_formatting_used().m_numeric_format, success);
 
     if(success)
     {
@@ -275,15 +297,28 @@ void ComboEntry::set_text(const Glib::ustring& text)
   #endif //GLOM_ENABLE_MAEMO
 
   //Call base class:
-  get_entry()->set_text(text);
+  Gtk::Entry* entry = get_entry();
+  if(!entry)
+  {
+    std::cerr << G_STRFUNC << ": get_entry() returned null." << std::endl;
+  }
+  else
+    entry->set_text(text);
 }
 
 Gnome::Gda::Value ComboEntry::get_value() const
 {
   bool success = false;
 
+  const Gtk::Entry* entry = get_entry();
+  if(!entry)
+  {
+    std::cerr << G_STRFUNC << ": get_entry() returned null." << std::endl;
+    return Gnome::Gda::Value();
+  }
+
   sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
-  return Conversions::parse_value(layout_item->get_glom_type(), get_entry()->get_text(), layout_item->get_formatting_used().m_numeric_format, success);
+  return Conversions::parse_value(layout_item->get_glom_type(), entry->get_text(), layout_item->get_formatting_used().m_numeric_format, success);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
