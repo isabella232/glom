@@ -1,5 +1,15 @@
 2011-03-18  Murray Cumming  <murrayc@murrayc.com>
 
+	libglom: Added utils::build_sql_select_count_rows().
+
+	* glom/base_db.[h|cc]: Make count_rows_returned_by() take a const SqlBuilder.
+	* glom/libglom/utils.[h|cc]: Move some of count_rows_returned_by() into a
+	build_sql_select_count_rows() method, for the convenience of UIs such as
+	OnlineGlom.
+	Bug #645110 (Ben Konrath)
+
+2011-03-18  Murray Cumming  <murrayc@murrayc.com>
+
 	ComboEntry: Really have an entry.
 
 	* glom/mode_data/datawidget/comboentry.cc: Constructor: Pass true to the
