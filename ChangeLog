@@ -1,5 +1,13 @@
 2011-03-18  Murray Cumming  <murrayc@murrayc.com>
 
+	ComboEntry: Really have an entry.
+
+	* glom/mode_data/datawidget/comboentry.cc: Constructor: Pass true to the
+	base constructor so that this Gtk::ComboBox really has an entry.
+	This was a mistake while avoiding use of deprecated API in gtkmm 2.24.
+
+2011-03-18  Murray Cumming  <murrayc@murrayc.com>
+
 	ComoboEntry: Check for a null Entry.
 
 	* glom/mode_data/datawidget/comboentry.cc: Always check the result of

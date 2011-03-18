@@ -42,7 +42,8 @@ namespace DataWidgetChildren
 {
 
 ComboEntry::ComboEntry()
-: ComboChoicesWithTreeModel(),
+: Gtk::ComboBox(true /* has_entry */),
+  ComboChoicesWithTreeModel(),
   m_cell_second(0)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
