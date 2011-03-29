@@ -1,3 +1,10 @@
+2011-03-29  Murray Cumming  <murrayc@murrayc.com>
+
+	Depend on libgdamm-5.0 instead of libgdamm-4.0.
+
+	* configure.ac: This change avoids an indirect dependency on GTK+ 2,
+	needed by the libgda 4 tarball build.
+
 2011-03-18  Murray Cumming  <murrayc@murrayc.com>
 
 	libglom: Added utils::build_sql_select_count_rows().
@@ -12,16 +19,16 @@
 
 	Do not crash if PyDateTime_IMPORT fails.
 
-	* glom/libglom/init.[h|cc]: Added libglom_pydatetime_import() and 
+	* glom/libglom/init.[h|cc]: Added libglom_pydatetime_import() and
 	libglom_pydatetime_imported(). Remove the g_assert() when it fails.
-	* glom/libglom/python_embed/pygdavalue_conversions.cc: Use the new 
+	* glom/libglom/python_embed/pygdavalue_conversions.cc: Use the new
 	utility function instead of repeating our reimplementation here.
-	
+
 	There will now just be an error message on stderr. We must fix this properly
-	but in the meantime it is better than requiring the use of a separate glom 
+	but in the meantime it is better than requiring the use of a separate glom
 	branch just for OnlineGlom.
 	See https://bugzilla.gnome.org/show_bug.cgi?id=644702
-	
+
 2011-03-14  Murray Cumming  <murrayc@murrayc.com>
 
 	Project Manager example: Resave.

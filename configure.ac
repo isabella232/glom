@@ -86,7 +86,7 @@ AC_ARG_ENABLE([glom-ui],
               [glom_enable_ui=$enableval],
               [glom_enable_ui=yes])
 AM_CONDITIONAL([GLOM_ENABLE_UI], [test "x$glom_enable_ui" = xyes])
-              
+
 # In most cases, you'll want all these options for the maemo build:
 #   ./configure --prefix=/usr --enable-postgesql --enable-sqlite --enable-maemo;make all install
 # And you might need to do:
@@ -104,7 +104,7 @@ AC_ARG_ENABLE([client-only],
                               [build without developer mode and self-hosting])],
               [glom_enable_client_only=$enableval],
               [glom_enable_client_only=$glom_enable_maemo])
-              
+
 
 # Bail out if --enable-maemo and --disable-client-only are used together.
 AS_IF([test "x$glom_enable_maemo" = xyes && test "x$glom_enable_client_only" != xyes],
@@ -154,9 +154,7 @@ AC_ARG_ENABLE([maemo-launcher],
               [glom_maemo_launcher=no])
 
 # Libraries used by libglom:
-# We require libgda >= 4.0.4 because previous versions had case-sensitivity or fatal metastore problems.
-# libgda >= 4.1.2 is also OK, but not 4.1.<2.
-REQUIRED_LIBGLOM_LIBS='gthread-2.0 giomm-2.4 libxml++-2.6 >= 2.23.1 pygda-4.0 >= 2.25.3 pygobject-2.0 >= 2.6.0 libgdamm-4.0 >= 4.1.2 libgda-4.0 >= 4.0.4 libgda-postgres-4.0'
+REQUIRED_LIBGLOM_LIBS='gthread-2.0 giomm-2.4 libxml++-2.6 >= 2.23.1 pygda-4.0 >= 2.25.3 pygobject-2.0 >= 2.6.0 libgdamm-5.0 >= 4.99.0 libgda-postgres-5.0'
 
 AS_IF([test "x$glom_host_win32" != xyes],
       [REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS libepc-1.0 >= 0.3.1"])
@@ -174,7 +172,7 @@ AS_IF([test "x$glom_enable_client_only" != xyes],
       [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS gtksourceviewmm-3.0 >= 2.91.5"])
 
 AS_IF([test "x$glom_enable_sqlite" = xyes],
-      [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS libgda-sqlite-4.0"])
+      [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS libgda-sqlite-5.0"])
 AS_IF([test "x$glom_enable_maemo" = xyes],
       [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS hildonmm hildon-fmmm libosso osso-af-settings"
       MM_PKG_CONFIG_SUBST([OSSO_SERVICEDIR], [--variable=dbusservicedir osso-af-settings])
@@ -182,7 +180,7 @@ AS_IF([test "x$glom_enable_maemo" = xyes],
 AS_IF([test "x$glom_maemo_launcher" = xyes],
       [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS maemo-launcher-app"])
 
-#TODO: Remove this check, because we checked again later anyway, 
+#TODO: Remove this check, because we checked again later anyway,
 #because we add REQUIRED_LIBGLOM_LIBS to REQUIRED_GLOM_LIBS?
 PKG_CHECK_MODULES([LIBGLOM], [$REQUIRED_LIBGLOM_LIBS])
 
