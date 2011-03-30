@@ -1,5 +1,12 @@
 2011-03-30  Murray Cumming  <murrayc@murrayc.com>
 
+	Update the document DTD.
+
+	* glom/glom_document.dtd: Mention some the new attribute and element
+	for the choices, to fix the DTD test during make check.
+
+2011-03-30  Murray Cumming  <murrayc@murrayc.com>
+
 	A simpler way to avoid the PyDateTime_Check() crash.
 
 	* glom/libglom/init.cc: libglom_init(): Remove the g_assert because this

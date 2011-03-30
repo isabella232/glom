@@ -164,7 +164,7 @@ TODO: Add 'title_singular' element.
   since normal text boxes are relatively simple. The choices_* options are for defining the custom choice
   boxes. -->
 
-    <!ELEMENT formatting (custom_choice_list*)>
+    <!ELEMENT formatting (custom_choice_list*, choices_related_extra_layout?)>
     <!ATTLIST formatting
         format_thousands_separator (true|false) "true"
         format_text_multiline (true|false) "true"
@@ -174,6 +174,7 @@ TODO: Add 'title_singular' element.
         choices_related_relationship CDATA #IMPLIED
         choices_related_field CDATA #IMPLIED
         choices_related_second CDATA #IMPLIED
+        choices_related_show_all (true|false) #IMPLIED
         choices_custom (true|false) "false"
         format_decimal_places_restricted (true|false) "false"
         format_currency_symbol CDATA #IMPLIED>
@@ -187,6 +188,8 @@ TODO: Add 'title_singular' element.
     <!ELEMENT custom_choice EMPTY>
     <!ATTLIST custom_choice
         value CDATA #REQUIRED>
+
+ <!ELEMENT choices_related_extra_layout (data_layout_groups)>
 
 <!-- The calculation node specifies python code that should be used to
      calculate a value for this field. They python code is in a child text node. -->
