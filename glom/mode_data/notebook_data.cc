@@ -45,8 +45,6 @@ Notebook_Data::Notebook_Data()
   //Hide the GtkNotebook border:
   set_name("glomnotebook");
 
-  std::cout << G_OBJECT_TYPE_NAME(gobj()) << std::endl;
-  
   GtkStyleContext *style_context;
   GtkCssProvider *provider;
   GError *error = NULL;
