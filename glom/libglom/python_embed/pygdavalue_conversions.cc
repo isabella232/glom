@@ -31,7 +31,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
 
     if (G_IS_VALUE (boxed))
       g_value_unset(boxed);
-    
+
     boost::python::extract<std::string> extractor_string(input);
     if(extractor_string.check())
     {
@@ -40,7 +40,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
       g_value_set_string(boxed, str.c_str());
       return true;
     }
-    
+
     boost::python::extract<int> extractor_int(input);
     if(extractor_int.check())
     {
@@ -49,7 +49,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
       g_value_set_int (boxed, val);
       return true;
     }
-    
+
     boost::python::extract<long> extractor_long(input);
     if(extractor_long.check())
     {
@@ -58,7 +58,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
       g_value_set_int (boxed, val);
       return true;
     }
-    
+
     boost::python::extract<double> extractor_double(input);
     if(extractor_double.check())
     {
@@ -67,7 +67,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
       g_value_set_double (boxed, val);
       return true;
     }
-    
+
     boost::python::extract<bool> extractor_bool(input);
     if(extractor_bool.check())
     {
@@ -76,21 +76,21 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
       g_value_set_boolean (boxed, val);
       return true;
     }
-    
+
 #if PY_VERSION_HEX >= 0x02040000
-    // We shouldn't need to call PyDateTime_IMPORT again,
-    // after already doing it in libglom_init(),
-    // but PyDate_Check crashes (with valgrind warnings) if we don't.
-    //
-    // Causes a C++ compiler warning, so we use its definition directly.
-    // See http://bugs.python.org/issue7463.
+    //TODO: Remove this redefine when Python fixes the compiler error in their macro:
+    // http://bugs.python.org/issue7463
+    // Note that this sets a local copy of PyDateTimeAPI (in Python's datetime.h
+    // header) so it _must_ be repeated and called before any code that use the
+    // Python PyDate* macros (!) such as PyDateTime_Check
+
     // PyDateTime_IMPORT; //A macro, needed to use PyDate_Check(), PyDateTime_Check(), etc.
     PyDateTimeAPI = (PyDateTime_CAPI*) PyCObject_Import((char*)"datetime", (char*)"datetime_CAPI");
-    g_assert(PyDateTimeAPI); //This should have been set by the PyDateTime_IMPORT macro
-    
-    //TODO: Find some way to do this with boost::python
-    PyObject* input_c = input.ptr();
-    if (PyDateTime_Check (input_c)) {
+    if(PyDateTimeAPI) //This should have been set but it can fail: https://bugzilla.gnome.org/show_bug.cgi?id=644702
+    {
+      //TODO: Find some way to do this with boost::python
+      PyObject* input_c = input.ptr();
+      if (PyDateTime_Check (input_c)) {
          GdaTimestamp gda;
          gda.year = PyDateTime_GET_YEAR(input_c);
          gda.month = PyDateTime_GET_MONTH(input_c);
@@ -101,7 +101,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
          gda.timezone = 0;
          gda_value_set_timestamp (boxed, &gda);
          return true;
-     } else if (PyDate_Check (input_c)) {
+       } else if (PyDate_Check (input_c)) {
          GDate *gda = g_date_new_dmy(
            PyDateTime_GET_DAY(input_c),
            (GDateMonth)PyDateTime_GET_MONTH(input_c),
@@ -110,7 +110,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
          g_value_set_boxed(boxed, gda);
          g_date_free(gda);
          return true;
-     } else if (PyTime_Check (input_c)) {
+       } else if (PyTime_Check (input_c)) {
          GdaTime gda;
          gda.hour = PyDateTime_TIME_GET_HOUR(input_c);
          gda.minute = PyDateTime_TIME_GET_MINUTE(input_c);
@@ -118,6 +118,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
          gda.timezone = 0;
          gda_value_set_time (boxed, &gda);
          return true;
+       }
      }
 #else
   //std::cout << "DEBUG Dates not supported." << std::endl;
@@ -134,7 +135,7 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
     boost::python::object ret;
 
 #if PY_VERSION_HEX >= 0x02040000
-    if((value_type == G_TYPE_DATE) || 
+    if((value_type == G_TYPE_DATE) ||
        (value_type == GDA_TYPE_TIME) ||
        (value_type == GDA_TYPE_TIMESTAMP))
     {
@@ -164,7 +165,7 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
         ret = boost::python::object((bool)g_value_get_boolean(boxed));
 #if PY_VERSION_HEX >= 0x02040000
     } else if (value_type == G_TYPE_DATE) {
-                  
+
         const GDate* val = (const GDate*)g_value_get_boxed(boxed);
         if(val)
         {
@@ -174,8 +175,8 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
           const int day = g_date_get_day(val);
 
           if(!g_date_valid(val))
-            std::cerr << "glom_pygda_value_as_boost_pyobject(): The GDate is not valid." << std::endl;
-            
+            std::cerr << G_STRFUNC << ": The GDate is not valid." << std::endl;
+
           //std::cout << "DEBUG G_TYPE_DATE: year=" << year << ", month=" << month << ", day=" << day << std::endl;
           PyObject* cobject = PyDate_FromDate(year, month, day);
           ret = boost::python::object( (boost::python::handle<>(cobject)) );
