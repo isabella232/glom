@@ -31,6 +31,9 @@
 
 //TODO: Remove this redefine when Python fixes the compiler error in their macro:
 // http://bugs.python.org/issue7463
+// Note that this sets a local copy of PyDateTimeAPI (in Python's datetime.h
+// header) so it _must_ be repeated and called before any code that use the
+// Python PyDate* macros (!) such as PyDateTime_Check
 #undef PyDateTime_IMPORT
 #define PyDateTime_IMPORT \
         PyDateTimeAPI = (PyDateTime_CAPI*) PyCObject_Import((char*)"datetime", \
@@ -56,9 +59,9 @@ void libglom_init()
 
     //This gives more information. When this happens it is generally a linker
     //failure while importing a python module:
+    //See https://bugzilla.gnome.org/show_bug.cgi?id=644702
     PyErr_Print();
   }
-  g_assert(PyDateTimeAPI); //This should have been set by the PyDateTime_IMPORT macro.
 }
 
 void libglom_deinit()

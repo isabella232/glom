@@ -1,3 +1,13 @@
+2011-03-30  Murray Cumming  <murrayc@murrayc.com>
+
+	A simpler way to avoid the PyDateTime_Check() crash.
+
+	* glom/libglom/init.cc: libglom_init(): Remove the g_assert because this
+	can fail: See bug #644702.
+	* glom/libglom/python_embed/pygdavalue_conversions.cc:
+	glom_pygda_value_as_boost_pyobject(): Check that the local re-import
+	(hopefully cached by Python) succeeded, to avoid a crash in PyDateTime_Check().
+
 2011-03-14  Murray Cumming  <murrayc@murrayc.com>
 
 	Reverted the previous commit to prevent a crash if PyDateTime_IMPORT fails.
