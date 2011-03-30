@@ -25,7 +25,7 @@
 #include <gtkmm/builder.h>
 #include <libglom/data_structure/layout/layoutitem_button.h>
 #include <glom/base_db.h>
-#include <gtksourceviewmm/sourceview.h>
+#include <gtksourceviewmm/view.h>
 #include <glom/utility_widgets/combo_textglade.h>
 
 namespace Glom
@@ -59,7 +59,7 @@ private:
 
   Combo_TextGlade* m_combobox_name;
 
-  Gsv::SourceView* m_text_view;
+  Gsv::View* m_text_view;
   Gtk::Button* m_button_check;
   Gtk::Button* m_button_add;
   Gtk::Button* m_button_remove;

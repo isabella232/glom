@@ -1,5 +1,18 @@
 2011-03-30  Murray Cumming  <murrayc@murrayc.com>
 
+	Adapt to the recent gtksourceviewmm API change.
+
+	* configure.ac: Require the latest gtksourceviewmm.
+	* glom/mode_design/dialog_database_preferences.[h|cc]:
+	* glom/mode_design/fields/dialog_fieldcalculation.[h|cc]:
+	* glom/mode_design/fields/dialog_fielddefinition.h:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.[h|cc]:
+	:
+	* glom/mode_design/script_library/dialog_script_library.[h|cc]: Use 
+	Gsv::* instead of Gsv::Source*.
+
+2011-03-30  Murray Cumming  <murrayc@murrayc.com>
+
 	Update the document DTD.
 
 	* glom/glom_document.dtd: Mention some the new attribute and element

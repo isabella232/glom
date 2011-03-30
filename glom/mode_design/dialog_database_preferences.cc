@@ -24,7 +24,7 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
 #include <glom/bakery/busy_cursor.h>
-#include <gtksourceviewmm/sourcelanguagemanager.h>
+#include <gtksourceviewmm/languagemanager.h>
 #include <glibmm/i18n.h>
 
 #include <iostream>
@@ -87,15 +87,15 @@ Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject
   //Dialog_Properties::set_modified(false);
 
   //Tell the SourceView to do syntax highlighting for Python:
-  Glib::RefPtr<Gsv::SourceLanguageManager> languages_manager = 
-    Gsv::SourceLanguageManager::get_default();
+  Glib::RefPtr<Gsv::LanguageManager> languages_manager = 
+    Gsv::LanguageManager::get_default();
 
-  Glib::RefPtr<Gsv::SourceLanguage> language = 
+  Glib::RefPtr<Gsv::Language> language = 
     languages_manager->get_language("python"); //This is the GtkSourceView language ID.
   if(language)
   {
      //Create a new buffer and set it, instead of getting the default buffer, in case libglade has tried to set it, using the wrong buffer type:
-     Glib::RefPtr<Gsv::SourceBuffer> buffer = Gsv::SourceBuffer::create(language);
+     Glib::RefPtr<Gsv::Buffer> buffer = Gsv::Buffer::create(language);
      buffer->set_highlight_syntax();
      m_text_view_script->set_buffer(buffer);
   }
