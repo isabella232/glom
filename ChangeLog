@@ -1,3 +1,24 @@
+2011-03-14  Murray Cumming  <murrayc@murrayc.com>
+
+	Reverted the previous commit to prevent a crash if PyDateTime_IMPORT fails.
+
+	* glom/libglom/init.[h|cc]: Added libglom_pydatetime_import() and
+	libglom_pydatetime_imported(). Remove the g_assert() when it fails.
+	* glom/libglom/python_embed/pygdavalue_conversions.cc: Use the new
+	utility function instead of repeating our reimplementation here.
+
+	There will now just be an error message on stderr. We must fix this properly
+	but in the meantime it is better than requiring the use of a separate glom
+	branch just for OnlineGlom.
+	See https://bugzilla.gnome.org/show_bug.cgi?id=644702
+
+	This commit was reverted because we really must repeat the implementation
+	everywhere, because the PyDateTime variable is declared in Python's datetime.h
+	header, and the macros then try to use that local instance. The copy in
+	init.cc is not available to callers.
+	And we cannot include datetime.h from init.h because it is full of other
+	problems that cause compiler warnings.
+
 2011-03-29  Murray Cumming  <murrayc@murrayc.com>
 
 	Depend on libgdamm-5.0 instead of libgdamm-4.0.
