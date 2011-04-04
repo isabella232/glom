@@ -1,3 +1,11 @@
+2011-04-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix an error found by the gtkmm change to use operator const void*.
+
+	* glom/utility_widgets/adddel/adddel.cc: There is no
+	TreeNodeChildren::operator[](TreeIter). The compiler was casting the TreeIter
+	to bool and then to (int)0.
+
 1.18.1:
 
 2011-04-04  Murray Cumming  <murrayc@murrayc.com>

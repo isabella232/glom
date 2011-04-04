@@ -148,7 +148,7 @@ void AddDel::set_treeview_accessible_name(const Glib::ustring& name)
 {
 #ifdef GTKMM_ATKMM_ENABLED
   m_TreeView.get_accessible()->set_name(name);
-#endif  
+#endif
 }
 
 void AddDel::warn_about_duplicate()
@@ -258,7 +258,7 @@ void AddDel::setup_menu()
   try
   {
 #endif
-    Glib::ustring ui_info = 
+    Glib::ustring ui_info =
         "<ui>"
         "  <popup name='ContextMenu'>"
         "    <menuitem action='ContextEdit'/>"
@@ -283,7 +283,7 @@ void AddDel::setup_menu()
 #endif //GLIBMM_EXCEPTIONS_ENABLED
 
   //Get the menu:
-  m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") ); 
+  m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") );
   if(!m_pMenuPopup)
     g_warning("menu not found");
 }
@@ -322,7 +322,7 @@ Gtk::TreeModel::iterator AddDel::get_item_placeholder()
     return add_item_placeholder();
   }
 }
-  
+
 Gtk::TreeModel::iterator AddDel::add_item_placeholder()
 {
   Gtk::TreeModel::iterator iter = m_refListStore->append();
@@ -404,7 +404,7 @@ bool AddDel::get_value_as_bool(const Gtk::TreeModel::iterator& iter, guint col)
 {
 //TODO: I doubt that this works. It should really get the value from the treeview as a bool. murrayc
   Glib::ustring strValue = get_value(iter, col);
-  return (strValue == "true");   
+  return (strValue == "true");
 }
 
 Glib::ustring AddDel::get_value_key_selected()
@@ -526,7 +526,7 @@ void AddDel::add_blank()
 
   if(get_allow_user_actions()) //The extra blank line is only used if the user may add items:
   {
-    Gtk::TreeModel::iterator iter = get_last_row();        
+    Gtk::TreeModel::iterator iter = get_last_row();
     if(get_is_placeholder_row(iter))
     {
         bAddNewBlank  = false; //One already exists.
@@ -771,7 +771,7 @@ void AddDel::construct_specified_columns()
     {
       std::cerr << "debug: AddDel::construct_specified_columns(): Leaking a Gtk::TreeModelColumn<>." << std::endl;
     }
-    
+
     ++model_column_index;
   }
 
@@ -911,7 +911,7 @@ guint AddDel::add_column(const AddDelColumnInfo& column_info)
 
   return m_ColumnTypes.size()-1;
 }
- 
+
 guint AddDel::add_column(const Glib::ustring& strTitle, AddDelColumnInfo::enumStyles style, bool editable, bool visible)
 {
   //Use the title as the column_id:
@@ -988,8 +988,8 @@ void AddDel::set_allow_delete(bool val)
 {
   m_allow_delete= val;
 }
-  
-  
+
+
 void AddDel::set_allow_user_actions(bool bVal)
 {
   m_bAllowUserActions = bVal;
@@ -1096,7 +1096,7 @@ Glib::ustring AddDel::treeview_get_key(const Gtk::TreeModel::iterator& row)
 
   if(m_refListStore)
   {
-    Gtk::TreeModel::Row treerow = m_refListStore->children()[row];
+    Gtk::TreeModel::Row treerow = *row;
 
     if(treerow)
       treerow.get_value(m_col_key, value);
@@ -1126,7 +1126,7 @@ void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int 
     row.set_value(model_column_index, value_new);
 
     //TODO: Did it really change?
-    
+
     //Is this an add or a change?:
 
     bool bIsAdd = false;
@@ -1165,7 +1165,7 @@ void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int 
     {
       //Change it back, so that we ignore it:
       row.set_value(model_column_index, value_old);
-         
+
       //Signal that a new key was added:
       //We will ignore editing of bool values in the blank row. It seems like a bad way to start a new record.
       //m_signal_user_added.emit(row);
@@ -1176,7 +1176,7 @@ void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int 
 
       m_signal_user_changed.emit(row, model_column_index);
     }
-    
+
   }
 }
 
@@ -1238,7 +1238,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
     //Fire appropriate signal:
     if(bIsAdd)
     {
-        //Signal that a new key was added"        
+        //Signal that a new key was added"
         m_signal_user_added.emit(row);
     }
     else if(bIsChange)
@@ -1521,7 +1521,7 @@ void AddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Glib::ust
     //This is not a placeholder anymore, if it every was:
     iter->set_value(m_col_placeholder, false);
   }
-  
+
   iter->set_value(m_col_key, strValue);
 }
 
@@ -1551,7 +1551,7 @@ bool AddDel::get_model_column_index(guint view_column_index, guint& model_column
   const guint count = m_ColumnTypes.size();
   if(hidden > count)
     return false; //This should never happen.
-  
+
   if(view_column_index >=  (count - hidden))
     return false;
 
