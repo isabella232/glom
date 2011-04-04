@@ -1,3 +1,23 @@
+1.18.1:
+
+* CSV Import: Fix quoted-newline detection, so we don't drop rows.
+  (Murray Cumming) Bug #637529 (Darmon Xavier),
+* libglom:
+  - Avoid the PyDateTime_Check() crash in strange situations such as under JNI.
+  and provide a clue on stderr.
+  See bug #644702
+  (Murray Cumming)
+  - Added utils::build_sql_select_count_rows().
+  (Murray Cumming) Bug #645110 (Ben Konrath)
+* ComboEntry: Really have an entry.
+  (Murray Cumming) Bug #645041 (Ben Konrath)
+* Build:
+  - Require the latest libgdamm, because we use its latest API.
+  - Avoid a tarball-build dependency on mm-common or the mm-common scripts
+  installed by the older version of glibmm.
+  - Make glom-1.18 parallel-installable with glom-1.16
+  (Murray Cumming)
+
 1.18.0:
 
 * Builds with gtkmm-2.24 with no use of deprecated API.
@@ -10,7 +30,7 @@
   Bug #167818
 * Build: Remove the gconfmm dependency, because we don't use it.
   (Murray Cumming)
-	
+
 1.16.1:
 
 Build: Fix the python module's filename.
