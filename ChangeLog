@@ -1,3 +1,10 @@
+2011-04-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Require the latest mm-common and dist the mm-common scripts.
+
+	* configure.ac: Add a MM_CONFIG_DOCTOOL_DIR() call so that the scripts will
+	be distributed with the tarball, avoiding a runtime dependency on mm-common.
+
 2011-03-30  Murray Cumming  <murrayc@murrayc.com>
 
 	A simpler way to avoid the PyDateTime_Check() crash.

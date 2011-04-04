@@ -83,7 +83,7 @@ AC_ARG_ENABLE([glom-ui],
               [glom_enable_ui=$enableval],
               [glom_enable_ui=yes])
 AM_CONDITIONAL([GLOM_ENABLE_UI], [test "x$glom_enable_ui" = xyes])
-              
+
 # In most cases, you'll want all these options for the maemo build:
 #   ./configure --prefix=/usr --enable-postgesql --enable-sqlite --enable-maemo;make all install
 # And you might need to do:
@@ -101,7 +101,7 @@ AC_ARG_ENABLE([client-only],
                               [build without developer mode and self-hosting])],
               [glom_enable_client_only=$enableval],
               [glom_enable_client_only=$glom_enable_maemo])
-              
+
 
 # Bail out if --enable-maemo and --disable-client-only are used together.
 AS_IF([test "x$glom_enable_maemo" = xyes && test "x$glom_enable_client_only" != xyes],
@@ -179,7 +179,7 @@ AS_IF([test "x$glom_enable_maemo" = xyes],
 AS_IF([test "x$glom_maemo_launcher" = xyes],
       [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS maemo-launcher-app"])
 
-#TODO: Remove this check, because we checked again later anyway, 
+#TODO: Remove this check, because we checked again later anyway,
 #because we add REQUIRED_LIBGLOM_LIBS to REQUIRED_GLOM_LIBS?
 PKG_CHECK_MODULES([LIBGLOM], [$REQUIRED_LIBGLOM_LIBS])
 
@@ -197,8 +197,16 @@ AC_DEFINE_UNQUOTED([ISO_CODES_PREFIX], ["$ISO_CODES_PREFIX"],
                    [Define to the installation prefix of the iso-codes module.])
 
 
+# Allow use of mm-common macros for the warnings option and for installing developer documentation.
+MM_PREREQ([0.9.5])
+MM_INIT_MODULE([libglom-1.18])
+
+# Copy the mm-common .pl scripts into docs/,
+# and use them from there,
+# so we can dist them to avoid a tarball-build dependency.
+MM_CONFIG_DOCTOOL_DIR([docs/libglom_reference])
+
 # Evaluate the --enable-warnings=level option.
-MM_PREREQ([0.8])
 AC_LANG([C])
 MM_ARG_ENABLE_WARNINGS([GLOM_WFLAGS],
                        [-Wall],
