@@ -1,5 +1,13 @@
 2011-04-04  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix an error found by the gtkmm change to use operator const void*.
+
+	* glom/utility_widgets/adddel/adddel.cc: There is no
+	TreeNodeChildren::operator[](TreeIter). The compiler was casting the TreeIter
+	to bool and then to (int)0.
+
+2011-04-04  Murray Cumming  <murrayc@murrayc.com>
+
 	Require the latest mm-common and dist the mm-common scripts.
 
 	* configure.ac: Add a MM_CONFIG_DOCTOOL_DIR() call so that the scripts will
@@ -15,7 +23,7 @@
 	* glom/mode_design/fields/dialog_fielddefinition.h:
 	* glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.[h|cc]:
 	:
-	* glom/mode_design/script_library/dialog_script_library.[h|cc]: Use 
+	* glom/mode_design/script_library/dialog_script_library.[h|cc]: Use
 	Gsv::* instead of Gsv::Source*.
 
 2011-03-30  Murray Cumming  <murrayc@murrayc.com>
