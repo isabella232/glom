@@ -198,8 +198,16 @@ AC_DEFINE_UNQUOTED([ISO_CODES_PREFIX], ["$ISO_CODES_PREFIX"],
                    [Define to the installation prefix of the iso-codes module.])
 
 
+# Allow use of mm-common macros for the warnings option and for installing developer documentation.
+MM_PREREQ([0.9.5])
+MM_INIT_MODULE([libglom-1.20])
+
+# Copy the mm-common .pl scripts into docs/,
+# and use them from there,
+# so we can dist them to avoid a tarball-build dependency.
+MM_CONFIG_DOCTOOL_DIR([docs/libglom_reference])
+
 # Evaluate the --enable-warnings=level option.
-MM_PREREQ([0.8])
 AC_LANG([C])
 MM_ARG_ENABLE_WARNINGS([GLOM_WFLAGS],
                        [-Wall],
