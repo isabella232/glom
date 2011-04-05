@@ -133,7 +133,7 @@ static Glib::ustring get_traceback()
     result = chrRetval;
     g_free(chrRetval);
   }
-  
+
   return result;
 }
 
@@ -148,7 +148,7 @@ static void ShowTrace()
  */
 static boost::python::object import_module(const char* name)
 {
-  boost::python::object module_glom; //Defaults to PyNone. 
+  boost::python::object module_glom; //Defaults to PyNone.
   try
   {
     module_glom = boost::python::import(name);
@@ -190,9 +190,9 @@ bool gda_python_module_is_available()
 
 static boost::python::object glom_python_call(Field::glom_field_type result_type,
   Document* pDocument,
-  const Glib::ustring& func_impl, 
+  const Glib::ustring& func_impl,
   Glib::ustring& error_message,
-  const boost::python::object& param1, 
+  const boost::python::object& param1,
   const boost::python::object& param2 = boost::python::object())
 {
   //std::cout << "glom_evaluate_python_function_implementation()" << std::endl;
@@ -225,9 +225,9 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
     func_signature = func_name + "(record)";
   else
     func_signature = func_name + "(record, ui)";
-  
+
   func_def = "def " + func_signature + ":\n  import glom_" GLOM_ABI_VERSION_UNDERLINED "\n  from gi.repository import Gda\n" + func_def;
-  
+
   //We did this in main(): Py_Initialize();
 
   boost::python::object pMain = import_module("__main__");
@@ -281,7 +281,7 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   boost::python::object module_gda = import_module("gi.repository.Gda");
   if(module_gda == boost::python::object())
   {
-    g_warning("Could not import python gda module.");
+    g_warning("Could not import python gi.repository.Gda module.");
     return boost::python::object();
   }
 
@@ -375,11 +375,11 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
     g_warning("pyResult.ptr() was null");
     HandlePythonError();
   }
-  
+
   //TODO: Why do we do this?
   Py_FlushLine();
   PyErr_Clear();
-  
+
   //We did this in main(): Py_Finalize();
 
   return pyResultCpp;
@@ -402,14 +402,14 @@ void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
     g_warning("Could not import python glom module.");
     return; // don't crash
   }
-  
+
   boost::python::object objRecord(new PyGlomRecord);
   boost::python::extract<PyGlomRecord*> extractor(objRecord);
   if(!extractor.check())
   {
     std::cerr << ("extract<PyGlomRecord*> failed.") << std::endl;
   }
-  
+
   PyGlomRecord* pParam = extractor;
   if(pParam)
   {
@@ -417,7 +417,7 @@ void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
     pParam->set_fields(field_values, pDocument, table_name, key_field, key_field_value, opened_connection);
     pParam->set_read_only();
   }
-  
+
   //Pass an additional ui parameter for use by scripts:
   boost::python::object objUI(new PyGlomUI(callbacks));
 
@@ -441,25 +441,25 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     g_warning("Could not import python glom module.");
     return Gnome::Gda::Value(); // don't crash
   }
-  
+
   boost::python::object objRecord(new PyGlomRecord);
-  
+
   boost::python::extract<PyGlomRecord*> extractor(objRecord);
   if(!extractor.check())
   {
     std::cerr << ("extract<PyGlomRecord*> failed.") << std::endl;
     return Gnome::Gda::Value();
   }
-  
+
   PyGlomRecord* pParam = extractor;
   if(pParam)
   {
     //Fill the record's details:
     pParam->set_fields(field_values, pDocument, table_name, key_field, key_field_value, opened_connection);
   }
-  
+
   const boost::python::object pyResultCpp = glom_python_call(result_type, pDocument, func_impl, error_message, objRecord);
-  
+
   //Deal with the various possible return types:
   Gnome::Gda::Value valueResult;
   bool object_is_gda_value = false;
@@ -519,7 +519,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
         HandlePythonError();
     }
   }
-  
+
   return valueResult;
 }
 

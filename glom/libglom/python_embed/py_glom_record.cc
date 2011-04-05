@@ -65,7 +65,7 @@ boost::python::object PyGlomRecord::get_connection()
   if(m_connection)
   {
     //Ask pygobject to create a PyObject* that wraps our GObject,
-    //presumably using something from pygda:
+    //presumably using something from gi.repository.Gda:
     PyObject* cobject = pygobject_new( G_OBJECT(m_connection->gobj()) );
     result = boost::python::object( boost::python::borrowed(cobject) );
   }

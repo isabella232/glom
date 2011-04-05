@@ -1,5 +1,14 @@
 2011-04-05  Murray Cumming  <murrayc@murrayc.com>
 
+	Remove more small traces of pygda.
+
+	* glom/libglom/python_embed/py_glom_record.cc:
+	* glom/python_embed/glom_python.cc:
+	* glom/python_embed/python_module/py_glom_module.cc: Some last minor renames
+	from pygda to gi.repository.Gda.
+
+2011-04-05  Murray Cumming  <murrayc@murrayc.com>
+
 	Python: Use gi.repository.Gda instead of Gda.
 
 	* configure.ac: Do not require pygda at build time, though we check for it

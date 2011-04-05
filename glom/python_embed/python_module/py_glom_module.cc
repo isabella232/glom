@@ -87,7 +87,7 @@ BOOST_PYTHON_MODULE(glom_1_20)
     .add_property("table_name", &PyGlomRecord::get_table_name,
        "The name of the current table as a string.")
     .add_property("connection", &PyGlomRecord::get_connection,
-       "The current database connection for use with the pygda API. This is a :class:`Gda.Connection` object.")
+       "The current database connection for use with the gi.repository.Gda API. This is a :class:`Gda.Connection` object.")
     .add_property("related", &PyGlomRecord::get_related,
        ":class:`Related` records. Use the ['relationship_name'] notation with this object.")
 
