@@ -1,5 +1,22 @@
 2011-04-05  Murray Cumming  <murrayc@murrayc.com>
 
+	Python: Use gi.repository.Gda instead of Gda.
+
+	* configure.ac: Do not require pygda at build time, though we check for it
+	at program startup. There is probably no similar way to check at configure
+	time, and it's debatable that it's appropriate anyway. The pygda check
+	was probably here before in order to use a pygda .h file that we no longer
+	use.
+	* glom/main.cc: Add and call check_gir_is_available_with_warning() to check
+	that gi.repository (gobject intropsection) in general is available.
+	* glom/python_embed/glom_python.[h|cc]:
+	* tests/test_python_module.[h|cc]: Add gir_python_module_is_available() for
+	use by main.cc.
+	gda_python_module_is_available(), glom_python_call(): Use the new python
+	module instead of the old Gda module.
+
+2011-04-05  Murray Cumming  <murrayc@murrayc.com>
+
 	Write Python tracebacks to stderr.
 
 	* glom/application.cc:

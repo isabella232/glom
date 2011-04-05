@@ -174,9 +174,16 @@ bool glom_python_module_is_available()
   return module_glom != boost::python::object();
 }
 
+bool gir_python_module_is_available()
+{
+  const char* name = "gi.repository";
+  const boost::python::object module_glom = import_module(name);
+  return module_glom != boost::python::object();
+}
+
 bool gda_python_module_is_available()
 {
-  const char* name = "gda";
+  const char* name = "gi.repository.Gda";
   const boost::python::object module_glom = import_module(name);
   return module_glom != boost::python::object();
 }
@@ -219,7 +226,7 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   else
     func_signature = func_name + "(record, ui)";
   
-  func_def = "def " + func_signature + ":\n  import glom_" GLOM_ABI_VERSION_UNDERLINED "\n  import gda\n" + func_def;
+  func_def = "def " + func_signature + ":\n  import glom_" GLOM_ABI_VERSION_UNDERLINED "\n  from gi.repository import Gda\n" + func_def;
   
   //We did this in main(): Py_Initialize();
 
@@ -271,7 +278,7 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   }
 
   //TODO: Is this necessary?
-  boost::python::object module_gda = import_module("gda");
+  boost::python::object module_gda = import_module("gi.repository.Gda");
   if(module_gda == boost::python::object())
   {
     g_warning("Could not import python gda module.");
@@ -360,6 +367,7 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   {
     std::cerr << "Glom: Exception caught from pFunc(objRecord). func_name=" << std::endl << func_name << std::endl;
     error_message = get_traceback();
+    //std::cerr << "  traceback=" << error_message << std::endl;
   }
 
   if(!(pyResultCpp.ptr()))

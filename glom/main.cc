@@ -356,16 +356,36 @@ bool check_pyglom_is_available_with_warning()
   return false;
 }
 
+bool check_gir_is_available_with_warning()
+{
+  if(gir_python_module_is_available())
+    return true;
+
+   /* The python module could not be imported by Glom, so warn the user: */
+   const Glib::ustring message = _("Your installation of Glom is not complete, because the gi.repository Python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
+
+#ifndef GLOM_ENABLE_MAEMO
+  Gtk::MessageDialog dialog(Utils::bold_message(_("gi.repository Python Module Not Installed")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+  dialog.set_secondary_text(message);
+  dialog.run();
+#else
+  Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
+  note.run();
+#endif //GLOM_ENABLE_MAEMO
+
+  return false;
+}
+
 bool check_pygda_is_available_with_warning()
 {
   if(gda_python_module_is_available())
     return true;
 
    /* The python module could not be imported by Glom, so warn the user: */
-   const Glib::ustring message = _("Your installation of Glom is not complete, because the gda Python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
+   const Glib::ustring message = _("Your installation of Glom is not complete, because the gi.repository.Gda python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
 
 #ifndef GLOM_ENABLE_MAEMO
-  Gtk::MessageDialog dialog(Utils::bold_message(_("gda Python Module Not Installed")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+  Gtk::MessageDialog dialog(Utils::bold_message(_("gi.repository.Gda Python Module Not Installed")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
   dialog.set_secondary_text(message);
   dialog.run();
 #else

@@ -34,6 +34,11 @@ namespace Glom
  */
 bool glom_python_module_is_available();
 
+/** Check that Python can really import the gi.repository module,
+ * as a runtime sanity check.
+ */
+bool gir_python_module_is_available();
+
 /** Check that Python can really import the gda module,
  * as a runtime sanity check.
  */

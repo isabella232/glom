@@ -26,7 +26,9 @@ bool glom_python_module_is_available()
 
 bool gda_python_module_is_available()
 {
-  const gchar* name = "gda";
+  //Python code usually uses "from gi.repository import Gda" so that 
+  //the code may use Gda. rather than gi.repository.Gda in the code.
+  const gchar* name = "gi.repository.Gda"; 
   PyObject* module_glom = PyImport_ImportModule((char*)name); //TODO: unref this?
 
   if(!module_glom)
