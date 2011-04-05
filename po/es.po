@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glom&component=general\n"
-"POT-Creation-Date: 2011-02-26 10:37+0000\n"
-"PO-Revision-Date: 2011-02-26 12:09+0100\n"
+"product=glom&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-04-05 13:32+0000\n"
+"PO-Revision-Date: 2011-04-05 15:58+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -347,56 +347,56 @@ msgstr "Problema al cargar el documento"
 msgid "Glom could not load the document."
 msgstr "Glom no pudo cargar el documento."
 
-#: ../glom/application.cc:1301
+#: ../glom/application.cc:1306
 msgid "Exporting Backup"
 msgstr "Exportando respaldo"
 
-#: ../glom/application.cc:1309
+#: ../glom/application.cc:1314
 msgid "Restoring Backup"
 msgstr "Restaurando respaldo"
 
-#: ../glom/application.cc:1625
+#: ../glom/application.cc:1630
 msgid "_Contents"
 msgstr "_Contenido"
 
-#: ../glom/application.cc:1625
+#: ../glom/application.cc:1630
 msgid "Help with the application"
 msgstr "Ayuda con la aplicación"
 
-#: ../glom/application.cc:1660 ../glom/application.cc:1740
-#: ../glom/application.cc:1928
+#: ../glom/application.cc:1665 ../glom/application.cc:1745
+#: ../glom/application.cc:1933
 msgid "Creating Glom Database"
 msgstr "Crear la base de datos de Glom"
 
-#: ../glom/application.cc:1660 ../glom/application.cc:1740
+#: ../glom/application.cc:1665 ../glom/application.cc:1745
 msgid "Creating Glom database from example file."
 msgstr "Creando base de datos Glom desde un archivo de ejemplo."
 
-#: ../glom/application.cc:1928
+#: ../glom/application.cc:1933
 msgid "Creating Glom database from backup file."
 msgstr "Creando base de datos Glom desde un archivo de respaldo."
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc.cc:237
+#: ../glom/application.cc:2396 ../glom/bakery/app_withdoc.cc:237
 #: ../glom/bakery/app_withdoc.cc:288
 msgid "Save failed."
 msgstr "Fallo al guardar."
 
-#: ../glom/application.cc:2391
+#: ../glom/application.cc:2396
 msgid "There was an error while saving the example file."
 msgstr "Ocurrió un error al grabar el archivo de ejemplo."
 
-#: ../glom/application.cc:2432 ../glom/application.cc:2437
+#: ../glom/application.cc:2437 ../glom/application.cc:2442
 #: ../glom/bakery/app_withdoc_gtk.cc:556
 msgid "Save Document"
 msgstr "Guardando el documento"
 
 #. Warn the user:
-#: ../glom/application.cc:2525 ../glom/bakery/app_withdoc_gtk.cc:605
+#: ../glom/application.cc:2530 ../glom/bakery/app_withdoc_gtk.cc:605
 msgid "Read-only File."
 msgstr "Archivo de sólo lectura."
 
-#: ../glom/application.cc:2525 ../glom/bakery/app_withdoc_gtk.cc:605
+#: ../glom/application.cc:2530 ../glom/bakery/app_withdoc_gtk.cc:605
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -405,11 +405,11 @@ msgstr ""
 "permisos de acceso."
 
 #. Warn the user:
-#: ../glom/application.cc:2539 ../glom/bakery/app_withdoc_gtk.cc:619
+#: ../glom/application.cc:2544 ../glom/bakery/app_withdoc_gtk.cc:619
 msgid "Read-only Directory."
 msgstr "Directorio de sólo lectura."
 
-#: ../glom/application.cc:2539 ../glom/bakery/app_withdoc_gtk.cc:619
+#: ../glom/application.cc:2544 ../glom/bakery/app_withdoc_gtk.cc:619
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -417,19 +417,19 @@ msgstr ""
 "No puede crear un archivo en este directorio porque no tiene suficientes "
 "permisos de acceso."
 
-#: ../glom/application.cc:2556
+#: ../glom/application.cc:2561
 msgid "Database Title missing"
 msgstr "Falta el título de la base de datos"
 
-#: ../glom/application.cc:2556
+#: ../glom/application.cc:2561
 msgid "You must specify a title for the new database."
 msgstr "Debe especificar un título para la nueva base de datos."
 
-#: ../glom/application.cc:2585 ../glom/frame_glom.cc:1908
+#: ../glom/application.cc:2590 ../glom/frame_glom.cc:1908
 msgid "Directory Already Exists"
 msgstr "El directorio ya existe"
 
-#: ../glom/application.cc:2585 ../glom/frame_glom.cc:1909
+#: ../glom/application.cc:2590 ../glom/frame_glom.cc:1909
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
@@ -440,43 +440,43 @@ msgstr ""
 "nombre de archivo diferente para usar un nuevo directorio en su lugar."
 
 #. This actually creates the directory:
-#: ../glom/application.cc:2724
+#: ../glom/application.cc:2729
 msgid "Save Backup"
 msgstr "Guardar respaldo"
 
-#: ../glom/application.cc:2806
+#: ../glom/application.cc:2811
 msgid "Export Backup failed."
 msgstr "Falló al exportar el respaldo."
 
-#: ../glom/application.cc:2806
+#: ../glom/application.cc:2811
 msgid "There was an error while exporting the backup."
 msgstr "Ocurrió un error al exportar el respaldo."
 
-#: ../glom/application.cc:2811
+#: ../glom/application.cc:2816
 msgid "Choose a backup file"
 msgstr "Elegir un archivo de respaldo"
 
-#: ../glom/application.cc:2816
+#: ../glom/application.cc:2821
 msgid ".tar.gz Backup files"
 msgstr "Archivos .tar.gz de respaldo"
 
-#: ../glom/application.cc:2822
+#: ../glom/application.cc:2827
 msgid "Restore"
 msgstr "Restaurar"
 
-#: ../glom/application.cc:2893 ../glom/application.cc:2899
+#: ../glom/application.cc:2898 ../glom/application.cc:2904
 msgid "Restore Backup failed."
 msgstr "Falló al restaurar el respaldo."
 
-#: ../glom/application.cc:2893
+#: ../glom/application.cc:2898
 msgid ""
 "There was an error while restoring the backup. The tar utility failed to "
 "extract the archive."
 msgstr ""
-"Ocurrió un error al restaurar el respaldo. La utilidad «tar» falló al "
-"extraer el archivo."
+"Ocurrió un error al restaurar el respaldo. La utilidad «tar» falló al extraer "
+"el archivo."
 
-#: ../glom/application.cc:2899
+#: ../glom/application.cc:2904
 msgid ""
 "There was an error while restoring the backup. The .glom file could not be "
 "found."
@@ -484,7 +484,7 @@ msgstr ""
 "Ocurrió un error al restaurar el respaldo. No se pudo encontrar el archivo "
 "de glom."
 
-#: ../glom/application.cc:3003 ../glom/bakery/app_withdoc_gtk.cc:466
+#: ../glom/application.cc:3008 ../glom/bakery/app_withdoc_gtk.cc:466
 msgid " (read-only)"
 msgstr " (sólo-lectura)"
 
@@ -2075,7 +2075,6 @@ msgstr ""
 "Introduzca los detalles de conexión con el servidor de su base de datos."
 
 #: ../glom/glom.glade.h:41
-#| msgid "Please wait, your data is being imported…"
 msgid "Please wait while your data is imported."
 msgstr "Espere mientras se importan sus datos."
 
@@ -2698,7 +2697,7 @@ msgstr "Ejecutándose como superusuario"
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
-#: ../glom/main.cc:315 ../glom/main.cc:328 ../glom/main.cc:571
+#: ../glom/main.cc:315 ../glom/main.cc:328 ../glom/main.cc:591
 msgid "Incomplete Glom Installation"
 msgstr "La instalación de Glom está incompleta"
 
@@ -2761,43 +2760,76 @@ msgstr "El módulo Glom de Python no está instalado"
 
 #. The python module could not be imported by Glom, so warn the user:
 #: ../glom/main.cc:365
+#| msgid ""
+#| "Your installation of Glom is not complete, because the gda Python module "
+#| "is not available on your system.\n"
+#| "\n"
+#| "Please report this bug to your vendor, or your system administrator so it "
+#| "can be corrected."
 msgid ""
-"Your installation of Glom is not complete, because the gda Python module is "
-"not available on your system.\n"
+"Your installation of Glom is not complete, because the gi.repository Python "
+"module is not available on your system.\n"
 "\n"
 "Please report this bug to your vendor, or your system administrator so it "
 "can be corrected."
 msgstr ""
-"Su instalación de Glom no está completa porque el módulo gda de Python no "
-"está disponible en su sistema.\n"
+"Su instalación de Glom no está completa porque el módulo gi.repository de "
+"Python no está disponible en su sistema.\n"
 "\n"
 "Informe de este error a su distribuidor o al administrador de su sistema "
-"para que pueda ser corregido."
+"para que pueda corregirse."
 
 #: ../glom/main.cc:368
-msgid "gda Python Module Not Installed"
-msgstr "El módulo gda de Python no está instalado"
+#| msgid "gda Python Module Not Installed"
+msgid "gi.repository Python Module Not Installed"
+msgstr "El módulo gi.repository de Python no está instalado"
 
-#: ../glom/main.cc:494
+#. The python module could not be imported by Glom, so warn the user:
+#: ../glom/main.cc:385
+#| msgid ""
+#| "Your installation of Glom is not complete, because the gda Python module "
+#| "is not available on your system.\n"
+#| "\n"
+#| "Please report this bug to your vendor, or your system administrator so it "
+#| "can be corrected."
+msgid ""
+"Your installation of Glom is not complete, because the gi.repository.Gda "
+"python module is not available on your system.\n"
+"\n"
+"Please report this bug to your vendor, or your system administrator so it "
+"can be corrected."
+msgstr ""
+"Su instalación de Glom no está completa porque el módulo gi.repository de "
+"Python no está disponible en su sistema.\n"
+"\n"
+"Informe de este error a su distribuidor o al administrador de su sistema "
+"para que pueda corregirse."
+
+#: ../glom/main.cc:388
+#| msgid "gda Python Module Not Installed"
+msgid "gi.repository.Gda Python Module Not Installed"
+msgstr "El módulo gi.repository.Gda de Python no está instalado"
+
+#: ../glom/main.cc:514
 msgid "Error while parsing command-line options: "
 msgstr "Error al analizar las opciones de la línea de comandos: "
 
-#: ../glom/main.cc:495
+#: ../glom/main.cc:515
 msgid "Use --help to see a list of available command-line options."
 msgstr ""
 "Use --help para ver una lista de las opciones disponibles para la línea de "
 "comandos."
 
-#: ../glom/main.cc:537
+#: ../glom/main.cc:557
 msgid "Glom: The file does not exist."
 msgstr "Glom: El archivo no existe."
 
-#: ../glom/main.cc:547
+#: ../glom/main.cc:567
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: La ruta del archivo es un directorio en lugar de un archivo."
 
 #. The Postgres provider was not found, so warn the user:
-#: ../glom/main.cc:568
+#: ../glom/main.cc:588
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda "
 "provider is not available on your system. This provider is needed to access "
@@ -2821,7 +2853,7 @@ msgstr ""
 msgid "Undefined Table"
 msgstr "Tabla no definida"
 
-#: ../glom/mode_data/box_data.cc:149
+#: ../glom/mode_data/box_data.cc:150
 msgid ""
 "You have not entered any find criteria. Try entering information in the "
 "fields."
@@ -2829,12 +2861,12 @@ msgstr ""
 "No ha introducido un criterio de búsqueda. Pruebe introduciendo información "
 "en los campos."
 
-#: ../glom/mode_data/box_data.cc:154
+#: ../glom/mode_data/box_data.cc:155
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:115
 msgid "No Find Criteria"
 msgstr "No hay criterio de búsqueda"
 
-#: ../glom/mode_data/box_data.cc:193
+#: ../glom/mode_data/box_data.cc:194
 msgid ""
 "This data cannot be stored in the database because you have not provided a "
 "primary key.\n"
@@ -2844,7 +2876,7 @@ msgstr ""
 "proporcionado una clave primaria.\n"
 "¿Desea descartar estos datos?"
 
-#: ../glom/mode_data/box_data.cc:199
+#: ../glom/mode_data/box_data.cc:200
 msgid "No primary key value"
 msgstr "No hay un valor de clave primaria"
 
@@ -2909,14 +2941,14 @@ msgstr ""
 #. Add Pages:
 #: ../glom/mode_data/box_data_list.cc:503
 #: ../glom/mode_data/box_data_manyrecords.cc:83
-#: ../glom/mode_data/notebook_data.cc:42 ../glom/mode_find/notebook_find.cc:32
+#: ../glom/mode_data/notebook_data.cc:67 ../glom/mode_find/notebook_find.cc:32
 msgid "List"
 msgstr "Lista"
 
 #. On Maemo, we add the box to m_window_maemo_details instead:
 #. Details column:
 #: ../glom/mode_data/box_data_portal.cc:142
-#: ../glom/mode_data/notebook_data.cc:46 ../glom/mode_data/notebook_data.cc:50
+#: ../glom/mode_data/notebook_data.cc:71 ../glom/mode_data/notebook_data.cc:75
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:214
 #: ../glom/mode_find/notebook_find.cc:41
 msgid "Details"
@@ -2996,11 +3028,11 @@ msgstr "¿Eliminar el grupo «%1» entero?"
 msgid "Delete whole group?"
 msgstr "¿Eliminar el grupo entero?"
 
-#: ../glom/mode_data/notebook_data.cc:68
+#: ../glom/mode_data/notebook_data.cc:93
 msgid "List Or Details View"
 msgstr "Vista de lista o detalles"
 
-#: ../glom/mode_data/notebook_data.cc:247
+#: ../glom/mode_data/notebook_data.cc:272
 msgid "%1 Details"
 msgstr "%1 detalles"
 
@@ -3704,7 +3736,7 @@ msgid "Duplicate"
 msgstr "Duplicar"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:383
+#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:418
 #: ../glom/mode_data/db_adddel/db_adddel.cc:632
 msgid "Example"
 msgstr "Ejemplo"
