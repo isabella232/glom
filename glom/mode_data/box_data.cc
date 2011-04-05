@@ -30,6 +30,7 @@
 #include <glom/application.h>
 #include <algorithm> //For std::find()
 #include <libglom/libglom_config.h>
+#include <iostream>
 #include <glibmm/i18n.h>
 
 #ifdef GLOM_ENABLE_MAEMO
@@ -380,7 +381,7 @@ void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& l
     //Allow this UI to respond to UI change requests from the Python code:
     AppPythonUICallbacks callbacks;
 
-    Glib::ustring error_message; //TODO: Check this.
+    Glib::ustring error_message;
     glom_execute_python_function_implementation(layout_item->get_script(),
       field_values, //TODO: Maybe use the field's type here.
       get_document(),
@@ -391,6 +392,11 @@ void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& l
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
   }
 #endif // !GLIBMM_EXCEPTIONS_ENABLED
+
+  if(!error_message.empty())
+  {
+    std::cerr << "Python Error: " << error_message << std::endl;
+  }
 }
 
 } //namespace Glom
