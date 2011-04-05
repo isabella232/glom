@@ -1,3 +1,13 @@
+2011-04-05  Murray Cumming  <murrayc@murrayc.com>
+
+	Write Python tracebacks to stderr.
+
+	* glom/application.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_design/dialog_database_preferences.cc:
+	* tests/test_python_execute_script.cc: Output python errors to stderr as a
+	clue when things go wrong.
+
 2011-04-04  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix an error found by the gtkmm change to use operator const void*.

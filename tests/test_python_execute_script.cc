@@ -94,6 +94,11 @@ int main()
     return EXIT_FAILURE;
   }
 
+  if(!error_message.empty())
+  {
+    std::cerr << "Python Error: " << error_message << std::endl;
+  }
+
   g_assert(error_message.empty());
 
   //Check that the callbacks received the expected values:

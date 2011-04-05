@@ -1281,6 +1281,11 @@ bool Application::on_document_load()
       sharedconnection->get_gda_connection(),
       callbacks,
       error_message);
+
+    if(!error_message.empty())
+    {
+      std::cerr << "Python Error: " << error_message << std::endl;
+    }
   }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

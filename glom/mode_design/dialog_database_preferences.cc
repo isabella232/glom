@@ -282,6 +282,11 @@ void Dialog_Database_Preferences::on_button_test_script()
     sharedconnection->get_gda_connection(),
     callbacks,
     error_message);
+
+  if(!error_message.empty())
+  {
+    std::cerr << "Python Error: " << error_message << std::endl;
+  }
 }
 
 
