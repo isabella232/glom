@@ -24,8 +24,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-16 15:00+0100\n"
-"PO-Revision-Date: 2011-01-08 14:52+0000\n"
+"POT-Creation-Date: 2011-04-06 22:20+0200\n"
+"PO-Revision-Date: 2011-04-02 14:52+0000\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -369,59 +369,59 @@ msgstr "Der opstod et problem under indlæsning af dokument"
 msgid "Glom could not load the document."
 msgstr "Glom kunne ikke indlæse dokumentet."
 
-#: ../glom/application.cc:1301
+#: ../glom/application.cc:1306
 msgid "Exporting Backup"
 msgstr "Eksporterer sikkerhedskopi"
 
-#: ../glom/application.cc:1309
+#: ../glom/application.cc:1314
 msgid "Restoring Backup"
 msgstr "Gendanner fra sikkerhedskopi"
 
-#: ../glom/application.cc:1625
+#: ../glom/application.cc:1630
 msgid "_Contents"
 msgstr "_Indhold"
 
 # med eller til (fremgår vist ikke helt klart her)
 # Strengen ser ud til at være en uddybning til hjælpemenuindgangen
 # "contents", så "Hjælp til programmet".
-#: ../glom/application.cc:1625
+#: ../glom/application.cc:1630
 msgid "Help with the application"
 msgstr "Hjælp til programmet"
 
-#: ../glom/application.cc:1660 ../glom/application.cc:1740
-#: ../glom/application.cc:1928
+#: ../glom/application.cc:1665 ../glom/application.cc:1745
+#: ../glom/application.cc:1933
 msgid "Creating Glom Database"
 msgstr "Opretter Glomdatabase"
 
-#: ../glom/application.cc:1660 ../glom/application.cc:1740
+#: ../glom/application.cc:1665 ../glom/application.cc:1745
 msgid "Creating Glom database from example file."
 msgstr "Opretter Glomdatabase ud fra eksempelfil."
 
-#: ../glom/application.cc:1928
+#: ../glom/application.cc:1933
 msgid "Creating Glom database from backup file."
 msgstr "Opretter Glomdatabase ud fra sikkerhedskopifil."
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc.cc:237
+#: ../glom/application.cc:2396 ../glom/bakery/app_withdoc.cc:237
 #: ../glom/bakery/app_withdoc.cc:288
 msgid "Save failed."
 msgstr "Gemning mislykkedes."
 
-#: ../glom/application.cc:2391
+#: ../glom/application.cc:2396
 msgid "There was an error while saving the example file."
 msgstr "Der opstod en fejl under gemning af eksempelfilen."
 
-#: ../glom/application.cc:2432 ../glom/application.cc:2437
+#: ../glom/application.cc:2437 ../glom/application.cc:2442
 #: ../glom/bakery/app_withdoc_gtk.cc:556
 msgid "Save Document"
 msgstr "Gem dokument"
 
 #. Warn the user:
-#: ../glom/application.cc:2525 ../glom/bakery/app_withdoc_gtk.cc:605
+#: ../glom/application.cc:2530 ../glom/bakery/app_withdoc_gtk.cc:605
 msgid "Read-only File."
 msgstr "Skrivebeskyttet fil."
 
-#: ../glom/application.cc:2525 ../glom/bakery/app_withdoc_gtk.cc:605
+#: ../glom/application.cc:2530 ../glom/bakery/app_withdoc_gtk.cc:605
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -430,11 +430,11 @@ msgstr ""
 "til det."
 
 #. Warn the user:
-#: ../glom/application.cc:2539 ../glom/bakery/app_withdoc_gtk.cc:619
+#: ../glom/application.cc:2544 ../glom/bakery/app_withdoc_gtk.cc:619
 msgid "Read-only Directory."
 msgstr "Skrivebeskyttet mappe."
 
-#: ../glom/application.cc:2539 ../glom/bakery/app_withdoc_gtk.cc:619
+#: ../glom/application.cc:2544 ../glom/bakery/app_withdoc_gtk.cc:619
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -442,19 +442,19 @@ msgstr ""
 "Du kan ikke oprette en fil i denne mappe, da du ikke har rettighederne til "
 "det."
 
-#: ../glom/application.cc:2556
+#: ../glom/application.cc:2561
 msgid "Database Title missing"
 msgstr "Databasenavn mangler"
 
-#: ../glom/application.cc:2556
+#: ../glom/application.cc:2561
 msgid "You must specify a title for the new database."
 msgstr "Du skal angive et navn for den nye database."
 
-#: ../glom/application.cc:2585 ../glom/frame_glom.cc:1908
+#: ../glom/application.cc:2590 ../glom/frame_glom.cc:1908
 msgid "Directory Already Exists"
 msgstr "Mappen findes allerede"
 
-#: ../glom/application.cc:2585 ../glom/frame_glom.cc:1909
+#: ../glom/application.cc:2590 ../glom/frame_glom.cc:1909
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
@@ -465,35 +465,35 @@ msgstr ""
 "bruge en ny mappe."
 
 #. This actually creates the directory:
-#: ../glom/application.cc:2724
+#: ../glom/application.cc:2729
 msgid "Save Backup"
 msgstr "Gem sikkerhedskopi"
 
-#: ../glom/application.cc:2806
+#: ../glom/application.cc:2811
 msgid "Export Backup failed."
 msgstr "Eksport af sikkerhedskopi mislykkedes."
 
-#: ../glom/application.cc:2806
+#: ../glom/application.cc:2811
 msgid "There was an error while exporting the backup."
 msgstr "Der opstod en fejl under eksport af sikkerhedskopien."
 
-#: ../glom/application.cc:2811
+#: ../glom/application.cc:2816
 msgid "Choose a backup file"
 msgstr "Vælg en sikkerhedskopi"
 
-#: ../glom/application.cc:2816
+#: ../glom/application.cc:2821
 msgid ".tar.gz Backup files"
 msgstr ".tar.gz-sikkerhedskopier"
 
-#: ../glom/application.cc:2822
+#: ../glom/application.cc:2827
 msgid "Restore"
 msgstr "Gendan"
 
-#: ../glom/application.cc:2893 ../glom/application.cc:2899
+#: ../glom/application.cc:2898 ../glom/application.cc:2904
 msgid "Restore Backup failed."
 msgstr "Gendannelse af sikkerhedskopi mislykkedes."
 
-#: ../glom/application.cc:2893
+#: ../glom/application.cc:2898
 msgid ""
 "There was an error while restoring the backup. The tar utility failed to "
 "extract the archive."
@@ -501,7 +501,7 @@ msgstr ""
 "Der opstod en fejl under gendannelse af sikkerhedskopien. Tar-værktøjet "
 "kunne ikke udpakke arkivet."
 
-#: ../glom/application.cc:2899
+#: ../glom/application.cc:2904
 msgid ""
 "There was an error while restoring the backup. The .glom file could not be "
 "found."
@@ -509,7 +509,7 @@ msgstr ""
 "Der opstod en fejl under gendannelse af sikkerhedskopien. Filen .glom blev "
 "ikke fundet."
 
-#: ../glom/application.cc:3003 ../glom/bakery/app_withdoc_gtk.cc:466
+#: ../glom/application.cc:3008 ../glom/bakery/app_withdoc_gtk.cc:466
 msgid " (read-only)"
 msgstr " (skrivebeskyttet)"
 
@@ -660,16 +660,16 @@ msgstr "Lokalt netværk"
 msgid "Recently Opened"
 msgstr "Seneste åbnede"
 
-#: ../glom/dialog_existing_or_new.cc:214
+#: ../glom/dialog_existing_or_new.cc:215
 msgid "New Empty Document"
 msgstr "Nyt tomt dokument"
 
-#: ../glom/dialog_existing_or_new.cc:217
+#: ../glom/dialog_existing_or_new.cc:218
 msgid "New From Template"
 msgstr "Ny fra skabelon"
 
 #. Translator hint: This is <Service Name> on <Host> (via Network Interface such as eth0).
-#: ../glom/dialog_existing_or_new.cc:744
+#: ../glom/dialog_existing_or_new.cc:745
 #, c-format
 msgid "%s on %s (via %s)"
 msgstr "%s på %s (via %s)"
@@ -1563,7 +1563,7 @@ msgstr "Sprog:"
 #. be sensitive anyway
 #: ../glom/glom_developer.glade.h:135
 #: ../glom/mode_data/box_data_calendar_related.cc:495
-#: ../glom/mode_data/db_adddel/db_adddel.cc:251
+#: ../glom/mode_data/db_adddel/db_adddel.cc:262
 msgid "Layout"
 msgstr "Layout"
 
@@ -2099,10 +2099,9 @@ msgstr "Åbn eller opret dokument"
 msgid "Please enter the connection details for your database server."
 msgstr "Indtast venligst forbindelsesdetaljer for din databaseserver."
 
-# Vent mens dine data bliver importeret...
 #: ../glom/glom.glade.h:41
-msgid "Please wait, your data is being imported…"
-msgstr "Vent venligst, dine data bliver importeret…"
+msgid "Please wait while your data is imported."
+msgstr "Vent venligst mens dine data bliver importeret."
 
 #: ../glom/glom.glade.h:42 ../glom/glade_utils.cc:41
 msgid "Processing"
@@ -2321,11 +2320,11 @@ msgstr "Importer fra CSV-fil: "
 msgid "Parsing CSV file %1"
 msgstr "Fortolker CSV-fil %1"
 
-#: ../glom/import_csv/dialog_import_csv_progress.cc:161
+#: ../glom/import_csv/dialog_import_csv_progress.cc:171
 msgid "Import complete\n"
 msgstr "Import færdig\n"
 
-#: ../glom/import_csv/dialog_import_csv_progress.cc:190
+#: ../glom/import_csv/dialog_import_csv_progress.cc:200
 msgid ""
 "Warning: Importing row %1: The value for field %2 must be unique, but is "
 "already in use. The value will not be imported.\n"
@@ -2333,7 +2332,7 @@ msgstr ""
 "Advarsel: Importerer række %1: Værdien for felt %2 skal være unik, men er "
 "allerede i brug. Værdien vil ikke blive importeret.\n"
 
-#: ../glom/import_csv/dialog_import_csv_progress.cc:199
+#: ../glom/import_csv/dialog_import_csv_progress.cc:209
 msgid ""
 "Warning: Importing row %1: The value for field %2, \"%3\" could not be "
 "converted to the field's type. The value will not be imported.\n"
@@ -2341,7 +2340,7 @@ msgstr ""
 "Advarsel: Importerer række %1: Værdien for felt %2, \"%3\" kunne ikke "
 "konverteres til feltets type. Værdien vil ikke blive importeret.\n"
 
-#: ../glom/import_csv/dialog_import_csv_progress.cc:224
+#: ../glom/import_csv/dialog_import_csv_progress.cc:234
 msgid ""
 "Error importing row %1: Cannot import the row because the primary key is "
 "empty.\n"
@@ -2721,7 +2720,7 @@ msgstr "Kører som rod"
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
-#: ../glom/main.cc:315 ../glom/main.cc:328 ../glom/main.cc:571
+#: ../glom/main.cc:315 ../glom/main.cc:328 ../glom/main.cc:591
 msgid "Incomplete Glom Installation"
 msgstr "Ufuldstændig Glominstallation"
 
@@ -2782,9 +2781,10 @@ msgstr "Gloms pythonmodul er ikke installeret"
 
 #. The python module could not be imported by Glom, so warn the user:
 #: ../glom/main.cc:365
+#, fuzzy
 msgid ""
-"Your installation of Glom is not complete, because the gda Python module is "
-"not available on your system.\n"
+"Your installation of Glom is not complete, because the gi.repository Python "
+"module is not available on your system.\n"
 "\n"
 "Please report this bug to your vendor, or your system administrator so it "
 "can be corrected."
@@ -2796,27 +2796,49 @@ msgstr ""
 "systemadministrator, så den kan blive rettet."
 
 #: ../glom/main.cc:368
-msgid "gda Python Module Not Installed"
+#, fuzzy
+msgid "gi.repository Python Module Not Installed"
 msgstr "gda's Pythonmodul er ikke installeret"
 
-#: ../glom/main.cc:494
+#. The python module could not be imported by Glom, so warn the user:
+#: ../glom/main.cc:385
+#, fuzzy
+msgid ""
+"Your installation of Glom is not complete, because the gi.repository.Gda "
+"python module is not available on your system.\n"
+"\n"
+"Please report this bug to your vendor, or your system administrator so it "
+"can be corrected."
+msgstr ""
+"Din installation af Glom er ufuldstændig, da gda's Pythonmodul ikke er "
+"tilgængelig på dit system.\n"
+"\n"
+"Rapporter venligst denne fejl til din leverandør eller din "
+"systemadministrator, så den kan blive rettet."
+
+#: ../glom/main.cc:388
+#, fuzzy
+msgid "gi.repository.Gda Python Module Not Installed"
+msgstr "gda's Pythonmodul er ikke installeret"
+
+#: ../glom/main.cc:514
 msgid "Error while parsing command-line options: "
 msgstr "Fejl ved fortolkning af kommandolinjetilvalg: "
 
-#: ../glom/main.cc:495
+#: ../glom/main.cc:515
 msgid "Use --help to see a list of available command-line options."
 msgstr "Brug --help for at se en liste over tilgængelige kommandolinjetilvalg."
 
-#: ../glom/main.cc:537
+#: ../glom/main.cc:557
 msgid "Glom: The file does not exist."
 msgstr "Glom: Filen findes ikke."
 
-#: ../glom/main.cc:547
+#: ../glom/main.cc:567
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: Filstien er en mappe og ikke en fil."
 
 #. The Postgres provider was not found, so warn the user:
-#: ../glom/main.cc:568
+#: ../glom/main.cc:588
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda "
 "provider is not available on your system. This provider is needed to access "
@@ -2840,7 +2862,7 @@ msgstr ""
 msgid "Undefined Table"
 msgstr "Tabel er ikke defineret"
 
-#: ../glom/mode_data/box_data.cc:149
+#: ../glom/mode_data/box_data.cc:150
 msgid ""
 "You have not entered any find criteria. Try entering information in the "
 "fields."
@@ -2848,12 +2870,12 @@ msgstr ""
 "Du har ikke indtastet nogen søgekriterier. Prøv at indtaste information i "
 "felterne."
 
-#: ../glom/mode_data/box_data.cc:154
+#: ../glom/mode_data/box_data.cc:155
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:115
 msgid "No Find Criteria"
 msgstr "Intet søgekriterium"
 
-#: ../glom/mode_data/box_data.cc:193
+#: ../glom/mode_data/box_data.cc:194
 msgid ""
 "This data cannot be stored in the database because you have not provided a "
 "primary key.\n"
@@ -2863,7 +2885,7 @@ msgstr ""
 "nøgle.\n"
 "Ønsker du at fjerne disse data?"
 
-#: ../glom/mode_data/box_data.cc:199
+#: ../glom/mode_data/box_data.cc:200
 msgid "No primary key value"
 msgstr "Ingen værdi for primær nøgle"
 
@@ -2929,14 +2951,14 @@ msgstr ""
 #. Add Pages:
 #: ../glom/mode_data/box_data_list.cc:503
 #: ../glom/mode_data/box_data_manyrecords.cc:83
-#: ../glom/mode_data/notebook_data.cc:42 ../glom/mode_find/notebook_find.cc:32
+#: ../glom/mode_data/notebook_data.cc:67 ../glom/mode_find/notebook_find.cc:32
 msgid "List"
 msgstr "Liste"
 
 #. On Maemo, we add the box to m_window_maemo_details instead:
 #. Details column:
 #: ../glom/mode_data/box_data_portal.cc:142
-#: ../glom/mode_data/notebook_data.cc:46 ../glom/mode_data/notebook_data.cc:50
+#: ../glom/mode_data/notebook_data.cc:71 ../glom/mode_data/notebook_data.cc:75
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:214
 #: ../glom/mode_find/notebook_find.cc:41
 msgid "Details"
@@ -3016,11 +3038,11 @@ msgstr "Slet hel gruppe \"%1\"?"
 msgid "Delete whole group?"
 msgstr "Slet hel gruppe?"
 
-#: ../glom/mode_data/notebook_data.cc:68
+#: ../glom/mode_data/notebook_data.cc:93
 msgid "List Or Details View"
 msgstr "Liste- eller detaljevisning"
 
-#: ../glom/mode_data/notebook_data.cc:247
+#: ../glom/mode_data/notebook_data.cc:272
 msgid "%1 Details"
 msgstr "%1 detaljer"
 
@@ -3720,8 +3742,8 @@ msgid "Duplicate"
 msgstr "Dupliker"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:383
-#: ../glom/mode_data/db_adddel/db_adddel.cc:621
+#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:418
+#: ../glom/mode_data/db_adddel/db_adddel.cc:632
 msgid "Example"
 msgstr "Eksempel"
 
@@ -3754,16 +3776,16 @@ msgstr ""
 msgid "Table Content"
 msgstr "Tabelindhold"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2170
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2181
 msgid "Right-click to layout, to specify the related fields."
 msgstr "Højreklik til layout, for at specificere de relaterede felter."
 
 #. Tell user that they can't do that:
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2392
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2403
 msgid "Extra Related Records Not Possible"
 msgstr "Kun en relateret post er mulig"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2393
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2404
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
@@ -3862,7 +3884,7 @@ msgstr "Vælg billede"
 msgid "Images"
 msgstr "Billeder"
 
-#: ../glom/utility_widgets/imageglom.cc:463
+#: ../glom/utility_widgets/imageglom.cc:462
 msgid "Choose File"
 msgstr "Vælg fil"
 
