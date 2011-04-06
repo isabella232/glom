@@ -8,15 +8,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glom master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glom&component=general\n"
-"POT-Creation-Date: 2011-02-26 11:27+0000\n"
-"PO-Revision-Date: 2011-02-26 15:08+0100\n"
-"Last-Translator: Andrej Žnidaršič <andrej.znidarsic@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glom&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-04-05 19:20+0000\n"
+"PO-Revision-Date: 2011-04-06 10:11+0100\n"
+"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
 "X-Poedit-Country: SLOVENIA\n"
 "X-Poedit-Language: Slovenian\n"
@@ -318,133 +318,133 @@ msgstr "Težava med nalaganjem dokumenta"
 msgid "Glom could not load the document."
 msgstr "Glom ni mogel naložiti dokumenta."
 
-#: ../glom/application.cc:1301
+#: ../glom/application.cc:1306
 msgid "Exporting Backup"
 msgstr "Izvažanje varnostne kopije"
 
-#: ../glom/application.cc:1309
+#: ../glom/application.cc:1314
 msgid "Restoring Backup"
 msgstr "Obnavljanje varnostne kopije"
 
-#: ../glom/application.cc:1625
+#: ../glom/application.cc:1630
 msgid "_Contents"
 msgstr "_Vsebina"
 
-#: ../glom/application.cc:1625
+#: ../glom/application.cc:1630
 msgid "Help with the application"
 msgstr "Pomoč za program"
 
-#: ../glom/application.cc:1660
-#: ../glom/application.cc:1740
-#: ../glom/application.cc:1928
+#: ../glom/application.cc:1665
+#: ../glom/application.cc:1745
+#: ../glom/application.cc:1933
 msgid "Creating Glom Database"
 msgstr "Ustvarjanje podatkovne zbirke Glom"
 
-#: ../glom/application.cc:1660
-#: ../glom/application.cc:1740
+#: ../glom/application.cc:1665
+#: ../glom/application.cc:1745
 msgid "Creating Glom database from example file."
 msgstr "Ustvarjanje podatkovne zbirke Glom iz poskusne datoteke."
 
-#: ../glom/application.cc:1928
+#: ../glom/application.cc:1933
 msgid "Creating Glom database from backup file."
 msgstr "Ustvarjanje podatkovne zbirke Glom iz datoteke varnostne kopije."
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/application.cc:2391
+#: ../glom/application.cc:2396
 #: ../glom/bakery/app_withdoc.cc:237
 #: ../glom/bakery/app_withdoc.cc:288
 msgid "Save failed."
 msgstr "Napaka med shranjevanjem."
 
-#: ../glom/application.cc:2391
+#: ../glom/application.cc:2396
 msgid "There was an error while saving the example file."
 msgstr "Prišlo je do napake med shranjevanjem datoteke primera."
 
-#: ../glom/application.cc:2432
 #: ../glom/application.cc:2437
+#: ../glom/application.cc:2442
 #: ../glom/bakery/app_withdoc_gtk.cc:556
 msgid "Save Document"
 msgstr "Shrani dokument"
 
 #. Warn the user:
-#: ../glom/application.cc:2525
+#: ../glom/application.cc:2530
 #: ../glom/bakery/app_withdoc_gtk.cc:605
 msgid "Read-only File."
 msgstr "Datoteka le za branje."
 
-#: ../glom/application.cc:2525
+#: ../glom/application.cc:2530
 #: ../glom/bakery/app_withdoc_gtk.cc:605
 msgid "You may not overwrite the existing file, because you do not have sufficient access rights."
 msgstr "Obstoječe datoteke ni mogoče prepisati, saj nimate ustreznih dovoljenj dostopa."
 
 #. Warn the user:
-#: ../glom/application.cc:2539
+#: ../glom/application.cc:2544
 #: ../glom/bakery/app_withdoc_gtk.cc:619
 msgid "Read-only Directory."
 msgstr "Mapa le za branje."
 
-#: ../glom/application.cc:2539
+#: ../glom/application.cc:2544
 #: ../glom/bakery/app_withdoc_gtk.cc:619
 msgid "You may not create a file in this directory, because you do not have sufficient access rights."
 msgstr "V tej mapi datoteke ni mogoče ustvariti, saj nimate ustreznih dovoljenj dostopa."
 
-#: ../glom/application.cc:2556
+#: ../glom/application.cc:2561
 msgid "Database Title missing"
 msgstr "Naslov podatkovne zbirke manjka"
 
-#: ../glom/application.cc:2556
+#: ../glom/application.cc:2561
 msgid "You must specify a title for the new database."
 msgstr "Navesti morate naslov za drugo podatkovno zbirko."
 
-#: ../glom/application.cc:2585
+#: ../glom/application.cc:2590
 #: ../glom/frame_glom.cc:1908
 msgid "Directory Already Exists"
 msgstr "Mapa že obstaja"
 
-#: ../glom/application.cc:2585
+#: ../glom/application.cc:2590
 #: ../glom/frame_glom.cc:1909
 msgid "There is an existing directory with the same name as the directory that should be created for the new database files. You should specify a different filename to use a new directory instead."
 msgstr "Novo ustvarjena mapa za nove datoteke podatkovne zbirke ima enako ime kot obstoječa mapa. Navedite drugo ime mape za nove datoteke podatkovne zbirke. "
 
 #. This actually creates the directory:
-#: ../glom/application.cc:2724
+#: ../glom/application.cc:2729
 msgid "Save Backup"
 msgstr "Shrani varnostno kopijo"
 
-#: ../glom/application.cc:2806
+#: ../glom/application.cc:2811
 msgid "Export Backup failed."
 msgstr "Izvoz varnostne kopije je spodletel."
 
-#: ../glom/application.cc:2806
+#: ../glom/application.cc:2811
 msgid "There was an error while exporting the backup."
 msgstr "Prišlo je do napake med izvažanjem varnostne kopije."
 
-#: ../glom/application.cc:2811
+#: ../glom/application.cc:2816
 msgid "Choose a backup file"
 msgstr "Izbor datoteke varnostne kopije"
 
-#: ../glom/application.cc:2816
+#: ../glom/application.cc:2821
 msgid ".tar.gz Backup files"
 msgstr "Datoteke varnostnih kopij .tar.gz"
 
-#: ../glom/application.cc:2822
+#: ../glom/application.cc:2827
 msgid "Restore"
 msgstr "Obnovi"
 
-#: ../glom/application.cc:2893
-#: ../glom/application.cc:2899
+#: ../glom/application.cc:2898
+#: ../glom/application.cc:2904
 msgid "Restore Backup failed."
 msgstr "Obnova varnostne kopije je spodletela."
 
-#: ../glom/application.cc:2893
+#: ../glom/application.cc:2898
 msgid "There was an error while restoring the backup. The tar utility failed to extract the archive."
 msgstr "Prišlo je do napake med obnavljanjem varnostne kopije. Pripomoček tar ni uspešno razširil arhiva."
 
-#: ../glom/application.cc:2899
+#: ../glom/application.cc:2904
 msgid "There was an error while restoring the backup. The .glom file could not be found."
 msgstr "Prišlo je do napake med obnavljanjem varnostne kopije. Datoteke .glom ni mogoče najti."
 
-#: ../glom/application.cc:3003
+#: ../glom/application.cc:3008
 #: ../glom/bakery/app_withdoc_gtk.cc:466
 msgid " (read-only)"
 msgstr " (le za branje)"
@@ -2434,7 +2434,7 @@ msgstr "Zagnano s skrbniškim računom"
 #. Show message to the user about the broken installation:
 #: ../glom/main.cc:315
 #: ../glom/main.cc:328
-#: ../glom/main.cc:571
+#: ../glom/main.cc:591
 msgid "Incomplete Glom Installation"
 msgstr "Nepopolna namestitev Gloma"
 
@@ -2484,36 +2484,51 @@ msgstr "Python module glom ni nameščen"
 #. The python module could not be imported by Glom, so warn the user:
 #: ../glom/main.cc:365
 msgid ""
-"Your installation of Glom is not complete, because the gda Python module is not available on your system.\n"
+"Your installation of Glom is not complete, because the gi.repository Python module is not available on your system.\n"
 "\n"
 "Please report this bug to your vendor, or your system administrator so it can be corrected."
 msgstr ""
-"Vaša namestitev Gloma ni končana, ker modul Python gda na vašem sistemu ni na voljo.\n"
+"Namestitev Gloma ni končana, ker modul Python gi.repository na vašem sistemu ni na voljo.\n"
 "\n"
-"Pošljite poročilo o tem hrošču svojemu proizvajalcu ali skrbniku sistema, da bo lahko popravljen."
+"Pošljite poročilo o tem hrošču skrbniku sistema, da bo lahko popravljen."
 
 #: ../glom/main.cc:368
-msgid "gda Python Module Not Installed"
-msgstr "Python modul gda ni nameščen"
+msgid "gi.repository Python Module Not Installed"
+msgstr "Python modul gi.repository ni nameščen"
 
-#: ../glom/main.cc:494
+#. The python module could not be imported by Glom, so warn the user:
+#: ../glom/main.cc:385
+msgid ""
+"Your installation of Glom is not complete, because the gi.repository.Gda python module is not available on your system.\n"
+"\n"
+"Please report this bug to your vendor, or your system administrator so it can be corrected."
+msgstr ""
+"Namestitev Gloma ni končana, ker modul Python gi.repository.Gda na vašem sistemu ni na voljo.\n"
+"\n"
+"Pošljite poročilo o hrošču skrbniku sistema, da bo lahko popravljen."
+
+#: ../glom/main.cc:388
+msgid "gi.repository.Gda Python Module Not Installed"
+msgstr "Python modul gi.repository.Gda ni nameščen"
+
+#: ../glom/main.cc:514
 msgid "Error while parsing command-line options: "
 msgstr "Napaka med razčlenjevanem možnosti ukazne vrstice:"
 
-#: ../glom/main.cc:495
+#: ../glom/main.cc:515
 msgid "Use --help to see a list of available command-line options."
 msgstr "Uporabite --help za ogled seznama razpoložljivih možnosti ukazne vrstice."
 
-#: ../glom/main.cc:537
+#: ../glom/main.cc:557
 msgid "Glom: The file does not exist."
 msgstr "Glom: Datoteka ne obstaja."
 
-#: ../glom/main.cc:547
+#: ../glom/main.cc:567
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: Pot datoteke je mapa namesto datoteke."
 
 #. The Postgres provider was not found, so warn the user:
-#: ../glom/main.cc:568
+#: ../glom/main.cc:588
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n"
 "\n"
@@ -2531,16 +2546,16 @@ msgstr ""
 msgid "Undefined Table"
 msgstr "Nedoločena razpredelnica"
 
-#: ../glom/mode_data/box_data.cc:149
+#: ../glom/mode_data/box_data.cc:150
 msgid "You have not entered any find criteria. Try entering information in the fields."
 msgstr "Niste vnesli kriterijev iskanja. Poskusite vnesti podatke v poljih."
 
-#: ../glom/mode_data/box_data.cc:154
+#: ../glom/mode_data/box_data.cc:155
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:115
 msgid "No Find Criteria"
 msgstr "Ni kriterijev iskanja"
 
-#: ../glom/mode_data/box_data.cc:193
+#: ../glom/mode_data/box_data.cc:194
 msgid ""
 "This data cannot be stored in the database because you have not provided a primary key.\n"
 "Do you really want to discard this data?"
@@ -2548,7 +2563,7 @@ msgstr ""
 "Podatkov ni mogoče shraniti v podatkovni zbirki, ker niste zagotovili osnovnega ključa.\n"
 "Ali resnično želite zavreči te podatke?"
 
-#: ../glom/mode_data/box_data.cc:199
+#: ../glom/mode_data/box_data.cc:200
 msgid "No primary key value"
 msgstr "Ni vrednosti osnovnega ključa"
 
@@ -2609,7 +2624,7 @@ msgstr ""
 #. Add Pages:
 #: ../glom/mode_data/box_data_list.cc:503
 #: ../glom/mode_data/box_data_manyrecords.cc:83
-#: ../glom/mode_data/notebook_data.cc:42
+#: ../glom/mode_data/notebook_data.cc:67
 #: ../glom/mode_find/notebook_find.cc:32
 msgid "List"
 msgstr "Seznam"
@@ -2617,8 +2632,8 @@ msgstr "Seznam"
 #. On Maemo, we add the box to m_window_maemo_details instead:
 #. Details column:
 #: ../glom/mode_data/box_data_portal.cc:142
-#: ../glom/mode_data/notebook_data.cc:46
-#: ../glom/mode_data/notebook_data.cc:50
+#: ../glom/mode_data/notebook_data.cc:71
+#: ../glom/mode_data/notebook_data.cc:75
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:214
 #: ../glom/mode_find/notebook_find.cc:41
 msgid "Details"
@@ -2694,11 +2709,11 @@ msgstr "Ali naj bo izbrisana celotna skupina \"%1\"?"
 msgid "Delete whole group?"
 msgstr "Ali naj bo izbrisana celotna skupina?"
 
-#: ../glom/mode_data/notebook_data.cc:68
+#: ../glom/mode_data/notebook_data.cc:93
 msgid "List Or Details View"
 msgstr "Pogled seznama ali podrobnosti"
 
-#: ../glom/mode_data/notebook_data.cc:247
+#: ../glom/mode_data/notebook_data.cc:272
 msgid "%1 Details"
 msgstr "Podrobnosti %1"
 
@@ -3329,7 +3344,7 @@ msgid "Duplicate"
 msgstr "Podvoji"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:383
+#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:418
 #: ../glom/mode_data/db_adddel/db_adddel.cc:632
 msgid "Example"
 msgstr "Primer"
@@ -3488,10 +3503,12 @@ msgstr "Poročilo bo sedaj odprto v vašem spletnem brskalniku."
 
 #~ msgid "You cannot drop anything here. Try to add a group first"
 #~ msgstr "Tu ni mogoče spustiti ničesar. Poskusite najprej dodati skupino"
+
 #~ msgid "Read-only field."
 #~ msgstr "Polje je le za branje."
+
 #~ msgid "This field may not be edited here."
 #~ msgstr "Polja tukaj ni mogoče urejati."
+
 #~ msgid "_Data"
 #~ msgstr "_Podatki"
-
