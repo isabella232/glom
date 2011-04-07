@@ -28,6 +28,8 @@
 #include <libgdamm.h>
 #include <iostream>
 
+#include <pygobject.h>
+
 //TODO: Remove this redefine when Python fixes the compiler error in their macro:
 // http://bugs.python.org/issue7463
 // Note that this sets a local copy of PyDateTimeAPI (in Python's datetime.h
@@ -61,6 +63,10 @@ void libglom_init()
     //See https://bugzilla.gnome.org/show_bug.cgi?id=644702
     PyErr_Print();
   }
+
+  //Initialize PyGObject, so that functions such as pygobject_new() work
+  //instead of crashing.
+  pygobject_init(2, 28, 0);
 }
 
 void libglom_deinit()

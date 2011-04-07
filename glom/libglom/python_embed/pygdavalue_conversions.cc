@@ -41,6 +41,8 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
       return true;
     }
 
+    //TODO: This also succeeds if the Python type is a bool,
+    //but we don't want to do that.
     boost::python::extract<int> extractor_int(input);
     if(extractor_int.check())
     {

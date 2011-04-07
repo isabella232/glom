@@ -1,5 +1,21 @@
 2011-04-07  Murray Cumming  <murrayc@murrayc.com>
 
+	Initialize pygobject, to fix the use of the PyRecord API.
+
+	* configure.ac: Require the latest pygobject with gi.repository support.
+	* glom/libglom/init.cc: Include pygobject.h so we can call pygobject_init()
+	here.
+	* glom/libglom/python_embed/py_glom_record.cc: Define NO_IMPORT_PYGOBJECT
+	so we can still include pygobject.h again here. pygobject.h uses a nasty
+	variable declared in the header.
+	* tests/python/test_python_execute_func_with_record.cc: Fix the python
+	example code.
+	However, this shows a problem with getting bool results from python,
+	apparently because boost::python::extract<>::check() checks that the type
+	is compatible rather than checking that it's the exact type.
+
+2011-04-07  Murray Cumming  <murrayc@murrayc.com>
+
 	Moved the python tests to a sub-directory.
 
 	* tests/test_load_python_library.cc:

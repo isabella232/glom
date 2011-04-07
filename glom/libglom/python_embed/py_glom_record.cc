@@ -21,7 +21,7 @@
 //We need to include this before anything else, to avoid redefinitions:
 //#include <Python.h>
 
-//#define NO_IMPORT_PYGOBJECT //To avoid a multiple definition in pygtk.
+#define NO_IMPORT_PYGOBJECT //To avoid a multiple definition in pygtk.
 #include <pygobject.h> //For the PyGObject and PyGBoxed struct definitions.
 
 #include <libglom/python_embed/py_glom_record.h>
@@ -64,10 +64,18 @@ boost::python::object PyGlomRecord::get_connection()
 
   if(m_connection)
   {
+
     //Ask pygobject to create a PyObject* that wraps our GObject,
     //presumably using something from pygda:
+    if(!_PyGObject_API)
+    {
+      std::cerr << "pyggobject does not seem to be initialized properly." << std::endl;
+      return result;
+    }
+
     PyObject* cobject = pygobject_new( G_OBJECT(m_connection->gobj()) );
-    result = boost::python::object( boost::python::borrowed(cobject) );
+    if(cobject)
+      result = boost::python::object( boost::python::borrowed(cobject) );
   }
 
   return result;
@@ -180,7 +188,7 @@ void PyGlomRecord::setitem(const boost::python::object& key, const boost::python
   params->add_holder(field->get_holder(field_value));
   params->add_holder(m_key_field->get_holder(m_key_field_value));
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = 
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
   builder->set_table(m_table_name);
   builder->add_field_value_as_value(field->get_name(), field_value);
@@ -188,7 +196,7 @@ void PyGlomRecord::setitem(const boost::python::object& key, const boost::python
     builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
       builder->add_field_id(m_key_field->get_name(), m_table_name),
       builder->add_expr(m_key_field_value)));
- 
+
   bool updated = false;
   try
   {
