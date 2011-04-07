@@ -1,5 +1,13 @@
 2011-04-07  Murray Cumming  <murrayc@murrayc.com>
 
+	Added a python function test that uses an actual database connection.
+
+  * Makefile_tests.am: Mention the new test.
+	* tests/python/test_python_execute_func_with_record.cc: This shows
+	a crash in Glom::PyGlomRecord::get_connection().
+
+2011-04-07  Murray Cumming  <murrayc@murrayc.com>
+
 	Moved the python tests to a sub-directory.
 
 	* tests/test_load_python_library.cc:
