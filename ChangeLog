@@ -1,3 +1,16 @@
+2011-04-07  Murray Cumming  <murrayc@murrayc.com>
+
+	Moved the python tests to a sub-directory.
+
+	* tests/test_load_python_library.cc:
+	* tests/test_python_execute_func.cc:
+	* tests/test_python_execute_func_bad_syntax.cc:
+	* tests/test_python_execute_func_change_result_type.cc:
+	* tests/test_python_execute_func_date.cc:
+	* tests/test_python_execute_script.cc:
+	* tests/test_python_module.cc: Moved to tests/python/
+	* Makefile_tests.am: Adapted.
+
 2011-04-05  Murray Cumming  <murrayc@murrayc.com>
 
 	Remove more small traces of pygda.

@@ -23,8 +23,8 @@ check_PROGRAMS =						\
 	tests/test_document_autosave			\
 	tests/test_parsing_time			\
 	tests/test_signal_reemit			\
-	tests/test_load_python_library\
-	tests/test_python_module \
+	tests/python/test_load_python_library\
+	tests/python/test_python_module \
 	tests/test_selfhosting_new_empty \
 	tests/test_selfhosting_new_from_example \
 	tests/import/test_parsing \
@@ -36,8 +36,8 @@ TESTS =	tests/test_document_load	\
 	tests/test_signal_reemit \
 	tests/test_dtd_file_validation.sh \
 	tests/test_glade_file_validation.sh \
-	tests/test_load_python_library \
-	tests/test_python_module \
+	tests/python/test_load_python_library \
+	tests/python/test_python_module \
 	tests/test_selfhosting_new_empty \
 	tests/test_selfhosting_new_from_example \
 	tests/import/test_parsing \
@@ -83,13 +83,13 @@ tests_test_signal_reemit_SOURCES = tests/test_signal_reemit.cc
 tests_test_signal_reemit_LDADD = $(LIBGLOM_LIBS)
 tests_test_signal_reemit_CPPFLAGS = $(tests_cppflags)
 
-tests_test_load_python_library_SOURCES = tests/test_load_python_library.cc
-tests_test_load_python_library_LDADD = $(LIBGLOM_LIBS) -ldl
-tests_test_load_python_library_CPPFLAGS = $(tests_cppflags)
+tests_python_test_load_python_library_SOURCES = tests/python/test_load_python_library.cc
+tests_python_test_load_python_library_LDADD = $(LIBGLOM_LIBS) -ldl
+tests_python_test_load_python_library_CPPFLAGS = $(tests_cppflags)
 
-tests_test_python_module_SOURCES = tests/test_python_module.cc
-tests_test_python_module_LDADD = $(tests_ldadd) $(PYTHON_LIBS)
-tests_test_python_module_CPPFLAGS = $(tests_cppflags)
+tests_python_test_python_module_SOURCES = tests/python/test_python_module.cc
+tests_python_test_python_module_LDADD = $(tests_ldadd) $(PYTHON_LIBS)
+tests_python_test_python_module_CPPFLAGS = $(tests_cppflags)
 
 
 # Distribute the tests data:
@@ -97,8 +97,8 @@ dist_noinst_DATA = tests/import/data/albums.csv
 
 # Let the .cc source code know about this path: TODO: Actually use this.
 glom_test_import_defines = -DGLOM_TESTS_IMPORT_DATA_NOTINSTALLED=\""$(abs_top_srcdir)/tests/import/data/"\"
-  
-  
+
+
 tests_import_test_parsing_SOURCES =	\
 	glom/import_csv/csv_parser.cc	\
 	glom/import_csv/csv_parser.h	\
@@ -136,21 +136,21 @@ check_PROGRAMS += \
 	glom/test_pyembed \
 	tests/test_glade_derived_instantiation \
 	tests/glade_toplevels_instantiation \
-	tests/test_python_execute_func \
-	tests/test_python_execute_func_bad_syntax \
-	tests/test_python_execute_func_date \
-	tests/test_python_execute_func_change_result_type \
-	tests/test_python_execute_script
+	tests/python/test_python_execute_func \
+	tests/python/test_python_execute_func_bad_syntax \
+	tests/python/test_python_execute_func_date \
+	tests/python/test_python_execute_func_change_result_type \
+	tests/python/test_python_execute_script
 #	glom/mode_data/test_flowtablewithfields
 
 TESTS += \
 	tests/test_glade_toplevels_instantiation.sh \
 	tests/test_glade_derived_instantiation \
-	tests/test_python_execute_func \
-	tests/test_python_execute_func_bad_syntax \
-	tests/test_python_execute_func_date \
-	tests/test_python_execute_func_change_result_type \
-	tests/test_python_execute_script
+	tests/python/test_python_execute_func \
+	tests/python/test_python_execute_func_bad_syntax \
+	tests/python/test_python_execute_func_date \
+	tests/python/test_python_execute_func_change_result_type \
+	tests/python/test_python_execute_script
 
 glom_utility_widgets_test_flowtable_SOURCES =	\
 	glom/utility_widgets/flowtable.cc	\
@@ -172,32 +172,32 @@ glom_utility_widgets_test_flowtable_CPPFLAGS = $(tests_cppflags_ui)
 #glom_mode_data_test_flowtablewithfields_CPPFLAGS = $(tests_cppflags_ui)
 
 
-tests_test_python_execute_func_SOURCES = tests/test_python_execute_func.cc \
+tests_python_test_python_execute_func_SOURCES = tests/python/test_python_execute_func.cc \
   glom/python_embed/glom_python.cc
-tests_test_python_execute_func_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
-tests_test_python_execute_func_CPPFLAGS = $(tests_cppflags_ui)
-tests_test_python_execute_func_CFLAGS = $(tests_cflags)
-tests_test_python_execute_func_CXXFLAGS = $(tests_cxxflags)
+tests_python_test_python_execute_func_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
+tests_python_test_python_execute_func_CPPFLAGS = $(tests_cppflags_ui)
+tests_python_test_python_execute_func_CFLAGS = $(tests_cflags)
+tests_python_test_python_execute_func_CXXFLAGS = $(tests_cxxflags)
 
-tests_test_python_execute_func_bad_syntax_SOURCES = tests/test_python_execute_func_bad_syntax.cc \
+tests_python_test_python_execute_func_bad_syntax_SOURCES = tests/python/test_python_execute_func_bad_syntax.cc \
   glom/python_embed/glom_python.cc
-tests_test_python_execute_func_bad_syntax_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
-tests_test_python_execute_func_bad_syntax_CPPFLAGS = $(tests_cppflags_ui)
+tests_python_test_python_execute_func_bad_syntax_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
+tests_python_test_python_execute_func_bad_syntax_CPPFLAGS = $(tests_cppflags_ui)
 
-tests_test_python_execute_func_date_SOURCES = tests/test_python_execute_func_date.cc \
+tests_python_test_python_execute_func_date_SOURCES = tests/python/test_python_execute_func_date.cc \
   glom/python_embed/glom_python.cc
-tests_test_python_execute_func_date_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
-tests_test_python_execute_func_date_CPPFLAGS = $(tests_cppflags_ui)
+tests_python_test_python_execute_func_date_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
+tests_python_test_python_execute_func_date_CPPFLAGS = $(tests_cppflags_ui)
 
-tests_test_python_execute_func_change_result_type_SOURCES = tests/test_python_execute_func_change_result_type.cc \
+tests_python_test_python_execute_func_change_result_type_SOURCES = tests/python/test_python_execute_func_change_result_type.cc \
   glom/python_embed/glom_python.cc
-tests_test_python_execute_func_change_result_type_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
-tests_test_python_execute_func_change_result_type_CPPFLAGS = $(tests_cppflags_ui)
+tests_python_test_python_execute_func_change_result_type_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
+tests_python_test_python_execute_func_change_result_type_CPPFLAGS = $(tests_cppflags_ui)
 
-tests_test_python_execute_script_SOURCES = tests/test_python_execute_script.cc \
+tests_python_test_python_execute_script_SOURCES = tests/python/test_python_execute_script.cc \
   glom/python_embed/glom_python.cc
-tests_test_python_execute_script_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
-tests_test_python_execute_script_CPPFLAGS = $(tests_cppflags_ui)
+tests_python_test_python_execute_script_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
+tests_python_test_python_execute_script_CPPFLAGS = $(tests_cppflags_ui)
 
 # You must remove PlaceholderGlom::get_application() to avoid having to specify
 # a huge set of .cc files when building this test:
