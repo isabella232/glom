@@ -31,54 +31,72 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
 
     if (G_IS_VALUE (boxed))
       g_value_unset(boxed);
-
-    boost::python::extract<std::string> extractor_string(input);
-    if(extractor_string.check())
+      
+    PyObject* input_c = input.ptr();
+    
+    //We check for bool first, 
+    //because bool is derived from int in Python,
+    //so PyInt_Check() would also succeed on a bool object.
+    if(PyBool_Check(input_c))
     {
-      const std::string str = extractor_string;
-      g_value_init(boxed, G_TYPE_STRING);
-      g_value_set_string(boxed, str.c_str());
-      return true;
+      boost::python::extract<bool> extractor_bool(input);
+      if(extractor_bool.check())
+      {
+        const bool val = extractor_bool;
+        g_value_init (boxed, G_TYPE_BOOLEAN);
+        g_value_set_boolean (boxed, val);
+        return true;
+      }
+    }
+    
+    if(PyInt_Check(input_c))
+    {
+      boost::python::extract<int> extractor_int(input);
+      if(extractor_int.check())
+      {
+        const int val = extractor_int;
+        g_value_init (boxed, G_TYPE_INT);
+        g_value_set_int (boxed, val);
+        return true;
+      }
     }
 
-    //TODO: This also succeeds if the Python type is a bool,
-    //but we don't want to do that.
-    boost::python::extract<int> extractor_int(input);
-    if(extractor_int.check())
+    if(PyLong_Check(input_c))
     {
-      const int val = extractor_int;
-      g_value_init (boxed, G_TYPE_INT);
-      g_value_set_int (boxed, val);
-      return true;
+      boost::python::extract<long> extractor_long(input);
+      if(extractor_long.check())
+      {
+        const long val = extractor_long;
+        g_value_init (boxed, G_TYPE_INT);
+        g_value_set_int (boxed, val);
+        return true;
+      }
     }
-
-    boost::python::extract<long> extractor_long(input);
-    if(extractor_long.check())
+    
+    if(PyFloat_Check(input_c))
     {
-      const long val = extractor_long;
-      g_value_init (boxed, G_TYPE_INT);
-      g_value_set_int (boxed, val);
-      return true;
+      boost::python::extract<double> extractor_double(input);
+      if(extractor_double.check())
+      {
+        const double val = extractor_double;
+        g_value_init (boxed, G_TYPE_DOUBLE);
+        g_value_set_double (boxed, val);
+        return true;
+      }
     }
-
-    boost::python::extract<double> extractor_double(input);
-    if(extractor_double.check())
+    
+    if(PyString_Check(input_c))
     {
-      const double val = extractor_double;
-      g_value_init (boxed, G_TYPE_DOUBLE);
-      g_value_set_double (boxed, val);
-      return true;
+      boost::python::extract<std::string> extractor_string(input);
+      if(extractor_string.check())
+      {
+        const std::string str = extractor_string;
+        g_value_init(boxed, G_TYPE_STRING);
+        g_value_set_string(boxed, str.c_str());
+        return true;
+      }
     }
-
-    boost::python::extract<bool> extractor_bool(input);
-    if(extractor_bool.check())
-    {
-      const bool val = extractor_bool;
-      g_value_init (boxed, G_TYPE_BOOLEAN);
-      g_value_set_boolean (boxed, val);
-      return true;
-    }
-
+    
 #if PY_VERSION_HEX >= 0x02040000
     //TODO: Remove this redefine when Python fixes the compiler error in their macro:
     // http://bugs.python.org/issue7463
@@ -91,8 +109,8 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
     if(PyDateTimeAPI) //This should have been set but it can fail: https://bugzilla.gnome.org/show_bug.cgi?id=644702
     {
       //TODO: Find some way to do this with boost::python
-      PyObject* input_c = input.ptr();
-      if (PyDateTime_Check (input_c)) {
+      if(PyDateTime_Check (input_c))
+      {
          GdaTimestamp gda;
          gda.year = PyDateTime_GET_YEAR(input_c);
          gda.month = PyDateTime_GET_MONTH(input_c);
@@ -103,7 +121,8 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
          gda.timezone = 0;
          gda_value_set_timestamp (boxed, &gda);
          return true;
-       } else if (PyDate_Check (input_c)) {
+       } else if(PyDate_Check (input_c))
+       {
          GDate *gda = g_date_new_dmy(
            PyDateTime_GET_DAY(input_c),
            (GDateMonth)PyDateTime_GET_MONTH(input_c),
@@ -112,7 +131,8 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
          g_value_set_boxed(boxed, gda);
          g_date_free(gda);
          return true;
-       } else if (PyTime_Check (input_c)) {
+       } else if(PyTime_Check (input_c))
+       {
          GdaTime gda;
          gda.hour = PyDateTime_TIME_GET_HOUR(input_c);
          gda.minute = PyDateTime_TIME_GET_MINUTE(input_c);
