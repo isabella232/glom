@@ -122,13 +122,13 @@ int main()
   }
 
   //Check that the return value is of the expected type:
-  //g_assert(value.get_value_type() == G_TYPE_BOOLEAN);
+  g_assert(value.get_value_type() == G_TYPE_BOOLEAN);
 
   //Check that the return value is of the expected value:
-  //const double boolval = value.get_boolean();
-  //g_assert(boolval == true);
+  const double boolval = value.get_boolean();
+  g_assert(boolval == true);
 
-  std::cout << "value=" << value.to_string() << std::endl;
+  //std::cout << "value=" << value.to_string() << std::endl;
 
   cleanup();
 

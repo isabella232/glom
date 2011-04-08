@@ -1,3 +1,16 @@
+2011-04-08  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix use of bool python return types.
+
+	* glom/libglom/python_embed/pygdavalue_conversions.cc: 
+	glom_pygda_value_from_pyobject(): Use the C Py*_Check() functions because 
+	boost::python::extract<>::check() does not really check for the exact type 
+	and has no way to do that. Previously we were interpreting bools as ints.
+	Note also that the order fo the Py*_Check() checks is important, because 
+	python considers bool to be derived from int.
+	* tests/python/test_python_execute_func_with_record.cc: Uncomment the checks 
+	for the return type and value now that it works.
+
 2011-04-07  Murray Cumming  <murrayc@murrayc.com>
 
 	Initialize pygobject, to fix the use of the PyRecord API.
