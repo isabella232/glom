@@ -1,5 +1,15 @@
 2011-04-08  Murray Cumming  <murrayc@murrayc.com>
 
+	Port the debian repository analyzer script example to GTK+ 3.
+
+	* examples/example_scripts/repository_analyzer_begin_scan.py:
+	Use PyGObject+Introspection instead of pygtk, and adapt for a minidom API 
+	change.
+	This is also here:
+	https://gitorious.org/debian_repository_analyzer
+
+2011-04-08  Murray Cumming  <murrayc@murrayc.com>
+
 	Fix use of bool python return types.
 
 	* glom/libglom/python_embed/pygdavalue_conversions.cc: 

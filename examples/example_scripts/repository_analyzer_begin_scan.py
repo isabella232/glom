@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Copyright (c) 2006 Openismus GmbH
+# Copyright (c) 2006-11 Openismus GmbH
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,14 +14,14 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with PythonCAD; if not, write to the Free Software
+# along with this file; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-# The actual .glom file that uses this is at 
-# http://www.murrayc.com/misc/repository_analyzer/  
+# The actual .glom file that uses this is at
+# http://gitorious.org/debian_repository_analyzer
 
-import gtk
-import gda
+from gi.repository import Gtk
+from gi.repository import Gda
 
 import apt # For apt.Cache.
 import apt_pkg # For apt_pkg.GetPkgSourceList
@@ -36,32 +36,32 @@ class DebugWindow:
 
     def __init__(self):
         #print "debug: Creating debug window."
-        self.debug_window = gtk.Window()
-        vbox = gtk.VBox()
+        self.debug_window = Gtk.Window()
+        vbox = Gtk.VBox()
         vbox.set_spacing(6)
         vbox.show()
-        self.debug_window.add(vbox);
+        self.debug_window.add(vbox)
 
-        scrolledwindow = gtk.ScrolledWindow()
-        scrolledwindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        scrolledwindow = Gtk.ScrolledWindow()
+        scrolledwindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         scrolledwindow.show()
-        vbox.pack_start(scrolledwindow)
+        vbox.pack_start(scrolledwindow, True, True, 0)
 
-        self.debug_textview = gtk.TextView()
+        self.debug_textview = Gtk.TextView()
         self.debug_textview.show()
         scrolledwindow.add(self.debug_textview) #We don't need to use add_with_viewport() with a TextView.
-       
-        hbox = gtk.HBox()
-        hbox.show()
-        vbox.pack_start(hbox, False, False)
 
-        self.debug_button_close = gtk.Button(stock=gtk.STOCK_CLOSE)
+        hbox = Gtk.HBox()
+        hbox.show()
+        vbox.pack_start(hbox, False, False, 6)
+
+        self.debug_button_close = Gtk.Button(stock=Gtk.STOCK_CLOSE)
         self.debug_button_close.set_sensitive(False) #Only let the user close this window when we are finished.
         self.debug_button_close.show()
-        hbox.pack_end(self.debug_button_close, False, False)
+        hbox.pack_end(self.debug_button_close, False, False, 6)
 
         self.debug_button_close.connect("clicked", self.on_debug_button_clicked, None)
-      
+
         self.debug_window.set_default_size(400, 400) #Make it big enough.
         self.debug_window.set_title(u"Repository Analyzer debug output")
 
@@ -73,14 +73,14 @@ class DebugWindow:
 
         #Make sure the the last message is always visible:
         enditer = textbuffer.get_end_iter()
-        self.debug_textview.scroll_to_iter(enditer, 0)
+        self.debug_textview.scroll_to_iter(enditer, 0, False, 0, 0)
 
         #Update the UI even during intensive processing:
         self.refresh_ui()
 
     def refresh_ui(self):
-        while gtk.events_pending():
-            gtk.main_iteration()
+        while Gtk.events_pending():
+            Gtk.main_iteration()
 
     def on_debug_button_clicked(self, *args):
         self.debug_window.destroy()
@@ -104,27 +104,27 @@ class StandardLicenses(object):
 
         license_name_gpl1 = u"GPL1"
         license_text_gpl1 = u"GNU GENERAL PUBLIC LICENSE\n       Version 1, February 1989"  #We stop the extract here, because there are versions with different FSF addresses.
-        self.add_license(license_name_gpl1, license_text_gpl1);
+        self.add_license(license_name_gpl1, license_text_gpl1)
 
         license_name_gpl2 = u"GPL2"
         license_text_gpl2 = u"GNU GENERAL PUBLIC LICENSE\n		       Version 2, June 1991"  #We stop the extract here, because there are versions with different FSF addresses.
-        self.add_license(license_name_gpl2, license_text_gpl2);
+        self.add_license(license_name_gpl2, license_text_gpl2)
 
         license_name_lgpl2 = u"LGPL2"
         license_text_lgpl2 = u"GNU LIBRARY GENERAL PUBLIC LICENSE\n		       Version 2, June 1991"  #We stop the extract here, because there are versions with different FSF addresses.
-        self.add_license(license_name_lgpl2, license_text_lgpl2);
+        self.add_license(license_name_lgpl2, license_text_lgpl2)
 
         license_name_lgpl2p1 = u"LGPL2.1"
         license_text_lgpl2p1 = u"GNU LESSER GENERAL PUBLIC LICENSE\n		       Version 2.1, February 1999" #We stop the extract here, because there are versions with different FSF addresses.
-        self.add_license(license_name_lgpl2p1, license_text_lgpl2p1);
+        self.add_license(license_name_lgpl2p1, license_text_lgpl2p1)
 
         license_name_mpl = u"MPL"
         license_text_mpl = u"MOZILLA PUBLIC LICENSE"
-        self.add_license(license_name_mpl, license_text_mpl);
+        self.add_license(license_name_mpl, license_text_mpl)
 
         license_name_boost = u"Boost"
         license_text_boost = u"Boost Software License - Version 1.0 - August 17th, 2003"
-        self.add_license(license_name_boost, license_text_boost);
+        self.add_license(license_name_boost, license_text_boost)
 
         license_name_mit = u"MIT"
         license_text_mit = u"""Permission is hereby granted, free of charge, to any person
@@ -134,7 +134,7 @@ restriction, including without limitation the rights to use,
 copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the
 Software is furnished to do so, subject to the following conditions"""
-        self.add_license(license_name_mit, license_text_mit);
+        self.add_license(license_name_mit, license_text_mit)
 
         license_name_x11 = u"X11" #Seems to be different to MIT. Sometimes mentions Keith Packard explicitly.
         license_text_x11 = u"""Permission to use, copy, modify, distribute, and sell this software and its
@@ -142,7 +142,7 @@ documentation for any purpose is hereby granted without fee, provided that
 the above copyright notice appear in all copies and that both that
 copyright notice and this permission notice appear in supporting
 documentation""" #Stop here, before an additional explicit name mention, forbidding use of the author's name, usually Keith Packard.
-        self.add_license(license_name_x11, license_text_x11);
+        self.add_license(license_name_x11, license_text_x11)
 
         license_name_bsd = u"BSD"
         license_text_bsd = u"""Redistribution and use in source and binary forms, with or without
@@ -153,7 +153,7 @@ are met:
 2. Redistributions in binary form must reproduce the above copyright
    notice, this list of conditions and the following disclaimer in the
    documentation and/or other materials provided with the distribution.""" #Stop here, before mention of a specific organisation name, usually forbidding use of that name.
-        self.add_license(license_name_bsd, license_text_bsd);
+        self.add_license(license_name_bsd, license_text_bsd)
 
         license_name_bsd_alt = u"BSD_alternate" #Almost identical - just uses - instead of 1. and 2.
         license_text_bsd_alt = u"""Redistribution and use in source and binary forms, with or without
@@ -166,10 +166,10 @@ notice, this list of conditions and the following disclaimer.
 - Redistributions in binary form must reproduce the above copyright
 notice, this list of conditions and the following disclaimer in the
 documentation and/or other materials provided with the distribution.""" #Stop here, before mention of a specific organisation name, usually forbidding use of that name.
-        self.add_license(license_name_bsd_alt, license_text_bsd_alt);
+        self.add_license(license_name_bsd_alt, license_text_bsd_alt)
 
     def add_license(self, name, text):
-        self.license_dict[name] = self.remove_excess_whitespace(text);
+        self.license_dict[name] = self.remove_excess_whitespace(text)
 
 
     def remove_excess_whitespace(self, text):
@@ -190,7 +190,7 @@ documentation and/or other materials provided with the distribution.""" #Stop he
 
     def get_are_same_standard_license(self, texta, textb, license_name_out):
         standard_name_a = self.get_is_standard_license(texta)
-        if(len(standard_name_a) == 0): 
+        if(len(standard_name_a) == 0):
             return False
 
         standard_name_b = self.get_is_standard_license(textb)
@@ -239,9 +239,9 @@ class HttpCache:
     def __init__(self):
         self._cache = HttpCache.Cache()
 
-  
 
-  
+
+
 
     class Cache:
 
@@ -397,7 +397,7 @@ class HttpCache:
                 ##        data = gzip.GzipFile(fileobj=StringIO.StringIO(data)).read()
                 ##    except:
                 ##        data = ''
-    
+
                 expires = response.headers.get('Expires')
 
                 # add new content to cache
@@ -407,7 +407,7 @@ class HttpCache:
                 filename = os.path.join(self.cachedir, entry.local)
                 open(filename, 'wb').write(data)
             except urllib2.HTTPError, e:
-                if e.code == 304: # not modified; update validated
+                if e.code == 304: # not modified. update validated
                     expires = e.hdrs.get('Expires')
                     filename = os.path.join(self.cachedir, entry.local)
                 else:
@@ -417,7 +417,7 @@ class HttpCache:
             entry.expires = self._parse_date(expires)
             if entry.expires <= now: # ignore expiry times that have already passed
                 entry.expires = now + self.default_age
-    
+
             # save cache
             self.entries[uri] = entry
             self.write_cache()
@@ -454,7 +454,7 @@ import StringIO
 #We create globals object because Python makes it so difficult to have static class methods.
 #(A patch would be welcome if you disagree.) murrayc.
 standard_licenses = StandardLicenses()
-the_httpcache = HttpCache();
+the_httpcache = HttpCache()
 
 class PackageData:
     def __init__(self, apt_cache, apt_srcrecords, candver):
@@ -560,19 +560,19 @@ class PackageData:
             if(len(text) == 0):
                 text = u"unknown (encoding error)"
             else:
-                license_found = True;
-         
+                license_found = True
+
         self.license_text = text
 
         #Remove any unnecessary leading or trailing whitespace:
-        self.license_text = self.license_text.strip();
+        self.license_text = self.license_text.strip()
 
         print_debug( "  debug: is standard license?: %s" % standard_licenses.get_is_standard_license(self.license_text) )
 
         return license_found
 
 
-    def convert_to_unicode_with_fallbacks(self, data, encoding=None):       
+    def convert_to_unicode_with_fallbacks(self, data, encoding=None):
         try:
             if(encoding == None):
                 result = unicode(data)
@@ -588,16 +588,16 @@ class PackageData:
 
         #Fall back to other encodings:
         if(encoding == None):
-           possible_encodings = ("utf-8", "ascii", "latin_1", "utf_16", "iso8859_2")
-           for enc in possible_encodings:
-               result = self.convert_to_unicode_with_fallbacks(data, enc);
-               if(len(result) != 0):
-                   print_debug( "fallback encoding successful: %s" % enc )
-                   return result;
+            possible_encodings = ("utf-8", "ascii", "latin_1", "utf_16", "iso8859_2")
+            for enc in possible_encodings:
+                result = self.convert_to_unicode_with_fallbacks(data, enc)
+                if(len(result) != 0):
+                    print_debug( "fallback encoding successful: %s" % enc )
+                    return result
 
-           print_debug( "debug: encoding error: All fallback codecs failed." )
+            print_debug( "debug: encoding error: All fallback codecs failed." )
 
-        return u"";
+        return u""
 
     def get_license_from_tarball_tarfile(self, the_tarfile):
         license_found = False
@@ -629,17 +629,17 @@ class PackageData:
                             else:
                                 # Restore the one we found earlier
                                 # (it was at a higher directory level, so it's more likely to be what we want.
-                                self.license_text = previous_found_license;
+                                self.license_text = previous_found_license
                                 #print_debug( "  debug1: restoring previous found text" )
                         else:
                             print_debug( "  debug: read failed. Error, if any: %s" %  self.license_text  )
                             #Restore the last text if any, including the last "unknown" error text,
                             #so we prefer previous found license text, or errors from higher-up files:
                             if( license_found or ((is_higher_than_previous == False) and len(previous_found_license)) ):
-                                 self.license_text = previous_found_license;
-                                 #print_debug( "  debug2: restoring previous found text" )
+                                self.license_text = previous_found_license
+                                #print_debug( "  debug2: restoring previous found text" )
 
-                            
+
 
         except tarfile.TarError, ex:
             print_debug( "Error while extracting tarball: %s" % str(ex) )
@@ -677,7 +677,7 @@ class PackageData:
                                     localfile.write(gzipped_data)
                                     localfile.close()
 
-                                except TarError, ex:
+                                except tarfile.TarError, ex:
                                     #raise
                                     print_debug( "tarfile.open() of nested tarball failed: for package: %s, for file: %s: %s" % (self.name, filename, ex) )
                                     self.license_text = "unknown (error extracting nested tarball)"
@@ -685,16 +685,16 @@ class PackageData:
 
                                 try:
                                     license_found = self.get_license_from_tarball(filename_local)
-                                except  TarError, ex:
+                                except  tarfile.TarError, ex:
                                     #raise
                                     print_debug( "tarfile.open() of nested tarball failed: for package: %s, for file: %s: %s" % (self.name, filename, ex) )
                                     self.license_text = "unknown (error opening extracted nested tarball)"
                                     license_found = False
 
-            except TarError, ex:
-                 print_debug( "Error while extracting tarball: %s" % str(ex) )
+            except tarfile.TarError, ex:
+                print_debug( "Error while extracting tarball: %s" % str(ex) )
 
-        return license_found;
+        return license_found
 
     # This seems to be the only way to delete a directory without getting exceptions about it not being empty:
     # I took this from some forum somewhere.
@@ -737,7 +737,7 @@ class PackageData:
 
             safe_mkdir(filename_local_parent)
 
-            filename_local = filename_local_parent + filename;
+            filename_local = filename_local_parent + filename
             localfile = open(filename_local, 'wb')
             localfile.write(data)
             localfile.close()
@@ -746,7 +746,7 @@ class PackageData:
             # -f makes it ignore warnings, so we only see new files.
             # -s makes it silent (apart from errors).
             # &> /dev/null hides errors from stdout, because strange encodings can confuse the terminal, making it show nonsense.
-            command = "cd " + filename_local_parent +"; patch -p0 -f -s < " + filename_local + " &> /dev/null" 
+            command = "cd " + filename_local_parent +"; patch -p0 -f -s < " + filename_local + " &> /dev/null"
             #print_debug( "debug: command=%s" % command )
             os.system(command)
 
@@ -769,7 +769,7 @@ class PackageData:
         except IOError, e:
             print_debug( "Could not read gzipfile %s" % str(e) )
 
-        return license_found;
+        return license_found
 
 
 
@@ -831,7 +831,7 @@ class PackageData:
                 tar = tarfile.open(local_filename, open_mode)
 
                 if(tar):
-                    return tar;
+                    return tar
             except Exception, ex:
                 print_debug( "debug: tarfile open failed with mode=%s for filename=%s" % (open_mode, local_filename) )
                 print_debug( "  ex=%s" % ex )
@@ -918,9 +918,9 @@ class PackageData:
     diff_uri = ""
     version = ""
     dependencies = set()
-    license_found = False;
+    license_found = False
     license_text = ""
-    license_text_simplified = False; # Whether we extracted a common part of the license, ignoring a unique part.
+    license_text_simplified = False # Whether we extracted a common part of the license, ignoring a unique part.
 
     # TODO: Be more clever when more than one of these files is present, or at least prioritize them:
     # In some cases there are multiple licenses because different executables in the tarball are
@@ -962,7 +962,7 @@ def escape_text_for_sql(text):
     # Use this as a workaround when using Glom < 1.0.5:
     # placeholder_newline = "NEWLINE"
 
-    text = text.replace("\n", "\\n");
+    text = text.replace("\n", "\\n")
 
     #Workaround for the postgres errors about unterminated quoted strings:
     #text = text.replace("\'", "XsinglequoteX")
@@ -978,7 +978,7 @@ def escape_text_for_sql(text):
     return text
 
 def boolean_for_sql(val):
-    if(val == True):
+    if(val):
         return "TRUE"
     else:
         return "FALSE"
@@ -1007,12 +1007,12 @@ def get_licenses_map(packages_dict):
 
 def get_licenses_map_with_matching(out_licenses_map, packages_dict):
     #For quick debugging of the previous steps:
-    #return False;
+    #return False
 
     #Examine each license and try to extract common parts,
     #ignoring small differences such as "XYZ is license under the GPL. Here is the license."
 
-    match_found = False;
+    match_found = False
     dict_matching_packages = {}
     for license_text in out_licenses_map.keys():
 
@@ -1071,7 +1071,7 @@ def get_licenses_map_with_matching(out_licenses_map, packages_dict):
                             common_text += license_text[start_a:(start_a + count)]
 
             if(this_match_found):
-                match_found = True;
+                match_found = True
                 print_debug( "match found for packages %s and packages %s" % (out_licenses_map[license_text], out_licenses_map[other_license_text]) )
                 #print_debug( "match found: text=%s" % (common_text) )
 
@@ -1088,7 +1088,7 @@ def get_licenses_map_with_matching(out_licenses_map, packages_dict):
 
         #Store the simplified license text instaed of the original:
         packages_dict[package_name].license_text = license_text_common
-        packages_dict[package_name].license_text_simplified = True; #Mark that we did this.
+        packages_dict[package_name].license_text_simplified = True #Mark that we did this.
 
     #Change the contents of the output variable:
     new_licenses_map = get_licenses_map(packages_dict)
@@ -1186,7 +1186,7 @@ def get_package_data_list(out_licenses_map):
     #for package_data in packages_dict:
     #   print_debug( package_data.name )
 
-    out_licenses_map_temp = get_licenses_map(packages_dict);
+    out_licenses_map_temp = get_licenses_map(packages_dict)
 
     previous_licenses_count = len(out_licenses_map_temp.keys())
     initial_previous_licenses_count = previous_licenses_count
@@ -1194,10 +1194,10 @@ def get_package_data_list(out_licenses_map):
     print_debug( "Searching for similar license texts (this can take a long time) ..." )
 
     #Note that this changes packages_dict and out_licenses_map_temp:
-    matches_found = True;
+    matches_found = True
     while(matches_found):
         matches_found = get_licenses_map_with_matching(out_licenses_map_temp, packages_dict)
-        if(matches_found == True):
+        if(matches_found):
             licenses_count = len(out_licenses_map_temp.keys())
             print_debug( "... Matching again after reducing %d unique licenses to %d ... " % (previous_licenses_count, licenses_count) )
             previous_licenses_count = licenses_count
@@ -1213,48 +1213,56 @@ def get_package_data_list(out_licenses_map):
 
 def debug_create_connection_record():
     #For debugging, outside of Glom:
-    client = gda.Client()
-
     data_source_name = "datasource_glomtest"
 
-    data_source = gda.config_find_data_source(data_source_name)
+    data_source = Gda.config_find_data_source(data_source_name)
     if not data_source:
         print_debug( "debug: Creating the DataSource, because it does not exist yet." )
 
         # Create it if it does not exist already:
-        data_source = gda.DataSourceInfo()
+        data_source = Gda.DataSourceInfo()
         data_source.name = data_source_name
         data_source.username = "murrayc"
-        data_source.password = "luftballons";     
+        data_source.password = "luftballons"
         data_source.description = "Test."
         data_source.provider = "PostgreSQL"
         # You must specify a database when using PostgreSQL, even when you want to create a database.
         # template1 always exists.
-        # data_source.cnc_string = "DATABASE=template1";
+        # data_source.cnc_string = "DATABASE=template1"
         data_source.cnc_string = "DATABASE=glom_repositoryanalyzer28162;HOST=localhost"
-      
-        # TODO: Add save_data_source(data_source_info);
-        gda.config_save_data_source(data_source.name, data_source.provider, data_source.cnc_string, data_source.description, data_source.username, data_source.password)
 
-    gda_connection = client.open_connection(data_source.name, data_source.username, data_source.password)
-    
+        # TODO: Add save_data_source(data_source_info)
+        Gda.config_save_data_source(data_source.name, data_source.provider, data_source.cnc_string, data_source.description, data_source.username, data_source.password)
+
+    cnc_string = "HOST=localhost;PORT=5434;DB_NAME=glom_example_smallbusiness_v2"
+    auth_string = "USERNAME=glom_default_developer_user;PASSWORD=glom_default_developer_password"
+    gda_connection = Gda.Connection.open_from_string("PostgreSQL", cnc_string, auth_string)
+
+
     class TestRecord:
         connection = None
 
     record = TestRecord()
     record.connection = gda_connection
-    return record;
+    return record
 
 
-def execute_sql_query(query_text):
+def execute_sql_non_select_query(query_text):
     #We use encode() here because, when running inside Glom, gda.Command() somehow expects an ascii string and tries to convert the unicode string to ascii, causing exceptions because the conversion does not default to 'replace'.
     #TODO: Find out why it acts differently inside Glom. This is not a problem when running normally as a standalone script.
-    command = gda.Command(query_text.encode('ascii', 'replace')) 
-    return record.connection.execute_single_command(command)
+    command = query_text.encode('ascii', 'replace')
+    return record.connection.execute_non_select_command(command)
+
+def execute_sql_select_query(query_text):
+    #We use encode() here because, when running inside Glom, gda.Command() somehow expects an ascii string and tries to convert the unicode string to ascii, causing exceptions because the conversion does not default to 'replace'.
+    #TODO: Find out why it acts differently inside Glom. This is not a problem when running normally as a standalone script.
+    command = query_text.encode('ascii', 'replace')
+    return record.connection.execute_select_command(command)
+
 
 def is_first_scan():
     query = "SELECT license_id FROM licenses"
-    datamodel = execute_sql_query(query)
+    datamodel = execute_sql_select_query(query)
     if(datamodel and (datamodel.get_n_rows() > 0)):
         return False
     else:
@@ -1263,7 +1271,7 @@ def is_first_scan():
 def main():
 
     if(is_first_scan() == False):
-        dlg = gtk.MessageDialog(None, 0, gtk.MESSAGE_INFO, gtk.BUTTONS_OK, u"Scan Already Done")
+        dlg = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, u"Scan Already Done")
         dlg.format_secondary_text("License records already exist, suggesting that a previous scan has already been done.")
         dlg.run()
         dlg.destroy()
@@ -1306,13 +1314,13 @@ def main():
 
         #Add the row to the database:
         query = u"INSERT INTO \"licenses\" (\"license_id\",\"description\",\"open_source\",\"license_text\",\"dynamic_linking_requires_source\",\"static_linking_requires_source\",\"modifications_must_be_released\",\"credit_required\") VALUES (%s)" % license_row
-       
-        #dlg = gtk.MessageDialog(None, 0, gtk.MESSAGE_INFO, gtk.BUTTONS_OK)
+
+        #dlg = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.OK)
         #dlg.format_secondary_text(query)
         #ret = dlg.run()
         #dlg.destroy()
 
-        execute_sql_query(query)
+        execute_sql_non_select_query(query)
 
         #rows_licenses += license_row + placeholder_newline #Use a placeholder that we can later convert to an escaped newline, because minidom doesn't do this for us, though it escapes other things.
 
@@ -1340,11 +1348,11 @@ def main():
         if(package_row):
             #Add the row to the database:
             query = u"INSERT INTO \"packages\" (\"name\",\"comments\",\"description\",\"license_id\",\"version\",\"parent_package\",\"tarball_uri\",\"diff_uri\",\"licensed_simplified\") VALUES (%s)" % package_row
-            execute_sql_query(query)
+            execute_sql_non_select_query(query)
 
 
             #rows_packages += package_row + placeholder_newline #Use a placeholder that we can later convert to an escaped newline, because minidom doesn't do this for us, though it escapes other things.
-           
+
         # Dependencies:
 
         if(package_data.dependencies):
@@ -1358,11 +1366,10 @@ def main():
 
                 #Add the row to the database:
                 query = u"INSERT INTO \"package_dependencies\" (\"package_dependencies_id\",\"package_name\",\"parent_package_name\") VALUES (%s)" % dependency_row
-                execute_sql_query(query)
+                execute_sql_non_select_query(query)
 
 
     debugwindow.debug_button_close.set_sensitive(True) #Let the user close the window. Don't close it automatically, so that they can read it and close when ready.
 
 if __name__ == "__main__":
     main()
-
