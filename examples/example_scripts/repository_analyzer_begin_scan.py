@@ -1236,8 +1236,7 @@ def get_package_data_list(out_licenses_map, package_names_list_restrict_to):
     #Or maybe put it in a database table.
     temp_sourceslist_path = "/tmp/repository_analyzer_sources.list"
     output = open(temp_sourceslist_path, 'w')
-    sources_list = "deb http://repository.maemo.org/ fremantle/sdk free non-free\ndeb-src http://repository.maemo.org/ fremantle/sdk free\ndeb http://repository.maemo.org/ fremantle/tools free non-free\ndeb-src http://repository.maemo.org/ fremantle/tools free\ndeb http://repository.maemo.org/extras-devel/ fremantle free non-free\ndeb-src http://repository.maemo.org/extras-devel/ fremantle free non-free
-"
+    sources_list = "deb http://repository.maemo.org/ fremantle/sdk free non-free\ndeb-src http://repository.maemo.org/ fremantle/sdk free\ndeb http://repository.maemo.org/ fremantle/tools free non-free\ndeb-src http://repository.maemo.org/ fremantle/tools free\ndeb http://repository.maemo.org/extras-devel/ fremantle free non-free\ndeb-src http://repository.maemo.org/extras-devel/ fremantle free non-free"
 
     output.write(sources_list)
     output.close()
