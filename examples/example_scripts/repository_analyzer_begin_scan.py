@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Copyright (c) 2006-11 Openismus GmbH
+# Copyright (c) 2006-2011 Openismus GmbH
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,17 +17,32 @@
 # along with this file; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
+
 # The actual .glom file that uses this is at
 # http://gitorious.org/debian_repository_analyzer
 
-from gi.repository import Gtk
+
+from gi.repository import Gtk, GObject
 from gi.repository import Gda
 
 import apt # For apt.Cache.
 import apt_pkg # For apt_pkg.GetPkgSourceList
-import sys
-import os
 import difflib
+
+def debug_create_connection_record():
+    cnc_string = "HOST=localhost;PORT=5434;DB_NAME=glom_repositoryanalyzer3121"
+    auth_string = "USERNAME=glom_default_developer_user;PASSWORD=glom_default_developer_password"
+    gda_connection = Gda.Connection.open_from_string("PostgreSQL", cnc_string, auth_string, Gda.ConnectionOptions.NONE)
+
+
+    class TestRecord:
+        connection = None
+
+    record = TestRecord()
+    record.connection = gda_connection
+    return record
+    
+record = debug_create_connection_record()
 
 class DebugWindow:
     debug_window = None
@@ -107,15 +122,15 @@ class StandardLicenses(object):
         self.add_license(license_name_gpl1, license_text_gpl1)
 
         license_name_gpl2 = u"GPL2"
-        license_text_gpl2 = u"GNU GENERAL PUBLIC LICENSE\n		       Version 2, June 1991"  #We stop the extract here, because there are versions with different FSF addresses.
+        license_text_gpl2 = u"GNU GENERAL PUBLIC LICENSE\n                     Version 2, June 1991"  #We stop the extract here, because there are versions with different FSF addresses.
         self.add_license(license_name_gpl2, license_text_gpl2)
 
         license_name_lgpl2 = u"LGPL2"
-        license_text_lgpl2 = u"GNU LIBRARY GENERAL PUBLIC LICENSE\n		       Version 2, June 1991"  #We stop the extract here, because there are versions with different FSF addresses.
+        license_text_lgpl2 = u"GNU LIBRARY GENERAL PUBLIC LICENSE\n                    Version 2, June 1991"  #We stop the extract here, because there are versions with different FSF addresses.
         self.add_license(license_name_lgpl2, license_text_lgpl2)
 
         license_name_lgpl2p1 = u"LGPL2.1"
-        license_text_lgpl2p1 = u"GNU LESSER GENERAL PUBLIC LICENSE\n		       Version 2.1, February 1999" #We stop the extract here, because there are versions with different FSF addresses.
+        license_text_lgpl2p1 = u"GNU LESSER GENERAL PUBLIC LICENSE\n                   Version 2.1, February 1999" #We stop the extract here, because there are versions with different FSF addresses.
         self.add_license(license_name_lgpl2p1, license_text_lgpl2p1)
 
         license_name_mpl = u"MPL"
@@ -219,15 +234,15 @@ and draws ideas from feedparser.py.  Strategies include:
 '''
 
 import os
-import urllib2
+#import urllib2
 import urlparse
 import time
 import rfc822
-import StringIO
-try:
-    import gzip
-except ImportError:
-    gzip = None
+#import StringIO
+#try:
+#    import gzip
+#except ImportError:
+#    gzip = None
 
 try:
     import xml.dom.minidom
@@ -407,7 +422,7 @@ class HttpCache:
                 filename = os.path.join(self.cachedir, entry.local)
                 open(filename, 'wb').write(data)
             except urllib2.HTTPError, e:
-                if e.code == 304: # not modified. update validated
+                if e.code == 304: # not modified; update validated
                     expires = e.hdrs.get('Expires')
                     filename = os.path.join(self.cachedir, entry.local)
                 else:
@@ -441,20 +456,46 @@ class HttpCache:
 import apt # For apt.Cache.
 import apt_pkg # For apt_pkg.GetPkgSourceList
 
-import sys
-import os
+#import sys
 import dircache
 
 import urllib2 #Library to do downloads.
 import os.path #For split()
 import gzip
 import tarfile
-import StringIO
+#import StringIO
 
 #We create globals object because Python makes it so difficult to have static class methods.
 #(A patch would be welcome if you disagree.) murrayc.
 standard_licenses = StandardLicenses()
 the_httpcache = HttpCache()
+
+def get_dependency_names_for_candver(cache, candver):
+    # Note: This is broken when Dir::State::status is not set: It returns huge false, irrelevant dependencies.
+    # Get the dependencies of this package:
+    # TODO: Get direct dependencies only?
+
+    dependslist = candver.DependsList
+
+    #Look at each dependency:
+    result_list = set()
+    for dep in dependslist.keys():
+
+        # get the list of each dependency object
+        for depVerList in dependslist[dep]:
+
+            for z in depVerList:
+
+                # get all TargetVersions of
+                # the dependency object
+                for tpkg in z.AllTargets():
+                    result_list.add(tpkg.ParentPkg.Name)
+                    #TODO: This does not always seem to be the same name that we get for the parent package.
+                    #       Sometimes there is no package with this exact name.
+                    #       Or maybe that's a problem with the repository.
+
+    return result_list
+
 
 class PackageData:
     def __init__(self, apt_cache, apt_srcrecords, candver):
@@ -498,28 +539,13 @@ class PackageData:
         dependslist = candver.DependsList
 
         #Look at each dependency:
-        self.dependencies = set() #If we don't do this then it seems to use the list from the last instantiation of this class, so the list keeps getting bigger.
-        for dep in dependslist.keys():
-
-            # get the list of each dependency object
-            for depVerList in dependslist[dep]:
-
-                for z in depVerList:
-
-                    # get all TargetVersions of
-                    # the dependency object
-                    for tpkg in z.AllTargets():
-                        self.dependencies.add(tpkg.ParentPkg.Name)
-                        #TODO: This does not always seem to be the same name that we get for the parent package.
-                        #       Sometimes there is no package with this exact name.
-                        #       Or maybe that's a problem with the repository.
+        self.dependencies = get_dependency_names_for_candver(apt_cache, candver)
 
         #print_debug( "  debug: dependencies of package %s: %s" % (self.name, self.dependencies) )
 
 
         self.license_text = ""
         license_found = False
-        #repository_base_uri = "http://archive.ubuntu.com/ubuntu/" # TODO: Get this from python-apt somehow.
         repository_base_uri = "http://repository.maemo.org/" # Remove this hack when we have ArchiveURI() in python-apt in Ubuntu Edgy.
 
         if(self.diff_uri):
@@ -547,7 +573,6 @@ class PackageData:
                 print_debug( "    debug: package: %s, license file not found in diff: %s" % (self.name, self.diff_uri) )
 
         self.license_found = license_found
-
 
     def get_license_from_file(self, file_object):
         license_found = False
@@ -677,7 +702,7 @@ class PackageData:
                                     localfile.write(gzipped_data)
                                     localfile.close()
 
-                                except tarfile.TarError, ex:
+                                except TarError, ex:
                                     #raise
                                     print_debug( "tarfile.open() of nested tarball failed: for package: %s, for file: %s: %s" % (self.name, filename, ex) )
                                     self.license_text = "unknown (error extracting nested tarball)"
@@ -685,13 +710,13 @@ class PackageData:
 
                                 try:
                                     license_found = self.get_license_from_tarball(filename_local)
-                                except  tarfile.TarError, ex:
+                                except  TarError, ex:
                                     #raise
                                     print_debug( "tarfile.open() of nested tarball failed: for package: %s, for file: %s: %s" % (self.name, filename, ex) )
                                     self.license_text = "unknown (error opening extracted nested tarball)"
                                     license_found = False
 
-            except tarfile.TarError, ex:
+            except TarError, ex:
                 print_debug( "Error while extracting tarball: %s" % str(ex) )
 
         return license_found
@@ -921,6 +946,7 @@ class PackageData:
     license_found = False
     license_text = ""
     license_text_simplified = False # Whether we extracted a common part of the license, ignoring a unique part.
+    previous_license_id = None
 
     # TODO: Be more clever when more than one of these files is present, or at least prioritize them:
     # In some cases there are multiple licenses because different executables in the tarball are
@@ -993,7 +1019,19 @@ def get_licenses_map(packages_dict):
     licenses_map = {}
 
     for package_name in packages_dict.keys():
+
         package_data = packages_dict[package_name]
+
+        #Ignore the license if the package version is the same as last time.
+        #In this case we will just use the existing license ID from the database.
+        previously_scanned_version = get_version_of_last_package_scan(package_name)
+        print("debug: previously_scanned_version=%s\n" % str(previously_scanned_version))
+        print("debug: package_data.version=%s\n" % str(package_data.version))
+        if( (previously_scanned_version != None) and (previously_scanned_version == package_data.version)):
+            print("  debug: using previous\n")
+            package_data.previous_license_id = get_license_id_of_last_package_scan(package_name)
+            continue
+
         if(package_data.license_text and len(package_data.license_text)): #TODO: Is there an empty() method to save time?
             # Create a list for this key, if necessary:
             if(licenses_map.has_key(package_data.license_text) == False):
@@ -1097,8 +1135,79 @@ def get_licenses_map_with_matching(out_licenses_map, packages_dict):
 
     return match_found
 
+def is_in_list(the_list, the_value):
 
-def get_package_data_list(out_licenses_map):
+    if(the_list == None):
+        return False
+
+    for item in the_list:
+        if(item == the_value):
+            return True
+
+    return False
+
+def get_apt_pkg_from_apt_cache(cache, package_name):
+    for pkg in cache:
+        candver = cache._depcache.GetCandidateVer(pkg._pkg)
+
+        # Ignore packages with no candidate version:
+        if candver == None:
+            continue
+
+        this_package_name = candver.ParentPkg.Name
+
+        if(this_package_name == package_name):
+            return pkg  #Found.
+
+    return None #Failed.
+
+def add_package_and_dependency_names_to_list(package_names_list, apt_cache, package_name, already_handled_list):
+
+    if(already_handled_list == None):
+        already_handled_list = [] # A new list.
+
+    #Prevent endless recursive loops caused by circular dependencies:
+    if(package_name in already_handled_list):
+        return
+    else:
+        already_handled_list.append(package_name)
+
+    #print("debug: package_name=%s\n" % package_name)
+    pkg = get_apt_pkg_from_apt_cache(apt_cache, package_name)
+    if(pkg == None):
+        return
+
+    #Add it to the list if necessary:
+    if(package_name not in package_names_list):
+        package_names_list.append(package_name)
+
+    # Get the list of direct dependencies:
+    candver = apt_cache._depcache.GetCandidateVer(pkg._pkg)
+    dependency_names = get_dependency_names_for_candver(apt_cache, candver)
+
+    #Look at each dependency,
+    #recursing:
+    for dependency_name in dependency_names:
+        #print("debug: dependencies: %s\n" % str(dependency_names))
+        add_package_and_dependency_names_to_list(package_names_list, apt_cache, dependency_name, already_handled_list)
+
+
+def add_dependency_names_to_list(package_names_list, apt_cache):
+
+    if(package_names_list == None):
+        return
+
+    #Look at each package:
+    for package_name in package_names_list:
+
+        # The last parameter (already_handled_list) prevents circular-dependencies from causing endless loops during recursion,
+        # without preventing us from looking fully at the packages that were originally in the list.
+
+        add_package_and_dependency_names_to_list(package_names_list, apt_cache, package_name, None)
+
+
+
+def get_package_data_list(out_licenses_map, package_names_list_restrict_to):
 
     #Start with the default config, probably from /etc/apt/sources.list:
     apt_pkg.InitConfig()
@@ -1127,7 +1236,7 @@ def get_package_data_list(out_licenses_map):
     #Or maybe put it in a database table.
     temp_sourceslist_path = "/tmp/repository_analyzer_sources.list"
     output = open(temp_sourceslist_path, 'w')
-    sources_list = "deb http://repository.maemo.org/ mistral free non-free\ndeb-src http://repository.maemo.org/ mistral free non-free"
+    sources_list = "deb http://repository.maemo.org/extras-devel fremantle free non-free\ndeb-src http://repository.maemo.org/extras-devel fremantle free"
 
     output.write(sources_list)
     output.close()
@@ -1159,6 +1268,13 @@ def get_package_data_list(out_licenses_map):
 
     print_debug( "Number of packages in cache: %d" % len(cache) )
 
+    #Add dependencies to the package_names_list_restrict_to list, if the list contains anything:
+    add_dependency_names_to_list(package_names_list_restrict_to, cache)
+    if((package_names_list_restrict_to == None) or (len(package_names_list_restrict_to) == 0)):
+        print_debug( "Not restricting to certain packages - examining all.")
+    else:
+        print_debug( "Restricting to %d packages (including dependencies)." % len(package_names_list_restrict_to) )
+
     # Look at each package:
     i = 0
     for pkg in cache:
@@ -1169,17 +1285,24 @@ def get_package_data_list(out_licenses_map):
         if candver == None:
             continue
 
-        package_data = PackageData(cache, srcrecords, candver) # Retrieves the data from apt.
-        if(package_data.tarball_uri):
-            packages_dict[package_data.name] = package_data
-            print_debug( "Processed package %d: %s" % (i, package_data.name) )
-        #else:
-            # TODO: The if(package_data.tarball_uri) is an old workaround, which it doesn't hurt to keep.
-            # python-apt seems to list files not in the specified sources.list, if Dir::State::status is not set.
-            # and we detect these because there is no source url for them.
-            #print_debug( "Abandoned package %d: %s" % (i, package_data.name) )
+        package_name = candver.ParentPkg.Name
 
-        i += 1
+        # If we are restricting the scan to a provided listof packages,
+        # skip the packages if it is not in the list:
+        if( (package_names_list_restrict_to == None) or is_in_list(package_names_list_restrict_to, package_name)):
+
+            package_data = PackageData(cache, srcrecords, candver) # Retrieves the data from apt.
+
+            if(package_data.tarball_uri):
+                packages_dict[package_data.name] = package_data
+                print_debug( "Processed package %d: %s" % (i, package_data.name) )
+            #else:
+                # TODO: The if(package_data.tarball_uri) is an old workaround, which it doesn't hurt to keep.
+                # python-apt seems to list files not in the specified sources.list, if Dir::State::status is not set.
+                # and we detect these because there is no source url for them.
+                #print_debug( "Abandoned package %d: %s" % (i, package_data.name) )
+
+            i += 1
 
     print_debug( "Number of packages used: %d" % len(packages_dict) )
 
@@ -1210,43 +1333,6 @@ def get_package_data_list(out_licenses_map):
 
     return packages_dict
 
-
-def debug_create_connection_record():
-    #For debugging, outside of Glom:
-    data_source_name = "datasource_glomtest"
-
-    data_source = Gda.config_find_data_source(data_source_name)
-    if not data_source:
-        print_debug( "debug: Creating the DataSource, because it does not exist yet." )
-
-        # Create it if it does not exist already:
-        data_source = Gda.DataSourceInfo()
-        data_source.name = data_source_name
-        data_source.username = "murrayc"
-        data_source.password = "luftballons"
-        data_source.description = "Test."
-        data_source.provider = "PostgreSQL"
-        # You must specify a database when using PostgreSQL, even when you want to create a database.
-        # template1 always exists.
-        # data_source.cnc_string = "DATABASE=template1"
-        data_source.cnc_string = "DATABASE=glom_repositoryanalyzer28162;HOST=localhost"
-
-        # TODO: Add save_data_source(data_source_info)
-        Gda.config_save_data_source(data_source.name, data_source.provider, data_source.cnc_string, data_source.description, data_source.username, data_source.password)
-
-    cnc_string = "HOST=localhost;PORT=5434;DB_NAME=glom_example_smallbusiness_v2"
-    auth_string = "USERNAME=glom_default_developer_user;PASSWORD=glom_default_developer_password"
-    gda_connection = Gda.Connection.open_from_string("PostgreSQL", cnc_string, auth_string)
-
-
-    class TestRecord:
-        connection = None
-
-    record = TestRecord()
-    record.connection = gda_connection
-    return record
-
-
 def execute_sql_non_select_query(query_text):
     #We use encode() here because, when running inside Glom, gda.Command() somehow expects an ascii string and tries to convert the unicode string to ascii, causing exceptions because the conversion does not default to 'replace'.
     #TODO: Find out why it acts differently inside Glom. This is not a problem when running normally as a standalone script.
@@ -1259,27 +1345,193 @@ def execute_sql_select_query(query_text):
     command = query_text.encode('ascii', 'replace')
     return record.connection.execute_select_command(command)
 
+#def is_first_scan():
+#    query = "SELECT license_id FROM licenses"
+#    datamodel = execute_sql_select_query(query)
+#    if(datamodel and (datamodel.get_n_rows() > 0)):
+#        return False
+#    else:
+#        return True
 
-def is_first_scan():
-    query = "SELECT license_id FROM licenses"
-    datamodel = execute_sql_select_query(query)
-    if(datamodel and (datamodel.get_n_rows() > 0)):
-        return False
-    else:
-        return True
+# TODO: Use the pyglom API for this when it is available.
+def get_next_automatic_id_number(table_name, field_name):
+
+    #Discover the current highest value:
+    sql_query = "SELECT MAX(\"" + table_name + "\".\"" + field_name + "\") FROM \"" + table_name + "\""
+    datamodel = execute_sql_select_query(sql_query)
+
+    max_id = 0
+    if(datamodel and (datamodel.get_n_rows() > 0) and (datamodel.get_n_columns() > 0)):
+        max_id_value = datamodel.get_value_at(0, 0)
+        if(max_id_value == None): #This seems to be the result when there are no records. I guess it is a NULL value in the result.
+            max_id = 0
+        else:
+            max_id = float(max_id_value.number) #TODO: Make sure this only converts in the C locale
+            max_id += 1
+
+    return max_id
+
+# TODO: Use the pyglom API for this when it is available.
+def reset_automatic_id_number(table_name, field_name):
+
+    next_id_value = get_next_automatic_id_number(table_name, field_name)
+
+    #Set the maximum value in the system table:
+    next_id_value_string = "%d" % next_id_value #str() adds the digits after the decimal point.
+    sql_query = "UPDATE \"glom_system_autoincrements\" SET \"next_value\" = " + next_id_value_string + " WHERE \"glom_system_autoincrements\".\"table_name\" = '" + table_name + "' AND \"glom_system_autoincrements\".\"field_name\" = '" + field_name + "'"
+    print "debug: sql=%s" % sql_query
+    execute_sql_non_select_query(sql_query)
+
+def get_record_exists_already(table_name, field_name, sql_field_value):
+    sql_query = "SELECT COUNT(\"" + table_name + "\".\"" + field_name + "\") FROM \"" + table_name + "\" WHERE \"" + field_name + "\" = " + sql_field_value
+    datamodel = execute_sql_select_query(sql_query)
+
+    if(datamodel and (datamodel.get_n_rows() > 0) and (datamodel.get_n_columns() > 0)):
+        count = datamodel.get_value_at(0, 0).get()
+        if(count == None): #This seems to be the result when there are no records. I guess it is a NULL value in the result.
+            return False
+        else:
+            return count > 0
+
+    return False
+
+def get_license_id_of_last_package_scan(package_name):
+    sql_query = "SELECT package_scans.license_id FROM package_scans WHERE package_scans.package_name = " + quote_for_sql(escape_text_for_sql(package_name)) + " ORDER BY package_scans.license_id DESC LIMIT 1"
+    datamodel = execute_sql_select_query(sql_query)
+
+    if(datamodel and (datamodel.get_n_rows() > 0) and (datamodel.get_n_columns() > 0)):
+        result = datamodel.get_value_at(0, 0).get()
+        if(result == None): #This seems to be the result when there are no records. I guess it is a NULL value in the result.
+            return None
+        else:
+            return result
+
+    return None
+
+def get_version_of_last_package_scan(package_name):
+    sql_query = "SELECT package_scans.version FROM package_scans WHERE package_scans.package_name = " + quote_for_sql(escape_text_for_sql(package_name)) + " ORDER BY package_scans.license_id DESC LIMIT 1"
+    datamodel = execute_sql_select_query(sql_query)
+
+    if(datamodel and (datamodel.get_n_rows() > 0) and (datamodel.get_n_columns() > 0)):
+        result = datamodel.get_value_at(0, 0).get()
+        if(result == None): #This seems to be the result when there are no records. I guess it is a NULL value in the result.
+            return None
+        else:
+            return result
+
+    return None
+
+
+
+class PackageXmlChooserWindow(Gtk.Dialog):
+
+    def __init__(self):
+        __gtype_name__ = 'PackageXmlChooserWindow'
+        # Call the base class's constructor, because python doesn't do that automatically:
+        super(PackageXmlChooserWindow, self).__init__()
+
+        # Sets the border width of the window.
+        self.set_border_width(6)
+        self.get_content_area().set_border_width(6)
+
+
+        # Add a label
+        label = Gtk.Label(label="Begin Scan")
+        label.set_alignment(0.0, 0.5)
+        self.get_content_area().pack_start(label, True, True, 0)
+        label.show()
+
+        #Pack an hbox in the dialog's vbox area:
+        self.hbox = Gtk.HBox()
+        self.hbox.set_spacing(6)
+        self.get_content_area().pack_start(self.hbox, False, False, 6)
+        self.hbox.show()
+
+        label = Gtk.Label(label="Optional Package XML file:")
+        label.set_alignment(0.0, 0.5)
+        self.hbox.pack_start(label, False, False, 6)
+        label.show()
+
+        #FileChooser Button:
+        self.filechooser_button = Gtk.FileChooserButton.new("Package XML file", Gtk.FileChooserAction.OPEN)
+
+        self.hbox.pack_start(self.filechooser_button, True, True, 6)
+        self.filechooser_button.show()
+
+        #Add response buttons:
+        self.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
+        self.add_button(Gtk.STOCK_OK, Gtk.ResponseType.OK)
+
+        #Make sure that clicking the window manager close button actually closes the window:
+        self.connect("delete_event", self.delete_event)
+
+
+    def get_chosen_filepath(self):
+        return self.filechooser_button.get_filename()
+
+
+    def delete_event(self, widget, event, data=None):
+        self.response(Gtk.ResponseType.CANCEL)
+        return True #Do not destroy the window.
+
+
+from xml.dom import minidom
+
+def get_list_of_packages_from_packages_xml_file(filepath):
+    result = [] #A new list.
+
+    xmldoc = minidom.parse(filepath)
+
+    #Get the top-level node:
+    nodes_document = xmldoc.getElementsByTagName("package-list")
+    if(nodes_document):
+        node_document = nodes_document[0]
+
+        #Find the package nodes:
+        nodes_packages = node_document.getElementsByTagName("package")
+        for node in nodes_packages:
+            nodes_names = node.getElementsByTagName("name")
+            if(nodes_names):
+                node_name = nodes_names[0]
+                package_name = node_name.firstChild.data #This should be a text node.
+                result.append(package_name)
+
+    return result
+
+
+import datetime
 
 def main():
 
-    if(is_first_scan() == False):
-        dlg = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, u"Scan Already Done")
-        dlg.format_secondary_text("License records already exist, suggesting that a previous scan has already been done.")
-        dlg.run()
-        dlg.destroy()
-        return
+    #Multiple scans are now allowed:
+    #
+    #if(is_first_scan() == False):
+    #    dlg = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, u"Scan Already Done")
+    #    dlg.format_secondary_text("License records already exist, suggesting that a previous scan has already been done.")
+    #    dlg.run()
+    #    dlg.destroy()
+    #    return
 
     #For debugging, outside of Glom:
-    #record = debug_create_connection_record()
+    record = debug_create_connection_record()
 
+
+    #Show the dialog:
+    question_window = PackageXmlChooserWindow()
+    response = question_window.run()
+    question_window.hide()
+
+    if(response != Gtk.ResponseType.OK):
+        return
+
+    # Get the input:
+    # (We have optionally allowed the user to choose an XML file to specify the packages that should be scanned.)
+    # Alternatively, we scan them all.
+    package_names_list_restrict_to = None
+    chosen_filepath = question_window.get_chosen_filepath()
+    if(chosen_filepath != None):
+        package_names_list_restrict_to = get_list_of_packages_from_packages_xml_file(chosen_filepath)
+        print_debug( "Restricting scan to these packages from the Packages XML file: %s" % str(package_names_list_restrict_to) )
 
 
     # Rows of SQL-formatted, comma-separated (fields), newline-separated (rows) example data,
@@ -1288,15 +1540,28 @@ def main():
     #rows_package_dependencies = ""
     #rows_licenses = ""
 
-    licenses_map = {} # a new dict.
-    packages_dict = get_package_data_list(licenses_map)
-
-
     empty_text = quote_for_sql("")
+
+    #Add a record for the scan:
+    # 'scan_id','date','comments'
+    scan_id = get_next_automatic_id_number("scans", "scan_id") #Start with the next free license ID.
+    today = datetime.datetime.today()
+    #See http://docs.python.org/lib/module-time.html for formatting syntax:
+    today_date_string = today.strftime("%m/%d/%Y")
+    today_time_string = today.strftime("%H:%M:%S")
+    scan_row = u"%d,'%s','%s',%s" % ( scan_id, today_date_string, today_time_string, empty_text)
+
+    query = u"INSERT INTO \"scans\" (\"scan_id\",\"date\",\"time\",\"comments\") VALUES (%s)" % scan_row
+    execute_sql_non_select_query(query)
+
+
+
+    licenses_map = {} # a new dict.
+    packages_dict = get_package_data_list(licenses_map, package_names_list_restrict_to)
 
     #Look at each key (the license texts):
     licenses_map_ids = {} # a new dict, of text to ids.
-    license_id = 0
+    license_id = get_next_automatic_id_number("licenses", "license_id") #Start with the next free license ID.
     for license_text in licenses_map.keys():
 
         licenses_map_ids[license_text] = license_id #So we can get the license ID later.
@@ -1327,7 +1592,8 @@ def main():
     print_debug( "count of licenses=%d" % license_id )
 
     #Look at each package:
-    dependency_id = 0
+    package_scan_id = get_next_automatic_id_number("package_scans", "package_scan_id")
+    dictPackageNamesToScanIDs = {}
     for package_name in packages_dict.keys():
         #print_debug( "used: ", package_data.name )
 
@@ -1335,39 +1601,81 @@ def main():
         license_id = "NULL" #empty integer value.
 
         package_data = packages_dict[package_name]
-        if(package_data.license_text):
+
+        if(package_data.previous_license_id != None): #Previously chosen, if the same version of the package was scanned in a previous scan.
+            license_id = package_data.previous_license_id
+        elif(package_data.license_text):
             try:
                 license_id = licenses_map_ids[package_data.license_text]
             except:
                 print_debug( "Error while determining license_id." )
 
-        # This will look like this:
-        # 'name','comments','description','license_id',,'version','parent_package','tarball_uri'
-        package_row = u"%s,%s,%s,%s,%s,%s,%s,%s,%s" % ( quote_for_sql(package_data.name), empty_text, quote_for_sql(escape_text_for_sql(package_data.description)), license_id, quote_for_sql(package_data.version), quote_for_sql(package_data.source_package_name), quote_for_sql(package_data.tarball_uri), quote_for_sql(package_data.diff_uri), boolean_for_sql(package_data.license_text_simplified) )
+        #Add the package details if they are not already in the database (from a previous scan):
+        if(get_record_exists_already("packages", "name", quote_for_sql(package_data.name)) == False):
+            package_row = u"%s,%s" % ( quote_for_sql(package_data.name), quote_for_sql(escape_text_for_sql(package_data.description)) )
 
-        if(package_row):
-            #Add the row to the database:
-            query = u"INSERT INTO \"packages\" (\"name\",\"comments\",\"description\",\"license_id\",\"version\",\"parent_package\",\"tarball_uri\",\"diff_uri\",\"licensed_simplified\") VALUES (%s)" % package_row
+            #This will look like this:
+            # 'name','description'
+            query = u"INSERT INTO \"packages\" (\"name\",\"description\") VALUES (%s)" % package_row
             execute_sql_non_select_query(query)
 
+        # Add the package scan, which refers to the package:
+        #
+        # This will look like this:
+        # 'package_scan_id','package_name','scan_id','comments','license_id','version','parent_package','tarball_uri','diff_uri',"simplified'
+        package_scan_row = u"%d,%s,%d,%s,%d,%s,%s,%s,%s,%s" % ( package_scan_id, quote_for_sql(package_data.name), scan_id, empty_text, license_id, quote_for_sql(package_data.version), quote_for_sql(package_data.source_package_name), quote_for_sql(package_data.tarball_uri), quote_for_sql(package_data.diff_uri), boolean_for_sql(package_data.license_text_simplified) )
+
+        if(package_scan_row):
+            #Add the row to the database:
+            query = u"INSERT INTO \"package_scans\" (\"package_scan_id\",\"package_name\",\"scan_id\",\"comments\",\"license_id\",\"version\",\"parent_package\",\"tarball_uri\",\"diff_uri\",\"licensed_simplified\") VALUES (%s)" % package_scan_row
+            execute_sql_non_select_query(query)
+
+            dictPackageNamesToScanIDs[package_data.name] = package_scan_id #Save for later, when we do the dependencies.
+            package_scan_id += 1
 
             #rows_packages += package_row + placeholder_newline #Use a placeholder that we can later convert to an escaped newline, because minidom doesn't do this for us, though it escapes other things.
 
-        # Dependencies:
 
+    # Dependencies:
+    dependency_id = get_next_automatic_id_number("package_dependencies", "package_dependencies_id")
+    for package_name in packages_dict.keys():
+        package_data = packages_dict[package_name]
         if(package_data.dependencies):
-            for dependency in package_data.dependencies:
+            for dependency_package_name in package_data.dependencies:
 
-                # This will look like this:
-                # 'dependency_id', 'dependency_name', 'package_name',
-                dependency_row = u"%d, %s, %s" % (dependency_id, quote_for_sql(dependency), quote_for_sql(package_data.name))
-                dependency_id += 1
-                #rows_package_dependencies += dependency_row + placeholder_newline
+                # Get the previously-chosen scan ID for the dependency, based on the name:
+                # apt seems to report some dependencies, such as libc, that are not in its list of packages.
+                # - we ignore them.
+                parent_package_scan_id = None
+                try:
+                    parent_package_scan_id = dictPackageNamesToScanIDs[package_name]
+                except KeyError, ex:
+                    print_debug("debug: parent package_scan_id not found for parent package %s. Ignoring." % package_name)
 
-                #Add the row to the database:
-                query = u"INSERT INTO \"package_dependencies\" (\"package_dependencies_id\",\"package_name\",\"parent_package_name\") VALUES (%s)" % dependency_row
-                execute_sql_non_select_query(query)
+                dependency_package_scan_id = None
+                try:
+                    dependency_package_scan_id = dictPackageNamesToScanIDs[dependency_package_name]
+                except KeyError, ex:
+                    print_debug("debug: package_scan_id not found for package %s. Ignoring" % dependency_package_name)
 
+                if( (parent_package_scan_id != None) and (dependency_package_scan_id != None) ):
+                    # This will look like this:
+                    # 'package_dependency_id', 'package_scan_id', 'parent_package_scan_id',
+                    dependency_row = u"%d, %d, %d" % (dependency_id, dependency_package_scan_id, parent_package_scan_id)
+                    dependency_id += 1
+                    #rows_package_dependencies += dependency_row + placeholder_newline
+
+                    #Add the row to the database:
+                    query = u"INSERT INTO \"package_dependencies\" (\"package_dependency_id\",\"package_scan_id\",\"parent_package_scan_id\") VALUES (%s)" % dependency_row
+                    execute_sql_non_select_query(query)
+
+
+    print_debug("Updating auto-increment values.")
+    reset_automatic_id_number("licenses", "license_id")
+    reset_automatic_id_number("package_scans", "package_scan_id")
+    reset_automatic_id_number("package_dependencies", "package_dependencies_id")
+    reset_automatic_id_number("scans", "scan_id")
+    print_debug("Finished.")
 
     debugwindow.debug_button_close.set_sensitive(True) #Let the user close the window. Don't close it automatically, so that they can read it and close when ready.
 
