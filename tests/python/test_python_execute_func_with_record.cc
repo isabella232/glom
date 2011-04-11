@@ -2,6 +2,7 @@
 #include <glom/libglom/connectionpool.h>
 #include <glom/python_embed/glom_python.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <libglom/utils.h>
 #include <boost/python.hpp>
 #include <iostream>
 
@@ -45,6 +46,7 @@ int main()
     return EXIT_FAILURE;
   }
 
+  g_assert( Glom::Utils::file_exists(uri) );
   //std::cout << "URI=" << uri << std::endl;
 
 

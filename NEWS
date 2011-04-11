@@ -1,3 +1,23 @@
+1.19.4 (unstable):
+
+* Calculated fields and button scripts:
+  - Properly return boolean results.
+  - Initialize pygobject, to fix the use of the PyRecord API.
+* libglom: Added utils::build_sql_select_count_rows().
+* Fix crashes when using choices with fixed lists.
+* Do not crash if PyDateTime_IMPORT fails.
+* Remove some unnecessary padding/borders around the main window.
+* Main window: Use a custom Notebook-like widget instead of Gtk::Notebook.
+* CSV Import: Fix quoted-newline detection, so we don't drop rows.
+* Use the new Gtk::ComboBox CellArea API to align columns properly.
+* Build:
+  - Depend on libgdamm-5.0 instead of libgdamm-4.0.
+  - Remove the dependency on pygda, though we now check for
+    gi.repository.Gda at startup instead.
+    It is provided by libgda-5.0 (currently 4.99.x).
+  - Require the latest mm-common and dist the mm-common scripts.
+  - Require the latest gtksourceviewmm
+
 1.19.3 (unstable):
 
 * Build
@@ -47,7 +67,7 @@
   Bug #167818
 * Build: Remove the gconfmm dependency, because we don't use it.
   (Murray Cumming)
-	
+
 1.16.1 (stable):
 
 * Prevent crash when all fields have been deleted from a table, also when
