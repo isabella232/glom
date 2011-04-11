@@ -45,7 +45,9 @@ int main()
   g_assert(!error_message.empty());
 
   //Check that the return value is of the expected type:
-  g_assert(value.get_value_type() == GDA_TYPE_NUMERIC);
+  g_assert(
+    (value.get_value_type() == GDA_TYPE_NUMERIC) ||
+    value.is_null() );
 
   //Check that the return value is of the expected value:
   const double numeric = Glom::Conversions::get_double_for_gda_value_numeric(value);

@@ -1,9 +1,17 @@
+2011-04-11  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix a test.
+
+	* tests/python/test_python_execute_func_bad_syntax.cc:
+	Allow the result to be a null Gda::Value, because that is acceptable for a
+	python script with invalid syntax.
+
 2011-04-08  Murray Cumming  <murrayc@murrayc.com>
 
 	Port the debian repository analyzer script example to GTK+ 3.
 
 	* examples/example_scripts/repository_analyzer_begin_scan.py:
-	Use PyGObject+Introspection instead of pygtk, and adapt for a minidom API 
+	Use PyGObject+Introspection instead of pygtk, and adapt for a minidom API
 	change.
 	This is also here:
 	https://gitorious.org/debian_repository_analyzer
@@ -12,13 +20,13 @@
 
 	Fix use of bool python return types.
 
-	* glom/libglom/python_embed/pygdavalue_conversions.cc: 
-	glom_pygda_value_from_pyobject(): Use the C Py*_Check() functions because 
-	boost::python::extract<>::check() does not really check for the exact type 
+	* glom/libglom/python_embed/pygdavalue_conversions.cc:
+	glom_pygda_value_from_pyobject(): Use the C Py*_Check() functions because
+	boost::python::extract<>::check() does not really check for the exact type
 	and has no way to do that. Previously we were interpreting bools as ints.
-	Note also that the order fo the Py*_Check() checks is important, because 
+	Note also that the order fo the Py*_Check() checks is important, because
 	python considers bool to be derived from int.
-	* tests/python/test_python_execute_func_with_record.cc: Uncomment the checks 
+	* tests/python/test_python_execute_func_with_record.cc: Uncomment the checks
 	for the return type and value now that it works.
 
 2011-04-07  Murray Cumming  <murrayc@murrayc.com>
