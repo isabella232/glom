@@ -1,5 +1,12 @@
 2011-04-12  Murray Cumming  <murrayc@murrayc.com>
 
+	Update the EggSpreadTable code.
+
+	* glom/utility_widgets/eggspreadtable/eggspreadtable.[h|cc]: Update this
+	code from libegg/libegg/spreadtable/
+
+2011-04-12  Murray Cumming  <murrayc@murrayc.com>
+
 	Fix distcheck.
 
 	* Makefile.am: Distribute the .db file for the sqlite example.
