@@ -26,8 +26,11 @@ from gi.repository import Gtk, GObject
 from gi.repository import Gda
 
 import apt # For apt.Cache.
-import apt_pkg # For apt_pkg.GetPkgSourceList
+import apt_pkg # For apt_pkg.SourceRecords
 import difflib
+
+record = None
+do_sql = False
 
 def debug_create_connection_record():
     cnc_string = "HOST=localhost;PORT=5434;DB_NAME=glom_repositoryanalyzer3121"
@@ -38,11 +41,10 @@ def debug_create_connection_record():
     class TestRecord:
         connection = None
 
+    global record;
     record = TestRecord()
     record.connection = gda_connection
     return record
-    
-record = debug_create_connection_record()
 
 class DebugWindow:
     debug_window = None
@@ -453,8 +455,6 @@ class HttpCache:
 
 #### From package_data.py:
 
-import apt # For apt.Cache.
-import apt_pkg # For apt_pkg.GetPkgSourceList
 
 #import sys
 import dircache
@@ -475,7 +475,7 @@ def get_dependency_names_for_candver(cache, candver):
     # Get the dependencies of this package:
     # TODO: Get direct dependencies only?
 
-    dependslist = candver.DependsList
+    dependslist = candver.depends_list
 
     #Look at each dependency:
     result_list = set()
@@ -489,7 +489,7 @@ def get_dependency_names_for_candver(cache, candver):
                 # get all TargetVersions of
                 # the dependency object
                 for tpkg in z.AllTargets():
-                    result_list.add(tpkg.ParentPkg.Name)
+                    result_list.add(tpkg.parent_pkg.name)
                     #TODO: This does not always seem to be the same name that we get for the parent package.
                     #       Sometimes there is no package with this exact name.
                     #       Or maybe that's a problem with the repository.
@@ -501,8 +501,8 @@ class PackageData:
     def __init__(self, apt_cache, apt_srcrecords, candver):
 
         # Save the name and version:
-        self.name = candver.ParentPkg.Name
-        self.version = candver.VerStr
+        self.name = candver.parent_pkg.name
+        self.version = candver.ver_str
 
         # Get the description and tarball URI:
         package = apt_cache[self.name]
@@ -512,28 +512,28 @@ class PackageData:
         self.source_package_name = package.sourcePackageName
 
         #Get the path of the source tarball, using the apt-pkg API:
-        srcrec = apt_srcrecords.Lookup(self.source_package_name)
+        srcrec = apt_srcrecords.lookup(self.source_package_name)
         if(srcrec == None):
-            apt_srcrecords.Restart() #Michael Vogt said this might stop Lookup() from failing sometimes.
-            srcrec = apt_srcrecords.Lookup(self.source_package_name) #Try again
+            apt_srcrecords.restart() #Michael Vogt said this might stop Lookup() from failing sometimes.
+            srcrec = apt_srcrecords.lookup(self.source_package_name) #Try again
 
         if srcrec:
             # TODO: Is this really the only way to get the path?
             # It's ugly.
             #
-            for (the_md5hash, the_size, the_path, the_type) in apt_srcrecords.Files:
+            for (the_md5hash, the_size, the_path, the_type) in apt_srcrecords.files:
                 if(the_type == "tar"): #Possible types seems to be "tar", "dsc", and "diff"
                     self.tarball_uri = apt_srcrecords.index.archive_uri(the_path)
                 elif(the_type == "diff"):
                     self.diff_uri = apt_srcrecords.index.archive_uri(the_path)
         else:
-            print_debug( "  debug: apt_srcrecords.Lookup() failed for package %s. " % self.source_package_name )
+            print_debug( "  debug: apt_srcrecords.lookup() failed for package %s. " % self.source_package_name )
 
 
         # Note: This is broken when Dir::State::status is not set: It returns huge false, irrelevant dependencies.
         # Get the dependencies of this package:
         # TODO: Get direct dependencies only?
-        dependslist = candver.DependsList
+        dependslist = candver.depends_list
 
         #Look at each dependency:
         self.dependencies = get_dependency_names_for_candver(apt_cache, candver)
@@ -543,7 +543,6 @@ class PackageData:
 
         self.license_text = ""
         license_found = False
-        repository_base_uri = "http://repository.maemo.org/" # Remove this hack when we have ArchiveURI() in python-apt in Ubuntu Edgy.
 
         #Try to get the license text by looking at the source tarball:
         if(self.tarball_uri):
@@ -1141,7 +1140,7 @@ def get_apt_pkg_from_apt_cache(cache, package_name):
         if candver == None:
             continue
 
-        this_package_name = candver.ParentPkg.Name
+        this_package_name = candver.parent_pkg.Name
 
         if(this_package_name == package_name):
             return pkg  #Found.
@@ -1223,18 +1222,19 @@ def get_package_data_list(out_licenses_map, package_names_list_restrict_to):
     #Or maybe put it in a database table.
     temp_sourceslist_path = "/tmp/repository_analyzer_sources.list"
     output = open(temp_sourceslist_path, 'w')
-    sources_list = "deb http://repository.maemo.org/ fremantle/sdk free non-free\ndeb-src http://repository.maemo.org/ fremantle/sdk free\ndeb http://repository.maemo.org/ fremantle/tools free non-free\ndeb-src http://repository.maemo.org/ fremantle/tools free\ndeb http://repository.maemo.org/extras-devel/ fremantle free non-free\ndeb-src http://repository.maemo.org/extras-devel/ fremantle free non-free"
+    sources_list = "deb http://repository.maemo.org/ fremantle/sdk free non-free\ndeb-src http://repository.maemo.org/ fremantle/sdk free\ndeb http://repository.maemo.org/ fremantle/tools free non-free\ndeb-src http://repository.maemo.org/ fremantle/tools free"
+    #sources_list = "deb http://repository.maemo.org/ fremantle/sdk free non-free\ndeb-src http://repository.maemo.org/ fremantle/sdk free\ndeb http://repository.maemo.org/ fremantle/tools free non-free\ndeb-src http://repository.maemo.org/ fremantle/tools free\ndeb http://repository.maemo.org/extras-devel/ fremantle free non-free\ndeb-src http://repository.maemo.org/extras-devel/ fremantle free non-free"
 
     output.write(sources_list)
     output.close()
 
     # Tell apt what sources.list to use.
     # (See "apt-config dump" for the list of all config keys.)
-    apt_pkg.Config.Set("Dir::Etc::sourcelist", temp_sourceslist_path)
-    apt_pkg.Config.Set("Dir::Cache::archives", config_dir_cache_archives)
-    apt_pkg.Config.Set("Dir::State", config_dir_state)
-    apt_pkg.Config.Set("Dir::State::Lists", config_dir_state_lists)
-    apt_pkg.Config.Set("Dir::State::status", config_file_state_status) #If we don't set this then we will pick up packages from the local system, from the default status file.
+    apt_pkg.Config.set("Dir::Etc::sourcelist", temp_sourceslist_path)
+    apt_pkg.Config.set("Dir::Cache::archives", config_dir_cache_archives)
+    apt_pkg.Config.set("Dir::State", config_dir_state)
+    apt_pkg.Config.set("Dir::State::Lists", config_dir_state_lists)
+    apt_pkg.Config.set("Dir::State::status", config_file_state_status) #If we don't set this then we will pick up packages from the local system, from the default status file.
 
 
     #Initialize the return value and the output parameter:
@@ -1250,8 +1250,8 @@ def get_package_data_list(out_licenses_map, package_names_list_restrict_to):
     cache.open(apt.progress.OpProgress()) #Shouldn't python-apt's cache.update() do this? Michael Vogt thinks so.
     print_debug( ".. finished updating apt cache\n" )
 
-    srcrecords = apt_pkg.GetPkgSrcRecords()
-    srcrecords.Restart()
+    srcrecords = apt_pkg.SourceRecords()
+    srcrecords.restart()
 
     print_debug( "Number of packages in cache: %d" % len(cache) )
 
@@ -1266,13 +1266,13 @@ def get_package_data_list(out_licenses_map, package_names_list_restrict_to):
     i = 0
     for pkg in cache:
 
-        candver = cache._depcache.GetCandidateVer(pkg._pkg)
+        candver = cache._depcache.get_candidate_ver(pkg._pkg)
 
         # Ignore packages with no candidate version:
         if candver == None:
             continue
 
-        package_name = candver.ParentPkg.Name
+        package_name = candver.parent_pkg.name
 
         # If we are restricting the scan to a provided list of packages,
         # skip the packages if it is not in the list:
@@ -1321,12 +1321,32 @@ def get_package_data_list(out_licenses_map, package_names_list_restrict_to):
     return packages_dict
 
 def execute_sql_non_select_query(query_text):
+
+    global do_sql
+    if(do_sql == False):
+      return 0;
+
+    #For debugging, outside of Glom:
+    global record
+    if(record == None):
+      record = debug_create_connection_record()
+
     #We use encode() here because, when running inside Glom, gda.Command() somehow expects an ascii string and tries to convert the unicode string to ascii, causing exceptions because the conversion does not default to 'replace'.
     #TODO: Find out why it acts differently inside Glom. This is not a problem when running normally as a standalone script.
     command = query_text.encode('ascii', 'replace')
     return record.connection.execute_non_select_command(command)
 
 def execute_sql_select_query(query_text):
+
+    global do_sql
+    if(do_sql == False):
+      return 0;
+
+    #For debugging, outside of Glom:
+    global record
+    if(record == None):
+      record = debug_create_connection_record()
+
     #We use encode() here because, when running inside Glom, gda.Command() somehow expects an ascii string and tries to convert the unicode string to ascii, causing exceptions because the conversion does not default to 'replace'.
     #TODO: Find out why it acts differently inside Glom. This is not a problem when running normally as a standalone script.
     command = query_text.encode('ascii', 'replace')
@@ -1498,9 +1518,6 @@ def main():
     #    dlg.run()
     #    dlg.destroy()
     #    return
-
-    #For debugging, outside of Glom:
-    record = debug_create_connection_record()
 
 
     #Show the dialog:
