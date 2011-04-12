@@ -172,6 +172,7 @@ Glib::ustring string_trim(const Glib::ustring& str, const Glib::ustring& to_remo
 Glib::ustring string_remove_suffix(const Glib::ustring& str, const Glib::ustring& suffix, bool case_sensitive = true);
 
 bool file_exists(const Glib::ustring& uri);
+bool file_exists(const Glib::RefPtr<Gio::File>& file);
 
 /** Delete a directory, if it exists, and its contents.
  * Unlike g_file_delete(), this does not fail if the directory is not empty.

@@ -19,9 +19,8 @@
  */
 
 #include <libglom/libglom_config.h>
-
 #include <libglom/connectionpool_backends/sqlite.h>
-
+#include <libglom/utils.h>
 #include <giomm/file.h>
 
 #include <iostream>
@@ -48,26 +47,40 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
   Glib::RefPtr<Gio::File> db_dir = Gio::File::create_for_uri(m_database_directory_uri);
   Glib::RefPtr<Gio::File> db_file = db_dir->get_child(database + ".db");
 
-
-  if(db_file->query_file_type() == Gio::FILE_TYPE_REGULAR)
+  const bool file_exists = Glom::Utils::file_exists(db_file);
+  if(!file_exists)
   {
-    // Convert URI to path, for GDA connection string
-    const std::string database_directory = db_dir->get_path();
+    std::cerr << G_STRFUNC << ": The db file does not exist at path: " << db_file->get_uri() << std::endl;
+  }
+  else
+  {
+    if(db_file->query_file_type() != Gio::FILE_TYPE_REGULAR)
+    {
+      std::cerr << G_STRFUNC << ": The db file is not a regular file at path: " << db_file->get_uri() << std::endl;
+    }
+    else
+    {
+      // Convert URI to path, for GDA connection string
+      const std::string database_directory = db_dir->get_path();
 
-    const Glib::ustring cnc_string = "DB_DIR=" + database_directory + ";DB_NAME=" + database;
-    const Glib::ustring auth_string = Glib::ustring::compose("USERNAME=%1;PASSWORD=%2", username, password);
-    
-    connection = Gnome::Gda::Connection::open_from_string("SQLite", 
-      cnc_string, auth_string,
-      Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
+      const Glib::ustring cnc_string = "DB_DIR=" + database_directory + ";DB_NAME=" + database;
+      const Glib::ustring auth_string = Glib::ustring::compose("USERNAME=%1;PASSWORD=%2", username, password);
+
+      connection = Gnome::Gda::Connection::open_from_string("SQLite",
+        cnc_string, auth_string,
+        Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
+    }
   }
 
   if(!connection)
   {
     // If the database directory is valid, then only the database (file) is
     // missing, otherwise we pretend the "server" is not running.
-    if(db_dir->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
+    if(Glom::Utils::file_exists(db_dir) &&
+      (db_dir->query_file_type() == Gio::FILE_TYPE_DIRECTORY))
+    {
       throw ExceptionConnection(ExceptionConnection::FAILURE_NO_DATABASE);
+    }
     else
       throw ExceptionConnection(ExceptionConnection::FAILURE_NO_SERVER);
   }
@@ -84,8 +97,8 @@ bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ust
   const std::string database_directory = file->get_path();
   const Glib::ustring cnc_string = Glib::ustring::compose("DB_DIR=%1;DB_NAME=%2", database_directory, database_name);
 
-  Glib::RefPtr<Gnome::Gda::Connection> cnc = 
-    Gnome::Gda::Connection::open_from_string("SQLite", 
+  Glib::RefPtr<Gnome::Gda::Connection> cnc =
+    Gnome::Gda::Connection::open_from_string("SQLite",
       cnc_string, "",
       Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
 
@@ -262,7 +275,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
     if(removed_iter == fields_removed.end())
     {
       add_column_to_server_operation(operation, field, i++);
-      
+
       if(!trans_fields.empty())
         trans_fields += ',';
       Gnome::Gda::Value default_value = field->get_default_value();
@@ -298,21 +311,21 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
     std::cerr << G_STRFUNC << ": Could not begin transaction: exception=" << ex.what() << std::endl;
     return false;
   }
-  
+
   //Do everything in one big try/catch block,
   //reverting the transaction if anything fail:
   try
   {
     connection->get_provider()->perform_operation(connection, operation);
-  
+
     if(!trans_fields.empty())
     {
       connection->statement_execute_non_select(Glib::ustring("INSERT INTO \"") + TEMPORARY_TABLE_NAME + "\" SELECT " + trans_fields + " FROM \"" + table_name + "\"");
       connection->statement_execute_non_select("DROP TABLE " + table_name);
       connection->statement_execute_non_select(Glib::ustring("ALTER TABLE \"") + TEMPORARY_TABLE_NAME + "\" RENAME TO \"" + table_name + "\"");
-    
+
       connection->commit_transaction(TRANSACTION_NAME);
-    
+
       return true;
     }
   }
@@ -320,7 +333,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   {
     std::cerr << G_STRFUNC << ": exception=" << ex.what() << std::endl;
     std::cerr << G_STRFUNC << ": Reverting the transaction." << std::endl;
-    
+
     try
     {
       connection->rollback_transaction(TRANSACTION_NAME);

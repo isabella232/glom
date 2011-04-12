@@ -96,7 +96,9 @@ dist_example_DATA =				\
 	examples/example_smallbusiness.glom
 
 # We use += because we set this first in Makefile_tests.am:
-dist_noinst_DATA += examples/sqlite/test_sqlite_music/test_sqlite_music.glom
+dist_noinst_DATA += \
+	examples/sqlite/test_sqlite_music/test_sqlite_music.glom \
+	examples/sqlite/test_sqlite_music/glom_musiccollection21.db
 
 iconthemedir = $(datadir)/icons/hicolor
 appicon16dir = $(iconthemedir)/16x16/apps

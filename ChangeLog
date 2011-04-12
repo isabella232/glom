@@ -1,3 +1,14 @@
+2011-04-12  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix distcheck.
+
+	* Makefile.am: Distribute the .db file for the sqlite example.
+	This fixes the discheck, because we use it in a test.
+	* glom/libglom/connectionpool_backends/sqlite.cc: connect(): Give clues
+	on stderr if the file is missing.
+	* glom/libglom/utils.[h|cc]: Add a file_exists(Gio::File) override for use
+	by those checks.
+
 1.19.4:
 
 2011-04-11  Murray Cumming  <murrayc@murrayc.com>

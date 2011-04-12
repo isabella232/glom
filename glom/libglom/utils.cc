@@ -953,18 +953,20 @@ bool Utils::file_exists(const Glib::ustring& uri)
      return false;
 
   //Check whether file exists already:
-  {
-    // Try to examine the input file.
-    Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+  // Try to examine the input file.
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+  return file_exists(file);
+}
 
-    try
-    {
-      return file->query_exists();
-    }
-    catch(const Gio::Error& /* ex */)
-    {
-      return false; //Something went wrong. It does not exist.
-    }
+bool Utils::file_exists(const Glib::RefPtr<Gio::File>& file)
+{
+  try
+  {
+    return file->query_exists();
+  }
+  catch(const Gio::Error& /* ex */)
+  {
+    return false; //Something went wrong. It does not exist.
   }
 }
 
