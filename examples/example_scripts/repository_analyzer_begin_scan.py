@@ -523,12 +523,9 @@ class PackageData:
             #
             for (the_md5hash, the_size, the_path, the_type) in apt_srcrecords.Files:
                 if(the_type == "tar"): #Possible types seems to be "tar", "dsc", and "diff"
-                    self.tarball_uri = the_path
-                    # TODO: In Ubuntu Edgy, we should be able to get the full URI by doing this,
-                    # according to Michael Vogt:
-                    # self.tarball_uri = srcrec.Index.ArchiveURI(self.tarball_uri)
+                    self.tarball_uri = apt_srcrecords.index.archive_uri(the_path)
                 elif(the_type == "diff"):
-                    self.diff_uri = the_path
+                    self.diff_uri = apt_srcrecords.index.archive_uri(the_path)
         else:
             print_debug( "  debug: apt_srcrecords.Lookup() failed for package %s. " % self.source_package_name )
 
@@ -548,21 +545,11 @@ class PackageData:
         license_found = False
         repository_base_uri = "http://repository.maemo.org/" # Remove this hack when we have ArchiveURI() in python-apt in Ubuntu Edgy.
 
-        if(self.diff_uri):
-            full_diff_uri = repository_base_uri + self.diff_uri
-            self.diff_uri = full_diff_uri #Store the full URI so we can use it in scripts in the Glom database if we like.
-
         #Try to get the license text by looking at the source tarball:
         if(self.tarball_uri):
-
-             # Michael Vogt says that full_uri = srcrec.Index.ArchiveURI(tarball_uri) gives the whole thing, but that will only work in Ubuntu Edgy (not Dapper)
-
-            full_uri = repository_base_uri + self.tarball_uri
-            self.tarball_uri = full_uri #Store the full URI so we can use it in scripts in the Glom database if we like.
-
-            license_found = self.get_license_from_tarball(full_uri)
+            license_found = self.get_license_from_tarball(self.tarball_uri)
             if(license_found == False):
-                print_debug( "debug: package: %s, license file not found in tarball: %s" % (self.name, full_uri) )
+                print_debug( "debug: package: %s, license file not found in tarball: %s" % (self.name, self.tarball_uri) )
 
         #Try to get the license from the .diff instead:
         if(license_found == False and self.diff_uri):
@@ -1287,7 +1274,7 @@ def get_package_data_list(out_licenses_map, package_names_list_restrict_to):
 
         package_name = candver.ParentPkg.Name
 
-        # If we are restricting the scan to a provided listof packages,
+        # If we are restricting the scan to a provided list of packages,
         # skip the packages if it is not in the list:
         if( (package_names_list_restrict_to == None) or is_in_list(package_names_list_restrict_to, package_name)):
 
