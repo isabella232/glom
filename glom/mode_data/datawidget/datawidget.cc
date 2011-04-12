@@ -228,7 +228,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
       #endif
       button_date->set_tooltip_text(_("Choose a date from an on-screen calendar."));
       button_date->show();
-      hbox_parent->pack_start(*button_date);
+      hbox_parent->pack_start(*button_date, Gtk::PACK_SHRINK);
       button_date->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_choose_date));
     }
 

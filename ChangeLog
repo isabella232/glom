@@ -1,3 +1,11 @@
+2011-04-12  Murray Cumming  <murrayc@murrayc.com>
+
+	Correct the sizing of the ... date button.
+
+	* glom/mode_data/datawidget/datawidget.cc: There is a button next to
+	all date fields, for selecting the date. Make sure that it does not expand.
+	Of course, a real date selection widget would be nicer.
+
 2011-04-08  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix use of bool python return types.
