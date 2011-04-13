@@ -488,7 +488,7 @@ def get_dependency_names_for_candver(cache, candver):
 
                 # get all TargetVersions of
                 # the dependency object
-                for tpkg in z.AllTargets():
+                for tpkg in z.all_targets():
                     result_list.add(tpkg.parent_pkg.name)
                     #TODO: This does not always seem to be the same name that we get for the parent package.
                     #       Sometimes there is no package with this exact name.
@@ -1134,13 +1134,13 @@ def is_in_list(the_list, the_value):
 
 def get_apt_pkg_from_apt_cache(cache, package_name):
     for pkg in cache:
-        candver = cache._depcache.GetCandidateVer(pkg._pkg)
+        candver = cache._depcache.get_candidate_ver(pkg._pkg)
 
         # Ignore packages with no candidate version:
         if candver == None:
             continue
 
-        this_package_name = candver.parent_pkg.Name
+        this_package_name = candver.parent_pkg.name
 
         if(this_package_name == package_name):
             return pkg  #Found.
@@ -1168,7 +1168,7 @@ def add_package_and_dependency_names_to_list(package_names_list, apt_cache, pack
         package_names_list.append(package_name)
 
     # Get the list of direct dependencies:
-    candver = apt_cache._depcache.GetCandidateVer(pkg._pkg)
+    candver = apt_cache._depcache.get_candidate_ver(pkg._pkg)
     dependency_names = get_dependency_names_for_candver(apt_cache, candver)
 
     #Look at each dependency,
@@ -1196,8 +1196,8 @@ def add_dependency_names_to_list(package_names_list, apt_cache):
 def get_package_data_list(out_licenses_map, package_names_list_restrict_to):
 
     #Start with the default config, probably from /etc/apt/sources.list:
-    apt_pkg.InitConfig()
-    apt_pkg.InitSystem()
+    apt_pkg.init_config()
+    apt_pkg.init_system()
 
     #Use a temporary config:
     config_dir_cache_archives = "./tmp_apt_archives"
@@ -1247,7 +1247,7 @@ def get_package_data_list(out_licenses_map, package_names_list_restrict_to):
 
     print_debug( "Updating apt cache ..." )
     cache.update() #We could pass a progress object to show feedback.
-    cache.open(apt.progress.OpProgress()) #Shouldn't python-apt's cache.update() do this? Michael Vogt thinks so.
+    cache.open(apt.progress.base.OpProgress()) #Shouldn't python-apt's cache.update() do this? Michael Vogt thinks so.
     print_debug( ".. finished updating apt cache\n" )
 
     srcrecords = apt_pkg.SourceRecords()
