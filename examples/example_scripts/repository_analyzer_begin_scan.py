@@ -444,7 +444,7 @@ class HttpCache:
     def load(self, uri, nonetwork=False):
         '''Downloads the file associated with the URI, and returns a local
         file name for contents.'''
-        if not self._cache: self._cache = Cache()
+        if not self._cache: self._cache = HttpCache.Cache()
         return self._cache.load(uri, nonetwork=nonetwork)
 
 
@@ -547,15 +547,15 @@ class PackageData:
         #Try to get the license text by looking at the source tarball:
         if(self.tarball_uri):
             license_found = self.get_license_from_tarball(self.tarball_uri)
-            if(license_found == False):
+            if(not license_found):
                 print_debug( "debug: package: %s, license file not found in tarball: %s" % (self.name, self.tarball_uri) )
 
         #Try to get the license from the .diff instead:
-        if(license_found == False and self.diff_uri):
+        if((not license_found)  and self.diff_uri):
 
             #print_debug( "  debug: Trying the .diff instead: URI=%s" % self.diff_uri )
             license_found = self.get_license_from_diffgz(self.diff_uri)
-            if(license_found == False):
+            if(not license_found):
                 print_debug( "    debug: package: %s, license file not found in diff: %s" % (self.name, self.diff_uri) )
 
         self.license_found = license_found
@@ -646,7 +646,7 @@ class PackageData:
                             print_debug( "  debug: read failed. Error, if any: %s" %  self.license_text  )
                             #Restore the last text if any, including the last "unknown" error text,
                             #so we prefer previous found license text, or errors from higher-up files:
-                            if( license_found or ((is_higher_than_previous == False) and len(previous_found_license)) ):
+                            if( license_found or ((not is_higher_than_previous) and len(previous_found_license)) ):
                                 self.license_text = previous_found_license
                                 #print_debug( "  debug2: restoring previous found text" )
 
@@ -659,7 +659,7 @@ class PackageData:
 
         #If no license was found, try looking for nested tarballs.
         #This seems to happen quite often - the tarball contains a tarball.
-        if(license_found == False):
+        if(not license_found):
             try:
                 for tarinfo in the_tarfile:
                     if(tarinfo.isreg()):
@@ -688,7 +688,7 @@ class PackageData:
                                     localfile.write(gzipped_data)
                                     localfile.close()
 
-                                except TarError, ex:
+                                except tarfile.TarError, ex:
                                     #raise
                                     print_debug( "tarfile.open() of nested tarball failed: for package: %s, for file: %s: %s" % (self.name, filename, ex) )
                                     self.license_text = "unknown (error extracting nested tarball)"
@@ -696,13 +696,13 @@ class PackageData:
 
                                 try:
                                     license_found = self.get_license_from_tarball(filename_local)
-                                except  TarError, ex:
+                                except  tarfile.TarError, ex:
                                     #raise
                                     print_debug( "tarfile.open() of nested tarball failed: for package: %s, for file: %s: %s" % (self.name, filename, ex) )
                                     self.license_text = "unknown (error opening extracted nested tarball)"
                                     license_found = False
 
-            except TarError, ex:
+            except tarfile.TarError, ex:
                 print_debug( "Error while extracting tarball: %s" % str(ex) )
 
         return license_found
@@ -915,7 +915,7 @@ class PackageData:
         license_found = self.get_license_from_diffgz_gzipfile(gzipped_file)
         gzipped_file.close()
 
-        if(license_found == False):
+        if(not license_found):
             if(len(self.license_text) == 0): #TODO: Is there an empty() for efficiency?
                 self.license_text = u"unknown (error reading from source tarball file)"
 
@@ -986,7 +986,7 @@ def escape_text_for_sql(text):
     #Single quotes must be quoted as '', but backquotes and double quotes must not.
     #Not that this text will be further quoted (for XML) when it is written as XML.
     text = text.replace(u"\'", u"\'\'")
-    text = text.replace(u";",u"\\073")
+    text = text.replace(u";", u"\\073")
     return text
 
 def boolean_for_sql(val):
@@ -1020,7 +1020,7 @@ def get_licenses_map(packages_dict):
 
         if(package_data.license_text and len(package_data.license_text)): #TODO: Is there an empty() method to save time?
             # Create a list for this key, if necessary:
-            if(licenses_map.has_key(package_data.license_text) == False):
+            if(not licenses_map.has_key(package_data.license_text)):
                 licenses_map[package_data.license_text] = [] # An empty list.
 
             # Associate the package name with this license text,
@@ -1046,7 +1046,7 @@ def get_licenses_map_with_matching(out_licenses_map, packages_dict):
         #Compare these exactly instead.
         package_name_list = out_licenses_map[license_text]
         package_name_first = package_name_list[0]
-        if(packages_dict[package_name_first].license_found == False):
+        if(not packages_dict[package_name_first].license_found):
             do_exact_match = True
 
         for other_license_text in out_licenses_map.keys():
@@ -1061,10 +1061,10 @@ def get_licenses_map_with_matching(out_licenses_map, packages_dict):
 
             #Don't roughly compare the special "unknown" error license texts.
             #Compare these exactly instead.
-            if(other_do_exact_match == False):
+            if(not other_do_exact_match):
                 package_name_list = out_licenses_map[other_license_text]
                 package_name_first = package_name_list[0]
-                if(packages_dict[package_name_first].license_found == False):
+                if(not packages_dict[package_name_first].license_found):
                     other_do_exact_match = True
 
             this_match_found = False
@@ -1323,7 +1323,7 @@ def get_package_data_list(out_licenses_map, package_names_list_restrict_to):
 def execute_sql_non_select_query(query_text):
 
     global do_sql
-    if(do_sql == False):
+    if(not do_sql):
       return 0;
 
     #For debugging, outside of Glom:
@@ -1339,7 +1339,7 @@ def execute_sql_non_select_query(query_text):
 def execute_sql_select_query(query_text):
 
     global do_sql
-    if(do_sql == False):
+    if(not do_sql):
       return 0;
 
     #For debugging, outside of Glom:
@@ -1512,7 +1512,7 @@ def main():
 
     #Multiple scans are now allowed:
     #
-    #if(is_first_scan() == False):
+    #if(not is_first_scan()):
     #    dlg = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, u"Scan Already Done")
     #    dlg.format_secondary_text("License records already exist, suggesting that a previous scan has already been done.")
     #    dlg.run()
@@ -1615,7 +1615,7 @@ def main():
                 print_debug( "Error while determining license_id." )
 
         #Add the package details if they are not already in the database (from a previous scan):
-        if(get_record_exists_already("packages", "name", quote_for_sql(package_data.name)) == False):
+        if(not get_record_exists_already("packages", "name", quote_for_sql(package_data.name))):
             package_row = u"%s,%s" % ( quote_for_sql(package_data.name), quote_for_sql(escape_text_for_sql(package_data.description)) )
 
             #This will look like this:
