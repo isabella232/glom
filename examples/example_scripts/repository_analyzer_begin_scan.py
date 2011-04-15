@@ -578,7 +578,8 @@ class PackageData:
         #Remove any unnecessary leading or trailing whitespace:
         self.license_text = self.license_text.strip()
 
-        print_debug( "  debug: is standard license?: %s" % standard_licenses.get_is_standard_license(self.license_text) )
+        # This debug output calls a method that is slow:
+        #print_debug( "  debug: is standard license?: %s" % standard_licenses.get_is_standard_license(self.license_text) )
 
         return license_found
 
