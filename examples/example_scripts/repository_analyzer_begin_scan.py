@@ -1369,7 +1369,16 @@ def get_next_automatic_id_number(table_name, field_name):
 
     max_id = 0
     if(datamodel and (datamodel.get_n_rows() > 0) and (datamodel.get_n_columns() > 0)):
-        max_id_value = datamodel.get_value_at(0, 0)
+        max_id_value = None
+        try:
+            max_id_value = datamodel.get_value_at(0, 0)
+        except:
+            # Current versions of PyGObject throw an exception because
+            # libgda returns a G_TYPE_INVALID GValue for NULL SQL Values.
+            # See https://bugzilla.gnome.org/show_bug.cgi?id=647272
+            # And this can throw an exception from libgda anyway.
+            max_id_value = None
+
         if(max_id_value == None): #This seems to be the result when there are no records. I guess it is a NULL value in the result.
             max_id = 0
         else:
@@ -1394,7 +1403,16 @@ def get_record_exists_already(table_name, field_name, sql_field_value):
     datamodel = execute_sql_select_query(sql_query)
 
     if(datamodel and (datamodel.get_n_rows() > 0) and (datamodel.get_n_columns() > 0)):
-        count = datamodel.get_value_at(0, 0).get()
+        count = None
+        try:
+            count = datamodel.get_value_at(0, 0)
+        except:
+            # Current versions of PyGObject throw an exception because
+            # libgda returns a G_TYPE_INVALID GValue for NULL SQL Values.
+            # See https://bugzilla.gnome.org/show_bug.cgi?id=647272
+            # And this can throw an exception from libgda anyway.
+            count = None
+
         if(count == None): #This seems to be the result when there are no records. I guess it is a NULL value in the result.
             return False
         else:
@@ -1407,7 +1425,16 @@ def get_license_id_of_last_package_scan(package_name):
     datamodel = execute_sql_select_query(sql_query)
 
     if(datamodel and (datamodel.get_n_rows() > 0) and (datamodel.get_n_columns() > 0)):
-        result = datamodel.get_value_at(0, 0).get()
+        result = None
+        try:
+            result = datamodel.get_value_at(0, 0)
+        except:
+            # Current versions of PyGObject throw an exception because
+            # libgda returns a G_TYPE_INVALID GValue for NULL SQL Values.
+            # See https://bugzilla.gnome.org/show_bug.cgi?id=647272
+            # And this can throw an exception from libgda anyway.
+            result = None
+
         if(result == None): #This seems to be the result when there are no records. I guess it is a NULL value in the result.
             return None
         else:
@@ -1420,7 +1447,16 @@ def get_version_of_last_package_scan(package_name):
     datamodel = execute_sql_select_query(sql_query)
 
     if(datamodel and (datamodel.get_n_rows() > 0) and (datamodel.get_n_columns() > 0)):
-        result = datamodel.get_value_at(0, 0).get()
+        result = None
+        try:
+            result = datamodel.get_value_at(0, 0)
+        except:
+            # Current versions of PyGObject throw an exception because
+            # libgda returns a G_TYPE_INVALID GValue for NULL SQL Values.
+            # See https://bugzilla.gnome.org/show_bug.cgi?id=647272
+            # And this can throw an exception from libgda anyway.
+            result = None
+
         if(result == None): #This seems to be the result when there are no records. I guess it is a NULL value in the result.
             return None
         else:
