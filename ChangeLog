@@ -1,5 +1,13 @@
 2011-04-18  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix the make check build.
+
+	* Makefile_glom.am: Create a variable for the eggspreadtable file list.
+	* Makefile_tests.am: Use that variable here, so we link against the new
+	files.
+
+2011-04-18  Murray Cumming  <murrayc@murrayc.com>
+
 	EggSpreadTableDnd: Wrap the wiget_drop_possible signal.
 
 	* glom/utility_widgets/eggspreadtablemm/eggspreadtabledndmm.[h|cc]:
