@@ -1,5 +1,9 @@
 2011-04-18  Murray Cumming  <murrayc@murrayc.com>
 
+	.com
+
+2011-04-18  Murray Cumming  <murrayc@murrayc.com>
+
 	Use EggSpreadTableDnd.
 
 	* glom/utility_widgets/eggspreadtable/eggmarshalers.[h|c}

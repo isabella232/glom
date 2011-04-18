@@ -53,11 +53,7 @@ const Glib::Class& SpreadTableDnd_Class::init()
     //CppClassParent::CppObjectType::get_type();
 
     // Create the wrapper type, with the same class/instance size as the base type.
-    register_derived_type(egg_spread_table_get_type());
-
-    // Add derived versions of interfaces, if the C type implements any interfaces:
-    Gtk::Orientable::add_interface(get_type());
-
+    register_derived_type(egg_spread_table_dnd_get_type());
   }
 
   return *this;
@@ -109,7 +105,7 @@ GType SpreadTableDnd::get_type()
 
 GType SpreadTableDnd::get_base_type()
 {
-  return egg_spread_table_get_type();
+  return egg_spread_table_dnd_get_type();
 }
 
 
