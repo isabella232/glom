@@ -178,11 +178,20 @@ glom_source_files = \
 	glom/utility_widgets/dialog_properties.h			\
 	glom/utility_widgets/flowtable.cc				\
 	glom/utility_widgets/flowtable.h				\
+	glom/utility_widgets/eggspreadtable/eggmarshalers.c \
+	glom/utility_widgets/eggspreadtable/eggmarshalers.h \
 	glom/utility_widgets/eggspreadtable/eggspreadtable.c \
 	glom/utility_widgets/eggspreadtable/eggspreadtable.h \
+	glom/utility_widgets/eggspreadtable/eggspreadtablednd.c \
+	glom/utility_widgets/eggspreadtable/eggspreadtablednd.h \
+	glom/utility_widgets/eggspreadtable/eggplaceholder.c \
+	glom/utility_widgets/eggspreadtable/eggplaceholder.h \
 	glom/utility_widgets/eggspreadtablemm/eggspreadtablemm.cc \
 	glom/utility_widgets/eggspreadtablemm/eggspreadtablemm.h \
+	glom/utility_widgets/eggspreadtablemm/eggspreadtabledndmm.cc \
+	glom/utility_widgets/eggspreadtablemm/eggspreadtabledndmm.h \
 	glom/utility_widgets/eggspreadtablemm/private/eggspreadtablemm_p.h \
+	glom/utility_widgets/eggspreadtablemm/private/eggspreadtabledndmm_p.h \
 	glom/utility_widgets/gimpruler/gimpruler.c \
 	glom/utility_widgets/gimpruler/gimpruler.h \
 	glom/utility_widgets/gimpruler/libgimpbase/gimpbase.h \

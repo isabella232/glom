@@ -1,3 +1,19 @@
+2011-04-18  Murray Cumming  <murrayc@murrayc.com>
+
+	Use EggSpreadTableDnd.
+
+	* glom/utility_widgets/eggspreadtable/eggmarshalers.[h|c}
+	* glom/utility_widgets/eggspreadtable/eggplaceholder.[h|c]
+	* glom/utility_widgets/eggspreadtable/eggspreadtablednd.[h|c]:
+  Added these files, copied from libegg.
+	* glom/utility_widgets/eggspreadtablemm/eggspreadtabledndmm.[h|cc]:
+	* glom/utility_widgets/eggspreadtablemm/private/eggspreadtabledndmm
+	_p.h:
+	Created a hand-written C++ wrapper for EggSpreadTableDnd.
+	* glom/Makefile_glom.am: Mention the new files.
+	* glom/utility_widgets/flowtable.h: Use SpreadTableDnd instead of
+	SpreadTable, though we do not use the drag-and-drop functionality yet.
+
 2011-04-12  Murray Cumming  <murrayc@murrayc.com>
 
 	Correct the sizing of the ... date button.
