@@ -35,6 +35,76 @@ Egg::SpreadTableDnd* wrap(EggSpreadTableDnd* object, bool take_copy)
 
 } /* namespace Glib */
 
+namespace
+{
+
+static gboolean EggSpreadTableDnd_signal_widget_drop_possible_callback(EggSpreadTableDnd* self, GtkWidget* p0, void* data)
+{
+  using namespace Egg;
+  typedef sigc::slot< bool, Gtk::Widget* > SlotType;
+
+  // Do not try to call a signal on a disassociated wrapper.
+  if(Glib::ObjectBase::_get_current_wrapper((GObject*) self))
+  {
+    #ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    {
+    #endif //GLIBMM_EXCEPTIONS_ENABLED
+      if(sigc::slot_base *const slot = Glib::SignalProxyNormal::data_to_slot(data))
+        return static_cast<int>((*static_cast<SlotType*>(slot))(Glib::wrap(p0)
+));
+    #ifdef GLIBMM_EXCEPTIONS_ENABLED
+    }
+    catch(...)
+    {
+      Glib::exception_handlers_invoke();
+    }
+    #endif //GLIBMM_EXCEPTIONS_ENABLED
+  }
+
+  typedef gboolean RType;
+  return RType();
+}
+
+static gboolean EggSpreadTableDnd_signal_widget_drop_possible_notify_callback(EggSpreadTableDnd* self, GtkWidget* p0, void* data)
+{
+  using namespace Egg;
+  typedef sigc::slot< bool, Gtk::Widget* > SlotType;
+
+  // Do not try to call a signal on a disassociated wrapper.
+  if(Glib::ObjectBase::_get_current_wrapper((GObject*) self))
+  {
+    #ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    {
+    #endif //GLIBMM_EXCEPTIONS_ENABLED
+      if(sigc::slot_base *const slot = Glib::SignalProxyNormal::data_to_slot(data))
+        (*static_cast<SlotType*>(slot))(Glib::wrap(p0)
+);
+    #ifdef GLIBMM_EXCEPTIONS_ENABLED
+    }
+    catch(...)
+    {
+      Glib::exception_handlers_invoke();
+    }
+    #endif //GLIBMM_EXCEPTIONS_ENABLED
+  }
+
+  typedef gboolean RType;
+  return RType();
+}
+
+static const Glib::SignalProxyInfo SpreadTableDnd_signal_widget_drop_possible_info =
+{
+  "widget-drop-possible",
+  (GCallback) &EggSpreadTableDnd_signal_widget_drop_possible_callback,
+  (GCallback) &EggSpreadTableDnd_signal_widget_drop_possible_notify_callback
+};
+
+
+} //anonymous namespace
+
+
 namespace Egg
 {
 
@@ -59,13 +129,56 @@ const Glib::Class& SpreadTableDnd_Class::init()
   return *this;
 }
 
-
 void SpreadTableDnd_Class::class_init_function(void* g_class, void* class_data)
 {
   BaseClassType *const klass = static_cast<BaseClassType*>(g_class);
   CppClassParent::class_init_function(klass, class_data);
 
+  klass->widget_drop_possible = &widget_drop_possible_callback;
+}
 
+gboolean SpreadTableDnd_Class::widget_drop_possible_callback(EggSpreadTableDnd* self, GtkWidget* p0)
+{
+  Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
+      Glib::ObjectBase::_get_current_wrapper((GObject*)self));
+
+  // Non-gtkmmproc-generated custom classes implicitly call the default
+  // Glib::ObjectBase constructor, which sets is_derived_. But gtkmmproc-
+  // generated classes can use this optimisation, which avoids the unnecessary
+  // parameter conversions if there is no possibility of the virtual function
+  // being overridden:
+  if(obj_base && obj_base->is_derived_())
+  {
+    CppObjectType *const obj = dynamic_cast<CppObjectType* const>(obj_base);
+    if(obj) // This can be NULL during destruction.
+    {
+      #ifdef GLIBMM_EXCEPTIONS_ENABLED
+      try // Trap C++ exceptions which would normally be lost because this is a C callback.
+      {
+      #endif //GLIBMM_EXCEPTIONS_ENABLED
+        // Call the virtual member method, which derived classes might override.
+        return static_cast<int>(obj->on_widget_drop_possible(Glib::wrap(p0)
+));
+      #ifdef GLIBMM_EXCEPTIONS_ENABLED
+      }
+      catch(...)
+      {
+        Glib::exception_handlers_invoke();
+      }
+      #endif //GLIBMM_EXCEPTIONS_ENABLED
+    }
+  }
+
+  BaseClassType *const base = static_cast<BaseClassType*>(
+        g_type_class_peek_parent(G_OBJECT_GET_CLASS(self)) // Get the parent class of the object class (The original underlying C class).
+    );
+
+  // Call the original underlying C function:
+  if(base && base->widget_drop_possible)
+    return (*base->widget_drop_possible)(self, p0);
+
+  typedef gboolean RType;
+  return RType();
 }
 
 
@@ -115,8 +228,6 @@ SpreadTableDnd::SpreadTableDnd()
   Glib::ObjectBase(0),
   SpreadTable(Glib::ConstructParams(spreadtable_class_.init()))
 {
-
-
 }
 
 SpreadTableDnd::SpreadTableDnd(Gtk::Orientation orientation, guint lines)
@@ -125,6 +236,24 @@ SpreadTableDnd::SpreadTableDnd(Gtk::Orientation orientation, guint lines)
   Glib::ObjectBase(0),
   SpreadTable(Glib::ConstructParams(spreadtable_class_.init(), "orientation", ((GtkOrientation)(orientation)), "lines", lines, static_cast<char*>(0)))
 {
+}
+
+
+bool SpreadTableDnd::on_widget_drop_possible(Gtk::Widget* widget)
+{
+  BaseClassType *const base = static_cast<BaseClassType*>(
+      g_type_class_peek_parent(G_OBJECT_GET_CLASS(gobject_)) // Get the parent class of the object class (The original underlying C class).
+  );
+
+  if(base && base->widget_drop_possible)
+    return (*base->widget_drop_possible)(gobj(), Glib::unwrap(widget));
+  else
+    return false;
+}
+
+Glib::SignalProxy1< bool, Gtk::Widget* > SpreadTableDnd::signal_widget_drop_possible()
+{
+  return Glib::SignalProxy1< bool, Gtk::Widget* >(this, &SpreadTableDnd_signal_widget_drop_possible_info);
 }
 
 } // namespace Egg

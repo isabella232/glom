@@ -1,6 +1,17 @@
 2011-04-18  Murray Cumming  <murrayc@murrayc.com>
 
-	.com
+	EggSpreadTableDnd: Wrap the wiget_drop_possible signal.
+
+	* glom/utility_widgets/eggspreadtablemm/eggspreadtabledndmm.[h|cc]:
+	* glom/utility_widgets/eggspreadtablemm/private/eggspreadtabledndmm
+	_p.h: This is unpleasant without gmmproc.
+
+2011-04-18  Murray Cumming  <murrayc@murrayc.com>
+
+	Egg::SpreadTableDnd: Fix typos.
+
+    * glom/utility_widgets/eggspreadtablemm/eggspreadtabledndmm.cc:
+    Use the correct GTypes.
 
 2011-04-18  Murray Cumming  <murrayc@murrayc.com>
 

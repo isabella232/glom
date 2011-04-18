@@ -84,6 +84,7 @@ protected:
 
   //Default Signal Handlers::
 
+  bool on_widget_drop_possible(Gtk::Widget* widget);
 
 private:
 
@@ -91,6 +92,14 @@ private:
 public:
   SpreadTableDnd();
   explicit SpreadTableDnd(Gtk::Orientation orientation, guint lines);
+
+
+  /**
+   * @par Prototype:
+   * <tt>void on_my_%widget_drop_possible()</tt>
+   */
+
+  Glib::SignalProxy1< bool, Gtk::Widget* > signal_widget_drop_possible();
 };
 
 } // namespace Egg
