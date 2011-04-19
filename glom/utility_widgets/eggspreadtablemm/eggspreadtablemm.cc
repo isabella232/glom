@@ -67,7 +67,6 @@ const Glib::Class& SpreadTable_Class::init()
 
     // Add derived versions of interfaces, if the C type implements any interfaces:
     Gtk::Orientable::add_interface(get_type());
-
   }
 
   return *this;

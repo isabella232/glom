@@ -35,7 +35,8 @@ namespace Egg
 {
 
 class SpreadTable
-: public Gtk::Container
+: public Gtk::Container,
+  public Gtk::Orientable
 {
   public:
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
