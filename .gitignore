@@ -12,6 +12,8 @@ stamp-h1
 /compile
 /configure.lineno
 /depcomp
+/ABOUT-NLS
+/config.rpath
 
 Makefile
 Makefile.in

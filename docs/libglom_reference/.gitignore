@@ -2,3 +2,8 @@
 /libglom-*.devhelp2
 /libglom-*.tag
 /html/
+
+doc-install.pl
+doc-postprocess.pl
+doxygen.css
+tagfile-to-devhelp2.xsl

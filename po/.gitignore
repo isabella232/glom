@@ -4,3 +4,12 @@
 /POTFILES
 /stamp-it
 /glom.pot
+/Makevars.template
+/Rules-quot
+/boldquot.sed
+/en@boldquot.header
+/en@quot.header
+/insert-header.sin
+/quot.sed
+/remove-potcdate.sin
+
