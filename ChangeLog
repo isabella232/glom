@@ -1,5 +1,13 @@
 2011-04-19  Murray Cumming  <murrayc@murrayc.com>
 
+	Egg::SpreadTable: Add a test.
+
+	* Makefile_tests.am:
+	* glom/utility_widgets/eggspreadtablemm/test_preadtablemm.[h|cc]:
+	Add a test based on the C test. It seems to work fine.
+
+2011-04-19  Murray Cumming  <murrayc@murrayc.com>
+
 	Egg::SpreadTable: Derive from (and implement) Orientable.
 
 	* glom/utility_widgets/eggspreadtablemm/eggspreadtablemm.[h|cc]:

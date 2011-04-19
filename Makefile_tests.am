@@ -133,6 +133,7 @@ if GLOM_ENABLE_UI
 # TODO: Shouldn't test_pyembed be non-UI?
 check_PROGRAMS += \
 	glom/utility_widgets/test_flowtable			\
+	glom/utility_widgets/eggspreadtablemm/test_spreadtablednd \
 	glom/test_pyembed \
 	tests/test_glade_derived_instantiation \
 	tests/glade_toplevels_instantiation \
@@ -161,6 +162,12 @@ glom_utility_widgets_test_flowtable_SOURCES =	\
 	glom/utility_widgets/test_flowtable.cc
 glom_utility_widgets_test_flowtable_LDADD = $(GLOM_LIBS)
 glom_utility_widgets_test_flowtable_CPPFLAGS = $(tests_cppflags_ui)
+
+glom_utility_widgets_eggspreadtablemm_test_spreadtablednd_SOURCES =	\
+	$(glom_eggspreadtable_files) \
+	glom/utility_widgets/eggspreadtablemm/test_spreadtablednd.cc
+glom_utility_widgets_eggspreadtablemm_test_spreadtablednd_LDADD = $(GLOM_LIBS)
+glom_utility_widgets_eggspreadtablemm_test_spreadtablednd_CPPFLAGS = $(tests_cppflags_ui)
 
 # Disabled because it slows down the build, because it builds all Glom files again, using its own flags:
 #glom_mode_data_test_flowtablewithfields_SOURCES =	\
