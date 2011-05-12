@@ -12,7 +12,7 @@ int main()
 
   //We try parse_time() though parse_value() calls it anyway,
   //to give us a clue if parse_value would fail.
-  struct tm value_as_tm =
+  /* struct tm value_as_tm = */
     Glom::Conversions::parse_time(time_text_input, success);
   if(!success)
   {

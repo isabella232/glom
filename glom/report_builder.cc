@@ -321,13 +321,10 @@ void ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
       found_set.m_where_clause, sharedptr<const Relationship>() /* extra_join */, found_set.m_sort_clause,
       limit);
 
-    bool records_found = false;
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(sql_query);
     if(datamodel)
     {
       const guint rows_count = datamodel->get_n_rows();
-      if(rows_count > 0)
-        records_found = true;
 
       for(guint row = 0; row < rows_count; ++row)
       {

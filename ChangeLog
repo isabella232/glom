@@ -1,5 +1,16 @@
 2011-05-12  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix compiler warnings.
+
+	* glom/mode_data/db_adddel/db_adddel.cc:
+	* glom/mode_design/layout/dialog_layout_details.cc:
+	* glom/report_builder.cc:
+	* glom/utility_widgets/eggspreadtable/eggspreadtablednd.c
+	(get_index_at_position):
+	* tests/test_parsing_time.cc: Remove unused variables noticed by g++ 4.6.
+
+2011-05-12  Murray Cumming  <murrayc@murrayc.com>
+
 	Require latest libepc.
 
 	Because it uses avahi-ui-gtk3, which uses GTK+3.

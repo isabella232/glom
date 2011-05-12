@@ -1919,9 +1919,7 @@ Gnome::Gda::Value DbAddDel::get_value_key(const Gtk::TreeModel::iterator& iter) 
 void DbAddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::Gda::Value& value)
 {
   if(iter && m_refListStore)
-  {
-    Gtk::TreeModel::Row row = *iter;
-
+  { 
     if(!(Conversions::value_is_empty(value)))
     {
       //This is not a placeholder anymore, if it every was:

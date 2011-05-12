@@ -715,8 +715,6 @@ void Dialog_Layout_Details::on_button_add_image()
 
 void Dialog_Layout_Details::on_button_add_notebook()
 {
-  Gtk::TreeModel::iterator parent = get_selected_group_parent();
-
   Gtk::TreeModel::iterator iter = append_appropriate_row();
   if(iter)
   {
@@ -741,8 +739,6 @@ void Dialog_Layout_Details::on_button_add_notebook()
 
 void Dialog_Layout_Details::on_button_add_related()
 {
-  Gtk::TreeModel::iterator parent = get_selected_group_parent();
-
   /* We don't need to ask this because the portal layout dialog can now handle an empty portal:
   sharedptr<Relationship> relationship = offer_relationship_list();
   if(relationship)
@@ -775,8 +771,6 @@ void Dialog_Layout_Details::on_button_add_related()
 
 void Dialog_Layout_Details::on_button_add_related_calendar()
 {
-  Gtk::TreeModel::iterator parent = get_selected_group_parent();
-
   /* We don't need to ask this because the portal layout dialog can now handle an empty portal:
   sharedptr<Relationship> relationship = offer_relationship_list();
   if(relationship)
@@ -1287,7 +1281,6 @@ void Dialog_Layout_Details::on_treeview_cell_edited_title(const Glib::ustring& p
       if(layout_item)
       {
         //Store the user's new text in the model:
-        Gtk::TreeRow row = *iter;
         layout_item->set_title(new_text);
 
         m_modified = true;
@@ -1312,7 +1305,6 @@ void Dialog_Layout_Details::on_treeview_cell_edited_name(const Glib::ustring& pa
       if(layout_item)
       {
         //Store the user's new text in the model:
-        Gtk::TreeRow row = *iter;
         layout_item->set_name(new_text);
 
         m_modified = true;
@@ -1340,7 +1332,6 @@ void Dialog_Layout_Details::on_treeview_cell_edited_column_width(const Glib::ust
         const guint new_value = static_cast<guint>( strtod(new_text.c_str(), &pchEnd) );
 
         //Store the user's new value in the model:
-        Gtk::TreeRow row = *iter;
         layout_item->set_display_width(new_value);
 
         m_modified = true;

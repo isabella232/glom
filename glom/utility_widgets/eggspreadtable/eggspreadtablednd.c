@@ -1017,7 +1017,7 @@ get_index_at_position (EggSpreadTableDnd *spread_table,
 		       gint              *line_ret)
 {
   EggSpreadTable *table;
-  GtkWidget      *widget, *child;
+  GtkWidget      *child;
   GList          *children, *l;
   GtkAllocation   allocation;
   gint            placeholder_cnt = 0;
@@ -1025,7 +1025,6 @@ get_index_at_position (EggSpreadTableDnd *spread_table,
   gint           *segments, lines, line = -1, i, full_size, spacing, position, line_width, first_child;
   gint            index = -1;
 
-  widget = GTK_WIDGET (spread_table);
   table  = EGG_SPREAD_TABLE (spread_table);
 
   /* First find the "line" in question */
