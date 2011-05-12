@@ -157,7 +157,7 @@ AC_ARG_ENABLE([maemo-launcher],
 REQUIRED_LIBGLOM_LIBS='gthread-2.0 giomm-2.4 libxml++-2.6 >= 2.23.1 pygobject-2.0 >= 2.28.0 libgdamm-5.0 >= 4.99.0 libgda-postgres-5.0'
 
 AS_IF([test "x$glom_host_win32" != xyes],
-      [REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS libepc-1.0 >= 0.3.1"])
+      [REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS libepc-1.0 >= 0.4.0"])
 
 # Libraries used by Glom:
 REQUIRED_GLOM_LIBS="$REQUIRED_LIBGLOM_LIBS gtkmm-3.0 >= 2.99.1 gthread-2.0 libxml++-2.6 libxslt >= 1.1.10 goocanvasmm-2.0 >= 1.90.3"

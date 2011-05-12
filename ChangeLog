@@ -1,3 +1,10 @@
+2011-05-12  Murray Cumming  <murrayc@murrayc.com>
+
+	Require latest libepc.
+
+	Because it uses avahi-ui-gtk3, which uses GTK+3.
+	Otherwise we would be indirectl using both GTK+ 2 and GTK+ 3.
+
 2011-04-19  Murray Cumming  <murrayc@murrayc.com>
 
 	Egg::SpreadTable: Add a test.
