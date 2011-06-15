@@ -150,7 +150,7 @@ protected:
 #endif
 
 #ifndef GLOM_ENABLE_MAEMO
-  Gtk::HButtonBox m_hbox_buttons;
+  Gtk::ButtonBox m_hbox_buttons;
   Gtk::Button m_Button_New;
   Gtk::Button m_Button_Del;
   Gtk::Button m_Button_Nav_First;

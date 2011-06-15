@@ -40,7 +40,7 @@ namespace Glom
 Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 : m_hbox_content(false, Utils::DEFAULT_SPACING_SMALL),
 #ifndef GLOM_ENABLE_MAEMO
-  m_hbox_buttons(Gtk::BUTTONBOX_END, Utils::DEFAULT_SPACING_SMALL),
+  m_hbox_buttons(Gtk::ORIENTATION_HORIZONTAL),
   m_Button_New(Gtk::Stock::ADD),
   m_Button_Del(Gtk::Stock::DELETE),
   m_Button_Nav_First(Gtk::Stock::GOTO_FIRST),
@@ -55,6 +55,9 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 #endif
 {
   m_layout_name = "details";
+
+  m_hbox_buttons.set_layout(Gtk::BUTTONBOX_END);
+  m_hbox_buttons.set_spacing(Utils::DEFAULT_SPACING_SMALL);
 
   add_view(&m_FlowTable); //Allow this to access the document too.
 

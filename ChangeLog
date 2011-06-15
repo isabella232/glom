@@ -1,3 +1,15 @@
+2011-06-15  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build with --enable-warnings=fatal with gtkmm 3.1.
+
+	* glom/mode_data/box_data_details.[h|cc]:
+	* glom/mode_data/db_adddel/db_adddel_withbuttons.[h|cc]:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:
+	* glom/utility_widgets/adddel/adddel_withbuttons.[h|cc]:
+	Fix the build with --enable-warnings=fatal with gtkmm 3.1, by
+	replacing Gtk::HButtonBox with ButtonBox and replacing get_vbox() with
+	get_content_area().
+
 2011-05-12  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix compiler warnings.

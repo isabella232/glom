@@ -46,7 +46,7 @@ private:
   void on_button_edit();
 
   //member widgets:
-  Gtk::HButtonBox m_ButtonBox;
+  Gtk::ButtonBox m_ButtonBox;
   Gtk::Button m_Button_Add;
   Gtk::Button m_Button_Del;
   Gtk::Button m_Button_Edit;

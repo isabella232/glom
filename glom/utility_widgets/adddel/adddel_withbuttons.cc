@@ -27,7 +27,7 @@ namespace Glom
 {
 
 AddDel_WithButtons::AddDel_WithButtons()
-: m_ButtonBox(Gtk::BUTTONBOX_END),
+: m_ButtonBox(Gtk::ORIENTATION_HORIZONTAL),
   m_Button_Add(Gtk::Stock::ADD),
   m_Button_Del(Gtk::Stock::DELETE),
   m_Button_Edit(Gtk::Stock::OPEN)
@@ -37,7 +37,7 @@ AddDel_WithButtons::AddDel_WithButtons()
 
 AddDel_WithButtons::AddDel_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : AddDel(cobject, builder),
-  m_ButtonBox(Gtk::BUTTONBOX_END),
+  m_ButtonBox(Gtk::ORIENTATION_HORIZONTAL),
   m_Button_Add(Gtk::Stock::ADD),
   m_Button_Del(Gtk::Stock::DELETE),
   m_Button_Edit(Gtk::Stock::OPEN)
@@ -47,7 +47,9 @@ AddDel_WithButtons::AddDel_WithButtons(BaseObjectType* cobject, const Glib::RefP
 
 void AddDel_WithButtons::init()
 {
+  m_ButtonBox.set_layout(Gtk::BUTTONBOX_END);
   m_ButtonBox.set_spacing(Utils::DEFAULT_SPACING_SMALL);
+
   //m_Button_Add.set_border_width(Utils::DEFAULT_SPACING_SMALL);
   //m_Button_Del.set_border_width(Utils::DEFAULT_SPACING_SMALL);
   //m_Button_Edit.set_border_width(Utils::DEFAULT_SPACING_SMALL);
