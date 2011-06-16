@@ -30,7 +30,7 @@ import apt_pkg # For apt_pkg.SourceRecords
 import difflib
 
 record = None
-do_sql = False
+do_sql = True
 
 def debug_create_connection_record():
     cnc_string = "HOST=localhost;PORT=5434;DB_NAME=glom_repositoryanalyzer3121"
@@ -1223,7 +1223,8 @@ def get_package_data_list(out_licenses_map, package_names_list_restrict_to):
     #Or maybe put it in a database table.
     temp_sourceslist_path = "/tmp/repository_analyzer_sources.list"
     output = open(temp_sourceslist_path, 'w')
-    sources_list = "deb http://repository.maemo.org/ fremantle/sdk free non-free\ndeb-src http://repository.maemo.org/ fremantle/sdk free\ndeb http://repository.maemo.org/ fremantle/tools free non-free\ndeb-src http://repository.maemo.org/ fremantle/tools free"
+    sources_list = "deb http://repository.maemo.org/ fremantle/sdk free non-free\ndeb-src http://repository.maemo.org/ fremantle/sdk free"
+    #sources_list = "deb http://repository.maemo.org/ fremantle/sdk free non-free\ndeb-src http://repository.maemo.org/ fremantle/sdk free\ndeb http://repository.maemo.org/ fremantle/tools free non-free\ndeb-src http://repository.maemo.org/ fremantle/tools free"
     #sources_list = "deb http://repository.maemo.org/ fremantle/sdk free non-free\ndeb-src http://repository.maemo.org/ fremantle/sdk free\ndeb http://repository.maemo.org/ fremantle/tools free non-free\ndeb-src http://repository.maemo.org/ fremantle/tools free\ndeb http://repository.maemo.org/extras-devel/ fremantle free non-free\ndeb-src http://repository.maemo.org/extras-devel/ fremantle free non-free"
 
     output.write(sources_list)
@@ -1323,6 +1324,8 @@ def get_package_data_list(out_licenses_map, package_names_list_restrict_to):
 
 def execute_sql_non_select_query(query_text):
 
+    print "debug: sql=%s" % query_text
+    
     global do_sql
     if(not do_sql):
       return 0;
@@ -1331,7 +1334,7 @@ def execute_sql_non_select_query(query_text):
     global record
     if(record == None):
       record = debug_create_connection_record()
-
+     
     #We use encode() here because, when running inside Glom, gda.Command() somehow expects an ascii string and tries to convert the unicode string to ascii, causing exceptions because the conversion does not default to 'replace'.
     #TODO: Find out why it acts differently inside Glom. This is not a problem when running normally as a standalone script.
     command = query_text.encode('ascii', 'replace')
@@ -1371,19 +1374,16 @@ def get_next_automatic_id_number(table_name, field_name):
     max_id = 0
     if(datamodel and (datamodel.get_n_rows() > 0) and (datamodel.get_n_columns() > 0)):
         max_id_value = None
+
         try:
             max_id_value = datamodel.get_value_at(0, 0)
         except:
-            # Current versions of PyGObject throw an exception because
-            # libgda returns a G_TYPE_INVALID GValue for NULL SQL Values.
-            # See https://bugzilla.gnome.org/show_bug.cgi?id=647272
-            # And this can throw an exception from libgda anyway.
             max_id_value = None
 
         if(max_id_value == None): #This seems to be the result when there are no records. I guess it is a NULL value in the result.
             max_id = 0
         else:
-            max_id = float(max_id_value.number) #TODO: Make sure this only converts in the C locale
+            max_id = float(max_id_value) #TODO: Make sure this only converts in the C locale
             max_id += 1
 
     return max_id
@@ -1396,7 +1396,6 @@ def reset_automatic_id_number(table_name, field_name):
     #Set the maximum value in the system table:
     next_id_value_string = "%d" % next_id_value #str() adds the digits after the decimal point.
     sql_query = "UPDATE \"glom_system_autoincrements\" SET \"next_value\" = " + next_id_value_string + " WHERE \"glom_system_autoincrements\".\"table_name\" = '" + table_name + "' AND \"glom_system_autoincrements\".\"field_name\" = '" + field_name + "'"
-    print "debug: sql=%s" % sql_query
     execute_sql_non_select_query(sql_query)
 
 def get_record_exists_already(table_name, field_name, sql_field_value):
@@ -1408,10 +1407,6 @@ def get_record_exists_already(table_name, field_name, sql_field_value):
         try:
             count = datamodel.get_value_at(0, 0)
         except:
-            # Current versions of PyGObject throw an exception because
-            # libgda returns a G_TYPE_INVALID GValue for NULL SQL Values.
-            # See https://bugzilla.gnome.org/show_bug.cgi?id=647272
-            # And this can throw an exception from libgda anyway.
             count = None
 
         if(count == None): #This seems to be the result when there are no records. I guess it is a NULL value in the result.
@@ -1430,10 +1425,6 @@ def get_license_id_of_last_package_scan(package_name):
         try:
             result = datamodel.get_value_at(0, 0)
         except:
-            # Current versions of PyGObject throw an exception because
-            # libgda returns a G_TYPE_INVALID GValue for NULL SQL Values.
-            # See https://bugzilla.gnome.org/show_bug.cgi?id=647272
-            # And this can throw an exception from libgda anyway.
             result = None
 
         if(result == None): #This seems to be the result when there are no records. I guess it is a NULL value in the result.
@@ -1452,10 +1443,6 @@ def get_version_of_last_package_scan(package_name):
         try:
             result = datamodel.get_value_at(0, 0)
         except:
-            # Current versions of PyGObject throw an exception because
-            # libgda returns a G_TYPE_INVALID GValue for NULL SQL Values.
-            # See https://bugzilla.gnome.org/show_bug.cgi?id=647272
-            # And this can throw an exception from libgda anyway.
             result = None
 
         if(result == None): #This seems to be the result when there are no records. I guess it is a NULL value in the result.
@@ -1664,7 +1651,7 @@ def main():
         #
         # This will look like this:
         # 'package_scan_id','package_name','scan_id','comments','license_id','version','parent_package','tarball_uri','diff_uri',"simplified'
-        package_scan_row = u"%d,%s,%d,%s,%d,%s,%s,%s,%s,%s" % ( package_scan_id, quote_for_sql(package_data.name), scan_id, empty_text, license_id, quote_for_sql(package_data.version), quote_for_sql(package_data.source_package_name), quote_for_sql(package_data.tarball_uri), quote_for_sql(package_data.diff_uri), boolean_for_sql(package_data.license_text_simplified) )
+        package_scan_row = u"%d,%s,%d,%s,%d,%s,%s,%s,%s,%s" % ( float(package_scan_id), quote_for_sql(package_data.name), float(scan_id), empty_text, float(license_id), quote_for_sql(package_data.version), quote_for_sql(package_data.source_package_name), quote_for_sql(package_data.tarball_uri), quote_for_sql(package_data.diff_uri), boolean_for_sql(package_data.license_text_simplified) )
 
         if(package_scan_row):
             #Add the row to the database:
@@ -1678,7 +1665,7 @@ def main():
 
 
     # Dependencies:
-    dependency_id = get_next_automatic_id_number("package_dependencies", "package_dependencies_id")
+    dependency_id = get_next_automatic_id_number("package_dependencies", "package_dependency_id")
     for package_name in packages_dict.keys():
         package_data = packages_dict[package_name]
         if(package_data.dependencies):
@@ -1714,7 +1701,7 @@ def main():
     print_debug("Updating auto-increment values.")
     reset_automatic_id_number("licenses", "license_id")
     reset_automatic_id_number("package_scans", "package_scan_id")
-    reset_automatic_id_number("package_dependencies", "package_dependencies_id")
+    reset_automatic_id_number("package_dependencies", "package_dependency_id")
     reset_automatic_id_number("scans", "scan_id")
     print_debug("Finished.")
 
