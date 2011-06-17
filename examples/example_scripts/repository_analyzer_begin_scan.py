@@ -41,7 +41,7 @@ def debug_create_connection_record():
     class TestRecord:
         connection = None
 
-    global record;
+    global record
     record = TestRecord()
     record.connection = gda_connection
     return record
@@ -1307,7 +1307,7 @@ def get_package_data_list(out_licenses_map, package_names_list_restrict_to):
 
     #Note that this changes packages_dict and out_licenses_map_temp:
     matches_found = True
-    while(matches_found):
+    while(False): #matches_found):
         matches_found = get_licenses_map_with_matching(out_licenses_map_temp, packages_dict)
         if(matches_found):
             licenses_count = len(out_licenses_map_temp.keys())
@@ -1328,12 +1328,12 @@ def execute_sql_non_select_query(query_text):
     
     global do_sql
     if(not do_sql):
-      return 0;
+        return 0
 
     #For debugging, outside of Glom:
     global record
     if(record == None):
-      record = debug_create_connection_record()
+        record = debug_create_connection_record()
      
     #We use encode() here because, when running inside Glom, gda.Command() somehow expects an ascii string and tries to convert the unicode string to ascii, causing exceptions because the conversion does not default to 'replace'.
     #TODO: Find out why it acts differently inside Glom. This is not a problem when running normally as a standalone script.
@@ -1344,12 +1344,12 @@ def execute_sql_select_query(query_text):
 
     global do_sql
     if(not do_sql):
-      return 0;
+        return 0
 
     #For debugging, outside of Glom:
     global record
     if(record == None):
-      record = debug_create_connection_record()
+        record = debug_create_connection_record()
 
     #We use encode() here because, when running inside Glom, gda.Command() somehow expects an ascii string and tries to convert the unicode string to ascii, causing exceptions because the conversion does not default to 'replace'.
     #TODO: Find out why it acts differently inside Glom. This is not a problem when running normally as a standalone script.
@@ -1652,7 +1652,18 @@ def main():
         #
         # This will look like this:
         # 'package_scan_id','package_name','scan_id','comments','license_id','version','parent_package','tarball_uri','diff_uri',"simplified'
-        package_scan_row = u"%d,%s,%d,%s,%d,%s,%s,%s,%s,%s" % ( float(package_scan_id), quote_for_sql(package_data.name), float(scan_id), empty_text, float(license_id), quote_for_sql(package_data.version), quote_for_sql(package_data.source_package_name), quote_for_sql(package_data.tarball_uri), quote_for_sql(package_data.diff_uri), boolean_for_sql(package_data.license_text_simplified) )
+        package_scan_id_float = package_scan_id  #For some reason this is not a GdaNumeric.
+        scan_id_float = scan_id #For some reason this is not a GdaNumeric.
+        
+        license_id_float = None
+        try:
+            license_id_float = float(license_id.number)
+        except:
+            license_id_float = None
+            
+        package_scan_row  = None
+        if(license_id_float):
+            package_scan_row = u"%d,%s,%d,%s,%d,%s,%s,%s,%s,%s" % ( package_scan_id_float, quote_for_sql(package_data.name), scan_id_float, empty_text, license_id_float, quote_for_sql(package_data.version), quote_for_sql(package_data.source_package_name), quote_for_sql(package_data.tarball_uri), quote_for_sql(package_data.diff_uri), boolean_for_sql(package_data.license_text_simplified) )
 
         if(package_scan_row):
             #Add the row to the database:
