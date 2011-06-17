@@ -1383,7 +1383,8 @@ def get_next_automatic_id_number(table_name, field_name):
         if(max_id_value == None): #This seems to be the result when there are no records. I guess it is a NULL value in the result.
             max_id = 0
         else:
-            max_id = float(max_id_value) #TODO: Make sure this only converts in the C locale
+            #It is a GdaNumeric:
+            max_id = float(max_id_value.number) #TODO: Make sure this only converts in the C locale
             max_id += 1
 
     return max_id
