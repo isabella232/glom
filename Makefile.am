@@ -83,11 +83,13 @@ pkgconfig_DATA = glom/libglom/glom-@GLOM_ABI_VERSION@.pc
 
 dist_pkgdata_DATA = glom/glom_document.dtd
 
+if GLOM_ENABLE_UI
 gladedir = $(pkgdatadir)/glade
 dist_glade_DATA = glom/glom.glade glom/glom_developer.glade
 
 xsltdir = $(pkgdatadir)/xslt
 dist_xslt_DATA = xslt/print_details_to_html.xsl xslt/print_report_to_html.xsl
+endif
 
 exampledir = $(docdir)/examples
 dist_example_DATA =				\
@@ -98,8 +100,9 @@ dist_example_DATA =				\
 	examples/example_project_manager.glom	\
 	examples/example_smallbusiness.glom
 
-dist_noinst_DATA = examples/sqlite/test_sqlite_music/test_sqlite_music.glom
+dist_noinst_DATA += examples/sqlite/test_sqlite_music/test_sqlite_music.glom
 
+if GLOM_ENABLE_UI
 iconthemedir = $(datadir)/icons/hicolor
 appicon16dir = $(iconthemedir)/16x16/apps
 appicon22dir = $(iconthemedir)/22x22/apps
@@ -128,6 +131,7 @@ dist_pixmap_DATA =				\
 	icons/16x16/glom-notebook.png		\
 	icons/16x16/glom-related-records.png	\
 	icons/16x16/glom-text.png
+endif
 
 if GLOM_ENABLE_MAEMO
 desktopdir = $(OSSO_DESKTOPDIR)

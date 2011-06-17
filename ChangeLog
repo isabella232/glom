@@ -1,3 +1,9 @@
+2011-06-17  Murray Cumming  <murrayc@murrayc.com>
+
+	Do not install .glade files and icons if only building libglom.
+
+	* Makefile.am: Put some lines in if GLOM_ENABLE_UI blocks.
+
 2011-04-12  Murray Cumming  <murrayc@murrayc.com>
 
 	Correct the sizing of the ... date button.
