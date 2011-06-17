@@ -5,7 +5,15 @@
 //Store results from the callbacks and check them later:
 Glib::ustring result_table_name_list;
 Glib::ustring result_table_name_details;
-Gnome::Gda::Value result_primary_key_value_details;
+
+//This can't be a normal global variable,
+//because it would be initialized before we have initialized the glib type system.
+static Gnome::Gda::Value& get_result_primary_key_value_details_instance()
+{
+  static Gnome::Gda::Value result_primary_key_value_details;
+  return result_primary_key_value_details;
+}
+
 Glib::ustring result_report_name;
 bool result_printed_layout = false;
 bool result_started_new_record = false;
@@ -21,7 +29,7 @@ static void on_script_ui_show_table_details(const Glib::ustring& table_name, con
   //std::cout << "debug: " << G_STRFUNC << ": table_name=" << table_name
   //  << ", primary_key_value=" << primary_key_value.to_string() << std::endl;
   result_table_name_details = table_name;
-  result_primary_key_value_details = primary_key_value;
+  get_result_primary_key_value_details_instance() = primary_key_value;
 }
 
 static void on_script_ui_print_report(const Glib::ustring& report_name)
@@ -104,7 +112,7 @@ int main()
   //Check that the callbacks received the expected values:
   g_assert(result_table_name_list == table_name_input);
   g_assert(result_table_name_details == table_name_details_input);
-  g_assert(result_primary_key_value_details == primary_key_value_input);
+  g_assert(get_result_primary_key_value_details_instance() == primary_key_value_input);
   g_assert(result_report_name == report_name_input);
   g_assert(result_printed_layout);
   g_assert(result_started_new_record);
