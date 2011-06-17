@@ -1,3 +1,10 @@
+2011-06-17  Murray Cumming  <murrayc@murrayc.com>
+
+	Details: Make Primary Key ID values visible again.
+
+	* glom/mode_data/datawidget/entry.cc: Use unset_color() instead of 
+	override_color(RGBA());
+
 2011-06-15  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the build with --enable-warnings=fatal with gtkmm 3.1.

@@ -174,7 +174,7 @@ void Entry::set_value(const Gnome::Gda::Value& value)
     if(!fg_color.empty())
       override_color(Gdk::RGBA(fg_color));
     else
-      override_color(Gdk::RGBA()); //TODO: Use an unset_*() method?
+      unset_color();
   }
 }
 
