@@ -1,3 +1,13 @@
+1.18.2:
+
+* Details: Correct the sizing of the ... date button.
+* Build: Do not install .glade files and icons if only building libglom.
+* Python:
+  - Fix the use of bool python return types.
+  - Initialize pygobject, to fix the use of the PyRecord API.
+  - Write Python tracebacks to stderr.
+(Murray Cumming)
+	
 1.18.1:
 
 * CSV Import: Fix quoted-newline detection, so we don't drop rows.

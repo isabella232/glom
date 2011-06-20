@@ -1,3 +1,5 @@
+1.18.2:
+
 2011-06-17  Murray Cumming  <murrayc@murrayc.com>
 
 	Do not install .glade files and icons if only building libglom.
