@@ -1,3 +1,9 @@
+2011-06-21  Murray Cumming  <murrayc@murrayc.com>
+
+	Require the latest libgdamm, for the GdaNull changes.
+
+	* configure.ac: Require libgdamm 4.99.3
+
 2011-06-17  Murray Cumming  <murrayc@murrayc.com>
 
   Fix the tests after the libgdamm Null Value change.
