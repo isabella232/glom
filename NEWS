@@ -1,3 +1,15 @@
+1.19.5 (unstable):
+
+* Details:
+  - Make the Primary Key ID values visible again.
+  - Correct the sizing of the ... date button.
+* Build:
+  - Adapt to the latest libgda and libgdamm API.
+  - Fix the build with --enable-warnings=fatal with gtkmm 3.1 and g++ 4.6.
+  - Require latest libepc, to avoid use of both GTK+ 3 and GTK+ 2.
+  - Use EggSpreadTableDnd, though it has crashes during layout drag-and-drop.
+(Murray Cumming
+  
 1.19.4 (unstable):
 
 * Calculated fields and button scripts:

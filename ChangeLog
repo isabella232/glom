@@ -1,3 +1,5 @@
+1.19.5:
+
 2011-06-21  Murray Cumming  <murrayc@murrayc.com>
 
 	Require the latest libgdamm, for the GdaNull changes.
