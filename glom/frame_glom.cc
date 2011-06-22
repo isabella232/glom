@@ -113,7 +113,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_pDialogConnection(0)
 {
   //Load widgets from glade file:
-  builder->get_widget("label_table_name", m_pLabel_Table);
+  builder->get_widget("label_table_name_main", m_pLabel_Table);
 
   builder->get_widget("hbox_header", m_box_header);
   builder->get_widget("hbox_footer", m_box_footer);

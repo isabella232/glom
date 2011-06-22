@@ -1,5 +1,16 @@
 2011-06-22  Murray Cumming  <murrayc@murrayc.com>
 
+	glom.glade: Resave with glade.
+
+	* glom/glom.glade: Resave with glade 3.10, which changes 
+	object IDs to be unique across the whole file.
+	Chose human-readable IDs instead of number suffixes.
+	* glom/navigation/box_tables.cc:
+	* glom/frame_glom.cc: Adapted the code.
+	This is rather tedious and just makes code less readable.
+
+2011-06-22  Murray Cumming  <murrayc@murrayc.com>
+
 	glom.glade: Reorder top-levels alphabetically.
 
 	* glom/glom.glade: Glade now does this when saving,

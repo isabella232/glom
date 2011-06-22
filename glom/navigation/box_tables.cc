@@ -43,7 +43,7 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 {
   //Get the Glade-instantiated widgets, and connect signal handlers:
   Gtk::Button* pButtonCancel = 0;
-  builder->get_widget("button_cancel", pButtonCancel);
+  builder->get_widget("button_cancel_tables", pButtonCancel);
   set_button_cancel(*pButtonCancel);
 
   // Set a name for the AddDel TreeView, so it can be accessed by LDTP
