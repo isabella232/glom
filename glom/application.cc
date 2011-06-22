@@ -460,20 +460,6 @@ void Application::init_menus()
   m_listTableSensitiveActions.push_back(action);
 #endif
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  //"UserLevel" menu:
-  m_refActionGroup_Others->add(Gtk::Action::create("Glom_Menu_userlevel", _("_User Level")));
-  Gtk::RadioAction::Group group_userlevel;
-
-  m_action_menu_userlevel_developer = Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Developer", C_("User-level menu item", "_Developer"));
-  m_refActionGroup_Others->add(m_action_menu_userlevel_developer,
-                        sigc::mem_fun(*this, &Application::on_menu_userlevel_developer) );
-
-  m_action_menu_userlevel_operator =  Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Operator", C_("User-level menu item", "_Operator"));
-  m_refActionGroup_Others->add(m_action_menu_userlevel_operator,
-                          sigc::mem_fun(*this, &Application::on_menu_userlevel_operator) );
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
   //"Mode" menu:
   action =  Gtk::Action::create("Glom_Menu_Mode", _("_Mode"));
   m_refActionGroup_Others->add(action);
@@ -486,8 +472,19 @@ void Application::init_menus()
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   action = Gtk::Action::create("Glom_Menu_Developer", C_("Developer menu title", "_Developer"));
-  m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action);
+
+
+  Gtk::RadioAction::Group group_userlevel;
+
+  m_action_menu_developer_developer = Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_Developer_Developer", _("_Developer Mode"));
+  m_refActionGroup_Others->add(m_action_menu_developer_developer,
+                        sigc::mem_fun(*this, &Application::on_menu_developer_developer) );
+
+  m_action_menu_developer_operator =  Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_Developer_Operator", _("_Operator Mode"));
+  m_refActionGroup_Others->add(m_action_menu_developer_operator,
+                          sigc::mem_fun(*this, &Application::on_menu_developer_operator) );
+
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_Database_Preferences", _("_Database Preferences"));
   m_listDeveloperActions.push_back(action);
@@ -544,6 +541,7 @@ void Application::init_menus()
 
   //"Active Platform" menu:
   action =  Gtk::Action::create("Glom_Menu_Developer_ActivePlatform", _("_Active Platform"));
+  m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action);
   Gtk::RadioAction::Group group_active_platform;
 
@@ -605,11 +603,10 @@ void Application::init_menus()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
     "     </menu>"
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    "      <menu action='Glom_Menu_userlevel'>"
-    "        <menuitem action='GlomAction_Menu_userlevel_Developer' />"
-    "        <menuitem action='GlomAction_Menu_userlevel_Operator' />"
-    "      </menu>"
     "      <menu action='Glom_Menu_Developer'>"
+    "        <menuitem action='GlomAction_Menu_Developer_Developer' />"
+    "        <menuitem action='GlomAction_Menu_Developer_Operator' />"
+    "        <separator />"
     "        <menuitem action='GlomAction_Menu_Developer_Fields' />"
     "        <menuitem action='GlomAction_Menu_Developer_Relationships' />"
     "        <menuitem action='GlomAction_Menu_Developer_RelationshipsOverview' />"
@@ -660,20 +657,20 @@ void Application::on_menu_file_toggle_share()
   m_pFrame->on_menu_file_toggle_share(m_toggleaction_network_shared);
 }
 
-void Application::on_menu_userlevel_developer()
+void Application::on_menu_developer_developer()
 {
   if(!m_pFrame)
     return;
 
-  m_pFrame->on_menu_userlevel_Developer(m_action_menu_userlevel_developer, m_action_menu_userlevel_operator);
+  m_pFrame->on_menu_developer_developer(m_action_menu_developer_developer, m_action_menu_developer_operator);
   m_pFrame->show_layout_toolbar(m_action_show_layout_toolbar->get_active());
 }
 
-void Application::on_menu_userlevel_operator()
+void Application::on_menu_developer_operator()
 {
   if(m_pFrame)
   {
-    m_pFrame->on_menu_userlevel_Operator(m_action_menu_userlevel_operator);
+    m_pFrame->on_menu_developer_operator(m_action_menu_developer_operator);
     m_pFrame->show_layout_toolbar(false);
   }
 }
@@ -1378,6 +1375,8 @@ void Application::on_userlevel_changed(AppState::userlevels /* userlevel */)
 
 void Application::update_table_sensitive_ui()
 {
+  AppState::userlevels userlevel = get_userlevel();
+
   bool has_table = false;
 
   if(m_pFrame)
@@ -1386,7 +1385,9 @@ void Application::update_table_sensitive_ui()
   for(type_listActions::iterator iter = m_listTableSensitiveActions.begin(); iter != m_listTableSensitiveActions.end(); ++iter)
   {
     Glib::RefPtr<Gtk::Action> action = *iter;
-    action->set_sensitive(has_table);
+
+    const bool sensitive = (userlevel == AppState::USERLEVEL_DEVELOPER) && has_table;
+    action->set_sensitive(sensitive);
   }
 }
 
@@ -1417,13 +1418,13 @@ void Application::update_userlevel_ui()
   //We only need to set/unset one, because the others are in the same radio group.
   if(userlevel ==  AppState::USERLEVEL_DEVELOPER)
   {
-    if(!m_action_menu_userlevel_developer->get_active())
-      m_action_menu_userlevel_developer->set_active();
+    if(!m_action_menu_developer_developer->get_active())
+      m_action_menu_developer_developer->set_active();
   }
   else if(userlevel ==  AppState::USERLEVEL_OPERATOR)
   {
-    if(!m_action_menu_userlevel_operator->get_active())
-      m_action_menu_userlevel_operator->set_active();
+    if(!m_action_menu_developer_operator->get_active())
+      m_action_menu_developer_operator->set_active();
     // Remove the drag layout toolbar
   }
 }

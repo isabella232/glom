@@ -81,7 +81,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_pLabel_Table(0),
   m_box_header(0),
   m_box_footer(0),
-  m_pLabel_userlevel(0),
   m_pBox_RecordsCount(0),
   m_pLabel_RecordsCount(0),
   m_pLabel_FoundCount(0),
@@ -116,7 +115,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 
   builder->get_widget("hbox_header", m_box_header);
   builder->get_widget("hbox_footer", m_box_footer);
-  builder->get_widget("label_user_level", m_pLabel_userlevel);
 
   //Hide unnecessary widgets on maemo that take too much space,
   //and reduce the border width:
@@ -512,7 +510,7 @@ void Frame_Glom::show_no_table()
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction>& action, const Glib::RefPtr<Gtk::RadioAction>& operator_action)
+void Frame_Glom::on_menu_developer_developer(const Glib::RefPtr<Gtk::RadioAction>& action, const Glib::RefPtr<Gtk::RadioAction>& operator_action)
 {
   if(action && action->get_active())
   {
@@ -587,7 +585,7 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
   }
 }
 
-void Frame_Glom::on_menu_userlevel_Operator(const Glib::RefPtr<Gtk::RadioAction>& action)
+void Frame_Glom::on_menu_developer_operator(const Glib::RefPtr<Gtk::RadioAction>& action)
 {
   if(action &&  action->get_active())
   {
@@ -1438,17 +1436,9 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
   }
 }
 
-void Frame_Glom::on_userlevel_changed(AppState::userlevels userlevel)
+void Frame_Glom::on_userlevel_changed(AppState::userlevels /* userlevel */)
 {
-  //show user level:
-  //The _C macro provides translator context.
-  Glib::ustring user_level_name = C_("Mode", "Operator");
-  if(userlevel == AppState::USERLEVEL_DEVELOPER)
-    user_level_name = C_("Mode", "Developer");
-
-  if(m_pLabel_userlevel)
-    m_pLabel_userlevel->set_text(user_level_name);
-
+  //show user level in the window title:
   show_table_title();
 }
 

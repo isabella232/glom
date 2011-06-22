@@ -78,8 +78,8 @@ public:
   void on_box_reports_selected(const Glib::ustring& strName);
   void on_box_print_layouts_selected(const Glib::ustring& strName);
 
-  void on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction>& action, const Glib::RefPtr<Gtk::RadioAction>& operator_action);
-  void on_menu_userlevel_Operator(const Glib::RefPtr<Gtk::RadioAction>& action);
+  void on_menu_developer_developer(const Glib::RefPtr<Gtk::RadioAction>& action, const Glib::RefPtr<Gtk::RadioAction>& operator_action);
+  void on_menu_developer_operator(const Glib::RefPtr<Gtk::RadioAction>& action);
 
   void on_menu_file_export();
   void on_menu_file_import();
@@ -256,7 +256,6 @@ private:
   Gtk::Label* m_pLabel_Table;
   Gtk::HBox* m_box_header;
   Gtk::HBox* m_box_footer;
-  Gtk::Label* m_pLabel_userlevel;
 
   Gtk::HBox* m_pBox_RecordsCount; //Only show this when in Data mode.
   Gtk::Label* m_pLabel_RecordsCount;

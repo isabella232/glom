@@ -173,8 +173,8 @@ private:
   void existing_or_new_new();
 
   void on_menu_file_toggle_share();
-  void on_menu_userlevel_developer();
-  void on_menu_userlevel_operator();
+  void on_menu_developer_developer();
+  void on_menu_developer_operator();
   void on_menu_file_save_as_example();
   void on_menu_developer_changelanguage();
   void on_menu_developer_translations();
@@ -236,7 +236,7 @@ private:
   Glib::RefPtr<Gtk::Action> m_action_mode_find;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gtk::Action> m_action_developer_users;
-  Glib::RefPtr<Gtk::RadioAction> m_action_menu_userlevel_developer, m_action_menu_userlevel_operator;
+  Glib::RefPtr<Gtk::RadioAction> m_action_menu_developer_developer, m_action_menu_developer_operator;
   Glib::RefPtr<Gtk::ToggleAction> m_action_show_layout_toolbar;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

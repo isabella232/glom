@@ -1,5 +1,17 @@
 2011-06-22  Murray Cumming  <murrayc@murrayc.com>
 
+	Remove the User Level menu and the User Level label.
+
+	* glom/glom.glade: Main window: Remove the User Level label.
+	* glom/application.[h|cc]:
+	* glom/frame_glom.[h|cc]: Remove the User Level menu, moving 
+	its two radio menu items to the top of the Developer menu.
+	init_menus(), update_table_sensitive_ui(): Make sure that all
+	developer items are deactivated in operator mode, now that 
+	we don't just deactivate the whole developer menu.
+
+2011-06-22  Murray Cumming  <murrayc@murrayc.com>
+
 	Main window: Simplify widgets at top.
 
 	* glom/glom.glade:
