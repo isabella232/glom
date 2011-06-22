@@ -460,10 +460,6 @@ void Application::init_menus()
   m_listTableSensitiveActions.push_back(action);
 #endif
 
-  //"Mode" menu:
-  action =  Gtk::Action::create("Glom_Menu_Mode", _("_Mode"));
-  m_refActionGroup_Others->add(action);
-
   //We remember this action, so that it can be explicitly activated later.
   m_action_mode_find = Gtk::ToggleAction::create("GlomAction_Menu_Mode_Toggle", _("_Find"), "", false);
   m_refActionGroup_Others->add(m_action_mode_find,  Gtk::AccelKey("<control>F"),
@@ -1385,8 +1381,14 @@ void Application::update_table_sensitive_ui()
   for(type_listActions::iterator iter = m_listTableSensitiveActions.begin(); iter != m_listTableSensitiveActions.end(); ++iter)
   {
     Glib::RefPtr<Gtk::Action> action = *iter;
+ 
+    bool sensitive = has_table;
 
-    const bool sensitive = (userlevel == AppState::USERLEVEL_DEVELOPER) && has_table;
+    const bool is_developer_item = 
+      (std::find(m_listDeveloperActions.begin(), m_listDeveloperActions.end(), action) != m_listDeveloperActions.end());
+    if(is_developer_item)
+      sensitive = sensitive && (userlevel == AppState::USERLEVEL_DEVELOPER);
+
     action->set_sensitive(sensitive);
   }
 }

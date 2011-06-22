@@ -1,3 +1,9 @@
+2011-06-23  Murray Cumming  <murrayc@murrayc.com>
+
+	Do not hide table-specific menu items in Operator mode.
+
+	* glom/application.cc: update_table_sensitive_ui().
+
 2011-06-22  Murray Cumming  <murrayc@murrayc.com>
 
 	Main Window: Combine the top two rows of widgets.
