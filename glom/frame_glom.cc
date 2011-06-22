@@ -81,7 +81,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_pLabel_Table(0),
   m_box_header(0),
   m_box_footer(0),
-  m_pLabel_Mode(0),
   m_pLabel_userlevel(0),
   m_pBox_RecordsCount(0),
   m_pLabel_RecordsCount(0),
@@ -117,7 +116,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 
   builder->get_widget("hbox_header", m_box_header);
   builder->get_widget("hbox_footer", m_box_footer);
-  builder->get_widget("label_mode", m_pLabel_Mode);
   builder->get_widget("label_user_level", m_pLabel_userlevel);
 
   //Hide unnecessary widgets on maemo that take too much space,
@@ -409,7 +407,6 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
 
   //Show the table:
   m_table_name = table_name;
-  Glib::ustring strMode;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Update the document with any new information in the database if necessary (though the database _should never have changed information)
   update_table_in_document_from_database();
@@ -426,7 +423,6 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
   {
     case(MODE_Data):
     {
-      strMode = _("Data");
       FoundSet found_set;
 
       //Start with the last-used found set (sort order and where clause)
@@ -477,7 +473,6 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
     }
     case(MODE_Find):
     {
-      strMode = _("Find");
       m_Notebook_Find.init_db_details(m_table_name, get_active_layout_platform(get_document()));
       set_mode_widget(m_Notebook_Find);
       break;
@@ -485,12 +480,9 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
     default:
     {
       std::cout << "debug: " << G_STRFUNC << ": Unexpected mode" << std::endl;
-      strMode = _("Unknown");
       break;
     }
   }
-
-  m_pLabel_Mode->set_text(strMode);
 
   show_table_title();
 
@@ -1483,10 +1475,9 @@ void Frame_Glom::show_table_title()
   if(app)
     app->set_title(document->get_name() + ": " + table_label);
 
-  // xx-large is too large on maemo, using far too much (vertical) space.
   // We hide this anyway: m_pLabel_Table->set_markup("<b>" + table_label + "</b>");
 #else
-  m_pLabel_Table->set_markup("<b><span size=\"xx-large\">" + table_label + "</span></b>"); //Show the table title in large text, because it's very important to the user.
+  m_pLabel_Table->set_markup("<b>" + table_label + "</b>"); //Show the table title in bold text, because it's important to the user.
 #endif
 }
 

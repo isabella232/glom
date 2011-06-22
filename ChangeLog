@@ -1,5 +1,15 @@
 2011-06-22  Murray Cumming  <murrayc@murrayc.com>
 
+	Main window: Simplify widgets at top.
+
+	* glom/glom.glade:
+	* glom/frame_glom.[h|cc]: Remove the Table: label. Make the 
+	table name normal sized, but still bold. Remove the mode 
+	labels, because there are only two modes now, and it should 
+	be obvious when you are in the middle of entering find criteria.
+
+2011-06-22  Murray Cumming  <murrayc@murrayc.com>
+
 	glom.glade: Resave with glade.
 
 	* glom/glom.glade: Resave with glade 3.10, which changes 
