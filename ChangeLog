@@ -1,5 +1,16 @@
 2011-06-22  Murray Cumming  <murrayc@murrayc.com>
 
+	Main Window: Combine the top two rows of widgets.
+
+	* glom/utility_widgets/notebook_noframe.[h|cc]: Add 
+	set_action_widget(), as in the GtkNotebook API.
+	* glom/glom.glade:
+	* glom/frame_glom.[h|cc]: Remove the top HBox, instead 
+	putting the table name label in the notebook widget, 
+	at the left of the tabs.
+
+2011-06-22  Murray Cumming  <murrayc@murrayc.com>
+
 	Remove the User Level menu and the User Level label.
 
 	* glom/glom.glade: Main window: Remove the User Level label.

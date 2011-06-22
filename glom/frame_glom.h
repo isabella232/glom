@@ -254,7 +254,6 @@ private:
 
   //Child widgets:
   Gtk::Label* m_pLabel_Table;
-  Gtk::HBox* m_box_header;
   Gtk::HBox* m_box_footer;
 
   Gtk::HBox* m_pBox_RecordsCount; //Only show this when in Data mode.

@@ -50,6 +50,8 @@ public:
   int get_current_page() const;
   void set_current_page(int page_num);
 
+  void set_action_widget(Gtk::Widget* widget, Gtk::PackType pack_type);
+
   typedef sigc::signal<void, Gtk::Widget*, guint> type_signal_switch_page;
 
   type_signal_switch_page signal_switch_page();
@@ -57,8 +59,9 @@ public:
 protected:
   void on_tab_toggled(int index);
 
-  Gtk::ButtonBox m_box_tabs;
+  Gtk::Box m_box_tabs;
   Gtk::Box m_box_pages;
+  Gtk::Box m_box_action_left, m_box_action_right;
 
   type_signal_switch_page m_signal_switch_page;
 

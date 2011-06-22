@@ -35,9 +35,12 @@ NotebookNoFrame::NotebookNoFrame()
   set_spacing(Utils::DEFAULT_SPACING_SMALL);
 
   m_box_tabs.set_spacing(Utils::DEFAULT_SPACING_SMALL);
-  m_box_tabs.set_layout(Gtk::BUTTONBOX_START);
+  m_box_tabs.pack_start(m_box_action_left, Gtk::PACK_SHRINK);
+  m_box_tabs.pack_end(m_box_action_right, Gtk::PACK_SHRINK);
+
   pack_start(m_box_tabs, Gtk::PACK_SHRINK);
   m_box_tabs.show();
+
 
   pack_start(m_box_pages);
   m_box_pages.show();
@@ -129,7 +132,7 @@ int NotebookNoFrame::append_page(Gtk::Widget& child, Gtk::Widget& tab_label)
   toggle->set_active(false);
   toggle->add(tab_label);
   toggle->show();
-  m_box_tabs.pack_start(*toggle);
+  m_box_tabs.pack_start(*toggle, Gtk::PACK_SHRINK);
   m_vec_tab_widgets.push_back(toggle);
 
   //We put the child into a box so we can show or hide it regardless of
@@ -197,5 +200,20 @@ void NotebookNoFrame::on_tab_toggled(int index)
   Gtk::Widget* child = get_nth_page(new_current_page);
   m_signal_switch_page.emit(child, new_current_page);
 }
+
+void NotebookNoFrame::set_action_widget(Gtk::Widget* widget, Gtk::PackType pack_type)
+{
+  if(pack_type == Gtk::PACK_START)
+  {
+    m_box_action_left.pack_start(*widget, Gtk::PACK_SHRINK);
+    m_box_action_left.show();
+  }
+  else
+  {
+    m_box_action_right.pack_end(*widget, Gtk::PACK_SHRINK);
+    m_box_action_right.show();
+  }
+}
+
 
 } //namespace Glom

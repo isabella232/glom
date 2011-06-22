@@ -79,7 +79,6 @@ namespace Glom
 Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : PlaceHolder(cobject, builder),
   m_pLabel_Table(0),
-  m_box_header(0),
   m_box_footer(0),
   m_pBox_RecordsCount(0),
   m_pLabel_RecordsCount(0),
@@ -111,18 +110,18 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_pDialogConnection(0)
 {
   //Load widgets from glade file:
-  builder->get_widget("label_table_name_main", m_pLabel_Table);
-
-  builder->get_widget("hbox_header", m_box_header);
   builder->get_widget("hbox_footer", m_box_footer);
 
   //Hide unnecessary widgets on maemo that take too much space,
   //and reduce the border width:
   #ifdef GLOM_ENABLE_MAEMO
-  m_box_header->hide();
   m_box_footer->hide();
   set_border_width(Glom::Utils::DEFAULT_SPACING_LARGE);
   #endif
+
+  m_pLabel_Table = Gtk::manage(new Gtk::Label(_("No Table Selected")));
+  m_pLabel_Table->show();
+  m_Notebook_Data.set_action_widget(m_pLabel_Table, Gtk::PACK_START);
 
   //QuickFind widgets:
   //We don't use Glade for these, so it easier to modify them for the Maemo port.
