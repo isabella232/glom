@@ -1,3 +1,11 @@
+2011-06-22  Murray Cumming  <murrayc@murrayc.com>
+
+	glom.glade: Reorder top-levels alphabetically.
+
+	* glom/glom.glade: Glade now does this when saving,
+	so this will make it easier to see what else Glade 
+	has changed.
+
 1.19.5:
 
 2011-06-21  Murray Cumming  <murrayc@murrayc.com>
