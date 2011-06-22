@@ -78,7 +78,8 @@ namespace Glom
 
 Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : PlaceHolder(cobject, builder),
-  m_pLabel_Table(0),
+  m_pLabel_Table_DataMode(0),
+  m_pLabel_Table_FindMode(0),
   m_box_footer(0),
   m_pBox_RecordsCount(0),
   m_pLabel_RecordsCount(0),
@@ -119,9 +120,13 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   set_border_width(Glom::Utils::DEFAULT_SPACING_LARGE);
   #endif
 
-  m_pLabel_Table = Gtk::manage(new Gtk::Label(_("No Table Selected")));
-  m_pLabel_Table->show();
-  m_Notebook_Data.set_action_widget(m_pLabel_Table, Gtk::PACK_START);
+  m_pLabel_Table_DataMode = Gtk::manage(new Gtk::Label(_("No Table Selected")));
+  m_pLabel_Table_DataMode->show();
+  m_Notebook_Data.set_action_widget(m_pLabel_Table_DataMode, Gtk::PACK_START);
+
+  m_pLabel_Table_FindMode = Gtk::manage(new Gtk::Label(_("No Table Selected")));
+  m_pLabel_Table_FindMode->show();
+  m_Notebook_Find.set_action_widget(m_pLabel_Table_FindMode, Gtk::PACK_START);
 
   //QuickFind widgets:
   //We don't use Glade for these, so it easier to modify them for the Maemo port.
@@ -1466,7 +1471,10 @@ void Frame_Glom::show_table_title()
 
   // We hide this anyway: m_pLabel_Table->set_markup("<b>" + table_label + "</b>");
 #else
-  m_pLabel_Table->set_markup("<b>" + table_label + "</b>"); //Show the table title in bold text, because it's important to the user.
+  //Show the table title in bold text, because it's important to the user.
+  const Glib::ustring title = "<b>" + table_label + "</b>";
+  m_pLabel_Table_DataMode->set_markup(title);
+  m_pLabel_Table_FindMode->set_markup(title);
 #endif
 }
 

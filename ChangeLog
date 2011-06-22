@@ -1,5 +1,12 @@
 2011-06-23  Murray Cumming  <murrayc@murrayc.com>
 
+	Main window: Show the table title in find mode too.
+
+	* glom/frame_glom.[h|cc]: Use an extra label for the 
+	find mode.
+
+2011-06-23  Murray Cumming  <murrayc@murrayc.com>
+
 	Do not hide table-specific menu items in Operator mode.
 
 	* glom/application.cc: update_table_sensitive_ui().

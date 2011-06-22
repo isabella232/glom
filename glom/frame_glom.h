@@ -253,7 +253,8 @@ private:
   Glib::ustring m_table_name;
 
   //Child widgets:
-  Gtk::Label* m_pLabel_Table;
+  Gtk::Label* m_pLabel_Table_DataMode;
+  Gtk::Label* m_pLabel_Table_FindMode;
   Gtk::HBox* m_box_footer;
 
   Gtk::HBox* m_pBox_RecordsCount; //Only show this when in Data mode.
