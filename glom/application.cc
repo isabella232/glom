@@ -1448,8 +1448,6 @@ Hildon::AppMenu* Application::get_maemo_appmenu()
 bool Application::offer_new_or_existing()
 {
   //Offer to load an existing document, or start a new one.
-  const Glib::ustring glade_path = Utils::get_glade_file_path("glom.glade");
-
   Dialog_ExistingOrNew* dialog_raw = 0;
   Utils::get_glade_widget_derived_with_warning(dialog_raw);
   std::auto_ptr<Dialog_ExistingOrNew> dialog(dialog_raw);

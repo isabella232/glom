@@ -84,14 +84,6 @@ void helper_get_glade_widget_derived_with_warning(const std::string& filename, c
   }
 }
 
-/*
-template<class T_Widget>
-void helper_get_glade_widget_derived_with_warning(const Glib::ustring&id, T_Widget*& widget)
-{
-  helper_get_glade_widget_derived_with_warning("glom.glade", id, widget);
-}
-*/
-
 /** This should be used with classes that have a static glade_id member.
  */
 template<class T_Widget>
@@ -102,7 +94,7 @@ void get_glade_widget_derived_with_warning(T_Widget*& widget)
   // Check the path to the installed .glade file:
   const Glib::ustring filename = T_Widget::glade_developer ? 
     Glib::build_filename("developer", "glom_developer.glade") : 
-    Glib::build_filename("operator", "glom.glade");
+    Glib::build_filename("operator", Glib::ustring(T_Widget::glade_id) + ".glade"); //The id is the same as the filename.
   
   helper_get_glade_widget_derived_with_warning(filename, T_Widget::glade_id, widget);
 }

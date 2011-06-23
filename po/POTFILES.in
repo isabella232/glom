@@ -132,5 +132,15 @@ glom/utility_widgets/layoutwidgetmenu.cc
 glom/utility_widgets/layoutwidgetutils.cc
 glom/utility_widgets/notebooklabelglom.cc
 glom/xsl_utils.cc
-ui/operator/glom.glade
+ui/operator/box_navigation_tables.glade
+ui/operator/dialog_choose_date.glade
+ui/operator/dialog_connection.glade
+ui/operator/dialog_data_invalid_format.glade
+ui/operator/dialog_existing_or_new.glade
+ui/operator/dialog_find_id.glade
+ui/operator/dialog_image_progress.glade
+ui/operator/dialog_import_csv.glade
+ui/operator/dialog_import_csv_progress.glade
+ui/operator/window_main.glade
+ui/operator/window_progress.glade
 ui/developer/glom_developer.glade

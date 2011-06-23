@@ -1,3 +1,12 @@
+2011-06-23  Murray Cumming  <murrayc@murrayc-desktop>
+
+	Split the operator .glade files up into one file per top-level ID.
+
+	* ui/operator/: Split the .glade files up, giving them the same names 
+	as the top-level (or almost top-level) IDs that the code looks for.
+	* glom/glade_utils.h: get_glade_widget_derived_with_warning(): Guess the 
+	filename based on the requested ID.
+
 2011-06-23  Murray Cumming  <murrayc@murrayc.com>
 
 	Move .glade files into subdirectories under ui/

@@ -82,8 +82,19 @@ dist_pkgdata_DATA = glom/glom_document.dtd
 
 
 glade_operatordir = $(pkgdatadir)/glade/operator
-dist_glade_operator_DATA = ui/operator/glom.glade
-
+dist_glade_operator_DATA = \
+	ui/operator/box_navigation_tables.glade \
+	ui/operator/dialog_choose_date.glade \
+	ui/operator/dialog_connection.glade \
+	ui/operator/dialog_data_invalid_format.glade \
+	ui/operator/dialog_existing_or_new.glade \
+	ui/operator/dialog_find_id.glade \
+	ui/operator/dialog_image_progress.glade \
+	ui/operator/dialog_import_csv.glade \
+	ui/operator/dialog_import_csv_progress.glade \
+	ui/operator/window_main.glade \
+	ui/operator/window_progress.glade
+		
 glade_developerdir = $(pkgdatadir)/glade/developer
 dist_glade_developer_DATA = ui/developer/glom_developer.glade
 
