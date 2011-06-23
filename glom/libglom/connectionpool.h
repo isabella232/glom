@@ -179,7 +179,7 @@ public:
 
   Field::sql_format get_sql_format() const;
   const FieldTypes* get_field_types() const;
-  Glib::ustring get_string_find_operator() const;
+  Gnome::Gda::SqlOperatorType get_string_find_operator() const;
 
   typedef Backend::InitErrors InitErrors;
 

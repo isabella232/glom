@@ -112,14 +112,14 @@ Gnome::Gda::SqlExpr Box_Data::get_find_where_clause() const
 
         if(use_this_field)
         {
-          const guint cond_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ, //TODO: Use field->sql_find_operator()
+          const guint cond_id = builder->add_cond(field->sql_find_operator(),
             builder->add_field_id(field->get_name(), m_table_name),
-            builder->add_expr(data));
+            builder->add_expr( field->sql_find(data) ));
 
           //And with previous condition, if any:
           if(where_cond_id)
           {
-            where_cond_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND, //TODO: Use field->sql_find_operator()
+            where_cond_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
               where_cond_id,
               cond_id);
           }

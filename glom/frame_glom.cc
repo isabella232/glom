@@ -1387,7 +1387,7 @@ void Frame_Glom::on_button_quickfind()
   else
   {
     const Gnome::Gda::SqlExpr where_clause = Utils::get_find_where_clause_quick(get_document(), m_table_name, Gnome::Gda::Value(criteria));
-    //std::cout << "debug: " << G_STRFUNC << ": where_clause=" << where_clause << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": where_clause=" << where_clause.serialize() << std::endl;
     on_notebook_find_criteria(where_clause);
   }
 }

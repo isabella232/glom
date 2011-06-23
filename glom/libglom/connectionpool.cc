@@ -467,7 +467,7 @@ const FieldTypes* ConnectionPool::get_field_types() const
   return m_pFieldTypes;
 }
 
-Glib::ustring ConnectionPool::get_string_find_operator() const
+Gnome::Gda::SqlOperatorType ConnectionPool::get_string_find_operator() const
 {
   g_assert(m_backend.get());
   return m_backend->get_string_find_operator();
