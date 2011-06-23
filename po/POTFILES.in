@@ -132,5 +132,5 @@ glom/utility_widgets/layoutwidgetmenu.cc
 glom/utility_widgets/layoutwidgetutils.cc
 glom/utility_widgets/notebooklabelglom.cc
 glom/xsl_utils.cc
-ui/glom_developer.glade
-ui/glom.glade
+ui/operator/glom.glade
+ui/developer/glom_developer.glade

@@ -1,5 +1,9 @@
 2011-06-23  Murray Cumming  <murrayc@murrayc.com>
 
+	Move .glade files into subdirectories under ui/
+
+2011-06-23  Murray Cumming  <murrayc@murrayc.com>
+
 	Move .glade files into a ui/ directory.
 
 	* glom/glom.glade:

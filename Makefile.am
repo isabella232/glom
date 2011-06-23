@@ -80,8 +80,13 @@ include Makefile_tests.am
 
 dist_pkgdata_DATA = glom/glom_document.dtd
 
-gladedir = $(pkgdatadir)/glade
-dist_glade_DATA = ui/glom.glade ui/glom_developer.glade
+
+glade_operatordir = $(pkgdatadir)/glade/operator
+dist_glade_operator_DATA = ui/operator/glom.glade
+
+glade_developerdir = $(pkgdatadir)/glade/developer
+dist_glade_developer_DATA = ui/developer/glom_developer.glade
+
 
 xsltdir = $(pkgdatadir)/xslt
 dist_xslt_DATA = xslt/print_details_to_html.xsl xslt/print_report_to_html.xsl

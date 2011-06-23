@@ -34,7 +34,6 @@ namespace Utils
 
 inline std::string get_glade_file_path(const std::string& filename)
 {
-  // Check the path to the installed .glade file:
 #ifdef G_OS_WIN32
   gchar* directory = g_win32_get_package_installation_directory_of_module(0);
   const std::string result = Glib::build_filename(directory, Glib::build_filename("share/glom/glade", filename));
@@ -85,11 +84,13 @@ void helper_get_glade_widget_derived_with_warning(const std::string& filename, c
   }
 }
 
+/*
 template<class T_Widget>
-void helper_get_glade_widget_derived_with_warning(const Glib::ustring& id, T_Widget*& widget)
+void helper_get_glade_widget_derived_with_warning(const Glib::ustring&id, T_Widget*& widget)
 {
   helper_get_glade_widget_derived_with_warning("glom.glade", id, widget);
 }
+*/
 
 /** This should be used with classes that have a static glade_id member.
  */
@@ -98,10 +99,12 @@ void get_glade_widget_derived_with_warning(T_Widget*& widget)
 {
   widget = 0;
 
-  if(T_Widget::glade_developer)
-    helper_get_glade_widget_derived_with_warning("glom_developer.glade", T_Widget::glade_id, widget);
-  else
-    helper_get_glade_widget_derived_with_warning("glom.glade", T_Widget::glade_id, widget);
+  // Check the path to the installed .glade file:
+  const Glib::ustring filename = T_Widget::glade_developer ? 
+    Glib::build_filename("developer", "glom_developer.glade") : 
+    Glib::build_filename("operator", "glom.glade");
+  
+  helper_get_glade_widget_derived_with_warning(filename, T_Widget::glade_id, widget);
 }
 
 
