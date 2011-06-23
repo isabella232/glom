@@ -1027,6 +1027,10 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const Document* document,
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_target(table_name);
 
+  //We need to add some fields to select,
+  //because otherwise the SqlBuilder would not contain a valid query.
+  builder->select_add_field("*", table_name);
+
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document was null." << std::endl;
@@ -1036,7 +1040,7 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const Document* document,
   //TODO: Cache the list of all fields, as well as caching (m_Fields) the list of all visible fields:
   const Document::type_vec_fields fields = document->get_table_fields(table_name);
 
-  guint previous_and_id = 0;
+  guint previous_id = 0;
   typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
   type_vecLayoutFields fieldsToGet;
   for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
@@ -1053,28 +1057,31 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const Document* document,
 
     if(use_this_field)
     {
-      const guint eq_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ, //TODO: Ue field->sql_find_operator().
+      //std::cout << "Using field: " << field->get_name() << std::endl;
+      const guint eq_id = builder->add_cond(field->sql_find_operator(),
         builder->add_field_id(field->get_name(), table_name),
-        builder->add_expr(quick_search)); //Use  field->sql_find(quick_search);
+        builder->add_expr( field->sql_find(quick_search) )); //sql_find() modifies the value for the operator.
 
-      guint and_id = 0;
-      if(previous_and_id)
+      if(previous_id)
       {
-        and_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
-        previous_and_id, eq_id);
+        const guint or_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_OR,
+          previous_id, eq_id);
+        previous_id = or_id;
       }
-
-      previous_and_id = and_id;
+      else
+        previous_id = eq_id;
     }
   }
 
-  if(previous_and_id)
+  if(previous_id)
   {
-    builder->set_where(previous_and_id); //This might be unnecessary.
-    return builder->export_expression(previous_and_id);
+    builder->set_where(previous_id); //This might be unnecessary.
+    //std::cout << G_STRFUNC << ": builder: " << sqlbuilder_get_full_query(builder) << std::endl; 
+    return builder->export_expression(previous_id);
   }
   else
   {
+    std::cerr << G_STRFUNC << ": Returning null SqlExpr" << std::endl;
     return Gnome::Gda::SqlExpr();
   }
 }

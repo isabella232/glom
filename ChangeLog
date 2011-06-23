@@ -1,4 +1,27 @@
+2011-06-23  Murray Cumming  <murrayc@murrayc.com>
+
+	Find: Use backend-specific LIKE or ILIKE operator instead of =.
+
+	* glom/libglom/connectionpool.[h|cc]:
+	* glom/libglom/connectionpool_backends/backend.h:
+	* glom/libglom/connectionpool_backends/postgres.h:
+	* glom/libglom/connectionpool_backends/sqlite.h:
+	get_string_find_operator(): Return the Gnome::Gda operator enum 
+	instead of the operator as a string.
+	* glom/libglom/data_structure/field.[h|cc]: sql_find_operator():
+	Likewise, return the Gnome::Gda operator enum.
+	* glom/libglom/utils.cc: get_find_where_clause_quick():
+	* glom/mode_data/box_data.cc: get_find_where_clause():
+	Use Field::sql_find_operator() and Field::sql_find(), as per 
+	the TODO comments.
+
+	This was code that I forgot to change properly when porting to 
+	use Gnome::Gda::SqlBuilder, so this has been broken since 
+	Glom 1.16.
+	Find still does not work.
+
 1.18.2:
+=======
 
 2011-06-17  Murray Cumming  <murrayc@murrayc.com>
 

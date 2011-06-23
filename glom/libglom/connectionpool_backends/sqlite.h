@@ -40,7 +40,7 @@ public:
 private:
   virtual Field::sql_format get_sql_format() const { return Field::SQL_FORMAT_SQLITE; }
   virtual bool supports_remote_access() const { return false; }
-  virtual Glib::ustring get_string_find_operator() const { return "LIKE"; }
+  virtual Gnome::Gda::SqlOperatorType get_string_find_operator() const { return Gnome::Gda::SQL_OPERATOR_TYPE_LIKE; }
   virtual const char* get_public_schema_name() const { return "main"; }
 
   bool add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, GdaMetaTableColumn* column, unsigned int i, std::auto_ptr<Glib::Error>& error);

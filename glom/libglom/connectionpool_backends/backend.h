@@ -115,7 +115,7 @@ protected:
    * TODO: Maybe we can use libgda to construct the expression, so we don't
    * need this function.
    */
-  virtual Glib::ustring get_string_find_operator() const = 0;
+  virtual Gnome::Gda::SqlOperatorType get_string_find_operator() const = 0;
 
   /** This specifies the database schema which contains the non-internal
    * tables. This is used to speedup the libgda meta store update by only
