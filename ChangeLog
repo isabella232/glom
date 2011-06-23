@@ -1,5 +1,13 @@
 2011-06-23  Murray Cumming  <murrayc@murrayc.com>
 
+	Field::sql_find(): Do not quote the string.
+
+	* glom/libglom/data_structure/field.cc: SqlBuilder already takes 
+	care of quoting so this just changed the actual value.
+	This makes Quick Find work again.
+
+2011-06-23  Murray Cumming  <murrayc@murrayc.com>
+
 	Find: Use backend-specific LIKE or ILIKE operator instead of =.
 
 	* glom/libglom/connectionpool.[h|cc]:

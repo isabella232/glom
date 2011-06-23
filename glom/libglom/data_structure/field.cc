@@ -375,7 +375,7 @@ Glib::ustring Field::sql_find(const Gnome::Gda::Value& value) const
       if(value.is_null())
         return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
       else
-        return ("'%" + value.to_string() + "%'"); //Add single-quotes. TODO: Actually escape it.
+        return ("%" + value.to_string() + "%"); //TODO: Escape it before adding "%", but then prevent SqlBuilder from re-escaping it.
         
       break;
     }
