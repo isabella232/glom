@@ -64,7 +64,7 @@ glom_defines = \
 -DGLOM_DOCDIR_EXAMPLES_NOTINSTALLED=\""$(abs_top_srcdir)/examples"\" \
 -DGLOM_LOCALEDIR=\""$(glom_localedir)"\" \
 -DGLOM_PKGDATADIR=\""$(pkgdatadir)"\" \
--DGLOM_PKGDATADIR_NOTINSTALLED=\""$(top_srcdir)/glom"\"
+-DGLOM_PKGDATADIR_NOTINSTALLED=\""$(top_srcdir)/ui"\"
 
 # We use these instead of individual variables,
 # to avoid repetition, becase we really want to use 
@@ -81,7 +81,7 @@ include Makefile_tests.am
 dist_pkgdata_DATA = glom/glom_document.dtd
 
 gladedir = $(pkgdatadir)/glade
-dist_glade_DATA = glom/glom.glade glom/glom_developer.glade
+dist_glade_DATA = ui/glom.glade ui/glom_developer.glade
 
 xsltdir = $(pkgdatadir)/xslt
 dist_xslt_DATA = xslt/print_details_to_html.xsl xslt/print_report_to_html.xsl

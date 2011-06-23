@@ -11,8 +11,6 @@ glom/dialog_connection.cc
 glom/dialog_existing_or_new.cc
 glom/filechooser_export.cc
 glom/frame_glom.cc
-glom/glom_developer.glade
-glom/glom.glade
 glom/glade_utils.cc
 glom/utils_ui.cc
 glom/bakery/app.cc
@@ -134,3 +132,5 @@ glom/utility_widgets/layoutwidgetmenu.cc
 glom/utility_widgets/layoutwidgetutils.cc
 glom/utility_widgets/notebooklabelglom.cc
 glom/xsl_utils.cc
+ui/glom_developer.glade
+ui/glom.glade

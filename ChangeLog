@@ -1,5 +1,14 @@
 2011-06-23  Murray Cumming  <murrayc@murrayc.com>
 
+	Move .glade files into a ui/ directory.
+
+	* glom/glom.glade:
+	* glom/glom_developer.glade: Moved to 
+	* ui/
+	This will be useful when they are split up more.
+
+2011-06-23  Murray Cumming  <murrayc@murrayc.com>
+
 	Main window: Show the table title in find mode too.
 
 	* glom/frame_glom.[h|cc]: Use an extra label for the 
