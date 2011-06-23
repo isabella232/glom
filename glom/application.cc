@@ -409,7 +409,7 @@ void Application::init_menus()
 
   add_button_to_appmenu(m_maemo_appmenu,
     _("Find"), _("Search for records in the table"),
-    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Toggle) );
+    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Edit_Find) );
 
   add_button_to_appmenu(m_maemo_appmenu,
     _("Add Record"), _("Create a new record in the table"),
@@ -461,9 +461,9 @@ void Application::init_menus()
 #endif
 
   //We remember this action, so that it can be explicitly activated later.
-  m_action_mode_find = Gtk::ToggleAction::create("GlomAction_Menu_Mode_Toggle", _("_Find"), "", false);
+  m_action_mode_find = Gtk::ToggleAction::create("GlomAction_Menu_Edit_Find", _("_Find"), "", false);
   m_refActionGroup_Others->add(m_action_mode_find,  Gtk::AccelKey("<control>F"),
-                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Toggle) );
+                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Edit_Find) );
   m_listTableSensitiveActions.push_back(m_action_mode_find);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -579,7 +579,7 @@ void Application::init_menus()
     "        <menuitem action='BakeryAction_Edit_Paste' />"
     "        <menuitem action='BakeryAction_Edit_Clear' />"
     "        <separator />"
-    "        <menuitem action='GlomAction_Menu_Mode_Toggle' />"
+    "        <menuitem action='GlomAction_Menu_Edit_Find' />"
     "      </menu>"
     "    </placeholder>"
     "    <placeholder name='Bakery_MenuPH_Others'>"

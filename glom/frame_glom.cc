@@ -1081,7 +1081,7 @@ void Frame_Glom::show_layout_toolbar (bool show)
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-void Frame_Glom::on_menu_Mode_Toggle()
+void Frame_Glom::on_menu_Edit_Find()
 {
   //Switch back to data mode if we are in find mode.
   if(m_Mode == MODE_Find)

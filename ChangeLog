@@ -1,5 +1,13 @@
 2011-06-23  Murray Cumming  <murrayc@murrayc.com>
 
+	Frame: Rename a signal handler.
+
+	* glom/frame_glom.[h|cc]: Rename on_menu_Mode_Toggle() to 
+	on_menu_Edit_Find() because that is what it is now.
+	* glom/application.cc: Adapted.
+
+2011-06-23  Murray Cumming  <murrayc@murrayc.com>
+
 	Main window: Moved the Records/Found widgets to the top-right.
 	
 	* ui/operator/window_main.glade: Remove the footer row of widgets.

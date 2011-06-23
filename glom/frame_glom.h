@@ -89,7 +89,7 @@ public:
   void on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>& action);
   void on_menu_file_print();
 
-  void on_menu_Mode_Toggle();
+  void on_menu_Edit_Find();
 
   //TODO: Actually put this in the menu for non-maemo too? #ifdef GLOM_ENABLE_MAEMO
   void on_menu_add_record();
