@@ -398,7 +398,7 @@ Glib::ustring Field::sql_find(const Gnome::Gda::Value& value) const
   }
 }
 
-Glib::ustring Field::sql_find_operator() const
+Gnome::Gda::SqlOperatorType Field::sql_find_operator() const
 {
   switch(get_glom_type())
   {
@@ -408,7 +408,7 @@ Glib::ustring Field::sql_find_operator() const
       if(connection_pool && connection_pool->get_backend())
         return connection_pool->get_string_find_operator();
       else
-        return "LIKE"; // Default
+        return Gnome::Gda::SQL_OPERATOR_TYPE_LIKE; // Default
       break;
     }
     case(TYPE_DATE):
@@ -417,7 +417,7 @@ Glib::ustring Field::sql_find_operator() const
     case(TYPE_BOOLEAN):
     default:
     {
-      return "=";
+      return Gnome::Gda::SQL_OPERATOR_TYPE_EQ;
       break;
     }
   }
