@@ -80,11 +80,8 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 : PlaceHolder(cobject, builder),
   m_pLabel_Table_DataMode(0),
   m_pLabel_Table_FindMode(0),
-  m_box_footer(0),
-  m_pBox_RecordsCount(0),
-  m_pLabel_RecordsCount(0),
-  m_pLabel_FoundCount(0),
-  m_pButton_FindAll(0),
+  m_Box_RecordsCount(false, Utils::DEFAULT_SPACING_SMALL),
+  m_Button_FindAll(_("Find All")),
   m_pBox_Mode(0),
 #ifndef GLOM_ENABLE_MAEMO
   m_pBox_Tables(0),
@@ -110,13 +107,9 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_dialog_progess_connection_cleanup(0),
   m_pDialogConnection(0)
 {
-  //Load widgets from glade file:
-  builder->get_widget("hbox_footer", m_box_footer);
-
   //Hide unnecessary widgets on maemo that take too much space,
   //and reduce the border width:
   #ifdef GLOM_ENABLE_MAEMO
-  m_box_footer->hide();
   set_border_width(Glom::Utils::DEFAULT_SPACING_LARGE);
   #endif
 
@@ -164,12 +157,17 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   placeholder_quickfind->add(*m_pBox_QuickFind);
   #endif //GLOM_ENABLE_MAEMO
 
-
-  builder->get_widget("hbox_records_count", m_pBox_RecordsCount);
-  builder->get_widget("label_records_count", m_pLabel_RecordsCount);
-  builder->get_widget("label_records_found_count", m_pLabel_FoundCount);
-  builder->get_widget("button_find_all", m_pButton_FindAll);
-  m_pButton_FindAll->signal_clicked().connect(
+  //Add the Records/Found widgets at the right of the notebook tabs:
+  m_Box_RecordsCount.pack_start(
+    *Gtk::manage(new Gtk::Label(_("Records:"))), Gtk::PACK_SHRINK);
+  m_Box_RecordsCount.pack_start(m_Label_RecordsCount, Gtk::PACK_SHRINK);
+  m_Box_RecordsCount.pack_start(
+    *Gtk::manage(new Gtk::Label(_("Found:"))), Gtk::PACK_SHRINK);
+  m_Box_RecordsCount.pack_start(m_Label_FoundCount, Gtk::PACK_SHRINK);
+  m_Box_RecordsCount.pack_start(m_Button_FindAll, Gtk::PACK_SHRINK);
+  m_Box_RecordsCount.show_all();
+  m_Notebook_Data.set_action_widget(&m_Box_RecordsCount, Gtk::PACK_END);
+  m_Button_FindAll.signal_clicked().connect(
     sigc::mem_fun(*this, &Frame_Glom::on_button_find_all) );
 
   builder->get_widget_derived("vbox_mode", m_pBox_Mode);
@@ -366,14 +364,10 @@ bool Frame_Glom::set_mode(enumModes mode)
       m_pEntry_QuickFind->grab_focus();
       //m_pButton_QuickFind->grab_default();
     }
-
-    m_pBox_RecordsCount->hide();
   }
   else
   {
     m_pBox_QuickFind->hide();
-
-    m_pBox_RecordsCount->show();
   }
 
   return changed;
@@ -2577,7 +2571,7 @@ void Frame_Glom::update_records_count()
     else
       str_count_found = str_count_all;
 
-    m_pButton_FindAll->hide();
+    m_Button_FindAll.hide();
   }
   else
   {
@@ -2585,11 +2579,11 @@ void Frame_Glom::update_records_count()
     the_stream << count_found;
     the_stream >> str_count_found;
 
-    m_pButton_FindAll->show();
+    m_Button_FindAll.show();
   }
 
-  m_pLabel_RecordsCount->set_text(str_count_all);
-  m_pLabel_FoundCount->set_text(str_count_found);
+  m_Label_RecordsCount.set_text(str_count_all);
+  m_Label_FoundCount.set_text(str_count_found);
 
 }
 

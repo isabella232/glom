@@ -255,12 +255,11 @@ private:
   //Child widgets:
   Gtk::Label* m_pLabel_Table_DataMode;
   Gtk::Label* m_pLabel_Table_FindMode;
-  Gtk::HBox* m_box_footer;
 
-  Gtk::HBox* m_pBox_RecordsCount; //Only show this when in Data mode.
-  Gtk::Label* m_pLabel_RecordsCount;
-  Gtk::Label* m_pLabel_FoundCount;
-  Gtk::Button* m_pButton_FindAll;
+  Gtk::HBox m_Box_RecordsCount; //Only show this when in Data mode.
+  Gtk::Label m_Label_RecordsCount;
+  Gtk::Label m_Label_FoundCount;
+  Gtk::Button m_Button_FindAll;
 
   PlaceHolder* m_pBox_Mode; //Contains e.g. design mode notebook.
 

@@ -1,4 +1,12 @@
-2011-06-23  Murray Cumming  <murrayc@murrayc-desktop>
+2011-06-23  Murray Cumming  <murrayc@murrayc.com>
+
+	Main window: Moved the Records/Found widgets to the top-right.
+	
+	* ui/operator/window_main.glade: Remove the footer row of widgets.
+	* glom/frame_glom.[h|cc]: Instead build them manually and add them (in a box) 
+	to the notebook at the right-hand side next to the tabs.
+
+2011-06-23  Murray Cumming  <murrayc@murrayc.com>
 
 	Split the operator .glade files up into one file per top-level ID.
 
