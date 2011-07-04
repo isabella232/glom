@@ -899,9 +899,9 @@ bool Postgres::supports_remote_access() const
 
 Gnome::Gda::SqlOperatorType Postgres::get_string_find_operator() const
 {
-  // TODO: ILIKE is a PostgreSQL extension for locale-dependent case-insensitive matches.
+  // ILIKE is a PostgreSQL extension for locale-dependent case-insensitive matches.
   //See http://developer.postgresql.org/pgdocs/postgres/functions-matching.html
-  return Gnome::Gda::SQL_OPERATOR_TYPE_LIKE;
+  return Gnome::Gda::SQL_OPERATOR_TYPE_ILIKE;
 }
 
 const char* Postgres::get_public_schema_name() const

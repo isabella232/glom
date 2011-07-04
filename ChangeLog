@@ -1,5 +1,15 @@
 2011-07-04  Murray Cumming  <murrayc@murrayc.com>
 
+	Find: Make searching case-insensitive again.
+
+	* glom/libglom/connectionpool_backends/postgres.cc:
+	get_string_find_operator(): Use ILIKE, though this requires the lastest 
+	libgdamm from git master.
+	Find has been case-sensitive since around glom 1.16, since we started 
+	using SqlBuilder.
+
+2011-07-04  Murray Cumming  <murrayc@murrayc.com>
+
 	Backends: Slight reorganization.
 
 	* glom/libglom/connectionpool_backends/backend.h:
