@@ -390,6 +390,25 @@ bool Sqlite::convert_backup(const SlotProgress& /* slot_progress */, const std::
   return false;
 }
 
+Field::sql_format Sqlite::get_sql_format() const
+{
+  return Field::SQL_FORMAT_SQLITE;
+}
+
+bool Sqlite::supports_remote_access() const
+{
+  return false;
+}
+
+Gnome::Gda::SqlOperatorType Sqlite::get_string_find_operator() const
+{
+  return Gnome::Gda::SQL_OPERATOR_TYPE_LIKE;
+}
+
+const char* Sqlite::get_public_schema_name() const
+{
+  return "main";
+}
 
 } // namespace ConnectionPoolBackends
 

@@ -56,10 +56,10 @@ public:
 
 
 private:
-  virtual Field::sql_format get_sql_format() const { return Field::SQL_FORMAT_POSTGRES; }
-  virtual bool supports_remote_access() const { return true; }
-  virtual Gnome::Gda::SqlOperatorType get_string_find_operator() const { return Gnome::Gda::SQL_OPERATOR_TYPE_LIKE;  } //TODO: Use ILIKE ILIKE is a postgres extension for locale-dependent case-insensitive matches.
-  virtual const char* get_public_schema_name() const { return "public"; }
+  virtual Field::sql_format get_sql_format() const;
+  virtual bool supports_remote_access() const;
+  virtual Gnome::Gda::SqlOperatorType get_string_find_operator() const;
+  virtual const char* get_public_schema_name() const;
 
   virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) throw();
 

@@ -38,10 +38,10 @@ public:
   Sqlite();
 
 private:
-  virtual Field::sql_format get_sql_format() const { return Field::SQL_FORMAT_SQLITE; }
-  virtual bool supports_remote_access() const { return false; }
-  virtual Gnome::Gda::SqlOperatorType get_string_find_operator() const { return Gnome::Gda::SQL_OPERATOR_TYPE_LIKE; }
-  virtual const char* get_public_schema_name() const { return "main"; }
+  virtual Field::sql_format get_sql_format() const;
+  virtual bool supports_remote_access() const;
+  virtual Gnome::Gda::SqlOperatorType get_string_find_operator() const;
+  virtual const char* get_public_schema_name() const;
 
   bool add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, GdaMetaTableColumn* column, unsigned int i);
   bool add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const sharedptr<const Field>& column, unsigned int i);

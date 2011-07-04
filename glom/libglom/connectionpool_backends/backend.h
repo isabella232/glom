@@ -99,11 +99,9 @@ protected:
    */
   virtual bool supports_remote_access() const = 0;
 
-  /** The operator to use to compare strings in a case-independant way. This
-   * is backend-depandent. For example, postgres uses ILIKE but SQLite uses
+  /** The operator to use to compare strings in a case-insensitive way. This
+   * is backend-dependent. For example, postgres uses ILIKE but SQLite uses
    * LIKE.
-   * TODO: Maybe we can use libgda to construct the expression, so we don't
-   * need this function.
    */
   virtual Gnome::Gda::SqlOperatorType get_string_find_operator() const = 0;
 

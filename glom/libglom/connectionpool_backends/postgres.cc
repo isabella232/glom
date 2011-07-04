@@ -887,6 +887,28 @@ bool Postgres::create_text_file(const std::string& file_uri, const std::string& 
   return true; //Success.
 }
 
+Field::sql_format Postgres::get_sql_format() const
+{
+  return Field::SQL_FORMAT_POSTGRES;
+}
+
+bool Postgres::supports_remote_access() const
+{
+  return true;
+}
+
+Gnome::Gda::SqlOperatorType Postgres::get_string_find_operator() const
+{
+  // TODO: ILIKE is a PostgreSQL extension for locale-dependent case-insensitive matches.
+  //See http://developer.postgresql.org/pgdocs/postgres/functions-matching.html
+  return Gnome::Gda::SQL_OPERATOR_TYPE_LIKE;
+}
+
+const char* Postgres::get_public_schema_name() const
+{
+  return "public";
+}
+
 } //namespace ConnectionPoolBackends
 
 } //namespace Glom
