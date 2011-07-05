@@ -708,7 +708,7 @@ int DbAddDel::get_fixed_cell_height()
   //TODO: Find out if this is reallyt the right way to calculate the correct height:
   int extra_height = 0;
   gtk_widget_style_get(GTK_WIDGET(m_TreeView.gobj()), "vertical-separator", &extra_height, (void*)0);
-  std::cout << "debug: extra_height=" << extra_height << std::endl;
+  //std::cout << "debug: extra_height=" << extra_height << std::endl;
 
   return m_fixed_cell_height + extra_height;
 }
