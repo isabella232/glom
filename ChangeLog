@@ -1,3 +1,11 @@
+2011-07-05  Murray Cumming  <murrayc@murrayc.com>
+
+	ListView: Make the rows high enough.
+
+	* glom/mode_data/db_adddel/db_adddel.cc: get_fixed_cell_height():
+	Add the GtkTreeView vertical-separator style property to the height, 
+	which might be the right thing to do, and which works here at least.
+
 2011-06-23  Murray Cumming  <murrayc@murrayc.com>
 
 	Field::sql_find(): Do not quote the string.
