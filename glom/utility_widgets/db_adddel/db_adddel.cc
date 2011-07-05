@@ -669,7 +669,7 @@ int DbAddDel::get_fixed_cell_height()
     // when all columns are known.
 
     //Get a default:
-    Glib::RefPtr<Pango::Layout> refLayout = create_pango_layout("example");
+    Glib::RefPtr<Pango::Layout> refLayout = m_TreeView.create_pango_layout("ExampleEg");
     int width = 0;
     int height = 0;
     refLayout->get_pixel_size(width, height);
@@ -691,7 +691,7 @@ int DbAddDel::get_fixed_cell_height()
         continue;
 
       // Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-      Glib::RefPtr<Pango::Layout> refLayout = create_pango_layout(_("Example"));
+      Glib::RefPtr<Pango::Layout> refLayout = m_TreeView.create_pango_layout(_("ExampleEg"));
       const Pango::FontDescription font(font_name);
       refLayout->set_font_description(font);
       int width = 0;
@@ -702,8 +702,15 @@ int DbAddDel::get_fixed_cell_height()
         m_fixed_cell_height = height;
     }
   }
+  
+  //We add extra spacing, because otherwise the bottom of letters such as "g" get cut off.
+  //We get this style property, which might be causing it. murrayc 
+  //TODO: Find out if this is reallyt the right way to calculate the correct height:
+  int extra_height = 0;
+  gtk_widget_style_get(GTK_WIDGET(m_TreeView.gobj()), "vertical-separator", &extra_height, (void*)0);
+  std::cout << "debug: extra_height=" << extra_height << std::endl;
 
-  return m_fixed_cell_height;
+  return m_fixed_cell_height + extra_height;
 }
 
 Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const sharedptr<LayoutItem>& layout_item, int model_column_index, int data_model_column_index)
