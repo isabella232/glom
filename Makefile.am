@@ -96,8 +96,46 @@ dist_glade_operator_DATA = \
 	ui/operator/window_progress.glade
 		
 glade_developerdir = $(pkgdatadir)/glade/developer
-dist_glade_developer_DATA = ui/developer/glom_developer.glade
-
+dist_glade_developer_DATA = ui/developer/dialog_add_related_table.glade \
+	ui/developer/dialog_change_language.glade \
+	ui/developer/dialog_choose_field.glade \
+	ui/developer/dialog_choose_relationship.glade \
+	ui/developer/dialog_choose_user.glade \
+	ui/developer/dialog_database_preferences.glade \
+	ui/developer/dialog_error_create_database.glade \
+	ui/developer/dialog_fieldslist.glade \
+	ui/developer/dialog_field_summary.glade \
+	ui/developer/dialog_flowtable.glade \
+	ui/developer/dialog_group_by.glade \
+	ui/developer/dialog_groupby_sort_fields.glade \
+	ui/developer/dialog_initial_password.glade \
+	ui/developer/dialog_layout_field_properties.glade \
+	ui/developer/dialog_layoutitem_properties.glade \
+	ui/developer/dialog_new_group.glade \
+	ui/developer/dialog_new_library_script.glade \
+	ui/developer/dialog_notebook.glade \
+	ui/developer/dialog_relationships_overview.glade \
+	ui/developer/dialog_script_library.glade \
+	ui/developer/dialog_translation_copy.glade \
+	ui/developer/dialog_translation_identify_original.glade \
+	ui/developer/dialog_user.glade \
+	ui/developer/window_button_script.glade \
+	ui/developer/window_data_layout_export.glade \
+	ui/developer/window_data_layout.glade \
+	ui/developer/window_design.glade \
+	ui/developer/window_field_calculation.glade \
+	ui/developer/window_field_definition_edit.glade \
+	ui/developer/box_formatting.glade \
+	ui/developer/window_groups.glade \
+	ui/developer/window_imageobject.glade \
+	ui/developer/window_print_layout_edit.glade \
+	ui/developer/box_print_layouts.glade \
+	ui/developer/window_report_layout.glade \
+	ui/developer/box_reports.glade \
+	ui/developer/window_text_format.glade \
+	ui/developer/window_textobject.glade \
+	ui/developer/window_translations.glade \
+	ui/developer/window_users.glade
 
 xsltdir = $(pkgdatadir)/xslt
 dist_xslt_DATA = xslt/print_details_to_html.xsl xslt/print_report_to_html.xsl

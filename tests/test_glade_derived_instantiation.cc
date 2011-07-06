@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
 
   using namespace Glom;
 
-  //Operator-mode dialogs:
+  //Operator-mode UI:
   instantiate_widget<Application>();
   instantiate_widget<Dialog_ExistingOrNew>();
   instantiate_widget<Box_Tables>();
@@ -90,6 +90,7 @@ int main(int argc, char *argv[])
   instantiate_widget<Dialog_Image_Progress>();
   instantiate_widget<Dialog_ProgressCreating>();
 
+  //Developer mode UI:
   instantiate_widget<Box_Print_Layouts>();
   instantiate_widget<Dialog_RelationshipsOverview>();
   instantiate_widget<Dialog_Relationships>();

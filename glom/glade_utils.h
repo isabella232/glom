@@ -92,9 +92,10 @@ void get_glade_widget_derived_with_warning(T_Widget*& widget)
   widget = 0;
 
   // Check the path to the installed .glade file:
-  const Glib::ustring filename = T_Widget::glade_developer ? 
-    Glib::build_filename("developer", "glom_developer.glade") : 
-    Glib::build_filename("operator", Glib::ustring(T_Widget::glade_id) + ".glade"); //The id is the same as the filename.
+  // The id is the same as the filename, in a developer/operator sub-directory:
+  const std::string filename = Glib::build_filename(
+      (T_Widget::glade_developer ? "developer" : "operator"),
+      std::string(T_Widget::glade_id) + ".glade"); 
   
   helper_get_glade_widget_derived_with_warning(filename, T_Widget::glade_id, widget);
 }

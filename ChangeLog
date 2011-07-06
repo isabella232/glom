@@ -1,5 +1,18 @@
 2011-07-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Split up the developer .glade files into separate files.
+
+	* ui/developer/:
+	* glom/glade_utils.h: get_glade_widget_derived_with_warning(): Guess the 
+	filename based on the requested ID, for developer UI as we already did 
+	for operator UI.
+  This makes it possible to edit these in recent versions of Glade, without 
+  Glade silently renaming IDs to make them unique across the whole file.
+  * po/POTFILES.in:
+  * Makefile.am: Mention the new files.
+
+2011-07-06  Murray Cumming  <murrayc@murrayc.com>
+
 	Enable silent build rules by default.
 
 	* configure.ac: This is still only used if the automake version is recent 
