@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-06-23 11:50+0000\n"
-"PO-Revision-Date: 2011-06-23 18:36+0200\n"
+"POT-Creation-Date: 2011-07-05 09:04+0000\n"
+"PO-Revision-Date: 2011-07-06 09:49+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -124,14 +124,10 @@ msgid "_Developer"
 msgstr "_Desarrollador"
 
 #: ../glom/application.cc:476
-#| msgctxt "User-level menu item"
-#| msgid "_Developer"
 msgid "_Developer Mode"
 msgstr "Modo _desarrollador"
 
 #: ../glom/application.cc:480
-#| msgctxt "User-level menu item"
-#| msgid "_Operator"
 msgid "_Operator Mode"
 msgstr "Modo _operador"
 
@@ -465,8 +461,8 @@ msgid ""
 "There was an error while restoring the backup. The tar utility failed to "
 "extract the archive."
 msgstr ""
-"Ocurrió un error al restaurar el respaldo. La utilidad «tar» falló al "
-"extraer el archivo."
+"Ocurrió un error al restaurar el respaldo. La utilidad «tar» falló al extraer "
+"el archivo."
 
 #: ../glom/application.cc:2905
 msgid ""
@@ -655,7 +651,6 @@ msgid "Find All"
 msgstr "Buscar todos"
 
 #: ../glom/frame_glom.cc:116 ../glom/frame_glom.cc:120
-#| msgid "None selected"
 msgid "No Table Selected"
 msgstr "Ninguna tabla seleccionada"
 
@@ -668,7 +663,6 @@ msgid "Search for records"
 msgstr "Buscar registros"
 
 #: ../glom/frame_glom.cc:162
-#| msgid "Records: "
 msgid "Records:"
 msgstr "Registros:"
 
@@ -2591,7 +2585,6 @@ msgstr "Duplicar"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
 #: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:418
-#: ../glom/mode_data/db_adddel/db_adddel.cc:632
 msgid "Example"
 msgstr "Ejemplo"
 
@@ -2624,18 +2617,24 @@ msgstr ""
 msgid "Table Content"
 msgstr "Contenido de la tabla"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2179
+#. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
+#: ../glom/mode_data/db_adddel/db_adddel.cc:632
+#| msgid "Example"
+msgid "ExampleEg"
+msgstr "Ejemplo"
+
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2186
 msgid "Right-click to layout, to specify the related fields."
 msgstr ""
 "Pulse con el botón derecho en la disposición, para especificar los campos "
 "relacionados."
 
 #. Tell user that they can't do that:
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2401
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2408
 msgid "Extra Related Records Not Possible"
 msgstr "No son posibles adicionales registros relacionados"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2402
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2409
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
