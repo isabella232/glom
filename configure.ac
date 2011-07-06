@@ -23,7 +23,7 @@ AC_CONFIG_MACRO_DIR([macros])
 AC_CONFIG_HEADERS([config.h glom/libglom/libglom_config.h])
 
 AM_INIT_AUTOMAKE([1.10 -Wno-portability no-define nostdinc tar-ustar])
-m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AM_MAINTAINER_MODE
 AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
 
