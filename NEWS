@@ -1,3 +1,15 @@
+1.16.3:
+
+* List: Make the rows high enough.
+* Find: Fixes for the Find features, though this is currently case-sensitive.
+  That is fixed properly in glom 1.19/20.
+* CSV Import: Fix quoted-newline detection, so we don't drop rows.
+  Bug #637529 (Darmon Xavier)
+* Build:
+  - Adapt to libgdamm API changes.
+  - Add an --enable-glom-ui configure option, so we can just build libglom.
+	* Makefile_tests.am: Restore the source file lists for the python tests.
+
 1.16.2:
 
 * CSV Import: Actually preview and import the field values.
