@@ -569,7 +569,12 @@ void Application::init_menus()
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  m_refHelpActionGroup = Gtk::ActionGroup::create("Glom_Menu_Help");
+  m_refUIManager->insert_action_group(m_refActionGroup_Others);
+  
+  action = Gtk::Action::create("Glom_Menu_Help", C_("Help menu title", "_Help"));
+  m_refActionGroup_Others->add(action);
+  
+  m_refHelpActionGroup = Gtk::ActionGroup::create("GlomHelpActions");
   m_refHelpActionGroup->add(Gtk::Action::create("GlomAction_Menu_Help", _("_Help")));
   
   m_refHelpActionGroup->add( Gtk::Action::create("GlomAction_Menu_Help_About",
@@ -578,8 +583,7 @@ void Application::init_menus()
   m_refHelpActionGroup->add( Gtk::Action::create("GlomAction_Menu_Help_Contents",
                         _("_Contents"), _("Help with the application")),
                         sigc::mem_fun(*this, &Application::on_menu_help_contents) );
-                        
-  m_refUIManager->insert_action_group(m_refActionGroup_Others);
+  m_refUIManager->insert_action_group(m_refHelpActionGroup);                       
 
   //Build part of the menu structure, to be merged in by using the "Bakery_MenuPH_Others" placeholder:
   static const Glib::ustring ui_description =
@@ -679,7 +683,7 @@ void Application::on_menu_help_about()
 
     m_pAbout = new Gtk::AboutDialog;
 
-    m_pAbout->set_name(m_strAppName);
+    m_pAbout->set_program_name(m_strAppName);
     m_pAbout->set_version(m_strVersion);
     m_pAbout->set_comments(_("A Database GUI"));
     m_pAbout->set_copyright(_("© 2000-2011 Murray Cumming, Openismus GmbH"));

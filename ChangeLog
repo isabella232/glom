@@ -1,5 +1,12 @@
 2011-07-07  Murray Cumming  <murrayc@murrayc.com>
 
+	Really fix the About Box.
+
+	* glom/application.cc: Add the Help menu itself, and use set_program_name() 
+	instead of set_name().
+
+2011-07-07  Murray Cumming  <murrayc@murrayc.com>
+
 	Improve the About box.
 
 	* glom/application.[h|cc]:
