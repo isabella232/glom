@@ -1,3 +1,10 @@
+1.19.6 (unstable):
+
+* Simplify the main window, and slightly simplify the menus.
+* Find: Make this work again, and make it case-insensitive.
+* ListView: Make the rows high enough.
+* Fix the About box.
+
 1.19.5 (unstable):
 
 * Details:
