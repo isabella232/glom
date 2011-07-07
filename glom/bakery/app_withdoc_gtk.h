@@ -89,7 +89,6 @@ protected:
   virtual void init_menus(); //Override this to add more or different menus.
   virtual void init_menus_file(); //Call this from init_menus() to add the standard file menu.
   virtual void init_menus_edit(); //Call this from init_menus() to add the standard edit menu
-  virtual void init_menus_help(); //Call this from init_menus() to add the standard help menu.
   virtual void init_toolbars();
 
   void add_ui_from_string(const Glib::ustring& ui_description); //Convenience function
@@ -111,10 +110,6 @@ protected:
 
   //Menus:
 
-  //Overrides from App:
-  virtual void on_menu_help_about();
-  virtual void on_about_close();
-
 
   virtual void ui_hide();
   virtual void ui_bring_to_front();
@@ -127,13 +122,10 @@ protected:
   Glib::RefPtr<Gtk::UIManager> m_refUIManager;
   Glib::RefPtr<Gtk::ActionGroup> m_refFileActionGroup;
   Glib::RefPtr<Gtk::ActionGroup> m_refEditActionGroup;
-  Glib::RefPtr<Gtk::ActionGroup> m_refHelpActionGroup;
 
   //Member widgets:
   Gtk::VBox* m_pVBox;
   Gtk::VBox m_VBox_PlaceHolder;
-
-  Gtk::Window* m_pAbout; //About box.
 
   //Menu stuff:
   Glib::RefPtr<Gtk::Action> m_action_save, m_action_saveas;

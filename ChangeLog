@@ -1,3 +1,16 @@
+2011-07-07  Murray Cumming  <murrayc@murrayc.com>
+
+	Improve the About box.
+
+	* glom/application.[h|cc]:
+	* glom/bakery/app.[h|cc]:
+	* glom/bakery/app_withdoc_gtk.[h|cc]: Move the help menu out of the 
+	Bakery class, doing it all in our derived Application class, to give us 
+	more control over the GtkAboutDialog. We do not need the abstraction any 
+	more.
+	This restores the application description, which was probably lost when 
+	converting to AboutDialog.
+	
 2011-07-06  Murray Cumming  <murrayc@murrayc.com>
 
 	Split up the developer .glade files into separate files.

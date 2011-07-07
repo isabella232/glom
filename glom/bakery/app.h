@@ -26,17 +26,6 @@
 namespace GlomBakery
 {
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-class HelpInfo
-{
-public:
-  typedef std::vector<Glib::ustring> type_vec_strings;	
-  Glib::ustring m_strVersion, m_strCopyright, m_strDescription, m_strTranslatorCredits;
-
-  type_vec_strings m_vecAuthors, m_vecDocumenters;
-};
-#endif //DOXYGEN_SHOULD_SKIP_THIS
-
 /** Bakery's Main Window.
  * This is an abstract class. You must use a class such as App_Gtk, which implements
  * the ui_* methods for a particular GUI toolkit.
@@ -44,7 +33,6 @@ public:
  * Features:
  * - Override methods to add/change menus/toolbars/statusbar.
  *   - Default is basic File, Edit, Help menus and toolbar icons.
- * - Configurable about box via set_about_information().
  *
  
  *
@@ -69,10 +57,6 @@ public:
 
   virtual void init(); //Sets it up and shows it.
 
-  //'About Box' information:
-  typedef std::vector<Glib::ustring> type_vec_strings;	
-  static void set_about_information(const Glib::ustring& strVersion, const type_vec_strings& vecAuthors, const Glib::ustring& strCopyright, const Glib::ustring& strDescription);
-  static void set_about_information(const Glib::ustring& strVersion, const type_vec_strings& vecAuthors, const Glib::ustring& strCopyright, const Glib::ustring& strDescription, const type_vec_strings& vecDocumenters, const Glib::ustring& strTranslatorCredits);
   virtual Glib::ustring get_version() const;
 
   static void set_command_line_args(int argc, char** &argv); //Needed for session management.
@@ -100,10 +84,6 @@ protected:
    */ 
   virtual void init_menus_edit() = 0;
 
-  /** Call this from init_menus() to add the standard help menu
-   */
-  virtual void init_menus_help() = 0;
-
   virtual void init_toolbars();
   
   virtual void new_instance(const Glib::ustring& uri = Glib::ustring()) = 0; //Must override in order to new() the derived document class.
@@ -126,8 +106,6 @@ public: // We can not take function pointers of these methods in a
 
   virtual void on_menu_help_about() = 0;
 
-  virtual void on_about_close();
-
 protected:
   //GUI abstractions:
   virtual void ui_hide() = 0;
@@ -143,16 +121,11 @@ protected:
   
   //'About Box'/WM Class information:
   static Glib::ustring m_strAppName;
-
-  //'About Box' information:
-  static HelpInfo m_HelpInfo;
+  static Glib::ustring m_strVersion;
 
   //Instances
 
   static bool m_bOperationCancelled; //see set/get_operation_cancelled().
-
-  //All instances share 1 About box:
-  static bool m_bAboutShown;
 
   //Command line args:
   static Glib::ustring m_strCommandLine_0;

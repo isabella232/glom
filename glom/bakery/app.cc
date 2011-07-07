@@ -24,9 +24,8 @@ namespace GlomBakery
 {
 
 //Initialize static member data:
-HelpInfo App::m_HelpInfo;
+Glib::ustring App::m_strVersion;
 
-bool App::m_bAboutShown = false;
 bool App::m_bOperationCancelled = false;
 Glib::ustring App::m_strCommandLine_0;
 Glib::ustring App::m_strAppName;
@@ -38,6 +37,7 @@ App::App(const Glib::ustring& appname)
 
 App::~App()
 {
+
 }
 
 void App::init_app_name(const Glib::ustring& appname) //static
@@ -65,7 +65,6 @@ void App::init_menus()
 {
   init_menus_file();
   init_menus_edit();
-  init_menus_help();
 
   //create_menus(m_menu_UI_Infos);
   //install_menu_hints();
@@ -77,8 +76,6 @@ void App::init_toolbars()
 {
   
 }
-
-
 
 void App::on_menu_file_new()
 {
@@ -112,35 +109,10 @@ void App::on_menu_edit_clear()
   
 }
 
-void App::on_about_close()
-{
-  m_bAboutShown = false;
-}
-
-void App::set_about_information(const Glib::ustring& strVersion, const type_vec_strings& vecAuthors, const Glib::ustring& strCopyright, const Glib::ustring& strDescription)
-{
-  m_HelpInfo.m_strVersion = strVersion;
-  m_HelpInfo.m_vecAuthors = vecAuthors;
-  m_HelpInfo.m_strCopyright = strCopyright;
-  m_HelpInfo.m_strDescription = strDescription;
-}
-
-void App::set_about_information(const Glib::ustring& strVersion, const type_vec_strings& vecAuthors, const Glib::ustring& strCopyright, const Glib::ustring& strDescription, const type_vec_strings& vecDocumenters, const Glib::ustring& strTranslatorCredits)
-{
-  m_HelpInfo.m_strVersion = strVersion;
-  m_HelpInfo.m_vecAuthors = vecAuthors;
-  m_HelpInfo.m_strCopyright = strCopyright;
-  m_HelpInfo.m_strDescription = strDescription;
-  m_HelpInfo.m_vecDocumenters = vecDocumenters;
-  m_HelpInfo.m_strTranslatorCredits = strTranslatorCredits;
-}
-
 Glib::ustring App::get_version() const
 {
-  return m_HelpInfo.m_strVersion;
+  return m_strVersion;
 }
-
-
 
 void App::set_operation_cancelled(bool bVal /* = true */)
 {

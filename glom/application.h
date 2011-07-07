@@ -155,7 +155,6 @@ private:
 
 #ifndef GLOM_ENABLE_MAEMO
   virtual void init_menus_file(); //override.
-  virtual void init_menus_help(); //override
 #endif //GLOM_ENABLE_MAEMO
 
   bool offer_new_or_existing();
@@ -201,6 +200,9 @@ private:
   void on_connection_avahi_progress();
   void on_connection_avahi_done();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+  void on_menu_help_about();
+  void on_about_close();
 
 #ifndef G_OS_WIN32
   /** Offer a file chooser dialog, with a Browse Network button.
@@ -253,12 +255,16 @@ private:
   Gtk::VBox* m_pBoxTop;
   Gtk::VBox* m_pBoxSidebar;
   Frame_Glom* m_pFrame;
+  
+  bool m_bAboutShown;
+  Gtk::AboutDialog* m_pAbout; //About box.
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Window_Translations* m_window_translations;
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+  Glib::RefPtr<Gtk::ActionGroup> m_refHelpActionGroup;
   Glib::RefPtr<Gtk::ActionGroup> m_refNavTablesActionGroup, m_refNavReportsActionGroup, m_refNavPrintLayoutsActionGroup;
   type_listActions m_listNavTableActions, m_listNavReportActions, m_listNavPrintLayoutActions;
   Gtk::UIManager::ui_merge_id m_menu_tables_ui_merge_id, m_menu_reports_ui_merge_id, m_menu_print_layouts_ui_merge_id;
@@ -278,7 +284,6 @@ private:
   Dialog_ProgressCreating* m_dialog_progress_creating;
   Dialog_ProgressCreating* m_dialog_progess_save_backup;
   Dialog_ProgressCreating* m_dialog_progess_convert_backup;
-
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   // This is set to the URI of an example file that is loaded to be able to

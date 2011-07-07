@@ -40,6 +40,8 @@
 #include <glom/python_embed/glom_python.h>
 #include <libglom/spawn_with_feedback.h>
 
+#include <gtkmm/aboutdialog.h>
+
 #include <cstdio>
 #include <memory> //For std::auto_ptr<>
 #include <giomm.h>
@@ -77,6 +79,8 @@ Application::Application(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
 : type_base(cobject, "Glom"),
   m_pBoxTop(0),
   m_pFrame(0),
+  m_bAboutShown(false),
+  m_pAbout(false),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_window_translations(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -141,6 +145,9 @@ Application::~Application()
   #ifdef GLOM_ENABLE_MAEMO
   m_pFrame->remove_view(&m_appmenu_button_table);
   #endif
+  
+  delete m_pAbout;
+  m_pAbout = 0;
 
   //This was set in the constructor:
   global_application = 0;
@@ -180,10 +187,6 @@ bool Application::init(const Glib::ustring& document_uri)
 
 bool Application::init(const Glib::ustring& document_uri, bool restore)
 {
-  type_vec_strings vecAuthors;
-  vecAuthors.push_back("Murray Cumming <murrayc@murrayc.com>");
-  set_about_information(PACKAGE_VERSION, vecAuthors, _("© 2000-2010 Murray Cumming"), _("A Database GUI"));
-
   type_base::init(); //calls init_menus() and init_toolbars()
 
   //m_pFrame->set_shadow_type(Gtk::SHADOW_IN);
@@ -566,6 +569,16 @@ void Application::init_menus()
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+  m_refHelpActionGroup = Gtk::ActionGroup::create("Glom_Menu_Help");
+  m_refHelpActionGroup->add(Gtk::Action::create("GlomAction_Menu_Help", _("_Help")));
+  
+  m_refHelpActionGroup->add( Gtk::Action::create("GlomAction_Menu_Help_About",
+                        _("_About"), _("About the application")),
+                        sigc::mem_fun(*this, &Application::on_menu_help_about) );
+  m_refHelpActionGroup->add( Gtk::Action::create("GlomAction_Menu_Help_Contents",
+                        _("_Contents"), _("Help with the application")),
+                        sigc::mem_fun(*this, &Application::on_menu_help_contents) );
+                        
   m_refUIManager->insert_action_group(m_refActionGroup_Others);
 
   //Build part of the menu structure, to be merged in by using the "Bakery_MenuPH_Others" placeholder:
@@ -626,6 +639,10 @@ void Application::init_menus()
     "        <menuitem action='GlomAction_Menu_Developer_ExportBackup' />"
     "        <menuitem action='GlomAction_Menu_Developer_RestoreBackup' />"
     "      </menu>"
+    "      <menu action='Glom_Menu_Help'>"
+    "        <menuitem action='GlomAction_Menu_Help_About' />"
+    "        <menuitem action='GlomAction_Menu_Help_Contents' />"
+    "      </menu>"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
     "    </placeholder>"
     "  </menubar>"
@@ -636,8 +653,6 @@ void Application::init_menus()
   //Add menu:
   add_ui_from_string(ui_description);
 
-  init_menus_help();
-
   update_table_sensitive_ui();
 
   fill_menu_tables();
@@ -645,6 +660,48 @@ void Application::init_menus()
 #endif //GLOM_ENABLE_MAEMO
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+
+void Application::on_menu_help_about()
+{
+  if(m_pAbout && m_bAboutShown) // "About" box hasn't been closed, so just raise it
+  {
+    m_pAbout->set_transient_for(*this);
+
+    Glib::RefPtr<Gdk::Window> about_win = m_pAbout->get_window();
+    about_win->show();
+    about_win->raise();
+  }
+  else
+  {
+    //Re-create About box:
+    delete m_pAbout;
+    m_pAbout = 0;
+
+    m_pAbout = new Gtk::AboutDialog;
+
+    m_pAbout->set_name(m_strAppName);
+    m_pAbout->set_version(m_strVersion);
+    m_pAbout->set_comments(_("A Database GUI"));
+    m_pAbout->set_copyright(_("© 2000-2011 Murray Cumming, Openismus GmbH"));
+    std::vector<Glib::ustring> vecAuthors;
+    vecAuthors.push_back("Murray Cumming <murrayc@murrayc.com>");
+    m_pAbout->set_authors(vecAuthors);
+    //Glib::RefPtr<Gdk::Pixbuf> logo = Gdk::Pixbuf::create_from_file();
+    //m_pAbout->set_logo(logo);
+
+    m_pAbout->signal_hide().connect( sigc::mem_fun(*this, &Application::on_about_close) );
+    m_bAboutShown = true;
+    static_cast<Gtk::Dialog*>(m_pAbout)->run(); //show() would be better. see below:
+    m_pAbout->hide();
+    //m_pAbout->show(); //TODO: respond to the OK button.
+  }
+}
+
+void Application::on_about_close()
+{
+  m_bAboutShown = false;
+}
+
 void Application::on_menu_file_toggle_share()
 {
   if(!m_pFrame)
@@ -1623,29 +1680,6 @@ void Application::set_mode_find()
 }
 
 #ifndef GLOM_ENABLE_MAEMO
-void Application::init_menus_help()
-{
-  //Call base class:
-  App_WithDoc_Gtk::init_menus_help();
-  m_refHelpActionGroup->add( Gtk::Action::create("BakeryAction_Help_Contents",
-                        _("_Contents"), _("Help with the application")),
-                        sigc::mem_fun(*this, &Application::on_menu_help_contents) );
-
-  //Build part of the menu structure, to be merged in by using the "PH" plaeholders:
-  static const Glib::ustring ui_description =
-    "<ui>"
-    "  <menubar name='Bakery_MainMenu'>"
-    "    <placeholder name='Bakery_MenuPH_Help'>"
-    "      <menu action='BakeryAction_Menu_Help'>"
-    "        <menuitem action='BakeryAction_Help_Contents' />"
-    "      </menu>"
-    "    </placeholder>"
-    "  </menubar>"
-    "</ui>";
-
-  //Add menu:
-  add_ui_from_string(ui_description);
-}
 
 void Application::on_menu_help_contents()
 {

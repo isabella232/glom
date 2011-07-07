@@ -25,7 +25,6 @@
 #include <gtkmm/recentchoosermenu.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/filechooserdialog.h>
-#include <gtkmm/aboutdialog.h>
 #include <giomm.h>
 #include <algorithm>
 #include <iostream>
@@ -47,8 +46,7 @@ namespace GlomBakery
 
 App_WithDoc_Gtk::App_WithDoc_Gtk(const Glib::ustring& appname)
 : App_WithDoc(appname),
-  m_pVBox(0),
-  m_pAbout(0)
+  m_pVBox(0)
 {
   init_app_name(appname);
 }
@@ -57,8 +55,7 @@ App_WithDoc_Gtk::App_WithDoc_Gtk(const Glib::ustring& appname)
 App_WithDoc_Gtk::App_WithDoc_Gtk(BaseObjectType* cobject, const Glib::ustring& appname)
 : App_WithDoc(appname),
   ParentWindow(cobject), 
-  m_pVBox(0),
-  m_pAbout(0)
+  m_pVBox(0)
 {
   init_app_name(appname);
 
@@ -73,9 +70,6 @@ App_WithDoc_Gtk::~App_WithDoc_Gtk()
 {
   delete m_pVBox;
   m_pVBox = 0;
-  
-  delete m_pAbout;
-  m_pAbout = 0;
 }
 
 
@@ -204,9 +198,8 @@ void App_WithDoc_Gtk::init_menus()
   //Override this to add more menus
   init_menus_file();
   init_menus_edit();
-  init_menus_help();
-
 }
+
 void App_WithDoc_Gtk::init_menus_file_recentfiles(const Glib::ustring& path)
 {
   if(!m_mime_types.empty()) //"Recent-files" is useless unless it knows what documents (which MIME-types) to show.
@@ -350,86 +343,6 @@ void App_WithDoc_Gtk::init_menus_edit()
 
   //Add menu:
   add_ui_from_string(ui_description);
-}
-
-void App_WithDoc_Gtk::init_menus_help()
-{
-  using namespace Gtk;
-  //Help menu
-
-  //Build actions:
-  m_refHelpActionGroup = ActionGroup::create("BakeryHelpActions");
-  m_refHelpActionGroup->add(Action::create("BakeryAction_Menu_Help", _("_Help")));
-
-  //TODO: Use stock?
-  m_refHelpActionGroup->add(Action::create("BakeryAction_Help_About",
-                        _("_About"), _("About the application")),
-                        sigc::mem_fun((GlomBakery::App&)*this, &App::on_menu_help_about));
-
-  m_refUIManager->insert_action_group(m_refHelpActionGroup);
-
-  //Build part of the menu structure, to be merged in by using the "PH" plaeholders:
-  static const Glib::ustring ui_description =
-    "<ui>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  <popup name='Bakery_MainMenu'>"
-#else
-    "  <menubar name='Bakery_MainMenu'>"
-#endif
-    "    <placeholder name='Bakery_MenuPH_Help'>"
-    "      <menu action='BakeryAction_Menu_Help'>"
-    "        <menuitem action='BakeryAction_Help_About' />"
-    "      </menu>"
-    "    </placeholder>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  </popup>"
-#else
-    "  </menubar>"
-#endif
-    "</ui>";
-
-  //Add menu:
-  add_ui_from_string(ui_description);
-}
-
-
-void App_WithDoc_Gtk::on_menu_help_about()
-{
-  if(m_pAbout && m_bAboutShown) // "About" box hasn't been closed, so just raise it
-  {
-    m_pAbout->set_transient_for(*this);
-
-    Glib::RefPtr<Gdk::Window> about_win = m_pAbout->get_window();
-    about_win->show();
-    about_win->raise();
-  }
-  else
-  {
-    //Re-create About box:
-    delete m_pAbout;
-    m_pAbout = 0;
-
-    Gtk::AboutDialog* pDerived = new Gtk::AboutDialog;
-    m_pAbout = pDerived;
-
-    pDerived->set_name(m_strAppName);
-    pDerived->set_version(m_HelpInfo.m_strVersion);
-    pDerived->set_copyright(m_HelpInfo.m_strCopyright);
-    pDerived->set_authors(m_HelpInfo.m_vecAuthors);
-    pDerived->set_documenters(m_HelpInfo.m_vecDocumenters);
-    pDerived->set_translator_credits(m_HelpInfo.m_strTranslatorCredits);
-
-    m_pAbout->signal_hide().connect(sigc::mem_fun((App&)*this, &App::on_about_close));
-    m_bAboutShown = true;
-    static_cast<Gtk::Dialog*>(m_pAbout)->run(); //show() would be better. see below:
-    m_pAbout->hide();
-    //m_pAbout->show(); //TODO: respond to the OK button.
-  }
-}
-
-void App_WithDoc_Gtk::on_about_close()
-{
-  m_bAboutShown = false;
 }
 
 void App_WithDoc_Gtk::add(Gtk::Widget& child)
