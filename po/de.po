@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-06-22 22:45+0000\n"
-"PO-Revision-Date: 2011-06-23 09:42+0100\n"
+"POT-Creation-Date: 2011-07-05 09:04+0000\n"
+"PO-Revision-Date: 2011-07-07 12:55+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@freenet.de>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -62,7 +62,7 @@ msgstr "Als Beispiel _speichern"
 msgid "_Export"
 msgstr "_Exportieren"
 
-#: ../glom/application.cc:304 ../glom/glom.glade.h:27
+#: ../glom/application.cc:304 ../ui/operator/dialog_import_csv.glade.h:6
 msgid "I_mport"
 msgstr "I_mportieren"
 
@@ -78,7 +78,7 @@ msgstr "_Standard"
 msgid "_Edit Print Layouts"
 msgstr "_Druck-Layouts bearbeiten"
 
-#: ../glom/application.cc:411 ../glom/frame_glom.cc:152
+#: ../glom/application.cc:411 ../glom/frame_glom.cc:145
 #: ../glom/mode_data/datawidget/datawidget.cc:250
 msgid "Find"
 msgstr "Suchen"
@@ -118,7 +118,7 @@ msgid "_Edit Reports"
 msgstr "_Berichte bearbeiten"
 
 #. We remember this action, so that it can be explicitly activated later.
-#: ../glom/application.cc:464 ../glom/frame_glom.cc:149
+#: ../glom/application.cc:464 ../glom/frame_glom.cc:142
 msgid "_Find"
 msgstr "_Suchen"
 
@@ -231,13 +231,13 @@ msgstr ""
 
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
 #. Warn the user, and let him try again:
-#: ../glom/application.cc:768 ../glom/frame_glom.cc:2139
-#: ../glom/frame_glom.cc:2212
+#: ../glom/application.cc:768 ../glom/frame_glom.cc:2133
+#: ../glom/frame_glom.cc:2206
 msgid "Connection Failed"
 msgstr "Verbindung gescheitert"
 
-#: ../glom/application.cc:768 ../glom/frame_glom.cc:2139
-#: ../glom/frame_glom.cc:2212
+#: ../glom/application.cc:768 ../glom/frame_glom.cc:2133
+#: ../glom/frame_glom.cc:2206
 msgid ""
 "Glom could not connect to the database server. Maybe you entered an incorrect "
 "user name or password, or maybe the postgres database server is not running."
@@ -348,48 +348,48 @@ msgstr "Sicherheitskopie wird exportiert"
 msgid "Restoring Backup"
 msgstr "Sicherheitskopie wird wiederhergestellt"
 
-#: ../glom/application.cc:1633
+#: ../glom/application.cc:1631
 msgid "_Contents"
 msgstr "_Inhalt"
 
-#: ../glom/application.cc:1633
+#: ../glom/application.cc:1631
 msgid "Help with the application"
 msgstr "Hilfe zu dieser Anwendung"
 
-#: ../glom/application.cc:1668 ../glom/application.cc:1748
-#: ../glom/application.cc:1936
+#: ../glom/application.cc:1666 ../glom/application.cc:1746
+#: ../glom/application.cc:1934
 msgid "Creating Glom Database"
 msgstr "Glom-Datenbank wird erstellt"
 
-#: ../glom/application.cc:1668 ../glom/application.cc:1748
+#: ../glom/application.cc:1666 ../glom/application.cc:1746
 msgid "Creating Glom database from example file."
 msgstr "Glom-Datenbank wird aus Beispieldatei erstellt."
 
-#: ../glom/application.cc:1936
+#: ../glom/application.cc:1934
 msgid "Creating Glom database from backup file."
 msgstr "Glom-Datenbank wird aus Sicherheitskopie erstellt."
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/application.cc:2399 ../glom/bakery/app_withdoc.cc:237
+#: ../glom/application.cc:2397 ../glom/bakery/app_withdoc.cc:237
 #: ../glom/bakery/app_withdoc.cc:288
 msgid "Save failed."
 msgstr "Speichern fehlgeschlagen"
 
-#: ../glom/application.cc:2399
+#: ../glom/application.cc:2397
 msgid "There was an error while saving the example file."
 msgstr "Beim Speichern der Beispieldatei ist ein Fehler aufgetreten."
 
-#: ../glom/application.cc:2440 ../glom/application.cc:2445
+#: ../glom/application.cc:2438 ../glom/application.cc:2443
 #: ../glom/bakery/app_withdoc_gtk.cc:556
 msgid "Save Document"
 msgstr "Dokument speichern"
 
 #. Warn the user:
-#: ../glom/application.cc:2533 ../glom/bakery/app_withdoc_gtk.cc:605
+#: ../glom/application.cc:2531 ../glom/bakery/app_withdoc_gtk.cc:605
 msgid "Read-only File."
 msgstr "Schreibgeschützte Datei."
 
-#: ../glom/application.cc:2533 ../glom/bakery/app_withdoc_gtk.cc:605
+#: ../glom/application.cc:2531 ../glom/bakery/app_withdoc_gtk.cc:605
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -398,11 +398,11 @@ msgstr ""
 "nötigen Zugriffsrechte fehlen."
 
 #. Warn the user:
-#: ../glom/application.cc:2547 ../glom/bakery/app_withdoc_gtk.cc:619
+#: ../glom/application.cc:2545 ../glom/bakery/app_withdoc_gtk.cc:619
 msgid "Read-only Directory."
 msgstr "Schreibgeschützter Ordner."
 
-#: ../glom/application.cc:2547 ../glom/bakery/app_withdoc_gtk.cc:619
+#: ../glom/application.cc:2545 ../glom/bakery/app_withdoc_gtk.cc:619
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -410,19 +410,19 @@ msgstr ""
 "Sie können keine Datei in diesem Ordner erstellen, da Ihnen die nötigen "
 "Zugriffsrechte fehlen."
 
-#: ../glom/application.cc:2564
+#: ../glom/application.cc:2562
 msgid "Database Title missing"
 msgstr "Datenbank-Titel fehlt"
 
-#: ../glom/application.cc:2564
+#: ../glom/application.cc:2562
 msgid "You must specify a title for the new database."
 msgstr "Sie müssen einen Titel für die neue Datenbank angeben."
 
-#: ../glom/application.cc:2593 ../glom/frame_glom.cc:1896
+#: ../glom/application.cc:2591 ../glom/frame_glom.cc:1890
 msgid "Directory Already Exists"
 msgstr "Ordner besteht bereits"
 
-#: ../glom/application.cc:2593 ../glom/frame_glom.cc:1897
+#: ../glom/application.cc:2591 ../glom/frame_glom.cc:1891
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
@@ -433,35 +433,35 @@ msgstr ""
 "anderen Dateinamen ein, um einen neuen Ordner zu nutzen."
 
 #. This actually creates the directory:
-#: ../glom/application.cc:2732
+#: ../glom/application.cc:2730
 msgid "Save Backup"
 msgstr "Sicherheitskopie erstellen"
 
-#: ../glom/application.cc:2814
+#: ../glom/application.cc:2812
 msgid "Export Backup failed."
 msgstr "Exportieren der Sicherheitskopie schlug fehl."
 
-#: ../glom/application.cc:2814
+#: ../glom/application.cc:2812
 msgid "There was an error while exporting the backup."
 msgstr "Beim Exportieren der Sicherheitskopie ist ein Fehler aufgetreten."
 
-#: ../glom/application.cc:2819
+#: ../glom/application.cc:2817
 msgid "Choose a backup file"
 msgstr "Wählen Sie eine Datei für die Sicherheitskopie"
 
-#: ../glom/application.cc:2824
+#: ../glom/application.cc:2822
 msgid ".tar.gz Backup files"
 msgstr ".tar.gz Sicherheitskopien"
 
-#: ../glom/application.cc:2830
+#: ../glom/application.cc:2828
 msgid "Restore"
 msgstr "Wiederherstellen"
 
-#: ../glom/application.cc:2901 ../glom/application.cc:2907
+#: ../glom/application.cc:2899 ../glom/application.cc:2905
 msgid "Restore Backup failed."
 msgstr "Wiederherstellen der Sicherheitskopie schlug fehl."
 
-#: ../glom/application.cc:2901
+#: ../glom/application.cc:2899
 msgid ""
 "There was an error while restoring the backup. The tar utility failed to "
 "extract the archive."
@@ -469,7 +469,7 @@ msgstr ""
 "Beim Wiederherstellen der Sicherheitskopie ist ein Fehler aufgetreten. Das "
 "Programm tar konnte das Archiv nicht entpacken."
 
-#: ../glom/application.cc:2907
+#: ../glom/application.cc:2905
 msgid ""
 "There was an error while restoring the backup. The .glom file could not be "
 "found."
@@ -477,7 +477,7 @@ msgstr ""
 "Beim Wiederherstellen der Sicherheitskopie ist ein Fehler aufgetreten. Die ."
 "glom-Datei konnte nicht gefunden werden. "
 
-#: ../glom/application.cc:3011 ../glom/bakery/app_withdoc_gtk.cc:466
+#: ../glom/application.cc:3009 ../glom/bakery/app_withdoc_gtk.cc:466
 msgid " (read-only)"
 msgstr "(schreibgeschützt)"
 
@@ -594,7 +594,7 @@ msgstr "Bericht umbenennen"
 msgid "A user-friendly database environment."
 msgstr "Eine anwenderfreundliche Datenbankumgebung."
 
-#: ../glom.desktop.in.in.h:2 ../glom/glom.glade.h:25
+#: ../glom.desktop.in.in.h:2 ../ui/operator/window_main.glade.h:1
 msgid "Glom"
 msgstr "Glom"
 
@@ -652,38 +652,50 @@ msgstr "In Datei exportieren"
 msgid "Define Data _Format"
 msgstr "Datums_format festlegen"
 
-#: ../glom/frame_glom.cc:123 ../glom/frame_glom.cc:127
+#: ../glom/frame_glom.cc:84
+msgid "Find All"
+msgstr "Alles suchen"
+
+#: ../glom/frame_glom.cc:116 ../glom/frame_glom.cc:120
 msgid "No Table Selected"
 msgstr "Keine Tabelle ausgewählt"
 
-#: ../glom/frame_glom.cc:134 ../glom/glom.glade.h:38
+#: ../glom/frame_glom.cc:127 ../ui/operator/dialog_find_id.glade.h:3
 msgid "Quick _search:"
 msgstr "_Schnellsuche:"
 
-#: ../glom/frame_glom.cc:152
+#: ../glom/frame_glom.cc:145
 msgid "Search for records"
 msgstr "Nach Datensätzen suchen"
 
-#: ../glom/frame_glom.cc:195
+#: ../glom/frame_glom.cc:162
+msgid "Records:"
+msgstr "Datensätze: "
+
+#: ../glom/frame_glom.cc:165
+msgid "Found:"
+msgstr "Gefunden:"
+
+#: ../glom/frame_glom.cc:193
 msgid "Glom: Find"
 msgstr "Glom: Suchen"
 
 #. TODO: Obviously this document should have been deleted when the database-creation was cancelled.
 #. Note that "canceled" is the correct US spelling.
-#: ../glom/frame_glom.cc:390
+#: ../glom/frame_glom.cc:384
 msgid "No table"
 msgstr "Keine Tabelle"
 
-#: ../glom/frame_glom.cc:390
+#: ../glom/frame_glom.cc:384
 msgid "This database has no tables yet."
 msgstr "Diese Datenbank enthält bis jetzt noch keine Tabellen."
 
 #. TODO: Obviously this could be possible but it would require a network protocol and some work:
-#: ../glom/frame_glom.cc:555
+#: ../glom/frame_glom.cc:549
 msgid "Developer mode not available."
 msgstr "Entwicklermodus nicht verfügbar."
 
-#: ../glom/frame_glom.cc:556
+#: ../glom/frame_glom.cc:550
 msgid ""
 "Developer mode is not available because the file was opened over the network "
 "from a running Glom. Only the original file may be edited."
@@ -692,11 +704,11 @@ msgstr ""
 "von einer laufenden Glom-Instanz geöffnet wurde. Nur die Original-Datei kann "
 "bearbeitet werden."
 
-#: ../glom/frame_glom.cc:562
+#: ../glom/frame_glom.cc:556
 msgid "Developer mode not available"
 msgstr "Entwicklermodus nicht verfügbar"
 
-#: ../glom/frame_glom.cc:563
+#: ../glom/frame_glom.cc:557
 msgid ""
 "Developer mode is not available. Check that you have sufficient database "
 "access rights and that the glom file is not read-only."
@@ -705,11 +717,11 @@ msgstr ""
 "die notwendigen Datenbankrechte besitzen und ob die glom-Datei nicht "
 "schreibgeschützt ist."
 
-#: ../glom/frame_glom.cc:570
+#: ../glom/frame_glom.cc:564
 msgid "Saving in new document format"
 msgstr "In neuem Dokumentenformat speichern"
 
-#: ../glom/frame_glom.cc:571
+#: ../glom/frame_glom.cc:565
 msgid ""
 "The document was created by an earlier version of the application. Making "
 "changes to the document will mean that the document cannot be opened by some "
@@ -719,15 +731,15 @@ msgstr ""
 "Sie Änderungen an diesem Dokument vornehmen, so kann dieses Dokument nicht "
 "mehr von früheren Versionen dieser Anwendung geöffnet werden."
 
-#: ../glom/frame_glom.cc:574
+#: ../glom/frame_glom.cc:568
 msgid "Continue"
 msgstr "Fortfahren"
 
-#: ../glom/frame_glom.cc:623
+#: ../glom/frame_glom.cc:617
 msgid "Export Not Allowed."
 msgstr "Export ist nicht erlaubt."
 
-#: ../glom/frame_glom.cc:623
+#: ../glom/frame_glom.cc:617
 msgid ""
 "You do not have permission to view the data in this table, so you may not "
 "export the data."
@@ -735,68 +747,68 @@ msgstr ""
 "Sie haben nicht das Recht, die Daten aus dieser Tabelle zu sehen, deshalb "
 "können Sie diese auch nicht exportieren."
 
-#: ../glom/frame_glom.cc:654
+#: ../glom/frame_glom.cc:648
 msgid "Could Not Create File."
 msgstr "Datei konnte nicht erstellt werden."
 
-#: ../glom/frame_glom.cc:654
+#: ../glom/frame_glom.cc:648
 msgid "Glom could not create the specified file."
 msgstr "Glom konnte die angegebene Datei nicht erstellen."
 
-#: ../glom/frame_glom.cc:804
+#: ../glom/frame_glom.cc:798
 msgid "No Table"
 msgstr "Keine Tabelle"
 
-#: ../glom/frame_glom.cc:804
+#: ../glom/frame_glom.cc:798
 msgid "There is no table in to which data could be imported."
 msgstr "Es gibt keine Tabelle, in welche Daten importiert werden können."
 
-#: ../glom/frame_glom.cc:808
+#: ../glom/frame_glom.cc:802
 msgid "Open CSV Document"
 msgstr "CSV-Dokument öffnen"
 
-#: ../glom/frame_glom.cc:812
+#: ../glom/frame_glom.cc:806
 msgid "CSV files"
 msgstr "CSV-Dateien"
 
-#: ../glom/frame_glom.cc:816
+#: ../glom/frame_glom.cc:810
 msgid "All files"
 msgstr "Alle Dateien"
 
-#: ../glom/frame_glom.cc:891
+#: ../glom/frame_glom.cc:885
 msgid "Share on the network"
 msgstr "Im Netzwerk freigeben"
 
-#: ../glom/frame_glom.cc:892
+#: ../glom/frame_glom.cc:886
 msgid "This will allow other users on the network to use this database."
 msgstr ""
 "Dadurch wird anderen Benutzern im Netzwerk die Nutzung dieser Datenbank "
 "ermöglicht."
 
-#: ../glom/frame_glom.cc:895
+#: ../glom/frame_glom.cc:889
 msgid "_Share"
 msgstr "_Freigeben"
 
 #. TODO: Warn about connected users if possible.
-#: ../glom/frame_glom.cc:990
+#: ../glom/frame_glom.cc:984
 msgid "Stop sharing on the network"
 msgstr "Freigabe im Netzwerk beenden"
 
-#: ../glom/frame_glom.cc:991
+#: ../glom/frame_glom.cc:985
 msgid "This will prevent other users on the network from using this database."
 msgstr ""
 "Dadurch wird anderen Benutzern im Netzwerk die Nutzung dieser Datenbank "
 "verweigert."
 
-#: ../glom/frame_glom.cc:994
+#: ../glom/frame_glom.cc:988
 msgid "_Stop Sharing"
 msgstr "Freigabe _beenden"
 
-#: ../glom/frame_glom.cc:1211
+#: ../glom/frame_glom.cc:1205
 msgid "Table Exists Already"
 msgstr "Tabelle existiert bereits"
 
-#: ../glom/frame_glom.cc:1211
+#: ../glom/frame_glom.cc:1205
 msgid ""
 "A table with this name already exists in the database. Please choose a "
 "different table name."
@@ -804,11 +816,11 @@ msgstr ""
 "Eine Tabelle mit diesem Namen existiert bereits in der Datenbank. Bitte "
 "wählen Sie einen anderen Namen für diese Tabelle."
 
-#: ../glom/frame_glom.cc:1215
+#: ../glom/frame_glom.cc:1209
 msgid "Relationship Exists Already"
 msgstr "Beziehung existiert bereits"
 
-#: ../glom/frame_glom.cc:1215
+#: ../glom/frame_glom.cc:1209
 msgid ""
 "A relationship with this name already exists for this table. Please choose a "
 "different relationship name."
@@ -816,61 +828,62 @@ msgstr ""
 "Eine Beziehung mit diesem Namen existiert bereits für diese Tabelle. Bitte "
 "wählen Sie einen anderen Namen für diese Beziehung."
 
-#: ../glom/frame_glom.cc:1219
+#: ../glom/frame_glom.cc:1213
 msgid "More information needed"
 msgstr "Weitere Informationen benötigt"
 
-#: ../glom/frame_glom.cc:1219
+#: ../glom/frame_glom.cc:1213
 msgid "You must specify a field, a table name, and a relationship name."
 msgstr ""
 "Sie müssen ein Feld, einen Tabellennamen, und einen Beziehungsnamen angeben."
 
-#: ../glom/frame_glom.cc:1273
+#: ../glom/frame_glom.cc:1267
 msgid "Related Table Created"
 msgstr "Bezugstabelle wurde erstellt"
 
-#: ../glom/frame_glom.cc:1273
+#: ../glom/frame_glom.cc:1267
 msgid "The new related table has been created."
 msgstr "Die neue Bezugstabelle wurde erstellt."
 
-#: ../glom/frame_glom.cc:1303 ../glom/glom.glade.h:20
+#. namespace Glom
+#: ../glom/frame_glom.cc:1297 ../ui/operator/box_navigation_tables.glade.h:1
 msgid "Edit Tables"
 msgstr "Tabellen bearbeiten"
 
-#: ../glom/frame_glom.cc:1382
+#: ../glom/frame_glom.cc:1376
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:111
 msgid "You have not entered any quick find criteria."
 msgstr "Sie haben keinerlei Schnellsuchkriterium angegeben."
 
-#: ../glom/frame_glom.cc:1387
+#: ../glom/frame_glom.cc:1381
 msgid "No find criteria"
 msgstr "Keine Suchkriterien"
 
-#: ../glom/frame_glom.cc:1751 ../glom/glom_developer.glade.h:159
+#: ../glom/frame_glom.cc:1745 ../ui/developer/glom_developer.glade.h:159
 msgid "Reports"
 msgstr "Berichte"
 
-#: ../glom/frame_glom.cc:1782 ../glom/glom_developer.glade.h:153
+#: ../glom/frame_glom.cc:1776 ../ui/developer/glom_developer.glade.h:153
 msgid "Print Layouts"
 msgstr "Druck-Layouts"
 
-#: ../glom/frame_glom.cc:1865
+#: ../glom/frame_glom.cc:1859
 msgid "Initializing Database Data"
 msgstr "Datenbank-Daten werden initialisiert"
 
-#: ../glom/frame_glom.cc:1874
+#: ../glom/frame_glom.cc:1868
 msgid "Starting Database Server"
 msgstr "Datenbankserver wird gestartet"
 
-#: ../glom/frame_glom.cc:1882
+#: ../glom/frame_glom.cc:1876
 msgid "Stopping Database Server"
 msgstr "Datenbankserver wird angehalten"
 
-#: ../glom/frame_glom.cc:1901
+#: ../glom/frame_glom.cc:1895
 msgid "Could Not Create Directory"
 msgstr "Ordner konnte nicht erstellt werden"
 
-#: ../glom/frame_glom.cc:1902
+#: ../glom/frame_glom.cc:1896
 msgid ""
 "There was an error when attempting to create the directory for the new "
 "database files."
@@ -878,1220 +891,23 @@ msgstr ""
 "Beim Erstellen des Ordners für die neuen Datenbank-Dateien ist ein Fehler "
 "aufgetreten."
 
-#: ../glom/frame_glom.cc:1906
+#: ../glom/frame_glom.cc:1900
 msgid "Could Not Start Database Server"
 msgstr "Datenbankserver konnte nicht gestartet werden"
 
-#: ../glom/frame_glom.cc:1907
+#: ../glom/frame_glom.cc:1901
 msgid "There was an error when attempting to start the database server."
 msgstr ""
 "Beim Versuch, den Datenbankserver zu starten, ist ein Fehler aufgetreten."
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2576
+#: ../glom/frame_glom.cc:2570
 msgid "All"
 msgstr "Alle"
 
-#. namespace Glom
-#: ../glom/glom_developer.glade.h:1
-msgid "<b>Address</b>"
-msgstr "<b>Adresse</b>"
-
-#: ../glom/glom_developer.glade.h:2
-msgid "<b>Available Parts</b>"
-msgstr "<b>Verfügbare Teile</b>"
-
-#: ../glom/glom_developer.glade.h:3
-msgid "<b>Choices</b>"
-msgstr "<b>Auswahl</b>"
-
-#: ../glom/glom_developer.glade.h:4
-msgid "<b>Dates</b>"
-msgstr "<b>Daten</b>"
-
-#: ../glom/glom_developer.glade.h:5
-msgid "<b>English</b>"
-msgstr "<b>Englisch</b>"
-
-#: ../glom/glom_developer.glade.h:6
-msgid "<b>Field:</b>"
-msgstr "<b>Feld:</b>"
-
-#: ../glom/glom_developer.glade.h:7
-msgid "<b>Fields</b>"
-msgstr "<b>Felder</b>"
-
-#: ../glom/glom_developer.glade.h:8
-msgid "<b>Formatting</b>"
-msgstr "<b>Formatierung</b>"
-
-#: ../glom/glom_developer.glade.h:9
-msgid "<b>Group By</b>"
-msgstr "<b>Gruppieren nach</b>"
-
-#: ../glom/glom_developer.glade.h:10
-msgid "<b>Group:</b>"
-msgstr "<b>Gruppe: </b>"
-
-#: ../glom/glom_developer.glade.h:11
-msgid "<b>Groups</b>"
-msgstr "<b>Gruppen</b>"
-
-#: ../glom/glom_developer.glade.h:12
-msgid "<b>Image:</b>"
-msgstr "<b>Bild:</b>"
-
-#: ../glom/glom_developer.glade.h:13
-msgid "<b>Label:</b>"
-msgstr "<b>Beschriftung:</b>"
-
-#: ../glom/glom_developer.glade.h:14
-msgid "<b>Layout name:</b>"
-msgstr "<b>Name des Layouts:</b>"
-
-#: ../glom/glom_developer.glade.h:15
-msgid "<b>Navigation</b>"
-msgstr "<b>Navigation</b>"
-
-#: ../glom/glom_developer.glade.h:16
-msgid "<b>Notebook Tabs</b>"
-msgstr "<b>Reiter der Mappe</b>"
-
-#: ../glom/glom_developer.glade.h:17
-msgid "<b>Numeric Formatting</b>"
-msgstr "<b>Zahlenformat</b>"
-
-#: ../glom/glom_developer.glade.h:18
-msgid "<b>Parts</b>"
-msgstr "<b>Teile</b>"
-
-#: ../glom/glom_developer.glade.h:19
-msgid "<b>Relationship:</b>"
-msgstr "<b>Beziehung:</b>"
-
-#: ../glom/glom_developer.glade.h:20
-msgid "<b>Select Relationship</b>"
-msgstr "<b>Beziehung auswählen</b>"
-
-#: ../glom/glom_developer.glade.h:21
-msgid "<b>Sort Fields</b>"
-msgstr "<b>Felder sortieren</b>"
-
-#: ../glom/glom_developer.glade.h:22
-msgid "<b>Source Language:</b>"
-msgstr "<b>Ausgangssprache:</b>"
-
-#: ../glom/glom_developer.glade.h:23
-msgid "<b>Summary Field</b>"
-msgstr "<b>Feldübersicht</b>"
-
-#: ../glom/glom_developer.glade.h:24 ../glom/glom.glade.h:6
-msgid "<b>Table:</b>"
-msgstr "<b>Tabelle: </b>"
-
-#: ../glom/glom_developer.glade.h:25
-msgid "<b>Tables</b>"
-msgstr "<b>Tabellen </b>"
-
-#: ../glom/glom_developer.glade.h:26
-msgid "<b>Target Language:</b>"
-msgstr "<b>Zielsprache:</b>"
-
-#: ../glom/glom_developer.glade.h:27
-msgid "<b>Text Formatting</b>"
-msgstr "<b>Textformatierung</b>"
-
-#: ../glom/glom_developer.glade.h:28
-msgid "<b>Text:</b>"
-msgstr "<b>Text:</b>"
-
-#: ../glom/glom_developer.glade.h:29
-msgid "<b>Title:</b>"
-msgstr "<b>Titel:</b>"
-
-#: ../glom/glom_developer.glade.h:30
-msgid "<b>Title</b>"
-msgstr "<b>Titel</b>"
-
-#: ../glom/glom_developer.glade.h:31
-msgid "<b>Translations</b>"
-msgstr "<b>Übersetzungen</b>"
-
-#: ../glom/glom_developer.glade.h:32
-msgid "<b>User</b>"
-msgstr "<b>Benutzer</b>"
-
-#: ../glom/glom_developer.glade.h:33
-msgid "<b>Users</b>"
-msgstr "<b>Benutzer</b>"
-
-#: ../glom/glom_developer.glade.h:34
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Add Module</span>\n"
-"\n"
-"What name should this module have?"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Modul hinzufügen</span>\n"
-"\n"
-"Welchen Namen soll dieses Modul erhalten?"
-
-#: ../glom/glom_developer.glade.h:37
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Add User To Group</span>\n"
-"\n"
-"Which user should be added to this group?"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Benutzer zur Gruppe hinzufügen</span>\n"
-"\n"
-"Welchen Benutzer möchten Sie zu dieser Gruppe hinzufügen?"
-
-#: ../glom/glom_developer.glade.h:40
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Copy Translation</span>\n"
-"\n"
-"From what language would you like to copy the translations to use as the "
-"start of the current translation?"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Übersetzung kopieren</span>\n"
-"\n"
-"Aus welcher Sprache möchte Sie als Startpunkt für die aktuelle Übersetzung "
-"eine Kopie erstellen?"
-
-#: ../glom/glom_developer.glade.h:43
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Create Group</span>\n"
-"\n"
-"What name should this group have?"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Gruppe anlegen</span>\n"
-"\n"
-"Welchen Namen soll diese Gruppe erhalten?"
-
-#: ../glom/glom_developer.glade.h:46
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
-"\n"
-"Glom could not create the new database. Maybe you do not have the necessary "
-"access rights. Please contact your system administrator."
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Fehler beim Erstellen der Datenbank</"
-"span>\n"
-"\n"
-"Glom konnte die neue Datenbank nicht erstellen. Eventuell haben Sie nicht die "
-"notwendigen Zugriffsrechte. Bitte setzen Sie sich mit Ihrem "
-"Systemadministrator in Verbindung."
-
-#: ../glom/glom_developer.glade.h:49
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Identify Original</span>\n"
-"\n"
-"The language of the original text is currently identified as:"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Original erkennen</span>\n"
-"\n"
-"Die Sprache des Ausgangstextes wurde erkannt als:"
-
-#: ../glom/glom_developer.glade.h:52
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Test Translation</span>\n"
-"\n"
-"Choose a language to use temporarily to test the translations. These "
-"translations are normally used automatically when the application is started "
-"on a computer that uses the language.\n"
-"\n"
-"Note that the standard parts of the Glom user interface, such as menus and "
-"dialog windows, will only be translated when you start Glom on a computer "
-"that uses that language."
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Übersetzung testen</span>\n"
-"\n"
-"Bitte wählen Sie die Sprache, die Sie zum Testen der Übersetzungen verwenden "
-"wollen. Diese Übersetzungen werden normalerweise automatisch verwendet, wenn "
-"eine Anwendung auf einem Rechner gestartet wird, der die jeweilige Sprache "
-"verwendet.\n"
-"\n"
-"Bitte beachten Sie, dass die Hauptteile der Glom-Benutzerschnittstelle, wie z."
-"B. Menüs oder Dialogfenster, nur übersetzt werden, wenn Glom auf einem "
-"Rechner gestartet wird, der die entsprechende Sprache verwendet."
-
-#: ../glom/glom_developer.glade.h:57
-#: ../glom/utility_widgets/layoutwidgetmenu.cc:45
-msgid "Add Button"
-msgstr "Knopf hinzufügen"
-
-#: ../glom/glom_developer.glade.h:58
-#: ../glom/utility_widgets/layoutwidgetmenu.cc:43
-msgid "Add Notebook"
-msgstr "Reitermappe hinzufügen"
-
-#: ../glom/glom_developer.glade.h:59
-msgid "Add Related Calendar"
-msgstr "Bezugskalender hinzufügen"
-
-#: ../glom/glom_developer.glade.h:60
-#: ../glom/utility_widgets/layoutwidgetmenu.cc:42
-msgid "Add Related Records"
-msgstr "Bezugsdatensätze hinzufügen"
-
-#: ../glom/glom_developer.glade.h:61
-msgid "Add Related Table"
-msgstr "Bezugstabelle hinzufügen"
-
-#: ../glom/glom_developer.glade.h:62
-#: ../glom/utility_widgets/layoutwidgetmenu.cc:46
-msgid "Add Text"
-msgstr "Text hinzufügen"
-
-#: ../glom/glom_developer.glade.h:63
-msgid "Add _Group"
-msgstr "_Gruppe hinzufügen"
-
-#: ../glom/glom_developer.glade.h:64
-msgid ""
-"Add a button. Edit the button to define the script that will be run when the "
-"button is clicked."
-msgstr ""
-"Knopf hinzufügen. Bearbeiten Sie den Knopf, um das Skript zu bestimmen, "
-"welches beim Anklicken des Knopfs gestartet wird."
-
-#: ../glom/glom_developer.glade.h:65
-msgid ""
-"Add a group which can contain other layout items. Use this to group items "
-"together, such as fields."
-msgstr ""
-"Eine Gruppe hinzufügen, welche andere Layout-Elemente enthalten kann. "
-"Benutzen Sie diese Gruppe, um Elemente wie Felder zu gruppieren."
-
-#: ../glom/glom_developer.glade.h:66
-msgid ""
-"Add a layout item that shows the data from a field in the record, and allows "
-"the user to edit that value."
-msgstr ""
-"Ein Layout-Element hinzufügen. Dieses zeigt die Daten eines Feldes im "
-"Datensatz und erlaubt dem Benutzer das Bearbeiten des Wertes."
-
-#: ../glom/glom_developer.glade.h:67
-msgid ""
-"Add a related records calendar portal. This is a calendar showing records "
-"from a related table. Remember to edit this layout item to specify the "
-"relationship to use, and the fields to show from the related table."
-msgstr ""
-"Ein Bezugseintrag-Kalenderportal hinzufügen. Hierbei handelt es sich um einen "
-"Kalender der die Einträge einer Bezugstabelle zeigt. Beachten Sie, dass Sie "
-"das Layout-Element bearbeiten müssen, um die zu benutzende Beziehung und die "
-"anzuzeigenden Felder der Bezugstabelle festzulegen."
-
-#: ../glom/glom_developer.glade.h:68
-msgid ""
-"Add a related records portal. This is a list of records in a related table. "
-"Remember to edit this layout item to specify the relationship to use, and the "
-"fields to show from the related table."
-msgstr ""
-"Ein Bezugsdatensatz-Portal hinzufügen. Hierbei handelt es sich um eine Liste "
-"der Datensätze in einer Bezugstabelle. Beachten Sie, dass Sie das Layout-"
-"Element bearbeiten müssen, um die zu benutzende Beziehung und die "
-"anzuzeigenden Felder der Bezugstabelle festzulegen."
-
-#: ../glom/glom_developer.glade.h:69
-msgid ""
-"Add a tabbed notebook. Each page of the notebook may contain several other "
-"layout items, but only one page will be visible at one time."
-msgstr ""
-"Eine Reitermappe hinzufügen. Jede Seite der Reitermappe kann mehrere andere "
-"Layout-Elemente enthalten, jedoch ist nur eine Seite zu einem Zeitpunkt "
-"sichtbar."
-
-#: ../glom/glom_developer.glade.h:70
-msgid ""
-"Add an image to the layout, such as a logo. The image will be the same for "
-"every record viewed. To show an image field from a record, to show different "
-"images for each field, use the field layout item."
-msgstr ""
-"Ein Bild zum Layout hinzufügen, z.B. ein Logo. Das Bild ist das gleiche für "
-"jeden betrachteten Datensatz. Benutzen Sie das Layout-Element »Feld«, um ein "
-"Bildfeld eines Datensatzes oder um verschiedene Bilder für jedes Feld zu "
-"zeigen."
-
-#: ../glom/glom_developer.glade.h:71
-msgid ""
-"Add text to a layout, such as an explanation or a warning. The text will be "
-"the same for every record viewed."
-msgstr ""
-"Text zu einem Layout hinzufügen, z.B. als Erklärung oder als Warnung. Der "
-"Text ist der gleiche Text für jeden betrachteten Datensatz."
-
-#: ../glom/glom_developer.glade.h:72
-#: ../glom/mode_design/box_db_table_relationships.cc:54
-msgid "Allow Editing"
-msgstr "Bearbeiten zulassen"
-
-#: ../glom/glom_developer.glade.h:73
-msgid "Also show:"
-msgstr "Außerdem anzeigen:"
-
-#: ../glom/glom_developer.glade.h:74
-msgid "Alternative Color for Negative Values"
-msgstr "Alternative Farbe für negative Werte:"
-
-#: ../glom/glom_developer.glade.h:75
-msgid "Auto-increment values"
-msgstr "Werte automatisch erhöhen"
-
-#: ../glom/glom_developer.glade.h:76
-msgid "Automatic:"
-msgstr "Automatisch:"
-
-#: ../glom/glom_developer.glade.h:77
-msgid "Background Color:"
-msgstr "Hintergrundfarbe:"
-
-#: ../glom/glom_developer.glade.h:78
-msgid "Border Width (ems)"
-msgstr "Randbreite (in em)"
-
-#: ../glom/glom_developer.glade.h:79
-msgid "Button Script"
-msgstr "Schalter-Skript"
-
-#: ../glom/glom_developer.glade.h:80
-msgid "C_reate"
-msgstr "A_nlegen"
-
-#: ../glom/glom_developer.glade.h:81
-msgid "Choices From Related Records"
-msgstr "Auswahl von Bezugsdatensätzen"
-
-#: ../glom/glom_developer.glade.h:82
-msgid "Choose User"
-msgstr "Benutzer wählen"
-
-#: ../glom/glom_developer.glade.h:83
-msgid ""
-"Click this check box to use a different foreground color to display negative "
-"values."
-msgstr ""
-"Wählen Sie dieses Ankreuzfeld aus, falls Sie eine andere Vordergrundfarbe für "
-"negative Werte verwenden möchten."
-
-#: ../glom/glom_developer.glade.h:84
-msgid "Click this check box to use a non-standard background color."
-msgstr ""
-"Wählen Sie dieses Ankreuzfeld aus, falls Sie nicht die Vorgabe-"
-"Hintergrundfarbe verwenden möchten."
-
-#: ../glom/glom_developer.glade.h:85
-msgid "Click this check box to use a non-standard font."
-msgstr ""
-"Wählen Sie dieses Ankreuzfeld aus, falls Sie nicht die Vorgabe-Schriftart "
-"verwenden möchten."
-
-#: ../glom/glom_developer.glade.h:86
-msgid "Click this check box to use a non-standard foreground color."
-msgstr ""
-"Wählen Sie dieses Ankreuzfeld aus, falls Sie nicht die Vorgabe-"
-"Vordergrundfarbe verwenden möchten."
-
-#: ../glom/glom_developer.glade.h:87
-msgid ""
-"Clicking the row button takes the user to the table specified by this "
-"relationship:"
-msgstr ""
-"Das Klicken des Zeilen-Knopfs bringt den Benutzer zur Tabelle, die durch "
-"diese Beziehung bestimmt ist:"
-
-#: ../glom/glom_developer.glade.h:88
-msgid "Columns:"
-msgstr "Spalten:"
-
-#: ../glom/glom_developer.glade.h:89
-msgid "Confirm Password"
-msgstr "Passwort bestätigen"
-
-#: ../glom/glom_developer.glade.h:90
-msgid "Copy From Existing Translation"
-msgstr "Aus vorhandener Übersetzung kopieren"
-
-#: ../glom/glom_developer.glade.h:91
-msgid "Country:"
-msgstr "Land:"
-
-#: ../glom/glom_developer.glade.h:92
-msgid "Create Group"
-msgstr "Gruppe anlegen"
-
-#: ../glom/glom_developer.glade.h:93
-msgid "Currency Symbol"
-msgstr "Währungssymbol"
-
-#: ../glom/glom_developer.glade.h:94
-msgid "Custom Choice List"
-msgstr "Eigene Auswahlliste"
-
-#: ../glom/glom_developer.glade.h:95
-msgid "Database Preferences"
-msgstr "Datenbankeinstellungen"
-
-#: ../glom/glom_developer.glade.h:96
-msgid "Database User"
-msgstr "Datenbankbenutzer"
-
-#: ../glom/glom_developer.glade.h:97
-msgid "Date Field:"
-msgstr "Datumsfeld:"
-
-#: ../glom/glom_developer.glade.h:98
-msgid "Decimal Places"
-msgstr "Dezimalstelle"
-
-#: ../glom/glom_developer.glade.h:99
-msgid "Default Formatting"
-msgstr "Standardformatierung"
-
-#: ../glom/glom_developer.glade.h:100
-msgid "Display as radio buttons"
-msgstr "Als Radioknöpfe anzeigen"
-
-#: ../glom/glom_developer.glade.h:101
-msgid "English"
-msgstr "Englisch"
-
-#: ../glom/glom_developer.glade.h:102
-#: ../glom/mode_design/translation/window_translations.cc:514
-msgid "Export"
-msgstr "Exportieren"
-
-#: ../glom/glom_developer.glade.h:103
-msgid "Export Format"
-msgstr "Exportierungsformat"
-
-#: ../glom/glom_developer.glade.h:104
-#: ../glom/libglom/data_structure/layout/layoutitem_field.cc:193
-#: ../glom/libglom/data_structure/translatable_item.cc:297
-#: ../glom/mode_design/dialog_database_preferences.cc:62
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:616
-msgid "Field"
-msgstr "Feld"
-
-#: ../glom/glom_developer.glade.h:105
-msgid "Field Calculation"
-msgstr "Feldberechnung"
-
-#: ../glom/glom_developer.glade.h:106
-msgid "Field Definition"
-msgstr "Felddefinition"
-
-#: ../glom/glom_developer.glade.h:107
-msgid "Field Definitions"
-msgstr "Felddefinitionen"
-
-#: ../glom/glom_developer.glade.h:108
-msgid "Field Layout"
-msgstr "Feld-Layout"
-
-#: ../glom/glom_developer.glade.h:109
-#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:71
-msgid "Field Summary"
-msgstr "Feldübersicht"
-
-#: ../glom/glom_developer.glade.h:110
-msgid "Field:"
-msgstr "Feld:"
-
-#: ../glom/glom_developer.glade.h:111
-msgid "Font:"
-msgstr "Schriftart:"
-
-#: ../glom/glom_developer.glade.h:112
-#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc:55
-msgid "Footer"
-msgstr "Fußzeile"
-
-#: ../glom/glom_developer.glade.h:113
-msgid "Foreground Color:"
-msgstr "Vordergrundfarbe:"
-
-#: ../glom/glom_developer.glade.h:114
-#: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:32
-msgid "Formatting"
-msgstr "Formatierung"
-
-#. Translators: FROM as in SQL's FROM
-#: ../glom/glom_developer.glade.h:116
-msgid "From field:"
-msgstr "»FROM«-Feld:"
-
-#: ../glom/glom_developer.glade.h:117
-#: ../glom/libglom/data_structure/layout/layoutgroup.cc:415
-#: ../glom/utility_widgets/layouttoolbar.cc:53
-#: ../glom/utility_widgets/layouttoolbar.cc:63
-#: ../glom/utility_widgets/notebooklabelglom.cc:76
-msgid "Group"
-msgstr "Gruppe"
-
-#: ../glom/glom_developer.glade.h:118
-#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.cc:102
-msgid "Group By"
-msgstr "Gruppieren nach"
-
-#: ../glom/glom_developer.glade.h:119
-msgid "Group By - Sort Fields"
-msgstr "Gruppieren nach - Felder sortieren"
-
-#: ../glom/glom_developer.glade.h:120
-msgid "Group Properties"
-msgstr "Gruppeneigenschaften"
-
-#: ../glom/glom_developer.glade.h:121
-msgid "Group name:"
-msgstr "Gruppenname:"
-
-#: ../glom/glom_developer.glade.h:122
-msgid "Groups"
-msgstr "Gruppen"
-
-#: ../glom/glom_developer.glade.h:123
-#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc:55
-msgid "Header"
-msgstr "Kopfzeilen"
-
-#: ../glom/glom_developer.glade.h:124
-msgid "Height (lines)"
-msgstr "Höhe (Zeilen)"
-
-#: ../glom/glom_developer.glade.h:125
-msgid "Horizontal Alignment:"
-msgstr "Horizontale Ausrichtung:"
-
-#: ../glom/glom_developer.glade.h:126
-msgid "Identify Original"
-msgstr "Original identifizieren"
-
-#: ../glom/glom_developer.glade.h:127
-msgid "Identify Source"
-msgstr "Quelle identifizieren"
-
-#: ../glom/glom_developer.glade.h:128
-msgid ""
-"If the text is not actually in this language, please choose the correct "
-"language."
-msgstr ""
-"Falls der Text derzeit nicht in dieser Sprache ist, dann wählen Sie bitte die "
-"richtige Sprache"
-
-#: ../glom/glom_developer.glade.h:129
-msgid ""
-"If this is not selected then a thousands separator will not be used, even if "
-"your locale would normally use one. If it is selected then a thousands "
-"separator will be used only if your locale normally uses one."
-msgstr ""
-"Wenn diese Option nicht ausgewählt ist, werden Tausenderstellen nicht durch "
-"ein extra Trennzeichen markiert - auch wenn Ihre Landeseinstellungen "
-"normalerweise ein solches verwenden - andernfalls wird ein Trennzeichen nur "
-"verwendet, wenn dies in Ihren Landeseinstellungen angegeben ist."
-
-#: ../glom/glom_developer.glade.h:130
-msgid ""
-"If this is selected then the field value will be shown in a multi-line box "
-"with a scrollbar."
-msgstr ""
-"Falls ausgewählt, so wird der Feldwert in einem mehrzeiligen Textfeld mit "
-"Bildlaufleiste angezeigt."
-
-#: ../glom/glom_developer.glade.h:131
-msgid ""
-"If this option is selected then the choices will list values from all records "
-"in the related table. If this option is not selected then the choices will "
-"list values only from related records."
-msgstr ""
-"Wenn diese Option ausgewählt ist, dann wird die Auswahl Werte von allen "
-"Datensätzen in der Bezugstabelle auflisten. Wenn diese Option nicht gewählt "
-"ist, so werden nur Werte von Bezugsdatensätzen zur Auswahl angeboten."
-
-#: ../glom/glom_developer.glade.h:132
-msgid "Image Object"
-msgstr "Bildobjekt"
-
-#. Note to translators: "Import" here is an action verb - it's a button.
-#: ../glom/glom_developer.glade.h:133
-#: ../glom/mode_design/translation/window_translations.cc:594
-msgid "Import"
-msgstr "Importieren"
-
-#: ../glom/glom_developer.glade.h:134
-msgid "Language:"
-msgstr "Sprache:"
-
-#. Don't add ContextLayout in client only mode because it would never
-#. be sensitive anyway
-#: ../glom/glom_developer.glade.h:135
-#: ../glom/mode_data/box_data_calendar_related.cc:495
-#: ../glom/mode_data/db_adddel/db_adddel.cc:262
-msgid "Layout"
-msgstr "Layout"
-
-#: ../glom/glom_developer.glade.h:136
-msgid "Locale:"
-msgstr "Gebietsschema:"
-
-#: ../glom/glom_developer.glade.h:137
-msgid "Logo"
-msgstr "Logo"
-
-#. Translators: The Main part of the report (not the footer or header)
-#: ../glom/glom_developer.glade.h:139
-msgid "Main"
-msgstr "Hauptteil"
-
-#: ../glom/glom_developer.glade.h:140
-msgid "Module name:"
-msgstr "Modulname:"
-
-#: ../glom/glom_developer.glade.h:141
-msgid "Multi-line"
-msgstr "Mehrzeilig"
-
-#: ../glom/glom_developer.glade.h:142
-msgid "Name of new related table:"
-msgstr "Name der neuen Bezugstabelle:"
-
-#: ../glom/glom_developer.glade.h:143
-msgid "Name of new relationship:"
-msgstr "Name der neuen Beziehung:"
-
-#: ../glom/glom_developer.glade.h:144
-msgid "Name:"
-msgstr "Name:"
-
-#: ../glom/glom_developer.glade.h:145
-msgid "No Choices"
-msgstr "Keine Auswahl"
-
-#: ../glom/glom_developer.glade.h:146
-msgid "None"
-msgstr "Nichts"
-
-#: ../glom/glom_developer.glade.h:147 ../glom/mode_design/dialog_design.cc:52
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:507
-msgid "None selected"
-msgstr "Nichts markiert"
-
-#: ../glom/glom_developer.glade.h:148
-#: ../glom/mode_design/layout/dialog_layout_details.cc:947
-msgid "Notebook Tabs"
-msgstr "Reiter der Mappe"
-
-#: ../glom/glom_developer.glade.h:149
-msgid "Organisation"
-msgstr "Organisation"
-
-#: ../glom/glom_developer.glade.h:150 ../glom/glom.glade.h:34
-msgid "Password"
-msgstr "Passwort"
-
-#: ../glom/glom_developer.glade.h:151
-msgid ""
-"Please enter the initial connection details for your database. You may add "
-"additional users later. Remember to keep this password secret because it "
-"allows access to your data from other computers on the network."
-msgstr ""
-"Bitte geben Sie die grundlegenden Verbindungsdetails für Ihre neue Datenbank "
-"an. Weitere Benutzer können später hinzugefügt werden. Bitte beachten Sie, "
-"dass Sie das Passwort geheim halten, da die Kenntnis des Passwortes Zugriff "
-"auf Ihre Daten von anderen Rechnern im Netzwerk ermöglicht."
-
-#: ../glom/glom_developer.glade.h:152
-msgid "Print Layout Editor"
-msgstr "Editor für Druck-Layout"
-
-#: ../glom/glom_developer.glade.h:154
-#: ../glom/utility_widgets/layoutwidgetutils.cc:37
-msgid "Properties"
-msgstr "Eigenschaften"
-
-#: ../glom/glom_developer.glade.h:155
-msgid "Relationship:"
-msgstr "Beziehung:"
-
-#: ../glom/glom_developer.glade.h:156
-msgid "Relationships Overview"
-msgstr "Übersicht über Beziehungen"
-
-#: ../glom/glom_developer.glade.h:157
-msgid ""
-"Remove the item from the layout. If you remove a field layout item, it will "
-"not remove the field from the table itself. It just will not be seen on the "
-"layout."
-msgstr ""
-"Element aus dem Layout entfernen. Das Entfernen eines  Layout-Elements »Feld« "
-"entfernt nicht das Feld aus der Tabelle, sondern das Feld wird nicht im "
-"Layout dargestellt."
-
-#: ../glom/glom_developer.glade.h:158
-msgid "Report Layout"
-msgstr "Layout des Berichts"
-
-#: ../glom/glom_developer.glade.h:160
-msgid "Restrict data to these choices"
-msgstr "Daten auf diese Auswahlmöglichkeiten begrenzen"
-
-#: ../glom/glom_developer.glade.h:161
-msgid "Script Library"
-msgstr "Skript-Bibliothek"
-
-#: ../glom/glom_developer.glade.h:162
-msgid "Script name:"
-msgstr "Skriptname:"
-
-#: ../glom/glom_developer.glade.h:163
-msgid "Secondary Fields:"
-msgstr "Sekundäre Felder:"
-
-#: ../glom/glom_developer.glade.h:164
-#: ../glom/mode_data/datawidget/dialog_choose_id.cc:94
-#: ../glom/utility_widgets/imageglom.cc:328
-msgid "Select"
-msgstr "Auswählen"
-
-#: ../glom/glom_developer.glade.h:165
-msgid "Select Field"
-msgstr "Feld auswählen"
-
-#: ../glom/glom_developer.glade.h:166
-msgid "Select Relationship"
-msgstr "Beziehung auswählen"
-
-#: ../glom/glom_developer.glade.h:167
-msgid "Show _Related Relationships"
-msgstr "Zugehö_rige Beziehungen anzeigen"
-
-#: ../glom/glom_developer.glade.h:168
-msgid "Show all records"
-msgstr "Alle Datensätze anzeigen"
-
-#: ../glom/glom_developer.glade.h:169
-msgid "Show child relationships"
-msgstr "Kindesbeziehungen anzeigen"
-
-#: ../glom/glom_developer.glade.h:170
-msgid "Sort Fields:"
-msgstr "Felder sortieren:"
-
-#: ../glom/glom_developer.glade.h:171
-msgid ""
-"Start a translation for this target locale by copying the strings from "
-"another target locale."
-msgstr ""
-"Eine Übersetzung für diese Zielsprache starten, indem die Zeichenketten aus "
-"einer anderen Zielsprache kopiert werden."
-
-#: ../glom/glom_developer.glade.h:172
-msgid "Startup Script"
-msgstr "Startskript"
-
-#: ../glom/glom_developer.glade.h:173
-msgid "State/County:"
-msgstr "Bundesland/Provinz:"
-
-#: ../glom/glom_developer.glade.h:174
-msgid "Street (Line 2):"
-msgstr "Straße (Zusatz):"
-
-#: ../glom/glom_developer.glade.h:175
-msgid "Street:"
-msgstr "Straße:"
-
-#: ../glom/glom_developer.glade.h:176
-msgid "Summary Type:"
-msgstr "Übersichttyp"
-
-#: ../glom/glom_developer.glade.h:177
-msgid "System Name:"
-msgstr "Systemname:"
-
-#: ../glom/glom_developer.glade.h:178
-msgid "Table Name"
-msgstr "Tabellenname"
-
-#: ../glom/glom_developer.glade.h:179
-msgid "Table:"
-msgstr "Tabelle:"
-
-#: ../glom/glom_developer.glade.h:180
-msgid "Table: "
-msgstr "Tabelle: "
-
-#: ../glom/glom_developer.glade.h:181
-msgid "Test"
-msgstr "Test"
-
-#: ../glom/glom_developer.glade.h:182
-msgid "Test Translation"
-msgstr "Übersetzung testen"
-
-#: ../glom/glom_developer.glade.h:183
-msgid "Text Format"
-msgstr "Textformat"
-
-#: ../glom/glom_developer.glade.h:184
-msgid "Text Object"
-msgstr "Textobjekt"
-
-#: ../glom/glom_developer.glade.h:185
-msgid ""
-"The field value will be the return value of the python function, which you "
-"implement here."
-msgstr ""
-"Das Feld hat erhält den Wert, der von der Python-Funktion zurückgeliefert "
-"wird, die Sie hier implementieren."
-
-#: ../glom/glom_developer.glade.h:186
-msgid ""
-"These modules will be available to your button scripts and field calculations "
-"via the python import keyword."
-msgstr ""
-"Diese Module werden über das Python-Import-Schlüsselwort für Ihre Knopf-"
-"Skripte und Feldberechnungen verfügbar sein."
-
-#: ../glom/glom_developer.glade.h:187
-msgid "This field will be used to decide which records to show in the calendar."
-msgstr "Dieses Feld bestimmt, welche Einträge im Kalender angezeigt werden."
-
-#: ../glom/glom_developer.glade.h:188
-msgid ""
-"This will add a new table and add a relationship that refers to the new  "
-"table, as a convenient alternative to doing this in separate steps.\n"
-"\n"
-"If a suitable related table already exists then you should instead cancel and "
-"just add a relationship."
-msgstr ""
-"Hiermit werden eine neue Tabelle und eine neue Beziehung hinzugefügt, die "
-"sich auf die neue Tabelle bezieht, um einen bequemen Weg zu bieten und nicht "
-"mehrere Einzelschritte zu benötigen.\n"
-"\n"
-"Falls eine passende Bezugstabelle bereits existiert, so sollten Sie nun "
-"abbrechen und stattdessen nur eine Beziehung hinzufügen."
-
-#: ../glom/glom_developer.glade.h:191
-msgid "Title:"
-msgstr "Titel:"
-
-#: ../glom/glom_developer.glade.h:192
-msgid "Town:"
-msgstr "Stadt:"
-
-#: ../glom/glom_developer.glade.h:193
-msgid "Translations"
-msgstr "Übersetzungen"
-
-#: ../glom/glom_developer.glade.h:194
-msgid "Triggered by:"
-msgstr "Ausgelöst durch:"
-
-#: ../glom/glom_developer.glade.h:195
-msgid "Typ_e:"
-msgstr "T_yp:"
-
-#: ../glom/glom_developer.glade.h:196
-msgid "Use 1000s separator"
-msgstr "Tausender-Trennzeichen verwenden"
-
-#: ../glom/glom_developer.glade.h:197
-msgid "Use custom formatting"
-msgstr "Benutzerdefinierte Formatierung verwenden"
-
-#: ../glom/glom_developer.glade.h:198
-msgid "Use custom title:"
-msgstr "Benutzerdefinierten Titel verwenden:"
-
-#: ../glom/glom_developer.glade.h:199
-msgid "Use default field title: "
-msgstr "Standardfeldtitel verwenden"
-
-#: ../glom/glom_developer.glade.h:200
-msgid "Use default formatting"
-msgstr "Standardformatierung verwenden"
-
-#: ../glom/glom_developer.glade.h:201 ../glom/glom.glade.h:40
-msgid "User"
-msgstr "Benutzer"
-
-#: ../glom/glom_developer.glade.h:202
-msgid "Users"
-msgstr "Benutzer"
-
-#: ../glom/glom_developer.glade.h:203
-msgid "Value"
-msgstr "Wert"
-
-#: ../glom/glom_developer.glade.h:204
-msgid ""
-"When the button is clicked it will run the python function which you "
-"implement here."
-msgstr ""
-"Wenn der Schalter angeklickt wird, wird die hier implementierte Python-"
-"Funktion ausgeführt."
-
-#: ../glom/glom_developer.glade.h:205
-msgid ""
-"When the database is opened the python function implemented here will run."
-msgstr ""
-"Wenn die Datenbank geöffnet wird, wird die hier implementierte Python-"
-"Funktion ausgeführt."
-
-#: ../glom/glom_developer.glade.h:206
-msgid ""
-"When this is checked the table's title will be shown at the top of the report "
-"in addition to the report title."
-msgstr ""
-"Falls ausgewählt, so wird der Tabellentitel zu Beginn des Berichts zusätzlich "
-"zum Reporttitel angezeigt."
-
-#: ../glom/glom_developer.glade.h:207
-msgid "Zip/Postal Code:"
-msgstr "Postleitzahl:"
-
-#: ../glom/glom_developer.glade.h:208
-msgid "_Auto-increment"
-msgstr "_Automatisch erhöhen"
-
-#: ../glom/glom_developer.glade.h:209
-msgid "_Calculate Value"
-msgstr "Wert bere_chnen"
-
-#. Translators: This is the verb
-#: ../glom/glom_developer.glade.h:211
-msgid "_Check"
-msgstr "Pr_üfen"
-
-#: ../glom/glom_developer.glade.h:212
-msgid "_Confirm Password:"
-msgstr "_Passwort bestätigen:"
-
-#: ../glom/glom_developer.glade.h:213 ../glom/bakery/app_withdoc_gtk.cc:319
-msgid "_Edit"
-msgstr "_Bearbeiten"
-
-#: ../glom/glom_developer.glade.h:214
-msgid "_Field:"
-msgstr "_Feld:"
-
-#: ../glom/glom_developer.glade.h:215
-msgid "_Lookup value when a field changes."
-msgstr "Wert suchen, wenn sich ein Fe_ld ändert."
-
-#: ../glom/glom_developer.glade.h:216
-msgid "_Name:"
-msgstr "_Name:"
-
-#: ../glom/glom_developer.glade.h:217 ../glom/glom.glade.h:46
-msgid "_Password:"
-msgstr "_Passwort:"
-
-#: ../glom/glom_developer.glade.h:218
-msgid "_Primary Key"
-msgstr "_Primärschlüssel"
-
-#: ../glom/glom_developer.glade.h:219
-msgid "_Relationship:"
-msgstr "Be_ziehung:"
-
-#: ../glom/glom_developer.glade.h:220
-msgid "_Report name:"
-msgstr "Be_richtname:"
-
-#: ../glom/glom_developer.glade.h:221 ../glom/glom.glade.h:47
-msgid "_Select"
-msgstr "_Auswählen"
-
-#: ../glom/glom_developer.glade.h:222
-msgid "_Show table title"
-msgstr "Ta_bellentitel zeigen"
-
-#: ../glom/glom_developer.glade.h:223
-msgid "_Table:"
-msgstr "_Tabelle:"
-
-#: ../glom/glom_developer.glade.h:224
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:101
-msgid "_Title:"
-msgstr "_Titel:"
-
-#: ../glom/glom_developer.glade.h:225
-msgid "_Unique"
-msgstr "Einde_utig"
-
-#: ../glom/glom_developer.glade.h:226
-msgid "_User Entry"
-msgstr "Ben_utzereingabe"
-
-#: ../glom/glom_developer.glade.h:227 ../glom/glom.glade.h:49
-msgid "_User:"
-msgstr "Ben_utzer:"
-
-#: ../glom/glom_developer.glade.h:228 ../glom/glom.glade.h:52
-msgid "label"
-msgstr "Beschriftung"
-
-#: ../glom/glom_developer.glade.h:229
-msgid "table name"
-msgstr "Tabellenname"
-
-#: ../glom/glom.glade.h:1
-msgid "0"
-msgstr "0"
-
-#. Import is a noun here. This is the title for a list of fields to import.
-#: ../glom/glom.glade.h:3
-msgid "<b>Import Fields</b>"
-msgstr "<b>Importfelder</b>"
-
-#. Import is a noun here. This is the title for a window showing options for an import operation.
-#: ../glom/glom.glade.h:5
-msgid "<b>Import Options</b>"
-msgstr "<b>Importoptionen</b>"
-
-#: ../glom/glom.glade.h:7
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Choose Date</span>\n"
-"\n"
-"Please select a date to enter in this field."
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Datum wählen</span>\n"
-"\n"
-"Bitte wählen Sie ein Datum, das Sie in dieses Feld eingeben."
-
-#: ../glom/glom.glade.h:10
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
-"\n"
-"The data in the field was not recognized. Please try to correct the data or "
-"revert to the previous value. Here is an example of correctly-formatted data "
-"for this field.\n"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Ungültige Formatierung</span>\n"
-"\n"
-"Die Daten des Feldes wurden nicht erkannt. Bitte versuchen Sie die Daten zu "
-"korrigieren, oder stellen Sie den ursprünglichen Wert wieder her.Hier ist ein "
-"Beispiel für richtig formatierte Daten dieses Feldes.\n"
-
-#: ../glom/glom.glade.h:14
-msgid "<span weight=\"bold\" size=\"larger\">Open or create a Document</span>"
-msgstr "<span weight='bold' size='larger'>Dokument öffnen oder erstellen</span>"
-
-#: ../glom/glom.glade.h:15
-msgid "Choose Date"
-msgstr "Datum wählen"
-
-#: ../glom/glom.glade.h:16
-msgid "Connect to Server"
-msgstr "Mit Server verbinden"
-
-#: ../glom/glom.glade.h:17
-msgid "Create New Document"
-msgstr "Neues Dokument erstellen"
-
-#: ../glom/glom.glade.h:18
-msgid "Database"
-msgstr "Datenbank"
-
-#: ../glom/glom.glade.h:19
-msgid "Database:"
-msgstr "Datenbank:"
-
-#: ../glom/glom.glade.h:21
-msgid "Encoding detected as: UTF-8"
-msgstr "Zeichensatz erkannt als: UTF-8"
-
-#: ../glom/glom.glade.h:22
-msgid "Find All"
-msgstr "Alles suchen"
-
-#: ../glom/glom.glade.h:23
-msgid "Find Related Record"
-msgstr "Bezugsdatensatz suchen"
-
-#: ../glom/glom.glade.h:24
-msgid "Found:"
-msgstr "Gefunden:"
-
-#: ../glom/glom.glade.h:26
-msgid "Host"
-msgstr "Rechner"
-
-#: ../glom/glom.glade.h:28
-msgid "Import Into _Table:"
-msgstr "In _Tabelle importieren:"
-
-#. This is a status message for a progress dialog. It says that importing is currently happenning.
-#: ../glom/glom.glade.h:30
-msgid "Importing Data"
-msgstr "Daten werden importiert"
-
-#: ../glom/glom.glade.h:31
-msgid "Loading image"
-msgstr "Bild wird geladen"
-
-#: ../glom/glom.glade.h:32
-msgid "Open Existing Document"
-msgstr "Bestehendes Dokument öffnen"
-
-#: ../glom/glom.glade.h:33
-msgid "Open or create Document"
-msgstr "Dokument öffnen oder anlegen"
-
-#: ../glom/glom.glade.h:35
-msgid "Please enter the connection details for your database server."
-msgstr ""
-"Bitte geben Sie die notwendigen Angaben ein, um sich mit Ihrem Datenbank-"
-"Server zu verbinden."
-
-#: ../glom/glom.glade.h:36
-msgid "Please wait while your data is imported."
-msgstr "Bitte warten Sie, Ihre Daten werden importiert."
-
-#: ../glom/glom.glade.h:37 ../glom/glade_utils.cc:41
+#: ../glom/glade_utils.cc:41 ../ui/operator/window_progress.glade.h:1
 msgid "Processing"
 msgstr "Verarbeitung läuft …"
-
-#: ../glom/glom.glade.h:39
-msgid "Records: "
-msgstr "Datensätze: "
-
-#: ../glom/glom.glade.h:41
-msgid "Welcome to Glom"
-msgstr "Willkommen bei Glom"
-
-#: ../glom/glom.glade.h:42
-msgid "_Encoding:"
-msgstr "_Zeichensatz:"
-
-#: ../glom/glom.glade.h:43
-msgid "_First line as title"
-msgstr "_Erste Zeile als Titel"
-
-#: ../glom/glom.glade.h:44
-msgid "_Host:"
-msgstr "Rec_hner:"
-
-#: ../glom/glom.glade.h:45
-msgid "_Number of sample rows:"
-msgstr "A_nzahl der Beispielzeilen:"
-
-#: ../glom/glom.glade.h:48
-msgid "_Show hidden tables"
-msgstr "Ver_steckte Tabellen anzeigen"
-
-#: ../glom/glom.glade.h:50
-msgid "bla.blub - Import from CSV"
-msgstr "bla.blub - Aus CSV importieren"
-
-#: ../glom/glom.glade.h:51
-msgid "example data format"
-msgstr "Beispieldatenformatierung"
-
-#: ../glom/glom.glade.h:53
-msgid "table_name"
-msgstr "Tabellen_name"
 
 #: ../glom/utils_ui.cc:144
 msgid "No help file available"
@@ -2113,6 +929,11 @@ msgstr "Keine Datensätze gefunden"
 #: ../glom/utils_ui.cc:497
 msgid "New Find"
 msgstr "Neue Suche"
+
+#: ../glom/bakery/app_withdoc_gtk.cc:319
+#: ../ui/developer/glom_developer.glade.h:213
+msgid "_Edit"
+msgstr "_Bearbeiten"
 
 #: ../glom/bakery/app_withdoc_gtk.cc:362
 msgid "_Help"
@@ -2458,6 +1279,14 @@ msgstr ""
 "wenden Sie sich an das Übersetzungsteam, indem Sie einen Fehlerbericht "
 "einreichen. Siehe http://www.glom.org"
 
+#: ../glom/libglom/data_structure/layout/layoutgroup.cc:415
+#: ../glom/utility_widgets/layouttoolbar.cc:53
+#: ../glom/utility_widgets/layouttoolbar.cc:63
+#: ../glom/utility_widgets/notebooklabelglom.cc:76
+#: ../ui/developer/glom_developer.glade.h:117
+msgid "Group"
+msgstr "Gruppe"
+
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:67
 #: ../glom/libglom/data_structure/translatable_item.cc:315
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1140
@@ -2468,6 +1297,14 @@ msgstr "Schalter"
 #: ../glom/libglom/data_structure/layout/layoutitem_calendarportal.cc:57
 msgid "Calendar Portal"
 msgstr "Kalenderportal"
+
+#: ../glom/libglom/data_structure/layout/layoutitem_field.cc:193
+#: ../glom/libglom/data_structure/translatable_item.cc:297
+#: ../glom/mode_design/dialog_database_preferences.cc:62
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:616
+#: ../ui/developer/glom_developer.glade.h:104
+msgid "Field"
+msgstr "Feld"
 
 #. Note to translators: "Notebook" means a GtkNotebook-type widget.
 #: ../glom/libglom/data_structure/layout/layoutitem_notebook.cc:56
@@ -2482,6 +1319,11 @@ msgstr "Platzhalter"
 #: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:68
 msgid "Portal"
 msgstr "Portal"
+
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:71
+#: ../ui/developer/glom_developer.glade.h:109
+msgid "Field Summary"
+msgstr "Feldübersicht"
 
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:126
 msgid "No summary chosen"
@@ -2498,6 +1340,21 @@ msgstr "Durchschnitt"
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:149
 msgid "Count"
 msgstr "Zählen"
+
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc:55
+#: ../ui/developer/glom_developer.glade.h:112
+msgid "Footer"
+msgstr "Fußzeile"
+
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.cc:102
+#: ../ui/developer/glom_developer.glade.h:118
+msgid "Group By"
+msgstr "Gruppieren nach"
+
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc:55
+#: ../ui/developer/glom_developer.glade.h:123
+msgid "Header"
+msgstr "Kopfzeilen"
 
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_summary.cc:61
 msgid "Summary"
@@ -2824,6 +1681,14 @@ msgstr ""
 msgid "Undefined Table"
 msgstr "Unbekannte Tabelle"
 
+#. Don't add ContextLayout in client only mode because it would never
+#. be sensitive anyway
+#: ../glom/mode_data/box_data_calendar_related.cc:495
+#: ../glom/mode_data/db_adddel/db_adddel.cc:262
+#: ../ui/developer/glom_developer.glade.h:135
+msgid "Layout"
+msgstr "Layout"
+
 #: ../glom/mode_data/box_data.cc:150
 msgid ""
 "You have not entered any find criteria. Try entering information in the "
@@ -3026,6 +1891,11 @@ msgstr "SQL-»FROM«-Feld"
 msgid "To Field"
 msgstr "In Feld"
 
+#: ../glom/mode_design/box_db_table_relationships.cc:54
+#: ../ui/developer/glom_developer.glade.h:72
+msgid "Allow Editing"
+msgstr "Bearbeiten zulassen"
+
 #: ../glom/mode_design/box_db_table_relationships.cc:55
 msgid "Automatic Creation"
 msgstr "Automatisch erstellen"
@@ -3038,6 +1908,12 @@ msgstr "Titel (Einzahl)"
 #: ../glom/mode_design/dialog_database_preferences.cc:63
 msgid "Next Value"
 msgstr "Nächster Wert"
+
+#: ../glom/mode_design/dialog_design.cc:52
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:507
+#: ../ui/developer/glom_developer.glade.h:147
+msgid "None selected"
+msgstr "Nichts markiert"
 
 #: ../glom/mode_design/dialog_initial_password.cc:83
 msgid "Username Is Empty"
@@ -3248,6 +2124,11 @@ msgid "group"
 msgstr "Gruppe"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:947
+#: ../ui/developer/glom_developer.glade.h:148
+msgid "Notebook Tabs"
+msgstr "Reiter der Mappe"
+
+#: ../glom/mode_design/layout/dialog_layout_details.cc:947
 msgid "Add child groups to the notebook to add tabs."
 msgstr ""
 "Fügen Sie Kindgruppen zur Reitermappe hinzu, um weitere Reiter hinzuzufügen."
@@ -3348,6 +2229,11 @@ msgstr "Vordergrundfarbe"
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:186
 msgid "Background Color"
 msgstr "Hintergrundfarbe"
+
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:32
+#: ../ui/developer/glom_developer.glade.h:114
+msgid "Formatting"
+msgstr "Formatierung"
 
 #. Give it access to the document.
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc:161
@@ -3707,6 +2593,17 @@ msgstr ".po-Dateinamen auswählen"
 msgid "Po files"
 msgstr "Po-Dateien"
 
+#: ../glom/mode_design/translation/window_translations.cc:514
+#: ../ui/developer/glom_developer.glade.h:102
+msgid "Export"
+msgstr "Exportieren"
+
+#. Note to translators: "Import" here is an action verb - it's a button.
+#: ../glom/mode_design/translation/window_translations.cc:594
+#: ../ui/developer/glom_developer.glade.h:133
+msgid "Import"
+msgstr "Importieren"
+
 #: ../glom/utility_widgets/adddel/adddel.cc:159
 msgid "This item already exists. Please try again."
 msgstr "Dieses Element existiert bereits. Bitte versuchen Sie es erneut."
@@ -3717,7 +2614,6 @@ msgstr "Duplikat"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
 #: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:418
-#: ../glom/mode_data/db_adddel/db_adddel.cc:632
 msgid "Example"
 msgstr "Beispiel"
 
@@ -3751,22 +2647,33 @@ msgstr ""
 msgid "Table Content"
 msgstr "Tabelleninhalt"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2179
+#. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
+#: ../glom/mode_data/db_adddel/db_adddel.cc:632
+msgid "ExampleEg"
+msgstr "Beispiel"
+
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2186
 msgid "Right-click to layout, to specify the related fields."
 msgstr "Rechtsklick auf Layout, um die Bezugsfelder festzulegen."
 
 #. Tell user that they can't do that:
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2401
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2408
 msgid "Extra Related Records Not Possible"
 msgstr "Zusätzliche Bezugsdatensätze nicht möglich"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2402
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2409
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
 msgstr ""
 "Sie versuchen, einen neuen Bezugsdatensatz hinzuzufügen, jedoch kann es nur "
 "einen Bezugsdatensatz geben, da die Beziehung eindeutige Schlüssel verwendet."
+
+#: ../glom/mode_data/datawidget/dialog_choose_id.cc:94
+#: ../glom/utility_widgets/imageglom.cc:328
+#: ../ui/developer/glom_developer.glade.h:164
+msgid "Select"
+msgstr "Auswählen"
 
 #: ../glom/utility_widgets/dialog_image_progress.cc:117
 msgid "Not enough memory available to load the image"
@@ -3793,6 +2700,11 @@ msgstr ""
 "Bitte wählen Sie einen beliebigen Namen für die neue Datenbank. Sie können\n"
 "diesen später auch in den Datenbankeigenschaten ändern. Der Name kann aus\n"
 "beliebigen Zeichen bestehen."
+
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:101
+#: ../ui/developer/glom_developer.glade.h:224
+msgid "_Title:"
+msgstr "_Titel:"
 
 #. Use titles that show the distinction between PostgreSQL and SQLite:
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:117
@@ -3892,9 +2804,34 @@ msgstr "Eigenschaften des Feld-Layouts"
 msgid "Add Field"
 msgstr "Feld hinzufügen"
 
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:42
+#: ../ui/developer/glom_developer.glade.h:60
+msgid "Add Related Records"
+msgstr "Bezugsdatensätze hinzufügen"
+
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:43
+#: ../ui/developer/glom_developer.glade.h:58
+msgid "Add Notebook"
+msgstr "Reitermappe hinzufügen"
+
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:44
 msgid "Add Group"
 msgstr "Gruppe hinzufügen"
+
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:45
+#: ../ui/developer/glom_developer.glade.h:57
+msgid "Add Button"
+msgstr "Knopf hinzufügen"
+
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:46
+#: ../ui/developer/glom_developer.glade.h:62
+msgid "Add Text"
+msgstr "Text hinzufügen"
+
+#: ../glom/utility_widgets/layoutwidgetutils.cc:37
+#: ../ui/developer/glom_developer.glade.h:154
+msgid "Properties"
+msgstr "Eigenschaften"
 
 #: ../glom/utility_widgets/notebooklabelglom.cc:89
 msgid "Delete whole notebook \"%1\"?"
@@ -3911,6 +2848,1081 @@ msgstr "Bericht fertiggestellt"
 #: ../glom/xsl_utils.cc:120
 msgid "The report will now be opened in your web browser."
 msgstr "Der Bericht wird nun in Ihrem Webbrowser geöffnet."
+
+#: ../ui/operator/box_navigation_tables.glade.h:2
+msgid "_Show hidden tables"
+msgstr "Ver_steckte Tabellen anzeigen"
+
+#: ../ui/operator/dialog_choose_date.glade.h:1
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Choose Date</span>\n"
+"\n"
+"Please select a date to enter in this field."
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Datum wählen</span>\n"
+"\n"
+"Bitte wählen Sie ein Datum, das Sie in dieses Feld eingeben."
+
+#: ../ui/operator/dialog_choose_date.glade.h:4
+msgid "Choose Date"
+msgstr "Datum wählen"
+
+#: ../ui/operator/dialog_connection.glade.h:1
+msgid "Connect to Server"
+msgstr "Mit Server verbinden"
+
+#: ../ui/operator/dialog_connection.glade.h:2
+msgid "Database"
+msgstr "Datenbank"
+
+#: ../ui/operator/dialog_connection.glade.h:3
+msgid "Database:"
+msgstr "Datenbank:"
+
+#: ../ui/operator/dialog_connection.glade.h:4
+msgid "Host"
+msgstr "Rechner"
+
+#: ../ui/operator/dialog_connection.glade.h:5
+#: ../ui/developer/glom_developer.glade.h:150
+msgid "Password"
+msgstr "Passwort"
+
+#: ../ui/operator/dialog_connection.glade.h:6
+msgid "Please enter the connection details for your database server."
+msgstr ""
+"Bitte geben Sie die notwendigen Angaben ein, um sich mit Ihrem Datenbank-"
+"Server zu verbinden."
+
+#: ../ui/operator/dialog_connection.glade.h:7
+#: ../ui/developer/glom_developer.glade.h:201
+msgid "User"
+msgstr "Benutzer"
+
+#: ../ui/operator/dialog_connection.glade.h:8
+msgid "_Host:"
+msgstr "Rec_hner:"
+
+#: ../ui/operator/dialog_connection.glade.h:9
+#: ../ui/developer/glom_developer.glade.h:217
+msgid "_Password:"
+msgstr "_Passwort:"
+
+#: ../ui/operator/dialog_connection.glade.h:10
+#: ../ui/developer/glom_developer.glade.h:227
+msgid "_User:"
+msgstr "Ben_utzer:"
+
+#: ../ui/operator/dialog_data_invalid_format.glade.h:1
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
+"\n"
+"The data in the field was not recognized. Please try to correct the data or "
+"revert to the previous value. Here is an example of correctly-formatted data "
+"for this field.\n"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Ungültige Formatierung</span>\n"
+"\n"
+"Die Daten des Feldes wurden nicht erkannt. Bitte versuchen Sie die Daten zu "
+"korrigieren, oder stellen Sie den ursprünglichen Wert wieder her.Hier ist ein "
+"Beispiel für richtig formatierte Daten dieses Feldes.\n"
+
+#: ../ui/operator/dialog_data_invalid_format.glade.h:5
+msgid "example data format"
+msgstr "Beispieldatenformatierung"
+
+#: ../ui/operator/dialog_existing_or_new.glade.h:1
+msgid "<span weight=\"bold\" size=\"larger\">Open or create a Document</span>"
+msgstr "<span weight='bold' size='larger'>Dokument öffnen oder erstellen</span>"
+
+#: ../ui/operator/dialog_existing_or_new.glade.h:2
+msgid "Create New Document"
+msgstr "Neues Dokument erstellen"
+
+#: ../ui/operator/dialog_existing_or_new.glade.h:3
+msgid "Open Existing Document"
+msgstr "Bestehendes Dokument öffnen"
+
+#: ../ui/operator/dialog_existing_or_new.glade.h:4
+msgid "Open or create Document"
+msgstr "Dokument öffnen oder anlegen"
+
+#: ../ui/operator/dialog_existing_or_new.glade.h:5
+msgid "Welcome to Glom"
+msgstr "Willkommen bei Glom"
+
+#: ../ui/operator/dialog_existing_or_new.glade.h:6
+#: ../ui/developer/glom_developer.glade.h:221
+msgid "_Select"
+msgstr "_Auswählen"
+
+#: ../ui/operator/dialog_find_id.glade.h:1
+#: ../ui/developer/glom_developer.glade.h:24
+msgid "<b>Table:</b>"
+msgstr "<b>Tabelle: </b>"
+
+#: ../ui/operator/dialog_find_id.glade.h:2
+msgid "Find Related Record"
+msgstr "Bezugsdatensatz suchen"
+
+#: ../ui/operator/dialog_find_id.glade.h:4
+msgid "table_name"
+msgstr "Tabellen_name"
+
+#: ../ui/operator/dialog_image_progress.glade.h:1
+msgid "Loading image"
+msgstr "Bild wird geladen"
+
+#. Import is a noun here. This is the title for a list of fields to import.
+#: ../ui/operator/dialog_import_csv.glade.h:2
+msgid "<b>Import Fields</b>"
+msgstr "<b>Importfelder</b>"
+
+#. Import is a noun here. This is the title for a window showing options for an import operation.
+#: ../ui/operator/dialog_import_csv.glade.h:4
+msgid "<b>Import Options</b>"
+msgstr "<b>Importoptionen</b>"
+
+#: ../ui/operator/dialog_import_csv.glade.h:5
+msgid "Encoding detected as: UTF-8"
+msgstr "Zeichensatz erkannt als: UTF-8"
+
+#: ../ui/operator/dialog_import_csv.glade.h:7
+msgid "Import Into _Table:"
+msgstr "In _Tabelle importieren:"
+
+#: ../ui/operator/dialog_import_csv.glade.h:8
+msgid "_Encoding:"
+msgstr "_Zeichensatz:"
+
+#: ../ui/operator/dialog_import_csv.glade.h:9
+msgid "_First line as title"
+msgstr "_Erste Zeile als Titel"
+
+#: ../ui/operator/dialog_import_csv.glade.h:10
+msgid "_Number of sample rows:"
+msgstr "A_nzahl der Beispielzeilen:"
+
+#: ../ui/operator/dialog_import_csv.glade.h:11
+msgid "bla.blub - Import from CSV"
+msgstr "bla.blub - Aus CSV importieren"
+
+#: ../ui/operator/dialog_import_csv.glade.h:12
+#: ../ui/developer/glom_developer.glade.h:228
+msgid "label"
+msgstr "Beschriftung"
+
+#. This is a status message for a progress dialog. It says that importing is currently happenning.
+#: ../ui/operator/dialog_import_csv_progress.glade.h:2
+msgid "Importing Data"
+msgstr "Daten werden importiert"
+
+#: ../ui/operator/dialog_import_csv_progress.glade.h:3
+msgid "Please wait while your data is imported."
+msgstr "Bitte warten Sie, Ihre Daten werden importiert."
+
+#: ../ui/developer/glom_developer.glade.h:1
+msgid "<b>Address</b>"
+msgstr "<b>Adresse</b>"
+
+#: ../ui/developer/glom_developer.glade.h:2
+msgid "<b>Available Parts</b>"
+msgstr "<b>Verfügbare Teile</b>"
+
+#: ../ui/developer/glom_developer.glade.h:3
+msgid "<b>Choices</b>"
+msgstr "<b>Auswahl</b>"
+
+#: ../ui/developer/glom_developer.glade.h:4
+msgid "<b>Dates</b>"
+msgstr "<b>Daten</b>"
+
+#: ../ui/developer/glom_developer.glade.h:5
+msgid "<b>English</b>"
+msgstr "<b>Englisch</b>"
+
+#: ../ui/developer/glom_developer.glade.h:6
+msgid "<b>Field:</b>"
+msgstr "<b>Feld:</b>"
+
+#: ../ui/developer/glom_developer.glade.h:7
+msgid "<b>Fields</b>"
+msgstr "<b>Felder</b>"
+
+#: ../ui/developer/glom_developer.glade.h:8
+msgid "<b>Formatting</b>"
+msgstr "<b>Formatierung</b>"
+
+#: ../ui/developer/glom_developer.glade.h:9
+msgid "<b>Group By</b>"
+msgstr "<b>Gruppieren nach</b>"
+
+#: ../ui/developer/glom_developer.glade.h:10
+msgid "<b>Group:</b>"
+msgstr "<b>Gruppe: </b>"
+
+#: ../ui/developer/glom_developer.glade.h:11
+msgid "<b>Groups</b>"
+msgstr "<b>Gruppen</b>"
+
+#: ../ui/developer/glom_developer.glade.h:12
+msgid "<b>Image:</b>"
+msgstr "<b>Bild:</b>"
+
+#: ../ui/developer/glom_developer.glade.h:13
+msgid "<b>Label:</b>"
+msgstr "<b>Beschriftung:</b>"
+
+#: ../ui/developer/glom_developer.glade.h:14
+msgid "<b>Layout name:</b>"
+msgstr "<b>Name des Layouts:</b>"
+
+#: ../ui/developer/glom_developer.glade.h:15
+msgid "<b>Navigation</b>"
+msgstr "<b>Navigation</b>"
+
+#: ../ui/developer/glom_developer.glade.h:16
+msgid "<b>Notebook Tabs</b>"
+msgstr "<b>Reiter der Mappe</b>"
+
+#: ../ui/developer/glom_developer.glade.h:17
+msgid "<b>Numeric Formatting</b>"
+msgstr "<b>Zahlenformat</b>"
+
+#: ../ui/developer/glom_developer.glade.h:18
+msgid "<b>Parts</b>"
+msgstr "<b>Teile</b>"
+
+#: ../ui/developer/glom_developer.glade.h:19
+msgid "<b>Relationship:</b>"
+msgstr "<b>Beziehung:</b>"
+
+#: ../ui/developer/glom_developer.glade.h:20
+msgid "<b>Select Relationship</b>"
+msgstr "<b>Beziehung auswählen</b>"
+
+#: ../ui/developer/glom_developer.glade.h:21
+msgid "<b>Sort Fields</b>"
+msgstr "<b>Felder sortieren</b>"
+
+#: ../ui/developer/glom_developer.glade.h:22
+msgid "<b>Source Language:</b>"
+msgstr "<b>Ausgangssprache:</b>"
+
+#: ../ui/developer/glom_developer.glade.h:23
+msgid "<b>Summary Field</b>"
+msgstr "<b>Feldübersicht</b>"
+
+#: ../ui/developer/glom_developer.glade.h:25
+msgid "<b>Tables</b>"
+msgstr "<b>Tabellen </b>"
+
+#: ../ui/developer/glom_developer.glade.h:26
+msgid "<b>Target Language:</b>"
+msgstr "<b>Zielsprache:</b>"
+
+#: ../ui/developer/glom_developer.glade.h:27
+msgid "<b>Text Formatting</b>"
+msgstr "<b>Textformatierung</b>"
+
+#: ../ui/developer/glom_developer.glade.h:28
+msgid "<b>Text:</b>"
+msgstr "<b>Text:</b>"
+
+#: ../ui/developer/glom_developer.glade.h:29
+msgid "<b>Title:</b>"
+msgstr "<b>Titel:</b>"
+
+#: ../ui/developer/glom_developer.glade.h:30
+msgid "<b>Title</b>"
+msgstr "<b>Titel</b>"
+
+#: ../ui/developer/glom_developer.glade.h:31
+msgid "<b>Translations</b>"
+msgstr "<b>Übersetzungen</b>"
+
+#: ../ui/developer/glom_developer.glade.h:32
+msgid "<b>User</b>"
+msgstr "<b>Benutzer</b>"
+
+#: ../ui/developer/glom_developer.glade.h:33
+msgid "<b>Users</b>"
+msgstr "<b>Benutzer</b>"
+
+#: ../ui/developer/glom_developer.glade.h:34
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Add Module</span>\n"
+"\n"
+"What name should this module have?"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Modul hinzufügen</span>\n"
+"\n"
+"Welchen Namen soll dieses Modul erhalten?"
+
+#: ../ui/developer/glom_developer.glade.h:37
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Add User To Group</span>\n"
+"\n"
+"Which user should be added to this group?"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Benutzer zur Gruppe hinzufügen</span>\n"
+"\n"
+"Welchen Benutzer möchten Sie zu dieser Gruppe hinzufügen?"
+
+#: ../ui/developer/glom_developer.glade.h:40
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Copy Translation</span>\n"
+"\n"
+"From what language would you like to copy the translations to use as the "
+"start of the current translation?"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Übersetzung kopieren</span>\n"
+"\n"
+"Aus welcher Sprache möchte Sie als Startpunkt für die aktuelle Übersetzung "
+"eine Kopie erstellen?"
+
+#: ../ui/developer/glom_developer.glade.h:43
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Create Group</span>\n"
+"\n"
+"What name should this group have?"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Gruppe anlegen</span>\n"
+"\n"
+"Welchen Namen soll diese Gruppe erhalten?"
+
+#: ../ui/developer/glom_developer.glade.h:46
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
+"\n"
+"Glom could not create the new database. Maybe you do not have the necessary "
+"access rights. Please contact your system administrator."
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Fehler beim Erstellen der Datenbank</"
+"span>\n"
+"\n"
+"Glom konnte die neue Datenbank nicht erstellen. Eventuell haben Sie nicht die "
+"notwendigen Zugriffsrechte. Bitte setzen Sie sich mit Ihrem "
+"Systemadministrator in Verbindung."
+
+#: ../ui/developer/glom_developer.glade.h:49
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Identify Original</span>\n"
+"\n"
+"The language of the original text is currently identified as:"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Original erkennen</span>\n"
+"\n"
+"Die Sprache des Ausgangstextes wurde erkannt als:"
+
+#: ../ui/developer/glom_developer.glade.h:52
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Test Translation</span>\n"
+"\n"
+"Choose a language to use temporarily to test the translations. These "
+"translations are normally used automatically when the application is started "
+"on a computer that uses the language.\n"
+"\n"
+"Note that the standard parts of the Glom user interface, such as menus and "
+"dialog windows, will only be translated when you start Glom on a computer "
+"that uses that language."
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Übersetzung testen</span>\n"
+"\n"
+"Bitte wählen Sie die Sprache, die Sie zum Testen der Übersetzungen verwenden "
+"wollen. Diese Übersetzungen werden normalerweise automatisch verwendet, wenn "
+"eine Anwendung auf einem Rechner gestartet wird, der die jeweilige Sprache "
+"verwendet.\n"
+"\n"
+"Bitte beachten Sie, dass die Hauptteile der Glom-Benutzerschnittstelle, wie z."
+"B. Menüs oder Dialogfenster, nur übersetzt werden, wenn Glom auf einem "
+"Rechner gestartet wird, der die entsprechende Sprache verwendet."
+
+#: ../ui/developer/glom_developer.glade.h:59
+msgid "Add Related Calendar"
+msgstr "Bezugskalender hinzufügen"
+
+#: ../ui/developer/glom_developer.glade.h:61
+msgid "Add Related Table"
+msgstr "Bezugstabelle hinzufügen"
+
+#: ../ui/developer/glom_developer.glade.h:63
+msgid "Add _Group"
+msgstr "_Gruppe hinzufügen"
+
+#: ../ui/developer/glom_developer.glade.h:64
+msgid ""
+"Add a button. Edit the button to define the script that will be run when the "
+"button is clicked."
+msgstr ""
+"Knopf hinzufügen. Bearbeiten Sie den Knopf, um das Skript zu bestimmen, "
+"welches beim Anklicken des Knopfs gestartet wird."
+
+#: ../ui/developer/glom_developer.glade.h:65
+msgid ""
+"Add a group which can contain other layout items. Use this to group items "
+"together, such as fields."
+msgstr ""
+"Eine Gruppe hinzufügen, welche andere Layout-Elemente enthalten kann. "
+"Benutzen Sie diese Gruppe, um Elemente wie Felder zu gruppieren."
+
+#: ../ui/developer/glom_developer.glade.h:66
+msgid ""
+"Add a layout item that shows the data from a field in the record, and allows "
+"the user to edit that value."
+msgstr ""
+"Ein Layout-Element hinzufügen. Dieses zeigt die Daten eines Feldes im "
+"Datensatz und erlaubt dem Benutzer das Bearbeiten des Wertes."
+
+#: ../ui/developer/glom_developer.glade.h:67
+msgid ""
+"Add a related records calendar portal. This is a calendar showing records "
+"from a related table. Remember to edit this layout item to specify the "
+"relationship to use, and the fields to show from the related table."
+msgstr ""
+"Ein Bezugseintrag-Kalenderportal hinzufügen. Hierbei handelt es sich um einen "
+"Kalender der die Einträge einer Bezugstabelle zeigt. Beachten Sie, dass Sie "
+"das Layout-Element bearbeiten müssen, um die zu benutzende Beziehung und die "
+"anzuzeigenden Felder der Bezugstabelle festzulegen."
+
+#: ../ui/developer/glom_developer.glade.h:68
+msgid ""
+"Add a related records portal. This is a list of records in a related table. "
+"Remember to edit this layout item to specify the relationship to use, and the "
+"fields to show from the related table."
+msgstr ""
+"Ein Bezugsdatensatz-Portal hinzufügen. Hierbei handelt es sich um eine Liste "
+"der Datensätze in einer Bezugstabelle. Beachten Sie, dass Sie das Layout-"
+"Element bearbeiten müssen, um die zu benutzende Beziehung und die "
+"anzuzeigenden Felder der Bezugstabelle festzulegen."
+
+#: ../ui/developer/glom_developer.glade.h:69
+msgid ""
+"Add a tabbed notebook. Each page of the notebook may contain several other "
+"layout items, but only one page will be visible at one time."
+msgstr ""
+"Eine Reitermappe hinzufügen. Jede Seite der Reitermappe kann mehrere andere "
+"Layout-Elemente enthalten, jedoch ist nur eine Seite zu einem Zeitpunkt "
+"sichtbar."
+
+#: ../ui/developer/glom_developer.glade.h:70
+msgid ""
+"Add an image to the layout, such as a logo. The image will be the same for "
+"every record viewed. To show an image field from a record, to show different "
+"images for each field, use the field layout item."
+msgstr ""
+"Ein Bild zum Layout hinzufügen, z.B. ein Logo. Das Bild ist das gleiche für "
+"jeden betrachteten Datensatz. Benutzen Sie das Layout-Element »Feld«, um ein "
+"Bildfeld eines Datensatzes oder um verschiedene Bilder für jedes Feld zu "
+"zeigen."
+
+#: ../ui/developer/glom_developer.glade.h:71
+msgid ""
+"Add text to a layout, such as an explanation or a warning. The text will be "
+"the same for every record viewed."
+msgstr ""
+"Text zu einem Layout hinzufügen, z.B. als Erklärung oder als Warnung. Der "
+"Text ist der gleiche Text für jeden betrachteten Datensatz."
+
+#: ../ui/developer/glom_developer.glade.h:73
+msgid "Also show:"
+msgstr "Außerdem anzeigen:"
+
+#: ../ui/developer/glom_developer.glade.h:74
+msgid "Alternative Color for Negative Values"
+msgstr "Alternative Farbe für negative Werte:"
+
+#: ../ui/developer/glom_developer.glade.h:75
+msgid "Auto-increment values"
+msgstr "Werte automatisch erhöhen"
+
+#: ../ui/developer/glom_developer.glade.h:76
+msgid "Automatic:"
+msgstr "Automatisch:"
+
+#: ../ui/developer/glom_developer.glade.h:77
+msgid "Background Color:"
+msgstr "Hintergrundfarbe:"
+
+#: ../ui/developer/glom_developer.glade.h:78
+msgid "Border Width (ems)"
+msgstr "Randbreite (in em)"
+
+#: ../ui/developer/glom_developer.glade.h:79
+msgid "Button Script"
+msgstr "Schalter-Skript"
+
+#: ../ui/developer/glom_developer.glade.h:80
+msgid "C_reate"
+msgstr "A_nlegen"
+
+#: ../ui/developer/glom_developer.glade.h:81
+msgid "Choices From Related Records"
+msgstr "Auswahl von Bezugsdatensätzen"
+
+#: ../ui/developer/glom_developer.glade.h:82
+msgid "Choose User"
+msgstr "Benutzer wählen"
+
+#: ../ui/developer/glom_developer.glade.h:83
+msgid ""
+"Click this check box to use a different foreground color to display negative "
+"values."
+msgstr ""
+"Wählen Sie dieses Ankreuzfeld aus, falls Sie eine andere Vordergrundfarbe für "
+"negative Werte verwenden möchten."
+
+#: ../ui/developer/glom_developer.glade.h:84
+msgid "Click this check box to use a non-standard background color."
+msgstr ""
+"Wählen Sie dieses Ankreuzfeld aus, falls Sie nicht die Vorgabe-"
+"Hintergrundfarbe verwenden möchten."
+
+#: ../ui/developer/glom_developer.glade.h:85
+msgid "Click this check box to use a non-standard font."
+msgstr ""
+"Wählen Sie dieses Ankreuzfeld aus, falls Sie nicht die Vorgabe-Schriftart "
+"verwenden möchten."
+
+#: ../ui/developer/glom_developer.glade.h:86
+msgid "Click this check box to use a non-standard foreground color."
+msgstr ""
+"Wählen Sie dieses Ankreuzfeld aus, falls Sie nicht die Vorgabe-"
+"Vordergrundfarbe verwenden möchten."
+
+#: ../ui/developer/glom_developer.glade.h:87
+msgid ""
+"Clicking the row button takes the user to the table specified by this "
+"relationship:"
+msgstr ""
+"Das Klicken des Zeilen-Knopfs bringt den Benutzer zur Tabelle, die durch "
+"diese Beziehung bestimmt ist:"
+
+#: ../ui/developer/glom_developer.glade.h:88
+msgid "Columns:"
+msgstr "Spalten:"
+
+#: ../ui/developer/glom_developer.glade.h:89
+msgid "Confirm Password"
+msgstr "Passwort bestätigen"
+
+#: ../ui/developer/glom_developer.glade.h:90
+msgid "Copy From Existing Translation"
+msgstr "Aus vorhandener Übersetzung kopieren"
+
+#: ../ui/developer/glom_developer.glade.h:91
+msgid "Country:"
+msgstr "Land:"
+
+#: ../ui/developer/glom_developer.glade.h:92
+msgid "Create Group"
+msgstr "Gruppe anlegen"
+
+#: ../ui/developer/glom_developer.glade.h:93
+msgid "Currency Symbol"
+msgstr "Währungssymbol"
+
+#: ../ui/developer/glom_developer.glade.h:94
+msgid "Custom Choice List"
+msgstr "Eigene Auswahlliste"
+
+#: ../ui/developer/glom_developer.glade.h:95
+msgid "Database Preferences"
+msgstr "Datenbankeinstellungen"
+
+#: ../ui/developer/glom_developer.glade.h:96
+msgid "Database User"
+msgstr "Datenbankbenutzer"
+
+#: ../ui/developer/glom_developer.glade.h:97
+msgid "Date Field:"
+msgstr "Datumsfeld:"
+
+#: ../ui/developer/glom_developer.glade.h:98
+msgid "Decimal Places"
+msgstr "Dezimalstelle"
+
+#: ../ui/developer/glom_developer.glade.h:99
+msgid "Default Formatting"
+msgstr "Standardformatierung"
+
+#: ../ui/developer/glom_developer.glade.h:100
+msgid "Display as radio buttons"
+msgstr "Als Radioknöpfe anzeigen"
+
+#: ../ui/developer/glom_developer.glade.h:101
+msgid "English"
+msgstr "Englisch"
+
+#: ../ui/developer/glom_developer.glade.h:103
+msgid "Export Format"
+msgstr "Exportierungsformat"
+
+#: ../ui/developer/glom_developer.glade.h:105
+msgid "Field Calculation"
+msgstr "Feldberechnung"
+
+#: ../ui/developer/glom_developer.glade.h:106
+msgid "Field Definition"
+msgstr "Felddefinition"
+
+#: ../ui/developer/glom_developer.glade.h:107
+msgid "Field Definitions"
+msgstr "Felddefinitionen"
+
+#: ../ui/developer/glom_developer.glade.h:108
+msgid "Field Layout"
+msgstr "Feld-Layout"
+
+#: ../ui/developer/glom_developer.glade.h:110
+msgid "Field:"
+msgstr "Feld:"
+
+#: ../ui/developer/glom_developer.glade.h:111
+msgid "Font:"
+msgstr "Schriftart:"
+
+#: ../ui/developer/glom_developer.glade.h:113
+msgid "Foreground Color:"
+msgstr "Vordergrundfarbe:"
+
+#. Translators: FROM as in SQL's FROM
+#: ../ui/developer/glom_developer.glade.h:116
+msgid "From field:"
+msgstr "»FROM«-Feld:"
+
+#: ../ui/developer/glom_developer.glade.h:119
+msgid "Group By - Sort Fields"
+msgstr "Gruppieren nach - Felder sortieren"
+
+#: ../ui/developer/glom_developer.glade.h:120
+msgid "Group Properties"
+msgstr "Gruppeneigenschaften"
+
+#: ../ui/developer/glom_developer.glade.h:121
+msgid "Group name:"
+msgstr "Gruppenname:"
+
+#: ../ui/developer/glom_developer.glade.h:122
+msgid "Groups"
+msgstr "Gruppen"
+
+#: ../ui/developer/glom_developer.glade.h:124
+msgid "Height (lines)"
+msgstr "Höhe (Zeilen)"
+
+#: ../ui/developer/glom_developer.glade.h:125
+msgid "Horizontal Alignment:"
+msgstr "Horizontale Ausrichtung:"
+
+#: ../ui/developer/glom_developer.glade.h:126
+msgid "Identify Original"
+msgstr "Original identifizieren"
+
+#: ../ui/developer/glom_developer.glade.h:127
+msgid "Identify Source"
+msgstr "Quelle identifizieren"
+
+#: ../ui/developer/glom_developer.glade.h:128
+msgid ""
+"If the text is not actually in this language, please choose the correct "
+"language."
+msgstr ""
+"Falls der Text derzeit nicht in dieser Sprache ist, dann wählen Sie bitte die "
+"richtige Sprache"
+
+#: ../ui/developer/glom_developer.glade.h:129
+msgid ""
+"If this is not selected then a thousands separator will not be used, even if "
+"your locale would normally use one. If it is selected then a thousands "
+"separator will be used only if your locale normally uses one."
+msgstr ""
+"Wenn diese Option nicht ausgewählt ist, werden Tausenderstellen nicht durch "
+"ein extra Trennzeichen markiert - auch wenn Ihre Landeseinstellungen "
+"normalerweise ein solches verwenden - andernfalls wird ein Trennzeichen nur "
+"verwendet, wenn dies in Ihren Landeseinstellungen angegeben ist."
+
+#: ../ui/developer/glom_developer.glade.h:130
+msgid ""
+"If this is selected then the field value will be shown in a multi-line box "
+"with a scrollbar."
+msgstr ""
+"Falls ausgewählt, so wird der Feldwert in einem mehrzeiligen Textfeld mit "
+"Bildlaufleiste angezeigt."
+
+#: ../ui/developer/glom_developer.glade.h:131
+msgid ""
+"If this option is selected then the choices will list values from all records "
+"in the related table. If this option is not selected then the choices will "
+"list values only from related records."
+msgstr ""
+"Wenn diese Option ausgewählt ist, dann wird die Auswahl Werte von allen "
+"Datensätzen in der Bezugstabelle auflisten. Wenn diese Option nicht gewählt "
+"ist, so werden nur Werte von Bezugsdatensätzen zur Auswahl angeboten."
+
+#: ../ui/developer/glom_developer.glade.h:132
+msgid "Image Object"
+msgstr "Bildobjekt"
+
+#: ../ui/developer/glom_developer.glade.h:134
+msgid "Language:"
+msgstr "Sprache:"
+
+#: ../ui/developer/glom_developer.glade.h:136
+msgid "Locale:"
+msgstr "Gebietsschema:"
+
+#: ../ui/developer/glom_developer.glade.h:137
+msgid "Logo"
+msgstr "Logo"
+
+#. Translators: The Main part of the report (not the footer or header)
+#: ../ui/developer/glom_developer.glade.h:139
+msgid "Main"
+msgstr "Hauptteil"
+
+#: ../ui/developer/glom_developer.glade.h:140
+msgid "Module name:"
+msgstr "Modulname:"
+
+#: ../ui/developer/glom_developer.glade.h:141
+msgid "Multi-line"
+msgstr "Mehrzeilig"
+
+#: ../ui/developer/glom_developer.glade.h:142
+msgid "Name of new related table:"
+msgstr "Name der neuen Bezugstabelle:"
+
+#: ../ui/developer/glom_developer.glade.h:143
+msgid "Name of new relationship:"
+msgstr "Name der neuen Beziehung:"
+
+#: ../ui/developer/glom_developer.glade.h:144
+msgid "Name:"
+msgstr "Name:"
+
+#: ../ui/developer/glom_developer.glade.h:145
+msgid "No Choices"
+msgstr "Keine Auswahl"
+
+#: ../ui/developer/glom_developer.glade.h:146
+msgid "None"
+msgstr "Nichts"
+
+#: ../ui/developer/glom_developer.glade.h:149
+msgid "Organisation"
+msgstr "Organisation"
+
+#: ../ui/developer/glom_developer.glade.h:151
+msgid ""
+"Please enter the initial connection details for your database. You may add "
+"additional users later. Remember to keep this password secret because it "
+"allows access to your data from other computers on the network."
+msgstr ""
+"Bitte geben Sie die grundlegenden Verbindungsdetails für Ihre neue Datenbank "
+"an. Weitere Benutzer können später hinzugefügt werden. Bitte beachten Sie, "
+"dass Sie das Passwort geheim halten, da die Kenntnis des Passwortes Zugriff "
+"auf Ihre Daten von anderen Rechnern im Netzwerk ermöglicht."
+
+#: ../ui/developer/glom_developer.glade.h:152
+msgid "Print Layout Editor"
+msgstr "Editor für Druck-Layout"
+
+#: ../ui/developer/glom_developer.glade.h:155
+msgid "Relationship:"
+msgstr "Beziehung:"
+
+#: ../ui/developer/glom_developer.glade.h:156
+msgid "Relationships Overview"
+msgstr "Übersicht über Beziehungen"
+
+#: ../ui/developer/glom_developer.glade.h:157
+msgid ""
+"Remove the item from the layout. If you remove a field layout item, it will "
+"not remove the field from the table itself. It just will not be seen on the "
+"layout."
+msgstr ""
+"Element aus dem Layout entfernen. Das Entfernen eines  Layout-Elements »Feld« "
+"entfernt nicht das Feld aus der Tabelle, sondern das Feld wird nicht im "
+"Layout dargestellt."
+
+#: ../ui/developer/glom_developer.glade.h:158
+msgid "Report Layout"
+msgstr "Layout des Berichts"
+
+#: ../ui/developer/glom_developer.glade.h:160
+msgid "Restrict data to these choices"
+msgstr "Daten auf diese Auswahlmöglichkeiten begrenzen"
+
+#: ../ui/developer/glom_developer.glade.h:161
+msgid "Script Library"
+msgstr "Skript-Bibliothek"
+
+#: ../ui/developer/glom_developer.glade.h:162
+msgid "Script name:"
+msgstr "Skriptname:"
+
+#: ../ui/developer/glom_developer.glade.h:163
+msgid "Secondary Fields:"
+msgstr "Sekundäre Felder:"
+
+#: ../ui/developer/glom_developer.glade.h:165
+msgid "Select Field"
+msgstr "Feld auswählen"
+
+#: ../ui/developer/glom_developer.glade.h:166
+msgid "Select Relationship"
+msgstr "Beziehung auswählen"
+
+#: ../ui/developer/glom_developer.glade.h:167
+msgid "Show _Related Relationships"
+msgstr "Zugehö_rige Beziehungen anzeigen"
+
+#: ../ui/developer/glom_developer.glade.h:168
+msgid "Show all records"
+msgstr "Alle Datensätze anzeigen"
+
+#: ../ui/developer/glom_developer.glade.h:169
+msgid "Show child relationships"
+msgstr "Kindesbeziehungen anzeigen"
+
+#: ../ui/developer/glom_developer.glade.h:170
+msgid "Sort Fields:"
+msgstr "Felder sortieren:"
+
+#: ../ui/developer/glom_developer.glade.h:171
+msgid ""
+"Start a translation for this target locale by copying the strings from "
+"another target locale."
+msgstr ""
+"Eine Übersetzung für diese Zielsprache starten, indem die Zeichenketten aus "
+"einer anderen Zielsprache kopiert werden."
+
+#: ../ui/developer/glom_developer.glade.h:172
+msgid "Startup Script"
+msgstr "Startskript"
+
+#: ../ui/developer/glom_developer.glade.h:173
+msgid "State/County:"
+msgstr "Bundesland/Provinz:"
+
+#: ../ui/developer/glom_developer.glade.h:174
+msgid "Street (Line 2):"
+msgstr "Straße (Zusatz):"
+
+#: ../ui/developer/glom_developer.glade.h:175
+msgid "Street:"
+msgstr "Straße:"
+
+#: ../ui/developer/glom_developer.glade.h:176
+msgid "Summary Type:"
+msgstr "Übersichttyp"
+
+#: ../ui/developer/glom_developer.glade.h:177
+msgid "System Name:"
+msgstr "Systemname:"
+
+#: ../ui/developer/glom_developer.glade.h:178
+msgid "Table Name"
+msgstr "Tabellenname"
+
+#: ../ui/developer/glom_developer.glade.h:179
+msgid "Table:"
+msgstr "Tabelle:"
+
+#: ../ui/developer/glom_developer.glade.h:180
+msgid "Table: "
+msgstr "Tabelle: "
+
+#: ../ui/developer/glom_developer.glade.h:181
+msgid "Test"
+msgstr "Test"
+
+#: ../ui/developer/glom_developer.glade.h:182
+msgid "Test Translation"
+msgstr "Übersetzung testen"
+
+#: ../ui/developer/glom_developer.glade.h:183
+msgid "Text Format"
+msgstr "Textformat"
+
+#: ../ui/developer/glom_developer.glade.h:184
+msgid "Text Object"
+msgstr "Textobjekt"
+
+#: ../ui/developer/glom_developer.glade.h:185
+msgid ""
+"The field value will be the return value of the python function, which you "
+"implement here."
+msgstr ""
+"Das Feld hat erhält den Wert, der von der Python-Funktion zurückgeliefert "
+"wird, die Sie hier implementieren."
+
+#: ../ui/developer/glom_developer.glade.h:186
+msgid ""
+"These modules will be available to your button scripts and field calculations "
+"via the python import keyword."
+msgstr ""
+"Diese Module werden über das Python-Import-Schlüsselwort für Ihre Knopf-"
+"Skripte und Feldberechnungen verfügbar sein."
+
+#: ../ui/developer/glom_developer.glade.h:187
+msgid "This field will be used to decide which records to show in the calendar."
+msgstr "Dieses Feld bestimmt, welche Einträge im Kalender angezeigt werden."
+
+#: ../ui/developer/glom_developer.glade.h:188
+msgid ""
+"This will add a new table and add a relationship that refers to the new  "
+"table, as a convenient alternative to doing this in separate steps.\n"
+"\n"
+"If a suitable related table already exists then you should instead cancel and "
+"just add a relationship."
+msgstr ""
+"Hiermit werden eine neue Tabelle und eine neue Beziehung hinzugefügt, die "
+"sich auf die neue Tabelle bezieht, um einen bequemen Weg zu bieten und nicht "
+"mehrere Einzelschritte zu benötigen.\n"
+"\n"
+"Falls eine passende Bezugstabelle bereits existiert, so sollten Sie nun "
+"abbrechen und stattdessen nur eine Beziehung hinzufügen."
+
+#: ../ui/developer/glom_developer.glade.h:191
+msgid "Title:"
+msgstr "Titel:"
+
+#: ../ui/developer/glom_developer.glade.h:192
+msgid "Town:"
+msgstr "Stadt:"
+
+#: ../ui/developer/glom_developer.glade.h:193
+msgid "Translations"
+msgstr "Übersetzungen"
+
+#: ../ui/developer/glom_developer.glade.h:194
+msgid "Triggered by:"
+msgstr "Ausgelöst durch:"
+
+#: ../ui/developer/glom_developer.glade.h:195
+msgid "Typ_e:"
+msgstr "T_yp:"
+
+#: ../ui/developer/glom_developer.glade.h:196
+msgid "Use 1000s separator"
+msgstr "Tausender-Trennzeichen verwenden"
+
+#: ../ui/developer/glom_developer.glade.h:197
+msgid "Use custom formatting"
+msgstr "Benutzerdefinierte Formatierung verwenden"
+
+#: ../ui/developer/glom_developer.glade.h:198
+msgid "Use custom title:"
+msgstr "Benutzerdefinierten Titel verwenden:"
+
+#: ../ui/developer/glom_developer.glade.h:199
+msgid "Use default field title: "
+msgstr "Standardfeldtitel verwenden"
+
+#: ../ui/developer/glom_developer.glade.h:200
+msgid "Use default formatting"
+msgstr "Standardformatierung verwenden"
+
+#: ../ui/developer/glom_developer.glade.h:202
+msgid "Users"
+msgstr "Benutzer"
+
+#: ../ui/developer/glom_developer.glade.h:203
+msgid "Value"
+msgstr "Wert"
+
+#: ../ui/developer/glom_developer.glade.h:204
+msgid ""
+"When the button is clicked it will run the python function which you "
+"implement here."
+msgstr ""
+"Wenn der Schalter angeklickt wird, wird die hier implementierte Python-"
+"Funktion ausgeführt."
+
+#: ../ui/developer/glom_developer.glade.h:205
+msgid ""
+"When the database is opened the python function implemented here will run."
+msgstr ""
+"Wenn die Datenbank geöffnet wird, wird die hier implementierte Python-"
+"Funktion ausgeführt."
+
+#: ../ui/developer/glom_developer.glade.h:206
+msgid ""
+"When this is checked the table's title will be shown at the top of the report "
+"in addition to the report title."
+msgstr ""
+"Falls ausgewählt, so wird der Tabellentitel zu Beginn des Berichts zusätzlich "
+"zum Reporttitel angezeigt."
+
+#: ../ui/developer/glom_developer.glade.h:207
+msgid "Zip/Postal Code:"
+msgstr "Postleitzahl:"
+
+#: ../ui/developer/glom_developer.glade.h:208
+msgid "_Auto-increment"
+msgstr "_Automatisch erhöhen"
+
+#: ../ui/developer/glom_developer.glade.h:209
+msgid "_Calculate Value"
+msgstr "Wert bere_chnen"
+
+#. Translators: This is the verb
+#: ../ui/developer/glom_developer.glade.h:211
+msgid "_Check"
+msgstr "Pr_üfen"
+
+#: ../ui/developer/glom_developer.glade.h:212
+msgid "_Confirm Password:"
+msgstr "_Passwort bestätigen:"
+
+#: ../ui/developer/glom_developer.glade.h:214
+msgid "_Field:"
+msgstr "_Feld:"
+
+#: ../ui/developer/glom_developer.glade.h:215
+msgid "_Lookup value when a field changes."
+msgstr "Wert suchen, wenn sich ein Fe_ld ändert."
+
+#: ../ui/developer/glom_developer.glade.h:216
+msgid "_Name:"
+msgstr "_Name:"
+
+#: ../ui/developer/glom_developer.glade.h:218
+msgid "_Primary Key"
+msgstr "_Primärschlüssel"
+
+#: ../ui/developer/glom_developer.glade.h:219
+msgid "_Relationship:"
+msgstr "Be_ziehung:"
+
+#: ../ui/developer/glom_developer.glade.h:220
+msgid "_Report name:"
+msgstr "Be_richtname:"
+
+#: ../ui/developer/glom_developer.glade.h:222
+msgid "_Show table title"
+msgstr "Ta_bellentitel zeigen"
+
+#: ../ui/developer/glom_developer.glade.h:223
+msgid "_Table:"
+msgstr "_Tabelle:"
+
+#: ../ui/developer/glom_developer.glade.h:225
+msgid "_Unique"
+msgstr "Einde_utig"
+
+#: ../ui/developer/glom_developer.glade.h:226
+msgid "_User Entry"
+msgstr "Ben_utzereingabe"
+
+#: ../ui/developer/glom_developer.glade.h:229
+msgid "table name"
+msgstr "Tabellenname"
+
+#~ msgid "0"
+#~ msgstr "0"
 
 #~ msgid "_User Level"
 #~ msgstr "_Benutzerebene"
