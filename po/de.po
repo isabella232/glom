@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-07-07 10:59+0000\n"
+"POT-Creation-Date: 2011-07-07 11:25+0000\n"
 "PO-Revision-Date: 2011-07-07 12:55+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@freenet.de>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
@@ -204,44 +204,49 @@ msgstr "Sicherheitskopie _wiederherstellen"
 msgid "_Show Layout Toolbar"
 msgstr "_Layout-Werkzeugleiste anzeigen"
 
-#: ../glom/application.cc:573
+#: ../glom/application.cc:574
+msgctxt "Help menu title"
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: ../glom/application.cc:576
+#: ../glom/application.cc:578
+msgid "_Help"
+msgstr "_Hilfe"
+
+#: ../glom/application.cc:581
 msgid "_About"
 msgstr "_Info"
 
-#: ../glom/application.cc:576
+#: ../glom/application.cc:581
 msgid "About the application"
 msgstr "Info zu dieser Anwendung"
 
-#: ../glom/application.cc:579
+#: ../glom/application.cc:584
 msgid "_Contents"
 msgstr "_Inhalt"
 
-#: ../glom/application.cc:579
+#: ../glom/application.cc:584
 msgid "Help with the application"
 msgstr "Hilfe zu dieser Anwendung"
 
-#: ../glom/application.cc:684
+#: ../glom/application.cc:688
 msgid "A Database GUI"
 msgstr "Eine grafische Datenbankschnittstelle"
 
-#: ../glom/application.cc:685
+#: ../glom/application.cc:689
 msgid "© 2000-2011 Murray Cumming, Openismus GmbH"
 msgstr "© 2000-2010 Murray Cumming, Openismus GmbH"
 
 #. TODO: Put this in the generic bakery code.
-#: ../glom/application.cc:765 ../glom/application.cc:774
+#: ../glom/application.cc:773 ../glom/application.cc:782
 msgid "Open Failed"
 msgstr "Öffnen gescheitert"
 
-#: ../glom/application.cc:766
+#: ../glom/application.cc:774
 msgid "The document could not be found."
 msgstr "Das Dokument konnte nicht gefunden werden."
 
-#: ../glom/application.cc:775
+#: ../glom/application.cc:783
 msgid ""
 "The document could not be opened because it was created or modified by a "
 "newer version of Glom."
@@ -251,12 +256,12 @@ msgstr ""
 
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
 #. Warn the user, and let him try again:
-#: ../glom/application.cc:825 ../glom/frame_glom.cc:2133
+#: ../glom/application.cc:833 ../glom/frame_glom.cc:2133
 #: ../glom/frame_glom.cc:2206
 msgid "Connection Failed"
 msgstr "Verbindung gescheitert"
 
-#: ../glom/application.cc:825 ../glom/frame_glom.cc:2133
+#: ../glom/application.cc:833 ../glom/frame_glom.cc:2133
 #: ../glom/frame_glom.cc:2206
 msgid ""
 "Glom could not connect to the database server. Maybe you entered an "
@@ -267,7 +272,7 @@ msgstr ""
 "Sie einen falschen Benutzernamen oder ein ungültiges Passwort eingegeben, "
 "möglich wäre auch,dass der Postgres-Datenbank-Server nicht läuft."
 
-#: ../glom/application.cc:1015
+#: ../glom/application.cc:1023
 msgid ""
 "The file cannot be opened because this version of Glom does not support self-"
 "hosting of databases."
@@ -275,7 +280,7 @@ msgstr ""
 "Die Datei kann nicht geöffnet werden, da diese Version von Glom keine selbst "
 "verwalteten Datenbanken unterstützt."
 
-#: ../glom/application.cc:1020 ../glom/application.cc:1029
+#: ../glom/application.cc:1028 ../glom/application.cc:1037
 msgid ""
 "The file cannot be opened because this version of Glom does not support "
 "PostgreSQL databases."
@@ -283,7 +288,7 @@ msgstr ""
 "Die Datei kann nicht geöffnet werden, da diese Version von Glom keine "
 "PostgreSQL-Datenbanken unterstützt."
 
-#: ../glom/application.cc:1037
+#: ../glom/application.cc:1045
 msgid ""
 "The file cannot be opened because this version of Glom does not support "
 "SQLite databases."
@@ -292,15 +297,15 @@ msgstr ""
 "Datenbanken unterstützt."
 
 #. Warn the user.
-#: ../glom/application.cc:1055
+#: ../glom/application.cc:1063
 msgid "File Uses Unsupported Database Backend"
 msgstr "Datei benutzt ein nicht unterstütztes Datenbank-Backend"
 
-#: ../glom/application.cc:1121
+#: ../glom/application.cc:1129
 msgid "Creating From Example File"
 msgstr "Aus Beispieldatei erstellen"
 
-#: ../glom/application.cc:1122
+#: ../glom/application.cc:1130
 msgid ""
 "To use this example file you must save an editable copy of the file. A new "
 "database will also be created on the server."
@@ -309,11 +314,11 @@ msgstr ""
 "Kopie dieser Datei abspeichern. Weiterhin wird eine neue Datenbank auf dem "
 "Server erstellt."
 
-#: ../glom/application.cc:1126
+#: ../glom/application.cc:1134
 msgid "Creating From Backup File"
 msgstr "Von Sicherheitskopie erstellen"
 
-#: ../glom/application.cc:1127
+#: ../glom/application.cc:1135
 msgid ""
 "To use this backup file you must save an editable copy of the file. A new "
 "database will also be created on the server."
@@ -322,11 +327,11 @@ msgstr ""
 "bearbeitbare Kopie dieser Datei abspeichern. Weiterhin wird eine neue "
 "Datenbank auf dem Server erstellt."
 
-#: ../glom/application.cc:1188
+#: ../glom/application.cc:1196
 msgid "Opening Read-Only File."
 msgstr "Schreibgeschützte Datei öffnen."
 
-#: ../glom/application.cc:1189
+#: ../glom/application.cc:1197
 msgid ""
 "This file is read only, so you will not be able to enter Developer mode to "
 "make design changes."
@@ -334,16 +339,16 @@ msgstr ""
 "Diese Datei ist nur lesbar, somit können Sie nicht in den Entwicklermodus "
 "wechseln, um Änderungen an der Struktur vorzunehmen."
 
-#: ../glom/application.cc:1192
+#: ../glom/application.cc:1200
 msgid "Continue without Developer Mode"
 msgstr "Ohne Entwicklermodus fortsetzen"
 
 #. The connection to the server is OK, but the database is not there yet.
-#: ../glom/application.cc:1250
+#: ../glom/application.cc:1258
 msgid "Database Not Found On Server"
 msgstr "Die Datenbank wurde auf diesem Server nicht gefunden"
 
-#: ../glom/application.cc:1250
+#: ../glom/application.cc:1258
 msgid ""
 "The database could not be found on the server. Please consult your system "
 "administrator."
@@ -353,56 +358,56 @@ msgstr ""
 
 #. std::cerr might show some hints, but we don't want to confront the user with them:
 #. TODO: Actually complain about specific stuff such as missing data, because the user might really play with the file system.
-#: ../glom/application.cc:1260
+#: ../glom/application.cc:1268
 msgid "Problem Loading Document"
 msgstr "Fehler beim Laden des Dokuments"
 
-#: ../glom/application.cc:1260
+#: ../glom/application.cc:1268
 msgid "Glom could not load the document."
 msgstr "Glom konnte das angegebene Dokument nicht laden."
 
-#: ../glom/application.cc:1356
+#: ../glom/application.cc:1364
 msgid "Exporting Backup"
 msgstr "Sicherheitskopie wird exportiert"
 
-#: ../glom/application.cc:1364
+#: ../glom/application.cc:1372
 msgid "Restoring Backup"
 msgstr "Sicherheitskopie wird wiederhergestellt"
 
-#: ../glom/application.cc:1700 ../glom/application.cc:1780
-#: ../glom/application.cc:1968
+#: ../glom/application.cc:1708 ../glom/application.cc:1788
+#: ../glom/application.cc:1976
 msgid "Creating Glom Database"
 msgstr "Glom-Datenbank wird erstellt"
 
-#: ../glom/application.cc:1700 ../glom/application.cc:1780
+#: ../glom/application.cc:1708 ../glom/application.cc:1788
 msgid "Creating Glom database from example file."
 msgstr "Glom-Datenbank wird aus Beispieldatei erstellt."
 
-#: ../glom/application.cc:1968
+#: ../glom/application.cc:1976
 msgid "Creating Glom database from backup file."
 msgstr "Glom-Datenbank wird aus Sicherheitskopie erstellt."
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/application.cc:2431 ../glom/bakery/app_withdoc.cc:237
+#: ../glom/application.cc:2439 ../glom/bakery/app_withdoc.cc:237
 #: ../glom/bakery/app_withdoc.cc:288
 msgid "Save failed."
 msgstr "Speichern fehlgeschlagen"
 
-#: ../glom/application.cc:2431
+#: ../glom/application.cc:2439
 msgid "There was an error while saving the example file."
 msgstr "Beim Speichern der Beispieldatei ist ein Fehler aufgetreten."
 
-#: ../glom/application.cc:2472 ../glom/application.cc:2477
+#: ../glom/application.cc:2480 ../glom/application.cc:2485
 #: ../glom/bakery/app_withdoc_gtk.cc:469
 msgid "Save Document"
 msgstr "Dokument speichern"
 
 #. Warn the user:
-#: ../glom/application.cc:2565 ../glom/bakery/app_withdoc_gtk.cc:518
+#: ../glom/application.cc:2573 ../glom/bakery/app_withdoc_gtk.cc:518
 msgid "Read-only File."
 msgstr "Schreibgeschützte Datei."
 
-#: ../glom/application.cc:2565 ../glom/bakery/app_withdoc_gtk.cc:518
+#: ../glom/application.cc:2573 ../glom/bakery/app_withdoc_gtk.cc:518
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -411,11 +416,11 @@ msgstr ""
 "nötigen Zugriffsrechte fehlen."
 
 #. Warn the user:
-#: ../glom/application.cc:2579 ../glom/bakery/app_withdoc_gtk.cc:532
+#: ../glom/application.cc:2587 ../glom/bakery/app_withdoc_gtk.cc:532
 msgid "Read-only Directory."
 msgstr "Schreibgeschützter Ordner."
 
-#: ../glom/application.cc:2579 ../glom/bakery/app_withdoc_gtk.cc:532
+#: ../glom/application.cc:2587 ../glom/bakery/app_withdoc_gtk.cc:532
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -423,19 +428,19 @@ msgstr ""
 "Sie können keine Datei in diesem Ordner erstellen, da Ihnen die nötigen "
 "Zugriffsrechte fehlen."
 
-#: ../glom/application.cc:2596
+#: ../glom/application.cc:2604
 msgid "Database Title missing"
 msgstr "Datenbank-Titel fehlt"
 
-#: ../glom/application.cc:2596
+#: ../glom/application.cc:2604
 msgid "You must specify a title for the new database."
 msgstr "Sie müssen einen Titel für die neue Datenbank angeben."
 
-#: ../glom/application.cc:2625 ../glom/frame_glom.cc:1890
+#: ../glom/application.cc:2633 ../glom/frame_glom.cc:1890
 msgid "Directory Already Exists"
 msgstr "Ordner besteht bereits"
 
-#: ../glom/application.cc:2625 ../glom/frame_glom.cc:1891
+#: ../glom/application.cc:2633 ../glom/frame_glom.cc:1891
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
@@ -446,35 +451,35 @@ msgstr ""
 "anderen Dateinamen ein, um einen neuen Ordner zu nutzen."
 
 #. This actually creates the directory:
-#: ../glom/application.cc:2764
+#: ../glom/application.cc:2772
 msgid "Save Backup"
 msgstr "Sicherheitskopie erstellen"
 
-#: ../glom/application.cc:2846
+#: ../glom/application.cc:2854
 msgid "Export Backup failed."
 msgstr "Exportieren der Sicherheitskopie schlug fehl."
 
-#: ../glom/application.cc:2846
+#: ../glom/application.cc:2854
 msgid "There was an error while exporting the backup."
 msgstr "Beim Exportieren der Sicherheitskopie ist ein Fehler aufgetreten."
 
-#: ../glom/application.cc:2851
+#: ../glom/application.cc:2859
 msgid "Choose a backup file"
 msgstr "Wählen Sie eine Datei für die Sicherheitskopie"
 
-#: ../glom/application.cc:2856
+#: ../glom/application.cc:2864
 msgid ".tar.gz Backup files"
 msgstr ".tar.gz Sicherheitskopien"
 
-#: ../glom/application.cc:2862
+#: ../glom/application.cc:2870
 msgid "Restore"
 msgstr "Wiederherstellen"
 
-#: ../glom/application.cc:2933 ../glom/application.cc:2939
+#: ../glom/application.cc:2941 ../glom/application.cc:2947
 msgid "Restore Backup failed."
 msgstr "Wiederherstellen der Sicherheitskopie schlug fehl."
 
-#: ../glom/application.cc:2933
+#: ../glom/application.cc:2941
 msgid ""
 "There was an error while restoring the backup. The tar utility failed to "
 "extract the archive."
@@ -482,7 +487,7 @@ msgstr ""
 "Beim Wiederherstellen der Sicherheitskopie ist ein Fehler aufgetreten. Das "
 "Programm tar konnte das Archiv nicht entpacken."
 
-#: ../glom/application.cc:2939
+#: ../glom/application.cc:2947
 msgid ""
 "There was an error while restoring the backup. The .glom file could not be "
 "found."
@@ -490,7 +495,7 @@ msgstr ""
 "Beim Wiederherstellen der Sicherheitskopie ist ein Fehler aufgetreten. Die ."
 "glom-Datei konnte nicht gefunden werden. "
 
-#: ../glom/application.cc:3043 ../glom/bakery/app_withdoc_gtk.cc:379
+#: ../glom/application.cc:3051 ../glom/bakery/app_withdoc_gtk.cc:379
 msgid " (read-only)"
 msgstr "(schreibgeschützt)"
 
