@@ -690,8 +690,12 @@ void Application::on_menu_help_about()
     std::vector<Glib::ustring> vecAuthors;
     vecAuthors.push_back("Murray Cumming <murrayc@murrayc.com>");
     m_pAbout->set_authors(vecAuthors);
-    //Glib::RefPtr<Gdk::Pixbuf> logo = Gdk::Pixbuf::create_from_file();
-    //m_pAbout->set_logo(logo);
+    
+    Glib::RefPtr<Gdk::Pixbuf> logo = Gdk::Pixbuf::create_from_file(GLOM_ICONPATH);
+    if(logo)
+      m_pAbout->set_logo(logo);
+    else
+      std::cout << G_STRFUNC << ": Could not load icon from path=" << GLOM_ICONPATH << std::endl;
 
     m_pAbout->signal_hide().connect( sigc::mem_fun(*this, &Application::on_about_close) );
     m_bAboutShown = true;

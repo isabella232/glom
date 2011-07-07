@@ -162,6 +162,9 @@ appicon32dir = $(iconthemedir)/32x32/apps
 appicon48dir = $(iconthemedir)/48x48/apps
 appiconscdir = $(iconthemedir)/scalable/apps
 
+glom_defines += \
+-DGLOM_ICONPATH=\""$(appicon24dir)/glom.png"\"
+
 dist_appicon16_DATA = icons/16x16/glom.png
 dist_appicon22_DATA = icons/22x22/glom.png
 dist_appicon24_DATA = icons/24x24/glom.png

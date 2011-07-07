@@ -1,5 +1,12 @@
 2011-07-07  Murray Cumming  <murrayc@murrayc.com>
 
+	About Box: Add a logo.
+
+	* glom/application.cc: Use set_logo() though this only appears in the title 
+	bar for some reason.
+
+2011-07-07  Murray Cumming  <murrayc@murrayc.com>
+
 	Really fix the About Box.
 
 	* glom/application.cc: Add the Help menu itself, and use set_program_name() 
