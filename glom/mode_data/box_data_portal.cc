@@ -44,8 +44,6 @@ Box_Data_Portal::Box_Data_Portal()
   m_box_maemo_details(0)
 #endif
 {
-  set_size_request(400, -1); //An arbitrary default.
-
   //m_Frame.set_label_widget(m_Label_Related);
   m_Frame.set_shadow_type(Gtk::SHADOW_NONE);
 

@@ -259,6 +259,10 @@ public:
    * adding the generated primary key if necessary.
    */
   bool start_new_record();
+  
+  /** Request a height for this widget, based on the number of rows to show.
+   */
+  void set_height_rows(guint rows);
 
 private:
 

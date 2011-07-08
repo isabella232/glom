@@ -103,7 +103,7 @@ DbAddDel::DbAddDel()
   m_TreeView.show();
 
   //Make sure that the TreeView doesn't start out only big enough for zero items.
-  m_TreeView.set_size_request(-1, 150);
+  set_height_rows(5);
 
   //Allow the user to change the column order:
   //m_TreeView.set_column_drag_function( sigc::mem_fun(*this, &DbAddDel::on_treeview_column_drop) );
@@ -144,6 +144,15 @@ DbAddDel::~DbAddDel()
     pApp->remove_developer_action(m_refContextLayout);
   }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+}
+
+void DbAddDel::set_height_rows(guint rows)
+{
+  //TODO: File a bug about API for this in GtkTreeView.
+  const guint height_for_rows = rows * get_fixed_cell_height();
+  //std::cout << "debug: height_for_rows = " << height_for_rows << std::endl;
+  const guint extra_for_treeview = 50; //TODO: Find some way to guess this.
+  m_ScrolledWindow.set_min_content_height(height_for_rows + extra_for_treeview);
 }
 
 void DbAddDel::do_user_requested_edit()

@@ -1,5 +1,24 @@
 2011-07-08  Murray Cumming  <murrayc@murrayc.com>
 
+	Related Records: Show enough records.
+
+	* glom/mode_data/db_adddel/db_adddel.[h|cc]: Added set_height_rows(), so 
+	we can set the minimum size based on the number of rows, though this 
+	currently hard-codes a size for the non-rows part of the GtkTreeView, such 
+	as the column headers.
+	* glom/mode_data/box_data_portal.cc:
+	* glom/mode_data/box_data_list_related.cc: Constructors: Remove unnecessary 
+	calls to set_size_request().
+	Call set_height_rows() instead.
+
+  The related records Gtk::TreeViews probably became too small since the port to 
+  gtkmm3. We now need to use Gtk::ScrolledArea::set_min_content_height().
+  
+  However, the number of rows should probably be something for the layout to 
+  specify per portal.
+	
+2011-07-08  Murray Cumming  <murrayc@murrayc.com>
+
 	Minor int->guint change.
 
 	* glom/mode_data/db_adddel/db_adddel.[h|cc]: get_fixed_cell_height(): 

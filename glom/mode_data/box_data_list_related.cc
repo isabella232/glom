@@ -32,11 +32,10 @@ namespace Glom
 
 Box_Data_List_Related::Box_Data_List_Related()
 {
-  set_size_request(400, -1); //An arbitrary default.
-
   m_Alignment.add(m_AddDel);
   add_view(&m_AddDel); //Give it access to the document.
   m_AddDel.show();
+  m_AddDel.set_height_rows(5);
   m_Alignment.show();
 
   //Connect signals:
