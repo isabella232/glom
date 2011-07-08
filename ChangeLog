@@ -1,3 +1,10 @@
+2011-07-08  Murray Cumming  <murrayc@murrayc.com>
+
+	DbAddDel: Remove unnecessary virtual keywords. 
+
+	* glom/mode_data/db_adddel/db_adddel.h: These methods are not meant to 
+	be overridden by anything.
+
 1.19.6:
 
 2011-07-07  Murray Cumming  <murrayc@murrayc.com>

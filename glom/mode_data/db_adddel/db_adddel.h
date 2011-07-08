@@ -237,10 +237,10 @@ public:
   type_signal_sort_clause_changed signal_sort_clause_changed();
 
 
-  virtual Gtk::TreeModel::iterator get_last_row();
-  virtual Gtk::TreeModel::iterator get_last_row() const;
+  Gtk::TreeModel::iterator get_last_row();
+  Gtk::TreeModel::iterator get_last_row() const;
 
-  virtual void set_open_button_title(const Glib::ustring& title);
+  void set_open_button_title(const Glib::ustring& title);
 
 
   /** Add a new row to the list, for the user to enter record details,
@@ -282,16 +282,16 @@ private:
   type_list_indexes get_data_model_column_index(const sharedptr<const LayoutItem_Field>& layout_item_field, bool including_specified_field_layout = true) const;
 
 protected:
-  virtual void setup_menu();
+  void setup_menu();
 
   /// A common handler for the edit button, the context menu, etc.
   void do_user_requested_edit();
 
 private:
-  virtual Gnome::Gda::Value treeview_get_key(const Gtk::TreeModel::iterator& row) const;
+  Gnome::Gda::Value treeview_get_key(const Gtk::TreeModel::iterator& row) const;
 
   ///Add a blank row, or return the existing blank row if there already is one.
-  //virtual Gtk::TreeModel::iterator get_next_available_row_with_add_if_necessary();
+  //Gtk::TreeModel::iterator get_next_available_row_with_add_if_necessary();
 
   //Signal handlers:
   #ifdef GLOM_ENABLE_MAEMO
@@ -305,15 +305,15 @@ private:
 
   //TODO: Remove virtuals after checking that there are no method overrides:
   #ifndef GLOM_ENABLE_MAEMO
-  virtual void on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index, int data_model_column_index);
-  virtual void on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index, int data_model_column_index);
+  void on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index, int data_model_column_index);
+  void on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index, int data_model_column_index);
   void on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& row, guint model_column_index);
 
   bool on_treeview_column_drop(Gtk::TreeView* treeview, Gtk::TreeViewColumn* column, Gtk::TreeViewColumn* prev_column, Gtk::TreeViewColumn* next_column);
   void on_treeview_columns_changed();
 
-  virtual bool on_button_press_event_Popup(GdkEventButton* event);
-  virtual void on_treeview_button_press_event(GdkEventButton* event);
+  bool on_button_press_event_Popup(GdkEventButton* event);
+  void on_treeview_button_press_event(GdkEventButton* event);
 
 protected:
   void on_MenuPopup_activate_Edit();
@@ -328,8 +328,8 @@ private:
 #endif
 
   #ifndef GLOM_ENABLE_MAEMO
-  virtual bool on_treeview_columnheader_button_press_event(GdkEventButton* event);
-  virtual void on_treeview_column_clicked(int model_column_index);
+  bool on_treeview_columnheader_button_press_event(GdkEventButton* event);
+  void on_treeview_column_clicked(int model_column_index);
   void on_treeview_column_resized(int model_column_index, DbTreeViewColumnGlom* view_column);
   void on_idle_row_edit();
   void on_cell_button_clicked(const Gtk::TreeModel::Path& path);
