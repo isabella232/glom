@@ -384,7 +384,7 @@ private:
    */
   void show_hint_model();
 
-  int get_fixed_cell_height();
+  guint get_fixed_cell_height();
 
   //TODO: Remove this and use AppGlom::get_application() instead?
   Application* get_application();
@@ -504,7 +504,7 @@ private:
   ModelColumnsEmptyHint m_columns_hint;
   Glib::RefPtr<Gtk::ListStore> m_model_hint;
 
-  int m_fixed_cell_height;
+  guint m_fixed_cell_height;
 
 private:
 

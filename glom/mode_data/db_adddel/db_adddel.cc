@@ -596,7 +596,7 @@ guint DbAddDel::get_columns_count() const
   #endif //GLOM_ENABLE_MAEMO
 }
 
-int DbAddDel::get_fixed_cell_height()
+guint DbAddDel::get_fixed_cell_height()
 {
   if(m_fixed_cell_height <= 0)
   {
@@ -635,8 +635,8 @@ int DbAddDel::get_fixed_cell_height()
       int height = 0;
       refLayout->get_pixel_size(width, height);
 
-      if(height > m_fixed_cell_height)
-        m_fixed_cell_height = height;
+      if(height > (int)m_fixed_cell_height)
+        m_fixed_cell_height = (guint)height;
     }
   }
   

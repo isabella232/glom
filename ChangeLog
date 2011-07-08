@@ -1,5 +1,12 @@
 2011-07-08  Murray Cumming  <murrayc@murrayc.com>
 
+	Minor int->guint change.
+
+	* glom/mode_data/db_adddel/db_adddel.[h|cc]: get_fixed_cell_height(): 
+	Return a guint instead of an int.
+
+2011-07-08  Murray Cumming  <murrayc@murrayc.com>
+
 	Details: Do not navigate past the last row.
 
 	* glom/mode_data/datawidget/treemodel_db.[h|cc]: get_last_row(): 
