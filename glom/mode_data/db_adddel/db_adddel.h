@@ -131,6 +131,12 @@ public:
   virtual void set_value_selected(const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value);
 
   bool get_is_first_row(const Gtk::TreeModel::iterator& iter) const;
+
+  /** Check whether the row is the last (non-placeholder) row.
+   * This will also return true if @a iter is the placeholder row,
+   * but this should be used to identify the last real row.
+   * @see get_is_placeholder_row()
+   */
   bool get_is_last_row(const Gtk::TreeModel::iterator& iter) const;
 
   /** @result Whether this is a blank row where date for a new row should be entered
@@ -236,8 +242,14 @@ public:
   typedef sigc::signal<void> type_signal_sort_clause_changed;
   type_signal_sort_clause_changed signal_sort_clause_changed();
 
-
+  /** Get the last row.
+   * This will never return the placeholder row. 
+   */
   Gtk::TreeModel::iterator get_last_row();
+  
+  /** Get the last row.
+   * This will never return the placeholder row. 
+   */
   Gtk::TreeModel::iterator get_last_row() const;
 
   void set_open_button_title(const Glib::ustring& title);

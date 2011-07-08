@@ -206,7 +206,12 @@ public:
 
   bool get_model_column_index(guint view_column_index, guint& model_column_index);
 
+  /** Get the last row. This will generally be the placeholder row.
+   */
   Gtk::TreeModel::iterator get_last_row();
+
+  /** Get the last row. This will generally be the placeholder row.
+   */
   Gtk::TreeModel::iterator get_last_row() const;
 
 protected:

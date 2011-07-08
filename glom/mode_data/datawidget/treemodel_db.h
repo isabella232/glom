@@ -105,7 +105,8 @@ public:
   void set_key_value(const TreeModel::iterator& iter, const DbValue& value);
   DbValue get_key_value(const TreeModel::iterator& iter) const;
 
-  /** Get the last row - usually the placeholder.
+  /** Get the last row.
+   * This will never return the placeholder row. 
    */
   TreeModel::iterator get_last_row();
 

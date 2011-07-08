@@ -1,5 +1,24 @@
 2011-07-08  Murray Cumming  <murrayc@murrayc.com>
 
+	Details: Do not navigate past the last row.
+
+	* glom/mode_data/datawidget/treemodel_db.[h|cc]: get_last_row(): 
+	Document that this never returns the placeholder row, and make sure that it 
+	does not. There was a typo that --ed the wrong variable.
+	* glom/mode_data/db_adddel/db_adddel.[h|cc]: get_last_row(): 
+	Document that this never returns the placeholder row.
+	get_is_placeholder_row(): Remove an illogical call to is_last_row().
+	get_count(): Remove an illogical check to see whether the last row is the 
+	placeholder row.
+	* glom/utility_widgets/adddel/adddel.h: get_last_row(): Document that this 
+  similarly-APIed widget has different behaviour.
+  
+  This stops the user from being taken to an empty record when clicking Last, 
+  or when clicking Next to the end.
+  Bug #526115 comment #25 (Michael Hasselmann)
+
+2011-07-08  Murray Cumming  <murrayc@murrayc.com>
+
 	DbAddDel: Remove unnecessary virtual keywords. 
 
 	* glom/mode_data/db_adddel/db_adddel.h: These methods are not meant to 

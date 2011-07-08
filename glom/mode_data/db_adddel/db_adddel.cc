@@ -554,8 +554,7 @@ guint DbAddDel::get_count() const
   //Take account of the extra blank for new entries:
   if(get_allow_user_actions()) //If it has the extra row.
   {
-    if(get_is_placeholder_row(get_last_row()))
-      --iCount;
+    --iCount;
   }
 
   return iCount;
@@ -1941,11 +1940,6 @@ void DbAddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::
 bool DbAddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const
 {
   //g_warning("DbAddDel::get_is_placeholder_row()");
-
-  if(!get_is_last_row(iter))
-  {
-    return false;
-  }
 
   if(!iter)
     return false;

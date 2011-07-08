@@ -881,15 +881,23 @@ bool DbTreeModel::row_was_removed(const type_datamodel_row_index& datamodel_row)
 
 Gtk::TreeModel::iterator DbTreeModel::get_last_row()
 {
+  std::cout << "debug: " << G_STRFUNC << std::endl;
   iterator result;
 
   //Find the last non-removed row:
-  int rows_count = get_internal_rows_count();
+  const int rows_count = get_internal_rows_count();
   if(rows_count)
   {
+    std::cout << "rows_count=" << rows_count << std::endl;
+   
     type_datamodel_row_index row = rows_count - 1;
-    --rows_count; //Ignore the placeholder.
+    
+    if(row > 0) //This should always be true, because there is always a placeholder.
+      --row; //Ignore the placeholder.
 
+    std::cout << "row=" << row << std::endl;
+   
+   
     //Step backwards until we find one that is not removed.
     while((m_map_rows.find(row) != m_map_rows.end()) && m_map_rows[row].m_removed)
     {
@@ -899,7 +907,7 @@ Gtk::TreeModel::iterator DbTreeModel::get_last_row()
         return result; //failed, because there are no non-removed row.
     }
 
-    //g_warning("DbTreeModel::get_last_row(): returning row=%d", row);
+    std::cout << G_STRFUNC << ": returning row=" << row << std::endl;
     create_iterator(row, result);
   }
 
