@@ -17,9 +17,9 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with glom.  If not, write to:
- * 	The Free Software Foundation, Inc.,
- * 	51 Franklin Street, Fifth Floor
- * 	Boston, MA  02110-1301, USA.
+ *   The Free Software Foundation, Inc.,
+ *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301, USA.
  */
 
 #include <libglom/data_structure/layout/layoutitem_placeholder.h>
@@ -27,42 +27,42 @@
 
 namespace Glom
 {
-	
+  
 LayoutItem_Placeholder::LayoutItem_Placeholder()
 {
-	
+  
 }
 
 LayoutItem_Placeholder::~LayoutItem_Placeholder()
 {
-	
+  
 }
-	
+  
 LayoutItem_Placeholder::LayoutItem_Placeholder(const LayoutItem_Placeholder& src) :
-	LayoutItem(src)
+  LayoutItem(src)
 {
-	
+  
 }
-	
+  
 LayoutItem* LayoutItem_Placeholder::clone() const
 {
-	return new LayoutItem_Placeholder(*this);
+  return new LayoutItem_Placeholder(*this);
 }
-	
+  
 bool LayoutItem_Placeholder::operator==(const LayoutItem_Placeholder* src) const
 {
-	return LayoutItem::operator==(*src);	
+  return LayoutItem::operator==(*src);  
 }
 
 Glib::ustring LayoutItem_Placeholder::get_part_type_name() const
 {
   //Translators: This is the name of a UI element (a layout part name).
-	return _("Placeholder");
+  return _("Placeholder");
 }
 
 Glib::ustring LayoutItem_Placeholder::get_report_part_id() const
 {
-	return "placeholder";
+  return "placeholder";
 }
 
 }
