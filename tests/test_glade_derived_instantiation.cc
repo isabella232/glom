@@ -14,7 +14,7 @@
 #include <glom/mode_data/datawidget/dialog_choose_date.h>
 #include <glom/mode_data/datawidget/dialog_choose_id.h>
 #include <glom/utility_widgets/dialog_flowtable.h>
-#include <glom/utility_widgets/dialog_image_progress.h>
+#include <glom/utility_widgets/dialog_image_load_progress.h>
 #include <glom/mode_design/layout/dialog_choose_field.h>
 #include <glom/mode_design/dialog_add_related_table.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.h>
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
   instantiate_widget<DataWidgetChildren::Dialog_ChooseID>();
   instantiate_widget<DataWidgetChildren::Dialog_ChooseDate>();
   instantiate_widget<Dialog_InvalidData>();
-  instantiate_widget<Dialog_Image_Progress>();
+  instantiate_widget<DialogImageLoadProgress>();
   instantiate_widget<Dialog_ProgressCreating>();
 
   //Developer mode UI:

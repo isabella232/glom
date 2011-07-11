@@ -120,7 +120,7 @@ glom/mode_data/datawidget/combochoiceswithtreemodel.cc
 glom/mode_data/datawidget/datawidget.cc
 glom/mode_data/db_adddel/db_adddel.cc
 glom/mode_data/datawidget/dialog_choose_id.cc
-glom/utility_widgets/dialog_image_progress.cc
+glom/utility_widgets/dialog_image_load_progress.cc
 glom/mode_data/datawidget/entry.cc
 glom/utility_widgets/eggspreadtable/eggspreadtable.c
 glom/utility_widgets/filechooserdialog_saveextras.cc
@@ -138,7 +138,7 @@ ui/operator/dialog_connection.glade
 ui/operator/dialog_data_invalid_format.glade
 ui/operator/dialog_existing_or_new.glade
 ui/operator/dialog_find_id.glade
-ui/operator/dialog_image_progress.glade
+ui/operator/dialog_image_load_progress.glade
 ui/operator/dialog_import_csv.glade
 ui/operator/dialog_import_csv_progress.glade
 ui/operator/window_main.glade

@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITY_WIDGETS_DIALOG_IMAGE_PROGRESS_H
-#define GLOM_UTILITY_WIDGETS_DIALOG_IMAGE_PROGRESS_H
+#ifndef GLOM_UTILITY_WIDGETS_DIALOG_IMAGE_LOAD_PROGRESS_H
+#define GLOM_UTILITY_WIDGETS_DIALOG_IMAGE_LOAD_PROGRESS_H
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/builder.h>
@@ -33,14 +33,14 @@
 namespace Glom
 {
 
-class Dialog_Image_Progress : public Gtk::Dialog
+class DialogImageLoadProgress : public Gtk::Dialog
 {
 public:
   static const char* glade_id;
   static const bool glade_developer;
 
-  Dialog_Image_Progress(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_Image_Progress();
+  DialogImageLoadProgress(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
+  virtual ~DialogImageLoadProgress();
 
   void load(const Glib::ustring& uri);
 
@@ -66,4 +66,4 @@ private:
 
 } //namespace Glom
 
-#endif // GLOM_UTILITY_WIDGETS_DIALOG_IMAGE_PROGRESS_H
+#endif // GLOM_UTILITY_WIDGETS_DIALOG_IMAGE_LOAD_PROGRESS_H

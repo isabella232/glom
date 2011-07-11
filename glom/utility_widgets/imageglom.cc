@@ -334,7 +334,7 @@ void ImageGlom::on_menupopup_activate_select_file()
     const Glib::ustring uri = dialog.get_uri();
     if(!uri.empty())
     {
-      Dialog_Image_Progress* dialog;
+      DialogImageLoadProgress* dialog;
       Utils::get_glade_widget_derived_with_warning(dialog);
       if(dialog)
       {

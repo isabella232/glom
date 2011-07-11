@@ -188,8 +188,8 @@ glom_source_files = \
 	glom/utility_widgets/combo_textglade.h				\
 	glom/utility_widgets/dialog_flowtable.cc			\
 	glom/utility_widgets/dialog_flowtable.h				\
-	glom/utility_widgets/dialog_image_progress.cc			\
-	glom/utility_widgets/dialog_image_progress.h			\
+	glom/utility_widgets/dialog_image_load_progress.cc			\
+	glom/utility_widgets/dialog_image_load_progress.h			\
 	glom/utility_widgets/dialog_properties.cc			\
 	glom/utility_widgets/dialog_properties.h			\
 	glom/utility_widgets/flowtable.cc				\
