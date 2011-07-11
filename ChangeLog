@@ -1,3 +1,9 @@
+2011-07-11  Ben Konrath  <ben@bagu.org>
+
+	Add exampledir variable to pkg-config file.
+
+	* glom/libglom/glom.pc.in:
+
 2011-07-11  Murray Cumming  <murrayc@murrayc.com>
 
 	Add translator comments.
