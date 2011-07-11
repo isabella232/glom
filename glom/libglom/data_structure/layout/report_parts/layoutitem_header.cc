@@ -52,6 +52,7 @@ LayoutItem_Header& LayoutItem_Header::operator=(const LayoutItem_Header& src)
 
 Glib::ustring LayoutItem_Header::get_part_type_name() const
 {
+  //Translators: This is the name of a UI element (a layout part name).
   return _("Header");
 }
 

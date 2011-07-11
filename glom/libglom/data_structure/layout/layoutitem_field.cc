@@ -190,6 +190,7 @@ void LayoutItem_Field::set_hidden(bool val)
 
 Glib::ustring LayoutItem_Field::get_part_type_name() const
 {
+  //Translators: This is the name of a UI element (a layout part name).
   return _("Field");
 }
 

@@ -66,6 +66,7 @@ LayoutItem_Image& LayoutItem_Image::operator=(const LayoutItem_Image& src)
 
 Glib::ustring LayoutItem_Image::get_part_type_name() const
 {
+  //Translators: This is the name of a UI element (a layout part name).
   return _("Image");
 }
 

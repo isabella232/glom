@@ -58,6 +58,7 @@ LayoutItem_Summary& LayoutItem_Summary::operator=(const LayoutItem_Summary& src)
 
 Glib::ustring LayoutItem_Summary::get_part_type_name() const
 {
+  //Translators: This is the name of a UI element (a layout part name).
   return _("Summary");
 }
 

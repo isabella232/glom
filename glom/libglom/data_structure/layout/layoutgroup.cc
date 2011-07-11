@@ -412,6 +412,7 @@ void LayoutGroup::change_relationship_name(const Glib::ustring& table_name, cons
 
 Glib::ustring LayoutGroup::get_part_type_name() const
 {
+  //Translators: This is the name of a UI element (a layout part name).
   return _("Group");
 }
 

@@ -52,6 +52,7 @@ LayoutItem_Footer& LayoutItem_Footer::operator=(const LayoutItem_Footer& src)
 
 Glib::ustring LayoutItem_Footer::get_part_type_name() const
 {
+  //Translators: This is the name of a UI element (a layout part name).
   return _("Footer");
 }
 

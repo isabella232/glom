@@ -78,7 +78,8 @@ LayoutItem_Line& LayoutItem_Line::operator=(const LayoutItem_Line& src)
 
 Glib::ustring LayoutItem_Line::get_part_type_name() const
 {
-  //Note to translators: This is a straight line, not a database row.
+  //Translators: This is the name of a UI element (a layout part name).
+  //This is a straight line, not a database row.
   return _("Line");
 }
 

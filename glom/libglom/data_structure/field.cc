@@ -637,12 +637,25 @@ void Field::init_map()
     m_map_glom_type_to_gda_type[TYPE_BOOLEAN] = G_TYPE_BOOLEAN;
     m_map_glom_type_to_gda_type[TYPE_IMAGE] = GDA_TYPE_BINARY;
 
+    // Translators: This means an unknown or unnacceptable value type in a database.
     m_map_type_names_ui[TYPE_INVALID] = _("Invalid");
+    
+    // Translators: This means a numeric value type in a database.
     m_map_type_names_ui[TYPE_NUMERIC] = _("Number");
+    
+    // Translators: This means a text/string value type in a database.
     m_map_type_names_ui[TYPE_TEXT] = _("Text");
+    
+    // Translators: This means a time value type in a database.
     m_map_type_names_ui[TYPE_TIME] = _("Time");
-    m_map_type_names_ui[TYPE_DATE] = _("Date");    
+    
+    // Translators: This means a time value type in a database.
+    m_map_type_names_ui[TYPE_DATE] = _("Date");
+    
+    // Translators: This means a true/false value type in a database.
     m_map_type_names_ui[TYPE_BOOLEAN] = _("Boolean");
+    
+    // Translators: This means a picture value type in a database.
     m_map_type_names_ui[TYPE_IMAGE] = _("Image");
 
     //Non-translated names used for the document:

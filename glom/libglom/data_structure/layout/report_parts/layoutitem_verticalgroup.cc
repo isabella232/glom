@@ -52,6 +52,7 @@ LayoutItem_VerticalGroup& LayoutItem_VerticalGroup::operator=(const LayoutItem_V
 
 Glib::ustring LayoutItem_VerticalGroup::get_part_type_name() const
 {
+  //Translators: This is the name of a UI element (a layout part name).
   return _("Vertical Group");
 }
 

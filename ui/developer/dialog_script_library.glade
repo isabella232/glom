@@ -115,7 +115,7 @@
                 <property name="layout_style">end</property>
                 <child>
                   <object class="GtkButton" id="button_check">
-                    <property name="label" translatable="yes" comments="Translators: This is the verb">_Check</property>
+                    <property name="label" translatable="yes" comments="Translators: This is the verb. It is for checking that a Python script works.">_Check</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="can_default">True</property>

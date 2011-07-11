@@ -64,6 +64,7 @@ LayoutItem_Button& LayoutItem_Button::operator=(const LayoutItem_Button& src)
 
 Glib::ustring LayoutItem_Button::get_part_type_name() const
 {
+  //Translators: This is the name of a UI element (a layout part name).
   return _("Button");
 }
 

@@ -69,6 +69,7 @@ LayoutItem_Text& LayoutItem_Text::operator=(const LayoutItem_Text& src)
 
 Glib::ustring LayoutItem_Text::get_part_type_name() const
 {
+  //Translators: This is the name of a UI element (a layout part name).
   return _("Text");
 }
 

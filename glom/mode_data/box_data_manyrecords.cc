@@ -80,6 +80,7 @@ void Box_Data_ManyRecords::print_layout()
     //Create a simple report on the fly:
     sharedptr<Report> report_temp(new Report());
     report_temp->set_name("list");
+    //Translators: This is a noun. It is the title of a report.
     report_temp->set_title(_("List"));
 
     //Add all the fields from the layout:

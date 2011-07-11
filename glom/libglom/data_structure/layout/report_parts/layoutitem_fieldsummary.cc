@@ -68,6 +68,7 @@ Glib::ustring LayoutItem_FieldSummary::get_title_or_name() const
 
 Glib::ustring LayoutItem_FieldSummary::get_part_type_name() const
 {
+  //Translators: This is the name of a UI element (a layout part name).
   return _("Field Summary");
 }
 

@@ -64,14 +64,17 @@ Notebook_Data::Notebook_Data()
    
    
   //Add Pages:
+  //Translators: This is a noun. It is a notebook tab title.
   append_page(m_Box_List, _("List"));
   m_iPage_List = 0;
 
   #ifndef GLOM_ENABLE_MAEMO
+  //Translators: This is a noun. It is a notebook tab title.
   append_page(m_Box_Details, _("Details"));
   m_iPage_Details = 1;
   #else
   //On Maemo, we add the box to m_window_maemo_details instead:
+  //Translators: This is a noun. It is a notebook tab title.
   m_window_maemo_details = new Window_BoxHolder(&m_Box_Details, _("Details"));
 
   //Let this window have the main AppMenu:
@@ -90,6 +93,7 @@ Notebook_Data::Notebook_Data()
 
   // Set accessible name for the notebook, to be able to access it via LDTP
 #ifdef GTKMM_ATKMM_ENABLED
+  //Translators: This is a title, not an action.
   get_accessible()->set_name(_("List Or Details View"));
 #endif
 

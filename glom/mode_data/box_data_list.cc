@@ -486,39 +486,6 @@ sharedptr<Field> Box_Data_List::get_field_primary_key() const
   return m_AddDel.get_key_field();
 }
 
-void Box_Data_List::print_layout() //TODO: Is this a duplicate of the one in box_data_manyrecords.cc?
-{
-  const Privileges table_privs = Privs::get_current_privs(m_table_name);
-
-  //Don't try to print tables that the user can't view.
-  if(!table_privs.m_view)
-  {
-    //TODO: Warn the user.
-  }
-  else
-  {
-    //Create a simple report on the fly:
-    sharedptr<Report> report_temp(new Report());
-    report_temp->set_name("list");
-    report_temp->set_title(_("List"));
-
-    //Add all the fields from the layout:
-    for(type_vecConstLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
-    {
-      sharedptr<const LayoutItem> item = *iter;
-      sharedptr<LayoutItem> unconst = sharedptr<LayoutItem>::cast_const(item); //TODO: Avoid this?
-      report_temp->m_layout_group->add_item(unconst);
-    }
-
-    ReportBuilder report_builder;
-    report_builder.set_document(get_document());
-    report_builder.report_build(m_found_set, report_temp, get_app_window());
-  }
-}
-
-void Box_Data_List::print_layout_group(xmlpp::Element* /* node_parent */, const sharedptr<const LayoutGroup>& /* group */)
-{
-}
 
 void Box_Data_List::set_read_only(bool read_only)
 {

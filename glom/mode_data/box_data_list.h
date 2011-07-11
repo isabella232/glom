@@ -102,9 +102,6 @@ protected:
   void on_adddel_script_button_clicked(const sharedptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row);
   bool on_script_button_idle(const sharedptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key);
 
-  virtual void print_layout();
-  virtual void print_layout_group(xmlpp::Element* node_parent, const sharedptr<const LayoutGroup>& group);
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual Dialog_Layout* create_layout_dialog() const; // override.
   virtual void prepare_layout_dialog(Dialog_Layout* dialog); // override.
