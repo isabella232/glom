@@ -442,7 +442,11 @@ bool ImageGlom::save_file(const Glib::ustring& uri)
   if(pApp)
     dialog_save->set_transient_for(*pApp);
 
-  dialog_save->set_pixbuf(m_pixbuf_original);
+  const GdaBinary* gda_binary = gda_value_get_binary(m_original_data.gobj());
+  if(!gda_binary)
+    return false;
+
+  dialog_save->set_image_data(*gda_binary);
   dialog_save->save(uri);
 
   //TODO: Use this when we do async saving:

@@ -24,8 +24,9 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/builder.h>
 #include <gtkmm/progressbar.h>
-#include <libglom/data_structure/layout/layoutitem_image.h> //For the file formats.
-//#include <memory>
+#include <giomm/file.h>
+#include <giomm/fileoutputstream.h>
+#include <libgda/libgda.h>
 
 namespace Glom
 {
@@ -41,13 +42,16 @@ public:
 
   void save(const Glib::ustring& uri);
 
-  void set_pixbuf(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf);
+  void set_image_data(const GdaBinary& data);
 
 private:
   void error(const Glib::ustring& error_message);
 
-  Glib::RefPtr<Gdk::Pixbuf> m_pixbuf;
   Gtk::ProgressBar* m_progress_bar;
+  const GdaBinary* m_data;
+
+  Glib::RefPtr<Gio::File> m_file;
+  Glib::RefPtr<Gio::FileOutputStream> m_stream;
 };
 
 } //namespace Glom

@@ -1,5 +1,16 @@
 2011-07-12  Murray Cumming  <murrayc@murrayc.com>
 
+	ImageGlom: Do not transform to PNG output when saving.
+
+	* glom/utility_widgets/dialog_image_save_progress.[h|cc]: Replace set_pixbuf() 
+	with set_image_data().
+	save(): Save the original data, instead of saving the data from the pixbuf.
+	* glom/utility_widgets/imageglom.cc: Adapt.
+	This means, for instance, that if the user loads the a JPG in then they will 
+	get exactly the same JPG out.
+
+2011-07-12  Murray Cumming  <murrayc@murrayc.com>
+
 	Some minor signed type corrections.
 
 	* glom/libglom/connectionpool_backends/postgres.cc:

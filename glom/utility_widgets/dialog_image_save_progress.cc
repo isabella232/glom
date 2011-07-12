@@ -31,7 +31,8 @@ const char* DialogImageSaveProgress::glade_id("dialog_image_save_progress");
 const bool DialogImageSaveProgress::glade_developer(false);
 
 DialogImageSaveProgress::DialogImageSaveProgress(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
-: Gtk::Dialog(cobject)
+: Gtk::Dialog(cobject),
+  m_data(0)
 {
   builder->get_widget("progress_bar", m_progress_bar);
 
@@ -45,22 +46,59 @@ DialogImageSaveProgress::~DialogImageSaveProgress()
 
 void DialogImageSaveProgress::save(const Glib::ustring& uri)
 {
-  //TODO: Support non-local URIs when we do this properly, using Gio::File.
-  const std::string filepath = Glib::filename_from_uri(uri);
-  m_progress_bar->set_text(Glib::ustring::compose("Saving %1...", 
-    Glib::filename_display_basename(filepath)));
+  g_assert(m_data);
 
+  if(m_data->data == 0)
+    return;
+    
+  if(m_data->binary_length == 0)
+    return;
+
+  m_file = Gio::File::create_for_uri(uri);
+  m_progress_bar->set_text(Glib::ustring::compose("Saving %1...", m_file->get_parse_name()));
+
+  m_stream.reset();
+   
   try
   {
-    // Open the file for reading:
-    m_pixbuf->save(filepath, GLOM_IMAGE_FORMAT);
+    if(m_file->query_exists())
+    {
+      m_stream = m_file->replace(); //Instead of append_to().
+    }
+    else
+    {
+      //By default files created are generally readable by everyone, but if we pass FILE_CREATE_PRIVATE in flags the file will be made readable only to the current user, to the level that is supported on the target filesystem.
+      //TODO: Do we want to specify 0660 exactly? (means "this user and his group can read and write this non-executable file".)
+      m_stream = m_file->create_file();
+    }
   }
-  catch(const Glib::Error& ex)
+  catch(const Gio::Error& ex)
   {
-    error(ex.what());
+    std::cerr << G_STRFUNC << ": exception: " << ex.what() << std::endl;
+    response(Gtk::RESPONSE_REJECT);
+    return;
   }
   
-  //response(Gtk::RESPONSE_ACCEPT);
+  //Write the data to the output uri
+  gssize bytes_written = 0;
+  try
+  {
+    bytes_written = m_stream->write(m_data->data, m_data->binary_length);
+  }
+  catch(const Gio::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": exception: " << ex.what() << std::endl;
+    response(Gtk::RESPONSE_REJECT);
+    return;
+  }
+
+  if(bytes_written != m_data->binary_length)
+  {
+    std::cerr << G_STRFUNC << ": unexpected number of bytes written: bytes_written=" << bytes_written <<
+       ", binary_length=" << m_data->binary_length << std::endl;
+  }
+  
+  response(Gtk::RESPONSE_ACCEPT);
 }
 
 void DialogImageSaveProgress::error(const Glib::ustring& error_message)
@@ -74,9 +112,9 @@ void DialogImageSaveProgress::error(const Glib::ustring& error_message)
 }
 
 
-void DialogImageSaveProgress::set_pixbuf(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf)
+void DialogImageSaveProgress::set_image_data(const GdaBinary& data)
 {
-  m_pixbuf = pixbuf;
+  m_data = &data;
 }
 
 } // namespace Glom
