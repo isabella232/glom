@@ -72,7 +72,8 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
   std::cout << "After xslt: " << result << std::endl;
 
   //Save it to a temporary file and show it in a browser:
-  const Glib::ustring temp_path = Glib::get_tmp_dir() + "/glom_printout.html";
+  const Glib::ustring temp_path = Glib::build_filename(
+    Glib::get_tmp_dir(), "glom_printout.html");
   //std::cout << "temp_path=" << temp_path << std::endl;
 
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(temp_path);

@@ -1,3 +1,19 @@
+2011-07-12  Murray Cumming  <murrayc@murrayc.com>
+
+	Image fields: Add Open, Open With, and Save context menu items.
+
+	* glom/utility_widgets/dialog_image_save_progress.[h|cc]:
+	* ui/operator/dialog_image_save_progress.glade:
+	Added a progress dialog to do image saving, though it does not yet do 
+	async saving so the dialog is never shown.
+	* Makefile.am:
+	* Makefile_glom.am:
+	* po/POTFILES.in: Mention the new files.
+  * glom/utility_widgets/imageglom.[h|cc]: Add the new context menu items,
+  using a temporary file for the Open and Open With features.
+  Open With uses AppChooserDialog to offer a choice to the user.
+  Bug #630057
+
 2011-07-11  Murray Cumming  <murrayc@murrayc.com>
 
 	Rename Dialog_Image_Progress to DialogImageLoadProgress

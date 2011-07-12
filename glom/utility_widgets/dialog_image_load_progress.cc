@@ -40,7 +40,7 @@ const bool DialogImageLoadProgress::glade_developer(false);
 DialogImageLoadProgress::DialogImageLoadProgress(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject)
 {
-  builder->get_widget("image_loading_progress_bar", m_progress_bar);
+  builder->get_widget("progress_bar", m_progress_bar);
 
   if(!m_progress_bar)
     throw std::runtime_error("Missing widgets from glade file for DialogImageLoadProgress");
@@ -50,6 +50,7 @@ DialogImageLoadProgress::~DialogImageLoadProgress()
 {
   if(m_data.get())
     g_free(m_data->data);
+
   if(m_loader)
   {
     try

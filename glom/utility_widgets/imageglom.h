@@ -24,7 +24,6 @@
 #include <gtkmm.h>
 #include <libglom/data_structure/field.h>
 #include "layoutwidgetfield.h"
-#include "dialog_image_load_progress.h"
 #include <gtkmm/builder.h>
 
 namespace Glom
@@ -59,12 +58,13 @@ public:
 private:
   void init();
 
-  // Note that these are normal signal handlers when glibmm was compiled
-  // without default signal handler API.
   virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
 
   virtual bool on_button_press_event(GdkEventButton *event);
 
+  void on_menupopup_activate_open_file();
+  void on_menupopup_activate_open_file_with();
+  void on_menupopup_activate_save_file();
   void on_menupopup_activate_select_file();
   void on_menupopup_activate_copy();
   void on_menupopup_activate_paste();
@@ -78,7 +78,8 @@ private:
 
   void setup_menu_usermode();
   void scale();
-
+  bool save_file(const Glib::ustring& uri);
+  void open_with(const Glib::RefPtr<Gio::AppInfo>& app_info =  Glib::RefPtr<Gio::AppInfo>());
  
   Gtk::Image m_image;
   Gtk::Frame m_frame;
@@ -89,7 +90,8 @@ private:
   Gtk::Menu* m_pMenuPopup_UserMode;
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup_UserModePopup;
   Glib::RefPtr<Gtk::UIManager> m_refUIManager_UserModePopup;
-  Glib::RefPtr<Gtk::Action> m_refActionSelectFile, m_refActionCopy, m_refActionPaste, m_refActionClear;
+  Glib::RefPtr<Gtk::Action> m_refActionOpenFile, m_refActionOpenFileWith, 
+    m_refActionSaveFile, m_refActionSelectFile, m_refActionCopy, m_refActionPaste, m_refActionClear;
 
   bool m_read_only;
 };

@@ -90,6 +90,7 @@ dist_glade_operator_DATA = \
 	ui/operator/dialog_existing_or_new.glade \
 	ui/operator/dialog_find_id.glade \
 	ui/operator/dialog_image_load_progress.glade \
+	ui/operator/dialog_image_save_progress.glade \
 	ui/operator/dialog_import_csv.glade \
 	ui/operator/dialog_import_csv_progress.glade \
 	ui/operator/window_main.glade \

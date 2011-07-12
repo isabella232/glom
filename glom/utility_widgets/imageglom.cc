@@ -24,7 +24,8 @@
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
 #include <libglom/data_structure/glomconversions.h>
-//#include <sstream> //For stringstream
+#include <glom/utility_widgets/dialog_image_load_progress.h>
+#include <glom/utility_widgets/dialog_image_save_progress.h>
 
 #include <iostream>   // for cout, endl
 
@@ -310,19 +311,147 @@ void ImageGlom::scale()
   //  g_warning("ImageGlom::scale(): attempt to scale a null pixbuf.");
 }
 
-void ImageGlom::on_menupopup_activate_select_file()
+void ImageGlom::on_menupopup_activate_open_file()
 {
-  if(m_read_only)
+  open_with();
+}
+
+void ImageGlom::on_menupopup_activate_open_file_with()
+{
+  Application* pApp = get_application();
+
+  //Offer the user a choice of suitable applications:
+  Gtk::AppChooserDialog dialog(GLOM_IMAGE_FORMAT_MIME_TYPE);
+  if(pApp)
+    dialog.set_transient_for(*pApp);
+
+  if(dialog.run() != Gtk::RESPONSE_OK)
+    return;
+  
+  Glib::RefPtr<Gio::AppInfo> app_info = dialog.get_app_info();
+  if(!app_info)
+  {
+    std::cerr << G_STRFUNC << ": app_info was null." << std::endl;
+  }
+  
+  open_with(app_info);
+}
+
+void ImageGlom::open_with(const Glib::RefPtr<Gio::AppInfo>& app_info)
+{
+  //Get a temporary file path:
+  std::string filepath;
+  const int filehandle = Glib::file_open_tmp(filepath);
+  ::close(filehandle);
+  
+  if(filepath.empty())
+  {
+    std::cerr << G_STRFUNC << ": Glib::file_open_tmp() returned an empty filepath" << std::endl;
+    return;
+  }
+  
+  const Glib::ustring uri = Glib::filename_to_uri(filepath);
+  
+  if(!save_file(uri))
     return;
 
-  //TODO: Use Hildon::FileChooser for Maemo.
-  Gtk::FileChooserDialog dialog(_("Choose Image"), Gtk::FILE_CHOOSER_ACTION_OPEN);
+  if(app_info)
+  {
+    std::vector<std::string> vec_uris;
+    vec_uris.push_back(uri);
+    std::cout << "app_info: " << app_info->get_name() << ", uri=" << uri << std::endl;
+    app_info->launch_uris(vec_uris, 0); //TODO: Get a GdkAppLaunchContext?
+  }
+  else
+  {
+    //TODO: Avoid duplication in xsl_utils.cc, by moving this into a utility function:  
+#ifdef G_OS_WIN32
+    // gtk_show_uri doesn't seem to work on Win32, at least not for local files
+    // We use Windows API instead.
+    // TODO: Check it again and file a bug if necessary.
+    ShellExecute(0, "open", uri.c_str(), 0, 0, SW_SHOW);
+#else
+    //Use the GNOME browser:
+    GError* gerror = 0;
+    if(!gtk_show_uri(0 /* screen */, uri.c_str(), GDK_CURRENT_TIME, &gerror))
+    {
+      std::cerr << G_STRFUNC << ": " << gerror->message << std::endl;
+      g_error_free(gerror);
+    }
+#endif //G_OS_WIN32
+  }
+}
 
+
+static Glib::RefPtr<Gtk::FileFilter> get_file_filter_images()
+{
   //Get image formats only:
   Glib::RefPtr<Gtk::FileFilter> filter = Gtk::FileFilter::create();
   filter->set_name(_("Images"));
   filter->add_pixbuf_formats();
-  dialog.add_filter(filter);
+  
+  return filter;
+}
+
+void ImageGlom::on_menupopup_activate_save_file()
+{
+  Application* pApp = get_application();
+
+  Gtk::FileChooserDialog dialog(_("Save Image"), Gtk::FILE_CHOOSER_ACTION_SAVE);
+  if(pApp)
+    dialog.set_transient_for(*pApp);
+          
+  dialog.add_filter( get_file_filter_images() );
+
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
+  const int response = dialog.run();
+  dialog.hide();
+  if(response != Gtk::RESPONSE_OK)
+    return;
+    
+  const Glib::ustring uri = dialog.get_uri();
+  if(uri.empty())
+    return;
+    
+  save_file(uri);
+}
+
+bool ImageGlom::save_file(const Glib::ustring& uri)
+{
+  DialogImageSaveProgress* dialog_save = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog_save);
+  if(!dialog_save)
+    return false;
+    
+  // Automatically delete the dialog when we no longer need it:
+  std::auto_ptr<Gtk::Dialog> dialog_keeper(dialog_save);
+
+  Application* pApp = get_application();
+  if(pApp)
+    dialog_save->set_transient_for(*pApp);
+
+  dialog_save->set_pixbuf(m_pixbuf_original);
+  dialog_save->save(uri);
+
+  //TODO: Use this when we do async saving:
+  //dialog_save->run();
+  return true;
+}
+
+void ImageGlom::on_menupopup_activate_select_file()
+{
+  if(m_read_only)
+    return;
+    
+  Application* pApp = get_application();
+
+  //TODO: Use Hildon::FileChooser for Maemo.
+  Gtk::FileChooserDialog dialog(_("Choose Image"), Gtk::FILE_CHOOSER_ACTION_OPEN);
+  if(pApp)
+    dialog.set_transient_for(*pApp);
+          
+  dialog.add_filter( get_file_filter_images() );
 
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("Select"), Gtk::RESPONSE_OK);
@@ -341,7 +470,6 @@ void ImageGlom::on_menupopup_activate_select_file()
         // Automatically delete the dialog when we no longer need it:
         std::auto_ptr<Gtk::Dialog> dialog_keeper(dialog);
 
-        Application* pApp = get_application();
         if(pApp)
           dialog->set_transient_for(*pApp);
 
@@ -459,11 +587,24 @@ void ImageGlom::setup_menu_usermode()
   m_refActionGroup_UserModePopup = Gtk::ActionGroup::create();
 
   m_refActionGroup_UserModePopup->add(Gtk::Action::create("ContextMenu_UserMode", "Context Menu") );
+  
+  m_refActionOpenFile =  Gtk::Action::create("ContextOpenFile", Gtk::Stock::OPEN);
+  m_refActionOpenFileWith =  Gtk::Action::create("ContextOpenFileWith", Gtk::Stock::OPEN, _("Open With"));
+  m_refActionSaveFile =  Gtk::Action::create("ContextSaveFile", Gtk::Stock::SAVE);
   m_refActionSelectFile =  Gtk::Action::create("ContextSelectFile", Gtk::Stock::EDIT, _("Choose File"));
   m_refActionCopy = Gtk::Action::create("ContextCopy", Gtk::Stock::COPY);
   m_refActionPaste = Gtk::Action::create("ContextPaste", Gtk::Stock::PASTE);
   m_refActionClear = Gtk::Action::create("ContextClear", Gtk::Stock::CLEAR);
 
+  m_refActionGroup_UserModePopup->add(m_refActionOpenFile,
+    sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_open_file) );
+
+  m_refActionGroup_UserModePopup->add(m_refActionOpenFileWith,
+    sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_open_file_with) );
+    
+  m_refActionGroup_UserModePopup->add(m_refActionSaveFile,
+    sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_save_file) );
+    
   m_refActionGroup_UserModePopup->add(m_refActionSelectFile,
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_select_file) );
 
@@ -487,6 +628,9 @@ void ImageGlom::setup_menu_usermode()
     Glib::ustring ui_info = 
         "<ui>"
         "  <popup name='ContextMenu_UserMode'>"
+        "    <menuitem action='ContextOpenFile'/>"
+        "    <menuitem action='ContextOpenFileWith'/>"
+        "    <menuitem action='ContextSaveFile'/>"
         "    <menuitem action='ContextSelectFile'/>"
         "    <menuitem action='ContextCopy'/>"
         "    <menuitem action='ContextPaste'/>"
