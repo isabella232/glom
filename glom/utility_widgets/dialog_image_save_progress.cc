@@ -24,6 +24,14 @@
 #include <iostream>
 #include <glibmm/i18n.h>
 
+namespace
+{
+
+// Write the file in chunks of this size:
+const unsigned int CHUNK_SIZE = 2048;
+
+} // anonymous namespace
+
 namespace Glom
 {
 
@@ -80,10 +88,11 @@ void DialogImageSaveProgress::save(const Glib::ustring& uri)
   }
   
   //Write the data to the output uri
-  gssize bytes_written = 0;
   try
   {
-    bytes_written = m_stream->write(m_data->data, m_data->binary_length);
+    m_stream->write_async(m_data->data,
+      std::min<gsize>(CHUNK_SIZE, m_data->binary_length),
+      sigc::bind(sigc::mem_fun(*this, &DialogImageSaveProgress::on_stream_write), 0));
   }
   catch(const Gio::Error& ex)
   {
@@ -91,14 +100,33 @@ void DialogImageSaveProgress::save(const Glib::ustring& uri)
     response(Gtk::RESPONSE_REJECT);
     return;
   }
+}
 
-  if(bytes_written != m_data->binary_length)
+void DialogImageSaveProgress::on_stream_write(const Glib::RefPtr<Gio::AsyncResult>& result, unsigned int offset)
+{
+  try
   {
-    std::cerr << G_STRFUNC << ": unexpected number of bytes written: bytes_written=" << bytes_written <<
-       ", binary_length=" << m_data->binary_length << std::endl;
+    const gssize size = m_stream->write_finish(result);
+    g_assert(size >= 0); // Would have thrown an exception otherwise
+    
+    // Set progress
+    m_progress_bar->set_fraction(static_cast<double>(offset + size) / m_data->binary_length);
+    
+    // Write next chunk, if any
+    if(  static_cast<gssize>(offset + size) < static_cast<gssize>(m_data->binary_length))
+      // Even if choose a priority lower than GDK_PRIORITY_REDRAW + 10 for the
+      // write_async we don't see the progressbar progressing while the image
+      // is loading. Therefore we put an idle inbetween.
+      Glib::signal_idle().connect(sigc::bind_return(sigc::bind(sigc::mem_fun(*this, &DialogImageSaveProgress::on_write_next), offset + size), false));
+    else
+      // We are done saving the image, close the progress dialog
+      response(Gtk::RESPONSE_ACCEPT);
   }
-  
-  response(Gtk::RESPONSE_ACCEPT);
+  catch(const Glib::Error& ex)
+  {
+    error(ex.what());
+    response(Gtk::RESPONSE_REJECT);
+  }
 }
 
 void DialogImageSaveProgress::error(const Glib::ustring& error_message)
@@ -111,6 +139,12 @@ void DialogImageSaveProgress::error(const Glib::ustring& error_message)
   response(Gtk::RESPONSE_REJECT);
 }
 
+void DialogImageSaveProgress::on_write_next(unsigned int at)
+{
+  g_assert(at < static_cast<gsize>(m_data->binary_length));
+
+  m_stream->write_async(m_data->data + at, std::min<gsize>(CHUNK_SIZE, m_data->binary_length - at), sigc::bind(sigc::mem_fun(*this, &DialogImageSaveProgress::on_stream_write), at));
+}
 
 void DialogImageSaveProgress::set_image_data(const GdaBinary& data)
 {

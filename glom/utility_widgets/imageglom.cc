@@ -453,8 +453,7 @@ bool ImageGlom::save_file(const Glib::ustring& uri)
   dialog_save->set_image_data(*gda_binary);
   dialog_save->save(uri);
 
-  //TODO: Use this when we do async saving:
-  //dialog_save->run();
+  dialog_save->run();
   return true;
 }
 

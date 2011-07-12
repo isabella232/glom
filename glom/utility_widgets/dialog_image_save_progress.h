@@ -45,7 +45,9 @@ public:
   void set_image_data(const GdaBinary& data);
 
 private:
+  void on_stream_write(const Glib::RefPtr<Gio::AsyncResult>& result, unsigned int offset);
   void error(const Glib::ustring& error_message);
+  void on_write_next(unsigned int at);
 
   Gtk::ProgressBar* m_progress_bar;
   const GdaBinary* m_data;

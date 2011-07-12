@@ -1,5 +1,14 @@
 2011-07-12  Murray Cumming  <murrayc@murrayc.com>
 
+	ImageGlom: Saving is now mostly async.
+
+	* glom/utility_widgets/dialog_image_save_progress.[h|cc]: Doing the actual 
+	writing in callbacks, like in the loader.
+	* glom/utility_widgets/imageglom.cc: Show the dialog, so we can use the 
+	idle callbacks, and give user feedback.
+
+2011-07-12  Murray Cumming  <murrayc@murrayc.com>
+
 	ImageGlom: Allow the user to choose any file.
 
 	* glom/utility_widgets/imageglom.cc: However, we are still restricted to 
