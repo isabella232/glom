@@ -59,7 +59,7 @@ DialogImageLoadProgress::~DialogImageLoadProgress()
     }
     catch(const Glib::Error& ex)
     {
-      // Ignore error, it's normal for close() to through when the image has
+      // Ignore error, it's normal for close() to throw when the image has
       // not yet been loaded completely, for example when cancelling the
       // dialog.
     }
