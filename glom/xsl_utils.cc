@@ -68,7 +68,7 @@ namespace Glom
 void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const Glib::ustring& xsl_file_path, Gtk::Window* parent_window)
 {
   //Use libxslt to convert the XML to HTML:
-  Glib::ustring result = xslt_process(xml_document, get_xslt_file(xsl_file_path));
+  const Glib::ustring result = xslt_process(xml_document, get_xslt_file(xsl_file_path));
   std::cout << "After xslt: " << result << std::endl;
 
   //Save it to a temporary file and show it in a browser:
@@ -100,7 +100,7 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
   }
 
   //Write the data to the output uri
-  gsize bytes_written = 0;
+  gssize bytes_written = 0;
   const Glib::ustring::size_type result_bytes = result.bytes();
   try
   {
@@ -112,7 +112,7 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
     return; // false; //print_error(ex, output_uri_string);
   }
 
-  if(bytes_written != result_bytes)
+  if(bytes_written != (gssize)result_bytes)
     return; //false
 
 

@@ -854,7 +854,7 @@ bool Postgres::create_text_file(const std::string& file_uri, const std::string& 
     return false;
 
 
-  gsize bytes_written = 0;
+  gssize bytes_written = 0;
   const std::string::size_type contents_size = contents.size();
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
@@ -877,7 +877,7 @@ bool Postgres::create_text_file(const std::string& file_uri, const std::string& 
     return false; //print_error(ex, output_uri_string);
   }
 
-  if(bytes_written != contents_size)
+  if(bytes_written != (gssize)contents_size)
   {
     std::cerr << "ConnectionPool::create_text_file(): not all bytes written when writing to file." << std::endl
       << "  file uri:" << file_uri << std::endl;

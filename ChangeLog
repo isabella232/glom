@@ -1,5 +1,13 @@
 2011-07-12  Murray Cumming  <murrayc@murrayc.com>
 
+	Some minor signed type corrections.
+
+	* glom/libglom/connectionpool_backends/postgres.cc:
+	* glom/xsl_utils.cc: Gio::FileOutputStream::write() returns a gssize, not a 
+	gsize.
+
+2011-07-12  Murray Cumming  <murrayc@murrayc.com>
+
 	ImageGlom: Size request corrections.
 
 	* glom/utility_widgets/imageglom.cc: init(): Remove the set_size_request() 
