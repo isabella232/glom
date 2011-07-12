@@ -1,3 +1,10 @@
+2011-07-12  Ben Konrath  <ben@bagu.org>
+
+	Add exampledir variable to pkg-config file.
+
+	* glom/libglom/glom.pc.in: Also add PACKAGE_TARNAME variable because
+	it's needed for the @docdir@ expansion.
+
 1.16.3:
 
 2011-07-05  Murray Cumming  <murrayc@murrayc.com>
