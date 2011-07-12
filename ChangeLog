@@ -1,3 +1,5 @@
+1.19.7:
+
 2011-07-12  Murray Cumming  <murrayc@murrayc.com>
 
 	ImageGlom: Saving is now mostly async.
@@ -102,6 +104,7 @@
 	Add exampledir variable to pkg-config file.
 
 	* glom/libglom/glom.pc.in:
+	Bug #654384
 
 2011-07-11  Murray Cumming  <murrayc@murrayc.com>
 

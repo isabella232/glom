@@ -1,3 +1,19 @@
+1.19.7 (unstable):
+
+* Details: Images:
+  - Fix insanely-big windows when big image files are used.
+  - Context menu: Add Open, Open With, and Save.
+  (Murray Cumming) Bug #630057
+  - Related Records: Show enough records.
+  (Murray Cumming)
+  - Do not navigate past the last row.
+  (Murray Cumming) Bug #526115 comment #25 (Michael Hasselmann)
+* Add exampledir variable to pkg-config file.
+  (Ben Konrath) Bug #654384
+* Add translator comments.
+	(Murray Cumming) Bug #638996 (Joe Hansen)
+
+	
 1.19.6 (unstable):
 
 * Simplify the main window, and slightly simplify the menus.
