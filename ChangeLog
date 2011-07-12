@@ -1,5 +1,12 @@
 2011-07-12  Murray Cumming  <murrayc@murrayc.com>
 
+	ImageGlom: Allow the user to choose any file.
+
+	* glom/utility_widgets/imageglom.cc: However, we are still restricted to 
+	what GdkPixbuf can load.
+
+2011-07-12  Murray Cumming  <murrayc@murrayc.com>
+
 	ImageGlom: Do not transform to PNG output when saving.
 
 	* glom/utility_widgets/dialog_image_save_progress.[h|cc]: Replace set_pixbuf() 

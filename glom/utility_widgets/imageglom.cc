@@ -394,14 +394,18 @@ void ImageGlom::open_with(const Glib::RefPtr<Gio::AppInfo>& app_info)
 }
 
 
-static Glib::RefPtr<Gtk::FileFilter> get_file_filter_images()
+static void set_file_filter_images(Gtk::FileChooser& file_chooser)
 {
   //Get image formats only:
   Glib::RefPtr<Gtk::FileFilter> filter = Gtk::FileFilter::create();
   filter->set_name(_("Images"));
   filter->add_pixbuf_formats();
+  file_chooser.add_filter(filter);
   
-  return filter;
+  filter = Gtk::FileFilter::create();
+  filter->set_name(_("All Files"));
+  filter->add_pattern("*");
+  file_chooser.add_filter(filter);
 }
 
 void ImageGlom::on_menupopup_activate_save_file()
@@ -412,7 +416,7 @@ void ImageGlom::on_menupopup_activate_save_file()
   if(pApp)
     dialog.set_transient_for(*pApp);
           
-  dialog.add_filter( get_file_filter_images() );
+  set_file_filter_images(dialog);
 
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   dialog.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
@@ -466,7 +470,7 @@ void ImageGlom::on_menupopup_activate_select_file()
   if(pApp)
     dialog.set_transient_for(*pApp);
           
-  dialog.add_filter( get_file_filter_images() );
+  set_file_filter_images(dialog);
 
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("Select"), Gtk::RESPONSE_OK);
