@@ -359,8 +359,10 @@ void ImageGlom::open_with(const Glib::RefPtr<Gio::AppInfo>& app_info)
   {
     std::vector<std::string> vec_uris;
     vec_uris.push_back(uri);
-    std::cout << "app_info: " << app_info->get_name() << ", uri=" << uri << std::endl;
     app_info->launch_uris(vec_uris, 0); //TODO: Get a GdkAppLaunchContext?
+    
+    //TODO Use this instead when we can use glibmm 3.2:
+    //app_info->launch_uri(uri);
   }
   else
   {
@@ -369,15 +371,11 @@ void ImageGlom::open_with(const Glib::RefPtr<Gio::AppInfo>& app_info)
     // gtk_show_uri doesn't seem to work on Win32, at least not for local files
     // We use Windows API instead.
     // TODO: Check it again and file a bug if necessary.
+    // TODO: and this might not be necessary with Gio::AppInfo::launch_default_for_uri().
+    //   Previously we used gtk_show_uri().
     ShellExecute(0, "open", uri.c_str(), 0, 0, SW_SHOW);
 #else
-    //Use the GNOME browser:
-    GError* gerror = 0;
-    if(!gtk_show_uri(0 /* screen */, uri.c_str(), GDK_CURRENT_TIME, &gerror))
-    {
-      std::cerr << G_STRFUNC << ": " << gerror->message << std::endl;
-      g_error_free(gerror);
-    }
+    Gio::AppInfo::launch_default_for_uri(uri);
 #endif //G_OS_WIN32
   }
 }

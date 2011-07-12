@@ -1,5 +1,13 @@
 2011-07-12  Murray Cumming  <murrayc@murrayc.com>
 
+	ImageGlom: Use AppInfo instead of gtk_show_uri() for Open.
+
+	* glom/utility_widgets/imageglom.cc: For the case that we have no AppInfo
+	(not Open With), use the static AppInfo method, for consistency.
+	This might work on Win32 too.
+
+2011-07-12  Murray Cumming  <murrayc@murrayc.com>
+
 	Image fields: Add Open, Open With, and Save context menu items.
 
 	* glom/utility_widgets/dialog_image_save_progress.[h|cc]:
