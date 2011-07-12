@@ -293,8 +293,8 @@ void ImageGlom::scale()
     if(allocation_height >= 400)
       allocation_height = 400;
       
-    std::cout << "pixbuf_height=" << pixbuf_height << ", pixbuf_width=" << pixbuf_width << std::endl;
-    std::cout << "allocation_height=" << allocation.get_height() << ", allocation_width=" << allocation.get_width() << std::endl;
+    //std::cout << "pixbuf_height=" << pixbuf_height << ", pixbuf_width=" << pixbuf_width << std::endl;
+    //std::cout << "allocation_height=" << allocation.get_height() << ", allocation_width=" << allocation.get_width() << std::endl;
 
     if( (pixbuf_height >allocation_height ) ||
         (pixbuf_width > allocation_width) )
