@@ -57,7 +57,7 @@ void ImageGlom::init()
 
   setup_menu_usermode();
 
-  m_image.set_size_request(150, 150);
+  //m_image.set_size_request(150, 150);
   m_image.show();
 
   m_frame.set_shadow_type(Gtk::SHADOW_ETCHED_IN); //Without this, the image widget has no borders and is completely invisible when empty.
@@ -152,8 +152,6 @@ bool ImageGlom::get_has_original_data() const
 void ImageGlom::set_pixbuf(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf)
 {
   m_pixbuf_original = pixbuf;
-  m_image.set(m_pixbuf_original);
-
   scale();
 }
 
@@ -166,8 +164,8 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
 
   if(pixbuf)
   {
-    set_pixbuf(pixbuf);
     scale();
+    set_pixbuf(pixbuf);
   }
   else
   {
@@ -282,11 +280,26 @@ void ImageGlom::scale()
     const Gtk::Allocation allocation = m_image.get_allocation();
     const int pixbuf_height = pixbuf->get_height();
     const int pixbuf_width = pixbuf->get_width();
+    
+    int allocation_height = allocation.get_height();
+    int allocation_width = allocation.get_width();
+    
+    //If the Image widget has expanded to be big enough for the original image,
+    //it might be huge. We don't want that.
+    //Scaling it down will reduce how much it requests.
+    if(allocation_width >= 400)
+      allocation_width = 400;
+      
+    if(allocation_height >= 400)
+      allocation_height = 400;
+      
+    std::cout << "pixbuf_height=" << pixbuf_height << ", pixbuf_width=" << pixbuf_width << std::endl;
+    std::cout << "allocation_height=" << allocation.get_height() << ", allocation_width=" << allocation.get_width() << std::endl;
 
-    if( (pixbuf_height > allocation.get_height()) ||
-        (pixbuf_width > allocation.get_width()) )
+    if( (pixbuf_height >allocation_height ) ||
+        (pixbuf_width > allocation_width) )
     {
-      if(allocation.get_height() > 10 || allocation.get_width() > 10)
+      if(allocation_height > 10 || allocation_width > 10)
       {
         Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = Utils::image_scale_keeping_ratio(pixbuf, allocation.get_height(), allocation.get_width());
         if(!pixbuf_scaled)
@@ -295,7 +308,7 @@ void ImageGlom::scale()
         }
         else 
         {
-          //Don't set a new pixbuf if the dimenstions have not changed:
+          //Don't set a new pixbuf if the dimensions have not changed:
           Glib::RefPtr<const Gdk::Pixbuf> pixbuf_in_image;
 
           if(m_image.get_storage_type() == Gtk::IMAGE_PIXBUF) //Prevent warning.
@@ -485,7 +498,6 @@ void ImageGlom::on_menupopup_activate_select_file()
           gda_value_take_binary(m_original_data.gobj(), bin);
 
           m_pixbuf_original = dialog->get_pixbuf();
-          m_image.set(m_pixbuf_original); //Load the image.
           scale();
           signal_edited().emit();
         }
@@ -550,9 +562,8 @@ void ImageGlom::on_clipboard_received_image(const Glib::RefPtr<Gdk::Pixbuf>& pix
     m_original_data = Gnome::Gda::Value();
 
     m_pixbuf_original = pixbuf;
-
-    m_image.set(m_pixbuf_original); //Load the image.
     scale();
+
     signal_edited().emit();
   }
 }

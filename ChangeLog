@@ -1,5 +1,19 @@
 2011-07-12  Murray Cumming  <murrayc@murrayc.com>
 
+	ImageGlom: Size request corrections.
+
+	* glom/utility_widgets/imageglom.cc: init(): Remove the set_size_request() 
+	call which does not seem necessary.
+	Do not call set_image(original) after scale(), because scale() does that, 
+	setting the scaled image.
+	This avoids the GtkImage being huge, because GtkImage re-requests the 
+	bigger size again when the original is put in it.
+	This is still not ideal. It would be nicer if we could just say "do not 
+	make the window bigger than the screen, or do not make this make the 
+	window bigger."
+
+2011-07-12  Murray Cumming  <murrayc@murrayc.com>
+
 	ImageGlom: Use AppInfo instead of gtk_show_uri() for Open.
 
 	* glom/utility_widgets/imageglom.cc: For the case that we have no AppInfo
