@@ -1,5 +1,11 @@
 2011-07-13  Murray Cumming  <murrayc@murrayc.com>
 
+	ImageGlom: Make the context-menu work with the EvView.
+
+	* glom/utility_widgets/imageglom.cc: Connect to the widget's own signal.
+
+2011-07-13  Murray Cumming  <murrayc@murrayc.com>
+
 	ImageGlom: Loading/Saving: Add more FileChooser filters.
 
 	* glom/utility_widgets/imageglom.cc: set_file_filter_images():

@@ -54,6 +54,14 @@ ImageGlom::ImageGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
 void ImageGlom::init()
 {
   m_ev_view = EV_VIEW(ev_view_new());
+  //gtk_widget_add_events(GTK_WIDGET(m_ev_view), GDK_BUTTON_PRESS_MASK);
+
+  //Connect the the EvView's button-press-event signal, 
+  //because we don't get it otherwise.
+  //For some reason this is not necessary with the GtkImage.
+  Gtk::Widget* cppEvView = Glib::wrap(GTK_WIDGET(m_ev_view));
+  cppEvView->signal_button_press_event().connect(
+    sigc::mem_fun(*this, &ImageGlom::on_button_press_event), false);
 
   m_read_only = false;
 
