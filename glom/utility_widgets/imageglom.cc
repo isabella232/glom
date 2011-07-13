@@ -565,10 +565,14 @@ static void set_file_filter_images(Gtk::FileChooser& file_chooser)
   filter->add_pixbuf_formats();
   file_chooser.add_filter(filter);
   
+  ev_document_factory_add_filters(GTK_WIDGET(file_chooser.gobj()), 0);
+  
+  /*  ev_document_factory_add_filters() add this already:
   filter = Gtk::FileFilter::create();
   filter->set_name(_("All Files"));
   filter->add_pattern("*");
   file_chooser.add_filter(filter);
+  */
 }
 
 void ImageGlom::on_menupopup_activate_save_file()

@@ -1,5 +1,12 @@
 2011-07-13  Murray Cumming  <murrayc@murrayc.com>
 
+	ImageGlom: Loading/Saving: Add more FileChooser filters.
+
+	* glom/utility_widgets/imageglom.cc: set_file_filter_images():
+	Use ev_document_factory_add_filters().
+
+2011-07-13  Murray Cumming  <murrayc@murrayc.com>
+
 	Image fields: Support PDF (and other types supported by evince)
 
 	* configure.ac: Depend on evince-view-3.0, which is a library installed by 
