@@ -1,5 +1,14 @@
 2011-07-13  Murray Cumming  <murrayc@murrayc.com>
 
+	ImageGlom: Remove hard-coded mentions of PNG file formats.
+
+	* glom/utility_widgets/imageglom.cc: Open With: Use the actual (sniffed)
+	mime type.
+	Clipboard: Try to use the actual mime type, though this does not seem to 
+	work for any mime type now.
+
+2011-07-13  Murray Cumming  <murrayc@murrayc.com>
+
 	ImageGlom: Show the missing image icon again.
 
 	* glom/utility_widgets/imageglom.cc: set_value(): Clear the data, not the 

@@ -445,7 +445,13 @@ void ImageGlom::on_menupopup_activate_open_file_with()
   Application* pApp = get_application();
 
   //Offer the user a choice of suitable applications:
-  Gtk::AppChooserDialog dialog(GLOM_IMAGE_FORMAT_MIME_TYPE);
+  const Glib::ustring mime_type = get_mime_type();
+  if(mime_type.empty())
+  {
+    std::cerr << G_STRFUNC << ": mime_type is empty." << std::endl;
+  }
+  
+  Gtk::AppChooserDialog dialog(mime_type);
   if(pApp)
     dialog.set_transient_for(*pApp);
 
@@ -688,14 +694,29 @@ void ImageGlom::on_clipboard_get(Gtk::SelectionData& selection_data, guint /* in
 
   const std::string target = selection_data.get_target(); 
 
-  if(target == GLOM_IMAGE_FORMAT_MIME_TYPE)
+  const Glib::ustring mime_type = get_mime_type();
+  if(mime_type.empty())
   {
+    std::cerr << G_STRFUNC << ": mime_type is empty." << std::endl;
+  }
+  
+  if(target == mime_type)
+  {
+    const GdaBinary* gda_binary = gda_value_get_binary(m_original_data.gobj());
+    if(!gda_binary)
+      return;
+    
+    if(!gda_binary->data)
+      return;
+    
+    selection_data.set(mime_type, 8, gda_binary->data, gda_binary->binary_length);
+
     // This set() override uses an 8-bit text format for the data.
-    selection_data.set_pixbuf(m_pixbuf_clipboard);
+    //selection_data.set_pixbuf(m_pixbuf_clipboard);
   }
   else
   {
-    g_warning("ExampleWindow::on_clipboard_get(): Unexpected clipboard target format.");
+    std::cout << "ExampleWindow::on_clipboard_get(): Unexpected clipboard target format. expected: " << mime_type << std::endl;
   }
 }
 
@@ -720,8 +741,14 @@ void ImageGlom::on_menupopup_activate_copy()
   Glib::RefPtr<Gtk::Clipboard> refClipboard = Gtk::Clipboard::get();
 
   //Targets:
+  const Glib::ustring mime_type = get_mime_type();
+  if(mime_type.empty())
+  {
+    std::cerr << G_STRFUNC << ": mime_type is empty." << std::endl;
+  }
+  
   std::vector<Gtk::TargetEntry> listTargets;
-  listTargets.push_back( Gtk::TargetEntry(GLOM_IMAGE_FORMAT_MIME_TYPE) );
+  listTargets.push_back( Gtk::TargetEntry(mime_type) );
 
   refClipboard->set( listTargets, sigc::mem_fun(*this, &ImageGlom::on_clipboard_get), sigc::mem_fun(*this, &ImageGlom::on_clipboard_clear) );
 }
