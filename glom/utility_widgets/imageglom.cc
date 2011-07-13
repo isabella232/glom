@@ -176,53 +176,6 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
   m_original_data = Gnome::Gda::Value();
   m_original_data = value;
   show_image_data();
-
-    /*
-    std::cout << "Debug: Setting MISSING_IMAGE" << std::endl;
-    
-    //Check that this stock icon size is really available,
-    //though it would be a distro error if it is not.
-    Glib::RefPtr<Gtk::Style> style = get_style();
-    if(style)
-    {
-      /std::cout << "Debug: Setting MISSING_IMAGE 3" << std::endl;
-
-      const Gtk::IconSet iconset = style->lookup_icon_set(Gtk::Stock::MISSING_IMAGE);
-
-      std::cout << "Debug: Setting MISSING_IMAGE 4" << std::endl;
-
-      typedef std::vector<Gtk::IconSize> type_vecSizes;
-      type_vecSizes sizes = iconset.get_sizes();
-      type_vecSizes::iterator iterFind = std::find(sizes.begin(), sizes.end(), Gtk::ICON_SIZE_DIALOG);
-      if(iterFind != sizes.end())
-      {
-     */
-        //m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
-     /*
-      }
-      else
-      {
-        std::cerr << "Glom: The current theme does not seem to havae the Gtk::Stock::MISSING_IMAGE icon in size Gtk::ICON_SIZE_DIALOG" << std::endl;
-
-        if(!sizes.empty() && (sizes[0] > 0))
-        {
-          std::cerr << "  Using alternative stock icon size." << std::endl;
-          m_image.set(Gtk::Stock::MISSING_IMAGE, sizes[0]);
-        }
-        else
-        {
-          std::cerr << "  No alternative stock icon size available either, for this stock icon." << std::endl;
-          m_image.set("");
-        }
-      }
-    }
-    else
-    {
-      std::cerr << "Glom: No Gtk::Style available for this widget (yet), so not setting MISSING_IMAGE icon." << std::endl;
-      m_image.set("");
-    }
-  }
-  */
 }
 
 Gnome::Gda::Value ImageGlom::get_value() const
@@ -359,22 +312,26 @@ void ImageGlom::show_image_data()
 {
   bool use_evince = false;
   
-  const Glib::ustring mime_type = get_mime_type();
-  //std::cout << "mime_type=" << mime_type << std::endl; 
   
-  fill_evince_supported_mime_types();
-  const type_vec_ustrings::iterator iterFind = 
-    std::find(m_evince_supported_mime_types.begin(),
-      m_evince_supported_mime_types.end(),
-      mime_type);
-  if(iterFind != m_evince_supported_mime_types.end())
+  if(!Conversions::value_is_empty(m_original_data))
   {
-    use_evince = true;
+    const Glib::ustring mime_type = get_mime_type();
+    //std::cout << "mime_type=" << mime_type << std::endl; 
+  
+    fill_evince_supported_mime_types();
+    const type_vec_ustrings::iterator iterFind = 
+      std::find(m_evince_supported_mime_types.begin(),
+        m_evince_supported_mime_types.end(),
+        mime_type);
+    if(iterFind != m_evince_supported_mime_types.end())
+    {
+      use_evince = true;
+    }
   }
   
-  m_frame.remove();
   
-
+  m_frame.remove();
+    
   //Clear all possible display widgets:
   m_pixbuf_original.reset();
   m_image.set(m_pixbuf_original);
@@ -420,7 +377,10 @@ void ImageGlom::show_image_data()
     m_frame.add(m_image);
     
     m_pixbuf_original = Utils::get_pixbuf_for_gda_value(m_original_data);
-    m_image.set(m_pixbuf_original);
+    if(m_pixbuf_original)
+       m_image.set(m_pixbuf_original);
+    else
+      m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
   }
 }
 
@@ -801,9 +761,8 @@ void ImageGlom::on_menupopup_activate_clear()
   if(m_read_only)
     return;
 
-  m_pixbuf_original.reset();
+  m_original_data = Gnome::Gda::Value();
   show_image_data();
-  //TODO: m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
   signal_edited().emit();
 }
 

@@ -1,5 +1,13 @@
 2011-07-13  Murray Cumming  <murrayc@murrayc.com>
 
+	ImageGlom: Show the missing image icon again.
+
+	* glom/utility_widgets/imageglom.cc: set_value(): Clear the data, not the 
+	pixbuf.
+	show_image_data(): Check for empty data and show the missing icon if so.
+
+2011-07-13  Murray Cumming  <murrayc@murrayc.com>
+
 	ImageGlom: Make the context-menu work with the EvView.
 
 	* glom/utility_widgets/imageglom.cc: Connect to the widget's own signal.
