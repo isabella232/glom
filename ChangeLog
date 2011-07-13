@@ -1,3 +1,21 @@
+2011-07-13  Murray Cumming  <murrayc@murrayc.com>
+
+	Image fields: Support PDF (and other types supported by evince)
+
+	* configure.ac: Depend on evince-view-3.0, which is a library installed by 
+	evince. It is packaged separately from evince by distros.
+	* glom/main.cc: Call ev_init().
+	* glom/utility_widgets/dialog_image_load_progress.[h|cc]: Remove 
+	get_pixbuf() and do not use Gdk::PixbufLoader here.
+	* glom/utility_widgets/imageglom.[h|cc]: Create the pixbuf here, from 
+	the data from the dialog.
+	Add an EvView, and use that instead of the Gtk::Image when the mime type is 
+	supported by EvView. We use g_content_type_guess() to sniff the mime type 
+	from the actual data, but this will probably not always work. We should 
+	store the mime type (and the filename) too.
+	
+	The context menu doesn't work with the EvView yet.
+
 1.19.7:
 
 2011-07-12  Murray Cumming  <murrayc@murrayc.com>

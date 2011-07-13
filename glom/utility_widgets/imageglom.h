@@ -25,6 +25,7 @@
 #include <libglom/data_structure/field.h>
 #include "layoutwidgetfield.h"
 #include <gtkmm/builder.h>
+#include <evince-view.h>
 
 namespace Glom
 {
@@ -49,12 +50,14 @@ public:
   virtual bool get_has_original_data() const;
 
   //Optionally use this instead of set_value(), to avoid creating an unnecessary Value.
-  void set_pixbuf(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf);
+  //void set_pixbuf(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf);
 
   void do_choose_image();
 
   void set_read_only(bool read_only = true);
 
+  void on_ev_job_finished(EvJob* job);
+  
 private:
   void init();
 
@@ -77,11 +80,22 @@ private:
   virtual Application* get_application();
 
   void setup_menu_usermode();
-  void scale();
+  void show_image_data();
+  void scale_image();
+  
+  Glib::ustring save_to_temp_file(bool show_progress = true);
   bool save_file(const Glib::ustring& uri);
+  bool save_file_sync(const Glib::ustring& uri);
   void open_with(const Glib::RefPtr<Gio::AppInfo>& app_info =  Glib::RefPtr<Gio::AppInfo>());
+
+  Glib::ustring get_mime_type() const;
+  static void fill_evince_supported_mime_types();
  
   Gtk::Image m_image;
+
+  EvView* m_ev_view;
+  EvDocumentModel* m_ev_document_model;
+  
   Gtk::Frame m_frame;
   mutable Gnome::Gda::Value m_original_data; // Original file data (mutable so that we can create it in get_value() if it does not exist yet)
   Glib::RefPtr<Gdk::Pixbuf> m_pixbuf_original; //Only stored temporarily, because it could be big.
@@ -94,6 +108,9 @@ private:
     m_refActionSaveFile, m_refActionSelectFile, m_refActionCopy, m_refActionPaste, m_refActionClear;
 
   bool m_read_only;
+  
+  typedef std::vector<Glib::ustring> type_vec_ustrings;
+  static type_vec_ustrings m_evince_supported_mime_types;
 };
 
 } //namespace Glom

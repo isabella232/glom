@@ -51,20 +51,6 @@ DialogImageLoadProgress::~DialogImageLoadProgress()
   if(m_data.get())
     g_free(m_data->data);
 
-  if(m_loader)
-  {
-    try
-    {
-      m_loader->close();
-    }
-    catch(const Glib::Error& ex)
-    {
-      // Ignore error, it's normal for close() to throw when the image has
-      // not yet been loaded completely, for example when cancelling the
-      // dialog.
-    }
-  }
-
   // TODO: Cancel outstanding async operations in destructor?
 }
 
@@ -73,7 +59,6 @@ void DialogImageLoadProgress::load(const Glib::ustring& uri)
   // Can only load one file with data 
   g_assert(!m_data.get());
 
-  m_loader = Gdk::PixbufLoader::create();
   m_data.reset(new GdaBinary);
   m_data->data = 0;
   m_data->binary_length = 0;
@@ -136,9 +121,6 @@ void DialogImageLoadProgress::on_stream_read(const Glib::RefPtr<Gio::AsyncResult
     // Cannot read more data than there is available in the file:
     g_assert( static_cast<gssize>(offset + size) <= static_cast<gssize>(m_data->binary_length));
     
-    // Load image
-    m_loader->write(m_data->data + offset, size);
-    
     // Set progress
     m_progress_bar->set_fraction(static_cast<double>(offset + size) / m_data->binary_length);
     
@@ -179,11 +161,6 @@ void DialogImageLoadProgress::error(const Glib::ustring& error_message)
 std::auto_ptr<GdaBinary> DialogImageLoadProgress::get_image_data()
 {
   return m_data;
-}
-
-Glib::RefPtr<Gdk::Pixbuf> DialogImageLoadProgress::get_pixbuf() 
-{
-  return m_loader->get_pixbuf();
 }
 
 } // namespace Glom

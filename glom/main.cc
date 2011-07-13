@@ -61,6 +61,8 @@
 #include <glom/glade_utils.h>
 #include <glom/utils_ui.h>
 
+#include <evince-view.h>
+
 #ifdef G_OS_WIN32
 #include <winsock2.h>
 #else
@@ -534,6 +536,8 @@ main(int argc, char* argv[])
     Gsv::init();
     Goocanvas::init(PACKAGE_NAME, PACKAGE_VERSION, argc, argv);
 #endif //!GLOM_ENABLE_CLIENT_ONLY
+
+    ev_init();
 
     //Get command-line parameters, if any:
     Glib::ustring input_uri = group.m_arg_filename;

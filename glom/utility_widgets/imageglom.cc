@@ -32,8 +32,11 @@
 namespace Glom
 {
 
+ImageGlom::type_vec_ustrings ImageGlom::m_evince_supported_mime_types;
+
 ImageGlom::ImageGlom()
-: m_image(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG), //The widget is invisible if we don't specify an image.
+: m_ev_view(0),
+  m_ev_document_model(0),
   m_pMenuPopup_UserMode(0)
 {
   init();
@@ -41,7 +44,8 @@ ImageGlom::ImageGlom()
 
 ImageGlom::ImageGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::EventBox(cobject),
-  m_image(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG), //The widget is invisible if we don't specify an image.
+  m_ev_view(0),
+  m_ev_document_model(0),
   m_pMenuPopup_UserMode(0)
 {
   init();
@@ -49,6 +53,8 @@ ImageGlom::ImageGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
 
 void ImageGlom::init()
 {
+  m_ev_view = EV_VIEW(ev_view_new());
+
   m_read_only = false;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -58,10 +64,9 @@ void ImageGlom::init()
   setup_menu_usermode();
 
   //m_image.set_size_request(150, 150);
-  m_image.show();
+
 
   m_frame.set_shadow_type(Gtk::SHADOW_ETCHED_IN); //Without this, the image widget has no borders and is completely invisible when empty.
-  m_frame.add(m_image);
   m_frame.show();
 
   add(m_frame);
@@ -149,26 +154,21 @@ bool ImageGlom::get_has_original_data() const
   return true; //TODO.
 }
 
+/*
 void ImageGlom::set_pixbuf(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf)
 {
   m_pixbuf_original = pixbuf;
-  scale();
+  show_image_data();
 }
+*/
 
 void ImageGlom::set_value(const Gnome::Gda::Value& value)
 {
   // Remember original data 
   m_original_data = Gnome::Gda::Value();
   m_original_data = value;
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::get_pixbuf_for_gda_value(value);
+  show_image_data();
 
-  if(pixbuf)
-  {
-    scale();
-    set_pixbuf(pixbuf);
-  }
-  else
-  {
     /*
     std::cout << "Debug: Setting MISSING_IMAGE" << std::endl;
     
@@ -189,7 +189,7 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
       if(iterFind != sizes.end())
       {
      */
-        m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
+        //m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
      /*
       }
       else
@@ -213,10 +213,8 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
       std::cerr << "Glom: No Gtk::Style available for this widget (yet), so not setting MISSING_IMAGE icon." << std::endl;
       m_image.set("");
     }
-    */
-
-    m_pixbuf_original = Glib::RefPtr<Gdk::Pixbuf>();
   }
+  */
 }
 
 Gnome::Gda::Value ImageGlom::get_value() const
@@ -267,61 +265,206 @@ bool ImageGlom::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
   const bool result = Gtk::EventBox::on_draw(cr);
 
-  scale();
+  if(m_pixbuf_original);
+    scale_image();
+
   return result;
 }
 
-void ImageGlom::scale()
+static void image_glom_ev_job_finished(EvJob* job, void* user_data)
+{
+  g_assert(job);
+  
+  ImageGlom* self = (ImageGlom*)user_data;
+  g_assert(self);
+  
+  self->on_ev_job_finished(job);
+}
+  
+void ImageGlom::on_ev_job_finished(EvJob* job)
+{
+	if (ev_job_is_failed (job)) {
+		g_warning ("%s", job->error->message);
+		g_object_unref (job);
+
+		return;
+	}
+
+	ev_document_model_set_document(m_ev_document_model, job->document);
+	ev_document_model_set_page(m_ev_document_model, 1);
+	g_object_unref (job);
+	
+	ev_view_set_loading(m_ev_view, FALSE);
+}
+
+Glib::ustring ImageGlom::get_mime_type() const
+{
+  const GdaBinary* gda_binary = gda_value_get_binary(m_original_data.gobj());
+  if(!gda_binary)
+    return Glib::ustring();
+    
+  if(!gda_binary->data)
+    return Glib::ustring();
+
+  bool uncertain = false;
+  const Glib::ustring result = Gio::content_type_guess(std::string(),
+    gda_binary->data, gda_binary->binary_length,
+    uncertain);
+
+  //std::cout << G_STRFUNC << ": mime_type=" << result << ", uncertain=" << uncertain << std::endl;
+  return result;  
+}
+
+void ImageGlom::fill_evince_supported_mime_types()
+{
+  //Fill the static list if it has not already been filled:
+  if(!m_evince_supported_mime_types.empty())
+    return;
+
+  //Discover what mime types libevview can support.
+  //Older versions supported image types too, via GdkPixbuf,
+  //but that support was then removed.  
+  GList* types_list = ev_backends_manager_get_all_types_info();
+  if(!types_list)
+  {
+    return;
+  }
+  
+  for(GList* l = types_list; l; l = g_list_next(l))
+  {
+	  EvTypeInfo *info = (EvTypeInfo *)l->data;
+	  if(!info)
+	    continue;
+
+	  const char* mime_type = 0;
+	  int i = 0;
+	  while((mime_type = info->mime_types[i++]))
+	  {
+	    if(mime_type)
+	      m_evince_supported_mime_types.push_back(mime_type);
+	    //std::cout << "evince supported mime_type=" << mime_type << std::endl; 
+	  }
+	}  
+}
+
+void ImageGlom::show_image_data()
+{
+  bool use_evince = false;
+  
+  const Glib::ustring mime_type = get_mime_type();
+  //std::cout << "mime_type=" << mime_type << std::endl; 
+  
+  fill_evince_supported_mime_types();
+  const type_vec_ustrings::iterator iterFind = 
+    std::find(m_evince_supported_mime_types.begin(),
+      m_evince_supported_mime_types.end(),
+      mime_type);
+  if(iterFind != m_evince_supported_mime_types.end())
+  {
+    use_evince = true;
+  }
+  
+  m_frame.remove();
+  
+
+  //Clear all possible display widgets:
+  m_pixbuf_original.reset();
+  m_image.set(m_pixbuf_original);
+  
+  if(m_ev_document_model)
+  {
+    g_object_unref(m_ev_document_model);
+    m_ev_document_model = 0;
+  }
+
+  if(use_evince)
+  {
+    //Use EvView:
+    m_image.hide();
+    
+    gtk_widget_show(GTK_WIDGET(m_ev_view));
+    gtk_container_add(GTK_CONTAINER(m_frame.gobj()), GTK_WIDGET(m_ev_view));
+
+    const Glib::ustring uri = save_to_temp_file(false /* don't show progress */);
+    if(uri.empty())
+    {
+      std::cerr << G_STRFUNC << "Could not save temp file to show in the EvView." << std::endl;
+    }
+  
+    EvJob *job = ev_job_load_new(uri.c_str());
+  
+    m_ev_document_model = ev_document_model_new();
+    ev_view_set_model(m_ev_view, m_ev_document_model);
+	  ev_document_model_set_continuous(m_ev_document_model, FALSE); //Show only one page.
+	  ev_view_set_loading(m_ev_view, TRUE);
+	
+    g_signal_connect (job, "finished",
+		  G_CALLBACK (image_glom_ev_job_finished), this);
+	  ev_job_scheduler_push_job (job, EV_JOB_PRIORITY_NONE);
+  }
+  else
+  {
+    //Use GtkImage instead:
+
+    gtk_widget_hide(GTK_WIDGET(m_ev_view));
+      
+    m_image.show();
+    m_frame.add(m_image);
+    
+    m_pixbuf_original = Utils::get_pixbuf_for_gda_value(m_original_data);
+    m_image.set(m_pixbuf_original);
+  }
+}
+
+void ImageGlom::scale_image()
 {
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = m_pixbuf_original;
 
-  if(pixbuf)
+  if(!pixbuf)
+    return;
+ 
+  const Gtk::Allocation allocation = m_image.get_allocation();
+  const int pixbuf_height = pixbuf->get_height();
+  const int pixbuf_width = pixbuf->get_width();
+    
+  int allocation_height = allocation.get_height();
+  int allocation_width = allocation.get_width();
+    
+  //If the Image widget has expanded to be big enough for the original image,
+  //it might be huge. We don't want that.
+  //Scaling it down will reduce how much it requests.
+  if(allocation_width >= 400)
+    allocation_width = 400;
+      
+  if(allocation_height >= 400)
+    allocation_height = 400;
+      
+  //std::cout << "pixbuf_height=" << pixbuf_height << ", pixbuf_width=" << pixbuf_width << std::endl;
+  //std::cout << "allocation_height=" << allocation.get_height() << ", allocation_width=" << allocation.get_width() << std::endl;
+
+  if( (pixbuf_height >allocation_height ) ||
+      (pixbuf_width > allocation_width) )
   {
-    const Gtk::Allocation allocation = m_image.get_allocation();
-    const int pixbuf_height = pixbuf->get_height();
-    const int pixbuf_width = pixbuf->get_width();
-    
-    int allocation_height = allocation.get_height();
-    int allocation_width = allocation.get_width();
-    
-    //If the Image widget has expanded to be big enough for the original image,
-    //it might be huge. We don't want that.
-    //Scaling it down will reduce how much it requests.
-    if(allocation_width >= 400)
-      allocation_width = 400;
-      
-    if(allocation_height >= 400)
-      allocation_height = 400;
-      
-    //std::cout << "pixbuf_height=" << pixbuf_height << ", pixbuf_width=" << pixbuf_width << std::endl;
-    //std::cout << "allocation_height=" << allocation.get_height() << ", allocation_width=" << allocation.get_width() << std::endl;
-
-    if( (pixbuf_height >allocation_height ) ||
-        (pixbuf_width > allocation_width) )
+    if(allocation_height > 10 || allocation_width > 10)
     {
-      if(allocation_height > 10 || allocation_width > 10)
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = Utils::image_scale_keeping_ratio(pixbuf, allocation.get_height(), allocation.get_width());
+      if(!pixbuf_scaled)
       {
-        Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = Utils::image_scale_keeping_ratio(pixbuf, allocation.get_height(), allocation.get_width());
-        if(!pixbuf_scaled)
-        {
-          std::cerr << "Utils::image_scale_keeping_ratio() returned NULL pixbuf." << std::endl;
-        }
-        else 
-        {
-          //Don't set a new pixbuf if the dimensions have not changed:
-          Glib::RefPtr<const Gdk::Pixbuf> pixbuf_in_image;
+        std::cerr << "Utils::image_scale_keeping_ratio() returned NULL pixbuf." << std::endl;
+      }
+      else 
+      {
+        //Don't set a new pixbuf if the dimensions have not changed:
+        Glib::RefPtr<const Gdk::Pixbuf> pixbuf_in_image;
 
-          if(m_image.get_storage_type() == Gtk::IMAGE_PIXBUF) //Prevent warning.
-            pixbuf_in_image = m_image.get_pixbuf();
+        if(m_image.get_storage_type() == Gtk::IMAGE_PIXBUF) //Prevent warning.
+          pixbuf_in_image = m_image.get_pixbuf();
 
-          if( !pixbuf_in_image || (pixbuf_in_image->get_height() != pixbuf_scaled->get_height()) || (pixbuf_in_image->get_width() != pixbuf_scaled->get_width()) )
-            m_image.set(pixbuf_scaled);
-        }
+        if( !pixbuf_in_image || (pixbuf_in_image->get_height() != pixbuf_scaled->get_height()) || (pixbuf_in_image->get_width() != pixbuf_scaled->get_width()) )
+          m_image.set(pixbuf_scaled);
       }
     }
   }
-  //else
-  //  g_warning("ImageGlom::scale(): attempt to scale a null pixbuf.");
 }
 
 void ImageGlom::on_menupopup_activate_open_file()
@@ -350,8 +493,10 @@ void ImageGlom::on_menupopup_activate_open_file_with()
   open_with(app_info);
 }
 
-void ImageGlom::open_with(const Glib::RefPtr<Gio::AppInfo>& app_info)
+Glib::ustring ImageGlom::save_to_temp_file(bool show_progress)
 {
+  Glib::ustring uri;
+  
   //Get a temporary file path:
   std::string filepath;
   const int filehandle = Glib::file_open_tmp(filepath);
@@ -360,12 +505,30 @@ void ImageGlom::open_with(const Glib::RefPtr<Gio::AppInfo>& app_info)
   if(filepath.empty())
   {
     std::cerr << G_STRFUNC << ": Glib::file_open_tmp() returned an empty filepath" << std::endl;
-    return;
+    return uri;
   }
   
-  const Glib::ustring uri = Glib::filename_to_uri(filepath);
+  uri = Glib::filename_to_uri(filepath);
   
-  if(!save_file(uri))
+  bool saved = false;
+  if(show_progress)
+    saved = save_file(uri);
+  else
+    saved = save_file_sync(uri);
+  
+  if(!saved)
+  {
+    uri = Glib::ustring();
+    std::cerr << G_STRFUNC << ": save_file() failed." << std::endl;
+  }
+
+  return uri;
+}
+
+void ImageGlom::open_with(const Glib::RefPtr<Gio::AppInfo>& app_info)
+{
+  const Glib::ustring uri = save_to_temp_file();
+  if(uri.empty())
     return;
 
   if(app_info)
@@ -430,6 +593,40 @@ void ImageGlom::on_menupopup_activate_save_file()
     return;
     
   save_file(uri);
+}
+
+bool ImageGlom::save_file_sync(const Glib::ustring& uri)
+{
+  //TODO: We should still do this asynchronously, 
+  //even when we don't use the dialog's run() to do that
+  //because we don't want to offer feedback.
+  //Ideally, EvView would just load from data anyway.
+  
+  const GdaBinary* gda_binary = gda_value_get_binary(m_original_data.gobj());
+  if(!gda_binary)
+  {
+    std::cerr << G_STRFUNC << ": GdaBinary is null" << std::endl;
+    return false;
+  }
+    
+  if(!gda_binary->data)
+  {
+    std::cerr << G_STRFUNC << ": GdaBinary::data is null" << std::endl;
+    return false;
+  }
+
+  try
+  {
+    const std::string filepath = Glib::filename_from_uri(uri);
+    Glib::file_set_contents(filepath, (const char*)gda_binary->data, gda_binary->binary_length);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << "Exception: " << ex.what() << std::endl;
+    return false;
+  }
+  
+  return true;
 }
 
 bool ImageGlom::save_file(const Glib::ustring& uri)
@@ -504,8 +701,7 @@ void ImageGlom::on_menupopup_activate_select_file()
           m_original_data.Glib::ValueBase::init(GDA_TYPE_BINARY);
           gda_value_take_binary(m_original_data.gobj(), bin);
 
-          m_pixbuf_original = dialog->get_pixbuf();
-          scale();
+          show_image_data();
           signal_edited().emit();
         }
       }
@@ -569,7 +765,7 @@ void ImageGlom::on_clipboard_received_image(const Glib::RefPtr<Gdk::Pixbuf>& pix
     m_original_data = Gnome::Gda::Value();
 
     m_pixbuf_original = pixbuf;
-    scale();
+    show_image_data();
 
     signal_edited().emit();
   }
@@ -594,7 +790,8 @@ void ImageGlom::on_menupopup_activate_clear()
     return;
 
   m_pixbuf_original.reset();
-  m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
+  show_image_data();
+  //TODO: m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
   signal_edited().emit();
 }
 
