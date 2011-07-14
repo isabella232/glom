@@ -354,6 +354,8 @@ void ImageGlom::show_image_data()
     gtk_widget_hide(GTK_WIDGET(m_ev_view));  
     m_image.show();
     m_frame.add(m_image);
+    
+    Glib::RefPtr<const Gio::Icon> icon;
       
     bool use_gdkpixbuf = false;
     fill_gdkpixbuf_supported_mime_types();
@@ -389,7 +391,8 @@ void ImageGlom::show_image_data()
         {
           file_info = file->query_info(
             G_FILE_ATTRIBUTE_THUMBNAIL_PATH ","
-            G_FILE_ATTRIBUTE_THUMBNAILING_FAILED);
+            G_FILE_ATTRIBUTE_THUMBNAILING_FAILED ","
+            G_FILE_ATTRIBUTE_STANDARD_ICON);
         }
         catch(const Glib::Error& ex)
         {
@@ -402,14 +405,19 @@ void ImageGlom::show_image_data()
             file_info->get_attribute_byte_string(G_FILE_ATTRIBUTE_THUMBNAIL_PATH);
           const bool failed = 
             file_info->get_attribute_boolean(G_FILE_ATTRIBUTE_THUMBNAILING_FAILED);
-          if(filepath.empty())
-          {
-            std::cerr << G_STRFUNC << ": Could not get attribute G_FILE_ATTRIBUTE_THUMBNAIL_PATH. failed=" << failed << std::endl;
-          }
+          if(!filepath.empty())
+            m_pixbuf_original = Gdk::Pixbuf::create_from_file(filepath);
           else
           {
-            //std::cout << "DEBUGDEBUG: filepath=" << filepath << std::endl;
-            m_pixbuf_original = Gdk::Pixbuf::create_from_file(filepath);
+            std::cerr << G_STRFUNC << ": Could not get attribute G_FILE_ATTRIBUTE_THUMBNAIL_PATH. failed=" << failed << std::endl;
+            
+            //Use the standard icon instead:
+            icon = file_info->get_icon();
+            if(!icon)
+            {
+               std::cerr << G_STRFUNC << ": Could not get G_FILE_ATTRIBUTE_STANDARD_ICON" << std::endl;
+            }
+            
           }
         }
       }
@@ -420,8 +428,14 @@ void ImageGlom::show_image_data()
       Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = get_scaled_image();
       m_image.set(pixbuf_scaled);
     }
+    else if(icon)
+    {
+      m_image.set(icon, Gtk::ICON_SIZE_DIALOG);
+    }
     else
+    {
       m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
+    }
   }
 }
 

@@ -1,5 +1,12 @@
 2011-07-14  Murray Cumming  <murrayc@murrayc.com>
 
+	ImageGlom: Use G_FILE_ATTRIBUTE_STANDARD_ICON
+
+	* glom/utility_widgets/imageglom.cc: If G_FILE_ATTRIBUTE_THUMBNAIL_PATH 
+	doesn't work, use the standard icon. This does seem to work. 
+
+2011-07-14  Murray Cumming  <murrayc@murrayc.com>
+
 	ImageGlom: Try to use G_FILE_ATTRIBUTE_THUMBNAIL_PATH for other file types.
 
 	* glom/utility_widgets/imageglom.[h|cc]: show_image_data():
