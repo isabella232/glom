@@ -888,15 +888,10 @@ Gtk::TreeModel::iterator DbTreeModel::get_last_row()
   const int rows_count = get_internal_rows_count();
   if(rows_count)
   {
-    std::cout << "rows_count=" << rows_count << std::endl;
-   
     type_datamodel_row_index row = rows_count - 1;
     
     if(row > 0) //This should always be true, because there is always a placeholder.
       --row; //Ignore the placeholder.
-
-    std::cout << "row=" << row << std::endl;
-   
    
     //Step backwards until we find one that is not removed.
     while((m_map_rows.find(row) != m_map_rows.end()) && m_map_rows[row].m_removed)
