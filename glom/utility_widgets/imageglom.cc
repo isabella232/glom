@@ -180,46 +180,7 @@ void ImageGlom::set_value(const Gnome::Gda::Value& value)
 
 Gnome::Gda::Value ImageGlom::get_value() const
 {
-  //TODO: Return the data from the file that was just chosen.
-  //Don't store the original here any longer than necessary,
-  if(m_original_data.get_value_type() != G_TYPE_NONE)
-    return m_original_data;
-  
-  if(m_pixbuf_original)
-  {
-    try
-    {
-      gchar* buffer = 0;
-      gsize buffer_size = 0;
-      std::vector<Glib::ustring> list_keys;
-      std::vector<Glib::ustring> list_values;
-      //list_keys.push_back("quality"); //For jpeg only.
-      //list_values.push_back("95");
-
-      m_pixbuf_original->save_to_buffer(buffer, buffer_size, GLOM_IMAGE_FORMAT, list_keys, list_values); //Always store images as the standard format in the database.
-
-      //g_warning("ImageGlom::get_value(): debug: to db: ");
-      //for(int i = 0; i < 10; ++i)
-      //  g_warning("%02X (%c), ", (guint8)buffer[i], buffer[i]);
-
-      GdaBinary* bin = g_new(GdaBinary, 1);
-      bin->data = reinterpret_cast<guchar*>(buffer);
-      bin->binary_length = buffer_size;
-
-      m_original_data = Gnome::Gda::Value();
-      m_original_data.Glib::ValueBase::init(GDA_TYPE_BINARY);
-      gda_value_take_binary(m_original_data.gobj(), bin);
-
-      buffer = 0;
-      return m_original_data;
-    }
-    catch(const Glib::Exception& ex)
-    {
-      std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
-    }
-  }
-
-  return Gnome::Gda::Value();
+  return m_original_data;
 }
 
 void ImageGlom::on_size_allocate(Gtk::Allocation& allocation)

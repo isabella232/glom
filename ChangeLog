@@ -1,5 +1,12 @@
 2011-07-14  Murray Cumming  <murrayc@murrayc.com>
 
+	ImageGlom: Remove some unnecessary code.
+
+	* glom/utility_widgets/imageglom.cc: get_value(): Don't use the pixbuf just 
+	to get the value.
+
+2011-07-14  Murray Cumming  <murrayc@murrayc.com>
+
 	ImageGlom: Another scaling fix.
 
 	* glom/utility_widgets/imageglom.cc: get_scaled_image(): Don't return 
