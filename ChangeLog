@@ -1,5 +1,14 @@
 2011-07-14  Murray Cumming  <murrayc@murrayc.com>
 
+	ImageGlom: Try to use G_FILE_ATTRIBUTE_THUMBNAIL_PATH for other file types.
+
+	* glom/utility_widgets/imageglom.[h|cc]: show_image_data():
+	Get the mime_types supported by GdkPixbuf and only try to use it if we have 
+	a suitable mime type. Otherwise try to get a thumbnail from GFileInfo.
+	That doesn't work now, probably because we should do that async.
+ 
+2011-07-14  Murray Cumming  <murrayc@murrayc.com>
+
 	ImageGlom: Remove some unnecessary code.
 
 	* glom/utility_widgets/imageglom.cc: get_value(): Don't use the pixbuf just 

@@ -33,6 +33,7 @@ namespace Glom
 {
 
 ImageGlom::type_vec_ustrings ImageGlom::m_evince_supported_mime_types;
+ImageGlom::type_vec_ustrings ImageGlom::m_gdkpixbuf_supported_mime_types;
 
 ImageGlom::ImageGlom()
 : m_ev_view(0),
@@ -187,9 +188,10 @@ void ImageGlom::on_size_allocate(Gtk::Allocation& allocation)
 {
   Gtk::EventBox::on_size_allocate(allocation);
 
+  //Resize the GtkImage if necessary:
   if(m_pixbuf_original)
   {
-    Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = get_scaled_image();
+    const Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = get_scaled_image();
     m_image.set(pixbuf_scaled);
   }
 }
@@ -270,33 +272,50 @@ void ImageGlom::fill_evince_supported_mime_types()
 	}  
 }
 
+void ImageGlom::fill_gdkpixbuf_supported_mime_types()
+{
+  //Fill the static list if it has not already been filled:
+  if(!m_gdkpixbuf_supported_mime_types.empty())
+    return;
+    
+  typedef std::vector<Gdk::PixbufFormat> type_vec_formats;
+  const type_vec_formats formats = Gdk::Pixbuf::get_formats();
+  
+  for(type_vec_formats::const_iterator iter = formats.begin();
+    iter != formats.end(); ++iter)
+  {
+    const Gdk::PixbufFormat& format = *iter;
+    const std::vector<Glib::ustring> mime_types = format.get_mime_types();
+    m_gdkpixbuf_supported_mime_types.insert(
+      m_gdkpixbuf_supported_mime_types.end(),
+      mime_types.begin(), mime_types.end());
+  }
+}
+
 void ImageGlom::show_image_data()
 {
   bool use_evince = false;
   
+  const Glib::ustring mime_type = get_mime_type();
+
+  //std::cout << "mime_type=" << mime_type << std::endl; 
   
-  if(!Conversions::value_is_empty(m_original_data))
+  fill_evince_supported_mime_types();
+  const type_vec_ustrings::iterator iterFind = 
+    std::find(m_evince_supported_mime_types.begin(),
+      m_evince_supported_mime_types.end(),
+      mime_type);
+  if(iterFind != m_evince_supported_mime_types.end())
   {
-    const Glib::ustring mime_type = get_mime_type();
-    //std::cout << "mime_type=" << mime_type << std::endl; 
-  
-    fill_evince_supported_mime_types();
-    const type_vec_ustrings::iterator iterFind = 
-      std::find(m_evince_supported_mime_types.begin(),
-        m_evince_supported_mime_types.end(),
-        mime_type);
-    if(iterFind != m_evince_supported_mime_types.end())
-    {
-      use_evince = true;
-    }
-  }
-  
+    use_evince = true;
+  }  
   
   m_frame.remove();
     
   //Clear all possible display widgets:
   m_pixbuf_original.reset();
-  m_image.set(m_pixbuf_original);
+  m_pixbuf_thumbnail.reset();
+  m_image.set(Glib::RefPtr<Gdk::Pixbuf>()); //TODO: Add an unset() to gtkmm.
   
   if(m_ev_document_model)
   {
@@ -332,13 +351,70 @@ void ImageGlom::show_image_data()
   else
   {
     //Use GtkImage instead:
-
-    gtk_widget_hide(GTK_WIDGET(m_ev_view));
-      
+    gtk_widget_hide(GTK_WIDGET(m_ev_view));  
     m_image.show();
     m_frame.add(m_image);
+      
+    bool use_gdkpixbuf = false;
+    fill_gdkpixbuf_supported_mime_types();
+    const type_vec_ustrings::iterator iterFind = 
+      std::find(m_gdkpixbuf_supported_mime_types.begin(),
+        m_gdkpixbuf_supported_mime_types.end(),
+        mime_type);
+    if(iterFind != m_gdkpixbuf_supported_mime_types.end())
+    {
+      use_gdkpixbuf = true;
+    }
     
-    m_pixbuf_original = Utils::get_pixbuf_for_gda_value(m_original_data);
+    if(use_gdkpixbuf)
+    {
+      //Try to use GdkPixbuf's loader:
+      m_pixbuf_original = Utils::get_pixbuf_for_gda_value(m_original_data);
+    }
+    else
+    {
+      //Try to use a thumbnail via GFile:
+      //TODO: Do this asynchronously:
+      const Glib::ustring uri = save_to_temp_file(false /* don't show progress */);
+      if(uri.empty())
+      {
+        std::cerr << G_STRFUNC << "Could not save temp file to get a thumbnail." << std::endl;
+      }
+      else
+      {
+        Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+        Glib::RefPtr<const Gio::FileInfo> file_info;
+
+        try
+        {
+          file_info = file->query_info(
+            G_FILE_ATTRIBUTE_THUMBNAIL_PATH ","
+            G_FILE_ATTRIBUTE_THUMBNAILING_FAILED);
+        }
+        catch(const Glib::Error& ex)
+        {
+          std::cerr << G_STRFUNC << ": query_info() failed: " << ex.what() << std::endl;
+        }
+      
+        if(file_info)
+        {
+          const std::string filepath = 
+            file_info->get_attribute_byte_string(G_FILE_ATTRIBUTE_THUMBNAIL_PATH);
+          const bool failed = 
+            file_info->get_attribute_boolean(G_FILE_ATTRIBUTE_THUMBNAILING_FAILED);
+          if(filepath.empty())
+          {
+            std::cerr << G_STRFUNC << ": Could not get attribute G_FILE_ATTRIBUTE_THUMBNAIL_PATH. failed=" << failed << std::endl;
+          }
+          else
+          {
+            //std::cout << "DEBUGDEBUG: filepath=" << filepath << std::endl;
+            m_pixbuf_original = Gdk::Pixbuf::create_from_file(filepath);
+          }
+        }
+      }
+    }
+    
     if(m_pixbuf_original)
     {
       Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = get_scaled_image();

@@ -92,16 +92,23 @@ private:
 
   Glib::ustring get_mime_type() const;
   static void fill_evince_supported_mime_types();
+  static void fill_gdkpixbuf_supported_mime_types();
  
-  Gtk::Image m_image;
+  mutable Gnome::Gda::Value m_original_data; // Original file data (mutable so that we can create it in get_value() if it does not exist yet)
 
+  Gtk::Frame m_frame;
+  
+  //For anything supported by Evince:
   EvView* m_ev_view;
   EvDocumentModel* m_ev_document_model;
   
-  Gtk::Frame m_frame;
-  mutable Gnome::Gda::Value m_original_data; // Original file data (mutable so that we can create it in get_value() if it does not exist yet)
+  //For anything supported by GdkPixbuf:
+  Gtk::Image m_image;
   Glib::RefPtr<Gdk::Pixbuf> m_pixbuf_original; //Only stored temporarily, because it could be big.
   Glib::RefPtr<Gdk::Pixbuf> m_pixbuf_clipboard; //When copy is used, store it here until it is pasted.
+  
+  //For anything else:
+  Glib::RefPtr<Gdk::Pixbuf> m_pixbuf_thumbnail;
 
   Gtk::Menu* m_pMenuPopup_UserMode;
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup_UserModePopup;
@@ -113,6 +120,7 @@ private:
   
   typedef std::vector<Glib::ustring> type_vec_ustrings;
   static type_vec_ustrings m_evince_supported_mime_types;
+  static type_vec_ustrings m_gdkpixbuf_supported_mime_types;
 };
 
 } //namespace Glom
