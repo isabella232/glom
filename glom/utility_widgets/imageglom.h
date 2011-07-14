@@ -61,7 +61,7 @@ public:
 private:
   void init();
 
-  virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
+  virtual void on_size_allocate(Gtk::Allocation& allocation);
 
   virtual bool on_button_press_event(GdkEventButton *event);
 
@@ -81,7 +81,9 @@ private:
 
   void setup_menu_usermode();
   void show_image_data();
-  void scale_image();
+  
+  //Get a pixbuf scaled down to the current size allocation:
+  Glib::RefPtr<Gdk::Pixbuf> get_scaled_image();
   
   Glib::ustring save_to_temp_file(bool show_progress = true);
   bool save_file(const Glib::ustring& uri);

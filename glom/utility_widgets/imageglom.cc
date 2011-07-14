@@ -222,14 +222,15 @@ Gnome::Gda::Value ImageGlom::get_value() const
   return Gnome::Gda::Value();
 }
 
-bool ImageGlom::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
+void ImageGlom::on_size_allocate(Gtk::Allocation& allocation)
 {
-  const bool result = Gtk::EventBox::on_draw(cr);
+  Gtk::EventBox::on_size_allocate(allocation);
 
   if(m_pixbuf_original)
-    scale_image();
-
-  return result;
+  {
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = get_scaled_image();
+    m_image.set(pixbuf_scaled);
+  }
 }
 
 static void image_glom_ev_job_finished(EvJob* job, void* user_data)
@@ -378,18 +379,21 @@ void ImageGlom::show_image_data()
     
     m_pixbuf_original = Utils::get_pixbuf_for_gda_value(m_original_data);
     if(m_pixbuf_original)
-       m_image.set(m_pixbuf_original);
+    {
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = get_scaled_image();
+      m_image.set(pixbuf_scaled);
+    }
     else
       m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
   }
 }
 
-void ImageGlom::scale_image()
+Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
 {
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = m_pixbuf_original;
 
   if(!pixbuf)
-    return;
+    return pixbuf;
  
   const Gtk::Allocation allocation = m_image.get_allocation();
   const int pixbuf_height = pixbuf->get_height();
@@ -397,42 +401,42 @@ void ImageGlom::scale_image()
     
   int allocation_height = allocation.get_height();
   int allocation_width = allocation.get_width();
-    
-  //If the Image widget has expanded to be big enough for the original image,
-  //it might be huge. We don't want that.
-  //Scaling it down will reduce how much it requests.
-  if(allocation_width >= 400)
-    allocation_width = 400;
       
-  if(allocation_height >= 400)
-    allocation_height = 400;
-      
-  //std::cout << "pixbuf_height=" << pixbuf_height << ", pixbuf_width=" << pixbuf_width << std::endl;
-  //std::cout << "allocation_height=" << allocation.get_height() << ", allocation_width=" << allocation.get_width() << std::endl;
+  std::cout << "pixbuf_height=" << pixbuf_height << ", pixbuf_width=" << pixbuf_width << std::endl;
+  std::cout << "allocation_height=" << allocation.get_height() << ", allocation_width=" << allocation.get_width() << std::endl;
 
-  if( (pixbuf_height >allocation_height ) ||
+  if( (pixbuf_height > allocation_height) ||
       (pixbuf_width > allocation_width) )
   {
-    if(allocation_height > 10 || allocation_width > 10)
+    if(true) //allocation_height > 10 || allocation_width > 10)
     {
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = Utils::image_scale_keeping_ratio(pixbuf, allocation.get_height(), allocation.get_width());
-      if(!pixbuf_scaled)
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = Utils::image_scale_keeping_ratio(pixbuf, allocation_height, allocation_width);
+      
+      //Don't set a new pixbuf if the dimensions have not changed:
+      Glib::RefPtr<const Gdk::Pixbuf> pixbuf_in_image;
+
+      if(m_image.get_storage_type() == Gtk::IMAGE_PIXBUF) //Prevent warning.
+        pixbuf_in_image = m_image.get_pixbuf();
+
+      if( !pixbuf_in_image || !pixbuf_scaled || (pixbuf_in_image->get_height() != pixbuf_scaled->get_height()) || (pixbuf_in_image->get_width() != pixbuf_scaled->get_width()) )
       {
-        std::cerr << "Utils::image_scale_keeping_ratio() returned NULL pixbuf." << std::endl;
+        std::cout << "get_scale(): returning scaled" << std::endl;
+        if(pixbuf_scaled)
+        {
+          std::cout << "scaled height=" << pixbuf_scaled->get_height() << ", scaled width=" << pixbuf_scaled->get_width() << std::endl;
+        }
+        
+        return pixbuf_scaled;
       }
-      else 
+      else
       {
-        //Don't set a new pixbuf if the dimensions have not changed:
-        Glib::RefPtr<const Gdk::Pixbuf> pixbuf_in_image;
-
-        if(m_image.get_storage_type() == Gtk::IMAGE_PIXBUF) //Prevent warning.
-          pixbuf_in_image = m_image.get_pixbuf();
-
-        if( !pixbuf_in_image || (pixbuf_in_image->get_height() != pixbuf_scaled->get_height()) || (pixbuf_in_image->get_width() != pixbuf_scaled->get_width()) )
-          m_image.set(pixbuf_scaled);
+        std::cout << "scaled image not used." << std::endl;
       }
     }
   }
+  
+  std::cout << "get_scaled(): returning original" << std::endl;
+  return pixbuf;
 }
 
 void ImageGlom::on_menupopup_activate_open_file()

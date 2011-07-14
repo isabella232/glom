@@ -429,6 +429,7 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::image_scale_keeping_ratio(const Glib::RefPtr<Gd
   {
     SCALE_WIDTH,
     SCALE_HEIGHT,
+    SCALE_BOTH,
     SCALE_NONE
   };
 
@@ -441,11 +442,7 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::image_scale_keeping_ratio(const Glib::RefPtr<Gd
   {
     if(pixbuf_width > target_width)
     {
-      //Both are bigger than the target, so find the biggest one:
-      if(pixbuf_width > pixbuf_height)
-        scale_mode = SCALE_WIDTH;
-      else
-        scale_mode = SCALE_HEIGHT;
+      scale_mode = SCALE_BOTH;
     }
     else
     {
@@ -469,6 +466,14 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::image_scale_keeping_ratio(const Glib::RefPtr<Gd
   else if(scale_mode == SCALE_WIDTH)
   {
     const float ratio = (float)target_width / (float) pixbuf_width;
+    target_height = (int)((float)pixbuf_height * ratio);
+  }
+  else if(scale_mode == SCALE_BOTH)
+  {
+    const float ratio = std::min(
+      (float)target_width / (float) pixbuf_width,
+      (float)target_height / (float) pixbuf_height);
+    target_width = (int)((float)pixbuf_width * ratio);
     target_height = (int)((float)pixbuf_height * ratio);
   }
 

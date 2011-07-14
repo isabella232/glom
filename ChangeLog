@@ -1,3 +1,18 @@
+2011-07-14  Murray Cumming  <murrayc@murrayc.com>
+
+	ImageGlom: Remove limits so we always scale, and use on_size_allocate().
+
+	* glom/utility_widgets/imageglom.[h|cc]: Use on_size_allocate() instead of 
+	on_draw(), which is slightly wiser.
+	Remove the hard-coded checks for minumum and maximum sizes, because 
+	we get an initial allocation of 1, and because the max was arbitrarily small.
+	* glom/utils_ui.cc: Fix this for images that are both 
+	too wide and too high.
+	
+	This works now, but we still need to make the window get smaller when 
+	the GtkImage requests less space.
+
+
 2011-07-13  Murray Cumming  <murrayc@murrayc.com>
 
 	ImageGlom: Remove hard-coded mentions of PNG file formats.
