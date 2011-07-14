@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-07-07 11:25+0000\n"
-"PO-Revision-Date: 2011-07-07 13:41+0200\n"
+"POT-Creation-Date: 2011-07-12 12:34+0000\n"
+"PO-Revision-Date: 2011-07-14 10:17+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -201,7 +201,6 @@ msgid "_Show Layout Toolbar"
 msgstr "_Mostrar distribución de la barra de herramientas"
 
 #: ../glom/application.cc:574
-#| msgid "_Help"
 msgctxt "Help menu title"
 msgid "_Help"
 msgstr "Ay_uda"
@@ -231,7 +230,6 @@ msgid "A Database GUI"
 msgstr "Un IGU para bases de datos"
 
 #: ../glom/application.cc:689
-#| msgid "© 2000-2010 Murray Cumming"
 msgid "© 2000-2011 Murray Cumming, Openismus GmbH"
 msgstr "© 2000-2011 Murray Cumming, Openismus GmbH"
 
@@ -480,8 +478,8 @@ msgid ""
 "There was an error while restoring the backup. The tar utility failed to "
 "extract the archive."
 msgstr ""
-"Ocurrió un error al restaurar el respaldo. La utilidad «tar» falló al extraer "
-"el archivo."
+"Ocurrió un error al restaurar el respaldo. La utilidad «tar» falló al "
+"extraer el archivo."
 
 #: ../glom/application.cc:2947
 msgid ""
@@ -1040,9 +1038,10 @@ msgstr ""
 "El archivo contiene datos no especificados en la codificación. Seleccione "
 "una codificación, o pruebe «Autodetectar»."
 
-#. Note to translators: This is a straight line, not a database row.
+#. Translators: This is the name of a UI element (a layout part name).
+#. This is a straight line, not a database row.
 #: ../glom/import_csv/dialog_import_csv.cc:510
-#: ../glom/libglom/data_structure/layout/layoutitem_line.cc:82
+#: ../glom/libglom/data_structure/layout/layoutitem_line.cc:83
 msgid "Line"
 msgstr "Línea"
 
@@ -1191,18 +1190,22 @@ msgstr "Rumano"
 msgid "Vietnamese"
 msgstr "Vietnamita"
 
-#: ../glom/libglom/data_structure/field.cc:640
-#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:143
-#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:151
+#. Translators: This means an unknown or unnacceptable value type in a database.
+#: ../glom/libglom/data_structure/field.cc:641
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:144
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:152
 msgid "Invalid"
 msgstr "No válido"
 
-#: ../glom/libglom/data_structure/field.cc:641
+#. Translators: This means a numeric value type in a database.
+#: ../glom/libglom/data_structure/field.cc:644
 msgid "Number"
 msgstr "Número"
 
-#: ../glom/libglom/data_structure/field.cc:642
-#: ../glom/libglom/data_structure/layout/layoutitem_text.cc:72
+#. Translators: This means a text/string value type in a database.
+#. Translators: This is the name of a UI element (a layout part name).
+#: ../glom/libglom/data_structure/field.cc:647
+#: ../glom/libglom/data_structure/layout/layoutitem_text.cc:73
 #: ../glom/libglom/data_structure/translatable_item.cc:317
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1147
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
@@ -1210,20 +1213,25 @@ msgstr "Número"
 msgid "Text"
 msgstr "Texto"
 
-#: ../glom/libglom/data_structure/field.cc:643
+#. Translators: This means a time value type in a database.
+#: ../glom/libglom/data_structure/field.cc:650
 msgid "Time"
 msgstr "Hora"
 
-#: ../glom/libglom/data_structure/field.cc:644
+#. Translators: This means a time value type in a database.
+#: ../glom/libglom/data_structure/field.cc:653
 msgid "Date"
 msgstr "Fecha"
 
-#: ../glom/libglom/data_structure/field.cc:645
+#. Translators: This means a true/false value type in a database.
+#: ../glom/libglom/data_structure/field.cc:656
 msgid "Boolean"
 msgstr "Booleano"
 
-#: ../glom/libglom/data_structure/field.cc:646
-#: ../glom/libglom/data_structure/layout/layoutitem_image.cc:69
+#. Translators: This means a picture value type in a database.
+#. Translators: This is the name of a UI element (a layout part name).
+#: ../glom/libglom/data_structure/field.cc:659
+#: ../glom/libglom/data_structure/layout/layoutitem_image.cc:70
 #: ../glom/libglom/data_structure/translatable_item.cc:319
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1154
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:39
@@ -1269,7 +1277,8 @@ msgstr ""
 "incorrecto para su configuración regional. Esto necesita la atención de un "
 "traductor. Rellene un informe de error; consulte http://www.glom.org"
 
-#: ../glom/libglom/data_structure/layout/layoutgroup.cc:415
+#. Translators: This is the name of a UI element (a layout part name).
+#: ../glom/libglom/data_structure/layout/layoutgroup.cc:416
 #: ../glom/utility_widgets/layouttoolbar.cc:53
 #: ../glom/utility_widgets/layouttoolbar.cc:63
 #: ../glom/utility_widgets/notebooklabelglom.cc:76
@@ -1277,18 +1286,21 @@ msgstr ""
 msgid "Group"
 msgstr "Agrupar"
 
-#: ../glom/libglom/data_structure/layout/layoutitem_button.cc:67
+#. Translators: This is the name of a UI element (a layout part name).
+#: ../glom/libglom/data_structure/layout/layoutitem_button.cc:68
 #: ../glom/libglom/data_structure/translatable_item.cc:315
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1140
 #: ../glom/utility_widgets/layouttoolbar.cc:61
 msgid "Button"
 msgstr "Botón"
 
-#: ../glom/libglom/data_structure/layout/layoutitem_calendarportal.cc:57
+#. Translators: This is the name of a UI element (a layout part name).
+#: ../glom/libglom/data_structure/layout/layoutitem_calendarportal.cc:58
 msgid "Calendar Portal"
 msgstr "Calendario del portal"
 
-#: ../glom/libglom/data_structure/layout/layoutitem_field.cc:193
+#. Translators: This is the name of a UI element (a layout part name).
+#: ../glom/libglom/data_structure/layout/layoutitem_field.cc:194
 #: ../glom/libglom/data_structure/translatable_item.cc:297
 #: ../glom/mode_design/dialog_database_preferences.cc:62
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:616
@@ -1296,61 +1308,73 @@ msgstr "Calendario del portal"
 msgid "Field"
 msgstr "Campo"
 
-#. Note to translators: "Notebook" means a GtkNotebook-type widget.
-#: ../glom/libglom/data_structure/layout/layoutitem_notebook.cc:56
+#. Translators: This is the name of a UI element (a layout part name).
+#. "Notebook" means a GtkNotebook-type widget.
+#: ../glom/libglom/data_structure/layout/layoutitem_notebook.cc:57
 #: ../glom/utility_widgets/layouttoolbar.cc:55
 msgid "Notebook"
 msgstr "Cuaderno"
 
-#: ../glom/libglom/data_structure/layout/layoutitem_placeholder.cc:59
+#. Translators: This is the name of a UI element (a layout part name).
+#: ../glom/libglom/data_structure/layout/layoutitem_placeholder.cc:60
 msgid "Placeholder"
 msgstr "Lugar"
 
-#: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:68
+#. TODO: "Portal" probably shouldn't appear in the UI.
+#. We should use "Related Records instead.
+#. Translators: This is the name of a UI element (a layout part name).
+#. It means a list of related records.
+#: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:72
 msgid "Portal"
 msgstr "Portal"
 
-#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:71
+#. Translators: This is the name of a UI element (a layout part name).
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:72
 #: ../ui/developer/dialog_field_summary.glade.h:2
 msgid "Field Summary"
 msgstr "Resumen del campo"
 
-#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:126
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:127
 msgid "No summary chosen"
 msgstr "No se eligió ningún resumen"
 
-#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:145
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:146
 msgid "Sum"
 msgstr "Res"
 
-#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:147
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:148
 msgid "Average"
 msgstr "Media"
 
-#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:149
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:150
 msgid "Count"
 msgstr "Cuenta"
 
-#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc:55
+#. Translators: This is the name of a UI element (a layout part name).
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc:56
 #: ../ui/developer/window_report_layout.glade.h:4
 msgid "Footer"
 msgstr "Pie de página"
 
-#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.cc:102
+#. Translators: This is the name of a UI element (a layout part name).
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.cc:103
 #: ../ui/developer/dialog_group_by.glade.h:5
 msgid "Group By"
 msgstr "Agrupar por"
 
-#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc:55
+#. Translators: This is the name of a UI element (a layout part name).
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc:56
 #: ../ui/developer/window_report_layout.glade.h:5
 msgid "Header"
 msgstr "Cabecera"
 
-#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_summary.cc:61
+#. Translators: This is the name of a UI element (a layout part name).
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_summary.cc:62
 msgid "Summary"
 msgstr "Resumen"
 
-#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.cc:55
+#. Translators: This is the name of a UI element (a layout part name).
+#: ../glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.cc:56
 msgid "Vertical Group"
 msgstr "Grupo vertical"
 
@@ -1662,16 +1686,16 @@ msgstr ""
 
 #. Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
 #: ../glom/mode_data/box_data_calendar_related.cc:98
-#: ../glom/mode_data/box_data_list_related.cc:96
-#: ../glom/mode_data/box_data_portal.cc:257
-#: ../glom/mode_data/box_data_portal.cc:271
+#: ../glom/mode_data/box_data_list_related.cc:95
+#: ../glom/mode_data/box_data_portal.cc:255
+#: ../glom/mode_data/box_data_portal.cc:269
 msgid "Undefined Table"
 msgstr "Tabla no definida"
 
 #. Don't add ContextLayout in client only mode because it would never
 #. be sensitive anyway
 #: ../glom/mode_data/box_data_calendar_related.cc:495
-#: ../glom/mode_data/db_adddel/db_adddel.cc:262
+#: ../glom/mode_data/db_adddel/db_adddel.cc:271
 #: ../ui/developer/window_data_layout.glade.h:25
 msgid "Layout"
 msgstr "Distribución"
@@ -1761,39 +1785,42 @@ msgstr ""
 "La clave primaria es autoincrementable.\n"
 " No debería introducir su propio valor para la clave primaria."
 
+#. Translators: This is a noun. It is the title of a report.
 #. Add Pages:
-#: ../glom/mode_data/box_data_list.cc:503
-#: ../glom/mode_data/box_data_manyrecords.cc:83
-#: ../glom/mode_data/notebook_data.cc:67 ../glom/mode_find/notebook_find.cc:32
+#. Translators: This is a noun. It is a notebook tab title.
+#: ../glom/mode_data/box_data_manyrecords.cc:84
+#: ../glom/mode_data/notebook_data.cc:68 ../glom/mode_find/notebook_find.cc:32
 msgid "List"
 msgstr "Lista"
 
+#. Translators: This is a noun. It is a notebook tab title.
 #. On Maemo, we add the box to m_window_maemo_details instead:
+#. Translators: This is a noun. It is a notebook tab title.
 #. Details column:
-#: ../glom/mode_data/box_data_portal.cc:142
-#: ../glom/mode_data/notebook_data.cc:71 ../glom/mode_data/notebook_data.cc:75
+#: ../glom/mode_data/box_data_portal.cc:140
+#: ../glom/mode_data/notebook_data.cc:73 ../glom/mode_data/notebook_data.cc:78
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:214
 #: ../glom/mode_find/notebook_find.cc:41
 msgid "Details"
 msgstr "Detalles"
 
-#: ../glom/mode_data/box_data_portal.cc:157
+#: ../glom/mode_data/box_data_portal.cc:155
 msgid "New Related %1"
 msgstr "Nuevo relacionado %1"
 
-#: ../glom/mode_data/box_data_portal.cc:199
+#: ../glom/mode_data/box_data_portal.cc:197
 msgid "Add Related %1"
 msgstr "Añadir relacionado %1"
 
-#: ../glom/mode_data/box_data_portal.cc:201
+#: ../glom/mode_data/box_data_portal.cc:199
 msgid "Add related record"
 msgstr "Añadir registro relacionado"
 
-#: ../glom/mode_data/box_data_portal.cc:554
+#: ../glom/mode_data/box_data_portal.cc:552
 msgid "No Corresponding Record Exists"
 msgstr "No existe un registro correspondiente"
 
-#: ../glom/mode_data/box_data_portal.cc:554
+#: ../glom/mode_data/box_data_portal.cc:552
 msgid ""
 "No record with this value exists. Therefore navigation to the related record "
 "is not possible."
@@ -1851,11 +1878,12 @@ msgstr "¿Eliminar el grupo «%1» entero?"
 msgid "Delete whole group?"
 msgstr "¿Eliminar el grupo entero?"
 
-#: ../glom/mode_data/notebook_data.cc:93
+#. Translators: This is a title, not an action.
+#: ../glom/mode_data/notebook_data.cc:97
 msgid "List Or Details View"
 msgstr "Vista de lista o detalles"
 
-#: ../glom/mode_data/notebook_data.cc:272
+#: ../glom/mode_data/notebook_data.cc:276
 msgid "%1 Details"
 msgstr "%1 detalles"
 
@@ -2627,22 +2655,22 @@ msgid "Table Content"
 msgstr "Contenido de la tabla"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-#: ../glom/mode_data/db_adddel/db_adddel.cc:632
+#: ../glom/mode_data/db_adddel/db_adddel.cc:640
 msgid "ExampleEg"
 msgstr "Ejemplo"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2186
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2189
 msgid "Right-click to layout, to specify the related fields."
 msgstr ""
 "Pulse con el botón derecho en la disposición, para especificar los campos "
 "relacionados."
 
 #. Tell user that they can't do that:
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2408
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2411
 msgid "Extra Related Records Not Possible"
 msgstr "No son posibles adicionales registros relacionados"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2409
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2412
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
@@ -2651,24 +2679,34 @@ msgstr ""
 "haber uno porque la relación usa una clave única."
 
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:94
-#: ../glom/utility_widgets/imageglom.cc:328
+#: ../glom/utility_widgets/imageglom.cc:476
 #: ../ui/developer/dialog_choose_relationship.glade.h:2
 #: ../ui/developer/dialog_field_summary.glade.h:4
 #: ../ui/developer/dialog_group_by.glade.h:7
 msgid "Select"
 msgstr "Seleccionar"
 
-#: ../glom/utility_widgets/dialog_image_progress.cc:117
+#: ../glom/utility_widgets/dialog_image_load_progress.cc:118
 msgid "Not enough memory available to load the image"
 msgstr "No hay suficiente memoria disponible para cargar la imagen"
 
-#: ../glom/utility_widgets/dialog_image_progress.cc:165
+#: ../glom/utility_widgets/dialog_image_load_progress.cc:166
 msgid "Error loading %1"
 msgstr "Error cargando %1"
 
-#: ../glom/utility_widgets/dialog_image_progress.cc:166
+#: ../glom/utility_widgets/dialog_image_load_progress.cc:167
 msgid "Error loading image"
 msgstr "Error al cargar la imagen"
+
+#: ../glom/utility_widgets/dialog_image_save_progress.cc:106
+#| msgid "Error loading %1"
+msgid "Error Saving"
+msgstr "Error al guardar"
+
+#: ../glom/utility_widgets/dialog_image_save_progress.cc:107
+#| msgid "Error loading image"
+msgid "Error saving image"
+msgstr "Error al guardar la imagen"
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:78
 msgid "New Database"
@@ -2745,16 +2783,31 @@ msgstr ""
 "Crear la base de datos en un servidor de base de datos externo, para "
 "especificarlo en el siguiente paso."
 
-#. TODO: Use Hildon::FileChooser for Maemo.
-#: ../glom/utility_widgets/imageglom.cc:319
-msgid "Choose Image"
-msgstr "Elegir imagen"
-
-#: ../glom/utility_widgets/imageglom.cc:323
+#: ../glom/utility_widgets/imageglom.cc:401
 msgid "Images"
 msgstr "Imágenes"
 
-#: ../glom/utility_widgets/imageglom.cc:462
+#: ../glom/utility_widgets/imageglom.cc:406
+#| msgid "All files"
+msgid "All Files"
+msgstr "Todos los archivos"
+
+#: ../glom/utility_widgets/imageglom.cc:415
+#| msgid "Image"
+msgid "Save Image"
+msgstr "Guardar imagen"
+
+#. TODO: Use Hildon::FileChooser for Maemo.
+#: ../glom/utility_widgets/imageglom.cc:469
+msgid "Choose Image"
+msgstr "Elegir imagen"
+
+#: ../glom/utility_widgets/imageglom.cc:609
+#| msgid "Open"
+msgid "Open With"
+msgstr "Abrir con"
+
+#: ../glom/utility_widgets/imageglom.cc:611
 msgid "Choose File"
 msgstr "Elegir archivo"
 
@@ -2825,11 +2878,11 @@ msgstr "¿Eliminar el cuaderno de notas «%1» entero?"
 msgid "Delete whole notebook?"
 msgstr "¿Eliminar el cuaderno de notas entero?"
 
-#: ../glom/xsl_utils.cc:120
+#: ../glom/xsl_utils.cc:121
 msgid "Report Finished"
 msgstr "Informe finalizado"
 
-#: ../glom/xsl_utils.cc:120
+#: ../glom/xsl_utils.cc:121
 msgid "The report will now be opened in your web browser."
 msgstr "El informe se abrirá ahora en su navegador web."
 
@@ -2957,9 +3010,14 @@ msgstr "Buscar registro relacionados"
 msgid "table_name"
 msgstr "nombre_de_la_tabla"
 
-#: ../ui/operator/dialog_image_progress.glade.h:1
+#: ../ui/operator/dialog_image_load_progress.glade.h:1
 msgid "Loading image"
 msgstr "Cargando imagen"
+
+#: ../ui/operator/dialog_image_save_progress.glade.h:1
+#| msgid "Loading image"
+msgid "Saving Image"
+msgstr "Guardando imagen"
 
 #. Import is a noun here. This is the title for a list of fields to import.
 #: ../ui/operator/dialog_import_csv.glade.h:2
@@ -3368,7 +3426,7 @@ msgstr ""
 "Estos módulos estarán disponibles para sus botones de scripts y cálculos de "
 "campos por medio de la palabra clave de importación python."
 
-#. Translators: This is the verb
+#. Translators: This is the verb. It is for checking that a Python script works.
 #: ../ui/developer/dialog_script_library.glade.h:5
 msgid "_Check"
 msgstr "_Verificar"
