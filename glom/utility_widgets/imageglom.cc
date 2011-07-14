@@ -413,7 +413,7 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
       Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = Utils::image_scale_keeping_ratio(pixbuf, allocation_height, allocation_width);
       
       //Don't set a new pixbuf if the dimensions have not changed:
-      Glib::RefPtr<const Gdk::Pixbuf> pixbuf_in_image;
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf_in_image;
 
       if(m_image.get_storage_type() == Gtk::IMAGE_PIXBUF) //Prevent warning.
         pixbuf_in_image = m_image.get_pixbuf();
@@ -432,7 +432,10 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
       }
       else
       {
-        //std::cout << "scaled image not used." << std::endl;
+        //Return the existing one, 
+        //instead of a new one with the same contents,
+        //so no unnecessary changes will be triggered.
+        return pixbuf_in_image;
       }
     }
   }

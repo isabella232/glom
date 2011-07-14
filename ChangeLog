@@ -1,5 +1,12 @@
 2011-07-14  Murray Cumming  <murrayc@murrayc.com>
 
+	ImageGlom: Another scaling fix.
+
+	* glom/utility_widgets/imageglom.cc: get_scaled_image(): Don't return 
+	an empty pixbuf just because the pixbuf doesn't not need to change.
+
+2011-07-14  Murray Cumming  <murrayc@murrayc.com>
+
 	ImageGlom: Remove limits so we always scale, and use on_size_allocate().
 
 	* glom/utility_widgets/imageglom.[h|cc]: Use on_size_allocate() instead of 
