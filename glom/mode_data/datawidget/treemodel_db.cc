@@ -907,7 +907,7 @@ Gtk::TreeModel::iterator DbTreeModel::get_last_row()
         return result; //failed, because there are no non-removed row.
     }
 
-    std::cout << G_STRFUNC << ": returning row=" << row << std::endl;
+    //std::cout << G_STRFUNC << ": debug: returning row=" << row << std::endl;
     create_iterator(row, result);
   }
 
