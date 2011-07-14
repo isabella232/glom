@@ -601,6 +601,9 @@ static void set_file_filter_images(Gtk::FileChooser& file_chooser)
   
   ev_document_factory_add_filters(GTK_WIDGET(file_chooser.gobj()), 0);
   
+  //Make Images the currently-selected one:
+  file_chooser.set_filter(filter);
+  
   /*  ev_document_factory_add_filters() add this already:
   filter = Gtk::FileFilter::create();
   filter->set_name(_("All Files"));

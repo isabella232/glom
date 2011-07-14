@@ -1,5 +1,12 @@
 2011-07-14  Murray Cumming  <murrayc@murrayc.com>
 
+	ImageGlom: Set an appropriate default file filter.
+
+	* glom/utility_widgets/imageglom.cc: evince-view sets its own default, 
+	but that's not ideal for us.
+
+2011-07-14  Murray Cumming  <murrayc@murrayc.com>
+
 	ImageGlom: Use G_FILE_ATTRIBUTE_STANDARD_ICON
 
 	* glom/utility_widgets/imageglom.cc: If G_FILE_ATTRIBUTE_THUMBNAIL_PATH 
