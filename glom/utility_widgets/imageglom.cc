@@ -226,7 +226,7 @@ bool ImageGlom::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
   const bool result = Gtk::EventBox::on_draw(cr);
 
-  if(m_pixbuf_original);
+  if(m_pixbuf_original)
     scale_image();
 
   return result;
