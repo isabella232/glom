@@ -399,11 +399,11 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
   const int pixbuf_height = pixbuf->get_height();
   const int pixbuf_width = pixbuf->get_width();
     
-  int allocation_height = allocation.get_height();
-  int allocation_width = allocation.get_width();
+  const int allocation_height = allocation.get_height();
+  const int allocation_width = allocation.get_width();
       
-  std::cout << "pixbuf_height=" << pixbuf_height << ", pixbuf_width=" << pixbuf_width << std::endl;
-  std::cout << "allocation_height=" << allocation.get_height() << ", allocation_width=" << allocation.get_width() << std::endl;
+  //std::cout << "pixbuf_height=" << pixbuf_height << ", pixbuf_width=" << pixbuf_width << std::endl;
+  //std::cout << "allocation_height=" << allocation.get_height() << ", allocation_width=" << allocation.get_width() << std::endl;
 
   if( (pixbuf_height > allocation_height) ||
       (pixbuf_width > allocation_width) )
@@ -420,22 +420,24 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
 
       if( !pixbuf_in_image || !pixbuf_scaled || (pixbuf_in_image->get_height() != pixbuf_scaled->get_height()) || (pixbuf_in_image->get_width() != pixbuf_scaled->get_width()) )
       {
+        /*
         std::cout << "get_scale(): returning scaled" << std::endl;
         if(pixbuf_scaled)
         {
           std::cout << "scaled height=" << pixbuf_scaled->get_height() << ", scaled width=" << pixbuf_scaled->get_width() << std::endl;
         }
+        */
         
         return pixbuf_scaled;
       }
       else
       {
-        std::cout << "scaled image not used." << std::endl;
+        //std::cout << "scaled image not used." << std::endl;
       }
     }
   }
   
-  std::cout << "get_scaled(): returning original" << std::endl;
+  //std::cout << "get_scaled(): returning original" << std::endl;
   return pixbuf;
 }
 
