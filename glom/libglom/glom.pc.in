@@ -3,6 +3,7 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 PACKAGE_TARNAME=@PACKAGE_TARNAME@
+datarootdir=@datarootdir@
 exampledir=@docdir@/examples
 
 Name: libglom
