@@ -1,5 +1,14 @@
 2011-07-15  Murray Cumming  <murrayc@murrayc.com>
 
+	Avoid autoconf warning about datarootdir.
+
+	* glom/libglom/glom.pc.in: Set datarootdir to avoid this warning:
+	config.status: WARNING:  'glom/libglom/glom.pc.in' seems to ignore the --datarootdir setting
+  as suggested here:
+  http://www.gnu.org/software/hello/manual/autoconf/Changed-Directory-Variables.html
+
+2011-07-15  Murray Cumming  <murrayc@murrayc.com>
+
 	ImageGlom: Do not try to get a thumbnail for non-image, non-evince types.
 	
 	* glom/utility_widgets/imageglom.cc: Just use g_content_type_get_icon(),
