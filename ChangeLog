@@ -1,5 +1,13 @@
 2011-07-15  Murray Cumming  <murrayc@murrayc.com>
 
+	ImageGlom: Do not try to get a thumbnail for non-image, non-evince types.
+	
+	* glom/utility_widgets/imageglom.cc: Just use g_content_type_get_icon(),
+	to avoid saving temporary files of huge content, such as video, when just 
+	navigating through rows.
+
+2011-07-15  Murray Cumming  <murrayc@murrayc.com>
+
 	ImageGlom: Remove unused member variable.
 
 	* glom/utility_widgets/imageglom.[h|cc]: Also add a comment that 

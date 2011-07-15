@@ -374,54 +374,8 @@ void ImageGlom::show_image_data()
     }
     else
     {
-      //Try to use a thumbnail via GFile:
-      //TODO: Do this asynchronously:
-      const Glib::ustring uri = save_to_temp_file(false /* don't show progress */);
-      if(uri.empty())
-      {
-        std::cerr << G_STRFUNC << "Could not save temp file to get a thumbnail." << std::endl;
-      }
-      else
-      {
-        Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
-        Glib::RefPtr<const Gio::FileInfo> file_info;
-
-        try
-        {
-          file_info = file->query_info(
-            G_FILE_ATTRIBUTE_THUMBNAIL_PATH ","
-            G_FILE_ATTRIBUTE_THUMBNAILING_FAILED ","
-            G_FILE_ATTRIBUTE_STANDARD_ICON);
-        }
-        catch(const Glib::Error& ex)
-        {
-          std::cerr << G_STRFUNC << ": query_info() failed: " << ex.what() << std::endl;
-        }
-      
-        if(file_info)
-        {
-          const std::string filepath = 
-            file_info->get_attribute_byte_string(G_FILE_ATTRIBUTE_THUMBNAIL_PATH);
-          const bool failed = 
-            file_info->get_attribute_boolean(G_FILE_ATTRIBUTE_THUMBNAILING_FAILED);
-          if(!filepath.empty())
-            m_pixbuf_original = Gdk::Pixbuf::create_from_file(filepath);
-          else
-          {
-            std::cerr << G_STRFUNC << ": Could not get attribute G_FILE_ATTRIBUTE_THUMBNAIL_PATH. failed=" << failed << std::endl;
-            //Note that gnome_desktop_thumbnail_factory_new() fails too, and 
-            //also requires a filepath rather than data in memory.
-            
-            //Use the standard icon instead:
-            icon = file_info->get_icon();
-            if(!icon)
-            {
-               std::cerr << G_STRFUNC << ": Could not get G_FILE_ATTRIBUTE_STANDARD_ICON" << std::endl;
-            }
-            
-          }
-        }
-      }
+      //Get an icon for the file type;
+      icon = Gio::content_type_get_icon(mime_type);
     }
     
     if(m_pixbuf_original)
