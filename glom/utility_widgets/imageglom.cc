@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2001-2004 Murray Cumming
+ * Copyright (C) 2001-2011 Murray Cumming
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -482,14 +482,87 @@ void ImageGlom::on_menupopup_activate_open_file_with()
   open_with(app_info);
 }
 
+static void make_file_read_only(const Glib::ustring& uri)
+{
+  std::string filepath;
+
+  try
+  {
+    filepath = Glib::filename_from_uri(uri);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << "Exception: " << ex.what() << std::endl;
+    return;
+  }
+  
+  if(filepath.empty())
+  {
+    std::cerr << G_STRFUNC << ": filepath is empty." << std::endl;
+  }
+  
+  const int result = chmod(filepath.c_str(), S_IRUSR);
+  if(result != 0)
+  {
+    std::cerr << G_STRFUNC << ": chmod() failed." << std::endl;
+  }
+  
+  //Setting the attribute via gio gives us this exception:
+  //"Setting attribute access::can-write not supported"
+  /*
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+
+  Glib::RefPtr<Gio::FileInfo> file_info;
+
+  try
+  {
+    file_info = file->query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": query_info() failed: " << ex.what() << std::endl;
+    return;
+  }
+  
+  if(!file_info)
+  {
+    std::cerr << ": file_info is null" << std::endl;
+    return;
+  }
+  
+  const bool can_write =
+    file_info->get_attribute_boolean(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
+  if(!can_write)
+    return;
+    
+  file_info->set_attribute_boolean(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE, false);
+  
+  try
+  {
+    file->set_attributes_from_info(file_info);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": set_attributes_from_info() failed: " << ex.what() << std::endl;
+  }
+  */
+}
+
 Glib::ustring ImageGlom::save_to_temp_file(bool show_progress)
 {
   Glib::ustring uri;
   
   //Get a temporary file path:
   std::string filepath;
-  const int filehandle = Glib::file_open_tmp(filepath);
-  ::close(filehandle);
+  try
+  {
+    const int filehandle = Glib::file_open_tmp(filepath);
+    ::close(filehandle);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": Glib::file_open_tmp() failed" << std::endl;
+  }
   
   if(filepath.empty())
   {
@@ -509,6 +582,13 @@ Glib::ustring ImageGlom::save_to_temp_file(bool show_progress)
   {
     uri = Glib::ustring();
     std::cerr << G_STRFUNC << ": save_file() failed." << std::endl;
+  }
+  else
+  {
+    //Don't let people easily edit the saved file,
+    //because they would lose data when it is automatically deleted later.
+    //Also they might think that editing it will change it in the database.
+    make_file_read_only(uri);
   }
 
   return uri;
@@ -647,6 +727,7 @@ bool ImageGlom::save_file(const Glib::ustring& uri)
   dialog_save->save(uri);
 
   dialog_save->run();
+
   return true;
 }
 

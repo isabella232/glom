@@ -1,5 +1,12 @@
 2011-07-15  Murray Cumming  <murrayc@murrayc.com>
 
+	ImageGlom: Save temp files as read-only to avoid unexpected data loss.
+
+	* glom/utility_widgets/imageglom.cc: save_temp_file(): Set the file 
+	permissions.
+
+2011-07-15  Murray Cumming  <murrayc@murrayc.com>
+
 	Avoid autoconf warning about datarootdir.
 
 	* glom/libglom/glom.pc.in: Set datarootdir to avoid this warning:
