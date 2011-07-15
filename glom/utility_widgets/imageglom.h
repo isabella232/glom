@@ -102,13 +102,12 @@ private:
   EvView* m_ev_view;
   EvDocumentModel* m_ev_document_model;
   
-  //For anything supported by GdkPixbuf:
+  //For anything supported by GdkPixbuf,
+  //or for representative thumbnails and icons:
   Gtk::Image m_image;
   Glib::RefPtr<Gdk::Pixbuf> m_pixbuf_original; //Only stored temporarily, because it could be big.
   Glib::RefPtr<Gdk::Pixbuf> m_pixbuf_clipboard; //When copy is used, store it here until it is pasted.
-  
-  //For anything else:
-  Glib::RefPtr<Gdk::Pixbuf> m_pixbuf_thumbnail;
+
 
   Gtk::Menu* m_pMenuPopup_UserMode;
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup_UserModePopup;

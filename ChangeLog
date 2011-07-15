@@ -1,3 +1,10 @@
+2011-07-15  Murray Cumming  <murrayc@murrayc.com>
+
+	ImageGlom: Remove unused member variable.
+
+	* glom/utility_widgets/imageglom.[h|cc]: Also add a comment that 
+	gnome_desktop_thumbnail_factory_new() didn't work either when I tried it.
+
 1.19.8:
 
 2011-07-14  Murray Cumming  <murrayc@murrayc.com>

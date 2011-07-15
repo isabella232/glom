@@ -314,7 +314,6 @@ void ImageGlom::show_image_data()
     
   //Clear all possible display widgets:
   m_pixbuf_original.reset();
-  m_pixbuf_thumbnail.reset();
   m_image.set(Glib::RefPtr<Gdk::Pixbuf>()); //TODO: Add an unset() to gtkmm.
   
   if(m_ev_document_model)
@@ -410,6 +409,8 @@ void ImageGlom::show_image_data()
           else
           {
             std::cerr << G_STRFUNC << ": Could not get attribute G_FILE_ATTRIBUTE_THUMBNAIL_PATH. failed=" << failed << std::endl;
+            //Note that gnome_desktop_thumbnail_factory_new() fails too, and 
+            //also requires a filepath rather than data in memory.
             
             //Use the standard icon instead:
             icon = file_info->get_icon();
