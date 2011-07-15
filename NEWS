@@ -1,3 +1,11 @@
+1.19.8 (unstable):
+
+* Details: Image fields:
+  - Support PDFs and similar files via the evince-view library.
+    (This adds a dependency.)
+  - Support other file formats, though there will be no preview image.
+  - Fix some window resizing issues.
+
 1.19.7 (unstable):
 
 * Details: Images:
