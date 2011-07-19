@@ -330,6 +330,21 @@ void ImageGlom::show_image_data()
     gtk_widget_show(GTK_WIDGET(m_ev_view));
     gtk_container_add(GTK_CONTAINER(m_frame.gobj()), GTK_WIDGET(m_ev_view));
 
+    // Try loading from data in memory:
+    // TODO: Uncomment this if this API is added: https://bugzilla.gnome.org/show_bug.cgi?id=654832
+    /*
+    const GdaBinary* gda_binary = gda_value_get_binary(m_original_data.gobj());
+    if(!gda_binary || !gda_binary->data || !gda_binary->binary_length)
+    {
+       std::cerr << G_STRFUNC << "Data was null or empty." << std::endl;
+      return;
+    }
+    
+    EvJob *job = ev_job_load_new_with_data(
+      (char*)gda_binary->data, gda_binary->binary_length);
+    */
+    //TODO: Test failure asynchronously.
+    
     const Glib::ustring uri = save_to_temp_file(false /* don't show progress */);
     if(uri.empty())
     {

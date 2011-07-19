@@ -1,3 +1,9 @@
+2011-07-19  Murray Cumming  <murrayc@murrayc.com>
+
+	ImageGlom: Add commented-out code to load PDFs from memory.
+
+	* glom/utility_widgets/imageglom.cc: This needs new API in bug #654832
+
 2011-07-15  Murray Cumming  <murrayc@murrayc.com>
 
 	ImageGlom: Save temp files as read-only to avoid unexpected data loss.
