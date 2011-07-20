@@ -881,7 +881,6 @@ bool DbTreeModel::row_was_removed(const type_datamodel_row_index& datamodel_row)
 
 Gtk::TreeModel::iterator DbTreeModel::get_last_row()
 {
-  std::cout << "debug: " << G_STRFUNC << std::endl;
   iterator result;
 
   //Find the last non-removed row:
