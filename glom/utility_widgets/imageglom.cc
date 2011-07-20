@@ -222,9 +222,19 @@ void ImageGlom::on_ev_job_finished(EvJob* job)
 	ev_view_set_loading(m_ev_view, FALSE);
 }
 
+const GdaBinary* ImageGlom::get_binary() const
+{
+  const GdaBinary* gda_binary = 0;
+  if(m_original_data.get_value_type() == GDA_TYPE_BINARY)
+    gda_binary = gda_value_get_binary(m_original_data.gobj());
+  
+  return gda_binary;
+}
+
 Glib::ustring ImageGlom::get_mime_type() const
 {
-  const GdaBinary* gda_binary = gda_value_get_binary(m_original_data.gobj());
+  const GdaBinary* gda_binary = get_binary();
+
   if(!gda_binary)
     return Glib::ustring();
     
@@ -333,7 +343,7 @@ void ImageGlom::show_image_data()
     // Try loading from data in memory:
     // TODO: Uncomment this if this API is added: https://bugzilla.gnome.org/show_bug.cgi?id=654832
     /*
-    const GdaBinary* gda_binary = gda_value_get_binary(m_original_data.gobj());
+    const GdaBinary* gda_binary = get_binary();
     if(!gda_binary || !gda_binary->data || !gda_binary->binary_length)
     {
        std::cerr << G_STRFUNC << "Data was null or empty." << std::endl;
@@ -693,7 +703,7 @@ bool ImageGlom::save_file_sync(const Glib::ustring& uri)
   //because we don't want to offer feedback.
   //Ideally, EvView would just load from data anyway.
   
-  const GdaBinary* gda_binary = gda_value_get_binary(m_original_data.gobj());
+  const GdaBinary* gda_binary = get_binary();
   if(!gda_binary)
   {
     std::cerr << G_STRFUNC << ": GdaBinary is null" << std::endl;
@@ -734,7 +744,7 @@ bool ImageGlom::save_file(const Glib::ustring& uri)
   if(pApp)
     dialog_save->set_transient_for(*pApp);
 
-  const GdaBinary* gda_binary = gda_value_get_binary(m_original_data.gobj());
+  const GdaBinary* gda_binary = get_binary();
   if(!gda_binary)
     return false;
 
@@ -816,7 +826,7 @@ void ImageGlom::on_clipboard_get(Gtk::SelectionData& selection_data, guint /* in
   
   if(target == mime_type)
   {
-    const GdaBinary* gda_binary = gda_value_get_binary(m_original_data.gobj());
+    const GdaBinary* gda_binary = get_binary();
     if(!gda_binary)
       return;
     

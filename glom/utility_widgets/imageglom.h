@@ -82,6 +82,8 @@ private:
   void setup_menu_usermode();
   void show_image_data();
   
+  const GdaBinary* get_binary() const;
+  
   //Get a pixbuf scaled down to the current size allocation:
   Glib::RefPtr<Gdk::Pixbuf> get_scaled_image();
   

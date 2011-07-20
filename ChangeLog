@@ -1,3 +1,10 @@
+2011-07-20  Murray Cumming  <murrayc@murrayc.com>
+
+	ImageGlom: Ignore warning about invalid GdaBinary GValue.
+
+	* glom/utility_widgets/imageglom.[h|cc]: Add and use get_binary() method, 
+	to avoid trying to get a GdaBinary from a null (type) Gnome::Gda::Value.
+
 2011-07-19  Murray Cumming  <murrayc@murrayc.com>
 
 	ImageGlom: Add commented-out code to load PDFs from memory.
