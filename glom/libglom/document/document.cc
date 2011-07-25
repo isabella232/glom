@@ -73,6 +73,7 @@ static const char GLOM_NODE_DATA_LAYOUT_NOTEBOOK[] = "data_layout_notebook";
 
 static const char GLOM_NODE_DATA_LAYOUT_PORTAL[] = "data_layout_portal";
 static const char GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP[] = "portal_navigation_relationship";
+static const char GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT[] = "portal_rows_count";
 static const char GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE[] = "navigation_type";
 static const char GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_AUTOMATIC[] = "automatic";
 static const char GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_SPECIFIC[] = "specific";
@@ -2309,6 +2310,12 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         }
 
         load_after_layout_item_usesrelationship(element, table_name, portal);
+        
+        const double rows_count = 
+          get_node_attribute_value_as_decimal_double(element, 
+            GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT);
+        if(rows_count) //0 is both a useless value and possible with older files that didn't have this attribute.
+          portal->set_rows_count(rows_count);
 
         xmlpp::Element* elementNavigationRelationshipSpecific = get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP);
         if(elementNavigationRelationshipSpecific)
@@ -3260,7 +3267,10 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
                 set_node_attribute_value(child_navigation_relationship,
                   GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE, navigation_type_string);
               }
-
+              
+              std::cout << "document: saving rows_count=" << portal->get_rows_count() << std::endl;
+              set_node_attribute_value_as_decimal_double(child, 
+                GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT, portal->get_rows_count());
 
               //Print Layout specific stuff:
               set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT, portal->get_print_layout_row_height());

@@ -390,7 +390,13 @@ void Box_Data_List_Related::create_layout()
   //m_AddDel.set_columns_count(m_Fields.size());
 
   m_AddDel.set_table_name(Base_DB_Table::m_table_name);
-
+  
+  if(m_portal)
+  {
+    const double rows_count = m_portal->get_rows_count();
+    if(rows_count) //0 is a silly value.
+      m_AddDel.set_height_rows(rows_count);
+  }
 
   sharedptr<Field> field_primary_key = get_field_primary_key_for_table(Base_DB_Table::m_table_name);
   if(!field_primary_key)

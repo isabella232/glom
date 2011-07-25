@@ -57,7 +57,9 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   m_button_field_delete(0),
   m_button_formatting(0),
   m_button_edit(0),
-  m_label_table_name(0)
+  m_label_table_name(0),
+  m_hbox_rows_count(0),
+  m_spinbutton_rows_count(0)
 {
   // Get the alternate sets of widgets, only one of which should be shown:
   // Derived classes will hide one and show the other:
@@ -73,7 +75,12 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   box_calendar->hide();
 
   builder->get_widget("label_table_name", m_label_table_name);
-
+  
+  //This is only shown in Dialog_Layout_List_Related:
+  builder->get_widget("hbox_rows_count", m_hbox_rows_count);
+  builder->get_widget("spinbutton_rows_count", m_spinbutton_rows_count);
+  m_hbox_rows_count->hide();
+  
   builder->get_widget("treeview_fields", m_treeview_fields);
   if(m_treeview_fields)
   {

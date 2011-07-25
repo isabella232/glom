@@ -1,3 +1,21 @@
+2011-07-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Design: Related Records: Allow the developer to specify how many rows to show.
+
+	* glom/libglom/data_structure/layout/layoutitem_portal.[h|cc]: Add 
+	set/get_rows_count() to specify how many rows to show.
+	* glom/libglom/document/document.cc: Load and save that rows count.
+	* ui/developer/window_data_layout.glade: Add a SpinButton to specify the 
+	number of rows to show in related records portals.
+	* glom/mode_design/layout/dialog_layout_details.[h|cc]: Get that widget, 
+	but hide it in this base class.
+	* glom/mode_design/layout/dialog_layout_list_related.[h|cc]:
+	Constructor: Show and setup the spinbutton.
+	set_document(): Set the spinbuttons's contents.
+	save_to_document(): Save it back to the portal layout item.
+	* glom/mode_data/box_data_list_related.cc: create_layout():
+	Use DbAddDel::set_height_rows() to try to show the correct number of rows.
+	
 2011-07-20  Murray Cumming  <murrayc@murrayc.com>
 
 	ImageGlom: Ignore warning about invalid GdaBinary GValue.

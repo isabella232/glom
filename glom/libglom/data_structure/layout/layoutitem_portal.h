@@ -98,6 +98,14 @@ public:
 
   /// This is used only for the print layouts.
   void set_print_layout_row_height(double row_height);
+  
+  /** Get the number of rows that should be displayed.
+   */
+  double get_rows_count() const;
+  
+  /** Set the number of rows that should be displayed.
+   */
+  void set_rows_count(double rows_count);
 
 
 private:
@@ -109,6 +117,8 @@ private:
 
   //If no navigation relationship has been specified then it will be automatically chosen or navigation will be disabled:
   navigation_type m_navigation_type;
+  
+  double m_rows_count;
 };
 
 } //namespace Glom

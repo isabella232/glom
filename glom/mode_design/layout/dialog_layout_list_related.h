@@ -65,7 +65,7 @@ protected:
   
   void on_combo_navigation_specific_changed();
   void on_checkbutton_show_child_relationships();
-
+  void on_spinbutton_rows_count_changed();
 
   ComboBox_Relationship* m_combo_relationship;
   Gtk::CheckButton* m_checkbutton_show_child_relationships;

@@ -26,7 +26,8 @@ namespace Glom
 
 LayoutItem_Portal::LayoutItem_Portal()
 : m_print_layout_row_height(20), //arbitrary default.
-  m_navigation_type(LayoutItem_Portal::NAVIGATION_AUTOMATIC)
+  m_navigation_type(LayoutItem_Portal::NAVIGATION_AUTOMATIC),
+  m_rows_count(6) //Sensible default.
 {
 }
 
@@ -36,7 +37,8 @@ LayoutItem_Portal::LayoutItem_Portal(const LayoutItem_Portal& src)
   //HasTitleSingular(src),
   m_navigation_relationship_specific(src.m_navigation_relationship_specific),
   m_print_layout_row_height(src.m_print_layout_row_height),
-  m_navigation_type(src.m_navigation_type)
+  m_navigation_type(src.m_navigation_type),
+  m_rows_count(src.m_rows_count)
 {
 }
 
@@ -59,6 +61,7 @@ LayoutItem_Portal& LayoutItem_Portal::operator=(const LayoutItem_Portal& src)
   m_navigation_relationship_specific = src.m_navigation_relationship_specific;
   m_print_layout_row_height = src.m_print_layout_row_height;
   m_navigation_type = src.m_navigation_type;
+  m_rows_count = src.m_rows_count;
 
   return *this;
 }
@@ -165,6 +168,16 @@ LayoutItem_Portal::navigation_type LayoutItem_Portal::get_navigation_type() cons
 void LayoutItem_Portal::set_navigation_type(LayoutItem_Portal::navigation_type type)
 {
   m_navigation_type = type;
+}
+
+double LayoutItem_Portal::get_rows_count() const
+{
+  return m_rows_count;
+}
+  
+void LayoutItem_Portal::set_rows_count(double rows_count)
+{
+  m_rows_count = rows_count;
 }
 
 /*
