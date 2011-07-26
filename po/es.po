@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-07-12 12:34+0000\n"
-"PO-Revision-Date: 2011-07-14 10:17+0200\n"
+"POT-Creation-Date: 2011-07-25 09:56+0000\n"
+"PO-Revision-Date: 2011-07-26 10:48+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -478,8 +478,8 @@ msgid ""
 "There was an error while restoring the backup. The tar utility failed to "
 "extract the archive."
 msgstr ""
-"Ocurrió un error al restaurar el respaldo. La utilidad «tar» falló al "
-"extraer el archivo."
+"Ocurrió un error al restaurar el respaldo. La utilidad «tar» falló al extraer "
+"el archivo."
 
 #: ../glom/application.cc:2947
 msgid ""
@@ -563,7 +563,7 @@ msgstr "Eliminar registro"
 #: ../glom/mode_design/fields/box_db_table_definition.cc:52
 #: ../glom/mode_design/layout/dialog_choose_field.cc:54
 #: ../glom/mode_design/layout/dialog_choose_relationship.cc:55
-#: ../glom/mode_design/layout/dialog_layout_details.cc:91
+#: ../glom/mode_design/layout/dialog_layout_details.cc:98
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.cc:53
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_groupby_sortfields.cc:52
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc:48
@@ -583,7 +583,7 @@ msgstr ""
 #: ../glom/mode_design/box_db_table_relationships.cc:48
 #: ../glom/mode_design/fields/box_db_table_definition.cc:56
 #: ../glom/mode_design/layout/dialog_choose_field.cc:55
-#: ../glom/mode_design/layout/dialog_layout_details.cc:104
+#: ../glom/mode_design/layout/dialog_layout_details.cc:111
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc:49
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:94
 #: ../glom/navigation/box_tables.cc:136
@@ -923,17 +923,17 @@ msgstr "No hay archivo de ayuda disponible"
 msgid "Could not display help: "
 msgstr "No se pudo mostrar la ayuda: "
 
-#: ../glom/utils_ui.cc:485
+#: ../glom/utils_ui.cc:490
 msgid "Your find criteria did not match any records in the table."
 msgstr ""
 "El criterio de búsqueda introducido no coincide con ningún registro de la "
 "tabla."
 
-#: ../glom/utils_ui.cc:490
+#: ../glom/utils_ui.cc:495
 msgid "No Records Found"
 msgstr "No se encontró ningún registro"
 
-#: ../glom/utils_ui.cc:497
+#: ../glom/utils_ui.cc:502
 msgid "New Find"
 msgstr "Nueva búsqueda"
 
@@ -1207,7 +1207,7 @@ msgstr "Número"
 #: ../glom/libglom/data_structure/field.cc:647
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:73
 #: ../glom/libglom/data_structure/translatable_item.cc:317
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1147
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1154
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:620
 msgid "Text"
@@ -1233,7 +1233,7 @@ msgstr "Booleano"
 #: ../glom/libglom/data_structure/field.cc:659
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:70
 #: ../glom/libglom/data_structure/translatable_item.cc:319
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1154
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1161
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:39
 #: ../glom/utility_widgets/layouttoolbar.cc:65
 msgid "Image"
@@ -1289,7 +1289,7 @@ msgstr "Agrupar"
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:68
 #: ../glom/libglom/data_structure/translatable_item.cc:315
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1140
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1147
 #: ../glom/utility_widgets/layouttoolbar.cc:61
 msgid "Button"
 msgstr "Botón"
@@ -1324,7 +1324,7 @@ msgstr "Lugar"
 #. We should use "Related Records instead.
 #. Translators: This is the name of a UI element (a layout part name).
 #. It means a list of related records.
-#: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:72
+#: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:75
 msgid "Portal"
 msgstr "Portal"
 
@@ -1421,44 +1421,44 @@ msgstr "Campo del título"
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: ../glom/libglom/document/document.cc:480
-#: ../glom/libglom/document/document.cc:498
+#: ../glom/libglom/document/document.cc:481
+#: ../glom/libglom/document/document.cc:499
 msgid "System Preferences"
 msgstr "Preferencias del sistema"
 
-#: ../glom/libglom/document/document.cc:511
+#: ../glom/libglom/document/document.cc:512
 msgid "System Name"
 msgstr "Nombre del sistema"
 
-#: ../glom/libglom/document/document.cc:517
+#: ../glom/libglom/document/document.cc:518
 msgid "Organisation Name"
 msgstr "Nombre de la organización"
 
-#: ../glom/libglom/document/document.cc:523
+#: ../glom/libglom/document/document.cc:524
 msgid "Organisation Logo"
 msgstr "Logotipo de la organización"
 
-#: ../glom/libglom/document/document.cc:529
+#: ../glom/libglom/document/document.cc:530
 msgid "Street"
 msgstr "Calle"
 
-#: ../glom/libglom/document/document.cc:535
+#: ../glom/libglom/document/document.cc:536
 msgid "Street (line 2)"
 msgstr "Calle (línea 2)"
 
-#: ../glom/libglom/document/document.cc:541
+#: ../glom/libglom/document/document.cc:542
 msgid "City"
 msgstr "Ciudad"
 
-#: ../glom/libglom/document/document.cc:547
+#: ../glom/libglom/document/document.cc:548
 msgid "State"
 msgstr "Estado"
 
-#: ../glom/libglom/document/document.cc:553
+#: ../glom/libglom/document/document.cc:554
 msgid "Country"
 msgstr "País"
 
-#: ../glom/libglom/document/document.cc:559
+#: ../glom/libglom/document/document.cc:560
 msgid "Zip Code"
 msgstr "Código postal"
 
@@ -1485,28 +1485,28 @@ msgstr "Descripción"
 msgid "Comments"
 msgstr "Comentarios"
 
-#: ../glom/main.cc:198
+#: ../glom/main.cc:200
 msgid "Glom options"
 msgstr "Opciones de Glom"
 
-#: ../glom/main.cc:198
+#: ../glom/main.cc:200
 msgid "Command-line options for glom"
 msgstr "Opciones de línea de comandos de glom"
 
-#: ../glom/main.cc:208
+#: ../glom/main.cc:210
 msgid "The Filename"
 msgstr "El nombre del archivo"
 
-#: ../glom/main.cc:214
+#: ../glom/main.cc:216
 msgid "The version of this application."
 msgstr "La versión de esta aplicación."
 
-#: ../glom/main.cc:219
+#: ../glom/main.cc:221
 msgid "Whether the filename is a .tar.gz backup to be restored."
 msgstr ""
 "Si el nombre del archivo es una copia de respaldo .tar.gz que restaurar."
 
-#: ../glom/main.cc:224
+#: ../glom/main.cc:226
 msgid ""
 "Do not automatically stop the database server if Glom quits. This is helpful "
 "for debugging with gdb."
@@ -1514,15 +1514,15 @@ msgstr ""
 "No parar automáticamente el servidor de bases de datos si se cierra Glom. "
 "Útil para depurar con gdb."
 
-#: ../glom/main.cc:229
+#: ../glom/main.cc:231
 msgid "Show the generated SQL queries on stdout, for debugging."
 msgstr "Mostrar las consultas SQL generadas en stdout, para depurar."
 
-#: ../glom/main.cc:234
+#: ../glom/main.cc:236
 msgid "Show how Glom outputs a date in this locale, then stop."
 msgstr "Mostrar cómo genera Glom la fecha en esta localización y parar."
 
-#: ../glom/main.cc:247
+#: ../glom/main.cc:249
 msgid ""
 "You seem to be running Glom as a user with administrator privileges. Glom "
 "may not be run with such privileges for security reasons.\n"
@@ -1534,7 +1534,7 @@ msgstr ""
 "Inicie sesión en su sistema como un usuario normal."
 
 #. Warn the user:
-#: ../glom/main.cc:261
+#: ../glom/main.cc:263
 msgid ""
 "You seem to be running Glom as root. Glom may not be run as root.\n"
 "Please login to your system as a normal user."
@@ -1543,20 +1543,20 @@ msgstr ""
 "ejecutar como superusuario.\n"
 "Inicie sesión en su sistema como un usuario normal."
 
-#: ../glom/main.cc:268
+#: ../glom/main.cc:270
 msgid "Running As Root"
 msgstr "Ejecutándose como superusuario"
 
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
-#: ../glom/main.cc:315 ../glom/main.cc:328 ../glom/main.cc:591
+#: ../glom/main.cc:317 ../glom/main.cc:330 ../glom/main.cc:595
 msgid "Incomplete Glom Installation"
 msgstr "La instalación de Glom está incompleta"
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:316
+#: ../glom/main.cc:318
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -1570,13 +1570,13 @@ msgstr ""
 "\n"
 "Ahora debe instalar PostgreSQL para completar la instalación de Glom."
 
-#: ../glom/main.cc:318
+#: ../glom/main.cc:320
 msgid "Install PostgreSQL"
 msgstr "Instalar PostreSQL"
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:329
+#: ../glom/main.cc:331
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -1593,7 +1593,7 @@ msgstr ""
 "para que pueda ser corregido."
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:345
+#: ../glom/main.cc:347
 msgid ""
 "Your installation of Glom is not complete, because the Glom Python module is "
 "not available on your system.\n"
@@ -1607,12 +1607,12 @@ msgstr ""
 "Informe de este error a su distribuidor o al administrador de su sistema "
 "para que pueda ser corregido."
 
-#: ../glom/main.cc:348
+#: ../glom/main.cc:350
 msgid "Glom Python Module Not Installed"
 msgstr "El módulo Glom de Python no está instalado"
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:365
+#: ../glom/main.cc:367
 msgid ""
 "Your installation of Glom is not complete, because the gi.repository Python "
 "module is not available on your system.\n"
@@ -1626,12 +1626,12 @@ msgstr ""
 "Informe de este error a su distribuidor o al administrador de su sistema "
 "para que pueda corregirse."
 
-#: ../glom/main.cc:368
+#: ../glom/main.cc:370
 msgid "gi.repository Python Module Not Installed"
 msgstr "El módulo gi.repository de Python no está instalado"
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:385
+#: ../glom/main.cc:387
 msgid ""
 "Your installation of Glom is not complete, because the gi.repository.Gda "
 "python module is not available on your system.\n"
@@ -1645,30 +1645,30 @@ msgstr ""
 "Informe de este error a su distribuidor o al administrador de su sistema "
 "para que pueda corregirse."
 
-#: ../glom/main.cc:388
+#: ../glom/main.cc:390
 msgid "gi.repository.Gda Python Module Not Installed"
 msgstr "El módulo gi.repository.Gda de Python no está instalado"
 
-#: ../glom/main.cc:514
+#: ../glom/main.cc:516
 msgid "Error while parsing command-line options: "
 msgstr "Error al analizar las opciones de la línea de comandos: "
 
-#: ../glom/main.cc:515
+#: ../glom/main.cc:517
 msgid "Use --help to see a list of available command-line options."
 msgstr ""
 "Use --help para ver una lista de las opciones disponibles para la línea de "
 "comandos."
 
-#: ../glom/main.cc:557
+#: ../glom/main.cc:561
 msgid "Glom: The file does not exist."
 msgstr "Glom: El archivo no existe."
 
-#: ../glom/main.cc:567
+#: ../glom/main.cc:571
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: La ruta del archivo es un directorio en lugar de un archivo."
 
 #. The Postgres provider was not found, so warn the user:
-#: ../glom/main.cc:588
+#: ../glom/main.cc:592
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda "
 "provider is not available on your system. This provider is needed to access "
@@ -1835,7 +1835,7 @@ msgid "New Group"
 msgstr "Grupo nuevo"
 
 #: ../glom/mode_data/flowtablewithfields.cc:1211
-#: ../glom/mode_design/layout/dialog_layout_details.cc:724
+#: ../glom/mode_design/layout/dialog_layout_details.cc:731
 msgid "notebook"
 msgstr "cuaderno"
 
@@ -1854,7 +1854,7 @@ msgid "button"
 msgstr "botón"
 
 #: ../glom/mode_data/flowtablewithfields.cc:1234
-#: ../glom/mode_design/layout/dialog_layout_details.cc:650
+#: ../glom/mode_design/layout/dialog_layout_details.cc:657
 msgid "New Button"
 msgstr "Botón nuevo"
 
@@ -2105,56 +2105,56 @@ msgid " Via: "
 msgstr " Vía: "
 
 #: ../glom/mode_design/layout/dialog_layout_calendar_related.cc:248
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:252
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:260
 msgid "None: No visible tables are specified by the fields."
 msgstr "Nada: Los campos no especifican ninguna tabla visible."
 
 #. Columns-count column:
 #. Note to translators: This is the number of columns in a group (group being a noun)
-#: ../glom/mode_design/layout/dialog_layout_details.cc:117
+#: ../glom/mode_design/layout/dialog_layout_details.cc:124
 msgid "Group Columns"
 msgstr "Agrupar columnas"
 
 #. Column-Width column: (only for list views)
 #. Note to translators: This is a name (the width of a UI element in the display), not an action.
-#: ../glom/mode_design/layout/dialog_layout_details.cc:130
+#: ../glom/mode_design/layout/dialog_layout_details.cc:137
 msgid "Display Width"
 msgstr "Mostrar ancho"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:675
+#: ../glom/mode_design/layout/dialog_layout_details.cc:682
 msgid "Text Title"
 msgstr "Título de texto"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:700
+#: ../glom/mode_design/layout/dialog_layout_details.cc:707
 msgid "Image Title"
 msgstr "Título de la imagen"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:855
+#: ../glom/mode_design/layout/dialog_layout_details.cc:862
 msgid "group"
 msgstr "grupo"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:947
+#: ../glom/mode_design/layout/dialog_layout_details.cc:954
 #: ../ui/developer/dialog_notebook.glade.h:2
 msgid "Notebook Tabs"
 msgstr "Pestañas del cuaderno"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:947
+#: ../glom/mode_design/layout/dialog_layout_details.cc:954
 msgid "Add child groups to the notebook to add tabs."
 msgstr "Añadir grupos hijos al cuaderno para añadir pestañas."
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1110
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1117
 msgid "Related Calendar: "
 msgstr "Calendario relacionado: "
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1112
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1119
 msgid "Related List: "
 msgstr "Lista relacionada: "
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1129
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1136
 msgid "Field: "
 msgstr "Campo: "
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1188
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1195
 msgid "(Notebook)"
 msgstr "(Cuaderno)"
 
@@ -2163,11 +2163,11 @@ msgstr "(Cuaderno)"
 msgid "Fields"
 msgstr "Campos"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:351
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:361
 msgid "Invalid Relationship"
 msgstr "Relación no válida"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:352
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:362
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship does not specify a field in the related table."
@@ -2175,11 +2175,11 @@ msgstr ""
 "La relación no puede usarse para mostrar registros relacionados porque la "
 "relación no especifica un campo en la tabla relacionada."
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:358
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:368
 msgid "Relationship Uses a Related Primary Key"
 msgstr "La relación usa una clave primaria relacionada"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:359
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:369
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship uses a primary key field in the related table, which must "
@@ -2191,11 +2191,11 @@ msgstr ""
 "contener valores únicos. Esto debería prevenir que la relación especifique "
 "múltiples registros relacionados."
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:365
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:375
 msgid "Relationship Uses a Related Unique Field"
 msgstr "La relación una un campo único relacionado"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:366
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:376
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship uses a unique-values field in the related table. This would "
@@ -2679,32 +2679,30 @@ msgstr ""
 "haber uno porque la relación usa una clave única."
 
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:94
-#: ../glom/utility_widgets/imageglom.cc:476
+#: ../glom/utility_widgets/imageglom.cc:774
 #: ../ui/developer/dialog_choose_relationship.glade.h:2
 #: ../ui/developer/dialog_field_summary.glade.h:4
 #: ../ui/developer/dialog_group_by.glade.h:7
 msgid "Select"
 msgstr "Seleccionar"
 
-#: ../glom/utility_widgets/dialog_image_load_progress.cc:118
+#: ../glom/utility_widgets/dialog_image_load_progress.cc:103
 msgid "Not enough memory available to load the image"
 msgstr "No hay suficiente memoria disponible para cargar la imagen"
 
-#: ../glom/utility_widgets/dialog_image_load_progress.cc:166
+#: ../glom/utility_widgets/dialog_image_load_progress.cc:153
 msgid "Error loading %1"
 msgstr "Error cargando %1"
 
-#: ../glom/utility_widgets/dialog_image_load_progress.cc:167
+#: ../glom/utility_widgets/dialog_image_load_progress.cc:154
 msgid "Error loading image"
 msgstr "Error al cargar la imagen"
 
-#: ../glom/utility_widgets/dialog_image_save_progress.cc:106
-#| msgid "Error loading %1"
+#: ../glom/utility_widgets/dialog_image_save_progress.cc:134
 msgid "Error Saving"
 msgstr "Error al guardar"
 
-#: ../glom/utility_widgets/dialog_image_save_progress.cc:107
-#| msgid "Error loading image"
+#: ../glom/utility_widgets/dialog_image_save_progress.cc:135
 msgid "Error saving image"
 msgstr "Error al guardar la imagen"
 
@@ -2783,31 +2781,24 @@ msgstr ""
 "Crear la base de datos en un servidor de base de datos externo, para "
 "especificarlo en el siguiente paso."
 
-#: ../glom/utility_widgets/imageglom.cc:401
+#: ../glom/utility_widgets/imageglom.cc:658
 msgid "Images"
 msgstr "Imágenes"
 
-#: ../glom/utility_widgets/imageglom.cc:406
-#| msgid "All files"
-msgid "All Files"
-msgstr "Todos los archivos"
-
-#: ../glom/utility_widgets/imageglom.cc:415
-#| msgid "Image"
+#: ../glom/utility_widgets/imageglom.cc:679
 msgid "Save Image"
 msgstr "Guardar imagen"
 
 #. TODO: Use Hildon::FileChooser for Maemo.
-#: ../glom/utility_widgets/imageglom.cc:469
+#: ../glom/utility_widgets/imageglom.cc:767
 msgid "Choose Image"
 msgstr "Elegir imagen"
 
-#: ../glom/utility_widgets/imageglom.cc:609
-#| msgid "Open"
+#: ../glom/utility_widgets/imageglom.cc:927
 msgid "Open With"
 msgstr "Abrir con"
 
-#: ../glom/utility_widgets/imageglom.cc:611
+#: ../glom/utility_widgets/imageglom.cc:929
 msgid "Choose File"
 msgstr "Elegir archivo"
 
@@ -3015,7 +3006,6 @@ msgid "Loading image"
 msgstr "Cargando imagen"
 
 #: ../ui/operator/dialog_image_save_progress.glade.h:1
-#| msgid "Loading image"
 msgid "Saving Image"
 msgstr "Guardando imagen"
 
@@ -3620,6 +3610,11 @@ msgid "None"
 msgstr "Ninguno"
 
 #: ../ui/developer/window_data_layout.glade.h:27
+#| msgid "_Number of sample rows:"
+msgid "Number of rows to show:"
+msgstr "Número de filas que mostrar:"
+
+#: ../ui/developer/window_data_layout.glade.h:28
 msgid ""
 "Remove the item from the layout. If you remove a field layout item, it will "
 "not remove the field from the table itself. It just will not be seen on the "
@@ -3629,16 +3624,9 @@ msgstr ""
 "campo, no quitará el campo de la tabla. Tan sólo no se verá en la "
 "disposición."
 
-#: ../ui/developer/window_data_layout.glade.h:28
+#: ../ui/developer/window_data_layout.glade.h:29
 msgid "Show child relationships"
 msgstr "Mostrar relaciones hijas"
-
-#: ../ui/developer/window_data_layout.glade.h:29
-msgid ""
-"This field will be used to decide which records to show in the calendar."
-msgstr ""
-"Este campo se utilizará para decidir qué registros se mostrarán en el "
-"calendario."
 
 #: ../ui/developer/window_data_layout.glade.h:30
 #: ../ui/developer/window_report_layout.glade.h:13
@@ -3981,6 +3969,16 @@ msgstr "<b>Grupo</b>"
 #: ../ui/developer/window_users.glade.h:2
 msgid "<b>Users</b>"
 msgstr "<b>Usuarios</b>"
+
+#~| msgid "All files"
+#~ msgid "All Files"
+#~ msgstr "Todos los archivos"
+
+#~ msgid ""
+#~ "This field will be used to decide which records to show in the calendar."
+#~ msgstr ""
+#~ "Este campo se utilizará para decidir qué registros se mostrarán en el "
+#~ "calendario."
 
 #~ msgid "_User Level"
 #~ msgstr "Nivel de _usuario"
