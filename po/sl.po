@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-07-11 07:54+0000\n"
-"PO-Revision-Date: 2011-07-11 11:15+0100\n"
+"POT-Creation-Date: 2011-07-20 16:58+0000\n"
+"PO-Revision-Date: 2011-07-23 18:24+0100\n"
 "Last-Translator: Andrej Žnidaršič <andrej.znidarsic@gmail.com>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -836,15 +836,15 @@ msgstr "Datoteka pomoči ni na voljo"
 msgid "Could not display help: "
 msgstr "Pomoči ni mogoče prikazati:"
 
-#: ../glom/utils_ui.cc:485
+#: ../glom/utils_ui.cc:490
 msgid "Your find criteria did not match any records in the table."
 msgstr "Vaši kriteriji iskanja se ne skladajo z nobenim zapisom v razpredelnici."
 
-#: ../glom/utils_ui.cc:490
+#: ../glom/utils_ui.cc:495
 msgid "No Records Found"
 msgstr "Zapisov ni mogoče najti"
 
-#: ../glom/utils_ui.cc:497
+#: ../glom/utils_ui.cc:502
 msgid "New Find"
 msgstr "Novo iskanje"
 
@@ -1353,39 +1353,39 @@ msgstr "Opis"
 msgid "Comments"
 msgstr "Opombe"
 
-#: ../glom/main.cc:198
+#: ../glom/main.cc:200
 msgid "Glom options"
 msgstr "Možnosti glom"
 
-#: ../glom/main.cc:198
+#: ../glom/main.cc:200
 msgid "Command-line options for glom"
 msgstr "Možnosti ukazne vrstice za glom"
 
-#: ../glom/main.cc:208
+#: ../glom/main.cc:210
 msgid "The Filename"
 msgstr "Ime datoteke"
 
-#: ../glom/main.cc:214
+#: ../glom/main.cc:216
 msgid "The version of this application."
 msgstr "Različica tega programa."
 
-#: ../glom/main.cc:219
+#: ../glom/main.cc:221
 msgid "Whether the filename is a .tar.gz backup to be restored."
 msgstr "Ali je datoteka varnostne kopije .tar.gz za obnovo."
 
-#: ../glom/main.cc:224
+#: ../glom/main.cc:226
 msgid "Do not automatically stop the database server if Glom quits. This is helpful for debugging with gdb."
 msgstr "Ne zaustavi samodejno strežnika podatkovne zbirke, če Glom konča. To je v pomoč pri razhroščevanju z gdb."
 
-#: ../glom/main.cc:229
+#: ../glom/main.cc:231
 msgid "Show the generated SQL queries on stdout, for debugging."
 msgstr "Pokaži ustvarjene poizvedbe SQL na standardnem izhodu za razhroščevanje."
 
-#: ../glom/main.cc:234
+#: ../glom/main.cc:236
 msgid "Show how Glom outputs a date in this locale, then stop."
 msgstr "Pokaži kako Glom izpiše datum v tej jezikovni oznaki, nato se zaustavi."
 
-#: ../glom/main.cc:247
+#: ../glom/main.cc:249
 msgid ""
 "You seem to be running Glom as a user with administrator privileges. Glom may not be run with such privileges for security reasons.\n"
 "Please login to your system as a normal user."
@@ -1394,7 +1394,7 @@ msgstr ""
 "Prijavite se v svoj sistem kot običajni uporabnik."
 
 #. Warn the user:
-#: ../glom/main.cc:261
+#: ../glom/main.cc:263
 msgid ""
 "You seem to be running Glom as root. Glom may not be run as root.\n"
 "Please login to your system as a normal user."
@@ -1402,22 +1402,22 @@ msgstr ""
 "Videti je, da zaganjate Glom kot skrbnik. Programa ni mogoče uporabljati kot tak skrbnik.\n"
 "Prijavite se v svoj sistem kot običajen uporabnik."
 
-#: ../glom/main.cc:268
+#: ../glom/main.cc:270
 msgid "Running As Root"
 msgstr "Zagnano s skrbniškim računom"
 
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
-#: ../glom/main.cc:315
-#: ../glom/main.cc:328
-#: ../glom/main.cc:591
+#: ../glom/main.cc:317
+#: ../glom/main.cc:330
+#: ../glom/main.cc:595
 msgid "Incomplete Glom Installation"
 msgstr "Nepopolna namestitev Gloma"
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:316
+#: ../glom/main.cc:318
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n"
 "\n"
@@ -1427,13 +1427,13 @@ msgstr ""
 "\n"
 "Za končanje namestitve Gloma namestite PostgreSQL."
 
-#: ../glom/main.cc:318
+#: ../glom/main.cc:320
 msgid "Install PostgreSQL"
 msgstr "Namesti PostgreSQL"
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:329
+#: ../glom/main.cc:331
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n"
 "\n"
@@ -1444,7 +1444,7 @@ msgstr ""
 "Pošljite poročilo o tem hrošču svojemu proizvajalcu ali skrbniku sistema, da bo lahko popravljen."
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:345
+#: ../glom/main.cc:347
 msgid ""
 "Your installation of Glom is not complete, because the Glom Python module is not available on your system.\n"
 "\n"
@@ -1454,12 +1454,12 @@ msgstr ""
 "\n"
 "Pošljite poročilo o tem hrošču svojemu proizvajalcu ali skrbniku sistema, da bo lahko popravljen."
 
-#: ../glom/main.cc:348
+#: ../glom/main.cc:350
 msgid "Glom Python Module Not Installed"
 msgstr "Python module glom ni nameščen"
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:365
+#: ../glom/main.cc:367
 msgid ""
 "Your installation of Glom is not complete, because the gi.repository Python module is not available on your system.\n"
 "\n"
@@ -1469,12 +1469,12 @@ msgstr ""
 "\n"
 "Pošljite poročilo o tem hrošču skrbniku sistema, da bo lahko popravljen."
 
-#: ../glom/main.cc:368
+#: ../glom/main.cc:370
 msgid "gi.repository Python Module Not Installed"
 msgstr "Python modul gi.repository ni nameščen"
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:385
+#: ../glom/main.cc:387
 msgid ""
 "Your installation of Glom is not complete, because the gi.repository.Gda python module is not available on your system.\n"
 "\n"
@@ -1484,28 +1484,28 @@ msgstr ""
 "\n"
 "Pošljite poročilo o hrošču skrbniku sistema, da bo lahko popravljen."
 
-#: ../glom/main.cc:388
+#: ../glom/main.cc:390
 msgid "gi.repository.Gda Python Module Not Installed"
 msgstr "Python modul gi.repository.Gda ni nameščen"
 
-#: ../glom/main.cc:514
+#: ../glom/main.cc:516
 msgid "Error while parsing command-line options: "
 msgstr "Napaka med razčlenjevanem možnosti ukazne vrstice:"
 
-#: ../glom/main.cc:515
+#: ../glom/main.cc:517
 msgid "Use --help to see a list of available command-line options."
 msgstr "Uporabite --help za ogled seznama razpoložljivih možnosti ukazne vrstice."
 
-#: ../glom/main.cc:557
+#: ../glom/main.cc:561
 msgid "Glom: The file does not exist."
 msgstr "Glom: Datoteka ne obstaja."
 
-#: ../glom/main.cc:567
+#: ../glom/main.cc:571
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: Pot datoteke je mapa namesto datoteke."
 
 #. The Postgres provider was not found, so warn the user:
-#: ../glom/main.cc:588
+#: ../glom/main.cc:592
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n"
 "\n"
@@ -2415,24 +2415,32 @@ msgid "You attempted to add a new related record, but there can only be one rela
 msgstr "Poskusili ste dodati nov povezan zapis, toda obstaja lahko le en povezan zapis, ker razmerje uporablja edinstven ključ."
 
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:94
-#: ../glom/utility_widgets/imageglom.cc:328
+#: ../glom/utility_widgets/imageglom.cc:774
 #: ../ui/developer/dialog_choose_relationship.glade.h:2
 #: ../ui/developer/dialog_field_summary.glade.h:4
 #: ../ui/developer/dialog_group_by.glade.h:7
 msgid "Select"
 msgstr "Izberi"
 
-#: ../glom/utility_widgets/dialog_image_progress.cc:117
+#: ../glom/utility_widgets/dialog_image_load_progress.cc:103
 msgid "Not enough memory available to load the image"
 msgstr "Na voljo ni dovolj pomnilnika za nalaganje slike"
 
-#: ../glom/utility_widgets/dialog_image_progress.cc:165
+#: ../glom/utility_widgets/dialog_image_load_progress.cc:153
 msgid "Error loading %1"
 msgstr "Napaka nalaganja %1"
 
-#: ../glom/utility_widgets/dialog_image_progress.cc:166
+#: ../glom/utility_widgets/dialog_image_load_progress.cc:154
 msgid "Error loading image"
 msgstr "Napaka nalaganja slike"
+
+#: ../glom/utility_widgets/dialog_image_save_progress.cc:134
+msgid "Error Saving"
+msgstr "Napaka med shranjevanjem"
+
+#: ../glom/utility_widgets/dialog_image_save_progress.cc:135
+msgid "Error saving image"
+msgstr "Napaka med shranjevanjem slike"
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:78
 msgid "New Database"
@@ -2481,16 +2489,24 @@ msgstr "Ustvari podatkovno zbirko v svoji lastni mapi na tem računalniku."
 msgid "Create database on an external database server, to be specified in the next step."
 msgstr "Ustvari podatkovno zbirko na zunanjem strežniku podatkovne zbirke, ki bo naveden v naslednjem koraku."
 
-#. TODO: Use Hildon::FileChooser for Maemo.
-#: ../glom/utility_widgets/imageglom.cc:319
-msgid "Choose Image"
-msgstr "Izbor slike"
-
-#: ../glom/utility_widgets/imageglom.cc:323
+#: ../glom/utility_widgets/imageglom.cc:658
 msgid "Images"
 msgstr "Slike"
 
-#: ../glom/utility_widgets/imageglom.cc:462
+#: ../glom/utility_widgets/imageglom.cc:679
+msgid "Save Image"
+msgstr "Shrani sliko"
+
+#. TODO: Use Hildon::FileChooser for Maemo.
+#: ../glom/utility_widgets/imageglom.cc:767
+msgid "Choose Image"
+msgstr "Izbor slike"
+
+#: ../glom/utility_widgets/imageglom.cc:927
+msgid "Open With"
+msgstr "Odpri z"
+
+#: ../glom/utility_widgets/imageglom.cc:929
 msgid "Choose File"
 msgstr "Izbor datoteke"
 
@@ -2559,11 +2575,11 @@ msgstr "Izbris celotne beležnice \"%1\"?"
 msgid "Delete whole notebook?"
 msgstr "Izbris celotne beležnice?"
 
-#: ../glom/xsl_utils.cc:120
+#: ../glom/xsl_utils.cc:121
 msgid "Report Finished"
 msgstr "Poročilo je končano"
 
-#: ../glom/xsl_utils.cc:120
+#: ../glom/xsl_utils.cc:121
 msgid "The report will now be opened in your web browser."
 msgstr "Poročilo bo sedaj odprto v vašem spletnem brskalniku."
 
@@ -2686,9 +2702,13 @@ msgstr "Najdi povezan zapis"
 msgid "table_name"
 msgstr "ime_razpredelnice"
 
-#: ../ui/operator/dialog_image_progress.glade.h:1
+#: ../ui/operator/dialog_image_load_progress.glade.h:1
 msgid "Loading image"
 msgstr "Nalaganje slike"
+
+#: ../ui/operator/dialog_image_save_progress.glade.h:1
+msgid "Saving Image"
+msgstr "Shranjevanje slike"
 
 #. Import is a noun here. This is the title for a list of fields to import.
 #: ../ui/operator/dialog_import_csv.glade.h:2
@@ -3524,41 +3544,30 @@ msgstr "<b>Uporabniki</b>"
 
 #~ msgid "_User Level"
 #~ msgstr "Upora_bniška raven"
-
 #~ msgid "_Mode"
 #~ msgstr "_Način"
-
 #~ msgid "Data"
 #~ msgstr "Podatki"
 #~ msgctxt "Mode"
-
 #~ msgid "Operator"
 #~ msgstr "Operater"
 #~ msgctxt "Mode"
-
 #~ msgid "Developer"
 #~ msgstr "Razvijalec"
-
 #~ msgid "0"
 #~ msgstr "0"
-
 #~ msgid "<b><span size=\"xx-large\">None selected</span></b>"
 #~ msgstr "<b><span size=\"xx-large\">Prazen izbor</span></b>"
-
 #~ msgid "<b>User Level:</b>"
 #~ msgstr "<b>Uporabniška raven:</b>"
-
 #~ msgid "Mode:"
 #~ msgstr "Način:"
-
 #~ msgid "You cannot drop anything here. Try to add a group first"
 #~ msgstr "Tu ni mogoče spustiti ničesar. Poskusite najprej dodati skupino"
-
 #~ msgid "Read-only field."
 #~ msgstr "Polje je le za branje."
-
 #~ msgid "This field may not be edited here."
 #~ msgstr "Polja tukaj ni mogoče urejati."
-
 #~ msgid "_Data"
 #~ msgstr "_Podatki"
+
