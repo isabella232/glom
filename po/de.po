@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-07-15 10:21+0000\n"
-"PO-Revision-Date: 2011-07-15 20:11+0100\n"
+"POT-Creation-Date: 2011-07-25 09:56+0000\n"
+"PO-Revision-Date: 2011-07-30 21:09+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@freenet.de>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -568,7 +568,7 @@ msgstr "Datensatz löschen"
 #: ../glom/mode_design/fields/box_db_table_definition.cc:52
 #: ../glom/mode_design/layout/dialog_choose_field.cc:54
 #: ../glom/mode_design/layout/dialog_choose_relationship.cc:55
-#: ../glom/mode_design/layout/dialog_layout_details.cc:91
+#: ../glom/mode_design/layout/dialog_layout_details.cc:98
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.cc:53
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_groupby_sortfields.cc:52
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc:48
@@ -589,7 +589,7 @@ msgstr ""
 #: ../glom/mode_design/box_db_table_relationships.cc:48
 #: ../glom/mode_design/fields/box_db_table_definition.cc:56
 #: ../glom/mode_design/layout/dialog_choose_field.cc:55
-#: ../glom/mode_design/layout/dialog_layout_details.cc:104
+#: ../glom/mode_design/layout/dialog_layout_details.cc:111
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc:49
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:94
 #: ../glom/navigation/box_tables.cc:136
@@ -1223,7 +1223,7 @@ msgstr "Nummer"
 #: ../glom/libglom/data_structure/field.cc:647
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:73
 #: ../glom/libglom/data_structure/translatable_item.cc:317
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1147
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1154
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:620
 msgid "Text"
@@ -1249,7 +1249,7 @@ msgstr "Boolean"
 #: ../glom/libglom/data_structure/field.cc:659
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:70
 #: ../glom/libglom/data_structure/translatable_item.cc:319
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1154
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1161
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:39
 #: ../glom/utility_widgets/layouttoolbar.cc:65
 msgid "Image"
@@ -1306,7 +1306,7 @@ msgstr "Gruppe"
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:68
 #: ../glom/libglom/data_structure/translatable_item.cc:315
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1140
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1147
 #: ../glom/utility_widgets/layouttoolbar.cc:61
 msgid "Button"
 msgstr "Schalter"
@@ -1341,7 +1341,7 @@ msgstr "Platzhalter"
 #. We should use "Related Records instead.
 #. Translators: This is the name of a UI element (a layout part name).
 #. It means a list of related records.
-#: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:72
+#: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:75
 msgid "Portal"
 msgstr "Portal"
 
@@ -1438,44 +1438,44 @@ msgstr "Feldtitel"
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: ../glom/libglom/document/document.cc:480
-#: ../glom/libglom/document/document.cc:498
+#: ../glom/libglom/document/document.cc:481
+#: ../glom/libglom/document/document.cc:499
 msgid "System Preferences"
 msgstr "Systemeinstellungen"
 
-#: ../glom/libglom/document/document.cc:511
+#: ../glom/libglom/document/document.cc:512
 msgid "System Name"
 msgstr "Systemname"
 
-#: ../glom/libglom/document/document.cc:517
+#: ../glom/libglom/document/document.cc:518
 msgid "Organisation Name"
 msgstr "Organisationsname"
 
-#: ../glom/libglom/document/document.cc:523
+#: ../glom/libglom/document/document.cc:524
 msgid "Organisation Logo"
 msgstr "Organisationslogo"
 
-#: ../glom/libglom/document/document.cc:529
+#: ../glom/libglom/document/document.cc:530
 msgid "Street"
 msgstr "Straße"
 
-#: ../glom/libglom/document/document.cc:535
+#: ../glom/libglom/document/document.cc:536
 msgid "Street (line 2)"
 msgstr "Straße (Zusatz)"
 
-#: ../glom/libglom/document/document.cc:541
+#: ../glom/libglom/document/document.cc:542
 msgid "City"
 msgstr "Stadt"
 
-#: ../glom/libglom/document/document.cc:547
+#: ../glom/libglom/document/document.cc:548
 msgid "State"
 msgstr "Land"
 
-#: ../glom/libglom/document/document.cc:553
+#: ../glom/libglom/document/document.cc:554
 msgid "Country"
 msgstr "Land"
 
-#: ../glom/libglom/document/document.cc:559
+#: ../glom/libglom/document/document.cc:560
 msgid "Zip Code"
 msgstr "Postleitzahl"
 
@@ -1857,7 +1857,7 @@ msgid "New Group"
 msgstr "Neue Gruppe"
 
 #: ../glom/mode_data/flowtablewithfields.cc:1211
-#: ../glom/mode_design/layout/dialog_layout_details.cc:724
+#: ../glom/mode_design/layout/dialog_layout_details.cc:731
 msgid "notebook"
 msgstr "Reitermappe"
 
@@ -1876,7 +1876,7 @@ msgid "button"
 msgstr "Schalter"
 
 #: ../glom/mode_data/flowtablewithfields.cc:1234
-#: ../glom/mode_design/layout/dialog_layout_details.cc:650
+#: ../glom/mode_design/layout/dialog_layout_details.cc:657
 msgid "New Button"
 msgstr "Neuer Schalter"
 
@@ -2130,57 +2130,57 @@ msgid " Via: "
 msgstr "Über:"
 
 #: ../glom/mode_design/layout/dialog_layout_calendar_related.cc:248
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:252
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:260
 msgid "None: No visible tables are specified by the fields."
 msgstr "Nichts: Es sind keine sichtbaren Tabellen durch die Felder festgelegt."
 
 #. Columns-count column:
 #. Note to translators: This is the number of columns in a group (group being a noun)
-#: ../glom/mode_design/layout/dialog_layout_details.cc:117
+#: ../glom/mode_design/layout/dialog_layout_details.cc:124
 msgid "Group Columns"
 msgstr "Spalten gruppieren"
 
 #. Column-Width column: (only for list views)
 #. Note to translators: This is a name (the width of a UI element in the display), not an action.
-#: ../glom/mode_design/layout/dialog_layout_details.cc:130
+#: ../glom/mode_design/layout/dialog_layout_details.cc:137
 msgid "Display Width"
 msgstr "Anzeigebreite"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:675
+#: ../glom/mode_design/layout/dialog_layout_details.cc:682
 msgid "Text Title"
 msgstr "Texttitel"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:700
+#: ../glom/mode_design/layout/dialog_layout_details.cc:707
 msgid "Image Title"
 msgstr "Bildtitel"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:855
+#: ../glom/mode_design/layout/dialog_layout_details.cc:862
 msgid "group"
 msgstr "Gruppe"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:947
+#: ../glom/mode_design/layout/dialog_layout_details.cc:954
 #: ../ui/developer/dialog_notebook.glade.h:2
 msgid "Notebook Tabs"
 msgstr "Reiter der Mappe"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:947
+#: ../glom/mode_design/layout/dialog_layout_details.cc:954
 msgid "Add child groups to the notebook to add tabs."
 msgstr ""
 "Fügen Sie Kindgruppen zur Reitermappe hinzu, um weitere Reiter hinzuzufügen."
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1110
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1117
 msgid "Related Calendar: "
 msgstr "Bezugskalender:"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1112
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1119
 msgid "Related List: "
 msgstr "Bezugsliste:"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1129
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1136
 msgid "Field: "
 msgstr "Feld:"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1188
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1195
 msgid "(Notebook)"
 msgstr "(Reitermappe)"
 
@@ -2189,11 +2189,11 @@ msgstr "(Reitermappe)"
 msgid "Fields"
 msgstr "Felder"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:351
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:361
 msgid "Invalid Relationship"
 msgstr "Ungültige Beziehung"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:352
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:362
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship does not specify a field in the related table."
@@ -2201,11 +2201,11 @@ msgstr ""
 "Die Beziehung darf nicht verwendet werden, um Bezugsdatensätze zu zeigen, "
 "weil die Beziehung kein Feld in der Bezugstabelle angibt."
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:358
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:368
 msgid "Relationship Uses a Related Primary Key"
 msgstr "Beziehung verwendet einen primären Bezugsschlüssel"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:359
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:369
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship uses a primary key field in the related table, which must "
@@ -2217,11 +2217,11 @@ msgstr ""
 "das eindeutige Werte enthalten muss. Dies verhindert, dass die Beziehung "
 "mehrere Datensätze angeben kann."
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:365
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:375
 msgid "Relationship Uses a Related Unique Field"
 msgstr "Beziehung verwendet ein eindeutiges Bezugsfeld"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:366
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:376
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship uses a unique-values field in the related table. This would "
@@ -2707,7 +2707,7 @@ msgstr ""
 "einen Bezugsdatensatz geben, da die Beziehung eindeutige Schlüssel verwendet."
 
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:94
-#: ../glom/utility_widgets/imageglom.cc:749
+#: ../glom/utility_widgets/imageglom.cc:774
 #: ../ui/developer/dialog_choose_relationship.glade.h:2
 #: ../ui/developer/dialog_field_summary.glade.h:4
 #: ../ui/developer/dialog_group_by.glade.h:7
@@ -2808,24 +2808,24 @@ msgstr ""
 "Datenbank auf einem externen Datenbank-Server erstellen, der im nächsten "
 "Schritt angegeben wird."
 
-#: ../glom/utility_widgets/imageglom.cc:633
+#: ../glom/utility_widgets/imageglom.cc:658
 msgid "Images"
 msgstr "Bilder"
 
-#: ../glom/utility_widgets/imageglom.cc:654
+#: ../glom/utility_widgets/imageglom.cc:679
 msgid "Save Image"
 msgstr "Bild speichern"
 
 #. TODO: Use Hildon::FileChooser for Maemo.
-#: ../glom/utility_widgets/imageglom.cc:742
+#: ../glom/utility_widgets/imageglom.cc:767
 msgid "Choose Image"
 msgstr "Bild wählen"
 
-#: ../glom/utility_widgets/imageglom.cc:902
+#: ../glom/utility_widgets/imageglom.cc:927
 msgid "Open With"
 msgstr "Öffnen mit"
 
-#: ../glom/utility_widgets/imageglom.cc:904
+#: ../glom/utility_widgets/imageglom.cc:929
 msgid "Choose File"
 msgstr "Datei wählen"
 
@@ -3644,6 +3644,10 @@ msgid "None"
 msgstr "Nichts"
 
 #: ../ui/developer/window_data_layout.glade.h:27
+msgid "Number of rows to show:"
+msgstr "Anzahl der anzuzeigenden Zeilen:"
+
+#: ../ui/developer/window_data_layout.glade.h:28
 msgid ""
 "Remove the item from the layout. If you remove a field layout item, it will "
 "not remove the field from the table itself. It just will not be seen on the "
@@ -3653,13 +3657,9 @@ msgstr ""
 "entfernt nicht das Feld aus der Tabelle, sondern das Feld wird nicht im "
 "Layout dargestellt."
 
-#: ../ui/developer/window_data_layout.glade.h:28
+#: ../ui/developer/window_data_layout.glade.h:29
 msgid "Show child relationships"
 msgstr "Kindesbeziehungen anzeigen"
-
-#: ../ui/developer/window_data_layout.glade.h:29
-msgid "This field will be used to decide which records to show in the calendar."
-msgstr "Dieses Feld bestimmt, welche Einträge im Kalender angezeigt werden."
 
 #: ../ui/developer/window_data_layout.glade.h:30
 #: ../ui/developer/window_report_layout.glade.h:13
@@ -4002,6 +4002,10 @@ msgstr "<b>Gruppe: </b>"
 #: ../ui/developer/window_users.glade.h:2
 msgid "<b>Users</b>"
 msgstr "<b>Benutzer</b>"
+
+#~ msgid ""
+#~ "This field will be used to decide which records to show in the calendar."
+#~ msgstr "Dieses Feld bestimmt, welche Einträge im Kalender angezeigt werden."
 
 #~ msgid "0"
 #~ msgstr "0"
