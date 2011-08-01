@@ -1,3 +1,9 @@
+1.19.9 (unstable):
+
+* Details:
+  - Related Records: Allow the developer to specify how many rows to show.
+  - Images: Avoid some saving of temp files.
+
 1.19.8 (unstable):
 
 * Details: Image fields:
