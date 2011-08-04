@@ -3267,8 +3267,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
                 set_node_attribute_value(child_navigation_relationship,
                   GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE, navigation_type_string);
               }
-              
-              std::cout << "document: saving rows_count=" << portal->get_rows_count() << std::endl;
+
               set_node_attribute_value_as_decimal_double(child, 
                 GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT, portal->get_rows_count());
 
