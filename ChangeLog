@@ -1,3 +1,14 @@
+2011-08-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Print Layouts: Make corner and edges snap to the grid too.
+
+	* glom/utility_widgets/canvas/canvas_group_resizable.[h|cc]:
+	Add a set_grid() override(), as in CanvasGroupMovable, so that the 
+	manipulator items also know about it, even though the manipulators 
+	were created earlier, in the constructor.
+
+	Previously snapping to the grid only worked while moving whole items.
+
 1.19.9:
 
 2011-07-25  Murray Cumming  <murrayc@murrayc.com>

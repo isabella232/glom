@@ -854,5 +854,27 @@ CanvasGroupResizable::type_signal_resized CanvasGroupResizable::signal_resized()
   return m_signal_resized;
 }
 
+void CanvasGroupResizable::set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid)
+{
+  //Call the base class:
+  CanvasItemMovable::set_grid(grid);
+
+  //Apply the grid to all the manipulators:
+  if(!m_group_manipulators)
+    return;
+
+  const int count = m_group_manipulators->get_n_children();
+  for(int i = 0; i < count; ++i)
+  {
+    Glib::RefPtr<Goocanvas::Item> child = m_group_manipulators->get_child(i);
+    Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(child);
+    if(movable)
+    {
+      movable->set_grid(grid);
+    }
+  }
+}
+
+
 } //namespace Glom
 

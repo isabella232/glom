@@ -59,6 +59,8 @@ public:
   virtual void set_xy(double x_offet, double y_offset);
   virtual void get_width_height(double& width, double& height) const;
   virtual void set_width_height(double width, double height);
+  virtual void set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid);
+
 
   typedef sigc::signal<void> type_signal_resized;
 
