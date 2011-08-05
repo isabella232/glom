@@ -235,7 +235,7 @@ void Canvas_PrintLayout::setup_context_menu()
   m_context_menu_action_group->add(action,
     sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_insert_field) );
 
-  action =  Gtk::Action::create("ContextInsertText", _("Text"));
+  action = Gtk::Action::create("ContextInsertText", _("Text"));
   m_context_menu_action_group->add(action,
     sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_insert_text) );
 */

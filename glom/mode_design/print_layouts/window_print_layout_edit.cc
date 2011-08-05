@@ -518,16 +518,12 @@ Window_PrintLayout_Edit::~Window_PrintLayout_Edit()
 
 void Window_PrintLayout_Edit::update_table_title()
 {
-  std::cout << G_STRFUNC << ": debug 1" << std::endl;
-
-  Document* document = dynamic_cast<Document*>(get_document());
+  const Document* document = dynamic_cast<const Document*>(get_document());
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document was null" << std::endl;
     return;
   }
-
-  std::cout << G_STRFUNC << ": debug 2" << std::endl;
 
   Glib::ustring table_label = _("None selected");
 
@@ -639,7 +635,7 @@ void Window_PrintLayout_Edit::setup_context_menu()
   m_context_menu_action_group->add(action,
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_context_menu_insert_field) );
 
-  action =  Gtk::Action::create("ContextInsertText", _("Text"));
+  action = Gtk::Action::create("ContextInsertText", _("Text"));
   m_context_menu_action_group->add(action,
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_context_menu_insert_text) );
 
