@@ -247,7 +247,7 @@ Glib::RefPtr<Gdk::Pixbuf> Window_PrintLayout_Edit::get_icon_for_toolbar_item(Gtk
     return result;
 
   const Gtk::StockID stock_id = action->property_stock_id();
-  if(!(stock_id.get_string().empty())) //The operator bool() is only in later versions of gtkmm 2.*.x
+  if(stock_id)
   {
     result = item.render_icon_pixbuf(stock_id, Gtk::ICON_SIZE_LARGE_TOOLBAR);
   }
