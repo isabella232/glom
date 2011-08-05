@@ -167,18 +167,23 @@ void Window_PrintLayout_Edit::init_menu()
   m_action_zoom_fit_page_width = Gtk::RadioAction::create(group_zoom, "Action_Menu_View_ZoomFitPageWidth", _("Fit Page _Width"));
   m_action_group->add(m_action_zoom_fit_page_width,
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_fitpagewidth));
+
   m_action_group->add(Gtk::RadioAction::create(group_zoom, "Action_Menu_View_Zoom200", _("Zoom 200%")),
     sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 200));
-  m_action_group->add(Gtk::RadioAction::create(group_zoom, "Action_Menu_View_Zoom100", Gtk::Stock::ZOOM_100),
+
+  Glib::RefPtr<Gtk::RadioAction> action_zoom100 = 
+    Gtk::RadioAction::create(group_zoom, "Action_Menu_View_Zoom100", Gtk::Stock::ZOOM_100);
+  m_action_group->add(action_zoom100,
     sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 100));
 
   Glib::RefPtr<Gtk::Action> action_50 = Gtk::RadioAction::create(group_zoom, "Action_Menu_View_Zoom50", _("Zoom 50%"));
   m_action_group->add(action_50,
     sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 50));
-  m_action_zoom_fit_page_width->activate();
 
   m_action_group->add(Gtk::RadioAction::create(group_zoom, "Action_Menu_View_Zoom25", _("Zoom 25%")),
     sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 25));
+
+  action_zoom100->activate(); //This seems like a sane default.
 
   //Build part of the menu structure, to be merged in by using the "PH" placeholders:
   static const Glib::ustring ui_description =

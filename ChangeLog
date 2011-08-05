@@ -1,5 +1,14 @@
 2011-08-05  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout Window: default to 100% size
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc: init_menu():
+	Default to 100% instead of fit-to-width, because this seems to give a 
+	better idea that it is a page, by being more like applications such as 
+	OpenOffice/LibreOffice write.
+
+2011-08-05  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout Window: Make the top widgets more compact.
 
 	* ui/developer/window_print_layout_edit.glade:
