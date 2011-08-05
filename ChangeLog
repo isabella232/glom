@@ -1,5 +1,16 @@
 2011-08-05  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout Window: Make the top widgets more compact.
+
+	* ui/developer/window_print_layout_edit.glade:
+	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
+	Make the table title/name a simple bold label with no Table: label,
+	as now in the main window. Make the other labels non-bold.
+	Make sure that we really show the table title with the name in brackets,
+	by removing an unused (but checked) widget pointer.
+
+2011-08-05  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Correct drag position even when the layout is scrolled.
 
 	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:

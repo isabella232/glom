@@ -1466,7 +1466,7 @@ void Frame_Glom::show_table_title()
   // We hide this anyway: m_pLabel_Table->set_markup("<b>" + table_label + "</b>");
 #else
   //Show the table title in bold text, because it's important to the user.
-  const Glib::ustring title = "<b>" + table_label + "</b>";
+  const Glib::ustring title = Utils::bold_message(table_label);
   m_pLabel_Table_DataMode->set_markup(title);
   m_pLabel_Table_FindMode->set_markup(title);
 #endif

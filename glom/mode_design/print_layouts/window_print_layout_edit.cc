@@ -22,6 +22,7 @@
 #include "window_print_layout_edit.h"
 #include <glom/box_db_table.h>
 #include <glom/print_layout/canvas_layout_item.h>
+#include <glom/utils_ui.h>
 #include <libglom/data_structure/layout/layoutitem_line.h>
 #include <libglom/data_structure/layout/layoutitem_portal.h>
 #include <libglom/utils.h> //For bold_message()).
@@ -41,7 +42,6 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_entry_name(0),
   m_entry_title(0),
   m_label_table_name(0),
-  m_label_table(0),
   m_button_close(0),
   m_box(0),
   m_drag_preview_requested(false),
@@ -57,7 +57,6 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   builder->get_widget("vbox_canvas", m_box_canvas);
   builder->get_widget("vbox_inner", m_box);
 
-  //builder->get_widget("label_name", m_label_name);
   builder->get_widget("label_table_name", m_label_table_name);
   builder->get_widget("entry_name", m_entry_name);
   builder->get_widget("entry_title", m_entry_title);
@@ -512,36 +511,40 @@ Window_PrintLayout_Edit::~Window_PrintLayout_Edit()
   remove_view(&m_canvas);
 }
 
-bool Window_PrintLayout_Edit::init_db_details(const Glib::ustring& table_name)
+void Window_PrintLayout_Edit::update_table_title()
 {
+  std::cout << G_STRFUNC << ": debug 1" << std::endl;
+
   Document* document = dynamic_cast<Document*>(get_document());
   if(!document)
-    return false;
+  {
+    std::cerr << G_STRFUNC << ": document was null" << std::endl;
+    return;
+  }
+
+  std::cout << G_STRFUNC << ": debug 2" << std::endl;
 
   Glib::ustring table_label = _("None selected");
 
   //Show the table title (if any) and name:
-  Glib::ustring table_title = document->get_table_title(table_name);
+  Glib::ustring table_title = document->get_table_title(m_table_name);
   if(table_title.empty())
-    table_label = table_name;
+    table_label = m_table_name;
   else
-    table_label = table_title + " (" + table_name + ')';
+    table_label = table_title + " (" + m_table_name + ')';
 
-  if(m_label_table)
-    m_label_table->set_text(table_label);
-
-  return true;
-
-/*
-  if(m_box)
+  if(m_label_table_name)
   {
-    m_box->load_from_document();
-
-    Dialog_Design::init_db_details(table_name);
-
-    m_box->init_db_details(table_name);
+    m_label_table_name->set_markup(
+      Utils::bold_message(table_label));
   }
-*/
+}
+
+bool Window_PrintLayout_Edit::init_db_details(const Glib::ustring& table_name)
+{
+  m_table_name = table_name;
+  update_table_title();
+
   return true;
 }
 
@@ -563,7 +566,7 @@ void Window_PrintLayout_Edit::set_print_layout(const Glib::ustring& table_name, 
   //Dialog_Layout::set_document(layout, document, table_name, table_fields);
 
   //Set the table name and title:
-  m_label_table_name->set_text(table_name);
+  update_table_title();
 
   m_entry_name->set_text(print_layout->get_name()); 
   m_entry_title->set_text(print_layout->get_title());

@@ -94,6 +94,7 @@ private:
 
   Glib::RefPtr<Gdk::Pixbuf> get_icon_for_toolbar_item(Gtk::ToolItem& item);
 
+  void update_table_title();
   void setup_context_menu();
   void set_ruler_sizes();
 
@@ -112,7 +113,6 @@ private:
   Gtk::Entry* m_entry_name;
   Gtk::Entry* m_entry_title;
   Gtk::Label* m_label_table_name;
-  Gtk::Label* m_label_table;
   //Gtk::Label* m_label_table_title;
   Gtk::Button* m_button_close;
 
