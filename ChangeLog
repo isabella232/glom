@@ -1,5 +1,15 @@
 2011-08-05  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Avoid warnings about -1 width.
+
+	* glom/utility_widgets/canvas/canvas_group_movable.cc: get_width_height(),
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc: get_width_heigh():
+	Do not return -1, which groups default to, to mean some default size.
+	This was not really used anyway, and was rejected when applied to non-group 
+	goocanvas items.
+
+2011-08-05  Murray Cumming  <murrayc@murrayc.com>
+
 	Developer menu: Move the Developer item after Operator.
 
 	* glom/application.cc: When the user changes this, he generally changes 

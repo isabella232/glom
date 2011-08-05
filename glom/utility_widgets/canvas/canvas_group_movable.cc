@@ -104,12 +104,22 @@ void CanvasGroupMovable::get_width_height(double& width, double& height) const
     //Just return any width/height that was previously set:
     width = m_width;
     height = m_height;
-    return;
+  }
+  else
+  {
+    Glib::RefPtr<const CanvasItemMovable> movable = CanvasItemMovable::cast_const_to_movable(first_child);
+    if(movable)
+      movable->get_width_height(width, height);
   }
 
-  Glib::RefPtr<const CanvasItemMovable> movable = CanvasItemMovable::cast_const_to_movable(first_child);
-  if(movable)
-     movable->get_width_height(width, height);
+  //GooCanvasGroup allows height and width to be -1 to mean the "use the default",
+  //but other GooCanvas* items reject that as out of range,
+  //so prevent us from using it:
+  if(width == -1)
+    width = 100; //Arbitrary default.
+
+  if(height == -1)
+    height = 100; //Arbitrary default.
 }
 
 void CanvasGroupMovable::set_width_height(double width, double height)

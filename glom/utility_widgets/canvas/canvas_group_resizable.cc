@@ -749,6 +749,15 @@ void CanvasGroupResizable::get_width_height(double& width, double& height) const
     width = m_width;
     height = m_height;
   }
+
+  //GooCanvasGroup allows height and width to be -1 to mean the "use the default",
+  //but other GooCanvas* items reject that as out of range,
+  //so prevent us from using it:
+  if(width == -1)
+    width = 100; //Arbitrary default.
+
+  if(height == -1)
+    height = 100; //Arbitrary default.
 }
 
 void CanvasGroupResizable::set_width_height(double width, double height)
