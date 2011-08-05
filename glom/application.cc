@@ -617,8 +617,8 @@ void Application::init_menus()
     "     </menu>"
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     "      <menu action='Glom_Menu_Developer'>"
-    "        <menuitem action='GlomAction_Menu_Developer_Developer' />"
     "        <menuitem action='GlomAction_Menu_Developer_Operator' />"
+    "        <menuitem action='GlomAction_Menu_Developer_Developer' />"
     "        <separator />"
     "        <menuitem action='GlomAction_Menu_Developer_Fields' />"
     "        <menuitem action='GlomAction_Menu_Developer_Relationships' />"

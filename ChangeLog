@@ -1,5 +1,12 @@
 2011-08-05  Murray Cumming  <murrayc@murrayc.com>
 
+	Developer menu: Move the Developer item after Operator.
+
+	* glom/application.cc: When the user changes this, he generally changes 
+	from operator to developer, so this feels more natural.
+
+2011-08-05  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout Window: default to 100% size
 
 	* glom/mode_design/print_layouts/window_print_layout_edit.cc: init_menu():
