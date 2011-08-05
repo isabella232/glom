@@ -99,6 +99,8 @@ private:
 
   bool get_is_item_at(double x, double y);
   void set_default_position(const sharedptr<LayoutItem>& item);
+  
+  void canvas_convert_from_drag_pixels(double& x, double& y) const;
 
   //Box_DB_Table_Definition* m_box;
   Glib::ustring m_name_original;

@@ -370,7 +370,7 @@ bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::Drag
   //Move the temporary canvas item to the new position:
   double item_x = x;
   double item_y = y;
-  m_canvas.convert_from_pixels(item_x, item_y);
+  canvas_convert_from_drag_pixels(item_x, item_y);
 
   m_layout_item_dropping->set_xy(item_x, item_y);
 
@@ -427,6 +427,20 @@ sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayoutTool
   return layout_item;
 }
 
+void Window_PrintLayout_Edit::canvas_convert_from_drag_pixels(double& x, double& y) const
+{
+  //The canvas might be scrolled down in the viewport/scrolledwindow,
+  //so deal with that:
+  const double scroll_x = m_scrolled_window.get_hadjustment()->get_value();
+  const double scroll_y = m_scrolled_window.get_vadjustment()->get_value();
+  
+  x += scroll_x;
+  y += scroll_y;
+
+  m_canvas.convert_from_pixels(x, y);
+}
+
+
 void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, const Gtk::SelectionData& selection_data, guint /* info */, guint timestamp)
 {
   //This is called when an item is dropped on the canvas,
@@ -450,7 +464,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
 
         double item_x = x;
         double item_y = y;
-        m_canvas.convert_from_pixels(item_x, item_y);
+        canvas_convert_from_drag_pixels(item_x, item_y);
         m_layout_item_dropping->set_xy(item_x, item_y);
       }
     }
@@ -470,7 +484,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
     m_canvas.add_canvas_layout_item(item);
     double item_x = x;
     double item_y = y;
-    m_canvas.convert_from_pixels(item_x, item_y);
+    canvas_convert_from_drag_pixels(item_x, item_y);
     item->set_xy(item_x, item_y);
    
     if(m_layout_item_dropping)
@@ -677,7 +691,7 @@ void Window_PrintLayout_Edit::set_default_position(const sharedptr<LayoutItem>& 
 
   double item_x = 10;
   double item_y = 10;
-  m_canvas.convert_from_pixels(item_x, item_y);
+  canvas_convert_from_drag_pixels(item_x, item_y);
   
   //TODO: This doesn't seem to actually work:
   while(get_is_item_at(item_x, item_y))
@@ -761,7 +775,7 @@ void Window_PrintLayout_Edit::on_menu_insert_line_vertical()
   /*
   double item_x = m_drop_x;
   double item_y = m_drop_y;
-  m_canvas.convert_from_pixels(item_x, item_y);
+  canvas_convert_from_drag_pixels(item_x, item_y);
   */
 
   // Note to translators: This is the default contents of a text item on a print layout: 

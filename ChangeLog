@@ -1,3 +1,12 @@
+2011-08-05  Murray Cumming  <murrayc@murrayc.com>
+
+	Print Layout: Correct drag position even when the layout is scrolled.
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
+	Add and use canvas_convert_from_drag_pixels() to avoid the offset when 
+	dragging an item from the toolpalette to the canvas when the canvas is 
+	scrolled down.
+
 2011-08-04  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layouts: Make corner and edges snap to the grid too.
