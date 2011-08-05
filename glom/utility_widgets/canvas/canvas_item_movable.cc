@@ -42,7 +42,8 @@ CanvasItemMovable::CanvasItemMovable()
   m_drag_start_cursor_x(0.0), m_drag_start_cursor_y(0.0),
   m_drag_start_position_x(0.0), m_drag_start_position_y(0.0),
   m_grid(0),
-  m_allow_vertical_movement(true), m_allow_horizontal_movement(true)
+  m_allow_vertical_movement(true), m_allow_horizontal_movement(true),
+  m_selected(false)
 {
    //TODO: Remove this when goocanvas is fixed, so the goocanvasmm constructor can connect default signal handlers:
   /*
@@ -167,6 +168,26 @@ bool CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::It
     canvas->pointer_ungrab(target, event->time);
 
   m_dragging = false;
+
+
+  // A click without a move should select or deselect:
+  bool selected = !get_selected();
+
+  // A drag-to-move should always select and never deselect:
+  if(!selected)
+  {
+    double x = 0;
+    double y = 0;
+    get_xy(x, y);
+    if( (m_drag_start_position_x != x)
+      || (m_drag_start_position_y != y) )
+    {
+      selected = true;
+    }
+  }
+
+  //This will also ask derived classes to indicate it visually:
+  set_selected(selected);
 
   return true;
 }
@@ -372,6 +393,23 @@ Glib::RefPtr<const Goocanvas::Item> CanvasItemMovable::cast_const_to_item(const 
   Glib::RefPtr<CanvasItemMovable> unconst = Glib::RefPtr<CanvasItemMovable>::cast_const(item);
   return cast_to_item(unconst);
 }
+
+void CanvasItemMovable::set_selected(bool selected)
+{
+  m_selected = selected;
+  show_selected(); //Let derived classes indicate it visually,
+}
+
+bool CanvasItemMovable::get_selected() const
+{
+  return m_selected;
+}
+
+void CanvasItemMovable::show_selected()
+{
+  //Derived classes should override this.
+}
+
 
 } //namespace Glom
 

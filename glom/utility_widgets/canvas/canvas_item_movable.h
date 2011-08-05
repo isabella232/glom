@@ -91,7 +91,21 @@ public:
 
   virtual void snap_position(double& x, double& y) const;
 
+  /** Mark the item as selected,
+   * meaning that its boundaries will be visible,
+   * and this can be queried later, for instance to move several items together.
+   */
+  void set_selected(bool selected = true);
+
+  bool get_selected() const;
+
 private:
+
+  /** Show some visual cue that the item is selected,
+   * depending on the value of get_selected(),
+   * hiding that visual cue if it is not selected.
+   */
+  virtual void show_selected();
 
   virtual Goocanvas::Canvas* get_parent_canvas_widget() = 0;
 
@@ -118,6 +132,7 @@ protected:
 
 private:
   bool m_allow_vertical_movement, m_allow_horizontal_movement;
+  bool m_selected;
 
   type_signal_moved m_signal_moved;
   type_signal_show_context m_signal_show_context;

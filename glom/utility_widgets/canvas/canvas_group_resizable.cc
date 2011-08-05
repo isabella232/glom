@@ -48,11 +48,17 @@ CanvasGroupResizable::CanvasGroupResizable()
 void CanvasGroupResizable::create_manipulators()
 {
   //Remove any existing manipulators:
-  if(m_group_manipulators)
-    m_group_manipulators->remove();
+  if(m_group_edge_manipulators)
+    m_group_edge_manipulators->remove();
+
+  if(m_group_corner_manipulators)
+    m_group_corner_manipulators->remove();
   
-  m_group_manipulators = Goocanvas::Group::create();
-  add_child(m_group_manipulators);
+  m_group_edge_manipulators = Goocanvas::Group::create();
+  add_child(m_group_edge_manipulators);
+
+  m_group_corner_manipulators = Goocanvas::Group::create();
+  add_child(m_group_corner_manipulators);
 
   if(get_is_line())
     create_line_manipulators();
@@ -89,14 +95,14 @@ void CanvasGroupResizable::create_rect_manipulators()
   m_manipulator_edge_left = create_edge_manipulator();
   m_manipulator_edge_right = create_edge_manipulator();
 
-  m_group_manipulators->add_child(m_manipulator_corner_top_left);
-  m_group_manipulators->add_child(m_manipulator_corner_top_right);
-  m_group_manipulators->add_child(m_manipulator_corner_bottom_left);
-  m_group_manipulators->add_child(m_manipulator_corner_bottom_right);
-  m_group_manipulators->add_child(m_manipulator_edge_top);
-  m_group_manipulators->add_child(m_manipulator_edge_bottom);
-  m_group_manipulators->add_child(m_manipulator_edge_left);
-  m_group_manipulators->add_child(m_manipulator_edge_right);
+  m_group_corner_manipulators->add_child(m_manipulator_corner_top_left);
+  m_group_corner_manipulators->add_child(m_manipulator_corner_top_right);
+  m_group_corner_manipulators->add_child(m_manipulator_corner_bottom_left);
+  m_group_corner_manipulators->add_child(m_manipulator_corner_bottom_right);
+  m_group_edge_manipulators->add_child(m_manipulator_edge_top);
+  m_group_edge_manipulators->add_child(m_manipulator_edge_bottom);
+  m_group_edge_manipulators->add_child(m_manipulator_edge_left);
+  m_group_edge_manipulators->add_child(m_manipulator_edge_right);
 
   m_manipulator_corner_top_left->set_grid(m_grid);
   m_manipulator_corner_top_left->set_snap_corner(CanvasRectMovable::CORNER_TOP_LEFT);
@@ -134,8 +140,11 @@ void CanvasGroupResizable::create_line_manipulators()
 {
   m_manipulator_start = create_corner_manipulator();
   m_manipulator_end = create_corner_manipulator();
-  m_group_manipulators->add_child(m_manipulator_start);
-  m_group_manipulators->add_child(m_manipulator_end);
+
+  //We add these to the edge manipulators, though they look like 
+  //corner manipulators, because we want to use them to show selection.
+  m_group_edge_manipulators->add_child(m_manipulator_start);
+  m_group_edge_manipulators->add_child(m_manipulator_end);
 
   m_manipulator_start->set_grid(m_grid);
   //m_manipulator_corner_top_left->set_snap_corner(CanvasRectMovable::CORNER_TOP_LEFT);
@@ -215,12 +224,14 @@ void CanvasGroupResizable::position_rect_manipulators()
   //and the manipulators are above the item (and above the rect):
   if(item)
   {
-    m_group_manipulators->raise(item);
+    m_group_edge_manipulators->raise(item);
+    m_group_corner_manipulators->raise(item);
     m_rect->lower(item);
   }
   else
   {
-    m_group_manipulators->raise(m_rect);
+    m_group_edge_manipulators->raise(m_rect);
+    m_group_corner_manipulators->raise(m_rect);
   }
 }
 
@@ -247,7 +258,8 @@ void CanvasGroupResizable::position_line_manipulators()
 
   m_manipulator_end->set_xy(end_x - half_size, end_y - half_size); //Center it over the point.
 
-  m_group_manipulators->raise(line);
+  m_group_edge_manipulators->raise(line);
+  m_group_corner_manipulators->raise(line);
 }
 
 void CanvasGroupResizable::set_child(const Glib::RefPtr<CanvasItemMovable>& child)
@@ -638,11 +650,18 @@ bool CanvasGroupResizable::on_manipulator_motion_notify_event(const Glib::RefPtr
 
 void CanvasGroupResizable::set_manipulators_visibility(Goocanvas::ItemVisibility visibility)
 {
-  if(!m_group_manipulators)
+  if(!m_group_edge_manipulators || !m_group_corner_manipulators)
     return;
 
+  //Make sure that edges stays visible if the item is selected,
+  //because that is how we show selection:
+  Goocanvas::ItemVisibility edge_visibility = visibility;
+  if(get_selected())
+    edge_visibility = Goocanvas::ITEM_VISIBLE;
+
   //For testing: visibility = Goocanvas::ITEM_VISIBLE;
-  m_group_manipulators->property_visibility() = visibility;
+  m_group_edge_manipulators->property_visibility() = edge_visibility;
+  m_group_corner_manipulators->property_visibility() = visibility;
 }
 
 bool CanvasGroupResizable::on_rect_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* /* event */)
@@ -869,13 +888,24 @@ void CanvasGroupResizable::set_grid(const Glib::RefPtr<const CanvasGroupGrid>& g
   CanvasItemMovable::set_grid(grid);
 
   //Apply the grid to all the manipulators:
-  if(!m_group_manipulators)
+  if(!m_group_edge_manipulators || !m_group_corner_manipulators)
     return;
 
-  const int count = m_group_manipulators->get_n_children();
+  int count = m_group_edge_manipulators->get_n_children();
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> child = m_group_manipulators->get_child(i);
+    Glib::RefPtr<Goocanvas::Item> child = m_group_edge_manipulators->get_child(i);
+    Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(child);
+    if(movable)
+    {
+      movable->set_grid(grid);
+    }
+  }
+
+  count = m_group_corner_manipulators->get_n_children();
+  for(int i = 0; i < count; ++i)
+  {
+    Glib::RefPtr<Goocanvas::Item> child = m_group_corner_manipulators->get_child(i);
     Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(child);
     if(movable)
     {
@@ -883,6 +913,21 @@ void CanvasGroupResizable::set_grid(const Glib::RefPtr<const CanvasGroupGrid>& g
     }
   }
 }
+
+void CanvasGroupResizable::show_selected()
+{
+  if(!m_group_edge_manipulators)
+    return;
+
+  Goocanvas::ItemVisibility edge_visibility = Goocanvas::ITEM_INVISIBLE;
+  if(get_selected())
+    edge_visibility = Goocanvas::ITEM_VISIBLE;
+
+  //This is also set the same way if set_manipulators_visibility(),
+  //in case that is called at some other time.
+  m_group_edge_manipulators->property_visibility() = edge_visibility;
+}
+
 
 
 } //namespace Glom

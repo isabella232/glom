@@ -395,7 +395,7 @@ sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayoutTool
     sharedptr<LayoutItem_Text> layout_item_derived = sharedptr<LayoutItem_Text>::create();
 
     // Note to translators: This is the default contents of a text item on a print layout: 
-    layout_item_derived->set_text(_("text"));
+    layout_item_derived->set_text(_("text")); //TODO: Choose some other longer default because this is hidden under the drag icon?
     layout_item = layout_item_derived;
     layout_item->set_print_layout_position(0, 0, 50, 10);
   }

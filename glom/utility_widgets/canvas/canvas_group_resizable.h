@@ -68,6 +68,7 @@ public:
   type_signal_resized signal_resized();
 
 private:
+  virtual void show_selected();
   virtual Goocanvas::Canvas* get_parent_canvas_widget();
 
   virtual void snap_position(double& x, double& y) const;
@@ -144,7 +145,8 @@ private:
 
   Glib::RefPtr<CanvasItemMovable> m_child;
 
-  Glib::RefPtr<Goocanvas::Group> m_group_manipulators; //not including the rect.
+  Glib::RefPtr<Goocanvas::Group> m_group_edge_manipulators; //not including the rect.
+  Glib::RefPtr<Goocanvas::Group> m_group_corner_manipulators; //not including the rect.
 
   //Manipulators for a rectangle:
   Glib::RefPtr<Goocanvas::Rect> m_rect; //Something to get events on, because m_child might actually be smaller than indicated by our manipulators.

@@ -1,5 +1,28 @@
 2011-08-05  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Allow the user to select items with a click.
+
+	* glom/utility_widgets/canvas/canvas_item_movable.[h|cc]: 
+	Added get/set_selected() and a virtual show_selected() which it calls.
+	on_button_release_event(): set the item as 
+	- selected if it unselected and the clicked without a move.
+	- unselected if it was selected and clicked without a move.
+	- selected if it was moved.
+	This is roughly like Inkscape's behaviour.
+	* glom/utility_widgets/canvas/canvas_group_resizable.[h|cc]:
+	Split the manipulator group into two groups (edges and corners), 
+	so we can (re)use the edges to show selection.
+	Implement show_selected() to show/hide the edges.
+	set_manipulator_visibility(): Make sure that we don't hide the 
+	edges that are visible to show selection.
+
+	This doesn't actuall do anything useful yet, but it will let us 
+	do things to the selected item(s), such as editing their position via 
+	coordinate numbers, moving them together, or copy/paste/cut/deleting 
+	them via the menus.
+
+2011-08-05  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Avoid warnings about -1 width.
 
 	* glom/utility_widgets/canvas/canvas_group_movable.cc: get_width_height(),
