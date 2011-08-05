@@ -89,6 +89,13 @@ private:
   void on_canvas_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint timestamp);
   void on_canvas_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint timestamp);
 
+  void on_canvas_selection_changed();
+
+  void on_spinbutton_x();
+  void on_spinbutton_y();
+  void on_spinbutton_width();
+  void on_spinbutton_height();
+
   //override:
   virtual bool on_configure_event(GdkEventConfigure* event);
 
@@ -121,6 +128,13 @@ private:
   Gtk::VBox* m_box;
   Gtk::ScrolledWindow m_scrolled_window;
   Canvas_PrintLayout m_canvas;
+
+  //Widgets that let the user edit item position and size:
+  Gtk::Box* m_box_item_position;
+  Gtk::SpinButton* m_spinbutton_x;
+  Gtk::SpinButton* m_spinbutton_y;
+  Gtk::SpinButton* m_spinbutton_width;
+  Gtk::SpinButton* m_spinbutton_height;
 
   //A preview of the item being dragged onto the canvas:
   bool m_drag_preview_requested;

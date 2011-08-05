@@ -70,6 +70,17 @@ public:
   typedef sigc::signal<void, guint, guint32> type_signal_show_context;
   type_signal_show_context signal_show_context();
 
+  /** For instance,
+   *   void on_selected();
+   */
+  typedef sigc::signal<void> type_signal_selected;
+
+  /** This signal is emitted if the user causes the item 
+   * to be selected or deselected. See get_selected().
+   */
+  type_signal_selected signal_selected();
+
+
   /** Provide information about a grid or rules,
    * to which the item should snap when moving:
    *
@@ -136,6 +147,7 @@ private:
 
   type_signal_moved m_signal_moved;
   type_signal_show_context m_signal_show_context;
+  type_signal_selected m_signal_selected;
 };
 
 } //namespace Glom

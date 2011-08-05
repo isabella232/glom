@@ -870,4 +870,43 @@ Base_DB::type_vecConstLayoutFields Canvas_PrintLayout::get_portal_fields_to_show
 }
 
 
+Canvas_PrintLayout::type_vec_items Canvas_PrintLayout::get_selected_items()
+{
+  type_vec_items result;
+
+  //TODO: Do this recursively.
+  Glib::RefPtr<Goocanvas::Item> root = m_items_group;
+  if(!root)
+    return result;
+
+  const int count = root->get_n_children();
+  for(int i = 0; i < count; ++i)
+  {
+    Glib::RefPtr<Goocanvas::Item> child = root->get_child(i);
+    Glib::RefPtr<CanvasLayoutItem> derived =
+      Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(child);
+    if(!derived)
+      continue;
+
+    if(derived->get_selected())
+      result.push_back(derived);
+  }
+
+  return result;
+}
+
+Canvas_PrintLayout::type_vec_const_items Canvas_PrintLayout::get_selected_items() const
+{
+  //TODO: This is inefficient. 
+  //We copy the vector items just to make them const.
+  Canvas_PrintLayout* unconst_this = const_cast<Canvas_PrintLayout*>(this); 
+  const type_vec_items unconst_result = unconst_this->get_selected_items();
+
+  type_vec_const_items result;
+  result.insert(result.begin(), 
+    unconst_result.begin(), unconst_result.end());
+
+  return result;
+}
+
 } //namespace Glom

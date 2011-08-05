@@ -22,7 +22,8 @@
 #define GLOM_UTILITY_WIDGETS_CANVAS_EDITABLE_H
 
 #include <goocanvasmm.h>
-#include "canvas_group_grid.h"
+#include <glom/utility_widgets/canvas/canvas_group_grid.h>
+#include <glom/utility_widgets/canvas/canvas_item_movable.h>
 #include <map>
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
@@ -54,13 +55,27 @@ public:
   void add_vertical_rule(double x);
   void add_horizontal_rule(double x);
 
+  //TODO: Actually emit this, so we actually show the context menu when clicking on blank space:
   /** void on_show_context(guint button, guint32 activate_time);
    */
   typedef sigc::signal<void, guint, guint32> type_signal_show_context;
   type_signal_show_context signal_show_context();
 
+
+  /** For instance,
+   *   void on_selection_changed();
+   */
+  typedef sigc::signal<void> type_signal_selection_changed;
+
+  /** This signal is emitted if the user causes items 
+   * to be selected or deselected. See get_selected_items().
+   */
+  type_signal_selection_changed signal_selection_changed();
+
 private:
   
+  void on_item_selected();
+
   static Glib::RefPtr<Goocanvas::Item> get_parent_container_or_self(const Glib::RefPtr<Goocanvas::Item>& item);
 
   bool m_dragging;
@@ -79,8 +94,9 @@ private:
 protected:
   Glib::RefPtr<CanvasGroupGrid> m_grid;
 
-public:
+private:
   type_signal_show_context m_signal_show_context;
+  type_signal_selection_changed m_signal_selection_changed;
 };
 
 } //namespace Glom

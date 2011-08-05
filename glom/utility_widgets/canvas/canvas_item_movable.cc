@@ -171,7 +171,8 @@ bool CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::It
 
 
   // A click without a move should select or deselect:
-  bool selected = !get_selected();
+  const bool old_selected = get_selected();
+  bool selected = !old_selected;
 
   // A drag-to-move should always select and never deselect:
   if(!selected)
@@ -187,7 +188,14 @@ bool CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::It
   }
 
   //This will also ask derived classes to indicate it visually:
+
   set_selected(selected);
+
+  //Notify of the selection change, if any:
+  if(selected != old_selected)
+  {
+    m_signal_selected.emit();
+  }
 
   return true;
 }
@@ -215,6 +223,11 @@ CanvasItemMovable::type_signal_moved CanvasItemMovable::signal_moved()
 CanvasItemMovable::type_signal_show_context CanvasItemMovable::signal_show_context()
 {
   return m_signal_show_context;
+}
+
+CanvasItemMovable::type_signal_selected CanvasItemMovable::signal_selected()
+{
+  return m_signal_selected;
 }
 
 void CanvasItemMovable::set_drag_cursor(const Glib::RefPtr<Gdk::Cursor>& cursor)

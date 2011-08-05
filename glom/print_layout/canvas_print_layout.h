@@ -62,6 +62,15 @@ public:
   void fill_with_data(const FoundSet& found_set);
 
   virtual void set_grid_gap(double gap = 20.0);
+
+  typedef std::vector< Glib::RefPtr<CanvasLayoutItem> > type_vec_items;
+
+  /** Get any items that have get_selected()==true.
+   */
+  type_vec_items get_selected_items();
+
+  typedef std::vector< Glib::RefPtr<const CanvasLayoutItem> > type_vec_const_items;
+  type_vec_const_items get_selected_items() const;
   
 private:
 
@@ -97,7 +106,7 @@ private:
   static void update_layout_position_from_canvas(const sharedptr<LayoutItem> layout_item, const Glib::RefPtr<const CanvasLayoutItem>& canvas_item);
 
   Glib::ustring m_table_name;
-  bool m_modified;
+  bool m_modified; //TODO: Actually check this?
 
   //A group containing the layout items, so we can remove them without removing anything else:
   Glib::RefPtr<Goocanvas::Group> m_items_group;

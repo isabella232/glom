@@ -1,3 +1,21 @@
+2011-08-06  Murray Cumming  <murrayc@murrayc.com>
+
+	Print Layout: Allow editing of positions and size numerically,
+
+	* ui/developer/window_print_layout_edit.glade: Add a row of SpinButtons
+	at the bottom to show the position and dimensins of the selected item,
+	also letting the user change them by changing the numbers.
+	* glom/utility_widgets/canvas/canvas_item_movable.[h|cc]:
+	Added signal_selected().
+	* glom/utility_widgets/canvas/canvas_editable.[h|cc]:
+	Added signal_selection_changed().
+	* glom/print_layout/canvas_print_layout.[h|cc]: 
+	Added get_selected_items().
+	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
+	Constructor: Get the SpinButton widgets from Gtk::Builder, and set their 
+	values when an item is selected. Also change the item when the values in 
+	the SpinButtons change.
+
 2011-08-05  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Allow the user to select items with a click.

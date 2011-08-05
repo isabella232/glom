@@ -44,6 +44,11 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_label_table_name(0),
   m_button_close(0),
   m_box(0),
+  m_box_item_position(0),
+  m_spinbutton_x(0),
+  m_spinbutton_y(0),
+  m_spinbutton_width(0),
+  m_spinbutton_height(0),
   m_drag_preview_requested(false),
   m_vruler(0),
   m_hruler(0),
@@ -60,6 +65,20 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   builder->get_widget("label_table_name", m_label_table_name);
   builder->get_widget("entry_name", m_entry_name);
   builder->get_widget("entry_title", m_entry_title);
+
+  builder->get_widget("box_item_position", m_box_item_position);
+  builder->get_widget("spinbutton_x", m_spinbutton_x);
+  m_spinbutton_x->signal_value_changed().connect(
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_spinbutton_x));
+  builder->get_widget("spinbutton_y", m_spinbutton_y);
+  m_spinbutton_y->signal_value_changed().connect(
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_spinbutton_y));
+  builder->get_widget("spinbutton_width", m_spinbutton_width);
+  m_spinbutton_width->signal_value_changed().connect(
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_spinbutton_width));
+  builder->get_widget("spinbutton_height", m_spinbutton_height);
+  m_spinbutton_height->signal_value_changed().connect(
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_spinbutton_height));
 
   //The rulers are not in the glade file because they use an unusual widget 
   //that Glade wouldn't usually know about:
@@ -126,6 +145,10 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   setup_context_menu();
   m_canvas.signal_show_context().connect(sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_show_context_menu));
 
+  m_canvas.signal_selection_changed().connect(
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_selection_changed));
+  on_canvas_selection_changed(); //Disable relevant widgets by default.
+  
   show_all_children();
 }
 
@@ -858,6 +881,12 @@ void Window_PrintLayout_Edit::on_menu_file_page_setup()
   set_ruler_sizes();
 }
 
+static void spinbutton_set_max(Gtk::SpinButton& spinbutton, double max)
+{
+  spinbutton.set_range(0, max);
+  spinbutton.set_increments(1, 10);
+}
+
 void Window_PrintLayout_Edit::set_ruler_sizes()
 {
   //Note: We should use the page size if we decide not to make the canvas bounds == page size.
@@ -871,6 +900,12 @@ void Window_PrintLayout_Edit::set_ruler_sizes()
 
   gimp_ruler_set_range(m_hruler, x1, x2, x2);
   gimp_ruler_set_range(m_vruler, y1, y2, x2);
+
+  //Set the limits for the SpinButtons too:
+  spinbutton_set_max(*m_spinbutton_x, x2);
+  spinbutton_set_max(*m_spinbutton_y, y2);
+  spinbutton_set_max(*m_spinbutton_width, x2);
+  spinbutton_set_max(*m_spinbutton_height, y2);
 }
 
 void Window_PrintLayout_Edit::on_scroll_value_changed()
@@ -900,6 +935,137 @@ bool Window_PrintLayout_Edit::on_configure_event(GdkEventConfigure* event)
     on_menu_view_fitpagewidth();
 
   return result;
+}
+
+void Window_PrintLayout_Edit::on_canvas_selection_changed()
+{
+  Canvas_PrintLayout::type_vec_items items = m_canvas.get_selected_items();
+  
+  double x = 0;
+  double y = 0;
+  double x2 = 0;
+  double y2 = 0;
+  bool first = true;
+  for(Canvas_PrintLayout::type_vec_items::const_iterator iter = items.begin();
+    iter != items.end(); ++iter)
+  {
+    Glib::RefPtr<CanvasLayoutItem> item = *iter;
+    if(!item)
+      continue;
+
+    double item_x = 0;
+    double item_y = 0;
+    item->get_xy(item_x, item_y);
+    double item_width = 0;
+    double item_height = 0;
+    item->get_width_height(item_width, item_height);
+    const double item_x2 = item_x + item_width;
+    const double item_y2 = item_y + item_height;
+
+    if(first || item_x < x)
+      x = item_x;
+
+    if(first || item_y < y)
+      y = item_y;
+
+    if(item_x2 > x2)
+      x2 = item_x2;
+
+    if(item_y2 > y2)
+      y2 = item_y2;
+
+    first = false;
+  }
+
+  const double width = x2 - x;
+  const double height = y2 - y;
+
+  m_spinbutton_x->set_value(x);
+  m_spinbutton_y->set_value(y);
+  m_spinbutton_width->set_value(width);
+  m_spinbutton_height->set_value(height);
+
+  //Disable the spinbuttons if there are no items selected,
+  //or if there are more than 1.
+  //TODO: Let the user resize groups of items.
+  const bool enable = (items.size() == 1);
+  m_box_item_position->set_sensitive(enable);
+}
+
+void Window_PrintLayout_Edit::on_spinbutton_x()
+{
+  Canvas_PrintLayout::type_vec_items items = m_canvas.get_selected_items();
+  if(items.empty())
+    return;
+
+  Glib::RefPtr<CanvasLayoutItem> item = items[0];
+  if(!item)
+    return;
+
+  double x = 0;
+  double y = 0;
+  item->get_xy(x, y);
+
+  item->set_xy(
+    m_spinbutton_x->get_value(),
+    y);
+}
+
+void Window_PrintLayout_Edit::on_spinbutton_y()
+{
+  Canvas_PrintLayout::type_vec_items items = m_canvas.get_selected_items();
+  if(items.empty())
+    return;
+
+  Glib::RefPtr<CanvasLayoutItem> item = items[0];
+  if(!item)
+    return;
+
+  double x = 0;
+  double y = 0;
+  item->get_xy(x, y);
+
+  item->set_xy(
+    x,
+    m_spinbutton_y->get_value());
+}
+
+void Window_PrintLayout_Edit::on_spinbutton_width()
+{
+  Canvas_PrintLayout::type_vec_items items = m_canvas.get_selected_items();
+  if(items.empty())
+    return;
+
+  Glib::RefPtr<CanvasLayoutItem> item = items[0];
+  if(!item)
+    return;
+
+  double width = 0;
+  double height = 0;
+  item->get_width_height(width, height);
+
+  item->set_width_height(
+    m_spinbutton_width->get_value(),
+    height);
+}
+
+void Window_PrintLayout_Edit::on_spinbutton_height()
+{
+  Canvas_PrintLayout::type_vec_items items = m_canvas.get_selected_items();
+  if(items.empty())
+    return;
+
+  Glib::RefPtr<CanvasLayoutItem> item = items[0];
+  if(!item)
+    return;
+
+  double width = 0;
+  double height = 0;
+  item->get_width_height(width, height);
+
+  item->set_width_height(
+    width,
+    m_spinbutton_height->get_value());
 }
 
 

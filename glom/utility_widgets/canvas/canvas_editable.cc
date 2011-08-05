@@ -90,7 +90,13 @@ void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, const G
 
   Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(item);
   if(movable)
+  {
     movable->set_grid(m_grid);
+
+    //Let this canvas item signal whenever any of its children are selected or deselected:
+    movable->signal_selected().connect(
+      sigc::mem_fun(*this, &CanvasEditable::on_item_selected));
+  }
 }
 
 void CanvasEditable::remove_all_items()
@@ -142,6 +148,16 @@ void CanvasEditable::remove_grid()
 CanvasEditable::type_signal_show_context CanvasEditable::signal_show_context()
 {
   return m_signal_show_context;
+}
+
+CanvasEditable::type_signal_selection_changed CanvasEditable::signal_selection_changed()
+{
+  return m_signal_selection_changed;
+}
+
+void CanvasEditable::on_item_selected()
+{
+  m_signal_selection_changed.emit();
 }
 
 } //namespace Glom
