@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-07-25 09:56+0000\n"
-"PO-Revision-Date: 2011-07-26 10:48+0200\n"
+"POT-Creation-Date: 2011-08-06 09:40+0000\n"
+"PO-Revision-Date: 2011-08-06 12:53+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -33,7 +33,7 @@ msgstr ""
 "Espere mientras Glom prepara su sistema para publicar a través de la red."
 
 #: ../glom/application.cc:287 ../glom/bakery/app_withdoc_gtk.cc:248
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:137
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:159
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:58
 msgid "_File"
 msgstr "_Archivo"
@@ -478,8 +478,8 @@ msgid ""
 "There was an error while restoring the backup. The tar utility failed to "
 "extract the archive."
 msgstr ""
-"Ocurrió un error al restaurar el respaldo. La utilidad «tar» falló al extraer "
-"el archivo."
+"Ocurrió un error al restaurar el respaldo. La utilidad «tar» falló al "
+"extraer el archivo."
 
 #: ../glom/application.cc:2947
 msgid ""
@@ -1209,7 +1209,7 @@ msgstr "Número"
 #: ../glom/libglom/data_structure/translatable_item.cc:317
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1154
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:620
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:661
 msgid "Text"
 msgstr "Texto"
 
@@ -1303,7 +1303,7 @@ msgstr "Calendario del portal"
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:194
 #: ../glom/libglom/data_structure/translatable_item.cc:297
 #: ../glom/mode_design/dialog_database_preferences.cc:62
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:616
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:657
 #: ../ui/developer/window_field_definition_edit.glade.h:2
 msgid "Field"
 msgstr "Campo"
@@ -1860,7 +1860,7 @@ msgstr "Botón nuevo"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
 #: ../glom/mode_data/flowtablewithfields.cc:1240
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:394
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:421
 msgid "text"
 msgstr "texto"
 
@@ -1921,7 +1921,7 @@ msgid "Next Value"
 msgstr "Siguiente valor"
 
 #: ../glom/mode_design/dialog_design.cc:52
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:507
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:551
 #: ../ui/developer/window_design.glade.h:3
 msgid "None selected"
 msgstr "Ninguno seleccionado"
@@ -2345,69 +2345,69 @@ msgstr ""
 "Arrastre esto a la distribución para añadir un nuevo portal de registros "
 "relacionados."
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:138
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:160
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:59
 msgid "Page _Setup"
 msgstr "_Configuración de la página"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:147
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:169
 msgid "_Insert"
 msgstr "_Insertar"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:148
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:170
 msgid "Insert _Field"
 msgstr "Insertar c_ampo"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:150
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:172
 msgid "Insert _Text"
 msgstr "Insertar _texto"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:152
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:174
 msgid "Insert _Image"
 msgstr "Insertar _imagen"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:154
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:176
 msgid "Insert _Related Records"
 msgstr "Buscar registros _relacionados"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:156
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:178
 msgid "Insert _Horizontal Line"
 msgstr "Insertar línea _horizontal"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:158
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:180
 msgid "Insert _Vertical Line"
 msgstr "Insertar línea _vertical"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:161
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:183
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:64
 msgid "_View"
 msgstr "_Ver"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:162
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:184
 msgid "Show Grid"
 msgstr "Mostrar rejilla"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:164
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:186
 msgid "Show Rules"
 msgstr "Mostrar reglas"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:168
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:190
 msgid "Fit Page _Width"
 msgstr "Ajustar al _ancho de página"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:171
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:194
 msgid "Zoom 200%"
 msgstr "Ampliación 200%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:176
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:202
 msgid "Zoom 50%"
 msgstr "Ampliación 50%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:181
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:206
 msgid "Zoom 25%"
 msgstr "Ampliación 25%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:614
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:655
 msgid "Insert"
 msgstr "Insertar"
 
@@ -2988,7 +2988,6 @@ msgstr "_Seleccionar"
 #: ../ui/developer/window_data_layout_export.glade.h:1
 #: ../ui/developer/window_data_layout.glade.h:5
 #: ../ui/developer/window_design.glade.h:1
-#: ../ui/developer/window_print_layout_edit.glade.h:2
 #: ../ui/developer/window_report_layout.glade.h:3
 msgid "<b>Table:</b>"
 msgstr "<b>Tabla:</b>"
@@ -3272,6 +3271,7 @@ msgid "Group Properties"
 msgstr "Propiedades del grupo"
 
 #: ../ui/developer/dialog_flowtable.glade.h:3
+#: ../ui/developer/window_print_layout_edit.glade.h:5
 msgid "Title:"
 msgstr "Título:"
 
@@ -3474,7 +3474,6 @@ msgstr "Confirme la contraseña"
 #: ../ui/developer/window_button_script.glade.h:1
 #: ../ui/developer/window_data_layout.glade.h:6
 #: ../ui/developer/window_imageobject.glade.h:2
-#: ../ui/developer/window_print_layout_edit.glade.h:3
 #: ../ui/developer/window_textobject.glade.h:2
 msgid "<b>Title:</b>"
 msgstr "<b>Título:</b>"
@@ -3610,7 +3609,6 @@ msgid "None"
 msgstr "Ninguno"
 
 #: ../ui/developer/window_data_layout.glade.h:27
-#| msgid "_Number of sample rows:"
 msgid "Number of rows to show:"
 msgstr "Número de filas que mostrar:"
 
@@ -3870,16 +3868,35 @@ msgid "Image Object"
 msgstr "Objeto imagen"
 
 #: ../ui/developer/window_print_layout_edit.glade.h:1
-msgid "<b>Layout name:</b>"
-msgstr "<b>Nombre de la distribución:</b>"
+#| msgid "<b>Table:</b>"
+msgid "<b>Table Name</b>"
+msgstr "<b>Nombre de la tabla:</b>"
+
+#: ../ui/developer/window_print_layout_edit.glade.h:2
+#| msgid "Right"
+msgid "Height:"
+msgstr "Altura:"
+
+#: ../ui/developer/window_print_layout_edit.glade.h:3
+#| msgid "<b>Layout name:</b>"
+msgid "Layout name:"
+msgstr "Nombre de la distribución:"
 
 #: ../ui/developer/window_print_layout_edit.glade.h:4
 msgid "Print Layout Editor"
 msgstr "Editor de la distribución de impresión"
 
-#: ../ui/developer/window_print_layout_edit.glade.h:5
-msgid "Table Name"
-msgstr "Nombre de la tabla"
+#: ../ui/developer/window_print_layout_edit.glade.h:6
+msgid "Width:"
+msgstr "Anchura:"
+
+#: ../ui/developer/window_print_layout_edit.glade.h:7
+msgid "X:"
+msgstr "X:"
+
+#: ../ui/developer/window_print_layout_edit.glade.h:8
+msgid "Y:"
+msgstr "Y:"
 
 #: ../ui/developer/window_report_layout.glade.h:1
 msgid "<b>Available Parts</b>"
@@ -3969,6 +3986,9 @@ msgstr "<b>Grupo</b>"
 #: ../ui/developer/window_users.glade.h:2
 msgid "<b>Users</b>"
 msgstr "<b>Usuarios</b>"
+
+#~ msgid "Table Name"
+#~ msgstr "Nombre de la tabla"
 
 #~| msgid "All files"
 #~ msgid "All Files"
