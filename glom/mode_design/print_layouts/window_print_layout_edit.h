@@ -150,11 +150,15 @@ private:
 
   //A cache of the selected item,
   //to avoid repeatedly requesting it:
-  Glib::RefPtr<CanvasLayoutItem> m_layout_item_selected;
-  sigc::connection connection_item_selected_moved;
+  typedef std::vector< Glib::RefPtr<CanvasLayoutItem> > type_vec_canvas_items;
+  type_vec_canvas_items m_layout_items_selected;
+
+  typedef std::vector<sigc::connection> type_vec_connections;
+  type_vec_connections m_connections_items_selected_moved;
 
   //A copied item to be pasted later:
-  sharedptr<LayoutItem> m_layout_item_to_paste;
+  typedef LayoutGroup::type_list_items type_list_items;
+  type_list_items m_layout_items_to_paste;
 
   GimpRuler* m_vruler;
   GimpRuler* m_hruler;

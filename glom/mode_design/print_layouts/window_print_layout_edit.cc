@@ -904,46 +904,68 @@ void Window_PrintLayout_Edit::on_menu_edit_cut()
 
 void Window_PrintLayout_Edit::on_menu_edit_copy()
 {
-  if(!m_layout_item_selected)
+  if(m_layout_items_selected.empty())
     return;
 
-  m_layout_item_selected->update_layout_position_from_canvas();
-  m_layout_item_to_paste = 
-    glom_sharedptr_clone(m_layout_item_selected->get_layout_item());
+  m_layout_items_to_paste.clear();
+
+  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
+    iter != m_layout_items_selected.end(); ++iter)
+  {
+    Glib::RefPtr<CanvasLayoutItem> item = *iter;
+    if(item)
+      item->update_layout_position_from_canvas();
+
+    sharedptr<LayoutItem> cloned = 
+      glom_sharedptr_clone(item->get_layout_item());
+
+    m_layout_items_to_paste.push_back(cloned);
+  }
 
   m_action_edit_paste->set_sensitive();
 }
 
 void Window_PrintLayout_Edit::on_menu_edit_paste()
 {
-  if(!m_layout_item_to_paste)
+  if(m_layout_items_to_paste.empty())
     return;
 
-  //TODO: Add x,y offset and add.
-  double x = 0;
-  double y = 0;
-  double width = 0;
-  double height = 0;
-  m_layout_item_to_paste->get_print_layout_position(
-    x, y, width, height);
+  for(type_list_items::iterator iter = m_layout_items_to_paste.begin();
+    iter != m_layout_items_to_paste.end(); ++iter)
+  {
+    sharedptr<LayoutItem> item = *iter;
+    if(!item)
+      continue;
 
-  const double offset = 5;
-  x += offset;
-  y += offset;
-  m_layout_item_to_paste->set_print_layout_position(x, y, width, height);
+    //TODO: Add x,y offset and add.
+    double x = 0;
+    double y = 0;
+    double width = 0;
+    double height = 0;
+    item->get_print_layout_position(
+      x, y, width, height);
 
-  Glib::RefPtr<CanvasLayoutItem> item = 
-    CanvasLayoutItem::create(m_layout_item_to_paste);
-  m_canvas.add_canvas_layout_item(item);
+    const double offset = 5;
+    x += offset;
+    y += offset;
+    item->set_print_layout_position(x, y, width, height);
+
+    Glib::RefPtr<CanvasLayoutItem> canvas_item = 
+      CanvasLayoutItem::create(item);
+    m_canvas.add_canvas_layout_item(canvas_item);
+  }
 }
 
 void Window_PrintLayout_Edit::on_menu_edit_delete()
 {
-  if(!m_layout_item_selected)
-     return;
+  while(!m_layout_items_selected.empty())
+  {
+    Glib::RefPtr<CanvasLayoutItem> item = m_layout_items_selected[0];
+    if(item)
+      m_canvas.remove_canvas_layout_item(item);
+  }
 
-  m_canvas.remove_canvas_layout_item(m_layout_item_selected);
-  m_layout_item_selected.reset();
+  m_layout_items_selected.clear();
 }
 
 static void spinbutton_set_max(Gtk::SpinButton& spinbutton, double max)
@@ -1005,7 +1027,18 @@ bool Window_PrintLayout_Edit::on_configure_event(GdkEventConfigure* event)
 void Window_PrintLayout_Edit::on_canvas_selection_changed()
 {
   Canvas_PrintLayout::type_vec_items items = m_canvas.get_selected_items();
+
+  //Forget about any previously selected items:
+  m_layout_items_selected.clear();
+  for(type_vec_connections::iterator iter = m_connections_items_selected_moved.begin();
+    iter != m_connections_items_selected_moved.end(); ++iter)
+  {
+    iter->disconnect();
+  }
+  m_connections_items_selected_moved.clear();
   
+
+  //Get the selected items, and their dimensions as a group:
   double x = 0;
   double y = 0;
   double x2 = 0;
@@ -1018,6 +1051,13 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
     if(!item)
       continue;
 
+    //Cache the selected items and handle their signal_moved signals:
+    m_layout_items_selected.push_back(item);
+    m_connections_items_selected_moved.push_back(
+      item->signal_moved().connect(
+        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_selected_item_moved)));
+
+    //Get the position:
     double item_x = 0;
     double item_y = 0;
     item->get_xy(item_x, item_y);
@@ -1027,6 +1067,7 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
     const double item_x2 = item_x + item_width;
     const double item_y2 = item_y + item_height;
 
+    //Store the outermost positions of the group of items:
     if(first || item_x < x)
       x = item_x;
 
@@ -1040,21 +1081,6 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
       y2 = item_y2;
 
     first = false;
-  }
-
-  const bool one_selected = (items.size() == 1);
-  if(one_selected)
-  {
-    m_layout_item_selected = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(items[0]);
-    connection_item_selected_moved.disconnect();
-    connection_item_selected_moved = 
-      m_layout_item_selected->signal_moved().connect(
-        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_selected_item_moved));
-  }
-  else
-  {
-    m_layout_item_selected.reset();
-    connection_item_selected_moved.disconnect();
   }
 
   const double width = x2 - x;
@@ -1073,16 +1099,18 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
   //Disable the spinbuttons if there are no items selected,
   //or if there are more than 1.
   //TODO: Let the user resize groups of items.
+  const bool one_selected = (m_layout_items_selected.size() == 1);
   m_box_item_position->set_sensitive(one_selected);
 
+  const bool some_selected = !m_layout_items_selected.empty();
   if(m_action_edit_cut)
-    m_action_edit_cut->set_sensitive(one_selected);
+    m_action_edit_cut->set_sensitive(some_selected);
 
   if(m_action_edit_copy)
-    m_action_edit_copy->set_sensitive(one_selected);
+    m_action_edit_copy->set_sensitive(some_selected);
 
   if(m_action_edit_delete)
-    m_action_edit_delete->set_sensitive(one_selected);
+    m_action_edit_delete->set_sensitive(some_selected);
 }
 
 void Window_PrintLayout_Edit::on_selected_item_moved()
@@ -1096,14 +1124,16 @@ void Window_PrintLayout_Edit::on_spinbutton_x()
   if(m_ignore_spinbutton_signals)
     return;
 
-  if(!m_layout_item_selected)
+  if(m_layout_items_selected.empty())
     return;
+
+  Glib::RefPtr<CanvasLayoutItem> item = m_layout_items_selected[0];
 
   double x = 0;
   double y = 0;
-  m_layout_item_selected->get_xy(x, y);
+  item->get_xy(x, y);
 
-  m_layout_item_selected->set_xy(
+  item->set_xy(
     m_spinbutton_x->get_value(),
     y);
 }
@@ -1113,14 +1143,16 @@ void Window_PrintLayout_Edit::on_spinbutton_y()
   if(m_ignore_spinbutton_signals)
     return;
 
-  if(!m_layout_item_selected)
+  if(m_layout_items_selected.empty())
     return;
+
+  Glib::RefPtr<CanvasLayoutItem> item = m_layout_items_selected[0];
 
   double x = 0;
   double y = 0;
-  m_layout_item_selected->get_xy(x, y);
+  item->get_xy(x, y);
 
-  m_layout_item_selected->set_xy(
+  item->set_xy(
     x,
     m_spinbutton_y->get_value());
 }
@@ -1130,14 +1162,16 @@ void Window_PrintLayout_Edit::on_spinbutton_width()
   if(m_ignore_spinbutton_signals)
     return;
 
-  if(!m_layout_item_selected)
+  if(m_layout_items_selected.empty())
     return;
+
+  Glib::RefPtr<CanvasLayoutItem> item = m_layout_items_selected[0];
 
   double width = 0;
   double height = 0;
-  m_layout_item_selected->get_width_height(width, height);
+  item->get_width_height(width, height);
 
-  m_layout_item_selected->set_width_height(
+  item->set_width_height(
     m_spinbutton_width->get_value(),
     height);
 }
@@ -1147,14 +1181,16 @@ void Window_PrintLayout_Edit::on_spinbutton_height()
   if(m_ignore_spinbutton_signals)
     return;
 
-  if(!m_layout_item_selected)
+  if(m_layout_items_selected.empty())
     return;
+
+  Glib::RefPtr<CanvasLayoutItem> item = m_layout_items_selected[0];
 
   double width = 0;
   double height = 0;
-  m_layout_item_selected->get_width_height(width, height);
+  item->get_width_height(width, height);
 
-  m_layout_item_selected->set_width_height(
+  item->set_width_height(
     width,
     m_spinbutton_height->get_value());
 }

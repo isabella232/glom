@@ -1,5 +1,19 @@
 2011-08-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Canvas_PrintLayout: Edit menu: Support multiple items.
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
+	on_canvas_selection_changed(): Store all the seleced items in a 
+	vector instead of just one.
+	on_menu_edit_copy(): Clone all the selected items in a vector, 
+	instead of just one.
+	on_menu_edit_paste(): Paste all the items, instead of just one.
+	on_menu_edit_delete(): Delete all the items, instead of just one.
+	on_spinbutton_*(): Adapt. These still assume that the SpinButtons 
+	are only editable when only one item is selected.
+
+2011-08-06  Murray Cumming  <murrayc@murrayc.com>
+
 	Canvas_PrintLayout: Update position numbers when moving items.
 
 	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
