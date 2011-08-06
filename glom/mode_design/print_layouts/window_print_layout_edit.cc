@@ -49,6 +49,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_spinbutton_y(0),
   m_spinbutton_width(0),
   m_spinbutton_height(0),
+  m_ignore_spinbutton_signals(false),
   m_drag_preview_requested(false),
   m_vruler(0),
   m_hruler(0),
@@ -1043,17 +1044,31 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
 
   const bool one_selected = (items.size() == 1);
   if(one_selected)
+  {
     m_layout_item_selected = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(items[0]);
+    connection_item_selected_moved.disconnect();
+    connection_item_selected_moved = 
+      m_layout_item_selected->signal_moved().connect(
+        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_selected_item_moved));
+  }
   else
+  {
     m_layout_item_selected.reset();
+    connection_item_selected_moved.disconnect();
+  }
 
   const double width = x2 - x;
   const double height = y2 - y;
 
+  //Update the SpinButton values,
+  //but don't respond to the SpinButton changes that we cause programatically:
+  const bool old_ignore = m_ignore_spinbutton_signals;
+  m_ignore_spinbutton_signals = true;
   m_spinbutton_x->set_value(x);
   m_spinbutton_y->set_value(y);
   m_spinbutton_width->set_value(width);
   m_spinbutton_height->set_value(height);
+  m_ignore_spinbutton_signals = old_ignore;
 
   //Disable the spinbuttons if there are no items selected,
   //or if there are more than 1.
@@ -1070,8 +1085,17 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
     m_action_edit_delete->set_sensitive(one_selected);
 }
 
+void Window_PrintLayout_Edit::on_selected_item_moved()
+{
+  //Show the new positions in the spinbuttons:
+  on_canvas_selection_changed();
+}
+
 void Window_PrintLayout_Edit::on_spinbutton_x()
 {
+  if(m_ignore_spinbutton_signals)
+    return;
+
   if(!m_layout_item_selected)
     return;
 
@@ -1086,6 +1110,9 @@ void Window_PrintLayout_Edit::on_spinbutton_x()
 
 void Window_PrintLayout_Edit::on_spinbutton_y()
 {
+  if(m_ignore_spinbutton_signals)
+    return;
+
   if(!m_layout_item_selected)
     return;
 
@@ -1100,6 +1127,9 @@ void Window_PrintLayout_Edit::on_spinbutton_y()
 
 void Window_PrintLayout_Edit::on_spinbutton_width()
 {
+  if(m_ignore_spinbutton_signals)
+    return;
+
   if(!m_layout_item_selected)
     return;
 
@@ -1114,6 +1144,9 @@ void Window_PrintLayout_Edit::on_spinbutton_width()
 
 void Window_PrintLayout_Edit::on_spinbutton_height()
 {
+  if(m_ignore_spinbutton_signals)
+    return;
+
   if(!m_layout_item_selected)
     return;
 

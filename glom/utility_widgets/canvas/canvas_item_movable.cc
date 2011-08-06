@@ -150,6 +150,11 @@ bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
 
     set_xy(new_x, new_y);
 
+    // A click with a move should always select:
+    // We emit this before signal_moved,
+    // so that its signal handler can know about the selection.
+    set_selected(true);
+
     m_signal_moved.emit();
 
     return true; //We handled this event.
@@ -188,14 +193,7 @@ bool CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::It
   }
 
   //This will also ask derived classes to indicate it visually:
-
   set_selected(selected);
-
-  //Notify of the selection change, if any:
-  if(selected != old_selected)
-  {
-    m_signal_selected.emit();
-  }
 
   return true;
 }
@@ -409,8 +407,15 @@ Glib::RefPtr<const Goocanvas::Item> CanvasItemMovable::cast_const_to_item(const 
 
 void CanvasItemMovable::set_selected(bool selected)
 {
+  const bool old_selected = m_selected;
   m_selected = selected;
-  show_selected(); //Let derived classes indicate it visually,
+  show_selected(); //Let derived classes indicate it visually.
+
+  //Notify of the selection change, if any:
+  if(m_selected != old_selected)
+  {
+    m_signal_selected.emit();
+  }
 }
 
 bool CanvasItemMovable::get_selected() const

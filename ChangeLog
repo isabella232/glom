@@ -1,8 +1,23 @@
 2011-08-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Canvas_PrintLayout: Update position numbers when moving items.
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
+	on_canvas_selection_changed(): Connect to the item's signal_moved,
+	so we can update the spinbuttons during the move.
+	on_spinbutton_*(): Ignore the spinbutton signals while we are setting
+	them programatically, to avoid an endless loop.
+	* glom/utility_widgets/canvas/canvas_item_movable.cc:
+	set_selected(): Emit the signal here if it has changed, rather than 
+	always doing it after the call.
+	on_motion_notify_event(): Mark the item as selected whenever it is 
+	moved, therefore emitting the signal.
+
+2011-08-06  Murray Cumming  <murrayc@murrayc.com>
+
 	Canvas_PrintLayout: Fix typo to pass the item by reference.
 
-	* glom/print_layout/canvas_print_layout.[h|cc]: 
+	* glom/print_layout/canvas_print_layout.[h|cc]:
 	add_canvas_layout_item(): Add a missing & to the parameter.
 
 2011-08-06  Murray Cumming  <murrayc@murrayc.com>

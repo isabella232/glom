@@ -96,6 +96,7 @@ private:
   void on_canvas_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint timestamp);
 
   void on_canvas_selection_changed();
+  void on_selected_item_moved();
 
   void on_spinbutton_x();
   void on_spinbutton_y();
@@ -141,6 +142,7 @@ private:
   Gtk::SpinButton* m_spinbutton_y;
   Gtk::SpinButton* m_spinbutton_width;
   Gtk::SpinButton* m_spinbutton_height;
+  bool m_ignore_spinbutton_signals;
 
   //A preview of the item being dragged onto the canvas:
   bool m_drag_preview_requested;
@@ -149,6 +151,7 @@ private:
   //A cache of the selected item,
   //to avoid repeatedly requesting it:
   Glib::RefPtr<CanvasLayoutItem> m_layout_item_selected;
+  sigc::connection connection_item_selected_moved;
 
   //A copied item to be pasted later:
   sharedptr<LayoutItem> m_layout_item_to_paste;
