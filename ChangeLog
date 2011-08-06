@@ -1,5 +1,15 @@
 2011-08-06  Murray Cumming  <murrayc@murrayc.com>
 
+	CanvasItemMovable: set_selected(): Do not emit the signal here.
+
+	* glom/utility_widgets/canvas/canvas_item_movable.cc:
+	set_selected(): Do not emit signal_selected here, because it should 
+	only be emitted when the user causes it.
+	on_button_release_event(), on_motion_notify_event():
+	Emit the signal if necessary.
+
+2011-08-06  Murray Cumming  <murrayc@murrayc.com>
+
 	Canvas_PrintLayout: Edit menu: Support multiple items.
 
 	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
