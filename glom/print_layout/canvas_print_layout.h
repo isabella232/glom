@@ -57,7 +57,7 @@ public:
   void hide_page_bounds();
 
   //Override: TODO: Is it really?
-  void add_canvas_layout_item(const Glib::RefPtr<CanvasLayoutItem> item);
+  void add_canvas_layout_item(const Glib::RefPtr<CanvasLayoutItem>& item);
 
   void remove_canvas_layout_item(const Glib::RefPtr<CanvasLayoutItem>& item);
 

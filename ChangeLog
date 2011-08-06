@@ -1,5 +1,12 @@
 2011-08-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Canvas_PrintLayout: Fix typo to pass the item by reference.
+
+	* glom/print_layout/canvas_print_layout.[h|cc]: 
+	add_canvas_layout_item(): Add a missing & to the parameter.
+
+2011-08-06  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Implement cut/copy/paste/delete.
 
 	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:

@@ -153,7 +153,7 @@ void Canvas_PrintLayout::add_layout_group_children(const sharedptr<LayoutGroup>&
   m_modified = true;
 }
 
-void Canvas_PrintLayout::add_canvas_layout_item(const Glib::RefPtr<CanvasLayoutItem> item) //TODO: Pass by ref.
+void Canvas_PrintLayout::add_canvas_layout_item(const Glib::RefPtr<CanvasLayoutItem>& item)
 {
   if(!item)
     return;
