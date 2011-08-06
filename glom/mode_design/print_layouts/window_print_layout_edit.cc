@@ -990,80 +990,65 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
   //TODO: Let the user resize groups of items.
   const bool enable = (items.size() == 1);
   m_box_item_position->set_sensitive(enable);
+
+  if(enable)
+    m_layout_item_selected = items[0];
+  else
+    m_layout_item_selected.reset();
 }
 
 void Window_PrintLayout_Edit::on_spinbutton_x()
 {
-  Canvas_PrintLayout::type_vec_items items = m_canvas.get_selected_items();
-  if(items.empty())
-    return;
-
-  Glib::RefPtr<CanvasLayoutItem> item = items[0];
-  if(!item)
+  if(!m_layout_item_selected)
     return;
 
   double x = 0;
   double y = 0;
-  item->get_xy(x, y);
+  m_layout_item_selected->get_xy(x, y);
 
-  item->set_xy(
+  m_layout_item_selected->set_xy(
     m_spinbutton_x->get_value(),
     y);
 }
 
 void Window_PrintLayout_Edit::on_spinbutton_y()
 {
-  Canvas_PrintLayout::type_vec_items items = m_canvas.get_selected_items();
-  if(items.empty())
-    return;
-
-  Glib::RefPtr<CanvasLayoutItem> item = items[0];
-  if(!item)
+  if(!m_layout_item_selected)
     return;
 
   double x = 0;
   double y = 0;
-  item->get_xy(x, y);
+  m_layout_item_selected->get_xy(x, y);
 
-  item->set_xy(
+  m_layout_item_selected->set_xy(
     x,
     m_spinbutton_y->get_value());
 }
 
 void Window_PrintLayout_Edit::on_spinbutton_width()
 {
-  Canvas_PrintLayout::type_vec_items items = m_canvas.get_selected_items();
-  if(items.empty())
-    return;
-
-  Glib::RefPtr<CanvasLayoutItem> item = items[0];
-  if(!item)
+  if(!m_layout_item_selected)
     return;
 
   double width = 0;
   double height = 0;
-  item->get_width_height(width, height);
+  m_layout_item_selected->get_width_height(width, height);
 
-  item->set_width_height(
+  m_layout_item_selected->set_width_height(
     m_spinbutton_width->get_value(),
     height);
 }
 
 void Window_PrintLayout_Edit::on_spinbutton_height()
 {
-  Canvas_PrintLayout::type_vec_items items = m_canvas.get_selected_items();
-  if(items.empty())
-    return;
-
-  Glib::RefPtr<CanvasLayoutItem> item = items[0];
-  if(!item)
+  if(!m_layout_item_selected)
     return;
 
   double width = 0;
   double height = 0;
-  item->get_width_height(width, height);
+  m_layout_item_selected->get_width_height(width, height);
 
-  item->set_width_height(
+  m_layout_item_selected->set_width_height(
     width,
     m_spinbutton_height->get_value());
 }

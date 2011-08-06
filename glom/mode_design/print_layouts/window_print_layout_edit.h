@@ -140,6 +140,10 @@ private:
   bool m_drag_preview_requested;
   Glib::RefPtr<CanvasLayoutItem> m_layout_item_dropping;
 
+  //A cache of the selected item,
+  //to avoid repeatedly requesting it:
+  Glib::RefPtr<CanvasLayoutItem> m_layout_item_selected;
+
   GimpRuler* m_vruler;
   GimpRuler* m_hruler;
 
@@ -158,6 +162,7 @@ private:
   Gtk::Menu* m_context_menu;
   Glib::RefPtr<Gtk::ActionGroup> m_context_menu_action_group;
   Glib::RefPtr<Gtk::UIManager> m_context_menu_uimanager;
+
 };
 
 } //namespace Glom

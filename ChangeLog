@@ -1,5 +1,13 @@
 2011-08-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Cache the selected item.
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
+	Store the selected item, when it changes, instead of repeatedly 
+	requesting it, which requires iteration.
+
+2011-08-06  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Allow editing of positions and size numerically,
 
 	* ui/developer/window_print_layout_edit.glade: Add a row of SpinButtons
