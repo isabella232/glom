@@ -90,8 +90,7 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
     //TODO: Catch an exception
     key_file.load_from_data(key_file_text);
 
-    //TODO: Use this when gtkmm and GTK+ have been fixed: page_setup = Gtk::PageSetup::create(key_file);
-    page_setup = Glib::wrap(gtk_page_setup_new_from_key_file(key_file.gobj(), 0, 0));
+    page_setup = Gtk::PageSetup::create_from_key_file(key_file);
   }
 
   set_page_setup(page_setup);
