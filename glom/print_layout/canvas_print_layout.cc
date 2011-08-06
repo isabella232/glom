@@ -895,18 +895,4 @@ Canvas_PrintLayout::type_vec_items Canvas_PrintLayout::get_selected_items()
   return result;
 }
 
-Canvas_PrintLayout::type_vec_const_items Canvas_PrintLayout::get_selected_items() const
-{
-  //TODO: This is inefficient. 
-  //We copy the vector items just to make them const.
-  Canvas_PrintLayout* unconst_this = const_cast<Canvas_PrintLayout*>(this); 
-  const type_vec_items unconst_result = unconst_this->get_selected_items();
-
-  type_vec_const_items result;
-  result.insert(result.begin(), 
-    unconst_result.begin(), unconst_result.end());
-
-  return result;
-}
-
 } //namespace Glom

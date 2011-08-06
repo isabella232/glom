@@ -1,5 +1,12 @@
 2011-08-06  Murray Cumming  <murrayc@murrayc.com>
 
+	CanvasPrintLayout: Remove unused method overload.
+
+	* glom/print_layout/canvas_print_layout.[h|cc]: get_selected_items():
+	The const overload is not used so remove it.
+
+2011-08-06  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Cache the selected item.
 
 	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:

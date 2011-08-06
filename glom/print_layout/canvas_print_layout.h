@@ -68,9 +68,6 @@ public:
   /** Get any items that have get_selected()==true.
    */
   type_vec_items get_selected_items();
-
-  typedef std::vector< Glib::RefPtr<const CanvasLayoutItem> > type_vec_const_items;
-  type_vec_const_items get_selected_items() const;
   
 private:
 
