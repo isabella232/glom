@@ -74,6 +74,12 @@ private:
   void on_menu_view_zoom(guint percent);
   void on_menu_view_fitpagewidth();
 
+  void on_menu_edit_cut();
+  void on_menu_edit_copy();
+  void on_menu_edit_paste();
+  void on_menu_edit_delete();
+
+
   void on_canvas_show_context_menu(guint button, guint32 activate_time);
   void on_context_menu_insert_field();
   void on_context_menu_insert_text();
@@ -144,6 +150,9 @@ private:
   //to avoid repeatedly requesting it:
   Glib::RefPtr<CanvasLayoutItem> m_layout_item_selected;
 
+  //A copied item to be pasted later:
+  sharedptr<LayoutItem> m_layout_item_to_paste;
+
   GimpRuler* m_vruler;
   GimpRuler* m_hruler;
 
@@ -152,6 +161,10 @@ private:
   Glib::RefPtr<Gtk::UIManager> m_uimanager;
   Glib::RefPtr<Gtk::ToggleAction> m_action_showgrid, m_action_showrules;
   Glib::RefPtr<Gtk::ToggleAction> m_action_zoom_fit_page_width;
+
+  //Edit menu:
+  Glib::RefPtr<Gtk::Action> m_action_edit_cut, m_action_edit_copy, 
+    m_action_edit_paste, m_action_edit_delete;
 
   //Toolbar:
   Gtk::HandleBox* m_palette_handle_box; //TODO: The toolbar is already a HandleBox.

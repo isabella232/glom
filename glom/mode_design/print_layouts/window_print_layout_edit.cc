@@ -147,7 +147,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
 
   m_canvas.signal_selection_changed().connect(
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_selection_changed));
-  on_canvas_selection_changed(); //Disable relevant widgets by default.
+  on_canvas_selection_changed(); //Disable relevant widgets or actions by default.
   
   show_all_children();
 }
@@ -160,11 +160,25 @@ void Window_PrintLayout_Edit::init_menu()
   m_action_group->add(Gtk::Action::create("Action_Menu_File_PageSetup", _("Page _Setup")),
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_file_page_setup));
 
+
   m_action_group->add(Gtk::Action::create("Menu_Edit", Gtk::Stock::EDIT));
-  m_action_group->add(Gtk::Action::create("Action_Menu_Edit_Cut", Gtk::Stock::CUT));
-  m_action_group->add(Gtk::Action::create("Action_Menu_Edit_Copy", Gtk::Stock::COPY));
-  m_action_group->add(Gtk::Action::create("Action_Menu_Edit_Paste", Gtk::Stock::PASTE));
-  m_action_group->add(Gtk::Action::create("Action_Menu_Edit_Delete", Gtk::Stock::DELETE));
+
+  m_action_edit_cut = Gtk::Action::create("Action_Menu_Edit_Cut", Gtk::Stock::CUT);
+  m_action_group->add(m_action_edit_cut,
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_cut) );
+
+  m_action_edit_copy = Gtk::Action::create("Action_Menu_Edit_Copy", Gtk::Stock::COPY);
+  m_action_group->add(m_action_edit_copy,
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_copy) );
+  
+  m_action_edit_paste = Gtk::Action::create("Action_Menu_Edit_Paste", Gtk::Stock::PASTE);
+  m_action_group->add(m_action_edit_paste,
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_paste) );
+  m_action_edit_paste->set_sensitive(false); //This is enable when something is copied or cut.
+
+  m_action_edit_delete = Gtk::Action::create("Action_Menu_Edit_Delete", Gtk::Stock::DELETE);
+  m_action_group->add(m_action_edit_delete,
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_delete) );
 
   m_action_group->add(Gtk::Action::create("Menu_Insert", _("_Insert")));
   m_action_group->add(Gtk::Action::create("Action_Menu_Insert_Field", _("Insert _Field")),
@@ -881,6 +895,56 @@ void Window_PrintLayout_Edit::on_menu_file_page_setup()
   set_ruler_sizes();
 }
 
+void Window_PrintLayout_Edit::on_menu_edit_cut()
+{
+  on_menu_edit_copy();
+  on_menu_edit_delete();
+}
+
+void Window_PrintLayout_Edit::on_menu_edit_copy()
+{
+  if(!m_layout_item_selected)
+    return;
+
+  m_layout_item_selected->update_layout_position_from_canvas();
+  m_layout_item_to_paste = 
+    glom_sharedptr_clone(m_layout_item_selected->get_layout_item());
+
+  m_action_edit_paste->set_sensitive();
+}
+
+void Window_PrintLayout_Edit::on_menu_edit_paste()
+{
+  if(!m_layout_item_to_paste)
+    return;
+
+  //TODO: Add x,y offset and add.
+  double x = 0;
+  double y = 0;
+  double width = 0;
+  double height = 0;
+  m_layout_item_to_paste->get_print_layout_position(
+    x, y, width, height);
+
+  const double offset = 5;
+  x += offset;
+  y += offset;
+  m_layout_item_to_paste->set_print_layout_position(x, y, width, height);
+
+  Glib::RefPtr<CanvasLayoutItem> item = 
+    CanvasLayoutItem::create(m_layout_item_to_paste);
+  m_canvas.add_canvas_layout_item(item);
+}
+
+void Window_PrintLayout_Edit::on_menu_edit_delete()
+{
+  if(!m_layout_item_selected)
+     return;
+
+  m_canvas.remove_canvas_layout_item(m_layout_item_selected);
+  m_layout_item_selected.reset();
+}
+
 static void spinbutton_set_max(Gtk::SpinButton& spinbutton, double max)
 {
   spinbutton.set_range(0, max);
@@ -949,7 +1013,7 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
   for(Canvas_PrintLayout::type_vec_items::const_iterator iter = items.begin();
     iter != items.end(); ++iter)
   {
-    Glib::RefPtr<CanvasLayoutItem> item = *iter;
+    Glib::RefPtr<CanvasLayoutItem> item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(*iter);
     if(!item)
       continue;
 
@@ -977,6 +1041,12 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
     first = false;
   }
 
+  const bool one_selected = (items.size() == 1);
+  if(one_selected)
+    m_layout_item_selected = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(items[0]);
+  else
+    m_layout_item_selected.reset();
+
   const double width = x2 - x;
   const double height = y2 - y;
 
@@ -988,13 +1058,16 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
   //Disable the spinbuttons if there are no items selected,
   //or if there are more than 1.
   //TODO: Let the user resize groups of items.
-  const bool enable = (items.size() == 1);
-  m_box_item_position->set_sensitive(enable);
+  m_box_item_position->set_sensitive(one_selected);
 
-  if(enable)
-    m_layout_item_selected = items[0];
-  else
-    m_layout_item_selected.reset();
+  if(m_action_edit_cut)
+    m_action_edit_cut->set_sensitive(one_selected);
+
+  if(m_action_edit_copy)
+    m_action_edit_copy->set_sensitive(one_selected);
+
+  if(m_action_edit_delete)
+    m_action_edit_delete->set_sensitive(one_selected);
 }
 
 void Window_PrintLayout_Edit::on_spinbutton_x()

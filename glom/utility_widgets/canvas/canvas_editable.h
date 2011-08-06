@@ -39,6 +39,8 @@ public:
   void add_item(const Glib::RefPtr<Goocanvas::Item>& item, bool resizable = false);
   void add_item(const Glib::RefPtr<Goocanvas::Item>& item, const Glib::RefPtr<Goocanvas::Group>& group, bool resizable = false);
 
+  void remove_item(const Glib::RefPtr<Goocanvas::Item>& item, const Glib::RefPtr<Goocanvas::Group>& group);
+
   void remove_all_items();
   void remove_all_items(const Glib::RefPtr<Goocanvas::Group>& group);
 
@@ -54,6 +56,15 @@ public:
 
   void add_vertical_rule(double x);
   void add_horizontal_rule(double x);
+
+
+  typedef std::vector< Glib::RefPtr<CanvasItemMovable> > type_vec_items;
+
+  /** Get any items that have get_selected()==true.
+   * Derived classes may override this to only examine items that they consider interesting.
+   */
+  virtual type_vec_items get_selected_items();
+
 
   //TODO: Actually emit this, so we actually show the context menu when clicking on blank space:
   /** void on_show_context(guint button, guint32 activate_time);

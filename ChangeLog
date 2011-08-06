@@ -1,5 +1,25 @@
 2011-08-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Implement cut/copy/paste/delete.
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
+	Implement the edit menu, enabling/disabling the menu items based on 
+	whether something has been selected or previously copied.
+	* glom/utility_widgets/canvas/canvas_editable.[h|cc]: Added 
+	get_selected_items() here, making it virtual. The override in 
+	Canvas_PrintLayout is the only real implementation so far.
+	Added remove_item().
+	remove_all_items(): Emit signal_selection_changed if something 
+	was selected.
+	* glom/print_layout/canvas_print_layout.[h|cc]:
+	Added remove_canvas_layout_item().
+	Removed update_layout_position_from_canvas(), putting it in 
+	Canvas_LayoutItem instead.
+	* glom/print_layout/canvas_layout_item.[h|cc]:
+	Added update_layout_position_from_canvas().
+
+2011-08-06  Murray Cumming  <murrayc@murrayc.com>
+
 	CanvasPrintLayout: Remove unused method overload.
 
 	* glom/print_layout/canvas_print_layout.[h|cc]: get_selected_items():

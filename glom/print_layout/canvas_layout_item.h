@@ -63,6 +63,10 @@ public:
 
   static int get_rows_count_for_portal(const sharedptr<const LayoutItem_Portal>& portal, double& row_height);
 
+  /** Make sure that the LayoutItem has the same position info as the CanvasItem that represents it.
+   */
+  void update_layout_position_from_canvas();
+
 private:
   /// Create the appropriate inner canvas item to represent the layout item.
   static Glib::RefPtr<CanvasItemMovable> create_canvas_item_for_layout_item(const sharedptr<LayoutItem>& layout_item);

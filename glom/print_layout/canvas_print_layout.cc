@@ -153,7 +153,7 @@ void Canvas_PrintLayout::add_layout_group_children(const sharedptr<LayoutGroup>&
   m_modified = true;
 }
 
-void Canvas_PrintLayout::add_canvas_layout_item(const Glib::RefPtr<CanvasLayoutItem> item)
+void Canvas_PrintLayout::add_canvas_layout_item(const Glib::RefPtr<CanvasLayoutItem> item) //TODO: Pass by ref.
 {
   if(!item)
     return;
@@ -169,7 +169,14 @@ void Canvas_PrintLayout::add_canvas_layout_item(const Glib::RefPtr<CanvasLayoutI
       sigc::mem_fun(*this, &Canvas_PrintLayout::on_item_show_context_menu),
       item) );
 #endif //GLOM_ENABLE_CLIENT_ONLY
+}
 
+void Canvas_PrintLayout::remove_canvas_layout_item(const Glib::RefPtr<CanvasLayoutItem>& item)
+{
+  if(!item)
+    return;
+
+  CanvasEditable::remove_item(item, m_items_group);
 }
 
 void Canvas_PrintLayout::add_layout_group(const sharedptr<LayoutGroup>& group, bool is_top_level)
@@ -211,11 +218,9 @@ void Canvas_PrintLayout::fill_layout_group(const sharedptr<LayoutGroup>& group)
       if((width != 0)) //Allow height to be 0, because text items currently have no height. TODO: && (height != 0)) //Avoid bogus items.
       {
       */
-        sharedptr<LayoutItem> layout_item = canvas_item->get_layout_item();
-        //std::cout << "DEBUG: saving layout_item type=" << layout_item->get_part_type_name() << std::endl;
-        update_layout_position_from_canvas(layout_item, canvas_item);
+        canvas_item->update_layout_position_from_canvas();
 
-        group->add_item(layout_item);
+        group->add_item(canvas_item->get_layout_item());
       //}
     }
 
@@ -318,10 +323,11 @@ void Canvas_PrintLayout::on_context_menu_edit()
 {
   Gtk::Window* parent = dynamic_cast<Gtk::Window*>(get_toplevel());
 
-  sharedptr<LayoutItem> layout_item = m_context_item->get_layout_item();
-  update_layout_position_from_canvas(layout_item, m_context_item);
+  m_context_item->update_layout_position_from_canvas();
 
-  sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+  sharedptr<LayoutItem> layout_item = m_context_item->get_layout_item();
+  sharedptr<LayoutItem_Field> field = 
+    sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
   if(field)
   {
     sharedptr<LayoutItem_Field> field_chosen = offer_field_list_select_one_field(field, m_table_name, parent);
@@ -366,9 +372,9 @@ void Canvas_PrintLayout::on_context_menu_formatting()
   if(!m_context_item)
     return;
 
-  sharedptr<LayoutItem> layout_item = m_context_item->get_layout_item();
-  update_layout_position_from_canvas(layout_item, m_context_item);
+  m_context_item->update_layout_position_from_canvas();
 
+  sharedptr<LayoutItem> layout_item = m_context_item->get_layout_item();
   sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
   sharedptr<LayoutItem_Text> layout_item_text = sharedptr<LayoutItem_Text>::cast_dynamic(layout_item);
   if(!layout_item_field && !layout_item_text)
@@ -433,24 +439,6 @@ void Canvas_PrintLayout::on_dialog_format_hide()
 }
 
 #endif //GLOM_ENABLE_CLIENT_ONLY
-
-
-void Canvas_PrintLayout::update_layout_position_from_canvas(const sharedptr<LayoutItem> layout_item, const Glib::RefPtr<const CanvasLayoutItem>& canvas_item)
-{
-  if(!layout_item || !canvas_item)
-    return;
-
-  //Get the actual position:
-  double x = 0;
-  double y = 0;
-  canvas_item->get_xy(x, y);
-  //std::cout << "debug: " << G_STRFUNC << ": x=" << x << std::endl;
-
-  double width = 0;
-  double height = 0;
-  canvas_item->get_width_height(width, height);
-  layout_item->set_print_layout_position(x, y, width, height);
-}
 
 Glib::RefPtr<Goocanvas::Polyline> Canvas_PrintLayout::create_margin_line(double x1, double y1, double x2, double y2)
 {

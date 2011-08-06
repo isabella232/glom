@@ -56,18 +56,18 @@ public:
    */
   void hide_page_bounds();
 
-  //Override:
+  //Override: TODO: Is it really?
   void add_canvas_layout_item(const Glib::RefPtr<CanvasLayoutItem> item);
+
+  void remove_canvas_layout_item(const Glib::RefPtr<CanvasLayoutItem>& item);
 
   void fill_with_data(const FoundSet& found_set);
 
   virtual void set_grid_gap(double gap = 20.0);
 
-  typedef std::vector< Glib::RefPtr<CanvasLayoutItem> > type_vec_items;
-
   /** Get any items that have get_selected()==true.
    */
-  type_vec_items get_selected_items();
+  virtual type_vec_items get_selected_items();
   
 private:
 
@@ -100,7 +100,6 @@ private:
 #endif
 
   Glib::RefPtr<Goocanvas::Polyline> create_margin_line(double x1, double y1, double x2, double y2);
-  static void update_layout_position_from_canvas(const sharedptr<LayoutItem> layout_item, const Glib::RefPtr<const CanvasLayoutItem>& canvas_item);
 
   Glib::ustring m_table_name;
   bool m_modified; //TODO: Actually check this?

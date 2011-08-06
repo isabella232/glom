@@ -99,17 +99,44 @@ void CanvasEditable::add_item(const Glib::RefPtr<Goocanvas::Item>& item, const G
   }
 }
 
+void CanvasEditable::remove_item(const Glib::RefPtr<Goocanvas::Item>& item , const Glib::RefPtr<Goocanvas::Group>& group)
+{
+  if(!group)
+   return;
+
+  //TODO: Remove resizable=true items via their parent item.
+  item->remove();
+
+  Glib::RefPtr<CanvasItemMovable> movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(item);
+  if(movable && movable->get_selected())
+    m_signal_selection_changed.emit();
+}
+
 void CanvasEditable::remove_all_items()
 {
+  const bool some_selected = !(get_selected_items().empty());
+
   Glib::RefPtr<Goocanvas::Item> root = get_root_item();
   Glib::RefPtr<Goocanvas::Group> root_group = Glib::RefPtr<Goocanvas::Group>::cast_dynamic(root);
-  remove_all_items(root_group);
+
+  while(root_group && root_group->get_n_children())
+      root_group->remove_child(0);
+
+  //The selection has changed because selected items have been removed:
+  if(some_selected)
+    m_signal_selection_changed.emit();
 }
 
 void CanvasEditable::remove_all_items(const Glib::RefPtr<Goocanvas::Group>& group)
 {
+ const bool some_selected = !(get_selected_items().empty());
+
   while(group && group->get_n_children())
       group->remove_child(0);
+
+  //The selection has changed because selected items have been removed:
+  if(some_selected)
+    m_signal_selection_changed.emit();
 }
 
 
@@ -158,6 +185,12 @@ CanvasEditable::type_signal_selection_changed CanvasEditable::signal_selection_c
 void CanvasEditable::on_item_selected()
 {
   m_signal_selection_changed.emit();
+}
+
+CanvasEditable::type_vec_items CanvasEditable::get_selected_items()
+{
+  //TODO: Provide a default implementation.
+  return type_vec_items();
 }
 
 } //namespace Glom

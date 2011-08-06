@@ -447,4 +447,23 @@ void CanvasLayoutItem::remove_empty_indicators()
   }
 }
 
+void CanvasLayoutItem::update_layout_position_from_canvas()
+{
+  sharedptr<LayoutItem> layout_item = get_layout_item();
+  if(!layout_item)
+    return;
+
+  //Get the actual position:
+  double x = 0;
+  double y = 0;
+  get_xy(x, y);
+  //std::cout << "debug: " << G_STRFUNC << ": x=" << x << std::endl;
+
+  double width = 0;
+  double height = 0;
+  get_width_height(width, height);
+
+  layout_item->set_print_layout_position(x, y, width, height);
+}
+
 } //namespace Glom
