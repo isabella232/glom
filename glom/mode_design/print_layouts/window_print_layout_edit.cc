@@ -1027,38 +1027,20 @@ bool Window_PrintLayout_Edit::on_configure_event(GdkEventConfigure* event)
   return result;
 }
 
-void Window_PrintLayout_Edit::on_canvas_selection_changed()
+void Window_PrintLayout_Edit::get_dimensions_of_multiple_selected_items(double& x, double& y, double& width, double& height)
 {
-  Canvas_PrintLayout::type_vec_items items = m_canvas.get_selected_items();
-
-  //Forget about any previously selected items:
-  m_layout_items_selected.clear();
-  for(type_vec_connections::iterator iter = m_connections_items_selected_moved.begin();
-    iter != m_connections_items_selected_moved.end(); ++iter)
-  {
-    iter->disconnect();
-  }
-  m_connections_items_selected_moved.clear();
-  
-
-  //Get the selected items, and their dimensions as a group:
-  double x = 0;
-  double y = 0;
+ //Get the selected items, and their dimensions as a group:
+  x = 0;
+  y = 0;
   double x2 = 0;
   double y2 = 0;
   bool first = true;
-  for(Canvas_PrintLayout::type_vec_items::const_iterator iter = items.begin();
-    iter != items.end(); ++iter)
+  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
+    iter != m_layout_items_selected.end(); ++iter)
   {
     Glib::RefPtr<CanvasLayoutItem> item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(*iter);
     if(!item)
       continue;
-
-    //Cache the selected items and handle their signal_moved signals:
-    m_layout_items_selected.push_back(item);
-    m_connections_items_selected_moved.push_back(
-      item->signal_moved().connect(
-        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_selected_item_moved)));
 
     //Get the position:
     double item_x = 0;
@@ -1086,8 +1068,43 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
     first = false;
   }
 
-  const double width = x2 - x;
-  const double height = y2 - y;
+  width = x2 - x;
+  height = y2 - y;
+}
+
+void Window_PrintLayout_Edit::on_canvas_selection_changed()
+{
+  Canvas_PrintLayout::type_vec_items items = m_canvas.get_selected_items();
+
+  //Forget about any previously selected items:
+  m_layout_items_selected.clear();
+  for(type_vec_connections::iterator iter = m_connections_items_selected_moved.begin();
+    iter != m_connections_items_selected_moved.end(); ++iter)
+  {
+    iter->disconnect();
+  }
+  m_connections_items_selected_moved.clear();
+  
+
+  for(Canvas_PrintLayout::type_vec_items::const_iterator iter = items.begin();
+    iter != items.end(); ++iter)
+  {
+    Glib::RefPtr<CanvasLayoutItem> item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(*iter);
+    if(!item)
+      continue;
+
+    //Cache the selected items and handle their signal_moved signals:
+    m_layout_items_selected.push_back(item);
+    m_connections_items_selected_moved.push_back(
+      item->signal_moved().connect(
+        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_selected_item_moved)));
+  }
+
+  double x = 0;
+  double y = 0;
+  double width = 0;
+  double height = 0;
+  get_dimensions_of_multiple_selected_items(x, y, width, height);
 
   //Update the SpinButton values,
   //but don't respond to the SpinButton changes that we cause programatically:
@@ -1103,9 +1120,17 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
   //or if there are more than 1.
   //TODO: Let the user resize groups of items.
   const bool one_selected = (m_layout_items_selected.size() == 1);
-  m_box_item_position->set_sensitive(one_selected);
-
   const bool some_selected = !m_layout_items_selected.empty();
+
+  //Allow x/y editing via the numbers for multiple items,
+  //but not width/height for multiple items (TODO: Stretch them in that case?)
+  //and only allow any editing when at least one item is selected:
+  m_box_item_position->set_sensitive(some_selected);
+  m_spinbutton_x->set_sensitive(some_selected);
+  m_spinbutton_y->set_sensitive(some_selected);
+  m_spinbutton_width->set_sensitive(one_selected);
+  m_spinbutton_height->set_sensitive(one_selected);
+
   if(m_action_edit_cut)
     m_action_edit_cut->set_sensitive(some_selected);
 
@@ -1144,15 +1169,31 @@ void Window_PrintLayout_Edit::on_spinbutton_x()
   if(m_layout_items_selected.empty())
     return;
 
-  Glib::RefPtr<CanvasLayoutItem> item = m_layout_items_selected[0];
-
   double x = 0;
   double y = 0;
-  item->get_xy(x, y);
+  double width = 0;
+  double height = 0;
+  get_dimensions_of_multiple_selected_items(x, y, width, height);
 
-  item->set_xy(
-    m_spinbutton_x->get_value(),
-    y);
+  //Discover the offset:
+  const double offset_x = m_spinbutton_x->get_value() - x;
+
+  //Apply the offset to all items:
+  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
+    iter != m_layout_items_selected.end(); ++iter)
+  {
+    Glib::RefPtr<CanvasLayoutItem> item = *iter;
+    if(!item)
+      continue;
+
+    double item_x = 0;
+    double item_y = 0;
+    item->get_xy(item_x, item_y);
+
+    item->set_xy(
+      item_x + offset_x,
+      item_y);
+  }
 }
 
 void Window_PrintLayout_Edit::on_spinbutton_y()
@@ -1163,15 +1204,31 @@ void Window_PrintLayout_Edit::on_spinbutton_y()
   if(m_layout_items_selected.empty())
     return;
 
-  Glib::RefPtr<CanvasLayoutItem> item = m_layout_items_selected[0];
-
-  double x = 0;
+   double x = 0;
   double y = 0;
-  item->get_xy(x, y);
+  double width = 0;
+  double height = 0;
+  get_dimensions_of_multiple_selected_items(x, y, width, height);
 
-  item->set_xy(
-    x,
-    m_spinbutton_y->get_value());
+  //Discover the offset:
+  const double offset_y = m_spinbutton_y->get_value() - y;
+
+  //Apply the offset to all items:
+  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
+    iter != m_layout_items_selected.end(); ++iter)
+  {
+    Glib::RefPtr<CanvasLayoutItem> item = *iter;
+    if(!item)
+      continue;
+
+    double item_x = 0;
+    double item_y = 0;
+    item->get_xy(item_x, item_y);
+
+    item->set_xy(
+      item_x,
+      item_y + offset_y);
+  }
 }
 
 void Window_PrintLayout_Edit::on_spinbutton_width()

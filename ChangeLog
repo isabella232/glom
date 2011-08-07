@@ -1,5 +1,16 @@
 2011-08-08  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Allow moving of multiple items via x and y numbers.
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
+	on_canvas_selection_changed(): Move the calculation of the group
+	dimensions into get_dimensions_of_multiple_selected_items().
+	on_spinbutton_x(), on_spinbutton_y(): Use the new method to get the 
+	old dimensions, so we can calculate the offset and then apply it to 
+	all items, moving them together.
+
+2011-08-08  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Snap to grid when dragging items from the toolbar.
 
 	* glom/utility_widgets/canvas/canvas_group_resizable.h:
