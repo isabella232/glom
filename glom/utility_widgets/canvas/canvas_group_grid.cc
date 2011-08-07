@@ -166,15 +166,11 @@ void CanvasGroupGrid::snap_position(double& x, double& y) const
   }
 }
 
-Glib::RefPtr<Goocanvas::Polyline> CanvasGroupGrid::create_grid_or_rule_line(double x1, double y1, double x2, double y2, bool is_rule)
+Glib::RefPtr<Goocanvas::Polyline> CanvasGroupGrid::create_rule_line(double x1, double y1, double x2, double y2)
 {
   Glib::RefPtr<Goocanvas::Polyline> line = Goocanvas::Polyline::create(x1, y1, x2, y2);
-  line->property_line_width() = 1.0f;
-
-  if(is_rule)
-    line->property_stroke_color() = "green";
-  else
-    line->property_stroke_color() = "gray";
+  line->property_line_width() = 0.5f;
+  line->property_stroke_color() = "green";
   return line;
 }
 
@@ -241,7 +237,7 @@ void CanvasGroupGrid::create_lines()
   for(CanvasGroupGrid::type_vec_double::const_iterator iter = m_rules_x.begin(); iter != m_rules_x.end(); ++iter)
   {
     const double x = *iter;
-    Glib::RefPtr<Goocanvas::Polyline> line = create_grid_or_rule_line(x, top, x, bottom, true);
+    Glib::RefPtr<Goocanvas::Polyline> line = create_rule_line(x, top, x, bottom);
     m_grid_rules_group->add_child(line);
   }
 
@@ -249,7 +245,7 @@ void CanvasGroupGrid::create_lines()
   for(CanvasGroupGrid::type_vec_double::const_iterator iter = m_rules_y.begin(); iter != m_rules_y.end(); ++iter)
   {
     const double y = *iter;
-    Glib::RefPtr<Goocanvas::Polyline> line = create_grid_or_rule_line(left, y, right, y, true);
+    Glib::RefPtr<Goocanvas::Polyline> line = create_rule_line(left, y, right, y);
     m_grid_rules_group->add_child(line);
   }
 }

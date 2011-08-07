@@ -1,5 +1,13 @@
 2011-08-07  Murray Cumming  <murrayc@murrayc.com>
 
+	CanvasGroupGrid: Simplify rule creation.
+
+	* glom/utility_widgets/canvas/canvas_group_grid.[h|cc]:
+	create_grid_or_rule_line(): Rename to create_rule_line(), removing 
+	the bool, because that is what it is used for.
+
+2011-08-07  Murray Cumming  <murrayc@murrayc.com>
+
 	Canvas_PrintLayout: Move all selected items when dragging.
 
 	* glom/utility_widgets/canvas/canvas_item_movable.[h|cc]:

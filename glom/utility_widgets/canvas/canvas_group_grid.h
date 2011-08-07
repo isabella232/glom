@@ -72,7 +72,7 @@ public:
 
 private:
   void create_lines();
-  Glib::RefPtr<Goocanvas::Polyline> create_grid_or_rule_line(double x1, double y1, double x2, double y2, bool is_rule = false);
+  Glib::RefPtr<Goocanvas::Polyline> create_rule_line(double x1, double y1, double x2, double y2);
 
   double snap_position_grid(double a) const;
   double snap_position_rules(const type_vec_double& rules, double a) const;
