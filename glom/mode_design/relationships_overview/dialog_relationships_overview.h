@@ -69,7 +69,7 @@ private:
   void on_menu_file_save();
   void on_menu_view_showgrid();
 
-  void on_table_moved(Glib::RefPtr<CanvasGroupDbTable> table);
+  void on_table_moved(const Glib::RefPtr<CanvasItemMovable>& item, double x_offset, double y_offset);
   void on_table_show_context(guint button, guint32 activate_time, Glib::RefPtr<CanvasGroupDbTable> table);
 
   void on_context_menu_edit_fields(Glib::RefPtr<CanvasGroupDbTable> table);

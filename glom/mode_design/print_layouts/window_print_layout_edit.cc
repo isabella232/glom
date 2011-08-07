@@ -1113,8 +1113,22 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
     m_action_edit_delete->set_sensitive(some_selected);
 }
 
-void Window_PrintLayout_Edit::on_selected_item_moved()
+void Window_PrintLayout_Edit::on_selected_item_moved(const Glib::RefPtr<CanvasItemMovable>& item, double x_offset, double y_offset)
 {
+  //Move the other selected items too:
+  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
+    iter != m_layout_items_selected.end(); ++iter)
+  {
+    Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
+    if(!selected_item || (item == selected_item))
+      continue;
+
+    double x = 0;
+    double y = 0;
+    selected_item->get_xy(x, y);
+    selected_item->set_xy(x + x_offset, y + y_offset);
+  }
+  
   //Show the new positions in the spinbuttons:
   on_canvas_selection_changed();
 }

@@ -206,12 +206,10 @@ void Dialog_RelationshipsOverview::draw_tables()
         CanvasGroupDbTable::create(info->get_name(), info->get_title_or_name(), fields, table_x, table_y);
       m_group_tables->add_child(table_group);
 
-      sigc::connection the_connection = table_group->signal_moved().connect( sigc::bind(
-        sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_moved),
-        table_group) );
-      m_list_table_connections.push_back(the_connection);
+      table_group->signal_moved().connect(
+        sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_moved));
 
-      the_connection = table_group->signal_show_context().connect( sigc::bind(
+      sigc::connection the_connection = table_group->signal_show_context().connect( sigc::bind(
         sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_show_context),
         table_group) );
       m_list_table_connections.push_back(the_connection);
@@ -434,8 +432,13 @@ Glib::RefPtr<CanvasGroupDbTable> Dialog_RelationshipsOverview::get_table_group(c
   return Glib::RefPtr<CanvasGroupDbTable>();
 }
 
-void Dialog_RelationshipsOverview::on_table_moved(Glib::RefPtr<CanvasGroupDbTable> table)
+void Dialog_RelationshipsOverview::on_table_moved(const Glib::RefPtr<CanvasItemMovable>& item, double /* x_offset */, double /* y_offset */)
 {
+  Glib::RefPtr<CanvasGroupDbTable> table = 
+    Glib::RefPtr<CanvasGroupDbTable>::cast_dynamic(item);
+  if(!table)
+    return;
+
   Document* document = dynamic_cast<Document*>(get_document());
   if(document && table)
   {

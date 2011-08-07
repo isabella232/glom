@@ -410,7 +410,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasGroupResizable::get_manipulator(Manipulato
   }
 }
 
-void CanvasGroupResizable::on_manipulator_corner_moved(Manipulators manipulator_id)
+void CanvasGroupResizable::on_manipulator_corner_moved(const Glib::RefPtr<CanvasItemMovable>& /* item */, double /* x_offset */, double /* y_offset */, Manipulators manipulator_id)
 {
   //Make sure that the manipulator is still visibile.
   //(if the user moves too fast then we get a leave-notify-event on the manipulator, rect, or item):
@@ -483,7 +483,7 @@ void CanvasGroupResizable::on_manipulator_corner_moved(Manipulators manipulator_
   m_signal_resized.emit();
 }
 
-void CanvasGroupResizable::on_manipulator_line_end_moved(Manipulators manipulator_id)
+void CanvasGroupResizable::on_manipulator_line_end_moved(const Glib::RefPtr<CanvasItemMovable>& /* item */, double /* x_offset */, double /* y_offset */, Manipulators manipulator_id)
 {
   //Make sure that the manipulator is still visibile.
   //(if the user moves too fast then we get a leave-notify-event on the manipulator, rect, or item):
@@ -533,7 +533,7 @@ bool CanvasGroupResizable::on_manipulator_leave_notify_event(const Glib::RefPtr<
   return false;
 }
 
-void CanvasGroupResizable::on_manipulator_edge_moved(Manipulators manipulator_id)
+void CanvasGroupResizable::on_manipulator_edge_moved(const Glib::RefPtr<CanvasItemMovable>& /* item */, double /* x_offset */, double /* y_offset */, Manipulators manipulator_id)
 {
   //Make sure that the manipulator is still visibile.
   //(if the user moves too fast then we get a leave-notify-event on the manipulator, rect, or item):

@@ -60,7 +60,15 @@ public:
   void set_drag_cursor(Gdk::CursorType cursor);
   void set_drag_cursor(const Glib::RefPtr<Gdk::Cursor>& cursor);
 
-  typedef sigc::signal<void> type_signal_moved;
+  /** For instance,
+   *
+   *   @param item The item (this item) that was moved, for convenience.
+   *   @param x_offset How much the item has moved in the x dimension.
+   *   @param y_offset How much the item has moved in the y dimension.
+   *
+   *   void on_moved(bool group_select, double x_offset, double y_offset);
+   */
+  typedef sigc::signal<void, const Glib::RefPtr<CanvasItemMovable>&, double, double> type_signal_moved;
 
   /// This signal is emitted when the canvas item is moved by the user.
   type_signal_moved signal_moved();
@@ -140,6 +148,7 @@ private:
   bool m_dragging_vertical_only, m_dragging_horizontal_only; //Set by using Ctrl while dragging.
   double m_drag_start_cursor_x, m_drag_start_cursor_y;
   double m_drag_start_position_x, m_drag_start_position_y;
+  double m_drag_latest_position_x, m_drag_latest_position_y; //To discover how much the latest motion_event has moved the item.
   Glib::RefPtr<Gdk::Cursor> m_drag_cursor;
 
 protected:

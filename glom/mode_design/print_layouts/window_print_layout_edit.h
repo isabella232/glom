@@ -96,7 +96,7 @@ private:
   void on_canvas_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint timestamp);
 
   void on_canvas_selection_changed();
-  void on_selected_item_moved();
+  void on_selected_item_moved(const Glib::RefPtr<CanvasItemMovable>& item, double x_offset, double y_offset);
 
   void on_spinbutton_x();
   void on_spinbutton_y();

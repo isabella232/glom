@@ -127,9 +127,9 @@ private:
   void position_line_manipulators();
   void set_manipulators_visibility(Goocanvas::ItemVisibility visibility);
 
-  void on_manipulator_corner_moved(Manipulators manipulator_id);
-  void on_manipulator_edge_moved(Manipulators manipulator_id);
-  void on_manipulator_line_end_moved(Manipulators manipulator_id);
+  void on_manipulator_corner_moved(const Glib::RefPtr<CanvasItemMovable>& item, double x_offset, double y_offset, Manipulators manipulator_id);
+  void on_manipulator_edge_moved(const Glib::RefPtr<CanvasItemMovable>& item, double x_offset, double y_offset, Manipulators manipulator_id);
+  void on_manipulator_line_end_moved(const Glib::RefPtr<CanvasItemMovable>& item, double x_offset, double y_offset, Manipulators manipulator_id);
   bool on_manipulator_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
   bool on_manipulator_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
 

@@ -35,12 +35,12 @@
 namespace Glom
 {
 
-
 CanvasItemMovable::CanvasItemMovable()
 : m_dragging(false),
   m_dragging_vertical_only(false), m_dragging_horizontal_only(false),
   m_drag_start_cursor_x(0.0), m_drag_start_cursor_y(0.0),
   m_drag_start_position_x(0.0), m_drag_start_position_y(0.0),
+  m_drag_latest_position_x(0.0), m_drag_latest_position_y(0.0),
   m_grid(0),
   m_allow_vertical_movement(true), m_allow_horizontal_movement(true),
   m_selected(false),
@@ -81,6 +81,8 @@ bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
       m_drag_start_cursor_y = event->y;
 
       get_xy(m_drag_start_position_x, m_drag_start_position_y);
+      m_drag_latest_position_x = m_drag_start_position_x;
+      m_drag_latest_position_y = m_drag_start_position_y; 
     
       Goocanvas::Canvas* canvas = get_parent_canvas_widget();
       if(canvas)
@@ -161,6 +163,9 @@ bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
 
     set_xy(new_x, new_y);
 
+    Glib::RefPtr<CanvasItemMovable> refThis(this);
+    refThis->reference();
+
     // A click with a move should always select:
     // We emit this before signal_moved,
     // so that its signal handler can know about the selection.
@@ -168,12 +173,14 @@ bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
     set_selected(true);
     if(!old_selected)
     {
-      Glib::RefPtr<CanvasItemMovable> refThis(this);
-      refThis->reference();
       m_signal_selected.emit(refThis, m_shift_click);
     }
 
-    m_signal_moved.emit();
+    const double this_move_offset_x = new_x - m_drag_latest_position_x;
+    const double this_move_offset_y = new_y - m_drag_latest_position_y;
+    m_drag_latest_position_x = new_x;
+    m_drag_latest_position_y = new_y;
+    m_signal_moved.emit(refThis, this_move_offset_x, this_move_offset_y);
 
     return true; //We handled this event.
   }
