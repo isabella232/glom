@@ -1,5 +1,15 @@
 2011-08-07  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Improve the grid appearance.
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	on_menu_view_show_grid(): Use a smaller grid gap, which seems more useful.
+	* glom/utility_widgets/canvas/canvas_group_grid.cc:
+	create_rule_line(): Make the lines thinner and light blue instead of 
+	gray.
+
+2011-08-07  Murray Cumming  <murrayc@murrayc.com>
+
 	CanvasGroupGrid: Simplify rule creation.
 
 	* glom/utility_widgets/canvas/canvas_group_grid.[h|cc]:

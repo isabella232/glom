@@ -27,6 +27,7 @@
 namespace Glom
 {
 
+const double LINE_WIDTH = 0.5f;
 
 CanvasGroupGrid::CanvasGroupGrid()
 : m_grid_gap(0.0),
@@ -169,7 +170,7 @@ void CanvasGroupGrid::snap_position(double& x, double& y) const
 Glib::RefPtr<Goocanvas::Polyline> CanvasGroupGrid::create_rule_line(double x1, double y1, double x2, double y2)
 {
   Glib::RefPtr<Goocanvas::Polyline> line = Goocanvas::Polyline::create(x1, y1, x2, y2);
-  line->property_line_width() = 0.5f;
+  line->property_line_width() = LINE_WIDTH;
   line->property_stroke_color() = "green";
   return line;
 }
@@ -226,10 +227,10 @@ void CanvasGroupGrid::create_lines()
   if(m_grid_gap > 0) //0 steps cause a crash in older versions of goocanvas.
   {
     m_grid_lines = Goocanvas::Grid::create(0, 0, width, height, m_grid_gap, m_grid_gap);
-    m_grid_lines->property_horz_grid_line_width() = 1.0f;
-    m_grid_lines->property_vert_grid_line_width() = 1.0f;
-    m_grid_lines->property_horz_grid_line_color() = "gray";
-    m_grid_lines->property_vert_grid_line_color() = "gray";
+    m_grid_lines->property_horz_grid_line_width() = LINE_WIDTH;
+    m_grid_lines->property_vert_grid_line_width() = LINE_WIDTH;
+    m_grid_lines->property_horz_grid_line_color() = "light blue";
+    m_grid_lines->property_vert_grid_line_color() = "light blue";
     add_child(m_grid_lines);
   }
 

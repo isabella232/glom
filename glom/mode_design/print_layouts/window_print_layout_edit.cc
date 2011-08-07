@@ -837,7 +837,7 @@ void Window_PrintLayout_Edit::on_menu_view_show_grid()
 {
   if(m_action_showgrid->get_active())
   {
-    m_canvas.set_grid_gap(20);
+    m_canvas.set_grid_gap(5.0f);
   }
   else
   {
