@@ -61,6 +61,7 @@ public:
   virtual void set_width_height(double width, double height);
   virtual void set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid);
 
+  virtual void snap_position(double& x, double& y) const;
 
   typedef sigc::signal<void> type_signal_resized;
 
@@ -70,8 +71,6 @@ public:
 private:
   virtual void show_selected();
   virtual Goocanvas::Canvas* get_parent_canvas_widget();
-
-  virtual void snap_position(double& x, double& y) const;
 
   enum Corners
   {

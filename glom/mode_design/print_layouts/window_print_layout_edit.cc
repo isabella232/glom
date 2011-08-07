@@ -413,6 +413,7 @@ bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::Drag
   double item_x = x;
   double item_y = y;
   canvas_convert_from_drag_pixels(item_x, item_y);
+  m_layout_item_dropping->snap_position(item_x, item_y);
 
   m_layout_item_dropping->set_xy(item_x, item_y);
 
@@ -507,6 +508,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
         double item_x = x;
         double item_y = y;
         canvas_convert_from_drag_pixels(item_x, item_y);
+        m_layout_item_dropping->snap_position(item_x, item_y);
         m_layout_item_dropping->set_xy(item_x, item_y);
       }
     }
@@ -527,6 +529,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
     double item_x = x;
     double item_y = y;
     canvas_convert_from_drag_pixels(item_x, item_y);
+    item->snap_position(item_x, item_y);
     item->set_xy(item_x, item_y);
    
     if(m_layout_item_dropping)

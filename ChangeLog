@@ -1,3 +1,14 @@
+2011-08-08  Murray Cumming  <murrayc@murrayc.com>
+
+	Print Layout: Snap to grid when dragging items from the toolbar.
+
+	* glom/utility_widgets/canvas/canvas_group_resizable.h:
+	snap_position(): Make this public.
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	on_canvas_drag_motion(), on_canvas_drag_data_received():
+	Snap the position to the grid (or rules), like we do when dragging 
+	an existing item.
+
 2011-08-07  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Improve the grid appearance.
