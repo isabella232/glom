@@ -13,8 +13,6 @@
 	on_selected_item_moved(): Move all the other selected items by the 
 	same amount.
 
-on_selected_item_moved
-
 2011-08-07  Murray Cumming  <murrayc@murrayc.com>
 
 	Canvas_PrintLayout: Selecting unselects others. Allow shift-clicking.
