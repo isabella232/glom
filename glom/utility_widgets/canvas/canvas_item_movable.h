@@ -71,9 +71,13 @@ public:
   type_signal_show_context signal_show_context();
 
   /** For instance,
-   *   void on_selected();
+   *
+   *   @param item The item (this item) that was selected/deseleted, for convenience.
+   *   @param group_select Whether the user selected this while pressing Shift to select multiple items.
+   *
+   *   void on_selected(bool group_select);
    */
-  typedef sigc::signal<void> type_signal_selected;
+  typedef sigc::signal<void, const Glib::RefPtr<CanvasItemMovable>&, bool> type_signal_selected;
 
   /** This signal is emitted if the user causes the item 
    * to be selected or deselected. See get_selected().
@@ -144,6 +148,7 @@ protected:
 private:
   bool m_allow_vertical_movement, m_allow_horizontal_movement;
   bool m_selected;
+  bool m_shift_click;
 
   type_signal_moved m_signal_moved;
   type_signal_show_context m_signal_show_context;

@@ -1,3 +1,17 @@
+2011-08-07  Murray Cumming  <murrayc@murrayc.com>
+
+	Canvas_PrintLayout: Selecting unselects others. Allow shift-clicking.
+
+	* glom/utility_widgets/canvas/canvas_item_movable.[h|cc]:
+	signal_selected(): Also send the item (this), to avoid the need for 
+	awkward (due to keeping a reference) sigc::bind()ing of RefPtr<>s.
+	Send a bool group_select parameter too, so we know if the button 
+	press (corresponding to the button release) was with the shift key 
+	held down.
+	* glom/utility_widgets/canvas/canvas_editable.[h|cc]:
+	on_item_selected(): Deselect other already-selected items if 
+	the select was not with shift held down.
+
 2011-08-06  Murray Cumming  <murrayc@murrayc.com>
 
 	CanvasItemMovable: set_selected(): Do not emit the signal here.

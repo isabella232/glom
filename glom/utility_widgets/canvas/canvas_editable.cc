@@ -182,8 +182,25 @@ CanvasEditable::type_signal_selection_changed CanvasEditable::signal_selection_c
   return m_signal_selection_changed;
 }
 
-void CanvasEditable::on_item_selected()
+void CanvasEditable::on_item_selected(const Glib::RefPtr<CanvasItemMovable>& item, bool group_select)
 {
+  const bool selected = !item->get_selected();
+
+  if(!group_select)
+  {
+    //Make sure that all other items are deselected first:
+    const type_vec_items items = get_selected_items();
+    for(type_vec_items::const_iterator iter = items.begin();
+      iter != items.end(); ++iter)
+    {
+      Glib::RefPtr<CanvasItemMovable> selected_item = *iter;
+      if(selected_item)
+        selected_item->set_selected(false);
+    }
+  }
+
+  item->set_selected(!selected);
+
   m_signal_selection_changed.emit();
 }
 

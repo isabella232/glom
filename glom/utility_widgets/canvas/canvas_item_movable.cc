@@ -43,7 +43,8 @@ CanvasItemMovable::CanvasItemMovable()
   m_drag_start_position_x(0.0), m_drag_start_position_y(0.0),
   m_grid(0),
   m_allow_vertical_movement(true), m_allow_horizontal_movement(true),
-  m_selected(false)
+  m_selected(false),
+  m_shift_click(false)
 {
    //TODO: Remove this when goocanvas is fixed, so the goocanvasmm constructor can connect default signal handlers:
   /*
@@ -63,6 +64,10 @@ CanvasItemMovable::~CanvasItemMovable()
 
 bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
 {
+  //std::cout << G_STRFUNC << ": DEBUG" << std::endl;
+
+  m_shift_click = false;
+
   switch(event->button)
   {
     case 1:
@@ -84,6 +89,12 @@ bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
       }
 
       m_dragging = true;
+
+      //Holding down shift when pressing the mouse down
+      //means that any selection (decided later) will be a multiple selection.
+      if(event->state & GDK_SHIFT_MASK)
+        m_shift_click = true;
+
       return true; // Handled.
       break;
     }
@@ -156,7 +167,11 @@ bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
     const bool old_selected = get_selected();
     set_selected(true);
     if(!old_selected)
-      m_signal_selected.emit();
+    {
+      Glib::RefPtr<CanvasItemMovable> refThis(this);
+      refThis->reference();
+      m_signal_selected.emit(refThis, m_shift_click);
+    }
 
     m_signal_moved.emit();
 
@@ -168,6 +183,8 @@ bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
 
 bool CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
 {
+  //std::cout << G_STRFUNC << ": DEBUG" << std::endl;
+
   if(!m_allow_vertical_movement && !m_allow_horizontal_movement)
     return false; // Not handled. Let it be handled by an item lower in the z order, or a parent group, if any.
 
@@ -202,7 +219,9 @@ bool CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::It
   //Notify of the selection change, if any:
   if(selected != old_selected)
   {
-    m_signal_selected.emit();
+    Glib::RefPtr<CanvasItemMovable> refThis(this);
+    refThis->reference();
+    m_signal_selected.emit(refThis, m_shift_click);
   }
 
   return true;
