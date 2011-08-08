@@ -1,5 +1,13 @@
 2011-08-08  Murray Cumming  <murrayc@murrayc.com>
 
+	Relationships Overview: Correct the packing in the dialog.
+
+	* ui/developer/dialog_relationships_overview.glade:
+	Let the scrolledwindow expand. This was really silly and must have 
+	happened during some edit with a bad version of Glade.
+
+2011-08-08  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Select All: Added ctrl-A keyboard shortcut.
 
 	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
