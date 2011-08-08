@@ -47,7 +47,8 @@ static bool on_group_button_press_event(const Glib::RefPtr<Goocanvas::Item>& tar
 
 Canvas_PrintLayout::Canvas_PrintLayout()
 : m_modified(false),
-  m_dialog_format(0)
+  m_dialog_format(0),
+  m_outline_visibility(false)
 {
   #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_context_menu();
@@ -168,6 +169,8 @@ void Canvas_PrintLayout::add_canvas_layout_item(const Glib::RefPtr<CanvasLayoutI
       sigc::mem_fun(*this, &Canvas_PrintLayout::on_item_show_context_menu),
       item) );
 #endif //GLOM_ENABLE_CLIENT_ONLY
+
+   item->set_outline_visible(m_outline_visibility);
 }
 
 void Canvas_PrintLayout::remove_canvas_layout_item(const Glib::RefPtr<CanvasLayoutItem>& item)
@@ -880,6 +883,29 @@ Canvas_PrintLayout::type_vec_items Canvas_PrintLayout::get_selected_items()
   }
 
   return result;
+}
+
+void Canvas_PrintLayout::set_outlines_visibility(bool visible)
+{
+  //Remember this so we can apply it to items added later:
+  m_outline_visibility = visible;
+
+  //TODO: Do this recursively.
+  Glib::RefPtr<Goocanvas::Item> root = m_items_group;
+  if(!root)
+    return;
+
+  const int count = root->get_n_children();
+  for(int i = 0; i < count; ++i)
+  {
+    Glib::RefPtr<Goocanvas::Item> child = root->get_child(i);
+    Glib::RefPtr<CanvasLayoutItem> derived =
+      Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(child);
+    if(!derived)
+      continue;
+
+    derived->set_outline_visible(visible);
+  }
 }
 
 } //namespace Glom

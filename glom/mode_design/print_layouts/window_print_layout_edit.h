@@ -71,6 +71,7 @@ private:
   void on_menu_insert_line_vertical();
   void on_menu_view_show_grid();
   void on_menu_view_show_rules();
+  void on_menu_view_show_outlines();
   void on_menu_view_zoom(guint percent);
   void on_menu_view_fitpagewidth();
 
@@ -167,7 +168,7 @@ private:
   //Main menu:
   Glib::RefPtr<Gtk::ActionGroup> m_action_group;
   Glib::RefPtr<Gtk::UIManager> m_uimanager;
-  Glib::RefPtr<Gtk::ToggleAction> m_action_showgrid, m_action_showrules;
+  Glib::RefPtr<Gtk::ToggleAction> m_action_showgrid, m_action_showrules, m_action_showoutlines;
   Glib::RefPtr<Gtk::ToggleAction> m_action_zoom_fit_page_width;
 
   //Edit menu:

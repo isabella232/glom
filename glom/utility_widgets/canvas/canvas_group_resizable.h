@@ -63,6 +63,8 @@ public:
 
   virtual void snap_position(double& x, double& y) const;
 
+  void set_outline_visible(bool visible = true);
+
   typedef sigc::signal<void> type_signal_resized;
 
   /// This signal is emitted when the canvas item is resized by the user.
@@ -120,17 +122,28 @@ private:
   void create_rect_manipulators();
   void create_line_manipulators();
 
-  void manipulator_connect_signals(const Glib::RefPtr<Goocanvas::Item> manipulator, Manipulators manipulator_id);
+  void create_outline_group();
+  Glib::RefPtr<CanvasLineMovable> create_outline_line(double x1, double y1, double x2, double y2);
+
+
+  void manipulator_connect_signals(const Glib::RefPtr<Goocanvas::Item>& manipulator, Manipulators manipulator_id);
   void position_manipulators();
   void position_rect_manipulators();
   void position_line_manipulators();
   void set_manipulators_visibility(Goocanvas::ItemVisibility visibility);
+
+  void position_outline();
+
+  /** Make sure that the outline and manipulators are correctly placed and sized.
+   */
+  void position_extras();
 
   void on_manipulator_corner_moved(const Glib::RefPtr<CanvasItemMovable>& item, double x_offset, double y_offset, Manipulators manipulator_id);
   void on_manipulator_edge_moved(const Glib::RefPtr<CanvasItemMovable>& item, double x_offset, double y_offset, Manipulators manipulator_id);
   void on_manipulator_line_end_moved(const Glib::RefPtr<CanvasItemMovable>& item, double x_offset, double y_offset, Manipulators manipulator_id);
   bool on_manipulator_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
   bool on_manipulator_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
+
 
   bool get_is_line() const;
 
@@ -154,6 +167,11 @@ private:
 
   //Manipulators for a line:
   Glib::RefPtr<CanvasRectMovable> m_manipulator_start, m_manipulator_end;
+
+  //These are visible to indicate the item's dimensions:
+  Glib::RefPtr<Goocanvas::Group> m_group_outline;
+  Glib::RefPtr<CanvasLineMovable> m_outline_top, m_outline_bottom, m_outline_left, m_outline_right;
+
 
   bool m_in_manipulator; //Whether the cursor is in a manipulator.
 

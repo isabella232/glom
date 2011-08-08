@@ -65,6 +65,8 @@ public:
 
   virtual void set_grid_gap(double gap = 20.0);
 
+  void set_outlines_visibility(bool visible = true);
+
   /** Get any items that have get_selected()==true.
    */
   virtual type_vec_items get_selected_items();
@@ -123,6 +125,8 @@ private:
   Glib::RefPtr<Gtk::PageSetup> m_page_setup;
 
   Dialog_TextFormatting* m_dialog_format;
+
+  bool m_outline_visibility;
 };
 
 } //namespace Glom

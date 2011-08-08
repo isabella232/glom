@@ -200,6 +200,8 @@ void Window_PrintLayout_Edit::init_menu()
   m_action_group->add(m_action_showgrid, sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_show_grid));
   m_action_showrules = Gtk::ToggleAction::create("Action_Menu_View_ShowRules", _("Show Rules"));
   m_action_group->add(m_action_showrules, sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_show_rules));
+  m_action_showoutlines = Gtk::ToggleAction::create("Action_Menu_View_ShowOutlines", _("Show Outlines"));
+  m_action_group->add(m_action_showoutlines, sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_show_outlines));
 
   Gtk::RadioAction::Group group_zoom;
   m_action_zoom_fit_page_width = Gtk::RadioAction::create(group_zoom, "Action_Menu_View_ZoomFitPageWidth", _("Fit Page _Width"));
@@ -247,6 +249,7 @@ void Window_PrintLayout_Edit::init_menu()
     "      <menu action='Menu_View'>"
     "        <menuitem action='Action_Menu_View_ShowGrid' />"
     "        <menuitem action='Action_Menu_View_ShowRules' />"
+    "        <menuitem action='Action_Menu_View_ShowOutlines' />"
     "        <separator />"
     "        <menuitem action='Action_Menu_View_ZoomFitPageWidth' />"
     "        <menuitem action='Action_Menu_View_Zoom200' />"
@@ -851,6 +854,13 @@ void Window_PrintLayout_Edit::on_menu_view_show_grid()
 void Window_PrintLayout_Edit::on_menu_view_show_rules()
 {
   //TODO:
+}
+
+
+void Window_PrintLayout_Edit::on_menu_view_show_outlines()
+{
+  m_canvas.set_outlines_visibility(
+    m_action_showoutlines->get_active());
 }
 
 void Window_PrintLayout_Edit::on_menu_view_zoom(guint percent)

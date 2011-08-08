@@ -1,5 +1,21 @@
 2011-08-08  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Add a Show Outlines menu item
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]
+	View menu: Add Show Outlines, with a handler, to show the extents of 
+	the items.
+	* glom/utility_widgets/canvas/canvas_group_resizable.[h|cc]:
+	Added a new group with lines, in a thinner fainter gray, to indicate 
+	the outline. Added set_outline_visible() to show it.
+	Move it whenever the child item moves, like the manipulator lines.
+	* glom/print_layout/canvas_print_layout.[h|cc]:
+	Added set_outlines_visibility() to call this on all items.
+	Store the value as a bool so we can use it again in 
+	add_canvas_layout_item().
+
+2011-08-08  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Allow moving of multiple items via x and y numbers.
 
 	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
