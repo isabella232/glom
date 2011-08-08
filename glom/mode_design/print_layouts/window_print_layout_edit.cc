@@ -181,6 +181,13 @@ void Window_PrintLayout_Edit::init_menu()
   m_action_group->add(m_action_edit_delete,
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_delete) );
 
+  m_action_group->add(
+    Gtk::Action::create("Action_Menu_Edit_SelectAll", Gtk::Stock::SELECT_ALL),
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_selectall) );
+  m_action_group->add(
+    Gtk::Action::create("Action_Menu_Edit_UnselectAll", _("Unselect All")), //TODO: Propose a new stock item for GTK+.
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_unselectall) );
+
   m_action_group->add(Gtk::Action::create("Menu_Insert", _("_Insert")));
   m_action_group->add(Gtk::Action::create("Action_Menu_Insert_Field", _("Insert _Field")),
                         sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_field) );
@@ -237,6 +244,9 @@ void Window_PrintLayout_Edit::init_menu()
     "        <menuitem action='Action_Menu_Edit_Copy' />"
     "        <menuitem action='Action_Menu_Edit_Paste' />"
     "        <menuitem action='Action_Menu_Edit_Delete' />"
+    "        <separator />"
+    "        <menuitem action='Action_Menu_Edit_SelectAll' />"
+    "        <menuitem action='Action_Menu_Edit_UnselectAll' />"
     "      </menu>"
     "      <menu action='Menu_Insert'>"
     "        <menuitem action='Action_Menu_Insert_Field' />"
@@ -979,6 +989,16 @@ void Window_PrintLayout_Edit::on_menu_edit_delete()
   }
 
   m_layout_items_selected.clear();
+}
+
+void Window_PrintLayout_Edit::on_menu_edit_selectall()
+{
+  m_canvas.select_all();
+}
+
+void Window_PrintLayout_Edit::on_menu_edit_unselectall()
+{
+  m_canvas.select_all(false);
 }
 
 static void spinbutton_set_max(Gtk::SpinButton& spinbutton, double max)

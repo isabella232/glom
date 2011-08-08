@@ -79,6 +79,8 @@ private:
   void on_menu_edit_copy();
   void on_menu_edit_paste();
   void on_menu_edit_delete();
+  void on_menu_edit_selectall();
+  void on_menu_edit_unselectall();
 
 
   void on_canvas_show_context_menu(guint button, guint32 activate_time);

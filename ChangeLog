@@ -1,5 +1,14 @@
 2011-08-08  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Add Select All and Unselect All menu items.
+
+	* glom/print_layout/canvas_print_layout.[h|cc]: Added select_all(bool)
+	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
+	init_menus(): Edit menu: Add Select All and Unselect All menu items,
+	which call that method.
+
+2011-08-08  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Add a Show Outlines menu item
 
 	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]

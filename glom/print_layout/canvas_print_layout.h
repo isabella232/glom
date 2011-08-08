@@ -70,6 +70,11 @@ public:
   /** Get any items that have get_selected()==true.
    */
   virtual type_vec_items get_selected_items();
+
+  /** Set all items as selected or unselected. 
+   * @param selected Use false to unselect all.
+   */
+  void select_all(bool selected = true);
   
 private:
 
