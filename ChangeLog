@@ -1,5 +1,12 @@
 2011-08-08  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Select All: Added ctrl-A keyboard shortcut.
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	init_menus(): Because it is not part of the stock item, for some reason.
+
+2011-08-08  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Add Select All and Unselect All menu items.
 
 	* glom/print_layout/canvas_print_layout.[h|cc]: Added select_all(bool)

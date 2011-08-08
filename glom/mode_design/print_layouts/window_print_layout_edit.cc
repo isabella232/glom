@@ -183,6 +183,7 @@ void Window_PrintLayout_Edit::init_menu()
 
   m_action_group->add(
     Gtk::Action::create("Action_Menu_Edit_SelectAll", Gtk::Stock::SELECT_ALL),
+    Gtk::AccelKey("<control>A"), //TODO: Suggest this as part of the stock item in GTK+?
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_selectall) );
   m_action_group->add(
     Gtk::Action::create("Action_Menu_Edit_UnselectAll", _("Unselect All")), //TODO: Propose a new stock item for GTK+.
