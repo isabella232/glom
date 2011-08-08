@@ -38,13 +38,6 @@
 namespace Glom
 {
 
-/*
-static bool on_group_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
-{
-  return true; // Let the child items get the event.
-}
-*/
-
 Canvas_PrintLayout::Canvas_PrintLayout()
 : m_modified(false),
   m_dialog_format(0),
@@ -295,6 +288,13 @@ void Canvas_PrintLayout::on_item_show_context_menu(guint button, guint32 activat
   m_context_menu->popup(button, activate_time);
 }
 
+bool Canvas_PrintLayout::on_background_button_press_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventButton* /* event */)
+{
+  //A click on empty space should deselect any selected items:
+  select_all(false);
+  return false;
+}
+
 sharedptr<LayoutItem_Portal> Canvas_PrintLayout::offer_related_records(const sharedptr<LayoutItem_Portal>& portal, Gtk::Window* parent)
 {
   sharedptr<LayoutItem_Portal> result = portal;
@@ -449,6 +449,11 @@ Glib::RefPtr<Goocanvas::Polyline> Canvas_PrintLayout::create_margin_line(double 
   line->property_line_width() = 0.5;
   line->property_stroke_color() = "light gray";
 
+  //Interpret a click on the line like a click on the background behind it:
+  //TODO: Do this for grid lines and rules too:
+  line->signal_button_press_event().connect(
+    sigc::mem_fun(*this, &Canvas_PrintLayout::on_background_button_press_event));
+
   m_bounds_group->add_child(line);
   return line;
 }
@@ -500,6 +505,8 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
   m_bounds_rect = Goocanvas::Rect::create(bounds.get_x1(), bounds.get_y1(), bounds.get_x2(), bounds.get_y2());
   m_bounds_rect->property_fill_color() = "white";
   m_bounds_rect->property_line_width() = 0;
+  m_bounds_rect->signal_button_press_event().connect(
+    sigc::mem_fun(*this, &Canvas_PrintLayout::on_background_button_press_event));
   m_bounds_group->add_child(m_bounds_rect);
 
   //Make sure that the bounds rect is at the bottom,

@@ -1,5 +1,15 @@
 2011-08-08  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Deselect all items when clicking on the background.
+
+	* glom/print_layout/canvas_print_layout.[h|cc]: 
+	set_page_setup(): Handle button-press-event signals on the background,
+	deselecting any selected items.
+	create_margin_line(): Do the same if the user manages to click on a 
+	line instead.
+
+2011-08-08  Murray Cumming  <murrayc@murrayc.com>
+
 	Relationships Overview: Correct the packing in the dialog.
 
 	* ui/developer/dialog_relationships_overview.glade:

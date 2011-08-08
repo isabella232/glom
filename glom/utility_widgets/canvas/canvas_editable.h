@@ -65,6 +65,13 @@ public:
    */
   virtual type_vec_items get_selected_items();
 
+  /** Set all items as selected or unselected. 
+   * @param selected Use false to unselect all.
+   *
+   * Derived classes may override this to only examine items that they consider interesting.
+   */
+  virtual void select_all(bool selected = true);
+
 
   //TODO: Actually emit this, so we actually show the context menu when clicking on blank space:
   /** void on_show_context(guint button, guint32 activate_time);

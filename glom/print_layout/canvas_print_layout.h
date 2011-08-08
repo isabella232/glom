@@ -102,6 +102,7 @@ private:
   void on_context_menu_edit();
   void on_context_menu_formatting();
   void on_context_menu_delete();
+  bool on_background_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event);
 
   void on_dialog_format_hide();
 #endif
