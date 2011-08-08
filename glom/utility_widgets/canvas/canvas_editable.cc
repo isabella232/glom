@@ -172,6 +172,13 @@ void CanvasEditable::remove_grid()
   m_grid->remove_grid();
 }
 
+void CanvasEditable::associate_with_grid(const Glib::RefPtr<Goocanvas::Item>& item)
+{
+  Glib::RefPtr<CanvasItemMovable> movable = CanvasItemMovable::cast_to_movable(item);
+  if(movable)
+    movable->set_grid(m_grid);
+}
+
 CanvasEditable::type_signal_show_context CanvasEditable::signal_show_context()
 {
   return m_signal_show_context;

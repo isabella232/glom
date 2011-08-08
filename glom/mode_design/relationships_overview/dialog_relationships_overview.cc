@@ -205,6 +205,7 @@ void Dialog_RelationshipsOverview::draw_tables()
       Glib::RefPtr<CanvasGroupDbTable> table_group =
         CanvasGroupDbTable::create(info->get_name(), info->get_title_or_name(), fields, table_x, table_y);
       m_group_tables->add_child(table_group);
+      m_canvas.associate_with_grid(table_group); //Make snapping work.
 
       table_group->signal_moved().connect(
         sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_moved));

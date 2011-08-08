@@ -57,6 +57,11 @@ public:
   void add_vertical_rule(double x);
   void add_horizontal_rule(double x);
 
+  /** For items not added directly via add_item(),
+   * but which need to snap to the grid.
+   */
+  void associate_with_grid(const Glib::RefPtr<Goocanvas::Item>& item);
+
 
   typedef std::vector< Glib::RefPtr<CanvasItemMovable> > type_vec_items;
 

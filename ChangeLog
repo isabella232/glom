@@ -1,5 +1,17 @@
 2011-08-08  Murray Cumming  <murrayc@murrayc.com>
 
+	Relationships Overview: Make snap to grid work.
+
+	* glom/utility_widgets/canvas/canvas_editable.[h|cc]:
+	Add associate_with_grid().
+	* glom/mode_design/relationships_overview/dialog_relationships_over
+	view.cc: draw_tables(): Use it so that the items' snap_position() 
+	methods have a grid to snap to.
+	The whole grid association/add idea is generally hacky, but this makes it 
+	work.
+
+2011-08-08  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Deselect all items when clicking on the background.
 
 	* glom/print_layout/canvas_print_layout.[h|cc]: 
