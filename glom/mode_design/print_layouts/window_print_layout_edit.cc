@@ -55,7 +55,13 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_hruler(0),
   m_context_menu(0)
 {
-  set_default_size(640, 480);
+  //See CanvasPrintLayout's commented-out use of set_size_request()
+  //for an attempt to do this properly.
+
+  //Try to give the user a large-enough window for working with a whole page:
+  //TODO: Make this even larger if we can be sure that no WM will make 
+  //the window bigger than the screen.
+  set_default_size(900, 640);
 
   add_view(&m_canvas);
 

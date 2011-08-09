@@ -1,5 +1,9 @@
 2011-08-09  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Make the window bigger by default.
+
+2011-08-09  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Make ruler markers follow moved items.
 
 	* glom/mode_design/print_layouts/window_print_layout_edit.cc:

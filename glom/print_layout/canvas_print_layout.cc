@@ -465,7 +465,7 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
     return;
 
   //Change the scroll extents to match the page size:
-  Gtk::PaperSize paper_size = m_page_setup->get_paper_size();
+  const Gtk::PaperSize paper_size = m_page_setup->get_paper_size();
   Goocanvas::Bounds bounds;
   bounds.set_x1(0);
   bounds.set_y1(0);
@@ -520,6 +520,15 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
   m_margin_bottom = create_margin_line(bounds.get_x1(), bounds.get_y2() - page_setup->get_bottom_margin(units), bounds.get_x2(), bounds.get_y2() - page_setup->get_bottom_margin(units));
 
   m_bounds_group->lower();
+
+  //Try to show the whole thing, by (indirectly) making the parent window big enough:
+  /* TODO: This doesn't seem to work
+  double width_pixels = bounds.get_x2() - bounds.get_x1();
+  double height_pixels = bounds.get_y2() - bounds.get_y1();
+  convert_to_pixels(width_pixels, height_pixels);
+  std::cout << "DEBUG: width_pixels=" << width_pixels << ", height_pixels=" << height_pixels << std::endl;
+  set_size_request(width_pixels, height_pixels);
+  */
 }
 
 Glib::RefPtr<Gtk::PageSetup> Canvas_PrintLayout::get_page_setup()
