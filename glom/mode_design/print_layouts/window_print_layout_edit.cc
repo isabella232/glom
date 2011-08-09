@@ -883,7 +883,8 @@ void Window_PrintLayout_Edit::on_menu_view_show_grid()
 
 void Window_PrintLayout_Edit::on_menu_view_show_rules()
 {
-  //TODO:
+  m_canvas.set_rules_visibility(
+    m_action_showrules->get_active());
 }
 
 

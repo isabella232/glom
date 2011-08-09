@@ -54,6 +54,8 @@ public:
    */
   void remove_grid();
 
+  void set_rules_visibility(bool visible = true);
+
   void add_vertical_rule(double x);
   void add_horizontal_rule(double x);
 

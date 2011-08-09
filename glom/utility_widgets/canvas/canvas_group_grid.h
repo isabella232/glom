@@ -70,8 +70,11 @@ public:
   void add_vertical_rule(double x);
   void add_horizontal_rule(double x);
 
+  void set_rules_visibility(bool visible = true);
+
 private:
-  void create_lines();
+  void create_grid_lines();
+  void create_rules();
   Glib::RefPtr<Goocanvas::Polyline> create_rule_line(double x1, double y1, double x2, double y2);
 
   double snap_position_grid(double a) const;

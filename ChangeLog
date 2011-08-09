@@ -1,5 +1,25 @@
 2011-08-09  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Actually show rules, if there are some.
+
+	* glom/utility_widgets/canvas/canvas_group_grid.[h|cc]:
+	create_lines(): Split this into two methods, and make sure that 
+	the z order is correct, so that we can really show the grid and 
+	rules independently, without needing to recreate both at the 
+	same time.
+	Added set_rules_visiblity() to do so.
+	add_horizontal_rule(), add_vertical_rule(): Actually create 
+	the rules.
+	* glom/utility_widgets/canvas/canvas_editable.[h|cc]:
+	Added set_rules_visibility() which just calls the same method 
+	in the grid.
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	on_action_menu_view_showrules(): Call it.
+
+	Of course, there is no way to add a rule yet.
+
+2011-08-09  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Make the window bigger by default.
 
 2011-08-09  Murray Cumming  <murrayc@murrayc.com>
