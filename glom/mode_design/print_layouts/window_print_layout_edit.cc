@@ -146,6 +146,8 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   setup_context_menu();
   m_canvas.signal_show_context().connect(sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_show_context_menu));
 
+  m_canvas.signal_motion_notify_event().connect(sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_motion_notify_event));
+
   m_canvas.signal_selection_changed().connect(
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_selection_changed));
   on_canvas_selection_changed(); //Disable relevant widgets or actions by default.
@@ -726,6 +728,17 @@ void Window_PrintLayout_Edit::setup_context_menu()
   m_context_menu = dynamic_cast<Gtk::Menu*>( m_context_menu_uimanager->get_widget("/ContextMenu") ); 
 }
 
+bool Window_PrintLayout_Edit::on_canvas_motion_notify_event(GdkEventMotion* event)
+{
+  double x = event->x;
+  double y = event->y;
+  canvas_convert_from_drag_pixels(x, y);
+
+  gimp_ruler_set_position(m_hruler, x);
+  gimp_ruler_set_position(m_vruler, y);
+
+  return false;
+}
 
 void Window_PrintLayout_Edit::on_canvas_show_context_menu(guint button, guint32 activate_time)
 {
