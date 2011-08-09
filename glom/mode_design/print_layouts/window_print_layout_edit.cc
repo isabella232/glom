@@ -1203,6 +1203,18 @@ void Window_PrintLayout_Edit::on_selected_item_moved(const Glib::RefPtr<CanvasIt
   
   //Show the new positions in the spinbuttons:
   on_canvas_selection_changed();
+
+  //Show the left-most and top-most position in the rulers:
+  //TODO: Maybe showing the position of the one item being 
+  //moved (though part of a group) would be better.
+  //Inkscape just tracks the cursor, which doesn't seem useful.
+  double x = 0;
+  double y = 0;
+  double width = 0;
+  double height = 0;
+  get_dimensions_of_multiple_selected_items(x, y, width, height);
+  gimp_ruler_set_position(m_hruler, x);
+  gimp_ruler_set_position(m_vruler, y);
 }
 
 void Window_PrintLayout_Edit::on_spinbutton_x()
