@@ -1,3 +1,10 @@
+2011-08-09  Murray Cumming  <murrayc@murrayc.com>
+
+	Update the GimpRuler source copy.
+
+	* glom/utility_widgets/gimpruler/gimpruler.[h|cc]:
+	Updated from gimp's repository, from the gtk3-port branch.
+
 2011-08-08  Murray Cumming  <murrayc@murrayc.com>
 
 	Relationships Overview: Make snap to grid work.
