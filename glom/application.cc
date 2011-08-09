@@ -101,7 +101,6 @@ Application::Application(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
 
   //Load widgets from glade file:
   builder->get_widget("bakery_vbox", m_pBoxTop);
-  builder->get_widget("sidebar_vbox", m_pBoxSidebar);
   builder->get_widget_derived("vbox_frame", m_pFrame); //This one is derived. There's a lot happening here.
 
   add_mime_type("application/x-glom"); //TODO: make this actually work - we need to register it properly.

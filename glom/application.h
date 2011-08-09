@@ -253,7 +253,6 @@ private:
   sigc::connection m_connection_toggleaction_network_shared;
 
   Gtk::VBox* m_pBoxTop;
-  Gtk::VBox* m_pBoxSidebar;
   Frame_Glom* m_pFrame;
   
   bool m_bAboutShown;
