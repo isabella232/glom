@@ -69,11 +69,11 @@ bool CanvasGroupGrid::is_close(double a, double b) const
   return (std::abs((long)(a - b)) < m_grid_sensitivity);
 }
 
-double CanvasGroupGrid::snap_position_rules(const type_vec_double& rules, double a) const
+double CanvasGroupGrid::snap_position_rules(const type_vec_doubles& rules, double a) const
 {
   double result = a;
 
-  for(type_vec_double::const_iterator iter = rules.begin(); iter != rules.end(); ++iter)
+  for(type_vec_doubles::const_iterator iter = rules.begin(); iter != rules.end(); ++iter)
   {
     const double rule_a = *iter;
     if(is_close(a, rule_a))
@@ -193,6 +193,24 @@ void CanvasGroupGrid::add_horizontal_rule(double y)
   create_rules();
 }
 
+void CanvasGroupGrid::remove_rules()
+{
+  m_rules_x.clear();
+  m_rules_y.clear();
+
+  create_rules();
+}
+
+CanvasGroupGrid::type_vec_doubles CanvasGroupGrid::get_horizontal_rules() const
+{
+  return m_rules_y;
+}
+
+CanvasGroupGrid::type_vec_doubles CanvasGroupGrid::get_vertical_rules() const
+{
+  return m_rules_x;
+}
+
 void CanvasGroupGrid::set_grid_gap(double gap)
 {
   m_grid_gap = gap;
@@ -222,7 +240,7 @@ void CanvasGroupGrid::create_rules()
     canvas->get_bounds(left, top, right, bottom);
 
   //Vertical rules:
-  for(CanvasGroupGrid::type_vec_double::const_iterator iter = m_rules_x.begin(); iter != m_rules_x.end(); ++iter)
+  for(CanvasGroupGrid::type_vec_doubles::const_iterator iter = m_rules_x.begin(); iter != m_rules_x.end(); ++iter)
   {
     const double x = *iter;
     Glib::RefPtr<Goocanvas::Polyline> line = create_rule_line(x, top, x, bottom);
@@ -230,7 +248,7 @@ void CanvasGroupGrid::create_rules()
   }
 
   //Horizontal rules:
-  for(CanvasGroupGrid::type_vec_double::const_iterator iter = m_rules_y.begin(); iter != m_rules_y.end(); ++iter)
+  for(CanvasGroupGrid::type_vec_doubles::const_iterator iter = m_rules_y.begin(); iter != m_rules_y.end(); ++iter)
   {
     const double y = *iter;
     Glib::RefPtr<Goocanvas::Polyline> line = create_rule_line(left, y, right, y);

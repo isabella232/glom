@@ -75,6 +75,7 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
   remove_all_items(m_items_group);
   add_layout_group(print_layout->m_layout_group, true /* is top-level */);
 
+  //Use the page setup:
   Glib::RefPtr<Gtk::PageSetup> page_setup;
   const Glib::ustring key_file_text = print_layout->get_page_setup();
   if(!key_file_text.empty())
@@ -88,6 +89,25 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
   }
 
   set_page_setup(page_setup);
+
+
+  //Add the rule lines:
+  remove_rules();
+
+  const PrintLayout::type_vec_doubles h_rules = print_layout->get_horizontal_rules();
+  for(PrintLayout::type_vec_doubles::const_iterator iter = h_rules.begin();
+    iter != h_rules.end(); ++iter)
+  {
+    add_horizontal_rule(*iter);
+  }
+
+  const PrintLayout::type_vec_doubles v_rules = print_layout->get_vertical_rules();
+  for(PrintLayout::type_vec_doubles::const_iterator iter = v_rules.begin();
+    iter != v_rules.end(); ++iter)
+  {
+    add_vertical_rule(*iter);
+  }
+
 
   m_modified = false;
 }
@@ -107,6 +127,9 @@ sharedptr<PrintLayout> Canvas_PrintLayout::get_print_layout()
   data = key_file.to_data();
 
   result->set_page_setup(data);
+
+  result->set_horizontal_rules( get_horizontal_rules() );
+  result->set_vertical_rules( get_horizontal_rules() );
 
   return result;
 }

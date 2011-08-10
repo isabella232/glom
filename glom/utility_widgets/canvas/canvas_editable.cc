@@ -162,6 +162,21 @@ void CanvasEditable::add_horizontal_rule(double y)
   m_grid->add_horizontal_rule(y);
 }
 
+void CanvasEditable::remove_rules()
+{
+  m_grid->remove_rules();
+}
+
+CanvasEditable::type_vec_doubles CanvasEditable::get_horizontal_rules() const
+{
+  return m_grid->get_horizontal_rules();
+}
+
+CanvasEditable::type_vec_doubles CanvasEditable::get_vertical_rules() const
+{
+  return m_grid->get_vertical_rules();
+}
+
 void CanvasEditable::show_temp_rule(double x, double y, bool show)
 {
   m_grid->show_temp_rule(x, y, show);

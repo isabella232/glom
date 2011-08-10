@@ -612,6 +612,10 @@ void Window_PrintLayout_Edit::set_print_layout(const Glib::ustring& table_name, 
 
   set_ruler_sizes();
 
+  m_action_showgrid->set_active( print_layout->get_show_grid() );
+  m_action_showrules->set_active( print_layout->get_show_rules() );
+  m_action_showoutlines->set_active( print_layout->get_show_outlines() );
+
   m_modified = false;
 }
 
@@ -627,6 +631,13 @@ sharedptr<PrintLayout> Window_PrintLayout_Edit::get_print_layout()
   m_print_layout = m_canvas.get_print_layout();
   m_print_layout->set_name( m_entry_name->get_text() );
   m_print_layout->set_title( m_entry_title->get_text() );
+
+  m_print_layout->set_show_grid( m_action_showgrid->get_active() );
+  m_print_layout->set_show_rules( m_action_showrules->get_active() );
+  m_print_layout->set_show_outlines( m_action_showoutlines->get_active() );
+
+  m_print_layout->set_horizontal_rules( m_canvas.get_horizontal_rules() );
+  m_print_layout->set_vertical_rules( m_canvas.get_vertical_rules() );
 
 /*
   m_print_layout->m_layout_group->remove_all_items();

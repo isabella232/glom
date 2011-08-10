@@ -48,10 +48,38 @@ public:
    */
   std::string get_page_setup() const;
 
+  bool get_show_grid() const;
+  void set_show_grid(bool show_grid = true);
+
+  bool get_show_rules() const;
+  void set_show_rules(bool show_rules = true);
+
+  bool get_show_outlines() const;
+  void set_show_outlines(bool show_outlines = true);
+
+  typedef std::vector<double> type_vec_doubles;
+
+  /** Get the y positions of the horizontal rule lines.
+   */
+  type_vec_doubles get_horizontal_rules() const;
+  void set_horizontal_rules(const type_vec_doubles& rules);
+
+  /** Get the x positions of the vertical rule lines.
+   */
+  type_vec_doubles get_vertical_rules() const;
+  void set_vertical_rules(const type_vec_doubles& rules);
+
 private:
   bool m_show_table_title;
 
+  bool m_show_grid;
+  bool m_show_rules;
+  bool m_show_outlines;
+
   std::string m_page_setup;
+
+  type_vec_doubles m_horizontal_rules;
+  type_vec_doubles m_vertical_rules;
 };
 
 } //namespace Glom

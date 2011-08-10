@@ -59,6 +59,12 @@ public:
   void add_vertical_rule(double x);
   void add_horizontal_rule(double y);
 
+  void remove_rules();
+
+  typedef std::vector<double> type_vec_doubles;
+  type_vec_doubles get_horizontal_rules() const;
+  type_vec_doubles get_vertical_rules() const;
+
   /** Either @a x or @a y should be 0.
    */
   void show_temp_rule(double x, double y, bool show = true);

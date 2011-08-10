@@ -1,5 +1,27 @@
 2011-08-10  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Save the rules and the various show/hides.
+
+	* glom/glom_document.dtd: Add the new nodes and attributes.
+	* glom/libglom/document/document.cc: load_after(), save_before():
+	Load and save these in the document.
+	
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	set_print_layout(): Set the menu actions from the PrintLayout
+	so, for instance, the grid is shown if it was shown last time.
+	* glom/print_layout/canvas_print_layout.cc:
+	set_print_layout(): Load and save the rules too.
+	* glom/utility_widgets/canvas/canvas_group_grid.[h|cc]:
+	Added remove_rules() and get_horizontal/vertical_rules().
+	* glom/utility_widgets/canvas/canvas_editable.[h|cc]:
+	Added remove_rules() and get_horizontal/vertical_rules(), 
+	calling the same methods in the grid.
+	* glom/libglom/data_structure/print_layout.[h|cc]: 
+	Added get/set_grid/rules/outlines() and 
+	get_horizontal/vertical_rules().
+
+2011-08-10  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Allow dragging of rules from the rulers.
 
 	* glom/utility_widgets/canvas/canvas_group_grid.[h|cc]:

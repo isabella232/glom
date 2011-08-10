@@ -404,13 +404,25 @@ TODO: Add 'title_singular' element.
 
 <!-- print layouts are for perfectly-positioned printing of single record details. -->
     <!ELEMENT print_layouts (print_layout*)>
-    <!ELEMENT print_layout (print_layout_groups)>
+    <!ELEMENT print_layout (print_layout_groups, horizontal_rule?, vertical_rule?)>
     <!ATTLIST print_layout
         name CDATA #REQUIRED
-        parent_table CDATA #IMPLIED>
+        parent_table CDATA #IMPLIED
+        show_table_title (true|false) "false"
+        show_grid (true|false) "false"
+        show_rules (true|false) "false"
+        show_outlines (true|false) "false">
 
     <!ELEMENT print_layout_groups (print_layout_group*)>
     <!ATTLIST print_layout_groups>
+
+    <!ELEMENT horizontal_rule EMPTY>
+    <!ATTLIST horizontal_rule
+        position CDATA #REQUIRED>
+
+    <!ELEMENT vertical_rule EMPTY>
+    <!ATTLIST vertical_rule
+        position CDATA #REQUIRED>
 
 
 <!-- The library_modules node contains python code that may be used in scripts and

@@ -171,6 +171,12 @@ static const char GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE[] = "summa
 
 static const char GLOM_NODE_PRINT_LAYOUTS[] = "print_layouts";
 static const char GLOM_NODE_PRINT_LAYOUT[] = "print_layout";
+static const char GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_GRID[] = "show_grid";
+static const char GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_RULES[] = "show_rules";
+static const char GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_OUTLINES[] = "show_outlines";
+static const char GLOM_NODE_HORIZONTAL_RULE[] = "horizonal_rule";
+static const char GLOM_NODE_VERTICAL_RULE[] = "vertical_rule";
+static const char GLOM_ATTRIBUTE_RULE_POSITION[] = "position";
 
 static const char GLOM_NODE_FORMAT[] = "formatting";
 static const char GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR[] = "format_thousands_separator";
@@ -2896,6 +2902,41 @@ bool Document::load_after(int& failure_code)
                 print_layout->set_name(name);
                 print_layout->set_show_table_title(show_table_title);
 
+                print_layout->set_show_grid(
+                  get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_GRID) );
+                print_layout->set_show_rules(
+                  get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_RULES) );
+                print_layout->set_show_outlines(
+                  get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_OUTLINES) );
+
+                //Get the horizontal and vertical rules:
+                PrintLayout::type_vec_doubles vec_rules_h;
+                xmlpp::Node::NodeList listRules = node->get_children(GLOM_NODE_HORIZONTAL_RULE);
+                for(xmlpp::Node::NodeList::iterator iter = listRules.begin(); iter != listRules.end(); ++iter)
+                {
+                  const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(*iter);
+                  if(!node)
+                    continue;
+
+                  const double pos = get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_RULE_POSITION);
+                  vec_rules_h.push_back(pos);
+                }
+		print_layout->set_horizontal_rules(vec_rules_h);
+
+		PrintLayout::type_vec_doubles vec_rules_v;
+                listRules = node->get_children(GLOM_NODE_VERTICAL_RULE);
+                for(xmlpp::Node::NodeList::iterator iter = listRules.begin(); iter != listRules.end(); ++iter)
+                {
+                  const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(*iter);
+                  if(!node)
+                    continue;
+
+                  const double pos = get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_RULE_POSITION);
+                  vec_rules_v.push_back(pos);
+                }
+		print_layout->set_vertical_rules(vec_rules_v);
+
+
                 //Page Setup:
                 const Glib::ustring key_file_text = get_child_text_node(node, GLOM_NODE_PAGE_SETUP);
                 print_layout->set_page_setup(key_file_text);
@@ -3702,6 +3743,27 @@ bool Document::save_before()
           sharedptr<const PrintLayout> print_layout = iter->second;
           set_node_attribute_value(nodePrintLayout, GLOM_ATTRIBUTE_NAME, print_layout->get_name());
           set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE, print_layout->get_show_table_title());
+
+          set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_GRID, print_layout->get_show_grid());
+          set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_RULES, print_layout->get_show_rules());
+          set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_OUTLINES, print_layout->get_show_outlines());
+
+          //Save the rule lines:
+          const PrintLayout::type_vec_doubles h_rules = print_layout->get_horizontal_rules();
+          for(PrintLayout::type_vec_doubles::const_iterator iter = h_rules.begin();
+            iter != h_rules.end(); ++iter)
+          {
+            xmlpp::Element* child = nodePrintLayout->add_child(GLOM_NODE_HORIZONTAL_RULE);
+            set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_RULE_POSITION, *iter);
+          }
+
+          const PrintLayout::type_vec_doubles v_rules = print_layout->get_vertical_rules();
+          for(PrintLayout::type_vec_doubles::const_iterator iter = v_rules.begin();
+            iter != v_rules.end(); ++iter)
+          {
+            xmlpp::Element* child = nodePrintLayout->add_child(GLOM_NODE_VERTICAL_RULE);
+            set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_RULE_POSITION, *iter);
+          }
 
           //Page Setup:
           const std::string page_setup = print_layout->get_page_setup();

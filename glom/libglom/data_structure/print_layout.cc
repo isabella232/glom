@@ -24,7 +24,10 @@ namespace Glom
 {
 
 PrintLayout::PrintLayout()
-: m_show_table_title(true)
+: m_show_table_title(true),
+  m_show_grid(true),
+  m_show_rules(true),
+  m_show_outlines(true)
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_PRINT_LAYOUT;
   m_layout_group = sharedptr<LayoutGroup>::create();
@@ -33,9 +36,14 @@ PrintLayout::PrintLayout()
 PrintLayout::PrintLayout(const PrintLayout& src)
 : TranslatableItem(src),
   m_layout_group(src.m_layout_group),
-  m_show_table_title(src.m_show_table_title)
+  m_show_table_title(src.m_show_table_title),
+  m_show_grid(src.m_show_grid),
+  m_show_rules(src.m_show_rules),
+  m_show_outlines(src.m_show_outlines)
 {
   m_page_setup = src.m_page_setup;
+  m_horizontal_rules = src.m_horizontal_rules;
+  m_vertical_rules = src.m_vertical_rules;
 }
 
 PrintLayout& PrintLayout::operator=(const PrintLayout& src)
@@ -44,7 +52,12 @@ PrintLayout& PrintLayout::operator=(const PrintLayout& src)
 
   m_layout_group = src.m_layout_group;
   m_show_table_title = src.m_show_table_title;
+  m_show_grid = src.m_show_grid;
+  m_show_rules = src.m_show_rules;
+  m_show_outlines = src.m_show_outlines;
   m_page_setup = src.m_page_setup;
+  m_horizontal_rules = src.m_horizontal_rules;
+  m_vertical_rules = src.m_vertical_rules;
   
   return *this;
 }
@@ -67,6 +80,56 @@ void PrintLayout::set_page_setup(const std::string& page_setup)
 std::string PrintLayout::get_page_setup() const
 {
   return m_page_setup;
+}
+
+bool PrintLayout::get_show_grid() const
+{
+  return m_show_grid;
+}
+
+void PrintLayout::set_show_grid(bool show_grid)
+{
+  m_show_grid = show_grid;
+}
+
+bool PrintLayout::get_show_rules() const
+{
+  return m_show_rules;
+}
+
+void PrintLayout::set_show_rules(bool show_rules)
+{
+  m_show_rules = show_rules;
+}
+
+bool PrintLayout::get_show_outlines() const
+{
+  return m_show_outlines;
+}
+
+void PrintLayout::set_show_outlines(bool show_outlines)
+{
+  m_show_outlines = show_outlines;
+}
+
+PrintLayout::type_vec_doubles PrintLayout::get_horizontal_rules() const
+{
+  return m_horizontal_rules;
+}
+
+void PrintLayout::set_horizontal_rules(const type_vec_doubles& rules)
+{
+  m_horizontal_rules = rules;
+}
+
+PrintLayout::type_vec_doubles PrintLayout::get_vertical_rules() const
+{
+  return m_vertical_rules;
+}
+
+void PrintLayout::set_vertical_rules(const type_vec_doubles& rules)
+{
+  m_vertical_rules = rules;
 }
 
 } //namespace Glom
