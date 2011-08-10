@@ -218,7 +218,8 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
       else
         canvas_item->set_image_empty(); //show a no-image picture.
 
-      canvas_item->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
+      //canvas_item->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
+      //canvas_item->property_fill_color_rgba() = 0xFFFFFF00;
 
       child = canvas_item;
       child_item = canvas_item;

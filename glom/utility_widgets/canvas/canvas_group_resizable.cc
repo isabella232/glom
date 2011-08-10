@@ -72,7 +72,7 @@ void CanvasGroupResizable::create_rect_manipulators()
 {
   m_rect = Goocanvas::Rect::create(0, 0, 0, 0);
   m_rect->property_line_width() = 0;
-  m_rect->property_fill_color() = "white";
+  m_rect->property_fill_color_rgba() = 0xFFFFFF00; //Needed to make it react to drags. White but completely transparent.
   add_child(m_rect);
 
   //Allow dragging of the rect to move everything:
@@ -253,7 +253,7 @@ void CanvasGroupResizable::position_rect_manipulators()
   m_rect->property_y() = child_y;
   m_rect->property_width() = child_width;
   m_rect->property_height() = child_height;
-  m_rect->property_fill_color() = "white";
+  //m_rect->property_fill_color_rgba() = 0xFFFFFF00;
 
   const double x2 = child_x + child_width;
   const double y2 = child_y + child_height;

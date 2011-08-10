@@ -1,5 +1,12 @@
 2011-08-10  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Make items transparent.
+
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
+	create_rect_manipulators(): Make items transparent instead of white.
+
+2011-08-10  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Allow rules to be moved.
 
 	* glom/utility_widgets/canvas/canvas_line_movable.[h|cc]: Added 
