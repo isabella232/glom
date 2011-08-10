@@ -162,6 +162,11 @@ void CanvasEditable::add_horizontal_rule(double y)
   m_grid->add_horizontal_rule(y);
 }
 
+void CanvasEditable::show_temp_rule(double x, double y, bool show)
+{
+  m_grid->show_temp_rule(x, y, show);
+}
+
 void CanvasEditable::set_grid_gap(double gap)
 {
   m_grid->set_grid_gap(gap);

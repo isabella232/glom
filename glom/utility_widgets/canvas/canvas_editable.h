@@ -57,7 +57,11 @@ public:
   void set_rules_visibility(bool visible = true);
 
   void add_vertical_rule(double x);
-  void add_horizontal_rule(double x);
+  void add_horizontal_rule(double y);
+
+  /** Either @a x or @a y should be 0.
+   */
+  void show_temp_rule(double x, double y, bool show = true);
 
   /** For items not added directly via add_item(),
    * but which need to snap to the grid.

@@ -37,6 +37,8 @@ namespace Glom
 const char* Window_PrintLayout_Edit::glade_id("window_print_layout_edit");
 const bool Window_PrintLayout_Edit::glade_developer(true);
 
+static const char DRAG_TARGET_NAME_RULE[] = "application/x-glom-printoutlayout-rule";
+
 Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Window(cobject),
   m_entry_name(0),
@@ -51,6 +53,8 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_spinbutton_height(0),
   m_ignore_spinbutton_signals(false),
   m_drag_preview_requested(false),
+  m_dragging_temp_rule(false),
+  m_temp_rule_horizontal(false),
   m_vruler(0),
   m_hruler(0),
   m_context_menu(0)
@@ -87,12 +91,26 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_spinbutton_height->signal_value_changed().connect(
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_spinbutton_height));
 
+  const Gtk::TargetEntry target_rule(DRAG_TARGET_NAME_RULE, Gtk::TARGET_SAME_APP, 0);
+  m_drag_targets_rule.push_back(target_rule);
+
   //The rulers are not in the glade file because they use an unusual widget 
   //that Glade wouldn't usually know about:
   m_vruler = GIMP_RULER(gimp_ruler_new(GTK_ORIENTATION_VERTICAL));
   gtk_widget_show(GTK_WIDGET(m_vruler));
+  Glib::wrap(GTK_WIDGET(m_vruler))->drag_source_set(m_drag_targets_rule);
   m_hruler = GIMP_RULER(gimp_ruler_new(GTK_ORIENTATION_HORIZONTAL));
   gtk_widget_show(GTK_WIDGET(m_hruler));
+  Glib::wrap(GTK_WIDGET(m_hruler))->drag_source_set(m_drag_targets_rule);
+
+  //Handle mouse button presses on the rulers, to start rule dragging:
+  gtk_widget_set_events (GTK_WIDGET(m_hruler), GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
+  gtk_widget_set_events (GTK_WIDGET(m_vruler), GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
+
+  Glib::wrap(GTK_WIDGET(m_hruler))->signal_button_press_event().connect(
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_hruler_button_press_event), true);
+  Glib::wrap(GTK_WIDGET(m_vruler))->signal_button_press_event().connect(
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_vruler_button_press_event), false);
  
   //Add the ruler widgets to the table at the left and top:
   Gtk::Table* table = 0;
@@ -118,11 +136,13 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_canvas.show();
 
   //Make the canvas a drag-and-drop destination:
+  //TODO: Does this need to be a member variable?
+  m_drag_targets_all = m_drag_targets_rule;
   const Gtk::TargetEntry toolbar_target = Gtk::ToolPalette::get_drag_target_item();
-  m_drag_targets.push_back(toolbar_target);
+  m_drag_targets_all.push_back(toolbar_target);
 
   //Note that we don't use Gtk::DEST_DEFAULT_DEFAULTS because that would prevent our signal handlers from being used:
-  m_canvas.drag_dest_set(m_drag_targets, Gtk::DEST_DEFAULT_HIGHLIGHT, Gdk::ACTION_COPY);
+  m_canvas.drag_dest_set(m_drag_targets_all, Gtk::DEST_DEFAULT_HIGHLIGHT, Gdk::ACTION_COPY);
   m_canvas.signal_drag_drop().connect(
       sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_drop) );
   m_canvas.signal_drag_motion().connect(
@@ -319,6 +339,28 @@ bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::Drag
 
   m_canvas.drag_highlight();
 
+  double item_x = x;
+  double item_y = y;
+  canvas_convert_from_drag_pixels(item_x, item_y);
+
+  //Show the position in the rulers:
+  gimp_ruler_set_position(m_hruler, item_x);
+  gimp_ruler_set_position(m_vruler, item_y);
+
+  //Handle dragging of the rule from the GimpRuler widget:
+  if(target == DRAG_TARGET_NAME_RULE)
+  {
+    if(m_temp_rule_horizontal)
+       m_canvas.show_temp_rule(0, item_y);
+    else
+       m_canvas.show_temp_rule(item_x, 0);
+
+    drag_context->drag_status(Gdk::ACTION_MOVE, timestamp);
+    return true; //Allow the drop.
+  }
+
+  //Else handle dragging of an item from the ToolPalette:
+
   //Create the temporary canvas item if necesary:
   if(!m_layout_item_dropping)
   {
@@ -333,9 +375,6 @@ bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::Drag
   drag_context->drag_status(Gdk::ACTION_COPY, timestamp);
 
   //Move the temporary canvas item to the new position:
-  double item_x = x;
-  double item_y = y;
-  canvas_convert_from_drag_pixels(item_x, item_y);
   m_layout_item_dropping->snap_position(item_x, item_y);
 
   m_layout_item_dropping->set_xy(item_x, item_y);
@@ -411,10 +450,39 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
 {
   //This is called when an item is dropped on the canvas,
   //or after our drag_motion handler has called drag_get_data()): 
+
+  const Glib::ustring target = m_canvas.drag_dest_find_target(drag_context);
+  if(target.empty())
+    return;
+
+  double item_x = x;
+  double item_y = y;
+  canvas_convert_from_drag_pixels(item_x, item_y);
+
+  //Handle dragging of the rule from the GimpRuler widget:
+  if(target == DRAG_TARGET_NAME_RULE)
+  {
+    m_canvas.show_temp_rule(0, 0, false);
+ 
+    if(m_temp_rule_horizontal)
+      m_canvas.add_horizontal_rule(item_y);
+    else
+      m_canvas.add_vertical_rule(item_x);
+
+    drag_context->drag_finish(true, false, timestamp);
+
+    m_dragging_temp_rule = false;
+    return;
+  }
   
   //Discover what toolbar item was dropped:
   const PrintLayoutToolbarButton::enumItems item_type = PrintLayoutToolbarButton::get_item_type_from_selection_data(drag_context, selection_data);
-  
+  if(item_type == PrintLayoutToolbarButton::ITEM_INVALID)
+  {
+    std::cerr << G_STRFUNC << ": item_type was invalid" << std::endl;
+    return;
+  }
+
   if(m_drag_preview_requested)
   {
     //Create the temporary drag item if necessary:
@@ -428,9 +496,6 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
         m_layout_item_dropping = CanvasLayoutItem::create(layout_item);
         m_canvas.add_canvas_layout_item(m_layout_item_dropping);
 
-        double item_x = x;
-        double item_y = y;
-        canvas_convert_from_drag_pixels(item_x, item_y);
         m_layout_item_dropping->snap_position(item_x, item_y);
         m_layout_item_dropping->set_xy(item_x, item_y);
       }
@@ -447,6 +512,12 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
 
     //Add the item to the canvas:
     sharedptr<LayoutItem> layout_item = create_empty_item(item_type);
+    if(!layout_item)
+    {
+      std::cerr << G_STRFUNC << ": layout_item is null." << std::endl;
+      return;
+    }
+
     Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
     m_canvas.add_canvas_layout_item(item);
     double item_x = x;
@@ -463,17 +534,20 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
   }
 }
 
-
 void Window_PrintLayout_Edit::on_canvas_drag_leave(const Glib::RefPtr<Gdk::DragContext>& /* drag_context */, guint /* timestamp */)
 {
   //Remove the temporary drag item if the cursor was dragged out of the drop widget:
+  //This also seems to be called after a drop, just before getting the data,
+  //therefore we should not do anything here that would stop the drop from succeeding.
   if(m_layout_item_dropping)
   {
     m_layout_item_dropping->remove();
     m_layout_item_dropping.reset();
   }
-}
 
+  m_canvas.show_temp_rule(0, 0, false); //Remove it.
+  m_dragging_temp_rule = false;
+}
 
 Window_PrintLayout_Edit::~Window_PrintLayout_Edit()
 {
@@ -1233,6 +1307,27 @@ void Window_PrintLayout_Edit::on_spinbutton_height()
     m_spinbutton_height->get_value());
 }
 
+bool Window_PrintLayout_Edit::on_hruler_button_press_event(GdkEventButton* event)
+{
+  if(event->button != 1)
+    return true;
+
+  m_dragging_temp_rule = true;
+  m_temp_rule_horizontal = true;
+ 
+  return false;
+}
+
+bool Window_PrintLayout_Edit::on_vruler_button_press_event(GdkEventButton* event)
+{
+  if(event->button != 1)
+    return true;
+
+  m_dragging_temp_rule = true;
+  m_temp_rule_horizontal = false; //vertical.
+
+  return false;
+}
 
 } //namespace Glom
 

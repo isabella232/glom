@@ -105,6 +105,9 @@ private:
   void on_spinbutton_width();
   void on_spinbutton_height();
 
+  bool on_hruler_button_press_event(GdkEventButton* event);
+  bool on_vruler_button_press_event(GdkEventButton* event);
+
   //override:
   virtual bool on_configure_event(GdkEventConfigure* event);
 
@@ -149,6 +152,9 @@ private:
   bool m_drag_preview_requested;
   Glib::RefPtr<CanvasLayoutItem> m_layout_item_dropping;
 
+  bool m_dragging_temp_rule;
+  bool m_temp_rule_horizontal; //Otherwise vertical.
+
   //A cache of the selected item,
   //to avoid repeatedly requesting it:
   typedef std::vector< Glib::RefPtr<CanvasLayoutItem> > type_vec_canvas_items;
@@ -161,6 +167,7 @@ private:
   typedef LayoutGroup::type_list_items type_list_items;
   type_list_items m_layout_items_to_paste;
 
+  std::vector<Gtk::TargetEntry> m_drag_targets_rule;
   GimpRuler* m_vruler;
   GimpRuler* m_hruler;
 
@@ -176,7 +183,7 @@ private:
 
   //Toolbar:
   Gtk::HandleBox* m_palette_handle_box; //TODO: The toolbar is already a HandleBox.
-  std::vector<Gtk::TargetEntry> m_drag_targets;
+  std::vector<Gtk::TargetEntry> m_drag_targets_all;
   PrintLayoutToolbar m_toolbar;
   
   //Context menu for clicking on empty space on the canvas:

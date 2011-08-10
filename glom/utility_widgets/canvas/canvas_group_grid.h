@@ -72,6 +72,10 @@ public:
 
   void set_rules_visibility(bool visible = true);
 
+  /** Either @a x or @a y should be 0.
+   */
+  void show_temp_rule(double x, double y, bool show = true);
+
 private:
   void create_grid_lines();
   void create_rules();
@@ -86,6 +90,7 @@ private:
 
   Glib::RefPtr<Goocanvas::Grid> m_grid_lines;
   Glib::RefPtr<Goocanvas::Group> m_grid_rules_group;
+  Glib::RefPtr<Goocanvas::Polyline> m_temp_rule;
 };
 
 } //namespace Glom

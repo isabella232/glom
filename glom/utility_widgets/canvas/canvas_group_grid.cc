@@ -35,6 +35,11 @@ CanvasGroupGrid::CanvasGroupGrid()
 {
   m_grid_rules_group = Goocanvas::Group::create();
   add_child(m_grid_rules_group);
+
+  //Create the temp rule and hide it by default:
+  m_temp_rule = create_rule_line(10, 10, 100, 100);
+  m_temp_rule->property_visibility() = Goocanvas::ITEM_INVISIBLE;
+  add_child(m_temp_rule);
 }
 
 CanvasGroupGrid::~CanvasGroupGrid()
@@ -285,6 +290,37 @@ void CanvasGroupGrid::set_rules_visibility(bool visible)
   if(m_grid_lines && m_grid_rules_group)
     m_grid_lines->lower(m_grid_rules_group);
 }
+
+void CanvasGroupGrid::show_temp_rule(double x, double y, bool show)
+{
+  m_temp_rule->property_visibility() = (show ? Goocanvas::ITEM_VISIBLE : Goocanvas::ITEM_INVISIBLE);
+
+  double left = 0.0;
+  double top = 0.0;
+  double right = 0.0;
+  double bottom = 0.0;
+  Goocanvas::Canvas* canvas = get_canvas();
+  if(canvas)
+    canvas->get_bounds(left, top, right, bottom);
+
+  const bool horizontal = (y == 0);
+
+  if(horizontal)
+  {
+    double points_coordinates[] = {x, top, x , bottom};
+    Goocanvas::Points points(2, points_coordinates);
+    m_temp_rule->property_points() = points;
+  }
+  else
+  {
+    double points_coordinates[] = {left, y, right , y};
+    Goocanvas::Points points(2, points_coordinates);
+    m_temp_rule->property_points() = points;
+  }
+
+  m_temp_rule->raise();
+}
+
 
 } //namespace Glom
 
