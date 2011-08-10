@@ -35,8 +35,8 @@ CanvasLineMovable::CanvasLineMovable()
   signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_button_press_event));
   signal_button_release_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_button_release_event));
 
-  signal_enter_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_enter_notify_event));
-  signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_leave_notify_event));
+  signal_enter_notify_event().connect(sigc::mem_fun(*this, &CanvasLineMovable::on_enter_notify_event));
+  signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasLineMovable::on_leave_notify_event));
 }
 
 CanvasLineMovable::~CanvasLineMovable()
@@ -80,6 +80,34 @@ Goocanvas::Canvas* CanvasLineMovable::get_parent_canvas_widget()
 {
   return get_canvas();
 }
+
+void CanvasLineMovable::set_hover_color(const Glib::ustring& color)
+{
+  m_hover_color = color;
+}
+
+bool CanvasLineMovable::on_enter_notify_event(const Glib::RefPtr<Item>& target, GdkEventCrossing* event)
+{
+  if(!m_hover_color.empty())
+  {
+    m_stroke_color = property_stroke_color_rgba();
+    property_stroke_color() = m_hover_color;
+  }
+
+  CanvasItemMovable::on_enter_notify_event(target, event);
+  return Goocanvas::Polyline::on_enter_notify_event(target, event);
+}
+
+bool CanvasLineMovable::on_leave_notify_event(const Glib::RefPtr<Item>& target, GdkEventCrossing* event)
+{ 
+  if(!m_hover_color.empty())
+    property_stroke_color_rgba() = m_stroke_color;
+
+  CanvasItemMovable::on_leave_notify_event(target, event);
+  return Goocanvas::Polyline::on_leave_notify_event(target, event);
+}
+
+
 
 } //namespace Glom
 

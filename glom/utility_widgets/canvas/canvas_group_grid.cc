@@ -19,10 +19,11 @@
  */
 
 #include "canvas_group_grid.h"
+#include "canvas_line_movable.h"
 #include <goocanvasmm/canvas.h>
+#include <goocanvasgroup.h>
 #include <math.h>
 #include <iostream>
-#include <goocanvasgroup.h>
 
 namespace Glom
 {
@@ -37,7 +38,7 @@ CanvasGroupGrid::CanvasGroupGrid()
   add_child(m_grid_rules_group);
 
   //Create the temp rule and hide it by default:
-  m_temp_rule = create_rule_line(10, 10, 100, 100);
+  m_temp_rule = create_rule_line(0, true); //Arbitrary defaults.
   m_temp_rule->property_visibility() = Goocanvas::ITEM_INVISIBLE;
   add_child(m_temp_rule);
 }
@@ -91,12 +92,14 @@ double CanvasGroupGrid::snap_position_rules(const type_vec_doubles& rules, doubl
 
 double CanvasGroupGrid::snap_position_rules_x(double x) const
 {
-  return snap_position_rules(m_rules_x, x);
+  const type_vec_doubles rules = get_vertical_rules();
+  return snap_position_rules(rules, x);
 }
 
 double CanvasGroupGrid::snap_position_rules_y(double y) const
 {
-  return snap_position_rules(m_rules_y, y);
+  const type_vec_doubles rules = get_horizontal_rules();
+  return snap_position_rules(rules, y);
 }
 
 double CanvasGroupGrid::snap_position_grid(double a) const
@@ -171,26 +174,55 @@ void CanvasGroupGrid::snap_position(double& x, double& y) const
   }
 }
 
-Glib::RefPtr<Goocanvas::Polyline> CanvasGroupGrid::create_rule_line(double x1, double y1, double x2, double y2)
+Glib::RefPtr<CanvasLineMovable> CanvasGroupGrid::create_rule_line(double pos, bool horizontal)
 {
-  Glib::RefPtr<Goocanvas::Polyline> line = Goocanvas::Polyline::create(x1, y1, x2, y2);
+  double left = 0.0;
+  double top = 0.0;
+  double right = 0.0;
+  double bottom = 0.0;
+  Goocanvas::Canvas* canvas = get_canvas();
+  if(canvas)
+    canvas->get_bounds(left, top, right, bottom);
+
+  Glib::RefPtr<CanvasLineMovable> line = CanvasLineMovable::create();
+
+  if(horizontal)
+  {
+    double data[4] = {left, pos, right, pos};
+    Goocanvas::Points points(2, data);
+    line->property_points() = points ;
+  }
+  else
+  {
+    double data[4] = {pos, top, pos, bottom};
+    Goocanvas::Points points(2, data);
+    line->property_points() = points ;
+  }
+
   line->property_line_width() = LINE_WIDTH;
   line->property_stroke_color() = "green";
+  line->set_hover_color("red"); //So the user knows when he can click to drag.
+
+  if(horizontal)
+    line->set_movement_allowed(true, false);
+  else
+    line->set_movement_allowed(false, true);
+
   return line;
 }
 
 void CanvasGroupGrid::add_vertical_rule(double x)
 {
-  m_rules_x.push_back(x);
-
-  create_rules();
+  Glib::RefPtr<CanvasLineMovable> line = create_rule_line(x, false);
+  m_rules_x.push_back(line);
+  m_grid_rules_group->add_child(line);
 }
 
 void CanvasGroupGrid::add_horizontal_rule(double y)
 {
-  m_rules_y.push_back(y);
-
-  create_rules();
+  Glib::RefPtr<CanvasLineMovable> line = create_rule_line(y, true);
+  m_rules_y.push_back(line);
+  m_grid_rules_group->add_child(line);
 }
 
 void CanvasGroupGrid::remove_rules()
@@ -198,17 +230,46 @@ void CanvasGroupGrid::remove_rules()
   m_rules_x.clear();
   m_rules_y.clear();
 
-  create_rules();
+  while(m_grid_rules_group && m_grid_rules_group->get_n_children())
+    m_grid_rules_group->remove_child(0);
 }
 
 CanvasGroupGrid::type_vec_doubles CanvasGroupGrid::get_horizontal_rules() const
 {
-  return m_rules_y;
+  type_vec_doubles result;
+  for(type_vec_lines::const_iterator iter = m_rules_y.begin();
+    iter != m_rules_y.end(); ++iter)
+  {
+    Glib::RefPtr<CanvasLineMovable> line = *iter;
+    if(!line)
+      continue;
+
+    double x = 0;
+    double y = 0;
+    line->get_xy(x, y);
+    result.push_back(y);
+  }
+
+  return result;
 }
 
 CanvasGroupGrid::type_vec_doubles CanvasGroupGrid::get_vertical_rules() const
 {
-  return m_rules_x;
+  type_vec_doubles result;
+  for(type_vec_lines::const_iterator iter = m_rules_x.begin();
+    iter != m_rules_x.end(); ++iter)
+  {
+    Glib::RefPtr<CanvasLineMovable> line = *iter;
+    if(!line)
+      continue;
+
+    double x = 0;
+    double y = 0;
+    line->get_xy(x, y);
+    result.push_back(x);
+  }
+
+  return result;
 }
 
 void CanvasGroupGrid::set_grid_gap(double gap)
@@ -223,41 +284,6 @@ void CanvasGroupGrid::remove_grid()
   m_grid_gap = 0.0;
 
   create_grid_lines();
-}
-
-void CanvasGroupGrid::create_rules()
-{
-  while(m_grid_rules_group && m_grid_rules_group->get_n_children())
-    m_grid_rules_group->remove_child(0);
-
-  //Fill the parent canvas with lines:
-  double left = 0.0;
-  double top = 0.0;
-  double right = 0.0;
-  double bottom = 0.0;
-  Goocanvas::Canvas* canvas = get_canvas();
-  if(canvas)
-    canvas->get_bounds(left, top, right, bottom);
-
-  //Vertical rules:
-  for(CanvasGroupGrid::type_vec_doubles::const_iterator iter = m_rules_x.begin(); iter != m_rules_x.end(); ++iter)
-  {
-    const double x = *iter;
-    Glib::RefPtr<Goocanvas::Polyline> line = create_rule_line(x, top, x, bottom);
-    m_grid_rules_group->add_child(line);
-  }
-
-  //Horizontal rules:
-  for(CanvasGroupGrid::type_vec_doubles::const_iterator iter = m_rules_y.begin(); iter != m_rules_y.end(); ++iter)
-  {
-    const double y = *iter;
-    Glib::RefPtr<Goocanvas::Polyline> line = create_rule_line(left, y, right, y);
-    m_grid_rules_group->add_child(line);
-  }
-
-  //Make sure that the grid is below the rules, so that the rules are visible:
-  if(m_grid_lines && m_grid_rules_group)
-    m_grid_lines->lower(m_grid_rules_group);
 }
 
 void CanvasGroupGrid::create_grid_lines()

@@ -32,21 +32,28 @@ class CanvasLineMovable
   : public Goocanvas::Polyline,
     public CanvasItemMovable
 {
-private:
+protected:
   CanvasLineMovable();
   virtual ~CanvasLineMovable();
+
+public:
+  static Glib::RefPtr<CanvasLineMovable> create();
+
+  void set_hover_color(const Glib::ustring& color);
 
   virtual void get_xy(double& x, double& y) const;
   virtual void set_xy(double x, double y);
   virtual void get_width_height(double& width, double& height) const;
   virtual void set_width_height(double width, double height);
 
-public:
-  static Glib::RefPtr<CanvasLineMovable> create();
-
 private:
   virtual Goocanvas::Canvas* get_parent_canvas_widget();
 
+  virtual bool on_enter_notify_event(const Glib::RefPtr<Item>& target, GdkEventCrossing* event);
+  virtual bool on_leave_notify_event(const Glib::RefPtr<Item>& target, GdkEventCrossing* event);
+
+  guint m_stroke_color;
+  Glib::ustring m_hover_color;
 };
 
 } //namespace Glom

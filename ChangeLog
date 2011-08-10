@@ -1,5 +1,18 @@
 2011-08-10  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Allow rules to be moved.
+
+	* glom/utility_widgets/canvas/canvas_line_movable.[h|cc]: Added 
+	set_hover_color() and make sure that color is used when the mouse is 
+	over the line.
+	* glom/utility_widgets/canvas/canvas_group_grid.[h|cc]:
+	Use CanvasLineMovable instead of PolyLine for rules, so it can 
+	be moved. Make it appear red when hovering over it. Store the 
+	lines instead of just the positions, so we can get the latest positions 
+	later. This is rather inefficient, but it works.
+
+2011-08-10  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Save the rules and the various show/hides.
 
 	* glom/glom_document.dtd: Add the new nodes and attributes.

@@ -21,6 +21,7 @@
 #ifndef GLOM_UTILITY_WIDGETS_CANVAS_GROUP_GRID_H
 #define GLOM_UTILITY_WIDGETS_CANVAS_GROUP_GRID_H
 
+//#include <glom/utility_widgets/canvas/canvas_line_movable.h>
 #include <goocanvasmm/grid.h>
 #include <goocanvasmm/group.h>
 #include <goocanvasmm/polyline.h>
@@ -29,6 +30,8 @@
 
 namespace Glom
 {
+
+class CanvasLineMovable;
 
 class CanvasGroupGrid : public Goocanvas::Group
 {
@@ -70,8 +73,7 @@ public:
 
 private:
   void create_grid_lines();
-  void create_rules();
-  Glib::RefPtr<Goocanvas::Polyline> create_rule_line(double x1, double y1, double x2, double y2);
+  Glib::RefPtr<CanvasLineMovable> create_rule_line(double pos, bool horizontal);
 
   double snap_position_grid(double a) const;
   double snap_position_rules(const type_vec_doubles& rules, double a) const;
@@ -86,11 +88,13 @@ private:
   /// How close we have to be to a grid line to snap to it:
   double m_grid_sensitivity;
 
-  /// The x coordinates of any vertical rules:
-  type_vec_doubles m_rules_x;
+  typedef std::vector< Glib::RefPtr<CanvasLineMovable> > type_vec_lines;
 
-  /// The y coordinates of any horizontal rules:
-  type_vec_doubles m_rules_y;
+  /// The vertical rules:
+  type_vec_lines m_rules_x;
+
+  /// The horizontal rules:
+  type_vec_lines m_rules_y;
 
   Glib::RefPtr<Goocanvas::Grid> m_grid_lines;
   Glib::RefPtr<Goocanvas::Group> m_grid_rules_group;
