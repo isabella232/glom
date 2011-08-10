@@ -92,7 +92,6 @@ private:
 
   //void on_toolbar_item_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context);
   //void on_toolbar_item_drag_end(const Glib::RefPtr<Gdk::DragContext>& drag_context);
-  void on_toolbar_item_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::SelectionData& selection_data, guint info, guint time);
   bool on_canvas_drag_drop(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint timestamp);
   bool on_canvas_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint timestamp);
   void on_canvas_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint timestamp);
@@ -108,8 +107,6 @@ private:
 
   //override:
   virtual bool on_configure_event(GdkEventConfigure* event);
-
-  Glib::RefPtr<Gdk::Pixbuf> get_icon_for_toolbar_item(Gtk::ToolItem& item);
 
   void update_table_title();
   void setup_context_menu();
