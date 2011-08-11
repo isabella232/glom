@@ -284,7 +284,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
             Glib::RefPtr<CanvasTableMovable> canvas_item = CanvasTableMovable::create();
             canvas_item->property_vert_grid_line_width() = 1;
             canvas_item->property_horz_grid_line_width() = 1;
-            canvas_item->property_stroke_color() = "black";
+            canvas_item->property_stroke_color() = "gray";
 
             //Show as many rows as can fit in the height.
             double row_height = 0;

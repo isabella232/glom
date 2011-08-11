@@ -159,7 +159,7 @@ void CanvasGroupMovable::set_grid(const Glib::RefPtr<const CanvasGroupGrid>& gri
 
 void CanvasGroupMovable::snap_position_one_corner(Corners corner, double& x, double& y) const
 {
-  Goocanvas::Bounds bounds = get_bounds();
+  const Goocanvas::Bounds bounds = get_bounds();
   const double width = std::abs(bounds.get_x2() - bounds.get_x1());
   const double height = std::abs(bounds.get_y2() - bounds.get_y1());
 
