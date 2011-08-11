@@ -23,6 +23,7 @@
 #include <glom/box_db_table.h>
 #include <glom/print_layout/canvas_layout_item.h>
 #include <glom/utils_ui.h>
+#include <glom/application.h>
 #include <libglom/data_structure/layout/layoutitem_line.h>
 #include <libglom/data_structure/layout/layoutitem_portal.h>
 #include <libglom/utils.h> //For bold_message()).
@@ -186,8 +187,10 @@ void Window_PrintLayout_Edit::init_menu()
   m_action_group = Gtk::ActionGroup::create();
 
   m_action_group->add(Gtk::Action::create("Menu_File", _("_File")));
-  m_action_group->add(Gtk::Action::create("Action_Menu_File_PageSetup", _("Page _Setup")),
+  m_action_group->add(Gtk::Action::create("Action_Menu_File_PageSetup", Gtk::Stock::PAGE_SETUP),
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_file_page_setup));
+  m_action_group->add(Gtk::Action::create("Action_Menu_File_PrintPreview", Gtk::Stock::PRINT_PREVIEW),
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_file_print_preview));
 
 
   m_action_group->add(Gtk::Action::create("Menu_Edit", Gtk::Stock::EDIT));
@@ -267,6 +270,7 @@ void Window_PrintLayout_Edit::init_menu()
     "  <menubar name='Menubar'>"
     "      <menu action='Menu_File'>"
     "        <menuitem action='Action_Menu_File_PageSetup' />"
+    "        <menuitem action='Action_Menu_File_PrintPreview' />"
     "      </menu>"
     "      <menu action='Menu_Edit'>"
     "        <menuitem action='Action_Menu_Edit_Cut' />"
@@ -919,6 +923,27 @@ void Window_PrintLayout_Edit::on_menu_file_page_setup()
   m_canvas.set_page_setup(page_setup);
 
   set_ruler_sizes();
+}
+
+void Window_PrintLayout_Edit::on_menu_file_print_preview()
+{
+  //Save any recent changes in the document,
+  //so that the preview will show them:
+  Document* document = dynamic_cast<Document*>(get_document());
+  if(!document)
+    return;
+
+  const Glib::ustring original_name = get_original_name();
+  sharedptr<PrintLayout> print_layout = get_print_layout();
+  if(print_layout && (original_name != get_name()))
+    document->remove_report(m_table_name, original_name);
+
+  document->set_print_layout(m_table_name, print_layout);
+
+  //Show the print preview window:
+  Application* app = Application::get_application();
+  if(app)
+    app->do_print_layout(m_print_layout->get_name(), true /* preview */, this);
 }
 
 void Window_PrintLayout_Edit::on_menu_edit_cut()

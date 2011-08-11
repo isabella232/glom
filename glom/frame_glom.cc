@@ -2397,7 +2397,13 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+
 void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout_name)
+{
+  do_print_layout(print_layout_name, false /* not preview */);
+}
+
+void Frame_Glom::do_print_layout(const Glib::ustring& print_layout_name, bool preview, Gtk::Window* transient_for)
 {
   const Privileges table_privs = Privs::get_current_privs(m_table_name);
 
@@ -2416,6 +2422,12 @@ void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout
   Canvas_PrintLayout canvas;
   add_view(&canvas); //So it has access to the document.
   canvas.set_print_layout(m_table_name, print_layout);
+
+  //Do not show things that are only for editing the print layout:
+
+  canvas.remove_grid();
+  canvas.set_rules_visibility(false);
+  canvas.set_outlines_visibility(false);
 
   //Create a new PrintOperation with our PageSetup and PrintSettings:
   //(We use our derived PrintOperation class)
@@ -2447,9 +2459,15 @@ void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout
 
   try
   {
-    Application* pApp = dynamic_cast<Application*>(get_app_window());
-    if(pApp)
-      print->run(Gtk::PRINT_OPERATION_ACTION_PRINT_DIALOG, *pApp);
+    if(!transient_for)
+      transient_for = get_app_window();
+
+    if(transient_for)
+    {
+      print->run(
+        (preview ? Gtk::PRINT_OPERATION_ACTION_PREVIEW : Gtk::PRINT_OPERATION_ACTION_PRINT_DIALOG),
+        *transient_for);
+    }
   }
   catch (const Gtk::PrintError& ex)
   {

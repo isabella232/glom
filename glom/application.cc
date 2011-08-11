@@ -2880,6 +2880,11 @@ void Application::on_menu_developer_restore_backup()
   do_restore_backup(uri_tarball);
 }
 
+void Application::do_print_layout(const Glib::ustring& print_layout_name, bool preview, Gtk::Window* transient_for)
+{
+  m_pFrame->do_print_layout(print_layout_name, preview, transient_for);
+}
+
 bool Application::do_restore_backup(const Glib::ustring& backup_uri)
 {
   // We cannot use an uri here, because we cannot untar remote files.

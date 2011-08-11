@@ -1,5 +1,20 @@
 2011-08-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Add a Print Preview menu item.
+
+	* glom/frame_glom.[h|cc]: on_menu_print_layout_selected(): 
+	Move this into a do_print_layout() method, with optional preview 
+	and transient-for window.
+	* glom/application.[h|cc]: Added do_print_layout() so we can do this 
+	from other parts of the code.
+	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
+	Add a Print Preview menu item that calls the method on the 
+	application, though transient to this window.
+	It shows data from the currently-selected record, even though that 
+	might not be very visible to the user.
+
+2011-08-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Make text formatting work for field items.
 
 	* glom/print_layout/canvas_print_layout.cc: on_context_menu_edit(), 

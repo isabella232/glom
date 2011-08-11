@@ -63,6 +63,7 @@ private:
   sharedptr<LayoutItem> create_empty_item(PrintLayoutToolbarButton::enumItems item_type);
 
   void on_menu_file_page_setup();
+  void on_menu_file_print_preview();
   void on_menu_insert_field();
   void on_menu_insert_text();
   void on_menu_insert_image();

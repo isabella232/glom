@@ -72,6 +72,8 @@ public:
 
   void set_databases_selected(const Glib::ustring& strName);
 
+  void do_print_layout(const Glib::ustring& print_layout_name, bool preview = false, Gtk::Window* transient_for = 0);
+
   void on_box_tables_selected(const Glib::ustring& strName);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
