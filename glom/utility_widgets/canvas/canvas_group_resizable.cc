@@ -29,12 +29,12 @@
 namespace Glom
 {
 
-static const double manipulator_corner_size = 2;
-static const gchar* manipulator_corner_fill_color = "black";
-static const double manipulator_stroke_width = 1.0f; //mm (assuming that the canvas uses mm.
-static const gchar* manipulator_stroke_color = "black";
-static const double outline_stroke_width = 0.5f; //mm (assuming that the canvas uses mm.
-static const gchar* outline_stroke_color = "gray";
+static const double MANIPULATOR_CORNER_SIZE = 2;
+static const char MANIPULATOR_CORNER_FILL_COLOR[] = "black";
+static const double MANIPULATOR_STROKE_WIDTH = 1.0f; //mm (assuming that the canvas uses mm.
+static const char MANIPULATOR_STROKE_COLOR[] = "black";
+static const double OUTLINE_STROKE_WIDTH = 0.5f; //mm (assuming that the canvas uses mm.
+static const char OUTLINE_STROKE_COLOR[] = "gray";
 
 CanvasGroupResizable::CanvasGroupResizable()
 : m_in_manipulator(false),
@@ -163,8 +163,8 @@ void CanvasGroupResizable::create_line_manipulators()
 Glib::RefPtr<CanvasLineMovable> CanvasGroupResizable::create_outline_line(double x1, double y1, double x2, double y2)
 {
   Glib::RefPtr<CanvasLineMovable> line = Glom::CanvasLineMovable::create();
-  line->property_line_width() = outline_stroke_width;
-  line->property_stroke_color() = outline_stroke_color;
+  line->property_line_width() = OUTLINE_STROKE_WIDTH;
+  line->property_stroke_color() = OUTLINE_STROKE_COLOR;
   m_group_outline->add_child(line);
   set_edge_points(line, x1, y1, x2, y2);
   return line;
@@ -261,9 +261,9 @@ void CanvasGroupResizable::position_rect_manipulators()
   Glib::RefPtr<Goocanvas::Item> item = CanvasItemMovable::cast_to_item(m_child);
 
   m_manipulator_corner_top_left->set_xy(x1, y1);
-  m_manipulator_corner_top_right->set_xy(x2 - manipulator_corner_size, y1);
-  m_manipulator_corner_bottom_left->set_xy(x1, y2 - manipulator_corner_size);
-  m_manipulator_corner_bottom_right->set_xy(x2 - manipulator_corner_size, y2 - manipulator_corner_size);
+  m_manipulator_corner_top_right->set_xy(x2 - MANIPULATOR_CORNER_SIZE, y1);
+  m_manipulator_corner_bottom_left->set_xy(x1, y2 - MANIPULATOR_CORNER_SIZE);
+  m_manipulator_corner_bottom_right->set_xy(x2 - MANIPULATOR_CORNER_SIZE, y2 - MANIPULATOR_CORNER_SIZE);
   set_edge_points(m_manipulator_edge_top, x1, y1, x2, y1);
   set_edge_points(m_manipulator_edge_bottom, x1, y2, x2, y2);
   set_edge_points(m_manipulator_edge_left, x1, y1, x1, y2);
@@ -298,7 +298,7 @@ void CanvasGroupResizable::position_line_manipulators()
   double start_y = 0;
   points.get_coordinate(0, start_x, start_y);
 
-  const double half_size = manipulator_corner_size / 2;
+  const double half_size = MANIPULATOR_CORNER_SIZE / 2;
   m_manipulator_start->set_xy(start_x - half_size, start_y - half_size); //Center it over the point.
 
   double end_x = 0;
@@ -547,7 +547,7 @@ void CanvasGroupResizable::on_manipulator_corner_moved(const Glib::RefPtr<Canvas
     {
       const double new_y = std::min(manipulator_y, child_y + child_height);
       const double new_height = std::max(child_y + child_height - manipulator->property_y(), 0.0);
-      const double new_width = std::max(manipulator->property_x() + manipulator_corner_size - child_x, 0.0);
+      const double new_width = std::max(manipulator->property_x() + MANIPULATOR_CORNER_SIZE - child_x, 0.0);
 
       set_xy(child_x, new_y);
       set_width_height(new_width, new_height);
@@ -557,7 +557,7 @@ void CanvasGroupResizable::on_manipulator_corner_moved(const Glib::RefPtr<Canvas
     case(MANIPULATOR_CORNER_BOTTOM_LEFT):
     {
       const double new_x = std::min(manipulator_x, child_x + child_width);
-      const double new_height = std::max(manipulator->property_y() + manipulator_corner_size - child_y, 0.0);
+      const double new_height = std::max(manipulator->property_y() + MANIPULATOR_CORNER_SIZE - child_y, 0.0);
       const double new_width = std::max(child_x + child_width - manipulator->property_x(), 0.0);
       set_xy(new_x, child_y);
       set_width_height(new_width, new_height);
@@ -566,8 +566,8 @@ void CanvasGroupResizable::on_manipulator_corner_moved(const Glib::RefPtr<Canvas
     }
     case(MANIPULATOR_CORNER_BOTTOM_RIGHT):
     {
-      const double new_height = std::max(manipulator->property_y() + manipulator_corner_size - child_y, 0.0);
-      const double new_width = std::max(manipulator->property_x() + manipulator_corner_size - child_x, 0.0);
+      const double new_height = std::max(manipulator->property_y() + MANIPULATOR_CORNER_SIZE - child_y, 0.0);
+      const double new_width = std::max(manipulator->property_x() + MANIPULATOR_CORNER_SIZE - child_x, 0.0);
       set_width_height(new_width, new_height);
 
       break;
@@ -609,7 +609,7 @@ void CanvasGroupResizable::on_manipulator_line_end_moved(const Glib::RefPtr<Canv
     return;
 
   const int point_index = (manipulator_id == MANIPULATOR_START) ? 0 : 1;
-  const double half_size = manipulator_corner_size / 2;
+  const double half_size = MANIPULATOR_CORNER_SIZE / 2;
   points.set_coordinate(point_index, manipulator_x + half_size, manipulator_y + half_size);
   line->property_points() = points; //TODO: Add a way to do this without getting and setting the points property.
 
@@ -808,20 +808,20 @@ bool CanvasGroupResizable::on_resizer_leave_notify_event(const Glib::RefPtr<Gooc
 Glib::RefPtr<CanvasRectMovable> CanvasGroupResizable::create_corner_manipulator()
 {
   Glib::RefPtr<CanvasRectMovable> result = CanvasRectMovable::create();
-  result->property_fill_color() = manipulator_corner_fill_color; //This makes the whole area clickable, not just the outline stroke:
-  result->property_line_width() = manipulator_stroke_width;
-  result->property_stroke_color() = manipulator_stroke_color;
+  result->property_fill_color() = MANIPULATOR_CORNER_FILL_COLOR; //This makes the whole area clickable, not just the outline stroke:
+  result->property_line_width() = MANIPULATOR_STROKE_WIDTH;
+  result->property_stroke_color() = MANIPULATOR_STROKE_COLOR;
 
-  result->property_height() = manipulator_corner_size;
-  result->property_width() = manipulator_corner_size;
+  result->property_height() = MANIPULATOR_CORNER_SIZE;
+  result->property_width() = MANIPULATOR_CORNER_SIZE;
   return result;
 }
 
 Glib::RefPtr<CanvasLineMovable> CanvasGroupResizable::create_edge_manipulator()
 {
   Glib::RefPtr<Glom::CanvasLineMovable> line = Glom::CanvasLineMovable::create();
-  line->property_line_width() = manipulator_stroke_width;
-  line->property_stroke_color() = manipulator_stroke_color;
+  line->property_line_width() = MANIPULATOR_STROKE_WIDTH;
+  line->property_stroke_color() = MANIPULATOR_STROKE_COLOR;
   return line;
 }
 
@@ -1024,7 +1024,6 @@ void CanvasGroupResizable::show_selected()
   //in case that is called at some other time.
   m_group_edge_manipulators->property_visibility() = edge_visibility;
 }
-
 
 
 } //namespace Glom
