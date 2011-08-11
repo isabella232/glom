@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-06 09:40+0000\n"
-"PO-Revision-Date: 2011-08-06 12:53+0200\n"
+"POT-Creation-Date: 2011-08-08 18:51+0000\n"
+"PO-Revision-Date: 2011-08-11 10:23+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -33,7 +33,7 @@ msgstr ""
 "Espere mientras Glom prepara su sistema para publicar a través de la red."
 
 #: ../glom/application.cc:287 ../glom/bakery/app_withdoc_gtk.cc:248
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:159
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:160
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:58
 msgid "_File"
 msgstr "_Archivo"
@@ -1209,7 +1209,7 @@ msgstr "Número"
 #: ../glom/libglom/data_structure/translatable_item.cc:317
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1154
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:661
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:692
 msgid "Text"
 msgstr "Texto"
 
@@ -1303,7 +1303,7 @@ msgstr "Calendario del portal"
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:194
 #: ../glom/libglom/data_structure/translatable_item.cc:297
 #: ../glom/mode_design/dialog_database_preferences.cc:62
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:657
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:688
 #: ../ui/developer/window_field_definition_edit.glade.h:2
 msgid "Field"
 msgstr "Campo"
@@ -1860,7 +1860,7 @@ msgstr "Botón nuevo"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
 #: ../glom/mode_data/flowtablewithfields.cc:1240
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:421
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:450
 msgid "text"
 msgstr "texto"
 
@@ -1921,7 +1921,7 @@ msgid "Next Value"
 msgstr "Siguiente valor"
 
 #: ../glom/mode_design/dialog_design.cc:52
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:551
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:582
 #: ../ui/developer/window_design.glade.h:3
 msgid "None selected"
 msgstr "Ninguno seleccionado"
@@ -2345,69 +2345,79 @@ msgstr ""
 "Arrastre esto a la distribución para añadir un nuevo portal de registros "
 "relacionados."
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:160
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:161
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:59
 msgid "Page _Setup"
 msgstr "_Configuración de la página"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:169
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:188
+#| msgid "Select File"
+msgid "Unselect All"
+msgstr "Deseleccionar todo"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:191
 msgid "_Insert"
 msgstr "_Insertar"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:170
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:192
 msgid "Insert _Field"
 msgstr "Insertar c_ampo"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:172
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:194
 msgid "Insert _Text"
 msgstr "Insertar _texto"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:174
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:196
 msgid "Insert _Image"
 msgstr "Insertar _imagen"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:176
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:198
 msgid "Insert _Related Records"
 msgstr "Buscar registros _relacionados"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:178
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:200
 msgid "Insert _Horizontal Line"
 msgstr "Insertar línea _horizontal"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:180
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:202
 msgid "Insert _Vertical Line"
 msgstr "Insertar línea _vertical"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:183
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:205
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:64
 msgid "_View"
 msgstr "_Ver"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:184
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:206
 msgid "Show Grid"
 msgstr "Mostrar rejilla"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:186
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:208
 msgid "Show Rules"
 msgstr "Mostrar reglas"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:190
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:210
+#| msgid "Show Rules"
+msgid "Show Outlines"
+msgstr "Mostrar esquemas"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:214
 msgid "Fit Page _Width"
 msgstr "Ajustar al _ancho de página"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:194
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:218
 msgid "Zoom 200%"
 msgstr "Ampliación 200%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:202
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:226
 msgid "Zoom 50%"
 msgstr "Ampliación 50%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:206
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:230
 msgid "Zoom 25%"
 msgstr "Ampliación 25%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:655
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:686
 msgid "Insert"
 msgstr "Insertar"
 
@@ -2415,11 +2425,11 @@ msgstr "Insertar"
 msgid "Show _Grid"
 msgstr "Mostrar r_ejilla"
 
-#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:481
+#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:484
 msgid "Edit _Fields"
 msgstr "Editar los _campos"
 
-#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:484
+#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:487
 msgid "Edit _Relationships"
 msgstr "Editar las _relaciones"
 
@@ -2564,7 +2574,7 @@ msgstr ""
 msgid "Choose Field"
 msgstr "Elegir campo"
 
-#: ../glom/print_layout/canvas_print_layout.cc:245
+#: ../glom/print_layout/canvas_print_layout.cc:252
 msgid "_Formatting"
 msgstr "_Formato"
 
@@ -3868,17 +3878,14 @@ msgid "Image Object"
 msgstr "Objeto imagen"
 
 #: ../ui/developer/window_print_layout_edit.glade.h:1
-#| msgid "<b>Table:</b>"
 msgid "<b>Table Name</b>"
 msgstr "<b>Nombre de la tabla:</b>"
 
 #: ../ui/developer/window_print_layout_edit.glade.h:2
-#| msgid "Right"
 msgid "Height:"
 msgstr "Altura:"
 
 #: ../ui/developer/window_print_layout_edit.glade.h:3
-#| msgid "<b>Layout name:</b>"
 msgid "Layout name:"
 msgstr "Nombre de la distribución:"
 
