@@ -118,7 +118,7 @@ private:
   bool get_is_item_at(double x, double y);
   void set_default_position(const sharedptr<LayoutItem>& item);
   
-  void canvas_convert_from_drag_pixels(double& x, double& y) const;
+  void canvas_convert_from_drag_pixels(double& x, double& y, bool adjust_for_scrolling = false) const;
   void get_dimensions_of_multiple_selected_items(double& x, double& y, double& width, double& height);
 
   //Box_DB_Table_Definition* m_box;

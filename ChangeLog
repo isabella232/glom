@@ -1,3 +1,15 @@
+2011-08-11  Murray Cumming  <murrayc@murrayc.com>
+
+	Print Layout: Correct drag positions when scrolled.
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
+	Correct the rule position indicators, the rule drag positions, and 
+	item drag positions, when the viewport is scrolled.
+	canvas_convert_from_drag_pixels(): Add a bool adjust_for_scrolling 
+	option, because the motion-notify-event signal already takes the 
+	scroll offset into account, but the drag-motion signal does not.
+	That does not seem to be documented.
+
 2011-08-10  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Make items transparent.

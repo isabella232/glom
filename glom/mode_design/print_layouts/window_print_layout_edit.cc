@@ -341,7 +341,7 @@ bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::Drag
 
   double item_x = x;
   double item_y = y;
-  canvas_convert_from_drag_pixels(item_x, item_y);
+  canvas_convert_from_drag_pixels(item_x, item_y, true /* adjust for scrolling */);
 
   //Show the position in the rulers:
   gimp_ruler_set_position(m_hruler, item_x);
@@ -432,15 +432,18 @@ sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayoutTool
   return layout_item;
 }
 
-void Window_PrintLayout_Edit::canvas_convert_from_drag_pixels(double& x, double& y) const
+void Window_PrintLayout_Edit::canvas_convert_from_drag_pixels(double& x, double& y, bool adjust_for_scrolling) const
 {
   //The canvas might be scrolled down in the viewport/scrolledwindow,
   //so deal with that:
-  const double scroll_x = m_scrolled_window.get_hadjustment()->get_value();
-  const double scroll_y = m_scrolled_window.get_vadjustment()->get_value();
+  if(adjust_for_scrolling)
+  {
+    const double scroll_x = m_scrolled_window.get_hadjustment()->get_value();
+    const double scroll_y = m_scrolled_window.get_vadjustment()->get_value();
   
-  x += scroll_x;
-  y += scroll_y;
+    x += scroll_x;
+    y += scroll_y;
+  }
 
   m_canvas.convert_from_pixels(x, y);
 }
@@ -449,7 +452,7 @@ void Window_PrintLayout_Edit::canvas_convert_from_drag_pixels(double& x, double&
 void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, const Gtk::SelectionData& selection_data, guint /* info */, guint timestamp)
 {
   //This is called when an item is dropped on the canvas,
-  //or after our drag_motion handler has called drag_get_data()): 
+  //or after our drag_motion handler has called drag_get_data()): 	
 
   const Glib::ustring target = m_canvas.drag_dest_find_target(drag_context);
   if(target.empty())
@@ -457,7 +460,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
 
   double item_x = x;
   double item_y = y;
-  canvas_convert_from_drag_pixels(item_x, item_y);
+  canvas_convert_from_drag_pixels(item_x, item_y, true /* adjust for scrolling */);
 
   //Handle dragging of the rule from the GimpRuler widget:
   if(target == DRAG_TARGET_NAME_RULE)
@@ -522,7 +525,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
     m_canvas.add_canvas_layout_item(item);
     double item_x = x;
     double item_y = y;
-    canvas_convert_from_drag_pixels(item_x, item_y);
+    canvas_convert_from_drag_pixels(item_x, item_y, true /* adjust for scrolling */);
     item->snap_position(item_x, item_y);
     item->set_xy(item_x, item_y);
    
@@ -722,9 +725,11 @@ void Window_PrintLayout_Edit::setup_context_menu()
 
 bool Window_PrintLayout_Edit::on_canvas_motion_notify_event(GdkEventMotion* event)
 {
+  //Notice that, unlike drag-motion, motion-notify-event's x/y position already 
+  //seems to have the scrolling taken into account.
   double x = event->x;
   double y = event->y;
-  canvas_convert_from_drag_pixels(x, y);
+  canvas_convert_from_drag_pixels(x, y, false /* do not adjust for scrolling */);
 
   gimp_ruler_set_position(m_hruler, x);
   gimp_ruler_set_position(m_vruler, y);
@@ -835,16 +840,6 @@ void Window_PrintLayout_Edit::on_menu_insert_line_horizontal()
 void Window_PrintLayout_Edit::on_menu_insert_line_vertical()
 {
   sharedptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::ITEM_LINE_VERTICAL);
-
-  /*
-  double item_x = m_drop_x;
-  double item_y = m_drop_y;
-  canvas_convert_from_drag_pixels(item_x, item_y);
-  */
-
-  // Note to translators: This is the default contents of a text item on a print layout: 
-  //layout_item->set_text(_("text"));
-  //layout_item->set_coordinates(item_x, item_y, item_x, item_y + 100);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
   m_canvas.add_canvas_layout_item(item);
