@@ -1,5 +1,15 @@
 2011-08-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Only show grid lines on mouseover.
+
+	* glom/utility_widgets/canvas/canvas_table_movable.[h|cc]:
+	Add set_lines_visibility().
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
+	position_line_manipulators(): If the child is a table then 
+	also show the grid lines.
+
+2011-08-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Make the manipulators the same width as the outlines.
 
 	* glom/utility_widgets/canvas/canvas_group_resizable.cc: Change 

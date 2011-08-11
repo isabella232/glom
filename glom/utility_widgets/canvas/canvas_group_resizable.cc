@@ -21,6 +21,7 @@
 #include "canvas_group_resizable.h"
 #include "canvas_rect_movable.h"
 #include "canvas_line_movable.h"
+#include <glom/utility_widgets/canvas/canvas_table_movable.h>
 #include <goocanvasmm/canvas.h>
 #include <goocanvasrect.h>
 #include <goocanvasgroup.h>
@@ -764,6 +765,19 @@ void CanvasGroupResizable::set_manipulators_visibility(Goocanvas::ItemVisibility
   //For testing: visibility = Goocanvas::ITEM_VISIBLE;
   m_group_edge_manipulators->property_visibility() = edge_visibility;
   m_group_corner_manipulators->property_visibility() = visibility;
+
+  //Also show grid lines in the portal table,
+  //though these are not actually manipulatable.
+  Glib::RefPtr<CanvasTableMovable> table = 
+    Glib::RefPtr<CanvasTableMovable>::cast_dynamic(get_child());
+  if(table)
+  {
+    if(visibility == Goocanvas::ITEM_VISIBLE)
+      table->set_lines_visibility();
+    else
+      table->set_lines_visibility(false);
+  }
+  
 }
 
 bool CanvasGroupResizable::on_rect_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* /* event */)

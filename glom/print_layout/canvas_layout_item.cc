@@ -345,33 +345,6 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
   }
 
   return child;
-
-  if(child && child_item)
-  {
-    //child_item->property_pointer_events() =
-    //  (Goocanvas::PointerEvents)(Goocanvas::EVENTS_VISIBLE_FILL & GOO_CANVAS_EVENTS_VISIBLE_STROKE);
-
-    //Set the position and dimensions of this group to match the child:
-    double x = 0;
-    double y = 0;
-    double width = 0;
-    double height = 0;
-    layout_item->get_print_layout_position(x, y, width, height);
-    child->set_width_height(width, height);
-    //std::cout << "debug: " << G_STRFUNC << ": item x=" << x << std::endl;
-  }
-
-  //Scale images.
-  //This can only be done after setting the size:
-  Glib::RefPtr<CanvasImageMovable> canvas_image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(child);
-  if(canvas_image)
-  {
-    canvas_image->scale_to_size();
-
-    //It will also be rescaled when this canvas item is resized - see on_resized().
-  }
-
-  return child;
 }
 
 void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)

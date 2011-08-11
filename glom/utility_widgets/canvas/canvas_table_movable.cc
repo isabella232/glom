@@ -72,6 +72,8 @@ void CanvasTableMovable::get_width_height(double& width, double& height) const
 
 void CanvasTableMovable::set_width_height(double width, double height)
 {
+  std::cout << "debug: " << G_STRFUNC << ": height=" << height << std::endl;
+
   if(width == -1)
   {
     std::cout << "debug: " << G_STRFUNC << ": width is -1" << std::endl;
@@ -180,6 +182,20 @@ Goocanvas::Canvas* CanvasTableMovable::get_parent_canvas_widget()
   return get_canvas();
 }
 
+void CanvasTableMovable::set_lines_visibility(bool show)
+{
+  if(show)
+  {
+    property_vert_grid_line_width() = 0.5f;
+    property_horz_grid_line_width() = 0.5f;
+    property_stroke_color() = "black";
+  }
+  else
+  {
+    property_vert_grid_line_width() = 0.0f;
+    property_horz_grid_line_width() = 0.0f;
+  }
+}
 
 } //namespace Glom
 
