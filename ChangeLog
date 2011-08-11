@@ -1,5 +1,20 @@
 2011-08-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Make the manipulators the same width as the outlines.
+
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc: Change 
+	MANIPULATOR_STROKE_WIDTH to be the same as OUTLINE_STROKE_WIDTH, 
+	which is thinner.
+	create_outline_line(): Prevent dragging of the outline, in case it 
+	ever gets high enough in the z order to be dragged.
+	create_rect_manipulators(), position_line_manipulators(),
+	create_outline_line(): Always raise the manipulators to the very top,
+	so they are always visible and draggable. Trying to be more precise 
+	with raise() can apparently move them lower than other items that we 
+	do not mention.
+
+2011-08-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Do not show the rules when they should not be visible.
 
 	* glom/print_layout/canvas_print_layout.cc: set_print_layout():

@@ -31,9 +31,9 @@ namespace Glom
 
 static const double MANIPULATOR_CORNER_SIZE = 2;
 static const char MANIPULATOR_CORNER_FILL_COLOR[] = "black";
-static const double MANIPULATOR_STROKE_WIDTH = 1.0f; //mm (assuming that the canvas uses mm.
+static const double MANIPULATOR_STROKE_WIDTH = 0.5f; //mm (assuming that the canvas uses mm.
 static const char MANIPULATOR_STROKE_COLOR[] = "black";
-static const double OUTLINE_STROKE_WIDTH = 0.5f; //mm (assuming that the canvas uses mm.
+static const double OUTLINE_STROKE_WIDTH = MANIPULATOR_STROKE_WIDTH; //mm (assuming that the canvas uses mm.
 static const char OUTLINE_STROKE_COLOR[] = "gray";
 
 CanvasGroupResizable::CanvasGroupResizable()
@@ -128,6 +128,10 @@ void CanvasGroupResizable::create_rect_manipulators()
   m_manipulator_edge_left->set_drag_cursor(Gdk::LEFT_SIDE);
   m_manipulator_edge_right->set_drag_cursor(Gdk::RIGHT_SIDE);
 
+  //Make sure that this is above the outline group:
+  m_group_edge_manipulators->raise();//m_group_outline);
+  m_group_corner_manipulators->raise();//m_group_outline);
+
   manipulator_connect_signals(m_manipulator_corner_top_left, MANIPULATOR_CORNER_TOP_LEFT);
   manipulator_connect_signals(m_manipulator_corner_top_right, MANIPULATOR_CORNER_TOP_RIGHT);
   manipulator_connect_signals(m_manipulator_corner_bottom_left, MANIPULATOR_CORNER_BOTTOM_LEFT);
@@ -165,6 +169,7 @@ Glib::RefPtr<CanvasLineMovable> CanvasGroupResizable::create_outline_line(double
   Glib::RefPtr<CanvasLineMovable> line = Glom::CanvasLineMovable::create();
   line->property_line_width() = OUTLINE_STROKE_WIDTH;
   line->property_stroke_color() = OUTLINE_STROKE_COLOR;
+  line->set_movement_allowed(false, false);
   m_group_outline->add_child(line);
   set_edge_points(line, x1, y1, x2, y2);
   return line;
@@ -273,14 +278,14 @@ void CanvasGroupResizable::position_rect_manipulators()
   //and the manipulators are above the item (and above the rect):
   if(item)
   {
-    m_group_edge_manipulators->raise(item);
-    m_group_corner_manipulators->raise(item);
+    m_group_edge_manipulators->raise();
+    m_group_corner_manipulators->raise();
     m_rect->lower(item);
   }
   else
   {
-    m_group_edge_manipulators->raise(m_rect);
-    m_group_corner_manipulators->raise(m_rect);
+    m_group_edge_manipulators->raise();
+    m_group_corner_manipulators->raise();
   }
 }
 
@@ -307,8 +312,8 @@ void CanvasGroupResizable::position_line_manipulators()
 
   m_manipulator_end->set_xy(end_x - half_size, end_y - half_size); //Center it over the point.
 
-  m_group_edge_manipulators->raise(line);
-  m_group_corner_manipulators->raise(line);
+  m_group_edge_manipulators->raise();
+  m_group_corner_manipulators->raise();
 }
 
 void CanvasGroupResizable::position_outline()
