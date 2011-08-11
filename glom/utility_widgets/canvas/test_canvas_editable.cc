@@ -104,7 +104,7 @@ public:
     table->set_xy(100, 100);
     table->set_width_height(200, 200);
     Glib::RefPtr<Glom::CanvasRectMovable> innerrect1 = Glom::CanvasRectMovable::create();
-    innerrect1->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
+    innerrect1->property_fill_color() = "blue"; //This makes the whole area clickable, not just the outline stroke.
     innerrect1->property_line_width() = 1;
     innerrect1->property_stroke_color() = "black";
     innerrect1->set_width_height(20, 20);
@@ -116,17 +116,31 @@ public:
                                        "x-expand", TRUE, 
                                        (void*)0);
     Glib::RefPtr<Glom::CanvasRectMovable> innerrect2 = Glom::CanvasRectMovable::create();
-    innerrect2->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
+    innerrect2->property_fill_color() = "green"; //This makes the whole area clickable, not just the outline stroke.
     innerrect2->property_line_width() = 1;
     innerrect2->property_stroke_color() = "black";
-    innerrect2->set_width_height(30, 30);
+    innerrect2->set_width_height(20, 20);
     table->add_child(innerrect2);
-    goo_canvas_item_set_child_properties(GOO_CANVAS_ITEM(table->gobj()), GOO_CANVAS_ITEM(innerrect1->gobj()),
-                                       "row", 0,
-                                       "column", 0,
+    goo_canvas_item_set_child_properties(GOO_CANVAS_ITEM(table->gobj()), GOO_CANVAS_ITEM(innerrect2->gobj()),
+                                       "row", 1,
+                                       "column", 1,
                                        "x-fill", TRUE, 
                                        "x-expand", TRUE, 
                                        (void*)0);
+    Glib::RefPtr<Glom::CanvasTextMovable> innerrect3 = Glom::CanvasTextMovable::create();
+    innerrect3->property_fill_color() = "yellow"; //This makes the whole area clickable, not just the outline stroke.
+    innerrect3->property_line_width() = 1;
+    innerrect3->property_stroke_color() = "black";
+    innerrect3->set_text("yadda");
+    innerrect3->set_width_height(20, 20);
+    table->add_child(innerrect3);
+    goo_canvas_item_set_child_properties(GOO_CANVAS_ITEM(table->gobj()), GOO_CANVAS_ITEM(innerrect3->gobj()),
+                                       "row", 2,
+                                       "column", 2,
+                                       "x-fill", TRUE, 
+                                       "x-expand", TRUE, 
+                                       (void*)0);
+
     add_item(table, true);
 
   }
