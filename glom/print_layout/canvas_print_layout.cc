@@ -358,7 +358,12 @@ void Canvas_PrintLayout::on_context_menu_edit()
   {
     sharedptr<LayoutItem_Field> field_chosen = offer_field_list_select_one_field(field, m_table_name, parent);
     if(field_chosen)
+    {
+      //Never use the default formatting for print layouts:
+      field_chosen->set_formatting_use_default(false);
+
       m_context_item->set_layout_item(field_chosen);
+    }
   }
   else
   {
@@ -459,10 +464,16 @@ void Canvas_PrintLayout::on_dialog_format_hide()
     return;
 
   if(layout_item_field)
+  {
     m_dialog_format->m_box_formatting->get_formatting(layout_item_field->m_formatting);
+
+    //Never use the default formatting for print layouts:
+    layout_item_field->set_formatting_use_default(false);
+  }
   else if(layout_item_text)
     m_dialog_format->m_box_formatting->get_formatting(layout_item_text->m_formatting);
 
+  
   m_context_item->set_layout_item(layout_item); //Redraw the child item with the new formatting.
 
   delete m_dialog_format;

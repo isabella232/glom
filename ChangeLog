@@ -1,5 +1,14 @@
 2011-08-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Make text formatting work for field items.
+
+	* glom/print_layout/canvas_print_layout.cc: on_context_menu_edit(), 
+	on_dialog_format_hide(): Never use default formatting for fields, 
+	because that formatting is for regular layouts, and we do not 
+	even let the user toggle whether to use it.
+
+2011-08-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Don't move fields to 0,0 when choosing the field.
 
 	* glom/mode_design/layout/dialog_choose_field.cc: get_field():
