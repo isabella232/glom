@@ -203,8 +203,24 @@ sharedptr<LayoutItem_Field> Dialog_ChooseField::get_field_chosen() const
   {
     field = *(list_fields.begin()); 
   }
+
+  if(!field)
+    return field;
+
+  if(!m_start_field)
+    return field;
+  else
+  {
+    //Preserve extra details of the field that was originally used, if any,
+    //changing only the details that could have been changed in this dialog:
+    //Note that m_start_field is already a clone, so it's safe to change it:
+    m_start_field->set_name( field->get_name() );
+    m_start_field->set_full_field_details( field->get_full_field_details() );
+    m_start_field->set_relationship( field->get_relationship() );
+    m_start_field->set_related_relationship( field->get_related_relationship() );
   
-  return field;
+    return m_start_field;
+  }
 }
 
 Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen() const

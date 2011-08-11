@@ -1,5 +1,13 @@
 2011-08-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Don't move fields to 0,0 when choosing the field.
+
+	* glom/mode_design/layout/dialog_choose_field.cc: get_field():
+	Preserve the extra details of the start field, such as formatting 
+	and print layout position.
+
+2011-08-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Actually allow the user to change the text formatting.
 
 	* glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:
