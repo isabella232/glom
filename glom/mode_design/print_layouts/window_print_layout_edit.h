@@ -153,7 +153,6 @@ private:
   bool m_drag_preview_requested;
   Glib::RefPtr<CanvasLayoutItem> m_layout_item_dropping;
 
-  bool m_dragging_temp_rule;
   bool m_temp_rule_horizontal; //Otherwise vertical.
 
   //A cache of the selected item,

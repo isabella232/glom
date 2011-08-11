@@ -1,5 +1,16 @@
 2011-08-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Prevent rule line dragging if rules are not shown.
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
+	on_menu_view_show_rules(): If rules are not shown, unset the GimpRulers 
+	as drag sources.
+	on_canvas_drag_motion(), on_canvas_drag_data_received(): Prevent 
+	showing the temp rule or dropping a real rule too.
+	Also remove the unused (though set) m_dragging_temp_rule variable.
+
+2011-08-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Add a Print Preview menu item.
 
 	* glom/frame_glom.[h|cc]: on_menu_print_layout_selected(): 

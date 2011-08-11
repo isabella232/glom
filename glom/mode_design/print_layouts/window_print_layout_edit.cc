@@ -54,7 +54,6 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_spinbutton_height(0),
   m_ignore_spinbutton_signals(false),
   m_drag_preview_requested(false),
-  m_dragging_temp_rule(false),
   m_temp_rule_horizontal(false),
   m_vruler(0),
   m_hruler(0),
@@ -354,6 +353,9 @@ bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::Drag
   //Handle dragging of the rule from the GimpRuler widget:
   if(target == DRAG_TARGET_NAME_RULE)
   {
+    if(!m_action_showrules->get_active())
+      return false; //Don't allow the drop.
+
     if(m_temp_rule_horizontal)
        m_canvas.show_temp_rule(0, item_y);
     else
@@ -469,6 +471,9 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
   //Handle dragging of the rule from the GimpRuler widget:
   if(target == DRAG_TARGET_NAME_RULE)
   {
+    if(!m_action_showrules->get_active())
+      return;
+
     m_canvas.show_temp_rule(0, 0, false);
  
     if(m_temp_rule_horizontal)
@@ -478,7 +483,6 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
 
     drag_context->drag_finish(true, false, timestamp);
 
-    m_dragging_temp_rule = false;
     return;
   }
   
@@ -553,7 +557,6 @@ void Window_PrintLayout_Edit::on_canvas_drag_leave(const Glib::RefPtr<Gdk::DragC
   }
 
   m_canvas.show_temp_rule(0, 0, false); //Remove it.
-  m_dragging_temp_rule = false;
 }
 
 Window_PrintLayout_Edit::~Window_PrintLayout_Edit()
@@ -868,8 +871,22 @@ void Window_PrintLayout_Edit::on_menu_view_show_grid()
 
 void Window_PrintLayout_Edit::on_menu_view_show_rules()
 {
-  m_canvas.set_rules_visibility(
-    m_action_showrules->get_active());
+  const bool active = m_action_showrules->get_active();
+  m_canvas.set_rules_visibility(active);
+
+  Gtk::Widget* hruler = Glib::wrap(GTK_WIDGET(m_hruler));
+  Gtk::Widget* vruler = Glib::wrap(GTK_WIDGET(m_vruler));
+
+  if(active)
+  {
+    hruler->drag_source_set(m_drag_targets_rule);
+    vruler->drag_source_set(m_drag_targets_rule);
+  }
+  else
+  {
+    hruler->drag_source_unset();
+    vruler->drag_source_unset();
+  }
 }
 
 
@@ -1343,7 +1360,6 @@ bool Window_PrintLayout_Edit::on_hruler_button_press_event(GdkEventButton* event
   if(event->button != 1)
     return true;
 
-  m_dragging_temp_rule = true;
   m_temp_rule_horizontal = true;
  
   return false;
@@ -1354,7 +1370,6 @@ bool Window_PrintLayout_Edit::on_vruler_button_press_event(GdkEventButton* event
   if(event->button != 1)
     return true;
 
-  m_dragging_temp_rule = true;
   m_temp_rule_horizontal = false; //vertical.
 
   return false;
