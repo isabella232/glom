@@ -109,6 +109,9 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
     add_vertical_rule(*iter);
   }
 
+  //TODO: This needs a number, but that is decided in WindowPrintLayoutEdit: set_grid_gap( print_layout->get_show_grid() );
+  set_rules_visibility( print_layout->get_show_rules() );
+  set_outlines_visibility( print_layout->get_show_outlines() );
 
   m_modified = false;
 }

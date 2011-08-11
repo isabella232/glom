@@ -1,5 +1,12 @@
 2011-08-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Do not show the rules when they should not be visible.
+
+	* glom/print_layout/canvas_print_layout.cc: set_print_layout():
+	Show the grid and rules as per the PrintLayout.
+
+2011-08-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Prevent rule line dragging if rules are not shown.
 
 	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
