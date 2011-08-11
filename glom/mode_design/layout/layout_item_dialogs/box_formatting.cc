@@ -473,12 +473,17 @@ void Box_Formatting::enforce_constraints()
     m_checkbox_format_text_font->hide();
     m_checkbox_format_text_color_background->hide();
     m_checkbox_format_text_color_foreground->hide();
+
+    //But enable them so that other code, that checks for it, works:
+    m_checkbox_format_text_font->set_active();
+    m_checkbox_format_text_color_background->set_active();
+    m_checkbox_format_text_color_foreground->set_active();
   }
 
   //Enable UI depending on the checkbutton state:
-  m_fontbutton->set_sensitive( m_for_print_layout || m_checkbox_format_text_font->get_active() );
-  m_colorbutton_foreground->set_sensitive( m_for_print_layout || m_checkbox_format_text_color_foreground->get_active() );
-  m_colorbutton_background->set_sensitive( m_for_print_layout || m_checkbox_format_text_color_background->get_active() );
+  m_fontbutton->set_sensitive( m_checkbox_format_text_font->get_active() );
+  m_colorbutton_foreground->set_sensitive( m_checkbox_format_text_color_foreground->get_active() );
+  m_colorbutton_background->set_sensitive(  m_checkbox_format_text_color_background->get_active() );
 
   //Choices:
   //Radio buttons only make sense when the items are restricted, instead of free-form:

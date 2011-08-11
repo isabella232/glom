@@ -29,6 +29,7 @@
 #include <glom/utility_widgets/canvas/canvas_table_movable.h>
 #include <glom/utility_widgets/canvas/canvas_image_movable.h>
 #include <glom/utility_widgets/canvas/canvas_text_movable.h>
+#include <glom/application.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
 
@@ -415,6 +416,10 @@ void Canvas_PrintLayout::on_context_menu_formatting()
   Utils::get_glade_widget_derived_with_warning(m_dialog_format);
   add_view(m_dialog_format);
 
+  Gtk::Window* window = dynamic_cast<Gtk::Window*>(get_toplevel());
+  if(window)
+    m_dialog_format->set_transient_for(*window);
+
   m_dialog_format->signal_hide().connect( sigc::mem_fun(*this, &Canvas_PrintLayout::on_dialog_format_hide) );
 
   //We need an if here, because they have no common base class.
@@ -427,7 +432,8 @@ void Canvas_PrintLayout::on_context_menu_formatting()
   else
   {
     const FieldFormatting& formatting = layout_item_text->m_formatting;
-    m_dialog_format->m_box_formatting->set_formatting_for_non_field(formatting);
+    m_dialog_format->m_box_formatting->set_formatting_for_non_field(
+      formatting, false /* don't show numeric options */);
   }
 
   m_dialog_format->m_box_formatting->set_is_for_non_editable();

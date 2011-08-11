@@ -1,5 +1,16 @@
 2011-08-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Actually allow the user to change the text formatting.
+
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:
+	When used for a print layout, enable the hidden checkboxes, because 
+	other code checks for them.
+	* glom/print_layout/canvas_print_layout.cc: on_context_menu_formatting():
+	Make the dialog transient for the parent window.
+	Also, do not show numeric formatting for text items.
+
+2011-08-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Correct drag positions when scrolled.
 
 	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
