@@ -114,7 +114,7 @@ public:
                                        "column", 0,
                                        "x-fill", TRUE, 
                                        "x-expand", TRUE, 
-                                       0);
+                                       (void*)0);
     Glib::RefPtr<Glom::CanvasRectMovable> innerrect2 = Glom::CanvasRectMovable::create();
     innerrect2->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
     innerrect2->property_line_width() = 1;
@@ -126,7 +126,7 @@ public:
                                        "column", 0,
                                        "x-fill", TRUE, 
                                        "x-expand", TRUE, 
-                                       0);
+                                       (void*)0);
     add_item(table, true);
 
   }
@@ -139,6 +139,7 @@ private:
     if(m_context_menu)
       m_context_menu->popup(button, activate_time);
   }
+  */
 
   void on_context_menu_edit()
   {
@@ -147,7 +148,6 @@ private:
   void on_context_menu_delete()
   {
   }
-  */
   
   void setup_context_menu()
   {

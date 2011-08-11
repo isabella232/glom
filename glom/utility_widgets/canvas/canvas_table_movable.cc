@@ -72,12 +72,11 @@ void CanvasTableMovable::get_width_height(double& width, double& height) const
 
 void CanvasTableMovable::set_width_height(double width, double height)
 {
-  std::cout << "debug: " << G_STRFUNC << ": height=" << height << std::endl;
-
   if(width == -1)
   {
     std::cout << "debug: " << G_STRFUNC << ": width is -1" << std::endl;
   }
+
   property_width() = width;
   property_height() = height;
 }

@@ -44,6 +44,28 @@ glom_eggspreadtable_files =  \
 	glom/utility_widgets/eggspreadtablemm/private/eggspreadtablemm_p.h \
 	glom/utility_widgets/eggspreadtablemm/private/eggspreadtabledndmm_p.h
 
+glom_canvas_files =  \
+	glom/utility_widgets/canvas/canvas_editable.cc			\
+	glom/utility_widgets/canvas/canvas_editable.h			\
+	glom/utility_widgets/canvas/canvas_group_grid.cc		\
+	glom/utility_widgets/canvas/canvas_group_grid.h			\
+	glom/utility_widgets/canvas/canvas_group_movable.cc		\
+	glom/utility_widgets/canvas/canvas_group_movable.h		\
+	glom/utility_widgets/canvas/canvas_group_resizable.cc		\
+	glom/utility_widgets/canvas/canvas_group_resizable.h		\
+	glom/utility_widgets/canvas/canvas_image_movable.cc		\
+	glom/utility_widgets/canvas/canvas_image_movable.h		\
+	glom/utility_widgets/canvas/canvas_item_movable.cc		\
+	glom/utility_widgets/canvas/canvas_item_movable.h		\
+	glom/utility_widgets/canvas/canvas_line_movable.cc		\
+	glom/utility_widgets/canvas/canvas_line_movable.h		\
+	glom/utility_widgets/canvas/canvas_rect_movable.cc		\
+	glom/utility_widgets/canvas/canvas_rect_movable.h		\
+	glom/utility_widgets/canvas/canvas_table_movable.cc		\
+	glom/utility_widgets/canvas/canvas_table_movable.h		\
+	glom/utility_widgets/canvas/canvas_text_movable.cc		\
+	glom/utility_widgets/canvas/canvas_text_movable.h
+
 glom_source_files = \
 	glom/application.cc						\
 	glom/application.h						\
@@ -230,26 +252,7 @@ glom_source_files = \
 	glom/utility_widgets/adddel/adddel_withbuttons.h		\
 	glom/utility_widgets/adddel/treeviewcolumn_glom.cc		\
 	glom/utility_widgets/adddel/treeviewcolumn_glom.h		\
-	glom/utility_widgets/canvas/canvas_editable.cc			\
-	glom/utility_widgets/canvas/canvas_editable.h			\
-	glom/utility_widgets/canvas/canvas_group_grid.cc		\
-	glom/utility_widgets/canvas/canvas_group_grid.h			\
-	glom/utility_widgets/canvas/canvas_group_movable.cc		\
-	glom/utility_widgets/canvas/canvas_group_movable.h		\
-	glom/utility_widgets/canvas/canvas_group_resizable.cc		\
-	glom/utility_widgets/canvas/canvas_group_resizable.h		\
-	glom/utility_widgets/canvas/canvas_image_movable.cc		\
-	glom/utility_widgets/canvas/canvas_image_movable.h		\
-	glom/utility_widgets/canvas/canvas_item_movable.cc		\
-	glom/utility_widgets/canvas/canvas_item_movable.h		\
-	glom/utility_widgets/canvas/canvas_line_movable.cc		\
-	glom/utility_widgets/canvas/canvas_line_movable.h		\
-	glom/utility_widgets/canvas/canvas_rect_movable.cc		\
-	glom/utility_widgets/canvas/canvas_rect_movable.h		\
-	glom/utility_widgets/canvas/canvas_table_movable.cc		\
-	glom/utility_widgets/canvas/canvas_table_movable.h		\
-	glom/utility_widgets/canvas/canvas_text_movable.cc		\
-	glom/utility_widgets/canvas/canvas_text_movable.h		\
+	$(glom_canvas_files) \
 	glom/utility_widgets/cellrendererlist.cc	\
 	glom/utility_widgets/cellrendererlist.h
 
