@@ -127,12 +127,14 @@ public:
                                        "x-fill", TRUE, 
                                        "x-expand", TRUE, 
                                        (void*)0);
-    Glib::RefPtr<Glom::CanvasTextMovable> innerrect3 = Glom::CanvasTextMovable::create();
+    Glib::RefPtr<Goocanvas::Text> innerrect3 = Goocanvas::Text::create();
     innerrect3->property_fill_color() = "yellow"; //This makes the whole area clickable, not just the outline stroke.
     innerrect3->property_line_width() = 1;
     innerrect3->property_stroke_color() = "black";
-    innerrect3->set_text("yadda");
-    innerrect3->set_width_height(20, 20);
+    innerrect3->property_text() = "yadda";
+    innerrect3->property_width() = 20;
+    //innerrect3->property_height() = 20;
+    //innerrect3->set_width_height(20, 20);
     table->add_child(innerrect3);
     goo_canvas_item_set_child_properties(GOO_CANVAS_ITEM(table->gobj()), GOO_CANVAS_ITEM(innerrect3->gobj()),
                                        "row", 2,

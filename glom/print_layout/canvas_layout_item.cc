@@ -290,7 +290,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
             //Show as many rows as can fit in the height.
             double row_height = 0;
             const int max_rows = get_rows_count_for_portal(portal, row_height);
-            std::cout << "DEBUG: max_rows=" << max_rows << std::endl;
+            std::cout << "DEBUG: max_rows=" << max_rows << ", row_height=" << row_height << std::endl;
 
             const LayoutGroup::type_list_items child_items = portal->get_items();
 
@@ -309,15 +309,20 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
                 if(cell)
                 {
                   //Make sure that the width is sensible:
+                  
                   guint width = layout_item->get_display_width();
                   width = std::max(width, (guint)10);
-                  cell->set_width_height(width, row_height);
-                  std::cout << "DEBUG: width=" << width << std::endl;
+                  //cell->set_width_height(width, row_height);
 
                   //TODO: Add/Remove rows when resizing, instead of resizing the rows:
                   Glib::RefPtr<Goocanvas::Item> cell_as_item = CanvasItemMovable::cast_to_item(cell);
                   if(cell_as_item)
                   {
+                    //TODO: Setting the height too cause weird problems in the GooCanvasTable,
+                    //making child items disappear as the table is moved around.
+                    cell_as_item->property_width() = width;
+                    //cell_as_item->set_width_height(width, row_height);
+
                     canvas_item->attach(cell_as_item,
                       col /* left_attach */, col + 1 /* right_attach */,
                       row /* top_attach */, row + 1 /* right_attach */,

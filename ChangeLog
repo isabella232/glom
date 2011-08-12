@@ -1,3 +1,13 @@
+2011-08-12  Murray Cumming  <murrayc@murrayc.com>
+
+	Print Layout: Work around some weirdness in portal tables.
+
+	* glom/print_layout/canvas_layout_item.cc:
+	create_canvas_item_for_layout_item() Do not set the height of 
+	items in tables, because that leads to them disappearing when the 
+	table is moved in certain ways. I am still investigating why.
+	We probably really do want to set the height.
+
 2011-08-11  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Only show grid lines on mouseover.
