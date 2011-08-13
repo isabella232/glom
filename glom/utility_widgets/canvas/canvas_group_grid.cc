@@ -135,18 +135,19 @@ double CanvasGroupGrid::snap_position_grid(double a) const
 
 void CanvasGroupGrid::snap_position(double& x, double& y) const
 {
-  //printf("%s: x=%f, y=%f\n", __FUNCTION__, x, y);
+  double offset_x = 0;
+  double offset_y = 0;
+  double offset_x_min = 0;
+  double offset_y_min = 0;
+
   if(m_grid_gap)
   {
-    double offset_x_min = 0;
-    double offset_y_min = 0;
-
     //Try snapping to the grid:
     double temp_x = snap_position_grid(x);
     double temp_y = snap_position_grid(y);
    
-    double offset_x = temp_x - x;
-    double offset_y = temp_y - y;
+    offset_x = temp_x - x;
+    offset_y = temp_y - y;
 
     //Use the smallest offset, preferring some offset to no offset:
     if(offset_x)
@@ -154,24 +155,24 @@ void CanvasGroupGrid::snap_position(double& x, double& y) const
 
     if(offset_y)
       offset_y_min = offset_y;
-
-    //Try snapping to the rules:
-    temp_x = snap_position_rules_x(x);
-    temp_y = snap_position_rules_y(y);
-
-    offset_x = temp_x - x;
-    offset_y = temp_y - y;
-
-    //Use the smallest offset, preferring some offset to no offset:
-    if(offset_x && ((std::abs((long)offset_x) < std::abs((long)offset_x_min)) || !offset_x_min))
-      offset_x_min = offset_x;
-
-    if(offset_y && ((std::abs((long)offset_y) < std::abs((long)offset_y_min)) || !offset_y_min))
-      offset_y_min = offset_y;
-
-    x += offset_x_min;
-    y += offset_y_min;
   }
+
+  //Try snapping to the rules, if any:
+  double temp_x = snap_position_rules_x(x);
+  double temp_y = snap_position_rules_y(y);
+
+  offset_x = temp_x - x;
+  offset_y = temp_y - y;
+
+  //Use the smallest offset, preferring some offset to no offset:
+  if(offset_x && ((std::abs((long)offset_x) < std::abs((long)offset_x_min)) || !offset_x_min))
+    offset_x_min = offset_x;
+
+  if(offset_y && ((std::abs((long)offset_y) < std::abs((long)offset_y_min)) || !offset_y_min))
+    offset_y_min = offset_y;
+
+  x += offset_x_min;
+  y += offset_y_min;
 }
 
 Glib::RefPtr<CanvasLineMovable> CanvasGroupGrid::create_rule_line(double pos, bool horizontal)

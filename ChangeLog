@@ -1,3 +1,10 @@
+2011-08-13  Murray Cumming  <murrayc@murrayc.com>
+
+	Print Layout: Snap to rules even when the grid is not shown.
+
+	* glom/utility_widgets/canvas/canvas_group_grid.cc: Don't make snapping 
+	to rules dependent on whether the grid is showing.
+
 2011-08-12  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Work around some weirdness in portal tables.
