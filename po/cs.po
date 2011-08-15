@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: glom gnome-master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-07-25 09:56+0000\n"
-"PO-Revision-Date: 2011-07-27 22:26+0200\n"
+"POT-Creation-Date: 2011-08-08 18:51+0000\n"
+"PO-Revision-Date: 2011-08-15 22:16+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,7 @@ msgid ""
 msgstr "Prosím počkejte dokud Glom nepřipraví váš systém pro sdílení na síti."
 
 #: ../glom/application.cc:287 ../glom/bakery/app_withdoc_gtk.cc:248
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:137
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:160
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:58
 msgid "_File"
 msgstr "_Soubor"
@@ -134,11 +134,11 @@ msgstr "_Pole"
 
 #: ../glom/application.cc:498
 msgid "Relationships _Overview"
-msgstr "Přehled _vztahů"
+msgstr "Přehled _relací"
 
 #: ../glom/application.cc:503
 msgid "_Relationships for this Table"
-msgstr "_Vztahy pro tuto tabulku"
+msgstr "_Relace pro tuto tabulku"
 
 #: ../glom/application.cc:508
 msgid "_Users"
@@ -515,7 +515,7 @@ msgid ""
 "of new related records."
 msgstr ""
 "Data ještě nelze vložit do tohoto souvisejícího pole, protože související "
-"záznam ještě neexistuje, a vztah nedovoluje automatické vytváření nových "
+"záznam ještě neexistuje, a relace nedovoluje automatické vytváření nových "
 "souvisejících záznamů."
 
 #: ../glom/base_db_table_data.cc:266
@@ -820,7 +820,7 @@ msgstr ""
 
 #: ../glom/frame_glom.cc:1209
 msgid "Relationship Exists Already"
-msgstr "Vztah již existuje"
+msgstr "Relace již existuje"
 
 #: ../glom/frame_glom.cc:1209
 msgid ""
@@ -836,7 +836,7 @@ msgstr "Jsou vyžadovány další informace"
 
 #: ../glom/frame_glom.cc:1213
 msgid "You must specify a field, a table name, and a relationship name."
-msgstr "Musíte určit pole, název tabulky a název vztahu."
+msgstr "Musíte určit pole, název tabulky a název relace."
 
 #: ../glom/frame_glom.cc:1267
 msgid "Related Table Created"
@@ -1200,7 +1200,7 @@ msgstr "Číslo"
 #: ../glom/libglom/data_structure/translatable_item.cc:317
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1154
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:620
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:692
 msgid "Text"
 msgstr "Text"
 
@@ -1293,7 +1293,7 @@ msgstr "Portál kalendáře"
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:194
 #: ../glom/libglom/data_structure/translatable_item.cc:297
 #: ../glom/mode_design/dialog_database_preferences.cc:62
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:616
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:688
 #: ../ui/developer/window_field_definition_edit.glade.h:2
 msgid "Field"
 msgstr "Pole"
@@ -1374,7 +1374,7 @@ msgstr "Vlastní nadpis"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:301
 msgid "Relationship"
-msgstr "Vztah"
+msgstr "Relace"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:303
 msgid "Layout Item"
@@ -1838,7 +1838,7 @@ msgstr "Nové tlačítko"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
 #: ../glom/mode_data/flowtablewithfields.cc:1240
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:394
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:450
 msgid "text"
 msgstr "text"
 
@@ -1869,7 +1869,7 @@ msgstr "Podrobnosti %1"
 #: ../glom/mode_design/box_db_table_relationships.cc:46
 msgid ""
 "This relationship already exists. Please choose a different relationship name"
-msgstr "Vztah již existuje. Prosím zvolte jiný název vztahu"
+msgstr "Relace již existuje. Prosím zvolte jiný název relace"
 
 #. Translators: FROM as in SQL's FROM
 #: ../glom/mode_design/box_db_table_relationships.cc:51
@@ -1899,7 +1899,7 @@ msgid "Next Value"
 msgstr "Následující hodnota"
 
 #: ../glom/mode_design/dialog_design.cc:52
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:507
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:582
 #: ../ui/developer/window_design.glade.h:3
 msgid "None selected"
 msgstr "Nic nevybráno"
@@ -1975,8 +1975,8 @@ msgid ""
 "type that is not supported by Glom. Your system administrator may be able to "
 "correct this."
 msgstr ""
-"Toto pole databáze bylo vytvořeno nebo upraveno mimo Glom. Má typ dat, který "
-"Glom nepodpouje. Váš správce systému to možná bude moci opravit."
+"Toto databázové pole bylo vytvořeno nebo upraveno mimo Glom. Má typ dat, "
+"který Glom nepodporuje. Váš správce systému to možná bude moci opravit."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:286
 msgid "Primary key required"
@@ -2141,19 +2141,19 @@ msgstr "Pole"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:361
 msgid "Invalid Relationship"
-msgstr "Neplatný vztah"
+msgstr "Neplatná relace"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:362
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship does not specify a field in the related table."
 msgstr ""
-"Vzájemný vztah nelze použít pro zobrazení odpovídajících záznamů, protože "
-"vztah nemá určené pole v odkazované tabulce."
+"Vzájemnou relaci nelze použít pro zobrazení odpovídajících záznamů, protože "
+"relace nemá určené pole v odkazované tabulce."
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:368
 msgid "Relationship Uses a Related Primary Key"
-msgstr "Vztah používající příslušný primární klíč"
+msgstr "Relace používající příslušný primární klíč"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:369
 msgid ""
@@ -2162,13 +2162,13 @@ msgid ""
 "contain unique values. This would prevent the relationship from specifying "
 "multiple related records."
 msgstr ""
-"Vzájemný vztah nelze použít pro zobrazení odpovídajících záznamů, protože "
-"vztah používá primární klíč v odkazované tabulce, který musí obsahovat "
+"Vzájemnou relaci nelze použít pro zobrazení odpovídajících záznamů, protože "
+"relace používá primární klíč v odkazované tabulce, který musí obsahovat "
 "jedinečné hodnoty. To by mělo zabrání vzniku vícenásobnému odkazu."
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:375
 msgid "Relationship Uses a Related Unique Field"
-msgstr "Vztah používající příslušný jednoznačné pole"
+msgstr "Relace používající příslušný jednoznačné pole"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:376
 msgid ""
@@ -2176,8 +2176,8 @@ msgid ""
 "relationship uses a unique-values field in the related table. This would "
 "prevent the relationship from specifying multiple related records."
 msgstr ""
-"Vzájemný vztah nelze použít pro zobrazení odpovídajících záznamů, protože "
-"vztah používá pole s jedinečnou hodnotou v odkazované tabulce. To by mělo "
+"Vzájemnou relaci nelze použít pro zobrazení odpovídajících záznamů, protože "
+"relace používá pole s jedinečnou hodnotou v odkazované tabulce. To by mělo "
 "zabrání vzniku vícenásobnému odkazu."
 
 #. Translators: This is Automatic text alignment.
@@ -2272,12 +2272,12 @@ msgstr "Záznamy"
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:35
 #: ../glom/utility_widgets/layouttoolbar.cc:57
 msgid "Database Field"
-msgstr "Pole databáze"
+msgstr "Databázové pole"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:35
 #: ../glom/utility_widgets/layouttoolbar.cc:57
 msgid "Drag this to the layout to add a new database field."
-msgstr "Přetažením na plochu přidáte nové pole databáze."
+msgstr "Přetažením na plochu přidáte nové databázové pole."
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
 #: ../glom/utility_widgets/layouttoolbar.cc:63
@@ -2291,7 +2291,7 @@ msgstr "Přetažením na plochu přidáte nový statický obrázek."
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:41
 msgid "Horizontal Line"
-msgstr "Horizontální čára"
+msgstr "Vodorovná čára"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:41
 msgid "Drag this to the layout to add a new horizontal line."
@@ -2299,11 +2299,11 @@ msgstr "Přetažením na plochu přidáte novou vodorovnou čáru."
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:43
 msgid "Vertical Line"
-msgstr "Vertikální čára"
+msgstr "Svislá čára"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:43
 msgid "Drag this to the layout to add a new vertical line."
-msgstr "Přetažením na plochu přidáte novou vertikální čáru."
+msgstr "Přetažením na plochu přidáte novou svislou čáru."
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:45
 #: ../glom/utility_widgets/layouttoolbar.cc:59
@@ -2314,69 +2314,79 @@ msgstr "Související záznamy"
 msgid "Drag this to the layout to add a new related records portal."
 msgstr "Přetažením na plochu přidáte nový portál souvisejících záznamů."
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:138
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:161
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:59
 msgid "Page _Setup"
 msgstr "Nastavení _stránky"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:147
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:188
+#| msgid "Select File"
+msgid "Unselect All"
+msgstr "Zrušit výběr všeho"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:191
 msgid "_Insert"
 msgstr "V_ložit"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:148
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:192
 msgid "Insert _Field"
 msgstr "Vložit _pole"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:150
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:194
 msgid "Insert _Text"
 msgstr "Vložit _text"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:152
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:196
 msgid "Insert _Image"
 msgstr "Vložit _obrázek"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:154
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:198
 msgid "Insert _Related Records"
 msgstr "Vložit související _záznamy"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:156
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:200
 msgid "Insert _Horizontal Line"
 msgstr "Vložit _vodorovnou čáru"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:158
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:202
 msgid "Insert _Vertical Line"
 msgstr "Vložit _svislou čáru"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:161
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:205
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:64
 msgid "_View"
 msgstr "_Zobrazení"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:162
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:206
 msgid "Show Grid"
 msgstr "Zobrazit mřížku"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:164
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:208
 msgid "Show Rules"
-msgstr "Zobrazit pravidla"
+msgstr "Zobrazit pravítka"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:168
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:210
+#| msgid "Show Rules"
+msgid "Show Outlines"
+msgstr "Zobrazit osnovu"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:214
 msgid "Fit Page _Width"
 msgstr "Zvětšit na šíř_ku stránky"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:171
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:218
 msgid "Zoom 200%"
 msgstr "Zvětšení 200%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:176
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:226
 msgid "Zoom 50%"
 msgstr "Zvětšení 50%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:181
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:230
 msgid "Zoom 25%"
 msgstr "Zvětšení 25%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:614
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:686
 msgid "Insert"
 msgstr "Vložit"
 
@@ -2384,13 +2394,13 @@ msgstr "Vložit"
 msgid "Show _Grid"
 msgstr "Zobrazit _mřížku"
 
-#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:481
+#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:484
 msgid "Edit _Fields"
 msgstr "Upravit _pole"
 
-#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:484
+#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:487
 msgid "Edit _Relationships"
-msgstr "Up_ravit vztahy"
+msgstr "Up_ravit relace"
 
 #: ../glom/mode_design/script_library/dialog_script_library.cc:129
 msgid "Remove library script"
@@ -2532,7 +2542,7 @@ msgstr ""
 msgid "Choose Field"
 msgstr "Zvolte pole"
 
-#: ../glom/print_layout/canvas_print_layout.cc:245
+#: ../glom/print_layout/canvas_print_layout.cc:252
 msgid "_Formatting"
 msgstr "_Formátování"
 
@@ -2643,7 +2653,7 @@ msgid ""
 "record, because the relationship uses a unique key."
 msgstr ""
 "Pokusili jste se přidat nový související záznam, ale může být jen jeden "
-"související záznam, protože vztah používá jedinečný klíč."
+"související záznam, protože relace používá jedinečný klíč."
 
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:94
 #: ../glom/utility_widgets/imageglom.cc:774
@@ -2948,7 +2958,6 @@ msgstr "_Vybrat"
 #: ../ui/developer/window_data_layout_export.glade.h:1
 #: ../ui/developer/window_data_layout.glade.h:5
 #: ../ui/developer/window_design.glade.h:1
-#: ../ui/developer/window_print_layout_edit.glade.h:2
 #: ../ui/developer/window_report_layout.glade.h:3
 msgid "<b>Table:</b>"
 msgstr "<b>Tabulka:</b>"
@@ -3032,7 +3041,7 @@ msgstr "Název nové související tabulky:"
 
 #: ../ui/developer/dialog_add_related_table.glade.h:5
 msgid "Name of new relationship:"
-msgstr "Název nového vztahu:"
+msgstr "Název nové relace:"
 
 #: ../ui/developer/dialog_add_related_table.glade.h:6
 msgid ""
@@ -3042,11 +3051,11 @@ msgid ""
 "If a suitable related table already exists then you should instead cancel "
 "and just add a relationship."
 msgstr ""
-"Tato volba přidá novou tabulku a vztah na ni odkazuje. To je snazší volbou "
+"Tato volba přidá novou tabulku a relace na ni odkazuje. To je snazší volbou "
 "než několik oddělených kroků.\n"
 "\n"
 "Jestliže již vhodná související tabulka existuje, měli byste akci zrušit a "
-"přidat jen vztah."
+"přidat jen relaci."
 
 #: ../ui/developer/dialog_change_language.glade.h:1
 msgid ""
@@ -3084,7 +3093,7 @@ msgstr "Zvolte pole"
 
 #: ../ui/developer/dialog_choose_field.glade.h:2
 msgid "Show _Related Relationships"
-msgstr "Zob_razit související vztahy"
+msgstr "Zob_razit související relace"
 
 #: ../ui/developer/dialog_choose_field.glade.h:4
 msgid "_Table:"
@@ -3092,11 +3101,11 @@ msgstr "_Tabulka:"
 
 #: ../ui/developer/dialog_choose_relationship.glade.h:1
 msgid "<b>Select Relationship</b>"
-msgstr "<b>Zvolte vztah</b>"
+msgstr "<b>Zvolte relaci</b>"
 
 #: ../ui/developer/dialog_choose_relationship.glade.h:3
 msgid "Select Relationship"
-msgstr "Zvolte vztah"
+msgstr "Zvolte relaci"
 
 #: ../ui/developer/dialog_choose_relationship.glade.h:4
 msgid "Table:"
@@ -3230,6 +3239,7 @@ msgid "Group Properties"
 msgstr "Vlastnosti skupiny"
 
 #: ../ui/developer/dialog_flowtable.glade.h:3
+#: ../ui/developer/window_print_layout_edit.glade.h:5
 msgid "Title:"
 msgstr "Nadpis:"
 
@@ -3356,7 +3366,7 @@ msgstr "<b>Karty poznámek</b>"
 
 #: ../ui/developer/dialog_relationships_overview.glade.h:1
 msgid "Relationships Overview"
-msgstr "Přehled vztahů"
+msgstr "Přehled relací"
 
 #: ../ui/developer/dialog_script_library.glade.h:1
 msgid "Module name:"
@@ -3431,7 +3441,6 @@ msgstr "Potvrďte heslo"
 #: ../ui/developer/window_button_script.glade.h:1
 #: ../ui/developer/window_data_layout.glade.h:6
 #: ../ui/developer/window_imageobject.glade.h:2
-#: ../ui/developer/window_print_layout_edit.glade.h:3
 #: ../ui/developer/window_textobject.glade.h:2
 msgid "<b>Title:</b>"
 msgstr "<b>Nadpis:</b>"
@@ -3458,11 +3467,11 @@ msgstr "<b>Data</b>"
 
 #: ../ui/developer/window_data_layout.glade.h:3
 msgid "<b>Navigation</b>"
-msgstr "<b>Vztah</b>"
+msgstr "<b>Relace</b>"
 
 #: ../ui/developer/window_data_layout.glade.h:4
 msgid "<b>Relationship:</b>"
-msgstr "<b>Vztah:</b>"
+msgstr "<b>Relace:</b>"
 
 #: ../ui/developer/window_data_layout.glade.h:9
 msgid "Add Related Calendar"
@@ -3503,8 +3512,8 @@ msgid ""
 "relationship to use, and the fields to show from the related table."
 msgstr ""
 "Přidá související záznamy portálu kalendáře. Tento kalendář zobrazuje "
-"záznamy z okazované tabulky. Nezapomeňte upravit tuto položku sestavy pro "
-"určení použitého vztahu a zobrazených polí z odkazované tabulky."
+"záznamy z odkazované tabulky. Nezapomeňte upravit tuto položku sestavy pro "
+"určení použité relace a zobrazených polí z odkazované tabulky."
 
 #: ../ui/developer/window_data_layout.glade.h:17
 msgid ""
@@ -3513,8 +3522,8 @@ msgid ""
 "the fields to show from the related table."
 msgstr ""
 "Přidat portál souvisejících záznamů. Toto je seznam záznamů v související "
-"tabulce. Nezapomeňte upravit tuto položku sestavy pro určení použitého "
-"vztahu a zobrazovaných polí ze související tabulky."
+"tabulce. Nezapomeňte upravit tuto položku sestavy pro určení použité relace "
+"a zobrazovaných polí ze související tabulky."
 
 #: ../ui/developer/window_data_layout.glade.h:18
 msgid ""
@@ -3552,8 +3561,7 @@ msgid ""
 "Clicking the row button takes the user to the table specified by this "
 "relationship:"
 msgstr ""
-"Kliknutím na tlačítko řádku přenese uživatele do tabulky určené tímto "
-"vztahem:"
+"Kliknutím na tlačítko řádku přenese uživatele do tabulky určené touto relací:"
 
 #: ../ui/developer/window_data_layout.glade.h:23
 msgid "Date Field:"
@@ -3564,7 +3572,6 @@ msgid "None"
 msgstr "Nic"
 
 #: ../ui/developer/window_data_layout.glade.h:27
-#| msgid "_Number of sample rows:"
 msgid "Number of rows to show:"
 msgstr "Počet zobrazených řádků:"
 
@@ -3579,7 +3586,7 @@ msgstr ""
 
 #: ../ui/developer/window_data_layout.glade.h:29
 msgid "Show child relationships"
-msgstr "Zobrazit zděděné vztahy"
+msgstr "Zobrazit zděděné relace"
 
 #: ../ui/developer/window_data_layout.glade.h:30
 #: ../ui/developer/window_report_layout.glade.h:13
@@ -3777,7 +3784,7 @@ msgstr "Žádné možnosti"
 
 #: ../ui/developer/box_formatting.glade.h:26
 msgid "Relationship:"
-msgstr "Vztah:"
+msgstr "Relace:"
 
 #: ../ui/developer/box_formatting.glade.h:27
 msgid "Restrict data to these choices"
@@ -3817,16 +3824,35 @@ msgid "Image Object"
 msgstr "Objekt obrázku"
 
 #: ../ui/developer/window_print_layout_edit.glade.h:1
-msgid "<b>Layout name:</b>"
-msgstr "<b>Název rozvržení:</b>"
+#| msgid "<b>Table:</b>"
+msgid "<b>Table Name</b>"
+msgstr "<b>Název tabulky</b>"
+
+#: ../ui/developer/window_print_layout_edit.glade.h:2
+#| msgid "Right"
+msgid "Height:"
+msgstr "Výška:"
+
+#: ../ui/developer/window_print_layout_edit.glade.h:3
+#| msgid "<b>Layout name:</b>"
+msgid "Layout name:"
+msgstr "Název rozvržení:"
 
 #: ../ui/developer/window_print_layout_edit.glade.h:4
 msgid "Print Layout Editor"
 msgstr "Úpravy rozvržení tisku"
 
-#: ../ui/developer/window_print_layout_edit.glade.h:5
-msgid "Table Name"
-msgstr "Název tabulky"
+#: ../ui/developer/window_print_layout_edit.glade.h:6
+msgid "Width:"
+msgstr "Šířka:"
+
+#: ../ui/developer/window_print_layout_edit.glade.h:7
+msgid "X:"
+msgstr "X:"
+
+#: ../ui/developer/window_print_layout_edit.glade.h:8
+msgid "Y:"
+msgstr "Y:"
 
 #: ../ui/developer/window_report_layout.glade.h:1
 msgid "<b>Available Parts</b>"
