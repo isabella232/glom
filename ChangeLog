@@ -1,3 +1,15 @@
+2011-08-15  Murray Cumming  <murrayc@murrayc.com>
+
+	Print Layout: Do not show navigation options for related records portals.
+
+	* glom/mode_design/layout/dialog_layout_list_related.[h|cc]:
+  set_document(): Add a new bool parametrer that can hide the navigation 
+  widgets because they are useless in a print layout.
+	* glom/print_layout/canvas_print_layout.cc: offer_related_records():
+  Use the new bool parameter.
+	* ui/developer/window_data_layout.glade: Correct some packing options so 
+  the right parts expand, without empty space.
+
 2011-08-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Snap to rules even when the grid is not shown.

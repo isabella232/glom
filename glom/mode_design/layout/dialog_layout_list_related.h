@@ -42,8 +42,9 @@ public:
    * @param layout_platform As in the document. Empty or "maemo".
    * @param document The document, so that the dialog can load the previous layout, and save changes.
    * @param portal The layout item, which knows its from_table, for instance.
+   * @apram for_print_layout If true, don't show the navigation options, for instance.
    */
-  virtual void set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const sharedptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table);
+  virtual void set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const sharedptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table, bool for_print_layout = false);
 
   virtual void update_ui(bool including_relationships_list = true);
 

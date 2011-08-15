@@ -333,7 +333,9 @@ sharedptr<LayoutItem_Portal> Canvas_PrintLayout::offer_related_records(const sha
 
   add_view(dialog); //Give it access to the document.
 
-  dialog->set_document("layout_name_unused_for_portals", "", /* layout_platform */ get_document(), portal, m_table_name);
+  dialog->set_document("layout_name_unused_for_portals", "", /* layout_platform */
+    get_document(), portal, m_table_name,
+    true /* for print layout */);
 
   if(parent)
     dialog->set_transient_for(*parent);

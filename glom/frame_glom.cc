@@ -2424,7 +2424,6 @@ void Frame_Glom::do_print_layout(const Glib::ustring& print_layout_name, bool pr
   canvas.set_print_layout(m_table_name, print_layout);
 
   //Do not show things that are only for editing the print layout:
-
   canvas.remove_grid();
   canvas.set_rules_visibility(false);
   canvas.set_outlines_visibility(false);

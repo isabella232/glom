@@ -95,7 +95,7 @@ Dialog_Layout_List_Related::~Dialog_Layout_List_Related()
 }
 
 
-void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const sharedptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table)
+void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const sharedptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table, bool for_print_layout)
 {
   //Ignore the provided from_table if the portal has one:
   Glib::ustring actual_from_table;
@@ -120,6 +120,12 @@ void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout_name, 
   Dialog_Layout::set_document(layout_name, layout_platform, document, actual_from_table, empty_fields);
   //m_table_name is now actually the parent_table_name.
 
+  //Hide unwanted widgets:
+  if(for_print_layout)
+  {
+    m_box_related_navigation->hide();
+  }
+  
   update_ui();
 }
 
