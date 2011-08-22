@@ -315,14 +315,11 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
                   //cell->set_width_height(width, row_height);
 
                   //TODO: Add/Remove rows when resizing, instead of resizing the rows:
+                  cell->set_width_height(width, row_height);
+
                   Glib::RefPtr<Goocanvas::Item> cell_as_item = CanvasItemMovable::cast_to_item(cell);
                   if(cell_as_item)
                   {
-                    //TODO: Setting the height too cause weird problems in the GooCanvasTable,
-                    //making child items disappear as the table is moved around.
-                    cell_as_item->property_width() = width;
-                    //cell_as_item->set_width_height(width, row_height);
-
                     canvas_item->attach(cell_as_item,
                       col /* left_attach */, col + 1 /* right_attach */,
                       row /* top_attach */, row + 1 /* right_attach */,

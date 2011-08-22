@@ -1,5 +1,13 @@
 2011-08-22  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Related Records: Set the row height.
+
+	* glom/print_layout/canvas_layout_item.cc: We can do this now that the 
+	goocanvas bug has been fixed, though configure should check for it when the
+	tarball version exists.
+
+2011-08-22  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout / Relationships Overview: Avoid errors with & in the text.
 
 	* glom/utility_widgets/canvas/canvas_text_movable.cc: reconstruct_markup:
