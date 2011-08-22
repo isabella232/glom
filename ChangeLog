@@ -1,3 +1,11 @@
+2011-08-22  Murray Cumming  <murrayc@murrayc.com>
+
+	Print Layout / Relationships Overview: Avoid errors with & in the text.
+
+	* glom/utility_widgets/canvas/canvas_text_movable.cc: reconstruct_markup:
+  Escape the text before using it to build markup. Otherwise pango will complain
+  (correctly) about & in the text.
+
 2011-08-15  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Do not show navigation options for related records portals.

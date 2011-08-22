@@ -176,12 +176,17 @@ void CanvasTextMovable::reconstruct_markup()
   char* markup = 0;
   if(!m_text.empty())
   {
+    //We will use the text as markup, so remove anything that could be 
+    //interpreted as pango markup.
+    //This is not really pango-specific, but it might just work:
+    const Glib::ustring text_escaped = Glib::Markup::escape_text(m_text);
+    
     //We add px (meaning absolute points size).
     //Otherwise both GooCanvas and GTK+ scale the font up, making it too large.
     //This really seems like a bug in GooCanvas.
     //TODO: This might not be robust - it assumes that the font size is at the end of the font_desc 
     //provided by GtkFontButton.
-    markup = g_strdup_printf("<span font_desc=\"%s\">%s</span>", m_font.c_str(), m_text.c_str());
+    markup = g_strdup_printf("<span font_desc=\"%s\">%s</span>", m_font.c_str(), text_escaped.c_str());
     //std::cout << "DEBUG: markup=" << markup << std::endl;
   }
   property_use_markup() = true;
