@@ -297,6 +297,8 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
             for(guint row = 0; row < (guint)max_rows; ++row)
             {
               guint col = 0;
+              const guint num_cols = child_items.size();
+              bool something_expanded = false;
               for(LayoutGroup::type_list_items::const_iterator iter = child_items.begin(); iter != child_items.end(); ++iter)
               {
                 sharedptr<LayoutItem> layout_item = *iter;
@@ -306,24 +308,56 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
                 //but goocanvas cannot yet support Groups inside Tables. murrayc.
                 //TODO: Bug number.
                 Glib::RefPtr<CanvasItemMovable> cell = create_canvas_item_for_layout_item(layout_item);
-                if(cell)
+                Glib::RefPtr<Goocanvas::Item> cell_as_item = CanvasItemMovable::cast_to_item(cell);
+
+                if(cell && cell_as_item)
                 {
-                  //Make sure that the width is sensible:
+                  const guint width = layout_item->get_display_width();
+                  bool expand = (width == 0);
                   
-                  guint width = layout_item->get_display_width();
-                  width = std::max(width, (guint)10);
-                  //cell->set_width_height(width, row_height);
-
-                  //TODO: Add/Remove rows when resizing, instead of resizing the rows:
-                  cell->set_width_height(width, row_height);
-
-                  Glib::RefPtr<Goocanvas::Item> cell_as_item = CanvasItemMovable::cast_to_item(cell);
-                  if(cell_as_item)
+                  //If this is the last item, and no other item has expanded,
+                  //let this one expand,
+                  //Otherwise, we could allocate less space than the table has left.
+                  //TODO: Prevent the user from allocating _more_ space than the table has.
+                  if(!something_expanded && (col == (num_cols - 1)))
                   {
+                    expand = true;
+                  }
+                  
+                  if(expand)
+                  {
+                    //Let the table allocate the width automatically:
+                    
+                    cell->set_width_height(-1, row_height);
                     canvas_item->attach(cell_as_item,
                       col /* left_attach */, col + 1 /* right_attach */,
                       row /* top_attach */, row + 1 /* right_attach */,
-                      Gtk::FILL, (Gtk::AttachOptions)Gtk::FILL | Gtk::EXPAND);
+                      (Gtk::AttachOptions)(Gtk::FILL | Gtk::EXPAND), (Gtk::AttachOptions)(Gtk::FILL | Gtk::EXPAND));
+                      
+                    something_expanded = true;
+                  }
+                  else
+                  {
+                    //Enforce a width:
+                    
+                    //TODO: Add/Remove rows when resizing, instead of resizing the rows:
+                    cell->set_width_height(width, row_height);
+
+                    canvas_item->attach(cell_as_item,
+                      col /* left_attach */, col + 1 /* right_attach */,
+                      row /* top_attach */, row + 1 /* right_attach */,
+                      (Gtk::FILL), (Gtk::AttachOptions)(Gtk::FILL | Gtk::EXPAND));
+                      
+                    //Add a second item (an invisible rect) to make sure that the size is really used:
+                    Glib::RefPtr<Goocanvas::Rect> rect = 
+                      Goocanvas::Rect::create(0, 0, width, row_height);
+                    //TODO: Find out why this doesn't work: rect->property_stroke_pattern() = Cairo::RefPtr<Cairo::Pattern>();
+                    g_object_set(rect->gobj(), "stroke-pattern", (void*)0, (void*)0);
+                     
+                    canvas_item->attach(rect,
+                      col /* left_attach */, col + 1 /* right_attach */,
+                      row /* top_attach */, row + 1 /* right_attach */,
+                      Gtk::SHRINK, Gtk::SHRINK);
                   }
                 }
 

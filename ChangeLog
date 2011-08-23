@@ -1,3 +1,14 @@
+2011-08-23  Murray Cumming  <murrayc@murrayc.com>
+
+	Print Layout: Related records: Corrections for column sizes.
+
+	* glom/print_layout/canvas_layout_item.cc: create_canvas_item_for_layout_item():
+	Related records table: Use an extra GooCanvasRect to make sure that the 
+	cell size is really what we want, avoiding GooCanvasText's and GooCanvasTable's 
+  attempts to be cleverer than we want.
+  Also, make sure that the last column is expanded, regardless of any size 
+  specified, if all the other columnd had specified sizes.
+
 2011-08-22  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Related Records: Set the row height.
