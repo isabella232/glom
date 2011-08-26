@@ -1,3 +1,10 @@
+2011-08-26  Murray Cumming  <murrayc@murrayc.com>
+
+	Allow deletion of multiple selected items via the context menu.
+
+	* glom/print_layout/canvas_print_layout.[h|cc]: on_context_menu_delete():
+	If the deleted item was selected, delete all selected items.
+
 2011-08-23  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Related records: Corrections for column sizes.

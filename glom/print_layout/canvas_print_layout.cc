@@ -453,8 +453,32 @@ void Canvas_PrintLayout::on_context_menu_formatting()
 
 void Canvas_PrintLayout::on_context_menu_delete()
 {
-  m_context_item->remove();
+  //If the item to be deleted was not selected then just delete it:
+  if(!m_context_item->get_selected())
+  {
+    m_context_item->remove();
+    m_context_item.reset();
+    return;
+  }
+
+  //Requesting deletion of a selected item should delete all selected items:
+  //TODO: If there are multiple items, ask the user for confirmation?
   m_context_item.reset();
+  const type_vec_items items = get_selected_items();
+  for(type_vec_items::const_iterator iter = items.begin();
+    iter != items.end(); ++iter)
+  {
+    const Glib::RefPtr<CanvasItemMovable> selected_item = *iter;
+    if(!selected_item)
+      continue;
+      
+    const Glib::RefPtr<CanvasLayoutItem> canvas_layout_item = 
+      Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(selected_item);
+    if(canvas_layout_item)
+      remove_canvas_layout_item(canvas_layout_item);
+  }
+  
+  signal_selection_changed().emit();
 }
 
 void Canvas_PrintLayout::on_dialog_format_hide()

@@ -98,6 +98,7 @@ private:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   sharedptr<LayoutItem_Portal> offer_related_records(const sharedptr<LayoutItem_Portal>& portal, Gtk::Window* parent);
 
+  //TODO: Make the signal send the item, so we can pass it by const reference:
   void on_item_show_context_menu(guint button, guint32 activate_time, Glib::RefPtr<CanvasLayoutItem> item);
   void on_context_menu_edit();
   void on_context_menu_formatting();
