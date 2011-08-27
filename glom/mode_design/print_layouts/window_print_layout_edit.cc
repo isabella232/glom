@@ -35,6 +35,12 @@
 namespace Glom
 {
 
+const double GRID_GAP = 5.0f;
+
+//Base the default item sizes on the grid gap, instead of being arbitrary:
+const double ITEM_HEIGHT = GRID_GAP;
+const double ITEM_WIDTH_WIDE = GRID_GAP * 10;
+
 const char* Window_PrintLayout_Edit::glade_id("window_print_layout_edit");
 const bool Window_PrintLayout_Edit::glade_developer(true);
 
@@ -395,7 +401,7 @@ sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayoutTool
   if(item_type == PrintLayoutToolbarButton::ITEM_FIELD)
   {
     layout_item = sharedptr<LayoutItem_Field>::create();
-    layout_item->set_print_layout_position(0, 0, 50, 10);
+    layout_item->set_print_layout_position(0, 0, ITEM_WIDTH_WIDE, ITEM_HEIGHT);
   }
   else if(item_type == PrintLayoutToolbarButton::ITEM_TEXT)
   {
@@ -404,23 +410,23 @@ sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayoutTool
     // Note to translators: This is the default contents of a text item on a print layout: 
     layout_item_derived->set_text(_("text")); //TODO: Choose some other longer default because this is hidden under the drag icon?
     layout_item = layout_item_derived;
-    layout_item->set_print_layout_position(0, 0, 50, 10);
+    layout_item->set_print_layout_position(0, 0, ITEM_WIDTH_WIDE, ITEM_HEIGHT);
   }
   else if(item_type == PrintLayoutToolbarButton::ITEM_IMAGE)
   {
     layout_item = sharedptr<LayoutItem_Image>::create();
-    layout_item->set_print_layout_position(0, 0, 50, 50);
+    layout_item->set_print_layout_position(0, 0, ITEM_WIDTH_WIDE, ITEM_WIDTH_WIDE);
   }
   else if(item_type == PrintLayoutToolbarButton::ITEM_LINE_HORIZONTAL)
   {
     sharedptr<LayoutItem_Line> layout_item_derived = sharedptr<LayoutItem_Line>::create();
-    layout_item_derived->set_coordinates(0, 0, 100, 0);
+    layout_item_derived->set_coordinates(0, 0, ITEM_WIDTH_WIDE * 2, 0);
     layout_item = layout_item_derived;
   }
   else if(item_type == PrintLayoutToolbarButton::ITEM_LINE_VERTICAL)
   {
     sharedptr<LayoutItem_Line> layout_item_derived = sharedptr<LayoutItem_Line>::create();
-    layout_item_derived->set_coordinates(0, 0, 0, 100);
+    layout_item_derived->set_coordinates(0, 0, 0, ITEM_WIDTH_WIDE * 2);
     layout_item = layout_item_derived;
   }
   else if(item_type == PrintLayoutToolbarButton::ITEM_PORTAL)
@@ -428,7 +434,7 @@ sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayoutTool
     sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::create();
     portal->set_print_layout_row_height(10); //Otherwise it will be 0, which is useless.
     layout_item = portal;
-    layout_item->set_print_layout_position(0, 0, 100, 50);
+    layout_item->set_print_layout_position(0, 0, ITEM_WIDTH_WIDE * 2, ITEM_WIDTH_WIDE);
   }
   else
   {
@@ -861,7 +867,7 @@ void Window_PrintLayout_Edit::on_menu_view_show_grid()
 {
   if(m_action_showgrid->get_active())
   {
-    m_canvas.set_grid_gap(5.0f);
+    m_canvas.set_grid_gap(GRID_GAP);
   }
   else
   {

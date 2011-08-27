@@ -1,3 +1,11 @@
+2011-08-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Print Layout: Make item sizes match the grid size by default.
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	create_empty_item(): Base the default item sizes on the grid gap,
+	so they are more useful.
+
 2011-08-26  Murray Cumming  <murrayc@murrayc.com>
 
 	Allow deletion of multiple selected items via the context menu.
