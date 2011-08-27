@@ -73,6 +73,9 @@ public:
   /// This signal is emitted when the canvas item is resized by the user.
   type_signal_resized signal_resized();
 
+  //Get the outline details so they can be used elsewhere, for consistency.
+  static void get_outline_stroke(Glib::ustring& color, double& width);
+
 private:
   virtual void show_selected();
   virtual Goocanvas::Canvas* get_parent_canvas_widget();

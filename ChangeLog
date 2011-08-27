@@ -1,5 +1,14 @@
 2011-08-27  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Related records portals: Use the normal outline stroke.
+
+	* glom/utility_widgets/canvas/canvas_group_resizable.[h|cc]: Add 
+	a static get_outline_stroke() method.
+	* glom/print_layout/canvas_layout_item.cc:
+	create_canvas_item_for_layout_item(): Use it here.
+
+2011-08-27  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layouts: Default to 12-point text instead of 9.
 
 	* glom/mode_design/print_layouts/window_print_layout_edit.cc:

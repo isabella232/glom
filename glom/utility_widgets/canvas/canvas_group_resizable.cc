@@ -37,6 +37,12 @@ static const char MANIPULATOR_STROKE_COLOR[] = "black";
 static const double OUTLINE_STROKE_WIDTH = MANIPULATOR_STROKE_WIDTH; //mm (assuming that the canvas uses mm.
 static const char OUTLINE_STROKE_COLOR[] = "gray";
 
+void CanvasGroupResizable::get_outline_stroke(Glib::ustring& color, double& width)
+{
+  color = OUTLINE_STROKE_COLOR;
+  width = OUTLINE_STROKE_WIDTH;
+}
+
 CanvasGroupResizable::CanvasGroupResizable()
 : m_in_manipulator(false),
   m_x(0), m_y(0), m_width(0), m_height(0)
