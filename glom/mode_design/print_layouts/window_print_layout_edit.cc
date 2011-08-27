@@ -35,7 +35,7 @@
 namespace Glom
 {
 
-const double GRID_GAP = 5.0f;
+const double GRID_GAP = 6.0f; //Roughly the right height for 12 point text.
 
 //Base the default item sizes on the grid gap, instead of being arbitrary:
 const double ITEM_HEIGHT = GRID_GAP;
@@ -400,8 +400,12 @@ sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayoutTool
 
   if(item_type == PrintLayoutToolbarButton::ITEM_FIELD)
   {
-    layout_item = sharedptr<LayoutItem_Field>::create();
+    sharedptr<LayoutItem_Field> layout_item_derived  = sharedptr<LayoutItem_Field>::create();
+    layout_item = layout_item_derived;
     layout_item->set_print_layout_position(0, 0, ITEM_WIDTH_WIDE, ITEM_HEIGHT);
+
+    //Don't use the field's default formatting, because that is probably only for on-screen layouts:
+    layout_item_derived->set_formatting_use_default(false);
   }
   else if(item_type == PrintLayoutToolbarButton::ITEM_TEXT)
   {
@@ -440,6 +444,14 @@ sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayoutTool
   {
     std::cerr << G_STRFUNC << ": Unhandled item type: " << item_type << std::endl;
   }
+
+  //Set a default text style and size:
+  //12pt text seems sane. It is what OpenOffice/LibreOffice and Abiword use:
+  //Serif (rather than sans-serif) is sane for body text:
+  sharedptr<LayoutItem_WithFormatting> with_formatting = 
+    sharedptr<LayoutItem_WithFormatting>::cast_dynamic(layout_item);
+  if(with_formatting)
+    with_formatting->m_formatting.set_text_format_font("Serif 12");
 
   return layout_item;
 }

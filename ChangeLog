@@ -1,5 +1,18 @@
 2011-08-27  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layouts: Default to 12-point text instead of 9.
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	Use a grid size, and item sizes, suitable for 12 point text.
+	create_empty_item(): Make sure we stop LayoutItem_Field items from 
+	using default formatting, which is not for print layouts.
+	Set a default font size for anything that has text formatting.
+	* glom/mode_design/relationships_overview/canvas_group_dbtable.cc:
+	Constructor: Use 12 points instead of 10 points, though this should 
+	be configurable anyway.
+
+2011-08-27  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Make item sizes match the grid size by default.
 
 	* glom/mode_design/print_layouts/window_print_layout_edit.cc:

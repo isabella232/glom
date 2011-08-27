@@ -94,11 +94,8 @@ void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& c
   Glib::ustring font = formatting.get_text_format_font();
   if(font.empty())
   {
+    //Just a sanity-check default that should never actually be used:
     font = "Serif 9";
-
-    //Set it in the input parameter,
-    //so that this is the default:
-    //TODO? formatting.set_text_format_font(font);
   }
 
   canvas_item->set_font_points(font);
