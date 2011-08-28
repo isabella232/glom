@@ -1,3 +1,10 @@
+2011-08-28  Murray Cumming  <murrayc@murrayc.com>
+
+	Remove unused .glade file.
+
+	* ui/developer/dialog_layoutitem_properties.glade:
+	* Makefile.am: This glade file is not used by any code.
+
 2011-08-27  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Related records portals: Use the normal outline stroke.
