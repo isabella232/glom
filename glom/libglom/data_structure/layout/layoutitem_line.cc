@@ -29,7 +29,9 @@ LayoutItem_Line::LayoutItem_Line()
 : m_start_x(0),
   m_start_y(0),
   m_end_x(0),
-  m_end_y(0)
+  m_end_y(0),
+  m_line_width(0.5f), //Arbitrary default
+  m_color("black") //Arbitrary default
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_INVALID; //There is no text in this to translate.
 }
@@ -39,7 +41,9 @@ LayoutItem_Line::LayoutItem_Line(const LayoutItem_Line& src)
   m_start_x(src.m_start_x),
   m_start_y(src.m_start_y),
   m_end_x(src.m_end_x),
-  m_end_y(src.m_end_y)
+  m_end_y(src.m_end_y),
+  m_line_width(src.m_line_width),
+  m_color(src.m_color)
 {
 }
 
@@ -58,7 +62,9 @@ bool LayoutItem_Line::operator==(const LayoutItem_Line& src) const
                 (m_start_x == src.m_start_x) && 
                 (m_start_y == src.m_start_y) && 
                 (m_end_x == src.m_end_x) && 
-                (m_end_y == src.m_end_y);
+                (m_end_y == src.m_end_y) &&
+                (m_line_width == src.m_line_width) &&
+                (m_color == src.m_color);
 
   return result;
 }
@@ -72,6 +78,8 @@ LayoutItem_Line& LayoutItem_Line::operator=(const LayoutItem_Line& src)
   m_start_y = src.m_start_y;
   m_end_x = src.m_end_x;
   m_end_y = src.m_end_y;
+  m_line_width = src.m_line_width;
+  m_color = src.m_color;
 
   return *this;
 }
@@ -107,6 +115,27 @@ void LayoutItem_Line::set_coordinates(double start_x, double start_y, double end
   //for generic code that deals with that API:
   set_print_layout_position(m_start_x, m_start_y, (m_end_x - m_start_x), (m_end_y - m_start_y));
 }
+
+double LayoutItem_Line::get_line_width() const
+{
+  return m_line_width;
+}
+
+void LayoutItem_Line::set_line_width(double line_width)
+{
+  m_line_width = line_width;
+}
+  
+Glib::ustring LayoutItem_Line::get_line_color() const
+{
+  return m_color;
+}
+
+void LayoutItem_Line::set_line_color(const Glib::ustring& color)
+{
+  m_color = color;
+}
+
 
 } //namespace Glom
 

@@ -110,6 +110,7 @@ dist_glade_developer_DATA = ui/developer/dialog_add_related_table.glade \
 	ui/developer/dialog_group_by.glade \
 	ui/developer/dialog_groupby_sort_fields.glade \
 	ui/developer/dialog_initial_password.glade \
+	ui/developer/dialog_line.glade \
 	ui/developer/dialog_layout_field_properties.glade \
 	ui/developer/dialog_new_group.glade \
 	ui/developer/dialog_new_library_script.glade \

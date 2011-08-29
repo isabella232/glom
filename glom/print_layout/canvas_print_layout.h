@@ -25,6 +25,7 @@
 #include <glom/utility_widgets/canvas/canvas_editable.h>
 #include <glom/print_layout/canvas_layout_item.h>
 #include <libglom/data_structure/print_layout.h>
+#include <libglom/data_structure/layout/layoutitem_line.h>
 #include <gtkmm/uimanager.h>
 #include <gtkmm/toggleaction.h>
 #include <gtkmm/pagesetup.h>
@@ -97,7 +98,8 @@ private:
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   sharedptr<LayoutItem_Portal> offer_related_records(const sharedptr<LayoutItem_Portal>& portal, Gtk::Window* parent);
-
+  sharedptr<LayoutItem_Line> offer_line(const sharedptr<LayoutItem_Line>& portal, Gtk::Window* parent);
+  
   //TODO: Make the signal send the item, so we can pass it by const reference:
   void on_item_show_context_menu(guint button, guint32 activate_time, Glib::RefPtr<CanvasLayoutItem> item);
   void on_context_menu_edit();

@@ -20,6 +20,7 @@
 #include <glom/mode_design/dialog_add_related_table.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.h>
+#include <glom/mode_design/layout/layout_item_dialogs/dialog_line.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_imageobject.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_notebook.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_textobject.h>
@@ -112,6 +113,7 @@ int main(int argc, char *argv[])
   instantiate_widget<Box_Formatting>();
   instantiate_widget<Dialog_FieldsList>();
   instantiate_widget<Dialog_GroupBy_SortFields>();
+  instantiate_widget<Dialog_Line>();
   instantiate_widget<Dialog_ImageObject>();
   instantiate_widget<Dialog_Notebook>();
   instantiate_widget<Dialog_FieldSummary>();

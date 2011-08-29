@@ -51,10 +51,19 @@ public:
   /** Set the coordinates.
    */
   void set_coordinates(double start_x, double start_y, double end_x, double end_y);
+  
+  double get_line_width() const;
+  void set_line_width(double line_width);
+  
+  //TODO: Document the format:
+  Glib::ustring get_line_color() const;
+  void set_line_color(const Glib::ustring& color);
 
 private:
 
   double m_start_x, m_start_y, m_end_x, m_end_y;
+  double m_line_width;
+  Glib::ustring m_color;
 };
 
 } //namespace Glom

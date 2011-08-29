@@ -24,6 +24,7 @@
 #include <gtkmm/stock.h>
 #include <glom/mode_design/print_layouts/dialog_text_formatting.h>
 #include <glom/mode_design/layout/dialog_layout_list_related.h>
+#include <glom/mode_design/layout/layout_item_dialogs/dialog_line.h>
 
 //TODO: Remove these when we can just use a CanvasLayoutItem in a GooCanvasTable:
 #include <glom/utility_widgets/canvas/canvas_table_movable.h>
@@ -350,6 +351,33 @@ sharedptr<LayoutItem_Portal> Canvas_PrintLayout::offer_related_records(const sha
   return result;
 }
 
+sharedptr<LayoutItem_Line> Canvas_PrintLayout::offer_line(const sharedptr<LayoutItem_Line>& line, Gtk::Window* parent)
+{
+  sharedptr<LayoutItem_Line> result = line;
+
+  Dialog_Line* dialog = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog) //Unlikely and it already warns on stderr.
+    return result;
+
+  if(parent)
+    dialog->set_transient_for(*parent);
+    
+  dialog->set_line(line);
+
+  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  dialog->hide();
+  if(response == Gtk::RESPONSE_OK)
+  {
+    //Get the chosen relationship:
+    result = dialog->get_line();
+  }
+
+  delete dialog;
+
+  return result;
+}
+
 void Canvas_PrintLayout::on_context_menu_edit()
 {
   Gtk::Window* parent = dynamic_cast<Gtk::Window*>(get_toplevel());
@@ -393,6 +421,15 @@ void Canvas_PrintLayout::on_context_menu_edit()
         {
           portal = offer_related_records(portal, parent);
           m_context_item->set_layout_item(portal);
+        }
+        else
+        {
+         sharedptr<LayoutItem_Line> line = sharedptr<LayoutItem_Line>::cast_dynamic(layout_item);
+         if(line)
+         {
+           line = offer_line(line, parent);
+           m_context_item->set_layout_item(line);
+         }
         }
       }
     }

@@ -1,5 +1,24 @@
 2011-08-29  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Allow editing of line width and color.
+
+	* Makefile.am:
+	* Makefile_glom.am:
+	* ui/developer/dialog_line.glade:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_line.[h|cc]:
+	Added a new dialog for editing line details, such as width and color.
+	* tests/test_glade_derived_instantiation.cc: Test new new dialog.
+
+	* glom/libglom/data_structure/layout/layoutitem_line.[h|cc]: Added 
+	get/set_line_width() and get/set_line_color().
+	* glom/libglom/document/document.cc: load_after(), save_before(): Store
+	these new details in the document.
+	* glom/print_layout/canvas_layout_item.cc:
+	* glom/print_layout/canvas_print_layout.[h|cc]: Allow editing by showing 
+	this new dialog.
+
+2011-08-29  Murray Cumming  <murrayc@murrayc.com>
+
 	Load whole glade files, to get secondary objects without listing them.
 
 	* glom/glade_utils.h: helper_get_glade_widget_derived_with_warning():

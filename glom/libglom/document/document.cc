@@ -97,6 +97,8 @@ static const char GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_X[] = "start_x";
 static const char GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_Y[] = "start_y";
 static const char GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_X[] = "end_x";
 static const char GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_Y[] = "end_y";
+static const char GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_WIDTH[] = "line_width";
+static const char GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_COLOR[] = "color";
 static const char GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING[] = "use_default_formatting";
 static const char GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY[] = "data_layout_item_groupby";
 static const char GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS[] = "secondary_fields";
@@ -2262,6 +2264,12 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
           get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_Y),
           get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_X),
           get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_Y) );
+          
+        item->set_line_width(
+          get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_WIDTH) );
+          
+        item->set_line_color(
+          get_node_attribute_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_COLOR) );
 
         item_added = item;
       }
@@ -3429,6 +3437,11 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
                   set_node_attribute_value_as_decimal_double(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_Y, start_y);
                   set_node_attribute_value_as_decimal_double(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_X, end_x);
                   set_node_attribute_value_as_decimal_double(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_Y, end_y);
+                  
+                  set_node_attribute_value_as_decimal_double(nodeItem, 
+                    GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_WIDTH, line->get_line_width());
+                  set_node_attribute_value(nodeItem, 
+                    GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_COLOR, line->get_line_color());
                 }
               }
             }

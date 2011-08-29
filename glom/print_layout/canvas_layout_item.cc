@@ -187,8 +187,6 @@ int CanvasLayoutItem::get_rows_count_for_portal(const sharedptr<const LayoutItem
 
 Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_item(const sharedptr<LayoutItem>& layout_item)
 {
-  sharedptr<LayoutItem_Line> line;
-
   Glib::RefPtr<CanvasItemMovable> child;
   Glib::RefPtr<Goocanvas::Item> child_item;
   sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::cast_dynamic(layout_item);
@@ -233,8 +231,8 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
         line->get_coordinates(start_x, start_y, end_x, end_y);
 
         Glib::RefPtr<CanvasLineMovable> canvas_item = CanvasLineMovable::create();
-        canvas_item->property_line_width() = 1;
-        canvas_item->property_stroke_color() = "black";
+        canvas_item->property_line_width() = line->get_line_width();
+        canvas_item->property_stroke_color() = line->get_line_color();
 
         Goocanvas::Points points(2);
         points.set_coordinate(0, start_x, start_y);
