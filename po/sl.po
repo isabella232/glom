@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-13 12:25+0000\n"
-"PO-Revision-Date: 2011-08-14 16:34+0100\n"
-"Last-Translator: Andrej Žnidaršič <andrej.znidarsic@gmail.com>\n"
+"POT-Creation-Date: 2011-08-29 11:44+0000\n"
+"PO-Revision-Date: 2011-08-29 20:11+0100\n"
+"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -31,7 +31,7 @@ msgstr "Počakajte, da program Glom pripravi vaš sistem na objavljanje preko om
 
 #: ../glom/application.cc:286
 #: ../glom/bakery/app_withdoc_gtk.cc:248
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:188
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:194
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:58
 msgid "_File"
 msgstr "_Datoteka"
@@ -819,7 +819,7 @@ msgid "There was an error when attempting to start the database server."
 msgstr "Med poskusom zaganjanja strežnika podatkovne zbirke je prišlo do napake."
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2588
+#: ../glom/frame_glom.cc:2587
 msgid "All"
 msgstr "Vse"
 
@@ -943,7 +943,7 @@ msgstr "Datoteka vsebuje podatke, ki niso v navedenemu kodiranju. Izberite druge
 #. Translators: This is the name of a UI element (a layout part name).
 #. This is a straight line, not a database row.
 #: ../glom/import_csv/dialog_import_csv.cc:510
-#: ../glom/libglom/data_structure/layout/layoutitem_line.cc:83
+#: ../glom/libglom/data_structure/layout/layoutitem_line.cc:91
 msgid "Line"
 msgstr "Vrstica"
 
@@ -1095,7 +1095,7 @@ msgstr "Številka"
 #: ../glom/libglom/data_structure/translatable_item.cc:317
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1154
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:697
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:715
 msgid "Text"
 msgstr "Besedilo"
 
@@ -1173,7 +1173,7 @@ msgstr "Portal koledarja"
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:194
 #: ../glom/libglom/data_structure/translatable_item.cc:297
 #: ../glom/mode_design/dialog_database_preferences.cc:62
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:693
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:711
 #: ../ui/developer/window_field_definition_edit.glade.h:2
 msgid "Field"
 msgstr "Polje"
@@ -1291,44 +1291,44 @@ msgstr "Naslov polja"
 msgid "Unknown"
 msgstr "Neznano"
 
-#: ../glom/libglom/document/document.cc:487
-#: ../glom/libglom/document/document.cc:505
+#: ../glom/libglom/document/document.cc:489
+#: ../glom/libglom/document/document.cc:507
 msgid "System Preferences"
 msgstr "Možnosti sistema"
 
-#: ../glom/libglom/document/document.cc:518
+#: ../glom/libglom/document/document.cc:520
 msgid "System Name"
 msgstr "Ime sistema"
 
-#: ../glom/libglom/document/document.cc:524
+#: ../glom/libglom/document/document.cc:526
 msgid "Organisation Name"
 msgstr "Ime organizacije"
 
-#: ../glom/libglom/document/document.cc:530
+#: ../glom/libglom/document/document.cc:532
 msgid "Organisation Logo"
 msgstr "Logotip organizacije"
 
-#: ../glom/libglom/document/document.cc:536
+#: ../glom/libglom/document/document.cc:538
 msgid "Street"
 msgstr "Ulica"
 
-#: ../glom/libglom/document/document.cc:542
+#: ../glom/libglom/document/document.cc:544
 msgid "Street (line 2)"
 msgstr "Ulica (druga vrstica)"
 
-#: ../glom/libglom/document/document.cc:548
+#: ../glom/libglom/document/document.cc:550
 msgid "City"
 msgstr "Mesto"
 
-#: ../glom/libglom/document/document.cc:554
+#: ../glom/libglom/document/document.cc:556
 msgid "State"
 msgstr "Regija"
 
-#: ../glom/libglom/document/document.cc:560
+#: ../glom/libglom/document/document.cc:562
 msgid "Country"
 msgstr "Država"
 
-#: ../glom/libglom/document/document.cc:566
+#: ../glom/libglom/document/document.cc:568
 msgid "Zip Code"
 msgstr "Poštna številka"
 
@@ -1679,7 +1679,7 @@ msgstr "Nov gumb"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
 #: ../glom/mode_data/flowtablewithfields.cc:1240
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:405
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:415
 msgid "text"
 msgstr "besedilo"
 
@@ -1739,7 +1739,7 @@ msgid "Next Value"
 msgstr "Naslednja vrednost"
 
 #: ../glom/mode_design/dialog_design.cc:52
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:576
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:594
 #: ../ui/developer/window_design.glade.h:3
 msgid "None selected"
 msgstr "Brez izbora"
@@ -1891,7 +1891,7 @@ msgid " Via: "
 msgstr " Preko:"
 
 #: ../glom/mode_design/layout/dialog_layout_calendar_related.cc:248
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:260
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:266
 msgid "None: No visible tables are specified by the fields."
 msgstr "Brez: Polja ne navajajo nobenih vidnih razpredelnic."
 
@@ -1949,27 +1949,27 @@ msgstr "(Beležka)"
 msgid "Fields"
 msgstr "Polja"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:361
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:367
 msgid "Invalid Relationship"
 msgstr "Neveljavno razmerje"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:362
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:368
 msgid "The relationship may not be used to show related records because the relationship does not specify a field in the related table."
 msgstr "Razmerja ni mogoče uporabiti za prikaz povezanih zapisov, ker razmerje ne določa polja v povezani razpredelnici."
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:368
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:374
 msgid "Relationship Uses a Related Primary Key"
 msgstr "Razmerje uporablja povezani osnovni ključ"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:369
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:375
 msgid "The relationship may not be used to show related records because the relationship uses a primary key field in the related table, which must contain unique values. This would prevent the relationship from specifying multiple related records."
 msgstr "Razmerja ni mogoče uporabiti za prikaz povezanih zapisov, ker razmerje v povezani razpredelnici vsebuje polje osnovnega ključa, ki mora vsebovati edinstvene vrednosti. To razmerju prepreči določitev več povezanih zapisov."
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:375
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:381
 msgid "Relationship Uses a Related Unique Field"
 msgstr "Razmerje uporablja edinstveno povezano polje"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:376
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:382
 msgid "The relationship may not be used to show related records because the relationship uses a unique-values field in the related table. This would prevent the relationship from specifying multiple related records."
 msgstr "Razmerja ni mogoče uporabiti za prikaz povezanih zapisov, ker razmerje v povezani razpredelnici uporablja polje edinstvenih vrednosti. To razmerju prepreči določitev več povezanih zapisov. "
 
@@ -2107,72 +2107,72 @@ msgstr "Povezani zapisi"
 msgid "Drag this to the layout to add a new related records portal."
 msgstr "Vleka tega v razporeditev doda nov portal povezanih zapisov."
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:219
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:225
 msgid "Unselect All"
 msgstr "Odstrani izbiro vsega"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:222
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:228
 msgid "_Insert"
 msgstr "_Vstavi"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:223
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:229
 msgid "Insert _Field"
 msgstr "Vstavi _polje"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:225
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:231
 msgid "Insert _Text"
 msgstr "Vstavi _besedilo"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:227
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:233
 msgid "Insert _Image"
 msgstr "Vstavi _sliko"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:229
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:235
 msgid "Insert _Related Records"
 msgstr "Vstavi _povezane zapise"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:231
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:237
 msgid "Insert _Horizontal Line"
 msgstr "Vstavi _vodoravno črto"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:233
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:239
 msgid "Insert _Vertical Line"
 msgstr "Vstavi _navpično črto"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:236
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:242
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:64
 msgid "_View"
 msgstr "_Pogled"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:237
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:243
 msgid "Show Grid"
 msgstr "Pokaži mrežo"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:239
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:245
 msgid "Show Rules"
 msgstr "Pokaži pravila"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:241
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:247
 msgid "Show Outlines"
 msgstr "Pokaži obrise"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:245
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:251
 msgid "Fit Page _Width"
 msgstr "Prilagodi širino _strani"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:249
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:255
 msgid "Zoom 200%"
 msgstr "Približaj na 200%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:257
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:263
 msgid "Zoom 50%"
 msgstr "Približaj na 50%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:261
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:267
 msgid "Zoom 25%"
 msgstr "Približaj na 25%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:691
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:709
 msgid "Insert"
 msgstr "Vstavi"
 
@@ -2312,12 +2312,12 @@ msgstr "Neznana razpredelnica"
 msgid "You cannot open this table, because there is no information about this table in the document."
 msgstr "Te razpredelnice ni mogoče odpreti, ker v dokumentu ni podatkov o tej razpredelnici."
 
-#: ../glom/print_layout/canvas_layout_item.cc:271
+#: ../glom/print_layout/canvas_layout_item.cc:266
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:39
 msgid "Choose Field"
 msgstr "Izbor polja"
 
-#: ../glom/print_layout/canvas_print_layout.cc:272
+#: ../glom/print_layout/canvas_print_layout.cc:273
 msgid "_Formatting"
 msgstr "_Oblikovanje"
 
@@ -2570,7 +2570,6 @@ msgid "Add Text"
 msgstr "Dodaj besedilo"
 
 #: ../glom/utility_widgets/layoutwidgetutils.cc:37
-#: ../ui/developer/dialog_layoutitem_properties.glade.h:2
 msgid "Properties"
 msgstr "Lastnosti"
 
@@ -3006,6 +3005,19 @@ msgstr "Vnesite začetne podrobnosti povezave za svojo podatkovno zbirko. Dodatn
 msgid "_Confirm Password:"
 msgstr "_Potrdi geslo:"
 
+#: ../ui/developer/dialog_line.glade.h:1
+msgid "Color:"
+msgstr "Barva:"
+
+#: ../ui/developer/dialog_line.glade.h:2
+msgid "Line Width:"
+msgstr "Širina črte:"
+
+#: ../ui/developer/dialog_line.glade.h:3
+#: ../ui/developer/window_textobject.glade.h:3
+msgid "Text Object"
+msgstr "Predmet besedila"
+
 #: ../ui/developer/dialog_layout_field_properties.glade.h:1
 msgid "<b>Field:</b>"
 msgstr "<b>Polje:</b>"
@@ -3037,10 +3049,6 @@ msgstr "Uporabi privzet naslov polja:"
 #: ../ui/developer/dialog_layout_field_properties.glade.h:9
 msgid "Use default formatting"
 msgstr "Uporabi privzeto oblikovanje"
-
-#: ../ui/developer/dialog_layoutitem_properties.glade.h:1
-msgid "<b>Label:</b>"
-msgstr "<b>Oznaka:</b>"
 
 #: ../ui/developer/dialog_new_group.glade.h:1
 msgid ""
@@ -3520,10 +3528,6 @@ msgstr "Oblika besedila"
 msgid "<b>Text:</b>"
 msgstr "<b>Besedilo:</b>"
 
-#: ../ui/developer/window_textobject.glade.h:3
-msgid "Text Object"
-msgstr "Predmet besedila"
-
 #: ../ui/developer/window_translations.glade.h:1
 msgid "<b>Source Language:</b>"
 msgstr "<b>Izvirni jezik:</b>"
@@ -3564,39 +3568,55 @@ msgstr "<b>Skupina:</b>"
 msgid "<b>Users</b>"
 msgstr "<b>Uporabniki</b>"
 
+#~ msgid "<b>Label:</b>"
+#~ msgstr "<b>Oznaka:</b>"
+
 #~ msgid "Table Name"
 #~ msgstr "Ime razpredelnice"
+
 #~ msgid ""
 #~ "This field will be used to decide which records to show in the calendar."
 #~ msgstr ""
 #~ "To polje bo uporabljeno za odločitev kateri zapisi bodo prikazani v "
 #~ "koledarju."
+
 #~ msgid "_User Level"
 #~ msgstr "Upora_bniška raven"
+
 #~ msgid "_Mode"
 #~ msgstr "_Način"
+
 #~ msgid "Data"
 #~ msgstr "Podatki"
 #~ msgctxt "Mode"
+
 #~ msgid "Operator"
 #~ msgstr "Operater"
 #~ msgctxt "Mode"
+
 #~ msgid "Developer"
 #~ msgstr "Razvijalec"
+
 #~ msgid "0"
 #~ msgstr "0"
+
 #~ msgid "<b><span size=\"xx-large\">None selected</span></b>"
 #~ msgstr "<b><span size=\"xx-large\">Prazen izbor</span></b>"
+
 #~ msgid "<b>User Level:</b>"
 #~ msgstr "<b>Uporabniška raven:</b>"
+
 #~ msgid "Mode:"
 #~ msgstr "Način:"
+
 #~ msgid "You cannot drop anything here. Try to add a group first"
 #~ msgstr "Tu ni mogoče spustiti ničesar. Poskusite najprej dodati skupino"
+
 #~ msgid "Read-only field."
 #~ msgstr "Polje je le za branje."
+
 #~ msgid "This field may not be edited here."
 #~ msgstr "Polja tukaj ni mogoče urejati."
+
 #~ msgid "_Data"
 #~ msgstr "_Podatki"
-
