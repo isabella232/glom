@@ -1293,7 +1293,7 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
   //Create the dialog, if it has not already been created:
   if(!m_pBox_Tables)
   {
-    Utils::get_glade_widget_derived_with_warning(m_pBox_Tables);
+    Utils::get_glade_child_widget_derived_with_warning(m_pBox_Tables);
     m_pDialog_Tables = new Window_BoxHolder(m_pBox_Tables, _("Edit Tables"));
     m_pDialog_Tables->signal_hide().connect(sigc::mem_fun(*this, &Frame_Glom::on_dialog_tables_hide));
 
@@ -1739,7 +1739,7 @@ void Frame_Glom::on_menu_developer_reports()
   //Create the widget if necessary:
   if(!m_pBox_Reports)
   {
-    Utils::get_glade_widget_derived_with_warning(m_pBox_Reports);
+    Utils::get_glade_child_widget_derived_with_warning(m_pBox_Reports);
     m_pDialog_Reports = new Window_BoxHolder(m_pBox_Reports);
     m_pDialog_Reports->set_transient_for(*(get_app_window()));
     m_pDialog_Reports->set_title(_("Reports"));
@@ -1769,7 +1769,7 @@ void Frame_Glom::on_menu_developer_print_layouts()
   //Create the widget if necessary:
   if(!m_pBox_PrintLayouts)
   {
-    Utils::get_glade_widget_derived_with_warning(m_pBox_PrintLayouts);
+    Utils::get_glade_child_widget_derived_with_warning(m_pBox_PrintLayouts);
     m_pDialog_PrintLayouts = new Window_BoxHolder(m_pBox_PrintLayouts);
 
     m_pDialog_PrintLayouts->set_transient_for(*get_app_window());

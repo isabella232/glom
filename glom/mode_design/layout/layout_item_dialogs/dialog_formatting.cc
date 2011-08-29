@@ -33,7 +33,7 @@ Dialog_Formatting::Dialog_Formatting()
   set_border_width(6);
 
   //Get the formatting stuff:
-  Utils::get_glade_widget_derived_with_warning(m_box_formatting);
+  Utils::get_glade_child_widget_derived_with_warning(m_box_formatting);
 
   get_content_area()->pack_start(*m_box_formatting, Gtk::PACK_EXPAND_WIDGET);
   add_view(m_box_formatting);

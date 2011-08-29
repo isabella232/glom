@@ -1,3 +1,22 @@
+2011-08-29  Murray Cumming  <murrayc@murrayc.com>
+
+	Load whole glade files, to get secondary objects without listing them.
+
+	* glom/glade_utils.h: helper_get_glade_widget_derived_with_warning():
+  Add a bool so we can choose to load the whole .glade file.
+  get_glade_widget_derived_with_warning(): Load the whole file.
+  Add get_child_glade_child_widget_derived_with_warning(), which does not load 
+  the whole file.
+  * glom/frame_glom.cc:
+  * glom/mode_design/fields/dialog_fielddefinition.cc:
+  * glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.cc:
+  * glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:
+  * glom/mode_design/print_layouts/dialog_text_formatting.cc: Use this to load 
+  boxes when we do not want the whole window that they are in.
+
+  This was the main reason for splitting the .glade files up - to work 
+  around GtkBuilder's inability to automatically load secondary objects.
+
 2011-08-28  Murray Cumming  <murrayc@murrayc.com>
 
 	Remove unused .glade file.

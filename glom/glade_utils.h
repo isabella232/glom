@@ -56,14 +56,22 @@ inline std::string get_glade_file_path(const std::string& filename)
   return Glib::build_filename(GLOM_PKGDATADIR_NOTINSTALLED, filename);
 }
 
+/** This assumes that there are no other top-level windows in the glade file.
+ * This allows us to get all object, including any necessary secondary objects,
+ * such as a GtkSpinButton's GtkAdjustment.
+ */
 template<class T_Widget>
-void helper_get_glade_widget_derived_with_warning(const std::string& filename, const Glib::ustring& id, T_Widget*& widget)
+void helper_get_glade_widget_derived_with_warning(const std::string& filename, const Glib::ustring& id, T_Widget*& widget, bool load_all)
 {
   Glib::RefPtr<Gtk::Builder> refXml;
 
   try
   {
-    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path(filename), id);
+    const std::string filepath = Utils::get_glade_file_path(filename);
+    if(load_all)
+      refXml = Gtk::Builder::create_from_file(filepath);
+     else
+      refXml = Gtk::Builder::create_from_file(filepath, id);
   }
   catch(const Gtk::BuilderError& ex)
   {
@@ -85,6 +93,26 @@ void helper_get_glade_widget_derived_with_warning(const std::string& filename, c
 }
 
 /** This should be used with classes that have a static glade_id member.
+ * This loads only the widget's own object, as specified by its ID.
+ */
+template<class T_Widget>
+void get_glade_child_widget_derived_with_warning(T_Widget*& widget)
+{
+  widget = 0;
+
+  // Check the path to the installed .glade file:
+  // The id is the same as the filename, in a developer/operator sub-directory:
+  const std::string filename = Glib::build_filename(
+      (T_Widget::glade_developer ? "developer" : "operator"),
+      std::string(T_Widget::glade_id) + ".glade"); 
+  
+  helper_get_glade_widget_derived_with_warning(filename, T_Widget::glade_id, widget, false /* load just this */);
+}
+
+/** This should be used with classes that have a static glade_id member.
+ * This assumes that there are no other top-level windows in the glade file.
+ * This allows us to get all object, including any necessary secondary objects,
+ * such as a GtkSpinButton's GtkAdjustment.
  */
 template<class T_Widget>
 void get_glade_widget_derived_with_warning(T_Widget*& widget)
@@ -97,9 +125,8 @@ void get_glade_widget_derived_with_warning(T_Widget*& widget)
       (T_Widget::glade_developer ? "developer" : "operator"),
       std::string(T_Widget::glade_id) + ".glade"); 
   
-  helper_get_glade_widget_derived_with_warning(filename, T_Widget::glade_id, widget);
+  helper_get_glade_widget_derived_with_warning(filename, T_Widget::glade_id, widget, true /* load_all */);
 }
-
 
 template<class T_Widget>
 void get_glade_widget_with_warning(const std::string& filename, const Glib::ustring& id, T_Widget*& widget)

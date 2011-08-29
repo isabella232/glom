@@ -87,7 +87,7 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
   builder->get_widget("box_formatting_placeholder", m_box_formatting_placeholder);
 
   //Get the formatting stuff:
-  Utils::get_glade_widget_derived_with_warning(m_box_formatting);
+  Utils::get_glade_child_widget_derived_with_warning(m_box_formatting);
 
   if(m_box_formatting) ////Unlikely to fail and it already warns on stderr.
     m_box_formatting_placeholder->pack_start(*m_box_formatting);
