@@ -173,16 +173,31 @@ void CanvasImageMovable::scale_to_size()
   double width = 0;
   double height = 0;
   get_width_height(width, height);
-  //std::cout << "debug: " << G_STRFUNC << ": width=" << width << ", height=" << height << std::endl;
-  
-  if(width && height)
+  Goocanvas::Canvas* canvas = get_canvas();
+  if(!canvas)
   {
-    Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::image_scale_keeping_ratio(m_pixbuf, (int)height, (int)width);
+    std::cerr << G_STRFUNC << ": canvas is null" << std::endl;
+    return;
+  }
+  
+  //Convert, because our canvas uses units (mm) but the pixbuf uses pixels:
+  double width_pixels = width;
+  double height_pixels = height;
+  canvas->convert_to_pixels(width_pixels, height_pixels);
+
+  if(width_pixels && height_pixels)
+  {
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::image_scale_keeping_ratio(m_pixbuf, (int)height_pixels, (int)width_pixels);
     property_pixbuf() = pixbuf;
   }
 
   //Make sure that the size stays the same even if the scaling wasn't exact:
   set_width_height(width, height);
+  
+  //TODO: Fix this goocanvas bug http://bugzilla.gnome.org/show_bug.cgi?id=657592, 
+  //We can't work around it by forcing an extra scale in GooCanvasItem like so:
+  //property_scale_to_fit() = true;
+  //because that does not keep the aspect ratio.
 }
 
 void CanvasImageMovable::set_image_empty()

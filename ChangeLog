@@ -1,3 +1,11 @@
+2011-08-30  Murray Cumming  <murrayc@murrayc.com>
+
+	Print Layout: Slight improvement to image scaling.
+
+	* glom/utility_widgets/canvas/canvas_image_movable.cc: scale_to_size():
+	Use the correct size in pixels to scale the image.
+	However, it is still overscaled and cropped due to goocanvas bug #657592 .
+
 2011-08-29  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Allow editing of line width and color.
