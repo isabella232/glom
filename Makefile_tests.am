@@ -134,7 +134,6 @@ if GLOM_ENABLE_UI
 check_PROGRAMS += \
 	glom/utility_widgets/test_flowtable			\
 	glom/utility_widgets/eggspreadtablemm/test_spreadtablednd \
-	glom/utility_widgets/canvas/test_canvas_editable \
 	glom/test_pyembed \
 	tests/test_glade_derived_instantiation \
 	tests/glade_toplevels_instantiation \
@@ -145,7 +144,8 @@ check_PROGRAMS += \
 	tests/python/test_python_execute_func_with_record \
 	tests/python/test_python_execute_script
 #	glom/mode_data/test_flowtablewithfields
-
+#	glom/utility_widgets/canvas/test_canvas_editable
+	
 TESTS += \
 	tests/test_glade_toplevels_instantiation.sh \
 	tests/test_glade_derived_instantiation \
@@ -170,11 +170,12 @@ glom_utility_widgets_eggspreadtablemm_test_spreadtablednd_SOURCES =	\
 glom_utility_widgets_eggspreadtablemm_test_spreadtablednd_LDADD = $(GLOM_LIBS)
 glom_utility_widgets_eggspreadtablemm_test_spreadtablednd_CPPFLAGS = $(tests_cppflags_ui)
 
-glom_utility_widgets_canvas_test_canvas_editable_SOURCES =	\
-        $(glom_source_files) \
-	glom/utility_widgets/canvas/test_canvas_editable.cc
-glom_utility_widgets_canvas_test_canvas_editable_LDADD = $(glom_all_libs)
-glom_utility_widgets_canvas_test_canvas_editable_CPPFLAGS = $(tests_cppflags_ui)
+# Disabled because it slows down the build, because it builds all Glom files again, using its own flags:
+#glom_utility_widgets_canvas_test_canvas_editable_SOURCES =	\
+#        $(glom_source_files) \
+#	glom/utility_widgets/canvas/test_canvas_editable.cc
+#glom_utility_widgets_canvas_test_canvas_editable_LDADD = $(glom_all_libs)
+#glom_utility_widgets_canvas_test_canvas_editable_CPPFLAGS = $(tests_cppflags_ui)
 
 # Disabled because it slows down the build, because it builds all Glom files again, using its own flags:
 #glom_mode_data_test_flowtablewithfields_SOURCES =	\

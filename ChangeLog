@@ -1,5 +1,11 @@
 2011-08-30  Murray Cumming  <murrayc@murrayc.com>
 
+	Disable the canvas test.
+
+	* Makefile_tests.am: Because it doubles the build time.
+
+2011-08-30  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Line editing: Allow decimal places.
 
 	* ui/developer/dialog_line.glade: Add an outer border, to match the other 
