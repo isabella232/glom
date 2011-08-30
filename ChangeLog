@@ -1,5 +1,12 @@
 2011-08-30  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Line editing: Allow decimal places.
+
+	* ui/developer/dialog_line.glade: Add an outer border, to match the other 
+  dialogs. Let the SpinButton show (and allow) 3 decimal places.
+
+2011-08-30  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Slight improvement to image scaling.
 
 	* glom/utility_widgets/canvas/canvas_image_movable.cc: scale_to_size():
