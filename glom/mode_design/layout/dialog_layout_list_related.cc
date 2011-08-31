@@ -44,7 +44,10 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   m_radio_navigation_none(0),
   m_radio_navigation_specify(0),
   m_label_navigation_automatic(0),
-  m_combo_navigation_specify(0)
+  m_combo_navigation_specify(0),
+  m_spinbutton_row_line_width(0),
+  m_spinbutton_column_line_width(0),
+  m_colorbutton_line(0)
 {
   // Show the appropriate alternate widgets:
   m_box_table_widgets->hide();
@@ -55,7 +58,7 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   m_spinbutton_rows_count->set_range(0, 100); //Otherwise only 0 would be allowed.
   m_spinbutton_rows_count->set_increments(1, 10); //Otherwise the buttons do nothing.
   m_spinbutton_rows_count->signal_value_changed().connect(
-    sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_spinbutton_rows_count_changed));
+    sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_spinbutton_changed));
 
   builder->get_widget_derived("combo_relationship_name", m_combo_relationship);
   m_combo_relationship->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_combo_relationship_changed));
@@ -75,6 +78,16 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   builder->get_widget_derived("combobox_navigation_specify", m_combo_navigation_specify);
   make_sensitivity_depend_on_toggle_button(*m_radio_navigation_specify, *m_combo_navigation_specify);
   m_combo_navigation_specify->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_combo_navigation_specific_changed));
+
+  builder->get_widget("spinbutton_row_line_width", m_spinbutton_row_line_width);
+  m_spinbutton_row_line_width->signal_value_changed().connect(
+    sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_spinbutton_changed));
+  builder->get_widget("spinbutton_column_line_width", m_spinbutton_column_line_width);
+  m_spinbutton_column_line_width->signal_value_changed().connect(
+    sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_spinbutton_changed));
+  builder->get_widget("colorbutton_line", m_colorbutton_line);
+  m_colorbutton_line->signal_color_set().connect(
+    sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_spinbutton_changed));
 
 
   m_modified = false;
@@ -120,10 +133,19 @@ void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout_name, 
   Dialog_Layout::set_document(layout_name, layout_platform, document, actual_from_table, empty_fields);
   //m_table_name is now actually the parent_table_name.
 
-  //Hide unwanted widgets:
+  //Hide unwanted widgets and show extra ones:
   if(for_print_layout)
   {
     m_box_related_navigation->hide();
+    m_box_frame_lines->show();
+    
+    m_spinbutton_row_line_width->set_value(
+      portal->get_print_layout_row_line_width());
+    m_spinbutton_column_line_width->set_value(
+      portal->get_print_layout_column_line_width());
+
+    Gdk::Color color( portal->get_print_layout_line_color() );
+    m_colorbutton_line->set_color(color);
   }
   
   update_ui();
@@ -335,8 +357,15 @@ void Dialog_Layout_List_Related::save_to_document()
       m_portal->set_navigation_type(LayoutItem_Portal::NAVIGATION_NONE);
     }
     
-    std::cout << "debug: saving rows_count=" << m_spinbutton_rows_count->get_value() << std::endl;
     m_portal->set_rows_count( m_spinbutton_rows_count->get_value() );
+    
+   
+    m_portal->set_print_layout_row_line_width(
+      m_spinbutton_row_line_width->get_value());
+    m_portal->set_print_layout_column_line_width(
+      m_spinbutton_column_line_width->get_value());      
+    //TODO: Use GdkRGBA's color string (CSS) format instead, everywhere:
+    m_portal->set_print_layout_line_color( m_colorbutton_line->get_color().to_string() );
   }
 }
 
@@ -416,7 +445,7 @@ void Dialog_Layout_List_Related::on_combo_relationship_changed()
   m_modified = true;
 }
 
-void Dialog_Layout_List_Related::on_spinbutton_rows_count_changed()
+void Dialog_Layout_List_Related::on_spinbutton_changed()
 {
   m_modified = true;
 }

@@ -81,6 +81,10 @@ static const char GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_NONE[] = "none";
 
 static const char GLOM_NODE_DATA_LAYOUT_CALENDAR_PORTAL[] = "data_layout_calendar_portal";
 static const char GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT[] = "row_height";
+static const char GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_WIDTH[] = "row_line_width";
+static const char GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_COLOR[] = "column_line_color";
+static const char GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_COLUMN_LINE_WIDTH[] = "row_line_width";
+static const char GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_LINE_COLOR[] = "line_color";
 static const char GLOM_ATTRIBUTE_PORTAL_CALENDAR_DATE_FIELD[] = "date_field";
 static const char GLOM_NODE_DATA_LAYOUT_ITEM[] = "data_layout_item"; //A field.
 static const char GLOM_NODE_LAYOUT_ITEM_CUSTOM_TITLE[] = "title_custom";
@@ -2366,8 +2370,20 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         }
 
         //Print Layout specific stuff:
-        portal->set_print_layout_row_height( get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT) );
-
+        portal->set_print_layout_row_height(
+          get_node_attribute_value_as_decimal(element, 
+            GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT) );
+            
+        portal->set_print_layout_row_line_width(
+          get_node_attribute_value_as_decimal(element, 
+            GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_WIDTH) );
+        portal->set_print_layout_column_line_width(
+          get_node_attribute_value_as_decimal(element, 
+            GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_COLUMN_LINE_WIDTH) );
+        portal->set_print_layout_line_color(
+          get_node_attribute_value(element, 
+            GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_LINE_COLOR) );
+                
         item_added = portal;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY)
@@ -3321,7 +3337,19 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
                 GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT, portal->get_rows_count());
 
               //Print Layout specific stuff:
-              set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT, portal->get_print_layout_row_height());
+              set_node_attribute_value_as_decimal(child,
+                GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT, 
+                portal->get_print_layout_row_height());
+                
+              set_node_attribute_value_as_decimal(child,
+                GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_WIDTH, 
+                portal->get_print_layout_row_line_width());
+              set_node_attribute_value(child,
+                GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_COLOR, 
+                portal->get_print_layout_line_color());
+              set_node_attribute_value(child,
+                GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_LINE_COLOR, 
+                portal->get_print_layout_line_color());
             }
             else
             {

@@ -69,6 +69,8 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   m_box_related_table_widgets->hide();
   builder->get_widget("frame_related_table_navigation", m_box_related_navigation);
   m_box_related_navigation->hide();
+  builder->get_widget("frame_lines", m_box_frame_lines);
+  m_box_frame_lines->hide();
 
   Gtk::Frame* box_calendar = 0;
   builder->get_widget("frame_calendar", box_calendar);

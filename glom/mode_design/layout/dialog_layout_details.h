@@ -105,6 +105,7 @@ protected:
   Gtk::Box* m_box_table_widgets;
   Gtk::Box* m_box_related_table_widgets;
   Gtk::Frame* m_box_related_navigation;
+  Gtk::Frame* m_box_frame_lines;
 
   Gtk::Button* m_button_up;
   Gtk::Button* m_button_down;

@@ -98,6 +98,25 @@ public:
 
   /// This is used only for the print layouts.
   void set_print_layout_row_height(double row_height);
+
+
+  /// This is used only for the print layouts.
+  double get_print_layout_row_line_width() const;
+    
+  /// This is used only for the print layouts.
+  void set_print_layout_row_line_width(double width);
+  
+  /// This is used only for the print layouts.
+  double get_print_layout_column_line_width() const;
+  
+  /// This is used only for the print layouts.
+  void set_print_layout_column_line_width(double width);
+  
+  /// This is used only for the print layouts.
+  Glib::ustring get_print_layout_line_color() const;
+  
+  /// This is used only for the print layouts.
+  void set_print_layout_line_color(const Glib::ustring& color);
   
   /** Get the number of rows that should be displayed.
    */
@@ -114,6 +133,8 @@ private:
 
   // This is used only for the print layouts.
   double m_print_layout_row_height;
+  double m_print_layout_row_line_width, m_print_layout_column_line_width;
+  Glib::ustring m_print_layout_line_color; //TODO: Patch GooCanvasTable to allow different colors for rows and columns?
 
   //If no navigation relationship has been specified then it will be automatically chosen or navigation will be disabled:
   navigation_type m_navigation_type;

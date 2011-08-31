@@ -278,13 +278,10 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
           {
             Glib::RefPtr<CanvasTableMovable> canvas_item = CanvasTableMovable::create();
 
-            Glib::ustring stroke_color;
-            double stroke_width = 0;
-            CanvasGroupResizable::get_outline_stroke(stroke_color, stroke_width);
-
-            canvas_item->property_vert_grid_line_width() = stroke_width;
-            canvas_item->property_horz_grid_line_width() = stroke_width;
-            canvas_item->property_stroke_color() = stroke_color;
+            canvas_item->set_lines_details(
+              portal->get_print_layout_row_line_width(),
+              portal->get_print_layout_column_line_width(),
+              portal->get_print_layout_line_color());
 
             //Show as many rows as can fit in the height.
             double row_height = 0;

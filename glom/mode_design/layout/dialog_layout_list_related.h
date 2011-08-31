@@ -66,7 +66,7 @@ protected:
   
   void on_combo_navigation_specific_changed();
   void on_checkbutton_show_child_relationships();
-  void on_spinbutton_rows_count_changed();
+  void on_spinbutton_changed();
 
   ComboBox_Relationship* m_combo_relationship;
   Gtk::CheckButton* m_checkbutton_show_child_relationships;
@@ -77,6 +77,10 @@ protected:
   Gtk::RadioButton* m_radio_navigation_specify;
   Gtk::Label* m_label_navigation_automatic;
   ComboBox_Relationship* m_combo_navigation_specify;
+  
+  Gtk::SpinButton* m_spinbutton_row_line_width;
+  Gtk::SpinButton* m_spinbutton_column_line_width;
+  Gtk::ColorButton* m_colorbutton_line;
 };
 
 } //namespace Glom

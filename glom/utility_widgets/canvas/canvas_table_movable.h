@@ -44,7 +44,10 @@ public:
   virtual void set_width_height(double width, double height);
   virtual void set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid);
 
-  /** Show horizontal and vertical grid lines.
+  void set_lines_details(double row_line_width, double column_line_width, const Glib::ustring& color);
+
+  /** Show horizontal and vertical grid lines, if they were not shown already somehow.
+   * @param show If this is false then the normal lines will be shown, or no lines. See set_line_details().
    */
   void set_lines_visibility(bool show = true);
 
@@ -63,6 +66,9 @@ private:
   void snap_position_one_corner(Corners corner, double& x, double& y) const;
 
   virtual void snap_position(double& x, double& y) const;
+  
+  double m_row_line_width, m_column_line_width;
+  Glib::ustring m_line_color;
 };
 
 } //namespace Glom

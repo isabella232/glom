@@ -1,3 +1,24 @@
+2011-08-31  Murray Cumming  <murrayc@murrayc.com>
+
+	Print Layout: Allow the user to choose row and column line widths and color.
+
+	* glom/libglom/data_structure/layout/layoutitem_portal.[h|cc]: Added 
+	get/set_print_layout_row_line_width(), 
+  get/set_print_layout_column_line_width(), and 
+  get/set_print_layout_line_color().
+	* glom/libglom/document/document.cc: load_after(), save_before(): Store the 
+	new details in the document.
+	* ui/developer/window_data_layout.glade: Added an optional extra section 
+	with line details for print layouts.
+	* glom/mode_design/layout/dialog_layout_list_related.[h|cc]: Use the new
+	widgets, hiding them for non-print-layout uses.
+	* glom/mode_design/layout/dialog_layout_details.[h|cc]: Hide the new widgets 
+	by default.
+	* glom/utility_widgets/canvas/canvas_table_movable.[h|cc]: 
+  Added set_line_details().
+	* glom/print_layout/canvas_layout_item.cc:
+  create_canvas_item_for_layout_item(): Call set_line_details().
+
 2011-08-30  Murray Cumming  <murrayc@murrayc.com>
 
 	Disable the canvas test.
