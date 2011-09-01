@@ -66,7 +66,7 @@ private:
   void on_box_select_selected(const Gnome::Gda::Value& primary_key);
 
   Gtk::Label* m_label_table_name;
-  Gtk::HBox* m_pBox_QuickFind; //Only show this when in Find mode.
+  Gtk::Box* m_pBox_QuickFind; //Only show this when in Find mode.
   Gtk::Entry* m_pEntry_QuickFind;
   Gtk::Button* m_pButton_QuickFind;
   Gtk::Alignment* m_alignment_parent;

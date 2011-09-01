@@ -48,7 +48,7 @@ private:
 #endif
 
   //Member widgets:
-  Gtk::HBox m_extra_widget;
+  Gtk::Box m_extra_widget;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Gtk::Button m_button_format;

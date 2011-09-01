@@ -144,9 +144,9 @@ static Gtk::Window *
 create_window()
 {
   Gtk::Window* window = new Gtk::Window();
-  Gtk::HBox* hbox = Gtk::manage(new Gtk::HBox(false, 2));
+  Gtk::Box* hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, 2));
   hbox->show();
-  Gtk::VBox* vbox = Gtk::manage(new Gtk::VBox(false, 6));
+  Gtk::Box* vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, 6));
   vbox->show();
 
   window->set_border_width (8);
@@ -178,7 +178,7 @@ create_window()
   /* Add SpreadTable test control frame */
   Gtk::Expander* expander = Gtk::manage(new Gtk::Expander("SpreadTable controls"));
   expander->set_expanded();
-  Gtk::VBox* paper_cntl = Gtk::manage(new Gtk::VBox(false, 2));
+  Gtk::Box* paper_cntl = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, 2));
   paper_cntl->show();;
   expander->show();
   expander->add(*paper_cntl);
@@ -198,7 +198,7 @@ create_window()
     sigc::ptr_fun(&on_combo_orientation_changed));
 
   /* Add horizontal/vertical spacing controls */
-  hbox = Gtk::manage(new Gtk::HBox(false, 2));
+  hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, 2));
   hbox->show();
 
   Gtk::Widget* label = Gtk::manage(new Gtk::Label("H Spacing"));
@@ -223,7 +223,7 @@ create_window()
 
   paper_cntl->pack_start(*hbox, false, false, 0);
 
-  hbox = Gtk::manage(new Gtk::HBox(false, 2));
+  hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, 2));
   hbox->show();
 
   label =  Gtk::manage(new Gtk::Label("V Spacing"));
@@ -268,7 +268,7 @@ create_window()
       togglebutton, child_accepts_drops));
 
   /* Add lines controls */
-  hbox = Gtk::manage(new Gtk::HBox(false, 2));
+  hbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, 2));
   hbox->show();
 
   label = Gtk::manage(new Gtk::Label("Lines"));
@@ -293,7 +293,7 @@ create_window()
   /* Add test items control frame */
   expander = Gtk::manage(new Gtk::Expander("Test item controls"));
   expander->set_expanded();
-  Gtk::VBox* items_cntl = Gtk::manage(new Gtk::VBox(false, 2));
+  Gtk::Box* items_cntl = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, 2));
   items_cntl->show();
   expander->show();
   expander->add(*items_cntl);

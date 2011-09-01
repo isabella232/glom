@@ -197,12 +197,12 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     //std::cout <<   "DEBUG: field->get_has_relationship_name()=" << field->get_has_relationship_name() << ", field_info->get_primary_key()=" <<  field_info->get_primary_key() << ", field_is_related_primary_key=" << field_is_related_primary_key << std::endl;
 
 
-    Gtk::HBox* hbox_parent = 0; //Only used if there are extra widgets.
+    Gtk::Box* hbox_parent = 0; //Only used if there are extra widgets.
 
     const bool with_extra_widgets = field_used_in_relationship_to_one || field_is_related_primary_key || (glom_type == Field::TYPE_DATE);
     if(with_extra_widgets)
     {
-      hbox_parent = Gtk::manage( new Gtk::HBox() ); //We put the child (and any extra stuff) in this:
+      hbox_parent = Gtk::manage( new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL) ); //We put the child (and any extra stuff) in this:
       hbox_parent->set_spacing(Utils::DEFAULT_SPACING_SMALL);
 
       hbox_parent->pack_start(*m_child);

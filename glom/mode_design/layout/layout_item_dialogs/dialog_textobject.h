@@ -46,7 +46,7 @@ public:
   void get_textobject(sharedptr<LayoutItem_Text>& textobject) const;
 
 private:
-  Gtk::VBox* m_box_title;
+  Gtk::Box* m_box_title;
   Gtk::Entry* m_entry_title;
   Gtk::TextView* m_text_view;
 

@@ -142,7 +142,7 @@ protected:
 
   //Member widgets:
   Gtk::ScrolledWindow m_ScrolledWindow;
-  Gtk::HBox m_hbox_content;
+  Gtk::Box m_hbox_content;
   FlowTableWithFields m_FlowTable;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

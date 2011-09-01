@@ -577,10 +577,10 @@ void FlowTableWithFields::add_button(const sharedptr<LayoutItem_Button>& layouti
   bool expand = false;
   if(alignment != FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT)
   {
-    //Put the button in a Gtk::HBox so we can have non-default alignment in
+    //Put the button in a Gtk::Box so we can have non-default alignment in
     //its space. Note that we will need a different technique if we ever
     //support center alignment.
-    Gtk::HBox* box_button = Gtk::manage(new Gtk::HBox());
+    Gtk::Box* box_button = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
     box_button->show();
     if(alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_RIGHT)
       box_button->pack_end(*button, Gtk::PACK_SHRINK);

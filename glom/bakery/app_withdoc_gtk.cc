@@ -46,7 +46,8 @@ namespace GlomBakery
 
 App_WithDoc_Gtk::App_WithDoc_Gtk(const Glib::ustring& appname)
 : App_WithDoc(appname),
-  m_pVBox(0)
+  m_pVBox(0),
+  m_VBox_PlaceHolder(Gtk::ORIENTATION_VERTICAL)
 {
   init_app_name(appname);
 }
@@ -55,7 +56,8 @@ App_WithDoc_Gtk::App_WithDoc_Gtk(const Glib::ustring& appname)
 App_WithDoc_Gtk::App_WithDoc_Gtk(BaseObjectType* cobject, const Glib::ustring& appname)
 : App_WithDoc(appname),
   ParentWindow(cobject), 
-  m_pVBox(0)
+  m_pVBox(0),
+  m_VBox_PlaceHolder(Gtk::ORIENTATION_VERTICAL)
 {
   init_app_name(appname);
 
@@ -98,7 +100,7 @@ void App_WithDoc_Gtk::init_layout()
   //If not, then we create a default one and add it to the window.
   if(!m_pVBox)
   {
-    m_pVBox = new Gtk::VBox();
+    m_pVBox = new Gtk::VBox(Gtk::ORIENTATION_VERTICAL);
     Gtk::Window::add(*m_pVBox);
   }
 

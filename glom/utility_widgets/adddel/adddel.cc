@@ -75,7 +75,8 @@ AddDelColumnInfo& AddDelColumnInfo::operator=(const AddDelColumnInfo& src)
 }
 
 AddDel::AddDel()
-: m_col_key(0),
+: Gtk::Box(Gtk::ORIENTATION_VERTICAL),
+  m_col_key(0),
   m_pMenuPopup(0),
   m_auto_add(true),
   m_allow_add(true),
@@ -86,7 +87,7 @@ AddDel::AddDel()
 
 
 AddDel::AddDel(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
-: Gtk::VBox(cobject),
+: Gtk::Box(cobject),
   m_col_key(0),
   m_pMenuPopup(0),
   m_auto_add(true),

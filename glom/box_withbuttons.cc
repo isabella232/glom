@@ -30,7 +30,8 @@ namespace Glom
 {
 
 Box_WithButtons::Box_WithButtons()
-: m_Box_Buttons(false, Utils::DEFAULT_SPACING_SMALL),
+: Gtk::Box(Gtk::ORIENTATION_VERTICAL),
+  m_Box_Buttons(Gtk::ORIENTATION_HORIZONTAL, Utils::DEFAULT_SPACING_SMALL),
   m_Button_Cancel(Gtk::Stock::CANCEL)
 {
   //m_pDocument = 0;
@@ -43,8 +44,8 @@ Box_WithButtons::Box_WithButtons()
 }
 
 Box_WithButtons::Box_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
-: Gtk::VBox(cobject),
-  m_Box_Buttons(false, Utils::DEFAULT_SPACING_SMALL),
+: Gtk::Box(cobject),
+  m_Box_Buttons(Gtk::ORIENTATION_HORIZONTAL, Utils::DEFAULT_SPACING_SMALL),
   m_Button_Cancel(Gtk::Stock::CANCEL)
 {
   //m_pDocument = 0;
@@ -57,8 +58,8 @@ Box_WithButtons::Box_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk
 }
 
 Box_WithButtons::Box_WithButtons(BaseObjectType* cobject)
-: Gtk::VBox(cobject),
-  m_Box_Buttons(false, Utils::DEFAULT_SPACING_SMALL),
+: Gtk::Box(cobject),
+  m_Box_Buttons(Gtk::ORIENTATION_HORIZONTAL, Utils::DEFAULT_SPACING_SMALL),
   m_Button_Cancel(Gtk::Stock::CANCEL)
 {
 }

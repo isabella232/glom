@@ -42,7 +42,7 @@ private:
   virtual void create_layout();
 
   //Member widgets:
-  Gtk::HBox m_HBox;
+  Gtk::Box m_HBox;
 };
 
 } //namespace Glom

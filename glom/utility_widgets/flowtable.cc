@@ -38,24 +38,24 @@ FlowTable::~FlowTable()
   while(!m_list_hboxes.empty())
   {
     type_list_hboxes::iterator iter = m_list_hboxes.begin();
-    Gtk::HBox* hbox = *iter;
+    Gtk::Box* hbox = *iter;
     delete_and_forget_hbox(hbox);
   }
 }
 
-const Gtk::HBox* FlowTable::get_parent_hbox(const Gtk::Widget* first) const
+const Gtk::Box* FlowTable::get_parent_hbox(const Gtk::Widget* first) const
 {
   const type_const_list_widgets::const_iterator iter_find = 
     std::find(m_list_first_widgets.begin(), m_list_first_widgets.end(), first);
   if(iter_find == m_list_first_widgets.end())
   {
     std::cerr << G_STRFUNC << ": first was not a first widget. first=" << first << std::endl;
-    return 0; //It has no HBox parent because it is not even a first widget.
+    return 0; //It has no Box parent because it is not even a first widget.
   }
   
   for(type_list_hboxes::const_iterator iter = m_list_hboxes.begin(); iter != m_list_hboxes.end(); ++iter)
   {
-    const Gtk::HBox* hbox = *iter;
+    const Gtk::Box* hbox = *iter;
     if(!hbox)
       continue;
 
@@ -73,10 +73,10 @@ const Gtk::HBox* FlowTable::get_parent_hbox(const Gtk::Widget* first) const
   return 0;
 }
 
-void FlowTable::delete_and_forget_hbox(Gtk::HBox* hbox)
+void FlowTable::delete_and_forget_hbox(Gtk::Box* hbox)
 {
-  //Remove its children because the API hides the fact that they are inside the HBox.
-  //Otherwise they could even be deleted by the HBox.
+  //Remove its children because the API hides the fact that they are inside the Box.
+  //Otherwise they could even be deleted by the Box.
   typedef std::vector<Widget*> type_children;
   type_children children = hbox->get_children();
   while(!children.empty())
@@ -136,7 +136,7 @@ void FlowTable::insert(Gtk::Widget* first, Gtk::Widget* second, int index, bool 
 {
   if(first && second)
   {
-    Gtk::HBox* hbox = new Gtk::HBox(false, get_horizontal_spacing());
+    Gtk::Box* hbox = new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, get_horizontal_spacing());
     m_list_hboxes.push_back(hbox); //So we can delete it whenever necessary.
 
     hbox->pack_start(*first, Gtk::PACK_SHRINK);
@@ -190,8 +190,8 @@ void FlowTable::remove(Gtk::Widget& first)
 {
   //std::cout << G_STRFUNC << ": debug: remove() first=" << &first << std::endl;
   
-  //Handle widgets that were added to an HBox:
-  Gtk::HBox* parent = const_cast<Gtk::HBox*>(get_parent_hbox(&first));
+  //Handle widgets that were added to an Box:
+  Gtk::Box* parent = const_cast<Gtk::Box*>(get_parent_hbox(&first));
   if(parent)
   {
     //std::cout << "  debug: hbox=" << parent << std::endl;
@@ -228,8 +228,8 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
     
   child = &first;
   
-  //Check if it was added to an HBox:
-  const Gtk::HBox* hbox = get_parent_hbox(child);
+  //Check if it was added to an Box:
+  const Gtk::Box* hbox = get_parent_hbox(child);
   if(hbox)
     child = hbox;
     

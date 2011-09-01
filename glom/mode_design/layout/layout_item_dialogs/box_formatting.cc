@@ -33,7 +33,7 @@ const char* Box_Formatting::glade_id("box_formatting");
 const bool Box_Formatting::glade_developer(true);
 
 Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
-: Gtk::VBox(cobject),
+: Gtk::Box(cobject),
   m_vbox_numeric_format(0),
   m_checkbox_format_use_thousands(0),
   m_checkbox_format_use_decimal_places(0),

@@ -42,7 +42,7 @@ main(int argc, char* argv[])
   Gtk::Main mainInstance(argc, argv);
 
   Gtk::Window window;
-  //Gtk::VBox flowtable;
+  //Gtk::Box flowtable;
   Glom::FlowTableDnd flowtable;
   flowtable.set_columns_count(3);
   flowtable.set_column_padding(100);

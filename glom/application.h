@@ -253,7 +253,7 @@ private:
   Glib::RefPtr<Gtk::ToggleAction> m_toggleaction_network_shared;
   sigc::connection m_connection_toggleaction_network_shared;
 
-  Gtk::VBox* m_pBoxTop;
+  Gtk::Box* m_pBoxTop;
   Frame_Glom* m_pFrame;
   
   bool m_bAboutShown;

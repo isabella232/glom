@@ -29,25 +29,29 @@ namespace Glom
 {
 
 FileChooserDialog_SaveExtras::FileChooserDialog_SaveExtras(const Glib::ustring& title, Gtk::FileChooserAction action, const Glib::ustring& backend)
-: Gtk::FileChooserDialog(title, action, backend)
+: Gtk::FileChooserDialog(title, action, backend),
+  m_extra_widget(Gtk::ORIENTATION_VERTICAL)
 {
   create_child_widgets();
 }
 
 FileChooserDialog_SaveExtras::FileChooserDialog_SaveExtras(Gtk::Window& parent, const Glib::ustring& title, Gtk::FileChooserAction action, const Glib::ustring& backend)
-: Gtk::FileChooserDialog(parent, title, action, backend)
+: Gtk::FileChooserDialog(parent, title, action, backend),
+  m_extra_widget(Gtk::ORIENTATION_VERTICAL)
 {
   create_child_widgets();
 }
 
 FileChooserDialog_SaveExtras::FileChooserDialog_SaveExtras(const Glib::ustring& title, Gtk::FileChooserAction action)
-: Gtk::FileChooserDialog(title, action)
+: Gtk::FileChooserDialog(title, action),
+  m_extra_widget(Gtk::ORIENTATION_VERTICAL)
 {
   create_child_widgets();
 }
 
 FileChooserDialog_SaveExtras::FileChooserDialog_SaveExtras(Gtk::Window& parent, const Glib::ustring& title, Gtk::FileChooserAction action)
-: Gtk::FileChooserDialog(parent, title, action)
+: Gtk::FileChooserDialog(parent, title, action),
+  m_extra_widget(Gtk::ORIENTATION_VERTICAL)
 {
   create_child_widgets();
 }
@@ -86,7 +90,7 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   frame->add(*alignment);
   frame->show();
 
-  Gtk::VBox* vbox = Gtk::manage(new Gtk::VBox(false, Utils::DEFAULT_SPACING_SMALL));
+  Gtk::Box* vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, Utils::DEFAULT_SPACING_SMALL));
   alignment->add(*vbox);
   vbox->show();
 
@@ -97,7 +101,7 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   label_newdb->set_alignment(0.0f, 0.5f);
   label_newdb->show();
 
-  Gtk::HBox* box_label = Gtk::manage(new Gtk::HBox(false, Utils::DEFAULT_SPACING_LARGE));
+  Gtk::Box* box_label = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, Utils::DEFAULT_SPACING_LARGE));
   Gtk::Label* label_title = Gtk::manage(new Gtk::Label(_("_Title:"), true));
   box_label->pack_start(*label_title, Gtk::PACK_SHRINK);
   label_title->show();

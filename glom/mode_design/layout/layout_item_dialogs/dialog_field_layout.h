@@ -65,7 +65,7 @@ private:
   Gtk::Entry* m_entry_title_custom;
 
 
-  Gtk::VBox* m_box_formatting_placeholder;
+  Gtk::Box* m_box_formatting_placeholder;
   Gtk::RadioButton* m_radiobutton_custom_formatting;
   Box_Formatting* m_box_formatting;
 

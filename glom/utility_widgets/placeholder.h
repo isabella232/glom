@@ -28,7 +28,7 @@ namespace Glom
 {
 
 //TODO: Remove this, using the vbox directly?
-class PlaceHolder : public Gtk::VBox
+class PlaceHolder : public Gtk::Box
 {
 public:
   PlaceHolder();

@@ -63,7 +63,7 @@ public:
 
 //For adding/deleting/selecting multi-columned lists of items.
 //This was also an abstraction layer against the strangeness of GtkSheet, though it now uses Gtk::TreeView instead.
-class AddDel : public Gtk::VBox
+class AddDel : public Gtk::Box
 {
 public:
   friend class InnerIgnore; //declared below.
@@ -269,7 +269,7 @@ protected:
   template<class T_ModelColumnType>
   guint treeview_append_column(const Glib::ustring& title, const Gtk::TreeModelColumn<T_ModelColumnType>& column, const Glib::ustring& column_id);
 
-  typedef Gtk::VBox type_base;
+  typedef Gtk::Box type_base;
 
   //Member widgets:
   Gtk::ScrolledWindow m_ScrolledWindow;

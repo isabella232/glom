@@ -124,8 +124,8 @@ protected:
   Glib::RefPtr<Gtk::ActionGroup> m_refEditActionGroup;
 
   //Member widgets:
-  Gtk::VBox* m_pVBox;
-  Gtk::VBox m_VBox_PlaceHolder;
+  Gtk::Box* m_pVBox;
+  Gtk::Box m_VBox_PlaceHolder;
 
   //Menu stuff:
   Glib::RefPtr<Gtk::Action> m_action_save, m_action_saveas;

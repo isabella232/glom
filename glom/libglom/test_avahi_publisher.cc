@@ -16,7 +16,7 @@ private:
   virtual void on_button_stop();
 
   //Member widgets:
-  Gtk::VBox m_box;
+  Gtk::Box m_box;
   Gtk::Button m_button_start;
   Gtk::Button m_button_stop;
 
@@ -26,7 +26,7 @@ private:
 
 
 TestWindow::TestWindow()
-: m_box(false, Glom::Utils::DEFAULT_SPACING_SMALL),
+: m_box(Gtk::ORIENTATION_VERTICAL, Glom::Utils::DEFAULT_SPACING_SMALL),
   m_button_start("Start"),
   m_button_stop("Stop"),
   m_avahi_publisher(0)

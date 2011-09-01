@@ -258,7 +258,7 @@ private:
   Gtk::Label* m_pLabel_Table_DataMode;
   Gtk::Label* m_pLabel_Table_FindMode;
 
-  Gtk::HBox m_Box_RecordsCount; //Only show this when in Data mode.
+  Gtk::Box m_Box_RecordsCount; //Only show this when in Data mode.
   Gtk::Label m_Label_RecordsCount;
   Gtk::Label m_Label_FoundCount;
   Gtk::Button m_Button_FindAll;
@@ -273,7 +273,7 @@ private:
 
   Notebook_Data m_Notebook_Data;
 
-  Gtk::HBox* m_pBox_QuickFind; //Only show this when in Find mode.
+  Gtk::Box* m_pBox_QuickFind; //Only show this when in Find mode.
   Gtk::Entry* m_pEntry_QuickFind;
   Gtk::Button* m_pButton_QuickFind;
   Notebook_Find m_Notebook_Find;

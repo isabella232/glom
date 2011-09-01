@@ -69,11 +69,11 @@ private:
   Combo_FieldType* m_pCombo_Type;
   Gtk::CheckButton* m_pCheck_Unique;
   Gtk::CheckButton* m_pCheck_NotNull;
-  Gtk::HBox* m_pBox_DefaultValueSimple;
+  Gtk::Box* m_pBox_DefaultValueSimple;
   Gtk::CheckButton* m_pCheck_PrimaryKey;
   Gtk::CheckButton* m_pCheck_AutoIncrement;
 
-  Gtk::VBox* m_pBox_ValueTab;
+  Gtk::Box* m_pBox_ValueTab;
 
   Gtk::RadioButton* m_pRadio_UserEntry;
   Gtk::Alignment* m_pAlignment_UserEntry;
@@ -91,7 +91,7 @@ private:
 
   DataWidget* m_pDataWidget_DefaultValueSimple;
 
-  Gtk::VBox* m_box_formatting_placeholder;
+  Gtk::Box* m_box_formatting_placeholder;
   Box_Formatting* m_box_formatting;
 
   sharedptr<Field> m_Field;

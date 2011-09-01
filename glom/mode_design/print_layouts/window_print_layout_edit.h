@@ -135,9 +135,9 @@ private:
   //Gtk::Label* m_label_table_title;
   Gtk::Button* m_button_close;
 
-  Gtk::VBox* m_box_menu;
-  Gtk::VBox* m_box_canvas;
-  Gtk::VBox* m_box;
+  Gtk::Box* m_box_menu;
+  Gtk::Box* m_box_canvas;
+  Gtk::Box* m_box;
   Gtk::ScrolledWindow m_scrolled_window;
   Canvas_PrintLayout m_canvas;
 

@@ -1,5 +1,12 @@
 2011-09-01  Murray Cumming  <murrayc@murrayc.com>
 
+	Replace deprecated Gtk::HBox and Gtk:VBox with Gtk::Box.
+
+	* glom/*.[h|cc]: HBox and VBox are deprecated.
+	However, these are still used in the .glade files.
+
+2011-09-01  Murray Cumming  <murrayc@murrayc.com>
+
 	Update EggSpreadTableDnd from libegg. 
 
 	* glom/utility_widgets/eggspreadtable/eggspreadtablednd.[h|c]:

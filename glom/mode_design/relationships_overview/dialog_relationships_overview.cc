@@ -50,7 +50,7 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   m_refSettings = Gtk::PrintSettings::create();
 
   //Add a menu:
-  Gtk::VBox* vbox = 0;
+  Gtk::Box* vbox = 0;
   builder->get_widget("vbox_placeholder_menubar", vbox);
 
   m_refActionGroup = Gtk::ActionGroup::create();

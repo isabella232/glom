@@ -44,7 +44,8 @@ namespace Glom
 {
 
 DbAddDel::DbAddDel()
-: m_column_is_sorted(false),
+: Gtk::Box(Gtk::ORIENTATION_VERTICAL),
+  m_column_is_sorted(false),
   m_column_sorted_direction(false),
   m_column_sorted(0),
 #ifndef GLOM_ENABLE_MAEMO

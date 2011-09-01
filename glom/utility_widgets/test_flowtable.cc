@@ -99,7 +99,7 @@ main(int argc, char* argv[])
   Gtk::Main mainInstance(argc, argv);
 
   Gtk::Window window;
-  //Gtk::VBox flowtable;
+  //Gtk::Box flowtable;
   Glom::FlowTable flowtable;
   flowtable.set_lines(2);
   flowtable.set_horizontal_spacing(6);

@@ -33,12 +33,12 @@
 namespace Glom
 {
 
-/** A Gtk::VBox base widget class, 
+/** A Gtk::Box base widget class, 
  * with some extra signals to allow derived classes to be used generically in 
  * Window_BoxHolder, allowing the dialog to respond to buttons in the box.
  */
 class Box_WithButtons :
-  public Gtk::VBox
+  public Gtk::Box
 {
 public: 
   Box_WithButtons();
@@ -74,7 +74,7 @@ private:
   //Member data:
   //Glib::ustring m_strHint; //Help text.
 
-  Gtk::HBox m_Box_Buttons;
+  Gtk::Box m_Box_Buttons;
   Gtk::Button m_Button_Cancel; //Derived classes can use it if it's necessary.
 };
 

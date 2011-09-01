@@ -61,7 +61,7 @@ public:
 private:
   void create_child_widgets();
 
-  Gtk::VBox m_extra_widget;
+  Gtk::Box m_extra_widget;
   Gtk::Label m_label_extra_message;
 
   /* New database details: */

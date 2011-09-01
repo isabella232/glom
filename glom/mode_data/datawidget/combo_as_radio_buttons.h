@@ -38,7 +38,7 @@ namespace DataWidgetChildren
  */
 class ComboAsRadioButtons
 :
-  public Gtk::VBox,
+  public Gtk::Box,
   public ComboChoices
 {
 public:

@@ -48,7 +48,7 @@ class DbTreeViewColumnGlom;
 /** For adding/deleting/selecting record rows.
  */
 class DbAddDel
- : public Gtk::VBox,
+ : public Gtk::Box,
    public Base_DB_Table_Data
 {
 public:
@@ -397,7 +397,7 @@ private:
 
   static void apply_formatting(Gtk::CellRenderer* renderer, const sharedptr<const LayoutItem_WithFormatting>& layout_item);
 
-  typedef Gtk::VBox type_base;
+  typedef Gtk::Box type_base;
 
   //Member widgets:
   #ifdef GLOM_ENABLE_MAEMO

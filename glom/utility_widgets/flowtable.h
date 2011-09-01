@@ -65,16 +65,16 @@ protected:
 
 private:
 
-  const Gtk::HBox* get_parent_hbox(const Gtk::Widget* first) const;
-  void delete_and_forget_hbox(Gtk::HBox* hbox);
+  const Gtk::Box* get_parent_hbox(const Gtk::Widget* first) const;
+  void delete_and_forget_hbox(Gtk::Box* hbox);
 
   bool m_design_mode;
 
   //For drawing:
   Glib::RefPtr<Gdk::Window> m_refGdkWindow;
 
-  //We remember the HBoxes so we can delete them when the are no longer used.
-  typedef std::list<Gtk::HBox*> type_list_hboxes;
+  //We remember the Boxes so we can delete them when the are no longer used.
+  typedef std::list<Gtk::Box*> type_list_hboxes;
   type_list_hboxes m_list_hboxes;
 
   type_const_list_widgets m_list_first_widgets;

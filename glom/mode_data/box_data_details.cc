@@ -38,7 +38,7 @@ namespace Glom
 {
 
 Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
-: m_hbox_content(false, Utils::DEFAULT_SPACING_SMALL),
+: m_hbox_content(Gtk::ORIENTATION_HORIZONTAL, Utils::DEFAULT_SPACING_SMALL),
 #ifndef GLOM_ENABLE_MAEMO
   m_hbox_buttons(Gtk::ORIENTATION_HORIZONTAL),
   m_Button_New(Gtk::Stock::ADD),

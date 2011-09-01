@@ -36,7 +36,8 @@ namespace DataWidgetChildren
 {
 
 ComboAsRadioButtons::ComboAsRadioButtons()
-: ComboChoices()
+: Gtk::Box(Gtk::ORIENTATION_VERTICAL),
+  ComboChoices()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
@@ -297,7 +298,7 @@ bool ComboAsRadioButtons::on_button_press_event(GdkEventButton *event)
 {
   show_context_menu(event);
 
-  return Gtk::VBox::on_button_press_event(event);
+  return Gtk::Box::on_button_press_event(event);
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

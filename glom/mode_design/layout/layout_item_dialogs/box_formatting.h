@@ -36,7 +36,7 @@ namespace Glom
 class Dialog_FieldsList;
 
 class Box_Formatting
- : public Gtk::VBox,
+ : public Gtk::Box,
    public View_Composite_Glom
 {
 public:
@@ -76,29 +76,29 @@ private:
 
   void enforce_constraints();
 
-  Gtk::VBox* m_vbox_numeric_format;
+  Gtk::Box* m_vbox_numeric_format;
   Gtk::CheckButton* m_checkbox_format_use_thousands;
   Gtk::CheckButton* m_checkbox_format_use_decimal_places;
   Gtk::Entry* m_entry_format_decimal_places;
   ComboEntry_Currency* m_entry_currency_symbol;
   Gtk::CheckButton* m_checkbox_format_color_negatives;
 
-  Gtk::VBox* m_vbox_text_format;
+  Gtk::Box* m_vbox_text_format;
   Gtk::ComboBox* m_combo_format_text_horizontal_alignment;
   Gtk::CheckButton* m_checkbox_format_text_multiline;
   Gtk::Label* m_label_format_text_multiline_height;
   Gtk::SpinButton* m_spinbutton_format_text_multiline_height;
-  Gtk::HBox* m_hbox_font;
+  Gtk::Box* m_hbox_font;
   Gtk::CheckButton* m_checkbox_format_text_font;
   Gtk::FontButton* m_fontbutton;
-  Gtk::HBox* m_hbox_color_foreground;
+  Gtk::Box* m_hbox_color_foreground;
   Gtk::CheckButton* m_checkbox_format_text_color_foreground;
   Gtk::ColorButton* m_colorbutton_foreground;
-  Gtk::HBox* m_hbox_color_background;
+  Gtk::Box* m_hbox_color_background;
   Gtk::CheckButton* m_checkbox_format_text_color_background;
   Gtk::ColorButton* m_colorbutton_background;
 
-  Gtk::VBox* m_vbox_choices;
+  Gtk::Box* m_vbox_choices;
   Gtk::RadioButton* m_radiobutton_choices_custom;
   Gtk::RadioButton* m_radiobutton_choices_related;
   Gtk::CheckButton* m_checkbutton_choices_restricted;
