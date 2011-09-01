@@ -37,7 +37,7 @@ static bool parent_accepts_drops = true;
 
 
 static void
-populate_spread_table_wrappy(Egg::SpreadTable* spread_table)
+populate_spread_table_wrappy(Egg::SpreadTableDnd* spread_table)
 {
   const gchar *strings[] = {
     "These are", "some wrappy label", "texts", "of various", "lengths.",
@@ -55,7 +55,7 @@ populate_spread_table_wrappy(Egg::SpreadTable* spread_table)
     iter != children.end(); ++iter)
   {
     Gtk::Widget *child = *iter;
-    paper->remove(*child);
+    paper->remove_child(*child);
     delete child;
   }
 

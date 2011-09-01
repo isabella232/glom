@@ -1,3 +1,22 @@
+2011-09-01  Murray Cumming  <murrayc@murrayc.com>
+
+	Update EggSpreadTableDnd from libegg. 
+
+	* glom/utility_widgets/eggspreadtable/eggspreadtablednd.[h|c]:
+	Updated from libegg.
+	* glom/utility_widgets/eggspreadtablemm/eggspreadtabledndmm.[h|cc]:
+	Wrap the new API to add and remove widgets. Note the extra reference() in 
+	remove_child(), like Gtk::Container::remove().
+	* glom/utility_widgets/eggspreadtablemm/test_spreadtablednd.cc: Adapt.
+	* glom/utility_widgets/flowtable.[h|cc]: Adapt and make several corrections, 
+	for instance to really find our intermediate hbox parents.
+	However, there is still a warning (from our code) about trying to remove a 
+	hbox that has no parent. 
+	* glom/mode_data/flowtablewithfields.[h|cc]: Remove the add_before parameters,
+	always adding at the end, because we do not need the ability to insert 
+  anywhere else, and doing so required examining the children, but 
+  EggSpreadTableDnd adds internal children that we don't want to care about.
+
 2011-08-31  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Allow the user to choose row and column line widths and color.

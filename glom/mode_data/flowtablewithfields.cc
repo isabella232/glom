@@ -65,11 +65,15 @@ FlowTableWithFields::~FlowTableWithFields()
   {
     View_Composite_Glom* pViewFirst = dynamic_cast<View_Composite_Glom*>(iter->m_first);
     if(pViewFirst)
+    {
       remove_view(pViewFirst);
+    }
 
-   View_Composite_Glom* pViewSecond = dynamic_cast<View_Composite_Glom*>(iter->m_second);
+    View_Composite_Glom* pViewSecond = dynamic_cast<View_Composite_Glom*>(iter->m_second);
     if(pViewSecond)
+    {
       remove_view(pViewSecond);
+    }
   }
 }
 
@@ -90,16 +94,11 @@ void FlowTableWithFields::set_table(const Glib::ustring& table_name)
 
 void FlowTableWithFields::add_layout_item(const sharedptr<LayoutItem>& item)
 {
-  add_layout_item_at_position(item, m_list_layoutwidgets.end());
-}
-
-void FlowTableWithFields::add_layout_item_at_position(const sharedptr<LayoutItem>& item, const type_list_layoutwidgets::iterator& add_before)
-{
   //Get derived type and do the appropriate thing:
   sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
   if(field)
   {
-    add_field_at_position(field, m_table_name, add_before);
+    add_field(field, m_table_name);
 
     //Do not allow editing of auto-increment fields:
     sharedptr<const Field> field_details = field->get_full_field_details();
@@ -116,41 +115,41 @@ void FlowTableWithFields::add_layout_item_at_position(const sharedptr<LayoutItem
     sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(item);
     if(portal)
     {
-      add_layout_portal_at_position(portal, add_before);
+      add_layout_portal(portal);
     }
     else
     {
       sharedptr<LayoutItem_Notebook> notebook = sharedptr<LayoutItem_Notebook>::cast_dynamic(item);
       if(notebook)
       {
-        add_layout_notebook_at_position(notebook, add_before);
+        add_layout_notebook(notebook);
       }
       else
       {
         sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(item);
         if(group)
-          add_layout_group_at_position(group, add_before);
+          add_layout_group(group);
         else
         {
           sharedptr<LayoutItem_Button> layout_button = sharedptr<LayoutItem_Button>::cast_dynamic(item);
           if(layout_button)
-            add_button_at_position(layout_button, m_table_name, add_before);
+            add_button(layout_button, m_table_name);
           else
           {
             sharedptr<LayoutItem_Text> layout_textobject = sharedptr<LayoutItem_Text>::cast_dynamic(item);
             if(layout_textobject)
-              add_textobject_at_position(layout_textobject, m_table_name, add_before);
+              add_textobject(layout_textobject, m_table_name);
             else
             {
               sharedptr<LayoutItem_Image> layout_imageobject = sharedptr<LayoutItem_Image>::cast_dynamic(item);
               if(layout_imageobject)
-                add_imageobject_at_position(layout_imageobject, m_table_name, add_before);
+                add_imageobject(layout_imageobject, m_table_name);
               else
               {
                 sharedptr<LayoutItem_Placeholder> layout_placeholder =
                   sharedptr<LayoutItem_Placeholder>::cast_dynamic(item);
                 if(layout_placeholder)
-                  add_placeholder_at_position(layout_placeholder, m_table_name, add_before);
+                  add_placeholder(layout_placeholder, m_table_name);
               }
             }
           }
@@ -161,11 +160,6 @@ void FlowTableWithFields::add_layout_item_at_position(const sharedptr<LayoutItem
 }
 
 void FlowTableWithFields::add_layout_group(const sharedptr<LayoutGroup>& group, bool with_indent)
-{
-  add_layout_group_at_position(group, m_list_layoutwidgets.end(), with_indent);
-}
-
-void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGroup>& group, const type_list_layoutwidgets::iterator& add_before, bool with_indent)
 {
   if(!group)
     return;
@@ -234,7 +228,7 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
 
     m_sub_flow_tables.push_back(flow_table);
     flow_table->set_layout_item(group, m_table_name);
-    add_layoutwidgetbase(flow_table, add_before);
+    add_layoutwidgetbase(flow_table);
 
     //Connect signal:
     flow_table->signal_field_edited().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_edited) );
@@ -325,7 +319,7 @@ Box_Data_Calendar_Related* FlowTableWithFields::create_related_calendar(const sh
   return 0;
 }
 
-void FlowTableWithFields::add_layout_portal_at_position(const sharedptr<LayoutItem_Portal>& portal, const type_list_layoutwidgets::iterator& add_before)
+void FlowTableWithFields::add_layout_portal(const sharedptr<LayoutItem_Portal>& portal)
 {
   Box_Data_Portal* portal_box = 0;
   sharedptr<LayoutItem_CalendarPortal> calendar_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(portal);
@@ -337,13 +331,13 @@ void FlowTableWithFields::add_layout_portal_at_position(const sharedptr<LayoutIt
   if(portal_box)
   {
     add(*portal_box, true /* expand */);
-    add_layoutwidgetbase(portal_box, add_before);
+    add_layoutwidgetbase(portal_box);
   }
   else
     std::cerr << G_STRFUNC << ": No portal was created." << std::endl;
 }
 
-void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<LayoutItem_Notebook>& notebook, const type_list_layoutwidgets::iterator& add_before)
+void FlowTableWithFields::add_layout_notebook(const sharedptr<LayoutItem_Notebook>& notebook)
 {
   if(!notebook)
     return;
@@ -379,7 +373,7 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
         portal_box->show();
         notebook_widget->append_page(*portal_box, *tab_label);
 
-        add_layoutwidgetbase(portal_box, add_before);
+        add_layoutwidgetbase(portal_box);
       }
       else
       {
@@ -429,7 +423,7 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
 
         m_sub_flow_tables.push_back(flow_table);
         flow_table->set_layout_item(group, m_table_name);
-        add_layoutwidgetbase(flow_table, add_before);
+        add_layoutwidgetbase(flow_table);
 
         //Connect signal:
         flow_table->signal_field_edited().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_edited) );
@@ -443,13 +437,9 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
     }
   }
 
-  add_layoutwidgetbase(notebook_widget, add_before);
+  add_layoutwidgetbase(notebook_widget);
   //add_view(button); //So it can get the document.
-  Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
-  if(widget)
-    insert_before (*notebook_widget, *widget, true /* expand */);
-  else
-    add(*notebook_widget, true /* expand */);
+  add(*notebook_widget, true /* expand */);
 }
 
 /*
@@ -507,17 +497,12 @@ void FlowTableWithFields::add_group(const Glib::ustring& group_name, const Glib:
 
 void FlowTableWithFields::add_field(const sharedptr<LayoutItem_Field>& layoutitem_field, const Glib::ustring& table_name)
 {
-  add_field_at_position(layoutitem_field, table_name, m_list_layoutwidgets.end());
-}
-
-void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field>& layoutitem_field, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before)
-{
   Info info;
   info.m_field = layoutitem_field;
 
   //Add the entry or checkbox (handled by the DataWidget)
   DataWidget* pDataWidget = Gtk::manage(new DataWidget(layoutitem_field, table_name, get_document()) ); //TODO_Leak: Possibly leaked, according to valgrind.
-  add_layoutwidgetbase(pDataWidget, add_before);
+  add_layoutwidgetbase(pDataWidget);
   add_view(pDataWidget); //So it can get the document.
 
   info.m_second = pDataWidget;
@@ -555,11 +540,7 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
   eventbox->set_events(Gdk::ALL_EVENTS_MASK);
   eventbox->show_all();
 
-  Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
-  if(widget)
-    insert_before(*eventbox, *(info.m_second), *widget, true);
-  else
-    add(*eventbox, *(info.m_second), true);
+  add(*eventbox, *(info.m_second), true);
 
   info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  ); //TODO:  Is it a good idea to bind the LayoutItem? sigc::bind() probably stores a copy at this point.
 
@@ -574,7 +555,7 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
 }
 
 
-void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Button>& layoutitem_button, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before)
+void FlowTableWithFields::add_button(const sharedptr<LayoutItem_Button>& layoutitem_button, const Glib::ustring& table_name)
 {
   //Add the widget
   ButtonGlom* button = Gtk::manage(new ButtonGlom());
@@ -587,7 +568,7 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
 
   button->show();
 
-  add_layoutwidgetbase(button, add_before);
+  add_layoutwidgetbase(button);
   //add_view(button); //So it can get the document.
 
   const FieldFormatting::HorizontalAlignment alignment =
@@ -610,16 +591,12 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
     expand = true;
   }
 
-  Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
-  if(widget)
-    insert_before(*widget_to_add, *widget, expand);
-  else
-    add(*widget_to_add, expand);
+  add(*widget_to_add, expand);
 
   apply_formatting(*button, layoutitem_button);
 }
 
-void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name , const type_list_layoutwidgets::iterator& add_before)
+void FlowTableWithFields::add_textobject(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name)
 {
   //Add the widget:
 
@@ -638,16 +615,12 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
 
   apply_formatting(*label, layoutitem_text);
 
-  add_layoutwidgetbase(label, add_before);
+  add_layoutwidgetbase(label);
 
   const Glib::ustring title = layoutitem_text->get_title();
   if(title.empty())
   {
-    Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
-    if(widget)
-      insert_before(*alignment_label, *widget, true /* expand */);
-    else
-      add(*alignment_label, true /* expand */);
+    add(*alignment_label, true /* expand */);
   }
   else
   {
@@ -659,17 +632,13 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
     title_label->set_layout_item(layoutitem_text, table_name);
     title_label->show();
     alignment_title->add(*title_label);
-    add_layoutwidgetbase(title_label, add_before);
+    add_layoutwidgetbase(title_label);
 
-    Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
-    if(widget)
-      insert_before (*alignment_title, *alignment_label, *widget, true /* expand */);
-    else
-      add(*alignment_title, *alignment_label, true /* expand */);
+    add(*alignment_title, *alignment_label, true /* expand */);
   }
 }
 
-void FlowTableWithFields::add_placeholder_at_position(const sharedptr<LayoutItem_Placeholder>& /* layoutitem_placeholder */, const Glib::ustring& /* table_name */, const type_list_layoutwidgets::iterator& add_before)
+void FlowTableWithFields::add_placeholder(const sharedptr<LayoutItem_Placeholder>& /* layoutitem_placeholder */, const Glib::ustring& /* table_name */)
 {
   //Delete any existing placeholder (there can be only one):
   delete m_placeholder;
@@ -685,15 +654,11 @@ void FlowTableWithFields::add_placeholder_at_position(const sharedptr<LayoutItem
 
   m_placeholder->add(*preview);
 
-  m_list_layoutwidgets.insert(add_before, preview);
-  Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
-  if(widget)
-    insert_before(*m_placeholder, *widget, false /* expand */);
-  else
-    add(*m_placeholder, false);
+  m_list_layoutwidgets.push_back(preview);
+  add(*m_placeholder, false);
 }
 
-void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem_Image>& layoutitem_image, const Glib::ustring& table_name , const type_list_layoutwidgets::iterator& add_before)
+void FlowTableWithFields::add_imageobject(const sharedptr<LayoutItem_Image>& layoutitem_image, const Glib::ustring& table_name)
 {
   //Add the widget:
   ImageGlom* image = Gtk::manage(new ImageGlom());
@@ -703,17 +668,13 @@ void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem
   image->set_layout_item(layoutitem_image, table_name);
   image->show();
 
-  add_layoutwidgetbase(image, add_before);
+  add_layoutwidgetbase(image);
   //add_view(button); //So it can get the document.
 
   const Glib::ustring title = layoutitem_image->get_title();
   if(title.empty())
   {
-    Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
-    if(widget)
-      insert_before(*image, *widget, true /* expand */);
-    else
-      add(*image, true /* expand */);
+    add(*image, true /* expand */);
   }
   else
   {
@@ -724,11 +685,7 @@ void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem
     Gtk::Label* title_label = Gtk::manage(new Gtk::Label(title));
     title_label->show();
     alignment_title->add(*title_label);
-    Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
-    if(widget)
-      insert_before(*alignment_title, *image, *widget, true /* expand */);
-    else
-      add(*alignment_title, *image, true /* expand */);
+    add(*alignment_title, *image, true /* expand */);
   }
 }
 
@@ -1141,12 +1098,7 @@ void FlowTableWithFields::set_design_mode(bool value)
 
 void FlowTableWithFields::add_layoutwidgetbase(LayoutWidgetBase* layout_widget)
 {
-  add_layoutwidgetbase(layout_widget, m_list_layoutwidgets.end());
-}
-
-void FlowTableWithFields::add_layoutwidgetbase(LayoutWidgetBase* layout_widget, const type_list_layoutwidgets::iterator& add_before)
-{
-  m_list_layoutwidgets.insert(add_before, layout_widget);
+  m_list_layoutwidgets.push_back(layout_widget);
 
   //Handle layout_changed signal:
 #ifndef GLOM_ENABLE_CLIENT_ONLY

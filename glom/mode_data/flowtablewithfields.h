@@ -228,18 +228,14 @@ private:
   typedef std::list< LayoutWidgetBase* > type_list_layoutwidgets;
   type_list_layoutwidgets m_list_layoutwidgets;
 
-  void add_field_at_position(const sharedptr<LayoutItem_Field>& layoutitem_field, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before);
-  void add_button_at_position(const sharedptr<LayoutItem_Button>& layoutitem_button, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before);
-  void add_textobject_at_position(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before);
-  void add_imageobject_at_position(const sharedptr<LayoutItem_Image>& layoutitem_image, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before);
-  void add_placeholder_at_position(const sharedptr<LayoutItem_Placeholder>& layoutitem_image, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before);
+  void add_button(const sharedptr<LayoutItem_Button>& layoutitem_button, const Glib::ustring& table_name);
+  void add_textobject(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name);
+  void add_imageobject(const sharedptr<LayoutItem_Image>& layoutitem_image, const Glib::ustring& table_name);
+  void add_placeholder(const sharedptr<LayoutItem_Placeholder>& layoutitem_image, const Glib::ustring& table_name);
 
   void add_layoutwidgetbase(LayoutWidgetBase* layout_widget);
-  void add_layoutwidgetbase(LayoutWidgetBase* layout_widget, const type_list_layoutwidgets::iterator& add_before);
-  void add_layout_item_at_position(const sharedptr<LayoutItem>& item, const type_list_layoutwidgets::iterator& add_before);
-  void add_layout_group_at_position(const sharedptr<LayoutGroup>& group, const type_list_layoutwidgets::iterator& add_before, bool with_indent = true);
-  void add_layout_notebook_at_position(const sharedptr<LayoutItem_Notebook>& notebook, const type_list_layoutwidgets::iterator& add_before);
-  void add_layout_portal_at_position(const sharedptr<LayoutItem_Portal>& portal, const type_list_layoutwidgets::iterator& add_before);
+  void add_layout_notebook(const sharedptr<LayoutItem_Notebook>& notebook);
+  void add_layout_portal(const sharedptr<LayoutItem_Portal>& portal);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 

@@ -238,6 +238,36 @@ SpreadTableDnd::SpreadTableDnd(Gtk::Orientation orientation, guint lines)
 {
 }
 
+void SpreadTableDnd::insert_child(Gtk::Widget& child, int index)
+{
+  egg_spread_table_dnd_insert_child(gobj(), child.gobj(), index);
+}
+
+void SpreadTableDnd::remove_child(Gtk::Widget& child)
+{
+  //This is based on Gtk::Container::remove()
+  //We don't need to do this often, because specialized remove() functions are unusual:
+  //
+  //If this is a managed widget,
+  //then do an extra ref so that it will
+  //not be destroyed when adding to another container
+  //This should leave it in much the same state as when it was instantiated,
+  //before being added to the first container.
+  if(child.is_managed_())
+    child.reference();
+    
+  egg_spread_table_dnd_remove_child(gobj(), child.gobj());
+}
+
+void SpreadTableDnd::set_steal_events(bool steal_events)
+{
+  egg_spread_table_dnd_set_steal_events(gobj(), steal_events);
+}
+
+bool SpreadTableDnd::get_steal_events() const
+{
+  return egg_spread_table_dnd_get_steal_events(const_cast<EggSpreadTableDnd*>(gobj()));
+} 
 
 bool SpreadTableDnd::on_widget_drop_possible(Gtk::Widget* widget)
 {

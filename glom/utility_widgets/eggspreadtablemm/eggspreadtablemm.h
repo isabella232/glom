@@ -97,7 +97,8 @@ public:
 
   //TODO: Is the default packing appropriate (and like the default for a Box::pack_start())?
 
-  void insert_child(Gtk::Widget& widget, int index);
+  //This is virtual to avoid us needing to override append_child() too in EggSpreadTableDnd
+  virtual void insert_child(Gtk::Widget& widget, int index);
 
 
   guint get_child_line(const Gtk::Widget& child, int size) const;

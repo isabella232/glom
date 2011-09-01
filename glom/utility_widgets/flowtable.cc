@@ -43,41 +43,33 @@ FlowTable::~FlowTable()
   }
 }
 
-Gtk::HBox* FlowTable::get_parent_hbox(Gtk::Widget* first)
+const Gtk::HBox* FlowTable::get_parent_hbox(const Gtk::Widget* first) const
 {
-  typedef std::vector<Widget*> type_children;
-  type_children children = get_children();
-  for(type_children::iterator iter = children.begin(); iter != children.end(); ++iter)
+  const type_const_list_widgets::const_iterator iter_find = 
+    std::find(m_list_first_widgets.begin(), m_list_first_widgets.end(), first);
+  if(iter_find == m_list_first_widgets.end())
   {
-    Gtk::Widget* widget = *iter;
-    if(!widget)
+    std::cerr << G_STRFUNC << ": first was not a first widget. first=" << first << std::endl;
+    return 0; //It has no HBox parent because it is not even a first widget.
+  }
+  
+  for(type_list_hboxes::const_iterator iter = m_list_hboxes.begin(); iter != m_list_hboxes.end(); ++iter)
+  {
+    const Gtk::HBox* hbox = *iter;
+    if(!hbox)
       continue;
 
-    if(widget == first) //It must be a single item.
-      return 0; //It has no HBox parent.
-    else
-    {
-      Gtk::HBox* hbox = dynamic_cast<Gtk::HBox*>(widget);
-      if(hbox) //The first and second widgets are inside an HBox
-      {
-        //Check that it is one of our special HBoxes,
-        //though this check should not be neccesary:
-        const type_list_hboxes::const_iterator iter_boxes =
-          std::find(m_list_hboxes.begin(), m_list_hboxes.end(), hbox);
-        if(iter_boxes != m_list_hboxes.end())
-        {
-          const type_children box_children = hbox->get_children();
-          if(!box_children.empty())
-          {
-            const Gtk::Widget* child_widget = box_children[0]; //TODO: Is this definitely the left-most one?
-            if(child_widget == first)
-              return hbox;
-          }
-        }
-      }
-    }
-  }
+    //Check if it has the widget as one of its children:
+    typedef std::vector<const Gtk::Widget*> type_children;
+    const type_children box_children = hbox->get_children();
+    if(box_children.empty())
+      continue;
 
+    const type_children::const_iterator iter_find = 
+      std::find(box_children.begin(), box_children.end(), first);
+    if(iter_find != box_children.end())
+      return hbox;
+  }
   return 0;
 }
 
@@ -94,26 +86,33 @@ void FlowTable::delete_and_forget_hbox(Gtk::HBox* hbox)
     children = hbox->get_children();
   }
 
-  if(hbox->get_parent() == this)
+  //This check does not work because EggSpreadTableDnD adds an intermediate GtkEventBox:
+  //if(hbox->get_parent() == this)
+  
+  //Check that it is in our list of hboxes:
+  const type_list_hboxes::iterator iter = std::find(
+    m_list_hboxes.begin(), m_list_hboxes.end(), hbox);
+  if(iter == m_list_hboxes.end())
   {
-    Egg::SpreadTable::remove(*hbox);
+    std::cerr << G_STRFUNC << ": hbox=" << hbox << " is not in our list of hboxes." << std::endl;
+    return;
+  }
+  
+  //Check that it has a parent,
+  //as a sanity check:
+  Gtk::Widget* parent= hbox->get_parent();
+  if(parent)
+  {
+    Egg::SpreadTableDnd::remove_child(*hbox);
   }
   else
   {
-    std::cerr << G_STRFUNC << ": hbox is not a direct child." << std::endl;
+    std::cerr << G_STRFUNC << ": hbox=" << hbox << " has no parent. Not removing from SpreadTableDnd" << std::endl;
   }
 
   //Delete and forget it:
-  for(type_list_hboxes::iterator iter = m_list_hboxes.begin(); iter != m_list_hboxes.end(); ++iter)
-  {
-    Gtk::HBox* this_hbox = *iter;
-    if(hbox == this_hbox)
-    {
-      delete hbox; //TODO: This causes a warning during gtk_container_remove(), though we have already removed it: sys:1: Warning: g_object_ref: assertion `object->ref_count > 0' failed
-      m_list_hboxes.erase(iter);
-      return;
-    }
-  }
+  delete hbox; //TODO: This causes a warning during gtk_container_remove(), though we have already removed it: sys:1: Warning: g_object_ref: assertion `object->ref_count > 0' failed
+  m_list_hboxes.erase(iter);
 }
 
 void FlowTable::set_design_mode(bool value)
@@ -145,12 +144,17 @@ void FlowTable::insert(Gtk::Widget* first, Gtk::Widget* second, int index, bool 
     hbox->show();
 
     hbox->set_halign(Gtk::ALIGN_FILL);
-    insert_child(*hbox, index);
+    Egg::SpreadTableDnd::insert_child(*hbox, index);
+    //std::cout << "DEBUG: inserted hbox=" << hbox << " for first=" << first << std::endl;
+
+    m_list_first_widgets.push_back(first);
   }
   else if(first)
   {
     first->set_halign(expand ? Gtk::ALIGN_FILL : Gtk::ALIGN_START);
-    append_child(*first);
+    Egg::SpreadTableDnd::append_child(*first);
+    //std::cout << "DEBUG: inserted first=" << first << std::endl;
+    m_list_first_widgets.push_back(first);
   }
   else
   {
@@ -158,78 +162,52 @@ void FlowTable::insert(Gtk::Widget* first, Gtk::Widget* second, int index, bool 
   }
 }
 
-int FlowTable::get_child_index(const Gtk::Widget& first) const
-{
-  int index = 0;
-
-  typedef std::vector<const Widget*> type_children;
-  const type_children children = get_children();
-  for(type_children::const_iterator iter = children.begin(); iter != children.end(); ++iter)
-  {
-    const Gtk::Widget* widget = *iter;
-    if(!widget)
-      continue;
-
-    if(widget == &first) //It must be a single item.
-      break;
-    else
-    {
-      const Gtk::HBox* hbox = dynamic_cast<const Gtk::HBox*>(widget);
-      if(hbox) //The first and second widgets are inside an HBox
-      {
-        const type_children box_children = hbox->get_children();
-        if(!box_children.empty())
-        {
-          const Gtk::Widget* child_widget = box_children[0]; //TODO: Is this definitely the left-most one?
-          if(child_widget == &first)
-            break;
-        }
-      }
-    }
-
-    ++index;
-  }
-
-  return index;
-}
-
-void FlowTable::insert_before(Gtk::Widget& first, Gtk::Widget& before, bool expand)
-{
-  const int index = get_child_index(before);
-  insert(&first, 0 /* second */, index - 1, expand);
-}
-
-void FlowTable::insert_before(Gtk::Widget& first, Gtk::Widget& second, Gtk::Widget& before, bool expand_second)
-{
-  const int index = get_child_index(before);
-  insert(&first, &second, index - 1, expand_second);
-}
-
 void FlowTable::remove_all()
 {
-  typedef std::vector<Widget*> type_children;
-  type_children children = get_children();
-  while(!children.empty())
+  for(type_const_list_widgets::const_iterator iter = m_list_first_widgets.begin(); iter != m_list_first_widgets.end(); ++iter)
   {
-    Gtk::Widget* widget = children[0];
-    remove(*widget);
-    children = get_children();
+    Gtk::Widget* first_widget = const_cast<Gtk::Widget*>(*iter);
+    
+    if(first_widget)
+      remove(*first_widget);
   }
+  m_list_first_widgets.clear();
+
+  //We can't use get_children() because EggSpreadTableDnd does not allow that,
+  //because it handles children differently via its specific API.
+  /*
+  typedef std::vector<Widget*> type_children;
+  const type_children children = get_children();
+  for(type_children::iterator iter = children.begin(); iter != children.end(); ++iter)
+  {
+    Gtk::Widget* widget = *iter;
+    remove(*widget);
+  }
+  */
 }
 
 void FlowTable::remove(Gtk::Widget& first)
 {
+  //std::cout << G_STRFUNC << ": debug: remove() first=" << &first << std::endl;
+  
   //Handle widgets that were added to an HBox:
-  Gtk::HBox* parent = get_parent_hbox(&first);
+  Gtk::HBox* parent = const_cast<Gtk::HBox*>(get_parent_hbox(&first));
   if(parent)
   {
+    //std::cout << "  debug: hbox=" << parent << std::endl;
+ 
     delete_and_forget_hbox(parent);
     return;
   }
 
-  Egg::SpreadTable::remove(first);
+  Egg::SpreadTableDnd::remove_child(first);
 }
 
+FlowTable::type_const_list_widgets FlowTable::get_first_child_widgets() const
+{
+  return m_list_first_widgets;
+}
+  
 bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& column) const
 {
   //Initialize output parameter:
@@ -238,46 +216,40 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
   if(get_lines() == 0)
     return false;
 
-  typedef std::vector<const Widget*> type_children;
-  const type_children children = get_children();
-  for(type_children::const_iterator iter = children.begin(); iter != children.end(); ++iter)
-  {
-    const Gtk::Widget* widget = *iter;
-    if(!widget)
-      continue;
+  //Discover actual child widget that was added to the EggSpreadTable,
+  //so we can use it again to call EggSpreadTable::get_child_line():
+  const Gtk::Widget* child = 0;
+      
+  //Check that it is really a child widget:
+  const type_const_list_widgets::const_iterator iter_find = 
+    std::find(m_list_first_widgets.begin(), m_list_first_widgets.end(), &first);
+  if(iter_find == m_list_first_widgets.end())
+    return false; //It is not a first widget.
+    
+  child = &first;
+  
+  //Check if it was added to an HBox:
+  const Gtk::HBox* hbox = get_parent_hbox(child);
+  if(hbox)
+    child = hbox;
+    
+  if(!child)
+    return false;
 
-    //Get the widget that EggSpreadTable thinks of as the child:
-    const Gtk::Widget* child = 0;
+  int width_min = 0;
+  int width_natural = 0;
+  child->get_preferred_width(width_min, width_natural);
+  //std::cout << G_STRFUNC << ": Calling get_child_line() with child=" << child << ", for first=" << &first << std::endl;
+  
+  //Get the internal parent GtkEventBox, if any,
+  //though we need a derived get_child_line() to do this automatically:
+  const Gtk::Widget* parent = child->get_parent();
+  if(dynamic_cast<const Gtk::EventBox*>(parent))
+     child = parent;
+     
+  column = get_child_line(*child, width_natural);
 
-    if(widget == &first) //It must be a single item.
-      child = widget;
-    else
-    {
-      const Gtk::HBox* hbox = dynamic_cast<const Gtk::HBox*>(widget);
-      if(hbox) //The first and second widgets are inside an HBox
-      {
-        const type_children box_children = hbox->get_children();
-        if(!box_children.empty())
-        {
-          const Gtk::Widget* child_widget = box_children[0]; //TODO: Is this definitely the left-most one?
-          if(child_widget == &first)
-            child = hbox;
-        }
-      }
-
-      if(child)
-      {
-        int width_min = 0;
-        int width_natural = 0;
-        child->get_preferred_width(width_min, width_natural);
-        column = get_child_line(*child, width_natural);
-
-        return true;
-      }
-    }
-  }
-
-  return false;
+  return true;
 }
 
 } //namespace Glom

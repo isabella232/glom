@@ -93,6 +93,11 @@ public:
   SpreadTableDnd();
   explicit SpreadTableDnd(Gtk::Orientation orientation, guint lines);
 
+  void insert_child(Gtk::Widget& child, int index);
+  void remove_child(Gtk::Widget& child);
+  void set_steal_events(bool steal_events);
+  bool get_steal_events() const;
+
 
   /**
    * @par Prototype:

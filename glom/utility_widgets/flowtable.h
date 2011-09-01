@@ -38,9 +38,7 @@ public:
 
   virtual void add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second = false);
   virtual void add(Gtk::Widget& first, bool expand = false); //override
-  void insert_before(Gtk::Widget& first, Gtk::Widget& second, Gtk::Widget& before, bool expand_second);
-  void insert_before(Gtk::Widget& first, Gtk::Widget& before, bool expand);
-
+ 
   /** Show extra UI that is useful in RAD tools:
    */
   virtual void set_design_mode(bool value = true);
@@ -58,10 +56,16 @@ protected:
 
   void insert(Gtk::Widget* first, Gtk::Widget* second, int index, bool expand);
 
-private:
-  int get_child_index(const Gtk::Widget& first) const;
+  typedef std::list<const Gtk::Widget*> type_const_list_widgets;
 
-  Gtk::HBox* get_parent_hbox(Gtk::Widget* first);
+  /** This returns all first widgets added with FlowTable::add().
+   * Gtk::Container::get_children() instead returns internal widgets.
+   */
+  type_const_list_widgets get_first_child_widgets() const;
+
+private:
+
+  const Gtk::HBox* get_parent_hbox(const Gtk::Widget* first) const;
   void delete_and_forget_hbox(Gtk::HBox* hbox);
 
   bool m_design_mode;
@@ -72,6 +76,8 @@ private:
   //We remember the HBoxes so we can delete them when the are no longer used.
   typedef std::list<Gtk::HBox*> type_list_hboxes;
   type_list_hboxes m_list_hboxes;
+
+  type_const_list_widgets m_list_first_widgets;
 };
 
 } //namespace Glom

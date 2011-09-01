@@ -125,6 +125,7 @@ glom/utility_widgets/dialog_image_load_progress.cc
 glom/utility_widgets/dialog_image_save_progress.cc
 glom/mode_data/datawidget/entry.cc
 glom/utility_widgets/eggspreadtable/eggspreadtable.c
+glom/utility_widgets/eggspreadtable/eggspreadtablednd.c
 glom/utility_widgets/filechooserdialog_saveextras.cc
 glom/utility_widgets/imageglom.cc
 glom/utility_widgets/layouttoolbar.cc
