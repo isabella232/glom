@@ -81,7 +81,7 @@
                         <property name="top_attach">2</property>
                         <property name="bottom_attach">3</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options">GTK_EXPAND</property>
+                        <property name="y_options"></property>
                       </packing>
                     </child>
                     <child>
@@ -128,7 +128,7 @@
                         <property name="top_attach">1</property>
                         <property name="bottom_attach">2</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options">GTK_EXPAND</property>
+                        <property name="y_options"></property>
                       </packing>
                     </child>
                   </object>
@@ -264,6 +264,7 @@
                                 <property name="receives_default">False</property>
                                 <property name="use_action_appearance">False</property>
                                 <property name="use_underline">True</property>
+                                <property name="xalign">0</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
@@ -290,8 +291,7 @@
                                     <property name="right_attach">2</property>
                                     <property name="top_attach">1</property>
                                     <property name="bottom_attach">2</property>
-                                    <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options">GTK_FILL</property>
+                                    <property name="y_options"></property>
                                   </packing>
                                 </child>
                                 <child>
@@ -302,8 +302,7 @@
                                   <packing>
                                     <property name="left_attach">1</property>
                                     <property name="right_attach">2</property>
-                                    <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options">GTK_FILL</property>
+                                    <property name="y_options"></property>
                                   </packing>
                                 </child>
                                 <child>
@@ -340,7 +339,7 @@
                                     <property name="top_attach">1</property>
                                     <property name="bottom_attach">2</property>
                                     <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options">GTK_EXPAND</property>
+                                    <property name="y_options"></property>
                                   </packing>
                                 </child>
                               </object>
@@ -362,6 +361,7 @@
                         <property name="receives_default">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
+                        <property name="xalign">0</property>
                         <property name="draw_indicator">True</property>
                       </object>
                     </child>
@@ -445,6 +445,7 @@
                         <property name="receives_default">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
+                        <property name="xalign">0</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">radiobutton_userentry</property>
                       </object>
