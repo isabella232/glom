@@ -453,6 +453,7 @@
                           <object class="GtkAlignment" id="alignment40">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
                             <property name="left_padding">12</property>
                             <child>
                               <object class="GtkTable" id="table8">
@@ -489,8 +490,8 @@
                                         <property name="use_stock">True</property>
                                       </object>
                                       <packing>
-                                        <property name="expand">True</property>
-                                        <property name="fill">True</property>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
                                         <property name="position">1</property>
                                       </packing>
                                     </child>
@@ -500,7 +501,6 @@
                                     <property name="right_attach">2</property>
                                     <property name="top_attach">2</property>
                                     <property name="bottom_attach">3</property>
-                                    <property name="x_options">GTK_FILL</property>
                                     <property name="y_options"></property>
                                   </packing>
                                 </child>
@@ -524,9 +524,10 @@
                                     <property name="xalign">1</property>
                                     <property name="label" translatable="yes">Relationship:</property>
                                     <property name="justify">right</property>
+                                    <property name="single_line_mode">True</property>
                                   </object>
                                   <packing>
-                                    <property name="x_options"></property>
+                                    <property name="x_options">GTK_FILL</property>
                                     <property name="y_options"></property>
                                   </packing>
                                 </child>
@@ -537,11 +538,12 @@
                                     <property name="xalign">1</property>
                                     <property name="label" translatable="yes">Field:</property>
                                     <property name="justify">right</property>
+                                    <property name="single_line_mode">True</property>
                                   </object>
                                   <packing>
                                     <property name="top_attach">1</property>
                                     <property name="bottom_attach">2</property>
-                                    <property name="x_options"></property>
+                                    <property name="x_options">GTK_FILL</property>
                                     <property name="y_options"></property>
                                   </packing>
                                 </child>
@@ -552,11 +554,12 @@
                                     <property name="xalign">1</property>
                                     <property name="label" translatable="yes">Also show:</property>
                                     <property name="justify">right</property>
+                                    <property name="single_line_mode">True</property>
                                   </object>
                                   <packing>
                                     <property name="top_attach">2</property>
                                     <property name="bottom_attach">3</property>
-                                    <property name="x_options"></property>
+                                    <property name="x_options">GTK_FILL</property>
                                     <property name="y_options"></property>
                                   </packing>
                                 </child>
@@ -626,6 +629,7 @@
                           <object class="GtkAlignment" id="alignment39">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
                             <property name="left_padding">12</property>
                             <child>
                               <object class="GtkVBox" id="adddel_choices">

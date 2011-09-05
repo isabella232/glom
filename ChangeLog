@@ -1,3 +1,17 @@
+2011-09-05  Murray Cumming  <murrayc@murrayc.com>
+
+	Glade files: Alignment corrections.
+
+	* ui/developer/box_formatting.glade:
+	* ui/developer/dialog_choose_field.glade:
+	* ui/developer/window_groups.glade:
+	* ui/operator/dialog_import_csv.glade: Use fill=true 
+	for the packing of labels in GtkTable, so their 
+	alignment is actually used. For instance, this makes 
+	labels line up to the left or right.
+	* ui/developer/dialog_user.glade: Also use a : at the 
+	end of labels, as in other dialogs.
+
 2011-09-02  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix expansions in glade files.

@@ -122,6 +122,8 @@
                       <object class="GtkAlignment" id="alignment2">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="xalign">0</property>
+                        <property name="yalign">0</property>
                         <property name="top_padding">6</property>
                         <property name="left_padding">12</property>
                         <child>
@@ -229,6 +231,8 @@
                       <object class="GtkAlignment" id="alignment4">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="xalign">0</property>
+                        <property name="yalign">0</property>
                         <property name="yscale">0</property>
                         <child>
                           <object class="GtkLabel" id="import_csv_encoding_info">
