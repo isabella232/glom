@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-31 11:23+0000\n"
-"PO-Revision-Date: 2011-09-01 10:06+0200\n"
+"POT-Creation-Date: 2011-09-05 16:25+0000\n"
+"PO-Revision-Date: 2011-09-06 11:47+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -32,13 +32,13 @@ msgid ""
 msgstr ""
 "Espere mientras Glom prepara su sistema para publicar a través de la red."
 
-#: ../glom/application.cc:286 ../glom/bakery/app_withdoc_gtk.cc:248
+#: ../glom/application.cc:286 ../glom/bakery/app_withdoc_gtk.cc:250
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:194
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:58
 msgid "_File"
 msgstr "_Archivo"
 
-#: ../glom/application.cc:287 ../glom/bakery/app_withdoc_gtk.cc:249
+#: ../glom/application.cc:287 ../glom/bakery/app_withdoc_gtk.cc:251
 msgid "_Recent Files"
 msgstr "Archivos _recientes"
 
@@ -392,16 +392,16 @@ msgid "There was an error while saving the example file."
 msgstr "Ocurrió un error al grabar el archivo de ejemplo."
 
 #: ../glom/application.cc:2479 ../glom/application.cc:2484
-#: ../glom/bakery/app_withdoc_gtk.cc:469
+#: ../glom/bakery/app_withdoc_gtk.cc:471
 msgid "Save Document"
 msgstr "Guardando el documento"
 
 #. Warn the user:
-#: ../glom/application.cc:2572 ../glom/bakery/app_withdoc_gtk.cc:518
+#: ../glom/application.cc:2572 ../glom/bakery/app_withdoc_gtk.cc:520
 msgid "Read-only File."
 msgstr "Archivo de sólo lectura."
 
-#: ../glom/application.cc:2572 ../glom/bakery/app_withdoc_gtk.cc:518
+#: ../glom/application.cc:2572 ../glom/bakery/app_withdoc_gtk.cc:520
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -410,11 +410,11 @@ msgstr ""
 "permisos de acceso."
 
 #. Warn the user:
-#: ../glom/application.cc:2586 ../glom/bakery/app_withdoc_gtk.cc:532
+#: ../glom/application.cc:2586 ../glom/bakery/app_withdoc_gtk.cc:534
 msgid "Read-only Directory."
 msgstr "Directorio de sólo lectura."
 
-#: ../glom/application.cc:2586 ../glom/bakery/app_withdoc_gtk.cc:532
+#: ../glom/application.cc:2586 ../glom/bakery/app_withdoc_gtk.cc:534
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -489,7 +489,7 @@ msgstr ""
 "Ocurrió un error al restaurar el respaldo. No se pudo encontrar el archivo "
 "de glom."
 
-#: ../glom/application.cc:3055 ../glom/bakery/app_withdoc_gtk.cc:379
+#: ../glom/application.cc:3055 ../glom/bakery/app_withdoc_gtk.cc:381
 msgid " (read-only)"
 msgstr " (sólo-lectura)"
 
@@ -587,7 +587,7 @@ msgstr ""
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc:49
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:94
 #: ../glom/navigation/box_tables.cc:136
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:105
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:109
 msgid "Title"
 msgstr "Título"
 
@@ -937,12 +937,12 @@ msgstr "No se encontró ningún registro"
 msgid "New Find"
 msgstr "Nueva búsqueda"
 
-#: ../glom/bakery/app_withdoc_gtk.cc:312
+#: ../glom/bakery/app_withdoc_gtk.cc:314
 #: ../ui/developer/window_field_definition_edit.glade.h:8
 msgid "_Edit"
 msgstr "_Editar"
 
-#: ../glom/bakery/app_withdoc_gtk.cc:416
+#: ../glom/bakery/app_withdoc_gtk.cc:418
 msgid "Open Document"
 msgstr "Abrir documento"
 
@@ -1282,7 +1282,6 @@ msgstr ""
 #: ../glom/utility_widgets/layouttoolbar.cc:53
 #: ../glom/utility_widgets/layouttoolbar.cc:63
 #: ../glom/utility_widgets/notebooklabelglom.cc:76
-#: ../ui/developer/dialog_user.glade.h:3
 msgid "Group"
 msgstr "Agrupar"
 
@@ -1695,7 +1694,7 @@ msgstr "Tabla no definida"
 #. Don't add ContextLayout in client only mode because it would never
 #. be sensitive anyway
 #: ../glom/mode_data/box_data_calendar_related.cc:495
-#: ../glom/mode_data/db_adddel/db_adddel.cc:271
+#: ../glom/mode_data/db_adddel/db_adddel.cc:272
 #: ../ui/developer/window_data_layout.glade.h:27
 msgid "Layout"
 msgstr "Distribución"
@@ -1828,53 +1827,53 @@ msgstr ""
 "No existe ningún registro con ese valor. Por consiguiente la navegación "
 "hasta el registro relacionado no es posible."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1205
+#: ../glom/mode_data/flowtablewithfields.cc:1157
 #: ../glom/utility_widgets/notebooklabelglom.cc:75
 #: ../glom/utility_widgets/notebooklabelglom.cc:115
 msgid "New Group"
 msgstr "Grupo nuevo"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1211
+#: ../glom/mode_data/flowtablewithfields.cc:1163
 #: ../glom/mode_design/layout/dialog_layout_details.cc:733
 msgid "notebook"
 msgstr "cuaderno"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1217
+#: ../glom/mode_data/flowtablewithfields.cc:1169
 msgid "tab1"
 msgstr "tab1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1220
+#: ../glom/mode_data/flowtablewithfields.cc:1172
 msgid "Tab One"
 msgstr "Pestaña uno"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1233
+#: ../glom/mode_data/flowtablewithfields.cc:1185
 msgid "button"
 msgstr "botón"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1234
+#: ../glom/mode_data/flowtablewithfields.cc:1186
 #: ../glom/mode_design/layout/dialog_layout_details.cc:659
 msgid "New Button"
 msgstr "Botón nuevo"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1240
+#: ../glom/mode_data/flowtablewithfields.cc:1192
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:415
 msgid "text"
 msgstr "texto"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1241
+#: ../glom/mode_data/flowtablewithfields.cc:1193
 msgid "New Text"
 msgstr "Texto nuevo"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1408
+#: ../glom/mode_data/flowtablewithfields.cc:1360
 msgid "Delete whole group \"%1\"?"
 msgstr "¿Eliminar el grupo «%1» entero?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1414
+#: ../glom/mode_data/flowtablewithfields.cc:1366
 msgid "Delete whole group?"
 msgstr "¿Eliminar el grupo entero?"
 
@@ -2619,11 +2618,11 @@ msgstr "Exportar"
 msgid "Import"
 msgstr "Importar"
 
-#: ../glom/utility_widgets/adddel/adddel.cc:159
+#: ../glom/utility_widgets/adddel/adddel.cc:160
 msgid "This item already exists. Please try again."
 msgstr "Este elemento ya existe. Inténtelo de nuevo."
 
-#: ../glom/utility_widgets/adddel/adddel.cc:166
+#: ../glom/utility_widgets/adddel/adddel.cc:167
 msgid "Duplicate"
 msgstr "Duplicar"
 
@@ -2657,27 +2656,27 @@ msgstr ""
 "Introduzca un criterio de búsqueda para identificar registros en la otra "
 "tabla, para elegir un ID para este campo."
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:81
+#: ../glom/mode_data/db_adddel/db_adddel.cc:82
 msgid "Table Content"
 msgstr "Contenido de la tabla"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-#: ../glom/mode_data/db_adddel/db_adddel.cc:640
+#: ../glom/mode_data/db_adddel/db_adddel.cc:641
 msgid "ExampleEg"
 msgstr "Ejemplo"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2189
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2190
 msgid "Right-click to layout, to specify the related fields."
 msgstr ""
 "Pulse con el botón derecho en la disposición, para especificar los campos "
 "relacionados."
 
 #. Tell user that they can't do that:
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2411
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2412
 msgid "Extra Related Records Not Possible"
 msgstr "No son posibles adicionales registros relacionados"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2412
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2413
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
@@ -2713,12 +2712,12 @@ msgstr "Error al guardar"
 msgid "Error saving image"
 msgstr "Error al guardar la imagen"
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:78
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:82
 msgid "New Database"
 msgstr "Nueva base de datos"
 
 #. For instance, an extra hint when saving from an example, saying that a new file must be saved.
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:95
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:99
 msgid ""
 "Please choose a human-readable title for the new database. You can change "
 "this later in the database properties. It may contain any characters."
@@ -2727,21 +2726,21 @@ msgstr ""
 "valores más tarde en las propiedades de la base de datos. Puede contener "
 "cualquier carácter."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:101
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:105
 #: ../ui/developer/window_field_definition_edit.glade.h:14
 #: ../ui/developer/window_report_layout.glade.h:12
 msgid "_Title:"
 msgstr "Tít_ulo:"
 
 #. Use titles that show the distinction between PostgreSQL and SQLite:
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:117
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:121
 msgid ""
 "Create PostgreSQL database in its own folder, to be hosted by this computer."
 msgstr ""
 "Crear la base de datos PostgreSQL en su propia carpeta, para hospedarla en "
 "este equipo."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:121
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:125
 msgid ""
 "Create database on an external PostgreSQL database server, to be specified "
 "in the next step."
@@ -2749,14 +2748,14 @@ msgstr ""
 "Crear la base de datos en un servidor de base de datos PostgreSQL externo, "
 "para ser especificado en el siguiente paso."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:127
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:131
 msgid ""
 "Create SQLite database in its own folder, to be hosted by this computer."
 msgstr ""
 "Crear la base de datos SQlite en su propia carpeta, para hospedarla en este "
 "equipo."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:128
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:132
 msgid ""
 "SQLite does not support authentication or remote access but is suitable for "
 "embedded devices."
@@ -2765,7 +2764,7 @@ msgstr ""
 "dispositivos empotrados."
 
 #. TODO: Hide this because it's the only radio button, so it's not a choice:
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:138
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:142
 msgid ""
 "Create database in its own folder, to be hosted by this computer, using "
 "SQLite"
@@ -2775,12 +2774,12 @@ msgstr ""
 
 #. Only PostgreSQL:
 #. Use titles that don't mention the boring name of the backend:
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:147
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:151
 msgid "Create database in its own folder, to be hosted by this computer."
 msgstr ""
 "Crear la base de datos en su propia carpeta, para hospedarla en este equipo."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:151
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:155
 msgid ""
 "Create database on an external database server, to be specified in the next "
 "step."
@@ -2918,7 +2917,6 @@ msgid "Host"
 msgstr "Host"
 
 #: ../ui/operator/dialog_connection.glade.h:5
-#: ../ui/developer/dialog_user.glade.h:4
 msgid "Password"
 msgstr "Contraseña"
 
@@ -3334,7 +3332,6 @@ msgid "Color:"
 msgstr "Color:"
 
 #: ../ui/developer/dialog_line.glade.h:2
-#| msgid "Width:"
 msgid "Line Width:"
 msgstr "Anchura de la línea:"
 
@@ -3484,8 +3481,24 @@ msgid "<b>User</b>"
 msgstr "<b>Usuario</b>"
 
 #: ../ui/developer/dialog_user.glade.h:2
-msgid "Confirm Password"
-msgstr "Confirme la contraseña"
+#| msgid "_Confirm Password:"
+msgid "Confirm Password:"
+msgstr "Confirmar contraseña:"
+
+#: ../ui/developer/dialog_user.glade.h:3
+#| msgid "Group"
+msgid "Group:"
+msgstr "Grupo:"
+
+#: ../ui/developer/dialog_user.glade.h:4
+#| msgid "_Password:"
+msgid "Password:"
+msgstr "Contraseña:"
+
+#: ../ui/developer/dialog_user.glade.h:6
+#| msgid "_User:"
+msgid "User:"
+msgstr "Usuario:"
 
 #: ../ui/developer/window_button_script.glade.h:1
 #: ../ui/developer/window_data_layout.glade.h:7
@@ -3515,7 +3528,6 @@ msgid "<b>Dates</b>"
 msgstr "<b>Fechas</b>"
 
 #: ../ui/developer/window_data_layout.glade.h:3
-#| msgid "<b>Fields</b>"
 msgid "<b>Lines</b>"
 msgstr "<b>Líneas</b>"
 
@@ -4012,6 +4024,9 @@ msgstr "<b>Grupo</b>"
 #: ../ui/developer/window_users.glade.h:2
 msgid "<b>Users</b>"
 msgstr "<b>Usuarios</b>"
+
+#~ msgid "Confirm Password"
+#~ msgstr "Confirme la contraseña"
 
 #~ msgid "<b>Label:</b>"
 #~ msgstr "<b>Etiqueta:</b>"
