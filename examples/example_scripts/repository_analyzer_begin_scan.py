@@ -1233,6 +1233,7 @@ def get_package_data_list(out_licenses_map, package_names_list_restrict_to):
     # Tell apt what sources.list to use.
     # (See "apt-config dump" for the list of all config keys.)
     apt_pkg.Config.set("Dir::Etc::sourcelist", temp_sourceslist_path)
+    apt_pkg.Config.set("Dir::Etc::sourceparts", temp_sourceslist_path) #Do we need both? Set this to ""?
     apt_pkg.Config.set("Dir::Cache::archives", config_dir_cache_archives)
     apt_pkg.Config.set("Dir::State", config_dir_state)
     apt_pkg.Config.set("Dir::State::Lists", config_dir_state_lists)
