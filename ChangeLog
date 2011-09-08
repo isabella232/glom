@@ -1,3 +1,10 @@
+2011-09-08  Murray Cumming  <murrayc@murrayc.com>
+
+	startup: Check that the gi.repository python module is available.
+
+	* glom/main.cc: Actually call check_gir_is_available_with_warning() and do 
+	that before checking for Gda inside it.
+
 2011-09-05  Murray Cumming  <murrayc@murrayc.com>
 
 	Glade files: Alignment corrections.

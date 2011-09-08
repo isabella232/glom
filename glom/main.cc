@@ -615,10 +615,13 @@ main(int argc, char* argv[])
       return -1;
 #endif //GLOM_ENABLE_POSTGRESQL
 
-    if(!Glom::check_pyglom_is_available_with_warning())
+    if(!Glom::check_gir_is_available_with_warning())
       return -1;
 
     if(!Glom::check_pygda_is_available_with_warning())
+      return -1;
+
+    if(!Glom::check_pyglom_is_available_with_warning())
       return -1;
 
 
