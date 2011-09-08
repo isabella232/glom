@@ -222,7 +222,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
       //Add a button for related record navigation:
       m_button_go_to_details = Gtk::manage(new Gtk::Button(Gtk::Stock::OPEN));
       m_button_go_to_details->set_tooltip_text(_("Open the record identified by this ID, in the other table."));
-      hbox_parent->pack_start(*m_button_go_to_details);
+      hbox_parent->pack_start(*m_button_go_to_details, Gtk::PACK_SHRINK);
       m_button_go_to_details->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_open_details));
 
       //Add a button to make it easier to choose an ID for this field.
@@ -232,7 +232,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
       {
         Gtk::Button* button_select = Gtk::manage(new Gtk::Button(Gtk::Stock::FIND));
         button_select->set_tooltip_text(_("Enter search criteria to identify records in the other table, to choose an ID for this field."));
-        hbox_parent->pack_start(*button_select);
+        hbox_parent->pack_start(*button_select, Gtk::PACK_SHRINK);
         button_select->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_select_id));
       }
     }
