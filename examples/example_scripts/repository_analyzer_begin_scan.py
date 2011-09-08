@@ -997,7 +997,7 @@ def boolean_for_sql(val):
         return "FALSE"
 
 def quote_for_sql(text):
-    return "'" + text + "'"
+    return "E'" + escape_text_for_sql(text) + "'" #E is a Postgresql extension meaning escaped text.
 
 
 
@@ -1224,8 +1224,6 @@ def get_package_data_list(out_licenses_map, package_names_list_restrict_to):
     temp_sourceslist_path = "/tmp/repository_analyzer_sources.list"
     output = open(temp_sourceslist_path, 'w')
     sources_list = "deb http://repository.maemo.org/ fremantle/sdk free non-free\ndeb-src http://repository.maemo.org/ fremantle/sdk free"
-    #sources_list = "deb http://repository.maemo.org/ fremantle/sdk free non-free\ndeb-src http://repository.maemo.org/ fremantle/sdk free\ndeb http://repository.maemo.org/ fremantle/tools free non-free\ndeb-src http://repository.maemo.org/ fremantle/tools free"
-    #sources_list = "deb http://repository.maemo.org/ fremantle/sdk free non-free\ndeb-src http://repository.maemo.org/ fremantle/sdk free\ndeb http://repository.maemo.org/ fremantle/tools free non-free\ndeb-src http://repository.maemo.org/ fremantle/tools free\ndeb http://repository.maemo.org/extras-devel/ fremantle free non-free\ndeb-src http://repository.maemo.org/extras-devel/ fremantle free non-free"
 
     output.write(sources_list)
     output.close()
@@ -1339,8 +1337,9 @@ def execute_sql_non_select_query(query_text):
     #We use encode() here because, when running inside Glom, gda.Command() somehow expects an ascii string and tries to convert the unicode string to ascii, causing exceptions because the conversion does not default to 'replace'.
     #TODO: Find out why it acts differently inside Glom. This is not a problem when running normally as a standalone script.
     command = query_text.encode('ascii', 'replace')
+    
     return record.connection.execute_non_select_command(command)
-
+    
 def execute_sql_select_query(query_text):
 
     global do_sql
@@ -1419,7 +1418,7 @@ def get_record_exists_already(table_name, field_name, sql_field_value):
     return False
 
 def get_license_id_of_last_package_scan(package_name):
-    sql_query = "SELECT package_scans.license_id FROM package_scans WHERE package_scans.package_name = " + quote_for_sql(escape_text_for_sql(package_name)) + " ORDER BY package_scans.license_id DESC LIMIT 1"
+    sql_query = "SELECT package_scans.license_id FROM package_scans WHERE package_scans.package_name = " + quote_for_sql(package_name) + " ORDER BY package_scans.license_id DESC LIMIT 1"
     datamodel = execute_sql_select_query(sql_query)
 
     if(datamodel and (datamodel.get_n_rows() > 0) and (datamodel.get_n_columns() > 0)):
@@ -1437,7 +1436,7 @@ def get_license_id_of_last_package_scan(package_name):
     return None
 
 def get_version_of_last_package_scan(package_name):
-    sql_query = "SELECT package_scans.version FROM package_scans WHERE package_scans.package_name = " + quote_for_sql(escape_text_for_sql(package_name)) + " ORDER BY package_scans.license_id DESC LIMIT 1"
+    sql_query = "SELECT package_scans.version FROM package_scans WHERE package_scans.package_name = " + quote_for_sql(package_name) + " ORDER BY package_scans.license_id DESC LIMIT 1"
     datamodel = execute_sql_select_query(sql_query)
 
     if(datamodel and (datamodel.get_n_rows() > 0) and (datamodel.get_n_columns() > 0)):
@@ -1604,7 +1603,7 @@ def main():
 
         # This will look like this:
         # 'id','description',opensource,'license_text',false,false,false,'creditrequired'
-        license_row = u"%d,%s,false,%s,false,false,false,%s" % (license_id, quote_for_sql(license_description), quote_for_sql(escape_text_for_sql(license_text)),  empty_text)
+        license_row = u"%d,%s,false,%s,false,false,false,%s" % (license_id, quote_for_sql(license_description), quote_for_sql(license_text), empty_text)
         license_id += 1
 
         #Add the row to the database:
@@ -1625,7 +1624,7 @@ def main():
     package_scan_id = get_next_automatic_id_number("package_scans", "package_scan_id")
     dictPackageNamesToScanIDs = {}
     for package_name in packages_dict.keys():
-        #print_debug( "used: ", package_data.name )
+        print_debug( "used: %s" % package_name )
 
 
         license_id = "NULL" #empty integer value.
@@ -1642,12 +1641,14 @@ def main():
 
         #Add the package details if they are not already in the database (from a previous scan):
         if(not get_record_exists_already("packages", "name", quote_for_sql(package_data.name))):
-            package_row = u"%s,%s" % ( quote_for_sql(package_data.name), quote_for_sql(escape_text_for_sql(package_data.description)) )
+            package_row = u"%s,%s" % ( quote_for_sql(package_data.name), quote_for_sql(package_data.description) )
 
             #This will look like this:
             # 'name','description'
             query = u"INSERT INTO \"packages\" (\"name\",\"description\") VALUES (%s)" % package_row
             execute_sql_non_select_query(query)
+        else:
+            print_debug("package exists already.")
 
         # Add the package scan, which refers to the package:
         #
@@ -1670,6 +1671,8 @@ def main():
             #Add the row to the database:
             query = u"INSERT INTO \"package_scans\" (\"package_scan_id\",\"package_name\",\"scan_id\",\"comments\",\"license_id\",\"version\",\"parent_package\",\"tarball_uri\",\"diff_uri\",\"licensed_simplified\") VALUES (%s)" % package_scan_row
             execute_sql_non_select_query(query)
+        else:
+            print_debug("Not inserting package_scans")
 
             dictPackageNamesToScanIDs[package_data.name] = package_scan_id #Save for later, when we do the dependencies.
             package_scan_id += 1
