@@ -25,18 +25,6 @@
 
 #include <glom/bakery/app_withdoc_gtk.h>
 
-//TODO: Remove this when maemomm's gtkmm has been updated. 7th September 2009.
-#ifdef GLOM_ENABLE_MAEMO
-//Because earlier versions of gtkmm/enums.h did not include this, so
-//GTKMM_MAEMO_EXTENSIONS_ENABLED was not defined,
-//leading to a compiler error in hildonmm/button.h
-#include <gtkmmconfig.h>
-#include <gtkmm/enums.h>
-
-#include <hildonmm/app-menu.h>
-#include <glom/navigation/maemo/pickerbutton_table.h>
-#endif //GLOM_ENABLE_MAEMO
-
 #include <glom/frame_glom.h>
 
 
@@ -75,11 +63,7 @@ public:
   //virtual void statusbar_clear();
 
   /// Get the UIManager so we can merge new menus in.
-  #ifndef GLOM_ENABLE_MAEMO
   Glib::RefPtr<Gtk::UIManager> get_ui_manager();
-  #else
-  Hildon::AppMenu* get_maemo_appmenu();
-  #endif //GLOM_ENABLE_MAEMO
 
   /** Changes the mode to Data mode, as if the user had selected the Data Mode menu item.
    */
@@ -154,15 +138,11 @@ private:
   virtual void on_document_close(); //override.
   virtual void update_window_title(); //override.
 
-#ifndef GLOM_ENABLE_MAEMO
   virtual void init_menus_file(); //override.
-#endif //GLOM_ENABLE_MAEMO
 
   bool offer_new_or_existing();
 
-#ifndef GLOM_ENABLE_MAEMO
   void on_menu_help_contents();
-#endif //GLOM_ENABLE_MAEMO
 
   /** Check that the file's hosting mode is supported by this build and
    * tell the user if necessary.
@@ -242,13 +222,6 @@ private:
   Glib::RefPtr<Gtk::RadioAction> m_action_menu_developer_developer, m_action_menu_developer_operator;
   Glib::RefPtr<Gtk::ToggleAction> m_action_show_layout_toolbar;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-
-#ifdef GLOM_ENABLE_MAEMO
-  Hildon::AppMenu m_maemo_appmenu;
-  PickerButton_Table m_appmenu_button_table;
-
-  void on_appmenu_button_table_value_changed();
-#endif //GLOM_ENABLE_MAEMO
 
   Glib::RefPtr<Gtk::ToggleAction> m_toggleaction_network_shared;
   sigc::connection m_connection_toggleaction_network_shared;

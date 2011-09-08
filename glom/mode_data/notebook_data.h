@@ -25,10 +25,6 @@
 #include <glom/mode_data/box_data_list.h>
 #include <glom/mode_data/box_data_details.h>
 
-#ifdef GLOM_ENABLE_MAEMO
-#include <glom/window_boxholder.h>
-#endif
-
 namespace Glom
 {
 
@@ -91,9 +87,6 @@ protected:
   virtual void on_switch_page_handler(Gtk::Widget* pPage, guint uiPageNumber);
 
 private:
-  #ifdef GLOM_ENABLE_MAEMO
-  void on_window_maemo_details_closed();
-  #endif
 
   bool on_idle_show_details(const Gnome::Gda::Value& primary_key_value);
 
@@ -101,10 +94,6 @@ protected:
   //Member widgets:
   Box_Data_List m_Box_List;
   Box_Data_Details m_Box_Details;
-
-  #ifdef GLOM_ENABLE_MAEMO //Details are in a separate window on Maemo.
-  Window_BoxHolder* m_window_maemo_details;
-  #endif
 
   guint m_iPage_Details, m_iPage_List;
   Glib::ustring m_table_name;

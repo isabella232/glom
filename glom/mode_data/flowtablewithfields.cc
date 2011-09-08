@@ -184,9 +184,6 @@ void FlowTableWithFields::add_layout_group(const sharedptr<LayoutGroup>& group, 
     if(!group->get_title().empty() && with_indent) //Don't indent if it has no title, to allow use of groups just for positioning.
     {
       alignment->set_padding(Glom::Utils::DEFAULT_SPACING_SMALL, 0, Glom::Utils::DEFAULT_SPACING_SMALL, 0);
-      #ifdef GLOM_ENABLE_MAEMO
-      std::cerr << "DEBUG: Unexpected group with title causing extra spacing on Maemo." << std::endl;
-      #endif
     }
 
     alignment->show();

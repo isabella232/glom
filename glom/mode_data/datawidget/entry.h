@@ -28,10 +28,6 @@
 #include <glom/utility_widgets/layoutwidgetfield.h>
 #include <gtkmm/builder.h>
 
-#ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/entry.h>
-#endif
-
 namespace Glom
 {
 
@@ -42,11 +38,7 @@ namespace DataWidgetChildren
 
 class Entry
 :
-#ifdef GLOM_ENABLE_MAEMO
-  public Hildon::Entry,
-#else
   public Gtk::Entry,
-#endif
   public LayoutWidgetField
 {
 public:

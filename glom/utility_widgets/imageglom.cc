@@ -763,7 +763,6 @@ void ImageGlom::on_menupopup_activate_select_file()
     
   Application* pApp = get_application();
 
-  //TODO: Use Hildon::FileChooser for Maemo.
   Gtk::FileChooserDialog dialog(_("Choose Image"), Gtk::FILE_CHOOSER_ACTION_OPEN);
   if(pApp)
     dialog.set_transient_for(*pApp);

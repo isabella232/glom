@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "config.h" // For GLOM_ENABLE_MAEMO
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include "box_data.h"
 #include <libglom/data_structure/glomconversions.h>
@@ -33,9 +33,6 @@
 #include <iostream>
 #include <glibmm/i18n.h>
 
-#ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/note.h>
-#endif
 
 namespace Glom
 {
@@ -149,13 +146,9 @@ void Box_Data::on_Button_Find()
   {
     const Glib::ustring message = _("You have not entered any find criteria. Try entering information in the fields.");
 
-#ifdef GLOM_ENABLE_MAEMO
-    Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *get_app_window(), message);
-#else
     Gtk::MessageDialog dialog(Utils::bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
     dialog.set_secondary_text(message);
     dialog.set_transient_for(*get_app_window());
-#endif
     dialog.run();
   }
   else
@@ -193,13 +186,8 @@ bool Box_Data::confirm_discard_unstored_data() const
   {
     const Glib::ustring message = _("This data cannot be stored in the database because you have not provided a primary key.\nDo you really want to discard this data?");
     //Ask user to confirm loss of data:
-#ifdef GLOM_ENABLE_MAEMO
-    //Hildon::Note dialog(Hildon::NOTE_TYPE_CONFIRMATION, *get_app_window(), message);
-    Hildon::Note dialog(Hildon::NOTE_TYPE_CONFIRMATION, message);
-#else
     Gtk::MessageDialog dialog(Utils::bold_message(_("No primary key value")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL );
     dialog.set_secondary_text(message);
-#endif
     //TODO: It needs a const. I wonder if it should. murrayc. dialog.set_transient_for(*get_app_window());
     const int iButton = dialog.run();
 
@@ -348,13 +336,9 @@ void Box_Data::fill_layout_group_field_info(const sharedptr<LayoutGroup>& group,
 void Box_Data::print_layout()
 {
   const Glib::ustring message = "Sorry, this feature has not been implemented yet.";
-#ifdef GLOM_ENABLE_MAEMO
-  Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *get_app_window(), message);
-#else
   Gtk::MessageDialog dialog("<b>Not implemented</b>", true);
   dialog.set_secondary_text(message);
   dialog.set_transient_for(*get_app_window());
-#endif
   dialog.run();
 }
 

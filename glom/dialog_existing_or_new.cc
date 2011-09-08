@@ -30,10 +30,6 @@
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/stock.h>
 
-#ifdef GLOM_ENABLE_MAEMO
-#include <hildon-fmmm/file-chooser-dialog.h>
-#endif // GLOM_ENABLE_MAEMO
-
 #ifdef G_OS_WIN32
 # include <glib/gwin32.h>
 #else
@@ -261,8 +257,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 
 #endif //!GLOM_ENABLE_CLIENT_ONLY
 
-  //Make sure the first item is visible,
-  //which is not always the case on Maemo.
+  //Make sure the first item is visible:
   m_existing_view->scroll_to_row(
     Gtk::TreeModel::Path(m_iter_existing_other) );
 
@@ -819,14 +814,10 @@ void Dialog_ExistingOrNew::on_select_clicked()
 
   if(action == OPEN_URI && iter == m_iter_existing_other)
   {
-    #ifdef GLOM_ENABLE_MAEMO
-    Hildon::FileChooserDialog dialog(Gtk::FILE_CHOOSER_ACTION_OPEN);
-    #else
     Gtk::FileChooserDialog dialog(*this, "Open Glom File");
     dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
     dialog.set_default_response(Gtk::RESPONSE_OK);
-    #endif // GLOM_ENABLE_MAEMO
 
     Glib::RefPtr<Gtk::FileFilter> filter = Gtk::FileFilter::create();
     filter->add_mime_type("application/x-glom");

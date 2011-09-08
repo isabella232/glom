@@ -28,11 +28,6 @@
 #include <libglom/document/document.h>
 #include <glom/base_db_table_data.h>
 
-#ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/pannable-area.h>
-#include <hildonmm/touch-selector.h>
-#endif //GLOM_ENABLE_MAEMO
-
 #include <vector>
 #include <map>
 
@@ -310,17 +305,11 @@ private:
   //Gtk::TreeModel::iterator get_next_available_row_with_add_if_necessary();
 
   //Signal handlers:
-  #ifdef GLOM_ENABLE_MAEMO
-  void treeviewcolumn_on_cell_data(const Gtk::TreeModel::iterator& iter, int model_column_index, int data_model_column_index);
-  void on_maemo_touchselector_changed(int column);
-  #else
   void treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index, int data_model_column_index);
   void on_treeview_cell_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& path);
-  #endif //GLOM_ENABLE_MAEMO
 
 
   //TODO: Remove virtuals after checking that there are no method overrides:
-  #ifndef GLOM_ENABLE_MAEMO
   void on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index, int data_model_column_index);
   void on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index, int data_model_column_index);
   void on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& row, guint model_column_index);
@@ -336,31 +325,18 @@ protected:
   void on_MenuPopup_activate_Add();
   void on_MenuPopup_activate_Delete();
 private:
-  #endif //GLOM_ENABLE_MAEMO
 
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_MenuPopup_activate_layout();
 #endif
 
-  #ifndef GLOM_ENABLE_MAEMO
   bool on_treeview_columnheader_button_press_event(GdkEventButton* event);
   void on_treeview_column_clicked(int model_column_index);
   void on_treeview_column_resized(int model_column_index, DbTreeViewColumnGlom* view_column);
   void on_idle_row_edit();
   void on_cell_button_clicked(const Gtk::TreeModel::Path& path);
   void on_cell_layout_button_clicked(const Gtk::TreeModel::Path& path, int model_column_index);
-  #endif //GLOM_ENABLE_MAEMO
-
-  #ifdef GLOM_ENABLE_MAEMO
-  void on_touch_selector_changed(int model_column_index);
-  #endif
-
-  #ifdef GLOM_ENABLE_MAEMO
-  /// Get the single column, adding it if necessary.
-  Glib::RefPtr<Hildon::TouchSelectorColumn> touch_selector_get_column();
-  Glib::RefPtr<const Hildon::TouchSelectorColumn> touch_selector_get_column() const;
-  #endif
 
 #ifdef GLOM_ENABLE_CLIENT_ONLY
   // Don't name it on_style_changed, otherwise we would override a virtual
@@ -400,12 +376,8 @@ private:
   typedef Gtk::Box type_base;
 
   //Member widgets:
-  #ifdef GLOM_ENABLE_MAEMO
-  Hildon::TouchSelector m_TreeView;
-  #else
   Gtk::ScrolledWindow m_ScrolledWindow;
   Gtk::TreeView m_TreeView;
-  #endif
 
   Glib::RefPtr<DbTreeModel> m_refListStore;
 
@@ -422,13 +394,11 @@ protected:
   Glib::ustring m_open_button_title; //Allow us to change "Open" to "Select".
 
 private:
-  #ifndef GLOM_ENABLE_MAEMO
   //TODO: Avoid repeating these in so many widgets:
   Gtk::Menu* m_pMenuPopup;
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
   Glib::RefPtr<Gtk::UIManager> m_refUIManager;
   Glib::RefPtr<Gtk::Action> m_refContextEdit, m_refContextAdd, m_refContextDelete;
-  #endif //GLOM_ENABLE_MAEMO
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gtk::Action> m_refContextLayout;
@@ -460,9 +430,7 @@ private:
   bool m_allow_view;
   bool m_allow_view_details;
 
-  #ifndef GLOM_ENABLE_MAEMO
   Gtk::TreeViewColumn* m_treeviewcolumn_button;
-  #endif
 
   //Signals:
   type_signal_user_requested_edit m_signal_user_requested_edit;

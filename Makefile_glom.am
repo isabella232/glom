@@ -390,15 +390,9 @@ glom_source_files +=							\
 	glom/utility_widgets/sidebar.h
 endif
 
-if !GLOM_ENABLE_MAEMO
 glom_source_files +=							\
 	glom/navigation/box_tables.cc					\
 	glom/navigation/box_tables.h
-else
-glom_source_files +=							\
-	glom/navigation/maemo/pickerbutton_table.cc			\
-	glom/navigation/maemo/pickerbutton_table.h
-endif
 
 glom_glom_SOURCES =							\
 	glom/main.cc							\
@@ -407,9 +401,7 @@ glom_glom_SOURCES =							\
 glom_all_libs = $(win_resfile) \
 	glom/libglom/libglom-$(GLOM_ABI_VERSION).la $(libglom_all_libs) \
 	$(GLOM_LIBS) $(INTLLIBS)
-if !GLOM_ENABLE_MAEMO
 glom_all_libs += -lgettextpo
-endif
 
 glom_glom_LDADD = $(glom_all_libs)
 

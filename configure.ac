@@ -46,21 +46,19 @@ AC_SUBST([GLOM_ABI_VERSION_UNDERLINED], ["AS_TR_SH([$GLOM_ABI_VERSION])"])
 AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION_UNDERLINED], ["$GLOM_ABI_VERSION_UNDERLINED"],
                    [Define to the Glom ABI version with '.' replaced by '_'.])
 
-# Only check for libgettextpo on non-Maemo platforms.
-AS_IF([test "x$glom_enable_maemo" != xyes],
-      [
-        # libgettext-po changed its API, changing the error handler struct
-        # from po_error_handler to po_xerror_handler:
-        AC_CACHE_CHECK([for po_xerror_handler], [glom_cv_has_po_xerror_handler],
-               [AC_CHECK_MEMBER([struct po_xerror_handler.xerror],
-                                [glom_cv_has_po_xerror_handler=yes],
-                                [glom_cv_has_po_xerror_handler=no],
-                                [#include <gettext-po.h>])])
 
-        AS_IF([test "x$glom_cv_has_po_xerror_handler" = xyes],
-          [AC_DEFINE([HAVE_GETTEXTPO_XERROR], [1],
-          [Define if libgettextpo provides the new po_xerror_handler struct.])])
-])
+# libgettext-po changed its API, changing the error handler struct
+# from po_error_handler to po_xerror_handler:
+AC_CACHE_CHECK([for po_xerror_handler], [glom_cv_has_po_xerror_handler],
+       [AC_CHECK_MEMBER([struct po_xerror_handler.xerror],
+                        [glom_cv_has_po_xerror_handler=yes],
+                        [glom_cv_has_po_xerror_handler=no],
+                        [#include <gettext-po.h>])])
+
+AS_IF([test "x$glom_cv_has_po_xerror_handler" = xyes],
+  [AC_DEFINE([HAVE_GETTEXTPO_XERROR], [1],
+  [Define if libgettextpo provides the new po_xerror_handler struct.])])
+
 
 # i18n
 IT_PROG_INTLTOOL([0.35])
@@ -87,37 +85,18 @@ AC_ARG_ENABLE([glom-ui],
               [glom_enable_ui=yes])
 AM_CONDITIONAL([GLOM_ENABLE_UI], [test "x$glom_enable_ui" = xyes])
 
-# In most cases, you'll want all these options for the maemo build:
-#   ./configure --prefix=/usr --enable-postgesql --enable-sqlite --enable-maemo;make all install
-# And you might need to do:
-#   export PYTHON=python2.5
-#   export CXXFLAGS="-fno-exceptions"
-AC_ARG_ENABLE([maemo],
-              [AS_HELP_STRING([--enable-maemo],
-                              [build with support for the Maemo platform
-                               (implies --enable-client-only)])],
-              [glom_enable_maemo=$enableval],
-              [glom_enable_maemo=no])
 
 AC_ARG_ENABLE([client-only],
               [AS_HELP_STRING([--enable-client-only],
                               [build without developer mode and self-hosting])],
               [glom_enable_client_only=$enableval],
-              [glom_enable_client_only=$glom_enable_maemo])
+              [glom_enable_client_only=no])
 
 
-# Bail out if --enable-maemo and --disable-client-only are used together.
-AS_IF([test "x$glom_enable_maemo" = xyes && test "x$glom_enable_client_only" != xyes],
-      [AC_MSG_ERROR([[Building with --enable-maemo also requires --enable-client-only.]])])
-
-AM_CONDITIONAL([GLOM_ENABLE_MAEMO], [test "x$glom_enable_maemo" = xyes])
 AM_CONDITIONAL([GLOM_ENABLE_CLIENT_ONLY], [test "x$glom_enable_client_only" = xyes])
 
-AS_IF([test "x$glom_enable_maemo" = xyes],
-      [AC_DEFINE([GLOM_ENABLE_MAEMO], [1],
-                 [Define to enable support for the Maemo platform.])])
 AS_IF([test "x$glom_enable_client_only" = xyes],
-      [AC_DEFINE([GLOM_ENABLE_CLIENT_ONLY], [1],
+         AC_DEFINE([GLOM_ENABLE_CLIENT_ONLY], [1],
                  [Define to disable support for self-hosting and developer mode.])])
 
 AC_ARG_ENABLE([sqlite],
@@ -147,12 +126,6 @@ AS_IF([test "x$glom_enable_postgresql" = xyes],
       [AC_DEFINE([GLOM_ENABLE_POSTGRESQL], [1],
                  [Whether to enable support for PostgreSQL databases.])])
 
-AC_ARG_ENABLE([maemo-launcher],
-              [AS_HELP_STRING([--enable-maemo-launcher],
-                              [build with maemo-launcher support])],
-              [glom_maemo_launcher=$enableval],
-              [glom_maemo_launcher=no])
-
 # Libraries used by libglom:
 REQUIRED_LIBGLOM_LIBS='gthread-2.0 giomm-2.4 libxml++-2.6 >= 2.23.1 pygobject-2.0 >= 2.28.0 libgdamm-5.0 >= 4.99.3.1 libgda-postgres-5.0'
 
@@ -173,12 +146,6 @@ AS_IF([test "x$glom_enable_client_only" != xyes],
 
 AS_IF([test "x$glom_enable_sqlite" = xyes],
       [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS libgda-sqlite-5.0"])
-AS_IF([test "x$glom_enable_maemo" = xyes],
-      [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS hildonmm hildon-fmmm libosso osso-af-settings"
-      MM_PKG_CONFIG_SUBST([OSSO_SERVICEDIR], [--variable=dbusservicedir osso-af-settings])
-      MM_PKG_CONFIG_SUBST([OSSO_DESKTOPDIR], [--variable=desktopentrydir osso-af-settings])])
-AS_IF([test "x$glom_maemo_launcher" = xyes],
-      [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS maemo-launcher-app"])
 
 #TODO: Remove this check, because we checked again later anyway,
 #because we add REQUIRED_LIBGLOM_LIBS to REQUIRED_GLOM_LIBS?

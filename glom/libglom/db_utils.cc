@@ -746,13 +746,9 @@ void handle_error(const std::exception& ex)
   std::cerr << "Internal Error (handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
 
  //TODO_Moved:
-#ifdef GLOM_ENABLE_MAEMO
-  //Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, ex.what());
-#else
   //Gtk::MessageDialog dialog(Utils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
   //dialog.set_secondary_text(ex.what());
   //TODO: dialog.set_transient_for(*get_application());
-#endif
   //dialog.run();
 }
 

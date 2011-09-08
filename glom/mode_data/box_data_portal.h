@@ -26,12 +26,6 @@
 #include "box_data_manyrecords.h"
 #include <glom/utility_widgets/layoutwidgetbase.h>
 
-#ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/button.h>
-//#include <glom/mode_data/box_data_details.h>
-#include <glom/window_boxholder.h>
-#endif //GLOM_ENABLE_MAEMO
-
 
 namespace Glom
 {
@@ -120,21 +114,6 @@ protected:
   Gnome::Gda::Value m_key_value;
     
   type_signal_portal_record_changed m_signal_portal_record_changed;
-  
-private:
-  #ifdef GLOM_ENABLE_MAEMO
-  void on_realize();
-  void on_unrealize();
-  void on_maemo_appmenubutton_add();
-  void on_window_maemo_details_closed();
-  
-  //Each related-records portal adds its own Add Something button 
-  //to the application's AppMenu when the portal is visible.
-  Hildon::Button m_maemo_appmenubutton_add;
-  
-  Window_BoxHolder* m_window_maemo_details;
-  Box_Data_Details* m_box_maemo_details;
-  #endif //GLOM_ENABLE_MAEMO
 };
 
 } //namespace Glom

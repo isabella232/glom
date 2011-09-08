@@ -30,9 +30,7 @@
 #include <libglom/document/bakery/view/view_composite.h>
 #include <libglom/document/document.h>
 
-#ifndef GLOM_ENABLE_MAEMO
 #include "navigation/box_tables.h"
-#endif
 
 #include "mode_data/notebook_data.h"
 #include "mode_find/notebook_find.h"
@@ -92,10 +90,8 @@ public:
   void on_menu_file_print();
 
   void on_menu_Edit_Find();
-
-  //TODO: Actually put this in the menu for non-maemo too? #ifdef GLOM_ENABLE_MAEMO
+  
   void on_menu_add_record();
-  //#endif
 
   void on_menu_report_selected(const Glib::ustring& report_name);
 
@@ -265,11 +261,9 @@ private:
 
   PlaceHolder* m_pBox_Mode; //Contains e.g. design mode notebook.
 
-#ifndef GLOM_ENABLE_MAEMO
   //Navigation:
   Box_Tables* m_pBox_Tables;
   Window_BoxHolder* m_pDialog_Tables;
-#endif //GLOM_ENABLE_MAEMO
 
   Notebook_Data m_Notebook_Data;
 
@@ -277,10 +271,6 @@ private:
   Gtk::Entry* m_pEntry_QuickFind;
   Gtk::Button* m_pButton_QuickFind;
   Notebook_Find m_Notebook_Find;
-
-  #ifdef GLOM_ENABLE_MAEMO
-  Hildon::StackableWindow m_maemo_window_find;
-  #endif
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Developer:

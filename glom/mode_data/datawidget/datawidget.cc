@@ -36,10 +36,6 @@
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
 
-#ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/button.h>
-#endif //GLOM_ENABLE_MAEMO
-
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -103,7 +99,6 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     m_label.set_alignment(0);
     m_label.show();
   }
-  // Use hildon widgets for date and time on maemo
   else
   {
     //The GNOME HIG says that labels should have ":" at the end:
@@ -215,11 +210,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     if(glom_type == Field::TYPE_DATE)
     {
       //Let the user choose a date from a calendar dialog:
-      #ifndef GLOM_ENABLE_MAEMO
       Gtk::Button* button_date = Gtk::manage(new Gtk::Button(_("..."))); //TODO: A better label/icon for "Choose Date".
-      #else
-      Gtk::Button* button_date = Gtk::manage(new Hildon::Button(Gtk::Hildon::SIZE_FINGER_HEIGHT, Hildon::BUTTON_ARRANGEMENT_HORIZONTAL, _("..."), ""));
-      #endif
       button_date->set_tooltip_text(_("Choose a date from an on-screen calendar."));
       button_date->show();
       hbox_parent->pack_start(*button_date, Gtk::PACK_SHRINK);
@@ -229,11 +220,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     if((field_used_in_relationship_to_one || field_is_related_primary_key) && hbox_parent)
     {
       //Add a button for related record navigation:
-      #ifndef GLOM_ENABLE_MAEMO
       m_button_go_to_details = Gtk::manage(new Gtk::Button(Gtk::Stock::OPEN));
-      #else
-      m_button_go_to_details = Gtk::manage(new Hildon::Button(Gtk::Hildon::SIZE_FINGER_HEIGHT, Hildon::BUTTON_ARRANGEMENT_HORIZONTAL, _("Open"), ""));
-      #endif
       m_button_go_to_details->set_tooltip_text(_("Open the record identified by this ID, in the other table."));
       hbox_parent->pack_start(*m_button_go_to_details);
       m_button_go_to_details->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_open_details));
@@ -243,12 +230,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
       //can generally not be edited via another table's layout.
       if(field_used_in_relationship_to_one)
       {
-        #ifndef GLOM_ENABLE_MAEMO
         Gtk::Button* button_select = Gtk::manage(new Gtk::Button(Gtk::Stock::FIND));
-        #else
-        Gtk::Button* button_select = Gtk::manage(new Hildon::Button(Gtk::Hildon::SIZE_FINGER_HEIGHT,
-           Hildon::BUTTON_ARRANGEMENT_HORIZONTAL, _("Find"), ""));
-        #endif
         button_select->set_tooltip_text(_("Enter search criteria to identify records in the other table, to choose an ID for this field."));
         hbox_parent->pack_start(*button_select);
         button_select->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_select_id));
@@ -362,7 +344,6 @@ void DataWidget::set_child_size_by_field(const sharedptr<const LayoutItem_Field>
     int height = -1; //auto.
     if((glom_type == Field::TYPE_TEXT) && (field->get_formatting_used().get_text_format_multiline()))
     {
-      #ifndef GLOM_ENABLE_MAEMO
       int example_width = 0;
       int example_height = 0;
       Glib::RefPtr<Pango::Layout> refLayout = create_pango_layout("example"); //TODO: Use different text, according to the current locale, or allow the user to choose an example?
@@ -370,13 +351,6 @@ void DataWidget::set_child_size_by_field(const sharedptr<const LayoutItem_Field>
 
       if(example_height > 0)
         height = example_height * field->get_formatting_used().get_text_format_multiline_height_lines();
-      #else
-      //On Maemo, TextView widgets expand automatically.
-      //TODO: Expansion only happens if both are -1, and vertical expansion never happens.
-      //See bug https://bugs.maemo.org/show_bug.cgi?id=5515
-      width = -1;
-      height = -1;
-      #endif //GLOM_ENABLE_MAEMO
     }
 
     m_child->set_size_request(width, height);

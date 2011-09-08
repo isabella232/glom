@@ -31,11 +31,6 @@
 
 #include "config.h"
 
-#ifdef GLOM_ENABLE_MAEMO
-#include <hildon-fmmm/file-chooser-dialog.h>
-#include <hildon/hildon-window.h>
-#endif // GLOM_ENABLE_MAEMO
-
 #include <glibmm/i18n-lib.h>
 
 namespace GlomBakery
@@ -60,11 +55,6 @@ App_WithDoc_Gtk::App_WithDoc_Gtk(BaseObjectType* cobject, const Glib::ustring& a
   m_VBox_PlaceHolder(Gtk::ORIENTATION_VERTICAL)
 {
   init_app_name(appname);
-
-  #ifdef GLOM_ENABLE_MAEMO
-  //The .glade file needs to specify HildonWindow or features such as HildonAppMenu won't work.
-  g_assert(HILDON_IS_WINDOW(gobj()));
-  #endif //GLOM_ENABLE_MAEMO
 }
 
   
@@ -106,14 +96,8 @@ void App_WithDoc_Gtk::init_layout()
 
   //Add menu bar at the top:
   //These were defined in init_uimanager().
-#ifdef GLOM_ENABLE_MAEMO
-  //TODO: Use Hildon::AppMenu
-  //Gtk::Menu* pMenu = static_cast<Gtk::Menu*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
-  //set_menu(*pMenu);
-#else
   Gtk::MenuBar* pMenuBar = static_cast<Gtk::MenuBar*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
   m_pVBox->pack_start(*pMenuBar, Gtk::PACK_SHRINK);
-#endif
 
   add_accel_group(m_refUIManager->get_accel_group());
 
@@ -156,20 +140,12 @@ void App_WithDoc_Gtk::init_ui_manager()
   //by adding a us string with one of the placeholders, but with menu items underneath it.
   static const Glib::ustring ui_description =
     "<ui>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  <popup name='Bakery_MainMenu'>"
-#else
     "  <menubar name='Bakery_MainMenu'>"
-#endif
     "    <placeholder name='Bakery_MenuPH_File' />"
     "    <placeholder name='Bakery_MenuPH_Edit' />"
     "    <placeholder name='Bakery_MenuPH_Others' />" //Note that extra menus should be inserted before the Help menu, which should always be at the end.
     "    <placeholder name='Bakery_MenuPH_Help' />"
-#ifdef GLOM_ENABLE_MAEMO
-    "  </popup>"
-#else
     "  </menubar>"
-#endif
     "  <toolbar name='Bakery_ToolBar'>"
     "    <placeholder name='Bakery_ToolBarItemsPH' />"
     "  </toolbar>"
@@ -273,11 +249,7 @@ void App_WithDoc_Gtk::init_menus_file()
   //Build part of the menu structure, to be merged in by using the "PH" placeholders:
   static const Glib::ustring ui_description =
     "<ui>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  <popup name='Bakery_MainMenu'>"
-#else
     "  <menubar name='Bakery_MainMenu'>"
-#endif
     "    <placeholder name='Bakery_MenuPH_File'>"
     "      <menu action='BakeryAction_Menu_File'>"
     "        <menuitem action='BakeryAction_File_New' />"
@@ -290,11 +262,7 @@ void App_WithDoc_Gtk::init_menus_file()
     "        <menuitem action='BakeryAction_File_Close' />"
     "      </menu>"
     "    </placeholder>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  </popup>"
-#else
     "  </menubar>"
-#endif
     "</ui>";
   
   //Add menu:
@@ -323,11 +291,7 @@ void App_WithDoc_Gtk::init_menus_edit()
   //Build part of the menu structure, to be merged in by using the "PH" placeholders:
   static const Glib::ustring ui_description =
     "<ui>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  <popup name='Bakery_MainMenu'>"
-#else
     "  <menubar name='Bakery_MainMenu'>"
-#endif
     "    <placeholder name='Bakery_MenuPH_Edit'>"
     "      <menu action='BakeryAction_Menu_Edit'>"
     "        <menuitem action='BakeryAction_Edit_Cut' />"
@@ -336,11 +300,7 @@ void App_WithDoc_Gtk::init_menus_edit()
     "        <menuitem action='BakeryAction_Edit_Clear' />"
     "      </menu>"
     "    </placeholder>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  </popup>"
-#else
     "  </menubar>"
-#endif
     "</ui>";
 
   //Add menu:
@@ -387,14 +347,10 @@ void App_WithDoc_Gtk::ui_warning(const Glib::ustring& text, const Glib::ustring&
 {
   Gtk::Window* pWindow = this;
 
-#ifdef GLOM_ENABLE_MAEMO
-  Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *pWindow, text);
-#else
   Gtk::MessageDialog dialog(App_WithDoc_Gtk::util_bold_message(text), true /* use markup */, Gtk::MESSAGE_WARNING);
   dialog.set_secondary_text(secondary_text);
 
   dialog.set_title(""); //The HIG says that alert dialogs should not have titles. The default comes from the message type.
-#endif
 
   if(pWindow)
     dialog.set_transient_for(*pWindow);
@@ -412,14 +368,10 @@ Glib::ustring App_WithDoc_Gtk::ui_file_select_open(const Glib::ustring& starting
 {
   Gtk::Window* pWindow = this;
 
-#ifdef GLOM_ENABLE_MAEMO
-  Hildon::FileChooserDialog fileChooser_Open(Gtk::FILE_CHOOSER_ACTION_OPEN);
-#else
   Gtk::FileChooserDialog fileChooser_Open(_("Open Document"), Gtk::FILE_CHOOSER_ACTION_OPEN);
   fileChooser_Open.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   fileChooser_Open.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
   fileChooser_Open.set_default_response(Gtk::RESPONSE_OK);
-#endif // GLOM_ENABLE_MAEMO
 
   if(pWindow)
     fileChooser_Open.set_transient_for(*pWindow);
@@ -465,16 +417,12 @@ Glib::ustring App_WithDoc_Gtk::ui_file_select_save(const Glib::ustring& old_file
 {
  Gtk::Window* pWindow = this;
 
-#ifdef GLOM_ENABLE_MAEMO
-  Hildon::FileChooserDialog fileChooser_Save(Gtk::FILE_CHOOSER_ACTION_SAVE);
-#else
   Gtk::FileChooserDialog fileChooser_Save(_("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE);
   fileChooser_Save.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   fileChooser_Save.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
   fileChooser_Save.set_default_response(Gtk::RESPONSE_OK);
-#endif // GLOM_ENABLE_MAEMO
 
- if(pWindow)
+  if(pWindow)
     fileChooser_Save.set_transient_for(*pWindow);
 
   fileChooser_Save.set_do_overwrite_confirmation(); //Ask the user if the file already exists.

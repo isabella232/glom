@@ -39,7 +39,6 @@ namespace Glom
 
 Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 : m_hbox_content(Gtk::ORIENTATION_HORIZONTAL, Utils::DEFAULT_SPACING_SMALL),
-#ifndef GLOM_ENABLE_MAEMO
   m_hbox_buttons(Gtk::ORIENTATION_HORIZONTAL),
   m_Button_New(Gtk::Stock::ADD),
   m_Button_Del(Gtk::Stock::DELETE),
@@ -47,7 +46,6 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_Button_Nav_Prev(Gtk::Stock::GO_BACK),
   m_Button_Nav_Next(Gtk::Stock::GO_FORWARD),
   m_Button_Nav_Last(Gtk::Stock::GOTO_LAST),
-#endif //GLOM_ENABLE_MAEMO
   m_bDoNotRefreshRelated(false),
   m_ignore_signals(true)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -63,28 +61,16 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 
   m_FlowTable.set_lines(1); //Sub-groups will have multiple columns (by default, there is one sub-group, with 2 columns).
 
-  #ifndef GLOM_ENABLE_MAEMO
   m_FlowTable.set_horizontal_spacing(Utils::DEFAULT_SPACING_SMALL); //The default anyway.
   m_FlowTable.set_vertical_spacing(Utils::DEFAULT_SPACING_SMALL); //The default anyway.
-  #else
-  m_FlowTable.set_vertical_spacing(0); //The hildon buttons and entries have their own default padding.
-  m_FlowTable.set_horizontal_spacing(HILDON_MARGIN_DOUBLE); //As per the UI specs.
-  #endif
 
   //m_strHint = _("When you change the data in a field the database is updated immediately.\n Click [New] to add a new record.\n Leave automatic ID fields empty - they will be filled for you.");
 
 
   //m_ScrolledWindow.set_border_width(Utils::DEFAULT_SPACING_SMALL);
-#ifdef GLOM_ENABLE_MAEMO
-  // Allow horizontal scrolling in maemo because the screen is rather small and
-  // there might be some database UIs that don't fit horizontally. Such a UI may
-  // be considered non-maemo-friendly, but it can still be fully viewed this way.
-  // TODO: Prevent the need for horizontal scrolling.
-  m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-#else
+
   // Allow vertical scrolling, but never scroll horizontally:
   m_ScrolledWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC);
-#endif
   m_ScrolledWindow.set_shadow_type(Gtk::SHADOW_NONE); //SHADOW_IN is Recommended by the GNOME HIG, but looks odd.
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -119,7 +105,6 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_FlowTable.signal_script_button_clicked().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_script_button_clicked) );
 
 
-#ifndef GLOM_ENABLE_MAEMO
   m_Button_New.set_tooltip_text(_("Create a new record."));
   m_Button_Del.set_tooltip_text(_("Remove this record."));
   m_Button_Nav_First.set_tooltip_text(_("View the first record in the list."));
@@ -154,7 +139,6 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_Button_Nav_Last.signal_clicked().connect(sigc::mem_fun(*this, &Box_Data_Details::on_button_nav_last));
 
   pack_start(m_hbox_buttons, Gtk::PACK_SHRINK);
-#endif //GLOM_ENABLE_MAEMO
 
   m_ignore_signals = false;
 }
@@ -302,10 +286,8 @@ bool Box_Data_Details::fill_from_database()
       Privileges table_privs = Privs::get_current_privs(m_table_name);
 
       //Enable/Disable record creation and deletion:
-      #ifndef GLOM_ENABLE_MAEMO
       m_Button_New.set_sensitive(table_privs.m_create);
       m_Button_Del.set_sensitive(table_privs.m_delete);
-      #endif //GLOM_ENABLE_MAEMO
 
       if(table_privs.m_view)
       {
@@ -450,7 +432,6 @@ void Box_Data_Details::on_button_new()
   }
 }
 
-#ifndef GLOM_ENABLE_MAEMO
 void Box_Data_Details::on_button_del()
 {
   if( Conversions::value_is_empty(get_primary_key_value_selected()) )
@@ -500,7 +481,6 @@ void Box_Data_Details::on_button_nav_last()
   if(confirm_discard_unstored_data())
     signal_nav_last().emit();
 }
-#endif //GLOM_ENABLE_MAEMO
 
 Gnome::Gda::Value Box_Data_Details::get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const
 {
@@ -587,7 +567,6 @@ void Box_Data_Details::on_related_record_added(Gnome::Gda::Value /* strKeyValue 
   m_bDoNotRefreshRelated = bDoNotRefreshRelated;
 }
 
-#ifndef GLOM_ENABLE_MAEMO
 Box_Data_Details::type_signal_void Box_Data_Details::signal_nav_first()
 {
   return m_signal_nav_first;
@@ -612,7 +591,6 @@ Box_Data_Details::type_signal_record_deleted Box_Data_Details::signal_record_del
 {
   return m_signal_record_deleted;
 }
-#endif //GLOM_ENABLE_MAEMO
 
 Box_Data_Details::type_signal_requested_related_details Box_Data_Details::signal_requested_related_details()
 {
@@ -705,10 +683,8 @@ void Box_Data_Details::on_flowtable_script_button_clicked(const sharedptr<const 
     }
     else
     {
-      #ifndef GLOM_ENABLE_MAEMO
       //Tell the parent to do something appropriate, such as show another record:
       signal_record_deleted().emit(primary_key_value);
-      #endif
     }
   }
 }

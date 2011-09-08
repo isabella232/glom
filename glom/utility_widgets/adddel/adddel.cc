@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "config.h" // For GLOM_ENABLE_MAEMO
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/utility_widgets/adddel/adddel.h>
 #include <algorithm> //For std::find.
@@ -31,10 +31,6 @@
 #include <libglom/utils.h>
 //#include <glom/bakery/app_gtk.h>
 #include <iostream> //For debug output.
-
-#ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/note.h>
-#endif // GLOM_ENABLE_MAEMO
 
 namespace Glom
 {
@@ -161,12 +157,9 @@ void AddDel::warn_about_duplicate()
   else
     message = m_prevent_duplicates_warning; //Something more specific and helpful.
 
-#ifdef GLOM_ENABLE_MAEMO
-  Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, message);
-#else
   Gtk::MessageDialog dialog(Utils::bold_message(_("Duplicate")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK);
   dialog.set_secondary_text(message);
-#endif
+
   //TODO: dialog.set_transient_for(get_parent_window());
 
   dialog.run();

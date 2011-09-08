@@ -49,12 +49,6 @@ Dialog_Connection::Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr
   builder->get_widget("entry_password", m_entry_password);
   builder->get_widget("label_database", m_label_database);
   builder->get_widget("connection_note", m_label_note);
-
-#ifdef GLOM_ENABLE_MAEMO
-  // Without size request, this label enlarges the dialog significantly,
-  // and the text is still truncated.
-  m_label_note->set_size_request(400, -1);
-#endif
 }
 
 Dialog_Connection::~Dialog_Connection()

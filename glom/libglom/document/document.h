@@ -413,14 +413,6 @@ public:
    */
   void set_active_layout_platform(const Glib::ustring& layout_platform = Glib::ustring());
 
-  /** Change any non-maemo layouts so their groups never have multiple columns,
-   * because this could never be displayed on the Maemo screen.
-   * This allows layouts to be shown fairly sanely on Maemo even if no custom
-   * maemo layout was defined.
-   * This does not save the change to disk.
-   */
-  void maemo_restrict_layouts_to_single_column();
-
 #ifndef SWIG //Hide this API from swig.
   Glib::ustring build_and_get_contents() const;
 
@@ -500,9 +492,6 @@ private:
 
   Glib::ustring get_child_text_node(const xmlpp::Element* node, const Glib::ustring& child_node_name) const;
   void set_child_text_node(xmlpp::Element* node, const Glib::ustring& child_node_name, const Glib::ustring& text);
-
-  ///A recursive helper function.
-  static void maemo_restrict_layouts_to_single_column_group(const sharedptr<LayoutGroup>& layout_group);
 
   AppState m_app_state;
   type_signal_userlevel_changed m_signal_userlevel_changed;

@@ -28,10 +28,6 @@
 #include <glom/utility_widgets/layoutwidgetfield.h>
 #include <gtkmm/builder.h>
 
-#ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/text-view.h>
-#endif
-
 namespace Glom
 {
 
@@ -61,11 +57,7 @@ public:
 
   virtual Gnome::Gda::Value get_value() const;
 
-#ifdef GLOM_ENABLE_MAEMO
-  typedef Hildon::TextView type_text_view;
-#else
   typedef Gtk::TextView type_text_view;
-#endif
   
   type_text_view* get_textview();
 

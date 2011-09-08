@@ -59,13 +59,6 @@
 #include <glom/printoperation_printlayout.h>
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/note.h>
-#include <hildonmm/entry.h>
-#include <hildonmm/text-view.h>
-#include <hildonmm/button.h>
-#endif
-
 #include <glom/filechooser_export.h>
 #include <libglom/privs.h>
 #include <libglom/db_utils.h>
@@ -83,10 +76,8 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_Box_RecordsCount(Gtk::ORIENTATION_HORIZONTAL, Utils::DEFAULT_SPACING_SMALL),
   m_Button_FindAll(_("Find All")),
   m_pBox_Mode(0),
-#ifndef GLOM_ENABLE_MAEMO
   m_pBox_Tables(0),
   m_pDialog_Tables(0),
-#endif //GLOM_ENABLE_MAEMO
   m_pBox_QuickFind(0),
   m_pEntry_QuickFind(0),
   m_pButton_QuickFind(0),
@@ -107,12 +98,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_dialog_progess_connection_cleanup(0),
   m_pDialogConnection(0)
 {
-  //Hide unnecessary widgets on maemo that take too much space,
-  //and reduce the border width:
-  #ifdef GLOM_ENABLE_MAEMO
-  set_border_width(Glom::Utils::DEFAULT_SPACING_LARGE);
-  #endif
-
   m_pLabel_Table_DataMode = Gtk::manage(new Gtk::Label(_("No Table Selected")));
   m_pLabel_Table_DataMode->show();
   m_Notebook_Data.set_action_widget(m_pLabel_Table_DataMode, Gtk::PACK_START);
@@ -127,23 +112,14 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   Gtk::Label* label = Gtk::manage(new Gtk::Label(_("Quick _search:"), true));
   m_pBox_QuickFind->pack_start(*label, Gtk::PACK_SHRINK);
 
-  #ifndef GLOM_ENABLE_MAEMO
   m_pEntry_QuickFind = Gtk::manage(new Gtk::Entry());
-  #else
-  m_pEntry_QuickFind = Gtk::manage(new Hildon::Entry(Gtk::Hildon::SIZE_AUTO));
-  #endif
   m_pEntry_QuickFind->signal_activate().connect(
    sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) ); //Pressing Enter here is like pressing Find.
 
   label->set_mnemonic_widget(*m_pEntry_QuickFind);
 
   m_pBox_QuickFind->pack_start(*m_pEntry_QuickFind, Gtk::PACK_EXPAND_WIDGET);
-  #ifndef GLOM_ENABLE_MAEMO
   m_pButton_QuickFind = Gtk::manage(new Gtk::Button(_("_Find"), true));
-  #else
-  m_pButton_QuickFind = Gtk::manage(new Hildon::Button(Gtk::Hildon::SIZE_AUTO,
-    Hildon::BUTTON_ARRANGEMENT_VERTICAL, _("Find"), _("Search for records")));
-  #endif
   m_pButton_QuickFind->signal_clicked().connect(
     sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) );
   m_pBox_QuickFind->pack_start(*m_pButton_QuickFind, Gtk::PACK_SHRINK);
@@ -151,11 +127,9 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_pBox_QuickFind->show_all_children();
   m_pBox_QuickFind->hide();
 
-  #ifndef GLOM_ENABLE_MAEMO
   PlaceHolder* placeholder_quickfind = 0;
   builder->get_widget_derived("vbox_quickfind", placeholder_quickfind);
   placeholder_quickfind->add(*m_pBox_QuickFind);
-  #endif //GLOM_ENABLE_MAEMO
 
   //Add the Records/Found widgets at the right of the notebook tabs:
   m_Box_RecordsCount.pack_start(
@@ -188,27 +162,15 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   add_view(&m_Notebook_Find); //Also a composite view.
 
   on_userlevel_changed(AppState::USERLEVEL_OPERATOR); //A default to show before a document is created or loaded.
-
-  #ifdef GLOM_ENABLE_MAEMO
-  m_maemo_window_find.set_title(_("Glom: Find"));
-
-  Gtk::Box* vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, Utils::DEFAULT_SPACING_SMALL));
-  vbox->pack_start(*m_pBox_QuickFind, Gtk::PACK_SHRINK);
-  vbox->pack_start(m_Notebook_Find, Gtk::PACK_EXPAND_WIDGET);
-  m_maemo_window_find.add(*vbox);
-  m_maemo_window_find.show_all_children();
-  #endif //GLOM_ENABLE_MAEMO
 }
 
 Frame_Glom::~Frame_Glom()
 {
-#ifndef GLOM_ENABLE_MAEMO
   if(m_pBox_Tables)
     remove_view(m_pBox_Tables);
 
   delete m_pDialog_Tables;
   m_pDialog_Tables = 0;
-#endif //GLOM_ENABLE_MAEMO
 
   remove_view(&m_Notebook_Data); //Also a composite view.
   remove_view(&m_Notebook_Find); //Also a composite view.
@@ -295,27 +257,14 @@ void Frame_Glom::set_databases_selected(const Glib::ustring& strName)
 
 void Frame_Glom::on_box_tables_selected(const Glib::ustring& strName)
 {
-#ifndef GLOM_ENABLE_MAEMO
   if(m_pDialog_Tables)
     m_pDialog_Tables->hide();
-#endif //GLOM_ENABLE_MAEMO
 
   show_table(strName);
 }
 
 void Frame_Glom::set_mode_widget(Gtk::Widget& widget)
 {
-  #ifdef GLOM_ENABLE_MAEMO
-  //On Maemo, the find UI is always shown in a separate window instead.
-  if(&widget == &m_Notebook_Find)
-    return;
-  else
-  {
-    //Make sure that this is hidden:
-    m_maemo_window_find.hide();
-  }
-  #endif
-
   //Remove current contents.
   //I wish that there was a better way to do this:
   //Trying to remove all of them leads to warnings,
@@ -1117,15 +1066,6 @@ void Frame_Glom::on_menu_Edit_Find()
     //Show the same layout in Find mode as was just being viewed in Data mode:
     m_Notebook_Find.set_current_view(list_or_details);
   }
-
-  #ifdef GLOM_ENABLE_CLIENT_ONLY
-  Gtk::Window* parent = get_app_window();
-  g_assert(parent);
-  if(parent)
-    m_maemo_window_find.set_transient_for(*parent);
-
-  m_maemo_window_find.show(); //TODO: Switch back to data on hide?
-  #endif
 }
 
 void Frame_Glom::on_menu_add_record()
@@ -1289,7 +1229,6 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
   if(open_default)
     default_table_name = get_document()->get_default_table();
 
-#ifndef GLOM_ENABLE_MAEMO
   //Create the dialog, if it has not already been created:
   if(!m_pBox_Tables)
   {
@@ -1313,7 +1252,6 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
     BusyCursor busy_cursor(get_app_window());
     m_pBox_Tables->init_db_details();
   }
-  #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   //Let the user choose a table:
   //m_pDialog_Tables->set_policy(false, true, false); //TODO_port
@@ -1325,13 +1263,8 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
   }
   else
   {
-    #ifndef GLOM_ENABLE_CLIENT_ONLY
     m_pDialog_Tables->show();
-    #else
-    //For Maemo: TODO
-    #endif // !GLOM_ENABLE_CLIENT_ONLY
   }
-
 }
 
 const Gtk::Window* Frame_Glom::get_app_window() const
@@ -1374,15 +1307,10 @@ void Frame_Glom::on_button_quickfind()
   if(criteria.empty())
   {
     Glib::ustring message(_("You have not entered any quick find criteria."));
-#ifdef GLOM_ENABLE_MAEMO
-    Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, *get_app_window(), message);
-    note.run();
-#else
     Gtk::MessageDialog dialog(Utils::bold_message(_("No find criteria")), true, Gtk::MESSAGE_WARNING );
     dialog.set_secondary_text(message);
     dialog.set_transient_for(*get_app_window());
     dialog.run();
-#endif
   }
   else
   {
@@ -1456,20 +1384,10 @@ void Frame_Glom::show_table_title()
   else //Use the table name if there is no table title.
     table_label = m_table_name;
 
-#ifdef GLOM_ENABLE_MAEMO
-  //Show the system's human-readable title and the table title in
-  //the window's title bar:
-  Gtk::Window* app = get_app_window();
-  if(app)
-    app->set_title(document->get_name() + ": " + table_label);
-
-  // We hide this anyway: m_pLabel_Table->set_markup("<b>" + table_label + "</b>");
-#else
   //Show the table title in bold text, because it's important to the user.
   const Glib::ustring title = Utils::bold_message(table_label);
   m_pLabel_Table_DataMode->set_markup(title);
   m_pLabel_Table_FindMode->set_markup(title);
-#endif
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

@@ -49,18 +49,6 @@ ComboGlom::ComboGlom(bool has_entry)
   setup_menu();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  #ifdef GLOM_ENABLE_MAEMO
-  //Maemo:
-  set_selector(m_maemo_selector);
-  m_maemo_selector.set_model(0, m_refModel);
-
-  Glib::RefPtr<Hildon::TouchSelectorColumn> column =
-    m_maemo_selector.append_text_column(m_refModel);
-  column->set_property("text-column", 0); // TODO: Add a TextSelectorColumn::set_text_column() method?
-
-  column->pack_start(m_Columns.m_col_first, false);
-  #endif //GLOM_ENABLE_MAEMO
-
   //if(m_glom_type == Field::TYPE_NUMERIC)
    // get_entry()->set_alignment(1.0); //Align numbers to the right.
 
@@ -229,11 +217,7 @@ void ComboGlom::set_value(const Gnome::Gda::Value& value)
     if(this_value == value)
     {
       found = true;
-      #ifndef GLOM_ENABLE_MAEMO
       set_active(iter);
-      #else
-      set_selected(iter);
-      #endif //GLOM_ENABLE_MAEMO
       break;
     }
   }
@@ -241,11 +225,7 @@ void ComboGlom::set_value(const Gnome::Gda::Value& value)
   if(!found)
   {
     //Not found, so mark it as blank:
-    #ifndef GLOM_ENABLE_MAEMO
     unset_active();
-    #else
-    unselect();
-    #endif
   }
 
   //Show a different color if the value is numeric, if that's specified:
@@ -274,12 +254,7 @@ void ComboGlom::set_value(const Gnome::Gda::Value& value)
 Gnome::Gda::Value ComboGlom::get_value() const
 {
    //Get the active row:
-   #ifndef GLOM_ENABLE_MAEMO
    Gtk::TreeModel::iterator iter = get_active();
-   #else
-   ComboGlom* unconst = const_cast<ComboGlom*>(this);
-   Gtk::TreeModel::iterator iter = unconst->get_selected();
-   #endif //GLOM_ENABLE_MAEMO
 
    if(iter)
    {
@@ -338,22 +313,14 @@ Application* ComboGlom::get_application()
 }
 
 
-#ifndef GLOM_ENABLE_MAEMO
 void ComboGlom::on_changed()
-#else
-void ComboGlom::on_changed(int /* column */)
-#endif
 {
   //Call base class:
   Gtk::ComboBox::on_changed();
 
   //This signal is emitted for every key press, but sometimes it's just to say that the active item has changed to "no active item",
   //if the text is not in the dropdown list:
-  #ifndef GLOM_ENABLE_MAEMO
   Gtk::TreeModel::iterator iter = get_active();
-  #else
-  Gtk::TreeModel::iterator iter = get_selected();
-  #endif //GLOM_ENABLE_MAEMO
 
   if(iter)
   {

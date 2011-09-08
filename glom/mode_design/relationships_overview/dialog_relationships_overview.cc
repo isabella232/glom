@@ -75,11 +75,7 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   {
     static const Glib::ustring ui_description =
     "<ui>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  <popup name='Overview_MainMenu'>"
-#else
     "  <menubar name='Overview_MainMenu'>"
-#endif
     "    <menu action='Overview_MainMenu_File'>"
     "      <menuitem action='Overview_MainMenu_File_PageSetup' />"
     "      <menuitem action='Overview_MainMenu_File_Print' />"
@@ -87,11 +83,7 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
     "    <menu action='Overview_MainMenu_View'>"
     "      <menuitem action='Overview_MainMenu_View_Grid' />"
     "    </menu>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  </popup>"
-#else
     "  </menubar>"
-#endif
     "</ui>";
 
     m_refUIManager->add_ui_from_string(ui_description);

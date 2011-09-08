@@ -30,10 +30,6 @@
 
 #include <gtkmm/messagedialog.h>
 
-#ifdef GLOM_ENABLE_MAEMO
-#include <hildon/hildon-defines.h>
-#endif
-
 namespace Glom
 {
 
@@ -43,14 +39,8 @@ namespace Utils
 
 enum DefaultSpacings
 {
-  #ifdef GLOM_ENABLE_MAEMO
-  //We use different spacings on Maemo because the screen is smaller:
-  DEFAULT_SPACING_LARGE = HILDON_MARGIN_DEFAULT,
-  DEFAULT_SPACING_SMALL = HILDON_MARGIN_HALF
-  #else
   DEFAULT_SPACING_LARGE = 12,
   DEFAULT_SPACING_SMALL = 6
-  #endif //GLOM_ENABLE_MAEMO
 };
 
 /**
@@ -71,14 +61,11 @@ int dialog_run_with_help(T_Dialog* dialog)
   return dialog_run_with_help(dialog, T_Dialog::glade_id);
 }
 
-// Maemo has no help system since Maemo 5 (Fremantle).
-#ifndef GLOM_ENABLE_MAEMO
 /** This is a replacement for gnome_help_display(),
  * to avoid the libgnome dependency.
  * TODO: GTK+ should have a function for this soon.
  */
 void show_help(const Glib::ustring& id = Glib::ustring());
-#endif //GLOM_ENABLE_MAEMO
 
 void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type);
 void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window* parent, Gtk::MessageType message_type);

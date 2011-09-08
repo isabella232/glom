@@ -25,32 +25,19 @@
 #include <gtkmm/window.h>
 #include <gtkmm/button.h>
 
-#ifdef GLOM_ENABLE_MAEMO
-#include <gtkmm/alignment.h>
-#include <hildonmm/stackable-window.h>
-#endif
-
 namespace Glom
 {
 
 /** A window that can hold a Box_WithButtons.
  */
 class Window_BoxHolder :
-#ifndef GLOM_ENABLE_MAEMO
   public Gtk::Window
-#else
-  public Hildon::StackableWindow
-#endif
 {
 public: 
   explicit Window_BoxHolder(Box_WithButtons* pBox, const Glib::ustring& title = Glib::ustring());
   virtual ~Window_BoxHolder();
 
 private:
-
-  #ifdef GLOM_ENABLE_MAEMO
-  Gtk::Alignment m_alignment;
-  #endif
 
   //Signal handlers:
   void on_box_cancelled();

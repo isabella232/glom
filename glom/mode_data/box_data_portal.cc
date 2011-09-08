@@ -26,11 +26,6 @@
 #include <glom/utils_ui.h> //For bold_message()).
 #include <glom/application.h>
 
-#ifdef GLOM_ENABLE_MAEMO
-#include <glom/mode_data/box_data_details.h>
-#include <glom/window_boxholder.h>
-#include <hildonmm/program.h>
-#endif //GLOM_ENABLE_MAEMO
 
 #include <glibmm/i18n.h>
 
@@ -38,11 +33,6 @@ namespace Glom
 {
 
 Box_Data_Portal::Box_Data_Portal()
-#ifdef GLOM_ENABLE_MAEMO
-: m_maemo_appmenubutton_add(Gtk::Hildon::SIZE_AUTO, Hildon::BUTTON_ARRANGEMENT_VERTICAL),
-  m_window_maemo_details(0),
-  m_box_maemo_details(0)
-#endif
 {
   //m_Frame.set_label_widget(m_Label_Related);
   m_Frame.set_shadow_type(Gtk::SHADOW_NONE);
@@ -60,24 +50,10 @@ Box_Data_Portal::Box_Data_Portal()
   add(m_Frame);
 
   m_layout_name = "list_portal"; //Replaced by derived classes.
-
-  #ifdef GLOM_ENABLE_MAEMO
-  m_maemo_appmenubutton_add.signal_clicked().connect(
-    sigc::mem_fun(*this, &Box_Data_Portal::on_maemo_appmenubutton_add));
-  #endif //GLOM_ENABLE_MAEMO
 }
 
 Box_Data_Portal::~Box_Data_Portal()
 {
-  #ifdef GLOM_ENABLE_MAEMO
-  delete m_window_maemo_details;
-
-  if(m_box_maemo_details)
-  {
-    remove_view(m_box_maemo_details);
-    delete m_box_maemo_details;
-  }
-  #endif //GLOM_ENABLE_MAEMO
 }
 
 void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_record_primary_key_value)
@@ -117,120 +93,6 @@ void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_recor
     std::cerr << G_STRFUNC << ": SQL query failed." << std::endl;
   }
 }
-
-
-#ifdef GLOM_ENABLE_MAEMO
-void Box_Data_Portal::on_maemo_appmenubutton_add()
-{
-  if(!m_portal)
-    return;
-
-  delete m_window_maemo_details;
-
-  if(m_box_maemo_details)
-  {
-    remove_view(m_box_maemo_details);
-    delete m_box_maemo_details;
-  }
-
-  m_box_maemo_details = new Box_Data_Details();
-  add_view(m_box_maemo_details);
-  m_box_maemo_details->show_all();
-
-  m_window_maemo_details = new Window_BoxHolder(m_box_maemo_details, _("Details"));
-
-  //Let this window have the main AppMenu:
-  Hildon::Program::get_instance()->add_window(*m_window_maemo_details);
-
-  Gtk::Window* pWindow = get_app_window();
-  if(pWindow)
-    m_window_maemo_details->set_transient_for(*pWindow);
-
-  //Refresh the portal when the window is closed:
-  //TODO: Refresh the parent Details too.
-  m_window_maemo_details->signal_hide().connect(
-    sigc::mem_fun(*this, &Box_Data_Portal::on_window_maemo_details_closed));
-
-  const Glib::ustring title =
-    Glib::ustring::compose(_("New Related %1"),
-      get_title_singular());
-  m_window_maemo_details->set_title(title);
-
-  FoundSet found_set;
-  found_set.m_table_name = m_portal->get_table_used(Glib::ustring());
-  Gnome::Gda::Value related_record_primary_key_value; //null for a new record.
-  m_box_maemo_details->init_db_details(found_set,
-    get_active_layout_platform(get_document()),
-    related_record_primary_key_value);
-
-  m_box_maemo_details->do_new_record(); //Doesn't block.
-
-  //Make the new record related:
-  //TODO: This only makes sense if the primary key is not auto-generated.
-  related_record_primary_key_value =
-    m_box_maemo_details->get_primary_key_value_selected();
-  make_record_related(related_record_primary_key_value);
-
-  //Show the data in the UI:
-  m_box_maemo_details->refresh_data_from_database_with_primary_key(related_record_primary_key_value);
-
-  m_window_maemo_details->show();
-}
-
-void Box_Data_Portal::on_window_maemo_details_closed()
-{
-  //Show the new added record in the portal:
-  fill_from_database();
-}
-
-void Box_Data_Portal::on_realize()
-{
-  if(!m_portal)
-    return;
-
-  // Add an Add Related Something button to the application's AppMenu.
-  // This will be removed when the portal is hidden.
-  //TODO: Use the ustring compose thingy. murrayc.
-  //TODO: Allow the designer to specify a singluar form for tables (and portals),
-  //so we can say Add Related Something instead of Somethings: Add Related.
-  const Glib::ustring title =
-    Glib::ustring::compose(_("Add Related %1"), get_title_singular());
-  m_maemo_appmenubutton_add.set_title(title);
-  m_maemo_appmenubutton_add.set_value(_("Add related record"));
-  Application* app = Application::get_application();
-  g_assert(app);
-  if(app)
-  {
-    //TODO: Use a per-window appmenu instead,
-    //so we don't get irrelevant Add Related buttons when opening extra windows above this one.
-    Hildon::AppMenu* appmenu = app->get_maemo_appmenu();
-    g_assert(appmenu);
-    if(appmenu)
-    {
-      m_maemo_appmenubutton_add.show();
-      appmenu->append(m_maemo_appmenubutton_add);
-    }
-  }
-}
-
-void Box_Data_Portal::on_unrealize()
-{
-  // Remove the AppMenu button when the portal is no longer shown:
-  Application* app = Application::get_application();
-  g_assert(app);
-  if(app)
-  {
-    Hildon::AppMenu* appmenu = app->get_maemo_appmenu();
-    g_assert(appmenu);
-    if(appmenu)
-    {
-      m_maemo_appmenubutton_add.hide();
-      Gtk::Container* container = appmenu;
-      container->remove(m_maemo_appmenubutton_add);
-    }
-  }
-}
-#endif //GLOM_ENABLE_MAEMO
 
 bool Box_Data_Portal::init_db_details(const sharedptr<const LayoutItem_Portal>& portal, bool show_title)
 {

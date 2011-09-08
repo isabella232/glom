@@ -50,13 +50,6 @@
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 #include <glibmm/i18n.h>
 
-#ifdef GLOM_ENABLE_MAEMO
-#include <libosso.h>
-#include <hildonmm/init.h>
-#include <hildonmm/note.h>
-#include <hildonmm/program.h>
-#endif
-
 #include <glom/application.h>
 #include <glom/glade_utils.h>
 #include <glom/utils_ui.h>
@@ -266,14 +259,9 @@ bool check_user_is_not_root_with_warning()
 
   if(!message.empty())
   {
-#ifndef GLOM_ENABLE_MAEMO
     Gtk::MessageDialog dialog(Utils::bold_message(_("Running As Root")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
     dialog.set_secondary_text(message);
     dialog.run();
-#else
-    Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
-    note.run();
-#endif
 
     return false; /* Is root. Bad. */
   }
@@ -346,14 +334,9 @@ bool check_pyglom_is_available_with_warning()
    /* The python module could not be imported by Glom, so warn the user: */
    const Glib::ustring message = _("Your installation of Glom is not complete, because the Glom Python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
 
-#ifndef GLOM_ENABLE_MAEMO
   Gtk::MessageDialog dialog(Utils::bold_message(_("Glom Python Module Not Installed")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
   dialog.set_secondary_text(message);
   dialog.run();
-#else
-  Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
-  note.run();
-#endif //GLOM_ENABLE_MAEMO
 
   return false;
 }
@@ -363,17 +346,12 @@ bool check_gir_is_available_with_warning()
   if(gir_python_module_is_available())
     return true;
 
-   /* The python module could not be imported by Glom, so warn the user: */
-   const Glib::ustring message = _("Your installation of Glom is not complete, because the gi.repository Python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
+  /* The python module could not be imported by Glom, so warn the user: */
+  const Glib::ustring message = _("Your installation of Glom is not complete, because the gi.repository Python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
 
-#ifndef GLOM_ENABLE_MAEMO
   Gtk::MessageDialog dialog(Utils::bold_message(_("gi.repository Python Module Not Installed")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
   dialog.set_secondary_text(message);
   dialog.run();
-#else
-  Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
-  note.run();
-#endif //GLOM_ENABLE_MAEMO
 
   return false;
 }
@@ -383,17 +361,12 @@ bool check_pygda_is_available_with_warning()
   if(gda_python_module_is_available())
     return true;
 
-   /* The python module could not be imported by Glom, so warn the user: */
-   const Glib::ustring message = _("Your installation of Glom is not complete, because the gi.repository.Gda python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
+  /* The python module could not be imported by Glom, so warn the user: */
+  const Glib::ustring message = _("Your installation of Glom is not complete, because the gi.repository.Gda python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
 
-#ifndef GLOM_ENABLE_MAEMO
   Gtk::MessageDialog dialog(Utils::bold_message(_("gi.repository.Gda Python Module Not Installed")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
   dialog.set_secondary_text(message);
   dialog.run();
-#else
-  Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
-  note.run();
-#endif //GLOM_ENABLE_MAEMO
 
   return false;
 }
@@ -478,15 +451,6 @@ main(int argc, char* argv[])
   }
 
   Glom::libglom_init(); //Also initializes python.
-
-#ifdef GLOM_ENABLE_MAEMO
-  if(!(osso_initialize("org.maemo.glom", PACKAGE_NAME, FALSE /* obsolete */, 0)))
-  {
-    std::cerr << "Glom: Error while initializing libossomm" << std::endl;
-    return 0;
-  }
-  Hildon::init();
-#endif
 
   Glib::OptionContext context;
 
@@ -591,14 +555,9 @@ main(int argc, char* argv[])
       /* The Postgres provider was not found, so warn the user: */
       const Glib::ustring message = _("Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
 
-      #ifndef GLOM_ENABLE_MAEMO
       Gtk::MessageDialog dialog(Glom::Utils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
       dialog.set_secondary_text(message);
       dialog.run();
-      #else
-      Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
-      note.run();
-      #endif
 
       return -1; //There is no point in going further because Glom would not be able to connect to any Postgres servers.
     }
@@ -649,11 +608,6 @@ main(int argc, char* argv[])
     Glom::ConnectionPool::get_instance()->set_show_debug_output(group.m_arg_debug_sql);
 
     const bool test = pApplication->init(input_uri, group.m_arg_restore); //Sets it up and shows it.
-
-    #ifdef GLOM_ENABLE_MAEMO
-    //TODO: What is this really for?
-    Hildon::Program::get_instance()->add_window(*pApplication);
-    #endif
 
     if(test) //The user could cancel the offer of a new or existing database.
       Gtk::Main::run(*pApplication); //Quit when the window is closed.

@@ -28,7 +28,6 @@ Notebook_Find::Notebook_Find()
 : m_iPage_Details(0),
   m_iPage_List(0)
 {
-  #ifndef GLOM_ENABLE_MAEMO
   append_page(m_Box_List, _("List"));
   m_Box_List.signal_find_criteria.connect(sigc::mem_fun(*this, &Notebook_Find::on_page_find_criteria));
   m_iPage_List = 0;
@@ -36,7 +35,6 @@ Notebook_Find::Notebook_Find()
 
   //Fill composite view:
   add_view(&m_Box_List);
-  #endif //GLOM_ENABLE_MAEMO
 
   append_page(m_Box_Details, _("Details"));
 
@@ -50,16 +48,11 @@ Notebook_Find::Notebook_Find()
 
   show_all_children();
 
-  #ifdef GLOM_ENABLE_MAEMO
-  set_show_tabs(false);
-  #endif //GLOM_ENABLE_MAEMO
 }
 
 Notebook_Find::~Notebook_Find()
 {
-  #ifndef GLOM_ENABLE_MAEMO
   remove_view(&m_Box_List);
-  #endif
 
   remove_view(&m_Box_Details);
 }
@@ -68,9 +61,7 @@ bool Notebook_Find::init_db_details(const Glib::ustring& table_name, const Glib:
 {
   bool result = true;
 
-  #ifndef GLOM_ENABLE_MAEMO
   result = m_Box_List.init_db_details(table_name, layout_platform);
-  #endif
 
   m_Box_Details.init_db_details(table_name, layout_platform);
 
@@ -85,11 +76,9 @@ void Notebook_Find::on_page_find_criteria(const Gnome::Gda::SqlExpr& where_claus
 
 void Notebook_Find::set_current_view(Notebook_Data::dataview view)
 {
-  #ifndef GLOM_ENABLE_MAEMO
   if(view == Notebook_Data::DATA_VIEW_List)
     set_current_page(m_iPage_List);
   else
-  #endif //GLOM_ENABLE_MAEMO
     set_current_page(m_iPage_Details);
 }
 

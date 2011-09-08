@@ -25,11 +25,6 @@
 
 #include <glom/mode_data/datawidget/combochoiceswithtreemodel.h>
 
-#ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/picker-button.h>
-#include <hildonmm/touch-selector-entry.h>
-#endif //GLOM_ENABLE_MAEMO
-
 namespace Glom
 {
 
@@ -43,11 +38,7 @@ namespace DataWidgetChildren
  */
 class ComboGlom
 :
-#ifndef GLOM_ENABLE_MAEMO
   public Gtk::ComboBox,
-#else
-  public Hildon::PickerButton,
-#endif
   public ComboChoicesWithTreeModel
 {
 public:
@@ -73,13 +64,9 @@ public:
 
 private:
 
-  #ifndef GLOM_ENABLE_MAEMO
   // Note that this is a normal signal handler when glibmm was complied
   // without default signal handlers
   virtual void on_changed(); //From Gtk::ComboBox
-  #else
-  void on_changed(int column);
-  #endif //GLOM_ENABLE_MAEMO
 
   virtual void check_for_change();
 
@@ -92,10 +79,6 @@ private:
 
   Gnome::Gda::Value m_old_value; //TODO: Only useful for navigation, which currently has no implementation.
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
-
-  #ifdef GLOM_ENABLE_MAEMO
-  Hildon::TouchSelector m_maemo_selector;
-  #endif
 };
 
 } //namespace DataWidetChildren

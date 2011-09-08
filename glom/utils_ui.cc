@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "config.h" // For GLOM_ENABLE_MAEMO
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/utils_ui.h>
 #include <libglom/connectionpool.h>
@@ -33,10 +33,6 @@
 #include <gtkmm/stock.h>
 
 #include <giomm.h>
-
-#ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/note.h>
-#endif
 
 #include <glibmm/i18n.h>
 
@@ -97,15 +93,11 @@ int Utils::dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id)
 {
   int result = dialog->run();
   
-  //Maemo has no help system since Maemo 5, 
-  //so we hide the buttons in anyway.
-  #ifndef GLOM_ENABLE_MAEMO
   while (result == Gtk::RESPONSE_HELP)
   {
     show_help(id);
     result = dialog->run();
   }
-  #endif //GLOM_ENABLE_MAEMO
 
   dialog->hide();
   return result;
@@ -117,9 +109,6 @@ int Utils::dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id)
  * Launch a help browser with the glom help and load the given id if given
  * If the help cannot be found an error dialog will be shown
  */
-
-// Maemo has no help system since Maemo 5 (Fremantle).
-#ifndef GLOM_ENABLE_MAEMO
 void Utils::show_help(const Glib::ustring& id)
 {
   GError* err = 0;
@@ -164,20 +153,13 @@ void Utils::show_help(const Glib::ustring& id)
     dialog.run();
   }
 }
-#endif //GLOM_ENABLE_MAEMO
 
 void Utils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window* parent, Gtk::MessageType message_type)
 {
-#undef GLOM_ENABLE_MAEMO
-#ifdef GLOM_ENABLE_MAEMO
-  // TODO_maemo: Map message_type to a sensible stock_id?
-  Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, parent, message);
-#else
   Gtk::MessageDialog dialog("<b>" + title + "</b>", true /* markup */, message_type, Gtk::BUTTONS_OK);
   dialog.set_secondary_text(message);
   if(parent)
     dialog.set_transient_for(*parent);
-#endif
 
   dialog.run();
 }
@@ -342,25 +324,14 @@ int Utils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const shared
     }
     case(Field::TYPE_NUMERIC):
     {
-#ifdef GLOM_ENABLE_MAEMO
-      //Maemo's screen is not so big, so don't be so generous:
-      example_text = "EUR 9999999";
-#else
       example_text = "EUR 9999999999";
-#endif //GLOM_ENABLE_MAEMO
       break;
     }
     case(Field::TYPE_TEXT):
     case(Field::TYPE_IMAGE): //Give images the same width as text fields, so they will often line up.
     {
       //if(!field_layout->get_text_format_multiline()) //Use the full width for multi-line text.
-#ifdef GLOM_ENABLE_MAEMO
-        //Maemo's screen is not so big, so don't be so generous:
-        example_text = "AAAAAAAAAAAAAAAA";
-#else
         example_text = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-#endif //GLOM_ENABLE_MAEMO
-
       break;
     }
     default:
@@ -489,14 +460,9 @@ bool Utils::show_warning_no_records_found(Gtk::Window& transient_for)
 {
   const Glib::ustring message = _("Your find criteria did not match any records in the table.");
 
-#ifdef GLOM_ENABLE_MAEMO
-  Hildon::Note dialog(Hildon::NOTE_TYPE_CONFIRMATION_BUTTON, transient_for, message);
-#else
   Gtk::MessageDialog dialog(Utils::bold_message(_("No Records Found")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE);
   dialog.set_secondary_text(message);
   dialog.set_transient_for(transient_for);
-#endif
-
 
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("New Find"), Gtk::RESPONSE_OK);

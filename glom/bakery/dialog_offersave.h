@@ -21,20 +21,13 @@
 
 #include "config.h"
 
-#ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/note.h>
-#else
 #include <gtkmm/messagedialog.h>
-#endif
+
 
 namespace GlomBakery
 {
 
-#ifdef GLOM_ENABLE_MAEMO
-class Dialog_OfferSave : public Hildon::Note
-#else
 class Dialog_OfferSave : public Gtk::MessageDialog
-#endif
 {
 public:
   Dialog_OfferSave(const Glib::ustring& file_uri);

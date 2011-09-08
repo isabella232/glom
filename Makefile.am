@@ -187,21 +187,7 @@ dist_pixmap_DATA =				\
 	icons/16x16/glom-related-records.png	\
 	icons/16x16/glom-text.png
 
-if GLOM_ENABLE_MAEMO
-desktopdir = $(OSSO_DESKTOPDIR)
-dbusservicedir = $(OSSO_SERVICEDIR)
-glom.service: Makefile
-	$(AM_V_at)rm -f $@ $@.tmp
-	$(AM_V_at)srcdir=''; \
-	       test -f ./$@.in || srcdir=$(srcdir)/; \
-	       sed -e 's|@bindir[@]|$(bindir)|g' $${srcdir}$@.in >$@.tmp
-	$(AM_V_GEN)mv $@.tmp $@
-
-glom.service: $(srcdir)/glom.service.in
-dbusservice_DATA = glom.service
-else
 desktopdir = $(datadir)/applications
-endif
 
 if HOST_WIN32
 desktop_DATA =

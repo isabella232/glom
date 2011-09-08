@@ -55,9 +55,6 @@
 //#undef GDA_DISABLE_DEPRECATED
 //#include <sql-parser/gda-statement-struct-util.h> //For gda_sql_identifier_remove_quotes().
 
-#ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/note.h>
-#endif
 
 #include <sstream> //For stringstream
 
@@ -139,13 +136,9 @@ void Base_DB::handle_error(const std::exception& ex)
 {
   std::cerr << "Internal Error (Base_DB::handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
 
-#ifdef GLOM_ENABLE_MAEMO
-  Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, ex.what());
-#else
   Gtk::MessageDialog dialog(Utils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
   dialog.set_secondary_text(ex.what());
   //TODO: dialog.set_transient_for(*get_application());
-#endif
 
   dialog.run();
 }
@@ -2013,14 +2006,6 @@ Glib::ustring Base_DB::get_active_layout_platform(Document* document)
   Glib::ustring result;
   if(document)
     result = document->get_active_layout_platform();
-
-  if(result.empty())
-  {
-    //Make Glom use the special "maemo" layouts if they exist.
-    #ifdef GLOM_ENABLE_MAEMO
-    return "maemo";
-    #endif
-  }
 
   return result;
 }

@@ -259,14 +259,9 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
     //Warn the user:
     //TODO: Make the field insensitive until it can receive data, so people never see this dialog.
     const Glib::ustring message = _("Data may not be entered into this related field, because the related record does not yet exist, and the relationship does not allow automatic creation of new related records.");
-#undef GLOM_ENABLE_MAEMO
-#ifdef GLOM_ENABLE_MAEMO
-    Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *Application::get_application(), message);
-#else
     Gtk::MessageDialog dialog(Utils::bold_message(_("Related Record Does Not Exist")), true);
     dialog.set_secondary_text(message);
     dialog.set_transient_for(*Application::get_application());
-#endif
     dialog.run();
 
     //Clear the field again, discarding the entered data.
@@ -285,14 +280,10 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
       //TODO: Make the field insensitive until it can receive data, so people never see this dialog.
       const Glib::ustring message = _("Data may not be entered into this related field, because the related record does not yet exist, and the key in the related record is auto-generated and therefore can not be created with the key value in this record.");
 
-#ifdef GLOM_ENABLE_MAEMO
-      Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *Application::get_application(), message);
-#else
       Gtk::MessageDialog dialog(Utils::bold_message(_("Related Record Cannot Be Created")), true);
       //TODO: This is a very complex error message:
       dialog.set_secondary_text(message);
       dialog.set_transient_for(*Application::get_application());
-#endif
       dialog.run();
 
       //Clear the field again, discarding the entered data.
@@ -399,13 +390,9 @@ bool Base_DB_Table_Data::confirm_delete_record()
 {
   //Ask the user for confirmation:
   const Glib::ustring message = _("Are you sure that you would like to delete this record? The data in this record will then be permanently lost.");
-#ifdef GLOM_ENABLE_MAEMO
-  Hildon::Note dialog(Hildon::NOTE_TYPE_CONFIRMATION_BUTTON, *get_app_window(), message);
-#else
   Gtk::MessageDialog dialog(Utils::bold_message(_("Delete record")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
   dialog.set_secondary_text(message);
   dialog.set_transient_for(*Application::get_application());
-#endif
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   dialog.add_button(Gtk::Stock::DELETE, Gtk::RESPONSE_OK);
 

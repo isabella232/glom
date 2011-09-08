@@ -202,7 +202,6 @@ void ComboBox_Fields::on_cell_data_title(const Gtk::TreeModel::const_iterator& i
   if(field)
   {
     m_renderer_title->set_property("text", field->get_title_or_name());
-    //m_renderer_title->property_text() = field->get_title_or_name(); //Not available on Maemo.
   }
   else
   {
@@ -214,7 +213,6 @@ void ComboBox_Fields::on_cell_data_title(const Gtk::TreeModel::const_iterator& i
     //" unable to set property `text' of type `gchararray' from value of type `glibmm__CustomPointer_Pc' "
     //TODO: Add a template specialization to Glib::ObjectBase::set_property() to allow this?
     m_renderer_title->set_property("text", Glib::ustring(_("(None)")));
-    //m_renderer_title->property_text() = _("(None)"); //Not available on Maemo.
   }
 }
 
