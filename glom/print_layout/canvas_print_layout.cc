@@ -308,10 +308,20 @@ void Canvas_PrintLayout::setup_context_menu()
 
 void Canvas_PrintLayout::on_item_show_context_menu(guint button, guint32 activate_time, Glib::RefPtr<CanvasLayoutItem> item)
 {
-  if(!m_context_menu)
+  if(!m_context_menu || !item)
     return;
 
   m_context_item = item;
+  
+  //Do not enable the Formatting menu item for all types of items:
+  sharedptr<LayoutItem> layout_item = m_context_item->get_layout_item();
+  bool enable_formatting = false;
+  if(sharedptr<LayoutItem_WithFormatting>::cast_dynamic(layout_item))
+  {
+    enable_formatting = true;
+  }
+
+  m_action_formatting->set_sensitive(enable_formatting);
 
   m_context_menu->popup(button, activate_time);
 }
