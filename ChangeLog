@@ -1,5 +1,17 @@
 2011-09-09  Murray Cumming  <murrayc@murrayc.com>
 
+	Do not create XML documents containing form feeds.
+
+	* glom/libglom/utils.[h|cc]: Added string_clean_for_xml(), though it is 
+	currently inefficient and copies the whole string even when not changing it.
+	* glom/libglom/document/document.cc: set_child_text_node(), 
+	set_node_text_child_as_value(), save_before(): Always use that utility 
+	method before giving the child text string to libxml, because libxml will 
+	just write it out to the file, creating an invalid XML file that it can't
+	read back in.
+
+2011-09-09  Murray Cumming  <murrayc@murrayc.com>
+
 	Related records portals: Allow navigation via read-only relationships.
 
 	* glom/mode_data/box_data_list_related.cc: on_adddel_user_requested_edit():

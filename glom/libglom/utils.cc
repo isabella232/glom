@@ -194,6 +194,15 @@ Glib::ustring Utils::string_replace(const Glib::ustring& src, const Glib::ustrin
 */
 }
 
+Glib::ustring Utils::string_clean_for_xml(const Glib::ustring& src)
+{
+  // The form feed character may not be in XML, even if escaped.
+  // So lets just lose it.
+  // Other unusual characters, such as &, are escaped by libxml later.
+  // TODO_Performance: Find a quicker way to do this.
+  return string_replace(src, "\f", Glib::ustring());
+}
+
 
 Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Gnome::Gda::SqlExpr& where_clause, const sharedptr<const Relationship>& extra_join, const type_sort_clause& sort_clause, guint limit)
 {

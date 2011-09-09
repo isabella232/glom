@@ -1131,11 +1131,13 @@ void Document::set_child_text_node(xmlpp::Element* node, const Glib::ustring& ch
     child = node->add_child(child_node_name);
   }
 
+  const Glib::ustring text_used = Utils::string_clean_for_xml(text);
+
   xmlpp::TextNode* text_child = child->get_child_text();
   if(!text_child)
-    child->add_child_text(text);
+    child->add_child_text(text_used);
   else
-    text_child->set_content(text);
+    text_child->set_content(text_used);
 }
 
 void Document::set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value, bool value_default)
@@ -1249,9 +1251,11 @@ void Document::set_node_attribute_value_as_value(xmlpp::Element* node, const Gli
 
 void Document::set_node_text_child_as_value(xmlpp::Element* node, const Gnome::Gda::Value& value, Field::glom_field_type field_type)
 {
+  if(!node)
+    return;
+
   const Glib::ustring value_as_text = Field::to_file_format(value, field_type);
-  if(node)
-    node->set_child_text(value_as_text);
+  node->set_child_text( Utils::string_clean_for_xml(value_as_text) );
 }
 
 Gnome::Gda::Value Document::get_node_attribute_value_as_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName, Field::glom_field_type field_type)
@@ -3812,7 +3816,7 @@ bool Document::save_before()
           if(!page_setup.empty())
           {
             xmlpp::Element* child = nodePrintLayout->add_child(GLOM_NODE_PAGE_SETUP);
-            child->add_child_text(page_setup);
+            child->add_child_text( Utils::string_clean_for_xml(page_setup) );
           }
 
           xmlpp::Element* nodeGroups = nodePrintLayout->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
@@ -3891,9 +3895,9 @@ bool Document::save_before()
       //The script is in a child text node:
       xmlpp::TextNode* text_child = nodeModule->get_child_text();
       if(!text_child)
-        nodeModule->add_child_text(script);
+        nodeModule->add_child_text( Utils::string_clean_for_xml(script) );
       else
-       text_child->set_content(script);
+       text_child->set_content( Utils::string_clean_for_xml(script) );
     }
   }
 

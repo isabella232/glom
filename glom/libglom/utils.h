@@ -44,6 +44,10 @@ Glib::ustring trim_whitespace(const Glib::ustring& text);
 
 Glib::ustring string_replace(const Glib::ustring& src, const Glib::ustring& search_for, const Glib::ustring& replace_with);
 
+/** Remove any characters that may not be in XML even when escaped.
+ */
+Glib::ustring string_clean_for_xml(const Glib::ustring& src);
+
 //typedef Base_DB::type_vecLayoutFields type_vecLayoutFields;
 typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
 typedef std::vector< sharedptr<const LayoutItem_Field> > type_vecConstLayoutFields;
