@@ -1,3 +1,12 @@
+2011-10-15  Murray Cumming  <murrayc@murrayc.com>
+
+	Related records portals: Allow navigation via read-only relationships.
+
+	* glom/mode_data/box_data_list_related.cc: on_adddel_user_requested_edit():
+	Remove the check for a non-editable relationship, because that is about 
+	editing, but this is about opening, and we already have the navigation=None
+	option.
+
 2011-10-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Deleting tables: Remove all auto-increment rows.
