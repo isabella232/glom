@@ -532,7 +532,7 @@ bool ConnectionPool::handle_error_cerr_only()
             error_details += '\n'; //Add newline after each error.
 
           error_details += (*iter)->get_description();
-          std::cerr << "Internal error (Database): " << error_details << std::endl;
+          std::cerr << G_STRFUNC << ": Internal error (Database): " << error_details << std::endl;
         }
       }
 
