@@ -1,5 +1,14 @@
 2011-09-09  Murray Cumming  <murrayc@murrayc.com>
 
+	Related records portals: Allow navigation via read-only relationships.
+
+	* glom/mode_data/box_data_list_related.cc: on_adddel_user_requested_edit():
+  Remove the check for a non-editable relationship, because that is about 
+  editing, but this is about opening, and we already have the navigation=None
+  option.
+
+2011-09-09  Murray Cumming  <murrayc@murrayc.com>
+
 	Script Library: Prevent a crash when opening the dialog.
 
 	* ui/developer/dialog_script_library.glade: Change the GtkComboBox to a 

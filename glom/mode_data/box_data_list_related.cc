@@ -173,13 +173,7 @@ Gnome::Gda::Value Box_Data_List_Related::get_primary_key_value(const Gtk::TreeMo
 
 void Box_Data_List_Related::on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row)
 {
-  if(!(m_portal->get_relationship_used_allows_edit()))
-  {
-    std::cerr << "Box_Data_List_Related::on_adddel_user_requested_eidt() called on non-editable portal. This should not happen." << std::endl;
-    return;
-  }
-
-  //Call base class:
+  //Note that this is really an Open rather than an Edit.
 
   const Gnome::Gda::Value primary_key_value = m_AddDel.get_value_key(row); //The primary key is in the key.
   //std::cout << "debug: " << G_STRFUNC << ": Requesting edit for primary_key=" << primary_key_value.to_string() << std::endl;
