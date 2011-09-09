@@ -1,5 +1,12 @@
 2011-09-09  Murray Cumming  <murrayc@murrayc.com>
 
+	ComboGlom::set_value(): Do not cause a change to be signalled.
+
+	* glom/mode_data/datawidget/combo.[h|cc]: Prevent unsuitable signal 
+	emissions when setting the value programatically.
+
+2011-09-09  Murray Cumming  <murrayc@murrayc.com>
+
 	Do not create XML documents containing form feeds.
 
 	* glom/libglom/utils.[h|cc]: Added string_clean_for_xml(), though it is 

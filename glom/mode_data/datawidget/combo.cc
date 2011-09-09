@@ -43,7 +43,8 @@ namespace DataWidgetChildren
 
 ComboGlom::ComboGlom(bool has_entry)
 : Gtk::ComboBox(has_entry),
-  ComboChoicesWithTreeModel()
+  ComboChoicesWithTreeModel(),
+  m_ignore_changed(false)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
@@ -207,6 +208,10 @@ void ComboGlom::set_value(const Gnome::Gda::Value& value)
     return;
   }
 
+  //Avoid emiting the edited signal just because of these calls:
+  const bool old_ignore = m_ignore_changed;
+  m_ignore_changed = true;
+
   bool found = false;
   for(Gtk::TreeModel::iterator iter = model->children().begin(); iter != model->children().end(); ++iter)
   {
@@ -227,6 +232,8 @@ void ComboGlom::set_value(const Gnome::Gda::Value& value)
     //Not found, so mark it as blank:
     unset_active();
   }
+
+  m_ignore_changed = old_ignore;
 
   //Show a different color if the value is numeric, if that's specified:
   if(layout_item->get_glom_type() == Field::TYPE_NUMERIC)
@@ -317,6 +324,9 @@ void ComboGlom::on_changed()
 {
   //Call base class:
   Gtk::ComboBox::on_changed();
+
+  if(m_ignore_changed)
+    return;
 
   //This signal is emitted for every key press, but sometimes it's just to say that the active item has changed to "no active item",
   //if the text is not in the dropdown list:

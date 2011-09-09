@@ -79,6 +79,9 @@ private:
 
   Gnome::Gda::Value m_old_value; //TODO: Only useful for navigation, which currently has no implementation.
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
+
+  //Prevent us from emitting signals just because set_value() was called:
+  bool m_ignore_changed;
 };
 
 } //namespace DataWidetChildren
