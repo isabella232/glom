@@ -1,3 +1,12 @@
+2011-09-09  Murray Cumming  <murrayc@murrayc.com>
+
+	Script Library: Prevent a crash when opening the dialog.
+
+	* ui/developer/dialog_script_library.glade: Change the GtkComboBox to a 
+	GtkComboBoxText as intended, to prevent a crash when it has no model.
+	* glom/utility_widgets/combo_textglade.[h|cc]: Add a check that there is a 
+	model.
+
 2011-09-08  Murray Cumming  <murrayc@murrayc.com>
 
 	DataWidget: Do not expand the Open and Find buttons.

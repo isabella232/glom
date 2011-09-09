@@ -26,11 +26,17 @@ namespace Glom
 Combo_TextGlade::Combo_TextGlade(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::ComboBoxText(cobject)
 {
+  //Check that this was really created from a GtkComboBoxText in the .glade file,
+  //instead of just a GtkComboBox, which would not usually have a model.
+  g_assert(get_model());
 }
 
 void Combo_TextGlade::set_first_active()
 {
   Glib::RefPtr<Gtk::TreeModel> model = get_model();
+  if(!model)
+    return;
+
   Gtk::TreeModel::iterator iter = model->children().begin();
   set_active(iter);
 }
