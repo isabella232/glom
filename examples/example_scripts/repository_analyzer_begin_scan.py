@@ -1186,7 +1186,6 @@ def add_dependency_names_to_list(package_names_list, apt_cache):
 
     #Look at each package:
     for package_name in package_names_list:
-
         # The last parameter (already_handled_list) prevents circular-dependencies from causing endless loops during recursion,
         # without preventing us from looking fully at the packages that were originally in the list.
 
@@ -1267,6 +1266,11 @@ def get_package_data_list(out_licenses_map, package_names_list_restrict_to):
     i = 0
     for pkg in cache:
 
+        # For quick debugging
+        #if(i > 10):
+        #    break;
+
+
         candver = cache._depcache.get_candidate_ver(pkg._pkg)
 
         # Ignore packages with no candidate version:
@@ -1306,7 +1310,7 @@ def get_package_data_list(out_licenses_map, package_names_list_restrict_to):
 
     #Note that this changes packages_dict and out_licenses_map_temp:
     matches_found = True
-    while(False): #matches_found):
+    while(matches_found):
         matches_found = get_licenses_map_with_matching(out_licenses_map_temp, packages_dict)
         if(matches_found):
             licenses_count = len(out_licenses_map_temp.keys())
@@ -1323,7 +1327,7 @@ def get_package_data_list(out_licenses_map, package_names_list_restrict_to):
 
 def execute_sql_non_select_query(query_text):
 
-    print "debug: sql=%s" % query_text
+    #print "debug: sql=%s" % query_text
     
     global do_sql
     if(not do_sql):
@@ -1365,6 +1369,7 @@ def execute_sql_select_query(query_text):
 #        return True
 
 # TODO: Use the pyglom API for this when it is available.
+# Returns a numeric type, not a GdaNumeric.
 def get_next_automatic_id_number(table_name, field_name):
 
     #Discover the current highest value:
@@ -1384,6 +1389,8 @@ def get_next_automatic_id_number(table_name, field_name):
             max_id = 0
         else:
             #It is a GdaNumeric:
+            # We must get the number now, because the GdaNumeric will be orphaned later:
+            # See http://mail.gnome.org/archives/python-hackers-list/2011-September/msg00000.html
             max_id = float(max_id_value.number) #TODO: Make sure this only converts in the C locale
             max_id += 1
 
@@ -1417,6 +1424,7 @@ def get_record_exists_already(table_name, field_name, sql_field_value):
 
     return False
 
+# Returns a numeric type, not a GdaNumeric
 def get_license_id_of_last_package_scan(package_name):
     sql_query = "SELECT package_scans.license_id FROM package_scans WHERE package_scans.package_name = " + quote_for_sql(package_name) + " ORDER BY package_scans.license_id DESC LIMIT 1"
     datamodel = execute_sql_select_query(sql_query)
@@ -1431,7 +1439,10 @@ def get_license_id_of_last_package_scan(package_name):
         if(result == None): #This seems to be the result when there are no records. I guess it is a NULL value in the result.
             return None
         else:
-            return result
+            #It is a GdaNumeric:
+            # We must get the number now, because the GdaNumeric will be orphaned later:
+            # See http://mail.gnome.org/archives/python-hackers-list/2011-September/msg00000.html
+            return float(result.number) #TODO: Make sure this only converts in the C locale
 
     return None
 
@@ -1627,7 +1638,7 @@ def main():
         print_debug( "used: %s" % package_name )
 
 
-        license_id = "NULL" #empty integer value.
+        license_id = None
 
         package_data = packages_dict[package_name]
 
@@ -1656,13 +1667,11 @@ def main():
         # 'package_scan_id','package_name','scan_id','comments','license_id','version','parent_package','tarball_uri','diff_uri',"simplified'
         package_scan_id_float = package_scan_id  #For some reason this is not a GdaNumeric.
         scan_id_float = scan_id #For some reason this is not a GdaNumeric.
-        
-        license_id_float = None
-        try:
-            license_id_float = float(license_id.number)
-        except:
-            license_id_float = None
-            
+        license_id_float = license_id #Already converted from a GdaNumeric.
+
+        #print_debug("license id=%s" % license_id_float)
+        #print_debug("package_scan_id_float=%s" % package_scan_id_float)
+                    
         package_scan_row  = None
         if(license_id_float):
             package_scan_row = u"%d,%s,%d,%s,%d,%s,%s,%s,%s,%s" % ( package_scan_id_float, quote_for_sql(package_data.name), scan_id_float, empty_text, license_id_float, quote_for_sql(package_data.version), quote_for_sql(package_data.source_package_name), quote_for_sql(package_data.tarball_uri), quote_for_sql(package_data.diff_uri), boolean_for_sql(package_data.license_text_simplified) )
@@ -1674,8 +1683,8 @@ def main():
         else:
             print_debug("Not inserting package_scans")
 
-            dictPackageNamesToScanIDs[package_data.name] = package_scan_id #Save for later, when we do the dependencies.
-            package_scan_id += 1
+        dictPackageNamesToScanIDs[package_data.name] = package_scan_id #Save for later, when we do the dependencies.
+        package_scan_id += 1
 
             #rows_packages += package_row + placeholder_newline #Use a placeholder that we can later convert to an escaped newline, because minidom doesn't do this for us, though it escapes other things.
 
