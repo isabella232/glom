@@ -225,18 +225,13 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
 
 
   //Describe the automatic navigation:
-  sharedptr<const UsesRelationship> relationship_navigation_automatic;
-  relationship_navigation_automatic = get_portal_navigation_relationship_automatic(m_portal);
-  Glib::ustring automatic_navigation_description;
-
-  automatic_navigation_description = m_portal->get_relationship_name_used();
-  if(relationship_navigation_automatic)
+  sharedptr<const UsesRelationship> relationship_navigation_automatic
+    = get_portal_navigation_relationship_automatic(m_portal);
+  Glib::ustring automatic_navigation_description = 
+    m_portal->get_relationship_name_used(); //TODO: Use get_relationship_display_name() instead?
+  if(relationship_navigation_automatic) //This is a relationship in the related table.
   {
-    if(relationship_navigation_automatic->get_has_relationship_name())
-      automatic_navigation_description += ("::" + relationship_navigation_automatic->get_relationship_name());
-
-    if(relationship_navigation_automatic->get_has_related_relationship_name())
-      automatic_navigation_description += ("::" + relationship_navigation_automatic->get_related_relationship_name());
+    automatic_navigation_description += ("::" + relationship_navigation_automatic->get_relationship_display_name());
   }
 
   if(automatic_navigation_description.empty())

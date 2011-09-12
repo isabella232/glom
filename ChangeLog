@@ -1,5 +1,15 @@
 2011-09-12  Murray Cumming  <murrayc@murrayc.com>
 
+	UsesRelationship: Added get_relationship_display_name().
+
+	* glom/mode_design/layout/dialog_layout_calendar_related.cc: update_ui():
+	* glom/mode_design/layout/dialog_layout_list_related.cc: update_ui():
+	Move some code into
+	* glom/libglom/data_structure/layout/usesrelationship.[h|cc]:
+	get_relationship_display_name() to avoid repetition.
+
+2011-09-12  Murray Cumming  <murrayc@murrayc.com>
+
 	Related Records: Correct automatic navigation to related relationships.
 
 	* glom/base_db.[h|cc]: get_portal_navigation_relationship_automatic():

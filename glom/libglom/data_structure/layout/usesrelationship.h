@@ -109,6 +109,12 @@ public:
    * @param parent_table The table to which the item (or its relatinoships) belong.
    */ 
   Glib::ustring get_sql_table_or_join_alias_name(const Glib::ustring& parent_table) const;
+  
+  
+  /** Get a human-readable representation of th relationship.
+   * This just concatenates the chain of relationships, separating them by ":".
+   */
+  Glib::ustring get_relationship_display_name() const;
 
 private:
 
