@@ -1,3 +1,18 @@
+1.19.10 (unstable):
+
+* Print Layout: Major overhaul to editing UI so it should be almost useable now.
+* Related Records:
+  - Allow navigation through non-editable relationships.
+  - Correct automatic navigation to related records.
+* Details: Avoid (failed) attempts to edit when navigating to related records.
+* Avoid some invalid characters in the document.
+* Script Library: Prevent a crash when opening the dialog.
+* Several UI fixes to correct how widgets expand and align.
+* Fix a crash when dragging items in the layout (developer mode)
+* Build:
+  - Use pygobject-3.0 instead of pygobject-2.0.
+  - Remove the optional Maemo UI.
+
 1.19.9 (unstable):
 
 * Details:
