@@ -269,7 +269,7 @@ void Box_Data_Portal::on_dialog_layout_hide()
 bool Box_Data_Portal::get_has_suitable_record_to_view_details() const
 {
   Glib::ustring navigation_table_name;
-  sharedptr<const UsesRelationship> navigation_relationship;
+  sharedptr<const UsesRelationship> navigation_relationship; //Ignored.
   get_suitable_table_to_view_details(navigation_table_name, navigation_relationship);
 
   return !(navigation_table_name.empty());
@@ -284,19 +284,24 @@ void Box_Data_Portal::get_suitable_table_to_view_details(Glib::ustring& table_na
     return;
 
 
-  sharedptr<const UsesRelationship> navigation_relationship = m_portal->get_navigation_relationship_specific();
+  sharedptr<const UsesRelationship> navigation_relationship;
 
   //Check whether a relationship was specified:
   if(m_portal->get_navigation_type() == LayoutItem_Portal::NAVIGATION_AUTOMATIC)
   {
     //std::cout << "debug: decide automatically." << std::endl;
     //Decide automatically:
-    bool navigation_relationship_main = false; // no longer used
-    navigation_relationship = get_portal_navigation_relationship_automatic(m_portal, navigation_relationship_main);
-    //std::cout << "debug: auto main=" << navigation_relationship_main << ", navigation_relationship=" << (navigation_relationship ? navigation_relationship->get_name() : navigation_relationship->get_relationship()->get_name()) << std::endl;
+    navigation_relationship = get_portal_navigation_relationship_automatic(m_portal);
+    //if(navigation_relationship && navigation_relationship->get_relationship())
+    //  std::cout << "  navigation_relationship->get_relationship()=" <<  navigation_relationship->get_relationship()->get_name() << std::endl;
+    //if(navigation_relationship && navigation_relationship->get_related_relationship())
+    //  std::cout << "  navigation_relationship->get_related_relationship()=" <<  navigation_relationship->get_related_relationship()->get_name() << std::endl;
   }
-  //else
-  //  std::cout << "debug: " << G_STRFUNC << ": Using specific nav." << std::endl;
+  else
+  {
+    navigation_relationship = m_portal->get_navigation_relationship_specific();
+    //std::cout << "debug: " << G_STRFUNC << ": Using specific nav." << std::endl;
+  }
 
   const Document* document = get_document();
   if(!document)
@@ -309,13 +314,15 @@ void Box_Data_Portal::get_suitable_table_to_view_details(Glib::ustring& table_na
   // The navigation_table_name (and therefore, the table_name output parameter,
   // as well) stays empty if the navrel type was set to none.
   Glib::ustring navigation_table_name;
-  if(m_portal->get_navigation_type() == LayoutItem_Portal::NAVIGATION_AUTOMATIC)
-  {
-    navigation_table_name = directly_related_table_name;
-  }
-  else if(m_portal->get_navigation_type() == LayoutItem_Portal::NAVIGATION_SPECIFIC)
+  if(navigation_relationship)
   {
     navigation_table_name = navigation_relationship->get_table_used(directly_related_table_name);
+  }
+  else if(m_portal->get_navigation_type() != LayoutItem_Portal::NAVIGATION_NONE)
+  {
+    //An empty result from get_portal_navigation_relationship_automatic() or 
+    //get_navigation_relationship_specific() means we should use the directly related table:
+    navigation_table_name = directly_related_table_name;
   }
 
   if(navigation_table_name.empty())
@@ -343,6 +350,11 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   Glib::ustring navigation_table_name;
   sharedptr<const UsesRelationship> navigation_relationship;
   get_suitable_table_to_view_details(navigation_table_name, navigation_relationship);
+  
+  //if(navigation_relationship && navigation_relationship->get_relationship())
+  //  std::cout << "debug: navigation_relationship=" << navigation_relationship->get_relationship()->get_name() << std::endl;
+  //if(navigation_relationship && navigation_relationship->get_related_relationship())
+  //  std::cout << "debug: navigation_related_relationship=" << navigation_relationship->get_related_relationship()->get_name() << std::endl;
 
   if(navigation_table_name.empty())
     return;
@@ -368,7 +380,7 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   //For instance "invoice_line_id" if this is a portal to an "invoice_lines" table:
   const Glib::ustring related_table = m_portal->get_table_used(Glib::ustring() /* not relevant */);
   sharedptr<const Field> key_field = get_field_primary_key_for_table(related_table);
-  //std::cout << "DEBUG: related table=" << related_table << ", whose primary_key=" << key_field->get_name() << std::endl;
+  //std::cout << "DEBUG: related table=" << related_table << ", whose primary_key=" << key_field->get_name() << ", with value=" << primary_key_value.to_string() << "getting value for: " << layout_item->get_layout_display_name() << std::endl;
 
   Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_key(related_table, fieldsToGet, key_field, primary_key_value);
   Glib::RefPtr<const Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(query);

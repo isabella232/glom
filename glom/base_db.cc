@@ -1690,11 +1690,8 @@ sharedptr<const LayoutItem_Field> Base_DB::get_field_identifies_non_hidden_relat
   return result;
 }
 
-sharedptr<const UsesRelationship> Base_DB::get_portal_navigation_relationship_automatic(const sharedptr<LayoutItem_Portal>& portal, bool& navigation_main) const
+sharedptr<const UsesRelationship> Base_DB::get_portal_navigation_relationship_automatic(const sharedptr<LayoutItem_Portal>& portal) const
 {
-  //Initialize output parameters:
-  navigation_main = false;
-
   const Document* document = get_document();
 
   //If the related table is not hidden then we can just navigate to that:
@@ -1702,7 +1699,6 @@ sharedptr<const UsesRelationship> Base_DB::get_portal_navigation_relationship_au
   if(!(document->get_table_is_hidden(direct_related_table_name)))
   {
     //Non-hidden tables can just be shown directly. Navigate to it:
-    navigation_main = true;
     return sharedptr<UsesRelationship>();
   }
   else
@@ -1712,7 +1708,7 @@ sharedptr<const UsesRelationship> Base_DB::get_portal_navigation_relationship_au
     sharedptr<const LayoutItem_Field> field = get_field_is_from_non_hidden_related_record(portal);
     if(field)
     {
-      return field; //Returns the relationship part. (A relationship belonging to the portal's related table.)
+      return field; //Returns the UsesRelationship base part. (A relationship belonging to the portal's related table.)
       //sharedptr<UsesRelationship> result = sharedptr<UsesRelationship>::create();
       //result->set_relationship( portal->get_relationship() );
       //result->set_related_relationship( field->get_relationship() );

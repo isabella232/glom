@@ -1211,6 +1211,7 @@ void FlowTableWithFields::on_flowtable_related_record_changed(const Glib::ustrin
   signal_related_record_changed().emit(relationship_name);
 }
 
+//TODO: Use Value by const &
 void FlowTableWithFields::on_portal_user_requested_details(Gnome::Gda::Value primary_key_value, Box_Data_Portal* portal_box)
 {
   sharedptr<const LayoutItem_Portal> portal = portal_box->get_portal();

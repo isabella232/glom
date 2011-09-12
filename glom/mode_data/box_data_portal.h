@@ -71,7 +71,22 @@ public:
   type_signal_portal_record_changed signal_portal_record_changed();
     
   bool get_has_suitable_record_to_view_details() const;
+
+  /** Discover what table to show when clicking on a related record.
+   * This table will not necessarily just be the directly related table.
+   *
+   * @param table_name The table that should be shown.
+   * @param relationship The relationship in the directly related table that should be used to get to that table. If this is empty then we should just show the table directly.
+   */
   void get_suitable_table_to_view_details(Glib::ustring& table_name, sharedptr<const UsesRelationship>& relationship) const;
+
+  /** Discover what record to show, in what table, when clicking on a related record.
+   * This record will not necessarily just be the directly related record.
+   *
+   * @param primary_key_value Identifies the related record that has been clicked.
+   * @param table_name The table that should be shown.
+   * @param table_primary_key_value Identifies the record in that table that should be shown.
+   */
   void get_suitable_record_to_view_details(const Gnome::Gda::Value& primary_key_value, Glib::ustring& table_name, Gnome::Gda::Value& table_primary_key_value) const;
 
 protected:
