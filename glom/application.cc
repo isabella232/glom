@@ -386,10 +386,12 @@ void Application::init_menus()
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_EditTables) );
   m_listDeveloperActions.push_back(action);
 
+/* Commented out because it is useful but confusing to new users:
   action = Gtk::Action::create("GlomAction_Menu_AddRelatedTable", _("Add _Related Table"));
   m_refActionGroup_Others->add(action,
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_AddRelatedTable) );
   m_listDeveloperActions.push_back(action);
+*/
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   //"Reports" menu:
@@ -545,7 +547,9 @@ void Application::init_menus()
     "        <separator />"
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     "        <menuitem action='GlomAction_Menu_EditTables' />"
+/* Commented out because it is useful but confusing to new users:
     "        <menuitem action='GlomAction_Menu_AddRelatedTable' />"
+*/
 #endif // !GLOM_ENABLE_CLIENT_ONLY
     "     </menu>"
     "     <menu action='Glom_Menu_Reports'>"

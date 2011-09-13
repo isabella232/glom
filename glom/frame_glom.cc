@@ -1088,6 +1088,7 @@ void Frame_Glom::on_menu_Tables_EditTables()
   do_menu_Navigate_Table();
 }
 
+/* Commented out because it is useful but confusing to new users:
 void Frame_Glom::on_menu_Tables_AddRelatedTable()
 {
   //Delete and recreate the dialog,
@@ -1118,6 +1119,7 @@ void Frame_Glom::on_menu_Tables_AddRelatedTable()
   m_dialog_addrelatedtable->set_modal(); //We don't want people to edit the main window while we are changing structure.
   m_dialog_addrelatedtable->show();
 }
+*/
 
 #endif
 

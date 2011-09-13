@@ -95,18 +95,15 @@ public:
 
   void on_menu_report_selected(const Glib::ustring& report_name);
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  void on_menu_print_layout_selected(const Glib::ustring& print_layout_name);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-  //virtual void on_menu_Navigate_Database();
-  //virtual void do_menu_Navigate_Database(bool bUseList = true);
-
   void do_menu_Navigate_Table(bool open_default = false);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+  void on_menu_print_layout_selected(const Glib::ustring& print_layout_name);
   void on_menu_Tables_EditTables();
+
+/* Commented out because it is useful but confusing to new users:
   void on_menu_Tables_AddRelatedTable();
+*/
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

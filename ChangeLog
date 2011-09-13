@@ -1,3 +1,14 @@
+2011-09-13  Murray Cumming  <murrayc@murrayc.com>>
+
+	Remove the Add Related Table feature.
+
+	* glom/application.cc: init_menus():
+	* glom/frame_glom.[h|cc]: on_menu_Tables_AddRelatedTable(): Remove the 
+	Tables/Add Related Table menu item (and feature) because, though it is 
+	useful, it requires explanation and is probably confusing to new users.
+	
+	Of course you can still add tables and then a relationship to them manually.
+
 1.19.10:
 
 2011-09-12  Murray Cumming  <murrayc@murrayc.com>
