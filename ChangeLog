@@ -1,9 +1,17 @@
-2011-09-19  Murray Cumming  <murrayc@murrayc-desktop>
+2011-09-19  Murray Cumming  <murrayc@murrayc.com>
 
-	reviewed by: <delete if not using a buddy>
+	Print Layout: Use the correct numeric formatting.
 
-	* glom/utility_widgets/canvas/canvas_image_movable.cc:
-	* glom/utility_widgets/imageglom.cc:
+	* glom/print_layout/canvas_print_layout.cc: set_canvas_item_field_value():
+	For instance, use the default field formatting. Otherwise numbers tend 
+	to have thousands separators and no decimal places by default.
+
+2011-09-19  Murray Cumming  <murrayc@murrayc.com>
+
+	Images: Avoid a warning when choosing.
+    
+        * glom/utility_widgets/imageglom.cc: on_menupopup_activate_select_file():
+        Avoid a warning about reinitializing a GValue when choosing an image file.
 
 2011-09-13  Murray Cumming  <murrayc@murrayc.com>>
 

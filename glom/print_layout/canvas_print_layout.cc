@@ -799,10 +799,10 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
   //TODO: Add a function to goocanvas for this.
   //TODO: Move the child stuff into group in goocanvas.
 
-  LayoutGroup::type_list_items child_layout_items = portal->get_items();
+  const LayoutGroup::type_list_items child_layout_items = portal->get_items();
 
   //Build and run the SQL query for this portal:
-  type_vecConstLayoutFields fields_shown = get_portal_fields_to_show(portal);
+  const type_vecConstLayoutFields fields_shown = get_portal_fields_to_show(portal);
 
   FoundSet found_set;
   found_set.m_table_name = portal->get_table_used(Glib::ustring() /* parent table_name, not used. */);
@@ -830,7 +830,7 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
   for(int row = 0; row < rows_count; ++row)
   {
     int db_col = 0;
-    LayoutGroup::type_list_items::iterator iter_child_layout_items = child_layout_items.begin();
+    LayoutGroup::type_list_items::const_iterator iter_child_layout_items = child_layout_items.begin();
     for(int col = 0; col < cols_count; ++col)
     {
       //Glib::RefPtr<Goocanvas::Item> canvas_child = base_item->get_cell_child(row, col); //TODO: Add this to Goocanvas::Table.
@@ -885,10 +885,22 @@ void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanva
       return;
     }
 
-    //FieldFormatting& formatting = field->m_formatting;
-    //apply_formatting(canvas_item, formatting);
-    const Glib::ustring text =
-      Conversions::get_text_for_gda_value(field->get_glom_type(), value, field->m_formatting.m_numeric_format);
+    Glib::ustring text;
+
+    sharedptr<LayoutItem_WithFormatting> with_formatting = 
+      sharedptr<LayoutItem_WithFormatting>::cast_dynamic(field);
+    if(with_formatting)
+    {
+      const FieldFormatting& formatting = with_formatting->get_formatting_used();
+      text = Conversions::get_text_for_gda_value(field->get_glom_type(), 
+        value, formatting.m_numeric_format);
+    }
+    else
+    {
+      text = Conversions::get_text_for_gda_value(field->get_glom_type(), 
+        value);
+    }
+
     canvas_text->set_text(text);
   }
 }
