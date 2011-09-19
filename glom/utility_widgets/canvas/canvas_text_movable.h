@@ -79,7 +79,7 @@ private:
   //What corner is considered when snapping to a grid while moving:
   Corners m_snap_corner;
 
-  //We rememeber this so we can reconstruct the pango markup when the text size changes:
+  //We remember this so we can reconstruct the pango markup when the text size changes:
   Glib::ustring m_text;
   Glib::ustring m_font;
 };

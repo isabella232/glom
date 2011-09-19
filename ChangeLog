@@ -17,6 +17,14 @@
 
 2011-09-19  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Use foregroud colors from the text/field formatting.
+
+	* glom/print_layout/canvas_layout_item.cc: apply_formatting():
+	Correctly use the foreground color, though the background color is not 
+	used yet.
+
+2011-09-19  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Use the correct numeric formatting.
 
 	* glom/print_layout/canvas_print_layout.cc: set_canvas_item_field_value():

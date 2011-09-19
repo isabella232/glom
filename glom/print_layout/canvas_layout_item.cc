@@ -107,13 +107,14 @@ void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& c
   const Glib::ustring fg = formatting.get_text_format_color_foreground();
   if(!fg.empty())
   {
-    canvas_item->property_stroke_color() = fg;
+    //GooCanvasText uses fill-color for the text foreground color.
+    //Presumably stroke-color would be an outline, if we had a line-width of >0 width.
+    canvas_item->property_fill_color() = fg;
   }
-
   const Glib::ustring bg = formatting.get_text_format_color_background();
   if(!bg.empty())
   {
-    canvas_item->property_fill_color() = bg;
+    //TODO: Add a filled rectangle.
   }
 }
 
