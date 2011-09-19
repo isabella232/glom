@@ -799,7 +799,9 @@ void ImageGlom::on_menupopup_activate_select_file()
           bin->binary_length = image_data->binary_length;
 
           m_original_data = Gnome::Gda::Value();
-          m_original_data.Glib::ValueBase::init(GDA_TYPE_BINARY);
+          
+          g_value_unset(m_original_data.gobj());
+          g_value_init(m_original_data.gobj(), GDA_TYPE_BINARY);
           gda_value_take_binary(m_original_data.gobj(), bin);
 
           show_image_data();
