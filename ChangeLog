@@ -1,5 +1,11 @@
 2011-09-20  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Layout: Fix alignment/expansion of the line options.
+
+	* ui/developer/window_data_layout.glade: Remove some horizontal expand=true.
+
+2011-09-20  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Related Records: Do not show editing formatting options.
 
 	* glom/mode_design/layout/dialog_layout.[h|cc]: Add m_editable_layout, 
