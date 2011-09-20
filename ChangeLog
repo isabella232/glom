@@ -1,5 +1,12 @@
 2011-09-20  Murray Cumming  <murrayc@murrayc.com>
 
+	Details: Avoid an empty layout when changing to developer mode.
+
+	* glom/mode_data/box_data_details.cc: on_userlevel_changed(): Recreate 
+	and refill the layout, instead of just recreating it.
+
+2011-09-20  Murray Cumming  <murrayc@murrayc.com>
+
 	Some checks for GValues with invalid types.
 
 	* glom/libglom/data_structure/glomconversions.cc: value_is_empty():
