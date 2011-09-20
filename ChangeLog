@@ -21,8 +21,8 @@
 
 	Images: Avoid a warning when choosing.
     
-        * glom/utility_widgets/imageglom.cc: on_menupopup_activate_select_file():
-        Avoid a warning about reinitializing a GValue when choosing an image file.
+  * glom/utility_widgets/imageglom.cc: on_menupopup_activate_select_file():
+  Avoid a warning about reinitializing a GValue when choosing an image file.
 
 2011-09-13  Murray Cumming  <murrayc@murrayc.com>>
 
