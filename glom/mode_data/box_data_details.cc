@@ -164,7 +164,7 @@ void Box_Data_Details::set_found_set_from_primary_key_value()
   if(!m_field_primary_key)
     return;
 
-  if(!m_primary_key_value.is_null())
+  if(!Conversions::value_is_empty(m_primary_key_value))
   {
     m_found_set.m_where_clause = Utils::build_simple_where_expression(
        m_table_name, m_field_primary_key, m_primary_key_value);
@@ -984,7 +984,7 @@ void Box_Data_Details::print_layout()
     //The groups:
     xmlpp::Element* nodeParent = nodeRoot;
 
-    Document::type_list_layout_groups layout_groups = get_data_layout_groups(m_layout_name, m_layout_platform);
+    const Document::type_list_layout_groups layout_groups = get_data_layout_groups(m_layout_name, m_layout_platform);
     for(Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
     {
       sharedptr<const LayoutGroup> layout_group = *iter;

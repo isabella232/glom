@@ -905,10 +905,12 @@ bool Conversions::value_is_empty(const Gnome::Gda::Value& value)
 
   switch(value.get_value_type())
   {
+    case(0):
+      return true; //Empty and invalid. It has not been initalized with a type.
     case(G_TYPE_STRING):
       return value.get_string().empty();
     default:
-      return false; //None of the other types can be empty. (An empty numeric, date, or time type shows up as a NULL).
+      return false; //None of the other types can be empty. (An empty numeric, date, or time type shows up as a GDA_TYPE_NULL).
   }
 }
 
