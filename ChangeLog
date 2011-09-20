@@ -9,7 +9,7 @@
 	Print Layout: Related Records: Do not show editing formatting options.
 
 	* glom/mode_design/layout/dialog_layout.[h|cc]: Add m_editable_layout, 
-  defaulting to true.
+	defaulting to true.
 	* glom/mode_design/layout/dialog_layout_details.cc: on_button_formatting():
 	Use m_editable_layout to avoid showing some formatting options.
 	* glom/mode_design/layout/dialog_layout_list_related.cc: set_document():
@@ -17,7 +17,7 @@
 
 2011-09-19  Murray Cumming  <murrayc@murrayc.com>
 
-	Print Layout: Use foregroud colors from the text/field formatting.
+	Print Layout: Use foreground colors from the text/field formatting.
 
 	* glom/print_layout/canvas_layout_item.cc: apply_formatting():
 	Correctly use the foreground color, though the background color is not 
@@ -35,8 +35,8 @@
 
 	Images: Avoid a warning when choosing.
     
-  * glom/utility_widgets/imageglom.cc: on_menupopup_activate_select_file():
-  Avoid a warning about reinitializing a GValue when choosing an image file.
+	* glom/utility_widgets/imageglom.cc: on_menupopup_activate_select_file():
+	Avoid a warning about reinitializing a GValue when choosing an image file.
 
 2011-09-13  Murray Cumming  <murrayc@murrayc.com>>
 
