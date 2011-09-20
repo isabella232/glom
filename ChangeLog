@@ -1,3 +1,14 @@
+2011-09-20  Murray Cumming  <murrayc@murrayc.com>
+
+	Print Layout: Related Records: Do not show editing formatting options.
+
+	* glom/mode_design/layout/dialog_layout.[h|cc]: Add m_editable_layout, 
+  defaulting to true.
+	* glom/mode_design/layout/dialog_layout_details.cc: on_button_formatting():
+	Use m_editable_layout to avoid showing some formatting options.
+	* glom/mode_design/layout/dialog_layout_list_related.cc: set_document():
+	Set m_editable_layout to false for print layout.
+
 2011-09-19  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Use the correct numeric formatting.

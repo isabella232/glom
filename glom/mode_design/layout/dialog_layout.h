@@ -72,6 +72,10 @@ protected:
   Glib::ustring m_table_name;
   Glib::ustring m_layout_name, m_layout_platform; //As in the document.
 
+  //Whether the layout is for a view that allows editing.
+  //If so, various editing options will be available in the formatting.
+  bool m_editable_layout;
+  
   bool m_modified;
 };
 

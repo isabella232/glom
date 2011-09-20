@@ -895,7 +895,7 @@ void Dialog_Layout_Details::on_button_formatting()
       if(field)
       {
         //Handle field formatting, which includes more than the generic formatting stuff:
-        sharedptr<LayoutItem_Field> chosenitem = offer_field_formatting(field, get_fields_table(), this);
+        sharedptr<LayoutItem_Field> chosenitem = offer_field_formatting(field, get_fields_table(), this, m_editable_layout);
         if(chosenitem)
         {
           *field = *chosenitem; //TODO_Performance.

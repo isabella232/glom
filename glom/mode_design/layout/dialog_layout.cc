@@ -29,6 +29,7 @@ Dialog_Layout::Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Bu
 : Gtk::Dialog(cobject),
   m_entry_table_title(0),
   m_label_table_title(0),
+  m_editable_layout(true),
   m_modified(false)
 {
   Gtk::Button* button = 0;

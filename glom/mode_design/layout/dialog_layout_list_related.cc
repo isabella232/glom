@@ -48,7 +48,7 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   m_spinbutton_row_line_width(0),
   m_spinbutton_column_line_width(0),
   m_colorbutton_line(0)
-{
+{  
   // Show the appropriate alternate widgets:
   m_box_table_widgets->hide();
   m_box_related_table_widgets->show();
@@ -146,8 +146,11 @@ void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout_name, 
 
     Gdk::Color color( portal->get_print_layout_line_color() );
     m_colorbutton_line->set_color(color);
+
+    //Avoid showing formatting options that are about editing:
+    m_editable_layout = false;
   }
-  
+
   update_ui();
 }
 

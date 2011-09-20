@@ -480,7 +480,7 @@ void Canvas_PrintLayout::on_context_menu_formatting()
   m_dialog_format->signal_hide().connect( sigc::mem_fun(*this, &Canvas_PrintLayout::on_dialog_format_hide) );
 
   //We need an if here, because they have no common base class.
-  //TODO: Maybe they should.
+  //TODO: Maybe they should. TODO: Maybe they already do.
   if(layout_item_field)
   {
     const FieldFormatting& formatting = layout_item_field->m_formatting;
