@@ -4118,13 +4118,18 @@ sharedptr<const Relationship> Document::get_field_used_in_relationship_to_one(co
   type_tables::const_iterator iterFind = m_tables.find(table_used);
   if(iterFind == m_tables.end())
   {
+    //This table is special. We would not create a relationship to it using a field:
+    if(table_used == GLOM_STANDARD_TABLE_PREFS_TABLE_NAME)
+      return result;
+     
     std::cerr << G_STRFUNC << ": table not found:" << table_used << std::endl;
     return result;
   }
 
   //Look at each relationship:
+  const DocumentTableInfo& table_info = iterFind->second;
   const Glib::ustring field_name = layout_field->get_name();
-  for(type_vec_relationships::const_iterator iterRel = iterFind->second.m_relationships.begin(); iterRel != iterFind->second.m_relationships.end(); ++iterRel)
+  for(type_vec_relationships::const_iterator iterRel = table_info.m_relationships.begin(); iterRel != table_info.m_relationships.end(); ++iterRel)
   {
     sharedptr<const Relationship> relationship = *iterRel;
     if(relationship)

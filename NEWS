@@ -1,6 +1,5 @@
 1.19.11 (unstable):
 
-
 * Details:
   - Avoid an empty layout when changing to developer mode.
   (Requires libgdamm 4.99.4)

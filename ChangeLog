@@ -1,5 +1,12 @@
 2011-09-21  Murray Cumming  <murrayc@murrayc.com>
 
+	Details: Avoid warning when using System Preferences fields.
+
+	* glom/libglom/document/document.cc: get_field_used_in_relationship_to_one():
+	Do not complain when the system preferences table is not found.
+
+2011-09-21  Murray Cumming  <murrayc@murrayc.com>
+
 	Avoid "m_backend is NULL" warning at startup.
 
 	* glom/libglom/connectionpool.[h|cc]: Added get_instance_is_ready().
