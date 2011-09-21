@@ -1207,11 +1207,24 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord
     return result;
   }
 
+  //Check that there is a key value, if there should be one:
+  //System Preferences, for instance, should not need a key to identify the record:
   if(!(field_in_record.m_key))
   {
-    std::cerr << G_STRFUNC << ": field_in_record.m_key is empty." << std::endl;
-    return result;
+    Glib::ustring to_field;
+    if(field_in_record.m_field &&
+      field_in_record.m_field->get_relationship())
+    {
+      to_field = field_in_record.m_field->get_relationship()->get_to_field();
+    }
+      
+    if(!to_field.empty())
+    {
+      std::cerr << G_STRFUNC << ": field_in_record.m_key is empty." << std::endl;
+      return result;
+    }
   }
+  
 
   type_vecConstLayoutFields list_fields;
   sharedptr<const LayoutItem_Field> layout_item = field_in_record.m_field;

@@ -578,7 +578,7 @@ sharedptr<TableInfo> Document::create_table_system_preferences(type_vec_fields& 
 
 bool Document::get_relationship_is_system_properties(const sharedptr<const Relationship>& relationship)
 {
-  return relationship->get_name() == GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES;
+  return relationship && (relationship->get_name() == GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES);
 }
 
 sharedptr<Relationship> Document::get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const

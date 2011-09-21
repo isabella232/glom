@@ -192,6 +192,8 @@ void Canvas_PrintLayout::add_canvas_layout_item(const Glib::RefPtr<CanvasLayoutI
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
    item->set_outline_visible(m_outline_visibility);
+
+   fill_with_data_system_preferences(item, get_document());
 }
 
 void Canvas_PrintLayout::remove_canvas_layout_item(const Glib::RefPtr<CanvasLayoutItem>& item)
@@ -268,7 +270,7 @@ void Canvas_PrintLayout::setup_context_menu()
     sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_insert_text) );
 */
 
-  m_action_edit =  Gtk::Action::create("ContextMenuEdit", Gtk::Stock::EDIT);
+  m_action_edit = Gtk::Action::create("ContextMenuEdit", Gtk::Stock::EDIT);
   m_context_menu_action_group->add(m_action_edit);
   m_action_formatting =  Gtk::Action::create("ContextMenuFormatting", _("_Formatting"));
   m_context_menu_action_group->add(m_action_formatting);
@@ -406,6 +408,7 @@ void Canvas_PrintLayout::on_context_menu_edit()
       field_chosen->set_formatting_use_default(false);
 
       m_context_item->set_layout_item(field_chosen);
+      fill_with_data_system_preferences(m_context_item, get_document());
     }
   }
   else
@@ -657,6 +660,43 @@ void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set)
   fill_with_data(m_items_group, found_set);
 }
 
+void Canvas_PrintLayout::fill_with_data_system_preferences(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, Document* document)
+{
+  sharedptr<LayoutItem_Field> layoutitem_field = 
+    sharedptr<LayoutItem_Field>::cast_dynamic(
+      canvas_item->get_layout_item());
+  if(!layoutitem_field)
+    return;
+  
+  bool empty = true;
+  if(!layoutitem_field->get_name().empty())
+  {
+    const sharedptr<const Relationship> relationship = 
+      layoutitem_field->get_relationship();
+
+    if(!document)
+    {
+      std::cerr << G_STRFUNC << ": document is null" << std::endl;
+      return;
+    }
+
+    if(document->get_relationship_is_system_properties(relationship))
+      empty = false;
+  }
+
+  if(!empty)
+  {
+    LayoutFieldInRecord field_in_record;
+    field_in_record.m_field = layoutitem_field;
+    field_in_record.m_table_name = m_table_name;
+    const Gnome::Gda::Value value = get_field_value_in_database(
+     field_in_record, 0 /* TODO: parent window */);
+    if(!Glom::Conversions::value_is_empty(value))
+      canvas_item->set_db_data(value);
+  }
+}
+ 
+
 void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& canvas_group, const FoundSet& found_set)
 {
   //A map of the text representation (e.g. field_name or relationship::field_name) to the index:
@@ -700,7 +740,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
         sharedptr<const Relationship> relationship = layoutitem_portal->get_relationship();
         if(relationship)
         {
-          sharedptr<Field> from_field = get_fields_for_table_one_field(relationship->get_from_table(), relationship->get_from_field());
+          const sharedptr<Field> from_field = get_fields_for_table_one_field(relationship->get_from_table(), relationship->get_from_field());
           const Gnome::Gda::Value from_key_value = get_field_value_in_database(from_field, found_set, 0 /* TODO: window */);
           fill_with_data_portal(canvas_item, from_key_value);
         }

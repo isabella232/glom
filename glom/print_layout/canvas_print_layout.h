@@ -62,6 +62,12 @@ public:
 
   void remove_canvas_layout_item(const Glib::RefPtr<CanvasLayoutItem>& item);
 
+  /** If the item is a field from the System Preferences table,
+   * show the content instead of the field name,
+   * because it will be the same for all records.
+   */
+  void fill_with_data_system_preferences(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, Document* document);
+
   void fill_with_data(const FoundSet& found_set);
 
   virtual void set_grid_gap(double gap = 20.0);

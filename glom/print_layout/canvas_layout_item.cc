@@ -287,7 +287,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
             //Show as many rows as can fit in the height.
             double row_height = 0;
             const int max_rows = get_rows_count_for_portal(portal, row_height);
-            std::cout << "DEBUG: max_rows=" << max_rows << ", row_height=" << row_height << std::endl;
+            //std::cout << "DEBUG: max_rows=" << max_rows << ", row_height=" << row_height << std::endl;
 
             const LayoutGroup::type_list_items child_items = portal->get_items();
 
@@ -410,7 +410,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
       if(text_value.empty() && sharedptr<const LayoutItem_FieldSummary>::cast_dynamic(field) && (field_type == Field::TYPE_NUMERIC))
       {
         //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
-        Gnome::Gda::Value value = Conversions::parse_value(0);
+        const Gnome::Gda::Value value = Conversions::parse_value(0);
         text_value = Conversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
       }
 
@@ -430,8 +430,10 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
       canvas_item->get_width_height(width, height);
 
       Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::get_pixbuf_for_gda_value(value);
-      if(pixbuf) //TODO: Remove this if() check when goocanvas has my patch to avoid crashes when this is NULL.
+      if(pixbuf)
         canvas_item->set_image(pixbuf);
+      else
+        canvas_item->set_image_empty();
 
       break;
     }

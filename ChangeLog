@@ -1,5 +1,20 @@
 2011-09-21  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Show contents of System Preferences in Fields.
+
+	* glom/base_db.cc: get_field_value_in_database(): Only complain about 
+	a missing key if the relationship needs one.
+	* glom/libglom/document/document.cc:
+	* glom/print_layout/canvas_layout_item.cc: set_db_data(): Show an 
+	empty image if there is no pixbuf.
+	* glom/print_layout/canvas_print_layout.[h|cc]: Added 
+	fill_with_data_system_preferences() to show details from the system 
+	preferences, if appropriate. This is possible because we do not need a 
+	specific record to show values from the one record in System Preferences.
+	add_canvas_layout_item(), on_context_menu_edit(): Call it.
+
+2011-09-21  Murray Cumming  <murrayc@murrayc.com>
+
 	Details: Avoid warning when using System Preferences fields.
 
 	* glom/libglom/document/document.cc: get_field_used_in_relationship_to_one():
