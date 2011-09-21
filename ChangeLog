@@ -1,3 +1,11 @@
+2011-09-21  Murray Cumming  <murrayc@murrayc.com>
+
+	Avoid "m_backend is NULL" warning at startup.
+
+	* glom/libglom/connectionpool.[h|cc]: Added get_instance_is_ready().
+	* glom/application.cc: update_userlevel_ui(): Use it, because it might not 
+	be ready, causing a (harmless) stderr warning.
+
 1.19.11:
 
 2011-09-21  Murray Cumming  <murrayc@murrayc.com>

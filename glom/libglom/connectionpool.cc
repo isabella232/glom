@@ -225,6 +225,14 @@ sharedptr<SharedConnection> ConnectionPool::get_and_connect()
   return result;
 }
 
+bool ConnectionPool::get_instance_is_ready()
+{
+  ConnectionPool* instance = get_instance();
+  if(!instance)
+    return false;
+
+  return instance->get_ready_to_connect();
+}
 
 
 // Store the connection for a few seconds in case it

@@ -1412,14 +1412,17 @@ void Application::update_userlevel_ui()
   // support users
   if(userlevel == AppState::USERLEVEL_DEVELOPER)
   {
-    sharedptr<SharedConnection> connection = ConnectionPool::get_and_connect();
-    if(connection && !connection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
-      m_action_developer_users->set_sensitive(false);
+    if(ConnectionPool::get_instance_is_ready())
+    {
+      sharedptr<SharedConnection> connection = ConnectionPool::get_and_connect();
+      if(connection && !connection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
+        m_action_developer_users->set_sensitive(false);
+    }
   }
 
   //Make sure that the correct radio menu item is activated (the userlevel might have been set programmatically):
   //We only need to set/unset one, because the others are in the same radio group.
-  if(userlevel ==  AppState::USERLEVEL_DEVELOPER)
+  if(userlevel == AppState::USERLEVEL_DEVELOPER)
   {
     if(!m_action_menu_developer_developer->get_active())
       m_action_menu_developer_developer->set_active();

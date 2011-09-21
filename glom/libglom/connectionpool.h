@@ -98,6 +98,10 @@ public:
    * Use delete_instance() when the program quits.
    */
   static ConnectionPool* get_instance();
+  
+  /** Whether the connection is ready to be used.
+   */ 
+  static bool get_instance_is_ready();
 
   /** Make the ConnectionPool use the correct backend, with the necessary details,
    * as required by the document.
