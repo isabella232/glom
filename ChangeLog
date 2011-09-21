@@ -1,3 +1,5 @@
+1.19.11:
+
 2011-09-21  Murray Cumming  <murrayc@murrayc.com>
 
 	Require latest libgdamm, for the Value::operator=() fix.

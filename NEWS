@@ -1,3 +1,20 @@
+1.19.11 (unstable):
+
+
+* Details:
+  - Avoid an empty layout when changing to developer mode.
+  (Requires libgdamm 4.99.4)
+  - Images: Avoid a warning when choosing.
+* Print Layout:
+  - Use the correct numeric formatting.
+  - Use foreground colors from the text/field formatting.
+  - Related Records: Do not show editing formatting options.
+  - Layout: Fix alignment/expansion of the line options.
+* Remove the Add Related Table feature.
+  It is useful, but it requires explanation and is probably confusing to new users.
+	Of course you can still add tables and then a relationship to them manually.
+  (Murray Cumming)
+	
 1.19.10 (unstable):
 
 * Print Layout: Major overhaul to editing UI so it should be almost useable now.
