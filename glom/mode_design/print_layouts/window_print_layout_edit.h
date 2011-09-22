@@ -82,6 +82,11 @@ private:
   void on_menu_edit_delete();
   void on_menu_edit_selectall();
   void on_menu_edit_unselectall();
+  
+  void on_menu_align_top();
+  void on_menu_align_bottom();
+  void on_menu_align_left();
+  void on_menu_align_right();
 
   bool on_canvas_motion_notify_event(GdkEventMotion* event);
   void on_canvas_show_context_menu(guint button, guint32 activate_time);
@@ -180,6 +185,10 @@ private:
   //Edit menu:
   Glib::RefPtr<Gtk::Action> m_action_edit_cut, m_action_edit_copy, 
     m_action_edit_paste, m_action_edit_delete;
+    
+  //Align menu:
+  Glib::RefPtr<Gtk::Action> m_action_align_top, m_action_align_bottom, 
+    m_action_align_left, m_action_align_right;
 
   //Toolbar:
   Gtk::HandleBox* m_palette_handle_box; //TODO: The toolbar is already a HandleBox.

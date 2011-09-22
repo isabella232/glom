@@ -239,6 +239,26 @@ void Window_PrintLayout_Edit::init_menu()
   m_action_group->add(Gtk::Action::create("Action_Menu_Insert_LineVertical", _("Insert _Vertical Line")),
                         sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_line_vertical) );
 
+
+  m_action_group->add(Gtk::Action::create("Menu_Align", _("_Align")));
+
+  m_action_align_top = Gtk::Action::create("Action_Menu_Align_Top", _("Align _Top"));
+  m_action_group->add(m_action_align_top,
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_align_top) );
+
+  m_action_align_bottom = Gtk::Action::create("Action_Menu_Align_Bottom", _("Align _Bottom"));
+  m_action_group->add(m_action_align_bottom,
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_align_bottom) );
+  
+  m_action_align_left = Gtk::Action::create("Action_Menu_Align_Left", _("Align _Left"));
+  m_action_group->add(m_action_align_left,
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_align_left) );
+
+  m_action_align_right = Gtk::Action::create("Action_Menu_Align_Right", _("Align _Right"));
+  m_action_group->add(m_action_align_right,
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_align_right) );
+
+
   m_action_group->add(Gtk::Action::create("Menu_View", _("_View")));
   m_action_showgrid = Gtk::ToggleAction::create("Action_Menu_View_ShowGrid", _("Show Grid"));
   m_action_group->add(m_action_showgrid, sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_show_grid));
@@ -293,6 +313,12 @@ void Window_PrintLayout_Edit::init_menu()
     "        <menuitem action='Action_Menu_Insert_RelatedRecords' />"
     "        <menuitem action='Action_Menu_Insert_LineHorizontal' />"
     "        <menuitem action='Action_Menu_Insert_LineVertical' />"
+    "      </menu>"
+    "      <menu action='Menu_Align'>"
+    "        <menuitem action='Action_Menu_Align_Top' />"
+    "        <menuitem action='Action_Menu_Align_Bottom' />"
+    "        <menuitem action='Action_Menu_Align_Left' />"
+    "        <menuitem action='Action_Menu_Align_Right' />"
     "      </menu>"
     "      <menu action='Menu_View'>"
     "        <menuitem action='Action_Menu_View_ShowGrid' />"
@@ -1061,6 +1087,174 @@ void Window_PrintLayout_Edit::on_menu_edit_selectall()
 void Window_PrintLayout_Edit::on_menu_edit_unselectall()
 {
   m_canvas.select_all(false);
+}
+
+void Window_PrintLayout_Edit::on_menu_align_top()
+{
+  //Get the top-most position:
+  double top = 0;
+  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
+    iter != m_layout_items_selected.end(); ++iter)
+  {
+    Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
+    if(!selected_item)
+      continue;
+
+    double x = 0;
+    double y = 0;
+    selected_item->get_xy(x, y);
+
+    if(iter == m_layout_items_selected.begin())
+      top = y;
+    else if(y < top)
+      top = y;
+  }
+  
+  //Give all items the same top position:
+  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
+    iter != m_layout_items_selected.end(); ++iter)
+  {
+    Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
+    if(!selected_item)
+      continue;
+
+    double x = 0;
+    double y = 0;
+    selected_item->get_xy(x, y);
+    selected_item->set_xy(x, top);
+  }
+}
+
+void Window_PrintLayout_Edit::on_menu_align_bottom()
+{
+  //Get the bottom-most position:
+  double bottom = 0;
+  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
+    iter != m_layout_items_selected.end(); ++iter)
+  {
+    Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
+    if(!selected_item)
+      continue;
+
+    double x = 0;
+    double y = 0;
+    selected_item->get_xy(x, y);
+    
+    double width = 0;
+    double height = 0;
+    selected_item->get_width_height(width, height);
+    const double this_bottom = y + height;
+
+    if(iter == m_layout_items_selected.begin())
+      bottom = this_bottom;
+    else if(this_bottom > bottom)
+      bottom = this_bottom;
+  }
+  
+  //Give all items the same top position:
+  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
+    iter != m_layout_items_selected.end(); ++iter)
+  {
+    Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
+    if(!selected_item)
+      continue;
+
+    double x = 0;
+    double y = 0;
+    selected_item->get_xy(x, y);
+    
+    double width = 0;
+    double height = 0;
+    selected_item->get_width_height(width, height);
+    const double this_bottom = y + height;
+
+    const double new_y = y + (bottom - this_bottom);
+    selected_item->set_xy(x, new_y);
+  }
+}
+
+void Window_PrintLayout_Edit::on_menu_align_left()
+{
+  //Get the left-most position:
+  double left = 0;
+  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
+    iter != m_layout_items_selected.end(); ++iter)
+  {
+    Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
+    if(!selected_item)
+      continue;
+
+    double x = 0;
+    double y = 0;
+    selected_item->get_xy(x, y);
+
+    if(iter == m_layout_items_selected.begin())
+      left = x;
+    else if(x < left)
+      left = x;
+  }
+  
+  //Give all items the same left position:
+  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
+    iter != m_layout_items_selected.end(); ++iter)
+  {
+    Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
+    if(!selected_item)
+      continue;
+
+    double x = 0;
+    double y = 0;
+    selected_item->get_xy(x, y);
+    selected_item->set_xy(left, y);
+  }
+}
+
+void Window_PrintLayout_Edit::on_menu_align_right()
+{
+  //Get the right-most position:
+  double right = 0;
+  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
+    iter != m_layout_items_selected.end(); ++iter)
+  {
+    Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
+    if(!selected_item)
+      continue;
+
+    double x = 0;
+    double y = 0;
+    selected_item->get_xy(x, y);
+    
+    double width = 0;
+    double height = 0;
+    selected_item->get_width_height(width, height);
+    const double this_right = x + width;
+
+    if(iter == m_layout_items_selected.begin())
+      right = this_right;
+    else if(this_right > right)
+      right = this_right;
+  }
+  
+  //Give all items the same top position:
+  for(type_vec_canvas_items::iterator iter = m_layout_items_selected.begin();
+    iter != m_layout_items_selected.end(); ++iter)
+  {
+    Glib::RefPtr<CanvasLayoutItem> selected_item = *iter;
+    if(!selected_item)
+      continue;
+
+    double x = 0;
+    double y = 0;
+    selected_item->get_xy(x, y);
+    
+    double width = 0;
+    double height = 0;
+    selected_item->get_width_height(width, height);
+    const double this_right = x + width;
+
+    const double new_x = x + (right - this_right);
+    selected_item->set_xy(new_x, y);
+  }
 }
 
 static void spinbutton_set_max(Gtk::SpinButton& spinbutton, double max)

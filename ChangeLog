@@ -1,5 +1,13 @@
 2011-09-22  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Add an Align menu.
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]: Add 
+	menu items for align top, bottom, left, and right. I don't much like the 
+	copy/pasteness of the code, but it works.
+
+2011-09-22  Murray Cumming  <murrayc@murrayc.com>
+
 	Layout window: Correct the vertical order of Add buttons.
 
 	* ui/developer/window_data_layout.glade: This has been mixed up since some 
