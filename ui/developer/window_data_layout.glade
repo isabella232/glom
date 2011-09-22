@@ -195,11 +195,70 @@
                         <property name="can_focus">False</property>
                         <property name="spacing">6</property>
                         <child>
+                          <object class="GtkButton" id="button_add_field">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="can_default">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="has_tooltip">True</property>
+                            <property name="tooltip_markup" translatable="yes">Add a layout item that shows the data from a field in the record, and allows the user to edit that value.</property>
+                            <property name="tooltip_text" translatable="yes">Add a layout item that shows the data from a field in the record, and allows the user to edit that value.</property>
+                            <property name="use_action_appearance">False</property>
+                            <child>
+                              <object class="GtkAlignment" id="alignment3">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xscale">0</property>
+                                <property name="yscale">0</property>
+                                <child>
+                                  <object class="GtkHBox" id="hbox3">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="spacing">2</property>
+                                    <child>
+                                      <object class="GtkImage" id="image2">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="stock">gtk-add</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="label4">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">Add Field</property>
+                                        <property name="use_underline">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
                           <object class="GtkButton" id="button_add_text">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
-                            <property name="receives_default">False</property>
+                            <property name="receives_default">True</property>
+                            <property name="has_tooltip">True</property>
+                            <property name="tooltip_markup" translatable="yes">Add text to a layout, such as an explanation or a warning. The text will be the same for every record viewed.</property>
                             <property name="tooltip_text" translatable="yes">Add text to a layout, such as an explanation or a warning. The text will be the same for every record viewed.</property>
                             <property name="use_action_appearance">False</property>
                             <child>
@@ -250,285 +309,13 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkButton" id="button_add_button">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="can_default">True</property>
-                            <property name="receives_default">False</property>
-                            <property name="tooltip_text" translatable="yes">Add a button. Edit the button to define the script that will be run when the button is clicked.</property>
-                            <property name="use_action_appearance">False</property>
-                            <child>
-                              <object class="GtkAlignment" id="alignment78">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="xscale">0</property>
-                                <property name="yscale">0</property>
-                                <child>
-                                  <object class="GtkHBox" id="hbox100">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="spacing">2</property>
-                                    <child>
-                                      <object class="GtkImage" id="image42">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="stock">gtk-add</property>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">0</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel" id="label228">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">Add Button</property>
-                                        <property name="use_underline">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">1</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="button_add_notebook">
-                            <property name="can_focus">True</property>
-                            <property name="can_default">True</property>
-                            <property name="receives_default">False</property>
-                            <property name="tooltip_text" translatable="yes">Add a tabbed notebook. Each page of the notebook may contain several other layout items, but only one page will be visible at one time.</property>
-                            <property name="use_action_appearance">False</property>
-                            <child>
-                              <object class="GtkAlignment" id="alignment85">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="xscale">0</property>
-                                <property name="yscale">0</property>
-                                <child>
-                                  <object class="GtkHBox" id="hbox109">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="spacing">2</property>
-                                    <child>
-                                      <object class="GtkImage" id="image46">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="stock">gtk-add</property>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">0</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel" id="label236">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">Add Notebook</property>
-                                        <property name="use_underline">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">1</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">3</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="button_add_related_calendar">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="can_default">True</property>
-                            <property name="receives_default">False</property>
-                            <property name="tooltip_text" translatable="yes">Add a related records calendar portal. This is a calendar showing records from a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table.</property>
-                            <property name="use_action_appearance">False</property>
-                            <child>
-                              <object class="GtkAlignment" id="alignment1">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="xscale">0</property>
-                                <property name="yscale">0</property>
-                                <child>
-                                  <object class="GtkHBox" id="hbox1">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="spacing">2</property>
-                                    <child>
-                                      <object class="GtkImage" id="image1">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="stock">gtk-add</property>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">0</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel" id="label1">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">Add Related Calendar</property>
-                                        <property name="use_underline">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">1</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">4</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="button_add_related">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="can_default">True</property>
-                            <property name="receives_default">False</property>
-                            <property name="tooltip_text" translatable="yes">Add a related records portal. This is a list of records in a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table.</property>
-                            <property name="use_action_appearance">False</property>
-                            <child>
-                              <object class="GtkAlignment" id="alignment22">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="xscale">0</property>
-                                <property name="yscale">0</property>
-                                <child>
-                                  <object class="GtkHBox" id="hbox29">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="spacing">2</property>
-                                    <child>
-                                      <object class="GtkImage" id="image19">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="stock">gtk-add</property>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">0</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel" id="label74">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">Add Related Records</property>
-                                        <property name="use_underline">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">1</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">4</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="button_add_group">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="can_default">True</property>
-                            <property name="receives_default">False</property>
-                            <property name="tooltip_text" translatable="yes">Add a group which can contain other layout items. Use this to group items together, such as fields.</property>
-                            <property name="use_action_appearance">False</property>
-                            <child>
-                              <object class="GtkAlignment" id="alignment17">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="xscale">0</property>
-                                <property name="yscale">0</property>
-                                <child>
-                                  <object class="GtkHBox" id="hbox17">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="spacing">2</property>
-                                    <child>
-                                      <object class="GtkImage" id="image8">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="stock">gtk-add</property>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">0</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel" id="label56">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">Add _Group</property>
-                                        <property name="use_underline">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">1</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">5</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkButton" id="button_add_image">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
-                            <property name="receives_default">False</property>
+                            <property name="receives_default">True</property>
+                            <property name="has_tooltip">True</property>
+                            <property name="tooltip_markup" translatable="yes">Add an image to the layout, such as a logo. The image will be the same for every record viewed. To show an image field from a record, to show different images for each field, use the field layout item.</property>
                             <property name="tooltip_text" translatable="yes">Add an image to the layout, such as a logo. The image will be the same for every record viewed. To show an image field from a record, to show different images for each field, use the field layout item.</property>
                             <property name="use_action_appearance">False</property>
                             <child>
@@ -575,30 +362,32 @@
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
-                            <property name="position">5</property>
+                            <property name="position">2</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkButton" id="button_add_field">
+                          <object class="GtkButton" id="button_add_button">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
-                            <property name="receives_default">False</property>
-                            <property name="tooltip_text" translatable="yes">Add a layout item that shows the data from a field in the record, and allows the user to edit that value.</property>
+                            <property name="receives_default">True</property>
+                            <property name="has_tooltip">True</property>
+                            <property name="tooltip_markup" translatable="yes">Add a button. Edit the button to define the script that will be run when the button is clicked.</property>
+                            <property name="tooltip_text" translatable="yes">Add a button. Edit the button to define the script that will be run when the button is clicked.</property>
                             <property name="use_action_appearance">False</property>
                             <child>
-                              <object class="GtkAlignment" id="alignment77">
+                              <object class="GtkAlignment" id="alignment78">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="xscale">0</property>
                                 <property name="yscale">0</property>
                                 <child>
-                                  <object class="GtkHBox" id="hbox99">
+                                  <object class="GtkHBox" id="hbox100">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="spacing">2</property>
                                     <child>
-                                      <object class="GtkImage" id="image41">
+                                      <object class="GtkImage" id="image42">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="stock">gtk-add</property>
@@ -610,10 +399,180 @@
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel" id="label227">
+                                      <object class="GtkLabel" id="label228">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="label">Add Field</property>
+                                        <property name="label" translatable="yes">Add Button</property>
+                                        <property name="use_underline">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="button_add_group">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="can_default">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="has_tooltip">True</property>
+                            <property name="tooltip_markup" translatable="yes">Add a group which can contain other layout items. Use this to group items together, such as fields.</property>
+                            <property name="tooltip_text" translatable="yes">Add a group which can contain other layout items. Use this to group items together, such as fields.</property>
+                            <property name="use_action_appearance">False</property>
+                            <child>
+                              <object class="GtkAlignment" id="alignment17">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xscale">0</property>
+                                <property name="yscale">0</property>
+                                <child>
+                                  <object class="GtkHBox" id="hbox17">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="spacing">2</property>
+                                    <child>
+                                      <object class="GtkImage" id="image8">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="stock">gtk-add</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="label56">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">Add _Group</property>
+                                        <property name="use_underline">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="button_add_notebook">
+                            <property name="can_focus">True</property>
+                            <property name="can_default">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="has_tooltip">True</property>
+                            <property name="tooltip_markup" translatable="yes">Add a tabbed notebook. Each page of the notebook may contain several other layout items, but only one page will be visible at one time.</property>
+                            <property name="tooltip_text" translatable="yes">Add a tabbed notebook. Each page of the notebook may contain several other layout items, but only one page will be visible at one time.</property>
+                            <property name="use_action_appearance">False</property>
+                            <child>
+                              <object class="GtkAlignment" id="alignment85">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xscale">0</property>
+                                <property name="yscale">0</property>
+                                <child>
+                                  <object class="GtkHBox" id="hbox109">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="spacing">2</property>
+                                    <child>
+                                      <object class="GtkImage" id="image46">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="stock">gtk-add</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="label236">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">Add Notebook</property>
+                                        <property name="use_underline">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">5</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="button_add_related">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="can_default">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="has_tooltip">True</property>
+                            <property name="tooltip_markup" translatable="yes">Add a related records portal. This is a list of records in a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table.</property>
+                            <property name="tooltip_text" translatable="yes">Add a related records portal. This is a list of records in a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table.</property>
+                            <property name="use_action_appearance">False</property>
+                            <child>
+                              <object class="GtkAlignment" id="alignment22">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xscale">0</property>
+                                <property name="yscale">0</property>
+                                <child>
+                                  <object class="GtkHBox" id="hbox29">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="spacing">2</property>
+                                    <child>
+                                      <object class="GtkImage" id="image19">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="stock">gtk-add</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="label74">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">Add Related Records</property>
                                         <property name="use_underline">True</property>
                                       </object>
                                       <packing>
@@ -631,6 +590,63 @@
                             <property name="expand">False</property>
                             <property name="fill">False</property>
                             <property name="position">6</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="button_add_related_calendar">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="can_default">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="has_tooltip">True</property>
+                            <property name="tooltip_markup" translatable="yes">Add a related records calendar portal. This is a calendar showing records from a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table.</property>
+                            <property name="tooltip_text" translatable="yes">Add a related records calendar portal. This is a calendar showing records from a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table.</property>
+                            <property name="use_action_appearance">False</property>
+                            <child>
+                              <object class="GtkAlignment" id="alignment1">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="xscale">0</property>
+                                <property name="yscale">0</property>
+                                <child>
+                                  <object class="GtkHBox" id="hbox1">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="spacing">2</property>
+                                    <child>
+                                      <object class="GtkImage" id="image1">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="stock">gtk-add</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="label1">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">Add Related Calendar</property>
+                                        <property name="use_underline">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">7</property>
                           </packing>
                         </child>
                       </object>

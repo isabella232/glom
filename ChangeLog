@@ -1,3 +1,10 @@
+2011-09-22  Murray Cumming  <murrayc@murrayc.com>
+
+	Layout window: Correct the vertical order of Add buttons.
+
+	* ui/developer/window_data_layout.glade: This has been mixed up since some 
+	time recently, probably due to Glade changes.
+
 2011-09-21  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Show contents of System Preferences in Fields.
