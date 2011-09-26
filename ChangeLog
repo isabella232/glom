@@ -1,8 +1,10 @@
-2011-09-26  Murray Cumming  <murrayc@murrayc-desktop>
+2011-09-26  Murray Cumming  <murrayc@murrayc.com>
 
-	reviewed by: <delete if not using a buddy>
+	Related Records: Do not try to navigate to an empty record.
 
-	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_list_related.cc: on_adddel_user_requested_edit():
+	Ignore clicks on the open button of the empty placeholder row, whose 
+	primary key is null.
 
 2011-09-22  Murray Cumming  <murrayc@murrayc.com>
 
