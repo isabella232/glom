@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-13 07:34+0000\n"
-"PO-Revision-Date: 2011-09-15 22:25+0100\n"
+"POT-Creation-Date: 2011-09-26 07:58+0000\n"
+"PO-Revision-Date: 2011-09-26 12:22+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
 "X-Poedit-Country: SLOVENIA\n"
 "X-Poedit-Language: Slovenian\n"
@@ -315,117 +315,117 @@ msgstr "Izvažanje varnostne kopije"
 msgid "Restoring Backup"
 msgstr "Obnavljanje varnostne kopije"
 
-#: ../glom/application.cc:1634
-#: ../glom/application.cc:1714
-#: ../glom/application.cc:1902
+#: ../glom/application.cc:1637
+#: ../glom/application.cc:1717
+#: ../glom/application.cc:1905
 msgid "Creating Glom Database"
 msgstr "Ustvarjanje podatkovne zbirke Glom"
 
-#: ../glom/application.cc:1634
-#: ../glom/application.cc:1714
+#: ../glom/application.cc:1637
+#: ../glom/application.cc:1717
 msgid "Creating Glom database from example file."
 msgstr "Ustvarjanje podatkovne zbirke Glom iz poskusne datoteke."
 
-#: ../glom/application.cc:1902
+#: ../glom/application.cc:1905
 msgid "Creating Glom database from backup file."
 msgstr "Ustvarjanje podatkovne zbirke Glom iz datoteke varnostne kopije."
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/application.cc:2320
+#: ../glom/application.cc:2323
 #: ../glom/bakery/app_withdoc.cc:237
 #: ../glom/bakery/app_withdoc.cc:288
 msgid "Save failed."
 msgstr "Napaka med shranjevanjem."
 
-#: ../glom/application.cc:2320
+#: ../glom/application.cc:2323
 msgid "There was an error while saving the example file."
 msgstr "Prišlo je do napake med shranjevanjem datoteke primera."
 
-#: ../glom/application.cc:2361
-#: ../glom/application.cc:2366
+#: ../glom/application.cc:2364
+#: ../glom/application.cc:2369
 #: ../glom/bakery/app_withdoc_gtk.cc:420
 msgid "Save Document"
 msgstr "Shrani dokument"
 
 #. Warn the user:
-#: ../glom/application.cc:2453
+#: ../glom/application.cc:2456
 #: ../glom/bakery/app_withdoc_gtk.cc:468
 msgid "Read-only File."
 msgstr "Datoteka le za branje."
 
-#: ../glom/application.cc:2453
+#: ../glom/application.cc:2456
 #: ../glom/bakery/app_withdoc_gtk.cc:468
 msgid "You may not overwrite the existing file, because you do not have sufficient access rights."
 msgstr "Obstoječe datoteke ni mogoče prepisati, saj nimate ustreznih dovoljenj dostopa."
 
 #. Warn the user:
-#: ../glom/application.cc:2467
+#: ../glom/application.cc:2470
 #: ../glom/bakery/app_withdoc_gtk.cc:482
 msgid "Read-only Directory."
 msgstr "Mapa le za branje."
 
-#: ../glom/application.cc:2467
+#: ../glom/application.cc:2470
 #: ../glom/bakery/app_withdoc_gtk.cc:482
 msgid "You may not create a file in this directory, because you do not have sufficient access rights."
 msgstr "V tej mapi datoteke ni mogoče ustvariti, saj nimate ustreznih dovoljenj dostopa."
 
-#: ../glom/application.cc:2484
+#: ../glom/application.cc:2487
 msgid "Database Title missing"
 msgstr "Naslov podatkovne zbirke manjka"
 
-#: ../glom/application.cc:2484
+#: ../glom/application.cc:2487
 msgid "You must specify a title for the new database."
 msgstr "Navesti morate naslov za drugo podatkovno zbirko."
 
-#: ../glom/application.cc:2513
+#: ../glom/application.cc:2516
 #: ../glom/frame_glom.cc:1810
 msgid "Directory Already Exists"
 msgstr "Mapa že obstaja"
 
-#: ../glom/application.cc:2513
+#: ../glom/application.cc:2516
 #: ../glom/frame_glom.cc:1811
 msgid "There is an existing directory with the same name as the directory that should be created for the new database files. You should specify a different filename to use a new directory instead."
 msgstr "Novo ustvarjena mapa za nove datoteke podatkovne zbirke ima enako ime kot obstoječa mapa. Navedite drugo ime mape za nove datoteke podatkovne zbirke. "
 
 #. This actually creates the directory:
-#: ../glom/application.cc:2652
+#: ../glom/application.cc:2655
 msgid "Save Backup"
 msgstr "Shrani varnostno kopijo"
 
-#: ../glom/application.cc:2734
+#: ../glom/application.cc:2737
 msgid "Export Backup failed."
 msgstr "Izvoz varnostne kopije je spodletel."
 
-#: ../glom/application.cc:2734
+#: ../glom/application.cc:2737
 msgid "There was an error while exporting the backup."
 msgstr "Prišlo je do napake med izvažanjem varnostne kopije."
 
-#: ../glom/application.cc:2739
+#: ../glom/application.cc:2742
 msgid "Choose a backup file"
 msgstr "Izbor datoteke varnostne kopije"
 
-#: ../glom/application.cc:2744
+#: ../glom/application.cc:2747
 msgid ".tar.gz Backup files"
 msgstr "Datoteke varnostnih kopij .tar.gz"
 
-#: ../glom/application.cc:2750
+#: ../glom/application.cc:2753
 msgid "Restore"
 msgstr "Obnovi"
 
-#: ../glom/application.cc:2826
-#: ../glom/application.cc:2832
+#: ../glom/application.cc:2829
+#: ../glom/application.cc:2835
 msgid "Restore Backup failed."
 msgstr "Obnova varnostne kopije je spodletela."
 
-#: ../glom/application.cc:2826
+#: ../glom/application.cc:2829
 msgid "There was an error while restoring the backup. The tar utility failed to extract the archive."
 msgstr "Prišlo je do napake med obnavljanjem varnostne kopije. Pripomoček tar ni uspešno razširil arhiva."
 
-#: ../glom/application.cc:2832
+#: ../glom/application.cc:2835
 msgid "There was an error while restoring the backup. The .glom file could not be found."
 msgstr "Prišlo je do napake med obnavljanjem varnostne kopije. Datoteke .glom ni mogoče najti."
 
-#: ../glom/application.cc:2936
+#: ../glom/application.cc:2939
 #: ../glom/bakery/app_withdoc_gtk.cc:341
 msgid " (read-only)"
 msgstr " (le za branje)"
@@ -435,11 +435,11 @@ msgstr " (le za branje)"
 msgid "Internal error"
 msgstr "Notranja napaka"
 
-#: ../glom/base_db.cc:1600
+#: ../glom/base_db.cc:1613
 msgid "Value Is Not Unique"
 msgstr "Vrednost ni edinstvena"
 
-#: ../glom/base_db.cc:1600
+#: ../glom/base_db.cc:1613
 msgid "The field's value must be unique, but a record with this value already exists."
 msgstr "Vrednost polja mora biti edinstvena, toda zapis s to vrednostjo že obstaja."
 
@@ -1065,7 +1065,7 @@ msgstr "Številka"
 #: ../glom/libglom/data_structure/translatable_item.cc:317
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1156
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:715
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:741
 msgid "Text"
 msgstr "Besedilo"
 
@@ -1142,7 +1142,7 @@ msgstr "Portal koledarja"
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:194
 #: ../glom/libglom/data_structure/translatable_item.cc:297
 #: ../glom/mode_design/dialog_database_preferences.cc:62
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:711
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:737
 #: ../ui/developer/window_field_definition_edit.glade.h:2
 msgid "Field"
 msgstr "Polje"
@@ -1495,7 +1495,7 @@ msgstr "Nedoločena razpredelnica"
 #. be sensitive anyway
 #: ../glom/mode_data/box_data_calendar_related.cc:495
 #: ../glom/mode_data/db_adddel/db_adddel.cc:230
-#: ../ui/developer/window_data_layout.glade.h:27
+#: ../ui/developer/window_data_layout.glade.h:28
 msgid "Layout"
 msgstr "Razporeditev"
 
@@ -1624,7 +1624,7 @@ msgstr "Nov gumb"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
 #: ../glom/mode_data/flowtablewithfields.cc:1189
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:415
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:441
 msgid "text"
 msgstr "besedilo"
 
@@ -1688,7 +1688,7 @@ msgid "Next Value"
 msgstr "Naslednja vrednost"
 
 #: ../glom/mode_design/dialog_design.cc:52
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:594
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:620
 #: ../ui/developer/window_design.glade.h:3
 msgid "None selected"
 msgstr "Brez izbora"
@@ -1840,7 +1840,7 @@ msgid " Via: "
 msgstr " Preko:"
 
 #: ../glom/mode_design/layout/dialog_layout_calendar_related.cc:239
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:279
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:282
 msgid "None: No visible tables are specified by the fields."
 msgstr "Brez: Polja ne navajajo nobenih vidnih razpredelnic."
 
@@ -1898,27 +1898,27 @@ msgstr "(Beležka)"
 msgid "Fields"
 msgstr "Polja"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:387
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:390
 msgid "Invalid Relationship"
 msgstr "Neveljavno razmerje"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:388
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:391
 msgid "The relationship may not be used to show related records because the relationship does not specify a field in the related table."
 msgstr "Razmerja ni mogoče uporabiti za prikaz povezanih zapisov, ker razmerje ne določa polja v povezani razpredelnici."
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:394
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:397
 msgid "Relationship Uses a Related Primary Key"
 msgstr "Razmerje uporablja povezani osnovni ključ"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:395
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:398
 msgid "The relationship may not be used to show related records because the relationship uses a primary key field in the related table, which must contain unique values. This would prevent the relationship from specifying multiple related records."
 msgstr "Razmerja ni mogoče uporabiti za prikaz povezanih zapisov, ker razmerje v povezani razpredelnici vsebuje polje osnovnega ključa, ki mora vsebovati edinstvene vrednosti. To razmerju prepreči določitev več povezanih zapisov."
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:401
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:404
 msgid "Relationship Uses a Related Unique Field"
 msgstr "Razmerje uporablja edinstveno povezano polje"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:402
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:405
 msgid "The relationship may not be used to show related records because the relationship uses a unique-values field in the related table. This would prevent the relationship from specifying multiple related records."
 msgstr "Razmerja ni mogoče uporabiti za prikaz povezanih zapisov, ker razmerje v povezani razpredelnici uporablja polje edinstvenih vrednosti. To razmerju prepreči določitev več povezanih zapisov. "
 
@@ -1958,7 +1958,7 @@ msgstr "Barva ozadja"
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:32
 #: ../ui/developer/dialog_fieldslist.glade.h:2
 #: ../ui/developer/dialog_group_by.glade.h:4
-#: ../ui/developer/window_data_layout.glade.h:26
+#: ../ui/developer/window_data_layout.glade.h:27
 msgid "Formatting"
 msgstr "Oblikovanje"
 
@@ -2088,40 +2088,60 @@ msgstr "Vstavi _vodoravno črto"
 msgid "Insert _Vertical Line"
 msgstr "Vstavi _navpično črto"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:242
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:243
+msgid "_Align"
+msgstr "_Poravnaj"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:245
+msgid "Align _Top"
+msgstr "Poravnaj na _vrh"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:249
+msgid "Align _Bottom"
+msgstr "Poravnaj na d_no"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:253
+msgid "Align _Left"
+msgstr "Poravnaj _levo"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:257
+msgid "Align _Right"
+msgstr "Poravnaj _desno"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:262
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:64
 msgid "_View"
 msgstr "_Pogled"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:243
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:263
 msgid "Show Grid"
 msgstr "Pokaži mrežo"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:245
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:265
 msgid "Show Rules"
 msgstr "Pokaži pravila"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:247
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:267
 msgid "Show Outlines"
 msgstr "Pokaži obrise"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:251
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:271
 msgid "Fit Page _Width"
 msgstr "Prilagodi širino _strani"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:255
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:275
 msgid "Zoom 200%"
 msgstr "Približaj na 200%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:263
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:283
 msgid "Zoom 50%"
 msgstr "Približaj na 50%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:267
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:287
 msgid "Zoom 25%"
 msgstr "Približaj na 25%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:709
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:735
 msgid "Insert"
 msgstr "Vstavi"
 
@@ -2261,12 +2281,12 @@ msgstr "Neznana razpredelnica"
 msgid "You cannot open this table, because there is no information about this table in the document."
 msgstr "Te razpredelnice ni mogoče odpreti, ker v dokumentu ni podatkov o tej razpredelnici."
 
-#: ../glom/print_layout/canvas_layout_item.cc:266
+#: ../glom/print_layout/canvas_layout_item.cc:267
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:39
 msgid "Choose Field"
 msgstr "Izbor polja"
 
-#: ../glom/print_layout/canvas_print_layout.cc:273
+#: ../glom/print_layout/canvas_print_layout.cc:275
 msgid "_Formatting"
 msgstr "_Oblikovanje"
 
@@ -2455,11 +2475,11 @@ msgstr "Shrani sliko"
 msgid "Choose Image"
 msgstr "Izbor slike"
 
-#: ../glom/utility_widgets/imageglom.cc:926
+#: ../glom/utility_widgets/imageglom.cc:928
 msgid "Open With"
 msgstr "Odpri z"
 
-#: ../glom/utility_widgets/imageglom.cc:928
+#: ../glom/utility_widgets/imageglom.cc:930
 msgid "Choose File"
 msgstr "Izbor datoteke"
 
@@ -2488,16 +2508,17 @@ msgid "Field Layout Properties"
 msgstr "Lastnosti razporeditve polja"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:41
+#: ../ui/developer/window_data_layout.glade.h:9
 msgid "Add Field"
 msgstr "Dodaj polje"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:42
-#: ../ui/developer/window_data_layout.glade.h:11
+#: ../ui/developer/window_data_layout.glade.h:12
 msgid "Add Related Records"
 msgstr "Dodaj povezane zapise"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:43
-#: ../ui/developer/window_data_layout.glade.h:9
+#: ../ui/developer/window_data_layout.glade.h:10
 msgid "Add Notebook"
 msgstr "Dodaj beležko"
 
@@ -2511,7 +2532,7 @@ msgid "Add Button"
 msgstr "Dodaj gumb"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:46
-#: ../ui/developer/window_data_layout.glade.h:12
+#: ../ui/developer/window_data_layout.glade.h:13
 msgid "Add Text"
 msgstr "Dodaj besedilo"
 
@@ -3096,22 +3117,18 @@ msgid "<b>User</b>"
 msgstr "<b>Uporabnik<b>"
 
 #: ../ui/developer/dialog_user.glade.h:2
-#| msgid "_Confirm Password:"
 msgid "Confirm Password:"
 msgstr "Potrdite geslo:"
 
 #: ../ui/developer/dialog_user.glade.h:3
-#| msgid "Group"
 msgid "Group:"
 msgstr "Skupina:"
 
 #: ../ui/developer/dialog_user.glade.h:4
-#| msgid "_Password:"
 msgid "Password:"
 msgstr "Geslo:"
 
 #: ../ui/developer/dialog_user.glade.h:6
-#| msgid "_User:"
 msgid "User:"
 msgstr "Uporabnik:"
 
@@ -3139,7 +3156,6 @@ msgid "<b>Dates</b>"
 msgstr "<b>Datumi</b>"
 
 #: ../ui/developer/window_data_layout.glade.h:3
-#| msgid "<b>Fields</b>"
 msgid "<b>Lines</b>"
 msgstr "<b>Črte</b>"
 
@@ -3151,90 +3167,87 @@ msgstr "<b>Krmarjenje</b>"
 msgid "<b>Relationship:</b>"
 msgstr "<b>Razmerje:</b>"
 
-#: ../ui/developer/window_data_layout.glade.h:10
+#: ../ui/developer/window_data_layout.glade.h:11
 msgid "Add Related Calendar"
 msgstr "Dodaj povezan koledar"
 
-#: ../ui/developer/window_data_layout.glade.h:13
+#: ../ui/developer/window_data_layout.glade.h:14
 msgid "Add _Group"
 msgstr "Dodaj _skupino"
 
-#: ../ui/developer/window_data_layout.glade.h:14
+#: ../ui/developer/window_data_layout.glade.h:15
 msgid "Add a button. Edit the button to define the script that will be run when the button is clicked."
 msgstr "Dodajanje gumba. Uredite gumb za določitev skripta, ki to tekel ob kliku na gumb."
 
-#: ../ui/developer/window_data_layout.glade.h:15
+#: ../ui/developer/window_data_layout.glade.h:16
 msgid "Add a group which can contain other layout items. Use this to group items together, such as fields."
 msgstr "Dodajanje skupine, ki lahko vsebuje druge predmete razporeditve. To uporabite za združevanje predmetov, kot so polja, skupaj."
 
-#: ../ui/developer/window_data_layout.glade.h:16
+#: ../ui/developer/window_data_layout.glade.h:17
 msgid "Add a layout item that shows the data from a field in the record, and allows the user to edit that value."
 msgstr "Dodajanje predmeta razporeditve, ki pokaže podatke iz polja v zapisu in uporabniku dovoli urejanje te vrednosti."
 
-#: ../ui/developer/window_data_layout.glade.h:17
+#: ../ui/developer/window_data_layout.glade.h:18
 msgid "Add a related records calendar portal. This is a calendar showing records from a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table."
 msgstr "Doda portal povezanega koledarja. To je koledar, ki prikaže zapise iz povezane razpredelnice. Ne pozabite urediti tega predmeta razporeditve za določitev razmerja za uporabo, in polj za prikaz iz povezane razpredelnice."
 
-#: ../ui/developer/window_data_layout.glade.h:18
+#: ../ui/developer/window_data_layout.glade.h:19
 msgid "Add a related records portal. This is a list of records in a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table."
 msgstr "Doda portal povezanih zapisov. To je seznam zapisov v povezani razpredelnici. Ne pozabite urediti tega predmeta razporeditve za določitev razmerja za uporabo, in polj za prikaz iz povezane razpredelnice."
 
-#: ../ui/developer/window_data_layout.glade.h:19
+#: ../ui/developer/window_data_layout.glade.h:20
 msgid "Add a tabbed notebook. Each page of the notebook may contain several other layout items, but only one page will be visible at one time."
 msgstr "Doda beležko z zavihki. Vsaka stran beležke lahko vsebuje več drugih predmetov razporeditev, toda naenkrat bo vidna samo ena stran."
 
-#: ../ui/developer/window_data_layout.glade.h:20
+#: ../ui/developer/window_data_layout.glade.h:21
 msgid "Add an image to the layout, such as a logo. The image will be the same for every record viewed. To show an image field from a record, to show different images for each field, use the field layout item."
 msgstr "Doda sliko razporeditvi, kot je na primer logotip. Ta slika bo enaka za vsak ogledan zapis. Za prikaz polja slike iz zapisa in za prikaz različnih slik za vsako polje uporabite predmet razporeditve polja."
 
-#: ../ui/developer/window_data_layout.glade.h:21
+#: ../ui/developer/window_data_layout.glade.h:22
 msgid "Add text to a layout, such as an explanation or a warning. The text will be the same for every record viewed."
 msgstr "Doda besedilo v razporeditev, kot sta na primer razlaga ali opozorilo. Besedilo bo enako za vsak ogledan zapis."
 
-#: ../ui/developer/window_data_layout.glade.h:22
+#: ../ui/developer/window_data_layout.glade.h:23
 msgid "Automatic:"
 msgstr "Samodejno:"
 
-#: ../ui/developer/window_data_layout.glade.h:23
+#: ../ui/developer/window_data_layout.glade.h:24
 msgid "Clicking the row button takes the user to the table specified by this relationship:"
 msgstr "Klik na gumb vrstice ponese uporabnika v razpredelnico, ki jo poda razmerje:"
 
-#: ../ui/developer/window_data_layout.glade.h:24
-#| msgid "Line Width:"
+#: ../ui/developer/window_data_layout.glade.h:25
 msgid "Column Line Width:"
 msgstr "Širina črte stolpca:"
 
-#: ../ui/developer/window_data_layout.glade.h:25
+#: ../ui/developer/window_data_layout.glade.h:26
 msgid "Date Field:"
 msgstr "Polje datuma:"
 
-#: ../ui/developer/window_data_layout.glade.h:28
-#| msgid "Color:"
+#: ../ui/developer/window_data_layout.glade.h:29
 msgid "Line Color:\n"
 msgstr "Barva črte:\n"
 
-#: ../ui/developer/window_data_layout.glade.h:30
+#: ../ui/developer/window_data_layout.glade.h:31
 msgid "None"
 msgstr "Brez"
 
-#: ../ui/developer/window_data_layout.glade.h:31
+#: ../ui/developer/window_data_layout.glade.h:32
 msgid "Number of rows to show:"
 msgstr "Število vrstic za prikaz:"
 
-#: ../ui/developer/window_data_layout.glade.h:32
+#: ../ui/developer/window_data_layout.glade.h:33
 msgid "Remove the item from the layout. If you remove a field layout item, it will not remove the field from the table itself. It just will not be seen on the layout."
 msgstr "Odstrani predmet iz razporeditve. V primeru, da odstranite predmet razporeditve polja, polje ne bo odstranjeno iz razpredelnice. Polje samo ne bo prikazano na razporeditvi."
 
-#: ../ui/developer/window_data_layout.glade.h:33
-#| msgid "Line Width:"
+#: ../ui/developer/window_data_layout.glade.h:34
 msgid "Row Line Width:"
 msgstr "Širina črte vrstice:"
 
-#: ../ui/developer/window_data_layout.glade.h:34
+#: ../ui/developer/window_data_layout.glade.h:35
 msgid "Show child relationships"
 msgstr "Pokaže podrejena razmerja"
 
-#: ../ui/developer/window_data_layout.glade.h:35
+#: ../ui/developer/window_data_layout.glade.h:36
 #: ../ui/developer/window_report_layout.glade.h:13
 msgid "table name"
 msgstr "ime razpredelnice"
@@ -3548,3 +3561,4 @@ msgstr "<b>Skupina:</b>"
 #: ../ui/developer/window_users.glade.h:2
 msgid "<b>Users</b>"
 msgstr "<b>Uporabniki</b>"
+
