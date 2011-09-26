@@ -1,5 +1,15 @@
 2011-09-26  Murray Cumming  <murrayc@murrayc.com>
 
+	Document: Use CSS3 formatting for colors, via Gdk::RGBA.
+
+	* glom/mode_design/layout/dialog_layout_list_related.cc:
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_line.cc:
+	* glom/utility_widgets/canvas/canvas_line_movable.[h|cc]: Use Gdk::RGBA
+	instead of Gdk::RGBA everywhere now that goocanvas(mm) supports it.
+
+2011-09-26  Murray Cumming  <murrayc@murrayc.com>
+
 	Related Records: Do not try to navigate to an empty record.
 
 	* glom/mode_data/box_data_list_related.cc: on_adddel_user_requested_edit():

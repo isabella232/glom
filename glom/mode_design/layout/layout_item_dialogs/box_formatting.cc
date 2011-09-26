@@ -245,11 +245,11 @@ void Box_Formatting::set_formatting_for_non_field(const FieldFormatting& format,
 
   const Glib::ustring color_foreground = format.get_text_format_color_foreground();
   m_checkbox_format_text_color_foreground->set_active(!color_foreground.empty());
-  m_colorbutton_foreground->set_color( Gdk::Color(color_foreground) );
+  m_colorbutton_foreground->set_rgba( Gdk::RGBA(color_foreground) );
 
   const Glib::ustring color_background = format.get_text_format_color_background();
   m_checkbox_format_text_color_background->set_active(!color_background.empty());
-  m_colorbutton_background->set_color( Gdk::Color(color_background) );
+  m_colorbutton_background->set_rgba( Gdk::RGBA(color_background) );
 
 
   //Choices:

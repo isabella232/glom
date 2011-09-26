@@ -52,7 +52,7 @@ private:
   virtual bool on_enter_notify_event(const Glib::RefPtr<Item>& target, GdkEventCrossing* event);
   virtual bool on_leave_notify_event(const Glib::RefPtr<Item>& target, GdkEventCrossing* event);
 
-  guint m_stroke_color;
+  Gdk::RGBA m_stroke_color;
   Glib::ustring m_hover_color;
 };
 

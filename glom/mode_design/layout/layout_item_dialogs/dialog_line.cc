@@ -64,9 +64,8 @@ void Dialog_Line::set_line(const sharedptr<const LayoutItem_Line>& line)
 
   m_spinbutton_line_width->set_value(line->get_line_width());
   
-  //TODO: Use GdkRGBA's color string (CSS) format instead, everywhere:
-  Gdk::Color color( line->get_line_color() );
-  m_colorbutton->set_color(color);
+  const Gdk::RGBA color( line->get_line_color() );
+  m_colorbutton->set_rgba(color);
 
   //set_blocked(false);
 

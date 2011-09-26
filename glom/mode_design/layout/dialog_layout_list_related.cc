@@ -144,8 +144,8 @@ void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout_name, 
     m_spinbutton_column_line_width->set_value(
       portal->get_print_layout_column_line_width());
 
-    Gdk::Color color( portal->get_print_layout_line_color() );
-    m_colorbutton_line->set_color(color);
+    const Gdk::RGBA color( portal->get_print_layout_line_color() );
+    m_colorbutton_line->set_rgba(color);
 
     //Avoid showing formatting options that are about editing:
     m_editable_layout = false;
