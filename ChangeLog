@@ -1,3 +1,11 @@
+2011-09-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Add libglom::layout_field_should_have_navigation().
+
+	* glom/mode_data/datawidget/datawidget.cc: Constructor: Moved decision code
+	from here to here:
+	* glom/libglom/db_utils.[h|cc]: Added layout_field_should_have_navigation().
+
 2011-09-26  Murray Cumming  <murrayc@murrayc.com>
 
 	Document: Use CSS3 formatting for colors, via Gdk::RGBA.

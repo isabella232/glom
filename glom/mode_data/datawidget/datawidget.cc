@@ -35,6 +35,7 @@
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.h>
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
+#include <libglom/db_utils.h>
 
 #include <glibmm/i18n.h>
 
@@ -175,26 +176,14 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
 
     bool child_added = false; //Don't use an extra container unless necessary.
 
-    //Check whether the field controls a relationship,
-    //meaning it identifies a record in another table.
-    const bool field_used_in_relationship_to_one = document->get_field_used_in_relationship_to_one(table_name, field);
-    //std::cout << "DEBUG: table_name=" << table_name << ", table_used=" << field->get_table_used(table_name) << ", field=" << field->get_name() << ", field_used_in_relationship_to_one=" << field_used_in_relationship_to_one << std::endl;
-
-    //Check whether the field identifies a record in another table
-    //just because it is a primary key in that table:
-    bool field_is_related_primary_key = false;
-    if(document)
-      field->set_full_field_details( document->get_field(field->get_table_used(table_name), field->get_name()) ); //Otherwise get_primary_key() returns false always.
-    sharedptr<const Field> field_info = field->get_full_field_details();
-    field_is_related_primary_key =
-      field->get_has_relationship_name() &&
-      field_info && field_info->get_primary_key();
-    //std::cout <<   "DEBUG: field->get_has_relationship_name()=" << field->get_has_relationship_name() << ", field_info->get_primary_key()=" <<  field_info->get_primary_key() << ", field_is_related_primary_key=" << field_is_related_primary_key << std::endl;
-
+    bool field_used_in_relationship_to_one = false;
+    const bool add_open_button = 
+       DbUtils::layout_field_should_have_navigation(table_name, field, document, 
+         field_used_in_relationship_to_one);
 
     Gtk::Box* hbox_parent = 0; //Only used if there are extra widgets.
 
-    const bool with_extra_widgets = field_used_in_relationship_to_one || field_is_related_primary_key || (glom_type == Field::TYPE_DATE);
+    const bool with_extra_widgets = field_used_in_relationship_to_one || add_open_button || (glom_type == Field::TYPE_DATE);
     if(with_extra_widgets)
     {
       hbox_parent = Gtk::manage( new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL) ); //We put the child (and any extra stuff) in this:
@@ -217,7 +206,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
       button_date->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_choose_date));
     }
 
-    if((field_used_in_relationship_to_one || field_is_related_primary_key) && hbox_parent)
+    if(hbox_parent && add_open_button)
     {
       //Add a button for related record navigation:
       m_button_go_to_details = Gtk::manage(new Gtk::Button(Gtk::Stock::OPEN));
@@ -225,7 +214,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
       hbox_parent->pack_start(*m_button_go_to_details, Gtk::PACK_SHRINK);
       m_button_go_to_details->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_open_details));
 
-      //Add a button to make it easier to choose an ID for this field.
+      //Add an additional button to make it easier to choose an ID for this field.
       //Don't add this for simple related primary key fields, because they
       //can generally not be edited via another table's layout.
       if(field_used_in_relationship_to_one)

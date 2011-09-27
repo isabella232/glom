@@ -1624,6 +1624,50 @@ void layout_item_fill_field_details(Document* document, const Glib::ustring& par
   layout_item->set_full_field_details( document->get_field(table_name, layout_item->get_name()) );
 }
 
+bool layout_field_should_have_navigation(const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& layout_item, const Document* document, bool& field_used_in_relationship_to_one)
+{
+  //Initialize output parameter:
+  field_used_in_relationship_to_one = false;
+  
+  if(!document)
+  {
+    std::cerr << G_STRFUNC << ": document was null." << std::endl;
+    return false;
+  }
+  
+  if(table_name.empty())
+  {
+    std::cerr << G_STRFUNC << ": table_name was empty." << std::endl;
+    return false;
+  } 
+  
+  if(!layout_item)
+  {
+    std::cerr << G_STRFUNC << ": layout_item was null." << std::endl;
+    return false;
+  }
+  
+  layout_item->set_full_field_details(
+     document->get_field(layout_item->get_table_used(table_name), layout_item->get_name()) ); //Otherwise get_primary_key() returns false always.
+
+
+  //Check whether the field controls a relationship,
+  //meaning it identifies a record in another table.
+  field_used_in_relationship_to_one = 
+    document->get_field_used_in_relationship_to_one(table_name, layout_item);
+  //std::cout << "DEBUG: table_name=" << table_name << ", table_used=" << field->get_table_used(table_name) << ", field=" << field->get_name() << ", field_used_in_relationship_to_one=" << field_used_in_relationship_to_one << std::endl;
+
+  //Check whether the field identifies a record in another table
+  //just because it is a primary key in that table:
+  const sharedptr<const Field> field_info = layout_item->get_full_field_details();
+  const bool field_is_related_primary_key =
+    layout_item->get_has_relationship_name() &&
+    field_info && field_info->get_primary_key();
+  //std::cout <<   "DEBUG: field->get_has_relationship_name()=" << field->get_has_relationship_name() << ", field_info->get_primary_key()=" <<  field_info->get_primary_key() << ", field_is_related_primary_key=" << field_is_related_primary_key << std::endl;
+
+  return field_used_in_relationship_to_one || field_is_related_primary_key;
+}
+
 
 } //namespace DbUtils
 
