@@ -1,3 +1,9 @@
+2011-09-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Require the latest gtkmm.
+
+	* configure.ac: Require gtkmm 3.2.0 to keep things simple.
+
 2011-09-27  Murray Cumming  <murrayc@murrayc.com>>
 
   libglom::LayoutItem_Portal: Added get_suitable_table_to_view_details().
