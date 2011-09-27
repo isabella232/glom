@@ -1624,10 +1624,10 @@ void layout_item_fill_field_details(Document* document, const Glib::ustring& par
   layout_item->set_full_field_details( document->get_field(table_name, layout_item->get_name()) );
 }
 
-bool layout_field_should_have_navigation(const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& layout_item, const Document* document, bool& field_used_in_relationship_to_one)
+bool layout_field_should_have_navigation(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_item, const Document* document, sharedptr<Relationship>& field_used_in_relationship_to_one)
 {
   //Initialize output parameter:
-  field_used_in_relationship_to_one = false;
+  field_used_in_relationship_to_one = sharedptr<Relationship>();
   
   if(!document)
   {
@@ -1646,16 +1646,13 @@ bool layout_field_should_have_navigation(const Glib::ustring& table_name, const 
     std::cerr << G_STRFUNC << ": layout_item was null." << std::endl;
     return false;
   }
-  
-  layout_item->set_full_field_details(
-     document->get_field(layout_item->get_table_used(table_name), layout_item->get_name()) ); //Otherwise get_primary_key() returns false always.
-
 
   //Check whether the field controls a relationship,
   //meaning it identifies a record in another table.
-  field_used_in_relationship_to_one = 
+  sharedptr<const Relationship> const_relationship =
     document->get_field_used_in_relationship_to_one(table_name, layout_item);
   //std::cout << "DEBUG: table_name=" << table_name << ", table_used=" << field->get_table_used(table_name) << ", field=" << field->get_name() << ", field_used_in_relationship_to_one=" << field_used_in_relationship_to_one << std::endl;
+  field_used_in_relationship_to_one = sharedptr<Relationship>::cast_const(const_relationship); //This is just because we can't seem to have a sharedptr<const Relationship>& output parameter.
 
   //Check whether the field identifies a record in another table
   //just because it is a primary key in that table:
