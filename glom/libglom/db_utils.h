@@ -104,6 +104,13 @@ Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& 
 Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
 
+/** Decides whether a field should have an Open button next to it,
+ * allowing the user to navigate to a related record.
+ *
+ * @param field_used_in_relationship_to_one Whether the field identifies a single record, so a Find button would also make sense, to choose the ID, in editing mode.
+ */
+bool layout_field_should_have_navigation(const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& layout_item, const Document* document, bool& field_used_in_relationship_to_one);
+
 } //namespace DbUtils
 
 } //namespace Glom
