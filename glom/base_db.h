@@ -309,14 +309,6 @@ protected:
   type_vecLayoutFields get_table_fields_to_show_for_sequence(const Glib::ustring& table_name, const Document::type_list_layout_groups& mapGroupSequence) const;
   void get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vec_fields& all_db_fields, const sharedptr<LayoutGroup>& group, type_vecLayoutFields& vecFields) const;
 
-  /** Get the relationship into which the row button should navigate,
-   * or the relationship itself, if the navigation_main output parameter is set to true after calling this method.
-   * (If that should be chosen automatically, by looking at the fields in the portal.)
-   */
-  sharedptr<const UsesRelationship> get_portal_navigation_relationship_automatic(const sharedptr<LayoutItem_Portal>& portal, bool& navigation_main) const;
-  sharedptr<const LayoutItem_Field> get_field_is_from_non_hidden_related_record(const sharedptr<const LayoutItem_Portal>& portal) const;
-  sharedptr<const LayoutItem_Field> get_field_identifies_non_hidden_related_record(const sharedptr<const LayoutItem_Portal>& portal, sharedptr<const Relationship>& used_in_relationship) const;
-
   bool get_primary_key_is_in_foundset(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value);
 
 

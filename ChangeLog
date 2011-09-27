@@ -1,3 +1,17 @@
+2011-09-27  Murray Cumming  <murrayc@murrayc.com>>
+
+  libglom::LayoutItem_Portal: Added get_suitable_table_to_view_details().
+
+	* glom/base_db.[h|cc]: Move the get_portal_navigation_relationship_automatic()
+	and get_suitable_table_to_view_details() utility functions to: 
+	* glom/libglom/data_structure/layout/layoutitem_portal.[h|cc]: Also
+	move other privately-used utility functions here too, from Base_DB.
+	* glom/mode_design/layout/dialog_layout_calendar_related.cc: update_ui():
+	* glom/mode_design/layout/dialog_layout_list_related.cc: update_ui():
+	* glom/mode_data/box_data_portal.cc: 
+  get_has_suitable_record_to_view_details(), 
+  get_has_suitable_record_to_view_details(): Adapted.
+
 2011-09-27  Murray Cumming  <murrayc@murrayc.com>
 
 	libglom::layout_field_should_have_navigation(): Return Relationship not bool.
