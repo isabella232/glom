@@ -1,5 +1,19 @@
 2011-09-27  Murray Cumming  <murrayc@murrayc.com>
 
+	libglom::layout_field_should_have_navigation(): Return Relationship not bool.
+
+	* glom/libglom/db_utils.[h|cc]: layout_field_should_have_navigation():
+	Make field_used_in_relationship_to_one() be a Relationship so it can 
+	be used for actual navigation.
+	Also require that the LayoutItem_Field has full field information, instead 
+	of updating it, so that it can be const.
+	* glom/mode_data/datawidget/datawidget.cc: Constructor: Adapted.
+	* glom/mode_data/box_data_details.cc: 
+  on_flowtable_field_open_details_requested(): Use it here instead of the 
+  copy/pasted code.
+
+2011-09-27  Murray Cumming  <murrayc@murrayc.com>
+
 	Add libglom::layout_field_should_have_navigation().
 
 	* glom/mode_data/datawidget/datawidget.cc: Constructor: Moved decision code
