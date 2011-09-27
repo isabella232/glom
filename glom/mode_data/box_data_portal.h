@@ -72,14 +72,6 @@ public:
     
   bool get_has_suitable_record_to_view_details() const;
 
-  /** Discover what table to show when clicking on a related record.
-   * This table will not necessarily just be the directly related table.
-   *
-   * @param table_name The table that should be shown.
-   * @param relationship The relationship in the directly related table that should be used to get to that table. If this is empty then we should just show the table directly.
-   */
-  void get_suitable_table_to_view_details(Glib::ustring& table_name, sharedptr<const UsesRelationship>& relationship) const;
-
   /** Discover what record to show, in what table, when clicking on a related record.
    * This record will not necessarily just be the directly related record.
    *

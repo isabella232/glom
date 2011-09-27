@@ -29,6 +29,8 @@
 namespace Glom
 {
 
+class Document; //For the utility functions.
+
 class LayoutItem_Portal
 : public LayoutGroup,
   public UsesRelationship
@@ -91,7 +93,21 @@ public:
    * activates a related record row.
    */
   void set_navigation_type(navigation_type type);
+  
+  /** Discover what table to show when clicking on a related record.
+   * This table will not necessarily just be the directly related table.
+   * The caller should check, in the document, that the returned @a table_name is not hidden.
+   *
+   * @param table_name The table that should be shown.
+   * @param relationship The relationship in the directly related table that should be used to get to that table. If this is empty then we should just show the table directly.
+   */
+  void get_suitable_table_to_view_details(Glib::ustring& table_name, sharedptr<const UsesRelationship>& relationship, const Document* document) const;
 
+  /** Get the relationship (from the related table) into which the row button should navigate,
+   * or none if it should use the portal's directly related table itself.
+   * (If that should be chosen automatically, by looking at the fields in the portal.)
+   */
+  sharedptr<const UsesRelationship> get_portal_navigation_relationship_automatic(const Document* document) const;
 
   /// This is used only for the print layouts.
   double get_print_layout_row_height() const;
@@ -128,6 +144,10 @@ public:
 
 
 private:
+
+  sharedptr<const LayoutItem_Field> get_field_is_from_non_hidden_related_record(const Document* document) const;
+  sharedptr<const LayoutItem_Field> get_field_identifies_non_hidden_related_record(sharedptr<const Relationship>& used_in_relationship, const Document* document) const;
+
 
   sharedptr<UsesRelationship> m_navigation_relationship_specific;
 

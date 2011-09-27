@@ -269,7 +269,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
 
   //Describe the automatic navigation:
   sharedptr<const UsesRelationship> relationship_navigation_automatic = 
-    get_portal_navigation_relationship_automatic(m_portal);
+    m_portal->get_portal_navigation_relationship_automatic(document);
   Glib::ustring automatic_navigation_description = 
     m_portal->get_relationship_name_used(); //TODO: Use get_relationship_display_name() instead?
   if(relationship_navigation_automatic) //This is a relationship in the related table.
