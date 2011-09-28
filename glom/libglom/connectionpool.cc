@@ -208,7 +208,13 @@ const ConnectionPool::Backend* ConnectionPool::get_backend() const
   return m_backend.get();
 }
 
-
+bool ConnectionPool::get_backend_supports_cursor() const
+{
+  //TODO: Is there a generic libgda way to discover this?
+  const ConnectionPoolBackends::Sqlite* sqlite_backend =
+    dynamic_cast<const ConnectionPoolBackends::Sqlite*>(get_backend());
+  return !sqlite_backend;
+}
 
 //static:
 #ifdef GLIBMM_EXCEPTIONS_ENABLED

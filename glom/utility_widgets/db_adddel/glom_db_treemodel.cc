@@ -287,7 +287,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     }
     else
     {
-      // Use a DataAccessWrapper to allow random access. This is necessary
+      // If using the sqlite backed, then use a DataAccessWrapper to allow random access. This is necessary
       // since we use move_to_row() on a created iterator in
       // fill_values_if_necessary(), which does not work if the iterator
       // does not support it (for example the one for Sqlite recordsets does
@@ -296,8 +296,10 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       // a) make this code dependent on the database backend used.
       // b) fetch rows we perhaps don't need, if only the first few rows of
       // a table are accessed.
-      // TODO_Performance: The unnecessary (for PostgreSQL) extra indirection might theoretically make this slower.
-      m_gda_datamodel = Gnome::Gda::DataAccessWrapper::create(m_gda_datamodel);
+      // See See libgda bug https://bugzilla.gnome.org/show_bug.cgi?id=660344
+      ConnectionPool* connection = ConnectionPool::get_instance();
+      if(connection && !connection->get_backend_supports_cursor())
+        m_gda_datamodel = Gnome::Gda::DataAccessWrapper::create(m_gda_datamodel);
 
       //This doesn't work with cursor-based models: const int count = m_gda_datamodel->get_n_rows();
       //because rows count is -1 until we have iterated to the last row.

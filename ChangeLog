@@ -1,3 +1,14 @@
+2011-09-28  Murray Cumming  <murrayc@murrayc.com>
+
+	Related Records: Fix bug with a blank row when there is only one row. 
+
+	* glom/libglom/connectionpool.[h|cc]: Added get_backend_supports_cursor().
+	* glom/mode_data/datawidget/treemodel_db.cc: refresh_from_database():
+	Call that method, so we can avoid using GdaDataAccessWrapper unless 
+	necessary. That avoids an apparent bug with GdaDataAccessWrapper returned 
+	a row of all-nulls if there is only one row. See libgda bug #660344 .
+	This is probably a performance improvement anyway.
+
 2011-09-27  Murray Cumming  <murrayc@murrayc.com>>
 
   libglom::LayoutItem_Portal: Added get_suitable_table_to_view_details().
