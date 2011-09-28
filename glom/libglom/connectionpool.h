@@ -132,6 +132,12 @@ public:
 
   Backend* get_backend();
   const Backend* get_backend() const;
+  
+  /** Discover whether the backend can create GdaDataModels that can be iterated,
+   * by creating them with the GDA_STATEMENT_MODEL_CURSOR_FORWARD flag.
+   * If not (with sqlite, for instance), the GdaDataAccessWrapper model can provide that API, without the performance.
+   */
+  bool get_backend_supports_cursor() const;
 
   /** This method will return a SharedConnection, either by opening a new connection or returning an already-open connection.
    * When that SharedConnection is destroyed, or when SharedConnection::close() is called, then the ConnectionPool will be informed.
