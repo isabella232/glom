@@ -70,6 +70,8 @@ private:
   void on_menu_insert_relatedrecords();
   void on_menu_insert_line_horizontal();
   void on_menu_insert_line_vertical();
+  void on_menu_insert_create_standard();
+
   void on_menu_view_show_grid();
   void on_menu_view_show_rules();
   void on_menu_view_show_outlines();
@@ -126,6 +128,8 @@ private:
   
   void canvas_convert_from_drag_pixels(double& x, double& y, bool adjust_for_scrolling = false) const;
   void get_dimensions_of_multiple_selected_items(double& x, double& y, double& width, double& height);
+
+  void create_standard(const sharedptr<const LayoutGroup>& layout_group, const sharedptr<LayoutGroup>& print_layout_group, double x, double& y);
 
   //Box_DB_Table_Definition* m_box;
   Glib::ustring m_name_original;

@@ -1,5 +1,13 @@
 2011-09-29  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Add experimental Create Standard feature.
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
+	Add an Insert/Create Standard Layout menu item which creates a layout 
+	similar to the details layout.
+
+2011-09-29  Murray Cumming  <murrayc@murrayc.com>
+
 	Dialog_Choose_ID: Work around a crash in GTK+.
 
 	* glom/mode_data/datawidget/dialog_choose_id.cc: Remove the Box_Data_List 

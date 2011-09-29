@@ -78,7 +78,6 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
   add_layout_group(print_layout->m_layout_group, true /* is top-level */);
 
   //Use the page setup:
-  Glib::RefPtr<Gtk::PageSetup> page_setup;
   const Glib::ustring key_file_text = print_layout->get_page_setup();
   if(!key_file_text.empty())
   {
@@ -87,10 +86,10 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
     //TODO: Catch an exception
     key_file.load_from_data(key_file_text);
 
-    page_setup = Gtk::PageSetup::create_from_key_file(key_file);
+    Glib::RefPtr<Gtk::PageSetup> page_setup = 
+      Gtk::PageSetup::create_from_key_file(key_file);
+    set_page_setup(page_setup);
   }
-
-  set_page_setup(page_setup);
 
 
   //Add the rule lines:
