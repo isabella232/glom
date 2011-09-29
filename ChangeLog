@@ -1,5 +1,12 @@
 2011-09-29  Murray Cumming  <murrayc@murrayc.com>
 
+	build_simple_where_expression(): Check input parameters.
+
+	* glom/libglom/utils.cc: build_simple_where_expression(): Check for an 
+	empty key field, which can happen during debugging.
+
+2011-09-29  Murray Cumming  <murrayc@murrayc.com>
+
 	Glade utils: Catch generic exceptions.
 
 	* glom/glade_utils.h: Though this only happens when gtkmm has not been 

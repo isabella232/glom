@@ -441,6 +441,12 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib
 
 Gnome::Gda::SqlExpr Utils::build_simple_where_expression(const Glib::ustring& table_name, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
 {
+  if(!key_field)
+  {
+    std::cerr << G_STRFUNC << ": key_field was empty" << std::endl;
+    return Gnome::Gda::SqlExpr();
+  }
+  
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_target(table_name);  //This might not be necessary.
   const Gnome::Gda::SqlBuilder::Id id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
