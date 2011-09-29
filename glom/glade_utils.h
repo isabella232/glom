@@ -69,15 +69,19 @@ void helper_get_glade_widget_derived_with_warning(const std::string& filename, c
   }
   catch(const Gtk::BuilderError& ex)
   {
-    std::cerr << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
   }
   catch(const Glib::MarkupError& ex)
   {
-    std::cerr << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
   }
   catch(const Glib::FileError& ex)
   {
-    std::cerr << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": Exception of unexpected type: " << ex.what() << std::endl;
   }
 #else
   std::auto_ptr<Glib::Error> error;
