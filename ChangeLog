@@ -1,3 +1,11 @@
+2011-09-29  Jasper Lievisse Adriaanse <jasperla@gnome.org>
+
+	Remove glibc-specific function call.
+
+	* glom/main.cc: Fix build on OpenBSD (and other non-glibc systems)
+	by wrapping calls to __libc_freeres() in correct #ifdefs.
+	Bug #660496
+
 2011-09-29  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Add experimental Create Standard feature.
