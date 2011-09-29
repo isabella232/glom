@@ -1,3 +1,10 @@
+2011-09-29  Murray Cumming  <murrayc@murrayc.com>
+
+	Glade utils: Catch generic exceptions.
+
+	* glom/glade_utils.h: Though this only happens when gtkmm has not been 
+	initialized.
+
 2011-09-28  Murray Cumming  <murrayc@murrayc.com>
 
 	Related Records: Fix bug with a blank row when there is only one row. 
