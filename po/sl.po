@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-30 07:50+0000\n"
-"PO-Revision-Date: 2011-09-30 11:10+0100\n"
+"POT-Creation-Date: 2011-09-30 09:27+0000\n"
+"PO-Revision-Date: 2011-09-30 11:31+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -1065,7 +1065,7 @@ msgstr "Številka"
 #: ../glom/libglom/data_structure/translatable_item.cc:317
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1156
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:745
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:752
 msgid "Text"
 msgstr "Besedilo"
 
@@ -1142,7 +1142,7 @@ msgstr "Portal koledarja"
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:194
 #: ../glom/libglom/data_structure/translatable_item.cc:297
 #: ../glom/mode_design/dialog_database_preferences.cc:62
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:741
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:748
 #: ../ui/developer/window_field_definition_edit.glade.h:2
 msgid "Field"
 msgstr "Polje"
@@ -1259,44 +1259,44 @@ msgstr "Naslov polja"
 msgid "Unknown"
 msgstr "Neznano"
 
-#: ../glom/libglom/document/document.cc:493
-#: ../glom/libglom/document/document.cc:511
+#: ../glom/libglom/document/document.cc:494
+#: ../glom/libglom/document/document.cc:512
 msgid "System Preferences"
 msgstr "Možnosti sistema"
 
-#: ../glom/libglom/document/document.cc:524
+#: ../glom/libglom/document/document.cc:525
 msgid "System Name"
 msgstr "Ime sistema"
 
-#: ../glom/libglom/document/document.cc:530
+#: ../glom/libglom/document/document.cc:531
 msgid "Organisation Name"
 msgstr "Ime organizacije"
 
-#: ../glom/libglom/document/document.cc:536
+#: ../glom/libglom/document/document.cc:537
 msgid "Organisation Logo"
 msgstr "Logotip organizacije"
 
-#: ../glom/libglom/document/document.cc:542
+#: ../glom/libglom/document/document.cc:543
 msgid "Street"
 msgstr "Ulica"
 
-#: ../glom/libglom/document/document.cc:548
+#: ../glom/libglom/document/document.cc:549
 msgid "Street (line 2)"
 msgstr "Ulica (druga vrstica)"
 
-#: ../glom/libglom/document/document.cc:554
+#: ../glom/libglom/document/document.cc:555
 msgid "City"
 msgstr "Mesto"
 
-#: ../glom/libglom/document/document.cc:560
+#: ../glom/libglom/document/document.cc:561
 msgid "State"
 msgstr "Regija"
 
-#: ../glom/libglom/document/document.cc:566
+#: ../glom/libglom/document/document.cc:567
 msgid "Country"
 msgstr "Država"
 
-#: ../glom/libglom/document/document.cc:572
+#: ../glom/libglom/document/document.cc:573
 msgid "Zip Code"
 msgstr "Poštna številka"
 
@@ -1624,7 +1624,7 @@ msgstr "Nov gumb"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
 #: ../glom/mode_data/flowtablewithfields.cc:1189
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:445
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:452
 msgid "text"
 msgstr "besedilo"
 
@@ -1688,7 +1688,7 @@ msgid "Next Value"
 msgstr "Naslednja vrednost"
 
 #: ../glom/mode_design/dialog_design.cc:52
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:624
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:631
 #: ../ui/developer/window_design.glade.h:3
 msgid "None selected"
 msgstr "Brez izbora"
@@ -2092,76 +2092,97 @@ msgstr "Vstavi _navpično črto"
 msgid "_Create Standard Layout"
 msgstr "_Ustvari standardno razporeditev"
 
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:243
+msgid "_Add Page"
+msgstr "_Dodaj stran"
+
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:245
+msgid "_Delete Page"
+msgstr "_Izbriši stran"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:249
 msgid "_Align"
 msgstr "_Poravnaj"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:247
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:251
 msgid "Align _Top"
 msgstr "Poravnaj _zgoraj"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:251
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:255
 msgid "Align _Bottom"
 msgstr "Poravnaj _spodaj"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:255
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:259
 msgid "Align _Left"
 msgstr "Poravnaj _levo"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:259
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:263
 msgid "Align _Right"
 msgstr "Poravnaj _desno"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:264
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:268
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:64
 msgid "_View"
 msgstr "_Pogled"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:265
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:269
 msgid "Show Grid"
 msgstr "Pokaži mrežo"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:267
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:271
 msgid "Show Rules"
 msgstr "Pokaži pravila"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:269
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:273
 msgid "Show Outlines"
 msgstr "Pokaži obrise"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:273
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:277
 msgid "Fit Page _Width"
 msgstr "Prilagodi širino _strani"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:277
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:281
 msgid "Zoom 200%"
 msgstr "Približaj na 200%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:285
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:289
 msgid "Zoom 50%"
 msgstr "Približaj na 50%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:289
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:293
 msgid "Zoom 25%"
 msgstr "Približaj na 25%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:739
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:746
 msgid "Insert"
 msgstr "Vstavi"
 
 #. Ask for confirmation:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:906
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:913
 msgid "Create Standard Layout"
 msgstr "Ustvari standardno razporeditev"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:907
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:914
 msgid "This is an experimental feature. It will remove all items from the print layout and then try to create a layout similar to the layout of the detail view."
 msgstr "Ta možnost je preizkusna. Odstranjeni bodo vsi predmeti razporeditve tiskanja, nato pa bo ustvarjena razvrstitev, ki je enaka razvrstitvi v podrobnem pogledu."
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:910
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:917
 #: ../glom/mode_design/users/dialog_groups_list.cc:80
 msgid "Create"
 msgstr "Ustvari"
+
+#. Ask the user to confirm:
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1086
+msgid "Remove page"
+msgstr "Odstrani stran"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1087
+msgid "Are you sure that you wish to remove the last page and any items on that page?"
+msgstr "Ali ste prepričani, da želite odstraniti zadnjo stran in vse predmete na njej?"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1090
+msgid "Remove Page"
+msgstr "Odstrani stran"
 
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:59
 msgid "Page _Setup"
@@ -2300,7 +2321,7 @@ msgstr "Te razpredelnice ni mogoče odpreti, ker v dokumentu ni podatkov o tej r
 msgid "Choose Field"
 msgstr "Izbor polja"
 
-#: ../glom/print_layout/canvas_print_layout.cc:274
+#: ../glom/print_layout/canvas_print_layout.cc:276
 msgid "_Formatting"
 msgstr "_Oblikovanje"
 
