@@ -412,7 +412,7 @@ TODO: Add 'title_singular' element.
         show_grid (true|false) "false"
         show_rules (true|false) "false"
         show_outlines (true|false) "false"
-        page_count CDATA 1>
+        page_count CDATA #IMPLIED>
 
     <!ELEMENT print_layout_groups (print_layout_group*)>
     <!ATTLIST print_layout_groups>

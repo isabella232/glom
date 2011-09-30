@@ -1,5 +1,11 @@
 2011-09-30  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix the DTD.
+	
+	* glom/glom_document.dtd: Fix my typo to fix make check.
+
+2011-09-30  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Allow multiple pages.
 
 	* glom/libglom/data_structure/print_layout.[h|cc]: Add get/set_page_count().
