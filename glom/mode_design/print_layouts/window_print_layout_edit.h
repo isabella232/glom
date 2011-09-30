@@ -31,7 +31,6 @@
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
 #include <gtkmm/uimanager.h>
-//TODO: #include <gtkmm/ruler.h>
 #include <glom/utility_widgets/gimpruler/gimpruler.h>
 #include <gtkmm/builder.h>
 
@@ -130,12 +129,6 @@ private:
   
   void canvas_convert_from_drag_pixels(double& x, double& y, bool adjust_for_scrolling = false) const;
   void get_dimensions_of_multiple_selected_items(double& x, double& y, double& width, double& height);
-
-  /* Get the start and end of the page, inside the margins.
-   */
-  void get_page_y_start_and_end(guint page_number, double& y1, double& y2);
-
-  void create_standard(const sharedptr<const LayoutGroup>& layout_group, const sharedptr<LayoutGroup>& print_layout_group, double x, double& y, guint& page_number);
 
   //Box_DB_Table_Definition* m_box;
   Glib::ustring m_name_original;

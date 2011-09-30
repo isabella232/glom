@@ -108,6 +108,8 @@ glom_source_files = \
 	glom/xsl_utils.h						\
 	glom/printoperation_printlayout.cc				\
 	glom/printoperation_printlayout.h				\
+	glom/print_layout_utils.cc						\
+	glom/print_layout_utils.h							\
 	glom/report_builder.cc						\
 	glom/report_builder.h						\
 	glom/window_boxholder.cc					\
