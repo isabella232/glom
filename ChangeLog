@@ -1,3 +1,11 @@
+2011-09-30  Murray Cumming  <murrayc@murrayc.com>
+
+	Field Formatting window: Make it slightly less tall.
+
+	* ui/developer/dialog_layout_field_properties.glade: Arrange two radio 
+	buttons horizontally instead of vertically. But this window is still too tall.
+	See https://bugs.launchpad.net/ubuntu/+source/glom/+bug/863016
+
 2011-09-29  Jasper Lievisse Adriaanse <jasperla@gnome.org>
 
 	Remove glibc-specific function call.
