@@ -1,3 +1,13 @@
+2011-09-30  Murray Cumming  <murrayc@murrayc.com>>
+
+	Instantiation test: warn if the widget is too big for small screens.
+
+	* tests/test_glade_derived_instantiation.cc: Actually show the window
+	(Is there a way to get the size without showing it) and warn if it is too 
+	big, but do not fail yet.
+	Note that this is very dependent on the theme in use, though maybe we 
+	can set that at runtime for the test.
+
 2011-09-30  Murray Cumming  <murrayc@murrayc.com>
 
 	Field Formatting window: Make it slightly less tall.

@@ -55,6 +55,8 @@
 #include <glom/dialog_progress_creating.h>
 #include <glom/dialog_invalid_data.h>
 
+const int GLOM_MAX_WINDOW_WIDTH = 800;
+const int GLOM_MAX_WINDOW_HEIGHT = 600;
 
 template<class T_Widget>
 bool instantiate_widget()
@@ -68,7 +70,24 @@ bool instantiate_widget()
     exit(EXIT_FAILURE); //Make sure that our test case fails.
     return false;
   }
-
+  
+  //Also check that it is not too big for our target minimum screen size.
+  //Note that this is not testing all .glade files, or all windows (some not using glade),
+  //and doesn't even reliably check all uses of .glade files,
+  //but hopefully it will catch some problems:
+  widget->show();
+  const Gtk::Allocation allocation = widget->get_allocation();
+ 
+  if( (allocation.get_height() > GLOM_MAX_WINDOW_HEIGHT) ||
+    (allocation.get_width() > GLOM_MAX_WINDOW_WIDTH))
+  {
+    std::cerr << "Test: The window/widget is too big: " << T_Widget::glade_id << std::endl;
+    std::cerr << "  height=" << allocation.get_height() << std::endl; 
+    std::cerr << "  width=" << allocation.get_width() << std::endl;
+    std::cerr << "  (Ignored, though it should be fixed.)" << std::endl; 
+    //TODO: Uncomment this when all the windows are small enough: exit(EXIT_FAILURE); //Make sure that our test case fails.
+  }
+  
   delete widget;
   return true;
 }
