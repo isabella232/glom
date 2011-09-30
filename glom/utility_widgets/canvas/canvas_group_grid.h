@@ -50,6 +50,11 @@ public:
    * used to snap to the grid lines when moving or resizing items.
    */
   void set_grid_gap(double gap);
+  
+  /** Recreate the grid lines if this item has changed size.
+   * TODO: Just do this in response to some property change?
+   */
+  void update_grid_for_new_size();
 
   /** Remove grid lines.
    * See also remove_rules().

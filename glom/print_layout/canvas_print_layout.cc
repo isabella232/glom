@@ -43,7 +43,8 @@ namespace Glom
 Canvas_PrintLayout::Canvas_PrintLayout()
 : m_modified(false),
   m_dialog_format(0),
-  m_outline_visibility(false)
+  m_outline_visibility(false),
+  m_page_count(1) //Sensible default
 {
   #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_context_menu();
@@ -68,7 +69,6 @@ Canvas_PrintLayout::~Canvas_PrintLayout()
 {
 }
 
-
 void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const sharedptr<const PrintLayout>& print_layout)
 {
   m_table_name = table_name;
@@ -91,6 +91,7 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
     set_page_setup(page_setup);
   }
 
+  set_page_count(print_layout->get_page_count());
 
   //Add the rule lines:
   remove_rules();
@@ -131,6 +132,7 @@ sharedptr<PrintLayout> Canvas_PrintLayout::get_print_layout()
   data = key_file.to_data();
 
   result->set_page_setup(data);
+  result->set_page_count(get_page_count());
 
   result->set_horizontal_rules( get_horizontal_rules() );
   result->set_vertical_rules( get_horizontal_rules() );
@@ -576,12 +578,8 @@ Glib::RefPtr<Goocanvas::Polyline> Canvas_PrintLayout::create_margin_line(double 
   return line;
 }
 
-void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page_setup)
+void Canvas_PrintLayout::update_page_bounds()
 {
-  m_page_setup = page_setup;
-  if(!m_page_setup)
-    return;
-
   //Change the scroll extents to match the page size:
   const Gtk::PaperSize paper_size = m_page_setup->get_paper_size();
   Goocanvas::Bounds bounds;
@@ -592,19 +590,21 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
 
   //std::cout << "debug: " << G_STRFUNC << ": width=" << paper_size.get_width(units) << ", height=" paper_size.get_height(units) << std::endl;
 
+  double page_width = 0;
+  double page_height = 0;
   if(m_page_setup->get_orientation() == Gtk::PAGE_ORIENTATION_PORTRAIT) //TODO: Handle the reverse orientations too?
   {
-    bounds.set_x2( paper_size.get_width(units) );
-    bounds.set_y2( paper_size.get_height(units) );
+    page_width = paper_size.get_width(units);
+    page_height = paper_size.get_height(units);
   }
   else
   {
-    bounds.set_y2( paper_size.get_width(units) );
-    bounds.set_x2( paper_size.get_height(units) );
+    page_width = paper_size.get_height(units);
+    page_height = paper_size.get_width(units);
   }
-
-  //std::cout << "debug: " << G_STRFUNC << ": portrait page width=" << paper_size.get_width(units) << std::endl;
-
+  
+  bounds.set_x2( page_width );
+  bounds.set_y2( page_height * m_page_count );
   set_bounds(bounds);
 
   //Show the bounds with a rectangle, because the scrolled window might contain extra empty space.
@@ -632,11 +632,26 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
   if(m_grid)
     m_grid->lower();
 
-  m_margin_left = create_margin_line(page_setup->get_left_margin(units), bounds.get_y1(), page_setup->get_left_margin(units), bounds.get_y2());
-  m_margin_right = create_margin_line(bounds.get_x2() - page_setup->get_right_margin(units), bounds.get_y1(), bounds.get_x2() - page_setup->get_right_margin(units), bounds.get_y2());
-  m_margin_top = create_margin_line(bounds.get_x1(), page_setup->get_top_margin(units), bounds.get_x2(), page_setup->get_top_margin(units));
-  m_margin_bottom = create_margin_line(bounds.get_x1(), bounds.get_y2() - page_setup->get_bottom_margin(units), bounds.get_x2(), bounds.get_y2() - page_setup->get_bottom_margin(units));
-
+  m_margin_left = create_margin_line(m_page_setup->get_left_margin(units), bounds.get_y1(), m_page_setup->get_left_margin(units), bounds.get_y2());
+  m_margin_right = create_margin_line(bounds.get_x2() - m_page_setup->get_right_margin(units), bounds.get_y1(), bounds.get_x2() - m_page_setup->get_right_margin(units), bounds.get_y2());
+ 
+  m_vec_margin_tops.clear();  
+  m_vec_margin_bottoms.clear();
+  for(guint page = 0; page < m_page_count; ++page)
+  {
+    const double top_y = paper_size.get_height(units) * page + m_page_setup->get_top_margin(units);
+    Glib::RefPtr<Goocanvas::Polyline> margin_top = 
+      create_margin_line(
+        bounds.get_x1(), top_y, bounds.get_x2(), top_y);
+    m_vec_margin_tops.push_back(margin_top);
+      
+    const double bottom_y = paper_size.get_height(units) * (page + 1) - m_page_setup->get_bottom_margin(units);
+    Glib::RefPtr<Goocanvas::Polyline> margin_bottom = 
+      create_margin_line(
+        bounds.get_x1(), bottom_y, bounds.get_x2(), bottom_y);
+    m_vec_margin_bottoms.push_back(margin_bottom);
+  }
+  
   m_bounds_group->lower();
 
   //Try to show the whole thing, by (indirectly) making the parent window big enough:
@@ -647,11 +662,43 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
   std::cout << "DEBUG: width_pixels=" << width_pixels << ", height_pixels=" << height_pixels << std::endl;
   set_size_request(width_pixels, height_pixels);
   */
+  
+  //Update the grid lines:
+  m_grid->update_grid_for_new_size();
+}
+
+void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page_setup)
+{
+  m_page_setup = page_setup;
+  if(!m_page_setup)
+    return;
+
+  update_page_bounds();
+  m_modified = true;
 }
 
 Glib::RefPtr<Gtk::PageSetup> Canvas_PrintLayout::get_page_setup()
 {
   return m_page_setup;
+}
+
+void Canvas_PrintLayout::set_page_count(guint count)
+{
+  if(count < 1)
+  {
+    std::cerr << G_STRFUNC << ": count was less than 1" << std::endl;
+    return;
+  }
+
+  m_page_count = count;
+  
+  update_page_bounds();
+  m_modified = true;
+}
+
+guint Canvas_PrintLayout::get_page_count() const
+{
+  return m_page_count;
 }
 
 void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set)
@@ -1110,6 +1157,37 @@ void Canvas_PrintLayout::select_all(bool selected)
   }
 
   signal_selection_changed().emit();
+}
+
+Goocanvas::Bounds Canvas_PrintLayout::get_page_bounds(guint page_num) const
+{
+  Goocanvas::Bounds bounds;
+  
+   //Change the scroll extents to match the page size:
+  const Gtk::PaperSize paper_size = m_page_setup->get_paper_size();
+  const Gtk::Unit units = property_units();
+
+  //std::cout << "debug: " << G_STRFUNC << ": width=" << paper_size.get_width(units) << ", height=" paper_size.get_height(units) << std::endl;
+
+  double page_width = 0;
+  double page_height = 0;
+  if(m_page_setup->get_orientation() == Gtk::PAGE_ORIENTATION_PORTRAIT) //TODO: Handle the reverse orientations too?
+  {
+    page_width = paper_size.get_width(units);
+    page_height = paper_size.get_height(units);
+  }
+  else
+  {
+    page_width = paper_size.get_height(units);
+    page_height = paper_size.get_width(units);
+  }
+  
+  bounds.set_x1(0);
+  bounds.set_y1( page_height * page_num);
+  bounds.set_x2( page_width );
+  bounds.set_y2( page_height * (page_num + 1) );
+
+  return bounds;
 }
 
 

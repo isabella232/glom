@@ -1,3 +1,28 @@
+2011-09-30  Murray Cumming  <murrayc@murrayc.com>
+
+	Print Layout: Allow multiple pages.
+
+	* glom/libglom/data_structure/print_layout.[h|cc]: Add get/set_page_count().
+	* glom/libglom/document/document.cc: load_after(), save_before():
+	Store the page count in the document.
+	* glom/glom_document.dtd: Mention the new attribute.
+	
+	* glom/print_layout/canvas_print_layout.[h|cc]: Add get/set_page_count()
+	and get_page_bounds().
+	update_page_bounds(): Move the margin creation into here, and create 
+	margins for all pages.
+	* glom/utility_widgets/canvas/canvas_group_grid.[h|cc]:
+  Added update_grid_for_new_size().
+	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]: Add 
+	Add Page and Delete Page menu items, though we need to rearrange the menus
+	more sensibly.
+
+	* glom/printoperation_printlayout.cc: on_begin_print(), on_paginate():
+  Set the number of pages.
+  on_draw(): Render only the specified page's bounds from the GooCanvas.
+  However, this is not working for any page but the first one.
+  Some cairo transformation might be necessary.
+
 2011-09-30  Murray Cumming  <murrayc@murrayc.com>>
 
 	Instantiation test: warn if the widget is too big for small screens.

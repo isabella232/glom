@@ -50,6 +50,9 @@ public:
 
   void set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page_setup);
   Glib::RefPtr<Gtk::PageSetup> get_page_setup();
+  
+  void set_page_count(guint count);
+  guint get_page_count() const;
 
   void set_zoom_percent(guint percent);
  
@@ -82,6 +85,9 @@ public:
    * @param selected Use false to unselect all.
    */
   void select_all(bool selected = true);
+  
+  
+  Goocanvas::Bounds get_page_bounds(guint page_num) const;
   
 private:
 
@@ -116,6 +122,8 @@ private:
   void on_dialog_format_hide();
 #endif
 
+  void update_page_bounds();
+  
   Glib::RefPtr<Goocanvas::Polyline> create_margin_line(double x1, double y1, double x2, double y2);
 
   Glib::ustring m_table_name;
@@ -127,7 +135,11 @@ private:
   //A rectangle to show the bounds:
   Glib::RefPtr<Goocanvas::Group> m_bounds_group; //the page and its margins.
   Glib::RefPtr<Goocanvas::Rect> m_bounds_rect;
-  Glib::RefPtr<Goocanvas::Polyline> m_margin_left, m_margin_right, m_margin_top, m_margin_bottom;
+  Glib::RefPtr<Goocanvas::Polyline> m_margin_left, m_margin_right;
+  
+  typedef std::vector< Glib::RefPtr<Goocanvas::Polyline> > type_vec_margins;
+  type_vec_margins m_vec_margin_tops;
+  type_vec_margins m_vec_margin_bottoms;
 
   //Context menu for existing items:
   Gtk::Menu* m_context_menu;
@@ -142,6 +154,7 @@ private:
   Dialog_TextFormatting* m_dialog_format;
 
   bool m_outline_visibility;
+  guint m_page_count;
 };
 
 } //namespace Glom

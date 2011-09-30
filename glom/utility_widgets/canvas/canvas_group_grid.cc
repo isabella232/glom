@@ -280,6 +280,11 @@ void CanvasGroupGrid::set_grid_gap(double gap)
   create_grid_lines();
 }
 
+void CanvasGroupGrid::update_grid_for_new_size()
+{
+  create_grid_lines();
+}
+
 void CanvasGroupGrid::remove_grid()
 {
   m_grid_gap = 0.0;

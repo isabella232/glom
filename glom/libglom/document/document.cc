@@ -180,6 +180,7 @@ static const char GLOM_NODE_PRINT_LAYOUT[] = "print_layout";
 static const char GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_GRID[] = "show_grid";
 static const char GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_RULES[] = "show_rules";
 static const char GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_OUTLINES[] = "show_outlines";
+static const char GLOM_ATTRIBUTE_PRINT_LAYOUT_PAGE_COUNT[] = "page_count";
 static const char GLOM_NODE_HORIZONTAL_RULE[] = "horizonal_rule";
 static const char GLOM_NODE_VERTICAL_RULE[] = "vertical_rule";
 static const char GLOM_ATTRIBUTE_RULE_POSITION[] = "position";
@@ -2969,6 +2970,10 @@ bool Document::load_after(int& failure_code)
                 //Page Setup:
                 const Glib::ustring key_file_text = get_child_text_node(node, GLOM_NODE_PAGE_SETUP);
                 print_layout->set_page_setup(key_file_text);
+                
+                print_layout->set_page_count(
+                  get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_PRINT_LAYOUT_PAGE_COUNT, 1));
+                 
 
                 //Layout Groups:
                 const xmlpp::Element* nodeGroups = get_node_child_named(node, GLOM_NODE_DATA_LAYOUT_GROUPS);
@@ -3818,6 +3823,9 @@ bool Document::save_before()
             xmlpp::Element* child = nodePrintLayout->add_child(GLOM_NODE_PAGE_SETUP);
             child->add_child_text( Utils::string_clean_for_xml(page_setup) );
           }
+          
+          set_node_attribute_value_as_decimal(nodePrintLayout, GLOM_ATTRIBUTE_PRINT_LAYOUT_PAGE_COUNT, 
+            print_layout->get_page_count(), 1);
 
           xmlpp::Element* nodeGroups = nodePrintLayout->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
           if(print_layout->m_layout_group)

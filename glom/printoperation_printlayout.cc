@@ -43,13 +43,21 @@ void PrintOperationPrintLayout::on_begin_print(
 {
   //Call base class:
   Gtk::PrintOperation::on_begin_print(print_context);
+  
+  set_n_pages( m_canvas->get_page_count() );
+  //std::cout << G_STRFUNC << ": n pages =" <<  m_canvas->get_page_count() << std::endl;
 }
 
 bool PrintOperationPrintLayout::on_paginate(const Glib::RefPtr<Gtk::PrintContext>& print_context)
 {
-  std::cout << "PrintOperationPrintLayout::on_paginate" << std::endl;
+  //std::cout << "PrintOperationPrintLayout::on_paginate" << std::endl;
 
-  set_n_pages(1); //on_draw_page() will be called for any new pages.
+  if(!m_canvas)
+    return false;
+
+  //on_draw_page() will be called for any new pages.
+  set_n_pages( m_canvas->get_page_count() );
+  //std::cout << G_STRFUNC << ": n pages =" <<  m_canvas->get_page_count() << std::endl;
 
   //Call base class:
   Gtk::PrintOperation::on_paginate(print_context);
@@ -61,6 +69,8 @@ bool PrintOperationPrintLayout::on_paginate(const Glib::RefPtr<Gtk::PrintContext
 void PrintOperationPrintLayout::on_draw_page(
         const Glib::RefPtr<Gtk::PrintContext>& print_context, int page_nr)
 {
+  //Note that page_nr is 0-based, so the first page is page 0.
+
   if(!m_canvas)
     return;
 
@@ -68,10 +78,14 @@ void PrintOperationPrintLayout::on_draw_page(
   m_canvas->hide_page_bounds();
   Cairo::RefPtr<Cairo::Context> cairo_context = print_context->get_cairo_context();
 
-
   //Render the canvas onto the cairo context:
-  if(m_canvas)
-    m_canvas->render(cairo_context);
+  const Goocanvas::Bounds bounds = m_canvas->get_page_bounds(page_nr);
+  //std::cout << G_STRFUNC << ": page_nr=" << page_nr << ", bounds: x1=" << bounds.get_x1() << ", y1=" << bounds.get_y1() << ", x2=" << bounds.get_x2() << ", y2=" << bounds.get_y2() << std::endl;
+  m_canvas->render(cairo_context, bounds);
+  
+  //This doesn't seem to help:
+  //Shift the renderer context up into the page:
+  //cairo_context->translate(0, - bounds.get_y1());
 
   //Call base class:
   Gtk::PrintOperation::on_draw_page(print_context, page_nr);

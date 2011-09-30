@@ -240,6 +240,10 @@ void Window_PrintLayout_Edit::init_menu()
                         sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_line_vertical) );
   m_action_group->add(Gtk::Action::create("Action_Menu_Insert_CreateStandard", _("_Create Standard Layout")),
                         sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_create_standard) );
+  m_action_group->add(Gtk::Action::create("Action_Menu_Insert_AddPage", _("_Add Page")),
+                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_add_page) );
+  m_action_group->add(Gtk::Action::create("Action_Menu_Insert_DeletePage", _("_Delete Page")),
+                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_delete_page) );
 
 
   m_action_group->add(Gtk::Action::create("Menu_Align", _("_Align")));
@@ -317,6 +321,9 @@ void Window_PrintLayout_Edit::init_menu()
     "        <menuitem action='Action_Menu_Insert_LineVertical' />"
     "        <separator />"
     "        <menuitem action='Action_Menu_Insert_CreateStandard' />"
+    "        <separator />"
+    "        <menuitem action='Action_Menu_Insert_AddPage' />"
+    "        <menuitem action='Action_Menu_Insert_DeletePage' />"
     "      </menu>"
     "      <menu action='Menu_Align'>"
     "        <menuitem action='Action_Menu_Align_Top' />"
@@ -1061,6 +1068,32 @@ void Window_PrintLayout_Edit::create_standard(const sharedptr<const LayoutGroup>
     }
   }
 }
+
+void Window_PrintLayout_Edit::on_menu_insert_add_page()
+{
+  m_canvas.set_page_count(
+    m_canvas.get_page_count() + 1);
+}
+
+//TODO: Disable this menu item when there is only one page:
+void Window_PrintLayout_Edit::on_menu_insert_delete_page()
+{
+  const guint page_count = m_canvas.get_page_count();
+  if(page_count <= 1)
+    return;
+
+  //Ask the user to confirm:
+  Gtk::MessageDialog dialog(Utils::bold_message(_("Remove page")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+  dialog.set_secondary_text(_("Are you sure that you wish to remove the last page and any items on that page?"));
+  dialog.set_transient_for(*this);
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(_("Remove Page"), Gtk::RESPONSE_OK);
+  if(dialog.run() != Gtk::RESPONSE_OK)
+    return;
+      
+  m_canvas.set_page_count(page_count - 1);
+}
+
 void Window_PrintLayout_Edit::on_button_close()
 {
   hide();

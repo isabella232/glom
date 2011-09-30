@@ -71,7 +71,9 @@ private:
   void on_menu_insert_line_horizontal();
   void on_menu_insert_line_vertical();
   void on_menu_insert_create_standard();
-
+  void on_menu_insert_add_page();
+  void on_menu_insert_delete_page();
+  
   void on_menu_view_show_grid();
   void on_menu_view_show_rules();
   void on_menu_view_show_outlines();

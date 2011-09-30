@@ -27,7 +27,8 @@ PrintLayout::PrintLayout()
 : m_show_table_title(true),
   m_show_grid(true),
   m_show_rules(true),
-  m_show_outlines(true)
+  m_show_outlines(true),
+  m_page_count(1) //A sensible default
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_PRINT_LAYOUT;
   m_layout_group = sharedptr<LayoutGroup>::create();
@@ -39,7 +40,8 @@ PrintLayout::PrintLayout(const PrintLayout& src)
   m_show_table_title(src.m_show_table_title),
   m_show_grid(src.m_show_grid),
   m_show_rules(src.m_show_rules),
-  m_show_outlines(src.m_show_outlines)
+  m_show_outlines(src.m_show_outlines),
+  m_page_count(src.m_page_count)
 {
   m_page_setup = src.m_page_setup;
   m_horizontal_rules = src.m_horizontal_rules;
@@ -56,6 +58,7 @@ PrintLayout& PrintLayout::operator=(const PrintLayout& src)
   m_show_rules = src.m_show_rules;
   m_show_outlines = src.m_show_outlines;
   m_page_setup = src.m_page_setup;
+  m_page_count = src.m_page_count;
   m_horizontal_rules = src.m_horizontal_rules;
   m_vertical_rules = src.m_vertical_rules;
   
@@ -80,6 +83,16 @@ void PrintLayout::set_page_setup(const std::string& page_setup)
 std::string PrintLayout::get_page_setup() const
 {
   return m_page_setup;
+}
+
+void PrintLayout::set_page_count(guint count)
+{
+  m_page_count = count;
+}
+
+guint PrintLayout::get_page_count() const
+{
+  return m_page_count;
 }
 
 bool PrintLayout::get_show_grid() const
