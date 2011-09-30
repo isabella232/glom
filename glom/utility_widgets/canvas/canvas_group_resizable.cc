@@ -209,6 +209,12 @@ void CanvasGroupResizable::create_outline_group()
 
 void CanvasGroupResizable::set_outline_visible(bool visible)
 {
+  if(!m_group_outline)
+  {
+    std::cerr << G_STRFUNC << ": m_group_outline was null." << std::endl;
+    return;
+  }
+  
   m_group_outline->property_visibility() = 
     (visible ? Goocanvas::ITEM_VISIBLE : Goocanvas::ITEM_INVISIBLE);
 }

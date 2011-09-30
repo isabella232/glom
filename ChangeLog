@@ -1,5 +1,15 @@
 2011-09-30  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Create Standard Layout: Support multiple pages.
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
+	create_standard(): Support multiple pages, trying to keep out of the margins.
+	* glom/print_layout/canvas_print_layout.cc: add_layout_group_children():
+  Do not add canvas items that were not able to handle the layout item, such 
+  as buttons. 
+
+2011-09-30  Murray Cumming  <murrayc@murrayc.com>
+
 	Fix the DTD.
 	
 	* glom/glom_document.dtd: Fix my typo to fix make check.

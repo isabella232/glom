@@ -167,7 +167,7 @@ void Canvas_PrintLayout::add_layout_group_children(const sharedptr<LayoutGroup>&
     else
     {
       Glib::RefPtr<CanvasLayoutItem> canvas_item = CanvasLayoutItem::create(item);
-      if(canvas_item)
+      if(canvas_item && canvas_item->get_child()) //get_child() returns null if the layout item was not handled.
         add_canvas_layout_item(canvas_item);
     }
   }

@@ -934,14 +934,17 @@ void Window_PrintLayout_Edit::on_menu_insert_create_standard()
 
   //Start inside the border, on the next grid line:
   double y = 0;
-  double y_border = 0;
-  const Glib::RefPtr<const Gtk::PageSetup> page_setup = m_canvas.get_page_setup();
-  if(page_setup)
-    y_border = page_setup->get_top_margin(m_canvas.property_units());
-
-  while(y <= y_border)
-    y += GRID_GAP;
-
+  double max_y = 0; //ignored
+  guint page_number = 0;
+  get_page_y_start_and_end(page_number, y, max_y);
+  
+  Glib::RefPtr<Gtk::PageSetup> page_setup = m_canvas.get_page_setup();
+  if(!page_setup)
+  {
+    std::cerr << G_STRFUNC << ": page_setup was null" << std::endl;
+    return;
+  }
+  
   double x = 0;
   double x_border = 0;
   if(page_setup)
@@ -972,13 +975,53 @@ void Window_PrintLayout_Edit::on_menu_insert_create_standard()
     if(!group)
       continue;
 
-    create_standard(group, m_print_layout->m_layout_group, x, y);
+    create_standard(group, m_print_layout->m_layout_group, x, y, page_number);
   }
 
+  //Add extra pages if necessary:
+  if(page_number >= m_print_layout->get_page_count())
+  {
+    m_print_layout->set_page_count(page_number + 1);
+  }
+  
   m_canvas.set_print_layout(m_table_name, m_print_layout);
 }
 
-void Window_PrintLayout_Edit::create_standard(const sharedptr<const LayoutGroup>& layout_group, const sharedptr<LayoutGroup>& print_layout_group, double x, double& y)
+void Window_PrintLayout_Edit::get_page_y_start_and_end(guint page_number, double& y1, double& y2)
+{
+  y1 = 0;
+  y2 = 0;
+  
+  Glib::RefPtr<Gtk::PageSetup> page_setup = m_canvas.get_page_setup();
+  if(!page_setup)
+  {
+    std::cerr << G_STRFUNC << ": page_setup was null" << std::endl;
+    return;
+  }
+  
+  const Gtk::PaperSize paper_size = page_setup->get_paper_size();
+  const Gtk::Unit units = m_canvas.property_units();
+  
+  double page_height = 0;
+  if(page_setup->get_orientation() == Gtk::PAGE_ORIENTATION_PORTRAIT) //TODO: Handle the reverse orientations too?
+    page_height = paper_size.get_height(units);
+  else
+    page_height = paper_size.get_width(units);
+    
+  //y1:
+  y1 = page_height * (page_number);  
+  double y_border = page_setup->get_top_margin(units);
+  while(y1 <= y_border)
+    y1 += GRID_GAP;
+  
+  //y2:
+  y2 = page_height * (page_number + 1);  
+  y2 -= page_setup->get_bottom_margin(units); //TODO: Handle orientation here and wherever else we use the margin?
+
+  //std::cout << G_STRFUNC << "page_number=" << page_number << ", y1=" << y1 << "y2=" << y2 << std::endl;
+}
+
+void Window_PrintLayout_Edit::create_standard(const sharedptr<const LayoutGroup>& layout_group, const sharedptr<LayoutGroup>& print_layout_group, double x, double& y, guint& page_number)
 {
   if(!layout_group || !print_layout_group)
   {
@@ -992,13 +1035,9 @@ void Window_PrintLayout_Edit::create_standard(const sharedptr<const LayoutGroup>
     return;
   }
 
+  double min_y = 0; //ignored;
   double max_y = 0;
-  const Gtk::PaperSize paper_size = page_setup->get_paper_size();
-  const Gtk::Unit units = m_canvas.property_units();
-  if(page_setup->get_orientation() == Gtk::PAGE_ORIENTATION_PORTRAIT) //TODO: Handle the reverse orientations too?
-    max_y = paper_size.get_height(units);
-  else
-    max_y = paper_size.get_width(units);
+  get_page_y_start_and_end(page_number, min_y, max_y);
 
   const double height = ITEM_HEIGHT;
   const double gap = GRID_GAP;
@@ -1015,8 +1054,13 @@ void Window_PrintLayout_Edit::create_standard(const sharedptr<const LayoutGroup>
 
     print_layout_group->add_item(text);
 
-    if( y >= max_y)
-      return;
+    //Start on the next page, if necessary:
+    //TODO: Add a page if necessary:
+    if( y >= max_y )
+    {
+      page_number += 1;
+      get_page_y_start_and_end(page_number, y, max_y);
+    }
   }
 
   //Recurse into the group's child items:
@@ -1034,7 +1078,7 @@ void Window_PrintLayout_Edit::create_standard(const sharedptr<const LayoutGroup>
     if(group)
     {
       //Recurse: //TODO: Handle portals separately:
-      create_standard(group, print_layout_group, x, y);
+      create_standard(group, print_layout_group, x, y, page_number);
     }
     else
     {
@@ -1063,8 +1107,13 @@ void Window_PrintLayout_Edit::create_standard(const sharedptr<const LayoutGroup>
 
       print_layout_group->add_item(clone);
 
-      if(y >= max_y)
-        break;
+      //Start on the next page, if necessary:
+      //TODO: Add a page if necessary:
+      if( y >= max_y )
+      {
+        page_number += 1;
+        get_page_y_start_and_end(page_number, y, max_y);
+      }
     }
   }
 }
