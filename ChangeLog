@@ -1,5 +1,15 @@
 2011-10-02  Murray Cumming  <murrayc@murrayc.com>
 
+	Find: Get criteria even when a field is on the layout twice.
+
+	* glom/mode_data/flowtablewithfields.cc: get_field_value(): 
+	Look at all the widgets for this field, instead of just the first one, 
+	and keep looking until we find a non-empty value.
+	This is still rather arbitrary, but this method is only used for 
+	find criteria, or should be.
+
+2011-10-02  Murray Cumming  <murrayc@murrayc.com>
+
 	Find Mode: Do not show data in related records.
 
 	* glom/mode_data/box_data_portal.[h|cc]: Add a virtual set_find_mode().

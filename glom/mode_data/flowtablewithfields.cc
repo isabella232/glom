@@ -783,12 +783,16 @@ void FlowTableWithFields::set_other_field_value(const sharedptr<const LayoutItem
 Gnome::Gda::Value FlowTableWithFields::get_field_value(const sharedptr<const LayoutItem_Field>& field) const
 {
   type_list_const_widgets list_widgets = get_field(field, true);
-  if(!list_widgets.empty())
+  for(type_list_const_widgets::const_iterator iter = list_widgets.begin();
+    iter != list_widgets.end(); ++iter)
   {
-    const DataWidget* datawidget = dynamic_cast<const DataWidget*>(*(list_widgets.begin()));
+    const DataWidget* datawidget = dynamic_cast<const DataWidget*>(*iter);
+    if(!datawidget)
+      continue;
 
-    if(datawidget)
-      return datawidget->get_value();
+    const Gnome::Gda::Value value = datawidget->get_value();
+    if(!Conversions::value_is_empty(value))
+      return value;
   }
 
   //g_warning("FlowTableWithFields::get_field_value(): returning null");
