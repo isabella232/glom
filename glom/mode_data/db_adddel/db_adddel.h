@@ -59,7 +59,9 @@ public:
   virtual void set_allow_delete(bool val = true);
 
   /** Prevent any attempts by this class to change actual records,
-   * if the widget is just being used to enter find critera.
+   * if the widget is just being used to enter find critera,
+   * and prevents any need for data retrieval from the database, because
+   * no data will be displayed.
    *
    * @param val True if find mode should be used.
    */

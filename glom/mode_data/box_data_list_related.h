@@ -42,6 +42,8 @@ public:
    */
   virtual bool init_db_details(const Glib::ustring& parent_table, bool show_title = true);
 
+  virtual void set_find_mode(bool val = true);
+
 protected:
   virtual bool fill_from_database(); //Override.
 

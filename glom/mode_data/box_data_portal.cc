@@ -33,6 +33,7 @@ namespace Glom
 {
 
 Box_Data_Portal::Box_Data_Portal()
+  : m_find_mode(false)
 {
   //m_Frame.set_label_widget(m_Label_Related);
   m_Frame.set_shadow_type(Gtk::SHADOW_NONE);
@@ -393,6 +394,11 @@ sharedptr<Field> Box_Data_Portal::get_field_primary_key() const
 Box_Data_Portal::type_signal_portal_record_changed Box_Data_Portal::signal_portal_record_changed()
 {
   return m_signal_portal_record_changed;
+}
+
+void Box_Data_Portal::set_find_mode(bool val)
+{
+  m_find_mode = val;
 }
 
 

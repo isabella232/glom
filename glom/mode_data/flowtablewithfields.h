@@ -63,6 +63,15 @@ public:
   ///The table name is needed to discover details of relationships.
   virtual void set_table(const Glib::ustring& table_name);
 
+  /** Prevent any attempts to change actual records,
+   * if the widget is just being used to enter find critera,
+   * and prevents any need for data retrieval from the database, because
+   * no data will be displayed.
+   *
+   * @param val True if find mode should be used.
+   */
+  void set_find_mode(bool val = true);
+
   /** Add a field.
    * @param layoutitem_field The layout item that describes this field,
    * @param table_name The table on which this layout appears.
@@ -249,6 +258,7 @@ private:
   Gtk::Alignment* m_placeholder;
 
   Glib::ustring m_table_name;
+  bool m_find_mode;
 
   //Size groups shared by this widget's sibling FlowTables,
   //with one group for each column.

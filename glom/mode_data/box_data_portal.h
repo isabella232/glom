@@ -81,6 +81,15 @@ public:
    */
   void get_suitable_record_to_view_details(const Gnome::Gda::Value& primary_key_value, Glib::ustring& table_name, Gnome::Gda::Value& table_primary_key_value) const;
 
+  /** Prevent any attempts to change actual records,
+   * if the widget is just being used to enter find critera,
+   * and prevents any need for data retrieval from the database, because
+   * no data will be displayed.
+   *
+   * @param val True if find mode should be used.
+   */
+  virtual void set_find_mode(bool val = true);
+
 protected:
   virtual type_vecConstLayoutFields get_fields_to_show() const; //override
     
@@ -119,6 +128,8 @@ protected:
   // must match another field in the parent table.
   sharedptr<Field> m_key_field;
   Gnome::Gda::Value m_key_value;
+
+  bool m_find_mode;
     
   type_signal_portal_record_changed m_signal_portal_record_changed;
 };

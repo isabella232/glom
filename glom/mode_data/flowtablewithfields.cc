@@ -54,7 +54,8 @@ FlowTableWithFields::Info::Info()
 FlowTableWithFields::FlowTableWithFields(const Glib::ustring& table_name)
 :
   m_placeholder(0),
-  m_table_name(table_name)
+  m_table_name(table_name),
+  m_find_mode(false)
 {
 }
 
@@ -190,6 +191,7 @@ void FlowTableWithFields::add_layout_group(const sharedptr<LayoutGroup>& group, 
     frame->add(*alignment);
 
     FlowTableWithFields* flow_table = Gtk::manage( new FlowTableWithFields() );
+    flow_table->set_find_mode(m_find_mode);
     add_view(flow_table); //Allow these sub-flowtables to access the document too.
     flow_table->set_table(m_table_name);
 
@@ -247,6 +249,7 @@ Box_Data_List_Related* FlowTableWithFields::create_related(const sharedptr<Layou
   if(pDocument)
   {
     Box_Data_List_Related* portal_box = Gtk::manage(new Box_Data_List_Related);
+    portal_box->set_find_mode(m_find_mode);
     add_view(portal_box); //Give it access to the document, needed to get the layout and fields information.
 
     //Create the layout:
@@ -286,6 +289,7 @@ Box_Data_Calendar_Related* FlowTableWithFields::create_related_calendar(const sh
   if(pDocument)
   {
     Box_Data_Calendar_Related* portal_box = Gtk::manage(new Box_Data_Calendar_Related);
+    portal_box->set_find_mode(m_find_mode); //TODO: Implement this in the class
     add_view(portal_box); //Give it access to the document, needed to get the layout and fields information.
 
     //Create the layout:
@@ -380,6 +384,7 @@ void FlowTableWithFields::add_layout_notebook(const sharedptr<LayoutItem_Noteboo
 
         //Add a FlowTable for this group:
         FlowTableWithFields* flow_table = Gtk::manage( new FlowTableWithFields() );
+        flow_table->set_find_mode(m_find_mode);
         add_view(flow_table); //Allow these sub-flowtables to access the document too.
         flow_table->set_table(m_table_name);
 
@@ -811,7 +816,7 @@ FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const sharedp
   const Glib::ustring from_key_name = from_key->get_name();
 
   //Check the single-item widgets:
-   for(type_portals::const_iterator iter = m_portals.begin(); iter != m_portals.end(); ++iter)
+  for(type_portals::const_iterator iter = m_portals.begin(); iter != m_portals.end(); ++iter)
   {
     //*iter is a FlowTableItem.
     Box_Data_Portal* pPortalUI = *iter;
@@ -1423,6 +1428,30 @@ sharedptr<LayoutItem_Portal> FlowTableWithFields::get_portal_relationship()
   return sharedptr<LayoutItem_Portal>();
 }
 
+void FlowTableWithFields::set_find_mode(bool val)
+{
+  m_find_mode = val;
+
+  //Set find mode in all portals:
+  for(type_portals::const_iterator iter = m_portals.begin(); iter != m_portals.end(); ++iter)
+  {
+    //*iter is a FlowTableItem.
+    Box_Data_Portal* portal = *iter;
+    if(portal)
+      portal->set_find_mode(m_find_mode);
+  }
+
+  //Set find mode in all the child flowtables, recursively:
+  for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  {
+    FlowTableWithFields* subtable = *iter;
+    if(subtable)
+    {
+      subtable->set_find_mode(m_find_mode);
+    }
+  }
+
+}
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

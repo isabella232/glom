@@ -1,3 +1,19 @@
+2011-10-02  Murray Cumming  <murrayc@murrayc.com>
+
+	Find Mode: Do not show data in related records.
+
+	* glom/mode_data/box_data_portal.[h|cc]: Add a virtual set_find_mode().
+	* glom/mode_data/box_data_list_related.h: Add a set_find_mode() 
+	override here which calls it on the DbAddDel.
+	* glom/mode_data/db_adddel/db_adddel.h: Document the existing 
+	set_find_mode() more.
+	* glom/mode_data/flowtablewithfields.[h|cc]: Add set_find_mode(), which 
+	calls it on all child portals and flowtables and calls it later when 
+	creating them.
+	* glom/mode_find/box_data_details_find.cc: Call set_find_mode() on the 
+	FlowTable.
+	This also affects the Find button next to ID fields.
+
 2011-09-30  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Create Standard Layout: Support multiple pages.

@@ -459,4 +459,10 @@ void Box_Data_List_Related::create_layout()
   m_FieldsShown = get_fields_to_show();
 }
 
+void Box_Data_List_Related::set_find_mode(bool val)
+{
+  Box_Data_Portal::set_find_mode(val);
+  m_AddDel.set_find_mode(val);
+}
+
 } //namespace Glom

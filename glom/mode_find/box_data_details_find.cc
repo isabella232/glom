@@ -39,6 +39,8 @@ Box_Data_Details_Find::Box_Data_Details_Find()
   show_layout_toolbar(false);
 #endif
 
+  m_FlowTable.set_find_mode();
+
   show_all_children();
 }
 
@@ -74,6 +76,7 @@ bool Box_Data_Details_Find::fill_from_database()
   return result;
 }
 
+//TODO: Remove this?
 void Box_Data_Details_Find::fill_related()
 {
   //Clear existing pages:
