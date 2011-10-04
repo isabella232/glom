@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-27 10:52+0000\n"
-"PO-Revision-Date: 2011-09-27 22:42+0200\n"
+"POT-Creation-Date: 2011-09-30 09:27+0000\n"
+"PO-Revision-Date: 2011-10-04 11:05+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -823,7 +823,7 @@ msgid "Edit Tables"
 msgstr "Upravit tabulky"
 
 #: ../glom/frame_glom.cc:1311
-#: ../glom/mode_data/datawidget/dialog_choose_id.cc:104
+#: ../glom/mode_data/datawidget/dialog_choose_id.cc:108
 msgid "You have not entered any quick find criteria."
 msgstr "Nezadali jste žádná kritéria rychlého hledání."
 
@@ -1171,7 +1171,7 @@ msgstr "Číslo"
 #: ../glom/libglom/data_structure/translatable_item.cc:317
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1156
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:741
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:752
 msgid "Text"
 msgstr "Text"
 
@@ -1263,7 +1263,7 @@ msgstr "Portál kalendáře"
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:194
 #: ../glom/libglom/data_structure/translatable_item.cc:297
 #: ../glom/mode_design/dialog_database_preferences.cc:62
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:737
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:748
 #: ../ui/developer/window_field_definition_edit.glade.h:2
 msgid "Field"
 msgstr "Pole"
@@ -1380,44 +1380,44 @@ msgstr "Nadpis pole"
 msgid "Unknown"
 msgstr "Neznámé"
 
-#: ../glom/libglom/document/document.cc:493
-#: ../glom/libglom/document/document.cc:511
+#: ../glom/libglom/document/document.cc:494
+#: ../glom/libglom/document/document.cc:512
 msgid "System Preferences"
 msgstr "Nastavení systému"
 
-#: ../glom/libglom/document/document.cc:524
+#: ../glom/libglom/document/document.cc:525
 msgid "System Name"
 msgstr "Název systému"
 
-#: ../glom/libglom/document/document.cc:530
+#: ../glom/libglom/document/document.cc:531
 msgid "Organisation Name"
 msgstr "Název organizace"
 
-#: ../glom/libglom/document/document.cc:536
+#: ../glom/libglom/document/document.cc:537
 msgid "Organisation Logo"
 msgstr "Logo organizace"
 
-#: ../glom/libglom/document/document.cc:542
+#: ../glom/libglom/document/document.cc:543
 msgid "Street"
 msgstr "Ulice"
 
-#: ../glom/libglom/document/document.cc:548
+#: ../glom/libglom/document/document.cc:549
 msgid "Street (line 2)"
 msgstr "Ulice (řádek 2)"
 
-#: ../glom/libglom/document/document.cc:554
+#: ../glom/libglom/document/document.cc:555
 msgid "City"
 msgstr "Město"
 
-#: ../glom/libglom/document/document.cc:560
+#: ../glom/libglom/document/document.cc:561
 msgid "State"
 msgstr "Stát"
 
-#: ../glom/libglom/document/document.cc:566
+#: ../glom/libglom/document/document.cc:567
 msgid "Country"
 msgstr "Země"
 
-#: ../glom/libglom/document/document.cc:572
+#: ../glom/libglom/document/document.cc:573
 msgid "Zip Code"
 msgstr "Směrovací číslo"
 
@@ -1505,7 +1505,7 @@ msgstr "Běžící jako root"
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
-#: ../glom/main.cc:305 ../glom/main.cc:318 ../glom/main.cc:558
+#: ../glom/main.cc:305 ../glom/main.cc:318 ../glom/main.cc:560
 msgid "Incomplete Glom Installation"
 msgstr "Nekompletní instalace programu Glom"
 
@@ -1602,24 +1602,24 @@ msgstr ""
 msgid "gi.repository.Gda Python Module Not Installed"
 msgstr "Modul gi.repository.Gda pro jazyk Python není nainstalovaný"
 
-#: ../glom/main.cc:480
+#: ../glom/main.cc:482
 msgid "Error while parsing command-line options: "
 msgstr "Chyba při analýze parametrů příkazové řádky: "
 
-#: ../glom/main.cc:481
+#: ../glom/main.cc:483
 msgid "Use --help to see a list of available command-line options."
 msgstr "Použijte --help pro zobrazení dostupných voleb příkazové řádky."
 
-#: ../glom/main.cc:525
+#: ../glom/main.cc:527
 msgid "Glom: The file does not exist."
 msgstr "Glom: Soubor neexistuje."
 
-#: ../glom/main.cc:535
+#: ../glom/main.cc:537
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: Cesta k souboru je složka namísto souboru."
 
 #. The Postgres provider was not found, so warn the user:
-#: ../glom/main.cc:556
+#: ../glom/main.cc:558
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda "
 "provider is not available on your system. This provider is needed to access "
@@ -1658,7 +1658,7 @@ msgid ""
 msgstr "Nezadali jste žádná kritéria hledání. Zkuste do polí zadat informace."
 
 #: ../glom/mode_data/box_data.cc:149
-#: ../glom/mode_data/datawidget/dialog_choose_id.cc:105
+#: ../glom/mode_data/datawidget/dialog_choose_id.cc:109
 msgid "No Find Criteria"
 msgstr "Žádná kritéria hledání"
 
@@ -1785,7 +1785,7 @@ msgstr "Nové tlačítko"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
 #: ../glom/mode_data/flowtablewithfields.cc:1189
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:441
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:452
 msgid "text"
 msgstr "text"
 
@@ -1850,7 +1850,7 @@ msgid "Next Value"
 msgstr "Následující hodnota"
 
 #: ../glom/mode_design/dialog_design.cc:52
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:620
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:631
 #: ../ui/developer/window_design.glade.h:3
 msgid "None selected"
 msgstr "Nic nevybráno"
@@ -2297,62 +2297,112 @@ msgstr "Vložit _vodorovnou čáru"
 msgid "Insert _Vertical Line"
 msgstr "Vložit _svislou čáru"
 
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:241
+msgid "_Create Standard Layout"
+msgstr "_Vytvořit standardní rozvržení"
+
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:243
+msgid "_Add Page"
+msgstr "Přid_at stránku"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:245
+#| msgid "Delete Table"
+msgid "_Delete Page"
+msgstr "O_dstranit stránku"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:249
 msgid "_Align"
 msgstr "Z_arovnat"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:245
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:251
 msgid "Align _Top"
 msgstr "Zarovnat na_horu"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:249
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:255
 msgid "Align _Bottom"
 msgstr "Zarovnat _dolů"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:253
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:259
 msgid "Align _Left"
 msgstr "Zarovnat v_levo"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:257
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:263
 msgid "Align _Right"
 msgstr "Zarovnat vp_ravo"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:262
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:268
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:64
 msgid "_View"
 msgstr "_Zobrazení"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:263
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:269
 msgid "Show Grid"
 msgstr "Zobrazit mřížku"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:265
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:271
 msgid "Show Rules"
 msgstr "Zobrazit pravítka"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:267
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:273
 msgid "Show Outlines"
 msgstr "Zobrazit osnovu"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:271
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:277
 msgid "Fit Page _Width"
 msgstr "Zvětšit na šíř_ku stránky"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:275
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:281
 msgid "Zoom 200%"
 msgstr "Zvětšení 200%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:283
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:289
 msgid "Zoom 50%"
 msgstr "Zvětšení 50%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:287
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:293
 msgid "Zoom 25%"
 msgstr "Zvětšení 25%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:735
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:746
 msgid "Insert"
 msgstr "Vložit"
+
+#. Ask for confirmation:
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:913
+msgid "Create Standard Layout"
+msgstr "Vytvoření standardního rozvržení"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:914
+msgid ""
+"This is an experimental feature. It will remove all items from the print "
+"layout and then try to create a layout similar to the layout of the detail "
+"view."
+msgstr ""
+"Jedná se o experimentální funkci. Odstraní všechny položky z tiskového "
+"rozvržení a po té zkusí vytvořit rozvržení s podobným rozložením jako v "
+"detailním zobrazení."
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:917
+#: ../glom/mode_design/users/dialog_groups_list.cc:80
+msgid "Create"
+msgstr "Vytvořit"
+
+#. Ask the user to confirm:
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1086
+msgid "Remove page"
+msgstr "Odstranění stránky"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1087
+#| msgid "Are you sure that you want to rename this print layout?"
+msgid ""
+"Are you sure that you wish to remove the last page and any items on that "
+"page?"
+msgstr ""
+"Opravdu chcete odstranit poslední stránku a položky, které se na ní nachází?"
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1090
+msgid "Remove Page"
+msgstr "Odstranit stránku"
 
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:59
 msgid "Page _Setup"
@@ -2386,10 +2436,6 @@ msgstr "Zobrazit"
 #: ../glom/mode_design/users/dialog_groups_list.cc:77
 msgid "Edit"
 msgstr "Upravit"
-
-#: ../glom/mode_design/users/dialog_groups_list.cc:80
-msgid "Create"
-msgstr "Vytvořit"
 
 #: ../glom/mode_design/users/dialog_groups_list.cc:83
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:47
@@ -2510,7 +2556,7 @@ msgstr ""
 msgid "Choose Field"
 msgstr "Zvolte pole"
 
-#: ../glom/print_layout/canvas_print_layout.cc:275
+#: ../glom/print_layout/canvas_print_layout.cc:276
 msgid "_Formatting"
 msgstr "_Formátování"
 
@@ -2621,7 +2667,7 @@ msgstr ""
 "Pokusili jste se přidat nový související záznam, ale může být jen jeden "
 "související záznam, protože relace používá jedinečný klíč."
 
-#: ../glom/mode_data/datawidget/dialog_choose_id.cc:87
+#: ../glom/mode_data/datawidget/dialog_choose_id.cc:91
 #: ../glom/utility_widgets/imageglom.cc:773
 #: ../ui/developer/dialog_choose_relationship.glade.h:2
 #: ../ui/developer/dialog_field_summary.glade.h:4
