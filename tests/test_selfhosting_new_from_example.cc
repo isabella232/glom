@@ -202,6 +202,7 @@ int main()
 
   //Test the standard print layout:
   /* Actually, we can't do this without depending on more than libglom:
+    Also we should not use GTK_PRINT_OPERATION_ACTION_PRINT when testing.
   const Glib::ustring test_table_name = "albums";
   Glib::RefPtr<Gtk::PageSetup> page_setup = Gtk::PageSetup::create(); //TODO: m_canvas.get_page_setup();
   sharedptr<PrintLayout> print_layout = 
