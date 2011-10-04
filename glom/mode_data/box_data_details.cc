@@ -31,6 +31,8 @@
 #include <libglom/privs.h>
 #include <glom/xsl_utils.h>
 #include <glom/python_embed/glom_python.h>
+#include <glom/print_layout_utils.h>
+#include <glom/application.h>
 #include <sstream> //For stringstream
 #include <glibmm/i18n.h>
 
@@ -906,99 +908,37 @@ sharedptr<Field> Box_Data_Details::get_field_primary_key() const
   return m_field_primary_key;
 }
 
-void Box_Data_Details::print_layout_group(xmlpp::Element* node_parent, const sharedptr<const LayoutGroup>& group)
-{
-  xmlpp::Element* nodeChildGroup = node_parent->add_child("group");
-  nodeChildGroup->set_attribute("title", group->get_title());
-
-  LayoutGroup::type_list_const_items items = group->get_items();
-  for(LayoutGroup::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
-  {
-    sharedptr<const LayoutItem> layout_item = *iter;
-
-    sharedptr<const LayoutGroup> pLayoutGroup = sharedptr<const LayoutGroup>::cast_dynamic(layout_item);
-    if(pLayoutGroup)
-      print_layout_group(nodeChildGroup, pLayoutGroup); //recurse
-    else
-    {
-      sharedptr<const LayoutItem_Field> pLayoutField = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
-      if(pLayoutField)
-      {
-        xmlpp::Element* nodeField = nodeChildGroup->add_child("field");
-
-        nodeField->set_attribute("title", pLayoutField->get_title_or_name());
-
-        Gnome::Gda::Value value = m_FlowTable.get_field_value(pLayoutField);
-        const Glib::ustring text_representation = Conversions::get_text_for_gda_value(pLayoutField->get_glom_type(), value,
-          pLayoutField->get_formatting_used().m_numeric_format); //In the current locale.
-
-        nodeField->set_attribute("value", text_representation);
-      }
-      else
-      {
-        sharedptr<const LayoutItem_Portal> pLayoutPortal = sharedptr<const LayoutItem_Portal>::cast_dynamic(layout_item);
-        if(pLayoutPortal)
-        {
-          xmlpp::Element* nodePortal = nodeChildGroup->add_child("related_records");
-
-          //Box_Data_List_Related* pPortalWidget = m_FlowTable.get_portals();
-
-          sharedptr<Relationship> relationship = get_document()->get_relationship(m_table_name, pLayoutPortal->get_relationship_name());
-          if(relationship)
-          {
-            nodePortal->set_attribute("title", relationship->get_title_or_name());
-
-            //TODO:
-
-            //TODO: Only print this if the user has access rights.
-          }
-        }
-      }
-    }
-  }
-
-}
-
 void Box_Data_Details::print_layout()
 {
-  const Privileges table_privs = Privs::get_current_privs(m_table_name);
+ const Privileges table_privs = Privs::get_current_privs(m_table_name);
 
   //Don't try to print tables that the user can't view.
   if(!table_privs.m_view)
+    return;  //TODO: Warn the user.
+   
+  const Document* document = dynamic_cast<const Document*>(get_document());
+  if(!document)
   {
-    //TODO: Warn the user.
+    std::cerr << G_STRFUNC << ": document was null" << std::endl;
+    return;
   }
-  else
+
+  Glib::RefPtr<Gtk::PageSetup> page_setup = Gtk::PageSetup::create(); //TODO: m_canvas.get_page_setup();
+  if(!page_setup)
   {
-    //Create a DOM Document with the XML:
-    xmlpp::DomParser dom_parser;;
-
-    xmlpp::Document* pDocument = dom_parser.get_document();
-    xmlpp::Element* nodeRoot = pDocument->get_root_node();
-    if(!nodeRoot)
-    {
-      //Add it if it isn't there already:
-      nodeRoot = pDocument->create_root_node("details_print");
-    }
-
-    Glib::ustring table_title = get_document()->get_table_title(m_table_name);
-    if(table_title.empty())
-      table_title = m_table_name;
-
-    nodeRoot->set_attribute("table", table_title);
-
-
-    //The groups:
-    xmlpp::Element* nodeParent = nodeRoot;
-
-    const Document::type_list_layout_groups layout_groups = get_data_layout_groups(m_layout_name, m_layout_platform);
-    for(Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
-    {
-      sharedptr<const LayoutGroup> layout_group = *iter;
-      print_layout_group(nodeParent, layout_group);
-    }
-
-    GlomXslUtils::transform_and_open(*pDocument, "print_details_to_html.xsl", get_app_window());
+    std::cerr << G_STRFUNC << ": page_setup was null" << std::endl;
+    return;
+  }
+  
+  sharedptr<PrintLayout> print_layout = 
+    PrintLayoutUtils::create_standard(page_setup, m_table_name, document);
+  
+  //Show the print preview window:
+  Application* app = Application::get_application();
+  if(app)
+  {
+    app->do_print_layout(print_layout, 
+      false /* print, not preview*/, app);
   }
 }
 

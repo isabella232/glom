@@ -97,6 +97,7 @@ public:
   void do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring table_name);
   void do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring table_name);
   void do_print_layout(const Glib::ustring& print_layout_name, bool preview = false, Gtk::Window* transient_for = 0);
+  void do_print_layout(const sharedptr<const PrintLayout>& print_layout, bool preview = false, Gtk::Window* transient_for = 0);
   bool do_restore_backup(const Glib::ustring& backup_uri);
 #endif //GLOM_ENABLE_CLIENT_ONLY
 

@@ -306,7 +306,7 @@ void Notebook_Data::show_layout_toolbar(bool show)
 
 void Notebook_Data::do_menu_file_print()
 {
-  int iPageCurrent = get_current_page();
+  const int iPageCurrent = get_current_page();
 
   Gtk::Widget* pChild  = get_nth_page(iPageCurrent);
   if(pChild)

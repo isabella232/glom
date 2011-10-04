@@ -2325,6 +2325,20 @@ void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout
 
 void Frame_Glom::do_print_layout(const Glib::ustring& print_layout_name, bool preview, Gtk::Window* transient_for)
 {
+  Document* document = get_document();
+  sharedptr<PrintLayout> print_layout = document->get_print_layout(m_table_name, print_layout_name);
+    
+  do_print_layout(print_layout, preview, transient_for);
+}
+    
+void Frame_Glom::do_print_layout(const sharedptr<const PrintLayout>& print_layout, bool preview, Gtk::Window* transient_for)
+{
+  if(!print_layout)
+  {
+    std::cerr << G_STRFUNC << ": print_layout was null" << std::endl;
+    return;
+  }
+  
   const Privileges table_privs = Privs::get_current_privs(m_table_name);
 
   //Don't try to print tables that the user can't view.
@@ -2333,11 +2347,6 @@ void Frame_Glom::do_print_layout(const Glib::ustring& print_layout_name, bool pr
     //TODO: Warn the user.
     return;
   }
-
-  Document* document = get_document();
-  sharedptr<PrintLayout> print_layout = document->get_print_layout(m_table_name, print_layout_name);
-  if(!print_layout)
-    return;
 
   Canvas_PrintLayout canvas;
   add_view(&canvas); //So it has access to the document.

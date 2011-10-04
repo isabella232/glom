@@ -1,5 +1,22 @@
 2011-10-04  Murray Cumming  <murrayc@murrayc.com>
 
+	Details: Print: Use a standard print layout instead of HTML.
+
+	* glom/frame_glom.[h|cc]: Add a do_print_layout() that takes a PrintLayout
+	instead of just a print layout name.
+	* glom/application.[h|cc]: Add a  do_print_layout() that forwards to 
+  Frame_Glom.
+	* glom/mode_data/box_data_details.[h|cc]: print_layout(): Instead of 
+	generating HTML and showing it in a browser, create a standard print layout 
+	and offer it via a normal printing dialog. This is at least as good (not 
+	very good yet) as our generated HTML, but simpler and more normal.
+	Remove any code that used the old XML+XSLT=HTML way for details.
+	
+	We still use the generated HTML for the list view, as if it was just another
+	report. Maybe we can improve that in future too.
+
+2011-10-04  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Move create_standard() into a utils file.
 
 	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]: Move
