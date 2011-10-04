@@ -108,8 +108,6 @@ glom_source_files = \
 	glom/xsl_utils.h						\
 	glom/printoperation_printlayout.cc				\
 	glom/printoperation_printlayout.h				\
-	glom/print_layout_utils.cc						\
-	glom/print_layout_utils.h							\
 	glom/report_builder.cc						\
 	glom/report_builder.h						\
 	glom/window_boxholder.cc					\
@@ -204,6 +202,8 @@ glom_source_files = \
 	glom/print_layout/canvas_layout_item.h				\
 	glom/print_layout/canvas_print_layout.cc			\
 	glom/print_layout/canvas_print_layout.h				\
+	glom/print_layout/print_layout_utils.cc \
+	glom/print_layout/print_layout_utils.h \				\
 	glom/python_embed/glom_python.cc				\
 	glom/python_embed/glom_python.h					\
 	glom/python_embed/python_ui_callbacks.cc				\

@@ -23,7 +23,7 @@
 #include <glom/print_layout/canvas_layout_item.h>
 #include <glom/utils_ui.h>
 #include <glom/application.h>
-#include <glom/print_layout_utils.h>
+#include <glom/print_layout/print_layout_utils.h>
 #include <libglom/data_structure/layout/layoutitem_line.h>
 #include <libglom/data_structure/layout/layoutitem_portal.h>
 #include <libglom/utils.h> //For bold_message()).

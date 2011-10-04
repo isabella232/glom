@@ -1,5 +1,13 @@
 2011-10-04  Murray Cumming  <murrayc@murrayc.com>
 
+	PrintLayoutUtils: Move to print_layout/
+
+	* Makefile_glom.am: Mention the changed paths.
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc: Adapted.
+
+2011-10-04  Murray Cumming  <murrayc@murrayc.com>
+
 	Details: Print: Use a standard print layout instead of HTML.
 
 	* glom/frame_glom.[h|cc]: Add a do_print_layout() that takes a PrintLayout
