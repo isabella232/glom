@@ -2769,12 +2769,6 @@ void Application::do_print_layout(const Glib::ustring& print_layout_name, bool p
   m_pFrame->do_print_layout(print_layout_name, preview, transient_for);
 }
 
-void Application::do_print_layout(const sharedptr<const PrintLayout>& print_layout, bool preview, Gtk::Window* transient_for)
-{
-  m_pFrame->do_print_layout(print_layout, preview, transient_for);
-}
-
-
 bool Application::do_restore_backup(const Glib::ustring& backup_uri)
 {
   // We cannot use an uri here, because we cannot untar remote files.

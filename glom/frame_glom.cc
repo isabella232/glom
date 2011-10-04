@@ -59,6 +59,8 @@
 #include <glom/print_layout/printoperation_printlayout.h>
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+#include <glom/print_layout/print_layout_utils.h>
+
 #include <glom/filechooser_export.h>
 #include <libglom/privs.h>
 #include <libglom/db_utils.h>
@@ -2317,28 +2319,17 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-
+ 
 void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout_name)
 {
-  do_print_layout(print_layout_name, false /* not preview */);
+  do_print_layout(print_layout_name, false /* not preview */, get_app_window());
 }
 
 void Frame_Glom::do_print_layout(const Glib::ustring& print_layout_name, bool preview, Gtk::Window* transient_for)
 {
-  Document* document = get_document();
-  sharedptr<PrintLayout> print_layout = document->get_print_layout(m_table_name, print_layout_name);
+  const Document* document = get_document();
+  sharedptr<const PrintLayout> print_layout = document->get_print_layout(m_table_name, print_layout_name);
     
-  do_print_layout(print_layout, preview, transient_for);
-}
-    
-void Frame_Glom::do_print_layout(const sharedptr<const PrintLayout>& print_layout, bool preview, Gtk::Window* transient_for)
-{
-  if(!print_layout)
-  {
-    std::cerr << G_STRFUNC << ": print_layout was null" << std::endl;
-    return;
-  }
-  
   const Privileges table_privs = Privs::get_current_privs(m_table_name);
 
   //Don't try to print tables that the user can't view.
@@ -2347,64 +2338,12 @@ void Frame_Glom::do_print_layout(const sharedptr<const PrintLayout>& print_layou
     //TODO: Warn the user.
     return;
   }
-
-  Canvas_PrintLayout canvas;
-  add_view(&canvas); //So it has access to the document.
-  canvas.set_print_layout(m_table_name, print_layout);
-
-  //Do not show things that are only for editing the print layout:
-  canvas.remove_grid();
-  canvas.set_rules_visibility(false);
-  canvas.set_outlines_visibility(false);
-
-  //Create a new PrintOperation with our PageSetup and PrintSettings:
-  //(We use our derived PrintOperation class)
-  Glib::RefPtr<PrintOperationPrintLayout> print = PrintOperationPrintLayout::create();
-  print->set_canvas(&canvas);
-
-  print->set_track_print_status();
-
-  //TODO: Put this in a utility function.
-  Glib::RefPtr<Gtk::PageSetup> page_setup;
-  const Glib::ustring key_file_text = print_layout->get_page_setup();
-  if(!key_file_text.empty())
-  {
-    Glib::KeyFile key_file;
-    key_file.load_from_data(key_file_text);
-    page_setup = Gtk::PageSetup::create_from_key_file(key_file);
-  }
-
-  print->set_default_page_setup(page_setup);
-
-  //print->set_print_settings(m_refSettings);
-
-  //print->signal_done().connect(sigc::bind(sigc::mem_fun(*this,
-  //                &ExampleWindow::on_printoperation_done), print));
-
+  
   const FoundSet found_set = m_Notebook_Data.get_found_set_details();
-  canvas.fill_with_data(found_set);
-
-  try
-  {
-    if(!transient_for)
-      transient_for = get_app_window();
-
-    if(transient_for)
-    {
-      print->run(
-        (preview ? Gtk::PRINT_OPERATION_ACTION_PREVIEW : Gtk::PRINT_OPERATION_ACTION_PRINT_DIALOG),
-        *transient_for);
-    }
-  }
-  catch (const Gtk::PrintError& ex)
-  {
-    //See documentation for exact Gtk::PrintError error codes.
-    std::cerr << "An error occurred while trying to run a print operation:"
-        << ex.what() << std::endl;
-  }
-
-  remove_view(&canvas);
+  PrintLayoutUtils::do_print_layout(print_layout, found_set, 
+    preview, document, transient_for);
 }
+ 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

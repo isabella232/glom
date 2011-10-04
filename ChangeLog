@@ -1,5 +1,14 @@
 2011-10-04  Murray Cumming  <murrayc@murrayc.com>
 
+	Move do_print_layout() to PrintLayoutUtils.
+
+	* glom/application.[h|cc]: Remove the new print_layout(PrintLayout) override.
+	* glom/frame_glom.[h|cc]:
+	* glom/mode_data/box_data_details.cc: Adapted, using 
+  PrintLayoutUtils::do_print_layout() instead.
+
+2011-10-04  Murray Cumming  <murrayc@murrayc.com>
+
 	PrintOperation_PrintLayout: Move to print_layout/:
 	
 	* Makefile_glom.am:  Mention the changed paths.

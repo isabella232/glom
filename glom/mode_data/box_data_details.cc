@@ -935,11 +935,8 @@ void Box_Data_Details::print_layout()
   
   //Show the print preview window:
   Application* app = Application::get_application();
-  if(app)
-  {
-    app->do_print_layout(print_layout, 
-      false /* print, not preview*/, app);
-  }
+  PrintLayoutUtils::do_print_layout(print_layout, m_found_set,
+    true /* not preview */, document, app);  
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

@@ -198,6 +198,23 @@ int main()
   if(!recreated)
     cleanup();
   g_assert(recreated);
+  
+
+  //Test the standard print layout:
+  /* Actually, we can't do this without depending on more than libglom:
+  const Glib::ustring test_table_name = "albums";
+  Glib::RefPtr<Gtk::PageSetup> page_setup = Gtk::PageSetup::create(); //TODO: m_canvas.get_page_setup();
+  sharedptr<PrintLayout> print_layout = 
+    PrintLayoutUtils::create_standard(page_setup, "albums", document);
+  
+  //Show the print preview window:
+  FoundSet foundset;
+  foundset.m_table_name = test_table_name;
+  foundset.m_where_clause = Utils::build_simple_where_expression(
+    test_table_name, "album_id", Gnome::Gda::Value("1"));
+  PrintLayoutUtils::do_print_layout(print_layout, found_set, 
+    false, document, &window);
+  */
 
   cleanup();
 
