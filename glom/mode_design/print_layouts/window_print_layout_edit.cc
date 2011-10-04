@@ -1065,7 +1065,7 @@ void Window_PrintLayout_Edit::on_menu_file_print_preview()
   const Glib::ustring original_name = get_original_name();
   sharedptr<PrintLayout> print_layout = get_print_layout();
   if(print_layout && (original_name != get_name()))
-    document->remove_report(m_table_name, original_name);
+    document->remove_print_layout(m_table_name, original_name);
 
   document->set_print_layout(m_table_name, print_layout);
 
