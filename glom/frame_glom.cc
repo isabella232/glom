@@ -56,7 +56,7 @@
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/mode_design/dialog_add_related_table.h>
 #include <glom/mode_design/script_library/dialog_script_library.h>
-#include <glom/printoperation_printlayout.h>
+#include <glom/print_layout/printoperation_printlayout.h>
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/filechooser_export.h>
@@ -2371,8 +2371,7 @@ void Frame_Glom::do_print_layout(const sharedptr<const PrintLayout>& print_layou
   {
     Glib::KeyFile key_file;
     key_file.load_from_data(key_file_text);
-    //TODO: Use this when gtkmm and GTK+ have been fixed: page_setup = Gtk::PageSetup::create(key_file);
-    page_setup = Glib::wrap(gtk_page_setup_new_from_key_file(key_file.gobj(), 0, 0));
+    page_setup = Gtk::PageSetup::create_from_key_file(key_file);
   }
 
   print->set_default_page_setup(page_setup);

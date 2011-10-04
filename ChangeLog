@@ -1,5 +1,12 @@
 2011-10-04  Murray Cumming  <murrayc@murrayc.com>
 
+	PrintOperation_PrintLayout: Move to print_layout/:
+	
+	* Makefile_glom.am:  Mention the changed paths.
+	* glom/frame_glom.cc: Adapted.
+
+2011-10-04  Murray Cumming  <murrayc@murrayc.com>
+
 	PrintLayoutUtils: Move to print_layout/
 
 	* Makefile_glom.am: Mention the changed paths.
