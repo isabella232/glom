@@ -52,7 +52,6 @@
 #include <glom/mode_design/users/dialog_choose_user.h>
 #include <glom/mode_design/users/dialog_user.h>
 #include <glom/mode_design/print_layouts/dialog_text_formatting.h>
-#include <glom/dialog_progress_creating.h>
 #include <glom/dialog_invalid_data.h>
 
 const int GLOM_MAX_WINDOW_WIDTH = 800;
@@ -110,7 +109,6 @@ int main(int argc, char *argv[])
   instantiate_widget<Dialog_InvalidData>();
   instantiate_widget<DialogImageLoadProgress>();
   instantiate_widget<DialogImageSaveProgress>();
-  instantiate_widget<Dialog_ProgressCreating>();
 
   //Developer mode UI:
   instantiate_widget<Box_Print_Layouts>();

@@ -18,14 +18,36 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <glom/glade_utils.h>
+#include <gtkmm/dialog.h>
+#include <glom/application.h>
+#include <glom/infobar_progress_creating.h>
+#include <gtkmm/main.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
 {
 
-namespace Utils
+Infobar_ProgressCreating::Infobar_ProgressCreating(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+: Gtk::InfoBar(cobject),
+  m_progress(0),
+  m_label_message(0)
 {
+  builder->get_widget("progressbar", m_progress);
+  builder->get_widget("label_message", m_label_message);
+}
 
-} //namespace Utils
+Infobar_ProgressCreating::~Infobar_ProgressCreating()
+{
+}
+
+void Infobar_ProgressCreating::pulse()
+{
+  m_progress->pulse();
+}
+
+void Infobar_ProgressCreating::set_message(const Glib::ustring& title, const Glib::ustring& secondary_text)
+{
+  m_label_message->set_markup("<b>" + title + "</b>\n\n" + secondary_text);
+}
+
 } //namespace Glom

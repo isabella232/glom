@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <!-- interface-requires gtk+ 3.0 -->
   <object class="GtkWindow" id="window_main">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Glom</property>
@@ -17,6 +16,51 @@
             <property name="can_focus">False</property>
             <property name="border_width">12</property>
             <property name="spacing">6</property>
+            <child>
+              <object class="GtkInfoBar" id="infobar_progress">
+                <property name="can_focus">False</property>
+                <child internal-child="content_area">
+                  <object class="GtkBox" id="infobar-content_area1">
+                    <property name="can_focus">False</property>
+                    <property name="border_width">6</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">6</property>
+                    <child>
+                      <object class="GtkLabel" id="label_message">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="xalign">0</property>
+                        <property name="yalign">0</property>
+                        <property name="label" translatable="yes">Processing</property>
+                        <property name="use_markup">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkProgressBar" id="progressbar">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="pulse_step">0.10000000149</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
             <child>
               <object class="GtkVBox" id="vbox_quickfind">
                 <property name="visible">True</property>

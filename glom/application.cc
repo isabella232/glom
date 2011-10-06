@@ -23,8 +23,6 @@
 #include <glom/application.h>
 #include <glom/dialog_existing_or_new.h>
 
-#include <glom/dialog_progress_creating.h>
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/mode_design/translation/dialog_change_language.h>
 #include <glom/mode_design/translation/window_translations.h>
@@ -85,9 +83,6 @@ Application::Application(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
   m_ui_save_extra_showextras(false),
   m_ui_save_extra_newdb_hosting_mode(Document::HOSTING_MODE_DEFAULT),
   m_avahi_progress_dialog(0),
-  m_dialog_progress_creating(0),
-  m_dialog_progess_save_backup(0),
-  m_dialog_progess_convert_backup(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_show_sql_debug(false)
 {
@@ -96,6 +91,7 @@ Application::Application(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
   //Load widgets from glade file:
   builder->get_widget("bakery_vbox", m_pBoxTop);
   builder->get_widget_derived("vbox_frame", m_pFrame); //This one is derived. There's a lot happening here.
+  builder->get_widget_derived("infobar_progress", m_infobar_progress);
 
   add_mime_type("application/x-glom"); //TODO: make this actually work - we need to register it properly.
 
@@ -126,13 +122,6 @@ Application::~Application()
   delete m_avahi_progress_dialog;
   m_avahi_progress_dialog = 0;
 
-  delete m_dialog_progress_creating;
-  m_dialog_progress_creating = 0;
-
-  delete m_dialog_progess_save_backup;
-
-  delete m_dialog_progess_convert_backup;
-  m_dialog_progess_convert_backup = 0;
   #endif // !GLOM_ENABLE_CLIENT_ONLY
   
   delete m_pAbout;
@@ -1275,18 +1264,12 @@ void Application::on_connection_close_progress()
 
 void Application::on_connection_save_backup_progress()
 {
-  if(!m_dialog_progess_save_backup)
-    m_dialog_progess_save_backup = Utils::get_and_show_pulse_dialog(_("Exporting Backup"), this);
-
-  m_dialog_progess_save_backup->pulse();
+  pulse_progress_message();
 }
 
 void Application::on_connection_convert_backup_progress()
 {
-  if(!m_dialog_progess_convert_backup)
-    m_dialog_progess_convert_backup = Utils::get_and_show_pulse_dialog(_("Restoring Backup"), this);
-
-  m_dialog_progess_convert_backup->pulse();
+  pulse_progress_message();
 }
 
 void Application::on_document_close()
@@ -1607,27 +1590,17 @@ void Application::on_menu_help_contents()
 void Application::on_recreate_database_progress()
 {
   //Show the user that something is happening, because the INSERTS might take time.
-  //TOOD: This doesn't actually show up until near the end, even with Gtk::Main::instance()->iteration().
-  if(!m_dialog_progress_creating)
-  {
-    Utils::get_glade_widget_derived_with_warning(m_dialog_progress_creating);
+  pulse_progress_message();
 
-    m_dialog_progress_creating->set_message(_("Creating Glom Database"), _("Creating Glom database from example file."));
-
-    m_dialog_progress_creating->set_transient_for(*this);
-    m_dialog_progress_creating->show();
-
-  }
-
-  //Ensure that the dialog is shown, instead of waiting for the application to be idle:
+  //Ensure that the infobar is shown, instead of waiting for the application to be idle.
   while(Gtk::Main::instance()->events_pending())
     Gtk::Main::instance()->iteration();
-
-  m_dialog_progress_creating->pulse();
 }
 
 bool Application::recreate_database_from_example(bool& user_cancelled)
 {
+  ShowProgressMessage progress_message(_("Creating Glom database from example file."));
+
   //Create a database, based on the information in the current document:
   Document* pDocument = static_cast<Document*>(get_document());
   if(!pDocument)
@@ -1689,20 +1662,11 @@ bool Application::recreate_database_from_example(bool& user_cancelled)
   }
 
   //Show the user that something is happening, because the INSERTS might take time.
-  //TOOD: This doesn't actually show up until near the end, even with Gtk::Main::instance()->iteration().
-  Dialog_ProgressCreating* dialog_progress_temp = 0;
-  Utils::get_glade_widget_derived_with_warning(dialog_progress_temp);
-  dialog_progress_temp->set_message(_("Creating Glom Database"), _("Creating Glom database from example file."));
-  std::auto_ptr<Dialog_ProgressCreating> dialog_progress(dialog_progress_temp); //Put the dialog in an auto_ptr so that it will be deleted (and hidden) when the current function returns.
+  pulse_progress_message();
 
-  dialog_progress->set_transient_for(*this);
-  dialog_progress->show();
-
-  //Ensure that the dialog is shown, instead of waiting for the application to be idle:
+  //Ensure that the infobar is shown, instead of waiting for the application to be idle.
   while(Gtk::Main::instance()->events_pending())
     Gtk::Main::instance()->iteration();
-
-  dialog_progress->pulse();
 
   //Create the database: (This will show a connection dialog)
   connection_pool->set_database( Glib::ustring() );
@@ -1715,7 +1679,7 @@ bool Application::recreate_database_from_example(bool& user_cancelled)
   else
     connection_pool->set_database(db_name); //Specify the new database when connecting from now on.
 
-  dialog_progress->pulse();
+  pulse_progress_message();
   BusyCursor busy_cursor(this);
 
   sharedptr<SharedConnection> sharedconnection;
@@ -1743,16 +1707,14 @@ bool Application::recreate_database_from_example(bool& user_cancelled)
     return false;
   }
 
-  dialog_progress->pulse();
-
   //Create the developer group, and make this user a member of it:
-  dialog_progress->pulse();
+  pulse_progress_message();
   bool test = DbUtils::add_standard_groups(pDocument);
   if(!test)
     return false;
 
   //Add any extra groups from the example file:
-  dialog_progress->pulse();
+  pulse_progress_message();
   test = DbUtils::add_groups_from_document(pDocument);
   if(!test)
     return false;
@@ -1767,9 +1729,9 @@ bool Application::recreate_database_from_example(bool& user_cancelled)
     Glib::ustring sql_fields;
     Document::type_vec_fields fields = pDocument->get_table_fields(table_info->get_name());
 
-    dialog_progress->pulse();
+    pulse_progress_message();
     const bool table_creation_succeeded = DbUtils::create_table(table_info, fields);
-    dialog_progress->pulse();
+    pulse_progress_message();
     if(!table_creation_succeeded)
     {
       g_warning("Application::recreate_database_from_example(): CREATE TABLE failed with the newly-created database.");
@@ -1777,11 +1739,11 @@ bool Application::recreate_database_from_example(bool& user_cancelled)
     }
   }
 
-  dialog_progress->pulse();
+  pulse_progress_message();
   DbUtils::add_standard_tables(pDocument); //Add internal, hidden, tables.
 
   //Set table priviliges, using the groups we just added:
-  dialog_progress->pulse();
+  pulse_progress_message();
   test = DbUtils::set_table_privileges_groups_from_document(pDocument);
   if(!test)
     return false;
@@ -1791,7 +1753,7 @@ bool Application::recreate_database_from_example(bool& user_cancelled)
     sharedptr<const TableInfo> table_info = *iter;
 
     //Add any example data to the table:
-    dialog_progress->pulse();
+    pulse_progress_message();
 
     //try
     //{
@@ -1816,6 +1778,8 @@ bool Application::recreate_database_from_example(bool& user_cancelled)
 
 bool Application::recreate_database_from_backup(const Glib::ustring& backup_uri, bool& user_cancelled)
 {
+  ShowProgressMessage progress_message(_("Creating Glom database from backup file."));
+
   //Create a database, based on the information in the current document:
   Document* pDocument = static_cast<Document*>(get_document());
   if(!pDocument)
@@ -1877,20 +1841,13 @@ bool Application::recreate_database_from_backup(const Glib::ustring& backup_uri,
   }
 
   //Show the user that something is happening, because the INSERTS might take time.
-  //TOOD: This doesn't actually show up until near the end, even with Gtk::Main::instance()->iteration().
-  Dialog_ProgressCreating* dialog_progress_temp = 0;
-  Utils::get_glade_widget_derived_with_warning(dialog_progress_temp);
-  dialog_progress_temp->set_message(_("Creating Glom Database"), _("Creating Glom database from backup file."));
-  std::auto_ptr<Dialog_ProgressCreating> dialog_progress(dialog_progress_temp); //Put the dialog in an auto_ptr so that it will be deleted (and hidden) when the current function returns.
+  pulse_progress_message();
 
-  dialog_progress->set_transient_for(*this);
-  dialog_progress->show();
-
-  //Ensure that the dialog is shown, instead of waiting for the application to be idle:
+  //Ensure that the infobar is shown, instead of waiting for the application to be idle.
   while(Gtk::Main::instance()->events_pending())
     Gtk::Main::instance()->iteration();
 
-  dialog_progress->pulse();
+  pulse_progress_message();
 
   //Create the database: (This will show a connection dialog)
   connection_pool->set_database( Glib::ustring() );
@@ -1915,18 +1872,17 @@ bool Application::recreate_database_from_backup(const Glib::ustring& backup_uri,
   connection_pool->set_database(db_name); //Specify the new database when connecting from now on.
 
   //Create the developer group, and make this user a member of it:
-  dialog_progress->pulse();
+  pulse_progress_message();
   bool test = DbUtils::add_standard_groups(pDocument);
   if(!test)
     return false;
 
   //Add any extra groups from the example file:
-  dialog_progress->pulse();
+  pulse_progress_message();
   test = DbUtils::add_groups_from_document(pDocument);
   if(!test)
     return false;
 
-  //dialog_progress->pulse();
   //m_pFrame->add_standard_tables(); //Add internal, hidden, tables.
 
   //Restore the backup into the database:
@@ -1959,9 +1915,6 @@ bool Application::recreate_database_from_backup(const Glib::ustring& backup_uri,
   //std::cout << "DEBUG: original_dir_path=" << original_dir_path << std::endl;
   const bool restored = connection_pool->convert_backup(
     sigc::mem_fun(*this, &Application::on_connection_convert_backup_progress), original_dir_path);
-
-  delete m_dialog_progess_convert_backup;
-  m_dialog_progess_convert_backup = 0;
 
   if(!restored)
   {
@@ -2660,10 +2613,8 @@ void Application::on_menu_developer_export_backup()
   if(saved)
   {
     ConnectionPool* connection_pool = ConnectionPool::get_instance();
+    ShowProgressMessage progress_message(_("Exporting backup"));
     saved = connection_pool->save_backup(sigc::mem_fun(*this, &Application::on_connection_save_backup_progress), path_dir);
-
-    delete m_dialog_progess_save_backup;
-    m_dialog_progess_save_backup = 0;
   }
 
   //Compress the backup in a .tar.gz, so it is slightly more safe from changes:
@@ -2698,6 +2649,7 @@ void Application::on_menu_developer_export_backup()
 
       //std::cout << "DEBUG: command_tar=" << command_tar << std::endl;
 
+      ShowProgressMessage progress_message(_("Exporting backup"));
       saved = Glom::Spawn::execute_command_line_and_wait(command_tar,
         sigc::mem_fun(*this, &Application::on_connection_save_backup_progress));
 
@@ -2705,9 +2657,6 @@ void Application::on_menu_developer_export_backup()
       {
         std::cerr << G_STRFUNC << "tar failed with command:" << command_tar << std::endl;
       }
-
-      delete m_dialog_progess_save_backup;
-      m_dialog_progess_save_backup = 0;
     }
   }
 
@@ -2793,6 +2742,7 @@ bool Application::do_restore_backup(const Glib::ustring& backup_uri)
 
   //std::cout << "DEBUG: command_tar=" << command_tar << std::endl;
 
+  ShowProgressMessage progress_message(_("Restoring backup"));
   const bool untarred = Glom::Spawn::execute_command_line_and_wait(command_tar,
     sigc::mem_fun(*this, &Application::on_connection_convert_backup_progress));
   if(!untarred)
@@ -2800,8 +2750,7 @@ bool Application::do_restore_backup(const Glib::ustring& backup_uri)
     std::cerr << G_STRFUNC << ": tar failed with command:" << command_tar << std::endl;
   }
 
-  delete m_dialog_progess_convert_backup;
-  m_dialog_progess_convert_backup = 0;
+  clear_progress_message();
 
   if(!untarred)
     ui_warning(_("Restore Backup failed."), _("There was an error while restoring the backup. The tar utility failed to extract the archive."));
@@ -2958,8 +2907,35 @@ void Application::print_layout()
 void Application::start_new_record()
 {
   m_pFrame->on_menu_add_record();
-
 }
 
+void Application::set_progress_message(const Glib::ustring& message)
+{
+  const Glib::ustring title = _("Processing");
+  const std::string collate_key = (title + message).collate_key();
+
+  if(collate_key != m_progress_collate_key)
+  {
+    // New progress message.
+    m_progress_collate_key = collate_key;
+    m_infobar_progress->set_message(title, message);
+    m_infobar_progress->show();
+  }
+
+  // Pulse the progress bar regardless of whether the message is new or not.
+  m_infobar_progress->pulse();
+  // TODO: Block interaction with the rest of the UI.
+}
+
+void Application::pulse_progress_message()
+{
+  m_infobar_progress->pulse();
+}
+
+void Application::clear_progress_message()
+{
+  m_progress_collate_key.clear();
+  m_infobar_progress->hide();
+}
 
 } //namespace Glom

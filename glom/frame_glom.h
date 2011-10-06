@@ -57,8 +57,6 @@ class Dialog_AddRelatedTable;
 class Dialog_RelationshipsOverview;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-class Dialog_ProgressCreating; //TODO: Rename this because it's not just about creating databases.
-
 class Frame_Glom :
   public PlaceHolder,
   //public GlomBakery::View_Composite<Document>,
@@ -285,11 +283,7 @@ private:
   Dialog_AddRelatedTable* m_dialog_addrelatedtable;
   Dialog_RelationshipsOverview* m_dialog_relationships_overview;
 
-  Dialog_ProgressCreating* m_dialog_progess_connection_initialize;
 #endif //GLOM_ENABLE_CLIENT_ONLY
-
-  Dialog_ProgressCreating* m_dialog_progess_connection_startup;
-  Dialog_ProgressCreating* m_dialog_progess_connection_cleanup;
 
   Dialog_Connection* m_pDialogConnection;
 };

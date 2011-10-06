@@ -26,7 +26,7 @@
 #include <glom/bakery/app_withdoc_gtk.h>
 
 #include <glom/frame_glom.h>
-
+#include "infobar_progress_creating.h"
 
 
 //Avoid including the header here:
@@ -41,7 +41,7 @@ namespace Glom
 {
 
 class Window_Translations;
-class Dialog_ProgressCreating; //TODO: Rename this because it's not just about creating databases.
+class ShowProgressMessage;
 
 class Application : public GlomBakery::App_WithDoc_Gtk
 {
@@ -123,6 +123,10 @@ public:
   /** Offer the user the UI to add a new record,
    */
   void start_new_record();
+
+  void set_progress_message(const Glib::ustring& message);
+  void pulse_progress_message();
+  void clear_progress_message();
 
   static Application* get_application();
 
@@ -230,6 +234,9 @@ private:
   bool m_bAboutShown;
   Gtk::AboutDialog* m_pAbout; //About box.
 
+  Infobar_ProgressCreating* m_infobar_progress;
+  std::string m_progress_collate_key;
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Window_Translations* m_window_translations;
 
@@ -252,9 +259,6 @@ private:
 
   Gtk::MessageDialog* m_avahi_progress_dialog;
 
-  Dialog_ProgressCreating* m_dialog_progress_creating;
-  Dialog_ProgressCreating* m_dialog_progess_save_backup;
-  Dialog_ProgressCreating* m_dialog_progess_convert_backup;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   // This is set to the URI of an example file that is loaded to be able to
@@ -268,6 +272,31 @@ private:
   Glib::ustring m_temp_username, m_temp_password;
 
   bool m_show_sql_debug;
+};
+
+/* Use this class to ensure that the progress message is cleared upon exiting a
+ * method with multiple return points. */
+class ShowProgressMessage
+{
+public:
+  ShowProgressMessage(const Glib::ustring &message)
+  : app(dynamic_cast<Application*>(Application::get_application())),
+    message(message)
+  {
+    g_return_if_fail(app);
+    app->set_progress_message(message);
+  };
+
+  ~ShowProgressMessage()
+  {
+    app->clear_progress_message();
+  };
+
+  void pulse() { app->set_progress_message(message); };
+
+private:
+  Application * const app;
+  const Glib::ustring &message;
 };
 
 } //namespace Glom

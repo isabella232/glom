@@ -94,10 +94,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_pDialog_Relationships(0),
   m_dialog_addrelatedtable(0),
   m_dialog_relationships_overview(0),
-  m_dialog_progess_connection_initialize(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-  m_dialog_progess_connection_startup(0),
-  m_dialog_progess_connection_cleanup(0),
   m_pDialogConnection(0)
 {
   m_pLabel_Table_DataMode = Gtk::manage(new Gtk::Label(_("No Table Selected")));
@@ -185,17 +182,7 @@ Frame_Glom::~Frame_Glom()
     m_pDialogConnection = 0;
   }
 
-
-  delete m_dialog_progess_connection_startup;
-  m_dialog_progess_connection_startup = 0;
-
-  delete m_dialog_progess_connection_cleanup;
-  m_dialog_progess_connection_cleanup = 0;
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  delete m_dialog_progess_connection_initialize;
-  m_dialog_progess_connection_initialize = 0;
-
   if(m_pBox_Reports)
     remove_view(m_pBox_Reports);
 
@@ -984,11 +971,10 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
       sharedconnection.clear();
     }
 
-    connectionpool->cleanup( sigc::mem_fun(*this, &Frame_Glom::on_connection_cleanup_progress) );
+    ShowProgressMessage cleanup_message(_("Stopping Database Server"));
+    connectionpool->cleanup (sigc::mem_fun(*this, &Frame_Glom::on_connection_cleanup_progress) );
 
-    delete m_dialog_progess_connection_cleanup;
-    m_dialog_progess_connection_cleanup = 0;
-
+    ShowProgressMessage startup_message(_("Starting Database Server"));
     connectionpool->set_network_shared(sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress), shared);
     ConnectionPool::StartupErrors started = connectionpool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
     if(started != ConnectionPool::Backend::STARTUPERROR_NONE)
@@ -998,9 +984,6 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
     }
 
     connectionpool->set_ready_to_connect();
-
-    delete m_dialog_progess_connection_startup;
-    m_dialog_progess_connection_startup = 0;
   }
 
   //Update the UI:
@@ -1777,27 +1760,24 @@ void Frame_Glom::on_developer_dialog_hide()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Frame_Glom::on_connection_initialize_progress()
 {
-  if(!m_dialog_progess_connection_initialize)
-    m_dialog_progess_connection_initialize = Utils::get_and_show_pulse_dialog(_("Initializing Database Data"), get_app_window());
-
-  m_dialog_progess_connection_initialize->pulse();
+  Application *app = dynamic_cast<Application*>(Application::get_application());
+  if(app)
+    app->pulse_progress_message();
 }
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
 void Frame_Glom::on_connection_startup_progress()
 {
-  if(!m_dialog_progess_connection_startup)
-    m_dialog_progess_connection_startup = Utils::get_and_show_pulse_dialog(_("Starting Database Server"), get_app_window());
-
-  m_dialog_progess_connection_startup->pulse();
+  Application *app = dynamic_cast<Application*>(Application::get_application());
+  if(app)
+    app->pulse_progress_message();
 }
 
 void Frame_Glom::on_connection_cleanup_progress()
 {
-  if(!m_dialog_progess_connection_cleanup)
-    m_dialog_progess_connection_cleanup = Utils::get_and_show_pulse_dialog(_("Stopping Database Server"), get_app_window());
-
-  m_dialog_progess_connection_cleanup->pulse();
+  Application *app = dynamic_cast<Application*>(Application::get_application());
+  if(app)
+    app->pulse_progress_message();
 }
 
 bool Frame_Glom::handle_connection_initialize_errors(ConnectionPool::InitErrors error)
@@ -1812,7 +1792,7 @@ bool Frame_Glom::handle_connection_initialize_errors(ConnectionPool::InitErrors 
     title = _("Directory Already Exists");
     message = _("There is an existing directory with the same name as the directory that should be created for the new database files. You should specify a different filename to use a new directory instead.");
   }
-  else if (error == ConnectionPool::Backend::INITERROR_COULD_NOT_CREATE_DIRECTORY)
+  else if(error == ConnectionPool::Backend::INITERROR_COULD_NOT_CREATE_DIRECTORY)
   {
     title = _("Could Not Create Directory");
     message = _("There was an error when attempting to create the directory for the new database files.");
@@ -1925,11 +1905,9 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       connection_pool->set_user(user);
       connection_pool->set_password(password);
 
+      ShowProgressMessage progress_message(_("Initializing Database Data"));
       const bool initialized = handle_connection_initialize_errors( connection_pool->initialize(
-        sigc::mem_fun(*this, &Frame_Glom::on_connection_initialize_progress) ) );
-
-      delete m_dialog_progess_connection_initialize;
-      m_dialog_progess_connection_initialize = 0;
+         sigc::mem_fun(*this, &Frame_Glom::on_connection_initialize_progress) ) );
 
       if(!initialized)
         return false;
@@ -1996,6 +1974,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   }
 
   // Do startup, such as starting the self-hosting database server
+  ShowProgressMessage progress_message(_("Starting Database Server"));
   const ConnectionPool::StartupErrors started =
     connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
   if(started != ConnectionPool::Backend::STARTUPERROR_NONE)
@@ -2003,9 +1982,6 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     std::cerr << G_STRFUNC << ": startup() failed." << std::endl;
     return false;
   }
-
-  delete m_dialog_progess_connection_startup;
-  m_dialog_progess_connection_startup = 0;
 
   const Glib::ustring database_name = document->get_connection_database();
 
@@ -2110,10 +2086,8 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 void Frame_Glom::cleanup_connection()
 {
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  ShowProgressMessage progress_message(_("Stopping Database Server"));
   connection_pool->cleanup( sigc::mem_fun(*this, &Frame_Glom::on_connection_cleanup_progress) );
-
-  delete m_dialog_progess_connection_cleanup;
-  m_dialog_progess_connection_cleanup = 0;
 }
 
 bool Frame_Glom::handle_request_password_connection_error(bool asked_for_password, const ExceptionConnection& ex, bool& database_not_found)
@@ -2158,6 +2132,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
 
   //Start a self-hosted server if necessary:
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  ShowProgressMessage progress_message(_("Starting Database Server"));
   connection_pool->setup_from_document(document);
   const ConnectionPool::StartupErrors started =
     connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
@@ -2167,8 +2142,8 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
     return false;
   }
 
-  delete m_dialog_progess_connection_startup;
-  m_dialog_progess_connection_startup = 0;
+  Application* app = dynamic_cast<Application*>(get_app_window());
+  app->clear_progress_message();
 
   //Only ask for the password if we are shared on the network, or we are using a centrally hosted server.
   //Otherwise, no password question is necessary, due to how our self-hosted database server is configured.
