@@ -1,3 +1,13 @@
+2011-10-06  Ben Konrath  <ben@bagu.org>
+
+	Fix small bugs in commented-out debugging print statements.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=661009
+
+	* glom/libglom/db_utils.cc: Change field to layout_item. Move print
+	statement to be after the assignment to
+	field_used_in_relationship_to_one.
+
 2011-09-28  Murray Cumming  <murrayc@murrayc.com>
 
 	Related Records: Fix bug with a blank row when there is only one row. 
