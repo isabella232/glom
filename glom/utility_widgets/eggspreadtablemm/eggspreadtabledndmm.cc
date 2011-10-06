@@ -38,7 +38,7 @@ Egg::SpreadTableDnd* wrap(EggSpreadTableDnd* object, bool take_copy)
 namespace
 {
 
-static gboolean EggSpreadTableDnd_signal_widget_drop_possible_callback(EggSpreadTableDnd* self, GtkWidget* p0, void* data)
+static gboolean EggSpreadTableDnd_signal_widget_drop_possible_callback(EggSpreadTableDnd* self, GtkWidget* p0, gboolean* drop_possible, void* data)
 {
   using namespace Egg;
   typedef sigc::slot< bool, Gtk::Widget* > SlotType;
@@ -66,7 +66,7 @@ static gboolean EggSpreadTableDnd_signal_widget_drop_possible_callback(EggSpread
   return RType();
 }
 
-static gboolean EggSpreadTableDnd_signal_widget_drop_possible_notify_callback(EggSpreadTableDnd* self, GtkWidget* p0, void* data)
+static gboolean EggSpreadTableDnd_signal_widget_drop_possible_notify_callback(EggSpreadTableDnd* self, GtkWidget* p0, gboolean* drop_possible, void* data)
 {
   using namespace Egg;
   typedef sigc::slot< bool, Gtk::Widget* > SlotType;
@@ -137,7 +137,7 @@ void SpreadTableDnd_Class::class_init_function(void* g_class, void* class_data)
   klass->widget_drop_possible = &widget_drop_possible_callback;
 }
 
-gboolean SpreadTableDnd_Class::widget_drop_possible_callback(EggSpreadTableDnd* self, GtkWidget* p0)
+gboolean SpreadTableDnd_Class::widget_drop_possible_callback(EggSpreadTableDnd* self, GtkWidget* p0, gboolean* drop_possible)
 {
   Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
       Glib::ObjectBase::_get_current_wrapper((GObject*)self));
@@ -157,8 +157,12 @@ gboolean SpreadTableDnd_Class::widget_drop_possible_callback(EggSpreadTableDnd* 
       {
       #endif //GLIBMM_EXCEPTIONS_ENABLED
         // Call the virtual member method, which derived classes might override.
-        return static_cast<int>(obj->on_widget_drop_possible(Glib::wrap(p0)
-));
+        bool cpp_drop_possible = false;
+        const bool result = 
+          static_cast<int>(obj->on_widget_drop_possible(Glib::wrap(p0), 
+            cpp_drop_possible));
+        *drop_possible = cpp_drop_possible;
+        return result;
       #ifdef GLIBMM_EXCEPTIONS_ENABLED
       }
       catch(...)
@@ -175,7 +179,7 @@ gboolean SpreadTableDnd_Class::widget_drop_possible_callback(EggSpreadTableDnd* 
 
   // Call the original underlying C function:
   if(base && base->widget_drop_possible)
-    return (*base->widget_drop_possible)(self, p0);
+    return (*base->widget_drop_possible)(self, p0, drop_possible);
 
   typedef gboolean RType;
   return RType();
@@ -259,31 +263,47 @@ void SpreadTableDnd::remove_child(Gtk::Widget& child)
   egg_spread_table_dnd_remove_child(gobj(), child.gobj());
 }
 
-void SpreadTableDnd::set_steal_events(bool steal_events)
+void SpreadTableDnd::set_drag_enabled(EggDragEnableMode drag_enabled)
 {
-  egg_spread_table_dnd_set_steal_events(gobj(), steal_events);
+  egg_spread_table_dnd_set_drag_enabled(gobj(), drag_enabled);
 }
 
-bool SpreadTableDnd::get_steal_events() const
+EggDragEnableMode SpreadTableDnd::get_drag_enabled() const
 {
-  return egg_spread_table_dnd_get_steal_events(const_cast<EggSpreadTableDnd*>(gobj()));
-} 
+  return egg_spread_table_dnd_get_drag_enabled(const_cast<EggSpreadTableDnd*>(gobj()));
+}
 
-bool SpreadTableDnd::on_widget_drop_possible(Gtk::Widget* widget)
+void SpreadTableDnd::set_drop_enabled(bool drop_enabled)
+{
+  egg_spread_table_dnd_set_drop_enabled(gobj(), drop_enabled);
+}
+
+bool SpreadTableDnd::get_drop_enabled() const
+{
+  return egg_spread_table_dnd_get_drop_enabled(const_cast<EggSpreadTableDnd*>(gobj()));
+}
+
+bool SpreadTableDnd::on_widget_drop_possible(Gtk::Widget* widget, bool& drop_possible)
 {
   BaseClassType *const base = static_cast<BaseClassType*>(
       g_type_class_peek_parent(G_OBJECT_GET_CLASS(gobject_)) // Get the parent class of the object class (The original underlying C class).
   );
 
   if(base && base->widget_drop_possible)
-    return (*base->widget_drop_possible)(gobj(), Glib::unwrap(widget));
+  {
+    gboolean c_drop_possible = FALSE;
+    const gboolean result =
+      (*base->widget_drop_possible)(gobj(), Glib::unwrap(widget), &c_drop_possible);
+    drop_possible = c_drop_possible;
+    return result;
+  }
   else
     return false;
 }
 
-Glib::SignalProxy1< bool, Gtk::Widget* > SpreadTableDnd::signal_widget_drop_possible()
+Glib::SignalProxy2< bool, Gtk::Widget*, bool& > SpreadTableDnd::signal_widget_drop_possible()
 {
-  return Glib::SignalProxy1< bool, Gtk::Widget* >(this, &SpreadTableDnd_signal_widget_drop_possible_info);
+  return Glib::SignalProxy2< bool, Gtk::Widget*, bool& >(this, &SpreadTableDnd_signal_widget_drop_possible_info);
 }
 
 } // namespace Egg

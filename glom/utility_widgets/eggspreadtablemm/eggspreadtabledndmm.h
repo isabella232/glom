@@ -19,6 +19,7 @@
 #define _EGG_SPREADTABLE_DND_H
 
 #include <glom/utility_widgets/eggspreadtablemm/eggspreadtablemm.h>
+#include <glom/utility_widgets/eggspreadtable/eggspreadtablednd.h> //For the enum, though we could wrap it instead.
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -84,7 +85,7 @@ protected:
 
   //Default Signal Handlers::
 
-  bool on_widget_drop_possible(Gtk::Widget* widget);
+  bool on_widget_drop_possible(Gtk::Widget* widget, bool& drop_possible);
 
 private:
 
@@ -95,8 +96,10 @@ public:
 
   void insert_child(Gtk::Widget& child, int index);
   void remove_child(Gtk::Widget& child);
-  void set_steal_events(bool steal_events);
-  bool get_steal_events() const;
+  void set_drag_enabled(EggDragEnableMode drag_enabled);
+  EggDragEnableMode get_drag_enabled() const;
+  void set_drop_enabled(bool drop_enabled = true);
+  bool get_drop_enabled() const;
 
 
   /**
@@ -104,7 +107,7 @@ public:
    * <tt>void on_my_%widget_drop_possible()</tt>
    */
 
-  Glib::SignalProxy1< bool, Gtk::Widget* > signal_widget_drop_possible();
+  Glib::SignalProxy2< bool, Gtk::Widget*, bool& > signal_widget_drop_possible();
 };
 
 } // namespace Egg
