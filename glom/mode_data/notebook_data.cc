@@ -297,9 +297,10 @@ void Notebook_Data::do_menu_developer_layout()
   }
 }
 
-void Notebook_Data::show_layout_toolbar(bool show)
+void Notebook_Data::set_enable_layout_drag_and_drop(bool enable)
 {
-  m_Box_Details.show_layout_toolbar(show);
+  m_Box_Details.show_layout_toolbar(enable);
+  m_Box_Details.set_enable_drag_and_drop(enable);
 }
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY

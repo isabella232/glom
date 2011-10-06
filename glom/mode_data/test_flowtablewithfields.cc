@@ -61,6 +61,18 @@ static void fill_flowtable(Glom::FlowTableWithFields& flowtable)
     item->set_title("title for image");
     flowtable.add_layout_item(item);
   }
+  
+  Glom::sharedptr<Glom::LayoutGroup> group = 
+    Glom::sharedptr<Glom::LayoutGroup>::create();
+  Glom::sharedptr<Glom::LayoutItem_Text> item =
+    Glom::sharedptr<Glom::LayoutItem_Text>::create();
+  item->set_text("inner text 1");
+  group->add_item(item);
+  item =
+    Glom::sharedptr<Glom::LayoutItem_Text>::create();
+  item->set_text("inner text 2");
+  group->add_item(item);
+  flowtable.add_layout_item(group);
 }
 
 static void clear_flowtable(Glom::FlowTableWithFields& flowtable)
@@ -87,9 +99,10 @@ main(int argc, char* argv[])
   window.add(flowtable);
   flowtable.set_design_mode();
   flowtable.show();
-
-//  Glom::DragWindow drag_window;
-//  drag_window.show();
+  
+  flowtable.set_enable_drag_and_drop(true);
+  //flowtable.set_drag_enabled(EGG_DRAG_FULL);
+  //flowtable.set_drop_enabled(true);
 
   Gtk::Main::run(window);
 

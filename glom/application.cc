@@ -505,9 +505,12 @@ void Application::init_menus()
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &Application::on_menu_developer_restore_backup));
 
-  m_action_show_layout_toolbar = Gtk::ToggleAction::create("GlomAction_Menu_Developer_ShowLayoutToolbar", _("_Show Layout Toolbar"));
-  m_listDeveloperActions.push_back(m_action_show_layout_toolbar);
-  m_refActionGroup_Others->add(m_action_show_layout_toolbar, sigc::mem_fun(*this, &Application::on_menu_developer_show_layout_toolbar));
+  //TODO: Think of a better name for this menu item,
+  //though it mostly only exists because it is not quite ready to be on by default:
+  //Note to translators: Drag and Drop is part of the name, not a verb or action:
+  m_action_enable_layout_drag_and_drop = Gtk::ToggleAction::create("GlomAction_Menu_Developer_EnableLayoutDragAndDrop", _("_Drag and Drop Layout"));
+  m_listDeveloperActions.push_back(m_action_enable_layout_drag_and_drop);
+  m_refActionGroup_Others->add(m_action_enable_layout_drag_and_drop, sigc::mem_fun(*this, &Application::on_menu_developer_enable_layout_drag_and_drop));
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -582,7 +585,7 @@ void Application::init_menus()
     "          <menuitem action='GlomAction_Menu_Developer_ActivePlatform_Normal' />"
     "          <menuitem action='GlomAction_Menu_Developer_ActivePlatform_Maemo' />"
     "        </menu>"
-    "        <menuitem action='GlomAction_Menu_Developer_ShowLayoutToolbar' />"
+    "        <menuitem action='GlomAction_Menu_Developer_EnableLayoutDragAndDrop' />"
     "        <separator />"
     "        <menuitem action='GlomAction_Menu_Developer_ExportBackup' />"
     "        <menuitem action='GlomAction_Menu_Developer_RestoreBackup' />"
@@ -667,7 +670,7 @@ void Application::on_menu_developer_developer()
     return;
 
   m_pFrame->on_menu_developer_developer(m_action_menu_developer_developer, m_action_menu_developer_operator);
-  m_pFrame->show_layout_toolbar(m_action_show_layout_toolbar->get_active());
+  m_pFrame->set_enable_layout_drag_and_drop(m_action_enable_layout_drag_and_drop->get_active());
 }
 
 void Application::on_menu_developer_operator()
@@ -675,7 +678,7 @@ void Application::on_menu_developer_operator()
   if(m_pFrame)
   {
     m_pFrame->on_menu_developer_operator(m_action_menu_developer_operator);
-    m_pFrame->show_layout_toolbar(false);
+    m_pFrame->set_enable_layout_drag_and_drop(false);
   }
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -2848,9 +2851,9 @@ bool Application::do_restore_backup(const Glib::ustring& backup_uri)
   return true;
 }
 
-void Application::on_menu_developer_show_layout_toolbar()
+void Application::on_menu_developer_enable_layout_drag_and_drop()
 {
-  m_pFrame->show_layout_toolbar(m_action_show_layout_toolbar->get_active());
+  m_pFrame->set_enable_layout_drag_and_drop(m_action_enable_layout_drag_and_drop->get_active());
 }
 
 

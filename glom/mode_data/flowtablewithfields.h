@@ -132,6 +132,8 @@ public:
    */
   void get_layout_groups(Document::type_list_layout_groups& groups);
   sharedptr<LayoutGroup> get_layout_group();
+  
+  void set_enable_drag_and_drop(bool enabled = true);
 
   /** For instance,
    * void on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);

@@ -31,6 +31,9 @@ FlowTable::FlowTable()
 :
   m_design_mode(false)
 {
+  //Default to disabling drag and drop:
+  set_drag_enabled(EGG_DRAG_DISABLED);
+  set_drop_enabled(false);
 }
 
 FlowTable::~FlowTable()

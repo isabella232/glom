@@ -1454,9 +1454,31 @@ void FlowTableWithFields::set_find_mode(bool val)
       subtable->set_find_mode(m_find_mode);
     }
   }
-
 }
 
+void FlowTableWithFields::set_enable_drag_and_drop(bool enabled)
+{
+  const EggDragEnableMode drag_mode = 
+    (enabled ? EGG_DRAG_FULL : EGG_DRAG_DISABLED);
+
+  //Only enable dragging of the sub-tables.
+  //Otherwise just the whole thing will be dragged,
+  //though there would be nowhere to drop it:
+  set_drag_enabled(EGG_DRAG_DISABLED);
+  set_drop_enabled(enabled);
+  
+  for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  {
+    FlowTableWithFields* child = *iter;
+    if(child)
+    {
+      //std::cout << G_STRFUNC << ": child" << std::endl;
+      child->set_drag_enabled(drag_mode);
+      child->set_drop_enabled(enabled);  
+    }
+  }
+}
+  
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } //namespace Glom

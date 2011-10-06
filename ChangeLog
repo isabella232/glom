@@ -1,5 +1,26 @@
 2011-10-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Details: Do not enable drag-and-drop by default.
+
+	* glom/utility_widgets/flowtable.cc: Turn of drag-and-drop by default in 
+	the EggSpreadTableDnd
+	* glom/mode_data/flowtablewithfields.[h|cc]: Added set_enable_drag_and_drop().
+	* glom/mode_data/box_data_details.[h|cc]: Added set_enable_drag_and_drop(), 
+	calling the FlowTableWithFields.
+		
+	* glom/application.[h|cc]: Rename the Show Layout Toolbar menu item to 
+	Drag and Drop Layout, though that is a bad name and I would like a better one.
+	* glom/frame_glom.[h|cc]:  show_layout_toolbar(): Rename to 
+	set_enable_layout_drag_and_drop().
+	* glom/mode_data/notebook_data.[h|cc]: Rename show_layout_toolbar() to 
+  set_enable_layout_drag_and_drop() and make it enable dnd as well as showing 
+  the toolpallette. The toolpalette is then a visual indication that 
+  drag-and-drop is possible.
+	* glom/mode_data/test_flowtablewithfields.cc: Add a sub-group and enable 
+	drag and drop.
+	
+2011-10-06  Murray Cumming  <murrayc@murrayc.com>
+
 	Update EggSpreadTable tests.
 
 	* glom/utility_widgets/eggspreadtablemm/test_spreadtablednd.cc: Fix a crash.

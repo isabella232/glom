@@ -162,7 +162,7 @@ private:
   void on_menu_developer_active_platform_maemo();
   void on_menu_developer_export_backup();
   void on_menu_developer_restore_backup();
-  void on_menu_developer_show_layout_toolbar();
+  void on_menu_developer_enable_layout_drag_and_drop ();
 
   void on_window_translations_hide();
 
@@ -220,7 +220,7 @@ private:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gtk::Action> m_action_developer_users;
   Glib::RefPtr<Gtk::RadioAction> m_action_menu_developer_developer, m_action_menu_developer_operator;
-  Glib::RefPtr<Gtk::ToggleAction> m_action_show_layout_toolbar;
+  Glib::RefPtr<Gtk::ToggleAction> m_action_enable_layout_drag_and_drop ;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Glib::RefPtr<Gtk::ToggleAction> m_toggleaction_network_shared;

@@ -161,7 +161,8 @@ public:
 
   ///Create the database for new documents, showing the Connection dialog
   bool create_database(const Glib::ustring& database_name, const Glib::ustring& title);
-  void show_layout_toolbar(bool show = true);
+  
+  void set_enable_layout_drag_and_drop(bool enable = true);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   void export_data_to_vector(Document::type_example_rows& the_vector, const FoundSet& found_set, const Document::type_list_layout_groups& sequence);

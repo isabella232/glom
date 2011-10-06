@@ -968,4 +968,9 @@ void Box_Data_Details::do_new_record()
   on_button_new();
 }
 
+void Box_Data_Details::set_enable_drag_and_drop(bool enabled)
+{
+  m_FlowTable.set_enable_drag_and_drop(enabled);
+}
+
 } //namespace Glom
