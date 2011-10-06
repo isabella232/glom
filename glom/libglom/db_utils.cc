@@ -1651,8 +1651,8 @@ bool layout_field_should_have_navigation(const Glib::ustring& table_name, const 
   //meaning it identifies a record in another table.
   sharedptr<const Relationship> const_relationship =
     document->get_field_used_in_relationship_to_one(table_name, layout_item);
-  //std::cout << "DEBUG: table_name=" << table_name << ", table_used=" << field->get_table_used(table_name) << ", field=" << field->get_name() << ", field_used_in_relationship_to_one=" << field_used_in_relationship_to_one << std::endl;
   field_used_in_relationship_to_one = sharedptr<Relationship>::cast_const(const_relationship); //This is just because we can't seem to have a sharedptr<const Relationship>& output parameter.
+  // std::cout << "DEBUG: table_name=" << table_name << ", table_used=" << layout_item->get_table_used(table_name) << ", layout_item=" << layout_item->get_name() << ", field_used_in_relationship_to_one=" << field_used_in_relationship_to_one << std::endl;
 
   //Check whether the field identifies a record in another table
   //just because it is a primary key in that table:
@@ -1660,7 +1660,7 @@ bool layout_field_should_have_navigation(const Glib::ustring& table_name, const 
   const bool field_is_related_primary_key =
     layout_item->get_has_relationship_name() &&
     field_info && field_info->get_primary_key();
-  //std::cout <<   "DEBUG: field->get_has_relationship_name()=" << field->get_has_relationship_name() << ", field_info->get_primary_key()=" <<  field_info->get_primary_key() << ", field_is_related_primary_key=" << field_is_related_primary_key << std::endl;
+  // std::cout <<   "DEBUG: layout_item->get_has_relationship_name()=" << layout_item->get_has_relationship_name() << ", field_info->get_primary_key()=" <<  field_info->get_primary_key() << ", field_is_related_primary_key=" << field_is_related_primary_key << std::endl;
 
   return field_used_in_relationship_to_one || field_is_related_primary_key;
 }
