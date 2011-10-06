@@ -28,25 +28,16 @@ namespace Utils
 {
 
 
-Dialog_ProgressCreating* get_and_show_pulse_dialog(const Glib::ustring& message, Gtk::Window* parent_window)
+Infobar_ProgressCreating* get_and_show_pulse_infobar(const Glib::ustring& message)
 {
-  if(!parent_window)
-    std::cerr << G_STRFUNC << ": parent_window is NULL" << std::endl;
-
-  Dialog_ProgressCreating* dialog_progress = 0;
-  Utils::get_glade_widget_derived_with_warning(dialog_progress);
-  if(!dialog_progress) //Unlikely and it already warns on stderr.
+  Infobar_ProgressCreating* infobar_progress = 0;
+  Utils::get_glade_widget_derived_with_warning(infobar_progress);
+  if(!infobar_progress) //Unlikely and it already warns on stderr.
     return 0;
     
-  dialog_progress->set_message(_("Processing"), message);
-  dialog_progress->set_modal();
+  infobar_progress->set_message(message);
 
-  if(parent_window)
-    dialog_progress->set_transient_for(*parent_window);
-
-  dialog_progress->show();
-
-  return dialog_progress;
+  return infobar_progress;
 }
 
 } //namespace Utils

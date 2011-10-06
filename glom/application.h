@@ -41,7 +41,7 @@ namespace Glom
 {
 
 class Window_Translations;
-class Dialog_ProgressCreating; //TODO: Rename this because it's not just about creating databases.
+class Infobar_ProgressCreating; //TODO: Rename this because it's not just about creating databases.
 
 class Application : public GlomBakery::App_WithDoc_Gtk
 {
@@ -254,9 +254,9 @@ private:
 
   Gtk::MessageDialog* m_avahi_progress_dialog;
 
-  Dialog_ProgressCreating* m_dialog_progress_creating;
-  Dialog_ProgressCreating* m_dialog_progess_save_backup;
-  Dialog_ProgressCreating* m_dialog_progess_convert_backup;
+  Infobar_ProgressCreating* m_infobar_progress_creating;
+  Infobar_ProgressCreating* m_infobar_progess_save_backup;
+  Infobar_ProgressCreating* m_infobar_progess_convert_backup;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   // This is set to the URI of an example file that is loaded to be able to

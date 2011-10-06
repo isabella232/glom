@@ -94,10 +94,8 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_pDialog_Relationships(0),
   m_dialog_addrelatedtable(0),
   m_dialog_relationships_overview(0),
-  m_dialog_progess_connection_initialize(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-  m_dialog_progess_connection_startup(0),
-  m_dialog_progess_connection_cleanup(0),
+  m_infobar_progress(0),
   m_pDialogConnection(0)
 {
   m_pLabel_Table_DataMode = Gtk::manage(new Gtk::Label(_("No Table Selected")));
@@ -107,6 +105,10 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_pLabel_Table_FindMode = Gtk::manage(new Gtk::Label(_("No Table Selected")));
   m_pLabel_Table_FindMode->show();
   m_Notebook_Find.set_action_widget(m_pLabel_Table_FindMode, Gtk::PACK_START);
+
+  Infobar_ProgressCreating* infobar_progress = 0;
+  Utils::get_glade_widget_derived_with_warning(infobar_progress);
+  m_infobar_progress = infobar_progress;
 
   //QuickFind widgets:
   //We don't use Glade for these, so it easier to modify them for the Maemo port.
@@ -185,17 +187,10 @@ Frame_Glom::~Frame_Glom()
     m_pDialogConnection = 0;
   }
 
-
-  delete m_dialog_progess_connection_startup;
-  m_dialog_progess_connection_startup = 0;
-
-  delete m_dialog_progess_connection_cleanup;
-  m_dialog_progess_connection_cleanup = 0;
+  delete m_infobar_progress;
+  m_infobar_progress = 0;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  delete m_dialog_progess_connection_initialize;
-  m_dialog_progess_connection_initialize = 0;
-
   if(m_pBox_Reports)
     remove_view(m_pBox_Reports);
 
@@ -986,9 +981,6 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
 
     connectionpool->cleanup( sigc::mem_fun(*this, &Frame_Glom::on_connection_cleanup_progress) );
 
-    delete m_dialog_progess_connection_cleanup;
-    m_dialog_progess_connection_cleanup = 0;
-
     connectionpool->set_network_shared(sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress), shared);
     ConnectionPool::StartupErrors started = connectionpool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
     if(started != ConnectionPool::Backend::STARTUPERROR_NONE)
@@ -998,9 +990,6 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
     }
 
     connectionpool->set_ready_to_connect();
-
-    delete m_dialog_progess_connection_startup;
-    m_dialog_progess_connection_startup = 0;
   }
 
   //Update the UI:
@@ -1777,27 +1766,18 @@ void Frame_Glom::on_developer_dialog_hide()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Frame_Glom::on_connection_initialize_progress()
 {
-  if(!m_dialog_progess_connection_initialize)
-    m_dialog_progess_connection_initialize = Utils::get_and_show_pulse_dialog(_("Initializing Database Data"), get_app_window());
-
-  m_dialog_progess_connection_initialize->pulse();
+  set_progress_message(_("Initializing Database Data"));
 }
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
 void Frame_Glom::on_connection_startup_progress()
 {
-  if(!m_dialog_progess_connection_startup)
-    m_dialog_progess_connection_startup = Utils::get_and_show_pulse_dialog(_("Starting Database Server"), get_app_window());
-
-  m_dialog_progess_connection_startup->pulse();
+  set_progress_message(_("Starting Database Server"));
 }
 
 void Frame_Glom::on_connection_cleanup_progress()
 {
-  if(!m_dialog_progess_connection_cleanup)
-    m_dialog_progess_connection_cleanup = Utils::get_and_show_pulse_dialog(_("Stopping Database Server"), get_app_window());
-
-  m_dialog_progess_connection_cleanup->pulse();
+  set_progress_message(_("Stopping Database Server"));
 }
 
 bool Frame_Glom::handle_connection_initialize_errors(ConnectionPool::InitErrors error)
@@ -1928,9 +1908,6 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       const bool initialized = handle_connection_initialize_errors( connection_pool->initialize(
         sigc::mem_fun(*this, &Frame_Glom::on_connection_initialize_progress) ) );
 
-      delete m_dialog_progess_connection_initialize;
-      m_dialog_progess_connection_initialize = 0;
-
       if(!initialized)
         return false;
 
@@ -2003,9 +1980,6 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     std::cerr << G_STRFUNC << ": startup() failed." << std::endl;
     return false;
   }
-
-  delete m_dialog_progess_connection_startup;
-  m_dialog_progess_connection_startup = 0;
 
   const Glib::ustring database_name = document->get_connection_database();
 
@@ -2110,9 +2084,6 @@ void Frame_Glom::cleanup_connection()
 {
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   connection_pool->cleanup( sigc::mem_fun(*this, &Frame_Glom::on_connection_cleanup_progress) );
-
-  delete m_dialog_progess_connection_cleanup;
-  m_dialog_progess_connection_cleanup = 0;
 }
 
 bool Frame_Glom::handle_request_password_connection_error(bool asked_for_password, const ExceptionConnection& ex, bool& database_not_found)
@@ -2145,6 +2116,28 @@ bool Frame_Glom::handle_request_password_connection_error(bool asked_for_passwor
   }
 }
 
+void Frame_Glom::set_progress_message(const Glib::ustring& message)
+{
+  const std::string collate_key = message.collate_key();
+
+  if(collate_key != m_progress_collate_key)
+  {
+    // New progress message.
+    m_progress_collate_key = collate_key;
+    m_infobar_progress->set_message(message);
+    m_infobar_progress->show();
+    m_infobar_progress->pulse();
+  }
+
+  // TODO: Block interaction with the rest of the UI.
+}
+
+void Frame_Glom::clear_progress_message()
+{
+  m_progress_collate_key.clear();
+  m_infobar_progress->hide();
+}
+
 bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_found, const Glib::ustring known_username, const Glib::ustring& known_password, bool confirm_known_user)
 {
   //Initialize output parameter:
@@ -2165,9 +2158,6 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
     std::cerr << G_STRFUNC << ": startup() failed." << std::endl;
     return false;
   }
-
-  delete m_dialog_progess_connection_startup;
-  m_dialog_progess_connection_startup = 0;
 
   //Only ask for the password if we are shared on the network, or we are using a centrally hosted server.
   //Otherwise, no password question is necessary, due to how our self-hosted database server is configured.

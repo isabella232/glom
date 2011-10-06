@@ -89,14 +89,14 @@ glom_source_files = \
 	glom/dialog_existing_or_new.h					\
 	glom/dialog_invalid_data.cc					\
 	glom/dialog_invalid_data.h					\
-	glom/dialog_progress_creating.cc				\
-	glom/dialog_progress_creating.h					\
 	glom/filechooser_export.cc					\
 	glom/filechooser_export.h					\
 	glom/frame_glom.cc						\
 	glom/frame_glom.h						\
 	glom/glade_utils.cc						\
 	glom/glade_utils.h						\
+	glom/infobar_progress_creating.cc				\
+	glom/infobar_progress_creating.h				\
 	glom/notebook_glom.cc						\
 	glom/notebook_glom.h						\
 	glom/signal_reemitter.h						\

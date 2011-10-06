@@ -57,7 +57,7 @@ class Dialog_AddRelatedTable;
 class Dialog_RelationshipsOverview;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-class Dialog_ProgressCreating; //TODO: Rename this because it's not just about creating databases.
+class Infobar_ProgressCreating; //TODO: Rename this because it's not just about creating databases.
 
 class Frame_Glom :
   public PlaceHolder,
@@ -69,6 +69,9 @@ public:
   virtual ~Frame_Glom();
 
   void set_databases_selected(const Glib::ustring& strName);
+
+  void set_progress_message(const Glib::ustring& message);
+  void clear_progress_message();
 
   void do_print_layout(const Glib::ustring& print_layout_name, bool preview = false, Gtk::Window* transient_for = 0);
 
@@ -247,6 +250,7 @@ private:
 
   //Member data:
   Glib::ustring m_table_name;
+  std::string m_progress_collate_key;
 
   //Child widgets:
   Gtk::Label* m_pLabel_Table_DataMode;
@@ -285,11 +289,9 @@ private:
   Dialog_AddRelatedTable* m_dialog_addrelatedtable;
   Dialog_RelationshipsOverview* m_dialog_relationships_overview;
 
-  Dialog_ProgressCreating* m_dialog_progess_connection_initialize;
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
-  Dialog_ProgressCreating* m_dialog_progess_connection_startup;
-  Dialog_ProgressCreating* m_dialog_progess_connection_cleanup;
+  Infobar_ProgressCreating* m_infobar_progress;
 
   Dialog_Connection* m_pDialogConnection;
 };

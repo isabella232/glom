@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
   instantiate_widget<Dialog_InvalidData>();
   instantiate_widget<DialogImageLoadProgress>();
   instantiate_widget<DialogImageSaveProgress>();
-  instantiate_widget<Dialog_ProgressCreating>();
+  instantiate_widget<Infobar_ProgressCreating>();
 
   //Developer mode UI:
   instantiate_widget<Box_Print_Layouts>();

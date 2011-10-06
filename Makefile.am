@@ -93,8 +93,7 @@ dist_glade_operator_DATA = \
 	ui/operator/dialog_image_save_progress.glade \
 	ui/operator/dialog_import_csv.glade \
 	ui/operator/dialog_import_csv_progress.glade \
-	ui/operator/window_main.glade \
-	ui/operator/window_progress.glade
+	ui/operator/window_main.glade
 		
 glade_developerdir = $(pkgdatadir)/glade/developer
 dist_glade_developer_DATA = ui/developer/dialog_add_related_table.glade \

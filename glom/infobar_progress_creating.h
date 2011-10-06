@@ -18,11 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_DIALOG_PROGRESS_CREATING_H
-#define GLOM_DIALOG_PROGRESS_CREATING_H
+#ifndef GLOM_INFOBAR_PROGRESS_CREATING_H
+#define GLOM_INFOBAR_PROGRESS_CREATING_H
 
 #include <gtkmm/builder.h>
-#include <gtkmm/window.h>
+#include <gtkmm/infobar.h>
 #include <gtkmm/label.h>
 #include <gtkmm/progressbar.h>
 
@@ -32,35 +32,26 @@ namespace Glom
 /** Use this to show the user that something is happening.
  * Call pulse() repeatedly to show that we are still working. 
  */
-class Dialog_ProgressCreating
-  : public Gtk::Window
+class Infobar_ProgressCreating
+  : public Gtk::InfoBar
 {
 public:
   static const char* glade_id;
   static const bool glade_developer;
 
-  Dialog_ProgressCreating(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_ProgressCreating();
+  Infobar_ProgressCreating(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
+  virtual ~Infobar_ProgressCreating();
 
   void set_message(const Glib::ustring& title, const Glib::ustring& secondary_text);
+  void set_message(const Glib::ustring& secondary_text);
 
   void pulse();
-
-  // TODO: This should probably derive from Gtk::Dialog... armin.
-  void response(int response_id);
-  int run();
-
-  virtual bool on_delete_event(GdkEventAny* event);
 
 private:
   Gtk::ProgressBar* m_progress;
   Gtk::Label* m_label_message;
-
-  int m_response_id;
-  bool m_running;
 };
 
 } //namespace Glom
 
-#endif //GLOM_DIALOG_PROGRESS_CREATING_H
-
+#endif //GLOM_INFOBAR_PROGRESS_CREATING_H
