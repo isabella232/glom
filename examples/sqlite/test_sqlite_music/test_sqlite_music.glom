@@ -114,8 +114,8 @@
               <secondary_fields>
                 <data_layout_group>
                   <data_layout_item name="name" relationship="artist" editable="true" use_default_formatting="true">
-                    <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
                     <title_custom use_custom="true" title="Artist Name"/>
+                    <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
                   </data_layout_item>
                 </data_layout_group>
               </secondary_fields>

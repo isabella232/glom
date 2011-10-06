@@ -194,6 +194,7 @@ static const char GLOM_ATTRIBUTE_FORMAT_USE_ALT_NEGATIVE_COLOR[] = "format_use_a
 
 static const char GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE[] = "format_text_multiline";
 static const char GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES[] = "format_text_multiline_height_lines";
+static const guint GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES_DEFAULT = 6;
 static const char GLOM_ATTRIBUTE_FORMAT_TEXT_FONT[] = "font";
 static const char GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_FOREGROUND[] = "color_fg";
 static const char GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_BACKGROUND[] = "color_bg";
@@ -1973,7 +1974,8 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
   if(field_type == Field::TYPE_TEXT)
   {
     format.set_text_format_multiline( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE) );
-    format.set_text_format_multiline_height_lines( get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES) );
+    format.set_text_format_multiline_height_lines( get_node_attribute_value_as_decimal(element, 
+      GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES_DEFAULT) );
   }
 
   format.set_text_format_font( get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_TEXT_FONT) );
@@ -2327,12 +2329,6 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         }
 
         load_after_layout_item_usesrelationship(element, table_name, portal);
-        
-        const double rows_count = 
-          get_node_attribute_value_as_decimal_double(element, 
-            GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT);
-        if(rows_count) //0 is both a useless value and possible with older files that didn't have this attribute.
-          portal->set_rows_count(rows_count);
 
         xmlpp::Element* elementNavigationRelationshipSpecific = get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP);
         if(elementNavigationRelationshipSpecific)
@@ -2368,20 +2364,29 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
           calendar_portal->set_date_field(date_field);
         }
 
-        //Print Layout specific stuff:
-        portal->set_print_layout_row_height(
-          get_node_attribute_value_as_decimal(element, 
-            GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT) );
+        if(!calendar_portal)
+        {
+          const double rows_count = 
+            get_node_attribute_value_as_decimal_double(element, 
+              GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT);
+          if(rows_count) //0 is both a useless value and possible with older files that didn't have this attribute.
+            portal->set_rows_count(rows_count);
             
-        portal->set_print_layout_row_line_width(
-          get_node_attribute_value_as_decimal(element, 
-            GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_WIDTH) );
-        portal->set_print_layout_column_line_width(
-          get_node_attribute_value_as_decimal(element, 
-            GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_COLUMN_LINE_WIDTH) );
-        portal->set_print_layout_line_color(
-          get_node_attribute_value(element, 
-            GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_LINE_COLOR) );
+          //Print Layout specific stuff:
+          portal->set_print_layout_row_height(
+            get_node_attribute_value_as_decimal(element, 
+              GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT) );
+            
+          portal->set_print_layout_row_line_width(
+            get_node_attribute_value_as_decimal(element, 
+              GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_WIDTH) );
+          portal->set_print_layout_column_line_width(
+            get_node_attribute_value_as_decimal(element, 
+              GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_COLUMN_LINE_WIDTH) );
+          portal->set_print_layout_line_color(
+            get_node_attribute_value(element, 
+              GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_LINE_COLOR) );
+        }
                 
         item_added = portal;
       }
@@ -3122,7 +3127,8 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
   if(field_type == Field::TYPE_TEXT)
   {
     set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE, format.get_text_format_multiline());
-    set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES, format.get_text_format_multiline_height_lines());
+    set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES, 
+      format.get_text_format_multiline_height_lines(), GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES_DEFAULT);
   }
 
   set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_FONT, format.get_text_format_font());
@@ -3336,23 +3342,26 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
                   GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE, navigation_type_string);
               }
 
-              set_node_attribute_value_as_decimal_double(child, 
-                GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT, portal->get_rows_count());
+              if(!calendar_portal)
+              {
+                set_node_attribute_value_as_decimal_double(child, 
+                  GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT, portal->get_rows_count());
 
-              //Print Layout specific stuff:
-              set_node_attribute_value_as_decimal(child,
-                GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT, 
-                portal->get_print_layout_row_height());
+                //Print Layout specific stuff:
+                set_node_attribute_value_as_decimal(child,
+                  GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT, 
+                  portal->get_print_layout_row_height());
                 
-              set_node_attribute_value_as_decimal(child,
-                GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_WIDTH, 
-                portal->get_print_layout_row_line_width());
-              set_node_attribute_value(child,
-                GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_COLOR, 
-                portal->get_print_layout_line_color());
-              set_node_attribute_value(child,
-                GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_LINE_COLOR, 
-                portal->get_print_layout_line_color());
+                set_node_attribute_value_as_decimal(child,
+                  GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_WIDTH, 
+                  portal->get_print_layout_row_line_width());
+                set_node_attribute_value(child,
+                  GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_COLOR, 
+                  portal->get_print_layout_line_color());
+                set_node_attribute_value(child,
+                  GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_LINE_COLOR, 
+                  portal->get_print_layout_line_color());
+              }
             }
             else
             {

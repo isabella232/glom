@@ -196,11 +196,8 @@ TODO: Add 'title_singular' element.
     <!ELEMENT calculation (#PCDATA)>
     <!ATTLIST calculation>
 
-<!-- data layouts determine the order of items and sorting of the fields. There are many
-  different ways that they are grouped with the various data_layout* possibilities, but the idea is
-  the same. They all have a sequence, which tells when they are displayed. In addition, there is a column_count
-  on the grouping subnodes, which is the number of columns wide the element should be.
-  The name of the data_layout will be either "list" or "details".-->
+<!-- data layouts specify the arrangement of layout items.
+  The name of the data_layout is usually either "list" or "details".-->
 
     <!ELEMENT data_layouts (data_layout*) >
 
@@ -212,7 +209,7 @@ TODO: Add 'title_singular' element.
     <!ELEMENT data_layout_groups (data_layout_group*)>
     <!ATTLIST data_layout_groups>
 
-<!-- A data_layout_group is just a the setup of fields to be shown. It encapsulates everything else. -->
+<!-- A data_layout_group is is a list of layout items. It can contain sub-groups. -->
 
     <!-- TODO: The comma separator specifies a fixed child node sequence, but we don't want to enforce that. -->
     <!ELEMENT data_layout_group (trans_set?, (data_layout_group | data_layout_item | data_layout_portal | data_layout_calendar_portal | data_layout_item_groupby | data_layout_button | data_layout_notebook | data_layout_item_header | data_layout_text)*)>
@@ -222,7 +219,7 @@ TODO: Add 'title_singular' element.
         sequence CDATA #IMPLIED
         columns_count CDATA #IMPLIED>
 
-<!-- A data_layout_notebook is the tabbed display of tables in the glom interface. -->
+<!-- A data_layout_notebook is the tabbed display of tables in the details view. -->
 
     <!ELEMENT data_layout_notebook (data_layout_group*, data_layout_portal*)>
     <!ATTLIST data_layout_notebook
@@ -243,7 +240,7 @@ TODO: Add 'title_singular' element.
 
 <!-- data_layout_text and text are for displaying text. -->
 
-    <!ELEMENT data_layout_text (formatting?, text?)>
+    <!ELEMENT data_layout_text (text?, formatting?)>
     <!ATTLIST data_layout_text
         sequence CDATA #IMPLIED>
 
@@ -256,7 +253,7 @@ TODO: Add 'title_singular' element.
     <!ELEMENT sortby (data_layout_item*)>
     <!ATTLIST sortby>
 
-<!-- data_layout_item_verticalgroup is used to display a vertical group of fields. -->
+<!-- data_layout_item_verticalgroup is in used in reporsts to display a vertical group of fields. -->
 
     <!ELEMENT data_layout_item_verticalgroup (data_layout_item*)>
     <!ATTLIST data_layout_item_verticalgroup
@@ -279,14 +276,14 @@ TODO: Add 'title_singular' element.
 
 <!-- groupby is used to determine how data_layout_item_groupby items group. -->
 
-    <!ELEMENT groupby (formatting?, title_custom?)>
+    <!ELEMENT groupby (title_custom?, formatting?)>
     <!ATTLIST groupby
         name CDATA #REQUIRED
         editable (true|false) "false"
         use_default_formatting (true|false) "true"
         relationship CDATA #IMPLIED>
 
-<!-- secondary fields are fields derived from other fields - this is a list of them. -->
+<!-- secondary fields are additional fields to display. -->
 
     <!ELEMENT secondary_fields (data_layout_group*)>
     <!ATTLIST secondary_fields>
@@ -303,10 +300,9 @@ TODO: Add 'title_singular' element.
         loc CDATA #REQUIRED
         val CDATA #REQUIRED>
 
-<!-- A data_layout_item is a single entry in the display formatting, which tells how a single
-  field is displayed. -->
+<!-- A data_layout_item is the display of a single field in the layout. -->
 
-    <!ELEMENT data_layout_item (formatting?, title_custom?) >
+    <!ELEMENT data_layout_item (title_custom?, formatting?)>
     <!ATTLIST data_layout_item
         name CDATA #REQUIRED
         relationship CDATA #IMPLIED
@@ -318,8 +314,7 @@ TODO: Add 'title_singular' element.
         related_relationship CDATA #IMPLIED
         sort_ascending (true|false) "false">
 
-<!-- A data_layout_item_header is the items that go at the very top of the database (e.g. the
-  organization name and logo in example_film_manager.glom). -->
+<!-- A data_layout_item_header is the initial part of a report. -->
 
     <!ELEMENT data_layout_item_header (data_layout_item*)>
     <!ATTLIST data_layout_item_header
@@ -327,8 +322,7 @@ TODO: Add 'title_singular' element.
         columns_count CDATA #IMPLIED
         sequence CDATA #IMPLIED>
 
-<!-- data_layout_button is a way to have a custom script (python) control the
-  display and effect of a button in the database. -->
+<!-- data_layout_button is a button on the layout. -->
 
     <!ELEMENT data_layout_button (script?, formatting?)>
     <!ATTLIST data_layout_button
@@ -341,15 +335,14 @@ TODO: Add 'title_singular' element.
     <!ELEMENT script (#PCDATA)>
     <!ATTLIST script>
 
-<!-- A title_custom is used to give a different name next to a field than normal. -->
+<!-- A title_custom is used instead of the field's usual title. -->
 
     <!ELEMENT title_custom (trans_set?)>
     <!ATTLIST title_custom
         title CDATA #IMPLIED
         use_custom (true|false) "true">
 
-<!-- A data_layout_portal is the essential information, a short and quick list of values
-  that are probably of interest to others (e.g. contact information, name, etc). -->
+<!-- A data_layout_portal shows related records -->
 
     <!ELEMENT data_layout_portal (portal_navigation_relationship?, data_layout_item*) >
     <!ATTLIST data_layout_portal
@@ -357,7 +350,10 @@ TODO: Add 'title_singular' element.
         relationship CDATA #REQUIRED
         sequence CDATA #IMPLIED
         hide CDATA #IMPLIED
-        columns_count CDATA #IMPLIED>
+        columns_count CDATA #IMPLIED
+        portal_rows_count CDATA #IMPLIED
+        line_color CDATA #IMPLIED
+        column_line_color CDATA #IMPLIED >
 
  <!ELEMENT data_layout_calendar_portal (portal_navigation_relationship?, data_layout_item*) >
     <!ATTLIST data_layout_calendar_portal

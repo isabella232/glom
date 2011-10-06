@@ -1,5 +1,19 @@
 2011-10-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix DTD validation.
+
+	* glom/glom_document.dtd: Change the order of some sub-nodes. Apparently 
+	we must specify a sequence, even though we do not really care.
+	* glom/libglom/document/document.cc: load_before(), save_after(): do not 
+	save some irrelevant details for calendard portals.
+	Portals assume that no rows count means the default of 6, to make the files 
+	less verbose.
+	* examples/example_film_manager.glom:
+	* examples/example_lesson_planner.glom:
+	* examples/sqlite/test_sqlite_music/test_sqlite_music.glom: Resaved/Fixed.
+
+2011-10-06  Murray Cumming  <murrayc@murrayc.com>
+
 	Examples: Details layout: Remove unnecessary "main" groups.
 
 	* examples/example_lesson_planner.glom:
