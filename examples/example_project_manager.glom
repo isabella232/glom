@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
-<glom_document xmlns="http://glom.org/glom_document" database_title="Project Manager Example" is_example="true" translation_original_locale="en_US" format_version="6">
+<?xml version="1.0" encoding="UTF-8"?>
+<glom_document xmlns="http://glom.org/glom_document" database_title="Project Manager Example" is_example="true" translation_original_locale="en_US" format_version="7">
   <connection server="localhost" user="" database="glom_example_project_manager_v3" self_hosted="true" port="5434" try_other_ports="false" hosting_mode="postgres_self"/>
   <table name="contacts" title="Contacts">
     <example_rows>
@@ -329,7 +329,7 @@
     <data_layouts>
       <data_layout name="details" parent_table="contacts">
         <data_layout_groups>
-          <data_layout_group name="header" columns_count="2" title="Overview">
+          <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
               <trans loc="de_AT" val="Ubersicht"/>
               <trans loc="de_BE" val="Overview"/>
@@ -344,7 +344,7 @@
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
             </data_layout_item>
           </data_layout_group>
-          <data_layout_group name="main" columns_count="2">
+          <data_layout_group name="details" columns_count="2">
             <data_layout_notebook name="notebook" title="(Notebook)">
               <data_layout_group name="telephone" title="Telephone">
                 <trans_set>
@@ -413,7 +413,7 @@
                 </data_layout_item>
               </data_layout_group>
             </data_layout_notebook>
-            <data_layout_portal relationship="team_members">
+            <data_layout_portal relationship="team_members" portal_rows_count="6">
               <data_layout_item name="team_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
               </data_layout_item>
@@ -593,14 +593,14 @@ if __name__ == "__main__":
   <table name="projects" default="true" title="Projects">
     <example_rows>
       <example_row>
-        <value column="projects_id">0</value>
+        <value column="project_id">0</value>
         <value column="description"/>
         <value column="comments"/>
         <value column="name">Project Big X</value>
       </example_row>
     </example_rows>
     <fields>
-      <field name="projects_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Project ID">
+      <field name="project_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Project ID">
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
       </field>
       <field name="description" type="Text" title="Description">
@@ -614,29 +614,29 @@ if __name__ == "__main__":
       </field>
     </fields>
     <relationships>
-      <relationship name="teams" key="projects_id" other_table="project_teams" other_key="team_id" auto_create="true" allow_edit="true" title="Teams"/>
+      <relationship name="teams" key="project_id" other_table="project_teams" other_key="team_id" auto_create="true" allow_edit="true" title="Teams"/>
     </relationships>
     <data_layouts>
       <data_layout name="details" parent_table="projects">
         <data_layout_groups>
-          <data_layout_group name="main">
-            <data_layout_group name="overview" columns_count="2" title="Overview">
-              <data_layout_item name="projects_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
-              </data_layout_item>
-              <data_layout_item name="name" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
-              </data_layout_item>
-            </data_layout_group>
-            <data_layout_group name="details" columns_count="2" title="Details">
-              <data_layout_item name="description" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
-              </data_layout_item>
-              <data_layout_item name="comments" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
-              </data_layout_item>
-            </data_layout_group>
-            <data_layout_portal relationship="teams">
+          <data_layout_group name="overview" columns_count="2" title="Overview">
+            <data_layout_item name="project_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="name" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+            </data_layout_item>
+          </data_layout_group>
+          <data_layout_group name="details" columns_count="2" title="Details">
+            <data_layout_item name="description" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="comments" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+            </data_layout_item>
+          </data_layout_group>
+          <data_layout_group name="others">
+            <data_layout_portal relationship="teams" portal_rows_count="6">
               <data_layout_item name="team_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
               </data_layout_item>
@@ -653,7 +653,7 @@ if __name__ == "__main__":
       <data_layout name="list" parent_table="projects">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="projects_id" editable="true" use_default_formatting="true" column_width="100">
+            <data_layout_item name="project_id" editable="true" use_default_formatting="true" column_width="100">
               <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
             </data_layout_item>
             <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="100">
@@ -675,21 +675,21 @@ if __name__ == "__main__":
   <table name="project_teams" hidden="true" title="Project Teams">
     <example_rows>
       <example_row>
-        <value column="project_teams_id">0</value>
+        <value column="project_team_id">0</value>
         <value column="comments"/>
         <value column="team_id">0</value>
         <value column="project_id"/>
       </example_row>
     </example_rows>
     <fields>
-      <field name="project_teams_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Project Team ID">
+      <field name="project_team_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Project Team ID">
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
       </field>
       <field name="comments" type="Text" title="Comments">
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
       </field>
       <field name="team_id" type="Number" title="Team ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="team" choices_related_field="teams_id" choices_related_show_all="true">
+        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="team" choices_related_field="team_id" choices_related_show_all="true">
           <choices_related_extra_layout>
             <data_layout_groups>
               <data_layout_group>
@@ -702,12 +702,12 @@ if __name__ == "__main__":
         </formatting>
       </field>
       <field name="project_id" type="Number" title="Project ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="project" choices_related_field="projects_id" choices_related_show_all="true">
+        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="project" choices_related_field="project_id" choices_related_show_all="true">
           <choices_related_extra_layout>
             <data_layout_groups>
               <data_layout_group>
                 <data_layout_item name="name" editable="true" use_default_formatting="true">
-                  <formatting format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
             </data_layout_groups>
@@ -716,10 +716,49 @@ if __name__ == "__main__":
       </field>
     </fields>
     <relationships>
-      <relationship name="team" key="team_id" other_table="teams" other_key="teams_id" title="Team"/>
-      <relationship name="project" key="project_id" other_table="projects" other_key="projects_id" title="Project"/>
+      <relationship name="team" key="team_id" other_table="teams" other_key="team_id" title="Team"/>
+      <relationship name="project" key="project_id" other_table="projects" other_key="project_id" title="Project"/>
     </relationships>
-    <data_layouts/>
+    <data_layouts>
+      <data_layout name="list" parent_table="project_teams">
+        <data_layout_groups>
+          <data_layout_group name="main">
+            <data_layout_item name="project_team_id" editable="true" use_default_formatting="true" column_width="40">
+              <formatting choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="comments" editable="true" use_default_formatting="true" column_width="103">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="team_id" editable="true" use_default_formatting="true" column_width="40">
+              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="project_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+      <data_layout name="details" parent_table="project_teams">
+        <data_layout_groups>
+          <data_layout_group name="overview" columns_count="2" title="Overview">
+            <data_layout_item name="project_team_id" editable="true" use_default_formatting="true">
+              <formatting choices_related_show_all="true"/>
+            </data_layout_item>
+          </data_layout_group>
+          <data_layout_group name="details" columns_count="2" title="Details">
+            <data_layout_item name="comments" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="team_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="project_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+    </data_layouts>
     <reports/>
     <print_layouts/>
   </table>
@@ -758,7 +797,7 @@ if __name__ == "__main__":
             <data_layout_groups>
               <data_layout_group>
                 <data_layout_item name="name_full" editable="true" use_default_formatting="true">
-                  <formatting format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
             </data_layout_groups>
@@ -766,7 +805,17 @@ if __name__ == "__main__":
         </formatting>
       </field>
       <field name="team_id" type="Number" title="Team ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="team" choices_related_field="team_id" choices_related_show_all="true">
+          <choices_related_extra_layout>
+            <data_layout_groups>
+              <data_layout_group>
+                <data_layout_item name="name" editable="true" use_default_formatting="true">
+                  <formatting/>
+                </data_layout_item>
+              </data_layout_group>
+            </data_layout_groups>
+          </choices_related_extra_layout>
+        </formatting>
       </field>
       <field name="role" type="Text" title="Role">
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
@@ -774,23 +823,74 @@ if __name__ == "__main__":
     </fields>
     <relationships>
       <relationship name="contacts" key="contact_id" other_table="contacts" other_key="contact_id" title="Contacts"/>
-      <relationship name="team" key="team_id" other_table="teams" other_key="teams_id" title="Team"/>
+      <relationship name="team" key="team_id" other_table="teams" other_key="team_id" title="Team"/>
     </relationships>
-    <data_layouts/>
+    <data_layouts>
+      <data_layout name="list" parent_table="team_members">
+        <data_layout_groups>
+          <data_layout_group name="main">
+            <data_layout_item name="team_members_id" editable="true" use_default_formatting="true" column_width="40">
+              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="103">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="comments" editable="true" use_default_formatting="true" column_width="103">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="contact_id" editable="true" use_default_formatting="true" column_width="40">
+              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="team_id" editable="true" use_default_formatting="true" column_width="40">
+              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="role" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+      <data_layout name="details" parent_table="team_members">
+        <data_layout_groups>
+          <data_layout_group name="overview" columns_count="2" title="Overview">
+            <data_layout_item name="team_members_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+            </data_layout_item>
+          </data_layout_group>
+          <data_layout_group name="details" columns_count="2" title="Details">
+            <data_layout_item name="description" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="comments" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="team_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="role" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+    </data_layouts>
     <reports/>
     <print_layouts/>
   </table>
   <table name="teams" title="Teams">
     <example_rows>
       <example_row>
-        <value column="teams_id">0</value>
+        <value column="team_id">0</value>
         <value column="description"/>
         <value column="comments"/>
         <value column="name">Quality Assurance</value>
       </example_row>
     </example_rows>
     <fields>
-      <field name="teams_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Team ID">
+      <field name="team_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Team ID">
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
       </field>
       <field name="description" type="Text" title="Description">
@@ -804,30 +904,30 @@ if __name__ == "__main__":
       </field>
     </fields>
     <relationships>
-      <relationship name="members" key="teams_id" other_table="team_members" other_key="team_id" auto_create="true" allow_edit="true" title="Members"/>
-      <relationship name="projects" key="teams_id" other_table="project_teams" other_key="team_id" title="Projects"/>
+      <relationship name="members" key="team_id" other_table="team_members" other_key="team_id" auto_create="true" allow_edit="true" title="Members"/>
+      <relationship name="projects" key="team_id" other_table="project_teams" other_key="team_id" title="Projects"/>
     </relationships>
     <data_layouts>
       <data_layout name="details" parent_table="teams">
         <data_layout_groups>
-          <data_layout_group name="main">
-            <data_layout_group name="overview" columns_count="2" title="Overview">
-              <data_layout_item name="teams_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
-              </data_layout_item>
-              <data_layout_item name="name" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
-              </data_layout_item>
-            </data_layout_group>
-            <data_layout_group name="details" columns_count="2" title="Details">
-              <data_layout_item name="description" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
-              </data_layout_item>
-              <data_layout_item name="comments" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
-              </data_layout_item>
-            </data_layout_group>
-            <data_layout_portal relationship="members">
+          <data_layout_group name="overview" columns_count="2" title="Overview">
+            <data_layout_item name="team_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="name" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+            </data_layout_item>
+          </data_layout_group>
+          <data_layout_group name="details" columns_count="2" title="Details">
+            <data_layout_item name="description" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="comments" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+            </data_layout_item>
+          </data_layout_group>
+          <data_layout_group name="other">
+            <data_layout_portal relationship="members" portal_rows_count="6">
               <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
               </data_layout_item>
@@ -838,7 +938,7 @@ if __name__ == "__main__":
                 <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
               </data_layout_item>
             </data_layout_portal>
-            <data_layout_portal relationship="projects">
+            <data_layout_portal relationship="projects" portal_rows_count="6">
               <data_layout_item name="project_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
               </data_layout_item>
@@ -852,7 +952,7 @@ if __name__ == "__main__":
       <data_layout name="list" parent_table="teams">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="teams_id" editable="true" use_default_formatting="true" column_width="123">
+            <data_layout_item name="team_id" editable="true" use_default_formatting="true" column_width="123">
               <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true" column_width="234">

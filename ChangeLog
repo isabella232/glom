@@ -1,5 +1,17 @@
 2011-10-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Examples: Details layout: Remove unnecessary "main" groups.
+
+	* examples/example_lesson_planner.glom:
+	* examples/example_music_collection.glom:
+	* examples/example_project_manager.glom:
+	* examples/example_smallbusiness.glom: Move overview and details to top,
+	instead of in a top-level group.
+	* examples/example_film_manager.glom: Remove unnecessary Details titles.
+	These look silly when the first item is a group with its own title.
+
+2011-10-06  Murray Cumming  <murrayc@murrayc.com>
+
 	Film Manager example: Scenes: Make the Props and Costume tabs work. 
 
 	* examples/example_film_manager.glom: The relevant tables and relationships
