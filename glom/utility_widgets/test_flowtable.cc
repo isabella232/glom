@@ -80,17 +80,17 @@ static void fill_flowtable(Glom::FlowTable& flowtable)
 
 static void clear_flowtable(Glom::FlowTable& flowtable)
 {
+  flowtable.remove_all();
+
   //std::cout << G_STRFUNC << ": debug 1" << std::endl;
   for(type_vec_widgets::iterator iter = vec_child_widgets.begin(); iter != vec_child_widgets.end(); ++iter)
   {
     Gtk::Widget* widget = *iter;
     //std::cout << "  loop: widget=" << widget << std::endl;
-    delete widget;
+    delete widget; //TODO: This crashes 
   }
 
   vec_child_widgets.clear();
-
-  flowtable.remove_all();
 }
 
 int

@@ -18,9 +18,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtkmm.h>
 #include <glom/utility_widgets/eggspreadtable/eggspreadtablednd.h>
 #include <glom/utility_widgets/eggspreadtablemm/eggspreadtabledndmm.h>
+#include <gtkmm.h>
 
 static const guint INITIAL_HSPACING = 2;
 static const guint INITIAL_VSPACING = 2;
@@ -117,7 +117,7 @@ on_combo_halign_changed()
 }
 
 static bool
-on_spreadtable_parent_drop_possible(Gtk::Widget* /* child */)
+on_spreadtable_parent_drop_possible(Gtk::Widget* /* child */, bool& drop_possible)
 {
   if(parent_accepts_drops)
     return true;
@@ -126,7 +126,7 @@ on_spreadtable_parent_drop_possible(Gtk::Widget* /* child */)
 }
 
 static bool
-on_inner_spreadtable_drop_possible(Gtk::Widget* /* child */)
+on_inner_spreadtable_drop_possible(Gtk::Widget* /* child */, bool& drop_possible)
 {
   if(child_accepts_drops)
     return true;

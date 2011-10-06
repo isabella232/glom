@@ -1,5 +1,13 @@
 2011-10-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Update EggSpreadTable tests.
+
+	* glom/utility_widgets/eggspreadtablemm/test_spreadtablednd.cc: Fix a crash.
+	* glom/utility_widgets/test_flowtable.cc:
+	* glom/utility_widgets/test_flowtable_dnd.cc: Adapt to the changed API.
+
+2011-10-06  Murray Cumming  <murrayc@murrayc.com>
+
 	Update EggSpreadTable
 
 	* glom/utility_widgets/eggspreadtable/: Update from libegg with Tristan's 
