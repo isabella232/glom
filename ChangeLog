@@ -1,5 +1,12 @@
 2011-10-06  Murray Cumming  <murrayc@murrayc.com>
 
+	TreeModelDb: fill_values_if_necessary(): Avoid a crash.
+
+	* glom/mode_data/datawidget/treemodel_db.cc: Do not try to use a null
+	GdaDataModel, which can happen if a SQL query fails.
+
+2011-10-06  Murray Cumming  <murrayc@murrayc.com>
+
 	Document: get_data_layout_groups_default(): Simplify the default structure.
 
 	* glom/libglom/document/document.cc: Do not create the useless "main" 

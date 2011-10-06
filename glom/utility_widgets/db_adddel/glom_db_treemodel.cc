@@ -106,16 +106,24 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
 
       //Create default values, if necessary, of the correct types:
       //Examine the columns in the returned DataModel:
+      const Glib::RefPtr<const Gnome::Gda::DataModel> datamodel = model.m_gda_datamodel;
       for(guint col = 0; col < model.m_data_model_columns_count; ++col)
       {
         if(m_db_values.find(col) == m_db_values.end()) //If there is not already a value in the map for this column.
         {
-          Glib::RefPtr<Gnome::Gda::Column> column = model.m_gda_datamodel->describe_column(col);
+          if(!datamodel) //though this should not happen.
+          {
+            m_db_values[col] = Gnome::Gda::Value();
+          }
+          else
+          {
+            const Glib::RefPtr<const Gnome::Gda::Column> column = datamodel->describe_column(col);
 
-          //We don't just create a Gda::Value of the column's gda type,
-          //because we should use a NULL-type Gda::Value as the initial value for some fields:
-          const Field::glom_field_type glom_type = Field::get_glom_type_for_gda_type(column->get_g_type());
-          m_db_values[col] = Glom::Conversions::get_empty_value(glom_type);
+            //We don't just create a Gda::Value of the column's gda type,
+            //because we should use a NULL-type Gda::Value as the initial value for some fields:
+            const Field::glom_field_type glom_type = Field::get_glom_type_for_gda_type(column->get_g_type());
+            m_db_values[col] = Glom::Conversions::get_empty_value(glom_type);
+          }
         }
       }
     }
