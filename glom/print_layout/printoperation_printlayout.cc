@@ -78,14 +78,15 @@ void PrintOperationPrintLayout::on_draw_page(
   m_canvas->hide_page_bounds();
   Cairo::RefPtr<Cairo::Context> cairo_context = print_context->get_cairo_context();
 
+
   //Render the canvas onto the cairo context:
   const Goocanvas::Bounds bounds = m_canvas->get_page_bounds(page_nr);
   //std::cout << G_STRFUNC << ": page_nr=" << page_nr << ", bounds: x1=" << bounds.get_x1() << ", y1=" << bounds.get_y1() << ", x2=" << bounds.get_x2() << ", y2=" << bounds.get_y2() << std::endl;
-  m_canvas->render(cairo_context, bounds);
-  
-  //This doesn't seem to help:
+
   //Shift the renderer context up into the page:
-  //cairo_context->translate(0, - bounds.get_y1());
+  cairo_context->translate(0, - bounds.get_y1());
+  
+  m_canvas->render(cairo_context, bounds);
 
   //Call base class:
   Gtk::PrintOperation::on_draw_page(print_context, page_nr);

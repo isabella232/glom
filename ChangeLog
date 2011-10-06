@@ -1,5 +1,13 @@
 2011-10-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Really print additional pages.
+
+	* glom/print_layout/printoperation_printlayout.cc: on_draw_page(): 
+  Use Cairo::Context::translate() before calling Goocanvas::Canvas::render().
+  Bug #660553 (Thanks to David King and Damon Chaplin)
+
+2011-10-06  Murray Cumming  <murrayc@murrayc.com>
+
 	Document: Avoid writing some unnecessary XML nodes.
 
 	* glom/libglom/document/document.cc: <formatting>: Do not write the 
