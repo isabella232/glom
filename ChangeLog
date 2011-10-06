@@ -1,3 +1,10 @@
+2011-10-06  Murray Cumming  <murrayc@murrayc.com>
+
+	Document: get_data_layout_groups_default(): Simplify the default structure.
+
+	* glom/libglom/document/document.cc: Do not create the useless "main" 
+	top-level group for details layouts.
+
 2011-10-06  Ben Konrath  <ben@bagu.org>
 
 	Fix small bugs in commented-out debugging print statements.

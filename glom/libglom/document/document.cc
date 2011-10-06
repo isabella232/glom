@@ -1483,41 +1483,34 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
   type_list_layout_groups result;
 
   //Add one if necessary:
-  sharedptr<LayoutGroup> pTopLevel;
-  sharedptr<LayoutGroup> pOverview;
-  sharedptr<LayoutGroup> pDetails;
-
-  sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
-  group->set_name("main");
-  group->set_columns_count(1);
-  result.push_back(group);
-  pTopLevel = group;
+  sharedptr<LayoutGroup> overview;
+  sharedptr<LayoutGroup> details;
 
   if(layout_name == "details") //The Details default layout is a bit more complicated.
   {
-    sharedptr<LayoutGroup> overview = sharedptr<LayoutGroup>::create();;
+    overview = sharedptr<LayoutGroup>::create();;
     overview->set_name("overview");
     overview->set_title_original("Overview"); //Don't translate this, but TODO: add standard translations.
     overview->set_columns_count(2);
+    result.push_back(overview);
 
-    pTopLevel->add_item(overview);
-    pOverview = sharedptr<LayoutGroup>::cast_dynamic(overview);
-
-    sharedptr<LayoutGroup> details = sharedptr<LayoutGroup>::create();
+    details = sharedptr<LayoutGroup>::create();
     details->set_name("details");
     details->set_title_original("Details"); //Don't translate this, but TODO: add standard translations.
     details->set_columns_count(2);
-
-    pTopLevel->add_item(details);
-    pDetails = sharedptr<LayoutGroup>::cast_dynamic(details);
+    result.push_back(details);
   }
-
-  //If, for some reason, we didn't create the-subgroups, add everything to the top level group:
-  if(!pOverview)
-    pOverview = pTopLevel;
-
-  if(!pDetails)
-    pDetails = pTopLevel;
+  
+  //If, for some reason, we didn't create the-subgroups, add everything to a top level group:
+  if(!overview && !details)
+  {
+    overview = sharedptr<LayoutGroup>::create();
+    overview->set_name("main");
+    overview->set_columns_count(1);
+    result.push_back(overview);
+      
+    details = overview; //Adding anything to details adds it to the overview, which is the only group.
+  }
 
 
   //Discover new fields, and add them:
@@ -1548,10 +1541,10 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
         //layout_item.m_sequence = sequence;  add_item() will fill this.
 
         //std::cout << "debug: " << G_STRFUNC << ": " << layout_item.get_name() << std::endl;
-        if(pOverview && layout_item->get_full_field_details()->get_primary_key())
-          pOverview->add_item(layout_item);
-        else if(pDetails)
-          pDetails->add_item(layout_item);
+        if(overview && layout_item->get_full_field_details()->get_primary_key())
+          overview->add_item(layout_item);
+        else if(details)
+          details->add_item(layout_item);
       }
     }
   }
