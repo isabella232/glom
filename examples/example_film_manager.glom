@@ -9,61 +9,61 @@
     </trans_set>
     <fields>
       <field name="accommodation_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Accommodation ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_DE" val="Unterkunft ID"/>
         </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Beschreibung"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_DE" val="Kommentare"/>
         </trans_set>
       </field>
       <field name="address_street" type="Text" title="Street">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Strasse"/>
         </trans_set>
       </field>
       <field name="address_town" type="Text" title="Town">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Ort"/>
         </trans_set>
       </field>
       <field name="address_county" type="Text" title="County">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Bundesland/Kanton"/>
         </trans_set>
       </field>
       <field name="address_country" type="Text" title="Country">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Land"/>
         </trans_set>
       </field>
       <field name="address_postcode" type="Text" title="Postcode">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Postleitzahl"/>
         </trans_set>
       </field>
       <field name="contact_id" type="Number" title="Contact ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_DE" val="Kontakt ID"/>
         </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
       </field>
     </fields>
     <relationships>
@@ -78,15 +78,15 @@
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <data_layout_item name="accommodation_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2">
             <data_layout_item name="description" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_group name="address" title="Address">
               <trans_set>
@@ -94,19 +94,19 @@
                 <trans loc="en_GB" val="Address"/>
               </trans_set>
               <data_layout_item name="address_town" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="address_street" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="address_county" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="address_country" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="address_postcode" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
             <data_layout_group name="contact" title="Contact">
@@ -115,14 +115,14 @@
                 <trans loc="en_GB" val="Contact"/>
               </trans_set>
               <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name_full" relationship="contacts" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -131,16 +131,16 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="accommodation_id" editable="true" use_default_formatting="true" column_width="40">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true" column_width="103">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="address_town" editable="true" use_default_formatting="true" column_width="103">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="address_country" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -182,37 +182,37 @@
     </trans_set>
     <fields>
       <field name="car_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Car ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_DE" val="Auto ID"/>
         </trans_set>
       </field>
       <field name="manufacturer" type="Text" title="Manufacturer">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Hersteller"/>
         </trans_set>
       </field>
       <field name="model" type="Text" title="Model">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Model"/>
         </trans_set>
       </field>
       <field name="registration" type="Text" title="Registration">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Kennzeichnung"/>
         </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Beschreibung"/>
         </trans_set>
       </field>
       <field name="comment" type="Text" title="Comment">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_DE" val="Kommentar"/>
         </trans_set>
@@ -228,10 +228,10 @@
               <trans loc="en_GB" val="Overview"/>
             </trans_set>
             <data_layout_item name="car_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="registration" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
@@ -240,16 +240,16 @@
               <trans loc="en_GB" val="Details"/>
             </trans_set>
             <data_layout_item name="manufacturer" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="model" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="comment" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -258,22 +258,22 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="car_id" editable="true" use_default_formatting="true" column_width="90">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="manufacturer" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="model" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="registration" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="comment" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -319,19 +319,19 @@
     </trans_set>
     <fields>
       <field name="character_id" primary_key="true" unique="true" type="Number" title="Cast ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_DE" val="Besetzung ID"/>
         </trans_set>
       </field>
       <field name="character" type="Text" title="Character">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Charakter"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_DE" val="Kommentar"/>
         </trans_set>
@@ -353,7 +353,7 @@
         </trans_set>
       </field>
       <field name="mainpart" default_value="FALSE" type="Boolean" title="Main Part">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Hauptrolle"/>
         </trans_set>
@@ -382,13 +382,13 @@
                 <trans loc="en_GB" val="Overview"/>
               </trans_set>
               <data_layout_item name="character_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="character" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="mainpart" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
             <data_layout_group name="details" columns_count="2" title="Details">
@@ -402,34 +402,34 @@
                   <trans loc="en_GB" val="Actor"/>
                 </trans_set>
                 <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
                 <data_layout_item name="name_full" relationship="contacts_actor" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_street1" relationship="contacts_actor" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_street2" relationship="contacts_actor" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_town" relationship="contacts_actor" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_country" relationship="contacts_actor" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_postcode" relationship="contacts_actor" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="picture" relationship="contacts_actor" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="agent_id" relationship="contacts_actor" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
                 <data_layout_item name="name_full" relationship="contacts_actor" related_relationship="agent" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
               <data_layout_group name="agent">
@@ -437,25 +437,25 @@
                   <trans loc="en_GB" val="Actor's Agent"/>
                 </trans_set>
                 <data_layout_item name="agent_id" relationship="contacts_actor" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
                 <data_layout_item name="name_full" relationship="contacts_actor" related_relationship="agent" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="tel_work" relationship="contacts_actor" related_relationship="agent" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
               <data_layout_portal relationship="scenes" portal_rows_count="6">
                 <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
                 <data_layout_item name="description" relationship="scene" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_portal>
               <data_layout_item name="comments" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
           </data_layout_group>
@@ -465,10 +465,10 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="character_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="character" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
               <title_custom use_custom="true" title="Actor's Contact ID">
@@ -476,7 +476,7 @@
                   <trans loc="de_DE" val="Schauspieler Kontakt ID"/>
                 </trans_set>
               </title_custom>
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name_full" relationship="contacts_actor" editable="true" use_default_formatting="true">
               <title_custom use_custom="true" title="Actor's Name">
@@ -484,13 +484,13 @@
                   <trans loc="de_DE" val="Schauspieler Name"/>
                 </trans_set>
               </title_custom>
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="mainpart" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -499,44 +499,44 @@
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <data_layout_item name="character_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="character" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
             <data_layout_item name="mainpart" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_group name="actor" title="Actor">
               <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name_full" relationship="contacts_actor" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="scenes">
             <data_layout_portal relationship="scenes" portal_rows_count="6">
               <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="overview_name" relationship="scene" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="interior_or_exterior" relationship="scene" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="day_or_night" relationship="scene" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="minutes" relationship="scene" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
             </data_layout_portal>
           </data_layout_group>
@@ -546,20 +546,20 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="character_id" editable="true" use_default_formatting="true" column_width="90">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="character" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="contact_id" editable="true" use_default_formatting="true" column_width="90">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name_full" relationship="contacts_actor" editable="true" use_default_formatting="true" column_width="143">
               <title_custom use_custom="true" title="Actor"/>
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="mainpart" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -571,10 +571,10 @@
           <data_layout_group>
             <data_layout_item_header>
               <data_layout_item name="org_name" relationship="system_properties" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="org_logo" relationship="system_properties" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_item_header>
             <data_layout_item_groupby border_width="0.05">
@@ -583,10 +583,10 @@
                 <data_layout_item name="character" editable="true" use_default_formatting="true" sort_ascending="true"/>
               </sortby>
               <data_layout_item name="character_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="character" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="name_full" relationship="contacts_actor" editable="true" use_default_formatting="true">
                 <title_custom use_custom="true" title="Actor">
@@ -594,18 +594,18 @@
                     <trans loc="de_DE" val="Schauspieler"/>
                   </trans_set>
                 </title_custom>
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="picture" relationship="contacts_actor" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item_verticalgroup>
                 <data_layout_item name="name_full" relationship="contacts_actor" related_relationship="agent" editable="true" use_default_formatting="true">
                   <title_custom use_custom="true" title="Agent"/>
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="tel_work" relationship="contacts_actor" related_relationship="agent" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_item_verticalgroup>
             </data_layout_item_groupby>
@@ -676,31 +676,31 @@
     </trans_set>
     <fields>
       <field name="company_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Company ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_DE" val="Firma ID"/>
         </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_DE" val="Kommentar"/>
         </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Beschreibung"/>
         </trans_set>
       </field>
       <field name="logo" type="Image" title="Logo">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
       </field>
       <field name="website" type="Text" title="Web Site">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Website"/>
         </trans_set>
@@ -722,10 +722,10 @@
               <trans loc="en_GB" val="Overview"/>
             </trans_set>
             <data_layout_item name="company_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
@@ -734,34 +734,34 @@
               <trans loc="en_GB" val="Details"/>
             </trans_set>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="logo" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="website" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="others">
             <data_layout_portal relationship="staff" portal_rows_count="6">
               <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name_first" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="name_last" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="tel_work" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="email" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_portal>
           </data_layout_group>
@@ -771,16 +771,16 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="company_id" editable="true" use_default_formatting="true" column_width="90">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true" column_width="233">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="221">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -1032,31 +1032,31 @@
     </trans_set>
     <fields>
       <field name="contact_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Contact ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_DE" val="Kontakt ID"/>
         </trans_set>
       </field>
       <field name="name_first" type="Text" title="First Name">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Vorname"/>
         </trans_set>
       </field>
       <field name="name_middle" type="Text" title="Second Name">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Zweiter Name"/>
         </trans_set>
       </field>
       <field name="name_last" type="Text" title="Last Name">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Familiename"/>
         </trans_set>
       </field>
       <field name="name_title" type="Text" title="Title">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_custom="true" choices_related_show_all="true">
+        <formatting choices_custom="true">
           <custom_choice_list>
             <custom_choice value="Mr"/>
             <custom_choice value="Ms"/>
@@ -1071,25 +1071,25 @@
         </trans_set>
       </field>
       <field name="address_street2" type="Text" title="Street (line 2)">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Strasse (2)"/>
         </trans_set>
       </field>
       <field name="address_town" type="Text" title="Town">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Ort"/>
         </trans_set>
       </field>
       <field name="address_state" type="Text" title="State">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Bundesland/Kanton"/>
         </trans_set>
       </field>
       <field name="address_country" type="Text" title="Country">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_custom="true" choices_related_show_all="true">
+        <formatting choices_custom="true">
           <custom_choice_list>
             <custom_choice value="Germany"/>
             <custom_choice value="United Kingdom"/>
@@ -1103,26 +1103,26 @@
         </trans_set>
       </field>
       <field name="address_postcode" type="Text" title="Postcode">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Postleitzahl"/>
         </trans_set>
       </field>
       <field name="date_of_birth" type="Date" title="Date Of Birth">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Geburtsdatum"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_DE" val="Kommentare"/>
         </trans_set>
       </field>
       <field name="name_full" type="Text" title="Full Name">
         <calculation>return record["name_first"] + " " + record["name_last"]</calculation>
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Vollständiger Name"/>
         </trans_set>
@@ -1144,46 +1144,46 @@
         </trans_set>
       </field>
       <field name="picture" type="Image" title="Picture">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Bild"/>
         </trans_set>
       </field>
       <field name="tel_home" type="Text" title="Home Telephone">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Telefon (Privat)"/>
         </trans_set>
       </field>
       <field name="tel_mobile" type="Text" title="Mobile Telephone">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Telefon (Handy)"/>
         </trans_set>
       </field>
       <field name="tel_fax" type="Text" title="Fax">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
       </field>
       <field name="tel_work" type="Text" title="Work Telephone">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Telefon (Buro)"/>
         </trans_set>
       </field>
       <field name="email" type="Text" title="Email">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="E-Mail"/>
         </trans_set>
       </field>
       <field name="address_street1" type="Text" title="Street (line 1)">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Strasse (1)"/>
         </trans_set>
       </field>
       <field name="website" type="Text" title="Web Site">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Website"/>
         </trans_set>
@@ -1194,7 +1194,7 @@
             <data_layout_groups>
               <data_layout_group>
                 <data_layout_item name="name_full" editable="true" use_default_formatting="true">
-                  <formatting choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
             </data_layout_groups>
@@ -1202,7 +1202,7 @@
         </formatting>
       </field>
       <field name="stagename" type="Text" title="Stagename">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Künstlername"/>
         </trans_set>
@@ -1227,10 +1227,10 @@
               <trans loc="en_GB" val="Overview"/>
             </trans_set>
             <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name_full" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
@@ -1245,16 +1245,16 @@
                   <trans loc="en_GB" val="Name"/>
                 </trans_set>
                 <data_layout_item name="name_title" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="name_first" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="name_middle" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="name_last" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
               <data_layout_group name="company" title="Company">
@@ -1263,10 +1263,10 @@
                   <trans loc="en_GB" val="Company"/>
                 </trans_set>
                 <data_layout_item name="company_id" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
                 <data_layout_item name="name" relationship="company" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
               <data_layout_group name="address" title="Address">
@@ -1275,22 +1275,22 @@
                   <trans loc="en_GB" val="Address"/>
                 </trans_set>
                 <data_layout_item name="address_street1" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_street2" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_town" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_state" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_country" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_postcode" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
               <data_layout_group name="telephone" title="Telephone">
@@ -1299,16 +1299,16 @@
                   <trans loc="en_GB" val="Telephone"/>
                 </trans_set>
                 <data_layout_item name="tel_work" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="tel_mobile" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="tel_home" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="tel_fax" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
               <data_layout_group name="agent" title="Agent">
@@ -1317,11 +1317,11 @@
                   <trans loc="en_GB" val="Agent"/>
                 </trans_set>
                 <data_layout_item name="agent_id" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
                 <data_layout_item name="name_full" relationship="agent" editable="true" use_default_formatting="true">
                   <title_custom/>
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
             </data_layout_notebook>
@@ -1333,10 +1333,10 @@
                 </trans_set>
                 <data_layout_portal relationship="crew" portal_rows_count="6">
                   <data_layout_item name="crew_id" editable="true" use_default_formatting="true">
-                    <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                    <formatting format_thousands_separator="true" format_decimal_places="2"/>
                   </data_layout_item>
                   <data_layout_item name="description" editable="true" use_default_formatting="true">
-                    <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                    <formatting/>
                   </data_layout_item>
                 </data_layout_portal>
               </data_layout_group>
@@ -1347,31 +1347,31 @@
                 </trans_set>
                 <data_layout_portal relationship="cast" portal_rows_count="6">
                   <data_layout_item name="character_id" editable="true" use_default_formatting="true">
-                    <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                    <formatting format_thousands_separator="true" format_decimal_places="2"/>
                   </data_layout_item>
                   <data_layout_item name="character" editable="true" use_default_formatting="true">
-                    <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                    <formatting/>
                   </data_layout_item>
                   <data_layout_item name="mainpart" editable="true" use_default_formatting="true">
-                    <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                    <formatting/>
                   </data_layout_item>
                 </data_layout_portal>
               </data_layout_group>
             </data_layout_notebook>
             <data_layout_item name="email" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="website" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="date_of_birth" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="picture" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+              <formatting format_text_multiline="true"/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -1381,23 +1381,23 @@
           <data_layout_group name="main">
             <data_layout_item name="contact_id" editable="true" use_default_formatting="true" column_width="100">
               <title_custom/>
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name_first" editable="true" use_default_formatting="true" column_width="100">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="name_last" editable="true" use_default_formatting="true" column_width="162">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="address_country" editable="true" use_default_formatting="true" column_width="100">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="name" relationship="company" editable="true" use_default_formatting="true" column_width="147">
               <title_custom use_custom="true" title="Company Name"/>
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -1412,7 +1412,7 @@
                 <formatting/>
               </data_layout_item>
               <data_layout_item name="name_full" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_item_groupby>
           </data_layout_group>
@@ -1427,10 +1427,10 @@
                   <formatting/>
                 </data_layout_item>
                 <data_layout_item name="name_full" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_postcode" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_item_groupby>
             </data_layout_item_groupby>
@@ -1469,16 +1469,16 @@
     </example_rows>
     <fields>
       <field name="costume_id" primary_key="true" auto_increment="true" type="Number" title="Costume ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
       <field name="description" type="Text" title="Description">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
       </field>
       <field name="name" type="Text" title="Name">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
       </field>
     </fields>
     <relationships/>
@@ -1487,13 +1487,13 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="costume_id" editable="true" use_default_formatting="true" column_width="40">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true" column_width="103">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="103">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -1502,18 +1502,18 @@
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <data_layout_item name="costume_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
             <data_layout_item name="description" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -1544,16 +1544,16 @@
     </trans_set>
     <fields>
       <field name="crew_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Crew ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
       <field name="description" type="Text" title="Description">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Beschreibung"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_DE" val="Kommentar"/>
         </trans_set>
@@ -1580,7 +1580,7 @@
             <data_layout_groups>
               <data_layout_group>
                 <data_layout_item name="name_full" editable="true" use_default_formatting="true">
-                  <formatting choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
             </data_layout_groups>
@@ -1620,10 +1620,10 @@
               <trans loc="en_GB" val="Overview"/>
             </trans_set>
             <data_layout_item name="crew_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2">
@@ -1637,10 +1637,10 @@
                 <trans loc="en_GB" val="Department"/>
               </trans_set>
               <data_layout_item name="dept_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name" relationship="departments" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
             <data_layout_group name="contact" title="Contact">
@@ -1649,10 +1649,10 @@
                 <trans loc="en_GB" val="Contact"/>
               </trans_set>
               <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name_full" relationship="contacts" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_group name="address" title="Address">
                 <trans_set>
@@ -1660,22 +1660,22 @@
                   <trans loc="en_GB" val="Address"/>
                 </trans_set>
                 <data_layout_item name="address_street1" relationship="contacts" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_street2" relationship="contacts" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_town" relationship="contacts" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_state" relationship="contacts" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_country" relationship="contacts" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_postcode" relationship="contacts" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
               <data_layout_group name="agent" title="Agent">
@@ -1684,23 +1684,23 @@
                   <trans loc="en_GB" val="Agent"/>
                 </trans_set>
                 <data_layout_item name="agent_id" relationship="contacts" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
                 <data_layout_item name="name_full" relationship="contacts" related_relationship="agent" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
             </data_layout_group>
             <data_layout_portal relationship="scenes" portal_rows_count="6">
               <data_layout_item name="scene_id" use_default_formatting="true" column_width="90">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="overview_name" relationship="scenes" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_portal>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -1709,19 +1709,19 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="crew_id" editable="true" use_default_formatting="true" column_width="90">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="contact_id" editable="true" use_default_formatting="true" column_width="90">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name_full" relationship="contacts" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="dept_id" editable="true" use_default_formatting="true" column_width="90">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" relationship="departments" editable="true" use_default_formatting="true">
               <title_custom use_custom="true" title="Department Name">
@@ -1729,7 +1729,7 @@
                   <trans loc="de_DE" val="Abteilungsname"/>
                 </trans_set>
               </title_custom>
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -1754,39 +1754,39 @@
                 <formatting/>
               </data_layout_item>
               <data_layout_item name="description" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item_verticalgroup>
                 <data_layout_item name="name_full" relationship="contacts" editable="true" use_default_formatting="true">
                   <title_custom/>
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_street1" relationship="contacts" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_street2" relationship="contacts" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_town" relationship="contacts" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_state" relationship="contacts" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_country" relationship="contacts" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_postcode" relationship="contacts" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_item_verticalgroup>
               <data_layout_item_verticalgroup>
                 <data_layout_item name="name_full" relationship="contacts" related_relationship="agent" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_item_verticalgroup>
               <data_layout_item name="comments" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_item_groupby>
           </data_layout_group>
@@ -1806,13 +1806,13 @@
     </trans_set>
     <fields>
       <field name="delivery_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Delivery ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_DE" val="Lieferung ID"/>
         </trans_set>
       </field>
       <field name="arrival_date" type="Number" title="Arrival Date">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_DE" val="Lieferungsdatum"/>
         </trans_set>
@@ -1823,7 +1823,7 @@
             <data_layout_groups>
               <data_layout_group>
                 <data_layout_item name="name_full" editable="true" use_default_formatting="true">
-                  <formatting choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
             </data_layout_groups>
@@ -1839,7 +1839,7 @@
             <data_layout_groups>
               <data_layout_group>
                 <data_layout_item name="name_full" editable="true" use_default_formatting="true">
-                  <formatting choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
             </data_layout_groups>
@@ -1850,43 +1850,43 @@
         </trans_set>
       </field>
       <field name="arrival_time" type="Time" title="Arrival Time">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Lieferungszeit"/>
         </trans_set>
       </field>
       <field name="arrival_place" type="Text" title="Arrival Place">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Lieferungsaddresse"/>
         </trans_set>
       </field>
       <field name="departure_time" type="Time" title="Departure Time">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Sendungszeit"/>
         </trans_set>
       </field>
       <field name="departure_date" type="Date" title="Departure Date">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Sendungsdatum"/>
         </trans_set>
       </field>
       <field name="departure_place" type="Text" title="Departure Place">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Sendungsaddresse"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_DE" val="Kommentare"/>
         </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Beschreibung"/>
         </trans_set>
@@ -1909,10 +1909,10 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="delivery_id" editable="true" use_default_formatting="true" column_width="90">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="name_full" relationship="departure_contact" editable="true" use_default_formatting="true" column_width="143">
               <title_custom use_custom="true" title="Departure Name">
@@ -1920,13 +1920,13 @@
                   <trans loc="de_DE" val="Sendername"/>
                 </trans_set>
               </title_custom>
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="departure_place" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="departure_date" editable="true" use_default_formatting="true" column_width="77">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="name_full" relationship="arrival_contact" editable="true" use_default_formatting="true" column_width="143">
               <title_custom use_custom="true" title="Arrival Name">
@@ -1934,13 +1934,13 @@
                   <trans loc="de_DE" val="Empfängerkontakt"/>
                 </trans_set>
               </title_custom>
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="arrival_place" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="arrival_date" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -1949,10 +1949,10 @@
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <data_layout_item name="description" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="delivery_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2">
@@ -1962,19 +1962,19 @@
                 <trans loc="en_GB" val="Departure"/>
               </trans_set>
               <data_layout_item name="departure_contact_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name_full" relationship="departure_contact" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="departure_place" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="departure_date" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="departure_time" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
             <data_layout_group name="arrival" title="Arrival">
@@ -1983,25 +1983,25 @@
                 <trans loc="en_GB" val="Arrival"/>
               </trans_set>
               <data_layout_item name="arrival_contact_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name_full" relationship="arrival_contact" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="arrival_place" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="arrival_date" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="arrival_time" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
           </data_layout_group>
           <data_layout_group name="comments">
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -2059,16 +2059,16 @@
     </trans_set>
     <fields>
       <field name="departments_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Department ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_DE" val="Abteilung ID"/>
         </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_DE" val="Kommentar"/>
         </trans_set>
@@ -2090,10 +2090,10 @@
               <trans loc="en_GB" val="Overview"/>
             </trans_set>
             <data_layout_item name="departments_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details">
@@ -2104,20 +2104,20 @@
             <data_layout_portal relationship="department_crew" portal_rows_count="6">
               <data_layout_item name="crew_id" editable="true" use_default_formatting="true">
                 <title_custom/>
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="description" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name_full" relationship="contacts" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_portal>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -2141,13 +2141,13 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="departments_id" editable="true" use_default_formatting="true" column_width="90">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -2179,20 +2179,20 @@
     </trans_set>
     <fields>
       <field name="equipment_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Equipment ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="en_GB" val="Equipment ID"/>
         </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Beschreibung"/>
           <trans loc="en_GB" val="Description"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_DE" val="Kommentar"/>
           <trans loc="en_GB" val="Comments"/>
@@ -2216,7 +2216,7 @@
               <trans loc="en_GB" val="Overview"/>
             </trans_set>
             <data_layout_item name="equipment_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
@@ -2225,18 +2225,18 @@
               <trans loc="en_GB" val="Details"/>
             </trans_set>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_portal relationship="scenes" portal_rows_count="6">
               <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="overview_name" relationship="scene" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_portal>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -2245,13 +2245,13 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="equipment_id" editable="true" use_default_formatting="true" column_width="90">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -2281,40 +2281,40 @@
     </trans_set>
     <fields>
       <field name="journey_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Journey ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_DE" val="Fahrt ID"/>
         </trans_set>
       </field>
       <field name="comment" type="Text" title="Comment">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_DE" val="Kommentar"/>
         </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Beschreibung"/>
         </trans_set>
       </field>
       <field name="arrival_date" type="Date" title="Arrival Date">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
       </field>
       <field name="arrival_time" type="Time" title="Arrival Time">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
       </field>
       <field name="arrival_place" type="Text" title="Arrival Place">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
       </field>
       <field name="departure_date" type="Date" title="Departure Date">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
       </field>
       <field name="departure_time" type="Time" title="Departure Time">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
       </field>
       <field name="departure_place" type="Text" title="Departure Place">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
       </field>
       <field name="contact_id" type="Number" title="Contact ID">
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="contacts" choices_related_field="contact_id" choices_related_show_all="true">
@@ -2322,7 +2322,7 @@
             <data_layout_groups>
               <data_layout_group>
                 <data_layout_item name="name_full" editable="true" use_default_formatting="true">
-                  <formatting choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
             </data_layout_groups>
@@ -2345,25 +2345,25 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="journey_id" editable="true" use_default_formatting="true" column_width="90">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name_full" relationship="contacts" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="192">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="arrival_place" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="arrival_date" editable="true" use_default_formatting="true" column_width="101">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="departure_place" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="departure_date" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -2372,10 +2372,10 @@
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <data_layout_item name="journey_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2">
@@ -2385,10 +2385,10 @@
                 <trans loc="en_GB" val="Person"/>
               </trans_set>
               <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name_full" relationship="contacts" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
             <data_layout_group name="departure" title="Departure">
@@ -2397,13 +2397,13 @@
                 <trans loc="en_GB" val="Departure"/>
               </trans_set>
               <data_layout_item name="departure_place" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="departure_date" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="departure_time" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
             <data_layout_group name="arrival" title="Arrival">
@@ -2412,19 +2412,19 @@
                 <trans loc="en_GB" val="Arrival"/>
               </trans_set>
               <data_layout_item name="arrival_place" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="arrival_date" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="arrival_time" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
           </data_layout_group>
           <data_layout_group name="comments">
             <data_layout_item name="comment" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -2465,43 +2465,43 @@
     </trans_set>
     <fields>
       <field name="location_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Location ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
       <field name="name" type="Text" title="Name">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
       </field>
       <field name="address_street" type="Text" title="Street">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Strasse"/>
         </trans_set>
       </field>
       <field name="address_town" type="Text" title="Town">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Stadt"/>
         </trans_set>
       </field>
       <field name="address_county" type="Text" title="County">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Land"/>
         </trans_set>
       </field>
       <field name="address_country" type="Text" title="Country">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Staat"/>
         </trans_set>
       </field>
       <field name="address_postcode" type="Text" title="Postcode">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Postleitzahl"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_DE" val="Kommentar"/>
         </trans_set>
@@ -2512,7 +2512,7 @@
             <data_layout_groups>
               <data_layout_group>
                 <data_layout_item name="name_full" editable="true" use_default_formatting="true">
-                  <formatting choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
             </data_layout_groups>
@@ -2520,7 +2520,7 @@
         </formatting>
       </field>
       <field name="rent" type="Number" title="Rent">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
     </fields>
     <relationships>
@@ -2536,10 +2536,10 @@
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <data_layout_item name="location_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2">
@@ -2549,19 +2549,19 @@
                 <trans loc="en_GB" val="Address"/>
               </trans_set>
               <data_layout_item name="address_street" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="address_town" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="address_county" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="address_country" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="address_postcode" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
             <data_layout_group name="contact_person" title="Contact Person">
@@ -2569,36 +2569,36 @@
                 <trans loc="de_DE" val="Contact Person"/>
               </trans_set>
               <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name_full" relationship="contacts" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
           </data_layout_group>
           <data_layout_group name="more">
             <data_layout_portal relationship="scenes" portal_rows_count="6">
               <data_layout_item name="date" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="time" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="name" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="description" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="day_or_night" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="location_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
             </data_layout_portal>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -2607,16 +2607,16 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="location_id" editable="true" use_default_formatting="true" column_width="90">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="address_town" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="address_country" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -2627,13 +2627,13 @@
         <data_layout_groups>
           <data_layout_group>
             <data_layout_item name="location_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="address_town" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -2667,16 +2667,16 @@
     </example_rows>
     <fields>
       <field name="prop_id" primary_key="true" auto_increment="true" type="Number" title="Prop ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
       <field name="description" type="Text" title="Description">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
       </field>
       <field name="name" type="Text" title="Name">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
       </field>
     </fields>
     <relationships/>
@@ -2685,13 +2685,13 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="prop_id" editable="true" use_default_formatting="true" column_width="40">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true" column_width="103">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -2700,18 +2700,18 @@
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <data_layout_item name="prop_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
             <data_layout_item name="description" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -2765,13 +2765,13 @@
     </trans_set>
     <fields>
       <field name="scene_cast_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Scene Cast ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_DE" val="Szene Besetzung ID"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_DE" val="Kommentar"/>
         </trans_set>
@@ -2793,7 +2793,7 @@
         </trans_set>
       </field>
       <field name="scene_id" type="Number" title="Scene ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_DE" val="Szene ID"/>
         </trans_set>
@@ -2818,16 +2818,16 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="scene_cast_id" editable="true" use_default_formatting="true" column_width="90">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="cast_id" editable="true" use_default_formatting="true" column_width="90">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -2837,18 +2837,18 @@
           <data_layout_group name="main">
             <data_layout_group name="overview" columns_count="2" title="Overview">
               <data_layout_item name="scene_cast_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
             </data_layout_group>
             <data_layout_group name="details" columns_count="2" title="Details">
               <data_layout_item name="comments" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="cast_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
             </data_layout_group>
           </data_layout_group>
@@ -2887,13 +2887,13 @@
     </example_rows>
     <fields>
       <field name="scene_costume_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Scene Costume ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
       </field>
       <field name="scene_id" type="Number" title="Scene Id">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
       <field name="costume_id" type="Number" title="Costume ID">
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="costume" choices_related_field="costume_id" choices_related_show_all="true">
@@ -2917,13 +2917,13 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="scene_costume_id" editable="true" use_default_formatting="true" column_width="40">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true" column_width="103">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -2932,22 +2932,22 @@
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <data_layout_item name="scene_costume_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="costume_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" relationship="costume" editable="true" use_default_formatting="true">
               <title_custom use_custom="true" title="Costume Name"/>
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -2971,13 +2971,13 @@
     </trans_set>
     <fields>
       <field name="scene_crew_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Scene Crew ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_DE" val="Szene Crew ID"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_DE" val="Kommentar"/>
         </trans_set>
@@ -3030,7 +3030,7 @@
                 <trans loc="en_GB" val="Overview"/>
               </trans_set>
               <data_layout_item name="scene_crew_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
             </data_layout_group>
             <data_layout_group name="details" columns_count="2" title="Details">
@@ -3039,16 +3039,16 @@
                 <trans loc="en_GB" val="Details"/>
               </trans_set>
               <data_layout_item name="comments" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="department_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name" relationship="department" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
           </data_layout_group>
@@ -3058,16 +3058,16 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="scene_crew_id" editable="true" use_default_formatting="true" column_width="40">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true" column_width="103">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="scene_id" editable="true" use_default_formatting="true" column_width="40">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="department_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -3102,13 +3102,13 @@
     </trans_set>
     <fields>
       <field name="scene_equipment_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Scene Equipment ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="en_GB" val="scene_equipment ID"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_DE" val="Kommentar"/>
           <trans loc="en_GB" val="Comments"/>
@@ -3131,7 +3131,7 @@
         </trans_set>
       </field>
       <field name="scene_id" type="Number" title="Scene ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="en_GB" val="Scene ID"/>
         </trans_set>
@@ -3154,16 +3154,16 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="scene_equipment_id" editable="true" use_default_formatting="true" column_width="40">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="scene_id" editable="true" use_default_formatting="true" column_width="40">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="equipment_id" editable="true" use_default_formatting="true" column_width="40">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -3172,18 +3172,18 @@
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <data_layout_item name="scene_equipment_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="equipment_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -3196,16 +3196,16 @@
     <example_rows/>
     <fields>
       <field name="scene_extras_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Scene Extras ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
       <field name="description" type="Text" title="Description">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
       </field>
       <field name="scene_id" type="Number" title="Scene ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
       <field name="contact_id" type="Number" title="Contact ID">
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="contact" choices_related_field="contact_id" choices_related_show_all="true">
@@ -3230,24 +3230,24 @@
           <data_layout_group name="main">
             <data_layout_group name="overview" columns_count="2" title="Overview">
               <data_layout_item name="scene_extras_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
             </data_layout_group>
             <data_layout_group name="details" columns_count="2" title="Details">
               <data_layout_item name="description" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="comments" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name_full" relationship="contact" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
           </data_layout_group>
@@ -3257,19 +3257,19 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="scene_extras_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -3282,16 +3282,16 @@
     <example_rows/>
     <fields>
       <field name="scene_makeup_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Scene Makeup ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
       <field name="description" type="Text" title="Description">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
       </field>
       <field name="scene_id" type="Number" title="Scene ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
     </fields>
     <relationships/>
@@ -3300,16 +3300,16 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="scene_makeup_id" editable="true" use_default_formatting="true" column_width="40">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="103">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true" column_width="103">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -3318,18 +3318,18 @@
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <data_layout_item name="scene_makeup_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
             <data_layout_item name="description" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -3361,13 +3361,13 @@
     </example_rows>
     <fields>
       <field name="scene_props_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Scene Prop ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
       </field>
       <field name="scene_id" type="Number" title="Scene ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
       <field name="prop_id" type="Number" title="Prop ID">
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="props" choices_related_field="prop_id" choices_related_show_all="true">
@@ -3391,13 +3391,13 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="scene_props_id" editable="true" use_default_formatting="true" column_width="40">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true" column_width="103">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -3406,15 +3406,15 @@
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <data_layout_item name="scene_props_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -3462,19 +3462,19 @@
     </trans_set>
     <fields>
       <field name="scene_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Scene ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_DE" val="Szene ID"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_DE" val="Kommentar"/>
         </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_DE" val="Beschreibung"/>
         </trans_set>
@@ -3485,7 +3485,7 @@
             <data_layout_groups>
               <data_layout_group>
                 <data_layout_item name="name" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
             </data_layout_groups>
@@ -3493,25 +3493,25 @@
         </formatting>
       </field>
       <field name="date" type="Date" title="Date">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Termin"/>
         </trans_set>
       </field>
       <field name="time" type="Time" title="Time">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Zeit"/>
         </trans_set>
       </field>
       <field name="minutes" type="Number" title="Stop (minutes)">
-        <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_DE" val="Stunde"/>
         </trans_set>
       </field>
       <field name="day_or_night" type="Text" title="Day/Night">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_custom="true" choices_related_show_all="true">
+        <formatting choices_custom="true">
           <custom_choice_list>
             <custom_choice value="Nacht"/>
             <custom_choice value="Tag"/>
@@ -3525,7 +3525,7 @@
         </trans_set>
       </field>
       <field name="interior_or_exterior" type="Text" title="Interior/Exterior">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_custom="true" choices_related_show_all="true">
+        <formatting choices_custom="true">
           <custom_choice_list>
             <custom_choice value="Interior"/>
             <custom_choice value="Exterior"/>
@@ -3536,7 +3536,7 @@
         </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Szene"/>
         </trans_set>
@@ -3547,13 +3547,13 @@
 else:
     return record.related["location"]["name"]
 </calculation>
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting/>
       </field>
       <field name="pages" type="Number" title="Pages">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
       <field name="script_day" type="Number" title="Script Day">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
     </fields>
     <relationships>
@@ -3593,16 +3593,16 @@ else:
               <trans loc="en_GB" val="Overview"/>
             </trans_set>
             <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="overview_name" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="minutes" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="script_day" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
@@ -3611,7 +3611,7 @@ else:
               <trans loc="en_GB" val="Details"/>
             </trans_set>
             <data_layout_item name="name" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_text>
               <text title="The location name will be used if the name is empty."/>
@@ -3622,20 +3622,20 @@ else:
                 <trans loc="de_DE" val="Stimmung"/>
               </trans_set>
               <data_layout_item name="interior_or_exterior" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="day_or_night" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="pages" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="date" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_group name="location" title="Location">
               <trans_set>
@@ -3643,23 +3643,23 @@ else:
                 <trans loc="en_GB" val="Location"/>
               </trans_set>
               <data_layout_item name="location_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name" relationship="location" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="name_full" relationship="location" related_relationship="contacts" editable="true" use_default_formatting="true">
                 <title_custom use_custom="true" title="Contact Name"/>
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="address_street" relationship="location" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="address_town" relationship="location" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="address_postcode" relationship="location" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
           </data_layout_group>
@@ -3667,86 +3667,86 @@ else:
             <data_layout_notebook name="notebook">
               <data_layout_portal relationship="scene_cast" portal_rows_count="6">
                 <data_layout_item name="cast_id" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
                 <data_layout_item name="character" relationship="cast" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="name_full" relationship="cast" related_relationship="contacts_actor" editable="true" use_default_formatting="true">
                   <title_custom use_custom="true" title="Actor's Name"/>
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="comments" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_portal>
               <data_layout_portal relationship="scene_extras" portal_rows_count="6" column_line_color="#000000000000" line_color="#000000000000">
                 <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
                 <data_layout_item name="name_full" relationship="contact" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="103">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_portal>
               <data_layout_portal relationship="scene_props" portal_rows_count="6" column_line_color="#000000000000" line_color="#000000000000">
                 <data_layout_item name="prop_id" editable="true" use_default_formatting="true" column_width="40">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
                 <data_layout_item name="name" relationship="props" editable="true" use_default_formatting="true" column_width="103">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="comments" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_portal>
               <data_layout_portal relationship="scene_costume" portal_rows_count="6" column_line_color="#000000000000" line_color="#000000000000">
                 <data_layout_item name="costume_id" editable="true" use_default_formatting="true" column_width="40">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
                 <data_layout_item name="name" relationship="costume" editable="true" use_default_formatting="true" column_width="103">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="comments" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_portal>
               <data_layout_portal relationship="scene_crew" portal_rows_count="6">
                 <data_layout_item name="department_id" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
                 <data_layout_item name="name" relationship="department" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="comments" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_portal>
               <data_layout_portal relationship="scene_equipment" portal_rows_count="6">
                 <data_layout_item name="equipment_id" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
                 <data_layout_item name="description" relationship="equipment" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="comments" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_portal>
               <data_layout_portal relationship="scene_makeup" portal_rows_count="6" column_line_color="#000000000000" line_color="#000000000000">
                 <portal_navigation_relationship navigation_type="none"/>
                 <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="103">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
                 <data_layout_item name="comments" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_portal>
             </data_layout_notebook>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -3755,25 +3755,25 @@ else:
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="scene_id" editable="true" use_default_formatting="true" column_width="90">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="overview_name" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="interior_or_exterior" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="day_or_night" editable="true" use_default_formatting="true" column_width="143">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="date" editable="true" use_default_formatting="true" column_width="77">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="minutes" editable="true" use_default_formatting="true" column_width="90">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -3788,7 +3788,7 @@ else:
               <formatting/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -3804,16 +3804,16 @@ else:
                 <data_layout_item name="time" editable="true" use_default_formatting="true" sort_ascending="true"/>
               </sortby>
               <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="interior_or_exterior" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="day_or_night" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="description" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_item_groupby>
           </data_layout_group>
@@ -3833,7 +3833,7 @@ else:
     </trans_set>
     <fields>
       <field name="teams_id" primary_key="true" unique="true" auto_increment="true" type="Number">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_DE" val="Teams ID"/>
         </trans_set>

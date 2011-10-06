@@ -1960,7 +1960,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
 void Document::load_after_layout_item_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   //Numeric formatting:
-  if(!field_name.empty())
+  if(!field_name.empty() && (field_type == Field::TYPE_NUMERIC))
   {
     format.m_numeric_format.m_use_thousands_separator = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR);
     format.m_numeric_format.m_decimal_places_restricted = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED);
@@ -3109,12 +3109,15 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
   //Numeric format:
   if(field_type != Field::TYPE_INVALID)  //These options are only for fields:
   {
-    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR,  format.m_numeric_format.m_use_thousands_separator);
-    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED, format.m_numeric_format.m_decimal_places_restricted);
-    set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES, format.m_numeric_format.m_decimal_places);
-    set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL, format.m_numeric_format.m_currency_symbol);
-    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_USE_ALT_NEGATIVE_COLOR,
-      format.m_numeric_format.m_alt_foreground_color_for_negatives);
+    if(field_type == Field::TYPE_NUMERIC)
+    {
+      set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR,  format.m_numeric_format.m_use_thousands_separator);
+      set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED, format.m_numeric_format.m_decimal_places_restricted);
+      set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES, format.m_numeric_format.m_decimal_places);
+      set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL, format.m_numeric_format.m_currency_symbol);
+      set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_USE_ALT_NEGATIVE_COLOR,
+        format.m_numeric_format.m_alt_foreground_color_for_negatives);
+    }
 
     bool as_radio_buttons = false;
     const bool choices_restricted = format.get_choices_restricted(as_radio_buttons);
@@ -3167,20 +3170,23 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
     bool choice_show_all = false;
     format.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_show_all);
 
-    Glib::ustring choice_field;
-    if(choice_layout_first)
-      choice_field = choice_layout_first->get_name();
-
-    set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP, glom_get_sharedptr_name(choice_relationship));
-    set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD, choice_field);
-    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SHOW_ALL, choice_show_all);
-
-    //Save the extra fields to show for related choices:
-    if(choice_extra_layouts)
+    if(choice_relationship)
     {
-      xmlpp::Element* nodeExtraLayout = nodeItem->add_child(GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_EXTRA_LAYOUT);
-      xmlpp::Element* nodeGroups = nodeExtraLayout->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
-      save_before_layout_group(nodeGroups, choice_extra_layouts);
+      Glib::ustring choice_field;
+      if(choice_layout_first)
+        choice_field = choice_layout_first->get_name();
+
+      set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP, glom_get_sharedptr_name(choice_relationship));
+      set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD, choice_field);
+      set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SHOW_ALL, choice_show_all);
+
+      //Save the extra fields to show for related choices:
+      if(choice_extra_layouts)
+      {
+        xmlpp::Element* nodeExtraLayout = nodeItem->add_child(GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_EXTRA_LAYOUT);
+        xmlpp::Element* nodeGroups = nodeExtraLayout->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
+        save_before_layout_group(nodeGroups, choice_extra_layouts);
+      }
     }
   }
 }

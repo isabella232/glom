@@ -1,5 +1,14 @@
 2011-10-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Document: Avoid writing some unnecessary XML nodes.
+
+	* glom/libglom/document/document.cc: <formatting>: Do not write the 
+  choices_related_show_all attribute if there are no choices.
+	Do not write numeric formatting attributes if the field type is not numeric.
+	* examples/example_film_manager.glom: Resaved.
+	
+2011-10-06  Murray Cumming  <murrayc@murrayc.com>
+
 	Fix DTD validation.
 
 	* glom/glom_document.dtd: Change the order of some sub-nodes. Apparently 
