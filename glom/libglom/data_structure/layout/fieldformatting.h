@@ -152,13 +152,6 @@ public:
 
   NumericFormat m_numeric_format; //Only used for numeric fields.
 
-  /** Adapt to a change of field name,
-   * so this Formatting does not refer to any field that no longer exists.
-   *
-   * @result true if something was changed.
-   */
-  bool change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name_old, const Glib::ustring& field_name_new);
-
 private:
 
   type_list_values m_choices_custom_list; //A drop-down list of possible values for the field.
