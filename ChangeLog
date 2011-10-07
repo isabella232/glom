@@ -1,3 +1,15 @@
+2011-10-07  Murray Cumming  <murrayc@murrayc.com>
+
+	Fields: Adapt choices fields when changing field names.
+
+	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]:
+	Added change_field_item_name().
+	* glom/libglom/data_structure/layout/layoutgroup.cc: change_field_item_name():
+	Change the formatting too, by calling the new method.
+	* glom/libglom/document/document.cc: change_field_name(): Change the default 
+	formatting of fields too.
+	Bug #661075
+
 2011-10-06  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Really print additional pages.
