@@ -310,7 +310,10 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
   for(LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin(); iterItem != m_list_items.end(); ++iterItem)
   {
     sharedptr<LayoutItem> item = *iterItem;
-    sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+    sharedptr<LayoutItem_Field> field_item = 
+      sharedptr<LayoutItem_Field>::cast_dynamic(item);
+    
+    //Field layout items:
     if(field_item)
     {
       if(field_item->get_has_relationship_name()) //If it's a related table (this would be a self-relationship)
@@ -335,6 +338,16 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
     }
     else
     {
+      //Formatting:
+      sharedptr<LayoutItem_WithFormatting> with_formatting = 
+        sharedptr<LayoutItem_WithFormatting>::cast_dynamic(item);
+      if(with_formatting)
+      {
+        FieldFormatting& formatting = with_formatting->m_formatting;
+        formatting.change_field_item_name(table_name, field_name, field_name_new);
+      }
+   
+      //Recurse into sub-groups:
       sharedptr<LayoutGroup> sub_group = sharedptr<LayoutGroup>::cast_dynamic(item);
       if(sub_group)
         sub_group->change_field_item_name(table_name, field_name, field_name_new);

@@ -887,7 +887,6 @@ sharedptr<Field> Document::get_field(const Glib::ustring& table_name, const Glib
   return sharedptr<Field>();
 }
 
-
 void Document::change_field_name(const Glib::ustring& table_name, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew)
 {
   type_tables::iterator iterFindTable = m_tables.find(table_name);
@@ -902,11 +901,23 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
       (*iterFind)->set_name(strFieldNameNew);
     }
 
-
     //Find any relationships, layouts, or formatting that use this field
     //Look at each table:
     for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
     {
+      //Fields:
+      type_vec_fields& vecFields = iter->second.m_fields;
+      for(type_vec_fields::iterator iterField = vecFields.begin(); iterField != vecFields.end(); ++iterField)
+      {
+        sharedptr<Field> field = *iterField;
+        if(!field)
+          continue;
+
+        //Formatting:
+        FieldFormatting& formatting = field->m_default_formatting;
+        formatting.change_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
+      }
+
       //Look at each relationship in the table:
       for(type_vec_relationships::iterator iterRels = iter->second.m_relationships.begin(); iterRels != iter->second.m_relationships.end(); ++iterRels)
       {
@@ -943,7 +954,6 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
       //Look at each layout:
       for(DocumentTableInfo::type_layouts::iterator iterLayouts = iter->second.m_layouts.begin(); iterLayouts != iter->second.m_layouts.end(); ++iterLayouts)
       {
-
         //Look at each group:
         for(type_list_layout_groups::iterator iterGroup = iterLayouts->m_layout_groups.begin(); iterGroup != iterLayouts->m_layout_groups.end(); ++iterGroup)
         {
