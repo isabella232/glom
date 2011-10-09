@@ -1,5 +1,12 @@
 2011-10-09  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix make check with --enable-warnings=fatal.
+
+	* glom/utility_widgets/eggspreadtablemm/test_spreadtablednd.cc:
+	drop_possible handlers: Adapt to the new meanin of the return type.
+
+2011-10-09  Murray Cumming  <murrayc@murrayc.com>
+
 	Fix the build with --enable-warnings=fatal.
 
 	* glom/utility_widgets/eggspreadtablemm/eggspreadtabledndmm.cc:
