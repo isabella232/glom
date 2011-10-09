@@ -41,7 +41,7 @@ namespace
 static gboolean EggSpreadTableDnd_signal_widget_drop_possible_callback(EggSpreadTableDnd* self, GtkWidget* p0, gboolean* drop_possible, void* data)
 {
   using namespace Egg;
-  typedef sigc::slot< bool, Gtk::Widget* > SlotType;
+  typedef sigc::slot< bool, Gtk::Widget*, bool& > SlotType;
 
   // Do not try to call a signal on a disassociated wrapper.
   if(Glib::ObjectBase::_get_current_wrapper((GObject*) self))
@@ -51,8 +51,12 @@ static gboolean EggSpreadTableDnd_signal_widget_drop_possible_callback(EggSpread
     {
     #endif //GLIBMM_EXCEPTIONS_ENABLED
       if(sigc::slot_base *const slot = Glib::SignalProxyNormal::data_to_slot(data))
-        return static_cast<int>((*static_cast<SlotType*>(slot))(Glib::wrap(p0)
-));
+      {
+        bool cpp_drop_possible = false;
+        const gboolean result = static_cast<int>((*static_cast<SlotType*>(slot))(Glib::wrap(p0), cpp_drop_possible));
+        *drop_possible = cpp_drop_possible;
+        return result;
+      }
     #ifdef GLIBMM_EXCEPTIONS_ENABLED
     }
     catch(...)
@@ -69,7 +73,7 @@ static gboolean EggSpreadTableDnd_signal_widget_drop_possible_callback(EggSpread
 static gboolean EggSpreadTableDnd_signal_widget_drop_possible_notify_callback(EggSpreadTableDnd* self, GtkWidget* p0, gboolean* drop_possible, void* data)
 {
   using namespace Egg;
-  typedef sigc::slot< bool, Gtk::Widget* > SlotType;
+  typedef sigc::slot< bool, Gtk::Widget*, bool& > SlotType;
 
   // Do not try to call a signal on a disassociated wrapper.
   if(Glib::ObjectBase::_get_current_wrapper((GObject*) self))
@@ -79,8 +83,12 @@ static gboolean EggSpreadTableDnd_signal_widget_drop_possible_notify_callback(Eg
     {
     #endif //GLIBMM_EXCEPTIONS_ENABLED
       if(sigc::slot_base *const slot = Glib::SignalProxyNormal::data_to_slot(data))
-        (*static_cast<SlotType*>(slot))(Glib::wrap(p0)
-);
+      {
+        bool cpp_drop_possible = false;
+        const gboolean result = static_cast<int>((*static_cast<SlotType*>(slot))(Glib::wrap(p0), cpp_drop_possible));
+        *drop_possible = cpp_drop_possible;
+        return result;
+      }
     #ifdef GLIBMM_EXCEPTIONS_ENABLED
     }
     catch(...)

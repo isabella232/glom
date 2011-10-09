@@ -1,3 +1,10 @@
+2011-10-09  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build with --enable-warnings=fatal.
+
+	* glom/utility_widgets/eggspreadtablemm/eggspreadtabledndmm.cc:
+	Signal callbacks: Actually use drop_possible.
+
 2011-10-07  Murray Cumming  <murrayc@murrayc.com>
 
 	Fields: Adapt choices fields when changing field names.
