@@ -75,3 +75,14 @@ pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = glom/libglom/glom-@GLOM_ABI_VERSION@.pc
 
 
+# Command-line tools:
+
+glom_commandline_ldadd = glom/libglom/libglom-$(GLOM_ABI_VERSION).la $(libglom_all_libs)
+glom_commandline_cppflags = $(glom_includes) $(LIBGLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(glom_defines)
+
+bin_PROGRAMS = glom/glom_create_from_example
+
+glom_glom_create_from_example_SOURCES = glom/glom_create_from_example.cc
+glom_glom_create_from_example_LDADD = $(glom_commandline_ldadd)
+glom_glom_create_from_example_CPPFLAGS = $(glom_commandline_cppflags)
+

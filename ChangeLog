@@ -1,5 +1,17 @@
 2011-10-10  Murray Cumming  <murrayc@murrayc.com>
 
+	Added the glom_create_from_example command-line utility.
+
+	* Makefile_libglom.am:
+	* glom/glom_create_from_example.cc: This command-line utility takes an
+	example .glom file, outputs a new non-example .glom file and puts the 
+	example data, if any, in the database.
+	Right now, it assumes that you want self-hosting, so it creates the 
+	database files locally.  
+	This builds when libglom builds. It does not require the glom application.
+
+2011-10-10  Murray Cumming  <murrayc@murrayc.com>
+
 	Added Utils::get_file_*_without_extension().
 	
 	* glom/application.[h|cc]: Moved get_file_uri_without_extension() to 

@@ -48,13 +48,14 @@
 #include <gtksourceviewmm/init.h>
 #include <goocanvasmm/init.h>
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-#include <glibmm/i18n.h>
 
 #include <glom/application.h>
 #include <glom/glade_utils.h>
 #include <glom/utils_ui.h>
 
 #include <evince-view.h>
+
+#include <glibmm/i18n.h>
 
 #ifdef G_OS_WIN32
 #include <winsock2.h>
