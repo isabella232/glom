@@ -1,5 +1,13 @@
 2011-10-10  Murray Cumming  <murrayc@murrayc.com>
 
+	Cope with Gnome::Gda::DataModelIter::get_value_at() throwing.
+
+	* glom/libglom/connectionpool_backends/postgres.cc: Add a catch/try
+	around get_value_at(), because the latest version of libgdamm can 
+	throw an exception there.
+
+2011-10-10  Murray Cumming  <murrayc@murrayc.com>
+
 	Use gdk_window_get_device_position() instead of gdk_window_get_pointer().
 
 	* glom/mode_data/box_data_calendar_related.cc:

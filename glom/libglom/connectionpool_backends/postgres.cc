@@ -397,7 +397,16 @@ bool Postgres::check_postgres_gda_client_is_available()
     {
       //See http://library.gnome.org/devel/libgda/unstable/libgda-40-Configuration.html#gda-config-list-providers
       //about the columns of this DataModel:
-      const Gnome::Gda::Value name = iter->get_value_at(0);
+      Gnome::Gda::Value name;
+      try
+      {
+        name = iter->get_value_at(0);
+      }
+      catch(const Glib::Error& ex)
+      {
+        std::cerr << G_STRFUNC << ": exception: " << ex.what() << std::endl;
+      }
+
       if(name.get_value_type() != G_TYPE_STRING)
         continue;
 
