@@ -870,7 +870,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
         Glib::RefPtr<Gnome::Gda::Column> field_info = Gnome::Gda::Column::create();
 
         //Get the field name:
-        Gnome::Gda::Value value_name = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NAME, row);
+        const Gnome::Gda::Value value_name = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NAME, row);
         if(value_name.get_value_type() ==  G_TYPE_STRING)
         {
           if(value_name.get_string().empty())
@@ -883,7 +883,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
         }
 
         //Get the field type:
-        Gnome::Gda::Value value_fieldtype = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_GTYPE, row);
+        const Gnome::Gda::Value value_fieldtype = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_GTYPE, row);
         if(value_fieldtype.get_value_type() ==  G_TYPE_STRING)
         {
           const Glib::ustring type_string = value_fieldtype.get_string();
@@ -894,13 +894,13 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
 
         //Get the default value:
         /* libgda does not return this correctly yet. TODO: check bug http://bugzilla.gnome.org/show_bug.cgi?id=143576
-        Gnome::Gda::Value value_defaultvalue = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_DEFAULTVALUE, row);
+        const Gnome::Gda::Value value_defaultvalue = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_DEFAULTVALUE, row);
         if(value_defaultG_VALUE_TYPE(value.gobj()) ==  G_TYPE_STRING)
           field_info->set_default_value(value_defaultvalue);
         */
 
         //Get whether it can be null:
-        Gnome::Gda::Value value_notnull = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NOTNULL, row);
+        const Gnome::Gda::Value value_notnull = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NOTNULL, row);
         if(value_notnull.get_value_type() ==  G_TYPE_BOOLEAN)
           field_info->set_allow_null(value_notnull.get_boolean());
 

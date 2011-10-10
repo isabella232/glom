@@ -201,7 +201,7 @@ boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& 
   // a datamodel is handled below.
   if(datamodel && datamodel->get_n_rows())
   {
-    Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
+    const Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
     //g_warning("RelatedRecord_generic_aggregate(): value from datamodel = %s", value.to_string().c_str());
 
     //Cache it, in case it's asked-for again.

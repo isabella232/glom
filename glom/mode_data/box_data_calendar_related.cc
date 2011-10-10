@@ -214,7 +214,7 @@ bool Box_Data_Calendar_Related::fill_from_database()
        continue;
 
       //Get the date value for this row:
-      Gnome::Gda::Value value_date = datamodel->get_value_at(m_query_column_date_field, row_index);
+      const Gnome::Gda::Value value_date = datamodel->get_value_at(m_query_column_date_field, row_index);
       const Glib::Date date = value_date.get_date();
 
       //Get all the values for this row:

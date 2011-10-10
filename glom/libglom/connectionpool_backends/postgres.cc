@@ -119,7 +119,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
 
   if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
   {
-    Gnome::Gda::Value value = data_model->get_value_at(0, 0);
+    const Gnome::Gda::Value value = data_model->get_value_at(0, 0);
     if(value.get_value_type() == G_TYPE_STRING)
     {
       const Glib::ustring version_text = value.get_string();

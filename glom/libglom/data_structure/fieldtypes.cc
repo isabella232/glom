@@ -71,7 +71,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
         
         if(!schema_type_string.empty())
         {
-          Gnome::Gda::Value value_gdatype = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_GTYPE, i);
+          const Gnome::Gda::Value value_gdatype = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_GTYPE, i);
           if(value_gdatype.get_value_type() == G_TYPE_STRING)
           {
             Glib::ustring type_string = value_gdatype.get_string();
