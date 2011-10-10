@@ -1,6 +1,6 @@
-2011-10-10  Murray Cumming  <murrayc@localhost.localdomain>
+2011-10-10  Murray Cumming  <murrayc@murrayc.com>
 
-	reviewed by: <delete if not using a buddy>
+	Use gdk_window_get_device_position() instead of gdk_window_get_pointer().
 
 	* glom/mode_data/box_data_calendar_related.cc:
 	* glom/mode_data/buttonglom.cc:
@@ -15,7 +15,7 @@
 	* glom/mode_data/flowtablewithfields.cc:
 	* glom/utility_widgets/adddel/adddel.cc:
 	* glom/utility_widgets/imageglom.cc:
-	* glom/utility_widgets/notebooklabelglom.cc:
+	* glom/utility_widgets/notebooklabelglom.cc: A fairly simple search/replace.
 
 1.19.12:
 
