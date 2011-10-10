@@ -1,3 +1,40 @@
+1.19.12 (unstable):
+
+* Added the glom_create_from_example command-line utility.
+  This has no UI dependencies and might be useful when using Online Glom.
+* Details:
+  - Print: Use a standard print layout instead of HTML.
+  - ID choosing dialog: Work around a crash in GTK+.
+    Bug #660347
+  - Related Records: Fix bug with a blank row when there is only one row.
+  - Related Records: Do not try to navigate to an empty record.
+* Find:
+  - Get criteria even when a field is on the layout twice.
+  - Do not show data in related records.
+* Developer mode: 
+  - Fields: Adapt choices fields when changing field names.
+	  Bug #661075
+	- Simplify the default layout structure for details.
+	- Details: Do not enable drag-and-drop by default.
+	- Field Formatting window: Make it slightly less tall.
+	  See https://bugs.launchpad.net/ubuntu/+source/glom/+bug/863016
+	- Layout window: Correct the vertical order of Add buttons.
+* Print Layout:
+  - Allow multiple pages.
+  - Add experimental Create Standard feature.
+  - Add an Align menu.
+  - Show contents of System Preferences in Fields.
+* Document:
+  - Avoid writing some unnecessary XML nodes.
+  - Use CSS3 formatting for colors, via Gdk::RGBA.
+  (Murray Cumming)
+* Build: Remove glibc-specific function call.
+	(Jasper Lievisse Adriaanse) Bug #660496
+* libglom:
+  - LayoutItem_Portal: Added get_suitable_table_to_view_details().
+  - Added layout_field_should_have_navigation().
+  (Murray Cumming)
+
 1.19.11 (unstable):
 
 * Details:

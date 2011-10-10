@@ -24,7 +24,7 @@ glom_includes += -I$(top_srcdir)/glom/utility_widgets/gimpruler
 
 
 
-bin_PROGRAMS = glom/glom
+bin_PROGRAMS += glom/glom
 
 glom_glom_CPPFLAGS = $(glom_includes) $(GLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(glom_defines)
 
@@ -201,9 +201,9 @@ glom_source_files = \
 	glom/print_layout/canvas_print_layout.cc			\
 	glom/print_layout/canvas_print_layout.h				\
 	glom/print_layout/print_layout_utils.cc \
-	glom/print_layout/print_layout_utils.h \				\
-	glom/print_layout/printoperation_printlayout.cc				\
-	glom/print_layout/printoperation_printlayout.h				\
+	glom/print_layout/print_layout_utils.h \
+	glom/print_layout/printoperation_printlayout.cc \
+	glom/print_layout/printoperation_printlayout.h \
 	glom/python_embed/glom_python.cc				\
 	glom/python_embed/glom_python.h					\
 	glom/python_embed/python_ui_callbacks.cc				\
