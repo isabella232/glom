@@ -81,6 +81,8 @@ protected:
   Gtk::SpinButton* m_spinbutton_row_line_width;
   Gtk::SpinButton* m_spinbutton_column_line_width;
   Gtk::ColorButton* m_colorbutton_line;
+  
+  bool m_for_print_layout;
 };
 
 } //namespace Glom

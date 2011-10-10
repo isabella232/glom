@@ -342,12 +342,12 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
 
   Glib::ustring color_foreground;
   if(m_checkbox_format_text_color_foreground->get_active())
-    color_foreground = m_colorbutton_foreground->get_color().to_string();
+    color_foreground = m_colorbutton_foreground->get_rgba().to_string();
   m_format.set_text_format_color_foreground(color_foreground);
 
   Glib::ustring color_background;
   if(m_checkbox_format_text_color_background->get_active())
-    color_background = m_colorbutton_background->get_color().to_string();
+    color_background = m_colorbutton_background->get_rgba().to_string();
 
   m_format.set_text_format_color_background(color_background);
 

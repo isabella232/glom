@@ -47,7 +47,8 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   m_combo_navigation_specify(0),
   m_spinbutton_row_line_width(0),
   m_spinbutton_column_line_width(0),
-  m_colorbutton_line(0)
+  m_colorbutton_line(0),
+  m_for_print_layout(false)
 {  
   // Show the appropriate alternate widgets:
   m_box_table_widgets->hide();
@@ -110,6 +111,8 @@ Dialog_Layout_List_Related::~Dialog_Layout_List_Related()
 
 void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const sharedptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table, bool for_print_layout)
 {
+  m_for_print_layout = for_print_layout;
+
   //Ignore the provided from_table if the portal has one:
   Glib::ustring actual_from_table;
   if(portal)
@@ -353,13 +356,15 @@ void Dialog_Layout_List_Related::save_to_document()
     
     m_portal->set_rows_count( m_spinbutton_rows_count->get_value() );
     
-   
-    m_portal->set_print_layout_row_line_width(
-      m_spinbutton_row_line_width->get_value());
-    m_portal->set_print_layout_column_line_width(
-      m_spinbutton_column_line_width->get_value());      
-    //TODO: Use GdkRGBA's color string (CSS) format instead, everywhere:
-    m_portal->set_print_layout_line_color( m_colorbutton_line->get_color().to_string() );
+    if(m_for_print_layout)
+    {
+      m_portal->set_print_layout_row_line_width(
+        m_spinbutton_row_line_width->get_value());
+      m_portal->set_print_layout_column_line_width(
+        m_spinbutton_column_line_width->get_value());      
+      m_portal->set_print_layout_line_color(
+        m_colorbutton_line->get_rgba().to_string() );
+    }
   }
 }
 

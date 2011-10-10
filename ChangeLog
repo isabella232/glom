@@ -1,5 +1,15 @@
 2011-10-10  Murray Cumming  <murrayc@murrayc.com>
 
+	Really use the goocanvasmm RGBA properties.
+
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_line.cc: Use 
+	Gtk::ColorButton::get_rgba() instead of get_color.
+	* glom/mode_design/layout/dialog_layout_list_related.[h|cc]: Do not save 
+	color details if they are not shown in the UI.
+	 
+2011-10-10  Murray Cumming  <murrayc@murrayc.com>
+
 	Require the latest goocanvasmm.
 
 	* configure.ac: Require goocanvasmm 1.90.6 because of the new RGBA properties.

@@ -88,9 +88,7 @@ sharedptr<LayoutItem_Line> Dialog_Line::get_line() const
   }
 
   result->set_line_width( m_spinbutton_line_width->get_value() );
-  
-  //TODO: Use GdkRGBA's color string (CSS) format instead, everywhere:
-  result->set_line_color( m_colorbutton->get_color().to_string() );
+  result->set_line_color( m_colorbutton->get_rgba().to_string() );
 
   return result;
 }
