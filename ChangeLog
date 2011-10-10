@@ -1,5 +1,12 @@
 2011-10-10  Murray Cumming  <murrayc@murrayc.com>
 
+	glom_create_from_example: --help: Add a hint about when self-hosting is used.
+
+	* glom/glom_create_from_example.cc: Add some text to the --server-hostname 
+	option.
+
+2011-10-10  Murray Cumming  <murrayc@murrayc.com>
+
 	glom_create_from_example: Support central-hosting too.
 
 	* glom/glom_create_from_example.cc: Allow a host name, port, and username to 

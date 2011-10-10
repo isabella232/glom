@@ -88,7 +88,7 @@ GlomCreateOptionGroup::GlomCreateOptionGroup()
   Glib::OptionEntry entry4;
   entry4.set_long_name("server-hostname");
   entry4.set_short_name('h');
-  entry4.set_description(_("The hostname of the PostgreSQL server, such as localhost."));
+  entry4.set_description(_("The hostname of the PostgreSQL server, such as localhost. If this is not specified then a self-hosted database will be created."));
   add_entry(entry4, m_arg_server_hostname);
   
   Glib::OptionEntry entry5;
