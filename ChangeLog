@@ -1,3 +1,22 @@
+2011-10-10  Murray Cumming  <murrayc@localhost.localdomain>
+
+	reviewed by: <delete if not using a buddy>
+
+	* glom/mode_data/box_data_calendar_related.cc:
+	* glom/mode_data/buttonglom.cc:
+	* glom/mode_data/datawidget/checkbutton.cc:
+	* glom/mode_data/datawidget/combo.cc:
+	* glom/mode_data/datawidget/combo_as_radio_buttons.cc:
+	* glom/mode_data/datawidget/datawidget.cc:
+	* glom/mode_data/datawidget/entry.cc:
+	* glom/mode_data/datawidget/label.cc:
+	* glom/mode_data/datawidget/textview.cc:
+	* glom/mode_data/db_adddel/db_adddel.cc:
+	* glom/mode_data/flowtablewithfields.cc:
+	* glom/utility_widgets/adddel/adddel.cc:
+	* glom/utility_widgets/imageglom.cc:
+	* glom/utility_widgets/notebooklabelglom.cc:
+
 1.19.12:
 
 2011-10-10  Murray Cumming  <murrayc@murrayc.com>

@@ -304,7 +304,7 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *event)
 #endif
 
   GdkModifierType mods;
-  gdk_window_get_pointer( gtk_widget_get_window (Gtk::Widget::gobj()), 0, 0, &mods );
+  gdk_window_get_device_position( gtk_widget_get_window(Gtk::Widget::gobj()), event->device, 0, 0, &mods );
   if(mods & GDK_BUTTON3_MASK)
   {
     //Give user choices of actions on this item:
