@@ -17,6 +17,7 @@ glom/bakery/app.cc
 glom/bakery/app_withdoc_gtk.cc
 glom/bakery/app_withdoc.cc
 glom/bakery/dialog_offersave.cc
+
 glom/import_csv/dialog_import_csv.cc
 glom/import_csv/dialog_import_csv_progress.cc
 glom/import_csv/file_encodings.cc
@@ -53,6 +54,7 @@ glom/libglom/gst-package.c
 glom/libglom/spawn_with_feedback.cc
 glom/libglom/utils.cc
 glom/libglom/db_utils.cc
+glom/glom_create_from_example.cc
 glom/main.cc
 glom/mode_data/box_data_calendar_related.cc
 glom/mode_data/box_data.cc
