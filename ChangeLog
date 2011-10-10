@@ -1,5 +1,11 @@
 2011-10-10  Murray Cumming  <murrayc@murrayc.com>
 
+	Require the latest goocanvasmm.
+
+	* configure.ac: Require goocanvasmm 1.90.6 because of the new RGBA properties.
+
+2011-10-10  Murray Cumming  <murrayc@murrayc.com>
+
 	glom_create_from_example: --help: Add a hint about when self-hosting is used.
 
 	* glom/glom_create_from_example.cc: Add some text to the --server-hostname 
