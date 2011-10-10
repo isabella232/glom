@@ -117,6 +117,14 @@ void layout_item_fill_field_details(Document* document, const Glib::ustring& par
  */
 bool layout_field_should_have_navigation(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_item, const Document* document, sharedptr<Relationship>& field_used_in_relationship_to_one);
 
+/** Discover a database name that is not yet used.
+ * This assumes that all other connection details are correctly set.
+ *
+ * @param base_name The wished-for name, to be modified until an unused name is found.
+ * @result A database name that does not yet exist on the server.
+ */
+Glib::ustring get_unused_database_name(const Glib::ustring& base_name);
+
 } //namespace DbUtils
 
 } //namespace Glom

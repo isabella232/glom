@@ -21,6 +21,7 @@
 #include <libglom/db_utils.h>
 #include <libglom/connectionpool.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <libglom/connectionpool_backends/postgres_central.h>
 #include <libglom/standard_table_prefs_fields.h>
 #include <libglom/privs.h>
 #include <libglom/data_structure/parameternamegenerator.h>
@@ -171,6 +172,15 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
     }
 
     progress();
+    
+    //Save the port, if appropriate, so the document can be used to connect again:
+    Glom::ConnectionPool::Backend* backend = connection_pool->get_backend();
+    Glom::ConnectionPoolBackends::PostgresCentralHosted* central = 
+      dynamic_cast<Glom::ConnectionPoolBackends::PostgresCentralHosted*>(backend);
+    if(central)
+    {
+      document->set_connection_port( central->get_port() );
+    }
 
     return true;
   }
@@ -183,7 +193,7 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
 
 bool recreate_database_from_document(Document* document, const sigc::slot<void>& progress)
 {
- ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)
     return false; //Impossible anyway.
 
@@ -197,23 +207,23 @@ bool recreate_database_from_document(Document* document, const sigc::slot<void>&
   {
     connection_pool->set_ready_to_connect(); //This has succeeded already.
     sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
-      g_warning("Application::recreate_database(): Failed because database exists already.");
+    std::cerr << G_STRFUNC << ": Failed because database exists already." << std::endl;
 
-      return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
+    return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
   }
   catch(const ExceptionConnection& ex)
   {
-      if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
-      {
-        g_warning("Application::recreate_database(): Failed because connection to server failed even without specifying a database.");
-        return false;
-      }
+    if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+    {
+      std::cerr << G_STRFUNC << ": Application::recreate_database(): Failed because connection to server failed even without specifying a database." << std::endl;
+      return false;
+    }
 
     //Otherwise continue, because we _expected_ connect() to fail if the db does not exist yet.
   }
 
 
-  //Create the database: (This will show a connection dialog)
+  //Create the database:
   progress();
   connection_pool->set_database( Glib::ustring() );
   const bool db_created = create_database(document, db_name, document->get_database_title(), progress);
@@ -235,7 +245,7 @@ bool recreate_database_from_document(Document* document, const sigc::slot<void>&
   }
   catch(const ExceptionConnection& ex)
   {
-    g_warning("Application::recreate_database(): Failed to connect to the newly-created database.");
+    std::cerr << G_STRFUNC << ": Failed to connect to the newly-created database." << std::endl;
     return false;
   }
 
@@ -256,7 +266,7 @@ bool recreate_database_from_document(Document* document, const sigc::slot<void>&
     progress();
     if(!table_creation_succeeded)
     {
-      g_warning("Application::recreate_database(): CREATE TABLE failed with the newly-created database.");
+      std::cerr << G_STRFUNC << ": CREATE TABLE failed with the newly-created database." << std::endl;
       return false;
     }
   }
@@ -284,7 +294,7 @@ bool recreate_database_from_document(Document* document, const sigc::slot<void>&
 
       if(!table_insert_succeeded)
       {
-        g_warning("Application::recreate_database(): INSERT of example data failed with the newly-created database.");
+        std::cerr << G_STRFUNC << ": INSERT of example data failed with the newly-created database." << std::endl;
         return false;
       }
     //}
@@ -1665,6 +1675,64 @@ bool layout_field_should_have_navigation(const Glib::ustring& table_name, const 
   return field_used_in_relationship_to_one || field_is_related_primary_key;
 }
 
+Glib::ustring get_unused_database_name(const Glib::ustring& base_name)
+{ 
+  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+  if(!connection_pool)
+    return Glib::ustring();
+
+  bool keep_trying = true;
+  size_t extra_num = 0;
+  while(keep_trying)
+  {
+    Glib::ustring database_name_possible;
+    if(extra_num == 0)
+    {
+      //Try the original name first,
+      //removing any characters that are likely to cause problems when used in a SQL identifier name:
+      database_name_possible = Utils::trim_whitespace(base_name);
+      database_name_possible = Utils::string_replace(database_name_possible, "\"", "");
+      database_name_possible = Utils::string_replace(database_name_possible, "'", "");
+      database_name_possible = Utils::string_replace(database_name_possible, "\t", "");
+      database_name_possible = Utils::string_replace(database_name_possible, "\n", "");
+    }
+    else
+    {
+      //Create a new database name by appending a number to the original name:
+      const Glib::ustring pchExtraNum = Glib::ustring::compose("%1", extra_num);
+      database_name_possible = (base_name + pchExtraNum);
+    }
+    ++extra_num;
+    
+    connection_pool->set_database(database_name_possible);
+    connection_pool->set_ready_to_connect();
+
+    Glom::sharedptr<Glom::SharedConnection> connection;
+
+    try
+    {
+      connection = ConnectionPool::get_and_connect();
+    }
+    catch(const ExceptionConnection& ex)
+    {
+      if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+      {
+        //We couldn't even connect to the server,
+        //regardless of what database we try to connect to:
+        std::cerr << G_STRFUNC << ": Could not connect to the server." << std::endl;
+        return Glib::ustring();
+      }
+      else
+      {
+        //We assume that the connection failed because the database does not exist.
+        std::cout << "debug: " << G_STRFUNC << ": unused database name successfully found: " << database_name_possible << std::endl;
+        return database_name_possible;
+      }
+    }
+  }
+  
+  return Glib::ustring();    
+}
 
 } //namespace DbUtils
 

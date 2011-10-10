@@ -2012,6 +2012,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   //std::cout << "debug: database_name to create=" << database_name << std::endl;
 
 
+  //TODO: Use DbUtils::get_unused_database_name() instead:
   bool keep_trying = true;
   size_t extra_num = 0;
   while(keep_trying)

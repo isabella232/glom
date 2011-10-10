@@ -299,7 +299,7 @@ private:
   Glib::RefPtr<Gnome::Gda::Connection> m_refGdaConnection;
   guint m_sharedconnection_refcount;
   bool m_ready_to_connect;
-  Glib::ustring m_host, m_user, m_password, m_database;
+  Glib::ustring m_user, m_password, m_database;
 
   FieldTypes* m_pFieldTypes;
   bool m_show_debug_output, m_auto_server_shutdown;

@@ -26,6 +26,7 @@
 #include <libglom/document/document.h>
 #include <libglom/connectionpool.h>
 #include <libglom/connectionpool_backends/postgres_self.h>
+#include <libglom/connectionpool_backends/postgres_central.h>
 #include <libglom/init.h>
 #include <libglom/privs.h>
 #include <libglom/db_utils.h>
@@ -46,11 +47,18 @@ public:
   std::string m_arg_filepath_dir_output;
   std::string m_arg_filepath_name_output;
   bool m_arg_version;
+  
+  //If not using self-hosting:
+  Glib::ustring m_arg_server_hostname;
+  double m_arg_server_port;
+  Glib::ustring m_arg_server_username;
+  Glib::ustring m_arg_server_password;
 };
 
 GlomCreateOptionGroup::GlomCreateOptionGroup()
 : Glib::OptionGroup("glom_create_from_example", _("Glom options"), _("Command-line options")),
-  m_arg_version(false)
+  m_arg_version(false),
+  m_arg_server_port(0)
 {
   Glib::OptionEntry entry;
   entry.set_long_name("input");
@@ -61,13 +69,13 @@ GlomCreateOptionGroup::GlomCreateOptionGroup()
   Glib::OptionEntry entry2;
   entry2.set_long_name("output-path");
   entry2.set_short_name('o');
-  entry2.set_description(_("The directory in which to save the created .glom file, or sub-directory if necessary, such as /home/someuser/"));
+  entry2.set_description(_("The directory in which to save the created .glom file, or sub-directory if necessary, such as /home/someuser/ ."));
   add_entry_filename(entry2, m_arg_filepath_dir_output);
   
   Glib::OptionEntry entry3;
   entry3.set_long_name("output-name");
   entry3.set_short_name('n');
-  entry3.set_description(_("The name for the created .glom file, such as something.glom"));
+  entry3.set_description(_("The name for the created .glom file, such as something.glom ."));
   add_entry_filename(entry3, m_arg_filepath_name_output);
 
   Glib::OptionEntry entry_version;
@@ -75,6 +83,25 @@ GlomCreateOptionGroup::GlomCreateOptionGroup()
   entry_version.set_short_name('V');
   entry_version.set_description(_("The version of this application."));
   add_entry(entry_version, m_arg_version);
+  
+  
+  Glib::OptionEntry entry4;
+  entry4.set_long_name("server-hostname");
+  entry4.set_short_name('h');
+  entry4.set_description(_("The hostname of the PostgreSQL server, such as localhost."));
+  add_entry(entry4, m_arg_server_hostname);
+  
+  Glib::OptionEntry entry5;
+  entry5.set_long_name("server-port");
+  entry5.set_short_name('p');
+  entry5.set_description(_("The port of the PostgreSQL server, such as 5434."));
+  add_entry(entry5, m_arg_server_port);
+  
+  Glib::OptionEntry entry6;
+  entry6.set_long_name("server-username");
+  entry6.set_short_name('u');
+  entry6.set_description(_("The username for the PostgreSQL server."));
+  add_entry(entry6, m_arg_server_username);
 }
 
 static void on_initialize_progress()
@@ -336,7 +363,19 @@ int main(int argc, char* argv[])
 
   document.set_file_uri(file_uri);
 
-  document.set_hosting_mode(Glom::Document::HOSTING_MODE_POSTGRES_SELF);
+
+  const bool self_hosting = group.m_arg_server_hostname.empty();
+  if(self_hosting)
+  {
+    std::cout << "Using self-hosting instead of a central PostgreSQL server." << std::endl;
+    document.set_hosting_mode(Glom::Document::HOSTING_MODE_POSTGRES_SELF);
+  }
+  else
+  {
+    std::cout << "Using the PostgreSQL server with host: " << group.m_arg_server_hostname << std::endl;
+    document.set_hosting_mode(Glom::Document::HOSTING_MODE_POSTGRES_CENTRAL);
+  }
+   
   document.set_is_example_file(false);
   document.set_network_shared(false);
   const bool saved = document.save();
@@ -346,12 +385,56 @@ int main(int argc, char* argv[])
   connection_pool->setup_from_document(&document);
 
   //We must specify a default username and password:
-  Glib::ustring password;
-  const Glib::ustring user = Glom::Privs::get_default_developer_user_name(password);
-  connection_pool->set_user(user);
-  connection_pool->set_password(password);
+  if(self_hosting)
+  {
+    Glib::ustring password;
+    const Glib::ustring user = Glom::Privs::get_default_developer_user_name(password);
+    connection_pool->set_user(user);
+    connection_pool->set_password(password);
+  }
+  else
+  {
+    //Get the password from stdin.
+    //This is not a command-line option because then it would appear in logs.
+    //Other command-line utilities such as psql don't do this either.
+    //TODO: Support alternatives such as using a file.
+    const Glib::ustring prompt = Glib::ustring::compose(
+      _("Please enter the PostgreSQL server's password for the user %1: "), group.m_arg_server_username);
+    const char* password = ::getpass(prompt.c_str());
 
-  //Create the self-hosting files:
+    //Central hosting:
+    connection_pool->set_user(group.m_arg_server_username);
+    connection_pool->set_password(password); //TODO: Take this from stdin instead.
+    
+    Glom::ConnectionPool::Backend* backend = connection_pool->get_backend();
+    Glom::ConnectionPoolBackends::PostgresCentralHosted* central = 
+      dynamic_cast<Glom::ConnectionPoolBackends::PostgresCentralHosted*>(backend);
+    g_assert(central);
+
+    central->set_host(group.m_arg_server_hostname);
+    
+    if(group.m_arg_server_port)
+    {
+      central->set_port(group.m_arg_server_port);
+      central->set_try_other_ports(false);
+    }
+    else
+    {
+      //Try all ports:
+      central->set_try_other_ports(false);
+    }
+    
+    const Glib::ustring database_name =
+      Glom::DbUtils::get_unused_database_name(document.get_connection_database());
+    if(database_name.empty())
+    {
+      std::cerr << G_STRFUNC << ": Could not find an unused database name" << std::endl;
+    }
+    else
+      document.set_connection_database(database_name);
+  }
+        
+  //Startup. For instance, create the self-hosting files if necessary:
   const Glom::ConnectionPool::InitErrors initialized_errors =
     connection_pool->initialize( sigc::ptr_fun(&on_initialize_progress) );
   g_assert(initialized_errors == Glom::ConnectionPool::Backend::INITERROR_NONE);
@@ -370,7 +453,6 @@ int main(int argc, char* argv[])
   if(!recreated)
     cleanup();
   g_assert(recreated);
-  
 
   //Tell the user where the file is:
   std::string output_path_used;

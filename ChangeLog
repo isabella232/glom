@@ -1,5 +1,16 @@
 2011-10-10  Murray Cumming  <murrayc@murrayc.com>
 
+	glom_create_from_example: Support central-hosting too.
+
+	* glom/glom_create_from_example.cc: Allow a host name, port, and username to 
+	be specified, and the password to be entered on stdin.
+	* glom/libglom/db_utils.[h|cc]: Added get_unused_database_name():
+	* glom/frame_glom.cc: Added a TODO that we should use it here too instead of 
+	the similar code that is mixed up with the dialog code.
+	* glom/libglom/connectionpool.h: Remove unused m_host member variable.
+
+2011-10-10  Murray Cumming  <murrayc@murrayc.com>
+
 	Added the glom_create_from_example command-line utility.
 
 	* Makefile_libglom.am:
