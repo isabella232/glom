@@ -205,8 +205,6 @@ private:
   void open_browsed_document(const EpcServiceInfo* server, const Glib::ustring& service_name);
 #endif // !G_OS_WIN32
 
-  static Glib::ustring get_file_uri_without_extension(const Glib::ustring& uri);
-
   typedef GlomBakery::App_WithDoc_Gtk type_base;
 
   //Widgets:

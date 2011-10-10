@@ -192,6 +192,14 @@ bool delete_directory(const std::string& uri);
  */
 Glib::ustring get_directory_child_with_suffix(const Glib::ustring& uri_directory, const std::string& suffix, bool recursive);
 
+/** Get a URI with the extension (any extension, not just .glom) removed.
+ */
+Glib::ustring get_file_uri_without_extension(const Glib::ustring& uri);
+
+/** Get a filepath with the extension (any extension, not just .glom) removed.
+ */
+std::string get_file_path_without_extension(const std::string& filepath);
+
 /** Get a string to display to the user, as a representation of a list of layout items.
  */
 Glib::ustring get_list_of_layout_items_for_display(const LayoutGroup::type_list_items& list_layout_fields);

@@ -889,32 +889,6 @@ static bool uri_is_writable(const Glib::RefPtr<const Gio::File>& uri)
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-Glib::ustring Application::get_file_uri_without_extension(const Glib::ustring& uri)
-{
-  if(uri.empty())
-    return uri;
-
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
-  if(!file)
-    return uri; //Actually an error.
-
-  const Glib::ustring filename_part = file->get_basename();
-
-  const Glib::ustring::size_type pos_dot = filename_part.rfind(".");
-  if(pos_dot == Glib::ustring::npos)
-    return uri; //There was no extension, so just return the existing URI.
-  else
-  {
-    const Glib::ustring filename_part_without_ext = filename_part.substr(0, pos_dot);
-
-    //Use the Gio::File API to manipulate the URI:
-    Glib::RefPtr<Gio::File> parent = file->get_parent();
-    Glib::RefPtr<Gio::File> file_without_extension = parent->get_child(filename_part_without_ext);
-
-    return file_without_extension->get_uri();
-  }
-}
-
 //TODO: Use Gio::Application? Is this even used?
 void Application::new_instance(const Glib::ustring& uri) //Override
 {
@@ -2440,7 +2414,7 @@ Glib::ustring Application::ui_file_select_save(const Glib::ustring& old_file_uri
       const Glib::ustring uri_chosen = fileChooser_Save->get_uri();
 
       //Change the URI, to put the file (and its data folder) in a folder:
-      const Glib::ustring uri = get_file_uri_without_extension(uri_chosen);
+      const Glib::ustring uri = Utils::get_file_uri_without_extension(uri_chosen);
 
       //Check whether the file exists, and that we have rights to it:
       Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
@@ -2645,7 +2619,7 @@ void Application::on_menu_developer_export_backup()
   // Start with a name based on the existing name.
   const Glib::ustring fileuri_old = document->get_file_uri();
   const Glib::RefPtr<const Gio::File> file_old =
-    Gio::File::create_for_uri( get_file_uri_without_extension(fileuri_old) );
+    Gio::File::create_for_uri( Utils::get_file_uri_without_extension(fileuri_old) );
   const std::string old_basename = file_old->get_basename();
   Glib::TimeVal timeval;
   timeval.assign_current_time();

@@ -1215,6 +1215,58 @@ Glib::ustring Utils::get_directory_child_with_suffix(const Glib::ustring& uri_di
   return Glib::ustring();
 }
 
+Glib::ustring Utils::get_file_uri_without_extension(const Glib::ustring& uri)
+{
+  if(uri.empty())
+    return uri;
+
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+  if(!file)
+    return uri; //Actually an error.
+
+  const Glib::ustring filename_part = file->get_basename();
+
+  const Glib::ustring::size_type pos_dot = filename_part.rfind(".");
+  if(pos_dot == Glib::ustring::npos)
+    return uri; //There was no extension, so just return the existing URI.
+  else
+  {
+    const Glib::ustring filename_part_without_ext = filename_part.substr(0, pos_dot);
+
+    //Use the Gio::File API to manipulate the URI:
+    Glib::RefPtr<Gio::File> parent = file->get_parent();
+    Glib::RefPtr<Gio::File> file_without_extension = parent->get_child(filename_part_without_ext);
+
+    return file_without_extension->get_uri();
+  }
+}
+
+std::string Utils::get_file_path_without_extension(const std::string& filepath)
+{
+  if(filepath.empty())
+    return filepath;
+
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(filepath);
+  if(!file)
+    return filepath; //Actually an error.
+
+  const Glib::ustring filename_part = file->get_basename();
+
+  const Glib::ustring::size_type pos_dot = filename_part.rfind(".");
+  if(pos_dot == Glib::ustring::npos)
+    return filepath; //There was no extension, so just return the existing URI.
+  else
+  {
+    const Glib::ustring filename_part_without_ext = filename_part.substr(0, pos_dot);
+
+    //Use the Gio::File API to manipulate the URI:
+    Glib::RefPtr<Gio::File> parent = file->get_parent();
+    Glib::RefPtr<Gio::File> file_without_extension = parent->get_child(filename_part_without_ext);
+
+    return file_without_extension->get_path();
+  }
+}
+
 Glib::ustring Utils::get_list_of_layout_items_for_display(const LayoutGroup::type_list_items& list_layout_fields)
 {
   Glib::ustring result;

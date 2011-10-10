@@ -1,3 +1,10 @@
+2011-10-10  Murray Cumming  <murrayc@murrayc.com>
+
+	Added Utils::get_file_*_without_extension().
+	
+	* glom/application.[h|cc]: Moved get_file_uri_without_extension() to 
+	* glom/libglom/utils.[h|cc]: And added get_file_path_without_extension().
+
 2011-10-09  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix make check with --enable-warnings=fatal.
