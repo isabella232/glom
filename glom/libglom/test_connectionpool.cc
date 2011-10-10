@@ -64,8 +64,16 @@ int main()
 
     //Connect:
     Glom::sharedptr<Glom::SharedConnection> connection;
-    connection = Glom::ConnectionPool::get_and_connect();
-
+    
+    try
+    {
+      connection = Glom::ConnectionPool::get_and_connect();
+    }
+    catch(const Glom::ExceptionConnection& ex)
+    {
+      std::cout << "Exception: " << ex.what() << std::endl;
+    }
+    
     if(connection)
       std::cout << "Connected" << std::endl;
     else
