@@ -1,5 +1,13 @@
 2011-10-11  Murray Cumming  <murrayc@murrayc.com>
 
+	CanvasPrintLayout: Wipe empty rows when filling with data.
+
+	* glom/print_layout/canvas_print_layout.cc: fill_with_data_portal():
+	Otherwise, the field names appear on the printout, left over from 
+	the default non-data preview.
+
+2011-10-11  Murray Cumming  <murrayc@murrayc.com>
+
 	TranslatableItem: Make get_title() virtual.
 
 	* glom/libglom/data_structure/translatable_item.h: Make get_title()

@@ -901,12 +901,7 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
     return;
 
   const int db_rows_count = datamodel->get_n_rows();
-  if(!(db_rows_count > 0))
-    return;
-
   const int db_columns_count = datamodel->get_n_columns();
-  if(!db_columns_count)
-    return;
 
   double row_height_ignored = 0;
   const int rows_count = CanvasLayoutItem::get_rows_count_for_portal(portal, row_height_ignored);
@@ -931,8 +926,8 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
       sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(child_layout_item);
       if(field)
       {
-        Gnome::Gda::Value db_value;
-        if( row < datamodel->get_n_rows() )
+        Gnome::Gda::Value db_value; //This default also wipes the placeholder field name text of empty rows.
+        if( (row < db_rows_count) && (db_col < db_columns_count) )
         {
           //TODO: Actually catch exception.
           db_value = datamodel->get_value_at(db_col, row);
