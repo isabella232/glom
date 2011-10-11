@@ -1,3 +1,10 @@
+2011-10-11  Murray Cumming  <murrayc@murrayc.com>
+
+	Simplify OptionEntry code.
+
+	* glom/glom_create_from_example.cc:
+	* glom/main.cc: Reuse one OptionEntry instance.
+
 2011-10-10  Murray Cumming  <murrayc@murrayc.com>
 
 	Cope with Gnome::Gda::DataModelIter::get_value_at() throwing.

@@ -66,42 +66,36 @@ GlomCreateOptionGroup::GlomCreateOptionGroup()
   entry.set_description(_("The example .glom file to open."));
   add_entry_filename(entry, m_arg_filename_input);
   
-  Glib::OptionEntry entry2;
-  entry2.set_long_name("output-path");
-  entry2.set_short_name('o');
-  entry2.set_description(_("The directory in which to save the created .glom file, or sub-directory if necessary, such as /home/someuser/ ."));
-  add_entry_filename(entry2, m_arg_filepath_dir_output);
+  entry.set_long_name("output-path");
+  entry.set_short_name('o');
+  entry.set_description(_("The directory in which to save the created .glom file, or sub-directory if necessary, such as /home/someuser/ ."));
+  add_entry_filename(entry, m_arg_filepath_dir_output);
   
-  Glib::OptionEntry entry3;
-  entry3.set_long_name("output-name");
-  entry3.set_short_name('n');
-  entry3.set_description(_("The name for the created .glom file, such as something.glom ."));
-  add_entry_filename(entry3, m_arg_filepath_name_output);
+  entry.set_long_name("output-name");
+  entry.set_short_name('n');
+  entry.set_description(_("The name for the created .glom file, such as something.glom ."));
+  add_entry_filename(entry, m_arg_filepath_name_output);
 
-  Glib::OptionEntry entry_version;
-  entry_version.set_long_name("version");
-  entry_version.set_short_name('V');
-  entry_version.set_description(_("The version of this application."));
-  add_entry(entry_version, m_arg_version);
+  entry.set_long_name("version");
+  entry.set_short_name('V');
+  entry.set_description(_("The version of this application."));
+  add_entry(entry, m_arg_version);
+
+
+  entry.set_long_name("server-hostname");
+  entry.set_short_name('h');
+  entry.set_description(_("The hostname of the PostgreSQL server, such as localhost. If this is not specified then a self-hosted database will be created."));
+  add_entry(entry, m_arg_server_hostname);
   
+  entry.set_long_name("server-port");
+  entry.set_short_name('p');
+  entry.set_description(_("The port of the PostgreSQL server, such as 5434."));
+  add_entry(entry, m_arg_server_port);
   
-  Glib::OptionEntry entry4;
-  entry4.set_long_name("server-hostname");
-  entry4.set_short_name('h');
-  entry4.set_description(_("The hostname of the PostgreSQL server, such as localhost. If this is not specified then a self-hosted database will be created."));
-  add_entry(entry4, m_arg_server_hostname);
-  
-  Glib::OptionEntry entry5;
-  entry5.set_long_name("server-port");
-  entry5.set_short_name('p');
-  entry5.set_description(_("The port of the PostgreSQL server, such as 5434."));
-  add_entry(entry5, m_arg_server_port);
-  
-  Glib::OptionEntry entry6;
-  entry6.set_long_name("server-username");
-  entry6.set_short_name('u');
-  entry6.set_description(_("The username for the PostgreSQL server."));
-  add_entry(entry6, m_arg_server_username);
+  entry.set_long_name("server-username");
+  entry.set_short_name('u');
+  entry.set_description(_("The username for the PostgreSQL server."));
+  add_entry(entry, m_arg_server_username);
 }
 
 static void on_initialize_progress()

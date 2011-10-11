@@ -204,31 +204,30 @@ OptionGroup::OptionGroup()
   entry.set_description(_("The Filename"));
   add_entry_filename(entry, m_arg_filename);
 
-  Glib::OptionEntry entry_version;
-  entry_version.set_long_name("version");
-  entry_version.set_short_name('V');
-  entry_version.set_description(_("The version of this application."));
-  add_entry(entry_version, m_arg_version);
+  entry.set_long_name("version");
+  entry.set_short_name('V');
+  entry.set_description(_("The version of this application."));
+  add_entry(entry, m_arg_version);
 
-  Glib::OptionEntry entry_restore;
-  entry_restore.set_long_name("restore");
-  entry_restore.set_description(_("Whether the filename is a .tar.gz backup to be restored."));
-  add_entry(entry_restore, m_arg_restore);
+  entry.set_long_name("restore");
+  entry.set_short_name(0);
+  entry.set_description(_("Whether the filename is a .tar.gz backup to be restored."));
+  add_entry(entry, m_arg_restore);
 
-  Glib::OptionEntry entry_stop_auto_server_shutdown;
-  entry_stop_auto_server_shutdown.set_long_name("stop-auto-server-shutdown");
-  entry_stop_auto_server_shutdown.set_description(_("Do not automatically stop the database server if Glom quits. This is helpful for debugging with gdb."));
-  add_entry(entry_stop_auto_server_shutdown, m_arg_stop_auto_server_shutdown);
+  entry.set_long_name("stop-auto-server-shutdown");
+  entry.set_short_name(0);
+  entry.set_description(_("Do not automatically stop the database server if Glom quits. This is helpful for debugging with gdb."));
+  add_entry(entry, m_arg_stop_auto_server_shutdown);
 
-  Glib::OptionEntry entry_debug_sql;
-  entry_debug_sql.set_long_name("debug_sql");
-  entry_debug_sql.set_description(_("Show the generated SQL queries on stdout, for debugging."));
-  add_entry(entry_debug_sql, m_arg_debug_sql);
+  entry.set_long_name("debug_sql");
+  entry.set_short_name(0);
+  entry.set_description(_("Show the generated SQL queries on stdout, for debugging."));
+  add_entry(entry, m_arg_debug_sql);
 
-  Glib::OptionEntry entry_debug_date_check;
-  entry_debug_date_check.set_long_name("debug-date-check");
-  entry_debug_date_check.set_description(_("Show how Glom outputs a date in this locale, then stop."));
-  add_entry(entry_debug_date_check, m_arg_debug_date_check);
+  entry.set_long_name("debug-date-check");
+  entry.set_short_name(0);
+  entry.set_description(_("Show how Glom outputs a date in this locale, then stop."));
+  add_entry(entry, m_arg_debug_date_check);
 }
 
 #ifdef GLOM_ENABLE_POSTGRESQL
