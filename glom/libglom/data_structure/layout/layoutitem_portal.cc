@@ -358,4 +358,16 @@ sharedptr<const LayoutItem_Field> LayoutItem_Portal::get_field_identifies_non_hi
   return result;
 }
 
+Glib::ustring LayoutItem_Portal::get_title_or_name() const
+{
+  Glib::ustring title = get_title_used(Glib::ustring() /* parent table - not relevant */);
+  if(title.empty())
+    title = get_relationship_name_used();
+  
+  if(title.empty()) //TODO: This prevents "" as a real title.
+   title = _("Undefined Table");
+
+  return title;
+}
+
 } //namespace Glom

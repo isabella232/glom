@@ -47,6 +47,7 @@ public:
 
   virtual LayoutItem* clone() const;
 
+  virtual Glib::ustring get_title_or_name() const;
   virtual Glib::ustring get_part_type_name() const;
 
   virtual void change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);

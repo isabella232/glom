@@ -374,13 +374,12 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
       Gtk::Label* tab_label = Gtk::manage(new Gtk::Label());
       tab_label->show();
 #endif
+
+      tab_label->set_label(group->get_title_or_name());
+
       sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(group);
       if(portal)
       {
-        const Glib::ustring tab_title = glom_get_sharedptr_title_or_name(portal->get_relationship());
-        //tab_label->set_markup(Utils::bold_message(tab_title));
-        tab_label->set_label(tab_title);
-
         //Add a Related Records list for this portal:
         Box_Data_List_Related* portal_box = create_related(portal, false /* no label, because it's in the tab instead. */);
         //portal_box->set_border_width(Glom::Utils::DEFAULT_SPACING_SMALL); It has "padding" around the Alignment instead.
@@ -391,10 +390,6 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
       }
       else
       {
-        const Glib::ustring tab_title = group->get_title_or_name();
-        //tab_label->set_markup(Utils::bold_message(tab_title));
-        tab_label->set_label(tab_title);
-
         //Add a FlowTable for this group:
         FlowTableWithFields* flow_table = Gtk::manage( new FlowTableWithFields() );
         add_view(flow_table); //Allow these sub-flowtables to access the document too.
