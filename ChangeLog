@@ -1,5 +1,13 @@
 2011-10-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Standard: Handle related records portals too.
+
+	* glom/print_layout/print_layout_utils.cc: create_standard():
+	If the group is a portal, just add that portal item, setting appropriate
+	sizes.
+
+2011-10-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Simplify OptionEntry code.
 
 	* glom/glom_create_from_example.cc:

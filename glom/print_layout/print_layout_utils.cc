@@ -77,18 +77,22 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
   double max_y = 0;
   get_page_y_start_and_end(page_setup, page_number, min_y, max_y);
 
-  const double height = ITEM_HEIGHT;
+  const double field_height = ITEM_HEIGHT;
   const double gap = GRID_GAP;
 
-  const Glib::ustring title = layout_group->get_title();
+  Glib::ustring title = layout_group->get_title();
+  const sharedptr<const LayoutItem_Portal> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(layout_group);
+  if(portal) //TODO: Just make get_title() work for portals.
+    title = glom_get_sharedptr_title_or_name(portal->get_relationship());
+
   if(!title.empty())
   {
     sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::create();
     text->set_text(title);
     text->m_formatting.set_text_format_font("Sans Bold 10");
 
-    text->set_print_layout_position(x, y, ITEM_WIDTH_WIDE, height); //TODO: Enough and no more.
-    y += height + gap; //padding.
+    text->set_print_layout_position(x, y, ITEM_WIDTH_WIDE, field_height); //TODO: Enough and no more.
+    y += field_height + gap; //padding.
 
     print_layout_group->add_item(text);
 
@@ -101,6 +105,34 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
     }
   }
 
+  //Deal with a portal group: 
+  if(portal)
+  {
+    sharedptr<LayoutItem_Portal> portal_clone = glom_sharedptr_clone(portal);
+    portal_clone->set_print_layout_row_height(field_height); //Otherwise it will be 0, which is useless.
+
+    double height = ITEM_HEIGHT;
+    const double rows_count = portal->get_rows_count();
+    if(rows_count)
+      height = ITEM_HEIGHT * rows_count;
+
+    portal_clone->set_print_layout_position(x, y, 100, height); //TODO: Enough and no more.
+    y += height + gap; //padding.
+
+    print_layout_group->add_item(portal_clone);
+
+    //Start on the next page, if necessary:
+    //TODO: Add a page if necessary:
+    if( y >= max_y )
+    {
+      page_number += 1;
+      get_page_y_start_and_end(page_setup, page_number, y, max_y);
+    }
+
+    return;
+  }
+
+  //Deal with a regular group:
   //Recurse into the group's child items:
   for(LayoutGroup::type_list_items::const_iterator iter = layout_group->m_list_items.begin(); iter != layout_group->m_list_items.end(); ++iter)
   {
@@ -109,11 +141,7 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
       continue;
 
     const sharedptr<const LayoutGroup> group = sharedptr<const LayoutGroup>::cast_dynamic(item);
-    const sharedptr<const LayoutItem_Portal> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(group);
-    if(portal)
-      continue; //TODO: Handle these.
-
-    if(group)
+    if(group && !portal)
     {
       //Recurse: //TODO: Handle portals separately:
       create_standard(group, print_layout_group, page_setup, x, y, page_number);
@@ -127,7 +155,7 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
       {
         sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::create();
         text->set_text(field->get_title_or_name() + ":");
-        text->set_print_layout_position(x, y, title_width, height); //TODO: Enough and no more.
+        text->set_print_layout_position(x, y, title_width, field_height); //TODO: Enough and no more.
         text->m_formatting.set_text_format_font("Sans 10");
 
         print_layout_group->add_item(text);
@@ -140,8 +168,8 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
       if(field)
         item_x += (title_width + gap);
 
-      clone->set_print_layout_position(item_x, y, 100, height); //TODO: Enough and no more.
-      y += height + gap; //padding.
+      clone->set_print_layout_position(item_x, y, 100, field_height); //TODO: Enough and no more.
+      y += field_height + gap; //padding.
 
       print_layout_group->add_item(clone);
 
@@ -181,9 +209,9 @@ sharedptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>&
     text->set_text(title);
     text->m_formatting.set_text_format_font("Sans Bold 12");
 
-    const double height = ITEM_HEIGHT;
-    text->set_print_layout_position(x, y, ITEM_WIDTH_WIDE, height); //TODO: Enough and no more.
-    y += height + GRID_GAP; //padding.
+    const double field_height = ITEM_HEIGHT;
+    text->set_print_layout_position(x, y, ITEM_WIDTH_WIDE, field_height); //TODO: Enough and no more.
+    y += field_height + GRID_GAP; //padding.
 
     print_layout->m_layout_group->add_item(text);
   }
