@@ -1,5 +1,14 @@
 2011-10-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Small fixes to Film Manager example.
+
+	* examples/example_film_manager.glom: Remove the unused (and hiddent)
+	Teams table.
+	Contacts: Remove the unnecessary groups around the related records 
+	portals in the notebook.
+
+2011-10-11  Murray Cumming  <murrayc@murrayc.com>
+
 	CanvasPrintLayout: Wipe empty rows when filling with data.
 
 	* glom/print_layout/canvas_print_layout.cc: fill_with_data_portal():

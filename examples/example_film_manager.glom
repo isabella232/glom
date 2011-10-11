@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <glom_document xmlns="http://glom.org/glom_document" database_title="Openismus Film Manager" is_example="true" translation_original_locale="en_US" format_version="7">
-  <connection server="localhost" user="" database="glom_film_production_manager" self_hosted="true" port="5434" try_other_ports="false" hosting_mode="postgres_self"/>
+  <connection server="localhost" user="" database="glom_film_production_manager" self_hosted="true" port="5433" try_other_ports="false" hosting_mode="postgres_self"/>
   <table name="accommodation" title="Accommodation">
     <example_rows/>
     <trans_set>
@@ -1326,37 +1326,25 @@
               </data_layout_group>
             </data_layout_notebook>
             <data_layout_notebook name="notebook_related">
-              <data_layout_group name="crew" title="Crew">
-                <trans_set>
-                  <trans loc="de_DE" val="Crew"/>
-                  <trans loc="en_GB" val="Crew"/>
-                </trans_set>
-                <data_layout_portal relationship="crew" portal_rows_count="6">
-                  <data_layout_item name="crew_id" editable="true" use_default_formatting="true">
-                    <formatting format_thousands_separator="true" format_decimal_places="2"/>
-                  </data_layout_item>
-                  <data_layout_item name="description" editable="true" use_default_formatting="true">
-                    <formatting/>
-                  </data_layout_item>
-                </data_layout_portal>
-              </data_layout_group>
-              <data_layout_group name="cast" title="Cast">
-                <trans_set>
-                  <trans loc="de_DE" val="Cast"/>
-                  <trans loc="en_GB" val="Cast"/>
-                </trans_set>
-                <data_layout_portal relationship="cast" portal_rows_count="6">
-                  <data_layout_item name="character_id" editable="true" use_default_formatting="true">
-                    <formatting format_thousands_separator="true" format_decimal_places="2"/>
-                  </data_layout_item>
-                  <data_layout_item name="character" editable="true" use_default_formatting="true">
-                    <formatting/>
-                  </data_layout_item>
-                  <data_layout_item name="mainpart" editable="true" use_default_formatting="true">
-                    <formatting/>
-                  </data_layout_item>
-                </data_layout_portal>
-              </data_layout_group>
+              <data_layout_portal relationship="crew" portal_rows_count="6">
+                <data_layout_item name="crew_id" editable="true" use_default_formatting="true">
+                  <formatting format_thousands_separator="true" format_decimal_places="2"/>
+                </data_layout_item>
+                <data_layout_item name="description" editable="true" use_default_formatting="true">
+                  <formatting/>
+                </data_layout_item>
+              </data_layout_portal>
+              <data_layout_portal relationship="cast" portal_rows_count="6">
+                <data_layout_item name="character_id" editable="true" use_default_formatting="true">
+                  <formatting format_thousands_separator="true" format_decimal_places="2"/>
+                </data_layout_item>
+                <data_layout_item name="character" editable="true" use_default_formatting="true">
+                  <formatting/>
+                </data_layout_item>
+                <data_layout_item name="mainpart" editable="true" use_default_formatting="true">
+                  <formatting/>
+                </data_layout_item>
+              </data_layout_portal>
             </data_layout_notebook>
             <data_layout_item name="email" editable="true" use_default_formatting="true">
               <formatting/>
@@ -3823,25 +3811,6 @@ else:
         </trans_set>
       </report>
     </reports>
-    <print_layouts/>
-  </table>
-  <table name="teams" hidden="true" title="Teams">
-    <example_rows/>
-    <trans_set>
-      <trans loc="de_DE" val="Teams"/>
-      <trans loc="en_GB" val="Teams"/>
-    </trans_set>
-    <fields>
-      <field name="teams_id" primary_key="true" unique="true" auto_increment="true" type="Number">
-        <formatting format_thousands_separator="true" format_decimal_places="2"/>
-        <trans_set>
-          <trans loc="de_DE" val="Teams ID"/>
-        </trans_set>
-      </field>
-    </fields>
-    <relationships/>
-    <data_layouts/>
-    <reports/>
     <print_layouts/>
   </table>
   <groups><!--These are only used when recreating a database from an example file. The actual access-control is on the server, of course.-->
