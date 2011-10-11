@@ -88,6 +88,13 @@ public:
   
   
   Goocanvas::Bounds get_page_bounds(guint page_num) const;
+
+  /** Look for any items that overlap the @a canvas_item and move them down so that the no longer overlap.
+   * @param canvas_item The item that should push items out of the way.
+   * @param y_start Ignore any items whose y position is less than this.
+   * @param offset Move items down by this amount:
+   */
+  void move_items_below_item(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, double y_start, double offset);
   
 private:
 

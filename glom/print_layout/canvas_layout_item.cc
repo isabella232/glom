@@ -394,8 +394,6 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
 
       if(cell && cell_as_item)
       {
-        std::cout << "    creating child" << std::endl;
-        
         const guint width = layout_item->get_display_width();
         bool expand = (width == 0);
         

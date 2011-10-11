@@ -1,5 +1,14 @@
 2011-10-12  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Related Records: Move others down when expanding.
+
+	* glom/print_layout/canvas_layout_item.[h|cc]: Added 
+	move_items_below_item().
+	* glom/print_layout/canvas_print_layout.[h|cc]: fill_with_data_portal():
+	move other items lower when changing the size of the portal's table.
+
+2011-10-12  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Related Records: Expand according to min/max rows count.
 
 	* glom/print_layout/canvas_layout_item.[h|cc]: 

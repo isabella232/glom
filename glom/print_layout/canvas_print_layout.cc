@@ -919,7 +919,14 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
   double old_height = 0;
   canvas_item->get_width_height(old_width, old_height);
   canvas_item->set_width_height(old_width, portal_height);
-  std::cout << G_STRFUNC << ": portal_height = " << portal_height << ", for rows_count=" << rows_count << std::endl;
+
+  //Move other items down if the portal table became bigger:
+  double x = 0;
+  double y = 0;
+  canvas_item->get_xy(x, y);
+  const double offset = portal_height - old_height;
+  move_items_below_item(canvas_item, y + old_height, offset);
+
   canvas_item->add_portal_rows_if_necessary(rows_count);
   //TODO: Move everything else down.
 
@@ -1173,6 +1180,50 @@ Goocanvas::Bounds Canvas_PrintLayout::get_page_bounds(guint page_num) const
   bounds.set_y2( page_height * (page_num + 1) );
 
   return bounds;
+}
+
+void Canvas_PrintLayout::move_items_below_item(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, double y_start, double offset)
+{
+  Glib::RefPtr<Goocanvas::Item> root = m_items_group;
+  if(!root)
+    return;
+
+  double item_x = 0;
+  double item_y = 0;
+  canvas_item->get_xy(item_x, item_y);
+  double item_width = 0;
+  double item_height = 0;
+  canvas_item->get_width_height(item_width, item_height);
+
+  const int count = root->get_n_children();
+  for(int i = 0; i < count; ++i)
+  {
+    Glib::RefPtr<Goocanvas::Item> child = root->get_child(i);
+    Glib::RefPtr<CanvasLayoutItem> derived =
+      Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(child);
+    if(!derived)
+      continue;
+
+    //Ignore items above y_start:
+    double x = 0;
+    double y = 0;
+    derived->get_xy(x, y);
+    if(y < y_start)
+      continue;
+
+    //Ignore items that would not overlap even if the had the same y:
+    double width = 0;
+    double height = 0;
+    derived->get_width_height(width, height);
+    if( (x + width) < item_x)
+      continue;
+
+    if( x > (item_x + item_width))
+      continue;
+
+    y += offset;
+    derived->set_xy(x, y);
+  }
 }
 
 
