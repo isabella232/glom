@@ -942,7 +942,7 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
   }
 }
 
-void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanvas::Item> canvas_item, const sharedptr<LayoutItem_Field> field, const Gnome::Gda::Value& value)
+void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanvas::Item>& canvas_item, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
 {
   if(!field)
     return;
@@ -968,8 +968,8 @@ void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanva
 
     Glib::ustring text;
 
-    sharedptr<LayoutItem_WithFormatting> with_formatting = 
-      sharedptr<LayoutItem_WithFormatting>::cast_dynamic(field);
+    sharedptr<const LayoutItem_WithFormatting> with_formatting = 
+      sharedptr<const LayoutItem_WithFormatting>::cast_dynamic(field);
     if(with_formatting)
     {
       const FieldFormatting& formatting = with_formatting->get_formatting_used();
