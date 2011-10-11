@@ -98,7 +98,7 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
     m_Label.set_markup(Glib::ustring());
     m_Label.hide();
 
-    m_Alignment.set_padding(0, 0, 0, 0); //The box itself has padding of 6.
+    m_Alignment.set_padding(0.0f, 0.0f, 0.0f, 0.0f); //The box itself has padding of 6.
   }
 
   if(m_portal)

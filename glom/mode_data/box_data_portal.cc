@@ -155,7 +155,7 @@ bool Box_Data_Portal::init_db_details(const Glib::ustring& parent_table, bool sh
     m_Label.set_markup(Glib::ustring());
     m_Label.hide();
 
-    m_Alignment.set_padding(0, 0, 0, 0); //The box itself has padding of 6.
+    m_Alignment.set_padding(0.0f, 0.0f, 0.0f, 0.0f); //The box itself has padding of 6.
   }
 
   m_key_field = get_fields_for_table_one_field(LayoutWidgetBase::m_table_name, m_portal->get_to_field_used());
