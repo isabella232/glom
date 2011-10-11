@@ -86,6 +86,10 @@ public:
   /** Get the user-visible title for the field, in the user's current locale.
    * This returns the name if no title is set.
    */
+  virtual Glib::ustring get_title() const;
+
+  /** Get the user-visible title for the field, in the user's current locale.
+   */
   virtual Glib::ustring get_title_or_name() const;
 
   Glib::ustring get_title_or_name_no_custom() const;
@@ -154,6 +158,8 @@ public:
   Glib::ustring get_sql_name(const Glib::ustring& parent_table) const;
 
 private:
+
+  Glib::ustring get_title_no_custom() const;
 
   //This is just a cache, filled in by looking at the database structure:
   sharedptr<const Field> m_field;

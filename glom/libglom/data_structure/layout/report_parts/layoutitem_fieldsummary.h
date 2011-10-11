@@ -61,6 +61,7 @@ public:
 
   void set_field(const sharedptr<LayoutItem_Field>& field);
 
+  virtual Glib::ustring get_title() const;
   virtual Glib::ustring get_title_or_name() const;
 
   virtual Glib::ustring get_layout_display_name() const;

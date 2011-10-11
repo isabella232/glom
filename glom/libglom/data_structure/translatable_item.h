@@ -55,7 +55,7 @@ public:
 
   /** Get the title's translation for the current locale.
    */
-  Glib::ustring get_title() const;
+  virtual Glib::ustring get_title() const;
 
   /** Get the title's translation for the specifed locale.
    */

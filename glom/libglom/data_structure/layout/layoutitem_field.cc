@@ -115,7 +115,7 @@ Glib::ustring LayoutItem_Field::get_name() const
   return LayoutItem_WithFormatting::get_name();
 }
 
-Glib::ustring LayoutItem_Field::get_title_or_name_no_custom() const
+Glib::ustring LayoutItem_Field::get_title_no_custom() const
 {
   //Use the field's default title:
   if(m_field_cache_valid && m_field)
@@ -124,6 +124,31 @@ Glib::ustring LayoutItem_Field::get_title_or_name_no_custom() const
   }
   else
     return get_name(); //We ignore TranslatableItem::get_title() for LayoutItem_Field.
+}
+
+
+Glib::ustring LayoutItem_Field::get_title_or_name_no_custom() const
+{
+  //Use the field's default title:
+  if(m_field_cache_valid && m_field)
+  {
+    return m_field->get_title();
+  }
+
+  return Glib::ustring();
+}
+
+Glib::ustring LayoutItem_Field::get_title() const
+{
+  //Use the custom title (overriding the field's default title), if there is one:
+  //This may even be empty if the developer specifies that.
+  if(m_title_custom && m_title_custom->get_use_custom_title())
+  {
+    return m_title_custom->get_title();
+  }
+
+  //Use the field's default title:
+  return get_title_no_custom();
 }
 
 Glib::ustring LayoutItem_Field::get_title_or_name() const
@@ -136,7 +161,7 @@ Glib::ustring LayoutItem_Field::get_title_or_name() const
   }
 
   //Use the field's default title:
-  return get_title_or_name_no_custom();
+  return get_title_no_custom();
 }
 
 bool LayoutItem_Field::get_editable_and_allowed() const
