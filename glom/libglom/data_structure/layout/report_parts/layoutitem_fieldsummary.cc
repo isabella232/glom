@@ -66,6 +66,13 @@ Glib::ustring LayoutItem_FieldSummary::get_title_or_name() const
   return get_summary_type_name(m_summary_type) + ": " + field_title; //TODO: Allow a more human-readable title for summary headings.
 }
 
+Glib::ustring LayoutItem_FieldSummary::get_title() const
+{
+  const Glib::ustring field_title = get_full_field_details()->get_title();
+
+  return get_summary_type_name(m_summary_type) + ": " + field_title; //TODO: Allow a more human-readable title for summary headings.
+}
+
 Glib::ustring LayoutItem_FieldSummary::get_part_type_name() const
 {
   //Translators: This is the name of a UI element (a layout part name).

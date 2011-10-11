@@ -80,7 +80,9 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
   const double field_height = ITEM_HEIGHT;
   const double gap = GRID_GAP;
 
-  const Glib::ustring title = layout_group->get_title_or_name();
+  //Show the group's title
+  //(but do not fall back to the name, because unnamed groups are really wanted sometimes.)
+  const Glib::ustring title = layout_group->get_title();
   if(!title.empty())
   {
     sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::create();

@@ -1,5 +1,22 @@
 2011-10-11  Murray Cumming  <murrayc@murrayc.com>
 
+	TranslatableItem: Make get_title() virtual.
+
+	* glom/libglom/data_structure/translatable_item.h: Make get_title()
+	virtual, like get_title_or_name() already is, so we can make get_title()
+	useful generically via the base class.
+	* glom/libglom/data_structure/layout/layoutitem_field.[h|cc]:
+	* glom/libglom/data_structure/layout/layoutitem_portal.[h|cc]:
+	* glom/libglom/data_structure/layout/report_parts/layoutitem_fields
+	ummary.[h|cc]: Add get_title() overrides.
+	* glom/mode_data/box_data_calendar_related.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/print_layout/print_layout_utils.cc: Use get_title() instead of 
+	get_title_or_name(), to avoid showing names of intentionally title-less 
+	groups and notebooks.
+
+2011-10-11  Murray Cumming  <murrayc@murrayc.com>
+
 	LayoutItem_Portal: Make get_title_or_name() useful.
 
 	* glom/libglom/data_structure/layout/layoutitem_portal.[h|cc]:

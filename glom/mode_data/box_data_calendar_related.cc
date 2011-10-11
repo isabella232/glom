@@ -91,12 +91,7 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
   {
     Glib::ustring title;
     if(m_portal)
-      title = m_portal->get_title_or_name();
-    else
-    {
-      //Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
-      title = _("Undefined Table");
-    }
+      title = m_portal->get_title();
 
     m_Label.set_markup(Utils::bold_message(title));
     m_Label.show();
