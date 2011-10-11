@@ -1,5 +1,19 @@
 2011-10-11  Murray Cumming  <murrayc@murrayc.com>
 
+	LayoutItem_Portal: Make get_title_or_name() useful.
+
+	* glom/libglom/data_structure/layout/layoutitem_portal.[h|cc]:
+	Add an override for get_title_or_nam(), so that callers do not need to 
+	special-case portals compared to other groups.
+	* glom/mode_data/box_data_calendar_related.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_portal.cc:
+	* glom/mode_data/flowtablewithfields.cc:
+	* glom/print_layout/print_layout_utils.cc: Use get_title_or_name() 
+	instead of more complicated code.
+
+2011-10-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Standard: Handle related records portals too.
 
 	* glom/print_layout/print_layout_utils.cc: create_standard():

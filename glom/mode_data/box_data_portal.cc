@@ -108,17 +108,13 @@ bool Box_Data_Portal::init_db_details(const sharedptr<const LayoutItem_Portal>& 
 
 Glib::ustring Box_Data_Portal::get_title() const
 {
-  //TODO: This same code is in box_data_related_list.cc. Remove the duplication.
-  Glib::ustring relationship_title;
-  if(m_portal && m_portal->get_has_relationship_name())
-    relationship_title = m_portal->get_title_used(Glib::ustring() /* parent title - not relevant */);
+  if(m_portal)
+    return m_portal->get_title_or_name();
   else
   {
     //Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
-    relationship_title = _("Undefined Table");
+    return _("Undefined Table");
   }
-
-  return relationship_title;
 }
 
 Glib::ustring Box_Data_Portal::get_title_singular() const

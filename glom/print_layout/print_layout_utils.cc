@@ -80,11 +80,7 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
   const double field_height = ITEM_HEIGHT;
   const double gap = GRID_GAP;
 
-  Glib::ustring title = layout_group->get_title();
-  const sharedptr<const LayoutItem_Portal> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(layout_group);
-  if(portal) //TODO: Just make get_title() work for portals.
-    title = glom_get_sharedptr_title_or_name(portal->get_relationship());
-
+  const Glib::ustring title = layout_group->get_title_or_name();
   if(!title.empty())
   {
     sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::create();
@@ -106,6 +102,7 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
   }
 
   //Deal with a portal group: 
+  const sharedptr<const LayoutItem_Portal> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(layout_group); 
   if(portal)
   {
     sharedptr<LayoutItem_Portal> portal_clone = glom_sharedptr_clone(portal);

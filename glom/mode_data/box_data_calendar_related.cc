@@ -89,16 +89,16 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
   //TODO: This is duplicated in box_data_related_list.cc and box_data_portal.cc. Just use code from the base class?
   if(show_title)
   {
-    Glib::ustring relationship_title;
-    if(m_portal && m_portal->get_has_relationship_name())
-      relationship_title = m_portal->get_title_used(Glib::ustring() /* parent title - not relevant */);
+    Glib::ustring title;
+    if(m_portal)
+      title = m_portal->get_title_or_name();
     else
     {
       //Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
-      relationship_title = _("Undefined Table");
+      title = _("Undefined Table");
     }
 
-    m_Label.set_markup(Utils::bold_message(relationship_title));
+    m_Label.set_markup(Utils::bold_message(title));
     m_Label.show();
 
     m_Alignment.set_padding(Utils::DEFAULT_SPACING_SMALL /* top */, 0, Utils::DEFAULT_SPACING_LARGE /* left */, 0);
