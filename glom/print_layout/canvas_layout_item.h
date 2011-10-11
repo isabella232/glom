@@ -24,11 +24,13 @@
 #include <glom/utility_widgets/canvas/canvas_group_resizable.h>
 #include <libglom/data_structure/layout/layoutitem_withformatting.h>
 #include <libgdamm/value.h>
+#include <goocanvasmm/table.h>
 
 namespace Glom
 {
 
 class CanvasTextMovable;
+class CanvasTableMovable;
 class FieldFormatting;
 class LayoutItem_Portal;
 
@@ -67,12 +69,21 @@ public:
    */
   void update_layout_position_from_canvas();
 
+  /* Add table child items if any are missing,
+   * for instance if the table has been made bigger.
+   */
+  void add_portal_rows_if_necessary(guint rows_count);
+
+  static Glib::RefPtr<Goocanvas::Item> get_canvas_table_cell_child(const Glib::RefPtr<Goocanvas::Table>& table, int row, int col); //TODO: Add this to Goocanvas::Table.
+
 private:
   /// Create the appropriate inner canvas item to represent the layout item.
   static Glib::RefPtr<CanvasItemMovable> create_canvas_item_for_layout_item(const sharedptr<LayoutItem>& layout_item);
 
   static void apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, const sharedptr<const LayoutItem_WithFormatting>& layout_item);
   
+  static void add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTableMovable>& canvas_table, const sharedptr<LayoutItem_Portal>& portal, guint rows_count);
+
   void on_resized();
 
   sharedptr<LayoutItem> m_layout_item;

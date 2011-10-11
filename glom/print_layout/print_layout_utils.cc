@@ -115,15 +115,15 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
     sharedptr<LayoutItem_Portal> portal_clone = glom_sharedptr_clone(portal);
     portal_clone->set_print_layout_row_height(field_height); //Otherwise it will be 0, which is useless.
 
-    double height = ITEM_HEIGHT;
-    gulong rows_count_min = 0;
-    gulong rows_count_max = 0;
-    portal->get_rows_count(rows_count_min, rows_count_max);
-    if(rows_count_min)
-      height = ITEM_HEIGHT * rows_count_min; //TODO: Expand to max when necessary.
+    //We ignore the rows count for the details layout's portal,
+    //because that is only suitable for the on-screen layout,
+    //and because, on the print layout, we want to show (almost) all rows: 
+    portal_clone->set_rows_count(1 /* min */, 100 /* max */);
 
-    portal_clone->set_print_layout_position(x, y, item_width, height); //TODO: Enough and no more.
-    y += height + gap; //padding.
+    //Set an initial default height, though this will be changed
+    //when we fill it with data:
+    portal_clone->set_print_layout_position(x, y, item_width, field_height);
+    y += field_height + gap; //padding.
 
     print_layout_group->add_item(portal_clone);
 

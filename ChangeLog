@@ -1,3 +1,17 @@
+2011-10-12  Murray Cumming  <murrayc@murrayc.com>
+
+	Print Layout: Related Records: Expand according to min/max rows count.
+
+	* glom/print_layout/canvas_layout_item.[h|cc]: 
+	Moved get_canvas_table_cell_child() here from CanvasPrintLayout.
+	create_canvas_item_for_layout_item(): Move the table-child creation 
+	code into add_portal_rows_if_necessary().
+	* glom/print_layout/canvas_print_layout.[h|cc]: fill_with_data_portal():
+	Add rows, up to the maximum, according to the number of database rows.
+	* glom/print_layout/print_layout_utils.cc: create_standard():
+	Set a simple default height for one row, but set a min of 1 and a max 
+	of 100 so it will expand later.
+
 2011-10-11  Murray Cumming  <murrayc@murrayc.com>
 
 	Update the example files for the portal rows count change.

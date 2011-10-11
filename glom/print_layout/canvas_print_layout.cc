@@ -894,17 +894,35 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
   found_set.m_table_name = portal->get_table_used(Glib::ustring() /* parent table_name, not used. */);
   set_found_set_where_clause_for_portal(found_set, portal, foreign_key_value);
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fields_shown, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause);
+  const Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fields_shown, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause);
   //std::cout << "DEBUG: sql_query=" << sql_query << std::endl;
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(sql_query);
+  const Glib::RefPtr<const Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(sql_query);
   if(!(datamodel))
     return;
 
-  const int db_rows_count = datamodel->get_n_rows();
+  const int db_rows_count = datamodel->get_n_rows(); //TODO: Performance? COUNT them instead?
   const int db_columns_count = datamodel->get_n_columns();
 
-  double row_height_ignored = 0;
-  const int rows_count = CanvasLayoutItem::get_rows_count_for_portal(portal, row_height_ignored);
+  //Show as many rows as needed, but not more than the maximum:
+  gulong rows_count_min = 0;
+  gulong rows_count_max = 0;
+  portal->get_rows_count(rows_count_min, rows_count_max);
+  int rows_count = std::min((int)rows_count_max, db_rows_count);
+  //Do not use less than the minimum:
+  rows_count = std::max(rows_count, (int)rows_count_min);
+
+  // TODO: Remove this method and/or change it to recalc the min when changing the height:
+  //CanvasLayoutItem::get_rows_count_for_portal(portal, row_height_ignored);
+  const double portal_height = rows_count * portal->get_print_layout_row_height();
+
+  double old_width = 0;
+  double old_height = 0;
+  canvas_item->get_width_height(old_width, old_height);
+  canvas_item->set_width_height(old_width, portal_height);
+  std::cout << G_STRFUNC << ": portal_height = " << portal_height << ", for rows_count=" << rows_count << std::endl;
+  canvas_item->add_portal_rows_if_necessary(rows_count);
+  //TODO: Move everything else down.
+
   const int cols_count = child_layout_items.size();
 
   //Set the DB value for each cell:
@@ -915,9 +933,13 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
     for(int col = 0; col < cols_count; ++col)
     {
       //Glib::RefPtr<Goocanvas::Item> canvas_child = base_item->get_cell_child(row, col); //TODO: Add this to Goocanvas::Table.
-      Glib::RefPtr<Goocanvas::Item> canvas_child = get_canvas_table_cell_child(canvas_table, row, col); //TODO: Add this to Goocanvas::Table.
+      Glib::RefPtr<Goocanvas::Item> canvas_child = 
+        CanvasLayoutItem::get_canvas_table_cell_child(canvas_table, row, col); //TODO: Add this to Goocanvas::Table.
       if(!canvas_child)
-        std::cerr << G_STRFUNC << ": canvas_child is NULL." << std::endl;
+      {
+        std::cerr << G_STRFUNC << ": canvas_child is NULL for row=" << row << ", col=" << col << std::endl;
+        continue;
+      }
 
       if(iter_child_layout_items == child_layout_items.end())
         continue;
@@ -1015,38 +1037,6 @@ void Canvas_PrintLayout::set_grid_gap(double gap)
   if(m_bounds_group)
     m_bounds_group->lower();
 }
-
-Glib::RefPtr<Goocanvas::Item> Canvas_PrintLayout::get_canvas_table_cell_child(const Glib::RefPtr<Goocanvas::Table>& table, int row, int col)
-{
-  Glib::RefPtr<Goocanvas::Item> result;
-
-  if(!table)
-    return result;
-
-  const int count = table->get_n_children();
-  for(int i = 0; i < count; ++i)
-  {
-    Glib::RefPtr<Goocanvas::Item> child = table->get_child(i);
-    if(!child)
-      continue;
-
-    int column_value = 0;
-    table->get_child_property(child, "column", column_value);
-    int row_value = 0;
-    table->get_child_property(child, "row", row_value);
-
-    //This assumes that all items occupy only one cell:
-    if( (column_value == col) &&
-        (row_value == row) )
-    {
-      return child;
-    }
-  }
-
-  return result;
-}
-
-
 
 Base_DB::type_vecConstLayoutFields Canvas_PrintLayout::get_portal_fields_to_show(const sharedptr<LayoutItem_Portal>& portal)
 {

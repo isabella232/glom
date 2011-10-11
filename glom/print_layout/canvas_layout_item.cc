@@ -163,6 +163,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& layout_item)
   }
 }
 
+//TODO: Remove this?
 int CanvasLayoutItem::get_rows_count_for_portal(const sharedptr<const LayoutItem_Portal>& portal, double& row_height)
 {
   if(!portal)
@@ -182,6 +183,7 @@ int CanvasLayoutItem::get_rows_count_for_portal(const sharedptr<const LayoutItem
   const double max_rows_fraction = total_height / row_height;
   double max_rows = 0;
   modf(max_rows_fraction, &max_rows);
+  std::cout << "debug: max_rows=" << max_rows << ", for total_height=" << total_height << ", row_height=" << row_height << std::endl;
 
   return max_rows;
 }
@@ -284,83 +286,10 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
               portal->get_print_layout_column_line_width(),
               portal->get_print_layout_line_color());
 
-            //Show as many rows as can fit in the height.
-            double row_height = 0;
-            const int max_rows = get_rows_count_for_portal(portal, row_height);
-            //std::cout << "DEBUG: max_rows=" << max_rows << ", row_height=" << row_height << std::endl;
-
-            const LayoutGroup::type_list_items child_items = portal->get_items();
-
-            for(guint row = 0; row < (guint)max_rows; ++row)
-            {
-              guint col = 0;
-              const guint num_cols = child_items.size();
-              bool something_expanded = false;
-              for(LayoutGroup::type_list_items::const_iterator iter = child_items.begin(); iter != child_items.end(); ++iter)
-              {
-                sharedptr<LayoutItem> layout_item = *iter;
-
-                //We use create_canvas_item_for_layout_item() instead of just
-                //creating another CanvasLayoutItem, because that would be a group,
-                //but goocanvas cannot yet support Groups inside Tables. murrayc.
-                //TODO: Bug number.
-                Glib::RefPtr<CanvasItemMovable> cell = create_canvas_item_for_layout_item(layout_item);
-                Glib::RefPtr<Goocanvas::Item> cell_as_item = CanvasItemMovable::cast_to_item(cell);
-
-                if(cell && cell_as_item)
-                {
-                  const guint width = layout_item->get_display_width();
-                  bool expand = (width == 0);
-                  
-                  //If this is the last item, and no other item has expanded,
-                  //let this one expand,
-                  //Otherwise, we could allocate less space than the table has left.
-                  //TODO: Prevent the user from allocating _more_ space than the table has.
-                  if(!something_expanded && (col == (num_cols - 1)))
-                  {
-                    expand = true;
-                  }
-                  
-                  if(expand)
-                  {
-                    //Let the table allocate the width automatically:
-                    
-                    cell->set_width_height(-1, row_height);
-                    canvas_item->attach(cell_as_item,
-                      col /* left_attach */, col + 1 /* right_attach */,
-                      row /* top_attach */, row + 1 /* right_attach */,
-                      (Gtk::AttachOptions)(Gtk::FILL | Gtk::EXPAND), (Gtk::AttachOptions)(Gtk::FILL | Gtk::EXPAND));
-                      
-                    something_expanded = true;
-                  }
-                  else
-                  {
-                    //Enforce a width:
-                    
-                    //TODO: Add/Remove rows when resizing, instead of resizing the rows:
-                    cell->set_width_height(width, row_height);
-
-                    canvas_item->attach(cell_as_item,
-                      col /* left_attach */, col + 1 /* right_attach */,
-                      row /* top_attach */, row + 1 /* right_attach */,
-                      (Gtk::FILL), (Gtk::AttachOptions)(Gtk::FILL | Gtk::EXPAND));
-                      
-                    //Add a second item (an invisible rect) to make sure that the size is really used:
-                    Glib::RefPtr<Goocanvas::Rect> rect = 
-                      Goocanvas::Rect::create(0, 0, width, row_height);
-                    //TODO: Find out why this doesn't work: rect->property_stroke_pattern() = Cairo::RefPtr<Cairo::Pattern>();
-                    g_object_set(rect->gobj(), "stroke-pattern", (void*)0, (void*)0);
-                     
-                    canvas_item->attach(rect,
-                      col /* left_attach */, col + 1 /* right_attach */,
-                      row /* top_attach */, row + 1 /* right_attach */,
-                      Gtk::SHRINK, Gtk::SHRINK);
-                  }
-                }
-
-                ++col;
-              }
-            }
+            gulong rows_count_min = 0;
+            gulong rows_count_max = 0;
+            portal->get_rows_count(rows_count_min, rows_count_max);
+            add_portal_rows_if_necessary(canvas_item, portal, rows_count_min);
 
             child = canvas_item;
             child_item = canvas_item;
@@ -379,6 +308,146 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
   }
 
   return child;
+}
+
+
+Glib::RefPtr<Goocanvas::Item> CanvasLayoutItem::get_canvas_table_cell_child(const Glib::RefPtr<Goocanvas::Table>& table, int row, int col)
+{
+  Glib::RefPtr<Goocanvas::Item> result;
+
+  if(!table)
+    return result;
+
+  const int count = table->get_n_children();
+  for(int i = 0; i < count; ++i)
+  {
+    Glib::RefPtr<Goocanvas::Item> child = table->get_child(i);
+    if(!child)
+      continue;
+
+    int column_value = 0;
+    table->get_child_property(child, "column", column_value);
+    int row_value = 0;
+    table->get_child_property(child, "row", row_value);
+
+    //This assumes that all items occupy only one cell:
+    if( (column_value == col) &&
+        (row_value == row) )
+    {
+      return child;
+    }
+  }
+
+  return result;
+}
+
+void CanvasLayoutItem::add_portal_rows_if_necessary(guint rows_count)
+{
+  Glib::RefPtr<CanvasItemMovable> child = get_child();
+  Glib::RefPtr<CanvasTableMovable> canvas_table = 
+    Glib::RefPtr<CanvasTableMovable>::cast_dynamic(child);
+  if(!canvas_table)
+    return;
+
+  sharedptr<LayoutItem_Portal> portal = 
+    sharedptr<LayoutItem_Portal>::cast_dynamic(get_layout_item());
+  if(!portal)
+  {
+    std::cerr << G_STRFUNC << ": The layout item was not a portal." << std::endl;
+    return;
+  }
+
+  add_portal_rows_if_necessary(canvas_table, portal, rows_count);
+}
+
+void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTableMovable>& canvas_table, const sharedptr<LayoutItem_Portal>& portal, guint rows_count)
+{
+  const double row_height = portal->get_print_layout_row_height();
+  const LayoutGroup::type_list_items child_items = portal->get_items();
+
+  for(guint row = 0; row < rows_count; ++row)
+  {
+    guint col = 0;
+    const guint num_cols = child_items.size();
+    bool something_expanded = false;
+    for(LayoutGroup::type_list_items::const_iterator iter = child_items.begin(); iter != child_items.end(); ++iter)
+    {
+      //std::cout << "  row=" << row << ", col=" << col << std::endl;
+      sharedptr<LayoutItem> layout_item = *iter;
+
+      //Check if a child already exists:
+      Glib::RefPtr<Goocanvas::Item> existing_child = 
+        get_canvas_table_cell_child(canvas_table, row, col);
+      if(existing_child)
+      {
+        //std::cout << "    existing child" << std::endl;
+        col++;
+        continue;
+      }
+
+      //We use create_canvas_item_for_layout_item() instead of just
+      //creating another CanvasLayoutItem, because that would be a group,
+      //but goocanvas cannot yet support Groups inside Tables. murrayc.
+      //TODO: Bug number.
+      Glib::RefPtr<CanvasItemMovable> cell = create_canvas_item_for_layout_item(layout_item);
+      Glib::RefPtr<Goocanvas::Item> cell_as_item = CanvasItemMovable::cast_to_item(cell);
+
+      if(cell && cell_as_item)
+      {
+        std::cout << "    creating child" << std::endl;
+        
+        const guint width = layout_item->get_display_width();
+        bool expand = (width == 0);
+        
+        //If this is the last item, and no other item has expanded,
+        //let this one expand,
+        //Otherwise, we could allocate less space than the table has left.
+        //TODO: Prevent the user from allocating _more_ space than the table has.
+        if(!something_expanded && (col == (num_cols - 1)))
+        {
+          expand = true;
+        }
+        
+        if(expand)
+        {
+            //Let the table allocate the width automatically:
+
+            cell->set_width_height(-1, row_height);
+            canvas_table->attach(cell_as_item,
+              col /* left_attach */, col + 1 /* right_attach */,
+              row /* top_attach */, row + 1 /* right_attach */,
+              (Gtk::AttachOptions)(Gtk::FILL | Gtk::EXPAND), (Gtk::AttachOptions)(Gtk::FILL | Gtk::EXPAND));
+  
+            something_expanded = true;
+        }
+        else
+        {
+            //Enforce a width:
+
+            //TODO: Add/Remove rows when resizing, instead of resizing the rows:
+            cell->set_width_height(width, row_height);
+
+            canvas_table->attach(cell_as_item,
+              col /* left_attach */, col + 1 /* right_attach */,
+              row /* top_attach */, row + 1 /* right_attach */,
+              (Gtk::FILL), (Gtk::AttachOptions)(Gtk::FILL | Gtk::EXPAND));
+  
+            //Add a second item (an invisible rect) to make sure that the size is really used:
+            Glib::RefPtr<Goocanvas::Rect> rect = 
+              Goocanvas::Rect::create(0, 0, width, row_height);
+            //TODO: Find out why this doesn't work: rect->property_stroke_pattern() = Cairo::RefPtr<Cairo::Pattern>();
+            g_object_set(rect->gobj(), "stroke-pattern", (void*)0, (void*)0);
+ 
+            canvas_table->attach(rect,
+              col /* left_attach */, col + 1 /* right_attach */,
+              row /* top_attach */, row + 1 /* right_attach */,
+              Gtk::SHRINK, Gtk::SHRINK);
+        }
+      }
+
+      ++col;
+    }
+  }
 }
 
 void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)

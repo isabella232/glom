@@ -193,6 +193,10 @@ void LayoutItem_Portal::set_rows_count(gulong rows_count_min, gulong rows_count_
 {
   m_rows_count_min = rows_count_min;
   m_rows_count_max = rows_count_max;
+
+  //Keep the values sane:
+  if(m_rows_count_max < m_rows_count_min)
+    m_rows_count_max = m_rows_count_min;
 }
 
 double LayoutItem_Portal::get_print_layout_row_line_width() const

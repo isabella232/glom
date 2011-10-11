@@ -103,8 +103,6 @@ private:
   void fill_with_data(const Glib::RefPtr<Goocanvas::Group>& canvas_group, const FoundSet& found_set);
   void fill_with_data_portal(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, const Gnome::Gda::Value& foreign_key_value);
   static void set_canvas_item_field_value(const Glib::RefPtr<Goocanvas::Item>& canvas_item, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
-
-  static Glib::RefPtr<Goocanvas::Item> get_canvas_table_cell_child(const Glib::RefPtr<Goocanvas::Table>& table, int row, int col); //TODO: Add this to Goocanvas::Table.
   
   type_vecConstLayoutFields get_portal_fields_to_show(const sharedptr<LayoutItem_Portal>& portal);
 
