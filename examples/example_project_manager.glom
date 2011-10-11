@@ -413,7 +413,7 @@
                 </data_layout_item>
               </data_layout_group>
             </data_layout_notebook>
-            <data_layout_portal relationship="team_members" portal_rows_count="6">
+            <data_layout_portal relationship="team_members" portal_rows_count_min="6" portal_rows_count_max="6">
               <data_layout_item name="team_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
               </data_layout_item>
@@ -636,7 +636,7 @@ if __name__ == "__main__":
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="others">
-            <data_layout_portal relationship="teams" portal_rows_count="6">
+            <data_layout_portal relationship="teams" portal_rows_count_min="6" portal_rows_count_max="6">
               <data_layout_item name="team_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
               </data_layout_item>
@@ -927,7 +927,7 @@ if __name__ == "__main__":
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="other">
-            <data_layout_portal relationship="members" portal_rows_count="6">
+            <data_layout_portal relationship="members" portal_rows_count_min="6" portal_rows_count_max="6">
               <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
               </data_layout_item>
@@ -938,7 +938,7 @@ if __name__ == "__main__":
                 <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
               </data_layout_item>
             </data_layout_portal>
-            <data_layout_portal relationship="projects" portal_rows_count="6">
+            <data_layout_portal relationship="projects" portal_rows_count_min="6" portal_rows_count_max="6">
               <data_layout_item name="project_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
               </data_layout_item>

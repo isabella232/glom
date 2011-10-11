@@ -446,7 +446,7 @@
                   <formatting/>
                 </data_layout_item>
               </data_layout_group>
-              <data_layout_portal relationship="scenes" portal_rows_count="6">
+              <data_layout_portal relationship="scenes" portal_rows_count_min="6" portal_rows_count_max="6">
                 <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
@@ -522,7 +522,7 @@
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="scenes">
-            <data_layout_portal relationship="scenes" portal_rows_count="6">
+            <data_layout_portal relationship="scenes" portal_rows_count_min="6" portal_rows_count_max="6">
               <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
@@ -747,7 +747,7 @@
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="others">
-            <data_layout_portal relationship="staff" portal_rows_count="6">
+            <data_layout_portal relationship="staff" portal_rows_count_min="6" portal_rows_count_max="6">
               <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
@@ -1326,7 +1326,7 @@
               </data_layout_group>
             </data_layout_notebook>
             <data_layout_notebook name="notebook_related">
-              <data_layout_portal relationship="crew" portal_rows_count="6">
+              <data_layout_portal relationship="crew" portal_rows_count_min="6" portal_rows_count_max="6">
                 <data_layout_item name="crew_id" editable="true" use_default_formatting="true">
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
@@ -1334,7 +1334,7 @@
                   <formatting/>
                 </data_layout_item>
               </data_layout_portal>
-              <data_layout_portal relationship="cast" portal_rows_count="6">
+              <data_layout_portal relationship="cast" portal_rows_count_min="6" portal_rows_count_max="6">
                 <data_layout_item name="character_id" editable="true" use_default_formatting="true">
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
@@ -1679,7 +1679,7 @@
                 </data_layout_item>
               </data_layout_group>
             </data_layout_group>
-            <data_layout_portal relationship="scenes" portal_rows_count="6">
+            <data_layout_portal relationship="scenes" portal_rows_count_min="6" portal_rows_count_max="6">
               <data_layout_item name="scene_id" use_default_formatting="true" column_width="90">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
@@ -2089,7 +2089,7 @@
               <trans loc="de_DE" val="Details"/>
               <trans loc="en_GB" val="Details"/>
             </trans_set>
-            <data_layout_portal relationship="department_crew" portal_rows_count="6">
+            <data_layout_portal relationship="department_crew" portal_rows_count_min="6" portal_rows_count_max="6">
               <data_layout_item name="crew_id" editable="true" use_default_formatting="true">
                 <title_custom/>
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -2215,7 +2215,7 @@
             <data_layout_item name="description" editable="true" use_default_formatting="true">
               <formatting/>
             </data_layout_item>
-            <data_layout_portal relationship="scenes" portal_rows_count="6">
+            <data_layout_portal relationship="scenes" portal_rows_count_min="6" portal_rows_count_max="6">
               <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
@@ -2565,7 +2565,7 @@
             </data_layout_group>
           </data_layout_group>
           <data_layout_group name="more">
-            <data_layout_portal relationship="scenes" portal_rows_count="6">
+            <data_layout_portal relationship="scenes" portal_rows_count_min="6" portal_rows_count_max="6">
               <data_layout_item name="date" editable="true" use_default_formatting="true">
                 <formatting/>
               </data_layout_item>
@@ -3653,7 +3653,7 @@ else:
           </data_layout_group>
           <data_layout_group name="details_lower">
             <data_layout_notebook name="notebook">
-              <data_layout_portal relationship="scene_cast" portal_rows_count="6">
+              <data_layout_portal relationship="scene_cast" portal_rows_count_min="6" portal_rows_count_max="6">
                 <data_layout_item name="cast_id" editable="true" use_default_formatting="true">
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
@@ -3668,7 +3668,7 @@ else:
                   <formatting/>
                 </data_layout_item>
               </data_layout_portal>
-              <data_layout_portal relationship="scene_extras" portal_rows_count="6" column_line_color="#000000000000" line_color="#000000000000">
+              <data_layout_portal relationship="scene_extras" portal_rows_count_min="6" portal_rows_count_max="6" column_line_color="#000000000000" line_color="#000000000000">
                 <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
@@ -3679,7 +3679,7 @@ else:
                   <formatting/>
                 </data_layout_item>
               </data_layout_portal>
-              <data_layout_portal relationship="scene_props" portal_rows_count="6" column_line_color="#000000000000" line_color="#000000000000">
+              <data_layout_portal relationship="scene_props" portal_rows_count_min="6" portal_rows_count_max="6" column_line_color="#000000000000" line_color="#000000000000">
                 <data_layout_item name="prop_id" editable="true" use_default_formatting="true" column_width="40">
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
@@ -3690,7 +3690,7 @@ else:
                   <formatting/>
                 </data_layout_item>
               </data_layout_portal>
-              <data_layout_portal relationship="scene_costume" portal_rows_count="6" column_line_color="#000000000000" line_color="#000000000000">
+              <data_layout_portal relationship="scene_costume" portal_rows_count_min="6" portal_rows_count_max="6" column_line_color="#000000000000" line_color="#000000000000">
                 <data_layout_item name="costume_id" editable="true" use_default_formatting="true" column_width="40">
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
@@ -3701,7 +3701,7 @@ else:
                   <formatting/>
                 </data_layout_item>
               </data_layout_portal>
-              <data_layout_portal relationship="scene_crew" portal_rows_count="6">
+              <data_layout_portal relationship="scene_crew" portal_rows_count_min="6" portal_rows_count_max="6">
                 <data_layout_item name="department_id" editable="true" use_default_formatting="true">
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
@@ -3712,7 +3712,7 @@ else:
                   <formatting/>
                 </data_layout_item>
               </data_layout_portal>
-              <data_layout_portal relationship="scene_equipment" portal_rows_count="6">
+              <data_layout_portal relationship="scene_equipment" portal_rows_count_min="6" portal_rows_count_max="6">
                 <data_layout_item name="equipment_id" editable="true" use_default_formatting="true">
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
@@ -3723,7 +3723,7 @@ else:
                   <formatting/>
                 </data_layout_item>
               </data_layout_portal>
-              <data_layout_portal relationship="scene_makeup" portal_rows_count="6" column_line_color="#000000000000" line_color="#000000000000">
+              <data_layout_portal relationship="scene_makeup" portal_rows_count_min="6" portal_rows_count_max="6" column_line_color="#000000000000" line_color="#000000000000">
                 <portal_navigation_relationship navigation_type="none"/>
                 <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="103">
                   <formatting/>

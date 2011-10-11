@@ -1,5 +1,14 @@
 2011-10-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Update the example files for the portal rows count change.
+
+	* examples/example_film_manager.glom:
+	* examples/example_music_collection.glom:
+	* examples/example_project_manager.glom:
+	* examples/example_smallbusiness.glom: Adapt to new document structure.
+
+2011-10-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Related Records Portals: Change rows count to min and max counts.
 
 	* glom/glom_document.dtd: Adapted.
