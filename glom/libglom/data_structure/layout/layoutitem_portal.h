@@ -138,11 +138,11 @@ public:
   
   /** Get the number of rows that should be displayed.
    */
-  double get_rows_count() const;
+  void get_rows_count(gulong& rows_count_min, gulong& rows_count_max) const;
   
   /** Set the number of rows that should be displayed.
    */
-  void set_rows_count(double rows_count);
+  void set_rows_count(gulong rows_count_min, gulong rows_count_max);
 
 
 private:
@@ -161,7 +161,7 @@ private:
   //If no navigation relationship has been specified then it will be automatically chosen or navigation will be disabled:
   navigation_type m_navigation_type;
   
-  double m_rows_count;
+  gulong m_rows_count_min, m_rows_count_max;
 };
 
 } //namespace Glom

@@ -31,7 +31,8 @@ LayoutItem_Portal::LayoutItem_Portal()
   m_print_layout_row_line_width(1), //Sensible default.
   m_print_layout_column_line_width(1), //Sensible default.
   m_navigation_type(LayoutItem_Portal::NAVIGATION_AUTOMATIC),
-  m_rows_count(6) //Sensible default.
+  m_rows_count_min(6), //Sensible default.
+  m_rows_count_max(6) //Sensible default.
 {
 }
 
@@ -45,7 +46,8 @@ LayoutItem_Portal::LayoutItem_Portal(const LayoutItem_Portal& src)
   m_print_layout_column_line_width(src.m_print_layout_column_line_width),
   m_print_layout_line_color(src.m_print_layout_line_color),
   m_navigation_type(src.m_navigation_type),
-  m_rows_count(src.m_rows_count)
+  m_rows_count_min(src.m_rows_count_min),
+  m_rows_count_max(src.m_rows_count_max)
 {
 }
 
@@ -71,7 +73,8 @@ LayoutItem_Portal& LayoutItem_Portal::operator=(const LayoutItem_Portal& src)
   m_print_layout_column_line_width = src.m_print_layout_column_line_width;
   m_print_layout_line_color = src.m_print_layout_line_color;
   m_navigation_type = src.m_navigation_type;
-  m_rows_count = src.m_rows_count;
+  m_rows_count_min = src.m_rows_count_min;
+  m_rows_count_max = src.m_rows_count_max;
 
   return *this;
 }
@@ -180,14 +183,16 @@ void LayoutItem_Portal::set_navigation_type(LayoutItem_Portal::navigation_type t
   m_navigation_type = type;
 }
 
-double LayoutItem_Portal::get_rows_count() const
+void LayoutItem_Portal::get_rows_count(gulong& rows_count_min, gulong& rows_count_max) const
 {
-  return m_rows_count;
+  rows_count_min = m_rows_count_min;
+  rows_count_max = m_rows_count_max;
 }
   
-void LayoutItem_Portal::set_rows_count(double rows_count)
+void LayoutItem_Portal::set_rows_count(gulong rows_count_min, gulong rows_count_max)
 {
-  m_rows_count = rows_count;
+  m_rows_count_min = rows_count_min;
+  m_rows_count_max = rows_count_max;
 }
 
 double LayoutItem_Portal::get_print_layout_row_line_width() const

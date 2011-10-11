@@ -1,5 +1,30 @@
 2011-10-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Related Records Portals: Change rows count to min and max counts.
+
+	* glom/glom_document.dtd: Adapted.
+	* glom/libglom/data_structure/layout/layoutitem_portal.[h|cc]: 
+	set_rows_count(): Return a min and max, and change it from double to 
+	gulong.
+	* glom/libglom/document/document.cc: load_after(), save_before():
+	Store it in the document. The old XML attribute was new in Glom 1.19
+	anyway, so we can change it.
+
+	* ui/developer/window_data_layout.glade: Add an extra SpinButton, 
+	adjust the labels, and add explanatory tooltips.
+	* glom/mode_design/layout/dialog_layout_details.[h|cc]: Adapted.
+
+	* glom/mode_data/db_adddel/db_adddel.[h|cc]: set_height_rows():
+	Take the min and max.
+	construct_specified_column(): Increase the size if appropriate when 
+	there are more database rows to show.
+	* glom/mode_design/layout/dialog_layout_list_related.cc:
+	* glom/print_layout/print_layout_utils.cc:
+	* glom/libglom/db_utils.cc:
+	* glom/mode_data/box_data_list_related.cc: Adapted.
+
+2011-10-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Create Standard: Use the full page width.
 
 	* glom/print_layout/print_layout_utils.cc: Instead of hard-coding the 

@@ -864,7 +864,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
 
       //Examine each field:
       guint row = 0;
-      const guint rows_count = data_model_fields->get_n_rows();
+      const gulong rows_count = data_model_fields->get_n_rows();
       while(row < rows_count)
       {
         Glib::RefPtr<Gnome::Gda::Column> field_info = Gnome::Gda::Column::create();

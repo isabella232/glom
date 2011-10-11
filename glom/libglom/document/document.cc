@@ -73,7 +73,8 @@ static const char GLOM_NODE_DATA_LAYOUT_NOTEBOOK[] = "data_layout_notebook";
 
 static const char GLOM_NODE_DATA_LAYOUT_PORTAL[] = "data_layout_portal";
 static const char GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP[] = "portal_navigation_relationship";
-static const char GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT[] = "portal_rows_count";
+static const char GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT_MIN[] = "portal_rows_count_min";
+static const char GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT_MAX[] = "portal_rows_count_max";
 static const char GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE[] = "navigation_type";
 static const char GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_AUTOMATIC[] = "automatic";
 static const char GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_SPECIFIC[] = "specific";
@@ -2376,11 +2377,14 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
 
         if(!calendar_portal)
         {
-          const double rows_count = 
+          const gulong rows_count_min = 
             get_node_attribute_value_as_decimal_double(element, 
-              GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT);
-          if(rows_count) //0 is both a useless value and possible with older files that didn't have this attribute.
-            portal->set_rows_count(rows_count);
+              GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT_MIN);
+          const gulong rows_count_max = 
+            get_node_attribute_value_as_decimal_double(element, 
+              GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT_MAX);
+          if(rows_count_min || rows_count_max) //Ignore useless 0, 0 values.
+            portal->set_rows_count(rows_count_min, rows_count_max);
             
           //Print Layout specific stuff:
           portal->set_print_layout_row_height(
@@ -3360,8 +3364,13 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
 
               if(!calendar_portal)
               {
+                gulong rows_count_min = 0;
+                gulong rows_count_max = 0;
+                portal->get_rows_count(rows_count_min, rows_count_max);
                 set_node_attribute_value_as_decimal_double(child, 
-                  GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT, portal->get_rows_count());
+                  GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT_MIN, rows_count_min);
+                set_node_attribute_value_as_decimal_double(child, 
+                  GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT_MAX, rows_count_max);
 
                 //Print Layout specific stuff:
                 set_node_attribute_value_as_decimal(child,

@@ -116,9 +116,11 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
     portal_clone->set_print_layout_row_height(field_height); //Otherwise it will be 0, which is useless.
 
     double height = ITEM_HEIGHT;
-    const double rows_count = portal->get_rows_count();
-    if(rows_count)
-      height = ITEM_HEIGHT * rows_count;
+    gulong rows_count_min = 0;
+    gulong rows_count_max = 0;
+    portal->get_rows_count(rows_count_min, rows_count_max);
+    if(rows_count_min)
+      height = ITEM_HEIGHT * rows_count_min; //TODO: Expand to max when necessary.
 
     portal_clone->set_print_layout_position(x, y, item_width, height); //TODO: Enough and no more.
     y += height + gap; //padding.

@@ -56,9 +56,13 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   m_box_related_navigation->show();
   m_hbox_rows_count->show();
   
-  m_spinbutton_rows_count->set_range(0, 100); //Otherwise only 0 would be allowed.
-  m_spinbutton_rows_count->set_increments(1, 10); //Otherwise the buttons do nothing.
-  m_spinbutton_rows_count->signal_value_changed().connect(
+  m_spinbutton_rows_count_min->set_range(0, 100); //Otherwise only 0 would be allowed.
+  m_spinbutton_rows_count_min->set_increments(1, 10); //Otherwise the buttons do nothing.
+  m_spinbutton_rows_count_min->signal_value_changed().connect(
+    sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_spinbutton_changed));
+  m_spinbutton_rows_count_max->set_range(0, 100); //Otherwise only 0 would be allowed.
+  m_spinbutton_rows_count_max->set_increments(1, 10); //Otherwise the buttons do nothing.
+  m_spinbutton_rows_count_max->signal_value_changed().connect(
     sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_spinbutton_changed));
 
   builder->get_widget_derived("combo_relationship_name", m_combo_relationship);
@@ -129,8 +133,12 @@ void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout_name, 
     m_portal = glom_sharedptr_clone(portal);
   else
     m_portal = sharedptr<LayoutItem_Portal>::create(); //The rest of the class assumes that this is not null.
-    
-  m_spinbutton_rows_count->set_value( m_portal->get_rows_count() );
+
+  gulong rows_count_min = 0;
+  gulong rows_count_max = 0;
+  m_portal->get_rows_count(rows_count_min, rows_count_max);
+  m_spinbutton_rows_count_min->set_value(rows_count_min);
+  m_spinbutton_rows_count_max->set_value(rows_count_max);
 
   type_vecConstLayoutFields empty_fields; //Just to satisfy the base class.
   Dialog_Layout::set_document(layout_name, layout_platform, document, actual_from_table, empty_fields);
@@ -354,7 +362,9 @@ void Dialog_Layout_List_Related::save_to_document()
       m_portal->set_navigation_type(LayoutItem_Portal::NAVIGATION_NONE);
     }
     
-    m_portal->set_rows_count( m_spinbutton_rows_count->get_value() );
+    m_portal->set_rows_count(
+      m_spinbutton_rows_count_min->get_value(),
+      m_spinbutton_rows_count_max->get_value());
     
     if(m_for_print_layout)
     {

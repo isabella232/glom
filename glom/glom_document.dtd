@@ -351,7 +351,8 @@ TODO: Add 'title_singular' element.
         sequence CDATA #IMPLIED
         hide CDATA #IMPLIED
         columns_count CDATA #IMPLIED
-        portal_rows_count CDATA #IMPLIED
+        portal_rows_count_min CDATA #IMPLIED
+        portal_rows_count_max CDATA #IMPLIED
         line_color CDATA #IMPLIED
         column_line_color CDATA #IMPLIED >
 

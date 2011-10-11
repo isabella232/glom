@@ -35,7 +35,7 @@ Box_Data_List_Related::Box_Data_List_Related()
   m_Alignment.add(m_AddDel);
   add_view(&m_AddDel); //Give it access to the document.
   m_AddDel.show();
-  m_AddDel.set_height_rows(5);
+  m_AddDel.set_height_rows(6, 6);
   m_Alignment.show();
 
   //Connect signals:
@@ -384,9 +384,11 @@ void Box_Data_List_Related::create_layout()
   
   if(m_portal)
   {
-    const double rows_count = m_portal->get_rows_count();
-    if(rows_count) //0 is a silly value.
-      m_AddDel.set_height_rows(rows_count);
+    gulong rows_count_min = 0;
+    gulong rows_count_max = 0;
+    m_portal->get_rows_count(rows_count_min, rows_count_max);
+    if(rows_count_min) //0 is a silly value.
+      m_AddDel.set_height_rows(rows_count_min, rows_count_max);
   }
 
   sharedptr<Field> field_primary_key = get_field_primary_key_for_table(Base_DB_Table::m_table_name);

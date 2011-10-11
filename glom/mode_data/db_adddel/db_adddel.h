@@ -258,8 +258,10 @@ public:
   bool start_new_record();
   
   /** Request a height for this widget, based on the number of rows to show.
+   * The widget will change its requested height if it is filled with enough 
+   * data to need more than the @a rows_count_min, if @a rows_count_max allows that.
    */
-  void set_height_rows(guint rows);
+  void set_height_rows(gulong rows_count_min, gulong rows_count_max);
 
 private:
 
@@ -489,11 +491,16 @@ private:
   void user_changed(const Gtk::TreeModel::iterator& row, guint col);
   void user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  /* rowEnd TODO */);
 
+  void set_height_rows_actual(gulong rows_count);
+
   //TODO_refactor: Make some other methods private too.
   /** Get an iterator to the blank row in which the user should add data for the new row.
    * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.
    */
   Gtk::TreeModel::iterator get_item_placeholder(); //Return index of the placeholder row.
+
+  gulong m_rows_count_min;
+  gulong m_rows_count_max;
 };
 
 } //namespace Glom

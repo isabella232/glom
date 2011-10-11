@@ -56,7 +56,9 @@ DbAddDel::DbAddDel()
   m_allow_view(true),
   m_allow_view_details(false),
   m_treeviewcolumn_button(0),
-  m_fixed_cell_height(0)
+  m_fixed_cell_height(0),
+  m_rows_count_min(0),
+  m_rows_count_max(0)
 {
   set_prevent_user_signals();
   set_ignore_treeview_signals(true);
@@ -84,7 +86,7 @@ DbAddDel::DbAddDel()
   m_TreeView.show();
 
   //Make sure that the TreeView doesn't start out only big enough for zero items.
-  set_height_rows(5);
+  set_height_rows(6, 6);
 
   //Allow the user to change the column order:
   //m_TreeView.set_column_drag_function( sigc::mem_fun(*this, &DbAddDel::on_treeview_column_drop) );
@@ -123,10 +125,18 @@ DbAddDel::~DbAddDel()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
-void DbAddDel::set_height_rows(guint rows)
+void DbAddDel::set_height_rows(gulong rows_count_min, gulong rows_count_max)
+{
+  m_rows_count_min = rows_count_min;
+  m_rows_count_max = rows_count_max;
+
+  set_height_rows_actual(m_rows_count_min);
+}
+
+void DbAddDel::set_height_rows_actual(gulong rows_count)
 {
   //TODO: File a bug about API for this in GtkTreeView.
-  const guint height_for_rows = rows * get_fixed_cell_height();
+  const guint height_for_rows = rows_count * get_fixed_cell_height();
   //std::cout << "debug: height_for_rows = " << height_for_rows << std::endl;
   const guint extra_for_treeview = 50; //TODO: Find some way to guess this.
   m_ScrolledWindow.set_min_content_height(height_for_rows + extra_for_treeview);
@@ -764,6 +774,21 @@ void DbAddDel::construct_specified_columns()
 
   //Make sure there's a blank row after the database rows that have just been added.
   //add_blank();
+
+  //Adjust the number of rows to show.
+  //This can change the amount of height requested for the widget.
+  //Show as many rows as needed, but not more than the maximum:
+  gulong total = 0; //ignored
+  gulong db_rows_count_found = 0;
+  Glib::RefPtr<DbTreeModel> refModelDerived = Glib::RefPtr<DbTreeModel>::cast_dynamic(m_refListStore);
+  if(refModelDerived)
+    refModelDerived->get_record_counts(total, db_rows_count_found);
+  
+  //+1 for the empty row:
+  gulong rows_count = std::min(m_rows_count_max,  db_rows_count_found + 1);
+  //Do not use less than the minimum:
+  rows_count = std::max(rows_count, m_rows_count_min);
+  set_height_rows_actual(rows_count);
 }
 
 bool DbAddDel::refresh_from_database()
