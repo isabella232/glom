@@ -1,5 +1,12 @@
 2011-10-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Create Standard: Use the full page width.
+
+	* glom/print_layout/print_layout_utils.cc: Instead of hard-coding the 
+	width. However, the field title widths are still hard-coded.
+
+2011-10-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Small fixes to Film Manager example.
 
 	* examples/example_film_manager.glom: Remove the unused (and hiddent)

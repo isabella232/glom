@@ -77,8 +77,13 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
   double max_y = 0;
   get_page_y_start_and_end(page_setup, page_number, min_y, max_y);
 
-  const double field_height = ITEM_HEIGHT;
   const double gap = GRID_GAP;
+
+  const Gtk::Unit units = get_units();
+  const Gtk::PaperSize paper_size = page_setup->get_paper_size();
+  const double item_width = paper_size.get_width(units) - x -
+    page_setup->get_right_margin(units) - gap;
+  const double field_height = ITEM_HEIGHT;
 
   //Show the group's title
   //(but do not fall back to the name, because unnamed groups are really wanted sometimes.)
@@ -89,7 +94,7 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
     text->set_text(title);
     text->m_formatting.set_text_format_font("Sans Bold 10");
 
-    text->set_print_layout_position(x, y, ITEM_WIDTH_WIDE, field_height); //TODO: Enough and no more.
+    text->set_print_layout_position(x, y, item_width, field_height); //TODO: Enough and no more.
     y += field_height + gap; //padding.
 
     print_layout_group->add_item(text);
@@ -115,7 +120,7 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
     if(rows_count)
       height = ITEM_HEIGHT * rows_count;
 
-    portal_clone->set_print_layout_position(x, y, 100, height); //TODO: Enough and no more.
+    portal_clone->set_print_layout_position(x, y, item_width, height); //TODO: Enough and no more.
     y += height + gap; //padding.
 
     print_layout_group->add_item(portal_clone);
@@ -167,7 +172,8 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
       if(field)
         item_x += (title_width + gap);
 
-      clone->set_print_layout_position(item_x, y, 100, field_height); //TODO: Enough and no more.
+      const double field_width = item_width - title_width - gap;
+      clone->set_print_layout_position(item_x, y, field_width, field_height); //TODO: Enough and no more.
       y += field_height + gap; //padding.
 
       print_layout_group->add_item(clone);
