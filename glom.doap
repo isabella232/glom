@@ -15,7 +15,7 @@
 
   <maintainer>
     <foaf:Person>
-      <foaf:name>Murray CUmming</foaf:name>
+      <foaf:name>Murray Cumming</foaf:name>
       <foaf:mbox rdf:resource="mailto:murrayc@murrayc.com" />
       <gnome:userid>murrayc</gnome:userid>
     </foaf:Person>
