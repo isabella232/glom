@@ -108,12 +108,10 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkTable" id="table_canvas">
+                  <object class="GtkGrid" id="grid_canvas">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                    <property name="n_rows">2</property>
-                    <property name="n_columns">2</property>
                     <child>
                       <object class="GtkVBox" id="vbox_canvas">
                         <property name="visible">True</property>
@@ -124,9 +122,9 @@
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
                         <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
                       </packing>
                     </child>
                     <child>

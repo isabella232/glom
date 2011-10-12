@@ -113,12 +113,17 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_vruler_button_press_event), false);
  
   //Add the ruler widgets to the table at the left and top:
-  Gtk::Table* table = 0;
-  builder->get_widget("table_canvas", table);
-  gtk_table_attach(table->gobj(), GTK_WIDGET(m_vruler), 
-    0, 1, 1, 2, GTK_SHRINK, (GtkAttachOptions)(GTK_EXPAND | GTK_FILL), 0, 0);
-  gtk_table_attach(table->gobj(), GTK_WIDGET(m_hruler), 
-    1, 2, 0, 1, (GtkAttachOptions)(GTK_EXPAND | GTK_FILL), GTK_SHRINK, 0, 0);
+  Gtk::Grid* grid = 0;
+  builder->get_widget("grid_canvas", grid);
+  gtk_grid_attach(grid->gobj(), GTK_WIDGET(m_vruler), 
+    0, 1, 1, 1);
+  gtk_widget_set_hexpand(GTK_WIDGET(m_vruler), FALSE);
+  gtk_widget_set_vexpand(GTK_WIDGET(m_vruler), TRUE);
+
+  gtk_grid_attach(grid->gobj(), GTK_WIDGET(m_hruler), 
+    1, 0, 1, 1);
+  gtk_widget_set_hexpand(GTK_WIDGET(m_hruler), TRUE);
+  gtk_widget_set_vexpand(GTK_WIDGET(m_hruler), FALSE);
 
   gimp_ruler_set_unit(m_hruler, GIMP_UNIT_MM);
   gimp_ruler_set_unit(m_vruler, GIMP_UNIT_MM);

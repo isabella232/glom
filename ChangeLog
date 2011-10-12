@@ -1,3 +1,16 @@
+2011-10-13  Murray Cumming  <murrayc@murrayc.com>
+
+	Replace Gtk::Table with Gtk::Grid in the source code.
+
+	* glom/mode_design/fields/dialog_fielddefinition.h: Use the table 
+	(from the .glade file) via Gtk::Widget*.
+	* ui/developer/window_print_layout_edit.glade: Replace the GtkTable
+	with a GtkGrid.
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	Adapt.
+	There are still GtkTables in the other .glade files, but this at least
+	lets us build with gtkmm 3.3/3.4 even with --enable-warnings=fatal.
+
 2011-10-12  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Avoid some code duplication.

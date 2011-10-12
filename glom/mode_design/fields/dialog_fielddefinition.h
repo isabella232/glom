@@ -78,7 +78,7 @@ private:
   Gtk::RadioButton* m_pRadio_UserEntry;
   Gtk::Alignment* m_pAlignment_UserEntry;
   Gtk::CheckButton* m_pCheck_Lookup;
-  Gtk::Table* m_pTable_Lookup;
+  Gtk::Widget* m_pTable_Lookup; //So we can make it insensitive.
   ComboBox_Relationship* m_pCombo_LookupRelationship;
   Combo_TextGlade* m_pCombo_LookupField;
 
