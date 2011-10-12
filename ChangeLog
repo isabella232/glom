@@ -1,5 +1,16 @@
 2011-10-12  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Avoid some code duplication.
+
+	* glom/print_layout/print_layout_utils.[h|cc]: moved get_page_height()
+	from CanvasPrintLayout to here. And actually get the margins.
+	* glom/print_layout/canvas_print_layout.cc: get_page_y_start_and_end():
+	Use it here.
+	get_page_height(): Forward to the PrintLayoutUtils versions, passing 
+	the extra parameters.
+
+2011-10-12  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Move items to next page when expanding portals.
 
 	* glom/print_layout/canvas_print_layout.[h|cc]: move_items_below_item():

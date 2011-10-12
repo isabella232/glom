@@ -30,6 +30,7 @@
 #include <glom/utility_widgets/canvas/canvas_table_movable.h>
 #include <glom/utility_widgets/canvas/canvas_image_movable.h>
 #include <glom/utility_widgets/canvas/canvas_text_movable.h>
+#include <glom/print_layout/print_layout_utils.h>
 #include <glom/application.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
@@ -1255,15 +1256,10 @@ guint Canvas_PrintLayout::get_page_for_y(double y) const
     return 0; //Avoid a division by zero.
      
   const double pages = y / (double)page_height;
-  std::cout << "pages = " << pages << ", for y=" << y << ", page_height=" << page_height << std::endl;
-  
   double pages_integral = 0;
   const double pages_fractional = modf(pages, &pages_integral);
-  std::cout << "pages_integral =" <<  pages_integral << std::endl;
-  
+
   const guint pages_full = (guint)pages_integral + (pages_fractional ? 1 : 0);
- std::cout << "pages_full =" <<  pages_full << std::endl;
-  
   return pages_full;
 }
 
@@ -1304,30 +1300,22 @@ double Canvas_PrintLayout::move_fully_to_page(const Glib::RefPtr<CanvasLayoutIte
     moved = false;
   }
 
-  item->set_xy(x, y);
+  if(moved)
+    item->set_xy(x, y);
+
   return y;
 }
 
 double Canvas_PrintLayout::get_page_height() const
 {
-  double margin_top = 0;
-  double margin_bottom = 0;
-  return get_page_height(margin_top, margin_bottom);
+  const Glib::RefPtr<const Gtk::PageSetup> page_setup = get_page_setup(); 
+  return PrintLayoutUtils::get_page_height(page_setup, property_units());
 }
 
 double Canvas_PrintLayout::get_page_height(double& margin_top, double& margin_bottom) const
 {
   const Glib::RefPtr<const Gtk::PageSetup> page_setup = get_page_setup();
-  const Gtk::PaperSize paper_size = page_setup->get_paper_size();
-  const Gtk::Unit units = property_units();
-  
-  double page_height = 0;
-  if(page_setup->get_orientation() == Gtk::PAGE_ORIENTATION_PORTRAIT) //TODO: Handle the reverse orientations too?
-    page_height = paper_size.get_height(units);
-  else
-    page_height = paper_size.get_width(units);
-
-  return page_height;
+  return PrintLayoutUtils::get_page_height(page_setup, property_units(), margin_top, margin_bottom);
 }
 
 } //namespace Glom

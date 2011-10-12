@@ -36,6 +36,38 @@ static Gtk::Unit get_units()
   return Gtk::UNIT_MM;
 }
 
+double get_page_height(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units)
+{
+  double margin_top = 0;
+  double margin_bottom = 0;
+  return get_page_height(page_setup, units, margin_top, margin_bottom);
+}
+
+double get_page_height(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, double& margin_top, double& margin_bottom)
+{
+  //Initialize output parameters:
+  margin_top = 0;
+  margin_bottom = 0;
+
+  const Gtk::PaperSize paper_size = page_setup->get_paper_size();
+  
+  double page_height = 0;
+  if(page_setup->get_orientation() == Gtk::PAGE_ORIENTATION_PORTRAIT) //TODO: Handle the reverse orientations too?
+  {
+    page_height = paper_size.get_height(units);
+    margin_top = page_setup->get_top_margin(units);
+    margin_bottom = page_setup->get_bottom_margin(units);
+  }
+  else
+  {
+    page_height = paper_size.get_width(units);
+    margin_top = page_setup->get_left_margin(units);
+    margin_bottom = page_setup->get_right_margin(units);
+  }
+
+  return page_height;
+}
+
 /* Get the start and end of the page, inside the margins.
  */
 static void get_page_y_start_and_end(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, guint page_number, double& y1, double& y2)
@@ -46,21 +78,20 @@ static void get_page_y_start_and_end(const Glib::RefPtr<const Gtk::PageSetup>& p
   const Gtk::PaperSize paper_size = page_setup->get_paper_size();
   const Gtk::Unit units = get_units();
   
-  double page_height = 0;
-  if(page_setup->get_orientation() == Gtk::PAGE_ORIENTATION_PORTRAIT) //TODO: Handle the reverse orientations too?
-    page_height = paper_size.get_height(units);
-  else
-    page_height = paper_size.get_width(units);
+  double margin_top = 0;
+  double margin_bottom = 0;
+  const double page_height = get_page_height(page_setup, units, 
+    margin_top, margin_bottom);
     
   //y1:
   y1 = page_height * (page_number);  
-  double y_border = page_setup->get_top_margin(units);
+  double y_border = margin_top;
   while(y1 <= y_border)
     y1 += GRID_GAP;
   
   //y2:
   y2 = page_height * (page_number + 1);  
-  y2 -= page_setup->get_bottom_margin(units); //TODO: Handle orientation here and wherever else we use the margin?
+  y2 -= margin_bottom;
 
   //std::cout << G_STRFUNC << "page_number=" << page_number << ", y1=" << y1 << "y2=" << y2 << std::endl;
 }
