@@ -682,6 +682,11 @@ Glib::RefPtr<Gtk::PageSetup> Canvas_PrintLayout::get_page_setup()
   return m_page_setup;
 }
 
+Glib::RefPtr<const Gtk::PageSetup> Canvas_PrintLayout::get_page_setup() const
+{
+  return m_page_setup;
+}
+
 void Canvas_PrintLayout::set_page_count(guint count)
 {
   if(count < 1)
@@ -1195,6 +1200,8 @@ void Canvas_PrintLayout::move_items_below_item(const Glib::RefPtr<CanvasLayoutIt
   double item_height = 0;
   canvas_item->get_width_height(item_width, item_height);
 
+  double bottom_max = 0;
+
   const int count = root->get_n_children();
   for(int i = 0; i < count; ++i)
   {
@@ -1211,7 +1218,7 @@ void Canvas_PrintLayout::move_items_below_item(const Glib::RefPtr<CanvasLayoutIt
     if(y < y_start)
       continue;
 
-    //Ignore items that would not overlap even if the had the same y:
+    //Ignore items that would not overlap even if they had the same y:
     double width = 0;
     double height = 0;
     derived->get_width_height(width, height);
@@ -1221,10 +1228,106 @@ void Canvas_PrintLayout::move_items_below_item(const Glib::RefPtr<CanvasLayoutIt
     if( x > (item_x + item_width))
       continue;
 
+    //Move it down:
     y += offset;
     derived->set_xy(x, y);
+
+    //Move it some more if necessary:
+    y = move_fully_to_page(derived);
+
+    //Check where the bottom is:
+    const double bottom = y + height;
+    bottom_max = std::max(bottom_max, bottom);
+  }
+
+  //Add extra pages if necessary:
+  const guint page_count_needed = get_page_for_y(bottom_max);
+  if(page_count_needed > get_page_count())
+  {
+    set_page_count(page_count_needed);
   }
 }
 
+guint Canvas_PrintLayout::get_page_for_y(double y) const
+{
+  const double page_height = get_page_height();
+  if(!page_height)
+    return 0; //Avoid a division by zero.
+     
+  const double pages = y / (double)page_height;
+  std::cout << "pages = " << pages << ", for y=" << y << ", page_height=" << page_height << std::endl;
+  
+  double pages_integral = 0;
+  const double pages_fractional = modf(pages, &pages_integral);
+  std::cout << "pages_integral =" <<  pages_integral << std::endl;
+  
+  const guint pages_full = (guint)pages_integral + (pages_fractional ? 1 : 0);
+ std::cout << "pages_full =" <<  pages_full << std::endl;
+  
+  return pages_full;
+}
+
+double Canvas_PrintLayout::move_fully_to_page(const Glib::RefPtr<CanvasLayoutItem>& item)
+{
+  double top_margin = 0;
+  double bottom_margin = 0;
+  const double page_height = get_page_height(top_margin, bottom_margin);
+
+  double x = 0;
+  double y = 0;
+  item->get_xy(x, y);
+
+  //Ignore items that would not overlap even if they had the same y:
+  double width = 0;
+  double height = 0;
+  item->get_width_height(width, height);
+
+  const double usable_page_height = page_height - top_margin - bottom_margin;
+  if(height > usable_page_height)
+    return y; //It will always be in a margin because it is so big. We could never move it somewhere where it would not be.
+
+  bool moved = false;
+  const guint current_page = get_page_for_y(y);
+  const double usable_page_start = current_page * page_height + top_margin;
+  if(y < usable_page_start) //If it is in the top margin:
+  {
+    //Move it to the end of the top margin:
+    y = usable_page_start;
+    moved = true;
+  }
+
+  const double usable_page_end = (current_page + 1) * page_height - bottom_margin;
+  if((y + height) > usable_page_end) //If it is in the top margin:
+  {
+    //Move it to the start of the next page:
+    y = (current_page + 1) * page_height + top_margin;
+    moved = false;
+  }
+
+  item->set_xy(x, y);
+  return y;
+}
+
+double Canvas_PrintLayout::get_page_height() const
+{
+  double margin_top = 0;
+  double margin_bottom = 0;
+  return get_page_height(margin_top, margin_bottom);
+}
+
+double Canvas_PrintLayout::get_page_height(double& margin_top, double& margin_bottom) const
+{
+  const Glib::RefPtr<const Gtk::PageSetup> page_setup = get_page_setup();
+  const Gtk::PaperSize paper_size = page_setup->get_paper_size();
+  const Gtk::Unit units = property_units();
+  
+  double page_height = 0;
+  if(page_setup->get_orientation() == Gtk::PAGE_ORIENTATION_PORTRAIT) //TODO: Handle the reverse orientations too?
+    page_height = paper_size.get_height(units);
+  else
+    page_height = paper_size.get_width(units);
+
+  return page_height;
+}
 
 } //namespace Glom

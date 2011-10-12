@@ -1,5 +1,15 @@
 2011-10-12  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Move items to next page when expanding portals.
+
+	* glom/print_layout/canvas_print_layout.[h|cc]: move_items_below_item():
+	Use a new move_fully_to_page() method to make sure that items are never 
+	in the margins if that is possible, when expanding related records 
+	portals for real data.
+	Also add extra pages when necessary.
+
+2011-10-12  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Related Records: Move others down when expanding.
 
 	* glom/print_layout/canvas_layout_item.[h|cc]: Added 
