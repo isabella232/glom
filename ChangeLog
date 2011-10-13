@@ -1,5 +1,14 @@
 2011-10-13  Murray Cumming  <murrayc@murrayc.com>
 
+	Deleting tables: Remove the auto-increment too.
+
+	* glom/libglom/db_utils.[h|cc]: Added remove_auto_increment().
+	* glom/navigation/box_tables.cc: on_adddel_Delete(): Remove the primary key's
+	autoincrement too.
+	Bug #661653 
+
+2011-10-13  Murray Cumming  <murrayc@murrayc.com>
+
 	DbUtils: Add some parameter checks to the autoincrement methods.
 
 	* glom/libglom/db_utils.cc: Otherwise we risk having an empty where clause,

@@ -103,7 +103,9 @@ Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& 
   */
 Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
-
+/** Use this, for instance, when deleting a table.
+ */
+void remove_auto_increment(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
 //TODO: It would be nice to use sharedptr<const Relationship>& instead of sharedptr<Relationship>&,
 //but it does not seem possible to pass a sharedptr<const Relationship> for a sharedptr<const Relationship>&.

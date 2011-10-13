@@ -288,7 +288,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
   bool something_changed = false;
   for(Gtk::TreeModel::iterator iter = rowStart; iter != iterAfter; ++iter)
   {
-    Glib::ustring table_name = m_AddDel.get_value_key(iter);
+    const Glib::ustring table_name = m_AddDel.get_value_key(iter);
 
     if(!table_name.empty())
     {
@@ -310,7 +310,12 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
           Gtk::MessageDialog dialog(Utils::bold_message(_("Delete Table")), true);
           dialog.set_secondary_text(strMsg);
           dialog.set_transient_for(*Application::get_application());
-          int iButtonClicked = dialog.run();
+          const int iButtonClicked = dialog.run();
+          
+          Glib::ustring primary_key_field_name; 
+          const sharedptr<const Field> primary_key_field = get_field_primary_key_for_table(table_name);
+          if(primary_key_field)
+            primary_key_field_name = primary_key_field->get_name();
 
           //Delete the table:
           if(iButtonClicked == Gtk::RESPONSE_OK)
@@ -320,7 +325,19 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
               std::cerr << "Box_Tables::on_adddel_Delete(): DROP TABLE failed." << std::endl;
             else
             {
-              get_document()->remove_table(table_name); //Forget about it in the document too.
+              //Remove the auto-increment row.
+              //Otherwise it would not start at 0 if a table with the same name is added again later.
+              //TODO: Remove rows for other auto-increment fields too:
+              if(!primary_key_field_name.empty())
+                DbUtils::remove_auto_increment(table_name, primary_key_field_name);
+              else
+              {
+                std::cerr << G_STRFUNC << ": primary_key_field_name is empty" << std::endl;
+              }
+              
+              //Forget about it in the document too.
+              get_document()->remove_table(table_name);
+              
               something_changed = true;
             }
           }

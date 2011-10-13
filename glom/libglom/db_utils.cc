@@ -1558,6 +1558,30 @@ static void recalculate_next_auto_increment_value(const Glib::ustring& table_nam
     std::cerr << "recalculate_next_auto_increment_value(): SELECT MAX() failed." << std::endl;
 }
 
+void remove_auto_increment(const Glib::ustring& table_name, const Glib::ustring& field_name)
+{
+  if(table_name.empty())
+  {
+    std::cerr << G_STRFUNC << ": table_name is empty" << std::endl;
+    return;
+  }
+  
+  if(field_name.empty())
+  {
+    std::cerr << G_STRFUNC << ": field_name is empty" << std::endl;
+    return;
+  }
+  
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_DELETE);
+  builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
+  builder_set_where_autoincrement(builder, table_name, field_name);
+
+  const bool test = query_execute(builder);
+  if(!test)
+    std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
+}
+
 bool insert_example_data(Document* document, const Glib::ustring& table_name)
 {
   //TODO_Performance: Avoid copying:
