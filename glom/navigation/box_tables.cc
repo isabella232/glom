@@ -306,11 +306,9 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
           dialog.set_transient_for(*Application::get_application());
           const int iButtonClicked = dialog.run();
           
-          Glib::ustring primary_key_field_name; 
-          const sharedptr<const Field> primary_key_field = get_field_primary_key_for_table(table_name);
-          if(primary_key_field)
-            primary_key_field_name = primary_key_field->get_name();
-            
+          //Get a list of autoincrementing fields in the table:
+          const Glom::Document::type_vec_fields fields = document->get_table_fields(table_name);
+   
 
           //Delete the table:
           if(iButtonClicked == Gtk::RESPONSE_OK)
@@ -320,20 +318,28 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
               std::cerr << G_STRFUNC << ": DROP TABLE failed." << std::endl;
             else
             {
-              //Remove the auto-increment row.
-              //Otherwise it would not start at 0 if a table with the same name is added again later.
-              //TODO: Remove rows for other auto-increment fields too:
-              if(!primary_key_field_name.empty())
-                DbUtils::remove_auto_increment(table_name, primary_key_field_name);
-              else
-              {
-                std::cerr << G_STRFUNC << ": primary_key_field_name is empty" << std::endl;
-              }
-              
               //Forget about it in the document too.
               get_document()->remove_table(table_name);
               
               something_changed = true;
+            }
+            
+            //Remove the auto-increment rows.
+            //Otherwise it would not start at 0 if a table with the same name, and same field, is added again later.
+            for(Glom::Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+            {
+              const Glom::sharedptr<const Glom::Field> field = *iter;
+              if(!field || !field->get_auto_increment())
+                continue;
+                
+              const Glib::ustring field_name = field->get_name();
+            
+              if(!field_name.empty())
+                DbUtils::remove_auto_increment(table_name, field_name);
+              else
+              {
+                std::cerr << G_STRFUNC << ": field_name is empty" << std::endl;
+              }
             }
           }
         }
