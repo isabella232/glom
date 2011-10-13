@@ -103,6 +103,10 @@ Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& 
   */
 Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
+/** Use this, for instance, when deleting a table.
+ */
+void remove_auto_increment(const Glib::ustring& table_name, const Glib::ustring& field_name);
+
 void layout_item_fill_field_details(Document* document, const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item);
 
 
