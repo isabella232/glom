@@ -1214,6 +1214,9 @@ void Canvas_PrintLayout::move_items_below_item(const Glib::RefPtr<CanvasLayoutIt
     if(!derived)
       continue;
 
+    if(derived == canvas_item)
+      continue;
+
     //Ignore items above y_start:
     double x = 0;
     double y = 0;
