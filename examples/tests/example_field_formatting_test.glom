@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<glom_document xmlns="http://glom.org/glom_document" format_version="6" translation_original_locale="en_CA" database_title="Field Formatting Test" is_example="true">
+  <connection hosting_mode="postgres_central" server="localhost" try_other_ports="false" database="glom_field_formatting_test" port="5432"/>
+  <table name="alignment" title="Alignment">
+    <example_rows>
+      <example_row>
+        <value column="alignment_id">0</value>
+        <value column="field_left">left alignment</value>
+        <value column="field_right">right alignmet</value>
+        <value column="override_left">layout overrides with left alignment</value>
+        <value column="override_right">layout overrides with right alignment</value>
+      </example_row>
+    </example_rows>
+    <fields>
+      <field name="alignment_id" primary_key="true" auto_increment="true" type="Number" title="alignment ID">
+        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+      </field>
+      <field name="field_left" type="Text" title="Field left">
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" alignment_horizontal="left" choices_related_show_all="true"/>
+      </field>
+      <field name="field_right" type="Text" title="Field Right">
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" alignment_horizontal="right" choices_related_show_all="true"/>
+      </field>
+      <field name="override_left" type="Text" title="Override with Left">
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" alignment_horizontal="right" choices_related_show_all="true"/>
+      </field>
+      <field name="override_right" type="Text" title="Override with Right">
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" alignment_horizontal="left" choices_related_show_all="true"/>
+      </field>
+    </fields>
+    <relationships/>
+    <data_layouts>
+      <data_layout name="list" parent_table="alignment">
+        <data_layout_groups>
+          <data_layout_group name="main">
+            <data_layout_item name="alignment_id" editable="true" use_default_formatting="true" column_width="94">
+              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="field_left" editable="true" use_default_formatting="true" column_width="130">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="field_right" editable="true" use_default_formatting="true" column_width="143">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="override_left" editable="true" column_width="308">
+              <title_custom/>
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" alignment_horizontal="left" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="override_right" editable="true">
+              <title_custom/>
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" alignment_horizontal="right" choices_related_show_all="true"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+      <data_layout name="details" parent_table="alignment">
+        <data_layout_groups>
+          <data_layout_group name="overview" columns_count="2" title="Overview">
+            <data_layout_item name="alignment_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+            </data_layout_item>
+          </data_layout_group>
+          <data_layout_group name="details" columns_count="2" title="Details">
+            <data_layout_item name="field_left" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="field_right" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="override_left" editable="true">
+              <title_custom/>
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" alignment_horizontal="left" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="override_right" editable="true">
+              <title_custom/>
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" alignment_horizontal="right" choices_related_show_all="true"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+    </data_layouts>
+    <reports/>
+    <print_layouts/>
+  </table>
+  <table name="colours" default="true" title="Colours">
+    <example_rows>
+      <example_row>
+        <value column="colours_id">0</value>
+        <value column="redtext_blueback">red text, blue background</value>
+        <value column="override_redtext_blueback">black text, white background</value>
+        <value column="alt_colour_neg">4</value>
+        <value column="alt_colour_neg_overrides">4</value>
+      </example_row>
+      <example_row>
+        <value column="colours_id">1</value>
+        <value column="redtext_blueback">red text, blue background</value>
+        <value column="override_redtext_blueback">black text, white background</value>
+        <value column="alt_colour_neg">-5</value>
+        <value column="alt_colour_neg_overrides">-5</value>
+      </example_row>
+    </example_rows>
+    <fields>
+      <field name="colours_id" primary_key="true" auto_increment="true" type="Number" title="Colours ID">
+        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+      </field>
+      <field name="redtext_blueback" type="Text" title="Red Text Blue Background">
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" color_fg="#ffff00000000" color_bg="#00000000ffff" choices_related_show_all="true"/>
+      </field>
+      <field name="override_redtext_blueback" type="Text" title="Override Red Text Blue Background">
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" color_fg="#ffff00000000" color_bg="#00000000ffff" choices_related_show_all="true"/>
+      </field>
+      <field name="alt_colour_neg" type="Number" title="Alternate Colour for Negatives">
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_use_alt_negative_color="true" choices_related_show_all="true"/>
+      </field>
+      <field name="alt_colour_neg_overrides" type="Number" title="Alternate Colour for Negatives Overrides Text Colour">
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_use_alt_negative_color="true" color_fg="#00000000ffff" choices_related_show_all="true"/>
+      </field>
+    </fields>
+    <relationships/>
+    <data_layouts>
+      <data_layout name="list" parent_table="colours">
+        <data_layout_groups>
+          <data_layout_group name="main">
+            <data_layout_item name="colours_id" editable="true" use_default_formatting="true" column_width="77">
+              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="redtext_blueback" editable="true" use_default_formatting="true" column_width="216">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="override_redtext_blueback" editable="true" column_width="239">
+              <title_custom/>
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" color_fg="#000000000000" color_bg="#ffffffffffff" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="alt_colour_neg" editable="true" use_default_formatting="true" column_width="219">
+              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+            </data_layout_item>
+            <data_layout_item name="alt_colour_neg_overrides" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+      <data_layout name="details" parent_table="colours">
+        <data_layout_groups>
+          <data_layout_group name="main">
+            <data_layout_group name="overview" columns_count="2" title="Overview">
+              <data_layout_item name="colours_id" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              </data_layout_item>
+            </data_layout_group>
+            <data_layout_group name="details" columns_count="2" title="Details">
+              <data_layout_item name="redtext_blueback" editable="true" use_default_formatting="true">
+                <title_custom/>
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              </data_layout_item>
+              <data_layout_item name="override_redtext_blueback" editable="true">
+                <title_custom/>
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" color_fg="#000000000000" color_bg="#ffffffffffff" choices_related_show_all="true"/>
+              </data_layout_item>
+              <data_layout_item name="alt_colour_neg_overrides" editable="true" use_default_formatting="true">
+                <title_custom/>
+                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              </data_layout_item>
+              <data_layout_item name="alt_colour_neg" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              </data_layout_item>
+            </data_layout_group>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+    </data_layouts>
+    <reports/>
+    <print_layouts/>
+  </table>
+  <groups><!--These are only used when recreating a database from an example file. The actual access-control is on the server, of course.--></groups>
+  <library_modules/></glom_document>

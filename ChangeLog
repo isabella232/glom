@@ -1,3 +1,9 @@
+2011-10-13  Ben Konrath  <ben@bagu.org>
+
+	Add example document to test field formatting.
+
+	* examples/tests/example_field_formatting_test.glom: New file.
+
 2011-10-11  Murray Cumming  <murrayc@murrayc.com>
 
 	TranslatableItem: Make get_title() virtual.
