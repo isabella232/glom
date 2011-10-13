@@ -1232,7 +1232,6 @@ void Canvas_PrintLayout::move_items_below_item(const Glib::RefPtr<CanvasLayoutIt
     //Move it down:
     y += offset;
     derived->set_xy(x, y);
-
     //Move it some more if necessary:
     y = move_fully_to_page(derived);
 
@@ -1254,13 +1253,11 @@ guint Canvas_PrintLayout::get_page_for_y(double y) const
   const double page_height = get_page_height();
   if(!page_height)
     return 0; //Avoid a division by zero.
-     
+
   const double pages = y / (double)page_height;
   double pages_integral = 0;
-  const double pages_fractional = modf(pages, &pages_integral);
-
-  const guint pages_full = (guint)pages_integral + (pages_fractional ? 1 : 0);
-  return pages_full;
+  modf(pages, &pages_integral);
+  return pages_integral;
 }
 
 double Canvas_PrintLayout::move_fully_to_page(const Glib::RefPtr<CanvasLayoutItem>& item)
@@ -1285,6 +1282,8 @@ double Canvas_PrintLayout::move_fully_to_page(const Glib::RefPtr<CanvasLayoutIte
   bool moved = false;
   const guint current_page = get_page_for_y(y);
   const double usable_page_start = current_page * page_height + top_margin;
+  //std::cout << G_STRFUNC << ": debug: current_page=" << current_page << ", usable_page_start =" << usable_page_start << std::endl;
+
   if(y < usable_page_start) //If it is in the top margin:
   {
     //Move it to the end of the top margin:

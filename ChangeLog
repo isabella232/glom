@@ -1,5 +1,12 @@
 2011-10-13  Murray Cumming  <murrayc@murrayc.com>
 
+	PrintLayout: Standard: Do not move to next page unnecessary.
+
+	* glom/print_layout/canvas_print_layout.cc: get_page_for_y(): Correct this
+  calculation.
+
+2011-10-13  Murray Cumming  <murrayc@murrayc.com>
+
 	About dialog: Show the version number.
 
 	* glom/application.cc: Use set_version().
