@@ -322,7 +322,7 @@ sharedptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>&
   //y is probably _after_ the last item, not exactly at the bottom of the last item, so we subtract gap.
   //TODO: However, this might not be reliable,
   //so this could lead to an extra blank page.
-  const guint page_number = get_page_for_y(page_setup, units, y - gap);
+  const guint page_number = get_page_for_y(page_setup, units, y - GRID_GAP);
   if(page_number >= print_layout->get_page_count())
   {
     print_layout->set_page_count(page_number + 1);
