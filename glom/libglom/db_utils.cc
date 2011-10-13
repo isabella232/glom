@@ -1237,6 +1237,18 @@ bool drop_column(const Glib::ustring& table_name, const Glib::ustring& field_nam
 
 static void builder_set_where_autoincrement(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
+  if(table_name.empty())
+  {
+    std::cerr << G_STRFUNC << ": table_name is empty" << std::endl;
+    return;
+  }
+  
+  if(field_name.empty())
+  {
+    std::cerr << G_STRFUNC << ": field_name is empty" << std::endl;
+    return;
+  }
+  
   builder->set_where(builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
     builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
       builder->add_field_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME),
@@ -1248,6 +1260,18 @@ static void builder_set_where_autoincrement(const Glib::RefPtr<Gnome::Gda::SqlBu
 
 Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
+  if(table_name.empty())
+  {
+    std::cerr << G_STRFUNC << ": table_name is empty" << std::endl;
+    return Gnome::Gda::Value();
+  }
+  
+  if(field_name.empty())
+  {
+    std::cerr << G_STRFUNC << ": field_name is empty" << std::endl;
+    return Gnome::Gda::Value();
+  }
+  
   const Gnome::Gda::Value result = DbUtils::auto_increment_insert_first_if_necessary(table_name, field_name);
   double num_result = Conversions::get_double_for_gda_value_numeric(result);
 
@@ -1269,6 +1293,18 @@ Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name,
 
 Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
+  if(table_name.empty())
+  {
+    std::cerr << G_STRFUNC << ": table_name is empty" << std::endl;
+    return Gnome::Gda::Value();
+  }
+  
+  if(field_name.empty())
+  {
+    std::cerr << G_STRFUNC << ": field_name is empty" << std::endl;
+    return Gnome::Gda::Value();
+  }
+
   Gnome::Gda::Value value;
 
   //Check that the user is allowd to view and edit this table:
@@ -1326,6 +1362,18 @@ Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& 
  */
 static void recalculate_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
+  if(table_name.empty())
+  {
+    std::cerr << G_STRFUNC << ": table_name is empty" << std::endl;
+    return;
+  }
+  
+  if(field_name.empty())
+  {
+    std::cerr << G_STRFUNC << ": field_name is empty" << std::endl;
+    return;
+  }
+
   //Make sure that the row exists in the glom system table:
   auto_increment_insert_first_if_necessary(table_name, field_name);
 

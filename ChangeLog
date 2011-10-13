@@ -1,5 +1,12 @@
 2011-10-13  Murray Cumming  <murrayc@murrayc.com>
 
+	DbUtils: Add some parameter checks to the autoincrement methods.
+
+	* glom/libglom/db_utils.cc: Otherwise we risk having an empty where clause,
+	and doing unwanted things to the entire table.
+
+2011-10-13  Murray Cumming  <murrayc@murrayc.com>
+
 	DbUtils: Avoid some repeated code.
 
 	* glom/libglom/db_utils.cc: Add a utility function for adding the where 
