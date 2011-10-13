@@ -1,5 +1,11 @@
 2011-10-13  Murray Cumming  <murrayc@murrayc.com>
 
+	About dialog: Show the version number.
+
+	* glom/application.cc: Use set_version().
+
+2011-10-13  Murray Cumming  <murrayc@murrayc.com>
+
 	Deleting tables: Remove all auto-increment rows.
 
 	* glom/navigation/box_tables.cc: Remove the autoincrement rows for all 
