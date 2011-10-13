@@ -300,11 +300,11 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
         else
         {
           //Ask the user to confirm:
-          Glib::ustring strMsg = _("Are you sure that you want to delete this table?\nTable name: ") + table_name;
+          const Glib::ustring strMsg = Glib::ustring::compose(_("Are you sure that you want to delete this table?\nTable name: %1"), table_name);
           Gtk::MessageDialog dialog(Utils::bold_message(_("Delete Table")), true);
           dialog.set_secondary_text(strMsg);
           dialog.set_transient_for(*Application::get_application());
-          int iButtonClicked = dialog.run();
+          const int iButtonClicked = dialog.run();
 
           //Delete the table:
           if(iButtonClicked == Gtk::RESPONSE_OK)

@@ -264,11 +264,11 @@ void ComboBox_Relationship::on_cell_data_fromfield(const Gtk::TreeModel::const_i
     {
       sharedptr<Relationship> parent_relationship = (*iterParent)[m_model_columns.m_relationship];
       if(parent_relationship)
-        m_renderer_fromfield->set_property("text", _(" Via: ") + parent_relationship->get_title() + "::" + relationship->get_from_field());
+        m_renderer_fromfield->set_property("text", Glib::ustring::compose(_(" Via: %1::%2"), parent_relationship->get_title(), relationship->get_from_field()));
     }
     else
     {
-      m_renderer_fromfield->set_property("text", _(" Via: ") + relationship->get_to_field());
+      m_renderer_fromfield->set_property("text", Glib::ustring::compose(_(" Via: %1"), relationship->get_to_field()));
     }
   }
   else

@@ -739,7 +739,7 @@ void Dialog_Import_CSV::on_parser_file_read_error(const Glib::ustring& error_mes
 
 void Dialog_Import_CSV::on_parser_have_display_name(const Glib::ustring& display_name)
 {
-  set_title(_("Import From CSV File: ") + display_name);
+  set_title( Glib::ustring::compose(_("Import From CSV File: %1"), display_name) );
 }
 
 void Dialog_Import_CSV::on_parser_state_changed()

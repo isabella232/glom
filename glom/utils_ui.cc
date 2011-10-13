@@ -148,7 +148,7 @@ void Utils::show_help(const Glib::ustring& id)
   }
   catch(const std::exception& ex)
   {
-    const Glib::ustring message = _("Could not display help: ") + Glib::ustring(ex.what());
+    const Glib::ustring message = Glib::ustring::compose(_("Could not display help: %1"), Glib::ustring(ex.what()));
     Gtk::MessageDialog dialog(message, false, Gtk::MESSAGE_ERROR);
     dialog.run();
   }

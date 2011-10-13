@@ -29,7 +29,11 @@ namespace
   {
     Glib::ustring message = _("This document has unsaved changes. Would you like to save the document?");
     if(!file_uri.empty())
-      message += _("\n\nDocument:\n") + Glib::filename_display_basename(file_uri); //TODO: Can we use filename_display_basename() with a URI?
+    {
+      message += "\n\n";
+      message += Glib::ustring::compose(_("Document:\n%1"), Glib::filename_display_basename(file_uri)); //TODO: Can we use filename_display_basename() with a URI?
+    }
+
     return message;
   }
 }

@@ -1118,9 +1118,9 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
       {
         sharedptr<LayoutItem_CalendarPortal> layout_calendar = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(layout_portal);
         if(layout_calendar)
-          markup = _("Related Calendar: ") + layout_portal->get_relationship_name();
+          markup = Glib::ustring::compose(_("Related Calendar: %1"), layout_portal->get_relationship_name());
         else
-          markup = _("Related List: ") + layout_portal->get_relationship_name();
+          markup = Glib::ustring::compose(_("Related List: %1"), layout_portal->get_relationship_name());
       }
       else
       {
@@ -1137,7 +1137,7 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
           sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
           if(layout_item_field)
           {
-            markup = _("Field: ") + layout_item_field->get_layout_display_name(); //TODO: Put this all in a sprintf-style string so it can be translated properly.
+            markup = Glib::ustring::compose(_("Field: %1"), layout_item_field->get_layout_display_name());
 
             //Just for debugging:
             //if(!row[m_model_items->m_columns.m_col_editable])

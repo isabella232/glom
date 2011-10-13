@@ -1,3 +1,16 @@
+2011-10-13  Murray Cumming  <murrayc@murrayc.com>
+
+	Use Glib::ustring::compose() instead of concatenation for translatable strings.
+
+	* glom/bakery/dialog_offersave.cc:
+	* glom/import_csv/dialog_import_csv.cc:
+	* glom/mode_design/fields/dialog_fieldcalculation.cc:
+	* glom/mode_design/layout/combobox_relationship.cc:
+	* glom/mode_design/layout/dialog_layout_details.cc:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc:
+	* glom/navigation/box_tables.cc:
+	* glom/utils_ui.cc: Let translators arrange built strings.
+
 2011-10-13  Ben Konrath  <ben@bagu.org>
 
 	Add example document to test field formatting.
