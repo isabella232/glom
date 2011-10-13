@@ -194,6 +194,15 @@ void LayoutItem::set_print_layout_position(double x, double y, double width, dou
   m_positions->m_height = height;
 }
 
+void LayoutItem::set_print_layout_position_y(double y)
+{
+  if(!m_positions && (y == 0))
+    return; //Don't bother instantiating the positions instance if everything is still 0.
+
+  instantiate_positions();
+
+  m_positions->m_y = y;
+}
 
 void LayoutItem::set_print_layout_split_across_pages(bool split)
 {

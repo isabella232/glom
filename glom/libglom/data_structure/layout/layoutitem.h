@@ -62,7 +62,11 @@ public:
 
   /// This is used only for the print layouts.
   void set_print_layout_position(double x, double y, double width, double height);
+  
+  /// This is used only for the print layouts.
+  void set_print_layout_position_y(double y);
 
+  //TODO: Do we use this? Do we want to?
   /// This is used only for the print layouts.
   void set_print_layout_split_across_pages(bool split = true);
 

@@ -1,5 +1,14 @@
 2011-10-13  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Create Standard: Move items to the next page when necessary.
+
+	* glom/libglom/data_structure/layout/layoutitem.[h|cc]: Add 
+	set_print_layout_position_y() for convenience.
+	* glom/print_layout/print_layout_utils.cc: create_standard(): Use
+	move_fully_to_page().
+
+2011-10-13  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Moved some code around.
 
 	* glom/print_layout/canvas_print_layout.[h|cc]: Moved get_page_for_y() and 
@@ -8,7 +17,7 @@
 
 2011-10-13  Murray Cumming  <murrayc@murrayc.com>
 
-	PrintLayout: Standard: Do not move to next page unnecessary.
+	PrintLayout: Standard: Do not move to next page unnecessarily.
 
 	* glom/print_layout/canvas_print_layout.cc: get_page_for_y(): Correct this
   calculation.

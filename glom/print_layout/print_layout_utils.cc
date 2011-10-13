@@ -97,16 +97,78 @@ static void get_page_y_start_and_end(const Glib::RefPtr<const Gtk::PageSetup>& p
 }
 
 
-static void create_standard(const sharedptr<const LayoutGroup>& layout_group, const sharedptr<LayoutGroup>& print_layout_group, const Glib::RefPtr<const Gtk::PageSetup>& page_setup, double x, double& y, guint& page_number)
+static double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, double y, double height)
+{
+  double top_margin = 0;
+  double bottom_margin = 0;
+  const double page_height = get_page_height(page_setup, units, top_margin, bottom_margin);
+
+  //Ignore items that would not overlap even if they had the same y:
+  //Note that we try to keep an extra GRID_GAP from the edge of the margin:
+  const double usable_page_height = page_height - top_margin - bottom_margin - GRID_GAP * 2;
+  if(height > usable_page_height)
+    return y; //It will always be in a margin because it is so big. We could never move it somewhere where it would not be.
+
+  const guint current_page = PrintLayoutUtils::get_page_for_y(page_setup, units, y);
+  const double usable_page_start = current_page * page_height + top_margin + GRID_GAP;
+  //std::cout << G_STRFUNC << ": debug: current_page=" << current_page << ", usable_page_start =" << usable_page_start << std::endl;
+
+  if(y < usable_page_start) //If it is in the top margin:
+  {
+    //Move it to the end of the top margin:
+    y = usable_page_start;
+  }
+
+  const double usable_page_end = (current_page + 1) * page_height - bottom_margin - GRID_GAP;
+  if((y + height) > usable_page_end) //If it is in the top margin:
+  {
+    //Move it to the start of the next page:
+    y = (current_page + 1) * page_height + top_margin + GRID_GAP;
+  }
+
+  return y;
+}
+
+double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, const Glib::RefPtr<CanvasLayoutItem>& item)
+{
+  double x = 0;
+  double y = 0;
+  item->get_xy(x, y);
+  
+  double width = 0;
+  double height = 0;
+  item->get_width_height(width, height);
+  
+  const double y_new = move_fully_to_page(page_setup, units, y, height);
+  if(y_new != y)
+    item->set_xy(x, y_new);
+    
+  return y_new;
+}
+
+/*
+static double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, const sharedptr<LayoutItem>& item)
+{
+  double x = 0;
+  double y = 0;
+  double width = 0;
+  double height = 0;
+  item->get_print_layout_position(x, y, width, height);
+  
+  const double y_new = move_fully_to_page(page_setup, units, y, height);
+  if(y_new != y)
+    item->set_print_layout_position(x, y_new, width, height);
+    
+  return y_new;
+}
+*/
+
+static void create_standard(const sharedptr<const LayoutGroup>& layout_group, const sharedptr<LayoutGroup>& print_layout_group, const Glib::RefPtr<const Gtk::PageSetup>& page_setup, double x, double& y)
 {
   if(!layout_group || !print_layout_group)
   {
     return;
   }
-
-  double min_y = 0; //ignored;
-  double max_y = 0;
-  get_page_y_start_and_end(page_setup, page_number, min_y, max_y);
 
   const double gap = GRID_GAP;
 
@@ -125,18 +187,11 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
     text->set_text(title);
     text->m_formatting.set_text_format_font("Sans Bold 10");
 
+    y = move_fully_to_page(page_setup, units, y, field_height);
     text->set_print_layout_position(x, y, item_width, field_height); //TODO: Enough and no more.
     y += field_height + gap; //padding.
 
     print_layout_group->add_item(text);
-
-    //Start on the next page, if necessary:
-    //TODO: Add a page if necessary:
-    if( y >= max_y )
-    {
-      page_number += 1;
-      get_page_y_start_and_end(page_setup, page_number, y, max_y);
-    }
   }
 
   //Deal with a portal group: 
@@ -153,18 +208,11 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
 
     //Set an initial default height, though this will be changed
     //when we fill it with data:
+    y = move_fully_to_page(page_setup, units, y, field_height);
     portal_clone->set_print_layout_position(x, y, item_width, field_height);
     y += field_height + gap; //padding.
 
     print_layout_group->add_item(portal_clone);
-
-    //Start on the next page, if necessary:
-    //TODO: Add a page if necessary:
-    if( y >= max_y )
-    {
-      page_number += 1;
-      get_page_y_start_and_end(page_setup, page_number, y, max_y);
-    }
 
     return;
   }
@@ -180,22 +228,24 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
     const sharedptr<const LayoutGroup> group = sharedptr<const LayoutGroup>::cast_dynamic(item);
     if(group && !portal)
     {
-      //Recurse: //TODO: Handle portals separately:
-      create_standard(group, print_layout_group, page_setup, x, y, page_number);
+      //Recurse:
+      create_standard(group, print_layout_group, page_setup, x, y);
     }
     else
     {
       //Add field titles, if necessary:
+      sharedptr<LayoutItem_Text> text_title;
       const double title_width = ITEM_WIDTH_WIDE; //TODO: Calculate it based on the widest in the column. Or just halve the column to start.
       const sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
       if(field)
       {
-        sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::create();
-        text->set_text(field->get_title_or_name() + ":");
-        text->set_print_layout_position(x, y, title_width, field_height); //TODO: Enough and no more.
-        text->m_formatting.set_text_format_font("Sans 10");
+        text_title = sharedptr<LayoutItem_Text>::create();
+        text_title->set_text(field->get_title_or_name() + ":");
+        y = move_fully_to_page(page_setup, units, y, field_height);
+        text_title->set_print_layout_position(x, y, title_width, field_height); //TODO: Enough and no more.
+        text_title->m_formatting.set_text_format_font("Sans 10");
 
-        print_layout_group->add_item(text);
+        print_layout_group->add_item(text_title);
       }
 
       //Add the item, such as a field:
@@ -206,18 +256,16 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
         item_x += (title_width + gap);
 
       const double field_width = item_width - title_width - gap;
+      y = move_fully_to_page(page_setup, units, y, field_height); //TODO: Move the title down too, if this was moved.
       clone->set_print_layout_position(item_x, y, field_width, field_height); //TODO: Enough and no more.
+      
+      //Make sure that the title is still aligned, even if this was moved by move_fully_to_page().
+      if(text_title)
+        text_title->set_print_layout_position_y(y);
+      
       y += field_height + gap; //padding.
 
       print_layout_group->add_item(clone);
-
-      //Start on the next page, if necessary:
-      //TODO: Add a page if necessary:
-      if( y >= max_y )
-      {
-        page_number += 1;
-        get_page_y_start_and_end(page_setup, page_number, y, max_y);
-      }
     }
   }
 }
@@ -234,56 +282,6 @@ guint get_page_for_y(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::
   return pages_integral;
 }
 
-double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, const Glib::RefPtr<CanvasLayoutItem>& item)
-{
-  double top_margin = 0;
-  double bottom_margin = 0;
-  const double page_height = get_page_height(page_setup, units, top_margin, bottom_margin);
-
-  double x = 0;
-  double y = 0;
-  item->get_xy(x, y);
-  std::cout << G_STRFUNC << ": y=" << y << std::endl;
-  
-  //Ignore items that would not overlap even if they had the same y:
-  double width = 0;
-  double height = 0;
-  item->get_width_height(width, height);
-
-  const double usable_page_height = page_height - top_margin - bottom_margin;
-  if(height > usable_page_height)
-    return y; //It will always be in a margin because it is so big. We could never move it somewhere where it would not be.
-
-  bool moved = false;
-  const guint current_page = PrintLayoutUtils::get_page_for_y(page_setup, units, y);
-  const double usable_page_start = current_page * page_height + top_margin;
-  //std::cout << G_STRFUNC << ": debug: current_page=" << current_page << ", usable_page_start =" << usable_page_start << std::endl;
-
-  if(y < usable_page_start) //If it is in the top margin:
-  {
-    //Move it to the end of the top margin:
-    y = usable_page_start;
-    moved = true;
-  }
-
-  const double usable_page_end = (current_page + 1) * page_height - bottom_margin;
-  if((y + height) > usable_page_end) //If it is in the top margin:
-  {
-    //Move it to the start of the next page:
-    y = (current_page + 1) * page_height + top_margin;
-    moved = false;
-  }
-
-  if(moved)
-    item->set_xy(x, y);
-    
-  std::cout << G_STRFUNC << ": y moved=" << y << std::endl;
-  
-
-  return y;
-}
-
-
 sharedptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, const Glib::ustring& table_name, const Document* document)
 {
   sharedptr<PrintLayout> print_layout = sharedptr<PrintLayout>::create();  
@@ -291,8 +289,7 @@ sharedptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>&
   //Start inside the border, on the next grid line:
   double y = 0;
   double max_y = 0; //ignored
-  guint page_number = 0;
-  get_page_y_start_and_end(page_setup, page_number, y, max_y);
+  get_page_y_start_and_end(page_setup, 0, y, max_y);
   
   double x = 0;
   double x_border = 0;
@@ -326,10 +323,13 @@ sharedptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>&
     if(!group)
       continue;
 
-    create_standard(group, print_layout->m_layout_group, page_setup, x, y, page_number);
+    create_standard(group, print_layout->m_layout_group, page_setup, x, y);
   }
 
   //Add extra pages if necessary:
+  //TODO: y is probably _after_ the last item, not exactly at the bottom of the last item,
+  //so this could lead to an extra blank page.
+  const guint page_number = get_page_for_y(page_setup, get_units(), y);
   if(page_number >= print_layout->get_page_count())
   {
     print_layout->set_page_count(page_number + 1);
