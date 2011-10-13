@@ -1,5 +1,12 @@
 2011-10-13  Murray Cumming  <murrayc@murrayc.com>
 
+	Deleting tables: Remove all auto-increment rows.
+
+	* glom/navigation/box_tables.cc: Remove the autoincrement rows for all 
+	autoincrement fields.
+
+2011-10-13  Murray Cumming  <murrayc@murrayc.com>
+
 	Deleting tables: Remove the auto-increment too.
 
 	* glom/libglom/db_utils.[h|cc]: Added remove_auto_increment().
