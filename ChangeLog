@@ -1,5 +1,13 @@
 2011-10-14  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Create standard: Use the multiline text formatting.
+
+	* glom/print_layout/print_layout_utils.cc: create_standard():
+	Make text fields multiline if they are multiline on the details 
+	layout.
+
+2011-10-14  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Small improvement.
 
 	* glom/print_layout/canvas_print_layout.cc: move_items_below_item():

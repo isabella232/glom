@@ -247,14 +247,29 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
         item_x += (title_width + gap);
 
       const double field_width = item_width - title_width - gap;
-      y = move_fully_to_page(page_setup, units, y, field_height); //TODO: Move the title down too, if this was moved.
-      clone->set_print_layout_position(item_x, y, field_width, field_height); //TODO: Enough and no more.
+
+      //Make multi-line fields bigger:
+      //TODO: Add an auto-expand feature:
+      double this_field_height = field_height;
+      if(field)
+      {
+        const FieldFormatting& formatting = field->get_formatting_used();
+        if(formatting.get_text_format_multiline())
+        {
+          const guint lines = formatting.get_text_format_multiline_height_lines();
+          if(lines)
+            this_field_height = field_height * lines;
+        }
+      }
+
+      y = move_fully_to_page(page_setup, units, y, this_field_height); //TODO: Move the title down too, if this was moved.
+      clone->set_print_layout_position(item_x, y, field_width, this_field_height); //TODO: Enough and no more.
       
       //Make sure that the title is still aligned, even if this was moved by move_fully_to_page().
       if(text_title)
         text_title->set_print_layout_position_y(y);
       
-      y += field_height + gap; //padding.
+      y += this_field_height + gap; //padding.
 
       print_layout_group->add_item(clone);
     }
