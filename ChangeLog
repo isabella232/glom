@@ -1,5 +1,12 @@
 2011-10-13  Murray Cumming  <murrayc@murrayc.com>
 
+	DbUtils: Avoid some repeated code.
+
+	* glom/libglom/db_utils.cc: Add a utility function for adding the where 
+	clause for the auto-increments table.
+
+2011-10-13  Murray Cumming  <murrayc@murrayc.com>
+
 	Use Glib::ustring::compose() instead of concatenation for translatable strings.
 
 	* glom/bakery/dialog_offersave.cc:
