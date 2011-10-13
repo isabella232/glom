@@ -132,19 +132,8 @@ private:
   
   Glib::RefPtr<Goocanvas::Polyline> create_margin_line(double x1, double y1, double x2, double y2);
 
-  /** Discover what page the y position is on:
-   */
-  guint get_page_for_y(double y) const;
-
   double get_page_height() const;
   double get_page_height(double& margin_top, double& margin_bottom) const;
-
-  /** Move the item to the start of a page, past the top margin,
-   * if it is currently in the bottom margin of a page, or in the top margin of a page.
-   *
-   * @result The new y position of the item.
-   */
-  double move_fully_to_page(const Glib::RefPtr<CanvasLayoutItem>& item);
 
   Glib::ustring m_table_name;
   bool m_modified; //TODO: Actually check this?

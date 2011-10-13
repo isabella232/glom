@@ -22,6 +22,7 @@
 #define GLOM_PRINT_LAYOUT_UTILS_H
 
 #include "config.h"
+#include <glom/print_layout/canvas_layout_item.h>
 #include <libglom/data_structure/print_layout.h>
 #include <libglom/document/document.h>
 #include <gtkmm/pagesetup.h>
@@ -46,6 +47,17 @@ void do_print_layout(const sharedptr<const PrintLayout>& print_layout, const Fou
 
 double get_page_height(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units);
 double get_page_height(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, double& margin_top, double& margin_bottom);
+
+/** Discover what page the y position is on:
+ */
+guint get_page_for_y(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, double y);
+
+/** Move the item to the start of a page, past the top margin,
+ * if it is currently in the bottom margin of a page, or in the top margin of a page.
+ *
+ * @result The new y position of the item.
+ */
+double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, const Glib::RefPtr<CanvasLayoutItem>& item);
 
 } //namespace PrintLayoutUtils
 

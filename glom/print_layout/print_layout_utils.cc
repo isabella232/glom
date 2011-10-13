@@ -222,6 +222,68 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
   }
 }
 
+guint get_page_for_y(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, double y)
+{
+  const double page_height = get_page_height(page_setup, units);
+  if(!page_height)
+    return 0; //Avoid a division by zero.
+
+  const double pages = y / (double)page_height;
+  double pages_integral = 0;
+  modf(pages, &pages_integral);
+  return pages_integral;
+}
+
+double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, const Glib::RefPtr<CanvasLayoutItem>& item)
+{
+  double top_margin = 0;
+  double bottom_margin = 0;
+  const double page_height = get_page_height(page_setup, units, top_margin, bottom_margin);
+
+  double x = 0;
+  double y = 0;
+  item->get_xy(x, y);
+  std::cout << G_STRFUNC << ": y=" << y << std::endl;
+  
+  //Ignore items that would not overlap even if they had the same y:
+  double width = 0;
+  double height = 0;
+  item->get_width_height(width, height);
+
+  const double usable_page_height = page_height - top_margin - bottom_margin;
+  if(height > usable_page_height)
+    return y; //It will always be in a margin because it is so big. We could never move it somewhere where it would not be.
+
+  bool moved = false;
+  const guint current_page = PrintLayoutUtils::get_page_for_y(page_setup, units, y);
+  const double usable_page_start = current_page * page_height + top_margin;
+  //std::cout << G_STRFUNC << ": debug: current_page=" << current_page << ", usable_page_start =" << usable_page_start << std::endl;
+
+  if(y < usable_page_start) //If it is in the top margin:
+  {
+    //Move it to the end of the top margin:
+    y = usable_page_start;
+    moved = true;
+  }
+
+  const double usable_page_end = (current_page + 1) * page_height - bottom_margin;
+  if((y + height) > usable_page_end) //If it is in the top margin:
+  {
+    //Move it to the start of the next page:
+    y = (current_page + 1) * page_height + top_margin;
+    moved = false;
+  }
+
+  if(moved)
+    item->set_xy(x, y);
+    
+  std::cout << G_STRFUNC << ": y moved=" << y << std::endl;
+  
+
+  return y;
+}
+
+
 sharedptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, const Glib::ustring& table_name, const Document* document)
 {
   sharedptr<PrintLayout> print_layout = sharedptr<PrintLayout>::create();  
