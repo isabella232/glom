@@ -29,13 +29,6 @@ namespace Glom
 namespace PrintLayoutUtils
 {
 
-static Gtk::Unit get_units()
-{
-  //TODO: Deal with this properly if we ever allow non-MM units in the UI:
-  //m_canvas.property_units()
-  return Gtk::UNIT_MM;
-}
-
 double get_page_height(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units)
 {
   double margin_top = 0;
@@ -70,13 +63,12 @@ double get_page_height(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk
 
 /* Get the start and end of the page, inside the margins.
  */
-static void get_page_y_start_and_end(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, guint page_number, double& y1, double& y2)
+static void get_page_y_start_and_end(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, guint page_number, double& y1, double& y2)
 {
   y1 = 0;
   y2 = 0;
   
   const Gtk::PaperSize paper_size = page_setup->get_paper_size();
-  const Gtk::Unit units = get_units();
   
   double margin_top = 0;
   double margin_bottom = 0;
@@ -163,7 +155,7 @@ static double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_
 }
 */
 
-static void create_standard(const sharedptr<const LayoutGroup>& layout_group, const sharedptr<LayoutGroup>& print_layout_group, const Glib::RefPtr<const Gtk::PageSetup>& page_setup, double x, double& y)
+static void create_standard(const sharedptr<const LayoutGroup>& layout_group, const sharedptr<LayoutGroup>& print_layout_group, const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, double x, double& y)
 {
   if(!layout_group || !print_layout_group)
   {
@@ -172,7 +164,6 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
 
   const double gap = GRID_GAP;
 
-  const Gtk::Unit units = get_units();
   const Gtk::PaperSize paper_size = page_setup->get_paper_size();
   const double item_width = paper_size.get_width(units) - x -
     page_setup->get_right_margin(units) - gap;
@@ -229,7 +220,7 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
     if(group && !portal)
     {
       //Recurse:
-      create_standard(group, print_layout_group, page_setup, x, y);
+      create_standard(group, print_layout_group, page_setup, units, x, y);
     }
     else
     {
@@ -284,17 +275,18 @@ guint get_page_for_y(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::
 
 sharedptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, const Glib::ustring& table_name, const Document* document)
 {
+  const Gtk::Unit units = Gtk::UNIT_MM;
   sharedptr<PrintLayout> print_layout = sharedptr<PrintLayout>::create();  
   
   //Start inside the border, on the next grid line:
   double y = 0;
   double max_y = 0; //ignored
-  get_page_y_start_and_end(page_setup, 0, y, max_y);
+  get_page_y_start_and_end(page_setup, units, 0, y, max_y);
   
   double x = 0;
   double x_border = 0;
   if(page_setup)
-    x_border = page_setup->get_left_margin(get_units());
+    x_border = page_setup->get_left_margin(units);
   while(x <= x_border)
     x += GRID_GAP;
   
@@ -323,13 +315,13 @@ sharedptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>&
     if(!group)
       continue;
 
-    create_standard(group, print_layout->m_layout_group, page_setup, x, y);
+    create_standard(group, print_layout->m_layout_group, page_setup, units, x, y);
   }
 
   //Add extra pages if necessary:
   //TODO: y is probably _after_ the last item, not exactly at the bottom of the last item,
   //so this could lead to an extra blank page.
-  const guint page_number = get_page_for_y(page_setup, get_units(), y);
+  const guint page_number = get_page_for_y(page_setup, units, y);
   if(page_number >= print_layout->get_page_count())
   {
     print_layout->set_page_count(page_number + 1);

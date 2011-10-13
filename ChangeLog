@@ -1,5 +1,12 @@
 2011-10-13  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Code improvement.
+
+	* glom/print_layout/print_layout_utils.[h|cc]: Remove the hacky get_units()
+	function.
+
+2011-10-13  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Create Standard: Move items to the next page when necessary.
 
 	* glom/libglom/data_structure/layout/layoutitem.[h|cc]: Add 

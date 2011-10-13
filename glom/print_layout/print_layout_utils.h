@@ -33,6 +33,7 @@ namespace Glom
 namespace PrintLayoutUtils
 {
 
+//TODO: Add get_grid_gap(units) instead.
 const double GRID_GAP = 6.0f; //Roughly the right height for 12 point text.
 
 //Base the default item sizes on the grid gap, instead of being arbitrary:
