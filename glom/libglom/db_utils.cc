@@ -1503,12 +1503,12 @@ static void recalculate_next_auto_increment_value(const Glib::ustring& table_nam
     builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
     builder->add_field_value_as_value(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE, next_value);
     builder->set_where(builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
-                                         builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-                                                           builder->add_field_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME),
-                                                           builder->add_expr(table_name)),
-                                         builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-                                                           builder->add_field_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME),
-                                                           builder->add_expr(field_name))));
+      builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+        builder->add_field_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME),
+        builder->add_expr(table_name)),
+      builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+        builder->add_field_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME),
+        builder->add_expr(field_name))));
 
     const bool test = query_execute(builder);
     if(!test)
