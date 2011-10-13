@@ -910,7 +910,7 @@ sharedptr<Field> Box_Data_Details::get_field_primary_key() const
 
 void Box_Data_Details::print_layout()
 {
- const Privileges table_privs = Privs::get_current_privs(m_table_name);
+  const Privileges table_privs = Privs::get_current_privs(m_table_name);
 
   //Don't try to print tables that the user can't view.
   if(!table_privs.m_view)
@@ -936,7 +936,7 @@ void Box_Data_Details::print_layout()
   //Show the print preview window:
   Application* app = Application::get_application();
   PrintLayoutUtils::do_print_layout(print_layout, m_found_set,
-    true /* not preview */, document, app);  
+    false /* not preview */, document, app);  
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

@@ -1,5 +1,12 @@
 2011-10-13  Murray Cumming  <murrayc@murrayc.com>
 
+	Print/Standard: Do print, not preview.
+
+	* glom/mode_data/box_data_details.cc: This is now the same as when 
+	printing a non-standard print layout.
+
+2011-10-13  Murray Cumming  <murrayc@murrayc.com>
+
 	Replace Gtk::Table with Gtk::Grid in the source code.
 
 	* glom/mode_design/fields/dialog_fielddefinition.h: Use the table 
