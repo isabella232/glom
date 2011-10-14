@@ -177,7 +177,12 @@ TODO: Add 'title_singular' element.
         choices_related_show_all (true|false) #IMPLIED
         choices_custom (true|false) "false"
         format_decimal_places_restricted (true|false) "false"
-        format_currency_symbol CDATA #IMPLIED>
+        format_currency_symbol CDATA #IMPLIED
+        format_use_alt_negative_color (true|false) "false"
+        font CDATA #IMPLIED
+        color_fg CDATA #IMPLIED
+        color_bg CDATA #IMPLIED
+        alignment_horizontal CDATA #IMPLIED>
 
 <!-- A custom_choice is a drop down menu that can be selected (for example, Mrs., Mr., Ms., etc) from
   a set of options. -->
