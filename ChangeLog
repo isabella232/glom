@@ -1,5 +1,14 @@
 2011-10-14  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Another expansion fixes.
+
+	* glom/print_layout/print_layout_utils.[h|cc]: move_fully_to_page():
+	Move generic CanvasItemMovables instead of just CanvasLayoutItems.
+	* glom/print_layout/canvas_print_layout.cc: move_items_below_item():
+	Likewise.
+
+2011-10-14  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Increase page count correctly when expanding portals.
 
 	* glom/print_layout/canvas_print_layout.cc: move_items_below_item():

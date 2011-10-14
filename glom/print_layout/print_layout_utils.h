@@ -58,7 +58,7 @@ guint get_page_for_y(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::
  *
  * @result The new y position of the item.
  */
-double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, const Glib::RefPtr<CanvasLayoutItem>& item);
+double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, const Glib::RefPtr<CanvasItemMovable>& item);
 
 } //namespace PrintLayoutUtils
 

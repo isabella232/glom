@@ -121,7 +121,7 @@ static double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_
   return y;
 }
 
-double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, const Glib::RefPtr<CanvasLayoutItem>& item)
+double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, const Glib::RefPtr<CanvasItemMovable>& item)
 {
   double x = 0;
   double y = 0;

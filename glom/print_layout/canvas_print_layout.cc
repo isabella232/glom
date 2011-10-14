@@ -1209,8 +1209,8 @@ void Canvas_PrintLayout::move_items_below_item(const Glib::RefPtr<CanvasLayoutIt
   for(int i = 0; i < count; ++i)
   {
     Glib::RefPtr<Goocanvas::Item> child = root->get_child(i);
-    Glib::RefPtr<CanvasLayoutItem> derived =
-      Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(child);
+    Glib::RefPtr<CanvasItemMovable> derived =
+      CanvasItemMovable::cast_to_movable(child);
     if(!derived)
       continue;
 
