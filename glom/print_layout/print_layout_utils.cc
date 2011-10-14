@@ -88,6 +88,31 @@ static void get_page_y_start_and_end(const Glib::RefPtr<const Gtk::PageSetup>& p
   //std::cout << G_STRFUNC << "page_number=" << page_number << ", y1=" << y1 << "y2=" << y2 << std::endl;
 }
 
+double get_offset_to_move_fully_to_next_page(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, double y, double height)
+{
+  double top_margin = 0;
+  double bottom_margin = 0;
+  const double page_height = get_page_height(page_setup, units, top_margin, bottom_margin);
+
+  const guint current_page = PrintLayoutUtils::get_page_for_y(page_setup, units, y);
+  const double usable_page_start = current_page * page_height + top_margin + GRID_GAP;
+  //std::cout << G_STRFUNC << ": debug: current_page=" << current_page << ", usable_page_start =" << usable_page_start << std::endl;
+
+  if(y < usable_page_start) //If it is in the top margin:
+  {
+    return usable_page_start - y;
+  }
+
+  const double usable_page_end = (current_page + 1) * page_height - bottom_margin - GRID_GAP;
+  if((y + height) > usable_page_end) //If it is in the bottom margin:
+  {
+    //Move it to the start of the next page:
+    const double start_next_page_y = (current_page + 1) * page_height + top_margin + GRID_GAP;
+    return start_next_page_y - y;
+  }
+
+  return 0;
+}
 
 static double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, double y, double height)
 {
@@ -101,27 +126,11 @@ static double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_
   if(height > usable_page_height)
     return y; //It will always be in a margin because it is so big. We could never move it somewhere where it would not be.
 
-  const guint current_page = PrintLayoutUtils::get_page_for_y(page_setup, units, y);
-  const double usable_page_start = current_page * page_height + top_margin + GRID_GAP;
-  //std::cout << G_STRFUNC << ": debug: current_page=" << current_page << ", usable_page_start =" << usable_page_start << std::endl;
-
-  if(y < usable_page_start) //If it is in the top margin:
-  {
-    //Move it to the end of the top margin:
-    y = usable_page_start;
-  }
-
-  const double usable_page_end = (current_page + 1) * page_height - bottom_margin - GRID_GAP;
-  if((y + height) > usable_page_end) //If it is in the top margin:
-  {
-    //Move it to the start of the next page:
-    y = (current_page + 1) * page_height + top_margin + GRID_GAP;
-  }
-
-  return y;
+  const double offset = get_offset_to_move_fully_to_next_page(page_setup, units, y, height);
+  return y + offset;
 }
 
-double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, const Glib::RefPtr<CanvasItemMovable>& item)
+bool needs_move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, const Glib::RefPtr<const CanvasItemMovable>& item)
 {
   double x = 0;
   double y = 0;
@@ -131,11 +140,14 @@ double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, 
   double height = 0;
   item->get_width_height(width, height);
   
+  //We don't actually move it, because items would then group together 
+  //at the top of pages.
+  //Instead, the caller will discover an offset to apply to all items:
   const double y_new = move_fully_to_page(page_setup, units, y, height);
   if(y_new != y)
-    item->set_xy(x, y_new);
-    
-  return y_new;
+    return true;
+
+  return false;
 }
 
 /*

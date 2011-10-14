@@ -931,7 +931,7 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
   double y = 0;
   canvas_item->get_xy(x, y);
   const double offset = portal_height - old_height;
-  move_items_below_item(canvas_item, y + old_height, offset);
+  move_items_down(y + old_height, offset);
 
   canvas_item->add_portal_rows_if_necessary(rows_count);
   //TODO: Move everything else down.
@@ -1188,18 +1188,16 @@ Goocanvas::Bounds Canvas_PrintLayout::get_page_bounds(guint page_num) const
   return bounds;
 }
 
-void Canvas_PrintLayout::move_items_below_item(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, double y_start, double offset)
+Glib::RefPtr<CanvasLayoutItem> Canvas_PrintLayout::move_items_down(double y_start, double offset)
 {
+  //Keep track of the top-most item that needs to be moved all the way on to a new page:
+  Glib::RefPtr<CanvasLayoutItem> needs_moving_top;
+  double y_needs_moving_top = 0;
+  double needs_moving_top_height = 0;
+
   Glib::RefPtr<Goocanvas::Item> root = m_items_group;
   if(!root)
-    return;
-
-  double item_x = 0;
-  double item_y = 0;
-  canvas_item->get_xy(item_x, item_y);
-  double item_width = 0;
-  double item_height = 0;
-  canvas_item->get_width_height(item_width, item_height);
+    return needs_moving_top;
 
   double bottom_max = 0;
   
@@ -1209,13 +1207,13 @@ void Canvas_PrintLayout::move_items_below_item(const Glib::RefPtr<CanvasLayoutIt
   for(int i = 0; i < count; ++i)
   {
     Glib::RefPtr<Goocanvas::Item> child = root->get_child(i);
-    Glib::RefPtr<CanvasItemMovable> derived =
-      CanvasItemMovable::cast_to_movable(child);
+    Glib::RefPtr<CanvasLayoutItem> derived = 
+      Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(child);
     if(!derived)
+    {
+      std::cout << "debug: not derived" << std::endl;
       continue;
-
-    if(derived == canvas_item)
-      continue;
+    }
 
     //Ignore items above y_start:
     double x = 0;
@@ -1228,18 +1226,29 @@ void Canvas_PrintLayout::move_items_below_item(const Glib::RefPtr<CanvasLayoutIt
     double width = 0;
     double height = 0;
     derived->get_width_height(width, height);
-    if( (x + width) < item_x)
-      continue;
+    //if( (x + width) < item_x)
+    //  continue;
 
-    if( x > (item_x + item_width))
-      continue;
+    //if( x > (item_x + item_width))
+    //  continue;
 
     //Move it down:
     y += offset;
     derived->set_xy(x, y);
+
     //Move it some more if necessary:
-    y = PrintLayoutUtils::move_fully_to_page(page_Setup, property_units(), 
-     derived);
+    //See if it should be moved down (but do that later):
+    const bool needs_moving = PrintLayoutUtils::needs_move_fully_to_page(page_Setup, property_units(), derived);
+    if(needs_moving)
+    {
+      if(!needs_moving_top || (y <= y_needs_moving_top))
+      {
+        y_needs_moving_top = y;
+
+        needs_moving_top = derived;
+        needs_moving_top_height = height;
+      }
+    }
 
     //Check where the bottom is:
     const double bottom = y + height;
@@ -1253,6 +1262,25 @@ void Canvas_PrintLayout::move_items_below_item(const Glib::RefPtr<CanvasLayoutIt
   {
     set_page_count(last_page_needed + 1);
   }
+
+  //Now move everything further, completely on to the next page
+  //and then do that again for the next page until all the pages are done:
+  if(needs_moving_top && (y_needs_moving_top > y_start))
+  {
+    std::cout << "extra move: y_needs_moving_top=" << y_needs_moving_top << std::endl;
+    const double extra_offset = 
+      PrintLayoutUtils::get_offset_to_move_fully_to_next_page(
+        page_Setup, property_units(),
+        y_needs_moving_top, needs_moving_top_height);
+    if(extra_offset)
+    {
+      needs_moving_top = move_items_down(y_needs_moving_top, extra_offset);
+    }
+    else
+      needs_moving_top.reset();
+  }
+
+  return needs_moving_top;
 }
 
 double Canvas_PrintLayout::get_page_height() const

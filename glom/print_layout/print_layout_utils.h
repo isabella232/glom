@@ -53,12 +53,14 @@ double get_page_height(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk
  */
 guint get_page_for_y(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, double y);
 
-/** Move the item to the start of a page, past the top margin,
- * if it is currently in the bottom margin of a page, or in the top margin of a page.
+/** See if the item needs to move to the start of a page, past the top margin,
+ * or if it is currently in the bottom margin of a page, or in the top margin of a page.
  *
- * @result The new y position of the item.
+ * @result Whether the item needs to be moved.
  */
-double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, const Glib::RefPtr<CanvasItemMovable>& item);
+bool needs_move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, const Glib::RefPtr<const CanvasItemMovable>& item);
+
+double get_offset_to_move_fully_to_next_page(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, double y, double height);
 
 } //namespace PrintLayoutUtils
 

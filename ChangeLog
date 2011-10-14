@@ -1,5 +1,21 @@
 2011-10-14  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Avoid grouping items at the tops of pages.
+
+	* glom/print_layout/print_layout_utils.[h|cc]: move_fully_to_page():
+	Change this to needs_move_fully_to_page(), so we can decide later how
+	much to move the items.
+	* glom/print_layout/canvas_print_layout.[h|cc]: move_items_below_item():
+	Rename to move_items_down(), not taking an item, and ignoring the x
+	dimension, moving everything down.
+	Remember the highest item that needs moving down more, because it 
+	is in a page margin, then move everything below it down by the same 
+	offset. Keep doing that until no items are in margins, gradually adding 
+	pages. This is a simple form of pagination, and not a particularly 
+	efficient one.
+
+2011-10-14  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Another expansion fixes.
 
 	* glom/print_layout/print_layout_utils.[h|cc]: move_fully_to_page():
