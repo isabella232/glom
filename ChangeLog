@@ -1,5 +1,13 @@
 2011-10-14  Murray Cumming  <murrayc@murrayc.com>
 
+	Tests: Fix cast error when using dlerror().
+
+	* tests/python/test_load_python_library.cc: Noticed on OpenBSD in 
+	bug #660495 (Jasper Lievisse Adriaanse). 
+	I don't know why this worked on Linux.
+
+2011-10-14  Murray Cumming  <murrayc@murrayc.com>
+
 	Examples: Remove other uses of pygtk.
 
 	* examples/example_lesson_planner.glom: Remove an old button script 

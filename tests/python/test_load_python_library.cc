@@ -12,7 +12,7 @@ int main()
 
   if(!lib)
   {
-    char *error = dlerror();
+    const char *error = dlerror();
     if(error)
     {
       fprintf (stderr, "%s\n", error);
