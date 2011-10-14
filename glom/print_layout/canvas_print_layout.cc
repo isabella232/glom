@@ -1247,11 +1247,11 @@ void Canvas_PrintLayout::move_items_below_item(const Glib::RefPtr<CanvasLayoutIt
   }
 
   //Add extra pages if necessary:
-  const guint page_count_needed = PrintLayoutUtils::get_page_for_y(page_Setup, 
+  const guint last_page_needed = PrintLayoutUtils::get_page_for_y(page_Setup, 
     property_units(), bottom_max);
-  if(page_count_needed > get_page_count())
+  if((last_page_needed + 1) > get_page_count())
   {
-    set_page_count(page_count_needed);
+    set_page_count(last_page_needed + 1);
   }
 }
 

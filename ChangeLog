@@ -1,5 +1,13 @@
 2011-10-14  Murray Cumming  <murrayc@murrayc.com>
 
+	Print Layout: Increase page count correctly when expanding portals.
+
+	* glom/print_layout/canvas_print_layout.cc: move_items_below_item():
+	Correct an off-by-one error in the calculation of the number of pages
+	needed.
+
+2011-10-14  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Create standard: Use the multiline text formatting.
 
 	* glom/print_layout/print_layout_utils.cc: create_standard():
