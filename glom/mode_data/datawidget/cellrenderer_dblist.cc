@@ -200,7 +200,13 @@ void CellRendererDbList::repack_cells_related(Gtk::CellLayout* combobox)
 
 void CellRendererDbList::on_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& path)
 {
-  g_assert(cell_editable);
+  //This can happen if no text-column has been set yet,
+  //though that shouldn't really happen.
+  if(!cell_editable)
+  {
+    std::cerr << G_STRFUNC << ": cell_editable was null" << std::endl;
+    return;
+  }
 
   Gtk::CellLayout* combobox = dynamic_cast<Gtk::CellLayout*>(cell_editable);
   if(!combobox)

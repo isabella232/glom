@@ -1,5 +1,17 @@
 2011-10-14  Murray Cumming  <murrayc@murrayc.com>
 
+	List: Actually show custom choices, instead of crashing.
+
+	* glom/mode_data/datawidget/cellcreation.cc: create_cell(): Call
+	set_choices_fixed() if appropriate.
+	* glom/mode_data/datawidget/cellrenderer_dblist.cc: on_editing_started():
+	Replace a g_assert with a warning to std::cerr, in case this happens 
+	again, particularly now that we know when it can happen - if there is
+	no text-column set.
+	Bug #661764 (André Klapper)
+
+2011-10-14  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Avoid grouping items at the tops of pages.
 
 	* glom/print_layout/print_layout_utils.[h|cc]: move_fully_to_page():
