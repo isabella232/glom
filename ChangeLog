@@ -1,5 +1,14 @@
 2011-10-14  Murray Cumming  <murrayc@murrayc.com>
 
+	Examples: Remove other uses of pygtk.
+
+	* examples/example_lesson_planner.glom: Remove an old button script 
+	from the XML though it was not used anymore in the UI.
+	* examples/example_project_manager.glom: Contacts: Remove the Test
+	button. It is in the small business example already instead.
+
+2011-10-14  Murray Cumming  <murrayc@murrayc.com>
+
 	Small Business Example: Port pygtk code to PyGObject+Introspection.
 
 	* examples/example_smallbusiness.glom: This fixes this crash, which 
