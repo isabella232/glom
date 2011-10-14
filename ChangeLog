@@ -1,5 +1,17 @@
 2011-10-14  Murray Cumming  <murrayc@murrayc.com>
 
+	Small Business Example: Port pygtk code to PyGObject+Introspection.
+
+	* examples/example_smallbusiness.glom: This fixes this crash, which 
+	apparently happens when trying to use pygtk when pygobject-3 is 
+	already loaded:
+	Warning: specified class size for type `PyGtkGenericCellRenderer' is 
+	smaller than the parenttype's `GtkCellRenderer' class size
+
+	Bug #661766 (André Klapper)
+
+2011-10-14  Murray Cumming  <murrayc@murrayc.com>
+
 	List: Actually show custom choices, instead of crashing.
 
 	* glom/mode_data/datawidget/cellcreation.cc: create_cell(): Call
