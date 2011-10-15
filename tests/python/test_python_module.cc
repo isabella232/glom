@@ -5,7 +5,7 @@
 #include "config.h"
 #include "glom/python_embed/glom_python.h"
 
-#ifndef G_OS_WIN32
+#ifdef __linux__
 extern "C" void __libc_freeres(void);
 #endif
 
@@ -43,7 +43,7 @@ bool gda_python_module_is_available()
 
 int main ()
 {
-#ifndef G_OS_WIN32
+#ifdef __linux__
   atexit(__libc_freeres);
 #endif
   Glom::libglom_init();  // Calls PyInitialize()

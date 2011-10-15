@@ -1,3 +1,13 @@
+2011-10-15  Jasper Lievisse Adriaanse <jasperla@gnome.org>
+
+	Remove glibc-specific function call.
+
+	* tests/python/test_python_module.cc: Fix build on OpenBSD (and
+	other non-glibc systems) by wrapping calls to __libc_freeres() in
+	correct #ifdefs.
+	Bug #660496
+
+
 2011-10-14  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix DTD to fix make check.
