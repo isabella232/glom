@@ -1,5 +1,19 @@
 2011-10-17  Murray Cumming  <murrayc@murrayc.com>
 
+	Examples: Remove all column_width attributes now that defaults are good.
+
+	* examples/example_film_manager.glom:
+	* examples/example_lesson_planner.glom:
+	* examples/example_music_collection.glom:
+	* examples/example_project_manager.glom:
+	* examples/example_smallbusiness.glom:
+	* examples/sqlite/test_sqlite_music/test_sqlite_music.glom:
+	* examples/tests/example_field_formatting_test.glom:
+	* ldtp/database-templates/PostgresCentral/Test.glom:
+	* ldtp/database-templates/SQLite/Test.glom: A simple regexxer replace.
+
+2011-10-17  Murray Cumming  <murrayc@murrayc.com>
+
 	List View: Correct the default column widths.
 
 	* glom/utils_ui.[h|cc]: get_suitable_field_width_for_widget(): Added a

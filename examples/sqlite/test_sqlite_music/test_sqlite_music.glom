@@ -93,7 +93,7 @@
       <data_layout name="list" parent_table="albums">
         <data_layout_groups>
           <data_layout_group name="toplevel">
-            <data_layout_item name="album_id" use_default_formatting="true" column_width="90">
+            <data_layout_item name="album_id" use_default_formatting="true" >
               <formatting format_thousands_separator="true"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true">
@@ -194,13 +194,13 @@
       <data_layout name="list" parent_table="artists">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="artist_id" editable="true" use_default_formatting="true" column_width="90">
+            <data_layout_item name="artist_id" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="name" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="name" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="description" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
             <data_layout_item name="somenum" editable="true" use_default_formatting="true">
@@ -357,13 +357,13 @@
       <data_layout name="list" parent_table="songs">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="songs_id" editable="true" use_default_formatting="true" column_width="90">
+            <data_layout_item name="songs_id" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="comments" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="comments" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="album_id" editable="true" use_default_formatting="true" column_width="90">
+            <data_layout_item name="album_id" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true">

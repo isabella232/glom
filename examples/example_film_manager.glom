@@ -276,19 +276,19 @@
       <data_layout name="list" parent_table="cars">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="car_id" editable="true" use_default_formatting="true" column_width="90">
+            <data_layout_item name="car_id" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="manufacturer" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="manufacturer" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="model" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="model" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="registration" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="registration" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="description" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
             <data_layout_item name="comment" editable="true" use_default_formatting="true">
@@ -559,16 +559,16 @@
       <data_layout name="list" parent_table="characters">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="character_id" editable="true" use_default_formatting="true" column_width="90">
+            <data_layout_item name="character_id" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="character" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="character" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="contact_id" editable="true" use_default_formatting="true" column_width="90">
+            <data_layout_item name="contact_id" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="name_full" relationship="contacts_actor" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="name_full" relationship="contacts_actor" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
               <title_custom use_custom="true" title="Actor"/>
             </data_layout_item>
@@ -794,13 +794,13 @@
       <data_layout name="list" parent_table="companies">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="company_id" editable="true" use_default_formatting="true" column_width="90">
+            <data_layout_item name="company_id" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="name" editable="true" use_default_formatting="true" column_width="233">
+            <data_layout_item name="name" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="221">
+            <data_layout_item name="description" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
@@ -1408,20 +1408,20 @@
       <data_layout name="list" parent_table="contacts">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="contact_id" editable="true" use_default_formatting="true" column_width="100">
+            <data_layout_item name="contact_id" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
               <title_custom/>
             </data_layout_item>
-            <data_layout_item name="name_first" editable="true" use_default_formatting="true" column_width="100">
+            <data_layout_item name="name_first" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="name_last" editable="true" use_default_formatting="true" column_width="162">
+            <data_layout_item name="name_last" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="address_country" editable="true" use_default_formatting="true" column_width="100">
+            <data_layout_item name="address_country" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="name" relationship="company" editable="true" use_default_formatting="true" column_width="147">
+            <data_layout_item name="name" relationship="company" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
               <title_custom use_custom="true" title="Company Name"/>
             </data_layout_item>
@@ -1625,7 +1625,7 @@
                 </data_layout_group>
               </data_layout_group>
               <data_layout_portal relationship="scenes">
-                <data_layout_item name="scene_id" use_default_formatting="true" column_width="90">
+                <data_layout_item name="scene_id" use_default_formatting="true" >
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
                 <data_layout_item name="overview_name" relationship="scenes" use_default_formatting="true">
@@ -1642,19 +1642,19 @@
       <data_layout name="list" parent_table="crew">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="crew_id" editable="true" use_default_formatting="true" column_width="90">
+            <data_layout_item name="crew_id" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="description" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="contact_id" editable="true" use_default_formatting="true" column_width="90">
+            <data_layout_item name="contact_id" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="name_full" relationship="contacts" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="name_full" relationship="contacts" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="dept_id" editable="true" use_default_formatting="true" column_width="90">
+            <data_layout_item name="dept_id" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" relationship="departments" editable="true" use_default_formatting="true">
@@ -1836,13 +1836,13 @@
       <data_layout name="list" parent_table="deliveries">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="delivery_id" editable="true" use_default_formatting="true" column_width="90">
+            <data_layout_item name="delivery_id" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="description" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="name_full" relationship="departure_contact" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="name_full" relationship="departure_contact" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
               <title_custom use_custom="true" title="Departure Name">
                 <trans_set>
@@ -1850,13 +1850,13 @@
                 </trans_set>
               </title_custom>
             </data_layout_item>
-            <data_layout_item name="departure_place" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="departure_place" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="departure_date" editable="true" use_default_formatting="true" column_width="77">
+            <data_layout_item name="departure_date" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="name_full" relationship="arrival_contact" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="name_full" relationship="arrival_contact" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
               <title_custom use_custom="true" title="Arrival Name">
                 <trans_set>
@@ -1864,7 +1864,7 @@
                 </trans_set>
               </title_custom>
             </data_layout_item>
-            <data_layout_item name="arrival_place" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="arrival_place" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
             <data_layout_item name="arrival_date" editable="true" use_default_formatting="true">
@@ -2073,10 +2073,10 @@
       <data_layout name="list" parent_table="departments">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="departments_id" editable="true" use_default_formatting="true" column_width="90">
+            <data_layout_item name="departments_id" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="name" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="name" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
@@ -2182,10 +2182,10 @@
       <data_layout name="list" parent_table="equipment">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="equipment_id" editable="true" use_default_formatting="true" column_width="90">
+            <data_layout_item name="equipment_id" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="description" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
@@ -2282,22 +2282,22 @@
       <data_layout name="list" parent_table="journeys">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="journey_id" editable="true" use_default_formatting="true" column_width="90">
+            <data_layout_item name="journey_id" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="name_full" relationship="contacts" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="name_full" relationship="contacts" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="192">
+            <data_layout_item name="description" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="arrival_place" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="arrival_place" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="arrival_date" editable="true" use_default_formatting="true" column_width="101">
+            <data_layout_item name="arrival_date" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="departure_place" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="departure_place" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
             <data_layout_item name="departure_date" editable="true" use_default_formatting="true">
@@ -2544,13 +2544,13 @@
       <data_layout name="list" parent_table="locations">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="location_id" editable="true" use_default_formatting="true" column_width="90">
+            <data_layout_item name="location_id" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="name" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="name" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="address_town" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="address_town" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
             <data_layout_item name="address_country" editable="true" use_default_formatting="true">
@@ -2673,13 +2673,13 @@
       <data_layout name="list" parent_table="scene_cast">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="scene_cast_id" editable="true" use_default_formatting="true" column_width="90">
+            <data_layout_item name="scene_cast_id" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="comments" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="comments" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="cast_id" editable="true" use_default_formatting="true" column_width="90">
+            <data_layout_item name="cast_id" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
@@ -3353,22 +3353,22 @@ else:
       <data_layout name="list" parent_table="scenes">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="scene_id" editable="true" use_default_formatting="true" column_width="90">
+            <data_layout_item name="scene_id" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="overview_name" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="overview_name" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="interior_or_exterior" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="interior_or_exterior" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="day_or_night" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="day_or_night" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="date" editable="true" use_default_formatting="true" column_width="77">
+            <data_layout_item name="date" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="minutes" editable="true" use_default_formatting="true" column_width="90">
+            <data_layout_item name="minutes" editable="true" use_default_formatting="true" >
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
