@@ -127,13 +127,13 @@ AS_IF([test "x$glom_enable_postgresql" = xyes],
                  [Whether to enable support for PostgreSQL databases.])])
 
 # Libraries used by libglom:
-REQUIRED_LIBGLOM_LIBS='gthread-2.0 giomm-2.4 libxml++-2.6 >= 2.23.1 pygobject-3.0 >= 2.29.0 libgdamm-5.0 >= 4.99.4 libgda-postgres-5.0'
+REQUIRED_LIBGLOM_LIBS='gthread-2.0 giomm-2.4 libxml++-2.6 >= 2.23.1 libxslt >= 1.1.10 pygobject-3.0 >= 2.29.0 libgdamm-5.0 >= 4.99.4 libgda-postgres-5.0'
 
 AS_IF([test "x$glom_host_win32" != xyes],
       [REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS libepc-1.0 >= 0.4.0"])
 
 # Libraries used by Glom:
-REQUIRED_GLOM_LIBS="$REQUIRED_LIBGLOM_LIBS gtkmm-3.0 >= 3.0.0 gthread-2.0 libxml++-2.6 libxslt >= 1.1.10 goocanvasmm-2.0 >= 1.90.6 evince-view-3.0"
+REQUIRED_GLOM_LIBS="$REQUIRED_LIBGLOM_LIBS gtkmm-3.0 >= 3.0.0 goocanvasmm-2.0 >= 1.90.6 evince-view-3.0"
 
 # Do not require iso-codes in client-only mode, or on Windows:
 # TODO: Package iso-codes for Windows?

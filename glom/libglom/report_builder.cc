@@ -18,11 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "report_builder.h"
+#include <libglom/report_builder.h>
 #include <libglom/utils.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
-#include <glom/xsl_utils.h>
+#include <libglom/xsl_utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

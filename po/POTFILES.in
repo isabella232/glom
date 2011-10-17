@@ -54,6 +54,8 @@ glom/libglom/gst-package.c
 glom/libglom/spawn_with_feedback.cc
 glom/libglom/utils.cc
 glom/libglom/db_utils.cc
+glom/libglom/report_builder.cc
+glom/libglom/xsl_utils.cc
 glom/glom_create_from_example.cc
 glom/main.cc
 glom/mode_data/box_data_calendar_related.cc
@@ -135,7 +137,6 @@ glom/utility_widgets/layoutwidgetbase.cc
 glom/utility_widgets/layoutwidgetmenu.cc
 glom/utility_widgets/layoutwidgetutils.cc
 glom/utility_widgets/notebooklabelglom.cc
-glom/xsl_utils.cc
 ui/operator/box_navigation_tables.glade
 ui/operator/dialog_choose_date.glade
 ui/operator/dialog_connection.glade

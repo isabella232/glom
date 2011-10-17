@@ -1,5 +1,17 @@
 2011-10-17  Murray Cumming  <murrayc@murrayc.com>
 
+	Move ReportBuilder to libglom, to make testing easier.
+
+	* glom/report_builder.[h|cc]:
+	* glom/xsl_utils.[h|cc]: Moved to:
+	* glom/libglom/report_builder.[h|cc]:
+	* glom/libglom/xsl_utils.[h|cc]:
+	* Makefile_glom.am, Makefile_libglom.am: Adapted, also adding a 
+	-D define for libglom to access the xslt file, though I am not happy
+	about a library needing a file to be installed.
+
+2011-10-17  Murray Cumming  <murrayc@murrayc.com>
+
 	ReportBuilder: Do not depend on Base_DB unnecessarily.
 
 	* glom/report_builder.[h|cc]: Just add get/set_document() instead.

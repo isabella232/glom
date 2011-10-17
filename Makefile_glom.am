@@ -104,10 +104,6 @@ glom_source_files = \
 	glom/utils_ui.h							\
 	glom/variablesmap.cc						\
 	glom/variablesmap.h						\
-	glom/xsl_utils.cc						\
-	glom/xsl_utils.h						\
-	glom/report_builder.cc						\
-	glom/report_builder.h						\
 	glom/window_boxholder.cc					\
 	glom/window_boxholder.h						\
 	glom/bakery/app.cc						\

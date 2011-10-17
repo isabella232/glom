@@ -52,7 +52,7 @@
 #include <libglom/data_structure/layout/report_parts/layoutitem_summary.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 
-#include <glom/report_builder.h>
+#include <glom/libglom/report_builder.h>
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/mode_design/dialog_add_related_table.h>
 #include <glom/mode_design/script_library/dialog_script_library.h>

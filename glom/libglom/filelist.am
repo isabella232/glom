@@ -24,7 +24,8 @@ libglom_toplevel_headers =				\
 	glom/libglom/sharedptr.h			\
 	glom/libglom/standard_table_prefs_fields.h	\
 	glom/libglom/utils.h				\
-	glom/libglom/db_utils.h
+	glom/libglom/db_utils.h \
+	glom/libglom/report_builder.h
 
 libglom_data_structure_headers =				\
 	glom/libglom/data_structure/field.h			\
@@ -107,10 +108,14 @@ libglom_sources =							\
 	glom/libglom/init.cc						\
 	glom/libglom/privs.cc						\
 	glom/libglom/privs.h						\
+	glom/libglom/report_builder.cc					\
+	glom/libglom/report_builder.h					\
 	glom/libglom/spawn_with_feedback.cc				\
 	glom/libglom/spawn_with_feedback.h				\
 	glom/libglom/utils.cc						\
 	glom/libglom/utils.h						\
+	glom/libglom/xsl_utils.cc					\
+	glom/libglom/xsl_utils.h					\
 	glom/libglom/connectionpool_backends/backend.cc			\
 	glom/libglom/connectionpool_backends/backend.h			\
 	glom/libglom/data_structure/field.cc				\

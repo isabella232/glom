@@ -18,9 +18,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+#include <libglom/libglom_config.h>
 
-#include "xsl_utils.h"
+#include <libglom/xsl_utils.h>
 #include <libglom/connectionpool.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <libglom/data_structure/glomconversions.h>
@@ -43,17 +43,29 @@
 
 namespace
 {
-  std::string get_xslt_file(const std::string& xsl_file)
+  static std::string get_xsl_file_dir()
   {
 #ifdef G_OS_WIN32
     gchar* directory = g_win32_get_package_installation_directory_of_module(0);
-    std::string xsltdir = Glib::build_filename(Glib::build_filename(directory,
-        "share" G_DIR_SEPARATOR_S "glom" G_DIR_SEPARATOR_S "xslt"), xsl_file);
+    const std::string xsltdir = Glib::build_filename(directory,
+        "share" G_DIR_SEPARATOR_S "glom" G_DIR_SEPARATOR_S "xslt");
     g_free(directory);
     return xsltdir;
 #else
-    return Glib::build_filename(GLOM_PKGDATADIR G_DIR_SEPARATOR_S "xslt", xsl_file);
+    return GLOM_PKGDATADIR_XSLT;
 #endif
+  }
+
+  static std::string get_xslt_file(const std::string& xsl_file)
+  {
+    const std::string result = Glib::build_filename(get_xsl_file_dir(), xsl_file);
+
+    // Check that it exists:
+    const Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(result);
+    if(file && file->query_exists())
+      return result;
+
+    return Glib::build_filename(GLOM_PKGDATADIR_XSLT_NOTINSTALLED, xsl_file);
   }
 }
 
