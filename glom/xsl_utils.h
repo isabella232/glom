@@ -43,7 +43,6 @@ namespace GlomXslUtils
 {
 
 void transform_and_open(const xmlpp::Document& xml_document, const Glib::ustring& xsl_file_path, Gtk::Window* parent_window = 0);
-Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt);
 
 } //namespace GlomXslUtils
 

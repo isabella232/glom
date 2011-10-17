@@ -120,7 +120,6 @@ private:
   void on_python_requested_start_new_record();
 
 protected:
-  static Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual Dialog_Layout* create_layout_dialog() const = 0;

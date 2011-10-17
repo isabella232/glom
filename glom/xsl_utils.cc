@@ -65,6 +65,60 @@ namespace
 namespace Glom
 {
 
+
+static Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt)
+{
+  //Debug output:
+  //std::cout << "XML before XSLT processing: " << std::endl;
+  //std::cout << "  ";
+  //xmlpp::Document& nonconst = const_cast<xmlpp::Document&>(xml_document);
+  //nonconst.write_to_stream_formatted(std::cout);
+  //std::cout << std::endl;
+
+  Glib::ustring  result;
+
+  //Use libxslt to transform the XML:
+  xmlDocPtr style = xmlReadFile(filepath_xslt.c_str(), 0, 0);
+  if(style)
+  {
+    //We need this to be able to use the exsl: functions, even if we declare the namespace at the start of the xsl.
+    //We don't need this anymore - we use xsl:copy-of instead of exsl:node-set (which didn't work as expected anyway):
+    //exsltRegisterAll();
+
+    //Parse the stylesheet:
+    xsltStylesheetPtr cur = xsltParseStylesheetDoc(style);
+    if(cur)
+    {
+      //Use the parsed stylesheet on the XML:
+      xmlDocPtr pDocOutput = xsltApplyStylesheet(cur, const_cast<xmlDoc*>(xml_document.cobj()), 0);
+      xsltFreeStylesheet(cur);
+
+      //Get the output text:
+      xmlChar* buffer = 0;
+      int length = 0;
+      xmlIndentTreeOutput = 1; //Format the output with extra white space. TODO: Is there a better way than this global variable?
+      xmlDocDumpFormatMemoryEnc(pDocOutput, &buffer, &length, 0, 0);
+
+      if(buffer)
+      {
+        // Create a Glib::ustring copy of the buffer
+
+        // Here we force the use of Glib::ustring::ustring( InputIterator begin, InputIterator end )
+        // instead of Glib::ustring::ustring( const char*, size_type ) because it
+        // expects the length of the string in characters, not in bytes.
+        result = Glib::ustring( reinterpret_cast<const char *>(buffer), reinterpret_cast<const char *>(buffer + length) );
+
+        // Deletes the original buffer
+        xmlFree(buffer);
+      }
+
+      xmlFreeDoc(pDocOutput);
+    }
+  }
+
+  return result;
+}
+
 void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const Glib::ustring& xsl_file_path, Gtk::Window* parent_window)
 {
   //Use libxslt to convert the XML to HTML:
@@ -134,59 +188,6 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
     g_error_free(gerror);
   }
 #endif //G_OS_WIN32
-}
-
-Glib::ustring GlomXslUtils::xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt)
-{
-  //Debug output:
-  //std::cout << "XML before XSLT processing: " << std::endl;
-  //std::cout << "  ";
-  //xmlpp::Document& nonconst = const_cast<xmlpp::Document&>(xml_document);
-  //nonconst.write_to_stream_formatted(std::cout);
-  //std::cout << std::endl;
-
-  Glib::ustring  result;
-
-  //Use libxslt to transform the XML:
-  xmlDocPtr style = xmlReadFile(filepath_xslt.c_str(), 0, 0);
-  if(style)
-  {
-    //We need this to be able to use the exsl: functions, even if we declare the namespace at the start of the xsl.
-    //We don't need this anymore - we use xsl:copy-of instead of exsl:node-set (which didn't work as expected anyway):
-    //exsltRegisterAll();
-
-    //Parse the stylesheet:
-    xsltStylesheetPtr cur = xsltParseStylesheetDoc(style);
-    if(cur)
-    {
-      //Use the parsed stylesheet on the XML:
-      xmlDocPtr pDocOutput = xsltApplyStylesheet(cur, const_cast<xmlDoc*>(xml_document.cobj()), 0);
-      xsltFreeStylesheet(cur);
-
-      //Get the output text:
-      xmlChar* buffer = 0;
-      int length = 0;
-      xmlIndentTreeOutput = 1; //Format the output with extra white space. TODO: Is there a better way than this global variable?
-      xmlDocDumpFormatMemoryEnc(pDocOutput, &buffer, &length, 0, 0);
-
-      if(buffer)
-      {
-        // Create a Glib::ustring copy of the buffer
-
-        // Here we force the use of Glib::ustring::ustring( InputIterator begin, InputIterator end )
-        // instead of Glib::ustring::ustring( const char*, size_type ) because it
-        // expects the length of the string in characters, not in bytes.
-        result = Glib::ustring( reinterpret_cast<const char *>(buffer), reinterpret_cast<const char *>(buffer + length) );
-
-        // Deletes the original buffer
-        xmlFree(buffer);
-      }
-
-      xmlFreeDoc(pDocOutput);
-    }
-  }
-
-  return result;
 }
 
 } //namespace Glom

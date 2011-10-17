@@ -1,5 +1,14 @@
 2011-10-17  Murray Cumming  <murrayc@murrayc.com>
 
+	Move some XSLT-processing code around.
+
+	* glom/mode_data/box_data.h: Remove declaration of non-implemented 
+	and unused xslt_process() method.
+	* glom/xsl_utils.[h|cc]: Move xslt_process() in to the .cc file as a 
+	static function.
+
+2011-10-17  Murray Cumming  <murrayc@murrayc.com>
+
 	Move some Report code around.
 
 	* glom/mode_data/box_data_manyrecords.cc: print_layout():
