@@ -465,19 +465,19 @@ dialog.hide();
       <data_layout name="list" parent_table="contacts">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="contact_id" use_default_formatting="true" column_width="100">
+            <data_layout_item name="contact_id" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="name_title" editable="true" use_default_formatting="true" column_width="100">
+            <data_layout_item name="name_title" editable="true" use_default_formatting="true">
               <formatting/>
             </data_layout_item>
-            <data_layout_item name="name_first" editable="true" use_default_formatting="true" column_width="100">
+            <data_layout_item name="name_first" editable="true" use_default_formatting="true">
               <formatting/>
             </data_layout_item>
-            <data_layout_item name="name_last" editable="true" use_default_formatting="true" column_width="100">
+            <data_layout_item name="name_last" editable="true" use_default_formatting="true">
               <formatting/>
             </data_layout_item>
-            <data_layout_item name="address_country" editable="true" use_default_formatting="true" column_width="100">
+            <data_layout_item name="address_country" editable="true" use_default_formatting="true">
               <formatting/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
@@ -913,19 +913,19 @@ dialog.hide();
       <data_layout name="list" parent_table="invoices">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="invoice_id" use_default_formatting="true" column_width="40">
+            <data_layout_item name="invoice_id" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="contact_id" editable="true" use_default_formatting="true" column_width="40">
+            <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="name_full" relationship="contacts" editable="true" use_default_formatting="true" column_width="103">
+            <data_layout_item name="name_full" relationship="contacts" editable="true" use_default_formatting="true">
               <formatting/>
             </data_layout_item>
-            <data_layout_item name="price_total" editable="true" use_default_formatting="true" column_width="40">
+            <data_layout_item name="price_total" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="date" editable="true" use_default_formatting="true" column_width="28">
+            <data_layout_item name="date" editable="true" use_default_formatting="true">
               <formatting/>
             </data_layout_item>
             <data_layout_item name="comment" editable="true" use_default_formatting="true">
@@ -1145,16 +1145,16 @@ dialog.hide();
       <data_layout name="list" parent_table="products">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="product_id" use_default_formatting="true" column_width="40">
+            <data_layout_item name="product_id" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="name" editable="true" use_default_formatting="true" column_width="103">
+            <data_layout_item name="name" editable="true" use_default_formatting="true">
               <formatting/>
             </data_layout_item>
-            <data_layout_item name="price" editable="true" use_default_formatting="true" column_width="40">
+            <data_layout_item name="price" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="103">
+            <data_layout_item name="description" editable="true" use_default_formatting="true">
               <formatting/>
             </data_layout_item>
             <data_layout_item name="comment" editable="true" use_default_formatting="true">
@@ -1357,13 +1357,13 @@ dialog.hide();
       <data_layout name="list" parent_table="staff">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="staff_id" use_default_formatting="true" column_width="40">
+            <data_layout_item name="staff_id" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="name_first" editable="true" use_default_formatting="true" column_width="103">
+            <data_layout_item name="name_first" editable="true" use_default_formatting="true">
               <formatting/>
             </data_layout_item>
-            <data_layout_item name="name_last" editable="true" use_default_formatting="true" column_width="103">
+            <data_layout_item name="name_last" editable="true" use_default_formatting="true">
               <formatting/>
             </data_layout_item>
             <data_layout_item name="position" editable="true" use_default_formatting="true">

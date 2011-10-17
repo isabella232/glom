@@ -33,16 +33,16 @@
       <data_layout name="list" parent_table="alignment">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="alignment_id" editable="true" use_default_formatting="true" column_width="94">
+            <data_layout_item name="alignment_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
             </data_layout_item>
-            <data_layout_item name="field_left" editable="true" use_default_formatting="true" column_width="130">
+            <data_layout_item name="field_left" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
             </data_layout_item>
-            <data_layout_item name="field_right" editable="true" use_default_formatting="true" column_width="143">
+            <data_layout_item name="field_right" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
             </data_layout_item>
-            <data_layout_item name="override_left" editable="true" column_width="308">
+            <data_layout_item name="override_left" editable="true">
               <title_custom/>
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" alignment_horizontal="left" choices_related_show_all="true"/>
             </data_layout_item>
@@ -121,17 +121,17 @@
       <data_layout name="list" parent_table="colours">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="colours_id" editable="true" use_default_formatting="true" column_width="77">
+            <data_layout_item name="colours_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
             </data_layout_item>
-            <data_layout_item name="redtext_blueback" editable="true" use_default_formatting="true" column_width="216">
+            <data_layout_item name="redtext_blueback" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
             </data_layout_item>
-            <data_layout_item name="override_redtext_blueback" editable="true" column_width="239">
+            <data_layout_item name="override_redtext_blueback" editable="true">
               <title_custom/>
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" color_fg="#000000000000" color_bg="#ffffffffffff" choices_related_show_all="true"/>
             </data_layout_item>
-            <data_layout_item name="alt_colour_neg" editable="true" use_default_formatting="true" column_width="219">
+            <data_layout_item name="alt_colour_neg" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
             </data_layout_item>
             <data_layout_item name="alt_colour_neg_overrides" editable="true" use_default_formatting="true">
