@@ -1,3 +1,11 @@
+2011-10-17  Murray Cumming  <murrayc@murrayc.com>
+
+	Remove an unused XSL file.
+
+	* xslt/print_details_to_html.xsl: Remove this because it is no longer
+	used.
+	* Makefile.am: Remove mention of it.
+
 2011-10-17  Murray Cumming  <murrayc@murrrayc.com>
 
 	Examples: Remove all column_width attributes now that defaults are good.

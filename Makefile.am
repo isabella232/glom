@@ -139,7 +139,7 @@ dist_glade_developer_DATA = ui/developer/dialog_add_related_table.glade \
 	ui/developer/window_users.glade
 
 xsltdir = $(pkgdatadir)/xslt
-dist_xslt_DATA = xslt/print_details_to_html.xsl xslt/print_report_to_html.xsl
+dist_xslt_DATA = xslt/print_report_to_html.xsl
 
 exampledir = $(docdir)/examples
 dist_example_DATA =				\
