@@ -1,5 +1,12 @@
 2011-10-17  Murray Cumming  <murrayc@murrayc.com>
 
+	Tests: Add general XML validity of XSLT files.
+
+	* tests/test_xslt_file_validation.sh: New test, based on the other ones.
+	* Makefile_tests.am: Mention the new test.
+
+2011-10-17  Murray Cumming  <murrayc@murrayc.com>
+
 	Remove an unused XSL file.
 
 	* xslt/print_details_to_html.xsl: Remove this because it is no longer
