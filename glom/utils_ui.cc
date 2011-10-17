@@ -334,7 +334,7 @@ static int get_width_for_text(Gtk::Widget& widget, const Glib::ustring& text)
   return result;
 }
 
-int Utils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const sharedptr<const LayoutItem_Field>& field_layout, bool or_title)
+int Utils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const sharedptr<const LayoutItem_Field>& field_layout, bool or_title, bool for_treeview)
 {
   int result = 150; //Suitable default.
 
@@ -345,7 +345,7 @@ int Utils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const shared
   {
     case(Field::TYPE_DATE):
     {
-      Glib::Date date(31, Glib::Date::Month(12), 2000);
+      const Glib::Date date(31, Glib::Date::Month(12), 2000);
       example_text = Conversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(date));
       break;
     }
@@ -360,24 +360,36 @@ int Utils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const shared
     }
     case(Field::TYPE_NUMERIC):
     {
+      if(for_treeview)
+        example_text = "EUR 999.99";
+      else
+      {
 #ifdef GLOM_ENABLE_MAEMO
       //Maemo's screen is not so big, so don't be so generous:
       example_text = "EUR 9999999";
 #else
       example_text = "EUR 9999999999";
 #endif
+      }
+        
       break;
     }
     case(Field::TYPE_TEXT):
     case(Field::TYPE_IMAGE): //Give images the same width as text fields, so they will often line up.
     {
       //if(!field_layout->get_text_format_multiline()) //Use the full width for multi-line text.
+      if(for_treeview)
+        example_text = "AAAAAAAAAAAA";
+      else
+      {
 #ifdef GLOM_ENABLE_MAEMO
         //Maemo's screen is not so big, so don't be so generous:
         example_text = "AAAAAAAAAAAAAAAA";
 #else
         example_text = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 #endif
+      }
+
       break;
     }
     default:
@@ -385,7 +397,6 @@ int Utils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const shared
       break;
     }
   }
-
 
   if(!example_text.empty())
   {
