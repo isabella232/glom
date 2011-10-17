@@ -1,3 +1,28 @@
+1.19.13 (unstable):
+
+* Developer:
+  - Deleting tables: Remove the auto-increment's next values too.
+	Bug #661653
+* Details:
+  - Related Records: Allow min and max rows counts instead of just a rows count.
+* List: Actually show custom choices, instead of crashing.
+	Bug #661764 (André Klapper)
+* Print Layouts:
+  - Handle related records.
+  - Improve pagination.
+  - Use full page width when creating standard layouts.
+* About dialog: Show the version number.
+* Examples: Avoid use of pygtk, which causes a crash.
+  Bug #661766 (André Klapper)
+* libglom: Make LayoutItem_Group::get_title_or_name() useful for portals too.
+  (Murray Cumming)
+* Build:
+  - Avoid some deprecated GTK+ (in 3.3) and gtkmm API.
+  - Improve some translatable strings, using ustring::compose().
+    (Murray Cumming)
+  - Some OpenBSD fixes.
+    (Jasper Lievisse Adriaanse). 
+  
 1.19.12 (unstable):
 
 * Added the glom_create_from_example command-line utility.
