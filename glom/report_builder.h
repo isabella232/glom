@@ -34,10 +34,12 @@ public:
   ReportBuilder();
   virtual ~ReportBuilder();
 
+  static sharedptr<Report> create_standard_list_report(const Document* document, const Glib::ustring& table_name);
+
   //void set_report(const Glib::ustring& table_name, const sharedptr<const Report>& report);
   //sharedptr<Report> get_report();
 
- void report_build(const FoundSet& found_set, const sharedptr<const Report>& report, Gtk::Window* parent_window = 0);
+  void report_build(const FoundSet& found_set, const sharedptr<const Report>& report, Gtk::Window* parent_window = 0);
 
  
 

@@ -1,5 +1,15 @@
 2011-10-17  Murray Cumming  <murrayc@murrayc.com>
 
+	Move some Report code around.
+
+	* glom/mode_data/box_data_manyrecords.cc: print_layout():
+	Move the report creation to ReportBuilder.
+	* glom/report_builder.[h|cc]: Added create_standard_list_report().
+	* glom/xsl_utils.cc: Do not output all the XSL and HTML to std::cout,
+	but do output the temporary file name of the generated HTML file.
+
+2011-10-17  Murray Cumming  <murrayc@murrayc.com>
+
 	XSLT file: Minor fixes.
 
 	* xslt/print_report_to_html.xsl: Change xsl::version to version, which

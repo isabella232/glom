@@ -28,6 +28,7 @@
 #include <libglom/data_structure/layout/report_parts/layoutitem_footer.h>
 #include <libglom/db_utils.h>
 #include <glom/xsl_utils.h>
+#include <glibmm/i18n.h>
 
 namespace Glom
 {
@@ -576,6 +577,45 @@ void ReportBuilder::report_build(const FoundSet& found_set, const sharedptr<cons
   }
 
   GlomXslUtils::transform_and_open(*pDocument, "print_report_to_html.xsl", parent_window);
+}
+
+static void fill_standard_list_report_fill(const sharedptr<Report>& report, const sharedptr<const LayoutGroup>& layout_group)
+{
+  if(!report)
+    return;
+
+  if(!layout_group)
+    return;
+
+  for(LayoutGroup::type_list_items::const_iterator iter = layout_group->m_list_items.begin(); iter != layout_group->m_list_items.end(); ++iter)
+  {
+    const sharedptr<const LayoutItem> item = *iter;
+    if(!item)
+      continue;
+
+    const sharedptr<LayoutItem> unconst = sharedptr<LayoutItem>::cast_const(item); //TODO: Avoid this?
+    report->m_layout_group->add_item(unconst);
+  }
+}
+
+
+sharedptr<Report> ReportBuilder::create_standard_list_report(const Document* document, const Glib::ustring& table_name)
+{
+  sharedptr<Report> result(new Report());
+  result->set_name("list");
+  //Translators: This is a noun. It is the title of a report.
+  result->set_title(_("List"));
+
+  const Document::type_list_layout_groups layout_groups = 
+    document->get_data_layout_groups("list", table_name); //TODO: layout_platform.
+  for(Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
+  {
+    const sharedptr<const LayoutGroup> group = *iter;
+    if(group)
+      fill_standard_list_report_fill(result, group);
+  }
+
+  return result;
 }
 
 

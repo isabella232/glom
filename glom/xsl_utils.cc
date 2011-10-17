@@ -69,12 +69,12 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
 {
   //Use libxslt to convert the XML to HTML:
   const Glib::ustring result = xslt_process(xml_document, get_xslt_file(xsl_file_path));
-  std::cout << "After xslt: " << result << std::endl;
+  //std::cout << "After xslt: " << result << std::endl;
 
   //Save it to a temporary file and show it in a browser:
   const Glib::ustring temp_path = Glib::build_filename(
     Glib::get_tmp_dir(), "glom_printout.html");
-  //std::cout << "temp_path=" << temp_path << std::endl;
+  std::cout << "temp_path=" << temp_path << std::endl;
 
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(temp_path);
   Glib::RefPtr<Gio::FileOutputStream> stream;
@@ -139,11 +139,11 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
 Glib::ustring GlomXslUtils::xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt)
 {
   //Debug output:
-  std::cout << "XML before XSLT processing: " << std::endl;
-  std::cout << "  ";
-  xmlpp::Document& nonconst = const_cast<xmlpp::Document&>(xml_document);
-  nonconst.write_to_stream_formatted(std::cout);
-  std::cout << std::endl;
+  //std::cout << "XML before XSLT processing: " << std::endl;
+  //std::cout << "  ";
+  //xmlpp::Document& nonconst = const_cast<xmlpp::Document&>(xml_document);
+  //nonconst.write_to_stream_formatted(std::cout);
+  //std::cout << std::endl;
 
   Glib::ustring  result;
 

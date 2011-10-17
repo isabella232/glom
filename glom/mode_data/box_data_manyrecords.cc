@@ -78,21 +78,11 @@ void Box_Data_ManyRecords::print_layout()
   else
   {
     //Create a simple report on the fly:
-    sharedptr<Report> report_temp(new Report());
-    report_temp->set_name("list");
-    //Translators: This is a noun. It is the title of a report.
-    report_temp->set_title(_("List"));
-
-    //Add all the fields from the layout:
-    for(type_vecConstLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
-    {
-      sharedptr<const LayoutItem> item = *iter;
-      sharedptr<LayoutItem> unconst = sharedptr<LayoutItem>::cast_const(item); //TODO: Avoid this?
-      report_temp->m_layout_group->add_item(unconst);
-    }
+    Document* document = get_document();
+    sharedptr<Report> report_temp = ReportBuilder::create_standard_list_report(document, m_table_name);
 
     ReportBuilder report_builder;
-    report_builder.set_document(get_document());
+    report_builder.set_document(document);
     report_builder.report_build(m_found_set, report_temp, get_app_window());
   }
 }
