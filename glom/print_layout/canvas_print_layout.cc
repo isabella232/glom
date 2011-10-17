@@ -707,9 +707,9 @@ guint Canvas_PrintLayout::get_page_count() const
   return m_page_count;
 }
 
-void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set)
+void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set, bool avoid_page_margins)
 {
-  fill_with_data(m_items_group, found_set);
+  fill_with_data(m_items_group, found_set, avoid_page_margins);
 }
 
 void Canvas_PrintLayout::fill_with_data_system_preferences(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, Document* document)
@@ -744,12 +744,15 @@ void Canvas_PrintLayout::fill_with_data_system_preferences(const Glib::RefPtr<Ca
     const Gnome::Gda::Value value = get_field_value_in_database(
      field_in_record, 0 /* TODO: parent window */);
     if(!Glom::Conversions::value_is_empty(value))
+    {
       canvas_item->set_db_data(value);
+      //TODO: canvas_item->expand_text_vertically();
+    }
   }
 }
  
 
-void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& canvas_group, const FoundSet& found_set)
+void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& canvas_group, const FoundSet& found_set, bool avoid_page_margins)
 {
   //A map of the text representation (e.g. field_name or relationship::field_name) to the index:
   typedef std::map<Glib::ustring, guint> type_map_layout_fields_index;
@@ -803,7 +806,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
   if(fieldsToGet.empty())
     return;
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
     fieldsToGet,
     found_set.m_where_clause, sharedptr<const Relationship>() /* extra_join */, found_set.m_sort_clause,
     1);
@@ -864,6 +867,25 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
     {
       //Clear the no-image pixbuf from images:
       canvas_item->remove_empty_indicators();
+    }
+    
+    if(avoid_page_margins)
+    {
+      const Glib::RefPtr<Gtk::PageSetup> page_setup = get_page_setup();
+      const Gtk::Unit units = property_units();
+      const bool needs_moving = PrintLayoutUtils::needs_move_fully_to_page(page_setup, units, canvas_item);
+      if(needs_moving)
+      {
+        double x = 0;
+        double y = 0;
+        canvas_item->get_xy(x, y);
+        double width = 0;
+        double height = 0;
+        canvas_item->get_width_height(width, height);
+               
+        const double offset = PrintLayoutUtils::get_offset_to_move_fully_to_next_page(page_setup, units, y, height);
+        move_items_down(y, offset);
+      }
     }
   }
 }

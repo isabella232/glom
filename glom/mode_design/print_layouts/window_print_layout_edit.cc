@@ -938,7 +938,7 @@ void Window_PrintLayout_Edit::on_menu_insert_create_standard()
     return;
   }
   
-  m_print_layout = PrintLayoutUtils::create_standard(page_setup, m_table_name, document);
+  m_print_layout = PrintLayoutUtils::create_standard(page_setup, m_table_name, document, true /* avoid page margins */);
   
   m_canvas.set_print_layout(m_table_name, m_print_layout);
 }

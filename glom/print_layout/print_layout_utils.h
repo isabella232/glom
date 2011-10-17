@@ -42,9 +42,12 @@ const double ITEM_WIDTH_WIDE = GRID_GAP * 10;
 
 //TODO: Move this into libglom, by replacing Gtk::PageSetup with a custom class.
 //However, this also uses goocanvas, which would need to have its GTK+ widget split away too.
-sharedptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, const Glib::ustring& table_name, const Document* document);
+/** Create a print layout based on the on-screen details layout.
+ * @param avoid_page_margins If true then do skip page margins.
+ */
+sharedptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, const Glib::ustring& table_name, const Document* document, bool avoid_page_margins);
 
-void do_print_layout(const sharedptr<const PrintLayout>& print_layout, const FoundSet& found_set, bool preview, const Document* document, Gtk::Window* transient_for);
+void do_print_layout(const sharedptr<const PrintLayout>& print_layout, const FoundSet& found_set, bool preview, const Document* document, bool avoid_page_margins, Gtk::Window* transient_for);
 
 double get_page_height(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units);
 double get_page_height(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, double& margin_top, double& margin_bottom);

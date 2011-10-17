@@ -929,14 +929,19 @@ void Box_Data_Details::print_layout()
     std::cerr << G_STRFUNC << ": page_setup was null" << std::endl;
     return;
   }
-  
+
+  //Note that we initially create the page layout without spaces for page 
+  //breaks because those spaces would be empty space on the page after
+  //we have moved items down when expanding:
+  //TODO: Squash that space when expanding custom layouts.
   sharedptr<PrintLayout> print_layout = 
-    PrintLayoutUtils::create_standard(page_setup, m_table_name, document);
+    PrintLayoutUtils::create_standard(page_setup, m_table_name, document,
+      false /* do not avoid page margins */);
   
   //Show the print preview window:
   Application* app = Application::get_application();
   PrintLayoutUtils::do_print_layout(print_layout, m_found_set,
-    false /* not preview */, document, app);  
+    false /* not preview */, document, true /* avoid page margins */, app);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

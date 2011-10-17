@@ -1,3 +1,25 @@
+2011-10-17  Murray Cumming  <murrayc@murrayc.com>
+
+	Print Layout: Print Standard: Avoid page break spaces in the middle of pages.
+
+	* glom/print_layout/canvas_print_layout.[h|cc]: fill_with_data():
+  Add an avoid_page_margins parameter, so we can choose to always move items
+  past the margins on to the next page while setting their data.
+	* glom/print_layout/print_layout_utils.[h|cc]: create_standard():
+	Add an avoid_page_margins parameter, so we can choose to do this later instead
+	when setting the data, to avoid big gaps that are later moved down into the 
+	middle of the page.
+	do_print_layout(): Add an avoid_page_margins parameter here too, passing 
+	it to fill_with_data().
+	* glom/mode_data/box_data_details.cc: print_layout(): Do not avoid page 
+	margins when creating, because that will happen when expanding items.
+	Avoid the page margins when setting the details.
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	on_menu_insert_create_standard(): Avoid page margins when creating.
+	However, those gaps could be left in the middle of the page when printing,
+	because some items may be expanded. We need a way to squash that space
+	later when it is unecessary.
+
 2011-10-15  Jasper Lievisse Adriaanse <jasperla@gnome.org>
 
 	Remove glibc-specific function call.

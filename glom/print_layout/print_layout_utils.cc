@@ -167,7 +167,7 @@ static double move_fully_to_page(const Glib::RefPtr<const Gtk::PageSetup>& page_
 }
 */
 
-static void create_standard(const sharedptr<const LayoutGroup>& layout_group, const sharedptr<LayoutGroup>& print_layout_group, const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, double x, double& y)
+static void create_standard(const sharedptr<const LayoutGroup>& layout_group, const sharedptr<LayoutGroup>& print_layout_group, const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::Unit units, double x, double& y, bool avoid_page_margins)
 {
   if(!layout_group || !print_layout_group)
   {
@@ -190,7 +190,9 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
     text->set_text(title);
     text->m_formatting.set_text_format_font("Sans Bold 10");
 
-    y = move_fully_to_page(page_setup, units, y, field_height);
+    if(avoid_page_margins)
+      y = move_fully_to_page(page_setup, units, y, field_height);
+
     text->set_print_layout_position(x, y, item_width, field_height); //TODO: Enough and no more.
     y += field_height + gap; //padding.
 
@@ -211,7 +213,9 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
 
     //Set an initial default height, though this will be changed
     //when we fill it with data:
-    y = move_fully_to_page(page_setup, units, y, field_height);
+    if(avoid_page_margins)
+      y = move_fully_to_page(page_setup, units, y, field_height);
+    
     portal_clone->set_print_layout_position(x, y, item_width, field_height);
     y += field_height + gap; //padding.
 
@@ -232,7 +236,7 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
     if(group && !portal)
     {
       //Recurse:
-      create_standard(group, print_layout_group, page_setup, units, x, y);
+      create_standard(group, print_layout_group, page_setup, units, x, y, avoid_page_margins);
     }
     else
     {
@@ -244,7 +248,10 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
       {
         text_title = sharedptr<LayoutItem_Text>::create();
         text_title->set_text(field->get_title_or_name() + ":");
-        y = move_fully_to_page(page_setup, units, y, field_height);
+        
+        if(avoid_page_margins)
+          y = move_fully_to_page(page_setup, units, y, field_height);
+
         text_title->set_print_layout_position(x, y, title_width, field_height); //TODO: Enough and no more.
         text_title->m_formatting.set_text_format_font("Sans 10");
 
@@ -274,7 +281,9 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
         }
       }
 
-      y = move_fully_to_page(page_setup, units, y, this_field_height); //TODO: Move the title down too, if this was moved.
+      if(avoid_page_margins)
+        y = move_fully_to_page(page_setup, units, y, this_field_height); //TODO: Move the title down too, if this was moved.
+        
       clone->set_print_layout_position(item_x, y, field_width, this_field_height); //TODO: Enough and no more.
       
       //Make sure that the title is still aligned, even if this was moved by move_fully_to_page().
@@ -300,7 +309,7 @@ guint get_page_for_y(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::
   return pages_integral;
 }
 
-sharedptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, const Glib::ustring& table_name, const Document* document)
+sharedptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, const Glib::ustring& table_name, const Document* document, bool avoid_page_margins)
 {
   const Gtk::Unit units = Gtk::UNIT_MM;
   sharedptr<PrintLayout> print_layout = sharedptr<PrintLayout>::create();  
@@ -342,7 +351,7 @@ sharedptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>&
     if(!group)
       continue;
 
-    create_standard(group, print_layout->m_layout_group, page_setup, units, x, y);
+    create_standard(group, print_layout->m_layout_group, page_setup, units, x, y, avoid_page_margins);
   }
 
   //Add extra pages if necessary:
@@ -358,7 +367,7 @@ sharedptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>&
   return print_layout;
 }
 
-void do_print_layout(const sharedptr<const PrintLayout>& print_layout, const FoundSet& found_set, bool preview, const Document* document, Gtk::Window* transient_for)
+void do_print_layout(const sharedptr<const PrintLayout>& print_layout, const FoundSet& found_set, bool preview, const Document* document, bool avoid_page_margins, Gtk::Window* transient_for)
 {
   if(!print_layout)
   {
@@ -412,7 +421,7 @@ void do_print_layout(const sharedptr<const PrintLayout>& print_layout, const Fou
   //print->signal_done().connect(sigc::bind(sigc::mem_fun(*this,
   //                &ExampleWindow::on_printoperation_done), print));
 
-  canvas.fill_with_data(found_set);
+  canvas.fill_with_data(found_set, avoid_page_margins);
 
   try
   {

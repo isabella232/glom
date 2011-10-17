@@ -72,7 +72,7 @@ public:
    */
   void fill_with_data_system_preferences(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, Document* document);
 
-  void fill_with_data(const FoundSet& found_set);
+  void fill_with_data(const FoundSet& found_set, bool avoid_page_margins);
 
   virtual void set_grid_gap(double gap = 20.0);
 
@@ -108,7 +108,7 @@ private:
   void fill_layout_group(const sharedptr<LayoutGroup>& group);
 
   //These are not static, because they need access to the document:
-  void fill_with_data(const Glib::RefPtr<Goocanvas::Group>& canvas_group, const FoundSet& found_set);
+  void fill_with_data(const Glib::RefPtr<Goocanvas::Group>& canvas_group, const FoundSet& found_set, bool avoid_page_margins);
   void fill_with_data_portal(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, const Gnome::Gda::Value& foreign_key_value);
   static void set_canvas_item_field_value(const Glib::RefPtr<Goocanvas::Item>& canvas_item, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
   
