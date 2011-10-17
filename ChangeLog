@@ -1,5 +1,15 @@
 2011-10-17  Murray Cumming  <murrayc@murrayc.com>
 
+	List View: Correct the default column widths.
+
+	* glom/utils_ui.[h|cc]: get_suitable_field_width_for_widget(): Added a
+	for_treeview parameter and adjust the width accordingly.
+	* glom/mode_data/db_adddel/db_adddel.cc: treeview_append_colum():
+  Replace the overly-generic division-by-3 hack with the new parameter, and 
+  add some hard-coded extra space.
+	
+2011-10-17  Murray Cumming  <murrayc@murrayc.com>
+
 	Details: Avoid an outdent after group titles
 
 	* glom/mode_data/flowtablewithfields.cc: add_layout_group(): Work around 
