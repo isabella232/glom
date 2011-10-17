@@ -20,6 +20,7 @@
 
 #include "tests/test_selfhosting_utils.h"
 #include <libglom/init.h>
+#include <libglom/report_builder.h>
 #include <glib.h> //For g_assert()
 #include <iostream>
 #include <cstdlib> //For EXIT_SUCCESS and EXIT_FAILURE
@@ -32,6 +33,29 @@ int main()
   const bool recreated = 
     test_create_and_selfhost("example_music_collection.glom", document);
   g_assert(recreated);
+
+  const Glom::sharedptr<const Glom::Report> report_temp = 
+    Glom::ReportBuilder::create_standard_list_report(&document, "albums");
+
+  Glom::FoundSet found_set; //TODO: Test a where clause.
+  found_set.m_table_name = "albums";
+  Glom::ReportBuilder report_builder;
+  report_builder.set_document(&document);
+  const std::string filepath = 
+    report_builder.report_build(found_set, report_temp);
+  if(filepath.empty())
+  {
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
+
+  /*
+  if(filecontents.find("Bruce Springsteen") == std::string::npos)
+  {
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
+  */
 
   test_selfhosting_cleanup();
 

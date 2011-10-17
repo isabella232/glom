@@ -52,6 +52,17 @@
 
 2011-10-17  Murray Cumming  <murrayc@murrayc.com>
 
+	Test report building.
+
+	* tests/test_selfhosting_new_from_example.cc: Move most code into 
+	utility functions in:
+	* tests/test_selfhosting_utils.[h|cc]:
+	* tests/test_selfhosting_new_then_report.cc: Add a new test that also 
+	generates a HTML report.
+	* Makefile_tests: Mention the new files.
+
+2011-10-17  Murray Cumming  <murrayc@murrayc.com>
+
 	Move ReportBuilder to libglom, to make testing easier.
 
 	* glom/report_builder.[h|cc]:

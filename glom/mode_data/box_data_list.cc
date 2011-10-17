@@ -21,7 +21,6 @@
 #include "box_data_list.h"
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/glade_utils.h>
-#include <libglom/report_builder.h>
 #include <glom/mode_design/layout/dialog_layout_list.h>
 #include <libglom/privs.h>
 #include <libglom/db_utils.h>

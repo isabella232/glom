@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2010 Openismus GmbH
+ * Copyright (C) 2011 Murray Cumming
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -14,28 +14,18 @@
  *
  * You should have received a copy of the GNU General Public
  * License along with this program; if not, write to the
-71 * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
 
-#include "tests/test_selfhosting_utils.h"
-#include <libglom/init.h>
-#include <glib.h> //For g_assert()
-#include <iostream>
-#include <cstdlib> //For EXIT_SUCCESS and EXIT_FAILURE
+#ifndef GLOM_TEST_SELFHOSTING_UTILS_H
+#define GLOM_TEST_SELFHOSTING_UTILS_H
 
-int main()
-{
-  Glom::libglom_init();
+#include <libglom/document/document.h>
+#include <string>
 
-  Glom::Document document;
-  const bool recreated = 
-    test_create_and_selfhost("example_music_collection.glom", document);
-  g_assert(recreated);
+bool test_create_and_selfhost(const std::string& example_filename, Glom::Document& document);
+void test_selfhosting_cleanup();
 
-  test_selfhosting_cleanup();
+#endif //GLOM_TEST_SELFHOSTING_UTILS_H
 
-  Glom::libglom_deinit();
-
-  return EXIT_SUCCESS;
-}
