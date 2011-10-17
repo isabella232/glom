@@ -96,6 +96,8 @@ bool show_warning_no_records_found(Gtk::Window& transient_for);
 
 void show_report_in_browser(const std::string& filepath, Gtk::Window* parent_window);
 
+std::string get_icon_path(const Glib::ustring& filename);
+
 } //namespace Utils
 
 } //namespace Glom

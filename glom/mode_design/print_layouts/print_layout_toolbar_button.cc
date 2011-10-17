@@ -19,34 +19,16 @@
  */
  
 #include "print_layout_toolbar_button.h"
+#include <glom/utils_ui.h>
 #include <gtkmm/toolpalette.h>
 #include <iostream>
-
-namespace
-{
-
-std::string get_icon_path(const std::string& filename)
-{
-#ifdef G_OS_WIN32
-  gchar* basepath = g_win32_get_package_installation_directory_of_module(0);
-  const std::string result = Glib::build_filename(Glib::build_filename(basepath,
-      "share" G_DIR_SEPARATOR_S "glom" G_DIR_SEPARATOR_S "pixmaps"), filename);
-  g_free(basepath);
-  return result;
-#else
-  return Glib::build_filename(GLOM_PKGDATADIR G_DIR_SEPARATOR_S "pixmaps", filename);
-#endif
-}
-
-} //anonymous namespace
-
 
 namespace Glom
 {
 
 PrintLayoutToolbarButton::PrintLayoutToolbarButton(const std::string& icon_name, enumItems type,
                                          const Glib::ustring& title, const Glib::ustring& tooltip)
-: Gtk::ToolButton( *(Gtk::manage (new Gtk::Image(get_icon_path(icon_name)))) )
+: Gtk::ToolButton( *(Gtk::manage (new Gtk::Image(Utils::get_icon_path(icon_name)))) )
 {
   m_type = type;
   g_object_set_data(G_OBJECT(gobj()), "glom-type", GINT_TO_POINTER(type));

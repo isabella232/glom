@@ -1,3 +1,37 @@
+2011-10-17  Murray Cumming  <murrayc@murrayc.com>
+
+	Avoid some copy/pasting of code.
+
+	* glom/mode_design/print_layouts/print_layout_toolbar_button.cc:
+	* glom/utility_widgets/layouttoolbar.cc:
+	* glom/utility_widgets/layouttoolbarbutton.cc: Moved get_icon_path() to:
+	* glom/utils_ui.[h|cc]
+
+2011-10-17  Murray Cumming  <murrayc@murrayc.com>
+
+	Test report contents.
+
+	* glom/libglom/xsl_utils.[h|cc]: transform(): Return the contents, 
+	not a filepath.
+	* glom/libglom/report_builder.[h|cc]: report_build(): return the 
+	contents, not the path. Add report_build_and_save() to get a temporary
+	filepath.
+	* glom/mode_data/box_data_manyrecords.cc:
+	* glom/frame_glom.cc: Adapted.
+	* tests/test_selfhosting_new_then_report.cc: Check that some expected 
+	text is in the generated HTML.
+
+2011-10-17  Murray Cumming  <murrayc@murrayc.com>
+
+	Test report building.
+
+	* tests/test_selfhosting_new_from_example.cc: Move most code into 
+	utility functions in:
+	* tests/test_selfhosting_utils.[h|cc]:
+	* tests/test_selfhosting_new_then_report.cc: Add a new test that also 
+	generates a HTML report.
+	* Makefile_tests: Mention the new files.
+
 2011-10-18  Murray Cumming  <murrayc@murrayc.com>
 
 	Film Manager example: Change default table.
@@ -48,32 +82,7 @@
 	Correct the pkg-config file.
 
 	* glom/libglom/glom.pc.in: Depend on libgdamm-5.0, not ligdamm-4.0.
-  And depend on libxslt, because we just moved the xslt stuff into libglom.
-
-2011-10-17  Murray Cumming  <murrayc@murrayc.com>
-
-	Test report contents.
-
-	* glom/libglom/xsl_utils.[h|cc]: transform(): Return the contents, 
-	not a filepath.
-	* glom/libglom/report_builder.[h|cc]: report_build(): return the 
-	contents, not the path. Add report_build_and_save() to get a temporary
-	filepath.
-	* glom/mode_data/box_data_manyrecords.cc:
-	* glom/frame_glom.cc: Adapted.
-	* tests/test_selfhosting_new_then_report.cc: Check that some expected 
-	text is in the generated HTML.
-
-2011-10-17  Murray Cumming  <murrayc@murrayc.com>
-
-	Test report building.
-
-	* tests/test_selfhosting_new_from_example.cc: Move most code into 
-	utility functions in:
-	* tests/test_selfhosting_utils.[h|cc]:
-	* tests/test_selfhosting_new_then_report.cc: Add a new test that also 
-	generates a HTML report.
-	* Makefile_tests: Mention the new files.
+	And depend on libxslt, because we just moved the xslt stuff into libglom.
 
 2011-10-17  Murray Cumming  <murrayc@murrayc.com>
 

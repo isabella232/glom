@@ -25,24 +25,6 @@
 
 #include "layoutwidgetbase.h"
 
-namespace
-{
-
-Glib::ustring get_icon_path(const Glib::ustring& filename)
-{
-#ifdef G_OS_WIN32
-  gchar* basepath = g_win32_get_package_installation_directory_of_module(0);
-  Glib::ustring result = Glib::build_filename(Glib::build_filename(basepath,
-      "share" G_DIR_SEPARATOR_S "glom" G_DIR_SEPARATOR_S "pixmaps"), filename);
-  g_free(basepath);
-  return result;
-#else
-  return Glib::build_filename(GLOM_PKGDATADIR G_DIR_SEPARATOR_S "pixmaps", filename);
-#endif
-}
-
-} //anonymous namespace
-
 namespace Glom
 {
 
