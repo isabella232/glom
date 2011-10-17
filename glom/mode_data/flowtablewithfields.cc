@@ -197,10 +197,14 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
 
     if(!group->get_title().empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
     {
-      alignment->set_padding(Glom::Utils::DEFAULT_SPACING_SMALL, 0, 6, 0); //Use left-padding of 6 even on Maemo because indentation is important.
       #ifdef GLOM_ENABLE_MAEMO
       std::cerr << "DEBUG: Unexpected group with title causing extra spacing on Maemo." << std::endl;
       #endif
+
+      //Add some indenting just to avoid the out-denting caused by this GtkFrame bug:
+      //https://bugzilla.gnome.org/show_bug.cgi?id=644199
+      const int BASE_INDENT = 3;
+      alignment->set_padding(Glom::Utils::DEFAULT_SPACING_SMALL, 0, BASE_INDENT, 0);
     }
 
     alignment->show();
