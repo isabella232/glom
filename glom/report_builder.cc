@@ -484,7 +484,7 @@ void ReportBuilder::report_build_records_vertical_group(const FoundSet& found_se
 }
 
 
-void ReportBuilder::report_build(const FoundSet& found_set, const sharedptr<const Report>& report, Gtk::Window* parent_window)
+std::string ReportBuilder::report_build(const FoundSet& found_set, const sharedptr<const Report>& report)
 {
   //Create a DOM Document with the XML:
   xmlpp::DomParser dom_parser;;
@@ -566,17 +566,17 @@ void ReportBuilder::report_build(const FoundSet& found_set, const sharedptr<cons
     {
       //Handle database errors here rather than crashing the whole application:
       handle_error(ex);
-      return;
+      return std::string();
     }
     catch(const std::exception& ex)
     {
       //Handle database errors here rather than crashing the whole application:
       handle_error(ex);
-      return;
+      return std::string();
     }
   }
 
-  GlomXslUtils::transform_and_open(*pDocument, "print_report_to_html.xsl", parent_window);
+  return GlomXslUtils::transform(*pDocument, "print_report_to_html.xsl");
 }
 
 static void fill_standard_list_report_fill(const sharedptr<Report>& report, const sharedptr<const LayoutGroup>& layout_group)

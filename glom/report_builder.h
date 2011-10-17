@@ -39,10 +39,11 @@ public:
   //void set_report(const Glib::ustring& table_name, const sharedptr<const Report>& report);
   //sharedptr<Report> get_report();
 
-  void report_build(const FoundSet& found_set, const sharedptr<const Report>& report, Gtk::Window* parent_window = 0);
-
+  /**
+   * @result The filepath of the generated HTML file.
+   */
+  std::string report_build(const FoundSet& found_set, const sharedptr<const Report>& report);
  
-
 private:
 
   void report_build_groupby(const FoundSet& found_set_parent, xmlpp::Element& parent_node, const sharedptr<LayoutItem_GroupBy>& group_by);

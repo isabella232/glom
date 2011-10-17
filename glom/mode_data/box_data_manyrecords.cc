@@ -23,6 +23,7 @@
 #include <glom/glade_utils.h>
 #include <glom/report_builder.h>
 #include <glom/mode_design/layout/dialog_layout_list.h>
+#include <glom/utils_ui.h>
 #include <libglom/privs.h>
 #include <libglom/utils.h> //For bold_message()).
 #include <sstream> //For stringstream
@@ -83,7 +84,9 @@ void Box_Data_ManyRecords::print_layout()
 
     ReportBuilder report_builder;
     report_builder.set_document(document);
-    report_builder.report_build(m_found_set, report_temp, get_app_window());
+    const std::string filepath = 
+      report_builder.report_build(m_found_set, report_temp);
+    Utils::show_report_in_browser(filepath, get_app_window());
   }
 }
 

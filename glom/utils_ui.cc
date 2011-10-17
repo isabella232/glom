@@ -49,6 +49,11 @@
 
 #include <stack>
 
+// For ShellExecute:
+#ifdef G_OS_WIN32
+# include <windows.h>
+#endif
+
 namespace
 {
 
@@ -477,5 +482,39 @@ bool Utils::show_warning_no_records_found(Gtk::Window& transient_for)
   return find_again;
 }
 
+
+void Utils::show_report_in_browser(const std::string& filepath, Gtk::Window* parent_window)
+{
+  //Give the user a clue, in case the web browser opens in the background, for instance in a new tab:
+  if(parent_window)
+    show_ok_dialog(_("Report Finished"), _("The report will now be opened in your web browser."), *parent_window, Gtk::MESSAGE_INFO);
+
+#ifdef G_OS_WIN32
+  // gtk_show_uri doesn't seem to work on Win32, at least not for local files
+  // We use Windows API instead.
+  // TODO: Check it again and file a bug if necessary.
+  ShellExecute(0, "open", filepath.c_str(), 0, 0, SW_SHOW);
+#else
+
+  Glib::ustring uri;
+  try
+  {
+    uri = Glib::filename_to_uri(filepath);
+  }
+  catch(const Glib::ConvertError& ex)
+  {
+    std::cerr << G_STRFUNC << ": Could not convert filepath to URI: " << filepath << std::endl;
+    return;
+  }
+
+  //Use the GNOME browser:
+  GError* gerror = 0;
+  if(!gtk_show_uri(0 /* screen */, uri.c_str(), GDK_CURRENT_TIME, &gerror))
+  {
+    std::cerr << G_STRFUNC << ": " << gerror->message << std::endl;
+    g_error_free(gerror);
+  }
+#endif //G_OS_WIN32
+}
 
 } //namespace Glom

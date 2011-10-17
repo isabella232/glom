@@ -1,5 +1,17 @@
 2011-10-17  Murray Cumming  <murrayc@murrayc.com>
 
+	Move report building code around.
+
+	* glom/report_builder.[h|cc]: report_build(): Return the filepath,
+	instead of opening it in the browser.
+	* glom/xsl_utils[h|cc]: transform_and_open(): Rename to transform(), 
+	returning the filepath. Also correct some ustring filepath to std::string.
+	* glom/utils_ui[h|cc]: Added show_report_in_browser().
+	* glom/frame_glom.cc: on_menu_report_selected():
+	* glom/mode_data/box_data_manyrecords.cc: print_layout: Adapted.
+
+2011-10-17  Murray Cumming  <murrayc@murrayc.com>
+
 	Move some XSLT-processing code around.
 
 	* glom/mode_data/box_data.h: Remove declaration of non-implemented 

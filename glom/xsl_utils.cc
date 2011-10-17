@@ -24,7 +24,6 @@
 #include <libglom/connectionpool.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <libglom/data_structure/glomconversions.h>
-#include <glom/frame_glom.h>
 #include <libxml++/libxml++.h>
 #include <libxslt/transform.h>
 //#include <libexslt/exslt.h> //For exsltRegisterAll().
@@ -41,18 +40,14 @@
 #include <iostream>   // for cout, endl
 #include <iomanip>
 
-// For ShellExecute:
-#ifdef G_OS_WIN32
-# include <windows.h>
-#endif
 
 namespace
 {
-  Glib::ustring get_xslt_file(const Glib::ustring& xsl_file)
+  std::string get_xslt_file(const std::string& xsl_file)
   {
 #ifdef G_OS_WIN32
     gchar* directory = g_win32_get_package_installation_directory_of_module(0);
-    Glib::ustring xsltdir = Glib::build_filename(Glib::build_filename(directory,
+    std::string xsltdir = Glib::build_filename(Glib::build_filename(directory,
         "share" G_DIR_SEPARATOR_S "glom" G_DIR_SEPARATOR_S "xslt"), xsl_file);
     g_free(directory);
     return xsltdir;
@@ -75,7 +70,7 @@ static Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std
   //nonconst.write_to_stream_formatted(std::cout);
   //std::cout << std::endl;
 
-  Glib::ustring  result;
+  Glib::ustring result;
 
   //Use libxslt to transform the XML:
   xmlDocPtr style = xmlReadFile(filepath_xslt.c_str(), 0, 0);
@@ -119,14 +114,14 @@ static Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std
   return result;
 }
 
-void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const Glib::ustring& xsl_file_path, Gtk::Window* parent_window)
+std::string GlomXslUtils::transform(const xmlpp::Document& xml_document, const std::string& xsl_file_path)
 {
   //Use libxslt to convert the XML to HTML:
   const Glib::ustring result = xslt_process(xml_document, get_xslt_file(xsl_file_path));
   //std::cout << "After xslt: " << result << std::endl;
 
   //Save it to a temporary file and show it in a browser:
-  const Glib::ustring temp_path = Glib::build_filename(
+  const std::string temp_path = Glib::build_filename(
     Glib::get_tmp_dir(), "glom_printout.html");
   std::cout << "temp_path=" << temp_path << std::endl;
 
@@ -150,7 +145,7 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
   catch(const Gio::Error& ex)
   {
     // If the operation was not successful, print the error and abort
-    return; // false; // print_error(ex, output_uri_string);
+    return std::string(); // print_error(ex, output_uri_string);
   }
 
   //Write the data to the output uri
@@ -163,31 +158,13 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
   catch(const Gio::Error& ex)
   {
     // If the operation was not successful, print the error and abort
-    return; // false; //print_error(ex, output_uri_string);
+    return std::string(); // false; //print_error(ex, output_uri_string);
   }
 
   if(bytes_written != (gssize)result_bytes)
-    return; //false
+    return std::string(); //false
 
-
-  //Give the user a clue, in case the web browser opens in the background, for instance in a new tab:
-  if(parent_window)
-    Frame_Glom::show_ok_dialog(_("Report Finished"), _("The report will now be opened in your web browser."), *parent_window, Gtk::MESSAGE_INFO);
-
-#ifdef G_OS_WIN32
-  // gtk_show_uri doesn't seem to work on Win32, at least not for local files
-  // We use Windows API instead.
-  // TODO: Check it again and file a bug if necessary.
-  ShellExecute(0, "open", file->get_path().c_str(), 0, 0, SW_SHOW);
-#else
-  //Use the GNOME browser:
-  GError* gerror = 0;
-  if(!gtk_show_uri(0 /* screen */, file->get_uri().c_str(), GDK_CURRENT_TIME, &gerror))
-  {
-    std::cerr << G_STRFUNC << ": " << gerror->message << std::endl;
-    g_error_free(gerror);
-  }
-#endif //G_OS_WIN32
+  return file->get_path();
 }
 
 } //namespace Glom

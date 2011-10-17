@@ -94,6 +94,8 @@ Glib::RefPtr<Gdk::Pixbuf> image_scale_keeping_ratio(const Glib::RefPtr<Gdk::Pixb
 ///@result Whether the user would like to find again.
 bool show_warning_no_records_found(Gtk::Window& transient_for);
 
+void show_report_in_browser(const std::string& filepath, Gtk::Window* parent_window);
+
 } //namespace Utils
 
 } //namespace Glom

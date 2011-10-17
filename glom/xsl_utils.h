@@ -27,10 +27,6 @@
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <libxml++/libxml++.h>
 
-namespace Gtk
-{
-  class Window;
-}
 
 namespace Glom
 {
@@ -42,7 +38,10 @@ typedef std::list<type_pair_sort_field> type_sort_clause;
 namespace GlomXslUtils
 {
 
-void transform_and_open(const xmlpp::Document& xml_document, const Glib::ustring& xsl_file_path, Gtk::Window* parent_window = 0);
+/**
+ * @result the filepath of the generated HTML file.
+ */
+std::string transform(const xmlpp::Document& xml_document, const std::string& xsl_file_path);
 
 } //namespace GlomXslUtils
 
