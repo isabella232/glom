@@ -182,9 +182,21 @@ void FlowTableWithFields::add_layout_group(const sharedptr<LayoutGroup>& group, 
 
     Gtk::Alignment* alignment = Gtk::manage( new Gtk::Alignment ); //TODO_leak: This is possibly leaked, according to valgrind.
 
-    if(!group->get_title().empty() && with_indent) //Don't indent if it has no title, to allow use of groups just for positioning.
+    if(!group->get_title().empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
     {
-      alignment->set_padding(Glom::Utils::DEFAULT_SPACING_SMALL, 0, Glom::Utils::DEFAULT_SPACING_SMALL, 0);
+      //Add some indenting just to avoid the out-denting caused by this GtkFrame bug:
+      //https://bugzilla.gnome.org/show_bug.cgi?id=644199
+      const int BASE_INDENT = 3;
+      
+      //std::cout << "title= " << group->get_title() << ", with_indent=" << with_indent << std::endl;
+      if(with_indent) 
+      {
+        alignment->set_padding(Glom::Utils::DEFAULT_SPACING_SMALL, 0, Glom::Utils::DEFAULT_SPACING_SMALL + BASE_INDENT, 0);
+      }
+      else
+      {
+        alignment->set_padding(Glom::Utils::DEFAULT_SPACING_SMALL, 0, BASE_INDENT, 0);
+      }
     }
 
     alignment->show();
