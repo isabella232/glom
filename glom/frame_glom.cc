@@ -2317,7 +2317,7 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
   ReportBuilder report_builder;
   report_builder.set_document(document);
   const std::string filepath = 
-    report_builder.report_build(found_set, report); //TODO: Use found set's where_clause.
+    report_builder.report_build_and_save(found_set, report); //TODO: Use found set's where_clause.
   Utils::show_report_in_browser(filepath, get_app_window());
 }
 

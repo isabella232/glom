@@ -39,9 +39,9 @@ namespace GlomXslUtils
 {
 
 /**
- * @result the filepath of the generated HTML file.
+ * @result the generated HTML.
  */
-std::string transform(const xmlpp::Document& xml_document, const std::string& xsl_file_path);
+Glib::ustring transform(const xmlpp::Document& xml_document, const std::string& xsl_file_path);
 
 } //namespace GlomXslUtils
 

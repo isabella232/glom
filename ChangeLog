@@ -52,6 +52,20 @@
 
 2011-10-17  Murray Cumming  <murrayc@murrayc.com>
 
+	Test report contents.
+
+	* glom/libglom/xsl_utils.[h|cc]: transform(): Return the contents, 
+	not a filepath.
+	* glom/libglom/report_builder.[h|cc]: report_build(): return the 
+	contents, not the path. Add report_build_and_save() to get a temporary
+	filepath.
+	* glom/mode_data/box_data_manyrecords.cc:
+	* glom/frame_glom.cc: Adapted.
+	* tests/test_selfhosting_new_then_report.cc: Check that some expected 
+	text is in the generated HTML.
+
+2011-10-17  Murray Cumming  <murrayc@murrayc.com>
+
 	Test report building.
 
 	* tests/test_selfhosting_new_from_example.cc: Move most code into 

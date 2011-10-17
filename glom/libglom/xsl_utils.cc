@@ -126,57 +126,11 @@ static Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std
   return result;
 }
 
-std::string GlomXslUtils::transform(const xmlpp::Document& xml_document, const std::string& xsl_file_path)
+Glib::ustring GlomXslUtils::transform(const xmlpp::Document& xml_document, const std::string& xsl_file_path)
 {
   //Use libxslt to convert the XML to HTML:
-  const Glib::ustring result = xslt_process(xml_document, get_xslt_file(xsl_file_path));
+  return xslt_process(xml_document, get_xslt_file(xsl_file_path));
   //std::cout << "After xslt: " << result << std::endl;
-
-  //Save it to a temporary file and show it in a browser:
-  const std::string temp_path = Glib::build_filename(
-    Glib::get_tmp_dir(), "glom_printout.html");
-  std::cout << "temp_path=" << temp_path << std::endl;
-
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(temp_path);
-  Glib::RefPtr<Gio::FileOutputStream> stream;
-
-  //Create the file if it does not already exist:
-  try
-  {
-    if(file->query_exists())
-    {
-      stream = file->replace(); //Instead of append_to().
-    }
-    else
-    {
-      //By default files created are generally readable by everyone, but if we pass FILE_CREATE_PRIVATE in flags the file will be made readable only to the current user, to the level that is supported on the target filesystem.
-      //TODO: Do we want to specify 0660 exactly? (means "this user and his group can read and write this non-executable file".)
-      stream = file->create_file();
-    }
-  }
-  catch(const Gio::Error& ex)
-  {
-    // If the operation was not successful, print the error and abort
-    return std::string(); // print_error(ex, output_uri_string);
-  }
-
-  //Write the data to the output uri
-  gssize bytes_written = 0;
-  const Glib::ustring::size_type result_bytes = result.bytes();
-  try
-  {
-    bytes_written = stream->write(result.data(), result_bytes);
-  }
-  catch(const Gio::Error& ex)
-  {
-    // If the operation was not successful, print the error and abort
-    return std::string(); // false; //print_error(ex, output_uri_string);
-  }
-
-  if(bytes_written != (gssize)result_bytes)
-    return std::string(); //false
-
-  return file->get_path();
 }
 
 } //namespace Glom

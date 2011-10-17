@@ -23,6 +23,7 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
 #include <libglom/xsl_utils.h>
+#include <iostream>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -478,8 +479,59 @@ void ReportBuilder::report_build_records_vertical_group(const FoundSet& found_se
   }
 }
 
+std::string ReportBuilder::report_build_and_save(const FoundSet& found_set, const sharedptr<const Report>& report)
+{
+  const Glib::ustring contents = report_build(found_set, report);
 
-std::string ReportBuilder::report_build(const FoundSet& found_set, const sharedptr<const Report>& report)
+ //Save it to a temporary file and show it in a browser:
+  const std::string temp_path = Glib::build_filename(
+    Glib::get_tmp_dir(), "glom_printout.html");
+  std::cout << G_STRFUNC << ": temp_path=" << temp_path << std::endl;
+
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(temp_path);
+  Glib::RefPtr<Gio::FileOutputStream> stream;
+
+  //Create the file if it does not already exist:
+  try
+  {
+    if(file->query_exists())
+    {
+      stream = file->replace(); //Instead of append_to().
+    }
+    else
+    {
+      //By default files created are generally readable by everyone, but if we pass FILE_CREATE_PRIVATE in flags the file will be made readable only to the current user, to the level that is supported on the target filesystem.
+      //TODO: Do we want to specify 0660 exactly? (means "this user and his group can read and write this non-executable file".)
+      stream = file->create_file();
+    }
+  }
+  catch(const Gio::Error& ex)
+  {
+    // If the operation was not successful, print the error and abort
+    return std::string(); // print_error(ex, output_uri_string);
+  }
+
+  //Write the data to the output uri
+  gssize bytes_written = 0;
+  const Glib::ustring::size_type result_bytes = contents.bytes();
+  try
+  {
+    bytes_written = stream->write(contents.data(), result_bytes);
+  }
+  catch(const Gio::Error& ex)
+  {
+    // If the operation was not successful, print the error and abort
+    return std::string(); // false; //print_error(ex, output_uri_string);
+  }
+
+  if(bytes_written != (gssize)result_bytes)
+    return std::string(); //false
+
+  return file->get_path();
+}
+ 
+
+Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const sharedptr<const Report>& report)
 {
   //Create a DOM Document with the XML:
   xmlpp::DomParser dom_parser;;

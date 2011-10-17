@@ -85,7 +85,7 @@ void Box_Data_ManyRecords::print_layout()
     ReportBuilder report_builder;
     report_builder.set_document(document);
     const std::string filepath = 
-      report_builder.report_build(m_found_set, report_temp);
+      report_builder.report_build_and_save(m_found_set, report_temp);
     Utils::show_report_in_browser(filepath, get_app_window());
   }
 }

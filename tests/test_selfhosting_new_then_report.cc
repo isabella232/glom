@@ -41,21 +41,22 @@ int main()
   found_set.m_table_name = "albums";
   Glom::ReportBuilder report_builder;
   report_builder.set_document(&document);
-  const std::string filepath = 
+  const Glib::ustring html = 
     report_builder.report_build(found_set, report_temp);
-  if(filepath.empty())
+
+  if(html.empty())
   {
     test_selfhosting_cleanup();
+    std::cerr << "Failed: html was empty." << std::endl;
     return EXIT_FAILURE;
   }
 
-  /*
-  if(filecontents.find("Bruce Springsteen") == std::string::npos)
+  if(html.find("Bruce Springsteen") == std::string::npos)
   {
+    std::cerr << "Failed: html did not contain the expected text." << std::endl;
     test_selfhosting_cleanup();
     return EXIT_FAILURE;
   }
-  */
 
   test_selfhosting_cleanup();
 

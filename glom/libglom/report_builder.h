@@ -46,9 +46,15 @@ public:
   //sharedptr<Report> get_report();
 
   /**
-   * @result The filepath of the generated HTML file.
+   * @result The HTML of the generated report.
    */
-  std::string report_build(const FoundSet& found_set, const sharedptr<const Report>& report);
+  Glib::ustring report_build(const FoundSet& found_set, const sharedptr<const Report>& report);
+
+  /**
+   * @result The filepath of a temporary file containing the generated HTML file.
+   */
+  std::string report_build_and_save(const FoundSet& found_set, const sharedptr<const Report>& report);
+ 
  
 private:
 
