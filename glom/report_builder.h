@@ -21,20 +21,26 @@
 #ifndef GLOM_REPORT_BUILDER_H
 #define GLOM_REPORT_BUILDER_H
 
-#include <glom/base_db.h>
 #include <libglom/data_structure/report.h>
-#include <libglom/sharedptr.h>
+#include <libglom/document/document.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_summary.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_header.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_footer.h>
 
 namespace Glom
 {
 
-class ReportBuilder : public Base_DB
+class ReportBuilder
 {
 public:
   ReportBuilder();
   virtual ~ReportBuilder();
 
   static sharedptr<Report> create_standard_list_report(const Document* document, const Glib::ustring& table_name);
+
+  void set_document(Document* document);
 
   //void set_report(const Glib::ustring& table_name, const sharedptr<const Report>& report);
   //sharedptr<Report> get_report();
@@ -52,6 +58,7 @@ private:
   void report_build_headerfooter(const FoundSet& found_set, xmlpp::Element& parent_node, const sharedptr<LayoutGroup>& group);
 
   typedef std::vector< sharedptr<LayoutItem> > type_vecLayoutItems;
+  typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
 
   void report_build_records(const FoundSet& found_set, xmlpp::Element& parent_node, const type_vecLayoutItems& items, bool one_record_only = false);
   void report_build_records_get_fields(const FoundSet& found_set, const sharedptr<LayoutGroup>& group, type_vecLayoutFields& items);
@@ -59,6 +66,10 @@ private:
   void report_build_records_text(const FoundSet& found_set, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Text>& textobject, bool vertical = false);
   void report_build_records_image(const FoundSet& found_set, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Image>& imageobject, bool vertical = false);
   void report_build_records_vertical_group(const FoundSet& found_set, xmlpp::Element& vertical_group_node, const sharedptr<LayoutItem_VerticalGroup>& group, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& field_index);
+
+  Document* get_document();
+
+  Document* m_document;
 };
 
 } //namespace Glom

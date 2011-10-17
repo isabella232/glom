@@ -21,11 +21,6 @@
 #include "report_builder.h"
 #include <libglom/utils.h>
 #include <libglom/data_structure/glomconversions.h>
-#include <libglom/data_structure/layout/report_parts/layoutitem_summary.h>
-#include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
-#include <libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h>
-#include <libglom/data_structure/layout/report_parts/layoutitem_header.h>
-#include <libglom/data_structure/layout/report_parts/layoutitem_footer.h>
 #include <libglom/db_utils.h>
 #include <glom/xsl_utils.h>
 #include <glibmm/i18n.h>
@@ -34,13 +29,13 @@ namespace Glom
 {
 
 ReportBuilder::ReportBuilder()
+: m_document(0)
 {
 }
 
 ReportBuilder::~ReportBuilder()
 {
 }
-
 
 void ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::Element& parent_node, const sharedptr<LayoutGroup>& group)
 {
@@ -197,7 +192,7 @@ void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
       guint rows_count = datamodel->get_n_rows();
       for(guint row = 0; row < rows_count; ++row)
       {
-        const Gnome::Gda::Value group_value = datamodel->get_value_at(0 /* col*/, row);
+        const Gnome::Gda::Value group_value = datamodel->get_value_at(0 /* col*/, row); //TODO: Catch exceptions.
 
 
         //Add XML node:
@@ -399,13 +394,13 @@ void ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
     if(!datamodel)
       return;
 
-    value = datamodel->get_value_at(colField, row);
+    value = datamodel->get_value_at(colField, row); //TODO: Catch exceptions.
     colField = 0;
     row = 0;
   }
   else
   {
-    value = datamodel->get_value_at(colField, row);
+    value = datamodel->get_value_at(colField, row); //TODO: Catch exceptions.
   }
 
   nodeField->set_attribute("title", field->get_title_or_name()); //Not always used, but useful.
@@ -553,27 +548,7 @@ std::string ReportBuilder::report_build(const FoundSet& found_set, const sharedp
   if(!itemsToGet_TopLevel.empty())
   {
     xmlpp::Element* nodeGroupBy = nodeParent->add_child("ungrouped_records");
-
-    // TODO: I am not sure where an exception could be thrown here. It seems
-    // not to be in glom, otherwise the code wouldn't compile with
-    // -fno-exceptions. If it's in a library, it does not seem to take an
-    // additional error paramater for that. armin.
-    try
-    {
-      report_build_records(found_set, *nodeGroupBy, itemsToGet_TopLevel);
-    }
-    catch(const Glib::Exception& ex)
-    {
-      //Handle database errors here rather than crashing the whole application:
-      handle_error(ex);
-      return std::string();
-    }
-    catch(const std::exception& ex)
-    {
-      //Handle database errors here rather than crashing the whole application:
-      handle_error(ex);
-      return std::string();
-    }
+    report_build_records(found_set, *nodeGroupBy, itemsToGet_TopLevel);
   }
 
   return GlomXslUtils::transform(*pDocument, "print_report_to_html.xsl");
@@ -598,7 +573,6 @@ static void fill_standard_list_report_fill(const sharedptr<Report>& report, cons
   }
 }
 
-
 sharedptr<Report> ReportBuilder::create_standard_list_report(const Document* document, const Glib::ustring& table_name)
 {
   sharedptr<Report> result(new Report());
@@ -616,6 +590,16 @@ sharedptr<Report> ReportBuilder::create_standard_list_report(const Document* doc
   }
 
   return result;
+}
+
+void ReportBuilder::set_document(Document* document)
+{
+  m_document = document;
+}
+
+Document* ReportBuilder::get_document()
+{
+  return m_document;
 }
 
 

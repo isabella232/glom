@@ -1,5 +1,11 @@
 2011-10-17  Murray Cumming  <murrayc@murrayc.com>
 
+	ReportBuilder: Do not depend on Base_DB unnecessarily.
+
+	* glom/report_builder.[h|cc]: Just add get/set_document() instead.
+
+2011-10-17  Murray Cumming  <murrayc@murrayc.com>
+
 	Move report building code around.
 
 	* glom/report_builder.[h|cc]: report_build(): Return the filepath,
