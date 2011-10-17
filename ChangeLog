@@ -1,5 +1,12 @@
 2011-10-17  Murray Cumming  <murrayc@murrayc.com>
 
+	XSLT file: Minor fixes.
+
+	* xslt/print_report_to_html.xsl: Change xsl::version to version, which
+	is apparently more correct. Specify the encoding as UTF-8.
+
+2011-10-17  Murray Cumming  <murrayc@murrayc.com>
+
 	Tests: Add general XML validity of XSLT files.
 
 	* tests/test_xslt_file_validation.sh: New test, based on the other ones.
