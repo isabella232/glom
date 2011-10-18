@@ -589,7 +589,7 @@ main(int argc, char* argv[])
     // Some more sanity checking:
     // These print errors to the stdout if they fail.
     // In future we might refuse to start if they fail.
-    bool date_check_ok = false;
+    bool date_check_ok = true;
     const bool test1 =
       Glom::Conversions::sanity_check_date_text_representation_uses_4_digit_years(group.m_arg_debug_date_check /* show debug output */);
     const bool test2 = Glom::Conversions::sanity_check_date_parsing();
