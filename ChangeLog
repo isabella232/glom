@@ -1,3 +1,10 @@
+2011-10-18  Murray Cumming  <murrayc@murrayc.com>
+
+	Correct the pkg-config file.
+
+	* glom/libglom/glom.pc.in: Depend on libgdamm-5.0, not ligdamm-4.0.
+  And depend on libxslt, because we just moved the xslt stuff into libglom.
+
 2011-10-17  Murray Cumming  <murrayc@murrayc.com>
 
 	Move ReportBuilder to libglom, to make testing easier.

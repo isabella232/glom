@@ -8,7 +8,7 @@ exampledir=@docdir@/examples
 
 Name: libglom
 Description: Library for accessing Glom documents and data structures.
-Requires: glibmm-2.4 giomm-2.4 libgdamm-4.0 libxml++-2.6
+Requires: glibmm-2.4 giomm-2.4 libgdamm-5.0 libxml++-2.6 libxslt
 Version: @PACKAGE_VERSION@
 Libs: -L${libdir} -lglom-@GLOM_ABI_VERSION@
 Cflags: -I${includedir}/glom-@GLOM_ABI_VERSION@
