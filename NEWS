@@ -1,3 +1,24 @@
+1.19.14 (unstable):
+
+* Details: Avoid an outdent after group titles,
+  working around GtkFrame bug #644199.
+* List View: Correct the default column widths.
+* Command line: Correct some exit results.
+* Add try/catch around all uses of std::locale(""),
+  though this should probably just fail early in main().
+  Bug #619445
+* libglom:
+  - Correct the pkg-config file.
+  - Move ReportBuilder to libglom, adding a libxstl dependency.
+* Tests:
+  - Self Hosting: Test more expected table structure and data.
+  - Add a simple SQL injection test.
+  - Test report building and contents.
+  - Test general XML validity of XSLT files.
+* Examples:
+  - Remove all column_width attributes now that the defaults are good.
+  - Film Manager example: Change default table to Scenes.
+
 1.19.13 (unstable):
 
 * Developer:

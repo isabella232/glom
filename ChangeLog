@@ -1,3 +1,5 @@
+1.19.14:
+
 2011-10-18  Murray Cumming  <murrayc@murrayc.com>
 
 	Add a simple SQL injection test.
@@ -202,16 +204,6 @@
 	* examples/tests/example_field_formatting_test.glom:
 	* ldtp/database-templates/PostgresCentral/Test.glom:
 	* ldtp/database-templates/SQLite/Test.glom: A simple regexxer replace.
-
-2011-10-17  Murray Cumming  <murrayc@murrayc.com>
-
-	List View: Correct the default column widths.
-
-	* glom/utils_ui.[h|cc]: get_suitable_field_width_for_widget(): Added a
-	for_treeview parameter and adjust the width accordingly.
-	* glom/mode_data/db_adddel/db_adddel.cc: treeview_append_colum():
-  Replace the overly-generic division-by-3 hack with the new parameter, and 
-  add some hard-coded extra space.
 	
 2011-10-17  Murray Cumming  <murrayc@murrayc.com>
 
@@ -220,15 +212,15 @@
 	* glom/utils_ui.[h|cc]: get_suitable_field_width_for_widget(): Added a
 	for_treeview parameter and adjust the width accordingly.
 	* glom/mode_data/db_adddel/db_adddel.cc: treeview_append_colum():
-  Replace the overly-generic division-by-3 hack with the new parameter, and 
-  add some hard-coded extra space.
+	Replace the overly-generic division-by-3 hack with the new parameter, and 
+	add some hard-coded extra space.
 	
 2011-10-17  Murray Cumming  <murrayc@murrayc.com>
 
 	Details: Avoid an outdent after group titles
 
 	* glom/mode_data/flowtablewithfields.cc: add_layout_group(): Work around 
-  the GtkFrame bug #644199
+	* the GtkFrame bug #644199
 
 1.19.13 (unstable):
 
