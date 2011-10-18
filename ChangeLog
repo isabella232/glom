@@ -1,5 +1,13 @@
 2011-10-18  Murray Cumming  <murrayc@murrayc.com>
 
+	Film Manager example: Change default table.
+
+	* examples/example_film_manager.glom: Make the Scenes table appear first so
+	people get a better idea of what this is about - managing production of a
+	single film, not managing a collection of films.
+
+2011-10-18  Murray Cumming  <murrayc@murrayc.com>
+
 	Add a test for the locale problem and for a missing translated date format.
 
 	* tests/test_glom_date_in_locales.sh: A new test that sets LANG and then tries

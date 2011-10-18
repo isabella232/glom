@@ -789,7 +789,7 @@
     <reports/>
     <print_layouts/>
   </table>
-  <table name="contacts" default="true" title="Contacts">
+  <table name="contacts" title="Contacts">
     <example_rows>
       <example_row>
         <value column="contact_id">0</value>
@@ -3411,7 +3411,7 @@
     <reports/>
     <print_layouts/>
   </table>
-  <table name="scenes" title="Scenes">
+  <table name="scenes" default="true" title="Scenes">
     <example_rows>
       <example_row>
         <value column="scene_id">1</value>
