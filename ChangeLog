@@ -1,5 +1,12 @@
 2011-10-18  Murray Cumming  <murrayc@murrayc.com>
 
+	Command line: Correct some exit results.
+
+	* glom/main.cc: Use EXIT_FAILURE and EXIT_SUCCESS instead of 0 and -1,
+	and use the correct ones.
+
+2011-10-18  Murray Cumming  <murrayc@murrayc.com>
+
 	libglom: FieldFomatting: Correct some parameter names.
 	
 	* glom/libglom/data_structure/layout/fieldformatting.h: get_choices_related()

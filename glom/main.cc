@@ -391,7 +391,7 @@ main(int argc, char* argv[])
   if(errcode != 0)
   {
     std::cerr << "Failed to initialize WinSock: " << errcode << std::endl;
-    return -1;
+    return EXIT_FAILURE;
   }
 
   gchar* installation_dir_c = g_win32_get_package_installation_directory_of_module(0);
@@ -470,7 +470,7 @@ main(int argc, char* argv[])
   catch(const Glib::Error& ex)
   {
     std::cerr << "Glom: Error while initializing gtkmm: " << ex.what() << std::endl;
-    return 0;
+    return EXIT_FAILURE;
   }
 
   try
@@ -481,19 +481,19 @@ main(int argc, char* argv[])
   {
       std::cout << _("Error while parsing command-line options: ") << std::endl << ex.what() << std::endl;
       std::cout << _("Use --help to see a list of available command-line options.") << std::endl;
-      return 0;
+      return EXIT_FAILURE;
   }
   catch(const Glib::Error& ex)
   {
     std::cout << "Error: " << ex.what() << std::endl;
-    return 0;
+    return EXIT_FAILURE;
   }
 
 
   if(group.m_arg_version)
   {
     std::cout << PACKAGE_STRING << std::endl;
-    return 0;
+    return EXIT_SUCCESS;
   }
 
   try
@@ -528,7 +528,7 @@ main(int argc, char* argv[])
         std::cerr << "uri: " << input_uri << std::endl;
 
         std::cerr << std::endl << context.get_help() << std::endl;
-        return -1;
+        return EXIT_FAILURE;
       }
 
       const Gio::FileType file_type = file->query_file_type();
@@ -537,7 +537,7 @@ main(int argc, char* argv[])
         std::cerr << _("Glom: The file path is a directory instead of a file.") << std::endl;
 
         std::cerr << std::endl << context.get_help() << std::endl;
-        return -1;
+        return EXIT_FAILURE;
       }
 
       input_uri = file->get_uri();
@@ -561,44 +561,48 @@ main(int argc, char* argv[])
       dialog.set_secondary_text(message);
       dialog.run();
 
-      return -1; //There is no point in going further because Glom would not be able to connect to any Postgres servers.
+      return EXIT_FAILURE; //There is no point in going further because Glom would not be able to connect to any Postgres servers.
     }
 
     #ifndef GLOM_ENABLE_CLIENT_ONLY
     //Check that the postgres executable is really available:
     if(!Glom::check_postgres_is_available_with_warning())
-      return -1; //There is no point in going further because the most useful Glom functionality will not work without Postgres. Only a very cut-down Glom client would be useful without self-hosting.
+      return EXIT_FAILURE; //There is no point in going further because the most useful Glom functionality will not work without Postgres. Only a very cut-down Glom client would be useful without self-hosting.
     #endif // !GLOM_ENABLE_CLIENT_ONLY
 
     // Postgres can't be started as root. initdb complains.
     // So just prevent this in general. It is safer anyway.
     if(!Glom::check_user_is_not_root_with_warning())
-      return -1;
+      return EXIT_FAILURE;
 #endif //GLOM_ENABLE_POSTGRESQL
 
     if(!Glom::check_gir_is_available_with_warning())
-      return -1;
+      return EXIT_FAILURE;
 
     if(!Glom::check_pygda_is_available_with_warning())
-      return -1;
+      return EXIT_FAILURE;
 
     if(!Glom::check_pyglom_is_available_with_warning())
-      return -1;
+      return EXIT_FAILURE;
 
 
     // Some more sanity checking:
     // These print errors to the stdout if they fail.
     // In future we might refuse to start if they fail.
+    bool date_check_ok = false;
     const bool test1 =
-      Glom::Conversions::sanity_check_date_text_representation_uses_4_digit_years(group.m_arg_debug_date_check);
+      Glom::Conversions::sanity_check_date_text_representation_uses_4_digit_years(group.m_arg_debug_date_check /* show debug output */);
     const bool test2 = Glom::Conversions::sanity_check_date_parsing();
     if(!test1 || !test2)
     {
-      std::cerr << "Glom: ERROR: Date parsing sanity checks failed. Glom will not display dates correctly or interperet entered dates correctly. This needs attention from a translator. Please file a bug. See http://www.glom.org." << std::endl;
+      std::cerr << "Glom: ERROR: Date parsing sanity checks failed. Glom will not display dates correctly or interpret entered dates correctly. This needs attention from a translator. Please file a bug. See http://www.glom.org." << std::endl;
+      date_check_ok = false;
     }
 
     if(group.m_arg_debug_date_check)
-      return 0; //This command-line option is documented as stopping afterwards.
+    {
+      return date_check_ok ? EXIT_SUCCESS : EXIT_FAILURE; //This command-line option is documented as stopping afterwards.
+    }
 
     Glom::Application* pApplication = 0;
     Glom::Utils::get_glade_widget_derived_with_warning(pApplication);
@@ -641,5 +645,5 @@ main(int argc, char* argv[])
   WSACleanup();
 #endif
 
-  return 0;
+  return EXIT_SUCCESS;
 }
