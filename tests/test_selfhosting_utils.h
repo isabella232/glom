@@ -22,9 +22,13 @@
 #define GLOM_TEST_SELFHOSTING_UTILS_H
 
 #include <libglom/document/document.h>
+#include <libgdamm/datamodel.h>
 #include <string>
 
 bool test_create_and_selfhost(const std::string& example_filename, Glom::Document& document);
+
+bool test_model_expected_size(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, guint columns_count, guint rows_count);
+
 void test_selfhosting_cleanup();
 
 #endif //GLOM_TEST_SELFHOSTING_UTILS_H

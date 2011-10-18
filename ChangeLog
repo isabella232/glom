@@ -1,5 +1,13 @@
 2011-10-18  Murray Cumming  <murrayc@murrayc.com>
 
+	Test some query functions.
+
+	* tests/test_selfhosting_utils.[h|cc]: Added test_model_expected_size().
+	* tests/test_selfhosting_new_from_example.cc: Test the quick find and 
+	the count query.
+
+2011-10-18  Murray Cumming  <murrayc@murrayc.com>
+
 	Avoid a compiler warning.
 
 	* glom/libglom/data_structure/glomconversions.cc: format_time():

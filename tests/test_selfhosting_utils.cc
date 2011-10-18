@@ -201,3 +201,27 @@ bool test_create_and_selfhost(const std::string& example_filename, Glom::Documen
   return recreated;
 }
 
+bool test_model_expected_size(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, guint columns_count, guint rows_count)
+{
+  if(!data_model)
+  {
+    std::cerr << "Failure: data_model was null" << std::endl;
+    return false;
+  }
+
+  if(data_model->get_n_columns() != (int)columns_count)
+  {
+    std::cerr << "Failure: get_n_columns() returned an unexpected value. Expected: " << columns_count << ", Actual: " << data_model->get_n_columns() << std::endl;
+    return false;
+  }
+
+  if(data_model->get_n_rows() != (int)rows_count)
+  {
+    std::cerr << "Failure: get_n_rows() returned an unexpected value. Expected: " << rows_count << ", Actual: " << data_model->get_n_rows() << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
+

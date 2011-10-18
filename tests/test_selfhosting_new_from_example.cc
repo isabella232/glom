@@ -20,6 +20,8 @@
 
 #include "tests/test_selfhosting_utils.h"
 #include <libglom/init.h>
+#include <libglom/utils.h>
+#include <libglom/db_utils.h>
 #include <glib.h> //For g_assert()
 #include <iostream>
 #include <cstdlib> //For EXIT_SUCCESS and EXIT_FAILURE
@@ -32,6 +34,64 @@ int main()
   const bool recreated = 
     test_create_and_selfhost("example_music_collection.glom", document);
   g_assert(recreated);
+
+  //Check that some data is as expected:
+  const Gnome::Gda::Value value("Born To Run");
+  const Gnome::Gda::SqlExpr where_clause = 
+    Glom::Utils::get_find_where_clause_quick(&document, "albums", value);
+  
+  Glom::Utils::type_vecLayoutFields fieldsToGet;
+  Glom::sharedptr<const Glom::Field> field = document.get_field("albums", "album_id");
+  Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem->set_full_field_details(field);
+  fieldsToGet.push_back(layoutitem);
+  field = document.get_field("albums", "name");
+  layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem->set_full_field_details(field);
+  fieldsToGet.push_back(layoutitem);
+
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
+    Glom::Utils::build_sql_select_with_where_clause("albums",
+      fieldsToGet, where_clause);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = 
+    Glom::DbUtils::query_execute_select(builder);
+  if(!test_model_expected_size(data_model, 2, 1))
+  {
+    std::cerr << "Failure: Unexpected data model size for main query." << std::endl;
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
+
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder_count = 
+    Glom::Utils::build_sql_select_count_rows(builder);
+  data_model = 
+    Glom::DbUtils::query_execute_select(builder_count);
+  if(!test_model_expected_size(data_model, 1, 1))
+  {
+    std::cerr << "Failure: Unexpected data model size for count query." << std::endl;
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
+
+  int result = 0;
+  const Gnome::Gda::Value value_count = data_model->get_value_at(0, 0);
+  if(value_count.get_value_type() == G_TYPE_INT64)
+  {
+    result = (int)value_count.get_int64();
+  }
+  else
+  {
+    std::cerr << "Failure: The COUNT query returned an unexpected data type." << std::endl;
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
+
+  if(result != 1)
+  {
+    std::cerr << "Failure: The COUNT query returned an unexpected value." << std::endl;
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
 
   test_selfhosting_cleanup();
 
