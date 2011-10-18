@@ -26,6 +26,7 @@
 #include <libglom/init.h>
 #include <libglom/privs.h>
 #include <libglom/db_utils.h>
+#include <libglom/utils.h>
 #include <giomm/file.h>
 #include <iostream>
 
@@ -224,4 +225,26 @@ bool test_model_expected_size(const Glib::RefPtr<Gnome::Gda::DataModel>& data_mo
   return true;
 }
 
+bool test_table_exists(const Glib::ustring& table_name, const Glom::Document& document)
+{
+  //Try to get more rows than intended:
+  Glom::Utils::type_vecLayoutFields fieldsToGet;
+  Glom::sharedptr<const Glom::Field> field = document.get_field_primary_key(table_name); //To to get some field.
+  Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem->set_full_field_details(field);
+  fieldsToGet.push_back(layoutitem);
+
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
+    Glom::Utils::build_sql_select_with_where_clause(table_name,
+      fieldsToGet);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = 
+    Glom::DbUtils::query_execute_select(builder);
+  if(!data_model || !(data_model->get_n_columns()))
+  {
+    std::cerr << "Failure: table does not exist: " << table_name << std::endl;
+    return false;
+  }
+
+  return true;
+}
 

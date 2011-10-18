@@ -193,6 +193,8 @@ public:
 
   sharedptr<Field> get_field(const Glib::ustring& table_name, const Glib::ustring& strFieldName) const;
 
+  sharedptr<Field> get_field_primary_key(const Glib::ustring& table_name) const;
+
   /** Use this after removing a field from a table,
    * so that it is not used anymore in relationships, layouts, reports, etc.
    */

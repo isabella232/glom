@@ -28,6 +28,7 @@
 bool test_create_and_selfhost(const std::string& example_filename, Glom::Document& document);
 
 bool test_model_expected_size(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, guint columns_count, guint rows_count);
+bool test_table_exists(const Glib::ustring& table_name, const Glom::Document& document);
 
 void test_selfhosting_cleanup();
 

@@ -904,6 +904,19 @@ sharedptr<Field> Document::get_field(const Glib::ustring& table_name, const Glib
   return sharedptr<Field>();
 }
 
+sharedptr<Field> Document::get_field_primary_key(const Glib::ustring& table_name) const
+{
+  type_vec_fields vecFields = get_table_fields(table_name);
+  for(type_vec_fields::const_iterator iter = vecFields.begin(); iter != vecFields.end(); ++iter)
+  {
+    sharedptr<Field> field = *iter;
+    if(field && field->get_primary_key())
+      return field;
+  }
+
+  return sharedptr<Field>();
+}
+
 void Document::change_field_name(const Glib::ustring& table_name, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew)
 {
   type_tables::iterator iterFindTable = m_tables.find(table_name);

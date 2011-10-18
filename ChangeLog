@@ -1,5 +1,15 @@
 2011-10-18  Murray Cumming  <murrayc@murrayc.com>
 
+	Self hosting test: Check that other tables exist.
+
+	* glom/libglom/document/document.[h|cc]: Added get_field_primary_key(),
+	for use by:
+	* tests/test_selfhosting_utils.[h|cc]: Added test_table_exists().
+	* tests/test_selfhosting_new_from_example.cc: Add quick checks that 
+	some other tables exist.
+
+2011-10-18  Murray Cumming  <murrayc@murrayc.com>
+
 	Test some query functions.
 
 	* tests/test_selfhosting_utils.[h|cc]: Added test_model_expected_size().
