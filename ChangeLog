@@ -1,3 +1,10 @@
+2011-10-18  Murray Cumming  <murrayc@murrayc.com>
+
+	Avoid a compiler warning.
+
+	* glom/libglom/data_structure/glomconversions.cc: format_time():
+	Return a result from the catch block.
+
 2011-10-17  Murray Cumming  <murrayc@murrayc.com>
 
 	Avoid some copy/pasting of code.

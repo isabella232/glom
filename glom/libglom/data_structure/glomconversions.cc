@@ -47,6 +47,7 @@ Glib::ustring Conversions::format_time(const tm& tm_data)
   {
     std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
     std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+    return Glib::ustring();
   } 
 }
 
