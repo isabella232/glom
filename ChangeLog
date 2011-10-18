@@ -1,5 +1,14 @@
 2011-10-18  Murray Cumming  <murrayc@murrayc.com>
 
+	Add a test for the locale problem and for a missing translated date format.
+
+	* tests/test_glom_date_in_locales.sh: A new test that sets LANG and then tries
+	to start glom with it's date-checking option, to see if any fail.
+	However, this is not run during "make check", or even distributed, because
+	it depends on you having the locales installed and configured.
+
+2011-10-18  Murray Cumming  <murrayc@murrayc.com>
+
 	Add try/catch around all uses of std::locale("").
 
 	* glom/libglom/data_structure/glomconversions.cc: Add try/catch with a warning
