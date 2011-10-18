@@ -1,5 +1,13 @@
 2011-10-18  Murray Cumming  <murrayc@murrayc.com>
 
+	libglom: FieldFomatting: Correct some parameter names.
+	
+	* glom/libglom/data_structure/layout/fieldformatting.h: get_choices_related()
+	Rename relationship_name to relatioship. It was already correct in the .cc
+	file.
+
+2011-10-18  Murray Cumming  <murrayc@murrayc.com>
+
 	Correct the pkg-config file.
 
 	* glom/libglom/glom.pc.in: Depend on libgdamm-5.0, not ligdamm-4.0.
