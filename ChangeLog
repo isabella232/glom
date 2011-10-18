@@ -1,5 +1,14 @@
 2011-10-18  Murray Cumming  <murrayc@murrayc.com>
 
+	Add a simple SQL injection test.
+
+	* tests/test_selfhosting_sqlinjection.cc: Attempt to do bad things 
+	that would be possible if our SQL values were not escaped properly
+	in the SQL. (libgda takes care of this.)
+	* Makefile_tests.am: Mention the new test.
+
+2011-10-18  Murray Cumming  <murrayc@murrayc.com>
+
 	Self hosting test: Check that other tables exist.
 
 	* glom/libglom/document/document.[h|cc]: Added get_field_primary_key(),
