@@ -1,5 +1,18 @@
 2011-10-18  Murray Cumming  <murrayc@murrayc.com>
 
+	Add try/catch around all uses of std::locale("").
+
+	* glom/libglom/data_structure/glomconversions.cc: Add try/catch with a warning
+	whenever we use std::locale(""), which means the current locale, because that 
+	can throw an exception if the locale is not properly configure.
+	* glom/main.cc: Mention that a non-installed or not-properly-configured 
+	locale could be the cause of the problem.
+	
+	However, I would like to know exactly what it means for a locale to be 
+	properly configured.
+
+2011-10-18  Murray Cumming  <murrayc@murrayc.com>
+
 	Command line: Correct some exit results.
 
 	* glom/main.cc: Use EXIT_FAILURE and EXIT_SUCCESS instead of 0 and -1,

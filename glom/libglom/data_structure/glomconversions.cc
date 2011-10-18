@@ -39,7 +39,15 @@ namespace Glom
 
 Glib::ustring Conversions::format_time(const tm& tm_data)
 {
-  return format_time( tm_data, std::locale("") /* the user's current locale */ ); //Get the current locale.
+  try
+  {
+    return format_time( tm_data, std::locale("") /* the user's current locale */ ); //Get the current locale.
+  }
+  catch(const std::runtime_error& ex)
+  {
+    std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
+    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+  } 
 }
 
 
@@ -55,7 +63,16 @@ Glib::ustring Conversions::format_time(const tm& tm_data, const std::locale& loc
 
 Glib::ustring Conversions::format_date(const tm& tm_data)
 {
-  return format_date( tm_data, std::locale("") /* the user's current locale */ ); //Get the current locale.
+  try
+  {
+    return format_date( tm_data, std::locale("") /* the user's current locale */ ); //Get the current locale.
+  }
+  catch(const std::runtime_error& ex)
+  {
+    std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
+    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+    return Glib::ustring();
+  }
 }
 
 #define GLOM_NON_TRANSLATED_LOCALE_DATE_FORMAT "%x"
@@ -191,11 +208,19 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
   Glib::ustring text = the_stream.str();
   //std::cout << "debug: " << G_STRFUNC << ": result from tp.put: " << text << std::endl;
 
-  if(locale == std::locale("") /* The user's current locale */)
+  try
   {
-    //Converts from the user's current locale to utf8. I would prefer a generic conversion from any locale,
-    // but there is no such function, and it's hard to do because I don't know how to get the encoding name from the std::locale()
-    text = Glib::locale_to_utf8(text);
+    if(locale == std::locale("") /* The user's current locale */)
+    {
+      // Converts from the user's current locale to utf8. I would prefer a generic conversion from any locale,
+      // but there is no such function, and it's hard to do because I don't know how to get the encoding name from the std::locale()
+      text = Glib::locale_to_utf8(text);
+    }
+  }
+  catch(const std::runtime_error& ex)
+  {
+    std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
+    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
   }
 
   //std::cout << "debug: " << G_STRFUNC << ": returning: " << text << std::endl;
@@ -260,7 +285,16 @@ class numpunct_no_thousands_separator: public std::numpunct<char>
 
 Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const NumericFormat& numeric_format)
 {
-  return get_text_for_gda_value(glom_type, value, std::locale("") /* the user's current locale */, numeric_format); //Get the current locale.
+  try
+  {
+    return get_text_for_gda_value(glom_type, value, std::locale("") /* the user's current locale */, numeric_format); //Get the current locale.
+  }
+  catch(const std::runtime_error& ex)
+  {
+    std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
+    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+    return Glib::ustring();
+  }
 }
 
 double Conversions::get_double_for_gda_value_numeric(const Gnome::Gda::Value& value)
@@ -444,12 +478,20 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     another_stream << number;
     Glib::ustring text = another_stream.str();  //Avoid using << because Glib::ustring does implicit character conversion with that.
 
-    if(locale == std::locale("") /* The user's current locale */)
+    try
     {
-      // Converts from the user's current locale to utf8. I would prefer a generic conversion from any locale,
-      // but there is no such function, and it's hard to do because I don't know how to get the encoding name from the std::locale()
-      text = Glib::locale_to_utf8(text);
+      if(locale == std::locale("") /* The user's current locale */)
+      {
+        // Converts from the user's current locale to utf8. I would prefer a generic conversion from any locale,
+        // but there is no such function, and it's hard to do because I don't know how to get the encoding name from the std::locale()
+        text = Glib::locale_to_utf8(text);
+      }
     }
+    catch(const std::runtime_error& ex)
+    {
+      std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
+      std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+    }      
 
     //std::cout << "debug: " << G_STRFUNC << ": number=" << number << ", text=" << text << std::endl;
     return text; //Do something like Glib::locale_to_utf(), but with the specified locale instead of the current locale.
@@ -515,8 +557,17 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
 
 Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, const NumericFormat& numeric_format, bool& success, bool iso_format)
 {
-  const std::locale the_locale = (iso_format ? std::locale::classic() :  std::locale("") /* The user's current locale */);
-
+  std::locale the_locale;
+  try
+  {
+    the_locale = (iso_format ? std::locale::classic() :  std::locale("") /* The user's current locale */);
+  }
+  catch(const std::runtime_error& ex)
+  {
+    std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
+    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+  } 
+  
   //Put a NULL in the database for empty dates, times, and numerics, because 0 would be an actual value.
   //But we use "" for strings, because the distinction between NULL and "" would not be clear to users.
   if(text.empty())
@@ -627,7 +678,19 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
 
 tm Conversions::parse_date(const Glib::ustring& text, bool& success)
 {
-  return parse_date( text, std::locale("") /* the user's current locale */, success ); //Get the current locale.
+  try
+  {
+    return parse_date( text, std::locale("") /* the user's current locale */, success ); //Get the current locale.
+  }
+  catch(const std::runtime_error& ex)
+  {
+    std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
+    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+    
+    tm the_c_time;
+    memset(&the_c_time, 0, sizeof(the_c_time));
+    return the_c_time;
+  } 
 }
 
 tm Conversions::parse_date(const Glib::ustring& text, const std::locale& locale, bool& success)
@@ -689,7 +752,7 @@ tm Conversions::parse_date(const Glib::ustring& text, const std::locale& locale,
   }
   else
   {
-    //time_get can fail just because you have entered "1/2/1903" instead "01/02/1903", 
+    //time_get can fail just because you have entered "1/2/1903" instead of "01/02/1903", 
     //or maybe we chose to skip it because it is not useful in this locale,
     //so let's try another, more liberal, way:
     Glib::Date date;
@@ -742,10 +805,24 @@ tm Conversions::parse_date(const Glib::ustring& text, const std::locale& locale,
 
 tm Conversions::parse_time(const Glib::ustring& text, bool& success)
 {
+  //Initialize output parameter:
+  success = false;
+
   //return parse_time( text, std::locale("") /* the user's current locale */ ); //Get the current locale.
 
   //time_get() does not seem to work with non-C locales.  TODO: Try again.
-  tm the_time = parse_time( text, std::locale("") /* the user's current locale */, success );
+  tm the_time;
+  
+  try
+  {
+    the_time = parse_time( text, std::locale("") /* the user's current locale */, success );
+  }
+  catch(const std::runtime_error& ex)
+  {
+    std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
+    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+  } 
+  
   if(success)
   {
     return the_time;
