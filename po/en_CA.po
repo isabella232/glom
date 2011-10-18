@@ -959,6 +959,18 @@ msgstr "Boolean"
 msgid "Image"
 msgstr "Image"
 
+#. TRANSLATORS: Please only translate this string if you know that strftime()
+#. * shows only 2 year digits when using format "x". We want to always display
+#. * 4 year digits. For instance, en_GB should translate it to "%d/%m/%Y".
+#. * Glom will show a warning in the terminal at startup if this is necessary
+#. * and default to %d/%m/%Y" if it detects a problem, but that might not be
+#. * correct for your locale.
+#. * Thanks.
+#: ../glom/libglom/data_structure/glomconversions.cc:78
+#, no-c-format
+msgid "%x"
+msgstr "%Y/%m/%d"
+
 #: ../glom/data_structure/translatable_item.cc:238
 msgid "Layout Item"
 msgstr "Layout Item"
