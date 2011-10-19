@@ -1,5 +1,22 @@
 2011-10-19  Murray Cumming  <murrayc@murrayc.com>
 
+	Self-hosting: Attempt to avoid failed shutdowns.
+
+	* glom/libglom/connectionpool.cc: invalidate_connection(): Actually call
+	Gda::Connection::close() instead of relying on the Connection destructor to
+	do that, because maybe it is not closing it if maybe Connection::is_opened()
+	is not working correctly.
+	cleanup(): invalidate the connection before shutting down the server,
+	not after, in case an open connection is stopping the server from closing down. 
+	* glom/libglom/connectionpool_backends/postgres_self.[h|cc]:
+	connect(): Remember the connection details so we can use them later to show
+	debug output.
+	Added show_active_connections() to try to get a clue about what is wrong
+	when the shutdown fails, using those connection details.
+	cleanup(): Call it when the shutdown fails.
+
+2011-10-19  Murray Cumming  <murrayc@murrayc.com>
+
 	Fix make check.
 
 	* tests/test_selfhosting_new_from_example.cc: Add some missing !.

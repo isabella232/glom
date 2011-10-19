@@ -86,8 +86,9 @@ SharedConnection::type_signal_finished SharedConnection::signal_finished()
 void SharedConnection::close()
 {
   if(m_gda_connection)
+  {
     m_gda_connection.reset();
-
+  }
 
   //Tell the connection pool that we have finished with this connection.
   //It might want to close it, or keep it open if somebody else is using it.
@@ -492,6 +493,10 @@ void ConnectionPool::invalidate_connection()
   connection_cached.clear();
   connection_cached_timeout_connection.disconnect();
   connection_cached_finished_connection.disconnect();
+
+  if(m_refGdaConnection)
+    m_refGdaConnection->close();
+    
   m_refGdaConnection.reset();
   m_sharedconnection_refcount = 0;
 }
@@ -622,12 +627,13 @@ bool ConnectionPool::cleanup(const SlotProgress& slot_progress)
 
   bool result = false;
 
+  //Make sure that no connections are still open.
+  //Otherwise database shutdown could fail.
+  //And make sure that connect() tries to make a new connection:
+  invalidate_connection();
+      
   if(m_backend.get())
     result = m_backend->cleanup(slot_progress);
-
-  //Make sure that connect() tries to make a new connection:
-  invalidate_connection();
-
 
 #ifndef G_OS_WIN32
   /* Stop advertising the self-hosting database server via avahi: */

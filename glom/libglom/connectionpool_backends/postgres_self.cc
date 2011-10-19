@@ -19,7 +19,9 @@
  */
 
 #include <libglom/connectionpool_backends/postgres_self.h>
+#include <libglom/connectionpool.h>
 #include <libglom/utils.h>
+#include <libglom/db_utils.h>
 #include <libglom/spawn_with_feedback.h>
 #include <giomm.h>
 #include <glib/gstdio.h> // For g_remove
@@ -451,6 +453,44 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
   return STARTUPERROR_NONE;
 }
 
+void PostgresSelfHosted::show_active_connections()
+{
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  builder->select_add_field("*", "pg_stat_activity");
+  builder->select_add_target("pg_stat_activity");
+ 
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = connect(m_saved_database_name, m_saved_username, m_saved_password);
+  if(!gda_connection)
+    std::cerr << G_STRFUNC << ": connection failed." << std::endl;
+  
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
+  if(!datamodel)
+    std::cerr << G_STRFUNC << ": pg_stat_activity SQL query failed." << std::endl;
+  
+  const int rows_count = datamodel->get_n_rows(); 
+  if(datamodel->get_n_rows() < 1)
+    std::cerr << G_STRFUNC << ": pg_stat_activity SQL query returned no rows." << std::endl;
+
+  std::cout << "Active connections according to a pg_stat_activity SQL query:" << std::endl;
+  const int cols_count = datamodel->get_n_columns();
+  for(int row = 0; row < rows_count; ++row)
+  {
+    for(int col = 0; col < cols_count; ++col)
+    {
+      if(col != 0)
+        std::cout << ", ";
+        
+      std::cout << datamodel->get_value_at(col, row).to_string();
+    }
+    
+    std::cout << std::endl;
+  }
+  
+  //Make sure that this connection does not stop a further attempt to stop the server.
+  gda_connection->close();
+}
+
 bool PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
 {
   // This seems to be called twice sometimes, so we don't assert here until
@@ -482,7 +522,17 @@ bool PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
   if(!result)
   {
     std::cerr << "Error while attempting to stop self-hosting of the database. Trying again."  << std::endl;
-
+    
+    //Show open connections for debugging:
+    try
+    {
+      show_active_connections();
+    }
+    catch(const Glib::Error& ex)
+    {
+      std::cerr << G_STRFUNC << ": exception while trying to show active connections: " << ex.what() << std::endl;
+    }
+    
     //I've seen it fail when running under valgrind, and there are reports of failures in bug #420962.
     //Maybe it will help to try again:
     const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, slot_progress);
@@ -601,6 +651,11 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
     keep_trying = false;
   }
 
+  //Save the connection details _only_ for later debug use:
+  
+  m_saved_database_name = database;
+  m_saved_username = username;
+  m_saved_password = password;
   return result;
 }
 
