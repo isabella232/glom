@@ -1,5 +1,12 @@
 2011-10-19  Murray Cumming  <murrayc@murrayc.com>
 
+	SQL Injection Test: Try both kinds of quote characters.
+
+	* tests/test_selfhosting_sqlinjection.cc: Instead of assuming that we know
+	what libgda uses.
+
+2011-10-19  Murray Cumming  <murrayc@murrayc.com>
+
 	Self-hosting: Attempt to avoid failed shutdowns.
 
 	* glom/libglom/connectionpool.cc: invalidate_connection(): Actually call

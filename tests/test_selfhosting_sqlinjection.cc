@@ -28,10 +28,10 @@
 
 Glom::Document document;
 
-static bool check_get_extra_rows()
+static bool check_get_extra_rows(const Glib::ustring& quote_char)
 {
   //Try to get more rows than intended:
-  const Gnome::Gda::Value value("Born To Run\" OR \"x\"=\"x");
+  const Gnome::Gda::Value value("Born To Run" + quote_char + " OR " + quote_char + "x" + quote_char + "=" + quote_char + "x");
   Glom::sharedptr<const Glom::Field> where_field = document.get_field("albums", "name");
   const Gnome::Gda::SqlExpr where_clause = 
     Glom::Utils::build_simple_where_expression("albums", where_field, value);
@@ -53,17 +53,17 @@ static bool check_get_extra_rows()
     Glom::DbUtils::query_execute_select(builder);
   if(!test_model_expected_size(data_model, 2, 0)) //No rows should be returned because the match value was stupid, if escaped properly.
   {
-    std::cerr << "Failure: Unexpected data model size for query." << std::endl;
+    std::cerr << "Failure: Unexpected data model size for query, with quote_char=" << quote_char << std::endl;
     return false;
   }
 
   return true;
 }
 
-static bool check_drop_table()
+static bool check_drop_table(const Glib::ustring& quote_char)
 {
   //Try to drop the table in a second SQL statement:
-  const Gnome::Gda::Value value("True Blue\"; DROP TABLE songs; --");
+  const Gnome::Gda::Value value("True Blue" + quote_char + "; DROP TABLE songs; --");
   Glom::sharedptr<const Glom::Field> where_field = 
     document.get_field("albums", "name");
   const Gnome::Gda::SqlExpr where_clause = 
@@ -86,7 +86,7 @@ static bool check_drop_table()
     Glom::DbUtils::query_execute_select(builder);
   if(!test_model_expected_size(data_model, 2, 0)) //No rows should be returned because the match value was stupid, if escaped properly.
   {
-    std::cerr << "Failure: Unexpected data model size for query." << std::endl;
+    std::cerr << "Failure: Unexpected data model size for query, with quote_char=" << quote_char << std::endl;
     return false;
   }
 
@@ -107,14 +107,28 @@ int main()
     test_create_and_selfhost("example_music_collection.glom", document);
   g_assert(recreated);
 
-  if(!check_get_extra_rows())
+  if(!check_get_extra_rows("\""))
+  {
+    std::cerr << "Failure: check_get_extra_rows() failed." << std::endl;
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
+  
+  if(!check_get_extra_rows("'"))
   {
     std::cerr << "Failure: check_get_extra_rows() failed." << std::endl;
     test_selfhosting_cleanup();
     return EXIT_FAILURE;
   }
 
-  if(!check_drop_table())
+  if(!check_drop_table("\""))
+  {
+    std::cerr << "Failure: check_drop_table() failed." << std::endl;
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
+  
+  if(!check_drop_table("'"))
   {
     std::cerr << "Failure: check_drop_table() failed." << std::endl;
     test_selfhosting_cleanup();
