@@ -90,7 +90,7 @@ tests_test_signal_reemit_LDADD = $(LIBGLOM_LIBS)
 tests_test_signal_reemit_CPPFLAGS = $(tests_cppflags)
 
 tests_python_test_load_python_library_SOURCES = tests/python/test_load_python_library.cc
-tests_python_test_load_python_library_LDADD = $(LIBGLOM_LIBS) -ldl
+tests_python_test_load_python_library_LDADD = $(LIBGLOM_LIBS) $(DL_LIB)
 tests_python_test_load_python_library_CPPFLAGS = $(tests_cppflags)
 
 tests_python_test_python_module_SOURCES = tests/python/test_python_module.cc

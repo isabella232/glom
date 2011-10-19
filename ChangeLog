@@ -1,5 +1,13 @@
 1.19.15:
 
+2011-10-19  Jasper Lievisse Adriaanse <jasperla@gnome.org>
+
+	Don't unconditionally link with libdl to fix regress tests on
+	systems which don't need to link with -ldl for dlopen() etc.
+
+	* configure.ac:
+	* Makefile_tests.am: Check for -libdl.
+
 2011-10-19  Murray Cumming  <murrayc@murrayc.com>
 
 	SQL Injection Test: Try both kinds of quote characters.
