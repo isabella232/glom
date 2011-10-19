@@ -66,7 +66,7 @@ void libglom_init()
 
   //Initialize PyGObject, so that functions such as pygobject_new() work
   //instead of crashing.
-  pygobject_init(2, 28, 0);
+  pygobject_init(3, 0, 0); //The major version should match the one in configure.ac.
 }
 
 void libglom_deinit()

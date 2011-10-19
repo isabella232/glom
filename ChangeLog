@@ -1,3 +1,12 @@
+2011-10-19  Murray Cumming  <murrayc@murrayc.com>
+
+	Do not pygoject_init() the wrong version.
+
+	* glom/libglom/init.cc: Specify pygobject 3 instead of 2 when calling
+	pygobject_init(). They are parallel-installable and incompatible and it is 
+	3 that we depend on. This recently started failing during "make check", 
+	which it should.
+
 1.19.14:
 
 2011-10-18  Murray Cumming  <murrayc@murrayc.com>
