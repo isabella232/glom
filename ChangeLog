@@ -1,3 +1,10 @@
+2011-10-19  Murray Cumming  <murrayc@murrayc.com>>
+
+	SQL Injection Test: Try to avoid quoting by giving a wrong field type.
+
+	* tests/test_selfhosting_sqlinjection.cc: Try to avoid quoting by
+	saying that a text field is a number but still providing a text value.
+
 2011-10-19  Murray Cumming  <murrayc@murrayc.com>
 
 	SQL Injection Test: Try to use (evil and unquoted) text for a number. 

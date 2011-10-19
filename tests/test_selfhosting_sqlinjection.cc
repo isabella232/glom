@@ -22,6 +22,7 @@
 #include <libglom/init.h>
 #include <libglom/utils.h>
 #include <libglom/db_utils.h>
+#include <libglom/connectionpool.h>
 #include <glib.h> //For g_assert()
 #include <iostream>
 #include <cstdlib> //For EXIT_SUCCESS and EXIT_FAILURE
@@ -99,7 +100,7 @@ static bool check_drop_table(const Glib::ustring& quote_char)
   return true;
 }
 
-static bool check_avoid_quotes_and_drop_table()
+static bool check_avoid_quotes_and_drop_table_with_false_value_type()
 {
   //Try to drop the table in a second SQL statement,
   //by using a text value for a field whose type should not need quoting:
@@ -142,6 +143,52 @@ static bool check_avoid_quotes_and_drop_table()
   return false;
 }
 
+static bool check_avoid_quotes_and_drop_table_with_false_field_type()
+{
+  //Try to drop the table in a second SQL statement,
+  //by using a text value for a field whose type should not need quoting:
+  const Gnome::Gda::Value value("\"Born To Run\";DROP TABLE songs");
+
+  //Specify a field with incorrect type information:
+  Glom::sharedptr<Glom::Field> where_field = 
+    document.get_field("albums", "name");
+  where_field->set_glom_type(Glom::Field::TYPE_NUMERIC);
+  //const GType gda_type = Glom::Field::get_gda_type_for_glom_type(Glom::TYPE_NUMERIC); 
+
+  const Gnome::Gda::SqlExpr where_clause = 
+    Glom::Utils::build_simple_where_expression("albums", where_field, value);
+ 
+  Glom::Utils::type_vecLayoutFields fieldsToGet;
+  Glom::sharedptr<const Glom::Field> field = document.get_field("albums", "album_id");
+  Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem->set_full_field_details(field);
+  fieldsToGet.push_back(layoutitem);
+  field = document.get_field("albums", "name");
+  layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem->set_full_field_details(field);
+  fieldsToGet.push_back(layoutitem);
+
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
+    Glom::Utils::build_sql_select_with_where_clause("albums",
+      fieldsToGet, where_clause);
+
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model
+    = Glom::DbUtils::query_execute_select(builder);
+  if(!test_model_expected_size(data_model, 2, 0)) //No rows should be returned because the match value was stupid, if escaped properly.
+  {
+    std::cerr << "Failure: Unexpected data model size for query." << std::endl;
+    return false;
+  }
+
+  if(!test_table_exists("songs", document))
+  {
+    std::cerr << "Failure: The table may have been dropped." << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
 int main()
 {
   Glom::libglom_init();
@@ -178,9 +225,16 @@ int main()
     return EXIT_FAILURE;
   }
 
-  if(!check_avoid_quotes_and_drop_table())
+  if(!check_avoid_quotes_and_drop_table_with_false_value_type())
   {
-    std::cerr << "Failure: check_avoid_quotes_and_drop_table() failed." << std::endl;
+    std::cerr << "Failure: check_avoid_quotes_and_drop_table_with_false_value_type() failed." << std::endl;
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
+
+  if(!check_avoid_quotes_and_drop_table_with_false_field_type())
+  {
+    std::cerr << "Failure: check_avoid_quotes_and_drop_table_with_false_field_type() failed." << std::endl;
     test_selfhosting_cleanup();
     return EXIT_FAILURE;
   }
