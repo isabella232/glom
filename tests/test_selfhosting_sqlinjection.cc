@@ -99,6 +99,49 @@ static bool check_drop_table(const Glib::ustring& quote_char)
   return true;
 }
 
+static bool check_avoid_quotes_and_drop_table()
+{
+  //Try to drop the table in a second SQL statement,
+  //by using a text value for a field whose type should not need quoting:
+  const Gnome::Gda::Value value("1;DROP TABLE songs");
+  Glom::sharedptr<const Glom::Field> where_field = 
+    document.get_field("albums", "album_id");
+  const Gnome::Gda::SqlExpr where_clause = 
+    Glom::Utils::build_simple_where_expression("albums", where_field, value);
+  
+  Glom::Utils::type_vecLayoutFields fieldsToGet;
+  Glom::sharedptr<const Glom::Field> field = document.get_field("albums", "album_id");
+  Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem->set_full_field_details(field);
+  fieldsToGet.push_back(layoutitem);
+  field = document.get_field("albums", "name");
+  layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem->set_full_field_details(field);
+  fieldsToGet.push_back(layoutitem);
+
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
+    Glom::Utils::build_sql_select_with_where_clause("albums",
+      fieldsToGet, where_clause);
+
+  std::cout << "This test expects some std::cerr output about exceptions now:" << std::endl;
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model
+    = Glom::DbUtils::query_execute_select(builder);
+  if(!data_model)
+  {
+    return true; //This should have failed because the value was of the wrong type.
+  }
+
+  //We should not get this far, but if we do, tell us more about what happened:
+  if(!test_table_exists("songs", document))
+  {
+    std::cerr << "Failure: The table may have been dropped." << std::endl;
+    return false;
+  }
+
+  //It should have failed earlier.
+  return false;
+}
+
 int main()
 {
   Glom::libglom_init();
@@ -131,6 +174,13 @@ int main()
   if(!check_drop_table("'"))
   {
     std::cerr << "Failure: check_drop_table() failed." << std::endl;
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
+
+  if(!check_avoid_quotes_and_drop_table())
+  {
+    std::cerr << "Failure: check_avoid_quotes_and_drop_table() failed." << std::endl;
     test_selfhosting_cleanup();
     return EXIT_FAILURE;
   }

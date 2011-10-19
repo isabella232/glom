@@ -1,3 +1,9 @@
+2011-10-19  Murray Cumming  <murrayc@murrayc.com>
+
+	SQL Injection Test: Try to use (evil and unquoted) text for a number. 
+
+	* tests/test_selfhosting_sqlinjection.cc: This seems to be safe already.
+
 1.19.15:
 
 2011-10-19  Jasper Lievisse Adriaanse <jasperla@gnome.org>
