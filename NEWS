@@ -1,3 +1,9 @@
+1.19.15 (unstable):
+
+* Do no try to pygobject_init() the incompatible 2 version instead of 3.0.
+* Self-hosting: Attempt to avoid failed shutdowns.
+* Tests: More SQL injection testing.
+
 1.19.14 (unstable):
 
 * Details: Avoid an outdent after group titles,
