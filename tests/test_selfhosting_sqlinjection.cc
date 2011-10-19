@@ -62,7 +62,7 @@ static bool check_get_extra_rows()
 
 static bool check_drop_table()
 {
-  //Try to get more rows than intended:
+  //Try to drop the table in a second SQL statement:
   const Gnome::Gda::Value value("True Blue\"; DROP TABLE songs; --");
   Glom::sharedptr<const Glom::Field> where_field = 
     document.get_field("albums", "name");
