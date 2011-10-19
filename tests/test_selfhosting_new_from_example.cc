@@ -93,13 +93,13 @@ int main()
     return EXIT_FAILURE;
   }
 
-  if(test_table_exists("songs", document))
+  if(!test_table_exists("songs", document))
   {
     test_selfhosting_cleanup();
     return EXIT_FAILURE;
   }
 
-  if(test_table_exists("publishers", document))
+  if(!test_table_exists("publishers", document))
   {
     test_selfhosting_cleanup();
     return EXIT_FAILURE;

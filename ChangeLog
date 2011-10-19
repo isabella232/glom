@@ -1,5 +1,11 @@
 2011-10-19  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix make check.
+
+	* tests/test_selfhosting_new_from_example.cc: Add some missing !.
+
+2011-10-19  Murray Cumming  <murrayc@murrayc.com>
+
 	Do not pygoject_init() the wrong version.
 
 	* glom/libglom/init.cc: Specify pygobject 3 instead of 2 when calling
