@@ -91,8 +91,11 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
 bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ustring& /* username */, const Glib::ustring& /* password */)
 {
   if(m_database_directory_uri.empty())
+  {
+    std::cerr << G_STRFUNC << ": m_database_directory_uri was empty." << std::endl;
     return false;
-
+  }
+  
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(m_database_directory_uri);
   const std::string database_directory = file->get_path();
   const Glib::ustring cnc_string = Glib::ustring::compose("DB_DIR=%1;DB_NAME=%2", database_directory, database_name);

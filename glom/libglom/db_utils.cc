@@ -144,16 +144,22 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
 
     bool test = add_standard_tables(document); //Add internal, hidden, tables.
     if(!test)
+    {
+      std::cerr << G_STRFUNC << ": add_standard_tables() failed." << std::endl;
       return false;
-
+    }
+    
     progress();
 
     //Create the developer group, and make this user a member of it:
     //If we got this far then the user must really have developer privileges already:
     test = add_standard_groups(document);
     if(!test)
+    {
+      std::cerr << G_STRFUNC << ": add_standard_groups() failed." << std::endl;
       return false;
-
+    }
+    
     progress();
 
     //std::cout << "debug: " << G_STRFUNC << ": Creation of standard tables and groups finished." << std::endl;
@@ -384,7 +390,12 @@ SystemPrefs get_database_preferences(Document* document)
       return result;
     else
     {
-      add_standard_tables(document);
+      const bool test = add_standard_tables(document);
+      if(!test)
+      {
+         std::cerr << G_STRFUNC << ": add_standard_tables() failed." << std::endl;
+      }
+      
       ++attempts; //Try again now that we have tried to create the table.
     }
   }
@@ -463,7 +474,7 @@ bool add_standard_tables(Document* document)
       }
       else
       {
-        g_warning("add_standard_tables(): create_table(prefs) failed.");
+        std::cerr << G_STRFUNC << ": add_standard_tables(): create_table(prefs) failed." << std::endl;
         return false;
       }
     }
@@ -507,7 +518,7 @@ bool add_standard_tables(Document* document)
       const bool test = create_table(table_info, fields);
       if(!test)
       {
-        g_warning("add_standard_tables(): create_table(autoincrements) failed.");
+        std::cerr << G_STRFUNC << ": add_standard_tables(): create_table(autoincrements) failed." << std::endl;
         return false;
       }
 
@@ -609,7 +620,7 @@ bool add_groups_from_document(Document* document)
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << "add_standard_groups(): No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": add_standard_groups(): No connection yet." << std::endl;
   }
 
   //Get the list of groups from the database server:
@@ -653,7 +664,7 @@ bool set_table_privileges_groups_from_document(Document* document)
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << "add_standard_groups(): No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": add_standard_groups(): No connection yet." << std::endl;
   }
 
   //Get the list of groups from the database server:
@@ -742,7 +753,7 @@ bool handle_error()
 
 void handle_error(const Glib::Exception& ex)
 {
-  std::cerr << "Internal Error (handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
+  std::cerr << G_STRFUNC << ": Internal Error (handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
 
   //TODO_Moved:
   //Gtk::MessageDialog dialog(Utils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
@@ -753,7 +764,7 @@ void handle_error(const Glib::Exception& ex)
 
 void handle_error(const std::exception& ex)
 {
-  std::cerr << "Internal Error (handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
+  std::cerr << G_STRFUNC << ": Internal Error (handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
 
  //TODO_Moved:
   //Gtk::MessageDialog dialog(Utils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
@@ -1146,7 +1157,7 @@ bool create_table(const sharedptr<const TableInfo>& table_info, const Document::
 
   if(sql_fields.empty())
   {
-    g_warning("create_table::create_table(): sql_fields is empty.");
+    std::cerr << G_STRFUNC << ": sql_fields is empty." << std::endl;
   }
 
   //Actually create the table
@@ -1160,6 +1171,7 @@ bool create_table(const sharedptr<const TableInfo>& table_info, const Document::
   }
   catch(const ExceptionConnection& ex)
   {
+    std::cerr << G_STRFUNC << "CREATE TABLE failed: " << ex.what() << std::endl;
     table_creation_succeeded = false;
   }
 
