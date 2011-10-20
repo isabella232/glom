@@ -113,6 +113,17 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_key(
   const type_sort_clause& sort_clause = type_sort_clause(),
   guint limit = 0);
 
+//Note: This is not used by glom itself, but it is used by java-libglom.
+/** Build a SQL query to discover how many rows a SQL query would return if it was run.
+ *
+ * This uses a COUNT * on a the @a sql_query as a sub-statement.
+ * Be careful not to include ORDER BY clauses in the supplied SQL query, because that would make it unnecessarily slow.
+ *
+ * @sql_query A SQL query.
+ * @result The number of rows.
+ */
+Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_count_rows(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql_query);
+
 Gnome::Gda::SqlExpr get_find_where_clause_quick(const Document* document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search);
 
 typedef std::list<Gnome::Gda::Value> type_list_values;

@@ -1,5 +1,12 @@
 2011-10-20  Murray Cumming  <murrayc@murrayc.com>
 
+	libglom: Restore the Util::build_sql_select_count_row() API. 
+
+	* glom/libglom/db_utils.cc: move it back to:
+	* glom/libglom/utils.[h|cc]: because it is needed by java-libglom.
+
+2011-10-20  Murray Cumming  <murrayc@murrayc.com>
+
 	Self-hosting tests: Test with sqlite too.
 
 	* tests/test_selfhosting_utils.[h|cc]: test_create_and_selfhost():
