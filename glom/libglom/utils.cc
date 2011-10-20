@@ -1118,31 +1118,6 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const Document* document,
   }
 }
 
-
-Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_count_rows(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql_query)
-{
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> result;
-
-  if(!sql_query)
-  {
-    std::cerr << "Base_DB::count_rows_returned_by(): sql_query was null." << std::endl;
-    return result;
-  }
-
-  result = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-
-  //Note that the alias is just because the SQL syntax requires it - we get an error if we don't use it.
-  //Be careful not to include ORDER BY clauses in this, because that would make it unnecessarily slow:
-  const guint target_id = result->add_sub_select( sql_query->get_sql_statement() );
-  result->select_add_target_id(target_id, "glomarbitraryalias");
-
-  const Gnome::Gda::SqlBuilder::Id id_function = result->add_function("COUNT", result->add_id("*"));
-  result->add_field_value_id(id_function);
-
-  return result;
-}
-
-
 bool Utils::delete_directory(const Glib::RefPtr<Gio::File>& directory)
 {
   if(!(directory->query_exists()))

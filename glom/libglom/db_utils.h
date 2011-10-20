@@ -129,6 +129,16 @@ bool layout_field_should_have_navigation(const Glib::ustring& table_name, const 
  */
 Glib::ustring get_unused_database_name(const Glib::ustring& base_name);
 
+/** Discover how many rows a SQL query would return if it was run.
+ *
+ * This uses a COUNT * on a the @a sql_query as a sub-statement.
+ * Be careful not to include ORDER BY clauses in the supplied SQL query, because that would make it unnecessarily slow.
+ *
+ * @sql_query A SQL query.
+ * @result The number of rows. Or -1 if something went wrong.
+ */
+int count_rows_returned_by(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql_query);
+
 } //namespace DbUtils
 
 } //namespace Glom

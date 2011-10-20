@@ -403,7 +403,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
           type_vecLayoutFields layout_fields;
           layout_fields.push_back(layout_item_temp);
           Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query_without_sort = Utils::build_sql_select_with_where_clause(found_set.m_table_name, layout_fields, found_set.m_where_clause, found_set.m_extra_join, type_sort_clause());
-          const int count = Base_DB::count_rows_returned_by(sql_query_without_sort);
+          const int count = DbUtils::count_rows_returned_by(sql_query_without_sort);
           if(count < 10000) //Arbitrary large number.
             found_set.m_sort_clause.push_back( type_pair_sort_field(layout_item_sort, true /* ascending */) );
         }

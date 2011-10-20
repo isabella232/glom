@@ -1685,36 +1685,6 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
     return false;
 }
 
-int Base_DB::count_rows_returned_by(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql_query)
-{
-  if(!sql_query)
-  {
-    std::cerr << G_STRFUNC << ": sql_query was null." << std::endl;
-    return 0;
-  }
-
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
-    Utils::build_sql_select_count_rows(sql_query);
-
-  int result = 0;
-
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
-  if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
-  {
-    const Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
-    //This showed me that this contains a gint64: std::cerr << "DEBUG: value type=" << G_VALUE_TYPE_NAME(value.gobj()) << std::endl;
-    //For sqlite, this is an integer
-    if(value.get_value_type() == G_TYPE_INT64)
-      result = (int)value.get_int64();
-    else
-      result = value.get_int();
-  }
-
-  //std::cout << "debug: " << G_STRFUNC << ": Returning " << result << std::endl;
-  return result;
-}
-
-
 void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const sharedptr<LayoutItem_Portal>& portal, const Gnome::Gda::Value& foreign_key_value)
 {
   found_set.m_table_name = Glib::ustring();

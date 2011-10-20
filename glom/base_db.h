@@ -70,8 +70,6 @@ public:
   virtual void set_document(Document* pDocument); //View override
   virtual void load_from_document(); //View override
 
-  static int count_rows_returned_by(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql_query);
-
   sharedptr<Field> change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, Gtk::Window* parent_window) const;
 
   typedef std::vector< sharedptr<Field> > type_vec_fields;

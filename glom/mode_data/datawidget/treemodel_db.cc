@@ -364,7 +364,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       //This doesn't work with cursor-based models: const int count = m_gda_datamodel->get_n_rows();
       //because rows count is -1 until we have iterated to the last row.
       Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query_without_sort = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, type_sort_clause());
-      const int count = Base_DB::count_rows_returned_by(sql_query_without_sort);
+      const int count = DbUtils::count_rows_returned_by(sql_query_without_sort);
       if(count < 0)
       {
         std::cerr << G_STRFUNC << ": count is < 0" << std::endl;
