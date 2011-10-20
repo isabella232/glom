@@ -1633,8 +1633,7 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
   }
   
   //Note that only -1 means an error, not all negative values.
-  //For instance, it can return -2 for a successful CREATE TABLE query:
-  //See https://bugzilla.gnome.org/show_bug.cgi?id=662279
+  //For instance, it can return -2 for a successful CREATE TABLE query, to mean that the backend (SQLite) does not report how many rows were affected.
   if(exec_retval == -1)
   {
     const Glib::ustring full_query = stmt->to_sql(params);
