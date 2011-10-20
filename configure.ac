@@ -71,7 +71,7 @@ AC_DEFINE([GETTEXT_PACKAGE], [PACKAGE_TARNAME], [Define to the gettext package n
 
 # Linking with libdl isn't needed on various non-Linux platforms,
 # eventhough they do provide dlopen(3).
-AC_CHECK_LIB([dl], [dlopen], DL_LIB="-ldl")
+AC_CHECK_LIB([dl], [dlopen], AC_SUBST([DL_LIB], ["-ldl"]))
 
 AC_MSG_CHECKING([whether to enable Windows specific options])
 AS_CASE([$host_os], [mingw*], [glom_host_win32=yes], [glom_host_win32=no])
