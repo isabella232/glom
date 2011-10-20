@@ -42,14 +42,10 @@ static void on_cleanup_progress()
   std::cout << "Database cleanup progress" << std::endl;
 }
 
-int main()
+static bool test(Glom::Document::HostingMode hosting_mode)
 {
-  Glom::libglom_init();
-
   // Create the document:
   Glom::Document document;
-
-
 
   //Save a copy, specifying the path to file in a directory:
   //For instance, /tmp/testfileglom/testfile.glom");
@@ -68,7 +64,7 @@ int main()
   const Glib::ustring file_uri = Glib::filename_to_uri(temp_filepath);
   document.set_file_uri(file_uri);
 
-  document.set_hosting_mode(Glom::Document::HOSTING_MODE_POSTGRES_SELF);
+  document.set_hosting_mode(hosting_mode);
   document.set_is_example_file(false);
   document.set_network_shared(false);
   const bool saved = document.save();
@@ -105,6 +101,25 @@ int main()
   {
     const Glib::ustring uri = Glib::filename_to_uri(temp_filepath_dir);
     Glom::Utils::delete_directory(uri);
+  }
+  
+  return true;
+}
+
+int main()
+{
+  Glom::libglom_init();
+
+  if(!test(Glom::Document::HOSTING_MODE_POSTGRES_CENTRAL))
+  {
+    std::cerr << "Failed with PostgreSQL" << std::endl;
+    return EXIT_FAILURE;
+  }
+  
+  if(!test(Glom::Document::HOSTING_MODE_SQLITE))
+  {
+    std::cerr << "Failed with SQLite" << std::endl;
+    return EXIT_FAILURE;
   }
 
   Glom::libglom_deinit();

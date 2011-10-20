@@ -50,6 +50,20 @@ static void on_cleanup_progress()
   std::cout << "Database cleanup progress" << std::endl;
 }
 
+std::string temp_filepath_dir;
+
+static bool check_directory_exists()
+{
+  if(temp_filepath_dir.empty())
+  {
+    std::cerr << G_STRFUNC << ": temp_filepath_dir is empty." << std::endl;
+    return false;
+  }
+  
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(temp_filepath_dir);
+  return file->query_exists();
+}
+
 /** Delete a directory, if it exists, and its contents.
  * Unlike g_file_delete(), this does not fail if the directory is not empty.
  */
@@ -94,8 +108,6 @@ static bool delete_directory(const std::string& uri)
   return delete_directory(file);
 }
 
-std::string temp_filepath_dir;
-
 void test_selfhosting_cleanup()
 {
   Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
@@ -103,16 +115,37 @@ void test_selfhosting_cleanup()
   const bool stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );
   g_assert(stopped);
 
-  //Make sure the directory is removed at the end,
+  //Make sure the directory is removed at the end:
+  if(!temp_filepath_dir.empty())
   {
-    const Glib::ustring uri = Glib::filename_to_uri(temp_filepath_dir);
-    delete_directory(uri);
+    Glib::ustring uri;
+    
+    try
+    {
+      uri = Glib::filename_to_uri(temp_filepath_dir);
+    }
+    catch(const Glib::ConvertError& ex)
+    {
+      std::cerr << G_STRFUNC << ": Glib::filename_to_uri() failed: " << ex.what() << std::endl;
+    }
+
+    if(!uri.empty())
+      delete_directory(uri);
   }
+  
+  temp_filepath_dir.clear();
 }
 
 
-bool test_create_and_selfhost(const std::string& example_filename, Glom::Document& document)
+bool test_create_and_selfhost(const std::string& example_filename, Glom::Document& document, Glom::Document::HostingMode hosting_mode)
 {
+  if( (hosting_mode != Glom::Document::HOSTING_MODE_POSTGRES_SELF) &&
+    (hosting_mode != Glom::Document::HOSTING_MODE_SQLITE) )
+  {
+    std::cerr << G_STRFUNC << ": This test function does not support the specified hosting_mode: " << hosting_mode << std::endl;
+    return false;
+  }
+ 
   // Get a URI for a test file:
   Glib::ustring uri;
 
@@ -126,7 +159,7 @@ bool test_create_and_selfhost(const std::string& example_filename, Glom::Documen
   catch(const Glib::ConvertError& ex)
   {
     std::cerr << G_STRFUNC << ": " << ex.what();
-    return EXIT_FAILURE;
+    return false;
   }
 
   //std::cout << "URI=" << uri << std::endl;
@@ -141,7 +174,7 @@ bool test_create_and_selfhost(const std::string& example_filename, Glom::Documen
   if(!test)
   {
     std::cerr << "Document::load() failed with failure_code=" << failure_code << std::endl;
-    return EXIT_FAILURE;
+    return false;
   }
 
   g_assert(document.get_is_example_file());;
@@ -165,7 +198,7 @@ bool test_create_and_selfhost(const std::string& example_filename, Glom::Documen
   const Glib::ustring file_uri = Glib::filename_to_uri(temp_filepath);
   document.set_file_uri(file_uri);
 
-  document.set_hosting_mode(Glom::Document::HOSTING_MODE_POSTGRES_SELF);
+  document.set_hosting_mode(hosting_mode);
   document.set_is_example_file(false);
   document.set_network_shared(false);
   const bool saved = document.save();
@@ -184,6 +217,11 @@ bool test_create_and_selfhost(const std::string& example_filename, Glom::Documen
   const Glom::ConnectionPool::InitErrors initialized_errors =
     connection_pool->initialize( sigc::ptr_fun(&on_initialize_progress) );
   g_assert(initialized_errors == Glom::ConnectionPool::Backend::INITERROR_NONE);
+  
+  if(!check_directory_exists())
+  {
+    std::cerr << "Failure: The data directory does not exist after calling initialize()." << std::endl; 
+  }
 
   //Start self-hosting:
   //TODO: Let this happen automatically on first connection?

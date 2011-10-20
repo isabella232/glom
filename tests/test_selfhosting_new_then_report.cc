@@ -25,14 +25,17 @@
 #include <iostream>
 #include <cstdlib> //For EXIT_SUCCESS and EXIT_FAILURE
 
-int main()
-{
-  Glom::libglom_init();
 
+static bool test(Glom::Document::HostingMode hosting_mode)
+{
   Glom::Document document;
   const bool recreated = 
-    test_create_and_selfhost("example_music_collection.glom", document);
-  g_assert(recreated);
+    test_create_and_selfhost("example_music_collection.glom", document, hosting_mode);
+  if(!recreated)
+  {
+    std::cerr << "Recreation failed." << std::endl;
+    return false;
+  }
 
   const Glom::sharedptr<const Glom::Report> report_temp = 
     Glom::ReportBuilder::create_standard_list_report(&document, "albums");
@@ -46,19 +49,38 @@ int main()
 
   if(html.empty())
   {
-    test_selfhosting_cleanup();
     std::cerr << "Failed: html was empty." << std::endl;
-    return EXIT_FAILURE;
+    return false;
   }
 
   if(html.find("Bruce Springsteen") == std::string::npos)
   {
     std::cerr << "Failed: html did not contain the expected text." << std::endl;
-    test_selfhosting_cleanup();
-    return EXIT_FAILURE;
+    return false;
   }
 
   test_selfhosting_cleanup();
+    
+  return true;
+}
+
+int main()
+{
+  Glom::libglom_init();
+
+  if(!test(Glom::Document::HOSTING_MODE_POSTGRES_SELF))
+  {
+    std::cerr << "Failed with PostgreSQL" << std::endl;
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
+  
+  if(!test(Glom::Document::HOSTING_MODE_SQLITE))
+  {
+    std::cerr << "Failed with SQLite" << std::endl;
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
 
   Glom::libglom_deinit();
 

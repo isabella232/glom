@@ -1,5 +1,19 @@
 2011-10-20  Murray Cumming  <murrayc@murrayc.com>
 
+	Self-hosting tests: Test with sqlite too.
+
+	* tests/test_selfhosting_utils.[h|cc]: test_create_and_selfhost():
+	Add a hosting_mode parameter so we can test sqlite too.
+	Correct some return values and check that the directory really exists after
+	it should have been created.
+	* tests/test_selfhosting_new_empty.cc:
+	* tests/test_selfhosting_new_from_example.cc:
+	* tests/test_selfhosting_new_then_report.cc:
+	* tests/test_selfhosting_sqlinjection.cc: Restructure so all tests are run 
+	twice - once for each backend.
+	
+2011-10-20  Murray Cumming  <murrayc@murrayc.com>
+
 	SQLite: Avoid reporting failure when recreating databases.
 
 	* glom/libglom/db_utils.[h|cc]: recreate_database_from_document(): Do not 

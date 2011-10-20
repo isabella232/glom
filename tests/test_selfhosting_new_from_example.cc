@@ -26,15 +26,17 @@
 #include <iostream>
 #include <cstdlib> //For EXIT_SUCCESS and EXIT_FAILURE
 
-int main()
+static bool test(Glom::Document::HostingMode hosting_mode)
 {
-  Glom::libglom_init();
-
   Glom::Document document;
   const bool recreated = 
-    test_create_and_selfhost("example_music_collection.glom", document);
-  g_assert(recreated);
-
+    test_create_and_selfhost("example_music_collection.glom", document, hosting_mode);
+  if(!recreated)
+  {
+    std::cerr << "Recreation failed." << std::endl;
+    return false;
+  }
+  
   //Check that some data is as expected:
   const Gnome::Gda::Value value("Born To Run");
   const Gnome::Gda::SqlExpr where_clause = 
@@ -58,54 +60,48 @@ int main()
   if(!test_model_expected_size(data_model, 2, 1))
   {
     std::cerr << "Failure: Unexpected data model size for main query." << std::endl;
-    test_selfhosting_cleanup();
-    return EXIT_FAILURE;
+    return false;
   }
 
-  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder_count = 
-    Glom::Utils::build_sql_select_count_rows(builder);
-  data_model = 
-    Glom::DbUtils::query_execute_select(builder_count);
-  if(!test_model_expected_size(data_model, 1, 1))
+  const int count = Glom::DbUtils::count_rows_returned_by(builder);
+  if(count != 1 )
   {
-    std::cerr << "Failure: Unexpected data model size for count query." << std::endl;
-    test_selfhosting_cleanup();
-    return EXIT_FAILURE;
-  }
-
-  int result = 0;
-  const Gnome::Gda::Value value_count = data_model->get_value_at(0, 0);
-  if(value_count.get_value_type() == G_TYPE_INT64)
-  {
-    result = (int)value_count.get_int64();
-  }
-  else
-  {
-    std::cerr << "Failure: The COUNT query returned an unexpected data type." << std::endl;
-    test_selfhosting_cleanup();
-    return EXIT_FAILURE;
-  }
-
-  if(result != 1)
-  {
-    std::cerr << "Failure: The COUNT query returned an unexpected value." << std::endl;
-    test_selfhosting_cleanup();
-    return EXIT_FAILURE;
+    std::cerr << "Failure: The COUNT query returned an unexpected value: " << count << std::endl;
+    return false;
   }
 
   if(!test_table_exists("songs", document))
   {
-    test_selfhosting_cleanup();
-    return EXIT_FAILURE;
+    return false;
   }
 
   if(!test_table_exists("publishers", document))
   {
-    test_selfhosting_cleanup();
-    return EXIT_FAILURE;
+    return false;
   }
 
   test_selfhosting_cleanup();
+ 
+  return true; 
+}
+
+int main()
+{
+  Glom::libglom_init();
+  
+  if(!test(Glom::Document::HOSTING_MODE_POSTGRES_SELF))
+  {
+    std::cerr << "Failed with PostgreSQL" << std::endl;
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
+  
+  if(!test(Glom::Document::HOSTING_MODE_SQLITE))
+  {
+    std::cerr << "Failed with SQLite" << std::endl;
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
 
   Glom::libglom_deinit();
 
