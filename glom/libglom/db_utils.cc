@@ -277,16 +277,8 @@ bool recreate_database_from_document(Document* document, const sigc::slot<void>&
     }
   }
 
-  progress();
-  add_standard_tables(document); //Add internal, hidden, tables.
-
-  //Create the developer group, and make this user a member of it:
-  //If we got this far then the user must really have developer privileges already:
-  progress();
-  const bool test = add_standard_groups(document);
-  if(!test)
-    return false;
-
+  //Note that create_database() has already called add_standard_tables() and add_standard_groups(document).
+  
   for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
     sharedptr<const TableInfo> table_info = *iter;
@@ -1639,7 +1631,18 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
     std::cerr << "  full_query: " << full_query << std::endl;
     return false;
   }
-  return (exec_retval >= 0);
+  
+  //Note that only -1 means an error, not all negative values.
+  //For instance, it can return -2 for a successful CREATE TABLE query:
+  //See https://bugzilla.gnome.org/show_bug.cgi?id=662279
+  if(exec_retval == -1)
+  {
+    const Glib::ustring full_query = stmt->to_sql(params);
+    std::cerr << G_STRFUNC << "Gnome::Gda::Connection::statement_execute_non_select() failed with SQL: " << full_query << std::endl;
+    return false;
+  }
+  
+  return true;
 }
 
 bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
@@ -1808,6 +1811,73 @@ Glib::ustring get_unused_database_name(const Glib::ustring& base_name)
   }
   
   return Glib::ustring();    
+}
+
+/** Build a SQL query to discover how many rows a SQL query would return if it was run.
+ *
+ * This uses a COUNT * on a the @a sql_query as a sub-statement.
+ * Be careful not to include ORDER BY clauses in the supplied SQL query, because that would make it unnecessarily slow.
+ *
+ * @sql_query A SQL query.
+ * @result The number of rows.
+ */
+static Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_count_rows(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql_query)
+{
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> result;
+
+  if(!sql_query)
+  {
+    std::cerr << G_STRFUNC << ": sql_query was null." << std::endl;
+    return result;
+  }
+
+  result = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+
+  //Note that the alias is just because the SQL syntax requires it - we get an error if we don't use it.
+  //Be careful not to include ORDER BY clauses in this, because that would make it unnecessarily slow:
+  const guint target_id = result->add_sub_select( sql_query->get_sql_statement() );
+  result->select_add_target_id(target_id, "glomarbitraryalias");
+
+  const Gnome::Gda::SqlBuilder::Id id_function = result->add_function("COUNT", result->add_id("*"));
+  result->add_field_value_id(id_function);
+
+  return result;
+}
+
+int count_rows_returned_by(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql_query)
+{
+  if(!sql_query)
+  {
+    std::cerr << G_STRFUNC << ": sql_query was null." << std::endl;
+    return 0;
+  }
+
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder =
+    build_sql_select_count_rows(sql_query);
+
+  int result = 0;
+
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
+  if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
+  {
+    const Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
+    //This showed me that this contains a gint64: std::cerr << "DEBUG: value type=" << G_VALUE_TYPE_NAME(value.gobj()) << std::endl;
+    //For sqlite, this is an integer
+    if(value.get_value_type() == G_TYPE_INT64) //With the PostgreSQL backend.
+      result = (int)value.get_int64();
+    else if(value.get_value_type() == G_TYPE_INT) //With the PostgreSQL backend.
+    {
+      result = value.get_int(); //With the SQLite backend.
+    }
+    else
+    {
+      std::cerr << G_STRFUNC << ": The COUNT query returned an unexpected value type: " << g_type_name(value.get_value_type()) << std::endl;
+      result = -1;
+    }
+  }
+
+  //std::cout << "debug: " << G_STRFUNC << ": Returning " << result << std::endl;
+  return result;
 }
 
 /** Build a SQL query to discover how many rows a SQL query would return if it was run.
