@@ -57,7 +57,12 @@ void connect_signals(Glom::CsvParser& parser)
 // Testcases
 int main()
 {
+  //Threading is always enabled starting from GLib 2.31.0:
+  //TODO: Just remove this when we can increase the glibmm version needed:
+#if !GLIB_CHECK_VERSION (2, 31, 0)
   Glib::thread_init();
+#endif
+
   Glib::init();
   Gio::init();
 

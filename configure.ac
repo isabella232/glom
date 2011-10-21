@@ -131,6 +131,8 @@ AS_IF([test "x$glom_enable_postgresql" = xyes],
                  [Whether to enable support for PostgreSQL databases.])])
 
 # Libraries used by libglom:
+# TODO: Remove the need for gthread-2.0 when we can depend on giomm (or glibmm) 3.32,
+# because gthread-2.0 is then just an empty unnecessary library.
 REQUIRED_LIBGLOM_LIBS='gthread-2.0 giomm-2.4 libxml++-2.6 >= 2.23.1 libxslt >= 1.1.10 pygobject-3.0 >= 2.29.0 libgdamm-5.0 >= 4.99.4 libgda-postgres-5.0'
 
 AS_IF([test "x$glom_host_win32" != xyes],
