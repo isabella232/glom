@@ -45,8 +45,12 @@ namespace Glom
 
 void libglom_init()
 {
+  //Threading is always enabled starting from GLib 2.31.0:
+  //TODO: Just remove this when we can increase the glibmm version needed:
+#if !GLIB_CHECK_VERSION (2, 31, 0)
   if (!Glib::thread_supported())
     Glib::thread_init(0); //So we can use GMutex.
+#endif
 
   Gnome::Gda::init();
   Gio::init();

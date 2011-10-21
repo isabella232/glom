@@ -1,3 +1,15 @@
+2011-10-21  Murray Cumming  <murrayc@murrayc.com>
+
+	Avoid calling g_thread_init() if possible.
+
+	* configure.ac: Add a comment about not linking to gthread-2.0 in future.
+	* glom/libglom/init.cc:
+	* tests/import/test_parsing.cc:
+	* tests/import/test_signals.cc: Avoid calls to deprecated Glib::thread_init()
+	if glib is new enough.
+	This is a step to making Glom build against glibmm from git master with
+	--enable-warnings=fatal.
+
 2011-10-17  Murray Cumming  <murrayc@murrayc.com>
 
 	Examples: Remove all column_width attributes now that defaults are good.
