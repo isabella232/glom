@@ -99,6 +99,8 @@ glom_source_files = \
 	glom/infobar_progress_creating.h				\
 	glom/notebook_glom.cc						\
 	glom/notebook_glom.h						\
+	glom/show_progress_message.cc						\
+	glom/show_progress_message.h						\
 	glom/signal_reemitter.h						\
 	glom/utils_ui.cc						\
 	glom/utils_ui.h							\

@@ -24,9 +24,9 @@
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/bakery/app_withdoc_gtk.h>
-
 #include <glom/frame_glom.h>
-#include "infobar_progress_creating.h"
+#include <glom/show_progress_message.h>
+#include <glom/infobar_progress_creating.h>
 
 
 //Avoid including the header here:
@@ -271,22 +271,6 @@ private:
   Glib::ustring m_temp_username, m_temp_password;
 
   bool m_show_sql_debug;
-};
-
-/** Use this class to ensure that the progress message is cleared upon exiting a
- * method with multiple return points.
- */
-class ShowProgressMessage
-{
-public:
-  explicit ShowProgressMessage(const Glib::ustring &message);
-  ~ShowProgressMessage();
-
-  void pulse();
-
-private:
-  Application* const m_app;
-  Glib::ustring m_message;
 };
 
 } //namespace Glom

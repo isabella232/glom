@@ -1,5 +1,13 @@
 2011-10-24  Murray Cumming  <murrayc@murrayc.com>
 
+	ShowProgressMessage: Move to its own source files.
+
+	* Makefile_glom.am:
+	* glom/application.[h|cc]: Move the ShowProgressMessage class to separate 
+	.h/.cc files because I generally prefer one .h/.cc per class.
+
+2011-10-24  Murray Cumming  <murrayc@murrayc.com>
+
 	ShowProgressMessage: Minor Cleanup.
 
 	* glom/application.[h|cc]: Move implementation into .cc file. Correct the code
