@@ -75,15 +75,15 @@ void helper_get_glade_widget_derived_with_warning(const std::string& filename, c
   }
   catch(const Gtk::BuilderError& ex)
   {
-    std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": BuilderError Exception: " << ex.what() << std::endl;
   }
   catch(const Glib::MarkupError& ex)
   {
-    std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": MarkupError exception:" << ex.what() << std::endl;
   }
   catch(const Glib::FileError& ex)
   {
-    std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": FileError: exception" << ex.what() << std::endl;
   }
   catch(const Glib::Error& ex)
   {

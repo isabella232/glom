@@ -2924,7 +2924,12 @@ void Application::set_progress_message(const Glib::ustring& message)
 
   // Pulse the progress bar regardless of whether the message is new or not.
   m_infobar_progress->pulse();
-  // TODO: Block interaction with the rest of the UI.
+  
+  //Block interaction with the rest of the UI.
+  Gtk::MenuBar* pMenuBar = static_cast<Gtk::MenuBar*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
+  if(pMenuBar)
+    pMenuBar->set_sensitive(false);
+  m_pFrame->set_sensitive(false);
 }
 
 void Application::pulse_progress_message()
@@ -2936,6 +2941,11 @@ void Application::clear_progress_message()
 {
   m_progress_collate_key.clear();
   m_infobar_progress->hide();
+
+  Gtk::MenuBar* pMenuBar = static_cast<Gtk::MenuBar*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
+  if(pMenuBar)
+    pMenuBar->set_sensitive();
+  m_pFrame->set_sensitive();
 }
 
 } //namespace Glom

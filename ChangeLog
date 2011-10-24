@@ -1,5 +1,16 @@
 2011-10-24  Murray Cumming  <murrayc@murrayc.com>
 
+	Progress InfoBar: Block user input during progress.
+
+	* glom/application.cc: set_progress_message(): Set the main UI elements to 
+	insensitive(), because all our current uses of the progess message should 
+	block user input, like a modal dialog.
+	* ui/operator/window_main.glade: Move the InfoBar out of the frame, because 
+	it should not have the border, and so we can make the frame insensitive 
+	without making the InfoBar insensitive.
+
+2011-10-24  Murray Cumming  <murrayc@murrayc.com>
+
 	ShowProgressMessage: Move to its own source files.
 
 	* Makefile_glom.am:
