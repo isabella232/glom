@@ -1,5 +1,13 @@
 2011-10-24  Murray Cumming  <murrayc@murrayc.com>
 
+	Main window: Use a smaller default size.
+
+	* ui/operator/window_main.glade: Request a small enough size to fit small 
+	screens. This will then not warn during test_glade_derived_instantiation.cc.
+	However, more space may be requested later.
+
+2011-10-24  Murray Cumming  <murrayc@murrayc.com>
+
 	Remove the unnused PlaceholderGlom class.
 
 	* glom/mode_data/placeholder-glom.[h|cc]: Remove these files.
