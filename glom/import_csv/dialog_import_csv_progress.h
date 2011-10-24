@@ -24,6 +24,8 @@
 #include "base_db_table_data.h"
 
 #include "dialog_import_csv.h"
+#include <gtkmm/progressbar.h>
+#include <gtkmm/textview.h>
 
 namespace Glom
 {

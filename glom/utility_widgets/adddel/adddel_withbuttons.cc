@@ -20,6 +20,7 @@
 
 #include "adddel_withbuttons.h"
 #include <glom/utils_ui.h>
+#include <gtkmm/stock.h>
 
 //#include <libgnome/gnome-i18n.h>
 

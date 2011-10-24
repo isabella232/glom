@@ -21,7 +21,9 @@
 #ifndef DIALOG_TEXTOBJECT_H
 #define DIALOG_TEXTOBJECT_H
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/textview.h>
 #include <gtkmm/builder.h>
 #include <libglom/data_structure/layout/layoutitem_text.h>
 #include <glom/base_db.h>

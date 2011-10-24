@@ -25,6 +25,7 @@
 #include <glom/base_db.h>
 #include <glom/utility_widgets/adddel/adddel_withbuttons.h>
 #include <gtkmm/builder.h>
+#include <gtkmm/checkbutton.h>
 
 namespace Glom
 {

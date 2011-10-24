@@ -17,7 +17,7 @@
 #ifndef GLOM_RELATIONSHIPS_OVERVIEW_PRINT_OPERATION_H
 #define GLOM_RELATIONSHIPS_OVERVIEW_PRINT_OPERATION_H
 
-#include <gtkmm.h>
+#include <gtkmm/printoperation.h>
 #include <goocanvasmm/canvas.h>
 #include <vector>
 

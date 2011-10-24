@@ -19,6 +19,9 @@
  */
 
 #include "box_print_layouts.h"
+#include <gtkmm/alignment.h>
+#include <gtkmm/messagedialog.h>
+#include <gtkmm/stock.h>
 #include <libglom/utils.h> //For bold_message()).
 #include <glibmm/i18n.h>
 

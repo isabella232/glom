@@ -21,6 +21,7 @@
 #include "flowtable.h"
 #include "layoutwidgetbase.h"
 #include <iostream>
+#include <gtkmm/eventbox.h>
 #include <gdkmm/window.h>
 #include <glom/utils_ui.h>
 

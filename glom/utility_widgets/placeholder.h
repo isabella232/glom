@@ -21,7 +21,7 @@
 #ifndef GLOM_UTILITY_WIDGETS_PLACEHOLDER_H
 #define GLOM_UTILITY_WIDGETS_PLACEHOLDER_H
 
-#include <gtkmm.h>
+#include <gtkmm/box.h>
 #include <gtkmm/builder.h>
 
 namespace Glom

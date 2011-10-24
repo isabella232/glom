@@ -21,7 +21,8 @@
 #ifndef DIALOG_BUTTONSCRIPT_H
 #define DIALOG_BUTTONSCRIPT_H
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/entry.h>
 #include <gtkmm/builder.h>
 #include <libglom/data_structure/layout/layoutitem_button.h>
 #include <glom/base_db.h>

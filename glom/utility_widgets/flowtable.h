@@ -23,6 +23,7 @@
 
 #include <gtkmm.h>
 #include "layoutwidgetbase.h"
+#include <gtkmm/box.h>
 
 namespace Glom
 {

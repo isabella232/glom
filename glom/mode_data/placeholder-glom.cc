@@ -25,6 +25,7 @@
 #include "placeholder-glom.h"
 #include <gtkmm/messagedialog.h>
 #include <glom/application.h>
+#include <gdkmm.h>
 #include <glibmm/i18n.h>
 #include <string.h> // for memset
 

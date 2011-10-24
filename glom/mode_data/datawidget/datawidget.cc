@@ -36,6 +36,7 @@
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.h>
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
+#include <gtkmm/stock.h>
 #include <libglom/db_utils.h>
 
 #ifdef GLOM_ENABLE_MAEMO

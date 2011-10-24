@@ -24,6 +24,7 @@
 #include <glom/application.h>
 #include <glom/python_embed/glom_python.h>
 #include <glom/utils_ui.h>
+#include <gtkmm/stock.h>
 #include <libglom/db_utils.h>
 #include <sstream>
 #include <iostream>

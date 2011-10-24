@@ -24,6 +24,8 @@
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/mode_data/datawidget/combochoices.h>
+#include <gtkmm/box.h>
+#include <gtkmm/radiobutton.h>
 
 namespace Glom
 {

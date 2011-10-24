@@ -28,6 +28,7 @@
 #include <glom/python_embed/glom_python.h>
 #include <glom/python_embed/python_ui_callbacks.h>
 #include <glom/application.h>
+#include <gtkmm/stock.h>
 #include <algorithm> //For std::find()
 #include <libglom/libglom_config.h>
 #include <iostream>

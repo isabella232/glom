@@ -30,9 +30,12 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
+#include <gtkmm/checkbutton.h>
 #include <gtkmm/combobox.h>
 #include <gtkmm/spinbutton.h>
 #include <gtkmm/builder.h>
+#include <gtkmm/cellrenderercombo.h>
+#include <gtkmm/treemodelsort.h>
 //#include <libgdamm/datamodelimport.h>
 
 

@@ -20,6 +20,8 @@
 
 #include "combochoiceswithtreemodel.h"
 #include <libglom/data_structure/glomconversions.h>
+#include <glom/utils_ui.h>
+#include <gtkmm/liststore.h>
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream
 

@@ -1,3 +1,9 @@
+2011-10-24  Murray Cumming  <murrayc@murrayc.com>
+
+	Do not include gtkmm.h, glibmm.h, giomm.h, or similar in headers.
+
+	* Many files: Use more specific includes.
+
 2011-10-21  Murray Cumming  <murrayc@murrayc.com>
 
 	Avoid calling g_thread_init() if possible.

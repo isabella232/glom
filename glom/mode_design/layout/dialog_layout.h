@@ -25,6 +25,7 @@
 #include <glom/utility_widgets/dialog_properties.h>
 #include <libglom/document/document.h>
 #include <glom/box_withbuttons.h>
+#include <gtkmm/togglebutton.h>
 
 namespace Glom
 {

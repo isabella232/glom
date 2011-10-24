@@ -21,7 +21,8 @@
 #ifndef GLOM_MODE_DATA_DIALOG_CHOOSE_FIELD_H
 #define GLOM_MODE_DATA_DIALOG_CHOOSE_FIELD_H
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/checkbutton.h>
 #include <glom/utility_widgets/dialog_properties.h>
 #include <libglom/document/document.h>
 #include <glom/box_withbuttons.h>

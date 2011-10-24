@@ -40,6 +40,10 @@
 #include <glom/python_embed/glom_python.h>
 #include <libglom/spawn_with_feedback.h>
 
+#include <gtkmm/radioaction.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/main.h>
+
 #include <cstdio>
 #include <memory> //For std::auto_ptr<>
 #include <giomm.h>

@@ -26,6 +26,8 @@
 #include <glom/utility_widgets/combo_textglade.h>
 #include <glom/mode_design/layout/combobox_relationship.h>
 #include <glom/mode_design/layout/combobox_fields.h>
+#include <gtkmm/checkbutton.h>
+#include <gtkmm/radiobutton.h>
 
 namespace Glom
 {

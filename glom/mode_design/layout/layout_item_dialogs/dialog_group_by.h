@@ -21,7 +21,9 @@
 #ifndef GLOM_LAYOUT_ITEM_DIALOGS_GROUP_BY_H
 #define GLOM_LAYOUT_ITEM_DIALOGS_GROUP_BY_H
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/label.h>
+#include <gtkmm/button.h>
 #include <glom/utility_widgets/dialog_properties.h>
 #include <libglom/document/document.h>
 #include <glom/box_withbuttons.h>

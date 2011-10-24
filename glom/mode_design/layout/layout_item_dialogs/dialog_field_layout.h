@@ -21,7 +21,9 @@
 #ifndef GLOM_MODE_DATA_DIALOG_FIELD_LAYOUT_H
 #define GLOM_MODE_DATA_DIALOG_FIELD_LAYOUT_H
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/label.h>
+#include <gtkmm/entry.h>
 #include <glom/utility_widgets/dialog_properties.h>
 #include <libglom/document/view.h>
 #include <glom/box_withbuttons.h>

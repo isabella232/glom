@@ -23,6 +23,7 @@
 #include <libglom/connectionpool_backends/sqlite.h>
 
 #include <giomm/file.h>
+#include <libgdamm/metastore.h>
 
 #include <iostream>
 

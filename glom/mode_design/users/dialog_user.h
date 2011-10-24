@@ -21,7 +21,8 @@
 #ifndef GLOM_MODE_DESIGN_DIALOG_USER_H
 #define GLOM_MODE_DESIGN_DIALOG_USER_H
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/entry.h>
 #include <gtkmm/builder.h>
 #include "../../utility_widgets/combo_textglade.h"
 

@@ -26,6 +26,7 @@
 #include <libglom/data_structure/parameternamegenerator.h>
 #include <libglom/utils.h>
 #include <libgdamm/value.h>
+#include <libgdamm/metastore.h>
 #include <libgda/libgda.h> // For gda_g_type_from_string
 #include <glibmm/i18n.h>
 #include <iostream>

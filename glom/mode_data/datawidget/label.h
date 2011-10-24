@@ -21,7 +21,8 @@
 #ifndef GLOM_UTILITY_WIDGETS_LABEL_GLOM_H
 #define GLOM_UTILITY_WIDGETS_LABEL_GLOM_H
 
-#include <gtkmm.h>
+#include <gtkmm/eventbox.h>
+#include <gtkmm/label.h>
 #include <glom/utility_widgets/layoutwidgetbase.h>
 #include <glom/utility_widgets/layoutwidgetutils.h>
 #include <libglom/data_structure/layout/layoutitem_button.h>

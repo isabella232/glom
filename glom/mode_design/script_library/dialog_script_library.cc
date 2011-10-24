@@ -27,6 +27,7 @@
 #include <glom/mode_design/script_library/dialog_new_script.h>
 #include <gtksourceviewmm/sourcelanguagemanager.h>
 #include <glom/application.h>
+#include <gtkmm/stock.h>
 
 
 //#include <libgnome/gnome-i18n.h>

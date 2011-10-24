@@ -21,10 +21,13 @@
 #ifndef ADDDEL_H
 #define ADDDEL_H
 
-#include <gtkmm.h>
 #include <libglom/data_structure/field.h>
-#include <libgdamm.h>
 #include <gtkmm/builder.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/box.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/uimanager.h>
 
 #include <vector>
 #include <map>

@@ -25,6 +25,9 @@
 
 #include "box_data_manyrecords.h"
 #include <glom/utility_widgets/layoutwidgetbase.h>
+#include <gtkmm/alignment.h>
+#include <gtkmm/frame.h>
+#include <gtkmm/label.h>
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/button.h>

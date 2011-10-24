@@ -21,7 +21,7 @@
 #ifndef GLOM_UTILITY_WIDGETS_NOTEBOOK_GLOM_H
 #define GLOM_UTILITY_WIDGETS_NOTEBOOK_GLOM_H
 
-#include <gtkmm.h>
+#include <gtkmm/notebook.h>
 #include "layoutwidgetmenu.h"
 #include <libglom/data_structure/layout/layoutitem_notebook.h>
 #include <gtkmm/builder.h>

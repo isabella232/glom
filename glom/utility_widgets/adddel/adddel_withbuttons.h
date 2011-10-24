@@ -22,6 +22,7 @@
 #define ADDDEL_WITHBUTTONS_H
 
 #include "adddel.h"
+#include <gtkmm/buttonbox.h>
 
 namespace Glom
 {

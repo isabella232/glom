@@ -23,7 +23,7 @@
 
 #include <libglom/libglom_config.h>
 
-#include <libgdamm.h>
+#include <libgdamm/connection.h>
 #include <libglom/sharedptr.h>
 #include <libglom/data_structure/fieldtypes.h>
 #include <libglom/data_structure/field.h>

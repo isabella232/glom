@@ -21,7 +21,12 @@
 #ifndef GLOM_BOX_FORMATTING_H
 #define GLOM_BOX_FORMATTING_H
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/radiobutton.h>
+#include <gtkmm/checkbutton.h>
+#include <gtkmm/spinbutton.h>
+#include <gtkmm/colorbutton.h>
+#include <gtkmm/fontbutton.h>
 #include <glom/utility_widgets/dialog_properties.h>
 #include <libglom/document/document.h>
 #include <glom/box_withbuttons.h>

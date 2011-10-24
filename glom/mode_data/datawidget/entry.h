@@ -23,7 +23,7 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
-#include <gtkmm.h>
+#include <gtkmm/entry.h>
 #include <libglom/data_structure/field.h>
 #include <glom/utility_widgets/layoutwidgetfield.h>
 #include <gtkmm/builder.h>

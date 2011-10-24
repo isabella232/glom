@@ -21,7 +21,8 @@
 #ifndef GLOM_DIALOG_DESIGN_H
 #define GLOM_DIALOG_DESIGN_H
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/label.h>
 #include <gtkmm/builder.h>
 #include <libglom/document/view.h>
 

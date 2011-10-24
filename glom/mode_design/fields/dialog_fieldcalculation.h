@@ -21,7 +21,9 @@
 #ifndef DIALOG_FIELDCALCULATION_H
 #define DIALOG_FIELDCALCULATION_H
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/button.h>
+#include <gtkmm/label.h>
 #include <gtkmm/builder.h>
 #include <libglom/data_structure/field.h>
 #include <glom/base_db.h>

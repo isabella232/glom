@@ -21,7 +21,10 @@
 #ifndef DIALOG_FIELDDEFINITION_H
 #define DIALOG_FIELDDEFINITION_H
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/checkbutton.h>
+#include <gtkmm/alignment.h>
+#include <gtkmm/entry.h>
 #include "../../utility_widgets/combo_textglade.h"
 #include <glom/mode_design/layout/combobox_relationship.h>
 #include "combo_fieldtype.h"

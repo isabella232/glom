@@ -28,6 +28,7 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/dialog_invalid_data.h>
 #include <glom/utils_ui.h>
+#include <gtkmm/stock.h>
 #include <libglom/utils.h>
 //#include <glom/bakery/app_gtk.h>
 #include <iostream> //For debug output.

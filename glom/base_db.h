@@ -23,7 +23,7 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
-#include <gtkmm.h>
+//#include <gtkmm.h>
 
 #include <libglom/document/view.h>
 #include <libglom/connectionpool.h>
@@ -35,6 +35,7 @@
 #include <libglom/calcinprogress.h>
 #include <libglom/document/bakery/view/view.h>
 #include <glom/bakery/busy_cursor.h>
+#include <gtkmm/treemodel.h>
 
 #include <libgdamm/set.h>
 #include <libgdamm/sqlbuilder.h>

@@ -21,7 +21,7 @@
 #ifndef GLOM_MODE_DATA_LAYOUT_WIDGET_BASE_H
 #define GLOM_MODE_DATA_LAYOUT_WIDGET_BASE_H
 
-#include <gtkmm.h>
+#include <gtkmm/widget.h>
 #include <libglom/data_structure/layout/layoutitem.h>
 #include <glom/mode_design/layout/treestore_layout.h> //Forthe enum.
 

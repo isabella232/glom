@@ -20,6 +20,8 @@
 
 #include "db_adddel_withbuttons.h"
 #include <glom/utils_ui.h>
+#include <gtkmm/buttonbox.h>
+#include <gtkmm/stock.h>
 
 namespace Glom
 {

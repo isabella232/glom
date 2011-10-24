@@ -21,7 +21,7 @@
 #ifndef GLOM_DIALOG_TEXT_FORMATTING_H
 #define GLOM_DIALOG_TEXT_FORMATTING_H
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
 #include <gtkmm/builder.h>
 #include <libglom/document/document.h>
 #include <glom/mode_design/layout/layout_item_dialogs/box_formatting.h>

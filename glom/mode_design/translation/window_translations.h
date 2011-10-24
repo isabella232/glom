@@ -22,7 +22,10 @@
 #define GLOM_TRANSLATIONS_DIALOG_TRANSLATIONS_H
 
 #include <libglom/document/view.h>
-#include <gtkmm.h>
+#include <gtkmm/window.h>
+#include <gtkmm/label.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/liststore.h>
 #include <gtkmm/builder.h>
 
 #include <gettext-po.h>

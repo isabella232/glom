@@ -22,6 +22,7 @@
 #include <glom/utils_ui.h> //For bold_message()).
 #include <libglom/db_utils.h>
 #include <glom/application.h>
+#include <gtkmm/stock.h>
 #include <glibmm/i18n.h>
 
 #include <iostream>

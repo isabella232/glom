@@ -21,11 +21,17 @@
 #ifndef GLOM_UTILITY_WIDGETS_IMAGE_GLOM_H
 #define GLOM_UTILITY_WIDGETS_IMAGE_GLOM_H
 
-#include <gtkmm.h>
+#include <gtkmm/eventbox.h>
+#include <gtkmm/image.h>
+#include <gtkmm/menu.h>
 #include <libglom/data_structure/field.h>
 #include "layoutwidgetfield.h"
 #include "dialog_image_progress.h"
 #include <gtkmm/builder.h>
+#include <gtkmm/frame.h>
+#include <gtkmm/builder.h>
+#include <giomm/appinfo.h>
+#include <evince-view.h>
 
 namespace Glom
 {

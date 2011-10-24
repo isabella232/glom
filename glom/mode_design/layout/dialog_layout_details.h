@@ -23,6 +23,8 @@
 
 #include <glom/mode_design/layout/dialog_layout.h>
 #include <glom/mode_design/layout/treestore_layout.h>
+#include <gtkmm/frame.h>
+#include <gtkmm/spinbutton.h>
 
 namespace Glom
 {

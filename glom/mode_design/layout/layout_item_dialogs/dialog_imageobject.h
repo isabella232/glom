@@ -21,7 +21,9 @@
 #ifndef DIALOG_IMAGEOBJECT_H
 #define DIALOG_IMAGEOBJECT_H
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/label.h>
 #include <gtkmm/builder.h>
 #include <libglom/data_structure/layout/layoutitem_image.h>
 #include <glom/base_db.h>

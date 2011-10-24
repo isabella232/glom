@@ -21,7 +21,7 @@
 #ifndef GLOM_APPSTATE_H
 #define GLOM_APPSTATE_H
 
-#include <glibmm.h>
+#include <sigc++/sigc++.h>
 
 namespace Glom
 {

@@ -22,6 +22,7 @@
 #define GLOM_DB_ADDDEL_WITHBUTTONS_H
 
 #include "db_adddel.h"
+#include <gtkmm/buttonbox.h>
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/button.h>

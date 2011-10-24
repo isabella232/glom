@@ -21,8 +21,6 @@
 #ifndef DB_POSTGRES_H
 #define DB_POSTGRES_H
 
-//#include <gtkmm.h>
-
 //#include <glom/base_db.h>
 #include <libglom/document/document.h>
 #include <libglom/connectionpool.h>

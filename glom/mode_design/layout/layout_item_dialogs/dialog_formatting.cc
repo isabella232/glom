@@ -21,6 +21,7 @@
 #include "dialog_formatting.h"
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/glade_utils.h>
+#include <gtkmm/stock.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
