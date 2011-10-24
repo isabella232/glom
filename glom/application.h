@@ -41,7 +41,6 @@ namespace Glom
 {
 
 class Window_Translations;
-class ShowProgressMessage;
 
 class Application : public GlomBakery::App_WithDoc_Gtk
 {
@@ -274,29 +273,20 @@ private:
   bool m_show_sql_debug;
 };
 
-/* Use this class to ensure that the progress message is cleared upon exiting a
- * method with multiple return points. */
+/** Use this class to ensure that the progress message is cleared upon exiting a
+ * method with multiple return points.
+ */
 class ShowProgressMessage
 {
 public:
-  ShowProgressMessage(const Glib::ustring &message)
-  : app(dynamic_cast<Application*>(Application::get_application())),
-    message(message)
-  {
-    g_return_if_fail(app);
-    app->set_progress_message(message);
-  };
+  explicit ShowProgressMessage(const Glib::ustring &message);
+  ~ShowProgressMessage();
 
-  ~ShowProgressMessage()
-  {
-    app->clear_progress_message();
-  };
-
-  void pulse() { app->set_progress_message(message); };
+  void pulse();
 
 private:
-  Application * const app;
-  const Glib::ustring &message;
+  Application* const m_app;
+  Glib::ustring m_message;
 };
 
 } //namespace Glom

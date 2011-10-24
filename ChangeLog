@@ -1,3 +1,10 @@
+2011-10-24  Murray Cumming  <murrayc@murrayc.com>
+
+	ShowProgressMessage: Minor Cleanup.
+
+	* glom/application.[h|cc]: Move implementation into .cc file. Correct the code
+	style. Make the constructor explicit.
+
 2011-10-24  David King  <davidk@openismus.com>
 
   Replace progress dialog with infobar.
