@@ -26,6 +26,10 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/utility_widgets/dialog_image_load_progress.h>
 #include <glom/utility_widgets/dialog_image_save_progress.h>
+#include <gtkmm/appchooserdialog.h>
+#include <gtkmm/filechooserdialog.h>
+#include <gtkmm/stock.h>
+#include <giomm.h>
 
 #include <iostream>   // for cout, endl
 

@@ -21,9 +21,9 @@
 #ifndef GLOM_UTILITYWIDGETS_FLOWTABLE_H
 #define GLOM_UTILITYWIDGETS_FLOWTABLE_H
 
-#include <gtkmm.h>
 #include <glom/utility_widgets/eggspreadtablemm/eggspreadtabledndmm.h>
 #include "layoutwidgetbase.h"
+#include <gtkmm/box.h>
 
 namespace Glom
 {

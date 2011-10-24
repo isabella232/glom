@@ -23,9 +23,10 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
-#include <gtkmm.h>
+#include <gtkmm/textview.h>
 #include <libglom/data_structure/field.h>
 #include <glom/utility_widgets/layoutwidgetfield.h>
+#include <gtkmm/scrolledwindow.h>
 #include <gtkmm/builder.h>
 
 namespace Glom

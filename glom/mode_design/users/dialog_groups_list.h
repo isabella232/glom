@@ -21,8 +21,10 @@
 #ifndef GLOM_MODE_DESIGN_DIALOG_GROUPS_LIST_H
 #define GLOM_MODE_DESIGN_DIALOG_GROUPS_LIST_H
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/treeview.h>
 #include <gtkmm/builder.h>
+#include <gtkmm/liststore.h>
 #include <glom/base_db.h>
 
 namespace Glom

@@ -31,6 +31,7 @@
 #include <glom/application.h>
 #include <glom/utils_ui.h> //For Utils::image_scale_keeping_ratio().
 #include <glom/mode_data/datawidget/cellcreation.h>
+#include <gtkmm/stock.h>
 #include <libglom/db_utils.h>
 
 #include <iostream> //For debug output.

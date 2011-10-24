@@ -23,6 +23,10 @@
 
 #include <glom/mode_design/layout/dialog_layout.h>
 #include <libglom/data_structure/report.h>
+#include <gtkmm/notebook.h>
+#include <gtkmm/checkbutton.h>
+#include <gtkmm/label.h>
+#include <gtkmm/entry.h>
 #include "treestore_report_layout.h"
 //#include <libglom/data_structure/layout/layoutitem.h>
 //#include <libglom/sharedptr.h>

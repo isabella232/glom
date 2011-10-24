@@ -25,6 +25,7 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
+#include <gtkmm/stock.h>
 #include <glom/glade_utils.h>
 #include <glibmm/i18n.h>
 

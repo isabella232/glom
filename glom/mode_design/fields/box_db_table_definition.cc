@@ -24,6 +24,7 @@
 #include <glom/utils_ui.h> //For bold_message()).
 #include <libglom/libglom_config.h>
 #include <libglom/db_utils.h>
+#include <gtkmm/stock.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

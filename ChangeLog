@@ -1,5 +1,11 @@
 2011-10-24  Murray Cumming  <murrayc@murrayc.com>
 
+	Do not include gtkmm.h, glibmm.h, giomm.h, or similar in headers.
+
+	* Many files: Use more specific includes.
+
+2011-10-24  Murray Cumming  <murrayc@murrayc.com>
+
 	Progress InfoBar: Block user input during progress.
 
 	* glom/application.cc: set_progress_message(): Set the main UI elements to 

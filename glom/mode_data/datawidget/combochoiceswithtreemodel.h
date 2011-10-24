@@ -22,6 +22,8 @@
 #define GLOM_MODE_DATA_COMBO_CHOICES_WITH_TREE_MODEL_H
 
 #include <glom/mode_data/datawidget/combochoices.h>
+#include <gtkmm/celllayout.h>
+#include <gtkmm/treemodel.h>
 
 namespace Glom
 {

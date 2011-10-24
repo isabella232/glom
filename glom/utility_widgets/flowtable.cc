@@ -21,6 +21,7 @@
 #include "flowtable.h"
 #include "layoutwidgetbase.h"
 #include <iostream>
+#include <gtkmm/eventbox.h>
 #include <gdkmm/window.h>
 #include <glom/utils_ui.h>
 
@@ -28,8 +29,7 @@ namespace Glom
 {
 
 FlowTable::FlowTable()
-:
-  m_design_mode(false)
+: m_design_mode(false)
 {
   //Default to disabling drag and drop:
   set_drag_enabled(EGG_DRAG_DISABLED);

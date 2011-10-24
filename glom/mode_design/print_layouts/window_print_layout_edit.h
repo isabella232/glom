@@ -32,6 +32,8 @@
 #include <gtkmm/label.h>
 #include <gtkmm/uimanager.h>
 #include <glom/utility_widgets/gimpruler/gimpruler.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/spinbutton.h>
 #include <gtkmm/builder.h>
 
 namespace Glom

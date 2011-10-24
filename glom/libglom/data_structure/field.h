@@ -21,7 +21,9 @@
 #ifndef GLOM_DATASTRUCTURE_FIELD_H
 #define GLOM_DATASTRUCTURE_FIELD_H
 
-#include <libgdamm.h>
+#include <libgdamm/column.h>
+#include <libgdamm/holder.h>
+#include <libgdamm/connection.h>
 #include <libglom/data_structure/translatable_item.h>
 #include <libglom/data_structure/layout/fieldformatting.h>
 #include <libglom/sharedptr.h>

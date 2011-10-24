@@ -27,7 +27,8 @@
 #include <glom/frame_glom.h>
 #include <glom/show_progress_message.h>
 #include <glom/infobar_progress_creating.h>
-
+#include <gtkmm/aboutdialog.h>
+#include <gtkmm/messagedialog.h>
 
 //Avoid including the header here:
 extern "C"

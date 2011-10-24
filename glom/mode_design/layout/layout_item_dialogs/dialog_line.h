@@ -21,7 +21,9 @@
 #ifndef GLOM_MODE_DESIGN_DIALOG_LINE_H
 #define GLOM_MODE_DESIGN_DIALOG_LINE_H
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/spinbutton.h>
+#include <gtkmm/colorbutton.h>
 #include <gtkmm/builder.h>
 #include <libglom/data_structure/layout/layoutitem_line.h>
 #include <glom/base_db.h>

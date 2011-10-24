@@ -18,8 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "box_reports.h"
+#include <glom/box_reports.h>
 #include <libglom/utils.h> //For bold_message()).
+#include <gtkmm/alignment.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/messagedialog.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -219,7 +222,7 @@ void Box_Reports::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint c
         const Glib::ustring report_name_new = m_AddDel.get_value(row, m_colReportName);
         if(!report_name.empty() && !report_name_new.empty())
         {
-          Glib::ustring strMsg = _("Are you sure that you want to rename this report?");  //TODO: Show old and new names?
+          const Glib::ustring strMsg = _("Are you sure that you want to rename this report?");  //TODO: Show old and new names?
           Gtk::MessageDialog dialog(_("Rename Report"));
           dialog.set_secondary_text(strMsg);
           int iButtonClicked = dialog.run();

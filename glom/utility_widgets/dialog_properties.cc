@@ -20,6 +20,8 @@
 
 #include "glom/utility_widgets/adddel/adddel.h"
 #include "dialog_properties.h"
+#include <gtkmm/togglebutton.h>
+#include <gtkmm/textview.h>
 
 namespace Glom
 {

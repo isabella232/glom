@@ -28,6 +28,7 @@
 #include <libglom/db_utils.h>
 #include <glom/application.h>
 #include <glom/utils_ui.h>
+#include <gtkmm/cellareabox.h>
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream
 

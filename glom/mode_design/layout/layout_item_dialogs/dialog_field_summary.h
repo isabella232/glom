@@ -21,7 +21,9 @@
 #ifndef GLOM_LAYOUT_ITEM_DIALOGS_FIELD_SUMMARY_H
 #define GLOM_LAYOUT_ITEM_DIALOGS_FIELD_SUMMARY_H
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/button.h>
+#include <gtkmm/label.h>
 #include <glom/utility_widgets/dialog_properties.h>
 #include <libglom/document/document.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>

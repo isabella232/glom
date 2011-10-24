@@ -25,7 +25,8 @@
 
 #include <glom/libglom/connectionpool.h>
 #include <giomm.h>
-#include <libgdamm.h>
+#include <libgdamm/connection.h>
+#include <libgdamm/init.h>
 #include <iostream>
 
 #include <pygobject.h>

@@ -24,6 +24,7 @@
 #include <gtkmm/window.h>
 #include <gtkmm/treemodel.h>
 #include <gtkmm/button.h>
+#include <gtkmm/combobox.h>
 #include <gtkmm/builder.h>
 
 namespace Glom

@@ -21,7 +21,7 @@
 #ifndef GLOM_UTILITY_WIDGETS_CANVAS_EDITABLE_H
 #define GLOM_UTILITY_WIDGETS_CANVAS_EDITABLE_H
 
-#include <goocanvasmm.h>
+#include <goocanvasmm/canvas.h>
 #include <glom/utility_widgets/canvas/canvas_group_grid.h>
 #include <glom/utility_widgets/canvas/canvas_item_movable.h>
 #include <map>

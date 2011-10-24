@@ -22,7 +22,7 @@
 #ifndef GLOM_UTILITY_WIDGETS_LAYOUTTOOLBARBUTTON_H
 #define GLOM_UTILITY_WIDGETS_LAYOUTTOOLBARBUTTON_H
 
-#include <gtkmm/button.h>
+#include <gtkmm/toolbutton.h>
 #include <gtkmm/image.h>
 #include <string>
 

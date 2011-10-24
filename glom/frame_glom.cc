@@ -62,6 +62,8 @@
 #include <glom/print_layout/print_layout_utils.h>
 
 #include <glom/filechooser_export.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/radioaction.h>
 #include <libglom/privs.h>
 #include <libglom/db_utils.h>
 #include <sstream> //For stringstream.

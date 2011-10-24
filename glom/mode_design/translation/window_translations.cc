@@ -25,6 +25,9 @@
 #include <glom/utils_ui.h> //For bold_message()).
 #include <libglom/utils.h>
 #include <glom/glade_utils.h>
+#include <gtkmm/filefilter.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/filechooserdialog.h>
 
 #include <glibmm/i18n.h>
 #include <string.h> // for memset

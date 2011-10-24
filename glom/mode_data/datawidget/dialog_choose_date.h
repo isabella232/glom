@@ -26,6 +26,7 @@
 #include <glom/base_db.h>
 //#include <glom/mode_find/box_data_details_find.h>
 #include <glom/mode_data/box_data_list.h>
+#include <gtkmm/calendar.h>
 
 namespace Glom
 {

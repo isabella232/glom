@@ -30,6 +30,8 @@
 #include <libglom/document/view.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <glom/mode_design/layout/treestore_layout.h> //Forthe enum.
+#include <gtkmm/eventbox.h>
+#include <gtkmm/button.h>
 
 namespace Glom
 {

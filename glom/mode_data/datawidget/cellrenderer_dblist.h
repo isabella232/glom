@@ -22,8 +22,7 @@
 #define GLOM_UTILITY_WIDGETS_DBADDDELL_CELLRENDERDBERLIST_H
 
 #include <glom/mode_data/datawidget/combochoiceswithtreemodel.h>
-#include <gtkmm.h>
-//#include <gtkmm/cellrenderercombo.h>
+#include <gtkmm/cellrenderercombo.h>
 //#include <gtkmm/liststore.h>
 
 

@@ -21,7 +21,9 @@
 #ifndef GLOM_DIALOG_FLOWTABLE_H
 #define GLOM_DIALOG_FLOWTABLE_H
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/spinbutton.h>
+#include <gtkmm/entry.h>
 #include <gtkmm/builder.h>
 #include "../mode_data/flowtablewithfields.h"
 #include <glom/base_db.h>

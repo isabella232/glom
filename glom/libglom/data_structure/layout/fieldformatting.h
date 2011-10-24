@@ -25,7 +25,7 @@
 #include <libglom/data_structure/numeric_format.h>
 #include <libglom/data_structure/relationship.h>
 #include <libglom/sharedptr.h>
-#include <libgdamm.h>
+#include <libgdamm/value.h>
 
 namespace Glom
 {

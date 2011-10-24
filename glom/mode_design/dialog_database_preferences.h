@@ -26,6 +26,8 @@
 #include <glom/variablesmap.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/liststore.h>
 #include <gtksourceviewmm/view.h>
 #include <glom/base_db.h>
 #include <libglom/data_structure/system_prefs.h>

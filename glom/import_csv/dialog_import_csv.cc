@@ -27,6 +27,7 @@
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/cellrenderercombo.h>
 #include <glom/utils_ui.h>
+#include <gtkmm/main.h>
 #include <glibmm/i18n.h>
 #include <cerrno>
 #include <iostream>

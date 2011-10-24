@@ -24,6 +24,7 @@
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/mode_data/datawidget/combochoiceswithtreemodel.h>
+#include <gtkmm/combobox.h>
 
 namespace Glom
 {

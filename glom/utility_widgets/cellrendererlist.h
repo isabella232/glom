@@ -21,9 +21,8 @@
 #ifndef GLOM_UTILITY_WIDGETS_CELLRENDERERLIST_H
 #define GLOM_UTILITY_WIDGETS_CELLRENDERERLIST_H
 
-#include <gtkmm.h>
-//#include <gtkmm/cellrenderercombo.h>
-//#include <gtkmm/liststore.h>
+#include <gtkmm/cellrenderercombo.h>
+#include <gtkmm/liststore.h>
 
 
 namespace Glom

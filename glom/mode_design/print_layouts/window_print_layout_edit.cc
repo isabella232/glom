@@ -27,7 +27,7 @@
 #include <libglom/data_structure/layout/layoutitem_line.h>
 #include <libglom/data_structure/layout/layoutitem_portal.h>
 #include <libglom/utils.h> //For bold_message()).
-#include <gtkmm/scrolledwindow.h>
+#include <gtkmm.h>
 #include <glibmm/i18n.h>
 
 #include <iostream>

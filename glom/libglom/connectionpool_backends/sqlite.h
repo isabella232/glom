@@ -21,7 +21,7 @@
 #ifndef GLOM_BACKEND_SQLITE_H
 #define GLOM_BACKEND_SQLITE_H
 
-#include <libgdamm.h>
+#include <libgdamm/connection.h>
 #include <libglom/connectionpool_backends/backend.h>
 
 #include <libglom/libglom_config.h>

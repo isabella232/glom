@@ -21,7 +21,7 @@
 #ifndef GLOM_MODE_DESIGN_DIALOG_FORMATTING_H
 #define GLOM_MODE_DESIGN_DIALOG_FORMATTING_H
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
 #include <glom/utility_widgets/dialog_properties.h>
 #include <libglom/document/view.h>
 #include <glom/box_withbuttons.h>

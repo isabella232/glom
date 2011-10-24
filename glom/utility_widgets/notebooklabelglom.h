@@ -21,8 +21,10 @@
 #ifndef GLOM_UTILITY_WIDGETS_NOTEBOOK_LABEL_GLOM_H
 #define GLOM_UTILITY_WIDGETS_NOTEBOOK_LABEL_GLOM_H
 
-#include <gtkmm.h>
 #include "notebookglom.h"
+#include <gtkmm/eventbox.h>
+#include <gtkmm/label.h>
+#include <gtkmm/menu.h>
 #include <gtkmm/builder.h>
 
 namespace Glom
@@ -38,7 +40,7 @@ public:
   explicit NotebookLabel(const Glib::ustring& label, NotebookGlom* notebook);
   virtual ~NotebookLabel();
 
-  void set_label (const Glib::ustring& title);  
+  void set_label(const Glib::ustring& title);  
     
 private:
   void init();

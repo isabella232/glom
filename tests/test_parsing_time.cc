@@ -1,4 +1,5 @@
 #include <libglom/data_structure/glomconversions.h>
+#include <libgdamm/init.h>
 #include <iostream>
 
 int main()

@@ -21,7 +21,7 @@
 #ifndef GLOM_BOX_WITHBUTTONS_H
 #define GLOM_BOX_WITHBUTTONS_H
 
-#include <gtkmm.h>
+#include <gtkmm/box.h>
 #include "utility_widgets/adddel/adddel_withbuttons.h"
 
 #include <libglom/document/document.h>

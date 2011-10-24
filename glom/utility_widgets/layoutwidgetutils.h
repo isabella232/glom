@@ -23,8 +23,10 @@
 #ifndef GLOM_UTILITY_WIDGETS_LAYOUT_WIDGET_UTILS_H
 #define GLOM_UTILITY_WIDGETS_LAYOUT_WIDGET_UTILS_H
 
-#include <gtkmm.h>
+#include <gtkmm/widget.h>
+#include <gtkmm/menu.h>
 #include "layoutwidgetbase.h"
+#include <gtkmm/uimanager.h>
 
 namespace Glom
 {

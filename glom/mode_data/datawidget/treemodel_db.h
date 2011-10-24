@@ -21,9 +21,8 @@
 #ifndef GLOM_UTILITY_WIDGETS_DB_TREEMODEL_H
 #define GLOM_UTILITY_WIDGETS_DB_TREEMODEL_H
 
-#include <gtkmm.h>
-//#include <gtkmm/treemodel.h>
-//#include <gtkmm/treepath.h>
+#include <gtkmm/treemodel.h>
+#include <gtkmm/treepath.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <libglom/connectionpool.h>
 #include <glom/base_db.h>

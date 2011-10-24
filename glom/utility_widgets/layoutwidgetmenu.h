@@ -22,6 +22,7 @@
 #define GLOM_MODE_DATA_LAYOUT_WIDGET_MENU_H
 
 #include "layoutwidgetbase.h"
+#include <gtkmm/uimanager.h>
 
 namespace Glom
 {

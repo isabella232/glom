@@ -18,7 +18,6 @@
 #ifndef _EGG_SPREADTABLE_H
 #define _EGG_SPREADTABLE_H
 
-#include <glibmm.h>
 #include <gtkmm/container.h>
 #include <gtkmm/orientable.h>
 

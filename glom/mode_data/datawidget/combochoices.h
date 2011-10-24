@@ -21,7 +21,6 @@
 #ifndef GLOM_UTILITY_WIDGETS_COMBO_CHOICES_H
 #define GLOM_UTILITY_WIDGETS_COMBO_CHOICES_H
 
-#include <gtkmm.h>
 #include <libglom/data_structure/field.h>
 #include <glom/utility_widgets/layoutwidgetfield.h>
 

@@ -21,7 +21,7 @@
 #ifndef DIALOG_SCRIPTLIBRARY_H
 #define DIALOG_SCRIPTLIBRARY_H
 
-#include <gtkmm.h>
+#include <gtkmm/dialog.h>
 #include <gtkmm/builder.h>
 #include <libglom/data_structure/layout/layoutitem_button.h>
 #include <glom/base_db.h>

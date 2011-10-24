@@ -22,6 +22,7 @@
 #include <glom/mode_data/datawidget/treemodel_db_withextratext.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/utils_ui.h>
+#include <gtkmm/liststore.h>
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream
 

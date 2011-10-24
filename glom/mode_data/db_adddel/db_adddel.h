@@ -21,9 +21,12 @@
 #ifndef GLOM_DB_ADDDEL_H
 #define GLOM_DB_ADDDEL_H
 
-#include <gtkmm.h>
+#include <gtkmm/box.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/uimanager.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
-#include <libgdamm.h>
 #include <glom/mode_data/datawidget/treemodel_db.h>
 #include <libglom/document/document.h>
 #include <glom/base_db_table_data.h>
