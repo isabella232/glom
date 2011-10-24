@@ -1,3 +1,9 @@
+2011-10-24  Murray Cumming  <murrayc@murray.com>
+
+	Remove the mention of window_progress.glade to fix make check. 
+
+	* POTFILES.in: Remove the mention of a file that no longer exists.
+
 2011-10-18  Murray Cumming  <murrayc@murrayc.com>
 
 	Correct the date format in the en_CA locale. 

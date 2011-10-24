@@ -148,7 +148,6 @@ ui/operator/dialog_image_save_progress.glade
 ui/operator/dialog_import_csv.glade
 ui/operator/dialog_import_csv_progress.glade
 ui/operator/window_main.glade
-ui/operator/window_progress.glade
 ui/developer/dialog_add_related_table.glade
 ui/developer/dialog_change_language.glade
 ui/developer/dialog_choose_field.glade
