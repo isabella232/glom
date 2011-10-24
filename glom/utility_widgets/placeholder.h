@@ -27,7 +27,8 @@
 namespace Glom
 {
 
-//TODO: Remove this, using the vbox directly?
+/** This is just an easy way to use a Gtk::Box as a single-item container.
+ */
 class PlaceHolder : public Gtk::Box
 {
 public:

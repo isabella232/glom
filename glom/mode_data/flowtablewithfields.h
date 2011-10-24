@@ -247,7 +247,6 @@ private:
   void add_button(const sharedptr<LayoutItem_Button>& layoutitem_button, const Glib::ustring& table_name);
   void add_textobject(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name);
   void add_imageobject(const sharedptr<LayoutItem_Image>& layoutitem_image, const Glib::ustring& table_name);
-  void add_placeholder(const sharedptr<LayoutItem_Placeholder>& layoutitem_image, const Glib::ustring& table_name);
 
   void add_layoutwidgetbase(LayoutWidgetBase* layout_widget);
   void add_layout_notebook(const sharedptr<LayoutItem_Notebook>& notebook);

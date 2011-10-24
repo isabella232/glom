@@ -27,7 +27,6 @@
 #include <glom/utility_widgets/imageglom.h>
 #include <glom/mode_data/datawidget/label.h>
 #include <glom/utility_widgets/dialog_flowtable.h>
-#include <glom/mode_data/placeholder-glom.h>
 #include <glom/application.h>
 #include <gtkmm/checkbutton.h>
 #include <libglom/data_structure/glomconversions.h>
@@ -145,13 +144,6 @@ void FlowTableWithFields::add_layout_item(const sharedptr<LayoutItem>& item)
               sharedptr<LayoutItem_Image> layout_imageobject = sharedptr<LayoutItem_Image>::cast_dynamic(item);
               if(layout_imageobject)
                 add_imageobject(layout_imageobject, m_table_name);
-              else
-              {
-                sharedptr<LayoutItem_Placeholder> layout_placeholder =
-                  sharedptr<LayoutItem_Placeholder>::cast_dynamic(item);
-                if(layout_placeholder)
-                  add_placeholder(layout_placeholder, m_table_name);
-              }
             }
           }
         }
@@ -645,26 +637,6 @@ void FlowTableWithFields::add_textobject(const sharedptr<LayoutItem_Text>& layou
 
     add(*alignment_title, *alignment_label, true /* expand */);
   }
-}
-
-void FlowTableWithFields::add_placeholder(const sharedptr<LayoutItem_Placeholder>& /* layoutitem_placeholder */, const Glib::ustring& /* table_name */)
-{
-  //Delete any existing placeholder (there can be only one):
-  delete m_placeholder;
-  m_placeholder = 0;
-
-  //Add the widget:
-  m_placeholder = Gtk::manage(new Gtk::Alignment());
-  m_placeholder->set(Gtk::ALIGN_START, Gtk::ALIGN_CENTER);
-  m_placeholder->show();
-
-  PlaceholderGlom* preview = Gtk::manage(new PlaceholderGlom);
-  preview->show();
-
-  m_placeholder->add(*preview);
-
-  m_list_layoutwidgets.push_back(preview);
-  add(*m_placeholder, false);
 }
 
 void FlowTableWithFields::add_imageobject(const sharedptr<LayoutItem_Image>& layoutitem_image, const Glib::ustring& table_name)

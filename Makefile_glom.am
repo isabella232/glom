@@ -152,8 +152,6 @@ glom_source_files = \
 	glom/mode_data/flowtablewithfields.h				\
 	glom/mode_data/notebook_data.cc					\
 	glom/mode_data/notebook_data.h					\
-	glom/mode_data/placeholder-glom.cc			\
-	glom/mode_data/placeholder-glom.h				\
 	glom/mode_data/datawidget/datawidget.cc				\
 	glom/mode_data/datawidget/datawidget.h				\
 	glom/mode_data/datawidget/cellcreation.cc				\

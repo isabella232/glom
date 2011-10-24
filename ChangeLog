@@ -1,5 +1,13 @@
 2011-10-24  Murray Cumming  <murrayc@murrayc.com>
 
+	Remove the unnused PlaceholderGlom class.
+
+	* glom/mode_data/placeholder-glom.[h|cc]: Remove these files.
+	* Makefile_glom.am: Remove mentions of these files.
+	* glom/mode_data/flowtable_withfields.cc: Remove uses of PlaceholderGlom.
+
+2011-10-24  Murray Cumming  <murrayc@murrayc.com>
+
 	Do not include gtkmm.h, glibmm.h, giomm.h, or similar in headers.
 
 	* Many files: Use more specific includes.
