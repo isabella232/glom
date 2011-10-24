@@ -7,7 +7,11 @@
 	block user input, like a modal dialog.
 	* ui/operator/window_main.glade: Move the InfoBar out of the frame, because 
 	it should not have the border, and so we can make the frame insensitive 
-	without making the InfoBar insensitive.
+	without making the InfoBar insensitive. This required adding an extra 
+	intermediate GtkBox, because otherwise there is no way to add the menubar
+	at the top, before the InfoBar.
+	This .glade file needed some hand-editing to remove bad <packing> tags that
+	glade (from git master) added.
 
 2011-10-24  Murray Cumming  <murrayc@murrayc.com>
 
