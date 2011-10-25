@@ -3,6 +3,8 @@
 #include <glom/python_embed/glom_python.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/utils.h>
+#include <glibmm/convert.h>
+#include <glibmm/miscutils.h>
 #include <boost/python.hpp>
 #include <iostream>
 

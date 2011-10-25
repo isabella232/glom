@@ -32,7 +32,7 @@
 #include <libglom/data_structure/layout/layoutitem_calendarportal.h>
 #include <libglom/data_structure/layout/layoutitem_line.h>
 #include <libglom/standard_table_prefs_fields.h>
-#include <giomm.h>
+#include <giomm/file.h>
 //#include <libglom/busy_cursor.h>
 
 #include <libglom/connectionpool.h>

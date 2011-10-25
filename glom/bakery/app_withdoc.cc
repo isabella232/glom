@@ -19,7 +19,7 @@
 #include "config.h"
 #include <glom/bakery/app_withdoc.h>
 #include <glom/bakery/dialog_offersave.h>
-#include <giomm.h>
+#include <giomm/file.h>
 #include <algorithm>
 #include <glibmm/i18n-lib.h>
 

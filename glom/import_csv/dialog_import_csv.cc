@@ -28,6 +28,8 @@
 #include <gtkmm/cellrenderercombo.h>
 #include <glom/utils_ui.h>
 #include <gtkmm/main.h>
+#include <glibmm/convert.h>
+#include <glibmm/markup.h>
 #include <glibmm/i18n.h>
 #include <cerrno>
 #include <iostream>

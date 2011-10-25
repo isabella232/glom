@@ -44,7 +44,9 @@
 
 #include <cstdio>
 #include <memory> //For std::auto_ptr<>
-#include <giomm.h>
+#include <giomm/file.h>
+#include <glibmm/spawn.h>
+#include <glibmm/convert.h>
 #include <sstream> //For stringstream.
 
 #ifndef G_OS_WIN32

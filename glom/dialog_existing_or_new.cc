@@ -29,6 +29,7 @@
 #include <gtkmm/recentmanager.h>
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/stock.h>
+#include <glibmm/miscutils.h>
 
 #ifdef G_OS_WIN32
 # include <glib/gwin32.h>

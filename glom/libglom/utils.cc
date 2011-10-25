@@ -27,7 +27,7 @@
 
 #include <glibmm/i18n.h>
 
-#include <giomm.h>
+#include <giomm/file.h>
 
 #include <string.h> // for strchr
 #include <sstream> //For stringstream

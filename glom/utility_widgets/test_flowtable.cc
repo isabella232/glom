@@ -18,7 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtkmm.h>
+#include <gtkmm/window.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/label.h>
+#include <gtkmm/button.h>
+#include <gtkmm/main.h>
 #include "flowtable.h"
 #include <iostream>
 

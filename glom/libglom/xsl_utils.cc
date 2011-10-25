@@ -27,7 +27,8 @@
 #include <libxml++/libxml++.h>
 #include <libxslt/transform.h>
 //#include <libexslt/exslt.h> //For exsltRegisterAll().
-#include <giomm.h>
+#include <giomm/file.h>
+#include <glibmm/miscutils.h>
 #include <glibmm/i18n.h>
 
 #include <sstream> //For stringstream

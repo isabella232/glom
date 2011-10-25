@@ -19,7 +19,6 @@
  */
 
 #include "cellrendererlist.h"
-#include <gtkmm.h>
 
 
 namespace Glom

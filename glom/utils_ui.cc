@@ -31,8 +31,11 @@
 
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/stock.h>
+#include <glibmm/convert.h>
+#include <glibmm/miscutils.h>
+#include <glibmm/fileutils.h>
 
-#include <giomm.h>
+#include <giomm/file.h>
 
 #include <glibmm/i18n.h>
 

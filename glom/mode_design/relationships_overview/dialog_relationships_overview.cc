@@ -19,13 +19,13 @@
  */
 
 #include "config.h"
-#include <gtkmm.h>
 #include "dialog_relationships_overview.h"
 #include "glom/utility_widgets/canvas/canvas_line_movable.h"
 #include "glom/utility_widgets/canvas/canvas_text_movable.h"
 #include <glom/mode_design/layout/dialog_choose_relationship.h>
 #include "printoperation_relationshipsoverview.h"
 #include "glom/application.h"
+#include <gtkmm/stock.h>
 #include <goocanvas.h>
 #include <glibmm/i18n.h>
 #include <iostream>

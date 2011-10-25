@@ -19,7 +19,7 @@
 
 #include <glom/utility_widgets/eggspreadtablemm/eggspreadtabledndmm.h>
 #include <glom/utility_widgets/eggspreadtablemm/private/eggspreadtabledndmm_p.h>
-
+#include <glibmm/exceptionhandler.h>
 
 #include <glib.h>
 #include <gtk/gtk.h>

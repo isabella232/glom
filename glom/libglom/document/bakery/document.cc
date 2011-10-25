@@ -18,7 +18,7 @@
 
 #include "config.h"
 #include <libglom/document/bakery/document.h>
-#include <giomm.h>
+#include <giomm/file.h>
 #include <iostream>
 #include <glibmm/i18n-lib.h>
 

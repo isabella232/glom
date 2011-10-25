@@ -24,6 +24,7 @@
 #include <libxml++/libxml++.h>
 #include <libglom/document/document.h>
 #include <libglom/utils.h>
+#include <glibmm/fileutils.h>
 #include <glibmm/i18n.h>
 
 #include <iostream>

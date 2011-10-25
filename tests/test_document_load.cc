@@ -21,6 +21,8 @@
 #include <libglom/document/document.h>
 #include <libglom/init.h>
 #include <giomm/file.h>
+#include <glibmm/convert.h>
+#include <glibmm/miscutils.h>
 
 #include <iostream>
 

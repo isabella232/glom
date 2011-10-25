@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtkmm.h>
+#include <gtkmm/liststore.h>
 #include "combo_fieldtype.h"
 #include "../../box_db_table.h"
 #include <glibmm/i18n.h>

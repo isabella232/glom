@@ -25,6 +25,9 @@
 #include <gtkmm/builder.h>
 #include <gtkmm/window.h>
 #include <giomm/file.h>
+#include <glibmm/miscutils.h>
+#include <glibmm/markup.h>
+#include <glibmm/fileutils.h>
 
 namespace Glom
 {

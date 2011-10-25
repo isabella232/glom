@@ -24,6 +24,7 @@
 #include <libglom/db_utils.h>
 #include <libglom/xsl_utils.h>
 #include <iostream>
+#include <glibmm/miscutils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

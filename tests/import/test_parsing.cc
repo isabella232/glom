@@ -1,7 +1,12 @@
 #include <glom/import_csv/csv_parser.h>
 #include <tests/import/utils.h>
 //#include <glibmm/regex.h>
-#include <giomm.h>
+#include <giomm/file.h>
+#include <glibmm/convert.h>
+#include <glibmm/miscutils.h>
+#include <glibmm/regex.h>
+#include <glibmm/init.h>
+#include <giomm/init.h>
 #include <iostream>
 #include <cstdlib>
 

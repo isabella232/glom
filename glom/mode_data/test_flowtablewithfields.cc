@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtkmm.h>
+#include <gtkmm/window.h>
 #include <glom/mode_data/flowtablewithfields.h>
 #include <iostream>
 

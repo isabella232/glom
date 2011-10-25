@@ -20,7 +20,19 @@
 
 #include <glom/utility_widgets/eggspreadtable/eggspreadtablednd.h>
 #include <glom/utility_widgets/eggspreadtablemm/eggspreadtabledndmm.h>
-#include <gtkmm.h>
+#include <gtkmm/window.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/label.h>
+#include <gtkmm/box.h>
+#include <gtkmm/button.h>
+#include <gtkmm/spinbutton.h>
+#include <gtkmm/expander.h>
+#include <gtkmm/togglebutton.h>
+#include <gtkmm/eventbox.h>
+#include <gtkmm/frame.h>
+#include <gtkmm/comboboxtext.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/main.h>
 
 static const guint INITIAL_HSPACING = 2;
 static const guint INITIAL_VSPACING = 2;

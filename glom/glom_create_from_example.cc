@@ -32,6 +32,9 @@
 #include <libglom/db_utils.h>
 #include <libglom/utils.h>
 #include <giomm/file.h>
+#include <glibmm/optioncontext.h>
+#include <glibmm/convert.h>
+#include <glibmm/miscutils.h>
 #include <iostream>
 
 #include <glibmm/i18n.h>

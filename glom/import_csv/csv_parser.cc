@@ -20,6 +20,7 @@
  */
 
 #include "csv_parser.h"
+#include <glibmm/convert.h>
 
 #include <cerrno>
 #include <iostream>

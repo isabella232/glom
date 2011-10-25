@@ -23,6 +23,7 @@
 
 #include <libglom/document/document.h>
 #include <libglom/init.h>
+#include <glibmm/convert.h>
 
 #include <iostream>
 

@@ -18,7 +18,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtkmm.h>
 #include "print_layout_toolbar.h"
 #include <gtkmm/stock.h>
 #include <glibmm/i18n.h>

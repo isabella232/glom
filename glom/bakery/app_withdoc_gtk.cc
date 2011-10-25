@@ -25,7 +25,7 @@
 #include <gtkmm/recentchoosermenu.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/filechooserdialog.h>
-#include <giomm.h>
+#include <giomm/file.h>
 #include <algorithm>
 #include <iostream>
 

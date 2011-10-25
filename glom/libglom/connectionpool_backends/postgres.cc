@@ -25,7 +25,9 @@
 #include <libglom/spawn_with_feedback.h>
 #include <libglom/utils.h>
 #include <libgdamm/config.h>
-#include <giomm.h>
+#include <giomm/file.h>
+#include <glibmm/convert.h>
+#include <glibmm/miscutils.h>
 #include <glib/gstdio.h> /* For g_rename(). TODO: Wrap this in glibmm? */
 #include <glibmm/i18n.h>
 

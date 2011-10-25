@@ -18,12 +18,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtkmm.h>
 #include <glom/utility_widgets/cellrendererlist.h>
 #include <glom/mode_data/datawidget/cellrenderer_dblist.h>
 #include <glom/mode_data/datawidget/cellrenderer_buttonimage.h>
 #include <glom/mode_data/datawidget/cellrenderer_buttontext.h>
 #include <glom/utils_ui.h>
+#include <gtkmm/cellrenderertext.h>
+#include <gtkmm/stock.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <libglom/data_structure/layout/layoutitem_image.h>
 #include <libglom/utils.h>

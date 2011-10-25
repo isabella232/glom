@@ -22,7 +22,6 @@
 
 #include "layoutwidgetutils.h"
 #include <glibmm/i18n.h>
-#include <gtkmm.h>
 #include <iostream>
 
 namespace Glom

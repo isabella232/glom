@@ -23,8 +23,6 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
-//#include <gtkmm.h>
-
 #include <libglom/document/view.h>
 #include <libglom/connectionpool.h>
 #include <libglom/appstate.h>

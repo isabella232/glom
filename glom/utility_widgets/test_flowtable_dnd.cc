@@ -19,7 +19,7 @@
  */
  
 #include "flowtable_dnd.h"
-#include <gtkmm.h>
+#include <gtkmm/window.h>
 
 //#include "dragwindow.h"
 

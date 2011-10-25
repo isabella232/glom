@@ -1,4 +1,6 @@
-#include <gtkmm.h>
+#include <gtkmm/window.h>
+#include <gtkmm/box.h>
+#include <gtkmm/button.h>
 #include <libglom/avahi_publisher.h>
 #include <libglom/utils.h>
 #include <iostream>

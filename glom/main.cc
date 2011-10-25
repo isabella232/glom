@@ -30,7 +30,10 @@
 #include <glom/glade_utils.h>
 #include <gtkmm/main.h>
 
-#include <giomm.h>
+#include <giomm/file.h>
+#include <glibmm/optioncontext.h>
+#include <glibmm/convert.h>
+#include <glibmm/miscutils.h>
 
 // For postgres availability checks:
 #ifdef GLOM_ENABLE_POSTGRESQL

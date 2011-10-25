@@ -17,7 +17,9 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include <gtkmm.h>
+#include <gtkmm/builder.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/main.h>
 #include <gtksourceviewmm/init.h>
 #include <libxml++/libxml++.h>
 
