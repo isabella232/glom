@@ -28,6 +28,9 @@
 #include <libglom/data_structure/layout/report_parts/layoutitem_footer.h>
 #include <libglom/db_utils.h>
 #include <glom/xsl_utils.h>
+#include <iostream>
+#include <glibmm/miscutils.h>
+#include <glibmm/i18n.h>
 
 namespace Glom
 {

@@ -21,6 +21,7 @@
 #define _GLOM_VARIABLESMAP_H
 
 #include <gtkmm/builder.h>
+#include <glibmm/date.h>
 #include <map>
 
 namespace Glom

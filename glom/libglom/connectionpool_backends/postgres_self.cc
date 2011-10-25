@@ -21,9 +21,13 @@
 #include <libglom/connectionpool_backends/postgres_self.h>
 #include <libglom/utils.h>
 #include <libglom/spawn_with_feedback.h>
-#include <giomm.h>
+#include <giomm/file.h>
 #include <glib/gstdio.h> // For g_remove
 
+#include <glibmm/convert.h>
+#include <glibmm/miscutils.h>
+#include <glibmm/stringutils.h>
+#include <glibmm/regex.h>
 #include <glibmm/i18n.h>
 
 #include <libglom/gst-package.h>

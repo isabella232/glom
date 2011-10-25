@@ -25,7 +25,7 @@
 #include <libglom/connectionpool.h>
 #include <libglom/utils.h>
 
-#include <glibmm/i18n.h>
+#include <glibmm/convert.h>
 #include <sstream> //For stringstream
 
 #include <locale>     // for locale, time_put
@@ -33,6 +33,9 @@
 #include <iostream>   // for cout, endl
 #include <iomanip>
 #include <string.h> // for strlen, memset, strcmp
+#include <stdexcept>
+
+#include <glibmm/i18n.h>
 
 namespace
 {

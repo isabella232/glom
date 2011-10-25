@@ -24,6 +24,7 @@
 #include <gtkmm/main.h>
 
 #include <libglom/data_structure/glomconversions.h>
+#include <glibmm/convert.h>
 #include <glibmm/i18n.h>
 
 #include <iostream>

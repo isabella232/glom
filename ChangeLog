@@ -1,3 +1,12 @@
+2011-10-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Change #includes for the latest glibmm.
+
+	Add individual includes instead of general giomm.h, glibmm.h or gtkmm.h 
+	includes.
+	Among other things, this might let us avoid the annoying warning about 
+	deprecated GThread functions.
+
 2011-10-24  Murray Cumming  <murrayc@murrayc.com>
 
 	Do not include gtkmm.h, glibmm.h, giomm.h, or similar in headers.

@@ -38,6 +38,8 @@
 
 #include <signal.h> //To catch segfaults
 
+#include <glibmm/convert.h>
+#include <glibmm/miscutils.h>
 #include <glibmm/i18n.h>
 
 #include <iostream>

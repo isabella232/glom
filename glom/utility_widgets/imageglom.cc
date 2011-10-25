@@ -30,6 +30,9 @@
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/stock.h>
 #include <giomm.h>
+#include <giomm/file.h>
+#include <giomm/contenttype.h>
+#include <glibmm/convert.h>
 #include <iostream>   // for cout, endl
 
 namespace Glom

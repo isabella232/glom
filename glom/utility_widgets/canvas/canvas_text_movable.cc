@@ -20,6 +20,7 @@
 
 #include "canvas_text_movable.h"
 #include <goocanvasmm/canvas.h>
+#include <glibmm/markup.h>
 #include <goocanvastext.h>
 #include <iostream>
 

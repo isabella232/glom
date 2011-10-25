@@ -23,6 +23,7 @@
 #define GLOM_DATASTRUCTURE_FIELDTYPES_H
 
 #include <libgdamm/connection.h>
+#include <map>
 
 namespace Glom
 {

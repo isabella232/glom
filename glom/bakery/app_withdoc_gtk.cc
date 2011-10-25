@@ -27,6 +27,7 @@
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/aboutdialog.h>
 #include <giomm.h>
+#include <giomm/file.h>
 #include <algorithm>
 #include <iostream>
 

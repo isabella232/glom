@@ -1,20 +1,23 @@
-#include <gtkmm.h>
-#include <gtksourceviewmm/init.h>
-#include <glom/glade_utils.h>
-#include <glom/application.h>
-#include <glom/dialog_existing_or_new.h>
-#include <glom/mode_design/print_layouts/box_print_layouts.h>
-#include <glom/mode_design/relationships_overview/dialog_relationships_overview.h>
-#include <glom/mode_design/dialog_relationships.h>
-#include <glom/mode_design/report_layout/dialog_layout_report.h>
-#include <glom/box_reports.h>
-#include <glom/navigation/box_tables.h>
-#include <glom/import_csv/dialog_import_csv.h>
-#include <glom/import_csv/dialog_import_csv_progress.h>
-#include <glom/mode_data/datawidget/dialog_choose_date.h>
-#include <glom/mode_data/datawidget/dialog_choose_id.h>
-#include <glom/utility_widgets/dialog_flowtable.h>
-#include <glom/utility_widgets/dialog_image_progress.h>
+/* Glom
+ *
+ * Copyright (C) 2010-2011 Murray Cumming
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+ 
 #include <glom/mode_design/layout/dialog_choose_field.h>
 #include <glom/mode_design/dialog_add_related_table.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.h>
@@ -52,6 +55,9 @@
 #include <glom/mode_design/print_layouts/dialog_text_formatting.h>
 #include <glom/dialog_progress_creating.h>
 #include <glom/dialog_invalid_data.h>
+#include <gtkmm/builder.h>
+#include <gtkmm/main.h>
+#include <gtksourceviewmm/init.h>
 
 
 template<class T_Widget>

@@ -29,6 +29,7 @@
 #include <gtkmm/recentmanager.h>
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/stock.h>
+#include <glibmm/miscutils.h>
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildon-fmmm/file-chooser-dialog.h>

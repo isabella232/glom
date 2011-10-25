@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
  
-#include <gtkmm.h>
+#include <gtkmm/window.h>
 #include "canvas_editable.h"
 #include "canvas_line_movable.h"
 #include "canvas_rect_movable.h"
