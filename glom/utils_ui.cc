@@ -41,6 +41,7 @@
 #include <hildonmm/note.h>
 #endif
 
+#include <glibmm/main.h>
 #include <glibmm/i18n.h>
 
 #include <string.h> // for strchr

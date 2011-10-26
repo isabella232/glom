@@ -28,6 +28,7 @@
 #include <libglom/utils.h> //For bold_message()).
 //#include <../utility_widgets/db_adddel/glom_db_treemodel.h> //For DbTreeModel.
 #include <sstream> //For stringstream
+#include <glibmm/main.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

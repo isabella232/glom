@@ -28,6 +28,7 @@
 #include <glibmm/miscutils.h>
 #include <glibmm/stringutils.h>
 #include <glibmm/regex.h>
+#include <glibmm/main.h>
 #include <glibmm/i18n.h>
 
 #include <libglom/gst-package.h>

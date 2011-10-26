@@ -23,6 +23,7 @@
 #include <libglom/db_utils.h>
 #include <libglom/utils.h>
 //#include <glom/application.h>
+#include <glibmm/main.h>
 
 #include <iostream>
 
