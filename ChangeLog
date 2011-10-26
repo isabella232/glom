@@ -1,5 +1,13 @@
 2011-10-26  Murray Cumming  <murrayc@murrayc.com>
 
+	Adapt to the latest goocanvasmm API.
+
+	* glom/main.cc: Pass no arguments to init(), though I think I will 
+	add the method overload back to goocanvasmm to avoid annoying people 
+	too much.
+
+2011-10-26  Murray Cumming  <murrayc@murrayc.com>
+
 	Avoid deprecated Gtk::HandleBox with latest gtkmm.
 
 	* glom/utility_widgets/sidebar.[h|cc]: Removed, because Gtk::HandleBox

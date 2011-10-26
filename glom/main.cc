@@ -504,7 +504,7 @@ main(int argc, char* argv[])
   {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     Gsv::init();
-    Goocanvas::init(PACKAGE_NAME, PACKAGE_VERSION, argc, argv);
+    Goocanvas::init();
 #endif //!GLOM_ENABLE_CLIENT_ONLY
 
     ev_init();
