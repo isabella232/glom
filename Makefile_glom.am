@@ -383,9 +383,7 @@ glom_source_files +=							\
 	glom/utility_widgets/layouttoolbarbutton.cc			\
 	glom/utility_widgets/layouttoolbarbutton.h			\
 	glom/utility_widgets/notebooklabelglom.cc			\
-	glom/utility_widgets/notebooklabelglom.h			\
-	glom/utility_widgets/sidebar.cc					\
-	glom/utility_widgets/sidebar.h
+	glom/utility_widgets/notebooklabelglom.h
 endif
 
 glom_source_files +=							\

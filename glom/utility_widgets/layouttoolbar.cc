@@ -62,8 +62,8 @@ LayoutToolbar::LayoutToolbar()
   m_group_items.add(m_drag_text);
   m_group_items.add(m_drag_image);
   
-  add_group(m_group_containers);
-  add_group(m_group_items);
+  add(m_group_containers);
+  add(m_group_items);
 
   set_drag_source();
   

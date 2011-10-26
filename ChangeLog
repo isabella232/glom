@@ -1,3 +1,18 @@
+2011-10-26  Murray Cumming  <murrayc@murrayc.com>
+
+	Avoid deprecated Gtk::HandleBox with latest gtkmm.
+
+	* glom/utility_widgets/sidebar.[h|cc]: Removed, because Gtk::HandleBox
+	is deprecated.
+	* Makefile_glom.am: Remove mention of this file.
+	* glom/utility_widgets/layouttoolbar.[h|cc]: Derive directly from 
+	Gtk::ToolPalette instead.
+	* glom/mode_design/print_layouts/print_layout_toolbar.[h|cc]: Adapt.
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.h: The glade 
+	file still has a GtkHandleBox which we should remove, but in the
+	meantime just use it via Gtk::Box.
+
 2011-10-25  Murray Cumming  <murrayc@murrayc.com>
 
 	Change #includes for the latest glibmm.

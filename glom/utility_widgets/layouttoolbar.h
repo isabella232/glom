@@ -24,15 +24,12 @@
 #include <gtkmm/box.h>
 #include <glom/utility_widgets/layouttoolbarbutton.h>
 #include <gtkmm/window.h>
-#include <gtkmm/handlebox.h>
-
-
-#include "sidebar.h"
+#include <gtkmm/toolpalette.h>
 
 namespace Glom
 {
 
-class LayoutToolbar : public SideBar
+class LayoutToolbar : public Gtk::ToolPalette
 {
 public:
   LayoutToolbar();

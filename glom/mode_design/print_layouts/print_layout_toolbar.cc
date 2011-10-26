@@ -58,9 +58,9 @@ PrintLayoutToolbar::PrintLayoutToolbar()
   //Note for translators: These are layout items, like widgets in GTK+.
   m_group_records.add(m_drag_related_records);
 
-  add_group(m_group_items);
-  add_group(m_group_lines);
-  add_group(m_group_records);
+  add(m_group_items);
+  add(m_group_lines);
+  add(m_group_records);
 
   set_drag_source();
 
