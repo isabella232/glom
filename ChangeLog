@@ -1,5 +1,27 @@
 2011-10-26  Murray Cumming  <murrayc@murrayc.com>
 
+	Add and move #includes for the latest glibmm. 
+
+	* glom/import_csv/csv_parser.cc:
+	* glom/import_csv/dialog_import_csv_progress.cc:
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool_backends/postgres_self.cc:
+	* glom/libglom/privs.cc:
+	* glom/libglom/spawn_with_feedback.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/db_adddel/db_adddel.cc:
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_design/print_layouts/window_print_layout_edit.h:
+	* glom/utility_widgets/dialog_image_load_progress.cc:
+	* glom/utility_widgets/dialog_image_save_progress.cc:
+	* glom/utils_ui.cc:
+	* tests/import/utils.cc: Add individual glibmm includes now that 
+	gmmproc does not include glibmm.h from headers.
+	Always include glibmm/thread.h first to avoid deprecation warnings.
+
+2011-10-26  Murray Cumming  <murrayc@murrayc.com>
+
 	Adapt to the latest goocanvasmm API.
 
 	* glom/main.cc: Pass no arguments to init(), though I think I will 

@@ -29,6 +29,8 @@
 #include <libglom/connectionpool_backends/postgres_self.h>
 #include <libglom/connectionpool_backends/sqlite.h>
 
+#include <glibmm/main.h>
+
 #ifdef G_OS_WIN32
 # include <windows.h>
 #else

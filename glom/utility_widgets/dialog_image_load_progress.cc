@@ -21,6 +21,7 @@
 #include "dialog_image_load_progress.h"
 
 #include <gtkmm/messagedialog.h>
+#include <glibmm/main.h>
 #include <glibmm/i18n.h>
 
 namespace

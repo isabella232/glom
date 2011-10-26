@@ -25,6 +25,7 @@
 #include <glom/glade_utils.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
 #include <glom/utils_ui.h> //For bold_message()).
+#include <glibmm/main.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

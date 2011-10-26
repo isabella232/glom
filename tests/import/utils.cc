@@ -1,6 +1,7 @@
 #include <tests/import/utils.h>
 #include <glibmm/convert.h>
 #include <glibmm/fileutils.h>
+#include <glibmm/main.h>
 
 namespace ImportTests
 {

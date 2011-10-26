@@ -20,6 +20,7 @@
 
 #include <glom/mode_data/notebook_data.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <glibmm/main.h>
 #include <glibmm/i18n.h>
 
 #include <iostream>

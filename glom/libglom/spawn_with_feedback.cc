@@ -18,10 +18,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <glibmm/thread.h>
 #include <libglom/spawn_with_feedback.h>
 #include <glibmm/main.h>
 #include <glibmm/spawn.h>
-#include <glibmm/thread.h>
 #include <glibmm/iochannel.h>
 #include <glibmm/shell.h>
 #include <glibmm/fileutils.h>

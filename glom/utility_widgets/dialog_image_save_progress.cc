@@ -21,6 +21,7 @@
 #include "dialog_image_save_progress.h"
 
 #include <gtkmm/messagedialog.h>
+#include <glibmm/main.h>
 #include <iostream>
 #include <glibmm/i18n.h>
 

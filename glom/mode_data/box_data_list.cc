@@ -26,6 +26,7 @@
 #include <libglom/db_utils.h>
 #include <libglom/utils.h> //For bold_message()).
 #include <sstream> //For stringstream
+#include <glibmm/main.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
