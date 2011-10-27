@@ -24,6 +24,7 @@
 
 #include <giomm/file.h>
 #include <libgdamm/metastore.h>
+#include <libgdamm/config.h>
 
 #include <iostream>
 

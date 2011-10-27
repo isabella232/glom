@@ -32,7 +32,6 @@
 #include <glom/xsl_utils.h>
 #include <glom/python_embed/glom_python.h>
 
-#include <glom/print_layout/print_layout_utils.h>
 #include <glom/application.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/viewport.h>

@@ -1,3 +1,7 @@
+2011-10-27  Murray Cumming  <murrayc@murrayc.com>
+
+	More includes fixes to fix the build.
+
 2011-10-26  Murray Cumming  <murrayc@murrayc.com>
 
 	Add and move #includes for the latest glibmm. 

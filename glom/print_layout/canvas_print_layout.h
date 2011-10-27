@@ -28,6 +28,7 @@
 #include <gtkmm/uimanager.h>
 #include <gtkmm/toggleaction.h>
 #include <gtkmm/pagesetup.h>
+#include <goocanvasmm/table.h>
 
 namespace Glom
 {

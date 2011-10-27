@@ -23,7 +23,7 @@
 
 #include <glom/mode_data/datawidget/combochoices.h>
 #include <gtkmm/celllayout.h>
-#include <gtkmm/treemodel.h>
+#include <gtkmm/liststore.h>
 
 namespace Glom
 {

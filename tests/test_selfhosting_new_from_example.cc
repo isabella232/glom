@@ -25,6 +25,8 @@
 #include <libglom/privs.h>
 #include <libglom/db_utils.h>
 #include <giomm/file.h>
+#include <glibmm/convert.h>
+#include <glibmm/miscutils.h>
 #include <iostream>
 
 static void on_initialize_progress()

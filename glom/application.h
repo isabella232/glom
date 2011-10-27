@@ -38,7 +38,7 @@
 #endif //GLOM_ENABLE_MAEMO
 
 #include <glom/frame_glom.h>
-#include <glom/infobar_progress_creating.h>
+#include <glom/dialog_progress_creating.h>
 #include <gtkmm/aboutdialog.h>
 #include <gtkmm/messagedialog.h>
 

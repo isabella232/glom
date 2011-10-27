@@ -30,8 +30,6 @@
 #include <gtkmm/builder.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/builder.h>
-#include <giomm/appinfo.h>
-#include <evince-view.h>
 
 namespace Glom
 {

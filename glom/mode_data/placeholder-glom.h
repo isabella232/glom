@@ -22,19 +22,13 @@
  * 	Boston, MA  02110-1301, USA.
  */
 
-
-
-#ifndef GLOM_MODE_DATA_PLACEHOLDER_GLOM_H
-#define GLOM_MODE_DATA_PLACEHOLDER_GLOM_H
-
+#ifndef GLOM_UTILITY_WIDGETS_PLACEHOLDER_GLOM_H_
+#define GLOM_UTILITY_WIDGETS_PLACEHOLDER_GLOM_H_
 
 #include <gtkmm/widget.h>
 #include <glom/utility_widgets/layoutwidgetbase.h>
 //#include <libglom/data_structure/layout/layoutitem_button.h>
 //#include <gtkmm/builder.h>
-
-#ifndef GLOM_UTILITY_WIDGETS_PLACEHOLDER_GLOM_H_
-#define GLOM_UTILITY_WIDGETS_PLACEHOLDER_GLOM_H_
 
 namespace Glom
 {

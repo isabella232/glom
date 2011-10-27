@@ -24,11 +24,10 @@
 #include <glom/print_layout/canvas_layout_item.h>
 #include <glom/utils_ui.h>
 #include <glom/application.h>
-#include <glom/print_layout/print_layout_utils.h>
 #include <gtkmm/radioaction.h>
 #include <gtkmm/printsettings.h>
 #include <gtkmm/stock.h>
-#include <gtkmm/grid.h>
+#include <gtkmm/table.h>
 #include <gtkmm/printoperation.h>
 #include <libglom/data_structure/layout/layoutitem_line.h>
 #include <libglom/data_structure/layout/layoutitem_portal.h>

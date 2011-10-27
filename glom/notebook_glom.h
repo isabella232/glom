@@ -22,6 +22,8 @@
 #define NOTEBOOK_GLOM_H
 
 #include <glom/box_withbuttons.h>
+#include <gtkmm/notebook.h>
+#include <gtkmm/window.h>
 #include <libglom/document/document.h>
 
 namespace Glom

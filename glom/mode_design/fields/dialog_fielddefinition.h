@@ -25,6 +25,7 @@
 #include <gtkmm/checkbutton.h>
 #include <gtkmm/alignment.h>
 #include <gtkmm/entry.h>
+#include <gtkmm/table.h>
 #include "../../utility_widgets/combo_textglade.h"
 #include <glom/mode_design/layout/combobox_relationship.h>
 #include "combo_fieldtype.h"
