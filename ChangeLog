@@ -1,3 +1,13 @@
+2011-10-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Notebook: Avoid truncating related records buttons.
+
+	* glom/mode_data/box_data_list_related.cc: Use
+	Gtk::Frame::unset_label() instead of just hiding the frame's label,
+	because that apparently leads to an incorrect allocation, causing the 
+	buttons to be cut in half horizontally at the bottom.
+	I will investigate.
+
 1.19.16:
 
 2011-10-27  Murray Cumming  <murrayc@murrayc.com>
