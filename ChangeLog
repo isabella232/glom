@@ -1,5 +1,14 @@
 2011-10-27  Murray Cumming  <murrayc@murrayc.com>
 
+	Depend on libgda 5.0.0.
+
+	* configure.ac: This version of libgda has fixes for:
+	Bug #661655 - data doesn't display when a field is renamed to string with a hyphen.
+	and
+	Bug #661073 - SQL Errors when a relationship name has capital letters.
+
+2011-10-27  Murray Cumming  <murrayc@murrayc.com>
+
 	Remove GtkHandleBox from the .glade file too.
 	
 	* ui/developer/window_print_layout_edit.glade:
