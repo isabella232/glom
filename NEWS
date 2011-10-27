@@ -1,3 +1,19 @@
+1.19.16 (unstable):
+
+* Main window: Use a smaller default size.
+  (Murray Cumming)
+* Replace progress dialogs with a GtkInfoBar.
+  (David King, Murray Cumming)
+* Remove use of GtkHandleBox. Tool Palettes cannot now be 
+  separated from the window.
+  (Murray Cumming)
+* Build: Fix the build with the latest unstable glibmm and gtkmm.
+  (Murray Cumming)
+* Tests:
+  - Test with sqlite too.
+  - Added some SQL injection tests.
+  (Murray Cumming)
+
 1.19.15 (unstable):
 
 * Do no try to pygobject_init() the incompatible 2 version instead of 3.0.
