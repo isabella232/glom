@@ -1,3 +1,20 @@
+1.18.5:
+
+* Details: Avoid an outdent after group titles
+* List View: Correct the default column widths.
+* Examples: Remove all column_width attributes now that defaults are good.
+* Related records:
+  - Allow navigation via read-only relationships.
+  - Fix bug with a blank row when there is only one row. 
+* Find: Get criteria even when a field is on the layout twice.
+* ID chooser dialog: Work around a crash in GTK+. (Bug #660347)
+* Deleting tables: Remove auto-increment rows too.
+  Bug #661653 (Ben Konrath)
+* Build: Fix the build with the latest unstable glibmm.
+* libglom:
+  Added Glom::LayoutItem_Portal::get_suitable_table_to_view_details().
+  Added Glom::DbUtils::layout_field_should_have_navigation()
+
 1.18.4:
 
 * Details:
