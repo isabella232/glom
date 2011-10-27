@@ -1,3 +1,11 @@
+2011-10-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Remove GtkHandleBox from the .glade file too.
+	
+	* ui/developer/window_print_layout_edit.glade:
+	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
+	Use a GtkBox instead of a GtkHandleBox.
+
 2011-10-26  Murray Cumming  <murrayc@murrayc.com>
 
 	Add and move #includes for the latest glibmm. 

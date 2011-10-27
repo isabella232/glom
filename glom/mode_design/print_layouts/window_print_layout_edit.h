@@ -197,7 +197,7 @@ private:
     m_action_align_left, m_action_align_right;
 
   //Toolbar:
-  Gtk::Bin* m_palette_handle_box; //TODO: The toolbar is already a HandleBox. //TODO: Remove the HandleBox from the .glade file.
+  Gtk::Box* m_palette_box;
   std::vector<Gtk::TargetEntry> m_drag_targets_all;
   PrintLayoutToolbar m_toolbar;
   

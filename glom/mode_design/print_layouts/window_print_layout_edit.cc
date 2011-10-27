@@ -132,7 +132,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   gimp_ruler_set_unit(m_hruler, GIMP_UNIT_MM);
   gimp_ruler_set_unit(m_vruler, GIMP_UNIT_MM);
 
-  builder->get_widget("handle_box", m_palette_handle_box);
+  builder->get_widget("toolpalette_box", m_palette_box);
 
 
   builder->get_widget("button_close", m_button_close);
@@ -163,7 +163,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
 
   init_menu();
 
-  m_palette_handle_box->add(m_toolbar);
+  m_palette_box->add(m_toolbar); //TODO: Just put the GtkToolPalette in the glade file and use get_widget_derived()?
   m_toolbar.show();
 
   m_scrolled_window.get_hadjustment()->signal_changed().connect(
