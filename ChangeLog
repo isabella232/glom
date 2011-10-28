@@ -1,5 +1,11 @@
 2011-10-28  Murray Cumming  <murrayc@murrayc.com>
 
+	Small Business Example: Make the report example more like the one in screenshots.
+
+	* examples/example_smallbusiness.glom:
+
+2011-10-28  Murray Cumming  <murrayc@murrayc.com>
+
 	More fixes for the Frame label issue.
 
 	* glom/mode_data/box_data_list_related.cc: Only set or unset the Gtk::Frame 
