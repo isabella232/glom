@@ -102,7 +102,7 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
     m_Label.set_markup(Glib::ustring());
     m_Label.hide();
     if(m_Frame.get_label_widget())
-      m_Frame.unset_label(); //Otherwise the allocation is calculated wrong. TODO: Investigate in GTK+.
+      m_Frame.unset_label(); //Otherwise the allocation is calculated wrong due to GtkFrame bug: https://bugzilla.gnome.org/show_bug.cgi?id=662915
 
     m_Alignment.set_padding(0.0f, 0.0f, 0.0f, 0.0f); //The box itself has padding of 6.
   }
