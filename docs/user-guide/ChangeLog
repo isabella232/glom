@@ -1,3 +1,25 @@
+2011-10-28  Murray Cumming  <murrayc@murrayc.com>
+
+	Updated screenshots for functionality that actually works.
+
+	* C/figures/start.png: Replace with:
+	* C/figures/start_create.png:
+	* C/figures/start_open.png:
+	and adapted:
+	* docs/user-guide/C/glom.xml and
+	* docs/user-guide/Makefile.am
+
+	* docs/user-guide/C/figures/glom_design_fields_dialog_calculated.png
+	* docs/user-guide/C/figures/glom_design_layout_details.png
+	* docs/user-guide/C/figures/glom_design_layout_list.png
+	* docs/user-guide/C/figures/glom_design_reports.png
+	* docs/user-guide/C/figures/glom_design_reports_details.png
+	* docs/user-guide/C/figures/glom_design_reports_group_by.png
+	* docs/user-guide/C/figures/glom_design_reports_vertical_group.png
+	* docs/user-guide/C/figures/glom_design_translations.png
+	* docs/user-guide/C/figures/glom_import.png
+	* docs/user-guide/C/figures/glom_tables.png: Updated
+
 2010-05-02  Murray Cumming  <murrayc@murrayc.com>
 
 	User Guide: Update the pygda example for pygda 4.

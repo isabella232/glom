@@ -170,18 +170,32 @@
     <sect2 id="glom-when-start">
     <title>When You Start &app;</title>
     <para>When you start <application>&app;</application>, the following window is 
-	displayed.</para>
+	displayed. You may open an existing Glom file or create a new one, possibly basing a new Glom file on one of the examples.</para>
 
     <!-- ==== Figure ==== -->
-      <figure id="newproject"> 
-	<title>&app; Start Up Window</title> 
+      <figure id="openproject"> 
+	<title>&app; Start Up Window, Opening an Existing File</title> 
 	<screenshot> 
 	  <mediaobject> 
 	    <imageobject><imagedata
-		fileref="figures/start.png" format="PNG"/> 
+		fileref="figures/start_open.png" format="PNG"/> 
 	    </imageobject>
 	    <textobject> 
-	      <phrase>Shows &app; main window.</phrase> 
+	      <phrase>Shows &app; main window used to open an existing Glom file.</phrase> 
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+      </figure>
+      
+        <figure id="newproject"> 
+	<title>&app; Start Up Window, Creating a New File</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/start_create.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>Shows &app; main window used to create a new Glom file.</phrase> 
 	    </textobject> 
 	  </mediaobject> 
 	</screenshot> 

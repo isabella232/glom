@@ -16,7 +16,8 @@ DOC_FIGURES = \
 	figures/glom_design_reports_vertical_group.png \
 	figures/glom_import.png \
 	figures/glom_initial_dialog_local_network.png \
-	figures/start.png \
+	figures/start_open.png \
+	figures/start_create.png \
 	figures/glom_design_fields_dialog_calculated.png \
 	figures/glom_design_reports_details.png \
 	figures/glom_design_translations.png \
