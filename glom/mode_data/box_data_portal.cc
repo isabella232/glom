@@ -131,40 +131,6 @@ Glib::ustring Box_Data_Portal::get_title_singular() const
   return relationship_title;
 }
 
-//TODO: Is this base class implementation actually called by anything?
-bool Box_Data_Portal::init_db_details(const Glib::ustring& parent_table, bool show_title)
-{
-  m_parent_table = parent_table;
-
-  if(m_portal)
-    LayoutWidgetBase::m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table_name, not used. */);
-  else
-    LayoutWidgetBase::m_table_name = Glib::ustring();
-
-  Base_DB_Table::m_table_name = LayoutWidgetBase::m_table_name;
-
-  if(show_title)
-  {
-    m_Label.set_markup(Utils::bold_message( get_title() ));
-    m_Label.show();
-
-    m_Alignment.set_padding(Utils::DEFAULT_SPACING_SMALL /* top */, 0, Utils::DEFAULT_SPACING_LARGE /* left */, 0);
-  }
-  else
-  {
-    m_Label.set_markup(Glib::ustring());
-    m_Label.hide();
-
-    m_Alignment.set_padding(0.0f, 0.0f, 0.0f, 0.0f); //The box itself has padding of 6.
-  }
-
-  m_key_field = get_fields_for_table_one_field(LayoutWidgetBase::m_table_name, m_portal->get_to_field_used());
-
-  FoundSet found_set;
-  found_set.m_table_name = LayoutWidgetBase::m_table_name;
-  return Box_Data::init_db_details(found_set, m_layout_platform); //Calls create_layout() and fill_from_database().
-}
-
 bool Box_Data_Portal::refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value)
 {
   m_key_value = foreign_key_value;

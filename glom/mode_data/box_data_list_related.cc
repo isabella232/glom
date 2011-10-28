@@ -92,13 +92,17 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
     m_Label.set_markup(Utils::bold_message(title));
     m_Label.show();
 
+    if(!(m_Frame.get_label_widget()))
+      m_Frame.set_label_widget(m_Label);
+
     m_Alignment.set_padding(Utils::DEFAULT_SPACING_SMALL /* top */, 0, Utils::DEFAULT_SPACING_LARGE /* left */, 0);
   }
   else
   {
     m_Label.set_markup(Glib::ustring());
     m_Label.hide();
-    m_Frame.unset_label(); //Otherwise the allocation is calculated wrong. TODO: Investigate in GTK+.
+    if(m_Frame.get_label_widget())
+      m_Frame.unset_label(); //Otherwise the allocation is calculated wrong. TODO: Investigate in GTK+.
 
     m_Alignment.set_padding(0.0f, 0.0f, 0.0f, 0.0f); //The box itself has padding of 6.
   }
