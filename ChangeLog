@@ -1,5 +1,14 @@
 2011-10-28  Murray Cumming  <murrayc@murrayc.com>
 
+	Add a test for Image fields.
+
+	* Makefile_tests.am:
+	* tests/test_selfhosting_new_then_image.cc: Add a test to read an image field
+	value, though this currently fails.
+	I will later add a write-then-read test.
+
+2011-10-28  Murray Cumming  <murrayc@murrayc.com>
+
 	Fix make check by correcting the DTD.
 
 	* glom/glom_document.dtd: Corrections relating to the print layout definitions.

@@ -30,34 +30,36 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 {
   Glom::Document document;
   const bool recreated = 
-    test_create_and_selfhost("example_music_collection.glom", document, hosting_mode);
+    test_create_and_selfhost("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
     std::cerr << "Recreation failed." << std::endl;
     return false;
   }
   
-  //Check that some data is as expected:
-  const Gnome::Gda::Value value("Born To Run");
+  //Where clause:
+  const Glom::sharedptr<const Glom::Field> key_field = document.get_field("contacts", "contact_id");
+  if(!key_field)
+  {
+    std::cerr << "Failure: Could not get key field." << std::endl;
+    return false;
+  }
+  
   const Gnome::Gda::SqlExpr where_clause = 
-    Glom::Utils::get_find_where_clause_quick(&document, "albums", value);
+    Glom::Utils::build_simple_where_expression("contacts", key_field, Gnome::Gda::Value(1));
   
   Glom::Utils::type_vecLayoutFields fieldsToGet;
-  Glom::sharedptr<const Glom::Field> field = document.get_field("albums", "album_id");
+  Glom::sharedptr<const Glom::Field> field = document.get_field("contacts", "picture");
   Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
-  layoutitem->set_full_field_details(field);
-  fieldsToGet.push_back(layoutitem);
-  field = document.get_field("albums", "name");
-  layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
-    Glom::Utils::build_sql_select_with_where_clause("albums",
+    Glom::Utils::build_sql_select_with_where_clause("contacts",
       fieldsToGet, where_clause);
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = 
     Glom::DbUtils::query_execute_select(builder);
-  if(!test_model_expected_size(data_model, 2, 1))
+  if(!test_model_expected_size(data_model, 1, 1))
   {
     std::cerr << "Failure: Unexpected data model size for main query." << std::endl;
     return false;
@@ -69,15 +71,11 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     std::cerr << "Failure: The COUNT query returned an unexpected value: " << count << std::endl;
     return false;
   }
-
-  if(!test_table_exists("songs", document))
+  
+  const Gnome::Gda::Value value_read = data_model->get_value_at(0, 0);
+  if(value_read.get_value_type() != GDA_TYPE_NUMERIC)
   {
-    return false;
-  }
-
-  if(!test_table_exists("publishers", document))
-  {
-    return false;
+    std::cerr << "Failure: The value read was not of the expected type: " << g_type_name( value_read.get_value_type() ) << std::endl;
   }
 
   test_selfhosting_cleanup();
