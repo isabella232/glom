@@ -1,5 +1,11 @@
 2011-10-28  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix make check by correcting the DTD.
+
+	* glom/glom_document.dtd: Corrections relating to the print layout definitions.
+
+2011-10-28  Murray Cumming  <murrayc@murrayc.com>
+
 	Small Business Example: Make the report example more like the one in screenshots.
 
 	* examples/example_smallbusiness.glom:

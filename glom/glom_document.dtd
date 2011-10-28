@@ -245,7 +245,7 @@ TODO: Add 'title_singular' element.
 
 <!-- data_layout_text and text are for displaying text. -->
 
-    <!ELEMENT data_layout_text (text?, formatting?)>
+    <!ELEMENT data_layout_text (text?, formatting?, position?)>
     <!ATTLIST data_layout_text
         sequence CDATA #IMPLIED>
 
@@ -307,7 +307,7 @@ TODO: Add 'title_singular' element.
 
 <!-- A data_layout_item is the display of a single field in the layout. -->
 
-    <!ELEMENT data_layout_item (title_custom?, formatting?)>
+    <!ELEMENT data_layout_item (title_custom?, formatting?, position?)>
     <!ATTLIST data_layout_item
         name CDATA #REQUIRED
         relationship CDATA #IMPLIED
@@ -349,7 +349,7 @@ TODO: Add 'title_singular' element.
 
 <!-- A data_layout_portal shows related records -->
 
-    <!ELEMENT data_layout_portal (portal_navigation_relationship?, data_layout_item*) >
+    <!ELEMENT data_layout_portal (portal_navigation_relationship?, data_layout_item*, position?) >
     <!ATTLIST data_layout_portal
         name CDATA #IMPLIED
         relationship CDATA #REQUIRED
@@ -361,7 +361,7 @@ TODO: Add 'title_singular' element.
         line_color CDATA #IMPLIED
         column_line_color CDATA #IMPLIED >
 
- <!ELEMENT data_layout_calendar_portal (portal_navigation_relationship?, data_layout_item*) >
+    <!ELEMENT data_layout_calendar_portal (portal_navigation_relationship?, data_layout_item*) >
     <!ATTLIST data_layout_calendar_portal
         name CDATA #IMPLIED
         relationship CDATA #REQUIRED
@@ -369,6 +369,14 @@ TODO: Add 'title_singular' element.
         sequence CDATA #IMPLIED
         hide CDATA #IMPLIED
         columns_count CDATA #IMPLIED>
+ 
+<!-- The position of a layout item on a print layouts. -->
+    <!ELEMENT position EMPTY>
+    <!ATTLIST position
+        x CDATA #REQUIRED
+        y CDATA #REQUIRED
+        width CDATA #REQUIRED
+        height CDATA #REQUIRED>
 
 <!-- portal_navigation_relationship determines what happens when the user
      activates a row in a related records portal.
@@ -406,15 +414,20 @@ TODO: Add 'title_singular' element.
 
 <!-- print layouts are for perfectly-positioned printing of single record details. -->
     <!ELEMENT print_layouts (print_layout*)>
-    <!ELEMENT print_layout (print_layout_groups, horizontal_rule?, vertical_rule?)>
+
+    <!ELEMENT print_layout (page_setup?, data_layout_groups, horizontal_rule?, vertical_rule?)>
     <!ATTLIST print_layout
         name CDATA #REQUIRED
+        title CDATA #IMPLIED
         parent_table CDATA #IMPLIED
         show_table_title (true|false) "false"
         show_grid (true|false) "false"
         show_rules (true|false) "false"
         show_outlines (true|false) "false"
         page_count CDATA #IMPLIED>
+        
+    <!ELEMENT page_setup (#PCDATA)>
+    <!ATTLIST page_setup>
 
     <!ELEMENT print_layout_groups (print_layout_group*)>
     <!ATTLIST print_layout_groups>
@@ -426,7 +439,6 @@ TODO: Add 'title_singular' element.
     <!ELEMENT vertical_rule EMPTY>
     <!ATTLIST vertical_rule
         position CDATA #REQUIRED>
-
 
 <!-- The library_modules node contains python code that may be used in scripts and
      calculations via the python import keyword. -->
