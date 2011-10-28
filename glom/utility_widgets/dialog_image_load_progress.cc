@@ -98,7 +98,8 @@ void DialogImageLoadProgress::on_query_info(const Glib::RefPtr<Gio::AsyncResult>
   {
     Glib::RefPtr<Gio::FileInfo> info = m_stream->query_info_finish(result);
     m_data->binary_length = info->get_size();
-    // We need to use the glib allocater here:
+
+    // We need to use the glib allocator here:
     m_data->data = static_cast<guchar*>(g_try_malloc(m_data->binary_length));
     if(!m_data->data)
       error(_("Not enough memory available to load the image"));
@@ -116,7 +117,7 @@ void DialogImageLoadProgress::on_stream_read(const Glib::RefPtr<Gio::AsyncResult
 {
   try
   {
-    gssize size = m_stream->read_finish(result);
+    const gssize size = m_stream->read_finish(result);
     g_assert(size >= 0); // Would have thrown an exception otherwise
     
     // Cannot read more data than there is available in the file:
@@ -126,11 +127,13 @@ void DialogImageLoadProgress::on_stream_read(const Glib::RefPtr<Gio::AsyncResult
     m_progress_bar->set_fraction(static_cast<double>(offset + size) / m_data->binary_length);
     
     // Read next chunk, if any
-    if(  static_cast<gssize>(offset + size) < static_cast<gssize>(m_data->binary_length))
+    if( static_cast<gssize>(offset + size) < static_cast<gssize>(m_data->binary_length) )
+    {
       // Even if choose a priority lower than GDK_PRIORITY_REDRAW + 10 for the
       // read_async we don't see the progressbar progressing while the image
       // is loading. Therefore we put an idle inbetween.
       Glib::signal_idle().connect(sigc::bind_return(sigc::bind(sigc::mem_fun(*this, &DialogImageLoadProgress::on_read_next), offset + size), false));
+    }
     else
       // We are done loading the image, close the progress dialog
       response(Gtk::RESPONSE_ACCEPT);
