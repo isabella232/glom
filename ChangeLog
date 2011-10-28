@@ -15,7 +15,7 @@
 	Gtk::Frame::unset_label() instead of just hiding the frame's label,
 	because that apparently leads to an incorrect allocation, causing the 
 	buttons to be cut in half horizontally at the bottom.
-	I will investigate.
+	This is caused by a regression in GTK+ 3: See bug #662915
 
 1.19.16:
 
