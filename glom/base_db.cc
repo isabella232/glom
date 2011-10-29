@@ -1148,13 +1148,12 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   const Glib::ustring field_name = field_in_record.m_field->get_name();
   if(!field_name.empty()) //This should not happen.
   {
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
-    builder->set_table(field_in_record.m_table_name);
-    builder->add_field_value_as_value(field_in_record.m_field->get_name(), field_value);
-    builder->set_where(
-      builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-        builder->add_field_id(field_in_record.m_key->get_name(), field_in_record.m_table_name),
-        builder->add_expr_as_value(field_in_record.m_key_value)));
+    const Gnome::Gda::SqlExpr where_clause = 
+      Utils::build_simple_where_expression(field_in_record.m_table_name,
+        field_in_record.m_key, field_in_record.m_key_value);
+    const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
+      Utils::build_sql_update_with_where_clause(field_in_record.m_table_name,
+        field_in_record.m_field, field_value, where_clause);
 
     try //TODO: The exceptions are probably already handled by query_execute(
     {

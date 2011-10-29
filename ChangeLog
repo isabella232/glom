@@ -1,3 +1,20 @@
+2011-10-29  Murray Cumming  <murrayc@murrayc.com>
+
+	libglom: Added build_sql_update_with_where_clause().
+
+	* glom/libglom/utils.[h|cc]: Added build_sql_update_with_where_clause().
+	* glom/base_db.cc: set_field_value_in_database(): use it here instead 
+	of manually creating a SqlBuilder.
+
+2011-10-28  Murray Cumming  <murrayc@murrayc.com>
+
+	Add a test for Image fields.
+
+	* Makefile_tests.am:
+	* tests/test_selfhosting_new_then_image.cc: Add a test to read an image field
+	value, though this currently fails.
+	I will later add a write-then-read test.
+
 2011-10-28  Murray Cumming  <murrayc@murrayc.com>
 
 	Add a test for Image fields.

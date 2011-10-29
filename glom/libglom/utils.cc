@@ -1148,6 +1148,48 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const Document* document,
   }
 }
 
+Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_update_with_where_clause(
+  const Glib::ustring& table_name,
+  const sharedptr<const Field>& field, const Gnome::Gda::Value& value,
+  const Gnome::Gda::SqlExpr& where_clause)
+{
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder;
+
+  if(!field || field->get_name().empty())
+  {
+    std::cerr << "field was null or its name was empty." << std::endl;
+    return builder;
+  }
+
+  if(table_name.empty())
+  {
+    std::cerr << "table_name was empty." << std::endl;
+    return builder;
+  }
+
+  //Build the whole SQL statement:
+  try
+  {
+    builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+    builder->set_table(table_name);
+
+    builder->add_field_value_as_value(field->get_name(), value);
+
+    //Add the WHERE clause:
+    if(!where_clause.empty())
+    {
+      const int id = builder->import_expression(where_clause);
+      builder->set_where(id);
+    }
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": Exception: " << ex.what() << std::endl;
+  }
+
+  return builder;
+}
+
 bool Utils::delete_directory(const Glib::RefPtr<Gio::File>& directory)
 {
   if(!(directory->query_exists()))
