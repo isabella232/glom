@@ -105,6 +105,7 @@ dist_noinst_DATA = tests/import/data/albums.csv
 
 # Let the .cc source code know about this path: TODO: Actually use this.
 glom_test_import_defines = -DGLOM_TESTS_IMPORT_DATA_NOTINSTALLED=\""$(abs_top_srcdir)/tests/import/data/"\"
+glom_test_image_defines = -DGLOM_TESTS_IMAGE_DATA_NOTINSTALLED=\""$(abs_top_srcdir)/tests/"\"
 
 
 tests_import_test_parsing_SOURCES =	\
@@ -143,7 +144,7 @@ tests_test_selfhosting_new_then_report_CPPFLAGS = $(tests_cppflags)
 
 tests_test_selfhosting_new_then_image_SOURCES = tests/test_selfhosting_new_then_image.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_then_image_LDADD = $(tests_ldadd)
-tests_test_selfhosting_new_then_image_CPPFLAGS = $(tests_cppflags)
+tests_test_selfhosting_new_then_image_CPPFLAGS = $(tests_cppflags) $(glom_test_image_defines)
 
 tests_test_selfhosting_sqlinjection_SOURCES = tests/test_selfhosting_sqlinjection.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_sqlinjection_LDADD = $(tests_ldadd)

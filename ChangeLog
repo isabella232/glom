@@ -1,5 +1,18 @@
 2011-10-29  Murray Cumming  <murrayc@murrayc.com>
 
+	Image fields test: Load data from a file and check setting and getting.
+
+	* tests/test_image.glom: Added an image file to set and get in the 
+	database.
+	* Makefile_tests.am: Distribute the image file.
+	* tests/test_selfhosting_new_then_image.cc: Load the data from the 
+	file, set it in the database, and check that the data read back is 
+	the same.
+	Correct the type check. However, the data equality test still fails
+	because of libgda bug #662922 .
+
+2011-10-29  Murray Cumming  <murrayc@murrayc.com>
+
 	libglom: Added build_sql_update_with_where_clause().
 
 	* glom/libglom/utils.[h|cc]: Added build_sql_update_with_where_clause().
