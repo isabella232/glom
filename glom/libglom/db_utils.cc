@@ -43,7 +43,6 @@ namespace DbUtils
 
 static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
 {
-
   sharedptr<SharedConnection> sharedconnection;
   try
   {

@@ -1015,6 +1015,31 @@ bool Utils::file_exists(const Glib::RefPtr<Gio::File>& file)
   }
 }
 
+//TODO: This is a duplicate of the one in db_utils.cc:
+//Merge all db utilities into db_utils in glom 1.22:
+static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
+{
+  sharedptr<SharedConnection> sharedconnection;
+  try
+  {
+     sharedconnection = ConnectionPool::get_and_connect();
+  }
+  catch (const Glib::Error& error)
+  {
+    std::cerr << G_STRFUNC << ": " << error.what() << std::endl;
+  }
+
+  if(!sharedconnection)
+  {
+    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
+    return Glib::RefPtr<Gnome::Gda::Connection>(0);
+  }
+
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+
+  return gda_connection;
+}
+
 std::string Utils::sqlbuilder_get_full_query(
     const Glib::RefPtr<Gnome::Gda::Connection>& connection,
     const Glib::ustring& query,
@@ -1029,7 +1054,10 @@ std::string Utils::sqlbuilder_get_full_query(
     {
       Glib::RefPtr<Gnome::Gda::Statement> stmt = parser->parse_string(query);
       if(stmt)
-        result = stmt->to_sql(params);
+      {
+        result = connection->statement_to_sql(stmt, params,
+          Gnome::Gda::STATEMENT_SQL_PARAMS_AS_VALUES | Gnome::Gda::STATEMENT_SQL_PRETTY);
+      }
     }
   }
   catch(const Glib::Exception& ex)
@@ -1053,12 +1081,30 @@ std::string Utils::sqlbuilder_get_full_query(
 std::string Utils::sqlbuilder_get_full_query(
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
 {
+  Glib::RefPtr<Gnome::Gda::Connection> connection = get_connection();
+  if(!connection)
+  {
+    //TODO: Just use the correct provider, without an actual connection?
+    std::cerr << G_STRFUNC << ": There is no connection, so the SQL statement might not be created correctly." << std::endl;
+  }
+
   Glib::ustring result = "glom_query_not_parsed";
 
   try
   {
     Glib::RefPtr<Gnome::Gda::Statement> stmt = builder->get_statement();
-    if(stmt)
+    if(!stmt)
+    {
+      std::cerr << G_STRFUNC << ": builder->get_statement() failed." << std::endl;
+      return result;
+    }
+
+    if(connection)
+    {
+      result = connection->statement_to_sql(stmt,
+          Gnome::Gda::STATEMENT_SQL_PARAMS_AS_VALUES | Gnome::Gda::STATEMENT_SQL_PRETTY);
+    }
+    else
       result = stmt->to_sql();
   }
   catch(const Gnome::Gda::SqlError& ex)

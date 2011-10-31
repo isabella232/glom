@@ -1,3 +1,11 @@
+2011-10-31  Murray Cumming  <murrayc@murrayc.com>
+
+	libglom: sqlbuilder_get_full_query(): Improve the result.
+
+	* glom/libglom/utils.cc: Use the GdaConnection's statement_to_sql() 
+	instead of just GdaStatement's to_sql() so we a) have correct quoting,
+	and b) use the server's specific SQL dialect.
+
 2011-10-29  Murray Cumming  <murrayc@murrayc.com>
 
 	Image fields test: Load data from a file and check setting and getting.
