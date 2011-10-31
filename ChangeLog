@@ -1,6 +1,13 @@
 2011-10-31  Murray Cumming  <murrayc@murrayc.com>
 
-	libglom: sqlbuilder_get_full_query(): Improve the result.
+	libglom: Remove an unused Utils::sqlbuilder_get_full_query() overload.
+
+	* glom/libglom/utils.[h|cc]: Nothing uses the version that takes 
+	a string and parameters.
+
+2011-10-31  Murray Cumming  <murrayc@murrayc.com>
+
+	libglom: Utils::sqlbuilder_get_full_query(): Improve the result.
 
 	* glom/libglom/utils.cc: Use the GdaConnection's statement_to_sql() 
 	instead of just GdaStatement's to_sql() so we a) have correct quoting,
