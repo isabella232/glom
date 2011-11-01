@@ -1,3 +1,11 @@
+2011-11-01  Murray Cumming  <murrayc@murrayc.com>
+
+	Added test for Glom::Priv getting of group and user names.
+
+	* tests/test_selfhosting_new_then_get_privs.cc: Added a test of some
+	Glom::Privs functions.
+	* Makefile_tests.am: Mention the new test.
+
 2011-10-31  Murray Cumming  <murrayc@murrayc.com>
 
 	libglom: Remove an unused Utils::sqlbuilder_get_full_query() overload.

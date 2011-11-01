@@ -32,9 +32,10 @@ class GlomPostgres
 {
 public:
 
+  typedef std::vector<Glib::ustring> type_vec_strings;
+
 protected:
   //Utility functions to help with the odd formats of postgres internal catalog fields:
-  typedef std::vector<Glib::ustring> type_vec_strings;
   static type_vec_strings pg_list_separate(const Glib::ustring& str);
 
 };
