@@ -52,8 +52,8 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   //Save a copy, specifying the path to file in a directory:
   //For instance, /tmp/testfileglom/testfile.glom");
   const std::string temp_filename = "testglom";
-  const std::string temp_filepath_dir = Glib::build_filename(Glib::get_tmp_dir(),
-    temp_filename);
+  const std::string temp_filepath_dir = 
+    Glom::Utils::get_temp_directory_path(temp_filename);
   const std::string temp_filepath = Glib::build_filename(temp_filepath_dir, temp_filename);
 
   //Make sure that the file does not exist yet:

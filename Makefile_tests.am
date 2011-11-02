@@ -116,7 +116,7 @@ tests_import_test_parsing_SOURCES =	\
 	tests/import/utils.cc\
 	tests/import/utils.h\
 	tests/import/test_parsing.cc
-tests_import_test_parsing_LDADD = $(GLOM_LIBS)
+tests_import_test_parsing_LDADD = $(tests_ldadd)
 tests_import_test_parsing_CPPFLAGS = $(tests_cppflags) $(glom_test_import_defines)
 
 tests_import_test_signals_SOURCES =	\
@@ -125,7 +125,7 @@ tests_import_test_signals_SOURCES =	\
 	tests/import/utils.cc\
 	tests/import/utils.h\
 	tests/import/test_signals.cc
-tests_import_test_signals_LDADD = $(GLOM_LIBS)
+tests_import_test_signals_LDADD = $(tests_ldadd)
 tests_import_test_signals_CPPFLAGS = $(tests_cppflags)
 
 

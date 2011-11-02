@@ -210,6 +210,12 @@ Glib::ustring get_list_of_layout_items_for_display(const LayoutGroup::type_list_
  */
 Glib::ustring get_list_of_layout_items_for_display(const sharedptr<const LayoutGroup>& layout_group);
 
+std::string get_temp_file_path(const std::string& prefix = std::string(), const std::string& extension = std::string());
+Glib::ustring get_temp_file_uri(const std::string& prefix = std::string(), const std::string& extension = std::string());
+
+std::string get_temp_directory_path(const std::string& prefix);
+Glib::ustring get_temp_directory_uri(const std::string& prefix);
+
 } //namespace Utils
 
 } //namespace Glom

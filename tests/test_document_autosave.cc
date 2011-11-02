@@ -20,6 +20,7 @@
 
 #include <libglom/document/document.h>
 #include <libglom/init.h>
+#include <libglom/utils.h>
 #include <giomm/file.h>
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
@@ -57,12 +58,8 @@ int main()
 {
   Glom::libglom_init();
 
-  //For instance, /tmp/testfile.glom");
-  const std::string temp_filename = "testglom_document_autosave";
-  const std::string temp_filepath = Glib::build_filename(Glib::get_tmp_dir(),
-    temp_filename);
-  file_uri = Glib::filename_to_uri(temp_filepath);
-
+  file_uri = Glom::Utils::get_temp_file_uri("testglom_document_autosave", ".glom");
+  
   //Make sure that the file does not exist yet:
   cleanup();
 

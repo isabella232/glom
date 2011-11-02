@@ -1,5 +1,25 @@
 2011-11-02  Murray Cumming  <murrayc@murrayc.com>
 
+	Add and use utility functions for creating temporary files.
+
+	* glom/libglom/utils.[h|cc]: Added get_temp_file_uri(), 
+	get_temp_file_path(), get_temp_directory_uri() and 
+	get_temp_directory_path(), using the correct awkward code that 
+	avoids overwriting existing files.
+	* glom/application.cc:
+	* glom/libglom/connectionpool_backends/postgres_self.cc:
+	* glom/libglom/report_builder.cc:
+	* glom/utility_widgets/imageglom.cc:
+	* tests/import/utils.cc:
+	* tests/test_document_autosave.cc:
+	* tests/test_selfhosting_new_empty.cc:
+	* tests/test_selfhosting_utils.cc: Use these functions instead 
+	of repeating the same stuff badly.
+	* Makefile_tests.am: Link to libglom so the import tests can use 
+	the new utility functions.
+
+2011-11-02  Murray Cumming  <murrayc@murrayc.com>
+
 	Make connections to central PostgreSQL servers work again.
 
 	* glom/libglom/connectionpool_backends/postgres_central.cc: Do not 

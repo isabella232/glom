@@ -480,16 +480,16 @@ void ReportBuilder::report_build_records_vertical_group(const FoundSet& found_se
   }
 }
 
+//TODO: Return a URI
 std::string ReportBuilder::report_build_and_save(const FoundSet& found_set, const sharedptr<const Report>& report)
 {
   const Glib::ustring contents = report_build(found_set, report);
 
  //Save it to a temporary file and show it in a browser:
-  const std::string temp_path = Glib::build_filename(
-    Glib::get_tmp_dir(), "glom_printout.html");
-  std::cout << G_STRFUNC << ": temp_path=" << temp_path << std::endl;
+  const Glib::ustring temp_uri = Utils::get_temp_file_uri("glom_printout", "html");
+  std::cout << G_STRFUNC << ": temp_uri=" << temp_uri << std::endl;
 
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(temp_path);
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(temp_uri);
   Glib::RefPtr<Gio::FileOutputStream> stream;
 
   //Create the file if it does not already exist:

@@ -581,27 +581,11 @@ static void make_file_read_only(const Glib::ustring& uri)
 
 Glib::ustring ImageGlom::save_to_temp_file(bool show_progress)
 {
-  Glib::ustring uri;
-  
-  //Get a temporary file path:
-  std::string filepath;
-  try
+  Glib::ustring uri = Utils::get_temp_file_uri("glom_image");
+  if(uri.empty())
   {
-    const int filehandle = Glib::file_open_tmp(filepath);
-    ::close(filehandle);
+    std::cerr << ": uri is empty." << std::endl;
   }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": Glib::file_open_tmp() failed" << std::endl;
-  }
-  
-  if(filepath.empty())
-  {
-    std::cerr << G_STRFUNC << ": Glib::file_open_tmp() returned an empty filepath" << std::endl;
-    return uri;
-  }
-  
-  uri = Glib::filename_to_uri(filepath);
   
   bool saved = false;
   if(show_progress)

@@ -2713,9 +2713,8 @@ bool Application::do_restore_backup(const Glib::ustring& backup_uri)
   }
 
   //Create a temporary directory into which we will untar the tarball:
-  std::string path_tmp = Glib::build_filename(
-    Glib::get_tmp_dir(), Glib::path_get_basename(filename_tarball));
-  path_tmp += "_extracted";
+  const std::string path_tmp = Utils::get_temp_file_path(
+    Glib::path_get_basename(filename_tarball), "_extracted");
 
   //Make sure that the directory does not exist already:
   const Glib::ustring uri_tmp = Glib::filename_to_uri(path_tmp);

@@ -25,9 +25,12 @@
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <libglom/data_structure/glomconversions.h>
 
+#include <giomm/file.h>
+#include <glibmm/convert.h>
+#include <glibmm/fileutils.h>
+#include <glibmm/miscutils.h>
 #include <glibmm/i18n.h>
 
-#include <giomm/file.h>
 
 #include <string.h> // for strchr
 #include <sstream> //For stringstream
@@ -1347,5 +1350,75 @@ Glib::ustring Utils::get_list_of_layout_items_for_display(const sharedptr<const 
   else
     return Glib::ustring();
 }
+
+std::string Utils::get_temp_file_path(const std::string& prefix, const std::string& extension)
+{
+  //Get a temporary file path:
+  std::string filepath;
+  try
+  {
+    const std::string prefix_pattern = prefix + "XXXXXX" + extension;
+    const int filehandle = Glib::file_open_tmp(filepath, prefix);
+    ::close(filehandle);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": Glib::file_open_tmp() failed" << std::endl;
+    return filepath;
+  }
+  
+  if(filepath.empty())
+  {
+    std::cerr << G_STRFUNC << ": Glib::file_open_tmp() returned an empty filepath" << std::endl;
+  }
+
+  return filepath;
+}
+
+Glib::ustring Utils::get_temp_file_uri(const std::string& prefix, const std::string& extension)
+{
+  try
+  {
+    const std::string filepath = get_temp_file_path(prefix, extension);
+    return Glib::filename_to_uri(filepath);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": Exception from filename_to_uri(): " << ex.what() << std::endl;
+    return std::string();
+  }
+}
+
+std::string Utils::get_temp_directory_path(const std::string& prefix)
+{
+  std::string result;
+
+  const std::string pattern = Glib::build_filename(
+    Glib::get_tmp_dir(), prefix + "XXXXXX");
+
+  //We must copy the pattern, because mkdtemp() modifies it:
+  char* c_pattern = g_strdup(pattern.c_str());
+  
+  const char* filepath = g_mkdtemp(c_pattern);
+  if(filepath)
+    result = filepath;
+
+  return result;
+}
+
+Glib::ustring Utils::get_temp_directory_uri(const std::string& prefix)
+{
+  try
+  {
+    const std::string filepath = get_temp_directory_path(prefix);
+    return Glib::filename_to_uri(filepath);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": Exception from filename_to_uri(): " << ex.what() << std::endl;
+    return Glib::ustring();
+  }
+}
+
 
 } //namespace Glom

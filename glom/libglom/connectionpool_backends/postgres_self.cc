@@ -226,9 +226,8 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   // initdb creates a new postgres database cluster:
 
   //Get file:// URI for the tmp/ directory:
-  const std::string temp_pwfile = Glib::build_filename(Glib::get_tmp_dir(), "glom_initdb_pwfile");
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(temp_pwfile);
-  const std::string temp_pwfile_uri = file->get_uri();
+  const std::string temp_pwfile = Utils::get_temp_file_path("glom_initdb_pwfile");
+  const Glib::ustring temp_pwfile_uri = Glib::filename_to_uri(temp_pwfile);
   const bool pwfile_creation_succeeded = create_text_file(temp_pwfile_uri, password);
   g_assert(pwfile_creation_succeeded);
 
