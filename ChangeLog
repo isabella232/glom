@@ -1,3 +1,10 @@
+2011-11-02  Murray Cumming  <murrayc@murrayc.com>
+
+	Make connections to central PostgreSQL servers work again.
+
+	* glom/libglom/connectionpool_backends/postgres_central.cc: Do not 
+	forget a previously-successful connection-but-not-to-the-database.
+
 2011-11-01  Murray Cumming  <murrayc@murrayc.com>
 
 	Added test for Glom::Priv getting of group and user names.

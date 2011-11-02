@@ -126,7 +126,9 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
       }
       catch(const ExceptionConnection& ex)
       {
-        connection_possible = false;
+        //Don't set this, because we might have previously set it to true to 
+        //show that a connection was possible with a previously-tried port: connection_possible = false;
+
         // Remember port if only the database was missing
         if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE)
         {
