@@ -3432,16 +3432,16 @@
         <value column="scene_id">0</value>
         <value column="comments"/>
         <value column="description"/>
-        <value column="location_id">4</value>
+        <value column="location_id">0</value>
         <value column="date">2009-12-10</value>
         <value column="time"/>
-        <value column="minutes"/>
+        <value column="minutes">3</value>
         <value column="day_or_night">Tag</value>
         <value column="interior_or_exterior">Exterior</value>
-        <value column="name"/>
+        <value column="name">Mexican Standoff</value>
         <value column="overview_name">Mexican Standoff</value>
         <value column="pages">4</value>
-        <value column="script_day"/>
+        <value column="script_day">21</value>
       </example_row>
     </example_rows>
     <trans_set>

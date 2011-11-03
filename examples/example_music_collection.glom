@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <glom_document xmlns="http://glom.org/glom_document" translation_original_locale="en_US" database_title="Music Collection" is_example="true" format_version="7">
-  <connection server="localhost" database="glom_musiccollection211" port="5434" self_hosted="true" try_other_ports="false" hosting_mode="postgres_self"/>
+  <connection server="localhost" database="glom_musiccollection211" port="5433" self_hosted="true" try_other_ports="false" hosting_mode="postgres_self"/>
   <table name="albums" overview_x="15" overview_y="9" title="Albums">
     <example_rows>
       <example_row>
@@ -46,13 +46,13 @@
     </example_rows>
     <fields>
       <field name="album_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Album ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
       </field>
       <field name="name" type="Text" title="Name">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+        <formatting/>
       </field>
       <field name="artist_id" type="Number" title="Artist ID">
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="artist" choices_related_field="artist_id" choices_related_show_all="true">
@@ -60,7 +60,7 @@
             <data_layout_groups>
               <data_layout_group>
                 <data_layout_item name="name" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
             </data_layout_groups>
@@ -73,7 +73,7 @@
             <data_layout_groups>
               <data_layout_group>
                 <data_layout_item name="name" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+                  <formatting/>
                 </data_layout_item>
               </data_layout_group>
             </data_layout_groups>
@@ -81,7 +81,7 @@
         </formatting>
       </field>
       <field name="year" type="Number" title="Year">
-        <formatting format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_decimal_places="2"/>
       </field>
     </fields>
     <relationships>
@@ -97,10 +97,10 @@
               <trans loc="de_DE" val="Overview"/>
             </trans_set>
             <data_layout_item name="album_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
@@ -112,10 +112,10 @@
                 <trans loc="de_DE" val="Artist"/>
               </trans_set>
               <data_layout_item name="artist_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name" relationship="artist" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
             <data_layout_group name="publisher" title="Publisher">
@@ -123,22 +123,22 @@
                 <trans loc="de_DE" val="Publisher"/>
               </trans_set>
               <data_layout_item name="publisher_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name" relationship="publisher" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
             <data_layout_item name="year" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_portal relationship="songs" portal_rows_count_min="6" portal_rows_count_max="6">
               <data_layout_item name="name" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_portal>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -147,27 +147,27 @@
         <data_layout_groups>
           <data_layout_group name="toplevel">
             <data_layout_item name="name" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="year" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="artist_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" relationship="artist" editable="true" use_default_formatting="true">
               <title_custom use_custom="true" title="Artist Name"/>
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="publisher_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" relationship="publisher" editable="true" use_default_formatting="true">
               <title_custom use_custom="true" title="Publisher Name"/>
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -183,15 +183,15 @@
                 <data_layout_group>
                   <data_layout_item name="name" relationship="artist" editable="true" use_default_formatting="true">
                     <title_custom use_custom="true" title="Artist Name"/>
-                    <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+                    <formatting/>
                   </data_layout_item>
                 </data_layout_group>
               </secondary_fields>
               <data_layout_item name="name" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="year" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
             </data_layout_item_groupby>
           </data_layout_group>
@@ -226,37 +226,19 @@
         <value column="comments"/>
         <value column="name">Curtis Mayfield</value>
       </example_row>
-      <example_row>
-        <value column="artist_id">4</value>
-        <value column="description"/>
-        <value column="comments"/>
-        <value column="name">sdsd</value>
-      </example_row>
-      <example_row>
-        <value column="artist_id">5</value>
-        <value column="description"/>
-        <value column="comments"/>
-        <value column="name">fdf</value>
-      </example_row>
-      <example_row>
-        <value column="artist_id">6</value>
-        <value column="description"/>
-        <value column="comments"/>
-        <value column="name">Curtis Mayfield</value>
-      </example_row>
     </example_rows>
     <fields>
       <field name="artist_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Artist ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
       <field name="description" type="Text" title="Description">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+        <formatting/>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
       </field>
       <field name="name" type="Text" title="Name">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+        <formatting/>
       </field>
     </fields>
     <relationships>
@@ -270,10 +252,10 @@
               <trans loc="de_DE" val="Overview"/>
             </trans_set>
             <data_layout_item name="artist_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
@@ -281,18 +263,18 @@
               <trans loc="de_DE" val="Details"/>
             </trans_set>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_portal relationship="albums" portal_rows_count_min="6" portal_rows_count_max="6">
               <data_layout_item name="name" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="year" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
             </data_layout_portal>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -301,16 +283,16 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="artist_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -339,13 +321,13 @@
     </example_rows>
     <fields>
       <field name="publishers_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Publisher ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
       </field>
       <field name="name" type="Text" title="Name">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+        <formatting/>
       </field>
     </fields>
     <relationships>
@@ -359,10 +341,10 @@
               <trans loc="de_DE" val="Overview"/>
             </trans_set>
             <data_layout_item name="publishers_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" title="Details">
@@ -370,17 +352,17 @@
               <trans loc="de_DE" val="Details"/>
             </trans_set>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_portal relationship="albums" portal_rows_count_min="6" portal_rows_count_max="6">
               <data_layout_item name="album_id" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
               <data_layout_item name="name" relationship="artist" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_portal>
           </data_layout_group>
@@ -390,13 +372,13 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="publishers_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -704,16 +686,16 @@
     </example_rows>
     <fields>
       <field name="song_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Song ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
       <field name="comments" type="Text" title="Comments">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+        <formatting format_text_multiline="true"/>
       </field>
       <field name="album_id" type="Number" title="Album ID">
-        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
       </field>
       <field name="name" type="Text" title="Name">
-        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+        <formatting/>
       </field>
     </fields>
     <relationships>
@@ -727,10 +709,10 @@
               <trans loc="de_DE" val="Overview"/>
             </trans_set>
             <data_layout_item name="song_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
@@ -739,22 +721,22 @@
             </trans_set>
             <data_layout_group name="album" title="Album">
               <data_layout_item name="album_id" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name" relationship="album" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
             <data_layout_group name="artist" title="Album Artist">
               <data_layout_item name="artist_id" relationship="album" related_relationship="artist" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name" relationship="album" related_relationship="artist" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+                <formatting/>
               </data_layout_item>
             </data_layout_group>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
@@ -763,16 +745,16 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="song_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
             <data_layout_item name="album_id" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" choices_related_show_all="true"/>
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related_show_all="true"/>
+              <formatting/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
