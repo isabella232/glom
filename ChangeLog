@@ -1,5 +1,14 @@
 2011-11-03  Murray Cumming  <murrayc@murrayc.com>
 
+	FlowTable: In developer mode, draw some lines.
+
+	* glom/utility_widgets/flowtable.[h|cc]: on_draw(): Draw some dashed lines
+	a little like the lines drawn in on_expose_event() in Glom 1.18.
+	This is not very good, but it was not very good before, but I still think
+	we need something to show the boundaries.
+
+2011-11-03  Murray Cumming  <murrayc@murrayc.com>
+
 	Small Business example: Add a little more data so the report is useful.
 
 	* examples/example_smallbusiness.glom: Contacts: Add towns and countries.

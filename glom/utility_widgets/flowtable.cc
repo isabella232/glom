@@ -255,4 +255,52 @@ bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& col
   return true;
 }
 
+bool FlowTable::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
+{
+  const bool result = Egg::SpreadTableDnd::on_draw(cr);
+  if(!m_design_mode)
+    return result;
+
+  cr->set_line_width(1);
+  cr->set_line_cap(Cairo::LINE_CAP_SQUARE);
+  cr->set_line_join(Cairo::LINE_JOIN_MITER);
+  std::vector<double> dashes;
+  dashes.push_back(10);
+  cr->set_dash(dashes, 0);
+
+  //Draw lines based on the allocations of the "first" widgets:
+  //This is a very rough interpretation of the column/item borders,
+  //but it is better than nothing.
+  //TODO: Add API to EggSpreadTable for this?
+  for(type_const_list_widgets::iterator iter = m_list_first_widgets.begin(); iter != m_list_first_widgets.end(); ++iter)
+  {
+    const Gtk::Widget* widget = *iter;
+    //std::cout << G_STRFUNC << ": widget: " << widget << std::endl;
+
+    if(!widget)
+      continue;
+
+    const Gtk::Allocation allocation = widget->get_allocation();
+    const int x = allocation.get_x();
+    const int y = allocation.get_y();
+    //std::cout << G_STRFUNC << ": x: " << x << ", y: " << y << std::endl;
+
+    int real_x = 0;
+    int real_y = 0;
+    Gtk::Widget* unconst = const_cast<Gtk::Widget*>(widget);
+    unconst->translate_coordinates(*this, x, y, real_x, real_y);
+    //std::cout << G_STRFUNC << ": real_x: " << real_x << ", real_y: " << real_y << std::endl;
+
+    cr->move_to(real_x, real_y);
+    cr->line_to(real_x + allocation.get_width(), real_y);
+    cr->stroke();
+
+    //cr->move_to(real_x, real_y + allocation.get_height());
+    //cr->line_to(real_x + allocation.get_width(), real_y + allocation.get_height());
+    //cr->stroke();
+  }
+
+  return result;
+}
+
 } //namespace Glom
