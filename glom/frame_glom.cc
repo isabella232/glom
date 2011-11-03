@@ -1718,7 +1718,9 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustri
   // Some database backends (SQLite) require the table to change to no longer
   // be in use when changing the records, so we stop the database usage
   // here. We reshow everything in on_developer_dialog_hide() anyway.
-  show_no_table();
+  Document* document = dynamic_cast<Document*>(get_document());
+  if(document && document->get_hosting_mode() == Document::HOSTING_MODE_SQLITE)
+    show_no_table();
 
   // Remember the old table name so that we re-show the previous table as
   // soon as the dialog has been closed.
