@@ -419,7 +419,7 @@ void Box_Data_List::create_layout()
   sharedptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
   if(!field_primary_key)
   {
-    std::cerr << G_STRFUNC << ": primary key not found." << std::endl;
+    std::cerr << G_STRFUNC << ": primary key not found for table: " << m_table_name << std::endl;
     return;
   }
 
