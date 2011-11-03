@@ -1,5 +1,15 @@
 2011-11-03  Murray Cumming  <murrayc@murrayc.com>
 
+	Update screenshots for the website.
+
+	* docs/website/screenshots/*.png: Updated these screenshots, 
+	partly by copying some from user_guide/C/figures/.
+	They are used here:
+	http://www.glom.org/wiki/index.php?title=Screenshots
+	after uploading with "make post-html"
+
+2011-11-03  Murray Cumming  <murrayc@murrayc.com>
+
 	FlowTable: In developer mode, draw some lines.
 
 	* glom/utility_widgets/flowtable.[h|cc]: on_draw(): Draw some dashed lines
