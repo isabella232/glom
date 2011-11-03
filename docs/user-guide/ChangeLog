@@ -1,3 +1,12 @@
+2011-11-03  Murray Cumming  <murrayc@murray.com>
+
+	Updated some more screenshots.
+
+	* C/figures/glom_data_details.png:
+	* C/figures/glom_design_fields.png:
+	* C/figures/glom_design_layout_details.png:
+	* C/figures/glom_report_result.png: Updated. Only 2 are left.
+
 2011-10-28  Murray Cumming  <murrayc@murrayc.com>
 
 	Updated screenshots for functionality that actually works.
