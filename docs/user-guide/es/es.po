@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom.userguide.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-28 11:50+0000\n"
-"PO-Revision-Date: 2011-11-01 13:35+0100\n"
+"POT-Creation-Date: 2011-11-03 09:41+0000\n"
+"PO-Revision-Date: 2011-11-03 15:26+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -126,7 +126,6 @@ msgstr ""
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:181(None)
-#| msgid "@@image: 'figures/start.png'; md5=b8c9acc03f9f1cdb213e37c9da91817a"
 msgid "@@image: 'figures/start_open.png'; md5=adac27f11f2324c3da2349f72d554994"
 msgstr ""
 "@@image: 'figures/start_open.png'; md5=adac27f11f2324c3da2349f72d554994"
@@ -134,7 +133,6 @@ msgstr ""
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:195(None)
-#| msgid "@@image: 'figures/start.png'; md5=b8c9acc03f9f1cdb213e37c9da91817a"
 msgid ""
 "@@image: 'figures/start_create.png'; md5=f1e4c22fd6811e4ba908e290e76f0474"
 msgstr ""
@@ -143,9 +141,6 @@ msgstr ""
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:226(None)
-#| msgid ""
-#| "@@image: 'figures/glom_data_list.png'; "
-#| "md5=3c43533f6b0ce3e645b29402f59af76f"
 msgid ""
 "@@image: 'figures/glom_tables.png'; md5=a61ac5516314b38c6c7a3f3fd534427f"
 msgstr ""
@@ -154,9 +149,6 @@ msgstr ""
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:252(None)
-#| msgid ""
-#| "@@image: 'figures/glom_data_list.png'; "
-#| "md5=3c43533f6b0ce3e645b29402f59af76f"
 msgid ""
 "@@image: 'figures/glom_data_list.png'; md5=3b7469ee1de77081b435db5ac2d48953"
 msgstr ""
@@ -165,39 +157,45 @@ msgstr ""
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:275(None)
+#| msgid ""
+#| "@@image: 'figures/glom_data_details.png'; "
+#| "md5=5444ab817d4e4e4da6899abbc5cbfd2f"
 msgid ""
 "@@image: 'figures/glom_data_details.png'; "
-"md5=5444ab817d4e4e4da6899abbc5cbfd2f"
+"md5=455bde435350fd53401213dff235bfb3"
 msgstr ""
 "@@image: 'figures/glom_data_details.png'; "
-"md5=5444ab817d4e4e4da6899abbc5cbfd2f"
+"md5=455bde435350fd53401213dff235bfb3"
 
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:305(None)
+#| msgid ""
+#| "@@image: 'figures/glom_report_result.png'; "
+#| "md5=ceeb0ce107453125736a604d91165bf4"
 msgid ""
 "@@image: 'figures/glom_report_result.png'; "
-"md5=ceeb0ce107453125736a604d91165bf4"
+"md5=2b752779eb0ed68724d094f6e1fef699"
 msgstr ""
 "@@image: 'figures/glom_report_result.png'; "
-"md5=ceeb0ce107453125736a604d91165bf4"
+"md5=2b752779eb0ed68724d094f6e1fef699"
 
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:343(None)
+#| msgid ""
+#| "@@image: 'figures/glom_design_fields.png'; "
+#| "md5=e7137a37c7c74a96a914b0df777f5f6b"
 msgid ""
 "@@image: 'figures/glom_design_fields.png'; "
-"md5=e7137a37c7c74a96a914b0df777f5f6b"
+"md5=39a13053db33b9c45bc1f61a0f31a199"
 msgstr ""
 "@@image: 'figures/glom_design_fields.png'; "
-"md5=e7137a37c7c74a96a914b0df777f5f6b"
+"md5=39a13053db33b9c45bc1f61a0f31a199"
 
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:393(None)
-#| msgid ""
-#| "@@image: 'figures/glom_design_layout_list.png'; "
-#| "md5=5c5fc16b70e39173785ef3167d66aceb"
 msgid ""
 "@@image: 'figures/glom_design_layout_list.png'; "
 "md5=213888ef5cd3037b2fa61155b4fe5136"
@@ -210,20 +208,17 @@ msgstr ""
 #: C/glom.xml:412(None)
 #| msgid ""
 #| "@@image: 'figures/glom_design_layout_details.png'; "
-#| "md5=34946df95ce29f04b3d204ba0cbca904"
+#| "md5=ad66696c0ad88b1dc7fa8618bb57eb8b"
 msgid ""
 "@@image: 'figures/glom_design_layout_details.png'; "
-"md5=ad66696c0ad88b1dc7fa8618bb57eb8b"
+"md5=6f1d78f90d6ec0ea338014d2ac697a90"
 msgstr ""
 "@@image: 'figures/glom_design_layout_details.png'; "
-"md5=ad66696c0ad88b1dc7fa8618bb57eb8b"
+"md5=6f1d78f90d6ec0ea338014d2ac697a90"
 
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:458(None)
-#| msgid ""
-#| "@@image: 'figures/glom_design_translations.png'; "
-#| "md5=94376c6bf38d86581d56b3309441a792"
 msgid ""
 "@@image: 'figures/glom_design_translations.png'; "
 "md5=92b8e4905d0b85ef7f7d248420942a97"
@@ -234,9 +229,6 @@ msgstr ""
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:485(None)
-#| msgid ""
-#| "@@image: 'figures/glom_design_reports.png'; "
-#| "md5=74c35ae3dd601490b9f4f2276383a518"
 msgid ""
 "@@image: 'figures/glom_design_reports.png'; "
 "md5=697eb7cc6baebae8b374e474b4fa0899"
@@ -247,9 +239,6 @@ msgstr ""
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:517(None)
-#| msgid ""
-#| "@@image: 'figures/glom_design_reports_details.png'; "
-#| "md5=b75a1a60a48659c6166f4fdd7da6c68c"
 msgid ""
 "@@image: 'figures/glom_design_reports_details.png'; "
 "md5=00ac05c3515a4db2175a47047ec3b98e"
@@ -260,9 +249,6 @@ msgstr ""
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:534(None)
-#| msgid ""
-#| "@@image: 'figures/glom_design_reports_group_by.png'; "
-#| "md5=3d6a191a50ca351183a6690ce0039a9d"
 msgid ""
 "@@image: 'figures/glom_design_reports_group_by.png'; "
 "md5=21168c2a89f9febf6905a59c24a3d6de"
@@ -273,9 +259,6 @@ msgstr ""
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:550(None)
-#| msgid ""
-#| "@@image: 'figures/glom_design_reports_vertical_group.png'; "
-#| "md5=0328958fcf2f55c27045dbc203761214"
 msgid ""
 "@@image: 'figures/glom_design_reports_vertical_group.png'; "
 "md5=001b3021da2dc0de68358b0b41215afb"
@@ -286,9 +269,6 @@ msgstr ""
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:766(None)
-#| msgid ""
-#| "@@image: 'figures/glom_design_fields_dialog_calculated.png'; "
-#| "md5=3306db510932ab3bb99f7e1c676b2512"
 msgid ""
 "@@image: 'figures/glom_design_fields_dialog_calculated.png'; "
 "md5=21b9fc570ff40883d1d283d960e45767"
@@ -417,18 +397,15 @@ msgstr ""
 "posiblemente basándose en alguno de los ejemplos para crear el archivo nuevo."
 
 #: C/glom.xml:177(title)
-#| msgid "Glom Start Up Window"
 msgid "Glom Start Up Window, Opening an Existing File"
 msgstr "Ventana de inicio de Glom, Abrir un archivo existente"
 
 #: C/glom.xml:184(phrase)
-#| msgid "You can also use this window to rename an existing table."
 msgid "Shows Glom main window used to open an existing Glom file."
 msgstr ""
 "Muestra la ventana principal de Glom usada para abrir un archivo existente."
 
 #: C/glom.xml:191(title)
-#| msgid "Glom Start Up Window"
 msgid "Glom Start Up Window, Creating a New File"
 msgstr "Ventana de inicio de Glom, Crear un archivo nuevo"
 
@@ -765,10 +742,10 @@ msgstr ""
 "Cada tabla debe tener una, y solamente una, <literal>Clave primaria</"
 "literal>. El valor en este campo debe ser único, lo que quiere decir que "
 "cada valor en este campo sólo aparecerá en un sólo registro de la tabla. Por "
-"ejemplo, cada registro de la tabla «Clientes» tendrá también un campo «ID "
-"del cliente». Este valor se usará para referirse a este cliente en otras "
-"tablas, tales como los registros «Proyectos» y «Facturas». Lea la sección "
-"<link linkend=\"sec-developer-relationships\">Creando relaciones</link> para "
+"ejemplo, cada registro de la tabla «Clientes» tendrá también un campo «ID del "
+"cliente». Este valor se usará para referirse a este cliente en otras tablas, "
+"tales como los registros «Proyectos» y «Facturas». Lea la sección <link "
+"linkend=\"sec-developer-relationships\">Creando relaciones</link> para "
 "obtener más información acerca de cómo relacionar tablas entre si."
 
 #: C/glom.xml:359(title)
@@ -892,10 +869,9 @@ msgstr ""
 "Para la vista de <literal>Detalles</literal>, puede crear grupos o campos y "
 "darlos títulos. Después puede colocar campos en esos grupos y especificar la "
 "secuencia de los campos en los grupos. También puede especificar la "
-"secuencia de los grupos. Por ejemplo, en una tabla de «Contactos» puede "
-"crear un grupo llamado «Nombre», y colocar los campos «Título», «Nombre» y "
-"«Apellido» en ese grupo. Puede tener otros grupos para los campos "
-"«Direcciones»."
+"secuencia de los grupos. Por ejemplo, en una tabla de «Contactos» puede crear "
+"un grupo llamado «Nombre», y colocar los campos «Título», «Nombre» y «Apellido» "
+"en ese grupo. Puede tener otros grupos para los campos «Direcciones»."
 
 #: C/glom.xml:408(title)
 msgid "Editing the details Layout"
@@ -920,8 +896,8 @@ msgid ""
 "\"Invoice\" record."
 msgstr ""
 "Muchas veces las tablas de una base de datos están relacionadas entre sí. "
-"Por ejemplo, una tabla de «Facturas» podrá tener un campo «ID del cliente». "
-"El valor de ese campo especifica un registro en la tabla «Clientes» el cual "
+"Por ejemplo, una tabla de «Facturas» podrá tener un campo «ID del cliente». El "
+"valor de ese campo especifica un registro en la tabla «Clientes» el cual "
 "tiene el mismo valor. Glom puede mostrar información adicional, como el "
 "nombre del cliente, de ese registro relacionado. O puede mostrar una lista "
 "de varios registros relacionados - por ejemplo, algún registro de la «Lista "
@@ -1299,9 +1275,9 @@ msgstr ""
 "combinación de usuario y contraseña que utiliza para autenticarse en su "
 "sistema. Todos los sistemas Glom requieren un servidor de bases de datos en "
 "el que almacenar los datos actuales. Si el servidor de bases de datos no se "
-"está ejecutando en el equipo local («localhost»), debe proporcionar el "
-"nombre del equipo, tal como \"glomserver.openismus.com\", aunque su nombre "
-"del equipo sea diferente."
+"está ejecutando en el equipo local («localhost»), debe proporcionar el nombre "
+"del equipo, tal como \"glomserver.openismus.com\", aunque su nombre del "
+"equipo sea diferente."
 
 #: C/glom.xml:593(para)
 msgid "Your system administrator can provide these database login details."
@@ -1519,9 +1495,9 @@ msgid ""
 msgstr ""
 "<literal>Registros</literal>: Cada tabla tiene varios registros, cada uno de "
 "los cuales contiene valores para cada uno de los campos. Por ejemplo la "
-"tabla de «Clientes» tendrá un registro para cada cliente. En otros "
-"documentos y aplicaciones, a los registros se los suele denominar "
-"<literal>filas</literal>."
+"tabla de «Clientes» tendrá un registro para cada cliente. En otros documentos "
+"y aplicaciones, a los registros se los suele denominar <literal>filas</"
+"literal>."
 
 #: C/glom.xml:752(simpara)
 msgid ""
@@ -1534,8 +1510,8 @@ msgid ""
 msgstr ""
 "<literal>Relaciones</literal>: Cada tabla puede estar relacionada con otras "
 "tablas, por medio de los campos de ambas tablas. Por ejemplo, la tabla "
-"«Clientes» puede tener relación con la tabla «Facturas», de tal manera que "
-"se pueden ver todas las facturas de ése cliente. Sólo los desarrolladores "
+"«Clientes» puede tener relación con la tabla «Facturas», de tal manera que se "
+"pueden ver todas las facturas de ése cliente. Sólo los desarrolladores "
 "necesitan entender éste concepto. En otros documentos y aplicaciones, a las "
 "relaciones se las suele denominar «uniones» o «joins»."
 
