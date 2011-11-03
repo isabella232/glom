@@ -1,5 +1,11 @@
 2011-11-03  Murray Cumming  <murrayc@murrayc.com>
 
+	Small Business example: Add a little more data so the report is useful.
+
+	* examples/example_smallbusiness.glom: Contacts: Add towns and countries.
+
+2011-11-03  Murray Cumming  <murrayc@murrayc.com>
+
 	Do not blank the data when showing the field definitions dialog.
 
 	* glom/frame_glom.cc: do_menu_developer_fields(): Only blank the data 
