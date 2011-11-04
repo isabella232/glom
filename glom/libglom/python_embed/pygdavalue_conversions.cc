@@ -24,8 +24,10 @@
 bool
 glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input)
 {
+std::cout << G_STRFUNC << std::endl;
+        
     /* Use an appropriate gda_value_set_*() function.
-       We can not know what GValue type is actually wanted, so
+       We cannot know what GValue type is actually wanted, so
        we must still have the get_*() functions in the python API.
      */
 
@@ -146,7 +148,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
   //std::cout << "DEBUG Dates not supported." << std::endl;
 #endif
 
-    //g_warning("Unhandled python type.");
+    std::cerr << G_STRFUNC << ": Unhandled python type." << std::endl;
     return false; /* failed. */
 }
 
