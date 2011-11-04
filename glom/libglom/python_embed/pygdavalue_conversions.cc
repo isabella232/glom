@@ -23,9 +23,7 @@
  */
 bool
 glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input)
-{
-std::cout << G_STRFUNC << std::endl;
-        
+{       
     /* Use an appropriate gda_value_set_*() function.
        We cannot know what GValue type is actually wanted, so
        we must still have the get_*() functions in the python API.
