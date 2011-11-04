@@ -1,3 +1,12 @@
+2011-11-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix some warnings about invalid field types with choices.
+
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.cc:
+	set_choices_related(): Set full field details on the 
+	layout_choice_extra fields, to avoid invalid field types,
+	and stderr warnings about them.
+
 2011-11-03  Murray Cumming  <murrayc@murrayc.com>
 
 	Updated examples screenshots.

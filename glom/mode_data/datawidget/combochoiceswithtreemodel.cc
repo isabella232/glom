@@ -236,17 +236,29 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const FieldFormatting::type_li
 
 void ComboChoicesWithTreeModel::set_choices_related(const Document* document, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value)
 {
+  if(!document)
+  {
+    std::cerr << G_STRFUNC << ": document is null." << std::endl;
+    return;
+  }
+
   const FieldFormatting& format = layout_field->get_formatting_used();
   sharedptr<const Relationship> choice_relationship;
   sharedptr<const LayoutItem_Field> layout_choice_first;
   sharedptr<const LayoutGroup> layout_choice_extra;
   bool choice_show_all = false;
   format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_extra, choice_show_all);
+  if(layout_choice_first->get_glom_type() == Field::TYPE_INVALID)
+    std::cerr << G_STRFUNC << ": layout_choice_first has invalid type. field name: " << layout_choice_first->get_name() << std::endl;
+
+  //Set full field details, cloning the group to avoid the constness:
+  sharedptr<LayoutGroup> layout_choice_extra_full = glom_sharedptr_clone(layout_choice_extra);
+  document->fill_layout_field_details(choice_relationship->get_to_table(), layout_choice_extra_full);
 
   //Get the list of fields to show:
-  LayoutGroup::type_list_const_items extra_fields;
-  if(layout_choice_extra)
-    extra_fields = layout_choice_extra->get_items_recursive();
+  LayoutGroup::type_list_items extra_fields;
+  if(layout_choice_extra_full)
+    extra_fields = layout_choice_extra_full->get_items_recursive();
 
   LayoutGroup::type_list_const_items layout_items;
   layout_items.push_back(layout_choice_first);
