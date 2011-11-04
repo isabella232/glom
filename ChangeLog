@@ -1,5 +1,14 @@
 2011-11-04  Murray Cumming  <murrayc@murrayc.com>
 
+	Handle gdouble results from python functions.
+    
+        * glom/libglom/data_structure/field.cc: Add a mapping
+        instead of ignoring doubles.
+        This avoids a stderr warning and probably makes calculations
+        work.
+
+2011-11-04  Murray Cumming  <murrayc@murrayc.com>
+
 	Fix some warnings about invalid field types with choices.
 
 	* glom/mode_data/datawidget/combochoiceswithtreemodel.cc:
