@@ -1,3 +1,22 @@
+1.19.17 (unstable):
+
+* Make connections to central PostgreSQL servers work again.
+* Details:
+  - In developer mode, draw some lines, as in glom 1.18.
+  - Notebook: Avoid truncating related records buttons,
+    working around GtkFrame bug #662915 .
+* Do not blank the data when showing the field definitions dialog.
+* Fix some warnings about invalid field types with choices.
+* Improvements to creation of temporary files, such as reports.
+* Handle gdouble results from python functions.
+* libglom:
+  - Utils::sqlbuilder_get_full_query(): Improve the result.
+  - Added Utils::build_sql_update_with_where_clause().
+* User guide: Update the screenshots.
+* tests:
+  - Add Glom::Priv test, to check parsting of PostgreSQL privileges tables.
+  - Add test of writing and then reading-back image data.
+
 1.19.16 (unstable):
 
 * Main window: Use a smaller default size.

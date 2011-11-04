@@ -103,7 +103,9 @@ tests_python_test_python_module_CPPFLAGS = $(tests_cppflags)
 
 
 # Distribute the tests data:
-dist_noinst_DATA = tests/import/data/albums.csv
+dist_noinst_DATA = \
+	tests/import/data/albums.csv \
+	tests/test_image.jpg
 
 # Let the .cc source code know about this path: TODO: Actually use this.
 glom_test_import_defines = -DGLOM_TESTS_IMPORT_DATA_NOTINSTALLED=\""$(abs_top_srcdir)/tests/import/data/"\"
