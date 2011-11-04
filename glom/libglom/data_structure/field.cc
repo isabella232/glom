@@ -22,6 +22,7 @@
 #include <libglom/connectionpool.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/utils.h>
+#include <libgda/gda-blob-op.h>
 #include <glibmm/i18n.h>
 
 #include <iostream>
@@ -284,32 +285,52 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value) const
 
 Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_type glom_type)
 {
+  //Handle TYPE_IMAGE specially:
   if(glom_type == TYPE_IMAGE)
   {
-    if(!value.gobj() || (value.get_value_type() != GDA_TYPE_BINARY))
+    if(!value.gobj())
       return Glib::ustring();
  
-    const GdaBinary* gdabinary = gda_value_get_binary(value.gobj());
-    if(!gdabinary)
-      return Glib::ustring();
-    else
+    gchar* str = 0;
+    const GType value_type = value.get_value_type();
+    if(value_type == GDA_TYPE_BINARY)
     {
-      gchar* str = gda_binary_to_string(gdabinary, 0);
-      Glib::ustring result = (str) ? 
-        Glib::ustring(Glib::ScopedPtr<char>(str).get()) : Glib::ustring();
-
-      //Avoid arbitrary newlines in this text.
-      //See libgda bug: https://bugzilla.gnome.org/show_bug.cgi?id=597390
-      result = Utils::string_replace(result, "\n", "\\012");
-
-      //Avoid arbitrary newlines in this text.
-      //See libgda bug: https://bugzilla.gnome.org/show_bug.cgi?id=597390
-      result = Utils::string_replace(result, "\r", "\\015");
-
-      //Escape any quotes in this text:
-      //See libgda bug: https://bugzilla.gnome.org/show_bug.cgi?id=597390
-      return Utils::string_replace(result, "\"", "\\042");
+      const GdaBinary* gdabinary = gda_value_get_binary(value.gobj());
+      if(!gdabinary)
+        return Glib::ustring();
+      else
+      {
+        str = gda_binary_to_string(gdabinary, 0);
+      }
     }
+    else if(value_type == GDA_TYPE_BLOB)
+    {
+      const GdaBlob* gdablob = gda_value_get_blob(value.gobj());
+      if(!gdablob)
+        return Glib::ustring();
+      else
+      {
+        str = gda_blob_to_string(const_cast<GdaBlob*>(gdablob), 0);
+      }
+    }
+
+    if(!str)
+      return Glib::ustring();
+
+    Glib::ustring result = (str) ? 
+      Glib::ustring(Glib::ScopedPtr<char>(str).get()) : Glib::ustring();
+
+    //Avoid arbitrary newlines in this text.
+    //See libgda bug: https://bugzilla.gnome.org/show_bug.cgi?id=597390
+    result = Utils::string_replace(result, "\n", "\\012");
+
+    //Avoid arbitrary newlines in this text.
+    //See libgda bug: https://bugzilla.gnome.org/show_bug.cgi?id=597390
+    result = Utils::string_replace(result, "\r", "\\015");
+
+    //Escape any quotes in this text:
+    //See libgda bug: https://bugzilla.gnome.org/show_bug.cgi?id=597390
+    return Utils::string_replace(result, "\"", "\\042");
   }
   
   NumericFormat format_ignored; //Because we use ISO format.
@@ -544,6 +565,7 @@ Glib::RefPtr<Gnome::Gda::Holder> Field::get_holder(const Gnome::Gda::Value& valu
     // investigate why the field type is not GdaBinary as well.
     // Maybe get_gda_type_for_glom_type() should already return fallback
     // types if necessary.
+    // Reply from murray: sqlite returns GdaBlob by default, and that should be OK. Is this causing a problem?
     std::cout << "debug: " << G_STRFUNC << ": Field type " << g_type_name(field_type) << " and value type " << g_type_name(gtype) << " don't match." << std::endl;
   }
   */

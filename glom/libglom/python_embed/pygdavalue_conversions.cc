@@ -7,6 +7,7 @@
 #include <boost/python.hpp>
 
 #include "pygdavalue_conversions.h"
+#include <libgda/gda-blob-op.h>
 #include <iostream>
 
 
@@ -179,10 +180,17 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
         ret = boost::python::object(g_value_get_uint64(boxed));
     } else if (value_type == GDA_TYPE_BINARY) {
         const GdaBinary* gdabinary = gda_value_get_binary(boxed);
-        ret = boost::python::object((const char*)gdabinary->data); /* TODO: Use the size. TODO: Check for null GdaBinary. */
+        if(gdabinary)
+          ret = boost::python::object((const char*)gdabinary->data); /* TODO: Use the size. TODO: Check for null GdaBinary. */
     } else if (value_type == GDA_TYPE_BLOB) {
-        /* const GdaBlob* val = gda_value_get_blob (boxed; */
-        /* TODO: This thing has a whole read/write API. */
+        const GdaBlob* gdablob = gda_value_get_blob (boxed);
+        if(gdablob && gdablob->op)
+        {
+          if(gda_blob_op_read_all(const_cast<GdaBlobOp*>(gdablob->op), const_cast<GdaBlob*>(gdablob)))
+          {
+            ret = boost::python::object((const char*)gdablob->data.data); /* TODO: Use the size. TODO: Check for null GdaBinary. */
+          }
+        }
     } else if (value_type == G_TYPE_BOOLEAN) {
         ret = boost::python::object((bool)g_value_get_boolean(boxed));
 #if PY_VERSION_HEX >= 0x02040000

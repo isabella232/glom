@@ -24,9 +24,11 @@
 #include <libglom/db_utils.h>
 #include <glibmm/fileutils.h>
 #include <glibmm/miscutils.h>
+#include <libgda/gda-blob-op.h>
 #include <glib.h> //For g_assert()
 #include <iostream>
 #include <cstdlib> //For EXIT_SUCCESS and EXIT_FAILURE
+#include <cstring> //For memcmp().
 
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
@@ -114,13 +116,40 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
   
   const Gnome::Gda::Value value_read = data_model->get_value_at(0, 0);
-  if(value_read.get_value_type() != GDA_TYPE_BINARY)
+  const GType value_read_type = value_read.get_value_type();
+  if( (value_read_type != GDA_TYPE_BINARY) &&
+    (value_read_type != GDA_TYPE_BLOB))
   {
     std::cerr << "Failure: The value read was not of the expected type: " << g_type_name( value_read.get_value_type() ) << std::endl;
     return false;
   }
 
-  if(value_set != value_read)
+  //Make sure that we have a GdaBinary,
+  //even if (as with SQLite) it's actually a GdaBlob that we get back:
+  const GdaBinary* binary_read = 0;
+  if(value_read_type == GDA_TYPE_BINARY)
+    binary_read = gda_value_get_binary(value_read.gobj());
+  else if(value_read_type == GDA_TYPE_BLOB)
+  {
+    const GdaBlob* blob = gda_value_get_blob(value_read.gobj());
+    const bool read_all = gda_blob_op_read_all(const_cast<GdaBlobOp*>(blob->op), const_cast<GdaBlob*>(blob));
+    if(!read_all)
+    {
+      std::cerr << "Failure: gda_blob_op_read_all() failed." << std::endl;
+      return false;
+    }
+
+    binary_read = &(blob->data);
+  }
+
+  const GdaBinary* binary_set = gda_value_get_binary(value_set.gobj());
+  if(binary_set->binary_length != binary_read->binary_length)
+  {
+    std::cerr << "Failure: The value read's data length was not equal to that of the value set." << std::endl;
+    return false;
+  }
+
+  if(memcmp(binary_set->data, binary_read->data, binary_set->binary_length) != 0)
   {
     std::cerr << "Failure: The value read was not equal to the value set." << std::endl;
     return false;
@@ -142,14 +171,12 @@ int main()
     return EXIT_FAILURE;
   }
   
-  /** TODO: Investigate why this does not work.
   if(!test(Glom::Document::HOSTING_MODE_SQLITE))
   {
     std::cerr << "Failed with SQLite" << std::endl;
     test_selfhosting_cleanup();
     return EXIT_FAILURE;
   }
-  */
 
   Glom::libglom_deinit();
 

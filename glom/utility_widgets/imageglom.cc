@@ -31,6 +31,7 @@
 #include <gtkmm/stock.h>
 #include <giomm/file.h>
 #include <giomm/contenttype.h>
+#include <libgda/gda-blob-op.h>
 #include <glibmm/convert.h>
 
 #include <iostream>   // for cout, endl
@@ -233,6 +234,12 @@ const GdaBinary* ImageGlom::get_binary() const
   const GdaBinary* gda_binary = 0;
   if(m_original_data.get_value_type() == GDA_TYPE_BINARY)
     gda_binary = gda_value_get_binary(m_original_data.gobj());
+  else if(m_original_data.get_value_type() == GDA_TYPE_BLOB)
+  {
+    const GdaBlob* gda_blob = gda_value_get_blob(m_original_data.gobj());
+    if(gda_blob && gda_blob_op_read_all(const_cast<GdaBlobOp*>(gda_blob->op), const_cast<GdaBlob*>(gda_blob)))
+      gda_binary = &(gda_blob->data);
+  }
   
   return gda_binary;
 }

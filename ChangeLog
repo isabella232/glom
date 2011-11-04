@@ -1,3 +1,21 @@
+2011-11-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Handle GdaBlob in query results instead of just GdaBinary.
+
+	* glom/libglom/data_structure/field.cc: to_file_format():
+	The Value might have a GdaBlob that needs to be read first, to get the 
+	GdaBinary. This can happen with SQLite.
+	* glom/libglom/python_embed/pygdavalue_conversions.cc:
+	glom_pygda_value_as_boost_pyobject(): Handle GdaBlob too, though neither 
+	this or the GdaBinary case use the data length, so this code is doomed 
+	if it is ever used. I need to find out if Python can really represent 
+	binary data, or if this should just not be handled here.
+	* glom/utility_widgets/imageglom.cc: get_binary(): Handle GdaBlob 
+	too in the original data.
+	* tests/test_selfhosting_new_then_image.cc: Handle GdaBlob in the 
+	data that is read back, for SQLite. Uncomment the SQLite test, fixing 
+	make check with the latest libgda.
+
 1.19.17:
 
 2011-11-04  Murray Cumming  <murrayc@murrayc.com>
