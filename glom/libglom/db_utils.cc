@@ -687,6 +687,10 @@ bool add_groups_from_document(Document* document)
     std::cerr << "add_standard_groups(): No connection yet." << std::endl;
   }
 
+  // If the connection doesn't support users we can skip this step
+  if(!(gda_connection->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS)))
+    return true;
+
   //Get the list of groups from the database server:
   const type_vec_strings database_groups = Privs::get_database_groups();
 
@@ -730,6 +734,10 @@ bool set_table_privileges_groups_from_document(Document* document)
   {
     std::cerr << "add_standard_groups(): No connection yet." << std::endl;
   }
+
+  // If the connection doesn't support users we can skip this step
+  if(!(gda_connection->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS)))
+    return true;
 
   //Get the list of groups from the database server:
   const type_vec_strings database_groups = Privs::get_database_groups();
