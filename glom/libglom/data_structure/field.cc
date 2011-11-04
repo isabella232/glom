@@ -599,7 +599,7 @@ Field::glom_field_type Field::get_glom_type_for_gda_type(GType gda_type)
       result = iterFind->second;
     else
     {
-      // g_warning("FieldType::FieldType(GType gda_type): Invalid gda type: %d",  gda_type);
+      std::cerr << G_STRFUNC << ": Unhandled GType: " << g_type_name(gda_type) << std::endl;
     }
   }
 
@@ -641,6 +641,11 @@ void Field::init_map()
     m_map_gda_type_to_glom_type[G_TYPE_DATE] = TYPE_DATE;
     m_map_gda_type_to_glom_type[G_TYPE_BOOLEAN] = TYPE_BOOLEAN;
     m_map_gda_type_to_glom_type[GDA_TYPE_BINARY] = TYPE_IMAGE;
+
+    //Extra conversions for GTypes that can be returned by glom_pygda_value_from_pyobject():
+    m_map_gda_type_to_glom_type[G_TYPE_DOUBLE] = TYPE_NUMERIC;
+    //TODO? m_map_gda_type_to_glom_type[GDA_TYPE_TIME] = ;
+    //TODO? m_map_gda_type_to_glom_type[GDA_TYPE_TIMESTAMP] = ;
 
     m_map_glom_type_to_gda_type[TYPE_NUMERIC] = GDA_TYPE_NUMERIC;
     m_map_glom_type_to_gda_type[TYPE_TEXT] = G_TYPE_STRING;

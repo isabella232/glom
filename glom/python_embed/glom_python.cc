@@ -465,10 +465,21 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   if(object_is_gda_value && G_IS_VALUE(&value))
   {
     valueResult = Gnome::Gda::Value(&value);
+    if(valueResult.get_value_type() == 0)
+    {
+      std::cerr << G_STRFUNC << ": valueResult (before convert_value()) has a GType of 0 before convert_value()." << std::endl;
+    }
+
     //Make sure that the value is of the expected Gda type:
     //TODO_Performance:
     valueResult = Glom::Conversions::convert_value(valueResult, result_type);
-    //std::cout << "DEBUG: glom_evaluate_python_function_implementation(): valueResult Gda type=" << g_type_name(valueResult.get_value_type()) << std::endl;
+
+    if(valueResult.get_value_type() == 0)
+    {
+      std::cerr << G_STRFUNC << ": valueResult has a GType of 0 after convert_value()." << std::endl;
+    }
+
+    //std::cout << "debug: " << G_STRFUNC << ": valueResult Gda type=" << g_type_name(valueResult.get_value_type()) << std::endl;
     g_value_unset(&value);
   }
   else
