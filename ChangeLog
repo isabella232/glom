@@ -1,3 +1,11 @@
+2011-11-04  Murray Cumming  <murrayc@murrayc.com>>
+
+	Creating from examples: Do not create users and groups with SQLite.
+
+	* glom/libglom/db_utils.cc: add_groups_from_document(),
+	set_table_privileges_groups_from_document(): Do nothing if the database 
+	backed doesn't support this feature, to avoid errors when using SQLite.
+
 2011-11-04  Murray Cumming  <murrayc@murrayc.com>
 
 	Handle GdaBlob in query results instead of just GdaBinary.
