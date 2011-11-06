@@ -133,7 +133,11 @@ AS_IF([test "x$glom_enable_postgresql" = xyes],
 # Libraries used by libglom:
 # TODO: Remove the need for gthread-2.0 when we can depend on giomm (or glibmm) 3.32,
 # because gthread-2.0 is then just an empty unnecessary library.
-REQUIRED_LIBGLOM_LIBS='gthread-2.0 giomm-2.4 libxml++-2.6 >= 2.23.1 libxslt >= 1.1.10 pygobject-3.0 >= 2.29.0 libgdamm-5.0 >= 4.99.4 libgda-postgres-5.0 libgda-5.0 >= 5.0.0'
+# We add an explicit libgda-5.0 version number (though libgdamm uses it) because it fixes these bugs:
+# https://bugzilla.gnome.org/show_bug.cgi?id=662925
+# https://bugzilla.gnome.org/show_bug.cgi?id=661655
+# https://bugzilla.gnome.org/show_bug.cgi?id=661073
+REQUIRED_LIBGLOM_LIBS='gthread-2.0 giomm-2.4 libxml++-2.6 >= 2.23.1 libxslt >= 1.1.10 pygobject-3.0 >= 2.29.0 libgdamm-5.0 >= 4.99.4 libgda-postgres-5.0 libgda-5.0 >= 5.0.1'
 
 AS_IF([test "x$glom_host_win32" != xyes],
       [REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS libepc-1.0 >= 0.4.0"])
