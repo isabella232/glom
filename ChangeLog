@@ -1,3 +1,10 @@
+2011-11-07  Murray Cumming  <murrayc@murrayc.com>
+
+	Require the latest libgdamm.
+
+	* configure.ac: We use a new Gnome::Gda::Connection::statement_to_sql()
+	method overload.
+
 1.19.18:
 
 2011-11-07  Murray Cumming  <murrayc@murrayc.com>
