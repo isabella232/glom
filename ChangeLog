@@ -1,3 +1,15 @@
+2011-11-07  Murray Cumming  <murrayc@murrayc.com>
+
+	Rename a test utility function.
+
+	* tests/test_selfhosting_utils.[h|cc]: Rename 
+  test_create_and_selfhost() to test_create_and_selfhost_from_example().
+	* tests/test_selfhosting_new_from_example.cc:
+	* tests/test_selfhosting_new_then_get_privs.cc:
+	* tests/test_selfhosting_new_then_image.cc:
+	* tests/test_selfhosting_new_then_report.cc:
+	* tests/test_selfhosting_sqlinjection.cc: Adapated.
+
 2011-11-06  Murray Cumming  <murrayc@murrayc.com>
 
 	Require libgda 5.0.2

@@ -29,7 +29,13 @@
  *
  * @param hosting_mode Either HOSTING_MODE_POSTGRES_SELF or HOSTING_MODE_SQLITE
  */
-bool test_create_and_selfhost(const std::string& example_filename, Glom::Document& document, Glom::Document::HostingMode hosting_mode);
+bool test_create_and_selfhost_from_example(const std::string& example_filename, Glom::Document& document, Glom::Document::HostingMode hosting_mode);
+
+/** Create a .glom file from an existing .glom example file with database data, and start a PostgreSQL server if necessary.
+ *
+ * @param hosting_mode Either HOSTING_MODE_POSTGRES_SELF or HOSTING_MODE_SQLITE
+ */
+bool test_create_and_selfhost_from_uri(const Glib::ustring& file_uri, Glom::Document& document, Glom::Document::HostingMode hosting_mode);
 
 bool test_model_expected_size(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, guint columns_count, guint rows_count);
 bool test_table_exists(const Glib::ustring& table_name, const Glom::Document& document);

@@ -138,19 +138,11 @@ void test_selfhosting_cleanup()
   temp_filepath_dir.clear();
 }
 
-
-bool test_create_and_selfhost(const std::string& example_filename, Glom::Document& document, Glom::Document::HostingMode hosting_mode)
+bool test_create_and_selfhost_from_example(const std::string& example_filename, Glom::Document& document, Glom::Document::HostingMode hosting_mode)
 {
-  if( (hosting_mode != Glom::Document::HOSTING_MODE_POSTGRES_SELF) &&
-    (hosting_mode != Glom::Document::HOSTING_MODE_SQLITE) )
-  {
-    std::cerr << G_STRFUNC << ": This test function does not support the specified hosting_mode: " << hosting_mode << std::endl;
-    return false;
-  }
- 
-  // Get a URI for a test file:
   Glib::ustring uri;
-
+  
+  // Get a URI for the example file:
   try
   {
     const std::string path =
@@ -163,12 +155,21 @@ bool test_create_and_selfhost(const std::string& example_filename, Glom::Documen
     std::cerr << G_STRFUNC << ": " << ex.what();
     return false;
   }
+  
+  return test_create_and_selfhost_from_uri(uri, document, hosting_mode);
+}
 
-  //std::cout << "URI=" << uri << std::endl;
-
+bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Glom::Document& document, Glom::Document::HostingMode hosting_mode)
+{
+  if( (hosting_mode != Glom::Document::HOSTING_MODE_POSTGRES_SELF) &&
+    (hosting_mode != Glom::Document::HOSTING_MODE_SQLITE) )
+  {
+    std::cerr << G_STRFUNC << ": This test function does not support the specified hosting_mode: " << hosting_mode << std::endl;
+    return false;
+  }
 
   // Load the document:
-  document.set_file_uri(uri);
+  document.set_file_uri(example_file_uri);
   int failure_code = 0;
   const bool test = document.load(failure_code);
   //std::cout << "Document load result=" << test << std::endl;

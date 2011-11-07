@@ -204,7 +204,7 @@ static bool check_avoid_quotes_and_drop_table_with_false_field_type()
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
   const bool recreated = 
-    test_create_and_selfhost("example_music_collection.glom", document, hosting_mode);
+    test_create_and_selfhost_from_example("example_music_collection.glom", document, hosting_mode);
   if(!recreated)
   {
     std::cerr << "Recreation failed." << std::endl;
