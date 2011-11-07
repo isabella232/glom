@@ -32,7 +32,10 @@
 #include <libglom/data_structure/layout/layoutitem_calendarportal.h>
 #include <libglom/data_structure/layout/layoutitem_line.h>
 #include <libglom/standard_table_prefs_fields.h>
+#include <libglom/spawn_with_feedback.h>
 #include <giomm/file.h>
+#include <glibmm/miscutils.h>
+#include <glibmm/convert.h>
 //#include <libglom/busy_cursor.h>
 
 #include <libglom/connectionpool.h>
@@ -4545,5 +4548,143 @@ bool Document::load(int& failure_code)
 {
   return GlomBakery::Document_XML::load(failure_code);
 }
+
+Glib::ustring Document::save_backup_file(const Glib::ustring& uri, const SlotProgress& slot_progress)
+{
+  //Save a copy of the .glom document,
+  //with the same name as the directory:
+  //For instance <path>/chosendirectory/chosendirectory.glom
+  const std::string path_dir = Glib::filename_from_uri(uri);
+  const std::string basename = Glib::path_get_basename(path_dir);
+  const std::string& filepath_document = Glib::build_filename(path_dir, basename + ".glom");
+  const Glib::ustring uri_document = Glib::filename_to_uri(filepath_document);
+
+  const Glib::ustring fileuri_old = get_file_uri();
+  set_allow_autosave(false); //Prevent saving while we modify the document:
+  set_file_uri(uri_document, true); //true = enforce file extension;
+  set_is_backup_file(true);
+  const bool saved = save();
+
+  set_file_uri(fileuri_old);
+  set_is_backup_file(false);
+  set_allow_autosave(true);
+
+  if(!saved)
+  {
+    std::cerr << G_STRFUNC << ": Saving of the backup .glom file failed with URI:" << uri_document << std::endl;
+    return Glib::ustring();
+  }
+
+
+  //Save the data:
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  const bool data_saved = 
+    connection_pool->save_backup(slot_progress, path_dir);
+  if(!data_saved)
+  {
+    std::cerr << G_STRFUNC << ": Saving of the backup data failed with path_dir=" << path_dir << std::endl;
+    return Glib::ustring();
+  }
+
+  //Compress the backup in a .tar.gz, so it is slightly more safe from changes:
+  const std::string path_tar = Glib::find_program_in_path("tar");
+  if(path_tar.empty())
+  {
+    std::cerr << G_STRFUNC << ": The tar executable could not be found." << std::endl;
+    return Glib::ustring();
+  }
+  else
+  {
+    Glib::RefPtr<const Gio::File> gio_file = Gio::File::create_for_path(path_dir);
+    const std::string basename = gio_file->get_basename();
+    Glib::RefPtr<const Gio::File> gio_file_parent = gio_file->get_parent();
+    const std::string parent_dir = gio_file_parent->get_path();
+    if(parent_dir.empty() || basename.empty())
+    {
+      std::cerr << G_STRFUNC << "parent_dir or basename are empty." << std::endl;
+      return Glib::ustring();
+    }
+    else
+    {
+      const std::string tarball_path = path_dir + ".tar.gz";
+      //TODO: Find some way to do this without using the command-line,
+      //which feels fragile:
+      const std::string command_tar = "\"" + path_tar + "\"" +
+        " --force-local --no-wildcards" + //Avoid side-effects of special characters.
+        " --remove-files" +
+        " -czf"
+        " \"" + tarball_path + "\"" +
+        " --directory \"" + parent_dir + "\"" + //This must be right before the mention of the file name:
+        " \"" + basename + "\"";
+
+      //std::cout << "DEBUG: command_tar=" << command_tar << std::endl;
+
+      const bool tarred = Glom::Spawn::execute_command_line_and_wait(command_tar,
+        slot_progress);
+
+      if(!tarred)
+      {
+        std::cerr << G_STRFUNC << "tar failed with command:" << command_tar << std::endl;
+        return Glib::ustring();
+      }
+      
+      return Glib::filename_to_uri(tarball_path);
+    }
+  }
+}
+
+Glib::ustring Document::restore_backup_file(const Glib::ustring& backup_uri, const SlotProgress& slot_progress)
+{
+  // We cannot use an uri here, because we cannot untar remote files.
+  const std::string filename_tarball = Glib::filename_from_uri(backup_uri);
+
+  const std::string path_tar = Glib::find_program_in_path("tar");
+  if(path_tar.empty())
+  {
+    std::cerr << G_STRFUNC << ": The tar executable could not be found." << std::endl;
+    return Glib::ustring();
+  }
+
+  //Create a temporary directory into which we will untar the tarball:
+  const std::string path_tmp = Utils::get_temp_directory_path(
+    Glib::path_get_basename(filename_tarball) + "_extracted");
+
+  //Untar into the tmp directory:
+  //TODO: Find some way to do this without using the command-line,
+  //which feels fragile:
+  const std::string command_tar = "\"" + path_tar + "\"" +
+    " --force-local --no-wildcards" + //Avoid side-effects of special characters.
+    " -xzf"
+    " \"" + filename_tarball + "\"" +
+    " --directory \"" + path_tmp + "\"";
+
+  //std::cout << "DEBUG: command_tar=" << command_tar << std::endl;
+
+  const bool untarred = Glom::Spawn::execute_command_line_and_wait(command_tar,
+    slot_progress);
+  if(!untarred)
+  {
+    std::cerr << G_STRFUNC << ": tar failed with command:" << command_tar << std::endl;
+    return Glib::ustring();
+  }
+
+  //Open the .glom file that is in the tmp directory:
+  const Glib::ustring uri_tmp = Glib::filename_to_uri(path_tmp);
+  const Glib::ustring untarred_uri = Utils::get_directory_child_with_suffix(uri_tmp, ".glom", true /* recurse */);
+  if(untarred_uri.empty())
+  {
+    std::cerr << G_STRFUNC << ": There was an error while restoring the backup. The .glom file could not be found.";
+    return Glib::ustring();
+  }
+
+  //Delete the temporary untarred directory:
+  //Actually, we just leave this here, where the system will clean it up anyway,
+  //because open_document() starts a new process,
+  //so we don't know when we can safely delete the files.
+  //Utils::delete_directory(uri_tmp);
+
+  return untarred_uri;
+}
+  
 
 } //namespace Glom

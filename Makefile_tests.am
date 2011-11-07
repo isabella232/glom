@@ -29,6 +29,7 @@ check_PROGRAMS =						\
 	tests/test_selfhosting_new_from_example \
 	tests/test_selfhosting_new_then_report \
 	tests/test_selfhosting_new_then_image \
+	tests/test_selfhosting_new_then_backup_restore \
 	tests/test_selfhosting_new_then_get_privs \
 	tests/test_selfhosting_sqlinjection \
 	tests/import/test_parsing \
@@ -46,6 +47,7 @@ TESTS =	tests/test_document_load	\
 	tests/test_selfhosting_new_empty \
 	tests/test_selfhosting_new_from_example \
 	tests/test_selfhosting_new_then_report \
+	tests/test_selfhosting_new_then_backup_restore \
 	tests/test_selfhosting_new_then_image \
 	tests/test_selfhosting_new_then_get_privs \
 	tests/test_selfhosting_sqlinjection \
@@ -149,6 +151,10 @@ tests_test_selfhosting_new_then_report_CPPFLAGS = $(tests_cppflags)
 tests_test_selfhosting_new_then_image_SOURCES = tests/test_selfhosting_new_then_image.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_then_image_LDADD = $(tests_ldadd)
 tests_test_selfhosting_new_then_image_CPPFLAGS = $(tests_cppflags) $(glom_test_image_defines)
+
+tests_test_selfhosting_new_then_backup_restore_SOURCES = tests/test_selfhosting_new_then_backup_restore.cc $(sources_test_selfhosting_utils)
+tests_test_selfhosting_new_then_backup_restore_LDADD = $(tests_ldadd)
+tests_test_selfhosting_new_then_backup_restore_CPPFLAGS = $(tests_cppflags)
 
 tests_test_selfhosting_new_then_get_privs_SOURCES = tests/test_selfhosting_new_then_get_privs.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_then_get_privs_LDADD = $(tests_ldadd)

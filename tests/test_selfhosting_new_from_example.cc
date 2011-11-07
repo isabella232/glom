@@ -37,36 +37,9 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
   
-  //Check that some data is as expected:
-  const Gnome::Gda::Value value("Born To Run");
-  const Gnome::Gda::SqlExpr where_clause = 
-    Glom::Utils::get_find_where_clause_quick(&document, "albums", value);
-  
-  Glom::Utils::type_vecLayoutFields fieldsToGet;
-  Glom::sharedptr<const Glom::Field> field = document.get_field("albums", "album_id");
-  Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
-  layoutitem->set_full_field_details(field);
-  fieldsToGet.push_back(layoutitem);
-  field = document.get_field("albums", "name");
-  layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
-  layoutitem->set_full_field_details(field);
-  fieldsToGet.push_back(layoutitem);
-
-  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
-    Glom::Utils::build_sql_select_with_where_clause("albums",
-      fieldsToGet, where_clause);
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = 
-    Glom::DbUtils::query_execute_select(builder);
-  if(!test_model_expected_size(data_model, 2, 1))
+  if(!test_example_musiccollection_data(&document))
   {
-    std::cerr << "Failure: Unexpected data model size for main query." << std::endl;
-    return false;
-  }
-
-  const int count = Glom::DbUtils::count_rows_returned_by(builder);
-  if(count != 1 )
-  {
-    std::cerr << "Failure: The COUNT query returned an unexpected value: " << count << std::endl;
+    std::cerr << "test_example_musiccollection_data() failed." << std::endl;
     return false;
   }
 

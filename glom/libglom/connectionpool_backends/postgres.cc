@@ -779,8 +779,8 @@ bool Postgres::create_directory_filepath(const std::string& filepath)
   const int mkdir_succeeded = g_mkdir_with_parents(filepath.c_str(), 0770);
   if(mkdir_succeeded == -1)
   {
-    std::cerr << G_STRFUNC << "Error from g_mkdir_with_parents() while trying to create directory: " << filepath << std::endl;
-    perror("Error from g_mkdir_with_parents");
+    std::cerr << G_STRFUNC << ": Error from g_mkdir_with_parents() while trying to create directory: " << filepath << std::endl;
+    perror("  perror(): Error from g_mkdir_with_parents()");
 
     return false;
   }

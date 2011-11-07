@@ -176,11 +176,15 @@ bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Gl
 
   if(!test)
   {
-    std::cerr << "Document::load() failed with failure_code=" << failure_code << std::endl;
+    std::cerr << G_STRFUNC << ": Document::load() failed with failure_code=" << failure_code << std::endl;
     return false;
   }
 
-  g_assert(document.get_is_example_file());;
+  if(!document.get_is_example_file() && !document.get_is_backup_file())
+  {
+    std::cerr << G_STRFUNC << ": The document is not an example or a backup." << std::endl;
+    return false;
+  }
 
   Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
 
@@ -286,6 +290,51 @@ bool test_table_exists(const Glib::ustring& table_name, const Glom::Document& do
     return false;
   }
 
+  return true;
+}
+
+bool test_example_musiccollection_data(const Glom::Document* document)
+{
+  if(!document)
+  {
+    std::cerr << G_STRFUNC << ": document is null" << std::endl;
+    return false;
+  }
+  
+  //Check that some data is as expected:
+  const Gnome::Gda::Value value("Born To Run");
+  const Gnome::Gda::SqlExpr where_clause = 
+    Glom::Utils::get_find_where_clause_quick(document, "albums", value);
+  
+  Glom::Utils::type_vecLayoutFields fieldsToGet;
+  Glom::sharedptr<const Glom::Field> field = document->get_field("albums", "album_id");
+  Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem->set_full_field_details(field);
+  fieldsToGet.push_back(layoutitem);
+  field = document->get_field("albums", "name");
+  layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem->set_full_field_details(field);
+  fieldsToGet.push_back(layoutitem);
+
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
+    Glom::Utils::build_sql_select_with_where_clause("albums",
+      fieldsToGet, where_clause);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = 
+    Glom::DbUtils::query_execute_select(builder);
+  if(!test_model_expected_size(data_model, 2, 1))
+  {
+    std::cerr << "Failure: Unexpected data model size with query: " << 
+      Glom::Utils::sqlbuilder_get_full_query(builder) << std::endl;
+    return false;
+  }
+  
+  const int count = Glom::DbUtils::count_rows_returned_by(builder);
+  if(count != 1 )
+  {
+    std::cerr << "Failure: The COUNT query returned an unexpected value: " << count << std::endl;
+    return false;
+  }
+  
   return true;
 }
 

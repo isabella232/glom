@@ -42,5 +42,7 @@ bool test_table_exists(const Glib::ustring& table_name, const Glom::Document& do
 
 void test_selfhosting_cleanup();
 
+bool test_example_musiccollection_data(const Glom::Document* document);
+
 #endif //GLOM_TEST_SELFHOSTING_UTILS_H
 

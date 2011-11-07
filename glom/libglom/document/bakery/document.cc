@@ -211,7 +211,9 @@ bool Document::read_from_disk(int& failure_code)
   }
   catch(const Gio::Error& ex)
   {
-    std::cout << "debug: " << G_STRFUNC << ": Error: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Error: " << ex.what() << std::endl;
+    std::cerr << " with m_file_uri=" << m_file_uri << std::endl;
+
 
     if(ex.code() == Gio::Error::NOT_FOUND)
       failure_code = LOAD_FAILURE_CODE_NOT_FOUND;
@@ -292,7 +294,16 @@ bool Document::write_to_disk()
       {
         //If it exists already then that's good.
         //Otherwise something unexpected happened.
-        if(ex.code() != Gio::Error::EXISTS)
+        if(ex.code() == Gio::Error::EXISTS)
+        {
+          if(parent->query_file_type() != Gio::FILE_TYPE_DIRECTORY)
+          {
+            std::cerr << G_STRFUNC << ": This part of the URI is not a directory: " << parent->get_uri() <<  std::endl;
+            std::cerr << "  using m_file_uri = " << m_file_uri << std::endl;
+            return false;
+          } 
+        }
+        else
         {
           std::cerr << G_STRFUNC << ": parent of uri=" << m_file_uri << "error=" << ex.what() << std::endl;
           return false;
@@ -309,7 +320,7 @@ bool Document::write_to_disk()
       }
       catch(const Gio::Error& ex)
       {
-        std::cerr << G_STRFUNC << ":" << m_file_uri << "error=" << ex.what() << std::endl;
+        std::cerr << G_STRFUNC << ": " << m_file_uri << ", error=" << ex.what() << std::endl;
         return false;
       }
     }

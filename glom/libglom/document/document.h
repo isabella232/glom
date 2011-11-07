@@ -416,7 +416,27 @@ public:
   void set_active_layout_platform(const Glib::ustring& layout_platform = Glib::ustring());
 
 #ifndef SWIG //Hide this API from swig.
+
   Glib::ustring build_and_get_contents() const;
+
+  /** This callback should show UI to indicate that work is still happening.
+   * For instance, a pulsing ProgressBar.
+   */
+  typedef sigc::slot<void> SlotProgress;
+  
+  /** Save a copy of the document as a backup.
+   * This document (and its URI) will not be changed.
+   * @param The location at which to save the backup Glom file.
+   * @result The URI of the .tar.gz tarball.
+   */
+  Glib::ustring save_backup_file(const Glib::ustring& uri, const SlotProgress& slot_progress);
+  
+  /**
+   * @param backup_uri: The URI of a .tar.gz backup file.
+   * @result The URI of the restored .glom file.
+   */
+  static Glib::ustring restore_backup_file(const Glib::ustring& backup_uri, const SlotProgress& slot_progress);
+  
 
 protected:
 
