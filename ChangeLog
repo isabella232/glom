@@ -1,3 +1,5 @@
+1.19.18:
+
 2011-11-07  Murray Cumming  <murrayc@murrayc.com>
 
 	Add a test of backup and restore.
@@ -5,17 +7,17 @@
 	* glom/application.cc: on_menu_developer_export_backup(),
 	do_restore_backup(): Move code into 
 	* glom/libglom/document/document.[h|cc]: save_backup() and 
-  restore_backup_file() so it is easier to test.
+	restore_backup_file() so it is easier to test.
 
 	* tests/test_selfhosting_new_from_example.cc: Move some testing into:
 	* tests/test_selfhosting_utils.[h|cc]: test_example_musiccollection_data()
 	to avoid repeating code.
 	
 	* Makefile_tests.am: Added a new test:
-  * tests/test_selfhosting_new_then_backup_restore.cc: Test the new 
-  Document functions, though the data check currently fails and is commented 
-  out. I think it is just a problem in the test because the data is there
-  when using the UI.
+	* tests/test_selfhosting_new_then_backup_restore.cc: Test the new 
+	Document functions, though the data check currently fails and is commented 
+	out. I think it is just a problem in the test because the data is there
+	when using the UI.
 	
 2011-11-07  Murray Cumming  <murrayc@murrayc.com>
 

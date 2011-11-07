@@ -1,3 +1,17 @@
+1.19.18 (unstable):
+
+* tests: Add a test of backup and restore.
+  (Murray Cumming)
+* Require libgda 5.0.2 to fix these Glom bugs:
+  - Can't see images.
+    Bug #662925
+  - Data doesn't display when a field is renamed to string with a hyphen.
+    Bug #661655 (Ben Konrath)
+  - SQL Errors when a relationship name has capital letters.
+    Bug #661073
+  (Murray Cumming)
+* Improvements to the (not compiled by default) SQLite code.
+
 1.19.17 (unstable):
 
 * Make connections to central PostgreSQL servers work again.
