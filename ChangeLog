@@ -1,5 +1,18 @@
 2011-11-08  Murray Cumming  <murrayc@murrayc.com>
 
+	Use escape_sql_id() for privileges SQL queries.
+
+	* glom/base_db.cc:
+	* glom/libglom/db_utils.cc:
+	* glom/libglom/privs.cc:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/mode_design/users/dialog_users_list.cc: Use 
+	DbUtils::escape_sql_id() instead of manually adding quotes with 
+	no escaping. This seems to be the right thing to do for these 
+	queries.
+
+2011-11-08  Murray Cumming  <murrayc@murrayc.com>
+
 	More use of escape_sql_id().
 
 	* glom/base_db.cc:

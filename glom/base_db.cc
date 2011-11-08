@@ -1738,15 +1738,14 @@ bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password,
   if(user.empty() || password.empty() || group.empty())
     return false;
 
-  //TODO: Quote and escape the group and user names.
   //Create the user:
   //Note that ' around the user fails, so we use ".
-  Glib::ustring strQuery = "CREATE USER \"" + user + "\" PASSWORD '" + password + "'" ; //TODO: Escape the password.
+  Glib::ustring strQuery = "CREATE USER " + DbUtils::escape_sql_id(user) + " PASSWORD '" + password + "'" ; //TODO: Escape the password.
   if(group == GLOM_STANDARD_GROUP_NAME_DEVELOPER)
     strQuery += " SUPERUSER CREATEDB CREATEROLE"; //Because SUPERUSER is not "inherited" from groups to members.
 
 
-  //Glib::ustring strQuery = "CREATE USER \"" + user + "\"";
+  //Glib::ustring strQuery = "CREATE USER " + DbUtils::escape_sql_id(user);
   //if(group == GLOM_STANDARD_GROUP_NAME_DEVELOPER)
   //  strQuery += " WITH SUPERUSER"; //Because SUPERUSER is not "inherited" from groups to members.
   //strQuery +=  " PASSWORD '" + password + "'" ; //TODO: Escape the password.
@@ -1760,7 +1759,7 @@ bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password,
   }
 
   //Add it to the group:
-  strQuery = "ALTER GROUP \"" + group + "\" ADD USER \"" + user + "\"";
+  strQuery = "ALTER GROUP " + DbUtils::escape_sql_id(group) + " ADD USER " + DbUtils::escape_sql_id(user);
   test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
@@ -1778,7 +1777,7 @@ bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password,
   for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
   {
     const Glib::ustring table_name = (*iter)->get_name();
-    const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON " + DbUtils::escape_sql_id(table_name) + " FROM \"" + user + "\"";
+    const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON " + DbUtils::escape_sql_id(table_name) + " FROM " + DbUtils::escape_sql_id(user);
     const bool test = DbUtils::query_execute_string(strQuery);
     if(!test)
       std::cerr << G_STRFUNC << ": REVOKE failed." << std::endl;
@@ -1793,7 +1792,7 @@ bool Base_DB::remove_user(const Glib::ustring& user)
   if(user.empty())
     return false;
 
-  const Glib::ustring strQuery = "DROP USER \"" + user + "\"";
+  const Glib::ustring strQuery = "DROP USER " + DbUtils::escape_sql_id(user);
   const bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
@@ -1809,7 +1808,7 @@ bool Base_DB::remove_user_from_group(const Glib::ustring& user, const Glib::ustr
   if(user.empty() || group.empty())
     return false;
 
-  const Glib::ustring strQuery = "ALTER GROUP \"" + group + "\" DROP USER \"" + user + "\"";
+  const Glib::ustring strQuery = "ALTER GROUP " + DbUtils::escape_sql_id(group) + " DROP USER " + DbUtils::escape_sql_id(user);
   const bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
@@ -1830,7 +1829,7 @@ bool Base_DB::set_database_owner_user(const Glib::ustring& user)
   if(database_name.empty())
     return false;
 
-  const Glib::ustring strQuery = "ALTER DATABASE \"" + database_name + "\" OWNER TO \"" + user + "\"";
+  const Glib::ustring strQuery = "ALTER DATABASE " + DbUtils::escape_sql_id(database_name) + " OWNER TO " + DbUtils::escape_sql_id(user);
   const bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
@@ -1854,7 +1853,7 @@ bool Base_DB::disable_user(const Glib::ustring& user)
     remove_user_from_group(user, group);
   }
 
-  const Glib::ustring strQuery = "ALTER ROLE \"" + user + "\" NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE";
+  const Glib::ustring strQuery = "ALTER ROLE " + DbUtils::escape_sql_id(user) + " NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE";
   const bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {

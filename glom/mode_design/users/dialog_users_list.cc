@@ -204,8 +204,7 @@ void Dialog_UsersList::on_button_user_add()
   if(!user.empty())
   {
     //Add it to the group:
-    //TODO: Quote and escape the group and user names?
-    const Glib::ustring strQuery = "ALTER GROUP \"" + m_combo_group->get_active_text() + "\" ADD USER \"" + user + "\"";
+    const Glib::ustring strQuery = "ALTER GROUP " + DbUtils::escape_sql_id(m_combo_group->get_active_text()) + " ADD USER " + DbUtils::escape_sql_id(user);
     const bool test = DbUtils::query_execute_string(strQuery);
     if(!test)
       std::cerr << G_STRFUNC << ": ALTER GROUP failed." << std::endl;
@@ -215,9 +214,8 @@ void Dialog_UsersList::on_button_user_add()
 
     for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
     {
-      //TODO: Quote and escape user?
       const Glib::ustring table_name = (*iter)->get_name();
-      const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON " + DbUtils::escape_sql_id(table_name) + " FROM \"" + user + "\"";
+      const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON " + DbUtils::escape_sql_id(table_name) + " FROM " + DbUtils::escape_sql_id(user);
       const bool test = DbUtils::query_execute_string(strQuery);
       if(!test)
         std::cerr << G_STRFUNC << ": REVOKE failed." << std::endl;
@@ -328,7 +326,7 @@ void Dialog_UsersList::on_button_user_edit()
 
       if(!user.empty() && !password.empty())
       {
-        const Glib::ustring strQuery = "ALTER USER \"" + user + "\" PASSWORD '" + password + "'" ; //TODO: Escape the password.
+        const Glib::ustring strQuery = "ALTER USER " + DbUtils::escape_sql_id(user) + " PASSWORD '" + password + "'" ; //TODO: Escape the password.
         const bool test = DbUtils::query_execute_string(strQuery);
         if(!test)
           std::cerr << G_STRFUNC << ": ALTER USER failed." << std::endl;

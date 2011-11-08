@@ -222,7 +222,7 @@ void Dialog_GroupsList::on_button_group_delete()
 
         if(response == Gtk::RESPONSE_OK)
         {
-          const Glib::ustring strQuery = "DROP GROUP \"" + group + "\"";
+          const Glib::ustring strQuery = "DROP GROUP " + DbUtils::escape_sql_id(group);
           const bool test = DbUtils::query_execute_string(strQuery);
           if(!test)
             std::cerr << G_STRFUNC << ": DROP GROUP failed." << std::endl;
@@ -255,7 +255,7 @@ void Dialog_GroupsList::on_button_group_new()
 
   if(!group_name.empty())
   {
-    const Glib::ustring strQuery = "CREATE GROUP \"" + group_name + "\"";
+    const Glib::ustring strQuery = "CREATE GROUP " + DbUtils::escape_sql_id(group_name);
     const bool test = DbUtils::query_execute_string(strQuery);
     if(!test)
       std::cout << "debug: " << G_STRFUNC << ": CREATE GROUP failed." << std::endl;
@@ -485,8 +485,7 @@ bool Dialog_GroupsList::set_table_privilege(const Glib::ustring& table_name, con
   else
     strQuery += "FROM";
 
-  //TODO: Quote and escape group_name?
-  strQuery += " GROUP \"" + group_name + "\"";
+  strQuery += " GROUP " + DbUtils::escape_sql_id(group_name);
 
   const bool test = DbUtils::query_execute_string(strQuery); //TODO: Handle errors.
   if(!test)
