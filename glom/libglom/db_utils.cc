@@ -1857,6 +1857,18 @@ int count_rows_returned_by(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql
   return result;
 }
 
+bool rename_table(const Glib::ustring& table_name, const Glib::ustring& new_table_name)
+{
+  //TODO: Escape the table names:
+  return query_execute_string( "ALTER TABLE \"" + table_name + "\" RENAME TO \"" + new_table_name + "\"");
+}
+
+bool drop_table(const Glib::ustring& table_name)
+{
+  //TODO: Escape the table names:
+  return DbUtils::query_execute_string( "DROP TABLE \"" + table_name + "\"");
+}
+
 } //namespace DbUtils
 
 } //namespace Glom

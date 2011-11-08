@@ -314,7 +314,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
           //Delete the table:
           if(iButtonClicked == Gtk::RESPONSE_OK)
           {
-            const bool test = DbUtils::query_execute_string( "DROP TABLE \"" + table_name + "\"");
+            const bool test = DbUtils::drop_table(table_name);
             if(!test)
               std::cerr << G_STRFUNC << ": DROP TABLE failed." << std::endl;
             else
@@ -407,7 +407,7 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
         //Rename the table:
         if(iButtonClicked == Gtk::RESPONSE_OK)
         {
-          const bool test = DbUtils::query_execute_string( "ALTER TABLE \"" + table_name + "\" RENAME TO \"" + table_name_new + "\"");
+          const bool test = DbUtils::rename_table(table_name, table_name_new);
           if(test)
           {
             //Change the AddDel item's key:

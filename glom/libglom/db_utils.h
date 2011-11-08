@@ -139,6 +139,15 @@ Glib::ustring get_unused_database_name(const Glib::ustring& base_name);
  */
 int count_rows_returned_by(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql_query);
 
+/** Rename a table in the database.
+ */
+bool rename_table(const Glib::ustring& table_name, const Glib::ustring& new_table_name);
+
+/* Remove a table from the database.
+ */
+bool drop_table(const Glib::ustring& table_name);
+
+
 } //namespace DbUtils
 
 } //namespace Glom

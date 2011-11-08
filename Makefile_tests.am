@@ -31,6 +31,7 @@ check_PROGRAMS =						\
 	tests/test_selfhosting_new_then_image \
 	tests/test_selfhosting_new_then_backup_restore \
 	tests/test_selfhosting_new_then_get_privs \
+	tests/test_selfhosting_new_then_alter_table \
 	tests/test_selfhosting_sqlinjection \
 	tests/import/test_parsing \
 	tests/import/test_signals
@@ -50,6 +51,7 @@ TESTS =	tests/test_document_load	\
 	tests/test_selfhosting_new_then_backup_restore \
 	tests/test_selfhosting_new_then_image \
 	tests/test_selfhosting_new_then_get_privs \
+	tests/test_selfhosting_new_then_alter_table \
 	tests/test_selfhosting_sqlinjection \
 	tests/import/test_parsing \
 	tests/import/test_signals
@@ -159,6 +161,10 @@ tests_test_selfhosting_new_then_backup_restore_CPPFLAGS = $(tests_cppflags)
 tests_test_selfhosting_new_then_get_privs_SOURCES = tests/test_selfhosting_new_then_get_privs.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_then_get_privs_LDADD = $(tests_ldadd)
 tests_test_selfhosting_new_then_get_privs_CPPFLAGS = $(tests_cppflags)
+
+tests_test_selfhosting_new_then_alter_table_SOURCES = tests/test_selfhosting_new_then_alter_table.cc $(sources_test_selfhosting_utils)
+tests_test_selfhosting_new_then_alter_table_LDADD = $(tests_ldadd)
+tests_test_selfhosting_new_then_alter_table_CPPFLAGS = $(tests_cppflags)
 
 tests_test_selfhosting_sqlinjection_SOURCES = tests/test_selfhosting_sqlinjection.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_sqlinjection_LDADD = $(tests_ldadd)
