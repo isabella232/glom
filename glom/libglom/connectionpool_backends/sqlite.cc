@@ -21,6 +21,7 @@
 #include <libglom/libglom_config.h>
 #include <libglom/connectionpool_backends/sqlite.h>
 #include <libglom/utils.h>
+#include <libglom/db_utils.h>
 #include <giomm/file.h>
 #include <libgdamm/metastore.h>
 
@@ -204,35 +205,35 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
       {
       case Field::TYPE_TEXT:
         if(column->gtype == G_TYPE_BOOLEAN)
-	  trans_fields += Glib::ustring("(CASE WHEN \"") + column->column_name + "\" = 1 THEN 'true' "
-                                              "WHEN \""  + column->column_name + "\" = 0 THEN 'false' "
-                                              "WHEN \""  + column->column_name + "\" IS NULL THEN 'false' END)";
+	  trans_fields += "(CASE WHEN "+ DbUtils::escape_sql_id(column->column_name) + " = 1 THEN 'true' "
+                                              "WHEN " + DbUtils::escape_sql_id(column->column_name) + " = 0 THEN 'false' "
+                                              "WHEN " + DbUtils::escape_sql_id(column->column_name) + " IS NULL THEN 'false' END)";
 	else if(column->gtype == GDA_TYPE_BLOB)
 	  trans_fields += "''";
 	else
           // Make sure we don't insert NULL strings, as we ignore that concept in Glom.
-          trans_fields += Glib::ustring("(CASE WHEN \"") + column->column_name + "\" IS NULL THEN '' "
-                                              "WHEN \""  + column->column_name + "\" IS NOT NULL THEN \"" + column->column_name + "\" END)";
+          trans_fields += "(CASE WHEN "+ DbUtils::escape_sql_id(column->column_name) + " IS NULL THEN '' "
+                                              "WHEN " + DbUtils::escape_sql_id(column->column_name) + " IS NOT NULL THEN " + DbUtils::escape_sql_id(column->column_name) + " END)";
 	break;
       case Field::TYPE_NUMERIC:
         if(column->gtype == G_TYPE_BOOLEAN)
-          trans_fields += Glib::ustring("(CASE WHEN \"") + column->column_name + "\" = 0 THEN 0 "
-                                              "WHEN \""  + column->column_name + "\" != 0 THEN 1 "
-                                              "WHEN \""  + column->column_name + "\" IS NULL THEN 0 END)";
+          trans_fields += "(CASE WHEN "+ DbUtils::escape_sql_id(column->column_name) + " = 0 THEN 0 "
+                                              "WHEN " + DbUtils::escape_sql_id(column->column_name) + " != 0 THEN 1 "
+                                              "WHEN " + DbUtils::escape_sql_id(column->column_name) + " IS NULL THEN 0 END)";
         else if(column->gtype == GDA_TYPE_BLOB || column->gtype == G_TYPE_DATE || column->gtype == GDA_TYPE_TIME)
           trans_fields += '0';
         else
-          trans_fields += Glib::ustring("CAST(") + column->column_name + " AS real)";
+          trans_fields += Glib::ustring("CAST(")+ DbUtils::escape_sql_id(column->column_name) + " AS real)";
         break;
       case Field::TYPE_BOOLEAN:
         if(column->gtype == G_TYPE_STRING)
-          trans_fields += Glib::ustring("(CASE WHEN \"") + column->column_name + "\" = 'true' THEN 1 "
-                                              "WHEN \""  + column->column_name + "\" = 'false' THEN 0 "
-                                              "WHEN \""  + column->column_name + "\" IS NULL THEN 0 END)";
+          trans_fields += "(CASE WHEN "+ DbUtils::escape_sql_id(column->column_name) + " = 'true' THEN 1 "
+                                              "WHEN " + DbUtils::escape_sql_id(column->column_name) + " = 'false' THEN 0 "
+                                              "WHEN " + DbUtils::escape_sql_id(column->column_name) + " IS NULL THEN 0 END)";
         else if(column->gtype == G_TYPE_DOUBLE)
-          trans_fields += Glib::ustring("(CASE WHEN \"") + column->column_name + "\" = 0 THEN 0 "
-                                              "WHEN \""  + column->column_name + "\" != 0 THEN 1 "
-                                              "WHEN \""  + column->column_name + "\" IS NULL THEN 0 END)";
+          trans_fields += "(CASE WHEN "+ DbUtils::escape_sql_id(column->column_name) + " = 0 THEN 0 "
+                                              "WHEN " + DbUtils::escape_sql_id(column->column_name) + " != 0 THEN 1 "
+                                              "WHEN " + DbUtils::escape_sql_id(column->column_name) + " IS NULL THEN 0 END)";
         else if(column->gtype == G_TYPE_BOOLEAN)
           trans_fields += column->column_name;
         else
@@ -242,13 +243,13 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
         if(column->gtype == G_TYPE_BOOLEAN || column->gtype == GDA_TYPE_BLOB || column->gtype == G_TYPE_DOUBLE)
           trans_fields += "NULL";
         else
-          trans_fields += Glib::ustring("date(") + column->column_name + ')';
+          trans_fields += Glib::ustring("date(")+ DbUtils::escape_sql_id(column->column_name) + ')';
         break;
       case Field::TYPE_TIME:
         if(column->gtype == G_TYPE_BOOLEAN || column->gtype == GDA_TYPE_BLOB || column->gtype == G_TYPE_DOUBLE)
           trans_fields += "NULL";
         else
-          trans_fields += Glib::ustring("time(") + column->column_name + ')';
+          trans_fields += Glib::ustring("time(")+ DbUtils::escape_sql_id(column->column_name) + ')';
         break;
       case Field::TYPE_IMAGE:
         if(column->gtype == GDA_TYPE_BLOB)
@@ -282,7 +283,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
 
       if(!trans_fields.empty())
         trans_fields += ',';
-      Gnome::Gda::Value default_value = field->get_default_value();
+      const Gnome::Gda::Value default_value = field->get_default_value();
       if(default_value.get_value_type() != G_TYPE_NONE && !default_value.is_null())
         trans_fields += field->sql(default_value, connection);
       else
@@ -324,9 +325,11 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
 
     if(!trans_fields.empty())
     {
-      connection->statement_execute_non_select(Glib::ustring("INSERT INTO \"") + TEMPORARY_TABLE_NAME + "\" SELECT " + trans_fields + " FROM \"" + table_name + "\"");
-      connection->statement_execute_non_select("DROP TABLE " + table_name);
-      connection->statement_execute_non_select(Glib::ustring("ALTER TABLE \"") + TEMPORARY_TABLE_NAME + "\" RENAME TO \"" + table_name + "\"");
+      const Glib::ustring query_insert = "INSERT INTO " + DbUtils::escape_sql_id(TEMPORARY_TABLE_NAME) + " SELECT " + trans_fields + " FROM " + DbUtils::escape_sql_id(table_name);
+      //std::cout << "debug: query_insert=" << query_insert << std::endl;
+      connection->statement_execute_non_select(query_insert);
+      connection->statement_execute_non_select("DROP TABLE " + DbUtils::escape_sql_id(table_name));
+      connection->statement_execute_non_select("ALTER TABLE " + DbUtils::escape_sql_id(TEMPORARY_TABLE_NAME) + " RENAME TO " + DbUtils::escape_sql_id(table_name));
 
       connection->commit_transaction(TRANSACTION_NAME);
 
@@ -351,23 +354,23 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   return false;
 }
 
-void Sqlite::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const sharedptr<const Field>& field)
+bool Sqlite::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const sharedptr<const Field>& field)
 {
   // Sqlite does not support adding primary key columns. So recreate the table
   // in that case.
   if(!field->get_primary_key())
   {
-    Backend::add_column(connection, table_name, field);
+    return Backend::add_column(connection, table_name, field);
   }
   else
   {
-    recreate_table(connection, table_name, type_vec_strings(), type_vec_const_fields(1, field), type_mapFieldChanges());
+    return recreate_table(connection, table_name, type_vec_strings(), type_vec_const_fields(1, field), type_mapFieldChanges());
   }
 }
 
-void Sqlite::drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name)
+bool Sqlite::drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
-  recreate_table(connection, table_name, type_vec_strings(1, field_name), type_vec_const_fields(), type_mapFieldChanges());
+  return recreate_table(connection, table_name, type_vec_strings(1, field_name), type_vec_const_fields(), type_mapFieldChanges());
 }
 
 bool Sqlite::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) throw()

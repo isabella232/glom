@@ -676,9 +676,9 @@ bool ConnectionPool::add_column(const Glib::ustring& table_name, const sharedptr
 
   try
   {
-    m_backend->add_column(m_refGdaConnection, table_name, field);
+    const bool result = m_backend->add_column(m_refGdaConnection, table_name, field);
     m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
-    return true;
+    return result;
   }
   catch(const Glib::Error& ex)
   {
@@ -701,9 +701,9 @@ bool ConnectionPool::drop_column(const Glib::ustring& table_name, const Glib::us
 
   try
   {
-    m_backend->drop_column(m_refGdaConnection, table_name, field_name);
+    const bool result = m_backend->drop_column(m_refGdaConnection, table_name, field_name);
     m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
-    return true;
+    return result;
   }
   catch(const Glib::Error& ex)
   {

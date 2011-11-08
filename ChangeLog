@@ -1,5 +1,22 @@
 2011-11-08  Murray Cumming  <murrayc@murrayc.com>
 
+	libglom: Use escape_sql_id() for column add/crop/change.
+
+	* glom/libglom/connectionpool.cc: add_column(), drop_column(),
+	
+	* glom/libglom/connectionpool_backends/backend.[h|cc]:
+	* glom/libglom/connectionpool_backends/postgres.cc
+	* glom/libglom/connectionpool_backends/sqlite.[h|cc]:
+	add_column(), drop_column(): Return a bool to indicate failure.
+	change_columns(): Report false return values from these.
+
+	* Makefile_tests.am
+	* tests/test_selfhosting_new_then_change_columns.cc: Add a simple
+	test, though we do not yet test that the expected change really
+	happened.
+
+2011-11-08  Murray Cumming  <murrayc@murrayc.com>
+
 	libglom: Add escape_sql_id() and use it for table add/drop/rename.
 
 	* glom/libglom/db_utils.[h|cc]: Add escape_sql_id(), using 

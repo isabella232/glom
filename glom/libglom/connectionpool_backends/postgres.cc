@@ -24,6 +24,7 @@
 #include <libglom/connectionpool_backends/postgres.h>
 #include <libglom/spawn_with_feedback.h>
 #include <libglom/utils.h>
+#include <libglom/db_utils.h>
 #include <libgdamm/config.h>
 #include <giomm/file.h>
 #include <glibmm/convert.h>
@@ -176,10 +177,15 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
 		    // primary key columns.
 		    temp_field->set_primary_key(false);
 
-		    add_column(connection, table_name, temp_field);
+		    const bool added = add_column(connection, table_name, temp_field);
+                    if(!added)
+                    {
+                      std::cerr << G_STRFUNC << ": add_column() failed." << std::endl;
+                      //TODO: Stop the transaction and return?
+                    }
 
 		    Glib::ustring conversion_command;
-		    const Glib::ustring field_name_old_quoted = "\"" + old_fields[i]->get_name() + "\"";
+		    const Glib::ustring field_name_old_quoted = DbUtils::escape_sql_id(old_fields[i]->get_name());
 		    const Field::glom_field_type old_field_type = old_fields[i]->get_glom_type();
 
 		    if(Field::get_conversion_possible(old_fields[i]->get_glom_type(), new_fields[i]->get_glom_type()))
@@ -263,7 +269,8 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
 		        }
 		      }
 
-		      connection->statement_execute_non_select("UPDATE \"" + table_name + "\" SET \"" + TEMP_COLUMN_NAME + "\" = " + conversion_command);
+                      //TODO: Use SqlBuilder here?
+		      connection->statement_execute_non_select("UPDATE " + DbUtils::escape_sql_id(table_name) + " SET " + DbUtils::escape_sql_id(TEMP_COLUMN_NAME) + " = " + conversion_command);
 		    }
 		    else
 		    {
@@ -272,12 +279,12 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
 
 		    drop_column(connection, table_name, old_fields[i]->get_name());
 
-		    connection->statement_execute_non_select("ALTER TABLE \"" + table_name + "\" RENAME COLUMN \"" + TEMP_COLUMN_NAME + "\" TO \"" + new_fields[i]->get_name() + "\"");
+		    connection->statement_execute_non_select("ALTER TABLE " + DbUtils::escape_sql_id(table_name) + " RENAME COLUMN " + DbUtils::escape_sql_id(TEMP_COLUMN_NAME) + " TO " + DbUtils::escape_sql_id(new_fields[i]->get_name()));
 
 		    // Read primary key constraint
 		    if(new_fields[i]->get_primary_key())
 		    {
-		      connection->statement_execute_non_select("ALTER TABLE \"" + table_name + "\" ADD PRIMARY KEY (\"" + new_fields[i]->get_name() + "\")");
+		      connection->statement_execute_non_select("ALTER TABLE  " + DbUtils::escape_sql_id(table_name) + " ADD PRIMARY KEY (" + DbUtils::escape_sql_id(new_fields[i]->get_name()) + ")");
 		    }
 		  }
 		  else
@@ -298,19 +305,19 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
 		        primary_key_was_set = true;
 
 		        // Primary key was added
-		       connection->statement_execute_non_select("ALTER TABLE \"" + table_name + "\" ADD PRIMARY KEY (\"" + old_fields[i]->get_name() + "\")");
+		       connection->statement_execute_non_select("ALTER TABLE " + DbUtils::escape_sql_id(table_name) + " ADD PRIMARY KEY (" + DbUtils::escape_sql_id(old_fields[i]->get_name()) + ")");
 
 		        // Remove unique key constraint, because this is already implied in
 		        // the field being primary key.
 		        if(old_fields[i]->get_unique_key())
-		          connection->statement_execute_non_select("ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + old_fields[i]->get_name() + "_key");
+		          connection->statement_execute_non_select("ALTER TABLE " + DbUtils::escape_sql_id(table_name) + " DROP CONSTRAINT " + DbUtils::escape_sql_id(old_fields[i]->get_name() + "_key"));
 		      }
 		      else
 		      {
 		        primary_key_was_unset = true;
 
 		        // Primary key was removed
-		        connection->statement_execute_non_select("ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + table_name + "_pkey\"");
+		        connection->statement_execute_non_select("ALTER TABLE " + DbUtils::escape_sql_id(table_name) + " DROP CONSTRAINT " + DbUtils::escape_sql_id(table_name + "_pkey"));
 		      }
 		    }
 
@@ -321,11 +328,11 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
 		      // to do that separately if we already made it a primary key
 		      if(!primary_key_was_set && new_fields[i]->get_unique_key())
 		      {
-		        connection->statement_execute_non_select("ALTER TABLE \"" + table_name + "\" ADD CONSTRAINT \"" + old_fields[i]->get_name() + "_key\" UNIQUE (\"" + old_fields[i]->get_name() + "\")");
+		        connection->statement_execute_non_select("ALTER TABLE " + DbUtils::escape_sql_id(table_name) + " ADD CONSTRAINT " + DbUtils::escape_sql_id(old_fields[i]->get_name() + "_key") + " UNIQUE (" + DbUtils::escape_sql_id(old_fields[i]->get_name()) + ")");
 		      }
 		      else if(!primary_key_was_unset && !new_fields[i]->get_unique_key() && !new_fields[i]->get_primary_key())
 		      {
-		        connection->statement_execute_non_select("ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + old_fields[i]->get_name() + "_key\"");
+		        connection->statement_execute_non_select("ALTER TABLE " + DbUtils::escape_sql_id(table_name) + " DROP CONSTRAINT " + DbUtils::escape_sql_id(old_fields[i]->get_name() + "_key"));
 		      }
 		    }
 
@@ -333,13 +340,13 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
 		    {
 		      if(old_fields[i]->get_default_value() != new_fields[i]->get_default_value())
 		      {
-		        connection->statement_execute_non_select("ALTER TABLE \"" + table_name + "\" ALTER COLUMN \"" + old_fields[i]->get_name() + "\" SET DEFAULT " + new_fields[i]->sql(new_fields[i]->get_default_value(), connection));
+		        connection->statement_execute_non_select("ALTER TABLE " + DbUtils::escape_sql_id(table_name) + " ALTER COLUMN " + DbUtils::escape_sql_id(old_fields[i]->get_name()) + " SET DEFAULT " + new_fields[i]->sql(new_fields[i]->get_default_value(), connection));
 		      }
 		    }
 
 		    if(old_fields[i]->get_name() != new_fields[i]->get_name())
 		    {
-		      connection->statement_execute_non_select("ALTER TABLE \"" + table_name + "\" RENAME COLUMN \"" + old_fields[i]->get_name() + "\" TO \"" + new_fields[i]->get_name() + "\"");
+		      connection->statement_execute_non_select("ALTER TABLE " + DbUtils::escape_sql_id(table_name) + " RENAME COLUMN " + DbUtils::escape_sql_id(old_fields[i]->get_name()) + " TO " + DbUtils::escape_sql_id(new_fields[i]->get_name()));
 		    }
 		  }
 		}

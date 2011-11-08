@@ -65,7 +65,7 @@ bool Backend::set_network_shared(const SlotProgress& /* slot_progress */, bool /
   return true; //Success at doing nothing.
 }
 
-void Backend::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const sharedptr<const Field>& field)
+bool Backend::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const sharedptr<const Field>& field)
 {
   Glib::RefPtr<Gnome::Gda::ServerProvider> provider = connection->get_provider();
   Glib::RefPtr<Gnome::Gda::ServerOperation> operation = provider->create_operation(connection, Gnome::Gda::SERVER_OPERATION_ADD_COLUMN);
@@ -77,10 +77,10 @@ void Backend::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection,
   operation->set_value_at("/COLUMN_DEF_P/COLUMN_PKEY", field->get_primary_key());
   operation->set_value_at("/COLUMN_DEF_P/COLUMN_UNIQUE", field->get_unique_key());
 
-  provider->perform_operation(connection, operation);
+  return provider->perform_operation(connection, operation);
 }
 
-void Backend::drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name)
+bool Backend::drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   Glib::RefPtr<Gnome::Gda::ServerProvider> provider = connection->get_provider();
   Glib::RefPtr<Gnome::Gda::ServerOperation> operation = provider->create_operation(connection, Gnome::Gda::SERVER_OPERATION_DROP_COLUMN);
@@ -88,7 +88,7 @@ void Backend::drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection
   //TODO: Quote table name and column name?
   operation->set_value_at("/COLUMN_DESC_P/TABLE_NAME", table_name);
   operation->set_value_at("/COLUMN_DESC_P/COLUMN_NAME", field_name);
-  provider->perform_operation(connection, operation);
+  return provider->perform_operation(connection, operation);
 }
 
 void Backend::set_database_directory_uri(const std::string& directory_uri)
