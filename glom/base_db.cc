@@ -1738,6 +1738,7 @@ bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password,
   if(user.empty() || password.empty() || group.empty())
     return false;
 
+  //TODO: Quote and escape the group and user names.
   //Create the user:
   //Note that ' around the user fails, so we use ".
   Glib::ustring strQuery = "CREATE USER \"" + user + "\" PASSWORD '" + password + "'" ; //TODO: Escape the password.
@@ -1776,7 +1777,8 @@ bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password,
 
   for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
   {
-    const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON \"" + (*iter)->get_name() + "\" FROM \"" + user + "\"";
+    const Glib::ustring table_name = (*iter)->get_name();
+    const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON " + DbUtils::escape_sql_id(table_name) + " FROM \"" + user + "\"";
     const bool test = DbUtils::query_execute_string(strQuery);
     if(!test)
       std::cerr << G_STRFUNC << ": REVOKE failed." << std::endl;

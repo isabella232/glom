@@ -477,7 +477,7 @@ bool Dialog_GroupsList::set_table_privilege(const Glib::ustring& table_name, con
   else if(priv == PRIV_DELETE)
     strPrivilege = "DELETE";
 
-  strQuery += " " + strPrivilege + " ON \"" + table_name + "\" ";
+  strQuery += " " + strPrivilege + " ON " + DbUtils::escape_sql_id(table_name) + " ";
 
   //This must match the Grant or Revoke:
   if(grant)
@@ -485,6 +485,7 @@ bool Dialog_GroupsList::set_table_privilege(const Glib::ustring& table_name, con
   else
     strQuery += "FROM";
 
+  //TODO: Quote and escape group_name?
   strQuery += " GROUP \"" + group_name + "\"";
 
   const bool test = DbUtils::query_execute_string(strQuery); //TODO: Handle errors.

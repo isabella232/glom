@@ -226,11 +226,12 @@ void Privs::set_table_privileges(const Glib::ustring& group_name, const Glib::us
     }
   }
 
-  strQuery += " " + strPrivilege + " ON \"" + table_name + "\" ";
+  strQuery += " " + strPrivilege + " ON " + DbUtils::escape_sql_id(table_name) + " ";
 
   //This must match the Grant or Revoke:
   strQuery += "TO";
 
+  //TODO: Quote and escape group_name?
   strQuery += " GROUP \"" + group_name + "\"";
 
   const bool test = DbUtils::query_execute_string(strQuery);

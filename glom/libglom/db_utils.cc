@@ -552,6 +552,7 @@ bool add_standard_groups(Document* document)
     type_vec_strings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
     if(iterFind == vecGroups.end())
     {
+      //TODO: Escape and quote the user and group names here?
       //The "SUPERUSER" here has no effect because SUPERUSER is not "inherited" to member users.
       //But let's keep it to make the purpose of this group obvious.
       bool test = query_execute_string("CREATE GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" WITH SUPERUSER");
@@ -1085,20 +1086,6 @@ bool create_table_with_default_fields(Document* document, const Glib::ustring& t
   table_info->set_title( Utils::title_from_string( table_name ) ); //Start with a title that might be appropriate.
 
   created = create_table(table_info, fields);
-
-    //Create a table with 1 "ID" field:
-   //MSYQL:
-    //query_execute( "CREATE TABLE \"" + table_name + "\" (" + primary_key_name + " INT NOT NULL AUTO_INCREMENT PRIMARY KEY)" );
-    //query_execute( "INSERT INTO \"" + table_name + "\" VALUES (0)" );
-
-    //PostgresSQL:
-    //query_execute( "CREATE TABLE \"" + table_name + "\" (\"" + primary_key_name + "\" serial NOT NULL  PRIMARY KEY)" );
-
-    //query_execute( "CREATE TABLE \"" + table_name + "\" (" +
-    //  field_primary_key->get_name() + " numeric NOT NULL  PRIMARY KEY," +
-    //  extra_field_description + "varchar, " +
-    //  extra_field_comments + "varchar" +
-    //  ")" );
 
   if(created)
   {

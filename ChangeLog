@@ -1,5 +1,18 @@
 2011-11-08  Murray Cumming  <murrayc@murrayc.com>
 
+	More use of escape_sql_id().
+
+	* glom/base_db.cc:
+	* glom/libglom/db_utils.cc:
+	* glom/libglom/privs.cc:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/mode_design/users/dialog_users_list.cc: Use 
+	escape_sql_id() instead of manually adding quotes with no 
+	escaping. However, I have not yet done this for group and 
+	user names.
+
+2011-11-08  Murray Cumming  <murrayc@murrayc.com>
+
 	libglom: Remove LayoutItem_Field::get_sql_name().
 
 	* glom/libglom/utils.cc: build_sql_select_add_fields_to_get():
