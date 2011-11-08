@@ -1144,7 +1144,7 @@ bool create_table(const sharedptr<const TableInfo>& table_info, const Document::
     info->set_g_type( Field::get_gda_type_for_glom_type(field->get_glom_type()) );
     field->set_field_info(info); //TODO_Performance
 
-    Glib::ustring sql_field_description = "\"" + field->get_name() + "\" " + field->get_sql_type();
+    Glib::ustring sql_field_description = escape_sql_id(field->get_name()) + " " + field->get_sql_type();
 
     if(field->get_primary_key())
       sql_field_description += " NOT NULL  PRIMARY KEY";
@@ -1166,7 +1166,7 @@ bool create_table(const sharedptr<const TableInfo>& table_info, const Document::
   {
     //TODO: Escape the table name?
     //TODO: Use GDA_SERVER_OPERATION_CREATE_TABLE instead?
-    table_creation_succeeded = query_execute_string( "CREATE TABLE \"" + table_info->get_name() + "\" (" + sql_fields + ");" );
+    table_creation_succeeded = query_execute_string( "CREATE TABLE " + escape_sql_id(table_info->get_name()) + " (" + sql_fields + ");" );
     if(!table_creation_succeeded)
       std::cerr << G_STRFUNC << ": CREATE TABLE failed." << std::endl;
   }
@@ -1860,14 +1860,35 @@ int count_rows_returned_by(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql
 bool rename_table(const Glib::ustring& table_name, const Glib::ustring& new_table_name)
 {
   //TODO: Escape the table names:
-  return query_execute_string( "ALTER TABLE \"" + table_name + "\" RENAME TO \"" + new_table_name + "\"");
+  return query_execute_string( "ALTER TABLE " + escape_sql_id(table_name) + " RENAME TO " + escape_sql_id(new_table_name));
 }
 
 bool drop_table(const Glib::ustring& table_name)
 {
   //TODO: Escape the table names:
-  return DbUtils::query_execute_string( "DROP TABLE \"" + table_name + "\"");
+  return DbUtils::query_execute_string( "DROP TABLE " + escape_sql_id(table_name));
 }
+
+Glib::ustring escape_sql_id(const Glib::ustring& id)
+{
+  if(id.empty())
+  {
+    std::cerr << G_STRFUNC << ": id is empty." << std::endl;
+    return id;
+  }
+
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  if(!gda_connection)
+  {
+    std::cerr << G_STRFUNC << ": No gda_connection." << std::endl;
+    return id;
+  }
+
+  //Always put it in quotes even if 
+
+  return gda_connection->quote_sql_identifier(id);
+}
+
 
 } //namespace DbUtils
 

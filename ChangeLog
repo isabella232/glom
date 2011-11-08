@@ -1,5 +1,16 @@
 2011-11-08  Murray Cumming  <murrayc@murrayc.com>
 
+	libglom: Add escape_sql_id() and use it for table add/drop/rename.
+
+	* glom/libglom/db_utils.[h|cc]: Add escape_sql_id(), using 
+	gda_connection_quote_sql_identifier().
+	create_table(), rename_table(), drop_table(): Use it instead of 
+	manually adding quotes with no escaping.
+	* tests/test_selfhosting_new_then_alter_table.cc: Mention that 
+	the commented-out test still fails because of libgda bug #663608 .
+
+2011-11-08  Murray Cumming  <murrayc@murrayc.com>
+
 	libglom: Add DbUtils::rename_table() and drop_table() and test them.
 
 	* glom/navigation/box_tables.c: Move query-building code to 
