@@ -1,3 +1,12 @@
+1.19.19 (unstable):
+
+* Use correct escapign of SQL identifiers in the custom SQL queries 
+  that change database structure or GROUPS and USERS.
+  However, this will fail with quote characters due to libgda bug #663608
+* Tests: Test some changes of database structure.
+* Require the latest libgdamm.
+  (Murray Cumming)
+
 1.19.18 (unstable):
 
 * tests: Add a test of backup and restore.
