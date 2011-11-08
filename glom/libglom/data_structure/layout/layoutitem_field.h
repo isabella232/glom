@@ -153,10 +153,6 @@ public:
    */
   bool is_same_field(const sharedptr<const LayoutItem_Field>& field) const;
 
-  /** Returns, for instance, "mytable"."myfield". 
-   */
-  Glib::ustring get_sql_name(const Glib::ustring& parent_table) const;
-
 private:
 
   Glib::ustring get_title_no_custom() const;

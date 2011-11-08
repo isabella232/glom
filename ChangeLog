@@ -1,5 +1,15 @@
 2011-11-08  Murray Cumming  <murrayc@murrayc.com>
 
+	libglom: Remove LayoutItem_Field::get_sql_name().
+
+	* glom/libglom/utils.cc: build_sql_select_add_fields_to_get():
+	Use SqlBuilder::add_field_id() instead of 
+	LayoutItemField::get_sql_name().
+	* glom/libglom/data_structure/layout/layoutitem_field.[h|cc]:
+	Remove the now unused get_sql_name() method.
+
+2011-11-08  Murray Cumming  <murrayc@murrayc.com>
+
 	libglom: Use escape_sql_id() for column add/crop/change.
 
 	* glom/libglom/connectionpool.cc: add_column(), drop_column(),

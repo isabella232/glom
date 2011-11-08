@@ -324,12 +324,6 @@ bool LayoutItem_Field::is_same_field(const sharedptr<const LayoutItem_Field>& fi
          (*uses_a == *uses_b);
 }
 
-Glib::ustring LayoutItem_Field::get_sql_name(const Glib::ustring& parent_table) const
-{
-  return "\"" + get_sql_table_or_join_alias_name(parent_table) + "\".\"" + get_name() + "\"";
-}
-
-
 } //namespace Glom
 
 
