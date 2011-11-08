@@ -555,7 +555,8 @@ bool add_standard_groups(Document* document)
       //TODO: Escape and quote the user and group names here?
       //The "SUPERUSER" here has no effect because SUPERUSER is not "inherited" to member users.
       //But let's keep it to make the purpose of this group obvious.
-      bool test = query_execute_string("CREATE GROUP " + DbUtils::escape_sql_id(GLOM_STANDARD_GROUP_NAME_DEVELOPER) + " WITH SUPERUSER");
+      bool test = query_execute_string(
+        DbUtils::build_query_create_group(GLOM_STANDARD_GROUP_NAME_DEVELOPER, true /* superuser */));
       if(!test)
       {
         std::cerr << G_STRFUNC << ": CREATE GROUP failed when adding the developer group." << std::endl;
@@ -565,7 +566,7 @@ bool add_standard_groups(Document* document)
       //Make sure the current user is in the developer group.
       //(If he is capable of creating these groups then he is obviously a developer, and has developer rights on the postgres server.)
       const Glib::ustring current_user = ConnectionPool::get_instance()->get_user();
-      const Glib::ustring strQuery = "ALTER GROUP " + DbUtils::escape_sql_id(GLOM_STANDARD_GROUP_NAME_DEVELOPER) + " ADD USER " + DbUtils::escape_sql_id(current_user);
+      const Glib::ustring strQuery = build_query_add_user_to_group(GLOM_STANDARD_GROUP_NAME_DEVELOPER, current_user);
       test = query_execute_string(strQuery);
       if(!test)
       {
@@ -638,13 +639,7 @@ bool add_groups_from_document(Document* document)
     type_vec_strings::const_iterator iterFind = std::find(database_groups.begin(), database_groups.end(), name);
     if(!name.empty() && iterFind == database_groups.end())
     {
-      Glib::ustring query = "CREATE GROUP " + escape_sql_id(name);
-
-      //The "SUPERUSER" here has no effect because SUPERUSER is not "inherited" to member users.
-      //But let's keep it to make the purpose of this group obvious.
-      if(group.m_developer)
-        query += " WITH SUPERUSER";
-
+      const Glib::ustring query = build_query_create_group(name, group.m_developer);
       const bool test = query_execute_string(query);
       if(!test)
       {
@@ -1876,6 +1871,37 @@ Glib::ustring escape_sql_id(const Glib::ustring& id)
   return gda_connection->quote_sql_identifier(id);
 }
 
+Glib::ustring build_query_create_group(const Glib::ustring& group, bool superuser)
+{
+  if(group.empty())
+  {
+    std::cerr << G_STRFUNC << ": group is empty" << std::endl;
+  }
+
+  Glib::ustring query = "CREATE GROUP " + escape_sql_id(group);
+
+  //The "SUPERUSER" here has no effect because SUPERUSER is not "inherited" to member users.
+  //But let's keep it to make the purpose of this group obvious.
+  if(superuser)
+    query += " WITH SUPERUSER";
+
+  return query;
+}
+
+Glib::ustring build_query_add_user_to_group(const Glib::ustring& group, const Glib::ustring& user)
+{
+  if(group.empty())
+  {
+    std::cerr << G_STRFUNC << ": group is empty" << std::endl;
+  }
+
+  if(user.empty())
+  {
+    std::cerr << G_STRFUNC << ": user is empty" << std::endl;
+  }
+
+  return "ALTER GROUP " + escape_sql_id(group) + " ADD USER " + escape_sql_id(user);
+}
 
 } //namespace DbUtils
 

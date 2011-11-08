@@ -1744,13 +1744,6 @@ bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password,
   if(group == GLOM_STANDARD_GROUP_NAME_DEVELOPER)
     strQuery += " SUPERUSER CREATEDB CREATEROLE"; //Because SUPERUSER is not "inherited" from groups to members.
 
-
-  //Glib::ustring strQuery = "CREATE USER " + DbUtils::escape_sql_id(user);
-  //if(group == GLOM_STANDARD_GROUP_NAME_DEVELOPER)
-  //  strQuery += " WITH SUPERUSER"; //Because SUPERUSER is not "inherited" from groups to members.
-  //strQuery +=  " PASSWORD '" + password + "'" ; //TODO: Escape the password.
-
-
   bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
@@ -1759,7 +1752,7 @@ bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password,
   }
 
   //Add it to the group:
-  strQuery = "ALTER GROUP " + DbUtils::escape_sql_id(group) + " ADD USER " + DbUtils::escape_sql_id(user);
+  strQuery = DbUtils::build_query_add_user_to_group(group, user);
   test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {

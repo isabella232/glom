@@ -204,7 +204,7 @@ void Dialog_UsersList::on_button_user_add()
   if(!user.empty())
   {
     //Add it to the group:
-    const Glib::ustring strQuery = "ALTER GROUP " + DbUtils::escape_sql_id(m_combo_group->get_active_text()) + " ADD USER " + DbUtils::escape_sql_id(user);
+    const Glib::ustring strQuery = DbUtils::build_query_add_user_to_group(m_combo_group->get_active_text(), user);
     const bool test = DbUtils::query_execute_string(strQuery);
     if(!test)
       std::cerr << G_STRFUNC << ": ALTER GROUP failed." << std::endl;

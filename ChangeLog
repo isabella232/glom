@@ -1,3 +1,13 @@
+2011-11-08  Murray Cumming  <murrayc@murrayc.com>
+
+	Avoid some repetition of some CREATE GROUP and ALTER GROUP queries.
+
+	* glom/libglom/db_utils.[h|cc]: Added build_query_create_group() and 
+	build_query_add_user_to_group() to avoid repeating the code.
+	* glom/base_db.cc:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/mode_design/users/dialog_users_list.cc: Use them.
+
 1.19.19:
 
 2011-11-08  Murray Cumming  <murrayc@murrayc.com>

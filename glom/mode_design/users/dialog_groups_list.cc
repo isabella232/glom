@@ -255,7 +255,7 @@ void Dialog_GroupsList::on_button_group_new()
 
   if(!group_name.empty())
   {
-    const Glib::ustring strQuery = "CREATE GROUP " + DbUtils::escape_sql_id(group_name);
+    const Glib::ustring strQuery = DbUtils::build_query_create_group(group_name);
     const bool test = DbUtils::query_execute_string(strQuery);
     if(!test)
       std::cout << "debug: " << G_STRFUNC << ": CREATE GROUP failed." << std::endl;
