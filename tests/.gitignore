@@ -10,3 +10,10 @@
 /test_glade_derived_instantiation
 /test_selfhosting_new_empty
 /test_selfhosting_new_from_example
+/test_selfhosting_new_then_alter_table
+/test_selfhosting_new_then_backup_restore
+/test_selfhosting_new_then_get_privs
+/test_selfhosting_new_then_image
+/test_selfhosting_new_then_report
+/test_selfhosting_sqlinjection
+
