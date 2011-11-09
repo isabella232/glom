@@ -715,6 +715,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
             if(layout_item->get_glom_type() == Field::TYPE_TEXT)
             {
               //The CSV RFC says text may be quoted and should be if it has newlines:
+              //TODO: Escape the text?
               row_string += ("\"" + field_text + "\"");
             }
             else
