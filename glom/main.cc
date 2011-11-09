@@ -292,7 +292,7 @@ bool check_user_is_not_root_with_warning()
  */
 bool check_postgres_is_available_with_warning()
 {
-  const std::string binpath = Glom::ConnectionPoolBackends::PostgresSelfHosted::get_path_to_postgres_executable("postgres");
+  const std::string binpath = Glom::ConnectionPoolBackends::PostgresSelfHosted::get_path_to_postgres_executable("postgres", false /* not quoted */);
 
   // TODO: At least on Windows we should probably also check for initdb and
   // pg_ctl. Perhaps it would also be a good idea to access these files as
