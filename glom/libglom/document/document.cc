@@ -36,6 +36,7 @@
 #include <giomm/file.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/convert.h>
+#include <glibmm/shell.h>
 //#include <libglom/busy_cursor.h>
 
 #include <libglom/connectionpool.h>
@@ -4609,13 +4610,13 @@ Glib::ustring Document::save_backup_file(const Glib::ustring& uri, const SlotPro
       const std::string tarball_path = path_dir + ".tar.gz";
       //TODO: Find some way to do this without using the command-line,
       //which feels fragile:
-      const std::string command_tar = "\"" + path_tar + "\"" +
+      const std::string command_tar = Glib::shell_quote(path_tar) +
         " --force-local --no-wildcards" + //Avoid side-effects of special characters.
         " --remove-files" +
         " -czf"
-        " \"" + tarball_path + "\"" +
-        " --directory \"" + parent_dir + "\"" + //This must be right before the mention of the file name:
-        " \"" + basename + "\"";
+        " " + Glib::shell_quote(tarball_path) +
+        " --directory " + Glib::shell_quote(parent_dir) + //This must be right before the mention of the file name:
+        " " + Glib::shell_quote(basename);
 
       //std::cout << "DEBUG: command_tar=" << command_tar << std::endl;
 
@@ -4652,11 +4653,11 @@ Glib::ustring Document::restore_backup_file(const Glib::ustring& backup_uri, con
   //Untar into the tmp directory:
   //TODO: Find some way to do this without using the command-line,
   //which feels fragile:
-  const std::string command_tar = "\"" + path_tar + "\"" +
+  const std::string command_tar = Glib::shell_quote(path_tar) +
     " --force-local --no-wildcards" + //Avoid side-effects of special characters.
     " -xzf"
-    " \"" + filename_tarball + "\"" +
-    " --directory \"" + path_tmp + "\"";
+    " " + Glib::shell_quote(filename_tarball) +
+    " --directory " + Glib::shell_quote(path_tmp);
 
   //std::cout << "DEBUG: command_tar=" << command_tar << std::endl;
 

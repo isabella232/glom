@@ -1,5 +1,12 @@
 2011-11-09  Murray Cumming  <murrayc@murrayc.com>
 
+	Use Glib::shell_quote() when spawning tar.
+
+	* glom/libglom/document/document.cc: Use Glib::shell_quote()
+	when spawning tar, instead of manually adding quotes.
+
+2011-11-09  Murray Cumming  <murrayc@murrayc.com>
+
 	PostgreSQL backend: Use g_shell_quote().
 
 	* glom/libglom/connectionpool_backends/postgres.[h|cc]:
