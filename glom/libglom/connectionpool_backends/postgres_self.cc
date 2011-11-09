@@ -31,6 +31,7 @@
 #include <glibmm/stringutils.h>
 #include <glibmm/regex.h>
 #include <glibmm/main.h>
+#include <glibmm/shell.h>
 #include <glibmm/i18n.h>
 
 #include <libglom/gst-package.h>
@@ -233,8 +234,8 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
 
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
-  const std::string command_initdb = "\"" + get_path_to_postgres_executable("initdb") + "\" -D \"" + dbdir_data + "\"" +
-                                        " -U " + initial_username + " --pwfile=\"" + temp_pwfile + "\"";
+  const std::string command_initdb = get_path_to_postgres_executable("initdb") + " -D " + Glib::shell_quote(dbdir_data) +
+                                        " -U " + initial_username + " --pwfile=" + Glib::shell_quote(temp_pwfile);
 
   //Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
   const bool result = Glom::Spawn::execute_command_line_and_wait(command_initdb, slot_progress);
@@ -253,7 +254,7 @@ Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgres
 {
   Glib::ustring result;
 
-  const std::string command = "\"" + get_path_to_postgres_executable("pg_ctl") + "\" --version";
+  const std::string command = get_path_to_postgres_executable("pg_ctl") + " --version";
 
   //The first command does not return, but the second command can check whether it succeeded:
   std::string output;
@@ -423,17 +424,21 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
   // -k specifies a directory to use for the socket. This must be writable by us.
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
-  const std::string command_postgres_start = "\"" + get_path_to_postgres_executable("postgres") + "\" -D \"" + dbdir_data + "\" "
+  const std::string dbdir_config = Glib::build_filename(dbdir, "config");
+  const std::string dbdir_hba = Glib::build_filename(dbdir_config, "pg_hba.conf");
+  const std::string dbdir_ident = Glib::build_filename(dbdir_config, "pg_ident.conf");
+  const std::string dbdir_pid = Glib::build_filename(dbdir, "pid");
+  const std::string command_postgres_start = get_path_to_postgres_executable("postgres") + " -D " + Glib::shell_quote(dbdir_data)
                                   + " -p " + port_as_text
                                   + " -i " //Equivalent to -h "*", which in turn is equivalent to listen_addresses in postgresql.conf. Listen to all IP addresses, so any client can connect (with a username+password)
-                                  + " -c hba_file=\"" + dbdir + "/config/pg_hba.conf\""
-                                  + " -c ident_file=\"" + dbdir + "/config/pg_ident.conf\""
-                                  + " -k \"" + dbdir + "\""
-                                  + " --external_pid_file=\"" + dbdir + "/pid\"";
+                                  + " -c hba_file=" + Glib::shell_quote(dbdir_hba)
+                                  + " -c ident_file=" + Glib::shell_quote(dbdir_ident)
+                                  + " -k " + Glib::shell_quote(dbdir)
+                                  + " --external_pid_file=" + Glib::shell_quote(dbdir_pid);
 
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
-  const std::string command_check_postgres_has_started = "\"" + get_path_to_postgres_executable("pg_ctl") + "\" status -D \"" + dbdir_data + "\"";
+  const std::string command_check_postgres_has_started = get_path_to_postgres_executable("pg_ctl") + " status -D " + Glib::shell_quote(dbdir_data);
 
   //For postgres 8.1, this is "postmaster is running".
   //For postgres 8.2, this is "server is running".
@@ -521,7 +526,7 @@ bool PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
   // TODO: Warn about connected clients on other computers? Warn those other users?
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
-  const std::string command_postgres_stop = "\"" + get_path_to_postgres_executable("pg_ctl") + "\" -D \"" + dbdir_data + "\" stop -m fast";
+  const std::string command_postgres_stop = get_path_to_postgres_executable("pg_ctl") + " -D " + Glib::shell_quote(dbdir_data) + " stop -m fast";
   const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, slot_progress);
   if(!result)
   {

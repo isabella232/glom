@@ -1,3 +1,17 @@
+2011-11-09  Murray Cumming  <murrayc@murrayc.com>
+
+	PostgreSQL backend: Use g_shell_quote().
+
+	* glom/libglom/connectionpool_backends/postgres.[h|cc]:
+	get_path_to_postgres_executable(): Return the already-quoted path
+	to avoid the need for manual quoting by the caller.
+	However, make this optional (but the default) so that the check in 
+	* main.cc: can still work.
+	* glom/libglom/connectionpool_backends/postgres_self.cc: Use 
+	Glib::shell_quote() instead of manually adding quote characters.
+	Hopefully this also escapes special characters, though we should try to 
+	test this somehow.
+
 2011-11-08  Murray Cumming  <murrayc@murrayc.com>
 
 	Avoid some repetition of some CREATE GROUP and ALTER GROUP queries.

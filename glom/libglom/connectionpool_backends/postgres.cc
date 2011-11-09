@@ -29,6 +29,7 @@
 #include <giomm/file.h>
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
+#include <glibmm/shell.h>
 #include <glib/gstdio.h> /* For g_rename(). TODO: Wrap this in glibmm? */
 #include <glibmm/i18n.h>
 
@@ -431,7 +432,7 @@ bool Postgres::check_postgres_gda_client_is_available()
   return false;
 }
 
-std::string Postgres::get_path_to_postgres_executable(const std::string& program)
+std::string Postgres::get_path_to_postgres_executable(const std::string& program, bool quoted)
 {
 #ifdef G_OS_WIN32
   // Add the .exe extension on Windows:
@@ -460,15 +461,25 @@ std::string Postgres::get_path_to_postgres_executable(const std::string& program
   g_free(installation_directory);
 
   if(Glib::file_test(test, Glib::FILE_TEST_IS_EXECUTABLE))
+  {
+    if(quoted)
+      test = Glib::shell_quote(path);
     return test;
+  }
 
   // Look in PATH otherwise
-  return Glib::find_program_in_path(real_program);
+  std::string path = Glib::find_program_in_path(real_program);
+  if(quoted)
+    path = Glib::shell_quote(path);
+  return path;
 #else // G_OS_WIN32
   // POSTGRES_UTILS_PATH is defined in config.h, based on the configure.
   try
   {
-    return Glib::build_filename(POSTGRES_UTILS_PATH, program + EXEEXT);
+    std::string path = Glib::build_filename(POSTGRES_UTILS_PATH, program + EXEEXT);
+    if(quoted)
+      path = Glib::shell_quote(path);
+    return path;
   }
   catch(const Glib::Error& ex)
   {
@@ -597,13 +608,13 @@ bool Postgres::save_backup(const SlotProgress& slot_progress, const Glib::ustrin
 
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
-  const std::string command_dump = "\"" + get_path_to_postgres_executable("pg_dump") + "\"" +
+  const std::string command_dump = get_path_to_postgres_executable("pg_dump") +
     " --format=c " + // The default (plain) format cannot be used with pg_restore.
-    " --create --file=\"" + path_backup + "\"" +
-    " --host=\"" + m_host + "\"" +
+    " --create --file=" + Glib::shell_quote(path_backup) +
+    " --host=" + Glib::shell_quote(m_host) +
     " --port=" + port_as_string(m_port) +
-    " --username=\"" + username + "\"" +
-    " " + database_name;
+    " --username=" + Glib::shell_quote(username) +
+    " " + database_name; //TODO: Quote database_name?
 
 
   //std::cout << "DEBUG: command_dump=" << command_dump << std::endl;
@@ -681,11 +692,11 @@ bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::stri
 
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
-  const std::string command_restore = "\"" + get_path_to_postgres_executable("pg_restore") + "\"" +
-    " -d " + database_name +
-    " --host=\"" + m_host + "\"" +
+  const std::string command_restore = get_path_to_postgres_executable("pg_restore") +
+    " -d " + database_name + //TODO: Quote database name?
+    " --host=" + Glib::shell_quote(m_host) +
     " --port=" + port_as_string(m_port) +
-    " --username=\"" + username + "\"" +
+    " --username=" + Glib::shell_quote(username) +
     " " + path_backup;
 
   std::cout << "DEBUG: command_restore=" << command_restore << std::endl;

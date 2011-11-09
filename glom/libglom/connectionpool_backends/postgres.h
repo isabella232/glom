@@ -51,7 +51,9 @@ public:
 
   virtual bool convert_backup(const SlotProgress& slot_progress, const std::string& base_directory, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name);
 
-  static std::string get_path_to_postgres_executable(const std::string& program);
+  /** Return the quoted path to the specified PostgreSQL utility.
+   */
+  static std::string get_path_to_postgres_executable(const std::string& program, bool quoted = true);
 
 
 
