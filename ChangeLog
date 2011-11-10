@@ -1,5 +1,12 @@
 2011-11-10  Murray Cumming  <murrayc@murrayc.com>
 
+	Correct an error in the previous commit.
+
+	* glom/libglom/connectionpool.cc: Remove a nonsense line of code that
+	stopped connections from working.
+
+2011-11-10  Murray Cumming  <murrayc@murrayc.com>
+
 	Added ConnectionPool::set_fake_connection().
 
 	* glom/libglom/connectionpool_backends/backend.h: connect():

@@ -305,7 +305,6 @@ sharedptr<SharedConnection> ConnectionPool::connect()
     }
     else
     {
-      if(m_fake_connection)
       try
       {
         m_refGdaConnection = m_backend->connect(m_database, get_user(), get_password(), m_fake_connection);
