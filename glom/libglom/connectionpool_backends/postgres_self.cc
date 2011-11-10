@@ -605,7 +605,7 @@ static bool on_timeout_delay(const Glib::RefPtr<Glib::MainLoop>& mainloop)
 }
 
 
-Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password)
+Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, bool fake_connection)
 {
   if(!get_self_hosting_active())
   {
@@ -622,7 +622,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
   {
     try
     {
-      result = attempt_connect(port_as_string(m_port), database, username, password);
+      result = attempt_connect(port_as_string(m_port), database, username, password, fake_connection);
     }
     catch(const ExceptionConnection& ex)
     {

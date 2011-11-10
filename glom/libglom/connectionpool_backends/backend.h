@@ -166,14 +166,12 @@ protected:
   virtual bool set_network_shared(const SlotProgress& slot_progress, bool network_shared = true);
 
   /** This method is called to create a connection to the database server.
-   * There exists only the variant with an error variable as last parameter
-   * so we don't need #ifdefs all over the code. This part of the API is only
-   * used by the ConnectionPool which will translate the error back into
-   * an exception in case exceptions are enabled.
-   * If this method doesn't return a connection handle then error will be
-   * non-zero (and vice versa).
+   *
+   * @param fake_connection Whether the connection should not actually be opened.
+   *
+   * @throws An ExceptionConnection if the correction failed.
    */
-  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password) = 0;
+  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, bool fake_connection = false) = 0;
 
   /** @throws Glib::Error (from libgdamm)
    */

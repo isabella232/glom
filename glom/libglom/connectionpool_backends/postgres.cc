@@ -64,7 +64,7 @@ Postgres::Postgres()
 {
 }
 
-Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password)
+Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, bool fake_connection)
 {
   //We must specify _some_ database even when we just want to create a database.
   //This _might_ be different on some systems. I hope not. murrayc
@@ -87,12 +87,21 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
 
   try
   {
-    connection = Gnome::Gda::Connection::open_from_string("PostgreSQL",
-      cnc_string, auth_string,
-      Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE
-      );
-    connection->statement_execute_non_select("SET DATESTYLE = 'ISO'");
-    data_model = connection->statement_execute_select("SELECT version()");
+    if(fake_connection)
+    {
+      connection = Gnome::Gda::Connection::create_from_string("PostgreSQL",
+        cnc_string, auth_string,
+        Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
+    }
+    else
+    {
+      connection = Gnome::Gda::Connection::open_from_string("PostgreSQL",
+        cnc_string, auth_string,
+        Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
+
+      connection->statement_execute_non_select("SET DATESTYLE = 'ISO'");
+      data_model = connection->statement_execute_select("SELECT version()");
+    }
   }
   catch(const Glib::Error& ex)
   {

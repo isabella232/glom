@@ -1,0 +1,99 @@
+/* Glom
+ *
+ * Copyright (C) 2010 Openismus GmbH
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+71 * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#include <libglom/document/document.h>
+#include <libglom/init.h>
+#include <libglom/utils.h>
+#include <libglom/db_utils.h>
+#include <libglom/connectionpool.h>
+#include <libglom/connectionpool_backends/postgres_central.h>
+#include <giomm/file.h>
+#include <glibmm/convert.h>
+#include <glibmm/miscutils.h>
+
+#include <iostream>
+
+int main()
+{
+  Glom::libglom_init();
+
+  // Get a URI for a test file:
+  Glib::ustring uri;
+
+  try
+  {
+    const std::string path =
+       Glib::build_filename(GLOM_DOCDIR_EXAMPLES_NOTINSTALLED,
+         "example_music_collection.glom");
+    uri = Glib::filename_to_uri(path);
+  }
+  catch(const Glib::ConvertError& ex)
+  {
+    std::cerr << G_STRFUNC << ": " << ex.what();
+    return EXIT_FAILURE;
+  }
+
+  // Load the document:
+  Glom::Document document;
+  document.set_file_uri(uri);
+  int failure_code = 0;
+  const bool test = document.load(failure_code);
+  //std::cout << "Document load result=" << test << std::endl;
+
+  if(!test)
+  {
+    std::cerr << "Document::load() failed with failure_code=" << failure_code << std::endl;
+    return EXIT_FAILURE;
+  }
+
+  //Allow a fake connection, so sqlbuilder_get_full_query() can work:
+  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+  Glom::ConnectionPoolBackends::Backend* backend = 
+    new Glom::ConnectionPoolBackends::PostgresCentralHosted();
+  connection_pool->set_backend(std::auto_ptr<Glom::ConnectionPool::Backend>(backend));
+  connection_pool->set_fake_connection();
+
+  //Build a SQL query and get the string for it:
+  //Try to get more rows than intended:
+  const Gnome::Gda::Value value("Born To Run");
+  Glom::sharedptr<const Glom::Field> where_field = document.get_field("albums", "name");
+  const Gnome::Gda::SqlExpr where_clause = 
+    Glom::Utils::build_simple_where_expression("albums", where_field, value);
+  
+  Glom::Utils::type_vecLayoutFields fieldsToGet;
+  Glom::sharedptr<const Glom::Field> field = document.get_field("albums", "album_id");
+  Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem->set_full_field_details(field);
+  fieldsToGet.push_back(layoutitem);
+  field = document.get_field("albums", "name");
+  layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem->set_full_field_details(field);
+  fieldsToGet.push_back(layoutitem);
+
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
+    Glom::Utils::build_sql_select_with_where_clause("albums",
+      fieldsToGet, where_clause);
+  const Glib::ustring& query = Glom::Utils::sqlbuilder_get_full_query(builder);
+  std::cout << "query: " << query << std::endl;
+
+  Glom::libglom_deinit();
+
+  return EXIT_SUCCESS;
+}

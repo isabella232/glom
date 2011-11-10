@@ -1,5 +1,27 @@
 2011-11-10  Murray Cumming  <murrayc@murrayc.com>
 
+	Added ConnectionPool::set_fake_connection().
+
+	* glom/libglom/connectionpool_backends/backend.h: connect():
+	* glom/libglom/connectionpool_backends/postgres.[h|cc]: connect(),
+	attempt_connect():
+	* glom/libglom/connectionpool_backends/postgres_central.[h|cc]: connect():
+	* glom/libglom/connectionpool_backends/postgres_self.[h|cc]: connect():
+	* glom/libglom/connectionpool_backends/sqlite.[h|cc]: connect():
+	Add a bool fake_connection parameter and use Gnome::Gda::create_with_string()
+	instead of open_with_string() if it is true.
+	* glom/libglom/connectionpool.[h|cc]: Add set_fake_connection() to set 
+	that bool and other things needed to make it work.	
+
+	* Makefile_tests.am:
+	* tests/test_fake_connection.cc: Added a test that uses this for the 
+	intended purpose of getting a suitable SQL query string without an open 
+	connection.
+	However, it does not currently work as expected due to:
+	http://mail.gnome.org/archives/gnome-db-list/2011-November/msg00007.html
+
+2011-11-10  Murray Cumming  <murrayc@murrayc.com>
+
 	Escape database connection details properly.
 
 	* glom/libglom/db_utils.[h|cc]: Added gda_cnc_string_encode() for use 

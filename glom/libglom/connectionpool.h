@@ -124,9 +124,15 @@ public:
   void set_avahi_publish_callbacks(const type_void_slot& slot_begin, const type_void_slot& slot_progress, const type_void_slot& slot_done);
 #endif
 
-
   bool get_ready_to_connect() const;
   void set_ready_to_connect(bool val = true);
+
+  /** Do not actually connect to the database,
+   * but create a Gnome::Gda::Connection object
+   * just so that utility functions such as Utils::sqlbuilder_get_full_query()
+   * and DbUtils::escape_sql_id() can work.
+   */
+  void set_fake_connection();
 
   void set_backend(std::auto_ptr<Backend> backend);
 
@@ -303,6 +309,8 @@ private:
 
   FieldTypes* m_pFieldTypes;
   bool m_show_debug_output, m_auto_server_shutdown;
+
+  bool m_fake_connection;
 
 private:
 

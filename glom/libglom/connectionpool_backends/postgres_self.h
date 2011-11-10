@@ -61,7 +61,7 @@ private:
   virtual bool cleanup(const SlotProgress& slot_progress);
   virtual bool set_network_shared(const SlotProgress& slot_progress, bool network_shared = true);
 
-  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password);
+  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, bool fake_connection = false);
 
   virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password);
 

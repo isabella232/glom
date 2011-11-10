@@ -37,7 +37,7 @@ Sqlite::Sqlite()
 {
 }
 
-Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password)
+Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, bool fake_connection)
 {
   Glib::RefPtr<Gnome::Gda::Connection> connection;
   if(m_database_directory_uri.empty())
@@ -71,9 +71,18 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
       const Glib::ustring auth_string = Glib::ustring::compose("USERNAME=%1;PASSWORD=%2", 
         DbUtils::gda_cnc_string_encode(username), DbUtils::gda_cnc_string_encode(password));
 
-      connection = Gnome::Gda::Connection::open_from_string("SQLite",
-        cnc_string, auth_string,
-        Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
+      if(fake_connection)
+      {
+         connection = Gnome::Gda::Connection::create_from_string("SQLite",
+          cnc_string, auth_string,
+          Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
+      }
+      else
+      {
+        connection = Gnome::Gda::Connection::open_from_string("SQLite",
+          cnc_string, auth_string,
+          Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
+      }
     }
   }
 

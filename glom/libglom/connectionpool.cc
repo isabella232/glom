@@ -112,7 +112,8 @@ ConnectionPool::ConnectionPool()
   m_ready_to_connect(false),
   m_pFieldTypes(0),
   m_show_debug_output(false),
-  m_auto_server_shutdown(true)
+  m_auto_server_shutdown(true),
+  m_fake_connection(false)
 {
 }
 
@@ -270,7 +271,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
   //Don't try to connect if we don't have a backend to connect to.
   g_return_val_if_fail(m_backend.get(), sharedptr<SharedConnection>(0));
 
-  if(get_ready_to_connect())
+  if(get_ready_to_connect() || m_fake_connection)
   {
     if(connection_cached)
     {
@@ -304,9 +305,10 @@ sharedptr<SharedConnection> ConnectionPool::connect()
     }
     else
     {
+      if(m_fake_connection)
       try
       {
-        m_refGdaConnection = m_backend->connect(m_database, get_user(), get_password());
+        m_refGdaConnection = m_backend->connect(m_database, get_user(), get_password(), m_fake_connection);
       }
       catch(const Glib::Error& ex)
       {
@@ -939,6 +941,15 @@ bool ConnectionPool::get_show_debug_output() const
 void ConnectionPool::set_auto_server_shutdown(bool val)
 {
   m_auto_server_shutdown = val;
+}
+
+void ConnectionPool::set_fake_connection()
+{
+  m_fake_connection = true;
+
+  //Set a fake username and password, to avoid a GError from gda_connection_new_from_string():
+  set_user("glom_fake_user");
+  set_password("glom_fake_password");
 }
 
 } //namespace Glom
