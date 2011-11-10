@@ -435,6 +435,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
                                   + " -c ident_file=" + Glib::shell_quote(dbdir_ident)
                                   + " -k " + Glib::shell_quote(dbdir)
                                   + " --external_pid_file=" + Glib::shell_quote(dbdir_pid);
+  //std::cout << G_STRFUNC << ": debug: " << command_postgres_start << std::endl;
 
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.

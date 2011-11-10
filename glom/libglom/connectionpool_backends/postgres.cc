@@ -46,7 +46,8 @@ static Glib::ustring create_auth_string(const Glib::ustring& username, const Gli
   if(username.empty() and password.empty())
     return Glib::ustring();
   else
-    return "USERNAME=" + username + ";PASSWORD=" + password; //TODO: How should we quote and escape these?
+    return "USERNAME=" + Glom::DbUtils::gda_cnc_string_encode(username) + 
+      ";PASSWORD=" + Glom::DbUtils::gda_cnc_string_encode(password);
 }
 
 } //anonymous namespace
@@ -69,8 +70,9 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   //This _might_ be different on some systems. I hope not. murrayc
   const Glib::ustring default_database = "template1";
   //const Glib::ustring& actual_database = (!database.empty()) ? database : default_database;;
-  const Glib::ustring cnc_string_main = "HOST=" + m_host + ";PORT=" + port;
-  Glib::ustring cnc_string = cnc_string_main + ";DB_NAME=" + database;
+  const Glib::ustring cnc_string_main = "HOST=" + DbUtils::gda_cnc_string_encode(m_host)
+   + ";PORT=" + DbUtils::gda_cnc_string_encode(port);
+  const Glib::ustring cnc_string = cnc_string_main + ";DB_NAME=" + DbUtils::gda_cnc_string_encode(database);
 
   Glib::RefPtr<Gnome::Gda::Connection> connection;
   Glib::RefPtr<Gnome::Gda::DataModel> data_model;
@@ -99,7 +101,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
     std::cout << "debug: " << G_STRFUNC << ": Attempting to connect without specifying the database." << std::endl;
 #endif
 
-    const Glib::ustring cnc_string = cnc_string_main + ";DB_NAME=" + default_database;
+    const Glib::ustring cnc_string = cnc_string_main + ";DB_NAME=" + DbUtils::gda_cnc_string_encode(default_database);
     Glib::RefPtr<Gnome::Gda::Connection> temp_conn;
     Glib::ustring auth_string = create_auth_string(username, password);
     try

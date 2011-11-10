@@ -138,7 +138,7 @@ void test_selfhosting_cleanup()
   temp_filepath_dir.clear();
 }
 
-bool test_create_and_selfhost_from_example(const std::string& example_filename, Glom::Document& document, Glom::Document::HostingMode hosting_mode)
+bool test_create_and_selfhost_from_example(const std::string& example_filename, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
 {
   Glib::ustring uri;
   
@@ -156,10 +156,10 @@ bool test_create_and_selfhost_from_example(const std::string& example_filename, 
     return false;
   }
   
-  return test_create_and_selfhost_from_uri(uri, document, hosting_mode);
+  return test_create_and_selfhost_from_uri(uri, document, hosting_mode, subdirectory_path);
 }
 
-bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Glom::Document& document, Glom::Document::HostingMode hosting_mode)
+bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
 {
   if( (hosting_mode != Glom::Document::HOSTING_MODE_POSTGRES_SELF) &&
     (hosting_mode != Glom::Document::HOSTING_MODE_SQLITE) )
@@ -189,10 +189,12 @@ bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Gl
   Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
 
   //Save a copy, specifying the path to file in a directory:
-  //For instance, /tmp/testfileglom/testfile.glom");
+  //For instance, /tmp/testglom/testglom.glom");
   const std::string temp_filename = "testglom";
   temp_filepath_dir = 
     Glom::Utils::get_temp_directory_path(temp_filename);
+  if(!subdirectory_path.empty())
+    temp_filepath_dir = Glib::build_filename(temp_filepath_dir, subdirectory_path);
   const std::string temp_filepath = Glib::build_filename(temp_filepath_dir, temp_filename);
 
   //Make sure that the file does not exist yet:

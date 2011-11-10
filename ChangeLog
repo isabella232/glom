@@ -1,3 +1,23 @@
+2011-11-10  Murray Cumming  <murrayc@murrayc.com>
+
+	Escape database connection details properly.
+
+	* glom/libglom/db_utils.[h|cc]: Added gda_cnc_string_encode() for use 
+	with GdaConnection's cnc_string and auth_string, for instance to 
+	escape the database directory, name, username, and password.
+	* glom/libglom/connectionpool_backends/postgres.cc:
+	* glom/libglom/connectionpool_backends/postgres_self.cc:
+	* glom/libglom/connectionpool_backends/sqlite.cc: Properly escape the 
+	cnc_string and auth_string key values.
+
+	* tests/test_selfhosting_utils.cc: test_create_and_selfhost_from_example(),
+	test_create_and_selfhost_from_uri(): Add an optional subdirectory parameter
+	that we can use to force weird parts into the path.
+	* Makefile_tests.am:
+	* tests/test_selfhosting_new_from_example_strangepath.cc: Add a 
+	test case that uses a path with some weird characters. This now works
+	thanks to the above changes.
+
 2011-11-09  Murray Cumming  <murrayc@murrayc.com>
 
 	Use Glib::shell_quote() when spawning tar.

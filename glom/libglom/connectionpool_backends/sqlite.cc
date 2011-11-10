@@ -53,6 +53,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
   if(!file_exists)
   {
     std::cerr << G_STRFUNC << ": The db file does not exist at path: " << db_file->get_uri() << std::endl;
+    //std::cerr << "  as filepath: " << db_file->get_path() << std::endl;
   }
   else
   {
@@ -65,8 +66,10 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
       // Convert URI to path, for GDA connection string
       const std::string database_directory = db_dir->get_path();
 
-      const Glib::ustring cnc_string = "DB_DIR=" + database_directory + ";DB_NAME=" + database;
-      const Glib::ustring auth_string = Glib::ustring::compose("USERNAME=%1;PASSWORD=%2", username, password);
+      const Glib::ustring cnc_string = "DB_DIR=" + DbUtils::gda_cnc_string_encode(database_directory) + 
+        ";DB_NAME=" + DbUtils::gda_cnc_string_encode(database);
+      const Glib::ustring auth_string = Glib::ustring::compose("USERNAME=%1;PASSWORD=%2", 
+        DbUtils::gda_cnc_string_encode(username), DbUtils::gda_cnc_string_encode(password));
 
       connection = Gnome::Gda::Connection::open_from_string("SQLite",
         cnc_string, auth_string,
@@ -100,7 +103,8 @@ bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ust
   
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(m_database_directory_uri);
   const std::string database_directory = file->get_path();
-  const Glib::ustring cnc_string = Glib::ustring::compose("DB_DIR=%1;DB_NAME=%2", database_directory, database_name);
+  const Glib::ustring cnc_string = Glib::ustring::compose("DB_DIR=%1;DB_NAME=%2", 
+    DbUtils::gda_cnc_string_encode(database_directory), DbUtils::gda_cnc_string_encode(database_name));
 
   Glib::RefPtr<Gnome::Gda::Connection> cnc =
     Gnome::Gda::Connection::open_from_string("SQLite",

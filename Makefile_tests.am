@@ -27,6 +27,7 @@ check_PROGRAMS =						\
 	tests/python/test_python_module \
 	tests/test_selfhosting_new_empty \
 	tests/test_selfhosting_new_from_example \
+	tests/test_selfhosting_new_from_example_strangepath \
 	tests/test_selfhosting_new_then_report \
 	tests/test_selfhosting_new_then_image \
 	tests/test_selfhosting_new_then_backup_restore \
@@ -48,6 +49,7 @@ TESTS =	tests/test_document_load	\
 	tests/python/test_python_module \
 	tests/test_selfhosting_new_empty \
 	tests/test_selfhosting_new_from_example \
+	tests/test_selfhosting_new_from_example_strangepath \
 	tests/test_selfhosting_new_then_report \
 	tests/test_selfhosting_new_then_backup_restore \
 	tests/test_selfhosting_new_then_image \
@@ -147,6 +149,11 @@ tests_test_selfhosting_new_empty_CPPFLAGS = $(tests_cppflags)
 tests_test_selfhosting_new_from_example_SOURCES = tests/test_selfhosting_new_from_example.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_from_example_LDADD = $(tests_ldadd)
 tests_test_selfhosting_new_from_example_CPPFLAGS = $(tests_cppflags)
+
+
+tests_test_selfhosting_new_from_example_strangepath_SOURCES = tests/test_selfhosting_new_from_example_strangepath.cc $(sources_test_selfhosting_utils)
+tests_test_selfhosting_new_from_example_strangepath_LDADD = $(tests_ldadd)
+tests_test_selfhosting_new_from_example_strangepath_CPPFLAGS = $(tests_cppflags)
 
 tests_test_selfhosting_new_then_report_SOURCES = tests/test_selfhosting_new_then_report.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_then_report_LDADD = $(tests_ldadd)

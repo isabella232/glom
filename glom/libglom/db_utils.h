@@ -151,6 +151,11 @@ bool drop_table(const Glib::ustring& table_name);
  */
 Glib::ustring escape_sql_id(const Glib::ustring& id);
 
+/** Just a wrapper around gda_rfc1738_encode(),
+ * for use when building libgda connection strings or authentication strings.
+ */ 
+Glib::ustring gda_cnc_string_encode(const Glib::ustring& str);
+
 Glib::ustring build_query_create_group(const Glib::ustring& group, bool superuser = false);
 
 Glib::ustring build_query_add_user_to_group(const Glib::ustring& group, const Glib::ustring& user);

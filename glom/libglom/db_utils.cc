@@ -1871,6 +1871,15 @@ Glib::ustring escape_sql_id(const Glib::ustring& id)
   return gda_connection->quote_sql_identifier(id);
 }
 
+Glib::ustring gda_cnc_string_encode(const Glib::ustring& str)
+{
+  char* pch = gda_rfc1738_encode(str.c_str());
+  if(!pch)
+    return Glib::ustring();
+  else
+    return Glib::ustring(pch);
+}
+
 Glib::ustring build_query_create_group(const Glib::ustring& group, bool superuser)
 {
   if(group.empty())
