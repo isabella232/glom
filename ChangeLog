@@ -1,3 +1,14 @@
+2011-11-11  Murray Cumming  <murrayc@murrayc.com>
+
+	List view and Related Records: Disable buttons when appropriate.
+
+	* glom/mode_data/db_adddel/db_adddel.[h|cc]: Handle the 
+	Gtk::TreeView::Selection::signal_changed() signal and call a 
+	new virtual on_selection_changed() method.
+	* glom/mode_data/db_adddel/db_adddel_withbuttons.[h|cc]:
+	Disable the Edit/Open and Delete buttons when there is no selection.
+	Bug #663812 (André Klapper)
+
 2011-11-10  Murray Cumming  <murrayc@murrayc.com>
 
 	Correct an error in the previous commit.

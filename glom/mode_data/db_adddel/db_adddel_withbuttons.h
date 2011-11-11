@@ -46,6 +46,7 @@ private:
   void on_button_add();
   void on_button_del();
   void on_button_edit();
+  virtual void on_selection_changed(bool selection);
 
   virtual void show_all_vfunc();
 

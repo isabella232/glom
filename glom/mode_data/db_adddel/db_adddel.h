@@ -305,6 +305,8 @@ protected:
   /// A common handler for the edit button, the context menu, etc.
   void do_user_requested_edit();
 
+  virtual void on_selection_changed(bool selection);
+
 private:
   Gnome::Gda::Value treeview_get_key(const Gtk::TreeModel::iterator& row) const;
 
@@ -326,6 +328,7 @@ private:
 
   bool on_button_press_event_Popup(GdkEventButton* event);
   void on_treeview_button_press_event(GdkEventButton* event);
+  void on_treeview_selection_changed();
 
 protected:
   void on_MenuPopup_activate_Edit();
@@ -386,6 +389,7 @@ private:
   Gtk::ScrolledWindow m_ScrolledWindow;
   Gtk::TreeView m_TreeView;
 
+private:
   Glib::RefPtr<DbTreeModel> m_refListStore;
 
   //Columns, not including the hidden internal columns:

@@ -132,5 +132,10 @@ void DbAddDel_WithButtons::set_allow_view_details(bool val)
   setup_buttons();
 }
 
+void DbAddDel_WithButtons::on_selection_changed(bool selection)
+{
+  m_Button_Edit.set_sensitive(selection);
+  m_Button_Del.set_sensitive(selection);
+}
 
 } //namespace Glom
