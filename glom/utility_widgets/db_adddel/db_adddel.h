@@ -306,6 +306,8 @@ protected:
   /// A common handler for the edit button, the context menu, etc.
   void do_user_requested_edit();
 
+  virtual void on_selection_changed(bool selection);
+
 private:
   virtual Gnome::Gda::Value treeview_get_key(const Gtk::TreeModel::iterator& row) const;
 
@@ -333,6 +335,7 @@ private:
 
   virtual bool on_button_press_event_Popup(GdkEventButton* event);
   virtual void on_treeview_button_press_event(GdkEventButton* event);
+  void on_treeview_selection_changed();
 
 protected:
   void on_MenuPopup_activate_Edit();
@@ -411,12 +414,17 @@ private:
   Gtk::TreeView m_TreeView;
   #endif
 
+<<<<<<< HEAD
 
   Gtk::TreeModel::ColumnRecord m_ColumnRecord;
 
   //typedef Gtk::ListStore type_model_store;
   typedef DbTreeModel type_model_store;
   Glib::RefPtr<type_model_store> m_refListStore;
+=======
+private:
+  Glib::RefPtr<DbTreeModel> m_refListStore;
+>>>>>>> edc483a... List view and Related Records: Disable buttons when appropriate.
 
   //Columns, not including the hidden internal columns:
   typedef std::vector<DbAddDelColumnInfo> type_ColumnTypes;

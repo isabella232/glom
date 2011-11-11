@@ -53,6 +53,8 @@ private:
   void on_button_edit();
   #endif //GLOM_ENABLE_MAEMO
 
+  virtual void on_selection_changed(bool selection);
+
   virtual void show_all_vfunc();
 
   //member widgets:

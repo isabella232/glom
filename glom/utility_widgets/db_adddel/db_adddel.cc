@@ -160,6 +160,13 @@ DbAddDel::DbAddDel()
 
   signal_style_changed().connect(sigc::mem_fun(*this, &DbAddDel::on_self_style_changed));
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_TreeView.get_selection();
+  if(refSelection)
+  {
+    refSelection->signal_changed().connect(
+      sigc::mem_fun(*this, &DbAddDel::on_treeview_selection_changed));
+  }
 }
 
 DbAddDel::~DbAddDel()
@@ -2928,6 +2935,22 @@ Gnome::Gda::Value DbAddDel::get_primary_key_value(const Gtk::TreeModel::iterator
 Gtk::TreeModel::iterator DbAddDel::get_row_selected()
 {
   return get_item_selected();
+}
+
+void DbAddDel::on_treeview_selection_changed()
+{
+  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_TreeView.get_selection();
+  if(!refSelection)
+    return;
+
+  const bool one_selected = (refSelection->count_selected_rows() > 0);
+  on_selection_changed(one_selected);
+}
+
+void DbAddDel::on_selection_changed(bool selection)
+{
+  m_refContextDel->set_sensitive(selection);
+  m_refContextAdd->set_sensitive(selection);
 }
 
 } //namespace Glom
