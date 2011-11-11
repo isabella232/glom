@@ -2417,7 +2417,7 @@ void DbAddDel::on_treeview_selection_changed()
 
 void DbAddDel::on_selection_changed(bool selection)
 {
-  m_refContextDel->set_sensitive(selection);
+  m_refContextDelete->set_sensitive(selection);
   m_refContextAdd->set_sensitive(selection);
 }
 
