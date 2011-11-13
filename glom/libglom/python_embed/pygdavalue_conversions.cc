@@ -7,6 +7,7 @@
 #include <boost/python.hpp>
 
 #include "pygdavalue_conversions.h"
+#include <libgdamm/numeric.h>
 #include <libgda/gda-blob-op.h>
 #include <iostream>
 
@@ -225,9 +226,7 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
         ret = boost::python::object(g_value_get_int(boxed));
     } else if (value_type == GDA_TYPE_NUMERIC) {
         const GdaNumeric* val = gda_value_get_numeric(boxed);
-        const gchar* number_as_text = val->number; /* Formatted according to the C locale, probably. */
-        /* This would need a string _object_: ret = PyFloat_FromString(number_as_text, 0); */
-        ret = boost::python::object(g_ascii_strtod(number_as_text, 0));
+        ret = boost::python::object(gda_numeric_get_double((GdaNumeric*)val));
     } else if (value_type == G_TYPE_FLOAT) {
         ret = boost::python::object(g_value_get_float(boxed));
     } else if (value_type == GDA_TYPE_SHORT) {

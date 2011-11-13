@@ -67,10 +67,8 @@ void execute_func_with_date_input_value()
   g_assert(value.get_value_type() == GDA_TYPE_NUMERIC);
 
   //Check that the return value is of the expected value:
-  g_assert(value.get_numeric());
-  g_assert(value.get_numeric()->number);
   //std::cout << "GdaNumeric number=" << value.get_numeric()->number << std::endl;
-  g_assert(value.get_numeric()->number == std::string("1973"));
+  g_assert(value.get_numeric().get_double() == 1973);
 
   //std::cout << "value=" << value.to_string() << std::endl;
 }

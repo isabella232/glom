@@ -1,3 +1,12 @@
+2011-11-13  Murray Cumming  <murrayc@murrayc.com>
+
+	Use the new Gnome::Gda::Numeric API.
+
+	* glom/libglom/data_structure/glomconversions.cc:
+	* glom/libglom/python_embed/pygdavalue_conversions.cc:
+	* tests/python/test_python_execute_func_date.cc: GdaNumeric now has 
+	a real API so we can make our code simpler.
+
 2011-11-11  Murray Cumming  <murrayc@murrayc.com>
 
 	List view and Related Records: Disable buttons when appropriate.

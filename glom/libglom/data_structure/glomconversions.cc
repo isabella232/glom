@@ -331,19 +331,8 @@ double Conversions::get_double_for_gda_value_numeric(const Gnome::Gda::Value& va
     }
   }
 
-  const GdaNumeric* gda_numeric = value.get_numeric();
-  std::string text_in_c_locale;
-  if(gda_numeric && gda_numeric->number) //A char* - I assume that it formatted as per the C locale. murrayc. TODO: Do we need to look at the other fields?
-    text_in_c_locale = gda_numeric->number; //What formatting does this use?
-
-  //Get an actual numeric value, so we can get a locale-specific text representation:
-  std::stringstream the_stream;
-  the_stream.imbue( std::locale::classic() ); //The C locale.
-  the_stream.str(text_in_c_locale); //Avoid using << because Glib::ustring does implicit character conversion with that.
-
-  double number = 0;
-  the_stream >> number;
-  return number;
+  const Gnome::Gda::Numeric numeric = value.get_numeric();
+  return numeric.get_double();
 }
 
 Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const std::locale& locale, const NumericFormat& numeric_format, bool iso_format)
@@ -532,25 +521,9 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
 Gnome::Gda::Value Conversions::parse_value(double number)
 {
   //This is just a way to get a NUMERIC Gnome::Gda::Value from a numeric type:
-  //Try to parse the inputted number, according to the current locale.
-
-  GdaNumeric gda_numeric = {0, 0, 0, 0};
-
-  //Then generate a canonical representation of the number:
-  std::stringstream clocale_stream;
-  clocale_stream.imbue( std::locale::classic() ); //The C locale.
-  clocale_stream << number;
-  Glib::ustring number_canonical_text = clocale_stream.str(); //Avoid << because it does implicit character conversion (though that might not be a problem here. Not sure). murrayc
-
-  //TODO: What about the precision and width values?
-  /* From the postgres docs:
-  *  The scale of a numeric is the count of decimal digits in the fractional part, to the right of the decimal point.
-  * The precision of a numeric is the total count of significant digits in the whole number, that is, the number of digits to both sides of the decimal point.
-  * So the number 23.5141 has a precision of 6 and a scale of 4. Integers can be considered to have a scale of zero.
-  */
-  gda_numeric.number = g_strdup(number_canonical_text.c_str());
-
-  return Gnome::Gda::Value(&gda_numeric);
+  Gnome::Gda::Numeric numeric;
+  numeric.set_double(number);
+  return Gnome::Gda::Value(numeric);
 }
 
 Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, bool& success, bool iso_format)
@@ -636,31 +609,13 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
     the_stream >> the_number;  //TODO: Does this throw any exception if the text is an invalid number?
 
     //std::cout << "debug: " << G_STRFUNC << ": text=" << text_to_parse << ", number=" << the_number << std::endl;
-    
+   
 
-    GdaNumeric gda_numeric = {0, 0, 0, 0};
-
-    //Then generate a canonical representation of the number:
-
-    std::stringstream clocale_stream;
-    clocale_stream.imbue( std::locale::classic() ); //The C locale.
-
-    //Avoid the e syntax. Normally this happens afer 7 digits, with loss of precision. TODO: Handle more.
-    clocale_stream << std::setprecision( NumericFormat::get_default_precision() );
-    clocale_stream << the_number;
-    const Glib::ustring number_canonical_text = clocale_stream.str(); //Avoid << because it does implicit character conversion (though that might not be a problem here. Not sure). murrayc
-    //std::cout << "  DEBUG: number_canonical_text=" << number_canonical_text << std::endl;  
-
-    //TODO: What about the precision and width values?
-    /* From the postgres docs:
-    *  The scale of a numeric is the count of decimal digits in the fractional part, to the right of the decimal point.
-    * The precision of a numeric is the total count of significant digits in the whole number, that is, the number of digits to both sides of the decimal point.
-    * So the number 23.5141 has a precision of 6 and a scale of 4. Integers can be considered to have a scale of zero.
-    */
-    gda_numeric.number = g_strdup(number_canonical_text.c_str());
+    Gnome::Gda::Numeric numeric;
+    numeric.set_double(the_number);
 
     success = true; //Can this ever fail?
-    return Gnome::Gda::Value(&gda_numeric);
+    return Gnome::Gda::Value(numeric);
   }
   else if(glom_type == Field::TYPE_BOOLEAN)
   {
