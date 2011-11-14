@@ -71,7 +71,6 @@ int main()
   connection_pool->set_fake_connection();
 
   //Build a SQL query and get the string for it:
-  //Try to get more rows than intended:
   const Gnome::Gda::Value value("Born To Run");
   Glom::sharedptr<const Glom::Field> where_field = document.get_field("albums", "name");
   const Gnome::Gda::SqlExpr where_clause = 
@@ -91,7 +90,7 @@ int main()
     Glom::Utils::build_sql_select_with_where_clause("albums",
       fieldsToGet, where_clause);
   const Glib::ustring& query = Glom::Utils::sqlbuilder_get_full_query(builder);
-  std::cout << "query: " << query << std::endl;
+  //std::cout << "query: " << query << std::endl;
 
   Glom::libglom_deinit();
 
