@@ -90,6 +90,13 @@ int main()
     Glom::Utils::build_sql_select_with_where_clause("albums",
       fieldsToGet, where_clause);
   const Glib::ustring& query = Glom::Utils::sqlbuilder_get_full_query(builder);
+  g_assert(!query.empty());
+  if(query.find("album_id") == Glib::ustring::npos)
+  {
+    std::cerr << "Failed: The query did not contain an expected field name." << std::endl;
+    return EXIT_FAILURE;
+  }
+
   //std::cout << "query: " << query << std::endl;
 
   Glom::libglom_deinit();

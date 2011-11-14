@@ -1,3 +1,10 @@
+2011-11-14  Murray Cumming  <murrayc@murrayc.com>
+
+	Fake connection test: Test for a substring in the generated query.
+
+	* tests/test_fake_connection.cc: This also fixes the build with
+	-Werror.
+
 2011-11-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Use the new Gnome::Gda::Numeric API.
