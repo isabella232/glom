@@ -2462,7 +2462,7 @@ msgstr "Imagen"
 #: ../glom/libglom/data_structure/glomconversions.cc:103
 #, no-c-format
 msgid "%x"
-msgstr "%x"
+msgstr "%d/%m/%Y"
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
 #: ../glom/libglom/data_structure/glomconversions.cc:150

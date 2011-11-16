@@ -1,14 +1,12 @@
-2011-01-27  Murray Cumming  <murrayc@murrayc-desktop>
+2011-11-16  Murray Cumming  <murrayc@murrayc.com>
 
-	reviewed by: <delete if not using a buddy>
+	Correct the date format in the es_ES locale. 
 
-	* POTFILES.in:
-
-2009-09-03  Murray Cumming  <murrayc@murrayc-x61>
-
-	reviewed by: <delete if not using a buddy>
-
-	* POTFILES.in:
+	* es.po: Added a translation for the date format, because the default
+	does not show 4-digit years. This avoids the warning at startup, which 
+	asks the translator to deal with it.
+	Note that I have made this correction before:
+	http://git.gnome.org/browse/glom/commit/po/es.po?id=79636cd099b8330339502cebe95fb6e1583d1c20
 
 2009-04-26  Mario Blättermann  <mariobl@gnome.org>
 
