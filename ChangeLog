@@ -16,6 +16,7 @@
 	* glom/mode_data/box_data_calendar_related.[h|cc]: Override
 	create_layout() as a place to call our get_fields_to_show(), like
 	Box_Data_List_Related does. Then fill_from_database() can succeed.
+	Bug #663310
 
 2011-11-11  Murray Cumming  <murrayc@murrayc.com>
 
