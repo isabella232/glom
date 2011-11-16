@@ -119,6 +119,14 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
   return Box_Data::init_db_details(found_set, "" /* layout_platform */); //Calls create_layout() and fill_from_database().
 }
 
+
+void Box_Data_Calendar_Related::create_layout()
+{
+  Box_Data::create_layout();
+
+  m_FieldsShown = get_fields_to_show();
+}
+
 bool Box_Data_Calendar_Related::fill_from_database()
 {
   if(!m_portal)
@@ -324,11 +332,17 @@ Box_Data_Calendar_Related::type_vecLayoutFields Box_Data_Calendar_Related::get_f
 
   sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
   if(!derived_portal)
+  {
+    std::cerr << G_STRFUNC << ": The portal is not a LayoutItem_CalendarPortal." << std::endl;
     return layout_fields;
+  }
 
   sharedptr<const Field> date_field = derived_portal->get_date_field();
   if(!date_field)
+  {
+    std::cerr << G_STRFUNC << ": get_date_field() returned no field." << std::endl;
     return layout_fields;
+  }
 
   //Add it to the list to ensure that we request the date (though it will not really be shown in the calendar):
   sharedptr<LayoutItem_Field> layout_item_date_field = sharedptr<LayoutItem_Field>::create();
@@ -406,7 +420,10 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
 
   sharedptr<const Field> date_field = derived_portal->get_date_field();
   if(!date_field)
+  {
+    std::cerr << G_STRFUNC << ":  get_date_field() returned no field." << std::endl;
     return Glib::ustring();
+  }
 
   //TODO: month seems to be 143710360 sometimes, which seems to be a GtkCalendar bug:
   //std::cout << "Box_Data_Calendar_Related::on_calendar_details(): year=" << year << ", month=" << month << " day=" << day << std::endl;
