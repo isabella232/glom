@@ -1,3 +1,13 @@
+2011-11-16  Murray Cumming  <murrayc@murrayc.com>
+
+	Correct the date format in the es_ES locale. 
+
+	* es.po: Added a translation for the date format, because the default
+	does not show 4-digit years. This avoids the warning at startup, which 
+	asks the translator to deal with it.
+	Note that I have made this correction before:
+	http://git.gnome.org/browse/glom/commit/po/es.po?id=79636cd099b8330339502cebe95fb6e1583d1c20
+
 2011-10-24  Murray Cumming  <murrayc@murray.com>
 
 	Remove the mention of window_progress.glade to fix make check. 
