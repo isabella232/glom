@@ -1,3 +1,11 @@
+2011-11-16  Murray Cumming  <murrayc@murrayc.com>
+
+	Make the Calendar portal work again.
+
+	* glom/mode_data/box_data_calendar_related.[h|cc]: Override
+	create_layout() as a place to call our get_fields_to_show(), like
+	Box_Data_List_Related does. Then fill_from_database() can succeed.
+
 2011-11-14  Murray Cumming  <murrayc@murrayc.com>
 
 	Fake connection test: Test for a substring in the generated query.
