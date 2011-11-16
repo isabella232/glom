@@ -1,3 +1,12 @@
+2011-11-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Handle gdouble results from python functions.
+    
+        * glom/libglom/data_structure/field.cc: Add a mapping
+        instead of ignoring doubles.
+        This avoids a stderr warning and probably makes calculations
+        work.
+
 2011-11-03  Murray Cumming  <murrayc@murrayc.com>
 
 	Do not blank the data when showing the field definitions dialog.
@@ -5,6 +14,8 @@
 	* glom/frame_glom.cc: do_menu_developer_fields(): Only blank the data 
 	view if using SQLite, which requires it, because it looks like a bug to 
 	the user.
+
+1.18.5:
 
 2011-10-27  Murray Cumming  <murrayc@murrayc.com>
 

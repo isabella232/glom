@@ -1,3 +1,9 @@
+TODO:
+
+* Handle gdouble results from python functions.
+* Do not blank the data when showing the field definitions dialog.
+  (Murray Cumming)
+
 1.18.5:
 
 * Details: Avoid an outdent after group titles
