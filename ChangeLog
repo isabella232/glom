@@ -1,5 +1,14 @@
 2011-11-16  Murray Cumming  <murrayc@murrayc.com>
 
+	List view: Stop unnecessary saving of column widths.
+
+	* glom/mode_data/db_adddel/db_adddel.[h|cc]: Do not handle changes 
+	of the GtkTreeView column width, because it happens during normal
+	size allocation as well as when the user resizes columns.
+	It is not essential anyway.
+
+2011-11-16  Murray Cumming  <murrayc@murrayc.com>
+
 	Make the Calendar portal work again.
 
 	* glom/mode_data/box_data_calendar_related.[h|cc]: Override
