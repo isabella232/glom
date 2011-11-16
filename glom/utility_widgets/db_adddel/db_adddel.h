@@ -415,17 +415,11 @@ private:
   Gtk::TreeView m_TreeView;
   #endif
 
-<<<<<<< HEAD
-
   Gtk::TreeModel::ColumnRecord m_ColumnRecord;
 
   //typedef Gtk::ListStore type_model_store;
   typedef DbTreeModel type_model_store;
   Glib::RefPtr<type_model_store> m_refListStore;
-=======
-private:
-  Glib::RefPtr<DbTreeModel> m_refListStore;
->>>>>>> edc483a... List view and Related Records: Disable buttons when appropriate.
 
   //Columns, not including the hidden internal columns:
   typedef std::vector<DbAddDelColumnInfo> type_ColumnTypes;
