@@ -1,6 +1,17 @@
 #/bin/sh -e
 
-locales=("en_US.UTF-8" "en_GB.UTF-8" "en_CA.UTF-8" "de_DE.UTF-8" "fr_FR.UTF-8" "hu_HU.UTF-8")
+# This test checks that dates are presented and interpreted correctly.
+# That sometimes requires a translation of the %x date format in the .po file,
+# and that translation is often lost accidentally
+#
+# This test requires these locales to be installed and configured.
+# That might be a problem on some systems, so feel free to use a patch to edit this file or disable it altogether.
+#
+# These are chosen based on problems found previously,
+# and the ones with good translations shown here: http://l10n.gnome.org/module/glom/
+#TODO: Get a list from po/*.po ?
+#These are apparently not available on Fedora:  "da_DA.UTF-8" "cs_CZ.UTF-8" "nb_NO.UTF-8" "sv_SE.UTF-8"
+locales=("en_US.UTF-8" "en_GB.UTF-8" "en_CA.UTF-8" "de_DE.UTF-8" "es_ES.UTF-8" "fi_FI.UTF-8" "fr_FR.UTF-8" "hu_HU.UTF-8" "it_IT.UTF-8" "pt_PT.UTF-8" "pt_BR.UTF-8" "sl_SI.UTF-8")
 
 for x in "${locales[@]}"
 do

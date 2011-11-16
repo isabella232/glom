@@ -15,6 +15,9 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Note that test_glom_date_in_locales.sh requires us to have certain locales 
+# installed and configured.
+
 check_PROGRAMS =						\
 	glom/libglom/test_connectionpool			\
 	glom/libglom/example_document_load \
@@ -46,6 +49,7 @@ TESTS =	tests/test_document_load	\
 	tests/test_dtd_file_validation.sh \
 	tests/test_glade_file_validation.sh \
 	tests/test_xslt_file_validation.sh \
+	tests/test_glom_date_in_locales.sh \
 	tests/python/test_load_python_library \
 	tests/python/test_python_module \
 	tests/test_fake_connection \
@@ -67,7 +71,8 @@ TESTS =	tests/test_document_load	\
 dist_noinst_SCRIPTS = tests/test_dtd_file_validation.sh \
 	tests/test_glade_file_validation.sh \
 	tests/test_xslt_file_validation.sh \
-	tests/test_glade_toplevels_instantiation.sh
+	tests/test_glade_toplevels_instantiation.sh \
+	tests/test_glom_date_in_locales.sh
 
 #TESTS_ENVIRONMENT=which valgrind && valgrind --tool=memcheck --leak-check=full --leak-resolution=high --trace-children=yes --num-callers=30
 

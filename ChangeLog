@@ -1,5 +1,15 @@
 2011-11-16  Murray Cumming  <murrayc@murrayc.com>
 
+	Enable the test for dates in various locales.
+
+	* Makefile_tests.am:
+	* tests/test_glom_date_in_locales.sh: I don't like requiring 
+	installation of these locales during make check, but I see no other
+	way to stop the fixes from being lost by careless translators, at 
+	least of the major languages.
+
+2011-11-16  Murray Cumming  <murrayc@murrayc.com>
+
 	List view: Stop unnecessary saving of column widths.
 
 	* glom/mode_data/db_adddel/db_adddel.[h|cc]: Do not handle changes 
