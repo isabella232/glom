@@ -1,4 +1,4 @@
-TODO:
+1.18.6:
 
 * Handle gdouble results from python functions.
 * Do not blank the data when showing the field definitions dialog.

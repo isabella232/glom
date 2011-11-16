@@ -1,3 +1,5 @@
+1.18.6:
+
 2011-11-16  Murray Cumming  <murrayc@murrayc.com>
 
 	List view: Stop unnecessary saving of column widths.
