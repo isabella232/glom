@@ -352,7 +352,8 @@ private:
   #ifndef GLOM_ENABLE_MAEMO
   virtual bool on_treeview_columnheader_button_press_event(GdkEventButton* event);
   virtual void on_treeview_column_clicked(int model_column_index);
-  void on_treeview_column_resized(int model_column_index, DbTreeViewColumnGlom* view_column);
+  //void on_treeview_column_resized(int model_column_index, DbTreeViewColumnGlom* view_column);
+
   void on_idle_row_edit();
   void on_cell_button_clicked(const Gtk::TreeModel::Path& path);
   void on_cell_layout_button_clicked(const Gtk::TreeModel::Path& path, int model_column_index);

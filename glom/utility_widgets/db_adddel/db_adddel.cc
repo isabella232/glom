@@ -2020,6 +2020,13 @@ bool DbAddDel::on_treeview_column_drop(Gtk::TreeView* /* treeview */, Gtk::TreeV
   return true;
 }
 
+/* We do not let the developer resize the columns directly in the treeview
+ * because we cannot easily avoid this signal handler from being called just during the 
+ * intial size allocation.
+ * Anyway, this would be rather implicit anyway - people might not know that they are changing it in the document.
+ * The size can still be specified in the layout dialog.
+ */
+/*
 void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColumnGlom* view_column)
 {
   if(!view_column)
@@ -2048,6 +2055,7 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
   if(column_info.m_item)
       column_info.m_item->set_display_width(width);
 }
+*/
 
 void DbAddDel::on_treeview_column_clicked(int model_column_index)
 {
@@ -2231,7 +2239,8 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   pViewColumn->signal_clicked().connect(
     sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_column_clicked), model_column_index) );
 
-  pViewColumn->connect_property_changed("width", sigc::bind(sigc::mem_fun(*this, &DbAddDel::on_treeview_column_resized), model_column_index, pViewColumn) );
+  // See the comment on on_treeview_column_resized():
+  //pViewColumn->connect_property_changed("width", sigc::bind(sigc::mem_fun(*this, &DbAddDel::on_treeview_column_resized), model_column_index, pViewColumn) );
   #endif //GLOM_ENABLE_MAEMO
 
   return cols_count;
