@@ -1,5 +1,12 @@
 2011-11-17  Murray Cumming  <murrayc@murrayc.com>
 
+	date test: Set LANGUAGE too, which seems to be necessary on Ubuntu.
+
+	* tests/test_glom_date_in_locales.sh: Also add some locales that 
+	are available on Ubuntu.
+
+2011-11-17  Murray Cumming  <murrayc@murrayc.com>
+
 	main: Break the date check into two possible error messages.
 
 	* glom/main.cc: This simplifies debugging a bit.
