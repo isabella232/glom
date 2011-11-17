@@ -596,10 +596,16 @@ main(int argc, char* argv[])
     bool date_check_ok = true;
     const bool test1 =
       Glom::Conversions::sanity_check_date_text_representation_uses_4_digit_years(group.m_arg_debug_date_check /* show debug output */);
-    const bool test2 = Glom::Conversions::sanity_check_date_parsing();
-    if(!test1 || !test2)
+    if(!test1)
     {
-      std::cerr << "Glom: ERROR: Date parsing sanity checks failed. Glom will not display dates correctly or interpret entered dates correctly. This needs attention from a translator. Please file a bug. See http://www.glom.org." << std::endl;
+      std::cerr << "Glom: ERROR: Date presentation sanity checks failed. Glom will not display dates correctly. This needs attention from a translator. Please file a bug. See http://www.glom.org." << std::endl;
+      date_check_ok = false;
+    }
+
+    const bool test2 = Glom::Conversions::sanity_check_date_parsing();
+    if(!test2)
+    {
+      std::cerr << "Glom: ERROR: Date parsing sanity checks failed. Glom will not interpret dates correctly. This needs attention from a translator. Please file a bug. See http://www.glom.org." << std::endl;
       date_check_ok = false;
     }
 

@@ -1,3 +1,9 @@
+2011-11-17  Murray Cumming  <murrayc@murrayc.com>
+
+	main: Break the date check into two possible error messages.
+
+	* glom/main.cc: This simplifies debugging a bit.
+
 2011-11-16  Murray Cumming  <murrayc@murrayc.com>
 
 	Enable the test for dates in various locales.
