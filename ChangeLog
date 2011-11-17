@@ -1,5 +1,14 @@
 2011-11-17  Murray Cumming  <murrayc@murrayc.com>
 
+	Update an example screenshot.
+
+	* docs/website/screenshots/glom_example_lessonplanner.png: Update this 
+	now that the calendar portal works again.
+	* docs/website/screenshots/glom_select_field.png: Remove this because 
+	it is not used.
+
+2011-11-17  Murray Cumming  <murrayc@murrayc.com>
+
 	date test: Set LANGUAGE too, which seems to be necessary on Ubuntu.
 
 	* tests/test_glom_date_in_locales.sh: Also add some locales that 

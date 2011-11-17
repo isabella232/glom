@@ -16,4 +16,7 @@
 /test_selfhosting_new_then_image
 /test_selfhosting_new_then_report
 /test_selfhosting_sqlinjection
+/test_fake_connection
+/test_selfhosting_new_from_example_strangepath
+/test_selfhosting_new_then_change_columns
 
