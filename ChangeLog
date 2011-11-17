@@ -1,3 +1,10 @@
+2011-11-17  Murray Cumming  <murrayc@murrayc.com>
+
+	date test: Set LANGUAGE too, which seems to be necessary on Ubuntu.
+
+	* tests/test_glom_date_in_locales.sh: Also add some locales that 
+	are available on Ubuntu.
+
 2011-11-16  Murray Cumming  <murrayc@murrayc.com>
 
 	Add a test for date presentation and parsing in various locales.

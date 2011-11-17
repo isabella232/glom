@@ -106,6 +106,7 @@ static inline const char* glom_get_locale_date_format()
     c_locale_date_format = _("%x");
   }
 
+  //std::cout << G_STRFUNC << ": c_locale_date_format=" << c_locale_date_format << std::endl;
   return c_locale_date_format;
 }
 
@@ -185,6 +186,8 @@ bool Conversions::sanity_check_date_text_representation_uses_4_digit_years(bool 
   {
     //Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
     std::cerr << _("ERROR: sanity_check_date_text_representation_uses_4_digit_year(): Sanity check failed: Glom does not seem to use 4 digits to display years in a date's text representation, in this locale. Defaulting to dd/mm/yyyy though this might be incorrect for your locale. This needs attention from a translator. Please file a bug - see http://www.glom.org") << std::endl;
+
+    //std::cout << "  Unexpected date text: " << date_text << std::endl;
 
     //Do not depend on translators to do what we ask.
     //Default to a common format, though this would be incorrect in some 
