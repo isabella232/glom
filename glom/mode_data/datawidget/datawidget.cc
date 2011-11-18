@@ -67,13 +67,16 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
 {
   const Field::glom_field_type glom_type = field->get_glom_type();
   set_layout_item(field, table_name);
+  
+  //The GNOME HIG says that labels should have ":" at the end:
+  //http://library.gnome.org/devel/hig-book/stable/design-text-labels.html.en
+  const Glib::ustring title = Glib::ustring::compose(_("%1:"), field->get_title_or_name());
 
   m_child = 0;
-  LayoutWidgetField* pFieldWidget = 0;
-  const Glib::ustring title = field->get_title_or_name();
+  LayoutWidgetField* pFieldWidget = 0;  
   if(glom_type == Field::TYPE_BOOLEAN)
   {
-    DataWidgetChildren::CheckButton* checkbutton = Gtk::manage( new DataWidgetChildren::CheckButton( title ) );
+    DataWidgetChildren::CheckButton* checkbutton = Gtk::manage( new DataWidgetChildren::CheckButton() );
     checkbutton->show();
     checkbutton->signal_toggled().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
 
@@ -82,7 +85,9 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     m_child = checkbutton;
     pFieldWidget = checkbutton;
 
-    m_label.set_text( Glib::ustring() ); //It is not used.
+    m_label.set_label(title);
+    m_label.set_alignment(0);
+    m_label.show();
   }
   else if(glom_type == Field::TYPE_IMAGE)
   {
@@ -103,9 +108,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
   }
   else
   {
-    //The GNOME HIG says that labels should have ":" at the end:
-    //http://library.gnome.org/devel/hig-book/stable/design-text-labels.html.en
-    m_label.set_label(title + ':');
+    m_label.set_label(title);
     m_label.set_alignment(0);
     m_label.show();
 

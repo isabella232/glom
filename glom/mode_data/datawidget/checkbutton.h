@@ -41,7 +41,7 @@ class CheckButton
   public LayoutWidgetField
 {
 public:
-  explicit CheckButton(const Glib::ustring& title);
+  explicit CheckButton(const Glib::ustring& title = Glib::ustring());
   virtual ~CheckButton();
 
   virtual void set_value(const Gnome::Gda::Value& value);
