@@ -1,5 +1,13 @@
 2011-11-18  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix the build with latest GTK+ with --enable-warnings=fatal
+
+	* glom/utility_widgets/eggspreadtable/eggspreadtablednd.c
+	(set_drag_icon): Update from libegg to fix the build with deprecated GTK+ 
+  API disabled.
+
+2011-11-18  Murray Cumming  <murrayc@murrayc.com>
+
 	Details: Move the checkbutton titles to the left.
 
 	* glom/mode_data/datawidget/checkbutton.h: Contructor:
