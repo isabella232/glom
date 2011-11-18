@@ -652,6 +652,9 @@ void Field::init_map()
     m_map_gda_type_to_glom_type[G_TYPE_BOOLEAN] = TYPE_BOOLEAN;
     m_map_gda_type_to_glom_type[GDA_TYPE_BINARY] = TYPE_IMAGE;
 
+    //SQLite can return a GdaBlob though it can take a GdaBinary:
+    m_map_gda_type_to_glom_type[GDA_TYPE_BLOB] = TYPE_IMAGE;
+
     //Extra conversions for GTypes that can be returned by glom_pygda_value_from_pyobject():
     m_map_gda_type_to_glom_type[G_TYPE_DOUBLE] = TYPE_NUMERIC;
     //TODO? m_map_gda_type_to_glom_type[GDA_TYPE_TIME] = ;

@@ -1,5 +1,12 @@
 2011-11-18  Murray Cumming  <murrayc@murrayc.com>
 
+	Recognize GdaBlob as suitable for Image field types.
+
+	* glom/libglom/data_structure/field.cc: Add to the map, to avoid 
+	a warning.
+
+2011-11-18  Murray Cumming  <murrayc@murrayc.com>
+
 	Fix the build with latest GTK+ with --enable-warnings=fatal
 
 	* glom/utility_widgets/eggspreadtable/eggspreadtablednd.c
@@ -13,7 +20,7 @@
 	* glom/mode_data/datawidget/checkbutton.h: Contructor:
 	Allow the title to be empty.
 	* glom/mode_data/datawidget/datawidget.cc: Give the checkbutton a title 
-  at the left, like other widgets. This looks consistent.
+	at the left, like other widgets. This looks consistent.
 
 2011-11-17  Murray Cumming  <murrayc@murrayc.com>
 
