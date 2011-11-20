@@ -1,3 +1,5 @@
+1.20.0 (stable):
+
 2011-11-20  Murray Cumming  <murrayc@murrayc.com>
 
 	Details View: Left-align numbers when using automatic alignment.
@@ -29,7 +31,7 @@
 
 	* glom/utility_widgets/eggspreadtable/eggspreadtablednd.c
 	(set_drag_icon): Update from libegg to fix the build with deprecated GTK+ 
-  API disabled.
+	API disabled.
 
 2011-11-18  Murray Cumming  <murrayc@murrayc.com>
 

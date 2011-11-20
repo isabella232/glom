@@ -1,10 +1,15 @@
-TODO:
+1.20.0 (unstable):
 
+Changes since 1.19.19:
+* Details view:
+  - Default to left-alignment for numeric fields,
+  but default to right-alignment in the list view and in related 
+  records lists.
+  - Move the checkbutton titles to the left.
+  - Make the Calendar portal work again. Bug #663310
 * List view: Stop unnecessary saving of column widths.
 * List view and Related Records: Disable buttons when appropriate.
   Bug #663812 (André Klapper)
-* Details: Make the Calendar portal work again.
-  Bug #663310
 * libglom: Added ConnectionPool::set_fake_connection().
 * Escape database connection details properly.
 * Correctly escape and quote options when spawning tar or postgres.
