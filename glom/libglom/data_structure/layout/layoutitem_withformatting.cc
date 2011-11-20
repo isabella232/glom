@@ -61,7 +61,7 @@ const FieldFormatting& LayoutItem_WithFormatting::get_formatting_used() const
   return m_formatting;
 }
 
-FieldFormatting::HorizontalAlignment LayoutItem_WithFormatting::get_formatting_used_horizontal_alignment() const
+FieldFormatting::HorizontalAlignment LayoutItem_WithFormatting::get_formatting_used_horizontal_alignment(bool /* for_details_view */) const
 {
   const FieldFormatting& format = get_formatting_used();
   FieldFormatting::HorizontalAlignment alignment = 

@@ -108,7 +108,7 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
 
   //Horizontal alignment:
   const FieldFormatting::HorizontalAlignment alignment =
-    layout_item->get_formatting_used_horizontal_alignment();
+    layout_item->get_formatting_used_horizontal_alignment(true /* for details view */);
   const float x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
   Gtk::Misc* misc = dynamic_cast<Gtk::Misc*>(widget_to_change);
   if(misc)

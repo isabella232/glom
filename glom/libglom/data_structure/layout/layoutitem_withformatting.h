@@ -53,7 +53,7 @@ public:
    * choosing an appropriate alignment if it is set to HORIZONTAL_ALIGNMENT_AUTO.
    * Note that this never returns HORIZONTAL_ALIGNMENT_AUTO.
    */
-  virtual FieldFormatting::HorizontalAlignment get_formatting_used_horizontal_alignment() const;
+  virtual FieldFormatting::HorizontalAlignment get_formatting_used_horizontal_alignment(bool for_details_view = false) const;
 };
 
 } //namespace Glom

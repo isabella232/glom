@@ -146,8 +146,10 @@ public:
   /** Get the alignment for the formatting used (see get_formatting_used()),
    * choosing an appropriate alignment if it is set to HORIZONTAL_ALIGNMENT_AUTO.
    * Note that this never returns HORIZONTAL_ALIGNMENT_AUTO.
+   *
+   * @param for_details_view This can change the effect of HORIZONTAL_ALIGNMENT_AUTO.
    */
-  virtual FieldFormatting::HorizontalAlignment get_formatting_used_horizontal_alignment() const;
+  virtual FieldFormatting::HorizontalAlignment get_formatting_used_horizontal_alignment(bool for_details_view = false) const;
 
   /** Compare the name, relationship, and related_relationship.
    */

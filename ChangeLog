@@ -1,3 +1,21 @@
+2011-11-20  Murray Cumming  <murrayc@murrayc.com>
+
+	Details View: Left-align numbers when using automatic alignment.
+
+	* glom/libglom/data_structure/layout/layoutitem_field.[h|cc]:
+	* glom/libglom/data_structure/layout/layoutitem_withformatting.[h|cc]:
+	get_formatting_used_horizontal_alignment(): Add a for_details_view() 
+	and return left-alignment for auto-alignment on a details view.
+	* glom/mode_data/datawidget/entry.cc:
+	* glom/utility_widgets/layoutwidgetbase.cc: Pass true to get that 
+	effect.
+
+	Right-aligned numbers on the detailed view just look sillier now that
+	the entry widgets are full width, and when there are no other numbers
+	above or below them. Note that we probably did not purposefully 
+	change it show numbers with full width, but I would still want this
+	alignment change.
+
 2011-11-18  Murray Cumming  <murrayc@murrayc.com>
 
 	Recognize GdaBlob as suitable for Image field types.
