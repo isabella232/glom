@@ -1912,6 +1912,16 @@ Glib::ustring build_query_add_user_to_group(const Glib::ustring& group, const Gl
   return "ALTER GROUP " + escape_sql_id(group) + " ADD USER " + escape_sql_id(user);
 }
 
+void set_fake_connection()
+{
+  //Allow a fake connection, so sqlbuilder_get_full_query() can work:
+  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+  Glom::ConnectionPoolBackends::Backend* backend = 
+    new Glom::ConnectionPoolBackends::PostgresCentralHosted();
+  connection_pool->set_backend(std::auto_ptr<Glom::ConnectionPool::Backend>(backend));
+  connection_pool->set_fake_connection();
+}
+
 } //namespace DbUtils
 
 } //namespace Glom

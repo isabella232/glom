@@ -22,8 +22,6 @@
 #include <libglom/init.h>
 #include <libglom/utils.h>
 #include <libglom/db_utils.h>
-#include <libglom/connectionpool.h>
-#include <libglom/connectionpool_backends/postgres_central.h>
 #include <giomm/file.h>
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
@@ -64,11 +62,7 @@ int main()
   }
 
   //Allow a fake connection, so sqlbuilder_get_full_query() can work:
-  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
-  Glom::ConnectionPoolBackends::Backend* backend = 
-    new Glom::ConnectionPoolBackends::PostgresCentralHosted();
-  connection_pool->set_backend(std::auto_ptr<Glom::ConnectionPool::Backend>(backend));
-  connection_pool->set_fake_connection();
+  Glom::DbUtils::set_fake_connection();
 
   //Build a SQL query and get the string for it:
   const Gnome::Gda::Value value("Born To Run");

@@ -160,6 +160,10 @@ Glib::ustring build_query_create_group(const Glib::ustring& group, bool superuse
 
 Glib::ustring build_query_add_user_to_group(const Glib::ustring& group, const Glib::ustring& user);
 
+/** Allow a fake connection, so sqlbuilder_get_full_query() can work.
+ */
+void set_fake_connection();
+
 } //namespace DbUtils
 
 } //namespace Glom

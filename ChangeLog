@@ -1,3 +1,12 @@
+2011-11-21  Murray Cumming  <murrayc@murrayc.com>
+
+	libglom: Added DbUtils::set_fake_connection().
+
+	* glom/libglom/db_utils.[h|cc]: Added DbUtils::set_fake_connection()
+  because ConnectionPool is not public API.
+	* tests/test_fake_connection.cc: Use this function instead of using 
+	ConnectionPool's API.
+
 1.20.0 (stable):
 
 2011-11-20  Murray Cumming  <murrayc@murrayc.com>
