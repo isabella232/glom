@@ -1,5 +1,19 @@
 1.20.0 (stable):
 
+Major changes since 1.18:
+
+* Simplified main window.
+* Glom can now store and display PDFs:
+  http://www.murrayc.com/blog/permalink/2011/07/14/glom-storing-pdfs/
+  It can store any file format, though it can only display images and PDFs.
+* Print Layout: Major overhaul with improved UI and new functionality.
+* Related Records: Allow the developer to specify how many rows to show.
+* Choice drop-downs can show more than 2 fields.
+* Choice drop-down fields are aligned.
+* Choice drop-downs can show related fields:
+  http://www.murrayc.com/blog/permalink/2010/10/07/glom-choice-drop-downs-can-show-related-fields
+* List columns have sensible widths.
+	
 Changes since 1.19.19:
 * Details view:
   - Default to left-alignment for numeric fields,
