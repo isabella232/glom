@@ -48,8 +48,8 @@ class CommandLineThreadData
 {
 public:
   std::string m_command;
-  Glib::Cond* m_cond;
-  Glib::Mutex* m_mutex;
+  Glib::Threads::Cond* m_cond;
+  Glib::Threads::Mutex* m_mutex;
   bool* m_result;
 };
 

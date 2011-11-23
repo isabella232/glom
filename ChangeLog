@@ -1,3 +1,13 @@
+2011-11-23  Murray Cumming  <murrayc@murrayc.com>
+
+	Avoid deprecated glibmm API (from glibmm/thread.h).
+
+	* configure.ac: Depend on a recent unstable glibmm. 
+	* glom/libglom/spawn_with_feedback.cc: Use Glib::Threads::Cond and 
+	Glib::Threads::Mutex instead of deprecated Glib::Cond and Glib::Mutex.
+
+This is the master branch. See also the glom-1-20 branch.
+
 2011-11-21  Murray Cumming  <murrayc@murrayc.com>
 
 	libglom: Added DbUtils::set_fake_connection().
