@@ -362,7 +362,6 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       // a) make this code dependent on the database backend used.
       // b) fetch rows we perhaps don't need, if only the first few rows of
       // a table are accessed.
-      // See See libgda bug https://bugzilla.gnome.org/show_bug.cgi?id=660344
       ConnectionPool* connection = ConnectionPool::get_instance();
       if(connection && !connection->get_backend_supports_cursor())
         m_gda_datamodel = Gnome::Gda::DataAccessWrapper::create(m_gda_datamodel);
