@@ -1,5 +1,12 @@
 2011-11-25  Murray Cumming  <murrayc@murrayc.com>
 
+	gcov: Use AC_PATH_PROG().
+
+	* configure.ac: Check for the path to gcov.
+	* Makefile.am: Use it.
+
+2011-11-25  Murray Cumming  <murrayc@murrayc.com>
+
 	Added a "make gcov" target to get some test coverage statistics.
 
 	* configure.ac: Add an --enable-gcov option which add gcc/g++ flags.
