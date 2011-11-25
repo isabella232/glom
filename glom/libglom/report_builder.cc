@@ -418,7 +418,7 @@ void ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
     if(text_value.empty() && sharedptr<const LayoutItem_FieldSummary>::cast_dynamic(field) && (field_type == Field::TYPE_NUMERIC))
     {
       //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
-      Gnome::Gda::Value value = Conversions::parse_value(0);
+      const Gnome::Gda::Value value = Conversions::parse_value(0);
       text_value = Conversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
     }
 
