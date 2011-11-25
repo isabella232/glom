@@ -87,7 +87,7 @@ gcov: gcov-clean all check
 	$(AM_V_GEN)(mkdir -p tests/coverage; \
 	coverage_dir='tests/coverage'; \
 	$(LCOV) --directory . --base-directory . --capture --output-file $$coverage_dir/coverage.info; \
-	$(GENHTML) --output-directory $$coverage_dir $$coverage_dir/coverage.info; \
+	$(GENHTML) --legend --output-directory $$coverage_dir $$coverage_dir/coverage.info; \
 	$(LCOV) --directory . --zerocounters; \
 	echo "Code coverage report: file://$(abs_top_builddir)/$$coverage_dir/index.html")
 

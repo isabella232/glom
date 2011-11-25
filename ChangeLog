@@ -1,5 +1,11 @@
 2011-11-25  Murray Cumming  <murrayc@murrayc.com>
 
+	gcov: Add a legend key to the lcov html.
+
+	* Makefile.am: Pass --legend to genhtml. 
+
+2011-11-25  Murray Cumming  <murrayc@murrayc.com>
+
 	Correct a query from UPDATE to SELECT.
 
 	* glom/libglom/report_builder.cc: Correc the query to get system preferences 
