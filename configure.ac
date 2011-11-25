@@ -288,6 +288,18 @@ if test "x$enable_gcov" = "xyes"; then
   fi
   AC_SUBST(GCOV)
 
+  AC_PATH_PROG(LCOV, [lcov], [no])
+  if test "x$LCOV" = "xno"; then
+    AC_MSG_ERROR([gcov was enabled but lcov was not found.])
+  fi
+  AC_SUBST(LCOV)
+
+  AC_PATH_PROG(GENHTML, [genhtml], [no])
+  if test "x$GENHTML" = "xno"; then
+    AC_MSG_ERROR([gcov was enabled but lcov's genhtml was not found.])
+  fi
+  AC_SUBST(GENHTML)
+
   GCOV_CFLAGS="-O0 -g -fprofile-arcs -ftest-coverage"
   GCOV_LIBS="-lgcov"
 
