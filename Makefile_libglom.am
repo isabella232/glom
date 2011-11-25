@@ -47,7 +47,7 @@ libglom_d_b_view_include_HEADERS = $(libglom_d_b_view_headers)
 
 glom_libglom_libglom_@GLOM_ABI_VERSION@_la_SOURCES = $(libglom_sources)
 
-libglom_all_libs = $(LIBGLOM_LIBS) $(PYTHON_LIBS) $(BOOST_PYTHON_LIBS)
+libglom_all_libs = $(LIBGLOM_LIBS) $(PYTHON_LIBS) $(BOOST_PYTHON_LIBS) $(GCOV_CFLAGS) 
 glom_libglom_libglom_@GLOM_ABI_VERSION@_la_LIBADD = $(libglom_all_libs)
 
 if HOST_WIN32
@@ -55,7 +55,7 @@ glom_libglom_libglom_@GLOM_ABI_VERSION@_la_LIBADD += -lws2_32
 endif
 glom_libglom_libglom_@GLOM_ABI_VERSION@_la_LDFLAGS = -no-undefined
 
-glom_libglom_libglom_@GLOM_ABI_VERSION@_la_CPPFLAGS = $(glom_includes) $(LIBGLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(libglom_defines)
+glom_libglom_libglom_@GLOM_ABI_VERSION@_la_CPPFLAGS = $(glom_includes) $(LIBGLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(GCOV_CFLAGS) $(libglom_defines)
 
 pyexec_LTLIBRARIES = glom/python_embed/python_module/glom_@GLOM_ABI_VERSION_UNDERLINED@.la
 

@@ -78,6 +78,59 @@ endif
 
 include Makefile_tests.am
 
+#We must do this so we can use += later:
+MAINTAINERCLEANFILES =
+
+# gcov
+if GCOV_ENABLED
+gcov-report.txt: gcov-clean all check
+	$(AM_V_GEN)(rm -f $@; \
+	echo -e "Test coverage:\n" >> $@; \
+	total_covered=0; total_actual=0; \
+	for file in $(filter %.cc,$(glom_glom_SOURCES) $(libglom_sources)); do \
+	  file_basename=$${file##*/}; \
+          file_basename_gcda="*-$${file_basename/.cc/.gcda}"; \
+          file_o=`find -newer $$file -name $${file_basename_gcda} | sed -e 's/\.gcda/\.o/'`; \
+          if [ -z $file_o ]; then \
+            echo "Glom: gcov input file (.o) not found."; \
+          else \
+	    gcov -o $$file_o $$file_basename > /dev/null; \
+	    file_gcov=$$file_basename.gcov; \
+	    if test -f $$file_gcov; then \
+	      actual=`grep -v '        -:' $$file_basename.gcov  | wc -l`; \
+	      uncovered=`grep '#####:' $$file_basename.gcov | wc -l`; \
+	      covered=$$((actual - uncovered)); \
+	      total_covered=$$((total_covered + covered)); \
+	      total_actual=$$((total_actual + actual)); \
+	      if [ -z $$actual ]; then \
+	        echo "Glom: gcov failure: actual is 0"; \
+	      else \
+	        echo -e "$$file:\t$$covered / $$actual\t($$((($$covered * 100) / $$actual))%)"; \
+	      fi \
+	    else \
+	      echo "generated gcov file not found: $$file_gcov"; \
+	    fi \
+          fi \
+	done >> $@; \
+	cd $(abs_srcdir); \
+	echo -e "\nSource lines: $$total_actual\nCovered statements: $$total_covered\nTotal coverage: $$((($$total_covered * 100) / $$total_actual))%" >> $@)
+
+gcov: gcov-report.txt
+	@cat gcov-report.txt
+
+clean: gcov-clean
+gcov-clean:
+	@find . -name "*.gcda" -o -name "*.gcov" -delete
+
+MAINTAINERCLEANFILES += gcov-report.txt
+gcov_phony_files = gcov gcov-clean gcov-report.txt
+else
+gcov:
+	@echo "Need to reconfigure with --enable-gcov"
+endif
+
+
+
 dist_pkgdata_DATA = glom/glom_document.dtd
 
 
@@ -212,7 +265,7 @@ dist_noinst_SCRIPTS += autogen.sh win32/build-installer
 
 CLEANFILES = $(dbusservice_DATA) $(desktop_DATA) $(win_resfile)
 DISTCLEANFILES = intltool-extract intltool-merge intltool-update
-MAINTAINERCLEANFILES = \
+MAINTAINERCLEANFILES += \
 	$(dist_docutils) $(dist_intltool) \
 	macros/gnome-doc-utils.m4 macros/intltool.m4 \
 	macros/libtool.m4 macros/ltoptions.m4 macros/ltsugar.m4 \
@@ -253,7 +306,8 @@ endif
 @INTLTOOL_DESKTOP_RULE@
 
 .PHONY: install-update-icon-cache uninstall-update-icon-cache \
-	install-update-mime-database uninstall-update-mime-database
+	install-update-mime-database uninstall-update-mime-database \
+        $(gcov_phony_files)
 
 # Instruct GNU make to delete the targets of a rule after it failed, in
 # order to avoid the complication of handling that situation manually.
