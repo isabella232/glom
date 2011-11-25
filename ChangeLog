@@ -1,5 +1,12 @@
 2011-11-25  Murray Cumming  <murrayc@murrayc.com>
 
+	Avoid an uninteresting stdcerr warning.
+
+	* glom/libglom/connectionpool.cc: It is OK to not know 
+	the document sometimes.
+
+2011-11-25  Murray Cumming  <murrayc@murrayc.com>
+
 	gcov: Use lcov instead of my hacky bash script.
 
 	* configure.ac: Check for lcov and genhtml.

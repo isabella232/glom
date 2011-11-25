@@ -751,7 +751,9 @@ Document* ConnectionPool::get_document()
 {
   if(!m_slot_get_document)
   {
-    std::cerr << G_STRFUNC << ": m_slot_get_document is null." << std::endl;
+    //Don't bother warning because all the code that calls get_document() checks 
+    //for 0 and responds reasonably.
+    //std::cerr << G_STRFUNC << ": m_slot_get_document is null." << std::endl;
     return 0;
   }
 
