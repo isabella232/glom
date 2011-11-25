@@ -1,5 +1,12 @@
 2011-11-25  Murray Cumming  <murrayc@murrayc.com>
 
+	Correct a query from UPDATE to SELECT.
+
+	* glom/libglom/report_builder.cc: Correc the query to get system preferences 
+	values. This was apparently not tested yet.
+
+2011-11-25  Murray Cumming  <murrayc@murrayc.com>
+
 	SQLite: Avoid a warning about int types for summary fields.
 
 	* glom/libglom/data_structure/glomconversions.cc:

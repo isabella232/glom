@@ -387,7 +387,7 @@ void ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
   {
     //In this case it can only be a system preferences field.
     //So let's get that data here:
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
     builder->set_table(field->get_table_used(found_set.m_table_name));
     builder->select_add_field(field->get_name(), found_set.m_table_name);
     builder->select_set_limit(1);
