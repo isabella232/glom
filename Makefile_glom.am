@@ -26,7 +26,7 @@ glom_includes += -I$(top_srcdir)/glom/utility_widgets/gimpruler
 
 bin_PROGRAMS += glom/glom
 
-glom_glom_CPPFLAGS = $(glom_includes) $(GLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(glom_defines)
+glom_glom_CPPFLAGS = $(glom_includes) $(GLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(GCOV_CFLAGS) $(glom_defines)
 
 glom_eggspreadtable_files =  \
   glom/utility_widgets/eggspreadtable/eggmarshalers.c \

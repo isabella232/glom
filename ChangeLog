@@ -1,3 +1,14 @@
+2011-11-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Added a "make gcov" target to get some test coverage statistics.
+
+	* configure.ac: Add an --enable-gcov option which add gcc/g++ flags.
+	* Makefile_glom.am:
+	* Makefile_libglom.am:
+	* Makefile.am: Add some cargo-culted and hacked-together bash scripted
+	rules that generate the .gcov files and parse them to give some 
+	percentages on stdout.
+
 2011-11-23  Murray Cumming  <murrayc@murrayc.com>
 
 	Avoid deprecated glibmm API (from glibmm/thread.h).

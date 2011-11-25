@@ -3,6 +3,10 @@
 *.a
 *.la
 *~
+*.gcno
+*.gcda
+*.gcov
+/gcov-report.txt
 
 .deps
 .dirstamp
