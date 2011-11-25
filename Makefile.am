@@ -94,7 +94,7 @@ gcov-report.txt: gcov-clean all check
           if [ -z $file_o ]; then \
             echo "Glom: gcov input file (.o) not found."; \
           else \
-	    gcov -o $$file_o $$file_basename > /dev/null; \
+	    $(GCOV) -o $$file_o $$file_basename > /dev/null; \
 	    file_gcov=$$file_basename.gcov; \
 	    if test -f $$file_gcov; then \
 	      actual=`grep -v '        -:' $$file_basename.gcov  | wc -l`; \
