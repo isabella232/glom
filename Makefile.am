@@ -83,50 +83,22 @@ MAINTAINERCLEANFILES =
 
 # gcov
 if GCOV_ENABLED
-gcov-report.txt: gcov-clean all check
-	$(AM_V_GEN)(rm -f $@; \
-	echo -e "Test coverage:\n" >> $@; \
-	total_covered=0; total_actual=0; \
-	for file in $(filter %.cc,$(glom_glom_SOURCES) $(libglom_sources)); do \
-	  file_basename=$${file##*/}; \
-          file_basename_gcda="*-$${file_basename/.cc/.gcda}"; \
-          file_o=`find -newer $$file -name $${file_basename_gcda} | sed -e 's/\.gcda/\.o/'`; \
-          if [ -z $file_o ]; then \
-            echo "Glom: gcov input file (.o) not found."; \
-          else \
-	    $(GCOV) -o $$file_o $$file_basename > /dev/null; \
-	    file_gcov=$$file_basename.gcov; \
-	    if test -f $$file_gcov; then \
-	      actual=`grep -v '        -:' $$file_basename.gcov  | wc -l`; \
-	      uncovered=`grep '#####:' $$file_basename.gcov | wc -l`; \
-	      covered=$$((actual - uncovered)); \
-	      total_covered=$$((total_covered + covered)); \
-	      total_actual=$$((total_actual + actual)); \
-	      if [ -z $$actual ]; then \
-	        echo "Glom: gcov failure: actual is 0"; \
-	      else \
-	        echo -e "$$file:\t$$covered / $$actual\t($$((($$covered * 100) / $$actual))%)"; \
-	      fi \
-	    else \
-	      echo "generated gcov file not found: $$file_gcov"; \
-	    fi \
-          fi \
-	done >> $@; \
-	cd $(abs_srcdir); \
-	echo -e "\nSource lines: $$total_actual\nCovered statements: $$total_covered\nTotal coverage: $$((($$total_covered * 100) / $$total_actual))%" >> $@)
-
-gcov: gcov-report.txt
-	@cat gcov-report.txt
+gcov: gcov-clean all check
+	$(AM_V_GEN)(mkdir -p tests/coverage; \
+	coverage_dir='tests/coverage'; \
+	$(LCOV) --directory . --base-directory . --capture --output-file $$coverage_dir/coverage.info; \
+	$(GENHTML) --output-directory $$coverage_dir $$coverage_dir/coverage.info; \
+	$(LCOV) --directory . --zerocounters; \
+	echo "Code coverage report: file://$(abs_top_builddir)/$$coverage_dir/index.html")
 
 clean: gcov-clean
 gcov-clean:
-	@find . -name "*.gcda" -o -name "*.gcov" -delete
+	$(LCOV) --directory . --zerocounters
 
-MAINTAINERCLEANFILES += gcov-report.txt
 gcov_phony_files = gcov gcov-clean gcov-report.txt
 else
 gcov:
-	@echo "Need to reconfigure with --enable-gcov"
+	echo "Need to reconfigure with --enable-gcov"
 endif
 
 
