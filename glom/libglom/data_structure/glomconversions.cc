@@ -420,10 +420,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
   }
   else if(glom_type == Field::TYPE_NUMERIC)
   {
-    const GType value_type = value.get_value_type();
-    if(value_type != GDA_TYPE_NUMERIC
-      && value_type != G_TYPE_DOUBLE
-      && value_type != G_TYPE_INT) //SQLite uses int for summary field results.
+    if(value.get_value_type() != GDA_TYPE_NUMERIC && value.get_value_type() != G_TYPE_DOUBLE)
     {
       std::cerr << G_STRFUNC << ": glom field type is NUMERIC but GdaValue type is: " << g_type_name(value.get_value_type()) << std::endl;
       return value.to_string();
