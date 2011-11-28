@@ -79,6 +79,10 @@ namespace Conversions
 
   Gnome::Gda::Value get_example_value(Field::glom_field_type field_type);
 
+  /** Convert the value to a different type, if necessary.
+   * Any text-to-number or number-to-text conversions will be in the ISO format,
+   * ignoring the current locale.
+   */
   Gnome::Gda::Value convert_value(const Gnome::Gda::Value& value, Field::glom_field_type target_glom_type);
   
 } //namespace Conversions
