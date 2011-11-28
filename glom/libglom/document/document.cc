@@ -625,8 +625,8 @@ Document::type_vec_relationships Document::get_relationships(const Glib::ustring
     //Add the system properties if necessary:
     if(plus_system_prefs)
     {
-        if(std::find_if(result.begin(), result.end(), predicate_FieldHasName<Relationship>(GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES)) == result.end())
-          result.push_back(create_relationship_system_preferences(table_name));
+      if(std::find_if(result.begin(), result.end(), predicate_FieldHasName<Relationship>(GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES)) == result.end())
+        result.push_back(create_relationship_system_preferences(table_name));
     }
 
     return result;
