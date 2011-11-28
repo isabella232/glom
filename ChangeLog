@@ -1,5 +1,12 @@
 2011-11-28  Murray Cumming  <murrayc@murrayc.com>
 
+	Added an extra test for the Document class.
+
+	* tests/test_document_change.cc: The beginnings of another test,
+	to check that what we set is what we later get.
+
+2011-11-28  Murray Cumming  <murrayc@murrayc.com>
+
 	SQLite: Avoid a warning about int types for summary fields.
 
 	* glom/libglom/data_structure/glomconversions.cc:
