@@ -1,3 +1,11 @@
+2011-11-28  Murray Cumming  <murrayc@murray.com>
+
+	Field::set_field_info(): Avoid unnecessary checks (and warnings).
+
+	* glom/libglom/data_structure/field.cc: If the type is not yet set,
+	don't bother checking that everything else uses that type.
+	This avoids a stderr warning about invalid types being used.
+
 2011-11-28  Murray Cumming  <murrayc@murrayc.comb>
 
 	Field::set_field_info(): Slight code improvement.

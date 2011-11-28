@@ -148,14 +148,21 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
 {
   m_field_info = fieldinfo;
 
+  const glom_field_type glom_type = get_glom_type();
+  const GType new_type = fieldinfo->get_g_type();
+  if( (glom_type == TYPE_INVALID) &&
+    (new_type == GDA_TYPE_NULL)) //GDA_TYPE_NULL is the default for GdaColumn.
+  {
+    //Don't bother with any of the following checks.
+    return;
+  }
+
   // Also take fallback types into account as fieldinfo might originate from
   // the database system directly.
-  GType new_type = fieldinfo->get_g_type();
-
   GType cur_type = G_TYPE_NONE;
-  if(get_glom_type() != TYPE_INVALID)
+  if(glom_type != TYPE_INVALID)
   {
-    cur_type = get_gda_type_for_glom_type(get_glom_type());
+    cur_type = get_gda_type_for_glom_type(glom_type);
 
     const FieldTypes* pFieldTypes = get_field_types();
 
