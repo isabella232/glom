@@ -435,8 +435,6 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     std::stringstream another_stream;
     another_stream.imbue(locale); //Tell it to parse stuff as per this locale.
 
-    std::cout << "debug: iso_format = " << iso_format << std::endl;
-
     //Numeric formatting:
     if(!iso_format)
     {
