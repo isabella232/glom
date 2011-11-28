@@ -1,3 +1,10 @@
+2011-11-28  Murray Cumming  <murrayc@murrayc.comb>
+
+	Field::set_field_info(): Slight code improvement.
+
+	* glom/libglom/data_structure/field.cc: Move some duplicated code into
+	a static helper function.
+
 2011-11-28  Murray Cumming  <murrayc@murrayc.com>
 
 	Added an extra test for the Document class.
