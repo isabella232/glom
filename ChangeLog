@@ -1,3 +1,14 @@
+2011-11-28  Murray Cumming  <murrayc@murrayc.com>
+
+	SQLite: Avoid a warning about int types for summary fields.
+
+	* glom/libglom/data_structure/glomconversions.cc:
+	get_text_for_gda_value(): An int is normal for aggregate fields for
+	SQLite.
+	convert_value(): Make sure that we do a locale-independent conversion,
+	otherwise the above fix will cause us to, for instance, have a 
+	comma in large numbers.
+
 2011-11-25  Murray Cumming  <murrayc@murrayc.com>
 
 	gcov: Add a legend key to the lcov html.

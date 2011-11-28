@@ -420,7 +420,10 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
   }
   else if(glom_type == Field::TYPE_NUMERIC)
   {
-    if(value.get_value_type() != GDA_TYPE_NUMERIC && value.get_value_type() != G_TYPE_DOUBLE)
+    const GType value_type = value.get_value_type();
+    if(value_type != GDA_TYPE_NUMERIC
+      && value_type != G_TYPE_DOUBLE
+      && value_type != G_TYPE_INT) //SQLite uses int for summary field results.
     {
       std::cerr << G_STRFUNC << ": glom field type is NUMERIC but GdaValue type is: " << g_type_name(value.get_value_type()) << std::endl;
       return value.to_string();
@@ -431,6 +434,8 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     //Get the locale-specific text representation, in the required format:
     std::stringstream another_stream;
     another_stream.imbue(locale); //Tell it to parse stuff as per this locale.
+
+    std::cout << "debug: iso_format = " << iso_format << std::endl;
 
     //Numeric formatting:
     if(!iso_format)
@@ -1030,7 +1035,7 @@ Gnome::Gda::Value Conversions::convert_value(const Gnome::Gda::Value& value, Fie
   }
 
   //Fallback for other conversions:
-  const Glib::ustring text = get_text_for_gda_value(source_glom_type, value);
+  const Glib::ustring text = get_text_for_gda_value(source_glom_type, value, std::locale::classic(), NumericFormat(), true /* iso_format */);
   bool test = false;
   return parse_value(target_glom_type, text, test, true /* iso_format */);
 }
