@@ -1,5 +1,11 @@
 2011-11-29  Murray Cumming  <murrayc@murrayc.com>
 
+	test_document_load_and_change: Test Document::remove_field() too.
+
+	* tests/test_document_load_and_change.cc: Exercise a little more of the API.
+
+2011-11-29  Murray Cumming  <murrayc@murrayc.com>
+
 	LayoutGroup: Add a more useful remove_field().
 
 	* glom/libglom/data_structure/layout/layoutgroup.[h|cc]:
