@@ -43,7 +43,8 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
   
   const Glib::ustring table_name = "contacts";
-  const Glom::sharedptr<const Glom::Field> field = document.get_field(table_name, "date_of_birth");
+  const Glib::ustring field_name_original = "date_of_birth";
+  const Glom::sharedptr<const Glom::Field> field = document.get_field(table_name, field_name_original);
   if(!field)
   {
     std::cerr << "Failure: Could not get field." << std::endl;
@@ -116,6 +117,10 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     std::cerr << "Failure: change_column() threw an exception: " << ex.what() << std::endl;
     return false;
   }
+
+  //Anything using this code would then update the Glom::Document,
+  //for instance by calling Document::set_table_fields(),
+  //but we are not testing that here.
 
   test_selfhosting_cleanup();
  
