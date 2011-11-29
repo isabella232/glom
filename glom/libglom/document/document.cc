@@ -763,15 +763,14 @@ void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring
       LayoutInfo& layout_info = *iterLayouts;
       for(type_list_layout_groups::iterator iter = layout_info.m_layout_groups.begin(); iter != layout_info.m_layout_groups.end(); ++iter)
       {
-        if(!(*iter))
+        sharedptr<LayoutGroup> group = *iter;
+        if(!group)
           continue;
 
-        //Remove regular fields if the field is in this layout's table:
-        if(info.m_info->get_name() == table_name)
-          (*iter)->remove_field(field_name);
 
-        //Remove the field wherever it is a related field:
-        (*iter)->remove_field(table_name, field_name);
+        //Remove regular field from the layout:
+        const Glib::ustring layout_table_name = info.m_info->get_name();
+        group->remove_field(layout_table_name, table_name, field_name);
       }
     }
 
@@ -782,11 +781,8 @@ void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring
       sharedptr<LayoutGroup> group = report->m_layout_group;
 
       //Remove regular fields if the field is in this layout's table:
-      if(info.m_info->get_name() == table_name)
-        group->remove_field(field_name);
-
-      //Remove the field wherever it is a related field:
-      group->remove_field(table_name, field_name);
+      const Glib::ustring layout_table_name = info.m_info->get_name();
+      group->remove_field(layout_table_name, table_name, field_name);
     }
   }
 }

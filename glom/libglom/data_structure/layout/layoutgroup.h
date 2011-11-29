@@ -80,13 +80,29 @@ public:
   void remove_item(const sharedptr<LayoutItem>& item);
 
   /** Remove any instance of the field (from the current table) from the layout.
+   * @deprecated Use remove_field(parent_table_name, table_name, field_name) instead.
    */
   virtual void remove_field(const Glib::ustring& field_name);
 
+  //TODO: Remove this unused method overload, and remove virtual from all these method overloads.
   /** Remove any instance of the related field from the layout.
+   *
+   * @param table_name The table to which the field, specified by @a field_name, belongs.
+   * @param field_name The name of the field to search for.
+   *
+   * @deprecated Use remove_field(parent_table_name, table_name, field_name) instead.
    */
   virtual void remove_field(const Glib::ustring& table_name, const Glib::ustring& field_name);
+  
+  /** Remove any instance of the field from the layout.
+   *
+   * @param parent_table_name The table to which this layout belongs.
+   * @param table_name The table to which the field, specified by @a field_name, belongs.
+   * @param field_name The name of the field to remove.
+   */
+  void remove_field(const Glib::ustring& parent_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name);
 
+  //TODO: Do these need to be virtual?
   virtual void change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
   virtual void change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
 

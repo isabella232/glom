@@ -342,6 +342,37 @@ void LayoutGroup::remove_field(const Glib::ustring& table_name, const Glib::ustr
   }
 }
 
+void LayoutGroup::remove_field(const Glib::ustring& parent_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name)
+{
+  //Look at each item:
+  LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin();
+  while(iterItem != m_list_items.end())
+  {
+    sharedptr<LayoutItem> item = *iterItem;
+    sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+    if(field_item)
+    {
+      if(field_item->get_table_used(parent_table_name) == table_name)
+      {
+        if(field_item->get_name() == field_name)
+        {
+          m_list_items.erase(iterItem);
+          iterItem = m_list_items.begin(); //Start again, because we changed the container.AddDel
+          continue;
+        }
+      }
+    }
+    else
+    {
+      sharedptr<LayoutGroup> sub_group = sharedptr<LayoutGroup>::cast_dynamic(item);
+      if(sub_group)
+        sub_group->remove_field(parent_table_name, table_name, field_name);
+    }
+
+    ++iterItem;
+  }
+}
+
 void LayoutGroup::change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)
 {
   //Look at each item:
