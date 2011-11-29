@@ -1,9 +1,11 @@
+1.20.1:
+
 2011-11-29  Murray Cumming  <murrayc@murrayc.com>
 
 	test_document_change: Test a little more API.
 
 	* tests/test_document_change.cc: Add a table and test some API that uses it.
-  We could do much more here.
+	We could do much more here.
 
 2011-11-29  Murray Cumming  <murrayc@murrayc.com>
 
@@ -16,11 +18,11 @@
 	LayoutGroup: Add a more useful remove_field().
 
 	* glom/libglom/data_structure/layout/layoutgroup.[h|cc]:
-  Add a remove_field(parent_table_name, table_name, field_name) method overload,
-  deprecating the existing method overloads.
+	Add a remove_field(parent_table_name, table_name, field_name) method overload,
+	deprecating the existing method overloads.
 	* glom/libglom/document/document.cc: Adapt.
 	* tests/test_document_load_and_change.cc: Test a different example,
-  so we can check for a related field on a layout.
+	so we can check for a related field on a layout.
 
 2011-11-29  Murray Cumming  <murrayc@murrayc.com>
 
@@ -35,7 +37,7 @@
 	test_document_load: Check that a field is on a layout.
 
 	* glom/libglom/data_structure/layout/layoutgroup.[h|cc]:
-  Added has_field() that can find a related field.
+	Added has_field() that can find a related field.
 	* tests/test_document_load.cc: Check that an expected field is found on
 	the layout.
 
