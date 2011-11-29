@@ -11,6 +11,7 @@
     method overload.
   - LayoutGroup: Added a has_field(parent_table_name, table_name, field_name) 
     method overload.
+  - Added DbUtils::set_fake_connection().
 
 This is the master branch. See also the glom-1-20 branch.
 
