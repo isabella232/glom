@@ -1,3 +1,27 @@
+1.20.1 (stable):
+
+* Avoid some unnecessary stdout warnings.
+* Tests:
+  - Added several more tests and improved existing tests.
+  - Added gcov/lcov to generate test code coverage reports in HTML.
+    (make gcov)
+
+* libglom:
+  - LayoutGroup: Added a remove_field(parent_table_name, table_name, field_name) 
+    method overload.
+  - LayoutGroup: Added a has_field(parent_table_name, table_name, field_name) 
+    method overload.
+
+This is the master branch. See also the glom-1-20 branch.
+
+2011-11-21  Murray Cumming  <murrayc@murrayc.com>
+
+	libglom: Added DbUtils::set_fake_connection().
+
+	* glom/libglom/db_utils.[h|cc]: Added DbUtils::set_fake_connection()
+  because ConnectionPool is not public API.
+	* tests/test_fake_connection.cc: Use this function instead of using 
+	ConnectionPool's API.
 1.20.0 (stable):
 
 Major changes since 1.18:
