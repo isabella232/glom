@@ -39,17 +39,19 @@ public:
   virtual ~LayoutGroup();
 
   virtual LayoutItem* clone() const;
-
-  //TODO: Unify the has_field() and remove_field() method overloads,
-  //probably like so: has_field(parent_table_name, table_name, field_name);
   
+  //TODO: Remove this now-unused method overload.
   /** Discover whether the layout group contains the specified related field,
    * @param field_name The name of the field to search for.
    * @result True if the field is in the layout group (or its child groups).
+   *
+   * @deprecated Use has_field(parent_table_name, table_name, field_name) instead.
    */
   bool has_field(const Glib::ustring& field_name) const;
 
   /** Discover whether the layout group contains the specified field (from the current table).
+   * @param parent_table_name The table to which this layout belongs.
+   * @param table_name The table to which the field, specified by @a field_name, belongs.
    * @param field_name The name of the field to search for.
    * @result True if the field is in the layout group (or its child groups).
    */
