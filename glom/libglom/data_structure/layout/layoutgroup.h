@@ -40,11 +40,21 @@ public:
 
   virtual LayoutItem* clone() const;
 
-  /** Discover whether the layout group contains the specified field.
-   * @param field_name The name of the field to seach for.
+  //TODO: Unify the has_field() and remove_field() method overloads,
+  //probably like so: has_field(parent_table_name, table_name, field_name);
+  
+  /** Discover whether the layout group contains the specified related field,
+   * @param field_name The name of the field to search for.
    * @result True if the field is in the layout group (or its child groups).
    */
   bool has_field(const Glib::ustring& field_name) const;
+
+  /** Discover whether the layout group contains the specified field (from the current table).
+   * @param field_name The name of the field to search for.
+   * @result True if the field is in the layout group (or its child groups).
+   */
+  bool has_field(const Glib::ustring& parent_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name) const;
+
 
   /** Discover whether the layout group contains any fields.
    * @result True if the field is in the layout group (or its child groups).
@@ -65,7 +75,7 @@ public:
   /** Remove a layout item from the group
    * @param item The item to remove.
    */
-  void remove_item (const sharedptr<LayoutItem>& item);
+  void remove_item(const sharedptr<LayoutItem>& item);
 
   /** Remove any instance of the field (from the current table) from the layout.
    */

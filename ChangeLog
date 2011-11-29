@@ -1,5 +1,14 @@
 2011-11-29  Murray Cumming  <murrayc@murrayc.com>
 
+	test_document_load: Check that a field is on a layout.
+
+	* glom/libglom/data_structure/layout/layoutgroup.[h|cc]:
+  Added has_field() that can find a related field.
+	* tests/test_document_load.cc: Check that an expected field is found on
+	the layout.
+
+2011-11-29  Murray Cumming  <murrayc@murrayc.com>
+
 	Add a test for changing of a field name. 
 
 	* tests/Makefile.am:
