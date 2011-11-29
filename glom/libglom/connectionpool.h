@@ -243,12 +243,42 @@ public:
    */
   virtual bool set_network_shared(const SlotProgress& slot_progress, bool network_shared = true);
 
+  /** Add a field to the database.
+   * The caller should then update the document's list of fields,
+   * for instance by calling Document::set_table_fields(). 
+   *
+   * @param table_name The parent table of the fields to be changed.
+   * @param field The field to be added.
+   */
   bool add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field) throw();
 
+  /** Remove a field from the database.
+   * The caller should then update the document's list of fields,
+   * for instance by calling Document::set_table_fields(). 
+   *
+   * @param table_name The parent table of the fields to be changed.
+   * @param field_name The name of the field to be removed.
+   */
   bool drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name) throw();
 
+  /** Change some detail about a field in the database.
+   * The caller should then update the document's list of fields,
+   * for instance by calling Document::set_table_fields(). 
+   *
+   * @param table_name The parent table of the field to be changed.
+   * @param field_old The old field information.
+   * @param field The new field information. 
+   */
   bool change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field) throw();
 
+  /** Change some detail about some fields in the database.
+   * The caller should then update the document's list of fields,
+   * for instance by calling Document::set_table_fields(). 
+   *
+   * @param table_name The parent table of the fields to be changed.
+   * @param old_fields The old field information.
+   * @param fields The new field information. 
+   */
   bool change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& fields) throw();
 
   /** Specify a callback that the ConnectionPool can call to get a pointer to the document.

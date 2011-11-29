@@ -1,3 +1,12 @@
+2011-11-29  Murray Cumming  <murrayc@murrayc.com>
+
+	Add a test for changing of a field name. 
+
+	* tests/Makefile.am:
+	* tests/test_document_load_and_change.cc: Change a field name and 
+	make sure that it has updated throughout the document.
+	However, we still need to check lookups and related fields.
+
 2011-11-28  Murray Cumming  <murrayc@murray.com>
 
 	Field::set_field_info(): Avoid unnecessary checks (and warnings).
