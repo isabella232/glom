@@ -1555,7 +1555,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
       for(type_list_layout_groups::const_iterator iterFind = result.begin(); iterFind != result.end(); ++iterFind)
       {
         sharedptr<const LayoutGroup> group = *iterFind;
-        if(group && group->has_field(field_name))
+        if(group && group->has_field(parent_table_name, parent_table_name, field_name))
         {
           found = true;
           break;

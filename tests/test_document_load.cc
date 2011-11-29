@@ -128,25 +128,17 @@ int main()
   const Glom::Document::type_list_layout_groups groups = 
     document.get_data_layout_groups("details", layout_table_name);
   bool found_on_layout = false;
-  bool found_related_on_layout = false;
   for(Glom::Document::type_list_layout_groups::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
   {
     const Glom::sharedptr<Glom::LayoutGroup> group = *iter;
-    if(group->has_field("album_id"))
-    {
-      found_on_layout = true;
-      break;
-    }
-    
     if(group->has_field(layout_table_name, "artists", "name"))
     {
-      found_related_on_layout = true;
+      found_on_layout = true;
       break;
     }
   }
   
   g_assert(found_on_layout);
-  g_assert(found_related_on_layout);
 
 
   Glom::libglom_deinit();

@@ -1,5 +1,13 @@
 2011-11-29  Murray Cumming  <murrayc@murrayc.com>
 
+	LayoutGroup: Deprecate the old has_field() method and do not use it.
+
+	* glom/libglom/data_structure/layout/layoutgroup.h:
+	* glom/libglom/document/document.cc:
+	* tests/test_document_load.cc: Adapt.
+
+2011-11-29  Murray Cumming  <murrayc@murrayc.com>
+
 	test_document_load: Check that a field is on a layout.
 
 	* glom/libglom/data_structure/layout/layoutgroup.[h|cc]:
