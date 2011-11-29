@@ -261,7 +261,7 @@ public:
   void set_tables(const type_listTableInfo& tables);
 
   sharedptr<TableInfo> get_table(const Glib::ustring& table_name) const;
-  void add_table(const  sharedptr<TableInfo>& table_name);
+  void add_table(const sharedptr<TableInfo>& table_name);
 
   /** Use this after DROPing the table.
    * It removes information about the table, including fields and layouts,

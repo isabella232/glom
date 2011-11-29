@@ -79,6 +79,25 @@ int main()
   document.set_startup_script(value);
   g_assert(document.get_startup_script() == value);
 
+
+  const Glib::ustring table_name = "sometable";
+  Glom::sharedptr<Glom::TableInfo> table_info(new Glom::TableInfo());
+  table_info->set_name(table_name);
+  
+  const Glib::ustring table_title = "sometabletitle";
+  table_info->set_title(table_title);
+  g_assert(table_info->get_title() == table_title);  
+  document.add_table(table_info);
+
+  const float x = 20.0f;
+  const float y = 30.0f;
+  document.set_table_overview_position(table_name, x, y);
+  float x_out = 0;
+  float y_out = 0;
+  document.get_table_overview_position(table_name, x_out, y_out);
+  g_assert(x == x_out);
+  g_assert(y == y_out);
+
   Glom::libglom_deinit();
 
   return EXIT_SUCCESS;
