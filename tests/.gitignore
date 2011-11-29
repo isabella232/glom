@@ -7,6 +7,8 @@
 /import/test_signals
 /test_document_autosave
 /test_document_load
+/test_document_load_and_change
+/test_document_change
 /test_glade_derived_instantiation
 /test_selfhosting_new_empty
 /test_selfhosting_new_from_example
@@ -19,4 +21,5 @@
 /test_fake_connection
 /test_selfhosting_new_from_example_strangepath
 /test_selfhosting_new_then_change_columns
+coverage/
 
