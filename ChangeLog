@@ -1,5 +1,12 @@
 2011-11-29  Murray Cumming  <murrayc@murrayc.com>
 
+	test_document_change: Test a little more API.
+
+	* tests/test_document_change.cc: Add a table and test some API that uses it.
+  We could do much more here.
+
+2011-11-29  Murray Cumming  <murrayc@murrayc.com>
+
 	test_document_load_and_change: Test Document::remove_field() too.
 
 	* tests/test_document_load_and_change.cc: Exercise a little more of the API.
