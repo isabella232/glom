@@ -26,22 +26,28 @@
 
 #include <iostream>
 
-template<typename T_Container>
-bool contains(const T_Container& container, const Glib::ustring& name)
+static bool field_is_on_a_layout(Glom::Document& document, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
-  typename T_Container::const_iterator iter =
-    std::find(container.begin(), container.end(), name);
-  return iter != container.end();
-}
+  //Check that the field name is no longer used on a layout:
+  const std::vector<Glib::ustring> table_names = document.get_table_names();
+  for(std::vector<Glib::ustring>::const_iterator iter = table_names.begin(); iter != table_names.end(); ++iter)
+  {
+    const Glib::ustring layout_table_name = *iter;
+    const Glom::Document::type_list_layout_groups groups = 
+      document.get_data_layout_groups("details", layout_table_name);
 
-template<typename T_Container>
-bool contains_named(const T_Container& container, const Glib::ustring& name)
-{
-  typedef typename T_Container::value_type::object_type type_item;
-  typename T_Container::const_iterator iter =
-    std::find_if(container.begin(), container.end(),
-      Glom::predicate_FieldHasName<type_item>(name));
-  return iter != container.end();
+    for(Glom::Document::type_list_layout_groups::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
+    {
+      const Glom::sharedptr<Glom::LayoutGroup> group = *iter;
+      if(group->has_field(layout_table_name, table_name, field_name))
+      {
+        //std::cerr << "Failure: The field is still used on a layout for table: " << layout_table_name << std::endl;
+        return true;
+      }
+    }
+  }
+  
+  return false;
 }
 
 int main()
@@ -54,8 +60,8 @@ int main()
   try
   {
     const std::string path =
-       Glib::build_filename(GLOM_DOCDIR_EXAMPLES_NOTINSTALLED,
-         "example_smallbusiness.glom");
+      Glib::build_filename(GLOM_DOCDIR_EXAMPLES_NOTINSTALLED,
+        "example_smallbusiness.glom");
     uri = Glib::filename_to_uri(path);
   }
   catch(const Glib::ConvertError& ex)
@@ -118,22 +124,19 @@ int main()
   }
 
   //Check that the original field name is no longer used on a layout:
-  const std::vector<Glib::ustring> table_names = document.get_table_names();
-  for(std::vector<Glib::ustring>::const_iterator iter = table_names.begin(); iter != table_names.end(); ++iter)
+  if(field_is_on_a_layout(document, table_name, field_name_original))
   {
-    const Glib::ustring layout_table_name = *iter;
-    const Glom::Document::type_list_layout_groups groups = 
-      document.get_data_layout_groups("details", layout_table_name);
+    std::cerr << "Failure: The original field name is still used on a layout." << std::endl;
+    return false;
+  }
 
-    for(Glom::Document::type_list_layout_groups::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
-    {
-      const Glom::sharedptr<Glom::LayoutGroup> group = *iter;
-      if(group->has_field(layout_table_name, table_name, field_name_original))
-      {
-        std::cerr << "Failure: The field is still used on a layout for table: " << layout_table_name << std::endl;
-        return false;
-      }
-    }
+
+  //Remove a field from the whole document:
+  document.remove_field("publisher", "publisher_id");
+  if(field_is_on_a_layout(document, "publisher", "publisher_id"))
+  {
+    std::cerr << "Failure: The removed field name is still used on a layout." << std::endl;
+    return false;
   }
 
   Glom::libglom_deinit();
