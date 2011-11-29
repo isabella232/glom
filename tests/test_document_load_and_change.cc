@@ -55,7 +55,7 @@ int main()
   {
     const std::string path =
        Glib::build_filename(GLOM_DOCDIR_EXAMPLES_NOTINSTALLED,
-         "example_music_collection.glom");
+         "example_smallbusiness.glom");
     uri = Glib::filename_to_uri(path);
   }
   catch(const Glib::ConvertError& ex)
@@ -84,8 +84,8 @@ int main()
   document.set_allow_autosave(false);
 
   //Change a field name throughout the document:
-  const Glib::ustring table_name = "songs";
-  const Glib::ustring field_name_original = "song_id";
+  const Glib::ustring table_name = "products";
+  const Glib::ustring field_name_original = "product_id";
   const Glib::ustring field_name_new = "newfieldname";
   document.change_field_name(table_name, field_name_original, field_name_new);
 
@@ -104,14 +104,14 @@ int main()
   }
 
   //Check that the original field name is no longer used in the relationship:
-  const Glom::sharedptr<const Glom::Relationship> relationship = document.get_relationship("songs", "album");
+  const Glom::sharedptr<const Glom::Relationship> relationship = document.get_relationship("invoice_lines", "products");
   if(!relationship)
   {
     std::cerr << "Failure: The relationship could not be found in the document." << std::endl;
     return false;
   }
 
-  if(relationship->get_from_field() == field_name_original)
+  if(relationship->get_to_field() == field_name_original)
   {
     std::cerr << "Failure: The relationship still uses the original field name." << std::endl;
     return false;
@@ -121,16 +121,16 @@ int main()
   const std::vector<Glib::ustring> table_names = document.get_table_names();
   for(std::vector<Glib::ustring>::const_iterator iter = table_names.begin(); iter != table_names.end(); ++iter)
   {
-    const Glib::ustring table_name = *iter;
+    const Glib::ustring layout_table_name = *iter;
     const Glom::Document::type_list_layout_groups groups = 
-      document.get_data_layout_groups("details", table_name);
+      document.get_data_layout_groups("details", layout_table_name);
 
     for(Glom::Document::type_list_layout_groups::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
     {
       const Glom::sharedptr<Glom::LayoutGroup> group = *iter;
-      if(group->has_field(field_name_original))
+      if(group->has_field(layout_table_name, table_name, field_name_original))
       {
-        std::cerr << "Failure: The field is still used on a layout for table: " << table_name << std::endl;
+        std::cerr << "Failure: The field is still used on a layout for table: " << layout_table_name << std::endl;
         return false;
       }
     }

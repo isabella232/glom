@@ -1,5 +1,16 @@
 2011-11-29  Murray Cumming  <murrayc@murrayc.com>
 
+	LayoutGroup: Add a more useful remove_field().
+
+	* glom/libglom/data_structure/layout/layoutgroup.[h|cc]:
+  Add a remove_field(parent_table_name, table_name, field_name) method overload,
+  deprecating the existing method overloads.
+	* glom/libglom/document/document.cc: Adapt.
+	* tests/test_document_load_and_change.cc: Test a different example,
+  so we can check for a related field on a layout.
+
+2011-11-29  Murray Cumming  <murrayc@murrayc.com>
+
 	LayoutGroup: Deprecate the old has_field() method and do not use it.
 
 	* glom/libglom/data_structure/layout/layoutgroup.h:
