@@ -110,7 +110,7 @@ int main()
   }
 
   //Check that the original field name is no longer used in the relationship:
-  const Glom::sharedptr<const Glom::Relationship> relationship = document.get_relationship("invoice_lines", "products");
+  Glom::sharedptr<const Glom::Relationship> relationship = document.get_relationship("invoice_lines", "products");
   if(!relationship)
   {
     std::cerr << "Failure: The relationship could not be found in the document." << std::endl;
@@ -138,6 +138,15 @@ int main()
     std::cerr << "Failure: The removed field name is still used on a layout." << std::endl;
     return false;
   }
+  
+  //Remove a relationship:
+  document.remove_relationship(relationship);
+  relationship = document.get_relationship("invoice_lines", "products");
+  if(relationship)
+  {
+    std::cerr << "Failure: The removed relationship still exists." << std::endl;
+    return false;
+  }  
 
   Glom::libglom_deinit();
 

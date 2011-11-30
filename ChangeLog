@@ -1,5 +1,11 @@
 2011-11-30  Murray Cumming  <murrayc@murrayc.com>
 
+	test_load_and_change(): Test removal of a relationship.
+
+	* tests/test_document_load_and_change.cc: Test Document::remove_relationship().
+
+2011-11-30  Murray Cumming  <murrayc@murrayc.com>
+
 	test_document_load: Test field formatting.
 
 	* tests/test_document_load.cc: Also use a different example, to
