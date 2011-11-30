@@ -349,7 +349,7 @@ TODO: Add 'title_singular' element.
 
 <!-- A data_layout_portal shows related records -->
 
-    <!ELEMENT data_layout_portal (portal_navigation_relationship?, data_layout_item*, position?) >
+    <!ELEMENT data_layout_portal (position?, portal_navigation_relationship?, data_layout_item*) >
     <!ATTLIST data_layout_portal
         name CDATA #IMPLIED
         relationship CDATA #REQUIRED
@@ -359,7 +359,9 @@ TODO: Add 'title_singular' element.
         portal_rows_count_min CDATA #IMPLIED
         portal_rows_count_max CDATA #IMPLIED
         line_color CDATA #IMPLIED
-        column_line_color CDATA #IMPLIED >
+        column_line_color CDATA #IMPLIED
+        row_height CDATA #IMPLIED
+        row_line_width CDATA #IMPLIED>
 
     <!ELEMENT data_layout_calendar_portal (portal_navigation_relationship?, data_layout_item*) >
     <!ATTLIST data_layout_calendar_portal
