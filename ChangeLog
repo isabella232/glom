@@ -1,5 +1,12 @@
 2011-11-30  Murray Cumming  <murrayc@murrayc.com>
 
+	Updated the Document DTD.
+
+	* glom/glom_document.dtd: This fixes make check with the new save of 
+	examples/example_film_manager.glom.
+
+2011-11-30  Murray Cumming  <murrayc@murrayc.com>
+
 	self-hosting tests: Avoid some noisy stdout messages.
 
 	* tests/test_selfhosting_utils.cc: Do not show PostgreSQL startup, etc,
