@@ -1,5 +1,12 @@
 2011-11-30  Murray Cumming  <murrayc@murrayc.com>
 
+	self-hosting tests: Avoid some noisy stdout messages.
+
+	* tests/test_selfhosting_utils.cc: Do not show PostgreSQL startup, etc,
+	progress messages.
+
+2011-11-30  Murray Cumming  <murrayc@murrayc.com>
+
 	test_load_and_change(): Test removal of a relationship.
 
 	* tests/test_document_load_and_change.cc: Test Document::remove_relationship().

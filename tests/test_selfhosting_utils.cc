@@ -34,22 +34,22 @@
 
 static void on_initialize_progress()
 {
-  std::cout << "Database initialization progress" << std::endl;
+  //std::cout << "Database initialization progress" << std::endl;
 }
 
 static void on_startup_progress()
 {
-  std::cout << "Database startup progress" << std::endl;
+  //std::cout << "Database startup progress" << std::endl;
 }
 
 static void on_recreate_progress()
 {
-  std::cout << "Database re-creation progress" << std::endl;
+  //std::cout << "Database re-creation progress" << std::endl;
 }
 
 static void on_cleanup_progress()
 {
-  std::cout << "Database cleanup progress" << std::endl;
+  //std::cout << "Database cleanup progress" << std::endl;
 }
 
 std::string temp_filepath_dir;
