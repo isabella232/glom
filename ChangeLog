@@ -1,5 +1,11 @@
 2011-11-30  Murray Cumming  <murrayc@murrayc.com>
 
+	test_document_load_and_change: Test print layout removal.
+
+	* tests/test_document_load_and_change.cc:
+
+2011-11-30  Murray Cumming  <murrayc@murrayc.com>
+
 	Updated the Document DTD.
 
 	* glom/glom_document.dtd: This fixes make check with the new save of 

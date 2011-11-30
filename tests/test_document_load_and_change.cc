@@ -146,7 +146,26 @@ int main()
   {
     std::cerr << "Failure: The removed relationship still exists." << std::endl;
     return false;
-  }  
+  }
+  
+  //Remove a print layout:
+  Glom::sharedptr<const Glom::PrintLayout> print_layout = 
+    document.get_print_layout("contacts", "contact_details");
+  if(!print_layout)
+  {
+    std::cerr << "Failure: Could not get an expected print layout." << std::endl;
+    return false;
+  }
+  
+  document.remove_print_layout("contacts", "contact_details");
+  print_layout = 
+    document.get_print_layout("contacts", "contact_details");
+  if(print_layout)
+  {
+    std::cerr << "Failure: The removed print layotu still exists." << std::endl;
+    return false;
+  }
+  
 
   Glom::libglom_deinit();
 
