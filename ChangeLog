@@ -1,5 +1,12 @@
 2011-11-30  Murray Cumming  <murrayc@murrayc.com>
 
+	self-hosting tests: Avoid some noisy stdout messages.
+
+	* tests/test_selfhosting_utils.cc: Do not show PostgreSQL startup, etc,
+	progress messages.
+
+2011-11-30  Murray Cumming  <murrayc@murrayc.com>
+
 	test_document_load: Test print layout functions.
 
 	* examples/example_film_manager.glom: Add a contacts print layout and 
