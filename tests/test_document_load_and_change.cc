@@ -148,6 +148,36 @@ int main()
     return false;
   }
   
+  //Change a table name:
+  const Glib::ustring table_renamed = "invoiceslinesrenamed";
+  document.change_table_name("invoice_lines", table_renamed);
+  if(document.get_table("invoice_lines"))
+  {
+    std::cerr << "Failure: The renamed table still exists." << std::endl;
+    return false;
+  }
+  
+  relationship = document.get_relationship("invoices", "invoice_lines");
+  if(!relationship)
+  {
+    std::cerr << "Failure: The expected relationship does not exist." << std::endl;
+    return false;
+  }
+
+  if(relationship->get_to_table() != table_renamed)
+  {
+    std::cerr << "Failure: The relationship's to_table does have been renamed." << std::endl;
+    return false;
+  }
+  
+  document.remove_table("products");
+  if(document.get_table("products"))
+  {
+    std::cerr << "Failure: The removed table still exists." << std::endl;
+    return false;
+  }
+
+ 
   //Remove a print layout:
   Glom::sharedptr<const Glom::PrintLayout> print_layout = 
     document.get_print_layout("contacts", "contact_details");
