@@ -1,3 +1,10 @@
+2011-11-30  Murray Cumming  <murrayc@murrayc.com>
+
+	test_document_load: Test field formatting.
+
+	* tests/test_document_load.cc: Also use a different example, to
+  widen the range of examples that we test.
+
 2011-11-29  Murray Cumming  <murrayc@murrayc.com>
 
 	test_document_change: Test a little more API.
