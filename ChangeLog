@@ -1,5 +1,12 @@
 2011-11-30  Murray Cumming  <murrayc@murrayc.com>
 
+  test_document_load_and_change: Test renaming and removing of tables.
+
+	* tests/test_document_load_and_change.cc: This also checks that relationships
+	are update when a table is renamed.
+
+2011-11-30  Murray Cumming  <murrayc@murrayc.com>
+
 	test_document_load_and_change: Test print layout removal.
 
 	* tests/test_document_load_and_change.cc:
