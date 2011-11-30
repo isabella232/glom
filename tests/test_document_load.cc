@@ -190,6 +190,50 @@ int main()
   g_assert(field_on_layout->get_formatting_used() == formatting);
 
 
+  //Test library modules:
+  const std::vector<Glib::ustring> module_names = document.get_library_module_names();
+  if(!module_names.empty()) //TODO: Test a document that actually has some?
+  {
+    std::cerr << "Failure: Unexpected library module names." << std::endl;
+    return false;
+  }
+
+
+  //Test print layouts:  
+  const Glom::Document::type_listPrintLayouts print_layout_names = 
+    document.get_print_layout_names("contacts");
+  if(print_layout_names.size() != 1)
+  {
+    std::cerr << "Failure: Unexpected number of print layouts." << std::endl;
+    return false;
+  }
+
+  if(!contains(print_layout_names, "contact_details"))
+  {
+    std::cerr << "Failure: Could not find the expected print layout name." << std::endl;
+    return false;
+  }
+  
+  const Glom::sharedptr<const Glom::PrintLayout> print_layout = document.get_print_layout("contacts", "contact_details");
+  if(!print_layout)
+  {
+    std::cerr << "Failure: Could not get an expected print layout." << std::endl;
+    return false;
+  }
+  
+  if(print_layout->get_title() != "Contact Details")
+  {
+    std::cerr << "Failure: Unexpected print layout title." << std::endl;
+    return false;
+  }
+  
+  if(!print_layout->m_layout_group)
+  {
+    std::cerr << "Failure: The print layout has no layout group." << std::endl;
+    return false;
+  }
+
+
   Glom::libglom_deinit();
 
   return EXIT_SUCCESS;

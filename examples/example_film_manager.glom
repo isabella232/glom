@@ -1426,7 +1426,323 @@
         </data_layout_groups>
       </report>
     </reports>
-    <print_layouts/>
+    <print_layouts>
+      <print_layout name="contact_details" show_table_title="true" show_grid="true" show_rules="true" show_outlines="true" page_count="2" title="Contact Details">
+        <page_setup>
+[Page Setup]
+PPDName=Letter
+DisplayName=US Letter
+Width=215.89999389648438
+Height=279.39999389648438
+MarginTop=6.3499999999999996
+MarginBottom=14.224
+MarginLeft=6.3499999999999996
+MarginRight=6.3499999999999996
+Orientation=portrait
+</page_setup>
+        <data_layout_groups>
+          <data_layout_group>
+            <data_layout_text>
+              <text title="Contacts"/>
+              <formatting font="Sans Bold 12"/>
+              <position x="12" y="12" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_text>
+              <text title="Overview"/>
+              <formatting font="Sans Bold 10"/>
+              <position x="12" y="24" width="191.55" height="6"/>
+            </data_layout_text>
+            <data_layout_text>
+              <text title="Contact ID:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="36" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              <position x="78" y="36" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Full Name:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="48" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="name_full" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="48" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Details"/>
+              <formatting font="Sans Bold 10"/>
+              <position x="12" y="60" width="191.55" height="6"/>
+            </data_layout_text>
+            <data_layout_text>
+              <text title="Name"/>
+              <formatting font="Sans Bold 10"/>
+              <position x="12" y="72" width="191.55" height="6"/>
+            </data_layout_text>
+            <data_layout_text>
+              <text title="Title:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="84" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="name_title" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="84" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="First Name:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="96" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="name_first" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="96" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Second Name:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="108" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="name_middle" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="108" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Last Name:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="120" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="name_last" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="120" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Company"/>
+              <formatting font="Sans Bold 10"/>
+              <position x="12" y="132" width="191.55" height="6"/>
+            </data_layout_text>
+            <data_layout_text>
+              <text title="Company ID:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="144" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="company_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              <position x="78" y="144" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Name:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="156" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="name" relationship="company" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="156" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Address"/>
+              <formatting font="Sans Bold 10"/>
+              <position x="12" y="168" width="191.55" height="6"/>
+            </data_layout_text>
+            <data_layout_text>
+              <text title="Street (line 1):"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="180" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="address_street1" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="180" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Street (line 2):"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="192" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="address_street2" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="192" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Town:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="204" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="address_town" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="204" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="State:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="216" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="address_state" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="216" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Country:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="228" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="address_country" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="228" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Postcode:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="240" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="address_postcode" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="240" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Telephone"/>
+              <formatting font="Sans Bold 10"/>
+              <position x="12" y="252" width="191.55" height="6"/>
+            </data_layout_text>
+            <data_layout_text>
+              <text title="Work Telephone:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="291.75" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="tel_work" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="291.75" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Mobile Telephone:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="303.75" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="tel_mobile" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="303.75" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Home Telephone:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="315.75" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="tel_home" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="315.75" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Fax:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="327.75" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="tel_fax" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="327.75" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Agent"/>
+              <formatting font="Sans Bold 10"/>
+              <position x="12" y="339.75" width="191.55" height="6"/>
+            </data_layout_text>
+            <data_layout_text>
+              <text title="Agent ID:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="351.75" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="agent_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              <position x="78" y="351.75" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Full Name:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="363.75" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="name_full" relationship="agent" editable="true" use_default_formatting="true">
+              <title_custom/>
+              <formatting/>
+              <position x="78" y="363.75" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Crew"/>
+              <formatting font="Sans Bold 10"/>
+              <position x="12" y="375.75" width="191.55" height="6"/>
+            </data_layout_text>
+            <data_layout_portal relationship="crew" portal_rows_count_min="1" portal_rows_count_max="100" row_height="6">
+              <position x="12" y="387.75" width="191.55" height="6"/>
+              <data_layout_item name="crew_id" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              </data_layout_item>
+              <data_layout_item name="description" editable="true" use_default_formatting="true">
+                <formatting/>
+              </data_layout_item>
+            </data_layout_portal>
+            <data_layout_text>
+              <text title="Cast"/>
+              <formatting font="Sans Bold 10"/>
+              <position x="12" y="399.75" width="191.55" height="6"/>
+            </data_layout_text>
+            <data_layout_portal relationship="cast" portal_rows_count_min="6" portal_rows_count_max="10" row_height="6" column_line_color="rgba(0,0,0,0)" line_color="rgba(0,0,0,0)">
+              <position x="12" y="411.75" width="192" height="62.25"/>
+              <data_layout_item name="character_id" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              </data_layout_item>
+              <data_layout_item name="character" editable="true" use_default_formatting="true">
+                <formatting/>
+              </data_layout_item>
+              <data_layout_item name="mainpart" editable="true" use_default_formatting="true">
+                <formatting/>
+              </data_layout_item>
+            </data_layout_portal>
+            <data_layout_text>
+              <text title="Email:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="480" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="email" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="480" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Web Site:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="492" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="website" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="492" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Date Of Birth:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="504" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="date_of_birth" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="504" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Picture:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="516" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="picture" editable="true" use_default_formatting="true">
+              <formatting/>
+              <position x="78" y="516" width="125.55" height="6"/>
+            </data_layout_item>
+            <data_layout_text>
+              <text title="Comments:"/>
+              <formatting font="Sans 10"/>
+              <position x="12" y="528" width="60" height="6"/>
+            </data_layout_text>
+            <data_layout_item name="comments" editable="true" use_default_formatting="true">
+              <formatting format_text_multiline="true"/>
+              <position x="78" y="528" width="125.55" height="36"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </print_layout>
+    </print_layouts>
   </table>
   <table name="costume" title="Costume">
     <example_rows>

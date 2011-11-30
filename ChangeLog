@@ -1,5 +1,13 @@
 2011-11-30  Murray Cumming  <murrayc@murrayc.com>
 
+	test_document_load: Test print layout functions.
+
+	* examples/example_film_manager.glom: Add a contacts print layout and 
+	resave this.
+	* tests/test_document_load.cc: Test the print layout data.
+
+2011-11-30  Murray Cumming  <murrayc@murrayc.com>
+
 	test_load_and_change(): Test removal of a relationship.
 
 	* tests/test_document_load_and_change.cc: Test Document::remove_relationship().
