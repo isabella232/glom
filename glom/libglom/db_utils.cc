@@ -24,7 +24,6 @@
 #include <libglom/connectionpool_backends/postgres_central.h>
 #include <libglom/standard_table_prefs_fields.h>
 #include <libglom/privs.h>
-#include <libglom/data_structure/parameternamegenerator.h>
 #include <libglom/utils.h>
 #include <libgdamm/value.h>
 #include <libgdamm/metastore.h>

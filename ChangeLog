@@ -1,5 +1,15 @@
 2011-11-30  Murray Cumming  <murrayc@murrayc.com>
 
+	Remove unused parameternamegenerator source file.
+
+	* glom/libglom/filelist.am:
+	* glom/libglom/data_structure/parameternamegenerator.[h|cc]: Remove this 
+  unused class.
+	* glom/base_db.cc
+	* glom/libglom/db_utils.cc: Do not include it.
+
+2011-11-30  Murray Cumming  <murrayc@murrayc.com>
+
   test_document_load_and_change: Test renaming and removing of tables.
 
 	* tests/test_document_load_and_change.cc: This also checks that relationships

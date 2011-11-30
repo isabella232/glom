@@ -35,7 +35,6 @@ libglom_data_structure_headers =				\
 	glom/libglom/data_structure/glomconversions.h		\
 	glom/libglom/data_structure/groupinfo.h			\
 	glom/libglom/data_structure/numeric_format.h		\
-	glom/libglom/data_structure/parameternamegenerator.h	\
 	glom/libglom/data_structure/print_layout.h		\
 	glom/libglom/data_structure/privileges.h		\
 	glom/libglom/data_structure/relationship.h		\
@@ -125,7 +124,6 @@ libglom_sources =							\
 	glom/libglom/data_structure/groupinfo.cc			\
 	glom/libglom/data_structure/has_title_singular.cc		\
 	glom/libglom/data_structure/numeric_format.cc			\
-	glom/libglom/data_structure/parameternamegenerator.cc		\
 	glom/libglom/data_structure/print_layout.cc			\
 	glom/libglom/data_structure/privileges.cc			\
 	glom/libglom/data_structure/relationship.cc			\

@@ -39,7 +39,6 @@
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
 #include <libglom/data_structure/glomconversions.h>
-#include <libglom/data_structure/parameternamegenerator.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_summary.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h>
