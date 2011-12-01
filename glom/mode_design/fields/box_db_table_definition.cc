@@ -432,7 +432,8 @@ sharedptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeMo
 
   //Start with original definitions, so that we preserve things like UNSIGNED.
   //TODO maybe use document's fieldinfo instead of m_vecFields.
-  sharedptr<const Field> field_temp = get_fields_for_table_one_field(m_table_name, strFieldNameBeforeEdit);
+  sharedptr<const Field> field_temp = 
+    DbUtils::get_fields_for_table_one_field(pDoc, m_table_name, strFieldNameBeforeEdit);
   if(field_temp)
   {
     Glib::RefPtr<Gnome::Gda::Column> fieldInfo = field_temp->get_field_info()->copy();
@@ -618,7 +619,7 @@ void Box_DB_Table_Definition::fill_fields()
   //std::cout << "DEBUG: Box_DB_Table_Definition::fill_fields()" << std::endl;
 
   //Update the fields (also checking the actual database):
-  m_vecFields = get_fields_for_table(m_table_name);
+  m_vecFields = DbUtils::get_fields_for_table(get_document(), m_table_name);
 }
 
 bool Box_DB_Table_Definition::field_has_null_values(const sharedptr<const Field>& field)

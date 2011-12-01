@@ -1,3 +1,34 @@
+2011-12-01  Murray Cumming  <murrayc@murrayc.com>
+
+	Moved some lookup functions into DbUtils and added a test for them.
+
+	* glom/libglom/db_utils.[h|cc]:
+	* glom/base_db.[h|cc]: Moved get_fields_for_table(), 
+	get_fields_for_table_one_field(), get_lookup_fields(), and 
+	get_lookup_value() to the DbUtils namespace, taking an extra 
+	Document parameter.
+	* glom/libglom/document/document.[h|cc]: Moved get_lookup_fields() to 
+	DbUtils too.
+
+	* glom/base_db_table_data.cc
+	* glom/mode_data/box_data.cc
+	* glom/mode_data/box_data_calendar_related.cc
+	* glom/mode_data/box_data_details.cc
+	* glom/mode_data/box_data_list_related.cc
+	* glom/mode_data/db_adddel/db_adddel.cc
+	* glom/mode_design/box_db_table_relationships.cc
+	* glom/mode_design/fields/box_db_table_definition.cc
+	* glom/mode_design/fields/dialog_fielddefinition.cc
+	* glom/mode_design/layout/dialog_layout_list_related.cc
+	* glom/print_layout/canvas_print_layout.cc: Adapted. This shows how
+	often we call this very inefficient function. It would be better to
+	just make sure that the document has up-to-date information from the 
+	database and just use the Document's information.
+
+	* Makefile_tests.am:
+	* tests/test_selfhosting_new_then_lookup.cc: Added a new test of
+	these functions, including retrieval of a lookup value.
+
 2011-11-30  Murray Cumming  <murrayc@murrayc.com>
 
 	Remove unused parameternamegenerator source file.

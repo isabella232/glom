@@ -20,6 +20,7 @@
 
 //#include <gtkmm/builder.h>
 #include "box_db_table_relationships.h"
+#include <libglom/db_utils.h>
 #include <algorithm>
 #include <glibmm/i18n.h>
 
@@ -90,7 +91,8 @@ bool Box_DB_Table_Relationships::fill_from_database()
     Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
     //Set combo choices:
-    m_AddDel.set_column_choices(m_colFromField, util_vecStrings_from_Fields(get_fields_for_table(m_table_name)));
+    m_AddDel.set_column_choices(m_colFromField, util_vecStrings_from_Fields(
+      DbUtils::get_fields_for_table(document, m_table_name)));
 
     type_vec_strings vecTableNames = document->get_table_names(false /* ignore_system_tables */);
     type_vec_strings vecTableNames_ustring(vecTableNames.begin(), vecTableNames.end());
@@ -245,7 +247,8 @@ void Box_DB_Table_Relationships::on_adddel_user_activated(const Gtk::TreeModel::
       {
         Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
-        type_vec_strings vecFields = util_vecStrings_from_Fields(get_fields_for_table(table_name));
+        Document* document = get_document();
+        type_vec_strings vecFields = util_vecStrings_from_Fields(DbUtils::get_fields_for_table(document, table_name));
 
         //This would cause a lot of tedious re-filling:
         //m_AddDel.set_column_choices(m_colToField, vecFields);

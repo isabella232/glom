@@ -51,6 +51,22 @@ typedef std::vector< sharedptr<Field> > type_vec_fields;
 type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_name, bool including_system_fields = false);
 bool get_field_exists_in_database(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
+/** Get all the fields for a table, including any from the database that are not yet known in the document.
+ *
+ * @param table_name The name of the table whose fields should be listed.
+ * @param including_system_fields Whether extra non-user-visible fields should be included in the list.
+ * @result A list of fields.
+ */
+type_vec_fields get_fields_for_table(const Document* document, const Glib::ustring& table_name, bool including_system_fields = false);
+
+/** Get a single field definition for a table, even if the field is in the datasbase but not yet known in the document.
+ *
+ * @param table_name The name of the table whose fields should be listed.
+ * @param field_name The name of the field for which to get the definition.
+ * @result The field definition.
+ */
+sharedptr<Field> get_fields_for_table_one_field(const Document* document, const Glib::ustring& table_name, const Glib::ustring& field_name);
+
 //TODO: Is this used directly?
 typedef std::vector<Glib::ustring> type_vec_strings;
 type_vec_strings get_table_names_from_database(bool ignore_system_tables = false);
@@ -160,6 +176,10 @@ Glib::ustring build_query_create_group(const Glib::ustring& group, bool superuse
 
 Glib::ustring build_query_add_user_to_group(const Glib::ustring& group, const Glib::ustring& user);
 
+/** Get the value of the @a source_field from the @a relationship, using the @a key_value.
+ */
+Gnome::Gda::Value get_lookup_value(Document* document, const Glib::ustring& table_name, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value & key_value);
+  
 /** Allow a fake connection, so sqlbuilder_get_full_query() can work.
  */
 void set_fake_connection();

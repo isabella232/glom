@@ -120,22 +120,6 @@ protected:
 
   bool get_relationship_exists(const Glib::ustring& table_name, const Glib::ustring& relationship_name);
 
-  /** Get all the fields for a table, including any from the datasbase that are not yet known in the document.
-   *
-   * @param table_name The name of the table whose fields should be listed.
-   * @param including_system_fields Whether extra non-user-visible fields should be included in the list.
-   * @result A list of fields.
-   */
-  type_vec_fields get_fields_for_table(const Glib::ustring& table_name, bool including_system_fields = false) const;
-
-  /** Get a single field definition for a table, even if the field is in the datasbase but not yet known in the document.
-   *
-   * @param table_name The name of the table whose fields should be listed.
-   * @param field_name The name of the field for which to get the definition.
-   * @result The field definition.
-   */
-  sharedptr<Field> get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
-
   sharedptr<Field> get_field_primary_key_for_table(const Glib::ustring& table_name) const;
 
   //Methods to be overridden by derived classes:
@@ -257,19 +241,6 @@ protected:
 
 
   void do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value);
-
-  typedef std::pair< sharedptr<LayoutItem_Field>, sharedptr<Relationship> > type_pairFieldTrigger;
-  typedef std::list<type_pairFieldTrigger> type_list_lookups;
-
-  /** Get the fields whose values should be looked up when @a field_name changes, with
-   * the relationship used to lookup the value.
-   */
-  type_list_lookups get_lookup_fields(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
-
-
-  /** Get the value of the @a source_field from the @a relationship, using the @a key_value.
-   */
-  Gnome::Gda::Value get_lookup_value(const Glib::ustring& table_name, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value & key_value);
 
 
   virtual void refresh_related_fields(const LayoutFieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value);

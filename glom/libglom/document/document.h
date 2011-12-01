@@ -199,6 +199,16 @@ public:
    * so that it is not used anymore in relationships, layouts, reports, etc.
    */
   void remove_field(const Glib::ustring& table_name, const Glib::ustring& field_name);
+  
+  
+  typedef std::pair< sharedptr<LayoutItem_Field>, sharedptr<Relationship> > type_pairFieldTrigger;
+  typedef std::list<type_pairFieldTrigger> type_list_lookups;
+  
+  /** Get the fields whose values should be looked up when @a field_name changes, with
+   * the relationship used to lookup the value.
+   */
+  type_list_lookups get_lookup_fields(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
+
 
 
   typedef std::vector< sharedptr<LayoutGroup> > type_list_layout_groups;

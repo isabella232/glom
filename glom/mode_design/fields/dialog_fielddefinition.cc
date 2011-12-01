@@ -23,6 +23,7 @@
 #include <glom/glade_utils.h>
 #include <glom/utils_ui.h>
 #include "../../box_db_table.h"
+#include <libglom/db_utils.h>
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
@@ -362,7 +363,7 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
       if(!to_table.empty())
       {
         //Get the fields in the other table, and add them to the combo:
-        const type_vec_fields fields_in_to_table = get_fields_for_table(to_table);
+        const type_vec_fields fields_in_to_table = DbUtils::get_fields_for_table(document, to_table);
         for(type_vec_fields::const_iterator iter = fields_in_to_table.begin(); iter != fields_in_to_table.end(); ++iter)
         {
           m_pCombo_LookupField->append((*iter)->get_name());

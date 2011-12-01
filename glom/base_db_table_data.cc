@@ -67,13 +67,15 @@ Gtk::TreeModel::iterator Base_DB_Table_Data::get_row_selected()
 
 bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value)
 {
+  Document* document = get_document();
+
   sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
 
   const Glib::ustring primary_key_name = fieldPrimaryKey->get_name();
 
   type_vecConstLayoutFields fieldsToAdd = m_FieldsShown;
   if(m_TableFields.empty())
-    m_TableFields = get_fields_for_table(m_table_name);
+    m_TableFields = DbUtils::get_fields_for_table(document, m_table_name);
 
   //Add values for all fields, not just the shown ones:
   //For instance, we must always add the primary key, and fields with default/calculated/lookup values:
@@ -89,8 +91,6 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
       fieldsToAdd.push_back(layout_item);
     }
   }
-
-  Document* document = get_document();
 
   //Calculate any necessary field values and enter them:
   for(type_vecConstLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
@@ -324,7 +324,9 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
         set_entered_field_data(item_from_key, primary_key_value);
 
         //Set it in the database too:
-        sharedptr<Field> field_from_key = get_fields_for_table_one_field(relationship->get_from_table(), relationship->get_from_field()); //TODO_Performance.
+        Document* document = get_document();
+        sharedptr<Field> field_from_key = DbUtils::get_fields_for_table_one_field(document,
+          relationship->get_from_table(), relationship->get_from_field()); //TODO_Performance.
         if(!field_from_key)
         {
           std::cerr << G_STRFUNC << ": get_fields_for_table_one_field() failed." << std::endl;

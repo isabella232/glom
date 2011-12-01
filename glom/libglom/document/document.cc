@@ -4682,6 +4682,38 @@ Glib::ustring Document::restore_backup_file(const Glib::ustring& backup_uri, con
 
   return untarred_uri;
 }
-  
+
+
+Document::type_list_lookups Document::get_lookup_fields(const Glib::ustring& table_name, const Glib::ustring& field_name) const
+{
+  type_list_lookups result;
+
+  //Examine all fields for this table:
+  const type_vec_fields fields = get_table_fields(table_name); //TODO_Performance: Cache this?
+  for(type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end();  ++iter)
+  {
+    sharedptr<Field> field = *iter;
+
+    //Examine each field that looks up its data from a relationship:
+    if(field && field->get_is_lookup())
+    {
+      //Get the relationship information:
+      sharedptr<Relationship> relationship = field->get_lookup_relationship();
+      if(relationship)
+      {
+        //If the relationship is triggererd by the specified field:
+        if(relationship->get_from_field() == field_name)
+        {
+          //Add it:
+          sharedptr<LayoutItem_Field> item = sharedptr<LayoutItem_Field>::create();
+          item->set_full_field_details(field);
+          result.push_back( type_pairFieldTrigger(item, relationship) );
+        }
+      }
+    }
+  }
+
+  return result;
+}
 
 } //namespace Glom

@@ -108,7 +108,10 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
   }
 
   if(m_portal)
-    m_key_field = get_fields_for_table_one_field(LayoutWidgetBase::m_table_name, m_portal->get_to_field_used());
+  {
+    m_key_field = DbUtils::get_fields_for_table_one_field(get_document(),
+      LayoutWidgetBase::m_table_name, m_portal->get_to_field_used());
+  }
   else
     m_key_field.clear();
 

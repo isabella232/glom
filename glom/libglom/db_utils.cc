@@ -940,6 +940,89 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
   return result;
 }
 
+//TODO: This is very inefficient, because it is called so often. Just update the document with whatever is really in the database:
+type_vec_fields get_fields_for_table(const Document* document, const Glib::ustring& table_name, bool including_system_fields)
+{
+  //Get field definitions from the database:
+  type_vec_fields fieldsDatabase = get_fields_for_table_from_database(table_name, including_system_fields);
+
+  if(!document)
+  {
+    std::cerr << G_STRFUNC << ": document is null" << std::endl;
+    return fieldsDatabase; //This should never happen.
+  }
+
+  type_vec_fields result;
+
+  type_vec_fields fieldsDocument = document->get_table_fields(table_name);
+
+  //Look at each field in the database:
+  for(type_vec_fields::iterator iter = fieldsDocument.begin(); iter != fieldsDocument.end(); ++iter)
+  {
+    sharedptr<Field> field = *iter;
+    const Glib::ustring field_name = field->get_name();
+
+    //Get the field info from the database:
+    //This is in the document as well, but it _might_ have changed.
+    type_vec_fields::const_iterator iterFindDatabase = 
+      std::find_if(fieldsDatabase.begin(), fieldsDatabase.end(), predicate_FieldHasName<Field>(field_name));
+
+    if(iterFindDatabase != fieldsDatabase.end() ) //Ignore fields that don't exist in the database anymore.
+    {
+      Glib::RefPtr<Gnome::Gda::Column> field_info_document = field->get_field_info();
+
+      //Update the Field information that _might_ have changed in the database.
+      Glib::RefPtr<Gnome::Gda::Column> field_info = (*iterFindDatabase)->get_field_info();
+
+      //libgda does not tell us whether the field is auto_incremented, so we need to get that from the document.
+      field_info->set_auto_increment( field_info_document->get_auto_increment() );
+
+      //libgda does not tell us whether the field is auto_incremented, so we need to get that from the document.
+      //TODO_gda:field_info->set_primary_key( field_info_document->get_primary_key() );
+
+      //libgda does yet tell us correct default_value information so we need to get that from the document.
+      field_info->set_default_value( field_info_document->get_default_value() );
+
+      field->set_field_info(field_info);
+
+      result.push_back(*iter);
+    }
+  }
+
+  //Add any fields that are in the database, but not in the document:
+  for(type_vec_fields::iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
+  {
+    const Glib::ustring field_name = (*iter)->get_name();
+
+    //Look in the result so far:
+    type_vec_fields::const_iterator iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(field_name));
+
+    //Add it if it is not there:
+    if(iterFind == result.end() )
+      result.push_back(*iter);
+  }
+
+  return result;
+}
+
+sharedptr<Field> get_fields_for_table_one_field(const Document* document, const Glib::ustring& table_name, const Glib::ustring& field_name)
+{
+  //Initialize output parameter:
+  sharedptr<Field> result;
+
+  if(field_name.empty() || table_name.empty())
+    return result;
+
+  type_vec_fields fields = get_fields_for_table(document, table_name); //TODO_Performance
+  type_vec_fields::iterator iter = std::find_if(fields.begin(), fields.end(), predicate_FieldHasName<Field>(field_name));
+  if(iter != fields.end()) //TODO: Handle error?
+  {
+    return *iter;
+  }
+
+  return sharedptr<Field>();
+}
+
 //TODO_Performance: Avoid calling this so often.
 //TODO: Put this in libgdamm.
 type_vec_strings get_table_names_from_database(bool ignore_system_tables)
@@ -1919,6 +2002,41 @@ void set_fake_connection()
     new Glom::ConnectionPoolBackends::PostgresCentralHosted();
   connection_pool->set_backend(std::auto_ptr<Glom::ConnectionPool::Backend>(backend));
   connection_pool->set_fake_connection();
+}
+
+Gnome::Gda::Value get_lookup_value(Document* document, const Glib::ustring& /* table_name */, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value& key_value)
+{
+  Gnome::Gda::Value result;
+
+  sharedptr<Field> to_key_field = get_fields_for_table_one_field(document, relationship->get_to_table(), relationship->get_to_field());
+  if(to_key_field)
+  {
+    //Convert the value, in case the from and to fields have different types:
+    const Gnome::Gda::Value value_to_key_field = Conversions::convert_value(key_value, to_key_field->get_glom_type());
+
+    const Glib::ustring target_table = relationship->get_to_table();
+    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+    builder->select_add_field(source_field->get_name(), target_table );
+    builder->select_add_target(target_table );
+    builder->set_where(
+      builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+        builder->add_field_id(to_key_field->get_name(), target_table),
+        builder->add_expr(value_to_key_field)));
+
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(builder);
+    if(data_model && data_model->get_n_rows())
+    {
+      //There should be only 1 row. Well, there could be more but we will ignore them.
+      result = data_model->get_value_at(0, 0);
+    }
+    else
+    {
+      handle_error();
+    }
+  }
+
+  return result;
 }
 
 } //namespace DbUtils

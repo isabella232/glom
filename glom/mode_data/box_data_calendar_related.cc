@@ -108,7 +108,11 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
   }
 
   if(m_portal)
-    m_key_field = get_fields_for_table_one_field(LayoutWidgetBase::m_table_name, m_portal->get_to_field_used());
+  {
+    Document* document = get_document();    
+    m_key_field = DbUtils::get_fields_for_table_one_field(document,
+      LayoutWidgetBase::m_table_name, m_portal->get_to_field_used());
+  }
   else
     m_key_field.clear();
 

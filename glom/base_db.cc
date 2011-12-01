@@ -221,69 +221,6 @@ Base_DB::type_vec_strings Base_DB::util_vecStrings_from_Fields(const type_vec_fi
   return vecNames;
 }
 
-Base_DB::type_vec_fields Base_DB::get_fields_for_table(const Glib::ustring& table_name, bool including_system_fields) const
-{
-  //Get field definitions from the database:
-  type_vec_fields fieldsDatabase = DbUtils::get_fields_for_table_from_database(table_name, including_system_fields);
-
-  const Document* pDoc = dynamic_cast<const Document*>(get_document());
-  if(!pDoc)
-    return fieldsDatabase; //This should never happen.
-  else
-  {
-    type_vec_fields result;
-
-    type_vec_fields fieldsDocument = pDoc->get_table_fields(table_name);
-
-    //Look at each field in the database:
-    for(type_vec_fields::iterator iter = fieldsDocument.begin(); iter != fieldsDocument.end(); ++iter)
-    {
-      sharedptr<Field> field = *iter;
-      const Glib::ustring field_name = field->get_name();
-
-      //Get the field info from the database:
-      //This is in the document as well, but it _might_ have changed.
-      type_vec_fields::const_iterator iterFindDatabase = std::find_if(fieldsDatabase.begin(), fieldsDatabase.end(), predicate_FieldHasName<Field>(field_name));
-
-      if(iterFindDatabase != fieldsDatabase.end() ) //Ignore fields that don't exist in the database anymore.
-      {
-        Glib::RefPtr<Gnome::Gda::Column> field_info_document = field->get_field_info();
-
-        //Update the Field information that _might_ have changed in the database.
-        Glib::RefPtr<Gnome::Gda::Column> field_info = (*iterFindDatabase)->get_field_info();
-
-        //libgda does not tell us whether the field is auto_incremented, so we need to get that from the document.
-        field_info->set_auto_increment( field_info_document->get_auto_increment() );
-
-        //libgda does not tell us whether the field is auto_incremented, so we need to get that from the document.
-        //TODO_gda:field_info->set_primary_key( field_info_document->get_primary_key() );
-
-        //libgda does yet tell us correct default_value information so we need to get that from the document.
-        field_info->set_default_value( field_info_document->get_default_value() );
-
-        field->set_field_info(field_info);
-
-        result.push_back(*iter);
-      }
-    }
-
-    //Add any fields that are in the database, but not in the document:
-    for(type_vec_fields::iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
-    {
-      Glib::ustring field_name = (*iter)->get_name();
-
-       //Look in the result so far:
-       type_vec_fields::const_iterator iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(field_name));
-
-       //Add it if it is not there:
-       if(iterFind == result.end() )
-         result.push_back(*iter);
-    }
-
-    return result;
-  }
-}
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 
 namespace
@@ -600,24 +537,6 @@ sharedptr<LayoutItem_Notebook> Base_DB::offer_notebook(const sharedptr<LayoutIte
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-sharedptr<Field> Base_DB::get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name) const
-{
-  //Initialize output parameter:
-  sharedptr<Field> result;
-
-  if(field_name.empty() || table_name.empty())
-    return result;
-
-  type_vec_fields fields = get_fields_for_table(table_name);
-  type_vec_fields::iterator iter = std::find_if(fields.begin(), fields.end(), predicate_FieldHasName<Field>(field_name));
-  if(iter != fields.end()) //TODO: Handle error?
-  {
-    return *iter;
-  }
-
-  return sharedptr<Field>();
-}
-
 //static:
 bool Base_DB::get_field_primary_key_index_for_fields(const type_vec_fields& fields, guint& field_column)
 {
@@ -694,6 +613,8 @@ sharedptr<Field> Base_DB::get_field_primary_key_for_table(const Glib::ustring& t
 
 void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vec_fields& all_db_fields, const sharedptr<LayoutGroup>& group, Base_DB::type_vecConstLayoutFields& vecFields) const
 {
+  const Document* document = dynamic_cast<const Document*>(get_document());
+
   //g_warning("Box_Data::get_table_fields_to_show_for_sequence_add_group(): table_name=%s, all_db_fields.size()=%d, group->name=%s", table_name.c_str(), all_db_fields.size(), group->get_name().c_str());
 
   LayoutGroup::type_list_items items = group->get_items();
@@ -710,7 +631,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
       if(item_field->get_has_relationship_name()) //If it's a field in a related table.
       {
         //TODO_Performance: get_fields_for_table_one_field() is probably very inefficient
-        sharedptr<Field> field = get_fields_for_table_one_field(item_field->get_table_used(table_name), item->get_name());
+        sharedptr<Field> field = DbUtils::get_fields_for_table_one_field(document, item_field->get_table_used(table_name), item->get_name());
         if(field)
         {
           sharedptr<LayoutItem_Field> layout_item = item_field;
@@ -772,14 +693,15 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
 
 Base_DB::type_vecConstLayoutFields Base_DB::get_table_fields_to_show_for_sequence(const Glib::ustring& table_name, const Document::type_list_layout_groups& mapGroupSequence) const
 {
+  const Document* pDoc = dynamic_cast<const Document*>(get_document());
+
   //Get field definitions from the database, with corrections from the document:
-  type_vec_fields all_fields = get_fields_for_table(table_name);
+  type_vec_fields all_fields = DbUtils::get_fields_for_table(pDoc, table_name);
 
   const Privileges table_privs = Privs::get_current_privs(table_name);
 
   //Get fields that the document says we should show:
   type_vecConstLayoutFields result;
-  const Document* pDoc = dynamic_cast<const Document*>(get_document());
   if(pDoc)
   {
     if(mapGroupSequence.empty())
@@ -1442,12 +1364,16 @@ Base_DB::type_list_const_field_items Base_DB::get_calculation_fields(const Glib:
 
 void Base_DB::do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value)
 {
+  Document* document = get_document();
+  if(!document)
+    return;
+
    //Get values for lookup fields, if this field triggers those relationships:
    //TODO_performance: There is a LOT of iterating and copying here.
    const Glib::ustring strFieldName = field_in_record.m_field->get_name();
-   const type_list_lookups lookups = get_lookup_fields(field_in_record.m_table_name, strFieldName);
+   const Document::type_list_lookups lookups = document->get_lookup_fields(field_in_record.m_table_name, strFieldName);
    //std::cout << "debug: " << G_STRFUNC << ": lookups size=" << lookups.size() << std::endl;
-   for(type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
+   for(Document::type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
    {
      sharedptr<const LayoutItem_Field> layout_item = iter->first;
 
@@ -1457,10 +1383,10 @@ void Base_DB::do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::
      const sharedptr<const Field> field_lookup = layout_item->get_full_field_details();
      if(field_lookup)
      {
-      sharedptr<const Field> field_source = get_fields_for_table_one_field(relationship->get_to_table(), field_lookup->get_lookup_field());
+      sharedptr<const Field> field_source = DbUtils::get_fields_for_table_one_field(document, relationship->get_to_table(), field_lookup->get_lookup_field());
       if(field_source)
       {
-        const Gnome::Gda::Value value = get_lookup_value(field_in_record.m_table_name, iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
+        const Gnome::Gda::Value value = DbUtils::get_lookup_value(document, field_in_record.m_table_name, iter->second /* relationship */,  field_source /* the field to look in to get the value */, field_value /* Value of to and from fields */);
 
         const Gnome::Gda::Value value_converted = Conversions::convert_value(value, layout_item->get_glom_type());
 
@@ -1479,85 +1405,9 @@ void Base_DB::do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::
   }
 }
 
-
-/** Get the fields whose values should be looked up when @a field_name changes, with
- * the relationship used to lookup the value.
- */
-Base_DB::type_list_lookups Base_DB::get_lookup_fields(const Glib::ustring& table_name, const Glib::ustring& field_name) const
-{
-  type_list_lookups result;
-
-  const Document* document = dynamic_cast<const Document*>(get_document());
-  if(document)
-  {
-    //Examine all fields, not just the the shown fields (m_Fields):
-    const type_vec_fields fields = document->get_table_fields(table_name); //TODO_Performance: Cache this?
-    //Examine all fields, not just the the shown fields.
-    for(type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end();  ++iter)
-    {
-      sharedptr<Field> field = *iter;
-
-      //Examine each field that looks up its data from a relationship:
-      if(field && field->get_is_lookup())
-      {
-        //Get the relationship information:
-        sharedptr<Relationship> relationship = field->get_lookup_relationship();
-        if(relationship)
-        {
-          //If the relationship is triggererd by the specified field:
-          if(relationship->get_from_field() == field_name)
-          {
-            //Add it:
-            sharedptr<LayoutItem_Field> item = sharedptr<LayoutItem_Field>::create();
-            item->set_full_field_details(field);
-            result.push_back( type_pairFieldTrigger(item, relationship) );
-          }
-        }
-      }
-    }
-  }
-
-  return result;
-}
-
 void Base_DB::refresh_related_fields(const LayoutFieldInRecord& /* field_in_record_changed */, const Gtk::TreeModel::iterator& /* row */, const Gnome::Gda::Value& /* field_value */)
 {
   //overridden in Box_Data.
-}
-
-Gnome::Gda::Value Base_DB::get_lookup_value(const Glib::ustring& /* table_name */, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value& key_value)
-{
-  Gnome::Gda::Value result;
-
-  sharedptr<Field> to_key_field = get_fields_for_table_one_field(relationship->get_to_table(), relationship->get_to_field());
-  if(to_key_field)
-  {
-    //Convert the value, in case the from and to fields have different types:
-    const Gnome::Gda::Value value_to_key_field = Conversions::convert_value(key_value, to_key_field->get_glom_type());
-
-    const Glib::ustring target_table = relationship->get_to_table();
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
-      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-    builder->select_add_field(source_field->get_name(), target_table );
-    builder->select_add_target(target_table );
-    builder->set_where(
-      builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-        builder->add_field_id(to_key_field->get_name(), target_table),
-        builder->add_expr(value_to_key_field)));
-
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
-    if(data_model && data_model->get_n_rows())
-    {
-      //There should be only 1 row. Well, there could be more but we will ignore them.
-      result = data_model->get_value_at(0, 0);
-    }
-    else
-    {
-      handle_error();
-    }
-  }
-
-  return result;
 }
 
 bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
@@ -1702,8 +1552,10 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
   // The WHERE clause mentions the first-related table (though by the alias defined in extra_join)
   // and we add an extra JOIN to mention the second-related table.
 
+  Document* document = get_document();
+
   Glib::ustring where_clause_to_table_name = relationship->get_to_table();
-  sharedptr<Field> where_clause_to_key_field = get_fields_for_table_one_field(relationship->get_to_table(), relationship->get_to_field());
+  sharedptr<Field> where_clause_to_key_field = DbUtils::get_fields_for_table_one_field(document, relationship->get_to_table(), relationship->get_to_field());
 
   found_set.m_table_name = portal->get_table_used(Glib::ustring() /* parent table - not relevant */);
 
@@ -1719,7 +1571,7 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
     where_clause_to_table_name = uses_rel_temp->get_sql_join_alias_name();
 
     const Glib::ustring to_field_name = uses_rel_temp->get_to_field_used();
-    where_clause_to_key_field = get_fields_for_table_one_field(relationship->get_to_table(), to_field_name);
+    where_clause_to_key_field = DbUtils::get_fields_for_table_one_field(document, relationship->get_to_table(), to_field_name);
     //std::cout << "extra_join=" << found_set.m_extra_join << std::endl;
 
     //std::cout << "extra_join where_clause_to_key_field=" << where_clause_to_key_field->get_name() << std::endl;

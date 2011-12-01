@@ -2150,7 +2150,8 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
           table_name = relationship->get_to_table();
           const Glib::ustring to_field_name = relationship->get_to_field();
           //Get the key field in the other table (the table that we will change)
-          primary_key_field = get_fields_for_table_one_field(table_name, to_field_name); //TODO_Performance.
+          primary_key_field = DbUtils::get_fields_for_table_one_field(document, 
+            table_name, to_field_name); //TODO_Performance.
           if(primary_key_field)
           {
             //Get the value of the corresponding key in the current table (that identifies the record in the table that we will change)

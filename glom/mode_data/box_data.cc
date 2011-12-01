@@ -24,6 +24,7 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/utils_ui.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
+#include <libglom/db_utils.h>
 #include <libglom/privs.h>
 #include <glom/python_embed/glom_python.h>
 #include <glom/python_embed/python_ui_callbacks.h>
@@ -171,7 +172,8 @@ void Box_Data::create_layout()
   set_unstored_data(false);
 
   //Cache the table information, for performance:
-  m_TableFields = get_fields_for_table(m_table_name);
+  const Document* document = dynamic_cast<const Document*>(get_document());
+  m_TableFields = DbUtils::get_fields_for_table(document, m_table_name);
 }
 
 bool Box_Data::fill_from_database()
@@ -298,7 +300,7 @@ void Box_Data::fill_layout_group_field_info(const sharedptr<LayoutGroup>& group,
         sharedptr<const Relationship> relationship = document->get_relationship(m_table_name, relationship_name);
         if(relationship)
         {
-          sharedptr<Field> field = get_fields_for_table_one_field(relationship->get_to_table(), item->get_name());
+          sharedptr<Field> field = DbUtils::get_fields_for_table_one_field(document, relationship->get_to_table(), item->get_name());
           if(field)
           {
             item_field->set_full_field_details(field);
@@ -313,7 +315,7 @@ void Box_Data::fill_layout_group_field_info(const sharedptr<LayoutGroup>& group,
       else
       {
         //Get the field info:
-        sharedptr<Field> field = get_fields_for_table_one_field(m_table_name, item_field->get_name());
+        sharedptr<Field> field = DbUtils::get_fields_for_table_one_field(document, m_table_name, item_field->get_name());
         if(field)
         {
           item_field->set_full_field_details(field); //TODO_Performance: Just use this as the output arg?

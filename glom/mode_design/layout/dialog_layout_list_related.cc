@@ -22,6 +22,7 @@
 #include <glom/mode_design/layout/dialog_choose_field.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.h>
 #include <libglom/utils.h> //For bold_message().
+#include <libglom/db_utils.h>
 #include <glom/utils_ui.h> //For show_ok_dialog().
 
 //#include <libgnome/gnome-i18n.h>
@@ -397,8 +398,8 @@ void Dialog_Layout_List_Related::on_combo_relationship_changed()
   //The relationship's to field may not be a unique field, because that would
   //prevent the portal from having multiple records.
   sharedptr<Field> to_key_field =
-    get_fields_for_table_one_field(relationship->get_to_table(),
-      relationship->get_to_field());
+    DbUtils::get_fields_for_table_one_field(get_document(), 
+      relationship->get_to_table(), relationship->get_to_field());
   bool relationship_invalid = false;
   if(!to_key_field)
   {
