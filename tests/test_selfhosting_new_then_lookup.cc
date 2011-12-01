@@ -159,20 +159,26 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   if(!field->get_is_lookup())
   {
-    std::cerr << "Failure: The lookup field is not a lookup." << std::endl;
+    std::cerr << "Failure: The lookup item's field is not a lookup." << std::endl;
+    return false;
+  }
+
+  if(field->get_lookup_field() != "price")
+  {
+    std::cerr << "Failure: The lookup item's field's name is unexpected." << std::endl;
     return false;
   }
 
   if(relationship != field->get_lookup_relationship())
   {
-    std::cerr << "Failure: The lookup field's relationship is not expected." << std::endl;
+    std::cerr << "Failure: The lookup item's field's relationship is not expected." << std::endl;
     return false;
   }
 
   //Lookup the value from the related record.
   //TODO: 
   const Glom::sharedptr<Glom::Field> field_source = 
-    document.get_field(relationship->get_to_table(), "price");
+    document.get_field(relationship->get_to_table(), field->get_lookup_field());
   const Gnome::Gda::Value value = Glom::DbUtils::get_lookup_value(&document, 
     table_name, relationship, field_source, Gnome::Gda::Value(2));
 
