@@ -1,5 +1,12 @@
 2011-12-02  Murray Cumming  <murrayc@murrayc.com>
 
+	DbUtils::recreate_database_from_document(): Create groups too.
+
+	* glom/libglom/db_utils.[h|cc]: recreate_database_from_document():
+  Also call add_groups_from_document().
+
+2011-12-02  Murray Cumming  <murrayc@murrayc.com>
+
 	test_document_load: Test some navigation utility functions.
 
 	* glom/libglom/data_structure/layout/layoutgroup.cc: get_items_recursive():
