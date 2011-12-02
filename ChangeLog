@@ -1,5 +1,12 @@
 2011-12-02  Murray Cumming  <murrayc@murrayc.com>
 
+	DbUtils::recreate_database_from_document(): Set table privileges too.
+
+	* glom/libglom/db_utils.cc: recreate_database_from_document():
+  Also call set_table_privileges_groups_from_document().
+
+2011-12-02  Murray Cumming  <murrayc@murrayc.com>
+
 	DbUtils::recreate_database_from_document(): Create groups too.
 
 	* glom/libglom/db_utils.[h|cc]: recreate_database_from_document():
