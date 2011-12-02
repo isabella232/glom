@@ -1,5 +1,12 @@
 2011-12-02  Murray Cumming  <murrayc@murrayc.com>
 
+	test_document_load: Test Document's user groups functions too.
+
+	* tests/test_document_load.cc: Check for expected group names and check 
+	that we can remove one.
+
+2011-12-02  Murray Cumming  <murrayc@murrayc.com>
+
 	test_document_load: Test some navigation utility functions.
 
 	* glom/libglom/data_structure/layout/layoutgroup.cc: get_items_recursive():
