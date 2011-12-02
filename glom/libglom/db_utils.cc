@@ -1794,7 +1794,7 @@ Glib::ustring get_unused_database_name(const Glib::ustring& base_name)
       else
       {
         //We assume that the connection failed because the database does not exist.
-        std::cout << "debug: " << G_STRFUNC << ": unused database name successfully found: " << database_name_possible << std::endl;
+        //std::cout << "debug: " << G_STRFUNC << ": unused database name successfully found: " << database_name_possible << std::endl;
         return database_name_possible;
       }
     }

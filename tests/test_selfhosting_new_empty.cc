@@ -119,9 +119,17 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
   g_assert(started == Glom::ConnectionPool::Backend::STARTUPERROR_NONE);
 
+  //Test this function a little:
+  const Glib::ustring db_name = Glom::DbUtils::get_unused_database_name("test_db");
+  if(db_name.empty())
+  {
+    std::cerr << "DbUtils::get_unused_database_name) failed." << std::endl;
+    cleanup();
+    return false;
+  }
 
   //Create a database:
-  const bool created = Glom::DbUtils::create_database(&document, "test_db", 
+  const bool created = Glom::DbUtils::create_database(&document, db_name, 
     "test title", sigc::ptr_fun(&on_db_creation_progress));
   if(!created)
   {
