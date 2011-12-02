@@ -1,3 +1,12 @@
+2011-12-02  Murray Cumming  <murrayc@murrayc.com>
+
+	test_selfhosting_new_empty(): Correct and expand.
+
+	* tests/test_selfhosting_new_empty.cc: Fix a CENTRAL->SELF typo. This 
+  probably only appeared to work before because no database cluster was really 
+  being initialized. Also actually create a database in the database cluster 
+  and set its system preferences table's record.
+
 2011-12-01  Murray Cumming  <murrayc@murrayc.com>
 
 	test_selfhosting_new_then_lookup: Minor improvements.
