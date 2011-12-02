@@ -417,7 +417,7 @@ TODO: Add 'title_singular' element.
 <!-- print layouts are for perfectly-positioned printing of single record details. -->
     <!ELEMENT print_layouts (print_layout*)>
 
-    <!ELEMENT print_layout (page_setup?, data_layout_groups, horizontal_rule?, vertical_rule?)>
+    <!ELEMENT print_layout (trans_set?, page_setup?, data_layout_groups, horizontal_rule?, vertical_rule?)>
     <!ATTLIST print_layout
         name CDATA #REQUIRED
         title CDATA #IMPLIED
