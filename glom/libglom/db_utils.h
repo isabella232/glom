@@ -32,6 +32,9 @@ namespace DbUtils
 
 bool create_database(Document* document, const Glib::ustring& database_name, const Glib::ustring& title, const sigc::slot<void>& progress);
 
+//TODO: Use this in Glom::Application?
+/** Create the database on an already-connected server.
+ */
 bool recreate_database_from_document(Document* document, const sigc::slot<void>& progress);
 
 /** This creates the standard tables if necessary,

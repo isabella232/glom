@@ -1,5 +1,12 @@
 2011-12-02  Murray Cumming  <murrayc@murrayc.com>
 
+	DbUtils::recreate_database_from_document(): Create groups too.
+
+	* glom/libglom/db_utils.[h|cc]: recreate_database_from_document():
+  Also call add_groups_from_document().
+
+2011-12-02  Murray Cumming  <murrayc@murrayc.com>
+
 	test_document_load: Move changes into test_document_load_and_change.
 
 	* tests/test_document_load.cc:

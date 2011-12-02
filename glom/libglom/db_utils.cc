@@ -278,7 +278,15 @@ bool recreate_database_from_document(Document* document, const sigc::slot<void>&
   }
 
   //Note that create_database() has already called add_standard_tables() and add_standard_groups(document).
-  
+
+  //Add groups from the document:
+  progress();
+  if(!add_groups_from_document(document))
+  {
+    std::cerr << G_STRFUNC << ": add_groups_from_document() failed." << std::endl;
+    return false;
+  }
+    
   for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
     sharedptr<const TableInfo> table_info = *iter;
@@ -288,6 +296,7 @@ bool recreate_database_from_document(Document* document, const sigc::slot<void>&
 
     //try
     //{
+      progress();
       const bool table_insert_succeeded = insert_example_data(document, table_info->get_name());
 
       if(!table_insert_succeeded)
@@ -303,7 +312,7 @@ bool recreate_database_from_document(Document* document, const sigc::slot<void>&
     //}
 
   } //for(tables)
-
+  
   return true; //All tables created successfully.
 }
 
