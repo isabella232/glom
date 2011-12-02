@@ -24,6 +24,7 @@
 #include <libglom/init.h>
 #include <libglom/privs.h>
 #include <libglom/utils.h>
+#include <libglom/db_utils.h>
 #include <giomm/file.h>
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
@@ -44,15 +45,37 @@ static void on_cleanup_progress()
   std::cout << "Database cleanup progress" << std::endl;
 }
 
+static void on_db_creation_progress()
+{
+  std::cout << "Database creation progress" << std::endl;
+}
+
+static Glom::ConnectionPool* connection_pool = 0;
+static std::string temp_filepath_dir;
+
+static void cleanup()
+{
+  //Stop:
+  const bool stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );
+  g_assert(stopped);
+
+  //Make sure the directory is removed at the end,
+  const Glib::ustring uri = Glib::filename_to_uri(temp_filepath_dir);
+  Glom::Utils::delete_directory(uri);
+}
+
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
+  connection_pool = 0;
+  temp_filepath_dir.clear();
+
   // Create the document:
   Glom::Document document;
 
   //Save a copy, specifying the path to file in a directory:
   //For instance, /tmp/testfileglom/testfile.glom");
   const std::string temp_filename = "testglom";
-  const std::string temp_filepath_dir = 
+  temp_filepath_dir = 
     Glom::Utils::get_temp_directory_path(temp_filename);
   const std::string temp_filepath = Glib::build_filename(temp_filepath_dir, temp_filename);
 
@@ -73,7 +96,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   g_assert(saved);
 
   //Specify the backend and backend-specific details to be used by the connectionpool.
-  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+  connection_pool = Glom::ConnectionPool::get_instance();
   connection_pool->setup_from_document(&document);
 
   //We must specify a default username and password:
@@ -96,14 +119,34 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
   g_assert(started == Glom::ConnectionPool::Backend::STARTUPERROR_NONE);
 
-  const bool stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );
-  g_assert(stopped);
 
-  //Make sure the directory is removed at the end,
+  //Create a database:
+  const bool created = Glom::DbUtils::create_database(&document, "test_db", 
+    "test title", sigc::ptr_fun(&on_db_creation_progress));
+  if(!created)
   {
-    const Glib::ustring uri = Glib::filename_to_uri(temp_filepath_dir);
-    Glom::Utils::delete_directory(uri);
+    std::cerr << "DbUtils::create_database() failed." << std::endl;
+    cleanup();
+    return false;
   }
+
+  
+  //Test some simple changes to the database:
+  try
+  {
+    Glom::SystemPrefs prefs;
+    prefs.m_name = "test name";
+    prefs.m_org_name = "test org name";
+    Glom::DbUtils::set_database_preferences(&document, prefs);
+  }
+  catch(const Glom::ExceptionConnection& ex)
+  {
+    std::cerr << "Exception: " << ex.what() << std::endl;
+    cleanup();
+    return false;
+  }
+  
+  cleanup();
   
   return true;
 }
@@ -112,7 +155,7 @@ int main()
 {
   Glom::libglom_init();
 
-  if(!test(Glom::Document::HOSTING_MODE_POSTGRES_CENTRAL))
+  if(!test(Glom::Document::HOSTING_MODE_POSTGRES_SELF))
   {
     std::cerr << "Failed with PostgreSQL" << std::endl;
     return EXIT_FAILURE;
