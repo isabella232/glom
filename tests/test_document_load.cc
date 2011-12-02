@@ -296,12 +296,7 @@ int main()
   //Test user groups:
   Glom::Document::type_list_groups groups = document.get_groups();
   g_assert(groups_contain_named(groups, "glom_developer"));
-  
-  const Glib::ustring group_name = "accounts";
-  g_assert(groups_contain_named(groups, group_name));
-  document.remove_group(group_name);
-  groups = document.get_groups();
-  g_assert(!groups_contain_named(groups, group_name));
+  g_assert(groups_contain_named(groups, "accounts"));
 
   //Test navigation:
   if(!needs_navigation(document, "scenes", "location_id"))
