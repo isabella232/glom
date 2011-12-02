@@ -20,6 +20,7 @@
 
 #include <libglom/document/document.h>
 #include <libglom/init.h>
+#include <libglom/db_utils.h>
 #include <giomm/file.h>
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
@@ -75,6 +76,57 @@ static Glom::sharedptr<const Glom::LayoutItem_Field> get_field_on_layout(const G
   return Glom::sharedptr<const Glom::LayoutItem_Field>();
 }
 
+static bool needs_navigation(Glom::Document& document, const Glib::ustring& table_name, const Glib::ustring& field_name)
+{
+  Glom::sharedptr<Glom::LayoutItem_Field> layout_item = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layout_item->set_name(field_name);
+  layout_item->set_full_field_details(
+    document.get_field(table_name, field_name));
+
+  Glom::sharedptr<Glom::Relationship> field_used_in_relationship_to_one;
+  return Glom::DbUtils::layout_field_should_have_navigation(table_name, 
+    layout_item, &document, field_used_in_relationship_to_one);
+}
+
+static Glom::sharedptr<const Glom::LayoutItem_Portal> get_portal_from_details_layout(const Glom::Document& document, const Glib::ustring& table_name, const Glib::ustring& relationship_name)
+{
+  const Glom::Document::type_list_layout_groups groups = 
+    document.get_data_layout_groups("details", table_name);
+  if(groups.empty())
+  {
+    std::cerr << G_STRFUNC << ": groups is empty." << std::endl;
+  }
+  
+  for(Glom::Document::type_list_layout_groups::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
+  {
+    const Glom::sharedptr<const Glom::LayoutGroup> group = *iter;
+
+    const Glom::LayoutGroup::type_list_const_items items = 
+      group->get_items_recursive();
+    for(Glom::LayoutGroup::type_list_const_items::const_iterator iter = items.begin(); 
+      iter != items.end(); ++iter)
+    {
+      const Glom::sharedptr<const Glom::LayoutItem> layout_item = *iter;
+ 
+      const Glom::sharedptr<const Glom::LayoutGroup> group =
+        Glom::sharedptr<const Glom::LayoutGroup>::cast_dynamic(layout_item);
+      if(!group)
+        continue;
+
+      const Glom::sharedptr<const Glom::LayoutItem_Portal> portal =
+        Glom::sharedptr<const Glom::LayoutItem_Portal>::cast_dynamic(layout_item);
+      if(!portal)
+        continue;
+      
+      if(portal->get_relationship_name() == relationship_name)
+        return portal;
+    }
+  }
+      
+  return Glom::sharedptr<Glom::LayoutItem_Portal>();
+}
+  
+ 
 int main()
 {
   Glom::libglom_init();
@@ -233,6 +285,53 @@ int main()
     return false;
   }
 
+  //Test navigation:
+  if(!needs_navigation(document, "scenes", "location_id"))
+  {
+    std::cerr << "Failure: DbUtils::layout_field_should_have_navigation() did not return the expected result." << std::endl;
+    return false;
+  }
+
+  if(needs_navigation(document, "scenes", "description"))
+  {
+    std::cerr << "Failure: DbUtils::layout_field_should_have_navigation() did not return the expected result." << std::endl;
+    return false;
+  }
+
+
+  //Test portal navigation.
+  //Note that related records portals don't have names.
+  //This example portal shows the scenes_cast table, but should navigate though that to the cast table.
+  const Glib::ustring portal_relationship_name = "scene_cast";
+  Glom::sharedptr<const Glom::LayoutItem_Portal> portal = 
+    get_portal_from_details_layout(document, "scenes", portal_relationship_name);
+  if(!portal)
+  {
+    std::cerr << "Failure: Could not get the portal from the layout." << std::endl;
+    return false;
+  }
+
+  Glib::ustring navigation_table_name;
+  Glom::sharedptr<const Glom::UsesRelationship> navigation_relationship;
+  portal->get_suitable_table_to_view_details(navigation_table_name, navigation_relationship, &document);
+
+  if(navigation_table_name != "characters")
+  {
+    std::cerr << "Failure: get_suitable_table_to_view_details() returned an unexpected table name: " << navigation_table_name << std::endl;
+    return false;
+  }
+
+  if(!navigation_relationship)
+  {
+    std::cerr << "Failure: get_suitable_table_to_view_details() returned an empty navigation_relationship." << std::endl;
+    return false;
+  }
+
+  if(navigation_relationship->get_relationship_name() != "cast")
+  {
+    std::cerr << "Failure: get_suitable_table_to_view_details() returned an unexpected navigation_relationship name: " << navigation_relationship->get_relationship_name() << std::endl;
+    return false;
+  }
 
   Glom::libglom_deinit();
 
