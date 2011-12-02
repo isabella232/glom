@@ -1,5 +1,15 @@
 2011-12-02  Murray Cumming  <murrayc@murrayc.com>
 
+	test_document_load: Test some navigation utility functions.
+
+	* glom/libglom/data_structure/layout/layoutgroup.cc: get_items_recursive():
+  Return the child groups as well as their items.
+	* tests/test_document_load.cc:
+	Test DbUtils::layout_field_should_have_navigation() and 
+	LayoutItem_Portal::get_suitable_table_to_view_details().
+	
+2011-12-02  Murray Cumming  <murrayc@murrayc.com>
+
 	test_selfhosting_new_empty(): Also test DbUtils::get_unused_database_name().
 
 	* glom/libglom/db_utils.cc: get_unused_database_name(): Remove debug output.

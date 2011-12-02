@@ -22,6 +22,7 @@
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <libglom/data_structure/layout/layoutitem_portal.h>
 #include <glibmm/i18n.h>
+#include <iostream> 
 
 namespace Glom
 {
@@ -215,14 +216,16 @@ LayoutGroup::type_list_const_items LayoutGroup::get_items_recursive() const
   for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
   {
     const sharedptr<const LayoutItem> item = *iter;
+    
+    //Add the item itself:
+    result.push_back(item);
+    
     sharedptr<const LayoutGroup> group = sharedptr<const LayoutGroup>::cast_dynamic(item);
     if(group)
     {
       const type_list_const_items sub_result = group->get_items_recursive();
       result.insert(result.end(), sub_result.begin(), sub_result.end());
     }
-    else
-      result.push_back(item);
   }
 
   return result;
@@ -235,6 +238,10 @@ LayoutGroup::type_list_items LayoutGroup::get_items_recursive()
   for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
   {
     const sharedptr<LayoutItem> item = *iter;
+    
+    //Add the item itself:
+    result.push_back(item);
+    
     sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(item);
     if(group)
     {
