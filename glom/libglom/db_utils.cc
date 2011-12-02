@@ -286,6 +286,14 @@ bool recreate_database_from_document(Document* document, const sigc::slot<void>&
     std::cerr << G_STRFUNC << ": add_groups_from_document() failed." << std::endl;
     return false;
   }
+  
+  //Set table privileges, using the groups we just added:
+  progress();
+  if(!DbUtils::set_table_privileges_groups_from_document(document))
+  {
+    std::cerr << G_STRFUNC << ": set_table_privileges_groups_from_document() failed." << std::endl;
+    return false;
+  }
     
   for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
