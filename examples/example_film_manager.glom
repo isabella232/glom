@@ -514,6 +514,11 @@
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name_full" relationship="contacts_actor" editable="true" use_default_formatting="true">
+                <title_custom use_custom="true" title="Actor's Name">
+                  <trans_set>
+                    <trans loc="de_DE" val="Schauspieler Name"/>
+                </trans_set>
+              </title_custom>
                 <formatting/>
               </data_layout_item>
             </data_layout_group>
@@ -1428,6 +1433,9 @@
     </reports>
     <print_layouts>
       <print_layout name="contact_details" show_table_title="true" show_grid="true" show_rules="true" show_outlines="true" page_count="2" title="Contact Details">
+        <trans_set>
+          <trans loc="de_DE" val="Kontakt Details"/>
+        </trans_set>
         <page_setup>
 [Page Setup]
 PPDName=Letter

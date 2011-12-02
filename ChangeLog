@@ -1,5 +1,12 @@
 2011-12-02  Murray Cumming  <murrayc@murrayc.com>
 
+	Added test_document_load_translations
+
+	* tests/test_document_load_translations.cc: Test some translated 
+	titles.
+
+2011-12-02  Murray Cumming  <murrayc@murrayc.com>
+
 	DbUtils::recreate_database_from_document(): Set table privileges too.
 
 	* glom/libglom/db_utils.cc: recreate_database_from_document():

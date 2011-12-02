@@ -3957,7 +3957,7 @@ bool Document::save_before()
 
 Glib::ustring Document::get_database_title() const
 {
-  return m_database_title;
+  return m_database_title; //TODO: Allow this to be translated.
 }
 
 void Document::set_database_title(const Glib::ustring& title)

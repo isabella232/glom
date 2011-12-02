@@ -24,6 +24,7 @@ check_PROGRAMS =						\
 	glom/libglom/test_sharedptr_layoutitem		\
 	tests/test_document_load			\
 	tests/test_document_load_and_change		\
+	tests/test_document_load_translations		\
 	tests/test_document_change			\
 	tests/test_document_autosave			\
 	tests/test_parsing_time			\
@@ -47,6 +48,7 @@ check_PROGRAMS =						\
 
 TESTS =	tests/test_document_load	\
 	tests/test_document_load_and_change	\
+	tests/test_document_load_translations	\
 	tests/test_document_change	\
 	tests/test_document_autosave	\
 	tests/test_parsing_time	\
@@ -105,6 +107,10 @@ tests_test_document_load_CPPFLAGS = $(tests_cppflags)
 tests_test_document_load_and_change_SOURCES = tests/test_document_load_and_change.cc
 tests_test_document_load_and_change_LDADD = $(tests_ldadd)
 tests_test_document_load_and_change_CPPFLAGS = $(tests_cppflags)
+
+tests_test_document_load_translations_SOURCES = tests/test_document_load_translations.cc
+tests_test_document_load_translations_LDADD = $(tests_ldadd)
+tests_test_document_load_translations_CPPFLAGS = $(tests_cppflags)
 
 tests_test_document_change_SOURCES = tests/test_document_change.cc
 tests_test_document_change_LDADD = $(tests_ldadd)
