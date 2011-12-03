@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "tests/test_utils.h"
 #include <libglom/document/document.h>
 #include <libglom/init.h>
 #include <giomm/file.h>
@@ -138,6 +139,35 @@ int main()
     return false;
   }
 
+  {
+    //Change a relationship name:
+    const Glib::ustring table_name = "invoices";
+    const Glib::ustring relationship_name_original = "contacts";
+    const Glib::ustring relationship_name_new = "newrelationshipname";
+    document.change_relationship_name(table_name, 
+      relationship_name_original, relationship_name_new);
+    if(document.get_relationship(table_name, relationship_name_original))
+    {
+      std::cerr << "Failure: The original relationship name still exists." << std::endl;
+      return false;
+    }
+
+    if(!document.get_relationship(table_name, relationship_name_new))
+    {
+      std::cerr << "Failure: The new relationship name does not exist." << std::endl;
+      return false;
+    }
+
+    //Check that the old relationship name is not used.
+    Glom::sharedptr<const Glom::LayoutItem_Field> field_on_layout = 
+      get_field_on_layout(document, table_name, "contacts", "name_full");
+    g_assert(field_on_layout);
+    if(field_on_layout->get_relationship_name() != relationship_name_new)
+    {
+      std::cerr << "Failure: A layout item does not use the new relationship name as expected." << std::endl;
+      return false;
+    }
+  }
 
   //Remove a field from the whole document:
   document.remove_field("publisher", "publisher_id");

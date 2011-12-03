@@ -1,5 +1,13 @@
 2011-12-03  Murray Cumming  <murrayc@murrayc.com>
 
+	tests/test_document_load_and_change: Change a relationship name.
+
+	* Makefile_tests.am: Use the test_utils.
+	* tests/test_document_load_and_change.cc: Also rename a relationship
+	and check that a layout item uses the new relationship name.
+
+2011-12-03  Murray Cumming  <murrayc@murrayc.com>
+
 	Tests: Add a shared get_field_on_layout() function.
 
 	* tests/test_document_load.cc: Move get_field_on_layout() to 
