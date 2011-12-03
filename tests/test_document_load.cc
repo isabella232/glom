@@ -155,7 +155,12 @@ int main()
   g_assert(contains(table_names, "scenes"));
   g_assert(!contains(table_names, "Scenes")); //The title, not the name.
 
-  //Test known details of one table:
+  Glom::sharedptr<Glom::TableInfo> table = document.get_table("scenes");
+  g_assert(table);
+  g_assert( table->get_title() == "Scenes" );
+  g_assert( table->get_title_singular() == "Scene" );
+
+  //Test known fields of one table:
   const Glom::Document::type_vec_fields fields = document.get_table_fields("scenes");
   g_assert(contains_named(fields, "scene_id"));
   g_assert(contains_named(fields, "comments"));
@@ -171,10 +176,12 @@ int main()
   //Check some fields:
   Glom::sharedptr<const Glom::Field> field = document.get_field("contacts", "contact_id");
   g_assert(field);
+  g_assert( field->get_title() == "Contact ID" );
   g_assert(field->get_glom_type() == Glom::Field::TYPE_NUMERIC);
   g_assert(field->get_auto_increment());
   field = document.get_field("locations", "rent");
   g_assert(field);
+  g_assert( field->get_title() == "Rent" );
   g_assert(field->get_glom_type() == Glom::Field::TYPE_NUMERIC);
   g_assert(!field->get_auto_increment());
   g_assert(!field->get_unique_key());
@@ -218,6 +225,9 @@ int main()
   g_assert(field_on_layout->get_name() == "name_title");
   g_assert(field_on_layout->get_formatting_use_default());
   g_assert(field_on_layout->get_formatting_used() == formatting);
+
+  //Test this utility method:
+  g_assert( document.get_data_layout_groups_have_any_fields("list", "cars") );
 
 
   //Test library modules:

@@ -1,5 +1,12 @@
 2011-12-03  Murray Cumming  <murrayc@murrayc.com>
 
+	test_document_load: Check a table title and its singular title.
+
+	* tests/test_document_load.cc: Also test 
+	get_data_layout_groups_have_any_fields().
+
+2011-12-03  Murray Cumming  <murrayc@murrayc.com>
+
 	tests/test_document_load_and_change: Change a relationship name.
 
 	* Makefile_tests.am: Use the test_utils.
