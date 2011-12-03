@@ -273,6 +273,46 @@ int main()
     return false;
   }
 
+
+  const Glom::Document::type_listReports report_names = 
+    document.get_report_names("contacts");
+  if(report_names.size() != 2)
+  {
+    std::cerr << "Failure: Unexpected number of reports." << std::endl;
+    return false;
+  }
+
+  if(!contains(report_names, "by_country"))
+  {
+    std::cerr << "Failure: Could not find the expected report name." << std::endl;
+    return false;
+  }
+
+  const Glom::sharedptr<const Glom::Report> report = document.get_report("contacts", "by_country_by_town");
+  if(!print_layout)
+  {
+    std::cerr << "Failure: Could not get an expected report." << std::endl;
+    return false;
+  }
+  
+  if(report->get_title() != "By Country, By Town")
+  {
+    std::cerr << "Failure: Unexpected report title." << std::endl;
+    return false;
+  }
+  
+  if(!report->m_layout_group)
+  {
+    std::cerr << "Failure: The report has no layout group." << std::endl;
+    return false;
+  }
+
+  
+  //Test user groups:
+  Glom::Document::type_list_groups groups = document.get_groups();
+  g_assert(groups_contain_named(groups, "glom_developer"));
+  g_assert(groups_contain_named(groups, "accounts"));
+
   //Test navigation:
   if(!needs_navigation(document, "scenes", "location_id"))
   {
