@@ -591,7 +591,7 @@ bool add_standard_groups(Document* document)
         return false;
       }
 
-      std::cout << "DEBUG: Added user " << current_user << " to glom developer group on postgres server." << std::endl;
+      //std::cout << "DEBUG: Added user " << current_user << " to glom developer group on postgres server." << std::endl;
 
       Privileges priv_devs;
       priv_devs.m_view = true;
