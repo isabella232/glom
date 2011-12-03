@@ -1,5 +1,11 @@
 2011-12-03  Murray Cumming  <murrayc@murrayc.com>
 
+	test_document_load: Check reports too.
+
+	* tests/test_document_load.cc: Check some report names.
+
+2011-12-03  Murray Cumming  <murrayc@murrayc.com>
+
 	test_document_load: Check a table title and its singular title.
 
 	* tests/test_document_load.cc: Also test 
