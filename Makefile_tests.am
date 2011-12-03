@@ -100,7 +100,7 @@ tests_test_document_load_SOURCES = tests/test_document_load.cc $(sources_test_ut
 tests_test_document_load_LDADD = $(tests_ldadd)
 tests_test_document_load_CPPFLAGS = $(tests_cppflags)
 
-tests_test_document_load_and_change_SOURCES = tests/test_document_load_and_change.cc
+tests_test_document_load_and_change_SOURCES = tests/test_document_load_and_change.cc $(sources_test_utils)
 tests_test_document_load_and_change_LDADD = $(tests_ldadd)
 tests_test_document_load_and_change_CPPFLAGS = $(tests_cppflags)
 
