@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "tests/test_utils.h"
 #include <libglom/document/document.h>
 #include <libglom/init.h>
 #include <libglom/db_utils.h>
@@ -51,37 +52,6 @@ static bool groups_contain_named(const Glom::Document::type_list_groups& contain
     std::find_if(container.begin(), container.end(),
       Glom::predicate_FieldHasName<Glom::GroupInfo>(name));
   return iter != container.end();
-}
-
-static Glom::sharedptr<const Glom::LayoutItem_Field> get_field_on_layout(const Glom::Document& document, const Glib::ustring& layout_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name)
-{
-  const Glom::Document::type_list_layout_groups groups = 
-    document.get_data_layout_groups("details", layout_table_name);
-
-  for(Glom::Document::type_list_layout_groups::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
-  {
-    const Glom::sharedptr<const Glom::LayoutGroup> group = *iter;
-    if(!group)
-      continue;
-    
-    const Glom::LayoutGroup::type_list_const_items items = group->get_items_recursive();
-    for(Glom::LayoutGroup::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
-    {
-      const Glom::sharedptr<const Glom::LayoutItem> layout_item = *iter;
-      const Glom::sharedptr<const Glom::LayoutItem_Field> layout_item_field =
-        Glom::sharedptr<const Glom::LayoutItem_Field>::cast_dynamic(layout_item);
-      if(!layout_item_field)
-        continue;
-
-      if( (layout_item_field->get_table_used(layout_table_name) == table_name) &&
-        (layout_item_field->get_name() == field_name) )
-      {
-        return layout_item_field;
-      }
-    }
-  }
-  
-  return Glom::sharedptr<const Glom::LayoutItem_Field>();
 }
 
 static bool needs_navigation(Glom::Document& document, const Glib::ustring& table_name, const Glib::ustring& field_name)
