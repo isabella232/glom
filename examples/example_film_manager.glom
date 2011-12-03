@@ -180,6 +180,7 @@
       <trans loc="de_DE" val="Autos"/>
       <trans loc="en_GB" val="Cars"/>
     </trans_set>
+    <title_singular title="Car"/>
     <fields>
       <field name="car_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Car ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -317,6 +318,7 @@
       <trans loc="de_DE" val="Besetzung"/>
       <trans loc="en_GB" val="Cast"/>
     </trans_set>
+    <title_singular title="Character"/>
     <fields>
       <field name="character_id" primary_key="true" unique="true" type="Number" title="Cast ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -679,6 +681,7 @@
       <trans loc="de_DE" val="Firmen"/>
       <trans loc="en_GB" val="Companies"/>
     </trans_set>
+    <title_singular title="Company"/>
     <fields>
       <field name="company_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Company ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -1035,6 +1038,7 @@
       <trans loc="de_DE" val="Kontakte"/>
       <trans loc="en_GB" val="Contacts"/>
     </trans_set>
+    <title_singular title="Contact"/>
     <fields>
       <field name="contact_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Contact ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -2116,6 +2120,7 @@ Orientation=portrait
       <trans loc="de_DE" val="Lieferungen"/>
       <trans loc="en_GB" val="Deliveries"/>
     </trans_set>
+    <title_singular title="Delivery"/>
     <fields>
       <field name="delivery_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Delivery ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -2369,6 +2374,7 @@ Orientation=portrait
       <trans loc="de_DE" val="Abteilungen"/>
       <trans loc="en_GB" val="Departments"/>
     </trans_set>
+    <title_singular title="Department"/>
     <fields>
       <field name="departments_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Department ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -2591,6 +2597,7 @@ Orientation=portrait
       <trans loc="de_DE" val="Fahrten"/>
       <trans loc="en_GB" val="Journeys"/>
     </trans_set>
+    <title_singular title="Journey"/>
     <fields>
       <field name="journey_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Journey ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -2775,6 +2782,7 @@ Orientation=portrait
     <trans_set>
       <trans loc="en_GB" val="Locations"/>
     </trans_set>
+    <title_singular title="Location"/>
     <fields>
       <field name="location_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Location ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -3772,6 +3780,7 @@ Orientation=portrait
       <trans loc="de_DE" val="Szenen"/>
       <trans loc="en_GB" val="Scenes"/>
     </trans_set>
+    <title_singular title="Scene"/>
     <fields>
       <field name="scene_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Scene ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
