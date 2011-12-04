@@ -1,3 +1,13 @@
+2011-12-04  Murray Cumming  <murrayc@murray.com>
+
+	Document DTD: adapt to the format we actually use.
+
+	* examples/example_film_manager.glom: Resave this.
+	* glom/glom_document.dtd: Change the sequence of child nodes for 
+	tables and print_layouts to match what we really write.
+	We do not really care about this but the DTD format forces us to 
+	use a sequence.
+
 2011-12-03  Murray Cumming  <murrayc@murrayc.com>
 
 	test_document_load: Check reports too.

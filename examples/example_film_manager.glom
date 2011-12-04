@@ -519,8 +519,8 @@
                 <title_custom use_custom="true" title="Actor's Name">
                   <trans_set>
                     <trans loc="de_DE" val="Schauspieler Name"/>
-                </trans_set>
-              </title_custom>
+                  </trans_set>
+                </title_custom>
                 <formatting/>
               </data_layout_item>
             </data_layout_group>
@@ -1437,9 +1437,6 @@
     </reports>
     <print_layouts>
       <print_layout name="contact_details" show_table_title="true" show_grid="true" show_rules="true" show_outlines="true" page_count="2" title="Contact Details">
-        <trans_set>
-          <trans loc="de_DE" val="Kontakt Details"/>
-        </trans_set>
         <page_setup>
 [Page Setup]
 PPDName=Letter
@@ -1753,6 +1750,9 @@ Orientation=portrait
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
+        <trans_set>
+          <trans loc="de_DE" val="Kontakt Details"/>
+        </trans_set>
       </print_layout>
     </print_layouts>
   </table>
