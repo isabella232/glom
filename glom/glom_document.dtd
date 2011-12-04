@@ -3,7 +3,6 @@
 DTD for glom documents.
 TODO: Make sure that all the comments list all the attributes and their meaning.
 TODO: Should we specify the presence of child text nodes in the ELEMENT somehow?
-TODO: Add 'title_singular' element.
 -->
 
 
@@ -92,7 +91,7 @@ TODO: Add 'title_singular' element.
   default: can specify that the table should be opened when the file is opened. Only one table should have default=true.
   example_rows: deprecated in 1.6 (and support removed in 1.10) - use the child node instead.
 -->
-    <!ELEMENT table (title_singular?, example_rows?, trans_set?, fields+, relationships?, data_layouts+, reports?, print_layouts?)>
+    <!ELEMENT table (example_rows?, trans_set?, title_singular?, fields+, relationships?, data_layouts+, reports?, print_layouts?)>
     <!ATTLIST table
         name CDATA #REQUIRED
         title CDATA #IMPLIED
@@ -347,6 +346,13 @@ TODO: Add 'title_singular' element.
         title CDATA #IMPLIED
         use_custom (true|false) "true">
 
+<!-- A title_singular is used for the singular form where the standard title would be the plural form. -->
+
+    <!ELEMENT title_singular (trans_set?)>
+    <!ATTLIST title_singular
+        title CDATA #IMPLIED>
+
+
 <!-- A data_layout_portal shows related records -->
 
     <!ELEMENT data_layout_portal (position?, portal_navigation_relationship?, data_layout_item*) >
@@ -417,7 +423,7 @@ TODO: Add 'title_singular' element.
 <!-- print layouts are for perfectly-positioned printing of single record details. -->
     <!ELEMENT print_layouts (print_layout*)>
 
-    <!ELEMENT print_layout (trans_set?, page_setup?, data_layout_groups, horizontal_rule?, vertical_rule?)>
+    <!ELEMENT print_layout (page_setup?, data_layout_groups, horizontal_rule?, vertical_rule?, trans_set?)>
     <!ATTLIST print_layout
         name CDATA #REQUIRED
         title CDATA #IMPLIED
