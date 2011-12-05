@@ -583,12 +583,6 @@ Glib::RefPtr<Gnome::Gda::Holder> Field::get_holder(const Gnome::Gda::Value& valu
   return holder;
 }
 
-Glib::ustring Field::get_gda_holder_string(const Glib::ustring& name) const
-{
-  const Glib::ustring real_name = name.empty() ? get_name() : name;
-  return "##" + real_name + "::" + get_gda_type_name();
-}
-
 /// Ignores any part of FieldAttributes that libgda does not properly fill.
 bool Field::field_info_from_database_is_equal(const Glib::RefPtr<const Gnome::Gda::Column>& field)
 {

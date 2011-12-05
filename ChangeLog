@@ -1,5 +1,12 @@
 2011-12-05  Murray Cumming  <murrayc@murrayc.com>
 
+	Field: Remove unused get_gda_holder_string().
+
+	* glom/libglom/data_structure/field.[h|cc]: Remove this 
+	unused method.
+
+2011-12-05  Murray Cumming  <murrayc@murrayc.com>
+
 	test_selfhosting_new_then_change_columns: Add a column too.
 
 	* tests/test_selfhosting_new_then_change_columns.cc:
