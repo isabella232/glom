@@ -193,7 +193,6 @@ public:
   Glib::ustring get_password() const;
   Glib::ustring get_database() const;
 
-  Field::sql_format get_sql_format() const;
   const FieldTypes* get_field_types() const;
   Gnome::Gda::SqlOperatorType get_string_find_operator() const;
 

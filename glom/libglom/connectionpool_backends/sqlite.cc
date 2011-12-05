@@ -413,11 +413,6 @@ bool Sqlite::convert_backup(const SlotProgress& /* slot_progress */, const std::
   return false;
 }
 
-Field::sql_format Sqlite::get_sql_format() const
-{
-  return Field::SQL_FORMAT_SQLITE;
-}
-
 bool Sqlite::supports_remote_access() const
 {
   return false;

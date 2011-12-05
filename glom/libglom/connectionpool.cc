@@ -476,12 +476,6 @@ Glib::ustring ConnectionPool::get_database() const
   return m_database;
 }
 
-Field::sql_format ConnectionPool::get_sql_format() const
-{
-  g_assert(m_backend.get());
-  return m_backend->get_sql_format();
-}
-
 const FieldTypes* ConnectionPool::get_field_types() const
 {
   return m_pFieldTypes;

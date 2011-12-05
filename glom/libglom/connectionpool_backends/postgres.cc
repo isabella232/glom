@@ -928,11 +928,6 @@ bool Postgres::create_text_file(const std::string& file_uri, const std::string& 
   return true; //Success.
 }
 
-Field::sql_format Postgres::get_sql_format() const
-{
-  return Field::SQL_FORMAT_POSTGRES;
-}
-
 bool Postgres::supports_remote_access() const
 {
   return true;

@@ -58,7 +58,6 @@ public:
 
 
 private:
-  virtual Field::sql_format get_sql_format() const;
   virtual bool supports_remote_access() const;
   virtual Gnome::Gda::SqlOperatorType get_string_find_operator() const;
   virtual const char* get_public_schema_name() const;

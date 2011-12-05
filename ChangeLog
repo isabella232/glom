@@ -1,5 +1,15 @@
 2011-12-05  Murray Cumming  <murrayc@murrayc.com>
 
+	Remove unused get_sql_format() methods.
+
+	* glom/libglom/connectionpool.[h|cc]:
+	* glom/libglom/connectionpool_backends/backend.h:
+	* glom/libglom/connectionpool_backends/postgres.[h|cc]:
+	* glom/libglom/connectionpool_backends/sqlite.[h|cc]: Remove the
+	various unused get_sql_format() methods.
+
+2011-12-05  Murray Cumming  <murrayc@murrayc.com>
+
 	Field: Remove unused get_gda_holder_string().
 
 	* glom/libglom/data_structure/field.[h|cc]: Remove this 

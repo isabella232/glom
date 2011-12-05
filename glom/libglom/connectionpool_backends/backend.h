@@ -90,10 +90,6 @@ protected:
   /* TODO: Merge create_database() and initialize() into a single function?
    */
 
-  /** This method specifies the format of values in SQL expressions.
-   */
-  virtual Field::sql_format get_sql_format() const = 0;
-
   /** Whether the database can be accessed from remote machines, once startup()
    * was called.
    */
