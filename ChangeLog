@@ -1,3 +1,11 @@
+2011-12-05  Murray Cumming  <murrayc@murrayc.com>
+
+	Added a test of field choices.
+
+	* Makefile_tests.am: 
+	* tests/test_selfhosting_new_then_choices.cc:
+	Test Utils::get_choice_values_all().
+
 2011-12-04  Murray Cumming  <murrayc@murray.com>
 
 	Document DTD: adapt to the format we actually use.

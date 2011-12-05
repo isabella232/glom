@@ -9,6 +9,7 @@
 /test_document_load
 /test_document_load_and_change
 /test_document_change
+/test_document_load_translations
 /test_glade_derived_instantiation
 /test_selfhosting_new_empty
 /test_selfhosting_new_from_example
@@ -17,6 +18,8 @@
 /test_selfhosting_new_then_get_privs
 /test_selfhosting_new_then_image
 /test_selfhosting_new_then_report
+/test_selfhosting_new_then_choices
+/test_selfhosting_new_then_lookup
 /test_selfhosting_sqlinjection
 /test_fake_connection
 /test_selfhosting_new_from_example_strangepath
