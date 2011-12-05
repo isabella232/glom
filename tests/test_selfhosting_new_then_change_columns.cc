@@ -117,6 +117,35 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     std::cerr << "Failure: change_column() threw an exception: " << ex.what() << std::endl;
     return false;
   }
+  
+  //Add a field:
+  try
+  {
+    //TODO: Avoid the need for this awkward use of set_g_type():
+    Glom::sharedptr<Glom::Field> field = Glom::sharedptr<Glom::Field>::create();
+    field->set_name("newfield");
+    field->set_glom_type(Glom::Field::TYPE_NUMERIC);
+    Glib::RefPtr<Gnome::Gda::Column> field_info = field->get_field_info();
+    field_info->set_g_type( Glom::Field::get_gda_type_for_glom_type(field->get_glom_type()) );
+    field->set_field_info(field_info);
+    
+    Gnome::Gda::Numeric numeric;
+    numeric.set_double(123);
+    field->set_default_value( Gnome::Gda::Value(numeric) );
+
+    const bool test = connection_pool->add_column(table_name, field);
+    if(!test)
+    {
+      std::cerr << "Failure: add_column() failed." << std::endl;
+      return false;
+    }
+  }
+  catch(const Glib::Error& ex)
+  { 
+    std::cerr << "Failure: add_column() threw an exception: " << ex.what() << std::endl;
+    return false;
+  }
+  
 
   //Anything using this code would then update the Glom::Document,
   //for instance by calling Document::set_table_fields(),

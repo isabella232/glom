@@ -61,7 +61,8 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
   
-  const std::pair<Gnome::Gda::Value, Glom::Utils::type_list_values> pair_values = *(values_with_second.begin());
+  const std::pair<Gnome::Gda::Value, Glom::Utils::type_list_values> pair_values 
+    = *(values_with_second.begin());
   if(pair_values.second.size() != 1)
   {
     std::cerr << "Failure: There were an unexpected number of field values in each choice." << std::endl;
