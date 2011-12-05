@@ -1,5 +1,11 @@
 2011-12-05  Murray Cumming  <murrayc@murrayc.com>
 
+	test_selfhosting_new_then_change_columns: Add a column too.
+
+	* tests/test_selfhosting_new_then_change_columns.cc:
+
+2011-12-05  Murray Cumming  <murrayc@murrayc.com>
+
 	Added a test of field choices.
 
 	* Makefile_tests.am: 
