@@ -73,7 +73,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     }
     
     //Create a document from the backup:
-    std::cout << "debug: recreated_uri=" << recreated_uri << std::endl;
+    //std::cout << "debug: recreated_uri=" << recreated_uri << std::endl;
     Glom::Document document;
     const bool recreated = 
       test_create_and_selfhost_from_uri(recreated_uri, document, hosting_mode);

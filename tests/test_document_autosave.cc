@@ -68,6 +68,7 @@ int main()
   //Test manual saving:
   {
     Glom::Document document;
+    document.set_allow_autosave(false);
     document.set_file_uri(file_uri);
     document.set_hosting_mode(Glom::Document::HOSTING_MODE_POSTGRES_CENTRAL);
     document.set_database_title(test_title);

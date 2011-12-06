@@ -84,6 +84,7 @@ bool Document_XML::save_before()
   }
   else
   {
+    std::cout << G_STRFUNC << ": not saving, because not modified" << std::endl;
     return true; //Success. (At doing nothing, because nothing needed to be done.)
   }
 }

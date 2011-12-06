@@ -1,5 +1,23 @@
 2011-12-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Test for autosaves without URI and for explicit saves while using autosave.
+
+	* glom/libglom/document/bakery/document.cc: write_to_disk():
+	Warn if the URI has not been set, because the caller probably wants 
+	either autosave (meaning he should have set a URI first) or explicit 
+	save (meaning he should disable autosave).
+	* glom/libglom/document/bakery/document_xml.cc: Warn about an attempt
+	to save when nothing has been modified, because this is usually caused
+	by a previous autosave, and the caller should probably be aware of that.
+	* tests/test_document_autosave.cc:
+	* tests/test_document_change.cc:
+	* tests/test_selfhosting_new_empty.cc:
+	* tests/test_selfhosting_new_then_backup_restore.cc:
+	* tests/test_selfhosting_utils.cc: Disable autosave so we can use 
+	a simpler explicit save, avoiding these new warnings.
+
+2011-12-06  Murray Cumming  <murrayc@murrayc.com>
+
 	Add a test that resaves (temporarily) all examples and checks the result.
 
 	* Makefile_tests.am:

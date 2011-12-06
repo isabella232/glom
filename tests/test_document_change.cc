@@ -49,6 +49,7 @@ int main()
   Glom::libglom_init();
 
   Glom::Document document;
+  document.set_allow_autosave(false); //Avoid warnings about it having no URI.
 
   //Test some simple get/set operations:
   const char* title = "Music Collection";

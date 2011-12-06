@@ -260,7 +260,10 @@ bool Document::read_from_disk(int& failure_code)
 bool Document::write_to_disk()
 {
   if(m_file_uri.empty())
+  {
+    std::cerr << G_STRFUNC << ": m_file_uri is empty." << std::endl;
     return false;
+  }
 
   //Write the changed data to disk:
   if(get_modified())

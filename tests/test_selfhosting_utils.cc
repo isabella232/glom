@@ -169,6 +169,7 @@ bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Gl
   }
 
   // Load the document:
+  document.set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
   document.set_file_uri(example_file_uri);
   int failure_code = 0;
   const bool test = document.load(failure_code);
@@ -205,6 +206,7 @@ bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Gl
 
   //Save the example as a real file:
   const Glib::ustring file_uri = Glib::filename_to_uri(temp_filepath);
+  document.set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
   document.set_file_uri(file_uri);
 
   document.set_hosting_mode(hosting_mode);

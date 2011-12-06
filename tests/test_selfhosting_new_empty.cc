@@ -87,6 +87,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   //Save the file. TODO: Do we need to do this for the test?
   const Glib::ustring file_uri = Glib::filename_to_uri(temp_filepath);
+  document.set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
   document.set_file_uri(file_uri);
 
   document.set_hosting_mode(hosting_mode);
