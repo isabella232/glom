@@ -1,5 +1,14 @@
 2011-12-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Use EXIT_* instead of 0 and -1.
+
+	* glom/test_pyembed.cc:
+	* glom/test_pyembed_singleline.cc:
+	* tests/glade_toplevels_instantiation.cc:
+	* tests/test_parsing_time.cc: Use EXIT_SUCCESS and EXIT_FAILURE.
+
+2011-12-06  Murray Cumming  <murrayc@murrayc.com>
+
 	Document: Avoid useless autosave during constructor.
 
 	* glom/libglom/document/document.cc: Constructor: Avoid triggering

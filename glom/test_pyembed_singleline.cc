@@ -53,5 +53,5 @@ int main ()
   evaluate_function_implementation(func_impl);
 
    
-  return 0;
+  return EXIT_SUCCESS;
 }
