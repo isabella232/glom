@@ -1,5 +1,17 @@
 2011-12-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Add a test that resaves (temporarily) all examples and checks the result.
+
+	* Makefile_tests.am:
+	* tests/test_document_load_and_save.cc: Load a file and save it, 
+	then check the saved file against the DTD.
+	* tests/test_document_load_and_save_all.sh: Run that test on all
+	example files.
+	* glom/glom_document.dtd: data_layout_notebook: Mention trans_set, 
+	so that this test succeeds.
+
+2011-12-06  Murray Cumming  <murrayc@murrayc.com>
+
 	Use EXIT_* instead of 0 and -1.
 
 	* glom/test_pyembed.cc:

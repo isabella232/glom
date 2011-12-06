@@ -24,6 +24,7 @@ check_PROGRAMS =						\
 	glom/libglom/test_sharedptr_layoutitem		\
 	tests/test_document_load			\
 	tests/test_document_load_and_change		\
+	tests/test_document_load_and_save		\
 	tests/test_document_load_translations		\
 	tests/test_document_change			\
 	tests/test_document_autosave			\
@@ -49,6 +50,7 @@ check_PROGRAMS =						\
 
 TESTS =	tests/test_document_load	\
 	tests/test_document_load_and_change	\
+	tests/test_document_load_and_save_all.sh \
 	tests/test_document_load_translations	\
 	tests/test_document_change	\
 	tests/test_document_autosave	\
@@ -82,7 +84,8 @@ dist_noinst_SCRIPTS = tests/test_dtd_file_validation.sh \
 	tests/test_glade_file_validation.sh \
 	tests/test_xslt_file_validation.sh \
 	tests/test_glade_toplevels_instantiation.sh \
-	tests/test_glom_date_in_locales.sh
+	tests/test_glom_date_in_locales.sh \
+	tests/test_document_load_and_save_all.sh
 
 #TESTS_ENVIRONMENT=which valgrind && valgrind --tool=memcheck --leak-check=full --leak-resolution=high --trace-children=yes --num-callers=30
 
@@ -109,6 +112,10 @@ tests_test_document_load_CPPFLAGS = $(tests_cppflags)
 tests_test_document_load_and_change_SOURCES = tests/test_document_load_and_change.cc $(sources_test_utils)
 tests_test_document_load_and_change_LDADD = $(tests_ldadd)
 tests_test_document_load_and_change_CPPFLAGS = $(tests_cppflags)
+
+tests_test_document_load_and_save_SOURCES = tests/test_document_load_and_save.cc
+tests_test_document_load_and_save_LDADD = $(tests_ldadd)
+tests_test_document_load_and_save_CPPFLAGS = $(tests_cppflags)
 
 tests_test_document_load_translations_SOURCES = tests/test_document_load_translations.cc
 tests_test_document_load_translations_LDADD = $(tests_ldadd)

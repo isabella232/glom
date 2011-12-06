@@ -225,7 +225,7 @@ TODO: Should we specify the presence of child text nodes in the ELEMENT somehow?
 
 <!-- A data_layout_notebook is the tabbed display of tables in the details view. -->
 
-    <!ELEMENT data_layout_notebook (data_layout_group*, data_layout_portal*)>
+    <!ELEMENT data_layout_notebook (trans_set?, data_layout_group*, data_layout_portal*)>
     <!ATTLIST data_layout_notebook
         name CDATA #REQUIRED
         columns_count CDATA #IMPLIED
