@@ -280,6 +280,9 @@ Document::Document()
   m_is_backup(false),
   m_opened_from_browse(false)
 {
+  //Prevent autosaving during the constructor:
+  set_allow_autosave(false); //Prevent saving while we modify the document.
+
   m_document_format_version = get_latest_known_document_format_version(); //Default to this for new documents.
 
   //Conscious use of virtual methods in a constructor:
@@ -306,6 +309,9 @@ Document::Document()
   set_translation_original_locale(TranslatableItem::get_current_locale()); //By default, we assume that the original is in the current locale. We must do this here so that TranslatableItem::set/get_title() knows.
 
   m_app_state.signal_userlevel_changed().connect( sigc::mem_fun(*this, &Document::on_app_state_userlevel_changed) );
+
+  set_modified(false);
+  set_allow_autosave(true);
 }
 
 Document::~Document()

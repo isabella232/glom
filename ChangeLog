@@ -1,3 +1,11 @@
+2011-12-06  Murray Cumming  <murrayc@murrayc.com>
+
+	Document: Avoid useless autosave during constructor.
+
+	* glom/libglom/document/document.cc: Constructor: Avoid triggering
+	autosave during the constructor, though this is stopped anyway by the 
+	empty filepath.
+
 2011-12-05  Murray Cumming  <murrayc@murrayc.com>
 
 	Remove unused get_sql_format() methods.
