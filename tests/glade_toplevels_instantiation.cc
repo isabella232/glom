@@ -40,7 +40,7 @@ static bool attempt_instantiation(const std::string& filepath, const xmlpp::Elem
   {
     std::cerr << "Exception from Gtk::Builder::create_from_file() with id=" << id << " from file " << filepath << std::endl;
     std::cerr << "  Error: " << ex.what() << std::endl;
-    return -1;
+    return EXIT_FAILURE;
   }
 
   // Try to get the widget, checking that it has the correct type:
@@ -99,7 +99,7 @@ int main(int argc, char* argv[])
   else
   {
     std::cerr << "Usage: glade_toplevels_instantiation filepath" << std::endl;
-    return -1;
+    return EXIT_FAILURE;
   }
 
   #ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
@@ -111,11 +111,11 @@ int main(int argc, char* argv[])
     parser.set_substitute_entities(); //We just want the text to be resolved/unescaped automatically.
     parser.parse_file(filepath);
     if(!parser)
-      return -1;
+      return EXIT_FAILURE;
 
     const xmlpp::Node* root = parser.get_document()->get_root_node(); //deleted by DomParser.
     if(!root)
-      return -1;
+      return EXIT_FAILURE;
 
     const xmlpp::Node::NodeList children = root->get_children("object");
     for(xmlpp::Node::NodeList::const_iterator iter = children.begin(); iter != children.end(); ++iter)
@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
 
        //Try to instante the object with Gtk::Builder:
        if(child && !attempt_instantiation(filepath, child))
-         return -1;
+         return EXIT_FAILURE;
     }
 
   #ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
@@ -135,5 +135,5 @@ int main(int argc, char* argv[])
   }
   #endif //LIBXMLCPP_EXCEPTIONS_ENABLED
 
-  return 0;
+  return EXIT_SUCCESS;
 }

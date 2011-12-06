@@ -37,7 +37,7 @@ int main()
   if(parsed_time.hour != 13)
   {
     std::cerr << "Failed: The parsed hour was " <<  parsed_time.hour << " instead of 13" << std::endl;
-    return -1; //Failed.
+    return EXIT_FAILURE; //Failed.
   }
 
   if(parsed_time.minute != 0)
