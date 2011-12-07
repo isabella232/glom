@@ -8,6 +8,7 @@
 /test_document_autosave
 /test_document_load
 /test_document_load_and_change
+/test_document_load_and_save
 /test_document_change
 /test_document_load_translations
 /test_glade_derived_instantiation
