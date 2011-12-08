@@ -1,5 +1,15 @@
 2011-12-08  Murray Cumming  <murrayc@murrayc.com>
 
+	test_fake_connection: Avoid unnecessary warnings about metadata.
+
+	* glom/libglom/connectionpool.cc: Avoid printing exceptions to stderr
+	about failed attempts to get types and tables metadata, because 
+	this is not used by fake connections, for instance by java-libglom.
+	There will be a warning later if it is really used.
+	* glom/libglom/db_utils.cc: Add some comments.
+
+2011-12-08  Murray Cumming  <murrayc@murrayc.com>
+
 	Document: Clarify that set_file_uri() does not trigger a save.
 
 	* glom/libglom/document/document.[h|cc]: set_file_uri(): The check for 

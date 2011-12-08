@@ -324,7 +324,13 @@ sharedptr<SharedConnection> ConnectionPool::connect()
         }
         catch(const Glib::Error& ex)
         {
-          std::cerr << G_STRFUNC << ": update_meta_store_data_types() failed: " << ex.what() << std::endl;
+          //If the conneciton was not opened, because it is a fake connection,
+          //then we should not be surprised that this fails,
+          //and a warning will only be useful later when get_meta_store_data() fails when used in FieldTypes, from Field::set_*().
+          if(!m_fake_connection)
+          {
+            std::cerr << G_STRFUNC << ": update_meta_store_data_types() failed: " << ex.what() << std::endl;
+          }
         }
         //std::cout << "DEBUG: ... update_meta_store_data_types() has finished." << std::endl;
 
@@ -338,7 +344,13 @@ sharedptr<SharedConnection> ConnectionPool::connect()
         }
         catch(const Glib::Error& ex)
         {
-          std::cerr << G_STRFUNC << ": update_meta_store_table_names() failed: " << ex.what() << std::endl;
+          //If the conneciton was not opened, because it is a fake connection,
+          //then we should not be surprised that this fails,
+          //and a warning will only be useful later when get_meta_store_data() fails when used in get_table_names_from_database().
+          if(!m_fake_connection)
+          {
+            std::cerr << G_STRFUNC << ": update_meta_store_table_names() failed: " << ex.what() << std::endl;
+          }
         }
         //std::cout << "DEBUG: ... update_meta_store_table_names() has finished." << std::endl;
 
@@ -439,7 +451,13 @@ bool ConnectionPool::convert_backup(const SlotProgress& slot_progress, const std
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "ConnectionPool::connect(): update_meta_store_table_names() failed: " << ex.what() << std::endl;
+    //If the conneciton was not opened, because it is a fake connection,
+    //then we should not be surprised that this fails,
+    //and a warning will only be useful later when get_meta_store_data() fails when used in get_table_names_from_database().
+    if(!m_fake_connection)
+    {
+      std::cerr << "ConnectionPool::connect(): update_meta_store_table_names() failed: " << ex.what() << std::endl;
+    }
   }
 
   return result;
