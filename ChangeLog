@@ -1,3 +1,13 @@
+2011-12-08  Murray Cumming  <murrayc@murrayc.com>
+
+	test_fake_connection: Avoid unnecessary warnings about metadata.
+
+	* glom/libglom/connectionpool.cc: Avoid printing exceptions to stderr
+	about failed attempts to get types and tables metadata, because 
+	this is not used by fake connections, for instance by java-libglom.
+	There will be a warning later if it is really used.
+	* glom/libglom/db_utils.cc: Add some comments.
+
 2011-12-06  Murray Cumming  <murrayc@murrayc.com>
 
 	Use EXIT_* instead of 0 and -1.
