@@ -1,3 +1,17 @@
+2011-12-08  Murray Cumming  <murrayc@murrayc.com>
+
+	Document: Clarify that set_file_uri() does not trigger a save.
+
+	* glom/libglom/document/document.[h|cc]: set_file_uri(): The check for 
+	a changed URI never actually worked here, so set_modified() was never 
+	called. That behaviour is actually correct, to avoid saving an empty file
+	over a real file before calling load(), so document that behaviour.
+	* glom/libglom/document/bakery/document_xml.cc: Remove the check for
+	modified so that an explicit save() always saves the document, even if 
+	all values are the default. This does not seem to have prevented any
+	unnecessary saves anyway, because we already check for changes before
+	calling set_modified(), so we only trigger autosave when really necessary.
+
 2011-12-06  Murray Cumming  <murrayc@murrayc.com>
 
 	Test for autosaves without URI and for explicit saves while using autosave.

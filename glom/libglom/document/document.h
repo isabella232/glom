@@ -58,6 +58,12 @@ public:
 
   virtual void set_modified(bool value = true);
 
+  /** Set the file URI that will be used in future calls to load() and save().
+   * Note that the document will not be saved immediately to the new URI. It will
+   * be saved either after the next change (if using autosave) or when calling save() explicitly.
+   * Likewise, the document at the URI will not be loaded until load() is called explicitly.
+   * That is unlike in the base class's implementation.
+   */
   virtual void set_file_uri(const Glib::ustring& file_uri, bool bEnforceFileExtension = false);
 
   /* Loads data from disk, using the URI (set with set_file_uri()) then asks the View to update itself.

@@ -4417,21 +4417,26 @@ void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& grou
 
 void Document::set_file_uri(const Glib::ustring& file_uri, bool bEnforceFileExtension /* = false */)
 {
+  Glib::ustring file_uri_used = file_uri;
+
+  //Enforce file extension:
+  if(bEnforceFileExtension)
+    file_uri_used = get_file_uri_with_extension(file_uri);
+
+  //const bool changed = (file_uri_used != m_file_uri);
   //We override this because set_modified() triggers a save (to the old filename) in this derived class.
 
   //I'm not sure why this is in the base class's method anyway. murrayc:
   //if(file_uri != m_file_uri)
   //  set_modified(); //Ready to save() for a Save As.
 
-  m_file_uri = file_uri;
-
-  //Enforce file extension:
-  if(bEnforceFileExtension)
-    m_file_uri = get_file_uri_with_extension(m_file_uri);
+  m_file_uri = file_uri_used;
 
   //Put this here instead. In the base class it's at the start:
-  if(file_uri != m_file_uri)
-    set_modified(); //Ready to save() for a Save As.
+  //Actually, we do not call this, because it would trigger a save, when using autosave,
+  //and that could cause an empty document to be saved to a URL before calling load() to load the real document that was there.
+  //if(changed)
+  //  set_modified(); //Ready to save() for a Save As.
 }
 
 guint Document::get_document_format_version()

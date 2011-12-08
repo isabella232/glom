@@ -78,15 +78,14 @@ bool Document_XML::save_before()
     m_strContents.erase();
 
     Util_DOM_Write(m_strContents);
+  }
 
-    //Save the XML string:
-    return type_base::save_before();
-  }
-  else
-  {
-    std::cout << G_STRFUNC << ": not saving, because not modified" << std::endl;
-    return true; //Success. (At doing nothing, because nothing needed to be done.)
-  }
+  //Write the file even if nothing was modified,
+  //to make sure that we write empty documents that have only default values,
+  //when save() is explicitly called.
+  //
+  //Save the XML string:
+  return type_base::save_before();
 }
 
 Glib::ustring Document_XML::get_xml() const
