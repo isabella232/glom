@@ -45,7 +45,9 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
     //This first call to update_meta_store() is also necessary for other calls to get_meta_store_data() elsewhere to succeed.
     Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables;
     if(true) //Already done in ConnectionPool::connect(): gda_connection->update_meta_store())
+    {
       data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES);
+    }
 
     if(!data_model_tables)
       std::cerr << G_STRFUNC << ": Couldn't get datamodel" << std::endl;
@@ -56,7 +58,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
     }
     else if(data_model_tables)
     {
-      int rows = data_model_tables->get_n_rows();
+      const int rows = data_model_tables->get_n_rows();
       if(!rows)
         std::cerr << G_STRFUNC << ": no rows from CONNECTION_META_TYPES" << std::endl;
 

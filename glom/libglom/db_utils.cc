@@ -1126,7 +1126,7 @@ bool get_table_exists_in_database(const Glib::ustring& table_name)
 {
   //TODO_Performance
 
-  type_vec_strings tables = get_table_names_from_database();
+  const type_vec_strings tables = get_table_names_from_database();
   type_vec_strings::const_iterator iterFind = std::find(tables.begin(), tables.end(), table_name);
   return (iterFind != tables.end());
 }
