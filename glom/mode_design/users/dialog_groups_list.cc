@@ -51,7 +51,8 @@ Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr
   m_model_groups = Gtk::ListStore::create(m_model_columns_groups);
   m_model_tables = Gtk::ListStore::create(m_model_columns_tables);
 
-  fill_group_list();
+  //Do this only in load_from_document(), to avoid ever doing it too early, before there is a connection:
+  //fill_group_list();
   //fill_table_list();
 
   m_treeview_groups->set_model(m_model_groups);
@@ -300,6 +301,7 @@ void Dialog_GroupsList::on_button_group_users()
       dialog->set_transient_for(*this);
       add_view(dialog); //Give it access to the document.
 
+      dialog->fill_list();
       dialog->set_group(group_name);
 
       Glom::Utils::dialog_run_with_help(dialog);

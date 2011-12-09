@@ -30,6 +30,9 @@
 namespace Glom
 {
 
+/** A dialog that lists the users in a group,
+ * or all users if no group is selected.
+ */
 class Dialog_UsersList
   : public Gtk::Dialog,
     public Base_DB
@@ -38,14 +41,18 @@ public:
   static const char* glade_id;
   static const bool glade_developer;
 
+  /** Call fill_list() after instantiating this class.
+   */
   Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_UsersList();
+
+  /** Fill the list of users.
+   */
+  void fill_list();
 
   virtual void set_group(const Glib::ustring& group_name);
 
 private:
-
-  void fill_list();
 
   //Enable/disable buttons, depending on treeview selection:
   virtual void enable_buttons();

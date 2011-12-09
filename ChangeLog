@@ -1,3 +1,13 @@
+2011-12-09  Murray Cumming  <murrayc@murrayc.com>
+
+	test_glade_derived_instantiation: Avoid warnings about no connection.
+
+	* glom/mode_design/users/dialog_groups_list.cc: Constructor:
+	Do not call fill_groups_list(). This happens already in load_from_document(),
+	where we can expect more to have a connection.
+	* glom/mode_design/users/dialog_users_list.[h|cc]: Make fill_list public
+	and expect the caller of the constructor to call it.
+
 2011-12-08  Murray Cumming  <murrayc@murrayc.com>
 
 	test_fake_connection: Avoid unnecessary warnings about metadata.

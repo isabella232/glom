@@ -59,8 +59,6 @@ Dialog_UsersList::Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<G
 
     m_model_users = Gtk::ListStore::create(m_model_columns_users);
 
-    fill_list();
-
     m_treeview_users->set_model(m_model_users);
 
 
