@@ -348,7 +348,9 @@ Glib::ustring Dialog_GroupsList::get_selected_group() const
 void Dialog_GroupsList::on_treeview_groups_selection_changed()
 {
   //Update the tables list for the currently-selected group:
-  fill_table_list( get_selected_group() );
+  const Glib::ustring group_name = get_selected_group();
+  if(!group_name.empty()) //This can happen when clearing the list, just before filling it, so something real can be selected.
+    fill_table_list(group_name);
 
   enable_buttons();
 }
@@ -387,6 +389,11 @@ void Dialog_GroupsList::fill_group_list()
 
 void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
 {
+  if(group_name.empty())
+  {
+    std::cerr << G_STRFUNC << ": group_name is empty." << std::endl;
+  }
+
   //Fill the model rows:
   m_model_tables->clear();
 

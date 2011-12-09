@@ -1,5 +1,14 @@
 2011-12-09  Murray Cumming  <murrayc@murrayc.com>
 
+	Users/Groups UI: Avoid warning about an empty group name.
+
+	* glom/mode_design/users/dialog_groups_list.cc:
+	on_treeview_groups_selection_changed(): Do not respond if there is 
+	no selection, which can happen when clearing the model, just before 
+	filling it. When there are items, there is always a selection.
+
+2011-12-09  Murray Cumming  <murrayc@murrayc.com>
+
 	Combo_TextGlade: Work around GtkComboBoxText bug #612396.
 
 	* glom/utility_widgets/combo_textglade.cc: Without setting 
