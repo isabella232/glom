@@ -1,5 +1,14 @@
 2011-12-09  Murray Cumming  <murrayc@murrayc.com>
 
+	Combo_TextGlade: Work around GtkComboBoxText bug #612396.
+
+	* glom/utility_widgets/combo_textglade.cc: Without setting 
+	entry-text-column, which GtkBuilder understandably does not do,
+	and which GtkComboBoxText does not do in this case, the widget just
+	does not work.
+
+2011-12-09  Murray Cumming  <murrayc@murrayc.com>
+
 	test_glade_derived_instantiation: Avoid warnings about no connection.
 
 	* glom/mode_design/users/dialog_groups_list.cc: Constructor:
