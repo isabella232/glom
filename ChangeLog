@@ -6,6 +6,7 @@
 	entry-text-column, which GtkBuilder understandably does not do,
 	and which GtkComboBoxText does not do in this case, the widget just
 	does not work.
+	This fixes the Users/Groups dialogs and the Script Library dialog.
 
 2011-12-09  Murray Cumming  <murrayc@murrayc.com>
 

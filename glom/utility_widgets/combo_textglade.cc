@@ -29,6 +29,10 @@ Combo_TextGlade::Combo_TextGlade(BaseObjectType* cobject, const Glib::RefPtr<Gtk
   //Check that this was really created from a GtkComboBoxText in the .glade file,
   //instead of just a GtkComboBox, which would not usually have a model.
   g_assert(get_model());
+
+  //Workaround this GtkComboBoxText bug: https://bugzilla.gnome.org/show_bug.cgi?id=612396
+  if(get_entry_text_column() < 0)
+    set_entry_text_column(0);
 }
 
 void Combo_TextGlade::set_first_active()
