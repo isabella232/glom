@@ -265,7 +265,7 @@ LayoutGroup::type_list_const_items LayoutGroup::get_items_recursive_with_groups(
     sharedptr<const LayoutGroup> group = sharedptr<const LayoutGroup>::cast_dynamic(item);
     if(group)
     {
-      const type_list_const_items sub_result = group->get_items_recursive();
+      const type_list_const_items sub_result = group->get_items_recursive_with_groups();
       result.insert(result.end(), sub_result.begin(), sub_result.end());
     }
   }

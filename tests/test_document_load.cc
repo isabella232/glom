@@ -95,7 +95,7 @@ static Glom::sharedptr<const Glom::LayoutItem_Portal> get_portal_from_details_la
         Glom::sharedptr<const Glom::LayoutItem_Portal>::cast_dynamic(layout_item);
       if(!portal)
         continue;
-      
+
       if(portal->get_relationship_name() == relationship_name)
         return portal;
     }

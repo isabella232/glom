@@ -1,5 +1,12 @@
 2011-12-12  Murray Cumming  <murrayc@murrayc.com>
 
+	LayoutGroup: Correct the get_items_recursive_with_groups() implementaiton.
+
+	* glom/libglom/data_structure/layout/layoutgroup.cc: Call the correct 
+	method recursively. This fixes make check.
+
+2011-12-12  Murray Cumming  <murrayc@murrayc.com>
+
 	test_document_load: Test LayoutGroup::get_items_recursive().
 
 	* tests/test_document_load.cc: And get_items_recursive_with_groups().
