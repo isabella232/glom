@@ -1,5 +1,11 @@
 2011-12-12  Murray Cumming  <murrayc@murrayc.com>
 
+	test_document_load: Test LayoutGroup::get_items_recursive().
+
+	* tests/test_document_load.cc: And get_items_recursive_with_groups().
+
+2011-12-12  Murray Cumming  <murrayc@murrayc.com>
+
 	Small fix to epository_analyzer_begin_scan example script.
 
 	* examples/example_scripts/repository_analyzer_begin_scan.py:

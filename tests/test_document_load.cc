@@ -194,6 +194,21 @@ int main()
   g_assert(relationship->get_to_field() == "contact_id");
 
 
+  //Check a layout:
+  const Glom::Document::type_list_layout_groups groups = 
+    document.get_data_layout_groups("details", "scenes");
+  g_assert(groups.size() == 3);
+  const Glom::sharedptr<const Glom::LayoutGroup> group =
+    groups[1];
+  const Glom::LayoutGroup::type_list_const_items items = 
+    group->get_items_recursive();
+  //std::cout << "size: " << items.size() << std::endl;
+  g_assert(items.size() == 13);
+  const Glom::LayoutGroup::type_list_const_items items_with_groups = 
+    group->get_items_recursive_with_groups();
+  //std::cout << "size: " << items_with_groups.size() << std::endl;
+  g_assert(items_with_groups.size() == 15);
+
   //Check that expected fields can be found on a layout.
   Glom::sharedptr<const Glom::LayoutItem_Field> field_on_layout = 
     get_field_on_layout(document, "scenes", "locations", "address_town");
@@ -309,9 +324,9 @@ int main()
 
   
   //Test user groups:
-  Glom::Document::type_list_groups groups = document.get_groups();
-  g_assert(groups_contain_named(groups, "glom_developer"));
-  g_assert(groups_contain_named(groups, "accounts"));
+  Glom::Document::type_list_groups user_groups = document.get_groups();
+  g_assert(groups_contain_named(user_groups, "glom_developer"));
+  g_assert(groups_contain_named(user_groups, "accounts"));
 
   //Test navigation:
   if(!needs_navigation(document, "scenes", "location_id"))
@@ -331,7 +346,7 @@ int main()
   //Note that related records portals don't have names.
   //This example portal shows the scenes_cast table, but should navigate though that to the cast table.
   const Glib::ustring portal_relationship_name = "scene_cast";
-  Glom::sharedptr<const Glom::LayoutItem_Portal> portal = 
+  Glom::sharedptr<const Glom::LayoutItem_Portal> portal =
     get_portal_from_details_layout(document, "scenes", portal_relationship_name);
   if(!portal)
   {
