@@ -29,22 +29,6 @@ import apt # For apt.Cache.
 import apt_pkg # For apt_pkg.SourceRecords
 import difflib
 
-record = None
-do_sql = True
-
-def debug_create_connection_record():
-    cnc_string = "HOST=localhost;PORT=5434;DB_NAME=glom_repositoryanalyzer3121"
-    auth_string = "USERNAME=glom_default_developer_user;PASSWORD=glom_default_developer_password"
-    gda_connection = Gda.Connection.open_from_string("PostgreSQL", cnc_string, auth_string, Gda.ConnectionOptions.NONE)
-
-
-    class TestRecord:
-        connection = None
-
-    global record
-    record = TestRecord()
-    record.connection = gda_connection
-    return record
 
 class DebugWindow:
     debug_window = None
@@ -1328,15 +1312,6 @@ def get_package_data_list(out_licenses_map, package_names_list_restrict_to):
 def execute_sql_non_select_query(query_text):
 
     #print "debug: sql=%s" % query_text
-    
-    global do_sql
-    if(not do_sql):
-        return 0
-
-    #For debugging, outside of Glom:
-    global record
-    if(record == None):
-        record = debug_create_connection_record()
      
     #We use encode() here because, when running inside Glom, gda.Command() somehow expects an ascii string and tries to convert the unicode string to ascii, causing exceptions because the conversion does not default to 'replace'.
     #TODO: Find out why it acts differently inside Glom. This is not a problem when running normally as a standalone script.
@@ -1345,15 +1320,6 @@ def execute_sql_non_select_query(query_text):
     return record.connection.execute_non_select_command(command)
     
 def execute_sql_select_query(query_text):
-
-    global do_sql
-    if(not do_sql):
-        return 0
-
-    #For debugging, outside of Glom:
-    global record
-    if(record == None):
-        record = debug_create_connection_record()
 
     #We use encode() here because, when running inside Glom, gda.Command() somehow expects an ascii string and tries to convert the unicode string to ascii, causing exceptions because the conversion does not default to 'replace'.
     #TODO: Find out why it acts differently inside Glom. This is not a problem when running normally as a standalone script.
