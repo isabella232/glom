@@ -80,7 +80,7 @@ static Glom::sharedptr<const Glom::LayoutItem_Portal> get_portal_from_details_la
     const Glom::sharedptr<const Glom::LayoutGroup> group = *iter;
 
     const Glom::LayoutGroup::type_list_const_items items = 
-      group->get_items_recursive();
+      group->get_items_recursive_with_groups();
     for(Glom::LayoutGroup::type_list_const_items::const_iterator iter = items.begin(); 
       iter != items.end(); ++iter)
     {

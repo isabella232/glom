@@ -1,3 +1,15 @@
+2011-12-12  Murray Cumming  <murrayc@murrayc.com>
+
+	List view: Do not show columns twice.
+
+	* glom/libglom/data_structure/layout/layoutgroup.[h|cc]: 
+	Revert the recent change to get_items_recursive() so that it only returns
+	no-groups items, as its documentation says.
+	Add get_items_recursive_with_groups().
+	* tests/test_document_load.cc: Use the new method.
+
+	This problem was caused by commit e51bf19e8a595dbc4e34c390ae2194293deb0236
+
 2011-12-09  Murray Cumming  <murrayc@murrayc.com>
 
 	Users/Groups UI: Avoid warning about an empty group name.

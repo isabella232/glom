@@ -217,15 +217,14 @@ LayoutGroup::type_list_const_items LayoutGroup::get_items_recursive() const
   {
     const sharedptr<const LayoutItem> item = *iter;
     
-    //Add the item itself:
-    result.push_back(item);
-    
     sharedptr<const LayoutGroup> group = sharedptr<const LayoutGroup>::cast_dynamic(item);
     if(group)
     {
       const type_list_const_items sub_result = group->get_items_recursive();
       result.insert(result.end(), sub_result.begin(), sub_result.end());
     }
+    else
+      result.push_back(item);
   }
 
   return result;
@@ -239,9 +238,6 @@ LayoutGroup::type_list_items LayoutGroup::get_items_recursive()
   {
     const sharedptr<LayoutItem> item = *iter;
     
-    //Add the item itself:
-    result.push_back(item);
-    
     sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(item);
     if(group)
     {
@@ -250,6 +246,28 @@ LayoutGroup::type_list_items LayoutGroup::get_items_recursive()
     }
     else
       result.push_back(item);
+  }
+
+  return result;
+}
+
+LayoutGroup::type_list_const_items LayoutGroup::get_items_recursive_with_groups() const
+{
+  type_list_const_items result;
+
+  for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
+  {
+    const sharedptr<const LayoutItem> item = *iter;
+    
+    //Add the item itself:
+    result.push_back(item);
+    
+    sharedptr<const LayoutGroup> group = sharedptr<const LayoutGroup>::cast_dynamic(item);
+    if(group)
+    {
+      const type_list_const_items sub_result = group->get_items_recursive();
+      result.insert(result.end(), sub_result.begin(), sub_result.end());
+    }
   }
 
   return result;
