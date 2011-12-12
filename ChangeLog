@@ -1,3 +1,16 @@
+2011-12-12  Murray Cumming  <murrayc@murrayc.com>
+
+	Small fix to epository_analyzer_begin_scan example script.
+
+	* examples/example_scripts/repository_analyzer_begin_scan.py:
+	Remove the global variables, used for debugging, because recent versions of 
+	Python do not seem to treat them as global when this script is used as 
+	a Button script in python. So it says they are undefined. They are, after 
+	all, inside the function that glom defines.
+	Although they would still work in this standalone script, it is nice to 
+	have no difference between this file and the one used in this .glom file:
+	https://gitorious.org/debian_repository_analyzer/debian_repository_analyzer
+
 2011-12-09  Murray Cumming  <murrayc@murrayc.com>
 
 	Combo_TextGlade: Work around GtkComboBoxText bug #612396.
