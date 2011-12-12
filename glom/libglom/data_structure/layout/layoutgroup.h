@@ -137,6 +137,11 @@ public:
    */
   type_list_items get_items_recursive();
 
+  /** Get the items recursively, depth-first, also returning the groups.
+   * This is only used by the tests so far.
+   */
+  type_list_const_items get_items_recursive_with_groups() const;
+
   virtual Glib::ustring get_part_type_name() const;
   virtual Glib::ustring get_report_part_id() const;
 
