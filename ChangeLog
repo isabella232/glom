@@ -1,3 +1,5 @@
+1.20.2:
+
 2011-12-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Correct parsing of example data.
@@ -23,7 +25,7 @@
 
 2011-12-12  Murray Cumming  <murrayc@murrayc.com>
 
-	Small fix to epository_analyzer_begin_scan example script.
+	Small fix to repository_analyzer_begin_scan example script.
 
 	* examples/example_scripts/repository_analyzer_begin_scan.py:
 	Remove the global variables, used for debugging, because recent versions of 
@@ -129,14 +131,14 @@
 	DbUtils::recreate_database_from_document(): Create groups too.
 
 	* glom/libglom/db_utils.[h|cc]: recreate_database_from_document():
-  Also call add_groups_from_document().
+	Also call add_groups_from_document().
 
 2011-12-02  Murray Cumming  <murrayc@murrayc.com>
 
 	test_document_load: Test some navigation utility functions.
 
 	* glom/libglom/data_structure/layout/layoutgroup.cc: get_items_recursive():
-  Return the child groups as well as their items.
+	Return the child groups as well as their items.
 	* tests/test_document_load.cc:
 	Test DbUtils::layout_field_should_have_navigation() and 
 	LayoutItem_Portal::get_suitable_table_to_view_details().
@@ -160,7 +162,7 @@
 
 2011-11-30  Murray Cumming  <murrayc@murrayc.com>
 
-  test_document_load_and_change: Test renaming and removing of tables.
+	test_document_load_and_change: Test renaming and removing of tables.
 
 	* tests/test_document_load_and_change.cc: This also checks that relationships
 	are update when a table is renamed.
@@ -196,7 +198,7 @@
 	test_document_load: Test field formatting.
 
 	* tests/test_document_load.cc: Also use a different example, to
-  widen the range of examples that we test.
+	widen the range of examples that we test.
 
 1.20.1:
 

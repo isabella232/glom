@@ -1,3 +1,12 @@
+1.20.2 (stable):
+
+* Correct parsing of quotes in example data.
+* ComboBoxes: Work around GtkComboBoxText bug #612396.
+  This fixes the Users/Groups dialogs and the Script Library dialog.
+* libglom: DbUtils::recreate_database_from_document():
+  Create groups and set table privileges too.
+* More tests.
+
 1.20.1 (stable):
 
 * Avoid some unnecessary stdout warnings.
