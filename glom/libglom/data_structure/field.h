@@ -181,9 +181,12 @@ public:
    * a default value or for example data.
    * This does not add quotes for text fields so the caller may need to do that.
    * Note that this does not do any extra escaping such as an XML file might need.
+   * However, this will escape data as per the CSV RFC.
    */
   Glib::ustring to_file_format(const Gnome::Gda::Value& value) const;
 
+  /** See to_file_format(const Gnome::Gda::Value& value).
+   */
   static Glib::ustring to_file_format(const Gnome::Gda::Value& value, glom_field_type glom_type);
 
   /** Parse the value from the canonical file format. See to_file_format()
