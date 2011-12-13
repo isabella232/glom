@@ -2233,7 +2233,7 @@ void Application::on_menu_file_save_as_example()
 
         //const type_vec_fields vec_fields = document->get_table_fields(table_name);
 
-        //export_data_to_stream() needs a type_list_layout_groups;
+        //export_data_to_*() needs a type_list_layout_groups;
         Document::type_list_layout_groups sequence = document->get_data_layout_groups_default("list", table_name, "" /* layout_platform */);
 
         //std::cout << "debug: table_name=" << table_name << std::endl;
