@@ -1,3 +1,12 @@
+2011-12-13  Murray Cumming  <murrayc@murrayc.com>
+
+	test_selfhosting_new_then_image: Move some code to test_utils.
+
+	* Makefile_tests.am:
+	* tests/test_selfhosting_new_then_image.cc: Move the test image-loading
+	code to:
+	* tests/test_utils.[h|cc]: get_value_for_image().
+
 2011-12-12  Murray Cumming  <murrayc@murrayc.com>
 
 	LayoutGroup: Correct the get_items_recursive_with_groups() implementaiton.

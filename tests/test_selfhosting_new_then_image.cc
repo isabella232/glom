@@ -19,6 +19,7 @@
  */
 
 #include "tests/test_selfhosting_utils.h"
+#include "tests/test_utils.h"
 #include <libglom/init.h>
 #include <libglom/utils.h>
 #include <libglom/db_utils.h>
@@ -58,28 +59,8 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   const Gnome::Gda::SqlExpr where_clause = 
     Glom::Utils::build_simple_where_expression(table_name, key_field, Gnome::Gda::Value(1));
 
-  //Fill a value from a file:
-  const std::string filename =
-    Glib::build_filename(GLOM_TESTS_IMAGE_DATA_NOTINSTALLED, "test_image.jpg");
-  std::string data;
-  try
-  {
-    data = Glib::file_get_contents(filename);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << "Failed: file_get_contents() failed: " << ex.what() << std::endl;
-    return false; //Something went wrong. It does not exist.
-  }
-
-  if(data.empty())
-  {
-    std::cerr << "Failed: The data read from the file was empty. filepath=" << filename << std::endl;
-    return false;
-  }
-
-  //Set the value:
-  Gnome::Gda::Value value_set((const guchar*)data.c_str(), data.size());
+  //Set the value, from an image file:
+  const Gnome::Gda::Value value_set = get_value_for_image();
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder_set = 
     Glom::Utils::build_sql_update_with_where_clause(table_name,
       field, value_set, where_clause);
