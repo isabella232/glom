@@ -328,6 +328,7 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_t
     Glib::ustring result = (str) ? 
       Glib::ustring(Glib::ScopedPtr<char>(str).get()) : Glib::ustring();
 
+    //Correction for text representations of image (binary) data:
     //Avoid arbitrary newlines in this text.
     //See libgda bug: https://bugzilla.gnome.org/show_bug.cgi?id=597390
     result = Utils::string_replace(result, "\n", "\\012");
@@ -369,13 +370,26 @@ Gnome::Gda::Value Field::from_file_format(const Glib::ustring& str, bool& succes
 Gnome::Gda::Value Field::from_file_format(const Glib::ustring& str, glom_field_type glom_type, bool& success)
 {
   success = true;
-  
+
+  //Unescape "" to ", because to_file_format() escaped ", as specified by the CSV RFC:
+  Glib::ustring string_unescaped;
   if(glom_type == TYPE_IMAGE)
   {
-    if(str.empty())
+    string_unescaped = str; //binary data does not have quote characters so we do not bother to escape or unescape it.
+  }
+  else
+  {
+    string_unescaped = 
+      Utils::string_replace(str, GLOM_QUOTE_FOR_FILE_FORMAT GLOM_QUOTE_FOR_FILE_FORMAT, GLOM_QUOTE_FOR_FILE_FORMAT);
+  }
+
+
+  if(glom_type == TYPE_IMAGE)
+  {
+    if(string_unescaped.empty())
       return  Gnome::Gda::Value();
 
-    GdaBinary* gdabinary = gda_string_to_binary(str.c_str());
+    GdaBinary* gdabinary = gda_string_to_binary(string_unescaped.c_str());
     if(!success || !gdabinary)
       return Gnome::Gda::Value();
     else
@@ -389,7 +403,7 @@ Gnome::Gda::Value Field::from_file_format(const Glib::ustring& str, glom_field_t
   else
   {
     NumericFormat format_ignored; //Because we use ISO format.
-    return Conversions::parse_value(glom_type, str, format_ignored, success, true);
+    return Conversions::parse_value(glom_type, string_unescaped, format_ignored, success, true);
   }
 }
 

@@ -1,5 +1,19 @@
 2011-12-13  Murray Cumming  <murrayc@murrayc.com>
 
+	Correct parsing of example data.
+
+	* glom/libglom/data_structure/field.[h|cc]: to_file_format(),
+	from_file_format() documentation: Mention that this uses CSV format.
+	from_file_format(): Unescape double quotes, because we escape quotes
+	as that in to_file_format().
+	This avoids reading them as double quotes when opening an example file.
+	This will also correct the interpretation of text default values.
+	* Makefile_tests.am:
+	* tests/test_field_file_format.cc: Add a test of this for text and image
+	data, checking that what we write is what we read.
+
+2011-12-13  Murray Cumming  <murrayc@murrayc.com>
+
 	test_selfhosting_new_then_image: Move some code to test_utils.
 
 	* Makefile_tests.am:
