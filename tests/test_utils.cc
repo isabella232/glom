@@ -19,6 +19,9 @@
  */
 
 #include "tests/test_utils.h"
+#include <glibmm/miscutils.h>
+#include <glibmm/fileutils.h>
+#include <iostream>
 
 Glom::sharedptr<const Glom::LayoutItem_Field> get_field_on_layout(const Glom::Document& document, const Glib::ustring& layout_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
@@ -51,4 +54,28 @@ Glom::sharedptr<const Glom::LayoutItem_Field> get_field_on_layout(const Glom::Do
   return Glom::sharedptr<const Glom::LayoutItem_Field>();
 }
 
+Gnome::Gda::Value get_value_for_image()
+{
+  //Fill a value from a file:
+  const std::string filename =
+    Glib::build_filename(GLOM_TESTS_IMAGE_DATA_NOTINSTALLED, "test_image.jpg");
+  std::string data;
+  try
+  {
+    data = Glib::file_get_contents(filename);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "Failed: file_get_contents() failed: " << ex.what() << std::endl;
+    return Gnome::Gda::Value(); //Something went wrong. It does not exist.
+  }
 
+  if(data.empty())
+  {
+    std::cerr << "Failed: The data read from the file was empty. filepath=" << filename << std::endl;
+    return Gnome::Gda::Value();
+  }
+
+  //Set the value:
+  return Gnome::Gda::Value((const guchar*)data.c_str(), data.size());
+}
