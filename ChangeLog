@@ -1,3 +1,13 @@
+2011-12-14  Murray Cumming  <murrayc@murrayc.com>
+
+	Document: Added get_translation_available_locales().
+
+	* glom/libglom/document/document.[h|cc]: load_after(), 
+	load_after_translations(): Remember any new locales encountered, so 
+	that get_translation_available_locales() can later return the list.
+	This could help with OnlineGlom bug #666165 .		
+	* tests/test_document_load_translations.cc: Test the new method.
+
 2011-12-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Correct parsing of example data.

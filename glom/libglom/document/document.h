@@ -174,6 +174,11 @@ public:
    */
   Glib::ustring get_translation_original_locale() const;
 
+  /** Get a list of locales for which at least one string is translated.
+   * The result will include the original, from get_translation_original_locale().
+   */
+  std::vector<Glib::ustring> get_translation_available_locales() const;
+
   typedef std::vector< sharedptr<Relationship> > type_vec_relationships;
   type_vec_relationships get_relationships(const Glib::ustring& table_name, bool plus_system_prefs = false) const;
   void set_relationships(const Glib::ustring& table_name, const type_vec_relationships& vecRelationships);
@@ -636,6 +641,7 @@ private:
 
   Glib::ustring m_database_title;
   Glib::ustring m_translation_original_locale;
+  std::vector<Glib::ustring> m_translation_available_locales; //Just a cache, based on other data.
 
   typedef std::map<Glib::ustring, Glib::ustring> type_map_library_scripts;
   type_map_library_scripts m_map_library_scripts;

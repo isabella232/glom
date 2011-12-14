@@ -2528,6 +2528,13 @@ void Document::load_after_translations(const xmlpp::Element* element, Translatab
         const Glib::ustring locale = get_node_attribute_value(element, GLOM_ATTRIBUTE_TRANSLATION_LOCALE);
         const Glib::ustring translation = get_node_attribute_value(element, GLOM_ATTRIBUTE_TRANSLATION_VALUE);
         item.set_translation(locale, translation);
+
+        //Remember any new translation locales in our cached list:
+        if(std::find(m_translation_available_locales.begin(), 
+          m_translation_available_locales.end(), locale) == m_translation_available_locales.end())
+        {
+          m_translation_available_locales.push_back(locale);
+        }
       }
     }
   }
@@ -2584,6 +2591,8 @@ bool Document::load_after(int& failure_code)
 
   if(result)
   {
+    m_translation_available_locales.clear();
+
     const xmlpp::Element* nodeRoot = get_node_document();
     if(nodeRoot)
     {
@@ -2604,6 +2613,7 @@ bool Document::load_after(int& failure_code)
 
       m_translation_original_locale = get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE);
       TranslatableItem::set_original_locale(m_translation_original_locale);
+      m_translation_available_locales.push_back(m_translation_original_locale); //Just a cache.
 
       const xmlpp::Element* nodeConnection = get_node_child_named(nodeRoot, GLOM_NODE_CONNECTION);
       if(nodeConnection)
@@ -4321,10 +4331,14 @@ void Document::set_translation_original_locale(const Glib::ustring& locale)
   set_modified();
 }
 
-
 Glib::ustring Document::get_translation_original_locale() const
 {
   return m_translation_original_locale;
+}
+
+std::vector<Glib::ustring> Document::get_translation_available_locales() const
+{
+  return m_translation_available_locales;
 }
 
 Document::type_list_translatables Document::get_translatable_layout_items(const Glib::ustring& table_name)
