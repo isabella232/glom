@@ -3746,21 +3746,6 @@ Orientation=portrait
   <table name="scenes" default="true" title="Scenes">
     <example_rows>
       <example_row>
-        <value column="scene_id">1</value>
-        <value column="comments"/>
-        <value column="description"/>
-        <value column="location_id">1</value>
-        <value column="date">2009-12-11</value>
-        <value column="time"/>
-        <value column="minutes"/>
-        <value column="day_or_night">Nacht</value>
-        <value column="interior_or_exterior">Interior</value>
-        <value column="name"/>
-        <value column="overview_name">Tavern</value>
-        <value column="pages">3</value>
-        <value column="script_day"/>
-      </example_row>
-      <example_row>
         <value column="scene_id">0</value>
         <value column="comments"/>
         <value column="description"/>
@@ -3768,12 +3753,27 @@ Orientation=portrait
         <value column="date">2009-12-10</value>
         <value column="time"/>
         <value column="minutes">3</value>
-        <value column="day_or_night">Tag</value>
+        <value column="day_or_night">Day</value>
         <value column="interior_or_exterior">Exterior</value>
         <value column="name">Mexican Standoff</value>
         <value column="overview_name">Mexican Standoff</value>
         <value column="pages">4</value>
         <value column="script_day">21</value>
+      </example_row>
+      <example_row>
+        <value column="scene_id">1</value>
+        <value column="comments"/>
+        <value column="description"/>
+        <value column="location_id">1</value>
+        <value column="date">2009-12-11</value>
+        <value column="time"/>
+        <value column="minutes"/>
+        <value column="day_or_night">Night</value>
+        <value column="interior_or_exterior">Interior</value>
+        <value column="name"/>
+        <value column="overview_name">Tavern</value>
+        <value column="pages">3</value>
+        <value column="script_day"/>
       </example_row>
     </example_rows>
     <trans_set>
@@ -3834,11 +3834,11 @@ Orientation=portrait
       <field name="day_or_night" type="Text" title="Day/Night">
         <formatting choices_custom="true">
           <custom_choice_list>
-            <custom_choice value="Nacht"/>
-            <custom_choice value="Tag"/>
-            <custom_choice value="Morgens"/>
-            <custom_choice value="Abends"/>
-            <custom_choice value="Daemmerung"/>
+            <custom_choice value="Day"/>
+            <custom_choice value="Night"/>
+            <custom_choice value="Morning"/>
+            <custom_choice value="Evening"/>
+            <custom_choice value="Dawn"/>
           </custom_choice_list>
         </formatting>
         <trans_set>

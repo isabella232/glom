@@ -1,3 +1,10 @@
+2011-12-16  Murray Cumming  <murrayc@murrayc.com>
+
+	Film Manager example: Use English for Day/Night choices.
+
+	* examples/example_film_manager.glom: Use English for the custom choice 
+	values. We need to allow these to be translated. See bug #666343
+
 2011-12-14  Murray Cumming  <murrayc@murrayc.com>
 
 	Document: Added get_translation_available_locales().
