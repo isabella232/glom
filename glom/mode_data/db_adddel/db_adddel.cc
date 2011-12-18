@@ -2297,10 +2297,12 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
     //Use the user-entered primary key value:
 
     //This only works when the primary key is already stored: primary_key_value = get_value_key(row);
-    //sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
-    //layout_item->set_full_field_details(field);
+    //primary_key_value = get_value_key_selected();
 
-    primary_key_value = get_value_key_selected();
+    sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::create();
+    layout_field->set_full_field_details(primary_key_field);
+    primary_key_value = get_value_selected(layout_field);
+    std::cout << "DEBUG: get_value_key_selected(): " << primary_key_value.to_string() << std::endl;
   }
 
   //If no primary key value is available yet, then don't add the record yet:

@@ -1,3 +1,12 @@
+2011-12-19  Murray Cumming  <murrayc@murrayc.com>
+
+	List: Really store data when the primary key is not auto-incremented.
+
+	* glom/mode_data/db_adddel/db_adddel.cc: user_added(): Do not use 
+	get_value_key_selected() to get the entered field data, because that 
+	is only useful after the key has been entered. Instead get the 
+	entered data from the cell where it was entered.
+
 2011-12-18  Murray Cumming  <murrayc@murrayc.com>
 
 	PostgreSQL: Print stderr message when the connection fails completely.
