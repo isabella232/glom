@@ -85,9 +85,12 @@ pkgconfig_DATA = glom/libglom/glom-@GLOM_ABI_VERSION@.pc
 glom_commandline_ldadd = glom/libglom/libglom-$(GLOM_ABI_VERSION).la $(libglom_all_libs)
 glom_commandline_cppflags = $(glom_includes) $(LIBGLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(glom_defines)
 
-bin_PROGRAMS = glom/glom_create_from_example
+bin_PROGRAMS = glom/glom_create_from_example glom/glom_test_connection
 
 glom_glom_create_from_example_SOURCES = glom/glom_create_from_example.cc
 glom_glom_create_from_example_LDADD = $(glom_commandline_ldadd)
 glom_glom_create_from_example_CPPFLAGS = $(glom_commandline_cppflags)
 
+glom_glom_test_connection_SOURCES = glom/glom_test_connection.cc
+glom_glom_test_connection_LDADD = $(glom_commandline_ldadd)
+glom_glom_test_connection_CPPFLAGS = $(glom_commandline_cppflags)

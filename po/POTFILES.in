@@ -57,6 +57,7 @@ glom/libglom/db_utils.cc
 glom/libglom/report_builder.cc
 glom/libglom/xsl_utils.cc
 glom/glom_create_from_example.cc
+glom/glom_test_connection.cc
 glom/main.cc
 glom/mode_data/box_data_calendar_related.cc
 glom/mode_data/box_data.cc
