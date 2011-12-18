@@ -1,3 +1,11 @@
+2011-12-18  Murray Cumming  <murrayc@murrayc.com>
+
+	Add the glom_test_connection command-line tool.
+
+	* Makefile_libglom.am:
+	* glom/glom_test_connection.cc: This is useful for sanity checking 
+	of the configuration of central PostgreSQL servers.
+
 2011-12-16  Murray Cumming  <murrayc@murrayc.com>
 
 	Film Manager example: Use English for Day/Night choices.
