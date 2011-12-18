@@ -1,5 +1,12 @@
 2011-12-18  Murray Cumming  <murrayc@murrayc.com>
 
+	PostgreSQL: Print stderr message when the connection fails completely.
+
+	* glom/libglom/connectionpool_backends/postgres.cc: This can provide 
+	a clue, for instance when the hostname cannot be resolved.
+
+2011-12-18  Murray Cumming  <murrayc@murrayc.com>
+
 	Add the glom_test_connection command-line tool.
 
 	* Makefile_libglom.am:
