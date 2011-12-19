@@ -88,10 +88,33 @@ void check_title(const T_Item& item, const char* title_en, const char* title_de)
 
   g_assert( item->get_title() == title_en );
 
+  //Check when changing the current locale:
   const Glib::ustring locale_original = Glom::TranslatableItem::get_current_locale();
   Glom::TranslatableItem::set_current_locale(locale_de);
   g_assert( item->get_title() == title_de );
   Glom::TranslatableItem::set_current_locale(locale_original);
+
+
+  //Don't do the following checks if get_title() would actually delegate to the 
+  //child Field, instead of using the LayoutItem's own title translations:
+  const Glom::sharedptr<const Glom::LayoutItem_Field> layout_field = 
+     Glom::sharedptr<const Glom::LayoutItem_Field>::cast_dynamic(item);
+  if(layout_field)
+  {
+    return;
+  }
+
+  //Check when getting the translations directly:
+  g_assert( item->get_title_original() == title_en );
+  g_assert( item->get_title_translation(locale_de) == title_de );
+
+  //Check fallbacks:
+  g_assert( item->get_title_translation(Glib::ustring()) == title_en );
+  g_assert( item->get_title_translation(locale_original) == title_en );
+
+  //Check that fallbacks do not happen when we don't want them:
+  g_assert( item->get_title_translation(Glib::ustring(), false) == Glib::ustring() );
+  g_assert( item->get_title_translation(locale_original, false) == Glib::ustring() );
 }
 
 int main()

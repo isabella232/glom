@@ -2527,7 +2527,7 @@ void Document::load_after_translations(const xmlpp::Element* element, Translatab
       {
         const Glib::ustring locale = get_node_attribute_value(element, GLOM_ATTRIBUTE_TRANSLATION_LOCALE);
         const Glib::ustring translation = get_node_attribute_value(element, GLOM_ATTRIBUTE_TRANSLATION_VALUE);
-        item.set_translation(locale, translation);
+        item.set_title_translation(locale, translation);
 
         //Remember any new translation locales in our cached list:
         if(std::find(m_translation_available_locales.begin(), 

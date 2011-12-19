@@ -71,7 +71,7 @@ bool TranslatableItem::operator!=(const TranslatableItem& src) const
   return !(operator==(src));
 }
 
-void TranslatableItem::set_translation(const Glib::ustring& locale, const Glib::ustring& translation)
+void TranslatableItem::set_title_translation(const Glib::ustring& locale, const Glib::ustring& translation)
 {
   if(translation.empty())
   {
@@ -84,13 +84,51 @@ void TranslatableItem::set_translation(const Glib::ustring& locale, const Glib::
     m_map_translations[locale] = translation;
 }
 
-Glib::ustring TranslatableItem::get_translation(const Glib::ustring& locale) const
+Glib::ustring TranslatableItem::get_title_translation(const Glib::ustring& locale, bool fallback) const
 {
   type_map_locale_to_translations::const_iterator iterFind = m_map_translations.find(locale);
   if(iterFind != m_map_translations.end())
     return iterFind->second;
-  else
+ 
+  //The original is not in m_map_translations,
+  //but we want to handle that locale too:
+  if(locale == get_current_locale())
+    return get_title_original();
+
+  if(!fallback)
     return Glib::ustring();
+
+  if(m_map_translations.empty())
+    return get_title_original();
+
+  //Return the first translation from a locale with the same language, if any.
+  //TODO_Performance: This is slow.
+  //Note that this would, for instance, give en_GB translations before en_US translations, if there are no en_AU translations.
+  const Glib::ustring locale_language_id = Utils::locale_language_id(locale);
+  for(type_map_locale_to_translations::const_iterator iter = m_map_translations.begin(); iter != m_map_translations.end(); ++iter)
+  {
+    const Glib::ustring& locale_id = iter->first;
+    if(Utils::locale_language_id(locale_id) == locale_language_id)
+    {
+      if(!(iter->second.empty()))
+        return iter->second;
+    }
+  }
+
+  //Fall back to the original title:
+  if(!m_title.empty())
+    return m_title;
+
+  //Fall back to first translation, if any.
+  //This would be quite unusual.
+  type_map_locale_to_translations::const_iterator iter = m_map_translations.begin();
+  if(iter != m_map_translations.end())
+  {
+    //std::cout << "debug: TranslatableItem::get_title() falling back to the first translation: locale=" << iter->first << std::endl;
+    return iter->second;
+  }
+
+  return Glib::ustring();
 }
 
 const TranslatableItem::type_map_locale_to_translations& TranslatableItem::_get_translations_map() const
@@ -109,49 +147,12 @@ Glib::ustring TranslatableItem::get_title() const
   if(get_current_locale_not_original()) //Avoid this code if we don't need translations.
   {
     const Glib::ustring current_locale_id = get_current_locale();
-    const Glib::ustring translated_title = get_translation(current_locale_id);
+    const Glib::ustring translated_title = get_title_translation(current_locale_id);
     if(!translated_title.empty())
       return translated_title;
-    else if(!(m_map_translations.empty()))
-    {
-      //return the first translation from a locale with the same language, if any.
-      //TODO_Performance: This is slow.
-      //Note that this would, for instance, give en_GB translations before en_US translations, if there are no en_AU translations.
-      const Glib::ustring current_locale_language_id = Utils::locale_language_id(current_locale_id);
-      for(type_map_locale_to_translations::const_iterator iter = m_map_translations.begin(); iter != m_map_translations.end(); ++iter)
-      {
-        const Glib::ustring& locale_id = iter->first;
-        if(Utils::locale_language_id(locale_id) == current_locale_language_id)
-        {
-          if(!(iter->second.empty()))
-            return iter->second;
-        }
-      }
-
-      if(m_title.empty())
-      {
-        //return the first translation, if any.
-        //This would be quite unusual.
-        type_map_locale_to_translations::const_iterator iter = m_map_translations.begin();
-        if(iter != m_map_translations.end())
-        {
-          //std::cout << "debug: TranslatableItem::get_title() falling back to the first translation: locale=" << iter->first << std::endl;
-          return iter->second;
-        }
-      }
-      else
-      {
-        return m_title;
-      }
-    }
   }
 
   return m_title;
-}
-
-Glib::ustring TranslatableItem::get_title(const Glib::ustring& locale) const
-{
-  return get_translation(locale);
 }
 
 
@@ -170,18 +171,13 @@ void TranslatableItem::set_title(const Glib::ustring& title)
       set_title_original(title);
     else
     {
-      set_translation(the_locale, title);
+      set_title_translation(the_locale, title);
     }
   }
   else
   {
     set_title_original(title);
   }
-}
-
-void TranslatableItem::set_title(const Glib::ustring& locale, const Glib::ustring& title)
-{
-  set_translation(locale, title);
 }
 
 void TranslatableItem::set_title_original(const Glib::ustring& title)

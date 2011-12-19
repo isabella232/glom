@@ -57,10 +57,6 @@ public:
    */
   virtual Glib::ustring get_title() const;
 
-  /** Get the title's translation for the specifed locale.
-   */
-  Glib::ustring get_title(const Glib::ustring& locale) const;
-
   /** Get the title's original (non-translated, usually English) text.
    */
   Glib::ustring get_title_original() const;
@@ -70,17 +66,18 @@ public:
    */
   void set_title(const Glib::ustring& title);
 
-  /** Set the title's translation for the current locale.
-   */
-  void set_title(const Glib::ustring& locale, const Glib::ustring& title);
-
   /** Set the title's original (non-translated, usually English) text.
    */
   void set_title_original(const Glib::ustring& title);
 
-  //TODO: Rename to set_title_translation()?
-  void set_translation(const Glib::ustring& locale, const Glib::ustring& translation);
-  Glib::ustring get_translation(const Glib::ustring& locale) const;
+  void set_title_translation(const Glib::ustring& locale, const Glib::ustring& translation);
+
+  /** Get the title's translation for the specified @a locale, optionally
+   * falling back to a locale of the same language, and then falling back to 
+   * the original.
+   * Calling this with the current locale is the same as calling get_title_original().
+   */
+  Glib::ustring get_title_translation(const Glib::ustring& locale, bool fallback = true) const;
   
   /// Clear the original title and any translations of the title.
   void clear_title_in_all_locales();

@@ -231,7 +231,7 @@ void Window_Translations::load_from_document()
     Gtk::TreeModel::iterator iterTree = m_model->append();
     Gtk::TreeModel::Row row = *iterTree;
     row[m_columns.m_col_item] = tableinfo;
-    row[m_columns.m_col_translation] = tableinfo->get_title(m_translation_locale);
+    row[m_columns.m_col_translation] = tableinfo->get_title_translation(m_translation_locale, false);
     row[m_columns.m_col_parent_table] = Glib::ustring(); //Not used for tables.
 
     //The table's field titles:
@@ -243,7 +243,7 @@ void Window_Translations::load_from_document()
 
       sharedptr<Field> field = *iter;
       row[m_columns.m_col_item] = field;
-      row[m_columns.m_col_translation] = field->get_title(m_translation_locale);
+      row[m_columns.m_col_translation] = field->get_title_translation(m_translation_locale, false);
       row[m_columns.m_col_parent_table] = table_name;
 
     }
@@ -259,7 +259,7 @@ void Window_Translations::load_from_document()
         Gtk::TreeModel::Row row = *iterTree;
 
         row[m_columns.m_col_item] = relationship;
-        row[m_columns.m_col_translation] = relationship->get_title(m_translation_locale);
+        row[m_columns.m_col_translation] = relationship->get_title_translation(m_translation_locale, false);
         row[m_columns.m_col_parent_table] = table_name;
       }
     }
@@ -277,7 +277,7 @@ void Window_Translations::load_from_document()
         Gtk::TreeModel::Row row = *iterTree;
 
         row[m_columns.m_col_item] = report;
-        row[m_columns.m_col_translation] = report->get_title(m_translation_locale);
+        row[m_columns.m_col_translation] = report->get_title_translation(m_translation_locale, false);
         row[m_columns.m_col_parent_table] = table_name;
 
         //Translatable report items:
@@ -293,7 +293,7 @@ void Window_Translations::load_from_document()
               Gtk::TreeModel::Row row = *iterTree;
 
               row[m_columns.m_col_item] = item;
-              row[m_columns.m_col_translation] = item->get_title(m_translation_locale);
+              row[m_columns.m_col_translation] = item->get_title_translation(m_translation_locale, false);
               row[m_columns.m_col_parent_table] = table_name;
             }
           }
@@ -314,7 +314,7 @@ void Window_Translations::load_from_document()
           Gtk::TreeModel::Row row = *iterTree;
 
           row[m_columns.m_col_item] = item;
-          row[m_columns.m_col_translation] = item->get_title(m_translation_locale);
+          row[m_columns.m_col_translation] = item->get_title_translation(m_translation_locale, false);
           row[m_columns.m_col_parent_table] = table_name;
         }
       }
@@ -340,7 +340,7 @@ void Window_Translations::save_to_document()
     if(item)
     {
       const Glib::ustring translation = row[m_columns.m_col_translation];
-      item->set_title(m_translation_locale, translation);
+      item->set_title_translation(m_translation_locale, translation);
     }
   }
 
@@ -386,7 +386,7 @@ void Window_Translations::on_button_copy_translation()
         if(item)
         {
           //Copy the translation from the chosen locale to the current locale:
-          const Glib::ustring translation = item->get_title(copy_source_locale);
+          const Glib::ustring translation = item->get_title_translation(copy_source_locale);
           row[m_columns.m_col_translation] = translation;
         }
       }
@@ -547,7 +547,7 @@ void Window_Translations::on_button_export()
         {
           po_message_t msg = po_message_create();
           po_message_set_msgid(msg, item->get_title_original().c_str());
-          po_message_set_msgstr(msg, item->get_translation(m_translation_locale).c_str());
+          po_message_set_msgstr(msg, item->get_title_translation(m_translation_locale, false).c_str());
 
           // Add "context" comments, to uniquely identify similar strings, used in different places,
           // and to provide a hint for translators.
@@ -649,7 +649,7 @@ void Window_Translations::on_button_import()
               if( (item->get_title_original() == msgid) && 
                   (get_po_context_for_item(item) == msgcontext) ) // This is not efficient, but it should be reliable.
               {
-                item->set_translation(m_translation_locale, msgstr);
+                item->set_title_translation(m_translation_locale, msgstr);
                 // Keep examining items, in case there are duplicates. break;
               }
             }

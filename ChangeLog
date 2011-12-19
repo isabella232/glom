@@ -1,5 +1,26 @@
 2011-12-19  Murray Cumming  <murrayc@murrayc.com>
 
+	TranslatableItem: Improve the API slightly.
+
+	* glom/libglom/data_structure/translatable_item.[h|cc]:
+	Renamed set/get_translation() to set/get_title_translation() to make 
+	it clearer, and to match set/get_title_original(). Add an optional bool 
+	fallback parameter, so we can move the fallback code into this method,
+	and simplify get_title(). This lets us easily get the title for a 
+	specified locale, with one method, even if that locale is the original/
+	current locale.
+	Removed get_title(locale), because it is hardly used, because any
+	override of the other (virtual) get_title() method overload would make 
+	it hard to call this anyway. And it just forwarded to 
+	get_title_translation() anyway. 
+	Likewise for set_title(locale).
+	* glom/libglom/document/document.cc:
+	* glom/mode_design/translation/window_translations.cc: Adapted.
+	* tests/test_document_load_translations.cc: Adapted and added some 
+	more test lines for get_title_translation().
+
+2011-12-19  Murray Cumming  <murrayc@murrayc.com>
+
 	PostgreSQL backend: Comment out the stdout exception information again.
 
 	* glom/libglom/connectionpool_backends/postgres.cc: This was 
