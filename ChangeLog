@@ -1,5 +1,12 @@
 2011-12-19  Murray Cumming  <murrayc@murrayc.com>
 
+	PostgreSQL backend: Comment out the stdout exception information again.
+
+	* glom/libglom/connectionpool_backends/postgres.cc: This was 
+	misleading when trying all ports, when we expect some failures.
+
+2011-12-19  Murray Cumming  <murrayc@murrayc.com>
+
 	List: Really store data when the primary key is not auto-incremented.
 
 	* glom/mode_data/db_adddel/db_adddel.cc: user_added(): Do not use 

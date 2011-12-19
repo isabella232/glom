@@ -119,10 +119,10 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
         cnc_string, auth_string,
         Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
     }
-    catch(const Glib::Error& ex)
+    catch(const Glib::Error& /* ex */)
     {
       //Show this on stderr because it can contain useful clues such as a hostname that cannot be resolved.
-      std::cerr << G_STRFUNC << ": Attempt to connect to default database failed on port=" << port << " : " << "error code=" << ex.code() << ", error message: " <<  ex.what() << std::endl;
+      //std::cerr << G_STRFUNC << ": Attempt to connect to default database failed on port=" << port << " : " << "error code=" << ex.code() << ", error message: " <<  ex.what() << std::endl;
     }
 
 #ifdef GLOM_CONNECTION_DEBUG
