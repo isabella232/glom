@@ -1,5 +1,12 @@
 2011-12-20  Murray Cumming  <murrayc@murrayc.com>
 
+	TranslatableItem::get_title_translation(): Correct fallback code.
+
+	* glom/libglom/data_structure/translatable_item.cc: This fixes make
+	check, which was broken after the recent change to this class.
+
+2011-12-20  Murray Cumming  <murrayc@murrayc.com>
+
 	Make this (Glom 1.21/22) parallel installable with glom 1.20.
 
 	* configure.ac: Increase version to 1.21.1.

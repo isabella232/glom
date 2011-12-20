@@ -92,7 +92,7 @@ Glib::ustring TranslatableItem::get_title_translation(const Glib::ustring& local
  
   //The original is not in m_map_translations,
   //but we want to handle that locale too:
-  if(locale == get_current_locale())
+  if(locale == m_original_locale)
     return get_title_original();
 
   if(!fallback)
