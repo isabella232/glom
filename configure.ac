@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([Glom],[1.20.2],[http://bugzilla.gnome.org/enter_bug.cgi?product=Glom],[glom])
+AC_INIT([Glom],[1.21.1],[http://bugzilla.gnome.org/enter_bug.cgi?product=Glom],[glom])
 AC_PREREQ(2.63)
 
 AC_CONFIG_SRCDIR([glom/main.cc])
@@ -37,7 +37,7 @@ LT_INIT([disable-static win32-dll])
 # Used for the install directories for headers.  The same number is used in
 # the library name, which must be kept in sync, but variables can't be used
 # with that.
-AC_SUBST([GLOM_ABI_VERSION], [1.20])
+AC_SUBST([GLOM_ABI_VERSION], [1.22])
 AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION], ["$GLOM_ABI_VERSION"],
 		   [Define to the Glom ABI version string.])
 
@@ -171,7 +171,7 @@ AC_DEFINE_UNQUOTED([ISO_CODES_PREFIX], ["$ISO_CODES_PREFIX"],
 
 # Allow use of mm-common macros for the warnings option and for installing developer documentation.
 MM_PREREQ([0.9.5])
-MM_INIT_MODULE([libglom-1.20])
+MM_INIT_MODULE([libglom-1.22])
 
 # Copy the mm-common .pl scripts into docs/,
 # and use them from there,

@@ -1,3 +1,13 @@
+2011-12-20  Murray Cumming  <murrayc@murrayc.com>
+
+	Make this (Glom 1.21/22) parallel installable with glom 1.20.
+
+	* configure.ac: Increase version to 1.21.1.
+	* docs/pyglom_reference/Makefile.am:
+	* glom/libglom/init.h:
+	* glom/python_embed/python_module/py_glom_module.cc: Change mention of 
+	1.20 or 1_20 to 1.22 or 1_20.
+
 2011-12-19  Murray Cumming  <murrayc@murrayc.com>
 
 	TranslatableItem: Improve the API slightly.

@@ -29,7 +29,7 @@
 
 using namespace Glom;
 
-BOOST_PYTHON_MODULE(glom_1_20)
+BOOST_PYTHON_MODULE(glom_1_22)
 {
   boost::python::docstring_options doc_options(
     true, // show the docstrings from here
