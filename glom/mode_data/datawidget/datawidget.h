@@ -92,6 +92,7 @@ private:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   void on_button_open_details();
   void on_button_select_id();
+  void on_button_new_id();
   void on_button_choose_date();
 
   // Don't call it on_style_changed, otherwise we would override a virtual
@@ -114,6 +115,10 @@ private:
   /** Show a dialog with a Find so that the user can choose an ID value to indicate the related record.
    */
   bool offer_related_record_id_find(Gnome::Gda::Value& chosen_id);
+
+  /** Show a dialog with Details so that the user can add a new record and then use that ID value to indicate that related record.
+   */
+  bool offer_related_record_id_new(Gnome::Gda::Value& chosen_id);
 
 private:
   void update_go_to_details_button_sensitivity();

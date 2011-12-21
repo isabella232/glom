@@ -864,7 +864,6 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
     else
     {
       //It is not auto-generated:
-
       if(m_field_primary_key && strFieldName == m_field_primary_key->get_name()) //if it is the primary key that is being edited.
       {
         if(!check_entered_value_for_uniqueness(m_table_name, layout_field, field_value, window))
