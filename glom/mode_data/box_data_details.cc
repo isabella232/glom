@@ -711,7 +711,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
 
   Gnome::Gda::Value primary_key_value = get_primary_key_value_selected();
   //std::cout << "debug: " << G_STRFUNC << ": primary_key_value=" << primary_key_value.to_string() << std::endl;
-  if(!Conversions::value_is_empty(primary_key_value)) //If there is not a primary key value:
+  if(!Conversions::value_is_empty(primary_key_value)) //If there is not a stored primary key value yet:
   {
     Glib::ustring table_name;
     sharedptr<Field> primary_key_field;
@@ -840,7 +840,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
   }
   else
   {
-    //There is no current primary key value:
+    //There is no current stored primary key value yet:
 
     if(m_field_primary_key && m_field_primary_key->get_auto_increment()) //If the primary key is an auto-increment:
     {
