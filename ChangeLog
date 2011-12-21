@@ -1,3 +1,28 @@
+2011-12-29  Murray Cumming  <murrayc@murrayc.com>
+
+	Foreign key ID fields: Add a New Button next to the existing Find button.
+
+	* glom/mode_data/datawidget/dialog_new_record.[h|cc]: A new dialog to 
+	quickly add a new related record.
+	* ui/operator/dialog_new_record.glade: The UI layout for that dialog.
+
+	* glom/mode_data/datawidget/datawidget: Constructor: Whenever we would 
+	add a Find or Open button, also add a New button, so the user does not 
+	need to manually go to the other table, add a record, and then come 
+	back to the right record. Add offer_related_record_id_new() to implement
+	this.
+	Added signal_choices_changed() which is emitted when this would result
+	in the list of related choices changing.
+	* glom/mode_data/box_data_details.cc: Constructor: Handle the 
+	field_choices_changed() signal, calling:
+	* glom/mode_data/flowtablewithfields.cc: a new update_choices() method,
+	to update all affected combo boxes.
+
+	* tests/test_glade_derived_instantiation.cc: Test the new dialog.
+
+	This will not quite work properly yet when the related choices should 
+	be restricted by an ID value.
+
 2011-12-27  David King  <davidk@openismus.com>
 
 	Add simple clipboard handlers to App_WithDoc_Gtk

@@ -233,8 +233,10 @@ void FlowTableWithFields::add_layout_group(const sharedptr<LayoutGroup>& group, 
     flow_table->set_layout_item(group, m_table_name);
     add_layoutwidgetbase(flow_table);
 
-    //Connect signal:
+    //Connect signals:
+    //TODO: Find a less repetitive way to do this chaining-up of signal emissions:
     flow_table->signal_field_edited().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_edited) );
+    flow_table->signal_field_choices_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_choices_changed) );
     flow_table->signal_field_open_details_requested().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_open_details_requested) );
     flow_table->signal_related_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_related_record_changed) );
     flow_table->signal_requested_related_details().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_requested_related_details) );
@@ -544,6 +546,7 @@ void FlowTableWithFields::add_field(const sharedptr<LayoutItem_Field>& layoutite
   add(*eventbox, *(info.m_second), true);
 
   info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  ); //TODO:  Is it a good idea to bind the LayoutItem? sigc::bind() probably stores a copy at this point.
+  info.m_second->signal_choices_changed().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_choices_changed), layoutitem_field)  );
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   info.m_second->signal_layout_item_added().connect( sigc::bind(
@@ -791,6 +794,33 @@ void FlowTableWithFields::set_field_editable(const sharedptr<const LayoutItem_Fi
   }
 }
 
+void FlowTableWithFields::update_choices(const sharedptr<const LayoutItem_Field>& field)
+{
+  type_list_widgets list_widgets = get_field(field, true);
+  for(type_list_widgets::iterator iter = list_widgets.begin(); iter != list_widgets.end(); ++iter)
+  {
+    DataWidget* datawidget = dynamic_cast<DataWidget*>(*iter);
+    if(!datawidget)
+      continue;
+
+    DataWidgetChildren::ComboChoices* combo = 
+      dynamic_cast<DataWidgetChildren::ComboChoices*>(datawidget->get_data_child_widget());
+    if(!combo)
+      continue;
+
+    const sharedptr<const LayoutItem> layout_item = combo->get_layout_item();
+    const sharedptr<const LayoutItem_Field> layout_item_field = 
+      sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+    if(!layout_item_field || !layout_item_field->get_formatting_used().get_has_related_choices())
+      continue;
+
+    //TODO: Handle not-all related choices, too.
+    combo->set_choices_related(get_document(), field, Gnome::Gda::Value() /* no ID means show all related records */);
+  }
+
+  //TODO: See also "Refresh choices widgets which should show the related records for relationships that use this field"
+}
+
 
 FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const sharedptr<const LayoutItem_Field>& from_key)
 {
@@ -1019,6 +1049,11 @@ FlowTableWithFields::type_signal_field_edited FlowTableWithFields::signal_field_
   return m_signal_field_edited;
 }
 
+FlowTableWithFields::type_signal_field_choices_changed FlowTableWithFields::signal_field_choices_changed()
+{
+  return m_signal_field_choices_changed;
+}
+
 FlowTableWithFields::type_signal_field_open_details_requested FlowTableWithFields::signal_field_open_details_requested()
 {
   return m_signal_field_open_details_requested;
@@ -1049,6 +1084,11 @@ void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, const 
   m_signal_field_edited.emit(field, value);
 }
 
+void FlowTableWithFields::on_entry_choices_changed(const sharedptr<const LayoutItem_Field> field)
+{
+  m_signal_field_choices_changed.emit(field);
+}
+
 void FlowTableWithFields::on_entry_open_details_requested(const Gnome::Gda::Value& value, const sharedptr<const LayoutItem_Field> field)
 {
   m_signal_field_open_details_requested.emit(field, value);
@@ -1057,6 +1097,11 @@ void FlowTableWithFields::on_entry_open_details_requested(const Gnome::Gda::Valu
 void FlowTableWithFields::on_flowtable_entry_edited(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
 {
   m_signal_field_edited.emit(field, value);
+}
+
+void FlowTableWithFields::on_flowtable_entry_choices_changed(const sharedptr<const LayoutItem_Field>& field)
+{
+  m_signal_field_choices_changed.emit(field);
 }
 
 void FlowTableWithFields::on_flowtable_entry_open_details_requested(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)

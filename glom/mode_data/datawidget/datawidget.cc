@@ -32,6 +32,7 @@
 #include <glom/mode_design/layout/dialog_choose_field.h>
 #include <glom/mode_data/datawidget/dialog_choose_id.h>
 #include <glom/mode_data/datawidget/dialog_choose_date.h>
+#include <glom/mode_data/datawidget/dialog_new_record.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.h>
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
@@ -129,7 +130,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
         combo = create_combo_widget_for_field(field);
         combo->set_layout_item( get_layout_item(), table_name);
 
-        combo->set_choices_related(document, field, Gnome::Gda::Value() /* TODO: Doesn't make sense */);
+        combo->set_choices_related(document, field, Gnome::Gda::Value() /* no ID means show all related records */);
       }
       else
       {
@@ -231,6 +232,11 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
         button_select->set_tooltip_text(_("Enter search criteria to identify records in the other table, to choose an ID for this field."));
         hbox_parent->pack_start(*button_select, Gtk::PACK_SHRINK);
         button_select->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_select_id));
+
+        Gtk::Button* button_new = Gtk::manage(new Gtk::Button(Gtk::Stock::NEW));
+        button_new->set_tooltip_text(_("Enter details for a new record in the other table, then use its ID for this field."));
+        hbox_parent->pack_start(*button_new, Gtk::PACK_SHRINK);
+        button_new->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_new_id));
       }
     }
 
@@ -261,6 +267,10 @@ DataWidget::type_signal_edited DataWidget::signal_edited()
   return m_signal_edited;
 }
 
+DataWidget::type_signal_choices_changed DataWidget::signal_choices_changed()
+{
+  return m_signal_choices_changed;
+}
 
 void DataWidget::set_value(const Gnome::Gda::Value& value)
 {
@@ -587,6 +597,20 @@ const Gtk::Widget* DataWidget::get_data_child_widget() const
    }
  }
 
+void DataWidget::on_button_new_id()
+{
+  Gnome::Gda::Value chosen_id;
+  const bool chosen = offer_related_record_id_new(chosen_id);
+  if(!chosen)
+    return;
+
+  //Update the choices, if any, to show the new related record:
+  m_signal_choices_changed.emit();
+
+  set_value(chosen_id);
+  m_signal_edited.emit(chosen_id);
+}
+
 void DataWidget::on_button_choose_date()
 {
   DataWidgetChildren::Dialog_ChooseDate* dialog = 0;
@@ -658,6 +682,55 @@ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
     if(response == Gtk::RESPONSE_OK)
     {
       //Get the chosen field:
+      result = dialog->get_id_chosen(chosen_id);
+    }
+
+    remove_view(dialog);
+    delete dialog;
+  }
+
+  return result;
+}
+
+
+bool DataWidget::offer_related_record_id_new(Gnome::Gda::Value& chosen_id)
+{
+  bool result = false;
+
+  //Initialize output variable:
+  chosen_id = Gnome::Gda::Value();
+
+  DataWidgetChildren::Dialog_NewRecord* dialog = 0;
+  Glom::Utils::get_glade_widget_derived_with_warning(dialog);
+
+  if(dialog)
+  {
+    //dialog->set_document(get_document(), table_name, field);
+    Gtk::Window* parent = get_application();
+    if(parent)
+      dialog->set_transient_for(*parent);
+    add_view(dialog);
+
+    //Discover the related table, in the relationship that uses this ID field:
+    Glib::ustring related_table_name;
+    sharedptr<const LayoutItem_Field> layoutField = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+    if(layoutField)
+    {
+      sharedptr<const Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layoutField);
+      if(relationship)
+        related_table_name = relationship->get_to_table();
+    }
+    else
+      g_warning("get_layout_item() was not a LayoutItem_Field");
+
+    dialog->init_db_details(related_table_name, Base_DB::get_active_layout_platform(get_document()));
+
+
+    const int response = dialog->run();
+    dialog->hide();
+    if(response == Gtk::RESPONSE_OK)
+    {
+      //Get the chosen ID:
       result = dialog->get_id_chosen(chosen_id);
     }
 

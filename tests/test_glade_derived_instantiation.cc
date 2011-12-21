@@ -1,19 +1,3 @@
-#include <glom/glade_utils.h>
-#include <glom/application.h>
-#include <glom/dialog_existing_or_new.h>
-#include <glom/mode_design/print_layouts/box_print_layouts.h>
-#include <glom/mode_design/relationships_overview/dialog_relationships_overview.h>
-#include <glom/mode_design/dialog_relationships.h>
-#include <glom/mode_design/report_layout/dialog_layout_report.h>
-#include <glom/box_reports.h>
-#include <glom/navigation/box_tables.h>
-#include <glom/import_csv/dialog_import_csv.h>
-#include <glom/import_csv/dialog_import_csv_progress.h>
-#include <glom/mode_data/datawidget/dialog_choose_date.h>
-#include <glom/mode_data/datawidget/dialog_choose_id.h>
-#include <glom/utility_widgets/dialog_flowtable.h>
-#include <glom/utility_widgets/dialog_image_load_progress.h>
-#include <glom/utility_widgets/dialog_image_save_progress.h>
 /* Glom
  *
  * Copyright (C) 2010-2011 Murray Cumming
@@ -34,6 +18,23 @@
  * Boston, MA 02111-1307, USA.
  */
  
+#include <glom/glade_utils.h>
+#include <glom/application.h>
+#include <glom/dialog_existing_or_new.h>
+#include <glom/mode_design/print_layouts/box_print_layouts.h>
+#include <glom/mode_design/relationships_overview/dialog_relationships_overview.h>
+#include <glom/mode_design/dialog_relationships.h>
+#include <glom/mode_design/report_layout/dialog_layout_report.h>
+#include <glom/box_reports.h>
+#include <glom/navigation/box_tables.h>
+#include <glom/import_csv/dialog_import_csv.h>
+#include <glom/import_csv/dialog_import_csv_progress.h>
+#include <glom/mode_data/datawidget/dialog_choose_date.h>
+#include <glom/mode_data/datawidget/dialog_choose_id.h>
+#include <glom/mode_data/datawidget/dialog_new_record.h>
+#include <glom/utility_widgets/dialog_flowtable.h>
+#include <glom/utility_widgets/dialog_image_load_progress.h>
+#include <glom/utility_widgets/dialog_image_save_progress.h>
 #include <glom/mode_design/layout/dialog_choose_field.h>
 #include <glom/mode_design/dialog_add_related_table.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.h>
@@ -127,6 +128,7 @@ int main(int argc, char *argv[])
   instantiate_widget<Dialog_Import_CSV_Progress>();
   instantiate_widget<DataWidgetChildren::Dialog_ChooseID>();
   instantiate_widget<DataWidgetChildren::Dialog_ChooseDate>();
+  instantiate_widget<DataWidgetChildren::Dialog_NewRecord>();
   instantiate_widget<Dialog_InvalidData>();
   instantiate_widget<DialogImageLoadProgress>();
   instantiate_widget<DialogImageSaveProgress>();

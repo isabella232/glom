@@ -93,6 +93,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   pack_start(m_hbox_content);
 
   m_FlowTable.signal_field_edited().connect( sigc::mem_fun(*this,  &Box_Data_Details::on_flowtable_field_edited) );
+  m_FlowTable.signal_field_choices_changed().connect( sigc::mem_fun(*this,  &Box_Data_Details::on_flowtable_field_choices_changed) );
   m_FlowTable.signal_field_open_details_requested().connect( sigc::mem_fun(*this,  &Box_Data_Details::on_flowtable_field_open_details_requested) );
   show_all();
 
@@ -864,7 +865,6 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
     else
     {
       //It is not auto-generated:
-
       if(m_field_primary_key && strFieldName == m_field_primary_key->get_name()) //if it is the primary key that is being edited.
       {
         if(!check_entered_value_for_uniqueness(m_table_name, layout_field, field_value, window))
@@ -891,6 +891,14 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
       }
     }
   } //if(get_primary_key_value_selected().size())
+}
+
+void Box_Data_Details::on_flowtable_field_choices_changed(const sharedptr<const LayoutItem_Field>& layout_field)
+{
+  if(m_ignore_signals)
+    return;
+
+  m_FlowTable.update_choices(layout_field);
 }
 
 void Box_Data_Details::on_userlevel_changed(AppState::userlevels user_level)

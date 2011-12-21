@@ -79,6 +79,16 @@ public:
   typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_open_details_requested;
   type_signal_open_details_requested signal_open_details_requested();
 
+  /** For instance,
+   * void on_choices_changed();
+   */
+  typedef sigc::signal<void> type_signal_choices_changed;
+
+  /** This is emitted when the related records, used by a choices combobox,
+   * have been changed. For instance, when the user adds a new choice via the "New" button.
+   */
+  type_signal_choices_changed signal_choices_changed();
+
 private:
   //virtual void setup_menu();
 
@@ -92,6 +102,7 @@ private:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   void on_button_open_details();
   void on_button_select_id();
+  void on_button_new_id();
   void on_button_choose_date();
 
   // Don't call it on_style_changed, otherwise we would override a virtual
@@ -115,12 +126,17 @@ private:
    */
   bool offer_related_record_id_find(Gnome::Gda::Value& chosen_id);
 
+  /** Show a dialog with Details so that the user can add a new record and then use that ID value to indicate that related record.
+   */
+  bool offer_related_record_id_new(Gnome::Gda::Value& chosen_id);
+
 private:
   void update_go_to_details_button_sensitivity();
 
 protected:
   type_signal_edited m_signal_edited;
   type_signal_open_details_requested m_signal_open_details_requested;
+  type_signal_choices_changed m_signal_choices_changed;
 
   Gtk::Label m_label;
   Gtk::Widget* m_child;

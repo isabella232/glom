@@ -107,6 +107,11 @@ public:
    */
   void set_other_field_value(const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& value);
 
+  /** Refresh the list of related records in choice combo boxes, 
+   * in any instance of the specified field.
+   */
+  void update_choices(const sharedptr<const LayoutItem_Field>& field);
+
   typedef std::list<Gtk::Widget*> type_list_widgets;
   typedef std::list<const Gtk::Widget*> type_list_const_widgets;
 
@@ -145,6 +150,13 @@ public:
    */
   typedef sigc::signal<void, const sharedptr<const LayoutItem_Field>&, const Gnome::Gda::Value&> type_signal_field_edited;
   type_signal_field_edited signal_field_edited();
+
+  /** For instance,
+   * void on_flowtable_field_choices_changed(const sharedptr<const LayoutItem_Field>& field);
+   */
+  typedef sigc::signal<void, const sharedptr<const LayoutItem_Field>&> type_signal_field_choices_changed;
+  type_signal_field_choices_changed signal_field_choices_changed();
+
 
   /** For instance,
    * void on_flowtable_field_open_details_requested(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
@@ -198,8 +210,10 @@ private:
   //int get_suitable_width(Field::glom_field_type field_type);
 
   void on_entry_edited(const Gnome::Gda::Value& value, const sharedptr<const LayoutItem_Field> field);
+  void on_entry_choices_changed(const sharedptr<const LayoutItem_Field> field);
   void on_entry_open_details_requested(const Gnome::Gda::Value& value, const sharedptr<const LayoutItem_Field> field);
   void on_flowtable_entry_edited(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  void on_flowtable_entry_choices_changed(const sharedptr<const LayoutItem_Field>& field);
   void on_flowtable_entry_open_details_requested(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
   void on_flowtable_related_record_changed(const Glib::ustring& relationship_name);
   void on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
@@ -271,6 +285,7 @@ private:
   type_vec_sizegroups m_vec_size_groups;
 
   type_signal_field_edited m_signal_field_edited;
+  type_signal_field_choices_changed m_signal_field_choices_changed;
   type_signal_field_open_details_requested m_signal_field_open_details_requested;
 
   //type_signal_related_record_added m_signal_related_record_added;
