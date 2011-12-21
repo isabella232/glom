@@ -49,7 +49,7 @@
             <property name="border_width">6</property>
             <property name="spacing">12</property>
             <child>
-              <object class="GtkAlignment" id="alignment_parent">
+              <object class="GtkAlignment" id="alignment_parent_top">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
@@ -150,7 +150,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkAlignment" id="alignment_parent1">
+                      <object class="GtkAlignment" id="alignment_parent">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>

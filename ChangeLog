@@ -1,3 +1,12 @@
+2011-12-21  Murray Cumming  <murrayc@murrayc.com>
+
+	Dialog_ChooseID: Really show the quick find feature.
+
+	* ui/operator/dialog_find_id.glade: Correct some widget names.
+	We were removing a widget too high in the hierarchy, so we did not 
+	show the quick find. This was presumably broken by some conversion
+	to a new version of Glade at some point.
+
 2011-12-20  Murray Cumming  <murrayc@murrayc.com>
 
 	TranslatableItem::get_title_translation(): Correct fallback code.
