@@ -1,3 +1,10 @@
+1.20.3 (stable):
+
+* Details: ID Find button: Really show the quick find feature.
+* List: Really store data when the primary key is not auto-incremented.
+* Add the glom_test_connection command-line tool.
+* Film Manager example: Use English for Day/Night choices.
+
 1.20.2 (stable):
 
 * Correct parsing of quotes in example data.
