@@ -51,13 +51,6 @@ public:
   void set_dtd_root_node_name(const Glib::ustring& strVal, const Glib::ustring& xmlns = Glib::ustring());
   
   Glib::ustring get_dtd_root_node_name() const;
-
-  /** Put each node on its own line and add white space for indenting,
-   * even if there are child text nodes.
-   * set_write_formatted() does not cause nodes to be indented if there are child text nodes,
-   * because it assumes that the white space is then significant.
-   */
-  void add_indenting_white_space();
   
   Glib::ustring get_xml() const; //Get the text for the XML.
 
@@ -73,6 +66,11 @@ protected:
 
   void Util_DOM_Write(Glib::ustring& refstrXML) const;
 
+  /** Put each node on its own line and add white space for indenting,
+   * even if there are child text nodes.
+   * set_write_formatted() does not cause nodes to be indented if there are child text nodes,
+   * because it assumes that the white space is then significant.
+   */
   void add_indenting_white_space_to_node(xmlpp::Node* node = 0, const Glib::ustring& start_indent = Glib::ustring());
 
   typedef GlomBakery::Document type_base;
