@@ -1,3 +1,11 @@
+2011-12-23  Murray Cumming  <murrayc@murrayc.com>
+
+	Document_XML: Remove an unimplemented method.
+
+	* glom/libglom/document/bakery/document_xml.h:
+	add_indenting_white_space() was never implemented or 
+	used.
+
 2011-12-21  Murray Cumming  <murrayc@murrayc.com>
 
 	Dialog_ChooseID: Really show the quick find feature.
