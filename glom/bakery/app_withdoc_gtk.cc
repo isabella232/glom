@@ -25,6 +25,7 @@
 #include <gtkmm/recentchoosermenu.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/filechooserdialog.h>
+#include <gtkmm/editable.h>
 #include <giomm/file.h>
 #include <algorithm>
 #include <iostream>
@@ -281,9 +282,12 @@ void App_WithDoc_Gtk::init_menus_edit()
   m_refEditActionGroup = ActionGroup::create("BakeryEditActions");
   m_refEditActionGroup->add(Action::create("BakeryAction_Menu_Edit", _("_Edit")));
   
-  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Cut", Gtk::Stock::CUT));
-  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Copy", Gtk::Stock::COPY));
-  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Paste", Gtk::Stock::PASTE));
+  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Cut", Gtk::Stock::CUT),
+                        sigc::mem_fun((App_WithDoc_Gtk&)*this, &App_WithDoc_Gtk::on_menu_edit_cut_activate));
+  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Copy", Gtk::Stock::COPY),
+                        sigc::mem_fun((App_WithDoc_Gtk&)*this, &App_WithDoc_Gtk::on_menu_edit_copy_activate));
+  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Paste", Gtk::Stock::PASTE),
+                        sigc::mem_fun((App_WithDoc_Gtk&)*this, &App_WithDoc_Gtk::on_menu_edit_paste_activate));
   m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Clear", Gtk::Stock::CLEAR));
 
   m_refUIManager->insert_action_group(m_refEditActionGroup);
@@ -565,6 +569,33 @@ void App_WithDoc_Gtk::document_history_remove(const Glib::ustring& file_uri)
 
     Gtk::RecentManager::get_default()->remove_item(uri);
   }
+}
+
+void App_WithDoc_Gtk::on_menu_edit_copy_activate()
+{
+  GtkEditable* editable_gobj = (GtkEditable *)this->get_focus()->gobj();
+  Glib::RefPtr<Gtk::Editable> editable = Glib::RefPtr<Gtk::Editable>::cast_dynamic(Glib::wrap(editable_gobj, true));
+
+  if(editable)
+    editable->copy_clipboard();
+}
+
+void App_WithDoc_Gtk::on_menu_edit_cut_activate()
+{
+  GtkEditable* editable_gobj = (GtkEditable *)this->get_focus()->gobj();
+  Glib::RefPtr<Gtk::Editable> editable = Glib::RefPtr<Gtk::Editable>::cast_dynamic(Glib::wrap(editable_gobj, true));
+
+  if(editable)
+    editable->cut_clipboard();
+}
+
+void App_WithDoc_Gtk::on_menu_edit_paste_activate()
+{
+  GtkEditable* editable_gobj = (GtkEditable *)this->get_focus()->gobj();
+  Glib::RefPtr<Gtk::Editable> editable = Glib::RefPtr<Gtk::Editable>::cast_dynamic(Glib::wrap(editable_gobj, true));
+
+  if(editable)
+    editable->paste_clipboard();
 }
 
 void App_WithDoc_Gtk::on_recent_files_activate(Gtk::RecentChooser& chooser)

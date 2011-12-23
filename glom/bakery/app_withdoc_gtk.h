@@ -103,6 +103,9 @@ protected:
 
   virtual bool on_delete_event(GdkEventAny* event); //override
 
+  void on_menu_edit_copy_activate();
+  void on_menu_edit_cut_activate();
+  void on_menu_edit_paste_activate();
   void on_recent_files_activate(Gtk::RecentChooser& recent_chooser);
 
   //UIManager and Actions

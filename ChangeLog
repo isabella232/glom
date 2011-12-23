@@ -1,3 +1,10 @@
+2011-12-27  David King  <davidk@openismus.com>
+
+	Add simple clipboard handlers to App_WithDoc_Gtk
+
+	* glom/bakery/app_withdoc_gtk.[cc|h]: Add simple clipboard handlers to
+	fix bug 518315.
+
 2011-12-24  Murray Cumming  <murrayc@murrayc.com>
 
 	Choices: Make sure related choices are sorted.
