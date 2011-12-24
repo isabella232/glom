@@ -1,3 +1,13 @@
+2011-12-24  Murray Cumming  <murrayc@murrayc.com>
+
+	Choices: Make sure related choices are sorted.
+
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.cc: 
+	set_choices_related(): Add a sort clause, though it would be best if
+	the developer could specify this.
+	Note that Utils::get_choice_values(), used for other choices, already 
+	does this, and we should reduce the code duplication.
+
 2011-12-23  Murray Cumming  <murrayc@murrayc.com>
 
 	Document_XML: Remove an unimplemented method.
