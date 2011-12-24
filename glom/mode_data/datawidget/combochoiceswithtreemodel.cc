@@ -277,6 +277,10 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
       to_table, to_field, foreign_key_value);
   }
 
+  //Sort by the first field, because that is better than so sort at all.
+  //TODO: Allow the developer to specify the sort order:
+  found_set.m_sort_clause.push_back( FoundSet::type_pair_sort_field(layout_choice_first, true /* ascending */) );
+
 
   m_db_layout_items.clear();
 
