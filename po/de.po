@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-12-19 14:10+0000\n"
-"PO-Revision-Date: 2011-12-20 20:12+0100\n"
+"POT-Creation-Date: 2011-12-23 12:15+0000\n"
+"PO-Revision-Date: 2011-12-28 11:32+0100\n"
 "Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1187,7 +1187,7 @@ msgstr "Nummer"
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/field.cc:693
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:73
-#: ../glom/libglom/data_structure/translatable_item.cc:317
+#: ../glom/libglom/data_structure/translatable_item.cc:313
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1158
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:36
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:760
@@ -1213,7 +1213,7 @@ msgstr "Boolean"
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/field.cc:705
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:70
-#: ../glom/libglom/data_structure/translatable_item.cc:319
+#: ../glom/libglom/data_structure/translatable_item.cc:315
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1165
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:38
 #: ../glom/utility_widgets/layouttoolbar.cc:47
@@ -1269,7 +1269,7 @@ msgstr "Gruppe"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:68
-#: ../glom/libglom/data_structure/translatable_item.cc:315
+#: ../glom/libglom/data_structure/translatable_item.cc:311
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1151
 #: ../glom/utility_widgets/layouttoolbar.cc:43
 msgid "Button"
@@ -1282,7 +1282,7 @@ msgstr "Kalenderportal"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:219
-#: ../glom/libglom/data_structure/translatable_item.cc:297
+#: ../glom/libglom/data_structure/translatable_item.cc:293
 #: ../glom/mode_design/dialog_database_preferences.cc:62
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:756
 #: ../ui/developer/window_field_definition_edit.glade.h:2
@@ -1370,28 +1370,28 @@ msgstr "Übersicht"
 msgid "Vertical Group"
 msgstr "Vertikale Gruppe"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:299
+#: ../glom/libglom/data_structure/translatable_item.cc:295
 msgid "Custom Title"
 msgstr "Benutzerdefinierte Titel"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:301
+#: ../glom/libglom/data_structure/translatable_item.cc:297
 msgid "Relationship"
 msgstr "Beziehung"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:303
+#: ../glom/libglom/data_structure/translatable_item.cc:299
 msgid "Layout Item"
 msgstr "Layout-Element"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:305
+#: ../glom/libglom/data_structure/translatable_item.cc:301
 msgid "Print Layout"
 msgstr "Druck-Layout"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:307
+#: ../glom/libglom/data_structure/translatable_item.cc:303
 msgid "Report"
 msgstr "Bericht"
 
 #. Tables:
-#: ../glom/libglom/data_structure/translatable_item.cc:309
+#: ../glom/libglom/data_structure/translatable_item.cc:305
 #: ../glom/mode_design/box_db_table_relationships.cc:52
 #: ../glom/mode_design/dialog_database_preferences.cc:61
 #: ../glom/mode_design/users/dialog_groups_list.cc:72
@@ -1399,15 +1399,15 @@ msgstr "Bericht"
 msgid "Table"
 msgstr "Tabelle"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:311
+#: ../glom/libglom/data_structure/translatable_item.cc:307
 msgid "Layout Group"
 msgstr "Layout-Gruppe"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:313
+#: ../glom/libglom/data_structure/translatable_item.cc:309
 msgid "Field Title"
 msgstr "Feldtitel"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:321
+#: ../glom/libglom/data_structure/translatable_item.cc:317
 #: ../glom/mode_design/translation/window_translations.cc:220
 msgid "Unknown"
 msgstr "Unbekannt"
@@ -2777,32 +2777,40 @@ msgstr "Beispiel"
 
 #. The GNOME HIG says that labels should have ":" at the end:
 #. http://library.gnome.org/devel/hig-book/stable/design-text-labels.html.en
-#: ../glom/mode_data/datawidget/datawidget.cc:73
+#: ../glom/mode_data/datawidget/datawidget.cc:74
 msgid "%1:"
 msgstr "%1:"
 
 #. Let the user choose a date from a calendar dialog:
-#: ../glom/mode_data/datawidget/datawidget.cc:210
+#: ../glom/mode_data/datawidget/datawidget.cc:211
 msgid "..."
 msgstr "…"
 
 #. TODO: A better label/icon for "Choose Date".
-#: ../glom/mode_data/datawidget/datawidget.cc:211
+#: ../glom/mode_data/datawidget/datawidget.cc:212
 msgid "Choose a date from an on-screen calendar."
 msgstr "Wählen Sie ein Datum aus dem Bildschirm-Kalender aus."
 
-#: ../glom/mode_data/datawidget/datawidget.cc:221
+#: ../glom/mode_data/datawidget/datawidget.cc:222
 msgid "Open the record identified by this ID, in the other table."
 msgstr ""
 "Den zu dieser Kennung gehörenden Datensatz in der anderen Tabelle öffnen."
 
-#: ../glom/mode_data/datawidget/datawidget.cc:231
+#: ../glom/mode_data/datawidget/datawidget.cc:232
 msgid ""
 "Enter search criteria to identify records in the other table, to choose an ID "
 "for this field."
 msgstr ""
 "Geben Sie Suchkriterien ein, um Datensätze in der anderen Tabelle zu suchen, "
 "um eine ID für dieses Feld festzulegen."
+
+#: ../glom/mode_data/datawidget/datawidget.cc:237
+msgid ""
+"Enter details for a new record in the other table, then use its ID for this "
+"field."
+msgstr ""
+"Geben Sie Details für einen neuen Datensatz in der anderen Tabelle ein, dann "
+"nutzen Sie dessen ID für dieses Feld."
 
 #: ../glom/mode_data/db_adddel/db_adddel.cc:78
 msgid "Table Content"
@@ -3128,6 +3136,7 @@ msgid "_Select"
 msgstr "_Auswählen"
 
 #: ../ui/operator/dialog_find_id.glade.h:1
+#: ../ui/operator/dialog_new_record.glade.h:1
 #: ../ui/developer/window_data_layout_export.glade.h:1
 #: ../ui/developer/window_data_layout.glade.h:6
 #: ../ui/developer/window_design.glade.h:1
@@ -3136,10 +3145,12 @@ msgid "<b>Table:</b>"
 msgstr "<b>Tabelle: </b>"
 
 #: ../ui/operator/dialog_find_id.glade.h:2
+#: ../ui/operator/dialog_new_record.glade.h:2
 msgid "Find Related Record"
 msgstr "Bezugsdatensatz suchen"
 
 #: ../ui/operator/dialog_find_id.glade.h:4
+#: ../ui/operator/dialog_new_record.glade.h:3
 msgid "table_name"
 msgstr "Tabellen_name"
 
