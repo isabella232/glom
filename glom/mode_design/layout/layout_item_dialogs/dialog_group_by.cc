@@ -192,22 +192,7 @@ void Dialog_GroupBy::update_labels()
   }
 
   //Sort fields:
-  if(m_layout_item->get_has_fields_sort_by())
-  {
-    Glib::ustring text;
-    LayoutItem_GroupBy::type_list_sort_fields list_fields = m_layout_item->get_fields_sort_by();
-    for(LayoutItem_GroupBy::type_list_sort_fields::const_iterator iter = list_fields.begin(); iter != list_fields.end(); ++iter)
-    {
-      if(!text.empty())
-        text += ", ";
-
-      text += iter->first->get_layout_display_name();
-    }
-
-    m_label_sort_by->set_text(text);
-  }
-  else
-    m_label_sort_by->set_text( Glib::ustring() );
+  m_label_sort_by->set_text( Utils::get_list_of_sort_fields_for_display(m_layout_item->get_fields_sort_by()) );
 
   //Secondary Fields:
   const Glib::ustring text_secondary_fields =

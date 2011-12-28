@@ -34,6 +34,7 @@
 #include <glom/mode_design/layout/combobox_relationship.h>
 #include <glom/mode_design/layout/combobox_fields.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.h>
+#include <glom/mode_design/layout/layout_item_dialogs/dialog_sortfields.h>
 
 namespace Glom
 {
@@ -78,6 +79,7 @@ private:
   void on_combo_choices_relationship_changed();
   void on_checkbox();
   void on_button_choices_extra();
+  void on_button_choices_sortby();
 
   void enforce_constraints();
 
@@ -114,9 +116,12 @@ private:
   ComboBox_Fields* m_combo_choices_field;
   Gtk::Label* m_label_choices_extra_fields;
   Gtk::Button* m_button_choices_extra_fields;
+  Gtk::Label* m_label_choices_sortby;
+  Gtk::Button* m_button_choices_sortby;
   Gtk::CheckButton* m_checkbutton_choices_related_show_all;
 
   Dialog_FieldsList* m_dialog_choices_extra_fields;
+  Dialog_SortFields* m_dialog_choices_sortby;
 
   mutable FieldFormatting m_format;
 

@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_MODE_DESIGN_DIALOG_GROUPBY_SORTFIELDS_H
-#define GLOM_MODE_DESIGN_DIALOG_GROUPBY_SORTFIELDS_H
+#ifndef GLOM_MODE_DESIGN_DIALOG_SORTFIELDS_H
+#define GLOM_MODE_DESIGN_DIALOG_SORTFIELDS_H
 
 #include <glom/base_db.h>
 #include <glom/mode_design/layout/dialog_layout.h>
@@ -28,15 +28,15 @@
 namespace Glom
 {
 
-class Dialog_GroupBy_SortFields
+class Dialog_SortFields
  : public Dialog_Layout //It has some useful stuff
 {
 public:
   static const char* glade_id;
   static const bool glade_developer;
 
-  Dialog_GroupBy_SortFields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_GroupBy_SortFields();
+  Dialog_SortFields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
+  virtual ~Dialog_SortFields();
 
 
   void set_fields(const Glib::ustring& table_name, const LayoutItem_GroupBy::type_list_sort_fields& table_fields);
@@ -86,4 +86,4 @@ private:
 
 } //namespace Glom
 
-#endif // GLOM_MODE_DESIGN_DIALOG_GROUPBY_SORTFIELDS_H
+#endif // GLOM_MODE_DESIGN_DIALOG_SORTFIELDS_H

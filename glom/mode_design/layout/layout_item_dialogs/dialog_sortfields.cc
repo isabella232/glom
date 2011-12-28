@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "dialog_groupby_sortfields.h"
+#include "dialog_sortfields.h"
 #include "dialog_field_layout.h"
 
 //#include <libgnome/gnome-i18n.h>
@@ -27,10 +27,10 @@
 namespace Glom
 {
 
-const char* Dialog_GroupBy_SortFields::glade_id("dialog_groupby_sort_fields");
-const bool Dialog_GroupBy_SortFields::glade_developer(true);
+const char* Dialog_SortFields::glade_id("dialog_sort_fields");
+const bool Dialog_SortFields::glade_developer(true);
 
-Dialog_GroupBy_SortFields::Dialog_GroupBy_SortFields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+Dialog_SortFields::Dialog_SortFields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Layout(cobject, builder, false /* means no table title */),
   m_treeview_fields(0),
   m_button_field_up(0),
@@ -54,7 +54,7 @@ Dialog_GroupBy_SortFields::Dialog_GroupBy_SortFields(BaseObjectType* cobject, co
 
     Gtk::CellRendererText* renderer_name = Gtk::manage(new Gtk::CellRendererText);
     column_name->pack_start(*renderer_name);
-    column_name->set_cell_data_func(*renderer_name, sigc::mem_fun(*this, &Dialog_GroupBy_SortFields::on_cell_data_name));
+    column_name->set_cell_data_func(*renderer_name, sigc::mem_fun(*this, &Dialog_SortFields::on_cell_data_name));
 
     m_treeview_fields->append_column_editable(_("Ascending"), m_ColumnsFields.m_col_ascending);
 
@@ -66,36 +66,36 @@ Dialog_GroupBy_SortFields::Dialog_GroupBy_SortFields(BaseObjectType* cobject, co
     Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
     if(refSelection)
     {
-      refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SortFields::on_treeview_fields_selection_changed) );
+      refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_SortFields::on_treeview_fields_selection_changed) );
     }
 
-    m_model_fields->signal_row_changed().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SortFields::on_treemodel_row_changed) );
+    m_model_fields->signal_row_changed().connect( sigc::mem_fun(*this, &Dialog_SortFields::on_treemodel_row_changed) );
   }
 
 
   builder->get_widget("button_field_up", m_button_field_up);
-  m_button_field_up->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SortFields::on_button_field_up) );
+  m_button_field_up->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_SortFields::on_button_field_up) );
 
   builder->get_widget("button_field_down", m_button_field_down);
-  m_button_field_down->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SortFields::on_button_field_down) );
+  m_button_field_down->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_SortFields::on_button_field_down) );
 
   builder->get_widget("button_field_delete", m_button_field_delete);
-  m_button_field_delete->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SortFields::on_button_delete) );
+  m_button_field_delete->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_SortFields::on_button_delete) );
 
   builder->get_widget("button_field_add", m_button_field_add);
-  m_button_field_add->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SortFields::on_button_add_field) );
+  m_button_field_add->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_SortFields::on_button_add_field) );
 
   builder->get_widget("button_field_edit", m_button_field_edit);
-  m_button_field_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SortFields::on_button_edit_field) );
+  m_button_field_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_SortFields::on_button_edit_field) );
 
   show_all_children();
 }
 
-Dialog_GroupBy_SortFields::~Dialog_GroupBy_SortFields()
+Dialog_SortFields::~Dialog_SortFields()
 {
 }
 
-void Dialog_GroupBy_SortFields::set_fields(const Glib::ustring& table_name, const LayoutItem_GroupBy::type_list_sort_fields& fields)
+void Dialog_SortFields::set_fields(const Glib::ustring& table_name, const LayoutItem_GroupBy::type_list_sort_fields& fields)
 {
   m_modified = false;
   m_table_name = table_name;
@@ -133,7 +133,7 @@ void Dialog_GroupBy_SortFields::set_fields(const Glib::ustring& table_name, cons
   m_modified = false;
 }
 
-void Dialog_GroupBy_SortFields::enable_buttons()
+void Dialog_SortFields::enable_buttons()
 {
   //Fields:
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
@@ -175,17 +175,17 @@ void Dialog_GroupBy_SortFields::enable_buttons()
 }
 
 
-void Dialog_GroupBy_SortFields::on_button_field_up()
+void Dialog_SortFields::on_button_field_up()
 {
   move_treeview_selection_up(m_treeview_fields, m_ColumnsFields.m_col_sequence);
 }
 
-void Dialog_GroupBy_SortFields::on_button_field_down()
+void Dialog_SortFields::on_button_field_down()
 {
   move_treeview_selection_down(m_treeview_fields, m_ColumnsFields.m_col_sequence);
 }
 
-LayoutItem_GroupBy::type_list_sort_fields Dialog_GroupBy_SortFields::get_fields() const
+LayoutItem_GroupBy::type_list_sort_fields Dialog_SortFields::get_fields() const
 {
   LayoutItem_GroupBy::type_list_sort_fields result;
 
@@ -210,12 +210,12 @@ LayoutItem_GroupBy::type_list_sort_fields Dialog_GroupBy_SortFields::get_fields(
   return result;
 }
 
-void Dialog_GroupBy_SortFields::on_treeview_fields_selection_changed()
+void Dialog_SortFields::on_treeview_fields_selection_changed()
 {
   enable_buttons();
 }
 
-void Dialog_GroupBy_SortFields::on_button_add_field()
+void Dialog_SortFields::on_button_add_field()
 {
   //Get the chosen fields:
   type_list_field_items fields_list = offer_field_list(m_table_name, this);
@@ -247,7 +247,7 @@ void Dialog_GroupBy_SortFields::on_button_add_field()
   }
 }
 
-void Dialog_GroupBy_SortFields::on_button_delete()
+void Dialog_SortFields::on_button_delete()
 {
   Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
@@ -264,7 +264,7 @@ void Dialog_GroupBy_SortFields::on_button_delete()
 }
 
 
-void Dialog_GroupBy_SortFields::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+void Dialog_SortFields::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
   Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
@@ -282,7 +282,7 @@ void Dialog_GroupBy_SortFields::on_cell_data_name(Gtk::CellRenderer* renderer, c
 }
 
 
-void Dialog_GroupBy_SortFields::on_button_edit_field()
+void Dialog_SortFields::on_button_edit_field()
 {
   Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)

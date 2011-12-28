@@ -59,6 +59,9 @@ public:
   virtual type_list_values get_choices_custom() const;
   virtual void set_choices_custom(const type_list_values& choices);
 
+  typedef std::pair< sharedptr<const LayoutItem_Field>, bool /* is_ascending */> type_pair_sort_field;
+  typedef std::list<type_pair_sort_field> type_list_sort_fields;
+
   /** Discover whether the entered data should only be one of the available
    * choices.
    * @param [out] as_radio_buttons: Whether the choices should be displayed as
@@ -70,9 +73,12 @@ public:
    */
   void set_choices_restricted(bool val = true, bool as_radio_buttons = false);
 
-  void get_choices_related(sharedptr<const Relationship>& relationship, sharedptr<LayoutItem_Field>& field, sharedptr<LayoutGroup>& extra_layout, bool& show_all);
-  void get_choices_related(sharedptr<const Relationship>& relationship, sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutGroup>& extra_layout, bool& show_all) const;
-  void set_choices_related(const sharedptr<const Relationship>& relationship_name, const sharedptr<LayoutItem_Field>& field, const sharedptr<LayoutGroup>& extra_layout, bool show_all);
+  //TODO: Add a ChoicesRelated class?
+
+  
+  void get_choices_related(sharedptr<const Relationship>& relationship, sharedptr<LayoutItem_Field>& field, sharedptr<LayoutGroup>& extra_layout, type_list_sort_fields& sort_fields, bool& show_all);
+  void get_choices_related(sharedptr<const Relationship>& relationship, sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutGroup>& extra_layout, type_list_sort_fields& sort_fields, bool& show_all) const;
+  void set_choices_related(const sharedptr<const Relationship>& relationship_name, const sharedptr<LayoutItem_Field>& field, const sharedptr<LayoutGroup>& extra_layout, const type_list_sort_fields& sort_fields, bool show_all);
 
   //Just for convenience:
   sharedptr<const Relationship> get_choices_related_relationship(bool& show_all) const;
@@ -179,6 +185,7 @@ private:
 
   sharedptr<LayoutItem_Field> m_choices_related_field;
   sharedptr<LayoutGroup> m_choices_extra_layout_group;
+  type_list_sort_fields m_choices_related_sort_fields;
   bool m_choices_related_show_all;
 };
 

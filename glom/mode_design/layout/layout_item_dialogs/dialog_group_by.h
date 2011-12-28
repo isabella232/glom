@@ -30,7 +30,7 @@
 #include <glom/utility_widgets/combo_textglade.h>
 #include <glom/mode_design/comboentry_currency.h>
 #include "dialog_fieldslist.h"
-#include "dialog_groupby_sortfields.h"
+#include "dialog_sortfields.h"
 #include "comboentry_borderwidth.h"
 
 namespace Glom
@@ -76,7 +76,7 @@ private:
   ComboEntry_BorderWidth* m_comboboxentry_border_width;
 
   Dialog_FieldsList* m_dialog_choose_secondary_fields;
-  Dialog_GroupBy_SortFields* m_dialog_choose_sort_fields;
+  Dialog_SortFields* m_dialog_choose_sort_fields;
 
   mutable sharedptr<LayoutItem_GroupBy> m_layout_item;
 

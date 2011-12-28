@@ -57,7 +57,7 @@
 #include <glom/mode_design/dialog_fields.h>
 #include <glom/mode_design/dialog_initial_password.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.h>
-#include <glom/mode_design/layout/layout_item_dialogs/dialog_groupby_sortfields.h>
+#include <glom/mode_design/layout/layout_item_dialogs/dialog_sortfields.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_formatting.h>
 #include <glom/mode_design/script_library/dialog_new_script.h>
 #include <glom/mode_design/script_library/dialog_script_library.h>
@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
   instantiate_widget<Dialog_FieldDefinition>();
   instantiate_widget<Box_Formatting>();
   instantiate_widget<Dialog_FieldsList>();
-  instantiate_widget<Dialog_GroupBy_SortFields>();
+  instantiate_widget<Dialog_SortFields>();
   instantiate_widget<Dialog_Line>();
   instantiate_widget<Dialog_ImageObject>();
   instantiate_widget<Dialog_Notebook>();

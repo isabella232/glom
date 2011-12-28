@@ -65,8 +65,11 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   m_combo_choices_field(0),
   m_label_choices_extra_fields(0),
   m_button_choices_extra_fields(0),
+  m_label_choices_sortby(0),
+  m_button_choices_sortby(0),
   m_checkbutton_choices_related_show_all(0),
   m_dialog_choices_extra_fields(0),
+  m_dialog_choices_sortby(0),
   m_for_print_layout(false),
   m_show_numeric(true),
   m_show_editable_options(true)
@@ -138,6 +141,8 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   builder->get_widget_derived("combobox_choices_related_field", m_combo_choices_field);
   builder->get_widget("label_choices_related_extra_fields", m_label_choices_extra_fields);
   builder->get_widget("button_choices_related_extra_fields", m_button_choices_extra_fields);
+  builder->get_widget("label_choices_related_sortby", m_label_choices_sortby);
+  builder->get_widget("button_choices_related_sortby", m_button_choices_sortby);
   builder->get_widget("checkbutton_choices_related_show_all", m_checkbutton_choices_related_show_all);
   builder->get_widget("radiobutton_choices_custom", m_radiobutton_choices_custom);
   builder->get_widget("radiobutton_choices_related", m_radiobutton_choices_related);
@@ -151,12 +156,22 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   m_checkbox_format_color_negatives->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox) );
   m_checkbutton_choices_restricted->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox) );
   m_button_choices_extra_fields->signal_clicked().connect( sigc::mem_fun(*this, &Box_Formatting::on_button_choices_extra) );
+  m_button_choices_sortby->signal_clicked().connect( sigc::mem_fun(*this, &Box_Formatting::on_button_choices_sortby) );
 
+  //TODO: Delay this until it is used?
   if(!m_dialog_choices_extra_fields)
   {
     Utils::get_glade_widget_derived_with_warning(m_dialog_choices_extra_fields);
     add_view(m_dialog_choices_extra_fields); //Give it access to the document.
     m_dialog_choices_extra_fields->set_title(_("Extra Fields"));
+  }
+
+  //TODO: Delay this until it is used?
+  if(!m_dialog_choices_sortby)
+  {
+    Utils::get_glade_widget_derived_with_warning(m_dialog_choices_sortby);
+    add_view(m_dialog_choices_sortby); //Give it access to the document.
+    m_dialog_choices_sortby->set_title(_("Sort Order"));
   }
 
   show_all_children();
@@ -168,6 +183,12 @@ Box_Formatting::~Box_Formatting()
   {
     remove_view(m_dialog_choices_extra_fields); //Give it access to the document.
     delete m_dialog_choices_extra_fields;
+  }
+
+  if(m_dialog_choices_sortby)
+  {
+    remove_view(m_dialog_choices_sortby); //Give it access to the document.
+    delete m_dialog_choices_sortby;
   }
 }
 
@@ -269,17 +290,19 @@ void Box_Formatting::set_formatting_for_non_field(const FieldFormatting& format,
     sharedptr<const Relationship> choices_relationship;
     sharedptr<const LayoutItem_Field> choices_field;
     sharedptr<const LayoutGroup> choices_field_extras;
+    FieldFormatting::type_list_sort_fields choices_sort_fields;
     bool choices_show_all = false;
-    format.get_choices_related(choices_relationship, choices_field, choices_field_extras, choices_show_all);
+    format.get_choices_related(choices_relationship, choices_field, choices_field_extras, choices_sort_fields, choices_show_all);
 
     m_combo_choices_relationship->set_selected_relationship(choices_relationship);
     on_combo_choices_relationship_changed(); //Fill the combos so we can set their active items.
     m_combo_choices_field->set_selected_field(choices_field ? choices_field->get_name() : Glib::ustring());
 
-    //Show the list of fields in a label:
+
+    //Show the list of extra fields in a label:
     const Glib::ustring text_extra_fields =
       Utils::get_list_of_layout_items_for_display(choices_field_extras);
-     m_label_choices_extra_fields->set_text(text_extra_fields);
+    m_label_choices_extra_fields->set_text(text_extra_fields);
 
     //Update the contents of the dialog that will be shown if Edit is clicked:
     const Glib::ustring related_to_table =
@@ -289,6 +312,14 @@ void Box_Formatting::set_formatting_for_non_field(const FieldFormatting& format,
     else
       m_dialog_choices_extra_fields->set_fields(related_to_table, LayoutGroup::type_list_items());
 
+
+    //Show the list of sort fields in a label:
+    const Glib::ustring text_sortby =
+      Utils::get_list_of_sort_fields_for_display(choices_sort_fields);
+    m_label_choices_sortby->set_text(text_sortby);
+
+    //Update the contents of the dialog that will be shown if Edit is clicked:
+    m_dialog_choices_sortby->set_fields(related_to_table, choices_sort_fields);
 
 
     m_checkbutton_choices_related_show_all->set_active(choices_show_all);
@@ -365,8 +396,11 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
     sharedptr<LayoutGroup> layout_choice_extra = sharedptr<LayoutGroup>::create();
     layout_choice_extra->m_list_items = m_dialog_choices_extra_fields->get_fields();
 
+    const FieldFormatting::type_list_sort_fields sort_fields = m_dialog_choices_sortby->get_fields();
+
     m_format.set_choices_related(choices_relationship,
       layout_choice_first, layout_choice_extra,
+      sort_fields,
       m_checkbutton_choices_related_show_all->get_active());
 
     //Custom choices:
@@ -419,7 +453,18 @@ void Box_Formatting::on_combo_choices_relationship_changed()
       //Update the label:
       const Glib::ustring text_extra_fields =
         Utils::get_list_of_layout_items_for_display(m_dialog_choices_extra_fields->get_fields());
-       m_label_choices_extra_fields->set_text(text_extra_fields);
+      m_label_choices_extra_fields->set_text(text_extra_fields);
+
+
+      //If the related table name has changed then the list of sort fields will probably
+      //be ignored, clearing the list, but we try to preserve it if possible:
+      const FieldFormatting::type_list_sort_fields sort_fields = m_dialog_choices_sortby->get_fields();
+      m_dialog_choices_sortby->set_fields(relationship->get_to_table(), sort_fields);
+
+      //Update the label: //TODO: Do the label updating in a shared function.
+      const Glib::ustring text_sortby =
+        Utils::get_list_of_sort_fields_for_display(m_dialog_choices_sortby->get_fields());
+      m_label_choices_sortby->set_text(text_sortby);
     }
   }
 }
@@ -525,6 +570,24 @@ void Box_Formatting::on_button_choices_extra()
   }
 }
 
+void Box_Formatting::on_button_choices_sortby()
+{
+  if(!m_dialog_choices_sortby)
+    return;
+
+  const int response = Glom::Utils::dialog_run_with_help(m_dialog_choices_sortby);
+  m_dialog_choices_sortby->hide();
+  if(response == Gtk::RESPONSE_OK && m_dialog_choices_sortby->get_modified())
+  {
+    //Update the label:
+    const Glib::ustring text_sortby =
+      Utils::get_list_of_sort_fields_for_display(m_dialog_choices_sortby->get_fields());
+    m_label_choices_sortby->set_text(text_sortby);
+
+    //Tell the parent (which connects directly to all other (regular) widgets):
+    m_signal_modified.emit();
+  }
+}
 
 Box_Formatting::type_signal_modified Box_Formatting::signal_modified()
 {

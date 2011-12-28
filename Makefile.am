@@ -133,7 +133,6 @@ dist_glade_developer_DATA = ui/developer/dialog_add_related_table.glade \
 	ui/developer/dialog_field_summary.glade \
 	ui/developer/dialog_flowtable.glade \
 	ui/developer/dialog_group_by.glade \
-	ui/developer/dialog_groupby_sort_fields.glade \
 	ui/developer/dialog_initial_password.glade \
 	ui/developer/dialog_line.glade \
 	ui/developer/dialog_layout_field_properties.glade \
@@ -142,6 +141,7 @@ dist_glade_developer_DATA = ui/developer/dialog_add_related_table.glade \
 	ui/developer/dialog_notebook.glade \
 	ui/developer/dialog_relationships_overview.glade \
 	ui/developer/dialog_script_library.glade \
+	ui/developer/dialog_sort_fields.glade \
 	ui/developer/dialog_translation_copy.glade \
 	ui/developer/dialog_translation_identify_original.glade \
 	ui/developer/dialog_user.glade \

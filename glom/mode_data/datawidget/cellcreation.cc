@@ -211,9 +211,10 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
     {
       sharedptr<const Relationship> choice_relationship;
       sharedptr<const LayoutItem_Field> choice_field;
-      sharedptr<const LayoutGroup> choice_extras;
+      sharedptr<const LayoutGroup> choice_extras; //Ignored
+      FieldFormatting::type_list_sort_fields choice_sort_fields; //Ignored
       bool choice_show_all = false;
-      item_field->get_formatting_used().get_choices_related(choice_relationship, choice_field, choice_extras, choice_show_all);
+      item_field->get_formatting_used().get_choices_related(choice_relationship, choice_field, choice_extras, choice_sort_fields, choice_show_all);
 
       if(choice_relationship && choice_field)
       {

@@ -553,8 +553,9 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
   sharedptr<const Relationship> choice_relationship;
   sharedptr<const LayoutItem_Field> layout_choice_first;
   sharedptr<const LayoutGroup> layout_choice_extra;
+  FieldFormatting::type_list_sort_fields choice_sort_fields;
   bool choice_show_all = false;
-  format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_extra, choice_show_all);
+  format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_extra, choice_sort_fields, choice_show_all);
 
   if(!choice_relationship)
   {
@@ -586,8 +587,11 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
     std::cerr << G_STRFUNC << ": to_field is null." << std::endl;
   }
 
-  type_sort_clause sort_clause;
-  sort_clause.push_back( type_pair_sort_field(layout_choice_first, true /* ascending */));
+  //Default to some sort order rather than none:
+  if(choice_sort_fields.empty())
+  {
+    choice_sort_fields.push_back( type_pair_sort_field(layout_choice_first, true /* ascending */));
+  }
 
   //TODO: Support related relationships (in the UI too):
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Utils::build_sql_select_with_key(
@@ -595,7 +599,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
     fields,
     to_field,
     foreign_key_value,
-    sort_clause);
+    choice_sort_fields);
 
   if(!builder)
   {
@@ -1349,6 +1353,25 @@ Glib::ustring Utils::get_list_of_layout_items_for_display(const sharedptr<const 
     return get_list_of_layout_items_for_display(layout_group->m_list_items);
   else
     return Glib::ustring();
+}
+
+Glib::ustring Utils::get_list_of_sort_fields_for_display(const FieldFormatting::type_list_sort_fields& sort_fields)
+{
+  Glib::ustring text;
+  for(FieldFormatting::type_list_sort_fields::const_iterator iter = sort_fields.begin(); iter != sort_fields.end(); ++iter)
+  {
+    const sharedptr<const LayoutItem_Field> item = iter->first;
+    if(!item)
+      continue;
+    
+    if(!text.empty())
+      text += ", ";
+
+    text += item->get_layout_display_name();
+    //TODO: Show Ascending/Descending?
+  }
+
+  return text;
 }
 
 std::string Utils::get_temp_file_path(const std::string& prefix, const std::string& extension)

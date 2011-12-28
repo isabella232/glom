@@ -47,6 +47,7 @@ public:
   sharedptr<const Relationship> m_extra_join; // Only used for doubly-related related records (portals), in which case the WHERE clause is also slightly different.
   Gnome::Gda::SqlExpr m_where_clause;
 
+  //TODO: Avoid duplication with types in FieldFormatting.
   ///field, ascending
   typedef std::pair< sharedptr<const LayoutItem_Field>, bool> type_pair_sort_field;
   typedef std::list<type_pair_sort_field> type_sort_clause;

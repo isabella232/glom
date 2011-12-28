@@ -69,8 +69,9 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
   sharedptr<const Relationship> choice_relationship;
   sharedptr<const LayoutItem_Field> layout_choice_first;
   sharedptr<const LayoutGroup> layout_choice_extra;
+  FieldFormatting::type_list_sort_fields choice_sort_fields; //Ignored. TODO?
   bool choice_show_all = false;
-  format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_extra, choice_show_all);
+  format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_extra, choice_sort_fields, choice_show_all);
 
   LayoutGroup::type_list_const_items extra_fields;
   if(layout_choice_extra)

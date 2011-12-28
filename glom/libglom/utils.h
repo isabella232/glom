@@ -210,6 +210,10 @@ Glib::ustring get_list_of_layout_items_for_display(const LayoutGroup::type_list_
  */
 Glib::ustring get_list_of_layout_items_for_display(const sharedptr<const LayoutGroup>& layout_group);
 
+/** Get a string to display to the user, as a representation of a sort order
+ */
+Glib::ustring get_list_of_sort_fields_for_display(const FieldFormatting::type_list_sort_fields& sort_fields);
+
 std::string get_temp_file_path(const std::string& prefix = std::string(), const std::string& extension = std::string());
 Glib::ustring get_temp_file_uri(const std::string& prefix = std::string(), const std::string& extension = std::string());
 

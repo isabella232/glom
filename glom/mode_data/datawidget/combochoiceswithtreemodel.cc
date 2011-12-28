@@ -121,7 +121,7 @@ void ComboChoicesWithTreeModel::delete_model()
   m_refModel.reset();
 }
 
-/*
+/* TODO: Remove this
 void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_with_second& list_values)
 {
   //Recreate the entire model:
@@ -246,8 +246,9 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
   sharedptr<const Relationship> choice_relationship;
   sharedptr<const LayoutItem_Field> layout_choice_first;
   sharedptr<const LayoutGroup> layout_choice_extra;
+  FieldFormatting::type_list_sort_fields choice_sort_fields;
   bool choice_show_all = false;
-  format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_extra, choice_show_all);
+  format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_extra, choice_sort_fields, choice_show_all);
   if(layout_choice_first->get_glom_type() == Field::TYPE_INVALID)
     std::cerr << G_STRFUNC << ": layout_choice_first has invalid type. field name: " << layout_choice_first->get_name() << std::endl;
 
@@ -277,10 +278,12 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
       to_table, to_field, foreign_key_value);
   }
 
-  //Sort by the first field, because that is better than so sort at all.
-  //TODO: Allow the developer to specify the sort order:
-  found_set.m_sort_clause.push_back( FoundSet::type_pair_sort_field(layout_choice_first, true /* ascending */) );
-
+  found_set.m_sort_clause = choice_sort_fields;
+  if(found_set.m_sort_clause.empty())
+  {
+    //Sort by the first field, because that is better than so sort at all.
+    found_set.m_sort_clause.push_back( FoundSet::type_pair_sort_field(layout_choice_first, true /* ascending */) );
+  }
 
   m_db_layout_items.clear();
 

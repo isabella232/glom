@@ -95,10 +95,10 @@ glom/mode_design/layout/layout_item_dialogs/dialog_field_summary.cc
 glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc
 glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc
 glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.cc
-glom/mode_design/layout/layout_item_dialogs/dialog_groupby_sortfields.cc
 glom/mode_design/layout/layout_item_dialogs/dialog_imageobject.cc
 glom/mode_design/layout/layout_item_dialogs/dialog_line.cc
 glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc
+glom/mode_design/layout/layout_item_dialogs/dialog_sortfields.cc
 glom/mode_design/layout/layout_item_dialogs/dialog_textobject.cc
 glom/mode_design/report_layout/dialog_layout_report.cc
 glom/mode_design/print_layouts/box_print_layouts.cc
@@ -161,7 +161,6 @@ ui/developer/dialog_fieldslist.glade
 ui/developer/dialog_field_summary.glade
 ui/developer/dialog_flowtable.glade
 ui/developer/dialog_group_by.glade
-ui/developer/dialog_groupby_sort_fields.glade
 ui/developer/dialog_initial_password.glade
 ui/developer/dialog_line.glade
 ui/developer/dialog_layout_field_properties.glade
@@ -170,6 +169,7 @@ ui/developer/dialog_new_library_script.glade
 ui/developer/dialog_notebook.glade
 ui/developer/dialog_relationships_overview.glade
 ui/developer/dialog_script_library.glade
+ui/developer/dialog_sort_fields.glade
 ui/developer/dialog_translation_copy.glade
 ui/developer/dialog_translation_identify_original.glade
 ui/developer/dialog_user.glade

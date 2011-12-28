@@ -221,6 +221,7 @@ static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD[] = "choices_relat
 static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_EXTRA_LAYOUT[] = "choices_related_extra_layout";
 static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND[] = "choices_related_second"; //deprecated
 static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SHOW_ALL[] = "choices_related_show_all";
+static const char GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SORTBY[] = "choices_related_sortby";
 
 static const char GLOM_NODE_TRANSLATIONS_SET[] = "trans_set";
 static const char GLOM_NODE_TRANSLATION[] = "trans";
@@ -1455,13 +1456,16 @@ void Document::fill_layout_field_details(const Glib::ustring& parent_table_name,
       sharedptr<const Relationship> choice_relationship;
       sharedptr<LayoutItem_Field> choice_layout_first;
       sharedptr<LayoutGroup> choice_extra_layouts;
+      FieldFormatting::type_list_sort_fields choice_sort_fields;
       bool choice_show_all = false;
-      layout_withformatting->m_formatting.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_show_all);
+      layout_withformatting->m_formatting.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_sort_fields, choice_show_all);
       
       const Glib::ustring table_name = (choice_relationship ? choice_relationship->get_to_table() : Glib::ustring());
       if(choice_layout_first)
         choice_layout_first->set_full_field_details( get_field(table_name, choice_layout_first->get_name()) );
       fill_layout_field_details(parent_table_name, choice_extra_layouts); //recurse
+
+      //TODO: Handle choice_sort_fields.
     }
 
     sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
@@ -1475,13 +1479,16 @@ void Document::fill_layout_field_details(const Glib::ustring& parent_table_name,
         sharedptr<const Relationship> choice_relationship;
         sharedptr<LayoutItem_Field> choice_layout_first;
         sharedptr<LayoutGroup> choice_extra_layouts;
+        FieldFormatting::type_list_sort_fields choice_sort_fields;
         bool choice_show_all = false;
-        field->m_default_formatting.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_show_all);
+        field->m_default_formatting.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_sort_fields, choice_show_all);
         
         const Glib::ustring table_name = (choice_relationship ? choice_relationship->get_to_table() : Glib::ustring());
         if(choice_layout_first)
           choice_layout_first->set_full_field_details( get_field(table_name, choice_layout_first->get_name()) );
         fill_layout_field_details(parent_table_name, choice_extra_layouts); //recurse
+
+        //TODO: Handle choice_sort_fields.
       }
     }
     else
@@ -2115,8 +2122,16 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
         }
       }
 
+      //Sort fields:
+      FieldFormatting::type_list_sort_fields sort_fields;
+      xmlpp::Element* elementSortBy = get_node_child_named(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SORTBY);
+      if(elementSortBy)
+      {
+        load_after_sort_by(elementSortBy, table_name, sort_fields);
+      }
+
       format.set_choices_related(relationship,
-        layout_field_first, extra_layouts,
+        layout_field_first, extra_layouts, sort_fields,
         show_all);
 
       //Full details are updated in filled-in ().
@@ -3210,8 +3225,9 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
     sharedptr<const Relationship> choice_relationship;
     sharedptr<const LayoutItem_Field> choice_layout_first;
     sharedptr<const LayoutGroup> choice_extra_layouts;
+    FieldFormatting::type_list_sort_fields choice_sort_fields;
     bool choice_show_all = false;
-    format.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_show_all);
+    format.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_sort_fields, choice_show_all);
 
     if(choice_relationship)
     {
@@ -3229,6 +3245,12 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
         xmlpp::Element* nodeExtraLayout = nodeItem->add_child(GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_EXTRA_LAYOUT);
         xmlpp::Element* nodeGroups = nodeExtraLayout->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
         save_before_layout_group(nodeGroups, choice_extra_layouts);
+      }
+
+      if(!choice_sort_fields.empty())
+      {
+        xmlpp::Element* nodeSortBy = nodeItem->add_child(GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SORTBY);
+        save_before_sort_by(nodeSortBy, choice_sort_fields);
       }
     }
   }
