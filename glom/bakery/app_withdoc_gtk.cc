@@ -26,6 +26,7 @@
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/editable.h>
+#include <gtkmm/textview.h>
 #include <giomm/file.h>
 #include <algorithm>
 #include <iostream>
@@ -577,7 +578,24 @@ void App_WithDoc_Gtk::on_menu_edit_copy_activate()
   Gtk::Editable* editable = dynamic_cast<Gtk::Editable*>(widget);
 
   if(editable)
+  {
     editable->copy_clipboard();
+    return;
+  }
+
+  //GtkTextView does not implement GtkTextView.
+  //See GTK+ bug: https://bugzilla.gnome.org/show_bug.cgi?id=667008
+  Gtk::TextView* textview = dynamic_cast<Gtk::TextView*>(widget);
+  if(textview)
+  {
+    Glib::RefPtr<Gtk::TextBuffer> buffer = textview->get_buffer();
+    if(buffer)
+    {
+      Glib::RefPtr<Gtk::Clipboard> clipboard = 
+        Gtk::Clipboard::get_for_display(get_display());
+      buffer->copy_clipboard(clipboard);
+    }
+  }
 }
 
 void App_WithDoc_Gtk::on_menu_edit_cut_activate()
@@ -586,7 +604,24 @@ void App_WithDoc_Gtk::on_menu_edit_cut_activate()
   Gtk::Editable* editable = dynamic_cast<Gtk::Editable*>(widget);
 
   if(editable)
+  {
     editable->cut_clipboard();
+    return;
+  }
+
+  //GtkTextView does not implement GtkTextView.
+  //See GTK+ bug: https://bugzilla.gnome.org/show_bug.cgi?id=667008
+  Gtk::TextView* textview = dynamic_cast<Gtk::TextView*>(widget);
+  if(textview)
+  {
+    Glib::RefPtr<Gtk::TextBuffer> buffer = textview->get_buffer();
+    if(buffer)
+    {
+      Glib::RefPtr<Gtk::Clipboard> clipboard = 
+        Gtk::Clipboard::get_for_display(get_display());
+      buffer->cut_clipboard(clipboard);
+    }
+  }
 }
 
 void App_WithDoc_Gtk::on_menu_edit_paste_activate()
@@ -595,7 +630,24 @@ void App_WithDoc_Gtk::on_menu_edit_paste_activate()
   Gtk::Editable* editable = dynamic_cast<Gtk::Editable*>(widget);
 
   if(editable)
+  {
     editable->paste_clipboard();
+    return;
+  }
+
+  //GtkTextView does not implement GtkTextView.
+  //See GTK+ bug: https://bugzilla.gnome.org/show_bug.cgi?id=667008
+  Gtk::TextView* textview = dynamic_cast<Gtk::TextView*>(widget);
+  if(textview)
+  {
+    Glib::RefPtr<Gtk::TextBuffer> buffer = textview->get_buffer();
+    if(buffer)
+    {
+      Glib::RefPtr<Gtk::Clipboard> clipboard = 
+        Gtk::Clipboard::get_for_display(get_display());
+      buffer->paste_clipboard(clipboard);
+    }
+  }
 }
 
 void App_WithDoc_Gtk::on_recent_files_activate(Gtk::RecentChooser& chooser)
