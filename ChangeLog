@@ -1,5 +1,12 @@
 2011-12-29  Murray Cumming  <murrayc@murrayc.com>
 
+	App_WithDoc_Gtk: Simple clipboard menu handlers: Handle GtkTextView
+
+	* glom/bakery/app_withdoc_gtk.cc: Add code to handle cut/copy/paste
+	when GtkTextView is focused. This is tedious - see bug #667008 .
+
+2011-12-29  Murray Cumming  <murrayc@murrayc.com>
+
 	App_WithDoc_Gtk: Improve simple clipboard handlers.
 
 	* glom/bakery/app_withdoc_gtk.cc: Do not use C code. And therefore do
