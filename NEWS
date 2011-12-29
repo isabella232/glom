@@ -188,12 +188,12 @@ Changes since 1.19.19:
   - Do not show data in related records.
 * Developer mode: 
   - Fields: Adapt choices fields when changing field names.
-	  Bug #661075
-	- Simplify the default layout structure for details.
-	- Details: Do not enable drag-and-drop by default.
-	- Field Formatting window: Make it slightly less tall.
-	  See https://bugs.launchpad.net/ubuntu/+source/glom/+bug/863016
-	- Layout window: Correct the vertical order of Add buttons.
+    Bug #661075
+  - Simplify the default layout structure for details.
+  - Details: Do not enable drag-and-drop by default.
+  - Field Formatting window: Make it slightly less tall.
+    See https://bugs.launchpad.net/ubuntu/+source/glom/+bug/863016
+  - Layout window: Correct the vertical order of Add buttons.
 * Print Layout:
   - Allow multiple pages.
   - Add experimental Create Standard feature.
@@ -378,7 +378,7 @@ New features in Glom 1.16, compared to Glom 1.14:
   instead of just showing all values in the related table.
   This allows the Choices to be used to narrow down a choice based on a
   choice in another field.
-*  Developer menu: Added Export Backup and Restore Backup menu items.
+* Developer menu: Added Export Backup and Restore Backup menu items.
   These use PostgreSQL's pg_dump and pg_restore utilities, wrapping the
   dump and .glom file up in a .tar.gz.
   As well as allowing backups of data, this should make it easier to upgrade
