@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-12-23 12:15+0000\n"
-"PO-Revision-Date: 2011-12-23 16:17+0100\n"
+"POT-Creation-Date: 2011-12-29 11:10+0000\n"
+"PO-Revision-Date: 2011-12-29 15:34+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -32,13 +32,13 @@ msgid ""
 msgstr ""
 "Espere mientras Glom prepara su sistema para publicar a través de la red."
 
-#: ../glom/application.cc:266 ../glom/bakery/app_withdoc_gtk.cc:226
+#: ../glom/application.cc:266 ../glom/bakery/app_withdoc_gtk.cc:227
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:197
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:58
 msgid "_File"
 msgstr "_Archivo"
 
-#: ../glom/application.cc:267 ../glom/bakery/app_withdoc_gtk.cc:227
+#: ../glom/application.cc:267 ../glom/bakery/app_withdoc_gtk.cc:228
 msgid "_Recent Files"
 msgstr "Archivos _recientes"
 
@@ -361,16 +361,16 @@ msgid "There was an error while saving the example file."
 msgstr "Ocurrió un error al grabar el archivo de ejemplo."
 
 #: ../glom/application.cc:2299 ../glom/application.cc:2304
-#: ../glom/bakery/app_withdoc_gtk.cc:420
+#: ../glom/bakery/app_withdoc_gtk.cc:424
 msgid "Save Document"
 msgstr "Guardando el documento"
 
 #. Warn the user:
-#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc_gtk.cc:468
+#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc_gtk.cc:472
 msgid "Read-only File."
 msgstr "Archivo de sólo lectura."
 
-#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc_gtk.cc:468
+#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc_gtk.cc:472
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -379,11 +379,11 @@ msgstr ""
 "permisos de acceso."
 
 #. Warn the user:
-#: ../glom/application.cc:2405 ../glom/bakery/app_withdoc_gtk.cc:482
+#: ../glom/application.cc:2405 ../glom/bakery/app_withdoc_gtk.cc:486
 msgid "Read-only Directory."
 msgstr "Carpeta de sólo lectura."
 
-#: ../glom/application.cc:2405 ../glom/bakery/app_withdoc_gtk.cc:482
+#: ../glom/application.cc:2405 ../glom/bakery/app_withdoc_gtk.cc:486
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -454,7 +454,7 @@ msgstr "Falló al restaurar el respaldo."
 msgid "There was an error while restoring the backup."
 msgstr "Ocurrió un error al restaurar el respaldo."
 
-#: ../glom/application.cc:2758 ../glom/bakery/app_withdoc_gtk.cc:341
+#: ../glom/application.cc:2758 ../glom/bakery/app_withdoc_gtk.cc:345
 msgid " (read-only)"
 msgstr " (sólo-lectura)"
 
@@ -534,8 +534,8 @@ msgstr "Eliminar registro"
 #: ../glom/mode_design/layout/dialog_choose_relationship.cc:55
 #: ../glom/mode_design/layout/dialog_layout_details.cc:102
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.cc:53
-#: ../glom/mode_design/layout/layout_item_dialogs/dialog_groupby_sortfields.cc:52
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc:48
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_sortfields.cc:52
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:93
 #: ../glom/mode_design/users/dialog_groups_list.cc:65
 msgid "Name"
@@ -904,12 +904,12 @@ msgstr "Informe finalizado"
 msgid "The report will now be opened in your web browser."
 msgstr "El informe se abrirá ahora en su navegador web."
 
-#: ../glom/bakery/app_withdoc_gtk.cc:282
+#: ../glom/bakery/app_withdoc_gtk.cc:283
 #: ../ui/developer/window_field_definition_edit.glade.h:8
 msgid "_Edit"
 msgstr "_Editar"
 
-#: ../glom/bakery/app_withdoc_gtk.cc:371
+#: ../glom/bakery/app_withdoc_gtk.cc:375
 msgid "Open Document"
 msgstr "Abrir documento"
 
@@ -1395,44 +1395,44 @@ msgstr "Campo del título"
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: ../glom/libglom/document/document.cc:506
-#: ../glom/libglom/document/document.cc:524
+#: ../glom/libglom/document/document.cc:507
+#: ../glom/libglom/document/document.cc:525
 msgid "System Preferences"
 msgstr "Preferencias del sistema"
 
-#: ../glom/libglom/document/document.cc:537
+#: ../glom/libglom/document/document.cc:538
 msgid "System Name"
 msgstr "Nombre del sistema"
 
-#: ../glom/libglom/document/document.cc:543
+#: ../glom/libglom/document/document.cc:544
 msgid "Organisation Name"
 msgstr "Nombre de la organización"
 
-#: ../glom/libglom/document/document.cc:549
+#: ../glom/libglom/document/document.cc:550
 msgid "Organisation Logo"
 msgstr "Logotipo de la organización"
 
-#: ../glom/libglom/document/document.cc:555
+#: ../glom/libglom/document/document.cc:556
 msgid "Street"
 msgstr "Calle"
 
-#: ../glom/libglom/document/document.cc:561
+#: ../glom/libglom/document/document.cc:562
 msgid "Street (line 2)"
 msgstr "Calle (línea 2)"
 
-#: ../glom/libglom/document/document.cc:567
+#: ../glom/libglom/document/document.cc:568
 msgid "City"
 msgstr "Ciudad"
 
-#: ../glom/libglom/document/document.cc:573
+#: ../glom/libglom/document/document.cc:574
 msgid "State"
 msgstr "Estado"
 
-#: ../glom/libglom/document/document.cc:579
+#: ../glom/libglom/document/document.cc:580
 msgid "Country"
 msgstr "País"
 
-#: ../glom/libglom/document/document.cc:585
+#: ../glom/libglom/document/document.cc:586
 msgid "Zip Code"
 msgstr "Código postal"
 
@@ -1782,35 +1782,35 @@ msgstr ""
 msgid "No primary key value"
 msgstr "No hay un valor de clave primaria"
 
-#: ../glom/mode_data/box_data_details.cc:111
+#: ../glom/mode_data/box_data_details.cc:112
 msgid "Create a new record."
 msgstr "Crear un nuevo registro."
 
-#: ../glom/mode_data/box_data_details.cc:112
+#: ../glom/mode_data/box_data_details.cc:113
 msgid "Remove this record."
 msgstr "Quitar este registro."
 
-#: ../glom/mode_data/box_data_details.cc:113
+#: ../glom/mode_data/box_data_details.cc:114
 msgid "View the first record in the list."
 msgstr "Ver el primer registro de la lista."
 
-#: ../glom/mode_data/box_data_details.cc:114
+#: ../glom/mode_data/box_data_details.cc:115
 msgid "View the previous record in the list."
 msgstr "Ver el registro anterior de la lista."
 
-#: ../glom/mode_data/box_data_details.cc:115
+#: ../glom/mode_data/box_data_details.cc:116
 msgid "View the next record in the list."
 msgstr "Ver el siguiente registro de la lista."
 
-#: ../glom/mode_data/box_data_details.cc:116
+#: ../glom/mode_data/box_data_details.cc:117
 msgid "View the last record in the list."
 msgstr "Ver el último registro de la lista."
 
-#: ../glom/mode_data/box_data_details.cc:416
+#: ../glom/mode_data/box_data_details.cc:417
 msgid "Layout Contains No Fields"
 msgstr "El esquema no contiene ningún campo"
 
-#: ../glom/mode_data/box_data_details.cc:416
+#: ../glom/mode_data/box_data_details.cc:417
 msgid ""
 "There are no fields on the layout, so there is no way to enter data in a new "
 "record."
@@ -1819,20 +1819,20 @@ msgstr ""
 "datos en un nuevo registro."
 
 #. Tell user that a primary key is needed to delete a record:
-#: ../glom/mode_data/box_data_details.cc:443
+#: ../glom/mode_data/box_data_details.cc:444
 msgid "No primary key value."
 msgstr "No hay un valor para la clave primaria."
 
-#: ../glom/mode_data/box_data_details.cc:444
+#: ../glom/mode_data/box_data_details.cc:445
 msgid "This record cannot be deleted because there is no primary key."
 msgstr "Este registro no se puede eliminar porque no hay una clave primaria."
 
 #. Warn user that they can't choose their own primary key:
-#: ../glom/mode_data/box_data_details.cc:850
+#: ../glom/mode_data/box_data_details.cc:851
 msgid "Primary key auto increments"
 msgstr "La clave primaria es autoincrementable"
 
-#: ../glom/mode_data/box_data_details.cc:851
+#: ../glom/mode_data/box_data_details.cc:852
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
@@ -1852,53 +1852,53 @@ msgstr ""
 "No existe ningún registro con ese valor. Por consiguiente la navegación "
 "hasta el registro relacionado no es posible."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1142
+#: ../glom/mode_data/flowtablewithfields.cc:1187
 #: ../glom/utility_widgets/notebooklabelglom.cc:75
 #: ../glom/utility_widgets/notebooklabelglom.cc:115
 msgid "New Group"
 msgstr "Grupo nuevo"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1148
+#: ../glom/mode_data/flowtablewithfields.cc:1193
 #: ../glom/mode_design/layout/dialog_layout_details.cc:735
 msgid "notebook"
 msgstr "cuaderno"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1154
+#: ../glom/mode_data/flowtablewithfields.cc:1199
 msgid "tab1"
 msgstr "tab1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1157
+#: ../glom/mode_data/flowtablewithfields.cc:1202
 msgid "Tab One"
 msgstr "Pestaña uno"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1170
+#: ../glom/mode_data/flowtablewithfields.cc:1215
 msgid "button"
 msgstr "botón"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1171
+#: ../glom/mode_data/flowtablewithfields.cc:1216
 #: ../glom/mode_design/layout/dialog_layout_details.cc:661
 msgid "New Button"
 msgstr "Botón nuevo"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1177
+#: ../glom/mode_data/flowtablewithfields.cc:1222
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:456
 msgid "text"
 msgstr "texto"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1178
+#: ../glom/mode_data/flowtablewithfields.cc:1223
 msgid "New Text"
 msgstr "Texto nuevo"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1346
+#: ../glom/mode_data/flowtablewithfields.cc:1391
 msgid "Delete whole group \"%1\"?"
 msgstr "¿Eliminar el grupo «%1» entero?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1352
+#: ../glom/mode_data/flowtablewithfields.cc:1397
 msgid "Delete whole group?"
 msgstr "¿Eliminar el grupo entero?"
 
@@ -2246,35 +2246,40 @@ msgstr ""
 "relacionados."
 
 #. Translators: This is Automatic text alignment.
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:112
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:115
 msgid "Automatic"
 msgstr "Automático"
 
 #. Translators: This is Left text alignment.
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:116
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:119
 msgid "Left"
 msgstr "Izquierda"
 
 #. Translators: This is Right text alignment.
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:120
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:123
 msgid "Right"
 msgstr "Derecha"
 
 #. Give it access to the document.
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:159
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:166
 msgid "Extra Fields"
 msgstr "Campos adicionales"
 
+#. Give it access to the document.
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:174
+msgid "Sort Order"
+msgstr "Método de ordenación"
+
 #. Add labels (because we will hide the checkboxes):
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:180
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:201
 msgid "Font"
 msgstr "Tipografía"
 
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:183
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:204
 msgid "Foreground Color"
 msgstr "Color de primer plano"
 
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:186
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:207
 msgid "Background Color"
 msgstr "Color de fondo"
 
@@ -2298,7 +2303,7 @@ msgstr "Formato"
 msgid "Group By - Secondary Fields"
 msgstr "Agrupar por - campos secundarios"
 
-#: ../glom/mode_design/layout/layout_item_dialogs/dialog_groupby_sortfields.cc:59
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_sortfields.cc:59
 msgid "Ascending"
 msgstr "Ascendiente"
 
@@ -2739,7 +2744,7 @@ msgid "Duplicate"
 msgstr "Duplicar"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:431
+#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:438
 msgid "Example"
 msgstr "Ejemplo"
 
@@ -2772,9 +2777,6 @@ msgstr ""
 "tabla, para elegir un ID para este campo."
 
 #: ../glom/mode_data/datawidget/datawidget.cc:237
-#| msgid ""
-#| "Enter search criteria to identify records in the other table, to choose "
-#| "an ID for this field."
 msgid ""
 "Enter details for a new record in the other table, then use its ID for this "
 "field."
@@ -3168,7 +3170,7 @@ msgid "bla.blub - Import from CSV"
 msgstr "bla.blub - Importar desde CSV"
 
 #: ../ui/operator/dialog_import_csv.glade.h:12
-#: ../ui/developer/box_formatting.glade.h:30
+#: ../ui/developer/box_formatting.glade.h:31
 msgid "label"
 msgstr "etiqueta"
 
@@ -3369,7 +3371,7 @@ msgid "<b>Fields</b>"
 msgstr "<b>Campos</b>"
 
 #: ../ui/developer/dialog_fieldslist.glade.h:3
-#: ../ui/developer/dialog_groupby_sort_fields.glade.h:3
+#: ../ui/developer/dialog_sort_fields.glade.h:3
 msgid "Table: "
 msgstr "Tabla: "
 
@@ -3415,14 +3417,6 @@ msgstr "Campos secundarios:"
 #: ../ui/developer/dialog_group_by.glade.h:8
 msgid "Sort Fields:"
 msgstr "Ordenar campos:"
-
-#: ../ui/developer/dialog_groupby_sort_fields.glade.h:1
-msgid "<b>Sort Fields</b>"
-msgstr "<b>Ordenar campos</b>"
-
-#: ../ui/developer/dialog_groupby_sort_fields.glade.h:2
-msgid "Group By - Sort Fields"
-msgstr "Agrupar por - campos ordenados"
 
 #: ../ui/developer/dialog_initial_password.glade.h:1
 #: ../ui/developer/dialog_new_group.glade.h:4
@@ -3554,6 +3548,14 @@ msgstr ""
 #: ../ui/developer/dialog_script_library.glade.h:5
 msgid "_Check"
 msgstr "_Verificar"
+
+#: ../ui/developer/dialog_sort_fields.glade.h:1
+msgid "<b>Sort Fields</b>"
+msgstr "<b>Ordenar campos</b>"
+
+#: ../ui/developer/dialog_sort_fields.glade.h:2
+msgid "Group By - Sort Fields"
+msgstr "Agrupar por - campos ordenados"
 
 #: ../ui/developer/dialog_translation_copy.glade.h:1
 msgid ""
@@ -4013,6 +4015,11 @@ msgid "Show all records"
 msgstr "Mostrar todos los registros"
 
 #: ../ui/developer/box_formatting.glade.h:29
+#| msgid "Sort Fields:"
+msgid "Sort Order:"
+msgstr "Método de ordenación:"
+
+#: ../ui/developer/box_formatting.glade.h:30
 msgid "Use 1000s separator"
 msgstr "Usar separadores de millares"
 
