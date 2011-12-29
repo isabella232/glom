@@ -579,11 +579,11 @@
 	LayoutGroup: Add a more useful remove_field().
 
 	* glom/libglom/data_structure/layout/layoutgroup.[h|cc]:
-  Add a remove_field(parent_table_name, table_name, field_name) method overload,
-  deprecating the existing method overloads.
+	Add a remove_field(parent_table_name, table_name, field_name) method overload,
+	deprecating the existing method overloads.
 	* glom/libglom/document/document.cc: Adapt.
 	* tests/test_document_load_and_change.cc: Test a different example,
-  so we can check for a related field on a layout.
+	so we can check for a related field on a layout.
 
 2011-11-29  Murray Cumming  <murrayc@murrayc.com>
 
@@ -598,7 +598,7 @@
 	test_document_load: Check that a field is on a layout.
 
 	* glom/libglom/data_structure/layout/layoutgroup.[h|cc]:
-  Added has_field() that can find a related field.
+	Added has_field() that can find a related field.
 	* tests/test_document_load.cc: Check that an expected field is found on
 	the layout.
 
@@ -5043,17 +5043,17 @@ This is the master branch. See also the glom-1-20 branch.
 	Tests: Fix a typo to fix make check.
 
 	* tests/test_load_python_library.cc: Fix a typo to properly load the
-  correct library name.
+	correct library name.
 
 2010-10-18  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the build with the latest gtkmm.
 
-  * Makefile_glom.am:
-  * po/POTFILES.in:
+	* Makefile_glom.am:
+	* po/POTFILES.in:
 	* glom/mode_data/datawidget/comboentry.[h|cc]: Removed this.
-  * glom/mode_data/datawidget/combo.cc: Add a has_entry parameter to the
-  constructor and handle that in set_choices_related().
+	* glom/mode_data/datawidget/combo.cc: Add a has_entry parameter to the
+	constructor and handle that in set_choices_related().
 
 2010-10-14  Murray Cumming  <murrayc@murrayc.com>
 
@@ -5061,8 +5061,8 @@ This is the master branch. See also the glom-1-20 branch.
 
 	* glom/libglom/db_utils.cc:
 	* glom/libglom/utils.cc:
-	* glom/mode_data/datawidget/cellrenderer_dblist.cc: Adde back some
-  includes of iostream and fix a size type.
+	* glom/mode_data/datawidget/cellrenderer_dblist.cc: Added back some
+	includes of iostream and fix a size type.
 
 2010-10-11  David King  <davidk@openismus.com>
 
@@ -5222,17 +5222,17 @@ This is the master branch. See also the glom-1-20 branch.
 	Choices: Do not offer editing formatting features when choosign extra fields.
 
 	* glom/mode_design/layout/layout_item_dialogs/box_formatting.[h|cc]:
-  Rename the two set_formatting() methods to set_formatting_for_non_field(),
-  without the show_choices option and set_formatting_for_field(). This avoids
-  using the wrong one at the wrong time.
-  set_is_for_print_layout(): Rename to set_is_for_non_editable() and change
-  the implementation to make it more generic.
+	Rename the two set_formatting() methods to set_formatting_for_non_field(),
+	without the show_choices option and set_formatting_for_field(). This avoids
+	using the wrong one at the wrong time.
+	set_is_for_print_layout(): Rename to set_is_for_non_editable() and change
+	the implementation to make it more generic.
 	* glom/base_db.[h|cc]: offer_field_formatting(): Rename one overload to
-  offer_non_field_item_formatting() and add a show_editable_options parameter
-  to the field one.
+	offer_non_field_item_formatting() and add a show_editable_options parameter
+	to the field one.
 	* glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.[h|cc]:
-  set_field(): Added a show_editable_options bool parameter. Hide the editable
-  checkbox and tell Box_Formatting not to show editing options.
+	set_field(): Added a show_editable_options bool parameter. Hide the editable
+	checkbox and tell Box_Formatting not to show editing options.
 
 	* glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.[h|cc]:
 	* glom/mode_design/layout/layout_item_dialogs/dialog_formatting.[h|cc]:
@@ -5249,8 +5249,8 @@ This is the master branch. See also the glom-1-20 branch.
 
 	* glom/mode_data/box_data_list.cc: create_layout():
 	* glom/mode_data/box_data_list_related.cc: create_layout(): Don't call
-  set_columns() before set_found_set(), to avoid SQL parsing errors due to
-  using invalid fields for sort (ORDER BY) clauses.
+	set_columns() before set_found_set(), to avoid SQL parsing errors due to
+	using invalid fields for sort (ORDER BY) clauses.
 
 2010-10-05  David King  <davidk@openismus.com>
 
