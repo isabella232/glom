@@ -1,3 +1,10 @@
+2011-12-29  Murray Cumming  <murrayc@murrayc.com>
+
+	App_WithDoc_Gtk: Improve simple clipboard handlers.
+
+	* glom/bakery/app_withdoc_gtk.cc: Do not use C code. And therefore do
+	not use Glib::wrap() strangely.
+
 2011-12-27  David King  <davidk@openismus.com>
 
 	Add simple clipboard handlers to App_WithDoc_Gtk
