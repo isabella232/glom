@@ -1,5 +1,34 @@
 2011-12-29  Murray Cumming  <murrayc@murrayc.com>
 
+	Related Choices: Allow the user to specify a sort order.
+
+  * glom/libglom/data_structure/layout/fieldformatting.[h|cc]:
+  set/get_choices_related(): Added a sort_fields parameter.
+  * glom/libglom/document/document.[h|cc]: fill_layout_field_details(),
+  load_after_layout_item_formatting(), save_before_layout_item_formatting():
+  Load and save the sort fields for related choices.
+  * glom/libglom/utils.cc: get_choice_values(): Use the sort fields.
+  Added get_list_of_sort_fields_for_display().
+  
+  * glom/mode_data/datawidget/cellcreation.cc:
+  * glom/mode_data/datawidget/combo_as_radio_buttons.cc:
+  * glom/mode_data/datawidget/combochoiceswithtreemodel.cc: Adapted.
+  
+  * Makefile.am, Makefile_glom.am:
+  * glom/mode_design/layout/layout_item_dialogs/dialog_groupby_sortfields.[h|cc]:
+  Rename to:
+  glom/mode_design/layout/layout_item_dialogs/dialog_sortfields.[h|cc]:
+  and rename the class to Dialog_SortFields.
+	* ui/developer/dialog_groupby_sort_fields.glade: Rename to 
+	* ui/developer/dialog_sort_fields.glade
+	
+	* ui/developer/box_formatting.glade:
+  * glom/mode_design/layout/layout_item_dialogs/box_formatting.cc: Add UI to
+  specify the related choices sort order, using the new dialog, much like 
+  the existing extra-fields UI.
+	
+2011-12-29  Murray Cumming  <murrayc@murrayc.com>
+
 	Foreign key ID fields: Add a New Button next to the existing Find button.
 
 	* glom/mode_data/datawidget/dialog_new_record.[h|cc]: A new dialog to 

@@ -57,6 +57,7 @@ FieldFormatting::FieldFormatting(const FieldFormatting& src)
   m_horizontal_alignment(src.m_horizontal_alignment),
   m_choices_related_field(src.m_choices_related_field),
   m_choices_extra_layout_group(src.m_choices_extra_layout_group),
+  m_choices_related_sort_fields(src.m_choices_related_sort_fields),
   m_choices_related_show_all(src.m_choices_related_show_all)
 {
 }
@@ -76,6 +77,7 @@ bool FieldFormatting::operator==(const FieldFormatting& src) const
     (m_choices_related == src.m_choices_related) &&
     (m_choices_related_field == src.m_choices_related_field) &&
     (m_choices_extra_layout_group == src.m_choices_extra_layout_group) &&
+    (m_choices_related_sort_fields == src.m_choices_related_sort_fields) &&
     (m_text_format_multiline == src.m_text_format_multiline) &&
     (m_text_multiline_height_lines == src.m_text_multiline_height_lines) &&
     (m_text_font == src.m_text_font) &&
@@ -99,6 +101,7 @@ FieldFormatting& FieldFormatting::operator=(const FieldFormatting& src)
   m_choices_related = src.m_choices_related;
   m_choices_related_field = src.m_choices_related_field;
   m_choices_extra_layout_group = src.m_choices_extra_layout_group;
+  m_choices_related_sort_fields = src.m_choices_related_sort_fields;
   m_choices_related_show_all = src.m_choices_related_show_all;
 
   m_text_format_multiline = src.m_text_format_multiline;
