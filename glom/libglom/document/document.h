@@ -264,8 +264,6 @@ public:
   void fill_layout_field_details(const Glib::ustring& parent_table_name, const sharedptr<LayoutGroup>& layout_group) const;
   void fill_layout_field_details(const Glib::ustring& parent_table_name, type_list_layout_groups& groups) const;
 
-
-
   ///When a field name is changed, change it in the relationships, layouts, reports, and fields data:
   void change_field_name(const Glib::ustring& table_name, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew);
 
@@ -517,6 +515,8 @@ private:
   void on_app_state_userlevel_changed(AppState::userlevels userlevel);
 
   void fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list);
+
+  void fill_sort_field_details(const Glib::ustring& parent_table_name, FieldFormatting::type_list_sort_fields& sort_fields) const;
 
 
   /// If the attribute is not there, then the default will be returned.

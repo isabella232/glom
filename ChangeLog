@@ -1,5 +1,13 @@
 2011-12-29  Murray Cumming  <murrayc@murrayc.com>
 
+	Document::fill_layout_field_details(): Handle related choices sort fields.
+
+	* glom/libglom/document/document.[h|cc]: fill_layout_field_details():
+	Also fill the details of the sort fields for related choices, dealing 
+	with those TODO comments.
+
+2011-12-29  Murray Cumming  <murrayc@murrayc.com>
+
 	Related Choices: Allow the user to specify a sort order.
 
 	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]:

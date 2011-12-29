@@ -1437,6 +1437,21 @@ void Document::set_tables(const type_listTableInfo& tables)
     set_modified();
 }
 
+void Document::fill_sort_field_details(const Glib::ustring& parent_table_name, FieldFormatting::type_list_sort_fields& sort_fields) const
+{
+  for(FieldFormatting::type_list_sort_fields::iterator iter = sort_fields.begin(); iter != sort_fields.end(); ++iter)
+  {
+    sharedptr<const LayoutItem_Field> sort_field = iter->first;
+    if(!sort_field)
+     continue;
+ 
+    //TODO: Avoid this unconst?
+    sharedptr<LayoutItem_Field> unconst_sort_field = sharedptr<LayoutItem_Field>::cast_const(sort_field);
+    sharedptr<Field> field = get_field( sort_field->get_table_used(parent_table_name), sort_field->get_name() );
+    unconst_sort_field->set_full_field_details(field);
+  }
+}
+
 void Document::fill_layout_field_details(const Glib::ustring& parent_table_name, const sharedptr<LayoutGroup>& layout_group) const
 {
   if(!layout_group)
@@ -1465,7 +1480,7 @@ void Document::fill_layout_field_details(const Glib::ustring& parent_table_name,
         choice_layout_first->set_full_field_details( get_field(table_name, choice_layout_first->get_name()) );
       fill_layout_field_details(parent_table_name, choice_extra_layouts); //recurse
 
-      //TODO: Handle choice_sort_fields.
+      fill_sort_field_details(table_name, choice_sort_fields);
     }
 
     sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
@@ -1488,7 +1503,7 @@ void Document::fill_layout_field_details(const Glib::ustring& parent_table_name,
           choice_layout_first->set_full_field_details( get_field(table_name, choice_layout_first->get_name()) );
         fill_layout_field_details(parent_table_name, choice_extra_layouts); //recurse
 
-        //TODO: Handle choice_sort_fields.
+        fill_sort_field_details(table_name, choice_sort_fields);
       }
     }
     else
