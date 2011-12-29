@@ -573,8 +573,8 @@ void App_WithDoc_Gtk::document_history_remove(const Glib::ustring& file_uri)
 
 void App_WithDoc_Gtk::on_menu_edit_copy_activate()
 {
-  GtkEditable* editable_gobj = (GtkEditable *)this->get_focus()->gobj();
-  Glib::RefPtr<Gtk::Editable> editable = Glib::RefPtr<Gtk::Editable>::cast_dynamic(Glib::wrap(editable_gobj, true));
+  Gtk::Widget* widget = get_focus();
+  Gtk::Editable* editable = dynamic_cast<Gtk::Editable*>(widget);
 
   if(editable)
     editable->copy_clipboard();
@@ -582,8 +582,8 @@ void App_WithDoc_Gtk::on_menu_edit_copy_activate()
 
 void App_WithDoc_Gtk::on_menu_edit_cut_activate()
 {
-  GtkEditable* editable_gobj = (GtkEditable *)this->get_focus()->gobj();
-  Glib::RefPtr<Gtk::Editable> editable = Glib::RefPtr<Gtk::Editable>::cast_dynamic(Glib::wrap(editable_gobj, true));
+  Gtk::Widget* widget = get_focus();
+  Gtk::Editable* editable = dynamic_cast<Gtk::Editable*>(widget);
 
   if(editable)
     editable->cut_clipboard();
@@ -591,8 +591,8 @@ void App_WithDoc_Gtk::on_menu_edit_cut_activate()
 
 void App_WithDoc_Gtk::on_menu_edit_paste_activate()
 {
-  GtkEditable* editable_gobj = (GtkEditable *)this->get_focus()->gobj();
-  Glib::RefPtr<Gtk::Editable> editable = Glib::RefPtr<Gtk::Editable>::cast_dynamic(Glib::wrap(editable_gobj, true));
+  Gtk::Widget* widget = get_focus();
+  Gtk::Editable* editable = dynamic_cast<Gtk::Editable*>(widget);
 
   if(editable)
     editable->paste_clipboard();

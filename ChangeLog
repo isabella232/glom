@@ -1,5 +1,12 @@
 2011-12-29  Murray Cumming  <murrayc@murrayc.com>
 
+	App_WithDoc_Gtk: Improve simple clipboard handlers.
+
+	* glom/bakery/app_withdoc_gtk.cc: Do not use C code. And therefore do
+	not use Glib::wrap() strangely.
+
+2011-12-29  Murray Cumming  <murrayc@murrayc.com>
+
 	Document::fill_layout_field_details(): Handle related choices sort fields.
 
 	* glom/libglom/document/document.[h|cc]: fill_layout_field_details():
