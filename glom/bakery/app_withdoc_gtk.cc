@@ -619,7 +619,7 @@ void App_WithDoc_Gtk::on_menu_edit_cut_activate()
     {
       Glib::RefPtr<Gtk::Clipboard> clipboard = 
         Gtk::Clipboard::get_for_display(get_display());
-      buffer->cut_clipboard(clipboard);
+      buffer->cut_clipboard(clipboard, textview->get_editable());
     }
   }
 }

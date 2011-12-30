@@ -1,5 +1,12 @@
 2011-12-30  Murray Cumming  <murrayc@murrayc.com>
 
+	Cut menu: Prevent cutting from non-editable GtkTextViews.
+
+	* glom/bakery/app_withdoc_gtk.cc: on_menu_edit_cut_activate():
+	Pass the extra parameter to cut_clipboard(). 
+
+2011-12-30  Murray Cumming  <murrayc@murrayc.com>
+
   Details: Really make non-editable multiline text fields non-editable.
   
 	* glom/mode_data/datawidget/textview.[h|cc]: Override set_read_only(),
