@@ -61,6 +61,8 @@ public:
   typedef Gtk::TextView type_text_view;
   
   type_text_view* get_textview();
+  
+  void set_read_only(bool read_only = true);
 
 private:
   void init();

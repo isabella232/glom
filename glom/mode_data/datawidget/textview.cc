@@ -221,5 +221,10 @@ TextView::type_text_view* TextView::get_textview()
   return &m_TextView;
 }
 
+void TextView::set_read_only(bool read_only)
+{
+  m_TextView.set_editable(!read_only);
+}
+
 } //namespace DataWidetChildren
 } //namespace Glom

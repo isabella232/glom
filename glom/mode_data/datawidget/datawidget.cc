@@ -386,21 +386,36 @@ void DataWidget::set_viewable(bool viewable)
 void DataWidget::set_editable(bool editable)
 {
   Gtk::Widget* child = get_data_child_widget();
-  Gtk::Entry* entry = dynamic_cast<Gtk::Entry*>(child);
-  if(entry)
-    entry->set_editable(editable);
-  else
+  Gtk::Editable* gtkeditable = dynamic_cast<Gtk::Editable*>(child);
+  if(gtkeditable)
   {
-    LayoutWidgetBase* base = dynamic_cast<LayoutWidgetBase*>(child);
-    if(base)
-      base->set_read_only(!editable);
-    else
-    {
-      Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(child);
-      if(checkbutton)
-        checkbutton->set_sensitive(editable);
-    }
+    gtkeditable->set_editable(editable);
+    return;
   }
+  
+  //GtkTextView does not implement GtkEditable:
+  //See https://bugzilla.gnome.org/show_bug.cgi?id=667008
+  //and our TextView class actually derives from ScrolledView anyway,
+  //and out LayoutWidgetBase::set_read_only() override takes care of it instead.
+  //But let's leave this here just in case:
+  Gtk::TextView* textview = 
+    dynamic_cast<Gtk::TextView*>(child);
+  if(textview)
+  {
+    textview->set_editable(editable);
+    return;
+  }
+  
+  LayoutWidgetBase* base = dynamic_cast<LayoutWidgetBase*>(child);
+  if(base)
+  {
+    base->set_read_only(!editable);
+    return;
+  }
+
+  Gtk::CheckButton* checkbutton = dynamic_cast<Gtk::CheckButton*>(child);
+  if(checkbutton)
+    checkbutton->set_sensitive(editable);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
