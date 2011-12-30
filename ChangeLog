@@ -1,5 +1,12 @@
 2011-12-30  Murray Cumming  <murrayc@murrayc.com>
 
+	Dialog_NewRecord: Hide the layout toolbar.
+
+	* glom/mode_data/datawidget/dialog_new_record.cc: setup(): The toolbar is 
+	useless here.
+
+2011-12-30  Murray Cumming  <murrayc@murrayc.com>
+
 	Cut menu: Prevent cutting from non-editable GtkTextViews.
 
 	* glom/bakery/app_withdoc_gtk.cc: on_menu_edit_cut_activate():

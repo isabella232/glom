@@ -56,6 +56,7 @@ Dialog_NewRecord::~Dialog_NewRecord()
 
 void Dialog_NewRecord::setup()
 {
+  m_box_details.show_layout_toolbar(false);
   m_alignment_parent->add(m_box_details);
 
   //Fill composite view:
