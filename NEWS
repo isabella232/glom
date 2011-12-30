@@ -1,3 +1,14 @@
+1.20.4 (stable):
+
+* Details: Really make non-editable multiline text fields non-editable.
+  (Murray Cumming)
+* Edit menu: Make the Cut/Copy/Paste menus actually work.
+  (David King, Murray Cumming) Bug #518315 (Göran)
+* Choices: Make sure related choices are sorted (by ID).
+  The sort order can be specified in Glom 1.21/22.
+* libglom: Document_XML: Remove an unimplemented method.
+  Bug #666744 (yselkowitz)
+
 1.20.3 (stable):
 
 * Details: ID Find button: Really show the quick find feature.

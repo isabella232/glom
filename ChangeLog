@@ -1,3 +1,5 @@
+1.20.4:
+
 2011-12-30  Murray Cumming  <murrayc@murrayc.com>
 
 	Cut menu: Prevent cutting from non-editable GtkTextViews.
@@ -7,11 +9,11 @@
 
 2011-12-30  Murray Cumming  <murrayc@murrayc.com>
 
-  Details: Really make non-editable multiline text fields non-editable.
+	Details: Really make non-editable multiline text fields non-editable.
   
 	* glom/mode_data/datawidget/textview.[h|cc]: Override set_read_only(),
 	so that multiline text fields are really non-editable when the formatting
-  specifies that.
+	specifies that.
 
 2011-12-29  Murray Cumming  <murrayc@murrayc.com>
 
