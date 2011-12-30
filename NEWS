@@ -1,3 +1,26 @@
+1.21.1 (unstable):
+
+* Details: Foreign key ID fields: Add a New button next to 
+  the existing Find button.
+* Related Choices: Allow the user to specify a sort order.
+* libglom:
+  - Make libglom 1.22 parallel installable with glom 1.20.
+  - Document: Added get_translation_available_locales().
+  - Field: Remove unused get_gda_holder_string().
+  - Remove unused get_sql_format() methods.
+  - DbUtils:: Added get_fields_for_table(), 
+    get_fields_for_table_one_field(), get_lookup_fields(), and 
+    get_lookup_value()
+  - LayoutGroup:
+    - Add a 
+    remove_field(parent_table_name, table_name, field_name) 
+    method overload, deprecating the existing method overloads.
+    - Deprecate the old has_field() method and do not use it.
+  - Remove unused parameternamegenerator.[h|cc] source files.
+* Build:
+  - Avoid deprecated glibmm API
+(Murray Cumming)
+ 
 1.20.4 (stable):
 
 * Details: Really make non-editable multiline text fields non-editable.

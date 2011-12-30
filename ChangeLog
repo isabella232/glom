@@ -1,3 +1,5 @@
+1.21.1:
+
 2011-12-30  Murray Cumming  <murrayc@murrayc.com>
 
 	Dialog_NewRecord: Hide the layout toolbar.
@@ -14,11 +16,11 @@
 
 2011-12-30  Murray Cumming  <murrayc@murrayc.com>
 
-  Details: Really make non-editable multiline text fields non-editable.
+	Details: Really make non-editable multiline text fields non-editable.
   
 	* glom/mode_data/datawidget/textview.[h|cc]: Override set_read_only(),
 	so that multiline text fields are really non-editable when the formatting
-  specifies that.
+	specifies that.
 
 2011-12-29  Murray Cumming  <murrayc@murrayc.com>
 
@@ -73,7 +75,7 @@
 	
 2011-12-29  Murray Cumming  <murrayc@murrayc.com>
 
-	Foreign key ID fields: Add a New Button next to the existing Find button.
+	Foreign key ID fields: Add a New button next to the existing Find button.
 
 	* glom/mode_data/datawidget/dialog_new_record.[h|cc]: A new dialog to 
 	quickly add a new related record.
@@ -241,7 +243,7 @@
 
 2011-12-12  Murray Cumming  <murrayc@murrayc.com>
 
-	LayoutGroup: Correct the get_items_recursive_with_groups() implementaiton.
+	LayoutGroup: Correct the get_items_recursive_with_groups() implementation.
 
 	* glom/libglom/data_structure/layout/layoutgroup.cc: Call the correct 
 	method recursively. This fixes make check.
@@ -254,7 +256,7 @@
 
 2011-12-12  Murray Cumming  <murrayc@murrayc.com>
 
-	Small fix to epository_analyzer_begin_scan example script.
+	Small fix to repository_analyzer_begin_scan example script.
 
 	* examples/example_scripts/repository_analyzer_begin_scan.py:
 	Remove the global variables, used for debugging, because recent versions of 
@@ -460,14 +462,14 @@
 	DbUtils::recreate_database_from_document(): Set table privileges too.
 
 	* glom/libglom/db_utils.cc: recreate_database_from_document():
-  Also call set_table_privileges_groups_from_document().
+	Also call set_table_privileges_groups_from_document().
 
 2011-12-02  Murray Cumming  <murrayc@murrayc.com>
 
 	DbUtils::recreate_database_from_document(): Create groups too.
 
 	* glom/libglom/db_utils.[h|cc]: recreate_database_from_document():
-  Also call add_groups_from_document().
+	Also call add_groups_from_document().
 
 2011-12-02  Murray Cumming  <murrayc@murrayc.com>
 
@@ -553,13 +555,13 @@
 
 	* glom/libglom/filelist.am:
 	* glom/libglom/data_structure/parameternamegenerator.[h|cc]: Remove this 
-  unused class.
+	unused class.
 	* glom/base_db.cc
 	* glom/libglom/db_utils.cc: Do not include it.
 
 2011-11-30  Murray Cumming  <murrayc@murrayc.com>
 
-  test_document_load_and_change: Test renaming and removing of tables.
+	test_document_load_and_change: Test renaming and removing of tables.
 
 	* tests/test_document_load_and_change.cc: This also checks that relationships
 	are update when a table is renamed.
@@ -603,7 +605,7 @@
 	test_document_load: Test field formatting.
 
 	* tests/test_document_load.cc: Also use a different example, to
-  widen the range of examples that we test.
+	widen the range of examples that we test.
 
 2011-11-29  Murray Cumming  <murrayc@murrayc.com>
 
@@ -698,7 +700,7 @@
 
 	Correct a query from UPDATE to SELECT.
 
-	* glom/libglom/report_builder.cc: Correc the query to get system preferences 
+	* glom/libglom/report_builder.cc: Correct the query to get system preferences 
 	values. This was apparently not tested yet.
 
 2011-11-25  Murray Cumming  <murrayc@murrayc.com>
