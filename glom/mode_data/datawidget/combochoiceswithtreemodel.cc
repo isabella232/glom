@@ -301,6 +301,73 @@ Glib::RefPtr<Gtk::TreeModel> ComboChoicesWithTreeModel::get_choices_model()
   return m_refModel;
 }
 
+void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+{
+  if(!field)
+    return;
+
+  if(!cell)
+    return;
+
+  const Field::glom_field_type type = field->get_glom_type();
+  switch(type)
+  {
+    case(Field::TYPE_BOOLEAN):
+    {
+      Gtk::CellRendererToggle* pDerived = dynamic_cast<Gtk::CellRendererToggle*>(cell);
+      if(pDerived)
+        pDerived->set_active( (value.get_value_type() == G_TYPE_BOOLEAN) && value.get_boolean() );
+
+      break;
+    }
+    case(Field::TYPE_IMAGE):
+    {
+      Gtk::CellRendererPixbuf* pDerived = dynamic_cast<Gtk::CellRendererPixbuf*>(cell);
+      if(pDerived)
+      {
+        const Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::get_pixbuf_for_gda_value(value);
+
+        //Scale it down to a sensible size.
+        //TODO: if(pixbuf)
+        //  pixbuf = Utils::image_scale_keeping_ratio(pixbuf,  get_fixed_cell_height(), pixbuf->get_width());
+        g_object_set(pDerived->gobj(), "pixbuf", pixbuf ? pixbuf->gobj() : 0, (gpointer)0);
+      }
+      else
+        std::cerr << "Field::sql(): glom_type is TYPE_IMAGE but gda type is not VALUE_TYPE_BINARY" << std::endl;
+
+      break;
+    }
+    default:
+    {
+      //TODO: Maybe we should have custom cellcells for time, date, and numbers.
+      Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(cell);
+      if(pDerived)
+      {
+        //std::cout << "debug: " << G_STRFUNC << ": field name=" << field->get_name() << ", glom type=" << field->get_glom_type() << std::endl;
+        const Glib::ustring text = Conversions::get_text_for_gda_value(field->get_glom_type(), value, field->get_formatting_used().m_numeric_format);
+        pDerived->property_text() = text;
+      }
+      else
+      {
+         std::cerr << G_STRFUNC << ": cell has an unexpected type: " << typeid(cell).name() << std::endl;
+      }
+
+      //Show a different color if the value is numeric, if that's specified:
+      if(type == Field::TYPE_NUMERIC)
+      {
+        const Glib::ustring fg_color =
+        field->get_formatting_used().get_text_format_color_foreground_to_use(value);
+        if(!fg_color.empty())
+          g_object_set(pDerived->gobj(), "foreground", fg_color.c_str(), (gpointer)0);
+        else
+          g_object_set(pDerived->gobj(), "foreground", (const char*)0, (gpointer)0);
+      }
+
+      break;
+    }
+  }
+}
+
 void ComboChoicesWithTreeModel::on_cell_data(const Gtk::TreeModel::iterator& iter, Gtk::CellRenderer* cell, guint model_column_index)
 {
   //std::cout << G_STRFUNC << ": DEBUG: model_column_index=" << model_column_index << std::endl;
@@ -316,76 +383,19 @@ void ComboChoicesWithTreeModel::on_cell_data(const Gtk::TreeModel::iterator& ite
     return;
   }
 
-  if(iter)
-  {
-    const sharedptr<const LayoutItem>& layout_item = m_db_layout_items[model_column_index];
+  if(!iter)
+    return;
 
-    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
-    if(field)
-    {
-      Gtk::TreeModel::Row treerow = *iter;
-      Gnome::Gda::Value value;
-      treerow->get_value(model_column_index, value);
+  const sharedptr<const LayoutItem>& layout_item = m_db_layout_items[model_column_index];
+  sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+  if(!field)
+    return;
 
-      const Field::glom_field_type type = field->get_glom_type();
-      switch(type)
-      {
-        case(Field::TYPE_BOOLEAN):
-        {
-          Gtk::CellRendererToggle* pDerived = dynamic_cast<Gtk::CellRendererToggle*>(cell);
-          if(pDerived)
-            pDerived->set_active( (value.get_value_type() == G_TYPE_BOOLEAN) && value.get_boolean() );
+  Gnome::Gda::Value value;
+  Gtk::TreeModel::Row treerow = *iter;
+  treerow->get_value(model_column_index, value);
 
-          break;
-        }
-        case(Field::TYPE_IMAGE):
-        {
-          Gtk::CellRendererPixbuf* pDerived = dynamic_cast<Gtk::CellRendererPixbuf*>(cell);
-          if(pDerived)
-          {
-            const Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::get_pixbuf_for_gda_value(value);
-
-            //Scale it down to a sensible size.
-            //TODO: if(pixbuf)
-            //  pixbuf = Utils::image_scale_keeping_ratio(pixbuf,  get_fixed_cell_height(), pixbuf->get_width());
-            g_object_set(pDerived->gobj(), "pixbuf", pixbuf ? pixbuf->gobj() : 0, (gpointer)0);
-          }
-          else
-            std::cerr << "Field::sql(): glom_type is TYPE_IMAGE but gda type is not VALUE_TYPE_BINARY" << std::endl;
-
-          break;
-        }
-        default:
-        {
-          //TODO: Maybe we should have custom cellcells for time, date, and numbers.
-          Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(cell);
-          if(pDerived)
-          {
-            //std::cout << "debug: " << G_STRFUNC << ": field name=" << field->get_name() << ", glom type=" << field->get_glom_type() << std::endl;
-            const Glib::ustring text = Conversions::get_text_for_gda_value(field->get_glom_type(), value, field->get_formatting_used().m_numeric_format);
-            pDerived->property_text() = text;
-          }
-          else
-          {
-             std::cerr << G_STRFUNC << ": cell has an unexpected type: " << typeid(cell).name() << std::endl;
-          }
-
-          //Show a different color if the value is numeric, if that's specified:
-          if(type == Field::TYPE_NUMERIC)
-          {
-             const Glib::ustring fg_color =
-               field->get_formatting_used().get_text_format_color_foreground_to_use(value);
-             if(!fg_color.empty())
-                 g_object_set(pDerived->gobj(), "foreground", fg_color.c_str(), (gpointer)0);
-             else
-                 g_object_set(pDerived->gobj(), "foreground", (const char*)0, (gpointer)0);
-          }
-
-          break;
-        }
-      }
-    }
-  }
+  set_cell_for_field_value(cell, field, value);
 }
 
 void ComboChoicesWithTreeModel::cell_connect_cell_data_func(Gtk::CellLayout* celllayout, Gtk::CellRenderer* cell, guint model_column_index)

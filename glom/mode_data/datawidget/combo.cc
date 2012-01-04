@@ -62,6 +62,29 @@ ComboGlom::~ComboGlom()
 {
 }
 
+void ComboGlom::on_fixed_cell_data(const Gtk::TreeModel::iterator& iter, Gtk::CellRenderer* cell, guint model_column_index)
+{
+  if(!cell)
+  {
+    std::cerr << G_STRFUNC << ": cell is null." << std::endl;
+    return;
+  }
+
+  if(!iter)
+    return;
+
+  const sharedptr<const LayoutItem>& layout_item = get_layout_item();
+  sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+  if(!field)
+    return;
+
+  Gnome::Gda::Value value;
+  Gtk::TreeModel::Row treerow = *iter;
+  treerow->get_value(model_column_index, value);
+
+  set_cell_for_field_value(cell, field, value);
+}
+
 void ComboGlom::set_choices_fixed(const FieldFormatting::type_list_values& list_values)
 {
   ComboChoicesWithTreeModel::set_choices_fixed(list_values);
@@ -113,7 +136,8 @@ void ComboGlom::set_choices_fixed(const FieldFormatting::type_list_values& list_
     cell_area->pack_start(*cell, true /* expand */, true /* align */, true /* fixed */);
 
     //Make the renderer render the column:
-    add_attribute(*cell, "text", i);
+    set_cell_data_func(*cell,
+      sigc::bind( sigc::mem_fun(*this, &ComboGlom::on_fixed_cell_data), cell, i));
   }
 }
 

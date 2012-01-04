@@ -81,6 +81,10 @@ protected:
   //though that shouldn't be necessary anyway.
   void cell_connect_cell_data_func(Gtk::CellLayout* celllayout, Gtk::CellRenderer* cell, guint model_column_index);
 
+  /** Display the value in the cell according to the layout field's type and formatting.
+   */
+  void set_cell_for_field_value(Gtk::CellRenderer* cell, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+
 private:
   /// Render the model data to the cells in the view.
   void on_cell_data(const Gtk::TreeModel::iterator& iter, Gtk::CellRenderer* cell, guint model_column_index);
