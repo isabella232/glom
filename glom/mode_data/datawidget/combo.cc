@@ -113,7 +113,8 @@ void ComboGlom::set_choices_fixed(const FieldFormatting::type_list_values& list_
     cell_area->pack_start(*cell, true /* expand */, true /* align */, true /* fixed */);
 
     //Make the renderer render the column:
-    add_attribute(*cell, "text", i);
+    set_cell_data_func(*cell,
+      sigc::bind( sigc::mem_fun(*this, &ComboGlom::on_fixed_cell_data), cell, i));
   }
 }
 

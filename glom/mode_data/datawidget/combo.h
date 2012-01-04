@@ -65,6 +65,8 @@ public:
 
 private:
 
+  void on_fixed_cell_data(const Gtk::TreeModel::iterator& iter, Gtk::CellRenderer* cell, guint model_column_index);
+
   // Note that this is a normal signal handler when glibmm was complied
   // without default signal handlers
   virtual void on_changed(); //From Gtk::ComboBox

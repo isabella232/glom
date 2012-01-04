@@ -1,4 +1,16 @@
-1.21.1:
+2012-01-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Details： Make restricted choices work.
+
+	* glom/mode_data/datawidget/combochoiceswithtreemode.[h|cc]:
+	on_cell_data(): Move some code into set_cell_for_field_value().
+	* glom/mode_data/datawidget/combo.[h|cc]: on_fixed_cell_data():
+	Connect a cell_data slot that uses set_cell_for_field_value(), 
+	instead of trying to associate a Gnome::Gda::Value with a cell's text 
+	property. 
+
+	Without this, the choice combobox's rows were empty when the field's
+	value should be restricted to the available custom (fixed) choices.
 
 2011-12-30  Murray Cumming  <murrayc@murrayc.com>
 
