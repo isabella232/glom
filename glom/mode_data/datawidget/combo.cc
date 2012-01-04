@@ -167,7 +167,7 @@ void ComboGlom::set_choices_related(const Document* document, const sharedptr<co
     //which we cannot replace without confusing (and crashing) GtkComboBox.
     if(model_column_index == 0 && get_has_entry())
     {
-       ++model_column_index;
+      ++model_column_index;
       continue;
     }
 
