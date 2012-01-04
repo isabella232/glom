@@ -38,14 +38,53 @@ bool contains(const T_Container& container, const T_Value& name)
   return iter != container.end();
 }
 
-template<typename T_Container>
-bool contains_named(const T_Container& container, const Glib::ustring& name)
+
+
+/** A predicate for use with std::find_if() to find a Field or LayoutItem which refers 
+ * to the same field, looking at just the name.
+ */
+template<class T_Element>
+class predicate_ItemHasTitle
 {
+public:
+  predicate_ItemHasTitle(const Glib::ustring& title)
+  {
+    m_title = title;
+  }
+
+  virtual ~predicate_ItemHasTitle()
+  {
+  }
+
+  bool operator() (const Glom::sharedptr<T_Element>& element)
+  {
+    return (element->get_title() == m_title);
+  }
+
+  bool operator() (const Glom::sharedptr<const T_Element>& element)
+  {
+    return (element->get_title() == m_title);
+  }
+
+private:
+  Glib::ustring m_title;
+};
+
+
+template<typename T_Container>
+typename T_Container::value_type get_titled(const T_Container& container, const Glib::ustring& title)
+{
+  typedef typename T_Container::value_type type_sharedptr;
+  type_sharedptr result;
+
   typedef typename T_Container::value_type::object_type type_item;
   typename T_Container::const_iterator iter =
     std::find_if(container.begin(), container.end(),
-      Glom::predicate_FieldHasName<type_item>(name));
-  return iter != container.end();
+      predicate_ItemHasTitle<type_item>(title));
+  if(iter != container.end())
+    result = *iter;
+
+  return result;
 }
 
 static Glom::sharedptr<const Glom::LayoutItem_Field> get_field_on_layout(const Glom::Document& document, const Glib::ustring& layout_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name)
@@ -172,9 +211,29 @@ int main()
   g_assert( document.get_table_title("scenes") == "Szenen" );
   Glom::TranslatableItem::set_current_locale(locale_original);
 
+  //Check a field:
   Glom::sharedptr<const Glom::Field> field = document.get_field("contacts", "contact_id");
   g_assert(field);
   check_title(field, "Contact ID", "Kontakt ID");
+
+  //Check a field and its custom choices:
+  field = document.get_field("scenes", "day_or_night");
+  g_assert(field);
+  check_title(field, "Day/Night", "Tag/Nacht");
+
+  Glom::FieldFormatting formatting = field->m_default_formatting;
+  g_assert(formatting.get_has_custom_choices());
+  Glom::FieldFormatting::type_list_values values = formatting.get_choices_custom();
+  //g_assert(contains(values, "Day"));
+  Glom::sharedptr<Glom::ChoiceValue> value = get_titled(values, "Day");
+  g_assert(value);
+  check_title(value, "Day", "Tag");
+  g_assert(value->get_value() == Gnome::Gda::Value("Day"));
+
+  Glom::TranslatableItem::set_current_locale(locale_de);
+  g_assert( value->get_title_original() == "Day" );
+  Glom::TranslatableItem::set_current_locale(locale_original);
+  g_assert( value->get_title_original() == "Day" );
 
   //Check a relationship:
   const Glom::sharedptr<const Glom::Relationship> relationship = document.get_relationship("characters", "contacts_actor");

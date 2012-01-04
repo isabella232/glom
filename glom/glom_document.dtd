@@ -189,7 +189,9 @@ TODO: Should we specify the presence of child text nodes in the ELEMENT somehow?
     <!ELEMENT custom_choice_list (custom_choice*)>
     <!ATTLIST custom_choice_list>
 
-    <!ELEMENT custom_choice EMPTY>
+<!-- A custom choice for a field's default formatting or for a layout item.
+     The title is just a text-version of the value and can be ignored. TODO: Do not write it? -->
+    <!ELEMENT custom_choice (trans_set?)>
     <!ATTLIST custom_choice
         value CDATA #REQUIRED>
 

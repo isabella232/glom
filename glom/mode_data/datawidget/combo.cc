@@ -85,9 +85,9 @@ void ComboGlom::on_fixed_cell_data(const Gtk::TreeModel::iterator& iter, Gtk::Ce
   set_cell_for_field_value(cell, field, value);
 }
 
-void ComboGlom::set_choices_fixed(const FieldFormatting::type_list_values& list_values)
+void ComboGlom::set_choices_fixed(const FieldFormatting::type_list_values& list_values, bool restricted)
 {
-  ComboChoicesWithTreeModel::set_choices_fixed(list_values);
+  ComboChoicesWithTreeModel::set_choices_fixed(list_values, restricted);
 
   Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
   if(!model)
@@ -118,8 +118,13 @@ void ComboGlom::set_choices_fixed(const FieldFormatting::type_list_values& list_
   
   guint columns_count = model->get_n_columns();
   if(columns_count)
-    columns_count -= 1; //The last one is the just the extra text-equivalent of the first one, for GtkComboBox wth has-entry=true.
+    columns_count -= 1; //The last one is the just the extra text-equivalent of the first one, for GtkComboBox with has-entry=true, or for translations.
 
+  const sharedptr<const LayoutItem>& layout_item = get_layout_item();
+  const sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+
+  //For fixed (custom) choices, this will always be 1 column anyway,
+  //so the for() loop here is excessive.
   for(guint i = 0; i < columns_count; ++i)
   {
     //set_entry_text_column() adds its own CellRenderer,
@@ -136,8 +141,16 @@ void ComboGlom::set_choices_fixed(const FieldFormatting::type_list_values& list_
     cell_area->pack_start(*cell, true /* expand */, true /* align */, true /* fixed */);
 
     //Make the renderer render the column:
-    set_cell_data_func(*cell,
-      sigc::bind( sigc::mem_fun(*this, &ComboGlom::on_fixed_cell_data), cell, i));
+    if(restricted && field && (field->get_glom_type() == Field::TYPE_TEXT))
+    {
+      //Use the translation instead:
+      add_attribute(*cell, "text", columns_count); //The extra text column.
+    }
+    else
+    {
+      set_cell_data_func(*cell,
+        sigc::bind( sigc::mem_fun(*this, &ComboGlom::on_fixed_cell_data), cell, i));
+    }
   }
 }
 

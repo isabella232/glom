@@ -50,7 +50,7 @@ public:
 
   virtual ~ComboAsRadioButtons();
 
-  virtual void set_choices_fixed(const FieldFormatting::type_list_values& list_values);
+  virtual void set_choices_fixed(const FieldFormatting::type_list_values& list_values, bool restricted = false);
 
   virtual void set_choices_related(const Document* document, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value);
 

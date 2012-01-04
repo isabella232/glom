@@ -261,6 +261,9 @@ public:
   type_list_translatables get_translatable_layout_items(const Glib::ustring& table_name);
   type_list_translatables get_translatable_report_items(const Glib::ustring& table_name, const Glib::ustring& report_title);
 
+  static void fill_translatable_custom_choices(FieldFormatting& formatting, type_list_translatables& the_list);
+
+
   void fill_layout_field_details(const Glib::ustring& parent_table_name, const sharedptr<LayoutGroup>& layout_group) const;
   void fill_layout_field_details(const Glib::ustring& parent_table_name, type_list_layout_groups& groups) const;
 
@@ -498,6 +501,7 @@ private:
 
   void save_before_translations(xmlpp::Element* nodeItem, const TranslatableItem& item);
   void save_before_print_layout_position(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem>& item);
+  void save_before_choicevalue(xmlpp::Element* nodeItem, const sharedptr<const ChoiceValue>& item, Field::glom_field_type field_type);
 
   void save_changes();
 
@@ -511,10 +515,11 @@ private:
 
   void load_after_translations(const xmlpp::Element* element, TranslatableItem& item);
   void load_after_print_layout_position(const xmlpp::Element* nodeItem, const sharedptr<LayoutItem>& item);
+  void load_after_choicevalue(const xmlpp::Element* element, const sharedptr<ChoiceValue>& item, Field::glom_field_type field_type);
 
   void on_app_state_userlevel_changed(AppState::userlevels userlevel);
 
-  void fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list);
+  static void fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list);
 
   void fill_sort_field_details(const Glib::ustring& parent_table_name, FieldFormatting::type_list_sort_fields& sort_fields) const;
 

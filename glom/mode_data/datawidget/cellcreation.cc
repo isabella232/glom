@@ -201,7 +201,11 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
       const FieldFormatting::type_list_values list_values = item_field->get_formatting_used().get_choices_custom();
       for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
       {
-        pCellRendererList->append_list_item( Conversions::get_text_for_gda_value(item_field->get_glom_type(), *iter, item_field->get_formatting_used().m_numeric_format) );
+        const sharedptr< const ChoiceValue> value = *iter;
+        if(!value)
+          continue;
+
+        pCellRendererList->append_list_item( Conversions::get_text_for_gda_value(item_field->get_glom_type(), value->get_value(), item_field->get_formatting_used().m_numeric_format) );
       }
     }
   }

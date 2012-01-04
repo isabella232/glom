@@ -50,7 +50,7 @@ public:
   virtual ~ComboGlom();
 
   //This creates a simple ListStore, with a text cell renderer.
-  virtual void set_choices_fixed(const FieldFormatting::type_list_values& list_values);
+  virtual void set_choices_fixed(const FieldFormatting::type_list_values& list_values, bool restricted = false);
 
   //This creates a db-based tree model, with appropriate cell renderers:
   virtual void set_choices_related(const Document* document, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value);

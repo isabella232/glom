@@ -1,5 +1,55 @@
 2012-01-04  Murray Cumming  <murrayc@murrayc.com>
 
+	Custom Choices: Allow these to be translated when used for text fields. 
+
+	* glom/libglom/filelist.am:
+	* glom/libglom/data_structure/layout/choicevalue.[h|cc]: Add the
+	ChoiceValue translatable item. The translations are only meaningful
+	when this is used for a text field.
+	* glom/libglom/data_structure/translatable_item.[h|cc]:
+	Make get_title_original() virtual, so ChoiceValue can override it,
+	to return a text representation of its Gnome::Gda::Value.
+	Always use get_title_original() instead of the member variable,
+	so that the method override is used when appropriate.
+	* glom/libglom/data_structure/layout/fieldformatting.h:
+	set/get_choices_custom(): Return a list of ChoiceValues instead of 
+	Gnome::Gda::Values.
+	* glom/mode_data/datawidget/cellcreation.cc:
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.cc: Adapt.
+
+	* glom/libglom/document/document.[h|cc]: 
+	load_after_layout_item_formatting(), save_before_layout_item_formatting():
+	Adapt and load/save the ChoiceValue translations too.
+	fill_translatable_layout_items(): Return the ChoiceValue items too.
+	Add a static fill_translatable_custom_choices() helper function. 
+
+	* glom/mode_data/datawidget/combochoices.h: set_choices_fixed():
+	Add an optional restricted parameter, because the translations are 
+	only useful if the choices are restricted.
+	* glom/mode_data/datawidget/cellrenderer_dblist.[h|cc]:
+	* glom/mode_data/datawidget/combo_as_radio_buttons.[h|cc]:
+	* glom/mode_data/datawidget/datawidget.cc:Adapted.
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.[h|cc]:
+	set_choices_fixed(): Use get_title() if the choice could be translated.
+	* glom/mode_data/datawidget/combo.[h|cc]: set_choices_fixed():
+	Use the (translated) text value if the choice could be translated.
+
+	* glom/mode_design/translation/window_translations.cc:
+	load_from_document(): For text fields, handle the ChoiceValues too.
+
+	* tests/test_document_load.cc: Adapt.
+	* tests/test_document_load_translations.cc: Test ChoiceValue 
+	translations too.
+	* examples/example_film_manager.glom: Add some translations for the 
+	Scene::Day/Night field's choices. Also make the choices for this 
+	field restricted, so the translations can be used.
+	* glom/glom_document.dtd: custom_choice: Mention the new trans_set
+	child tags.
+
+	This fixes bug #666343
+
+2012-01-04  Murray Cumming  <murrayc@murrayc.com>
+
 	Details： Make restricted choices work.
 
 	* glom/mode_data/datawidget/combochoiceswithtreemode.[h|cc]:

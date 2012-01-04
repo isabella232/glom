@@ -203,7 +203,7 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
 */
 
 
-void ComboChoicesWithTreeModel::set_choices_fixed(const FieldFormatting::type_list_values& list_values)
+void ComboChoicesWithTreeModel::set_choices_fixed(const FieldFormatting::type_list_values& list_values, bool restricted)
 {
   create_model_non_db(1); //Use a regular ListStore without a dynamic column?
 
@@ -220,14 +220,33 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const FieldFormatting::type_li
     Gtk::TreeModel::Row row = *iterTree;
 
     sharedptr<const LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
-    if(layout_item)
+    if(!layout_item)
+      continue;
+    
+    const sharedptr<ChoiceValue> choicevalue = *iter;
+    if(!choicevalue)
+      continue;
+
+    //Note that this is never a translated version of the value.
+    //This is the original value that will be stored in, or read form, the database.
+    const Gnome::Gda::Value value = choicevalue->get_value();
+    row.set_value(0, value);
+
+    //The text to show in the combo box for the item:
+    Glib::ustring text;
+    if(restricted && choicevalue->is_translatable())
     {
-      const Gnome::Gda::Value value = *iter;
-      row.set_value(0, value);
-      
-      const Glib::ustring text = Conversions::get_text_for_gda_value(layout_item->get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format);
-      row.set_value(1, text);
+      //Show the translated text of the value:
+      //This will never be stored in the database:
+      text = choicevalue->get_title();
     }
+    else
+    {
+      text = Conversions::get_text_for_gda_value(layout_item->get_glom_type(), 
+        value, layout_item->get_formatting_used().m_numeric_format);
+    }
+
+    row.set_value(1, text);
   }
 
   //The derived class's (virtual) implementation calls this base method and

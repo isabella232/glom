@@ -329,8 +329,13 @@ void Box_Formatting::set_formatting_for_non_field(const FieldFormatting& format,
     FieldFormatting::type_list_values list_choice_values = format.get_choices_custom();
     for(FieldFormatting::type_list_values::const_iterator iter = list_choice_values.begin(); iter != list_choice_values.end(); ++iter)
     {
+      const sharedptr<ChoiceValue> choicevalue = *iter;
+      Gnome::Gda::Value value;
+      if(choicevalue)
+        value = choicevalue->get_value();
+
       //Display the value in the choices list as it would be displayed in the format:
-      const Glib::ustring value_text = Conversions::get_text_for_gda_value(m_field->get_glom_type(), *iter, format.m_numeric_format);
+      const Glib::ustring value_text = Conversions::get_text_for_gda_value(m_field->get_glom_type(), value, format.m_numeric_format);
       Gtk::TreeModel::iterator iter = m_adddel_choices_custom->add_item(value_text);
       m_adddel_choices_custom->set_value(iter, m_col_index_custom_choices, value_text);
     }
@@ -414,10 +419,14 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
         if(!text.empty())
         {
           bool success = false;
-          Gnome::Gda::Value value = Conversions::parse_value(m_field->get_glom_type(), text, m_format.m_numeric_format, success);
+          const Gnome::Gda::Value value = Conversions::parse_value(m_field->get_glom_type(), text, m_format.m_numeric_format, success);
 
           if(success)
-            list_choice_values.push_back(value);
+          {
+            sharedptr<ChoiceValue> choicevalue = sharedptr<ChoiceValue>::create();
+            choicevalue->set_value(value);
+            list_choice_values.push_back(choicevalue);
+          }
         }
       }
     }

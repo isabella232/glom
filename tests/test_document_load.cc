@@ -46,6 +46,23 @@ bool contains_named(const T_Container& container, const Glib::ustring& name)
   return iter != container.end();
 }
 
+template<typename T_Container>
+bool contains_value(const T_Container& container, const Glib::ustring& name)
+{
+  typedef typename T_Container::value_type type_item;
+  typedef typename T_Container::const_iterator type_iterator;
+
+  for(type_iterator iter = container.begin(); iter != container.end(); ++iter)
+  {
+    const type_item item = *iter;
+    if(item->get_value() == Gnome::Gda::Value(name))
+      return true;
+  }
+
+  return false;
+}
+
+
 static bool groups_contain_named(const Glom::Document::type_list_groups& container, const Glib::ustring& name)
 {
   const Glom::Document::type_list_groups::const_iterator iter =
@@ -229,8 +246,8 @@ int main()
   g_assert(!formatting.get_has_related_choices());
   Glom::FieldFormatting::type_list_values choices = formatting.get_choices_custom();
   g_assert(!choices.empty());
-  g_assert(contains(choices, Gnome::Gda::Value("Mr")));
-  g_assert(contains(choices, Gnome::Gda::Value("Mrs")));
+  g_assert(contains_value(choices, "Mr"));
+  g_assert(contains_value(choices, "Mrs"));
   
   //Check that the default formatting is used on the layout:
   field_on_layout = 

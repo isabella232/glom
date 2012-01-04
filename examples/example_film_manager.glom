@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <glom_document xmlns="http://glom.org/glom_document" database_title="Openismus Film Manager" is_example="true" translation_original_locale="en_US" format_version="7">
-  <connection server="localhost" user="" database="glom_film_production_manager" self_hosted="true" port="5433" try_other_ports="false" hosting_mode="postgres_self"/>
+  <connection server="localhost" user="" database="glom_film_production_manager" self_hosted="true" port="5435" try_other_ports="false" hosting_mode="postgres_self"/>
   <table name="accommodation" title="Accommodation">
     <example_rows/>
     <trans_set>
@@ -3832,17 +3832,25 @@ Orientation=portrait
         </trans_set>
       </field>
       <field name="day_or_night" type="Text" title="Day/Night">
-        <formatting choices_custom="true">
+        <formatting choices_restricted="true" choices_custom="true">
           <custom_choice_list>
-            <custom_choice value="Day"/>
-            <custom_choice value="Night"/>
+            <custom_choice value="Day">
+              <trans_set>
+                <trans loc="de_DE" val="Tag"/>
+              </trans_set>
+            </custom_choice>
+            <custom_choice value="Night">
+              <trans_set>
+                <trans loc="de_DE" val="Nacht"/>
+              </trans_set>
+            </custom_choice>
             <custom_choice value="Morning"/>
             <custom_choice value="Evening"/>
             <custom_choice value="Dawn"/>
           </custom_choice_list>
         </formatting>
         <trans_set>
-          <trans loc="de_DE" val="Day/Night"/>
+          <trans loc="de_DE" val="Tag/Nacht"/>
         </trans_set>
       </field>
       <field name="interior_or_exterior" type="Text" title="Interior/Exterior">

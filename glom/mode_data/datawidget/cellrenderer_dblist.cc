@@ -40,9 +40,9 @@ CellRendererDbList::~CellRendererDbList()
 }
 
 
-void CellRendererDbList::set_choices_fixed(const FieldFormatting::type_list_values& list_values)
+void CellRendererDbList::set_choices_fixed(const FieldFormatting::type_list_values& list_values, bool restricted)
 {
-  ComboChoicesWithTreeModel::set_choices_fixed(list_values);
+  ComboChoicesWithTreeModel::set_choices_fixed(list_values, restricted);
 
   Glib::RefPtr<Gtk::TreeModel> model = get_choices_model();
 

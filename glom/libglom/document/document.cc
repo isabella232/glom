@@ -2075,7 +2075,8 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
                 field_type = field_temp->get_glom_type();
             }
 
-            const Gnome::Gda::Value value = get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_VALUE, field_type);
+            sharedptr<ChoiceValue> value = sharedptr<ChoiceValue>::create();
+            load_after_choicevalue(element, value, field_type);
             list_values.push_back(value);
           }
         }
@@ -2544,7 +2545,11 @@ void Document::load_after_translations(const xmlpp::Element* element, Translatab
   if(!element)
     return;
 
-  item.set_title_original( get_node_attribute_value(element, GLOM_ATTRIBUTE_TITLE) );
+  const ChoiceValue* choicevalue = dynamic_cast<ChoiceValue*>(&item);
+  if(!choicevalue) //This item does not use the title, but uses the title translations to translate its value, if it is of type text.
+  {
+    item.set_title_original( get_node_attribute_value(element, GLOM_ATTRIBUTE_TITLE) );
+  };
 
   const xmlpp::Element* nodeTranslations = get_node_child_named(element, GLOM_NODE_TRANSLATIONS_SET);
   if(nodeTranslations)
@@ -2597,6 +2602,15 @@ void Document::load_after_print_layout_position(const xmlpp::Element* nodeItem, 
     const double height = get_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_HEIGHT);
     item->set_print_layout_position(x, y, width, height);
   }
+}
+
+void Document::load_after_choicevalue(const xmlpp::Element* element, const sharedptr<ChoiceValue>& item, Field::glom_field_type field_type)
+{
+  const Gnome::Gda::Value value = get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_VALUE, field_type);
+  item->set_value(value);
+
+  sharedptr<ChoiceValue> nonconst_item = item; //TODO: Avoid this.
+  load_after_translations(element, *nonconst_item);
 }
 
 bool Document::load_after(int& failure_code)
@@ -3230,8 +3244,9 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
       const FieldFormatting::type_list_values list_values = format.get_choices_custom();
       for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
       {
+        const sharedptr<const ChoiceValue> value = *iter; 
         xmlpp::Element* childChoice = child->add_child(GLOM_NODE_FORMAT_CUSTOM_CHOICE);
-        set_node_attribute_value_as_value(childChoice, GLOM_ATTRIBUTE_VALUE, *iter, field_type);
+        save_before_choicevalue(childChoice, value, field_type);
       }
     }
 
@@ -3608,8 +3623,11 @@ void Document::save_before_translations(xmlpp::Element* element, const Translata
   if(!element)
     return;
 
-  set_node_attribute_value(element, GLOM_ATTRIBUTE_TITLE, item.get_title_original());
-
+  const ChoiceValue* choicevalue = dynamic_cast<const ChoiceValue*>(&item);
+  if(!choicevalue) //This item does not use the title, but uses the title translations to translate its value, if it is of type text.
+  {
+    set_node_attribute_value(element, GLOM_ATTRIBUTE_TITLE, item.get_title_original());
+  }
 
   if(!item.get_has_translations())
     return;
@@ -3653,6 +3671,15 @@ void Document::save_before_print_layout_position(xmlpp::Element* nodeItem, const
   //Avoid having an empty (or useless) XML element:
   if(child->get_attributes().empty())
     nodeItem->remove_child(child);
+}
+
+void Document::save_before_choicevalue(xmlpp::Element* nodeItem, const sharedptr<const ChoiceValue>& item, Field::glom_field_type field_type)
+{
+  if(!item)
+    return;
+
+  set_node_attribute_value_as_value(nodeItem, GLOM_ATTRIBUTE_VALUE, item->get_value(), field_type);
+  save_before_translations(nodeItem, *item);
 }
 
 bool Document::save_before()
@@ -4415,6 +4442,22 @@ Document::type_list_translatables Document::get_translatable_report_items(const 
   return the_list;
 }
 
+void Document::fill_translatable_custom_choices(FieldFormatting& formatting, type_list_translatables& the_list)
+{
+  if(!formatting.get_has_custom_choices())
+    return;
+
+  FieldFormatting::type_list_values values = formatting.get_choices_custom();
+  for(FieldFormatting::type_list_values::iterator iter = values.begin(); iter != values.end(); ++iter)
+  {
+    sharedptr<ChoiceValue> value = *iter;
+
+    //TODO: Make the translator comment mention the field name as well 
+    //as just the fact that it's a custom choice.
+    the_list.push_back(value);
+  }
+}
+
 void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list)
 {
   the_list.push_back(group);
@@ -4460,6 +4503,11 @@ void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& grou
           {
             the_list.push_back(custom_title);
           }
+
+          //Custom Choices, if any:
+          //Only text fields can have translated choice values:
+          if(layout_field->get_glom_type() == Field::TYPE_TEXT)
+            fill_translatable_custom_choices(layout_field->m_formatting, the_list);
         }
       }
     }

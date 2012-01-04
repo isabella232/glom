@@ -116,8 +116,9 @@ Glib::ustring TranslatableItem::get_title_translation(const Glib::ustring& local
   }
 
   //Fall back to the original title:
-  if(!m_title.empty())
-    return m_title;
+  const Glib::ustring title_original = get_title_original();
+  if(!title_original.empty())
+    return title_original;
 
   //Fall back to first translation, if any.
   //This would be quite unusual.
@@ -152,7 +153,7 @@ Glib::ustring TranslatableItem::get_title() const
       return translated_title;
   }
 
-  return m_title;
+  return get_title_original();
 }
 
 
@@ -185,6 +186,7 @@ void TranslatableItem::set_title_original(const Glib::ustring& title)
   m_title = title;
 }
 
+//TODO: Make this virtual and handle it in ChoiceValue?
 void TranslatableItem::clear_title_in_all_locales()
 {
   m_title.clear();
@@ -281,8 +283,10 @@ Glib::ustring TranslatableItem::get_translatable_type_name_nontranslated(enumTra
     return "Button";
   else if(item_type == TRANSLATABLE_TYPE_TEXTOBJECT)
     return "Text";
- else if(item_type == TRANSLATABLE_TYPE_IMAGEOBJECT)
+  else if(item_type == TRANSLATABLE_TYPE_IMAGEOBJECT)
     return "Image";
+  else if(item_type == TRANSLATABLE_TYPE_CHOICEVALUE)
+    return "Field Choice";
   else
     return "Unknown";
 }
@@ -311,8 +315,10 @@ Glib::ustring TranslatableItem::get_translatable_type_name(enumTranslatableItemT
     return _("Button");
   else if(item_type == TRANSLATABLE_TYPE_TEXTOBJECT)
     return _("Text");
- else if(item_type == TRANSLATABLE_TYPE_IMAGEOBJECT)
+  else if(item_type == TRANSLATABLE_TYPE_IMAGEOBJECT)
     return _("Image");
+  else if(item_type == TRANSLATABLE_TYPE_CHOICEVALUE)
+    return _("Field Choice");
   else
     return _("Unknown");
 }

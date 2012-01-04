@@ -28,6 +28,7 @@ libglom_toplevel_headers =				\
 	glom/libglom/report_builder.h
 
 libglom_data_structure_headers =				\
+	glom/libglom/data_structure/choicevalue.h			\
 	glom/libglom/data_structure/field.h			\
 	glom/libglom/data_structure/fieldtypes.h		\
 	glom/libglom/data_structure/foundset.h			\
@@ -117,6 +118,7 @@ libglom_sources =							\
 	glom/libglom/xsl_utils.h					\
 	glom/libglom/connectionpool_backends/backend.cc			\
 	glom/libglom/connectionpool_backends/backend.h			\
+  glom/libglom/data_structure/choicevalue.cc \	
 	glom/libglom/data_structure/field.cc				\
 	glom/libglom/data_structure/fieldtypes.cc			\
 	glom/libglom/data_structure/foundset.cc				\

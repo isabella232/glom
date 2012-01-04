@@ -121,7 +121,7 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
   }
 }
 
-void ComboAsRadioButtons::set_choices_fixed(const FieldFormatting::type_list_values& list_values)
+void ComboAsRadioButtons::set_choices_fixed(const FieldFormatting::type_list_values& list_values, bool /* restricted */)
 {
   //Clear existing buttons:
   for(type_map_buttons::iterator iter = m_map_buttons.begin();
@@ -139,7 +139,12 @@ void ComboAsRadioButtons::set_choices_fixed(const FieldFormatting::type_list_val
     sharedptr<const LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
     if(layout_item)
     {
-      const Glib::ustring value_first = Conversions::get_text_for_gda_value(layout_item->get_glom_type(), *iter, layout_item->get_formatting_used().m_numeric_format);
+      const sharedptr<ChoiceValue> choicevalue = *iter;
+      Gnome::Gda::Value value;
+      if(choicevalue)
+        value = choicevalue->get_value();
+
+      const Glib::ustring value_first = Conversions::get_text_for_gda_value(layout_item->get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format);
 
       Gtk::RadioButton* button = new Gtk::RadioButton(group, value_first);
       m_map_buttons[value_first] = button;

@@ -47,7 +47,7 @@ namespace Glom
 static DataWidgetChildren::ComboChoices* create_combo_widget_for_field(const sharedptr<LayoutItem_Field>& field)
 {
   DataWidgetChildren::ComboChoices* result = 0;
-  bool as_radio_buttons = false; //TODO: Use this.
+  bool as_radio_buttons = false;
   const bool restricted = field->get_formatting_used().get_choices_restricted(as_radio_buttons);
   if(restricted)
   {
@@ -123,7 +123,9 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
         //set_choices_fixed() needs this, for the numeric layout:
         combo->set_layout_item( get_layout_item(), table_name);
 
-        combo->set_choices_fixed( field->get_formatting_used().get_choices_custom() );
+	const FieldFormatting& formatting = field->get_formatting_used();
+	bool as_radio_buttons = false; //Ignored;
+        combo->set_choices_fixed( formatting.get_choices_custom(), formatting.get_choices_restricted(as_radio_buttons));
       }
       else if(field->get_formatting_used().get_has_related_choices())
       {

@@ -238,14 +238,39 @@ void Window_Translations::load_from_document()
     Document::type_vec_fields fields = document->get_table_fields(table_name);
     for(Document::type_vec_fields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
+      sharedptr<Field> field = *iter;
+      if(!field)
+        continue;
+
       Gtk::TreeModel::iterator iterTree = m_model->append();
       Gtk::TreeModel::Row row = *iterTree;
 
-      sharedptr<Field> field = *iter;
       row[m_columns.m_col_item] = field;
       row[m_columns.m_col_translation] = field->get_title_translation(m_translation_locale, false);
       row[m_columns.m_col_parent_table] = table_name;
 
+      //Custom Choices, if any:
+      if(field->get_glom_type() == Field::TYPE_TEXT) //Choices for other field types could not be translated.
+      {
+        Document::type_list_translatables list_choice_items;
+        Document::fill_translatable_custom_choices(field->m_default_formatting, list_choice_items);
+        for(Document::type_list_translatables::iterator iter = list_choice_items.begin(); iter != list_choice_items.end(); ++iter)
+        {
+          sharedptr<TranslatableItem> item = *iter;
+          if(!item)
+            continue;
+
+          if(item->get_title_original().empty())
+            continue;
+
+          Gtk::TreeModel::iterator iterTree = m_model->append();
+          Gtk::TreeModel::Row row = *iterTree;
+
+          row[m_columns.m_col_item] = item;
+          row[m_columns.m_col_translation] = item->get_title_translation(m_translation_locale, false);
+          row[m_columns.m_col_parent_table] = table_name;
+        }
+      }
     }
 
     //The table's relationships:

@@ -24,7 +24,7 @@
 #include <libglom/data_structure/layout/usesrelationship.h>
 #include <libglom/data_structure/numeric_format.h>
 #include <libglom/data_structure/relationship.h>
-#include <libglom/sharedptr.h>
+#include <libglom/data_structure/choicevalue.h>
 #include <libgdamm/value.h>
 #include <list>
 
@@ -55,7 +55,7 @@ public:
   bool get_has_custom_choices() const;
   void set_has_custom_choices(bool val = true);
 
-  typedef std::list<Gnome::Gda::Value> type_list_values;
+  typedef std::list< sharedptr<ChoiceValue> > type_list_values;
   virtual type_list_values get_choices_custom() const;
   virtual void set_choices_custom(const type_list_values& choices);
 

@@ -59,7 +59,7 @@ public:
 
   /** Get the title's original (non-translated, usually English) text.
    */
-  Glib::ustring get_title_original() const;
+  virtual Glib::ustring get_title_original() const;
 
 
   /** Set the title's translation for the current locale.
@@ -98,7 +98,8 @@ public:
      TRANSLATABLE_TYPE_TABLE,
      TRANSLATABLE_TYPE_BUTTON,
      TRANSLATABLE_TYPE_TEXTOBJECT,
-     TRANSLATABLE_TYPE_IMAGEOBJECT
+     TRANSLATABLE_TYPE_IMAGEOBJECT,
+     TRANSLATABLE_TYPE_CHOICEVALUE
    };
 
   enumTranslatableItemType get_translatable_item_type();
