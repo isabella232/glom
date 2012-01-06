@@ -28,7 +28,7 @@ libglom_toplevel_headers =				\
 	glom/libglom/report_builder.h
 
 libglom_data_structure_headers =				\
-	glom/libglom/data_structure/choicevalue.h			\
+	glom/libglom/data_structure/choicevalue.h		\
 	glom/libglom/data_structure/field.h			\
 	glom/libglom/data_structure/fieldtypes.h		\
 	glom/libglom/data_structure/foundset.h			\
