@@ -6,15 +6,15 @@
 # Antonio Ognio <gnrfan@gnrfan.org>, 2004.
 # Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004, 2006.
 # Jorge González <jorgegonz@svn.gnome.org>, 2005, 2006, 2007, 2008, 2009, 2010.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2009, 2010, 2011.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2009, 2010, 2011, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-12-29 11:10+0000\n"
-"PO-Revision-Date: 2011-12-29 15:34+0100\n"
+"POT-Creation-Date: 2012-01-04 23:26+0000\n"
+"PO-Revision-Date: 2012-01-06 20:36+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -32,13 +32,13 @@ msgid ""
 msgstr ""
 "Espere mientras Glom prepara su sistema para publicar a través de la red."
 
-#: ../glom/application.cc:266 ../glom/bakery/app_withdoc_gtk.cc:227
+#: ../glom/application.cc:266 ../glom/bakery/app_withdoc_gtk.cc:228
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:197
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:58
 msgid "_File"
 msgstr "_Archivo"
 
-#: ../glom/application.cc:267 ../glom/bakery/app_withdoc_gtk.cc:228
+#: ../glom/application.cc:267 ../glom/bakery/app_withdoc_gtk.cc:229
 msgid "_Recent Files"
 msgstr "Archivos _recientes"
 
@@ -361,16 +361,16 @@ msgid "There was an error while saving the example file."
 msgstr "Ocurrió un error al grabar el archivo de ejemplo."
 
 #: ../glom/application.cc:2299 ../glom/application.cc:2304
-#: ../glom/bakery/app_withdoc_gtk.cc:424
+#: ../glom/bakery/app_withdoc_gtk.cc:425
 msgid "Save Document"
 msgstr "Guardando el documento"
 
 #. Warn the user:
-#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc_gtk.cc:472
+#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc_gtk.cc:473
 msgid "Read-only File."
 msgstr "Archivo de sólo lectura."
 
-#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc_gtk.cc:472
+#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc_gtk.cc:473
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -379,11 +379,11 @@ msgstr ""
 "permisos de acceso."
 
 #. Warn the user:
-#: ../glom/application.cc:2405 ../glom/bakery/app_withdoc_gtk.cc:486
+#: ../glom/application.cc:2405 ../glom/bakery/app_withdoc_gtk.cc:487
 msgid "Read-only Directory."
 msgstr "Carpeta de sólo lectura."
 
-#: ../glom/application.cc:2405 ../glom/bakery/app_withdoc_gtk.cc:486
+#: ../glom/application.cc:2405 ../glom/bakery/app_withdoc_gtk.cc:487
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -454,7 +454,7 @@ msgstr "Falló al restaurar el respaldo."
 msgid "There was an error while restoring the backup."
 msgstr "Ocurrió un error al restaurar el respaldo."
 
-#: ../glom/application.cc:2758 ../glom/bakery/app_withdoc_gtk.cc:345
+#: ../glom/application.cc:2758 ../glom/bakery/app_withdoc_gtk.cc:346
 msgid " (read-only)"
 msgstr " (sólo-lectura)"
 
@@ -904,12 +904,12 @@ msgstr "Informe finalizado"
 msgid "The report will now be opened in your web browser."
 msgstr "El informe se abrirá ahora en su navegador web."
 
-#: ../glom/bakery/app_withdoc_gtk.cc:283
+#: ../glom/bakery/app_withdoc_gtk.cc:284
 #: ../ui/developer/window_field_definition_edit.glade.h:8
 msgid "_Edit"
 msgstr "_Editar"
 
-#: ../glom/bakery/app_withdoc_gtk.cc:375
+#: ../glom/bakery/app_withdoc_gtk.cc:376
 msgid "Open Document"
 msgstr "Abrir documento"
 
@@ -1171,7 +1171,7 @@ msgstr "Número"
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/field.cc:693
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:73
-#: ../glom/libglom/data_structure/translatable_item.cc:313
+#: ../glom/libglom/data_structure/translatable_item.cc:317
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1158
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:36
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:760
@@ -1197,7 +1197,7 @@ msgstr "Booleano"
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/field.cc:705
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:70
-#: ../glom/libglom/data_structure/translatable_item.cc:315
+#: ../glom/libglom/data_structure/translatable_item.cc:319
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1165
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:38
 #: ../glom/utility_widgets/layouttoolbar.cc:47
@@ -1252,7 +1252,7 @@ msgstr "Agrupar"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:68
-#: ../glom/libglom/data_structure/translatable_item.cc:311
+#: ../glom/libglom/data_structure/translatable_item.cc:315
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1151
 #: ../glom/utility_widgets/layouttoolbar.cc:43
 msgid "Button"
@@ -1265,7 +1265,7 @@ msgstr "Calendario del portal"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:219
-#: ../glom/libglom/data_structure/translatable_item.cc:293
+#: ../glom/libglom/data_structure/translatable_item.cc:297
 #: ../glom/mode_design/dialog_database_preferences.cc:62
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:756
 #: ../ui/developer/window_field_definition_edit.glade.h:2
@@ -1353,28 +1353,28 @@ msgstr "Resumen"
 msgid "Vertical Group"
 msgstr "Grupo vertical"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:295
+#: ../glom/libglom/data_structure/translatable_item.cc:299
 msgid "Custom Title"
 msgstr "Título personalizado"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:297
+#: ../glom/libglom/data_structure/translatable_item.cc:301
 msgid "Relationship"
 msgstr "Relación"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:299
+#: ../glom/libglom/data_structure/translatable_item.cc:303
 msgid "Layout Item"
 msgstr "Distribución de los objetos"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:301
+#: ../glom/libglom/data_structure/translatable_item.cc:305
 msgid "Print Layout"
 msgstr "Distribución de impresión"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:303
+#: ../glom/libglom/data_structure/translatable_item.cc:307
 msgid "Report"
 msgstr "Informe"
 
 #. Tables:
-#: ../glom/libglom/data_structure/translatable_item.cc:305
+#: ../glom/libglom/data_structure/translatable_item.cc:309
 #: ../glom/mode_design/box_db_table_relationships.cc:52
 #: ../glom/mode_design/dialog_database_preferences.cc:61
 #: ../glom/mode_design/users/dialog_groups_list.cc:72
@@ -1382,15 +1382,20 @@ msgstr "Informe"
 msgid "Table"
 msgstr "Tabla"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:307
+#: ../glom/libglom/data_structure/translatable_item.cc:311
 msgid "Layout Group"
 msgstr "Distribución del grupo"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:309
+#: ../glom/libglom/data_structure/translatable_item.cc:313
 msgid "Field Title"
 msgstr "Campo del título"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:317
+#: ../glom/libglom/data_structure/translatable_item.cc:321
+#| msgid "Field Title"
+msgid "Field Choice"
+msgstr "Campo de opción"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:323
 #: ../glom/mode_design/translation/window_translations.cc:220
 msgid "Unknown"
 msgstr "Desconocido"
@@ -2704,32 +2709,32 @@ msgid "Translation"
 msgstr "Traducción"
 
 #. Show only debug output
-#: ../glom/mode_design/translation/window_translations.cc:433
+#: ../glom/mode_design/translation/window_translations.cc:458
 msgid "Gettext-Warning: "
 msgstr "Alerta de gettext"
 
-#: ../glom/mode_design/translation/window_translations.cc:449
+#: ../glom/mode_design/translation/window_translations.cc:474
 msgid "Gettext-Error: "
 msgstr "Error de gettext: "
 
 #. Show the file-chooser dialog, to select an output .po file:
-#: ../glom/mode_design/translation/window_translations.cc:506
-#: ../glom/mode_design/translation/window_translations.cc:585
+#: ../glom/mode_design/translation/window_translations.cc:531
+#: ../glom/mode_design/translation/window_translations.cc:610
 msgid "Choose .po File Name"
 msgstr "Elija el nombre de archivo .po"
 
-#: ../glom/mode_design/translation/window_translations.cc:512
-#: ../glom/mode_design/translation/window_translations.cc:590
+#: ../glom/mode_design/translation/window_translations.cc:537
+#: ../glom/mode_design/translation/window_translations.cc:615
 msgid "Po files"
 msgstr "Archivos po"
 
-#: ../glom/mode_design/translation/window_translations.cc:517
+#: ../glom/mode_design/translation/window_translations.cc:542
 #: ../ui/developer/window_translations.glade.h:6
 msgid "Export"
 msgstr "Exportar"
 
 #. Note to translators: "Import" here is an action verb - it's a button.
-#: ../glom/mode_design/translation/window_translations.cc:597
+#: ../glom/mode_design/translation/window_translations.cc:622
 #: ../ui/developer/window_translations.glade.h:8
 msgid "Import"
 msgstr "Importar"
@@ -2744,7 +2749,7 @@ msgid "Duplicate"
 msgstr "Duplicar"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:438
+#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:467
 msgid "Example"
 msgstr "Ejemplo"
 
@@ -2755,20 +2760,20 @@ msgid "%1:"
 msgstr "%1:"
 
 #. Let the user choose a date from a calendar dialog:
-#: ../glom/mode_data/datawidget/datawidget.cc:211
+#: ../glom/mode_data/datawidget/datawidget.cc:213
 msgid "..."
 msgstr "…"
 
 #. TODO: A better label/icon for "Choose Date".
-#: ../glom/mode_data/datawidget/datawidget.cc:212
+#: ../glom/mode_data/datawidget/datawidget.cc:214
 msgid "Choose a date from an on-screen calendar."
 msgstr "Elegir una fecha desde un calendario en pantalla."
 
-#: ../glom/mode_data/datawidget/datawidget.cc:222
+#: ../glom/mode_data/datawidget/datawidget.cc:224
 msgid "Open the record identified by this ID, in the other table."
 msgstr "Abrir el registro identificado por este ID en la otra tabla."
 
-#: ../glom/mode_data/datawidget/datawidget.cc:232
+#: ../glom/mode_data/datawidget/datawidget.cc:234
 msgid ""
 "Enter search criteria to identify records in the other table, to choose an "
 "ID for this field."
@@ -2776,7 +2781,7 @@ msgstr ""
 "Introduzca un criterio de búsqueda para identificar registros en la otra "
 "tabla, para elegir un ID para este campo."
 
-#: ../glom/mode_data/datawidget/datawidget.cc:237
+#: ../glom/mode_data/datawidget/datawidget.cc:239
 msgid ""
 "Enter details for a new record in the other table, then use its ID for this "
 "field."
@@ -4015,7 +4020,6 @@ msgid "Show all records"
 msgstr "Mostrar todos los registros"
 
 #: ../ui/developer/box_formatting.glade.h:29
-#| msgid "Sort Fields:"
 msgid "Sort Order:"
 msgstr "Método de ordenación:"
 
