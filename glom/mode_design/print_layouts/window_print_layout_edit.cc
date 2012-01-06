@@ -117,6 +117,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_vruler_button_press_event), false);
  
   //Add the ruler widgets to the table at the left and top:
+  //TODO: Use C++ API here:
   Gtk::Grid* grid = 0;
   builder->get_widget("grid_canvas", grid);
   gtk_grid_attach(grid->gobj(), GTK_WIDGET(m_vruler), 

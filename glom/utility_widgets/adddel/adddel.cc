@@ -682,7 +682,7 @@ void AddDel::construct_specified_columns()
           if(pCellRenderer)
           {
             //Make it editable:
-            g_object_set(pCellRenderer->gobj(), "editable", TRUE, (gpointer)0);
+            pCellRenderer->property_editable() = true;
 
             //Connect to its signal:
             pCellRenderer->signal_edited().connect(
@@ -694,7 +694,7 @@ void AddDel::construct_specified_columns()
            Gtk::CellRendererToggle* pCellRenderer = dynamic_cast<Gtk::CellRendererToggle*>(m_TreeView.get_column_cell_renderer(view_column_index));
            if(pCellRenderer)
            {
-             g_object_set(pCellRenderer->gobj(), "activatable", TRUE, (gpointer)0);
+             pCellRenderer->property_activatable() = true;
 
              //Connect to its signal:
              pCellRenderer->signal_toggled().connect(

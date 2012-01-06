@@ -1961,7 +1961,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
             if(pixbuf)
               pixbuf = Utils::image_scale_keeping_ratio(pixbuf,  get_fixed_cell_height(), pixbuf->get_width());
 
-            g_object_set(pDerived->gobj(), "pixbuf", pixbuf ? pixbuf->gobj() : 0, (gpointer)0);
+            pDerived->property_pixbuf() = pixbuf;
           }
           else
             g_warning("Field::sql(): glom_type is TYPE_IMAGE but gda type is not VALUE_TYPE_BINARY");
@@ -1991,8 +1991,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
                text = text_to_show;
             }
 
-            //TODO: Use the C++ API here and elsewhere:
-            g_object_set(pDerived->gobj(), "text", text.c_str(), (gpointer)0);
+            pDerived->property_text() = text;
           }
 
           //Show a different color if the value is numeric, if that's specified:
@@ -2001,8 +2000,8 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
              const Glib::ustring fg_color =
                field->get_formatting_used().get_text_format_color_foreground_to_use(value);
              if(!fg_color.empty())
-                 g_object_set(pDerived->gobj(), "foreground", fg_color.c_str(), (gpointer)0);
-             else
+                 pDerived->property_foreground() = fg_color;
+             else //TODO: Remove this when this GTK+ bug is fixed: https://bugzilla.gnome.org/show_bug.cgi?id=667415
                  g_object_set(pDerived->gobj(), "foreground", (const char*)0, (gpointer)0);
           }
 

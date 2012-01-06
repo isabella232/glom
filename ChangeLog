@@ -1,5 +1,19 @@
 2012-01-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Replace most uses of g_object_set() with C++ code.
+
+	* glom/mode_data/datawidget/cellcreation.cc:
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.cc:
+	* glom/mode_data/db_adddel/db_adddel.cc:
+	* glom/mode_design/layout/dialog_layout_export.cc:
+	* glom/utility_widgets/adddel/adddel.cc:
+	Apart from some uses, due to GTK+ bug #667415 .
+
+	These were probably using C code due to the reduced API on Maemo,
+	but we remove the Maemo code a while ago.
+
+2012-01-06  Murray Cumming  <murrayc@murrayc.com>
+
 	List: Custom choices: Make them work here too.
 
 	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]:

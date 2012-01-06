@@ -177,7 +177,7 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
     //Use an ellipze to indicate excessive text,
     //so that similar values do not look equal,
     //and to avoid multi-line comments. TODO: Is there a better way to restrict the height? This doesn't actually truncate multilines anyway.
-    g_object_set(cell_text->gobj(), "ellipsize", PANGO_ELLIPSIZE_END, (gpointer)0);
+    cell_text->property_ellipsize() = Pango::ELLIPSIZE_END;
 
     //Restrict the height, to prevent multiline text cells,
     //and to allow TreeView performance optimisation:
