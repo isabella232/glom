@@ -98,14 +98,14 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
           sharedptr<LayoutItem> unconst = sharedptr<LayoutItem>::cast_const(layout_item); //TODO: Avoid this.
           rendererList->set_layout_item(unconst, table_name);
           bool as_radio_buttons = false; //Can't really be done in a list, so we ignore it.
-          rendererList->set_restrict_values_to_list(
-            formatting.get_choices_restricted(as_radio_buttons));
+          const bool restricted = formatting.get_choices_restricted(as_radio_buttons);
+          rendererList->set_restrict_values_to_list(restricted);
 
           //Set the choices.
           //For related choices, that gets set when the value of a dependent field is set.
           if(formatting.get_has_custom_choices())
           {
-            rendererList->set_choices_fixed( formatting.get_choices_custom() );
+            rendererList->set_choices_fixed( formatting.get_choices_custom(), restricted);
           }
 
           cell = rendererList;

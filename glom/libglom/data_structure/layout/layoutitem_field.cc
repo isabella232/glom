@@ -264,6 +264,19 @@ FieldFormatting::HorizontalAlignment LayoutItem_Field::get_formatting_used_horiz
   return alignment;
 }
 
+bool LayoutItem_Field::get_formatting_used_has_translatable_choices() const
+{
+  const FieldFormatting& formatting = get_formatting_used();
+  if(!formatting.get_has_custom_choices())
+    return false;
+
+  bool as_radio_buttons = false; //Ignored.
+  if(!formatting.get_choices_restricted(as_radio_buttons))
+    return false;
+
+  return true;
+}
+
 
 void LayoutItem_Field::set_full_field_details(const sharedptr<const Field>& field)
 {

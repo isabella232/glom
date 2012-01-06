@@ -1475,7 +1475,23 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
       //Make sure that the entered data is suitable for this field type:
       bool success = false;
 
-      const Gnome::Gda::Value value = Conversions::parse_value(field_type, new_text, item_field->get_formatting_used().m_numeric_format, success);
+      Glib::ustring new_text_to_save = new_text;
+
+      //If this layout field uses a translatable set of custom choices,
+      //then make sure that we only write the original to the database, though we display the translated version:
+      if(item_field->get_formatting_used_has_translatable_choices())
+      {
+        const FieldFormatting& formatting = item_field->get_formatting_used();
+        new_text_to_save = formatting.get_custom_choice_original_for_translated_text(new_text);
+
+        //If somehow (though this should be impossible), the user entered a 
+        //translated value with no corresponding original text, then
+        //store the translated version rather than losing data.
+        if(new_text_to_save.empty())
+          new_text_to_save = new_text;
+      }
+
+      const Gnome::Gda::Value value = Conversions::parse_value(field_type, new_text_to_save, item_field->get_formatting_used().m_numeric_format, success);
       if(!success)
       {  
           //Tell the user and offer to revert or try again:
@@ -1959,8 +1975,23 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
           if(pDerived)
           {
             //std::cout << "debug: " << G_STRFUNC << ": field name=" << field->get_name() << ", glom type=" << field->get_glom_type() << std::endl;
-            const Glib::ustring text = Conversions::get_text_for_gda_value(field->get_glom_type(), value, field->get_formatting_used().m_numeric_format);
+            Glib::ustring text = Conversions::get_text_for_gda_value(field->get_glom_type(), value, field->get_formatting_used().m_numeric_format);
             //g_assert(text != "NULL");
+
+            //If this layout field uses a translatable set of custom choices,
+            //then make sure that we show the translated version, never showing the original text from the database:
+            if(field->get_formatting_used_has_translatable_choices())
+            {
+              const FieldFormatting& formatting = field->get_formatting_used();
+              const Glib::ustring text_to_show = formatting.get_custom_choice_translated(text);
+
+              //Use the translation if there is one.
+              //Otherwise, show the original data rather than showing nothing:
+              if(!text_to_show.empty())
+               text = text_to_show;
+            }
+
+            //TODO: Use the C++ API here and elsewhere:
             g_object_set(pDerived->gobj(), "text", text.c_str(), (gpointer)0);
           }
 

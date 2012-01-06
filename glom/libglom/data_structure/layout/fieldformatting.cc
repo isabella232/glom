@@ -207,6 +207,37 @@ void FieldFormatting::set_choices_custom(const type_list_values& choices)
   m_choices_custom_list = choices;
 }
 
+Glib::ustring FieldFormatting::get_custom_choice_original_for_translated_text(const Glib::ustring& text) const
+{
+  for(FieldFormatting::type_list_values::const_iterator iter = m_choices_custom_list.begin(); iter != m_choices_custom_list.end(); ++iter)
+  {
+    const sharedptr<const ChoiceValue> value = *iter;
+    if(!value)
+      continue;
+
+    if(value->get_title() == text)
+      return value->get_title_original();
+  }
+
+  return Glib::ustring();
+}
+
+Glib::ustring FieldFormatting::get_custom_choice_translated(const Glib::ustring& original_text) const
+{
+  for(FieldFormatting::type_list_values::const_iterator iter = m_choices_custom_list.begin(); iter != m_choices_custom_list.end(); ++iter)
+  {
+    const sharedptr<const ChoiceValue> value = *iter;
+    if(!value)
+      continue;
+
+    if(value->get_title_original() == original_text)
+      return value->get_title();
+  }
+
+  return Glib::ustring();
+}
+
+
 bool FieldFormatting::get_choices_restricted(bool& as_radio_buttons) const
 {
   as_radio_buttons = m_choices_restricted_as_radio_buttons;

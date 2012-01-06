@@ -232,6 +232,10 @@ int main()
 
   Glom::TranslatableItem::set_current_locale(locale_de);
   g_assert( value->get_title_original() == "Day" );
+  g_assert( formatting.get_custom_choice_original_for_translated_text("Nacht") == "Night" );
+  g_assert( formatting.get_custom_choice_original_for_translated_text("aaaa") == "" );
+  g_assert( formatting.get_custom_choice_translated("Night") == "Nacht" );
+  g_assert( formatting.get_custom_choice_translated("aaaa") == "" );
   Glom::TranslatableItem::set_current_locale(locale_original);
   g_assert( value->get_title_original() == "Day" );
 
@@ -245,6 +249,13 @@ int main()
   g_assert(field_on_layout);
   check_title(field_on_layout, "Actor's Name", "Schauspieler Name" );
 
+  field_on_layout = 
+    get_field_on_layout(document, "scenes", "scenes", "day_or_night");
+  g_assert(field_on_layout);
+  check_title(field_on_layout,  "Day/Night", "Tag/Nacht");
+  g_assert(field_on_layout->get_formatting_used_has_translatable_choices());
+
+  //Check a print layout:
   const Glom::sharedptr<const Glom::PrintLayout> print_layout = document.get_print_layout("contacts", "contact_details");
   g_assert(print_layout);
   check_title(print_layout, "Contact Details", "Kontakt Details" );

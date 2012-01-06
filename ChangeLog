@@ -1,3 +1,25 @@
+2012-01-06  Murray Cumming  <murrayc@murrayc.com>
+
+	List: Custom choices: Make them work here too.
+
+	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]:
+	Added get_custom_choice_original_for_translated_text() and
+	get_custom_choice_translated() to convert between original and 
+	translated choice text.
+	* glom/libglom/data_structure/layout/layoutitem_field.[h|cc]:
+	Add a get_formatting_used_has_translatable_choices() convenience method.
+	* tests/test_document_load_translations.cc: Test these new methods.
+
+	* glom/mode_data/datawidget/cellcreation.cc: create_cell():
+	Pass the restricted bool to set_choices_restricted() so that the
+	translations can be used.
+	* glom/mode_data/db_adddel/db_adddel.cc:
+	on_treeview_cell_edited(): store only the original (not translated) 
+	text in the database so that other locales can also show their own 
+	translations.
+	treeviewcolumn_on_cell_data(): Show the translated text, not the 
+	original.
+
 2012-01-05  Murray Cumming  <murrayc@murrayc.com>
 
 	DTD: formatting: Mention choices_restricted to fix make check.

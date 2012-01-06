@@ -151,6 +151,12 @@ public:
    */
   virtual FieldFormatting::HorizontalAlignment get_formatting_used_horizontal_alignment(bool for_details_view = false) const;
 
+  /** A convenience method to discover whether the formatting that is used
+   * has custom choices with the values restricted to those choices,
+   * meaning that those choices could be translated.
+   */
+  bool get_formatting_used_has_translatable_choices() const;
+
   /** Compare the name, relationship, and related_relationship.
    */
   bool is_same_field(const sharedptr<const LayoutItem_Field>& field) const;
