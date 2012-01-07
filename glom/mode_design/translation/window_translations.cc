@@ -24,6 +24,7 @@
 #include "dialog_copy_translation.h"
 #include <glom/utils_ui.h> //For bold_message()).
 #include <libglom/utils.h>
+#include <libglom/translations_po.h>
 #include <glom/glade_utils.h>
 #include <gtkmm/filefilter.h>
 #include <gtkmm/stock.h>
@@ -32,15 +33,7 @@
 #include <glibmm/i18n.h>
 #include <string.h> // for memset
 
-// To read the .po files
-#include <gettext-po.h>
-#include "config.h" //For HAVE_GETTEXTPO_XERROR
-
 #include <sstream>
-
-/* For really ugly hacks! */
-#include <setjmp.h>
-
 
 namespace Glom
 {
@@ -220,132 +213,23 @@ void Window_Translations::load_from_document()
     original_locale_name = _("Unknown");
   m_label_source_locale->set_text(original_locale_name);
 
-  //Add tables:
-  Document::type_listTableInfo tables = document->get_tables();
-  for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  Document::type_list_translatables list_layout_items = document->get_translatable_items();
+  for(Document::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
   {
-    sharedptr<TableInfo> tableinfo = *iter;
-    const Glib::ustring table_name = tableinfo->get_name();
-
-    //Table title:
-    Gtk::TreeModel::iterator iterTree = m_model->append();
-    Gtk::TreeModel::Row row = *iterTree;
-    row[m_columns.m_col_item] = tableinfo;
-    row[m_columns.m_col_translation] = tableinfo->get_title_translation(m_translation_locale, false);
-    row[m_columns.m_col_parent_table] = Glib::ustring(); //Not used for tables.
-
-    //The table's field titles:
-    Document::type_vec_fields fields = document->get_table_fields(table_name);
-    for(Document::type_vec_fields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    sharedptr<TranslatableItem> item = *iter;
+    if(item)
     {
-      sharedptr<Field> field = *iter;
-      if(!field)
+      if(item->get_title_original().empty())
         continue;
-
+      
       Gtk::TreeModel::iterator iterTree = m_model->append();
       Gtk::TreeModel::Row row = *iterTree;
 
-      row[m_columns.m_col_item] = field;
-      row[m_columns.m_col_translation] = field->get_title_translation(m_translation_locale, false);
-      row[m_columns.m_col_parent_table] = table_name;
-
-      //Custom Choices, if any:
-      if(field->get_glom_type() == Field::TYPE_TEXT) //Choices for other field types could not be translated.
-      {
-        Document::type_list_translatables list_choice_items;
-        Document::fill_translatable_custom_choices(field->m_default_formatting, list_choice_items);
-        for(Document::type_list_translatables::iterator iter = list_choice_items.begin(); iter != list_choice_items.end(); ++iter)
-        {
-          sharedptr<TranslatableItem> item = *iter;
-          if(!item)
-            continue;
-
-          if(item->get_title_original().empty())
-            continue;
-
-          Gtk::TreeModel::iterator iterTree = m_model->append();
-          Gtk::TreeModel::Row row = *iterTree;
-
-          row[m_columns.m_col_item] = item;
-          row[m_columns.m_col_translation] = item->get_title_translation(m_translation_locale, false);
-          row[m_columns.m_col_parent_table] = table_name;
-        }
-      }
+      row[m_columns.m_col_item] = item;
+      row[m_columns.m_col_translation] = item->get_title_translation(m_translation_locale, false);
+      //row[m_columns.m_col_parent_table] = table_name;
     }
-
-    //The table's relationships:
-    Document::type_vec_relationships relationships = document->get_relationships(table_name);
-    for(Document::type_vec_relationships::iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
-    {
-      sharedptr<Relationship> relationship = *iter;
-      if(relationship)
-      {
-        Gtk::TreeModel::iterator iterTree = m_model->append();
-        Gtk::TreeModel::Row row = *iterTree;
-
-        row[m_columns.m_col_item] = relationship;
-        row[m_columns.m_col_translation] = relationship->get_title_translation(m_translation_locale, false);
-        row[m_columns.m_col_parent_table] = table_name;
-      }
-    }
-
-    //The table's report titles:
-    Document::type_listReports listReports = document->get_report_names(table_name);
-    for(Document::type_listReports::iterator iter = listReports.begin(); iter != listReports.end(); ++iter)
-    {
-      const Glib::ustring report_name = *iter;
-      sharedptr<Report> report = document->get_report(table_name, report_name);
-      if(report)
-      {
-        //Translatable report title:
-        Gtk::TreeModel::iterator iterTree = m_model->append();
-        Gtk::TreeModel::Row row = *iterTree;
-
-        row[m_columns.m_col_item] = report;
-        row[m_columns.m_col_translation] = report->get_title_translation(m_translation_locale, false);
-        row[m_columns.m_col_parent_table] = table_name;
-
-        //Translatable report items:
-        Document::type_list_translatables list_layout_items = document->get_translatable_report_items(table_name, report_name);
-        for(Document::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
-        {
-          sharedptr<TranslatableItem> item = *iter;
-          if(item)
-          {
-            if(!(item->get_title_original().empty()))
-            {
-              Gtk::TreeModel::iterator iterTree = m_model->append();
-              Gtk::TreeModel::Row row = *iterTree;
-
-              row[m_columns.m_col_item] = item;
-              row[m_columns.m_col_translation] = item->get_title_translation(m_translation_locale, false);
-              row[m_columns.m_col_parent_table] = table_name;
-            }
-          }
-        }
-      }
-    }
-
-    //The table's translatable layout items:
-    Document::type_list_translatables list_layout_items = document->get_translatable_layout_items(table_name);
-    for(Document::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
-    {
-      sharedptr<TranslatableItem> item = *iter;
-      if(item)
-      {
-        if(!(item->get_title_original().empty()))
-        {
-          Gtk::TreeModel::iterator iterTree = m_model->append();
-          Gtk::TreeModel::Row row = *iterTree;
-
-          row[m_columns.m_col_item] = item;
-          row[m_columns.m_col_translation] = item->get_title_translation(m_translation_locale, false);
-          row[m_columns.m_col_parent_table] = table_name;
-        }
-      }
-    }
-
-  } //for
+  }
 
   m_treeview_modified = false;
 }
@@ -438,95 +322,8 @@ void Window_Translations::on_treeview_edited(const Glib::ustring& /* path */, co
   m_treeview_modified = true;
 }
 
-static jmp_buf jump;
-
-static void show_gettext_error(int severity, const char* filename, const gchar* message)
-{
-  std::ostringstream msg_stream;
-  if(filename)
-    msg_stream << filename << ": ";
-
-  if(message)
-   msg_stream << message;
-
-  switch(severity)
-  {
-    #ifdef PO_SEVERITY_WARNING //This was introduced in libgettext-po some time after gettext version 0.14.5 
-    case PO_SEVERITY_WARNING:
-    {
-      // Show only debug output
-      std::cout << _("Gettext-Warning: ") << msg_stream.str() << std::endl;
-      break;
-    }
-    #endif //PO_SEVERITY_WARNING
-
-
-    #ifdef PO_SEVERITY_ERROR //This was introduced in libgettext-po some time after gettext version 0.14.5 
-    case PO_SEVERITY_ERROR:
-    #endif //PO_SEVERITY_ERROR
-
-    #ifdef PO_SEVERITY_FATAL_ERROR //This was introduced in libgettext-po some time after gettext version 0.14.5 
-    case PO_SEVERITY_FATAL_ERROR:
-    #endif //PO_SEVERITY_FATAL_ERROR
-
-    default:
-    {
-      Glib::ustring msg = Glib::ustring(_("Gettext-Error: ")) + ' ' + msg_stream.str();
-      Gtk::MessageDialog dlg(msg, false, Gtk::MESSAGE_ERROR);
-      dlg.run();
-      break;
-    }
-  }   
-}
-
-/*
- * The exception handling of libgettext-po is very ugly! The following methods are called
- * if an exception occurs and may not return in case of a fatal exception. We use setjmp
- * and longjmp to bypass this and return to the caller
- */
-#ifdef HAVE_GETTEXTPO_XERROR
-static void on_gettextpo_xerror (int severity, po_message_t /* message */, const char *filename, size_t /* lineno */, size_t /* column */,
-                  int /* multiline_p */, const char *message_text)
-{
-  show_gettext_error(severity, filename, message_text);
-
-  #ifdef PO_SEVERITY_FATAL_ERROR  //This was introduced in libgettext-po some time after gettext version 0.14.5 
-  if(severity == PO_SEVERITY_FATAL_ERROR)
-    longjmp(jump, 1);
-  #endif //PO_SEVERITY_FATAL_ERROR
-}
-
-static void on_gettextpo_xerror2 (int severity, po_message_t /* message1 */, const char * filename1, size_t /* lineno1 */, size_t /* column1 */,
-                   int /* multiline_p1 */, const char *message_text1,
-                   po_message_t /* message2 */, const char * /*filename2 */, size_t /* lineno2 */, size_t /* column2 */,
-                   int /* multiline_p2 */, const char * /* message_text2 */)
-{
-  show_gettext_error(severity, filename1, message_text1);
-  
-  #ifdef PO_SEVERITY_FATAL_ERROR  //This was introduced in libgettext-po some time after gettext version 0.14.5 
-  if(severity == PO_SEVERITY_FATAL_ERROR)
-    longjmp(jump, 1);
-  #endif //PO_SEVERITY_FATAL_ERROR
-}
-#else //HAVE_GETTEXTPO_XERROR
-static void on_gettextpo_error(int status, int errnum, const char * /* format */, ...)
-{
-  std::cerr << "gettext error (old libgettext-po API): status=" << status << ", errnum=" << errnum << std::endl;
-}
-#endif //HAVE_GETTEXTPO_XERROR
-
-Glib::ustring Window_Translations::get_po_context_for_item(const sharedptr<TranslatableItem>& item)
-{
-  // Note that this context string should use English rather than the translated strings,
-  // or the context would change depending on the locale of the user doing the export:
-  return TranslatableItem::get_translatable_type_name_nontranslated(item->get_translatable_item_type()) + " (" + item->get_name() + ')';
-}
-
 void Window_Translations::on_button_export()
-{
-  if(setjmp(jump) != 0)
-    return;  
-  
+{ 
   //Show the file-chooser dialog, to select an output .po file:
   Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FILE_CHOOSER_ACTION_SAVE);
   file_dlg.set_transient_for(*this);
@@ -539,74 +336,34 @@ void Window_Translations::on_button_export()
   file_dlg.add_filter(filter);
 
   file_dlg.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  file_dlg.add_button(_("Export"), Gtk::RESPONSE_OK);  
+  file_dlg.add_button(_("Export"), Gtk::RESPONSE_OK); 
   
   const int result = file_dlg.run();
-  if(result == Gtk::RESPONSE_OK)
-  {
-      std::string filename = file_dlg.get_filename();
-      if(filename.empty())
-        return;
+  if(result != Gtk::RESPONSE_OK)
+    return;
 
-      //Enforce the file extension:
-      const std::string extension = ".po";
-      bool add_extension = false;
-      if(filename.size() <= extension.size())
-         add_extension = true;
-      else if(filename.substr(filename.size() - extension.size()) != extension)
-         add_extension = true;
+  Glib::ustring uri = file_dlg.get_uri();
+  if(uri.empty())
+    return;
 
-      if(add_extension)
-        filename += extension;
+  save_to_document();
+  
+  //Enforce the file extension:
+  const Glib::ustring extension = ".po";
+  bool add_extension = false;
+  if(uri.size() <= extension.size())
+    add_extension = true;
+  else if(uri.substr(uri.size() - extension.size()) != extension)
+    add_extension = true;
 
+  if(add_extension)
+    uri += extension;
 
-      po_file_t po_file = po_file_create();
-      po_message_iterator_t msg_iter = po_message_iterator(po_file, 0);
-      
-      for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
-      {
-        Gtk::TreeModel::Row row = *iter;
-
-        sharedptr<TranslatableItem> item = row[m_columns.m_col_item];
-        if(item)
-        {
-          po_message_t msg = po_message_create();
-          po_message_set_msgid(msg, item->get_title_original().c_str());
-          po_message_set_msgstr(msg, item->get_title_translation(m_translation_locale, false).c_str());
-
-          // Add "context" comments, to uniquely identify similar strings, used in different places,
-          // and to provide a hint for translators.
-          po_message_set_msgctxt(msg, get_po_context_for_item(item).c_str());
-
-          po_message_insert(msg_iter, msg);
-        }
-      }
-
-      po_message_iterator_free(msg_iter);
-
-      #ifdef HAVE_GETTEXTPO_XERROR
-      po_xerror_handler error_handler;
-      memset(&error_handler, 0, sizeof(error_handler));
-      error_handler.xerror = &on_gettextpo_xerror;
-      error_handler.xerror2 = &on_gettextpo_xerror2;
-      #else
-      po_error_handler error_handler;
-      memset(&error_handler, 0, sizeof(error_handler));
-      error_handler.error = &on_gettextpo_error;
-      #endif //HAVE_GETTEXTPO_XERROR
-
-      if(po_file_write(po_file, filename.c_str(), &error_handler))
-      {
-        po_file_free(po_file);
-      }
-   }
+  Glom::write_translations_to_po_file(get_document(), uri, m_translation_locale);
 }
 
 void Window_Translations::on_button_import()
 {
-  if(setjmp(jump) != 0)
-    return;
-
   Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FILE_CHOOSER_ACTION_OPEN);
   file_dlg.set_transient_for(*this);
 
@@ -621,72 +378,18 @@ void Window_Translations::on_button_import()
   //Note to translators: "Import" here is an action verb - it's a button. 
   file_dlg.add_button(_("Import"), Gtk::RESPONSE_OK);
   
-  int result = file_dlg.run();
-  if(result == Gtk::RESPONSE_OK)
-  {
-      // We cannot use an uri here:
-      const std::string filename = file_dlg.get_filename();
-      if(filename.empty())
-        return;
+  const int result = file_dlg.run();
+  if(result != Gtk::RESPONSE_OK)
+    return;
 
-      #ifdef HAVE_GETTEXTPO_XERROR
-      po_xerror_handler error_handler;
-      memset(&error_handler, 0, sizeof(error_handler));
-      error_handler.xerror = &on_gettextpo_xerror;
-      error_handler.xerror2 = &on_gettextpo_xerror2;
-      #else
-      po_error_handler error_handler;
-      memset(&error_handler, 0, sizeof(error_handler));
-      error_handler.error = &on_gettextpo_error;
-      #endif //HAVE_GETTEXTPO_XERROR
+  const std::string uri = file_dlg.get_uri();
+  if(uri.empty())
+    return;
 
-      po_file_t po_file = po_file_read(filename.c_str(), &error_handler);
-      if(!po_file)
-      {
-        // error message is already given by error_handle.
-        return;
-      }
-
-      //Look at each domain (could there be more than one?):
-      const char* const* domains = po_file_domains(po_file);
-      for (int i = 0; domains[i] != 0; ++i)
-      {
-        //Look at each message:
-        po_message_iterator_t iter = po_message_iterator(po_file, domains[i]);
-        po_message_t msg;
-        while ((msg = po_next_message(iter)))
-        {
-          //This message:
-          //TODO: Just use const char* instead of copying it in to a Glib::ustring,
-          //if we have performance problems here:
-          const Glib::ustring msgid = po_message_msgid(msg);
-          const Glib::ustring msgstr = po_message_msgstr(msg);
-          const Glib::ustring msgcontext = po_message_msgctxt(msg);
-
-          //Find the matching entry in the TreeModel:
-          for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
-          {
-            Gtk::TreeModel::Row row = *iter;
-
-            sharedptr<TranslatableItem> item = row[m_columns.m_col_item];
-            if(item)
-            {
-              if( (item->get_title_original() == msgid) && 
-                  (get_po_context_for_item(item) == msgcontext) ) // This is not efficient, but it should be reliable.
-              {
-                item->set_title_translation(m_translation_locale, msgstr);
-                // Keep examining items, in case there are duplicates. break;
-              }
-            }
-          }
-        }
-        po_message_iterator_free(iter);
-      }
-
-      po_file_free(po_file);
-
-      save_to_document();
-   }
+  Glom::import_translations_from_po_file(get_document(), uri, m_translation_locale);
+  
+  //Show the changed document in the UI:
+  load_from_document();
 }
 
 } //namespace Glom

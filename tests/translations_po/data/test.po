@@ -1,0 +1,1163 @@
+msgctxt "Table (accommodation)"
+msgid "Accommodation"
+msgstr "Unterkunft"
+
+msgctxt "Field (accommodation_id)"
+msgid "Accommodation ID"
+msgstr "Unterkunft ID"
+
+msgctxt "Field (description)"
+msgid "Description"
+msgstr "Beschreibung"
+
+msgctxt "Field (comments)"
+msgid "Comments"
+msgstr "Kommentare"
+
+msgctxt "Field (address_street)"
+msgid "Street"
+msgstr "Strasse"
+
+msgctxt "Field (address_town)"
+msgid "Town"
+msgstr "Ort"
+
+msgctxt "Field (address_county)"
+msgid "County"
+msgstr "Bundesland/Kanton"
+
+msgctxt "Field (address_country)"
+msgid "Country"
+msgstr "Land"
+
+msgctxt "Field (address_postcode)"
+msgid "Postcode"
+msgstr "Postleitzahl"
+
+msgctxt "Field (contact_id)"
+msgid "Contact ID"
+msgstr "Kontakt ID"
+
+msgctxt "Field (name)"
+msgid "Name"
+msgstr ""
+
+msgctxt "Relationship (contacts)"
+msgid "Contacts"
+msgstr "Kontakte"
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr ""
+
+msgctxt "Layout Group (address)"
+msgid "Address"
+msgstr "Addresse"
+
+msgctxt "Layout Group (contact)"
+msgid "Contact"
+msgstr "Kontakt"
+
+msgctxt "Table (cars)"
+msgid "Cars"
+msgstr "Autos"
+
+msgctxt "Field (car_id)"
+msgid "Car ID"
+msgstr "Auto ID"
+
+msgctxt "Field (manufacturer)"
+msgid "Manufacturer"
+msgstr "Hersteller"
+
+msgctxt "Field (model)"
+msgid "Model"
+msgstr "Model"
+
+msgctxt "Field (registration)"
+msgid "Registration"
+msgstr "Kennzeichnung"
+
+msgctxt "Field (description)"
+msgid "Description"
+msgstr "Beschreibung"
+
+msgctxt "Field (comment)"
+msgid "Comment"
+msgstr "Kommentar"
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr "bersicht"
+
+msgctxt "Layout Group (details)"
+msgid "Details"
+msgstr "Details"
+
+msgctxt "Table (characters)"
+msgid "Characters"
+msgstr "Besetzung"
+
+msgctxt "Field (character_id)"
+msgid "Cast ID"
+msgstr "Besetzung ID"
+
+msgctxt "Field (character)"
+msgid "Character"
+msgstr "Charakter"
+
+msgctxt "Field (comments)"
+msgid "Comments"
+msgstr "Kommentar"
+
+msgctxt "Field (contact_id)"
+msgid "Contact ID"
+msgstr "Kontakt ID"
+
+msgctxt "Field (mainpart)"
+msgid "Main Part"
+msgstr "Hauptrolle"
+
+msgctxt "Relationship (contacts_actor)"
+msgid "Actor"
+msgstr "Schauspieler"
+
+msgctxt "Relationship (scenes)"
+msgid "Scenes"
+msgstr ""
+
+msgctxt "Report (cast_list)"
+msgid "Cast List"
+msgstr "Besetzungsliste"
+
+msgctxt "Custom Title ()"
+msgid "Actor"
+msgstr "Schauspieler"
+
+msgctxt "Custom Title ()"
+msgid "Agent"
+msgstr ""
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr "bersicht"
+
+msgctxt "Layout Group (details)"
+msgid "Details"
+msgstr "Details"
+
+msgctxt "Layout Group (actor)"
+msgid "Actor"
+msgstr "Schauspieler"
+
+msgctxt "Custom Title ()"
+msgid "Actor's Contact ID"
+msgstr "Schauspieler Kontakt ID"
+
+msgctxt "Custom Title ()"
+msgid "Actor's Name"
+msgstr "Schauspieler Name"
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr ""
+
+msgctxt "Layout Group (details)"
+msgid "Details"
+msgstr ""
+
+msgctxt "Layout Group (actor)"
+msgid "Actor"
+msgstr ""
+
+msgctxt "Custom Title ()"
+msgid "Actor's Name"
+msgstr "Schauspieler Name"
+
+msgctxt "Custom Title ()"
+msgid "Actor"
+msgstr ""
+
+msgctxt "Table (companies)"
+msgid "Companies"
+msgstr "Firmen"
+
+msgctxt "Field (company_id)"
+msgid "Company ID"
+msgstr "Firma ID"
+
+msgctxt "Field (name)"
+msgid "Name"
+msgstr ""
+
+msgctxt "Field (comments)"
+msgid "Comments"
+msgstr "Kommentar"
+
+msgctxt "Field (description)"
+msgid "Description"
+msgstr "Beschreibung"
+
+msgctxt "Field (logo)"
+msgid "Logo"
+msgstr ""
+
+msgctxt "Field (website)"
+msgid "Web Site"
+msgstr "Website"
+
+msgctxt "Relationship (staff)"
+msgid "Staff"
+msgstr "Angestellte"
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr "bersicht"
+
+msgctxt "Layout Group (details)"
+msgid "Details"
+msgstr "Details"
+
+msgctxt "Table (contacts)"
+msgid "Contacts"
+msgstr "Kontakte"
+
+msgctxt "Field (contact_id)"
+msgid "Contact ID"
+msgstr "Kontakt ID"
+
+msgctxt "Field (name_first)"
+msgid "First Name"
+msgstr "Vorname"
+
+msgctxt "Field (name_middle)"
+msgid "Second Name"
+msgstr "Zweiter Name"
+
+msgctxt "Field (name_last)"
+msgid "Last Name"
+msgstr "Familiename"
+
+msgctxt "Field (name_title)"
+msgid "Title"
+msgstr "Titel"
+
+msgctxt "Field Choice ()"
+msgid "Mr"
+msgstr ""
+
+msgctxt "Field Choice ()"
+msgid "Ms"
+msgstr ""
+
+msgctxt "Field Choice ()"
+msgid "Mrs"
+msgstr ""
+
+msgctxt "Field Choice ()"
+msgid "Miss"
+msgstr ""
+
+msgctxt "Field Choice ()"
+msgid "Dr"
+msgstr ""
+
+msgctxt "Field Choice ()"
+msgid "Prof"
+msgstr ""
+
+msgctxt "Field (address_street2)"
+msgid "Street (line 2)"
+msgstr "Strasse (2)"
+
+msgctxt "Field (address_town)"
+msgid "Town"
+msgstr "Ort"
+
+msgctxt "Field (address_state)"
+msgid "State"
+msgstr "Bundesland/Kanton"
+
+msgctxt "Field (address_country)"
+msgid "Country"
+msgstr "Land"
+
+msgctxt "Field Choice ()"
+msgid "Germany"
+msgstr ""
+
+msgctxt "Field Choice ()"
+msgid "United Kingdom"
+msgstr ""
+
+msgctxt "Field Choice ()"
+msgid "USA"
+msgstr ""
+
+msgctxt "Field Choice ()"
+msgid "France"
+msgstr ""
+
+msgctxt "Field Choice ()"
+msgid "Spain"
+msgstr ""
+
+msgctxt "Field (address_postcode)"
+msgid "Postcode"
+msgstr "Postleitzahl"
+
+msgctxt "Field (date_of_birth)"
+msgid "Date Of Birth"
+msgstr "Geburtsdatum"
+
+msgctxt "Field (comments)"
+msgid "Comments"
+msgstr "Kommentare"
+
+msgctxt "Field (name_full)"
+msgid "Full Name"
+msgstr "Vollstndiger Name"
+
+msgctxt "Field (company_id)"
+msgid "Company ID"
+msgstr "Firma ID"
+
+msgctxt "Field (picture)"
+msgid "Picture"
+msgstr "Bild"
+
+msgctxt "Field (tel_home)"
+msgid "Home Telephone"
+msgstr "Telefon (Privat)"
+
+msgctxt "Field (tel_mobile)"
+msgid "Mobile Telephone"
+msgstr "Telefon (Handy)"
+
+msgctxt "Field (tel_fax)"
+msgid "Fax"
+msgstr ""
+
+msgctxt "Field (tel_work)"
+msgid "Work Telephone"
+msgstr "Telefon (Buro)"
+
+msgctxt "Field (email)"
+msgid "Email"
+msgstr "E-Mail"
+
+msgctxt "Field (address_street1)"
+msgid "Street (line 1)"
+msgstr "Strasse (1)"
+
+msgctxt "Field (website)"
+msgid "Web Site"
+msgstr "Website"
+
+msgctxt "Field (agent_id)"
+msgid "Agent ID"
+msgstr ""
+
+msgctxt "Field (stagename)"
+msgid "Stagename"
+msgstr "Knstlername"
+
+msgctxt "Relationship (company)"
+msgid "Company"
+msgstr "Firma"
+
+msgctxt "Relationship (agent)"
+msgid "Agent"
+msgstr ""
+
+msgctxt "Relationship (crew)"
+msgid "Crew"
+msgstr ""
+
+msgctxt "Relationship (cast)"
+msgid "Cast"
+msgstr ""
+
+msgctxt "Report (by_country)"
+msgid "Contacts By Country"
+msgstr ""
+
+msgctxt "Report (by_country_by_town)"
+msgid "By Country, By Town"
+msgstr ""
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr "bersicht"
+
+msgctxt "Layout Group (details)"
+msgid "Details"
+msgstr "Details"
+
+msgctxt "Layout Group (name)"
+msgid "Name"
+msgstr "Name"
+
+msgctxt "Layout Group (company)"
+msgid "Company"
+msgstr "Firma"
+
+msgctxt "Layout Group (address)"
+msgid "Address"
+msgstr "Addresse"
+
+msgctxt "Layout Group (telephone)"
+msgid "Telephone"
+msgstr "Telefon"
+
+msgctxt "Layout Group (agent)"
+msgid "Agent"
+msgstr "Agent"
+
+msgctxt "Custom Title ()"
+msgid "Company Name"
+msgstr ""
+
+msgctxt "Table (costume)"
+msgid "Costume"
+msgstr ""
+
+msgctxt "Field (costume_id)"
+msgid "Costume ID"
+msgstr ""
+
+msgctxt "Field (description)"
+msgid "Description"
+msgstr ""
+
+msgctxt "Field (comments)"
+msgid "Comments"
+msgstr ""
+
+msgctxt "Field (name)"
+msgid "Name"
+msgstr ""
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr ""
+
+msgctxt "Layout Group (details)"
+msgid "Details"
+msgstr ""
+
+msgctxt "Table (crew)"
+msgid "Crew"
+msgstr ""
+
+msgctxt "Field (crew_id)"
+msgid "Crew ID"
+msgstr ""
+
+msgctxt "Field (description)"
+msgid "Description"
+msgstr "Beschreibung"
+
+msgctxt "Field (comments)"
+msgid "Comments"
+msgstr "Kommentar"
+
+msgctxt "Field (dept_id)"
+msgid "Department ID"
+msgstr "Abteilung ID"
+
+msgctxt "Field (contact_id)"
+msgid "Contact ID"
+msgstr "Kontakt ID"
+
+msgctxt "Relationship (contacts)"
+msgid "Contacts"
+msgstr "Kontakten"
+
+msgctxt "Relationship (departments)"
+msgid "Departments"
+msgstr "Abteilungen"
+
+msgctxt "Relationship (scenes)"
+msgid "Scenes"
+msgstr "Szenen"
+
+msgctxt "Report (crew_list)"
+msgid "Crew List"
+msgstr "TestResult2"
+
+msgctxt "Custom Title ()"
+msgid "Department Name"
+msgstr "Abteilungsname"
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr "bersicht"
+
+msgctxt "Layout Group (department)"
+msgid "Department"
+msgstr "Abteilung"
+
+msgctxt "Layout Group (contact)"
+msgid "Contact"
+msgstr "Kontakt"
+
+msgctxt "Layout Group (address)"
+msgid "Address"
+msgstr "Addresse"
+
+msgctxt "Layout Group (agent)"
+msgid "Agent"
+msgstr "Agent"
+
+msgctxt "Custom Title ()"
+msgid "Department Name"
+msgstr "Abteilungsname"
+
+msgctxt "Table (deliveries)"
+msgid "Deliveries"
+msgstr "Lieferungen"
+
+msgctxt "Field (delivery_id)"
+msgid "Delivery ID"
+msgstr "Lieferung ID"
+
+msgctxt "Field (arrival_date)"
+msgid "Arrival Date"
+msgstr "Lieferungsdatum"
+
+msgctxt "Field (departure_contact_id)"
+msgid "Contact ID"
+msgstr "Kontakt ID"
+
+msgctxt "Field (arrival_contact_id)"
+msgid "Contact ID"
+msgstr "Kontakt ID"
+
+msgctxt "Field (arrival_time)"
+msgid "Arrival Time"
+msgstr "Lieferungszeit"
+
+msgctxt "Field (arrival_place)"
+msgid "Arrival Place"
+msgstr "Lieferungsaddresse"
+
+msgctxt "Field (departure_time)"
+msgid "Departure Time"
+msgstr "Sendungszeit"
+
+msgctxt "Field (departure_date)"
+msgid "Departure Date"
+msgstr "Sendungsdatum"
+
+msgctxt "Field (departure_place)"
+msgid "Departure Place"
+msgstr "Sendungsaddresse"
+
+msgctxt "Field (comments)"
+msgid "Comments"
+msgstr "Kommentare"
+
+msgctxt "Field (description)"
+msgid "Description"
+msgstr "Beschreibung"
+
+msgctxt "Relationship (departure_contact)"
+msgid "Departure Contact"
+msgstr "Sendungskontakt"
+
+msgctxt "Relationship (arrival_contact)"
+msgid "Arrival Contact"
+msgstr "Empfaengerkontakt"
+
+msgctxt "Custom Title ()"
+msgid "Departure Name"
+msgstr "Sendername"
+
+msgctxt "Custom Title ()"
+msgid "Arrival Name"
+msgstr "Empfngerkontakt"
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr ""
+
+msgctxt "Layout Group (departure)"
+msgid "Departure"
+msgstr "Departure"
+
+msgctxt "Layout Group (arrival)"
+msgid "Arrival"
+msgstr "Arrival"
+
+msgctxt "Table (departments)"
+msgid "Departments"
+msgstr "Abteilungen"
+
+msgctxt "Field (departments_id)"
+msgid "Department ID"
+msgstr "Abteilung ID"
+
+msgctxt "Field (name)"
+msgid "Name"
+msgstr ""
+
+msgctxt "Field (comments)"
+msgid "Comments"
+msgstr "Kommentar"
+
+msgctxt "Relationship (department_crew)"
+msgid "Department Crew"
+msgstr "Abteilung Crew"
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr "bersicht"
+
+msgctxt "Table (equipment)"
+msgid "Equipment"
+msgstr ""
+
+msgctxt "Field (equipment_id)"
+msgid "Equipment ID"
+msgstr ""
+
+msgctxt "Field (description)"
+msgid "Description"
+msgstr "Beschreibung"
+
+msgctxt "Field (comments)"
+msgid "Comments"
+msgstr "Kommentar"
+
+msgctxt "Relationship (scenes)"
+msgid "Scenes"
+msgstr "Szenen"
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr "bersicht"
+
+msgctxt "Layout Group (details)"
+msgid "Details"
+msgstr "Details"
+
+msgctxt "Table (journeys)"
+msgid "Journeys"
+msgstr "Fahrten"
+
+msgctxt "Field (journey_id)"
+msgid "Journey ID"
+msgstr "Fahrt ID"
+
+msgctxt "Field (comment)"
+msgid "Comment"
+msgstr "Kommentar"
+
+msgctxt "Field (description)"
+msgid "Description"
+msgstr "Beschreibung"
+
+msgctxt "Field (arrival_date)"
+msgid "Arrival Date"
+msgstr ""
+
+msgctxt "Field (arrival_time)"
+msgid "Arrival Time"
+msgstr ""
+
+msgctxt "Field (arrival_place)"
+msgid "Arrival Place"
+msgstr ""
+
+msgctxt "Field (departure_date)"
+msgid "Departure Date"
+msgstr ""
+
+msgctxt "Field (departure_time)"
+msgid "Departure Time"
+msgstr ""
+
+msgctxt "Field (departure_place)"
+msgid "Departure Place"
+msgstr ""
+
+msgctxt "Field (contact_id)"
+msgid "Contact ID"
+msgstr "Kontakt ID"
+
+msgctxt "Relationship (contacts)"
+msgid "Contacts"
+msgstr "Kontakte"
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr ""
+
+msgctxt "Layout Group (person)"
+msgid "Person"
+msgstr "Person"
+
+msgctxt "Layout Group (departure)"
+msgid "Departure"
+msgstr "Departure"
+
+msgctxt "Layout Group (arrival)"
+msgid "Arrival"
+msgstr "Arrival"
+
+msgctxt "Table (locations)"
+msgid "Locations"
+msgstr ""
+
+msgctxt "Field (location_id)"
+msgid "Location ID"
+msgstr ""
+
+msgctxt "Field (name)"
+msgid "Name"
+msgstr ""
+
+msgctxt "Field (address_street)"
+msgid "Street"
+msgstr "Strasse"
+
+msgctxt "Field (address_town)"
+msgid "Town"
+msgstr "Stadt"
+
+msgctxt "Field (address_county)"
+msgid "County"
+msgstr "Land"
+
+msgctxt "Field (address_country)"
+msgid "Country"
+msgstr "Staat"
+
+msgctxt "Field (address_postcode)"
+msgid "Postcode"
+msgstr "Postleitzahl"
+
+msgctxt "Field (comments)"
+msgid "Comments"
+msgstr "Kommentar"
+
+msgctxt "Field (contact_id)"
+msgid "Contact ID"
+msgstr ""
+
+msgctxt "Field (rent)"
+msgid "Rent"
+msgstr ""
+
+msgctxt "Relationship (scenes)"
+msgid "Scenes"
+msgstr "Szenen"
+
+msgctxt "Relationship (contacts)"
+msgid "Contacts"
+msgstr ""
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr ""
+
+msgctxt "Layout Group (address)"
+msgid "Address"
+msgstr "Addresse"
+
+msgctxt "Layout Group (contact_person)"
+msgid "Contact Person"
+msgstr "Contact Person"
+
+msgctxt "Table (props)"
+msgid "Props"
+msgstr ""
+
+msgctxt "Field (prop_id)"
+msgid "Prop ID"
+msgstr ""
+
+msgctxt "Field (description)"
+msgid "Description"
+msgstr ""
+
+msgctxt "Field (comments)"
+msgid "Comments"
+msgstr ""
+
+msgctxt "Field (name)"
+msgid "Name"
+msgstr ""
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr ""
+
+msgctxt "Layout Group (details)"
+msgid "Details"
+msgstr ""
+
+msgctxt "Table (scene_cast)"
+msgid "Scene Cast"
+msgstr "Szene Besetzung"
+
+msgctxt "Field (scene_cast_id)"
+msgid "Scene Cast ID"
+msgstr "Szene Besetzung ID"
+
+msgctxt "Field (comments)"
+msgid "Comments"
+msgstr "Kommentar"
+
+msgctxt "Field (cast_id)"
+msgid "Cast ID"
+msgstr "Besetzung ID"
+
+msgctxt "Field (scene_id)"
+msgid "Scene ID"
+msgstr "Szene ID"
+
+msgctxt "Relationship (cast)"
+msgid "Cast"
+msgstr "Besetzung"
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr ""
+
+msgctxt "Layout Group (details)"
+msgid "Details"
+msgstr ""
+
+msgctxt "Table (scene_costume)"
+msgid "Scene Costume"
+msgstr ""
+
+msgctxt "Field (scene_costume_id)"
+msgid "Scene Costume ID"
+msgstr ""
+
+msgctxt "Field (comments)"
+msgid "Comments"
+msgstr ""
+
+msgctxt "Field (scene_id)"
+msgid "Scene Id"
+msgstr ""
+
+msgctxt "Field (costume_id)"
+msgid "Costume ID"
+msgstr ""
+
+msgctxt "Relationship (costume)"
+msgid "Costume"
+msgstr ""
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr ""
+
+msgctxt "Layout Group (details)"
+msgid "Details"
+msgstr ""
+
+msgctxt "Custom Title ()"
+msgid "Costume Name"
+msgstr ""
+
+msgctxt "Table (scene_crew)"
+msgid "Scene Crew"
+msgstr "Szene Crew"
+
+msgctxt "Field (scene_crew_id)"
+msgid "Scene Crew ID"
+msgstr "Szene Crew ID"
+
+msgctxt "Field (comments)"
+msgid "Comments"
+msgstr "Kommentar"
+
+msgctxt "Field (scene_id)"
+msgid "Scene ID"
+msgstr "Szene ID"
+
+msgctxt "Field (department_id)"
+msgid "Department ID"
+msgstr ""
+
+msgctxt "Relationship (department)"
+msgid "Department"
+msgstr ""
+
+msgctxt "Relationship (scenes)"
+msgid "Scenes"
+msgstr "Szenen"
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr "bersicht"
+
+msgctxt "Layout Group (details)"
+msgid "Details"
+msgstr "Details"
+
+msgctxt "Field (scene_equipment_id)"
+msgid "Scene Equipment ID"
+msgstr ""
+
+msgctxt "Field (comments)"
+msgid "Comments"
+msgstr "Kommentar"
+
+msgctxt "Field (equipment_id)"
+msgid "Equipment ID"
+msgstr ""
+
+msgctxt "Field (scene_id)"
+msgid "Scene ID"
+msgstr ""
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr ""
+
+msgctxt "Layout Group (details)"
+msgid "Details"
+msgstr ""
+
+msgctxt "Table (scene_extras)"
+msgid "Scene Extras"
+msgstr ""
+
+msgctxt "Field (scene_extras_id)"
+msgid "Scene Extras ID"
+msgstr ""
+
+msgctxt "Field (description)"
+msgid "Description"
+msgstr ""
+
+msgctxt "Field (comments)"
+msgid "Comments"
+msgstr ""
+
+msgctxt "Field (scene_id)"
+msgid "Scene ID"
+msgstr ""
+
+msgctxt "Field (contact_id)"
+msgid "Contact ID"
+msgstr ""
+
+msgctxt "Relationship (contact)"
+msgid "Contact"
+msgstr ""
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr ""
+
+msgctxt "Layout Group (details)"
+msgid "Details"
+msgstr ""
+
+msgctxt "Table (scene_makeup)"
+msgid "Scene Makeup"
+msgstr ""
+
+msgctxt "Field (scene_makeup_id)"
+msgid "Scene Makeup ID"
+msgstr ""
+
+msgctxt "Field (description)"
+msgid "Description"
+msgstr ""
+
+msgctxt "Field (comments)"
+msgid "Comments"
+msgstr ""
+
+msgctxt "Field (scene_id)"
+msgid "Scene ID"
+msgstr ""
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr ""
+
+msgctxt "Layout Group (details)"
+msgid "Details"
+msgstr ""
+
+msgctxt "Table (scene_props)"
+msgid "Scene Props"
+msgstr ""
+
+msgctxt "Field (scene_props_id)"
+msgid "Scene Prop ID"
+msgstr ""
+
+msgctxt "Field (comments)"
+msgid "Comments"
+msgstr ""
+
+msgctxt "Field (scene_id)"
+msgid "Scene ID"
+msgstr ""
+
+msgctxt "Field (prop_id)"
+msgid "Prop ID"
+msgstr ""
+
+msgctxt "Relationship (props)"
+msgid "Props"
+msgstr ""
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr ""
+
+msgctxt "Layout Group (details)"
+msgid "Details"
+msgstr ""
+
+msgctxt "Table (scenes)"
+msgid "Scenes"
+msgstr "TestResult1"
+
+msgctxt "Field (scene_id)"
+msgid "Scene ID"
+msgstr "Szene ID"
+
+msgctxt "Field (comments)"
+msgid "Comments"
+msgstr "Kommentar"
+
+msgctxt "Field (description)"
+msgid "Description"
+msgstr "Beschreibung"
+
+msgctxt "Field (location_id)"
+msgid "Location ID"
+msgstr ""
+
+msgctxt "Field (date)"
+msgid "Date"
+msgstr "Termin"
+
+msgctxt "Field (time)"
+msgid "Time"
+msgstr "Zeit"
+
+msgctxt "Field (minutes)"
+msgid "Stop (minutes)"
+msgstr "Stunde"
+
+msgctxt "Field (day_or_night)"
+msgid "Day/Night"
+msgstr "Tag/Nacht"
+
+msgctxt "Field Choice ()"
+msgid "Day"
+msgstr "Tag"
+
+msgctxt "Field Choice ()"
+msgid "Night"
+msgstr "Nacht"
+
+msgctxt "Field Choice ()"
+msgid "Morning"
+msgstr ""
+
+msgctxt "Field Choice ()"
+msgid "Evening"
+msgstr ""
+
+msgctxt "Field Choice ()"
+msgid "Dawn"
+msgstr ""
+
+msgctxt "Field (interior_or_exterior)"
+msgid "Interior/Exterior"
+msgstr "Interior/Exterior"
+
+msgctxt "Field Choice ()"
+msgid "Interior"
+msgstr ""
+
+msgctxt "Field Choice ()"
+msgid "Exterior"
+msgstr ""
+
+msgctxt "Field (name)"
+msgid "Name"
+msgstr "Szene"
+
+msgctxt "Field (overview_name)"
+msgid "Scene"
+msgstr ""
+
+msgctxt "Field (pages)"
+msgid "Pages"
+msgstr ""
+
+msgctxt "Field (script_day)"
+msgid "Script Day"
+msgstr ""
+
+msgctxt "Relationship (location)"
+msgid "Locations"
+msgstr ""
+
+msgctxt "Relationship (scene_crew)"
+msgid "Additional Crew"
+msgstr "Szene Crew"
+
+msgctxt "Relationship (scene_cast)"
+msgid "Cast"
+msgstr "Szene Besetzung"
+
+msgctxt "Relationship (scene_equipment)"
+msgid "Additional Equipment"
+msgstr ""
+
+msgctxt "Relationship (scene_extras)"
+msgid "Extras"
+msgstr ""
+
+msgctxt "Relationship (scene_props)"
+msgid "Props"
+msgstr ""
+
+msgctxt "Relationship (scene_costume)"
+msgid "Costume"
+msgstr ""
+
+msgctxt "Relationship (scene_makeup)"
+msgid "Additional Makeup"
+msgstr ""
+
+msgctxt "Layout Group (overview)"
+msgid "Overview"
+msgstr "bersicht"
+
+msgctxt "Layout Group (details)"
+msgid "Details"
+msgstr "Details"
+
+msgctxt "Layout Group (scenario)"
+msgid "Scenario"
+msgstr "Stimmung"
+
+msgctxt "Layout Group (location)"
+msgid "Location"
+msgstr "Location"
+
+msgctxt "Custom Title ()"
+msgid "Contact Name"
+msgstr ""
+
+msgctxt "Custom Title ()"
+msgid "Actor's Name"
+msgstr ""

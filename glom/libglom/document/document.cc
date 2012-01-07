@@ -4405,6 +4405,69 @@ std::vector<Glib::ustring> Document::get_translation_available_locales() const
   return m_translation_available_locales;
 }
 
+Document::type_list_translatables Document::get_translatable_items()
+{
+  type_list_translatables result;
+
+  //Add tables:
+  type_listTableInfo tables = get_tables();
+  for(type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  {
+    sharedptr<TableInfo> tableinfo = *iter;
+    if(!tableinfo)
+      continue;
+
+    result.push_back(tableinfo);
+
+    const Glib::ustring table_name = tableinfo->get_name();
+
+    //The table's field titles:
+    type_vec_fields fields = get_table_fields(table_name);
+    for(type_vec_fields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    {
+      sharedptr<Field> field = *iter;
+      if(!field)
+        continue;
+
+      result.push_back(field);
+
+      //Custom Choices, if any:
+      if(field->get_glom_type() == Field::TYPE_TEXT) //Choices for other field types could not be translated.
+      {
+        type_list_translatables list_choice_items;
+        Document::fill_translatable_custom_choices(field->m_default_formatting, list_choice_items);
+        result.insert(result.end(), list_choice_items.begin(), list_choice_items.end());
+      }
+    }
+
+    //The table's relationships:
+    type_vec_relationships relationships = get_relationships(table_name);
+    result.insert(result.end(), relationships.begin(), relationships.end());
+
+    //The table's report titles:
+    type_listReports listReports = get_report_names(table_name);
+    for(type_listReports::iterator iter = listReports.begin(); iter != listReports.end(); ++iter)
+    {
+      const Glib::ustring report_name = *iter;
+      sharedptr<Report> report = get_report(table_name, report_name);
+      if(!report)
+        continue;
+
+      result.push_back(report);
+      
+      //Translatable report items:
+      type_list_translatables list_layout_items = get_translatable_report_items(table_name, report_name);
+      result.insert(result.end(), list_layout_items.begin(), list_layout_items.end());
+    }
+
+    //The table's translatable layout items:
+    type_list_translatables list_layout_items = get_translatable_layout_items(table_name);
+    result.insert(result.end(), list_layout_items.begin(), list_layout_items.end());
+  } //for
+
+  return result;
+}
+
 Document::type_list_translatables Document::get_translatable_layout_items(const Glib::ustring& table_name)
 {
   type_list_translatables result;

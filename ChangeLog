@@ -1,5 +1,29 @@
 2012-01-07  Murray Cumming  <murrayc@murrayc.com>
 
+	Move po file (gettext) import and export into libglom and test it.
+
+	* glom/mode_design/translation/window_translations.[h|cc]:
+	load_from_document(), save_to_document(): Move the collecting of
+	translatable items to:
+	* glom/libglom/document/document.[h|cc]: get_translatable_items();
+	Also move the gettext/po import/export to:
+	* Makefile_libglom.am:
+	* glom/libglom/filelist.am:
+	* glom/libglom/translations_po.[h|cc]: write_translations_to_po_file()
+	and import_translations_from_po_file().
+
+	* Makefile_tests.am
+	* tests/translations_po/data/test.po:
+	* tests/translations_po/test_document_export_po.cc:
+	* tests/translations_po/test_document_import_po.cc: Add tests of the new 
+	libglom functions.
+
+	* Makefile_glom.am
+	* glom/glom_export_po.cc: Added a new command-line tool that uses the
+	new libglom API.
+
+2012-01-07  Murray Cumming  <murrayc@murrayc.com>
+
 	test_document_load: Fix a typo.
 
 	* tests/test_document_load.cc: Check the correct variable.

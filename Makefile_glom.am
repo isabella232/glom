@@ -399,7 +399,6 @@ glom_glom_SOURCES =							\
 glom_all_libs = $(win_resfile) \
 	glom/libglom/libglom-$(GLOM_ABI_VERSION).la $(libglom_all_libs) \
 	$(GLOM_LIBS) $(INTLLIBS)
-glom_all_libs += -lgettextpo
 
 glom_glom_LDADD = $(glom_all_libs)
 

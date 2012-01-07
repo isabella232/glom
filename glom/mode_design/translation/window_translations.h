@@ -76,11 +76,11 @@ private:
   public:
 
     ModelColumns()
-    { add(m_col_item); add(m_col_translation); add(m_col_parent_table); }
+    { add(m_col_item); add(m_col_translation); }
 
     Gtk::TreeModelColumn< sharedptr<TranslatableItem> > m_col_item; //The table name, field name, etc.
     Gtk::TreeModelColumn<Glib::ustring> m_col_translation;
-    Gtk::TreeModelColumn<Glib::ustring> m_col_parent_table; //Not shown.
+    //Gtk::TreeModelColumn<Glib::ustring> m_col_parent_table; //Not shown.
   };
 
   ModelColumns m_columns;

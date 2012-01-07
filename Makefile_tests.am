@@ -47,7 +47,9 @@ check_PROGRAMS =						\
 	tests/test_selfhosting_new_then_change_columns \
 	tests/test_selfhosting_sqlinjection \
 	tests/import/test_parsing \
-	tests/import/test_signals
+	tests/import/test_signals \
+	tests/translations_po/test_document_export_po \
+	tests/translations_po/test_document_import_po
 
 TESTS =	tests/test_document_load	\
 	tests/test_document_load_and_change	\
@@ -78,7 +80,10 @@ TESTS =	tests/test_document_load	\
 	tests/test_selfhosting_new_then_change_columns \
 	tests/test_selfhosting_sqlinjection \
 	tests/import/test_parsing \
-	tests/import/test_signals
+	tests/import/test_signals \
+	tests/translations_po/test_document_export_po \
+	tests/translations_po/test_document_import_po
+
 
 # We also set this in Makefile.am, with +=,
 # but this is the first use, where we must use =
@@ -155,11 +160,15 @@ tests_python_test_python_module_CPPFLAGS = $(tests_cppflags)
 # Distribute the tests data:
 dist_noinst_DATA = \
 	tests/import/data/albums.csv \
+	tests/translations_po/data/test.po \
 	tests/test_image.jpg
 
-# Let the .cc source code know about this path: TODO: Actually use this.
+# Let the .cc source code know about this path:
 glom_test_import_defines = -DGLOM_TESTS_IMPORT_DATA_NOTINSTALLED=\""$(abs_top_srcdir)/tests/import/data/"\"
 glom_test_image_defines = -DGLOM_TESTS_IMAGE_DATA_NOTINSTALLED=\""$(abs_top_srcdir)/tests/"\"
+
+# Let the .cc source code know about this path:
+glom_test_translations_po_defines = -DGLOM_TESTS_TRANSLATIONS_PO_DATA_NOTINSTALLED=\""$(abs_top_srcdir)/tests/translations_po/data/"\"
 
 
 tests_import_test_parsing_SOURCES =	\
@@ -179,6 +188,16 @@ tests_import_test_signals_SOURCES =	\
 	tests/import/test_signals.cc
 tests_import_test_signals_LDADD = $(tests_ldadd)
 tests_import_test_signals_CPPFLAGS = $(tests_cppflags)
+
+tests_translations_po_test_document_export_po_SOURCES =	\
+	tests/translations_po/test_document_export_po.cc
+tests_translations_po_test_document_export_po_LDADD = $(tests_ldadd)
+tests_translations_po_test_document_export_po_CPPFLAGS = $(tests_cppflags)
+
+tests_translations_po_test_document_import_po_SOURCES =	\
+	tests/translations_po/test_document_import_po.cc
+tests_translations_po_test_document_import_po_LDADD = $(tests_ldadd)
+tests_translations_po_test_document_import_po_CPPFLAGS = $(tests_cppflags) $(glom_test_translations_po_defines)
 
 # Note that wherever we use this we must also use glom_test_image_defines.
 sources_test_utils = tests/test_utils.h \
