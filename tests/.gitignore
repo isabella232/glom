@@ -6,6 +6,8 @@
 /test_signal_reemit
 /import/test_parsing
 /import/test_signals
+/translations_po/test_document_export_po
+/translations_po/test_document_import_po
 /test_document_autosave
 /test_document_load
 /test_document_load_and_change

@@ -1,4 +1,5 @@
 glom
 glom_create_from_example
+glom_export_po
 glom_test_connection
 test_pyembed
