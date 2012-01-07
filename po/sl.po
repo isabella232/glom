@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-11-25 11:39+0000\n"
-"PO-Revision-Date: 2011-11-25 17:43+0100\n"
+"POT-Creation-Date: 2012-01-06 19:04+0000\n"
+"PO-Revision-Date: 2012-01-07 19:45+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -30,14 +30,14 @@ msgid "Please wait while Glom prepares your system for publishing over the netwo
 msgstr "Počakajte, da program Glom pripravi vaš sistem na objavljanje preko omrežja."
 
 #: ../glom/application.cc:266
-#: ../glom/bakery/app_withdoc_gtk.cc:226
+#: ../glom/bakery/app_withdoc_gtk.cc:228
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:197
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:58
 msgid "_File"
 msgstr "_Datoteka"
 
 #: ../glom/application.cc:267
-#: ../glom/bakery/app_withdoc_gtk.cc:227
+#: ../glom/bakery/app_withdoc_gtk.cc:229
 msgid "_Recent Files"
 msgstr "N_edavne datoteke"
 
@@ -331,29 +331,29 @@ msgstr "Prišlo je do napake med shranjevanjem datoteke primera."
 
 #: ../glom/application.cc:2299
 #: ../glom/application.cc:2304
-#: ../glom/bakery/app_withdoc_gtk.cc:420
+#: ../glom/bakery/app_withdoc_gtk.cc:425
 msgid "Save Document"
 msgstr "Shrani dokument"
 
 #. Warn the user:
 #: ../glom/application.cc:2391
-#: ../glom/bakery/app_withdoc_gtk.cc:468
+#: ../glom/bakery/app_withdoc_gtk.cc:473
 msgid "Read-only File."
 msgstr "Datoteka le za branje."
 
 #: ../glom/application.cc:2391
-#: ../glom/bakery/app_withdoc_gtk.cc:468
+#: ../glom/bakery/app_withdoc_gtk.cc:473
 msgid "You may not overwrite the existing file, because you do not have sufficient access rights."
 msgstr "Obstoječe datoteke ni mogoče prepisati, saj nimate ustreznih dovoljenj dostopa."
 
 #. Warn the user:
 #: ../glom/application.cc:2405
-#: ../glom/bakery/app_withdoc_gtk.cc:482
+#: ../glom/bakery/app_withdoc_gtk.cc:487
 msgid "Read-only Directory."
 msgstr "Mapa le za branje."
 
 #: ../glom/application.cc:2405
-#: ../glom/bakery/app_withdoc_gtk.cc:482
+#: ../glom/bakery/app_withdoc_gtk.cc:487
 msgid "You may not create a file in this directory, because you do not have sufficient access rights."
 msgstr "V tej mapi datoteke ni mogoče ustvariti, saj nimate ustreznih dovoljenj dostopa."
 
@@ -417,7 +417,7 @@ msgid "There was an error while restoring the backup."
 msgstr "Prišlo je do napake med obnavljanjem varnostne kopije."
 
 #: ../glom/application.cc:2758
-#: ../glom/bakery/app_withdoc_gtk.cc:341
+#: ../glom/bakery/app_withdoc_gtk.cc:346
 msgid " (read-only)"
 msgstr " (le za branje)"
 
@@ -821,12 +821,12 @@ msgstr "Poročilo je končano"
 msgid "The report will now be opened in your web browser."
 msgstr "Poročilo bo sedaj odprto v vašem spletnem brskalniku."
 
-#: ../glom/bakery/app_withdoc_gtk.cc:282
+#: ../glom/bakery/app_withdoc_gtk.cc:284
 #: ../ui/developer/window_field_definition_edit.glade.h:8
 msgid "_Edit"
 msgstr "_Uredi"
 
-#: ../glom/bakery/app_withdoc_gtk.cc:371
+#: ../glom/bakery/app_withdoc_gtk.cc:376
 msgid "Open Document"
 msgstr "Odpri dokument"
 
@@ -1048,20 +1048,20 @@ msgid "Vietnamese"
 msgstr "vietnamščina"
 
 #. Translators: This means an unknown or unnacceptable value type in a database.
-#: ../glom/libglom/data_structure/field.cc:671
+#: ../glom/libglom/data_structure/field.cc:693
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:151
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:159
 msgid "Invalid"
 msgstr "Neveljavno"
 
 #. Translators: This means a numeric value type in a database.
-#: ../glom/libglom/data_structure/field.cc:674
+#: ../glom/libglom/data_structure/field.cc:696
 msgid "Number"
 msgstr "Številka"
 
 #. Translators: This means a text/string value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/field.cc:677
+#: ../glom/libglom/data_structure/field.cc:699
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:73
 #: ../glom/libglom/data_structure/translatable_item.cc:317
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1158
@@ -1071,23 +1071,23 @@ msgid "Text"
 msgstr "Besedilo"
 
 #. Translators: This means a time value type in a database.
-#: ../glom/libglom/data_structure/field.cc:680
+#: ../glom/libglom/data_structure/field.cc:702
 msgid "Time"
 msgstr "Čas"
 
 #. Translators: This means a time value type in a database.
-#: ../glom/libglom/data_structure/field.cc:683
+#: ../glom/libglom/data_structure/field.cc:705
 msgid "Date"
 msgstr "Datum"
 
 #. Translators: This means a true/false value type in a database.
-#: ../glom/libglom/data_structure/field.cc:686
+#: ../glom/libglom/data_structure/field.cc:708
 msgid "Boolean"
 msgstr "Boolean"
 
 #. Translators: This means a picture value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/field.cc:689
+#: ../glom/libglom/data_structure/field.cc:711
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:70
 #: ../glom/libglom/data_structure/translatable_item.cc:319
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1165
@@ -1119,7 +1119,7 @@ msgid "ERROR: sanity_check_date_text_representation_uses_4_digit_year(): Sanity 
 msgstr "NAPAKA: sanity_check_date_text_representation_uses_4_digit_year(): pregled je spodletel. Videti je, da v tej jezikovni oznaki Glom ne uporablja štirih številk za prikaz let. Uporabljanje privzetega dd/mm/llll, čeprav je to morda napačno za vašo jezikovno oznako. To mora videti prevajalec. Pošljite poročilo o hrošču - oglejte si http://www.glom.org "
 
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/layout/layoutgroup.cc:429
+#: ../glom/libglom/data_structure/layout/layoutgroup.cc:496
 #: ../glom/utility_widgets/layouttoolbar.cc:35
 #: ../glom/utility_widgets/layouttoolbar.cc:45
 #: ../glom/utility_widgets/notebooklabelglom.cc:76
@@ -1324,12 +1324,12 @@ msgstr "Paketa ni mogoče namestiti"
 msgid "The necessary applications to install the package could not be found."
 msgstr "Zahtevanih programov za namestitev paketa ni mogoče najti."
 
-#: ../glom/libglom/db_utils.cc:1067
+#: ../glom/libglom/db_utils.cc:1087
 #: ../glom/mode_design/users/dialog_groups_list.cc:68
 msgid "Description"
 msgstr "Opis"
 
-#: ../glom/libglom/db_utils.cc:1074
+#: ../glom/libglom/db_utils.cc:1094
 msgid "Comments"
 msgstr "Opombe"
 
@@ -1343,11 +1343,13 @@ msgid "List"
 msgstr "Seznam"
 
 #: ../glom/glom_create_from_example.cc:62
+#: ../glom/glom_test_connection.cc:54
 #: ../glom/main.cc:197
 msgid "Glom options"
 msgstr "Možnosti glom"
 
 #: ../glom/glom_create_from_example.cc:62
+#: ../glom/glom_test_connection.cc:54
 msgid "Command-line options"
 msgstr "Možnosti ukazne vrstice"
 
@@ -1364,6 +1366,7 @@ msgid "The name for the created .glom file, such as something.glom ."
 msgstr "Ime ustvarjene datoteke .glom, na primer imedatoteke.glom ."
 
 #: ../glom/glom_create_from_example.cc:84
+#: ../glom/glom_test_connection.cc:62
 #: ../glom/main.cc:212
 msgid "The version of this application."
 msgstr "Različica tega programa."
@@ -1373,19 +1376,24 @@ msgid "The hostname of the PostgreSQL server, such as localhost. If this is not 
 msgstr "Ime gostitelja strežnika PostgreSQL, na primer localhost. V kolikor možnost ni navedena, bo samodejno ustvarjena  podatkovna zbirka z lastnim gostiteljem."
 
 #: ../glom/glom_create_from_example.cc:95
+#: ../glom/glom_test_connection.cc:72
 msgid "The port of the PostgreSQL server, such as 5434."
 msgstr "Vrata strežnika PostgreSQL, na primer 5434."
 
 #: ../glom/glom_create_from_example.cc:100
+#: ../glom/glom_test_connection.cc:77
 msgid "The username for the PostgreSQL server."
 msgstr "Uporabniško ime za povezavo s strežnikom PostgreSQL."
 
 #: ../glom/glom_create_from_example.cc:215
+#: ../glom/glom_test_connection.cc:108
 #: ../glom/main.cc:486
 msgid "Error while parsing command-line options: "
 msgstr "Napaka med razčlenjevanem možnosti ukazne vrstice:"
 
+#. TODO: How can we just print them out?
 #: ../glom/glom_create_from_example.cc:216
+#: ../glom/glom_test_connection.cc:90
 #: ../glom/main.cc:487
 msgid "Use --help to see a list of available command-line options."
 msgstr "Uporabite --help za ogled seznama razpoložljivih možnosti ukazne vrstice."
@@ -1409,8 +1417,33 @@ msgid "Glom: The output path is not a directory."
 msgstr "Glom: odvodna pot je mapa."
 
 #: ../glom/glom_create_from_example.cc:399
+#: ../glom/glom_test_connection.cc:143
 msgid "Please enter the PostgreSQL server's password for the user %1: "
 msgstr "Vnesite geslo za povezavo s strežnikom PostgreSQL za uporabnika %1:"
+
+#: ../glom/glom_test_connection.cc:67
+msgid "The hostname of the PostgreSQL server, such as localhost."
+msgstr "Ime gostitelja strežnika PostgreSQL, na primer localhost."
+
+#: ../glom/glom_test_connection.cc:83
+msgid "The specific database on the PostgreSQL server (Optional)."
+msgstr "Podatkovna zbirka na strežniku PostgreSQL (izbirno)."
+
+#: ../glom/glom_test_connection.cc:133
+msgid "Please provide a database username."
+msgstr "Vnesite uporabniško ime za podatkovno zbirko."
+
+#: ../glom/glom_test_connection.cc:192
+msgid "Error: Could not connect to the server even without specifying a database."
+msgstr "Napaka: ni se mogoče povezati s strežnikom brez določila podatkovne zbirke."
+
+#: ../glom/glom_test_connection.cc:200
+msgid "Error: Could not connect to the specified database."
+msgstr "Napaka: povezava z določeno podatkovno zbirko ni mogoča."
+
+#: ../glom/glom_test_connection.cc:206
+msgid "Successful connection."
+msgstr "Povezava je uspešno vzpostavljena."
 
 #: ../glom/main.cc:197
 msgid "Command-line options for glom"
@@ -2448,7 +2481,7 @@ msgid "Duplicate"
 msgstr "Podvoji"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:431
+#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:445
 msgid "Example"
 msgstr "Primer"
 
@@ -3675,6 +3708,13 @@ msgstr "<b>Skupina:</b>"
 #: ../ui/developer/window_users.glade.h:2
 msgid "<b>Users</b>"
 msgstr "<b>Uporabniki</b>"
+
+#~ msgid ""
+#~ "Enter details for a new record in the other table, then use its ID for "
+#~ "this field."
+#~ msgstr ""
+#~ "Vnesite podrobnosti novega zapisa  v drugi razpredelnici za izbor ID tega "
+#~ "polja."
 
 #~ msgid ""
 #~ "There was an error while restoring the backup. The tar utility failed to "
