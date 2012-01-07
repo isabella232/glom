@@ -257,10 +257,13 @@ public:
 
   type_list_layout_groups get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform = Glib::ustring()) const;
 
-  typedef std::list< sharedptr<TranslatableItem> > type_list_translatables;
+  /// The translatable item and a hint about what it is.
+  typedef std::pair< sharedptr<TranslatableItem>, Glib::ustring> pair_translatable_item_and_hint;
+
+  typedef std::list<pair_translatable_item_and_hint> type_list_translatables;
   type_list_translatables get_translatable_items();
 
-  static void fill_translatable_custom_choices(FieldFormatting& formatting, type_list_translatables& the_list);
+  static void fill_translatable_custom_choices(FieldFormatting& formatting, type_list_translatables& the_list, const Glib::ustring& hint);
 
 
   void fill_layout_field_details(const Glib::ustring& parent_table_name, const sharedptr<LayoutGroup>& layout_group) const;
@@ -518,12 +521,12 @@ private:
 
   void on_app_state_userlevel_changed(AppState::userlevels userlevel);
 
-  static void fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list);
+  static void fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list, const Glib::ustring& hint);
 
   void fill_sort_field_details(const Glib::ustring& parent_table_name, FieldFormatting::type_list_sort_fields& sort_fields) const;
 
-  type_list_translatables get_translatable_layout_items(const Glib::ustring& table_name);
-  type_list_translatables get_translatable_report_items(const Glib::ustring& table_name, const Glib::ustring& report_title);
+  type_list_translatables get_translatable_layout_items(const Glib::ustring& table_name, const Glib::ustring& hint);
+  type_list_translatables get_translatable_report_items(const Glib::ustring& table_name, const Glib::ustring& report_title, const Glib::ustring& hint);
 
 
   /// If the attribute is not there, then the default will be returned.

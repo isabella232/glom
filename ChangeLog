@@ -1,3 +1,19 @@
+2012-01-08  Murray Cumming  <murrayc@murrayc.com>
+
+	Export to po file: Improve the msgtxt hints.
+
+	* glom/libglom/data_structure/translatable_item.[h|cc]: 
+	get_translatable_item_type(): Make this const.
+	* glom/libglom/document/document.[h|cc]: get_translatable_items():
+	Now return a list of pairs, so each TranslatableItem also has a hint
+	for the msgtxt for the po (gettext) file, so that each can be 
+	identified uniquely and so that the translator has some context.
+	* glom/libglom/translations_po.[h|cc]: Adapt.
+	* glom/mode_design/translation/window_translations.[h|cc]: Adapt,
+	showing the actual hint instead of just the item type.
+	* tests/test_document_load_translations.cc: Adapted.
+	* tests/translations_po/data/test.po: Reexported.
+
 2012-01-07  Murray Cumming  <murrayc@murrayc.com>
 
 	Move po file (gettext) import and export into libglom and test it.

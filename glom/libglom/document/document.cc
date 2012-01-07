@@ -2549,7 +2549,7 @@ void Document::load_after_translations(const xmlpp::Element* element, Translatab
   if(!choicevalue) //This item does not use the title, but uses the title translations to translate its value, if it is of type text.
   {
     item.set_title_original( get_node_attribute_value(element, GLOM_ATTRIBUTE_TITLE) );
-  };
+  }
 
   const xmlpp::Element* nodeTranslations = get_node_child_named(element, GLOM_NODE_TRANSLATIONS_SET);
   if(nodeTranslations)
@@ -4405,6 +4405,15 @@ std::vector<Glib::ustring> Document::get_translation_available_locales() const
   return m_translation_available_locales;
 }
 
+template <typename T_List>
+static void translatable_items_append_with_hint(Document::type_list_translatables& result, T_List& list_items, const Glib::ustring& hint)
+{
+  for(typename T_List::iterator iter = list_items.begin(); iter != list_items.end(); ++iter)
+  {
+    result.push_back( Document::pair_translatable_item_and_hint(*iter, hint) );
+  }
+}
+
 Document::type_list_translatables Document::get_translatable_items()
 {
   type_list_translatables result;
@@ -4417,11 +4426,12 @@ Document::type_list_translatables Document::get_translatable_items()
     if(!tableinfo)
       continue;
 
-    result.push_back(tableinfo);
+    result.push_back( pair_translatable_item_and_hint(tableinfo, "") );
 
     const Glib::ustring table_name = tableinfo->get_name();
 
     //The table's field titles:
+    Glib::ustring hint = "Parent table: " + table_name;
     type_vec_fields fields = get_table_fields(table_name);
     for(type_vec_fields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
@@ -4429,20 +4439,21 @@ Document::type_list_translatables Document::get_translatable_items()
       if(!field)
         continue;
 
-      result.push_back(field);
+      result.push_back( pair_translatable_item_and_hint(field, hint) );
 
       //Custom Choices, if any:
       if(field->get_glom_type() == Field::TYPE_TEXT) //Choices for other field types could not be translated.
       {
+        const Glib::ustring this_hint = hint + ", Parent Field: " + field->get_name();   
         type_list_translatables list_choice_items;
-        Document::fill_translatable_custom_choices(field->m_default_formatting, list_choice_items);
+        Document::fill_translatable_custom_choices(field->m_default_formatting, list_choice_items, this_hint);
         result.insert(result.end(), list_choice_items.begin(), list_choice_items.end());
       }
     }
 
     //The table's relationships:
     type_vec_relationships relationships = get_relationships(table_name);
-    result.insert(result.end(), relationships.begin(), relationships.end());
+    translatable_items_append_with_hint(result, relationships, hint);
 
     //The table's report titles:
     type_listReports listReports = get_report_names(table_name);
@@ -4453,22 +4464,23 @@ Document::type_list_translatables Document::get_translatable_items()
       if(!report)
         continue;
 
-      result.push_back(report);
+      result.push_back( pair_translatable_item_and_hint(report, hint) );
       
       //Translatable report items:
-      type_list_translatables list_layout_items = get_translatable_report_items(table_name, report_name);
+      const Glib::ustring this_hint = hint + ", Parent Report: " + report->get_name();
+      type_list_translatables list_layout_items = get_translatable_report_items(table_name, report_name, this_hint);
       result.insert(result.end(), list_layout_items.begin(), list_layout_items.end());
     }
 
     //The table's translatable layout items:
-    type_list_translatables list_layout_items = get_translatable_layout_items(table_name);
+    type_list_translatables list_layout_items = get_translatable_layout_items(table_name, hint);
     result.insert(result.end(), list_layout_items.begin(), list_layout_items.end());
   } //for
 
   return result;
 }
 
-Document::type_list_translatables Document::get_translatable_layout_items(const Glib::ustring& table_name)
+Document::type_list_translatables Document::get_translatable_layout_items(const Glib::ustring& table_name, const Glib::ustring& hint)
 {
   type_list_translatables result;
 
@@ -4484,7 +4496,7 @@ Document::type_list_translatables Document::get_translatable_layout_items(const 
         sharedptr<LayoutGroup> group = *iterGroup;
         if(group)
         {
-          fill_translatable_layout_items(group, result);
+          fill_translatable_layout_items(group, result, hint);
         }
       }
     }
@@ -4494,18 +4506,18 @@ Document::type_list_translatables Document::get_translatable_layout_items(const 
 }
 
 
-Document::type_list_translatables Document::get_translatable_report_items(const Glib::ustring& table_name, const Glib::ustring& report_title)
+Document::type_list_translatables Document::get_translatable_report_items(const Glib::ustring& table_name, const Glib::ustring& report_title, const Glib::ustring& hint)
 {
   Document::type_list_translatables the_list;
 
   sharedptr<Report> report = get_report(table_name, report_title);
   if(report)
-    fill_translatable_layout_items(report->m_layout_group, the_list);
+    fill_translatable_layout_items(report->m_layout_group, the_list, hint);
 
   return the_list;
 }
 
-void Document::fill_translatable_custom_choices(FieldFormatting& formatting, type_list_translatables& the_list)
+void Document::fill_translatable_custom_choices(FieldFormatting& formatting, type_list_translatables& the_list, const Glib::ustring& hint)
 {
   if(!formatting.get_has_custom_choices())
     return;
@@ -4515,15 +4527,13 @@ void Document::fill_translatable_custom_choices(FieldFormatting& formatting, typ
   {
     sharedptr<ChoiceValue> value = *iter;
 
-    //TODO: Make the translator comment mention the field name as well 
-    //as just the fact that it's a custom choice.
-    the_list.push_back(value);
+    the_list.push_back( pair_translatable_item_and_hint(value, hint) );
   }
 }
 
-void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list)
+void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list, const Glib::ustring& hint)
 {
-  the_list.push_back(group);
+  the_list.push_back( pair_translatable_item_and_hint(group, hint) );
 
   //Look at each item:
   LayoutGroup::type_list_items items = group->get_items();
@@ -4541,21 +4551,21 @@ void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& grou
         sharedptr<CustomTitle> custom_title = field->get_title_custom();
         if(custom_title)
         {
-          the_list.push_back(custom_title);
+          the_list.push_back( pair_translatable_item_and_hint(custom_title, hint) ); 
         }
 
-        fill_translatable_layout_items(group_by->m_group_secondary_fields, the_list);
+        fill_translatable_layout_items(group_by->m_group_secondary_fields, the_list, hint);
       }
 
       //recurse:
-      fill_translatable_layout_items(child_group, the_list);
+      fill_translatable_layout_items(child_group, the_list, hint);
     }
     else
     {
       //Buttons too:
       sharedptr<LayoutItem_Button> button = sharedptr<LayoutItem_Button>::cast_dynamic(item);
       if(button)
-        the_list.push_back(button);
+        the_list.push_back( pair_translatable_item_and_hint(button, hint) ); 
       else
       {
         sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
@@ -4564,13 +4574,14 @@ void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& grou
           sharedptr<CustomTitle> custom_title = layout_field->get_title_custom();
           if(custom_title)
           {
-            the_list.push_back(custom_title);
+            the_list.push_back( pair_translatable_item_and_hint(custom_title, hint) ); 
           }
 
           //Custom Choices, if any:
           //Only text fields can have translated choice values:
+          const Glib::ustring this_hint = hint + ", Parent Field: " + layout_field->get_name();
           if(layout_field->get_glom_type() == Field::TYPE_TEXT)
-            fill_translatable_custom_choices(layout_field->m_formatting, the_list);
+            fill_translatable_custom_choices(layout_field->m_formatting, the_list, this_hint);
         }
       }
     }

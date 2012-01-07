@@ -112,11 +112,20 @@ static void on_gettextpo_error(int status, int errnum, const char * /* format */
 }
 #endif //HAVE_GETTEXTPO_XERROR
 
-static Glib::ustring get_po_context_for_item(const sharedptr<TranslatableItem>& item)
+Glib::ustring get_po_context_for_item(const sharedptr<const TranslatableItem>& item, const Glib::ustring& hint)
 {
   // Note that this context string should use English rather than the translated strings,
   // or the context would change depending on the locale of the user doing the export:
-  return TranslatableItem::get_translatable_type_name_nontranslated(item->get_translatable_item_type()) + " (" + item->get_name() + ')';
+  Glib::ustring result = TranslatableItem::get_translatable_type_name_nontranslated(item->get_translatable_item_type());
+
+  const Glib::ustring name = item->get_name();
+  if(!name.empty())
+    result += " (" + item->get_name() + ')';
+
+  if(!hint.empty())
+    result += ". " + hint;
+
+  return result;
 }
 
 bool write_translations_to_po_file(Document* document, const Glib::ustring& po_file_uri, const Glib::ustring& translation_locale)
@@ -142,12 +151,14 @@ bool write_translations_to_po_file(Document* document, const Glib::ustring& po_f
   Document::type_list_translatables list_layout_items = document->get_translatable_items();
   for(Document::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
   {
-    sharedptr<TranslatableItem> item = *iter;
+    sharedptr<TranslatableItem> item = iter->first;
     if(!item)
       continue;
 
     if(item->get_title_original().empty())
       continue;
+
+    const Glib::ustring hint = iter->second;
 
     po_message_t msg = po_message_create();
     po_message_set_msgid(msg, item->get_title_original().c_str());
@@ -155,7 +166,9 @@ bool write_translations_to_po_file(Document* document, const Glib::ustring& po_f
 
     // Add "context" comments, to uniquely identify similar strings, used in different places,
     // and to provide a hint for translators.
-    po_message_set_msgctxt(msg, get_po_context_for_item(item).c_str());
+    const Glib::ustring msgtxt = get_po_context_for_item(item, hint);
+    //std::cout << "debug: msgtxt=" << msgtxt << std::endl;
+    po_message_set_msgctxt(msg, msgtxt.c_str());
 
     po_message_insert(msg_iter, msg);
   }
@@ -239,12 +252,14 @@ bool import_translations_from_po_file(Document* document, const Glib::ustring& p
       //Find the matching item in the list:
       for(Document::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
       {
-        sharedptr<TranslatableItem> item = *iter;
+        sharedptr<TranslatableItem> item = iter->first;
         if(!item)
-         continue;
+          continue;
+
+        const Glib::ustring hint = iter->second;
 
         if( (item->get_title_original() == msgid) && 
-          (get_po_context_for_item(item) == msgcontext) ) // This is not efficient, but it should be reliable.
+          (get_po_context_for_item(item, hint) == msgcontext) ) // This is not efficient, but it should be reliable.
         {
           item->set_title_translation(translation_locale, msgstr);
           // Keep examining items, in case there are duplicates. break;

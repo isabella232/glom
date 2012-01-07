@@ -72,7 +72,7 @@ private:
 
 /** A predicate for use with std::find_if() to find a LayoutItem of a particular type.
  */
-template<class T_Element, class T_TypeToFind>
+template<class T_TypeToFind>
 class predicate_ItemHasType
 {
 public:
@@ -84,18 +84,10 @@ public:
   {
   }
 
-  bool operator() (const Glom::sharedptr<T_Element>& element)
+  bool operator() (const Glom::Document::pair_translatable_item_and_hint& element)
   {
-    Glom::sharedptr<T_TypeToFind> derived = Glom::sharedptr<T_TypeToFind>::cast_dynamic(element);
-    if(derived)
-      return true;
-    else
-      return false;
-  }
-
-  bool operator() (const Glom::sharedptr<const T_Element>& element)
-  {
-     Glom::sharedptr<const T_TypeToFind> derived = Glom::sharedptr<const T_TypeToFind>::cast_dynamic(element);
+    Glom::sharedptr<Glom::TranslatableItem> item = element.first;
+    Glom::sharedptr<T_TypeToFind> derived = Glom::sharedptr<T_TypeToFind>::cast_dynamic(item);
     if(derived)
       return true;
     else
@@ -120,20 +112,16 @@ typename T_Container::value_type get_titled(const T_Container& container, const 
   return result;
 }
 
-template<typename T_Container, typename T_TypeToFind>
-bool contains_item_type(const T_Container& container)
+template<typename T_TypeToFind>
+bool contains_item_type(const Glom::Document::type_list_translatables& container)
 {
-  typedef typename T_Container::value_type type_sharedptr;
-  type_sharedptr result;
-
-  typedef typename T_Container::value_type::object_type type_item;
-  typename T_Container::const_iterator iter =
+  Glom::Document::type_list_translatables::const_iterator iter =
     std::find_if(container.begin(), container.end(),
-      predicate_ItemHasType<type_item, T_TypeToFind>());
+      predicate_ItemHasType<T_TypeToFind>());
   if(iter != container.end())
-    result = *iter;
+    return true;
 
-  return result;
+  return false;
 }
 
 static Glom::sharedptr<const Glom::LayoutItem_Field> get_field_on_layout(const Glom::Document& document, const Glib::ustring& layout_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name)
@@ -313,30 +301,30 @@ int main()
   Glom::Document::type_list_translatables list_layout_items = document.get_translatable_items();
   g_assert(!list_layout_items.empty());
   const bool contains_tableinfo =
-    contains_item_type<Glom::Document::type_list_translatables, Glom::TableInfo>(list_layout_items);
+    contains_item_type<Glom::TableInfo>(list_layout_items);
   g_assert( contains_tableinfo );
   const bool contains_layoutitem =
-    contains_item_type<Glom::Document::type_list_translatables, Glom::LayoutItem>(list_layout_items);
+    contains_item_type<Glom::LayoutItem>(list_layout_items);
   g_assert( contains_layoutitem );
   /*
   const bool contains_layoutitemfield =
-    contains_item_type<Glom::Document::type_list_translatables, Glom::LayoutItem_Field>(list_layout_items);
+    contains_item_type<Glom::LayoutItem_Field>(list_layout_items);
   g_assert( contains_layoutitemfield );
   */
   const bool contains_relationship =
-    contains_item_type<Glom::Document::type_list_translatables, Glom::Relationship>(list_layout_items);
+    contains_item_type<Glom::Relationship>(list_layout_items);
   g_assert( contains_relationship );
   const bool contains_field =
-    contains_item_type<Glom::Document::type_list_translatables, Glom::Field>(list_layout_items);
+    contains_item_type<Glom::Field>(list_layout_items);
   g_assert( contains_field );
   const bool contains_choicevalue =
-    contains_item_type<Glom::Document::type_list_translatables, Glom::ChoiceValue>(list_layout_items);
+    contains_item_type<Glom::ChoiceValue>(list_layout_items);
   g_assert( contains_choicevalue );
   const bool contains_customtitle =
-    contains_item_type<Glom::Document::type_list_translatables, Glom::CustomTitle>(list_layout_items);
+    contains_item_type<Glom::CustomTitle>(list_layout_items);
   g_assert( contains_customtitle );
   const bool contains_report =
-    contains_item_type<Glom::Document::type_list_translatables, Glom::Report>(list_layout_items);
+    contains_item_type<Glom::Report>(list_layout_items);
   g_assert( contains_report );
 
   Glom::libglom_deinit();

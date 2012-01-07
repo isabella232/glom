@@ -57,7 +57,7 @@ private:
   //signal handlers:
   void on_button_identify();
   void on_cell_data_original(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
-  void on_cell_data_item_typename(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void on_cell_data_item_itemhint(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
   void on_treeview_edited(const Glib::ustring& path, const Glib::ustring& new_text);
 
   void on_combo_target_locale_changed();
@@ -67,8 +67,6 @@ private:
   void on_button_copy_translation();
   void on_button_import();
   void on_button_export();
-  
-  Glib::ustring get_po_context_for_item(const sharedptr<TranslatableItem>& item);
 
   //Tree model columns:
   class ModelColumns : public Gtk::TreeModel::ColumnRecord
@@ -76,11 +74,11 @@ private:
   public:
 
     ModelColumns()
-    { add(m_col_item); add(m_col_translation); }
+    { add(m_col_item); add(m_col_translation); add(m_col_hint); }
 
     Gtk::TreeModelColumn< sharedptr<TranslatableItem> > m_col_item; //The table name, field name, etc.
     Gtk::TreeModelColumn<Glib::ustring> m_col_translation;
-    //Gtk::TreeModelColumn<Glib::ustring> m_col_parent_table; //Not shown.
+    Gtk::TreeModelColumn<Glib::ustring> m_col_hint;
   };
 
   ModelColumns m_columns;

@@ -75,7 +75,7 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
 
     Gtk::CellRendererText* renderer_item_typename = Gtk::manage(new Gtk::CellRendererText);
     column_item_typename->pack_start(*renderer_item_typename);
-    column_item_typename->set_cell_data_func(*renderer_item_typename, sigc::mem_fun(*this, &Window_Translations::on_cell_data_item_typename));
+    column_item_typename->set_cell_data_func(*renderer_item_typename, sigc::mem_fun(*this, &Window_Translations::on_cell_data_item_itemhint));
 
 
     const int col = m_treeview->append_column_editable(_("Translation"), m_columns.m_col_translation);
@@ -178,25 +178,24 @@ void Window_Translations::on_cell_data_original(Gtk::CellRenderer* renderer, con
   }
 }
 
-void Window_Translations::on_cell_data_item_typename(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+void Window_Translations::on_cell_data_item_itemhint(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
   Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
-  if(renderer_text)
-  {
-    if(iter)
-    {
-      Gtk::TreeModel::Row row = *iter;
+  if(!renderer_text)
+    return;
 
-      Glib::ustring item_type_name;
-      sharedptr<TranslatableItem> item = row[m_columns.m_col_item];
-      if(item)
-        item_type_name = TranslatableItem::get_translatable_type_name(item->get_translatable_item_type());
+  if(!iter)
+    return;
 
-      renderer_text->property_text() = item_type_name;
-      renderer_text->property_editable() = false; //Names can never be edited.
-    }
-  }
+  Gtk::TreeModel::Row row = *iter;
+
+  Glib::ustring item_type_name;
+  sharedptr<TranslatableItem> item = row[m_columns.m_col_item];
+  const Glib::ustring hint = row[m_columns.m_col_hint];
+
+  renderer_text->property_text() = get_po_context_for_item(item, hint);
+  renderer_text->property_editable() = false; //Names can never be edited.
 }
 
 void Window_Translations::load_from_document()
@@ -216,19 +215,19 @@ void Window_Translations::load_from_document()
   Document::type_list_translatables list_layout_items = document->get_translatable_items();
   for(Document::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
   {
-    sharedptr<TranslatableItem> item = *iter;
-    if(item)
-    {
-      if(item->get_title_original().empty())
-        continue;
-      
-      Gtk::TreeModel::iterator iterTree = m_model->append();
-      Gtk::TreeModel::Row row = *iterTree;
+    sharedptr<TranslatableItem> item = iter->first;
+    if(!item)
+      continue;
 
-      row[m_columns.m_col_item] = item;
-      row[m_columns.m_col_translation] = item->get_title_translation(m_translation_locale, false);
-      //row[m_columns.m_col_parent_table] = table_name;
-    }
+    if(item->get_title_original().empty())
+      continue;
+      
+    Gtk::TreeModel::iterator iterTree = m_model->append();
+    Gtk::TreeModel::Row row = *iterTree;
+
+    row[m_columns.m_col_item] = item;
+    row[m_columns.m_col_translation] = item->get_title_translation(m_translation_locale, false);
+    row[m_columns.m_col_hint] = iter->second;
   }
 
   m_treeview_modified = false;

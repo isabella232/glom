@@ -241,7 +241,7 @@ Glib::ustring TranslatableItem::get_original_locale()
   return m_original_locale; 
 }
 
-bool TranslatableItem::get_current_locale_not_original()
+bool TranslatableItem::get_current_locale_not_original() //TODO: Make this const?
 {
   if(m_original_locale.empty())
     get_original_locale();
@@ -252,7 +252,7 @@ bool TranslatableItem::get_current_locale_not_original()
   return m_original_locale != m_current_locale;
 }
 
-TranslatableItem::enumTranslatableItemType TranslatableItem::get_translatable_item_type()
+TranslatableItem::enumTranslatableItemType TranslatableItem::get_translatable_item_type() const
 {
   return m_translatable_item_type;
 }

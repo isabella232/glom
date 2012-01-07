@@ -102,7 +102,7 @@ public:
      TRANSLATABLE_TYPE_CHOICEVALUE
    };
 
-  enumTranslatableItemType get_translatable_item_type();
+  enumTranslatableItemType get_translatable_item_type() const;
 
   //Direct access, for performance:
   const type_map_locale_to_translations& _get_translations_map() const;
