@@ -321,7 +321,7 @@ int main()
   }
 
   const Glom::sharedptr<const Glom::Report> report = document.get_report("contacts", "by_country_by_town");
-  if(!print_layout)
+  if(!report)
   {
     std::cerr << "Failure: Could not get an expected report." << std::endl;
     return false;
