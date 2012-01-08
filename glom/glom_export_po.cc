@@ -41,6 +41,7 @@ public:
   //These instances should live as long as the OptionGroup to which they are added,
   //and as long as the OptionContext to which those OptionGroups are added.
   std::string m_arg_filepath_output;
+  Glib::ustring m_arg_locale_id;
   bool m_arg_version;
 };
 
@@ -53,6 +54,12 @@ GlomCreateOptionGroup::GlomCreateOptionGroup()
   entry.set_short_name('o');
   entry.set_description(_("The path at which to save the created .po file, such as /home/someuser/somefile.po ."));
   add_entry_filename(entry, m_arg_filepath_output);
+
+  entry; 
+  entry.set_long_name("locale-id");
+  entry.set_short_name('l');
+  entry.set_description(_("The locale whose translations should be written to the .po file, such as de_DE."));
+  add_entry(entry, m_arg_locale_id);
   
   entry.set_long_name("version");
   entry.set_short_name('V');
@@ -105,6 +112,13 @@ int main(int argc, char* argv[])
   if(input_uri.empty())
   {
     std::cerr << "Please specify a glom file." << std::endl;
+    std::cerr << std::endl << context.get_help() << std::endl;
+    return EXIT_FAILURE;
+  }
+
+  if(group.m_arg_locale_id.empty())
+  {
+    std::cerr << "Please specify a locale ID." << std::endl;
     std::cerr << std::endl << context.get_help() << std::endl;
     return EXIT_FAILURE;
   }
@@ -168,7 +182,7 @@ int main(int argc, char* argv[])
   }
 
   const bool succeeded = 
-    Glom::write_translations_to_po_file(&document, ouput_uri, "de_DE");
+    Glom::write_translations_to_po_file(&document, ouput_uri, group.m_arg_locale_id);
   if(!succeeded)
   {
     std::cerr << "Po file creation failed." << std::endl;

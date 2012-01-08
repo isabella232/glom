@@ -1,5 +1,12 @@
 2012-01-08  Murray Cumming  <murrayc@murrayc.com>
 
+	glom_export_po: Let the user choose the locale ID.
+
+	* glom/glom_export_po.cc: Add, and use, a --locale-id (-l) option
+	instead of just hard-coding de_DE.
+
+2012-01-08  Murray Cumming  <murrayc@murrayc.com>
+
 	Export to po file: Write a po file header.
 
 	* glom/libglom/translations_po.[h|cc]: write_translations_to_po_file():
