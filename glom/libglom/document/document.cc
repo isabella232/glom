@@ -4535,6 +4535,11 @@ void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& grou
 {
   the_list.push_back( pair_translatable_item_and_hint(group, hint) );
 
+  const Glib::ustring group_name = group->get_name();
+  Glib::ustring this_hint = hint;
+  if(!group_name.empty())
+    this_hint += ", Parent Group: " + group_name;
+
   //Look at each item:
   LayoutGroup::type_list_items items = group->get_items();
   for(LayoutGroup::type_list_items::const_iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
@@ -4551,21 +4556,21 @@ void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& grou
         sharedptr<CustomTitle> custom_title = field->get_title_custom();
         if(custom_title)
         {
-          the_list.push_back( pair_translatable_item_and_hint(custom_title, hint) ); 
+          the_list.push_back( pair_translatable_item_and_hint(custom_title, this_hint) ); 
         }
 
-        fill_translatable_layout_items(group_by->m_group_secondary_fields, the_list, hint);
+        fill_translatable_layout_items(group_by->m_group_secondary_fields, the_list, this_hint);
       }
 
       //recurse:
-      fill_translatable_layout_items(child_group, the_list, hint);
+      fill_translatable_layout_items(child_group, the_list, this_hint);
     }
     else
     {
       //Buttons too:
       sharedptr<LayoutItem_Button> button = sharedptr<LayoutItem_Button>::cast_dynamic(item);
       if(button)
-        the_list.push_back( pair_translatable_item_and_hint(button, hint) ); 
+        the_list.push_back( pair_translatable_item_and_hint(button, this_hint) ); 
       else
       {
         sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
@@ -4574,12 +4579,12 @@ void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& grou
           sharedptr<CustomTitle> custom_title = layout_field->get_title_custom();
           if(custom_title)
           {
-            the_list.push_back( pair_translatable_item_and_hint(custom_title, hint) ); 
+            the_list.push_back( pair_translatable_item_and_hint(custom_title, this_hint) ); 
           }
 
           //Custom Choices, if any:
           //Only text fields can have translated choice values:
-          const Glib::ustring this_hint = hint + ", Parent Field: " + layout_field->get_name();
+          const Glib::ustring choice_hint = this_hint + ", Parent Field: " + layout_field->get_name();
           if(layout_field->get_glom_type() == Field::TYPE_TEXT)
             fill_translatable_custom_choices(layout_field->m_formatting, the_list, this_hint);
         }
