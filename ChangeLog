@@ -1,5 +1,12 @@
 2012-01-08  Murray Cumming  <murrayc@murrayc.com>
 
+	Import of po files: Handle empty gettext strings.
+
+	* glom/libglom/translations_po.cc: Handle empty msgid, msgstr and 
+	msgctxt.
+
+2012-01-08  Murray Cumming  <murrayc@murrayc.com>
+
 	Export to po file: Improve the msgtxt hints more.
 
 	* glom/libglom/document/document.cc: fill_translatable_layout_items():

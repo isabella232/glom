@@ -245,9 +245,9 @@ bool import_translations_from_po_file(Document* document, const Glib::ustring& p
       //This message:
       //TODO: Just use const char* instead of copying it in to a Glib::ustring,
       //if we have performance problems here:
-      const Glib::ustring msgid = po_message_msgid(msg);
-      const Glib::ustring msgstr = po_message_msgstr(msg);
-      const Glib::ustring msgcontext = po_message_msgctxt(msg);
+      const Glib::ustring msgid = Glib::convert_const_gchar_ptr_to_ustring( po_message_msgid(msg) );
+      const Glib::ustring msgstr = Glib::convert_const_gchar_ptr_to_ustring( po_message_msgstr(msg) );
+      const Glib::ustring msgcontext = Glib::convert_const_gchar_ptr_to_ustring( po_message_msgctxt(msg) );
 
       //Find the matching item in the list:
       for(Document::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
