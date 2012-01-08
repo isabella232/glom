@@ -55,7 +55,6 @@ GlomCreateOptionGroup::GlomCreateOptionGroup()
   entry.set_description(_("The path at which to save the created .po file, such as /home/someuser/somefile.po ."));
   add_entry_filename(entry, m_arg_filepath_output);
 
-  entry; 
   entry.set_long_name("locale-id");
   entry.set_short_name('l');
   entry.set_description(_("The locale whose translations should be written to the .po file, such as de_DE."));

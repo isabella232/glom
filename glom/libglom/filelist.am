@@ -121,7 +121,7 @@ libglom_sources =							\
 	glom/libglom/xsl_utils.h					\
 	glom/libglom/connectionpool_backends/backend.cc			\
 	glom/libglom/connectionpool_backends/backend.h			\
-  glom/libglom/data_structure/choicevalue.cc \	
+  glom/libglom/data_structure/choicevalue.cc \
 	glom/libglom/data_structure/field.cc				\
 	glom/libglom/data_structure/fieldtypes.cc			\
 	glom/libglom/data_structure/foundset.cc				\

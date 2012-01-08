@@ -1,5 +1,13 @@
 2012-01-08  Murray Cumming  <murrayc@murrayc.com>
 
+	test_document_export_po: Use msgfmt -c to test the exported .po file.
+
+	* configure.ac: Get the path for msgfmt.
+	* tests/translations_po/test_document_export_po.cc: Use msgfmt -c to
+	check the new .po file.
+
+2012-01-08  Murray Cumming  <murrayc@murrayc.com>
+
 	glom_export_po: Let the user choose the locale ID.
 
 	* glom/glom_export_po.cc: Add, and use, a --locale-id (-l) option

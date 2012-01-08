@@ -18,6 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <config.h> //For GLOM_MSGFMT
+
 #include <libglom/document/document.h>
 #include <libglom/translations_po.h>
 #include <libglom/init.h>
@@ -26,10 +28,42 @@
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/fileutils.h>
+#include <glibmm/shell.h>
+#include <glibmm/spawn.h>
 
 #include <iostream>
 
- 
+static bool check_po_file(const std::string& filepath)
+{
+  if(filepath.empty())
+    return false;
+
+  //We could use the gettext-po po_file_check_all() function to check 
+  //the file, but the gettext-po error handling is very awkward,
+  //so let's keep it simple:
+  int return_status = EXIT_FAILURE;
+  std::string stdout_output;
+  const Glib::ustring command = Glib::ustring::compose(GLOM_MSGFMT " %1",
+    Glib::shell_quote(filepath));
+  try
+  {    
+    Glib::spawn_command_line_sync(command, &stdout_output, 0, &return_status);
+    //std::cout << " debug: output=" << stdout_output << std::endl;
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "Exception caught: " << ex.what() << std::endl;
+  }
+
+  if(return_status != EXIT_SUCCESS)
+  {
+    std::cout << stdout_output << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
 int main()
 {
   Glom::libglom_init();
@@ -111,6 +145,10 @@ int main()
   const bool text_found =
     (data.find("Stabliste") != std::string::npos);
   g_assert(text_found);
+
+
+  //Check that the .po file is valid:
+  check_po_file(po_file_path);
 
   //TODO: Remove po_file_uri
 

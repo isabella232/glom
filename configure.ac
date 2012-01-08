@@ -270,6 +270,11 @@ AC_CHECK_PROG([GLOM_GZIP], [gzip], [yes], [no])
 AS_IF([test "$GLOM_GZIP" = no],
   [AC_MSG_ERROR([gzip not found. Glom needs this to create backup files.])])
 
+AC_PATH_PROG([GLOM_MSGFMT], [msgfmt], [no])
+AS_IF([test "$GLOM_MSGFMT" = no],
+  [AC_MSG_ERROR([msgfmt not found. Glom needs this to test exported .po (gettext) files.])])
+AC_DEFINE_UNQUOTED([GLOM_MSGFMT], ["$GLOM_MSGFMT"],
+                   [Define to the location of the msgfmt gettext utility.])
 
 # Code testing coverage with gcov
 AC_MSG_CHECKING(whether to build with gcov testing)
