@@ -26,8 +26,19 @@
 namespace Glom
 {
 
-bool write_translations_to_po_file(Document* document, const Glib::ustring& po_file_uri, const Glib::ustring& translation_locale);
+/** Create a po file containing the translations from the Glom document.
+ * @param document The document whose translations should be written to a .po file.
+ * @param po_file The filepath at which to create a .po file.
+ * @param translation_locale For instance, de_DE.
+ * @param locale_name For instance, Deutsch, to identify the translation team.
+ */
+bool write_translations_to_po_file(Document* document, const Glib::ustring& po_file_uri, const Glib::ustring& translation_locale, const Glib::ustring& locale_name = Glib::ustring());
 
+/** Parse a po file, storing its translations in the Glom document.
+ * @param document The document into which the translations should be stored.
+ * @param po_file The filepath at which to find a .po file.
+ * @param translation_locale For instance, de_DE.
+ */
 bool import_translations_from_po_file(Document* document, const Glib::ustring& po_file_uri, const Glib::ustring& translation_locale);
 
 /** Get a hint about what the text is for.

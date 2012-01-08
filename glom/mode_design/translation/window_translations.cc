@@ -358,7 +358,8 @@ void Window_Translations::on_button_export()
   if(add_extension)
     uri += extension;
 
-  Glom::write_translations_to_po_file(get_document(), uri, m_translation_locale);
+  Glom::write_translations_to_po_file(get_document(), uri, m_translation_locale,
+    IsoCodes::get_locale_name(m_translation_locale));
 }
 
 void Window_Translations::on_button_import()

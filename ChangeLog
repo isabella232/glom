@@ -1,5 +1,20 @@
 2012-01-08  Murray Cumming  <murrayc@murrayc.com>
 
+	Export to po file: Write a po file header.
+
+	* glom/libglom/translations_po.[h|cc]: write_translations_to_po_file():
+	Add an optional locale_name parameter. We cannot discover this inside
+	the function because we only use iso-codes in glom, not libglom, and 
+	I would prefer not to move that static data into libglom.
+	* glom/mode_design/translation/window_translations.cc: 
+	on_button_export():Pass the extra locale_name parameter.
+	* tests/translations_po/data/test.po: Resave.
+
+	This makes the written .po file pass validation by msgfmt -c on the 
+	command line.
+
+2012-01-08  Murray Cumming  <murrayc@murrayc.com>
+
 	Import of po files: Handle empty gettext strings.
 
 	* glom/libglom/translations_po.cc: Handle empty msgid, msgstr and 

@@ -25,12 +25,26 @@
 #include "config.h" //For HAVE_GETTEXTPO_XERROR
 
 #include <glibmm/convert.h>
+#include <glibmm/fileutils.h>
+#include <glibmm/datetime.h>
 #include <glibmm/i18n.h>
 
 #include <iostream>
 
 /* For really ugly hacks! */
 #include <setjmp.h>
+
+#define GLOM_PO_HEADER \
+"msgid \"\"\n" \
+"msgstr \"\"\n" \
+"\"Project-Id-Version: %1\\n\"\n" \
+"\"product=glom&keywords=I18N+L10N&component=general\\n\"\n" \
+"\"PO-Revision-Date: %2\\n\"\n" \
+"\"Last-Translator: Someone <someone@someone.com>\\n\"\n" \
+"\"Language-Team: %3 <someone@someone.com>\\n\"\n" \
+"\"MIME-Version: 1.0\\n\"\n" \
+"\"Content-Type: text/plain; charset=UTF-8\\n\"\n" \
+"\"Content-Transfer-Encoding: 8bit\\n\""
 
 namespace Glom
 {
@@ -128,7 +142,7 @@ Glib::ustring get_po_context_for_item(const sharedptr<const TranslatableItem>& i
   return result;
 }
 
-bool write_translations_to_po_file(Document* document, const Glib::ustring& po_file_uri, const Glib::ustring& translation_locale)
+bool write_translations_to_po_file(Document* document, const Glib::ustring& po_file_uri, const Glib::ustring& translation_locale, const Glib::ustring& locale_name)
 {
   std::string filename;
 
@@ -186,10 +200,27 @@ bool write_translations_to_po_file(Document* document, const Glib::ustring& po_f
   error_handler.error = &on_gettextpo_error;
   #endif //HAVE_GETTEXTPO_XERROR
 
-  if(po_file_write(po_file, filename.c_str(), &error_handler))
-  {
-    po_file_free(po_file);
-  }
+  const po_file_t written = po_file_write(po_file, filename.c_str(), &error_handler);
+  po_file_free(po_file);
+  
+  if(!written)
+    return false;
+
+  //Prepend the po header, by reading in the data written by po_file_write(),
+  //and then writing it all out again. The (generally awkward) gettext-po API 
+  //does not offer an easier way to do this.
+  //
+  //Actually. maybe we could use po_header_set_field(), but that is not 
+  //clear and that returns allocated strings that we would need to free instead 
+  //of just ignoring, so this is probably still the easiest way.
+  const Glib::DateTime revision_date = Glib::DateTime::create_now_local();
+  const Glib::ustring revision_date_str = revision_date.format("%F %R%z");
+
+  const Glib::ustring data = Glib::file_get_contents(filename);
+  const Glib::ustring header = Glib::ustring::compose(GLOM_PO_HEADER,
+    document->get_database_title(), revision_date_str, locale_name);
+  const Glib::ustring full = header + "\n\n" + data;
+  Glib::file_set_contents(filename, full);
 
   return true;
 }
