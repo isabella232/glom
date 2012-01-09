@@ -1,5 +1,15 @@
 2012-01-09  Murray Cumming  <murrayc@murrayc.com>
 
+	test_document_export_po: Test a special character.
+
+	* tests/translations_po/test_document_export_po.cc:
+	Demonstrate that the po file export currently drops non-ASCII characters.
+  Apparently there is no way to tell po_file_write() to use UTF-8 encoding, 
+  though that can be affected by code that uses the libgettext-po source code 
+  itself, by setting output_format_po.requires_utf8.
+
+2012-01-09  Murray Cumming  <murrayc@murrayc.com>
+
 	Add glom_import_po_all command-line utility.
 
 	* glom/libglom/translations_po.cc: write_translations_to_po_file():

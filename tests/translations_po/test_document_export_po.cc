@@ -142,8 +142,12 @@ int main()
     return EXIT_FAILURE;
   }
 
-  const bool text_found =
+  bool text_found =
     (data.find("Stabliste") != std::string::npos);
+  g_assert(text_found);
+  
+  text_found =
+    (data.find("\u00DCbersicht") != std::string::npos);
   g_assert(text_found);
 
 
