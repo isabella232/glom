@@ -1,5 +1,11 @@
 2012-01-09  Murray Cumming  <murrayc@murrayc.com>
 
+	export_po_all: Fix some typos.
+
+	* glom/glom_export_po_all.cc: Fix some typos.
+
+2012-01-09  Murray Cumming  <murrayc@murrayc.com>
+
 	test_document_load_translations: Test more fallbacks.
 
 	* examples/example_film_manager.glom: Remove the useless en_GB translations.

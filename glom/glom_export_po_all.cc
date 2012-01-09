@@ -46,13 +46,13 @@ public:
 };
 
 GlomCreateOptionGroup::GlomCreateOptionGroup()
-: Glib::OptionGroup("glom_export_po", _("Glom options"), _("Command-line options")),
+: Glib::OptionGroup("glom_export_po_all", _("Glom options"), _("Command-line options")),
   m_arg_version(false)
 {
   Glib::OptionEntry entry; 
   entry.set_long_name("output-path");
   entry.set_short_name('o');
-  entry.set_description(_("The directory path at which to save the created .po files, such as /home/someuser/ ."));
+  entry.set_description(_("The directory path at which to save the created .po files, such as /home/someuser/po_files/ ."));
   add_entry_filename(entry, m_arg_filepath_output);
 
   entry.set_long_name("version");
@@ -118,7 +118,7 @@ int main(int argc, char* argv[])
 
   if(!file_input->query_exists())
   {
-    std::cerr << _("The directory does not exist.") << std::endl;
+    std::cerr << _("The Glom file does not exist.") << std::endl;
     std::cerr << "uri: " << input_uri << std::endl;
 
     std::cerr << std::endl << context.get_help() << std::endl;
@@ -157,7 +157,7 @@ int main(int argc, char* argv[])
   file_type = file_output->query_file_type();
   if(file_type != Gio::FILE_TYPE_DIRECTORY)
   {
-    std::cerr << _("Glom: The output file path is not directory.") << std::endl;
+    std::cerr << _("Glom: The output file path is not a directory.") << std::endl;
     std::cerr << std::endl << context.get_help() << std::endl;
     return EXIT_FAILURE;
   }
