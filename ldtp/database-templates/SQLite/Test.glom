@@ -3,7 +3,7 @@
   <connection server="localhost" user="" database="glom_example_smallbusiness_v2" self_hosted="true" port="0" try_other_ports="true" hosting_mode="sqlite"/>
   <table name="contacts" default="true" title="Contacts">
     <trans_set>
-      <trans loc="de_AT" val="Kontakten"/>
+      
       <trans loc="de" val="Kontakten"/>
     </trans_set>
     <fields>
@@ -11,7 +11,7 @@
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
-          <trans loc="de_AT" val="Kontakt ID"/>
+          
           <trans loc="de" val="Kontakt ID"/>
         </trans_set>
       </field>
@@ -19,7 +19,7 @@
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Vorname"/>
+          
           <trans loc="de" val="Vorname"/>
         </trans_set>
       </field>
@@ -27,7 +27,7 @@
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Zweite Name"/>
+          
           <trans loc="de" val="Zweite Name"/>
         </trans_set>
       </field>
@@ -35,7 +35,7 @@
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Familiename"/>
+          
           <trans loc="de" val="Familiename"/>
         </trans_set>
       </field>
@@ -59,7 +59,7 @@
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Strasse"/>
+          
           <trans loc="de" val="Strasse"/>
         </trans_set>
       </field>
@@ -67,7 +67,7 @@
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Ort"/>
+          
           <trans loc="de" val="Ort"/>
         </trans_set>
       </field>
@@ -75,7 +75,7 @@
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Bundesland/Kanton"/>
+          
           <trans loc="de" val="Bundesland/Kanton"/>
         </trans_set>
       </field>
@@ -83,7 +83,7 @@
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Land"/>
+          
           <trans loc="de" val="Land"/>
         </trans_set>
       </field>
@@ -91,7 +91,7 @@
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Postleitzahl"/>
+          
           <trans loc="de" val="Postleitzahl"/>
         </trans_set>
       </field>
@@ -99,7 +99,7 @@
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
-          <trans loc="de_AT" val="Geburtsdatum"/>
+          
           <trans loc="de" val="Geburtsdatum"/>
         </trans_set>
       </field>
@@ -107,7 +107,7 @@
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Kommentar"/>
+          
           <trans loc="de" val="Kommentar"/>
         </trans_set>
       </field>
@@ -115,7 +115,7 @@
         <calculation>return record["name_first"] + " " + record["name_last"];</calculation>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Vollname"/>
+          
           <trans loc="de" val="Vollname"/>
         </trans_set>
       </field>
@@ -123,7 +123,7 @@
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
-          <trans loc="de_AT" val="Bild"/>
+          
           <trans loc="de" val="Bild"/>
         </trans_set>
       </field>
@@ -131,7 +131,7 @@
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="E-mail Addresse"/>
+          
           <trans loc="de" val="E-mail Addresse"/>
         </trans_set>
       </field>
@@ -139,7 +139,7 @@
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Website"/>
+          
           <trans loc="de" val="Website"/>
         </trans_set>
       </field>
@@ -159,7 +159,7 @@
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Fax"/>
+          
           <trans loc="de" val="Fax"/>
         </trans_set>
       </field>
@@ -170,11 +170,7 @@
         <data_layout_groups>
           <data_layout_group name="header" columns_count="2" title="Overview">
             <trans_set>
-              <trans loc="de_AT" val="Ubersicht"/>
-              <trans loc="de_BE" val="Overview"/>
               <trans loc="de" val="Ubersicht"/>
-              <trans loc="en_GB" val="Overview"/>
-              <trans loc="en_US" val="Overview"/>
             </trans_set>
             <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -186,11 +182,7 @@
           <data_layout_group name="main" columns_count="2">
             <data_layout_group name="name" title="Name">
               <trans_set>
-                <trans loc="de_AT" val="Name"/>
-                <trans loc="de_BE" val="Name"/>
                 <trans loc="de" val="Name"/>
-                <trans loc="en_GB" val="Name"/>
-                <trans loc="en_US" val="Name"/>
               </trans_set>
               <data_layout_item name="name_title" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
@@ -207,11 +199,7 @@
             </data_layout_group>
             <data_layout_group name="address" title="Address">
               <trans_set>
-                <trans loc="de_AT" val="Addresse"/>
-                <trans loc="de_BE" val="Address"/>
                 <trans loc="de" val="Addresse"/>
-                <trans loc="en_GB" val="Address"/>
-                <trans loc="en_US" val="Address"/>
               </trans_set>
               <data_layout_item name="address_street" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
@@ -231,11 +219,7 @@
             </data_layout_group>
             <data_layout_group name="telephone" title="Telephone">
               <trans_set>
-                <trans loc="de_AT" val="Telefon"/>
-                <trans loc="de_BE" val="Telephone"/>
                 <trans loc="de" val="Telefon"/>
-                <trans loc="en_GB" val="Telephone"/>
-                <trans loc="en_US" val="Telephone"/>
               </trans_set>
               <data_layout_item name="tel_work" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
@@ -432,7 +416,7 @@ if __name__ == "__main__":
         <field_lookup relationship="products" field="name"/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Produkt Name"/>
+          
           <trans loc="de" val="Produkt Name"/>
         </trans_set>
       </field>
@@ -440,7 +424,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="products" choices_related_field="product_id" choices_related_second="name"/>
         <trans_set>
-          <trans loc="de_AT" val="Produkt ID"/>
+          
           <trans loc="de" val="Produkt ID"/>
         </trans_set>
       </field>
@@ -449,7 +433,7 @@ if __name__ == "__main__":
         <field_lookup relationship="products" field="price"/>
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
-          <trans loc="de_AT" val="Produkt Preis"/>
+          
           <trans loc="de" val="Produkt Preis"/>
         </trans_set>
       </field>
@@ -457,7 +441,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
-          <trans loc="de_AT" val="Rechnung ID"/>
+          
           <trans loc="de" val="Rechnung ID"/>
         </trans_set>
       </field>
@@ -465,7 +449,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
-          <trans loc="de_AT" val="Menge"/>
+          
           <trans loc="de" val="Menge"/>
         </trans_set>
       </field>
@@ -473,7 +457,7 @@ if __name__ == "__main__":
         <calculation>return record["count"] * record["product_price"];</calculation>
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
-          <trans loc="de_AT" val="Gesamtpreis"/>
+          
           <trans loc="de" val="Gesamtpreis"/>
         </trans_set>
       </field>
@@ -482,7 +466,7 @@ if __name__ == "__main__":
         <field_lookup relationship="products" field="vat_percent"/>
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
-          <trans loc="de_AT" val="MwST Prozent"/>
+          
           <trans loc="de" val="MwST Prozent"/>
         </trans_set>
       </field>
@@ -490,7 +474,7 @@ if __name__ == "__main__":
         <calculation>return record["total_price"] * (record["vat_percentage"] / 100);</calculation>
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
-          <trans loc="de_AT" val="Gesamt MwST"/>
+          
           <trans loc="de" val="Gesamt MwST"/>
         </trans_set>
       </field>
@@ -498,7 +482,7 @@ if __name__ == "__main__":
     <relationships>
       <relationship name="products" key="product_id" other_table="products" other_key="product_id">
         <trans_set>
-          <trans loc="de_AT" val="Produkten"/>
+          
           <trans loc="de" val="Produkten"/>
         </trans_set>
       </relationship>
@@ -570,7 +554,7 @@ if __name__ == "__main__":
   </table>
   <table name="invoices" title="Invoices">
     <trans_set>
-      <trans loc="de_AT" val="Rechnungen"/>
+      
       <trans loc="de" val="Rechnungen"/>
     </trans_set>
     <fields>
@@ -578,7 +562,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
-          <trans loc="de_AT" val="Rechnung ID"/>
+          
           <trans loc="de" val="Rechnung ID"/>
         </trans_set>
       </field>
@@ -586,7 +570,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
-          <trans loc="de_AT" val="Kontakt ID"/>
+          
           <trans loc="de" val="Kontakt ID"/>
         </trans_set>
       </field>
@@ -594,7 +578,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
-          <trans loc="de_AT" val="Datum"/>
+          
           <trans loc="de" val="Datum"/>
         </trans_set>
       </field>
@@ -602,7 +586,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Kommentar"/>
+          
           <trans loc="de" val="Kommentar"/>
         </trans_set>
       </field>
@@ -610,7 +594,7 @@ if __name__ == "__main__":
         <calculation>return record.related["invoice_lines"].sum("total_price");</calculation>
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
-          <trans loc="de_AT" val="Gesamtpreis"/>
+          
           <trans loc="de" val="Gesamtpreis"/>
         </trans_set>
       </field>
@@ -618,7 +602,7 @@ if __name__ == "__main__":
         <calculation>return record.related["invoice_lines"].sum("total_price_vat");</calculation>
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
-          <trans loc="de_AT" val="Gesamt MwST"/>
+          
           <trans loc="de" val="Gesamt MwST"/>
         </trans_set>
       </field>
@@ -626,7 +610,7 @@ if __name__ == "__main__":
         <calculation>return record["price_total"] + record["vat_total"];</calculation>
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
-          <trans loc="de_AT" val="Gesamtpreis mit MwST"/>
+          
           <trans loc="de" val="Gesamtpreis mit MwST"/>
         </trans_set>
       </field>
@@ -634,13 +618,13 @@ if __name__ == "__main__":
     <relationships>
       <relationship name="invoice_lines" key="invoice_id" other_table="invoice_lines" other_key="invoice_id" auto_create="true" allow_edit="true" title="Invoice Lines">
         <trans_set>
-          <trans loc="de_AT" val="Rechnung Reihen"/>
+          
           <trans loc="de" val="Rechnung Reihen"/>
         </trans_set>
       </relationship>
       <relationship name="contacts" key="contact_id" other_table="contacts" other_key="contact_id" title="Contacts">
         <trans_set>
-          <trans loc="de_AT" val="Kontakten"/>
+          
           <trans loc="de" val="Kontakten"/>
         </trans_set>
       </relationship>
@@ -650,11 +634,7 @@ if __name__ == "__main__":
         <data_layout_groups>
           <data_layout_group name="header" columns_count="2" title="Overview">
             <trans_set>
-              <trans loc="de_AT" val="&#xDC;bersicht"/>
-              <trans loc="de_BE" val="Overview"/>
               <trans loc="de" val="&#xDC;bersicht"/>
-              <trans loc="en_GB" val="Overview"/>
-              <trans loc="en_US" val="Overview"/>
             </trans_set>
             <data_layout_item name="invoice_id" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -666,11 +646,7 @@ if __name__ == "__main__":
           <data_layout_group name="main">
             <data_layout_group name="customer" columns_count="2" title="Customer">
               <trans_set>
-                <trans loc="de_AT" val="Kunde"/>
-                <trans loc="de_BE" val="Customer"/>
                 <trans loc="de" val="Kunde"/>
-                <trans loc="en_GB" val="Customer"/>
-                <trans loc="en_US" val="Customer"/>
               </trans_set>
               <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -840,7 +816,7 @@ if __name__ == "__main__":
   </table>
   <table name="products" title="Products">
     <trans_set>
-      <trans loc="de_AT" val="Produkten"/>
+      
       <trans loc="de" val="Produkten"/>
     </trans_set>
     <fields>
@@ -848,7 +824,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
-          <trans loc="de_AT" val="Produkt ID"/>
+          
           <trans loc="de" val="Produkt ID"/>
         </trans_set>
       </field>
@@ -856,7 +832,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Kommentar"/>
+          
           <trans loc="de" val="Kommentar"/>
         </trans_set>
       </field>
@@ -864,7 +840,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Beschreibung"/>
+          
           <trans loc="de" val="Beschreibung"/>
         </trans_set>
       </field>
@@ -872,7 +848,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Name"/>
+          
           <trans loc="de" val="Name"/>
         </trans_set>
       </field>
@@ -880,7 +856,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
-          <trans loc="de_AT" val="Preis"/>
+          
           <trans loc="de" val="Preis"/>
         </trans_set>
       </field>
@@ -888,7 +864,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
-          <trans loc="de_AT" val="MwST Prozent"/>
+          
           <trans loc="de" val="MwST Prozent"/>
         </trans_set>
       </field>
@@ -899,11 +875,7 @@ if __name__ == "__main__":
         <data_layout_groups>
           <data_layout_group name="header" columns_count="2" title="Overview">
             <trans_set>
-              <trans loc="de_AT" val="Overview"/>
-              <trans loc="de_BE" val="Overview"/>
               <trans loc="de" val="Overview"/>
-              <trans loc="en_GB" val="Overview"/>
-              <trans loc="en_US" val="Overview"/>
             </trans_set>
             <data_layout_item name="product_id" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -914,11 +886,7 @@ if __name__ == "__main__":
           </data_layout_group>
           <data_layout_group name="main" columns_count="2" title="Details">
             <trans_set>
-              <trans loc="de_AT" val="Details"/>
-              <trans loc="de_BE" val="Details"/>
               <trans loc="de" val="Details"/>
-              <trans loc="en_GB" val="Details"/>
-              <trans loc="en_US" val="Details"/>
             </trans_set>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
@@ -982,7 +950,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Vorname"/>
+          
           <trans loc="de" val="Vorname"/>
         </trans_set>
       </field>
@@ -990,7 +958,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Zweite Name"/>
+          
           <trans loc="de" val="Zweite Name"/>
         </trans_set>
       </field>
@@ -998,7 +966,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Familiename"/>
+          
           <trans loc="de" val="Familiename"/>
         </trans_set>
       </field>
@@ -1006,7 +974,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Strasse"/>
+          
           <trans loc="de" val="Strasse"/>
         </trans_set>
       </field>
@@ -1014,7 +982,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Ort"/>
+          
           <trans loc="de" val="Ort"/>
         </trans_set>
       </field>
@@ -1022,7 +990,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Bundesland/Kanton"/>
+          
           <trans loc="de" val="Bundesland/Kanton"/>
         </trans_set>
       </field>
@@ -1030,7 +998,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Staat"/>
+          
           <trans loc="de" val="Staat"/>
         </trans_set>
       </field>
@@ -1038,7 +1006,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
         <trans_set>
-          <trans loc="de_AT" val="Postleitzahl"/>
+          
           <trans loc="de" val="Postleitzahl"/>
         </trans_set>
       </field>
@@ -1046,7 +1014,7 @@ if __name__ == "__main__":
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
-          <trans loc="de_AT" val="Geburtsdatum"/>
+          
           <trans loc="de" val="Geburtsdatum"/>
         </trans_set>
       </field>
@@ -1061,11 +1029,7 @@ if __name__ == "__main__":
         <data_layout_groups>
           <data_layout_group name="header" columns_count="2" title="Overview">
             <trans_set>
-              <trans loc="de_AT" val="Overview"/>
-              <trans loc="de_BE" val="Overview"/>
               <trans loc="de" val="Overview"/>
-              <trans loc="en_GB" val="Overview"/>
-              <trans loc="en_US" val="Overview"/>
             </trans_set>
             <data_layout_item name="staff_id" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -1080,11 +1044,7 @@ if __name__ == "__main__":
             </data_layout_item>
             <data_layout_group name="name" title="Name">
               <trans_set>
-                <trans loc="de_AT" val="Name"/>
-                <trans loc="de_BE" val="Name"/>
                 <trans loc="de" val="Name"/>
-                <trans loc="en_GB" val="Name"/>
-                <trans loc="en_US" val="Name"/>
               </trans_set>
               <data_layout_item name="name_title" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
@@ -1101,11 +1061,7 @@ if __name__ == "__main__":
             </data_layout_group>
             <data_layout_group name="address" title="Address">
               <trans_set>
-                <trans loc="de_AT" val="Address"/>
-                <trans loc="de_BE" val="Address"/>
                 <trans loc="de" val="Address"/>
-                <trans loc="en_GB" val="Address"/>
-                <trans loc="en_US" val="Address"/>
               </trans_set>
               <data_layout_item name="address_state" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>

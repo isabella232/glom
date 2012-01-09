@@ -181,35 +181,30 @@
       </example_row>
     </example_rows>
     <trans_set>
-      <trans loc="de_AT" val="Kontakten"/>
       <trans loc="de" val="Kontakten"/>
     </trans_set>
     <fields>
       <field name="contact_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Contact ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
-          <trans loc="de_AT" val="Kontakt ID"/>
           <trans loc="de" val="Kontakt ID"/>
         </trans_set>
       </field>
       <field name="name_first" type="Text" title="First Name">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Vorname"/>
           <trans loc="de" val="Vorname"/>
         </trans_set>
       </field>
       <field name="name_middle" type="Text" title="Middle Name">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Zweite Name"/>
           <trans loc="de" val="Zweite Name"/>
         </trans_set>
       </field>
       <field name="name_last" type="Text" title="Last Name">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Familiename"/>
           <trans loc="de" val="Familiename"/>
         </trans_set>
       </field>
@@ -231,49 +226,42 @@
       <field name="address_street" type="Text" title="Street">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Strasse"/>
           <trans loc="de" val="Strasse"/>
         </trans_set>
       </field>
       <field name="address_town" type="Text" title="Town">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Ort"/>
           <trans loc="de" val="Ort"/>
         </trans_set>
       </field>
       <field name="address_state" type="Text" title="State">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Bundesland/Kanton"/>
           <trans loc="de" val="Bundesland/Kanton"/>
         </trans_set>
       </field>
       <field name="address_country" type="Text" title="Country">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Land"/>
           <trans loc="de" val="Land"/>
         </trans_set>
       </field>
       <field name="address_postcode" type="Text" title="Postcode">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Postleitzahl"/>
           <trans loc="de" val="Postleitzahl"/>
         </trans_set>
       </field>
       <field name="date_of_birth" type="Date" title="Date of Birth">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Geburtsdatum"/>
           <trans loc="de" val="Geburtsdatum"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
         <formatting format_text_multiline="true"/>
         <trans_set>
-          <trans loc="de_AT" val="Kommentar"/>
           <trans loc="de" val="Kommentar"/>
         </trans_set>
       </field>
@@ -281,28 +269,24 @@
         <calculation>return record["name_first"] + " " + record["name_last"];</calculation>
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Vollname"/>
           <trans loc="de" val="Vollname"/>
         </trans_set>
       </field>
       <field name="picture" type="Image" title="Picture">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Bild"/>
           <trans loc="de" val="Bild"/>
         </trans_set>
       </field>
       <field name="email" type="Text" title="Email Address">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="E-mail Addresse"/>
           <trans loc="de" val="E-mail Addresse"/>
         </trans_set>
       </field>
       <field name="website" type="Text" title="Web Site">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Website"/>
           <trans loc="de" val="Website"/>
         </trans_set>
       </field>
@@ -318,7 +302,6 @@
       <field name="tel_fax" type="Text" title="Fax">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Fax"/>
           <trans loc="de" val="Fax"/>
         </trans_set>
       </field>
@@ -331,11 +314,7 @@
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
-              <trans loc="de_AT" val="Ubersicht"/>
-              <trans loc="de_BE" val="Overview"/>
               <trans loc="de" val="Ubersicht"/>
-              <trans loc="en_GB" val="Overview"/>
-              <trans loc="en_US" val="Overview"/>
             </trans_set>
             <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -348,11 +327,7 @@
             <data_layout_notebook name="notebook" title="(Notebook)">
               <data_layout_group name="telephone" title="Telephone">
                 <trans_set>
-                  <trans loc="de_AT" val="Telefon"/>
-                  <trans loc="de_BE" val="Telephone"/>
                   <trans loc="de" val="Telefon"/>
-                  <trans loc="en_GB" val="Telephone"/>
-                  <trans loc="en_US" val="Telephone"/>
                 </trans_set>
                 <data_layout_item name="tel_work" editable="true" use_default_formatting="true">
                   <formatting/>
@@ -369,11 +344,7 @@
               </data_layout_group>
               <data_layout_group name="address" title="Address">
                 <trans_set>
-                  <trans loc="de_AT" val="Addresse"/>
-                  <trans loc="de_BE" val="Address"/>
                   <trans loc="de" val="Addresse"/>
-                  <trans loc="en_GB" val="Address"/>
-                  <trans loc="en_US" val="Address"/>
                 </trans_set>
                 <data_layout_item name="address_street" editable="true" use_default_formatting="true">
                   <formatting/>
@@ -393,11 +364,7 @@
               </data_layout_group>
               <data_layout_group name="name" title="Name">
                 <trans_set>
-                  <trans loc="de_AT" val="Name"/>
-                  <trans loc="de_BE" val="Name"/>
                   <trans loc="de" val="Name"/>
-                  <trans loc="en_GB" val="Name"/>
-                  <trans loc="en_US" val="Name"/>
                 </trans_set>
                 <data_layout_item name="name_title" editable="true" use_default_formatting="true">
                   <formatting/>
