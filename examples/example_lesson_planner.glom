@@ -77,35 +77,30 @@
       <field name="product_name" type="Text" title="Product Name">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Produkt Name"/>
           <trans loc="de" val="Produkt Name"/>
         </trans_set>
       </field>
       <field name="product_id" type="Number" title="Product Id">
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true"/>
         <trans_set>
-          <trans loc="de_AT" val="Produkt ID"/>
           <trans loc="de" val="Produkt ID"/>
         </trans_set>
       </field>
       <field name="product_price" type="Number" title="Product Price">
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
-          <trans loc="de_AT" val="Produkt Preis"/>
           <trans loc="de" val="Produkt Preis"/>
         </trans_set>
       </field>
       <field name="invoice_id" type="Number" title="Invoice ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
-          <trans loc="de_AT" val="Rechnung ID"/>
           <trans loc="de" val="Rechnung ID"/>
         </trans_set>
       </field>
       <field name="count" default_value="1" type="Number" title="Number Of">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
-          <trans loc="de_AT" val="Menge"/>
           <trans loc="de" val="Menge"/>
         </trans_set>
       </field>
@@ -113,14 +108,12 @@
         <calculation>return record["count"] * record["product_price"];</calculation>
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
-          <trans loc="de_AT" val="Gesamtpreis"/>
           <trans loc="de" val="Gesamtpreis"/>
         </trans_set>
       </field>
       <field name="vat_percentage" type="Number" title="VAT Percentage">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
-          <trans loc="de_AT" val="MwST Prozent"/>
           <trans loc="de" val="MwST Prozent"/>
         </trans_set>
       </field>
@@ -128,7 +121,6 @@
         <calculation>return record["total_price"] * (record["vat_percentage"] / 100);</calculation>
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
-          <trans loc="de_AT" val="Gesamt MwST"/>
           <trans loc="de" val="Gesamt MwST"/>
         </trans_set>
       </field>
@@ -800,35 +792,30 @@
       </example_row>
     </example_rows>
     <trans_set>
-      <trans loc="de_AT" val="Kontakten"/>
       <trans loc="de" val="Kontakten"/>
     </trans_set>
     <fields>
       <field name="teacher_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Teacher ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
-          <trans loc="de_AT" val="Kontakt ID"/>
           <trans loc="de" val="Kontakt ID"/>
         </trans_set>
       </field>
       <field name="name_first" type="Text" title="First Name">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Vorname"/>
           <trans loc="de" val="Vorname"/>
         </trans_set>
       </field>
       <field name="name_middle" type="Text" title="Middle Name">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Zweite Name"/>
           <trans loc="de" val="Zweite Name"/>
         </trans_set>
       </field>
       <field name="name_last" type="Text" title="Last Name">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Familiename"/>
           <trans loc="de" val="Familiename"/>
         </trans_set>
       </field>
@@ -850,49 +837,42 @@
       <field name="address_street" type="Text" title="Street">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Strasse"/>
           <trans loc="de" val="Strasse"/>
         </trans_set>
       </field>
       <field name="address_town" type="Text" title="Town">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Ort"/>
           <trans loc="de" val="Ort"/>
         </trans_set>
       </field>
       <field name="address_state" type="Text" title="State">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Bundesland/Kanton"/>
           <trans loc="de" val="Bundesland/Kanton"/>
         </trans_set>
       </field>
       <field name="address_country" type="Text" title="Country">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Land"/>
           <trans loc="de" val="Land"/>
         </trans_set>
       </field>
       <field name="address_postcode" type="Text" title="Postcode">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Postleitzahl"/>
           <trans loc="de" val="Postleitzahl"/>
         </trans_set>
       </field>
       <field name="date_of_birth" type="Date" title="Date of Birth">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Geburtsdatum"/>
           <trans loc="de" val="Geburtsdatum"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
         <formatting format_text_multiline="true"/>
         <trans_set>
-          <trans loc="de_AT" val="Kommentar"/>
           <trans loc="de" val="Kommentar"/>
         </trans_set>
       </field>
@@ -900,28 +880,24 @@
         <calculation>return record["name_first"] + " " + record["name_last"];</calculation>
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Vollname"/>
           <trans loc="de" val="Vollname"/>
         </trans_set>
       </field>
       <field name="picture" type="Image" title="Picture">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Bild"/>
           <trans loc="de" val="Bild"/>
         </trans_set>
       </field>
       <field name="email" type="Text" title="Email Address">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="E-mail Addresse"/>
           <trans loc="de" val="E-mail Addresse"/>
         </trans_set>
       </field>
       <field name="website" type="Text" title="Web Site">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Website"/>
           <trans loc="de" val="Website"/>
         </trans_set>
       </field>
@@ -937,7 +913,6 @@
       <field name="tel_fax" type="Text" title="Fax">
         <formatting/>
         <trans_set>
-          <trans loc="de_AT" val="Fax"/>
           <trans loc="de" val="Fax"/>
         </trans_set>
       </field>

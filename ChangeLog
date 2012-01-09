@@ -1,5 +1,16 @@
 2012-01-09  Murray Cumming  <murrayc@murrayc.com>
 
+	examples: Remove translations for useless locale.
+
+	* examples/example_lesson_planner.glom:
+	* examples/example_project_manager.glom:
+	* examples/example_smallbusiness.glom:
+	* ldtp/database-templates/PostgresCentral/Test.glom:
+	* ldtp/database-templates/SQLite/Test.glom: For some reason
+	these had translations for de_BE, de_AT, en_GB, and en_US.
+
+2012-01-09  Murray Cumming  <murrayc@murrayc.com>
+
 	Translations: Prefer non-country-specific locales, such as de.
 
 	* examples/example_film_manager.glom:

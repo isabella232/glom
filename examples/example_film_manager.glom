@@ -360,8 +360,7 @@
           <trans loc="de" val="Schauspieler"/>
         </trans_set>
       </relationship>
-      <relationship name="scenes" key="character_id" other_table="scene_cast" other_key="cast_id" title="Scenes">
-      </relationship>
+      <relationship name="scenes" key="character_id" other_table="scene_cast" other_key="cast_id" title="Scenes"/>
     </relationships>
     <data_layouts>
       <data_layout name="details" parent_table="cast">
@@ -2717,7 +2716,6 @@ Orientation=portrait
         <value column="rent"/>
       </example_row>
     </example_rows>
-    <title_singular title="Location"/>
     <fields>
       <field name="location_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Location ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -3373,10 +3371,8 @@ Orientation=portrait
       </field>
     </fields>
     <relationships>
-      <relationship name="equipment" key="equipment_id" other_table="equipment" other_key="equipment_id">
-      </relationship>
-      <relationship name="scene" key="scene_id" other_table="scenes" other_key="scene_id">
-      </relationship>
+      <relationship name="equipment" key="equipment_id" other_table="equipment" other_key="equipment_id"/>
+      <relationship name="scene" key="scene_id" other_table="scenes" other_key="scene_id"/>
     </relationships>
     <data_layouts>
       <data_layout name="list" parent_table="scene_equipment">
@@ -3794,8 +3790,7 @@ else:
       </field>
     </fields>
     <relationships>
-      <relationship name="location" key="location_id" other_table="locations" other_key="location_id" title="Locations">
-      </relationship>
+      <relationship name="location" key="location_id" other_table="locations" other_key="location_id" title="Locations"/>
       <relationship name="scene_crew" key="scene_id" other_table="scene_crew" other_key="scene_id" auto_create="true" allow_edit="true" title="Additional Crew">
         <trans_set>
           <trans loc="de" val="Szene Crew"/>
@@ -3806,8 +3801,7 @@ else:
           <trans loc="de" val="Szene Besetzung"/>
         </trans_set>
       </relationship>
-      <relationship name="scene_equipment" key="scene_id" other_table="scene_equipment" other_key="scene_id" auto_create="true" allow_edit="true" title="Additional Equipment">
-      </relationship>
+      <relationship name="scene_equipment" key="scene_id" other_table="scene_equipment" other_key="scene_id" auto_create="true" allow_edit="true" title="Additional Equipment"/>
       <relationship name="scene_extras" key="scene_id" other_table="scene_extras" other_key="scene_id" auto_create="true" allow_edit="true" title="Extras"/>
       <relationship name="scene_props" key="scene_id" other_table="scene_props" other_key="scene_id" auto_create="true" allow_edit="true" title="Props"/>
       <relationship name="scene_costume" key="scene_id" other_table="scene_costume" other_key="scene_id" auto_create="true" allow_edit="true" title="Costume"/>
