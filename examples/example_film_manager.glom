@@ -5,7 +5,6 @@
     <example_rows/>
     <trans_set>
       <trans loc="de_DE" val="Unterkunft"/>
-      <trans loc="en_GB" val="Accommodation"/>
     </trans_set>
     <fields>
       <field name="accommodation_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Accommodation ID">
@@ -91,7 +90,6 @@
             <data_layout_group name="address" title="Address">
               <trans_set>
                 <trans loc="de_DE" val="Addresse"/>
-                <trans loc="en_GB" val="Address"/>
               </trans_set>
               <data_layout_item name="address_town" editable="true" use_default_formatting="true">
                 <formatting/>
@@ -112,7 +110,6 @@
             <data_layout_group name="contact" title="Contact">
               <trans_set>
                 <trans loc="de_DE" val="Kontakt"/>
-                <trans loc="en_GB" val="Contact"/>
               </trans_set>
               <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -178,7 +175,6 @@
     </example_rows>
     <trans_set>
       <trans loc="de_DE" val="Autos"/>
-      <trans loc="en_GB" val="Cars"/>
     </trans_set>
     <title_singular title="Car"/>
     <fields>
@@ -226,7 +222,6 @@
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
               <trans loc="de_DE" val="Übersicht"/>
-              <trans loc="en_GB" val="Overview"/>
             </trans_set>
             <data_layout_item name="car_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -238,7 +233,6 @@
           <data_layout_group name="details" columns_count="2" title="Details">
             <trans_set>
               <trans loc="de_DE" val="Details"/>
-              <trans loc="en_GB" val="Details"/>
             </trans_set>
             <data_layout_item name="manufacturer" editable="true" use_default_formatting="true">
               <formatting/>
@@ -316,7 +310,6 @@
     </example_rows>
     <trans_set>
       <trans loc="de_DE" val="Besetzung"/>
-      <trans loc="en_GB" val="Cast"/>
     </trans_set>
     <title_singular title="Character"/>
     <fields>
@@ -365,13 +358,9 @@
       <relationship name="contacts_actor" key="contact_id" other_table="contacts" other_key="contact_id" title="Actor">
         <trans_set>
           <trans loc="de_DE" val="Schauspieler"/>
-          <trans loc="en_GB" val="Actor"/>
         </trans_set>
       </relationship>
       <relationship name="scenes" key="character_id" other_table="scene_cast" other_key="cast_id" title="Scenes">
-        <trans_set>
-          <trans loc="en_GB" val="Scenes"/>
-        </trans_set>
       </relationship>
     </relationships>
     <data_layouts>
@@ -381,7 +370,6 @@
             <data_layout_group name="overview" columns_count="2" title="Overview">
               <trans_set>
                 <trans loc="de_DE" val="Übersicht"/>
-                <trans loc="en_GB" val="Overview"/>
               </trans_set>
               <data_layout_item name="character_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -396,12 +384,10 @@
             <data_layout_group name="details" columns_count="2" title="Details">
               <trans_set>
                 <trans loc="de_DE" val="Details"/>
-                <trans loc="en_GB" val="Details"/>
               </trans_set>
               <data_layout_group name="actor" title="Actor">
                 <trans_set>
                   <trans loc="de_DE" val="Schauspieler"/>
-                  <trans loc="en_GB" val="Actor"/>
                 </trans_set>
                 <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -435,9 +421,6 @@
                 </data_layout_item>
               </data_layout_group>
               <data_layout_group name="agent">
-                <trans_set>
-                  <trans loc="en_GB" val="Actor's Agent"/>
-                </trans_set>
                 <data_layout_item name="agent_id" relationship="contacts_actor" editable="true" use_default_formatting="true">
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
@@ -620,7 +603,6 @@
         </data_layout_groups>
         <trans_set>
           <trans loc="de_DE" val="Besetzungsliste"/>
-          <trans loc="en_GB" val="Cast List"/>
         </trans_set>
       </report>
     </reports>
@@ -679,7 +661,6 @@
     </example_rows>
     <trans_set>
       <trans loc="de_DE" val="Firmen"/>
-      <trans loc="en_GB" val="Companies"/>
     </trans_set>
     <title_singular title="Company"/>
     <fields>
@@ -727,7 +708,6 @@
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
               <trans loc="de_DE" val="Übersicht"/>
-              <trans loc="en_GB" val="Overview"/>
             </trans_set>
             <data_layout_item name="company_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -739,7 +719,6 @@
           <data_layout_group name="details" columns_count="2" title="Details">
             <trans_set>
               <trans loc="de_DE" val="Details"/>
-              <trans loc="en_GB" val="Details"/>
             </trans_set>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
               <formatting/>
@@ -1036,7 +1015,6 @@
     </example_rows>
     <trans_set>
       <trans loc="de_DE" val="Kontakte"/>
-      <trans loc="en_GB" val="Contacts"/>
     </trans_set>
     <title_singular title="Contact"/>
     <fields>
@@ -1233,7 +1211,6 @@
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
               <trans loc="de_DE" val="Übersicht"/>
-              <trans loc="en_GB" val="Overview"/>
             </trans_set>
             <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -1245,13 +1222,11 @@
           <data_layout_group name="details" columns_count="2" title="Details">
             <trans_set>
               <trans loc="de_DE" val="Details"/>
-              <trans loc="en_GB" val="Details"/>
             </trans_set>
             <data_layout_notebook name="notebook_contact">
               <data_layout_group name="name" title="Name">
                 <trans_set>
                   <trans loc="de_DE" val="Name"/>
-                  <trans loc="en_GB" val="Name"/>
                 </trans_set>
                 <data_layout_item name="name_title" editable="true" use_default_formatting="true">
                   <formatting/>
@@ -1269,7 +1244,6 @@
               <data_layout_group name="company" title="Company">
                 <trans_set>
                   <trans loc="de_DE" val="Firma"/>
-                  <trans loc="en_GB" val="Company"/>
                 </trans_set>
                 <data_layout_item name="company_id" editable="true" use_default_formatting="true">
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -1281,7 +1255,6 @@
               <data_layout_group name="address" title="Address">
                 <trans_set>
                   <trans loc="de_DE" val="Addresse"/>
-                  <trans loc="en_GB" val="Address"/>
                 </trans_set>
                 <data_layout_item name="address_street1" editable="true" use_default_formatting="true">
                   <formatting/>
@@ -1305,7 +1278,6 @@
               <data_layout_group name="telephone" title="Telephone">
                 <trans_set>
                   <trans loc="de_DE" val="Telefon"/>
-                  <trans loc="en_GB" val="Telephone"/>
                 </trans_set>
                 <data_layout_item name="tel_work" editable="true" use_default_formatting="true">
                   <formatting/>
@@ -1323,7 +1295,6 @@
               <data_layout_group name="agent" title="Agent">
                 <trans_set>
                   <trans loc="de_DE" val="Agent"/>
-                  <trans loc="en_GB" val="Agent"/>
                 </trans_set>
                 <data_layout_item name="agent_id" editable="true" use_default_formatting="true">
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -1855,9 +1826,6 @@ Orientation=portrait
         <value column="contact_id">8</value>
       </example_row>
     </example_rows>
-    <trans_set>
-      <trans loc="en_GB" val="Crew"/>
-    </trans_set>
     <fields>
       <field name="crew_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Crew ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -1911,19 +1879,16 @@ Orientation=portrait
       <relationship name="contacts" key="contact_id" other_table="contacts" other_key="contact_id" title="Contacts">
         <trans_set>
           <trans loc="de_DE" val="Kontakten"/>
-          <trans loc="en_GB" val="Contacts"/>
         </trans_set>
       </relationship>
       <relationship name="departments" key="dept_id" other_table="departments" other_key="departments_id" title="Departments">
         <trans_set>
           <trans loc="de_DE" val="Abteilungen"/>
-          <trans loc="en_GB" val="Departments"/>
         </trans_set>
       </relationship>
       <relationship name="scenes" key="crew_id" other_table="scene_crew" other_key="department_id" title="Scenes">
         <trans_set>
           <trans loc="de_DE" val="Szenen"/>
-          <trans loc="en_GB" val="Scenes"/>
         </trans_set>
       </relationship>
     </relationships>
@@ -1933,7 +1898,6 @@ Orientation=portrait
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
               <trans loc="de_DE" val="Übersicht"/>
-              <trans loc="en_GB" val="Overview"/>
             </trans_set>
             <data_layout_item name="crew_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -1945,12 +1909,10 @@ Orientation=portrait
           <data_layout_group name="details" columns_count="2">
             <trans_set>
               <trans loc="de_DE" val="Details"/>
-              <trans loc="en_GB" val="Details"/>
             </trans_set>
             <data_layout_group name="department" title="Department">
               <trans_set>
                 <trans loc="de_DE" val="Abteilung"/>
-                <trans loc="en_GB" val="Department"/>
               </trans_set>
               <data_layout_item name="dept_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -1962,7 +1924,6 @@ Orientation=portrait
             <data_layout_group name="contact" title="Contact">
               <trans_set>
                 <trans loc="de_DE" val="Kontakt"/>
-                <trans loc="en_GB" val="Contact"/>
               </trans_set>
               <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -1973,7 +1934,6 @@ Orientation=portrait
               <data_layout_group name="address" title="Address">
                 <trans_set>
                   <trans loc="de_DE" val="Addresse"/>
-                  <trans loc="en_GB" val="Address"/>
                 </trans_set>
                 <data_layout_item name="address_street1" relationship="contacts" editable="true" use_default_formatting="true">
                   <formatting/>
@@ -1997,7 +1957,6 @@ Orientation=portrait
               <data_layout_group name="agent" title="Agent">
                 <trans_set>
                   <trans loc="de_DE" val="Agent"/>
-                  <trans loc="en_GB" val="Agent"/>
                 </trans_set>
                 <data_layout_item name="agent_id" relationship="contacts" editable="true" use_default_formatting="true">
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -2118,7 +2077,6 @@ Orientation=portrait
     <example_rows/>
     <trans_set>
       <trans loc="de_DE" val="Lieferungen"/>
-      <trans loc="en_GB" val="Deliveries"/>
     </trans_set>
     <title_singular title="Delivery"/>
     <fields>
@@ -2276,7 +2234,6 @@ Orientation=portrait
             <data_layout_group name="departure" title="Departure">
               <trans_set>
                 <trans loc="de_DE" val="Departure"/>
-                <trans loc="en_GB" val="Departure"/>
               </trans_set>
               <data_layout_item name="departure_contact_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -2297,7 +2254,6 @@ Orientation=portrait
             <data_layout_group name="arrival" title="Arrival">
               <trans_set>
                 <trans loc="de_DE" val="Arrival"/>
-                <trans loc="en_GB" val="Arrival"/>
               </trans_set>
               <data_layout_item name="arrival_contact_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -2372,7 +2328,6 @@ Orientation=portrait
     </example_rows>
     <trans_set>
       <trans loc="de_DE" val="Abteilungen"/>
-      <trans loc="en_GB" val="Departments"/>
     </trans_set>
     <title_singular title="Department"/>
     <fields>
@@ -2405,7 +2360,6 @@ Orientation=portrait
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
               <trans loc="de_DE" val="Übersicht"/>
-              <trans loc="en_GB" val="Overview"/>
             </trans_set>
             <data_layout_item name="departments_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -2417,7 +2371,6 @@ Orientation=portrait
           <data_layout_group name="details">
             <trans_set>
               <trans loc="de_DE" val="Details"/>
-              <trans loc="en_GB" val="Details"/>
             </trans_set>
             <data_layout_portal relationship="department_crew" portal_rows_count_min="6" portal_rows_count_max="6">
               <data_layout_item name="crew_id" editable="true" use_default_formatting="true">
@@ -2492,28 +2445,20 @@ Orientation=portrait
         <value column="comments"/>
       </example_row>
     </example_rows>
-    <trans_set>
-      <trans loc="en_GB" val="Equipment"/>
-    </trans_set>
     <fields>
       <field name="equipment_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Equipment ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
-        <trans_set>
-          <trans loc="en_GB" val="Equipment ID"/>
-        </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
         <formatting/>
         <trans_set>
           <trans loc="de_DE" val="Beschreibung"/>
-          <trans loc="en_GB" val="Description"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
         <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_DE" val="Kommentar"/>
-          <trans loc="en_GB" val="Comments"/>
         </trans_set>
       </field>
     </fields>
@@ -2521,7 +2466,6 @@ Orientation=portrait
       <relationship name="scenes" key="equipment_id" other_table="scene_equipment" other_key="equipment_id" title="Scenes">
         <trans_set>
           <trans loc="de_DE" val="Szenen"/>
-          <trans loc="en_GB" val="Scenes"/>
         </trans_set>
       </relationship>
     </relationships>
@@ -2531,7 +2475,6 @@ Orientation=portrait
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
               <trans loc="de_DE" val="Übersicht"/>
-              <trans loc="en_GB" val="Overview"/>
             </trans_set>
             <data_layout_item name="equipment_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -2540,7 +2483,6 @@ Orientation=portrait
           <data_layout_group name="details" columns_count="2" title="Details">
             <trans_set>
               <trans loc="de_DE" val="Details"/>
-              <trans loc="en_GB" val="Details"/>
             </trans_set>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
               <formatting/>
@@ -2595,7 +2537,6 @@ Orientation=portrait
     </example_rows>
     <trans_set>
       <trans loc="de_DE" val="Fahrten"/>
-      <trans loc="en_GB" val="Journeys"/>
     </trans_set>
     <title_singular title="Journey"/>
     <fields>
@@ -2701,7 +2642,6 @@ Orientation=portrait
             <data_layout_group name="person" title="Person">
               <trans_set>
                 <trans loc="de_DE" val="Person"/>
-                <trans loc="en_GB" val="Person"/>
               </trans_set>
               <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -2713,7 +2653,6 @@ Orientation=portrait
             <data_layout_group name="departure" title="Departure">
               <trans_set>
                 <trans loc="de_DE" val="Departure"/>
-                <trans loc="en_GB" val="Departure"/>
               </trans_set>
               <data_layout_item name="departure_place" editable="true" use_default_formatting="true">
                 <formatting/>
@@ -2728,7 +2667,6 @@ Orientation=portrait
             <data_layout_group name="arrival" title="Arrival">
               <trans_set>
                 <trans loc="de_DE" val="Arrival"/>
-                <trans loc="en_GB" val="Arrival"/>
               </trans_set>
               <data_layout_item name="arrival_place" editable="true" use_default_formatting="true">
                 <formatting/>
@@ -2779,9 +2717,6 @@ Orientation=portrait
         <value column="rent"/>
       </example_row>
     </example_rows>
-    <trans_set>
-      <trans loc="en_GB" val="Locations"/>
-    </trans_set>
     <title_singular title="Location"/>
     <fields>
       <field name="location_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Location ID">
@@ -2866,7 +2801,6 @@ Orientation=portrait
             <data_layout_group name="address" title="Address">
               <trans_set>
                 <trans loc="de_DE" val="Addresse"/>
-                <trans loc="en_GB" val="Address"/>
               </trans_set>
               <data_layout_item name="address_street" editable="true" use_default_formatting="true">
                 <formatting/>
@@ -3081,7 +3015,6 @@ Orientation=portrait
     </example_rows>
     <trans_set>
       <trans loc="de_DE" val="Szene Besetzung"/>
-      <trans loc="en_GB" val="Scene Cast"/>
     </trans_set>
     <fields>
       <field name="scene_cast_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Scene Cast ID">
@@ -3123,13 +3056,11 @@ Orientation=portrait
       <relationship name="cast" key="cast_id" other_table="characters" other_key="character_id" title="Cast">
         <trans_set>
           <trans loc="de_DE" val="Besetzung"/>
-          <trans loc="en_GB" val="Cast"/>
         </trans_set>
       </relationship>
       <relationship name="scene" key="scene_id" other_table="scenes" other_key="scene_id">
         <trans_set>
           <trans loc="de_DE" val="Szene"/>
-          <trans loc="en_GB" val="Scene"/>
         </trans_set>
       </relationship>
     </relationships>
@@ -3287,7 +3218,6 @@ Orientation=portrait
     </example_rows>
     <trans_set>
       <trans loc="de_DE" val="Szene Crew"/>
-      <trans loc="en_GB" val="Scene Crew"/>
     </trans_set>
     <fields>
       <field name="scene_crew_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Scene Crew ID">
@@ -3347,7 +3277,6 @@ Orientation=portrait
             <data_layout_group name="overview" columns_count="2" title="Overview">
               <trans_set>
                 <trans loc="de_DE" val="Übersicht"/>
-                <trans loc="en_GB" val="Overview"/>
               </trans_set>
               <data_layout_item name="scene_crew_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -3356,7 +3285,6 @@ Orientation=portrait
             <data_layout_group name="details" columns_count="2" title="Details">
               <trans_set>
                 <trans loc="de_DE" val="Details"/>
-                <trans loc="en_GB" val="Details"/>
               </trans_set>
               <data_layout_item name="comments" editable="true" use_default_formatting="true">
                 <formatting/>
@@ -3417,21 +3345,14 @@ Orientation=portrait
         <value column="scene_id">1</value>
       </example_row>
     </example_rows>
-    <trans_set>
-      <trans loc="en_GB" val="Scene Equipment"/>
-    </trans_set>
     <fields>
       <field name="scene_equipment_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Scene Equipment ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
-        <trans_set>
-          <trans loc="en_GB" val="scene_equipment ID"/>
-        </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
         <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_DE" val="Kommentar"/>
-          <trans loc="en_GB" val="Comments"/>
         </trans_set>
       </field>
       <field name="equipment_id" type="Number" title="Equipment ID">
@@ -3446,27 +3367,15 @@ Orientation=portrait
             </data_layout_groups>
           </choices_related_extra_layout>
         </formatting>
-        <trans_set>
-          <trans loc="en_GB" val="Equipment ID"/>
-        </trans_set>
       </field>
       <field name="scene_id" type="Number" title="Scene ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
-        <trans_set>
-          <trans loc="en_GB" val="Scene ID"/>
-        </trans_set>
       </field>
     </fields>
     <relationships>
       <relationship name="equipment" key="equipment_id" other_table="equipment" other_key="equipment_id">
-        <trans_set>
-          <trans loc="en_GB" val="Equipment"/>
-        </trans_set>
       </relationship>
       <relationship name="scene" key="scene_id" other_table="scenes" other_key="scene_id">
-        <trans_set>
-          <trans loc="en_GB" val="Scene"/>
-        </trans_set>
       </relationship>
     </relationships>
     <data_layouts>
@@ -3778,7 +3687,6 @@ Orientation=portrait
     </example_rows>
     <trans_set>
       <trans loc="de_DE" val="Szenen"/>
-      <trans loc="en_GB" val="Scenes"/>
     </trans_set>
     <title_singular title="Scene"/>
     <fields>
@@ -3887,26 +3795,18 @@ else:
     </fields>
     <relationships>
       <relationship name="location" key="location_id" other_table="locations" other_key="location_id" title="Locations">
-        <trans_set>
-          <trans loc="en_GB" val="Locations"/>
-        </trans_set>
       </relationship>
       <relationship name="scene_crew" key="scene_id" other_table="scene_crew" other_key="scene_id" auto_create="true" allow_edit="true" title="Additional Crew">
         <trans_set>
           <trans loc="de_DE" val="Szene Crew"/>
-          <trans loc="en_GB" val="Scene Crew"/>
         </trans_set>
       </relationship>
       <relationship name="scene_cast" key="scene_id" other_table="scene_cast" other_key="scene_id" auto_create="true" allow_edit="true" title="Cast">
         <trans_set>
           <trans loc="de_DE" val="Szene Besetzung"/>
-          <trans loc="en_GB" val="Scene Cast"/>
         </trans_set>
       </relationship>
       <relationship name="scene_equipment" key="scene_id" other_table="scene_equipment" other_key="scene_id" auto_create="true" allow_edit="true" title="Additional Equipment">
-        <trans_set>
-          <trans loc="en_GB" val="Scene Equipment"/>
-        </trans_set>
       </relationship>
       <relationship name="scene_extras" key="scene_id" other_table="scene_extras" other_key="scene_id" auto_create="true" allow_edit="true" title="Extras"/>
       <relationship name="scene_props" key="scene_id" other_table="scene_props" other_key="scene_id" auto_create="true" allow_edit="true" title="Props"/>
@@ -3919,7 +3819,6 @@ else:
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
               <trans loc="de_DE" val="Übersicht"/>
-              <trans loc="en_GB" val="Overview"/>
             </trans_set>
             <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -3937,7 +3836,6 @@ else:
           <data_layout_group name="details" columns_count="2" title="Details">
             <trans_set>
               <trans loc="de_DE" val="Details"/>
-              <trans loc="en_GB" val="Details"/>
             </trans_set>
             <data_layout_item name="name" editable="true" use_default_formatting="true">
               <formatting/>
@@ -3969,7 +3867,6 @@ else:
             <data_layout_group name="location" title="Location">
               <trans_set>
                 <trans loc="de_DE" val="Location"/>
-                <trans loc="en_GB" val="Location"/>
               </trans_set>
               <data_layout_item name="location_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>

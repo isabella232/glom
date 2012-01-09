@@ -187,10 +187,14 @@ void check_title(const T_Item& item, const char* title_en, const char* title_de)
   //Check fallbacks:
   g_assert( item->get_title_translation(Glib::ustring()) == title_en );
   g_assert( item->get_title_translation(locale_original) == title_en );
+  g_assert( item->get_title_translation("en_GB") == title_en );
+  g_assert( item->get_title_translation("de_AU") == title_de );
 
   //Check that fallbacks do not happen when we don't want them:
   g_assert( item->get_title_translation(Glib::ustring(), false) == Glib::ustring() );
   g_assert( item->get_title_translation(locale_original, false) == Glib::ustring() );
+  g_assert( item->get_title_translation("en_GB", false) == Glib::ustring() );
+  g_assert( item->get_title_translation("de_AU", false) == Glib::ustring() );
 }
 
 int main()
@@ -235,7 +239,7 @@ int main()
   }
 
   const std::vector<Glib::ustring> locales = document.get_translation_available_locales();
-  g_assert(locales.size() == 3);
+  g_assert(locales.size() == 2);
   g_assert(contains(locales, "de_DE"));
 
   const std::vector<Glib::ustring> table_names = document.get_table_names();

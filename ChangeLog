@@ -1,5 +1,13 @@
 2012-01-09  Murray Cumming  <murrayc@murrayc.com>
 
+	test_document_load_translations: Test more fallbacks.
+
+	* examples/example_film_manager.glom: Remove the useless en_GB translations.
+	* tests/test_document_load_translations.cc: Check that similar locales 
+  are used if there is no translation.
+
+2012-01-09  Murray Cumming  <murrayc@murrayc.com>
+
 	Added glom_export_po_all command-line too.
 
 	* Makefile_libglom.am:
