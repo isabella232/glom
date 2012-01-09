@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-12-23 12:15+0000\n"
-"PO-Revision-Date: 2011-12-28 11:32+0100\n"
+"POT-Creation-Date: 2012-01-09 11:26+0000\n"
+"PO-Revision-Date: 2012-01-09 22:33+0100\n"
 "Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -36,13 +36,13 @@ msgstr ""
 "Bitte warten Sie, während Glom das System für das Veröffentlichen im Netzwerk "
 "vorbereitet."
 
-#: ../glom/application.cc:266 ../glom/bakery/app_withdoc_gtk.cc:226
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:197
+#: ../glom/application.cc:266 ../glom/bakery/app_withdoc_gtk.cc:228
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:198
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:58
 msgid "_File"
 msgstr "_Datei"
 
-#: ../glom/application.cc:267 ../glom/bakery/app_withdoc_gtk.cc:227
+#: ../glom/application.cc:267 ../glom/bakery/app_withdoc_gtk.cc:229
 msgid "_Recent Files"
 msgstr "_Zuletzt geöffnet"
 
@@ -366,16 +366,16 @@ msgid "There was an error while saving the example file."
 msgstr "Beim Speichern der Beispieldatei ist ein Fehler aufgetreten."
 
 #: ../glom/application.cc:2299 ../glom/application.cc:2304
-#: ../glom/bakery/app_withdoc_gtk.cc:420
+#: ../glom/bakery/app_withdoc_gtk.cc:425
 msgid "Save Document"
 msgstr "Dokument speichern"
 
 #. Warn the user:
-#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc_gtk.cc:468
+#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc_gtk.cc:473
 msgid "Read-only File."
 msgstr "Schreibgeschützte Datei."
 
-#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc_gtk.cc:468
+#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc_gtk.cc:473
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -384,11 +384,11 @@ msgstr ""
 "nötigen Zugriffsrechte fehlen."
 
 #. Warn the user:
-#: ../glom/application.cc:2405 ../glom/bakery/app_withdoc_gtk.cc:482
+#: ../glom/application.cc:2405 ../glom/bakery/app_withdoc_gtk.cc:487
 msgid "Read-only Directory."
 msgstr "Schreibgeschützter Ordner."
 
-#: ../glom/application.cc:2405 ../glom/bakery/app_withdoc_gtk.cc:482
+#: ../glom/application.cc:2405 ../glom/bakery/app_withdoc_gtk.cc:487
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -459,7 +459,7 @@ msgstr "Wiederherstellen der Sicherheitskopie schlug fehl."
 msgid "There was an error while restoring the backup."
 msgstr "Beim Wiederherstellen der Sicherheitskopie ist ein Fehler aufgetreten."
 
-#: ../glom/application.cc:2758 ../glom/bakery/app_withdoc_gtk.cc:341
+#: ../glom/application.cc:2758 ../glom/bakery/app_withdoc_gtk.cc:346
 msgid " (read-only)"
 msgstr "(schreibgeschützt)"
 
@@ -539,8 +539,8 @@ msgstr "Datensatz löschen"
 #: ../glom/mode_design/layout/dialog_choose_relationship.cc:55
 #: ../glom/mode_design/layout/dialog_layout_details.cc:102
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.cc:53
-#: ../glom/mode_design/layout/layout_item_dialogs/dialog_groupby_sortfields.cc:52
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc:48
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_sortfields.cc:52
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:93
 #: ../glom/mode_design/users/dialog_groups_list.cc:65
 msgid "Name"
@@ -914,12 +914,12 @@ msgstr "Bericht fertiggestellt"
 msgid "The report will now be opened in your web browser."
 msgstr "Der Bericht wird nun in Ihrem Webbrowser geöffnet."
 
-#: ../glom/bakery/app_withdoc_gtk.cc:282
+#: ../glom/bakery/app_withdoc_gtk.cc:284
 #: ../ui/developer/window_field_definition_edit.glade.h:8
 msgid "_Edit"
 msgstr "_Bearbeiten"
 
-#: ../glom/bakery/app_withdoc_gtk.cc:371
+#: ../glom/bakery/app_withdoc_gtk.cc:376
 msgid "Open Document"
 msgstr "Dokument öffnen"
 
@@ -1187,10 +1187,10 @@ msgstr "Nummer"
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/field.cc:693
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:73
-#: ../glom/libglom/data_structure/translatable_item.cc:313
+#: ../glom/libglom/data_structure/translatable_item.cc:317
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1158
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:36
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:760
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:761
 msgid "Text"
 msgstr "Text"
 
@@ -1213,7 +1213,7 @@ msgstr "Boolean"
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/field.cc:705
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:70
-#: ../glom/libglom/data_structure/translatable_item.cc:315
+#: ../glom/libglom/data_structure/translatable_item.cc:319
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1165
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:38
 #: ../glom/utility_widgets/layouttoolbar.cc:47
@@ -1269,7 +1269,7 @@ msgstr "Gruppe"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:68
-#: ../glom/libglom/data_structure/translatable_item.cc:311
+#: ../glom/libglom/data_structure/translatable_item.cc:315
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1151
 #: ../glom/utility_widgets/layouttoolbar.cc:43
 msgid "Button"
@@ -1282,9 +1282,9 @@ msgstr "Kalenderportal"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:219
-#: ../glom/libglom/data_structure/translatable_item.cc:293
+#: ../glom/libglom/data_structure/translatable_item.cc:297
 #: ../glom/mode_design/dialog_database_preferences.cc:62
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:756
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:757
 #: ../ui/developer/window_field_definition_edit.glade.h:2
 msgid "Field"
 msgstr "Feld"
@@ -1370,28 +1370,28 @@ msgstr "Übersicht"
 msgid "Vertical Group"
 msgstr "Vertikale Gruppe"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:295
+#: ../glom/libglom/data_structure/translatable_item.cc:299
 msgid "Custom Title"
 msgstr "Benutzerdefinierte Titel"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:297
+#: ../glom/libglom/data_structure/translatable_item.cc:301
 msgid "Relationship"
 msgstr "Beziehung"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:299
+#: ../glom/libglom/data_structure/translatable_item.cc:303
 msgid "Layout Item"
 msgstr "Layout-Element"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:301
+#: ../glom/libglom/data_structure/translatable_item.cc:305
 msgid "Print Layout"
 msgstr "Druck-Layout"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:303
+#: ../glom/libglom/data_structure/translatable_item.cc:307
 msgid "Report"
 msgstr "Bericht"
 
 #. Tables:
-#: ../glom/libglom/data_structure/translatable_item.cc:305
+#: ../glom/libglom/data_structure/translatable_item.cc:309
 #: ../glom/mode_design/box_db_table_relationships.cc:52
 #: ../glom/mode_design/dialog_database_preferences.cc:61
 #: ../glom/mode_design/users/dialog_groups_list.cc:72
@@ -1399,57 +1399,61 @@ msgstr "Bericht"
 msgid "Table"
 msgstr "Tabelle"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:307
+#: ../glom/libglom/data_structure/translatable_item.cc:311
 msgid "Layout Group"
 msgstr "Layout-Gruppe"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:309
+#: ../glom/libglom/data_structure/translatable_item.cc:313
 msgid "Field Title"
 msgstr "Feldtitel"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:317
-#: ../glom/mode_design/translation/window_translations.cc:220
+#: ../glom/libglom/data_structure/translatable_item.cc:321
+msgid "Field Choice"
+msgstr "Feldauswahl"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:323
+#: ../glom/mode_design/translation/window_translations.cc:212
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: ../glom/libglom/document/document.cc:506
-#: ../glom/libglom/document/document.cc:524
+#: ../glom/libglom/document/document.cc:507
+#: ../glom/libglom/document/document.cc:525
 msgid "System Preferences"
 msgstr "Systemeinstellungen"
 
-#: ../glom/libglom/document/document.cc:537
+#: ../glom/libglom/document/document.cc:538
 msgid "System Name"
 msgstr "Systemname"
 
-#: ../glom/libglom/document/document.cc:543
+#: ../glom/libglom/document/document.cc:544
 msgid "Organisation Name"
 msgstr "Organisationsname"
 
-#: ../glom/libglom/document/document.cc:549
+#: ../glom/libglom/document/document.cc:550
 msgid "Organisation Logo"
 msgstr "Organisationslogo"
 
-#: ../glom/libglom/document/document.cc:555
+#: ../glom/libglom/document/document.cc:556
 msgid "Street"
 msgstr "Straße"
 
-#: ../glom/libglom/document/document.cc:561
+#: ../glom/libglom/document/document.cc:562
 msgid "Street (line 2)"
 msgstr "Straße (Zusatz)"
 
-#: ../glom/libglom/document/document.cc:567
+#: ../glom/libglom/document/document.cc:568
 msgid "City"
 msgstr "Stadt"
 
-#: ../glom/libglom/document/document.cc:573
+#: ../glom/libglom/document/document.cc:574
 msgid "State"
 msgstr "Land"
 
-#: ../glom/libglom/document/document.cc:579
+#: ../glom/libglom/document/document.cc:580
 msgid "Country"
 msgstr "Land"
 
-#: ../glom/libglom/document/document.cc:585
+#: ../glom/libglom/document/document.cc:586
 msgid "Zip Code"
 msgstr "Postleitzahl"
 
@@ -1466,6 +1470,11 @@ msgid "The necessary applications to install the package could not be found."
 msgstr ""
 "Die benötigten Anwendungen zum Installieren des Pakets konnten nicht gefunden "
 "werden."
+
+#. Show only debug output
+#: ../glom/libglom/translations_po.cc:69
+msgid "Gettext-Warning: "
+msgstr "Gettext-Warnung: "
 
 #: ../glom/libglom/db_utils.cc:1169
 #: ../glom/mode_design/users/dialog_groups_list.cc:69
@@ -1484,20 +1493,23 @@ msgstr "Kommentare"
 msgid "List"
 msgstr "Liste"
 
-#: ../glom/glom_create_from_example.cc:62 ../glom/glom_test_connection.cc:54
-#: ../glom/main.cc:197
+#: ../glom/glom_create_from_example.cc:63 ../glom/glom_export_po.cc:50
+#: ../glom/glom_export_po_all.cc:49 ../glom/glom_import_po_all.cc:50
+#: ../glom/glom_test_connection.cc:55 ../glom/main.cc:197
 msgid "Glom options"
 msgstr "Glom-Optionen"
 
-#: ../glom/glom_create_from_example.cc:62 ../glom/glom_test_connection.cc:54
+#: ../glom/glom_create_from_example.cc:63 ../glom/glom_export_po.cc:50
+#: ../glom/glom_export_po_all.cc:49 ../glom/glom_import_po_all.cc:50
+#: ../glom/glom_test_connection.cc:55
 msgid "Command-line options"
 msgstr "Befehlszeilenoptionen"
 
-#: ../glom/glom_create_from_example.cc:69
+#: ../glom/glom_create_from_example.cc:70
 msgid "The example .glom file to open."
 msgstr "Die zu öffnende .glom-Beispieldatei."
 
-#: ../glom/glom_create_from_example.cc:74
+#: ../glom/glom_create_from_example.cc:75
 msgid ""
 "The directory in which to save the created .glom file, or sub-directory if "
 "necessary, such as /home/someuser/ ."
@@ -1505,16 +1517,17 @@ msgstr ""
 "Der Ordner, in dem die erstellte .glom-Datei gespeichert werden soll, "
 "gegebenenfalls mit Unterordner, beispielsweise /home/benutzer/."
 
-#: ../glom/glom_create_from_example.cc:79
+#: ../glom/glom_create_from_example.cc:80
 msgid "The name for the created .glom file, such as something.glom ."
 msgstr "Der Name der erstellten .glom-Datei, beispielsweise beispiel.glom."
 
-#: ../glom/glom_create_from_example.cc:84 ../glom/glom_test_connection.cc:62
-#: ../glom/main.cc:212
+#: ../glom/glom_create_from_example.cc:85 ../glom/glom_export_po.cc:66
+#: ../glom/glom_export_po_all.cc:60 ../glom/glom_import_po_all.cc:61
+#: ../glom/glom_test_connection.cc:63 ../glom/main.cc:212
 msgid "The version of this application."
 msgstr "Die Version dieser Anwendung."
 
-#: ../glom/glom_create_from_example.cc:90
+#: ../glom/glom_create_from_example.cc:91
 msgid ""
 "The hostname of the PostgreSQL server, such as localhost. If this is not "
 "specified then a self-hosted database will be created."
@@ -1523,72 +1536,169 @@ msgstr ""
 "dies nicht angegeben wird, dann wird eine von einem Server unabhängige "
 "Datenbank erstellt."
 
-#: ../glom/glom_create_from_example.cc:95 ../glom/glom_test_connection.cc:72
+#: ../glom/glom_create_from_example.cc:96 ../glom/glom_test_connection.cc:73
 msgid "The port of the PostgreSQL server, such as 5434."
 msgstr "Der Port für den PostgreSQL-Server, beispielsweise 5434."
 
-#: ../glom/glom_create_from_example.cc:100 ../glom/glom_test_connection.cc:77
+#: ../glom/glom_create_from_example.cc:101 ../glom/glom_test_connection.cc:78
 msgid "The username for the PostgreSQL server."
 msgstr "Der Benutzername für den PostgreSQL-Server."
 
-#: ../glom/glom_create_from_example.cc:215 ../glom/glom_test_connection.cc:108
-#: ../glom/main.cc:486
+#: ../glom/glom_create_from_example.cc:238 ../glom/glom_export_po.cc:106
+#: ../glom/glom_export_po_all.cc:100 ../glom/glom_import_po_all.cc:101
+#: ../glom/glom_test_connection.cc:131 ../glom/main.cc:486
 msgid "Error while parsing command-line options: "
 msgstr "Fehler beim Einlesen der Befehlszeilenoptionen: "
 
 #. TODO: How can we just print them out?
-#: ../glom/glom_create_from_example.cc:216 ../glom/glom_test_connection.cc:90
-#: ../glom/main.cc:487
+#: ../glom/glom_create_from_example.cc:239 ../glom/glom_export_po.cc:107
+#: ../glom/glom_export_po_all.cc:101 ../glom/glom_import_po_all.cc:102
+#: ../glom/glom_test_connection.cc:91 ../glom/main.cc:487
 msgid "Use --help to see a list of available command-line options."
 msgstr ""
 "Benutzen Sie --help, um eine Liste der verfügbaren Befehlszeilenoptionen zu "
 "erhalten."
 
-#: ../glom/glom_create_from_example.cc:250 ../glom/main.cc:531
+#: ../glom/glom_create_from_example.cc:273 ../glom/glom_export_po.cc:156
+#: ../glom/main.cc:531
 msgid "Glom: The file does not exist."
 msgstr "Glom: Die Datei existiert nicht."
 
-#: ../glom/glom_create_from_example.cc:260 ../glom/main.cc:541
+#: ../glom/glom_create_from_example.cc:283 ../glom/glom_export_po.cc:166
+#: ../glom/main.cc:541
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: Der Dateipfad ist ein Ordner und keine Datei."
 
-#: ../glom/glom_create_from_example.cc:291
+#: ../glom/glom_create_from_example.cc:314
 msgid "Glom: The output directory does not exist."
 msgstr "Glom: Der Ausgabeordner existiert nicht."
 
-#: ../glom/glom_create_from_example.cc:301
+#: ../glom/glom_create_from_example.cc:324
 msgid "Glom: The output path is not a directory."
 msgstr "Glom: Der Ausgabepfad ist kein Ordner."
 
-#: ../glom/glom_create_from_example.cc:399 ../glom/glom_test_connection.cc:143
+#: ../glom/glom_create_from_example.cc:422 ../glom/glom_test_connection.cc:166
 msgid "Please enter the PostgreSQL server's password for the user %1: "
 msgstr "Bitte geben Sie das PostgreSQL-Passwort für den Benutzer %1 ein:"
 
-#: ../glom/glom_test_connection.cc:67
+#: ../glom/glom_export_po.cc:56
+msgid ""
+"The path at which to save the created .po file, such as /home/someuser/"
+"somefile.po ."
+msgstr ""
+"Der Ordner, in dem die erstellte .po-Datei gespeichert werden soll, z.B. /"
+"home/benutzer/datei.po."
+
+#: ../glom/glom_export_po.cc:61
+msgid ""
+"The locale whose translations should be written to the .po file, such as "
+"de_DE."
+msgstr ""
+"Die Sprachkennung, deren Übersetzung in die .po-Datei geschrieben werden "
+"soll, wie de_DE."
+
+#: ../glom/glom_export_po.cc:136 ../glom/glom_export_po_all.cc:130
+#: ../glom/glom_import_po_all.cc:131
+msgid "Please specify a glom file."
+msgstr "Bitte geben Sie eine Glom-Datei an."
+
+#: ../glom/glom_export_po.cc:143
+msgid "Please specify a locale ID."
+msgstr "Bitte geben Sie eine Sprachkennung an."
+
+#: ../glom/glom_export_po.cc:174 ../glom/glom_export_po_all.cc:161
+msgid "Please specify an output path."
+msgstr "Bitte geben Sie einen Ausgabepfad an."
+
+#: ../glom/glom_export_po.cc:185
+msgid "Glom: The output file aready exists."
+msgstr "Glom: Die Ausgabedatei existiert bereits."
+
+#: ../glom/glom_export_po.cc:210 ../glom/glom_export_po_all.cc:223
+msgid "Po file creation failed."
+msgstr "Erstellung der po-Datei ist fehlgeschlagen."
+
+#: ../glom/glom_export_po.cc:214 ../glom/glom_export_po_all.cc:227
+msgid "Po file created at: %1"
+msgstr "po-Datei erstellt in: %1"
+
+#: ../glom/glom_export_po_all.cc:55
+msgid ""
+"The directory path at which to save the created .po files, such as /home/"
+"someuser/po_files/ ."
+msgstr ""
+"Der Pfad zum Ordner, in dem die erstellten .po-Dateien gespeichert werden "
+"sollen, z.B. /home/benutzer/po_dateien/."
+
+#: ../glom/glom_export_po_all.cc:143 ../glom/glom_import_po_all.cc:144
+msgid "The Glom file does not exist."
+msgstr "Die Glom-Datei existiert nicht."
+
+#: ../glom/glom_export_po_all.cc:153 ../glom/glom_import_po_all.cc:154
+msgid "The Glom file path is a directory instead of a file."
+msgstr "Der Glom-Dateipfad ist ein Ordner und keine Datei."
+
+#: ../glom/glom_export_po_all.cc:174
+msgid "The ouput directory could not be created."
+msgstr "Der Ausgabeordner konnte nicht erstellt werden."
+
+#: ../glom/glom_export_po_all.cc:182
+msgid "Glom: The output file path is not a directory."
+msgstr "Glom: Der Ausgabepfad ist kein Ordner."
+
+#: ../glom/glom_export_po_all.cc:204
+msgid "The Glom document has no translations."
+msgstr "Das Glom-Dokument enthält keine Übersetzungen."
+
+#: ../glom/glom_import_po_all.cc:56
+msgid ""
+"The path to a directory containing .po files, such as /home/someuser/"
+"po_files/ ."
+msgstr ""
+"Der Pfad zu einem Ordner, der po-Dateien enthält, z.B. /home/benutzer/"
+"po_dateien/."
+
+#: ../glom/glom_import_po_all.cc:162
+msgid "Please specify the path to a directory containing po files."
+msgstr "Bitte geben Sie den Pfad zum Ordner an, der po-Dateien enthält."
+
+#: ../glom/glom_import_po_all.cc:173
+msgid "Glom: The po files directory path is not a directory."
+msgstr "Glom: Der Ordnerpfad zu den po-Dateien ist kein Ordner."
+
+#: ../glom/glom_import_po_all.cc:213
+msgid "Po file import failed for locale: %1"
+msgstr "Import der po-Datei ist fehlgeschlagen für Sprachkennung: %1"
+
+#: ../glom/glom_import_po_all.cc:218
+msgid "Po file imported for locale: %1"
+msgstr "po-Datei wurde importiert für Sprachkennung: %1"
+
+#: ../glom/glom_test_connection.cc:68
 msgid "The hostname of the PostgreSQL server, such as localhost."
 msgstr "Der Rechnername des PostgreSQL-Servers, beispielsweise localhost."
 
-#: ../glom/glom_test_connection.cc:83
+#: ../glom/glom_test_connection.cc:84
 msgid "The specific database on the PostgreSQL server (Optional)."
 msgstr "Die spezifische Datenbank für den PostgreSQL-Server (optional)."
 
-#: ../glom/glom_test_connection.cc:133
+#: ../glom/glom_test_connection.cc:156
 msgid "Please provide a database username."
 msgstr "Bitte geben Sie einen Benutzernamen für die Datenbank an."
 
-#: ../glom/glom_test_connection.cc:192
+#: ../glom/glom_test_connection.cc:215
 msgid ""
 "Error: Could not connect to the server even without specifying a database."
 msgstr ""
 "Fehler: Ohne Angabe einer Datenbank kann keine Verbindung zum Server "
 "aufgebaut werden."
 
-#: ../glom/glom_test_connection.cc:200
+#: ../glom/glom_test_connection.cc:223
 msgid "Error: Could not connect to the specified database."
 msgstr ""
 "Fehler: Verbindung zur spezifischen Datenbank konnte nicht aufgebaut werden."
 
-#: ../glom/glom_test_connection.cc:206
+#: ../glom/glom_test_connection.cc:229
 msgid "Successful connection."
 msgstr "Erfolgreiche Verbindung."
 
@@ -1804,35 +1914,35 @@ msgstr ""
 msgid "No primary key value"
 msgstr "Primärschlüssel hat keinen Wert"
 
-#: ../glom/mode_data/box_data_details.cc:111
+#: ../glom/mode_data/box_data_details.cc:112
 msgid "Create a new record."
 msgstr "Eine neuen Datensatz erstellen."
 
-#: ../glom/mode_data/box_data_details.cc:112
+#: ../glom/mode_data/box_data_details.cc:113
 msgid "Remove this record."
 msgstr "Diesen Datensatz entfernen."
 
-#: ../glom/mode_data/box_data_details.cc:113
+#: ../glom/mode_data/box_data_details.cc:114
 msgid "View the first record in the list."
 msgstr "Den ersten Datensatz in der Liste ansehen."
 
-#: ../glom/mode_data/box_data_details.cc:114
+#: ../glom/mode_data/box_data_details.cc:115
 msgid "View the previous record in the list."
 msgstr "Den vorherigen Datensatz in der Liste ansehen."
 
-#: ../glom/mode_data/box_data_details.cc:115
+#: ../glom/mode_data/box_data_details.cc:116
 msgid "View the next record in the list."
 msgstr "Den nächsten Datensatz in der Liste ansehen."
 
-#: ../glom/mode_data/box_data_details.cc:116
+#: ../glom/mode_data/box_data_details.cc:117
 msgid "View the last record in the list."
 msgstr "Den letzten Datensatz in der Liste ansehen."
 
-#: ../glom/mode_data/box_data_details.cc:416
+#: ../glom/mode_data/box_data_details.cc:417
 msgid "Layout Contains No Fields"
 msgstr "Layout enthält keine Felder"
 
-#: ../glom/mode_data/box_data_details.cc:416
+#: ../glom/mode_data/box_data_details.cc:417
 msgid ""
 "There are no fields on the layout, so there is no way to enter data in a new "
 "record."
@@ -1841,22 +1951,22 @@ msgstr ""
 "Eintrag eingegeben werden."
 
 #. Tell user that a primary key is needed to delete a record:
-#: ../glom/mode_data/box_data_details.cc:443
+#: ../glom/mode_data/box_data_details.cc:444
 msgid "No primary key value."
 msgstr "Es wurde kein Primärschlüssel angegeben."
 
-#: ../glom/mode_data/box_data_details.cc:444
+#: ../glom/mode_data/box_data_details.cc:445
 msgid "This record cannot be deleted because there is no primary key."
 msgstr ""
 "Dieser Datensatz kann nicht gelöscht werden, da es keinen Primärschlüssel "
 "gibt."
 
 #. Warn user that they can't choose their own primary key:
-#: ../glom/mode_data/box_data_details.cc:850
+#: ../glom/mode_data/box_data_details.cc:851
 msgid "Primary key auto increments"
 msgstr "Primärschlüssel zählt automatisch hoch"
 
-#: ../glom/mode_data/box_data_details.cc:851
+#: ../glom/mode_data/box_data_details.cc:852
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
@@ -1876,53 +1986,53 @@ msgstr ""
 "Ex existiert kein Datensatz mit diesem Wert, daher ist die Navigation zu "
 "diesem Bezugsdatensatz nicht möglich."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1142
+#: ../glom/mode_data/flowtablewithfields.cc:1187
 #: ../glom/utility_widgets/notebooklabelglom.cc:75
 #: ../glom/utility_widgets/notebooklabelglom.cc:115
 msgid "New Group"
 msgstr "Neue Gruppe"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1148
+#: ../glom/mode_data/flowtablewithfields.cc:1193
 #: ../glom/mode_design/layout/dialog_layout_details.cc:735
 msgid "notebook"
 msgstr "Reitermappe"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1154
+#: ../glom/mode_data/flowtablewithfields.cc:1199
 msgid "tab1"
 msgstr "Reiter1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1157
+#: ../glom/mode_data/flowtablewithfields.cc:1202
 msgid "Tab One"
 msgstr "Reiter Eins"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1170
+#: ../glom/mode_data/flowtablewithfields.cc:1215
 msgid "button"
 msgstr "Schalter"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1171
+#: ../glom/mode_data/flowtablewithfields.cc:1216
 #: ../glom/mode_design/layout/dialog_layout_details.cc:661
 msgid "New Button"
 msgstr "Neuer Schalter"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1177
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:456
+#: ../glom/mode_data/flowtablewithfields.cc:1222
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:457
 msgid "text"
 msgstr "Text"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1178
+#: ../glom/mode_data/flowtablewithfields.cc:1223
 msgid "New Text"
 msgstr "Neuer Text"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1346
+#: ../glom/mode_data/flowtablewithfields.cc:1391
 msgid "Delete whole group \"%1\"?"
 msgstr "Gesamte Gruppe »%1« löschen?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1352
+#: ../glom/mode_data/flowtablewithfields.cc:1397
 msgid "Delete whole group?"
 msgstr "Gesamte Gruppe löschen?"
 
@@ -1975,7 +2085,7 @@ msgid "Next Value"
 msgstr "Nächster Wert"
 
 #: ../glom/mode_design/dialog_design.cc:52
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:639
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:640
 #: ../ui/developer/window_design.glade.h:3
 msgid "None selected"
 msgstr "Nichts markiert"
@@ -2274,35 +2384,40 @@ msgstr ""
 "kann."
 
 #. Translators: This is Automatic text alignment.
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:112
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:115
 msgid "Automatic"
 msgstr "Automatisch"
 
 #. Translators: This is Left text alignment.
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:116
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:119
 msgid "Left"
 msgstr "Links"
 
 #. Translators: This is Right text alignment.
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:120
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:123
 msgid "Right"
 msgstr "Rechts"
 
 #. Give it access to the document.
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:159
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:166
 msgid "Extra Fields"
 msgstr "Zusätzliche Felder"
 
+#. Give it access to the document.
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:174
+msgid "Sort Order"
+msgstr "Sortierreihenfolge"
+
 #. Add labels (because we will hide the checkboxes):
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:180
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:201
 msgid "Font"
 msgstr "Schriftart"
 
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:183
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:204
 msgid "Foreground Color"
 msgstr "Vordergrundfarbe"
 
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:186
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:207
 msgid "Background Color"
 msgstr "Hintergrundfarbe"
 
@@ -2326,7 +2441,7 @@ msgstr "Formatierung"
 msgid "Group By - Secondary Fields"
 msgstr "Gruppieren nach - sekundäre Felder"
 
-#: ../glom/mode_design/layout/layout_item_dialogs/dialog_groupby_sortfields.cc:59
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_sortfields.cc:59
 msgid "Ascending"
 msgstr "Aufsteigend"
 
@@ -2422,113 +2537,113 @@ msgstr ""
 "Ziehen Sie dies in das Layout, um ein neues Portal für relative Datensätze zu "
 "erzeugen."
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:228
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:229
 msgid "Unselect All"
 msgstr "Auswahl aufheben"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:231
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:232
 msgid "_Insert"
 msgstr "E_infügen"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:232
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:233
 msgid "Insert _Field"
 msgstr "_Feld einfügen"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:234
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:235
 msgid "Insert _Text"
 msgstr "_Text einfügen"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:236
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:237
 msgid "Insert _Image"
 msgstr "_Bild einfügen"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:238
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:239
 msgid "Insert _Related Records"
 msgstr "_Bezugsdatensätze einfügen"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:240
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:241
 msgid "Insert _Horizontal Line"
 msgstr "_Horizontale Linie einfügen"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:242
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:243
 msgid "Insert _Vertical Line"
 msgstr "_Vertikale Linie einfügen"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:244
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:245
 msgid "_Create Standard Layout"
 msgstr "_Standard-Layout erstellen"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:246
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:247
 msgid "_Add Page"
 msgstr "Seite _hinzufügen"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:248
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:249
 msgid "_Delete Page"
 msgstr "Seite _entfernen"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:252
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:253
 msgid "_Align"
 msgstr "_Ausrichten"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:254
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:255
 msgid "Align _Top"
 msgstr "Nach _oben ausrichten"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:258
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:259
 msgid "Align _Bottom"
 msgstr "Nach _unten ausrichten"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:262
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:263
 msgid "Align _Left"
 msgstr "_Links ausrichten"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:266
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:267
 msgid "Align _Right"
 msgstr "_Rechts ausrichten"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:271
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:272
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:64
 msgid "_View"
 msgstr "_Ansicht"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:272
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:273
 msgid "Show Grid"
 msgstr "Gitter anzeigen"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:274
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:275
 msgid "Show Rules"
 msgstr "Trennlinien anzeigen"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:276
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:277
 msgid "Show Outlines"
 msgstr "Begrenzungen zeigen"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:280
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:281
 msgid "Fit Page _Width"
 msgstr "_Seitenbreite einpassen"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:284
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:285
 msgid "Zoom 200%"
 msgstr "Maßstab 200%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:292
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:293
 msgid "Zoom 50%"
 msgstr "Maßstab 50%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:296
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:297
 msgid "Zoom 25%"
 msgstr "Maßstab 25%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:754
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:755
 msgid "Insert"
 msgstr "Einfügen"
 
 #. Ask for confirmation:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:921
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:922
 msgid "Create Standard Layout"
 msgstr "Standard-Layout erstellen"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:922
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:923
 msgid ""
 "This is an experimental feature. It will remove all items from the print "
 "layout and then try to create a layout similar to the layout of the detail "
@@ -2538,24 +2653,24 @@ msgstr ""
 "Druck-Layouts gelöscht und versucht, ein Layout ähnlich dem Layout der "
 "Detailansicht zu erzeugen."
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:925
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:926
 #: ../glom/mode_design/users/dialog_groups_list.cc:81
 msgid "Create"
 msgstr "Anlegen"
 
 #. Ask the user to confirm:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:965
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:966
 msgid "Remove page"
 msgstr "Seite entfernen"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:966
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:967
 msgid ""
 "Are you sure that you wish to remove the last page and any items on that page?"
 msgstr ""
 "Sind Sie sicher, dass Sie die letzte Seite und die darin befindlichen Objekte "
 "entfernen wollen?"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:969
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:970
 msgid "Remove Page"
 msgstr "Seite entfernen"
 
@@ -2718,45 +2833,36 @@ msgid "_Formatting"
 msgstr "_Formatieren"
 
 #. Append the View columns:
-#: ../glom/mode_design/translation/window_translations.cc:72
+#: ../glom/mode_design/translation/window_translations.cc:65
 msgid "Original"
 msgstr "Original"
 
-#: ../glom/mode_design/translation/window_translations.cc:80
+#: ../glom/mode_design/translation/window_translations.cc:73
 msgid "Item"
 msgstr "Eintrag"
 
-#: ../glom/mode_design/translation/window_translations.cc:88
+#: ../glom/mode_design/translation/window_translations.cc:81
 msgid "Translation"
 msgstr "Übersetzung"
 
-#. Show only debug output
-#: ../glom/mode_design/translation/window_translations.cc:433
-msgid "Gettext-Warning: "
-msgstr "Gettext-Warnung: "
-
-#: ../glom/mode_design/translation/window_translations.cc:449
-msgid "Gettext-Error: "
-msgstr "Gettext-Fehler: "
-
 #. Show the file-chooser dialog, to select an output .po file:
-#: ../glom/mode_design/translation/window_translations.cc:506
-#: ../glom/mode_design/translation/window_translations.cc:585
+#: ../glom/mode_design/translation/window_translations.cc:327
+#: ../glom/mode_design/translation/window_translations.cc:367
 msgid "Choose .po File Name"
 msgstr ".po-Dateinamen auswählen"
 
-#: ../glom/mode_design/translation/window_translations.cc:512
-#: ../glom/mode_design/translation/window_translations.cc:590
+#: ../glom/mode_design/translation/window_translations.cc:333
+#: ../glom/mode_design/translation/window_translations.cc:372
 msgid "Po files"
 msgstr "Po-Dateien"
 
-#: ../glom/mode_design/translation/window_translations.cc:517
+#: ../glom/mode_design/translation/window_translations.cc:338
 #: ../ui/developer/window_translations.glade.h:6
 msgid "Export"
 msgstr "Exportieren"
 
 #. Note to translators: "Import" here is an action verb - it's a button.
-#: ../glom/mode_design/translation/window_translations.cc:597
+#: ../glom/mode_design/translation/window_translations.cc:379
 #: ../ui/developer/window_translations.glade.h:8
 msgid "Import"
 msgstr "Importieren"
@@ -2771,7 +2877,7 @@ msgid "Duplicate"
 msgstr "Duplikat"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:431
+#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:468
 msgid "Example"
 msgstr "Beispiel"
 
@@ -2782,21 +2888,21 @@ msgid "%1:"
 msgstr "%1:"
 
 #. Let the user choose a date from a calendar dialog:
-#: ../glom/mode_data/datawidget/datawidget.cc:211
+#: ../glom/mode_data/datawidget/datawidget.cc:213
 msgid "..."
 msgstr "…"
 
 #. TODO: A better label/icon for "Choose Date".
-#: ../glom/mode_data/datawidget/datawidget.cc:212
+#: ../glom/mode_data/datawidget/datawidget.cc:214
 msgid "Choose a date from an on-screen calendar."
 msgstr "Wählen Sie ein Datum aus dem Bildschirm-Kalender aus."
 
-#: ../glom/mode_data/datawidget/datawidget.cc:222
+#: ../glom/mode_data/datawidget/datawidget.cc:224
 msgid "Open the record identified by this ID, in the other table."
 msgstr ""
 "Den zu dieser Kennung gehörenden Datensatz in der anderen Tabelle öffnen."
 
-#: ../glom/mode_data/datawidget/datawidget.cc:232
+#: ../glom/mode_data/datawidget/datawidget.cc:234
 msgid ""
 "Enter search criteria to identify records in the other table, to choose an ID "
 "for this field."
@@ -2804,7 +2910,7 @@ msgstr ""
 "Geben Sie Suchkriterien ein, um Datensätze in der anderen Tabelle zu suchen, "
 "um eine ID für dieses Feld festzulegen."
 
-#: ../glom/mode_data/datawidget/datawidget.cc:237
+#: ../glom/mode_data/datawidget/datawidget.cc:239
 msgid ""
 "Enter details for a new record in the other table, then use its ID for this "
 "field."
@@ -2821,16 +2927,16 @@ msgstr "Tabelleninhalt"
 msgid "ExampleEg"
 msgstr "Beispiel"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2057
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2087
 msgid "Right-click to layout, to specify the related fields."
 msgstr "Rechtsklick auf Layout, um die Bezugsfelder festzulegen."
 
 #. Tell user that they can't do that:
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2274
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2304
 msgid "Extra Related Records Not Possible"
 msgstr "Zusätzliche Bezugsdatensätze nicht möglich"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2275
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2305
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
@@ -3197,7 +3303,7 @@ msgid "bla.blub - Import from CSV"
 msgstr "bla.blub - Aus CSV importieren"
 
 #: ../ui/operator/dialog_import_csv.glade.h:12
-#: ../ui/developer/box_formatting.glade.h:30
+#: ../ui/developer/box_formatting.glade.h:31
 msgid "label"
 msgstr "Beschriftung"
 
@@ -3400,7 +3506,7 @@ msgid "<b>Fields</b>"
 msgstr "<b>Felder</b>"
 
 #: ../ui/developer/dialog_fieldslist.glade.h:3
-#: ../ui/developer/dialog_groupby_sort_fields.glade.h:3
+#: ../ui/developer/dialog_sort_fields.glade.h:3
 msgid "Table: "
 msgstr "Tabelle: "
 
@@ -3446,14 +3552,6 @@ msgstr "Sekundäre Felder:"
 #: ../ui/developer/dialog_group_by.glade.h:8
 msgid "Sort Fields:"
 msgstr "Felder sortieren:"
-
-#: ../ui/developer/dialog_groupby_sort_fields.glade.h:1
-msgid "<b>Sort Fields</b>"
-msgstr "<b>Felder sortieren</b>"
-
-#: ../ui/developer/dialog_groupby_sort_fields.glade.h:2
-msgid "Group By - Sort Fields"
-msgstr "Gruppieren nach - Felder sortieren"
 
 #: ../ui/developer/dialog_initial_password.glade.h:1
 #: ../ui/developer/dialog_new_group.glade.h:4
@@ -3586,6 +3684,14 @@ msgstr ""
 #: ../ui/developer/dialog_script_library.glade.h:5
 msgid "_Check"
 msgstr "Pr_üfen"
+
+#: ../ui/developer/dialog_sort_fields.glade.h:1
+msgid "<b>Sort Fields</b>"
+msgstr "<b>Felder sortieren</b>"
+
+#: ../ui/developer/dialog_sort_fields.glade.h:2
+msgid "Group By - Sort Fields"
+msgstr "Gruppieren nach - Felder sortieren"
 
 #: ../ui/developer/dialog_translation_copy.glade.h:1
 msgid ""
@@ -4047,6 +4153,10 @@ msgid "Show all records"
 msgstr "Alle Datensätze anzeigen"
 
 #: ../ui/developer/box_formatting.glade.h:29
+msgid "Sort Order:"
+msgstr "Sortierreihenfolge:"
+
+#: ../ui/developer/box_formatting.glade.h:30
 msgid "Use 1000s separator"
 msgstr "Tausender-Trennzeichen verwenden"
 
@@ -4187,6 +4297,9 @@ msgstr "<b>Gruppe: </b>"
 #: ../ui/developer/window_users.glade.h:2
 msgid "<b>Users</b>"
 msgstr "<b>Benutzer</b>"
+
+#~ msgid "Gettext-Error: "
+#~ msgstr "Gettext-Fehler: "
 
 #~ msgid ""
 #~ "There was an error while restoring the backup. The tar utility failed to "
