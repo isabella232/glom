@@ -30,6 +30,7 @@
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
 #include <iostream>
+#include <stdexcept>
 
 #include <glibmm/i18n.h>
 
@@ -62,6 +63,28 @@ GlomCreateOptionGroup::GlomCreateOptionGroup()
 
 int main(int argc, char* argv[])
 {
+  bindtextdomain(GETTEXT_PACKAGE, GLOM_LOCALEDIR);
+  bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+  textdomain(GETTEXT_PACKAGE);
+
+  // Set the locale for any streams to the user's current locale,
+  // We should not rely on the default locale of
+  // any streams (we should always do an explicit imbue()),
+  // but this is maybe a good default in case we forget.
+  try
+  {
+    std::locale::global(std::locale(""));
+  }
+  catch(const std::runtime_error& ex)
+  {
+    //This has been known to throw an exception at least once:
+    //https://bugzilla.gnome.org/show_bug.cgi?id=619445
+    //This should tell us what the problem is:
+    std::cerr << G_STRFUNC << ": exception from std::locale::global(std::locale(\"\")): " << ex.what() << std::endl;
+    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+  }
+
+  
   Glom::libglom_init();
   
   Glib::OptionContext context;
@@ -104,7 +127,7 @@ int main(int argc, char* argv[])
 
   if(input_uri.empty())
   {
-    std::cerr << "Please specify a glom file." << std::endl;
+    std::cerr << _("Please specify a glom file.") << std::endl;
     std::cerr << std::endl << context.get_help() << std::endl;
     return EXIT_FAILURE;
   }
@@ -178,7 +201,7 @@ int main(int argc, char* argv[])
   const std::vector<Glib::ustring> locales = document.get_translation_available_locales();
   if(locales.empty())
   {
-    std::cerr << "The Glom document has no translations." << std::endl;
+    std::cerr << _("The Glom document has no translations.") << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -197,11 +220,11 @@ int main(int argc, char* argv[])
       Glom::write_translations_to_po_file(&document, output_uri, locale_id);
     if(!succeeded)
     {
-      std::cerr << "Po file creation failed." << std::endl;
+      std::cerr << _("Po file creation failed.") << std::endl;
       return EXIT_FAILURE;
     }
 
-    std::cout << "Po file created at: " << output_uri << std::endl;
+    std::cout << Glib::ustring::compose(_("Po file created at: %1"), output_uri) << std::endl;
   }
 
   Glom::libglom_deinit();
