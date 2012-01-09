@@ -22,7 +22,7 @@
 
 #include <glom/mode_design/iso_codes.h>
 #include <libxml++/libxml++.h>
-#include <libglom/document/document.h>
+//#include <libglom/document/document.h>
 #include <libglom/utils.h>
 #include <glibmm/fileutils.h>
 #include <glibmm/i18n.h>
@@ -99,6 +99,16 @@ type_list_currencies get_list_of_currency_symbols()
   return list_currencies;
 }
 
+static void split_locale_id(const Glib::ustring& locale_id, Glib::ustring& language_id, Glib::ustring& country_id)
+{
+  //Split the locale ID into language and country parts:
+  language_id = Utils::locale_language_id(locale_id);
+
+  country_id.clear();
+  if(!language_id.empty() && ((language_id.size() +1) < locale_id.size()))
+    country_id = locale_id.substr(language_id.size() + 1);
+}
+
 Glib::ustring get_locale_name(const Glib::ustring& locale_id)
 {
   //Build the list of locales, with their translated language and countries names:
@@ -117,6 +127,26 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
     catch(const Glib::FileError& ex)
     {
       std::cerr << G_STRFUNC << ": Could not open (or read) glibc locales directory: " << locales_path << "Error: " << ex.what() << std::endl;
+    }
+
+    //Make sure that we list non-specific versions of the locales too,
+    //because this is normally what translators translate to.
+    //For instance, po/ files generally contain po/de.po.
+    type_list_ids list_ids_simple;
+    for(type_list_ids::const_iterator iter = list_ids.begin(); iter != list_ids.end(); ++iter)
+    {
+      const Glib::ustring id = *iter;
+      Glib::ustring id_language, id_country;
+      split_locale_id(id, id_language, id_country);
+      list_ids_simple.push_back(id_language);
+    }
+
+    //Add the non-specific locales:
+    for(type_list_ids::const_iterator iter = list_ids_simple.begin(); iter != list_ids_simple.end(); ++iter)
+    {
+      const Glib::ustring id = *iter;
+      if(std::find(list_ids.begin(), list_ids.end(), id) == list_ids.end())
+        list_ids.push_back(id);
     }
 
     //Get the (translated) language names:
@@ -236,10 +266,9 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
       if(map_locales.find(identifier) == map_locales.end()) //Prevent duplicates.
       {
         //Split the locale ID into language and country parts:
-        Glib::ustring id_language = Utils::locale_language_id(identifier);
-        Glib::ustring id_country;
-        if(!id_language.empty() && ((id_language.size() +1) < identifier.size()))
-            id_country = identifier.substr(id_language.size() + 1);
+        Glib::ustring id_language, id_country;
+        split_locale_id(identifier, id_language, id_country);
+        //std::cout << "debug: id_language=" << id_language << ", id_country=" << id_country << std::endl;
 
         //Get the translated human-readable names of the language and country:
         Glib::ustring name;

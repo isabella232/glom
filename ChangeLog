@@ -1,5 +1,18 @@
 2012-01-09  Murray Cumming  <murrayc@murrayc.com>
 
+	Translations: Offer non-country-specific language locales too.
+
+	* Makefile_tests.am:
+	* glom/libglom/utils.cc: locale_language_id(): Parse language-only
+	locale IDs too.
+	* glom/mode_design/iso_codes.cc: get_locale_name(): Create non-country
+	locale IDs too, though they are not in the iso-codes XML file.
+	* glom/mode_design/translation/window_translations.cc: Show, for instance
+	German (de) as well as the existing German (Germany), German (Austria),
+	etc.
+
+2012-01-09  Murray Cumming  <murrayc@murrayc.com>
+
 	Command-line utilities: Initialize gettext and the locale.
 
 	* glom/glom_create_from_example.cc:
