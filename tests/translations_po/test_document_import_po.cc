@@ -89,7 +89,7 @@ int main()
 
   //std::cout << "po file URI: " << po_file_uri << std::endl;
 
-  const Glib::ustring locale = "de_DE";
+  const Glib::ustring locale = "de";
   const bool success = 
     Glom::import_translations_from_po_file(&document, po_file_uri, locale);
   if(!success)

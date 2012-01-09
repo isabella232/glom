@@ -1,5 +1,22 @@
 2012-01-09  Murray Cumming  <murrayc@murrayc.com>
 
+	Translations: Prefer non-country-specific locales, such as de.
+
+	* examples/example_film_manager.glom:
+	* examples/example_lesson_planner.glom:
+	* examples/example_music_collection.glom:
+	* examples/example_project_manager.glom:
+	* examples/example_smallbusiness.glom:
+	* examples/sqlite/test_sqlite_music/test_sqlite_music.glom:
+	* ldtp/database-templates/PostgresCentral/Test.glom:
+	* ldtp/database-templates/SQLite/Test.glom:
+	* tests/test_document_load_translations.cc:
+	* tests/translations_po/test_document_export_po.cc:
+	* tests/translations_po/test_document_import_po.cc:
+	Replace de_DE with de.
+
+2012-01-09  Murray Cumming  <murrayc@murrayc.com>
+
 	Translations: Offer non-country-specific language locales too.
 
 	* Makefile_tests.am:

@@ -240,7 +240,7 @@ int main()
 
   const std::vector<Glib::ustring> locales = document.get_translation_available_locales();
   g_assert(locales.size() == 2);
-  g_assert(contains(locales, "de_DE"));
+  g_assert(contains(locales, "de"));
 
   const std::vector<Glib::ustring> table_names = document.get_table_names();
   g_assert(contains(table_names, "scenes"));
