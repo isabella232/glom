@@ -39,7 +39,7 @@
           <data_layout_group name="main">
             <data_layout_group name="overview" columns_count="2" title="Overview">
               <trans_set>
-                <trans loc="de_DE" val="Overview"/>
+                <trans loc="de" val="Overview"/>
               </trans_set>
               <data_layout_item name="album_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -50,11 +50,11 @@
             </data_layout_group>
             <data_layout_group name="details" columns_count="2" title="Details">
               <trans_set>
-                <trans loc="de_DE" val="Details"/>
+                <trans loc="de" val="Details"/>
               </trans_set>
               <data_layout_group name="artist" title="Artist">
                 <trans_set>
-                  <trans loc="de_DE" val="Artist"/>
+                  <trans loc="de" val="Artist"/>
                 </trans_set>
                 <data_layout_item name="artist_id" editable="true" use_default_formatting="true">
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -65,7 +65,7 @@
               </data_layout_group>
               <data_layout_group name="publisher" title="Publisher">
                 <trans_set>
-                  <trans loc="de_DE" val="Publisher"/>
+                  <trans loc="de" val="Publisher"/>
                 </trans_set>
                 <data_layout_item name="publisher_id" editable="true" use_default_formatting="true">
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -160,7 +160,7 @@
           <data_layout_group name="main">
             <data_layout_group name="overview" columns_count="2" title="Overview">
               <trans_set>
-                <trans loc="de_DE" val="Overview"/>
+                <trans loc="de" val="Overview"/>
               </trans_set>
               <data_layout_item name="artist_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -171,7 +171,7 @@
             </data_layout_group>
             <data_layout_group name="details" columns_count="2" title="Details">
               <trans_set>
-                <trans loc="de_DE" val="Details"/>
+                <trans loc="de" val="Details"/>
               </trans_set>
               <data_layout_item name="description" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
@@ -240,7 +240,7 @@
           <data_layout_group name="main">
             <data_layout_group name="overview" columns_count="2" title="Overview">
               <trans_set>
-                <trans loc="de_DE" val="Overview"/>
+                <trans loc="de" val="Overview"/>
               </trans_set>
               <data_layout_item name="publishers_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -251,7 +251,7 @@
             </data_layout_group>
             <data_layout_group name="details" title="Details">
               <trans_set>
-                <trans loc="de_DE" val="Details"/>
+                <trans loc="de" val="Details"/>
               </trans_set>
               <data_layout_item name="comments" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
@@ -318,7 +318,7 @@
           <data_layout_group name="main">
             <data_layout_group name="overview" columns_count="2" title="Overview">
               <trans_set>
-                <trans loc="de_DE" val="Overview"/>
+                <trans loc="de" val="Overview"/>
               </trans_set>
               <data_layout_item name="songs_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -329,7 +329,7 @@
             </data_layout_group>
             <data_layout_group name="details" columns_count="2" title="Details">
               <trans_set>
-                <trans loc="de_DE" val="Details"/>
+                <trans loc="de" val="Details"/>
               </trans_set>
               <data_layout_group name="album" title="Album">
                 <data_layout_item name="album_id" editable="true" use_default_formatting="true">

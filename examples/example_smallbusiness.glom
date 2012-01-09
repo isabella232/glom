@@ -185,35 +185,35 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
     </example_rows>
     <trans_set>
       <trans loc="de_AT" val="Kontakten"/>
-      <trans loc="de_DE" val="Kontakten"/>
+      <trans loc="de" val="Kontakten"/>
     </trans_set>
     <fields>
       <field name="contact_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Contact ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_AT" val="Kontakt ID"/>
-          <trans loc="de_DE" val="Kontakt ID"/>
+          <trans loc="de" val="Kontakt ID"/>
         </trans_set>
       </field>
       <field name="name_first" type="Text" title="First Name">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Vorname"/>
-          <trans loc="de_DE" val="Vorname"/>
+          <trans loc="de" val="Vorname"/>
         </trans_set>
       </field>
       <field name="name_middle" type="Text" title="Middle Name">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Zweite Name"/>
-          <trans loc="de_DE" val="Zweite Name"/>
+          <trans loc="de" val="Zweite Name"/>
         </trans_set>
       </field>
       <field name="name_last" type="Text" title="Last Name">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Familiename"/>
-          <trans loc="de_DE" val="Familiename"/>
+          <trans loc="de" val="Familiename"/>
         </trans_set>
       </field>
       <field name="name_title" type="Text" title="Title">
@@ -228,56 +228,56 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
           </custom_choice_list>
         </formatting>
         <trans_set>
-          <trans loc="de_DE" val="Titel"/>
+          <trans loc="de" val="Titel"/>
         </trans_set>
       </field>
       <field name="address_street" type="Text" title="Street">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Strasse"/>
-          <trans loc="de_DE" val="Strasse"/>
+          <trans loc="de" val="Strasse"/>
         </trans_set>
       </field>
       <field name="address_town" type="Text" title="Town">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Ort"/>
-          <trans loc="de_DE" val="Ort"/>
+          <trans loc="de" val="Ort"/>
         </trans_set>
       </field>
       <field name="address_state" type="Text" title="State">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Bundesland/Kanton"/>
-          <trans loc="de_DE" val="Bundesland/Kanton"/>
+          <trans loc="de" val="Bundesland/Kanton"/>
         </trans_set>
       </field>
       <field name="address_country" type="Text" title="Country">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Land"/>
-          <trans loc="de_DE" val="Land"/>
+          <trans loc="de" val="Land"/>
         </trans_set>
       </field>
       <field name="address_postcode" type="Text" title="Postcode">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Postleitzahl"/>
-          <trans loc="de_DE" val="Postleitzahl"/>
+          <trans loc="de" val="Postleitzahl"/>
         </trans_set>
       </field>
       <field name="date_of_birth" type="Date" title="Date of Birth">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Geburtsdatum"/>
-          <trans loc="de_DE" val="Geburtsdatum"/>
+          <trans loc="de" val="Geburtsdatum"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
         <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_AT" val="Kommentar"/>
-          <trans loc="de_DE" val="Kommentar"/>
+          <trans loc="de" val="Kommentar"/>
         </trans_set>
       </field>
       <field name="name_full" type="Text" title="Full Name">
@@ -285,28 +285,28 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Vollname"/>
-          <trans loc="de_DE" val="Vollname"/>
+          <trans loc="de" val="Vollname"/>
         </trans_set>
       </field>
       <field name="picture" type="Image" title="Picture">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Bild"/>
-          <trans loc="de_DE" val="Bild"/>
+          <trans loc="de" val="Bild"/>
         </trans_set>
       </field>
       <field name="email" type="Text" title="Email Address">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="E-mail Addresse"/>
-          <trans loc="de_DE" val="E-mail Addresse"/>
+          <trans loc="de" val="E-mail Addresse"/>
         </trans_set>
       </field>
       <field name="website" type="Text" title="Web Site">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Website"/>
-          <trans loc="de_DE" val="Website"/>
+          <trans loc="de" val="Website"/>
         </trans_set>
       </field>
       <field name="tel_home" type="Text" title="Home Telephone">
@@ -322,7 +322,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Fax"/>
-          <trans loc="de_DE" val="Fax"/>
+          <trans loc="de" val="Fax"/>
         </trans_set>
       </field>
     </fields>
@@ -334,7 +334,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
             <trans_set>
               <trans loc="de_AT" val="Ubersicht"/>
               <trans loc="de_BE" val="Overview"/>
-              <trans loc="de_DE" val="Ubersicht"/>
+              <trans loc="de" val="Ubersicht"/>
               <trans loc="en_GB" val="Overview"/>
               <trans loc="en_US" val="Overview"/>
             </trans_set>
@@ -350,7 +350,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
               <trans_set>
                 <trans loc="de_AT" val="Name"/>
                 <trans loc="de_BE" val="Name"/>
-                <trans loc="de_DE" val="Name"/>
+                <trans loc="de" val="Name"/>
                 <trans loc="en_GB" val="Name"/>
                 <trans loc="en_US" val="Name"/>
               </trans_set>
@@ -371,7 +371,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
               <trans_set>
                 <trans loc="de_AT" val="Addresse"/>
                 <trans loc="de_BE" val="Address"/>
-                <trans loc="de_DE" val="Addresse"/>
+                <trans loc="de" val="Addresse"/>
                 <trans loc="en_GB" val="Address"/>
                 <trans loc="en_US" val="Address"/>
               </trans_set>
@@ -395,7 +395,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
               <trans_set>
                 <trans loc="de_AT" val="Telefon"/>
                 <trans loc="de_BE" val="Telephone"/>
-                <trans loc="de_DE" val="Telefon"/>
+                <trans loc="de" val="Telefon"/>
                 <trans loc="en_GB" val="Telephone"/>
                 <trans loc="en_US" val="Telephone"/>
               </trans_set>
@@ -826,7 +826,7 @@ Orientation=portrait
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Produkt Name"/>
-          <trans loc="de_DE" val="Produkt Name"/>
+          <trans loc="de" val="Produkt Name"/>
         </trans_set>
       </field>
       <field name="product_id" type="Number" title="Product Id">
@@ -843,7 +843,7 @@ Orientation=portrait
         </formatting>
         <trans_set>
           <trans loc="de_AT" val="Produkt ID"/>
-          <trans loc="de_DE" val="Produkt ID"/>
+          <trans loc="de" val="Produkt ID"/>
         </trans_set>
       </field>
       <field name="product_price" type="Number" title="Product Price">
@@ -851,21 +851,21 @@ Orientation=portrait
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
           <trans loc="de_AT" val="Produkt Preis"/>
-          <trans loc="de_DE" val="Produkt Preis"/>
+          <trans loc="de" val="Produkt Preis"/>
         </trans_set>
       </field>
       <field name="invoice_id" type="Number" title="Invoice ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_AT" val="Rechnung ID"/>
-          <trans loc="de_DE" val="Rechnung ID"/>
+          <trans loc="de" val="Rechnung ID"/>
         </trans_set>
       </field>
       <field name="count" default_value="1" type="Number" title="Number Of">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_AT" val="Menge"/>
-          <trans loc="de_DE" val="Menge"/>
+          <trans loc="de" val="Menge"/>
         </trans_set>
       </field>
       <field name="total_price" type="Number" title="Total Price">
@@ -873,7 +873,7 @@ Orientation=portrait
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
           <trans loc="de_AT" val="Gesamtpreis"/>
-          <trans loc="de_DE" val="Gesamtpreis"/>
+          <trans loc="de" val="Gesamtpreis"/>
         </trans_set>
       </field>
       <field name="vat_percentage" type="Number" title="VAT Percentage">
@@ -881,7 +881,7 @@ Orientation=portrait
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_AT" val="MwST Prozent"/>
-          <trans loc="de_DE" val="MwST Prozent"/>
+          <trans loc="de" val="MwST Prozent"/>
         </trans_set>
       </field>
       <field name="total_price_vat" type="Number" title="Total VAT">
@@ -889,7 +889,7 @@ Orientation=portrait
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
           <trans loc="de_AT" val="Gesamt MwST"/>
-          <trans loc="de_DE" val="Gesamt MwST"/>
+          <trans loc="de" val="Gesamt MwST"/>
         </trans_set>
       </field>
     </fields>
@@ -897,7 +897,7 @@ Orientation=portrait
       <relationship name="products" key="product_id" other_table="products" other_key="product_id">
         <trans_set>
           <trans loc="de_AT" val="Produkten"/>
-          <trans loc="de_DE" val="Produkten"/>
+          <trans loc="de" val="Produkten"/>
         </trans_set>
       </relationship>
     </relationships>
@@ -989,35 +989,35 @@ Orientation=portrait
     </example_rows>
     <trans_set>
       <trans loc="de_AT" val="Rechnungen"/>
-      <trans loc="de_DE" val="Rechnungen"/>
+      <trans loc="de" val="Rechnungen"/>
     </trans_set>
     <fields>
       <field name="invoice_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Invoice ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_AT" val="Rechnung ID"/>
-          <trans loc="de_DE" val="Rechnung ID"/>
+          <trans loc="de" val="Rechnung ID"/>
         </trans_set>
       </field>
       <field name="contact_id" type="Number" title="Contact ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_AT" val="Kontakt ID"/>
-          <trans loc="de_DE" val="Kontakt ID"/>
+          <trans loc="de" val="Kontakt ID"/>
         </trans_set>
       </field>
       <field name="date" type="Date" title="Date">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Datum"/>
-          <trans loc="de_DE" val="Datum"/>
+          <trans loc="de" val="Datum"/>
         </trans_set>
       </field>
       <field name="comment" type="Text" title="Comment">
         <formatting format_text_multiline="true"/>
         <trans_set>
           <trans loc="de_AT" val="Kommentar"/>
-          <trans loc="de_DE" val="Kommentar"/>
+          <trans loc="de" val="Kommentar"/>
         </trans_set>
       </field>
       <field name="price_total" type="Number" title="Total Price">
@@ -1025,7 +1025,7 @@ Orientation=portrait
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
           <trans loc="de_AT" val="Gesamtpreis"/>
-          <trans loc="de_DE" val="Gesamtpreis"/>
+          <trans loc="de" val="Gesamtpreis"/>
         </trans_set>
       </field>
       <field name="vat_total" default_value="16" type="Number" title="Total VAT">
@@ -1033,7 +1033,7 @@ Orientation=portrait
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
           <trans loc="de_AT" val="Gesamt MwST"/>
-          <trans loc="de_DE" val="Gesamt MwST"/>
+          <trans loc="de" val="Gesamt MwST"/>
         </trans_set>
       </field>
       <field name="price_total_with_vat" type="Number" title="Total Price With Vat">
@@ -1041,7 +1041,7 @@ Orientation=portrait
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
           <trans loc="de_AT" val="Gesamtpreis mit MwST"/>
-          <trans loc="de_DE" val="Gesamtpreis mit MwST"/>
+          <trans loc="de" val="Gesamtpreis mit MwST"/>
         </trans_set>
       </field>
     </fields>
@@ -1049,13 +1049,13 @@ Orientation=portrait
       <relationship name="invoice_lines" key="invoice_id" other_table="invoice_lines" other_key="invoice_id" auto_create="true" allow_edit="true" title="Invoice Lines">
         <trans_set>
           <trans loc="de_AT" val="Rechnung Reihen"/>
-          <trans loc="de_DE" val="Rechnung Reihen"/>
+          <trans loc="de" val="Rechnung Reihen"/>
         </trans_set>
       </relationship>
       <relationship name="contacts" key="contact_id" other_table="contacts" other_key="contact_id" title="Contacts">
         <trans_set>
           <trans loc="de_AT" val="Kontakten"/>
-          <trans loc="de_DE" val="Kontakten"/>
+          <trans loc="de" val="Kontakten"/>
         </trans_set>
       </relationship>
     </relationships>
@@ -1066,7 +1066,7 @@ Orientation=portrait
             <trans_set>
               <trans loc="de_AT" val="Übersicht"/>
               <trans loc="de_BE" val="Overview"/>
-              <trans loc="de_DE" val="Übersicht"/>
+              <trans loc="de" val="Übersicht"/>
               <trans loc="en_GB" val="Overview"/>
               <trans loc="en_US" val="Overview"/>
             </trans_set>
@@ -1082,7 +1082,7 @@ Orientation=portrait
               <trans_set>
                 <trans loc="de_AT" val="Kunde"/>
                 <trans loc="de_BE" val="Customer"/>
-                <trans loc="de_DE" val="Kunde"/>
+                <trans loc="de" val="Kunde"/>
                 <trans loc="en_GB" val="Customer"/>
                 <trans loc="en_US" val="Customer"/>
               </trans_set>
@@ -1275,49 +1275,49 @@ Orientation=portrait
     </example_rows>
     <trans_set>
       <trans loc="de_AT" val="Produkten"/>
-      <trans loc="de_DE" val="Produkten"/>
+      <trans loc="de" val="Produkten"/>
     </trans_set>
     <fields>
       <field name="product_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Product ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_AT" val="Produkt ID"/>
-          <trans loc="de_DE" val="Produkt ID"/>
+          <trans loc="de" val="Produkt ID"/>
         </trans_set>
       </field>
       <field name="comment" type="Text" title="Comment">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Kommentar"/>
-          <trans loc="de_DE" val="Kommentar"/>
+          <trans loc="de" val="Kommentar"/>
         </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Beschreibung"/>
-          <trans loc="de_DE" val="Beschreibung"/>
+          <trans loc="de" val="Beschreibung"/>
         </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Name"/>
-          <trans loc="de_DE" val="Name"/>
+          <trans loc="de" val="Name"/>
         </trans_set>
       </field>
       <field name="price" type="Number" title="Price">
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
           <trans loc="de_AT" val="Preis"/>
-          <trans loc="de_DE" val="Preis"/>
+          <trans loc="de" val="Preis"/>
         </trans_set>
       </field>
       <field name="vat_percent" default_value="16" type="Number" title="Vat Percent">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="de_AT" val="MwST Prozent"/>
-          <trans loc="de_DE" val="MwST Prozent"/>
+          <trans loc="de" val="MwST Prozent"/>
         </trans_set>
       </field>
     </fields>
@@ -1329,7 +1329,7 @@ Orientation=portrait
             <trans_set>
               <trans loc="de_AT" val="Overview"/>
               <trans loc="de_BE" val="Overview"/>
-              <trans loc="de_DE" val="Overview"/>
+              <trans loc="de" val="Overview"/>
               <trans loc="en_GB" val="Overview"/>
               <trans loc="en_US" val="Overview"/>
             </trans_set>
@@ -1344,7 +1344,7 @@ Orientation=portrait
             <trans_set>
               <trans loc="de_AT" val="Details"/>
               <trans loc="de_BE" val="Details"/>
-              <trans loc="de_DE" val="Details"/>
+              <trans loc="de" val="Details"/>
               <trans loc="en_GB" val="Details"/>
               <trans loc="en_US" val="Details"/>
             </trans_set>
@@ -1438,63 +1438,63 @@ Orientation=portrait
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Vorname"/>
-          <trans loc="de_DE" val="Vorname"/>
+          <trans loc="de" val="Vorname"/>
         </trans_set>
       </field>
       <field name="name_second" type="Text" title="Second Name">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Zweite Name"/>
-          <trans loc="de_DE" val="Zweite Name"/>
+          <trans loc="de" val="Zweite Name"/>
         </trans_set>
       </field>
       <field name="name_last" type="Text" title="Last Name">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Familiename"/>
-          <trans loc="de_DE" val="Familiename"/>
+          <trans loc="de" val="Familiename"/>
         </trans_set>
       </field>
       <field name="address_street" type="Text" title="Street">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Strasse"/>
-          <trans loc="de_DE" val="Strasse"/>
+          <trans loc="de" val="Strasse"/>
         </trans_set>
       </field>
       <field name="address_town" type="Text" title="Town">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Ort"/>
-          <trans loc="de_DE" val="Ort"/>
+          <trans loc="de" val="Ort"/>
         </trans_set>
       </field>
       <field name="address_state" type="Text" title="State">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Bundesland/Kanton"/>
-          <trans loc="de_DE" val="Bundesland/Kanton"/>
+          <trans loc="de" val="Bundesland/Kanton"/>
         </trans_set>
       </field>
       <field name="address_country" type="Text" title="Country">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Staat"/>
-          <trans loc="de_DE" val="Staat"/>
+          <trans loc="de" val="Staat"/>
         </trans_set>
       </field>
       <field name="address_postcode" type="Text" title="Postcode">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Postleitzahl"/>
-          <trans loc="de_DE" val="Postleitzahl"/>
+          <trans loc="de" val="Postleitzahl"/>
         </trans_set>
       </field>
       <field name="date_of_birth" type="Date" title="Date Of Birth">
         <formatting/>
         <trans_set>
           <trans loc="de_AT" val="Geburtsdatum"/>
-          <trans loc="de_DE" val="Geburtsdatum"/>
+          <trans loc="de" val="Geburtsdatum"/>
         </trans_set>
       </field>
       <field name="position" type="Text" title="Position">
@@ -1509,7 +1509,7 @@ Orientation=portrait
             <trans_set>
               <trans loc="de_AT" val="Overview"/>
               <trans loc="de_BE" val="Overview"/>
-              <trans loc="de_DE" val="Overview"/>
+              <trans loc="de" val="Overview"/>
               <trans loc="en_GB" val="Overview"/>
               <trans loc="en_US" val="Overview"/>
             </trans_set>
@@ -1528,7 +1528,7 @@ Orientation=portrait
               <trans_set>
                 <trans loc="de_AT" val="Name"/>
                 <trans loc="de_BE" val="Name"/>
-                <trans loc="de_DE" val="Name"/>
+                <trans loc="de" val="Name"/>
                 <trans loc="en_GB" val="Name"/>
                 <trans loc="en_US" val="Name"/>
               </trans_set>
@@ -1549,7 +1549,7 @@ Orientation=portrait
               <trans_set>
                 <trans loc="de_AT" val="Address"/>
                 <trans loc="de_BE" val="Address"/>
-                <trans loc="de_DE" val="Address"/>
+                <trans loc="de" val="Address"/>
                 <trans loc="en_GB" val="Address"/>
                 <trans loc="en_US" val="Address"/>
               </trans_set>
