@@ -25,6 +25,7 @@
 
 #include <libglom/init.h>
 #include <libglom/translations_po.h>
+#include <libglom/utils.h>
 #include <giomm/file.h>
 #include <glibmm/optioncontext.h>
 #include <glibmm/convert.h>
@@ -40,19 +41,20 @@ public:
 
   //These instances should live as long as the OptionGroup to which they are added,
   //and as long as the OptionContext to which those OptionGroups are added.
-  std::string m_arg_filepath_output;
+  std::string m_arg_filepath_po_input;
+  Glib::ustring m_arg_locale_id;
   bool m_arg_version;
 };
 
 GlomCreateOptionGroup::GlomCreateOptionGroup()
-: Glib::OptionGroup("glom_export_po_all", _("Glom options"), _("Command-line options")),
+: Glib::OptionGroup("glom_import_po_all", _("Glom options"), _("Command-line options")),
   m_arg_version(false)
 {
   Glib::OptionEntry entry; 
-  entry.set_long_name("output-path");
+  entry.set_long_name("input-path");
   entry.set_short_name('o');
-  entry.set_description(_("The directory path at which to save the created .po files, such as /home/someuser/po_files/ ."));
-  add_entry_filename(entry, m_arg_filepath_output);
+  entry.set_description(_("The path to a directory containing .po files, such as /home/someuser/po_files/ ."));
+  add_entry_filename(entry, m_arg_filepath_po_input);
 
   entry.set_long_name("version");
   entry.set_short_name('V');
@@ -132,31 +134,21 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  //Check the output path: 
-  if(group.m_arg_filepath_output.empty())
+  //Check the po files path: 
+  if(group.m_arg_filepath_po_input.empty())
   {
-    std::cerr << _("Please specify an output path.") << std::endl;
+    std::cerr << _("Please specify the path to a directory containing po files.") << std::endl;
     std::cerr << std::endl << context.get_help() << std::endl;
     return EXIT_FAILURE;
   }
 
   //Get a URI (file://something) from the filepath:
-  Glib::RefPtr<Gio::File> file_output = Gio::File::create_for_commandline_arg(group.m_arg_filepath_output);
-  
-  //Create the directory, if necessary:
-  if(!(file_output->query_exists()))
-  {
-    if(!(file_output->make_directory_with_parents()))
-    {
-      std::cerr << _("The ouput directory could not be created.") << std::endl;
-      return EXIT_FAILURE;
-    }
-  }
+  Glib::RefPtr<Gio::File> file_output = Gio::File::create_for_commandline_arg(group.m_arg_filepath_po_input);
 
   file_type = file_output->query_file_type();
   if(file_type != Gio::FILE_TYPE_DIRECTORY)
   {
-    std::cerr << _("Glom: The output file path is not a directory.") << std::endl;
+    std::cerr << _("Glom: The po files directory path is not a directory.") << std::endl;
     std::cerr << std::endl << context.get_help() << std::endl;
     return EXIT_FAILURE;
   }
@@ -175,33 +167,31 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  const std::vector<Glib::ustring> locales = document.get_translation_available_locales();
-  if(locales.empty())
+  //Import all .po files from the directory:
+  Glib::RefPtr<Gio::FileEnumerator> enumerator = file_output->enumerate_children();
+  Glib::RefPtr<Gio::FileInfo> info = enumerator->next_file();
+  while(info)
   {
-    std::cerr << "The Glom document has no translations." << std::endl;
-    return EXIT_FAILURE;
-  }
-
-  const Glib::ustring original_locale_id = document.get_translation_original_locale();
-  for(std::vector<Glib::ustring>::const_iterator iter = locales.begin();
-    iter != locales.end(); ++iter)
-  {
-    const Glib::ustring locale_id = *iter;
-    if(locale_id == original_locale_id)
+    Glib::RefPtr<Gio::File> child = file_output->get_child(info->get_name());
+    if(child->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
       continue;
 
-    const Glib::RefPtr<const Gio::File> file_output_full = file_output->get_child(locale_id + ".po");
-    const Glib::ustring output_uri = file_output_full->get_uri();
+    //Check that it has the .po file extension:
+    const std::string basename = child->get_basename();
+    const std::string locale_id = 
+      Glom::Utils::string_remove_suffix(basename, ".po");
+    if(locale_id == basename)
+      continue;
 
     const bool succeeded = 
-      Glom::write_translations_to_po_file(&document, output_uri, locale_id);
+      Glom::import_translations_from_po_file(&document, child->get_uri(), locale_id);
     if(!succeeded)
     {
-      std::cerr << "Po file creation failed." << std::endl;
+      std::cerr << "Po file imported for locale: " << locale_id << std::endl;
       return EXIT_FAILURE;
     }
-
-    std::cout << "Po file created at: " << output_uri << std::endl;
+ 
+    info = enumerator->next_file();
   }
 
   Glom::libglom_deinit();

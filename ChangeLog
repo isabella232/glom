@@ -1,5 +1,12 @@
 2012-01-09  Murray Cumming  <murrayc@murrayc.com>
 
+	glom_export_po_all: Actually export the translations.
+
+	* glom/glom_export_po_all.cc: Use the available locale_id,
+	instead of an unset variable that should not be used.
+
+2012-01-09  Murray Cumming  <murrayc@murrayc.com>
+
 	export_po_all: Fix some typos.
 
 	* glom/glom_export_po_all.cc: Fix some typos.
