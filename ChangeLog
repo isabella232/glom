@@ -1,3 +1,10 @@
+2012-01-09  Murray Cumming  <murrayc@murrayc.com>
+
+	Command-line utilities: Initialize gettext and the locale.
+
+	* glom/glom_create_from_example.cc:
+	* glom/glom_test_connection.cc: This should make the translations be used.
+
 2012-01-07  Murray Cumming  <murrayc@murrayc.com>
 
 	test_document_load: Fix a typo.

@@ -32,6 +32,7 @@
 #include <glibmm/optioncontext.h>
 #include <glibmm/convert.h>
 #include <iostream>
+#include <stdexcept>
 
 #include <glibmm/i18n.h>
 
@@ -93,6 +94,28 @@ static void print_options_hint()
 
 int main(int argc, char* argv[])
 {
+  bindtextdomain(GETTEXT_PACKAGE, GLOM_LOCALEDIR);
+  bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+  textdomain(GETTEXT_PACKAGE);
+
+  // Set the locale for any streams to the user's current locale,
+  // We should not rely on the default locale of
+  // any streams (we should always do an explicit imbue()),
+  // but this is maybe a good default in case we forget.
+  try
+  {
+    std::locale::global(std::locale(""));
+  }
+  catch(const std::runtime_error& ex)
+  {
+    //This has been known to throw an exception at least once:
+    //https://bugzilla.gnome.org/show_bug.cgi?id=619445
+    //This should tell us what the problem is:
+    std::cerr << G_STRFUNC << ": exception from std::locale::global(std::locale(\"\")): " << ex.what() << std::endl;
+    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+  }
+
+
   Glom::libglom_init();
   
   Glib::OptionContext context;
