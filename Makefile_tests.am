@@ -274,7 +274,8 @@ check_PROGRAMS += \
 	tests/python/test_python_execute_func_date \
 	tests/python/test_python_execute_func_change_result_type \
 	tests/python/test_python_execute_func_with_record \
-	tests/python/test_python_execute_script
+	tests/python/test_python_execute_script \
+	tests/test_iso_codes
 #	glom/mode_data/test_flowtablewithfields
 #	glom/utility_widgets/canvas/test_canvas_editable
 	
@@ -286,7 +287,8 @@ TESTS += \
 	tests/python/test_python_execute_func_date \
 	tests/python/test_python_execute_func_change_result_type \
 	tests/python/test_python_execute_func_with_record \
-	tests/python/test_python_execute_script
+	tests/python/test_python_execute_script \
+	tests/test_iso_codes
 
 glom_utility_widgets_test_flowtable_SOURCES =	\
 	glom/utility_widgets/flowtable.cc	\
@@ -348,6 +350,12 @@ tests_python_test_python_execute_script_SOURCES = tests/python/test_python_execu
   glom/python_embed/glom_python.cc
 tests_python_test_python_execute_script_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
 tests_python_test_python_execute_script_CPPFLAGS = $(tests_cppflags_ui)
+
+tests_test_iso_codes_SOURCES = tests/test_iso_codes.cc \
+  glom/mode_design/iso_codes.cc \
+  glom/mode_design/iso_codes.h
+tests_test_iso_codes_LDADD = $(tests_ldadd) $(GLOM_LIBS)
+tests_test_iso_codes_CPPFLAGS = $(tests_cppflags_ui)
 
 # You must remove PlaceholderGlom::get_application() to avoid having to specify
 # a huge set of .cc files when building this test:

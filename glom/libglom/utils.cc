@@ -730,15 +730,16 @@ Glib::ustring Utils::locale_simplify(const Glib::ustring& locale_id)
 
 Glib::ustring Utils::locale_language_id(const Glib::ustring& locale_id)
 {
-  Glib::ustring result;
-
   const Glib::ustring::size_type posUnderscore = locale_id.find('_');
   if(posUnderscore != Glib::ustring::npos)
   {
-    result = locale_id.substr(0, posUnderscore);
+    return locale_id.substr(0, posUnderscore);
   }
-
-  return result;
+  else
+  {
+    //We assume that this locale ID specifies a language but no specific country.
+    return locale_id;
+  }
 }
 
 Glib::ustring Utils::create_local_image_uri(const Gnome::Gda::Value& value)

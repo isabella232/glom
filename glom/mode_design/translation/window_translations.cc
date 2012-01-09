@@ -69,19 +69,18 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
     column_original->pack_start(*renderer_name);
     column_original->set_cell_data_func(*renderer_name, sigc::mem_fun(*this, &Window_Translations::on_cell_data_original));
 
+    const int col = m_treeview->append_column_editable(_("Translation"), m_columns.m_col_translation);
+    Gtk::CellRendererText* renderer = dynamic_cast<Gtk::CellRendererText*>(m_treeview->get_column_cell_renderer(col - 1));
+    if(renderer)
+      renderer->signal_edited().connect(sigc::mem_fun(*this, &Window_Translations::on_treeview_edited));
 
+    //This is at the end, because it can contain a long description of the item's context.
     Gtk::TreeView::Column* column_item_typename = Gtk::manage( new Gtk::TreeView::Column(_("Item")) );
     m_treeview->append_column(*column_item_typename);
 
     Gtk::CellRendererText* renderer_item_typename = Gtk::manage(new Gtk::CellRendererText);
     column_item_typename->pack_start(*renderer_item_typename);
     column_item_typename->set_cell_data_func(*renderer_item_typename, sigc::mem_fun(*this, &Window_Translations::on_cell_data_item_itemhint));
-
-
-    const int col = m_treeview->append_column_editable(_("Translation"), m_columns.m_col_translation);
-    Gtk::CellRendererText* renderer = dynamic_cast<Gtk::CellRendererText*>(m_treeview->get_column_cell_renderer(col - 1));
-    if(renderer)
-      renderer->signal_edited().connect(sigc::mem_fun(*this, &Window_Translations::on_treeview_edited));
   }
 
   builder->get_widget("button_identify", m_button_identify);
@@ -113,6 +112,11 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
     m_translation_locale = TranslatableItem::get_current_locale();
     m_combo_target_locale->set_selected_locale(m_translation_locale);
     //The translations will be shown in the treeview when load_from_document() is called.
+  }
+  else
+  {
+    //Start with _some_ locale, rather than no locale:
+    m_combo_target_locale->set_active(0);
   }
 }
 
