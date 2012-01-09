@@ -19,7 +19,7 @@
  */
 
 // For instance:
-// glom_export_po /opt/gnome30/share/doc/glom/examples/example_music_collection.glom --output="/home/someone/something.po"
+// glom_import_po_all /opt/gnome30/share/doc/glom/examples/example_music_collection.glom --input-path="/home/someone/po_Files"
 
 #include "config.h"
 

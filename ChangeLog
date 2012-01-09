@@ -1,5 +1,14 @@
 2012-01-09  Murray Cumming  <murrayc@murrayc.com>
 
+	Exporting of .po files: Do not lose non-ASCII characters.
+
+	* glom/libglom/translations_po.cc: write_translations_to_po_file():
+  Write the file manually instead of using gettext-po.h and its po_file_write(), 
+  because that loses non-ASCII characters (see previous commit).
+  make check now works.
+
+2012-01-09  Murray Cumming  <murrayc@murrayc.com>
+
 	test_document_export_po: Test a special character.
 
 	* tests/translations_po/test_document_export_po.cc:

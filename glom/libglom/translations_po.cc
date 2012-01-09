@@ -156,11 +156,12 @@ bool write_translations_to_po_file(Document* document, const Glib::ustring& po_f
     return false;
   }
 
-  if(setjmp(jump) != 0)
-    return false;  
-
-  po_file_t po_file = po_file_create();
-  po_message_iterator_t msg_iter = po_message_iterator(po_file, 0);
+  //We do not use gettext-po.h and its po_file_write() function for this,
+  //because that does not allow us to specify UTF-8, so it drops non-ASCII 
+  //characters such as U with umlaut.
+  //It also has no obvious API for setting the header, so we would have to 
+  //do that manually anyway.
+  Glib::ustring data;
 
   Document::type_list_translatables list_layout_items = document->get_translatable_items();
   for(Document::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
@@ -174,52 +175,23 @@ bool write_translations_to_po_file(Document* document, const Glib::ustring& po_f
 
     const Glib::ustring hint = iter->second;
 
-    po_message_t msg = po_message_create();
-    po_message_set_msgid(msg, item->get_title_original().c_str());
-    po_message_set_msgstr(msg, item->get_title_translation(translation_locale, false).c_str());
-
     // Add "context" comments, to uniquely identify similar strings, used in different places,
     // and to provide a hint for translators.
-    const Glib::ustring msgtxt = get_po_context_for_item(item, hint);
-    //std::cout << "debug: msgtxt=" << msgtxt << std::endl;
-    po_message_set_msgctxt(msg, msgtxt.c_str());
-
-    po_message_insert(msg_iter, msg);
+    Glib::ustring msg = "msgctxt \"" + get_po_context_for_item(item, hint) + "\"\n";
+    
+    //The original and its translation:
+    msg += "msgid \"" + item->get_title_original() + "\"\n";
+    msg += "msgstr \"" + item->get_title_translation(translation_locale, false) + "\"";
+    
+    data += msg + "\n\n";
   }
 
-  po_message_iterator_free(msg_iter);
-
-  #ifdef HAVE_GETTEXTPO_XERROR
-  po_xerror_handler error_handler;
-  memset(&error_handler, 0, sizeof(error_handler));
-  error_handler.xerror = &on_gettextpo_xerror;
-  error_handler.xerror2 = &on_gettextpo_xerror2;
-  #else
-  po_error_handler error_handler;
-  memset(&error_handler, 0, sizeof(error_handler));
-  error_handler.error = &on_gettextpo_error;
-  #endif //HAVE_GETTEXTPO_XERROR
-
-  output_format_po.requires_utf8 = true;
-  const po_file_t written = po_file_write(po_file, filename.c_str(), &error_handler);
-  po_file_free(po_file);
-  
-  if(!written)
-    return false;
-
-  //Prepend the po header, by reading in the data written by po_file_write(),
-  //and then writing it all out again. The (generally awkward) gettext-po API 
-  //does not offer an easier way to do this.
-  //
-  //Actually. maybe we could use po_header_set_field(), but that is not 
-  //clear and that returns allocated strings that we would need to free instead 
-  //of just ignoring, so this is probably still the easiest way.
+  //The header:
   const Glib::DateTime revision_date = Glib::DateTime::create_now_local();
   const Glib::ustring revision_date_str = revision_date.format("%F %R%z");
-
-  const Glib::ustring data = Glib::file_get_contents(filename);
   const Glib::ustring header = Glib::ustring::compose(GLOM_PO_HEADER,
     document->get_database_title(), revision_date_str, locale_name);
+  
   const Glib::ustring full = header + "\n\n" + data;
   Glib::file_set_contents(filename, full);
 
