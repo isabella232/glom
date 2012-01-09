@@ -200,6 +200,7 @@ bool write_translations_to_po_file(Document* document, const Glib::ustring& po_f
   error_handler.error = &on_gettextpo_error;
   #endif //HAVE_GETTEXTPO_XERROR
 
+  output_format_po.requires_utf8 = true;
   const po_file_t written = po_file_write(po_file, filename.c_str(), &error_handler);
   po_file_free(po_file);
   
@@ -302,6 +303,8 @@ bool import_translations_from_po_file(Document* document, const Glib::ustring& p
   }
 
   po_file_free(po_file);
+
+  document->set_modified();
 
   return true;
 }

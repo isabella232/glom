@@ -1,5 +1,15 @@
 2012-01-09  Murray Cumming  <murrayc@murrayc.com>
 
+	Add glom_import_po_all command-line utility.
+
+	* glom/libglom/translations_po.cc: write_translations_to_po_file():
+  Mark the document as modified so the changes will (or can be) saved.
+	* Makefile_libglom.am:
+	* glom/glom_import_po_all.cc: Add this command-line utility to read all 
+	.po files in a directory back into the .glom file.
+	
+2012-01-09  Murray Cumming  <murrayc@murrayc.com>
+
 	Command-line utilities: Initialize gettext and the locale.
 
 	* glom/glom_create_from_example.cc:

@@ -31,6 +31,7 @@
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
 #include <iostream>
+#include <stdexcept>
 
 #include <glibmm/i18n.h>
 
@@ -42,7 +43,6 @@ public:
   //These instances should live as long as the OptionGroup to which they are added,
   //and as long as the OptionContext to which those OptionGroups are added.
   std::string m_arg_filepath_po_input;
-  Glib::ustring m_arg_locale_id;
   bool m_arg_version;
 };
 
@@ -64,6 +64,28 @@ GlomCreateOptionGroup::GlomCreateOptionGroup()
 
 int main(int argc, char* argv[])
 {
+  bindtextdomain(GETTEXT_PACKAGE, GLOM_LOCALEDIR);
+  bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+  textdomain(GETTEXT_PACKAGE);
+
+  // Set the locale for any streams to the user's current locale,
+  // We should not rely on the default locale of
+  // any streams (we should always do an explicit imbue()),
+  // but this is maybe a good default in case we forget.
+  try
+  {
+    std::locale::global(std::locale(""));
+  }
+  catch(const std::runtime_error& ex)
+  {
+    //This has been known to throw an exception at least once:
+    //https://bugzilla.gnome.org/show_bug.cgi?id=619445
+    //This should tell us what the problem is:
+    std::cerr << G_STRFUNC << ": exception from std::locale::global(std::locale(\"\")): " << ex.what() << std::endl;
+    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+  }
+
+  
   Glom::libglom_init();
   
   Glib::OptionContext context;
@@ -106,7 +128,7 @@ int main(int argc, char* argv[])
 
   if(input_uri.empty())
   {
-    std::cerr << "Please specify a glom file." << std::endl;
+    std::cerr << _("Please specify a glom file.") << std::endl;
     std::cerr << std::endl << context.get_help() << std::endl;
     return EXIT_FAILURE;
   }
@@ -169,8 +191,8 @@ int main(int argc, char* argv[])
 
   //Import all .po files from the directory:
   Glib::RefPtr<Gio::FileEnumerator> enumerator = file_output->enumerate_children();
-  Glib::RefPtr<Gio::FileInfo> info = enumerator->next_file();
-  while(info)
+  Glib::RefPtr<Gio::FileInfo> info;
+  while(info = enumerator->next_file())
   {
     Glib::RefPtr<Gio::File> child = file_output->get_child(info->get_name());
     if(child->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
@@ -182,16 +204,18 @@ int main(int argc, char* argv[])
       Glom::Utils::string_remove_suffix(basename, ".po");
     if(locale_id == basename)
       continue;
-
+    
+    document.set_allow_autosave(false); //Prevent saving while we modify the document.
     const bool succeeded = 
       Glom::import_translations_from_po_file(&document, child->get_uri(), locale_id);
     if(!succeeded)
     {
-      std::cerr << "Po file imported for locale: " << locale_id << std::endl;
+      std::cerr << Glib::ustring::compose(_("Po file import failed for locale: %1"), locale_id) << std::endl;
       return EXIT_FAILURE;
     }
- 
-    info = enumerator->next_file();
+    document.save();
+
+    std::cout << Glib::ustring::compose(_("Po file imported for locale: %1"), locale_id) << std::endl;
   }
 
   Glom::libglom_deinit();
