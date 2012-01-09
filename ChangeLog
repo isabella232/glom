@@ -1,5 +1,18 @@
 2012-01-09  Murray Cumming  <murrayc@murrayc.com>
 
+	Export .po files for the example files.
+
+	* examples/po_files/example_film_manager/de.po:
+	* examples/po_files/example_lesson_planner/de.po:
+	* examples/po_files/example_music_collection/de.po:
+	* examples/po_files/example_project_manager/de.po:
+	* examples/po_files/example_smallbusiness/de.po:
+	Hopefully people will translate these and add more,
+	for me to import back into the .glom files with
+	$ make examples_import_po
+
+2012-01-09  Murray Cumming  <murrayc@murrayc.com>
+
 	examples: Remove translations for useless locale.
 
 	* examples/example_lesson_planner.glom:
