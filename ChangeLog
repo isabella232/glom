@@ -1,5 +1,16 @@
 2012-01-09  Murray Cumming  <murrayc@murrayc.com>
 
+	Add rules for batch .po import and export for the examples.
+
+	* Makefile.am: Add examples_export_po and examples_import_po targets 
+	that must be run manually. For instance:
+	$ make examples_export_po
+	and
+	$ make examples_import_po
+	* glom/glom_import_po_all.cc: Improve the stdout message.
+
+2012-01-09  Murray Cumming  <murrayc@murrayc.com>
+
 	Exporting of .po files: Do not lose non-ASCII characters.
 
 	* glom/libglom/translations_po.cc: write_translations_to_po_file():

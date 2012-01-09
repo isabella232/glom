@@ -167,13 +167,31 @@ xsltdir = $(pkgdatadir)/xslt
 dist_xslt_DATA = xslt/print_report_to_html.xsl
 
 exampledir = $(docdir)/examples
-dist_example_DATA =				\
-	examples/README				\
+example_files = \
 	examples/example_film_manager.glom	\
 	examples/example_lesson_planner.glom	\
 	examples/example_music_collection.glom	\
 	examples/example_project_manager.glom	\
 	examples/example_smallbusiness.glom
+dist_example_DATA = \
+	$(example_files) \
+	examples/README
+
+# Get the base filenames only, without the extension: 
+example_files_names ?= $(patsubst %.glom,%,$(notdir $(example_files)))
+
+# Create .po files for all locales in all example files:
+examples_export_po: $(top_builddir)/glom/glom_export_po_all
+	for example_file in $(example_files_names); do \
+	  $(top_builddir)/glom/glom_export_po_all $(top_srcdir)/examples/$$example_file.glom --output-path=$(top_builddir)/examples/po_files/$$example_file/; \
+	done
+
+# Import all .po files into all example files:
+examples_import_po: $(top_builddir)/glom/glom_import_po_all
+	for example_file in $(example_files_names); do \
+	  $(top_builddir)/glom/glom_import_po_all $(top_srcdir)/examples/$$example_file.glom --input-path=$(top_builddir)/examples/po_files/$$example_file/; \
+	done
+	
 
 # We use += because we set this first in Makefile_tests.am:
 dist_noinst_DATA += \

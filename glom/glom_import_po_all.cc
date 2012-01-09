@@ -215,7 +215,7 @@ int main(int argc, char* argv[])
     }
     document.save();
 
-    std::cout << Glib::ustring::compose(_("Po file imported for locale: %1"), locale_id) << std::endl;
+    std::cout << Glib::ustring::compose(_("Po file imported for locale: %1 for file %2"), locale_id, input_uri) << std::endl;
   }
 
   Glom::libglom_deinit();
