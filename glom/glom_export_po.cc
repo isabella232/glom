@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
   Glib::OptionContext context;
   GlomCreateOptionGroup group;
   context.set_main_group(group);
-  
+
   try
   {
     context.parse(argc, argv);
@@ -121,7 +121,7 @@ int main(int argc, char* argv[])
     std::cerr << std::endl << context.get_help() << std::endl;
     return EXIT_FAILURE;
   }
-  
+
   //Get a URI (file://something) from the filepath:
   Glib::RefPtr<Gio::File> file_input = Gio::File::create_for_commandline_arg(input_uri);
 
@@ -152,7 +152,7 @@ int main(int argc, char* argv[])
     std::cerr << std::endl << context.get_help() << std::endl;
     return EXIT_FAILURE;
   }
-  
+
   //Get a URI (file://something) from the filepath:
   Glib::RefPtr<Gio::File> file_output = Gio::File::create_for_commandline_arg(group.m_arg_filepath_output);
   const Glib::ustring ouput_uri = file_output->get_uri();
@@ -189,7 +189,7 @@ int main(int argc, char* argv[])
   }
 
   std::cout << "Po file created at: " << ouput_uri << std::endl;
-  
+
   Glom::libglom_deinit();
 
   return EXIT_SUCCESS;
