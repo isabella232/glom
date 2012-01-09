@@ -1,3 +1,10 @@
+2012-01-09  Murray Cumming  <murrayc@murrayc.com>
+
+	Added glom_export_po_all command-line too.
+
+	* Makefile_libglom.am:
+	* glom/glom_export_po_all.cc: This outputs all .po files to a directory.
+
 2012-01-08  Murray Cumming  <murrayc@murrayc.com>
 
 	test_document_export_po: Use msgfmt -c to test the exported .po file.

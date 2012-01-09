@@ -87,7 +87,8 @@ glom_commandline_cppflags = $(glom_includes) $(LIBGLOM_CFLAGS) $(PYTHON_CPPFLAGS
 
 bin_PROGRAMS = glom/glom_create_from_example \
   glom/glom_test_connection \
-  glom/glom_export_po
+  glom/glom_export_po \
+  glom/glom_export_po_all
 
 glom_glom_create_from_example_SOURCES = glom/glom_create_from_example.cc
 glom_glom_create_from_example_LDADD = $(glom_commandline_ldadd)
@@ -100,3 +101,7 @@ glom_glom_test_connection_CPPFLAGS = $(glom_commandline_cppflags)
 glom_glom_export_po_SOURCES = glom/glom_export_po.cc
 glom_glom_export_po_LDADD = $(glom_commandline_ldadd)
 glom_glom_export_po_CPPFLAGS = $(glom_commandline_cppflags)
+
+glom_glom_export_po_all_SOURCES = glom/glom_export_po_all.cc
+glom_glom_export_po_all_LDADD = $(glom_commandline_ldadd)
+glom_glom_export_po_all_CPPFLAGS = $(glom_commandline_cppflags)
