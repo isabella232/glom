@@ -26,6 +26,12 @@
 namespace Glom
 {
 
+/** Create a pot template file that can be used by translators to create a new .po file.
+ * @param document The document whose translations should be written to a .po file.
+ * @param pot_file The filepath at which to create a .po file.
+ */
+bool write_pot_file(Document* document, const Glib::ustring& pot_file_uri);
+
 /** Create a po file containing the translations from the Glom document.
  * @param document The document whose translations should be written to a .po file.
  * @param po_file The filepath at which to create a .po file.

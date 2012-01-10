@@ -43,6 +43,7 @@ public:
   //and as long as the OptionContext to which those OptionGroups are added.
   std::string m_arg_filepath_output;
   Glib::ustring m_arg_locale_id;
+  bool m_arg_template;
   bool m_arg_version;
 };
 
@@ -60,6 +61,11 @@ GlomCreateOptionGroup::GlomCreateOptionGroup()
   entry.set_short_name('l');
   entry.set_description(_("The locale whose translations should be written to the .po file, such as de_DE."));
   add_entry(entry, m_arg_locale_id);
+
+  entry.set_long_name("template");
+  entry.set_short_name('t');
+  entry.set_description(_("Generate a .pot template file instead of a .po file for a locale."));
+  add_entry(entry, m_arg_template);
   
   entry.set_long_name("version");
   entry.set_short_name('V');
@@ -138,9 +144,9 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  if(group.m_arg_locale_id.empty())
+  if(group.m_arg_locale_id.empty() && !(group.m_arg_template))
   {
-    std::cerr << _("Please specify a locale ID.") << std::endl;
+    std::cerr << _("Please use either the --locale-id option or the --template option.") << std::endl;
     std::cerr << std::endl << context.get_help() << std::endl;
     return EXIT_FAILURE;
   }
@@ -180,6 +186,7 @@ int main(int argc, char* argv[])
   Glib::RefPtr<Gio::File> file_output = Gio::File::create_for_commandline_arg(group.m_arg_filepath_output);
   const Glib::ustring ouput_uri = file_output->get_uri();
 
+  /* Silently overwriting is easier when we use this in a batch:
   if(file_output->query_exists())
   {
     std::cerr << _("Glom: The output file aready exists.") << std::endl;
@@ -188,6 +195,7 @@ int main(int argc, char* argv[])
     std::cerr << std::endl << context.get_help() << std::endl;
     return EXIT_FAILURE;
   }
+  */
 
 
   // Load the document:
@@ -203,15 +211,30 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  const bool succeeded = 
-    Glom::write_translations_to_po_file(&document, ouput_uri, group.m_arg_locale_id);
-  if(!succeeded)
+  if(group.m_arg_template)
   {
-    std::cerr << _("Po file creation failed.") << std::endl;
-    return EXIT_FAILURE;
-  }
+    const bool succeeded = 
+      Glom::write_pot_file(&document, ouput_uri);
+    if(!succeeded)
+    {
+      std::cerr << _("Pot file creation failed.") << std::endl;
+      return EXIT_FAILURE;
+    }
 
-  std::cout << Glib::ustring::compose(_("Po file created at: %1"), ouput_uri) << std::endl;
+    std::cout << Glib::ustring::compose(_("Pot file created at: %1"), ouput_uri) << std::endl;
+  }
+  else
+  {
+    const bool succeeded = 
+      Glom::write_translations_to_po_file(&document, ouput_uri, group.m_arg_locale_id);
+    if(!succeeded)
+    {
+      std::cerr << _("Po file creation failed.") << std::endl;
+      return EXIT_FAILURE;
+    }
+
+    std::cout << Glib::ustring::compose(_("Po file created at: %1"), ouput_uri) << std::endl;
+  }
 
   Glom::libglom_deinit();
 

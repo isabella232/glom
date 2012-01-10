@@ -181,17 +181,18 @@ dist_example_DATA = \
 example_files_names ?= $(patsubst %.glom,%,$(notdir $(example_files)))
 
 # Create .po files for all locales in all example files:
-examples_export_po: $(top_builddir)/glom/glom_export_po_all
+examples_export_po: $(top_builddir)/glom/glom_export_po_all $(top_builddir)/glom/glom_export_po
 	for example_file in $(example_files_names); do \
 	  $(top_builddir)/glom/glom_export_po_all $(top_srcdir)/examples/$$example_file.glom --output-path=$(top_builddir)/examples/po_files/$$example_file/; \
+	  $(top_builddir)/glom/glom_export_po $(top_srcdir)/examples/$$example_file.glom --output-path=$(top_builddir)/examples/po_files/$$example_file/$$example_file.pot --template; \
 	done
+	
 
 # Import all .po files into all example files:
 examples_import_po: $(top_builddir)/glom/glom_import_po_all
 	for example_file in $(example_files_names); do \
 	  $(top_builddir)/glom/glom_import_po_all $(top_srcdir)/examples/$$example_file.glom --input-path=$(top_builddir)/examples/po_files/$$example_file/; \
 	done
-	
 
 # We use += because we set this first in Makefile_tests.am:
 dist_noinst_DATA += \

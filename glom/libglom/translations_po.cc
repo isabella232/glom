@@ -142,6 +142,12 @@ Glib::ustring get_po_context_for_item(const sharedptr<const TranslatableItem>& i
   return result;
 }
 
+bool write_pot_file(Document* document, const Glib::ustring& pot_file_uri)
+{
+  //A .pot file 
+  return write_translations_to_po_file(document, pot_file_uri, Glib::ustring() /* no locale */);
+}
+
 bool write_translations_to_po_file(Document* document, const Glib::ustring& po_file_uri, const Glib::ustring& translation_locale, const Glib::ustring& locale_name)
 {
   std::string filename;

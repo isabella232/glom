@@ -1,5 +1,17 @@
 2012-01-10  Murray Cumming  <murrayc@murrayc.com>
 
+	Allow creation of .pot files for .glom files.
+
+	* glom/libglom/translations_po.[h|cc]: Added write_pot_file().
+	* glom/glom_export_po.cc: Add a --template option to genereate
+	.pot files.
+	* Makefile.am: Use this new option to generate .pot files 
+	when exporting all .po files.
+	* examples/po_files/*/*.pot: Add these generated files to git,
+	to help translators to start new translations.
+
+2012-01-10  Murray Cumming  <murrayc@murrayc.com>
+
 	Add README about examples' .po files.
 
 	* examples/po_files/README:
