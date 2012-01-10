@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-01-09 11:26+0000\n"
-"PO-Revision-Date: 2012-01-09 14:37+0100\n"
+"POT-Creation-Date: 2012-01-10 10:42+0000\n"
+"PO-Revision-Date: 2012-01-10 11:57+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1395,7 +1395,7 @@ msgid "Field Choice"
 msgstr "Campo de opción"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:323
-#: ../glom/mode_design/translation/window_translations.cc:212
+#: ../glom/mode_design/translation/window_translations.cc:216
 msgid "Unknown"
 msgstr "Desconocido"
 
@@ -1476,13 +1476,13 @@ msgstr "Comentarios"
 msgid "List"
 msgstr "Lista"
 
-#: ../glom/glom_create_from_example.cc:63 ../glom/glom_export_po.cc:50
+#: ../glom/glom_create_from_example.cc:63 ../glom/glom_export_po.cc:51
 #: ../glom/glom_export_po_all.cc:49 ../glom/glom_import_po_all.cc:50
 #: ../glom/glom_test_connection.cc:55 ../glom/main.cc:197
 msgid "Glom options"
 msgstr "Opciones de Glom"
 
-#: ../glom/glom_create_from_example.cc:63 ../glom/glom_export_po.cc:50
+#: ../glom/glom_create_from_example.cc:63 ../glom/glom_export_po.cc:51
 #: ../glom/glom_export_po_all.cc:49 ../glom/glom_import_po_all.cc:50
 #: ../glom/glom_test_connection.cc:55
 msgid "Command-line options"
@@ -1504,7 +1504,7 @@ msgstr ""
 msgid "The name for the created .glom file, such as something.glom ."
 msgstr "El nombre del archivo .glom creado, por ejemplo «algo.glom»."
 
-#: ../glom/glom_create_from_example.cc:85 ../glom/glom_export_po.cc:66
+#: ../glom/glom_create_from_example.cc:85 ../glom/glom_export_po.cc:72
 #: ../glom/glom_export_po_all.cc:60 ../glom/glom_import_po_all.cc:61
 #: ../glom/glom_test_connection.cc:63 ../glom/main.cc:212
 msgid "The version of this application."
@@ -1526,14 +1526,14 @@ msgstr "El puerto del servidor PostgreSQL, por ejemplo 5434."
 msgid "The username for the PostgreSQL server."
 msgstr "El nombre de usuario para el servidor PostgreSQL."
 
-#: ../glom/glom_create_from_example.cc:238 ../glom/glom_export_po.cc:106
+#: ../glom/glom_create_from_example.cc:238 ../glom/glom_export_po.cc:112
 #: ../glom/glom_export_po_all.cc:100 ../glom/glom_import_po_all.cc:101
 #: ../glom/glom_test_connection.cc:131 ../glom/main.cc:486
 msgid "Error while parsing command-line options: "
 msgstr "Error al analizar las opciones de la línea de comandos: "
 
 #. TODO: How can we just print them out?
-#: ../glom/glom_create_from_example.cc:239 ../glom/glom_export_po.cc:107
+#: ../glom/glom_create_from_example.cc:239 ../glom/glom_export_po.cc:113
 #: ../glom/glom_export_po_all.cc:101 ../glom/glom_import_po_all.cc:102
 #: ../glom/glom_test_connection.cc:91 ../glom/main.cc:487
 msgid "Use --help to see a list of available command-line options."
@@ -1541,12 +1541,12 @@ msgstr ""
 "Use --help para ver una lista de las opciones disponibles para la línea de "
 "comandos."
 
-#: ../glom/glom_create_from_example.cc:273 ../glom/glom_export_po.cc:156
+#: ../glom/glom_create_from_example.cc:273 ../glom/glom_export_po.cc:162
 #: ../glom/main.cc:531
 msgid "Glom: The file does not exist."
 msgstr "Glom: el archivo no existe."
 
-#: ../glom/glom_create_from_example.cc:283 ../glom/glom_export_po.cc:166
+#: ../glom/glom_create_from_example.cc:283 ../glom/glom_export_po.cc:172
 #: ../glom/main.cc:541
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: la ruta del archivo es una carpeta en lugar de un archivo."
@@ -1563,10 +1563,7 @@ msgstr "Glom: la ruta de salida no es una carpeta."
 msgid "Please enter the PostgreSQL server's password for the user %1: "
 msgstr "Introduzca la contraseña del servidor PostgreSQL para el usuario %1: "
 
-#: ../glom/glom_export_po.cc:56
-#| msgid ""
-#| "The directory in which to save the created .glom file, or sub-directory "
-#| "if necessary, such as /home/someuser/ ."
+#: ../glom/glom_export_po.cc:57
 msgid ""
 "The path at which to save the created .po file, such as /home/someuser/"
 "somefile.po ."
@@ -1574,7 +1571,7 @@ msgstr ""
 "La carutarpeta en la que guardar el archivo .po creado, por ejemplo /home/"
 "usuario/archivo.po ."
 
-#: ../glom/glom_export_po.cc:61
+#: ../glom/glom_export_po.cc:62
 msgid ""
 "The locale whose translations should be written to the .po file, such as "
 "de_DE."
@@ -1582,37 +1579,44 @@ msgstr ""
 "La configuración regional para la que se deben escribir traducciones en el "
 "archivo .po, por ejemplo es_ES."
 
-#: ../glom/glom_export_po.cc:136 ../glom/glom_export_po_all.cc:130
+#: ../glom/glom_export_po.cc:67
+msgid "Generate a .pot template file instead of a .po file for a locale."
+msgstr ""
+"Generar un archivo .pot de plantilla en vez de un archivo .po para una "
+"configuración regional."
+
+#: ../glom/glom_export_po.cc:142 ../glom/glom_export_po_all.cc:130
 #: ../glom/glom_import_po_all.cc:131
 msgid "Please specify a glom file."
 msgstr "Especifique un archivo de glom."
 
-#: ../glom/glom_export_po.cc:143
-msgid "Please specify a locale ID."
-msgstr "Especifique un ID de configuración regional."
+#: ../glom/glom_export_po.cc:149
+msgid "Please use either the --locale-id option or the --template option."
+msgstr "Use la opción --locale-id o --template."
 
-#: ../glom/glom_export_po.cc:174 ../glom/glom_export_po_all.cc:161
+#: ../glom/glom_export_po.cc:180 ../glom/glom_export_po_all.cc:161
 msgid "Please specify an output path."
 msgstr "Especifique una ruta de salida."
 
-#: ../glom/glom_export_po.cc:185
-#| msgid "Glom: The output directory does not exist."
-msgid "Glom: The output file aready exists."
-msgstr "Glom: el archivo de salida ya existe."
+#: ../glom/glom_export_po.cc:220
+#| msgid "Po file creation failed."
+msgid "Pot file creation failed."
+msgstr "Falló la creación del archivo POT"
 
-#: ../glom/glom_export_po.cc:210 ../glom/glom_export_po_all.cc:223
-#| msgid "Calculation failed"
+#: ../glom/glom_export_po.cc:224
+#| msgid "Po file created at: %1"
+msgid "Pot file created at: %1"
+msgstr "Archivo POT creado en: %1"
+
+#: ../glom/glom_export_po.cc:232 ../glom/glom_export_po_all.cc:223
 msgid "Po file creation failed."
 msgstr "Falló la creación del archivo PO"
 
-#: ../glom/glom_export_po.cc:214 ../glom/glom_export_po_all.cc:227
+#: ../glom/glom_export_po.cc:236 ../glom/glom_export_po_all.cc:227
 msgid "Po file created at: %1"
 msgstr "Archivo PO creado en: %1"
 
 #: ../glom/glom_export_po_all.cc:55
-#| msgid ""
-#| "The directory in which to save the created .glom file, or sub-directory "
-#| "if necessary, such as /home/someuser/ ."
 msgid ""
 "The directory path at which to save the created .po files, such as /home/"
 "someuser/po_files/ ."
@@ -1621,22 +1625,18 @@ msgstr ""
 "ejemplo /home/usuario/archivos_po ."
 
 #: ../glom/glom_export_po_all.cc:143 ../glom/glom_import_po_all.cc:144
-#| msgid "Glom: The file does not exist."
 msgid "The Glom file does not exist."
 msgstr "El archivo de Glom no existe."
 
 #: ../glom/glom_export_po_all.cc:153 ../glom/glom_import_po_all.cc:154
-#| msgid "Glom: The file path is a directory instead of a file."
 msgid "The Glom file path is a directory instead of a file."
 msgstr "La ruta del archivo de Glom es una carpeta en lugar de un archivo."
 
 #: ../glom/glom_export_po_all.cc:174
-#| msgid "The document could not be opened."
 msgid "The ouput directory could not be created."
 msgstr "No se pudo crear la carpeta de salida."
 
 #: ../glom/glom_export_po_all.cc:182
-#| msgid "Glom: The output path is not a directory."
 msgid "Glom: The output file path is not a directory."
 msgstr "Glom: la ruta de salida no es una carpeta."
 
@@ -1653,12 +1653,10 @@ msgstr ""
 "archivos_po ."
 
 #: ../glom/glom_import_po_all.cc:162
-#| msgid "Glom: The file path is a directory instead of a file."
 msgid "Please specify the path to a directory containing po files."
 msgstr "Especifique la ruta a una carpeta que contenga archivos PO."
 
 #: ../glom/glom_import_po_all.cc:173
-#| msgid "Glom: The output path is not a directory."
 msgid "Glom: The po files directory path is not a directory."
 msgstr "Glom: la ruta de la carpeta de archivos PO no es una carpeta."
 
@@ -1667,8 +1665,9 @@ msgid "Po file import failed for locale: %1"
 msgstr "Falló al importar el archivo PO para la configuración regional: %1"
 
 #: ../glom/glom_import_po_all.cc:218
-msgid "Po file imported for locale: %1"
-msgstr "Archivo PO importado para la configuración regional: %1"
+#| msgid "Po file imported for locale: %1"
+msgid "Po file imported for locale: %1 for file %2"
+msgstr "Archivo PO importado para la configuración regional: %1 para %2"
 
 #: ../glom/glom_test_connection.cc:68
 msgid "The hostname of the PostgreSQL server, such as localhost."
@@ -2819,32 +2818,33 @@ msgstr "_Formato"
 msgid "Original"
 msgstr "Original"
 
-#: ../glom/mode_design/translation/window_translations.cc:73
-msgid "Item"
-msgstr "Elemento"
-
-#: ../glom/mode_design/translation/window_translations.cc:81
+#: ../glom/mode_design/translation/window_translations.cc:72
 msgid "Translation"
 msgstr "Traducción"
 
+#. This is at the end, because it can contain a long description of the item's context.
+#: ../glom/mode_design/translation/window_translations.cc:78
+msgid "Item"
+msgstr "Elemento"
+
 #. Show the file-chooser dialog, to select an output .po file:
-#: ../glom/mode_design/translation/window_translations.cc:327
-#: ../glom/mode_design/translation/window_translations.cc:367
+#: ../glom/mode_design/translation/window_translations.cc:331
+#: ../glom/mode_design/translation/window_translations.cc:371
 msgid "Choose .po File Name"
 msgstr "Elija el nombre de archivo .po"
 
-#: ../glom/mode_design/translation/window_translations.cc:333
-#: ../glom/mode_design/translation/window_translations.cc:372
+#: ../glom/mode_design/translation/window_translations.cc:337
+#: ../glom/mode_design/translation/window_translations.cc:376
 msgid "Po files"
 msgstr "Archivos po"
 
-#: ../glom/mode_design/translation/window_translations.cc:338
+#: ../glom/mode_design/translation/window_translations.cc:342
 #: ../ui/developer/window_translations.glade.h:6
 msgid "Export"
 msgstr "Exportar"
 
 #. Note to translators: "Import" here is an action verb - it's a button.
-#: ../glom/mode_design/translation/window_translations.cc:379
+#: ../glom/mode_design/translation/window_translations.cc:383
 #: ../ui/developer/window_translations.glade.h:8
 msgid "Import"
 msgstr "Importar"
@@ -4274,6 +4274,13 @@ msgstr "<b>Grupo</b>"
 #: ../ui/developer/window_users.glade.h:2
 msgid "<b>Users</b>"
 msgstr "<b>Usuarios</b>"
+
+#~ msgid "Please specify a locale ID."
+#~ msgstr "Especifique un ID de configuración regional."
+
+#~| msgid "Glom: The output directory does not exist."
+#~ msgid "Glom: The output file aready exists."
+#~ msgstr "Glom: el archivo de salida ya existe."
 
 #~ msgid "Gettext-Error: "
 #~ msgstr "Error de gettext: "
