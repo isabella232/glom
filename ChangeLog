@@ -1,3 +1,9 @@
+2012-01-10  Murray Cumming  <murrayc@murrayc.com>
+
+	Add README about examples' .po files.
+
+	* examples/po_files/README:
+
 2012-01-09  Murray Cumming  <murrayc@murrayc.com>
 
 	Export .po files for the example files.

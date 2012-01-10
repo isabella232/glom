@@ -1,0 +1,12 @@
+These .po files are exported from Glom's example .glom files.
+They can be edited and then imported back into the .glom files.
+
+To export all .po files, at the top level, do:
+$ make examples_export_po
+
+To import all .po files back into their .glom files:
+$ make examples_import_po
+
+To export a single .po file:
+$ glom/glom_export_po examples/somefile.glom -o examples/po_files/somefile/somefile.po
+
