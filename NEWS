@@ -1,3 +1,10 @@
+1.20.5 (stable):
+
+* Details： Make restricted choices work.
+* Translations: Offer non-country-specific language locales too.
+* Command-line utilities: Initialize gettext and the locale.
+* DTD: formatting: Mention choices_restricted to fix make check.
+
 1.20.4 (stable):
 
 * Details: Really make non-editable multiline text fields non-editable.
