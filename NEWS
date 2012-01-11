@@ -1,3 +1,19 @@
+1.21.2 (unstable):
+
+* Field choices:
+  - Allow custom (not related) choices to be translated,
+  with only the original text being stored in the database.
+  This only happens when the choices are restricted, at least for now.
+  - Use the appropriate type of data for choices. rather than, for instance,
+  forcing German users to see (and store) 1.99 EUR instead of 1,99 EUR.
+* Translations:
+  - Offer non-country locales, such as de, instead of only de_DE, de_AT, etc.
+  - Default to the first locale in the list, instead of none.
+* Added command-line utilities to help with translation via po files:
+  glom_export_po, glom_import_po, glom_export_po_all.
+* Build: Added several more tests, including tests of the translation system
+  and of the iso-codes XML files parsing.
+
 1.21.1 (unstable):
 
 * Details: Foreign key ID fields: Add a New button next to 
