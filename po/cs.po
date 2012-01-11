@@ -7,15 +7,15 @@
 # Petr Kovar <pknbe@volny.cz>, 2009.
 # Pavel Mlčoch <pavkamlc@centrum.cz>, 2009.
 # Lucas Lommer <llommer@svn.gnome.org>, 2009.
-# Marek Černocký <marek@manet.cz>, 2009, 2010, 2011.
+# Marek Černocký <marek@manet.cz>, 2009, 2010, 2011, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-12-23 12:15+0000\n"
-"PO-Revision-Date: 2011-12-24 15:03+0100\n"
+"POT-Creation-Date: 2012-01-11 06:35+0000\n"
+"PO-Revision-Date: 2012-01-11 10:40+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -33,13 +33,13 @@ msgid ""
 "Please wait while Glom prepares your system for publishing over the network."
 msgstr "Prosím počkejte dokud Glom nepřipraví váš systém pro sdílení na síti."
 
-#: ../glom/application.cc:266 ../glom/bakery/app_withdoc_gtk.cc:226
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:197
+#: ../glom/application.cc:266 ../glom/bakery/app_withdoc_gtk.cc:228
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:198
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:58
 msgid "_File"
 msgstr "_Soubor"
 
-#: ../glom/application.cc:267 ../glom/bakery/app_withdoc_gtk.cc:227
+#: ../glom/application.cc:267 ../glom/bakery/app_withdoc_gtk.cc:229
 msgid "_Recent Files"
 msgstr "_Nedávné soubory"
 
@@ -361,16 +361,16 @@ msgid "There was an error while saving the example file."
 msgstr "Vyskytla se chyba během ukládání ukázkového souboru."
 
 #: ../glom/application.cc:2299 ../glom/application.cc:2304
-#: ../glom/bakery/app_withdoc_gtk.cc:420
+#: ../glom/bakery/app_withdoc_gtk.cc:425
 msgid "Save Document"
 msgstr "Uložit dokument"
 
 #. Warn the user:
-#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc_gtk.cc:468
+#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc_gtk.cc:473
 msgid "Read-only File."
 msgstr "Soubor pouze pro čtení."
 
-#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc_gtk.cc:468
+#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc_gtk.cc:473
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -378,11 +378,11 @@ msgstr ""
 "Nemůžete přepsat existující soubor, protože nemáte potřebná přístupová práva."
 
 #. Warn the user:
-#: ../glom/application.cc:2405 ../glom/bakery/app_withdoc_gtk.cc:482
+#: ../glom/application.cc:2405 ../glom/bakery/app_withdoc_gtk.cc:487
 msgid "Read-only Directory."
 msgstr "Adresář pouze pro čtení."
 
-#: ../glom/application.cc:2405 ../glom/bakery/app_withdoc_gtk.cc:482
+#: ../glom/application.cc:2405 ../glom/bakery/app_withdoc_gtk.cc:487
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -453,7 +453,7 @@ msgstr "Obnovení ze zálohy selhalo."
 msgid "There was an error while restoring the backup."
 msgstr "Vyskytla se chyba během obnovy ze zálohy."
 
-#: ../glom/application.cc:2758 ../glom/bakery/app_withdoc_gtk.cc:341
+#: ../glom/application.cc:2758 ../glom/bakery/app_withdoc_gtk.cc:346
 msgid " (read-only)"
 msgstr " (pouze čtení)"
 
@@ -532,8 +532,8 @@ msgstr "Odstranit záznam"
 #: ../glom/mode_design/layout/dialog_choose_relationship.cc:55
 #: ../glom/mode_design/layout/dialog_layout_details.cc:102
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.cc:53
-#: ../glom/mode_design/layout/layout_item_dialogs/dialog_groupby_sortfields.cc:52
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc:48
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_sortfields.cc:52
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:93
 #: ../glom/mode_design/users/dialog_groups_list.cc:65
 msgid "Name"
@@ -896,12 +896,12 @@ msgstr "Sestava dokončena"
 msgid "The report will now be opened in your web browser."
 msgstr "Report bude nyní otevřen ve vašem prohlížeči WWW."
 
-#: ../glom/bakery/app_withdoc_gtk.cc:282
+#: ../glom/bakery/app_withdoc_gtk.cc:284
 #: ../ui/developer/window_field_definition_edit.glade.h:8
 msgid "_Edit"
 msgstr "_Upravit"
 
-#: ../glom/bakery/app_withdoc_gtk.cc:371
+#: ../glom/bakery/app_withdoc_gtk.cc:376
 msgid "Open Document"
 msgstr "Otevřít dokument"
 
@@ -1163,10 +1163,10 @@ msgstr "Číslo"
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/field.cc:693
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:73
-#: ../glom/libglom/data_structure/translatable_item.cc:313
+#: ../glom/libglom/data_structure/translatable_item.cc:317
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1158
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:36
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:760
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:761
 msgid "Text"
 msgstr "Text"
 
@@ -1189,7 +1189,7 @@ msgstr "Booleovská hodnota"
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/field.cc:705
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:70
-#: ../glom/libglom/data_structure/translatable_item.cc:315
+#: ../glom/libglom/data_structure/translatable_item.cc:319
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1165
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:38
 #: ../glom/utility_widgets/layouttoolbar.cc:47
@@ -1243,7 +1243,7 @@ msgstr "Skupina"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:68
-#: ../glom/libglom/data_structure/translatable_item.cc:311
+#: ../glom/libglom/data_structure/translatable_item.cc:315
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1151
 #: ../glom/utility_widgets/layouttoolbar.cc:43
 msgid "Button"
@@ -1256,9 +1256,9 @@ msgstr "Portál kalendáře"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:219
-#: ../glom/libglom/data_structure/translatable_item.cc:293
+#: ../glom/libglom/data_structure/translatable_item.cc:297
 #: ../glom/mode_design/dialog_database_preferences.cc:62
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:756
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:757
 #: ../ui/developer/window_field_definition_edit.glade.h:2
 msgid "Field"
 msgstr "Pole"
@@ -1344,28 +1344,28 @@ msgstr "Souhrn"
 msgid "Vertical Group"
 msgstr "Svislá skupina"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:295
+#: ../glom/libglom/data_structure/translatable_item.cc:299
 msgid "Custom Title"
 msgstr "Vlastní nadpis"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:297
+#: ../glom/libglom/data_structure/translatable_item.cc:301
 msgid "Relationship"
 msgstr "Relace"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:299
+#: ../glom/libglom/data_structure/translatable_item.cc:303
 msgid "Layout Item"
 msgstr "Rozložení položek"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:301
+#: ../glom/libglom/data_structure/translatable_item.cc:305
 msgid "Print Layout"
 msgstr "Rozvržení tisku"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:303
+#: ../glom/libglom/data_structure/translatable_item.cc:307
 msgid "Report"
 msgstr "Sestava"
 
 #. Tables:
-#: ../glom/libglom/data_structure/translatable_item.cc:305
+#: ../glom/libglom/data_structure/translatable_item.cc:309
 #: ../glom/mode_design/box_db_table_relationships.cc:52
 #: ../glom/mode_design/dialog_database_preferences.cc:61
 #: ../glom/mode_design/users/dialog_groups_list.cc:72
@@ -1373,57 +1373,61 @@ msgstr "Sestava"
 msgid "Table"
 msgstr "Tabulka"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:307
+#: ../glom/libglom/data_structure/translatable_item.cc:311
 msgid "Layout Group"
 msgstr "Skupina sestavy"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:309
+#: ../glom/libglom/data_structure/translatable_item.cc:313
 msgid "Field Title"
 msgstr "Nadpis pole"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:317
-#: ../glom/mode_design/translation/window_translations.cc:220
+#: ../glom/libglom/data_structure/translatable_item.cc:321
+msgid "Field Choice"
+msgstr "Volba pole"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:323
+#: ../glom/mode_design/translation/window_translations.cc:216
 msgid "Unknown"
 msgstr "Neznámé"
 
-#: ../glom/libglom/document/document.cc:506
-#: ../glom/libglom/document/document.cc:524
+#: ../glom/libglom/document/document.cc:507
+#: ../glom/libglom/document/document.cc:525
 msgid "System Preferences"
 msgstr "Nastavení systému"
 
-#: ../glom/libglom/document/document.cc:537
+#: ../glom/libglom/document/document.cc:538
 msgid "System Name"
 msgstr "Název systému"
 
-#: ../glom/libglom/document/document.cc:543
+#: ../glom/libglom/document/document.cc:544
 msgid "Organisation Name"
 msgstr "Název organizace"
 
-#: ../glom/libglom/document/document.cc:549
+#: ../glom/libglom/document/document.cc:550
 msgid "Organisation Logo"
 msgstr "Logo organizace"
 
-#: ../glom/libglom/document/document.cc:555
+#: ../glom/libglom/document/document.cc:556
 msgid "Street"
 msgstr "Ulice"
 
-#: ../glom/libglom/document/document.cc:561
+#: ../glom/libglom/document/document.cc:562
 msgid "Street (line 2)"
 msgstr "Ulice (řádek 2)"
 
-#: ../glom/libglom/document/document.cc:567
+#: ../glom/libglom/document/document.cc:568
 msgid "City"
 msgstr "Město"
 
-#: ../glom/libglom/document/document.cc:573
+#: ../glom/libglom/document/document.cc:574
 msgid "State"
 msgstr "Stát"
 
-#: ../glom/libglom/document/document.cc:579
+#: ../glom/libglom/document/document.cc:580
 msgid "Country"
 msgstr "Země"
 
-#: ../glom/libglom/document/document.cc:585
+#: ../glom/libglom/document/document.cc:586
 msgid "Zip Code"
 msgstr "Směrovací číslo"
 
@@ -1438,6 +1442,11 @@ msgstr "Nelze nainstalovat balíček"
 #: ../glom/libglom/gst-package.c:74
 msgid "The necessary applications to install the package could not be found."
 msgstr "Aplikace důležité pro instalaci balíčku nebyly nalezeny."
+
+#. Show only debug output
+#: ../glom/libglom/translations_po.cc:69
+msgid "Gettext-Warning: "
+msgstr "Gettext-varování: "
 
 #: ../glom/libglom/db_utils.cc:1169
 #: ../glom/mode_design/users/dialog_groups_list.cc:69
@@ -1456,37 +1465,41 @@ msgstr "Komentáře"
 msgid "List"
 msgstr "Seznam"
 
-#: ../glom/glom_create_from_example.cc:62 ../glom/glom_test_connection.cc:54
-#: ../glom/main.cc:197
+#: ../glom/glom_create_from_example.cc:63 ../glom/glom_export_po.cc:51
+#: ../glom/glom_export_po_all.cc:49 ../glom/glom_import_po_all.cc:50
+#: ../glom/glom_test_connection.cc:55 ../glom/main.cc:197
 msgid "Glom options"
 msgstr "Volby programu Glom"
 
-#: ../glom/glom_create_from_example.cc:62 ../glom/glom_test_connection.cc:54
+#: ../glom/glom_create_from_example.cc:63 ../glom/glom_export_po.cc:51
+#: ../glom/glom_export_po_all.cc:49 ../glom/glom_import_po_all.cc:50
+#: ../glom/glom_test_connection.cc:55
 msgid "Command-line options"
 msgstr "Přepínače příkazového řádku"
 
-#: ../glom/glom_create_from_example.cc:69
+#: ../glom/glom_create_from_example.cc:70
 msgid "The example .glom file to open."
 msgstr "Ukázkový soubor .glom, který se má otevřít."
 
-#: ../glom/glom_create_from_example.cc:74
+#: ../glom/glom_create_from_example.cc:75
 msgid ""
 "The directory in which to save the created .glom file, or sub-directory if "
 "necessary, such as /home/someuser/ ."
 msgstr ""
 "Složka, do které se má uložit vytvořený soubor .glom, případně i podsložka, "
-"pokud je potřeba. Např. /home/uživatel/"
+"pokud je potřeba. Např. /home/uzivatel/"
 
-#: ../glom/glom_create_from_example.cc:79
+#: ../glom/glom_create_from_example.cc:80
 msgid "The name for the created .glom file, such as something.glom ."
 msgstr "Název pro vytvořený soubor .glom, např. něco.glom"
 
-#: ../glom/glom_create_from_example.cc:84 ../glom/glom_test_connection.cc:62
-#: ../glom/main.cc:212
+#: ../glom/glom_create_from_example.cc:85 ../glom/glom_export_po.cc:72
+#: ../glom/glom_export_po_all.cc:60 ../glom/glom_import_po_all.cc:61
+#: ../glom/glom_test_connection.cc:63 ../glom/main.cc:212
 msgid "The version of this application."
 msgstr "Verze tohoto programu."
 
-#: ../glom/glom_create_from_example.cc:90
+#: ../glom/glom_create_from_example.cc:91
 msgid ""
 "The hostname of the PostgreSQL server, such as localhost. If this is not "
 "specified then a self-hosted database will be created."
@@ -1494,67 +1507,172 @@ msgstr ""
 "Hostitel serveru PostgreSQL, např. localhost. Pokud není uvedeno, vytvoří se "
 "databáze zde."
 
-#: ../glom/glom_create_from_example.cc:95 ../glom/glom_test_connection.cc:72
+#: ../glom/glom_create_from_example.cc:96 ../glom/glom_test_connection.cc:73
 msgid "The port of the PostgreSQL server, such as 5434."
 msgstr "Port pro server PostgreSQL, např. 5434."
 
-#: ../glom/glom_create_from_example.cc:100 ../glom/glom_test_connection.cc:77
+#: ../glom/glom_create_from_example.cc:101 ../glom/glom_test_connection.cc:78
 msgid "The username for the PostgreSQL server."
 msgstr "Jméno uživatele pro server PostgreSQL."
 
-#: ../glom/glom_create_from_example.cc:215 ../glom/glom_test_connection.cc:108
-#: ../glom/main.cc:486
+#: ../glom/glom_create_from_example.cc:238 ../glom/glom_export_po.cc:112
+#: ../glom/glom_export_po_all.cc:100 ../glom/glom_import_po_all.cc:101
+#: ../glom/glom_test_connection.cc:131 ../glom/main.cc:486
 msgid "Error while parsing command-line options: "
 msgstr "Chyba při analýze parametrů příkazové řádky: "
 
 #. TODO: How can we just print them out?
-#: ../glom/glom_create_from_example.cc:216 ../glom/glom_test_connection.cc:90
-#: ../glom/main.cc:487
+#: ../glom/glom_create_from_example.cc:239 ../glom/glom_export_po.cc:113
+#: ../glom/glom_export_po_all.cc:101 ../glom/glom_import_po_all.cc:102
+#: ../glom/glom_test_connection.cc:91 ../glom/main.cc:487
 msgid "Use --help to see a list of available command-line options."
 msgstr "Použijte --help pro zobrazení dostupných voleb příkazové řádky."
 
-#: ../glom/glom_create_from_example.cc:250 ../glom/main.cc:531
+#: ../glom/glom_create_from_example.cc:273 ../glom/glom_export_po.cc:162
+#: ../glom/main.cc:531
 msgid "Glom: The file does not exist."
 msgstr "Glom: Soubor neexistuje."
 
-#: ../glom/glom_create_from_example.cc:260 ../glom/main.cc:541
+#: ../glom/glom_create_from_example.cc:283 ../glom/glom_export_po.cc:172
+#: ../glom/main.cc:541
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: Cesta k souboru je složka namísto souboru."
 
-#: ../glom/glom_create_from_example.cc:291
+#: ../glom/glom_create_from_example.cc:314
 msgid "Glom: The output directory does not exist."
 msgstr "Glom: Výstupní složka neexistuje."
 
-#: ../glom/glom_create_from_example.cc:301
+#: ../glom/glom_create_from_example.cc:324
 msgid "Glom: The output path is not a directory."
 msgstr "Glom: Výstupní cesta není složkou."
 
-#: ../glom/glom_create_from_example.cc:399 ../glom/glom_test_connection.cc:143
+#: ../glom/glom_create_from_example.cc:422 ../glom/glom_test_connection.cc:166
 msgid "Please enter the PostgreSQL server's password for the user %1: "
 msgstr "Zadejte prosím heslo pro uživatele %1 serveru PostgreSQL:"
 
-#: ../glom/glom_test_connection.cc:67
+#: ../glom/glom_export_po.cc:57
+msgid ""
+"The path at which to save the created .po file, such as /home/someuser/"
+"somefile.po ."
+msgstr ""
+"Cesta, kam se má uložit vytvořený soubor .po, např. /home/uzivatel/"
+"nejakysoubor.po"
+
+#: ../glom/glom_export_po.cc:62
+msgid ""
+"The locale whose translations should be written to the .po file, such as "
+"de_DE."
+msgstr ""
+"Národní prostředí, jehož překlad by měl být zapsán do souboru .po, např. "
+"cs_CZ."
+
+#: ../glom/glom_export_po.cc:67
+msgid "Generate a .pot template file instead of a .po file for a locale."
+msgstr ""
+"Generovat soubor se šablonou .pot místo souboru .po pro národní prostředí."
+
+#: ../glom/glom_export_po.cc:142 ../glom/glom_export_po_all.cc:130
+#: ../glom/glom_import_po_all.cc:131
+msgid "Please specify a glom file."
+msgstr "Zadejte prosím soubor glom."
+
+#: ../glom/glom_export_po.cc:149
+msgid "Please use either the --locale-id option or the --template option."
+msgstr "Použijte prosím buď volbu --locale-id nebo volbu --template."
+
+#: ../glom/glom_export_po.cc:180 ../glom/glom_export_po_all.cc:161
+msgid "Please specify an output path."
+msgstr "Zadejte prosím výstupní cestu."
+
+#: ../glom/glom_export_po.cc:220
+msgid "Pot file creation failed."
+msgstr "Vytvoření souboru POT selhalo."
+
+#: ../glom/glom_export_po.cc:224
+msgid "Pot file created at: %1"
+msgstr "Soubor POT vytvořen v: %1"
+
+#: ../glom/glom_export_po.cc:232 ../glom/glom_export_po_all.cc:223
+msgid "Po file creation failed."
+msgstr "Vytvoření souboru PO selhalo."
+
+#: ../glom/glom_export_po.cc:236 ../glom/glom_export_po_all.cc:227
+msgid "Po file created at: %1"
+msgstr "Soubor PO vytvořen v: %1"
+
+#: ../glom/glom_export_po_all.cc:55
+msgid ""
+"The directory path at which to save the created .po files, such as /home/"
+"someuser/po_files/ ."
+msgstr ""
+"Složka, do které se mají uložit vytvořené soubory .po, např. /home/uzivatel/"
+"po_files/"
+
+#: ../glom/glom_export_po_all.cc:143 ../glom/glom_import_po_all.cc:144
+msgid "The Glom file does not exist."
+msgstr "Soubor aplikace Glom neexistuje."
+
+#: ../glom/glom_export_po_all.cc:153 ../glom/glom_import_po_all.cc:154
+msgid "The Glom file path is a directory instead of a file."
+msgstr "Cesta k souboru Glom je složkou, místo aby se jednalo o soubor."
+
+#: ../glom/glom_export_po_all.cc:174
+msgid "The ouput directory could not be created."
+msgstr "Výstupní složku nelze vytvořit."
+
+#: ../glom/glom_export_po_all.cc:182
+msgid "Glom: The output file path is not a directory."
+msgstr "Glom: Cesta k výstupnímu souboru není cesta."
+
+#: ../glom/glom_export_po_all.cc:204
+msgid "The Glom document has no translations."
+msgstr "Dokumentace k aplikaci Glom nemá žádné překlady."
+
+#: ../glom/glom_import_po_all.cc:56
+msgid ""
+"The path to a directory containing .po files, such as /home/someuser/"
+"po_files/ ."
+msgstr ""
+"Cesta ke složce obsahující soubory .po, např. /home/uzivatel/po_files/"
+
+#: ../glom/glom_import_po_all.cc:162
+msgid "Please specify the path to a directory containing po files."
+msgstr "Zadejte prosím cestu ke složce obsahující soubory PO."
+
+#: ../glom/glom_import_po_all.cc:173
+msgid "Glom: The po files directory path is not a directory."
+msgstr "Glom: Složka se soubory PO není složka."
+
+#: ../glom/glom_import_po_all.cc:213
+msgid "Po file import failed for locale: %1"
+msgstr "Import souboru PO selhal pro národní prostředí: %1"
+
+#: ../glom/glom_import_po_all.cc:218
+msgid "Po file imported for locale: %1 for file %2"
+msgstr "Soubor PO byl naimportován pro národní prostředí: %1 pro soubor %2"
+
+#: ../glom/glom_test_connection.cc:68
 msgid "The hostname of the PostgreSQL server, such as localhost."
 msgstr "Počítač se serverem PostgreSQL, např. localhost."
 
-#: ../glom/glom_test_connection.cc:83
+#: ../glom/glom_test_connection.cc:84
 msgid "The specific database on the PostgreSQL server (Optional)."
 msgstr "Konkrétní databáze na serveru PostgreSQL (volitelné)."
 
-#: ../glom/glom_test_connection.cc:133
+#: ../glom/glom_test_connection.cc:156
 msgid "Please provide a database username."
 msgstr "Zadejte prosím uživatelské jméno k databázi."
 
-#: ../glom/glom_test_connection.cc:192
+#: ../glom/glom_test_connection.cc:215
 msgid ""
 "Error: Could not connect to the server even without specifying a database."
 msgstr "Chyba: Nelze se připojit k serveru, ani bez udání databáze."
 
-#: ../glom/glom_test_connection.cc:200
+#: ../glom/glom_test_connection.cc:223
 msgid "Error: Could not connect to the specified database."
 msgstr "Chyba: Nelze se připojit k zadané databázi."
 
-#: ../glom/glom_test_connection.cc:206
+#: ../glom/glom_test_connection.cc:229
 msgid "Successful connection."
 msgstr "Úspěšné připojení."
 
@@ -1760,35 +1878,35 @@ msgstr ""
 msgid "No primary key value"
 msgstr "Žádná hodnota primárního klíče"
 
-#: ../glom/mode_data/box_data_details.cc:111
+#: ../glom/mode_data/box_data_details.cc:112
 msgid "Create a new record."
 msgstr "Vytvořit nový záznam"
 
-#: ../glom/mode_data/box_data_details.cc:112
+#: ../glom/mode_data/box_data_details.cc:113
 msgid "Remove this record."
 msgstr "Odstranit tento záznam."
 
-#: ../glom/mode_data/box_data_details.cc:113
+#: ../glom/mode_data/box_data_details.cc:114
 msgid "View the first record in the list."
 msgstr "Zobrazí první záznam v seznamu."
 
-#: ../glom/mode_data/box_data_details.cc:114
+#: ../glom/mode_data/box_data_details.cc:115
 msgid "View the previous record in the list."
 msgstr "Zobrazí předchozí záznam v seznamu."
 
-#: ../glom/mode_data/box_data_details.cc:115
+#: ../glom/mode_data/box_data_details.cc:116
 msgid "View the next record in the list."
 msgstr "Zobrazí následující záznam v seznamu."
 
-#: ../glom/mode_data/box_data_details.cc:116
+#: ../glom/mode_data/box_data_details.cc:117
 msgid "View the last record in the list."
 msgstr "Zobrazí poslední záznam v seznamu."
 
-#: ../glom/mode_data/box_data_details.cc:416
+#: ../glom/mode_data/box_data_details.cc:417
 msgid "Layout Contains No Fields"
 msgstr "Sestava neobsahuje žádná pole"
 
-#: ../glom/mode_data/box_data_details.cc:416
+#: ../glom/mode_data/box_data_details.cc:417
 msgid ""
 "There are no fields on the layout, so there is no way to enter data in a new "
 "record."
@@ -1796,20 +1914,20 @@ msgstr ""
 "Sestava nebosahuje žádná pole, takže není možné zadat data do nového záznamu."
 
 #. Tell user that a primary key is needed to delete a record:
-#: ../glom/mode_data/box_data_details.cc:443
+#: ../glom/mode_data/box_data_details.cc:444
 msgid "No primary key value."
 msgstr "Žádná hodnota primárního klíče."
 
-#: ../glom/mode_data/box_data_details.cc:444
+#: ../glom/mode_data/box_data_details.cc:445
 msgid "This record cannot be deleted because there is no primary key."
 msgstr "Tento záznam nelze odstranit, protože chybí primární klíč."
 
 #. Warn user that they can't choose their own primary key:
-#: ../glom/mode_data/box_data_details.cc:850
+#: ../glom/mode_data/box_data_details.cc:851
 msgid "Primary key auto increments"
 msgstr "Primární klíč se automaticky inkrementuje"
 
-#: ../glom/mode_data/box_data_details.cc:851
+#: ../glom/mode_data/box_data_details.cc:852
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
@@ -1829,53 +1947,53 @@ msgstr ""
 "Neexistují záznamy s touto hodnotou a proto není možný přechod na "
 "související záznam."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1142
+#: ../glom/mode_data/flowtablewithfields.cc:1187
 #: ../glom/utility_widgets/notebooklabelglom.cc:75
 #: ../glom/utility_widgets/notebooklabelglom.cc:115
 msgid "New Group"
 msgstr "Nová skupina"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1148
+#: ../glom/mode_data/flowtablewithfields.cc:1193
 #: ../glom/mode_design/layout/dialog_layout_details.cc:735
 msgid "notebook"
 msgstr "poznámkový blok"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1154
+#: ../glom/mode_data/flowtablewithfields.cc:1199
 msgid "tab1"
 msgstr "tab1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1157
+#: ../glom/mode_data/flowtablewithfields.cc:1202
 msgid "Tab One"
 msgstr "Záložka"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1170
+#: ../glom/mode_data/flowtablewithfields.cc:1215
 msgid "button"
 msgstr "tlačítko"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1171
+#: ../glom/mode_data/flowtablewithfields.cc:1216
 #: ../glom/mode_design/layout/dialog_layout_details.cc:661
 msgid "New Button"
 msgstr "Nové tlačítko"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1177
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:456
+#: ../glom/mode_data/flowtablewithfields.cc:1222
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:457
 msgid "text"
 msgstr "text"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1178
+#: ../glom/mode_data/flowtablewithfields.cc:1223
 msgid "New Text"
 msgstr "Nový text"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1346
+#: ../glom/mode_data/flowtablewithfields.cc:1391
 msgid "Delete whole group \"%1\"?"
 msgstr "Odstranit celou skupinu „%1“?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1352
+#: ../glom/mode_data/flowtablewithfields.cc:1397
 msgid "Delete whole group?"
 msgstr "Odstranit celou skupinu?"
 
@@ -1926,7 +2044,7 @@ msgid "Next Value"
 msgstr "Následující hodnota"
 
 #: ../glom/mode_design/dialog_design.cc:52
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:639
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:640
 #: ../ui/developer/window_design.glade.h:3
 msgid "None selected"
 msgstr "Nic nevybráno"
@@ -2219,35 +2337,40 @@ msgstr ""
 "zabrání vzniku vícenásobnému odkazu."
 
 #. Translators: This is Automatic text alignment.
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:112
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:115
 msgid "Automatic"
 msgstr "Automaticky"
 
 #. Translators: This is Left text alignment.
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:116
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:119
 msgid "Left"
 msgstr "Vlevo"
 
 #. Translators: This is Right text alignment.
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:120
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:123
 msgid "Right"
 msgstr "Vpravo"
 
 #. Give it access to the document.
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:159
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:166
 msgid "Extra Fields"
 msgstr "Doplňující pole"
 
+#. Give it access to the document.
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:174
+msgid "Sort Order"
+msgstr "Pořadí řazení"
+
 #. Add labels (because we will hide the checkboxes):
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:180
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:201
 msgid "Font"
 msgstr "Písmo"
 
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:183
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:204
 msgid "Foreground Color"
 msgstr "Barva popředí"
 
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:186
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:207
 msgid "Background Color"
 msgstr "Barva pozadí"
 
@@ -2271,7 +2394,7 @@ msgstr "Formátování"
 msgid "Group By - Secondary Fields"
 msgstr "Seskupovat podle - sekundárních polí"
 
-#: ../glom/mode_design/layout/layout_item_dialogs/dialog_groupby_sortfields.cc:59
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_sortfields.cc:59
 msgid "Ascending"
 msgstr "Vzestupně"
 
@@ -2360,113 +2483,113 @@ msgstr "Související záznamy"
 msgid "Drag this to the layout to add a new related records portal."
 msgstr "Přetažením na plochu přidáte nový portál souvisejících záznamů."
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:228
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:229
 msgid "Unselect All"
 msgstr "Zrušit výběr všeho"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:231
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:232
 msgid "_Insert"
 msgstr "V_ložit"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:232
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:233
 msgid "Insert _Field"
 msgstr "Vložit _pole"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:234
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:235
 msgid "Insert _Text"
 msgstr "Vložit _text"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:236
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:237
 msgid "Insert _Image"
 msgstr "Vložit _obrázek"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:238
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:239
 msgid "Insert _Related Records"
 msgstr "Vložit související _záznamy"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:240
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:241
 msgid "Insert _Horizontal Line"
 msgstr "Vložit _vodorovnou čáru"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:242
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:243
 msgid "Insert _Vertical Line"
 msgstr "Vložit _svislou čáru"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:244
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:245
 msgid "_Create Standard Layout"
 msgstr "_Vytvořit standardní rozvržení"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:246
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:247
 msgid "_Add Page"
 msgstr "Přid_at stránku"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:248
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:249
 msgid "_Delete Page"
 msgstr "O_dstranit stránku"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:252
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:253
 msgid "_Align"
 msgstr "Z_arovnat"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:254
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:255
 msgid "Align _Top"
 msgstr "Zarovnat na_horu"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:258
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:259
 msgid "Align _Bottom"
 msgstr "Zarovnat _dolů"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:262
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:263
 msgid "Align _Left"
 msgstr "Zarovnat v_levo"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:266
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:267
 msgid "Align _Right"
 msgstr "Zarovnat vp_ravo"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:271
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:272
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:64
 msgid "_View"
 msgstr "_Zobrazení"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:272
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:273
 msgid "Show Grid"
 msgstr "Zobrazit mřížku"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:274
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:275
 msgid "Show Rules"
 msgstr "Zobrazit pravítka"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:276
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:277
 msgid "Show Outlines"
 msgstr "Zobrazit osnovu"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:280
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:281
 msgid "Fit Page _Width"
 msgstr "Zvětšit na šíř_ku stránky"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:284
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:285
 msgid "Zoom 200%"
 msgstr "Zvětšení 200%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:292
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:293
 msgid "Zoom 50%"
 msgstr "Zvětšení 50%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:296
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:297
 msgid "Zoom 25%"
 msgstr "Zvětšení 25%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:754
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:755
 msgid "Insert"
 msgstr "Vložit"
 
 #. Ask for confirmation:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:921
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:922
 msgid "Create Standard Layout"
 msgstr "Vytvoření standardního rozvržení"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:922
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:923
 msgid ""
 "This is an experimental feature. It will remove all items from the print "
 "layout and then try to create a layout similar to the layout of the detail "
@@ -2476,24 +2599,24 @@ msgstr ""
 "rozvržení a po té zkusí vytvořit rozvržení s podobným rozložením jako v "
 "detailním zobrazení."
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:925
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:926
 #: ../glom/mode_design/users/dialog_groups_list.cc:81
 msgid "Create"
 msgstr "Vytvořit"
 
 #. Ask the user to confirm:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:965
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:966
 msgid "Remove page"
 msgstr "Odstranění stránky"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:966
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:967
 msgid ""
 "Are you sure that you wish to remove the last page and any items on that "
 "page?"
 msgstr ""
 "Opravdu chcete odstranit poslední stránku a položky, které se na ní nachází?"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:969
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:970
 msgid "Remove Page"
 msgstr "Odstranit stránku"
 
@@ -2654,45 +2777,37 @@ msgid "_Formatting"
 msgstr "_Formátování"
 
 #. Append the View columns:
-#: ../glom/mode_design/translation/window_translations.cc:72
+#: ../glom/mode_design/translation/window_translations.cc:65
 msgid "Original"
 msgstr "Originál"
 
-#: ../glom/mode_design/translation/window_translations.cc:80
-msgid "Item"
-msgstr "Položka"
-
-#: ../glom/mode_design/translation/window_translations.cc:88
+#: ../glom/mode_design/translation/window_translations.cc:72
 msgid "Translation"
 msgstr "Překlad"
 
-#. Show only debug output
-#: ../glom/mode_design/translation/window_translations.cc:433
-msgid "Gettext-Warning: "
-msgstr "Gettext-varování: "
-
-#: ../glom/mode_design/translation/window_translations.cc:449
-msgid "Gettext-Error: "
-msgstr "Gettext-chyba: "
+#. This is at the end, because it can contain a long description of the item's context.
+#: ../glom/mode_design/translation/window_translations.cc:78
+msgid "Item"
+msgstr "Položka"
 
 #. Show the file-chooser dialog, to select an output .po file:
-#: ../glom/mode_design/translation/window_translations.cc:506
-#: ../glom/mode_design/translation/window_translations.cc:585
+#: ../glom/mode_design/translation/window_translations.cc:331
+#: ../glom/mode_design/translation/window_translations.cc:371
 msgid "Choose .po File Name"
 msgstr "Zvolte název souboru .po"
 
-#: ../glom/mode_design/translation/window_translations.cc:512
-#: ../glom/mode_design/translation/window_translations.cc:590
+#: ../glom/mode_design/translation/window_translations.cc:337
+#: ../glom/mode_design/translation/window_translations.cc:376
 msgid "Po files"
 msgstr "Soubory Po"
 
-#: ../glom/mode_design/translation/window_translations.cc:517
+#: ../glom/mode_design/translation/window_translations.cc:342
 #: ../ui/developer/window_translations.glade.h:6
 msgid "Export"
 msgstr "Export"
 
 #. Note to translators: "Import" here is an action verb - it's a button.
-#: ../glom/mode_design/translation/window_translations.cc:597
+#: ../glom/mode_design/translation/window_translations.cc:383
 #: ../ui/developer/window_translations.glade.h:8
 msgid "Import"
 msgstr "Import"
@@ -2707,7 +2822,7 @@ msgid "Duplicate"
 msgstr "Duplicitní"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:431
+#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:468
 msgid "Example"
 msgstr "Příklad"
 
@@ -2718,20 +2833,20 @@ msgid "%1:"
 msgstr "%1:"
 
 #. Let the user choose a date from a calendar dialog:
-#: ../glom/mode_data/datawidget/datawidget.cc:211
+#: ../glom/mode_data/datawidget/datawidget.cc:213
 msgid "..."
 msgstr "…"
 
 #. TODO: A better label/icon for "Choose Date".
-#: ../glom/mode_data/datawidget/datawidget.cc:212
+#: ../glom/mode_data/datawidget/datawidget.cc:214
 msgid "Choose a date from an on-screen calendar."
 msgstr "Vyberte datum v zobrazeném kalendáři."
 
-#: ../glom/mode_data/datawidget/datawidget.cc:222
+#: ../glom/mode_data/datawidget/datawidget.cc:224
 msgid "Open the record identified by this ID, in the other table."
 msgstr "Otevřít záznam nalezený podle ID v jiné tabulce."
 
-#: ../glom/mode_data/datawidget/datawidget.cc:232
+#: ../glom/mode_data/datawidget/datawidget.cc:234
 msgid ""
 "Enter search criteria to identify records in the other table, to choose an "
 "ID for this field."
@@ -2739,10 +2854,7 @@ msgstr ""
 "Zadejte vyhledávací kritéria pro výběr záznamů v jiné tabulce, což umožní "
 "výběr ID pro toto pole."
 
-#: ../glom/mode_data/datawidget/datawidget.cc:237
-#| msgid ""
-#| "Enter search criteria to identify records in the other table, to choose "
-#| "an ID for this field."
+#: ../glom/mode_data/datawidget/datawidget.cc:239
 msgid ""
 "Enter details for a new record in the other table, then use its ID for this "
 "field."
@@ -2759,17 +2871,17 @@ msgstr "Obsah tabulky"
 msgid "ExampleEg"
 msgstr "příklad"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2057
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2087
 msgid "Right-click to layout, to specify the related fields."
 msgstr ""
 "Pokud chcete vybrat související pole, klikněte pravým tlačítkem na plochu."
 
 #. Tell user that they can't do that:
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2274
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2304
 msgid "Extra Related Records Not Possible"
 msgstr "Další související záznamy nejsou možné"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2275
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2305
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
@@ -3128,7 +3240,7 @@ msgid "bla.blub - Import from CSV"
 msgstr "bla.blub - Import z CSV"
 
 #: ../ui/operator/dialog_import_csv.glade.h:12
-#: ../ui/developer/box_formatting.glade.h:30
+#: ../ui/developer/box_formatting.glade.h:31
 msgid "label"
 msgstr "nadpis"
 
@@ -3327,7 +3439,7 @@ msgid "<b>Fields</b>"
 msgstr "<b>Pole</b>"
 
 #: ../ui/developer/dialog_fieldslist.glade.h:3
-#: ../ui/developer/dialog_groupby_sort_fields.glade.h:3
+#: ../ui/developer/dialog_sort_fields.glade.h:3
 msgid "Table: "
 msgstr "Tabulka: "
 
@@ -3373,14 +3485,6 @@ msgstr "Sekundární pole:"
 #: ../ui/developer/dialog_group_by.glade.h:8
 msgid "Sort Fields:"
 msgstr "Seřadit pole:"
-
-#: ../ui/developer/dialog_groupby_sort_fields.glade.h:1
-msgid "<b>Sort Fields</b>"
-msgstr "<b>Seřadit pole</b>"
-
-#: ../ui/developer/dialog_groupby_sort_fields.glade.h:2
-msgid "Group By - Sort Fields"
-msgstr "Seskupovat podle - třídících polí"
 
 #: ../ui/developer/dialog_initial_password.glade.h:1
 #: ../ui/developer/dialog_new_group.glade.h:4
@@ -3512,6 +3616,14 @@ msgstr ""
 #: ../ui/developer/dialog_script_library.glade.h:5
 msgid "_Check"
 msgstr "Z_kontrolovat"
+
+#: ../ui/developer/dialog_sort_fields.glade.h:1
+msgid "<b>Sort Fields</b>"
+msgstr "<b>Seřadit pole</b>"
+
+#: ../ui/developer/dialog_sort_fields.glade.h:2
+msgid "Group By - Sort Fields"
+msgstr "Seskupovat podle - třídících polí"
 
 #: ../ui/developer/dialog_translation_copy.glade.h:1
 msgid ""
@@ -3959,6 +4071,10 @@ msgid "Show all records"
 msgstr "Zobrazit všechny záznamy"
 
 #: ../ui/developer/box_formatting.glade.h:29
+msgid "Sort Order:"
+msgstr "Seřadit pole:"
+
+#: ../ui/developer/box_formatting.glade.h:30
 msgid "Use 1000s separator"
 msgstr "Používat oddělovač tisíců"
 
