@@ -1,0 +1,186 @@
+# Marek Černocký <marek@manet.cz>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Music Collection\n"
+"product=glom&keywords=I18N+L10N&component=general\n"
+"PO-Revision-Date: 2012-01-11 10:57+0100\n"
+"Last-Translator: Marek Černocký <marek@manet.cz>\n"
+"Language-Team: Czech <gnome-cs-list@gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Language: cs\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+msgctxt "Table (albums)"
+msgid "Albums"
+msgstr "Alba"
+
+msgctxt "Field (album_id). Parent table: albums"
+msgid "Album ID"
+msgstr "ID alba"
+
+msgctxt "Field (comments). Parent table: albums"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (name). Parent table: albums"
+msgid "Name"
+msgstr "Název"
+
+msgctxt "Field (artist_id). Parent table: albums"
+msgid "Artist ID"
+msgstr "ID umělce"
+
+msgctxt "Field (publisher_id). Parent table: albums"
+msgid "Publisher ID"
+msgstr "ID vydavatele"
+
+msgctxt "Field (year). Parent table: albums"
+msgid "Year"
+msgstr "Rok"
+
+msgctxt "Relationship (artist). Parent table: albums"
+msgid "Artist"
+msgstr "Umělec"
+
+msgctxt "Relationship (publisher). Parent table: albums"
+msgid "Publisher"
+msgstr "Vydavatel"
+
+msgctxt "Relationship (songs). Parent table: albums"
+msgid "Songs"
+msgstr "Skladby"
+
+msgctxt "Report (albums_by_artist). Parent table: albums"
+msgid "Albums By Artist"
+msgstr "Alba od umělce"
+
+msgctxt "Custom Title. Parent table: albums, Parent Report: albums_by_artist"
+msgid "Artist Name"
+msgstr "Jméno umělce"
+
+msgctxt "Layout Group (overview). Parent table: albums"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: albums"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Layout Group (artist). Parent table: albums, Parent Group: details"
+msgid "Artist"
+msgstr "Umělec"
+
+msgctxt "Layout Group (publisher). Parent table: albums, Parent Group: details"
+msgid "Publisher"
+msgstr "Vydavatel"
+
+msgctxt "Custom Title. Parent table: albums, Parent Group: toplevel"
+msgid "Artist Name"
+msgstr "Jméno umělce"
+
+msgctxt "Custom Title. Parent table: albums, Parent Group: toplevel"
+msgid "Publisher Name"
+msgstr "Jméno vydavatele"
+
+msgctxt "Table (artists)"
+msgid "Artists"
+msgstr "Umělci"
+
+msgctxt "Field (artist_id). Parent table: artists"
+msgid "Artist ID"
+msgstr "ID umělce"
+
+msgctxt "Field (description). Parent table: artists"
+msgid "Description"
+msgstr "Popis"
+
+msgctxt "Field (comments). Parent table: artists"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (name). Parent table: artists"
+msgid "Name"
+msgstr "Jméno"
+
+msgctxt "Relationship (albums). Parent table: artists"
+msgid "Albums"
+msgstr "Alba"
+
+msgctxt "Layout Group (overview). Parent table: artists"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: artists"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (publishers)"
+msgid "Publishers"
+msgstr "Vydavatelé"
+
+msgctxt "Field (publishers_id). Parent table: publishers"
+msgid "Publisher ID"
+msgstr "ID vydavatele"
+
+msgctxt "Field (comments). Parent table: publishers"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (name). Parent table: publishers"
+msgid "Name"
+msgstr "Jméno"
+
+msgctxt "Relationship (albums). Parent table: publishers"
+msgid "Albums"
+msgstr "Alba"
+
+msgctxt "Layout Group (overview). Parent table: publishers"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: publishers"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (songs)"
+msgid "Songs"
+msgstr "Skladby"
+
+msgctxt "Field (song_id). Parent table: songs"
+msgid "Song ID"
+msgstr "ID skladby"
+
+msgctxt "Field (comments). Parent table: songs"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (album_id). Parent table: songs"
+msgid "Album ID"
+msgstr "ID alba"
+
+msgctxt "Field (name). Parent table: songs"
+msgid "Name"
+msgstr "Název"
+
+msgctxt "Relationship (album). Parent table: songs"
+msgid "Album"
+msgstr "Album"
+
+msgctxt "Layout Group (overview). Parent table: songs"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: songs"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Layout Group (album). Parent table: songs, Parent Group: details"
+msgid "Album"
+msgstr "Album"
+
+msgctxt "Layout Group (artist). Parent table: songs, Parent Group: details"
+msgid "Album Artist"
+msgstr "Umělci alba"
