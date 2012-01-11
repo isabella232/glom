@@ -1,0 +1,357 @@
+#
+# Marek Černocký <marek@manet.cz>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Small Business Example\n"
+"product=glom&keywords=I18N+L10N&component=general\n"
+"PO-Revision-Date: 2012-01-11 11:22+0100\n"
+"Last-Translator: Marek Černocký <marek@manet.cz>\n"
+"Language-Team: Czech <gnome-cs-list@gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Language: cs\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+msgctxt "Table (contacts)"
+msgid "Contacts"
+msgstr "Kontakty"
+
+msgctxt "Field (contact_id). Parent table: contacts"
+msgid "Contact ID"
+msgstr "ID kontaktu"
+
+msgctxt "Field (name_first). Parent table: contacts"
+msgid "First Name"
+msgstr "Křestní jméno"
+
+msgctxt "Field (name_middle). Parent table: contacts"
+msgid "Middle Name"
+msgstr "Prostřední jméno"
+
+msgctxt "Field (name_last). Parent table: contacts"
+msgid "Last Name"
+msgstr "Příjmení"
+
+msgctxt "Field (name_title). Parent table: contacts"
+msgid "Title"
+msgstr "Oslovení"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mr"
+msgstr "pan"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mrs"
+msgstr "paní"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Ms"
+msgstr "paní/slečna"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Miss"
+msgstr "slečna"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr."
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Prof"
+msgstr "Prof."
+
+msgctxt "Field (address_street). Parent table: contacts"
+msgid "Street"
+msgstr "Ulice"
+
+msgctxt "Field (address_town). Parent table: contacts"
+msgid "Town"
+msgstr "Město"
+
+msgctxt "Field (address_state). Parent table: contacts"
+msgid "State"
+msgstr "Stát"
+
+msgctxt "Field (address_country). Parent table: contacts"
+msgid "Country"
+msgstr "Země"
+
+msgctxt "Field (address_postcode). Parent table: contacts"
+msgid "Postcode"
+msgstr "PSČ"
+
+msgctxt "Field (date_of_birth). Parent table: contacts"
+msgid "Date of Birth"
+msgstr "Datum narození"
+
+msgctxt "Field (comments). Parent table: contacts"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (name_full). Parent table: contacts"
+msgid "Full Name"
+msgstr "Celé jméno"
+
+msgctxt "Field (picture). Parent table: contacts"
+msgid "Picture"
+msgstr "Obrázek"
+
+msgctxt "Field (email). Parent table: contacts"
+msgid "Email Address"
+msgstr "E-mailová adresa"
+
+msgctxt "Field (website). Parent table: contacts"
+msgid "Web Site"
+msgstr "Webové stránky"
+
+msgctxt "Field (tel_home). Parent table: contacts"
+msgid "Home Telephone"
+msgstr "Telefon domů"
+
+msgctxt "Field (tel_work). Parent table: contacts"
+msgid "Work Telephone"
+msgstr "Telefon do práce"
+
+msgctxt "Field (tel_mobile). Parent table: contacts"
+msgid "Mobile Telephone"
+msgstr "Mobilní telefon"
+
+msgctxt "Field (tel_fax). Parent table: contacts"
+msgid "Fax"
+msgstr "Fax"
+
+msgctxt "Report (by_country). Parent table: contacts"
+msgid "Contacts By Country"
+msgstr "Kontakty podle země"
+
+msgctxt "Report (by_country_by_town). Parent table: contacts"
+msgid "By Country, By Town"
+msgstr "Podle země, podle města"
+
+msgctxt "Layout Group (overview). Parent table: contacts"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (name). Parent table: contacts, Parent Group: details"
+msgid "Name"
+msgstr "Název"
+
+msgctxt "Layout Group (address). Parent table: contacts, Parent Group: details"
+msgid "Address"
+msgstr "Adresa"
+
+msgctxt ""
+"Layout Group (telephone). Parent table: contacts, Parent Group: details"
+msgid "Telephone"
+msgstr "Telefon"
+
+msgctxt "Button. Parent table: contacts, Parent Group: details"
+msgid "Test Button"
+msgstr "Testovací tlačítko"
+
+msgctxt "Field (product_name). Parent table: invoice_lines"
+msgid "Product Name"
+msgstr "Název produktu"
+
+msgctxt "Field (product_id). Parent table: invoice_lines"
+msgid "Product Id"
+msgstr "ID produktu"
+
+msgctxt "Field (product_price). Parent table: invoice_lines"
+msgid "Product Price"
+msgstr "Cena produktu"
+
+msgctxt "Field (invoice_id). Parent table: invoice_lines"
+msgid "Invoice ID"
+msgstr "ID faktury"
+
+msgctxt "Field (count). Parent table: invoice_lines"
+msgid "Number Of"
+msgstr "Počet"
+
+msgctxt "Field (total_price). Parent table: invoice_lines"
+msgid "Total Price"
+msgstr "Celková cena"
+
+msgctxt "Field (vat_percentage). Parent table: invoice_lines"
+msgid "VAT Percentage"
+msgstr "Sazba DPH"
+
+msgctxt "Field (total_price_vat). Parent table: invoice_lines"
+msgid "Total VAT"
+msgstr "DPH celkem"
+
+msgctxt "Table (invoices)"
+msgid "Invoices"
+msgstr "Faktury"
+
+msgctxt "Field (invoice_id). Parent table: invoices"
+msgid "Invoice ID"
+msgstr "ID faktury"
+
+msgctxt "Field (contact_id). Parent table: invoices"
+msgid "Contact ID"
+msgstr "ID kontaktu"
+
+msgctxt "Field (date). Parent table: invoices"
+msgid "Date"
+msgstr "Datum"
+
+msgctxt "Field (comment). Parent table: invoices"
+msgid "Comment"
+msgstr "Poznámka"
+
+msgctxt "Field (price_total). Parent table: invoices"
+msgid "Total Price"
+msgstr "Cena celkem"
+
+msgctxt "Field (vat_total). Parent table: invoices"
+msgid "Total VAT"
+msgstr "DPH celkem"
+
+msgctxt "Field (price_total_with_vat). Parent table: invoices"
+msgid "Total Price With Vat"
+msgstr "Celková cena včetně DPH"
+
+msgctxt "Relationship (invoice_lines). Parent table: invoices"
+msgid "Invoice Lines"
+msgstr "Řádků faktury"
+
+msgctxt "Relationship (contacts). Parent table: invoices"
+msgid "Contacts"
+msgstr "Kontakty"
+
+msgctxt "Report (By Customer). Parent table: invoices"
+msgid "By Customer"
+msgstr "Podle zákazníka"
+
+msgctxt "Layout Group (overview). Parent table: invoices"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt ""
+"Layout Group (customer). Parent table: invoices, Parent Group: details"
+msgid "Customer"
+msgstr "Zákazník"
+
+msgctxt "Table (products)"
+msgid "Products"
+msgstr "Produkty"
+
+msgctxt "Field (product_id). Parent table: products"
+msgid "Product ID"
+msgstr "ID produktu"
+
+msgctxt "Field (comment). Parent table: products"
+msgid "Comment"
+msgstr "Poznámka"
+
+msgctxt "Field (description). Parent table: products"
+msgid "Description"
+msgstr "Popis"
+
+msgctxt "Field (name). Parent table: products"
+msgid "Name"
+msgstr "Název"
+
+msgctxt "Field (price). Parent table: products"
+msgid "Price"
+msgstr "Cena"
+
+msgctxt "Field (vat_percent). Parent table: products"
+msgid "Vat Percent"
+msgstr "Sazba DPH"
+
+msgctxt "Layout Group (overview). Parent table: products"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: products"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (staff)"
+msgid "Staff"
+msgstr "Zaměstnanci"
+
+msgctxt "Field (staff_id). Parent table: staff"
+msgid "Staff ID"
+msgstr "ID zaměstnance"
+
+msgctxt "Field (name_title). Parent table: staff"
+msgid "Title"
+msgstr "Oslovení"
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Mr"
+msgstr "pan"
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Mrs"
+msgstr "paní"
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Miss"
+msgstr "slečna"
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr."
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Prof"
+msgstr "Prof."
+
+msgctxt "Field (name_first). Parent table: staff"
+msgid "First Name"
+msgstr "Křestní jméno"
+
+msgctxt "Field (name_second). Parent table: staff"
+msgid "Second Name"
+msgstr "Prostřední jméno"
+
+msgctxt "Field (name_last). Parent table: staff"
+msgid "Last Name"
+msgstr "Příjmení"
+
+msgctxt "Field (address_street). Parent table: staff"
+msgid "Street"
+msgstr "Ulice"
+
+msgctxt "Field (address_town). Parent table: staff"
+msgid "Town"
+msgstr "Město"
+
+msgctxt "Field (address_state). Parent table: staff"
+msgid "State"
+msgstr "Stát"
+
+msgctxt "Field (address_country). Parent table: staff"
+msgid "Country"
+msgstr "Země"
+
+msgctxt "Field (address_postcode). Parent table: staff"
+msgid "Postcode"
+msgstr "PSČ"
+
+msgctxt "Field (date_of_birth). Parent table: staff"
+msgid "Date Of Birth"
+msgstr "Datum narození"
+
+msgctxt "Field (position). Parent table: staff"
+msgid "Position"
+msgstr "Pozice"
+
+msgctxt "Layout Group (overview). Parent table: staff"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (name). Parent table: staff, Parent Group: details"
+msgid "Name"
+msgstr "Název"
+
+msgctxt "Layout Group (address). Parent table: staff, Parent Group: details"
+msgid "Address"
+msgstr "Adresa"
