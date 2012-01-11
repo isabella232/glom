@@ -255,7 +255,9 @@ dist_noinst_DATA += $(dist_template) $(noinst_icons) $(dist_docutils) \
 # We use += here because we already used = in Makefile_tests.am:
 dist_noinst_SCRIPTS += autogen.sh win32/build-installer
 
-CLEANFILES = $(dbusservice_DATA) $(desktop_DATA) $(win_resfile)
+# messages.mo is apparently generated because we have .po files under examples/po_files, in git,
+# TODO: Is there some way to tell the build to ignore them?
+CLEANFILES = $(dbusservice_DATA) $(desktop_DATA) $(win_resfile) $(top_builddir)/messages.mo
 DISTCLEANFILES = intltool-extract intltool-merge intltool-update
 MAINTAINERCLEANFILES += \
 	$(dist_docutils) $(dist_intltool) \

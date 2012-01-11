@@ -1,3 +1,12 @@
+2012-01-11  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix make distcheck.
+
+	* Makefile.am: Add messages.mo to CLEANFILES, though I would prefer 
+  to not generate it in the first place. This is apparently triggered by 
+  the presence of the .po files in examples/po_files/ though these are 
+  not part of the build.
+
 2012-01-10  Murray Cumming  <murrayc@murrayc.com>
 
 	Allow creation of .pot files for .glom files.
