@@ -1,0 +1,309 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Project Manager Example\n"
+"product=glom&keywords=I18N+L10N&component=general\n"
+"PO-Revision-Date: 2012-01-10 11:38+0100\n"
+"Last-Translator: Marek Černocký <marek@manet.cz>\n"
+"Language-Team: Czech <gnome-cs-list@gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Language: cs\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+msgctxt "Table (contacts)"
+msgid "Contacts"
+msgstr "Kontakty"
+
+msgctxt "Field (contact_id). Parent table: contacts"
+msgid "Contact ID"
+msgstr "ID kontaktu"
+
+msgctxt "Field (name_first). Parent table: contacts"
+msgid "First Name"
+msgstr "Křestní jméno"
+
+msgctxt "Field (name_middle). Parent table: contacts"
+msgid "Middle Name"
+msgstr "Prostřední jméno"
+
+msgctxt "Field (name_last). Parent table: contacts"
+msgid "Last Name"
+msgstr "Příjmení"
+
+msgctxt "Field (name_title). Parent table: contacts"
+msgid "Title"
+msgstr "Oslovení"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mr"
+msgstr "pan"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mrs"
+msgstr "paní"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Ms"
+msgstr "paní/slečna"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Miss"
+msgstr "slečna"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr."
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Prof"
+msgstr "Prof."
+
+msgctxt "Field (address_street). Parent table: contacts"
+msgid "Street"
+msgstr "Ulice"
+
+msgctxt "Field (address_town). Parent table: contacts"
+msgid "Town"
+msgstr "Město"
+
+msgctxt "Field (address_state). Parent table: contacts"
+msgid "State"
+msgstr "Stát"
+
+msgctxt "Field (address_country). Parent table: contacts"
+msgid "Country"
+msgstr "Země"
+
+msgctxt "Field (address_postcode). Parent table: contacts"
+msgid "Postcode"
+msgstr "PSČ"
+
+msgctxt "Field (date_of_birth). Parent table: contacts"
+msgid "Date of Birth"
+msgstr "Datum narození"
+
+msgctxt "Field (comments). Parent table: contacts"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (name_full). Parent table: contacts"
+msgid "Full Name"
+msgstr "Celé jméno"
+
+msgctxt "Field (picture). Parent table: contacts"
+msgid "Picture"
+msgstr "Obrázek"
+
+msgctxt "Field (email). Parent table: contacts"
+msgid "Email Address"
+msgstr "E-mailová adresa"
+
+msgctxt "Field (website). Parent table: contacts"
+msgid "Web Site"
+msgstr "Webové stránky"
+
+msgctxt "Field (tel_home). Parent table: contacts"
+msgid "Home Telephone"
+msgstr "Telefon domů"
+
+msgctxt "Field (tel_work). Parent table: contacts"
+msgid "Work Telephone"
+msgstr "Telefon do práce"
+
+msgctxt "Field (tel_mobile). Parent table: contacts"
+msgid "Mobile Telephone"
+msgstr "Mobilní telefon"
+
+msgctxt "Field (tel_fax). Parent table: contacts"
+msgid "Fax"
+msgstr "Fax"
+
+msgctxt "Relationship (team_members). Parent table: contacts"
+msgid "Team Membership"
+msgstr "Členství v týmu"
+
+msgctxt "Report (by_country). Parent table: contacts"
+msgid "Contacts By Country"
+msgstr "Kontakty podle země"
+
+msgctxt "Report (by_country_by_town). Parent table: contacts"
+msgid "By Country, By Town"
+msgstr "Podle země, podle města"
+
+msgctxt "Layout Group (overview). Parent table: contacts"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (notebook). Parent table: contacts, Parent Group: details"
+msgid "(Notebook)"
+msgstr "(Sešit)"
+
+msgctxt "Layout Group (telephone). Parent table: contacts, Parent Group: details, Parent Group: notebook"
+msgid "Telephone"
+msgstr "Telefon"
+
+msgctxt "Layout Group (address). Parent table: contacts, Parent Group: details, Parent Group: notebook"
+msgid "Address"
+msgstr "Adresa"
+
+msgctxt "Layout Group (name). Parent table: contacts, Parent Group: details, Parent Group: notebook"
+msgid "Name"
+msgstr "Název"
+
+msgctxt "Table (projects)"
+msgid "Projects"
+msgstr "Projekty"
+
+msgctxt "Field (project_id). Parent table: projects"
+msgid "Project ID"
+msgstr "ID projektu"
+
+msgctxt "Field (description). Parent table: projects"
+msgid "Description"
+msgstr "Popis"
+
+msgctxt "Field (comments). Parent table: projects"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (name). Parent table: projects"
+msgid "Name"
+msgstr "Název"
+
+msgctxt "Relationship (teams). Parent table: projects"
+msgid "Teams"
+msgstr "Týmy"
+
+msgctxt "Layout Group (overview). Parent table: projects"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: projects"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (project_teams)"
+msgid "Project Teams"
+msgstr "Týmy projektu"
+
+msgctxt "Field (project_team_id). Parent table: project_teams"
+msgid "Project Team ID"
+msgstr "ID týmu projektu"
+
+msgctxt "Field (comments). Parent table: project_teams"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (team_id). Parent table: project_teams"
+msgid "Team ID"
+msgstr "ID týmu"
+
+msgctxt "Field (project_id). Parent table: project_teams"
+msgid "Project ID"
+msgstr "ID projektu"
+
+msgctxt "Relationship (team). Parent table: project_teams"
+msgid "Team"
+msgstr "Tým"
+
+msgctxt "Relationship (project). Parent table: project_teams"
+msgid "Project"
+msgstr "Projekt"
+
+msgctxt "Layout Group (overview). Parent table: project_teams"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: project_teams"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Custom Title. Parent table: project_teams, Parent Group: details"
+msgid "Team Name"
+msgstr "Název týmu"
+
+msgctxt "Custom Title. Parent table: project_teams, Parent Group: details"
+msgid "Project Name"
+msgstr "Název projektu"
+
+msgctxt "Table (team_members)"
+msgid "Team Members"
+msgstr "Členové týmu"
+
+msgctxt "Field (team_members_id). Parent table: team_members"
+msgid "team_members ID"
+msgstr "ID členů týmu"
+
+msgctxt "Field (description). Parent table: team_members"
+msgid "Description"
+msgstr "Popis"
+
+msgctxt "Field (comments). Parent table: team_members"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (contact_id). Parent table: team_members"
+msgid "Contact ID"
+msgstr "ID kontaktu"
+
+msgctxt "Field (team_id). Parent table: team_members"
+msgid "Team ID"
+msgstr "ID týmu"
+
+msgctxt "Field (role). Parent table: team_members"
+msgid "Role"
+msgstr "Postavení"
+
+msgctxt "Relationship (contacts). Parent table: team_members"
+msgid "Contacts"
+msgstr "Kontakty"
+
+msgctxt "Relationship (team). Parent table: team_members"
+msgid "Team"
+msgstr "Tým"
+
+msgctxt "Layout Group (overview). Parent table: team_members"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: team_members"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (teams)"
+msgid "Teams"
+msgstr "Týmy"
+
+msgctxt "Field (team_id). Parent table: teams"
+msgid "Team ID"
+msgstr "ID týmu"
+
+msgctxt "Field (description). Parent table: teams"
+msgid "Description"
+msgstr "Popis"
+
+msgctxt "Field (comments). Parent table: teams"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (name). Parent table: teams"
+msgid "Name"
+msgstr "Název"
+
+msgctxt "Relationship (members). Parent table: teams"
+msgid "Members"
+msgstr "Členové"
+
+msgctxt "Relationship (projects). Parent table: teams"
+msgid "Projects"
+msgstr "Projekty"
+
+msgctxt "Layout Group (overview). Parent table: teams"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: teams"
+msgid "Details"
+msgstr "Podrobnosti"
+
