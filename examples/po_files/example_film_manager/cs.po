@@ -1,0 +1,1177 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Openismus Film Manager\n"
+"product=glom&keywords=I18N+L10N&component=general\n"
+"PO-Revision-Date: 2012-01-10 11:38+0100\n"
+"Last-Translator: Marek Černocký <marek@manet.cz>\n"
+"Language-Team: Czech <gnome-cs-list@gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Language: cs\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+msgctxt "Table (accommodation)"
+msgid "Accommodation"
+msgstr "Ubytování"
+
+msgctxt "Field (accommodation_id). Parent table: accommodation"
+msgid "Accommodation ID"
+msgstr "ID ubytování"
+
+msgctxt "Field (description). Parent table: accommodation"
+msgid "Description"
+msgstr "Popis"
+
+msgctxt "Field (comments). Parent table: accommodation"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (address_street). Parent table: accommodation"
+msgid "Street"
+msgstr "Ulice"
+
+msgctxt "Field (address_town). Parent table: accommodation"
+msgid "Town"
+msgstr "Město"
+
+msgctxt "Field (address_county). Parent table: accommodation"
+msgid "County"
+msgstr "Region"
+
+msgctxt "Field (address_country). Parent table: accommodation"
+msgid "Country"
+msgstr "Země"
+
+msgctxt "Field (address_postcode). Parent table: accommodation"
+msgid "Postcode"
+msgstr "PSČ"
+
+msgctxt "Field (contact_id). Parent table: accommodation"
+msgid "Contact ID"
+msgstr "ID kontaktu"
+
+msgctxt "Field (name). Parent table: accommodation"
+msgid "Name"
+msgstr "Název"
+
+msgctxt "Relationship (contacts). Parent table: accommodation"
+msgid "Contacts"
+msgstr "Kontakty"
+
+msgctxt "Layout Group (overview). Parent table: accommodation"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (address). Parent table: accommodation, Parent Group: details"
+msgid "Address"
+msgstr "Adresa"
+
+msgctxt "Layout Group (contact). Parent table: accommodation, Parent Group: details"
+msgid "Contact"
+msgstr "Kontakt"
+
+msgctxt "Table (cars)"
+msgid "Cars"
+msgstr "Auta"
+
+msgctxt "Field (car_id). Parent table: cars"
+msgid "Car ID"
+msgstr "ID auta"
+
+msgctxt "Field (manufacturer). Parent table: cars"
+msgid "Manufacturer"
+msgstr "Výrobce"
+
+msgctxt "Field (model). Parent table: cars"
+msgid "Model"
+msgstr "Model"
+
+msgctxt "Field (registration). Parent table: cars"
+msgid "Registration"
+msgstr "Registrační značka"
+
+msgctxt "Field (description). Parent table: cars"
+msgid "Description"
+msgstr "Popis"
+
+msgctxt "Field (comment). Parent table: cars"
+msgid "Comment"
+msgstr "Poznámka"
+
+msgctxt "Layout Group (overview). Parent table: cars"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: cars"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (characters)"
+msgid "Characters"
+msgstr "Postavy"
+
+msgctxt "Field (character_id). Parent table: characters"
+msgid "Cast ID"
+msgstr "ID obsazení"
+
+msgctxt "Field (character). Parent table: characters"
+msgid "Character"
+msgstr "Postava"
+
+msgctxt "Field (comments). Parent table: characters"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (contact_id). Parent table: characters"
+msgid "Contact ID"
+msgstr "ID kontaktu"
+
+msgctxt "Field (mainpart). Parent table: characters"
+msgid "Main Part"
+msgstr "Hlavní část"
+
+msgctxt "Relationship (contacts_actor). Parent table: characters"
+msgid "Actor"
+msgstr "Herec"
+
+msgctxt "Relationship (scenes). Parent table: characters"
+msgid "Scenes"
+msgstr "Scény"
+
+msgctxt "Report (cast_list). Parent table: characters"
+msgid "Cast List"
+msgstr "Seznam obsazení"
+
+msgctxt "Custom Title. Parent table: characters, Parent Report: cast_list"
+msgid "Actor"
+msgstr "Herec"
+
+msgctxt "Custom Title. Parent table: characters, Parent Report: cast_list"
+msgid "Agent"
+msgstr "Agent"
+
+msgctxt "Layout Group (overview). Parent table: characters, Parent Group: main"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: characters, Parent Group: main"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Layout Group (actor). Parent table: characters, Parent Group: main, Parent Group: details"
+msgid "Actor"
+msgstr "Herec"
+
+msgctxt "Custom Title. Parent table: characters, Parent Group: main"
+msgid "Actor's Contact ID"
+msgstr "ID kontaktu herce"
+
+msgctxt "Custom Title. Parent table: characters, Parent Group: main"
+msgid "Actor's Name"
+msgstr "Jméno herce"
+
+msgctxt "Layout Group (overview). Parent table: characters"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: characters"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Layout Group (actor). Parent table: characters, Parent Group: details"
+msgid "Actor"
+msgstr "Herec"
+
+msgctxt "Custom Title. Parent table: characters, Parent Group: details, Parent Group: actor"
+msgid "Actor's Name"
+msgstr "Jméno herce"
+
+msgctxt "Custom Title. Parent table: characters, Parent Group: main"
+msgid "Actor"
+msgstr "Herec"
+
+msgctxt "Table (companies)"
+msgid "Companies"
+msgstr "Společnosti"
+
+msgctxt "Field (company_id). Parent table: companies"
+msgid "Company ID"
+msgstr "ID společnosti"
+
+msgctxt "Field (name). Parent table: companies"
+msgid "Name"
+msgstr "Název"
+
+msgctxt "Field (comments). Parent table: companies"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (description). Parent table: companies"
+msgid "Description"
+msgstr "Popis"
+
+msgctxt "Field (logo). Parent table: companies"
+msgid "Logo"
+msgstr "Logo"
+
+msgctxt "Field (website). Parent table: companies"
+msgid "Web Site"
+msgstr "Webové stránky"
+
+msgctxt "Relationship (staff). Parent table: companies"
+msgid "Staff"
+msgstr "Zaměstnanci"
+
+msgctxt "Layout Group (overview). Parent table: companies"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: companies"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (contacts)"
+msgid "Contacts"
+msgstr "Kontakty"
+
+msgctxt "Field (contact_id). Parent table: contacts"
+msgid "Contact ID"
+msgstr "ID kontaktu"
+
+msgctxt "Field (name_first). Parent table: contacts"
+msgid "First Name"
+msgstr "Křestní jméno"
+
+msgctxt "Field (name_middle). Parent table: contacts"
+msgid "Second Name"
+msgstr "Prostřední jméno"
+
+msgctxt "Field (name_last). Parent table: contacts"
+msgid "Last Name"
+msgstr "Příjmení"
+
+msgctxt "Field (name_title). Parent table: contacts"
+msgid "Title"
+msgstr "Oslovení"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mr"
+msgstr "pan"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Ms"
+msgstr "paní/slečna"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mrs"
+msgstr "paní"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Miss"
+msgstr "slečna"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr."
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Prof"
+msgstr "Prof."
+
+msgctxt "Field (address_street2). Parent table: contacts"
+msgid "Street (line 2)"
+msgstr "Ulice (2. řádek)"
+
+msgctxt "Field (address_town). Parent table: contacts"
+msgid "Town"
+msgstr "Město"
+
+msgctxt "Field (address_state). Parent table: contacts"
+msgid "State"
+msgstr "Stát"
+
+msgctxt "Field (address_country). Parent table: contacts"
+msgid "Country"
+msgstr "Země"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "Germany"
+msgstr "Německo"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "United Kingdom"
+msgstr "Velká Británie"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "USA"
+msgstr "USA"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "France"
+msgstr "Francie"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "Spain"
+msgstr "Španělsko"
+
+msgctxt "Field (address_postcode). Parent table: contacts"
+msgid "Postcode"
+msgstr "PSČ"
+
+msgctxt "Field (date_of_birth). Parent table: contacts"
+msgid "Date Of Birth"
+msgstr "Datum narození"
+
+msgctxt "Field (comments). Parent table: contacts"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (name_full). Parent table: contacts"
+msgid "Full Name"
+msgstr "Celé jméno"
+
+msgctxt "Field (company_id). Parent table: contacts"
+msgid "Company ID"
+msgstr "ID společnosti"
+
+msgctxt "Field (picture). Parent table: contacts"
+msgid "Picture"
+msgstr "Obrázek"
+
+msgctxt "Field (tel_home). Parent table: contacts"
+msgid "Home Telephone"
+msgstr "Telefon domů"
+
+msgctxt "Field (tel_mobile). Parent table: contacts"
+msgid "Mobile Telephone"
+msgstr "Mobilní telefon"
+
+msgctxt "Field (tel_fax). Parent table: contacts"
+msgid "Fax"
+msgstr "Fax"
+
+msgctxt "Field (tel_work). Parent table: contacts"
+msgid "Work Telephone"
+msgstr "Telefon do práce"
+
+msgctxt "Field (email). Parent table: contacts"
+msgid "Email"
+msgstr "E-mail"
+
+msgctxt "Field (address_street1). Parent table: contacts"
+msgid "Street (line 1)"
+msgstr "Ulice (1. řádek)"
+
+msgctxt "Field (website). Parent table: contacts"
+msgid "Web Site"
+msgstr "Webové stránky"
+
+msgctxt "Field (agent_id). Parent table: contacts"
+msgid "Agent ID"
+msgstr "ID agenta"
+
+msgctxt "Field (stagename). Parent table: contacts"
+msgid "Stagename"
+msgstr "Umělecké jméno"
+
+msgctxt "Relationship (company). Parent table: contacts"
+msgid "Company"
+msgstr "Společnost"
+
+msgctxt "Relationship (agent). Parent table: contacts"
+msgid "Agent"
+msgstr "Agent"
+
+msgctxt "Relationship (crew). Parent table: contacts"
+msgid "Crew"
+msgstr "Štáb"
+
+msgctxt "Relationship (cast). Parent table: contacts"
+msgid "Cast"
+msgstr "Obsazení"
+
+msgctxt "Report (by_country). Parent table: contacts"
+msgid "Contacts By Country"
+msgstr "Kontakty podle země"
+
+msgctxt "Report (by_country_by_town). Parent table: contacts"
+msgid "By Country, By Town"
+msgstr "Podle země, podle města"
+
+msgctxt "Layout Group (overview). Parent table: contacts"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: contacts"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Layout Group (name). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
+msgid "Name"
+msgstr "Název"
+
+msgctxt "Layout Group (company). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
+msgid "Company"
+msgstr "Společnost"
+
+msgctxt "Layout Group (address). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
+msgid "Address"
+msgstr "Adresa"
+
+msgctxt "Layout Group (telephone). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
+msgid "Telephone"
+msgstr "Telefon"
+
+msgctxt "Layout Group (agent). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
+msgid "Agent"
+msgstr "Agent"
+
+msgctxt "Custom Title. Parent table: contacts, Parent Group: main"
+msgid "Company Name"
+msgstr "Název společnosti"
+
+msgctxt "Table (costume)"
+msgid "Costume"
+msgstr "Kostým"
+
+msgctxt "Field (costume_id). Parent table: costume"
+msgid "Costume ID"
+msgstr "ID kostýmu"
+
+msgctxt "Field (description). Parent table: costume"
+msgid "Description"
+msgstr "Popis"
+
+msgctxt "Field (comments). Parent table: costume"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (name). Parent table: costume"
+msgid "Name"
+msgstr "Název"
+
+msgctxt "Layout Group (overview). Parent table: costume"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: costume"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (crew)"
+msgid "Crew"
+msgstr "Štáb"
+
+msgctxt "Field (crew_id). Parent table: crew"
+msgid "Crew ID"
+msgstr "ID štábu"
+
+msgctxt "Field (description). Parent table: crew"
+msgid "Description"
+msgstr "Popis"
+
+msgctxt "Field (comments). Parent table: crew"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (dept_id). Parent table: crew"
+msgid "Department ID"
+msgstr "ID týmu"
+
+msgctxt "Field (contact_id). Parent table: crew"
+msgid "Contact ID"
+msgstr "ID kontaktu"
+
+msgctxt "Relationship (contacts). Parent table: crew"
+msgid "Contacts"
+msgstr "Kontakty"
+
+msgctxt "Relationship (departments). Parent table: crew"
+msgid "Departments"
+msgstr "Týmy"
+
+msgctxt "Relationship (scenes). Parent table: crew"
+msgid "Scenes"
+msgstr "Scény"
+
+msgctxt "Report (crew_list). Parent table: crew"
+msgid "Crew List"
+msgstr "Seznam štábu"
+
+msgctxt "Custom Title. Parent table: crew, Parent Report: crew_list"
+msgid "Department Name"
+msgstr "Název týmu"
+
+msgctxt "Layout Group (overview). Parent table: crew"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (department). Parent table: crew, Parent Group: details"
+msgid "Department"
+msgstr "Tým"
+
+msgctxt "Layout Group (contact). Parent table: crew, Parent Group: details"
+msgid "Contact"
+msgstr "Kontakt"
+
+msgctxt "Layout Group (address). Parent table: crew, Parent Group: details, Parent Group: contact"
+msgid "Address"
+msgstr "Adresa"
+
+msgctxt "Layout Group (agent). Parent table: crew, Parent Group: details, Parent Group: contact"
+msgid "Agent"
+msgstr "Agent"
+
+msgctxt "Custom Title. Parent table: crew, Parent Group: main"
+msgid "Department Name"
+msgstr "Název týmu"
+
+msgctxt "Table (deliveries)"
+msgid "Deliveries"
+msgstr "Dodávky"
+
+msgctxt "Field (delivery_id). Parent table: deliveries"
+msgid "Delivery ID"
+msgstr "ID dodávky"
+
+msgctxt "Field (arrival_date). Parent table: deliveries"
+msgid "Arrival Date"
+msgstr "Datum příjezdu"
+
+msgctxt "Field (departure_contact_id). Parent table: deliveries"
+msgid "Contact ID"
+msgstr "ID kontaktu"
+
+msgctxt "Field (arrival_contact_id). Parent table: deliveries"
+msgid "Contact ID"
+msgstr "ID kontaktu"
+
+msgctxt "Field (arrival_time). Parent table: deliveries"
+msgid "Arrival Time"
+msgstr "Čas příjezdu"
+
+msgctxt "Field (arrival_place). Parent table: deliveries"
+msgid "Arrival Place"
+msgstr "Místo příjezdu"
+
+msgctxt "Field (departure_time). Parent table: deliveries"
+msgid "Departure Time"
+msgstr "Čas odjezdu"
+
+msgctxt "Field (departure_date). Parent table: deliveries"
+msgid "Departure Date"
+msgstr "Datum odjezdu"
+
+msgctxt "Field (departure_place). Parent table: deliveries"
+msgid "Departure Place"
+msgstr "Místo odjezdu"
+
+msgctxt "Field (comments). Parent table: deliveries"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (description). Parent table: deliveries"
+msgid "Description"
+msgstr "Popis"
+
+msgctxt "Relationship (departure_contact). Parent table: deliveries"
+msgid "Departure Contact"
+msgstr "Kontakt při odjezdu"
+
+msgctxt "Relationship (arrival_contact). Parent table: deliveries"
+msgid "Arrival Contact"
+msgstr "Kontakt při příjezdu"
+
+msgctxt "Custom Title. Parent table: deliveries, Parent Group: main"
+msgid "Departure Name"
+msgstr "Název odjezdu"
+
+msgctxt "Custom Title. Parent table: deliveries, Parent Group: main"
+msgid "Arrival Name"
+msgstr "Název příjezdu"
+
+msgctxt "Layout Group (overview). Parent table: deliveries"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (departure). Parent table: deliveries, Parent Group: details"
+msgid "Departure"
+msgstr "Odjezd"
+
+msgctxt "Layout Group (arrival). Parent table: deliveries, Parent Group: details"
+msgid "Arrival"
+msgstr "Příjezd"
+
+msgctxt "Table (departments)"
+msgid "Departments"
+msgstr "Odjezdy"
+
+msgctxt "Field (departments_id). Parent table: departments"
+msgid "Department ID"
+msgstr "ID odjezdu"
+
+msgctxt "Field (name). Parent table: departments"
+msgid "Name"
+msgstr "Název"
+
+msgctxt "Field (comments). Parent table: departments"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Relationship (department_crew). Parent table: departments"
+msgid "Department Crew"
+msgstr "Tým štábu"
+
+msgctxt "Layout Group (overview). Parent table: departments"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Table (equipment)"
+msgid "Equipment"
+msgstr "Vybavení"
+
+msgctxt "Field (equipment_id). Parent table: equipment"
+msgid "Equipment ID"
+msgstr "ID vybavení"
+
+msgctxt "Field (description). Parent table: equipment"
+msgid "Description"
+msgstr "Popis"
+
+msgctxt "Field (comments). Parent table: equipment"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Relationship (scenes). Parent table: equipment"
+msgid "Scenes"
+msgstr "Scény"
+
+msgctxt "Layout Group (overview). Parent table: equipment"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: equipment"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (journeys)"
+msgid "Journeys"
+msgstr "Cestování"
+
+msgctxt "Field (journey_id). Parent table: journeys"
+msgid "Journey ID"
+msgstr "ID cesty"
+
+msgctxt "Field (comment). Parent table: journeys"
+msgid "Comment"
+msgstr "Poznámka"
+
+msgctxt "Field (description). Parent table: journeys"
+msgid "Description"
+msgstr "Popis"
+
+msgctxt "Field (arrival_date). Parent table: journeys"
+msgid "Arrival Date"
+msgstr "Datum příjezdu"
+
+msgctxt "Field (arrival_time). Parent table: journeys"
+msgid "Arrival Time"
+msgstr "Čas příjezdu"
+
+msgctxt "Field (arrival_place). Parent table: journeys"
+msgid "Arrival Place"
+msgstr "Místo příjezdu"
+
+msgctxt "Field (departure_date). Parent table: journeys"
+msgid "Departure Date"
+msgstr "Datum odjezdu"
+
+msgctxt "Field (departure_time). Parent table: journeys"
+msgid "Departure Time"
+msgstr "Čas odjezdu"
+
+msgctxt "Field (departure_place). Parent table: journeys"
+msgid "Departure Place"
+msgstr "Místo odjezdu"
+
+msgctxt "Field (contact_id). Parent table: journeys"
+msgid "Contact ID"
+msgstr "ID kontaktu"
+
+msgctxt "Relationship (contacts). Parent table: journeys"
+msgid "Contacts"
+msgstr "Kontakty"
+
+msgctxt "Layout Group (overview). Parent table: journeys"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (person). Parent table: journeys, Parent Group: details"
+msgid "Person"
+msgstr "Osoba"
+
+msgctxt "Layout Group (departure). Parent table: journeys, Parent Group: details"
+msgid "Departure"
+msgstr "Odjezd"
+
+msgctxt "Layout Group (arrival). Parent table: journeys, Parent Group: details"
+msgid "Arrival"
+msgstr "Příjezd"
+
+msgctxt "Table (locations)"
+msgid "Locations"
+msgstr "Místa"
+
+msgctxt "Field (location_id). Parent table: locations"
+msgid "Location ID"
+msgstr "ID místa"
+
+msgctxt "Field (name). Parent table: locations"
+msgid "Name"
+msgstr "Název"
+
+msgctxt "Field (address_street). Parent table: locations"
+msgid "Street"
+msgstr "Ulice"
+
+msgctxt "Field (address_town). Parent table: locations"
+msgid "Town"
+msgstr "Město"
+
+msgctxt "Field (address_county). Parent table: locations"
+msgid "County"
+msgstr "Region"
+
+msgctxt "Field (address_country). Parent table: locations"
+msgid "Country"
+msgstr "Země"
+
+msgctxt "Field (address_postcode). Parent table: locations"
+msgid "Postcode"
+msgstr "PSČ"
+
+msgctxt "Field (comments). Parent table: locations"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (contact_id). Parent table: locations"
+msgid "Contact ID"
+msgstr "ID kontaktu"
+
+msgctxt "Field (rent). Parent table: locations"
+msgid "Rent"
+msgstr "Pronájem"
+
+msgctxt "Relationship (scenes). Parent table: locations"
+msgid "Scenes"
+msgstr "Scény"
+
+msgctxt "Relationship (contacts). Parent table: locations"
+msgid "Contacts"
+msgstr "Kontakty"
+
+msgctxt "Layout Group (overview). Parent table: locations"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (address). Parent table: locations, Parent Group: details"
+msgid "Address"
+msgstr "Adresa"
+
+msgctxt "Layout Group (contact_person). Parent table: locations, Parent Group: details"
+msgid "Contact Person"
+msgstr "Kontaktní osoba"
+
+msgctxt "Table (props)"
+msgid "Props"
+msgstr "Rekvizity"
+
+msgctxt "Field (prop_id). Parent table: props"
+msgid "Prop ID"
+msgstr "ID rekvizity"
+
+msgctxt "Field (description). Parent table: props"
+msgid "Description"
+msgstr "Popis"
+
+msgctxt "Field (comments). Parent table: props"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (name). Parent table: props"
+msgid "Name"
+msgstr "Název"
+
+msgctxt "Layout Group (overview). Parent table: props"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: props"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (scene_cast)"
+msgid "Scene Cast"
+msgstr "Obsazení scény"
+
+msgctxt "Field (scene_cast_id). Parent table: scene_cast"
+msgid "Scene Cast ID"
+msgstr "ID obsazení scény"
+
+msgctxt "Field (comments). Parent table: scene_cast"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (cast_id). Parent table: scene_cast"
+msgid "Cast ID"
+msgstr "ID obsazení"
+
+msgctxt "Field (scene_id). Parent table: scene_cast"
+msgid "Scene ID"
+msgstr "ID scény"
+
+msgctxt "Relationship (cast). Parent table: scene_cast"
+msgid "Cast"
+msgstr "Obsazení"
+
+msgctxt "Layout Group (overview). Parent table: scene_cast, Parent Group: main"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: scene_cast, Parent Group: main"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (scene_costume)"
+msgid "Scene Costume"
+msgstr "Kostým scény"
+
+msgctxt "Field (scene_costume_id). Parent table: scene_costume"
+msgid "Scene Costume ID"
+msgstr "ID kostýmu scény"
+
+msgctxt "Field (comments). Parent table: scene_costume"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (scene_id). Parent table: scene_costume"
+msgid "Scene Id"
+msgstr "ID scény"
+
+msgctxt "Field (costume_id). Parent table: scene_costume"
+msgid "Costume ID"
+msgstr "ID kostýmu"
+
+msgctxt "Relationship (costume). Parent table: scene_costume"
+msgid "Costume"
+msgstr "Kostým"
+
+msgctxt "Layout Group (overview). Parent table: scene_costume"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: scene_costume"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Custom Title. Parent table: scene_costume, Parent Group: details"
+msgid "Costume Name"
+msgstr "Název kostýmu"
+
+msgctxt "Table (scene_crew)"
+msgid "Scene Crew"
+msgstr "Štáb scény"
+
+msgctxt "Field (scene_crew_id). Parent table: scene_crew"
+msgid "Scene Crew ID"
+msgstr "ID štábu scény"
+
+msgctxt "Field (comments). Parent table: scene_crew"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (scene_id). Parent table: scene_crew"
+msgid "Scene ID"
+msgstr "ID scény"
+
+msgctxt "Field (department_id). Parent table: scene_crew"
+msgid "Department ID"
+msgstr "ID týmu"
+
+msgctxt "Relationship (department). Parent table: scene_crew"
+msgid "Department"
+msgstr "Tým"
+
+msgctxt "Relationship (scenes). Parent table: scene_crew"
+msgid "Scenes"
+msgstr "Scény"
+
+msgctxt "Layout Group (overview). Parent table: scene_crew, Parent Group: main"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: scene_crew, Parent Group: main"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Field (scene_equipment_id). Parent table: scene_equipment"
+msgid "Scene Equipment ID"
+msgstr "ID vybavení pro scénu"
+
+msgctxt "Field (comments). Parent table: scene_equipment"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (equipment_id). Parent table: scene_equipment"
+msgid "Equipment ID"
+msgstr "ID vybavení"
+
+msgctxt "Field (scene_id). Parent table: scene_equipment"
+msgid "Scene ID"
+msgstr "ID scény"
+
+msgctxt "Layout Group (overview). Parent table: scene_equipment"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: scene_equipment"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (scene_extras)"
+msgid "Scene Extras"
+msgstr "Kompars pro scénu"
+
+msgctxt "Field (scene_extras_id). Parent table: scene_extras"
+msgid "Scene Extras ID"
+msgstr "ID komparsu pro scénu"
+
+msgctxt "Field (description). Parent table: scene_extras"
+msgid "Description"
+msgstr "Popis"
+
+msgctxt "Field (comments). Parent table: scene_extras"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (scene_id). Parent table: scene_extras"
+msgid "Scene ID"
+msgstr "ID scény"
+
+msgctxt "Field (contact_id). Parent table: scene_extras"
+msgid "Contact ID"
+msgstr "ID kontaktu"
+
+msgctxt "Relationship (contact). Parent table: scene_extras"
+msgid "Contact"
+msgstr "Kontakt"
+
+msgctxt "Layout Group (overview). Parent table: scene_extras, Parent Group: main"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: scene_extras, Parent Group: main"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (scene_makeup)"
+msgid "Scene Makeup"
+msgstr "Líčení pro scénu"
+
+msgctxt "Field (scene_makeup_id). Parent table: scene_makeup"
+msgid "Scene Makeup ID"
+msgstr "ID líčení pro scénu"
+
+msgctxt "Field (description). Parent table: scene_makeup"
+msgid "Description"
+msgstr "Popis"
+
+msgctxt "Field (comments). Parent table: scene_makeup"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (scene_id). Parent table: scene_makeup"
+msgid "Scene ID"
+msgstr "ID scény"
+
+msgctxt "Layout Group (overview). Parent table: scene_makeup"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: scene_makeup"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (scene_props)"
+msgid "Scene Props"
+msgstr "Rekvizity pro scénu"
+
+msgctxt "Field (scene_props_id). Parent table: scene_props"
+msgid "Scene Prop ID"
+msgstr "ID rekvizity pro scénu"
+
+msgctxt "Field (comments). Parent table: scene_props"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (scene_id). Parent table: scene_props"
+msgid "Scene ID"
+msgstr "ID scény"
+
+msgctxt "Field (prop_id). Parent table: scene_props"
+msgid "Prop ID"
+msgstr "ID rekvizity"
+
+msgctxt "Relationship (props). Parent table: scene_props"
+msgid "Props"
+msgstr "Rekvizity"
+
+msgctxt "Layout Group (overview). Parent table: scene_props"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: scene_props"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (scenes)"
+msgid "Scenes"
+msgstr "Scény"
+
+msgctxt "Field (scene_id). Parent table: scenes"
+msgid "Scene ID"
+msgstr "ID scény"
+
+msgctxt "Field (comments). Parent table: scenes"
+msgid "Comments"
+msgstr "Poznámky"
+
+msgctxt "Field (description). Parent table: scenes"
+msgid "Description"
+msgstr "Popis"
+
+msgctxt "Field (location_id). Parent table: scenes"
+msgid "Location ID"
+msgstr "ID místa"
+
+msgctxt "Field (date). Parent table: scenes"
+msgid "Date"
+msgstr "Datum"
+
+msgctxt "Field (time). Parent table: scenes"
+msgid "Time"
+msgstr "Čas"
+
+msgctxt "Field (minutes). Parent table: scenes"
+msgid "Stop (minutes)"
+msgstr "Stopka (v minutách)"
+
+msgctxt "Field (day_or_night). Parent table: scenes"
+msgid "Day/Night"
+msgstr "Den/noc"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Day"
+msgstr "Den"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Night"
+msgstr "Noc"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Morning"
+msgstr "Ráno"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Evening"
+msgstr "Večer"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Dawn"
+msgstr "Rozbřesk"
+
+msgctxt "Field (interior_or_exterior). Parent table: scenes"
+msgid "Interior/Exterior"
+msgstr "Interiér/exteriér"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: interior_or_exterior"
+msgid "Interior"
+msgstr "Interiér"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: interior_or_exterior"
+msgid "Exterior"
+msgstr "Exteriér"
+
+msgctxt "Field (name). Parent table: scenes"
+msgid "Name"
+msgstr "Název"
+
+msgctxt "Field (overview_name). Parent table: scenes"
+msgid "Scene"
+msgstr "Scéna"
+
+msgctxt "Field (pages). Parent table: scenes"
+msgid "Pages"
+msgstr "Stran"
+
+msgctxt "Field (script_day). Parent table: scenes"
+msgid "Script Day"
+msgstr "Den v scénáři"
+
+msgctxt "Relationship (location). Parent table: scenes"
+msgid "Locations"
+msgstr "Místa"
+
+msgctxt "Relationship (scene_crew). Parent table: scenes"
+msgid "Additional Crew"
+msgstr "Dodatečný štáb"
+
+msgctxt "Relationship (scene_cast). Parent table: scenes"
+msgid "Cast"
+msgstr "Obsazení"
+
+msgctxt "Relationship (scene_equipment). Parent table: scenes"
+msgid "Additional Equipment"
+msgstr "Dodatečné vybavení"
+
+msgctxt "Relationship (scene_extras). Parent table: scenes"
+msgid "Extras"
+msgstr "Kompars"
+
+msgctxt "Relationship (scene_props). Parent table: scenes"
+msgid "Props"
+msgstr "Rekvizity"
+
+msgctxt "Relationship (scene_costume). Parent table: scenes"
+msgid "Costume"
+msgstr "Kostým"
+
+msgctxt "Relationship (scene_makeup). Parent table: scenes"
+msgid "Additional Makeup"
+msgstr "Dodatečné líčení"
+
+msgctxt "Layout Group (overview). Parent table: scenes"
+msgid "Overview"
+msgstr "Přehled"
+
+msgctxt "Layout Group (details). Parent table: scenes"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Layout Group (scenario). Parent table: scenes, Parent Group: details"
+msgid "Scenario"
+msgstr "Scénář"
+
+msgctxt "Layout Group (location). Parent table: scenes, Parent Group: details"
+msgid "Location"
+msgstr "Místo"
+
+msgctxt "Custom Title. Parent table: scenes, Parent Group: details, Parent Group: location"
+msgid "Contact Name"
+msgstr "Jméno kontaktu"
+
+msgctxt "Custom Title. Parent table: scenes, Parent Group: details_lower, Parent Group: notebook"
+msgid "Actor's Name"
+msgstr "Jméno herce"
+
