@@ -77,51 +77,67 @@
       <field name="product_name" type="Text" title="Product Name">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Název produktu"/>
           <trans loc="de" val="Produkt Name"/>
+          <trans loc="es" val="Nombre del producto"/>
         </trans_set>
       </field>
       <field name="product_id" type="Number" title="Product Id">
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true"/>
         <trans_set>
+          <trans loc="cs" val="ID produktu"/>
           <trans loc="de" val="Produkt ID"/>
+          <trans loc="es" val="ID del producto"/>
         </trans_set>
       </field>
       <field name="product_price" type="Number" title="Product Price">
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
+          <trans loc="cs" val="Cena produktu"/>
           <trans loc="de" val="Produkt Preis"/>
+          <trans loc="es" val="Precio del producto"/>
         </trans_set>
       </field>
       <field name="invoice_id" type="Number" title="Invoice ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
+          <trans loc="cs" val="ID faktury"/>
           <trans loc="de" val="Rechnung ID"/>
+          <trans loc="es" val="ID de la factura"/>
         </trans_set>
       </field>
       <field name="count" default_value="1" type="Number" title="Number Of">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
+          <trans loc="cs" val="Počet"/>
           <trans loc="de" val="Menge"/>
+          <trans loc="es" val="Número de"/>
         </trans_set>
       </field>
       <field name="total_price" type="Number" title="Total Price">
         <calculation>return record["count"] * record["product_price"];</calculation>
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
+          <trans loc="cs" val="Cena celkem"/>
           <trans loc="de" val="Gesamtpreis"/>
+          <trans loc="es" val="Precio total"/>
         </trans_set>
       </field>
       <field name="vat_percentage" type="Number" title="VAT Percentage">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
+          <trans loc="cs" val="Sazba DPH"/>
           <trans loc="de" val="MwST Prozent"/>
+          <trans loc="es" val="% IVA"/>
         </trans_set>
       </field>
       <field name="total_price_vat" type="Number" title="Total VAT">
         <calculation>return record["total_price"] * (record["vat_percentage"] / 100);</calculation>
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
+          <trans loc="cs" val="DPH celkem"/>
           <trans loc="de" val="Gesamt MwST"/>
+          <trans loc="es" val="IVA total"/>
         </trans_set>
       </field>
     </fields>
@@ -238,15 +254,31 @@
         <value column="room_id">2</value>
       </example_row>
     </example_rows>
+    <trans_set>
+      <trans loc="cs" val="Vyučovací hodiny"/>
+      <trans loc="es" val="Lecciones"/>
+    </trans_set>
     <fields>
       <field name="lesson_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Lesson ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="cs" val="ID vyučovací hodiny"/>
+          <trans loc="es" val="ID de la lección"/>
+        </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Popis"/>
+          <trans loc="es" val="Descripción"/>
+        </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
         <formatting format_text_multiline="true"/>
+        <trans_set>
+          <trans loc="cs" val="Poznámky"/>
+          <trans loc="es" val="Comentarios"/>
+        </trans_set>
       </field>
       <field name="subject_id" type="Number" title="Subject ID">
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="subject" choices_related_field="subject_id" choices_related_show_all="true">
@@ -260,6 +292,10 @@
             </data_layout_groups>
           </choices_related_extra_layout>
         </formatting>
+        <trans_set>
+          <trans loc="cs" val="ID předmětu"/>
+          <trans loc="es" val="ID del asunto"/>
+        </trans_set>
       </field>
       <field name="teacher_id" type="Number" title="Teacher ID">
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="teacher" choices_related_field="teacher_id" choices_related_show_all="true">
@@ -273,15 +309,31 @@
             </data_layout_groups>
           </choices_related_extra_layout>
         </formatting>
+        <trans_set>
+          <trans loc="cs" val="ID učitele"/>
+          <trans loc="es" val="ID del profesor"/>
+        </trans_set>
       </field>
       <field name="date" type="Date" title="Date">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Datum"/>
+          <trans loc="es" val="Fecha"/>
+        </trans_set>
       </field>
       <field name="time_start" type="Time" title="Start Time">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Čas začátku"/>
+          <trans loc="es" val="Fecha de inicio"/>
+        </trans_set>
       </field>
       <field name="hours" type="Number" title="Hours">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="cs" val="Počet hodin"/>
+          <trans loc="es" val="Horas"/>
+        </trans_set>
       </field>
       <field name="room_id" type="Number" title="Room ID">
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="room" choices_related_field="room_id" choices_related_show_all="true">
@@ -295,12 +347,31 @@
             </data_layout_groups>
           </choices_related_extra_layout>
         </formatting>
+        <trans_set>
+          <trans loc="cs" val="ID místnosti"/>
+          <trans loc="es" val="ID del aula"/>
+        </trans_set>
       </field>
     </fields>
     <relationships>
-      <relationship name="subject" key="subject_id" other_table="subjects" other_key="subject_id" title="Subject"/>
-      <relationship name="teacher" key="teacher_id" other_table="teachers" other_key="teacher_id" title="Teacher"/>
-      <relationship name="room" key="room_id" other_table="rooms" other_key="room_id" title="Room"/>
+      <relationship name="subject" key="subject_id" other_table="subjects" other_key="subject_id" title="Subject">
+        <trans_set>
+          <trans loc="cs" val="Předmět"/>
+          <trans loc="es" val="Asunto"/>
+        </trans_set>
+      </relationship>
+      <relationship name="teacher" key="teacher_id" other_table="teachers" other_key="teacher_id" title="Teacher">
+        <trans_set>
+          <trans loc="cs" val="Učitel"/>
+          <trans loc="es" val="Profesor"/>
+        </trans_set>
+      </relationship>
+      <relationship name="room" key="room_id" other_table="rooms" other_key="room_id" title="Room">
+        <trans_set>
+          <trans loc="cs" val="Místnost"/>
+          <trans loc="es" val="Aula"/>
+        </trans_set>
+      </relationship>
     </relationships>
     <data_layouts>
       <data_layout name="list" parent_table="lessons">
@@ -333,6 +404,10 @@
       <data_layout name="details" parent_table="lessons">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
+            <trans_set>
+              <trans loc="cs" val="Přehled"/>
+              <trans loc="es" val="Visión general"/>
+            </trans_set>
             <data_layout_item name="lesson_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
@@ -347,7 +422,15 @@
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
+            <trans_set>
+              <trans loc="cs" val="Podrobnosti"/>
+              <trans loc="es" val="Detalles"/>
+            </trans_set>
             <data_layout_group name="subject" title="Subject">
+              <trans_set>
+                <trans loc="cs" val="Předmět"/>
+                <trans loc="es" val="Asunto"/>
+              </trans_set>
               <data_layout_item name="subject_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
@@ -356,6 +439,10 @@
               </data_layout_item>
             </data_layout_group>
             <data_layout_group name="room" title="Room">
+              <trans_set>
+                <trans loc="cs" val="Místnost"/>
+                <trans loc="es" val="Aula"/>
+              </trans_set>
               <data_layout_item name="room_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
@@ -364,6 +451,10 @@
               </data_layout_item>
             </data_layout_group>
             <data_layout_group name="teacher" title="Teacher">
+              <trans_set>
+                <trans loc="cs" val="Učitel"/>
+                <trans loc="es" val="Profesor"/>
+              </trans_set>
               <data_layout_item name="teacher_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
@@ -421,27 +512,66 @@
         <value column="building">Main Building</value>
       </example_row>
     </example_rows>
+    <trans_set>
+      <trans loc="cs" val="Místnosti"/>
+      <trans loc="es" val="Aulas"/>
+    </trans_set>
     <fields>
       <field name="room_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Room ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="cs" val="ID místnosti"/>
+          <trans loc="es" val="ID del aula"/>
+        </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Popis"/>
+          <trans loc="es" val="Descripción"/>
+        </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
         <formatting format_text_multiline="true"/>
+        <trans_set>
+          <trans loc="cs" val="Poznámky"/>
+          <trans loc="es" val="Comentarios"/>
+        </trans_set>
       </field>
       <field name="floor" type="Number" title="Floor">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="cs" val="Patro"/>
+          <trans loc="es" val="Planta"/>
+        </trans_set>
       </field>
       <field name="building" type="Text" title="Building">
         <formatting choices_custom="true">
           <custom_choice_list>
-            <custom_choice value="Main Building"/>
-            <custom_choice value="Science Block"/>
-            <custom_choice value="Sports Hall"/>
+            <custom_choice value="Main Building">
+              <trans_set>
+                <trans loc="cs" val="Hlavní budova"/>
+                <trans loc="es" val="Edificio principal"/>
+              </trans_set>
+            </custom_choice>
+            <custom_choice value="Science Block">
+              <trans_set>
+                <trans loc="cs" val="Laboratoře"/>
+                <trans loc="es" val="Bloque de ciencias"/>
+              </trans_set>
+            </custom_choice>
+            <custom_choice value="Sports Hall">
+              <trans_set>
+                <trans loc="cs" val="Sportovní hala"/>
+                <trans loc="es" val="Pabellón de deportes"/>
+              </trans_set>
+            </custom_choice>
           </custom_choice_list>
         </formatting>
+        <trans_set>
+          <trans loc="cs" val="Budova"/>
+          <trans loc="es" val="Edificio"/>
+        </trans_set>
       </field>
     </fields>
     <relationships/>
@@ -467,6 +597,10 @@
       <data_layout name="details" parent_table="rooms">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
+            <trans_set>
+              <trans loc="cs" val="Přehled"/>
+              <trans loc="es" val="Visión general"/>
+            </trans_set>
             <data_layout_item name="room_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
@@ -475,6 +609,10 @@
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
+            <trans_set>
+              <trans loc="cs" val="Podrobnosti"/>
+              <trans loc="es" val="Detalles"/>
+            </trans_set>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
               <formatting/>
             </data_layout_item>
@@ -549,19 +687,40 @@
         <value column="comments"/>
       </example_row>
     </example_rows>
+    <trans_set>
+      <trans loc="cs" val="Předměty"/>
+      <trans loc="es" val="Materias"/>
+    </trans_set>
     <fields>
       <field name="subject_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Subject ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="cs" val="ID předmětu"/>
+          <trans loc="es" val="ID de materia"/>
+        </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Název"/>
+          <trans loc="es" val="Nombre"/>
+        </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
         <formatting format_text_multiline="true"/>
+        <trans_set>
+          <trans loc="cs" val="Poznámky"/>
+          <trans loc="es" val="Comentarios"/>
+        </trans_set>
       </field>
     </fields>
     <relationships>
-      <relationship name="lessons" key="subject_id" other_table="lessons" other_key="subject_id" title="Lessons"/>
+      <relationship name="lessons" key="subject_id" other_table="lessons" other_key="subject_id" title="Lessons">
+        <trans_set>
+          <trans loc="cs" val="Vyučovací hodiny"/>
+          <trans loc="es" val="Lecciones"/>
+        </trans_set>
+      </relationship>
     </relationships>
     <data_layouts>
       <data_layout name="list" parent_table="subjects">
@@ -582,6 +741,10 @@
       <data_layout name="details" parent_table="subjects">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
+            <trans_set>
+              <trans loc="cs" val="Přehled"/>
+              <trans loc="es" val="Visión general"/>
+            </trans_set>
             <data_layout_item name="subject_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
@@ -590,6 +753,10 @@
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
+            <trans_set>
+              <trans loc="cs" val="Poznámky"/>
+              <trans loc="es" val="Detalles"/>
+            </trans_set>
             <data_layout_portal relationship="lessons" portal_rows_count_min="6" portal_rows_count_max="6">
               <data_layout_item name="lesson_id" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -598,7 +765,12 @@
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name_full" relationship="teacher" use_default_formatting="true">
-                <title_custom use_custom="true" title="Teacher Name"/>
+                <title_custom use_custom="true" title="Teacher Name">
+                  <trans_set>
+                    <trans loc="cs" val="Jméno učitele"/>
+                    <trans loc="es" val="Nombre del profesor"/>
+                  </trans_set>
+                </title_custom>
                 <formatting/>
               </data_layout_item>
             </data_layout_portal>
@@ -792,133 +964,216 @@
       </example_row>
     </example_rows>
     <trans_set>
+      <trans loc="cs" val="Učitelé"/>
       <trans loc="de" val="Kontakten"/>
+      <trans loc="es" val="Profesores"/>
     </trans_set>
     <fields>
       <field name="teacher_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Teacher ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
+          <trans loc="cs" val="ID učitele"/>
           <trans loc="de" val="Kontakt ID"/>
+          <trans loc="es" val="ID del profesor"/>
         </trans_set>
       </field>
       <field name="name_first" type="Text" title="First Name">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Křestní jméno"/>
           <trans loc="de" val="Vorname"/>
+          <trans loc="es" val="Nombre"/>
         </trans_set>
       </field>
       <field name="name_middle" type="Text" title="Middle Name">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Prostřední jméno"/>
           <trans loc="de" val="Zweite Name"/>
+          <trans loc="es" val="Primer apellido"/>
         </trans_set>
       </field>
       <field name="name_last" type="Text" title="Last Name">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Příjmení"/>
           <trans loc="de" val="Familiename"/>
+          <trans loc="es" val="Segundo apellido"/>
         </trans_set>
       </field>
       <field name="name_title" type="Text" title="Title">
         <formatting choices_custom="true">
           <custom_choice_list>
-            <custom_choice value="Mr"/>
-            <custom_choice value="Mrs"/>
-            <custom_choice value="Ms"/>
-            <custom_choice value="Miss"/>
-            <custom_choice value="Dr"/>
-            <custom_choice value="Prof"/>
+            <custom_choice value="Mr">
+              <trans_set>
+                <trans loc="cs" val="pan"/>
+                <trans loc="es" val="Sr."/>
+              </trans_set>
+            </custom_choice>
+            <custom_choice value="Mrs">
+              <trans_set>
+                <trans loc="cs" val="paní"/>
+                <trans loc="es" val="Srta."/>
+              </trans_set>
+            </custom_choice>
+            <custom_choice value="Ms">
+              <trans_set>
+                <trans loc="cs" val="paní/slečna"/>
+                <trans loc="es" val="Sra."/>
+              </trans_set>
+            </custom_choice>
+            <custom_choice value="Miss">
+              <trans_set>
+                <trans loc="cs" val="slečna"/>
+                <trans loc="es" val="Señorita"/>
+              </trans_set>
+            </custom_choice>
+            <custom_choice value="Dr">
+              <trans_set>
+                <trans loc="cs" val="Dr."/>
+                <trans loc="es" val="Dr"/>
+              </trans_set>
+            </custom_choice>
+            <custom_choice value="Prof">
+              <trans_set>
+                <trans loc="cs" val="Prof."/>
+                <trans loc="es" val="Prof"/>
+              </trans_set>
+            </custom_choice>
           </custom_choice_list>
         </formatting>
         <trans_set>
+          <trans loc="cs" val="Oslovení"/>
           <trans loc="de" val="Titel"/>
+          <trans loc="es" val="Título"/>
         </trans_set>
       </field>
       <field name="address_street" type="Text" title="Street">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Ulice"/>
           <trans loc="de" val="Strasse"/>
+          <trans loc="es" val="Calle"/>
         </trans_set>
       </field>
       <field name="address_town" type="Text" title="Town">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Město"/>
           <trans loc="de" val="Ort"/>
+          <trans loc="es" val="Ciudad"/>
         </trans_set>
       </field>
       <field name="address_state" type="Text" title="State">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Stát"/>
           <trans loc="de" val="Bundesland/Kanton"/>
+          <trans loc="es" val="Estado"/>
         </trans_set>
       </field>
       <field name="address_country" type="Text" title="Country">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Země"/>
           <trans loc="de" val="Land"/>
+          <trans loc="es" val="País"/>
         </trans_set>
       </field>
       <field name="address_postcode" type="Text" title="Postcode">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="PSČ"/>
           <trans loc="de" val="Postleitzahl"/>
+          <trans loc="es" val="Código postal"/>
         </trans_set>
       </field>
       <field name="date_of_birth" type="Date" title="Date of Birth">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Datum narození"/>
           <trans loc="de" val="Geburtsdatum"/>
+          <trans loc="es" val="Fecha de nacimiento"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
         <formatting format_text_multiline="true"/>
         <trans_set>
+          <trans loc="cs" val="Poznámky"/>
           <trans loc="de" val="Kommentar"/>
+          <trans loc="es" val="Comentarios"/>
         </trans_set>
       </field>
       <field name="name_full" type="Text" title="Full Name">
         <calculation>return record["name_first"] + " " + record["name_last"];</calculation>
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Celé jméno"/>
           <trans loc="de" val="Vollname"/>
+          <trans loc="es" val="Nombre completo"/>
         </trans_set>
       </field>
       <field name="picture" type="Image" title="Picture">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Obrázek"/>
           <trans loc="de" val="Bild"/>
+          <trans loc="es" val="Foto"/>
         </trans_set>
       </field>
       <field name="email" type="Text" title="Email Address">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="E-mailová adresa"/>
           <trans loc="de" val="E-mail Addresse"/>
+          <trans loc="es" val="Dirección de correo-e"/>
         </trans_set>
       </field>
       <field name="website" type="Text" title="Web Site">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Webové stránky"/>
           <trans loc="de" val="Website"/>
+          <trans loc="es" val="Página web"/>
         </trans_set>
       </field>
       <field name="tel_home" type="Text" title="Home Telephone">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Telefon domů"/>
+          <trans loc="es" val="Teléfono de casa"/>
+        </trans_set>
       </field>
       <field name="tel_work" type="Text" title="Work Telephone">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Telefon do práce"/>
+          <trans loc="es" val="Teléfono del trabajo"/>
+        </trans_set>
       </field>
       <field name="tel_mobile" type="Text" title="Mobile Telephone">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Mobilní telefon"/>
+          <trans loc="es" val="Móvil"/>
+        </trans_set>
       </field>
       <field name="tel_fax" type="Text" title="Fax">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Fax"/>
           <trans loc="de" val="Fax"/>
+          <trans loc="es" val="Fax"/>
         </trans_set>
       </field>
     </fields>
     <relationships>
-      <relationship name="lessons" key="teacher_id" other_table="lessons" other_key="teacher_id" auto_create="true" allow_edit="true" title="Lessons"/>
+      <relationship name="lessons" key="teacher_id" other_table="lessons" other_key="teacher_id" auto_create="true" allow_edit="true" title="Lessons">
+        <trans_set>
+          <trans loc="cs" val="Vyučovací hodiny"/>
+          <trans loc="es" val="Lecciones"/>
+        </trans_set>
+      </relationship>
     </relationships>
     <data_layouts>
       <data_layout name="list" parent_table="teachers">
@@ -990,6 +1245,10 @@
       <data_layout name="details" parent_table="teachers">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
+            <trans_set>
+              <trans loc="cs" val="Přehled"/>
+              <trans loc="es" val="Visión general"/>
+            </trans_set>
             <data_layout_item name="teacher_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
@@ -998,8 +1257,16 @@
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
+            <trans_set>
+              <trans loc="cs" val="Podrobnosti"/>
+              <trans loc="es" val="Detalles"/>
+            </trans_set>
             <data_layout_notebook name="notebook">
               <data_layout_group name="name" title="Name">
+                <trans_set>
+                  <trans loc="cs" val="Název"/>
+                  <trans loc="es" val="Nombre"/>
+                </trans_set>
                 <data_layout_item name="name_title" editable="true" use_default_formatting="true">
                   <formatting/>
                 </data_layout_item>
@@ -1014,6 +1281,10 @@
                 </data_layout_item>
               </data_layout_group>
               <data_layout_group name="address" title="Address">
+                <trans_set>
+                  <trans loc="cs" val="Adresa"/>
+                  <trans loc="es" val="Dirección"/>
+                </trans_set>
                 <data_layout_item name="address_street" editable="true" use_default_formatting="true">
                   <formatting/>
                 </data_layout_item>
@@ -1031,6 +1302,10 @@
                 </data_layout_item>
               </data_layout_group>
               <data_layout_group name="telephone" title="Telephone">
+                <trans_set>
+                  <trans loc="cs" val="Telefon"/>
+                  <trans loc="es" val="Teléfono"/>
+                </trans_set>
                 <data_layout_item name="tel_home" editable="true" use_default_formatting="true">
                   <formatting/>
                 </data_layout_item>
@@ -1053,6 +1328,10 @@
                 </data_layout_item>
               </data_layout_group>
               <data_layout_group name="other" title="Other">
+                <trans_set>
+                  <trans loc="cs" val="Ostatní"/>
+                  <trans loc="es" val="Otro"/>
+                </trans_set>
                 <data_layout_item name="date_of_birth" editable="true" use_default_formatting="true">
                   <formatting/>
                 </data_layout_item>
@@ -1072,7 +1351,12 @@
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name" relationship="subject" editable="true" use_default_formatting="true">
-                <title_custom use_custom="true" title="Subject Name"/>
+                <title_custom use_custom="true" title="Subject Name">
+                  <trans_set>
+                    <trans loc="cs" val="Název předmětu"/>
+                    <trans loc="es" val="Nombre de la materia"/>
+                  </trans_set>
+                </title_custom>
                 <formatting/>
               </data_layout_item>
               <data_layout_item name="time_start" editable="true" use_default_formatting="true">
@@ -1109,6 +1393,10 @@
             </data_layout_item_groupby>
           </data_layout_group>
         </data_layout_groups>
+        <trans_set>
+          <trans loc="cs" val="Kontakty podle země"/>
+          <trans loc="es" val="Contactos por país"/>
+        </trans_set>
       </report>
       <report name="by_country_by_town" title="By Country, By Town">
         <data_layout_groups>
@@ -1130,6 +1418,10 @@
             </data_layout_item_groupby>
           </data_layout_group>
         </data_layout_groups>
+        <trans_set>
+          <trans loc="cs" val="Podle země, podle města"/>
+          <trans loc="es" val="Por país, por ciudad"/>
+        </trans_set>
       </report>
     </reports>
     <print_layouts/>

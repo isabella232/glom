@@ -181,140 +181,225 @@
       </example_row>
     </example_rows>
     <trans_set>
+      <trans loc="cs" val="Kontakty"/>
       <trans loc="de" val="Kontakten"/>
+      <trans loc="es" val="Contactos"/>
     </trans_set>
     <fields>
       <field name="contact_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Contact ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
+          <trans loc="cs" val="ID kontaktu"/>
           <trans loc="de" val="Kontakt ID"/>
+          <trans loc="es" val="ID del contacto"/>
         </trans_set>
       </field>
       <field name="name_first" type="Text" title="First Name">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Křestní jméno"/>
           <trans loc="de" val="Vorname"/>
+          <trans loc="es" val="Nombre"/>
         </trans_set>
       </field>
       <field name="name_middle" type="Text" title="Middle Name">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Prostřední jméno"/>
           <trans loc="de" val="Zweite Name"/>
+          <trans loc="es" val="Primer apellido"/>
         </trans_set>
       </field>
       <field name="name_last" type="Text" title="Last Name">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Příjmení"/>
           <trans loc="de" val="Familiename"/>
+          <trans loc="es" val="Segundo apellido"/>
         </trans_set>
       </field>
       <field name="name_title" type="Text" title="Title">
         <formatting choices_custom="true">
           <custom_choice_list>
-            <custom_choice value="Mr"/>
-            <custom_choice value="Mrs"/>
-            <custom_choice value="Ms"/>
-            <custom_choice value="Miss"/>
-            <custom_choice value="Dr"/>
-            <custom_choice value="Prof"/>
+            <custom_choice value="Mr">
+              <trans_set>
+                <trans loc="cs" val="pan"/>
+                <trans loc="es" val="Sr."/>
+              </trans_set>
+            </custom_choice>
+            <custom_choice value="Mrs">
+              <trans_set>
+                <trans loc="cs" val="paní"/>
+                <trans loc="es" val="Srta."/>
+              </trans_set>
+            </custom_choice>
+            <custom_choice value="Ms">
+              <trans_set>
+                <trans loc="cs" val="paní/slečna"/>
+                <trans loc="es" val="Sra."/>
+              </trans_set>
+            </custom_choice>
+            <custom_choice value="Miss">
+              <trans_set>
+                <trans loc="cs" val="slečna"/>
+                <trans loc="es" val="Señorita"/>
+              </trans_set>
+            </custom_choice>
+            <custom_choice value="Dr">
+              <trans_set>
+                <trans loc="cs" val="Dr."/>
+                <trans loc="es" val="Dr"/>
+              </trans_set>
+            </custom_choice>
+            <custom_choice value="Prof">
+              <trans_set>
+                <trans loc="cs" val="Prof."/>
+                <trans loc="es" val="Prof"/>
+              </trans_set>
+            </custom_choice>
           </custom_choice_list>
         </formatting>
         <trans_set>
+          <trans loc="cs" val="Oslovení"/>
           <trans loc="de" val="Titel"/>
+          <trans loc="es" val="Título"/>
         </trans_set>
       </field>
       <field name="address_street" type="Text" title="Street">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Ulice"/>
           <trans loc="de" val="Strasse"/>
+          <trans loc="es" val="Calle"/>
         </trans_set>
       </field>
       <field name="address_town" type="Text" title="Town">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Město"/>
           <trans loc="de" val="Ort"/>
+          <trans loc="es" val="Ciudad"/>
         </trans_set>
       </field>
       <field name="address_state" type="Text" title="State">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Stát"/>
           <trans loc="de" val="Bundesland/Kanton"/>
+          <trans loc="es" val="Estado"/>
         </trans_set>
       </field>
       <field name="address_country" type="Text" title="Country">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Země"/>
           <trans loc="de" val="Land"/>
+          <trans loc="es" val="País"/>
         </trans_set>
       </field>
       <field name="address_postcode" type="Text" title="Postcode">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="PSČ"/>
           <trans loc="de" val="Postleitzahl"/>
+          <trans loc="es" val="Código postal"/>
         </trans_set>
       </field>
       <field name="date_of_birth" type="Date" title="Date of Birth">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Datum narození"/>
           <trans loc="de" val="Geburtsdatum"/>
+          <trans loc="es" val="Fecha de nacimiento"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
         <formatting format_text_multiline="true"/>
         <trans_set>
+          <trans loc="cs" val="Poznámky"/>
           <trans loc="de" val="Kommentar"/>
+          <trans loc="es" val="Comentarios"/>
         </trans_set>
       </field>
       <field name="name_full" type="Text" title="Full Name">
         <calculation>return record["name_first"] + " " + record["name_last"];</calculation>
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Celé jméno"/>
           <trans loc="de" val="Vollname"/>
+          <trans loc="es" val="Nombre completo"/>
         </trans_set>
       </field>
       <field name="picture" type="Image" title="Picture">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Obrázek"/>
           <trans loc="de" val="Bild"/>
+          <trans loc="es" val="Foto"/>
         </trans_set>
       </field>
       <field name="email" type="Text" title="Email Address">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="E-mailová adresa"/>
           <trans loc="de" val="E-mail Addresse"/>
+          <trans loc="es" val="Dirección de correo-e"/>
         </trans_set>
       </field>
       <field name="website" type="Text" title="Web Site">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Webové stránky"/>
           <trans loc="de" val="Website"/>
+          <trans loc="es" val="Página web"/>
         </trans_set>
       </field>
       <field name="tel_home" type="Text" title="Home Telephone">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Telefon domů"/>
+          <trans loc="es" val="Teléfono de casa"/>
+        </trans_set>
       </field>
       <field name="tel_work" type="Text" title="Work Telephone">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Telefon do práce"/>
+          <trans loc="es" val="Teléfono del trabajo"/>
+        </trans_set>
       </field>
       <field name="tel_mobile" type="Text" title="Mobile Telephone">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Mobilní telefon"/>
+          <trans loc="es" val="Móvil"/>
+        </trans_set>
       </field>
       <field name="tel_fax" type="Text" title="Fax">
         <formatting/>
         <trans_set>
+          <trans loc="cs" val="Fax"/>
           <trans loc="de" val="Fax"/>
+          <trans loc="es" val="Fax"/>
         </trans_set>
       </field>
     </fields>
     <relationships>
-      <relationship name="team_members" key="contact_id" other_table="team_members" other_key="contact_id" title="Team Membership"/>
+      <relationship name="team_members" key="contact_id" other_table="team_members" other_key="contact_id" title="Team Membership">
+        <trans_set>
+          <trans loc="cs" val="Členství v týmu"/>
+          <trans loc="es" val="Miembro del equipo"/>
+        </trans_set>
+      </relationship>
     </relationships>
     <data_layouts>
       <data_layout name="details" parent_table="contacts">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
+              <trans loc="cs" val="Přehled"/>
               <trans loc="de" val="Ubersicht"/>
+              <trans loc="es" val="Visión general"/>
             </trans_set>
             <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -325,9 +410,15 @@
           </data_layout_group>
           <data_layout_group name="details" columns_count="2">
             <data_layout_notebook name="notebook" title="(Notebook)">
+              <trans_set>
+                <trans loc="cs" val="(Sešit)"/>
+                <trans loc="es" val="(Cuaderno de notas)"/>
+              </trans_set>
               <data_layout_group name="telephone" title="Telephone">
                 <trans_set>
+                  <trans loc="cs" val="Telefon"/>
                   <trans loc="de" val="Telefon"/>
+                  <trans loc="es" val="Teléfono"/>
                 </trans_set>
                 <data_layout_item name="tel_work" editable="true" use_default_formatting="true">
                   <formatting/>
@@ -344,7 +435,9 @@
               </data_layout_group>
               <data_layout_group name="address" title="Address">
                 <trans_set>
+                  <trans loc="cs" val="Adresa"/>
                   <trans loc="de" val="Addresse"/>
+                  <trans loc="es" val="Dirección"/>
                 </trans_set>
                 <data_layout_item name="address_street" editable="true" use_default_formatting="true">
                   <formatting/>
@@ -364,7 +457,9 @@
               </data_layout_group>
               <data_layout_group name="name" title="Name">
                 <trans_set>
+                  <trans loc="cs" val="Název"/>
                   <trans loc="de" val="Name"/>
+                  <trans loc="es" val="Nombre"/>
                 </trans_set>
                 <data_layout_item name="name_title" editable="true" use_default_formatting="true">
                   <formatting/>
@@ -449,6 +544,10 @@
             </data_layout_item_groupby>
           </data_layout_group>
         </data_layout_groups>
+        <trans_set>
+          <trans loc="cs" val="Kontakty podle země"/>
+          <trans loc="es" val="Contactos por país"/>
+        </trans_set>
       </report>
       <report name="by_country_by_town" title="By Country, By Town">
         <data_layout_groups>
@@ -470,6 +569,10 @@
             </data_layout_item_groupby>
           </data_layout_group>
         </data_layout_groups>
+        <trans_set>
+          <trans loc="cs" val="Podle země, podle města"/>
+          <trans loc="es" val="Por país, por ciudad"/>
+        </trans_set>
       </report>
     </reports>
     <print_layouts/>
@@ -489,27 +592,56 @@
         <value column="name">Project Big X</value>
       </example_row>
     </example_rows>
+    <trans_set>
+      <trans loc="cs" val="Projekty"/>
+      <trans loc="es" val="Proyectos"/>
+    </trans_set>
     <fields>
       <field name="project_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Project ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="cs" val="ID projektu"/>
+          <trans loc="es" val="ID del proyecto"/>
+        </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Popis"/>
+          <trans loc="es" val="Descripción"/>
+        </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
         <formatting format_text_multiline="true"/>
+        <trans_set>
+          <trans loc="cs" val="Poznámky"/>
+          <trans loc="es" val="Comentarios"/>
+        </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Název"/>
+          <trans loc="es" val="Nombre"/>
+        </trans_set>
       </field>
     </fields>
     <relationships>
-      <relationship name="teams" key="project_id" other_table="project_teams" other_key="project_id" auto_create="true" allow_edit="true" title="Teams"/>
+      <relationship name="teams" key="project_id" other_table="project_teams" other_key="project_id" auto_create="true" allow_edit="true" title="Teams">
+        <trans_set>
+          <trans loc="cs" val="Týmy"/>
+          <trans loc="es" val="Equipos"/>
+        </trans_set>
+      </relationship>
     </relationships>
     <data_layouts>
       <data_layout name="details" parent_table="projects">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
+            <trans_set>
+              <trans loc="cs" val="Přehled"/>
+              <trans loc="es" val="Visión general"/>
+            </trans_set>
             <data_layout_item name="project_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
@@ -518,6 +650,10 @@
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
+            <trans_set>
+              <trans loc="cs" val="Podrobnosti"/>
+              <trans loc="es" val="Detalles"/>
+            </trans_set>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
               <formatting/>
             </data_layout_item>
@@ -577,12 +713,24 @@
         <value column="project_id">0</value>
       </example_row>
     </example_rows>
+    <trans_set>
+      <trans loc="cs" val="Týmy projektu"/>
+      <trans loc="es" val="Equipos de proyectos"/>
+    </trans_set>
     <fields>
       <field name="project_team_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Project Team ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="cs" val="ID týmu projektu"/>
+          <trans loc="es" val="ID del equipo de proyecto"/>
+        </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
         <formatting format_text_multiline="true"/>
+        <trans_set>
+          <trans loc="cs" val="Poznámky"/>
+          <trans loc="es" val="Comentarios"/>
+        </trans_set>
       </field>
       <field name="team_id" type="Number" title="Team ID">
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="team" choices_related_field="team_id" choices_related_show_all="true">
@@ -596,6 +744,10 @@
             </data_layout_groups>
           </choices_related_extra_layout>
         </formatting>
+        <trans_set>
+          <trans loc="cs" val="ID týmu"/>
+          <trans loc="es" val="ID del equipo"/>
+        </trans_set>
       </field>
       <field name="project_id" type="Number" title="Project ID">
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="project" choices_related_field="project_id" choices_related_show_all="true">
@@ -609,11 +761,25 @@
             </data_layout_groups>
           </choices_related_extra_layout>
         </formatting>
+        <trans_set>
+          <trans loc="cs" val="ID projektu"/>
+          <trans loc="es" val="ID del proyecto"/>
+        </trans_set>
       </field>
     </fields>
     <relationships>
-      <relationship name="team" key="team_id" other_table="teams" other_key="team_id" title="Team"/>
-      <relationship name="project" key="project_id" other_table="projects" other_key="project_id" title="Project"/>
+      <relationship name="team" key="team_id" other_table="teams" other_key="team_id" title="Team">
+        <trans_set>
+          <trans loc="cs" val="Tým"/>
+          <trans loc="es" val="Equipo"/>
+        </trans_set>
+      </relationship>
+      <relationship name="project" key="project_id" other_table="projects" other_key="project_id" title="Project">
+        <trans_set>
+          <trans loc="cs" val="Projekt"/>
+          <trans loc="es" val="Proyecto"/>
+        </trans_set>
+      </relationship>
     </relationships>
     <data_layouts>
       <data_layout name="list" parent_table="project_teams">
@@ -637,11 +803,19 @@
       <data_layout name="details" parent_table="project_teams">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
+            <trans_set>
+              <trans loc="cs" val="Přehled"/>
+              <trans loc="es" val="Visión general"/>
+            </trans_set>
             <data_layout_item name="project_team_id" editable="true" use_default_formatting="true">
               <formatting/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
+            <trans_set>
+              <trans loc="cs" val="Podrobnosti"/>
+              <trans loc="es" val="Detalles"/>
+            </trans_set>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
               <formatting/>
             </data_layout_item>
@@ -649,14 +823,24 @@
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" relationship="team" editable="true" use_default_formatting="true">
-              <title_custom use_custom="true" title="Team Name"/>
+              <title_custom use_custom="true" title="Team Name">
+                <trans_set>
+                  <trans loc="cs" val="Název týmu"/>
+                  <trans loc="es" val="Nombre del equipo"/>
+                </trans_set>
+              </title_custom>
               <formatting/>
             </data_layout_item>
             <data_layout_item name="project_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" relationship="project" editable="true" use_default_formatting="true">
-              <title_custom use_custom="true" title="Project Name"/>
+              <title_custom use_custom="true" title="Project Name">
+                <trans_set>
+                  <trans loc="cs" val="Název projektu"/>
+                  <trans loc="es" val="Nombre del proyecto"/>
+                </trans_set>
+              </title_custom>
               <formatting/>
             </data_layout_item>
           </data_layout_group>
@@ -685,15 +869,31 @@
         <value column="role">Quality Manager</value>
       </example_row>
     </example_rows>
+    <trans_set>
+      <trans loc="cs" val="Členové týmu"/>
+      <trans loc="es" val="Miembros del equipo"/>
+    </trans_set>
     <fields>
       <field name="team_members_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="team_members ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="cs" val="ID členů týmu"/>
+          <trans loc="es" val="ID de los miembros del equipo"/>
+        </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Popis"/>
+          <trans loc="es" val="Descripción"/>
+        </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
         <formatting format_text_multiline="true"/>
+        <trans_set>
+          <trans loc="cs" val="Poznámky"/>
+          <trans loc="es" val="Comentarios"/>
+        </trans_set>
       </field>
       <field name="contact_id" type="Number" title="Contact ID">
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="contacts" choices_related_field="contact_id" choices_related_show_all="true">
@@ -707,6 +907,10 @@
             </data_layout_groups>
           </choices_related_extra_layout>
         </formatting>
+        <trans_set>
+          <trans loc="cs" val="ID kontaktu"/>
+          <trans loc="es" val="ID del contacto"/>
+        </trans_set>
       </field>
       <field name="team_id" type="Number" title="Team ID">
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="team" choices_related_field="team_id" choices_related_show_all="true">
@@ -720,14 +924,32 @@
             </data_layout_groups>
           </choices_related_extra_layout>
         </formatting>
+        <trans_set>
+          <trans loc="cs" val="ID týmu"/>
+          <trans loc="es" val="ID del equipo"/>
+        </trans_set>
       </field>
       <field name="role" type="Text" title="Role">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Postavení"/>
+          <trans loc="es" val="Rol"/>
+        </trans_set>
       </field>
     </fields>
     <relationships>
-      <relationship name="contacts" key="contact_id" other_table="contacts" other_key="contact_id" title="Contacts"/>
-      <relationship name="team" key="team_id" other_table="teams" other_key="team_id" title="Team"/>
+      <relationship name="contacts" key="contact_id" other_table="contacts" other_key="contact_id" title="Contacts">
+        <trans_set>
+          <trans loc="cs" val="Kontakty"/>
+          <trans loc="es" val="Contactos"/>
+        </trans_set>
+      </relationship>
+      <relationship name="team" key="team_id" other_table="teams" other_key="team_id" title="Team">
+        <trans_set>
+          <trans loc="cs" val="Tým"/>
+          <trans loc="es" val="Equipo"/>
+        </trans_set>
+      </relationship>
     </relationships>
     <data_layouts>
       <data_layout name="list" parent_table="team_members">
@@ -757,11 +979,19 @@
       <data_layout name="details" parent_table="team_members">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
+            <trans_set>
+              <trans loc="cs" val="Přehled"/>
+              <trans loc="es" val="Visión general"/>
+            </trans_set>
             <data_layout_item name="team_members_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
+            <trans_set>
+              <trans loc="cs" val="Podrobnosti"/>
+              <trans loc="es" val="Detalles"/>
+            </trans_set>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
               <formatting/>
             </data_layout_item>
@@ -799,28 +1029,62 @@
         <value column="name">Software Development</value>
       </example_row>
     </example_rows>
+    <trans_set>
+      <trans loc="cs" val="Týmy"/>
+      <trans loc="es" val="Equipos"/>
+    </trans_set>
     <fields>
       <field name="team_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Team ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="cs" val="ID týmu"/>
+          <trans loc="es" val="ID del equipo"/>
+        </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Popis"/>
+          <trans loc="es" val="Descripción"/>
+        </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
         <formatting format_text_multiline="true"/>
+        <trans_set>
+          <trans loc="cs" val="Poznámky"/>
+          <trans loc="es" val="Comentarios"/>
+        </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Název"/>
+          <trans loc="es" val="Nombre"/>
+        </trans_set>
       </field>
     </fields>
     <relationships>
-      <relationship name="members" key="team_id" other_table="team_members" other_key="team_id" auto_create="true" allow_edit="true" title="Members"/>
-      <relationship name="projects" key="team_id" other_table="project_teams" other_key="team_id" title="Projects"/>
+      <relationship name="members" key="team_id" other_table="team_members" other_key="team_id" auto_create="true" allow_edit="true" title="Members">
+        <trans_set>
+          <trans loc="cs" val="Členové"/>
+          <trans loc="es" val="Miembros"/>
+        </trans_set>
+      </relationship>
+      <relationship name="projects" key="team_id" other_table="project_teams" other_key="team_id" title="Projects">
+        <trans_set>
+          <trans loc="cs" val="Projekty"/>
+          <trans loc="es" val="Proyectos"/>
+        </trans_set>
+      </relationship>
     </relationships>
     <data_layouts>
       <data_layout name="details" parent_table="teams">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
+            <trans_set>
+              <trans loc="cs" val="Přehled"/>
+              <trans loc="es" val="Visión general"/>
+            </trans_set>
             <data_layout_item name="team_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
@@ -829,6 +1093,10 @@
             </data_layout_item>
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
+            <trans_set>
+              <trans loc="cs" val="Podrobnosti"/>
+              <trans loc="es" val="Detalles"/>
+            </trans_set>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
               <formatting/>
             </data_layout_item>

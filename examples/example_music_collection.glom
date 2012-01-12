@@ -44,15 +44,31 @@
         <value column="year">1972</value>
       </example_row>
     </example_rows>
+    <trans_set>
+      <trans loc="cs" val="Alba"/>
+      <trans loc="es" val="Álbumes"/>
+    </trans_set>
     <fields>
       <field name="album_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Album ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="cs" val="ID alba"/>
+          <trans loc="es" val="ID del álbum"/>
+        </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
         <formatting format_text_multiline="true"/>
+        <trans_set>
+          <trans loc="cs" val="Poznámky"/>
+          <trans loc="es" val="Comentarios"/>
+        </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Název"/>
+          <trans loc="es" val="Nombre"/>
+        </trans_set>
       </field>
       <field name="artist_id" type="Number" title="Artist ID">
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="artist" choices_related_field="artist_id" choices_related_show_all="true">
@@ -66,6 +82,10 @@
             </data_layout_groups>
           </choices_related_extra_layout>
         </formatting>
+        <trans_set>
+          <trans loc="cs" val="ID umělce"/>
+          <trans loc="es" val="ID del artista"/>
+        </trans_set>
       </field>
       <field name="publisher_id" type="Number" title="Publisher ID">
         <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="publisher" choices_related_field="publishers_id" choices_related_show_all="true">
@@ -79,22 +99,47 @@
             </data_layout_groups>
           </choices_related_extra_layout>
         </formatting>
+        <trans_set>
+          <trans loc="cs" val="ID vydavatele"/>
+          <trans loc="es" val="ID de la editorial"/>
+        </trans_set>
       </field>
       <field name="year" type="Number" title="Year">
         <formatting format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="cs" val="Rok"/>
+          <trans loc="es" val="Año"/>
+        </trans_set>
       </field>
     </fields>
     <relationships>
-      <relationship name="artist" key="artist_id" other_table="artists" other_key="artist_id" title="Artist"/>
-      <relationship name="publisher" key="publisher_id" other_table="publishers" other_key="publishers_id" title="Publisher"/>
-      <relationship name="songs" key="album_id" other_table="songs" other_key="album_id" auto_create="true" allow_edit="true" title="Songs"/>
+      <relationship name="artist" key="artist_id" other_table="artists" other_key="artist_id" title="Artist">
+        <trans_set>
+          <trans loc="cs" val="Umělec"/>
+          <trans loc="es" val="Artista"/>
+        </trans_set>
+      </relationship>
+      <relationship name="publisher" key="publisher_id" other_table="publishers" other_key="publishers_id" title="Publisher">
+        <trans_set>
+          <trans loc="cs" val="Vydavatel"/>
+          <trans loc="es" val="Editorial"/>
+        </trans_set>
+      </relationship>
+      <relationship name="songs" key="album_id" other_table="songs" other_key="album_id" auto_create="true" allow_edit="true" title="Songs">
+        <trans_set>
+          <trans loc="cs" val="Skladby"/>
+          <trans loc="es" val="Canciones"/>
+        </trans_set>
+      </relationship>
     </relationships>
     <data_layouts>
       <data_layout name="details" parent_table="albums">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
+              <trans loc="cs" val="Přehled"/>
               <trans loc="de" val="Overview"/>
+              <trans loc="es" val="Visión general"/>
             </trans_set>
             <data_layout_item name="album_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -105,11 +150,15 @@
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
             <trans_set>
+              <trans loc="cs" val="Podrobnosti"/>
               <trans loc="de" val="Details"/>
+              <trans loc="es" val="Detalles"/>
             </trans_set>
             <data_layout_group name="artist" title="Artist">
               <trans_set>
+                <trans loc="cs" val="Umělec"/>
                 <trans loc="de" val="Artist"/>
+                <trans loc="es" val="Artista"/>
               </trans_set>
               <data_layout_item name="artist_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -120,7 +169,9 @@
             </data_layout_group>
             <data_layout_group name="publisher" title="Publisher">
               <trans_set>
+                <trans loc="cs" val="Vydavatel"/>
                 <trans loc="de" val="Publisher"/>
+                <trans loc="es" val="Editorial"/>
               </trans_set>
               <data_layout_item name="publisher_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -156,14 +207,24 @@
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" relationship="artist" editable="true" use_default_formatting="true">
-              <title_custom use_custom="true" title="Artist Name"/>
+              <title_custom use_custom="true" title="Artist Name">
+                <trans_set>
+                  <trans loc="cs" val="Jméno umělce"/>
+                  <trans loc="es" val="Nombre del artista"/>
+                </trans_set>
+              </title_custom>
               <formatting/>
             </data_layout_item>
             <data_layout_item name="publisher_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" relationship="publisher" editable="true" use_default_formatting="true">
-              <title_custom use_custom="true" title="Publisher Name"/>
+              <title_custom use_custom="true" title="Publisher Name">
+                <trans_set>
+                  <trans loc="cs" val="Jméno vydavatele"/>
+                  <trans loc="es" val="Nombre de la editorial"/>
+                </trans_set>
+              </title_custom>
               <formatting/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
@@ -182,7 +243,12 @@
               <secondary_fields>
                 <data_layout_group>
                   <data_layout_item name="name" relationship="artist" editable="true" use_default_formatting="true">
-                    <title_custom use_custom="true" title="Artist Name"/>
+                    <title_custom use_custom="true" title="Artist Name">
+                      <trans_set>
+                        <trans loc="cs" val="Jméno umělce"/>
+                        <trans loc="es" val="Nombre del artista"/>
+                      </trans_set>
+                    </title_custom>
                     <formatting/>
                   </data_layout_item>
                 </data_layout_group>
@@ -196,6 +262,10 @@
             </data_layout_item_groupby>
           </data_layout_group>
         </data_layout_groups>
+        <trans_set>
+          <trans loc="cs" val="Alba od umělce"/>
+          <trans loc="es" val="Álbumes por artista"/>
+        </trans_set>
       </report>
     </reports>
     <print_layouts/>
@@ -227,29 +297,56 @@
         <value column="name">Curtis Mayfield</value>
       </example_row>
     </example_rows>
+    <trans_set>
+      <trans loc="cs" val="Umělci"/>
+      <trans loc="es" val="Artistas"/>
+    </trans_set>
     <fields>
       <field name="artist_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Artist ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="cs" val="ID umělce"/>
+          <trans loc="es" val="ID del artista"/>
+        </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Popis"/>
+          <trans loc="es" val="Descripción"/>
+        </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
         <formatting format_text_multiline="true"/>
+        <trans_set>
+          <trans loc="cs" val="Poznámky"/>
+          <trans loc="es" val="Comentarios"/>
+        </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Jméno"/>
+          <trans loc="es" val="Nombre"/>
+        </trans_set>
       </field>
     </fields>
     <relationships>
-      <relationship name="albums" key="artist_id" other_table="albums" other_key="artist_id" auto_create="true" allow_edit="true" title="Albums"/>
+      <relationship name="albums" key="artist_id" other_table="albums" other_key="artist_id" auto_create="true" allow_edit="true" title="Albums">
+        <trans_set>
+          <trans loc="cs" val="Alba"/>
+          <trans loc="es" val="Álbumes"/>
+        </trans_set>
+      </relationship>
     </relationships>
     <data_layouts>
       <data_layout name="details" parent_table="artists">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
+              <trans loc="cs" val="Přehled"/>
               <trans loc="de" val="Overview"/>
+              <trans loc="es" val="Visión general"/>
             </trans_set>
             <data_layout_item name="artist_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -260,7 +357,9 @@
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
             <trans_set>
+              <trans loc="cs" val="Podrobnosti"/>
               <trans loc="de" val="Details"/>
+              <trans loc="es" val="Detalles"/>
             </trans_set>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
               <formatting/>
@@ -319,26 +418,49 @@
         <value column="name">Rhino</value>
       </example_row>
     </example_rows>
+    <trans_set>
+      <trans loc="cs" val="Vydavatelé"/>
+      <trans loc="es" val="Editoriales"/>
+    </trans_set>
     <fields>
       <field name="publishers_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Publisher ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="cs" val="ID vydavatele"/>
+          <trans loc="es" val="ID de la editorial"/>
+        </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
         <formatting format_text_multiline="true"/>
+        <trans_set>
+          <trans loc="cs" val="Poznámky"/>
+          <trans loc="es" val="Comentarios"/>
+        </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Jméno"/>
+          <trans loc="es" val="Nombre"/>
+        </trans_set>
       </field>
     </fields>
     <relationships>
-      <relationship name="albums" key="publishers_id" other_table="albums" other_key="publisher_id" title="Albums"/>
+      <relationship name="albums" key="publishers_id" other_table="albums" other_key="publisher_id" title="Albums">
+        <trans_set>
+          <trans loc="cs" val="Alba"/>
+          <trans loc="es" val="Álbumes"/>
+        </trans_set>
+      </relationship>
     </relationships>
     <data_layouts>
       <data_layout name="details" parent_table="publishers">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
+              <trans loc="cs" val="Přehled"/>
               <trans loc="de" val="Overview"/>
+              <trans loc="es" val="Visión general"/>
             </trans_set>
             <data_layout_item name="publishers_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -349,7 +471,9 @@
           </data_layout_group>
           <data_layout_group name="details" title="Details">
             <trans_set>
+              <trans loc="cs" val="Podrobnosti"/>
               <trans loc="de" val="Details"/>
+              <trans loc="es" val="Detalles"/>
             </trans_set>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
               <formatting/>
@@ -684,29 +808,56 @@
         <value column="name">Superfly</value>
       </example_row>
     </example_rows>
+    <trans_set>
+      <trans loc="cs" val="Skladby"/>
+      <trans loc="es" val="Canciones"/>
+    </trans_set>
     <fields>
       <field name="song_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Song ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="cs" val="ID skladby"/>
+          <trans loc="es" val="ID de la canción"/>
+        </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
         <formatting format_text_multiline="true"/>
+        <trans_set>
+          <trans loc="cs" val="Poznámky"/>
+          <trans loc="es" val="Comentarios"/>
+        </trans_set>
       </field>
       <field name="album_id" type="Number" title="Album ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="cs" val="ID alba"/>
+          <trans loc="es" val="ID del álbum"/>
+        </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
         <formatting/>
+        <trans_set>
+          <trans loc="cs" val="Název"/>
+          <trans loc="es" val="Nombre"/>
+        </trans_set>
       </field>
     </fields>
     <relationships>
-      <relationship name="album" key="album_id" other_table="albums" other_key="album_id" title="Album"/>
+      <relationship name="album" key="album_id" other_table="albums" other_key="album_id" title="Album">
+        <trans_set>
+          <trans loc="cs" val="Album"/>
+          <trans loc="es" val="Álbum"/>
+        </trans_set>
+      </relationship>
     </relationships>
     <data_layouts>
       <data_layout name="details" parent_table="songs">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
+              <trans loc="cs" val="Přehled"/>
               <trans loc="de" val="Overview"/>
+              <trans loc="es" val="Visión general"/>
             </trans_set>
             <data_layout_item name="song_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -717,9 +868,15 @@
           </data_layout_group>
           <data_layout_group name="details" columns_count="2" title="Details">
             <trans_set>
+              <trans loc="cs" val="Podrobnosti"/>
               <trans loc="de" val="Details"/>
+              <trans loc="es" val="Detalles"/>
             </trans_set>
             <data_layout_group name="album" title="Album">
+              <trans_set>
+                <trans loc="cs" val="Album"/>
+                <trans loc="es" val="Álbum"/>
+              </trans_set>
               <data_layout_item name="album_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
@@ -728,6 +885,10 @@
               </data_layout_item>
             </data_layout_group>
             <data_layout_group name="artist" title="Album Artist">
+              <trans_set>
+                <trans loc="cs" val="Umělci alba"/>
+                <trans loc="es" val="Artista del álbum"/>
+              </trans_set>
               <data_layout_item name="artist_id" relationship="album" related_relationship="artist" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>

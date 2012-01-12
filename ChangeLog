@@ -1,3 +1,14 @@
+2012-01-13  Murray Cumming  <murrayc@murrayc.com>
+
+	Import .po translations into the .glom example files.
+
+	* examples/example_film_manager.glom:
+	* examples/example_lesson_planner.glom:
+	* examples/example_music_collection.glom:
+	* examples/example_project_manager.glom:
+	* examples/example_smallbusiness.glom: Import some new German,
+	Czech, and Spanish translations. This is wonderful.
+
 1.21.2:
 
 2012-01-11  Murray Cumming  <murrayc@murrayc.com>
