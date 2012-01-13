@@ -128,6 +128,26 @@ public:
   void pulse_progress_message();
   void clear_progress_message();
 
+  /** Set the locale used for original text of titles. This 
+   * must usually be stored in the document. 
+   * Ideally, it would be English.
+   */
+  static void set_original_locale(const Glib::ustring& locale);
+
+  static Glib::ustring get_original_locale();
+
+  static bool get_current_locale_not_original();
+
+  /** Set the locale used for titles, to test translations.
+   * Usually the current locale is just the locale at startup.
+   */
+  static void set_current_locale(const Glib::ustring& locale);
+
+  /** Get the locale used by this program when it was started,
+   * or the locale set by set_current_locale().
+   */
+  static Glib::ustring get_current_locale();
+
   static Application* get_application();
 
 protected:
@@ -272,6 +292,8 @@ private:
   Glib::ustring m_temp_username, m_temp_password;
 
   bool m_show_sql_debug;
+
+  static Glib::ustring m_current_locale, m_original_locale;
 };
 
 } //namespace Glom

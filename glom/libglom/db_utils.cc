@@ -499,7 +499,7 @@ bool add_standard_tables(Document* document)
     {
       sharedptr<TableInfo> table_info(new TableInfo());
       table_info->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
-      table_info->set_title("System: Auto Increments"); //TODO: Provide standard translations.
+      table_info->set_title_original(_("System: Auto Increments"));
       table_info->m_hidden = true;
 
       Document::type_vec_fields fields;
@@ -1149,7 +1149,7 @@ bool create_table_with_default_fields(Document* document, const Glib::ustring& t
   //Primary key:
   sharedptr<Field> field_primary_key(new Field());
   field_primary_key->set_name(table_name + "_id");
-  field_primary_key->set_title(table_name + " ID");
+  field_primary_key->set_title_original( Glib::ustring::compose("%1 ID", table_name) );
   field_primary_key->set_primary_key();
   field_primary_key->set_auto_increment();
 
@@ -1166,21 +1166,21 @@ bool create_table_with_default_fields(Document* document, const Glib::ustring& t
   //Description:
   sharedptr<Field> field_description(new Field());
   field_description->set_name("description");
-  field_description->set_title(_("Description")); //Use a translation, because the original locale will be marked as non-English if the current locale is non-English.
+  field_description->set_title_original(_("Description")); //Use a translation, because the original locale will be marked as non-English if the current locale is non-English.
   field_description->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_description);
 
   //Comments:
   sharedptr<Field> field_comments(new Field());
   field_comments->set_name("comments");
-  field_comments->set_title(_("Comments"));
+  field_comments->set_title_original(_("Comments"));
   field_comments->set_glom_type(Field::TYPE_TEXT);
   field_comments->m_default_formatting.set_text_format_multiline();
   fields.push_back(field_comments);
 
   sharedptr<TableInfo> table_info(new TableInfo());
   table_info->set_name(table_name);
-  table_info->set_title( Utils::title_from_string( table_name ) ); //Start with a title that might be appropriate.
+  table_info->set_title_original( Utils::title_from_string( table_name ) ); //Start with a title that might be appropriate.
 
   created = create_table(table_info, fields);
 

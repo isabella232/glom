@@ -46,11 +46,16 @@ public:
 
   /** Get the text that will be shown on each record.
    */
-  Glib::ustring get_text() const;
+  Glib::ustring get_text(const Glib::ustring& locale) const;
 
   /** Set the text that will be shown on each record.
    */
-  void set_text(const Glib::ustring& text);
+  void set_text(const Glib::ustring& text, const Glib::ustring& locale);
+
+  /** Set the text's original (non-translated, usually English) text.
+   * This is the same as calling set_text() with an empty locale parameter.
+   */
+  void set_text_original(const Glib::ustring& text);
 
   sharedptr<TranslatableItem> m_text; //Reuse the title concept of this class to give us translatable text.
 };

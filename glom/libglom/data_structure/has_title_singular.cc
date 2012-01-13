@@ -59,18 +59,27 @@ bool HasTitleSingular::operator!=(const HasTitleSingular& src) const
 }
 
 
-Glib::ustring HasTitleSingular::get_title_singular() const
+Glib::ustring HasTitleSingular::get_title_singular(const Glib::ustring& locale) const
 {
   Glib::ustring result;
   if(m_title_singular)
-    result = m_title_singular->get_title();
+    result = m_title_singular->get_title(locale);
 
   return result;
 }
 
-Glib::ustring HasTitleSingular::get_title_singular_with_fallback() const
+Glib::ustring HasTitleSingular::get_title_singular_original() const
 {
-  const Glib::ustring result = get_title_singular();
+  Glib::ustring result;
+  if(m_title_singular)
+    result = m_title_singular->get_title_original();
+
+  return result;
+}
+
+Glib::ustring HasTitleSingular::get_title_singular_with_fallback(const Glib::ustring& locale) const
+{
+  const Glib::ustring result = get_title_singular(locale);
   if(!result.empty())
     return result;
   
@@ -78,18 +87,18 @@ Glib::ustring HasTitleSingular::get_title_singular_with_fallback() const
   //then try getting the regular title instead.
   const TranslatableItem* translatable = dynamic_cast<const TranslatableItem*>(this);
   if(translatable)
-    return translatable->get_title_or_name();
+    return translatable->get_title_or_name(locale);
 
   return result;
 }
 
 
-void HasTitleSingular::set_title_singular(const Glib::ustring& title)
+void HasTitleSingular::set_title_singular(const Glib::ustring& title, const Glib::ustring& locale)
 {
   if(!m_title_singular)
     m_title_singular = sharedptr<TranslatableItem>::create();
 
-  m_title_singular->set_title(title);
+  m_title_singular->set_title(title, locale);
 }
 
 } //namespace Glom

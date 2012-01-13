@@ -86,8 +86,8 @@ int main()
   table_info->set_name(table_name);
   
   const Glib::ustring table_title = "sometabletitle";
-  table_info->set_title(table_title);
-  g_assert(table_info->get_title() == table_title);  
+  table_info->set_title_original(table_title);
+  g_assert(table_info->get_title_original() == table_title);  
   document.add_table(table_info);
 
   const float x = 20.0f;

@@ -20,6 +20,7 @@
 
 #include "dialog_choose_id.h"
 #include <glom/utils_ui.h> //For bold_message()).
+#include <glom/application.h>
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
@@ -176,7 +177,7 @@ bool Dialog_ChooseID::init_db_details(const Glib::ustring& table_name, const Gli
   m_table_name = table_name;
   m_layout_platform = layout_platform;
 
-  m_label_table_name->set_text( get_document()->get_table_title(m_table_name) );
+  m_label_table_name->set_text( get_document()->get_table_title(m_table_name, Application::get_current_locale()) );
 
   //Start by asking for find criteria:
   m_stage = STAGE_FIND;

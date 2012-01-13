@@ -72,7 +72,7 @@ Application* NotebookLabel::get_application()
 void NotebookLabel::on_menu_new_group_activate()
 {
   sharedptr<LayoutGroup> group(new LayoutGroup());
-  group->set_title(_("New Group"));
+  group->set_title_original(_("New Group"));
   group->set_name(_("Group"));
   
   sharedptr<LayoutGroup> notebook_group = sharedptr<LayoutGroup>::cast_dynamic (m_notebook->get_layout_item());
@@ -84,10 +84,11 @@ void NotebookLabel::on_menu_new_group_activate()
 void NotebookLabel::on_menu_delete_activate()
 {
   Glib::ustring message;
-  if(!m_notebook->get_layout_item()->get_title().empty())
+  const Glib::ustring notebook_title = m_notebook->get_layout_item()->get_title(Application::get_current_locale());
+  if(!notebook_title.empty())
   {
     message = Glib::ustring::compose (_("Delete whole notebook \"%1\"?"),
-                                      m_notebook->get_layout_item()->get_title());
+                                      notebook_title);
   }
   else
   {

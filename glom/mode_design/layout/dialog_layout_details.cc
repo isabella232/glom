@@ -26,6 +26,7 @@
 #include <glom/frame_glom.h> //For show_ok_dialog()
 //#include <libgnome/gnome-i18n.h>
 #include <glom/utils_ui.h> //For bold_message()).
+#include <glom/application.h>
 #include <glibmm/i18n.h>
 #include <sstream> //For stringstream
 
@@ -341,7 +342,7 @@ void Dialog_Layout_Details::set_document(const Glib::ustring& layout_name, const
   {
     //Set the table name and title:
     m_label_table_name->set_text(table_name);
-    m_entry_table_title->set_text( document->get_table_title(table_name) );
+    m_entry_table_title->set_text( document->get_table_title(table_name, Application::get_current_locale()) );
 
     Document::type_list_layout_groups list_groups = document->get_data_layout_groups_plus_new_fields(m_layout_name, m_table_name, m_layout_platform);
     document->fill_layout_field_details(m_table_name, list_groups); //Update with full field information.
@@ -658,7 +659,7 @@ void Dialog_Layout_Details::on_button_add_button()
 
     //Add a new button:
     sharedptr<LayoutItem_Button> button = sharedptr<LayoutItem_Button>::create();
-    button->set_title(_("New Button")); //Give the button a default title, so it is big enough, and so people see that they should change it.
+    button->set_title_original(_("New Button")); //Give the button a default title, so it is big enough, and so people see that they should change it.
     row[m_model_items->m_columns.m_col_layout_item] = button;
 
     //Scroll to, and select, the new row:
@@ -683,7 +684,7 @@ void Dialog_Layout_Details::on_button_add_text()
 
     //Add a new button:
     sharedptr<LayoutItem_Text> textobject = sharedptr<LayoutItem_Text>::create();
-    textobject->set_title(_("Text Title")); //Give the button a default title, so it is big enough, and so people see that they should change it.
+    textobject->set_title_original(_("Text Title")); //Give the button a default title, so it is big enough, and so people see that they should change it.
     row[m_model_items->m_columns.m_col_layout_item] = textobject;
 
     //Scroll to, and select, the new row:
@@ -708,7 +709,7 @@ void Dialog_Layout_Details::on_button_add_image()
 
     //Add a new button:
     sharedptr<LayoutItem_Image> imageobject = sharedptr<LayoutItem_Image>::create();
-    imageobject->set_title(_("Image Title")); //Give the item a default title, so it is big enough, and so people see that they should change it.
+    imageobject->set_title_original(_("Image Title")); //Give the item a default title, so it is big enough, and so people see that they should change it.
     row[m_model_items->m_columns.m_col_layout_item] = imageobject;
 
     //Scroll to, and select, the new row:
@@ -1053,7 +1054,7 @@ void Dialog_Layout_Details::save_to_document()
     //Set the table name and title:
     Document* document = get_document();
     if(document)
-      document->set_table_title( m_table_name, m_entry_table_title->get_text() );
+      document->set_table_title( m_table_name, m_entry_table_title->get_text(), Application::get_current_locale());
 
     //Get the data from the TreeView and store it in the document:
 
@@ -1198,7 +1199,7 @@ void Dialog_Layout_Details::on_cell_data_title(Gtk::CellRenderer* renderer, cons
       if(layout_notebook)
         renderer_text->property_text() = _("(Notebook)");
       else if(layout_item)
-        renderer_text->property_text() = layout_item->get_title();
+        renderer_text->property_text() = layout_item->get_title(Application::get_current_locale());
       else
         renderer_text->property_text() = Glib::ustring();
 
@@ -1292,7 +1293,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_title(const Glib::ustring& p
       if(layout_item)
       {
         //Store the user's new text in the model:
-        layout_item->set_title(new_text);
+        layout_item->set_title(new_text, Application::get_current_locale());
 
         m_modified = true;
       }

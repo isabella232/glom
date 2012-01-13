@@ -31,6 +31,7 @@
 namespace Glom
 {
 
+//TODO: Is this used?
 class Dialog_FlowTable
  : public Gtk::Dialog,
    public Base_DB //Give this class access to the current document, and to some utility methods.
@@ -45,8 +46,8 @@ public:
 
   void set_flowtable(FlowTableWithFields* flowtable);
   
-  gint get_columns_count();
-  Glib::ustring get_title();
+  gint get_columns_count(); //TODO: Make const?
+  Glib::ustring get_title(); //TODO: Isn't this the same as Widget::get_title()?
     
 private:
   Gtk::Entry* m_entry_title;

@@ -271,7 +271,7 @@ bool import_translations_from_po_file(Document* document, const Glib::ustring& p
         if( (item->get_title_original() == msgid) && 
           (get_po_context_for_item(item, hint) == msgcontext) ) // This is not efficient, but it should be reliable.
         {
-          item->set_title_translation(translation_locale, msgstr);
+          item->set_title(msgstr, translation_locale);
           // Keep examining items, in case there are duplicates. break;
         }
       }

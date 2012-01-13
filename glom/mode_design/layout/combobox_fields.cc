@@ -19,6 +19,7 @@
  */
 
 #include <glom/mode_design/layout/combobox_fields.h>
+#include <glom/application.h>
 #include <glibmm/i18n.h>
 
 #include <iostream>
@@ -201,7 +202,7 @@ void ComboBox_Fields::on_cell_data_title(const Gtk::TreeModel::const_iterator& i
   sharedptr<Field> field = row[m_model_columns.m_field];
   if(field)
   {
-    m_renderer_title->set_property("text", field->get_title_or_name());
+    m_renderer_title->set_property("text", field->get_title_or_name(Application::get_current_locale()));
   }
   else
   {

@@ -114,11 +114,11 @@ protected:
 
   /** Get the title of the relationship used by the portal.
    */
-  Glib::ustring get_title() const;
+  Glib::ustring get_title(const Glib::ustring& locale) const;
   
   /** Get the singular title of the relationship used by the portal.
    */
-  Glib::ustring get_title_singular() const;  
+  Glib::ustring get_title_singular(const Glib::ustring& locale) const;  
   
   Gtk::Frame m_Frame;
   Gtk::Alignment m_Alignment;

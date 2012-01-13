@@ -22,6 +22,7 @@
 #include <glom/mode_data/datawidget/treemodel_db_withextratext.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/utils_ui.h>
+#include <glom/application.h>
 #include <gtkmm/liststore.h>
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream
@@ -238,7 +239,7 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const FieldFormatting::type_li
     {
       //Show the translated text of the value:
       //This will never be stored in the database:
-      text = choicevalue->get_title();
+      text = choicevalue->get_title(Application::get_current_locale());
     }
     else
     {

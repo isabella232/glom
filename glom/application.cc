@@ -68,6 +68,9 @@ namespace Glom
 // Global application variable
 Application* global_application = 0;
 
+Glib::ustring Application::m_current_locale;
+Glib::ustring Application::m_original_locale;
+
 const char* Application::glade_id("window_main");
 const bool Application::glade_developer(false);
 
@@ -906,8 +909,13 @@ void Application::init_create_document()
   if(!m_pDocument)
   {
     Document* document_glom = new Document();
+
+    //By default, we assume that the original is in the current locale.
+    document_glom->set_translation_original_locale(Application::get_current_locale());
+
     m_pDocument = document_glom;
     //document_glom->set_parent_window(this); //So that it can show a BusyCursor when loading and saving.
+
 
     //Tell document about view:
     m_pDocument->set_view(m_pFrame);
@@ -986,6 +994,9 @@ bool Application::on_document_load()
   Document* pDocument = static_cast<Document*>(get_document());
   if(!pDocument)
     return false;
+
+  //Set this so that Application::get_current_locale() works as expected:
+  Application::set_original_locale(pDocument->get_translation_original_locale());
 
   if(!pDocument->get_is_new() && !check_document_hosting_mode_is_supported(pDocument))
     return false;
@@ -1998,7 +2009,7 @@ void Application::fill_menu_tables()
 
       ui_description += "<menuitem action='" + action_name + "' />";
 
-      Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create(action_name, Utils::string_escape_underscores(table_info->get_title_or_name()));
+      Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create(action_name, Utils::string_escape_underscores(table_info->get_title_or_name(Application::get_current_locale())));
       m_refNavTablesActionGroup->add(refAction,
         sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_box_tables_selected), table_info->get_name()) );
 
@@ -2067,7 +2078,7 @@ void Application::fill_menu_reports(const Glib::ustring& table_name)
 
         ui_description += "<menuitem action='" + action_name + "' />";
 
-        Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create( action_name, Utils::string_escape_underscores(report->get_title_or_name()));
+        Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create( action_name, Utils::string_escape_underscores(report->get_title_or_name(Application::get_current_locale())));
         m_refNavReportsActionGroup->add(refAction,
           sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_report_selected), report->get_name()) );
 
@@ -2148,7 +2159,7 @@ void Application::fill_menu_print_layouts(const Glib::ustring& table_name)
 
         ui_description += "<menuitem action='" + action_name + "' />";
 
-        Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create( action_name, Utils::string_escape_underscores(print_layout->get_title_or_name()));
+        Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create( action_name, Utils::string_escape_underscores(print_layout->get_title_or_name(Application::get_current_locale())));
         m_refNavPrintLayoutsActionGroup->add(refAction,
           sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_print_layout_selected), print_layout->get_name()) );
 
@@ -2513,7 +2524,7 @@ void Application::on_menu_developer_changelanguage()
 
   if(response == Gtk::RESPONSE_OK)
   {
-    TranslatableItem::set_current_locale(dialog->get_locale());
+    Application::set_current_locale(dialog->get_locale());
 
     //Get the translations from the document (in Operator mode, we only load the necessary translations.)
     //This also updates the UI, so we show all the translated titles:
@@ -2733,7 +2744,7 @@ void Application::update_window_title()
 
   //Show the table title:
   const Glib::ustring table_name = m_pFrame->get_shown_table_name();
-  Glib::ustring table_label = document->get_table_title(table_name);
+  Glib::ustring table_label = document->get_table_title(table_name, Application::get_current_locale());
   if(!table_label.empty())
   {
     #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -2838,6 +2849,59 @@ void Application::clear_progress_message()
   if(pMenuBar)
     pMenuBar->set_sensitive();
   m_pFrame->set_sensitive();
+}
+
+void Application::set_current_locale(const Glib::ustring& locale)
+{
+  if(locale.empty())
+    return;
+
+  m_current_locale = locale;
+}
+
+void Application::set_original_locale(const Glib::ustring& locale)
+{
+  if(locale.empty())
+    return;
+
+  m_original_locale = locale;
+}
+
+Glib::ustring Application::get_original_locale()
+{
+  if(m_original_locale.empty())
+    m_original_locale = "en_US"; //"en_US.UTF-8";
+
+  return m_original_locale; 
+}
+
+bool Application::get_current_locale_not_original() //TODO: Make this const?
+{
+  if(m_original_locale.empty())
+    get_original_locale();
+
+  if(m_current_locale.empty())
+    get_current_locale();
+
+  return m_original_locale != m_current_locale;
+}
+
+Glib::ustring Application::get_current_locale()
+{
+  //Return a previously-set current locale, if any:
+  if(!m_current_locale.empty())
+    return m_current_locale;
+
+  //Get the user's current locale:
+  const char* cLocale = setlocale(LC_ALL, 0); //Passing NULL means query, instead of set.
+  if(cLocale)
+  {
+    //std::cout << "debug1: " << G_STRFUNC << ": locale=" << cLocale << std::endl;
+    return Utils::locale_simplify(cLocale);
+    //std::cout << "debug2: " << G_STRFUNC << ": m_current_locale=" << m_current_locale << std::endl;
+  }
+  else
+    return "C";
 }
 
 } //namespace Glom

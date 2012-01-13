@@ -102,7 +102,7 @@ int main()
   //Check that some expected translated titles are now in the document:
   Glom::sharedptr<const Glom::TableInfo> table = document.get_table("scenes");
   g_assert(table);
-  g_assert( table->get_title() == "Scenes" ); //The original title should be unchanged:
+  g_assert( table->get_title_original() == "Scenes" ); //The original title should be unchanged:
 
   //This should have a new translated title:
   if(table->get_title_translation(locale) != "TestResult1")
@@ -113,7 +113,7 @@ int main()
 
   const Glom::sharedptr<const Glom::Report> report = document.get_report("crew", "crew_list");
   g_assert(report);
-  g_assert(report->get_title() == "Crew List"); //The original title should be unchanged:
+  g_assert(report->get_title_original() == "Crew List"); //The original title should be unchanged:
 
   //This should have a new translated title:
   if(report->get_title_translation(locale) != "TestResult2")

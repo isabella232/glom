@@ -51,34 +51,45 @@ public:
 
   bool get_name_not_empty() const; //For performance.
 
-  virtual Glib::ustring get_title_or_name() const;
+  virtual Glib::ustring get_title_or_name(const Glib::ustring& locale) const;
 
-  /** Get the title's translation for the current locale.
+  virtual Glib::ustring get_title_or_name_original() const;
+
+  /** Get the title's translation for the specified locale, falling back to the
+   * original text if there is no translation.
+   *
+   * See also get_title_translation() and get_title_original(), which (optionally)
+   * do not use fallbacks.
+   *
+   * @param locale The locale whose title text should be returned. If this is empty then the original text will be returned.
+   * @result The text of the title.
    */
-  virtual Glib::ustring get_title() const;
+  virtual Glib::ustring get_title(const Glib::ustring& locale) const;
 
   /** Get the title's original (non-translated, usually English) text.
    */
   virtual Glib::ustring get_title_original() const;
-
-
-  /** Set the title's translation for the current locale.
-   */
-  void set_title(const Glib::ustring& title);
-
-  /** Set the title's original (non-translated, usually English) text.
-   */
-  void set_title_original(const Glib::ustring& title);
-
-  void set_title_translation(const Glib::ustring& locale, const Glib::ustring& translation);
 
   /** Get the title's translation for the specified @a locale, optionally
    * falling back to a locale of the same language, and then falling back to 
    * the original.
    * Calling this with the current locale is the same as calling get_title_original().
    */
-  Glib::ustring get_title_translation(const Glib::ustring& locale, bool fallback = true) const;
+  virtual Glib::ustring get_title_translation(const Glib::ustring& locale, bool fallback = true) const;
   
+
+  /** Set the title's translation for the specified locale.
+   * @param title The text of the title.
+   * @param locale The locale whose title text should be set. If this is empty then the original text will be set.
+   */
+  void set_title(const Glib::ustring& title, const Glib::ustring& locale);
+
+  /** Set the title's original (non-translated, usually English) text.
+   * This is the same as calling set_title() with an empty locale parameter.
+   */
+  void set_title_original(const Glib::ustring& title);
+
+
   /// Clear the original title and any translations of the title.
   void clear_title_in_all_locales();
 
@@ -113,30 +124,14 @@ public:
    */
   static Glib::ustring get_translatable_type_name_nontranslated(enumTranslatableItemType item_type);
 
-
-  /** Set the locale used for titles, to test translations.
-   * Usually the current locale is just the locale at startup.
-   */
-  static void set_current_locale(const Glib::ustring& locale);
-
-  /** Get the locale used by this program when it was started.
-   */
-  static Glib::ustring get_current_locale();
-
-  /** Set the locale used for original text of titles. This 
-   * must usually be stored in the document. 
-   * Ideally, it would be English.
-   */
-  static void set_original_locale(const Glib::ustring& locale);
-
-  static bool get_current_locale_not_original();
-
 private:
 
   /** Get the locale used as the source language.
    * This is the language of the title that is used when there are no translations.
    */
   static Glib::ustring get_original_locale();
+
+  void set_title_translation(const Glib::ustring& locale, const Glib::ustring& translation);
 
 
 protected:
@@ -146,8 +141,6 @@ private:
   Glib::ustring m_name; //Non-translated identifier;
   Glib::ustring m_title; //The original, untranslated (usually-English) title.
   type_map_locale_to_translations m_map_translations;
-
-  static Glib::ustring m_current_locale, m_original_locale;
 };
 
 template <class T_object>
@@ -160,10 +153,10 @@ Glib::ustring glom_get_sharedptr_name(const sharedptr<T_object>& item)
 }
 
 template <class T_object>
-Glib::ustring glom_get_sharedptr_title_or_name(const sharedptr<T_object>& item)
+Glib::ustring glom_get_sharedptr_title_or_name(const sharedptr<T_object>& item, const Glib::ustring& locale)
 {
   if(item)
-    return item->get_title_or_name();
+    return item->get_title_or_name(locale);
   else
     return Glib::ustring();
 }

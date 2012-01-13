@@ -20,6 +20,7 @@
 
 #include "dialog_design.h"
 #include "../box_db_table.h"
+#include <glom/application.h>
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
@@ -55,7 +56,7 @@ bool Dialog_Design::init_db_details(const Glib::ustring& table_name)
      Document* document = dynamic_cast<Document*>(get_document());
      if(document)
      {
-       Glib::ustring table_title = document->get_table_title(table_name);
+       Glib::ustring table_title = document->get_table_title(table_name, Application::get_current_locale());
        if(table_title.empty())
          table_label = table_name;
        else

@@ -414,9 +414,9 @@ sharedptr<const LayoutItem_Field> LayoutItem_Portal::get_field_identifies_non_hi
   return result;
 }
 
-Glib::ustring LayoutItem_Portal::get_title_or_name() const
+Glib::ustring LayoutItem_Portal::get_title_or_name(const Glib::ustring& locale) const
 {
-  Glib::ustring title = get_title_used(Glib::ustring() /* parent table - not relevant */);
+  Glib::ustring title = get_title_used(Glib::ustring() /* parent table - not relevant */, locale);
   if(title.empty())
     title = get_relationship_name_used();
   
@@ -426,9 +426,9 @@ Glib::ustring LayoutItem_Portal::get_title_or_name() const
   return title;
 }
 
-Glib::ustring LayoutItem_Portal::get_title() const
+Glib::ustring LayoutItem_Portal::get_title(const Glib::ustring& locale) const
 {
-  Glib::ustring title = get_title_used(Glib::ustring() /* parent table - not relevant */);
+  Glib::ustring title = get_title_used(Glib::ustring() /* parent table - not relevant */, locale);
   if(title.empty()) //TODO: This prevents "" as a real title.
    title = _("Undefined Table");
 

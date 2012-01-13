@@ -22,6 +22,7 @@
 #include "dialog_imageobject.h"
 #include <glom/python_embed/glom_python.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <glom/application.h>
 
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
@@ -69,7 +70,7 @@ void Dialog_ImageObject::set_imageobject(const sharedptr<const LayoutItem_Image>
   m_imageobject = glom_sharedptr_clone(imageobject); //Remember it so we save any details that are not in our UI.
   m_table_name = table_name;  //Used for lookup combo boxes.
 
-  m_entry_title->set_text(imageobject->get_title());
+  m_entry_title->set_text(imageobject->get_title(Application::get_current_locale()));
   m_image->set_value( imageobject->get_image() );
 
   if(show_title)
@@ -86,7 +87,7 @@ sharedptr<LayoutItem_Image> Dialog_ImageObject::get_imageobject() const
 {
   sharedptr<LayoutItem_Image> result = glom_sharedptr_clone(m_imageobject); //Start with the old details, to preserve anything that is not in our UI.
 
-  result->set_title(m_entry_title->get_text());
+  result->set_title(m_entry_title->get_text(), Application::get_current_locale());
   result->set_image( m_image->get_value() );
 
   return result;

@@ -207,7 +207,7 @@ void FieldFormatting::set_choices_custom(const type_list_values& choices)
   m_choices_custom_list = choices;
 }
 
-Glib::ustring FieldFormatting::get_custom_choice_original_for_translated_text(const Glib::ustring& text) const
+Glib::ustring FieldFormatting::get_custom_choice_original_for_translated_text(const Glib::ustring& text, const Glib::ustring& locale) const
 {
   for(FieldFormatting::type_list_values::const_iterator iter = m_choices_custom_list.begin(); iter != m_choices_custom_list.end(); ++iter)
   {
@@ -215,14 +215,14 @@ Glib::ustring FieldFormatting::get_custom_choice_original_for_translated_text(co
     if(!value)
       continue;
 
-    if(value->get_title() == text)
+    if(value->get_title(locale) == text)
       return value->get_title_original();
   }
 
   return Glib::ustring();
 }
 
-Glib::ustring FieldFormatting::get_custom_choice_translated(const Glib::ustring& original_text) const
+Glib::ustring FieldFormatting::get_custom_choice_translated(const Glib::ustring& original_text, const Glib::ustring& locale) const
 {
   for(FieldFormatting::type_list_values::const_iterator iter = m_choices_custom_list.begin(); iter != m_choices_custom_list.end(); ++iter)
   {
@@ -231,7 +231,7 @@ Glib::ustring FieldFormatting::get_custom_choice_translated(const Glib::ustring&
       continue;
 
     if(value->get_title_original() == original_text)
-      return value->get_title();
+      return value->get_title(locale);
   }
 
   return Glib::ustring();

@@ -78,14 +78,19 @@ Glib::ustring LayoutItem_Text::get_report_part_id() const
   return "field"; //We reuse this for this node.
 }
 
-Glib::ustring LayoutItem_Text::get_text() const
+Glib::ustring LayoutItem_Text::get_text(const Glib::ustring& locale) const
 {
-  return m_text->get_title();
+  return m_text->get_title(locale);
 }
 
-void LayoutItem_Text::set_text(const Glib::ustring& text)
+void LayoutItem_Text::set_text(const Glib::ustring& text, const Glib::ustring& locale)
 {
-  m_text->set_title(text);
+  m_text->set_title(text, locale);
+}
+
+void LayoutItem_Text::set_text_original(const Glib::ustring& text)
+{
+  m_text->set_title_original(text);
 }
 
 } //namespace Glom

@@ -1167,7 +1167,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
       sharedptr<Relationship> relationship = sharedptr<Relationship>::create();
 
       relationship->set_name(relationship_name);
-      relationship->set_title(Utils::title_from_string(relationship_name));
+      relationship->set_title(Utils::title_from_string(relationship_name), Application::get_current_locale());
       relationship->set_from_table(m_table_name);
       relationship->set_from_field(from_key_name);
       relationship->set_to_table(table_name);
@@ -1365,7 +1365,7 @@ void Frame_Glom::show_table_title()
     return;
 
   //Show the table title:
-  Glib::ustring table_label = document->get_table_title(m_table_name);
+  Glib::ustring table_label = document->get_table_title(m_table_name, Application::get_current_locale());
   if(!table_label.empty())
   {
     if(document->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
@@ -2294,7 +2294,7 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
 
   FoundSet found_set = m_Notebook_Data.get_found_set();
 
-  ReportBuilder report_builder;
+  ReportBuilder report_builder(Application::get_current_locale());
   report_builder.set_document(document);
   const std::string filepath = 
     report_builder.report_build_and_save(found_set, report); //TODO: Use found set's where_clause.

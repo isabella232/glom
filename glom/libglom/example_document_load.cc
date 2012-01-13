@@ -40,7 +40,7 @@ void print_layout_group(const Glom::sharedptr<Glom::LayoutGroup>& layout_group, 
     if(!layout_item)
       continue;
 
-    std::cout << indent << "Layout Item: title=" << layout_item->get_title_or_name()
+    std::cout << indent << "Layout Item: title=" << layout_item->get_title_or_name_original()
       << ", item type=" << layout_item->get_part_type_name();
 
     const Glib::ustring display_name = layout_item->get_layout_display_name();
@@ -66,7 +66,7 @@ void print_layout(const Glom::Document::type_list_layout_groups& layout_groups)
     if(!layout_group)
       continue;
 
-    std::cout << "    Layout Group: title=" << layout_group->get_title_or_name() << std::endl;
+    std::cout << "    Layout Group: title=" << layout_group->get_title_or_name_original() << std::endl;
     print_layout_group(layout_group, "      ");
   }
 }
@@ -125,7 +125,7 @@ int main()
        const Glom::Field::glom_field_type field_type = field->get_glom_type();
 
        std::cout << "  Field: name=" << field->get_name()
-         << ", title=" << field->get_title_or_name()
+         << ", title=" << field->get_title_or_name_original()
          << ", type=" << Glom::Field::get_type_name_ui(field_type) << std::endl;
 
     }

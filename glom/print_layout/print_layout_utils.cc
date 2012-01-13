@@ -21,6 +21,7 @@
 #include <glom/print_layout/print_layout_utils.h>
 #include <glom/print_layout/canvas_print_layout.h>
 #include <glom/print_layout/printoperation_printlayout.h>
+#include <glom/application.h>
 #include <iostream>
 
 namespace Glom
@@ -183,11 +184,11 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
 
   //Show the group's title
   //(but do not fall back to the name, because unnamed groups are really wanted sometimes.)
-  const Glib::ustring title = layout_group->get_title();
+  const Glib::ustring title = layout_group->get_title(Application::get_current_locale());
   if(!title.empty())
   {
     sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::create();
-    text->set_text(title);
+    text->set_text(title, Application::get_current_locale());
     text->m_formatting.set_text_format_font("Sans Bold 10");
 
     if(avoid_page_margins)
@@ -247,7 +248,8 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
       if(field)
       {
         text_title = sharedptr<LayoutItem_Text>::create();
-        text_title->set_text(field->get_title_or_name() + ":");
+        const Glib::ustring field_title = field->get_title_or_name(Application::get_current_locale());
+        text_title->set_text(field_title + ":", Application::get_current_locale());
         
         if(avoid_page_margins)
           y = move_fully_to_page(page_setup, units, y, field_height);
@@ -327,11 +329,11 @@ sharedptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>&
     x += GRID_GAP;
   
   //The table title:
-  const Glib::ustring title = document->get_table_title_singular(table_name);
+  const Glib::ustring title = document->get_table_title_singular(table_name, Application::get_current_locale());
   if(!title.empty())
   {
     sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::create();
-    text->set_text(title);
+    text->set_text(title, Application::get_current_locale());
     text->m_formatting.set_text_format_font("Sans Bold 12");
 
     const double field_height = ITEM_HEIGHT;

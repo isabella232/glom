@@ -728,7 +728,7 @@ void DbAddDel::construct_specified_columns()
     {
       no_columns_used = false;
 
-      const Glib::ustring column_name = layout_item->get_title_or_name();
+      const Glib::ustring column_name = layout_item->get_title_or_name(Application::get_current_locale());
       const Glib::ustring column_id = layout_item->get_name();
 
       // Whenever we are dealing with real database fields,

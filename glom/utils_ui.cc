@@ -21,6 +21,7 @@
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/utils_ui.h>
+#include <glom/application.h>
 #include <libglom/connectionpool.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <libglom/data_structure/glomconversions.h>
@@ -364,7 +365,7 @@ int Utils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const shared
   if(or_title)
   {
     //Make sure that there's enough space for the title too.
-    const int title_width = get_width_for_text(widget, field_layout->get_title());
+    const int title_width = get_width_for_text(widget, field_layout->get_title(Application::get_current_locale()));
     if(title_width > result)
       result = title_width;
   }

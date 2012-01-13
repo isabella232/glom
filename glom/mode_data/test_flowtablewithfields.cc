@@ -50,7 +50,7 @@ static void fill_flowtable(Glom::FlowTableWithFields& flowtable)
     Glom::sharedptr<Glom::LayoutItem_Text> item =
       Glom::sharedptr<Glom::LayoutItem_Text>::create();
     item->set_text("test static text 2");
-    item->set_title("title for text 2");
+    item->set_title("title for text 2", Application::get_current_locale());
     flowtable.add_layout_item(item);
   }
 
@@ -58,7 +58,7 @@ static void fill_flowtable(Glom::FlowTableWithFields& flowtable)
     Glom::sharedptr<Glom::LayoutItem_Image> item =
       Glom::sharedptr<Glom::LayoutItem_Image>::create();
     //item->set_image(somevalue);
-    item->set_title("title for image");
+    item->set_title("title for image", Application::get_current_locale());
     flowtable.add_layout_item(item);
   }
   

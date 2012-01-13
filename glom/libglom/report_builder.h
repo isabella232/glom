@@ -35,11 +35,12 @@ namespace Glom
 class ReportBuilder
 {
 public:
-  ReportBuilder();
+  explicit ReportBuilder(const Glib::ustring& locale);
   virtual ~ReportBuilder();
 
   static sharedptr<Report> create_standard_list_report(const Document* document, const Glib::ustring& table_name);
 
+  //TODO: Remove set_document() and get_document()?
   void set_document(Document* document);
 
   //void set_report(const Glib::ustring& table_name, const sharedptr<const Report>& report);
@@ -76,6 +77,8 @@ private:
   Document* get_document();
 
   Document* m_document;
+
+  Glib::ustring m_locale;
 };
 
 } //namespace Glom

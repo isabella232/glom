@@ -19,6 +19,7 @@
  */
 
 #include "dialog_change_language.h"
+#include <glom/application.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -33,7 +34,7 @@ Dialog_ChangeLanguage::Dialog_ChangeLanguage(BaseObjectType* cobject, const Glib
 {
   builder->get_widget_derived("combobox_locale", m_combo_locale);
 
-  m_combo_locale->set_selected_locale(TranslatableItem::get_current_locale());
+  m_combo_locale->set_selected_locale(Application::get_current_locale());
 }
 
 Dialog_ChangeLanguage::~Dialog_ChangeLanguage()

@@ -22,6 +22,7 @@
 #include "dialog_fieldcalculation.h"
 #include <glom/glade_utils.h>
 #include <glom/utils_ui.h>
+#include <glom/application.h>
 #include "../../box_db_table.h"
 #include <libglom/db_utils.h>
 //#include <libgnome/gnome-i18n.h>
@@ -155,7 +156,7 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
   sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
   sharedptr<Field> field_default_value = glom_sharedptr_clone(m_Field);
   field_default_value->set_name("glom_temp_default_value");
-  field_default_value->set_title(_("Default Value"));
+  field_default_value->set_title_original(_("Default Value"));
   layout_item->set_full_field_details(field_default_value);
   m_pDataWidget_DefaultValueSimple = Gtk::manage( new DataWidget(layout_item, "", get_document()) );
   if(!m_pDataWidget_DefaultValueSimple->get_data_child_widget())
@@ -210,7 +211,7 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
   m_pTextView_Calculation->get_buffer()->set_text(calculation);
   //std::cout << "  debug: dialog_fielddefinition.c:: after get_buffer()" << std::endl;
 
-  m_pEntry_Title->set_text(field->get_title());
+  m_pEntry_Title->set_text(field->get_title(Application::get_current_locale()));
 
   //Formatting:
   m_box_formatting->set_formatting_for_field(field->m_default_formatting, m_table_name, field);
@@ -270,7 +271,7 @@ sharedptr<Field> Dialog_FieldDefinition::get_field() const
   field->set_unique_key(m_pCheck_Unique->get_active());
   field->set_primary_key(m_pCheck_PrimaryKey->get_active());
 
-  field->set_title(m_pEntry_Title->get_text());
+  field->set_title(m_pEntry_Title->get_text(), Application::get_current_locale());
 
   //Formatting:
   m_box_formatting->get_formatting(field->m_default_formatting);

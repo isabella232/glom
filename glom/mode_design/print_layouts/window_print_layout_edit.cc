@@ -454,7 +454,7 @@ sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayoutTool
     sharedptr<LayoutItem_Text> layout_item_derived = sharedptr<LayoutItem_Text>::create();
 
     // Note to translators: This is the default contents of a text item on a print layout: 
-    layout_item_derived->set_text(_("text")); //TODO: Choose some other longer default because this is hidden under the drag icon?
+    layout_item_derived->set_text_original(_("text")); //TODO: Choose some other longer default because this is hidden under the drag icon?
     layout_item = layout_item_derived;
     layout_item->set_print_layout_position(0, 0,
       PrintLayoutUtils::ITEM_WIDTH_WIDE, PrintLayoutUtils::ITEM_HEIGHT);
@@ -640,7 +640,7 @@ void Window_PrintLayout_Edit::update_table_title()
   Glib::ustring table_label = _("None selected");
 
   //Show the table title (if any) and name:
-  Glib::ustring table_title = document->get_table_title(m_table_name);
+  Glib::ustring table_title = document->get_table_title(m_table_name, Application::get_current_locale());
   if(table_title.empty())
     table_label = m_table_name;
   else
@@ -682,7 +682,7 @@ void Window_PrintLayout_Edit::set_print_layout(const Glib::ustring& table_name, 
   update_table_title();
 
   m_entry_name->set_text(print_layout->get_name()); 
-  m_entry_title->set_text(print_layout->get_title());
+  m_entry_title->set_text(print_layout->get_title(Application::get_current_locale()));
 
   set_ruler_sizes();
 
@@ -704,7 +704,7 @@ sharedptr<PrintLayout> Window_PrintLayout_Edit::get_print_layout()
 {
   m_print_layout = m_canvas.get_print_layout();
   m_print_layout->set_name( m_entry_name->get_text() );
-  m_print_layout->set_title( m_entry_title->get_text() );
+  m_print_layout->set_title( m_entry_title->get_text() , Application::get_current_locale());
 
   m_print_layout->set_show_grid( m_action_showgrid->get_active() );
   m_print_layout->set_show_rules( m_action_showrules->get_active() );
@@ -874,7 +874,7 @@ void Window_PrintLayout_Edit::on_menu_insert_image()
 {
   sharedptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::ITEM_IMAGE);
   // Note to translators: This is the default contents of a text item on a print layout: 
-  //layout_item->set_text(_("text"));
+  //layout_item->set_text_original(_("text"));
   set_default_position(layout_item);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
@@ -901,7 +901,7 @@ void Window_PrintLayout_Edit::on_menu_insert_line_horizontal()
   */
 
   // Note to translators: This is the default contents of a text item on a print layout: 
-  //layout_item->set_text(_("text"));
+  //layout_item->set_text_original(_("text"));
   //layout_item->set_coordinates(item_x, item_y, item_x + 100, item_y);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);

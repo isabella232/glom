@@ -307,8 +307,6 @@ Document::Document()
   if(get_connection_server().empty())
     set_connection_server("localhost");
 
-  set_translation_original_locale(TranslatableItem::get_current_locale()); //By default, we assume that the original is in the current locale. We must do this here so that TranslatableItem::set/get_title() knows.
-
   m_app_state.signal_userlevel_changed().connect( sigc::mem_fun(*this, &Document::on_app_state_userlevel_changed) );
 
   set_modified(false);
@@ -504,7 +502,7 @@ sharedptr<Relationship> Document::create_relationship_system_preferences(const G
 {
   sharedptr<Relationship> relationship = sharedptr<Relationship>::create();
   relationship->set_name(GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES);
-  relationship->set_title(_("System Preferences"));
+  relationship->set_title_original(_("System Preferences"));
   relationship->set_from_table(table_name);
   relationship->set_to_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
   relationship->set_allow_edit(false);
@@ -522,7 +520,7 @@ sharedptr<TableInfo> Document::create_table_system_preferences(type_vec_fields& 
 {
   sharedptr<TableInfo> prefs_table_info = sharedptr<TableInfo>::create();
   prefs_table_info->set_name(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
-  prefs_table_info->set_title(_("System Preferences"));
+  prefs_table_info->set_title_original(_("System Preferences"));
   prefs_table_info->m_hidden = true;
 
 
@@ -535,55 +533,55 @@ sharedptr<TableInfo> Document::create_table_system_preferences(type_vec_fields& 
 
   sharedptr<Field> field_name(new Field());
   field_name->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME);
-  field_name->set_title(_("System Name"));
+  field_name->set_title_original(_("System Name"));
   field_name->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_name);
 
   sharedptr<Field> field_org_name(new Field());
   field_org_name->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME);
-  field_org_name->set_title(_("Organisation Name"));
+  field_org_name->set_title_original(_("Organisation Name"));
   field_org_name->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_name);
 
   sharedptr<Field> field_org_logo(new Field());
   field_org_logo->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO);
-  field_org_logo->set_title(_("Organisation Logo"));
+  field_org_logo->set_title_original(_("Organisation Logo"));
   field_org_logo->set_glom_type(Field::TYPE_IMAGE);
   fields.push_back(field_org_logo);
 
   sharedptr<Field> field_org_address_street(new Field());
   field_org_address_street->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET);
-  field_org_address_street->set_title(_("Street"));
+  field_org_address_street->set_title_original(_("Street"));
   field_org_address_street->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_address_street);
 
   sharedptr<Field> field_org_address_street2(new Field());
   field_org_address_street2->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2);
-  field_org_address_street2->set_title(_("Street (line 2)"));
+  field_org_address_street2->set_title_original(_("Street (line 2)"));
   field_org_address_street2->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_address_street2);
 
   sharedptr<Field> field_org_address_town(new Field());
   field_org_address_town->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN);
-  field_org_address_town->set_title(_("City"));
+  field_org_address_town->set_title_original(_("City"));
   field_org_address_town->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_address_town);
 
   sharedptr<Field> field_org_address_county(new Field());
   field_org_address_county->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY);
-  field_org_address_county->set_title(_("State"));
+  field_org_address_county->set_title_original(_("State"));
   field_org_address_county->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_address_county);
 
   sharedptr<Field> field_org_address_country(new Field());
   field_org_address_country->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY);
-  field_org_address_country->set_title(_("Country"));
+  field_org_address_country->set_title_original(_("Country"));
   field_org_address_country->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_address_country);
 
   sharedptr<Field> field_org_address_postcode(new Field());
   field_org_address_postcode->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE);
-  field_org_address_postcode->set_title(_("Zip Code"));
+  field_org_address_postcode->set_title_original(_("Zip Code"));
   field_org_address_postcode->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_address_postcode);
 
@@ -860,7 +858,7 @@ Document::type_vec_fields Document::get_table_fields(const Glib::ustring& table_
       if(table_name == GLOM_STANDARD_TABLE_PREFS_TABLE_NAME)
       {
         type_vec_fields fields;
-        sharedptr<TableInfo> temp = create_table_system_preferences(fields);
+        create_table_system_preferences(fields);
         result = fields;
       }
       else
@@ -1543,13 +1541,13 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
   {
     overview = sharedptr<LayoutGroup>::create();;
     overview->set_name("overview");
-    overview->set_title_original("Overview"); //Don't translate this, but TODO: add standard translations.
+    overview->set_title_original(_("Overview"));
     overview->set_columns_count(2);
     result.push_back(overview);
 
     details = sharedptr<LayoutGroup>::create();
     details->set_name("details");
-    details->set_title_original("Details"); //Don't translate this, but TODO: add standard translations.
+    details->set_title_original(_("Details"));
     details->set_columns_count(2);
     result.push_back(details);
   }
@@ -1735,33 +1733,51 @@ Document::DocumentTableInfo& Document::get_table_info_with_add(const Glib::ustri
   }
 }
 
-Glib::ustring Document::get_table_title(const Glib::ustring& table_name) const
+Glib::ustring Document::get_table_title(const Glib::ustring& table_name, const Glib::ustring& locale) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
-    return iterFind->second.m_info->get_title();
+    return iterFind->second.m_info->get_title(locale);
   else
     return Glib::ustring();
 }
 
-Glib::ustring Document::get_table_title_singular(const Glib::ustring& table_name) const
+Glib::ustring Document::get_table_title_original(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
-    return iterFind->second.m_info->get_title_singular_with_fallback();
+    return iterFind->second.m_info->get_title_original();
   else
     return Glib::ustring();
 }
 
-void Document::set_table_title(const Glib::ustring& table_name, const Glib::ustring& value)
+Glib::ustring Document::get_table_title_singular(const Glib::ustring& table_name, const Glib::ustring& locale) const
+{
+  type_tables::const_iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+    return iterFind->second.m_info->get_title_singular_with_fallback(locale);
+  else
+    return Glib::ustring();
+}
+
+Glib::ustring Document::get_table_title_singular_original(const Glib::ustring& table_name) const
+{
+  type_tables::const_iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+    return iterFind->second.m_info->get_title_singular_original();
+  else
+    return Glib::ustring();
+}
+
+void Document::set_table_title(const Glib::ustring& table_name, const Glib::ustring& value, const Glib::ustring& locale)
 {
   //std::cout << "debug: " << G_STRFUNC << ": table_name=" << table_name << ", value=" << value << std::endl;
   if(!table_name.empty())
   {
     DocumentTableInfo& info = get_table_info_with_add(table_name);
-    if(info.m_info->get_title() != value)
+    if(info.m_info->get_title(locale) != value)
     {
-      info.m_info->set_title(value);
+      info.m_info->set_title(value, locale);
       set_modified();
     }
   }
@@ -2255,7 +2271,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
 
   //Get the group details:
   group->set_name( get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME) );
-  group->set_title( get_node_attribute_value(node, GLOM_ATTRIBUTE_TITLE) );
+  group->set_title_original( get_node_attribute_value(node, GLOM_ATTRIBUTE_TITLE) );
   group->set_columns_count(
     get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_COLUMNS_COUNT, 1)); //default to 1, because 0 is meaningless.
   group->set_border_width( get_node_attribute_value_as_decimal_double(node, GLOM_ATTRIBUTE_BORDER_WIDTH) );
@@ -2548,7 +2564,7 @@ void Document::load_after_translations(const xmlpp::Element* element, Translatab
   const ChoiceValue* choicevalue = dynamic_cast<ChoiceValue*>(&item);
   if(!choicevalue) //This item does not use the title, but uses the title translations to translate its value, if it is of type text.
   {
-    item.set_title_original( get_node_attribute_value(element, GLOM_ATTRIBUTE_TITLE) );
+    item.set_title_original( get_node_attribute_value(element, GLOM_ATTRIBUTE_TITLE));
   }
 
   const xmlpp::Element* nodeTranslations = get_node_child_named(element, GLOM_NODE_TRANSLATIONS_SET);
@@ -2562,7 +2578,7 @@ void Document::load_after_translations(const xmlpp::Element* element, Translatab
       {
         const Glib::ustring locale = get_node_attribute_value(element, GLOM_ATTRIBUTE_TRANSLATION_LOCALE);
         const Glib::ustring translation = get_node_attribute_value(element, GLOM_ATTRIBUTE_TRANSLATION_VALUE);
-        item.set_title_translation(locale, translation);
+        item.set_title(translation, locale);
 
         //Remember any new translation locales in our cached list:
         if(std::find(m_translation_available_locales.begin(), 
@@ -2656,7 +2672,6 @@ bool Document::load_after(int& failure_code)
       m_startup_script = get_child_text_node(nodeRoot, GLOM_NODE_STARTUP_SCRIPT);
 
       m_translation_original_locale = get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE);
-      TranslatableItem::set_original_locale(m_translation_original_locale);
       m_translation_available_locales.push_back(m_translation_original_locale); //Just a cache.
 
       const xmlpp::Element* nodeConnection = get_node_child_named(nodeRoot, GLOM_NODE_CONNECTION);
@@ -3708,11 +3723,6 @@ bool Document::save_before()
 
     set_child_text_node(nodeRoot, GLOM_NODE_STARTUP_SCRIPT, m_startup_script);
 
-    //Assume that the first language used is the original locale.
-    //It can be identified as a translation later.
-    if(m_translation_original_locale.empty())
-      m_translation_original_locale = TranslatableItem::get_current_locale();
-
     set_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE, m_translation_original_locale);
 
     xmlpp::Element* nodeConnection = get_node_child_named_with_add(nodeRoot, GLOM_NODE_CONNECTION);
@@ -4390,8 +4400,10 @@ void Document::set_is_backup_file(bool value)
 
 void Document::set_translation_original_locale(const Glib::ustring& locale)
 {
+  if(m_translation_original_locale == locale)
+    return;
+
   m_translation_original_locale = locale;
-  TranslatableItem::set_original_locale(m_translation_original_locale);
   set_modified();
 }
 

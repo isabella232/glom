@@ -20,6 +20,7 @@
 
 #include <glom/mode_data/box_data_list_related.h>
 #include <glom/mode_design/layout/dialog_layout_list_related.h>
+#include <glom/application.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
 #include <glom/glade_utils.h>
@@ -87,7 +88,7 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
   {
     Glib::ustring title;
     if(m_portal)
-      title = m_portal->get_title();
+      title = m_portal->get_title(Application::get_current_locale());
 
     m_Label.set_markup(Utils::bold_message(title));
     m_Label.show();

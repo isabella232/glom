@@ -62,12 +62,12 @@ public:
   /** Get the original text that corresponds to the translated choice for the 
    * current locale.
    */
-  Glib::ustring get_custom_choice_original_for_translated_text(const Glib::ustring& text) const;
+  Glib::ustring get_custom_choice_original_for_translated_text(const Glib::ustring& text, const Glib::ustring& locale = Glib::ustring()) const;
 
   /** Get the translated choice text, for the 
    * current locale, that corresponds to the original text .
    */
-  Glib::ustring get_custom_choice_translated(const Glib::ustring& original_text) const;
+  Glib::ustring get_custom_choice_translated(const Glib::ustring& original_text, const Glib::ustring& locale = Glib::ustring()) const;
 
   typedef std::pair< sharedptr<const LayoutItem_Field>, bool /* is_ascending */> type_pair_sort_field;
   typedef std::list<type_pair_sort_field> type_list_sort_fields;

@@ -20,6 +20,7 @@
 
 #include "dialog_new_record.h"
 #include <glom/utils_ui.h> //For bold_message()).
+#include <glom/application.h>
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
@@ -74,7 +75,7 @@ bool Dialog_NewRecord::init_db_details(const Glib::ustring& table_name, const Gl
   m_table_name = table_name;
   m_layout_platform = layout_platform;
 
-  m_label_table_name->set_text( get_document()->get_table_title(m_table_name) );
+  m_label_table_name->set_text( get_document()->get_table_title(m_table_name, Application::get_current_locale()) );
 
   FoundSet found_set;
   found_set.m_table_name = m_table_name;

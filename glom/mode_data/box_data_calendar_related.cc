@@ -92,7 +92,7 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
   {
     Glib::ustring title;
     if(m_portal)
-      title = m_portal->get_title();
+      title = m_portal->get_title(Application::get_current_locale());
 
     m_Label.set_markup(Utils::bold_message(title));
     m_Label.show();
@@ -460,7 +460,7 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
       //Text for a text item:
       sharedptr<const LayoutItem_Text> layout_item_text = sharedptr<const LayoutItem_Text>::cast_dynamic(layout_item);
       if(layout_item_text)
-        text = layout_item_text->get_text();
+        text = layout_item_text->get_text(Application::get_current_locale());
       else
       {
         //Text for a field:

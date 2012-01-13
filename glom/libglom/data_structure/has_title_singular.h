@@ -45,17 +45,21 @@ public:
   /** Get the (translation of the) singular form of the title, in the current locale, 
    * if specified.
    */
-  Glib::ustring get_title_singular() const;
+  Glib::ustring get_title_singular(const Glib::ustring& locale) const;
+
+  /** Get the title's original (non-translated, usually English) text.
+   */
+  Glib::ustring get_title_singular_original() const;
 
   /** Get the (translation of the) singular form of the title, in the current locale, 
    * if specified, falling back to the non-singular title, and 
    * then falling back to the table name.
    */
-  Glib::ustring get_title_singular_with_fallback() const;
+  Glib::ustring get_title_singular_with_fallback(const Glib::ustring& locale) const;
 
   /** Set the singular title's translation for the current locale.
    */
-  void set_title_singular(const Glib::ustring& title);
+  void set_title_singular(const Glib::ustring& title, const Glib::ustring& locale);
 
   /** For instance, "Customer" if the table is titled "Customers".
    * This is useful in some UI strings.

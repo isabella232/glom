@@ -19,6 +19,7 @@
  */
 
 #include "box_print_layouts.h"
+#include <glom/application.h>
 #include <gtkmm/alignment.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/stock.h>
@@ -64,7 +65,7 @@ void Box_Print_Layouts::fill_row(const Gtk::TreeModel::iterator& iter, const sha
     const Glib::ustring& name = item->get_name();
     m_AddDel.set_value_key(iter, name);
     m_AddDel.set_value(iter, m_colName, name);
-    m_AddDel.set_value(iter, m_colTitle, item->get_title());
+    m_AddDel.set_value(iter, m_colTitle, item->get_title(Application::get_current_locale()));
   }
 }
 
@@ -140,7 +141,7 @@ void Box_Print_Layouts::on_adddel_user_added(const Gtk::TreeModel::iterator& row
       m_AddDel.set_value(row, m_colTitle, title);
     }
 
-    item->set_title(title);
+    item->set_title(title, Application::get_current_locale());
 
     get_document()->set_print_layout(m_table_name, item);
   }
@@ -187,7 +188,7 @@ void Box_Print_Layouts::save_to_document()
         sharedptr<PrintLayout> item(new PrintLayout());
         item->set_name(name);
 
-        item->set_title( m_AddDel.get_value(iter, m_colTitle) ); //TODO: Translations: Store the original in the TreeView.
+        item->set_title( m_AddDel.get_value(iter, m_colTitle) , Application::get_current_locale()); //TODO: Translations: Store the original in the TreeView.
 
         get_document()->set_print_layout(m_table_name, item);
         modified = true;
@@ -211,7 +212,7 @@ void Box_Print_Layouts::on_adddel_user_changed(const Gtk::TreeModel::iterator& r
     {
       if(column == m_colTitle)
       {
-        item->set_title( m_AddDel.get_value(row, m_colTitle) );
+        item->set_title( m_AddDel.get_value(row, m_colTitle) , Application::get_current_locale());
         //TODO: Unnecessary:
         document->set_print_layout(m_table_name, item);
       }

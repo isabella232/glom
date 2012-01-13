@@ -26,9 +26,6 @@
 namespace Glom
 {
 
-Glib::ustring TranslatableItem::m_current_locale;
-Glib::ustring TranslatableItem::m_original_locale;
-
 TranslatableItem::TranslatableItem()
 : m_translatable_item_type(TRANSLATABLE_TYPE_INVALID)
 {
@@ -89,11 +86,6 @@ Glib::ustring TranslatableItem::get_title_translation(const Glib::ustring& local
   type_map_locale_to_translations::const_iterator iterFind = m_map_translations.find(locale);
   if(iterFind != m_map_translations.end())
     return iterFind->second;
- 
-  //The original is not in m_map_translations,
-  //but we want to handle that locale too:
-  if(locale == m_original_locale)
-    return get_title_original();
 
   if(!fallback)
     return Glib::ustring();
@@ -143,12 +135,11 @@ bool TranslatableItem::get_has_translations() const
 }
 
 
-Glib::ustring TranslatableItem::get_title() const
+Glib::ustring TranslatableItem::get_title(const Glib::ustring& locale) const
 {
-  if(get_current_locale_not_original()) //Avoid this code if we don't need translations.
+  if(!locale.empty())
   {
-    const Glib::ustring current_locale_id = get_current_locale();
-    const Glib::ustring translated_title = get_title_translation(current_locale_id);
+    const Glib::ustring translated_title = get_title_translation(locale, true /* fallback */);
     if(!translated_title.empty())
       return translated_title;
   }
@@ -162,23 +153,15 @@ Glib::ustring TranslatableItem::get_title_original() const
   return m_title;
 }
 
-void TranslatableItem::set_title(const Glib::ustring& title)
+void TranslatableItem::set_title(const Glib::ustring& title, const Glib::ustring& locale)
 {
-  if(get_current_locale_not_original()) //Avoid this code if we don't need translations.
-  {
-    //std::cout << "TranslatableItem::set_title() setting translation: " << title;
-    const Glib::ustring the_locale = get_current_locale();
-    if(the_locale.empty())
-      set_title_original(title);
-    else
-    {
-      set_title_translation(the_locale, title);
-    }
-  }
-  else
+  if(locale.empty())
   {
     set_title_original(title);
+    return;
   }
+
+  set_title_translation(locale, title);
 }
 
 void TranslatableItem::set_title_original(const Glib::ustring& title)
@@ -196,60 +179,6 @@ void TranslatableItem::clear_title_in_all_locales()
     Glib::ustring& translation = iter->second;
     translation.clear();
   }
-}
-
-Glib::ustring TranslatableItem::get_current_locale()
-{
-  if(m_current_locale.empty())
-  {
-    const char* cLocale = setlocale(LC_ALL, 0); //Passing NULL means query, instead of set.
-    if(cLocale)
-    {
-      //std::cout << "debug1: " << G_STRFUNC << ": locale=" << cLocale << std::endl;
-      m_current_locale = Utils::locale_simplify(cLocale);
-      //std::cout << "debug2: " << G_STRFUNC << ": m_current_locale=" << m_current_locale << std::endl;
-    }
-    else
-      m_current_locale = 'C';
-  }
-
-  return m_current_locale;
-}
-
-void TranslatableItem::set_current_locale(const Glib::ustring& locale)
-{
-  if(locale.empty())
-    return;
-
-  m_current_locale = locale;
-}
-
-void TranslatableItem::set_original_locale(const Glib::ustring& locale)
-{
-  if(locale.empty())
-    return;
-
-  m_original_locale = locale;
-}
-
-
-Glib::ustring TranslatableItem::get_original_locale()
-{
-  if(m_original_locale.empty())
-    m_original_locale = "en_US"; //"en_US.UTF-8";
-
-  return m_original_locale; 
-}
-
-bool TranslatableItem::get_current_locale_not_original() //TODO: Make this const?
-{
-  if(m_original_locale.empty())
-    get_original_locale();
-
-  if(m_current_locale.empty())
-    get_current_locale();
-
-  return m_original_locale != m_current_locale;
 }
 
 TranslatableItem::enumTranslatableItemType TranslatableItem::get_translatable_item_type() const
@@ -338,9 +267,18 @@ bool TranslatableItem::get_name_not_empty() const
   return !(get_name().empty());
 }
 
-Glib::ustring TranslatableItem::get_title_or_name() const
+Glib::ustring TranslatableItem::get_title_or_name(const Glib::ustring& locale) const
 {
-  const Glib::ustring title = get_title();
+  const Glib::ustring title = get_title(locale);
+  if(title.empty())
+    return get_name();
+  else
+    return title;
+}
+
+Glib::ustring TranslatableItem::get_title_or_name_original() const
+{
+  const Glib::ustring title = get_title_original();
   if(title.empty())
     return get_name();
   else

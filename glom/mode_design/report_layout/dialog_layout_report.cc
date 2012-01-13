@@ -34,6 +34,7 @@
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_group_by.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_field_summary.h>
 #include <glom/mode_design/layout/dialog_choose_relationship.h>
+#include <glom/application.h>
 //#include <libgnome/gnome-i18n.h>
 #include <libglom/utils.h> //For bold_message()).
 #include <glibmm/i18n.h>
@@ -350,7 +351,7 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const sha
   m_label_table_name->set_text(table_name);
 
   m_entry_name->set_text(report->get_name());
-  m_entry_title->set_text(report->get_title());
+  m_entry_title->set_text(report->get_title(Application::get_current_locale()));
   m_checkbutton_table_title->set_active(report->get_show_table_title());
 
   //Update the tree models from the document
@@ -359,7 +360,7 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const sha
   {
 
 
-    //m_entry_table_title->set_text( document->get_table_title(table_name) );
+    //m_entry_table_title->set_text( document->get_table_title(table_name, Application::get_current_locale()) );
 
     //document->fill_layout_field_details(m_table_name, mapGroups); //Update with full field information.
 
@@ -1008,7 +1009,7 @@ Glib::ustring Dialog_Layout_Report::get_original_report_name() const
 sharedptr<Report> Dialog_Layout_Report::get_report()
 {
   m_report->set_name( m_entry_name->get_text() );
-  m_report->set_title( m_entry_title->get_text() );
+  m_report->set_title( m_entry_title->get_text() , Application::get_current_locale());
   m_report->set_show_table_title( m_checkbutton_table_title->get_active() );
 
   m_report->m_layout_group->remove_all_items();

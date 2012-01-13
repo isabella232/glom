@@ -19,6 +19,7 @@
  */
 
 #include <glom/mode_design/layout/combobox_relationship.h>
+#include <glom/application.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -161,7 +162,7 @@ void ComboBox_Relationship::set_relationships(Document* document, const Glib::us
   m_model->clear();
 
   if(show_parent_table_name)
-    set_display_parent_table(parent_table_name, document->get_table_title(parent_table_name));
+    set_display_parent_table(parent_table_name, document->get_table_title(parent_table_name, Application::get_current_locale()));
 
   //Fill the model:
   for(type_vec_relationships::const_iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
@@ -231,10 +232,10 @@ void ComboBox_Relationship::on_cell_data_title(const Gtk::TreeModel::const_itera
       //related relationship:
       sharedptr<Relationship> parent_relationship = (*iterParent)[m_model_columns.m_relationship];
       if(relationship)
-        m_renderer_title->set_property("text", parent_relationship->get_title_or_name() + "::" + relationship->get_title_or_name());
+        m_renderer_title->set_property("text", parent_relationship->get_title_or_name(Application::get_current_locale()) + "::" + relationship->get_title_or_name(Application::get_current_locale()));
     }
     else
-      m_renderer_title->set_property("text", relationship->get_title_or_name());
+      m_renderer_title->set_property("text", relationship->get_title_or_name(Application::get_current_locale()));
   }
   else if(get_has_parent_table())
   {
@@ -264,7 +265,7 @@ void ComboBox_Relationship::on_cell_data_fromfield(const Gtk::TreeModel::const_i
     {
       sharedptr<Relationship> parent_relationship = (*iterParent)[m_model_columns.m_relationship];
       if(parent_relationship)
-        m_renderer_fromfield->set_property("text", Glib::ustring::compose(_(" Via: %1::%2"), parent_relationship->get_title(), relationship->get_from_field()));
+        m_renderer_fromfield->set_property("text", Glib::ustring::compose(_(" Via: %1::%2"), parent_relationship->get_title(Application::get_current_locale()), relationship->get_from_field()));
     }
     else
     {

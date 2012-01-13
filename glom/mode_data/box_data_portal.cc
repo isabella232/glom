@@ -106,10 +106,10 @@ bool Box_Data_Portal::init_db_details(const sharedptr<const LayoutItem_Portal>& 
   return init_db_details(parent_table, show_title);
 }
 
-Glib::ustring Box_Data_Portal::get_title() const
+Glib::ustring Box_Data_Portal::get_title(const Glib::ustring& locale) const
 {
   if(m_portal)
-    return m_portal->get_title_or_name();
+    return m_portal->get_title_or_name(locale);
   else
   {
     //Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
@@ -117,11 +117,11 @@ Glib::ustring Box_Data_Portal::get_title() const
   }
 }
 
-Glib::ustring Box_Data_Portal::get_title_singular() const
+Glib::ustring Box_Data_Portal::get_title_singular(const Glib::ustring& locale) const
 {
   Glib::ustring relationship_title;
   if(m_portal && m_portal->get_has_relationship_name())
-    relationship_title = m_portal->get_title_singular_used(Glib::ustring() /* parent title - not relevant */);
+    relationship_title = m_portal->get_title_singular_used(Glib::ustring() /* parent title - not relevant */, locale);
   else
   {
     //Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.

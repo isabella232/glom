@@ -161,10 +161,11 @@ void FlowTableWithFields::add_layout_group(const sharedptr<LayoutGroup>& group, 
   {
     Gtk::Frame* frame = Gtk::manage( new Gtk::Frame ); //TODO_leak: This is possibly leaked, according to valgrind.
 
-    if(!group->get_title().empty())
+    const Glib::ustring group_title = group->get_title(Application::get_current_locale());
+    if(!group_title.empty())
     {
       Gtk::Label* label = Gtk::manage( new Gtk::Label ); //TODO: This is maybe leaked, according to valgrind, though it should be managed by GtkFrame.
-      label->set_markup( Utils::bold_message(group->get_title()) );
+      label->set_markup( Utils::bold_message(group_title) );
       label->show();
       frame->set_label_widget(*label);
     }
@@ -174,13 +175,13 @@ void FlowTableWithFields::add_layout_group(const sharedptr<LayoutGroup>& group, 
 
     Gtk::Alignment* alignment = Gtk::manage( new Gtk::Alignment ); //TODO_leak: This is possibly leaked, according to valgrind.
 
-    if(!group->get_title().empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
+    if(!group_title.empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
     {
       //Add some indenting just to avoid the out-denting caused by this GtkFrame bug:
       //https://bugzilla.gnome.org/show_bug.cgi?id=644199
       const int BASE_INDENT = 3;
       
-      //std::cout << "title= " << group->get_title() << ", with_indent=" << with_indent << std::endl;
+      //std::cout << "title= " << group_title << ", with_indent=" << with_indent << std::endl;
       if(with_indent) 
       {
         alignment->set_padding(Glom::Utils::DEFAULT_SPACING_SMALL, 0, Glom::Utils::DEFAULT_SPACING_SMALL + BASE_INDENT, 0);
@@ -368,7 +369,7 @@ void FlowTableWithFields::add_layout_notebook(const sharedptr<LayoutItem_Noteboo
       tab_label->show();
 #endif
 
-      tab_label->set_label(group->get_title_or_name());
+      tab_label->set_label(group->get_title_or_name(Application::get_current_locale()));
 
       sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(group);
       if(portal)
@@ -563,7 +564,7 @@ void FlowTableWithFields::add_button(const sharedptr<LayoutItem_Button>& layouti
 {
   //Add the widget
   ButtonGlom* button = Gtk::manage(new ButtonGlom());
-  button->set_label(layoutitem_button->get_title_or_name());
+  button->set_label(layoutitem_button->get_title_or_name(Application::get_current_locale()));
   button->set_layout_item(layoutitem_button, table_name);
   button->signal_clicked().connect(
     sigc::bind(
@@ -611,7 +612,7 @@ void FlowTableWithFields::add_textobject(const sharedptr<LayoutItem_Text>& layou
   alignment_label->set(x_align, Gtk::ALIGN_CENTER);
   alignment_label->show();
 
-  const Glib::ustring text = layoutitem_text->get_text();
+  const Glib::ustring text = layoutitem_text->get_text(Application::get_current_locale());
   DataWidgetChildren::Label* label = Gtk::manage(new DataWidgetChildren::Label(text));
   label->set_layout_item(layoutitem_text, table_name);
   label->show();
@@ -621,7 +622,7 @@ void FlowTableWithFields::add_textobject(const sharedptr<LayoutItem_Text>& layou
 
   add_layoutwidgetbase(label);
 
-  const Glib::ustring title = layoutitem_text->get_title();
+  const Glib::ustring title = layoutitem_text->get_title(Application::get_current_locale());
   if(title.empty())
   {
     add(*alignment_label, true /* expand */);
@@ -655,7 +656,7 @@ void FlowTableWithFields::add_imageobject(const sharedptr<LayoutItem_Image>& lay
   add_layoutwidgetbase(image);
   //add_view(button); //So it can get the document.
 
-  const Glib::ustring title = layoutitem_image->get_title();
+  const Glib::ustring title = layoutitem_image->get_title(Application::get_current_locale());
   if(title.empty())
   {
     add(*image, true /* expand */);
@@ -1184,7 +1185,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
   else if(item_type == LayoutWidgetBase::TYPE_GROUP)
   {
     sharedptr<LayoutGroup> layout_item = sharedptr<LayoutGroup>::create();
-    layout_item->set_title(_("New Group"));
+    layout_item->set_title_original(_("New Group"));
     layout_item_new = layout_item;
   }
   else if(item_type == LayoutWidgetBase::TYPE_NOTEBOOK)
@@ -1199,7 +1200,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
     group_tab->set_name(_("tab1"));
 
     //Note to translators: This is the default label text for a notebook tab.
-    group_tab->set_title(_("Tab One"));
+    group_tab->set_title_original(_("Tab One"));
 
     layout_item->add_item(group_tab);
 
@@ -1213,14 +1214,14 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
   {
     sharedptr<LayoutItem_Button> layout_item = sharedptr<LayoutItem_Button>::create();
     layout_item->set_name(_("button"));
-    layout_item->set_title(_("New Button"));
+    layout_item->set_title_original(_("New Button"));
     layout_item_new = layout_item;
   }
   else if(item_type == LayoutWidgetBase::TYPE_TEXT)
   {
     sharedptr<LayoutItem_Text> layout_item = sharedptr<LayoutItem_Text>::create();
     layout_item->set_name(_("text"));
-    layout_item->set_text(_("New Text"));
+    layout_item->set_text_original(_("New Text"));
     layout_item_new = layout_item;
   }
 
@@ -1374,7 +1375,7 @@ void FlowTableWithFields::on_menu_properties_activate()
   {
     sharedptr<LayoutGroup> group = get_layout_group();
     group->set_columns_count( dialog->get_columns_count() );
-    group->set_title(dialog->get_title());
+    group->set_title(dialog->get_title(), Application::get_current_locale());
     signal_layout_changed().emit();
   }
 
@@ -1385,11 +1386,11 @@ void FlowTableWithFields::on_menu_properties_activate()
 void FlowTableWithFields::on_menu_delete_activate()
 {
   Glib::ustring message;
-  if(!get_layout_item()->get_title().empty())
+  if(!get_layout_item()->get_title(Application::get_current_locale()).empty())
   {
     //TODO: Use a real English sentence here?
     message = Glib::ustring::compose(_("Delete whole group \"%1\"?"),
-                                      get_layout_item()->get_title());
+                                      get_layout_item()->get_title(Application::get_current_locale()));
   }
   else
   {

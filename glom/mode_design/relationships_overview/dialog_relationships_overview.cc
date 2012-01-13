@@ -195,7 +195,7 @@ void Dialog_RelationshipsOverview::draw_tables()
       Document::type_vec_fields fields = document->get_table_fields(table_name);
 
       Glib::RefPtr<CanvasGroupDbTable> table_group =
-        CanvasGroupDbTable::create(info->get_name(), info->get_title_or_name(), fields, table_x, table_y);
+        CanvasGroupDbTable::create(info->get_name(), info->get_title_or_name(Application::get_current_locale()), fields, table_x, table_y);
       m_group_tables->add_child(table_group);
       m_canvas.associate_with_grid(table_group); //Make snapping work.
 
@@ -317,7 +317,7 @@ void Dialog_RelationshipsOverview::draw_lines()
 
           const double text_x = (from_field_x + to_field_x) / 2;
           const double text_y = ((from_field_y + to_field_y) / 2) + y_offset;
-          Glib::RefPtr<CanvasTextMovable> text = CanvasTextMovable::create(relationship->get_title_or_name(),
+          Glib::RefPtr<CanvasTextMovable> text = CanvasTextMovable::create(relationship->get_title_or_name(Application::get_current_locale()),
             text_x, text_y, -1, //TODO: Calc a suitable width.
             Goocanvas::ANCHOR_CENTER);
           text->property_font() = "Sans 10";

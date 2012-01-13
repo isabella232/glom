@@ -22,6 +22,7 @@
 #include "glom/utility_widgets/canvas/canvas_rect_movable.h"
 #include "glom/utility_widgets/canvas/canvas_line_movable.h"
 #include "glom/utility_widgets/canvas/canvas_text_movable.h"
+#include <glom/application.h>
 #include <goocanvasmm/canvas.h>
 #include <goocanvasmm/rect.h>
 #include <goocanvasmm/polyline.h>
@@ -86,9 +87,9 @@ CanvasGroupDbTable::CanvasGroupDbTable(const Glib::ustring& table_name, const Gl
     //Show the primary key as bold:
     Glib::ustring title;
     if(field->get_primary_key())
-      title = "<u>" + field->get_title_or_name() + "</u>";
+      title = "<u>" + field->get_title_or_name(Application::get_current_locale()) + "</u>";
     else
-      title = field->get_title_or_name();
+      title = field->get_title_or_name(Application::get_current_locale());
 
     Glib::RefPtr<CanvasTextMovable> text_item = CanvasTextMovable::create(title, 
       x + margin, y + margin + field_y, m_table_width - margin*2,

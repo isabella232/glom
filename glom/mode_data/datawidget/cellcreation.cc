@@ -23,6 +23,7 @@
 #include <glom/mode_data/datawidget/cellrenderer_buttonimage.h>
 #include <glom/mode_data/datawidget/cellrenderer_buttontext.h>
 #include <glom/utils_ui.h>
+#include <glom/application.h>
 #include <gtkmm/cellrenderertext.h>
 #include <gtkmm/stock.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
@@ -140,7 +141,7 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
       if(item_text)
       {
         Gtk::CellRendererText* pCellText = Gtk::manage( new Gtk::CellRendererText() );
-        pCellText->set_property("text", item_text->get_text());
+        pCellText->set_property("text", item_text->get_text(Application::get_current_locale()));
 
         cell = pCellText;
       }
@@ -150,7 +151,7 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
         if(item_button)
         {
           GlomCellRenderer_ButtonText* pCellButton = Gtk::manage( new GlomCellRenderer_ButtonText() );
-          pCellButton->set_property("text", item_button->get_title_or_name());
+          pCellButton->set_property("text", item_button->get_title_or_name(Application::get_current_locale()));
           //pCellButton->set_fixed_width(50); //Otherwise it doesn't show up. TODO: Discover the width of the contents.
 
           cell = pCellButton;

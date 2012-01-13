@@ -58,12 +58,12 @@ public:
 
   bool operator() (const Glom::sharedptr<T_Element>& element)
   {
-    return (element->get_title() == m_title);
+    return (element->get_title_original() == m_title);
   }
 
   bool operator() (const Glom::sharedptr<const T_Element>& element)
   {
-    return (element->get_title() == m_title);
+    return (element->get_title_original() == m_title);
   }
 
 private:
@@ -162,37 +162,28 @@ void check_title(const T_Item& item, const char* title_en, const char* title_de)
 {
   g_assert(item);
 
-  g_assert( item->get_title() == title_en );
-
-  //Check when changing the current locale:
-  const Glib::ustring locale_original = Glom::TranslatableItem::get_current_locale();
-  Glom::TranslatableItem::set_current_locale(locale_de);
-  g_assert( item->get_title() == title_de );
-  Glom::TranslatableItem::set_current_locale(locale_original);
-
-
-  //Don't do the following checks if get_title() would actually delegate to the 
-  //child Field, instead of using the LayoutItem's own title translations:
-  const Glom::sharedptr<const Glom::LayoutItem_Field> layout_field = 
-     Glom::sharedptr<const Glom::LayoutItem_Field>::cast_dynamic(item);
-  if(layout_field)
-  {
-    return;
-  }
-
-  //Check when getting the translations directly:
   g_assert( item->get_title_original() == title_en );
+  g_assert( item->get_title(Glib::ustring()) == title_en );
+  g_assert( item->get_title("en_US") == title_en );
+
   g_assert( item->get_title_translation(locale_de) == title_de );
+  g_assert( item->get_title(locale_de) == title_de );
+
+  g_assert( item->get_title_or_name_original() == title_en );
+  g_assert( item->get_title_or_name(Glib::ustring()) == title_en );
+  g_assert( item->get_title_or_name("en_US") == title_en );
+  g_assert( item->get_title_or_name(locale_de) == title_de );
+
 
   //Check fallbacks:
   g_assert( item->get_title_translation(Glib::ustring()) == title_en );
-  g_assert( item->get_title_translation(locale_original) == title_en );
+  g_assert( item->get_title_translation("en_US") == title_en );
   g_assert( item->get_title_translation("en_GB") == title_en );
   g_assert( item->get_title_translation("de_AU") == title_de );
 
   //Check that fallbacks do not happen when we don't want them:
   g_assert( item->get_title_translation(Glib::ustring(), false) == Glib::ustring() );
-  g_assert( item->get_title_translation(locale_original, false) == Glib::ustring() );
+  g_assert( item->get_title_translation("en_US", false) == Glib::ustring() );
   g_assert( item->get_title_translation("en_GB", false) == Glib::ustring() );
   g_assert( item->get_title_translation("de_AU", false) == Glib::ustring() );
 }
@@ -245,14 +236,11 @@ int main()
   const std::vector<Glib::ustring> table_names = document.get_table_names();
   g_assert(contains(table_names, "scenes"));
 
-  g_assert( document.get_table_title("scenes") == "Scenes" );
-  g_assert( document.get_table_title_singular("scenes") == "Scene" );
+  g_assert( document.get_table_title_original("scenes") == "Scenes" );
+  g_assert( document.get_table_title_singular_original("scenes") == "Scene" );
   
-  const Glib::ustring locale_original = Glom::TranslatableItem::get_current_locale();
-  Glom::TranslatableItem::set_current_locale(locale_de);
-  g_assert( document.get_table_title("scenes") == "Szenen" );
-  g_assert( document.get_table_title_singular("scenes") == "Szene" ); //TODO: Make this is translated correctly.
-  Glom::TranslatableItem::set_current_locale(locale_original);
+  g_assert( document.get_table_title("scenes", locale_de) == "Szenen" );
+  g_assert( document.get_table_title_singular("scenes", locale_de) == "Szene" ); //TODO: Make sure this is translated correctly.
 
   //Check a field:
   Glom::sharedptr<const Glom::Field> field = document.get_field("contacts", "contact_id");
@@ -273,13 +261,11 @@ int main()
   check_title(value, "Day", "Tag");
   g_assert(value->get_value() == Gnome::Gda::Value("Day"));
 
-  Glom::TranslatableItem::set_current_locale(locale_de);
   g_assert( value->get_title_original() == "Day" );
-  g_assert( formatting.get_custom_choice_original_for_translated_text("Nacht") == "Night" );
-  g_assert( formatting.get_custom_choice_original_for_translated_text("aaaa") == "" );
-  g_assert( formatting.get_custom_choice_translated("Night") == "Nacht" );
-  g_assert( formatting.get_custom_choice_translated("aaaa") == "" );
-  Glom::TranslatableItem::set_current_locale(locale_original);
+  g_assert( formatting.get_custom_choice_original_for_translated_text("Nacht", locale_de) == "Night" );
+  g_assert( formatting.get_custom_choice_original_for_translated_text("aaaa", locale_de) == "" );
+  g_assert( formatting.get_custom_choice_translated("Night", locale_de) == "Nacht" );
+  g_assert( formatting.get_custom_choice_translated("aaaa", locale_de) == "" );
   g_assert( value->get_title_original() == "Day" );
 
   //Check a relationship:
@@ -287,10 +273,17 @@ int main()
   g_assert(relationship);
   check_title(relationship, "Actor", "Schauspieler");
 
+  //Check a LayoutItemField's CustomTitle:
   Glom::sharedptr<const Glom::LayoutItem_Field> field_on_layout = 
     get_field_on_layout(document, "characters", "contacts", "name_full");
   g_assert(field_on_layout);
   check_title(field_on_layout, "Actor's Name", "Schauspieler Name" );
+
+  //Check a LayoutItemField's Field title:
+  field_on_layout = 
+    get_field_on_layout(document, "scenes", "locations", "name");
+  g_assert(field_on_layout);
+  check_title(field_on_layout, "Name", "Name" );
 
   field_on_layout = 
     get_field_on_layout(document, "scenes", "scenes", "day_or_night");

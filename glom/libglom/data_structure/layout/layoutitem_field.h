@@ -86,13 +86,24 @@ public:
   /** Get the user-visible title for the field, in the user's current locale.
    * This returns the name if no title is set.
    */
-  virtual Glib::ustring get_title() const;
+  virtual Glib::ustring get_title(const Glib::ustring& locale) const;
+
+  /** Get the user-visible title for the field, in the user's current locale.
+   * This returns the name if no title is set.
+   */
+  virtual Glib::ustring get_title_original() const;
+
+  virtual Glib::ustring get_title_translation(const Glib::ustring& locale, bool fallback = true) const;
 
   /** Get the user-visible title for the field, in the user's current locale.
    */
-  virtual Glib::ustring get_title_or_name() const;
+  virtual Glib::ustring get_title_or_name(const Glib::ustring& locale) const;
 
-  Glib::ustring get_title_or_name_no_custom() const;
+  /** Get the user-visible title for the field, in the original locale.
+   */
+  virtual Glib::ustring get_title_or_name_original() const;
+
+  Glib::ustring get_title_or_name_no_custom(const Glib::ustring& locale) const;
 
   sharedptr<const CustomTitle> get_title_custom() const;
   sharedptr<CustomTitle> get_title_custom();
@@ -163,7 +174,12 @@ public:
 
 private:
 
-  Glib::ustring get_title_no_custom() const;
+  Glib::ustring get_title_no_custom(const Glib::ustring& locale) const;
+
+  Glib::ustring get_title_no_custom_original() const;
+
+  Glib::ustring get_title_no_custom_translation(const Glib::ustring& locale, bool fallback = true) const;
+
 
   //This is just a cache, filled in by looking at the database structure:
   sharedptr<const Field> m_field;

@@ -135,17 +135,17 @@ Glib::ustring UsesRelationship::get_table_used(const Glib::ustring& parent_table
     return parent_table;
 }
 
-Glib::ustring UsesRelationship::get_title_used(const Glib::ustring& parent_table_title) const
+Glib::ustring UsesRelationship::get_title_used(const Glib::ustring& parent_table_title, const Glib::ustring& locale) const
 {
   if(m_related_relationship)
-    return m_related_relationship->get_title_or_name();
+    return m_related_relationship->get_title_or_name(locale);
   else if(m_relationship)
-    return m_relationship->get_title_or_name();
+    return m_relationship->get_title_or_name(locale);
   else
     return parent_table_title;
 }
 
-Glib::ustring UsesRelationship::get_title_singular_used(const Glib::ustring& parent_table_title) const
+Glib::ustring UsesRelationship::get_title_singular_used(const Glib::ustring& parent_table_title, const Glib::ustring& locale) const
 {
   sharedptr<const Relationship> used = m_related_relationship;
   if(!used)
@@ -154,11 +154,11 @@ Glib::ustring UsesRelationship::get_title_singular_used(const Glib::ustring& par
   if(!used)
     return Glib::ustring();
 
-  const Glib::ustring result = used->get_title_singular();
+  const Glib::ustring result = used->get_title_singular(locale);
   if(!result.empty())
     return result;
   else
-    return get_title_used(parent_table_title);
+    return get_title_used(parent_table_title, locale);
 }
 
 Glib::ustring UsesRelationship::get_to_field_used() const

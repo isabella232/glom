@@ -296,10 +296,12 @@ public:
   bool get_table_is_known(const Glib::ustring& table_name) const;
   bool get_table_is_hidden(const Glib::ustring& table_name) const;
 
-  Glib::ustring get_table_title(const Glib::ustring& table_name) const;
-  void set_table_title(const Glib::ustring& table_name, const Glib::ustring& value);
+  Glib::ustring get_table_title(const Glib::ustring& table_name, const Glib::ustring& locale) const;
+  Glib::ustring get_table_title_original(const Glib::ustring& table_name) const;
+  void set_table_title(const Glib::ustring& table_name, const Glib::ustring& value, const Glib::ustring& locale);
 
-  Glib::ustring get_table_title_singular(const Glib::ustring& table_name) const;
+  Glib::ustring get_table_title_singular(const Glib::ustring& table_name, const Glib::ustring& locale) const;
+  Glib::ustring get_table_title_singular_original(const Glib::ustring& table_name) const;
 
   typedef std::vector< Gnome::Gda::Value > type_row_data;
   typedef std::vector< type_row_data > type_example_rows;

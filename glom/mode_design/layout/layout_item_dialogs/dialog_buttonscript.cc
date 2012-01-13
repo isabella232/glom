@@ -22,6 +22,7 @@
 #include "dialog_buttonscript.h"
 #include <glom/python_embed/glom_python.h>
 #include <glom/utils_ui.h>
+#include <glom/application.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <gtksourceviewmm/languagemanager.h>
 
@@ -80,7 +81,7 @@ void Dialog_ButtonScript::set_script(const sharedptr<const LayoutItem_Button>& s
 
   m_text_view_script->get_buffer()->set_text( script->get_script() );
 
-  m_entry_title->set_text(script->get_title());
+  m_entry_title->set_text(script->get_title(Application::get_current_locale()));
   //set_blocked(false);
 
   //Dialog_Properties::set_modified(false);
@@ -98,7 +99,7 @@ sharedptr<LayoutItem_Button> Dialog_ButtonScript::get_script() const
 void Dialog_ButtonScript::get_script(const sharedptr<LayoutItem_Button>& script) const
 {
   script->set_script(m_text_view_script->get_buffer()->get_text() );
-  script->set_title(m_entry_title->get_text());
+  script->set_title(m_entry_title->get_text(), Application::get_current_locale());
 }
 
 void Dialog_ButtonScript::on_button_test_script()

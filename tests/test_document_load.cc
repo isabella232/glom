@@ -174,8 +174,8 @@ int main()
 
   Glom::sharedptr<Glom::TableInfo> table = document.get_table("scenes");
   g_assert(table);
-  g_assert( table->get_title() == "Scenes" );
-  g_assert( table->get_title_singular() == "Scene" );
+  g_assert( table->get_title_original() == "Scenes" );
+  g_assert( table->get_title_singular_original() == "Scene" );
 
   //Test known fields of one table:
   const Glom::Document::type_vec_fields fields = document.get_table_fields("scenes");
@@ -193,12 +193,12 @@ int main()
   //Check some fields:
   Glom::sharedptr<const Glom::Field> field = document.get_field("contacts", "contact_id");
   g_assert(field);
-  g_assert( field->get_title() == "Contact ID" );
+  g_assert( field->get_title_original() == "Contact ID" );
   g_assert(field->get_glom_type() == Glom::Field::TYPE_NUMERIC);
   g_assert(field->get_auto_increment());
   field = document.get_field("locations", "rent");
   g_assert(field);
-  g_assert( field->get_title() == "Rent" );
+  g_assert( field->get_title_original() == "Rent" );
   g_assert(field->get_glom_type() == Glom::Field::TYPE_NUMERIC);
   g_assert(!field->get_auto_increment());
   g_assert(!field->get_unique_key());
@@ -293,7 +293,7 @@ int main()
     return false;
   }
   
-  if(print_layout->get_title() != "Contact Details")
+  if(print_layout->get_title_original() != "Contact Details")
   {
     std::cerr << "Failure: Unexpected print layout title." << std::endl;
     return false;
@@ -327,7 +327,7 @@ int main()
     return false;
   }
   
-  if(report->get_title() != "By Country, By Town")
+  if(report->get_title_original() != "By Country, By Town")
   {
     std::cerr << "Failure: Unexpected report title." << std::endl;
     return false;
