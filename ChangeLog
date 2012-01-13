@@ -1,5 +1,14 @@
 2012-01-13  Murray Cumming  <murrayc@murrayc.com>
 
+	test_document_load_translations: Test title_singular too.
+
+	* examples/example_film_manager.glom: Scenes table: Add a German
+	translation of the singular title.
+	* tests/test_document_load_translations.cc: Test 
+	Document::get_table_title_singular() in the original and de locales.
+
+2012-01-13  Murray Cumming  <murrayc@murrayc.com>
+
 	Import .po translations into the .glom example files.
 
 	* examples/example_film_manager.glom:

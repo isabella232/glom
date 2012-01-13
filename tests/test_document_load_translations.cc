@@ -239,17 +239,19 @@ int main()
   }
 
   const std::vector<Glib::ustring> locales = document.get_translation_available_locales();
-  g_assert(locales.size() == 2);
+  g_assert(locales.size() == 4);
   g_assert(contains(locales, "de"));
 
   const std::vector<Glib::ustring> table_names = document.get_table_names();
   g_assert(contains(table_names, "scenes"));
 
   g_assert( document.get_table_title("scenes") == "Scenes" );
+  g_assert( document.get_table_title_singular("scenes") == "Scene" );
   
   const Glib::ustring locale_original = Glom::TranslatableItem::get_current_locale();
   Glom::TranslatableItem::set_current_locale(locale_de);
   g_assert( document.get_table_title("scenes") == "Szenen" );
+  g_assert( document.get_table_title_singular("scenes") == "Szene" ); //TODO: Make this is translated correctly.
   Glom::TranslatableItem::set_current_locale(locale_original);
 
   //Check a field:

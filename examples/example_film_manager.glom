@@ -4432,7 +4432,11 @@ Orientation=portrait
       <trans loc="de" val="Szenen"/>
       <trans loc="es" val="Escenas"/>
     </trans_set>
-    <title_singular title="Scene"/>
+    <title_singular title="Scene">
+      <trans_set>
+        <trans loc="de" val="Szene"/>
+      </trans_set>
+    </title_singular>
     <fields>
       <field name="scene_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Scene ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
