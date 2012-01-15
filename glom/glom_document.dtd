@@ -329,7 +329,7 @@ TODO: Should we specify the presence of child text nodes in the ELEMENT somehow?
 
 <!-- data_layout_button is a button on the layout. -->
 
-    <!ELEMENT data_layout_button (script?, formatting?)>
+    <!ELEMENT data_layout_button (script?, trans_set?, formatting?)>
     <!ATTLIST data_layout_button
         title CDATA #REQUIRED
         sequence CDATA #IMPLIED
