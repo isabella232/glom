@@ -1,3 +1,8 @@
+1.20.6 (stable):
+
+* List view: Do not show columns twice.
+  Bug #667997 (Ivan)
+
 1.20.5 (stable):
 
 * Details： Make restricted choices work.
