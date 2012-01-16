@@ -60,7 +60,7 @@ void Dialog_TextObject::set_textobject(const sharedptr<const LayoutItem_Text>& t
   m_textobject = glom_sharedptr_clone(textobject); //Remember it so we save any details that are not in our UI.
   m_table_name = table_name;  //Used for lookup combo boxes.
 
-  m_entry_title->set_text(textobject->get_title(Application::get_current_locale()));
+  m_entry_title->set_text(item_get_title(textobject));
   m_text_view->get_buffer()->set_text( textobject->get_text(Application::get_current_locale()) );
 
   if(show_title)

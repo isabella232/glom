@@ -88,7 +88,7 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
   {
     Glib::ustring title;
     if(m_portal)
-      title = m_portal->get_title(Application::get_current_locale());
+      title = item_get_title(m_portal);
 
     m_Label.set_markup(Utils::bold_message(title));
     m_Label.show();

@@ -232,10 +232,10 @@ void ComboBox_Relationship::on_cell_data_title(const Gtk::TreeModel::const_itera
       //related relationship:
       sharedptr<Relationship> parent_relationship = (*iterParent)[m_model_columns.m_relationship];
       if(relationship)
-        m_renderer_title->set_property("text", parent_relationship->get_title_or_name(Application::get_current_locale()) + "::" + relationship->get_title_or_name(Application::get_current_locale()));
+        m_renderer_title->set_property("text", item_get_title_or_name(parent_relationship) + "::" + item_get_title_or_name(relationship));
     }
     else
-      m_renderer_title->set_property("text", relationship->get_title_or_name(Application::get_current_locale()));
+      m_renderer_title->set_property("text", item_get_title_or_name(relationship));
   }
   else if(get_has_parent_table())
   {
@@ -265,7 +265,7 @@ void ComboBox_Relationship::on_cell_data_fromfield(const Gtk::TreeModel::const_i
     {
       sharedptr<Relationship> parent_relationship = (*iterParent)[m_model_columns.m_relationship];
       if(parent_relationship)
-        m_renderer_fromfield->set_property("text", Glib::ustring::compose(_(" Via: %1::%2"), parent_relationship->get_title(Application::get_current_locale()), relationship->get_from_field()));
+        m_renderer_fromfield->set_property("text", Glib::ustring::compose(_(" Via: %1::%2"), item_get_title(parent_relationship), relationship->get_from_field()));
     }
     else
     {

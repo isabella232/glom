@@ -102,7 +102,7 @@ void Dialog_Notebook::set_notebook(const sharedptr<const LayoutItem_Notebook>& s
 
       row[m_ColumnsTabs.m_col_item] = glom_sharedptr_clone(item);
       row[m_ColumnsTabs.m_col_name] = item->get_name();
-      row[m_ColumnsTabs.m_col_title] = item->get_title(Application::get_current_locale());
+      row[m_ColumnsTabs.m_col_title] = item_get_title(item);
       row[m_ColumnsTabs.m_col_sequence] = sequence;
       ++sequence;
   }

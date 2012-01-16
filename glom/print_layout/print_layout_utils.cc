@@ -184,7 +184,7 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
 
   //Show the group's title
   //(but do not fall back to the name, because unnamed groups are really wanted sometimes.)
-  const Glib::ustring title = layout_group->get_title(Application::get_current_locale());
+  const Glib::ustring title = item_get_title(layout_group);
   if(!title.empty())
   {
     sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::create();
@@ -248,7 +248,7 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
       if(field)
       {
         text_title = sharedptr<LayoutItem_Text>::create();
-        const Glib::ustring field_title = field->get_title_or_name(Application::get_current_locale());
+        const Glib::ustring field_title = item_get_title_or_name(field);
         text_title->set_text(field_title + ":", Application::get_current_locale());
         
         if(avoid_page_margins)

@@ -1199,7 +1199,7 @@ void Dialog_Layout_Details::on_cell_data_title(Gtk::CellRenderer* renderer, cons
       if(layout_notebook)
         renderer_text->property_text() = _("(Notebook)");
       else if(layout_item)
-        renderer_text->property_text() = layout_item->get_title(Application::get_current_locale());
+        renderer_text->property_text() = item_get_title(layout_item);
       else
         renderer_text->property_text() = Glib::ustring();
 

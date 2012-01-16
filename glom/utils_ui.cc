@@ -365,7 +365,7 @@ int Utils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const shared
   if(or_title)
   {
     //Make sure that there's enough space for the title too.
-    const int title_width = get_width_for_text(widget, field_layout->get_title(Application::get_current_locale()));
+    const int title_width = get_width_for_text(widget, item_get_title(field_layout));
     if(title_width > result)
       result = title_width;
   }

@@ -90,13 +90,13 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const shar
     if(developer_mode)
     {
       //std::cout << "debug: " << G_STRFUNC << ": dev title=" << table_info->get_title(Application::get_current_locale()) << std::endl;
-      m_AddDel.set_value(iter, m_colTitle, table_info->get_title(Application::get_current_locale()));
+      m_AddDel.set_value(iter, m_colTitle, item_get_title(table_info));
       m_AddDel.set_value(iter, m_colTitleSingular, table_info->get_title_singular(Application::get_current_locale()));
     }
     else
     {
       //std::cout << "debug: " << G_STRFUNC << ": op get_title_or_name=" << table_info->get_title_or_name(Application::get_current_locale()) << std::endl;
-      m_AddDel.set_value(iter, m_colTitle, table_info->get_title_or_name(Application::get_current_locale()));
+      m_AddDel.set_value(iter, m_colTitle, item_get_title_or_name(table_info));
     }
 
     m_AddDel.set_value(iter, m_colDefault, table_info->m_default);
@@ -175,7 +175,7 @@ bool Box_Tables::fill_from_database()
       {
         table_info = *iterFind;
 
-        //std::cout << "debug: " << G_STRFUNC << ": name=" << (*iterFind)->get_name() << ", table_info->get_title(Application::get_current_locale())=" << (*iterFind)->get_title(Application::get_current_locale()) << std::endl;
+        //std::cout << "debug: " << G_STRFUNC << ": name=" << (*iterFind)->get_name() << ", item_get_title(table_info)=" << item_get_title(*iterFind) << std::endl;
       }
       else
       {
@@ -480,7 +480,7 @@ void Box_Tables::save_to_document()
           table_info->m_hidden = m_AddDel.get_value_as_bool(iter, m_colHidden);
           table_info->set_title( m_AddDel.get_value(iter, m_colTitle) , Application::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
           table_info->set_title_singular( m_AddDel.get_value(iter, m_colTitleSingular), Application::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
-          //std::cout << "debug: " << G_STRFUNC << ": title=" << table_info->get_title(Application::get_current_locale()) << std::endl;
+          //std::cout << "debug: " << G_STRFUNC << ": title=" << item_get_title(table_info) << std::endl;
           table_info->m_default = m_AddDel.get_value_as_bool(iter, m_colDefault);
 
           listTables.push_back(table_info);

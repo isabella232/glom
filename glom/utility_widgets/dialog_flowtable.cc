@@ -57,7 +57,7 @@ void Dialog_FlowTable::set_flowtable(FlowTableWithFields* flowtable)
 {
   m_flowtable = flowtable;
   m_layoutgroup = sharedptr<LayoutGroup>::cast_dynamic(flowtable->get_layout_item());
-  m_entry_title->set_text(m_layoutgroup->get_title(Application::get_current_locale()));
+  m_entry_title->set_text(item_get_title(m_layoutgroup));
   m_spin_columns->set_value(m_layoutgroup->get_columns_count());
 }
 

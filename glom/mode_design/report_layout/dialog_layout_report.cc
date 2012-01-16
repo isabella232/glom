@@ -351,7 +351,7 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const sha
   m_label_table_name->set_text(table_name);
 
   m_entry_name->set_text(report->get_name());
-  m_entry_title->set_text(report->get_title(Application::get_current_locale()));
+  m_entry_title->set_text(item_get_title(report));
   m_checkbutton_table_title->set_active(report->get_show_table_title());
 
   //Update the tree models from the document

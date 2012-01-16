@@ -161,7 +161,7 @@ void FlowTableWithFields::add_layout_group(const sharedptr<LayoutGroup>& group, 
   {
     Gtk::Frame* frame = Gtk::manage( new Gtk::Frame ); //TODO_leak: This is possibly leaked, according to valgrind.
 
-    const Glib::ustring group_title = group->get_title(Application::get_current_locale());
+    const Glib::ustring group_title = item_get_title(group);
     if(!group_title.empty())
     {
       Gtk::Label* label = Gtk::manage( new Gtk::Label ); //TODO: This is maybe leaked, according to valgrind, though it should be managed by GtkFrame.
@@ -369,7 +369,7 @@ void FlowTableWithFields::add_layout_notebook(const sharedptr<LayoutItem_Noteboo
       tab_label->show();
 #endif
 
-      tab_label->set_label(group->get_title_or_name(Application::get_current_locale()));
+      tab_label->set_label(item_get_title_or_name(group));
 
       sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(group);
       if(portal)
@@ -564,7 +564,7 @@ void FlowTableWithFields::add_button(const sharedptr<LayoutItem_Button>& layouti
 {
   //Add the widget
   ButtonGlom* button = Gtk::manage(new ButtonGlom());
-  button->set_label(layoutitem_button->get_title_or_name(Application::get_current_locale()));
+  button->set_label(item_get_title_or_name(layoutitem_button));
   button->set_layout_item(layoutitem_button, table_name);
   button->signal_clicked().connect(
     sigc::bind(
@@ -622,7 +622,7 @@ void FlowTableWithFields::add_textobject(const sharedptr<LayoutItem_Text>& layou
 
   add_layoutwidgetbase(label);
 
-  const Glib::ustring title = layoutitem_text->get_title(Application::get_current_locale());
+  const Glib::ustring title = item_get_title(layoutitem_text);
   if(title.empty())
   {
     add(*alignment_label, true /* expand */);
@@ -656,7 +656,7 @@ void FlowTableWithFields::add_imageobject(const sharedptr<LayoutItem_Image>& lay
   add_layoutwidgetbase(image);
   //add_view(button); //So it can get the document.
 
-  const Glib::ustring title = layoutitem_image->get_title(Application::get_current_locale());
+  const Glib::ustring title = item_get_title(layoutitem_image);
   if(title.empty())
   {
     add(*image, true /* expand */);
@@ -1386,11 +1386,11 @@ void FlowTableWithFields::on_menu_properties_activate()
 void FlowTableWithFields::on_menu_delete_activate()
 {
   Glib::ustring message;
-  if(!get_layout_item()->get_title(Application::get_current_locale()).empty())
+  if(!item_get_title(get_layout_item()).empty())
   {
     //TODO: Use a real English sentence here?
     message = Glib::ustring::compose(_("Delete whole group \"%1\"?"),
-                                      get_layout_item()->get_title(Application::get_current_locale()));
+                                      item_get_title(get_layout_item()));
   }
   else
   {

@@ -86,7 +86,7 @@ void Dialog_ChooseRelationship::set_document(Document* document, const Glib::ust
       if(relationship)
         row[m_ColumnsRelationships.m_col_name] = glom_get_sharedptr_name(relationship);
 
-      //row[m_ColumnsRelationships.m_col_title] = iter->get_title(Application::get_current_locale());
+      //row[m_ColumnsRelationships.m_col_title] = item_get_title(iter);
       row[m_ColumnsRelationships.m_col_relationship] = relationship;
     }
   }

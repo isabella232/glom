@@ -239,7 +239,7 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const FieldFormatting::type_li
     {
       //Show the translated text of the value:
       //This will never be stored in the database:
-      text = choicevalue->get_title(Application::get_current_locale());
+      text = item_get_title(choicevalue);
     }
     else
     {

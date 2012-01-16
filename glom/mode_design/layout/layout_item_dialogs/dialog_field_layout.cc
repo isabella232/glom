@@ -90,7 +90,7 @@ void Dialog_FieldLayout::set_field(const sharedptr<const LayoutItem_Field>& fiel
   //Custom title:
   Glib::ustring title_custom;
   if(field->get_title_custom())
-    title_custom = field->get_title_custom()->get_title(Application::get_current_locale());
+    title_custom = item_get_title(field->get_title_custom());
 
   m_radiobutton_title_custom->set_active( field->get_title_custom() && field->get_title_custom()->get_use_custom_title() );
   m_entry_title_custom->set_text(title_custom);

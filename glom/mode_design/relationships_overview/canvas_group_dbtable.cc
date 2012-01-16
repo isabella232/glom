@@ -87,9 +87,9 @@ CanvasGroupDbTable::CanvasGroupDbTable(const Glib::ustring& table_name, const Gl
     //Show the primary key as bold:
     Glib::ustring title;
     if(field->get_primary_key())
-      title = "<u>" + field->get_title_or_name(Application::get_current_locale()) + "</u>";
+      title = "<u>" + item_get_title_or_name(field) + "</u>";
     else
-      title = field->get_title_or_name(Application::get_current_locale());
+      title = item_get_title_or_name(field);
 
     Glib::RefPtr<CanvasTextMovable> text_item = CanvasTextMovable::create(title, 
       x + margin, y + margin + field_y, m_table_width - margin*2,

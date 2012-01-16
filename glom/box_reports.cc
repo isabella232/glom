@@ -65,7 +65,7 @@ void Box_Reports::fill_row(const Gtk::TreeModel::iterator& iter, const sharedptr
     const Glib::ustring report_name = report->get_name();
     m_AddDel.set_value_key(iter, report_name);
     m_AddDel.set_value(iter, m_colReportName, report_name);
-    m_AddDel.set_value(iter, m_colTitle, report->get_title(Application::get_current_locale()));
+    m_AddDel.set_value(iter, m_colTitle, item_get_title(report));
   }
 }
 

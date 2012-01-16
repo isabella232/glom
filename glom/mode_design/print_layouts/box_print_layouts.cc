@@ -65,7 +65,7 @@ void Box_Print_Layouts::fill_row(const Gtk::TreeModel::iterator& iter, const sha
     const Glib::ustring& name = item->get_name();
     m_AddDel.set_value_key(iter, name);
     m_AddDel.set_value(iter, m_colName, name);
-    m_AddDel.set_value(iter, m_colTitle, item->get_title(Application::get_current_locale()));
+    m_AddDel.set_value(iter, m_colTitle, item_get_title(item));
   }
 }
 

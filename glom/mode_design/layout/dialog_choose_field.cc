@@ -168,7 +168,7 @@ void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& t
 
       sharedptr<Field> field = *iter;
       row[m_ColumnsFields.m_col_name] = field->get_name();
-      row[m_ColumnsFields.m_col_title] = field->get_title(Application::get_current_locale());
+      row[m_ColumnsFields.m_col_title] = item_get_title(field);
       row[m_ColumnsFields.m_col_field] = field;
     }
   }
@@ -327,7 +327,7 @@ void Dialog_ChooseField::on_combo_relationship_changed()
 
       sharedptr<Field> field = *iter;
       row[m_ColumnsFields.m_col_name] = field->get_name();
-      row[m_ColumnsFields.m_col_title] = field->get_title(Application::get_current_locale());
+      row[m_ColumnsFields.m_col_title] = item_get_title(field);
       row[m_ColumnsFields.m_col_field] = field;
     }
 

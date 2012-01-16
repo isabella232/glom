@@ -81,7 +81,7 @@ void Dialog_ButtonScript::set_script(const sharedptr<const LayoutItem_Button>& s
 
   m_text_view_script->get_buffer()->set_text( script->get_script() );
 
-  m_entry_title->set_text(script->get_title(Application::get_current_locale()));
+  m_entry_title->set_text(item_get_title(script));
   //set_blocked(false);
 
   //Dialog_Properties::set_modified(false);

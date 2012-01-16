@@ -211,7 +211,7 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
   m_pTextView_Calculation->get_buffer()->set_text(calculation);
   //std::cout << "  debug: dialog_fielddefinition.c:: after get_buffer()" << std::endl;
 
-  m_pEntry_Title->set_text(field->get_title(Application::get_current_locale()));
+  m_pEntry_Title->set_text(item_get_title(field));
 
   //Formatting:
   m_box_formatting->set_formatting_for_field(field->m_default_formatting, m_table_name, field);

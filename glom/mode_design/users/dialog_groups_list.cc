@@ -416,7 +416,7 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
       const Glib::ustring table_name = (*iter)->get_name();
 
       row[m_model_columns_tables.m_col_name] = table_name;
-      row[m_model_columns_tables.m_col_title] = (*iter)->get_title_or_name(Application::get_current_locale());
+      row[m_model_columns_tables.m_col_title] = item_get_title_or_name(*iter);
 
       const Privileges privs = Privs::get_table_privileges(group_name, table_name);
       row[m_model_columns_tables.m_col_view] = privs.m_view;

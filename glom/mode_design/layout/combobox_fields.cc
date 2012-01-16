@@ -202,7 +202,7 @@ void ComboBox_Fields::on_cell_data_title(const Gtk::TreeModel::const_iterator& i
   sharedptr<Field> field = row[m_model_columns.m_field];
   if(field)
   {
-    m_renderer_title->set_property("text", field->get_title_or_name(Application::get_current_locale()));
+    m_renderer_title->set_property("text", item_get_title_or_name(field));
   }
   else
   {

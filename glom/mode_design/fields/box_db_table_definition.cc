@@ -100,7 +100,7 @@ void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& ite
 
   m_AddDel.set_value(iter, m_colName, field->get_name());
 
-  const Glib::ustring title = field->get_title(Application::get_current_locale());
+  const Glib::ustring title = item_get_title(field);
   m_AddDel.set_value(iter, m_colTitle, title);
 
   //Type:

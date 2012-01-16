@@ -1,5 +1,15 @@
 2012-01-16  Murray Cumming  <murrayc@murrayc.com>
 
+	Avoid repetitive Application::get_current_locale() calls.
+
+	* glom/application.[h|cc]: Added item_get_title() and item_get_title_or_name()
+	outside of the class.
+	* glom/libglom/data_structure/translatable_item.h: Removed unused 
+	glom_get_sharedptr_title_or_name().
+	* glom/: Many files: Use the new functions to make the code slighly shorter.
+
+2012-01-16  Murray Cumming  <murrayc@murrayc.com>
+
 	TranslatableItems: Make less methods virtual.
 
 	* glom/libglom/data_structure/translatable_item.[h|cc]:

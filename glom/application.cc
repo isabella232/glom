@@ -2009,7 +2009,7 @@ void Application::fill_menu_tables()
 
       ui_description += "<menuitem action='" + action_name + "' />";
 
-      Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create(action_name, Utils::string_escape_underscores(table_info->get_title_or_name(Application::get_current_locale())));
+      Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create(action_name, Utils::string_escape_underscores(item_get_title_or_name(table_info)));
       m_refNavTablesActionGroup->add(refAction,
         sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_box_tables_selected), table_info->get_name()) );
 
@@ -2078,7 +2078,7 @@ void Application::fill_menu_reports(const Glib::ustring& table_name)
 
         ui_description += "<menuitem action='" + action_name + "' />";
 
-        Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create( action_name, Utils::string_escape_underscores(report->get_title_or_name(Application::get_current_locale())));
+        Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create( action_name, Utils::string_escape_underscores(item_get_title_or_name(report)) );
         m_refNavReportsActionGroup->add(refAction,
           sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_report_selected), report->get_name()) );
 
@@ -2159,7 +2159,7 @@ void Application::fill_menu_print_layouts(const Glib::ustring& table_name)
 
         ui_description += "<menuitem action='" + action_name + "' />";
 
-        Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create( action_name, Utils::string_escape_underscores(print_layout->get_title_or_name(Application::get_current_locale())));
+        Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create( action_name, Utils::string_escape_underscores(item_get_title(print_layout)) );
         m_refNavPrintLayoutsActionGroup->add(refAction,
           sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_print_layout_selected), print_layout->get_name()) );
 
@@ -2903,5 +2903,23 @@ Glib::ustring Application::get_current_locale()
   else
     return "C";
 }
+
+Glib::ustring item_get_title(const sharedptr<const TranslatableItem>& item)
+{
+  if(!item)
+    return Glib::ustring();
+
+  return item->get_title(Application::get_current_locale());
+}
+
+Glib::ustring item_get_title_or_name(const sharedptr<const TranslatableItem>& item)
+{
+  if(!item)
+    return Glib::ustring();
+
+  return item->get_title_or_name(Application::get_current_locale());
+}
+
+
 
 } //namespace Glom

@@ -112,7 +112,7 @@ bool Box_DB_Table_Relationships::fill_from_database()
         m_AddDel.set_value(iterTree, m_colName, relationship->get_name());
 
         //Title:
-        m_AddDel.set_value(iterTree, m_colTitle, relationship->get_title(Application::get_current_locale()));
+        m_AddDel.set_value(iterTree, m_colTitle, item_get_title(relationship));
         m_AddDel.set_value(iterTree, m_colTitleSingular, relationship->get_title_singular(Application::get_current_locale()));
 
         //From Field:

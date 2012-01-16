@@ -141,7 +141,7 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
       if(item_text)
       {
         Gtk::CellRendererText* pCellText = Gtk::manage( new Gtk::CellRendererText() );
-        pCellText->set_property("text", item_text->get_text(Application::get_current_locale()));
+        pCellText->set_property("text", item_get_title(item_text));
 
         cell = pCellText;
       }
@@ -151,7 +151,7 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
         if(item_button)
         {
           GlomCellRenderer_ButtonText* pCellButton = Gtk::manage( new GlomCellRenderer_ButtonText() );
-          pCellButton->set_property("text", item_button->get_title_or_name(Application::get_current_locale()));
+          pCellButton->set_property("text", item_get_title_or_name(item_button));
           //pCellButton->set_fixed_width(50); //Otherwise it doesn't show up. TODO: Discover the width of the contents.
 
           cell = pCellButton;

@@ -682,7 +682,7 @@ void Window_PrintLayout_Edit::set_print_layout(const Glib::ustring& table_name, 
   update_table_title();
 
   m_entry_name->set_text(print_layout->get_name()); 
-  m_entry_title->set_text(print_layout->get_title(Application::get_current_locale()));
+  m_entry_title->set_text(item_get_title(print_layout));
 
   set_ruler_sizes();
 

@@ -71,7 +71,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
   
   //The GNOME HIG says that labels should have ":" at the end:
   //http://library.gnome.org/devel/hig-book/stable/design-text-labels.html.en
-  const Glib::ustring title = Glib::ustring::compose(_("%1:"), field->get_title_or_name(Application::get_current_locale()));
+  const Glib::ustring title = Glib::ustring::compose(_("%1:"), item_get_title_or_name(field));
 
   m_child = 0;
   LayoutWidgetField* pFieldWidget = 0;  

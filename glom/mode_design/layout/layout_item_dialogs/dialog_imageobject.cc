@@ -70,7 +70,7 @@ void Dialog_ImageObject::set_imageobject(const sharedptr<const LayoutItem_Image>
   m_imageobject = glom_sharedptr_clone(imageobject); //Remember it so we save any details that are not in our UI.
   m_table_name = table_name;  //Used for lookup combo boxes.
 
-  m_entry_title->set_text(imageobject->get_title(Application::get_current_locale()));
+  m_entry_title->set_text(item_get_title(imageobject));
   m_image->set_value( imageobject->get_image() );
 
   if(show_title)

@@ -92,7 +92,7 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
   {
     Glib::ustring title;
     if(m_portal)
-      title = m_portal->get_title(Application::get_current_locale());
+      title = item_get_title(m_portal);
 
     m_Label.set_markup(Utils::bold_message(title));
     m_Label.show();
