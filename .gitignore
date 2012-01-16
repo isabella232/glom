@@ -43,6 +43,7 @@ Makefile.in
 /doc-reference.am
 /generate-binding.am
 /gnome-doc-utils.make
+/messages.mo
 /omf.make
 /xmldocs.make
 
