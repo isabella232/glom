@@ -2,5 +2,6 @@ glom
 glom_create_from_example
 glom_export_po
 glom_export_po_all
+glom_import_po_all
 glom_test_connection
 test_pyembed
