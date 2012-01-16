@@ -53,7 +53,7 @@ public:
 
   virtual Glib::ustring get_title_or_name(const Glib::ustring& locale) const;
 
-  virtual Glib::ustring get_title_or_name_original() const;
+  Glib::ustring get_title_or_name_original() const;
 
   /** Get the title's translation for the specified locale, falling back to the
    * original text if there is no translation.
@@ -66,6 +66,7 @@ public:
    */
   virtual Glib::ustring get_title(const Glib::ustring& locale) const;
 
+  //This is virtual so that ChoiceValue can override it.
   /** Get the title's original (non-translated, usually English) text.
    */
   virtual Glib::ustring get_title_original() const;
@@ -75,7 +76,7 @@ public:
    * the original.
    * Calling this with the current locale is the same as calling get_title_original().
    */
-  virtual Glib::ustring get_title_translation(const Glib::ustring& locale, bool fallback = true) const;
+  Glib::ustring get_title_translation(const Glib::ustring& locale, bool fallback = true) const;
   
 
   /** Set the title's translation for the specified locale.

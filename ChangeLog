@@ -1,5 +1,24 @@
 2012-01-16  Murray Cumming  <murrayc@murrayc.com>
 
+	TranslatableItems: Make less methods virtual.
+
+	* glom/libglom/data_structure/translatable_item.[h|cc]:
+	get_title_translation(), get_title_or_name_original():
+	Make these non-virtual, because nothing needs to override them.
+	* glom/libglom/data_structure/layout/layoutitem_field.[h|cc]:
+  Remove useless get_title_original(), get_title_translation(), and
+  get_title_or_name_original() overrides.
+  Remove useless and unused private get_title_no_custom_original() method.
+	* glom/libglom/document/document.[h|cc]: Add a 
+  fill_translatable_layout_items(LayoutItem_Field) method, and use it in 
+  fill_translatable_layout_items(LayoutGroup), instead of repeating code.
+  Avoid calling get_title_original() and get_title_translation() on 
+  LayoutItem_Field because it does not have its own title.
+	* glom/libglom/example_document_load.cc:
+	* tests/test_document_load_translations.cc: Adapted.
+
+2012-01-16  Murray Cumming  <murrayc@murrayc.com>
+
 	TranslatableItem: Require the caller to provide the locale.
 
 	* glom/libglom/data_structure/translatable_item.[h|cc]:

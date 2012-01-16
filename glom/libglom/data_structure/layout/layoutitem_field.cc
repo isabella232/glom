@@ -137,18 +137,6 @@ Glib::ustring LayoutItem_Field::get_title_no_custom_translation(const Glib::ustr
     return Glib::ustring();
 }
 
-Glib::ustring LayoutItem_Field::get_title_no_custom_original() const
-{
-  //Use the field's default title:
-  if(m_field_cache_valid && m_field)
-  {
-    return m_field->get_title_original();
-  }
-  else
-    return get_name(); //We ignore TranslatableItem::get_title() for LayoutItem_Field.
-}
-
-
 Glib::ustring LayoutItem_Field::get_title_or_name_no_custom(const Glib::ustring& locale) const
 {
   //Use the field's default title:
@@ -173,32 +161,6 @@ Glib::ustring LayoutItem_Field::get_title(const Glib::ustring& locale) const
   return get_title_no_custom(locale);
 }
 
-Glib::ustring LayoutItem_Field::get_title_translation(const Glib::ustring& locale, bool fallback) const
-{
-  //Use the custom title (overriding the field's default title), if there is one:
-  //This may even be empty if the developer specifies that.
-  if(m_title_custom && m_title_custom->get_use_custom_title())
-  {
-    return m_title_custom->get_title_translation(locale, fallback);
-  }
-
-  return m_field->get_title_translation(locale, fallback);
-}
-
-Glib::ustring LayoutItem_Field::get_title_original() const
-{
-  //Use the custom title (overriding the field's default title), if there is one:
-  //This may even be empty if the developer specifies that.
-  if(m_title_custom && m_title_custom->get_use_custom_title())
-  {
-    return m_title_custom->get_title_original();
-  }
-
-  //Use the field's default title:
-  return get_title_no_custom_original();
-}
-
-
 Glib::ustring LayoutItem_Field::get_title_or_name(const Glib::ustring& locale) const
 {
   //Use the custom title (overriding the field's default title), if there is one:
@@ -210,19 +172,6 @@ Glib::ustring LayoutItem_Field::get_title_or_name(const Glib::ustring& locale) c
 
   //Use the field's default title:
   return get_title_no_custom(locale);
-}
-
-Glib::ustring LayoutItem_Field::get_title_or_name_original() const
-{
-  //Use the custom title (overriding the field's default title), if there is one:
-  //This may even be empty if the developer specifies that.
-  if(m_title_custom && m_title_custom->get_use_custom_title())
-  {
-    return m_title_custom->get_title_original();
-  }
-
-  //Use the field's default title:
-  return get_title_no_custom_original();
 }
 
 bool LayoutItem_Field::get_editable_and_allowed() const

@@ -59,6 +59,10 @@ private:
  * The field may be in a known table, or in a to table of a relationship 
  * or related relatinoship. See UsesRelationship::get_relationship() and 
  * UsesRelationship::get_related_relationship() in the base class.
+ *
+ * get_title() returns either the title of the Field or the CustomTitle.
+ * You should not call get/set_title_original() or get/set_title_translation()
+ * on items of this type.
  */
 class LayoutItem_Field 
  : public LayoutItem_WithFormatting,
@@ -89,19 +93,8 @@ public:
   virtual Glib::ustring get_title(const Glib::ustring& locale) const;
 
   /** Get the user-visible title for the field, in the user's current locale.
-   * This returns the name if no title is set.
-   */
-  virtual Glib::ustring get_title_original() const;
-
-  virtual Glib::ustring get_title_translation(const Glib::ustring& locale, bool fallback = true) const;
-
-  /** Get the user-visible title for the field, in the user's current locale.
    */
   virtual Glib::ustring get_title_or_name(const Glib::ustring& locale) const;
-
-  /** Get the user-visible title for the field, in the original locale.
-   */
-  virtual Glib::ustring get_title_or_name_original() const;
 
   Glib::ustring get_title_or_name_no_custom(const Glib::ustring& locale) const;
 
@@ -175,8 +168,6 @@ public:
 private:
 
   Glib::ustring get_title_no_custom(const Glib::ustring& locale) const;
-
-  Glib::ustring get_title_no_custom_original() const;
 
   Glib::ustring get_title_no_custom_translation(const Glib::ustring& locale, bool fallback = true) const;
 

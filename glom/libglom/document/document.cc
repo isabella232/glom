@@ -4443,7 +4443,7 @@ Document::type_list_translatables Document::get_translatable_items()
     const Glib::ustring table_name = tableinfo->get_name();
 
     //The table's field titles:
-    Glib::ustring hint = "Parent table: " + table_name;
+    const Glib::ustring hint = "Parent table: " + table_name;
     type_vec_fields fields = get_table_fields(table_name);
     for(type_vec_fields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
@@ -4543,10 +4543,37 @@ void Document::fill_translatable_custom_choices(FieldFormatting& formatting, typ
   }
 }
 
+void Document::fill_translatable_layout_items(const sharedptr<LayoutItem_Field>& layout_field, type_list_translatables& the_list, const Glib::ustring& hint)
+{
+  //LayoutItem_Field items do not have their own titles.
+  //They use either the field's title or a custom title:
+  sharedptr<CustomTitle> custom_title = layout_field->get_title_custom();
+  if(custom_title)
+  {
+    the_list.push_back( pair_translatable_item_and_hint(custom_title, hint) ); 
+  }
+
+  //The field will be added separately.
+  
+  //Custom Choices, if any:
+  //Only text fields can have translated choice values:
+  if(layout_field->get_glom_type() == Field::TYPE_TEXT)
+  {
+    const Glib::ustring choice_hint = hint + ", Parent Field: " + layout_field->get_name();
+    fill_translatable_custom_choices(layout_field->m_formatting, the_list, hint);
+  }
+}
+
+
 void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list, const Glib::ustring& hint)
 {
-  the_list.push_back( pair_translatable_item_and_hint(group, hint) );
-
+  //Portals don't have their own titles - they use the relationship title (though we might want to allow custom titles)
+  sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(group);
+  if(!portal)
+  {
+    the_list.push_back( pair_translatable_item_and_hint(group, hint) );
+  }
+  
   const Glib::ustring group_name = group->get_name();
   Glib::ustring this_hint = hint;
   if(!group_name.empty())
@@ -4565,11 +4592,7 @@ void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& grou
       if(group_by)
       {
         sharedptr<LayoutItem_Field> field = group_by->get_field_group_by();
-        sharedptr<CustomTitle> custom_title = field->get_title_custom();
-        if(custom_title)
-        {
-          the_list.push_back( pair_translatable_item_and_hint(custom_title, this_hint) ); 
-        }
+        fill_translatable_layout_items(field, the_list, hint);
 
         fill_translatable_layout_items(group_by->m_group_secondary_fields, the_list, this_hint);
       }
@@ -4588,17 +4611,7 @@ void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& grou
         sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
         if(layout_field)
         {
-          sharedptr<CustomTitle> custom_title = layout_field->get_title_custom();
-          if(custom_title)
-          {
-            the_list.push_back( pair_translatable_item_and_hint(custom_title, this_hint) ); 
-          }
-
-          //Custom Choices, if any:
-          //Only text fields can have translated choice values:
-          const Glib::ustring choice_hint = this_hint + ", Parent Field: " + layout_field->get_name();
-          if(layout_field->get_glom_type() == Field::TYPE_TEXT)
-            fill_translatable_custom_choices(layout_field->m_formatting, the_list, this_hint);
+          fill_translatable_layout_items(layout_field, the_list, hint);
         }
       }
     }

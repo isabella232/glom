@@ -162,30 +162,43 @@ void check_title(const T_Item& item, const char* title_en, const char* title_de)
 {
   g_assert(item);
 
-  g_assert( item->get_title_original() == title_en );
+  //The get_title_original() and get_title_translation() should not be called 
+  //on items that delegate to a child item:
+  bool has_own_title = true;
+  Glom::sharedptr<const Glom::LayoutItem_Field> field = 
+    Glom::sharedptr<const Glom::LayoutItem_Field>::cast_dynamic(item);
+  if(field)
+     has_own_title = false;
+
+  if(has_own_title)
+    g_assert( item->get_title_original() == title_en );
+    
   g_assert( item->get_title(Glib::ustring()) == title_en );
   g_assert( item->get_title("en_US") == title_en );
 
-  g_assert( item->get_title_translation(locale_de) == title_de );
+  if(has_own_title)
+    g_assert( item->get_title_translation(locale_de) == title_de );
+    
   g_assert( item->get_title(locale_de) == title_de );
 
-  g_assert( item->get_title_or_name_original() == title_en );
   g_assert( item->get_title_or_name(Glib::ustring()) == title_en );
   g_assert( item->get_title_or_name("en_US") == title_en );
   g_assert( item->get_title_or_name(locale_de) == title_de );
 
+  if(has_own_title)
+  {
+    //Check fallbacks:
+    g_assert( item->get_title_translation(Glib::ustring()) == title_en );
+    g_assert( item->get_title_translation("en_US") == title_en );
+    g_assert( item->get_title_translation("en_GB") == title_en );
+    g_assert( item->get_title_translation("de_AU") == title_de );
 
-  //Check fallbacks:
-  g_assert( item->get_title_translation(Glib::ustring()) == title_en );
-  g_assert( item->get_title_translation("en_US") == title_en );
-  g_assert( item->get_title_translation("en_GB") == title_en );
-  g_assert( item->get_title_translation("de_AU") == title_de );
-
-  //Check that fallbacks do not happen when we don't want them:
-  g_assert( item->get_title_translation(Glib::ustring(), false) == Glib::ustring() );
-  g_assert( item->get_title_translation("en_US", false) == Glib::ustring() );
-  g_assert( item->get_title_translation("en_GB", false) == Glib::ustring() );
-  g_assert( item->get_title_translation("de_AU", false) == Glib::ustring() );
+    //Check that fallbacks do not happen when we don't want them:
+    g_assert( item->get_title_translation(Glib::ustring(), false) == Glib::ustring() );
+    g_assert( item->get_title_translation("en_US", false) == Glib::ustring() );
+    g_assert( item->get_title_translation("en_GB", false) == Glib::ustring() );
+    g_assert( item->get_title_translation("de_AU", false) == Glib::ustring() );
+  }
 }
 
 int main()
@@ -277,7 +290,7 @@ int main()
   Glom::sharedptr<const Glom::LayoutItem_Field> field_on_layout = 
     get_field_on_layout(document, "characters", "contacts", "name_full");
   g_assert(field_on_layout);
-  check_title(field_on_layout, "Actor's Name", "Schauspieler Name" );
+  check_title(field_on_layout, "Actor's Name", "Schauspieler Name");
 
   //Check a LayoutItemField's Field title:
   field_on_layout = 

@@ -276,13 +276,4 @@ Glib::ustring TranslatableItem::get_title_or_name(const Glib::ustring& locale) c
     return title;
 }
 
-Glib::ustring TranslatableItem::get_title_or_name_original() const
-{
-  const Glib::ustring title = get_title_original();
-  if(title.empty())
-    return get_name();
-  else
-    return title;
-}
-
 } //namespace Glom
