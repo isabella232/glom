@@ -62,9 +62,9 @@ public:
   void set_field(const sharedptr<LayoutItem_Field>& field);
 
   virtual Glib::ustring get_title(const Glib::ustring& locale) const;
-  //TODO: get_title_original() and get_title_translation():
+  //TODO: get_title_original() and get_title_translation(): But this just uses the field title anyway.
   virtual Glib::ustring get_title_or_name(const Glib::ustring& locale) const;
-  //TODO: get_title_or_name_original()?
+  //TODO: get_title_or_name_original()? But this just uses the field title anyway.
 
   virtual Glib::ustring get_layout_display_name() const;
 

@@ -2875,7 +2875,7 @@ Glib::ustring Application::get_original_locale()
   return m_original_locale; 
 }
 
-bool Application::get_current_locale_not_original() //TODO: Make this const?
+bool Application::get_current_locale_not_original()
 {
   if(m_original_locale.empty())
     get_original_locale();

@@ -1,3 +1,29 @@
+2012-01-16  Murray Cumming  <murrayc@murrayc.com>
+
+	TranslatableItem: Require the caller to provide the locale.
+
+	* glom/libglom/data_structure/translatable_item.[h|cc]:
+	get_current_locale(), set_current_locale(), set_original_locale(),
+	get_current_locale_not_original(): Move to Glom::Application, out of 
+	libglom.
+	get_title(), set_title(), get_title_or_name(): Add a ustring locale 
+	parameter.
+	Added virtual get_title_original(), get_title_translation(), 
+	get_title_or_name_original(), get_title_or_name_translation().
+	Added set_title_original() and set_title_translation(), though these
+	are private and non-virtual.
+	This let use discover the actual original text and its translations
+	while still using get_title(locale) to just get the title that should
+	be used. Before we could get the exact entered title for a locale just
+	by setting the current locale.
+	* libglom/data_structure/layout/layoutitem_field.[h|cc]: Override the 
+	new virtual methods.
+	* Many other files: Adapt.
+
+	This allows us to use different translatations from Online Glom, which 
+	only loads the library once for all Glom files. And this is generally 
+	cleaner, even if it requires more repetitive code.
+
 2012-01-13  Murray Cumming  <murrayc@murrayc.com>
 
 	test_document_load_translations: Test title_singular too.
