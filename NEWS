@@ -1,3 +1,10 @@
+1.21.3 (unstable):
+
+* libglom: TranslatableItem: Require the caller to provide the locale to 
+  get_title() instead of calling the static set_current_locale() method
+  (now removed). This allows Online Glom to use translations, and it is 
+  generally good to avoid the static data.
+  
 1.21.2 (unstable):
 
 * Field choices:
