@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<glom_document xmlns="http://glom.org/glom_document" database_title="Project Manager Example" is_example="true" translation_original_locale="en_US" format_version="7">
+<glom_document xmlns="http://glom.org/glom_document" database_title="Project Manager Example" is_example="true" translation_original_locale="en" format_version="7">
   <connection server="localhost" user="" database="glom_example_project_manager_v3" self_hosted="true" port="5433" try_other_ports="false" hosting_mode="postgres_self"/>
   <table name="contacts" title="Contacts">
     <example_rows>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<glom_document xmlns="http://glom.org/glom_document" translation_original_locale="en_US" database_title="Music Collection" is_example="false" format_version="4">
+<glom_document xmlns="http://glom.org/glom_document" translation_original_locale="en" database_title="Music Collection" is_example="false" format_version="4">
   <connection server="localhost" database="glom_musiccollection21" port="0" self_hosted="true" try_other_ports="true" hosting_mode="sqlite"/>
   <table name="albums" overview_x="15" overview_y="9" title="Albums">
     <fields>

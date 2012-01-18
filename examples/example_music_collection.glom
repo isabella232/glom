@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<glom_document xmlns="http://glom.org/glom_document" translation_original_locale="en_US" database_title="Music Collection" is_example="true" format_version="7">
+<glom_document xmlns="http://glom.org/glom_document" translation_original_locale="en" database_title="Music Collection" is_example="true" format_version="7">
   <connection server="localhost" database="glom_musiccollection211" port="5433" self_hosted="true" try_other_ports="false" hosting_mode="postgres_self"/>
   <table name="albums" overview_x="15" overview_y="9" title="Albums">
     <example_rows>
