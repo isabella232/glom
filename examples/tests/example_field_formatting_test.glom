@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<glom_document xmlns="http://glom.org/glom_document" format_version="6" translation_original_locale="en_CA" database_title="Field Formatting Test" is_example="true">
+<glom_document xmlns="http://glom.org/glom_document" format_version="6" translation_original_locale="en" database_title="Field Formatting Test" is_example="true">
   <connection hosting_mode="postgres_central" server="localhost" try_other_ports="false" database="glom_field_formatting_test" port="5432"/>
   <table name="alignment" title="Alignment">
     <example_rows>

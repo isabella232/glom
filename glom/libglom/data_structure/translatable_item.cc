@@ -237,8 +237,9 @@ void TranslatableItem::set_original_locale(const Glib::ustring& locale)
 
 Glib::ustring TranslatableItem::get_original_locale()
 {
+  //Default to English:
   if(m_original_locale.empty())
-    m_original_locale = "en_US"; //"en_US.UTF-8";
+    m_original_locale = "en";
 
   return m_original_locale; 
 }
