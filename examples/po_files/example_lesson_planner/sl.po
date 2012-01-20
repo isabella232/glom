@@ -1,0 +1,391 @@
+#'glom/examples/po_files/example_lesson_planner
+# Slovenian translation for glom lesson planner example.
+# Copyright (C) 2012 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+#
+# Matej Urbančič <mateju@svn.gnome.org>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glom master\n"
+"PO-Revision-Date: 2012-01-20 21:51+0100\n"
+"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
+"Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
+"X-Poedit-Country: SLOVENIA\n"
+"X-Poedit-Language: Slovenian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"POT-Creation-Date: \n"
+
+msgctxt "Field (product_name). Parent table: invoice_lines"
+msgid "Product Name"
+msgstr "Ime izdelka"
+
+msgctxt "Field (product_id). Parent table: invoice_lines"
+msgid "Product Id"
+msgstr "ID izdelka"
+
+#, fuzzy
+msgctxt "Field (product_price). Parent table: invoice_lines"
+msgid "Product Price"
+msgstr "gotovinska_cena:gotovinska cena"
+
+#, fuzzy
+msgctxt "Field (invoice_id). Parent table: invoice_lines"
+msgid "Invoice ID"
+msgstr "Brez-IDja"
+
+#, fuzzy
+msgctxt "Field (count). Parent table: invoice_lines"
+msgid "Number Of"
+msgstr "ŠTEVILKA"
+
+#, fuzzy
+msgctxt "Field (total_price). Parent table: invoice_lines"
+msgid "Total Price"
+msgstr "gotovinska_cena:gotovinska cena"
+
+#, fuzzy
+msgctxt "Field (vat_percentage). Parent table: invoice_lines"
+msgid "VAT Percentage"
+msgstr "Odstotek pokritosti"
+
+#, fuzzy
+msgctxt "Field (total_price_vat). Parent table: invoice_lines"
+msgid "Total VAT"
+msgstr "Skupna razdalja"
+
+msgctxt "Table (lessons)"
+msgid "Lessons"
+msgstr ""
+
+#, fuzzy
+msgctxt "Field (lesson_id). Parent table: lessons"
+msgid "Lesson ID"
+msgstr "Brez-IDja"
+
+#, fuzzy
+msgctxt "Field (description). Parent table: lessons"
+msgid "Description"
+msgstr "Opis"
+
+#, fuzzy
+msgctxt "Field (comments). Parent table: lessons"
+msgid "Comments"
+msgstr "Razlage"
+
+#, fuzzy
+msgctxt "Field (subject_id). Parent table: lessons"
+msgid "Subject ID"
+msgstr "Edinstven ID zadeve"
+
+#, fuzzy
+msgctxt "Field (teacher_id). Parent table: lessons"
+msgid "Teacher ID"
+msgstr "Brez-IDja"
+
+msgctxt "Field (date). Parent table: lessons"
+msgid "Date"
+msgstr "Datum"
+
+#, fuzzy
+msgctxt "Field (time_start). Parent table: lessons"
+msgid "Start Time"
+msgstr "Začetni čas"
+
+#, fuzzy
+msgctxt "Field (hours). Parent table: lessons"
+msgid "Hours"
+msgstr "Ure"
+
+#, fuzzy
+msgctxt "Field (room_id). Parent table: lessons"
+msgid "Room ID"
+msgstr "Brez-IDja"
+
+#, fuzzy
+msgctxt "Relationship (subject). Parent table: lessons"
+msgid "Subject"
+msgstr "Zadeva"
+
+msgctxt "Relationship (teacher). Parent table: lessons"
+msgid "Teacher"
+msgstr "Učitelj"
+
+#, fuzzy
+msgctxt "Relationship (room). Parent table: lessons"
+msgid "Room"
+msgstr "Klepetalnica"
+
+msgctxt "Layout Group (overview). Parent table: lessons"
+msgid "Overview"
+msgstr "Pregled"
+
+#, fuzzy
+msgctxt "Layout Group (details). Parent table: lessons"
+msgid "Details"
+msgstr "Podrobnosti"
+
+#, fuzzy
+msgctxt "Layout Group (subject). Parent table: lessons, Parent Group: details"
+msgid "Subject"
+msgstr "Zadeva"
+
+#, fuzzy
+msgctxt "Layout Group (room). Parent table: lessons, Parent Group: details"
+msgid "Room"
+msgstr "Klepetalnica"
+
+#, fuzzy
+msgctxt "Layout Group (teacher). Parent table: lessons, Parent Group: details"
+msgid "Teacher"
+msgstr "Učitelj"
+
+#, fuzzy
+msgctxt "Table (rooms)"
+msgid "Rooms"
+msgstr "Upravljanje priljubljenih klepetalnic"
+
+#, fuzzy
+msgctxt "Field (room_id). Parent table: rooms"
+msgid "Room ID"
+msgstr "Brez-IDja"
+
+#, fuzzy
+msgctxt "Field (description). Parent table: rooms"
+msgid "Description"
+msgstr "Opis"
+
+#, fuzzy
+msgctxt "Field (comments). Parent table: rooms"
+msgid "Comments"
+msgstr "Razlage"
+
+#, fuzzy
+msgctxt "Field (floor). Parent table: rooms"
+msgid "Floor"
+msgstr "Največje celo število, ki je manjše od števila x"
+
+#, fuzzy
+msgctxt "Field (building). Parent table: rooms"
+msgid "Building"
+msgstr "Izgradnja"
+
+#, fuzzy
+msgctxt "Field Choice. Parent table: rooms, Parent Field: building"
+msgid "Main Building"
+msgstr "Gradnja galerije"
+
+#, fuzzy
+msgctxt "Field Choice. Parent table: rooms, Parent Field: building"
+msgid "Science Block"
+msgstr "Block Ten"
+
+#, fuzzy
+msgctxt "Field Choice. Parent table: rooms, Parent Field: building"
+msgid "Sports Hall"
+msgstr "Velika dvorana"
+
+msgctxt "Layout Group (overview). Parent table: rooms"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: rooms"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (subjects)"
+msgid "Subjects"
+msgstr "Predmeti"
+
+#, fuzzy
+msgctxt "Field (subject_id). Parent table: subjects"
+msgid "Subject ID"
+msgstr "Edinstven ID zadeve"
+
+msgctxt "Field (name). Parent table: subjects"
+msgid "Name"
+msgstr "Ime"
+
+msgctxt "Field (comments). Parent table: subjects"
+msgid "Comments"
+msgstr "Opombe"
+
+msgctxt "Relationship (lessons). Parent table: subjects"
+msgid "Lessons"
+msgstr ""
+
+msgctxt "Layout Group (overview). Parent table: subjects"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: subjects"
+msgid "Details"
+msgstr "Podrobnosti"
+
+#, fuzzy
+msgctxt "Custom Title. Parent table: subjects, Parent Group: details"
+msgid "Teacher Name"
+msgstr "Ime pravila:"
+
+msgctxt "Table (teachers)"
+msgid "Teachers"
+msgstr "Učitelji"
+
+#, fuzzy
+msgctxt "Field (teacher_id). Parent table: teachers"
+msgid "Teacher ID"
+msgstr "Brez-IDja"
+
+msgctxt "Field (name_first). Parent table: teachers"
+msgid "First Name"
+msgstr "Ime"
+
+msgctxt "Field (name_middle). Parent table: teachers"
+msgid "Middle Name"
+msgstr "Drugo ime"
+
+msgctxt "Field (name_last). Parent table: teachers"
+msgid "Last Name"
+msgstr "Priimek"
+
+msgctxt "Field (name_title). Parent table: teachers"
+msgid "Title"
+msgstr "Naziv"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Mr"
+msgstr "G."
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Mrs"
+msgstr "Ga."
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Ms"
+msgstr "Ga."
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Miss"
+msgstr "Gdč."
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Dr"
+msgstr "dr."
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Prof"
+msgstr "prof."
+
+msgctxt "Field (address_street). Parent table: teachers"
+msgid "Street"
+msgstr "Ulica"
+
+msgctxt "Field (address_town). Parent table: teachers"
+msgid "Town"
+msgstr "Mesto"
+
+msgctxt "Field (address_state). Parent table: teachers"
+msgid "State"
+msgstr "Regija"
+
+msgctxt "Field (address_country). Parent table: teachers"
+msgid "Country"
+msgstr "Država"
+
+msgctxt "Field (address_postcode). Parent table: teachers"
+msgid "Postcode"
+msgstr ""
+
+msgctxt "Field (date_of_birth). Parent table: teachers"
+msgid "Date of Birth"
+msgstr "Datum rojstva"
+
+#, fuzzy
+msgctxt "Field (comments). Parent table: teachers"
+msgid "Comments"
+msgstr "Opombe"
+
+msgctxt "Field (name_full). Parent table: teachers"
+msgid "Full Name"
+msgstr "Polno ime"
+
+#, fuzzy
+msgctxt "Field (picture). Parent table: teachers"
+msgid "Picture"
+msgstr "Slika"
+
+msgctxt "Field (email). Parent table: teachers"
+msgid "Email Address"
+msgstr "Elektronski naslov"
+
+msgctxt "Field (website). Parent table: teachers"
+msgid "Web Site"
+msgstr "Spletna stran"
+
+#, fuzzy
+msgctxt "Field (tel_home). Parent table: teachers"
+msgid "Home Telephone"
+msgstr "Telefonska številka"
+
+#, fuzzy
+msgctxt "Field (tel_work). Parent table: teachers"
+msgid "Work Telephone"
+msgstr "Telefonska številka"
+
+#, fuzzy
+msgctxt "Field (tel_mobile). Parent table: teachers"
+msgid "Mobile Telephone"
+msgstr "Telefonska številka"
+
+msgctxt "Field (tel_fax). Parent table: teachers"
+msgid "Fax"
+msgstr "Faks"
+
+msgctxt "Relationship (lessons). Parent table: teachers"
+msgid "Lessons"
+msgstr ""
+
+#, fuzzy
+msgctxt "Report (by_country). Parent table: teachers"
+msgid "Contacts By Country"
+msgstr "Tek na smučeh"
+
+#, fuzzy
+msgctxt "Report (by_country_by_town). Parent table: teachers"
+msgid "By Country, By Town"
+msgstr "Avtomobili v mestu"
+
+msgctxt "Layout Group (overview). Parent table: teachers"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: teachers"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Layout Group (name). Parent table: teachers, Parent Group: details, Parent Group: notebook"
+msgid "Name"
+msgstr "Ime"
+
+msgctxt "Layout Group (address). Parent table: teachers, Parent Group: details, Parent Group: notebook"
+msgid "Address"
+msgstr "Naslov"
+
+msgctxt "Layout Group (telephone). Parent table: teachers, Parent Group: details, Parent Group: notebook"
+msgid "Telephone"
+msgstr "Telefon"
+
+#, fuzzy
+msgctxt "Layout Group (other). Parent table: teachers, Parent Group: details, Parent Group: notebook"
+msgid "Other"
+msgstr "Ostalo"
+
+msgctxt "Custom Title. Parent table: teachers, Parent Group: details"
+msgid "Subject Name"
+msgstr "Ime predmeta"
+
