@@ -97,12 +97,12 @@ bool Box_Print_Layouts::fill_from_database()
 
   m_colTitle = m_AddDel.add_column(_("Title"), AddDelColumnInfo::STYLE_Text, editable, true);
 
-  Document::type_listPrintLayouts listItems;
+  std::vector<Glib::ustring> listItems;
   Document* document = get_document();
   if(document)
   {
     listItems = document->get_print_layout_names(m_table_name);
-    for(Document::type_listPrintLayouts::const_iterator iter = listItems.begin(); iter != listItems.end(); ++iter)
+    for(std::vector<Glib::ustring>::const_iterator iter = listItems.begin(); iter != listItems.end(); ++iter)
     {
       sharedptr<PrintLayout> item = document->get_print_layout(m_table_name, *iter);
       if(item)
@@ -176,7 +176,7 @@ void Box_Print_Layouts::save_to_document()
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     //Add any that are not in the document:
-    Document::type_listPrintLayouts listItems = get_document()->get_print_layout_names(m_table_name);
+    std::vector<Glib::ustring> listItems = get_document()->get_print_layout_names(m_table_name);
 
     bool modified = false;
     for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)

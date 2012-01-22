@@ -1,3 +1,16 @@
+2012-01-22  Murray Cumming  <murrayc@murrayc.com>
+
+	Document: get_report_names(), get_print_layout_names(): Return a vector.
+
+	* glom/libglom/document/document.[h|cc]: get_report_names(), 
+	get_print_layout_names(): Return a std::vector instead of a std::list,
+	removing the typedefs, to be consistent with get_table_names().
+	This also helps java-libglom, whose std::list wrapper seems to be useless.
+	* glom/application.cc:
+	* glom/box_reports.cc:
+	* glom/mode_design/print_layouts/box_print_layouts.cc:
+	* tests/test_document_load.cc: Adapted.
+
 2012-01-18  Murray Cumming  <murrayc@murrayc.com>
 
 	Default to en rather than en_US for the original locale.

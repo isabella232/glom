@@ -4111,12 +4111,12 @@ void Document::remove_group(const Glib::ustring& group_name)
   }
 }
 
-Document::type_listReports Document::get_report_names(const Glib::ustring& table_name) const
+std::vector<Glib::ustring> Document::get_report_names(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
   {
-    type_listReports result;
+    std::vector<Glib::ustring> result;
     for(DocumentTableInfo::type_reports::const_iterator iter = iterFind->second.m_reports.begin(); iter != iterFind->second.m_reports.end(); ++iter)
     {
       result.push_back(iter->second->get_name());
@@ -4125,7 +4125,7 @@ Document::type_listReports Document::get_report_names(const Glib::ustring& table
     return result;
   }
   else
-    return type_listReports();
+    return std::vector<Glib::ustring>();
 }
 
 void Document::set_report(const Glib::ustring& table_name, const sharedptr<Report>& report)
@@ -4169,12 +4169,12 @@ void Document::remove_report(const Glib::ustring& table_name, const Glib::ustrin
 }
 
 
-Document::type_listPrintLayouts Document::get_print_layout_names(const Glib::ustring& table_name) const
+std::vector<Glib::ustring> Document::get_print_layout_names(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
   {
-    type_listReports result;
+    std::vector<Glib::ustring> result;
     for(DocumentTableInfo::type_print_layouts::const_iterator iter = iterFind->second.m_print_layouts.begin(); iter != iterFind->second.m_print_layouts.end(); ++iter)
     {
       result.push_back(iter->second->get_name());
@@ -4183,7 +4183,7 @@ Document::type_listPrintLayouts Document::get_print_layout_names(const Glib::ust
     return result;
   }
   else
-    return type_listReports();
+    return std::vector<Glib::ustring>();
 }
 
 
@@ -4468,8 +4468,8 @@ Document::type_list_translatables Document::get_translatable_items()
     translatable_items_append_with_hint(result, relationships, hint);
 
     //The table's report titles:
-    type_listReports listReports = get_report_names(table_name);
-    for(type_listReports::iterator iter = listReports.begin(); iter != listReports.end(); ++iter)
+    std::vector<Glib::ustring> listReports = get_report_names(table_name);
+    for(std::vector<Glib::ustring>::iterator iter = listReports.begin(); iter != listReports.end(); ++iter)
     {
       const Glib::ustring report_name = *iter;
       sharedptr<Report> report = get_report(table_name, report_name);

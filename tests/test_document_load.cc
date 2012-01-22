@@ -272,7 +272,7 @@ int main()
 
 
   //Test print layouts:  
-  const Glom::Document::type_listPrintLayouts print_layout_names = 
+  const std::vector<Glib::ustring> print_layout_names = 
     document.get_print_layout_names("contacts");
   if(print_layout_names.size() != 1)
   {
@@ -306,7 +306,7 @@ int main()
   }
 
 
-  const Glom::Document::type_listReports report_names = 
+  const std::vector<Glib::ustring> report_names = 
     document.get_report_names("contacts");
   if(report_names.size() != 2)
   {

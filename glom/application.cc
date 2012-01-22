@@ -2065,8 +2065,8 @@ void Application::fill_menu_reports(const Glib::ustring& table_name)
     "        <placeholder name='Menu_Reports_Dynamic'>";
 
   Document* document = dynamic_cast<Document*>(get_document());
-  const Document::type_listReports tables = document->get_report_names(table_name);
-  for(Document::type_listReports::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  const std::vector<Glib::ustring> reports = document->get_report_names(table_name);
+  for(std::vector<Glib::ustring>::const_iterator iter = reports.begin(); iter != reports.end(); ++iter)
   {
     sharedptr<Report> report = document->get_report(table_name, *iter);
     if(report)
@@ -2142,12 +2142,12 @@ void Application::fill_menu_print_layouts(const Glib::ustring& table_name)
     "          <placeholder name='Menu_PrintLayouts_Dynamic'>";
 
   Document* document = dynamic_cast<Document*>(get_document());
-  const Document::type_listPrintLayouts tables = document->get_print_layout_names(table_name);
+  const std::vector<Glib::ustring> tables = document->get_print_layout_names(table_name);
 
   // TODO_clientonly: Should this be available in client only mode? We need to
   // depend on goocanvas in client only mode then:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  for(Document::type_listPrintLayouts::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  for(std::vector<Glib::ustring>::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
     sharedptr<PrintLayout> print_layout = document->get_print_layout(table_name, *iter);
     if(print_layout)

@@ -346,16 +346,14 @@ public:
   void remove_group(const Glib::ustring& group_name);
 
 
-  typedef std::list<Glib::ustring> type_listReports;
-  type_listReports get_report_names(const Glib::ustring& table_name) const;
+  std::vector<Glib::ustring> get_report_names(const Glib::ustring& table_name) const;
 
   void set_report(const Glib::ustring& table_name, const sharedptr<Report>& report);
   sharedptr<Report> get_report(const Glib::ustring& table_name, const Glib::ustring& report_name) const;
   void remove_report(const Glib::ustring& table_name, const Glib::ustring& report_name);
 
   //Print Layouts are precisely positioned layouts for printing to a printer:
-  typedef std::list<Glib::ustring> type_listPrintLayouts;
-  type_listPrintLayouts get_print_layout_names(const Glib::ustring& table_name) const;
+  std::vector<Glib::ustring> get_print_layout_names(const Glib::ustring& table_name) const;
   void set_print_layout(const Glib::ustring& table_name, const sharedptr<PrintLayout>& print_layout);
   sharedptr<PrintLayout> get_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name) const;
   void remove_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name);

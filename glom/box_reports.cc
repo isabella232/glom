@@ -97,12 +97,12 @@ bool Box_Reports::fill_from_database()
 
   m_colTitle = m_AddDel.add_column(_("Title"), AddDelColumnInfo::STYLE_Text, editable, true);
 
-  Document::type_listReports listTableReports;
+  std::vector<Glib::ustring> listTableReports;
   Document* document = get_document();
   if(document)
   {
     listTableReports = document->get_report_names(m_table_name);
-    for(Document::type_listReports::const_iterator iter = listTableReports.begin(); iter != listTableReports.end(); ++iter)
+    for(std::vector<Glib::ustring>::const_iterator iter = listTableReports.begin(); iter != listTableReports.end(); ++iter)
     {
       sharedptr<Report> report = document->get_report(m_table_name, *iter);
       if(report)
@@ -177,7 +177,7 @@ void Box_Reports::save_to_document()
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     //Add any reports that are not in the document:
-    Document::type_listReports listReports = get_document()->get_report_names(m_table_name);
+    std::vector<Glib::ustring> listReports = get_document()->get_report_names(m_table_name);
 
     bool modified = false;
     for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
