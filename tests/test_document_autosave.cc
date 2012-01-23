@@ -71,7 +71,7 @@ int main()
     document.set_allow_autosave(false);
     document.set_file_uri(file_uri);
     document.set_hosting_mode(Glom::Document::HOSTING_MODE_POSTGRES_CENTRAL);
-    document.set_database_title(test_title);
+    document.set_database_title_original(test_title);
     const bool saved = document.save();
     g_assert(saved);
   }
@@ -82,7 +82,7 @@ int main()
     const bool test = document.load(failure_code);
     g_assert(test);
 
-    g_assert( document.get_database_title() == test_title );
+    g_assert( document.get_database_title_original() == test_title );
   }
 
   cleanup();
@@ -93,7 +93,7 @@ int main()
     document.set_file_uri(file_uri);
     document.set_hosting_mode(Glom::Document::HOSTING_MODE_POSTGRES_CENTRAL);
     document.set_allow_autosave();
-    document.set_database_title(test_title);
+    document.set_database_title_original(test_title);
     g_assert( !document.get_modified() );
   }
   {
@@ -103,7 +103,7 @@ int main()
     const bool test = document.load(failure_code);
     g_assert(test);
 
-    g_assert( document.get_database_title() == test_title );
+    g_assert( document.get_database_title_original() == test_title );
   }
 
   cleanup();

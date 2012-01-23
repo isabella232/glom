@@ -37,6 +37,7 @@
 #include <libglom/data_structure/report.h>
 #include <libglom/data_structure/print_layout.h>
 #include <libglom/data_structure/foundset.h>
+#include <libglom/data_structure/database_title.h>
 #include <libglom/appstate.h>
 #include <vector>
 #include <map>
@@ -260,7 +261,7 @@ public:
   /// The translatable item and a hint about what it is.
   typedef std::pair< sharedptr<TranslatableItem>, Glib::ustring> pair_translatable_item_and_hint;
 
-  typedef std::list<pair_translatable_item_and_hint> type_list_translatables;
+  typedef std::vector<pair_translatable_item_and_hint> type_list_translatables;
   type_list_translatables get_translatable_items();
 
   static void fill_translatable_custom_choices(FieldFormatting& formatting, type_list_translatables& the_list, const Glib::ustring& hint);
@@ -320,8 +321,9 @@ public:
   Glib::ustring get_default_table() const;
   Glib::ustring get_first_table() const;
 
-  Glib::ustring get_database_title() const;
-  void set_database_title(const Glib::ustring& title);
+  Glib::ustring get_database_title_original() const;
+  Glib::ustring get_database_title(const Glib::ustring& locale) const;
+  void set_database_title_original(const Glib::ustring& title);
 
   std::vector<Glib::ustring> get_library_module_names() const;
   void set_library_module(const Glib::ustring& name, const Glib::ustring& script);
@@ -650,7 +652,7 @@ private:
   typedef std::map<Glib::ustring, GroupInfo> type_map_groups;
   type_map_groups m_groups;
 
-  Glib::ustring m_database_title;
+  sharedptr<DatabaseTitle> m_database_title;
   Glib::ustring m_translation_original_locale;
   std::vector<Glib::ustring> m_translation_available_locales; //Just a cache, based on other data.
 

@@ -878,7 +878,7 @@ void ConnectionPool::avahi_start_publishing()
   if(!document)
     return;
 
-  m_epc_publisher = epc_publisher_new(document->get_database_title().c_str(), "glom", 0);
+  m_epc_publisher = epc_publisher_new(document->get_database_title_original().c_str(), "glom", 0);
   epc_publisher_set_protocol(m_epc_publisher, publish_protocol);
 
   epc_publisher_add_handler(m_epc_publisher, "document", on_publisher_document_requested, this /* user_data */, 0);

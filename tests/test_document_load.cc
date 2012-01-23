@@ -160,7 +160,7 @@ int main()
 
   //Test some known details:
   g_assert(document.get_is_example_file());
-  g_assert(document.get_database_title() == "Openismus Film Manager");
+  g_assert(document.get_database_title_original() == "Openismus Film Manager");
 
   const std::vector<Glib::ustring> table_names = document.get_table_names();
   g_assert(contains(table_names, "accommodation"));

@@ -232,7 +232,7 @@ bool recreate_database_from_document(Document* document, const sigc::slot<void>&
   //Create the database:
   progress();
   connection_pool->set_database( Glib::ustring() );
-  const bool db_created = create_database(document, db_name, document->get_database_title(), progress);
+  const bool db_created = create_database(document, db_name, document->get_database_title_original(), progress);
 
   if(!db_created)
   {
@@ -440,7 +440,7 @@ void set_database_preferences(Document* document, const SystemPrefs& prefs)
     std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
 
   //Set some information in the document too, so we can use it to recreate the database:
-  document->set_database_title(prefs.m_name);
+  document->set_database_title_original(prefs.m_name);
 }
 
 
@@ -467,7 +467,7 @@ bool add_standard_tables(Document* document)
           std::cerr << G_STRFUNC << ": INSERT failed." << std::endl;
 
         //Use the database title from the document, if there is one:
-        const Glib::ustring system_name = document->get_database_title();
+        const Glib::ustring system_name = document->get_database_title_original();
         if(!system_name.empty())
         {
           Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);

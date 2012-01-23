@@ -216,6 +216,8 @@ Glib::ustring TranslatableItem::get_translatable_type_name_nontranslated(enumTra
     return "Image";
   else if(item_type == TRANSLATABLE_TYPE_CHOICEVALUE)
     return "Field Choice";
+  else if(item_type == TRANSLATABLE_TYPE_DATABASE_TITLE)
+    return "Database Title";
   else
     return "Unknown";
 }
@@ -248,6 +250,8 @@ Glib::ustring TranslatableItem::get_translatable_type_name(enumTranslatableItemT
     return _("Image");
   else if(item_type == TRANSLATABLE_TYPE_CHOICEVALUE)
     return _("Field Choice");
+  else if(item_type == TRANSLATABLE_TYPE_DATABASE_TITLE)
+    return _("Database Title");
   else
     return _("Unknown");
 }

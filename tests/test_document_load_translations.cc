@@ -312,6 +312,9 @@ int main()
   //Check the whole list of translatable items:
   Glom::Document::type_list_translatables list_layout_items = document.get_translatable_items();
   g_assert(!list_layout_items.empty());
+  const bool contains_databasetitle =
+    contains_item_type<Glom::DatabaseTitle>(list_layout_items);
+  g_assert( contains_databasetitle );
   const bool contains_tableinfo =
     contains_item_type<Glom::TableInfo>(list_layout_items);
   g_assert( contains_tableinfo );

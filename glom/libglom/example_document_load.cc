@@ -102,7 +102,7 @@ int main()
   if(!test)
     return 1;
 
-  std::cout << "Database Title: " << document.get_database_title() << std::endl;
+  std::cout << "Database Title: " << document.get_database_title_original() << std::endl;
   std::cout << "Default Table: " << document.get_default_table() << std::endl;
 
 

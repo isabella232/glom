@@ -196,7 +196,7 @@ bool write_translations_to_po_file(Document* document, const Glib::ustring& po_f
   const Glib::DateTime revision_date = Glib::DateTime::create_now_local();
   const Glib::ustring revision_date_str = revision_date.format("%F %R%z");
   const Glib::ustring header = Glib::ustring::compose(GLOM_PO_HEADER,
-    document->get_database_title(), revision_date_str, locale_name);
+    document->get_database_title_original(), revision_date_str, locale_name);
   
   const Glib::ustring full = header + "\n\n" + data;
   Glib::file_set_contents(filename, full);

@@ -1,5 +1,26 @@
 2012-01-23  Murray Cumming  <murrayc@murrayc.com>
 
+	Document: Allow the database title to be translated.
+
+	* glom/libglom/filelist.am:
+	* glom/libglom/database_title.[h|cc]: Add this new TranslatableItem.
+	* glom/libglom/document/document.[h|cc]: Use DatabaseTitle instead of just
+	a string, and load/save it in the database.
+	get_database_title(): Add a locale parameter and add 
+	get_database_title_original().
+	* glom/application.cc:
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/data_structure/translatable_item.[h|cc]:
+	* glom/libglom/db_utils.cc:
+	* glom/libglom/example_document_load.cc:
+	* glom/libglom/translations_po.cc:
+	* tests/test_document_autosave.cc:
+	* tests/test_document_change.cc:
+	* tests/test_document_load.cc:
+	* tests/test_document_load_translations.cc: Adapt.
+
+2012-01-23  Murray Cumming  <murrayc@murrayc.com>
+
 	Document: load_after_translation(), save_before_translation(): Use sharedptr.
 
 	* glom/libglom/document/document.[h|cc]: load_after_translation(), 

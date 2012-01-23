@@ -1070,7 +1070,7 @@ bool Application::on_document_load()
       if(!get_operation_cancelled())
       {
         //Get the results from the extended save dialog:
-        pDocument->set_database_title(m_ui_save_extra_newdb_title);
+        pDocument->set_database_title_original(m_ui_save_extra_newdb_title);
         pDocument->set_hosting_mode(m_ui_save_extra_newdb_hosting_mode);
         m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT;
         pDocument->set_is_example_file(false);
@@ -1559,7 +1559,7 @@ void Application::existing_or_new_new()
       {
         const Glib::ustring database_name_used = document->get_connection_database();
         ConnectionPool::get_instance()->set_database(database_name_used);
-        document->set_database_title(db_title);
+        document->set_database_title_original(db_title);
         m_pFrame->set_databases_selected(database_name_used);
 
         // Add the document to recent files
@@ -1685,7 +1685,7 @@ bool Application::recreate_database_from_example(bool& user_cancelled)
 
   //Create the database: (This will show a connection dialog)
   connection_pool->set_database( Glib::ustring() );
-  const bool db_created = m_pFrame->create_database(db_name, pDocument->get_database_title());
+  const bool db_created = m_pFrame->create_database(db_name, pDocument->get_database_title_original());
 
   if(!db_created)
   {

@@ -29,6 +29,7 @@ libglom_toplevel_headers =				\
 	glom/libglom/translations_po.h
 
 libglom_data_structure_headers =				\
+	glom/libglom/data_structure/database_title.h		\
 	glom/libglom/data_structure/choicevalue.h		\
 	glom/libglom/data_structure/field.h			\
 	glom/libglom/data_structure/fieldtypes.h		\
@@ -121,6 +122,7 @@ libglom_sources =							\
 	glom/libglom/xsl_utils.h					\
 	glom/libglom/connectionpool_backends/backend.cc			\
 	glom/libglom/connectionpool_backends/backend.h			\
+  glom/libglom/data_structure/database_title.cc \
   glom/libglom/data_structure/choicevalue.cc \
 	glom/libglom/data_structure/field.cc				\
 	glom/libglom/data_structure/fieldtypes.cc			\

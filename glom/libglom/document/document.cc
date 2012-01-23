@@ -281,6 +281,8 @@ Document::Document()
   m_is_backup(false),
   m_opened_from_browse(false)
 {
+  m_database_title = sharedptr<DatabaseTitle>::create();
+
   //Prevent autosaving during the constructor:
   set_allow_autosave(false); //Prevent saving while we modify the document.
 
@@ -2667,7 +2669,9 @@ bool Document::load_after(int& failure_code)
 
       m_is_example = get_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE);
       m_is_backup = get_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_BACKUP);
-      m_database_title = get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE);
+      m_database_title->set_title_original( 
+        get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE) );
+      load_after_translations(nodeRoot, m_database_title);
 
       m_startup_script = get_child_text_node(nodeRoot, GLOM_NODE_STARTUP_SCRIPT);
 
@@ -3719,7 +3723,10 @@ bool Document::save_before()
 
     set_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE, m_is_example);
     set_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_BACKUP, m_is_backup);
-    set_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE, m_database_title);
+
+    set_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE, 
+      m_database_title->get_title_original());
+    save_before_translations(nodeRoot, m_database_title);   
 
     set_child_text_node(nodeRoot, GLOM_NODE_STARTUP_SCRIPT, m_startup_script);
 
@@ -4045,16 +4052,21 @@ bool Document::save_before()
   return GlomBakery::Document_XML::save_before();
 }
 
-Glib::ustring Document::get_database_title() const
+Glib::ustring Document::get_database_title_original() const
 {
-  return m_database_title; //TODO: Allow this to be translated.
+  return m_database_title->get_title_original();
 }
 
-void Document::set_database_title(const Glib::ustring& title)
+Glib::ustring Document::get_database_title(const Glib::ustring& locale) const
 {
-  if(m_database_title != title)
+  return m_database_title->get_title(locale);
+}
+
+void Document::set_database_title_original(const Glib::ustring& title)
+{
+  if(get_database_title_original() != title)
   {
-    m_database_title = title;
+    m_database_title->set_title_original(title);
     set_modified();
   }
 }
@@ -4062,10 +4074,11 @@ void Document::set_database_title(const Glib::ustring& title)
 Glib::ustring Document::get_name() const
 {
   //Show the database title in the window title bar:
-  if(m_database_title.empty())
+  const Glib::ustring title = get_database_title_original();
+  if(title.empty())
     return GlomBakery::Document_XML::get_name();
   else
-    return m_database_title;
+    return title;
 }
 
 Document::type_list_groups Document::get_groups() const
@@ -4429,6 +4442,8 @@ static void translatable_items_append_with_hint(Document::type_list_translatable
 Document::type_list_translatables Document::get_translatable_items()
 {
   type_list_translatables result;
+  
+  result.push_back( pair_translatable_item_and_hint(m_database_title, "Database Title") );
 
   //Add tables:
   type_listTableInfo tables = get_tables();

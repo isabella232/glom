@@ -53,8 +53,8 @@ int main()
 
   //Test some simple get/set operations:
   const char* title = "Music Collection";
-  document.set_database_title(title);
-  g_assert(document.get_database_title() == title);
+  document.set_database_title_original(title);
+  g_assert(document.get_database_title_original() == title);
 
   const char* value = "someuser";
   document.set_connection_user(value);
