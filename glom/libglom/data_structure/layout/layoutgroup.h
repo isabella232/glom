@@ -22,7 +22,7 @@
 #define GLOM_DATASTRUCTURE_LAYOUTGROUP_H
 
 #include <libglom/data_structure/layout/layoutitem_field.h>
-#include <list>
+#include <vector>
 
 namespace Glom
 {

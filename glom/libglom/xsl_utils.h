@@ -33,7 +33,7 @@ namespace Glom
 
 ///field, ascending
 typedef std::pair< sharedptr<const LayoutItem_Field>, bool> type_pair_sort_field;
-typedef std::list<type_pair_sort_field> type_sort_clause;
+typedef std::vector<type_pair_sort_field> type_sort_clause;
 
 namespace GlomXslUtils
 {

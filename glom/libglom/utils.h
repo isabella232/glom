@@ -35,7 +35,7 @@ namespace Glom
 
 ///field, ascending
 typedef std::pair< sharedptr<const LayoutItem_Field>, bool> type_pair_sort_field;
-typedef std::list<type_pair_sort_field> type_sort_clause;
+typedef std::vector<type_pair_sort_field> type_sort_clause;
 
 namespace Utils
 {
@@ -133,8 +133,8 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_update_with_where_clause(
   const sharedptr<const Field>& field, const Gnome::Gda::Value& value,
   const Gnome::Gda::SqlExpr& where_clause);
 
-typedef std::list<Gnome::Gda::Value> type_list_values;
-typedef std::list< std::pair<Gnome::Gda::Value, type_list_values> > type_list_values_with_second; //TODO: Rename this now that we have more than just 1 extra field.
+typedef std::vector<Gnome::Gda::Value> type_list_values;
+typedef std::vector< std::pair<Gnome::Gda::Value, type_list_values> > type_list_values_with_second; //TODO: Rename this now that we have more than just 1 extra field.
 type_list_values_with_second get_choice_values_all(const Document* document, const sharedptr<const LayoutItem_Field>& field);
 
 type_list_values_with_second get_choice_values(const Document* document, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value);

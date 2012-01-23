@@ -71,8 +71,8 @@ public:
 private:
   void init();
 
-  typedef std::list<Gnome::Gda::Value> type_list_values;
-  typedef std::list< std::pair<Gnome::Gda::Value, type_list_values> > type_list_values_with_second;
+  typedef std::vector<Gnome::Gda::Value> type_list_values;
+  typedef std::vector< std::pair<Gnome::Gda::Value, type_list_values> > type_list_values_with_second;
 
   //A utility function that's needed because we don't use a real db model:
   void set_choices_with_second(const type_list_values_with_second& list_values);

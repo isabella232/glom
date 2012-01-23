@@ -1,5 +1,20 @@
 2012-01-23  Murray Cumming  <murrayc@murrayc.com>
 
+	libglom: Replace more std::lists with std::vector.
+
+	* glom/libglom/connectionpool_backends/postgres_central.h:
+	* glom/libglom/data_structure/field.h:
+	* glom/libglom/data_structure/foundset.h:
+	* glom/libglom/data_structure/layout/fieldformatting.h:
+	* glom/libglom/data_structure/layout/layoutgroup.h:
+	* glom/libglom/document/document.h:
+	* glom/libglom/utils.h:
+	* glom/libglom/xsl_utils.h:
+	* glom/mode_data/datawidget/combo_as_radio_buttons.h:
+	This is more consistent.
+
+2012-01-23  Murray Cumming  <murrayc@murrayc.com>
+
 	Document: Allow the database title to be translated.
 
 	* glom/libglom/filelist.am:

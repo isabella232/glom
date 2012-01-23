@@ -22,7 +22,7 @@
 #define GLOM_DATASTRUCTURE_FOUNDSET_H
 
 #include <glibmm/ustring.h>
-#include <list>
+#include <vector>
 #include <utility> //For std::pair
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <libglom/sharedptr.h>
@@ -50,7 +50,7 @@ public:
   //TODO: Avoid duplication with types in FieldFormatting.
   ///field, ascending
   typedef std::pair< sharedptr<const LayoutItem_Field>, bool> type_pair_sort_field;
-  typedef std::list<type_pair_sort_field> type_sort_clause;
+  typedef std::vector<type_pair_sort_field> type_sort_clause;
   type_sort_clause m_sort_clause;
 };
 

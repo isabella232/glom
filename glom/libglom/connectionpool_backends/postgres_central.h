@@ -53,7 +53,7 @@ private:
   virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password);
 
 private:
-  typedef std::list<Glib::ustring> type_list_ports;
+  typedef std::vector<Glib::ustring> type_list_ports;
   type_list_ports m_list_ports;
 
   bool m_try_other_ports;

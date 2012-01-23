@@ -214,7 +214,7 @@ public:
   
   
   typedef std::pair< sharedptr<LayoutItem_Field>, sharedptr<Relationship> > type_pairFieldTrigger;
-  typedef std::list<type_pairFieldTrigger> type_list_lookups;
+  typedef std::vector<type_pairFieldTrigger> type_list_lookups;
   
   /** Get the fields whose values should be looked up when @a field_name changes, with
    * the relationship used to lookup the value.
@@ -279,7 +279,7 @@ public:
   ///When a relationship name is changed, change it in layouts and reports:
   void change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new);
 
-  typedef std::list< sharedptr<TableInfo> > type_listTableInfo;
+  typedef std::vector< sharedptr<TableInfo> > type_listTableInfo;
   type_listTableInfo get_tables(bool plus_system_prefs = false) const;
   std::vector<Glib::ustring> get_table_names(bool plus_system_prefs = false) const;
 
@@ -339,7 +339,7 @@ public:
   void set_startup_script(const Glib::ustring& script);
 
   /// These are only used when recreating a database from an example file. The actualy access-control is on the server, of course.
-  typedef std::list<GroupInfo> type_list_groups;
+  typedef std::vector<GroupInfo> type_list_groups;
   type_list_groups get_groups() const;
 
   /// This adds the group if necessary.
@@ -621,7 +621,7 @@ private:
     type_vec_fields m_fields;
     type_vec_relationships m_relationships;
 
-    typedef std::list< LayoutInfo > type_layouts;
+    typedef std::vector< LayoutInfo > type_layouts;
     type_layouts m_layouts;
 
     typedef std::map< Glib::ustring, sharedptr<Report> > type_reports; //map of report names to reports

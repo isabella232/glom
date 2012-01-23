@@ -208,7 +208,7 @@ public:
   /* Discover what fields are used in the calculation,
    * so the value can be recalculated when their values change.
    */
-  typedef std::list<Glib::ustring> type_list_strings;
+  typedef std::vector<Glib::ustring> type_list_strings;
   type_list_strings get_calculation_relationships() const;
 
   void set_visible(bool val = true);
@@ -250,7 +250,7 @@ private:
   typedef std::map<glom_field_type, GType> type_map_glom_type_to_gda_type;
   static type_map_glom_type_to_gda_type m_map_glom_type_to_gda_type;
 
-  typedef std::list<glom_field_type> type_list_conversion_targets;
+  typedef std::vector<glom_field_type> type_list_conversion_targets;
   typedef std::map<glom_field_type, type_list_conversion_targets> type_map_conversions;
 
   static type_map_type_names m_map_type_names; //These are canonical, for internal use.

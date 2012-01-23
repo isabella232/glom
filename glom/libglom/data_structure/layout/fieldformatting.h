@@ -26,7 +26,7 @@
 #include <libglom/data_structure/relationship.h>
 #include <libglom/data_structure/choicevalue.h>
 #include <libgdamm/value.h>
-#include <list>
+#include <vector>
 
 namespace Glom
 {
@@ -55,7 +55,7 @@ public:
   bool get_has_custom_choices() const;
   void set_has_custom_choices(bool val = true);
 
-  typedef std::list< sharedptr<ChoiceValue> > type_list_values;
+  typedef std::vector< sharedptr<ChoiceValue> > type_list_values;
   virtual type_list_values get_choices_custom() const;
   virtual void set_choices_custom(const type_list_values& choices);
 
@@ -70,7 +70,7 @@ public:
   Glib::ustring get_custom_choice_translated(const Glib::ustring& original_text, const Glib::ustring& locale = Glib::ustring()) const;
 
   typedef std::pair< sharedptr<const LayoutItem_Field>, bool /* is_ascending */> type_pair_sort_field;
-  typedef std::list<type_pair_sort_field> type_list_sort_fields;
+  typedef std::vector<type_pair_sort_field> type_list_sort_fields;
 
   /** Discover whether the entered data should only be one of the available
    * choices.
