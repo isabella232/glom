@@ -501,7 +501,7 @@ private:
   void save_before_layout_item_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, Field::glom_field_type field_type = Field::TYPE_INVALID);
   void save_before_layout_item_formatting(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem_WithFormatting>& layout_item);
 
-  void save_before_translations(xmlpp::Element* nodeItem, const TranslatableItem& item);
+  void save_before_translations(xmlpp::Element* nodeItem, const sharedptr<const TranslatableItem>& item);
   void save_before_print_layout_position(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem>& item);
   void save_before_choicevalue(xmlpp::Element* nodeItem, const sharedptr<const ChoiceValue>& item, Field::glom_field_type field_type);
 
@@ -515,7 +515,7 @@ private:
   void load_after_layout_item_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type = Field::TYPE_INVALID, const Glib::ustring& table_name = Glib::ustring(), const Glib::ustring& field_name = Glib::ustring());
  void load_after_layout_item_formatting(const xmlpp::Element* element, const sharedptr<LayoutItem_WithFormatting>& layout_item, const Glib::ustring& table_name = Glib::ustring());
 
-  void load_after_translations(const xmlpp::Element* element, TranslatableItem& item);
+  void load_after_translations(const xmlpp::Element* element, const sharedptr<TranslatableItem>& item);
   void load_after_print_layout_position(const xmlpp::Element* nodeItem, const sharedptr<LayoutItem>& item);
   void load_after_choicevalue(const xmlpp::Element* element, const sharedptr<ChoiceValue>& item, Field::glom_field_type field_type);
 

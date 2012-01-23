@@ -2231,7 +2231,7 @@ void Document::load_after_layout_item_field(const xmlpp::Element* element, const
     sharedptr<CustomTitle> custom_title = sharedptr<CustomTitle>::create();
     custom_title->set_use_custom_title( get_node_attribute_value_as_bool(nodeCustomTitle, GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE_USE) );
 
-    load_after_translations(nodeCustomTitle, *custom_title);
+    load_after_translations(nodeCustomTitle, custom_title);
     item->set_title_custom(custom_title);
   }
 }
@@ -2278,7 +2278,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
 
   //Translations:
   sharedptr<LayoutGroup> temp = group;
-  load_after_translations(node, *temp);
+  load_after_translations(node, temp);
 
   //Get the child items:
   xmlpp::Node::NodeList listNodes = node->get_children();
@@ -2306,21 +2306,21 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         if(!(item->get_has_script())) //Try the deprecated attribute instead
            item->set_script( get_node_attribute_value(element, GLOM_DEPRECATED_ATTRIBUTE_BUTTON_SCRIPT) );
 
-        load_after_translations(element, *item);
+        load_after_translations(element, item);
 
         item_added = item;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_TEXTOBJECT)
       {
         sharedptr<LayoutItem_Text> item = sharedptr<LayoutItem_Text>::create();
-        load_after_translations(element, *item);
+        load_after_translations(element, item);
 
         //The text can be translated too, so it has its own node:
         const xmlpp::Element* element_text = get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT);
         if(element_text)
         {
           sharedptr<TranslatableItem> translatable_text = sharedptr<TranslatableItem>::create();
-          load_after_translations(element_text, *translatable_text);
+          load_after_translations(element_text, translatable_text);
           item->m_text = translatable_text;
           //std::cout << "  DEBUG: text: " << item->m_text->get_title_or_name() << std::endl;
         }
@@ -2330,7 +2330,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_IMAGEOBJECT)
       {
         sharedptr<LayoutItem_Image> item = sharedptr<LayoutItem_Image>::create();
-        load_after_translations(element, *item);
+        load_after_translations(element, item);
 
         item->set_image(get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, Field::TYPE_IMAGE));
 
@@ -2339,7 +2339,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_LINE)
       {
         sharedptr<LayoutItem_Line> item = sharedptr<LayoutItem_Line>::create();
-        //Has no translations: load_after_translations(element, *item);
+        //Has no translations: load_after_translations(element, item);
 
         item->set_coordinates(
           get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_X),
@@ -2556,15 +2556,15 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
   } //for
 }
 
-void Document::load_after_translations(const xmlpp::Element* element, TranslatableItem& item)
+void Document::load_after_translations(const xmlpp::Element* element, const sharedptr<TranslatableItem>& item)
 {
   if(!element)
     return;
 
-  const ChoiceValue* choicevalue = dynamic_cast<ChoiceValue*>(&item);
+  const sharedptr<ChoiceValue> choicevalue = sharedptr<ChoiceValue>::cast_dynamic(item);
   if(!choicevalue) //This item does not use the title, but uses the title translations to translate its value, if it is of type text.
   {
-    item.set_title_original( get_node_attribute_value(element, GLOM_ATTRIBUTE_TITLE));
+    item->set_title_original( get_node_attribute_value(element, GLOM_ATTRIBUTE_TITLE));
   }
 
   const xmlpp::Element* nodeTranslations = get_node_child_named(element, GLOM_NODE_TRANSLATIONS_SET);
@@ -2578,7 +2578,7 @@ void Document::load_after_translations(const xmlpp::Element* element, Translatab
       {
         const Glib::ustring locale = get_node_attribute_value(element, GLOM_ATTRIBUTE_TRANSLATION_LOCALE);
         const Glib::ustring translation = get_node_attribute_value(element, GLOM_ATTRIBUTE_TRANSLATION_VALUE);
-        item.set_title(translation, locale);
+        item->set_title(translation, locale);
 
         //Remember any new translation locales in our cached list:
         if(std::find(m_translation_available_locales.begin(), 
@@ -2591,8 +2591,8 @@ void Document::load_after_translations(const xmlpp::Element* element, Translatab
   }
 
   //If it has a singular title, then load that too:
-  HasTitleSingular* has_title_singular =
-    dynamic_cast<HasTitleSingular*>(&item);
+  const sharedptr<HasTitleSingular> has_title_singular =
+     sharedptr<HasTitleSingular>::cast_dynamic(item);
   if(has_title_singular)
   {
     const xmlpp::Element* nodeTitleSingular = get_node_child_named(element, GLOM_NODE_TABLE_TITLE_SINGULAR);
@@ -2600,7 +2600,7 @@ void Document::load_after_translations(const xmlpp::Element* element, Translatab
     if(!has_title_singular->m_title_singular)
      has_title_singular->m_title_singular = sharedptr<TranslatableItem>::create();
 
-    load_after_translations(nodeTitleSingular, *(has_title_singular->m_title_singular));
+    load_after_translations(nodeTitleSingular, has_title_singular->m_title_singular);
   }
 }
 
@@ -2626,7 +2626,7 @@ void Document::load_after_choicevalue(const xmlpp::Element* element, const share
   item->set_value(value);
 
   sharedptr<ChoiceValue> nonconst_item = item; //TODO: Avoid this.
-  load_after_translations(element, *nonconst_item);
+  load_after_translations(element, nonconst_item);
 }
 
 bool Document::load_after(int& failure_code)
@@ -2748,7 +2748,7 @@ bool Document::load_after(int& failure_code)
           doctableinfo.m_overviewy = get_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_Y);
 
           //Translations:
-          load_after_translations(nodeTable, *(doctableinfo.m_info));
+          load_after_translations(nodeTable, doctableinfo.m_info);
 
           //Relationships:
           //These should be loaded before the fields, because the fields use them.
@@ -2774,7 +2774,7 @@ bool Document::load_after(int& failure_code)
                 relationship->set_allow_edit( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_ALLOW_EDIT) );
 
                 //Translations:
-                load_after_translations(nodeChild, *relationship);
+                load_after_translations(nodeChild, relationship);
 
                 doctableinfo.m_relationships.push_back(relationship);
               }
@@ -2844,7 +2844,7 @@ bool Document::load_after(int& failure_code)
                   load_after_layout_item_formatting(elementFormatting, field->m_default_formatting, field_type_enum, table_name, strName);
 
                 //Translations:
-                load_after_translations(nodeChild, *field);
+                load_after_translations(nodeChild, field);
 
                 doctableinfo.m_fields.push_back(field);
               }
@@ -3007,7 +3007,7 @@ bool Document::load_after(int& failure_code)
                 }
 
                 //Translations:
-                load_after_translations(node, *report);
+                load_after_translations(node, report);
 
                 doctableinfo.m_reports[report->get_name()] = report;
               }
@@ -3097,7 +3097,7 @@ bool Document::load_after(int& failure_code)
                 }
 
                 //Translations:
-                load_after_translations(node, *print_layout);
+                load_after_translations(node, print_layout);
 
                 doctableinfo.m_print_layouts[print_layout->get_name()] = print_layout;
               }
@@ -3327,7 +3327,7 @@ void Document::save_before_layout_item_field(xmlpp::Element* nodeItem, const sha
     xmlpp::Element* elementCustomTitle = nodeItem->add_child(GLOM_NODE_LAYOUT_ITEM_CUSTOM_TITLE);
     set_node_attribute_value_as_bool(elementCustomTitle, GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE_USE, custom_title->get_use_custom_title());
 
-    save_before_translations(elementCustomTitle, *custom_title);
+    save_before_translations(elementCustomTitle, custom_title);
   }
 }
 
@@ -3511,7 +3511,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
   set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_BORDER_WIDTH, group->get_border_width());
 
   //Translations:
-  save_before_translations(child, *group);
+  save_before_translations(child, group);
 
   //Print layout position:
   if(with_print_layout_positions)
@@ -3556,7 +3556,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
           {
             nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_BUTTON);
             set_child_text_node(nodeItem, GLOM_NODE_BUTTON_SCRIPT, button->get_script());
-            save_before_translations(nodeItem, *button);
+            save_before_translations(nodeItem, button);
           }
           else
           {
@@ -3564,11 +3564,11 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
             if(textobject) //If it is a text object.
             {
               nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_TEXTOBJECT);
-              save_before_translations(nodeItem, *textobject);
+              save_before_translations(nodeItem, textobject);
 
               //The text is translatable too, so we use a node for it:
               xmlpp::Element* element_text = nodeItem->add_child(GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT);
-              save_before_translations(element_text, *(textobject->m_text));
+              save_before_translations(element_text, textobject->m_text);
             }
             else
             {
@@ -3576,7 +3576,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
               if(imageobject) //If it is an image object.
               {
                 nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_IMAGEOBJECT);
-                save_before_translations(nodeItem, *imageobject);
+                save_before_translations(nodeItem, imageobject);
 
                 set_node_attribute_value_as_value(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, imageobject->get_image(), Field::TYPE_IMAGE);
               }
@@ -3586,7 +3586,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
                 if(line) //If it is a line
                 {
                   nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_LINE);
-                  //This has no translations: save_before_translations(nodeItem, *line);
+                  //This has no translations: save_before_translations(nodeItem, line);
 
                   double start_x = 0;
                   double start_y = 0;
@@ -3633,23 +3633,23 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
   }
 }
 
-void Document::save_before_translations(xmlpp::Element* element, const TranslatableItem& item)
+void Document::save_before_translations(xmlpp::Element* element, const sharedptr<const TranslatableItem>& item)
 {
   if(!element)
     return;
 
-  const ChoiceValue* choicevalue = dynamic_cast<const ChoiceValue*>(&item);
+  const sharedptr<const ChoiceValue> choicevalue = sharedptr<const ChoiceValue>::cast_dynamic(item);
   if(!choicevalue) //This item does not use the title, but uses the title translations to translate its value, if it is of type text.
   {
-    set_node_attribute_value(element, GLOM_ATTRIBUTE_TITLE, item.get_title_original());
+    set_node_attribute_value(element, GLOM_ATTRIBUTE_TITLE, item->get_title_original());
   }
 
-  if(!item.get_has_translations())
+  if(!item->get_has_translations())
     return;
 
   xmlpp::Element* child = element->add_child(GLOM_NODE_TRANSLATIONS_SET);
 
-  const TranslatableItem::type_map_locale_to_translations& map_translations = item._get_translations_map();
+  const TranslatableItem::type_map_locale_to_translations& map_translations = item->_get_translations_map();
   for(TranslatableItem::type_map_locale_to_translations::const_iterator iter = map_translations.begin(); iter != map_translations.end(); ++iter)
   {
     xmlpp::Element* childItem = child->add_child(GLOM_NODE_TRANSLATION);
@@ -3658,13 +3658,13 @@ void Document::save_before_translations(xmlpp::Element* element, const Translata
   }
 
   //If it has a singular title, then save that too:
-  const HasTitleSingular* has_title_singular =
-    dynamic_cast<const HasTitleSingular*>(&item);
+  const sharedptr<const HasTitleSingular> has_title_singular =
+    sharedptr<const HasTitleSingular>::cast_dynamic(item);
   if(has_title_singular && has_title_singular->m_title_singular
     && !(has_title_singular->m_title_singular->get_title_original().empty()))
   {
     xmlpp::Element* nodeTitleSingular = element->add_child(GLOM_NODE_TABLE_TITLE_SINGULAR);
-    save_before_translations(nodeTitleSingular, *(has_title_singular->m_title_singular));
+    save_before_translations(nodeTitleSingular, has_title_singular->m_title_singular);
   }
 }
 
@@ -3694,7 +3694,7 @@ void Document::save_before_choicevalue(xmlpp::Element* nodeItem, const sharedptr
     return;
 
   set_node_attribute_value_as_value(nodeItem, GLOM_ATTRIBUTE_VALUE, item->get_value(), field_type);
-  save_before_translations(nodeItem, *item);
+  save_before_translations(nodeItem, item);
 }
 
 bool Document::save_before()
@@ -3800,7 +3800,7 @@ bool Document::save_before()
 
 
         //Translations:
-        save_before_translations(nodeTable, *(doctableinfo.m_info));
+        save_before_translations(nodeTable, doctableinfo.m_info);
 
         //Fields:
         xmlpp::Element* elemFields = nodeTable->add_child(GLOM_NODE_FIELDS);
@@ -3844,7 +3844,7 @@ bool Document::save_before()
           save_before_layout_item_formatting(elementFormat, field->m_default_formatting, field->get_glom_type());
 
           //Translations:
-          save_before_translations(elemField, *field);
+          save_before_translations(elemField, field);
         } /* fields */
 
         //Relationships:
@@ -3866,7 +3866,7 @@ bool Document::save_before()
             set_node_attribute_value_as_bool(elemRelationship, GLOM_ATTRIBUTE_ALLOW_EDIT, relationship->get_allow_edit());
 
             //Translations:
-            save_before_translations(elemRelationship, *relationship);
+            save_before_translations(elemRelationship, relationship);
           }
         }
 
@@ -3910,7 +3910,7 @@ bool Document::save_before()
           }
 
           //Translations:
-          save_before_translations(nodeReport, *report);
+          save_before_translations(nodeReport, report);
         }
 
         //Print Layouts:
@@ -3964,7 +3964,7 @@ bool Document::save_before()
           }
 
           //Translations:
-          save_before_translations(nodePrintLayout, *print_layout);
+          save_before_translations(nodePrintLayout, print_layout);
         }
       }
 

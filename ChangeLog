@@ -1,3 +1,11 @@
+2012-01-23  Murray Cumming  <murrayc@murrayc.com>
+
+	Document: load_after_translation(), save_before_translation(): Use sharedptr.
+
+	* glom/libglom/document/document.[h|cc]: load_after_translation(), 
+	save_before_translation(): Take the TranslatableItem parameter as a sharedptr.
+	Any reason not to no longer applies.
+
 2012-01-22  Murray Cumming  <murrayc@murrayc.com>
 
 	Document: get_report_names(), get_print_layout_names(): Return a vector.
