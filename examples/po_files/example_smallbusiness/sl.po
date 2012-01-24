@@ -1,17 +1,25 @@
+#'glom/examples/po_files/example_smallbusiness
+# Slovenian translation for glom smallbusiness example.
+# Copyright (C) 2012 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+#
+# Matej Urbančič <mateju@svn.gnome.org>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Small Business Example\n"
-"product=glom&keywords=I18N+L10N&component=general\n"
-"PO-Revision-Date: 2012-01-24 14:23+0100\n"
-"Last-Translator: Someone <someone@someone.com>\n"
-"Language-Team:  <someone@someone.com>\n"
+"Project-Id-Version: glom master\n"
+"PO-Revision-Date: 2012-01-24 20:08+0100\n"
+"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
+"Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgctxt "Database Title"
-msgid "Small Business Example"
-msgstr ""
+"Language: \n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
+"X-Poedit-Country: SLOVENIA\n"
+"X-Poedit-Language: Slovenian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"POT-Creation-Date: \n"
 
 msgctxt "Table (contacts)"
 msgid "Contacts"
@@ -71,7 +79,7 @@ msgstr "Mesto"
 
 msgctxt "Field (address_state). Parent table: contacts"
 msgid "State"
-msgstr "Stanje"
+msgstr "Okraj"
 
 msgctxt "Field (address_country). Parent table: contacts"
 msgid "Country"
@@ -87,7 +95,7 @@ msgstr "Datum rojstva"
 
 msgctxt "Field (comments). Parent table: contacts"
 msgid "Comments"
-msgstr "Razlage"
+msgstr "Opombe"
 
 msgctxt "Field (name_full). Parent table: contacts"
 msgid "Full Name"
@@ -107,15 +115,15 @@ msgstr "Spletna stran"
 
 msgctxt "Field (tel_home). Parent table: contacts"
 msgid "Home Telephone"
-msgstr "Telefonska številka"
+msgstr "Telefon doma"
 
 msgctxt "Field (tel_work). Parent table: contacts"
 msgid "Work Telephone"
-msgstr "Telefonska številka"
+msgstr "Telefon v službi"
 
 msgctxt "Field (tel_mobile). Parent table: contacts"
 msgid "Mobile Telephone"
-msgstr "Telefonska številka"
+msgstr "Mobilni telefon"
 
 msgctxt "Field (tel_fax). Parent table: contacts"
 msgid "Fax"
@@ -123,11 +131,11 @@ msgstr "Faks"
 
 msgctxt "Report (by_country). Parent table: contacts"
 msgid "Contacts By Country"
-msgstr "Tek na smučeh"
+msgstr "Stiki po državah"
 
 msgctxt "Report (by_country_by_town). Parent table: contacts"
 msgid "By Country, By Town"
-msgstr "Avtomobili v mestu"
+msgstr "Po državi, po mestu"
 
 msgctxt "Layout Group (overview). Parent table: contacts"
 msgid "Overview"
@@ -147,11 +155,11 @@ msgstr "Telefon"
 
 msgctxt "Button. Parent table: contacts, Parent Group: details"
 msgid "Test Button"
-msgstr ""
+msgstr "Gumb za preizkus"
 
 msgctxt "Field (product_name). Parent table: invoice_lines"
 msgid "Product Name"
-msgstr "Ime proizvoda"
+msgstr "Ime izdelka"
 
 msgctxt "Field (product_id). Parent table: invoice_lines"
 msgid "Product Id"
@@ -159,35 +167,35 @@ msgstr "ID izdelka"
 
 msgctxt "Field (product_price). Parent table: invoice_lines"
 msgid "Product Price"
-msgstr "gotovinska_cena:gotovinska cena"
+msgstr "Cena izdelka"
 
 msgctxt "Field (invoice_id). Parent table: invoice_lines"
 msgid "Invoice ID"
-msgstr "Brez-IDja"
+msgstr "ID računa"
 
 msgctxt "Field (count). Parent table: invoice_lines"
 msgid "Number Of"
-msgstr "ŠTEVILKA"
+msgstr "Število"
 
 msgctxt "Field (total_price). Parent table: invoice_lines"
 msgid "Total Price"
-msgstr "gotovinska_cena:gotovinska cena"
+msgstr "Skupna cena"
 
 msgctxt "Field (vat_percentage). Parent table: invoice_lines"
 msgid "VAT Percentage"
-msgstr "Odstotek pokritosti"
+msgstr "Odstotek DDV"
 
 msgctxt "Field (total_price_vat). Parent table: invoice_lines"
 msgid "Total VAT"
-msgstr "Skupna razdalja"
+msgstr "Skupni DDV"
 
 msgctxt "Table (invoices)"
 msgid "Invoices"
-msgstr "Račun"
+msgstr "Računi"
 
 msgctxt "Field (invoice_id). Parent table: invoices"
 msgid "Invoice ID"
-msgstr "Brez-IDja"
+msgstr "ID računa"
 
 msgctxt "Field (contact_id). Parent table: invoices"
 msgid "Contact ID"
@@ -203,19 +211,19 @@ msgstr "Opomba"
 
 msgctxt "Field (price_total). Parent table: invoices"
 msgid "Total Price"
-msgstr "gotovinska_cena:gotovinska cena"
+msgstr "Skupna cena"
 
 msgctxt "Field (vat_total). Parent table: invoices"
 msgid "Total VAT"
-msgstr "Skupna razdalja"
+msgstr "Skupni DDV"
 
 msgctxt "Field (price_total_with_vat). Parent table: invoices"
 msgid "Total Price With Vat"
-msgstr "Skupna cena z davkom"
+msgstr "Skupna cena z DDV"
 
 msgctxt "Relationship (invoice_lines). Parent table: invoices"
 msgid "Invoice Lines"
-msgstr "Prelomi vrstice"
+msgstr "Vrstice računa"
 
 msgctxt "Relationship (contacts). Parent table: invoices"
 msgid "Contacts"
@@ -223,7 +231,7 @@ msgstr "Stiki"
 
 msgctxt "Report (By Customer). Parent table: invoices"
 msgid "By Customer"
-msgstr "Ključna stranka"
+msgstr "Po strankah"
 
 msgctxt "Layout Group (overview). Parent table: invoices"
 msgid "Overview"
@@ -231,11 +239,11 @@ msgstr "Pregled"
 
 msgctxt "Layout Group (customer). Parent table: invoices, Parent Group: details"
 msgid "Customer"
-msgstr "Ključna stranka"
+msgstr "Stranka"
 
 msgctxt "Table (products)"
 msgid "Products"
-msgstr "Podobni izdelki:"
+msgstr "Izdelki"
 
 msgctxt "Field (product_id). Parent table: products"
 msgid "Product ID"
@@ -259,7 +267,7 @@ msgstr "Cena"
 
 msgctxt "Field (vat_percent). Parent table: products"
 msgid "Vat Percent"
-msgstr ""
+msgstr "Odstotek DDV"
 
 msgctxt "Layout Group (overview). Parent table: products"
 msgid "Overview"
@@ -271,35 +279,35 @@ msgstr "Podrobnosti"
 
 msgctxt "Table (staff)"
 msgid "Staff"
-msgstr "Izbor osebja"
+msgstr "Osebje"
 
 msgctxt "Field (staff_id). Parent table: staff"
 msgid "Staff ID"
-msgstr "Brez-IDja"
+msgstr "ID osebja"
 
 msgctxt "Field (name_title). Parent table: staff"
 msgid "Title"
-msgstr "Naslov"
+msgstr "Naziv"
 
 msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
 msgid "Mr"
-msgstr "G."
+msgstr "g."
 
 msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
 msgid "Mrs"
-msgstr "Ga."
+msgstr "ga."
 
 msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
 msgid "Miss"
-msgstr "Gdč."
+msgstr "gdč."
 
 msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
 msgid "Dr"
-msgstr "Dr."
+msgstr "dr."
 
 msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
 msgid "Prof"
-msgstr "Prof."
+msgstr "prof."
 
 msgctxt "Field (name_first). Parent table: staff"
 msgid "First Name"
@@ -307,7 +315,7 @@ msgstr "Ime"
 
 msgctxt "Field (name_second). Parent table: staff"
 msgid "Second Name"
-msgstr ""
+msgstr "Drugo ime"
 
 msgctxt "Field (name_last). Parent table: staff"
 msgid "Last Name"
@@ -323,7 +331,7 @@ msgstr "Mesto"
 
 msgctxt "Field (address_state). Parent table: staff"
 msgid "State"
-msgstr "Stanje"
+msgstr "Okraj"
 
 msgctxt "Field (address_country). Parent table: staff"
 msgid "Country"
@@ -335,7 +343,7 @@ msgstr "Poštna koda"
 
 msgctxt "Field (date_of_birth). Parent table: staff"
 msgid "Date Of Birth"
-msgstr "<b>Datum rojstva</b>"
+msgstr "Datum rojstva"
 
 msgctxt "Field (position). Parent table: staff"
 msgid "Position"
