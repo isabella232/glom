@@ -1,5 +1,5 @@
-#'glom/examples/po_files/example_smallbusiness
-# Slovenian translation for glom smallbusiness example.
+#'glom/examples/po_files/example_film_manager
+# Slovenian translation for glom file manager example.
 # Copyright (C) 2012 glom's COPYRIGHT HOLDER
 # This file is distributed under the same license as the glom package.
 #
@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glom master\n"
-"PO-Revision-Date: 2012-01-24 20:08+0100\n"
+"PO-Revision-Date: 2012-01-24 20:57+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -20,6 +20,231 @@ msgstr ""
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "POT-Creation-Date: \n"
+
+msgctxt "Table (accommodation)"
+msgid "Accommodation"
+msgstr "ID nastanitve"
+
+msgctxt "Field (accommodation_id). Parent table: accommodation"
+msgid "Accommodation ID"
+msgstr "ID nastanitve"
+
+msgctxt "Field (description). Parent table: accommodation"
+msgid "Description"
+msgstr "Opis"
+
+msgctxt "Field (comments). Parent table: accommodation"
+msgid "Comments"
+msgstr "Opombe"
+
+msgctxt "Field (address_street). Parent table: accommodation"
+msgid "Street"
+msgstr "Ulica"
+
+msgctxt "Field (address_town). Parent table: accommodation"
+msgid "Town"
+msgstr "Mesto"
+
+msgctxt "Field (address_county). Parent table: accommodation"
+msgid "County"
+msgstr "Okrožje"
+
+msgctxt "Field (address_country). Parent table: accommodation"
+msgid "Country"
+msgstr "Država"
+
+msgctxt "Field (address_postcode). Parent table: accommodation"
+msgid "Postcode"
+msgstr "Poštna koda"
+
+msgctxt "Field (contact_id). Parent table: accommodation"
+msgid "Contact ID"
+msgstr "ID stika"
+
+msgctxt "Field (name). Parent table: accommodation"
+msgid "Name"
+msgstr "Ime"
+
+msgctxt "Relationship (contacts). Parent table: accommodation"
+msgid "Contacts"
+msgstr "Stiki"
+
+msgctxt "Layout Group (overview). Parent table: accommodation"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (address). Parent table: accommodation, Parent Group: details"
+msgid "Address"
+msgstr "Naslov"
+
+msgctxt "Layout Group (contact). Parent table: accommodation, Parent Group: details"
+msgid "Contact"
+msgstr "Stik"
+
+msgctxt "Table (cars)"
+msgid "Cars"
+msgstr "Vozila"
+
+msgctxt "Field (car_id). Parent table: cars"
+msgid "Car ID"
+msgstr "ID vozila"
+
+msgctxt "Field (manufacturer). Parent table: cars"
+msgid "Manufacturer"
+msgstr "Proizvajalec"
+
+msgctxt "Field (model). Parent table: cars"
+msgid "Model"
+msgstr "Model"
+
+msgctxt "Field (registration). Parent table: cars"
+msgid "Registration"
+msgstr "Prijava"
+
+msgctxt "Field (description). Parent table: cars"
+msgid "Description"
+msgstr "Opis"
+
+msgctxt "Field (comment). Parent table: cars"
+msgid "Comment"
+msgstr "Opomba"
+
+msgctxt "Layout Group (overview). Parent table: cars"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: cars"
+msgid "Details"
+msgstr "Podrobnosti"
+
+#, fuzzy
+msgctxt "Table (characters)"
+msgid "Characters"
+msgstr "znakih"
+
+#, fuzzy
+msgctxt "Field (character_id). Parent table: characters"
+msgid "Cast ID"
+msgstr "Brez-IDja"
+
+#, fuzzy
+msgctxt "Field (character). Parent table: characters"
+msgid "Character"
+msgstr "Znak"
+
+msgctxt "Field (comments). Parent table: characters"
+msgid "Comments"
+msgstr "Opombe"
+
+#, fuzzy
+msgctxt "Field (contact_id). Parent table: characters"
+msgid "Contact ID"
+msgstr "ID stika"
+
+msgctxt "Field (mainpart). Parent table: characters"
+msgid "Main Part"
+msgstr "Glavna vloga"
+
+msgctxt "Relationship (contacts_actor). Parent table: characters"
+msgid "Actor"
+msgstr "Igralec"
+
+msgctxt "Relationship (scenes). Parent table: characters"
+msgid "Scenes"
+msgstr "Scene"
+
+#, fuzzy
+msgctxt "Report (cast_list). Parent table: characters"
+msgid "Cast List"
+msgstr "Seznam rezultatov"
+
+msgctxt "Custom Title. Parent table: characters, Parent Report: cast_list"
+msgid "Actor"
+msgstr "Igralex"
+
+msgctxt "Custom Title. Parent table: characters, Parent Report: cast_list"
+msgid "Agent"
+msgstr "Agent"
+
+msgctxt "Layout Group (overview). Parent table: characters, Parent Group: main"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: characters, Parent Group: main"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Layout Group (actor). Parent table: characters, Parent Group: main, Parent Group: details"
+msgid "Actor"
+msgstr "Igralec"
+
+msgctxt "Custom Title. Parent table: characters, Parent Group: main"
+msgid "Actor's Contact ID"
+msgstr "ID stika igralca"
+
+msgctxt "Custom Title. Parent table: characters, Parent Group: main"
+msgid "Actor's Name"
+msgstr "Ime igralca"
+
+msgctxt "Layout Group (overview). Parent table: characters"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: characters"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Layout Group (actor). Parent table: characters, Parent Group: details"
+msgid "Actor"
+msgstr "Igralec"
+
+msgctxt "Custom Title. Parent table: characters, Parent Group: details, Parent Group: actor"
+msgid "Actor's Name"
+msgstr "Ime igralca"
+
+msgctxt "Custom Title. Parent table: characters, Parent Group: main"
+msgid "Actor"
+msgstr "Igralec"
+
+msgctxt "Table (companies)"
+msgid "Companies"
+msgstr "Podjetja"
+
+msgctxt "Field (company_id). Parent table: companies"
+msgid "Company ID"
+msgstr "ID podjetja"
+
+msgctxt "Field (name). Parent table: companies"
+msgid "Name"
+msgstr "Ime"
+
+msgctxt "Field (comments). Parent table: companies"
+msgid "Comments"
+msgstr "Razlage"
+
+msgctxt "Field (description). Parent table: companies"
+msgid "Description"
+msgstr "Opis"
+
+msgctxt "Field (logo). Parent table: companies"
+msgid "Logo"
+msgstr "Logo"
+
+msgctxt "Field (website). Parent table: companies"
+msgid "Web Site"
+msgstr "Spletna stran"
+
+msgctxt "Relationship (staff). Parent table: companies"
+msgid "Staff"
+msgstr "Osebje"
+
+msgctxt "Layout Group (overview). Parent table: companies"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: companies"
+msgid "Details"
+msgstr "Podrobnosti"
 
 msgctxt "Table (contacts)"
 msgid "Contacts"
@@ -34,7 +259,7 @@ msgid "First Name"
 msgstr "Ime"
 
 msgctxt "Field (name_middle). Parent table: contacts"
-msgid "Middle Name"
+msgid "Second Name"
 msgstr "Drugo ime"
 
 msgctxt "Field (name_last). Parent table: contacts"
@@ -47,19 +272,19 @@ msgstr "Naziv"
 
 msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
 msgid "Mr"
-msgstr "G."
-
-msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
-msgid "Mrs"
-msgstr "Ga."
+msgstr "g."
 
 msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
 msgid "Ms"
-msgstr "Ga."
+msgstr "ga."
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mrs"
+msgstr "ga."
 
 msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
 msgid "Miss"
-msgstr "Gdč."
+msgstr "gdč."
 
 msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
 msgid "Dr"
@@ -69,9 +294,9 @@ msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
 msgid "Prof"
 msgstr "prof."
 
-msgctxt "Field (address_street). Parent table: contacts"
-msgid "Street"
-msgstr "Ulica"
+msgctxt "Field (address_street2). Parent table: contacts"
+msgid "Street (line 2)"
+msgstr "Ulica (druga vrstica)"
 
 msgctxt "Field (address_town). Parent table: contacts"
 msgid "Town"
@@ -85,12 +310,32 @@ msgctxt "Field (address_country). Parent table: contacts"
 msgid "Country"
 msgstr "Država"
 
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "Germany"
+msgstr "Nemčija"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "United Kingdom"
+msgstr "Združeno kraljestvo"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "USA"
+msgstr "ZDA"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "France"
+msgstr "Francija"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "Spain"
+msgstr "Španija"
+
 msgctxt "Field (address_postcode). Parent table: contacts"
 msgid "Postcode"
 msgstr "Poštna koda"
 
 msgctxt "Field (date_of_birth). Parent table: contacts"
-msgid "Date of Birth"
+msgid "Date Of Birth"
 msgstr "Datum rojstva"
 
 msgctxt "Field (comments). Parent table: contacts"
@@ -101,25 +346,17 @@ msgctxt "Field (name_full). Parent table: contacts"
 msgid "Full Name"
 msgstr "Polno ime"
 
+msgctxt "Field (company_id). Parent table: contacts"
+msgid "Company ID"
+msgstr "ID podjetja"
+
 msgctxt "Field (picture). Parent table: contacts"
 msgid "Picture"
 msgstr "Slika"
 
-msgctxt "Field (email). Parent table: contacts"
-msgid "Email Address"
-msgstr "Elektronski naslov"
-
-msgctxt "Field (website). Parent table: contacts"
-msgid "Web Site"
-msgstr "Spletna stran"
-
 msgctxt "Field (tel_home). Parent table: contacts"
 msgid "Home Telephone"
 msgstr "Telefon doma"
-
-msgctxt "Field (tel_work). Parent table: contacts"
-msgid "Work Telephone"
-msgstr "Telefon v službi"
 
 msgctxt "Field (tel_mobile). Parent table: contacts"
 msgid "Mobile Telephone"
@@ -128,6 +365,47 @@ msgstr "Mobilni telefon"
 msgctxt "Field (tel_fax). Parent table: contacts"
 msgid "Fax"
 msgstr "Faks"
+
+msgctxt "Field (tel_work). Parent table: contacts"
+msgid "Work Telephone"
+msgstr "Telefon v službi"
+
+msgctxt "Field (email). Parent table: contacts"
+msgid "Email"
+msgstr "Elektronska pošta"
+
+msgctxt "Field (address_street1). Parent table: contacts"
+msgid "Street (line 1)"
+msgstr "Ulica (prva vrstica)"
+
+msgctxt "Field (website). Parent table: contacts"
+msgid "Web Site"
+msgstr "Spletna stran"
+
+msgctxt "Field (agent_id). Parent table: contacts"
+msgid "Agent ID"
+msgstr "ID agenta"
+
+msgctxt "Field (stagename). Parent table: contacts"
+msgid "Stagename"
+msgstr ""
+
+msgctxt "Relationship (company). Parent table: contacts"
+msgid "Company"
+msgstr "Podjetje"
+
+msgctxt "Relationship (agent). Parent table: contacts"
+msgid "Agent"
+msgstr "Agent"
+
+msgctxt "Relationship (crew). Parent table: contacts"
+msgid "Crew"
+msgstr ""
+
+#, fuzzy
+msgctxt "Relationship (cast). Parent table: contacts"
+msgid "Cast"
+msgstr "Oddajanje naprave"
 
 msgctxt "Report (by_country). Parent table: contacts"
 msgid "Contacts By Country"
@@ -141,223 +419,826 @@ msgctxt "Layout Group (overview). Parent table: contacts"
 msgid "Overview"
 msgstr "Pregled"
 
-msgctxt "Layout Group (name). Parent table: contacts, Parent Group: details"
-msgid "Name"
-msgstr "Ime"
-
-msgctxt "Layout Group (address). Parent table: contacts, Parent Group: details"
-msgid "Address"
-msgstr "Naslov"
-
-msgctxt "Layout Group (telephone). Parent table: contacts, Parent Group: details"
-msgid "Telephone"
-msgstr "Telefon"
-
-msgctxt "Button. Parent table: contacts, Parent Group: details"
-msgid "Test Button"
-msgstr "Gumb za preizkus"
-
-msgctxt "Field (product_name). Parent table: invoice_lines"
-msgid "Product Name"
-msgstr "Ime izdelka"
-
-msgctxt "Field (product_id). Parent table: invoice_lines"
-msgid "Product Id"
-msgstr "ID izdelka"
-
-msgctxt "Field (product_price). Parent table: invoice_lines"
-msgid "Product Price"
-msgstr "Cena izdelka"
-
-msgctxt "Field (invoice_id). Parent table: invoice_lines"
-msgid "Invoice ID"
-msgstr "ID računa"
-
-msgctxt "Field (count). Parent table: invoice_lines"
-msgid "Number Of"
-msgstr "Število"
-
-msgctxt "Field (total_price). Parent table: invoice_lines"
-msgid "Total Price"
-msgstr "Skupna cena"
-
-msgctxt "Field (vat_percentage). Parent table: invoice_lines"
-msgid "VAT Percentage"
-msgstr "Odstotek DDV"
-
-msgctxt "Field (total_price_vat). Parent table: invoice_lines"
-msgid "Total VAT"
-msgstr "Skupni DDV"
-
-msgctxt "Table (invoices)"
-msgid "Invoices"
-msgstr "Računi"
-
-msgctxt "Field (invoice_id). Parent table: invoices"
-msgid "Invoice ID"
-msgstr "ID računa"
-
-msgctxt "Field (contact_id). Parent table: invoices"
-msgid "Contact ID"
-msgstr "ID stika"
-
-msgctxt "Field (date). Parent table: invoices"
-msgid "Date"
-msgstr "Datum"
-
-msgctxt "Field (comment). Parent table: invoices"
-msgid "Comment"
-msgstr "Opomba"
-
-msgctxt "Field (price_total). Parent table: invoices"
-msgid "Total Price"
-msgstr "Skupna cena"
-
-msgctxt "Field (vat_total). Parent table: invoices"
-msgid "Total VAT"
-msgstr "Skupni DDV"
-
-msgctxt "Field (price_total_with_vat). Parent table: invoices"
-msgid "Total Price With Vat"
-msgstr "Skupna cena z DDV"
-
-msgctxt "Relationship (invoice_lines). Parent table: invoices"
-msgid "Invoice Lines"
-msgstr "Vrstice računa"
-
-msgctxt "Relationship (contacts). Parent table: invoices"
-msgid "Contacts"
-msgstr "Stiki"
-
-msgctxt "Report (By Customer). Parent table: invoices"
-msgid "By Customer"
-msgstr "Po strankah"
-
-msgctxt "Layout Group (overview). Parent table: invoices"
-msgid "Overview"
-msgstr "Pregled"
-
-msgctxt "Layout Group (customer). Parent table: invoices, Parent Group: details"
-msgid "Customer"
-msgstr "Stranka"
-
-msgctxt "Table (products)"
-msgid "Products"
-msgstr "Izdelki"
-
-msgctxt "Field (product_id). Parent table: products"
-msgid "Product ID"
-msgstr "ID izdelka"
-
-msgctxt "Field (comment). Parent table: products"
-msgid "Comment"
-msgstr "Opomba"
-
-msgctxt "Field (description). Parent table: products"
-msgid "Description"
-msgstr "Opis"
-
-msgctxt "Field (name). Parent table: products"
-msgid "Name"
-msgstr "Ime"
-
-msgctxt "Field (price). Parent table: products"
-msgid "Price"
-msgstr "Cena"
-
-msgctxt "Field (vat_percent). Parent table: products"
-msgid "Vat Percent"
-msgstr "Odstotek DDV"
-
-msgctxt "Layout Group (overview). Parent table: products"
-msgid "Overview"
-msgstr "Pregled"
-
-msgctxt "Layout Group (details). Parent table: products"
+msgctxt "Layout Group (details). Parent table: contacts"
 msgid "Details"
 msgstr "Podrobnosti"
 
-msgctxt "Table (staff)"
-msgid "Staff"
-msgstr "Osebje"
-
-msgctxt "Field (staff_id). Parent table: staff"
-msgid "Staff ID"
-msgstr "ID osebja"
-
-msgctxt "Field (name_title). Parent table: staff"
-msgid "Title"
-msgstr "Naziv"
-
-msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
-msgid "Mr"
-msgstr "g."
-
-msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
-msgid "Mrs"
-msgstr "ga."
-
-msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
-msgid "Miss"
-msgstr "gdč."
-
-msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
-msgid "Dr"
-msgstr "dr."
-
-msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
-msgid "Prof"
-msgstr "prof."
-
-msgctxt "Field (name_first). Parent table: staff"
-msgid "First Name"
-msgstr "Ime"
-
-msgctxt "Field (name_second). Parent table: staff"
-msgid "Second Name"
-msgstr "Drugo ime"
-
-msgctxt "Field (name_last). Parent table: staff"
-msgid "Last Name"
-msgstr "Priimek"
-
-msgctxt "Field (address_street). Parent table: staff"
-msgid "Street"
-msgstr "Ulica"
-
-msgctxt "Field (address_town). Parent table: staff"
-msgid "Town"
-msgstr "Mesto"
-
-msgctxt "Field (address_state). Parent table: staff"
-msgid "State"
-msgstr "Okraj"
-
-msgctxt "Field (address_country). Parent table: staff"
-msgid "Country"
-msgstr "Država"
-
-msgctxt "Field (address_postcode). Parent table: staff"
-msgid "Postcode"
-msgstr "Poštna koda"
-
-msgctxt "Field (date_of_birth). Parent table: staff"
-msgid "Date Of Birth"
-msgstr "Datum rojstva"
-
-msgctxt "Field (position). Parent table: staff"
-msgid "Position"
-msgstr "Položaj"
-
-msgctxt "Layout Group (overview). Parent table: staff"
-msgid "Overview"
-msgstr "Pregled"
-
-msgctxt "Layout Group (name). Parent table: staff, Parent Group: details"
+msgctxt "Layout Group (name). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
 msgid "Name"
 msgstr "Ime"
 
-msgctxt "Layout Group (address). Parent table: staff, Parent Group: details"
+msgctxt "Layout Group (company). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
+msgid "Company"
+msgstr "Podjetje"
+
+msgctxt "Layout Group (address). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
 msgid "Address"
 msgstr "Naslov"
+
+msgctxt "Layout Group (telephone). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
+msgid "Telephone"
+msgstr "Telefon"
+
+msgctxt "Layout Group (agent). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
+msgid "Agent"
+msgstr "Agent"
+
+msgctxt "Custom Title. Parent table: contacts, Parent Group: main"
+msgid "Company Name"
+msgstr "Ime podjetja"
+
+msgctxt "Table (costume)"
+msgid "Costume"
+msgstr "Kostume"
+
+msgctxt "Field (costume_id). Parent table: costume"
+msgid "Costume ID"
+msgstr "ID kostuma"
+
+msgctxt "Field (description). Parent table: costume"
+msgid "Description"
+msgstr "Opis"
+
+msgctxt "Field (comments). Parent table: costume"
+msgid "Comments"
+msgstr "Opombe"
+
+msgctxt "Field (name). Parent table: costume"
+msgid "Name"
+msgstr "Ime"
+
+msgctxt "Layout Group (overview). Parent table: costume"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: costume"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (crew)"
+msgid "Crew"
+msgstr ""
+
+#, fuzzy
+msgctxt "Field (crew_id). Parent table: crew"
+msgid "Crew ID"
+msgstr "Brez-IDja"
+
+msgctxt "Field (description). Parent table: crew"
+msgid "Description"
+msgstr "Opis"
+
+msgctxt "Field (comments). Parent table: crew"
+msgid "Comments"
+msgstr "Opombe"
+
+#, fuzzy
+msgctxt "Field (dept_id). Parent table: crew"
+msgid "Department ID"
+msgstr "Brez-IDja"
+
+msgctxt "Field (contact_id). Parent table: crew"
+msgid "Contact ID"
+msgstr "ID stika"
+
+msgctxt "Relationship (contacts). Parent table: crew"
+msgid "Contacts"
+msgstr "Stiki"
+
+msgctxt "Relationship (departments). Parent table: crew"
+msgid "Departments"
+msgstr ""
+
+msgctxt "Relationship (scenes). Parent table: crew"
+msgid "Scenes"
+msgstr "Scene"
+
+#, fuzzy
+msgctxt "Report (crew_list). Parent table: crew"
+msgid "Crew List"
+msgstr "Seznam rezultatov"
+
+#, fuzzy
+msgctxt "Custom Title. Parent table: crew, Parent Report: crew_list"
+msgid "Department Name"
+msgstr "Ime pravila:"
+
+msgctxt "Layout Group (overview). Parent table: crew"
+msgid "Overview"
+msgstr "Pregled"
+
+#, fuzzy
+msgctxt "Layout Group (department). Parent table: crew, Parent Group: details"
+msgid "Department"
+msgstr "Oddelek"
+
+msgctxt "Layout Group (contact). Parent table: crew, Parent Group: details"
+msgid "Contact"
+msgstr "Stik"
+
+msgctxt "Layout Group (address). Parent table: crew, Parent Group: details, Parent Group: contact"
+msgid "Address"
+msgstr "Naslov"
+
+msgctxt "Layout Group (agent). Parent table: crew, Parent Group: details, Parent Group: contact"
+msgid "Agent"
+msgstr "Agent"
+
+#, fuzzy
+msgctxt "Custom Title. Parent table: crew, Parent Group: main"
+msgid "Department Name"
+msgstr "Ime pravila:"
+
+msgctxt "Table (deliveries)"
+msgid "Deliveries"
+msgstr ""
+
+#, fuzzy
+msgctxt "Field (delivery_id). Parent table: deliveries"
+msgid "Delivery ID"
+msgstr "Brez-IDja"
+
+msgctxt "Field (arrival_date). Parent table: deliveries"
+msgid "Arrival Date"
+msgstr "Datum prihoda"
+
+msgctxt "Field (departure_contact_id). Parent table: deliveries"
+msgid "Contact ID"
+msgstr "ID stika"
+
+msgctxt "Field (arrival_contact_id). Parent table: deliveries"
+msgid "Contact ID"
+msgstr "ID stika"
+
+msgctxt "Field (arrival_time). Parent table: deliveries"
+msgid "Arrival Time"
+msgstr "Čas prihoda"
+
+msgctxt "Field (arrival_place). Parent table: deliveries"
+msgid "Arrival Place"
+msgstr "Mesto prihoda"
+
+#, fuzzy
+msgctxt "Field (departure_time). Parent table: deliveries"
+msgid "Departure Time"
+msgstr "Vstavi _čas"
+
+#, fuzzy
+msgctxt "Field (departure_date). Parent table: deliveries"
+msgid "Departure Date"
+msgstr "Izberi datum"
+
+#, fuzzy
+msgctxt "Field (departure_place). Parent table: deliveries"
+msgid "Departure Place"
+msgstr "Mesto objave"
+
+msgctxt "Field (comments). Parent table: deliveries"
+msgid "Comments"
+msgstr "Opombe"
+
+msgctxt "Field (description). Parent table: deliveries"
+msgid "Description"
+msgstr "Opis"
+
+msgctxt "Relationship (departure_contact). Parent table: deliveries"
+msgid "Departure Contact"
+msgstr "Stik ob odhodu"
+
+msgctxt "Relationship (arrival_contact). Parent table: deliveries"
+msgid "Arrival Contact"
+msgstr "Stik ob prihodu"
+
+msgctxt "Custom Title. Parent table: deliveries, Parent Group: main"
+msgid "Departure Name"
+msgstr "Ime odhoda"
+
+msgctxt "Custom Title. Parent table: deliveries, Parent Group: main"
+msgid "Arrival Name"
+msgstr "Ime prihoda"
+
+msgctxt "Layout Group (overview). Parent table: deliveries"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (departure). Parent table: deliveries, Parent Group: details"
+msgid "Departure"
+msgstr "Odhod"
+
+msgctxt "Layout Group (arrival). Parent table: deliveries, Parent Group: details"
+msgid "Arrival"
+msgstr "Prihod"
+
+msgctxt "Table (departments)"
+msgid "Departments"
+msgstr ""
+
+#, fuzzy
+msgctxt "Field (departments_id). Parent table: departments"
+msgid "Department ID"
+msgstr "Brez-IDja"
+
+msgctxt "Field (name). Parent table: departments"
+msgid "Name"
+msgstr "Ime"
+
+msgctxt "Field (comments). Parent table: departments"
+msgid "Comments"
+msgstr "Opombe"
+
+msgctxt "Relationship (department_crew). Parent table: departments"
+msgid "Department Crew"
+msgstr ""
+
+msgctxt "Layout Group (overview). Parent table: departments"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Table (equipment)"
+msgid "Equipment"
+msgstr "Oprema"
+
+msgctxt "Field (equipment_id). Parent table: equipment"
+msgid "Equipment ID"
+msgstr "ID opreme"
+
+msgctxt "Field (description). Parent table: equipment"
+msgid "Description"
+msgstr "Opis"
+
+msgctxt "Field (comments). Parent table: equipment"
+msgid "Comments"
+msgstr "Opombe"
+
+msgctxt "Relationship (scenes). Parent table: equipment"
+msgid "Scenes"
+msgstr "Scene"
+
+msgctxt "Layout Group (overview). Parent table: equipment"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: equipment"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (journeys)"
+msgid "Journeys"
+msgstr ""
+
+#, fuzzy
+msgctxt "Field (journey_id). Parent table: journeys"
+msgid "Journey ID"
+msgstr "Brez-IDja"
+
+msgctxt "Field (comment). Parent table: journeys"
+msgid "Comment"
+msgstr "Opomba"
+
+msgctxt "Field (description). Parent table: journeys"
+msgid "Description"
+msgstr "Opis"
+
+msgctxt "Field (arrival_date). Parent table: journeys"
+msgid "Arrival Date"
+msgstr "Datum prihoda"
+
+msgctxt "Field (arrival_time). Parent table: journeys"
+msgid "Arrival Time"
+msgstr "Čas prihoda"
+
+msgctxt "Field (arrival_place). Parent table: journeys"
+msgid "Arrival Place"
+msgstr "Mesto prihoda"
+
+msgctxt "Field (departure_date). Parent table: journeys"
+msgid "Departure Date"
+msgstr "Datum odhoda"
+
+msgctxt "Field (departure_time). Parent table: journeys"
+msgid "Departure Time"
+msgstr "Čas odhoda"
+
+msgctxt "Field (departure_place). Parent table: journeys"
+msgid "Departure Place"
+msgstr "Mesto odhoda"
+
+msgctxt "Field (contact_id). Parent table: journeys"
+msgid "Contact ID"
+msgstr "ID stika"
+
+msgctxt "Relationship (contacts). Parent table: journeys"
+msgid "Contacts"
+msgstr "Stiki"
+
+msgctxt "Layout Group (overview). Parent table: journeys"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (person). Parent table: journeys, Parent Group: details"
+msgid "Person"
+msgstr "Oseba"
+
+msgctxt "Layout Group (departure). Parent table: journeys, Parent Group: details"
+msgid "Departure"
+msgstr "Odhod"
+
+msgctxt "Layout Group (arrival). Parent table: journeys, Parent Group: details"
+msgid "Arrival"
+msgstr "Prihod"
+
+msgctxt "Table (locations)"
+msgid "Locations"
+msgstr "Mesta"
+
+msgctxt "Field (location_id). Parent table: locations"
+msgid "Location ID"
+msgstr "ID mest"
+
+msgctxt "Field (name). Parent table: locations"
+msgid "Name"
+msgstr "Ime"
+
+msgctxt "Field (address_street). Parent table: locations"
+msgid "Street"
+msgstr "Ulica"
+
+msgctxt "Field (address_town). Parent table: locations"
+msgid "Town"
+msgstr "Mesto"
+
+msgctxt "Field (address_county). Parent table: locations"
+msgid "County"
+msgstr "Okrožje"
+
+msgctxt "Field (address_country). Parent table: locations"
+msgid "Country"
+msgstr "Država"
+
+msgctxt "Field (address_postcode). Parent table: locations"
+msgid "Postcode"
+msgstr "Poštna koda"
+
+msgctxt "Field (comments). Parent table: locations"
+msgid "Comments"
+msgstr "Opombe"
+
+msgctxt "Field (contact_id). Parent table: locations"
+msgid "Contact ID"
+msgstr "ID stika"
+
+msgctxt "Field (rent). Parent table: locations"
+msgid "Rent"
+msgstr "Najemnina"
+
+msgctxt "Relationship (scenes). Parent table: locations"
+msgid "Scenes"
+msgstr "Scene"
+
+msgctxt "Relationship (contacts). Parent table: locations"
+msgid "Contacts"
+msgstr "Stiki"
+
+msgctxt "Layout Group (overview). Parent table: locations"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (address). Parent table: locations, Parent Group: details"
+msgid "Address"
+msgstr "Naslov"
+
+msgctxt "Layout Group (contact_person). Parent table: locations, Parent Group: details"
+msgid "Contact Person"
+msgstr "Stik"
+
+#, fuzzy
+msgctxt "Table (props)"
+msgid "Props"
+msgstr "P_redlogi"
+
+#, fuzzy
+msgctxt "Field (prop_id). Parent table: props"
+msgid "Prop ID"
+msgstr "Brez-IDja"
+
+msgctxt "Field (description). Parent table: props"
+msgid "Description"
+msgstr "Opis"
+
+msgctxt "Field (comments). Parent table: props"
+msgid "Comments"
+msgstr "Opombe"
+
+msgctxt "Field (name). Parent table: props"
+msgid "Name"
+msgstr "Ime"
+
+msgctxt "Layout Group (overview). Parent table: props"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: props"
+msgid "Details"
+msgstr "Podrobnosti"
+
+#, fuzzy
+msgctxt "Table (scene_cast)"
+msgid "Scene Cast"
+msgstr "Oddajanje naprave"
+
+#, fuzzy
+msgctxt "Field (scene_cast_id). Parent table: scene_cast"
+msgid "Scene Cast ID"
+msgstr ""
+"\n"
+"Veljavnost uporabniškega ID: %s"
+
+msgctxt "Field (comments). Parent table: scene_cast"
+msgid "Comments"
+msgstr "Opombe"
+
+#, fuzzy
+msgctxt "Field (cast_id). Parent table: scene_cast"
+msgid "Cast ID"
+msgstr "Brez-IDja"
+
+msgctxt "Field (scene_id). Parent table: scene_cast"
+msgid "Scene ID"
+msgstr "ID scene"
+
+#, fuzzy
+msgctxt "Relationship (cast). Parent table: scene_cast"
+msgid "Cast"
+msgstr "Oddajanje naprave"
+
+msgctxt "Layout Group (overview). Parent table: scene_cast, Parent Group: main"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: scene_cast, Parent Group: main"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (scene_costume)"
+msgid "Scene Costume"
+msgstr "Kostum scene"
+
+msgctxt "Field (scene_costume_id). Parent table: scene_costume"
+msgid "Scene Costume ID"
+msgstr "ID kostuma scene"
+
+msgctxt "Field (comments). Parent table: scene_costume"
+msgid "Comments"
+msgstr "Opombe"
+
+msgctxt "Field (scene_id). Parent table: scene_costume"
+msgid "Scene Id"
+msgstr "ID scene"
+
+msgctxt "Field (costume_id). Parent table: scene_costume"
+msgid "Costume ID"
+msgstr "ID kostuma"
+
+msgctxt "Relationship (costume). Parent table: scene_costume"
+msgid "Costume"
+msgstr "Kostum"
+
+msgctxt "Layout Group (overview). Parent table: scene_costume"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: scene_costume"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Custom Title. Parent table: scene_costume, Parent Group: details"
+msgid "Costume Name"
+msgstr "Ime kostuma"
+
+#, fuzzy
+msgctxt "Table (scene_crew)"
+msgid "Scene Crew"
+msgstr "Vrsta scene"
+
+#, fuzzy
+msgctxt "Field (scene_crew_id). Parent table: scene_crew"
+msgid "Scene Crew ID"
+msgstr ""
+"\n"
+"Veljavnost uporabniškega ID: %s"
+
+#, fuzzy
+msgctxt "Field (comments). Parent table: scene_crew"
+msgid "Comments"
+msgstr "Razlage"
+
+msgctxt "Field (scene_id). Parent table: scene_crew"
+msgid "Scene ID"
+msgstr "ID scene"
+
+#, fuzzy
+msgctxt "Field (department_id). Parent table: scene_crew"
+msgid "Department ID"
+msgstr "Brez-IDja"
+
+#, fuzzy
+msgctxt "Relationship (department). Parent table: scene_crew"
+msgid "Department"
+msgstr "Oddelek"
+
+msgctxt "Relationship (scenes). Parent table: scene_crew"
+msgid "Scenes"
+msgstr "Scene"
+
+msgctxt "Layout Group (overview). Parent table: scene_crew, Parent Group: main"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: scene_crew, Parent Group: main"
+msgid "Details"
+msgstr "Podrobnosti"
+
+#, fuzzy
+msgctxt "Field (scene_equipment_id). Parent table: scene_equipment"
+msgid "Scene Equipment ID"
+msgstr ""
+"\n"
+"Veljavnost uporabniškega ID: %s"
+
+msgctxt "Field (comments). Parent table: scene_equipment"
+msgid "Comments"
+msgstr "Opombe"
+
+msgctxt "Field (equipment_id). Parent table: scene_equipment"
+msgid "Equipment ID"
+msgstr "ID opreme"
+
+msgctxt "Field (scene_id). Parent table: scene_equipment"
+msgid "Scene ID"
+msgstr "ID scene"
+
+msgctxt "Layout Group (overview). Parent table: scene_equipment"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: scene_equipment"
+msgid "Details"
+msgstr "Podrobnosti"
+
+#, fuzzy
+msgctxt "Table (scene_extras)"
+msgid "Scene Extras"
+msgstr "Vrsta scene"
+
+#, fuzzy
+msgctxt "Field (scene_extras_id). Parent table: scene_extras"
+msgid "Scene Extras ID"
+msgstr ""
+"\n"
+"Veljavnost uporabniškega ID: %s"
+
+msgctxt "Field (description). Parent table: scene_extras"
+msgid "Description"
+msgstr "Opis"
+
+msgctxt "Field (comments). Parent table: scene_extras"
+msgid "Comments"
+msgstr "Opombe"
+
+msgctxt "Field (scene_id). Parent table: scene_extras"
+msgid "Scene ID"
+msgstr "ID scene"
+
+msgctxt "Field (contact_id). Parent table: scene_extras"
+msgid "Contact ID"
+msgstr "ID stika"
+
+msgctxt "Relationship (contact). Parent table: scene_extras"
+msgid "Contact"
+msgstr "Stik"
+
+msgctxt "Layout Group (overview). Parent table: scene_extras, Parent Group: main"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: scene_extras, Parent Group: main"
+msgid "Details"
+msgstr "Podrobnosti"
+
+#, fuzzy
+msgctxt "Table (scene_makeup)"
+msgid "Scene Makeup"
+msgstr "Vrsta scene"
+
+#, fuzzy
+msgctxt "Field (scene_makeup_id). Parent table: scene_makeup"
+msgid "Scene Makeup ID"
+msgstr ""
+"\n"
+"Veljavnost uporabniškega ID: %s"
+
+msgctxt "Field (description). Parent table: scene_makeup"
+msgid "Description"
+msgstr "Opis"
+
+msgctxt "Field (comments). Parent table: scene_makeup"
+msgid "Comments"
+msgstr "Opombe"
+
+msgctxt "Field (scene_id). Parent table: scene_makeup"
+msgid "Scene ID"
+msgstr "ID scene"
+
+msgctxt "Layout Group (overview). Parent table: scene_makeup"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: scene_makeup"
+msgid "Details"
+msgstr "Podrobnosti"
+
+#, fuzzy
+msgctxt "Table (scene_props)"
+msgid "Scene Props"
+msgstr "Vrsta scene"
+
+#, fuzzy
+msgctxt "Field (scene_props_id). Parent table: scene_props"
+msgid "Scene Prop ID"
+msgstr ""
+"\n"
+"Veljavnost uporabniškega ID: %s"
+
+msgctxt "Field (comments). Parent table: scene_props"
+msgid "Comments"
+msgstr "Opombe"
+
+msgctxt "Field (scene_id). Parent table: scene_props"
+msgid "Scene ID"
+msgstr "ID scene"
+
+#, fuzzy
+msgctxt "Field (prop_id). Parent table: scene_props"
+msgid "Prop ID"
+msgstr "Brez-IDja"
+
+#, fuzzy
+msgctxt "Relationship (props). Parent table: scene_props"
+msgid "Props"
+msgstr "P_redlogi"
+
+msgctxt "Layout Group (overview). Parent table: scene_props"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: scene_props"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Table (scenes)"
+msgid "Scenes"
+msgstr "Scene"
+
+msgctxt "Field (scene_id). Parent table: scenes"
+msgid "Scene ID"
+msgstr "ID scene"
+
+msgctxt "Field (comments). Parent table: scenes"
+msgid "Comments"
+msgstr "Opombe"
+
+msgctxt "Field (description). Parent table: scenes"
+msgid "Description"
+msgstr "Opis"
+
+msgctxt "Field (location_id). Parent table: scenes"
+msgid "Location ID"
+msgstr "ID mesta"
+
+msgctxt "Field (date). Parent table: scenes"
+msgid "Date"
+msgstr "Datum"
+
+msgctxt "Field (time). Parent table: scenes"
+msgid "Time"
+msgstr "Čas"
+
+#, fuzzy
+msgctxt "Field (minutes). Parent table: scenes"
+msgid "Stop (minutes)"
+msgstr "05 minut"
+
+msgctxt "Field (day_or_night). Parent table: scenes"
+msgid "Day/Night"
+msgstr "Dan/Noč"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Day"
+msgstr "Dan"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Night"
+msgstr "Noč"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Morning"
+msgstr "Jutro"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Evening"
+msgstr "Večer"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Dawn"
+msgstr "Zora"
+
+msgctxt "Field (interior_or_exterior). Parent table: scenes"
+msgid "Interior/Exterior"
+msgstr "Notranjost/Zunanjost"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: interior_or_exterior"
+msgid "Interior"
+msgstr "Notranjost"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: interior_or_exterior"
+msgid "Exterior"
+msgstr "Zunanjost"
+
+msgctxt "Field (name). Parent table: scenes"
+msgid "Name"
+msgstr "Ime"
+
+msgctxt "Field (overview_name). Parent table: scenes"
+msgid "Scene"
+msgstr "Scena"
+
+msgctxt "Field (pages). Parent table: scenes"
+msgid "Pages"
+msgstr "Strani"
+
+#, fuzzy
+msgctxt "Field (script_day). Parent table: scenes"
+msgid "Script Day"
+msgstr "pred {0} dnevi, {1}"
+
+msgctxt "Relationship (location). Parent table: scenes"
+msgid "Locations"
+msgstr "Mesta"
+
+#, fuzzy
+msgctxt "Relationship (scene_crew). Parent table: scenes"
+msgid "Additional Crew"
+msgstr "Dodatne knjižnice:"
+
+#, fuzzy
+msgctxt "Relationship (scene_cast). Parent table: scenes"
+msgid "Cast"
+msgstr "Oddajanje naprave"
+
+msgctxt "Relationship (scene_equipment). Parent table: scenes"
+msgid "Additional Equipment"
+msgstr "Dodatna oprema"
+
+#, fuzzy
+msgctxt "Relationship (scene_extras). Parent table: scenes"
+msgid "Extras"
+msgstr "Omogoči dodatna razvojna orodja"
+
+#, fuzzy
+msgctxt "Relationship (scene_props). Parent table: scenes"
+msgid "Props"
+msgstr "P_redlogi"
+
+msgctxt "Relationship (scene_costume). Parent table: scenes"
+msgid "Costume"
+msgstr "Kostum"
+
+#, fuzzy
+msgctxt "Relationship (scene_makeup). Parent table: scenes"
+msgid "Additional Makeup"
+msgstr "Dodatne knjižnice:"
+
+msgctxt "Layout Group (overview). Parent table: scenes"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: scenes"
+msgid "Details"
+msgstr "Podrobnosti"
+
+msgctxt "Layout Group (scenario). Parent table: scenes, Parent Group: details"
+msgid "Scenario"
+msgstr "Scenarij"
+
+msgctxt "Layout Group (location). Parent table: scenes, Parent Group: details"
+msgid "Location"
+msgstr "Mesto"
+
+msgctxt "Custom Title. Parent table: scenes, Parent Group: details, Parent Group: location"
+msgid "Contact Name"
+msgstr "Ime stika"
+
+msgctxt "Custom Title. Parent table: scenes, Parent Group: details_lower, Parent Group: notebook"
+msgid "Actor's Name"
+msgstr "Ime igralca"
 
