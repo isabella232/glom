@@ -147,7 +147,7 @@ msgstr "Telefon"
 
 msgctxt "Button. Parent table: contacts, Parent Group: details"
 msgid "Test Button"
-msgstr "Preizkus razporeditve gumbov %d"
+msgstr ""
 
 msgctxt "Field (product_name). Parent table: invoice_lines"
 msgid "Product Name"
@@ -259,7 +259,7 @@ msgstr "Cena"
 
 msgctxt "Field (vat_percent). Parent table: products"
 msgid "Vat Percent"
-msgstr "Odstotkov opravljeno: %i"
+msgstr ""
 
 msgctxt "Layout Group (overview). Parent table: products"
 msgid "Overview"
@@ -307,7 +307,7 @@ msgstr "Ime"
 
 msgctxt "Field (name_second). Parent table: staff"
 msgid "Second Name"
-msgstr "ime <%s> "%s" je uporabljeno drugič"
+msgstr ""
 
 msgctxt "Field (name_last). Parent table: staff"
 msgid "Last Name"

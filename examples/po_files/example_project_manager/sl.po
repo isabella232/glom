@@ -235,8 +235,7 @@ msgstr "Nedejavni člani"
 
 msgctxt "Field (team_members_id). Parent table: team_members"
 msgid "team_members ID"
-msgstr "
-Veljavnost uporabniškega ID: %s"
+msgstr ""
 
 msgctxt "Field (description). Parent table: team_members"
 msgid "Description"

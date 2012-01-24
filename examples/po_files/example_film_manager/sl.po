@@ -131,7 +131,7 @@ msgstr "ID stika:"
 
 msgctxt "Field (mainpart). Parent table: characters"
 msgid "Main Part"
-msgstr "del %s: %s (datoteka %s)"
+msgstr ""
 
 msgctxt "Relationship (contacts_actor). Parent table: characters"
 msgid "Actor"
@@ -247,7 +247,7 @@ msgstr "Ime"
 
 msgctxt "Field (name_middle). Parent table: contacts"
 msgid "Second Name"
-msgstr "ime <%s> "%s" je uporabljeno drugič"
+msgstr ""
 
 msgctxt "Field (name_last). Parent table: contacts"
 msgid "Last Name"
@@ -819,8 +819,7 @@ msgstr "Oddajanje naprave"
 
 msgctxt "Field (scene_cast_id). Parent table: scene_cast"
 msgid "Scene Cast ID"
-msgstr "
-Veljavnost uporabniškega ID: %s"
+msgstr ""
 
 msgctxt "Field (comments). Parent table: scene_cast"
 msgid "Comments"
@@ -852,8 +851,7 @@ msgstr "Vrsta scene"
 
 msgctxt "Field (scene_costume_id). Parent table: scene_costume"
 msgid "Scene Costume ID"
-msgstr "
-Veljavnost uporabniškega ID: %s"
+msgstr ""
 
 msgctxt "Field (comments). Parent table: scene_costume"
 msgid "Comments"
@@ -889,8 +887,7 @@ msgstr "Vrsta scene"
 
 msgctxt "Field (scene_crew_id). Parent table: scene_crew"
 msgid "Scene Crew ID"
-msgstr "
-Veljavnost uporabniškega ID: %s"
+msgstr ""
 
 msgctxt "Field (comments). Parent table: scene_crew"
 msgid "Comments"
@@ -922,8 +919,7 @@ msgstr "Podrobnosti"
 
 msgctxt "Field (scene_equipment_id). Parent table: scene_equipment"
 msgid "Scene Equipment ID"
-msgstr "
-Veljavnost uporabniškega ID: %s"
+msgstr ""
 
 msgctxt "Field (comments). Parent table: scene_equipment"
 msgid "Comments"
@@ -951,8 +947,7 @@ msgstr "Vrsta scene"
 
 msgctxt "Field (scene_extras_id). Parent table: scene_extras"
 msgid "Scene Extras ID"
-msgstr "
-Veljavnost uporabniškega ID: %s"
+msgstr ""
 
 msgctxt "Field (description). Parent table: scene_extras"
 msgid "Description"
@@ -988,8 +983,7 @@ msgstr "Vrsta scene"
 
 msgctxt "Field (scene_makeup_id). Parent table: scene_makeup"
 msgid "Scene Makeup ID"
-msgstr "
-Veljavnost uporabniškega ID: %s"
+msgstr ""
 
 msgctxt "Field (description). Parent table: scene_makeup"
 msgid "Description"
@@ -1017,8 +1011,7 @@ msgstr "Vrsta scene"
 
 msgctxt "Field (scene_props_id). Parent table: scene_props"
 msgid "Scene Prop ID"
-msgstr "
-Veljavnost uporabniškega ID: %s"
+msgstr ""
 
 msgctxt "Field (comments). Parent table: scene_props"
 msgid "Comments"
