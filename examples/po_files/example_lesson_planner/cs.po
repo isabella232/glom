@@ -1,18 +1,17 @@
-#
-# Marek Černocký <marek@manet.cz>, 2012.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: Lesson Planner\n"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"PO-Revision-Date: 2012-01-11 12:54+0100\n"
-"Last-Translator: Marek Černocký <marek@manet.cz>\n"
-"Language-Team: Czech <gnome-cs-list@gnome.org>\n"
+"PO-Revision-Date: 2012-01-24 14:23+0100\n"
+"Last-Translator: Someone <someone@someone.com>\n"
+"Language-Team:  <someone@someone.com>\n"
 "MIME-Version: 1.0\n"
-"Language: cs\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+msgctxt "Database Title"
+msgid "Lesson Planner"
+msgstr ""
 
 msgctxt "Field (product_name). Parent table: invoice_lines"
 msgid "Product Name"
@@ -322,30 +321,23 @@ msgctxt "Layout Group (details). Parent table: teachers"
 msgid "Details"
 msgstr "Podrobnosti"
 
-msgctxt ""
-"Layout Group (name). Parent table: teachers, Parent Group: details, Parent "
-"Group: notebook"
+msgctxt "Layout Group (name). Parent table: teachers, Parent Group: details, Parent Group: notebook"
 msgid "Name"
 msgstr "Název"
 
-msgctxt ""
-"Layout Group (address). Parent table: teachers, Parent Group: details, "
-"Parent Group: notebook"
+msgctxt "Layout Group (address). Parent table: teachers, Parent Group: details, Parent Group: notebook"
 msgid "Address"
 msgstr "Adresa"
 
-msgctxt ""
-"Layout Group (telephone). Parent table: teachers, Parent Group: details, "
-"Parent Group: notebook"
+msgctxt "Layout Group (telephone). Parent table: teachers, Parent Group: details, Parent Group: notebook"
 msgid "Telephone"
 msgstr "Telefon"
 
-msgctxt ""
-"Layout Group (other). Parent table: teachers, Parent Group: details, Parent "
-"Group: notebook"
+msgctxt "Layout Group (other). Parent table: teachers, Parent Group: details, Parent Group: notebook"
 msgid "Other"
 msgstr "Ostatní"
 
 msgctxt "Custom Title. Parent table: teachers, Parent Group: details"
 msgid "Subject Name"
 msgstr "Název předmětu"
+

@@ -2,12 +2,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Openismus Film Manager\n"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"PO-Revision-Date: 2012-01-09 23:55+0100\n"
+"PO-Revision-Date: 2012-01-24 14:23+0100\n"
 "Last-Translator: Someone <someone@someone.com>\n"
 "Language-Team:  <someone@someone.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+msgctxt "Database Title"
+msgid "Openismus Film Manager"
+msgstr ""
 
 msgctxt "Table (accommodation)"
 msgid "Accommodation"
@@ -161,11 +165,11 @@ msgctxt "Layout Group (actor). Parent table: characters, Parent Group: main, Par
 msgid "Actor"
 msgstr "Schauspieler"
 
-msgctxt "Custom Title. Parent table: characters, Parent Group: main"
+msgctxt "Custom Title. Parent table: characters"
 msgid "Actor's Contact ID"
 msgstr "Schauspieler Kontakt ID"
 
-msgctxt "Custom Title. Parent table: characters, Parent Group: main"
+msgctxt "Custom Title. Parent table: characters"
 msgid "Actor's Name"
 msgstr "Schauspieler Name"
 
@@ -181,11 +185,11 @@ msgctxt "Layout Group (actor). Parent table: characters, Parent Group: details"
 msgid "Actor"
 msgstr ""
 
-msgctxt "Custom Title. Parent table: characters, Parent Group: details, Parent Group: actor"
+msgctxt "Custom Title. Parent table: characters, Parent Group: details"
 msgid "Actor's Name"
 msgstr "Schauspieler Name"
 
-msgctxt "Custom Title. Parent table: characters, Parent Group: main"
+msgctxt "Custom Title. Parent table: characters"
 msgid "Actor"
 msgstr ""
 
@@ -425,7 +429,7 @@ msgctxt "Layout Group (agent). Parent table: contacts, Parent Group: details, Pa
 msgid "Agent"
 msgstr "Agent"
 
-msgctxt "Custom Title. Parent table: contacts, Parent Group: main"
+msgctxt "Custom Title. Parent table: contacts"
 msgid "Company Name"
 msgstr ""
 
@@ -521,7 +525,7 @@ msgctxt "Layout Group (agent). Parent table: crew, Parent Group: details, Parent
 msgid "Agent"
 msgstr "Agent"
 
-msgctxt "Custom Title. Parent table: crew, Parent Group: main"
+msgctxt "Custom Title. Parent table: crew"
 msgid "Department Name"
 msgstr "Abteilungsname"
 
@@ -581,11 +585,11 @@ msgctxt "Relationship (arrival_contact). Parent table: deliveries"
 msgid "Arrival Contact"
 msgstr "Empfaengerkontakt"
 
-msgctxt "Custom Title. Parent table: deliveries, Parent Group: main"
+msgctxt "Custom Title. Parent table: deliveries"
 msgid "Departure Name"
 msgstr "Sendername"
 
-msgctxt "Custom Title. Parent table: deliveries, Parent Group: main"
+msgctxt "Custom Title. Parent table: deliveries"
 msgid "Arrival Name"
 msgstr "Empfängerkontakt"
 
@@ -873,7 +877,7 @@ msgctxt "Layout Group (details). Parent table: scene_costume"
 msgid "Details"
 msgstr ""
 
-msgctxt "Custom Title. Parent table: scene_costume, Parent Group: details"
+msgctxt "Custom Title. Parent table: scene_costume"
 msgid "Costume Name"
 msgstr ""
 
@@ -1165,7 +1169,7 @@ msgctxt "Layout Group (location). Parent table: scenes, Parent Group: details"
 msgid "Location"
 msgstr "Location"
 
-msgctxt "Custom Title. Parent table: scenes, Parent Group: details, Parent Group: location"
+msgctxt "Custom Title. Parent table: scenes, Parent Group: details"
 msgid "Contact Name"
 msgstr ""
 

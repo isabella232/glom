@@ -1,25 +1,17 @@
-#'glom/examples/po_files/example_project_manager
-# Slovenian translation for glom project manager example.
-# Copyright (C) 2012 glom's COPYRIGHT HOLDER
-# This file is distributed under the same license as the glom package.
-#
-# Matej Urbančič <mateju@svn.gnome.org>, 2012.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: glom master\n"
-"PO-Revision-Date: 2012-01-20 21:57+0100\n"
-"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
-"Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
+"Project-Id-Version: Project Manager Example\n"
+"product=glom&keywords=I18N+L10N&component=general\n"
+"PO-Revision-Date: 2012-01-24 14:23+0100\n"
+"Last-Translator: Someone <someone@someone.com>\n"
+"Language-Team:  <someone@someone.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
-"X-Poedit-Country: SLOVENIA\n"
-"X-Poedit-Language: Slovenian\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"POT-Creation-Date: \n"
+
+msgctxt "Database Title"
+msgid "Project Manager Example"
+msgstr ""
 
 msgctxt "Table (contacts)"
 msgid "Contacts"
@@ -105,27 +97,22 @@ msgctxt "Field (picture). Parent table: contacts"
 msgid "Picture"
 msgstr "Slika"
 
-#, fuzzy
 msgctxt "Field (email). Parent table: contacts"
 msgid "Email Address"
 msgstr "Elektronski naslov"
 
-#, fuzzy
 msgctxt "Field (website). Parent table: contacts"
 msgid "Web Site"
 msgstr "Spletna stran"
 
-#, fuzzy
 msgctxt "Field (tel_home). Parent table: contacts"
 msgid "Home Telephone"
 msgstr "Telefonska številka"
 
-#, fuzzy
 msgctxt "Field (tel_work). Parent table: contacts"
 msgid "Work Telephone"
 msgstr "Telefonska številka"
 
-#, fuzzy
 msgctxt "Field (tel_mobile). Parent table: contacts"
 msgid "Mobile Telephone"
 msgstr "Telefonska številka"
@@ -134,32 +121,26 @@ msgctxt "Field (tel_fax). Parent table: contacts"
 msgid "Fax"
 msgstr "Faks"
 
-#, fuzzy
 msgctxt "Relationship (team_members). Parent table: contacts"
 msgid "Team Membership"
 msgstr "Članstvo"
 
-#, fuzzy
 msgctxt "Report (by_country). Parent table: contacts"
 msgid "Contacts By Country"
 msgstr "Tek na smučeh"
 
-#, fuzzy
 msgctxt "Report (by_country_by_town). Parent table: contacts"
 msgid "By Country, By Town"
 msgstr "Avtomobili v mestu"
 
-#, fuzzy
 msgctxt "Layout Group (overview). Parent table: contacts"
 msgid "Overview"
 msgstr "Pregled"
 
-#, fuzzy
 msgctxt "Layout Group (notebook). Parent table: contacts, Parent Group: details"
 msgid "(Notebook)"
 msgstr "(Beležka)"
 
-#, fuzzy
 msgctxt "Layout Group (telephone). Parent table: contacts, Parent Group: details, Parent Group: notebook"
 msgid "Telephone"
 msgstr "Telefon"
@@ -172,199 +153,159 @@ msgctxt "Layout Group (name). Parent table: contacts, Parent Group: details, Par
 msgid "Name"
 msgstr "Ime"
 
-#, fuzzy
 msgctxt "Table (projects)"
 msgid "Projects"
 msgstr "Projekti"
 
-#, fuzzy
 msgctxt "Field (project_id). Parent table: projects"
 msgid "Project ID"
 msgstr "Id _različice projekta:"
 
-#, fuzzy
 msgctxt "Field (description). Parent table: projects"
 msgid "Description"
 msgstr "Opis"
 
-#, fuzzy
 msgctxt "Field (comments). Parent table: projects"
 msgid "Comments"
 msgstr "Razlage"
 
-#, fuzzy
 msgctxt "Field (name). Parent table: projects"
 msgid "Name"
 msgstr "Ime"
 
-#, fuzzy
 msgctxt "Relationship (teams). Parent table: projects"
 msgid "Teams"
 msgstr "Skupine"
 
-#, fuzzy
 msgctxt "Layout Group (overview). Parent table: projects"
 msgid "Overview"
 msgstr "Pregled"
 
-#, fuzzy
 msgctxt "Layout Group (details). Parent table: projects"
 msgid "Details"
 msgstr "Podrobnosti"
 
-#, fuzzy
 msgctxt "Table (project_teams)"
 msgid "Project Teams"
 msgstr "Igralci ekip"
 
-#, fuzzy
 msgctxt "Field (project_team_id). Parent table: project_teams"
 msgid "Project Team ID"
 msgstr "Id _različice projekta:"
 
-#, fuzzy
 msgctxt "Field (comments). Parent table: project_teams"
 msgid "Comments"
 msgstr "Razlage"
 
-#, fuzzy
 msgctxt "Field (team_id). Parent table: project_teams"
 msgid "Team ID"
 msgstr "Brez-IDja"
 
-#, fuzzy
 msgctxt "Field (project_id). Parent table: project_teams"
 msgid "Project ID"
 msgstr "Id _različice projekta:"
 
-#, fuzzy
 msgctxt "Relationship (team). Parent table: project_teams"
 msgid "Team"
 msgstr "Ekipa"
 
-#, fuzzy
 msgctxt "Relationship (project). Parent table: project_teams"
 msgid "Project"
 msgstr "Projekt"
 
-#, fuzzy
 msgctxt "Layout Group (overview). Parent table: project_teams"
 msgid "Overview"
 msgstr "Pregled"
 
-#, fuzzy
 msgctxt "Layout Group (details). Parent table: project_teams"
 msgid "Details"
 msgstr "Podrobnosti"
 
-#, fuzzy
-msgctxt "Custom Title. Parent table: project_teams, Parent Group: details"
+msgctxt "Custom Title. Parent table: project_teams"
 msgid "Team Name"
-msgstr "Ime ekipe"
+msgstr ""
 
-#, fuzzy
-msgctxt "Custom Title. Parent table: project_teams, Parent Group: details"
+msgctxt "Custom Title. Parent table: project_teams"
 msgid "Project Name"
-msgstr "Ime projekta"
+msgstr ""
 
-#, fuzzy
 msgctxt "Table (team_members)"
 msgid "Team Members"
 msgstr "Nedejavni člani"
 
-#, fuzzy
 msgctxt "Field (team_members_id). Parent table: team_members"
 msgid "team_members ID"
-msgstr ""
-"\n"
-"Veljavnost uporabniškega ID: %s"
+msgstr "
+Veljavnost uporabniškega ID: %s"
 
-#, fuzzy
 msgctxt "Field (description). Parent table: team_members"
 msgid "Description"
 msgstr "Opis"
 
-#, fuzzy
 msgctxt "Field (comments). Parent table: team_members"
 msgid "Comments"
 msgstr "Razlage"
 
-#, fuzzy
 msgctxt "Field (contact_id). Parent table: team_members"
 msgid "Contact ID"
 msgstr "ID stika:"
 
-#, fuzzy
 msgctxt "Field (team_id). Parent table: team_members"
 msgid "Team ID"
 msgstr "Brez-IDja"
 
-#, fuzzy
 msgctxt "Field (role). Parent table: team_members"
 msgid "Role"
 msgstr "Vloga"
 
-#, fuzzy
 msgctxt "Relationship (contacts). Parent table: team_members"
 msgid "Contacts"
 msgstr "Stiki"
 
-#, fuzzy
 msgctxt "Relationship (team). Parent table: team_members"
 msgid "Team"
 msgstr "Ekipa"
 
-#, fuzzy
 msgctxt "Layout Group (overview). Parent table: team_members"
 msgid "Overview"
 msgstr "Pregled"
 
-#, fuzzy
 msgctxt "Layout Group (details). Parent table: team_members"
 msgid "Details"
 msgstr "Podrobnosti"
 
-#, fuzzy
 msgctxt "Table (teams)"
 msgid "Teams"
 msgstr "Skupine"
 
-#, fuzzy
 msgctxt "Field (team_id). Parent table: teams"
 msgid "Team ID"
 msgstr "Brez-IDja"
 
-#, fuzzy
 msgctxt "Field (description). Parent table: teams"
 msgid "Description"
 msgstr "Opis"
 
-#, fuzzy
 msgctxt "Field (comments). Parent table: teams"
 msgid "Comments"
 msgstr "Razlage"
 
-#, fuzzy
 msgctxt "Field (name). Parent table: teams"
 msgid "Name"
 msgstr "Ime"
 
-#, fuzzy
 msgctxt "Relationship (members). Parent table: teams"
 msgid "Members"
 msgstr "Člani"
 
-#, fuzzy
 msgctxt "Relationship (projects). Parent table: teams"
 msgid "Projects"
 msgstr "Projekti"
 
-#, fuzzy
 msgctxt "Layout Group (overview). Parent table: teams"
 msgid "Overview"
 msgstr "Pregled"
 
-#, fuzzy
 msgctxt "Layout Group (details). Parent table: teams"
 msgid "Details"
 msgstr "Podrobnosti"

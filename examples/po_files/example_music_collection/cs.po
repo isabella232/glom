@@ -1,17 +1,17 @@
-# Marek Černocký <marek@manet.cz>, 2012.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: Music Collection\n"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"PO-Revision-Date: 2012-01-11 10:57+0100\n"
-"Last-Translator: Marek Černocký <marek@manet.cz>\n"
-"Language-Team: Czech <gnome-cs-list@gnome.org>\n"
+"PO-Revision-Date: 2012-01-24 14:23+0100\n"
+"Last-Translator: Someone <someone@someone.com>\n"
+"Language-Team:  <someone@someone.com>\n"
 "MIME-Version: 1.0\n"
-"Language: cs\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+msgctxt "Database Title"
+msgid "Music Collection"
+msgstr ""
 
 msgctxt "Table (albums)"
 msgid "Albums"
@@ -77,11 +77,11 @@ msgctxt "Layout Group (publisher). Parent table: albums, Parent Group: details"
 msgid "Publisher"
 msgstr "Vydavatel"
 
-msgctxt "Custom Title. Parent table: albums, Parent Group: toplevel"
+msgctxt "Custom Title. Parent table: albums"
 msgid "Artist Name"
 msgstr "Jméno umělce"
 
-msgctxt "Custom Title. Parent table: albums, Parent Group: toplevel"
+msgctxt "Custom Title. Parent table: albums"
 msgid "Publisher Name"
 msgstr "Jméno vydavatele"
 
@@ -184,3 +184,4 @@ msgstr "Album"
 msgctxt "Layout Group (artist). Parent table: songs, Parent Group: details"
 msgid "Album Artist"
 msgstr "Umělci alba"
+

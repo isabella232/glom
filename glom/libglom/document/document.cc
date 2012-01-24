@@ -4448,7 +4448,7 @@ Document::type_list_translatables Document::get_translatable_items()
 {
   type_list_translatables result;
   
-  result.push_back( pair_translatable_item_and_hint(m_database_title, "Database Title") );
+  result.push_back( pair_translatable_item_and_hint(m_database_title, "") );
 
   //Add tables:
   type_listTableInfo tables = get_tables();

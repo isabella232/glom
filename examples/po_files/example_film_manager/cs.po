@@ -2,14 +2,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Openismus Film Manager\n"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"PO-Revision-Date: 2012-01-10 11:38+0100\n"
-"Last-Translator: Marek Černocký <marek@manet.cz>\n"
-"Language-Team: Czech <gnome-cs-list@gnome.org>\n"
+"PO-Revision-Date: 2012-01-24 14:23+0100\n"
+"Last-Translator: Someone <someone@someone.com>\n"
+"Language-Team:  <someone@someone.com>\n"
 "MIME-Version: 1.0\n"
-"Language: cs\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+msgctxt "Database Title"
+msgid "Openismus Film Manager"
+msgstr ""
 
 msgctxt "Table (accommodation)"
 msgid "Accommodation"
@@ -163,11 +165,11 @@ msgctxt "Layout Group (actor). Parent table: characters, Parent Group: main, Par
 msgid "Actor"
 msgstr "Herec"
 
-msgctxt "Custom Title. Parent table: characters, Parent Group: main"
+msgctxt "Custom Title. Parent table: characters"
 msgid "Actor's Contact ID"
 msgstr "ID kontaktu herce"
 
-msgctxt "Custom Title. Parent table: characters, Parent Group: main"
+msgctxt "Custom Title. Parent table: characters"
 msgid "Actor's Name"
 msgstr "Jméno herce"
 
@@ -183,11 +185,11 @@ msgctxt "Layout Group (actor). Parent table: characters, Parent Group: details"
 msgid "Actor"
 msgstr "Herec"
 
-msgctxt "Custom Title. Parent table: characters, Parent Group: details, Parent Group: actor"
+msgctxt "Custom Title. Parent table: characters, Parent Group: details"
 msgid "Actor's Name"
 msgstr "Jméno herce"
 
-msgctxt "Custom Title. Parent table: characters, Parent Group: main"
+msgctxt "Custom Title. Parent table: characters"
 msgid "Actor"
 msgstr "Herec"
 
@@ -427,7 +429,7 @@ msgctxt "Layout Group (agent). Parent table: contacts, Parent Group: details, Pa
 msgid "Agent"
 msgstr "Agent"
 
-msgctxt "Custom Title. Parent table: contacts, Parent Group: main"
+msgctxt "Custom Title. Parent table: contacts"
 msgid "Company Name"
 msgstr "Název společnosti"
 
@@ -523,7 +525,7 @@ msgctxt "Layout Group (agent). Parent table: crew, Parent Group: details, Parent
 msgid "Agent"
 msgstr "Agent"
 
-msgctxt "Custom Title. Parent table: crew, Parent Group: main"
+msgctxt "Custom Title. Parent table: crew"
 msgid "Department Name"
 msgstr "Název týmu"
 
@@ -583,11 +585,11 @@ msgctxt "Relationship (arrival_contact). Parent table: deliveries"
 msgid "Arrival Contact"
 msgstr "Kontakt při příjezdu"
 
-msgctxt "Custom Title. Parent table: deliveries, Parent Group: main"
+msgctxt "Custom Title. Parent table: deliveries"
 msgid "Departure Name"
 msgstr "Název odjezdu"
 
-msgctxt "Custom Title. Parent table: deliveries, Parent Group: main"
+msgctxt "Custom Title. Parent table: deliveries"
 msgid "Arrival Name"
 msgstr "Název příjezdu"
 
@@ -875,7 +877,7 @@ msgctxt "Layout Group (details). Parent table: scene_costume"
 msgid "Details"
 msgstr "Podrobnosti"
 
-msgctxt "Custom Title. Parent table: scene_costume, Parent Group: details"
+msgctxt "Custom Title. Parent table: scene_costume"
 msgid "Costume Name"
 msgstr "Název kostýmu"
 
@@ -1167,7 +1169,7 @@ msgctxt "Layout Group (location). Parent table: scenes, Parent Group: details"
 msgid "Location"
 msgstr "Místo"
 
-msgctxt "Custom Title. Parent table: scenes, Parent Group: details, Parent Group: location"
+msgctxt "Custom Title. Parent table: scenes, Parent Group: details"
 msgid "Contact Name"
 msgstr "Jméno kontaktu"
 

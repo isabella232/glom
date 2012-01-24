@@ -1,18 +1,17 @@
-#
-# Marek Černocký <marek@manet.cz>, 2012.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: Small Business Example\n"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"PO-Revision-Date: 2012-01-11 11:22+0100\n"
-"Last-Translator: Marek Černocký <marek@manet.cz>\n"
-"Language-Team: Czech <gnome-cs-list@gnome.org>\n"
+"PO-Revision-Date: 2012-01-24 14:23+0100\n"
+"Last-Translator: Someone <someone@someone.com>\n"
+"Language-Team:  <someone@someone.com>\n"
 "MIME-Version: 1.0\n"
-"Language: cs\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+msgctxt "Database Title"
+msgid "Small Business Example"
+msgstr ""
 
 msgctxt "Table (contacts)"
 msgid "Contacts"
@@ -142,8 +141,7 @@ msgctxt "Layout Group (address). Parent table: contacts, Parent Group: details"
 msgid "Address"
 msgstr "Adresa"
 
-msgctxt ""
-"Layout Group (telephone). Parent table: contacts, Parent Group: details"
+msgctxt "Layout Group (telephone). Parent table: contacts, Parent Group: details"
 msgid "Telephone"
 msgstr "Telefon"
 
@@ -231,8 +229,7 @@ msgctxt "Layout Group (overview). Parent table: invoices"
 msgid "Overview"
 msgstr "Přehled"
 
-msgctxt ""
-"Layout Group (customer). Parent table: invoices, Parent Group: details"
+msgctxt "Layout Group (customer). Parent table: invoices, Parent Group: details"
 msgid "Customer"
 msgstr "Zákazník"
 
@@ -355,3 +352,4 @@ msgstr "Název"
 msgctxt "Layout Group (address). Parent table: staff, Parent Group: details"
 msgid "Address"
 msgstr "Adresa"
+
