@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<glom_document xmlns="http://glom.org/glom_document" database_title="Small Business Example" is_example="true" translation_original_locale="en" format_version="7">
+<glom_document xmlns="http://glom.org/glom_document" database_title="Small Business Example" is_example="true" translation_original_locale="en" format_version="8" title="Small Business Example">
   <connection server="localhost" user="" database="glom_example_smallbusiness_v2" self_hosted="true" port="5433" try_other_ports="false" hosting_mode="postgres_self"/>
   <startup_script/>
   <table name="contacts" default="true" title="Contacts">
@@ -187,6 +187,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
       <trans loc="cs" val="Kontakty"/>
       <trans loc="de" val="Kontakten"/>
       <trans loc="es" val="Contactos"/>
+      <trans loc="sl" val="Stiki"/>
     </trans_set>
     <fields>
       <field name="contact_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Contact ID">
@@ -195,6 +196,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
           <trans loc="cs" val="ID kontaktu"/>
           <trans loc="de" val="Kontakt ID"/>
           <trans loc="es" val="ID del contacto"/>
+          <trans loc="sl" val="ID stika"/>
         </trans_set>
       </field>
       <field name="name_first" type="Text" title="First Name">
@@ -203,6 +205,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
           <trans loc="cs" val="Křestní jméno"/>
           <trans loc="de" val="Vorname"/>
           <trans loc="es" val="Nombre"/>
+          <trans loc="sl" val="Ime"/>
         </trans_set>
       </field>
       <field name="name_middle" type="Text" title="Middle Name">
@@ -211,6 +214,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
           <trans loc="cs" val="Prostřední jméno"/>
           <trans loc="de" val="Zweite Name"/>
           <trans loc="es" val="Primer apellido"/>
+          <trans loc="sl" val="Drugo ime"/>
         </trans_set>
       </field>
       <field name="name_last" type="Text" title="Last Name">
@@ -219,6 +223,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
           <trans loc="cs" val="Příjmení"/>
           <trans loc="de" val="Familiename"/>
           <trans loc="es" val="Segundo apellido"/>
+          <trans loc="sl" val="Priimek"/>
         </trans_set>
       </field>
       <field name="name_title" type="Text" title="Title">
@@ -228,36 +233,42 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
               <trans_set>
                 <trans loc="cs" val="pan"/>
                 <trans loc="es" val="Sr."/>
+                <trans loc="sl" val="G."/>
               </trans_set>
             </custom_choice>
             <custom_choice value="Mrs">
               <trans_set>
                 <trans loc="cs" val="paní"/>
                 <trans loc="es" val="Srta."/>
+                <trans loc="sl" val="Ga."/>
               </trans_set>
             </custom_choice>
             <custom_choice value="Ms">
               <trans_set>
                 <trans loc="cs" val="paní/slečna"/>
                 <trans loc="es" val="Sra."/>
+                <trans loc="sl" val="Ga."/>
               </trans_set>
             </custom_choice>
             <custom_choice value="Miss">
               <trans_set>
                 <trans loc="cs" val="slečna"/>
                 <trans loc="es" val="Señorita"/>
+                <trans loc="sl" val="Gdč."/>
               </trans_set>
             </custom_choice>
             <custom_choice value="Dr">
               <trans_set>
                 <trans loc="cs" val="Dr."/>
                 <trans loc="es" val="Dr"/>
+                <trans loc="sl" val="dr."/>
               </trans_set>
             </custom_choice>
             <custom_choice value="Prof">
               <trans_set>
                 <trans loc="cs" val="Prof."/>
                 <trans loc="es" val="Prof"/>
+                <trans loc="sl" val="prof."/>
               </trans_set>
             </custom_choice>
           </custom_choice_list>
@@ -266,6 +277,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
           <trans loc="cs" val="Oslovení"/>
           <trans loc="de" val="Titel"/>
           <trans loc="es" val="Título"/>
+          <trans loc="sl" val="Naziv"/>
         </trans_set>
       </field>
       <field name="address_street" type="Text" title="Street">
@@ -274,6 +286,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
           <trans loc="cs" val="Ulice"/>
           <trans loc="de" val="Strasse"/>
           <trans loc="es" val="Calle"/>
+          <trans loc="sl" val="Ulica"/>
         </trans_set>
       </field>
       <field name="address_town" type="Text" title="Town">
@@ -282,6 +295,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
           <trans loc="cs" val="Město"/>
           <trans loc="de" val="Ort"/>
           <trans loc="es" val="Ciudad"/>
+          <trans loc="sl" val="Mesto"/>
         </trans_set>
       </field>
       <field name="address_state" type="Text" title="State">
@@ -290,6 +304,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
           <trans loc="cs" val="Stát"/>
           <trans loc="de" val="Bundesland/Kanton"/>
           <trans loc="es" val="Estado"/>
+          <trans loc="sl" val="Stanje"/>
         </trans_set>
       </field>
       <field name="address_country" type="Text" title="Country">
@@ -298,6 +313,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
           <trans loc="cs" val="Země"/>
           <trans loc="de" val="Land"/>
           <trans loc="es" val="País"/>
+          <trans loc="sl" val="Država"/>
         </trans_set>
       </field>
       <field name="address_postcode" type="Text" title="Postcode">
@@ -306,6 +322,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
           <trans loc="cs" val="PSČ"/>
           <trans loc="de" val="Postleitzahl"/>
           <trans loc="es" val="Código postal"/>
+          <trans loc="sl" val="Poštna koda"/>
         </trans_set>
       </field>
       <field name="date_of_birth" type="Date" title="Date of Birth">
@@ -314,6 +331,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
           <trans loc="cs" val="Datum narození"/>
           <trans loc="de" val="Geburtsdatum"/>
           <trans loc="es" val="Fecha de nacimiento"/>
+          <trans loc="sl" val="Datum rojstva"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
@@ -322,6 +340,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
           <trans loc="cs" val="Poznámky"/>
           <trans loc="de" val="Kommentar"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="sl" val="Razlage"/>
         </trans_set>
       </field>
       <field name="name_full" type="Text" title="Full Name">
@@ -331,6 +350,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
           <trans loc="cs" val="Celé jméno"/>
           <trans loc="de" val="Vollname"/>
           <trans loc="es" val="Nombre completo"/>
+          <trans loc="sl" val="Polno ime"/>
         </trans_set>
       </field>
       <field name="picture" type="Image" title="Picture">
@@ -339,6 +359,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
           <trans loc="cs" val="Obrázek"/>
           <trans loc="de" val="Bild"/>
           <trans loc="es" val="Foto"/>
+          <trans loc="sl" val="Slika"/>
         </trans_set>
       </field>
       <field name="email" type="Text" title="Email Address">
@@ -347,6 +368,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
           <trans loc="cs" val="E-mailová adresa"/>
           <trans loc="de" val="E-mail Addresse"/>
           <trans loc="es" val="Dirección de correo-e"/>
+          <trans loc="sl" val="Elektronski naslov"/>
         </trans_set>
       </field>
       <field name="website" type="Text" title="Web Site">
@@ -355,6 +377,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
           <trans loc="cs" val="Webové stránky"/>
           <trans loc="de" val="Website"/>
           <trans loc="es" val="Página web"/>
+          <trans loc="sl" val="Spletna stran"/>
         </trans_set>
       </field>
       <field name="tel_home" type="Text" title="Home Telephone">
@@ -362,6 +385,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
         <trans_set>
           <trans loc="cs" val="Telefon domů"/>
           <trans loc="es" val="Teléfono de casa"/>
+          <trans loc="sl" val="Telefonska številka"/>
         </trans_set>
       </field>
       <field name="tel_work" type="Text" title="Work Telephone">
@@ -369,6 +393,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
         <trans_set>
           <trans loc="cs" val="Telefon do práce"/>
           <trans loc="es" val="Teléfono del trabajo"/>
+          <trans loc="sl" val="Telefonska številka"/>
         </trans_set>
       </field>
       <field name="tel_mobile" type="Text" title="Mobile Telephone">
@@ -376,6 +401,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
         <trans_set>
           <trans loc="cs" val="Mobilní telefon"/>
           <trans loc="es" val="Móvil"/>
+          <trans loc="sl" val="Telefonska številka"/>
         </trans_set>
       </field>
       <field name="tel_fax" type="Text" title="Fax">
@@ -384,6 +410,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
           <trans loc="cs" val="Fax"/>
           <trans loc="de" val="Fax"/>
           <trans loc="es" val="Fax"/>
+          <trans loc="sl" val="Faks"/>
         </trans_set>
       </field>
     </fields>
@@ -396,6 +423,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
               <trans loc="cs" val="Přehled"/>
               <trans loc="de" val="Ubersicht"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="sl" val="Pregled"/>
             </trans_set>
             <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -410,6 +438,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
                 <trans loc="cs" val="Název"/>
                 <trans loc="de" val="Name"/>
                 <trans loc="es" val="Nombre"/>
+                <trans loc="sl" val="Ime"/>
               </trans_set>
               <data_layout_item name="name_title" editable="true" use_default_formatting="true">
                 <formatting/>
@@ -429,6 +458,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
                 <trans loc="cs" val="Adresa"/>
                 <trans loc="de" val="Addresse"/>
                 <trans loc="es" val="Dirección"/>
+                <trans loc="sl" val="Naslov"/>
               </trans_set>
               <data_layout_item name="address_street" editable="true" use_default_formatting="true">
                 <formatting/>
@@ -451,6 +481,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
                 <trans loc="cs" val="Telefon"/>
                 <trans loc="de" val="Telefon"/>
                 <trans loc="es" val="Teléfono"/>
+                <trans loc="sl" val="Telefon"/>
               </trans_set>
               <data_layout_item name="tel_work" editable="true" use_default_formatting="true">
                 <formatting/>
@@ -491,6 +522,7 @@ dialog.hide();
               <trans_set>
                 <trans loc="cs" val="Testovací tlačítko"/>
                 <trans loc="es" val="Botón de prueba"/>
+                <trans loc="sl" val="Preizkus razporeditve gumbov %d"/>
               </trans_set>
               <formatting/>
             </data_layout_button>
@@ -540,6 +572,7 @@ dialog.hide();
         <trans_set>
           <trans loc="cs" val="Kontakty podle země"/>
           <trans loc="es" val="Contactos por país"/>
+          <trans loc="sl" val="Tek na smučeh"/>
         </trans_set>
       </report>
       <report name="by_country_by_town" title="By Country, By Town">
@@ -584,6 +617,7 @@ dialog.hide();
         <trans_set>
           <trans loc="cs" val="Podle země, podle města"/>
           <trans loc="es" val="Por país, por ciudad"/>
+          <trans loc="sl" val="Avtomobili v mestu"/>
         </trans_set>
       </report>
     </reports>
@@ -893,6 +927,7 @@ Orientation=portrait
           <trans loc="cs" val="Název produktu"/>
           <trans loc="de" val="Produkt Name"/>
           <trans loc="es" val="Nombre del producto"/>
+          <trans loc="sl" val="Ime proizvoda"/>
         </trans_set>
       </field>
       <field name="product_id" type="Number" title="Product Id">
@@ -911,6 +946,7 @@ Orientation=portrait
           <trans loc="cs" val="ID produktu"/>
           <trans loc="de" val="Produkt ID"/>
           <trans loc="es" val="ID del producto"/>
+          <trans loc="sl" val="ID izdelka"/>
         </trans_set>
       </field>
       <field name="product_price" type="Number" title="Product Price">
@@ -920,6 +956,7 @@ Orientation=portrait
           <trans loc="cs" val="Cena produktu"/>
           <trans loc="de" val="Produkt Preis"/>
           <trans loc="es" val="Precio del producto"/>
+          <trans loc="sl" val="gotovinska_cena:gotovinska cena"/>
         </trans_set>
       </field>
       <field name="invoice_id" type="Number" title="Invoice ID">
@@ -928,6 +965,7 @@ Orientation=portrait
           <trans loc="cs" val="ID faktury"/>
           <trans loc="de" val="Rechnung ID"/>
           <trans loc="es" val="ID de la factura"/>
+          <trans loc="sl" val="Brez-IDja"/>
         </trans_set>
       </field>
       <field name="count" default_value="1" type="Number" title="Number Of">
@@ -936,6 +974,7 @@ Orientation=portrait
           <trans loc="cs" val="Počet"/>
           <trans loc="de" val="Menge"/>
           <trans loc="es" val="Número de"/>
+          <trans loc="sl" val="ŠTEVILKA"/>
         </trans_set>
       </field>
       <field name="total_price" type="Number" title="Total Price">
@@ -945,6 +984,7 @@ Orientation=portrait
           <trans loc="cs" val="Celková cena"/>
           <trans loc="de" val="Gesamtpreis"/>
           <trans loc="es" val="Precio total"/>
+          <trans loc="sl" val="gotovinska_cena:gotovinska cena"/>
         </trans_set>
       </field>
       <field name="vat_percentage" type="Number" title="VAT Percentage">
@@ -954,6 +994,7 @@ Orientation=portrait
           <trans loc="cs" val="Sazba DPH"/>
           <trans loc="de" val="MwST Prozent"/>
           <trans loc="es" val="% IVA"/>
+          <trans loc="sl" val="Odstotek pokritosti"/>
         </trans_set>
       </field>
       <field name="total_price_vat" type="Number" title="Total VAT">
@@ -963,6 +1004,7 @@ Orientation=portrait
           <trans loc="cs" val="DPH celkem"/>
           <trans loc="de" val="Gesamt MwST"/>
           <trans loc="es" val="IVA total"/>
+          <trans loc="sl" val="Skupna razdalja"/>
         </trans_set>
       </field>
     </fields>
@@ -1063,6 +1105,7 @@ Orientation=portrait
       <trans loc="cs" val="Faktury"/>
       <trans loc="de" val="Rechnungen"/>
       <trans loc="es" val="Facturas"/>
+      <trans loc="sl" val="Račun"/>
     </trans_set>
     <fields>
       <field name="invoice_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Invoice ID">
@@ -1071,6 +1114,7 @@ Orientation=portrait
           <trans loc="cs" val="ID faktury"/>
           <trans loc="de" val="Rechnung ID"/>
           <trans loc="es" val="ID de la factura"/>
+          <trans loc="sl" val="Brez-IDja"/>
         </trans_set>
       </field>
       <field name="contact_id" type="Number" title="Contact ID">
@@ -1079,6 +1123,7 @@ Orientation=portrait
           <trans loc="cs" val="ID kontaktu"/>
           <trans loc="de" val="Kontakt ID"/>
           <trans loc="es" val="ID del contacto"/>
+          <trans loc="sl" val="ID stika"/>
         </trans_set>
       </field>
       <field name="date" type="Date" title="Date">
@@ -1087,6 +1132,7 @@ Orientation=portrait
           <trans loc="cs" val="Datum"/>
           <trans loc="de" val="Datum"/>
           <trans loc="es" val="Fecha"/>
+          <trans loc="sl" val="Datum"/>
         </trans_set>
       </field>
       <field name="comment" type="Text" title="Comment">
@@ -1095,6 +1141,7 @@ Orientation=portrait
           <trans loc="cs" val="Poznámka"/>
           <trans loc="de" val="Kommentar"/>
           <trans loc="es" val="Comentario"/>
+          <trans loc="sl" val="Opomba"/>
         </trans_set>
       </field>
       <field name="price_total" type="Number" title="Total Price">
@@ -1104,6 +1151,7 @@ Orientation=portrait
           <trans loc="cs" val="Cena celkem"/>
           <trans loc="de" val="Gesamtpreis"/>
           <trans loc="es" val="Precio total"/>
+          <trans loc="sl" val="gotovinska_cena:gotovinska cena"/>
         </trans_set>
       </field>
       <field name="vat_total" default_value="16" type="Number" title="Total VAT">
@@ -1113,6 +1161,7 @@ Orientation=portrait
           <trans loc="cs" val="DPH celkem"/>
           <trans loc="de" val="Gesamt MwST"/>
           <trans loc="es" val="IVA total"/>
+          <trans loc="sl" val="Skupna razdalja"/>
         </trans_set>
       </field>
       <field name="price_total_with_vat" type="Number" title="Total Price With Vat">
@@ -1122,6 +1171,7 @@ Orientation=portrait
           <trans loc="cs" val="Celková cena včetně DPH"/>
           <trans loc="de" val="Gesamtpreis mit MwST"/>
           <trans loc="es" val="Precio total con IVa"/>
+          <trans loc="sl" val="Skupna cena z davkom"/>
         </trans_set>
       </field>
     </fields>
@@ -1131,6 +1181,7 @@ Orientation=portrait
           <trans loc="cs" val="Řádků faktury"/>
           <trans loc="de" val="Rechnung Reihen"/>
           <trans loc="es" val="Líneas de factura"/>
+          <trans loc="sl" val="Prelomi vrstice"/>
         </trans_set>
       </relationship>
       <relationship name="contacts" key="contact_id" other_table="contacts" other_key="contact_id" title="Contacts">
@@ -1138,6 +1189,7 @@ Orientation=portrait
           <trans loc="cs" val="Kontakty"/>
           <trans loc="de" val="Kontakten"/>
           <trans loc="es" val="Contactos"/>
+          <trans loc="sl" val="Stiki"/>
         </trans_set>
       </relationship>
     </relationships>
@@ -1149,6 +1201,7 @@ Orientation=portrait
               <trans loc="cs" val="Přehled"/>
               <trans loc="de" val="Übersicht"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="sl" val="Pregled"/>
             </trans_set>
             <data_layout_item name="invoice_id" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -1163,6 +1216,7 @@ Orientation=portrait
                 <trans loc="cs" val="Zákazník"/>
                 <trans loc="de" val="Kunde"/>
                 <trans loc="es" val="Cliente"/>
+                <trans loc="sl" val="Ključna stranka"/>
               </trans_set>
               <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -1323,6 +1377,7 @@ Orientation=portrait
         <trans_set>
           <trans loc="cs" val="Podle zákazníka"/>
           <trans loc="es" val="Por cliente"/>
+          <trans loc="sl" val="Ključna stranka"/>
         </trans_set>
       </report>
     </reports>
@@ -1359,6 +1414,7 @@ Orientation=portrait
       <trans loc="cs" val="Produkty"/>
       <trans loc="de" val="Produkten"/>
       <trans loc="es" val="Productos"/>
+      <trans loc="sl" val="Podobni izdelki:"/>
     </trans_set>
     <fields>
       <field name="product_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Product ID">
@@ -1367,6 +1423,7 @@ Orientation=portrait
           <trans loc="cs" val="ID produktu"/>
           <trans loc="de" val="Produkt ID"/>
           <trans loc="es" val="ID del producto"/>
+          <trans loc="sl" val="ID izdelka"/>
         </trans_set>
       </field>
       <field name="comment" type="Text" title="Comment">
@@ -1375,6 +1432,7 @@ Orientation=portrait
           <trans loc="cs" val="Poznámka"/>
           <trans loc="de" val="Kommentar"/>
           <trans loc="es" val="Comentario"/>
+          <trans loc="sl" val="Opomba"/>
         </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
@@ -1383,6 +1441,7 @@ Orientation=portrait
           <trans loc="cs" val="Popis"/>
           <trans loc="de" val="Beschreibung"/>
           <trans loc="es" val="Descripción"/>
+          <trans loc="sl" val="Opis"/>
         </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
@@ -1391,6 +1450,7 @@ Orientation=portrait
           <trans loc="cs" val="Název"/>
           <trans loc="de" val="Name"/>
           <trans loc="es" val="Nombre"/>
+          <trans loc="sl" val="Ime"/>
         </trans_set>
       </field>
       <field name="price" type="Number" title="Price">
@@ -1399,6 +1459,7 @@ Orientation=portrait
           <trans loc="cs" val="Cena"/>
           <trans loc="de" val="Preis"/>
           <trans loc="es" val="Precio"/>
+          <trans loc="sl" val="Cena"/>
         </trans_set>
       </field>
       <field name="vat_percent" default_value="16" type="Number" title="Vat Percent">
@@ -1407,6 +1468,7 @@ Orientation=portrait
           <trans loc="cs" val="Sazba DPH"/>
           <trans loc="de" val="MwST Prozent"/>
           <trans loc="es" val="% IVA"/>
+          <trans loc="sl" val="Odstotkov opravljeno: %i"/>
         </trans_set>
       </field>
     </fields>
@@ -1419,6 +1481,7 @@ Orientation=portrait
               <trans loc="cs" val="Přehled"/>
               <trans loc="de" val="Overview"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="sl" val="Pregled"/>
             </trans_set>
             <data_layout_item name="product_id" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -1432,6 +1495,7 @@ Orientation=portrait
               <trans loc="cs" val="Podrobnosti"/>
               <trans loc="de" val="Details"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="sl" val="Podrobnosti"/>
             </trans_set>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
               <formatting/>
@@ -1507,6 +1571,7 @@ Orientation=portrait
     <trans_set>
       <trans loc="cs" val="Zaměstnanci"/>
       <trans loc="es" val="Personal"/>
+      <trans loc="sl" val="Izbor osebja"/>
     </trans_set>
     <fields>
       <field name="staff_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Staff ID">
@@ -1514,6 +1579,7 @@ Orientation=portrait
         <trans_set>
           <trans loc="cs" val="ID zaměstnance"/>
           <trans loc="es" val="ID del personal"/>
+          <trans loc="sl" val="Brez-IDja"/>
         </trans_set>
       </field>
       <field name="name_title" type="Text" title="Title">
@@ -1523,30 +1589,35 @@ Orientation=portrait
               <trans_set>
                 <trans loc="cs" val="pan"/>
                 <trans loc="es" val="Sr."/>
+                <trans loc="sl" val="G."/>
               </trans_set>
             </custom_choice>
             <custom_choice value="Mrs">
               <trans_set>
                 <trans loc="cs" val="paní"/>
                 <trans loc="es" val="Srta."/>
+                <trans loc="sl" val="Ga."/>
               </trans_set>
             </custom_choice>
             <custom_choice value="Miss">
               <trans_set>
                 <trans loc="cs" val="slečna"/>
                 <trans loc="es" val="Señorita"/>
+                <trans loc="sl" val="Gdč."/>
               </trans_set>
             </custom_choice>
             <custom_choice value="Dr">
               <trans_set>
                 <trans loc="cs" val="Dr."/>
                 <trans loc="es" val="Dr"/>
+                <trans loc="sl" val="Dr."/>
               </trans_set>
             </custom_choice>
             <custom_choice value="Prof">
               <trans_set>
                 <trans loc="cs" val="Prof."/>
                 <trans loc="es" val="Prof"/>
+                <trans loc="sl" val="Prof."/>
               </trans_set>
             </custom_choice>
           </custom_choice_list>
@@ -1554,6 +1625,7 @@ Orientation=portrait
         <trans_set>
           <trans loc="cs" val="Oslovení"/>
           <trans loc="es" val="Título"/>
+          <trans loc="sl" val="Naslov"/>
         </trans_set>
       </field>
       <field name="name_first" type="Text" title="First Name">
@@ -1562,6 +1634,7 @@ Orientation=portrait
           <trans loc="cs" val="Křestní jméno"/>
           <trans loc="de" val="Vorname"/>
           <trans loc="es" val="Nombre"/>
+          <trans loc="sl" val="Ime"/>
         </trans_set>
       </field>
       <field name="name_second" type="Text" title="Second Name">
@@ -1570,6 +1643,7 @@ Orientation=portrait
           <trans loc="cs" val="Prostřední jméno"/>
           <trans loc="de" val="Zweite Name"/>
           <trans loc="es" val="&lt;b&gt;Nombre:&lt;/b&gt;"/>
+          <trans loc="sl" val="ime &lt;%s&gt; &quot;%s&quot; je uporabljeno drugič"/>
         </trans_set>
       </field>
       <field name="name_last" type="Text" title="Last Name">
@@ -1578,6 +1652,7 @@ Orientation=portrait
           <trans loc="cs" val="Příjmení"/>
           <trans loc="de" val="Familiename"/>
           <trans loc="es" val="Segundo apellido"/>
+          <trans loc="sl" val="Priimek"/>
         </trans_set>
       </field>
       <field name="address_street" type="Text" title="Street">
@@ -1586,6 +1661,7 @@ Orientation=portrait
           <trans loc="cs" val="Ulice"/>
           <trans loc="de" val="Strasse"/>
           <trans loc="es" val="Calle"/>
+          <trans loc="sl" val="Ulica"/>
         </trans_set>
       </field>
       <field name="address_town" type="Text" title="Town">
@@ -1594,6 +1670,7 @@ Orientation=portrait
           <trans loc="cs" val="Město"/>
           <trans loc="de" val="Ort"/>
           <trans loc="es" val="Ciudad"/>
+          <trans loc="sl" val="Mesto"/>
         </trans_set>
       </field>
       <field name="address_state" type="Text" title="State">
@@ -1602,6 +1679,7 @@ Orientation=portrait
           <trans loc="cs" val="Stát"/>
           <trans loc="de" val="Bundesland/Kanton"/>
           <trans loc="es" val="Estado"/>
+          <trans loc="sl" val="Stanje"/>
         </trans_set>
       </field>
       <field name="address_country" type="Text" title="Country">
@@ -1610,6 +1688,7 @@ Orientation=portrait
           <trans loc="cs" val="Země"/>
           <trans loc="de" val="Staat"/>
           <trans loc="es" val="País"/>
+          <trans loc="sl" val="Država"/>
         </trans_set>
       </field>
       <field name="address_postcode" type="Text" title="Postcode">
@@ -1618,6 +1697,7 @@ Orientation=portrait
           <trans loc="cs" val="PSČ"/>
           <trans loc="de" val="Postleitzahl"/>
           <trans loc="es" val="Código postal"/>
+          <trans loc="sl" val="Poštna koda"/>
         </trans_set>
       </field>
       <field name="date_of_birth" type="Date" title="Date Of Birth">
@@ -1626,6 +1706,7 @@ Orientation=portrait
           <trans loc="cs" val="Datum narození"/>
           <trans loc="de" val="Geburtsdatum"/>
           <trans loc="es" val="Fecha de nacimiento"/>
+          <trans loc="sl" val="&lt;b&gt;Datum rojstva&lt;/b&gt;"/>
         </trans_set>
       </field>
       <field name="position" type="Text" title="Position">
@@ -1633,6 +1714,7 @@ Orientation=portrait
         <trans_set>
           <trans loc="cs" val="Pozice"/>
           <trans loc="es" val="Posición"/>
+          <trans loc="sl" val="Položaj"/>
         </trans_set>
       </field>
     </fields>
@@ -1645,6 +1727,7 @@ Orientation=portrait
               <trans loc="cs" val="Přehled"/>
               <trans loc="de" val="Overview"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="sl" val="Pregled"/>
             </trans_set>
             <data_layout_item name="staff_id" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -1662,6 +1745,7 @@ Orientation=portrait
                 <trans loc="cs" val="Název"/>
                 <trans loc="de" val="Name"/>
                 <trans loc="es" val="Nombre"/>
+                <trans loc="sl" val="Ime"/>
               </trans_set>
               <data_layout_item name="name_title" editable="true" use_default_formatting="true">
                 <formatting/>
@@ -1681,6 +1765,7 @@ Orientation=portrait
                 <trans loc="cs" val="Adresa"/>
                 <trans loc="de" val="Address"/>
                 <trans loc="es" val="Dirección"/>
+                <trans loc="sl" val="Naslov"/>
               </trans_set>
               <data_layout_item name="address_state" editable="true" use_default_formatting="true">
                 <formatting/>
