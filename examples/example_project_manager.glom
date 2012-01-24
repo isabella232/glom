@@ -932,7 +932,6 @@
         <trans_set>
           <trans loc="cs" val="ID členů týmu"/>
           <trans loc="es" val="ID de los miembros del equipo"/>
-          <trans loc="sl" val="&#10;Veljavnost uporabniškega ID: %s"/>
         </trans_set>
       </field>
       <field name="description" type="Text" title="Description">

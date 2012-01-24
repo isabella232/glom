@@ -522,7 +522,6 @@ dialog.hide();
               <trans_set>
                 <trans loc="cs" val="Testovací tlačítko"/>
                 <trans loc="es" val="Botón de prueba"/>
-                <trans loc="sl" val="Preizkus razporeditve gumbov %d"/>
               </trans_set>
               <formatting/>
             </data_layout_button>
@@ -1468,7 +1467,6 @@ Orientation=portrait
           <trans loc="cs" val="Sazba DPH"/>
           <trans loc="de" val="MwST Prozent"/>
           <trans loc="es" val="% IVA"/>
-          <trans loc="sl" val="Odstotkov opravljeno: %i"/>
         </trans_set>
       </field>
     </fields>
@@ -1643,7 +1641,6 @@ Orientation=portrait
           <trans loc="cs" val="Prostřední jméno"/>
           <trans loc="de" val="Zweite Name"/>
           <trans loc="es" val="&lt;b&gt;Nombre:&lt;/b&gt;"/>
-          <trans loc="sl" val="ime &lt;%s&gt; &quot;%s&quot; je uporabljeno drugič"/>
         </trans_set>
       </field>
       <field name="name_last" type="Text" title="Last Name">

@@ -442,7 +442,6 @@
           <trans loc="cs" val="Hlavní část"/>
           <trans loc="de" val="Hauptrolle"/>
           <trans loc="es" val="Parte principal"/>
-          <trans loc="sl" val="del %s: %s (datoteka %s)"/>
         </trans_set>
       </field>
     </fields>
@@ -1224,7 +1223,6 @@
           <trans loc="cs" val="Prostřední jméno"/>
           <trans loc="de" val="Zweiter Name"/>
           <trans loc="es" val="Primer apellido"/>
-          <trans loc="sl" val="ime &lt;%s&gt; &quot;%s&quot; je uporabljeno drugič"/>
         </trans_set>
       </field>
       <field name="name_last" type="Text" title="Last Name">
@@ -3740,7 +3738,6 @@ Orientation=portrait
           <trans loc="cs" val="ID obsazení scény"/>
           <trans loc="de" val="Szene Besetzung ID"/>
           <trans loc="es" val="ID de reparto de escena"/>
-          <trans loc="sl" val="&#10;Veljavnost uporabniškega ID: %s"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
@@ -3889,7 +3886,6 @@ Orientation=portrait
         <trans_set>
           <trans loc="cs" val="ID kostýmu scény"/>
           <trans loc="es" val="ID de vestuario de escena"/>
-          <trans loc="sl" val="&#10;Veljavnost uporabniškega ID: %s"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
@@ -4016,7 +4012,6 @@ Orientation=portrait
           <trans loc="cs" val="ID štábu scény"/>
           <trans loc="de" val="Szene Crew ID"/>
           <trans loc="es" val="ID de personal de escena"/>
-          <trans loc="sl" val="&#10;Veljavnost uporabniškega ID: %s"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
@@ -4169,7 +4164,6 @@ Orientation=portrait
         <trans_set>
           <trans loc="cs" val="ID vybavení pro scénu"/>
           <trans loc="es" val="ID de equipamiento de escena"/>
-          <trans loc="sl" val="&#10;Veljavnost uporabniškega ID: %s"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
@@ -4278,7 +4272,6 @@ Orientation=portrait
         <trans_set>
           <trans loc="cs" val="ID komparsu pro scénu"/>
           <trans loc="es" val="ID de extras de escena"/>
-          <trans loc="sl" val="&#10;Veljavnost uporabniškega ID: %s"/>
         </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
@@ -4410,7 +4403,6 @@ Orientation=portrait
         <trans_set>
           <trans loc="cs" val="ID líčení pro scénu"/>
           <trans loc="es" val="ID de maquillaje de escena"/>
-          <trans loc="sl" val="&#10;Veljavnost uporabniškega ID: %s"/>
         </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
@@ -4524,7 +4516,6 @@ Orientation=portrait
         <trans_set>
           <trans loc="cs" val="ID rekvizity pro scénu"/>
           <trans loc="es" val="ID de accesorio de escena"/>
-          <trans loc="sl" val="&#10;Veljavnost uporabniškega ID: %s"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
