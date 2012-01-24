@@ -1,3 +1,15 @@
+2012-01-24  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix document loading, and make distcheck.
+
+	* glom/glom_document.dtd: Mention that the database_title 
+	attribute is replaced by title.
+	* glom/libglom/document/document.cc: load_after(): Deprecate the 
+	database_title attribute, but do load it if it is present and 
+	if title is not.
+	get_latest_known_document_format_version(): Increase the version
+	because the deprecated attribute will not be saved.
+
 2012-01-23  Murray Cumming  <murrayc@murrayc.com>
 
 	libglom: Replace more std::lists with std::vector.

@@ -149,7 +149,7 @@ static const char GLOM_ATTRIBUTE_PRIV_DELETE[] = "priv_delete";
 static const char GLOM_ATTRIBUTE_FORMAT_VERSION[] = "format_version";
 static const char GLOM_ATTRIBUTE_IS_EXAMPLE[] = "is_example";
 static const char GLOM_ATTRIBUTE_IS_BACKUP[] = "is_backup";
-static const char GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE[] = "database_title";
+static const char GLOM_DEPRECATED_ATTRIBUTE_CONNECTION_DATABASE_TITLE[] = "database_title"; //deprecated in favour of GLOM_ATTRIBUTE_TITLE.
 static const char GLOM_NODE_STARTUP_SCRIPT[] = "startup_script";
 static const char GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE[] = "translation_original_locale";
 static const char GLOM_ATTRIBUTE_NAME[] = "name";
@@ -2669,9 +2669,16 @@ bool Document::load_after(int& failure_code)
 
       m_is_example = get_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE);
       m_is_backup = get_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_BACKUP);
-      m_database_title->set_title_original( 
-        get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE) );
+
       load_after_translations(nodeRoot, m_database_title);
+
+      //"database_title" is deprecated in favour of "title", loaded in
+      //load_after_translations(), but load this from old documents if
+      //if it is present, and the only thing present:
+      const Glib::ustring database_title_deprecated = 
+        get_node_attribute_value(nodeRoot, GLOM_DEPRECATED_ATTRIBUTE_CONNECTION_DATABASE_TITLE);
+      if(!database_title_deprecated.empty() && get_database_title_original().empty())
+        m_database_title->set_title_original(database_title_deprecated);
 
       m_startup_script = get_child_text_node(nodeRoot, GLOM_NODE_STARTUP_SCRIPT);
 
@@ -3724,8 +3731,6 @@ bool Document::save_before()
     set_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE, m_is_example);
     set_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_BACKUP, m_is_backup);
 
-    set_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE, 
-      m_database_title->get_title_original());
     save_before_translations(nodeRoot, m_database_title);   
 
     set_child_text_node(nodeRoot, GLOM_NODE_STARTUP_SCRIPT, m_startup_script);
@@ -4673,8 +4678,9 @@ guint Document::get_latest_known_document_format_version()
   // Version 5: (Glom 1.14). Extra layout item formatting options were added, plus a startup script.
   // Version 6: (Glom 1.16). Extra show_all option for choices that show related records. Extra related choice fields are now a layout group instead of just a second field name.
   // Version 7: (Glom 1.20). New print layout details. Related records: Number of rows can be specified. All colors can now be in CSS3 string format (via GdkRGBA)
+  // Version 8: (Glom 1.22). The database_title attribute is replaced by the title attribute. 
 
-  return 7;
+  return 8;
 }
 
 std::vector<Glib::ustring> Document::get_library_module_names() const

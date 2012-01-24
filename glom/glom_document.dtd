@@ -9,14 +9,16 @@ TODO: Should we specify the presence of child text nodes in the ELEMENT somehow?
 <!-- This is the main node of the glom document. It describes the format of the
   databases (tables) and permissions (groups), as well as connections and any
   libraries.
-  database_title: The human-readable title of the database.
+  title: The human-readable title of the database.
+  database_title: Deprecated in favour of title.
   translation_original_locale: What locale is considered to have been used for the human-readable titles in this document.
   format_version: The version of this document's format. Older versions of Glom cannot open documents saved in newer versions of the document format.
   is_example: Whether this is an example document. Opening an example document causes a new database (and document) to be created.
 -->
-    <!ELEMENT glom_document (connection?, startup_script?, table*, groups?, library_modules?) >
+    <!ELEMENT glom_document (connection?, trans_set?, startup_script?, table*, groups?, library_modules?) >
     <!ATTLIST glom_document
         xmlns CDATA #IMPLIED
+        title CDATA #IMPLIED
         database_title CDATA #IMPLIED
         translation_original_locale CDATA #IMPLIED
         format_version CDATA #IMPLIED
