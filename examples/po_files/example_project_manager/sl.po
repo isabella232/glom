@@ -1,17 +1,25 @@
+#'glom/examples/po_files/example_project_manager
+# Slovenian translation for glom project manager example.
+# Copyright (C) 2012 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+#
+# Matej Urbančič <mateju@svn.gnome.org>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Project Manager Example\n"
-"product=glom&keywords=I18N+L10N&component=general\n"
-"PO-Revision-Date: 2012-01-24 14:23+0100\n"
-"Last-Translator: Someone <someone@someone.com>\n"
-"Language-Team:  <someone@someone.com>\n"
+"Project-Id-Version: glom master\n"
+"PO-Revision-Date: 2012-01-24 19:53+0100\n"
+"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
+"Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgctxt "Database Title"
-msgid "Project Manager Example"
-msgstr ""
+"Language: \n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
+"X-Poedit-Country: SLOVENIA\n"
+"X-Poedit-Language: Slovenian\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"POT-Creation-Date: \n"
 
 msgctxt "Table (contacts)"
 msgid "Contacts"
@@ -39,19 +47,19 @@ msgstr "Naziv"
 
 msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
 msgid "Mr"
-msgstr "G."
+msgstr "g."
 
 msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
 msgid "Mrs"
-msgstr "Ga."
+msgstr "ga."
 
 msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
 msgid "Ms"
-msgstr "Ga."
+msgstr "ga."
 
 msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
 msgid "Miss"
-msgstr "Gdč."
+msgstr "gdč."
 
 msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
 msgid "Dr"
@@ -107,15 +115,15 @@ msgstr "Spletna stran"
 
 msgctxt "Field (tel_home). Parent table: contacts"
 msgid "Home Telephone"
-msgstr "Telefonska številka"
+msgstr "Telefon doma"
 
 msgctxt "Field (tel_work). Parent table: contacts"
 msgid "Work Telephone"
-msgstr "Telefonska številka"
+msgstr "Telefon v službi"
 
 msgctxt "Field (tel_mobile). Parent table: contacts"
 msgid "Mobile Telephone"
-msgstr "Telefonska številka"
+msgstr "Mobilni telefon"
 
 msgctxt "Field (tel_fax). Parent table: contacts"
 msgid "Fax"
@@ -123,15 +131,15 @@ msgstr "Faks"
 
 msgctxt "Relationship (team_members). Parent table: contacts"
 msgid "Team Membership"
-msgstr "Članstvo"
+msgstr "Članstvo v skupini"
 
 msgctxt "Report (by_country). Parent table: contacts"
 msgid "Contacts By Country"
-msgstr "Tek na smučeh"
+msgstr "Stiki po državah"
 
 msgctxt "Report (by_country_by_town). Parent table: contacts"
 msgid "By Country, By Town"
-msgstr "Avtomobili v mestu"
+msgstr "Po državi, po mestu"
 
 msgctxt "Layout Group (overview). Parent table: contacts"
 msgid "Overview"
@@ -159,7 +167,7 @@ msgstr "Projekti"
 
 msgctxt "Field (project_id). Parent table: projects"
 msgid "Project ID"
-msgstr "Id _različice projekta:"
+msgstr "ID projekta"
 
 msgctxt "Field (description). Parent table: projects"
 msgid "Description"
@@ -167,7 +175,7 @@ msgstr "Opis"
 
 msgctxt "Field (comments). Parent table: projects"
 msgid "Comments"
-msgstr "Razlage"
+msgstr "Opombe"
 
 msgctxt "Field (name). Parent table: projects"
 msgid "Name"
@@ -187,27 +195,27 @@ msgstr "Podrobnosti"
 
 msgctxt "Table (project_teams)"
 msgid "Project Teams"
-msgstr "Igralci ekip"
+msgstr "Skupine projekta"
 
 msgctxt "Field (project_team_id). Parent table: project_teams"
 msgid "Project Team ID"
-msgstr "Id _različice projekta:"
+msgstr "ID skupine projekta"
 
 msgctxt "Field (comments). Parent table: project_teams"
 msgid "Comments"
-msgstr "Razlage"
+msgstr "Opombe"
 
 msgctxt "Field (team_id). Parent table: project_teams"
 msgid "Team ID"
-msgstr "Brez-IDja"
+msgstr "ID skupine"
 
 msgctxt "Field (project_id). Parent table: project_teams"
 msgid "Project ID"
-msgstr "Id _različice projekta:"
+msgstr "ID projekta"
 
 msgctxt "Relationship (team). Parent table: project_teams"
 msgid "Team"
-msgstr "Ekipa"
+msgstr "Skupina"
 
 msgctxt "Relationship (project). Parent table: project_teams"
 msgid "Project"
@@ -221,21 +229,21 @@ msgctxt "Layout Group (details). Parent table: project_teams"
 msgid "Details"
 msgstr "Podrobnosti"
 
-msgctxt "Custom Title. Parent table: project_teams"
+msgctxt "Custom Title. Parent table: project_teams, Parent Group: details"
 msgid "Team Name"
-msgstr ""
+msgstr "Ime skupine"
 
-msgctxt "Custom Title. Parent table: project_teams"
+msgctxt "Custom Title. Parent table: project_teams, Parent Group: details"
 msgid "Project Name"
-msgstr ""
+msgstr "Ime projekta"
 
 msgctxt "Table (team_members)"
 msgid "Team Members"
-msgstr "Nedejavni člani"
+msgstr "Člani skupine"
 
 msgctxt "Field (team_members_id). Parent table: team_members"
 msgid "team_members ID"
-msgstr ""
+msgstr "ID članov skupineVeljavnost uporabniškega ID: %s"
 
 msgctxt "Field (description). Parent table: team_members"
 msgid "Description"
@@ -243,15 +251,15 @@ msgstr "Opis"
 
 msgctxt "Field (comments). Parent table: team_members"
 msgid "Comments"
-msgstr "Razlage"
+msgstr "Opombe"
 
 msgctxt "Field (contact_id). Parent table: team_members"
 msgid "Contact ID"
-msgstr "ID stika:"
+msgstr "ID stika"
 
 msgctxt "Field (team_id). Parent table: team_members"
 msgid "Team ID"
-msgstr "Brez-IDja"
+msgstr "ID skupine"
 
 msgctxt "Field (role). Parent table: team_members"
 msgid "Role"
@@ -263,7 +271,7 @@ msgstr "Stiki"
 
 msgctxt "Relationship (team). Parent table: team_members"
 msgid "Team"
-msgstr "Ekipa"
+msgstr "Skupina"
 
 msgctxt "Layout Group (overview). Parent table: team_members"
 msgid "Overview"
@@ -279,7 +287,7 @@ msgstr "Skupine"
 
 msgctxt "Field (team_id). Parent table: teams"
 msgid "Team ID"
-msgstr "Brez-IDja"
+msgstr "ID skupine"
 
 msgctxt "Field (description). Parent table: teams"
 msgid "Description"
@@ -287,7 +295,7 @@ msgstr "Opis"
 
 msgctxt "Field (comments). Parent table: teams"
 msgid "Comments"
-msgstr "Razlage"
+msgstr "Opombe"
 
 msgctxt "Field (name). Parent table: teams"
 msgid "Name"
