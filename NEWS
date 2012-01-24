@@ -1,3 +1,10 @@
+1.21.4 (unstable):
+
+* libglom: Use std::vector instead of std::list, for consistency.
+* Translations:
+  - Allow the database title to be translated.
+  - Default to en rather than en_US for the original locale.
+
 1.21.3 (unstable):
 
 * libglom: TranslatableItem: Require the caller to provide the locale to 
