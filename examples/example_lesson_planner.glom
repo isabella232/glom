@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <glom_document xmlns="http://glom.org/glom_document" database_title="Lesson Planner" is_example="true" translation_original_locale="en" format_version="8" title="Lesson Planner">
+  <trans_set>
+    <trans loc="es" val="Planificador de lecciones"/>
+    <trans loc="sl" val="Planer pouka"/>
+  </trans_set>
   <connection server="localhost" user="" database="glom_example_lessonplanner_v2" self_hosted="true" port="5433" try_other_ports="false" hosting_mode="postgres_self"/>
-  <trans_set>
-    <trans loc="es" val="Planificador de lecciones"/>
-  </trans_set>
-  <trans_set>
-    <trans loc="es" val="Planificador de lecciones"/>
-    <trans loc="sl" val="Planer pouka"/>
-  </trans_set>
-  <trans_set>
-    <trans loc="es" val="Planificador de lecciones"/>
-    <trans loc="sl" val="Planer pouka"/>
-  </trans_set>
   <table name="invoice_lines" hidden="true">
     <example_rows>
       <example_row>

@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <glom_document xmlns="http://glom.org/glom_document" database_title="Small Business Example" is_example="true" translation_original_locale="en" format_version="8" title="Small Business Example">
+  <trans_set>
+    <trans loc="es" val="Ejemplo de negocio pequeño"/>
+    <trans loc="sl" val="Primer zbirke za mala podjetja."/>
+  </trans_set>
   <connection server="localhost" user="" database="glom_example_smallbusiness_v2" self_hosted="true" port="5433" try_other_ports="false" hosting_mode="postgres_self"/>
   <startup_script/>
-  <trans_set>
-    <trans loc="es" val="Ejemplo de negocio pequeño"/>
-  </trans_set>
-  <trans_set>
-    <trans loc="es" val="Ejemplo de negocio pequeño"/>
-    <trans loc="sl" val="Primer zbirke za mala podjetja."/>
-  </trans_set>
-  <trans_set>
-    <trans loc="es" val="Ejemplo de negocio pequeño"/>
-    <trans loc="sl" val="Primer zbirke za mala podjetja."/>
-  </trans_set>
   <table name="contacts" default="true" title="Contacts">
     <example_rows>
       <example_row>

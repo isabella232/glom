@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <glom_document xmlns="http://glom.org/glom_document" database_title="Openismus Film Manager" is_example="true" translation_original_locale="en" format_version="8" title="Openismus Film Manager">
-  <connection server="localhost" user="" database="glom_film_production_manager" self_hosted="true" port="5435" try_other_ports="false" hosting_mode="postgres_self"/>
-  <trans_set>
-    <trans loc="es" val="Gestor de películas Openismus"/>
-  </trans_set>
   <trans_set>
     <trans loc="es" val="Gestor de películas Openismus"/>
     <trans loc="sl" val="Upravljalnik filmov Openismus"/>
   </trans_set>
+  <connection server="localhost" user="" database="glom_film_production_manager" self_hosted="true" port="5435" try_other_ports="false" hosting_mode="postgres_self"/>
   <table name="accommodation" title="Accommodation">
     <example_rows/>
     <trans_set>
