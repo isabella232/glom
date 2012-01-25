@@ -4,7 +4,7 @@
     <trans loc="es" val="Colección de música"/>
     <trans loc="sl" val="Zbirka glasbe"/>
   </trans_set>
-  <connection server="localhost" database="glom_musiccollection211" port="5433" self_hosted="true" try_other_ports="false" hosting_mode="postgres_self"/>
+  <connection hosting_mode="postgres_self" server="localhost" port="5433" try_other_ports="false" database="glom_musiccollection211"/>
   <table name="albums" overview_x="15" overview_y="9" title="Albums">
     <example_rows>
       <example_row>

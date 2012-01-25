@@ -1,5 +1,15 @@
 2012-01-25  Murray Cumming  <murrayc@murrayc.com>
 
+	Document: Avoid accumulating old nodes in the XML.
+
+	* glom/glom_document.dtd: <connection>: Port and server should be 
+	optional because the document can specify a SQLite file instead.
+	* glom/libglom/document/document.cc: save_before(): Remove all
+	children of the root node before recreating them, to avoid keeping
+	old stuff.
+
+2012-01-25  Murray Cumming  <murrayc@murrayc.com>
+
 	Examples: Remove multiple trans_set nodes.
 
 	* examples/example_film_manager.glom:

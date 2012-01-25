@@ -4,8 +4,7 @@
     <trans loc="es" val="Ejemplo de negocio pequeño"/>
     <trans loc="sl" val="Primer zbirke za mala podjetja."/>
   </trans_set>
-  <connection server="localhost" user="" database="glom_example_smallbusiness_v2" self_hosted="true" port="5433" try_other_ports="false" hosting_mode="postgres_self"/>
-  <startup_script/>
+  <connection hosting_mode="postgres_self" server="localhost" port="5433" try_other_ports="false" database="glom_example_smallbusiness_v2"/>
   <table name="contacts" default="true" title="Contacts">
     <example_rows>
       <example_row>

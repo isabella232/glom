@@ -15,7 +15,7 @@ TODO: Should we specify the presence of child text nodes in the ELEMENT somehow?
   format_version: The version of this document's format. Older versions of Glom cannot open documents saved in newer versions of the document format.
   is_example: Whether this is an example document. Opening an example document causes a new database (and document) to be created.
 -->
-    <!ELEMENT glom_document (connection?, trans_set?, startup_script?, table*, groups?, library_modules?) >
+    <!ELEMENT glom_document (trans_set?, connection?, startup_script?, table*, groups?, library_modules?) >
     <!ATTLIST glom_document
         xmlns CDATA #IMPLIED
         title CDATA #IMPLIED
@@ -36,10 +36,10 @@ TODO: Should we specify the presence of child text nodes in the ELEMENT somehow?
 -->
     <!ELEMENT connection EMPTY >
     <!ATTLIST connection
-        server CDATA "localhost"
+        server CDATA #IMPLIED
         user CDATA #IMPLIED
         database CDATA #REQUIRED
-	port CDATA #REQUIRED
+	port CDATA #IMPLIED
 	try_other_ports (true|false) "true"
         self_hosted (true|false) "false"
         hosting_mode CDATA #IMPLIED

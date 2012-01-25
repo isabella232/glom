@@ -4,7 +4,7 @@
     <trans loc="es" val="Ejemplo de gestor de proyectos"/>
     <trans loc="sl" val="Primer zbirke upravljalnika projektov"/>
   </trans_set>
-  <connection server="localhost" user="" database="glom_example_project_manager_v3" self_hosted="true" port="5433" try_other_ports="false" hosting_mode="postgres_self"/>
+  <connection hosting_mode="postgres_self" server="localhost" port="5433" try_other_ports="false" database="glom_example_project_manager_v3"/>
   <table name="contacts" title="Contacts">
     <example_rows>
       <example_row>

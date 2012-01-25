@@ -3719,10 +3719,16 @@ bool Document::save_before()
     auto_cursor = std::auto_ptr<BusyCursor>( new BusyCursor(m_parent_window) );
   */
 
+  //TODO: Add xmlpp::Document::remove_root_node() to libxml++
   xmlpp::Element* nodeRoot = get_node_document();
 
   if(nodeRoot)
   {
+    // Remove existing child nodes:
+    xmlpp::Node::NodeList listNodesToRemove = nodeRoot->get_children();
+    for(xmlpp::Node::NodeList::iterator iter = listNodesToRemove.begin(); iter != listNodesToRemove.end(); ++iter)
+      nodeRoot->remove_child(*iter);
+
     //Always save as the latest format,
     //possibly making it impossible to open this document in older versions of Glom:
     m_document_format_version = get_latest_known_document_format_version();
@@ -3730,12 +3736,11 @@ bool Document::save_before()
 
     set_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE, m_is_example);
     set_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_BACKUP, m_is_backup);
+    set_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE, m_translation_original_locale);
 
-    save_before_translations(nodeRoot, m_database_title);   
+    save_before_translations(nodeRoot, m_database_title);
 
     set_child_text_node(nodeRoot, GLOM_NODE_STARTUP_SCRIPT, m_startup_script);
-
-    set_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE, m_translation_original_locale);
 
     xmlpp::Element* nodeConnection = get_node_child_named_with_add(nodeRoot, GLOM_NODE_CONNECTION);
 
