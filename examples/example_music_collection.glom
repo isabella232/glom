@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <glom_document xmlns="http://glom.org/glom_document" translation_original_locale="en" database_title="Music Collection" is_example="true" format_version="8" title="Music Collection">
   <connection server="localhost" database="glom_musiccollection211" port="5433" self_hosted="true" try_other_ports="false" hosting_mode="postgres_self"/>
+  <trans_set>
+    <trans loc="es" val="Colección de música"/>
+  </trans_set>
+  <trans_set>
+    <trans loc="es" val="Colección de música"/>
+    <trans loc="sl" val="Zbirka glasbe"/>
+  </trans_set>
+  <trans_set>
+    <trans loc="es" val="Colección de música"/>
+    <trans loc="sl" val="Zbirka glasbe"/>
+  </trans_set>
   <table name="albums" overview_x="15" overview_y="9" title="Albums">
     <example_rows>
       <example_row>
@@ -63,7 +74,7 @@
         <trans_set>
           <trans loc="cs" val="Poznámky"/>
           <trans loc="es" val="Comentarios"/>
-          <trans loc="sl" val="Razlage"/>
+          <trans loc="sl" val="Opombe"/>
         </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
@@ -225,6 +236,7 @@
                 <trans_set>
                   <trans loc="cs" val="Jméno umělce"/>
                   <trans loc="es" val="Nombre del artista"/>
+                  <trans loc="sl" val="Ime izvajalca"/>
                 </trans_set>
               </title_custom>
               <formatting/>
@@ -237,6 +249,7 @@
                 <trans_set>
                   <trans loc="cs" val="Jméno vydavatele"/>
                   <trans loc="es" val="Nombre de la editorial"/>
+                  <trans loc="sl" val="Ime izdajatelja"/>
                 </trans_set>
               </title_custom>
               <formatting/>
