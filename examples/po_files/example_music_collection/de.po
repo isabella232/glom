@@ -1,65 +1,73 @@
+# German translation of glom (example application "music collection".
+# Copyright (C) 2012 THE glom'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+# Mario Blättermann <mario.blaettermann@gmail.com>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Music Collection\n"
-"product=glom&keywords=I18N+L10N&component=general\n"
-"PO-Revision-Date: 2012-01-24 14:23+0100\n"
-"Last-Translator: Someone <someone@someone.com>\n"
-"Language-Team:  <someone@someone.com>\n"
+"Project-Id-Version: glom Music Collection\n"
+"POT-Creation-Date: 2012-01-25 23:07+0100\n"
+"PO-Revision-Date: 2012-01-25 23:07+0100\n"
+"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
+"Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
 
 msgctxt "Database Title"
 msgid "Music Collection"
-msgstr ""
+msgstr "Musiksammlung"
 
 msgctxt "Table (albums)"
 msgid "Albums"
-msgstr ""
+msgstr "Alben"
 
 msgctxt "Field (album_id). Parent table: albums"
 msgid "Album ID"
-msgstr ""
+msgstr "Albenkennung"
 
 msgctxt "Field (comments). Parent table: albums"
 msgid "Comments"
-msgstr ""
+msgstr "Kommentare"
 
 msgctxt "Field (name). Parent table: albums"
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 msgctxt "Field (artist_id). Parent table: albums"
 msgid "Artist ID"
-msgstr ""
+msgstr "Künstlerkennung"
 
 msgctxt "Field (publisher_id). Parent table: albums"
 msgid "Publisher ID"
-msgstr ""
+msgstr "Herausgeber-Kennung"
 
 msgctxt "Field (year). Parent table: albums"
 msgid "Year"
-msgstr ""
+msgstr "Jahr"
 
 msgctxt "Relationship (artist). Parent table: albums"
 msgid "Artist"
-msgstr ""
+msgstr "Künstler"
 
 msgctxt "Relationship (publisher). Parent table: albums"
 msgid "Publisher"
-msgstr ""
+msgstr "Herausgeber"
 
 msgctxt "Relationship (songs). Parent table: albums"
 msgid "Songs"
-msgstr ""
+msgstr "Lieder"
 
 msgctxt "Report (albums_by_artist). Parent table: albums"
 msgid "Albums By Artist"
-msgstr ""
+msgstr "Alben nach Künstler"
 
 msgctxt "Custom Title. Parent table: albums, Parent Report: albums_by_artist"
 msgid "Artist Name"
-msgstr ""
+msgstr "Künstlername"
 
 msgctxt "Layout Group (overview). Parent table: albums"
 msgid "Overview"
@@ -79,35 +87,35 @@ msgstr "Publisher"
 
 msgctxt "Custom Title. Parent table: albums"
 msgid "Artist Name"
-msgstr ""
+msgstr "Künstlername"
 
 msgctxt "Custom Title. Parent table: albums"
 msgid "Publisher Name"
-msgstr ""
+msgstr "Name des Herausgebers"
 
 msgctxt "Table (artists)"
 msgid "Artists"
-msgstr ""
+msgstr "Künstler"
 
 msgctxt "Field (artist_id). Parent table: artists"
 msgid "Artist ID"
-msgstr ""
+msgstr "Künstlerkennung"
 
 msgctxt "Field (description). Parent table: artists"
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 msgctxt "Field (comments). Parent table: artists"
 msgid "Comments"
-msgstr ""
+msgstr "Kommentare"
 
 msgctxt "Field (name). Parent table: artists"
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 msgctxt "Relationship (albums). Parent table: artists"
 msgid "Albums"
-msgstr ""
+msgstr "Alben"
 
 msgctxt "Layout Group (overview). Parent table: artists"
 msgid "Overview"
@@ -119,23 +127,23 @@ msgstr "Details"
 
 msgctxt "Table (publishers)"
 msgid "Publishers"
-msgstr ""
+msgstr "Herausgeber"
 
 msgctxt "Field (publishers_id). Parent table: publishers"
 msgid "Publisher ID"
-msgstr ""
+msgstr "Herausgeber-Kennung"
 
 msgctxt "Field (comments). Parent table: publishers"
 msgid "Comments"
-msgstr ""
+msgstr "Kommentare"
 
 msgctxt "Field (name). Parent table: publishers"
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 msgctxt "Relationship (albums). Parent table: publishers"
 msgid "Albums"
-msgstr ""
+msgstr "Alben"
 
 msgctxt "Layout Group (overview). Parent table: publishers"
 msgid "Overview"
@@ -147,27 +155,27 @@ msgstr "Details"
 
 msgctxt "Table (songs)"
 msgid "Songs"
-msgstr ""
+msgstr "Lieder"
 
 msgctxt "Field (song_id). Parent table: songs"
 msgid "Song ID"
-msgstr ""
+msgstr "Lied-Kennung"
 
 msgctxt "Field (comments). Parent table: songs"
 msgid "Comments"
-msgstr ""
+msgstr "Kommentare"
 
 msgctxt "Field (album_id). Parent table: songs"
 msgid "Album ID"
-msgstr ""
+msgstr "Albenkennung"
 
 msgctxt "Field (name). Parent table: songs"
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 msgctxt "Relationship (album). Parent table: songs"
 msgid "Album"
-msgstr ""
+msgstr "Album"
 
 msgctxt "Layout Group (overview). Parent table: songs"
 msgid "Overview"
@@ -179,9 +187,9 @@ msgstr "Details"
 
 msgctxt "Layout Group (album). Parent table: songs, Parent Group: details"
 msgid "Album"
-msgstr ""
+msgstr "Album-Künstler"
 
 msgctxt "Layout Group (artist). Parent table: songs, Parent Group: details"
 msgid "Album Artist"
-msgstr ""
+msgstr "Album-Künstler"
 
