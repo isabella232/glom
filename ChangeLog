@@ -1,3 +1,11 @@
+2012-01-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Depend on libgda 5.0.3 because we need the GdaNumeric corrections.
+
+	* configure.ac: This avoids errors when creating from examples, when
+	using a non-English locale. 
+	This fixes bug #668346 (Janne)
+
 2012-01-18  Murray Cumming  <murrayc@murrayc.com>
 
 	Default to en rather than en_US for the original locale.
