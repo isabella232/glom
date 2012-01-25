@@ -1,3 +1,9 @@
+1.21.5 (unstable):
+
+* Depend on libgda 5.0.3 because we need the GdaNumeric corrections.
+  This avoids errors when creating from examples, when using a 
+  non-English locale. This fixes bug #668346 (Janne)
+
 1.21.4 (unstable):
 
 * libglom: Use std::vector instead of std::list, for consistency.
