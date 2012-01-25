@@ -1,3 +1,10 @@
+1.20.7 (stable):
+
+* Depend on libgda 5.0.3 because we need the GdaNumeric corrections.
+  This avoids errors when creating from examples, when using a 
+  non-English locale. This fixes bug #668346 (Janne)
+* Translations: Default to en rather than en_US for the original locale.
+
 1.20.6 (stable):
 
 * List view: Do not show columns twice.
