@@ -1,3 +1,14 @@
+2012-01-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Test creation from examples in non-English locales.
+
+	* Makefile_tests.am:
+	* tests/test_selfhosting_new_from_example_in_locales.sh:
+	Run the test_selfhosting_new_from_example example in various
+	locales, to make sure that the libgda problem (see bug #668346),
+	or something like it, does not come back.
+	* tests/test_selfhosting_new_from_example.cc: Call setlocale().
+
 1.20.7:
 
 2012-01-25  Murray Cumming  <murrayc@murrayc.com>

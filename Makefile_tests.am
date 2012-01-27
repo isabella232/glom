@@ -62,6 +62,7 @@ TESTS =	tests/test_document_load	\
 	tests/test_fake_connection \
 	tests/test_selfhosting_new_empty \
 	tests/test_selfhosting_new_from_example \
+	tests/test_selfhosting_new_from_example_in_locales.sh \
 	tests/test_selfhosting_new_from_example_strangepath \
 	tests/test_selfhosting_new_then_report \
 	tests/test_selfhosting_new_then_backup_restore \
@@ -80,7 +81,8 @@ dist_noinst_SCRIPTS = tests/test_dtd_file_validation.sh \
 	tests/test_glade_file_validation.sh \
 	tests/test_xslt_file_validation.sh \
 	tests/test_glade_toplevels_instantiation.sh \
-	tests/test_glom_date_in_locales.sh
+	tests/test_glom_date_in_locales.sh \
+	tests/test_selfhosting_new_from_example_in_locales.sh
 
 #TESTS_ENVIRONMENT=which valgrind && valgrind --tool=memcheck --leak-check=full --leak-resolution=high --trace-children=yes --num-callers=30
 
