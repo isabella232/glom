@@ -61,6 +61,11 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 int main()
 {
   Glom::libglom_init();
+
+  //We run this test in several locales via 
+  //test_selfhosting_new_from_example_in_locales.sh,
+  //so we do this so the locale will really be used:
+  setlocale(LC_ALL, "");
   
   if(!test(Glom::Document::HOSTING_MODE_POSTGRES_SELF))
   {
