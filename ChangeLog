@@ -1,3 +1,17 @@
+2012-01-28  Murray Cumming  <murrayc@murrayc.com>
+
+	ComboChoicesWithTreeModel: Make sure the model always has the primary key.
+
+	* glom/libglom/data_structure/layout/layoutitem_field.h:
+	predicate_LayoutItem_Field_IsSameField: Let this be used with containers of
+	LayoutItems as well as just LayoutItem_Fields.
+	* glom/libglom/utils.[h|cc]: Add get_layout_items_plus_primary_key().
+	* glom/mode_data/box_data_list.cc: create_layout(): Simplify code by using 
+	get_layout_items_plus_primary_key().
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.cc:
+	set_choices_related(): Use get_layout_items_plus_primary_key() so the 
+	model has the primary key, avoiding a warning and a later crash.
+
 2012-01-27  Murray Cumming  <murrayc@murrayc.com>
 
 	Test creation from examples in non-English locales.

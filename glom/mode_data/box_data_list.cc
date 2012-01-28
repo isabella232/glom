@@ -465,18 +465,18 @@ void Box_Data_List::create_layout()
 
   //Add extra possibly-non-visible columns that we need:
   //TODO: Only add it if it is not already there.
+  items_to_use = Utils::get_layout_items_plus_primary_key(items_to_use, pDoc, m_table_name);
   if(field_primary_key)
   {
     sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
     layout_item->set_hidden();
     layout_item->set_full_field_details(m_AddDel.get_key_field());
-    m_FieldsShown.push_back(layout_item);
 
-    items_to_use.push_back(layout_item);
+    m_FieldsShown.push_back(layout_item); //TODO: Do this only if it is not already present.
   }
 
   m_AddDel.set_found_set(m_found_set);
-  m_AddDel.set_columns(items_to_use);
+  m_AddDel.set_columns(items_to_use); //TODO: Use LayoutGroup::type_list_const_items instead?
 
   m_FieldsShown = get_fields_to_show();
 }

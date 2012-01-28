@@ -214,6 +214,17 @@ Glib::ustring get_list_of_layout_items_for_display(const sharedptr<const LayoutG
  */
 Glib::ustring get_list_of_sort_fields_for_display(const FieldFormatting::type_list_sort_fields& sort_fields);
 
+/** This returns the provided list of layout items,
+ * plus the primary key, if the primary key is not already present in the list
+ */
+LayoutGroup::type_list_const_items get_layout_items_plus_primary_key(const LayoutGroup::type_list_const_items& items, const Document* document, const Glib::ustring& table_name);
+
+//TODO: Avoid the overload just for constness.
+/** This returns the provided list of layout items,
+ * plus the primary key, if the primary key is not already present in the list
+ */
+LayoutGroup::type_list_items get_layout_items_plus_primary_key(const LayoutGroup::type_list_items& items, const Document* document, const Glib::ustring& table_name);
+
 std::string get_temp_file_path(const std::string& prefix = std::string(), const std::string& extension = std::string());
 Glib::ustring get_temp_file_uri(const std::string& prefix = std::string(), const std::string& extension = std::string());
 

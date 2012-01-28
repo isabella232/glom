@@ -88,6 +88,7 @@ void DbTreeModelWithExtraText::get_value_vfunc(const TreeModel::iterator& iter, 
     if(m_column_index_key == -1)
     {
       std::cerr << G_STRFUNC << ": m_column_index_key is not set." << std::endl;
+      //TODO: This then causes a crash later. Find out why.
     }
     else
     {
