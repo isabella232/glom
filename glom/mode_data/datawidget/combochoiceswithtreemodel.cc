@@ -253,7 +253,8 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
 
   //Set full field details, cloning the group to avoid the constness:
   sharedptr<LayoutGroup> layout_choice_extra_full = glom_sharedptr_clone(layout_choice_extra);
-  document->fill_layout_field_details(choice_relationship->get_to_table(), layout_choice_extra_full);
+  const Glib::ustring table_name = choice_relationship->get_to_table();
+  document->fill_layout_field_details(table_name,  layout_choice_extra_full);
 
   //Get the list of fields to show:
   LayoutGroup::type_list_items extra_fields;
@@ -263,6 +264,10 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
   LayoutGroup::type_list_const_items layout_items;
   layout_items.push_back(layout_choice_first);
   layout_items.insert(layout_items.end(), extra_fields.begin(), extra_fields.end());
+
+  //Make sure that the primary key is also in the list, but hidden,
+  //because TreeModel_DB needs it:
+  layout_items = Utils::get_layout_items_plus_primary_key(layout_items, document, table_name);
 
   //Build the FoundSet:
   const Glib::ustring to_table = choice_relationship->get_to_table();

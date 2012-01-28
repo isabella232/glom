@@ -34,11 +34,11 @@ namespace Glom
 /** A predicate for use with std::find_if() to find a LayoutItem_Field which refers 
  * to the same field, without comparing irrelevant stuff such as formatting.
  */
-template<class T_Element>
+template<class T_ElementField, class T_Element = T_ElementField>
 class predicate_LayoutItem_Field_IsSameField
 {
 public:
-  predicate_LayoutItem_Field_IsSameField(const sharedptr<const T_Element>& layout_item)
+  predicate_LayoutItem_Field_IsSameField(const sharedptr<const T_ElementField>& layout_item)
   {
     m_layout_item = layout_item;
   }
@@ -47,12 +47,18 @@ public:
   {
     if(!m_layout_item && !element)
       return true;
+
+    //Allow this to be used on a container of LayoutItems,
+    //as well as just of LayoutItem_Fields.
+    sharedptr<const T_ElementField> element_field = sharedptr<const T_ElementField>::cast_dynamic(element);
+    if(!element_field)
+      return false;
        
-    return m_layout_item && m_layout_item->is_same_field(element);
+    return m_layout_item && m_layout_item->is_same_field(element_field);
   }
     
 private:
-  sharedptr<const T_Element> m_layout_item;
+  sharedptr<const T_ElementField> m_layout_item;
 };
 
 /** A LayoutItem that shows the data from a table field.

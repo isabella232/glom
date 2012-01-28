@@ -1421,5 +1421,62 @@ Glib::ustring Utils::get_temp_directory_uri(const std::string& prefix)
   }
 }
 
+LayoutGroup::type_list_const_items Utils::get_layout_items_plus_primary_key(const LayoutGroup::type_list_const_items& items, const Document* document, const Glib::ustring& table_name)
+{
+  if(!document)
+  {
+    std::cerr << G_STRFUNC << ": document was null." << std::endl;
+    return items;
+  }
+
+  const sharedptr<Field> field_primary_key = document->get_field_primary_key(table_name);
+  if(!field_primary_key)
+  {
+    std::cerr << G_STRFUNC << ": Could not find the primary key." << std::endl;
+    return items;
+  }
+
+  sharedptr<LayoutItem_Field> pk_layout_item = sharedptr<LayoutItem_Field>::create();
+  pk_layout_item->set_hidden();
+  pk_layout_item->set_full_field_details(field_primary_key);
+  
+  const LayoutGroup::type_list_const_items::const_iterator iterFind = std::find_if(items.begin(), items.end(), predicate_LayoutItem_Field_IsSameField<LayoutItem_Field, LayoutItem>(pk_layout_item));
+  if(iterFind != items.end())
+    return items; //It is already in the list:
+
+  LayoutGroup::type_list_const_items items_plus_pk = items;
+  items_plus_pk.push_back(pk_layout_item);
+  return items_plus_pk;
+}
+
+//TODO: Avoid the horrible code duplication with the const version.
+LayoutGroup::type_list_items Utils::get_layout_items_plus_primary_key(const LayoutGroup::type_list_items& items, const Document* document, const Glib::ustring& table_name)
+{
+  if(!document)
+  {
+    std::cerr << G_STRFUNC << ": document was null." << std::endl;
+    return items;
+  }
+
+  const sharedptr<Field> field_primary_key = document->get_field_primary_key(table_name);
+  if(!field_primary_key)
+  {
+    std::cerr << G_STRFUNC << ": Could not find the primary key." << std::endl;
+    return items;
+  }
+
+  sharedptr<LayoutItem_Field> pk_layout_item = sharedptr<LayoutItem_Field>::create();
+  pk_layout_item->set_hidden();
+  pk_layout_item->set_full_field_details(field_primary_key);
+  
+  const LayoutGroup::type_list_items::const_iterator iterFind = std::find_if(items.begin(), items.end(), predicate_LayoutItem_Field_IsSameField<LayoutItem_Field, LayoutItem>(pk_layout_item));
+  if(iterFind != items.end())
+    return items; //It is already in the list:
+
+  LayoutGroup::type_list_items items_plus_pk = items;
+  items_plus_pk.push_back(pk_layout_item);
+  return items_plus_pk;
+}
+
 
 } //namespace Glom
