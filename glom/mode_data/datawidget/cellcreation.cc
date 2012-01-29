@@ -30,6 +30,7 @@
 #include <libglom/utils.h>
 #include <libglom/db_utils.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <iostream>
 
 
 namespace Glom
@@ -72,8 +73,14 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
   sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
   if(item_field)
   {
+    //Ignore hiddent fields.
+    //For instance, these are generally added to DbTreeModels when they would not otherwise contain the primary key,
+    //so that the record can still be uniquely identified.
     if(item_field->get_hidden())
+    {
+      //std::cerr << G_STRFUNC << ": Returning 0 because the layout field is hidden. table_name=" << table_name << ", field name=" << item_field->get_name() << std::endl;
       return 0;
+    }
 
     switch(item_field->get_glom_type())
     {
@@ -160,7 +167,10 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
   }
 
   if(!cell)
+  {
+    std::cerr << G_STRFUNC << ": Returning 0 because no cell was created." << std::endl;
     return 0;
+  }
 
   //Use formatting:
   sharedptr<const LayoutItem_WithFormatting> item_withformatting =
