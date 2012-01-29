@@ -66,7 +66,7 @@ class DbTreeModel
     public Gtk::TreeModel
 {
 public:
-  typedef unsigned int size_type;
+  //typedef unsigned int size_type;
 
   typedef Base_DB::type_vecConstLayoutFields type_vec_const_fields;
 
@@ -78,15 +78,27 @@ public:
   
 protected:
 
+  /**
+   * @param found_set This specifies the table and where clause for the data to show in the treemodel.
+   * @param layout_items The items to show in the treemodel. This should include the primary key for the table at least once.
+   * @param get_records
+   * @param find_mode
+   * @param fields_shown This will be filled with a list of the LayoutItem_Fields that will be shown in the treemodel.
+   */
   DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecConstLayoutFields& fields_shown);
 
   virtual ~DbTreeModel();
+
 public:
-
-
  
   /** A convenience method, creating the model from a list of LayoutItems,
    * instead of a list of LayoutItem_Fields.
+   *
+   * @param found_set This specifies the table and where clause for the data to show in the treemodel.
+   * @param layout_items The items to show in the treemodel. This should include the primary key for the table at least once.
+   * @param get_records
+   * @param find_mode
+   * @param fields_shown This will be filled with a list of the LayoutItem_Fields that will be shown in the treemodel.
    */
   static Glib::RefPtr<DbTreeModel> create(const FoundSet& found_set, const type_vec_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecConstLayoutFields& fields_shown);
 
@@ -101,7 +113,12 @@ public:
   void set_is_not_placeholder(const TreeModel::iterator& iter);
   bool get_is_placeholder(const TreeModel::iterator& iter) const;
 
+  /** Set the value of the primary key for the specified row.
+   */
   void set_key_value(const TreeModel::iterator& iter, const DbValue& value);
+
+  /** Get the value of the primary key for the specified row.
+   */
   DbValue get_key_value(const TreeModel::iterator& iter) const;
 
   /** Get the last row.
@@ -159,7 +176,6 @@ private:
 
    virtual void set_value_impl(const iterator& row, int column, const Glib::ValueBase& value);
 
-protected: //TODO: Make some things private again if possible.
    typedef DbTreeModelRow typeRow; //X columns, all of type Value.
 
    //We use a std::list instead of a std::vector, though it is slower to access via an index,
@@ -180,7 +196,7 @@ protected: //TODO: Make some things private again if possible.
    unsigned int m_columns_count;
    FoundSet m_found_set;
    type_vec_const_fields m_column_fields;
-   int m_column_index_key;
+   int m_column_index_key; //The index of the primary key in the Gda::DataModel.
 
    //Data:
    sharedptr<SharedConnection> m_connection;
