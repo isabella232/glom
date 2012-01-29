@@ -370,7 +370,7 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const sha
     m_model_parts_footer->clear();
 
     //Add most parts to main, adding any found header or footer chidlren to those other models:
-    add_group_children(m_model_parts_main, Gtk::TreeModel::iterator() /* null == top-level */, report->m_layout_group);
+    add_group_children(m_model_parts_main, Gtk::TreeModel::iterator() /* null == top-level */, report->get_layout_group());
 
     //treeview_fill_sequences(m_model_parts_main, m_model_parts_main->m_columns.m_col_sequence); //The document should have checked this already, but it does not hurt to check again.
   }
@@ -1012,24 +1012,23 @@ sharedptr<Report> Dialog_Layout_Report::get_report()
   m_report->set_title( m_entry_title->get_text() , Application::get_current_locale());
   m_report->set_show_table_title( m_checkbutton_table_title->get_active() );
 
-  m_report->m_layout_group->remove_all_items();
-
-  m_report->m_layout_group->remove_all_items();
+  sharedptr<LayoutGroup> group = m_report->get_layout_group();
+  group->remove_all_items();
 
   //The Header and Footer parts are implicit (they are the whole header or footer treeview)
   sharedptr<LayoutItem_Header> header = sharedptr<LayoutItem_Header>::create();
   sharedptr<LayoutGroup> group_temp = header;
   fill_report_parts(group_temp, m_model_parts_header);
   if(header->get_items_count())
-    m_report->m_layout_group->add_item(header);
+    group->add_item(header);
 
-  fill_report_parts(m_report->m_layout_group, m_model_parts_main);
+  fill_report_parts(group, m_model_parts_main);
 
   sharedptr<LayoutItem_Footer> footer = sharedptr<LayoutItem_Footer>::create();
   group_temp = footer;
   fill_report_parts(group_temp, m_model_parts_footer);
   if(footer->get_items_count())
-    m_report->m_layout_group->add_item(footer);
+    group->add_item(footer);
 
   return m_report;
 }

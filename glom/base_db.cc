@@ -758,7 +758,7 @@ Base_DB::type_vecConstLayoutFields Base_DB::get_table_fields_to_show_for_sequenc
       {
         sharedptr<LayoutGroup> group = *iter;
 
-        if(true) //!group->m_hidden)
+        if(true) //!group->get_hidden())
         {
           //Get the fields:
           get_table_fields_to_show_for_sequence_add_group(table_name, table_privs, all_fields, group, result);

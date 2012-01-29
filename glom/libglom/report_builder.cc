@@ -563,7 +563,8 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const share
 
   type_vecLayoutItems itemsToGet_TopLevel;
 
-  for(LayoutGroup::type_list_items::const_iterator iter = report->m_layout_group->m_list_items.begin(); iter != report->m_layout_group->m_list_items.end(); ++iter)
+  const sharedptr<const LayoutGroup> group = report->get_layout_group();
+  for(LayoutGroup::type_list_items::const_iterator iter = group->m_list_items.begin(); iter != group->m_list_items.end(); ++iter)
   {
     sharedptr<LayoutItem> pPart = *iter;
 
@@ -623,7 +624,7 @@ static void fill_standard_list_report_fill(const sharedptr<Report>& report, cons
       continue;
 
     const sharedptr<LayoutItem> unconst = sharedptr<LayoutItem>::cast_const(item); //TODO: Avoid this?
-    report->m_layout_group->add_item(unconst);
+    report->get_layout_group()->add_item(unconst);
   }
 }
 

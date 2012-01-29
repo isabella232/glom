@@ -523,7 +523,7 @@ sharedptr<TableInfo> Document::create_table_system_preferences(type_vec_fields& 
   sharedptr<TableInfo> prefs_table_info = sharedptr<TableInfo>::create();
   prefs_table_info->set_name(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
   prefs_table_info->set_title_original(_("System Preferences"));
-  prefs_table_info->m_hidden = true;
+  prefs_table_info->set_hidden(true);
 
 
   fields.clear();
@@ -707,7 +707,7 @@ void Document::remove_relationship(const sharedptr<const Relationship>& relation
     for(DocumentTableInfo::type_reports::iterator iterReports = info.m_reports.begin(); iterReports != info.m_reports.end(); ++iterReports)
     {
       sharedptr<Report> report = iterReports->second;
-      sharedptr<LayoutGroup> group = report->m_layout_group;
+      sharedptr<LayoutGroup> group = report->get_layout_group();
 
       //Remove the field wherever it is a related field:
       group->remove_relationship(relationship);
@@ -785,7 +785,7 @@ void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring
     for(DocumentTableInfo::type_reports::iterator iterReports = info.m_reports.begin(); iterReports != info.m_reports.end(); ++iterReports)
     {
       sharedptr<Report> report = iterReports->second;
-      sharedptr<LayoutGroup> group = report->m_layout_group;
+      sharedptr<LayoutGroup> group = report->get_layout_group();
 
       //Remove regular fields if the field is in this layout's table:
       const Glib::ustring layout_table_name = info.m_info->get_name();
@@ -1008,9 +1008,9 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
         if(report)
         {
           if(is_parent_table)
-            report->m_layout_group->change_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
+            report->get_layout_group()->change_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
           else
-            report->m_layout_group->change_related_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
+            report->get_layout_group()->change_related_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
         }
       }
 
@@ -1111,9 +1111,9 @@ void Document::change_relationship_name(const Glib::ustring& table_name, const G
       {
         //Change the field if it is in this group:
         if(is_parent_table)
-          iterReports->second->m_layout_group->change_relationship_name(table_name, name, name_new);
+          iterReports->second->get_layout_group()->change_relationship_name(table_name, name, name_new);
         else
-          iterReports->second->m_layout_group->change_related_relationship_name(table_name, name, name_new);
+          iterReports->second->get_layout_group()->change_related_relationship_name(table_name, name, name_new);
       }
       */
 
@@ -1817,7 +1817,7 @@ bool Document::get_table_is_hidden(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
-    return iterFind->second.m_info->m_hidden;
+    return iterFind->second.m_info->get_hidden();
   else
     return false; //It's not even known.
 }
@@ -1906,8 +1906,9 @@ Glib::ustring Document::get_default_table() const
 {
   for(type_tables::const_iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
-    if(iter->second.m_info->m_default)
-      return iter->second.m_info->get_name();
+    const sharedptr<const TableInfo> info = iter->second.m_info;
+    if(info && info->get_default())
+      return info->get_name();
   }
 
   //If there is only one table then pretend that is the default:
@@ -2750,8 +2751,8 @@ bool Document::load_after(int& failure_code)
 
           sharedptr<TableInfo> table_info(new TableInfo());
           table_info->set_name(table_name);
-          table_info->m_hidden = get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN);
-          table_info->m_default = get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT);
+          table_info->set_hidden( get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN) );
+          table_info->set_default( get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT) );
 
           doctableinfo.m_info = table_info;
 
@@ -3007,12 +3008,11 @@ bool Document::load_after(int& failure_code)
                     const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(*iter);
                     if(node)
                     {
-                      sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
+                      sharedptr<LayoutGroup> group = report->get_layout_group();
+                      group->remove_all_items();
                       load_after_layout_group(node, table_name, group);
 
-                      report->m_layout_group = group; //TODO: Get rid of the for loop here.
-
-                      fill_layout_field_details(table_name, report->m_layout_group); //Get full field details from the field names.
+                      fill_layout_field_details(table_name, group); //Get full field details from the field names.
                     }
                   }
                 }
@@ -3097,12 +3097,11 @@ bool Document::load_after(int& failure_code)
                     const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(*iter);
                     if(node)
                     {
-                      sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
+                      sharedptr<LayoutGroup> group = print_layout->get_layout_group();
+                      group->remove_all_items();
                       load_after_layout_group(node, table_name, group, true /* load positions too. */);
 
-                      print_layout->m_layout_group = group; //TODO: Get rid of the for loop here.
-
-                      fill_layout_field_details(table_name, print_layout->m_layout_group); //Get full field details from the field names.
+                      fill_layout_field_details(table_name, group); //Get full field details from the field names.
                     }
                   }
                 }
@@ -3785,8 +3784,8 @@ bool Document::save_before()
       {
         xmlpp::Element* nodeTable = nodeRoot->add_child(GLOM_NODE_TABLE);
         set_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME, table_name);
-        set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN, doctableinfo.m_info->m_hidden);
-        set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT, doctableinfo.m_info->m_default);
+        set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN, doctableinfo.m_info->get_hidden());
+        set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT, doctableinfo.m_info->get_default());
 
         set_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_X, doctableinfo.m_overviewx);
         set_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_Y, doctableinfo.m_overviewy);
@@ -3921,10 +3920,7 @@ bool Document::save_before()
           set_node_attribute_value_as_bool(nodeReport, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE, report->get_show_table_title());
 
           xmlpp::Element* nodeGroups = nodeReport->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
-          if(report->m_layout_group)
-          {
-            save_before_layout_group(nodeGroups, report->m_layout_group);
-          }
+          save_before_layout_group(nodeGroups, report->get_layout_group());
 
           //Translations:
           save_before_translations(nodeReport, report);
@@ -3975,10 +3971,7 @@ bool Document::save_before()
             print_layout->get_page_count(), 1);
 
           xmlpp::Element* nodeGroups = nodePrintLayout->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
-          if(print_layout->m_layout_group)
-          {
-            save_before_layout_group(nodeGroups, print_layout->m_layout_group, true /* x,y positions too. */);
-          }
+          save_before_layout_group(nodeGroups, print_layout->get_layout_group(), true /* x,y positions too. */);
 
           //Translations:
           save_before_translations(nodePrintLayout, print_layout);
@@ -4549,7 +4542,7 @@ Document::type_list_translatables Document::get_translatable_report_items(const 
 
   sharedptr<Report> report = get_report(table_name, report_title);
   if(report)
-    fill_translatable_layout_items(report->m_layout_group, the_list, hint);
+    fill_translatable_layout_items(report->get_layout_group(), the_list, hint);
 
   return the_list;
 }

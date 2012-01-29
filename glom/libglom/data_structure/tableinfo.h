@@ -36,7 +36,24 @@ public:
   TableInfo(const TableInfo& src);
   TableInfo& operator=(const TableInfo& src);
 
-  guint m_sequence; //TODO: Use this?
+  /** Returns true if this table should not be shown in the list of tables when in operator mode.
+   */
+  bool get_hidden() const;
+
+  /** See get_default().
+   */
+  void set_hidden(bool val = true);
+
+  /** Returns true if this table should be shown when the system is opened.
+   * Only one table can be the default table.
+   */
+  bool get_default() const;
+
+  /** See get_default().
+   */
+  void set_default(bool val = true);
+
+private:
   bool m_hidden;
   bool m_default;
 };

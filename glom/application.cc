@@ -2003,7 +2003,7 @@ void Application::fill_menu_tables()
   for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
     sharedptr<const TableInfo> table_info = *iter;
-    if(!table_info->m_hidden)
+    if(!table_info->get_hidden())
     {
       const Glib::ustring action_name = "NavTableAction_" + table_info->get_name();
 

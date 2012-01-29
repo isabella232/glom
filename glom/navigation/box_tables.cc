@@ -85,7 +85,7 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const shar
 
     m_AddDel.set_value_key(iter, table_info->get_name());
     m_AddDel.set_value(iter, m_colTableName, table_info->get_name());
-    m_AddDel.set_value(iter, m_colHidden, table_info->m_hidden);
+    m_AddDel.set_value(iter, m_colHidden, table_info->get_hidden());
 
     if(developer_mode)
     {
@@ -99,7 +99,7 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const shar
       m_AddDel.set_value(iter, m_colTitle, item_get_title_or_name(table_info));
     }
 
-    m_AddDel.set_value(iter, m_colDefault, table_info->m_default);
+    m_AddDel.set_value(iter, m_colDefault, table_info->get_default());
   }
 }
 
@@ -183,10 +183,10 @@ bool Box_Tables::fill_from_database()
         //Show it as hidden:
         table_info = sharedptr<TableInfo>(new TableInfo());
         table_info->set_name(strName);
-        table_info->m_hidden = true;
+        table_info->set_hidden(true);
       }
 
-      const bool hidden = table_info->m_hidden;
+      const bool hidden = table_info->get_hidden();
 
       bool bAddIt = true;
       if(hidden && !developer_mode) //Don't add hidden tables unless we are in developer mode:
@@ -477,11 +477,11 @@ void Box_Tables::save_to_document()
 
         if(!table_info->get_name().empty())
         {
-          table_info->m_hidden = m_AddDel.get_value_as_bool(iter, m_colHidden);
+          table_info->set_hidden( m_AddDel.get_value_as_bool(iter, m_colHidden) );
           table_info->set_title( m_AddDel.get_value(iter, m_colTitle) , Application::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
           table_info->set_title_singular( m_AddDel.get_value(iter, m_colTitleSingular), Application::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
           //std::cout << "debug: " << G_STRFUNC << ": title=" << item_get_title(table_info) << std::endl;
-          table_info->m_default = m_AddDel.get_value_as_bool(iter, m_colDefault);
+          table_info->set_default( m_AddDel.get_value_as_bool(iter, m_colDefault) );
 
           listTables.push_back(table_info);
         }

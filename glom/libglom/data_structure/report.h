@@ -38,9 +38,11 @@ public:
   bool get_show_table_title() const;
   void set_show_table_title(bool show_table_title = true);
 
-  sharedptr<LayoutGroup> m_layout_group;
+  sharedptr<LayoutGroup> get_layout_group();
+  sharedptr<const LayoutGroup> get_layout_group() const;
 
 private:
+  sharedptr<LayoutGroup> m_layout_group;
   bool m_show_table_title;
 };
 

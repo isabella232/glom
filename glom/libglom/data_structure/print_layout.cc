@@ -75,6 +75,16 @@ void PrintLayout::set_show_table_title(bool show_table_title)
   m_show_table_title = show_table_title;
 }
 
+sharedptr<LayoutGroup> PrintLayout::get_layout_group()
+{
+  return m_layout_group;
+}
+
+sharedptr<const LayoutGroup> PrintLayout::get_layout_group() const
+{
+  return m_layout_group;
+}
+
 void PrintLayout::set_page_setup(const std::string& page_setup)
 {
   m_page_setup = page_setup;

@@ -501,7 +501,7 @@ bool add_standard_tables(Document* document)
       sharedptr<TableInfo> table_info(new TableInfo());
       table_info->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
       table_info->set_title_original(_("System: Auto Increments"));
-      table_info->m_hidden = true;
+      table_info->set_hidden(true);
 
       Document::type_vec_fields fields;
 

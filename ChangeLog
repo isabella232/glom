@@ -1,5 +1,27 @@
 2012-01-29  Murray Cumming  <murrayc@murrayc.com>
 
+	TableInfo, Report, PrintLayout: Make member variables private.
+
+	* glom/libglom/data_structure/print_layout.[h|cc]:
+	* glom/libglom/data_structure/report.[h|cc]:
+	* glom/libglom/data_structure/tableinfo.[h|cc]: Hide the member
+	variables behind getters and setters.
+	* glom/application.cc:
+	* glom/base_db.cc:
+	* glom/libglom/db_utils.cc:
+	* glom/libglom/document/document.cc:
+	* glom/libglom/report_builder.cc:
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	* glom/mode_design/report_layout/dialog_layout_report.cc:
+	* glom/navigation/box_tables.cc:
+	* glom/print_layout/canvas_print_layout.[h|cc]:
+	* glom/print_layout/print_layout_utils.cc:
+	* tests/test_document_load.cc: Adapt.
+	This avoids java-libglom generating getM_*() and setM_*() methods,
+	as well as being generally correct.
+
+2012-01-29  Murray Cumming  <murrayc@murrayc.com>
+
 	Database Preferences: Really store the organization name in the database.
 
 	* glom/libglom/db_utils.cc: set_database_preferences(): Also UPDATE

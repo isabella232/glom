@@ -24,8 +24,7 @@ namespace Glom
 {
 
 TableInfo::TableInfo()
-: m_sequence(0),
-  m_hidden(false),
+: m_hidden(false),
   m_default(false)
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_TABLE;
@@ -34,7 +33,6 @@ TableInfo::TableInfo()
 TableInfo::TableInfo(const TableInfo& src)
 : TranslatableItem(src),
   HasTitleSingular(src),
-  m_sequence(src.m_sequence),
   m_hidden(src.m_hidden),
   m_default(src.m_default)
 {
@@ -44,13 +42,31 @@ TableInfo& TableInfo::operator=(const TableInfo& src)
 {
   TranslatableItem::operator=(src);
   HasTitleSingular::operator=(src);
-  
-  m_sequence = src.m_sequence;
+
   m_hidden = src.m_hidden;
   m_default = src.m_default;
 
   return *this;
 }
 
+bool TableInfo::get_hidden() const
+{
+  return m_hidden;
+}
+
+void TableInfo::set_hidden(bool val)
+{
+  m_hidden = val;
+}
+
+bool TableInfo::get_default() const
+{
+  return m_default;
+}
+
+void TableInfo::set_default(bool val)
+{
+  m_default = val;
+}
 
 } //namespace Glom

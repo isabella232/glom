@@ -70,13 +70,13 @@ Canvas_PrintLayout::~Canvas_PrintLayout()
 {
 }
 
-void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const sharedptr<const PrintLayout>& print_layout)
+void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const sharedptr<PrintLayout>& print_layout)
 {
   m_table_name = table_name;
   m_modified = false;
 
   remove_all_items(m_items_group);
-  add_layout_group(print_layout->m_layout_group, true /* is top-level */);
+  add_layout_group(print_layout->get_layout_group(), true /* is top-level */);
 
   //Use the page setup:
   const Glib::ustring key_file_text = print_layout->get_page_setup();
@@ -121,7 +121,7 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
 sharedptr<PrintLayout> Canvas_PrintLayout::get_print_layout()
 {
   sharedptr<PrintLayout> result = sharedptr<PrintLayout>::create();
-  fill_layout_group(result->m_layout_group);
+  fill_layout_group(result->get_layout_group());
 
   //Page Setup:
   Glib::KeyFile key_file;

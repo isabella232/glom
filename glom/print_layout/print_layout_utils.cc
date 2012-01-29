@@ -340,7 +340,7 @@ sharedptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>&
     text->set_print_layout_position(x, y, ITEM_WIDTH_WIDE, field_height); //TODO: Enough and no more.
     y += field_height + GRID_GAP; //padding.
 
-    print_layout->m_layout_group->add_item(text);
+    print_layout->get_layout_group()->add_item(text);
   }
 
   //The layout:
@@ -353,7 +353,7 @@ sharedptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>&
     if(!group)
       continue;
 
-    create_standard(group, print_layout->m_layout_group, page_setup, units, x, y, avoid_page_margins);
+    create_standard(group, print_layout->get_layout_group(), page_setup, units, x, y, avoid_page_margins);
   }
 
   //Add extra pages if necessary:
@@ -392,7 +392,10 @@ void do_print_layout(const sharedptr<const PrintLayout>& print_layout, const Fou
 
   Canvas_PrintLayout canvas;
   canvas.set_document(const_cast<Document*>(document)); //We const_cast because, for this use, it will not be changed.
-  canvas.set_print_layout(found_set.m_table_name, print_layout);
+
+  //We cast to unconst because we know that the layout will not be changed by this use: 
+  sharedptr<PrintLayout> unconst = sharedptr<PrintLayout>::cast_const(print_layout);
+  canvas.set_print_layout(found_set.m_table_name, unconst);
 
   //Do not show things that are only for editing the print layout:
   canvas.remove_grid();

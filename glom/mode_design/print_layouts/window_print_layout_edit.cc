@@ -714,24 +714,22 @@ sharedptr<PrintLayout> Window_PrintLayout_Edit::get_print_layout()
   m_print_layout->set_vertical_rules( m_canvas.get_vertical_rules() );
 
 /*
-  m_print_layout->m_layout_group->remove_all_items();
-
-  m_print_layout->m_layout_group->remove_all_items();
+  m_print_layout->get_layout_group()->remove_all_items();
 
   //The Header and Footer parts are implicit (they are the whole header or footer treeview)
   sharedptr<LayoutItem_Header> header = sharedptr<LayoutItem_Header>::create();
   sharedptr<LayoutGroup> group_temp = header;
   fill_print_layout_parts(group_temp, m_model_parts_header);
   if(header->get_items_count())
-    m_print_layout->m_layout_group->add_item(header);
+    m_print_layout->get_layout_group()->add_item(header);
 
-  fill_print_layout_parts(m_print_layout->m_layout_group, m_model_parts_main);
+  fill_print_layout_parts(m_print_layout->get_layout_group(), m_model_parts_main);
 
   sharedptr<LayoutItem_Footer> footer = sharedptr<LayoutItem_Footer>::create();
   group_temp = footer;
   fill_print_layout_parts(group_temp, m_model_parts_footer);
   if(footer->get_items_count())
-    m_print_layout->m_layout_group->add_item(footer);
+    m_print_layout->get_layout_group()->add_item(footer);
 
 */
   return m_print_layout;

@@ -299,7 +299,7 @@ int main()
     return false;
   }
   
-  if(!print_layout->m_layout_group)
+  if(!print_layout->get_layout_group())
   {
     std::cerr << "Failure: The print layout has no layout group." << std::endl;
     return false;
@@ -333,7 +333,7 @@ int main()
     return false;
   }
   
-  if(!report->m_layout_group)
+  if(!report->get_layout_group())
   {
     std::cerr << "Failure: The report has no layout group." << std::endl;
     return false;

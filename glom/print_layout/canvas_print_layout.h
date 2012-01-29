@@ -45,7 +45,7 @@ public:
   Canvas_PrintLayout();
   virtual ~Canvas_PrintLayout();
 
-  void set_print_layout(const Glib::ustring& table_name, const sharedptr<const PrintLayout>& print_layout);
+  void set_print_layout(const Glib::ustring& table_name, const sharedptr<PrintLayout>& print_layout);
   sharedptr<PrintLayout> get_print_layout();
 
   void set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page_setup);

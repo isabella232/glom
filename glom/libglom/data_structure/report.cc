@@ -57,5 +57,16 @@ void Report::set_show_table_title(bool show_table_title)
   m_show_table_title = show_table_title;
 }
 
+
+sharedptr<LayoutGroup> Report::get_layout_group()
+{
+  return m_layout_group;
+}
+
+sharedptr<const LayoutGroup> Report::get_layout_group() const
+{
+  return m_layout_group;
+}
+
 } //namespace Glom
 
