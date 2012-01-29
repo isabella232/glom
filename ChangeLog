@@ -1,3 +1,20 @@
+2012-01-29  Murray Cumming  <murrayc@murrayc.com>
+
+	Choices: Allow the field to be be other than the primary key.
+
+	* glom/mode_data/datawidget/treemodel_db.h: Make most methods and
+	members private again, documentation what they *key methods and members
+	really mean.
+	* glom/mode_data/datawidget/treemodel_db_withextratext.[h|cc]: Add
+	m_column_index_first and m_item_first members.
+	Constructor: Set these by looking for the first LayoutItem_Field, 
+	because that is what we will want to show in the first cell of 
+	a combobox, which is where this model is used.
+	Use these instead of the *key members, which were actually the primary
+	key. We had previously assumed that the first field would always be
+	the primary key, but we should not enforce that.
+	This fixes crashing bug #668759 (alien).
+
 2012-01-28  Murray Cumming  <murrayc@murrayc.com>
 
 	ComboChoicesWithTreeModel: Make sure the model always has the primary key.

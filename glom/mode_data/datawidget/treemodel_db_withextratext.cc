@@ -35,14 +35,32 @@ typedef Glib::Value<Glib::ustring> type_value_string;
 
 DbTreeModelWithExtraText::DbTreeModelWithExtraText(const FoundSet& found_set, const type_vec_const_layout_items& layout_items, bool get_records, bool find_mode, Base_DB::type_vecConstLayoutFields& fields_shown)
 : Glib::ObjectBase( typeid(DbTreeModel) ), //register a custom GType.
-  DbTreeModel(found_set, layout_items, get_records, find_mode, fields_shown)
+  DbTreeModel(found_set, layout_items, get_records, find_mode, fields_shown),
+  m_column_index_first(-1)
 {
-  //Remember the key field details so we can use it later to get a text representation.
-  if(m_column_index_key != -1 && (guint)m_column_index_key < fields_shown.size())
-    m_item_key = fields_shown[m_column_index_key];
+  //Remember the first field details so we can use it later to get a text representation.
+  int column_index = 0;
+  for(type_vec_const_layout_items::const_iterator iter = layout_items.begin(); iter != layout_items.end(); ++iter)
+  {
+    const sharedptr<const LayoutItem_Field> item_field = 
+      sharedptr<const LayoutItem_Field>::cast_dynamic(*iter);
+    if(item_field)
+    {
+      m_item_first = item_field;
+      break;
+    }
+    
+    ++column_index;
+  }
+
+  
+  if(m_item_first)
+  {
+   m_column_index_first = column_index;
+  }
   else
   {
-    std::cerr << G_STRFUNC << ": m_column_index_key is not set, or is out of range. m_column_index_key=" << m_column_index_key << ", size=" << fields_shown.size() << std::endl;
+    std::cerr << G_STRFUNC << ": The first field was found in the list." << std::endl;
   }
 }
 
@@ -85,19 +103,19 @@ void DbTreeModelWithExtraText::get_value_vfunc(const TreeModel::iterator& iter, 
   {
     Glib::ustring text;
     
-    if(m_column_index_key == -1)
+    if(m_column_index_first == -1)
     {
-      std::cerr << G_STRFUNC << ": m_column_index_key is not set." << std::endl;
+      std::cerr << G_STRFUNC << ": m_column_index_first is not set." << std::endl;
       //TODO: This then causes a crash later. Find out why.
     }
     else
     {
       Glib::Value<Gnome::Gda::Value> value_db;
-      get_value_vfunc(iter, m_column_index_key, value_db);
+      get_value_vfunc(iter, m_column_index_first, value_db);
       const DbValue dbvalue = value_db.get();
       
       text =
-        Conversions::get_text_for_gda_value(m_item_key->get_glom_type(), dbvalue, m_item_key->get_formatting_used().m_numeric_format);
+        Conversions::get_text_for_gda_value(m_item_first->get_glom_type(), dbvalue, m_item_first->get_formatting_used().m_numeric_format);
       //std::cout << "debug: text=" << text << std::endl;
       //std::cout << "  debug: m_item_key name=" << m_item_key->get_name() << std::endl;
       //std::cout << "  debug: dbvalue=" << dbvalue.to_string() << std::endl;
