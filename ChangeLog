@@ -1,5 +1,14 @@
 2012-01-29  Murray Cumming  <murrayc@murrayc.com>
 
+	Database Preferences: Really store the organization name in the database.
+
+	* glom/libglom/db_utils.cc: set_database_preferences(): Also UPDATE
+	the organization name.
+
+	This fixes bug #668836 (alien)
+
+2012-01-29  Murray Cumming  <murrayc@murrayc.com>
+
 	Field Formatting: Related Choices: Default to showing the primary key.
 
 	* glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:

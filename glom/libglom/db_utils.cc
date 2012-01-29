@@ -421,6 +421,7 @@ void set_database_preferences(Document* document, const SystemPrefs& prefs)
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
   builder->set_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
   builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME, prefs.m_name);
+  builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME, prefs.m_org_name);
   builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET, prefs.m_org_address_street);
   builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2, prefs.m_org_address_street2);
   builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN, prefs.m_org_address_town);
