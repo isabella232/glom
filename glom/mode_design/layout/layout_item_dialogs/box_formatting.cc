@@ -447,11 +447,18 @@ void Box_Formatting::on_combo_choices_relationship_changed()
   Document* pDocument = get_document();
   if(pDocument)
   {
-    //Show the list of formats from this relationship:
+    //Show the list of fields from this relationship:
     if(relationship)
     {
-      const Document::type_vec_fields vecFields = pDocument->get_table_fields(relationship->get_to_table());
+      const Glib::ustring related_table = relationship->get_to_table();
+      const Document::type_vec_fields vecFields = pDocument->get_table_fields(related_table);
       m_combo_choices_field->set_fields(vecFields);
+
+      //Default to using the Primary Key field from the related table,
+      //because this is almost always what people want to use:
+      const sharedptr<Field> related_primary_key = pDocument->get_field_primary_key(related_table);
+      if(related_primary_key)
+        m_combo_choices_field->set_selected_field(related_primary_key);
 
       //Update the show-all dialog's list:
       //If the related table name has changed then the list of fields will probably

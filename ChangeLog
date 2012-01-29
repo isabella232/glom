@@ -1,5 +1,16 @@
 2012-01-29  Murray Cumming  <murrayc@murrayc.com>
 
+	Field Formatting: Related Choices: Default to showing the primary key.
+
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:
+	on_combo_choices_relationship_changed(): By default, automatically
+	choose the related table's primary key as the field to show in the
+	choices. Other fields should then be shown (or looked up) based on the
+	chosen ID.
+	This avoids the confusion noticed here: https://bugzilla.gnome.org/show_bug.cgi?id=668759#c21
+
+2012-01-29  Murray Cumming  <murrayc@murrayc.com>
+
 	CellRendererDbList: Do not crash if one of the fields is hidden.
 
 	* glom/mode_data/datawidget/cellrenderer_dblist.cc:
