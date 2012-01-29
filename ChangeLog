@@ -1,5 +1,16 @@
 2012-01-29  Murray Cumming  <murrayc@murrayc.com>
 
+	CellRendererDbList: Do not crash if one of the fields is hidden.
+
+	* glom/mode_data/datawidget/cellrenderer_dblist.cc:
+	repack_cells_related(): Do not crash if create_cell() returns 0,
+	and add a comment explaining that that is OK.
+	* glom/mode_data/datawidget/cellcreation.cc: Add explanatory comments.
+
+	This fixes the second crash mentioned in #668759 (alien).
+
+2012-01-29  Murray Cumming  <murrayc@murrayc.com>
+
 	Choices: Allow the field to be be other than the primary key.
 
 	* glom/mode_data/datawidget/treemodel_db.h: Make most methods and

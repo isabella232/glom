@@ -171,7 +171,10 @@ void CellRendererDbList::repack_cells_related(Gtk::CellLayout* combobox)
       //Get the default column, created by set_text_column():
       cell = combobox->get_first_cell();
       if(!cell)
-        std::cerr << G_STRFUNC << ": get_first_cell() returned null." << std::endl;
+      {
+        //This is normal, for instance if the item is meant to be hidden.
+        //std::cerr << G_STRFUNC << ": get_first_cell() returned null." << std::endl;
+      }
       else
       {
         //Unpack and repack it with expand=false instead of expand=true:
@@ -189,9 +192,16 @@ void CellRendererDbList::repack_cells_related(Gtk::CellLayout* combobox)
     {
       //Create the cell:
       cell = create_cell(layout_item, m_table_name, m_document, get_fixed_cell_height(*widget));
-      combobox->pack_start(*cell, true);
+      if(!cell)
+      {
+        std::cerr << G_STRFUNC << ": create_cell() return 0." << std::endl;
+      }
+      else
+      {
+        combobox->pack_start(*cell, true);
 
-      cell_connect_cell_data_func(combobox, cell, i);
+        cell_connect_cell_data_func(combobox, cell, i);
+      }
     }
 
     ++i;
