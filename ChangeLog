@@ -1,5 +1,13 @@
 2012-01-30  Murray Cumming  <murrayc@murrayc.com>
 
+	Add test_selfhosting_new_empty_change_sysprefs.
+
+	* Makefile_tests.am:
+	* tests/test_selfhosting_new_empty_change_sysprefs.cc: Add this 
+	test to check that the writing and reading of System Preferences works.
+
+2012-01-30  Murray Cumming  <murrayc@murrayc.com>
+
 	test_selfhosting_new_empty: Move some code into test_selfhosting_utils
 
 	* tests/test_selfhosting_utils.[h|cc]: Add functions for self-hosting 
