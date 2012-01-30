@@ -1,5 +1,13 @@
 2012-01-30  Murray Cumming  <murrayc@murrayc.com>
 
+	test_selfhosting_new_empty: Simplify the cleanup code.
+
+	* tests/test_selfhosting_new_empty.cc: Call cleanup if test() returns 
+	false, like we in the other tests, to avoid calling it in too many
+	places.
+
+2012-01-30  Murray Cumming  <murrayc@murrayc.com>
+
 	Require the latest goocanvas because it has fixes that PrintLayout needs.
 
 	* configure.ac: Require goocanvas 2.0.1.

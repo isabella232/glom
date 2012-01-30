@@ -125,7 +125,6 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   if(db_name.empty())
   {
     std::cerr << "DbUtils::get_unused_database_name) failed." << std::endl;
-    cleanup();
     return false;
   }
 
@@ -135,7 +134,6 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   if(!created)
   {
     std::cerr << "DbUtils::create_database() failed." << std::endl;
-    cleanup();
     return false;
   }
 
@@ -151,12 +149,10 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   catch(const Glom::ExceptionConnection& ex)
   {
     std::cerr << "Exception: " << ex.what() << std::endl;
-    cleanup();
     return false;
   }
-  
+
   cleanup();
-  
   return true;
 }
 
@@ -167,12 +163,14 @@ int main()
   if(!test(Glom::Document::HOSTING_MODE_POSTGRES_SELF))
   {
     std::cerr << "Failed with PostgreSQL" << std::endl;
+    cleanup();
     return EXIT_FAILURE;
   }
   
   if(!test(Glom::Document::HOSTING_MODE_SQLITE))
   {
     std::cerr << "Failed with SQLite" << std::endl;
+    cleanup();
     return EXIT_FAILURE;
   }
 
