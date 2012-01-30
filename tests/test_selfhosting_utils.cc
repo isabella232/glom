@@ -52,6 +52,11 @@ static void on_cleanup_progress()
   //std::cout << "Database cleanup progress" << std::endl;
 }
 
+static void on_db_creation_progress()
+{
+  //std::cout << "Database creation progress" << std::endl;
+}
+
 std::string temp_filepath_dir;
 
 static bool check_directory_exists()
@@ -138,6 +143,102 @@ void test_selfhosting_cleanup()
   temp_filepath_dir.clear();
 }
 
+bool test_create_and_selfhost_new_empty(Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
+{
+  if( (hosting_mode != Glom::Document::HOSTING_MODE_POSTGRES_SELF) &&
+    (hosting_mode != Glom::Document::HOSTING_MODE_SQLITE) )
+  {
+    std::cerr << G_STRFUNC << ": This test function does not support the specified hosting_mode: " << hosting_mode << std::endl;
+    return false;
+  }
+
+  //Save a copy, specifying the path to file in a directory:
+  //For instance, /tmp/testglom/testglom.glom");
+  const std::string temp_filename = "testglom";
+  temp_filepath_dir = 
+    Glom::Utils::get_temp_directory_path(temp_filename);
+  if(!subdirectory_path.empty())
+    temp_filepath_dir = Glib::build_filename(temp_filepath_dir, subdirectory_path);
+  const std::string temp_filepath = Glib::build_filename(temp_filepath_dir, temp_filename);
+
+  //Make sure that the file does not exist yet:
+  {
+    const Glib::ustring uri = Glib::filename_to_uri(temp_filepath_dir);
+    delete_directory(uri);
+  }
+
+   //Save the example as a real file:
+  const Glib::ustring file_uri = Glib::filename_to_uri(temp_filepath);
+  document.set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
+  document.set_file_uri(file_uri);
+
+  document.set_hosting_mode(hosting_mode);
+  document.set_is_example_file(false);
+  document.set_network_shared(false);
+  const bool saved = document.save();
+  g_assert(saved);
+
+  //Specify the backend and backend-specific details to be used by the connectionpool.
+  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+  connection_pool->setup_from_document(&document);
+
+  //We must specify a default username and password:
+  Glib::ustring password;
+  const Glib::ustring user = Glom::Privs::get_default_developer_user_name(password);
+  connection_pool->set_user(user);
+  connection_pool->set_password(password);
+
+  //Create the self-hosting files:
+  const Glom::ConnectionPool::InitErrors initialized_errors =
+    connection_pool->initialize( sigc::ptr_fun(&on_initialize_progress) );
+  g_assert(initialized_errors == Glom::ConnectionPool::Backend::INITERROR_NONE);
+  
+  if(!check_directory_exists())
+  {
+    std::cerr << "Failure: The data directory does not exist after calling initialize()." << std::endl; 
+  }
+
+  //Start self-hosting:
+  //TODO: Let this happen automatically on first connection?
+  const Glom::ConnectionPool::StartupErrors started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
+  if(started != Glom::ConnectionPool::Backend::STARTUPERROR_NONE)
+  {
+    std::cerr << "connection_pool->startup(): result=" << started << std::endl;
+    test_selfhosting_cleanup();
+  }
+  g_assert(started == Glom::ConnectionPool::Backend::STARTUPERROR_NONE);
+
+  return true;
+}
+
+bool test_create_and_selfhost_new_database(Glom::Document& document, Glom::Document::HostingMode hosting_mode, const Glib::ustring& database_name, const std::string& subdirectory_path)
+{
+  if(!test_create_and_selfhost_new_empty(document, hosting_mode, subdirectory_path))
+  {
+    std::cerr << G_STRFUNC << ": test_create_and_selfhost_new_empty() failed." << std::endl;
+    return false;
+  } 
+
+  const Glib::ustring db_name = Glom::DbUtils::get_unused_database_name("test_db");
+  if(db_name.empty())
+  {
+    std::cerr << "DbUtils::get_unused_database_name) failed." << std::endl;
+    return false;
+  }
+
+  //Create a database:
+  const bool created = Glom::DbUtils::create_database(&document, db_name,
+    "test title", sigc::ptr_fun(&on_db_creation_progress));
+  if(!created)
+  {
+    std::cerr << "DbUtils::create_database() failed." << std::endl;
+    return false;
+  }
+  
+  return true;
+}
+
+
 bool test_create_and_selfhost_from_example(const std::string& example_filename, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
 {
   Glib::ustring uri;
@@ -187,62 +288,11 @@ bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Gl
     return false;
   }
 
-  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
-
-  //Save a copy, specifying the path to file in a directory:
-  //For instance, /tmp/testglom/testglom.glom");
-  const std::string temp_filename = "testglom";
-  temp_filepath_dir = 
-    Glom::Utils::get_temp_directory_path(temp_filename);
-  if(!subdirectory_path.empty())
-    temp_filepath_dir = Glib::build_filename(temp_filepath_dir, subdirectory_path);
-  const std::string temp_filepath = Glib::build_filename(temp_filepath_dir, temp_filename);
-
-  //Make sure that the file does not exist yet:
+  if(!test_create_and_selfhost_new_empty(document, hosting_mode, subdirectory_path))
   {
-    const Glib::ustring uri = Glib::filename_to_uri(temp_filepath_dir);
-    delete_directory(uri);
+    std::cerr << G_STRFUNC << ": test_create_and_selfhost_new_empty() failed." << std::endl;
+    return false;
   }
-
-  //Save the example as a real file:
-  const Glib::ustring file_uri = Glib::filename_to_uri(temp_filepath);
-  document.set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
-  document.set_file_uri(file_uri);
-
-  document.set_hosting_mode(hosting_mode);
-  document.set_is_example_file(false);
-  document.set_network_shared(false);
-  const bool saved = document.save();
-  g_assert(saved);
-
-  //Specify the backend and backend-specific details to be used by the connectionpool.
-  connection_pool->setup_from_document(&document);
-
-  //We must specify a default username and password:
-  Glib::ustring password;
-  const Glib::ustring user = Glom::Privs::get_default_developer_user_name(password);
-  connection_pool->set_user(user);
-  connection_pool->set_password(password);
-
-  //Create the self-hosting files:
-  const Glom::ConnectionPool::InitErrors initialized_errors =
-    connection_pool->initialize( sigc::ptr_fun(&on_initialize_progress) );
-  g_assert(initialized_errors == Glom::ConnectionPool::Backend::INITERROR_NONE);
-  
-  if(!check_directory_exists())
-  {
-    std::cerr << "Failure: The data directory does not exist after calling initialize()." << std::endl; 
-  }
-
-  //Start self-hosting:
-  //TODO: Let this happen automatically on first connection?
-  const Glom::ConnectionPool::StartupErrors started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
-  if(started != Glom::ConnectionPool::Backend::STARTUPERROR_NONE)
-  {
-    std::cerr << "connection_pool->startup(): result=" << started << std::endl;
-    test_selfhosting_cleanup();
-  }
-  g_assert(started == Glom::ConnectionPool::Backend::STARTUPERROR_NONE);
 
   const bool recreated = Glom::DbUtils::recreate_database_from_document(&document, sigc::ptr_fun(&on_recreate_progress) );
   if(!recreated)

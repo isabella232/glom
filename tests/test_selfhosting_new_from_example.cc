@@ -53,6 +53,22 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
+  //Test the system preferences for the database:
+  //TODO: We should store this only in the document anyway,
+  //and make it translatable:
+  /* TODO: This is not stored in the examples. Should it be?
+  const Glom::SystemPrefs prefs = 
+    Glom::DbUtils::get_database_preferences(&document);
+  g_return_val_if_fail(prefs.m_name == "Music Collection", false);
+  g_return_val_if_fail(prefs.m_org_name == "SomeOrganization Incorporated", false);
+  g_return_val_if_fail(prefs.m_org_address_street == "Some House", false);
+  g_return_val_if_fail(prefs.m_org_address_street2 == "123 Some Street", false);
+  g_return_val_if_fail(prefs.m_org_address_town == "Some Town", false);
+  g_return_val_if_fail(prefs.m_org_address_county == "Some State", false);
+  g_return_val_if_fail(prefs.m_org_address_postcode == "12345", false);
+  g_return_val_if_fail(prefs.m_org_address_country == "USA", false);
+  */
+
   test_selfhosting_cleanup();
  
   return true; 

@@ -27,6 +27,23 @@
 
 /** Create a .glom file from an example, with database data, and start a PostgreSQL server if necessary.
  *
+ * @param document A new empty document that will be filled with hosting details.
+ * @param hosting_mode Either HOSTING_MODE_POSTGRES_SELF or HOSTING_MODE_SQLITE
+ * @param subdirectory_path: An additional directory path to use under the temporary directory that will be used to save the file.
+ */
+bool test_create_and_selfhost_new_empty(Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path = std::string());
+
+/** Create a .glom file from an example, with database data, and start a PostgreSQL server if necessary.
+ *
+ * @param document A new empty document that will be filled with hosting details.
+ * @param hosting_mode Either HOSTING_MODE_POSTGRES_SELF or HOSTING_MODE_SQLITE
+ * @param database_name The name of the database to created.
+ * @param subdirectory_path: An additional directory path to use under the temporary directory that will be used to save the file.
+ */
+bool test_create_and_selfhost_new_database(Glom::Document& document, Glom::Document::HostingMode hosting_mode, const Glib::ustring& database_name,  const std::string& subdirectory_path = std::string());
+
+/** Create a .glom file from an example, with database data, and start a PostgreSQL server if necessary.
+ *
  * @param hosting_mode Either HOSTING_MODE_POSTGRES_SELF or HOSTING_MODE_SQLITE
  * @param subdirectory_path: An additional directory path to use under the temporary directory that will be used to save the file.
  */

@@ -1,5 +1,15 @@
 2012-01-30  Murray Cumming  <murrayc@murrayc.com>
 
+	test_selfhosting_new_empty: Move some code into test_selfhosting_utils
+
+	* tests/test_selfhosting_utils.[h|cc]: Add functions for self-hosting 
+	of an empty new database, used by the existing code too.
+	* Makefile_tests.am:
+	* tests/test_selfhosting_new_empty.cc: Use test_selfhosting_utils to 
+	simplify this code, making it easier to create variations of this test.
+
+2012-01-30  Murray Cumming  <murrayc@murrayc.com>
+
 	test_selfhosting_new_empty: Simplify the cleanup code.
 
 	* tests/test_selfhosting_new_empty.cc: Call cleanup if test() returns 
