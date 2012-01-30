@@ -108,6 +108,7 @@ glom_source_files = \
 	glom/variablesmap.h						\
 	glom/window_boxholder.cc					\
 	glom/window_boxholder.h						\
+	glom/onlineglom_strings.cc \
 	glom/bakery/app.cc						\
 	glom/bakery/app.h						\
 	glom/bakery/app_withdoc.cc					\

@@ -1,5 +1,16 @@
 2012-01-30  Murray Cumming  <murrayc@murrayc.com>
 
+	Add translatable strings from OnlineGlom
+
+	* glom/onlineglom_strings.cc:
+	* Makefile.am:
+	* po/POTFILES.in: Mention the new file.
+	These strings are actually used here:
+	http://gitorious.org/online-glom/gwt-glom/trees/master/src/main/resources/org/glom/web/client/ui
+	and I must manually copy the translations across until I find a better way.
+
+2012-01-30  Murray Cumming  <murrayc@murrayc.com>
+
 	Translatable: Remove unimplemented get_title_or_name_original().
 
 	* glom/libglom/data_structure/translatable_item.h: This 

@@ -13,6 +13,7 @@ glom/filechooser_export.cc
 glom/frame_glom.cc
 glom/glade_utils.cc
 glom/utils_ui.cc
+glom/onlineglom_strings.cc
 glom/bakery/app.cc
 glom/bakery/app_withdoc_gtk.cc
 glom/bakery/app_withdoc.cc
