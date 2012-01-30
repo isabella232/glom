@@ -1,3 +1,10 @@
+2012-01-30  Murray Cumming  <murrayc@murrayc.com>
+
+	Translatable: Remove unimplemented get_title_or_name_original().
+
+	* glom/libglom/data_structure/translatable_item.h: This 
+	method is not used, of course.
+
 2012-01-29  Murray Cumming  <murrayc@murrayc.com>
 
 	TableInfo, Report, PrintLayout: Make member variables private.

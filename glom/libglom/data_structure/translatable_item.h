@@ -53,8 +53,6 @@ public:
 
   virtual Glib::ustring get_title_or_name(const Glib::ustring& locale) const;
 
-  Glib::ustring get_title_or_name_original() const;
-
   /** Get the title's translation for the specified locale, falling back to the
    * original text if there is no translation.
    *
