@@ -1,3 +1,25 @@
+2012-02-01  Murray Cumming  <murrayc@murrayc.com>
+
+	Add test_selfhosting_new_from_example_operator.
+
+	* glom/base_db.[h|cc]: Move add_user() to
+	* glom/libglom/db_utils.[h|cc]:
+	* glom/frame_glom.cc:
+	* glom/mode_design/users/dialog_users_list.cc: Adapted.
+
+	* glom/libglom/connectionpool.cc: invalidate_connection():
+	Also clear m_pFieldTypes to make sure that we refill it when making 
+	a new connection.
+
+	* glom/libglom/data_structure/fieldtypes.[h|cc]: Add get_types_count().
+	* tests/test_selfhosting_utils.[h|cc]: Add test_selfhost() to 
+	start an already-existing .glom system.
+	* Makefile_tests.am:
+	* tests/test_selfhosting_new_from_example_operator.cc:
+	Add this new test which attempts to re-open a .glom system as
+	a non-developer user. This currently fails to get the list of 
+	tables from the database. I must investigate that.
+
 2012-01-30  Murray Cumming  <murrayc@murrayc.com>
 
 	Add test_selfhosting_new_empty_change_sysprefs.

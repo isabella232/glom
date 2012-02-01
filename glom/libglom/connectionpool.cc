@@ -268,6 +268,8 @@ static bool on_connection_pool_cache_timeout()
 
 sharedptr<SharedConnection> ConnectionPool::connect()
 {
+  //std::cout << G_STRFUNC << ": debug" << std::endl;
+
   //Don't try to connect if we don't have a backend to connect to.
   g_return_val_if_fail(m_backend.get(), sharedptr<SharedConnection>(0));
 
@@ -340,11 +342,16 @@ sharedptr<SharedConnection> ConnectionPool::connect()
         {
           //update_meta_store_table_names() has been known to throw an exception.
           //Glom is mostly unusable when it fails, but that's still better than a crash.
-          m_refGdaConnection->update_meta_store_table_names(m_backend->get_public_schema_name());
+          //std::cout << G_STRFUNC << ": Before update_meta_store_table_name()" << std::endl;
+          const bool test = m_refGdaConnection->update_meta_store_table_names(m_backend->get_public_schema_name());
+          if(!test && !m_fake_connection)
+          {
+            std::cerr << G_STRFUNC << ": update_meta_store_table_names() failed without an exception." << std::endl;
+          }
         }
         catch(const Glib::Error& ex)
         {
-          //If the conneciton was not opened, because it is a fake connection,
+          //If the connection was not opened, because it is a fake connection,
           //then we should not be surprised that this fails,
           //and a warning will only be useful later when get_meta_store_data() fails when used in get_table_names_from_database().
           if(!m_fake_connection)
@@ -496,6 +503,10 @@ Glib::ustring ConnectionPool::get_database() const
 
 const FieldTypes* ConnectionPool::get_field_types() const
 {
+  //TODO: Investigate this:
+  //if(!m_pFieldTypes)
+  //  std::cerr << G_STRFUNC << ": m_pFieldTypes is null but this should never happen." << std::endl;
+
   return m_pFieldTypes;
 }
 
@@ -507,6 +518,7 @@ Gnome::Gda::SqlOperatorType ConnectionPool::get_string_find_operator() const
 
 void ConnectionPool::invalidate_connection()
 {
+  //std::cerr << G_STRFUNC << ": debug" << std::endl;
   connection_cached.clear();
   connection_cached_timeout_connection.disconnect();
   connection_cached_finished_connection.disconnect();
@@ -516,6 +528,9 @@ void ConnectionPool::invalidate_connection()
     
   m_refGdaConnection.reset();
   m_sharedconnection_refcount = 0;
+
+  delete m_pFieldTypes;
+  m_pFieldTypes = 0;
 }
 
 void ConnectionPool::on_sharedconnection_finished()

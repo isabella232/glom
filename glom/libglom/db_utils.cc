@@ -246,8 +246,8 @@ bool recreate_database_from_document(Document* document, const sigc::slot<void>&
   sharedptr<SharedConnection> sharedconnection;
   try
   {
+    //Check that we can connect:
     sharedconnection = connection_pool->connect();
-      connection_pool->set_database(db_name); //The database was successfully created, so specify it when connecting from now on.
   }
   catch(const ExceptionConnection& ex)
   {
@@ -841,7 +841,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
     Glib::RefPtr<Gnome::Gda::DataModel> data_model_fields;
     try
     {
-      //This should work because we called update_meta_store_tables() in ConnectionPool,
+      //This should work because we called update_meta_store_table_names() in ConnectionPool,
       //and that gets the tables' fields too.
       data_model_fields = connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_FIELDS, holder_list);
     }
@@ -2014,6 +2014,75 @@ Glib::ustring build_query_add_user_to_group(const Glib::ustring& group, const Gl
 
   return "ALTER GROUP " + escape_sql_id(group) + " ADD USER " + escape_sql_id(user);
 }
+
+static Glib::ustring build_query_add_user(const Glib::ustring& user, const Glib::ustring& password, bool superuser)
+{
+  if(user.empty())
+  {
+    std::cerr << G_STRFUNC << ": user is empty" << std::endl;
+  }
+
+  if(password.empty())
+  {
+    std::cerr << G_STRFUNC << ": password is empty" << std::endl;
+  }
+
+  //Note that ' around the user fails, so we use ".
+  Glib::ustring strQuery = "CREATE USER " + DbUtils::escape_sql_id(user) + " PASSWORD '" + password + "'" ; //TODO: Escape the password.
+  if(superuser)
+    strQuery += " SUPERUSER CREATEDB CREATEROLE"; //Because SUPERUSER is not "inherited" from groups to members.
+
+  return strQuery;
+}
+
+bool add_user(const Document* document, const Glib::ustring& user, const Glib::ustring& password, const Glib::ustring& group)
+{
+  if(!document)
+  {
+    std::cerr << G_STRFUNC << ": document is null." << std::endl;
+    return false;
+  }
+
+  if(user.empty() || password.empty() || group.empty())
+  {
+    std::cerr << G_STRFUNC << ": user, password, or group are empty." << std::endl;
+    return false;
+  }
+
+  //Create the user:
+  const bool superuser = (group == GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+  const Glib::ustring query_add = build_query_add_user(user, password, superuser);
+  bool test = DbUtils::query_execute_string(query_add);
+  if(!test)
+  {
+    std::cerr << G_STRFUNC << ": CREATE USER failed." << std::endl;
+    return false;
+  }
+
+  //Add it to the group:
+  const Glib::ustring query_add_to_group = build_query_add_user_to_group(group, user);
+  test = DbUtils::query_execute_string(query_add_to_group);
+  if(!test)
+  {
+    std::cerr << G_STRFUNC << ": ALTER GROUP failed." << std::endl;
+    return false;
+  }
+
+  //Remove any user rights, so that all rights come from the user's presence in the group:
+  Document::type_listTableInfo table_list = document->get_tables();
+
+  for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+  {
+    const Glib::ustring table_name = (*iter)->get_name();
+    const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON " + DbUtils::escape_sql_id(table_name) + " FROM " + DbUtils::escape_sql_id(user);
+    const bool test = DbUtils::query_execute_string(strQuery);
+    if(!test)
+      std::cerr << G_STRFUNC << ": REVOKE failed." << std::endl;
+  }
+
+  return true;
+}
+
 
 void set_fake_connection()
 {

@@ -844,7 +844,7 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
         const bool initial_password_provided = connection_request_initial_password(user, password);
         bool added = false;
         if(initial_password_provided)
-          added = add_user(user, password, GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+          added = DbUtils::add_user(document, user, password, GLOM_STANDARD_GROUP_NAME_DEVELOPER);
 
         if(initial_password_provided && added)
         {
@@ -942,7 +942,7 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
         Glib::ustring default_password;
         const Glib::ustring default_user = Privs::get_default_developer_user_name(default_password);
 
-        const bool added = add_user(default_user, default_password, GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+        const bool added = DbUtils::add_user(document, default_user, default_password, GLOM_STANDARD_GROUP_NAME_DEVELOPER);
         if(!added)
         {
            shared = true;

@@ -1584,53 +1584,7 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
   }
 }
 
-bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password, const Glib::ustring& group)
-{
-  if(user.empty() || password.empty() || group.empty())
-    return false;
-
-  //Create the user:
-  //Note that ' around the user fails, so we use ".
-  Glib::ustring strQuery = "CREATE USER " + DbUtils::escape_sql_id(user) + " PASSWORD '" + password + "'" ; //TODO: Escape the password.
-  if(group == GLOM_STANDARD_GROUP_NAME_DEVELOPER)
-    strQuery += " SUPERUSER CREATEDB CREATEROLE"; //Because SUPERUSER is not "inherited" from groups to members.
-
-  bool test = DbUtils::query_execute_string(strQuery);
-  if(!test)
-  {
-    std::cerr << G_STRFUNC << ": CREATE USER failed." << std::endl;
-    return false;
-  }
-
-  //Add it to the group:
-  strQuery = DbUtils::build_query_add_user_to_group(group, user);
-  test = DbUtils::query_execute_string(strQuery);
-  if(!test)
-  {
-    std::cerr << G_STRFUNC << ": ALTER GROUP failed." << std::endl;
-    return false;
-  }
-
-  //Remove any user rights, so that all rights come from the user's presence in the group:
-  Document* document = get_document();
-  if(!document)
-    return true;
-
-  Document::type_listTableInfo table_list = document->get_tables();
-
-  for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
-  {
-    const Glib::ustring table_name = (*iter)->get_name();
-    const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON " + DbUtils::escape_sql_id(table_name) + " FROM " + DbUtils::escape_sql_id(user);
-    const bool test = DbUtils::query_execute_string(strQuery);
-    if(!test)
-      std::cerr << G_STRFUNC << ": REVOKE failed." << std::endl;
-  }
-
-  return true;
-}
-
-
+//TODO: Move this into libglom and test it.
 bool Base_DB::remove_user(const Glib::ustring& user)
 {
   if(user.empty())

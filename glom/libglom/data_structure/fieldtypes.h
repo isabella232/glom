@@ -39,6 +39,8 @@ public:
   Glib::ustring get_string_name_for_gdavaluetype(GType field_type) const;
 
   GType get_fallback_type_for_gdavaluetype(GType field_type) const;
+
+  guint get_types_count() const;
   
 private:
   typedef std::map<Glib::ustring, GType> type_mapSchemaStringsToGdaTypes;

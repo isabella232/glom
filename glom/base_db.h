@@ -290,11 +290,6 @@ protected:
   typedef std::vector<Glib::ustring> type_vec_strings;
   static type_vec_strings util_vecStrings_from_Fields(const type_vec_fields& fields);
 
-  /** Add a @a user to the database, with the specified @a password, in the specified @a group.
-   * @result true if the addition succeeded.
-   */
-  bool add_user(const Glib::ustring& user, const Glib::ustring& password, const Glib::ustring& group);
-
   /** Remove the @a user from the database.
    * @result true if the removal succeeded.
    */

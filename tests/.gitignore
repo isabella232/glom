@@ -19,6 +19,7 @@
 /test_selfhosting_new_empty
 /test_selfhosting_new_empty_change_sysprefs
 /test_selfhosting_new_from_example
+/test_selfhosting_new_from_example_operator
 /test_selfhosting_new_then_alter_table
 /test_selfhosting_new_then_backup_restore
 /test_selfhosting_new_then_get_privs

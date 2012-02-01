@@ -554,6 +554,10 @@ Glib::ustring Field::get_sql_type() const
         const GType fieldType = m_field_info->get_g_type();
         strType = pFieldTypes->get_string_name_for_gdavaluetype(fieldType);
       }
+      else
+      {
+        std::cerr << G_STRFUNC << ": get_field_types() returned null" << std::endl;
+      }
     }
 
     if(strType == "unknowntype")

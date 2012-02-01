@@ -56,10 +56,24 @@ bool test_create_and_selfhost_from_example(const std::string& example_filename, 
  */
 bool test_create_and_selfhost_from_uri(const Glib::ustring& file_uri, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path = std::string());
 
+/** Start self-hosting of a .glom document.
+ * @param document The document must already be saved to a file.
+ */
+bool test_selfhost(Glom::Document& document, const Glib::ustring& user, const Glib::ustring& password);
+
+
 bool test_model_expected_size(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, guint columns_count, guint rows_count);
 bool test_table_exists(const Glib::ustring& table_name, const Glom::Document& document);
 
-void test_selfhosting_cleanup();
+/** Return the URI of the temporary .glom file created by the test_create_and_selfhost_*() methods.
+ * This should only be used by some special tests.
+ */
+Glib::ustring test_get_temp_file_uri();
+
+/** Stop the self-hosting server process,
+ * and (optionally) delete the temporary .glom file and its data.
+ */
+void test_selfhosting_cleanup(bool delete_file = true);
 
 bool test_example_musiccollection_data(const Glom::Document* document);
 

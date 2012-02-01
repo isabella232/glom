@@ -179,6 +179,11 @@ Glib::ustring build_query_create_group(const Glib::ustring& group, bool superuse
 
 Glib::ustring build_query_add_user_to_group(const Glib::ustring& group, const Glib::ustring& user);
 
+/** Add a @a user to the database, with the specified @a password, in the specified @a group.
+ * @result true if the addition succeeded.
+ */
+bool add_user(const Document* document, const Glib::ustring& user, const Glib::ustring& password, const Glib::ustring& group);
+
 /** Get the value of the @a source_field from the @a relationship, using the @a key_value.
  */
 Gnome::Gda::Value get_lookup_value(Document* document, const Glib::ustring& table_name, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value & key_value);

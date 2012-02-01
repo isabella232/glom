@@ -57,7 +57,8 @@ static void on_db_creation_progress()
   //std::cout << "Database creation progress" << std::endl;
 }
 
-std::string temp_filepath_dir;
+static std::string temp_filepath_dir; //Remembered so we can delete it later.
+static Glib::ustring temp_file_uri; //Rememered so we can return it sometimes.
 
 static bool check_directory_exists()
 {
@@ -115,12 +116,15 @@ static bool delete_directory(const std::string& uri)
   return delete_directory(file);
 }
 
-void test_selfhosting_cleanup()
+void test_selfhosting_cleanup(bool delete_file)
 {
   Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
 
   const bool stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );
   g_assert(stopped);
+
+  if(!delete_file)
+    return;
 
   //Make sure the directory is removed at the end:
   if(!temp_filepath_dir.empty())
@@ -141,6 +145,29 @@ void test_selfhosting_cleanup()
   }
   
   temp_filepath_dir.clear();
+  temp_file_uri.clear(); //Forget this too.
+}
+
+bool test_selfhost(Glom::Document& document, const Glib::ustring& user, const Glib::ustring& password)
+{
+  //TODO: Let this happen automatically on first connection?
+  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+
+  connection_pool->setup_from_document(&document);
+
+  connection_pool->set_user(user);
+  connection_pool->set_password(password);
+
+  const Glom::ConnectionPool::StartupErrors started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
+  if(started != Glom::ConnectionPool::Backend::STARTUPERROR_NONE)
+  {
+    std::cerr << "connection_pool->startup(): result=" << started << std::endl;
+    test_selfhosting_cleanup();
+    return false;
+  }
+  g_assert(started == Glom::ConnectionPool::Backend::STARTUPERROR_NONE);
+
+  return true;
 }
 
 bool test_create_and_selfhost_new_empty(Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
@@ -168,9 +195,9 @@ bool test_create_and_selfhost_new_empty(Glom::Document& document, Glom::Document
   }
 
    //Save the example as a real file:
-  const Glib::ustring file_uri = Glib::filename_to_uri(temp_filepath);
+  temp_file_uri = Glib::filename_to_uri(temp_filepath);
   document.set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
-  document.set_file_uri(file_uri);
+  document.set_file_uri(temp_file_uri);
 
   document.set_hosting_mode(hosting_mode);
   document.set_is_example_file(false);
@@ -195,20 +222,17 @@ bool test_create_and_selfhost_new_empty(Glom::Document& document, Glom::Document
   
   if(!check_directory_exists())
   {
-    std::cerr << "Failure: The data directory does not exist after calling initialize()." << std::endl; 
+    std::cerr << "Failure: The data directory does not exist after calling initialize()." << std::endl;
+    return false;
   }
 
   //Start self-hosting:
-  //TODO: Let this happen automatically on first connection?
-  const Glom::ConnectionPool::StartupErrors started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
-  if(started != Glom::ConnectionPool::Backend::STARTUPERROR_NONE)
-  {
-    std::cerr << "connection_pool->startup(): result=" << started << std::endl;
-    test_selfhosting_cleanup();
-  }
-  g_assert(started == Glom::ConnectionPool::Backend::STARTUPERROR_NONE);
+  return test_selfhost(document, user, password);
+}
 
-  return true;
+Glib::ustring test_get_temp_file_uri()
+{
+  return temp_file_uri;
 }
 
 bool test_create_and_selfhost_new_database(Glom::Document& document, Glom::Document::HostingMode hosting_mode, const Glib::ustring& database_name, const std::string& subdirectory_path)
@@ -219,7 +243,7 @@ bool test_create_and_selfhost_new_database(Glom::Document& document, Glom::Docum
     return false;
   } 
 
-  const Glib::ustring db_name = Glom::DbUtils::get_unused_database_name("test_db");
+  const Glib::ustring db_name = Glom::DbUtils::get_unused_database_name(database_name);
   if(db_name.empty())
   {
     std::cerr << "DbUtils::get_unused_database_name) failed." << std::endl;

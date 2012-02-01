@@ -82,6 +82,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
             //std::cout << "debug: schema_type_string=" << schema_type_string << ", gda type=" << gdatype << "(" << g_type_name(gdatype) << ")" << std::endl;
 
             //Save it for later:
+            //std::cout << G_STRFUNC << ": debug: schema_type_string=" << schema_type_string << ", gdatype=" << g_type_name(gdatype) << std::endl;
             m_mapSchemaStringsToGdaTypes[schema_type_string] = gdatype;
 
             Glib::ustring gdatypestring = gda_g_type_to_string(gdatype); // TODO: What is this actually used for?
@@ -105,6 +106,21 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
 
 FieldTypes::~FieldTypes()
 {
+}
+
+guint FieldTypes::get_types_count() const
+{
+/*
+  if(!m_mapSchemaStringsToGdaTypes.empty())
+  {
+    const type_mapSchemaStringsToGdaTypes::const_iterator iter = m_mapSchemaStringsToGdaTypes.begin();
+    const Glib::ustring schema_type_string = iter->first;
+    const GType gdatype = iter->second;
+    std::cout << G_STRFUNC << ": debug: schema_type_string=" << schema_type_string << ", gdatype=" << g_type_name(gdatype) << std::endl;
+  }
+*/
+
+  return m_mapSchemaStringsToGdaTypes.size();
 }
 
 Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(GType field_type) const

@@ -258,7 +258,7 @@ void Dialog_UsersList::on_button_user_new()
   if(response != Gtk::RESPONSE_OK)
     return;
 
-  add_user(user, password, m_combo_group->get_active_text() /* group */);
+  DbUtils::add_user(get_document(), user, password, m_combo_group->get_active_text() /* group */);
   fill_list();
 }
 
