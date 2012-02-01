@@ -257,6 +257,29 @@ bool Privs::set_table_privileges(const Glib::ustring& group_name, const Glib::us
   return true;
 }
 
+static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
+{
+  sharedptr<SharedConnection> sharedconnection;
+  try
+  {
+     sharedconnection = ConnectionPool::get_and_connect();
+  }
+  catch (const Glib::Error& error)
+  {
+    std::cerr << G_STRFUNC << ": " << error.what() << std::endl;
+  }
+
+  if(!sharedconnection)
+  {
+    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
+    return Glib::RefPtr<Gnome::Gda::Connection>(0);
+  }
+
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+
+  return gda_connection;
+}
+
 Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name)
 {
   Privileges result;
@@ -274,95 +297,70 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
   //Get the permissions:
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-  builder->select_add_field("relacl", "pg_class");
-  builder->select_add_target("pg_class");
-  builder->set_where(
-    builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-      builder->add_field_id("relname", "pg_class"),
-      builder->add_expr(table_name)));
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
-  if(data_model && data_model->get_n_rows())
+
+  const Glib::ustring function_name = "has_table_privilege";
+  std::vector<Gnome::Gda::SqlBuilder::Id> args_base;
+
+  Glib::RefPtr<Gnome::Gda::Connection> connection = get_connection();
+  if(!connection)
   {
-    const Gnome::Gda::Value value = data_model->get_value_at(0, 0);
-
-    Glib::ustring access_details;
-    if(!value.is_null())
-      access_details = value.get_string();
-
-    //std::cout << "DEBUG: access_details:" << access_details << std::endl;
-
-    //Parse the strange postgres permissions format:
-    //For instance, "{murrayc=arwdxt/murrayc,operators=r/murrayc}" (Postgres 8.x)
-    //For instance, "{murrayc=arwdxt/murrayc,group operators=r/murrayc}" (Postgres <8.x)
-    const type_vec_strings vecItems = pg_list_separate(access_details);
-    for(type_vec_strings::const_iterator iterItems = vecItems.begin(); iterItems != vecItems.end(); ++iterItems)
-    {
-      Glib::ustring item = *iterItems;
-      //std::cout << "DEBUG: item:" << item << std::endl;
-
-      item = Utils::string_trim(item, "\""); //Remove quotes from front and back.
-
-      //std::cout << "DEBUG: item without quotes:" << item << std::endl;
-
-      //Find group permissions, ignoring user permissions:
-      //We need to find the role by name.
-      // Previous versions of Postgres (8.1, or maybe 7.4) prefixed group names by "group ",
-      // but that doesn't work for recent versions of Postgres,
-      // probably because the user and group concepts have been combined into "roles".
-      //
-      //const Glib::ustring strgroup = "group ";
-      const Glib::ustring strgroup = group_name + "=";
-      Glib::ustring::size_type posFind = item.find(strgroup);
-      if(posFind != Glib::ustring::npos)
-      {
-        //It is the needed group permision:
-
-        //Remove the "group " prefix (not needed for Postgres 8.x):
-        //item = item.substr(strgroup.size());
-        item = item.substr(posFind);
-        //std::cout << "DEBUG: user permissions:" << item << std::endl;
-
-        //Get the parts before and after the =:
-        const type_vec_strings vecParts = Utils::string_separate(item, "=");
-        if(vecParts.size() == 2)
-        {
-          const Glib::ustring this_group_name = vecParts[0];
-          if(this_group_name == group_name) //Only look at permissions for the requested group->
-          {
-            Glib::ustring group_permissions = vecParts[1];
-
-            //Get the part before the /user_who_granted_the_privileges:
-            const type_vec_strings vecParts = Utils::string_separate(group_permissions, "/");
-            if(!vecParts.empty())
-              group_permissions = vecParts[0];
-
-            //g_warning("  group=%s", group_name.c_str());
-            //g_warning("  permisisons=%s", group_permissions.c_str());
-
-            //Iterate through the characters:
-            for(Glib::ustring::iterator iter = group_permissions.begin(); iter != group_permissions.end(); ++iter)
-            {
-              gunichar chperm = *iter;
-              Glib::ustring perm(1, chperm);
-
-              //See http://www.postgresql.org/docs/8.0/interactive/sql-grant.html
-              if(perm == "r")
-                result.m_view = true;
-              else if(perm == "w")
-                result.m_edit = true;
-              else if(perm == "a")
-                result.m_create = true;
-              else if(perm == "d")
-                result.m_delete = true;
-            }
-          }
-        }
-      }
-
-    }
+    std::cerr << ": Could not get a connection." << std::endl;
+    return result;
   }
 
-  //g_warning("get_table_privileges(group_name=%s, table_name=%s) returning: %d", group_name.c_str(), table_name.c_str(), result.m_create);
+  //TODO: Why doesn't this need to be quoted like table_name.
+  //The group names are quoted when we create them:
+  //For some reason, this is what PostgreSQL wants: SELECT has_table_privilege('Some Group', '"Some Table"', 'SELECT');
+  //However, note that libgda does seem to escape characters here (for instance, changing ' to '').
+  //const Glib::ustring group_name_for_arg = connection->quote_sql_identifier(group_name);
+  const Glib::ustring group_name_for_arg = group_name;
+  args_base.push_back(builder->add_expr(group_name_for_arg));
+
+  //The table name must be quoted if it needs to be quoted,
+  //but not quoted if it is does not need to be quoted,
+  //because it must match how it was created, and libgda probably did not quote it unless necessary.
+  const Glib::ustring table_name_for_arg = connection->quote_sql_identifier(table_name);
+  args_base.push_back(builder->add_expr(table_name_for_arg));
+
+  std::vector<Gnome::Gda::SqlBuilder::Id> args = args_base;
+  args.push_back(builder->add_expr("SELECT"));
+  builder->add_field_value_id(builder->add_function(function_name, args));
+  args = args_base;
+  args.push_back(builder->add_expr("UPDATE"));
+  builder->add_field_value_id(builder->add_function(function_name, args));
+  args = args_base;
+  args.push_back(builder->add_expr("INSERT"));
+  builder->add_field_value_id(builder->add_function(function_name, args));
+  args = args_base;
+  args.push_back(builder->add_expr("DELETE"));
+  builder->add_field_value_id(builder->add_function(function_name, args));
+
+  //const Glib::ustring sql_debug = Utils::sqlbuilder_get_full_query(builder);
+  //std::cout << "DEBUG: " << sql_debug << std::endl;
+
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
+  if(!data_model || (data_model->get_n_rows() <= 0))
+  {
+    std::cerr << G_STRFUNC << ": The query returned no data." << std::endl;
+    return result;
+  }
+
+  if(data_model->get_n_columns() < 4)
+  {
+    std::cerr << G_STRFUNC << ": The query did not return enough columns." << std::endl;
+    return result;
+  }
+
+  Gnome::Gda::Value value = data_model->get_value_at(0, 0);
+  result.m_view = value.get_boolean();
+  value = data_model->get_value_at(1, 0);
+  result.m_edit = value.get_boolean();
+  value = data_model->get_value_at(2, 0);
+  result.m_create = value.get_boolean();
+  value = data_model->get_value_at(3, 0);
+  result.m_delete = value.get_boolean();
+  
+  //std::cout << G_STRFUNC << ": group_name=" << group_name << ", table_name=" << table_name << ", returning create=" << result.m_create << std::endl;
   return result;
 }
 

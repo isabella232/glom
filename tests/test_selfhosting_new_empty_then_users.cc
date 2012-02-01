@@ -98,9 +98,11 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   typedef std::vector<Glib::ustring> type_vec_strings;
   type_vec_strings table_names;
-  table_names.push_back("sometable1");
+  table_names.push_back("sometable");
+  table_names.push_back("SomeTableWithUpperCase");
   table_names.push_back("sometable with space characters");
-  table_names.push_back("sometable with a \" quote character");
+  table_names.push_back("sometable with a \" doublequote character");
+  table_names.push_back("sometable with a ' quote character");
   table_names.push_back("sometablewithaverylongnameyaddayaddayaddayaddayaddyaddayaddayaddayaddayaddayaddayaddayaddayaddayaddayaddayadda");
 
   //Add some tables, for the groups to have rights for:
@@ -133,7 +135,8 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   type_vec_strings group_names;
   group_names.push_back("somegroup1");
   group_names.push_back("somegroup with space characters");
-  group_names.push_back("somegroup with a \" quote character");
+  group_names.push_back("somegroup with a \" doublequote character");
+  group_names.push_back("somegroup with a ' quote character");
   group_names.push_back("somegroupwithaverylongnameyaddayaddayaddayaddayaddyaddayaddayad"); //Almost too big.
   //We expect this to fail because of an apparently-undocumented max pg_user size of 63 characters in PostgreSQL:
   //group_names.push_back("somegroupwithaverylongnameyaddayaddayaddayaddayaddyaddayaddayadd");
@@ -152,7 +155,8 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   type_vec_strings user_names;
   user_names.push_back("someuser1");
   user_names.push_back("someuser with space characters");
-  user_names.push_back("someuser with a \" quote character");
+  user_names.push_back("someuser with a \" doublequote character");
+  user_names.push_back("someuser with a ' quote character");
   user_names.push_back("someuserwithaverylongnameyaddayaddayaddayaddayaddyaddayadda"); //Almost too big, with space for the numeric suffix below.
   //We expect this to fail because of an apparently-undocumented max pg_user size of 63 characters in PostgreSQL:
   //user_names.push_back("someuserwithaverylongnameyaddayaddayaddayaddayaddyaddayaddayadd");
@@ -183,19 +187,42 @@ static bool test(Glom::Document::HostingMode hosting_mode)
           return false;
         }
 
-	/*
-        if(!privs.m_create)
+        //We default to create and delete being false:
+        /*
+        if(privs.m_create)
         {
           std::cerr << "Privs::get_table_privileges() returned an unexpected create privilege for group=" << group_name << ", table_name=" << table_name << std::endl;
           return false;
         }
 
-        if(!privs.m_delete)
+        if(privs.m_delete)
         {
           std::cerr << "Privs::get_table_privileges() returned an unexpected delete privilege for group=" << group_name << ", table_name=" << table_name << std::endl;
           return false;
         }
-	*/
+        */
+
+        //Change the privs and make sure that it worked:
+        Glom::Privileges privs_new;
+        privs_new.m_view = true;
+        privs_new.m_edit = true;
+        privs_new.m_create = true;
+        privs_new.m_delete = false;
+        if(!Glom::Privs::set_table_privileges(group_name, table_name, privs_new, false))
+        {
+          std::cerr << "Privs::set_table_privileges() failed for group=" << group_name << ", table_name=" << table_name << std::endl;
+          return false;
+        }
+
+        const Glom::Privileges privs_changed = Glom::Privs::get_table_privileges(group_name, table_name);
+        if( (privs_changed.m_view != privs_new.m_view) ||
+            (privs_changed.m_edit != privs_new.m_edit) ||
+            (privs_changed.m_create != privs_new.m_create) ||
+            (privs_changed.m_delete != privs_new.m_delete) )
+        {
+          std::cerr << "Changing and re-reading privileges failed for group=" << group_name << ", table_name=" << table_name << std::endl;
+          return false;
+        }
       }
 
       ++i;

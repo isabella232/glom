@@ -2028,6 +2028,7 @@ bool add_group(const Document* document, const Glib::ustring& group)
   }
  
   const Glib::ustring strQuery = DbUtils::build_query_create_group(group);
+  //std::cout << "DEBUGCREATE: " << strQuery << std::endl;
   const bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
