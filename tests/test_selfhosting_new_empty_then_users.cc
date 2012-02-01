@@ -52,6 +52,13 @@ static bool test_add_group(const Glom::Document& document, const Glib::ustring& 
     return false;
   }
 
+  const Glom::Privs::type_vec_strings user_list = Glom::Privs::get_database_users(group);
+  if(!user_list.empty())
+  {
+    std::cerr << "The user list is not empty as expected.." << std::endl;
+    return false;
+  }
+
   return true;
 }
 
@@ -88,23 +95,21 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
+
+  typedef std::vector<Glib::ustring> type_vec_strings;
+  type_vec_strings table_names;
+  table_names.push_back("sometable1");
+  table_names.push_back("sometable with space characters1");
+  table_names.push_back("sometable with a \" quote character");
+
   //Add some tables, for the groups to have rights for:
-  if(!Glom::DbUtils::create_table_with_default_fields(&document, "sometable1"))
+  for(type_vec_strings::const_iterator iter = table_names.begin(); iter != table_names.end(); ++iter)
   {
-    std::cerr << "Failure: create_table_with_default_fields() failed." << std::endl;
-    return false;
-  }
-
-  if(!Glom::DbUtils::create_table_with_default_fields(&document, "sometable with space characters"))
-  {
-    std::cerr << "Failure: create_table_with_default_fields() failed." << std::endl;
-    return false;
-  }
-
-  if(!Glom::DbUtils::create_table_with_default_fields(&document, "sometable with a \" quote character"))
-  {
-    std::cerr << "Failure: create_table_with_default_fields() failed." << std::endl;
-    return false;
+    if(!Glom::DbUtils::create_table_with_default_fields(&document, *iter))
+    {
+      std::cerr << "Failure: create_table_with_default_fields() failed." << std::endl;
+      return false;
+    }
   }
 
 
@@ -122,37 +127,37 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
+
   //Add groups:
-  if(!test_add_group(document, "somegroup"))
-    return false;
+  type_vec_strings group_names;
+  group_names.push_back("somegroup1");
+  group_names.push_back("somegroup with space characters1");
+  group_names.push_back("somegroup with a \" quote character");
 
-  if(!test_add_group(document, "somegroup with space characters"))
-    return false;
-
-  if(!test_add_group(document, "somegroup with a \" character"))
-    return false;
-
-
-  const Glib::ustring group_name = "somegroup";
-  const Glom::Privs::type_vec_strings user_list_original = Glom::Privs::get_database_users(group_name);
-  if(!user_list_original.empty())
+  //Add groups:
+  for(type_vec_strings::const_iterator iter = group_names.begin(); iter != group_names.end(); ++iter)
   {
-    std::cerr << "The user list is not empty as expected.." << std::endl;
-    return false;
+    //Add groups:
+    if(!test_add_group(document, *iter))
+      return false;
   }
 
 
   //Add users:
-  //TODO: Test strange group names here.
   //TODO: Test strange passwords.
-  if(!test_add_user(document, "someuser", group_name))
-    return false;
-
-  if(!test_add_user(document, "someuser with space characters", group_name))
-    return false;
-
-  if(!test_add_user(document, "someuser with a \" character", group_name))
-    return false;
+  type_vec_strings user_names;
+  user_names.push_back("someuser1");
+  user_names.push_back("someuser with space characters1");
+  user_names.push_back("someuser with a \" quote character");
+  for(type_vec_strings::const_iterator iter_user = user_names.begin(); iter_user != user_names.end(); ++iter_user)
+  {
+    for(type_vec_strings::const_iterator iter_group = group_names.begin(); iter_group != group_names.end(); ++iter_group)
+    {
+      const Glib::ustring username = *iter_user + "for_" + *iter_group; //Make sure the username is unique.
+      if(!test_add_user(document, username, *iter_group))
+        return false;
+    }
+  }
 
 
   test_selfhosting_cleanup(false /* do not delete the file. */);
