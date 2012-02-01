@@ -1,5 +1,13 @@
 2012-02-01  Murray Cumming  <murrayc@murrayc.com>
 
+	test_selfhosting_new_empty_then_users: Improvements.
+
+	* tests/test_selfhosting_new_empty_then_users.cc:
+	Add tables that will be affected.
+	Test strange characters in group and user names.
+
+2012-02-01  Murray Cumming  <murrayc@murrayc.com>
+
 	Add test_selfhosting_new_empty_then_users
 
 	* glom/mode_design/users/dialog_groups_list.cc: on_button_group_new():
