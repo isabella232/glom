@@ -75,7 +75,7 @@ static bool test_add_user(const Glom::Document& document, const Glib::ustring& u
   const Glom::Privs::type_vec_strings user_list = Glom::Privs::get_database_users(group);
   if(!contains(user_list, user))
   {
-    std::cerr << "Privs::get_database_groups() does not contain the expected user:" << std::endl;
+    std::cerr << "Privs::get_database_users() does not contain the expected user:" << std::endl;
     std::cerr << "  group: " << group << std::endl;
     std::cerr << "  user: " << user << std::endl;
     return false;

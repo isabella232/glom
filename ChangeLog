@@ -6,7 +6,7 @@
 	simplify the code and to make sure that we test adding of users with 
 	all the group types.
 	This shows a problem:
-	  Privs::get_database_groups() does not contain the expected user:
+	  Privs::get_database_users() does not contain the expected user:
 	  group: somegroup with space characters1
 	  user: someuser with space characters1for_somegroup with space characters1
 
