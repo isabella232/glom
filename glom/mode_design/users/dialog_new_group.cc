@@ -32,7 +32,7 @@ Dialog_NewGroup::Dialog_NewGroup(BaseObjectType* cobject, const Glib::RefPtr<Gtk
   m_entry_name(0)
 {
   builder->get_widget("entry_group_name", m_entry_name);
-  m_entry_name.set_max_length(Privs::MAX_ROLE_SIZE);
+  m_entry_name->set_max_length(Privs::MAX_ROLE_SIZE);
 
   //m_entry_name->signal_changed().connect( sigc::mem_fun(*this, &Dialog_NewGroup::on_entry_name_changed) );
 }
