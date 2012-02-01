@@ -1,5 +1,17 @@
 2012-02-01  Murray Cumming  <murrayc@murrayc.com>
 
+	Allow user and group names to have spaces and other special characters.
+
+	* glom/libglom/privs.cc: get_table_privileges(): Instead of parsing the
+	relacl.pg_class field, use the PostgreSQL has_table_privilege() 
+	function, though it needs some strange quoting (see comments).
+	This code is much simpler now. 
+	* tests/test_selfhosting_new_empty_then_users.cc: Add various other
+	table, group, and user names, to excercise the code.
+	This now passes.
+
+2012-02-01  Murray Cumming  <murrayc@murrayc.com>
+
 	Fix the build.
 
 	* glom/mode_design/users/dialog_new_group.cc:
