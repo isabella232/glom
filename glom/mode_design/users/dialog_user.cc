@@ -35,9 +35,13 @@ Dialog_User::Dialog_User(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
   //builder->get_widget("label_table_name", m_label_table_name);
 
   builder->get_widget("entry_user", m_entry_user);
+  m_entry_name.set_max_length(Privs::MAX_ROLE_SIZE);
   builder->get_widget_derived("combobox_group", m_combo_group);
+
   builder->get_widget("entry_password", m_entry_password);
+  m_entry_password.set_max_length(Privs::MAX_ROLE_SIZE); //Let's assume that this has a similar (undocumented in PostgreSQL) max size as the user.
   builder->get_widget("entry_password_confirm", m_entry_password_confirm);
+  m_entry_password_confirm.set_max_length(Privs::MAX_ROLE_SIZE);
 
   show_all_children();
 }

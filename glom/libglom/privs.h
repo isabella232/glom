@@ -32,6 +32,16 @@ class Privs : public GlomPostgres
 {
 public:
 
+  /** This is apparently undocumented in PostgreSQL,
+   * but if we try to create a user or group
+   * with more characters (or bytes?) than this then
+   * a truncated version of it will be read back.
+   */
+  enum constant
+  {
+     MAX_ROLE_SIZE = 63
+  };
+
   /** Get the groups with access to the database.
    */
   static type_vec_strings get_database_groups();

@@ -99,8 +99,9 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   typedef std::vector<Glib::ustring> type_vec_strings;
   type_vec_strings table_names;
   table_names.push_back("sometable1");
-  table_names.push_back("sometable with space characters1");
+  table_names.push_back("sometable with space characters");
   table_names.push_back("sometable with a \" quote character");
+  table_names.push_back("sometablewithaverylongnameyaddayaddayaddayaddayaddyaddayaddayaddayaddayaddayaddayaddayaddayaddayaddayaddayadda");
 
   //Add some tables, for the groups to have rights for:
   for(type_vec_strings::const_iterator iter = table_names.begin(); iter != table_names.end(); ++iter)
@@ -131,8 +132,11 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   //Add groups:
   type_vec_strings group_names;
   group_names.push_back("somegroup1");
-  group_names.push_back("somegroup with space characters1");
+  group_names.push_back("somegroup with space characters");
   group_names.push_back("somegroup with a \" quote character");
+  group_names.push_back("somegroupwithaverylongnameyaddayaddayaddayaddayaddyaddayaddayad"); //Almost too big.
+  //We expect this to fail because of an apparently-undocumented max pg_user size of 63 characters in PostgreSQL:
+  //group_names.push_back("somegroupwithaverylongnameyaddayaddayaddayaddayaddyaddayaddayadd");
 
   //Add groups:
   for(type_vec_strings::const_iterator iter = group_names.begin(); iter != group_names.end(); ++iter)
@@ -147,15 +151,21 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   //TODO: Test strange passwords.
   type_vec_strings user_names;
   user_names.push_back("someuser1");
-  user_names.push_back("someuser with space characters1");
+  user_names.push_back("someuser with space characters");
   user_names.push_back("someuser with a \" quote character");
+  user_names.push_back("someuserwithaverylongnameyaddayaddayaddayaddayaddyaddayadda"); //Almost too big, with space for the numeric suffix below.
+  //We expect this to fail because of an apparently-undocumented max pg_user size of 63 characters in PostgreSQL:
+  //user_names.push_back("someuserwithaverylongnameyaddayaddayaddayaddayaddyaddayaddayadd");
+
+  guint i = 0;
   for(type_vec_strings::const_iterator iter_user = user_names.begin(); iter_user != user_names.end(); ++iter_user)
   {
     for(type_vec_strings::const_iterator iter_group = group_names.begin(); iter_group != group_names.end(); ++iter_group)
     {
-      const Glib::ustring username = *iter_user + "for_" + *iter_group; //Make sure the username is unique.
+      const Glib::ustring username = Glib::ustring::compose("%1%2", *iter_user, i); //Make sure the username is unique.
       if(!test_add_user(document, username, *iter_group))
         return false;
+      ++i;
     }
   }
 

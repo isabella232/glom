@@ -1,5 +1,18 @@
 2012-02-01  Murray Cumming  <murrayc@murrayc.com>
 
+	Limit user and group name lengths.
+
+	* glom/libglom/privs.[h|cc]: Add a MAX_ROLE_SIZE enum constants.
+	I cannot find any PostgreSQL documentation of this 63 character limit.
+	* glom/mode_design/users/dialog_new_group.cc:
+	* glom/mode_design/users/dialog_user.cc: Use it to set maximum characters
+	for the entry boxes.
+	* tests/test_selfhosting_new_empty_then_users.cc: Show that the problem
+	found so far was caused by too-long names, not spaces.
+	I still need to check parsing of table permissions.
+
+2012-02-01  Murray Cumming  <murrayc@murrayc.com>
+
 	test_selfhosting_new_empty_then_users: Test user adding with all group names.
 
 	* tests/test_selfhosting_new_empty_then_users.cc: Use for loops to 
