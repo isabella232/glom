@@ -33,6 +33,7 @@ check_PROGRAMS =						\
 	tests/python/test_python_module \
 	tests/test_fake_connection \
 	tests/test_selfhosting_new_empty \
+	tests/test_selfhosting_new_empty_then_users \
 	tests/test_selfhosting_new_from_example \
 	tests/test_selfhosting_new_from_example_strangepath \
 	tests/test_selfhosting_new_then_report \
@@ -61,6 +62,7 @@ TESTS =	tests/test_document_load	\
 	tests/python/test_python_module \
 	tests/test_fake_connection \
 	tests/test_selfhosting_new_empty \
+	tests/test_selfhosting_new_empty_then_users \
 	tests/test_selfhosting_new_from_example \
 	tests/test_selfhosting_new_from_example_in_locales.sh \
 	tests/test_selfhosting_new_from_example_strangepath \
@@ -181,6 +183,10 @@ tests_test_fake_connection_CPPFLAGS = $(tests_cppflags)
 tests_test_selfhosting_new_empty_SOURCES = tests/test_selfhosting_new_empty.cc
 tests_test_selfhosting_new_empty_LDADD = $(tests_ldadd)
 tests_test_selfhosting_new_empty_CPPFLAGS = $(tests_cppflags)
+
+tests_test_selfhosting_new_empty_then_users_SOURCES = tests/test_selfhosting_new_empty_then_users.cc $(sources_test_selfhosting_utils)
+tests_test_selfhosting_new_empty_then_users_LDADD = $(tests_ldadd)
+tests_test_selfhosting_new_empty_then_users_CPPFLAGS = $(tests_cppflags)
 
 tests_test_selfhosting_new_from_example_SOURCES = tests/test_selfhosting_new_from_example.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_from_example_LDADD = $(tests_ldadd)

@@ -1933,6 +1933,121 @@ Glib::ustring build_query_add_user_to_group(const Glib::ustring& group, const Gl
   return "ALTER GROUP " + escape_sql_id(group) + " ADD USER " + escape_sql_id(user);
 }
 
+static Glib::ustring build_query_add_user(const Glib::ustring& user, const Glib::ustring& password, bool superuser)
+{
+  if(user.empty())
+  {
+    std::cerr << G_STRFUNC << ": user is empty" << std::endl;
+  }
+
+  if(password.empty())
+  {
+    std::cerr << G_STRFUNC << ": password is empty" << std::endl;
+  }
+
+  //Note that ' around the user fails, so we use ".
+  Glib::ustring strQuery = "CREATE USER " + DbUtils::escape_sql_id(user) + " PASSWORD '" + password + "'" ; //TODO: Escape the password.
+  if(superuser)
+    strQuery += " SUPERUSER CREATEDB CREATEROLE"; //Because SUPERUSER is not "inherited" from groups to members.
+
+  return strQuery;
+}
+
+bool add_user(const Document* document, const Glib::ustring& user, const Glib::ustring& password, const Glib::ustring& group)
+{
+  if(!document)
+  {
+    std::cerr << G_STRFUNC << ": document is null." << std::endl;
+    return false;
+  }
+
+  if(user.empty() || password.empty() || group.empty())
+  {
+    std::cerr << G_STRFUNC << ": user, password, or group are empty." << std::endl;
+    return false;
+  }
+
+  //Create the user:
+  const bool superuser = (group == GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+  const Glib::ustring query_add = build_query_add_user(user, password, superuser);
+  bool test = DbUtils::query_execute_string(query_add);
+  if(!test)
+  {
+    std::cerr << G_STRFUNC << ": CREATE USER failed." << std::endl;
+    return false;
+  }
+
+  //Add it to the group:
+  const Glib::ustring query_add_to_group = build_query_add_user_to_group(group, user);
+  test = DbUtils::query_execute_string(query_add_to_group);
+  if(!test)
+  {
+    std::cerr << G_STRFUNC << ": ALTER GROUP failed." << std::endl;
+    return false;
+  }
+
+  //Remove any user rights, so that all rights come from the user's presence in the group:
+  Document::type_listTableInfo table_list = document->get_tables();
+
+  for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+  {
+    const Glib::ustring table_name = (*iter)->get_name();
+    const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON " + DbUtils::escape_sql_id(table_name) + " FROM " + DbUtils::escape_sql_id(user);
+    const bool test = DbUtils::query_execute_string(strQuery);
+    if(!test)
+      std::cerr << G_STRFUNC << ": REVOKE failed." << std::endl;
+  }
+
+  return true;
+}
+
+bool add_group(const Document* document, const Glib::ustring& group)
+{
+  if(!document)
+  {
+    std::cerr << G_STRFUNC << ": document is null." << std::endl;
+    return false;
+  }
+
+  if(group.empty())
+  {
+    std::cerr << G_STRFUNC << ": group is empty." << std::endl;
+    return false;
+  }
+ 
+  const Glib::ustring strQuery = DbUtils::build_query_create_group(group);
+  const bool test = DbUtils::query_execute_string(strQuery);
+  if(!test)
+  {
+    std::cerr << G_STRFUNC << ": CREATE GROUP failed." << std::endl;
+    return false;
+  }
+
+  //Give the new group some sensible default privileges:
+  Privileges priv;
+  priv.m_view = true;
+  priv.m_edit = true;
+
+  Document::type_listTableInfo table_list = document->get_tables(true /* plus system prefs */);
+  for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+  {
+    if(!Privs::set_table_privileges(group, (*iter)->get_name(), priv))
+    {
+      std::cerr << G_STRFUNC << "Privs::set_table_privileges() failed." << std::endl;
+      return false;
+    }
+  }
+
+  //Let them edit the autoincrements too:
+  if(!Privs::set_table_privileges(group, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME, priv))
+  {
+    std::cerr << G_STRFUNC << "Privs::set_table_privileges() failed." << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
 void set_fake_connection()
 {
   //Allow a fake connection, so sqlbuilder_get_full_query() can work:

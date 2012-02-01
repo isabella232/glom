@@ -179,10 +179,12 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
   return result;
 }
 
-void Privs::set_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name, const Privileges& privs, bool developer_privs)
+bool Privs::set_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name, const Privileges& privs, bool developer_privs)
 {
   if(group_name.empty() || table_name.empty())
-    return;
+  {
+    return false;
+  }
 
   //Change the permission in the database:
 
@@ -237,19 +239,22 @@ void Privs::set_table_privileges(const Glib::ustring& group_name, const Glib::us
 
   const bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
-    std::cerr << G_STRFUNC << ": GRANT failed." << std::endl;
-  else
   {
-    if( (table_name != GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME) && privs.m_create )
-    {
-      //To create a record, you will usually need write access to the autoincrements table,
-      //so grant this too:
-      Privileges priv_autoincrements;
-      priv_autoincrements.m_view = true;
-      priv_autoincrements.m_edit = true;
-      set_table_privileges(group_name, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME, priv_autoincrements);
-    }
+    std::cerr << G_STRFUNC << ": GRANT failed." << std::endl;
+    return false;
   }
+
+  if( (table_name != GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME) && privs.m_create )
+  {
+    //To create a record, you will usually need write access to the autoincrements table,
+    //so grant this too:
+    Privileges priv_autoincrements;
+    priv_autoincrements.m_view = true;
+    priv_autoincrements.m_edit = true;
+    return set_table_privileges(group_name, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME, priv_autoincrements);
+  }
+
+  return true;
 }
 
 Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name)
