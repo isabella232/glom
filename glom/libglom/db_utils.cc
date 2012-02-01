@@ -2043,9 +2043,21 @@ bool add_user(const Document* document, const Glib::ustring& user, const Glib::u
     return false;
   }
 
-  if(user.empty() || password.empty() || group.empty())
+  if(user.empty())
   {
-    std::cerr << G_STRFUNC << ": user, password, or group are empty." << std::endl;
+    std::cerr << G_STRFUNC << ": user is empty." << std::endl;
+    return false;
+  }
+
+  if(password.empty())
+  {
+    std::cerr << G_STRFUNC << ": password is  empty." << std::endl;
+    return false;
+  }
+
+  if(group.empty())
+  {
+    std::cerr << G_STRFUNC << ": group is empty." << std::endl;
     return false;
   }
 
