@@ -60,7 +60,7 @@ public:
   static Glib::ustring get_default_developer_user_name(Glib::ustring& password);
 
   static Privileges get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name);
-  static void set_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name, const Privileges& privs, bool developer_privs = false);
+  static bool set_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name, const Privileges& privs, bool developer_privs = false);
 
   static Glib::ustring get_user_visible_group_name(const Glib::ustring& group_name);
 

@@ -255,30 +255,18 @@ void Dialog_GroupsList::on_button_group_new()
   if(response != Gtk::RESPONSE_OK)
     return;
 
-  if(!group_name.empty())
+  if(group_name.empty())
   {
-    const Glib::ustring strQuery = DbUtils::build_query_create_group(group_name);
-    const bool test = DbUtils::query_execute_string(strQuery);
-    if(!test)
-      std::cout << "debug: " << G_STRFUNC << ": CREATE GROUP failed." << std::endl;
-
-    //Give the new group some sensible default privileges:
-    Privileges priv;
-    priv.m_view = true;
-    priv.m_edit = true;
-
-    Document::type_listTableInfo table_list = get_document()->get_tables(true /* plus system prefs */);
-
-    for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
-    {
-      Privs::set_table_privileges(group_name, (*iter)->get_name(), priv);
-    }
-
-    //Let them edit the autoincrements too:
-    Privs::set_table_privileges(group_name, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME, priv);
-
-    fill_group_list();
+    std::cerr << ": group_name is empty" << std::endl;
+    return;
   }
+
+  if(!DbUtils::add_group(get_document(), group_name))
+  {
+    std::cerr << ": DbUtils::add_group() failed." << std::endl;
+  }
+
+  fill_group_list();
 }
 
 void Dialog_GroupsList::on_button_group_users()

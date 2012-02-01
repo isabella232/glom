@@ -36,6 +36,7 @@ check_PROGRAMS =						\
 	tests/test_fake_connection \
 	tests/test_selfhosting_new_empty \
 	tests/test_selfhosting_new_empty_change_sysprefs \
+	tests/test_selfhosting_new_empty_then_users \
 	tests/test_selfhosting_new_from_example \
 	tests/test_selfhosting_new_from_example_operator \
 	tests/test_selfhosting_new_from_example_strangepath \
@@ -71,6 +72,7 @@ TESTS =	tests/test_document_load	\
 	tests/test_fake_connection \
 	tests/test_selfhosting_new_empty \
 	tests/test_selfhosting_new_empty_change_sysprefs \
+	tests/test_selfhosting_new_empty_then_users \
 	tests/test_selfhosting_new_from_example \
 	tests/test_selfhosting_new_from_example_operator \
 	tests/test_selfhosting_new_from_example_in_locales.sh \
@@ -223,6 +225,10 @@ tests_test_selfhosting_new_empty_CPPFLAGS = $(tests_cppflags)
 tests_test_selfhosting_new_empty_change_sysprefs_SOURCES = tests/test_selfhosting_new_empty_change_sysprefs.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_empty_change_sysprefs_LDADD = $(tests_ldadd)
 tests_test_selfhosting_new_empty_change_sysprefs_CPPFLAGS = $(tests_cppflags)
+
+tests_test_selfhosting_new_empty_then_users_SOURCES = tests/test_selfhosting_new_empty_then_users.cc $(sources_test_selfhosting_utils)
+tests_test_selfhosting_new_empty_then_users_LDADD = $(tests_ldadd)
+tests_test_selfhosting_new_empty_then_users_CPPFLAGS = $(tests_cppflags)
 
 tests_test_selfhosting_new_from_example_SOURCES = tests/test_selfhosting_new_from_example.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_from_example_LDADD = $(tests_ldadd)

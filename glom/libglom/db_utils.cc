@@ -2083,6 +2083,53 @@ bool add_user(const Document* document, const Glib::ustring& user, const Glib::u
   return true;
 }
 
+bool add_group(const Document* document, const Glib::ustring& group)
+{
+  if(!document)
+  {
+    std::cerr << G_STRFUNC << ": document is null." << std::endl;
+    return false;
+  }
+
+  if(group.empty())
+  {
+    std::cerr << G_STRFUNC << ": group is empty." << std::endl;
+    return false;
+  }
+ 
+  const Glib::ustring strQuery = DbUtils::build_query_create_group(group);
+  const bool test = DbUtils::query_execute_string(strQuery);
+  if(!test)
+  {
+    std::cerr << G_STRFUNC << ": CREATE GROUP failed." << std::endl;
+    return false;
+  }
+
+  //Give the new group some sensible default privileges:
+  Privileges priv;
+  priv.m_view = true;
+  priv.m_edit = true;
+
+  Document::type_listTableInfo table_list = document->get_tables(true /* plus system prefs */);
+  for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+  {
+    if(!Privs::set_table_privileges(group, (*iter)->get_name(), priv))
+    {
+      std::cerr << G_STRFUNC << "Privs::set_table_privileges() failed." << std::endl;
+      return false;
+    }
+  }
+
+  //Let them edit the autoincrements too:
+  if(!Privs::set_table_privileges(group, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME, priv))
+  {
+    std::cerr << G_STRFUNC << "Privs::set_table_privileges() failed." << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
 
 void set_fake_connection()
 {
