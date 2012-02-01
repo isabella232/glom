@@ -133,6 +133,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
         builder->add_field_id("groname", "pg_group"),
         builder->add_expr(group_name)));
+    //TODO: Show SQL.
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
     if(data_model && data_model->get_n_rows())
     {
@@ -162,6 +163,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
           if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
           {
             const Gnome::Gda::Value value = data_model->get_value_at(0, 0);
+            //std::cout << G_STRFUNC << "DEBUG:  username=" << value.get_string() << std::endl; 
             result.push_back(value.get_string());
           }
           else
