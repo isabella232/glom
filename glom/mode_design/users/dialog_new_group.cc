@@ -19,6 +19,7 @@
  */
  
 #include "dialog_new_group.h"
+#include <libglom/privs.h>
 
 namespace Glom
 {

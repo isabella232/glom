@@ -20,6 +20,7 @@
 
 #include "dialog_user.h"
 #include <glom/frame_glom.h> //For Frame_Glom::show_ok_dialog().
+#include <libglom/privs.h>
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
@@ -35,7 +36,7 @@ Dialog_User::Dialog_User(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
   //builder->get_widget("label_table_name", m_label_table_name);
 
   builder->get_widget("entry_user", m_entry_user);
-  m_entry_name.set_max_length(Privs::MAX_ROLE_SIZE);
+  m_entry_user->set_max_length(Privs::MAX_ROLE_SIZE);
   builder->get_widget_derived("combobox_group", m_combo_group);
 
   builder->get_widget("entry_password", m_entry_password);
