@@ -162,12 +162,48 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   {
     for(type_vec_strings::const_iterator iter_group = group_names.begin(); iter_group != group_names.end(); ++iter_group)
     {
+      const Glib::ustring group_name = *iter_group;
       const Glib::ustring username = Glib::ustring::compose("%1%2", *iter_user, i); //Make sure the username is unique.
-      if(!test_add_user(document, username, *iter_group))
+      if(!test_add_user(document, username, group_name))
         return false;
+
+      for(type_vec_strings::const_iterator iter_table = table_names.begin(); iter_table != table_names.end(); ++iter_table)
+      {
+        const Glib::ustring table_name = *iter_table;
+        const Glom::Privileges privs = Glom::Privs::get_table_privileges(group_name, table_name);
+        if(!privs.m_view)
+        {
+          std::cerr << "Privs::get_table_privileges() returned an unexpected view privilege for group=" << group_name << ", table_name=" << table_name << std::endl;
+          return false;
+        }
+
+        if(!privs.m_edit)
+        {
+          std::cerr << "Privs::get_table_privileges() returned an unexpected edit privilege for group=" << group_name << ", table_name=" << table_name << std::endl;
+          return false;
+        }
+
+	/*
+        if(!privs.m_create)
+        {
+          std::cerr << "Privs::get_table_privileges() returned an unexpected create privilege for group=" << group_name << ", table_name=" << table_name << std::endl;
+          return false;
+        }
+
+        if(!privs.m_delete)
+        {
+          std::cerr << "Privs::get_table_privileges() returned an unexpected delete privilege for group=" << group_name << ", table_name=" << table_name << std::endl;
+          return false;
+        }
+	*/
+      }
+
       ++i;
     }
   }
+
+  //Test get_table_privileges().
+ 
 
 
   test_selfhosting_cleanup(false /* do not delete the file. */);

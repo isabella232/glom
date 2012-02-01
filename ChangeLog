@@ -1,5 +1,13 @@
 2012-02-01  Murray Cumming  <murrayc@murrayc.com>
 
+	test_selfhosting_new_empty_then_users: Show the problem with spaces.
+
+	* tests/test_selfhosting_new_empty_then_users.cc: 
+	Privs::get_table_privileges() must parse a strange format. This test
+	shows that it fails if the group name contains spaces.
+
+2012-02-01  Murray Cumming  <murrayc@murrayc.com>
+
 	Limit user and group name lengths.
 
 	* glom/libglom/privs.[h|cc]: Add a MAX_ROLE_SIZE enum constants.
