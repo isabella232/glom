@@ -1,5 +1,12 @@
 2012-02-01  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix the build.
+
+	* glom/mode_design/users/dialog_new_group.cc:
+	* glom/mode_design/users/dialog_user.cc: Add includes to fix the build.
+
+2012-02-01  Murray Cumming  <murrayc@murrayc.com>
+
 	test_selfhosting_new_empty_then_users: Show the problem with spaces.
 
 	* tests/test_selfhosting_new_empty_then_users.cc: 
