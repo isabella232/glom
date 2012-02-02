@@ -23,6 +23,7 @@
 #include <libglom/utils.h>
 #include <libglom/db_utils.h>
 #include <libglom/connectionpool.h>
+#include <libglom/privs.h>
 #include <glib.h> //For g_assert()
 #include <iostream>
 #include <cstdlib> //For EXIT_SUCCESS and EXIT_FAILURE
