@@ -117,6 +117,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       return false;
     }
 
+    if(Glom::Privs::get_user_is_in_group(connection_pool->get_user(), GLOM_STANDARD_GROUP_NAME_DEVELOPER))
+    {
+      std::cerr << "The operator user is in the developer group, but should not be." << std::endl;
+      return false;
+    }
+
+
     test_selfhosting_cleanup(); //Delete the file this time.
   }
  

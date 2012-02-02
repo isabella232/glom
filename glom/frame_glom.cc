@@ -464,7 +464,9 @@ void Frame_Glom::on_menu_developer_developer(const Glib::RefPtr<Gtk::RadioAction
       bool test = true;
 
       if(sharedconnection && sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
-        Privs::get_user_is_in_group(connection_pool->get_user(), GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+      {
+        test = Privs::get_user_is_in_group(connection_pool->get_user(), GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+      }
 
       if(test)
       {
