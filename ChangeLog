@@ -1,5 +1,17 @@
 2012-02-02  Murray Cumming  <murrayc@murrayc.com>
 
+	test_selfhosting_new_empty_then_users: Test user removal.
+
+	* glom/base_db.[h|cc]: Move remove_user() and 
+	remove_user_from_group() to
+	* glom/libglom/db_utils.[h|cc].
+	* glom/frame_glom.cc:
+	* glom/mode_design/users/dialog_users_list.cc: Adapted.
+	* tests/test_selfhosting_new_empty_then_users.cc: Test these
+	functions.
+
+2012-02-02  Murray Cumming  <murrayc@murrayc.com>
+
 	Really prevent changing to developer mode for non-developers.
 
 	* glom/frame_glom.cc: on_menu_developer_developer(): Actually use the

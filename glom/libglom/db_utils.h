@@ -168,11 +168,17 @@ Glib::ustring build_query_add_user_to_group(const Glib::ustring& group, const Gl
  */
 bool add_user(const Document* document, const Glib::ustring& user, const Glib::ustring& password, const Glib::ustring& group);
 
+/** Remove the @a user from the database.
+ * @result true if the removal succeeded.
+ */
+bool remove_user(const Glib::ustring& user);
+
 /** Add a @a group to the database.
  * @result true if the addition succeeded.
  */
 bool add_group(const Document* document, const Glib::ustring& group);
 
+bool remove_user_from_group(const Glib::ustring& user, const Glib::ustring& group);
 
 /** Get the value of the @a source_field from the @a relationship, using the @a key_value.
  */

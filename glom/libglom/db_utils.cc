@@ -2061,6 +2061,38 @@ bool add_group(const Document* document, const Glib::ustring& group)
   return true;
 }
 
+bool remove_user(const Glib::ustring& user)
+{
+  if(user.empty())
+    return false;
+
+  const Glib::ustring strQuery = "DROP USER " + DbUtils::escape_sql_id(user);
+  const bool test = DbUtils::query_execute_string(strQuery);
+  if(!test)
+  {
+    std::cerr << G_STRFUNC << ": DROP USER failed" << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
+bool remove_user_from_group(const Glib::ustring& user, const Glib::ustring& group)
+{
+  if(user.empty() || group.empty())
+    return false;
+
+  const Glib::ustring strQuery = "ALTER GROUP " + DbUtils::escape_sql_id(group) + " DROP USER " + DbUtils::escape_sql_id(user);
+  const bool test = DbUtils::query_execute_string(strQuery);
+  if(!test)
+  {
+    std::cerr << G_STRFUNC << ": ALTER GROUP failed." << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
 void set_fake_connection()
 {
   //Allow a fake connection, so sqlbuilder_get_full_query() can work:
