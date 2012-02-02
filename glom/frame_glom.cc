@@ -896,7 +896,7 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
           const bool reowned = set_database_owner_user(connectionpool->get_user());
           bool removed = false;
           if(reowned)
-            removed = remove_user(default_user);
+            removed = DbUtils::remove_user(default_user);
 
           if(!removed)
           {

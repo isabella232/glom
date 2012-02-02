@@ -290,13 +290,6 @@ protected:
   typedef std::vector<Glib::ustring> type_vec_strings;
   static type_vec_strings util_vecStrings_from_Fields(const type_vec_fields& fields);
 
-  /** Remove the @a user from the database.
-   * @result true if the removal succeeded.
-   */
-  bool remove_user(const Glib::ustring& user);
-
-  bool remove_user_from_group(const Glib::ustring& user, const Glib::ustring& group);
-
   bool set_database_owner_user(const Glib::ustring& user);
 
   /** Revoke any login rights from the user and remove it from any groups.

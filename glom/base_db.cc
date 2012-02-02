@@ -1584,39 +1584,6 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
   }
 }
 
-//TODO: Move this into libglom and test it.
-bool Base_DB::remove_user(const Glib::ustring& user)
-{
-  if(user.empty())
-    return false;
-
-  const Glib::ustring strQuery = "DROP USER " + DbUtils::escape_sql_id(user);
-  const bool test = DbUtils::query_execute_string(strQuery);
-  if(!test)
-  {
-    std::cerr << G_STRFUNC << ": DROP USER failed" << std::endl;
-    return false;
-  }
-
-  return true;
-}
-
-bool Base_DB::remove_user_from_group(const Glib::ustring& user, const Glib::ustring& group)
-{
-  if(user.empty() || group.empty())
-    return false;
-
-  const Glib::ustring strQuery = "ALTER GROUP " + DbUtils::escape_sql_id(group) + " DROP USER " + DbUtils::escape_sql_id(user);
-  const bool test = DbUtils::query_execute_string(strQuery);
-  if(!test)
-  {
-    std::cerr << G_STRFUNC << ": ALTER GROUP failed." << std::endl;
-    return false;
-  }
-
-  return true;
-}
-
 bool Base_DB::set_database_owner_user(const Glib::ustring& user)
 {
   if(user.empty())
@@ -1648,7 +1615,7 @@ bool Base_DB::disable_user(const Glib::ustring& user)
   for(type_vec_strings::const_iterator iter = vecGroups.begin(); iter != vecGroups.end(); ++iter)
   {
     const Glib::ustring group = *iter;
-    remove_user_from_group(user, group);
+    DbUtils::remove_user_from_group(user, group);
   }
 
   const Glib::ustring strQuery = "ALTER ROLE " + DbUtils::escape_sql_id(user) + " NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE";

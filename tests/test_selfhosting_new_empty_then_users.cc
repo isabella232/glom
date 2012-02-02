@@ -85,6 +85,33 @@ static bool test_add_user(const Glom::Document& document, const Glib::ustring& u
 }
 
 
+static bool change_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name, bool view, bool edit, bool create, bool del)
+{
+  //Change the privs and make sure that it worked:
+  Glom::Privileges privs_new;
+  privs_new.m_view = view;
+  privs_new.m_edit = edit;
+  privs_new.m_create = create;
+  privs_new.m_delete = del;
+  if(!Glom::Privs::set_table_privileges(group_name, table_name, privs_new, false))
+  {
+    std::cerr << "Privs::set_table_privileges() failed for group=" << group_name << ", table_name=" << table_name << std::endl;
+    return false;
+  }
+
+  const Glom::Privileges privs_changed = Glom::Privs::get_table_privileges(group_name, table_name);
+  if( (privs_changed.m_view != privs_new.m_view) ||
+    (privs_changed.m_edit != privs_new.m_edit) ||
+    (privs_changed.m_create != privs_new.m_create) ||
+    (privs_changed.m_delete != privs_new.m_delete) )
+  {
+    std::cerr << "Changing and re-reading privileges failed for group=" << group_name << ", table_name=" << table_name << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
   //Create and self-host the document:
@@ -202,27 +229,20 @@ static bool test(Glom::Document::HostingMode hosting_mode)
         }
         */
 
-        //Change the privs and make sure that it worked:
-        Glom::Privileges privs_new;
-        privs_new.m_view = true;
-        privs_new.m_edit = true;
-        privs_new.m_create = true;
-        privs_new.m_delete = false;
-        if(!Glom::Privs::set_table_privileges(group_name, table_name, privs_new, false))
-        {
-          std::cerr << "Privs::set_table_privileges() failed for group=" << group_name << ", table_name=" << table_name << std::endl;
+	if(!change_privileges(group_name, table_name, true, true, true, false))
           return false;
-        }
+      }
 
-        const Glom::Privileges privs_changed = Glom::Privs::get_table_privileges(group_name, table_name);
-        if( (privs_changed.m_view != privs_new.m_view) ||
-            (privs_changed.m_edit != privs_new.m_edit) ||
-            (privs_changed.m_create != privs_new.m_create) ||
-            (privs_changed.m_delete != privs_new.m_delete) )
-        {
-          std::cerr << "Changing and re-reading privileges failed for group=" << group_name << ", table_name=" << table_name << std::endl;
-          return false;
-        }
+      if(!Glom::DbUtils::remove_user_from_group(username, group_name))
+      {
+        std::cerr << "DbUtils::remove_user() failed for user=" << username << ", group=" << group_name << std::endl;
+        return false;
+      }
+
+      if(!Glom::DbUtils::remove_user(username))
+      {
+        std::cerr << "DbUtils::remove_user() failed for user=" << username << std::endl;
+        return false;
       }
 
       ++i;

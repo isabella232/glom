@@ -131,7 +131,7 @@ void Dialog_UsersList::on_button_user_remove()
         const Glib::ustring user = row[m_model_columns_users.m_col_name];
         if(!user.empty())
         {
-          remove_user_from_group(user, m_combo_group->get_active_text());
+          DbUtils::remove_user_from_group(user, m_combo_group->get_active_text());
 
           fill_list();
         }
@@ -167,7 +167,7 @@ void Dialog_UsersList::on_button_user_delete()
 
           if(response == Gtk::RESPONSE_OK)
           {
-            remove_user(user);
+            DbUtils::remove_user(user); //TODO: Warn about failure when this returns false?
             fill_list();
           }
         }
