@@ -904,6 +904,12 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
             //Try to revoke it instead.
             //TODO: Discover how to make remove_user() succeed.
             disabled = disable_user(default_user);
+            if(disabled)
+            {
+              //This message should be reassuring if the user sees a previous error
+              //about the default user not being removed.
+              std::cout << G_STRFUNC << ": The default user could not be removed, but it has been disabled." << std::endl;
+            }
           }
 
           if(!reowned || !(removed || disabled))

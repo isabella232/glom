@@ -1,5 +1,16 @@
 2012-02-02  Murray Cumming  <murrayc@murrayc.com>
 
+	Share on Network: Add reassuring message when user removal fails.
+
+	* glom/frame_glom.cc: Add a stdout message saying the the 
+	default user has been disabled, because the existing message
+	about the failure to remove the user looks at first like
+	a security problem.
+	I still do not know why removal fails, even though we do
+	change the ownership of the database.
+
+2012-02-02  Murray Cumming  <murrayc@murrayc.com>
+
 	test_selfhosting_new_empty_then_users: Test user removal.
 
 	* glom/base_db.[h|cc]: Move remove_user() and 
