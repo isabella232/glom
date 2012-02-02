@@ -1,3 +1,13 @@
+2012-02-02  Murray Cumming  <murrayc@murrayc.com>
+
+	Really prevent changing to developer mode for non-developers.
+
+	* glom/frame_glom.cc: on_menu_developer_developer(): Actually use the
+	result of Privs::get_user_is_in_group().
+	* tests/test_selfhosting_new_from_example_operator.cc: Test this
+	same function here, though this test currently fails anyway.
+	This fixes bug #669043 (alien) 
+
 2012-02-01  Murray Cumming  <murrayc@murrayc.com>
 
 	Allow user and group names to have spaces and other special characters.
