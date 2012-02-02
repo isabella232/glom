@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <glom_document xmlns="http://glom.org/glom_document" database_title="Lesson Planner" is_example="true" translation_original_locale="en" format_version="8" title="Lesson Planner">
   <trans_set>
+    <trans loc="cs" val="Rozvrh výuky"/>
     <trans loc="es" val="Planificador de lecciones"/>
     <trans loc="sl" val="Planer pouka"/>
   </trans_set>

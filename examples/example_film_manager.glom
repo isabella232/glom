@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <glom_document xmlns="http://glom.org/glom_document" database_title="Openismus Film Manager" is_example="true" translation_original_locale="en" format_version="8" title="Openismus Film Manager">
   <trans_set>
+    <trans loc="cs" val="Filmový manažer"/>
     <trans loc="es" val="Gestor de películas Openismus"/>
     <trans loc="sl" val="Upravljalnik filmov Openismus"/>
   </trans_set>

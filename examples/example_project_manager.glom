@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <glom_document xmlns="http://glom.org/glom_document" database_title="Project Manager Example" is_example="true" translation_original_locale="en" format_version="8" title="Project Manager Example">
   <trans_set>
+    <trans loc="cs" val="Správa projektu"/>
     <trans loc="es" val="Ejemplo de gestor de proyectos"/>
     <trans loc="sl" val="Primer zbirke upravljalnika projektov"/>
   </trans_set>
