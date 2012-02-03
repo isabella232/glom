@@ -232,6 +232,12 @@ std::string get_temp_directory_path(const std::string& prefix = std::string());
  */
 Glib::ustring get_temp_directory_uri(const std::string& prefix = std::string());
 
+/** @returns true if the script is OK, or 
+ * false if the script uses pygtk2, which would cause a crash,
+ * because Glom itself uses GTK+ 3.
+ */
+bool script_check_for_pygtk2(const Glib::ustring& script);
+
 } //namespace Utils
 
 } //namespace Glom
