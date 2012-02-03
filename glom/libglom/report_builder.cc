@@ -40,7 +40,7 @@ ReportBuilder::~ReportBuilder()
 {
 }
 
-void ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::Element& parent_node, const sharedptr<LayoutGroup>& group)
+bool ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::Element& parent_node, const sharedptr<LayoutGroup>& group)
 {
   //Add XML node:
   xmlpp::Element* node = parent_node.add_child(group->get_report_part_id());
@@ -54,14 +54,22 @@ void ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::
     sharedptr<LayoutItem_Text> item_text = sharedptr<LayoutItem_Text>::cast_dynamic(item);
     if(item_text)
     {
-      report_build_records_text(found_set, *node, item_text);
+      if(!report_build_records_text(found_set, *node, item_text))
+      {
+        std::cerr << G_STRFUNC << ": report_build_records_text() failed." << std::endl;
+        return false;
+      }
     }
     else
     {
       sharedptr<LayoutItem_Image> item_image = sharedptr<LayoutItem_Image>::cast_dynamic(item);
       if(item_image)
       {
-        report_build_records_image(found_set, *node, item_image);
+        if(!report_build_records_image(found_set, *node, item_image))
+        {
+          std::cerr << G_STRFUNC << ": report_build_records_image() failed." << std::endl;
+          return false;
+        }
       }
       else
       {
@@ -69,7 +77,11 @@ void ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::
         if(pField)
         {
           guint col_index = 0; //ignored.
-          report_build_records_field(found_set, *node, pField, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index);
+          if(!report_build_records_field(found_set, *node, pField, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index))
+          {
+            std::cerr << G_STRFUNC << ": report_build_records_field() failed." << std::endl;
+            return false;
+          }
         }
         else
         {
@@ -78,16 +90,21 @@ void ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::
           {
             //Reuse (a bit hacky) this function for the header and footer:
             guint col_index = 0; //Ignored, because the model is null.
-            report_build_records_vertical_group(found_set, *node, vertical_group, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index);
+            if(!report_build_records_vertical_group(found_set, *node, vertical_group, Glib::RefPtr<Gnome::Gda::DataModel>(), 0, col_index))
+            {
+              std::cerr << G_STRFUNC << ": report_build_records_vertical_group() failed." << std::endl;
+              return false;
+            }
           }
         }
       }
     }
   }
 
+  return true;
 }
 
-void ReportBuilder::report_build_summary(const FoundSet& found_set, xmlpp::Element& parent_node, const sharedptr<LayoutItem_Summary>& summary)
+bool ReportBuilder::report_build_summary(const FoundSet& found_set, xmlpp::Element& parent_node, const sharedptr<LayoutItem_Summary>& summary)
 {
   //Add XML node:
   xmlpp::Element* node = parent_node.add_child(summary->get_report_part_id());
@@ -102,7 +119,11 @@ void ReportBuilder::report_build_summary(const FoundSet& found_set, xmlpp::Eleme
     if(pGroupBy)
     {
       //Recurse, adding a sub-groupby block:
-      report_build_groupby(found_set, *node, pGroupBy);
+      if(!report_build_groupby(found_set, *node, pGroupBy))
+      {
+        std::cerr << G_STRFUNC << ": report_build_groupby() failed." << std::endl;
+        return false;
+      }
     }
     else
     {
@@ -110,7 +131,11 @@ void ReportBuilder::report_build_summary(const FoundSet& found_set, xmlpp::Eleme
       if(pSummary)
       {
         //Recurse, adding a summary block:
-        report_build_summary(found_set, *node, pSummary);
+        if(!report_build_summary(found_set, *node, pSummary))
+        {
+          std::cerr << G_STRFUNC << ": report_build_summary() failed." << std::endl;
+          return false;
+        }
       }
       else
       {
@@ -128,13 +153,19 @@ void ReportBuilder::report_build_summary(const FoundSet& found_set, xmlpp::Eleme
     found_set_used.m_sort_clause.clear();
 
     //Rows, with data:
-    report_build_records(found_set_used, *node, itemsToGet); //TODO: Check for failures.
+    if(!report_build_records(found_set_used, *node, itemsToGet))
+    {
+      std::cerr << G_STRFUNC << ": report_build_records() failed." << std::endl;
+      return false;
+    }
   }
+
+  return true;
 }
 
 
 
-void ReportBuilder::report_build_groupby_children(const FoundSet& found_set, xmlpp::Element& node, const sharedptr<LayoutItem_GroupBy>& group_by)
+bool ReportBuilder::report_build_groupby_children(const FoundSet& found_set, xmlpp::Element& node, const sharedptr<LayoutItem_GroupBy>& group_by)
 {
   //Get data and add child rows:
   type_vecLayoutItems itemsToGet;
@@ -146,7 +177,11 @@ void ReportBuilder::report_build_groupby_children(const FoundSet& found_set, xml
     if(pGroupBy)
     {
       //Recurse, adding a sub-groupby block:
-      report_build_groupby(found_set, node, pGroupBy);
+      if(!report_build_groupby(found_set, node, pGroupBy))
+      {
+        std::cerr << G_STRFUNC << ": report_build_groupby() failed." << std::endl;
+        return false;
+      }
     }
     else
     {
@@ -154,7 +189,11 @@ void ReportBuilder::report_build_groupby_children(const FoundSet& found_set, xml
       if(pSummary)
       {
         //Recurse, adding a summary block:
-        report_build_summary(found_set, node, pSummary);
+        if(!report_build_summary(found_set, node, pSummary))
+        {
+          std::cerr << G_STRFUNC << ": report_build_summary() failed." << std::endl;
+          return false;
+        }
       }
       else
       {
@@ -168,11 +207,17 @@ void ReportBuilder::report_build_groupby_children(const FoundSet& found_set, xml
     //Rows, with data:
     FoundSet found_set_records = found_set;
     found_set_records.m_sort_clause = group_by->get_fields_sort_by();
-    report_build_records(found_set_records, node, itemsToGet);
+    if(!report_build_records(found_set_records, node, itemsToGet))
+    {
+      std::cerr << G_STRFUNC << ": report_build_records() failed." << std::endl;
+      return false;
+    }
   }
+
+  return true;
 }
 
-void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp::Element& parent_node, const sharedptr<LayoutItem_GroupBy>& group_by)
+bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp::Element& parent_node, const sharedptr<LayoutItem_GroupBy>& group_by)
 {
   //Get the possible heading values.
   if(group_by->get_has_field_group_by())
@@ -196,9 +241,14 @@ void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
     builder->select_group_by( builder->add_field_id(field_group_by->get_name(), group_field_table_name) ); //TODO: And restrict to the current found set.
 
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
-    if(datamodel)
+    if(!datamodel)
     {
-      guint rows_count = datamodel->get_n_rows();
+      std::cerr << G_STRFUNC << ": The SQL query failed." << std::endl;
+      return false; 
+    }
+    else
+    {
+      const guint rows_count = datamodel->get_n_rows();
       for(guint row = 0; row < rows_count; ++row)
       {
         const Gnome::Gda::Value group_value = datamodel->get_value_at(0 /* col*/, row); //TODO: Catch exceptions.
@@ -239,12 +289,20 @@ void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
 
           if(!itemsToGet.empty())
           {
-            report_build_records(found_set_records, *nodeSecondaryFields, itemsToGet, true /* one record only */);
+            if(!report_build_records(found_set_records, *nodeSecondaryFields, itemsToGet, true /* one record only */))
+            {
+              std::cerr << G_STRFUNC << ": report_build_records() failed." << std::endl;
+              return false;
+            }
           }
         }
 
         //Get data and add child rows:
-        report_build_groupby_children(found_set_records, *nodeGroupBy, group_by);
+        if(!report_build_groupby_children(found_set_records, *nodeGroupBy, group_by))
+        {
+          std::cerr << G_STRFUNC << ": report_build_groupby_children() failed." << std::endl;
+          return false;
+        }
       }
     }
   }
@@ -254,11 +312,13 @@ void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
     //For instance, the user could use the GroupBy part just to specify a sort, though that would be a bit of a hack:
     xmlpp::Element* nodeGroupBy = parent_node.add_child(group_by->get_report_part_id()); //We need this to create the HTML table.
     Document::set_node_attribute_value_as_decimal_double(nodeGroupBy, "border_width", group_by->get_border_width());
-    report_build_groupby_children(found_set_parent, *nodeGroupBy, group_by);
+    return report_build_groupby_children(found_set_parent, *nodeGroupBy, group_by);
   }
+
+  return true;
 }
 
-void ReportBuilder::report_build_records_get_fields(const FoundSet& found_set, const sharedptr<LayoutGroup>& group, type_vecLayoutFields& items)
+bool ReportBuilder::report_build_records_get_fields(const FoundSet& found_set, const sharedptr<LayoutGroup>& group, type_vecLayoutFields& items)
 {
   for(LayoutGroup::type_list_items::iterator iterChildren = group->m_list_items.begin(); iterChildren != group->m_list_items.end(); ++iterChildren)
   {
@@ -267,7 +327,11 @@ void ReportBuilder::report_build_records_get_fields(const FoundSet& found_set, c
     sharedptr<LayoutItem_VerticalGroup> pVerticalGroup = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
     if(pVerticalGroup)
     {
-      report_build_records_get_fields(found_set, pVerticalGroup, items);
+      if(!report_build_records_get_fields(found_set, pVerticalGroup, items))
+      {
+        std::cerr << G_STRFUNC << ": report_build_records_get_fields() failed." << std::endl;
+        return false;
+      }
     }
     else
     {
@@ -276,9 +340,11 @@ void ReportBuilder::report_build_records_get_fields(const FoundSet& found_set, c
         items.push_back(pField);
     }
   }
+
+  return true;
 }
 
-void ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Element& parent_node, const type_vecLayoutItems& items, bool one_record_only)
+bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Element& parent_node, const type_vecLayoutItems& items, bool one_record_only)
 {
   if(!items.empty())
   {
@@ -311,7 +377,11 @@ void ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
         if(vertical_group)
         {
           //Get all the fields in this group:
-          report_build_records_get_fields(found_set, vertical_group, fieldsToGet);
+          if(!report_build_records_get_fields(found_set, vertical_group, fieldsToGet))
+          {
+            std::cerr << G_STRFUNC << ": report_build_records_get_fields() failed." << std::endl;
+            return false;
+          }
         }
       }
     }
@@ -327,7 +397,12 @@ void ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
       limit);
 
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(sql_query);
-    if(datamodel)
+    if(!datamodel)
+    {
+      std::cerr << G_STRFUNC << ": The SLQ query failed." << std::endl;
+      return false; 
+    }
+    else
     {
       const guint rows_count = datamodel->get_n_rows();
 
@@ -344,22 +419,33 @@ void ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
           sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
           if(field)
           {
-            report_build_records_field(found_set, *nodeRow, field, datamodel, row, colField);
+            if(!report_build_records_field(found_set, *nodeRow, field, datamodel, row, colField))
+            {
+              std::cerr << G_STRFUNC << ": report_build_records_field() failed." << std::endl;
+              return false;
+            }
           }
           else
           {
             sharedptr<LayoutItem_Text> item_text = sharedptr<LayoutItem_Text>::cast_dynamic(item);
             if(item_text)
             {
-              report_build_records_text(found_set, *nodeRow, item_text);
+              if(!report_build_records_text(found_set, *nodeRow, item_text))
+              {
+                std::cerr << G_STRFUNC << ": report_build_records_text() failed." << std::endl;
+                return false;
+              }
             }
             else
             {
               sharedptr<LayoutItem_VerticalGroup> item_verticalgroup = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
               if(item_verticalgroup)
               {
-                report_build_records_vertical_group(found_set, *nodeRow, item_verticalgroup, datamodel, row, colField);
-                //TODO
+                if(!report_build_records_vertical_group(found_set, *nodeRow, item_verticalgroup, datamodel, row, colField))
+                {
+                  std::cerr << G_STRFUNC << ": report_build_records_vertical_group() failed." << std::endl;
+                  return false;
+                }
               }
             }
           }
@@ -374,9 +460,11 @@ void ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
     //If there are no records, show zero
     //if(!rows_found && show_null_row)
   }
+
+  return true;
 }
 
-void ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Field>& field, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& colField, bool vertical)
+bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Field>& field, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& colField, bool vertical)
 {
   const Field::glom_field_type field_type = field->get_glom_type();
 
@@ -401,7 +489,10 @@ void ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
 
     if(!datamodel)
-      return;
+    {
+      std::cerr << G_STRFUNC << ": The SQL query failed." << std::endl;
+      return false;
+    }
 
     value = datamodel->get_value_at(colField, row); //TODO: Catch exceptions.
     colField = 0;
@@ -433,9 +524,11 @@ void ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
   }
 
   ++colField;
+
+  return true;
 }
 
-void ReportBuilder::report_build_records_text(const FoundSet& /* found_set */, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Text>& textobject, bool vertical)
+bool ReportBuilder::report_build_records_text(const FoundSet& /* found_set */, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Text>& textobject, bool vertical)
 {
   //Text object:
   xmlpp::Element* nodeField = nodeParent.add_child(textobject->get_report_part_id()); //We reuse this node type for text objects.
@@ -443,9 +536,11 @@ void ReportBuilder::report_build_records_text(const FoundSet& /* found_set */, x
 
   if(vertical)
     nodeField->set_attribute("vertical", "true");
+
+  return true;
 }
 
-void ReportBuilder::report_build_records_image(const FoundSet& /* found_set */, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Image>& imageobject, bool vertical)
+bool ReportBuilder::report_build_records_image(const FoundSet& /* found_set */, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Image>& imageobject, bool vertical)
 {
   //Text object:
   xmlpp::Element* nodeImage = nodeParent.add_child(imageobject->get_report_part_id()); //We reuse this node type for text objects.
@@ -453,9 +548,11 @@ void ReportBuilder::report_build_records_image(const FoundSet& /* found_set */, 
 
   if(vertical)
     nodeImage->set_attribute("vertical", "true");
+
+  return true;
 }
 
-void ReportBuilder::report_build_records_vertical_group(const FoundSet& found_set, xmlpp::Element& parentNode, const sharedptr<LayoutItem_VerticalGroup>& group, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& field_index)
+bool ReportBuilder::report_build_records_vertical_group(const FoundSet& found_set, xmlpp::Element& parentNode, const sharedptr<LayoutItem_VerticalGroup>& group, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& field_index)
 {
   xmlpp::Element* nodeGroupVertical = parentNode.add_child(group->get_report_part_id());
 
@@ -466,25 +563,39 @@ void ReportBuilder::report_build_records_vertical_group(const FoundSet& found_se
     sharedptr<LayoutItem_VerticalGroup> pVerticalGroup = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
     if(pVerticalGroup)
     {
-      report_build_records_vertical_group(found_set, *nodeGroupVertical, pVerticalGroup, datamodel, row, field_index);
+      if(!report_build_records_vertical_group(found_set, *nodeGroupVertical, pVerticalGroup, datamodel, row, field_index))
+      {
+        std::cerr << G_STRFUNC << ": report_build_records_vertical_group() failed." << std::endl;
+        return false;
+      }
     }
     else
     {
       sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
       if(pField)
       {
-        report_build_records_field(found_set, *nodeGroupVertical, pField, datamodel, row, field_index, true /* vertical, so we get a row for each field too. */);
+        if(!report_build_records_field(found_set, *nodeGroupVertical, pField, datamodel, row, field_index, true /* vertical, so we get a row for each field too. */))
+        {
+          std::cerr << G_STRFUNC << ": report_build_records_field() failed." << std::endl;
+          return false;
+        }
       }
       else
       {
         sharedptr<LayoutItem_Text> pText = sharedptr<LayoutItem_Text>::cast_dynamic(item);
         if(pText)
         {
-          report_build_records_text(found_set, *nodeGroupVertical, pText, true);
+          if(!report_build_records_text(found_set, *nodeGroupVertical, pText, true))
+          {
+            std::cerr << G_STRFUNC << ": report_build_records_text() failed." << std::endl;
+            return false;
+          }
         }
       }
     }
   }
+
+  return true;
 }
 
 //TODO: Return a URI
@@ -577,14 +688,24 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const share
     //The Group, and the details for each record in the group:
     sharedptr<LayoutItem_GroupBy> pGroupBy = sharedptr<LayoutItem_GroupBy>::cast_dynamic(pPart);
     if(pGroupBy)
-      report_build_groupby(found_set, *nodeParent, pGroupBy);
+    {
+      if(!report_build_groupby(found_set, *nodeParent, pGroupBy))
+      {
+        std::cerr << G_STRFUNC << ": report_build_groupby() failed." << std::endl;
+        return Glib::ustring();
+      }
+    }
     else
     {
       sharedptr<LayoutItem_Summary> pSummary = sharedptr<LayoutItem_Summary>::cast_dynamic(pPart);
       if(pSummary)
       {
         //Recurse, adding a summary block:
-        report_build_summary(found_set, *nodeParent, pSummary);
+        if(!report_build_summary(found_set, *nodeParent, pSummary))
+        {
+          std::cerr << G_STRFUNC << ": report_build_summary() failed." << std::endl;
+          return Glib::ustring();
+        }
       }
       else
       {
@@ -596,7 +717,11 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const share
           if(pHeader || pFooter)
           {
             //Recurse, adding a summary block:
-            report_build_headerfooter(found_set, *nodeParent, pGroup);
+            if(!report_build_headerfooter(found_set, *nodeParent, pGroup))
+            {
+              std::cerr << G_STRFUNC << ": report_build_headerfooter() failed." << std::endl;
+              return Glib::ustring();
+            }
           }
         }
         else
@@ -609,7 +734,11 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const share
   if(!itemsToGet_TopLevel.empty())
   {
     xmlpp::Element* nodeGroupBy = nodeParent->add_child("ungrouped_records");
-    report_build_records(found_set, *nodeGroupBy, itemsToGet_TopLevel);
+    if(!report_build_records(found_set, *nodeGroupBy, itemsToGet_TopLevel))
+    {
+      std::cerr << G_STRFUNC << ": report_build_records() failed." << std::endl;
+      return Glib::ustring();
+    }
   }
 
   return GlomXslUtils::transform(*pDocument, "print_report_to_html.xsl");

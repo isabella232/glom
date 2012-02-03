@@ -1,5 +1,12 @@
 2012-02-03  Murray Cumming  <murrayc@murrayc.com>
 
+	ReportBuilder: Add error checking.
+
+	* glom/libglom/report_builder.[h|cc]: Return bool
+	from the private methods and check those results.
+
+2012-02-03  Murray Cumming  <murrayc@murrayc.com>
+
 	Reports: Make summary fields work again.
 
 	* glom/libglom/report_builder.cc: report_build_summary():
