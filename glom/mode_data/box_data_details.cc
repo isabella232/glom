@@ -675,27 +675,30 @@ void Box_Data_Details::on_flowtable_field_open_details_requested(const sharedptr
 
 void Box_Data_Details::on_flowtable_script_button_clicked(const sharedptr<const LayoutItem_Button>& layout_item)
 {
-  if(layout_item)
+  if(!layout_item)
   {
-    const Gnome::Gda::Value primary_key_value = get_primary_key_value_selected();
-    const Glib::ustring table_name_before = m_table_name;
-    execute_button_script(layout_item, primary_key_value);
+    std::cerr << G_STRFUNC << ": layout_item is null" << std::endl;
+    return;
+  }
+  
+  const Gnome::Gda::Value primary_key_value = get_primary_key_value_selected();
+  const Glib::ustring table_name_before = m_table_name;
+  execute_button_script(layout_item, primary_key_value);
 
-    //Refresh the view, in case the script changed any data,
-    //but not if the script navigated away:
-    if(m_table_name != table_name_before)
-      return;
+  //Refresh the view, in case the script changed any data,
+  //but not if the script navigated away:
+  if(m_table_name != table_name_before)
+    return;
 
-    //(m_primary_key_value seems to be NULL here. We can use primary_key_value instead, but it's a bit strange. murrayc.)
-    if(get_primary_key_is_in_foundset(m_found_set, primary_key_value)) //Check, because maybe the script deleted the current record, or changed something so that it should no longer be shown in the found set.
-    {
-      refresh_data_from_database_with_primary_key(primary_key_value);
-    }
-    else
-    {
-      //Tell the parent to do something appropriate, such as show another record:
-      signal_record_deleted().emit(primary_key_value);
-    }
+  //(m_primary_key_value seems to be NULL here. We can use primary_key_value instead, but it's a bit strange. murrayc.)
+  if(get_primary_key_is_in_foundset(m_found_set, primary_key_value)) //Check, because maybe the script deleted the current record, or changed something so that it should no longer be shown in the found set.
+  {
+    refresh_data_from_database_with_primary_key(primary_key_value);
+  }
+  else
+  {
+    //Tell the parent to do something appropriate, such as show another record:
+    signal_record_deleted().emit(primary_key_value);
   }
 }
 

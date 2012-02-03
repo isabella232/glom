@@ -358,21 +358,21 @@ void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& l
   //We need the connection when we run the script, so that the script may use it.
   sharedptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */);
 
-    //Allow this UI to respond to UI change requests from the Python code:
-    AppPythonUICallbacks callbacks;
+  //Allow this UI to respond to UI change requests from the Python code:
+  AppPythonUICallbacks callbacks;
 
-    Glib::ustring error_message;
-    glom_execute_python_function_implementation(layout_item->get_script(),
-      field_values, //TODO: Maybe use the field's type here.
-      get_document(),
-      get_table_name(), field_primary_key, primary_key_value,
-      sharedconnection->get_gda_connection(),
-      callbacks,
-      error_message);
-    if(!error_message.empty())
-    {
-      std::cerr << "Python Error: " << error_message << std::endl;
-    }
+  Glib::ustring error_message;
+  glom_execute_python_function_implementation(layout_item->get_script(),
+    field_values, //TODO: Maybe use the field's type here.
+    get_document(),
+    get_table_name(), field_primary_key, primary_key_value,
+    sharedconnection->get_gda_connection(),
+    callbacks,
+    error_message);
+  if(!error_message.empty())
+  {
+    std::cerr << "Python Error: " << error_message << std::endl;
+  }
 }
 
 } //namespace Glom
