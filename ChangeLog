@@ -1,5 +1,19 @@
 2012-02-03  Murray Cumming  <murrayc@murrayc.com>
 
+	Reports: Make summary fields work again.
+
+	* glom/libglom/report_builder.cc: report_build_summary():
+	Remove any sort clause (ORDER BY) from the FoundSet because that makes 
+	no sense for a single row with summary fields. It looks like recent versions
+	of PostgreSQL have become more strict about this, producing this error, for
+	instance:
+	column "invoices.invoice_id" must appear in the GROUP BY clause or be used in an aggregate function
+	* Makefile_tests.am:
+	* tests/test_selfhosting_new_then_report_summary.cc: Add a test for this.
+	This fixes bug #669281 (alien)
+
+2012-02-03  Murray Cumming  <murrayc@murrayc.com>
+
 	Document: Really load the table privileges.
 
 	* glom/libglom/db_utils.[h|cc]: add_group(): Take a bool superuser

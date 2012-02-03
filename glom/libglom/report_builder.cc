@@ -121,8 +121,14 @@ void ReportBuilder::report_build_summary(const FoundSet& found_set, xmlpp::Eleme
 
   if(!itemsToGet.empty())
   {
+    //Make sure that the FoundSet has no ORDER BY, because
+    //a) That makes no sense for a single summary row result.
+    //b) That would require us to mention the ORDER BY field in the GROUP BY clause or in an aggregate function.
+    FoundSet found_set_used = found_set;
+    found_set_used.m_sort_clause.clear();
+
     //Rows, with data:
-    report_build_records(found_set, *node, itemsToGet);
+    report_build_records(found_set_used, *node, itemsToGet); //TODO: Check for failures.
   }
 }
 

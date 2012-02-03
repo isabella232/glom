@@ -1347,7 +1347,7 @@ Orientation=portrait
       </data_layout>
     </data_layouts>
     <reports>
-      <report name="By Customer" title="By Customer">
+      <report name="by_customer" title="By Customer">
         <data_layout_groups>
           <data_layout_group>
             <data_layout_item_groupby>
