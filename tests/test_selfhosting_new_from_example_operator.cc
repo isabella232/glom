@@ -28,6 +28,14 @@
 #include <iostream>
 #include <cstdlib> //For EXIT_SUCCESS and EXIT_FAILURE
 
+template<typename T_Container, typename T_Value>
+bool contains(const T_Container& container, const T_Value& name)
+{
+  typename T_Container::const_iterator iter =
+    std::find(container.begin(), container.end(), name);
+  return iter != container.end();
+}
+
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
   Glib::ustring temp_file_uri;
@@ -53,7 +61,16 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     }
 
     //Add an operator user:
-    if(!Glom::DbUtils::add_user(&document, operator_user, operator_password, "personnel_department"))
+    const Glib::ustring operator_group_name = "personnel_department";
+    const Glom::DbUtils::type_vec_strings group_list = 
+      Glom::Privs::get_database_groups();
+    if(!contains(group_list, operator_group_name))
+    {
+      std::cerr << "The expected group was not found." << std::endl;
+      return false;
+    }
+
+    if(!Glom::DbUtils::add_user(&document, operator_user, operator_password, operator_group_name))
     {
       std::cerr << "DbUtils::add_user() failed." << std::endl;
       test_selfhosting_cleanup();
