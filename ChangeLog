@@ -1,5 +1,17 @@
 2012-02-03  Murray Cumming  <murrayc@murrayc.com>
 
+	Button scripts: Check and warn about pygtk2 instead of crashing.
+
+	* glom/libglom/utils.[h|cc]: Add script_check_for_pygtk().
+	* Makefile_tests.am:
+	* tests/test_script_check_for_problems.cc: Add a test for the check
+	function.
+	* glom/mode_data/box_data.cc: execute_button_script(): Show a 
+	warning dialog, and do not run the script, if it seems to use pygtk.
+	This should help with but #669196 (alien) and ##661766 (Andre Klapper) .
+
+2012-02-03  Murray Cumming  <murrayc@murrayc.com>
+
 	ReportBuilder: Add error checking.
 
 	* glom/libglom/report_builder.[h|cc]: Return bool
