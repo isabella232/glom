@@ -1,3 +1,12 @@
+2012-02-03  Murray Cumming  <murrayc@murrayc.com>
+
+	Add some runtime warnings.
+
+	* glom/libglom/db_utils.cc: get_table_names_from_database():
+	Slightly improved error checking. 
+	* glom/libglom/privs.cc: set_table_privileges():
+	Warn if a GRANT fails.
+
 2012-02-02  Murray Cumming  <murrayc@murrayc.com>
 
 	Share on Network: Add reassuring message when user removal fails.
