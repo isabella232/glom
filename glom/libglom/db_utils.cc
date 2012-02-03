@@ -651,7 +651,7 @@ bool add_groups_from_document(Document* document)
   {
     const GroupInfo& group = *iter;
     const Glib::ustring name = group.get_name();
-    std::cout << G_STRFUNC << ": DEBUG: group=" << name << std::endl;
+    //std::cout << G_STRFUNC << ": DEBUG: group=" << name << std::endl;
 
     //See if the group exists in the database:
     type_vec_strings::const_iterator iterFind = std::find(database_groups.begin(), database_groups.end(), name);
