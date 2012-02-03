@@ -46,12 +46,19 @@ bool contains_named(const T_Container& container, const Glib::ustring& name)
   return iter != container.end();
 }
 
-static bool groups_contain_named(const Glom::Document::type_list_groups& container, const Glib::ustring& name)
+static bool get_group_named(const Glom::Document::type_list_groups& container, const Glib::ustring& name, Glom::GroupInfo& group_info).
 {
-  const Glom::Document::type_list_groups::const_iterator iter =
+  Glom::Document::type_list_groups::const_iterator iter =
     std::find_if(container.begin(), container.end(),
       Glom::predicate_FieldHasName<Glom::GroupInfo>(name));
-  return iter != container.end();
+  if(iter != container.end())
+  {
+    group_info = *iter;
+    return true;
+  }
+  
+  group_info = Glom::GroupInfo();
+  return false;
 }
 
 static bool needs_navigation(Glom::Document& document, const Glib::ustring& table_name, const Glib::ustring& field_name)
@@ -309,9 +316,21 @@ int main()
 
   
   //Test user groups:
-  Glom::Document::type_list_groups groups = document.get_groups();
-  g_assert(groups_contain_named(groups, "glom_developer"));
-  g_assert(groups_contain_named(groups, "accounts"));
+  Glom::Document::type_list_groups user_groups = document.get_groups();
+  Glom::GroupInfo group_info_ignored;
+  g_assert(get_group_named(user_groups, "glom_developer", group_info_ignored));
+
+  Glom::GroupInfo group_info_accounts;
+  g_assert(get_group_named(user_groups, "props_department", group_info_accounts));
+  Glom::GroupInfo::type_map_table_privileges::const_iterator iterFind =
+    group_info_accounts.m_map_privileges.find("scenes");
+  const bool privileges_found = (iterFind != group_info_accounts.m_map_privileges.end());
+  g_assert(privileges_found);
+  const Glom::Privileges privs = iterFind->second;
+  g_assert(privs.m_view == true);
+  g_assert(privs.m_edit == true);
+  g_assert(privs.m_create == false);
+  g_assert(privs.m_delete == false);
 
   //Test navigation:
   if(!needs_navigation(document, "scenes", "location_id"))

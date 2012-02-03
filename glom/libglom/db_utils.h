@@ -176,7 +176,7 @@ bool remove_user(const Glib::ustring& user);
 /** Add a @a group to the database.
  * @result true if the addition succeeded.
  */
-bool add_group(const Document* document, const Glib::ustring& group);
+bool add_group(const Document* document, const Glib::ustring& group, bool superuser = false);
 
 bool remove_user_from_group(const Glib::ustring& user, const Glib::ustring& group);
 

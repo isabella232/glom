@@ -1,5 +1,32 @@
 2012-02-03  Murray Cumming  <murrayc@murrayc.com>
 
+	Document: Really load the table privileges.
+
+	* glom/libglom/db_utils.[h|cc]: add_group(): Take a bool superuser
+	parameter.
+	add_groups_from_document(): Use add_group() instead of executing
+	the ADD GROUP query directly, to make sure that we also start 
+	with some sane table privileges defaults, in case nothing else 
+	sets the privielges.
+	* glom/libglom/document/document.cc: load_after(): Fix a typo
+	so that the group privileges are really loaded (and then
+	saved again instead of being lost).
+	* examples/example_film_manager.glom:
+	* examples/example_smallbusiness.glom: Save these with 
+	useful group privileges, so the groups will be allowed to
+	see tables.
+	* tests/test_document_load.cc: Test the loading of the group
+	privileges.
+	Previously the examples were created with groups that could not
+	even view the tables, which meant that they could not even 
+	find out about their existence.
+	This deals with the problem found here:
+	https://bugzilla.gnome.org/show_bug.cgi?id=669043#c2
+	But I would like to show the existence (and structure) of tables
+	even if their data cannot be viewed, so there is more work to do.
+
+2012-02-03  Murray Cumming  <murrayc@murrayc.com>
+
 	Add some runtime warnings.
 
 	* glom/libglom/db_utils.cc: get_table_names_from_database():
