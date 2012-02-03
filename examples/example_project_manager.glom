@@ -1229,8 +1229,29 @@
     <print_layouts/>
   </table>
   <groups><!--These are only used when recreating a database from an example file. The actual access-control is on the server, of course.-->
-    <group name="accounts"/>
-    <group name="glom_developer" developer="true"/>
-    <group name="personnel_department"/>
+    <group name="accounts">
+      <table_privs table_name="contacts" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="glom_system_preferences" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="projects" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="project_teams" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="team_members" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="teams" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+    </group>
+    <group name="glom_developer">
+      <table_privs table_name="contacts" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="glom_system_preferences" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="projects" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="project_teams" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="team_members" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="teams" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+    </group>
+    <group name="personnel_department">
+      <table_privs table_name="contacts" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="glom_system_preferences" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="projects" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="project_teams" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="team_members" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="teams" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+    </group>
   </groups>
   <library_modules/></glom_document>
