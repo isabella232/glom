@@ -985,11 +985,15 @@ type_vec_strings get_table_names_from_database(bool ignore_system_tables)
       std::cerr << G_STRFUNC << ": Error: " << ex.what() << std::endl;
     }
 
-    if(data_model_tables && (data_model_tables->get_n_columns() == 0))
+    if(!data_model_tables)
+    {
+      std::cerr << G_STRFUNC << ": libgda returned an empty tables GdaDataModel for the database." << std::endl;
+    }
+    else if(data_model_tables->get_n_columns() <= 0)
     {
       std::cerr << G_STRFUNC << ": libgda reported 0 tables for the database." << std::endl;
     }
-    else if(data_model_tables)
+    else
     {
       //std::cout << "debug: data_model_tables refcount=" << G_OBJECT(data_model_tables->gobj())->ref_count << std::endl;
       const int rows = data_model_tables->get_n_rows();

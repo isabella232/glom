@@ -251,7 +251,11 @@ bool Privs::set_table_privileges(const Glib::ustring& group_name, const Glib::us
     Privileges priv_autoincrements;
     priv_autoincrements.m_view = true;
     priv_autoincrements.m_edit = true;
-    return set_table_privileges(group_name, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME, priv_autoincrements);
+    if(!set_table_privileges(group_name, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME, priv_autoincrements))
+    {
+      std::cerr << G_STRFUNC << ": GRANT failed on autoincrements table." << std::endl;
+      return false;
+    }
   }
 
   return true;
