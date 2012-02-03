@@ -5,7 +5,7 @@
     <trans loc="es" val="Gestor de películas Openismus"/>
     <trans loc="sl" val="Upravljalnik filmov Openismus"/>
   </trans_set>
-  <connection hosting_mode="postgres_self" server="localhost" port="5435" try_other_ports="false" database="glom_film_production_manager"/>
+  <connection hosting_mode="postgres_self" server="localhost" port="5433" try_other_ports="false" database="glom_film_production_manager"/>
   <table name="accommodation" title="Accommodation">
     <example_rows/>
     <trans_set>
@@ -5209,8 +5209,77 @@ else:
     <print_layouts/>
   </table>
   <groups><!--These are only used when recreating a database from an example file. The actual access-control is on the server, of course.-->
-    <group name="accounts"/>
-    <group name="glom_developer" developer="true"/>
-    <group name="personnel_department"/>
+    <group name="production">
+      <table_privs table_name="accommodation" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="cars" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="characters" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="companies" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="contacts" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="costume" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="crew" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="deliveries" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="departments" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="equipment" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="glom_system_preferences" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="journeys" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="locations" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="props" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="scene_cast" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="scene_costume" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="scene_crew" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="scene_equipment" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="scene_extras" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="scene_makeup" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="scene_props" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="scenes" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+    </group>
+    <group name="glom_developer">
+      <table_privs table_name="accommodation" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="cars" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="characters" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="companies" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="contacts" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="costume" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="crew" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="deliveries" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="departments" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="equipment" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="glom_system_preferences" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="journeys" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="locations" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="props" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="scene_cast" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="scene_costume" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="scene_crew" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="scene_equipment" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="scene_extras" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="scene_makeup" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="scene_props" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="scenes" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+    </group>
+    <group name="props_department">
+      <table_privs table_name="accommodation" priv_view="true"/>
+      <table_privs table_name="cars" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="characters" priv_view="true"/>
+      <table_privs table_name="companies" priv_view="true"/>
+      <table_privs table_name="contacts" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="costume" priv_view="true"/>
+      <table_privs table_name="crew" priv_view="true"/>
+      <table_privs table_name="deliveries" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="departments" priv_view="true"/>
+      <table_privs table_name="equipment" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="glom_system_preferences" priv_view="true"/>
+      <table_privs table_name="journeys" priv_view="true"/>
+      <table_privs table_name="locations" priv_view="true"/>
+      <table_privs table_name="props" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="scene_cast" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="scene_costume" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="scene_crew" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="scene_equipment" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="scene_extras" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="scene_makeup" priv_view="true"/>
+      <table_privs table_name="scene_props" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="scenes" priv_view="true" priv_edit="true"/>
+    </group>
   </groups>
   <library_modules/></glom_document>

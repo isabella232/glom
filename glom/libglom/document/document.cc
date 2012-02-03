@@ -3133,7 +3133,7 @@ bool Document::load_after(int& failure_code)
                 group_info.set_name( get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME) );
                 group_info.m_developer = get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_DEVELOPER);
 
-                xmlpp::Node::NodeList listTablePrivs = nodeGroups->get_children(GLOM_NODE_TABLE_PRIVS);
+                xmlpp::Node::NodeList listTablePrivs = node->get_children(GLOM_NODE_TABLE_PRIVS);
                 for(xmlpp::Node::NodeList::iterator iter = listTablePrivs.begin(); iter != listTablePrivs.end(); ++iter)
                 {
                   xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);

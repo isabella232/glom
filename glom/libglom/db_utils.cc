@@ -651,16 +651,15 @@ bool add_groups_from_document(Document* document)
   {
     const GroupInfo& group = *iter;
     const Glib::ustring name = group.get_name();
+    std::cout << G_STRFUNC << ": DEBUG: group=" << name << std::endl;
 
     //See if the group exists in the database:
     type_vec_strings::const_iterator iterFind = std::find(database_groups.begin(), database_groups.end(), name);
     if(!name.empty() && iterFind == database_groups.end())
     {
-      const Glib::ustring query = build_query_create_group(name, group.m_developer);
-      const bool test = query_execute_string(query);
-      if(!test)
+      if(!add_group(document, name, group.m_developer))
       {
-        std::cerr << G_STRFUNC << ": CREATE GROUP failed when adding the group with name=" << name << std::endl;
+        std::cerr << G_STRFUNC << ": add_group() failed when adding the group with name=" << name << std::endl;
         return false;
       }
     }
@@ -2099,7 +2098,7 @@ bool add_user(const Document* document, const Glib::ustring& user, const Glib::u
   return true;
 }
 
-bool add_group(const Document* document, const Glib::ustring& group)
+bool add_group(const Document* document, const Glib::ustring& group, bool superuser)
 {
   if(!document)
   {
@@ -2113,7 +2112,7 @@ bool add_group(const Document* document, const Glib::ustring& group)
     return false;
   }
  
-  const Glib::ustring strQuery = DbUtils::build_query_create_group(group);
+  const Glib::ustring strQuery = DbUtils::build_query_create_group(group, superuser);
   //std::cout << "DEBUGCREATE: " << strQuery << std::endl;
   const bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
@@ -2127,10 +2126,11 @@ bool add_group(const Document* document, const Glib::ustring& group)
   priv.m_view = true;
   priv.m_edit = true;
 
-  Document::type_listTableInfo table_list = document->get_tables(true /* plus system prefs */);
-  for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+  const type_vec_strings table_list =
+    get_table_names_from_database(true /* plus system prefs */);
+  for(type_vec_strings::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
   {
-    if(!Privs::set_table_privileges(group, (*iter)->get_name(), priv))
+    if(!Privs::set_table_privileges(group, *iter, priv))
     {
       std::cerr << G_STRFUNC << "Privs::set_table_privileges() failed." << std::endl;
       return false;
