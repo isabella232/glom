@@ -112,6 +112,9 @@ void Dialog_FieldCalculation::on_button_test()
   if(!check_for_return_statement(calculation))
     return;
 
+  if(!Utils::script_check_for_pygtk2_with_warning(calculation, this))
+    return;
+
   type_map_fields field_values;
 
   Document* document = get_document();

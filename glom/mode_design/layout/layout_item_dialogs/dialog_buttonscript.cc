@@ -104,6 +104,8 @@ void Dialog_ButtonScript::get_script(const sharedptr<LayoutItem_Button>& script)
 void Dialog_ButtonScript::on_button_test_script()
 {
   const Glib::ustring calculation = m_text_view_script->get_buffer()->get_text();
+  if(!Utils::script_check_for_pygtk2_with_warning(calculation, this))
+    return;
 
   type_map_fields field_values;
 
