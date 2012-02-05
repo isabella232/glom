@@ -534,4 +534,16 @@ std::string Utils::get_icon_path(const Glib::ustring& filename)
 #endif
 }
 
+bool Utils::script_check_for_pygtk2_with_warning(const Glib::ustring& script, Gtk::Window* parent_window)
+{
+  if(!Utils::script_check_for_pygtk2(script))
+  {
+    Utils::show_ok_dialog(_("Script Uses PyGTK 2"),
+      _("Glom cannot run this script because it uses pygtk 2, but Glom uses GTK+ 3, and attempting to use pygtk 2 would cause Glom to crash."), parent_window, Gtk::MESSAGE_ERROR);
+    return false;
+  }
+
+  return true;
+}
+
 } //namespace Glom

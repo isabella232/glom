@@ -98,6 +98,11 @@ void show_report_in_browser(const std::string& filepath, Gtk::Window* parent_win
 
 std::string get_icon_path(const Glib::ustring& filename);
 
+/** Runs libglom's Utils::script_check_for_pygtk2() and shows
+ * a warning dialog if necessary.
+ */
+bool script_check_for_pygtk2_with_warning(const Glib::ustring& script, Gtk::Window* parent_window);
+
 } //namespace Utils
 
 } //namespace Glom

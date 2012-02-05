@@ -353,12 +353,8 @@ Glib::ustring Box_Data::get_layout_name() const
 void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key_value)
 {
   const Glib::ustring script = layout_item->get_script();
-  if(!Utils::script_check_for_pygtk2(script))
-  {
-    Utils::show_ok_dialog(_("Script Uses PyGTK 2"),
-      _("Glom cannot run this script because it uses pygtk 2, but Glom uses GTK+ 3, and attempting to use pygtk 2 would cause Glom to crash."), *get_app_window(), Gtk::MESSAGE_ERROR);
+  if(!Utils::script_check_for_pygtk2_with_warning(script, get_app_window()))
     return;
-  }
 
   const sharedptr<Field> field_primary_key = get_field_primary_key();
   const type_map_fields field_values = get_record_field_values_for_calculation(m_table_name, field_primary_key, primary_key_value);
