@@ -1,3 +1,29 @@
+1.20.8 (stable):
+
+* Button scripts: Check and warn about pygtk2 instead of crashing.
+  This should help with but #669196 (alien) and ##661766 (Andre Klapper) .
+* ReportBuilder:
+  - Make summary fields work again.
+  - Add error checking.
+  Bug #669281 (alien)
+* Users/Groups:
+  - Example files: Really load the table privileges.
+  - Really prevent changing to developer mode for non-developers.
+    Bug #669043 (alien)
+  - Allow user and group names to have spaces and other special characters.
+    Bug #669012 (alien)
+  - Limit user and group name lengths because PostgreSQL seems to have an
+    (undocumented) limit.
+  - Add tests.
+* Database Preferences: Really store the organization name in the database.
+  Bug #668836 (alien)
+* Choices: Allow the field to be be other than the primary key and do not
+  crash if it is not, or if it is hidden.
+  Bug #668759 (alien).
+* Build:
+  - Require the latest goocanvas because it has fixes that PrintLayout needs.
+
+
 1.20.7 (stable):
 
 * Depend on libgda 5.0.3 because we need the GdaNumeric corrections.

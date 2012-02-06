@@ -42,6 +42,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   Glom::FoundSet found_set; //TODO: Test a where clause.
   found_set.m_table_name = "albums";
+
   Glom::ReportBuilder report_builder;
   report_builder.set_document(&document);
   const Glib::ustring html = 

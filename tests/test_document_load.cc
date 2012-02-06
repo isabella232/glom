@@ -46,7 +46,7 @@ bool contains_named(const T_Container& container, const Glib::ustring& name)
   return iter != container.end();
 }
 
-static bool get_group_named(const Glom::Document::type_list_groups& container, const Glib::ustring& name, Glom::GroupInfo& group_info).
+static bool get_group_named(const Glom::Document::type_list_groups& container, const Glib::ustring& name, Glom::GroupInfo& group_info)
 {
   Glom::Document::type_list_groups::const_iterator iter =
     std::find_if(container.begin(), container.end(),

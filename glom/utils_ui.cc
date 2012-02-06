@@ -24,6 +24,7 @@
 #include <libglom/connectionpool.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <libglom/utils.h>
 
 #include <libglom/data_structure/layout/layoutitem_image.h> // For GLOM_IMAGE_FORMAT
 #include <gdkmm/pixbufloader.h>
