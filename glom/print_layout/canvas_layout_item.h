@@ -35,12 +35,17 @@ class FieldFormatting;
 class LayoutItem_Portal;
 
 /** This has the appropriate child canvas item, depending on the type of the child LayoutItem.
+ * You should call set_layout_item() after instantiating a CanvasLayoutItem via create(),
+ * and after adding the CanvasLayoutItem to a parent CanvasItem that is already in a Goocanvas::Canvas.
+ *
+ * If the CanvasLayoutItem is not already (indirectly) in a GooCanvas::Canvas then
+ * Goocanvas::Image items will show over-scaled images, due to goocanvas bug:
+ * https://bugzilla.gnome.org/show_bug.cgi?id=657592#c16 
  */
 class CanvasLayoutItem : public CanvasGroupResizable
 {
 private:
   CanvasLayoutItem();
-  CanvasLayoutItem(const sharedptr<LayoutItem>& layout_item);
   virtual ~CanvasLayoutItem();
 
 public:

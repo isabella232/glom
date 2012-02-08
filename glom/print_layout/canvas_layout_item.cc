@@ -48,14 +48,6 @@ CanvasLayoutItem::CanvasLayoutItem()
   signal_resized().connect( sigc::mem_fun(*this, &CanvasLayoutItem::on_resized) );
 }
 
-CanvasLayoutItem::CanvasLayoutItem(const sharedptr<LayoutItem>& layout_item)
-{
-  set_layout_item(layout_item);
-
-  //Rescale images when the canvas item is resized:
-  signal_resized().connect( sigc::mem_fun(*this, &CanvasLayoutItem::on_resized) );
-}
-
 CanvasLayoutItem::~CanvasLayoutItem()
 {
 }
@@ -63,11 +55,6 @@ CanvasLayoutItem::~CanvasLayoutItem()
 Glib::RefPtr<CanvasLayoutItem> CanvasLayoutItem::create()
 {
   return Glib::RefPtr<CanvasLayoutItem>(new CanvasLayoutItem());
-}
-
-Glib::RefPtr<CanvasLayoutItem> CanvasLayoutItem::create(const sharedptr<LayoutItem>& layout_item)
-{
-  return Glib::RefPtr<CanvasLayoutItem>(new CanvasLayoutItem(layout_item));
 }
 
 sharedptr<LayoutItem> CanvasLayoutItem::get_layout_item()
@@ -127,6 +114,12 @@ void CanvasLayoutItem::on_resized()
 
 void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& layout_item)
 {
+  //TODO: If we can ever avoid this the also update the CanvasLayoutItem class documentation.
+  if(!get_canvas())
+  {
+    std::cerr << G_STRFUNC << ": get_canvas() returned null. This should not be called before the CanvasLayoutItem is in a canvas due to goocanvas bug https://bugzilla.gnome.org/show_bug.cgi?id=657592#c16 ." << std::endl;
+  }
+  
   //Add the new child:
   m_layout_item = layout_item;
 

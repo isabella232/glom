@@ -133,6 +133,8 @@ private:
   void canvas_convert_from_drag_pixels(double& x, double& y, bool adjust_for_scrolling = false) const;
   void get_dimensions_of_multiple_selected_items(double& x, double& y, double& width, double& height);
 
+  Glib::RefPtr<CanvasLayoutItem> create_canvas_layout_item_and_add(const sharedptr<LayoutItem>& layout_item);
+
   //Box_DB_Table_Definition* m_box;
   Glib::ustring m_name_original;
   Glib::ustring m_table_name;

@@ -1,3 +1,19 @@
+2012-02-08  Murray Cumming  <murrayc@murrayc.com>
+
+	Print Layout: Avoid sometimes over-scaled images.
+
+	* glom/print_layout/canvas_layout_item.[h|cc]: Remove the constructor and
+	create() that take a LayoutItem, because we should put the CanvasItem in a 
+	canvas (even indirectly) before creating the child item, to avoid this
+	goocanvas bug: https://bugzilla.gnome.org/show_bug.cgi?id=657592#c16
+	* glom/mode_design/print_layouts/window_print_layout_edit.[h|cc]:
+	* glom/print_layout/canvas_print_layout.[h|cc]:
+	Add and use create_canvas_layout_item_and_add() methods which put the new 
+	canvas item in the canvas before creating its child items based on the 
+	LayoutItem.
+	
+	This fixes bug #668901 (alien)
+
 1.20.8:
 
 2012-02-05  Murray Cumming  <murrayc@murrayc.com>
