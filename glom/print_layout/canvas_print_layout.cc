@@ -144,7 +144,9 @@ sharedptr<PrintLayout> Canvas_PrintLayout::get_print_layout()
 /*
 Glib::RefPtr<CanvasLayoutItem> Canvas_PrintLayout::create_canvas_item(const sharedptr<LayoutItem>& item)
 {
-  Glib::RefPtr<CanvasLayoutItem> result = CanvasLayoutItem::create(item);
+  Glib::RefPtr<CanvasLayoutItem> result = CanvasLayoutItem::create();
+  //TODO: Add to the canvas.
+  result->set_layout_item(item);
 
   return result;
 }
@@ -167,13 +169,20 @@ void Canvas_PrintLayout::add_layout_group_children(const sharedptr<LayoutGroup>&
     }
     else
     {
-      Glib::RefPtr<CanvasLayoutItem> canvas_item = CanvasLayoutItem::create(item);
-      if(canvas_item && canvas_item->get_child()) //get_child() returns null if the layout item was not handled.
-        add_canvas_layout_item(canvas_item);
+      create_canvas_layout_item_and_add(item);
     }
   }
 
   m_modified = true;
+}
+
+void Canvas_PrintLayout::create_canvas_layout_item_and_add(const sharedptr<LayoutItem>& layout_item)
+{
+  Glib::RefPtr<CanvasLayoutItem> canvas_item = CanvasLayoutItem::create();
+  add_canvas_layout_item(canvas_item);
+  canvas_item->set_layout_item(layout_item);
+  
+  canvas_item->set_outline_visible(m_outline_visibility);
 }
 
 void Canvas_PrintLayout::add_canvas_layout_item(const Glib::RefPtr<CanvasLayoutItem>& item)
@@ -193,7 +202,8 @@ void Canvas_PrintLayout::add_canvas_layout_item(const Glib::RefPtr<CanvasLayoutI
       item) );
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
-   item->set_outline_visible(m_outline_visibility);
+   if(item->get_child())
+     item->set_outline_visible(m_outline_visibility);
 
    fill_with_data_system_preferences(item, get_document());
 }
@@ -213,9 +223,7 @@ void Canvas_PrintLayout::add_layout_group(const sharedptr<LayoutGroup>& group, b
   //Add the group item:
   if(!is_top_level)
   {
-    Glib::RefPtr<CanvasLayoutItem> canvas_item = CanvasLayoutItem::create(group);
-    if(canvas_item)
-      add_canvas_layout_item(canvas_item);
+    create_canvas_layout_item_and_add(group);
   }
 
   //Add the group's children.

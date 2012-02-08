@@ -114,6 +114,8 @@ private:
   
   type_vecConstLayoutFields get_portal_fields_to_show(const sharedptr<LayoutItem_Portal>& portal);
 
+  void create_canvas_layout_item_and_add(const sharedptr<LayoutItem>& layout_item);
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   sharedptr<LayoutItem_Portal> offer_related_records(const sharedptr<LayoutItem_Portal>& portal, Gtk::Window* parent);
   sharedptr<LayoutItem_Line> offer_line(const sharedptr<LayoutItem_Line>& portal, Gtk::Window* parent);

@@ -568,8 +568,8 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
       //Show it on the canvas, at the position:
       if(layout_item)
       {
-        m_layout_item_dropping = CanvasLayoutItem::create(layout_item);
-        m_canvas.add_canvas_layout_item(m_layout_item_dropping);
+        m_layout_item_dropping = 
+          create_canvas_layout_item_and_add(layout_item);
 
         m_layout_item_dropping->snap_position(item_x, item_y);
         m_layout_item_dropping->set_xy(item_x, item_y);
@@ -593,8 +593,8 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
       return;
     }
 
-    Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
-    m_canvas.add_canvas_layout_item(item);
+    Glib::RefPtr<CanvasLayoutItem> item =
+      create_canvas_layout_item_and_add(layout_item);
     double item_x = x;
     double item_y = y;
     canvas_convert_from_drag_pixels(item_x, item_y, true /* adjust for scrolling */);
@@ -855,8 +855,7 @@ void Window_PrintLayout_Edit::on_menu_insert_field()
   // Note to translators: This is the default contents of a text item on a print layout: 
   set_default_position(layout_item);
 
-  Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
-  m_canvas.add_canvas_layout_item(item);
+  create_canvas_layout_item_and_add(layout_item);
 }
 
 void Window_PrintLayout_Edit::on_menu_insert_text()
@@ -864,8 +863,7 @@ void Window_PrintLayout_Edit::on_menu_insert_text()
   sharedptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::ITEM_TEXT);
   set_default_position(layout_item);
 
-  Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
-  m_canvas.add_canvas_layout_item(item);
+  create_canvas_layout_item_and_add(layout_item);
 }
 
 void Window_PrintLayout_Edit::on_menu_insert_image()
@@ -875,8 +873,7 @@ void Window_PrintLayout_Edit::on_menu_insert_image()
   //layout_item->set_text_original(_("text"));
   set_default_position(layout_item);
 
-  Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
-  m_canvas.add_canvas_layout_item(item);
+  create_canvas_layout_item_and_add(layout_item);
 }
 
 void Window_PrintLayout_Edit::on_menu_insert_relatedrecords()
@@ -884,8 +881,7 @@ void Window_PrintLayout_Edit::on_menu_insert_relatedrecords()
   sharedptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::ITEM_PORTAL);
   set_default_position(layout_item);
 
-  Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
-  m_canvas.add_canvas_layout_item(item);
+  create_canvas_layout_item_and_add(layout_item);
 }
 
 void Window_PrintLayout_Edit::on_menu_insert_line_horizontal()
@@ -902,16 +898,14 @@ void Window_PrintLayout_Edit::on_menu_insert_line_horizontal()
   //layout_item->set_text_original(_("text"));
   //layout_item->set_coordinates(item_x, item_y, item_x + 100, item_y);
 
-  Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
-  m_canvas.add_canvas_layout_item(item);
+  create_canvas_layout_item_and_add(layout_item);
 }
 
 void Window_PrintLayout_Edit::on_menu_insert_line_vertical()
 {
   sharedptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::ITEM_LINE_VERTICAL);
 
-  Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
-  m_canvas.add_canvas_layout_item(item);
+  create_canvas_layout_item_and_add(layout_item);
 }
 
 void Window_PrintLayout_Edit::on_menu_insert_create_standard()
@@ -1137,10 +1131,20 @@ void Window_PrintLayout_Edit::on_menu_edit_paste()
     y += offset;
     item->set_print_layout_position(x, y, width, height);
 
-    Glib::RefPtr<CanvasLayoutItem> canvas_item = 
-      CanvasLayoutItem::create(item);
-    m_canvas.add_canvas_layout_item(canvas_item);
+    create_canvas_layout_item_and_add(item);
+
   }
+}
+
+Glib::RefPtr<CanvasLayoutItem> Window_PrintLayout_Edit::create_canvas_layout_item_and_add(const sharedptr<LayoutItem>& layout_item)
+{
+  Glib::RefPtr<CanvasLayoutItem> canvas_item = CanvasLayoutItem::create();
+  m_canvas.add_canvas_layout_item(canvas_item);
+  canvas_item->set_layout_item(layout_item);
+  
+  //canvas_item->set_outline_visible(m_outline_visibility);
+  
+  return canvas_item;
 }
 
 void Window_PrintLayout_Edit::on_menu_edit_delete()
