@@ -22,7 +22,7 @@
 #include "dialog_buttonscript.h"
 #include <glom/python_embed/glom_python.h>
 #include <glom/utils_ui.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <gtksourceviewmm/languagemanager.h>
 
@@ -99,7 +99,7 @@ sharedptr<LayoutItem_Button> Dialog_ButtonScript::get_script() const
 void Dialog_ButtonScript::get_script(const sharedptr<LayoutItem_Button>& script) const
 {
   script->set_script(m_text_view_script->get_buffer()->get_text() );
-  script->set_title(m_entry_title->get_text(), Application::get_current_locale());
+  script->set_title(m_entry_title->get_text(), AppWindow::get_current_locale());
 }
 
 void Dialog_ButtonScript::on_button_test_script()

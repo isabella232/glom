@@ -26,7 +26,7 @@
  * @section description Description
  *
  * libglom provides API to access Glom's XML-based Glom::Document structure.
- * Applications may use it to load a .glom document and then call methods
+ * AppWindows may use it to load a .glom document and then call methods
  * on the document to discover the connection details and the data structure, including:
  * - The list of tables
  * - The list of fields in each table

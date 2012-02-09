@@ -30,7 +30,7 @@
 namespace Glom
 {
 
-class Application;
+class AppWindow;
 
 namespace DataWidgetChildren
 {
@@ -88,7 +88,7 @@ private:
   void show_context_menu(GdkEventButton *event);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  virtual Application* get_application();
+  virtual AppWindow* get_application();
 
 
   Glib::ustring m_old_text;

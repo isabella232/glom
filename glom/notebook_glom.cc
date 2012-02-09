@@ -19,7 +19,7 @@
  */
 
 #include "notebook_glom.h"
-#include "application.h"
+#include "appwindow.h"
 
 namespace Glom
 {
@@ -80,7 +80,7 @@ void Notebook_Glom::on_switch_page_handler(Gtk::Widget* /* pPage */, guint uiPag
       //pBox->load_from_document();
 
       //Set the default button, if there is one:
-      Application* pAppGlom = dynamic_cast<Application*>(pApp);
+      AppWindow* pAppGlom = dynamic_cast<AppWindow*>(pApp);
       if(pAppGlom)
       {
         Gtk::Widget* default_button = pBox->get_default_button();

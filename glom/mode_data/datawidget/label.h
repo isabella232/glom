@@ -31,7 +31,7 @@
 namespace Glom
 {
 
-class Application;
+class AppWindow;
 
 namespace DataWidgetChildren
 {
@@ -51,7 +51,7 @@ public:
 private:
   void init();
 
-  virtual Application* get_application();
+  virtual AppWindow* get_application();
     
   Gtk::Label m_label;
 #ifndef GLOM_ENABLE_CLIENT_ONLY    

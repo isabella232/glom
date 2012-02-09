@@ -19,7 +19,7 @@
  */
 
 #include <glom/mode_design/layout/combobox_relationship.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -162,7 +162,7 @@ void ComboBox_Relationship::set_relationships(Document* document, const Glib::us
   m_model->clear();
 
   if(show_parent_table_name)
-    set_display_parent_table(parent_table_name, document->get_table_title(parent_table_name, Application::get_current_locale()));
+    set_display_parent_table(parent_table_name, document->get_table_title(parent_table_name, AppWindow::get_current_locale()));
 
   //Fill the model:
   for(type_vec_relationships::const_iterator iter = relationships.begin(); iter != relationships.end(); ++iter)

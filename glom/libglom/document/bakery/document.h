@@ -71,7 +71,7 @@ public:
 
   ///Whether this just a default document.
   bool get_is_new() const;
-  ///Called by App_WithDoc::init_create_document().
+  ///Called by AppWindow_WithDoc::init_create_document().
   void set_is_new(bool bVal);
 
   Glib::ustring get_contents() const;

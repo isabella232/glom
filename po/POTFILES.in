@@ -1,7 +1,7 @@
 [encoding: UTF-8]
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
-glom/application.cc
+glom/appwindow.cc
 glom/base_db.cc
 glom/base_db_table_data.cc
 glom/base_db_table_data_readonly.cc
@@ -14,9 +14,9 @@ glom/frame_glom.cc
 glom/glade_utils.cc
 glom/utils_ui.cc
 glom/onlineglom_strings.cc
-glom/bakery/app.cc
-glom/bakery/app_withdoc_gtk.cc
-glom/bakery/app_withdoc.cc
+glom/bakery/appwindow.cc
+glom/bakery/appwindow_withdoc_gtk.cc
+glom/bakery/appwindow_withdoc.cc
 glom/bakery/dialog_offersave.cc
 
 glom/import_csv/dialog_import_csv.cc

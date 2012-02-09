@@ -23,7 +23,7 @@
 #include <glom/mode_data/datawidget/cellrenderer_buttonimage.h>
 #include <glom/mode_data/datawidget/cellrenderer_buttontext.h>
 #include <glom/utils_ui.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <gtkmm/cellrenderertext.h>
 #include <gtkmm/stock.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>

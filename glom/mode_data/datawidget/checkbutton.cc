@@ -21,7 +21,7 @@
 #include "checkbutton.h"
 #include <gtkmm/messagedialog.h>
 #include <glom/dialog_invalid_data.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <glibmm/i18n.h>
 
 #include <iostream>   // for cout, endl
@@ -56,7 +56,7 @@ bool CheckButton::on_button_press_event(GdkEventButton *event)
 {
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
-  Application* pApp = get_application();
+  AppWindow* pApp = get_application();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -84,12 +84,12 @@ bool CheckButton::on_button_press_event(GdkEventButton *event)
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-Application* CheckButton::get_application()
+AppWindow* CheckButton::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return dynamic_cast<Application*>(pWindow);
+  return dynamic_cast<AppWindow*>(pWindow);
 }
 
 void CheckButton::set_value(const Gnome::Gda::Value& value)

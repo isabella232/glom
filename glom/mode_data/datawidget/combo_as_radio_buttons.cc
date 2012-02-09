@@ -23,7 +23,7 @@
 #include <gtkmm/messagedialog.h>
 #include <glom/dialog_invalid_data.h>
 #include <libglom/data_structure/glomconversions.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream
 
@@ -267,7 +267,7 @@ Glib::ustring ComboAsRadioButtons::get_text() const
 void ComboAsRadioButtons::show_context_menu(GdkEventButton *event)
 {
   std::cout << "ComboAsRadioButtons::show_context_menu()" << std::endl;
-  Application* pApp = get_application();
+  AppWindow* pApp = get_application();
   if(pApp)
   {
     //Enable/Disable items.
@@ -308,12 +308,12 @@ bool ComboAsRadioButtons::on_button_press_event(GdkEventButton *event)
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-Application* ComboAsRadioButtons::get_application()
+AppWindow* ComboAsRadioButtons::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return dynamic_cast<Application*>(pWindow);
+  return dynamic_cast<AppWindow*>(pWindow);
 }
 
 

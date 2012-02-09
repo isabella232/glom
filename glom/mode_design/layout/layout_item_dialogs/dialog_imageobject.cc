@@ -22,7 +22,7 @@
 #include "dialog_imageobject.h"
 #include <glom/python_embed/glom_python.h>
 #include <libglom/data_structure/glomconversions.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
@@ -87,7 +87,7 @@ sharedptr<LayoutItem_Image> Dialog_ImageObject::get_imageobject() const
 {
   sharedptr<LayoutItem_Image> result = glom_sharedptr_clone(m_imageobject); //Start with the old details, to preserve anything that is not in our UI.
 
-  result->set_title(m_entry_title->get_text(), Application::get_current_locale());
+  result->set_title(m_entry_title->get_text(), AppWindow::get_current_locale());
   result->set_image( m_image->get_value() );
 
   return result;

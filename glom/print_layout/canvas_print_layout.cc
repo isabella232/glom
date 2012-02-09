@@ -31,7 +31,7 @@
 #include <glom/utility_widgets/canvas/canvas_image_movable.h>
 #include <glom/utility_widgets/canvas/canvas_text_movable.h>
 #include <glom/print_layout/print_layout_utils.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
 

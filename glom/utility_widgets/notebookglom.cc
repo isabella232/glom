@@ -20,7 +20,7 @@
 
 #include "notebookglom.h"
 #include <gtkmm/messagedialog.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream
 
@@ -59,12 +59,12 @@ void NotebookGlom::init()
 
 }
 
-Application* NotebookGlom::get_application()
+AppWindow* NotebookGlom::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return dynamic_cast<Application*>(pWindow);
+  return dynamic_cast<AppWindow*>(pWindow);
 }
 
 void NotebookGlom::delete_from_layout()

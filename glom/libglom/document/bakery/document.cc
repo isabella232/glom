@@ -377,7 +377,7 @@ static Glib::ustring get_file_display_name(const Glib::ustring& uri)
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "Application::get_file_display_name(uri=" << uri << "): error: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": uri=" << uri << "): error: " << ex.what() << std::endl;
     return result;
   }
 

@@ -19,7 +19,7 @@
  */
 
 #include <glom/box_reports.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <libglom/utils.h> //For bold_message()).
 #include <gtkmm/alignment.h>
 #include <gtkmm/dialog.h>
@@ -141,7 +141,7 @@ void Box_Reports::on_adddel_Add(const Gtk::TreeModel::iterator& row)
       m_AddDel.set_value(row, m_colTitle, title);
     }
 
-    report->set_title(title, Application::get_current_locale());
+    report->set_title(title, AppWindow::get_current_locale());
 
     get_document()->set_report(m_table_name, report);
   }
@@ -189,7 +189,7 @@ void Box_Reports::save_to_document()
         sharedptr<Report> report(new Report());
         report->set_name(report_name);
 
-        report->set_title( m_AddDel.get_value(iter, m_colTitle) , Application::get_current_locale()); //TODO: Translations: Store the original in the TreeView.
+        report->set_title( m_AddDel.get_value(iter, m_colTitle) , AppWindow::get_current_locale()); //TODO: Translations: Store the original in the TreeView.
 
         get_document()->set_report(m_table_name, report);
         modified = true;
@@ -214,7 +214,7 @@ void Box_Reports::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint c
     {
       if(column == m_colTitle)
       {
-        report->set_title( m_AddDel.get_value(row, m_colTitle) , Application::get_current_locale());
+        report->set_title( m_AddDel.get_value(row, m_colTitle) , AppWindow::get_current_locale());
         //TODO: Unnecessary:
         document->set_report(m_table_name, report);
       }

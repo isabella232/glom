@@ -39,7 +39,7 @@
 namespace Glom
 {
 
-class Application;
+class AppWindow;
 
 class DbTreeViewColumnGlom;
 
@@ -377,7 +377,7 @@ private:
   guint get_fixed_cell_height();
 
   //TODO: Remove this and use AppGlom::get_application() instead?
-  Application* get_application();
+  AppWindow* get_application();
 
   void refresh_cell_choices_data_from_database_with_foreign_key(guint model_index, const Gnome::Gda::Value& foreign_key_value);
 

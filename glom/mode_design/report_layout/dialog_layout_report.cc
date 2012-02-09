@@ -34,7 +34,7 @@
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_group_by.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_field_summary.h>
 #include <glom/mode_design/layout/dialog_choose_relationship.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 //#include <libgnome/gnome-i18n.h>
 #include <libglom/utils.h> //For bold_message()).
 #include <glibmm/i18n.h>
@@ -360,7 +360,7 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const sha
   {
 
 
-    //m_entry_table_title->set_text( document->get_table_title(table_name, Application::get_current_locale()) );
+    //m_entry_table_title->set_text( document->get_table_title(table_name, AppWindow::get_current_locale()) );
 
     //document->fill_layout_field_details(m_table_name, mapGroups); //Update with full field information.
 
@@ -1009,7 +1009,7 @@ Glib::ustring Dialog_Layout_Report::get_original_report_name() const
 sharedptr<Report> Dialog_Layout_Report::get_report()
 {
   m_report->set_name( m_entry_name->get_text() );
-  m_report->set_title( m_entry_title->get_text() , Application::get_current_locale());
+  m_report->set_title( m_entry_title->get_text() , AppWindow::get_current_locale());
   m_report->set_show_table_title( m_checkbutton_table_title->get_active() );
 
   sharedptr<LayoutGroup> group = m_report->get_layout_group();

@@ -20,7 +20,7 @@
 
 #include "dialog_notebook.h"
 #include <glom/mode_design/layout/dialog_layout.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
@@ -185,7 +185,7 @@ sharedptr<LayoutItem_Notebook> Dialog_Notebook::get_notebook() const
         group_copy = sharedptr<LayoutGroup>::create();
 
       group_copy->set_name(name);
-      group_copy->set_title( row[m_ColumnsTabs.m_col_title] , Application::get_current_locale());
+      group_copy->set_title( row[m_ColumnsTabs.m_col_title] , AppWindow::get_current_locale());
       //group_copy->set_sequence( row[m_ColumnsTabs.m_col_sequence] );
 
       result->add_item(group_copy);

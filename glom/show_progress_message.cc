@@ -21,14 +21,14 @@
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/show_progress_message.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 
 
 namespace Glom
 {
 
 ShowProgressMessage::ShowProgressMessage(const Glib::ustring& message)
-: m_app(dynamic_cast<Application*>(Application::get_application())),
+: m_app(dynamic_cast<AppWindow*>(AppWindow::get_application())),
   m_message(message)
 {
   g_return_if_fail(m_app);

@@ -31,7 +31,7 @@
 #include <libglom/privs.h>
 #include <glom/python_embed/glom_python.h>
 #include <glom/print_layout/print_layout_utils.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/viewport.h>
 #include <sstream> //For stringstream
@@ -951,7 +951,7 @@ void Box_Data_Details::print_layout()
       false /* do not avoid page margins */);
   
   //Show the print preview window:
-  Application* app = Application::get_application();
+  AppWindow* app = AppWindow::get_application();
   PrintLayoutUtils::do_print_layout(print_layout, m_found_set,
     false /* not preview */, document, true /* avoid page margins */, app);
 }

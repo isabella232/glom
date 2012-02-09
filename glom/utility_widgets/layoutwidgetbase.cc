@@ -20,7 +20,7 @@
 
 #include "layoutwidgetbase.h"
 #include <glibmm/i18n.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <glom/mode_data/datawidget/textview.h>
 #include <glom/mode_data/datawidget/label.h>
 
@@ -55,7 +55,7 @@ sharedptr<LayoutItem> LayoutWidgetBase::get_layout_item()
   return m_pLayoutItem;
 }
 
-Application* LayoutWidgetBase::get_application() const
+AppWindow* LayoutWidgetBase::get_application() const
 {
   return 0; //override to implement.
 }

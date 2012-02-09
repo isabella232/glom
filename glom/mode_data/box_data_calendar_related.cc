@@ -21,7 +21,7 @@
 #include <glom/mode_data/box_data_calendar_related.h>
 #include <glom/mode_design/layout/dialog_layout_calendar_related.h>
 #include <glom/utils_ui.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
@@ -460,7 +460,7 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
       //Text for a text item:
       sharedptr<const LayoutItem_Text> layout_item_text = sharedptr<const LayoutItem_Text>::cast_dynamic(layout_item);
       if(layout_item_text)
-        text = layout_item_text->get_text(Application::get_current_locale());
+        text = layout_item_text->get_text(AppWindow::get_current_locale());
       else
       {
         //Text for a field:
@@ -514,7 +514,7 @@ void Box_Data_Calendar_Related::setup_menu()
     sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_MenuPopup_activate_layout) );
 
   //TODO: This does not work until this widget is in a container in the window:
-  Application* pApp = get_application();
+  AppWindow* pApp = get_application();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -564,7 +564,7 @@ void Box_Data_Calendar_Related::on_calendar_button_press_event(GdkEventButton *e
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
-  Application* pApp = get_application();
+  AppWindow* pApp = get_application();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.

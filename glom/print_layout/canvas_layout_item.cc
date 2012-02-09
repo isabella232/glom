@@ -26,7 +26,7 @@
 #include <glom/utility_widgets/canvas/canvas_line_movable.h>
 #include <glom/utility_widgets/canvas/canvas_group_movable.h>
 #include <glom/utility_widgets/canvas/canvas_table_movable.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <libglom/data_structure/layout/layoutitem_button.h>
 #include <libglom/data_structure/layout/layoutitem_text.h>
 #include <libglom/data_structure/layout/layoutitem_image.h>
@@ -194,7 +194,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
 
     apply_formatting(canvas_item, text);
 
-    canvas_item->set_text(text->get_text(Application::get_current_locale()));
+    canvas_item->set_text(text->get_text(AppWindow::get_current_locale()));
     child = canvas_item;
     child_item = canvas_item;
   }

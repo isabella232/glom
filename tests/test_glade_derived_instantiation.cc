@@ -19,7 +19,7 @@
  */
  
 #include <glom/glade_utils.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <glom/dialog_existing_or_new.h>
 #include <glom/mode_design/print_layouts/box_print_layouts.h>
 #include <glom/mode_design/relationships_overview/dialog_relationships_overview.h>
@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
   using namespace Glom;
 
   //Operator-mode UI:
-  instantiate_widget<Application>();
+  instantiate_widget<AppWindow>();
   instantiate_widget<Dialog_ExistingOrNew>();
   instantiate_widget<Box_Tables>();
   instantiate_widget<Dialog_Import_CSV>();

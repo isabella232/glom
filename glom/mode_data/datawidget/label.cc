@@ -20,7 +20,7 @@
 
 #include "label.h"
 #include <gtkmm/messagedialog.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <glibmm/i18n.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_textobject.h>
 #include <glom/glade_utils.h>
@@ -66,12 +66,12 @@ void Label::init()
   m_label.set_line_wrap();
 }
 
-Application* Label::get_application()
+AppWindow* Label::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return dynamic_cast<Application*>(pWindow);
+  return dynamic_cast<AppWindow*>(pWindow);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -102,7 +102,7 @@ void Label::on_menu_properties_activate()
 
 bool Label::on_button_press_event(GdkEventButton *event)
 {
-  Application* pApp = get_application();
+  AppWindow* pApp = get_application();
   if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     GdkModifierType mods;

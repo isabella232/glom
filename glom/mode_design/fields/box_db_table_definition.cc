@@ -22,7 +22,7 @@
 #include <glom/frame_glom.h>
 #include <glom/glade_utils.h>
 #include <glom/utils_ui.h> //For bold_message()).
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <libglom/libglom_config.h>
 #include <libglom/db_utils.h>
 #include <gtkmm/stock.h>
@@ -171,7 +171,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
   {
     sharedptr<Field> field(new Field());
     field->set_name(name);
-    field->set_title( Utils::title_from_string(name) , Application::get_current_locale()); //Start with a title that might be useful.
+    field->set_title( Utils::title_from_string(name) , AppWindow::get_current_locale()); //Start with a title that might be useful.
     field->set_glom_type(Field::TYPE_NUMERIC);
 
     Glib::RefPtr<Gnome::Gda::Column> field_info = field->get_field_info();
@@ -445,7 +445,7 @@ sharedptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeMo
 
     //Title:
     const Glib::ustring title = m_AddDel.get_value(row, m_colTitle);
-    fieldResult->set_title(title, Application::get_current_locale());
+    fieldResult->set_title(title, AppWindow::get_current_locale());
 
     //Type:
     const Glib::ustring& strType = m_AddDel.get_value(row, m_colType);

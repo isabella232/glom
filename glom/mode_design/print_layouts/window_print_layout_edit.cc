@@ -22,7 +22,7 @@
 #include <glom/box_db_table.h>
 #include <glom/print_layout/canvas_layout_item.h>
 #include <glom/utils_ui.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <glom/print_layout/print_layout_utils.h>
 #include <gtkmm/radioaction.h>
 #include <gtkmm/printsettings.h>
@@ -640,7 +640,7 @@ void Window_PrintLayout_Edit::update_table_title()
   Glib::ustring table_label = _("None selected");
 
   //Show the table title (if any) and name:
-  Glib::ustring table_title = document->get_table_title(m_table_name, Application::get_current_locale());
+  Glib::ustring table_title = document->get_table_title(m_table_name, AppWindow::get_current_locale());
   if(table_title.empty())
     table_label = m_table_name;
   else
@@ -704,7 +704,7 @@ sharedptr<PrintLayout> Window_PrintLayout_Edit::get_print_layout()
 {
   m_print_layout = m_canvas.get_print_layout();
   m_print_layout->set_name( m_entry_name->get_text() );
-  m_print_layout->set_title( m_entry_title->get_text() , Application::get_current_locale());
+  m_print_layout->set_title( m_entry_title->get_text() , AppWindow::get_current_locale());
 
   m_print_layout->set_show_grid( m_action_showgrid->get_active() );
   m_print_layout->set_show_rules( m_action_showrules->get_active() );
@@ -1072,7 +1072,7 @@ void Window_PrintLayout_Edit::on_menu_file_print_preview()
   document->set_print_layout(m_table_name, print_layout);
 
   //Show the print preview window:
-  Application* app = Application::get_application();
+  AppWindow* app = AppWindow::get_application();
   if(app)
     app->do_print_layout(m_print_layout->get_name(), true /* preview */, this);
 }

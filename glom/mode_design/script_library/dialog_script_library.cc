@@ -26,7 +26,7 @@
 #include <glom/utils_ui.h>
 #include <glom/mode_design/script_library/dialog_new_script.h>
 #include <gtksourceviewmm/languagemanager.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <gtkmm/stock.h>
 
 

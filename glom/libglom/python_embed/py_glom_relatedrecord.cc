@@ -27,7 +27,7 @@
 #include <libglom/data_structure/field.h>
 #include <glibmm/ustring.h>
 
-//#include "glom/application.h"
+//#include "glom/appwindow.h"
 
 namespace Glom
 {

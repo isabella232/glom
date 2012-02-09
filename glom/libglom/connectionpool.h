@@ -281,7 +281,7 @@ public:
   bool change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& fields) throw();
 
   /** Specify a callback that the ConnectionPool can call to get a pointer to the document.
-   * This callback avoids Connection having to link to Application,
+   * This callback avoids Connection having to link to AppWindow,
    * and avoids us worrying about whether a previously-set document (via a set_document() method) is still valid.
    */
   typedef sigc::slot<Document*> SlotGetDocument;

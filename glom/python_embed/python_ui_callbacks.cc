@@ -19,7 +19,7 @@
  */
 
 #include <glom/python_embed/python_ui_callbacks.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 
 namespace Glom
 {
@@ -40,35 +40,35 @@ AppPythonUICallbacks::AppPythonUICallbacks()
 
 void AppPythonUICallbacks::on_show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value)
 {
-  Application* app = Application::get_application();
+  AppWindow* app = AppWindow::get_application();
   if(app)
     app->show_table_details(table_name, primary_key_value);
 }
 
 void AppPythonUICallbacks::on_show_table_list(const Glib::ustring& table_name)
 {
-  Application* app = Application::get_application();
+  AppWindow* app = AppWindow::get_application();
   if(app)
     app->show_table_list(table_name);
 }
 
 void AppPythonUICallbacks::on_print_report(const Glib::ustring& report_name)
 {
-  Application* app = Application::get_application();
+  AppWindow* app = AppWindow::get_application();
   if(app)
     app->print_report(report_name);
 }
 
 void AppPythonUICallbacks::on_print_layout()
 {
-  Application* app = Application::get_application();
+  AppWindow* app = AppWindow::get_application();
   if(app)
     app->print_layout();
 }
 
 void AppPythonUICallbacks::on_start_new_record()
 {
-  Application* app = Application::get_application();
+  AppWindow* app = AppWindow::get_application();
   if(app)
     app->start_new_record();
 }

@@ -24,7 +24,7 @@
 #include "dialog_new_group.h"
 #include <libglom/standard_table_prefs_fields.h>
 #include <glom/glade_utils.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <libglom/privs.h>
 //#include <libgnome/gnome-i18n.h>
 #include <glom/utils_ui.h> //For bold_message()).
@@ -129,7 +129,7 @@ void Dialog_GroupsList::set_document(const Glib::ustring& layout, Document* docu
   {
     //Set the table name and title:
     m_label_table_name->set_text(table_name);
-    m_entry_table_title->set_text( document->get_table_title(table_name, Application::get_current_locale()) );
+    m_entry_table_title->set_text( document->get_table_title(table_name, AppWindow::get_current_locale()) );
 
     Document::type_list_layout_groups mapGroups = document->get_data_layout_groups_plus_new_fields(layout, m_table_name, m_layout_platform);
 

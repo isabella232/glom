@@ -1,5 +1,12 @@
 2012-02-09  Murray Cumming  <murrayc@murrayc.com>
 
+	Rename Application to AppWindow.
+
+	Rename Application to AppWindow and rename the Bakery::App* classes
+	appropriately too. This is a preparation for using Gtk::Application.
+
+2012-02-09  Murray Cumming  <murrayc@murrayc.com>
+
 	Print Layout: Print Preview: Avoid warnings when there are no records yet.
 
 	* glom/print_layout/canvas_print_layout.cc: fill_with_data(): Do nothing,

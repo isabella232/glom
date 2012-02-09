@@ -20,7 +20,7 @@
 
 #include "dialog_copy_translation.h"
 #include <libglom/utils.h> //For bold_message()).
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -35,7 +35,7 @@ Dialog_CopyTranslation::Dialog_CopyTranslation(BaseObjectType* cobject, const Gl
 {
   builder->get_widget_derived("combobox_locale", m_combo_locale);
 
-  m_combo_locale->set_selected_locale(Application::get_current_locale());
+  m_combo_locale->set_selected_locale(AppWindow::get_current_locale());
 }
 
 Dialog_CopyTranslation::~Dialog_CopyTranslation()

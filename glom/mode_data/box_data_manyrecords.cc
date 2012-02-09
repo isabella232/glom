@@ -21,7 +21,7 @@
 #include "box_data_manyrecords.h"
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/glade_utils.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <libglom/report_builder.h>
 #include <glom/mode_design/layout/dialog_layout_list.h>
 #include <glom/utils_ui.h>
@@ -83,7 +83,7 @@ void Box_Data_ManyRecords::print_layout()
     Document* document = get_document();
     sharedptr<Report> report_temp = ReportBuilder::create_standard_list_report(document, m_table_name);
 
-    ReportBuilder report_builder(Application::get_current_locale());
+    ReportBuilder report_builder(AppWindow::get_current_locale());
     report_builder.set_document(document);
     const std::string filepath = 
       report_builder.report_build_and_save(m_found_set, report_temp);
