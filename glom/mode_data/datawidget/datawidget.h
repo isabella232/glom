@@ -36,7 +36,7 @@
 namespace Glom
 {
 
-class Application;
+class AppWindow;
 
 class DataWidget
  : public Gtk::EventBox,
@@ -62,7 +62,7 @@ public:
   virtual void set_viewable(bool viewable = true);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  static sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document* document, Application* app);
+  static sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document* document, AppWindow* app);
   sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name);
   sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field);
 
@@ -117,7 +117,7 @@ private:
   //virtual void on_menupopup_add_item(LayoutWidgetBase::enumType item);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  Application* get_application();
+  AppWindow* get_application();
 
   void set_child_size_by_field(const sharedptr<const LayoutItem_Field>& field);
   int get_suitable_width(const sharedptr<const LayoutItem_Field>& field_layout);

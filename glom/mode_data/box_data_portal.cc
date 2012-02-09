@@ -24,7 +24,7 @@
 #include <glom/glade_utils.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
 #include <glom/utils_ui.h> //For bold_message()).
-#include <glom/application.h>
+#include <glom/appwindow.h>
 
 
 #include <glibmm/i18n.h>

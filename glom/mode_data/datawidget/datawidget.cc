@@ -28,7 +28,7 @@
 #include <glom/mode_data/datawidget/textview.h>
 #include <glom/utility_widgets/imageglom.h>
 #include <libglom/data_structure/glomconversions.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <glom/mode_design/layout/dialog_choose_field.h>
 #include <glom/mode_data/datawidget/dialog_choose_id.h>
 #include <glom/mode_data/datawidget/dialog_choose_date.h>
@@ -427,7 +427,7 @@ bool DataWidget::on_button_press_event(GdkEventButton *event)
 
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
-  Application* pApp = get_application();
+  AppWindow* pApp = get_application();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -465,7 +465,7 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
   return offer_field_list(table_name, start_field, get_document(), get_application());
 }
 
-sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document* document, Application* app)
+sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document* document, AppWindow* app)
 {
   sharedptr<LayoutItem_Field> result;
 
@@ -567,12 +567,12 @@ void DataWidget::on_child_user_requested_layout()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-Application* DataWidget::get_application()
+AppWindow* DataWidget::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return dynamic_cast<Application*>(pWindow);
+  return dynamic_cast<AppWindow*>(pWindow);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

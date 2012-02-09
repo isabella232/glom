@@ -221,7 +221,7 @@ bool recreate_database_from_document(Document* document, const sigc::slot<void>&
   {
     if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
     {
-      std::cerr << G_STRFUNC << ": Application::recreate_database(): Failed because connection to server failed even without specifying a database." << std::endl;
+      std::cerr << G_STRFUNC << ": AppWindow::recreate_database(): Failed because connection to server failed even without specifying a database." << std::endl;
       return false;
     }
 

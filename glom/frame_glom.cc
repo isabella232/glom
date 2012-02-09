@@ -22,7 +22,7 @@
 #include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/frame_glom.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <glom/import_csv/dialog_import_csv.h>
 #include <glom/import_csv/dialog_import_csv_progress.h>
 #include <libglom/appstate.h>
@@ -261,7 +261,7 @@ void Frame_Glom::set_mode_widget(Gtk::Widget& widget)
   //Trying to remove all of them leads to warnings,
   //and I don't see a way to get a list of children.
 
-  Application* pApp = dynamic_cast<Application*>(get_app_window());
+  AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
   if(pApp)
   {
     //Glib::RefPtr<Gtk::UIManager> ui_manager = pApp->get_ui_manager();
@@ -332,7 +332,7 @@ void Frame_Glom::show_table_refresh()
 
 void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value_for_details)
 {
-  Application* pApp = dynamic_cast<Application*>(get_app_window());
+  AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
 
   //This can take quite a long time, so we show the busy cursor while it's working:
   BusyCursor busy_cursor(pApp);
@@ -998,7 +998,7 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
   }
 
   //Update the UI:
-  Application* pApp = dynamic_cast<Application*>(get_app_window());
+  AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
   if(pApp)
   {
     pApp->update_network_shared_ui();
@@ -1175,7 +1175,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
       sharedptr<Relationship> relationship = sharedptr<Relationship>::create();
 
       relationship->set_name(relationship_name);
-      relationship->set_title(Utils::title_from_string(relationship_name), Application::get_current_locale());
+      relationship->set_title(Utils::title_from_string(relationship_name), AppWindow::get_current_locale());
       relationship->set_from_table(m_table_name);
       relationship->set_from_field(from_key_name);
       relationship->set_to_table(table_name);
@@ -1322,7 +1322,7 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
 {
   //std::cout << "debug: " << G_STRFUNC << ": " << where_clause << std::endl;
 
-  Application* pApp = dynamic_cast<Application*>(get_app_window());
+  AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
   if(pApp)
   {
     bool records_found = false;
@@ -1373,7 +1373,7 @@ void Frame_Glom::show_table_title()
     return;
 
   //Show the table title:
-  Glib::ustring table_label = document->get_table_title(m_table_name, Application::get_current_locale());
+  Glib::ustring table_label = document->get_table_title(m_table_name, AppWindow::get_current_locale());
   if(!table_label.empty())
   {
     if(document->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
@@ -1773,7 +1773,7 @@ void Frame_Glom::on_developer_dialog_hide()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Frame_Glom::on_connection_initialize_progress()
 {
-  Application *app = dynamic_cast<Application*>(Application::get_application());
+  AppWindow *app = dynamic_cast<AppWindow*>(AppWindow::get_application());
   if(app)
     app->pulse_progress_message();
 }
@@ -1781,14 +1781,14 @@ void Frame_Glom::on_connection_initialize_progress()
 
 void Frame_Glom::on_connection_startup_progress()
 {
-  Application *app = dynamic_cast<Application*>(Application::get_application());
+  AppWindow *app = dynamic_cast<AppWindow*>(AppWindow::get_application());
   if(app)
     app->pulse_progress_message();
 }
 
 void Frame_Glom::on_connection_cleanup_progress()
 {
-  Application *app = dynamic_cast<Application*>(Application::get_application());
+  AppWindow *app = dynamic_cast<AppWindow*>(AppWindow::get_application());
   if(app)
     app->pulse_progress_message();
 }
@@ -2155,7 +2155,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
     return false;
   }
 
-  Application* app = dynamic_cast<Application*>(get_app_window());
+  AppWindow* app = dynamic_cast<AppWindow*>(get_app_window());
   app->clear_progress_message();
 
   //Only ask for the password if we are shared on the network, or we are using a centrally hosted server.
@@ -2302,7 +2302,7 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
 
   FoundSet found_set = m_Notebook_Data.get_found_set();
 
-  ReportBuilder report_builder(Application::get_current_locale());
+  ReportBuilder report_builder(AppWindow::get_current_locale());
   report_builder.set_document(document);
   const std::string filepath = 
     report_builder.report_build_and_save(found_set, report); //TODO: Use found set's where_clause.
@@ -2358,7 +2358,7 @@ void Frame_Glom::on_dialog_layout_report_hide()
   }
 
   //Update the reports menu:
-  Application* pApp = dynamic_cast<Application*>(get_app_window());
+  AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
   if(pApp)
     pApp->fill_menu_reports(m_table_name);
 }
@@ -2378,7 +2378,7 @@ void Frame_Glom::on_dialog_layout_print_hide()
   }
 
   //Update the reports menu:
-  Application* pApp = dynamic_cast<Application*>(get_app_window());
+  AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
   if(pApp)
     pApp->fill_menu_print_layouts(m_table_name);
 }
@@ -2395,7 +2395,7 @@ void Frame_Glom::on_dialog_tables_hide()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     if(document->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
     {
-      Application* pApp = dynamic_cast<Application*>(get_app_window());
+      AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
       if(pApp)
         pApp->fill_menu_tables();
 
@@ -2417,7 +2417,7 @@ void Frame_Glom::on_dialog_tables_hide()
 void Frame_Glom::on_notebook_data_switch_page(Gtk::Widget* /* page */, guint /* page_num */)
 {
   //Refill this menu, because it depends on whether list or details are visible:
-  Application* pApp = dynamic_cast<Application*>(get_app_window());
+  AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
   if(pApp)
     pApp->fill_menu_print_layouts(m_table_name);
 }

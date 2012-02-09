@@ -27,7 +27,7 @@
 #include <glom/utility_widgets/imageglom.h>
 #include <glom/mode_data/datawidget/label.h>
 #include <glom/utility_widgets/dialog_flowtable.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <gtkmm/checkbutton.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/glade_utils.h>
@@ -612,7 +612,7 @@ void FlowTableWithFields::add_textobject(const sharedptr<LayoutItem_Text>& layou
   alignment_label->set(x_align, Gtk::ALIGN_CENTER);
   alignment_label->show();
 
-  const Glib::ustring text = layoutitem_text->get_text(Application::get_current_locale());
+  const Glib::ustring text = layoutitem_text->get_text(AppWindow::get_current_locale());
   DataWidgetChildren::Label* label = Gtk::manage(new DataWidgetChildren::Label(text));
   label->set_layout_item(layoutitem_text, table_name);
   label->show();
@@ -1375,7 +1375,7 @@ void FlowTableWithFields::on_menu_properties_activate()
   {
     sharedptr<LayoutGroup> group = get_layout_group();
     group->set_columns_count( dialog->get_columns_count() );
-    group->set_title(dialog->get_title(), Application::get_current_locale());
+    group->set_title(dialog->get_title(), AppWindow::get_current_locale());
     signal_layout_changed().emit();
   }
 
@@ -1412,7 +1412,7 @@ void FlowTableWithFields::on_menu_delete_activate()
 
 bool FlowTableWithFields::on_button_press_event(GdkEventButton *event)
 {
-  Application* pApp = Application::get_application();
+  AppWindow* pApp = AppWindow::get_application();
   if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     GdkModifierType mods;

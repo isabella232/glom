@@ -27,7 +27,7 @@
 namespace Glom
 {
 
-class Application;
+class AppWindow;
 
 /** Use this class to ensure that the progress message is cleared upon exiting a
  * method with multiple return points.
@@ -41,7 +41,7 @@ public:
   void pulse();
 
 private:
-  Application* const m_app;
+  AppWindow* const m_app;
   Glib::ustring m_message;
 };
 

@@ -21,7 +21,7 @@
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/utils_ui.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <libglom/connectionpool.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <libglom/data_structure/glomconversions.h>

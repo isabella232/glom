@@ -31,7 +31,7 @@
 namespace Glom
 {
 
-class Application;
+class AppWindow;
 
 namespace DataWidgetChildren
 {
@@ -54,7 +54,7 @@ private:
   virtual bool on_button_press_event(GdkEventButton *event); //override
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  virtual Application* get_application();
+  virtual AppWindow* get_application();
 };
 
 } //namespace DataWidetChildren

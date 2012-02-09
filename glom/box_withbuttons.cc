@@ -19,7 +19,7 @@
  */
 
 #include <glom/box_withbuttons.h>
-#include <glom/application.h> //Application.
+#include <glom/appwindow.h> //AppWindow.
 #include <glom/utils_ui.h>
 #include <gtkmm/stock.h>
 #include <libglom/appstate.h>

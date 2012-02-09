@@ -20,7 +20,7 @@
 
 
 #include "dialog_textobject.h"
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <libglom/data_structure/glomconversions.h>
 
 //#include <libgnome/gnome-i18n.h>
@@ -61,7 +61,7 @@ void Dialog_TextObject::set_textobject(const sharedptr<const LayoutItem_Text>& t
   m_table_name = table_name;  //Used for lookup combo boxes.
 
   m_entry_title->set_text(item_get_title(textobject));
-  m_text_view->get_buffer()->set_text( textobject->get_text(Application::get_current_locale()) );
+  m_text_view->get_buffer()->set_text( textobject->get_text(AppWindow::get_current_locale()) );
 
   if(show_title)
     m_box_title->show();
@@ -84,8 +84,8 @@ sharedptr<LayoutItem_Text> Dialog_TextObject::get_textobject() const
 
 void Dialog_TextObject::get_textobject(sharedptr<LayoutItem_Text>& textobject) const
 {
-  textobject->set_title(m_entry_title->get_text(), Application::get_current_locale());
-  textobject->set_text( m_text_view->get_buffer()->get_text(), Application::get_current_locale());
+  textobject->set_title(m_entry_title->get_text(), AppWindow::get_current_locale());
+  textobject->set_text( m_text_view->get_buffer()->get_text(), AppWindow::get_current_locale());
 }
 
 } //namespace Glom

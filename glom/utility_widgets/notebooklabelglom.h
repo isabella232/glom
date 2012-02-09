@@ -30,7 +30,7 @@
 namespace Glom
 {
 
-class Application;
+class AppWindow;
 
 class NotebookLabel
 : public Gtk::EventBox
@@ -45,7 +45,7 @@ public:
 private:
   void init();
 
-  virtual Application* get_application();
+  virtual AppWindow* get_application();
     
   Gtk::Label m_label;
   NotebookGlom* m_notebook;

@@ -30,7 +30,7 @@
 namespace Glom
 {
 
-class Application;
+class AppWindow;
 
 class LayoutWidgetBase : virtual public sigc::trackable
 {
@@ -84,7 +84,7 @@ public:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 protected:
-  virtual Application* get_application() const; // = 0;
+  virtual AppWindow* get_application() const; // = 0;
 
 
   static void apply_formatting(Gtk::Widget& widget, const sharedptr<const LayoutItem_WithFormatting>& layout_item);

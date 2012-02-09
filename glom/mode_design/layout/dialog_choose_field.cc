@@ -19,7 +19,7 @@
  */
 
 #include "dialog_choose_field.h"
-#include <glom/application.h>
+#include <glom/appwindow.h>
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
@@ -87,7 +87,7 @@ void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& t
     m_combo_relationship->set_selected_relationship( field->get_relationship(), field->get_related_relationship());
   }
   else
-    m_combo_relationship->set_selected_parent_table(table_name, document->get_table_title(table_name, Application::get_current_locale())); 
+    m_combo_relationship->set_selected_parent_table(table_name, document->get_table_title(table_name, AppWindow::get_current_locale())); 
 
   //If one start field was specified, then multiple selection would not make 
   //much sense. The caller probably wants single selection.
@@ -149,10 +149,10 @@ void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& t
     //Fill the list of relationships:
 
     //Add a special option for the current table:
-    m_combo_relationship->set_display_parent_table(table_name, document->get_table_title(table_name, Application::get_current_locale()));
+    m_combo_relationship->set_display_parent_table(table_name, document->get_table_title(table_name, AppWindow::get_current_locale()));
 
     //Add the relationships for this table:
-    const Glib::ustring table_title = document->get_table_title(table_name, Application::get_current_locale());
+    const Glib::ustring table_title = document->get_table_title(table_name, AppWindow::get_current_locale());
     m_combo_relationship->set_relationships(document, table_name, false /* show related relationships */);
 
     //Set the table name and title:

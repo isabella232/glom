@@ -20,7 +20,7 @@
 
 #include <glom/mode_data/box_data_list_related.h>
 #include <glom/mode_design/layout/dialog_layout_list_related.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
 #include <glom/glade_utils.h>

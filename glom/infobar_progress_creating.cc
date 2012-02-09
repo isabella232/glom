@@ -19,7 +19,7 @@
  */
 
 #include <gtkmm/dialog.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <glom/infobar_progress_creating.h>
 #include <gtkmm/main.h>
 #include <glibmm/i18n.h>

@@ -20,7 +20,7 @@
 
 #include "imageglom.h"
 #include <glibmm/i18n.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
 #include <libglom/data_structure/glomconversions.h>
@@ -109,7 +109,7 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
 
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
-  Application* pApp = get_application();
+  AppWindow* pApp = get_application();
   if(pApp)
   {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -157,12 +157,12 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
   return Gtk::EventBox::on_button_press_event(event);
 }
 
-Application* ImageGlom::get_application()
+AppWindow* ImageGlom::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return dynamic_cast<Application*>(pWindow);
+  return dynamic_cast<AppWindow*>(pWindow);
 }
 
 bool ImageGlom::get_has_original_data() const
@@ -495,7 +495,7 @@ void ImageGlom::on_menupopup_activate_open_file()
 
 void ImageGlom::on_menupopup_activate_open_file_with()
 {
-  Application* pApp = get_application();
+  AppWindow* pApp = get_application();
 
   //Offer the user a choice of suitable applications:
   const Glib::ustring mime_type = get_mime_type();
@@ -671,7 +671,7 @@ static void set_file_filter_images(Gtk::FileChooser& file_chooser)
 
 void ImageGlom::on_menupopup_activate_save_file()
 {
-  Application* pApp = get_application();
+  AppWindow* pApp = get_application();
 
   Gtk::FileChooserDialog dialog(_("Save Image"), Gtk::FILE_CHOOSER_ACTION_SAVE);
   if(pApp)
@@ -737,7 +737,7 @@ bool ImageGlom::save_file(const Glib::ustring& uri)
   // Automatically delete the dialog when we no longer need it:
   std::auto_ptr<Gtk::Dialog> dialog_keeper(dialog_save);
 
-  Application* pApp = get_application();
+  AppWindow* pApp = get_application();
   if(pApp)
     dialog_save->set_transient_for(*pApp);
 
@@ -758,7 +758,7 @@ void ImageGlom::on_menupopup_activate_select_file()
   if(m_read_only)
     return;
     
-  Application* pApp = get_application();
+  AppWindow* pApp = get_application();
 
   Gtk::FileChooserDialog dialog(_("Choose Image"), Gtk::FILE_CHOOSER_ACTION_OPEN);
   if(pApp)

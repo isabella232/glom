@@ -29,7 +29,7 @@
 namespace Glom
 {
 
-class Application;
+class AppWindow;
 
 namespace DataWidgetChildren
 {
@@ -77,7 +77,7 @@ private:
   virtual bool on_button_press_event(GdkEventButton *event);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  virtual Application* get_application();
+  virtual AppWindow* get_application();
 
 
   Gnome::Gda::Value m_old_value; //TODO: Only useful for navigation, which currently has no implementation.

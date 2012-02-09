@@ -67,8 +67,8 @@ glom_canvas_files =  \
 	glom/utility_widgets/canvas/canvas_text_movable.h
 
 glom_source_files = \
-	glom/application.cc						\
-	glom/application.h						\
+	glom/appwindow.cc						\
+	glom/appwindow.h						\
 	glom/base_db.cc							\
 	glom/base_db.h							\
 	glom/base_db_table.cc						\
@@ -109,12 +109,12 @@ glom_source_files = \
 	glom/window_boxholder.cc					\
 	glom/window_boxholder.h						\
 	glom/onlineglom_strings.cc \
-	glom/bakery/app.cc						\
-	glom/bakery/app.h						\
-	glom/bakery/app_withdoc.cc					\
-	glom/bakery/app_withdoc.h					\
-	glom/bakery/app_withdoc_gtk.cc					\
-	glom/bakery/app_withdoc_gtk.h					\
+	glom/bakery/appwindow.cc						\
+	glom/bakery/appwindow.h						\
+	glom/bakery/appwindow_withdoc.cc					\
+	glom/bakery/appwindow_withdoc.h					\
+	glom/bakery/appwindow_withdoc_gtk.cc					\
+	glom/bakery/appwindow_withdoc_gtk.h					\
 	glom/bakery/busy_cursor.cc					\
 	glom/bakery/busy_cursor.h					\
 	glom/bakery/dialog_offersave.cc					\

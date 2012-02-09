@@ -21,7 +21,7 @@
 #include "config.h"
 #include "base_db_table_data.h"
 #include <libglom/data_structure/glomconversions.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <glom/python_embed/glom_python.h>
 #include <glom/utils_ui.h>
 #include <libglom/db_utils.h>

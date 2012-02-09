@@ -19,7 +19,7 @@
  */
 
 #include "notebooklabelglom.h"
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <glibmm/i18n.h>
 
 #include <iostream>
@@ -61,12 +61,12 @@ void NotebookLabel::set_label (const Glib::ustring& title)
   m_label.set_label (title); 
 }
 
-Application* NotebookLabel::get_application()
+AppWindow* NotebookLabel::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return dynamic_cast<Application*>(pWindow);
+  return dynamic_cast<AppWindow*>(pWindow);
 }
 
 void NotebookLabel::on_menu_new_group_activate()
@@ -149,7 +149,7 @@ void NotebookLabel::setup_menu()
 
 bool NotebookLabel::on_button_press_event(GdkEventButton *event)
 {
-  Application* pApp = get_application();
+  AppWindow* pApp = get_application();
   if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     GdkModifierType mods;

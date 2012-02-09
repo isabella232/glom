@@ -29,7 +29,7 @@
 #include <libgdamm/dataaccesswrapper.h>
 #include <libgdamm/datamodelarray.h>
 
-#include <glom/application.h>
+#include <glom/appwindow.h>
 
 namespace Glom
 {

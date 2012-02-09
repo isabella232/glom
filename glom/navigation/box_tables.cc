@@ -21,7 +21,7 @@
 #include <glom/navigation/box_tables.h>
 #include <glom/utils_ui.h> //For bold_message()).
 #include <libglom/db_utils.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <gtkmm/stock.h>
 #include <glibmm/i18n.h>
 
@@ -89,13 +89,13 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const shar
 
     if(developer_mode)
     {
-      //std::cout << "debug: " << G_STRFUNC << ": dev title=" << table_info->get_title(Application::get_current_locale()) << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": dev title=" << table_info->get_title(AppWindow::get_current_locale()) << std::endl;
       m_AddDel.set_value(iter, m_colTitle, item_get_title(table_info));
-      m_AddDel.set_value(iter, m_colTitleSingular, table_info->get_title_singular(Application::get_current_locale()));
+      m_AddDel.set_value(iter, m_colTitleSingular, table_info->get_title_singular(AppWindow::get_current_locale()));
     }
     else
     {
-      //std::cout << "debug: " << G_STRFUNC << ": op get_title_or_name=" << table_info->get_title_or_name(Application::get_current_locale()) << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": op get_title_or_name=" << table_info->get_title_or_name(AppWindow::get_current_locale()) << std::endl;
       m_AddDel.set_value(iter, m_colTitle, item_get_title_or_name(table_info));
     }
 
@@ -105,7 +105,7 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const shar
 
 bool Box_Tables::fill_from_database()
 {
-  BusyCursor busy_cursor(Application::get_application());
+  BusyCursor busy_cursor(AppWindow::get_application());
 
   bool result = Base_DB::fill_from_database();
 
@@ -154,7 +154,7 @@ bool Box_Tables::fill_from_database()
     g_warning("Box_Tables::fill_from_database(): document is null");
 
   //Get the list of tables in the database, from the server:
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(Application::get_application());
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(AppWindow::get_application());
 
   if(sharedconnection)
   {
@@ -235,7 +235,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
     //Ask the user if they want us to try to cope with this:
     Gtk::MessageDialog dialog(Utils::bold_message(_("Table Already Exists")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
     dialog.set_secondary_text(_("This table already exists on the database server, though it is not mentioned in the .glom file. This should not happen. Would you like Glom to attempt to use the existing table?"));
-    dialog.set_transient_for(*Application::get_application());
+    dialog.set_transient_for(*AppWindow::get_application());
 
     const int response = dialog.run();
     dialog.hide();
@@ -295,7 +295,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
         {
            //TODO: Do not show tables that are not in the document.
            Gtk::MessageDialog dialog(_("You cannot delete this table, because there is no information about this table in the document."));
-           dialog.set_transient_for(*Application::get_application());
+           dialog.set_transient_for(*AppWindow::get_application());
            dialog.run();
         }
         else
@@ -304,7 +304,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
           const Glib::ustring strMsg = Glib::ustring::compose(_("Are you sure that you want to delete this table?\nTable name: %1"), table_name);
           Gtk::MessageDialog dialog(Utils::bold_message(_("Delete Table")), true);
           dialog.set_secondary_text(strMsg);
-          dialog.set_transient_for(*Application::get_application());
+          dialog.set_transient_for(*AppWindow::get_application());
           const int iButtonClicked = dialog.run();
           
           //Get a list of autoincrementing fields in the table:
@@ -442,7 +442,7 @@ void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
     {
        Gtk::MessageDialog dialog(Utils::bold_message(_("Unknown Table")), true);
        dialog.set_secondary_text(_("You cannot open this table, because there is no information about this table in the document."));
-       dialog.set_transient_for(*Application::get_application());
+       dialog.set_transient_for(*AppWindow::get_application());
        dialog.run();
     }
     else
@@ -478,8 +478,8 @@ void Box_Tables::save_to_document()
         if(!table_info->get_name().empty())
         {
           table_info->set_hidden( m_AddDel.get_value_as_bool(iter, m_colHidden) );
-          table_info->set_title( m_AddDel.get_value(iter, m_colTitle) , Application::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
-          table_info->set_title_singular( m_AddDel.get_value(iter, m_colTitleSingular), Application::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
+          table_info->set_title( m_AddDel.get_value(iter, m_colTitle) , AppWindow::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
+          table_info->set_title_singular( m_AddDel.get_value(iter, m_colTitleSingular), AppWindow::get_current_locale()); //TODO_Translations: Store the TableInfo in the TreeView.
           //std::cout << "debug: " << G_STRFUNC << ": title=" << item_get_title(table_info) << std::endl;
           table_info->set_default( m_AddDel.get_value_as_bool(iter, m_colDefault) );
 

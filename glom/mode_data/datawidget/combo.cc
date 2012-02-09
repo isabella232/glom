@@ -26,7 +26,7 @@
 #include <glom/mode_data/datawidget/treemodel_db_withextratext.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <glom/utils_ui.h>
 #include <gtkmm/cellareabox.h>
 #include <glibmm/i18n.h>
@@ -319,7 +319,7 @@ g_warning("ComboGlom::on_button_press_event()");
 
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
-  Application* pApp = get_application();
+  AppWindow* pApp = get_application();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -349,12 +349,12 @@ g_warning("ComboGlom::on_button_press_event()");
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-Application* ComboGlom::get_application()
+AppWindow* ComboGlom::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return dynamic_cast<Application*>(pWindow);
+  return dynamic_cast<AppWindow*>(pWindow);
 }
 
 

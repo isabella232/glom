@@ -20,7 +20,7 @@
 
 //#include <gtkmm/builder.h>
 #include "box_db_table_relationships.h"
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <libglom/db_utils.h>
 #include <algorithm>
 #include <glibmm/i18n.h>
@@ -113,7 +113,7 @@ bool Box_DB_Table_Relationships::fill_from_database()
 
         //Title:
         m_AddDel.set_value(iterTree, m_colTitle, item_get_title(relationship));
-        m_AddDel.set_value(iterTree, m_colTitleSingular, relationship->get_title_singular(Application::get_current_locale()));
+        m_AddDel.set_value(iterTree, m_colTitleSingular, relationship->get_title_singular(AppWindow::get_current_locale()));
 
         //From Field:
         m_AddDel.set_value(iterTree, m_colFromField, relationship->get_from_field());
@@ -159,8 +159,8 @@ void Box_DB_Table_Relationships::save_to_document()
           relationship = sharedptr<Relationship>::create();
 
         relationship->set_name(name);
-        relationship->set_title(m_AddDel.get_value(iter, m_colTitle), Application::get_current_locale());
-        relationship->set_title_singular(m_AddDel.get_value(iter, m_colTitleSingular), Application::get_current_locale());
+        relationship->set_title(m_AddDel.get_value(iter, m_colTitle), AppWindow::get_current_locale());
+        relationship->set_title_singular(m_AddDel.get_value(iter, m_colTitleSingular), AppWindow::get_current_locale());
         relationship->set_from_table(m_table_name);
         relationship->set_from_field(m_AddDel.get_value(iter, m_colFromField));
         relationship->set_to_table(m_AddDel.get_value(iter, m_colToTable));

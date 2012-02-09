@@ -22,7 +22,7 @@
 #include "dialog_fieldcalculation.h"
 #include <glom/glade_utils.h>
 #include <glom/utils_ui.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include "../../box_db_table.h"
 #include <libglom/db_utils.h>
 //#include <libgnome/gnome-i18n.h>
@@ -271,7 +271,7 @@ sharedptr<Field> Dialog_FieldDefinition::get_field() const
   field->set_unique_key(m_pCheck_Unique->get_active());
   field->set_primary_key(m_pCheck_PrimaryKey->get_active());
 
-  field->set_title(m_pEntry_Title->get_text(), Application::get_current_locale());
+  field->set_title(m_pEntry_Title->get_text(), AppWindow::get_current_locale());
 
   //Formatting:
   m_box_formatting->get_formatting(field->m_default_formatting);

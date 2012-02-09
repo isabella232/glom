@@ -21,7 +21,7 @@
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/base_db.h>
-#include "application.h" //Application.
+#include "appwindow.h" //AppWindow.
 #include <libglom/appstate.h>
 #include <libglom/standard_table_prefs_fields.h>
 #include <libglom/document/document.h>

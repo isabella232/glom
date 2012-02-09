@@ -29,7 +29,7 @@
 namespace Glom
 {
 
-class Application;
+class AppWindow;
 class NotebookLabel;
 
 class NotebookGlom
@@ -48,7 +48,7 @@ protected:
 protected:
   void init();
 
-  virtual Application* get_application();
+  virtual AppWindow* get_application();
 };
 
 } //namespace Glom

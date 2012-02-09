@@ -21,7 +21,7 @@
 #include <glom/print_layout/print_layout_utils.h>
 #include <glom/print_layout/canvas_print_layout.h>
 #include <glom/print_layout/printoperation_printlayout.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <iostream>
 
 namespace Glom
@@ -188,7 +188,7 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
   if(!title.empty())
   {
     sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::create();
-    text->set_text(title, Application::get_current_locale());
+    text->set_text(title, AppWindow::get_current_locale());
     text->m_formatting.set_text_format_font("Sans Bold 10");
 
     if(avoid_page_margins)
@@ -249,7 +249,7 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
       {
         text_title = sharedptr<LayoutItem_Text>::create();
         const Glib::ustring field_title = item_get_title_or_name(field);
-        text_title->set_text(field_title + ":", Application::get_current_locale());
+        text_title->set_text(field_title + ":", AppWindow::get_current_locale());
         
         if(avoid_page_margins)
           y = move_fully_to_page(page_setup, units, y, field_height);
@@ -329,11 +329,11 @@ sharedptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>&
     x += GRID_GAP;
   
   //The table title:
-  const Glib::ustring title = document->get_table_title_singular(table_name, Application::get_current_locale());
+  const Glib::ustring title = document->get_table_title_singular(table_name, AppWindow::get_current_locale());
   if(!title.empty())
   {
     sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::create();
-    text->set_text(title, Application::get_current_locale());
+    text->set_text(title, AppWindow::get_current_locale());
     text->m_formatting.set_text_format_font("Sans Bold 12");
 
     const double field_height = ITEM_HEIGHT;

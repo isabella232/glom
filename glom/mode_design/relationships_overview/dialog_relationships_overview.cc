@@ -24,7 +24,7 @@
 #include "glom/utility_widgets/canvas/canvas_text_movable.h"
 #include <glom/mode_design/layout/dialog_choose_relationship.h>
 #include "printoperation_relationshipsoverview.h"
-#include "glom/application.h"
+#include "glom/appwindow.h"
 #include <gtkmm/stock.h>
 #include <goocanvas.h>
 #include <glibmm/i18n.h>
@@ -504,7 +504,7 @@ void Dialog_RelationshipsOverview::setup_context_menu()
 
 void Dialog_RelationshipsOverview::on_context_menu_edit_fields(Glib::RefPtr<CanvasGroupDbTable> table)
 {
-  Application* pApp = Application::get_application();
+  AppWindow* pApp = AppWindow::get_application();
   if(pApp && table)
   {
     pApp->do_menu_developer_fields(*this, table->get_table_name());
@@ -515,7 +515,7 @@ void Dialog_RelationshipsOverview::on_context_menu_edit_fields(Glib::RefPtr<Canv
 
 void Dialog_RelationshipsOverview::on_context_menu_edit_relationships(Glib::RefPtr<CanvasGroupDbTable> table)
 {
-  Application* pApp = Application::get_application();
+  AppWindow* pApp = AppWindow::get_application();
   if(pApp && table)
   {
     pApp->do_menu_developer_relationships(*this, table->get_table_name());

@@ -22,7 +22,7 @@
 #include <libglom/standard_table_prefs_fields.h>
 #include <libglom/db_utils.h>
 #include <libglom/utils.h>
-//#include <glom/application.h>
+//#include <glom/appwindow.h>
 #include <glibmm/main.h>
 
 #include <iostream>
@@ -98,7 +98,7 @@ Glib::ustring Privs::get_default_developer_user_name(Glib::ustring& password)
 
 Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_name)
 {
-  //TODO_Moved: BusyCursor cursor(Application::get_application());
+  //TODO_Moved: BusyCursor cursor(AppWindow::get_application());
 
   type_vec_strings result;
 
@@ -429,7 +429,7 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   //TODO_Performance: There's lots of database access here.
   //We could maybe replace some with the postgres has_table_* function().
 
-  //TODO_Moved: BusyCursor cursor(Application::get_application());
+  //TODO_Moved: BusyCursor cursor(AppWindow::get_application());
 
   //Return a cached value if possible.
   //(If it is in the cache then it's fairly recent)

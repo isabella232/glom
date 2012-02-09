@@ -21,7 +21,7 @@
 #include "dialog_field_layout.h"
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/glade_utils.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -94,7 +94,7 @@ void Dialog_FieldLayout::set_field(const sharedptr<const LayoutItem_Field>& fiel
 
   m_radiobutton_title_custom->set_active( field->get_title_custom() && field->get_title_custom()->get_use_custom_title() );
   m_entry_title_custom->set_text(title_custom);
-  m_label_title_default->set_text(field->get_title_or_name_no_custom(Application::get_current_locale()));
+  m_label_title_default->set_text(field->get_title_or_name_no_custom(AppWindow::get_current_locale()));
 
   //Formatting:
   m_radiobutton_custom_formatting->set_active( !field->get_formatting_use_default() );
@@ -114,7 +114,7 @@ sharedptr<LayoutItem_Field> Dialog_FieldLayout::get_field_chosen() const
 
   sharedptr<CustomTitle> title_custom = sharedptr<CustomTitle>::create();
   title_custom->set_use_custom_title(m_radiobutton_title_custom->get_active()); //For instance, tell it to really use a blank title.
-  title_custom->set_title(m_entry_title_custom->get_text(), Application::get_current_locale());
+  title_custom->set_title(m_entry_title_custom->get_text(), AppWindow::get_current_locale());
 
   m_layout_item->set_title_custom(title_custom);
 

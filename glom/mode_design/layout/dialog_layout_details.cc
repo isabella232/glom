@@ -26,7 +26,7 @@
 #include <glom/frame_glom.h> //For show_ok_dialog()
 //#include <libgnome/gnome-i18n.h>
 #include <glom/utils_ui.h> //For bold_message()).
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <glibmm/i18n.h>
 #include <sstream> //For stringstream
 
@@ -342,7 +342,7 @@ void Dialog_Layout_Details::set_document(const Glib::ustring& layout_name, const
   {
     //Set the table name and title:
     m_label_table_name->set_text(table_name);
-    m_entry_table_title->set_text( document->get_table_title(table_name, Application::get_current_locale()) );
+    m_entry_table_title->set_text( document->get_table_title(table_name, AppWindow::get_current_locale()) );
 
     Document::type_list_layout_groups list_groups = document->get_data_layout_groups_plus_new_fields(m_layout_name, m_table_name, m_layout_platform);
     document->fill_layout_field_details(m_table_name, list_groups); //Update with full field information.
@@ -1054,7 +1054,7 @@ void Dialog_Layout_Details::save_to_document()
     //Set the table name and title:
     Document* document = get_document();
     if(document)
-      document->set_table_title( m_table_name, m_entry_table_title->get_text(), Application::get_current_locale());
+      document->set_table_title( m_table_name, m_entry_table_title->get_text(), AppWindow::get_current_locale());
 
     //Get the data from the TreeView and store it in the document:
 
@@ -1293,7 +1293,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_title(const Glib::ustring& p
       if(layout_item)
       {
         //Store the user's new text in the model:
-        layout_item->set_title(new_text, Application::get_current_locale());
+        layout_item->set_title(new_text, AppWindow::get_current_locale());
 
         m_modified = true;
       }

@@ -28,7 +28,7 @@
 #include "db_treeviewcolumn_glom.h"
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/dialog_invalid_data.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <glom/utils_ui.h> //For Utils::image_scale_keeping_ratio().
 #include <glom/mode_data/datawidget/cellcreation.h>
 #include <gtkmm/stock.h>
@@ -126,7 +126,7 @@ DbAddDel::DbAddDel()
 DbAddDel::~DbAddDel()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  Application* pApp = get_application();
+  AppWindow* pApp = get_application();
   if(pApp)
   {
     pApp->remove_developer_action(m_refContextLayout);
@@ -251,7 +251,7 @@ void DbAddDel::setup_menu()
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_layout) );
 
   //TODO: This does not work until this widget is in a container in the window:
-  Application* pApp = get_application();
+  AppWindow* pApp = get_application();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -314,7 +314,7 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *event)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
-  Application* pApp = get_application();
+  AppWindow* pApp = get_application();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -2012,12 +2012,12 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
   }
 }
 
-Application* DbAddDel::get_application()
+AppWindow* DbAddDel::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return dynamic_cast<Application*>(pWindow);
+  return dynamic_cast<AppWindow*>(pWindow);
 }
 
 void DbAddDel::on_treeview_cell_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& /* path */)
@@ -2303,7 +2303,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
     //Tell user that they can't do that:
     Gtk::MessageDialog dialog(Utils::bold_message(_("Extra Related Records Not Possible")), true, Gtk::MESSAGE_WARNING);
     dialog.set_secondary_text(_("You attempted to add a new related record, but there can only be one related record, because the relationship uses a unique key.")),
-    dialog.set_transient_for(*Application::get_application());
+    dialog.set_transient_for(*AppWindow::get_application());
     dialog.run();
 
     return;

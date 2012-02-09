@@ -26,7 +26,7 @@
 #include <libglom/utils.h>
 #include <libglom/translations_po.h>
 #include <glom/glade_utils.h>
-#include <glom/application.h>
+#include <glom/appwindow.h>
 #include <gtkmm/filefilter.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/filechooserdialog.h>
@@ -108,9 +108,9 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
   show_all_children();
 
   //Start with the currently-used/tested translation, if appropriate:
-  if(Application::get_current_locale_not_original())
+  if(AppWindow::get_current_locale_not_original())
   {
-    m_translation_locale = Application::get_current_locale();
+    m_translation_locale = AppWindow::get_current_locale();
     m_combo_target_locale->set_selected_locale(m_translation_locale);
     //The translations will be shown in the treeview when load_from_document() is called.
   }

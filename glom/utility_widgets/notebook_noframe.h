@@ -28,7 +28,7 @@
 namespace Glom
 {
 
-class Application;
+class AppWindow;
 class NotebookLabel;
 
 class NotebookNoFrame
