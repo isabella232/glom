@@ -2330,9 +2330,12 @@ void Frame_Glom::do_print_layout(const Glib::ustring& print_layout_name, bool pr
     return;
   }
   
-  //TODO: When expandingt items, avoid the page gaps that the print layout's designed
+  //TODO: When expanding items, avoid the page gaps that the print layout's design
   //has added.  
   const FoundSet found_set = m_Notebook_Data.get_found_set_details();
+  //Note that found_set.m_where_clause could be empty if there are no records yet,
+  //and that is acceptable if this is for a print preview while designing the print layout. 
+  
   PrintLayoutUtils::do_print_layout(print_layout, found_set, 
     preview, document, false /* do not avoid print margins */, transient_for);
 }

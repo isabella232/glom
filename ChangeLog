@@ -1,3 +1,11 @@
+2012-02-09  Murray Cumming  <murrayc@murrayc.com>
+
+	Print Layout: Print Preview: Avoid warnings when there are no records yet.
+
+	* glom/print_layout/canvas_print_layout.cc: fill_with_data(): Do nothing,
+	and hint on stdout, if there are no records yet. This avoids several 
+	real warnings later.
+
 2012-02-08  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Avoid sometimes over-scaled images.

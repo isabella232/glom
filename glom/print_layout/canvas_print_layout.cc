@@ -717,6 +717,14 @@ guint Canvas_PrintLayout::get_page_count() const
 
 void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set, bool avoid_page_margins)
 {
+  if(found_set.m_where_clause.empty())
+  {
+    //This might help a developer/debugger:
+    //This is not an error.
+    std::cout << G_STRFUNC << ": Not attempting to show real data because the where_clause is empty, maybe because there are no records in the database yet." << std::endl;
+    return;
+  }
+  
   fill_with_data(m_items_group, found_set, avoid_page_margins);
 }
 
