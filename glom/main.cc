@@ -32,7 +32,6 @@
 #include <gtkmm/main.h>
 
 #include <giomm/file.h>
-#include <glibmm/optioncontext.h>
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
 
@@ -45,7 +44,6 @@
 #endif //GLOM_ENABLE_POSTGRESQL
 
 // For sanity checks:
-#include <libglom/data_structure/glomconversions.h>
 #include <glom/python_embed/glom_python.h>
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -177,61 +175,6 @@ pgwin32_is_admin(void)
 
 namespace Glom
 {
-
-class OptionGroup : public Glib::OptionGroup
-{
-public:
-  OptionGroup();
-
-  //These int instances should live as long as the OptionGroup to which they are added,
-  //and as long as the OptionContext to which those OptionGroups are added.
-  std::string m_arg_filename;
-  bool m_arg_version;
-  bool m_arg_restore;
-  bool m_arg_stop_auto_server_shutdown;
-  bool m_arg_debug_sql;
-  bool m_arg_debug_date_check;
-};
-
-OptionGroup::OptionGroup()
-: Glib::OptionGroup("Glom", _("Glom options"), _("Command-line options for glom")),
-  m_arg_version(false),
-  m_arg_restore(false),
-  m_arg_stop_auto_server_shutdown(false),
-  m_arg_debug_sql(false),
-  m_arg_debug_date_check(false)
-{
-  Glib::OptionEntry entry;
-  entry.set_long_name("file");
-  entry.set_short_name('f');
-  entry.set_description(_("The Filename"));
-  add_entry_filename(entry, m_arg_filename);
-
-  entry.set_long_name("version");
-  entry.set_short_name('V');
-  entry.set_description(_("The version of this application."));
-  add_entry(entry, m_arg_version);
-
-  entry.set_long_name("restore");
-  entry.set_short_name(0);
-  entry.set_description(_("Whether the filename is a .tar.gz backup to be restored."));
-  add_entry(entry, m_arg_restore);
-
-  entry.set_long_name("stop-auto-server-shutdown");
-  entry.set_short_name(0);
-  entry.set_description(_("Do not automatically stop the database server if Glom quits. This is helpful for debugging with gdb."));
-  add_entry(entry, m_arg_stop_auto_server_shutdown);
-
-  entry.set_long_name("debug_sql");
-  entry.set_short_name(0);
-  entry.set_description(_("Show the generated SQL queries on stdout, for debugging."));
-  add_entry(entry, m_arg_debug_sql);
-
-  entry.set_long_name("debug-date-check");
-  entry.set_short_name(0);
-  entry.set_description(_("Show how Glom outputs a date in this locale, then stop."));
-  add_entry(entry, m_arg_debug_date_check);
-}
 
 #ifdef GLOM_ENABLE_POSTGRESQL
 bool check_user_is_not_root_with_warning()
@@ -458,46 +401,18 @@ main(int argc, char* argv[])
 
   Glom::libglom_init(); //Also initializes python.
 
-  Glib::OptionContext context;
-
-  Glom::OptionGroup group;
-  context.set_main_group(group);
-
   //We use python for calculated-fields:
   PySys_SetArgv(argc, argv);
 
   std::auto_ptr<Gtk::Main> mainInstance;
   try
   {
-    mainInstance = std::auto_ptr<Gtk::Main>( new Gtk::Main(argc, argv, context) );
+    mainInstance = std::auto_ptr<Gtk::Main>( new Gtk::Main(argc, argv) );
   }
   catch(const Glib::Error& ex)
   {
     std::cerr << "Glom: Error while initializing gtkmm: " << ex.what() << std::endl;
     return EXIT_FAILURE;
-  }
-
-  try
-  {
-    context.parse(argc, argv);
-  }
-  catch(const Glib::OptionError& ex)
-  {
-      std::cout << _("Error while parsing command-line options: ") << std::endl << ex.what() << std::endl;
-      std::cout << _("Use --help to see a list of available command-line options.") << std::endl;
-      return EXIT_FAILURE;
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cout << "Error: " << ex.what() << std::endl;
-    return EXIT_FAILURE;
-  }
-
-
-  if(group.m_arg_version)
-  {
-    std::cout << PACKAGE_STRING << std::endl;
-    return EXIT_SUCCESS;
   }
 
   try
@@ -508,49 +423,6 @@ main(int argc, char* argv[])
 #endif //!GLOM_ENABLE_CLIENT_ONLY
 
     ev_init();
-
-    //Get command-line parameters, if any:
-    Glib::ustring input_uri = group.m_arg_filename;
-
-    // The GOption documentation says that options without names will be returned to the application as "rest arguments".
-    // I guess this means they will be left in the argv. Murray.
-    if(input_uri.empty() && (argc > 1))
-    {
-       const char* pch = argv[1];
-       if(pch)
-         input_uri = pch;
-    }
-
-    if(!input_uri.empty())
-    {
-      //Get a URI (file://something) from the filepath:
-      Glib::RefPtr<Gio::File> file = Gio::File::create_for_commandline_arg(input_uri);
-
-      if(!file->query_exists())
-      {
-        std::cerr << _("Glom: The file does not exist.") << std::endl;
-        std::cerr << "uri: " << input_uri << std::endl;
-
-        std::cerr << std::endl << context.get_help() << std::endl;
-        return EXIT_FAILURE;
-      }
-
-      const Gio::FileType file_type = file->query_file_type();
-      if(file_type == Gio::FILE_TYPE_DIRECTORY)
-      {
-        std::cerr << _("Glom: The file path is a directory instead of a file.") << std::endl;
-
-        std::cerr << std::endl << context.get_help() << std::endl;
-        return EXIT_FAILURE;
-      }
-
-      input_uri = file->get_uri();
-
-      //std::cout << "URI = " << input_uri << std::endl;
-    }
-
-    //debugging:
-    //input_uri = "file:///home/murrayc/cvs/gnome212/glom/examples/example_smallbusiness.glom";
 
 #ifdef GLOM_ENABLE_POSTGRESQL
 
@@ -590,36 +462,8 @@ main(int argc, char* argv[])
       return EXIT_FAILURE;
 
 
-    // Some more sanity checking:
-    // These print errors to the stdout if they fail.
-    // In future we might refuse to start if they fail.
-    bool date_check_ok = true;
-    const bool test1 =
-      Glom::Conversions::sanity_check_date_text_representation_uses_4_digit_years(group.m_arg_debug_date_check /* show debug output */);
-    if(!test1)
-    {
-      std::cerr << "Glom: ERROR: Date presentation sanity checks failed. Glom will not display dates correctly. This needs attention from a translator. Please file a bug. See http://www.glom.org." << std::endl;
-      date_check_ok = false;
-    }
-
-    const bool test2 = Glom::Conversions::sanity_check_date_parsing();
-    if(!test2)
-    {
-      std::cerr << "Glom: ERROR: Date parsing sanity checks failed. Glom will not interpret dates correctly. This needs attention from a translator. Please file a bug. See http://www.glom.org." << std::endl;
-      date_check_ok = false;
-    }
-
-    if(group.m_arg_debug_date_check)
-    {
-      return date_check_ok ? EXIT_SUCCESS : EXIT_FAILURE; //This command-line option is documented as stopping afterwards.
-    }
-
     Glib::RefPtr<Glom::Application> application = 
       Glom::Application::create();
-    //TODO: application->set_show_sql_debug(group.m_arg_debug_sql);
-    //TODO: application->set_stop_auto_server_shutdown(group.m_arg_stop_auto_server_shutdown);
-    Glom::ConnectionPool::get_instance()->set_show_debug_output(group.m_arg_debug_sql); //TODO: Put this in Application::set_show_sql_debug().
-
     const int status = application->run(argc, argv);
     if(status != EXIT_SUCCESS) //TODO: Is this right?
       return status;

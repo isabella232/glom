@@ -1,3 +1,19 @@
+2012-02-10  Murray Cumming  <murrayc@murrayc.com>>
+
+	Move all command-line handling into the remote Application.
+
+	* glom/main.cc:
+	* glom/application.cc:
+	* glom/main_local_options.[h|cc]:
+	* glom/main_remote_options.[h|cc]: Split the command-line options into 
+	two OptionGroups, in their own files, even putting local option handling in
+	its separate file. This lets us handle them properly, despite the lack of 
+	GApplication support for separate local/remote GOption handling.
+	( See https://bugzilla.gnome.org/show_bug.cgi?id=634990#c6 )
+	thanks to our use of G_APPLICATION_NON_UNIQUE.
+	Having them separate should make it easier to really do it properly if
+	GApplication ever allows it.
+
 2012-02-10  Murray Cumming  <murrayc@murrayc.com>
 
 	Use G_APPLICATION_NON_UNIQUE.
