@@ -36,18 +36,26 @@ class LocalOptionGroup : public Glib::OptionGroup
 {
 public:
   LocalOptionGroup();
+  
+  /**
+   * @result If this is false then the GApplication, or main() should return EXIT_FAILURE.
+   */
+  bool handle_options();
+  
+  bool get_debug_date_check_result(bool& stop) const;
+
+private:
 
   //These int instances should live as long as the OptionGroup to which they are added,
   //and as long as the OptionContext to which those OptionGroups are added.
   bool m_arg_version;
   bool m_arg_debug_date_check;
+
+  bool m_debug_date_check_result;
 };
 
 
-/**
- * @result If this is false then the GApplication, or main() should return EXIT_FAILURE.
- */
-bool main_handle_local_options(const LocalOptionGroup& group);
+
 
 } //namespace Glom
 

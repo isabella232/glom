@@ -36,7 +36,8 @@ namespace Glom
 LocalOptionGroup::LocalOptionGroup()
 : Glib::OptionGroup("glom-extra", _("Extra Glom options"), _("Extra command-line options for glom")),
   m_arg_version(false),
-  m_arg_debug_date_check(false)
+  m_arg_debug_date_check(false),
+  m_debug_date_check_result(false)
 {
   Glib::OptionEntry entry;
   entry.set_long_name("version");
@@ -51,39 +52,43 @@ LocalOptionGroup::LocalOptionGroup()
 }
 
 
-bool main_handle_local_options(const LocalOptionGroup& group)
+bool LocalOptionGroup::handle_options()
 {
-  if(group.m_arg_version)
+  if(m_arg_version)
   {
     std::cout << PACKAGE_STRING << std::endl;
-    return EXIT_SUCCESS;
+    return false; //Then stop.
   }
   
   // Some more sanity checking:
   // These print errors to the stdout if they fail.
   // In future we might refuse to start if they fail.
-  bool date_check_ok = true;
+  m_debug_date_check_result = true;
   const bool test1 =
-    Glom::Conversions::sanity_check_date_text_representation_uses_4_digit_years(group.m_arg_debug_date_check /* show debug output */);
+    Glom::Conversions::sanity_check_date_text_representation_uses_4_digit_years(m_arg_debug_date_check /* show debug output */);
   if(!test1)
   {
     std::cerr << "Glom: ERROR: Date presentation sanity checks failed. Glom will not display dates correctly. This needs attention from a translator. Please file a bug. See http://www.glom.org." << std::endl;
-    date_check_ok = false;
+    m_debug_date_check_result = false;
   }
 
   const bool test2 = Glom::Conversions::sanity_check_date_parsing();
   if(!test2)
   {
     std::cerr << "Glom: ERROR: Date parsing sanity checks failed. Glom will not interpret dates correctly. This needs attention from a translator. Please file a bug. See http://www.glom.org." << std::endl;
-    date_check_ok = false;
+    m_debug_date_check_result = false;
   }
 
-  if(group.m_arg_debug_date_check)
-  {
-    return date_check_ok; //This command-line option is documented as stopping afterwards.
-  }
-  
   return true;
+}
+
+bool LocalOptionGroup::get_debug_date_check_result(bool& stop) const
+{
+  //This command-line option is documented as stopping executing after checking,
+  //so that the execution result can be checked: 
+  stop = m_arg_debug_date_check;
+  
+  return m_debug_date_check_result;
 }
 
 
