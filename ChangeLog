@@ -1,3 +1,13 @@
+2012-02-10  Murray Cumming  <murrayc@murrayc.com>
+
+	Add a Gtk::Application subclass, used by main().
+
+	* Makefile.am:
+	* main.cc:
+	* glom/application.[h|cc]: Use a derived Gtk::Application which instantiates
+	the Glom::AppWindow via its on_open(). Some command-line option handling is 
+	temporarily commented out.
+
 2012-02-24  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix a typo in the previous commit.
