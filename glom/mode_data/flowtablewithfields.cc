@@ -1412,7 +1412,7 @@ void FlowTableWithFields::on_menu_delete_activate()
 
 bool FlowTableWithFields::on_button_press_event(GdkEventButton *event)
 {
-  AppWindow* pApp = AppWindow::get_application();
+  AppWindow* pApp = AppWindow::get_appwindow();
   if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     GdkModifierType mods;

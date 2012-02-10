@@ -426,8 +426,8 @@ bool DataWidget::on_button_press_event(GdkEventButton *event)
   //g_warning("DataWidget::on_button_press_event_popup");
 
   //Enable/Disable items.
-  //We did this earlier, but get_application is more likely to work now:
-  AppWindow* pApp = get_application();
+  //We did this earlier, but get_appwindow is more likely to work now:
+  AppWindow* pApp = get_appwindow();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -462,7 +462,7 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
 
 sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field)
 {
-  return offer_field_list(table_name, start_field, get_document(), get_application());
+  return offer_field_list(table_name, start_field, get_document(), get_appwindow());
 }
 
 sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document* document, AppWindow* app)
@@ -504,7 +504,7 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_layout(const sharedptr<const
   add_view(dialog); //Give it access to the document.
   dialog->set_field(start_field, m_table_name);
 
-  Gtk::Window* parent = get_application();
+  Gtk::Window* parent = get_appwindow();
   if(parent)
     dialog->set_transient_for(*parent);
 
@@ -567,7 +567,7 @@ void DataWidget::on_child_user_requested_layout()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-AppWindow* DataWidget::get_application()
+AppWindow* DataWidget::get_appwindow()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
@@ -635,7 +635,7 @@ void DataWidget::on_button_choose_date()
 
   if(dialog)
   {
-    Gtk::Window* parent = get_application(); //This doesn't work (and would be wrong) when the widget is in a Field Definitions dialog.
+    Gtk::Window* parent = get_appwindow(); //This doesn't work (and would be wrong) when the widget is in a Field Definitions dialog.
     if(parent)
       dialog->set_transient_for(*parent);
     dialog->set_date_chosen(get_value());
@@ -674,7 +674,7 @@ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
   if(dialog)
   {
     //dialog->set_document(get_document(), table_name, field);
-    Gtk::Window* parent = get_application();
+    Gtk::Window* parent = get_appwindow();
     if(parent)
       dialog->set_transient_for(*parent);
     add_view(dialog);
@@ -723,7 +723,7 @@ bool DataWidget::offer_related_record_id_new(Gnome::Gda::Value& chosen_id)
   if(dialog)
   {
     //dialog->set_document(get_document(), table_name, field);
-    Gtk::Window* parent = get_application();
+    Gtk::Window* parent = get_appwindow();
     if(parent)
       dialog->set_transient_for(*parent);
     add_view(dialog);

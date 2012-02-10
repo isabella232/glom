@@ -84,7 +84,7 @@ public:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 protected:
-  virtual AppWindow* get_application() const; // = 0;
+  virtual AppWindow* get_appwindow() const; // = 0;
 
 
   static void apply_formatting(Gtk::Widget& widget, const sharedptr<const LayoutItem_WithFormatting>& layout_item);

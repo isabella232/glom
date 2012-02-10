@@ -66,7 +66,7 @@ void Label::init()
   m_label.set_line_wrap();
 }
 
-AppWindow* Label::get_application()
+AppWindow* Label::get_appwindow()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
@@ -102,7 +102,7 @@ void Label::on_menu_properties_activate()
 
 bool Label::on_button_press_event(GdkEventButton *event)
 {
-  AppWindow* pApp = get_application();
+  AppWindow* pApp = get_appwindow();
   if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     GdkModifierType mods;

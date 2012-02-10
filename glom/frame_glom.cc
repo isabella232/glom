@@ -1773,7 +1773,7 @@ void Frame_Glom::on_developer_dialog_hide()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Frame_Glom::on_connection_initialize_progress()
 {
-  AppWindow *app = dynamic_cast<AppWindow*>(AppWindow::get_application());
+  AppWindow *app = dynamic_cast<AppWindow*>(AppWindow::get_appwindow());
   if(app)
     app->pulse_progress_message();
 }
@@ -1781,14 +1781,14 @@ void Frame_Glom::on_connection_initialize_progress()
 
 void Frame_Glom::on_connection_startup_progress()
 {
-  AppWindow *app = dynamic_cast<AppWindow*>(AppWindow::get_application());
+  AppWindow *app = dynamic_cast<AppWindow*>(AppWindow::get_appwindow());
   if(app)
     app->pulse_progress_message();
 }
 
 void Frame_Glom::on_connection_cleanup_progress()
 {
-  AppWindow *app = dynamic_cast<AppWindow*>(AppWindow::get_application());
+  AppWindow *app = dynamic_cast<AppWindow*>(AppWindow::get_appwindow());
   if(app)
     app->pulse_progress_message();
 }

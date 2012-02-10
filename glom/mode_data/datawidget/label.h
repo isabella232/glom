@@ -51,7 +51,7 @@ public:
 private:
   void init();
 
-  virtual AppWindow* get_application();
+  virtual AppWindow* get_appwindow();
     
   Gtk::Label m_label;
 #ifndef GLOM_ENABLE_CLIENT_ONLY    

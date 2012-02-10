@@ -177,8 +177,8 @@ Gnome::Gda::Value TextView::get_value() const
 bool TextView::on_button_press_event(GdkEventButton *event)
 {
   //Enable/Disable items.
-  //We did this earlier, but get_application is more likely to work now:
-  AppWindow* pApp = get_application();
+  //We did this earlier, but get_appwindow is more likely to work now:
+  AppWindow* pApp = get_appwindow();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -208,7 +208,7 @@ bool TextView::on_button_press_event(GdkEventButton *event)
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-AppWindow* TextView::get_application()
+AppWindow* TextView::get_appwindow()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.

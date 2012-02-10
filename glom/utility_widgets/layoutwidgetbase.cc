@@ -55,7 +55,7 @@ sharedptr<LayoutItem> LayoutWidgetBase::get_layout_item()
   return m_pLayoutItem;
 }
 
-AppWindow* LayoutWidgetBase::get_application() const
+AppWindow* LayoutWidgetBase::get_appwindow() const
 {
   return 0; //override to implement.
 }
