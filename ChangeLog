@@ -1,5 +1,12 @@
 2012-02-10  Murray Cumming  <murrayc@murrayc.com>
 
+	Use G_APPLICATION_NON_UNIQUE.
+
+	* glom/application.cc: This is necessary because we use singletons that
+	are really per-AppWindow, to simplify our code.
+
+2012-02-10  Murray Cumming  <murrayc@murrayc.com>
+
 	Add a Gtk::Application subclass, used by main().
 
 	* Makefile.am:
