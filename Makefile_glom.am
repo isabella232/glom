@@ -67,8 +67,6 @@ glom_canvas_files =  \
 	glom/utility_widgets/canvas/canvas_text_movable.h
 
 glom_source_files = \
-	glom/application.cc						\
-	glom/application.h						\
 	glom/appwindow.cc						\
 	glom/appwindow.h						\
 	glom/base_db.cc							\
@@ -396,7 +394,13 @@ glom_source_files +=							\
 	glom/navigation/box_tables.h
 
 glom_glom_SOURCES =							\
+	glom/application.cc						\
+	glom/application.h						\
 	glom/main.cc							\
+	glom/main_local_options.cc \
+	glom/main_local_options.h \
+	glom/main_remote_options.cc \
+	glom/main_remote_options.h \
 	$(glom_source_files)
 
 glom_all_libs = $(win_resfile) \

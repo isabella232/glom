@@ -18,38 +18,32 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_APPLICATION_H
-#define GLOM_APPLICATION_H
+#ifndef GLOM_MAIN_REMOTE_OPTIONS_H
+#define GLOM_MAIN_REMOTE_OPTIONS_H
 
-#include <glom/main_remote_options.h>
-#include <gtkmm/application.h>
+#include <glibmm/optiongroup.h>
 
 namespace Glom
 {
 
-class Application: public Gtk::Application
+//These options can be run by the remote (main) instance:
+//However, real separation (or even real remote handling) of OptionGroups is
+//not possible yet:
+//https://bugzilla.gnome.org/show_bug.cgi?id=634990#c6
+//This only works at all because we use Gio::APPLICATION_NON_UNIQUE .
+class RemoteOptionGroup : public Glib::OptionGroup
 {
-protected:
-  Application();
-
 public:
-  static Glib::RefPtr<Application> create();
-    
-protected:
-  //Overrides of default signal handlers:
-  virtual void on_activate();
-  virtual void on_open(const Gio::Application::type_vec_files& files,
-    const Glib::ustring& hint);
-  virtual int on_command_line(const Glib::RefPtr<Gio::ApplicationCommandLine>& command_line);
+  RemoteOptionGroup();
 
-private:
-  void create_window(const Glib::RefPtr<Gio::File>& file = Glib::RefPtr<Gio::File>());
-
-  void on_window_hide(Gtk::Window* window);
-  
-  RemoteOptionGroup m_remote_option_group;
+  //These int instances should live as long as the OptionGroup to which they are added,
+  //and as long as the OptionContext to which those OptionGroups are added.
+  std::string m_arg_filename;
+  bool m_arg_restore;
+  bool m_arg_stop_auto_server_shutdown;
+  bool m_arg_debug_sql;
 };
 
 } //namespace Glom
 
-#endif /* GTKMM_APPLICATION_H */
+#endif //GLOM_MAIN_REMOTE_OPTIONS
