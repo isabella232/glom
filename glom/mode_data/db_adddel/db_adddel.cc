@@ -126,7 +126,7 @@ DbAddDel::DbAddDel()
 DbAddDel::~DbAddDel()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  AppWindow* pApp = get_application();
+  AppWindow* pApp = get_appwindow();
   if(pApp)
   {
     pApp->remove_developer_action(m_refContextLayout);
@@ -251,7 +251,7 @@ void DbAddDel::setup_menu()
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_layout) );
 
   //TODO: This does not work until this widget is in a container in the window:
-  AppWindow* pApp = get_application();
+  AppWindow* pApp = get_appwindow();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -313,8 +313,8 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *event)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Enable/Disable items.
-  //We did this earlier, but get_application is more likely to work now:
-  AppWindow* pApp = get_application();
+  //We did this earlier, but get_appwindow is more likely to work now:
+  AppWindow* pApp = get_appwindow();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -1612,7 +1612,7 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
 
 void DbAddDel::on_treeview_column_clicked(int model_column_index)
 {
-  BusyCursor busy_cursor(get_application());
+  BusyCursor busy_cursor(get_appwindow());
 
   if(model_column_index >= (int)m_column_items.size())
     return;
@@ -2012,7 +2012,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
   }
 }
 
-AppWindow* DbAddDel::get_application()
+AppWindow* DbAddDel::get_appwindow()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
@@ -2155,7 +2155,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
     Glib::ustring table_name = m_found_set.m_table_name;
     sharedptr<Field> primary_key_field;
     Gnome::Gda::Value primary_key_value;
-    Gtk::Window* window = get_application();
+    Gtk::Window* window = get_appwindow();
 
     //Just update the record:
     try
@@ -2303,7 +2303,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
     //Tell user that they can't do that:
     Gtk::MessageDialog dialog(Utils::bold_message(_("Extra Related Records Not Possible")), true, Gtk::MESSAGE_WARNING);
     dialog.set_secondary_text(_("You attempted to add a new related record, but there can only be one related record, because the relationship uses a unique key.")),
-    dialog.set_transient_for(*AppWindow::get_application());
+    dialog.set_transient_for(*AppWindow::get_appwindow());
     dialog.run();
 
     return;
@@ -2339,7 +2339,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
   if(Conversions::value_is_empty(primary_key_value))
     return;
 
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(get_application()); //Keep it alive while we need the data_model.
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(get_appwindow()); //Keep it alive while we need the data_model.
   if(!sharedconnection)
   {
     //Add Record failed.
@@ -2351,7 +2351,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
 
   sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::create();
   layout_field->set_full_field_details(primary_key_field);
-  if(!check_entered_value_for_uniqueness(m_found_set.m_table_name, layout_field, primary_key_value, get_application()))
+  if(!check_entered_value_for_uniqueness(m_found_set.m_table_name, layout_field, primary_key_value, get_appwindow()))
   {
     //Revert to a blank value.
     primary_key_value = Conversions::get_empty_value(layout_field->get_full_field_details()->get_glom_type());

@@ -951,7 +951,7 @@ void Box_Data_Details::print_layout()
       false /* do not avoid page margins */);
   
   //Show the print preview window:
-  AppWindow* app = AppWindow::get_application();
+  AppWindow* app = AppWindow::get_appwindow();
   PrintLayoutUtils::do_print_layout(print_layout, m_found_set,
     false /* not preview */, document, true /* avoid page margins */, app);
 }

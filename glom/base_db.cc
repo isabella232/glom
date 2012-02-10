@@ -127,7 +127,7 @@ void Base_DB::handle_error(const Glib::Exception& ex)
 
   Gtk::MessageDialog dialog(Utils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
   dialog.set_secondary_text(ex.what());
-  //TODO: dialog.set_transient_for(*get_application());
+  //TODO: dialog.set_transient_for(*get_appwindow());
   dialog.run();
 }
 
@@ -137,7 +137,7 @@ void Base_DB::handle_error(const std::exception& ex)
 
   Gtk::MessageDialog dialog(Utils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
   dialog.set_secondary_text(ex.what());
-  //TODO: dialog.set_transient_for(*get_application());
+  //TODO: dialog.set_transient_for(*get_appwindow());
 
   dialog.run();
 }

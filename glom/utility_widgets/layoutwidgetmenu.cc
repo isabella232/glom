@@ -83,7 +83,7 @@ void LayoutWidgetMenu::setup_menu()
     sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_activate_delete) );
 
   //TODO: This does not work until this widget is in a container in the window:s
-  AppWindow* pApp = get_application();
+  AppWindow* pApp = get_appwindow();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.

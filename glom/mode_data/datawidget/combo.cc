@@ -318,8 +318,8 @@ bool ComboGlom::on_button_press_event(GdkEventButton *event)
 g_warning("ComboGlom::on_button_press_event()");
 
   //Enable/Disable items.
-  //We did this earlier, but get_application is more likely to work now:
-  AppWindow* pApp = get_application();
+  //We did this earlier, but get_appwindow is more likely to work now:
+  AppWindow* pApp = get_appwindow();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -349,7 +349,7 @@ g_warning("ComboGlom::on_button_press_event()");
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-AppWindow* ComboGlom::get_application()
+AppWindow* ComboGlom::get_appwindow()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.

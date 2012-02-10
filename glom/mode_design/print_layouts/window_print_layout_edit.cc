@@ -1072,7 +1072,7 @@ void Window_PrintLayout_Edit::on_menu_file_print_preview()
   document->set_print_layout(m_table_name, print_layout);
 
   //Show the print preview window:
-  AppWindow* app = AppWindow::get_application();
+  AppWindow* app = AppWindow::get_appwindow();
   if(app)
     app->do_print_layout(m_print_layout->get_name(), true /* preview */, this);
 }

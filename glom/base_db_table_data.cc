@@ -113,7 +113,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
 
           //We need the connection when we run the script, so that the script may use it.
           // TODO: Is this function supposed to throw an exception?
-          sharedptr<SharedConnection> sharedconnection = connect_to_server(AppWindow::get_application());
+          sharedptr<SharedConnection> sharedconnection = connect_to_server(AppWindow::get_appwindow());
 
             Glib::ustring error_message; //TODO: Check this.
             const Gnome::Gda::Value value =
@@ -262,7 +262,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
     const Glib::ustring message = _("Data may not be entered into this related field, because the related record does not yet exist, and the relationship does not allow automatic creation of new related records.");
     Gtk::MessageDialog dialog(Utils::bold_message(_("Related Record Does Not Exist")), true);
     dialog.set_secondary_text(message);
-    dialog.set_transient_for(*AppWindow::get_application());
+    dialog.set_transient_for(*AppWindow::get_appwindow());
     dialog.run();
 
     //Clear the field again, discarding the entered data.
@@ -284,7 +284,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
       Gtk::MessageDialog dialog(Utils::bold_message(_("Related Record Cannot Be Created")), true);
       //TODO: This is a very complex error message:
       dialog.set_secondary_text(message);
-      dialog.set_transient_for(*AppWindow::get_application());
+      dialog.set_transient_for(*AppWindow::get_appwindow());
       dialog.run();
 
       //Clear the field again, discarding the entered data.
@@ -395,7 +395,7 @@ bool Base_DB_Table_Data::confirm_delete_record()
   const Glib::ustring message = _("Are you sure that you would like to delete this record? The data in this record will then be permanently lost.");
   Gtk::MessageDialog dialog(Utils::bold_message(_("Delete record")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
   dialog.set_secondary_text(message);
-  dialog.set_transient_for(*AppWindow::get_application());
+  dialog.set_transient_for(*AppWindow::get_appwindow());
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   dialog.add_button(Gtk::Stock::DELETE, Gtk::RESPONSE_OK);
 
@@ -431,7 +431,7 @@ Base_DB_Table_Data::type_signal_record_changed Base_DB_Table_Data::signal_record
 
 bool Base_DB_Table_Data::get_related_record_exists(const sharedptr<const Relationship>& relationship, const Gnome::Gda::Value& key_value)
 {
-  BusyCursor cursor(AppWindow::get_application());
+  BusyCursor cursor(AppWindow::get_appwindow());
 
   bool result = false;
 

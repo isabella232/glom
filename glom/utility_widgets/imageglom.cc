@@ -108,8 +108,8 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
   gdk_window_get_device_position( gtk_widget_get_window (Gtk::Widget::gobj()), event->device, 0, 0, &mods );
 
   //Enable/Disable items.
-  //We did this earlier, but get_application is more likely to work now:
-  AppWindow* pApp = get_application();
+  //We did this earlier, but get_appwindow is more likely to work now:
+  AppWindow* pApp = get_appwindow();
   if(pApp)
   {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -157,7 +157,7 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
   return Gtk::EventBox::on_button_press_event(event);
 }
 
-AppWindow* ImageGlom::get_application()
+AppWindow* ImageGlom::get_appwindow()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
@@ -495,7 +495,7 @@ void ImageGlom::on_menupopup_activate_open_file()
 
 void ImageGlom::on_menupopup_activate_open_file_with()
 {
-  AppWindow* pApp = get_application();
+  AppWindow* pApp = get_appwindow();
 
   //Offer the user a choice of suitable applications:
   const Glib::ustring mime_type = get_mime_type();
@@ -671,7 +671,7 @@ static void set_file_filter_images(Gtk::FileChooser& file_chooser)
 
 void ImageGlom::on_menupopup_activate_save_file()
 {
-  AppWindow* pApp = get_application();
+  AppWindow* pApp = get_appwindow();
 
   Gtk::FileChooserDialog dialog(_("Save Image"), Gtk::FILE_CHOOSER_ACTION_SAVE);
   if(pApp)
@@ -737,7 +737,7 @@ bool ImageGlom::save_file(const Glib::ustring& uri)
   // Automatically delete the dialog when we no longer need it:
   std::auto_ptr<Gtk::Dialog> dialog_keeper(dialog_save);
 
-  AppWindow* pApp = get_application();
+  AppWindow* pApp = get_appwindow();
   if(pApp)
     dialog_save->set_transient_for(*pApp);
 
@@ -758,7 +758,7 @@ void ImageGlom::on_menupopup_activate_select_file()
   if(m_read_only)
     return;
     
-  AppWindow* pApp = get_application();
+  AppWindow* pApp = get_appwindow();
 
   Gtk::FileChooserDialog dialog(_("Choose Image"), Gtk::FILE_CHOOSER_ACTION_OPEN);
   if(pApp)

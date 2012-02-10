@@ -45,7 +45,7 @@ public:
 private:
   void init();
 
-  virtual AppWindow* get_application();
+  virtual AppWindow* get_appwindow();
     
   Gtk::Label m_label;
   NotebookGlom* m_notebook;

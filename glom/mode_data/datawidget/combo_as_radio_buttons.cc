@@ -267,11 +267,11 @@ Glib::ustring ComboAsRadioButtons::get_text() const
 void ComboAsRadioButtons::show_context_menu(GdkEventButton *event)
 {
   std::cout << "ComboAsRadioButtons::show_context_menu()" << std::endl;
-  AppWindow* pApp = get_application();
+  AppWindow* pApp = get_appwindow();
   if(pApp)
   {
     //Enable/Disable items.
-    //We did this earlier, but get_application is more likely to work now:
+    //We did this earlier, but get_appwindow is more likely to work now:
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
     pApp->add_developer_action(m_refContextAddField);
     pApp->add_developer_action(m_refContextAddRelatedRecords);
@@ -308,7 +308,7 @@ bool ComboAsRadioButtons::on_button_press_event(GdkEventButton *event)
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-AppWindow* ComboAsRadioButtons::get_application()
+AppWindow* ComboAsRadioButtons::get_appwindow()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.

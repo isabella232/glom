@@ -514,7 +514,7 @@ void Box_Data_Calendar_Related::setup_menu()
     sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_MenuPopup_activate_layout) );
 
   //TODO: This does not work until this widget is in a container in the window:
-  AppWindow* pApp = get_application();
+  AppWindow* pApp = get_appwindow();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -563,8 +563,8 @@ void Box_Data_Calendar_Related::on_calendar_button_press_event(GdkEventButton *e
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Enable/Disable items.
-  //We did this earlier, but get_application is more likely to work now:
-  AppWindow* pApp = get_application();
+  //We did this earlier, but get_appwindow is more likely to work now:
+  AppWindow* pApp = get_appwindow();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.

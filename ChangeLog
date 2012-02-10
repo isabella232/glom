@@ -1,5 +1,9 @@
 2012-02-10  Murray Cumming  <murrayc@murrayc.com>
 
+	AppWindow: Rename get_application() to get_appwindow().
+
+2012-02-10  Murray Cumming  <murrayc@murrayc.com>
+
 	Do not use Gtk::Main.
 
 	* glom/application.cc: create(): Call the new init_gtkmm method.

@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
  
-#include <glom/appwindow.h> // For get_application().
+#include <glom/appwindow.h> // For get_appwindow().
 
 #include "canvas_image_movable.h"
 #include <goocanvasmm/canvas.h>
@@ -207,7 +207,7 @@ void CanvasImageMovable::set_image_empty()
   Gtk::Widget *widget = get_canvas();
 
   if(!widget)
-    widget = AppWindow::get_application();
+    widget = AppWindow::get_appwindow();
 
   Glib::RefPtr<Gdk::Pixbuf> pixbuf;
   if(widget)

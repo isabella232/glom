@@ -108,7 +108,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
         builder->add_expr(m_from_key_value)));
 
     /* TODO: Fix linking problems
-    const App_Glom* app = App_Glom::get_application();
+    const App_Glom* app = App_Glom::get_appwindow();
     if(app && app->get_show_sql_debug())
     {
       try

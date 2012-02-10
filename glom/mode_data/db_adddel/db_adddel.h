@@ -376,8 +376,8 @@ private:
 
   guint get_fixed_cell_height();
 
-  //TODO: Remove this and use AppGlom::get_application() instead?
-  AppWindow* get_application();
+  //TODO: Remove this and use AppGlom::get_appwindow() instead?
+  AppWindow* get_appwindow();
 
   void refresh_cell_choices_data_from_database_with_foreign_key(guint model_index, const Gnome::Gda::Value& foreign_key_value);
 

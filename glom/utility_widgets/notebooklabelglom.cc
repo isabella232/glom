@@ -61,7 +61,7 @@ void NotebookLabel::set_label (const Glib::ustring& title)
   m_label.set_label (title); 
 }
 
-AppWindow* NotebookLabel::get_application()
+AppWindow* NotebookLabel::get_appwindow()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
@@ -149,7 +149,7 @@ void NotebookLabel::setup_menu()
 
 bool NotebookLabel::on_button_press_event(GdkEventButton *event)
 {
-  AppWindow* pApp = get_application();
+  AppWindow* pApp = get_appwindow();
   if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     GdkModifierType mods;

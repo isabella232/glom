@@ -59,7 +59,7 @@ void NotebookGlom::init()
 
 }
 
-AppWindow* NotebookGlom::get_application()
+AppWindow* NotebookGlom::get_appwindow()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.

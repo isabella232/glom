@@ -771,7 +771,7 @@ void handle_error(const Glib::Exception& ex)
   //TODO_Moved:
   //Gtk::MessageDialog dialog(Utils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
   //dialog.set_secondary_text(ex.what());
-  //TODO: dialog.set_transient_for(*get_application());
+  //TODO: dialog.set_transient_for(*get_appwindow());
   //dialog.run();
 }
 
@@ -782,7 +782,7 @@ void handle_error(const std::exception& ex)
  //TODO_Moved:
   //Gtk::MessageDialog dialog(Utils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
   //dialog.set_secondary_text(ex.what());
-  //TODO: dialog.set_transient_for(*get_application());
+  //TODO: dialog.set_transient_for(*get_appwindow());
   //dialog.run();
 }
 
@@ -815,7 +815,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
     DATAMODEL_FIELDS_COL_EXTRA = 6 // Could be auto-increment
   };
 
-  //TODO: BusyCursor busy_cursor(get_application());
+  //TODO: BusyCursor busy_cursor(get_appwindow());
 
   {
     Glib::RefPtr<Gnome::Gda::Connection> connection = get_connection();
