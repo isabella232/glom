@@ -145,9 +145,18 @@ int Application::on_command_line(const Glib::RefPtr<Gio::ApplicationCommandLine>
     return EXIT_FAILURE;
   }
 
-  //Get command-line parameters, if any:  
-  if(!main_handle_local_options(local_group))
+  //Get command-line parameters, if any:
+  if(!local_group.handle_options())
     return EXIT_FAILURE;
+    
+  bool stop = false;
+  const bool date_check_ok = local_group.get_debug_date_check_result(stop);
+  if(stop)
+  {
+    //This command-line option is documented as stopping afterwards.
+    return date_check_ok ? EXIT_SUCCESS : EXIT_FAILURE;
+  }
+
 
   Glib::ustring input_uri = m_remote_option_group.m_arg_filename;
 
