@@ -67,6 +67,8 @@ glom_canvas_files =  \
 	glom/utility_widgets/canvas/canvas_text_movable.h
 
 glom_source_files = \
+	glom/application.cc						\
+	glom/application.h						\
 	glom/appwindow.cc						\
 	glom/appwindow.h						\
 	glom/base_db.cc							\

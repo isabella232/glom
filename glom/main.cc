@@ -27,7 +27,8 @@
 //#include <gnome.h>
 #include <gtkmm/messagedialog.h>
 #include <glom/libglom/init.h>
-#include <glom/glade_utils.h>
+#include <glom/libglom/connectionpool.h>
+#include <glom/libglom/utils.h>
 #include <gtkmm/main.h>
 
 #include <giomm/file.h>
@@ -52,8 +53,7 @@
 #include <goocanvasmm/init.h>
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#include <glom/appwindow.h>
-#include <glom/glade_utils.h>
+#include <glom/application.h>
 #include <glom/utils_ui.h>
 
 #include <evince-view.h>
@@ -614,23 +614,15 @@ main(int argc, char* argv[])
       return date_check_ok ? EXIT_SUCCESS : EXIT_FAILURE; //This command-line option is documented as stopping afterwards.
     }
 
-    Glom::AppWindow* pAppWindow = 0;
-    Glom::Utils::get_glade_widget_derived_with_warning(pAppWindow);
-    g_assert(pAppWindow);
+    Glib::RefPtr<Glom::Application> application = 
+      Glom::Application::create();
+    //TODO: application->set_show_sql_debug(group.m_arg_debug_sql);
+    //TODO: application->set_stop_auto_server_shutdown(group.m_arg_stop_auto_server_shutdown);
+    Glom::ConnectionPool::get_instance()->set_show_debug_output(group.m_arg_debug_sql); //TODO: Put this in Application::set_show_sql_debug().
 
-    pAppWindow->set_command_line_args(argc, argv);
-    pAppWindow->set_show_sql_debug(group.m_arg_debug_sql);
-    pAppWindow->set_stop_auto_server_shutdown(group.m_arg_stop_auto_server_shutdown);
-    Glom::ConnectionPool::get_instance()->set_show_debug_output(group.m_arg_debug_sql);
-
-    const bool test = pAppWindow->init(input_uri, group.m_arg_restore); //Sets it up and shows it.
-
-    if(test) //The user could cancel the offer of a new or existing database.
-      Gtk::Main::run(*pAppWindow); //Quit when the window is closed.
-
-    //Cleanup:
-    delete pAppWindow;
-    pAppWindow = 0;
+    const int status = application->run(argc, argv);
+    if(status != EXIT_SUCCESS) //TODO: Is this right?
+      return status;
   }
   catch(const Glib::Exception& ex)
   {
