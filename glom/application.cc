@@ -26,8 +26,11 @@
 namespace Glom
 {
 
+// We use Gio::APPLICATION_NON_UNIQUE because we have some singletons and other static data,
+// to simplify our code.
+// We also want to prevent all instances from crashing when one instance crashes.
 Application::Application()
-: Gtk::Application("org.glom.application", Gio::APPLICATION_HANDLES_OPEN)
+: Gtk::Application("org.glom.application", Gio::APPLICATION_HANDLES_OPEN | Gio::APPLICATION_NON_UNIQUE)
 {
 }
 
