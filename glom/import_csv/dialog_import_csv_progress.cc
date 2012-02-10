@@ -157,8 +157,9 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
   
   //Allow GTK+ to process events, so that the UI is responsive.
   //TODO: This does not seem to actually work.
-  while(Gtk::Main::events_pending())
-   Gtk::Main::iteration();
+  //TODO: Make sure that gtkmm has some non-Gtk::Main API for this:
+  while(gtk_events_pending())
+    gtk_main_iteration_do(true);
 
   const CsvParser::type_row_strings row = m_data_source->get_parser().fetch_next_row();
 

@@ -75,8 +75,9 @@ void BusyCursor::force_gui_update()
   if(m_refWindow)
   {
     //Force the GUI to update:
-    while(Gtk::Main::events_pending())
-      Gtk::Main::iteration();
+    //TODO: Make sure that gtkmm has some non-Gtk::Main API for this:
+    while(gtk_events_pending())
+      gtk_main_iteration_do(true);
   }
 }
 
