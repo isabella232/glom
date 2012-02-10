@@ -29,7 +29,6 @@
 #include <glom/libglom/init.h>
 #include <glom/libglom/connectionpool.h>
 #include <glom/libglom/utils.h>
-#include <gtkmm/main.h>
 
 #include <giomm/file.h>
 #include <glibmm/convert.h>
@@ -403,17 +402,6 @@ main(int argc, char* argv[])
 
   //We use python for calculated-fields:
   PySys_SetArgv(argc, argv);
-
-  std::auto_ptr<Gtk::Main> mainInstance;
-  try
-  {
-    mainInstance = std::auto_ptr<Gtk::Main>( new Gtk::Main(argc, argv) );
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << "Glom: Error while initializing gtkmm: " << ex.what() << std::endl;
-    return EXIT_FAILURE;
-  }
 
   try
   {

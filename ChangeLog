@@ -1,5 +1,12 @@
 2012-02-10  Murray Cumming  <murrayc@murrayc.com>
 
+	Do not use Gtk::Main.
+
+	* glom/application.cc: create(): Call the new init_gtkmm method.
+	* glom/main.cc: Remove the use of Gtk::Main because it is no unnecessary.
+
+2012-02-10  Murray Cumming  <murrayc@murrayc.com>
+
 	--debug-date-check: Do not show the window.
 
 	* glom/main_local_options.[h|cc]: Make the handler function a class method,
