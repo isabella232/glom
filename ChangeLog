@@ -1,3 +1,15 @@
+2012-02-13  Murray Cumming  <murrayc@murrayc.com>
+
+	Users: Warn if we cannot get the list of users.
+
+	* glom/libglom/privs.[h|cc]: get_database_users(): Add documentation
+	about the case that the result is empty.
+	* glom/mode_design/users/dialog_users_list.cc: on_button_user_add():
+	If the users list is empty then warn that something is probably wrong
+	with the permissions. I would like to warn much earlier if the user is
+	not a superuser, but I do not know how.
+	Bug #669178 (alien)
+
 2012-02-09  Murray Cumming  <murrayc@murrayc.com>
 
 	Print Layout: Print Preview: Avoid warnings when there are no records yet.
