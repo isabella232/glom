@@ -47,6 +47,7 @@ public:
   static type_vec_strings get_database_groups();
 
   /** Get users with access to the database.
+   * If the resuilt is empty even when @a group_name is empty then it was not possible to get the list of users, probably due to a permissions problem.
    * @param group_name Get only users in this group.
    */
   static type_vec_strings get_database_users(const Glib::ustring& group_name = Glib::ustring());

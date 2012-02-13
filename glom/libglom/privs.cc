@@ -100,6 +100,10 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
 {
   //TODO_Moved: BusyCursor cursor(AppWindow::get_appwindow());
 
+  //Note that these queries can fail with "permission denied for relation pg_shadow" if the user is not a superuser.
+  //So the caller should interpret an empty result for group_name="" as an error,
+  //because there should always be at least one user.
+
   type_vec_strings result;
 
   if(group_name.empty())

@@ -180,6 +180,15 @@ void Dialog_UsersList::on_button_user_delete()
 
 void Dialog_UsersList::on_button_user_add()
 {
+  //Fill it with the list of users:
+  const Privs::type_vec_strings users = Privs::get_database_users();
+  if(users.empty())
+  {
+    Utils::show_ok_dialog(_("Error Retrieving the List of Users"),
+      _("Glom could not get the list of users from the database server. You probably do not have enough permissions. You should be a superuser."), *this, Gtk::MESSAGE_ERROR);
+    return;
+  }
+
   Dialog_ChooseUser* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog) //Unlikely and it already warns on stderr.
@@ -187,8 +196,7 @@ void Dialog_UsersList::on_button_user_add()
 
   dialog->set_transient_for(*this);
 
-  //Fill it with the list of users:
-  dialog->set_user_list( Privs::get_database_users() );
+  dialog->set_user_list(users);
 
   const int response = Glom::Utils::dialog_run_with_help(dialog);
 
