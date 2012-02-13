@@ -108,7 +108,7 @@ void Application::on_open(const Gio::Application::type_vec_files& files,
       create_window(file);
   }
 
-  Application::on_open(files, hint);
+  Gtk::Application::on_open(files, hint);
 }
 
 

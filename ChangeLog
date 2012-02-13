@@ -1,3 +1,11 @@
+2012-02-13  Murray Cumming  <murrayc@murrayc.com>
+
+	Application: Do not load documents twice.
+
+	* glom/application.cc: on_open(): Correct the call to the 
+	base class method, to avoid a second attempt to open the same
+	document.
+
 2012-02-10  Murray Cumming  <murrayc@murrayc.com>
 
 	Remove use of Gtk::Main functions.
