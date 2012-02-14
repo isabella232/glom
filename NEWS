@@ -1,3 +1,10 @@
+1.20.9 (stable):
+
+* Users: Warn if we cannot get the list of users.
+	Bug #669178 (alien)
+* Print Layout: Avoid sometimes over-scaled images.
+  Bug #668901 (alien)
+	
 1.20.8 (stable):
 
 * Button scripts: Check and warn about pygtk2 instead of crashing.
