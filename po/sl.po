@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-06 11:36+0000\n"
-"PO-Revision-Date: 2012-02-13 22:33+0100\n"
+"POT-Creation-Date: 2012-02-14 08:03+0000\n"
+"PO-Revision-Date: 2012-02-15 20:46+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -51,7 +51,7 @@ msgid "_Export"
 msgstr "_Izvozi"
 
 #: ../glom/application.cc:286
-#: ../ui/operator/dialog_import_csv.glade.h:6
+#: ../ui/operator/dialog_import_csv.glade.h:2
 msgid "I_mport"
 msgstr "_Uvozi"
 
@@ -515,13 +515,13 @@ msgstr "Preimenuj poročilo"
 
 #. namespace Glom
 #: ../glom.desktop.in.in.h:1
-msgid "A user-friendly database environment."
-msgstr "Uporabniku prijazno okolje podatkovnih zbirk."
-
-#: ../glom.desktop.in.in.h:2
 #: ../ui/operator/window_main.glade.h:1
 msgid "Glom"
 msgstr "Glom"
+
+#: ../glom.desktop.in.in.h:2
+msgid "A user-friendly database environment."
+msgstr "Uporabniku prijazno okolje podatkovnih zbirk."
 
 #: ../glom/dialog_connection.cc:203
 msgid "Not yet created."
@@ -587,7 +587,7 @@ msgid "No Table Selected"
 msgstr "Ni izbrane razpredelnice"
 
 #: ../glom/frame_glom.cc:113
-#: ../ui/operator/dialog_find_id.glade.h:3
+#: ../ui/operator/dialog_find_id.glade.h:4
 msgid "Quick _search:"
 msgstr "_Hitro iskanje:"
 
@@ -789,48 +789,48 @@ msgid "Initializing Database Data"
 msgstr "Zaganjanje podatkov podatkovne zbirke"
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2447
+#: ../glom/frame_glom.cc:2450
 msgid "All"
 msgstr "Vse"
 
-#: ../glom/utils_ui.cc:141
+#: ../glom/utils_ui.cc:142
 msgid "No help file available"
 msgstr "Datoteka pomoči ni na voljo"
 
-#: ../glom/utils_ui.cc:159
+#: ../glom/utils_ui.cc:160
 msgid "Could not display help: %1"
 msgstr "Ni mogoče prikazati pomoči: %1"
 
-#: ../glom/utils_ui.cc:475
+#: ../glom/utils_ui.cc:476
 msgid "Your find criteria did not match any records in the table."
 msgstr "Vaši kriteriji iskanja se ne skladajo z nobenim zapisom v razpredelnici."
 
-#: ../glom/utils_ui.cc:477
+#: ../glom/utils_ui.cc:478
 msgid "No Records Found"
 msgstr "Zapisov ni mogoče najti"
 
-#: ../glom/utils_ui.cc:482
+#: ../glom/utils_ui.cc:483
 msgid "New Find"
 msgstr "Novo iskanje"
 
-#: ../glom/utils_ui.cc:493
+#: ../glom/utils_ui.cc:494
 msgid "Report Finished"
 msgstr "Poročilo je končano"
 
-#: ../glom/utils_ui.cc:493
+#: ../glom/utils_ui.cc:494
 msgid "The report will now be opened in your web browser."
 msgstr "Poročilo bo sedaj odprto v vašem spletnem brskalniku."
 
-#: ../glom/utils_ui.cc:540
+#: ../glom/utils_ui.cc:541
 msgid "Script Uses PyGTK 2"
 msgstr "Skript uporablja PyGTK2"
 
-#: ../glom/utils_ui.cc:541
+#: ../glom/utils_ui.cc:542
 msgid "Glom cannot run this script because it uses pygtk 2, but Glom uses GTK+ 3, and attempting to use pygtk 2 would cause Glom to crash."
 msgstr "S programom Glom ni mogoče zagnati skripta, ker uporablja pygtk 2, program pa zahteva GTK+ 3. Poskus uporabe napačnega sistema bi povzročilo sesutje programa."
 
 #: ../glom/bakery/app_withdoc_gtk.cc:284
-#: ../ui/developer/window_field_definition_edit.glade.h:8
+#: ../ui/developer/window_field_definition_edit.glade.h:13
 msgid "_Edit"
 msgstr "_Uredi"
 
@@ -1152,7 +1152,7 @@ msgstr "Portal koledarja"
 #: ../glom/libglom/data_structure/translatable_item.cc:298
 #: ../glom/mode_design/dialog_database_preferences.cc:62
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:756
-#: ../ui/developer/window_field_definition_edit.glade.h:2
+#: ../ui/developer/window_field_definition_edit.glade.h:8
 msgid "Field"
 msgstr "Polje"
 
@@ -1189,7 +1189,7 @@ msgstr "Nedoločena razpredelnica"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:79
-#: ../ui/developer/dialog_field_summary.glade.h:2
+#: ../ui/developer/dialog_field_summary.glade.h:1
 msgid "Field Summary"
 msgstr "Povzetek polja"
 
@@ -1211,19 +1211,19 @@ msgstr "Števec"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc:56
-#: ../ui/developer/window_report_layout.glade.h:4
+#: ../ui/developer/window_report_layout.glade.h:12
 msgid "Footer"
 msgstr "Noga"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.cc:103
-#: ../ui/developer/dialog_group_by.glade.h:5
+#: ../ui/developer/dialog_group_by.glade.h:1
 msgid "Group By"
 msgstr "Združi po"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc:56
-#: ../ui/developer/window_report_layout.glade.h:5
+#: ../ui/developer/window_report_layout.glade.h:9
 msgid "Header"
 msgstr "Glava"
 
@@ -1595,7 +1595,7 @@ msgstr ""
 #. be sensitive anyway
 #: ../glom/mode_data/box_data_calendar_related.cc:508
 #: ../glom/mode_data/db_adddel/db_adddel.cc:249
-#: ../ui/developer/window_data_layout.glade.h:28
+#: ../ui/developer/window_data_layout.glade.h:1
 msgid "Layout"
 msgstr "Razporeditev"
 
@@ -1761,7 +1761,7 @@ msgid "To Field"
 msgstr "Polje za"
 
 #: ../glom/mode_design/box_db_table_relationships.cc:53
-#: ../ui/developer/dialog_layout_field_properties.glade.h:4
+#: ../ui/developer/dialog_layout_field_properties.glade.h:3
 msgid "Allow Editing"
 msgstr "Dovoli urejanje"
 
@@ -1971,7 +1971,7 @@ msgid "group"
 msgstr "skupina"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:958
-#: ../ui/developer/dialog_notebook.glade.h:2
+#: ../ui/developer/dialog_notebook.glade.h:1
 msgid "Notebook Tabs"
 msgstr "Zavihki beležke"
 
@@ -2068,7 +2068,7 @@ msgstr ""
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:33
 #: ../ui/developer/dialog_fieldslist.glade.h:2
 #: ../ui/developer/dialog_group_by.glade.h:4
-#: ../ui/developer/window_data_layout.glade.h:27
+#: ../ui/developer/window_data_layout.glade.h:23
 msgid "Formatting"
 msgstr "Oblikovanje"
 
@@ -2268,29 +2268,29 @@ msgid "Insert"
 msgstr "Vstavi"
 
 #. Ask for confirmation:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:921
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:915
 msgid "Create Standard Layout"
 msgstr "Ustvari standardno razporeditev"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:922
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:916
 msgid "This is an experimental feature. It will remove all items from the print layout and then try to create a layout similar to the layout of the detail view."
 msgstr "Ta možnost je preizkusna. Odstranjeni bodo vsi predmeti razporeditve tiskanja, nato pa bo ustvarjena razvrstitev, ki je enaka razvrstitvi v podrobnem pogledu."
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:925
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:919
 #: ../glom/mode_design/users/dialog_groups_list.cc:80
 msgid "Create"
 msgstr "Ustvari"
 
 #. Ask the user to confirm:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:965
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:959
 msgid "Remove page"
 msgstr "Odstrani stran"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:966
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:960
 msgid "Are you sure that you wish to remove the last page and any items on that page?"
 msgstr "Ali ste prepričani, da želite odstraniti zadnjo stran in vse predmete na njej?"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:969
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:963
 msgid "Remove Page"
 msgstr "Odstrani stran"
 
@@ -2360,11 +2360,19 @@ msgstr "Izbriši uporabnika"
 msgid "Are your sure that you wish to delete this user?"
 msgstr "Ali ste prepričani, da želite izbrisati tega uporabnika?"
 
-#: ../glom/mode_design/users/dialog_users_list.cc:406
+#: ../glom/mode_design/users/dialog_users_list.cc:189
+msgid "Error Retrieving the List of Users"
+msgstr "Napaka med pridobivanjem seznama uporabnikov"
+
+#: ../glom/mode_design/users/dialog_users_list.cc:190
+msgid "Glom could not get the list of users from the database server. You probably do not have enough permissions. You should be a superuser."
+msgstr "Ni mogoče pridobiti seznama uporabnikov s strežnika. Najverjetneje ni ustreznih dovoljenje za skrbniška opravila."
+
+#: ../glom/mode_design/users/dialog_users_list.cc:414
 msgid "Developer group may not be empty."
 msgstr "Skupina razvijalcev ne sme biti prazna."
 
-#: ../glom/mode_design/users/dialog_users_list.cc:407
+#: ../glom/mode_design/users/dialog_users_list.cc:415
 msgid "The developer group must contain at least one user."
 msgstr "Skupina razvijalcev mora vsebovati vsaj enega uporabnika."
 
@@ -2426,12 +2434,12 @@ msgstr "Neznana razpredelnica"
 msgid "You cannot open this table, because there is no information about this table in the document."
 msgstr "Te razpredelnice ni mogoče odpreti, ker v dokumentu ni podatkov o tej razpredelnici."
 
-#: ../glom/print_layout/canvas_layout_item.cc:269
+#: ../glom/print_layout/canvas_layout_item.cc:262
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:39
 msgid "Choose Field"
 msgstr "Izbor polja"
 
-#: ../glom/print_layout/canvas_print_layout.cc:277
+#: ../glom/print_layout/canvas_print_layout.cc:285
 msgid "_Formatting"
 msgstr "_Oblikovanje"
 
@@ -2470,13 +2478,13 @@ msgid "Po files"
 msgstr "Datoteke po"
 
 #: ../glom/mode_design/translation/window_translations.cc:521
-#: ../ui/developer/window_translations.glade.h:6
+#: ../ui/developer/window_translations.glade.h:7
 msgid "Export"
 msgstr "Izvozi"
 
 #. Note to translators: "Import" here is an action verb - it's a button.
 #: ../glom/mode_design/translation/window_translations.cc:601
-#: ../ui/developer/window_translations.glade.h:8
+#: ../ui/developer/window_translations.glade.h:6
 msgid "Import"
 msgstr "Uvoz"
 
@@ -2542,9 +2550,9 @@ msgstr "Poskusili ste dodati nov povezan zapis, toda obstaja lahko le en povezan
 
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:91
 #: ../glom/utility_widgets/imageglom.cc:770
-#: ../ui/developer/dialog_choose_relationship.glade.h:2
-#: ../ui/developer/dialog_field_summary.glade.h:4
-#: ../ui/developer/dialog_group_by.glade.h:7
+#: ../ui/developer/dialog_choose_relationship.glade.h:4
+#: ../ui/developer/dialog_field_summary.glade.h:3
+#: ../ui/developer/dialog_group_by.glade.h:3
 msgid "Select"
 msgstr "Izberi"
 
@@ -2578,8 +2586,8 @@ msgid "Please choose a human-readable title for the new database. You can change
 msgstr "Izberite človeku berljiv naslov za novo podatkovno zbirko. To lahko spremenite kasneje v lastnostih podatkovne zbirke. Lahko vsebuje katerekoli znake."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:105
-#: ../ui/developer/window_field_definition_edit.glade.h:14
-#: ../ui/developer/window_report_layout.glade.h:12
+#: ../ui/developer/window_field_definition_edit.glade.h:4
+#: ../ui/developer/window_report_layout.glade.h:7
 msgid "_Title:"
 msgstr "_Naslov:"
 
@@ -2660,17 +2668,17 @@ msgid "Field Layout Properties"
 msgstr "Lastnosti razporeditve polja"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:41
-#: ../ui/developer/window_data_layout.glade.h:9
+#: ../ui/developer/window_data_layout.glade.h:8
 msgid "Add Field"
 msgstr "Dodaj polje"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:42
-#: ../ui/developer/window_data_layout.glade.h:12
+#: ../ui/developer/window_data_layout.glade.h:19
 msgid "Add Related Records"
 msgstr "Dodaj povezane zapise"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:43
-#: ../ui/developer/window_data_layout.glade.h:10
+#: ../ui/developer/window_data_layout.glade.h:17
 msgid "Add Notebook"
 msgstr "Dodaj beležko"
 
@@ -2679,12 +2687,12 @@ msgid "Add Group"
 msgstr "Dodaj skupino"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:45
-#: ../ui/developer/window_data_layout.glade.h:8
+#: ../ui/developer/window_data_layout.glade.h:13
 msgid "Add Button"
 msgstr "Dodaj gumb"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:46
-#: ../ui/developer/window_data_layout.glade.h:13
+#: ../ui/developer/window_data_layout.glade.h:10
 msgid "Add Text"
 msgstr "Dodaj besedilo"
 
@@ -2705,6 +2713,10 @@ msgid "_Show hidden tables"
 msgstr "_Pokaži skrite razpredelnice"
 
 #: ../ui/operator/dialog_choose_date.glade.h:1
+msgid "Choose Date"
+msgstr "Izbor datuma"
+
+#: ../ui/operator/dialog_choose_date.glade.h:2
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Choose Date</span>\n"
 "\n"
@@ -2714,53 +2726,49 @@ msgstr ""
 "\n"
 "Izberite datum za vnos v to polje."
 
-#: ../ui/operator/dialog_choose_date.glade.h:4
-msgid "Choose Date"
-msgstr "Izbor datuma"
-
 #: ../ui/operator/dialog_connection.glade.h:1
 msgid "Connect to Server"
 msgstr "Poveži se s strežnikom"
 
 #: ../ui/operator/dialog_connection.glade.h:2
-msgid "Database"
-msgstr "Podatkovna zbirka"
-
-#: ../ui/operator/dialog_connection.glade.h:3
-msgid "Database:"
-msgstr "Podatkovna zbirka:"
-
-#: ../ui/operator/dialog_connection.glade.h:4
-msgid "Host"
-msgstr "Gostitelj"
-
-#: ../ui/operator/dialog_connection.glade.h:5
-msgid "Password"
-msgstr "Geslo"
-
-#: ../ui/operator/dialog_connection.glade.h:6
 msgid "Please enter the connection details for your database server."
 msgstr "Vnesite podrobnosti povezave za vaš strežnik podatkovne zbirke."
 
-#: ../ui/operator/dialog_connection.glade.h:7
+#: ../ui/operator/dialog_connection.glade.h:3
+msgid "Host"
+msgstr "Gostitelj"
+
+#: ../ui/operator/dialog_connection.glade.h:4
+msgid "Password"
+msgstr "Geslo"
+
+#: ../ui/operator/dialog_connection.glade.h:5
 #: ../ui/developer/dialog_choose_user.glade.h:5
-#: ../ui/developer/dialog_user.glade.h:5
+#: ../ui/developer/dialog_user.glade.h:1
 msgid "User"
 msgstr "Uporabnik"
 
-#: ../ui/operator/dialog_connection.glade.h:8
+#: ../ui/operator/dialog_connection.glade.h:6
 msgid "_Host:"
 msgstr "_Gostitelj:"
 
+#: ../ui/operator/dialog_connection.glade.h:7
+msgid "Database:"
+msgstr "Podatkovna zbirka:"
+
+#: ../ui/operator/dialog_connection.glade.h:8
+#: ../ui/developer/dialog_initial_password.glade.h:3
+msgid "_User:"
+msgstr "_Uporabnik:"
+
 #: ../ui/operator/dialog_connection.glade.h:9
-#: ../ui/developer/dialog_initial_password.glade.h:5
+#: ../ui/developer/dialog_initial_password.glade.h:4
 msgid "_Password:"
 msgstr "_Geslo:"
 
 #: ../ui/operator/dialog_connection.glade.h:10
-#: ../ui/developer/dialog_initial_password.glade.h:6
-msgid "_User:"
-msgstr "_Uporabnik:"
+msgid "Database"
+msgstr "Podatkovna zbirka"
 
 #: ../ui/operator/dialog_data_invalid_format.glade.h:1
 msgid ""
@@ -2777,43 +2785,43 @@ msgid "example data format"
 msgstr "primer oblike podatkov"
 
 #: ../ui/operator/dialog_existing_or_new.glade.h:1
-msgid "<span weight=\"bold\" size=\"larger\">Open or create a Document</span>"
-msgstr "<span weight=\"bold\" size=\"larger\">Odpiranje ali ustvarjanje dokumenta</span>"
+msgid "Welcome to Glom"
+msgstr "Dobrodošli v Glom"
 
 #: ../ui/operator/dialog_existing_or_new.glade.h:2
-msgid "Create New Document"
-msgstr "Ustvari nov dokument"
+#: ../ui/developer/dialog_choose_field.glade.h:2
+msgid "_Select"
+msgstr "_Izberi"
 
 #: ../ui/operator/dialog_existing_or_new.glade.h:3
-msgid "Open Existing Document"
-msgstr "Odpre obstoječi dokument"
+msgid "<span weight=\"bold\" size=\"larger\">Open or create a Document</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Odpiranje ali ustvarjanje dokumenta</span>"
 
 #: ../ui/operator/dialog_existing_or_new.glade.h:4
 msgid "Open or create Document"
 msgstr "Odpre ali ustvari dokument"
 
 #: ../ui/operator/dialog_existing_or_new.glade.h:5
-msgid "Welcome to Glom"
-msgstr "Dobrodošli v Glom"
+msgid "Open Existing Document"
+msgstr "Odpre obstoječi dokument"
 
 #: ../ui/operator/dialog_existing_or_new.glade.h:6
-#: ../ui/developer/dialog_choose_field.glade.h:3
-msgid "_Select"
-msgstr "_Izberi"
+msgid "Create New Document"
+msgstr "Ustvari nov dokument"
 
 #: ../ui/operator/dialog_find_id.glade.h:1
-#: ../ui/developer/window_data_layout_export.glade.h:1
-#: ../ui/developer/window_data_layout.glade.h:6
-#: ../ui/developer/window_design.glade.h:1
-#: ../ui/developer/window_report_layout.glade.h:3
-msgid "<b>Table:</b>"
-msgstr "<b>Razpredelnica:</b>"
-
-#: ../ui/operator/dialog_find_id.glade.h:2
 msgid "Find Related Record"
 msgstr "Najdi povezan zapis"
 
-#: ../ui/operator/dialog_find_id.glade.h:4
+#: ../ui/operator/dialog_find_id.glade.h:2
+#: ../ui/developer/window_data_layout_export.glade.h:2
+#: ../ui/developer/window_data_layout.glade.h:2
+#: ../ui/developer/window_design.glade.h:2
+#: ../ui/developer/window_report_layout.glade.h:2
+msgid "<b>Table:</b>"
+msgstr "<b>Razpredelnica:</b>"
+
+#: ../ui/operator/dialog_find_id.glade.h:3
 msgid "table_name"
 msgstr "ime_razpredelnice"
 
@@ -2825,44 +2833,44 @@ msgstr "Nalaganje slike"
 msgid "Saving Image"
 msgstr "Shranjevanje slike"
 
-#. Import is a noun here. This is the title for a list of fields to import.
-#: ../ui/operator/dialog_import_csv.glade.h:2
-msgid "<b>Import Fields</b>"
-msgstr "<b>Polja uvoza</b>"
+#: ../ui/operator/dialog_import_csv.glade.h:1
+msgid "bla.blub - Import from CSV"
+msgstr "bla.blub - Izvozi iz CSV"
 
-#. Import is a noun here. This is the title for a window showing options for an import operation.
+#: ../ui/operator/dialog_import_csv.glade.h:3
+#: ../ui/developer/box_formatting.glade.h:20
+msgid "label"
+msgstr "oznaka"
+
 #: ../ui/operator/dialog_import_csv.glade.h:4
-msgid "<b>Import Options</b>"
-msgstr "<b>Možnosti uvoza</b>"
+msgid "_First line as title"
+msgstr "_Prva vrstica kot naslov"
 
 #: ../ui/operator/dialog_import_csv.glade.h:5
-msgid "Encoding detected as: UTF-8"
-msgstr "Kodiranje je zaznano kot: UTF-8"
-
-#: ../ui/operator/dialog_import_csv.glade.h:7
-msgid "Import Into _Table:"
-msgstr "Uvozi v _razpredelnico:"
-
-#: ../ui/operator/dialog_import_csv.glade.h:8
 msgid "_Encoding:"
 msgstr "_Kodiranje:"
 
+#: ../ui/operator/dialog_import_csv.glade.h:6
+msgid "Import Into _Table:"
+msgstr "Uvozi v _razpredelnico:"
+
+#: ../ui/operator/dialog_import_csv.glade.h:7
+msgid "Encoding detected as: UTF-8"
+msgstr "Kodiranje je zaznano kot: UTF-8"
+
+#. Import is a noun here. This is the title for a window showing options for an import operation.
 #: ../ui/operator/dialog_import_csv.glade.h:9
-msgid "_First line as title"
-msgstr "_Prva vrstica kot naslov"
+msgid "<b>Import Options</b>"
+msgstr "<b>Možnosti uvoza</b>"
 
 #: ../ui/operator/dialog_import_csv.glade.h:10
 msgid "_Number of sample rows:"
 msgstr "_Število vrstic vzorca:"
 
-#: ../ui/operator/dialog_import_csv.glade.h:11
-msgid "bla.blub - Import from CSV"
-msgstr "bla.blub - Izvozi iz CSV"
-
+#. Import is a noun here. This is the title for a list of fields to import.
 #: ../ui/operator/dialog_import_csv.glade.h:12
-#: ../ui/developer/box_formatting.glade.h:30
-msgid "label"
-msgstr "oznaka"
+msgid "<b>Import Fields</b>"
+msgstr "<b>Polja uvoza</b>"
 
 #. This is a status message for a progress dialog. It says that importing is currently happenning.
 #: ../ui/operator/dialog_import_csv_progress.glade.h:2
@@ -2877,20 +2885,7 @@ msgstr "Počakajte, medtem ko se vaši podatki uvažajo."
 msgid "Add Related Table"
 msgstr "Dodaj povezano razpredelnico"
 
-#. Translators: FROM as in SQL's FROM
-#: ../ui/developer/dialog_add_related_table.glade.h:3
-msgid "From field:"
-msgstr "Polje od:"
-
-#: ../ui/developer/dialog_add_related_table.glade.h:4
-msgid "Name of new related table:"
-msgstr "Ime nove povezane razpredelnice:"
-
-#: ../ui/developer/dialog_add_related_table.glade.h:5
-msgid "Name of new relationship:"
-msgstr "Ime novega razmerja:"
-
-#: ../ui/developer/dialog_add_related_table.glade.h:6
+#: ../ui/developer/dialog_add_related_table.glade.h:2
 msgid ""
 "This will add a new table and add a relationship that refers to the new  table, as a convenient alternative to doing this in separate steps.\n"
 "\n"
@@ -2900,7 +2895,24 @@ msgstr ""
 "\n"
 "V primeru da primerna povezana razpredelnica že obstaja, prekličite dejanje in dodajte le razmerje.  "
 
+#. Translators: FROM as in SQL's FROM
+#: ../ui/developer/dialog_add_related_table.glade.h:6
+msgid "From field:"
+msgstr "Polje od:"
+
+#: ../ui/developer/dialog_add_related_table.glade.h:7
+msgid "Name of new related table:"
+msgstr "Ime nove povezane razpredelnice:"
+
+#: ../ui/developer/dialog_add_related_table.glade.h:8
+msgid "Name of new relationship:"
+msgstr "Ime novega razmerja:"
+
 #: ../ui/developer/dialog_change_language.glade.h:1
+msgid "Test Translation"
+msgstr "Preizkus prevoda"
+
+#: ../ui/developer/dialog_change_language.glade.h:2
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Test Translation</span>\n"
 "\n"
@@ -2914,19 +2926,15 @@ msgstr ""
 "\n"
 "Običajni deli uporabniškega vmesnika Glom, kot so meniji in pogovorna okna bodo prevedeni ob zagonu Gloma na računalniku, ki uporablja ta jezik."
 
-#: ../ui/developer/dialog_change_language.glade.h:6
+#: ../ui/developer/dialog_change_language.glade.h:7
 msgid "Locale:"
 msgstr "Jezikovna oznaka:"
-
-#: ../ui/developer/dialog_change_language.glade.h:7
-msgid "Test Translation"
-msgstr "Preizkus prevoda"
 
 #: ../ui/developer/dialog_choose_field.glade.h:1
 msgid "Select Field"
 msgstr "Izberi polje"
 
-#: ../ui/developer/dialog_choose_field.glade.h:2
+#: ../ui/developer/dialog_choose_field.glade.h:3
 msgid "Show _Related Relationships"
 msgstr "Pokaži _povezana razmerja"
 
@@ -2935,18 +2943,22 @@ msgid "_Table:"
 msgstr "_Razpredelnica:"
 
 #: ../ui/developer/dialog_choose_relationship.glade.h:1
-msgid "<b>Select Relationship</b>"
-msgstr "<b>Izbor razmerja</b>"
-
-#: ../ui/developer/dialog_choose_relationship.glade.h:3
 msgid "Select Relationship"
 msgstr "Izberi razmerje"
 
-#: ../ui/developer/dialog_choose_relationship.glade.h:4
+#: ../ui/developer/dialog_choose_relationship.glade.h:2
 msgid "Table:"
 msgstr "Razpredelnica:"
 
+#: ../ui/developer/dialog_choose_relationship.glade.h:3
+msgid "<b>Select Relationship</b>"
+msgstr "<b>Izbor razmerja</b>"
+
 #: ../ui/developer/dialog_choose_user.glade.h:1
+msgid "Choose User"
+msgstr "Izbor uporabnika"
+
+#: ../ui/developer/dialog_choose_user.glade.h:2
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Add User To Group</span>\n"
 "\n"
@@ -2956,75 +2968,71 @@ msgstr ""
 "\n"
 "Kateri uporabnik naj bo dodan v to skupino?"
 
-#: ../ui/developer/dialog_choose_user.glade.h:4
-msgid "Choose User"
-msgstr "Izbor uporabnika"
-
 #: ../ui/developer/dialog_database_preferences.glade.h:1
-msgid "<b>Address</b>"
-msgstr "<b>Naslov</b>"
-
-#: ../ui/developer/dialog_database_preferences.glade.h:2
-msgid "Auto-increment values"
-msgstr "Samodejno povečujoče vrednosti"
-
-#: ../ui/developer/dialog_database_preferences.glade.h:3
-msgid "Country:"
-msgstr "Država:"
-
-#: ../ui/developer/dialog_database_preferences.glade.h:4
 msgid "Database Preferences"
 msgstr "Možnosti podatkovne zbirke"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:5
-msgid "Logo"
-msgstr "Logotip"
-
-#: ../ui/developer/dialog_database_preferences.glade.h:6
-msgid "Name:"
-msgstr "Ime:"
-
-#: ../ui/developer/dialog_database_preferences.glade.h:7
-msgid "Organisation"
-msgstr "Organizacija"
-
-#: ../ui/developer/dialog_database_preferences.glade.h:8
-msgid "Startup Script"
-msgstr "Začetni skript"
-
-#: ../ui/developer/dialog_database_preferences.glade.h:9
-msgid "State/County:"
-msgstr "Regija:"
-
-#: ../ui/developer/dialog_database_preferences.glade.h:10
-msgid "Street (Line 2):"
-msgstr "Ulica (druga vrstica):"
-
-#: ../ui/developer/dialog_database_preferences.glade.h:11
-msgid "Street:"
-msgstr "Ulica:"
-
-#: ../ui/developer/dialog_database_preferences.glade.h:12
+#: ../ui/developer/dialog_database_preferences.glade.h:2
 msgid "System Name:"
 msgstr "Ime sistema:"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:13
-#: ../ui/developer/window_button_script.glade.h:3
-#: ../ui/developer/window_field_calculation.glade.h:2
-msgid "Test"
-msgstr "Preizkus"
+#: ../ui/developer/dialog_database_preferences.glade.h:3
+msgid "Name:"
+msgstr "Ime:"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:14
+#: ../ui/developer/dialog_database_preferences.glade.h:4
+msgid "Country:"
+msgstr "Država:"
+
+#: ../ui/developer/dialog_database_preferences.glade.h:5
+msgid "Zip/Postal Code:"
+msgstr "Poštna številka: "
+
+#: ../ui/developer/dialog_database_preferences.glade.h:6
+msgid "State/County:"
+msgstr "Regija:"
+
+#: ../ui/developer/dialog_database_preferences.glade.h:7
 msgid "Town:"
 msgstr "Mesto:"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:15
+#: ../ui/developer/dialog_database_preferences.glade.h:8
+msgid "Street (Line 2):"
+msgstr "Ulica (druga vrstica):"
+
+#: ../ui/developer/dialog_database_preferences.glade.h:9
+msgid "Street:"
+msgstr "Ulica:"
+
+#: ../ui/developer/dialog_database_preferences.glade.h:10
+msgid "<b>Address</b>"
+msgstr "<b>Naslov</b>"
+
+#: ../ui/developer/dialog_database_preferences.glade.h:11
+msgid "Organisation"
+msgstr "Organizacija"
+
+#: ../ui/developer/dialog_database_preferences.glade.h:12
+msgid "Logo"
+msgstr "Logotip"
+
+#: ../ui/developer/dialog_database_preferences.glade.h:13
+msgid "Auto-increment values"
+msgstr "Samodejno povečujoče vrednosti"
+
+#: ../ui/developer/dialog_database_preferences.glade.h:14
 msgid "When the database is opened the python function implemented here will run."
 msgstr "Ko bi podatkovna zbirka odprta, bo zagnana tukaj podprta zmožnost python."
 
+#: ../ui/developer/dialog_database_preferences.glade.h:15
+#: ../ui/developer/window_button_script.glade.h:4
+#: ../ui/developer/window_field_calculation.glade.h:3
+msgid "Test"
+msgstr "Preizkus"
+
 #: ../ui/developer/dialog_database_preferences.glade.h:16
-msgid "Zip/Postal Code:"
-msgstr "Poštna številka: "
+msgid "Startup Script"
+msgstr "Začetni skript"
 
 #: ../ui/developer/dialog_error_create_database.glade.h:1
 msgid ""
@@ -3037,130 +3045,135 @@ msgstr ""
 "S programom ni mogoče ustvariti nove podatkovne zbirke. Morda nimate zahtevanih pravic dostopa. Stopite v stik s skrbnikom sistema."
 
 #: ../ui/developer/dialog_fieldslist.glade.h:1
-#: ../ui/developer/window_data_layout.glade.h:2
-msgid "<b>Fields</b>"
-msgstr "<b>Polja</b>"
-
-#: ../ui/developer/dialog_fieldslist.glade.h:3
-#: ../ui/developer/dialog_groupby_sort_fields.glade.h:3
+#: ../ui/developer/dialog_groupby_sort_fields.glade.h:2
 msgid "Table: "
 msgstr "Razpredelnica: "
 
-#: ../ui/developer/dialog_field_summary.glade.h:1
-msgid "<b>Summary Field</b>"
-msgstr "<b>Polje povzetka</b>"
+#: ../ui/developer/dialog_fieldslist.glade.h:3
+#: ../ui/developer/window_data_layout.glade.h:24
+msgid "<b>Fields</b>"
+msgstr "<b>Polja</b>"
 
-#: ../ui/developer/dialog_field_summary.glade.h:3
-#: ../ui/developer/dialog_group_by.glade.h:3
-#: ../ui/developer/box_formatting.glade.h:16
+#: ../ui/developer/dialog_field_summary.glade.h:2
+#: ../ui/developer/dialog_group_by.glade.h:2
+#: ../ui/developer/box_formatting.glade.h:22
 msgid "Field:"
 msgstr "Polje:"
 
-#: ../ui/developer/dialog_field_summary.glade.h:5
+#: ../ui/developer/dialog_field_summary.glade.h:4
 msgid "Summary Type:"
 msgstr "Vrsta povzetka:"
 
-#: ../ui/developer/dialog_flowtable.glade.h:1
-msgid "Columns:"
-msgstr "Stolpci:"
+#: ../ui/developer/dialog_field_summary.glade.h:5
+msgid "<b>Summary Field</b>"
+msgstr "<b>Polje povzetka</b>"
 
-#: ../ui/developer/dialog_flowtable.glade.h:2
+#: ../ui/developer/dialog_flowtable.glade.h:1
 msgid "Group Properties"
 msgstr "Lastnosti skupine"
 
+#: ../ui/developer/dialog_flowtable.glade.h:2
+msgid "Columns:"
+msgstr "Stolpci:"
+
 #: ../ui/developer/dialog_flowtable.glade.h:3
-#: ../ui/developer/window_print_layout_edit.glade.h:5
+#: ../ui/developer/window_print_layout_edit.glade.h:4
 msgid "Title:"
 msgstr "Naslov:"
 
-#: ../ui/developer/dialog_group_by.glade.h:1
-msgid "<b>Group By</b>"
-msgstr "<b>Združi po</b>"
-
-#: ../ui/developer/dialog_group_by.glade.h:2
-msgid "Border Width (ems)"
-msgstr "Širina robu (ems)"
+#: ../ui/developer/dialog_group_by.glade.h:5
+msgid "Sort Fields:"
+msgstr "Razvrsti polja:"
 
 #: ../ui/developer/dialog_group_by.glade.h:6
 msgid "Secondary Fields:"
 msgstr "Drugotna polja:"
 
+#: ../ui/developer/dialog_group_by.glade.h:7
+msgid "Border Width (ems)"
+msgstr "Širina robu (ems)"
+
 #: ../ui/developer/dialog_group_by.glade.h:8
-msgid "Sort Fields:"
-msgstr "Razvrsti polja:"
+msgid "<b>Group By</b>"
+msgstr "<b>Združi po</b>"
 
 #: ../ui/developer/dialog_groupby_sort_fields.glade.h:1
-msgid "<b>Sort Fields</b>"
-msgstr "<b>Razvrsti polja</b>"
-
-#: ../ui/developer/dialog_groupby_sort_fields.glade.h:2
 msgid "Group By - Sort Fields"
 msgstr "Združi po - poljih razvrščanja"
 
-#: ../ui/developer/dialog_initial_password.glade.h:1
-#: ../ui/developer/dialog_new_group.glade.h:4
-#: ../ui/developer/dialog_new_library_script.glade.h:4
-msgid "C_reate"
-msgstr "U_stvari"
+#: ../ui/developer/dialog_groupby_sort_fields.glade.h:3
+msgid "<b>Sort Fields</b>"
+msgstr "<b>Razvrsti polja</b>"
 
-#: ../ui/developer/dialog_initial_password.glade.h:2
+#: ../ui/developer/dialog_initial_password.glade.h:1
 msgid "Database User"
 msgstr "Uporabnik podatkovne zbirke"
 
-#: ../ui/developer/dialog_initial_password.glade.h:3
+#: ../ui/developer/dialog_initial_password.glade.h:2
 msgid "Please enter the initial connection details for your database. You may add additional users later. Remember to keep this password secret because it allows access to your data from other computers on the network."
 msgstr "Vnesite začetne podrobnosti povezave za svojo podatkovno zbirko. Dodatne uporabnike lahko dodate pozneje. Obdržite geslo skrito, saj dovoli dostop do vaših podatkov z ostalih računalnikov na omrežju."
 
-#: ../ui/developer/dialog_initial_password.glade.h:4
+#: ../ui/developer/dialog_initial_password.glade.h:5
 msgid "_Confirm Password:"
 msgstr "_Potrdi geslo:"
 
+#: ../ui/developer/dialog_initial_password.glade.h:6
+#: ../ui/developer/dialog_new_group.glade.h:2
+#: ../ui/developer/dialog_new_library_script.glade.h:2
+msgid "C_reate"
+msgstr "U_stvari"
+
 #: ../ui/developer/dialog_line.glade.h:1
-msgid "Color:"
-msgstr "Barva:"
+#: ../ui/developer/window_textobject.glade.h:1
+msgid "Text Object"
+msgstr "Predmet besedila"
 
 #: ../ui/developer/dialog_line.glade.h:2
 msgid "Line Width:"
 msgstr "Širina črte:"
 
 #: ../ui/developer/dialog_line.glade.h:3
-#: ../ui/developer/window_textobject.glade.h:3
-msgid "Text Object"
-msgstr "Predmet besedila"
+msgid "Color:"
+msgstr "Barva:"
 
 #: ../ui/developer/dialog_layout_field_properties.glade.h:1
-msgid "<b>Field:</b>"
-msgstr "<b>Polje:</b>"
-
-#: ../ui/developer/dialog_layout_field_properties.glade.h:2
-msgid "<b>Formatting</b>"
-msgstr "<b>Oblikovanje</b>"
-
-#: ../ui/developer/dialog_layout_field_properties.glade.h:3
-msgid "<b>Title</b>"
-msgstr "<b>Naslov</b>"
-
-#: ../ui/developer/dialog_layout_field_properties.glade.h:5
 msgid "Field Layout"
 msgstr "Razporeditev polja"
 
-#: ../ui/developer/dialog_layout_field_properties.glade.h:6
-msgid "Use custom formatting"
-msgstr "Uporabi oblikovanje po meri"
+#: ../ui/developer/dialog_layout_field_properties.glade.h:2
+msgid "<b>Field:</b>"
+msgstr "<b>Polje:</b>"
 
-#: ../ui/developer/dialog_layout_field_properties.glade.h:7
-msgid "Use custom title:"
-msgstr "Uporabi naslov po meri:"
-
-#: ../ui/developer/dialog_layout_field_properties.glade.h:8
+#: ../ui/developer/dialog_layout_field_properties.glade.h:4
 msgid "Use default field title: "
 msgstr "Uporabi privzet naslov polja:"
 
-#: ../ui/developer/dialog_layout_field_properties.glade.h:9
+#: ../ui/developer/dialog_layout_field_properties.glade.h:5
+msgid "Use custom title:"
+msgstr "Uporabi naslov po meri:"
+
+#: ../ui/developer/dialog_layout_field_properties.glade.h:6
+msgid "<b>Title</b>"
+msgstr "<b>Naslov</b>"
+
+#: ../ui/developer/dialog_layout_field_properties.glade.h:7
 msgid "Use default formatting"
 msgstr "Uporabi privzeto oblikovanje"
 
+#: ../ui/developer/dialog_layout_field_properties.glade.h:8
+msgid "Use custom formatting"
+msgstr "Uporabi oblikovanje po meri"
+
+#: ../ui/developer/dialog_layout_field_properties.glade.h:9
+msgid "<b>Formatting</b>"
+msgstr "<b>Oblikovanje</b>"
+
 #: ../ui/developer/dialog_new_group.glade.h:1
+#: ../ui/developer/dialog_new_library_script.glade.h:1
+msgid "Create Group"
+msgstr "Ustvari skupino"
+
+#: ../ui/developer/dialog_new_group.glade.h:3
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Create Group</span>\n"
 "\n"
@@ -3170,16 +3183,11 @@ msgstr ""
 "\n"
 "Kakšno ime naj ima ta skupina?"
 
-#: ../ui/developer/dialog_new_group.glade.h:5
-#: ../ui/developer/dialog_new_library_script.glade.h:5
-msgid "Create Group"
-msgstr "Ustvari skupino"
-
 #: ../ui/developer/dialog_new_group.glade.h:6
 msgid "Group name:"
 msgstr "Ime skupine:"
 
-#: ../ui/developer/dialog_new_library_script.glade.h:1
+#: ../ui/developer/dialog_new_library_script.glade.h:3
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Add Module</span>\n"
 "\n"
@@ -3193,7 +3201,7 @@ msgstr ""
 msgid "Script name:"
 msgstr "Ime skripta:"
 
-#: ../ui/developer/dialog_notebook.glade.h:1
+#: ../ui/developer/dialog_notebook.glade.h:2
 msgid "<b>Notebook Tabs</b>"
 msgstr "<b>Zavihki beležke</b>"
 
@@ -3202,16 +3210,16 @@ msgid "Relationships Overview"
 msgstr "Pregled razmerij"
 
 #: ../ui/developer/dialog_script_library.glade.h:1
-msgid "Module name:"
-msgstr "Ime modula:"
-
-#: ../ui/developer/dialog_script_library.glade.h:2
 msgid "Script Library"
 msgstr "Knjižnica skriptov"
 
-#: ../ui/developer/dialog_script_library.glade.h:3
+#: ../ui/developer/dialog_script_library.glade.h:2
 msgid "These modules will be available to your button scripts and field calculations via the python import keyword."
 msgstr "Ti moduli bodo na voljo vašim gumbom skript in izračunom polja preko uvožene ključne besede pyhton."
+
+#: ../ui/developer/dialog_script_library.glade.h:3
+msgid "Module name:"
+msgstr "Ime modula:"
 
 #. Translators: This is the verb. It is for checking that a Python script works.
 #: ../ui/developer/dialog_script_library.glade.h:5
@@ -3219,6 +3227,11 @@ msgid "_Check"
 msgstr "_Preveri"
 
 #: ../ui/developer/dialog_translation_copy.glade.h:1
+#: ../ui/developer/dialog_translation_identify_original.glade.h:1
+msgid "Identify Original"
+msgstr "Določi izvirnik"
+
+#: ../ui/developer/dialog_translation_copy.glade.h:2
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Copy Translation</span>\n"
 "\n"
@@ -3228,19 +3241,10 @@ msgstr ""
 "\n"
 "Iz katerega jezika želite kopirati prevode, ki bodo uporabljeni kot začetek trenutnega prevoda?"
 
-#: ../ui/developer/dialog_translation_copy.glade.h:4
-#: ../ui/developer/dialog_translation_identify_original.glade.h:5
-msgid "Identify Original"
-msgstr "Določi izvirnik"
-
 #: ../ui/developer/dialog_translation_copy.glade.h:5
 #: ../ui/developer/dialog_translation_identify_original.glade.h:7
 msgid "Language:"
 msgstr "Jezik:"
-
-#: ../ui/developer/dialog_translation_identify_original.glade.h:1
-msgid "<b>English</b>"
-msgstr "<b>angleščina</b>"
 
 #: ../ui/developer/dialog_translation_identify_original.glade.h:2
 msgid ""
@@ -3252,163 +3256,167 @@ msgstr ""
 "\n"
 "Jezik izvirnega besedila je trenutno določen kot:"
 
+#: ../ui/developer/dialog_translation_identify_original.glade.h:5
+msgid "<b>English</b>"
+msgstr "<b>angleščina</b>"
+
 #: ../ui/developer/dialog_translation_identify_original.glade.h:6
 msgid "If the text is not actually in this language, please choose the correct language."
 msgstr "V primeru da besedilo ni v tem jeziku, izberite pravilnega."
 
-#: ../ui/developer/dialog_user.glade.h:1
-msgid "<b>User</b>"
-msgstr "<b>Uporabnik<b>"
-
 #: ../ui/developer/dialog_user.glade.h:2
-msgid "Confirm Password:"
-msgstr "Potrdite geslo:"
-
-#: ../ui/developer/dialog_user.glade.h:3
 msgid "Group:"
 msgstr "Skupina:"
 
-#: ../ui/developer/dialog_user.glade.h:4
+#: ../ui/developer/dialog_user.glade.h:3
 msgid "Password:"
 msgstr "Geslo:"
 
-#: ../ui/developer/dialog_user.glade.h:6
+#: ../ui/developer/dialog_user.glade.h:4
+msgid "Confirm Password:"
+msgstr "Potrdite geslo:"
+
+#: ../ui/developer/dialog_user.glade.h:5
 msgid "User:"
 msgstr "Uporabnik:"
 
+#: ../ui/developer/dialog_user.glade.h:6
+msgid "<b>User</b>"
+msgstr "<b>Uporabnik<b>"
+
 #: ../ui/developer/window_button_script.glade.h:1
-#: ../ui/developer/window_data_layout.glade.h:7
+msgid "Button Script"
+msgstr "Skript gumba"
+
+#: ../ui/developer/window_button_script.glade.h:2
+#: ../ui/developer/window_data_layout.glade.h:6
 #: ../ui/developer/window_imageobject.glade.h:2
 #: ../ui/developer/window_textobject.glade.h:2
 msgid "<b>Title:</b>"
 msgstr "<b>Naslov:</b>"
 
-#: ../ui/developer/window_button_script.glade.h:2
-msgid "Button Script"
-msgstr "Skript gumba"
-
-#: ../ui/developer/window_button_script.glade.h:4
+#: ../ui/developer/window_button_script.glade.h:3
 msgid "When the button is clicked it will run the python function which you implement here."
 msgstr "Ko je gumb kliknjen, zažene tukaj podprto zmožnost python."
 
-#: ../ui/developer/window_data_layout_export.glade.h:2
+#: ../ui/developer/window_data_layout_export.glade.h:1
 msgid "Export Format"
 msgstr "Oblika zapisa za izvoz"
 
-#: ../ui/developer/window_data_layout.glade.h:1
-msgid "<b>Dates</b>"
-msgstr "<b>Datumi</b>"
-
 #: ../ui/developer/window_data_layout.glade.h:3
-msgid "<b>Lines</b>"
-msgstr "<b>Črte</b>"
+#: ../ui/developer/window_report_layout.glade.h:3
+msgid "table name"
+msgstr "ime razpredelnice"
 
 #: ../ui/developer/window_data_layout.glade.h:4
-msgid "<b>Navigation</b>"
-msgstr "<b>Krmarjenje</b>"
-
-#: ../ui/developer/window_data_layout.glade.h:5
 msgid "<b>Relationship:</b>"
 msgstr "<b>Razmerje:</b>"
 
-#: ../ui/developer/window_data_layout.glade.h:11
-msgid "Add Related Calendar"
-msgstr "Dodaj povezan koledar"
+#: ../ui/developer/window_data_layout.glade.h:5
+msgid "Show child relationships"
+msgstr "Pokaže podrejena razmerja"
 
-#: ../ui/developer/window_data_layout.glade.h:14
-msgid "Add _Group"
-msgstr "Dodaj _skupino"
-
-#: ../ui/developer/window_data_layout.glade.h:15
-msgid "Add a button. Edit the button to define the script that will be run when the button is clicked."
-msgstr "Dodajanje gumba. Uredite gumb za določitev skripta, ki to tekel ob kliku na gumb."
-
-#: ../ui/developer/window_data_layout.glade.h:16
-msgid "Add a group which can contain other layout items. Use this to group items together, such as fields."
-msgstr "Dodajanje skupine, ki lahko vsebuje druge predmete razporeditve. To uporabite za združevanje predmetov, kot so polja, skupaj."
-
-#: ../ui/developer/window_data_layout.glade.h:17
+#: ../ui/developer/window_data_layout.glade.h:7
 msgid "Add a layout item that shows the data from a field in the record, and allows the user to edit that value."
 msgstr "Dodajanje predmeta razporeditve, ki pokaže podatke iz polja v zapisu in uporabniku dovoli urejanje te vrednosti."
 
-#: ../ui/developer/window_data_layout.glade.h:18
-msgid "Add a related records calendar portal. This is a calendar showing records from a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table."
-msgstr "Doda portal povezanega koledarja. To je koledar, ki prikaže zapise iz povezane razpredelnice. Ne pozabite urediti tega predmeta razporeditve za določitev razmerja za uporabo, in polj za prikaz iz povezane razpredelnice."
+#: ../ui/developer/window_data_layout.glade.h:9
+msgid "Add text to a layout, such as an explanation or a warning. The text will be the same for every record viewed."
+msgstr "Doda besedilo v razporeditev, kot sta na primer razlaga ali opozorilo. Besedilo bo enako za vsak ogledan zapis."
 
-#: ../ui/developer/window_data_layout.glade.h:19
+#: ../ui/developer/window_data_layout.glade.h:11
+msgid "Add an image to the layout, such as a logo. The image will be the same for every record viewed. To show an image field from a record, to show different images for each field, use the field layout item."
+msgstr "Doda sliko razporeditvi, kot je na primer logotip. Ta slika bo enaka za vsak ogledan zapis. Za prikaz polja slike iz zapisa in za prikaz različnih slik za vsako polje uporabite predmet razporeditve polja."
+
+#: ../ui/developer/window_data_layout.glade.h:12
+msgid "Add a button. Edit the button to define the script that will be run when the button is clicked."
+msgstr "Dodajanje gumba. Uredite gumb za določitev skripta, ki to tekel ob kliku na gumb."
+
+#: ../ui/developer/window_data_layout.glade.h:14
+msgid "Add a group which can contain other layout items. Use this to group items together, such as fields."
+msgstr "Dodajanje skupine, ki lahko vsebuje druge predmete razporeditve. To uporabite za združevanje predmetov, kot so polja, skupaj."
+
+#: ../ui/developer/window_data_layout.glade.h:15
+msgid "Add _Group"
+msgstr "Dodaj _skupino"
+
+#: ../ui/developer/window_data_layout.glade.h:16
+msgid "Add a tabbed notebook. Each page of the notebook may contain several other layout items, but only one page will be visible at one time."
+msgstr "Doda beležko z zavihki. Vsaka stran beležke lahko vsebuje več drugih predmetov razporeditev, toda naenkrat bo vidna samo ena stran."
+
+#: ../ui/developer/window_data_layout.glade.h:18
 msgid "Add a related records portal. This is a list of records in a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table."
 msgstr "Doda portal povezanih zapisov. To je seznam zapisov v povezani razpredelnici. Ne pozabite urediti tega predmeta razporeditve za določitev razmerja za uporabo, in polj za prikaz iz povezane razpredelnice."
 
 #: ../ui/developer/window_data_layout.glade.h:20
-msgid "Add a tabbed notebook. Each page of the notebook may contain several other layout items, but only one page will be visible at one time."
-msgstr "Doda beležko z zavihki. Vsaka stran beležke lahko vsebuje več drugih predmetov razporeditev, toda naenkrat bo vidna samo ena stran."
+msgid "Add a related records calendar portal. This is a calendar showing records from a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table."
+msgstr "Doda portal povezanega koledarja. To je koledar, ki prikaže zapise iz povezane razpredelnice. Ne pozabite urediti tega predmeta razporeditve za določitev razmerja za uporabo, in polj za prikaz iz povezane razpredelnice."
 
 #: ../ui/developer/window_data_layout.glade.h:21
-msgid "Add an image to the layout, such as a logo. The image will be the same for every record viewed. To show an image field from a record, to show different images for each field, use the field layout item."
-msgstr "Doda sliko razporeditvi, kot je na primer logotip. Ta slika bo enaka za vsak ogledan zapis. Za prikaz polja slike iz zapisa in za prikaz različnih slik za vsako polje uporabite predmet razporeditve polja."
+msgid "Add Related Calendar"
+msgstr "Dodaj povezan koledar"
 
 #: ../ui/developer/window_data_layout.glade.h:22
-msgid "Add text to a layout, such as an explanation or a warning. The text will be the same for every record viewed."
-msgstr "Doda besedilo v razporeditev, kot sta na primer razlaga ali opozorilo. Besedilo bo enako za vsak ogledan zapis."
+msgid "Remove the item from the layout. If you remove a field layout item, it will not remove the field from the table itself. It just will not be seen on the layout."
+msgstr "Odstrani predmet iz razporeditve. V primeru, da odstranite predmet razporeditve polja, polje ne bo odstranjeno iz razpredelnice. Polje samo ne bo prikazano na razporeditvi."
 
-#: ../ui/developer/window_data_layout.glade.h:23
-msgid "Automatic:"
-msgstr "Samodejno:"
-
-#: ../ui/developer/window_data_layout.glade.h:24
+#: ../ui/developer/window_data_layout.glade.h:25
 msgid "Clicking the row button takes the user to the table specified by this relationship:"
 msgstr "Klik na gumb vrstice ponese uporabnika v razpredelnico, ki jo poda razmerje:"
 
-#: ../ui/developer/window_data_layout.glade.h:25
-msgid "Column Line Width:"
-msgstr "Širina črte stolpca:"
-
 #: ../ui/developer/window_data_layout.glade.h:26
-msgid "Date Field:"
-msgstr "Polje datuma:"
+msgid "Automatic:"
+msgstr "Samodejno:"
 
-#: ../ui/developer/window_data_layout.glade.h:29
-msgid "Line Color:\n"
-msgstr "Barva črte:\n"
-
-#: ../ui/developer/window_data_layout.glade.h:31
-msgid "Maximum number of rows:"
-msgstr "Največje število vrstic:"
-
-#: ../ui/developer/window_data_layout.glade.h:32
-msgid "Minimum number of rows:"
-msgstr "Najmanjše število vrstic:"
-
-#: ../ui/developer/window_data_layout.glade.h:33
+#: ../ui/developer/window_data_layout.glade.h:27
 msgid "None"
 msgstr "Brez"
 
+#: ../ui/developer/window_data_layout.glade.h:28
+msgid "<b>Navigation</b>"
+msgstr "<b>Krmarjenje</b>"
+
+#: ../ui/developer/window_data_layout.glade.h:29
+msgid "Date Field:"
+msgstr "Polje datuma:"
+
+#: ../ui/developer/window_data_layout.glade.h:30
+msgid "<b>Dates</b>"
+msgstr "<b>Datumi</b>"
+
+#: ../ui/developer/window_data_layout.glade.h:31
+msgid "Minimum number of rows:"
+msgstr "Najmanjše število vrstic:"
+
+#: ../ui/developer/window_data_layout.glade.h:32
+msgid "Show at least this many rows."
+msgstr "Pokaži vsaj toliko vrstic."
+
+#: ../ui/developer/window_data_layout.glade.h:33
+msgid "Maximum number of rows:"
+msgstr "Največje število vrstic:"
+
 #: ../ui/developer/window_data_layout.glade.h:34
-msgid "Remove the item from the layout. If you remove a field layout item, it will not remove the field from the table itself. It just will not be seen on the layout."
-msgstr "Odstrani predmet iz razporeditve. V primeru, da odstranite predmet razporeditve polja, polje ne bo odstranjeno iz razpredelnice. Polje samo ne bo prikazano na razporeditvi."
+msgid "Show no more than this many rows."
+msgstr "Ne pokaži več kot toliko vrstic."
 
 #: ../ui/developer/window_data_layout.glade.h:35
 msgid "Row Line Width:"
 msgstr "Širina črte vrstice:"
 
 #: ../ui/developer/window_data_layout.glade.h:36
-msgid "Show at least this many rows."
-msgstr "Pokaži vsaj toliko vrstic."
+msgid "Column Line Width:"
+msgstr "Širina črte stolpca:"
 
 #: ../ui/developer/window_data_layout.glade.h:37
-msgid "Show child relationships"
-msgstr "Pokaže podrejena razmerja"
-
-#: ../ui/developer/window_data_layout.glade.h:38
-msgid "Show no more than this many rows."
-msgstr "Ne pokaži več kot toliko vrstic."
+msgid "Line Color:\n"
+msgstr "Barva črte:\n"
 
 #: ../ui/developer/window_data_layout.glade.h:39
-#: ../ui/developer/window_report_layout.glade.h:13
-msgid "table name"
-msgstr "ime razpredelnice"
+msgid "<b>Lines</b>"
+msgstr "<b>Črte</b>"
 
-#: ../ui/developer/window_design.glade.h:2
+#: ../ui/developer/window_design.glade.h:1
 msgid "Field Definitions"
 msgstr "Definicije polja"
 
@@ -3416,7 +3424,7 @@ msgstr "Definicije polja"
 msgid "Field Calculation"
 msgstr "Izračun polja"
 
-#: ../ui/developer/window_field_calculation.glade.h:3
+#: ../ui/developer/window_field_calculation.glade.h:2
 msgid "The field value will be the return value of the python function, which you implement here."
 msgstr "Vrednost polja bo vrnjena vrednost tukaj podprte zmožnosti python."
 
@@ -3425,296 +3433,296 @@ msgid "Triggered by:"
 msgstr "Sprožil:"
 
 #: ../ui/developer/window_field_definition_edit.glade.h:1
-msgid "Default Formatting"
-msgstr "Privzeto oblikovanje"
-
-#: ../ui/developer/window_field_definition_edit.glade.h:3
 msgid "Field Definition"
 msgstr "Definicija polja"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:4
+#: ../ui/developer/window_field_definition_edit.glade.h:2
+msgid "_Name:"
+msgstr "_Ime:"
+
+#: ../ui/developer/window_field_definition_edit.glade.h:3
 msgid "Typ_e:"
 msgstr "V_rsta:"
 
 #: ../ui/developer/window_field_definition_edit.glade.h:5
-msgid "Value"
-msgstr "Vrednost"
-
-#: ../ui/developer/window_field_definition_edit.glade.h:6
-msgid "_Auto-increment"
-msgstr "S_amodejno povečevanje"
-
-#: ../ui/developer/window_field_definition_edit.glade.h:7
-msgid "_Calculate Value"
-msgstr "_Izračunaj vrednost"
-
-#: ../ui/developer/window_field_definition_edit.glade.h:9
-msgid "_Field:"
-msgstr "_Polje:"
-
-#: ../ui/developer/window_field_definition_edit.glade.h:10
-msgid "_Lookup value when a field changes."
-msgstr "_Poizvedba vrednosti ob spremembi polja."
-
-#: ../ui/developer/window_field_definition_edit.glade.h:11
-msgid "_Name:"
-msgstr "_Ime:"
-
-#: ../ui/developer/window_field_definition_edit.glade.h:12
 msgid "_Primary Key"
 msgstr "_Osnovni ključ"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:13
-msgid "_Relationship:"
-msgstr "_Razmerje:"
-
-#: ../ui/developer/window_field_definition_edit.glade.h:15
+#: ../ui/developer/window_field_definition_edit.glade.h:6
 msgid "_Unique"
 msgstr "_Edinstveno"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:16
+#: ../ui/developer/window_field_definition_edit.glade.h:7
+msgid "_Auto-increment"
+msgstr "S_amodejno povečevanje"
+
+#: ../ui/developer/window_field_definition_edit.glade.h:9
+msgid "_Lookup value when a field changes."
+msgstr "_Poizvedba vrednosti ob spremembi polja."
+
+#: ../ui/developer/window_field_definition_edit.glade.h:10
+msgid "_Relationship:"
+msgstr "_Razmerje:"
+
+#: ../ui/developer/window_field_definition_edit.glade.h:11
+msgid "_Field:"
+msgstr "_Polje:"
+
+#: ../ui/developer/window_field_definition_edit.glade.h:12
 msgid "_User Entry"
 msgstr "_Uporabniški vnos"
 
+#: ../ui/developer/window_field_definition_edit.glade.h:14
+msgid "_Calculate Value"
+msgstr "_Izračunaj vrednost"
+
+#: ../ui/developer/window_field_definition_edit.glade.h:15
+msgid "Value"
+msgstr "Vrednost"
+
+#: ../ui/developer/window_field_definition_edit.glade.h:16
+msgid "Default Formatting"
+msgstr "Privzeto oblikovanje"
+
 #: ../ui/developer/box_formatting.glade.h:1
-msgid "<b>Choices</b>"
-msgstr "<b>Izbire</b>"
+msgid "Use 1000s separator"
+msgstr "Ustvari ločnico tisočic"
 
 #: ../ui/developer/box_formatting.glade.h:2
-msgid "<b>Numeric Formatting</b>"
-msgstr "<b>Oblikovanje števil</b>"
+msgid "If this is not selected then a thousands separator will not be used, even if your locale would normally use one. If it is selected then a thousands separator will be used only if your locale normally uses one."
+msgstr "Neizbrana možnost onemogoči uporabo ločilnika tisočic, tudi če vaše jezikovno določilo običajno uporablja ločilnik. Izbrana možnost omogoči ločilnik tisočic le če ga vaša jezikovna oznaka običajno uporablja. "
 
 #: ../ui/developer/box_formatting.glade.h:3
-msgid "<b>Text Formatting</b>"
-msgstr "<b>Oblikovanje besedila</b>"
+msgid "Decimal Places"
+msgstr "Decimalna mesta"
 
 #: ../ui/developer/box_formatting.glade.h:4
-msgid "Also show:"
-msgstr "Prikaži tudi:"
+msgid "Currency Symbol"
+msgstr "Simbol denarne enote"
 
 #: ../ui/developer/box_formatting.glade.h:5
 msgid "Alternative Color for Negative Values"
 msgstr "Dodatna barva za negativne vrednosti"
 
 #: ../ui/developer/box_formatting.glade.h:6
-msgid "Background Color:"
-msgstr "Barva ozadja:"
-
-#: ../ui/developer/box_formatting.glade.h:7
-msgid "Choices From Related Records"
-msgstr "Izbire iz povezanih zapisov"
-
-#: ../ui/developer/box_formatting.glade.h:8
 msgid "Click this check box to use a different foreground color to display negative values."
 msgstr "Klik na to potrditveno polje omogoči drugo barvo ospredja za prikaz negativnih vrednosti."
 
-#: ../ui/developer/box_formatting.glade.h:9
-msgid "Click this check box to use a non-standard background color."
-msgstr "Kliknite na to potrditveno polje za uporabo neobičajne barve ozadja."
+#: ../ui/developer/box_formatting.glade.h:7
+msgid "<b>Numeric Formatting</b>"
+msgstr "<b>Oblikovanje števil</b>"
 
-#: ../ui/developer/box_formatting.glade.h:10
-msgid "Click this check box to use a non-standard font."
-msgstr "Kliknite na to potrditveno polje za uporabo neobičajne pisave."
-
-#: ../ui/developer/box_formatting.glade.h:11
-msgid "Click this check box to use a non-standard foreground color."
-msgstr "Kliknite na to potrditveno polje za neobičajno barvo ospredja."
-
-#: ../ui/developer/box_formatting.glade.h:12
-msgid "Currency Symbol"
-msgstr "Simbol denarne enote"
-
-#: ../ui/developer/box_formatting.glade.h:13
-msgid "Custom Choice List"
-msgstr "Izbirni seznam po meri"
-
-#: ../ui/developer/box_formatting.glade.h:14
-msgid "Decimal Places"
-msgstr "Decimalna mesta"
-
-#: ../ui/developer/box_formatting.glade.h:15
-msgid "Display as radio buttons"
-msgstr "Prikaži kot radijske gumbe"
-
-#: ../ui/developer/box_formatting.glade.h:17
-msgid "Font:"
-msgstr "Pisava:"
-
-#: ../ui/developer/box_formatting.glade.h:18
-msgid "Foreground Color:"
-msgstr "Barva ospredja:"
-
-#: ../ui/developer/box_formatting.glade.h:19
-msgid "Height (lines)"
-msgstr "Višina (vrstice)"
-
-#: ../ui/developer/box_formatting.glade.h:20
+#: ../ui/developer/box_formatting.glade.h:8
 msgid "Horizontal Alignment:"
 msgstr "Vodoravna poravnava:"
 
-#: ../ui/developer/box_formatting.glade.h:21
-msgid "If this is not selected then a thousands separator will not be used, even if your locale would normally use one. If it is selected then a thousands separator will be used only if your locale normally uses one."
-msgstr "Neizbrana možnost onemogoči uporabo ločilnika tisočic, tudi če vaše jezikovno določilo običajno uporablja ločilnik. Izbrana možnost omogoči ločilnik tisočic le če ga vaša jezikovna oznaka običajno uporablja. "
-
-#: ../ui/developer/box_formatting.glade.h:22
-msgid "If this is selected then the field value will be shown in a multi-line box with a scrollbar."
-msgstr "Izbrana možnost omogoči prikaz vrednosti polja v več vrstičnem oknu z drsnikom."
-
-#: ../ui/developer/box_formatting.glade.h:23
-msgid "If this option is selected then the choices will list values from all records in the related table. If this option is not selected then the choices will list values only from related records."
-msgstr "V primeru da je ta možnost izbrana bodo izbire izpisale vrednosti iz vseh zapisov v povezani razpredelnici. V primeru da ta možnost ni izbrana, bodo izbire izpisale le vrednosti iz povezanih zapisov."
-
-#: ../ui/developer/box_formatting.glade.h:24
+#: ../ui/developer/box_formatting.glade.h:9
 msgid "Multi-line"
 msgstr "Večvrstično"
 
-#: ../ui/developer/box_formatting.glade.h:25
+#: ../ui/developer/box_formatting.glade.h:10
+msgid "If this is selected then the field value will be shown in a multi-line box with a scrollbar."
+msgstr "Izbrana možnost omogoči prikaz vrednosti polja v več vrstičnem oknu z drsnikom."
+
+#: ../ui/developer/box_formatting.glade.h:11
+msgid "Height (lines)"
+msgstr "Višina (vrstice)"
+
+#: ../ui/developer/box_formatting.glade.h:12
+msgid "Font:"
+msgstr "Pisava:"
+
+#: ../ui/developer/box_formatting.glade.h:13
+msgid "Click this check box to use a non-standard font."
+msgstr "Kliknite na to potrditveno polje za uporabo neobičajne pisave."
+
+#: ../ui/developer/box_formatting.glade.h:14
+msgid "Foreground Color:"
+msgstr "Barva ospredja:"
+
+#: ../ui/developer/box_formatting.glade.h:15
+msgid "Click this check box to use a non-standard foreground color."
+msgstr "Kliknite na to potrditveno polje za neobičajno barvo ospredja."
+
+#: ../ui/developer/box_formatting.glade.h:16
+msgid "Background Color:"
+msgstr "Barva ozadja:"
+
+#: ../ui/developer/box_formatting.glade.h:17
+msgid "Click this check box to use a non-standard background color."
+msgstr "Kliknite na to potrditveno polje za uporabo neobičajne barve ozadja."
+
+#: ../ui/developer/box_formatting.glade.h:18
+msgid "<b>Text Formatting</b>"
+msgstr "<b>Oblikovanje besedila</b>"
+
+#: ../ui/developer/box_formatting.glade.h:19
 msgid "No Choices"
 msgstr "Ni izbire"
 
-#: ../ui/developer/box_formatting.glade.h:26
+#: ../ui/developer/box_formatting.glade.h:21
 msgid "Relationship:"
 msgstr "Razmerje:"
 
-#: ../ui/developer/box_formatting.glade.h:27
-msgid "Restrict data to these choices"
-msgstr "Omeji podatkoe na te izbire"
+#: ../ui/developer/box_formatting.glade.h:23
+msgid "Also show:"
+msgstr "Prikaži tudi:"
 
-#: ../ui/developer/box_formatting.glade.h:28
+#: ../ui/developer/box_formatting.glade.h:24
 msgid "Show all records"
 msgstr "Pokaže vse zapise"
 
+#: ../ui/developer/box_formatting.glade.h:25
+msgid "If this option is selected then the choices will list values from all records in the related table. If this option is not selected then the choices will list values only from related records."
+msgstr "V primeru da je ta možnost izbrana bodo izbire izpisale vrednosti iz vseh zapisov v povezani razpredelnici. V primeru da ta možnost ni izbrana, bodo izbire izpisale le vrednosti iz povezanih zapisov."
+
+#: ../ui/developer/box_formatting.glade.h:26
+msgid "Choices From Related Records"
+msgstr "Izbire iz povezanih zapisov"
+
+#: ../ui/developer/box_formatting.glade.h:27
+msgid "Custom Choice List"
+msgstr "Izbirni seznam po meri"
+
+#: ../ui/developer/box_formatting.glade.h:28
+msgid "Restrict data to these choices"
+msgstr "Omeji podatkoe na te izbire"
+
 #: ../ui/developer/box_formatting.glade.h:29
-msgid "Use 1000s separator"
-msgstr "Ustvari ločnico tisočic"
+msgid "Display as radio buttons"
+msgstr "Prikaži kot radijske gumbe"
+
+#: ../ui/developer/box_formatting.glade.h:30
+msgid "<b>Choices</b>"
+msgstr "<b>Izbire</b>"
 
 #: ../ui/developer/window_groups.glade.h:1
-msgid "<b>Groups</b>"
-msgstr "<b>Skupine</b>"
-
-#: ../ui/developer/window_groups.glade.h:2
-msgid "<b>Tables</b>"
-msgstr "<b>Razpredelnice</b>"
-
-#: ../ui/developer/window_groups.glade.h:3
 msgid "Groups"
 msgstr "Skupine"
 
-#: ../ui/developer/window_groups.glade.h:4
-#: ../ui/developer/window_users.glade.h:3
+#: ../ui/developer/window_groups.glade.h:2
+#: ../ui/developer/window_users.glade.h:1
 msgid "Users"
 msgstr "Uporabniki"
 
-#: ../ui/developer/window_imageobject.glade.h:1
-msgid "<b>Image:</b>"
-msgstr "<b>Slika:</b>"
+#: ../ui/developer/window_groups.glade.h:3
+msgid "<b>Groups</b>"
+msgstr "<b>Skupine</b>"
 
-#: ../ui/developer/window_imageobject.glade.h:3
+#: ../ui/developer/window_groups.glade.h:4
+msgid "<b>Tables</b>"
+msgstr "<b>Razpredelnice</b>"
+
+#: ../ui/developer/window_imageobject.glade.h:1
 msgid "Image Object"
 msgstr "Slikovni predmet"
 
+#: ../ui/developer/window_imageobject.glade.h:3
+msgid "<b>Image:</b>"
+msgstr "<b>Slika:</b>"
+
 #: ../ui/developer/window_print_layout_edit.glade.h:1
-msgid "<b>Table Name</b>"
-msgstr "<b>Ime preglednice</b>"
+msgid "Print Layout Editor"
+msgstr "Urejevalnik razporeditev tiskanja"
 
 #: ../ui/developer/window_print_layout_edit.glade.h:2
-msgid "Height:"
-msgstr "Višina:"
+msgid "<b>Table Name</b>"
+msgstr "<b>Ime preglednice</b>"
 
 #: ../ui/developer/window_print_layout_edit.glade.h:3
 msgid "Layout name:"
 msgstr "Ime razporeditve:"
 
-#: ../ui/developer/window_print_layout_edit.glade.h:4
-msgid "Print Layout Editor"
-msgstr "Urejevalnik razporeditev tiskanja"
-
-#: ../ui/developer/window_print_layout_edit.glade.h:6
-msgid "Width:"
-msgstr "Širina:"
-
-#: ../ui/developer/window_print_layout_edit.glade.h:7
+#: ../ui/developer/window_print_layout_edit.glade.h:5
 msgid "X:"
 msgstr "X:"
 
-#: ../ui/developer/window_print_layout_edit.glade.h:8
+#: ../ui/developer/window_print_layout_edit.glade.h:6
 msgid "Y:"
 msgstr "Y:"
 
+#: ../ui/developer/window_print_layout_edit.glade.h:7
+msgid "Width:"
+msgstr "Širina:"
+
+#: ../ui/developer/window_print_layout_edit.glade.h:8
+msgid "Height:"
+msgstr "Višina:"
+
 #: ../ui/developer/window_report_layout.glade.h:1
-msgid "<b>Available Parts</b>"
-msgstr "<b>Deli na voljo</b>"
-
-#: ../ui/developer/window_report_layout.glade.h:2
-msgid "<b>Parts</b>"
-msgstr "<b>Deli</b>"
-
-#. Translators: The Main part of the report (not the footer or header)
-#: ../ui/developer/window_report_layout.glade.h:7
-msgid "Main"
-msgstr "Glavni del"
-
-#: ../ui/developer/window_report_layout.glade.h:8
 msgid "Report Layout"
 msgstr "Razporeditev poročila"
 
-#: ../ui/developer/window_report_layout.glade.h:9
+#: ../ui/developer/window_report_layout.glade.h:4
+msgid "_Show table title"
+msgstr "Pokaži naslov p_reglednice"
+
+#: ../ui/developer/window_report_layout.glade.h:5
 msgid "When this is checked the table's title will be shown at the top of the report in addition to the report title."
 msgstr "Izbrana možnost omogoči prikaz naslova razpredelnice na vrhu poročila poleg naslova poročila."
 
-#: ../ui/developer/window_report_layout.glade.h:10
+#: ../ui/developer/window_report_layout.glade.h:6
 msgid "_Report name:"
 msgstr "Ime _poročila:"
 
+#: ../ui/developer/window_report_layout.glade.h:8
+msgid "<b>Available Parts</b>"
+msgstr "<b>Deli na voljo</b>"
+
+#. Translators: The Main part of the report (not the footer or header)
 #: ../ui/developer/window_report_layout.glade.h:11
-msgid "_Show table title"
-msgstr "Pokaži naslov p_reglednice"
+msgid "Main"
+msgstr "Glavni del"
+
+#: ../ui/developer/window_report_layout.glade.h:13
+msgid "<b>Parts</b>"
+msgstr "<b>Deli</b>"
 
 #: ../ui/developer/window_text_format.glade.h:1
 msgid "Text Format"
 msgstr "Oblika besedila"
 
-#: ../ui/developer/window_textobject.glade.h:1
+#: ../ui/developer/window_textobject.glade.h:3
 msgid "<b>Text:</b>"
 msgstr "<b>Besedilo:</b>"
 
 #: ../ui/developer/window_translations.glade.h:1
+msgid "Translations"
+msgstr "Prevodi"
+
+#: ../ui/developer/window_translations.glade.h:2
 msgid "<b>Source Language:</b>"
 msgstr "<b>Izvirni jezik:</b>"
 
-#: ../ui/developer/window_translations.glade.h:2
-msgid "<b>Target Language:</b>"
-msgstr "<b>Ciljni jezik:</b>"
-
 #: ../ui/developer/window_translations.glade.h:3
-msgid "<b>Translations</b>"
-msgstr "<b>Prevodi</b>"
-
-#: ../ui/developer/window_translations.glade.h:4
-msgid "Copy From Existing Translation"
-msgstr "Kopiraj iz obstoječega prevoda"
-
-#: ../ui/developer/window_translations.glade.h:5
 msgid "English"
 msgstr "angleščina"
 
-#: ../ui/developer/window_translations.glade.h:7
+#: ../ui/developer/window_translations.glade.h:4
 msgid "Identify Source"
 msgstr "Določi vir"
+
+#: ../ui/developer/window_translations.glade.h:5
+msgid "<b>Target Language:</b>"
+msgstr "<b>Ciljni jezik:</b>"
+
+#: ../ui/developer/window_translations.glade.h:8
+msgid "Copy From Existing Translation"
+msgstr "Kopiraj iz obstoječega prevoda"
 
 #: ../ui/developer/window_translations.glade.h:9
 msgid "Start a translation for this target locale by copying the strings from another target locale."
 msgstr "Začnite prevod za to ciljno jezikovno oznako s kopiranjem nizov iz druge ciljne jezikovne oznake."
 
 #: ../ui/developer/window_translations.glade.h:10
-msgid "Translations"
-msgstr "Prevodi"
+msgid "<b>Translations</b>"
+msgstr "<b>Prevodi</b>"
 
-#: ../ui/developer/window_users.glade.h:1
+#: ../ui/developer/window_users.glade.h:2
 msgid "<b>Group:</b>"
 msgstr "<b>Skupina:</b>"
 
-#: ../ui/developer/window_users.glade.h:2
+#: ../ui/developer/window_users.glade.h:3
 msgid "<b>Users</b>"
 msgstr "<b>Uporabniki</b>"
 
