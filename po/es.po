@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-02-14 08:03+0000\n"
-"PO-Revision-Date: 2012-02-06 12:40+0100\n"
+"POT-Creation-Date: 2012-02-15 17:12+0000\n"
+"PO-Revision-Date: 2012-02-15 18:14+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -2610,13 +2610,15 @@ msgstr "¿Está seguro de querer eliminar este usuario?"
 
 #: ../glom/mode_design/users/dialog_users_list.cc:189
 msgid "Error Retrieving the List of Users"
-msgstr ""
+msgstr "Error al obtener la lista de usuarios"
 
 #: ../glom/mode_design/users/dialog_users_list.cc:190
 msgid ""
 "Glom could not get the list of users from the database server. You probably "
 "do not have enough permissions. You should be a superuser."
 msgstr ""
+"Glom no pudo obtener la lista de usuarios del servidor de bases de datos. "
+"Probablemente no tiene los permisos suficientes. Debe ser administrador."
 
 #: ../glom/mode_design/users/dialog_users_list.cc:414
 msgid "Developer group may not be empty."
