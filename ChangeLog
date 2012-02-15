@@ -1,3 +1,10 @@
+2012-02-15  Murray Cumming  <murrayc@murrayc.com>
+
+	Remove now-unnecessary call to init_gtkmm.
+
+	* glom/application.cc: The latest gtkmm code in git master makes this 
+	unnecessary.
+
 2012-02-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Application: Do not load documents twice.
