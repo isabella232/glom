@@ -41,7 +41,6 @@ Application::Application()
 
 Glib::RefPtr<Application> Application::create()
 {
-  init_gtkmm();
   return Glib::RefPtr<Application>( new Application() );
 }
 
