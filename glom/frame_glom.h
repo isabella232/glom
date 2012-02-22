@@ -215,6 +215,7 @@ protected:
 
   void alert_no_table();
 
+  //TODO: Make these private?
   //Signal handlers:
   void on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clause);
   void on_button_quickfind();
@@ -234,6 +235,8 @@ protected:
   bool handle_connection_initialize_errors(ConnectionPool::InitErrors error);
 
 private:
+
+  void on_notebook_data_record_selection_changed();
 
   /**
    * @result Whether to try again.

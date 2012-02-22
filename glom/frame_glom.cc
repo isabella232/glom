@@ -154,6 +154,8 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_Notebook_Find.signal_find_criteria.connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_find_criteria));
   m_Notebook_Find.show();
   m_Notebook_Data.signal_record_details_requested().connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_data_record_details_requested));
+  m_Notebook_Data.signal_record_selection_changed().connect(sigc::mem_fun(*this,
+    &Frame_Glom::on_notebook_data_record_selection_changed));
   m_Notebook_Data.signal_switch_page().connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_data_switch_page));
   m_Notebook_Data.show();
 
@@ -2426,6 +2428,18 @@ void Frame_Glom::on_notebook_data_record_details_requested(const Glib::ustring& 
 {
   //Specifying a primary key value causes the details tab to be shown:
   show_table(table_name, primary_key_value);
+}
+
+void Frame_Glom::on_notebook_data_record_selection_changed()
+{
+  bool something_selected = false;
+  const FoundSet found_set = m_Notebook_Data.get_found_set_selected();
+  if(!found_set.m_where_clause.empty())
+    something_selected = true;
+  
+  AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
+  if(pApp)
+    pApp->enable_menu_print_layouts_details(something_selected);  
 }
 
 void Frame_Glom::update_records_count()

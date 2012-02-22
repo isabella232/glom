@@ -78,6 +78,13 @@ public:
   typedef sigc::signal<void, const Glib::ustring&, Gnome::Gda::Value> type_signal_record_details_requested;
   type_signal_record_details_requested signal_record_details_requested();
 
+  typedef sigc::signal<void> type_signal_record_selection_changed;
+  
+  /** This signal is emitted when the a record is selected, or deselected,
+   * in the list view.
+   */
+  type_signal_record_selection_changed signal_record_selection_changed();
+
 protected:
 
   ///Show the counts of all records and found records.
@@ -92,6 +99,7 @@ protected:
 private:
 
   bool on_idle_show_details(const Gnome::Gda::Value& primary_key_value);
+  void on_list_selection_changed();
 
 protected:
   //Member widgets:
@@ -102,6 +110,7 @@ protected:
   Glib::ustring m_table_name;
 
   type_signal_record_details_requested m_signal_record_details_requested;
+  type_signal_record_selection_changed m_signal_record_selection_changed;
 };
 
 } //namespace Glom

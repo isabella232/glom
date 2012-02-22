@@ -50,6 +50,9 @@ public:
   //Primary Key value:
   typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_user_requested_details;
   type_signal_user_requested_details signal_user_requested_details();
+  
+  typedef sigc::signal<void> type_signal_record_selection_changed;
+  type_signal_record_selection_changed signal_record_selection_changed();
 
   void get_record_counts(gulong& total, gulong& found) const;
 
@@ -66,6 +69,7 @@ protected:
 
 
   type_signal_user_requested_details m_signal_user_requested_details;
+  type_signal_record_selection_changed m_signal_record_selection_changed;
 };
 
 } //namespace Glom

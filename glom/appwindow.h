@@ -92,6 +92,7 @@ public:
   void fill_menu_tables();
   void fill_menu_reports(const Glib::ustring& table_name);
   void fill_menu_print_layouts(const Glib::ustring& table_name);
+  void enable_menu_print_layouts_details(bool enable = true);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring table_name);

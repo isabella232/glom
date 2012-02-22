@@ -1275,6 +1275,11 @@ DbAddDel::type_signal_sort_clause_changed DbAddDel::signal_sort_clause_changed()
   return m_signal_sort_clause_changed;
 }
 
+DbAddDel::type_signal_record_selection_changed DbAddDel::signal_record_selection_changed()
+{
+  return m_signal_record_selection_changed;
+}
+
 void DbAddDel::on_cell_layout_button_clicked(const Gtk::TreeModel::Path& path, int model_column_index)
 {
   if(!m_refListStore)
@@ -2461,6 +2466,8 @@ void DbAddDel::on_selection_changed(bool selection)
 {
   m_refContextDelete->set_sensitive(selection);
   m_refContextAdd->set_sensitive(selection);
+  
+  m_signal_record_selection_changed.emit();
 }
 
 } //namespace Glom

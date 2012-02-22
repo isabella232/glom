@@ -1,5 +1,30 @@
 2012-02-22  Murray Cumming  <murrayc@murrayc.com>
 
+	List View: Make print layouts grayed-out if no record is selected.
+
+	* glom/mode_data/db_adddel/db_adddel.[h|cc]:
+	Add signal_record_selection_changed and emit it when the TreeView's selection
+	changes:
+	* glom/mode_data/db_adddel/db_adddel_withbuttons.cc: Make sure that we call 
+	the base class.
+	* glom/mode_data/box_data_manyrecords.[h|cc]:
+	Added signal_record_selection_changed.
+	* glom/mode_data/box_data_list.[h|cc]: Handle the AddDel_DB's 
+	signal_record_selection_changed, emitting our own 
+	signal_record_selection_changed.
+	* glom/mode_data/notebook_data.[h|cc]: Handle the Box_Data_List's 
+	signal_record_selection_changed, emitting our own 
+	signal_record_selection_changed.
+	I still do not like the repetition that is required here, and elsewhere,
+	when a child widget needs to signal all the way up an ownership hierarchy.
+	
+	* glom/appwindow.[h|cc]: Add enable_menu_print_layouts_details().
+	* glom/frame_glom.[h|cc]: Handle the Notebook_Data's 
+	signal_record_selection_changed(), calling the AppWindow's
+	enable_menu_print_layouts_details().
+
+2012-02-22  Murray Cumming  <murrayc@murrayc.com>
+
 	Allow printing of print layouts from the list view.
 
 	* glom/appwindow.cc: fill_menu_print_layouts(): Show the print layouts

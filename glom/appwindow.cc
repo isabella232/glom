@@ -2110,6 +2110,12 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
   }
 }
 
+void AppWindow::enable_menu_print_layouts_details(bool enable)
+{
+ if(m_refNavPrintLayoutsActionGroup)
+    m_refNavPrintLayoutsActionGroup->set_sensitive(enable);
+}
+
 void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
 {
   //TODO: This is copy/pasted from fill_menu_print_reports. Can we generalize it?

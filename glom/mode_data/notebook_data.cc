@@ -76,7 +76,12 @@ Notebook_Data::Notebook_Data()
   //Connect signals:
 
   //Allow List to ask Details to show a record.
-  m_Box_List.signal_user_requested_details().connect(sigc::mem_fun(*this, &Notebook_Data::on_list_user_requested_details));
+  m_Box_List.signal_user_requested_details().connect(sigc::mem_fun(*this,
+    &Notebook_Data::on_list_user_requested_details));
+  
+  //Allow the parent widget to detect list selection changes:
+  m_Box_List.signal_record_selection_changed().connect(sigc::mem_fun(*this,
+    &Notebook_Data::on_list_selection_changed));
 
   //Allow Details to ask List to ask Details to show a different record:
   m_Box_Details.signal_nav_first().connect(sigc::mem_fun(m_Box_List, &Box_Data_List::on_details_nav_first));
@@ -89,6 +94,7 @@ Notebook_Data::Notebook_Data()
 
   //Allow Details to ask to show a different record in a different table:
   m_Box_Details.signal_requested_related_details().connect(sigc::mem_fun(*this, &Notebook_Data::on_details_user_requested_related_details));
+  
 
   //Fill composite view:
   add_view(&m_Box_List);
@@ -245,6 +251,11 @@ void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& prim
       primary_key_value));
 }
 
+void Notebook_Data::on_list_selection_changed()
+{
+  m_signal_record_selection_changed.emit();
+}
+
 void Notebook_Data::on_details_user_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
 {
   signal_record_details_requested().emit(table_name, primary_key_value);
@@ -371,6 +382,11 @@ Notebook_Data::dataview Notebook_Data::get_current_view() const
 Notebook_Data::type_signal_record_details_requested Notebook_Data::signal_record_details_requested()
 {
   return m_signal_record_details_requested;
+}
+
+Notebook_Data::type_signal_record_selection_changed Notebook_Data::signal_record_selection_changed()
+{
+  return m_signal_record_selection_changed;
 }
 
 void Notebook_Data::on_switch_page_handler(Gtk::Widget* pPage, guint uiPageNumber)

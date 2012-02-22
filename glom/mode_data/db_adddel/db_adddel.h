@@ -235,12 +235,16 @@ public:
   typedef sigc::signal<void, const Gtk::TreeModel::iterator&, const Gnome::Gda::Value&> type_signal_record_added;
   type_signal_record_added signal_record_added();
 
-
   /** Emitted when the user changed the sort order,
    * for instance by clicking on a column header.
    */
   typedef sigc::signal<void> type_signal_sort_clause_changed;
   type_signal_sort_clause_changed signal_sort_clause_changed();
+  
+  /** Emitted when the user selected (or deselected) a record.
+   */
+  typedef sigc::signal<void> type_signal_record_selection_changed;
+  type_signal_record_selection_changed signal_record_selection_changed();
 
   /** Get the last row.
    * This will never return the placeholder row. 
@@ -448,6 +452,7 @@ private:
   type_signal_script_button_clicked m_signal_script_button_clicked;
   type_signal_record_added m_signal_record_added;
   type_signal_sort_clause_changed m_signal_sort_clause_changed;
+  type_signal_record_selection_changed m_signal_record_selection_changed;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   type_signal_user_requested_layout m_signal_user_requested_layout;

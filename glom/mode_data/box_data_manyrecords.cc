@@ -68,6 +68,11 @@ Box_Data_ManyRecords::type_signal_user_requested_details Box_Data_ManyRecords::s
   return m_signal_user_requested_details;
 }
 
+Box_Data_ManyRecords::type_signal_record_selection_changed Box_Data_ManyRecords::signal_record_selection_changed()
+{
+  return m_signal_record_selection_changed;
+}
+
 void Box_Data_ManyRecords::print_layout()
 {
   const Privileges table_privs = Privs::get_current_privs(m_table_name);
