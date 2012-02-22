@@ -258,9 +258,41 @@ void Notebook_Data::on_details_user_requested_related_details(const Glib::ustrin
   */
 }
 
-FoundSet Notebook_Data::get_found_set_details() const
+FoundSet Notebook_Data::get_found_set_selected() const
 {
-  return m_Box_Details.get_found_set();
+  if(get_current_view() == DATA_VIEW_Details)
+  {
+    return m_Box_Details.get_found_set();
+  }
+  else
+  {
+    //Start with something sensible:
+    FoundSet found_set = m_Box_List.get_found_set();
+    
+    const Gnome::Gda::Value primary_key_value_selected = 
+      m_Box_List.get_primary_key_value_selected();
+    if(Conversions::value_is_empty(primary_key_value_selected))
+    {
+      //Indicate to the caller that no record is selected:
+      found_set.m_where_clause = Gnome::Gda::SqlExpr();
+      return found_set;
+    }
+
+    const Document* document = get_document();
+    if(!document)
+    {
+      std::cerr << G_STRFUNC << ": document is null" << std::endl;
+      found_set.m_where_clause = Gnome::Gda::SqlExpr();
+      return found_set;
+    }
+    
+    sharedptr<Field> primary_key_field =
+      document->get_field_primary_key(m_table_name);
+    found_set.m_where_clause = Utils::build_simple_where_expression(
+      m_table_name, primary_key_field,
+      primary_key_value_selected);
+    return found_set;
+  }
 }
 
 

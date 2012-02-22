@@ -2332,7 +2332,7 @@ void Frame_Glom::do_print_layout(const Glib::ustring& print_layout_name, bool pr
   
   //TODO: When expanding items, avoid the page gaps that the print layout's design
   //has added.  
-  const FoundSet found_set = m_Notebook_Data.get_found_set_details();
+  const FoundSet found_set = m_Notebook_Data.get_found_set_selected();
   //Note that found_set.m_where_clause could be empty if there are no records yet,
   //and that is acceptable if this is for a print preview while designing the print layout. 
   
@@ -2471,11 +2471,6 @@ void Frame_Glom::on_button_find_all()
 {
   //Change the found set to all records:
   show_table(m_table_name);
-}
-
-bool Frame_Glom::get_viewing_details() const
-{
-  return (m_Notebook_Data.get_current_view() == Notebook_Data::DATA_VIEW_Details);
 }
 
 Glib::ustring Frame_Glom::get_shown_table_name() const

@@ -170,9 +170,6 @@ public:
    */
   void show_table_refresh();
 
-  ///Whether we are viewing the details or list.
-  bool get_viewing_details() const;
-
   Glib::ustring get_shown_table_name() const;
 
   /** Show the table, possibly selecting a particular record, possibly showing that in the details tab.

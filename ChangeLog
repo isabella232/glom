@@ -1,3 +1,21 @@
+2012-02-22  Murray Cumming  <murrayc@murrayc.com>
+
+	Allow printing of print layouts from the list view.
+
+	* glom/appwindow.cc: fill_menu_print_layouts(): Show the print layouts
+	even if the list view is visible.
+	* glom/mode_data/notebook_data.[h|cc]:
+	get_found_set_details(): Replace with get_found_set_selected()
+	which checks the selected record in the list view, if the list 
+	view is visible, instead of just the details view.
+	* glom/frame_glom.[h|cc]: Remove get_viewing_details().
+	do_print_layout(): Use get_found_set_selected() so we can print the 
+	print layout for the selected record.
+	
+	This avoids some confusion caused by the print layouts not being available
+	when viewing the list instead of the details.
+	Bug #670462 (alien)
+
 2012-02-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Users: Warn if we cannot get the list of users.
