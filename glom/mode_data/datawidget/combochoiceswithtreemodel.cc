@@ -314,6 +314,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
 
   //We create DbTreeModelWithExtraText rather than just DbTreeModel, 
   //because Combo(has_entry) needs it.
+  //TODO: Avoid getting the actual data if the user does not have view rights.
   m_refModel = DbTreeModelWithExtraText::create(found_set, layout_items, true /* allow_view */, false /* find mode */, m_db_layout_items);
   if(!m_refModel)
   {

@@ -671,6 +671,7 @@ void DbAddDel::construct_specified_columns()
     return;
   }
 
+  //TODO: Do not try to get the data if the user does not have view rights.
   m_refListStore = DbTreeModel::create(m_found_set, m_column_items, m_allow_view, m_find_mode, m_FieldsShown);
   //m_FieldsShown is needed by Base_DB_Table_Data::record_new().
 
