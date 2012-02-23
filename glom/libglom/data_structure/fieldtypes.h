@@ -43,6 +43,11 @@ public:
   guint get_types_count() const;
   
 private:
+  /** Use some default mappings,
+   * if, for some reason, we cannot get it from the database server at runtime.
+   */
+  void fill_with_default_data();
+
   typedef std::map<Glib::ustring, GType> type_mapSchemaStringsToGdaTypes;
   type_mapSchemaStringsToGdaTypes m_mapSchemaStringsToGdaTypes;
 

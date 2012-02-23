@@ -1,3 +1,11 @@
+2012-02-23  Murray Cumming  <murrayc@murrayc.com>
+
+	FieldTypes: Add defaults.
+
+	* glom/libglom/data_structure/fieldtypes.[h|cc]: Fallback to a hard-coded map of
+	database types to GType types, for the (so far unexplained) cases where
+	CONNECTION_META_TYPES gives us no rows.
+
 2012-02-22  Murray Cumming  <murrayc@murrayc.com>
 
 	List View: Make print layouts grayed-out if no record is selected.

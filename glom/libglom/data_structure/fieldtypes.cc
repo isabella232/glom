@@ -60,7 +60,11 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
     {
       const int rows = data_model_tables->get_n_rows();
       if(!rows)
-        std::cerr << G_STRFUNC << ": no rows from CONNECTION_META_TYPES" << std::endl;
+      {
+        //This happens with our developer user when sharing is activated, and with other extra users.
+        //TODO: Find out why.
+        std::cout << G_STRFUNC << ": no rows from CONNECTION_META_TYPES. Using default type mappings." << std::endl;
+      }
 
       for(int i = 0; i < rows; ++i)
       {
@@ -82,10 +86,11 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
             //std::cout << "debug: schema_type_string=" << schema_type_string << ", gda type=" << gdatype << "(" << g_type_name(gdatype) << ")" << std::endl;
 
             //Save it for later:
-            //std::cout << G_STRFUNC << ": debug: schema_type_string=" << schema_type_string << ", gdatype=" << g_type_name(gdatype) << std::endl;
+            const Glib::ustring gdatypestring = gda_g_type_to_string(gdatype); // TODO: What is this actually used for?
+            //std::cout << G_STRFUNC << ": m_mapSchemaStringsToGdaTypes[\"" << schema_type_string << "\"] = " << gdatypestring << ";" << std::endl;
             m_mapSchemaStringsToGdaTypes[schema_type_string] = gdatype;
 
-            Glib::ustring gdatypestring = gda_g_type_to_string(gdatype); // TODO: What is this actually used for?
+            
             //std::cout << "schema type: " << schema_type_string << " = gdatype " << (guint)gdatype << "(" << gdatypestring << ")" << std::endl;
             
             m_mapGdaTypesToSchemaStrings[gdatype] = schema_type_string; //We save it twice, to just to make searching easier, without using a predicate.
@@ -98,6 +103,13 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
     }
   }
 
+  //Use some default mappings if we could not get them from the database server.
+  //For instance, this can happen if the user does not have read access.
+  if(m_mapSchemaStringsToGdaTypes.empty())
+  {
+    fill_with_default_data();
+  }
+
   m_mapFallbackTypes[GDA_TYPE_BINARY] = GDA_TYPE_BLOB;
   m_mapFallbackTypes[GDA_TYPE_NUMERIC] = G_TYPE_DOUBLE;
   m_mapFallbackTypes[GDA_TYPE_TIME] = G_TYPE_STRING;
@@ -106,6 +118,62 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
 
 FieldTypes::~FieldTypes()
 {
+}
+
+void FieldTypes::fill_with_default_data()
+{
+  //This is based on the values normally retrieved from the database server,
+  //in the constructor.
+  //This is appropriate for PostgreSQL, but SQLite should never need these defaults anyway.
+  //TODO: Make something like libgda's static postgres_name_to_g_type() method public?
+  m_mapSchemaStringsToGdaTypes["abstime"] = G_TYPE_INT;
+  m_mapSchemaStringsToGdaTypes["bit"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["bool"] = G_TYPE_BOOLEAN;
+  m_mapSchemaStringsToGdaTypes["bpchar"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["bytea"] = GDA_TYPE_BINARY;
+  m_mapSchemaStringsToGdaTypes["char"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["cidr"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["circle"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["date"] = G_TYPE_DATE;
+  m_mapSchemaStringsToGdaTypes["float4"] = G_TYPE_FLOAT;
+  m_mapSchemaStringsToGdaTypes["float8"] = G_TYPE_DOUBLE;
+  m_mapSchemaStringsToGdaTypes["gtsvector"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["inet"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["int2"] = GDA_TYPE_SHORT;
+  m_mapSchemaStringsToGdaTypes["int4"] = G_TYPE_INT;
+  m_mapSchemaStringsToGdaTypes["int8"] = G_TYPE_INT64;
+  m_mapSchemaStringsToGdaTypes["interval"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["macaddr"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["money"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["numeric"] = GDA_TYPE_NUMERIC;
+  m_mapSchemaStringsToGdaTypes["path"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["pg_node_tree"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["polygon"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["regconfig"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["regdictionary"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["reltime"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["text"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["time"] = GDA_TYPE_TIME;
+  m_mapSchemaStringsToGdaTypes["timestamp"] = GDA_TYPE_TIMESTAMP;
+  m_mapSchemaStringsToGdaTypes["timestamptz"] = GDA_TYPE_TIMESTAMP;
+  m_mapSchemaStringsToGdaTypes["timetz"] = GDA_TYPE_TIME;
+  m_mapSchemaStringsToGdaTypes["tinterval"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["tsquery"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["tsvector"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["txid_snapshot"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["uuid"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["varbit"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["varchar"] = G_TYPE_STRING;
+  m_mapSchemaStringsToGdaTypes["xml"] = G_TYPE_STRING;
+
+  //Fill the reverse map too:
+  for(type_mapSchemaStringsToGdaTypes::const_iterator iter = m_mapSchemaStringsToGdaTypes.begin();
+    iter != m_mapSchemaStringsToGdaTypes.end(); ++iter)
+  {
+    const Glib::ustring str = iter->first;
+    const GType gtype = iter->second;
+    m_mapGdaTypesToSchemaStrings[gtype] = str;
+  }
 }
 
 guint FieldTypes::get_types_count() const
