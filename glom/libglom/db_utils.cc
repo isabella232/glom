@@ -864,7 +864,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
     }
     else if(data_model_fields->get_n_rows() == 0)
     {
-      g_warning("get_fields_for_table_from_database(): table_name=%s, data_model_fields->get_n_rows() == 0: The table probably does not exist in the specified database.", table_name.c_str());
+      std::cerr << G_STRFUNC << ": table_name=" << table_name << ": data_model_fields->get_n_rows() == 0: The table probably does not exist in the specified database, or the user does not have SELECT rights." << std::endl;
     }
     else
     {
