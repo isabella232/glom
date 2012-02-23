@@ -761,7 +761,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
         }
         else
         {
-          g_warning("Box_Data_Details::on_flowtable_field_edited(): key not found for edited related field.");
+          std::cerr << G_STRFUNC << ": key not found for edited related field." << std::endl;
         }
       }
     }

@@ -257,7 +257,7 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
   while((bufsize *= 2) <= 65536);
 
   // This error is quite unlikely (unless strftime is buggy).
-  g_warning("Conversions::format_time(): maximum size of strftime buffer exceeded, giving up");
+  std::cerr << G_STRFUNC << ": maximum size of strftime buffer exceeded. Giving up." << std::endl;
 
   return Glib::ustring();
   */

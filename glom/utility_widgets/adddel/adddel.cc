@@ -769,7 +769,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gn
   {
     case(AddDelColumnInfo::STYLE_Boolean):
     {
-      g_warning("AddDel::set_value(): boolean column being set as bool.");
+      std::cerr << G_STRFUNC << ": boolean column being set as bool." << std::endl;
       set_value(iter, col, value.get_bool());
       break;
     }
@@ -787,7 +787,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gl
   InnerIgnore innerIgnore(this);
 
   if(!m_refListStore)
-    g_warning("AddDel::set_value: No model.");
+    std::cerr << G_STRFUNC << ": No model." << std::endl;
   else
   {
     Gtk::TreeModel::Row treerow = *iter;
@@ -837,7 +837,7 @@ void AddDel::set_value(const Gtk::TreeModel::iterator& iter, guint col, bool bVa
   InnerIgnore innerIgnore(this);
 
   if(!m_refListStore)
-    g_warning("AddDel::set_value: No model.");
+    std::cerr << G_STRFUNC << ": No model." << std::endl;
   else
   {
     Gtk::TreeModel::Row treerow = *iter;

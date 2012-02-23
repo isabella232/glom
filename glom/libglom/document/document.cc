@@ -352,7 +352,7 @@ std::string Document::get_connection_self_hosted_directory_uri() const
   const std::string uri_file = get_file_uri();
   if(uri_file.empty())
   {
-    g_warning("Document::get_connection_self_hosted_directory_uri(): file_uri is empty.");
+    std::cerr << G_STRFUNC << ": file_uri is empty." << std::endl;
     return std::string();
   }
   else
@@ -386,7 +386,7 @@ std::string Document::get_connection_self_hosted_directory_uri() const
     }
   }
 
-  g_warning("Document::get_connection_self_hosted_directory_uri(): returning empty string.");
+  std::cerr << G_STRFUNC << ": returning empty string." << std::endl;
   return std::string();
 }
 
@@ -865,13 +865,13 @@ Document::type_vec_fields Document::get_table_fields(const Glib::ustring& table_
       }
       else
       {
-        //g_warning("Document::get_table_fields: table not found in document: %s", table_name.c_str());
+        //std::cerr << G_STRFUNC << ": table not found in document: " << table_name << std::endl;
       }
     }
   }
   else
   {
-    //g_warning("Document::get_table_fields: table name is empty.");
+    //std::cerr << G_STRFUNC << ": table name is empty." << std::endl;
   }
 
   //Hide any system fields:
@@ -888,7 +888,7 @@ void Document::set_table_fields(const Glib::ustring& table_name, const type_vec_
   {
     if(vecFields.empty())
     {
-      g_warning("Document::set_table_fields(): vecFields is empty: table_name=%s", table_name.c_str());
+      std::cerr << ": vecFields is empty: table_name=" << table_name << std::endl;
     }
 
     DocumentTableInfo& info = get_table_info_with_add(table_name);
@@ -1698,7 +1698,7 @@ void Document::set_data_layout_groups(const Glib::ustring& layout_name, const Gl
   //std::cout << "debug: " << G_STRFUNC << ": layout_name=" << layout_name << ", parent_table_name=" << parent_table_name << ", layout_platform=" << layout_platform << std::endl;
   const Glib::ustring child_table_name = parent_table_name; //TODO: Remove this cruft.
 
-  //g_warning("Document::set_data_layout_groups(): ADDING layout for table %s (child_table=%s), for layout %s", parent_table_name.c_str(), child_table_name.c_str(), layout_name.c_str());
+  //std::cerr << G_STRFUNC << ": ADDING layout for table " << parent_table_name << " (child_table=" << child_table_name << "), for layout " << layout_name << std::endl;
 
 
   if(!parent_table_name.empty())
@@ -2268,7 +2268,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
 {
   if(!node || !group)
   {
-    //g_warning("Document::load_after_layout_group(): node is NULL");
+    //std::cerr << G_STRFUNC << ": node is NULL" << std::endl;
     return;
   }
 
@@ -3778,7 +3778,7 @@ bool Document::save_before()
 
       const Glib::ustring table_name = doctableinfo.m_info->get_name();
       if(table_name.empty())
-        g_warning("Document::save_before(): table name is empty.");
+        std::cerr << G_STRFUNC << ": table name is empty." << std::endl;
 
       if(!table_name.empty())
       {

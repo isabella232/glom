@@ -2039,7 +2039,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     }
     catch(const ExceptionConnection& ex)
     {
-      //g_warning("Frame_Glom::connection_request_password_and_choose_new_database_name(): caught exception.");
+      //std::cerr << G_STRFUNC << ": caught exception." << std::endl;
 
       if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
       {
@@ -2107,7 +2107,7 @@ void Frame_Glom::cleanup_connection()
 
 bool Frame_Glom::handle_request_password_connection_error(bool asked_for_password, const ExceptionConnection& ex, bool& database_not_found)
 {
-  g_warning("Frame_Glom::connection_request_password_and_attempt(): caught exception.");
+  std::cerr << G_STRFUNC << ": caught exception." << std::endl;
 
   //Initialize input parameter:
   database_not_found = false;

@@ -236,7 +236,7 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_pixbuf_for_gda_value(const Gnome::Gda::Valu
       {
         buffer_binary_length = 0;
         buffer_binary = 0;
-        g_warning("Conversions::get_pixbuf_for_gda_value(): Failed to read BLOB data");
+        std::cerr << G_STRFUNC << ": Failed to read BLOB data" << std::endl;
       }
     }
     else
@@ -279,7 +279,7 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_pixbuf_for_gda_value(const Gnome::Gda::Valu
 
         catch(const Glib::Exception& ex)
         {
-          g_warning("Conversions::get_pixbuf_for_gda_value(): PixbufLoader::write() failed: %s", ex.what().c_str());
+          std::cerr << G_STRFUNC << ": PixbufLoader::write() failed: " << ex.what() << std::endl;
         }
       }
 

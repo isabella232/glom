@@ -44,7 +44,7 @@ LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
   m_formatting_use_default(src.m_formatting_use_default),
   m_title_custom(src.m_title_custom)
 {
-//g_warning("LayoutItem_Field::LayoutItem_Field: m_choices_related_relationship=%s, src.m_choices_related_relationship=%s", m_choices_related_relationship.c_str(), src.m_choices_related_relationship.c_str());
+//std::cerr << G_STRFUNC << ": m_choices_related_relationship=" << m_choices_related_relationship << ", src.m_choices_related_relationship=" << src.m_choices_related_relationship << std::endl;
 
   m_field = src.m_field;
 }

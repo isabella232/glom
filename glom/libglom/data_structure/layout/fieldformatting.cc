@@ -111,7 +111,7 @@ FieldFormatting& FieldFormatting::operator=(const FieldFormatting& src)
   m_text_color_background = src.m_text_color_background;
   m_horizontal_alignment = src.m_horizontal_alignment;
 
-//g_warning("FieldFormatting::operator=: m_choices_related_relationship=%s, src.m_choices_related_relationship=%s", m_choices_related_relationship->c_str(), src.m_choices_related_relationship->c_str());
+  //std::cerr << G_STRFUNC << ": m_choices_related_relationship=" << m_choices_related_relationship << ", src.m_choices_related_relationship=" << src.m_choices_related_relationship << std::endl;
   return *this;
 }
 

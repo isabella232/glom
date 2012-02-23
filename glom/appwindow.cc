@@ -1645,7 +1645,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
     if(!error.get())
     {
 #endif // GLIBMM_EXCEPTIONS_ENABLED
-      g_warning("AppWindow::recreate_database_from_example(): Failed because database exists already.");
+      std::cerr << G_STRFUNC << ": Failed because database exists already." << std::endl;
 
       return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
@@ -1666,7 +1666,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
       if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
       {
         user_cancelled = true; //Eventually, the user will cancel after retrying.
-        g_warning("AppWindow::recreate_database_from_example(): Failed because connection to server failed, without specifying a database.");
+        std::cerr << G_STRFUNC << ": Failed because connection to server failed, without specifying a database." << std::endl;
         return false;
       }
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
@@ -1718,7 +1718,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
   {
     const std::exception& ex = *error.get();
 #endif // GLIBMM_EXCEPTIONS_ENABLED
-    g_warning("AppWindow::recreate_database_from_example(): Failed to connect to the newly-created database.");
+    std::cerr << G_STRFUNC << ": Failed to connect to the newly-created database." << std::endl;
     return false;
   }
 
@@ -1749,7 +1749,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
     pulse_progress_message();
     if(!table_creation_succeeded)
     {
-      g_warning("AppWindow::recreate_database_from_example(): CREATE TABLE failed with the newly-created database.");
+      std::cerr << G_STRFUNC << ": CREATE TABLE failed with the newly-created database." << std::endl;
       return false;
     }
   }
@@ -1776,7 +1776,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
 
       if(!table_insert_succeeded)
       {
-        g_warning("AppWindow::recreate_database_from_example(): INSERT of example data failed with the newly-created database.");
+        std::cerr << G_STRFUNC << ": INSERT of example data failed with the newly-created database." << std::endl;
         return false;
       }
     //}
@@ -1824,7 +1824,7 @@ bool AppWindow::recreate_database_from_backup(const Glib::ustring& backup_uri, b
     if(!error.get())
     {
 #endif // GLIBMM_EXCEPTIONS_ENABLED
-      g_warning("AppWindow::recreate_database_from_example(): Failed because database exists already.");
+      std::cerr << G_STRFUNC << ": Failed because database exists already." << std::endl;
 
       return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
@@ -1845,7 +1845,7 @@ bool AppWindow::recreate_database_from_backup(const Glib::ustring& backup_uri, b
       if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
       {
         user_cancelled = true; //Eventually, the user will cancel after retrying.
-        g_warning("AppWindow::recreate_database_from_example(): Failed because connection to server failed, without specifying a database.");
+        std::cerr << G_STRFUNC << ": Failed because connection to server failed, without specifying a database." << std::endl;
         return false;
       }
 #ifndef GLIBMM_EXCEPTIONS_ENABLED

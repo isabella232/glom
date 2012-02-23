@@ -26,6 +26,8 @@
 #include <libglom/utils.h> //For bold_message()).
 #include <glibmm/i18n.h>
 
+#include <iostream>
+
 namespace Glom
 {
 
@@ -113,7 +115,7 @@ bool Box_Print_Layouts::fill_from_database()
     }
    }
   else
-    g_warning("Box_Print_Layouts::fill_from_database(): document is null");
+    std::cerr << G_STRFUNC << ": document is null" << std::endl;
 
   //TODO:
 

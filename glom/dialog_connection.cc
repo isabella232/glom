@@ -29,6 +29,8 @@
 #include <libglom/connectionpool_backends/postgres_self.h>
 #endif //#ifdef GLOM_ENABLE_POSTGRESQL
 
+#include <iostream>
+
 namespace Glom
 {
 
@@ -170,7 +172,7 @@ void Dialog_Connection::load_from_document()
     set_database_name(document->get_connection_database());
   }
   else
-    g_warning("Dialog_Connection::load_from_document(): no document");
+    std::cerr << G_STRFUNC << ": no document" << std::endl;
 
 }
 

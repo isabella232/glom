@@ -169,7 +169,7 @@ AppState::userlevels Base_DB::get_userlevel() const
   }
   else
   {
-    g_warning("Base_DB::get_userlevel(): document not found.");
+    std::cerr << G_STRFUNC << ": document not found." << std::endl;
     return AppState::USERLEVEL_OPERATOR;
   }
 }
@@ -687,7 +687,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
 
   if(vecFields.empty())
   {
-    //g_warning("Box_Data::get_table_fields_to_show_for_sequence_add_group(): Returning empty list.");
+    //std::cerr << G_STRFUNC << ": Returning empty list." << std::endl;
   }
 }
 
@@ -769,7 +769,7 @@ Base_DB::type_vecConstLayoutFields Base_DB::get_table_fields_to_show_for_sequenc
 
   if(result.empty())
   {
-    //g_warning("Box_Data::get_table_fields_to_show_for_sequence_add_group(): Returning empty list.");
+    //std::cerr << G_STRFUNC << ": Returning empty list." << std::endl;
   }
 
   return result;
@@ -823,7 +823,7 @@ void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, co
 void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
 {
   const Glib::ustring field_name = field_in_record.m_field->get_name();
-  //g_warning("Box_Data::calculate_field(): field_name=%s", field_name.c_str());
+  //std::cerr << G_STRFUNC << ": field_name=" << field_name << std::endl;
 
   //Do we already have this in our list?
   type_field_calcs::iterator iterFind = m_FieldsCalculationInProgress.find(field_name);
@@ -842,18 +842,18 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
   //Use the previously-calculated value if possible:
   if(refCalcProgress.m_calc_in_progress)
   {
-    //g_warning("  Box_Data::calculate_field(): Circular calculation detected. field_name=%s", field_name.c_str());
+    //std::cerr << G_STRFUNC << ": Circular calculation detected. field_name=" << field_name << std::endl;
     //refCalcProgress.m_value = Conversions::get_empty_value(field->get_glom_type()); //Give up.
   }
   else if(refCalcProgress.m_calc_finished)
   {
-    //g_warning("  Box_Data::calculate_field(): Already calculated.");
+    //std::cerr << G_STRFUNC << ": Already calculated." << std::endl;
 
     //Don't bother calculating it again. The correct value is already in the database and layout.
   }
   else
   {
-    //g_warning("  Box_Data::calculate_field(): setting calc_in_progress: field_name=%s", field_name.c_str());
+    //std::cerr << G_STRFUNC << ": setting calc_in_progress: field_name=" << field_name << std::endl;
 
     refCalcProgress.m_calc_in_progress = true; //Let the recursive calls to calculate_field() check this.
 
@@ -1107,7 +1107,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
     //Prevent circular calculations during the recursive do_calculations:
     {
       //Recalculate any calculated fields that depend on this calculated field.
-      //g_warning("Box_Data::set_field_value_in_database(): calling do_calculations");
+      //std::cerr << G_STRFUNC << ": calling do_calculations" << std::endl;
 
       do_calculations(layoutfield_in_record, !use_current_calculations);
     }

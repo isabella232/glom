@@ -96,7 +96,7 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
     }
     else
     {
-      //g_warning("DbTreeModelRow::fill_values_if_necessary(): Non-db row.");
+      //std::cerr << G_STRFUNC << ": Non-db row." << std::endl;
       if(m_extra)
       {
         //std::cout << "debug: " << G_STRFUNC << ": using default value" << std::endl;
@@ -677,7 +677,7 @@ bool DbTreeModel::create_iterator(const type_datamodel_row_index& datamodel_row,
 
 bool DbTreeModel::get_iter_vfunc(const Path& path, iterator& iter) const
 {
-  //g_warning("DbTreeModel::get_iter_vfunc(): path=%s", path.to_string().c_str());
+   //std::cout << ": path=" << path << std::endl;
 
    unsigned sz = path.size();
    if(!sz)
@@ -725,12 +725,12 @@ int DbTreeModel::get_internal_rows_count() const
 DbTreeModel::iterator DbTreeModel::append()
 {
   //const size_type existing_size = m_data_model_rows_count;
-  //g_warning("DbTreeModel::append(): existing_size = %d", existing_size);
+  //std::cerr << G_STRFUNC << ": existing_size = " << existing_size << std::endl;
   //m_rows.resize(existing_size + 1);
 
   //Get aniterator to the last element:
   type_datamodel_row_index datamodel_row = get_internal_rows_count();
-  //g_warning("DbTreeModel::append(): new row number=%d", datamodel_row);
+  //std::cerr << G_STRFUNC << ": new row number=" << datamodel_row << std::endl;
   ++m_count_extra_rows; //So that create_iterator() can succeed.
 
   //Create the row:
@@ -776,7 +776,7 @@ void DbTreeModel::set_value_impl(const iterator& row, int column, const Glib::Va
 
     const ValueDbValue* pDbValue = static_cast<const ValueDbValue*>(&value);
     if(!pDbValue)
-      g_warning("DbTreeModel::set_value_impl(): value is not a Value< DbValue >.");
+      std::cerr << G_STRFUNC << ": value is not a Value< DbValue >." << std::endl;
     else
     {
       DbTreeModelRow& row_details = m_map_rows[datamodel_row]; //Adds it if necessary.
@@ -942,7 +942,7 @@ Gtk::TreeModel::iterator DbTreeModel::get_placeholder_row()
         --row;
       else
       {
-        g_warning("bTreeModel::get_placeholder_row(): Placeholder row not found.");
+        std::cerr << G_STRFUNC << ": Placeholder row not found." << std::endl;
         return result; //failed, because there are no non-removed rows.
       }
     }
@@ -950,7 +950,7 @@ Gtk::TreeModel::iterator DbTreeModel::get_placeholder_row()
     type_map_rows::const_iterator iter_map = m_map_rows.find(row);
     if(iter_map != m_map_rows.end())
     {
-      //g_warning("DbTreeModel::get_last_row(): returning row=%d", row);
+      //std::cerr << G_STRFUNC << ": returning row=" << row << std::endl;
       create_iterator(row, result);
     }
   }

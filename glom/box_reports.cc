@@ -26,6 +26,8 @@
 #include <gtkmm/messagedialog.h>
 #include <glibmm/i18n.h>
 
+#include <iostream>
+
 namespace Glom
 {
 
@@ -113,7 +115,7 @@ bool Box_Reports::fill_from_database()
     }
    }
   else
-    g_warning("Box_Reports::fill_from_database(): document is null");
+    std::cerr << G_STRFUNC << ": document is null" << std::endl;
 
   //TODO:
 

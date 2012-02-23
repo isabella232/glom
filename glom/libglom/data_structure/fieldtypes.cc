@@ -206,12 +206,12 @@ Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(GType field_type) con
     if(iterFallback != m_mapFallbackTypes.end())
       return get_string_name_for_gdavaluetype(iterFallback->second);
 
-    g_warning("FieldTypes::get_string_name_for_gdavaluetype(): returning unknowntype for field_type=%ld (%s)", static_cast<long>(field_type), g_type_name(field_type));
+    std::cerr << G_STRFUNC << ": returning unknowntype for field_type=" << field_type << " (" << g_type_name(field_type) << ")" << std::endl;
 
-    g_warning("  possible types are: ");
+    std::cerr << "  possible types are: " << std::endl;
     for(type_mapGdaTypesToSchemaStrings::const_iterator iter = m_mapGdaTypesToSchemaStrings.begin(); iter != m_mapGdaTypesToSchemaStrings.end(); ++iter)
     {
-      g_warning("    gdatype=%ld (%s), sqltype=%s", static_cast<long>(iter->first), g_type_name(iter->first), iter->second.c_str());
+      std::cerr << "    gdatype=" << iter->first << " (" << g_type_name(iter->first) << "), sqltype=" << iter->second << std::endl;
     }
     
     return "unknowntype";

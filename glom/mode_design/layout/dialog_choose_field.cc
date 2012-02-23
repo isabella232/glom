@@ -23,6 +23,8 @@
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
+#include <iostream>
+
 namespace Glom
 {
 
@@ -131,12 +133,12 @@ void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& t
 
   if(!m_document)
   {
-    g_warning("Dialog_ChooseField::set_document(): document is null");
+    std::cerr << G_STRFUNC << ": document is null" << std::endl;
   }
 
   if(table_name.empty())
   {
-    g_warning("Dialog_ChooseField::set_document(): table_name is empty");
+    std::cerr << G_STRFUNC << ": table_name is empty" << std::endl;
   }
   
   Glib::RefPtr<Gtk::TreeView::Selection> selection = m_treeview->get_selection();

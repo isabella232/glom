@@ -284,7 +284,7 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
   }
   else if(Conversions::value_is_empty(m_key_value))
   {
-    g_warning("Box_Data_Calendar_Related::on_record_added(): m_key_value is NULL.");
+    std::cerr << G_STRFUNC << ": m_key_value is NULL." << std::endl;
   }
   else
   {

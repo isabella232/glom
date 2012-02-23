@@ -383,7 +383,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
   }
   else
   {
-    //g_warning("ConnectionPool::connect(): not ready to connect.");
+    //std::cerr << G_STRFUNC << ": not ready to connect." << std::endl;
   }
 
   return sharedptr<SharedConnection>(0);
@@ -545,7 +545,7 @@ void ConnectionPool::on_sharedconnection_finished()
   {
     //There should be no copies of the m_refConnection, so the Gnome::Gda::Connection destructor should
     //run when we clear this last RefPtr of it, but we will explicitly close it just in case.
-    //g_warning("ConnectionPool::on_sharedconnection_finished(): closing GdaConnection");
+    //std::cerr << G_STRFUNC << ": closing GdaConnection" << std::endl;
     m_refGdaConnection->close();
 
     m_refGdaConnection.reset();

@@ -1969,7 +1969,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
             pDerived->property_pixbuf() = pixbuf;
           }
           else
-            g_warning("Field::sql(): glom_type is TYPE_IMAGE but gda type is not VALUE_TYPE_BINARY");
+            std::cerr << G_STRFUNC << ": glom_type is TYPE_IMAGE but gda type is not VALUE_TYPE_BINARY" << std::endl;
 
           break;
         }
@@ -2211,7 +2211,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
           }
           else
           {
-            g_warning("Box_Data_List::on_flowtable_field_edited(): key not found for edited related field.");
+            std::cerr << G_STRFUNC << ": key not found for edited related field." << std::endl;
           }
         }
       }

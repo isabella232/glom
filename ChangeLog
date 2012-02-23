@@ -1,5 +1,9 @@
 2012-02-23  Murray Cumming  <murrayc@murrayc.com>
 
+	Change lots of g_warnings() to std::cerr.
+
+2012-02-23  Murray Cumming  <murrayc@murrayc.com>
+
 	FieldTypes: Add defaults.
 
 	* glom/libglom/data_structure/fieldtypes.[h|cc]: Fallback to a hard-coded map of

@@ -21,6 +21,8 @@
 #include "combo_summarytype.h"
 #include <glibmm/i18n.h>
 
+#include <iostream>
+
 namespace Glom
 {
 
@@ -66,7 +68,7 @@ void Combo_SummaryType::set_summary_type(LayoutItem_FieldSummary::summaryType su
     }
   }
 
-  g_warning("Combo_SummaryType::set_summary_type(): no item found");
+  std::cerr << G_STRFUNC << ": no item found" << std::endl;
 
   //Not found, so mark it as blank:
   unset_active();

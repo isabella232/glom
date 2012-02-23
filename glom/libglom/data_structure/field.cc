@@ -194,7 +194,7 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
 
     if(!value.is_null() && value.get_value_type() != cur_type)
     {
-      g_warning("Field::set_field_info: New field's default value type (%s) does not match field type (%s). Resetting default value.", g_type_name(value.get_value_type()), g_type_name(get_gda_type_for_glom_type(get_glom_type())));
+      std::cerr << G_STRFUNC << ": New field's default value type (" << g_type_name(value.get_value_type()) << " does not match field type (" << g_type_name(get_gda_type_for_glom_type(get_glom_type())) << "). Resetting default value." << std::endl;
       m_field_info->set_default_value(Gnome::Gda::Value());
     }
   }
@@ -228,7 +228,7 @@ bool Field::get_is_lookup() const
 
 Glib::ustring Field::sql(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnome::Gda::Connection>& connection) const
 {
-  //g_warning("Field::sql: glom_type=%d", get_glom_type());
+  //std::cout << ": glom_type=" << get_glom_type() << std::endl;
 
   if(value.is_null() && (get_glom_type() == TYPE_TEXT))
   {
@@ -531,7 +531,7 @@ void Field::set_default_value(const Gnome::Gda::Value& value)
   if(value.is_null() || value.get_value_type() == cur_type)
     m_field_info->set_default_value(value);
   else
-    g_warning("Field::set_default_value: Cannot set incompatible default value: Default value has type %s, but field has type %s", g_type_name(value.get_value_type()), g_type_name(get_gda_type_for_glom_type(get_glom_type())));
+    std::cerr << G_STRFUNC << ": Cannot set incompatible default value: Default value has type " << g_type_name(value.get_value_type()) << ", but field has type " << g_type_name(get_gda_type_for_glom_type(get_glom_type())) << std::endl;
 }
 
 Glib::ustring Field::get_sql_type() const
@@ -562,7 +562,7 @@ Glib::ustring Field::get_sql_type() const
 
     if(strType == "unknowntype")
     {
-      g_warning("Field::get_sql_type(): returning unknowntype for field name=%s , glom_type=%d, gda_type=%d", get_name().c_str(), get_glom_type(), (int)m_field_info->get_g_type());
+      std::cerr << G_STRFUNC << ": returning unknowntype for field name=" << get_name() << ", glom_type=" << get_glom_type() << ", gda_type=" << (int)m_field_info->get_g_type() << std::endl;
     }
 
     return strType;
@@ -648,7 +648,7 @@ GType Field::get_gda_type_for_glom_type(Field::glom_field_type glom_type)
 
   if(ideal_gda_type == G_TYPE_NONE)
   {
-    g_warning("Field::get_gda_type_for_glom_type(): Returning G_TYPE_NONE for glom_type=%d", glom_type);
+    std::cerr << G_STRFUNC << ": Returning G_TYPE_NONE for glom_type=" << glom_type << std::endl;
   }
 
   //std::cout << "debug: " << G_STRFUNC << ": returning: " << g_type_name(ideal_gda_type) << std::endl;

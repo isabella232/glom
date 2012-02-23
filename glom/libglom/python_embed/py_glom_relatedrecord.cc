@@ -70,7 +70,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
   sharedptr<const Field> field = m_document->get_field(m_relationship->get_to_table(), field_name);
   if(!field)
   {
-    g_warning("PyGlomRelatedRecord::setitem(): field %s not found in table %s", field_name.c_str(), m_relationship->get_to_table().c_str());
+    std::cerr << G_STRFUNC << ": field " << field_name << " not found in table " << m_relationship->get_to_table() << std::endl;
     PyErr_SetString(PyExc_IndexError, "field not found");
     return boost::python::object();
   }
@@ -134,7 +134,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
     }
     else if(!datamodel)
     {
-      g_warning("PyGlomRelatedRecord::setitem()(): The datamodel was null.");
+      std::cerr << G_STRFUNC << ": The datamodel was null." << std::endl;
       ConnectionPool::handle_error_cerr_only();
       RelatedRecord_HandlePythonError();
     }
@@ -144,7 +144,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
     }
   }
 
-  g_warning("PyGlomRelatedRecord::setitem()(): return null.");
+  std::cerr << G_STRFUNC << ": return null." << std::endl;
   return boost::python::object();
 }
 

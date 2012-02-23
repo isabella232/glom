@@ -51,7 +51,7 @@ bool Document_XML::load_after(int& failure_code)
     //m_DOM_Parser.setDoValidation(true);
 
     if(m_strContents.empty())
-      g_warning("Document_XML::load_after(): parsing empty document.");
+      std::cerr << G_STRFUNC << ": parsing empty document." << std::endl;
 
     m_DOM_Parser.parse_memory(m_strContents);
     m_pDOM_Document = m_DOM_Parser.get_document();

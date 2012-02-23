@@ -336,7 +336,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
         sharedptr<Field> parent_primary_key_field = get_field_primary_key();
         if(!parent_primary_key_field)
         {
-          g_warning("Base_DB_Table_Data::add_related_record_for_field(): get_field_primary_key() failed. table = %s", get_table_name().c_str());
+          std::cerr << G_STRFUNC << ": get_field_primary_key() failed. table = " << get_table_name() << std::endl;
           return false;
         }
         else
@@ -344,7 +344,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
           const Gnome::Gda::Value parent_primary_key_value = get_primary_key_value_selected();
           if(parent_primary_key_value.is_null())
           {
-            g_warning("Base_DB_Table_Data::add_related_record_for_field(): get_primary_key_value_selected() failed. table = %s", get_table_name().c_str());
+            std::cerr << G_STRFUNC << ": get_primary_key_value_selected() failed. table = " << get_table_name() << std::endl;
             return false;
           }
           else

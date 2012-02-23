@@ -72,7 +72,7 @@ void Dialog_InitialPassword::load_from_document()
     m_entry_user->set_text(user);
   }
   else
-    g_warning("Dialog_InitialPassword::load_from_document(): no document");
+    std::cerr << G_STRFUNC << ": no document" << std::endl;
 
 }
 

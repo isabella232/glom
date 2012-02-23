@@ -740,7 +740,7 @@ void FlowTableWithFields::set_field_value(const sharedptr<const LayoutItem_Field
     Box_Data_Portal* portal = *iter;
     if(portal)
     {
-      //g_warning("FlowTableWithFields::set_field_value: foreign_key_value=%s", value.to_string().c_str());
+      //std::cerr << G_STRFUNC << ": foreign_key_value=" << value.to_string() << std::endl;
       portal->refresh_data_from_database_with_foreign_key(value /* foreign key value */);
     }
   }
@@ -752,7 +752,7 @@ void FlowTableWithFields::set_field_value(const sharedptr<const LayoutItem_Field
     DataWidgetChildren::ComboChoices* widget = *iter;
     if(widget)
     {
-      //g_warning("FlowTableWithFields::set_field_value: foreign_key_value=%s", value.to_string().c_str());
+      //std::cerr << G_STRFUNC << ": foreign_key_value=" << value.to_string() << std::endl;
       widget->refresh_data_from_database_with_foreign_key(get_document(), value /* foreign key value */);
     }
   }
@@ -778,7 +778,7 @@ Gnome::Gda::Value FlowTableWithFields::get_field_value(const sharedptr<const Lay
       return value;
   }
 
-  //g_warning("FlowTableWithFields::get_field_value(): returning null");
+  //std::cerr << G_STRFUNC << ": returning null" << std::endl;
   return Gnome::Gda::Value(); //null.
 }
 

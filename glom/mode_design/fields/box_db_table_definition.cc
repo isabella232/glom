@@ -672,7 +672,7 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const sharedptr<const 
   }
   else
   {
-    g_warning("Box_DB_Table_Definition::field_has_non_unique_values(): SELECT COUNT() failed.");
+    std::cerr << G_STRFUNC << ": SELECT COUNT() failed." << std::endl;
   }
 
   //Count all rows, to compare. TODO_performance: Is there a more efficient way to do this? Maybe count(*), which apparently doesn't ignore NULL rows like count(somefield) would.
@@ -689,7 +689,7 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const sharedptr<const 
   }
   else
   {
-    g_warning("Box_DB_Table_Definition::field_has_non_unique_values(): SELECT COUNT() failed.");
+    std::cerr << G_STRFUNC << ": SELECT COUNT() failed." << std::endl;
   }
 
 

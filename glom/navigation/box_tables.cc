@@ -151,7 +151,7 @@ bool Box_Tables::fill_from_database()
     listTablesDocument = document->get_tables();
   }
   else
-    g_warning("Box_Tables::fill_from_database(): document is null");
+    std::cerr << G_STRFUNC << ": document is null" << std::endl;
 
   //Get the list of tables in the database, from the server:
   sharedptr<SharedConnection> sharedconnection = connect_to_server(AppWindow::get_appwindow());
