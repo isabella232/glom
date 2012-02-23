@@ -1,5 +1,20 @@
 2012-02-23  Murray Cumming  <murrayc@murrayc.com>
 
+	Do not hide the database structure if the user does not have view rights.
+
+	* glom/frame_glom.cc: update_table_in_document_from_database(): Warn if we cannot
+	get the fields list from the database and do not then assume that there are no fields.
+	* glom/libglom/db_utils.cc: get_fields_for_table(): Do not get the fields from the 
+	database because it is inefficient and we should already have updated the document.
+	* glom/mode_data/box_data_list.cc: create_layout(): Do not (incredibly inefficiently)
+	check that each field exists in the database. We should already have updated the 
+	document.
+
+	This should make the UI faster too.
+	Bug #669299
+
+2012-02-23  Murray Cumming  <murrayc@murrayc.com>
+
 	Change lots of g_warnings() to std::cerr.
 
 2012-02-23  Murray Cumming  <murrayc@murrayc.com>

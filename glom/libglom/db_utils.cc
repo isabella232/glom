@@ -959,23 +959,25 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
   return result;
 }
 
-//TODO: This is very inefficient, because it is called so often. Just update the document with whatever is really in the database:
+//TODO: This is very inefficient, because it is 
 type_vec_fields get_fields_for_table(const Document* document, const Glib::ustring& table_name, bool including_system_fields)
 {
-  //Get field definitions from the database:
-  type_vec_fields fieldsDatabase = get_fields_for_table_from_database(table_name, including_system_fields);
+  //We could also get the field definitions from the database:
+  //But that is inefficient because this method is called so often,
+  //and that meta information is not even available if the user does not have SELECT rights.
+  //Therefore we just assume that the Document has been updated from the database already.
+  //type_vec_fields fieldsDatabase = get_fields_for_table_from_database(table_name, including_system_fields);
 
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document is null" << std::endl;
-    return fieldsDatabase; //This should never happen.
+    return type_vec_fields(); //This should never happen.
   }
 
-  type_vec_fields result;
-
-  type_vec_fields fieldsDocument = document->get_table_fields(table_name);
+  type_vec_fields result = document->get_table_fields(table_name);
 
   //Look at each field in the database:
+  /*
   for(type_vec_fields::iterator iter = fieldsDocument.begin(); iter != fieldsDocument.end(); ++iter)
   {
     sharedptr<Field> field = *iter;
@@ -1020,6 +1022,7 @@ type_vec_fields get_fields_for_table(const Document* document, const Glib::ustri
     if(iterFind == result.end() )
       result.push_back(*iter);
   }
+  */
 
   return result;
 }

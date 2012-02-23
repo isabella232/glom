@@ -1403,6 +1403,12 @@ void Frame_Glom::update_table_in_document_from_database()
 
   //Get the fields information from the database:
   DbUtils::type_vec_fields fieldsDatabase = DbUtils::get_fields_for_table_from_database(m_table_name);
+  if(fieldsDatabase.empty())
+  {
+    std::cerr << G_STRFUNC << ": Could not get the list of fields for table=" << m_table_name <<
+      " from the database. This might be due to insufficient database user rights." << 
+      " Falling back to the field details in the document." << std::endl;
+  }
 
   Document* pDoc = dynamic_cast<const Document*>(get_document());
   if(pDoc)
@@ -1458,25 +1464,28 @@ void Frame_Glom::update_table_in_document_from_database()
 
     //Remove fields that are no longer in the database:
     //TODO_performance: This is incredibly inefficient - but it's difficut to erase() items while iterating over them.
-    type_vec_fields fieldsActual;
-    for(type_vec_fields::const_iterator iter = fieldsDocument.begin(); iter != fieldsDocument.end(); ++iter)
+    if(!fieldsDatabase.empty()) //Do not do this if getting the fields from the database failed completely, probably due to permissions.
     {
-      sharedptr<Field> field = *iter;
+      type_vec_fields fieldsActual;
+      for(type_vec_fields::const_iterator iter = fieldsDocument.begin(); iter != fieldsDocument.end(); ++iter)
+      {
+        sharedptr<Field> field = *iter;
 
-      //Check whether it's in the database:
-      type_vec_fields::iterator iterFindDatabase = std::find_if( fieldsDatabase.begin(), fieldsDatabase.end(), predicate_FieldHasName<Field>( field->get_name() ) );
-      if(iterFindDatabase != fieldsDatabase.end()) //If it was found
-      {
-        fieldsActual.push_back(field);
+        //Check whether it's in the database:
+        type_vec_fields::iterator iterFindDatabase = std::find_if( fieldsDatabase.begin(), fieldsDatabase.end(), predicate_FieldHasName<Field>( field->get_name() ) );
+        if(iterFindDatabase != fieldsDatabase.end()) //If it was found
+        {
+          fieldsActual.push_back(field);
+        }
+        else
+        {
+          document_must_be_updated = true; //Something changed.
+        }
       }
-      else
-      {
-        document_must_be_updated = true; //Something changed.
-      }
+
+      if(document_must_be_updated)
+        pDoc->set_table_fields(m_table_name, fieldsActual);
     }
-
-    if(document_must_be_updated)
-      pDoc->set_table_fields(m_table_name, fieldsActual);
   }
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY

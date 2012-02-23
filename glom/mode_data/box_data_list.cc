@@ -449,6 +449,10 @@ void Box_Data_List::create_layout()
         child_item->set_editable(false);
 
       sharedptr<const LayoutItem_Field> child_field = sharedptr<const LayoutItem_Field>::cast_dynamic(child_item);
+
+      //This check has already happened in Frame_Glom::update_table_in_document_from_database().
+      //It is inefficient and unnecessary to do it here too.
+      /*
       if(child_field)
       {
         //Check that the field really exists, to avoid SQL errors.
@@ -459,6 +463,7 @@ void Box_Data_List::create_layout()
           continue;
         }
       }
+      */
 
       items_to_use.push_back(child_item);
     }
