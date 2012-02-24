@@ -129,10 +129,11 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
 
   enable_buttons();
 
+  //TODO: Use m_found_set?
   FoundSet found_set;
   found_set.m_table_name = LayoutWidgetBase::m_table_name;
 
-  const Privileges table_privs = Privs::get_current_privs(m_found_set.m_table_name);
+  const Privileges table_privs = Privs::get_current_privs(found_set.m_table_name);
   m_AddDel.set_allow_view(table_privs.m_view);
 
   m_AddDel.set_found_set(found_set);

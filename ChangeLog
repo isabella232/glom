@@ -1,5 +1,12 @@
 2012-02-24  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix a typo in the previous commit.
+
+	* glom/mode_data/box_data_list_related.cc: Do not use m_found_set where
+	we really mean found_set.
+
+2012-02-24  Murray Cumming  <murrayc@murrayc.com>
+
 	Prevent SQL SELECT errors when the user does not have view (SELECT) rights.
 
 	* glom/libglom/privs.cc: get_current_privs(): Check for an empty table 
