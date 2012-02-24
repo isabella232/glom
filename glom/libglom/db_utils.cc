@@ -960,7 +960,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
 }
 
 //TODO: This is very inefficient, because it is 
-type_vec_fields get_fields_for_table(const Document* document, const Glib::ustring& table_name, bool including_system_fields)
+type_vec_fields get_fields_for_table(const Document* document, const Glib::ustring& table_name, bool /* including_system_fields */)
 {
   //We could also get the field definitions from the database:
   //But that is inefficient because this method is called so often,
