@@ -1,5 +1,19 @@
 2012-02-24  Murray Cumming  <murrayc@murrayc.com>
 
+	Prevent SQL SELECT errors when the user does not have view (SELECT) rights.
+
+	* glom/libglom/privs.cc: get_current_privs(): Check for an empty table 
+	name to avoid SQL errors.
+	* glom/frame_glom.cc: show_table_allow_empty():
+	* glom/mode_data/box_data_list.cc: fill_from_database(), create_layout(),
+	* glom/mode_data/box_data_list_related.cc: init_db_detail(), create_layout():
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.cc:
+	set_choices_related(): Set DbAddDel::set_allow_view(), with the 
+	discovered view privileges for the current user, to avoid SQL errors when the
+	user does not have SELECT rights.
+
+2012-02-24  Murray Cumming  <murrayc@murrayc.com>
+
 	More not hiding the database structure if the user does not have view rights.
 
 	* glom/mode_data/box_data_list_related.cc: Do not check if the field really	

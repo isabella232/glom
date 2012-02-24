@@ -23,6 +23,7 @@
 #include <glom/appwindow.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
+#include <libglom/privs.h>
 #include <glom/glade_utils.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
 #include <glom/utils_ui.h> //For bold_message()).
@@ -82,6 +83,11 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
   else
     LayoutWidgetBase::m_table_name = Glib::ustring();
 
+  if(LayoutWidgetBase::m_table_name.empty())
+  {
+    std::cerr << G_STRFUNC << ": LayoutWidgetBase::m_table_name is null" << std::endl;
+  }
+  
   Base_DB_Table::m_table_name = LayoutWidgetBase::m_table_name;
 
   if(show_title)
@@ -125,6 +131,10 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
 
   FoundSet found_set;
   found_set.m_table_name = LayoutWidgetBase::m_table_name;
+
+  const Privileges table_privs = Privs::get_current_privs(m_found_set.m_table_name);
+  m_AddDel.set_allow_view(table_privs.m_view);
+
   m_AddDel.set_found_set(found_set);
   return Box_Data_ManyRecords::init_db_details(found_set, "" /* layout_platform */); //Calls create_layout() and fill_from_database().
 }
@@ -164,6 +174,9 @@ bool Box_Data_List_Related::fill_from_database()
     allow_add = m_portal->get_relationship()->get_auto_create();
 
   m_AddDel.set_allow_add(allow_add);
+
+  const Privileges table_privs = Privs::get_current_privs(m_found_set.m_table_name);
+  m_AddDel.set_allow_view(table_privs.m_view);
 
   m_AddDel.set_found_set(m_found_set);
   result = m_AddDel.refresh_from_database();
@@ -465,6 +478,9 @@ void Box_Data_List_Related::create_layout()
     items_to_use.push_back(layout_item);
   }
 
+  const Privileges table_privs = Privs::get_current_privs(m_found_set.m_table_name);
+  m_AddDel.set_allow_view(table_privs.m_view);
+  
   m_AddDel.set_found_set(m_found_set);
   m_AddDel.set_columns(items_to_use);
 

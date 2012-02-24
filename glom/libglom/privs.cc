@@ -430,6 +430,12 @@ bool Privs::on_privs_privileges_cache_timeout(const Glib::ustring& table_name)
 
 Privileges Privs::get_current_privs(const Glib::ustring& table_name)
 {
+  if(table_name.empty())
+  {
+    std::cerr << G_STRFUNC << ": table_name is empty." << std::endl;
+    return Privileges();
+  }
+  
   //TODO_Performance: There's lots of database access here.
   //We could maybe replace some with the postgres has_table_* function().
 

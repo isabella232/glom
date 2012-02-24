@@ -21,6 +21,7 @@
 #include "combochoiceswithtreemodel.h"
 #include <glom/mode_data/datawidget/treemodel_db_withextratext.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <libglom/privs.h>
 #include <glom/utils_ui.h>
 #include <glom/appwindow.h>
 #include <gtkmm/liststore.h>
@@ -315,7 +316,8 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
   //We create DbTreeModelWithExtraText rather than just DbTreeModel, 
   //because Combo(has_entry) needs it.
   //TODO: Avoid getting the actual data if the user does not have view rights.
-  m_refModel = DbTreeModelWithExtraText::create(found_set, layout_items, true /* allow_view */, false /* find mode */, m_db_layout_items);
+  const Privileges table_privs = Privs::get_current_privs(found_set.m_table_name);
+  m_refModel = DbTreeModelWithExtraText::create(found_set, layout_items, table_privs.m_view, false /* find mode */, m_db_layout_items);
   if(!m_refModel)
   {
     std::cerr << G_STRFUNC << ": DbTreeModel::create() returned a null model." << std::endl;

@@ -144,14 +144,13 @@ bool Box_Data_List::fill_from_database()
 
     enable_buttons();
 
+    m_AddDel.set_allow_view(table_privs.m_view);
     m_AddDel.set_found_set(m_found_set);
 
     result = m_AddDel.refresh_from_database();
 
     if(table_privs.m_view)
     {
-      //TODO: Don't show it if m_view is false.
-
       //Select first record:
       Glib::RefPtr<Gtk::TreeModel> refModel = m_AddDel.get_model();
       if(refModel)
@@ -482,6 +481,9 @@ void Box_Data_List::create_layout()
     m_FieldsShown.push_back(layout_item); //TODO: Do this only if it is not already present.
   }
 
+  const Privileges table_privs = Privs::get_current_privs(m_found_set.m_table_name);
+  m_AddDel.set_allow_view(table_privs.m_view);
+    
   m_AddDel.set_found_set(m_found_set);
   m_AddDel.set_columns(items_to_use); //TODO: Use LayoutGroup::type_list_const_items instead?
 
