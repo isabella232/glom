@@ -1,0 +1,323 @@
+# French translation for glom.
+# Copyright (C) 2012 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+#
+# Bruno Brouard <annoa.b@gmail.com>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: glom master\n"
+"PO-Revision-Date: 2012-02-27 21:42+0100\n"
+"Last-Translator: Bruno Brouard <annoa.b@gmail.com>\n"
+"Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"product=glom&keywords=I18N+L10N&component=general\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgctxt "Database Title"
+msgid "Project Manager Example"
+msgstr "Exemple de gestion de projet"
+
+msgctxt "Table (contacts)"
+msgid "Contacts"
+msgstr "Contacts"
+
+msgctxt "Field (contact_id). Parent table: contacts"
+msgid "Contact ID"
+msgstr "ID du contact"
+
+msgctxt "Field (name_first). Parent table: contacts"
+msgid "First Name"
+msgstr "Prénom"
+
+msgctxt "Field (name_middle). Parent table: contacts"
+msgid "Middle Name"
+msgstr "Nom intermédiaire"
+
+msgctxt "Field (name_last). Parent table: contacts"
+msgid "Last Name"
+msgstr "Nom"
+
+msgctxt "Field (name_title). Parent table: contacts"
+msgid "Title"
+msgstr "Titre"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mr"
+msgstr "M."
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mrs"
+msgstr "Mme"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Ms"
+msgstr "Mme"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Miss"
+msgstr "Mlle"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Prof"
+msgstr "Pr"
+
+msgctxt "Field (address_street). Parent table: contacts"
+msgid "Street"
+msgstr "Rue"
+
+msgctxt "Field (address_town). Parent table: contacts"
+msgid "Town"
+msgstr "Ville"
+
+msgctxt "Field (address_state). Parent table: contacts"
+msgid "State"
+msgstr "État"
+
+msgctxt "Field (address_country). Parent table: contacts"
+msgid "Country"
+msgstr "Pays"
+
+msgctxt "Field (address_postcode). Parent table: contacts"
+msgid "Postcode"
+msgstr "Code postal"
+
+msgctxt "Field (date_of_birth). Parent table: contacts"
+msgid "Date of Birth"
+msgstr "Date de naissance"
+
+msgctxt "Field (comments). Parent table: contacts"
+msgid "Comments"
+msgstr "Commentaires"
+
+msgctxt "Field (name_full). Parent table: contacts"
+msgid "Full Name"
+msgstr "Nom complet"
+
+msgctxt "Field (picture). Parent table: contacts"
+msgid "Picture"
+msgstr "Image"
+
+msgctxt "Field (email). Parent table: contacts"
+msgid "Email Address"
+msgstr "Adresse électronique"
+
+msgctxt "Field (website). Parent table: contacts"
+msgid "Web Site"
+msgstr "Site Web"
+
+msgctxt "Field (tel_home). Parent table: contacts"
+msgid "Home Telephone"
+msgstr "Téléphone domicile"
+
+msgctxt "Field (tel_work). Parent table: contacts"
+msgid "Work Telephone"
+msgstr "Téléphone travail"
+
+msgctxt "Field (tel_mobile). Parent table: contacts"
+msgid "Mobile Telephone"
+msgstr "Téléphone portable"
+
+msgctxt "Field (tel_fax). Parent table: contacts"
+msgid "Fax"
+msgstr "Fax"
+
+msgctxt "Relationship (team_members). Parent table: contacts"
+msgid "Team Membership"
+msgstr "Membres de l'équipe"
+
+msgctxt "Report (by_country). Parent table: contacts"
+msgid "Contacts By Country"
+msgstr "Contacts par pays"
+
+msgctxt "Report (by_country_by_town). Parent table: contacts"
+msgid "By Country, By Town"
+msgstr "Par pays, par ville"
+
+msgctxt "Layout Group (overview). Parent table: contacts"
+msgid "Overview"
+msgstr "Résumé"
+
+msgctxt ""
+"Layout Group (notebook). Parent table: contacts, Parent Group: details"
+msgid "(Notebook)"
+msgstr "(Répertoire)"
+
+msgctxt ""
+"Layout Group (telephone). Parent table: contacts, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Telephone"
+msgstr "Téléphone"
+
+msgctxt ""
+"Layout Group (address). Parent table: contacts, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Address"
+msgstr "Adresse"
+
+msgctxt ""
+"Layout Group (name). Parent table: contacts, Parent Group: details, Parent "
+"Group: notebook"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "Table (projects)"
+msgid "Projects"
+msgstr "Projets"
+
+msgctxt "Field (project_id). Parent table: projects"
+msgid "Project ID"
+msgstr "ID du projet"
+
+msgctxt "Field (description). Parent table: projects"
+msgid "Description"
+msgstr "Description"
+
+msgctxt "Field (comments). Parent table: projects"
+msgid "Comments"
+msgstr "Commentaires"
+
+msgctxt "Field (name). Parent table: projects"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "Relationship (teams). Parent table: projects"
+msgid "Teams"
+msgstr "Équipes"
+
+msgctxt "Layout Group (overview). Parent table: projects"
+msgid "Overview"
+msgstr "Résumé"
+
+msgctxt "Layout Group (details). Parent table: projects"
+msgid "Details"
+msgstr "Détails"
+
+msgctxt "Table (project_teams)"
+msgid "Project Teams"
+msgstr "Équipes du projet"
+
+msgctxt "Field (project_team_id). Parent table: project_teams"
+msgid "Project Team ID"
+msgstr "ID de l'équipe du projet"
+
+msgctxt "Field (comments). Parent table: project_teams"
+msgid "Comments"
+msgstr "Commentaires"
+
+msgctxt "Field (team_id). Parent table: project_teams"
+msgid "Team ID"
+msgstr "ID de l'équipe"
+
+msgctxt "Field (project_id). Parent table: project_teams"
+msgid "Project ID"
+msgstr "ID du projet"
+
+msgctxt "Relationship (team). Parent table: project_teams"
+msgid "Team"
+msgstr "Équipe"
+
+msgctxt "Relationship (project). Parent table: project_teams"
+msgid "Project"
+msgstr "Projet"
+
+msgctxt "Layout Group (overview). Parent table: project_teams"
+msgid "Overview"
+msgstr "Résumé"
+
+msgctxt "Layout Group (details). Parent table: project_teams"
+msgid "Details"
+msgstr "Détails"
+
+msgctxt "Custom Title. Parent table: project_teams"
+msgid "Team Name"
+msgstr "Nom de l'équipe"
+
+msgctxt "Custom Title. Parent table: project_teams"
+msgid "Project Name"
+msgstr "Nom du projet"
+
+msgctxt "Table (team_members)"
+msgid "Team Members"
+msgstr "Membres de l'équipe"
+
+msgctxt "Field (team_members_id). Parent table: team_members"
+msgid "team_members ID"
+msgstr "ID team_members"
+
+msgctxt "Field (description). Parent table: team_members"
+msgid "Description"
+msgstr "Description"
+
+msgctxt "Field (comments). Parent table: team_members"
+msgid "Comments"
+msgstr "Commentaires"
+
+msgctxt "Field (contact_id). Parent table: team_members"
+msgid "Contact ID"
+msgstr "ID du contact"
+
+msgctxt "Field (team_id). Parent table: team_members"
+msgid "Team ID"
+msgstr "ID de l'équipe"
+
+msgctxt "Field (role). Parent table: team_members"
+msgid "Role"
+msgstr "Rôle"
+
+msgctxt "Relationship (contacts). Parent table: team_members"
+msgid "Contacts"
+msgstr "Contacts"
+
+msgctxt "Relationship (team). Parent table: team_members"
+msgid "Team"
+msgstr "Équipe"
+
+msgctxt "Layout Group (overview). Parent table: team_members"
+msgid "Overview"
+msgstr "Résumé"
+
+msgctxt "Layout Group (details). Parent table: team_members"
+msgid "Details"
+msgstr "Détails"
+
+msgctxt "Table (teams)"
+msgid "Teams"
+msgstr "Équipes"
+
+msgctxt "Field (team_id). Parent table: teams"
+msgid "Team ID"
+msgstr "ID de l'équipe"
+
+msgctxt "Field (description). Parent table: teams"
+msgid "Description"
+msgstr "Description"
+
+msgctxt "Field (comments). Parent table: teams"
+msgid "Comments"
+msgstr "Commentaires"
+
+msgctxt "Field (name). Parent table: teams"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "Relationship (members). Parent table: teams"
+msgid "Members"
+msgstr "Membres"
+
+msgctxt "Relationship (projects). Parent table: teams"
+msgid "Projects"
+msgstr "Projets"
+
+msgctxt "Layout Group (overview). Parent table: teams"
+msgid "Overview"
+msgstr "Résumé"
+
+msgctxt "Layout Group (details). Parent table: teams"
+msgid "Details"
+msgstr "Détails"
