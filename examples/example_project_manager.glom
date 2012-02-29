@@ -3,6 +3,7 @@
   <trans_set>
     <trans loc="cs" val="Správa projektu"/>
     <trans loc="es" val="Ejemplo de gestor de proyectos"/>
+    <trans loc="fr" val="Exemple de gestion de projet"/>
     <trans loc="sl" val="Primer zbirke upravljalnika projektov"/>
   </trans_set>
   <connection hosting_mode="postgres_self" server="localhost" port="5433" try_other_ports="false" database="glom_example_project_manager_v3"/>
@@ -189,6 +190,7 @@
       <trans loc="cs" val="Kontakty"/>
       <trans loc="de" val="Kontakten"/>
       <trans loc="es" val="Contactos"/>
+      <trans loc="fr" val="Contacts"/>
       <trans loc="sl" val="Stiki"/>
     </trans_set>
     <fields>
@@ -198,6 +200,7 @@
           <trans loc="cs" val="ID kontaktu"/>
           <trans loc="de" val="Kontakt ID"/>
           <trans loc="es" val="ID del contacto"/>
+          <trans loc="fr" val="ID du contact"/>
           <trans loc="sl" val="ID stika"/>
         </trans_set>
       </field>
@@ -207,6 +210,7 @@
           <trans loc="cs" val="Křestní jméno"/>
           <trans loc="de" val="Vorname"/>
           <trans loc="es" val="Nombre"/>
+          <trans loc="fr" val="Prénom"/>
           <trans loc="sl" val="Ime"/>
         </trans_set>
       </field>
@@ -216,6 +220,7 @@
           <trans loc="cs" val="Prostřední jméno"/>
           <trans loc="de" val="Zweite Name"/>
           <trans loc="es" val="Primer apellido"/>
+          <trans loc="fr" val="Nom intermédiaire"/>
           <trans loc="sl" val="Drugo ime"/>
         </trans_set>
       </field>
@@ -225,6 +230,7 @@
           <trans loc="cs" val="Příjmení"/>
           <trans loc="de" val="Familiename"/>
           <trans loc="es" val="Segundo apellido"/>
+          <trans loc="fr" val="Nom"/>
           <trans loc="sl" val="Priimek"/>
         </trans_set>
       </field>
@@ -235,6 +241,7 @@
               <trans_set>
                 <trans loc="cs" val="pan"/>
                 <trans loc="es" val="Sr."/>
+                <trans loc="fr" val="M."/>
                 <trans loc="sl" val="g."/>
               </trans_set>
             </custom_choice>
@@ -242,6 +249,7 @@
               <trans_set>
                 <trans loc="cs" val="paní"/>
                 <trans loc="es" val="Srta."/>
+                <trans loc="fr" val="Mme"/>
                 <trans loc="sl" val="ga."/>
               </trans_set>
             </custom_choice>
@@ -249,6 +257,7 @@
               <trans_set>
                 <trans loc="cs" val="paní/slečna"/>
                 <trans loc="es" val="Sra."/>
+                <trans loc="fr" val="Mme"/>
                 <trans loc="sl" val="ga."/>
               </trans_set>
             </custom_choice>
@@ -256,6 +265,7 @@
               <trans_set>
                 <trans loc="cs" val="slečna"/>
                 <trans loc="es" val="Señorita"/>
+                <trans loc="fr" val="Mlle"/>
                 <trans loc="sl" val="gdč."/>
               </trans_set>
             </custom_choice>
@@ -263,6 +273,7 @@
               <trans_set>
                 <trans loc="cs" val="Dr."/>
                 <trans loc="es" val="Dr"/>
+                <trans loc="fr" val="Dr"/>
                 <trans loc="sl" val="dr."/>
               </trans_set>
             </custom_choice>
@@ -270,6 +281,7 @@
               <trans_set>
                 <trans loc="cs" val="Prof."/>
                 <trans loc="es" val="Prof"/>
+                <trans loc="fr" val="Pr"/>
                 <trans loc="sl" val="prof."/>
               </trans_set>
             </custom_choice>
@@ -279,6 +291,7 @@
           <trans loc="cs" val="Oslovení"/>
           <trans loc="de" val="Titel"/>
           <trans loc="es" val="Título"/>
+          <trans loc="fr" val="Titre"/>
           <trans loc="sl" val="Naziv"/>
         </trans_set>
       </field>
@@ -288,6 +301,7 @@
           <trans loc="cs" val="Ulice"/>
           <trans loc="de" val="Strasse"/>
           <trans loc="es" val="Calle"/>
+          <trans loc="fr" val="Rue"/>
           <trans loc="sl" val="Ulica"/>
         </trans_set>
       </field>
@@ -297,6 +311,7 @@
           <trans loc="cs" val="Město"/>
           <trans loc="de" val="Ort"/>
           <trans loc="es" val="Ciudad"/>
+          <trans loc="fr" val="Ville"/>
           <trans loc="sl" val="Mesto"/>
         </trans_set>
       </field>
@@ -306,6 +321,7 @@
           <trans loc="cs" val="Stát"/>
           <trans loc="de" val="Bundesland/Kanton"/>
           <trans loc="es" val="Estado"/>
+          <trans loc="fr" val="État"/>
           <trans loc="sl" val="Okraj"/>
         </trans_set>
       </field>
@@ -315,6 +331,7 @@
           <trans loc="cs" val="Země"/>
           <trans loc="de" val="Land"/>
           <trans loc="es" val="País"/>
+          <trans loc="fr" val="Pays"/>
           <trans loc="sl" val="Država"/>
         </trans_set>
       </field>
@@ -324,6 +341,7 @@
           <trans loc="cs" val="PSČ"/>
           <trans loc="de" val="Postleitzahl"/>
           <trans loc="es" val="Código postal"/>
+          <trans loc="fr" val="Code postal"/>
           <trans loc="sl" val="Poštna koda"/>
         </trans_set>
       </field>
@@ -333,6 +351,7 @@
           <trans loc="cs" val="Datum narození"/>
           <trans loc="de" val="Geburtsdatum"/>
           <trans loc="es" val="Fecha de nacimiento"/>
+          <trans loc="fr" val="Date de naissance"/>
           <trans loc="sl" val="Datum rojstva"/>
         </trans_set>
       </field>
@@ -342,6 +361,7 @@
           <trans loc="cs" val="Poznámky"/>
           <trans loc="de" val="Kommentar"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="fr" val="Commentaires"/>
           <trans loc="sl" val="Opombe"/>
         </trans_set>
       </field>
@@ -352,6 +372,7 @@
           <trans loc="cs" val="Celé jméno"/>
           <trans loc="de" val="Vollname"/>
           <trans loc="es" val="Nombre completo"/>
+          <trans loc="fr" val="Nom complet"/>
           <trans loc="sl" val="Polno ime"/>
         </trans_set>
       </field>
@@ -361,6 +382,7 @@
           <trans loc="cs" val="Obrázek"/>
           <trans loc="de" val="Bild"/>
           <trans loc="es" val="Foto"/>
+          <trans loc="fr" val="Image"/>
           <trans loc="sl" val="Slika"/>
         </trans_set>
       </field>
@@ -370,6 +392,7 @@
           <trans loc="cs" val="E-mailová adresa"/>
           <trans loc="de" val="E-mail Addresse"/>
           <trans loc="es" val="Dirección de correo-e"/>
+          <trans loc="fr" val="Adresse électronique"/>
           <trans loc="sl" val="Elektronski naslov"/>
         </trans_set>
       </field>
@@ -379,6 +402,7 @@
           <trans loc="cs" val="Webové stránky"/>
           <trans loc="de" val="Website"/>
           <trans loc="es" val="Página web"/>
+          <trans loc="fr" val="Site Web"/>
           <trans loc="sl" val="Spletna stran"/>
         </trans_set>
       </field>
@@ -387,6 +411,7 @@
         <trans_set>
           <trans loc="cs" val="Telefon domů"/>
           <trans loc="es" val="Teléfono de casa"/>
+          <trans loc="fr" val="Téléphone domicile"/>
           <trans loc="sl" val="Telefon doma"/>
         </trans_set>
       </field>
@@ -395,6 +420,7 @@
         <trans_set>
           <trans loc="cs" val="Telefon do práce"/>
           <trans loc="es" val="Teléfono del trabajo"/>
+          <trans loc="fr" val="Téléphone travail"/>
           <trans loc="sl" val="Telefon v službi"/>
         </trans_set>
       </field>
@@ -403,6 +429,7 @@
         <trans_set>
           <trans loc="cs" val="Mobilní telefon"/>
           <trans loc="es" val="Móvil"/>
+          <trans loc="fr" val="Téléphone portable"/>
           <trans loc="sl" val="Mobilni telefon"/>
         </trans_set>
       </field>
@@ -412,6 +439,7 @@
           <trans loc="cs" val="Fax"/>
           <trans loc="de" val="Fax"/>
           <trans loc="es" val="Fax"/>
+          <trans loc="fr" val="Fax"/>
           <trans loc="sl" val="Faks"/>
         </trans_set>
       </field>
@@ -421,6 +449,7 @@
         <trans_set>
           <trans loc="cs" val="Členství v týmu"/>
           <trans loc="es" val="Miembro del equipo"/>
+          <trans loc="fr" val="Membres de l'équipe"/>
           <trans loc="sl" val="Članstvo v skupini"/>
         </trans_set>
       </relationship>
@@ -433,6 +462,7 @@
               <trans loc="cs" val="Přehled"/>
               <trans loc="de" val="Ubersicht"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="fr" val="Résumé"/>
               <trans loc="sl" val="Pregled"/>
             </trans_set>
             <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
@@ -447,6 +477,7 @@
               <trans_set>
                 <trans loc="cs" val="(Sešit)"/>
                 <trans loc="es" val="(Cuaderno de notas)"/>
+                <trans loc="fr" val="(Répertoire)"/>
                 <trans loc="sl" val="(Beležka)"/>
               </trans_set>
               <data_layout_group name="telephone" title="Telephone">
@@ -454,6 +485,7 @@
                   <trans loc="cs" val="Telefon"/>
                   <trans loc="de" val="Telefon"/>
                   <trans loc="es" val="Teléfono"/>
+                  <trans loc="fr" val="Téléphone"/>
                   <trans loc="sl" val="Telefon"/>
                 </trans_set>
                 <data_layout_item name="tel_work" editable="true" use_default_formatting="true">
@@ -474,6 +506,7 @@
                   <trans loc="cs" val="Adresa"/>
                   <trans loc="de" val="Addresse"/>
                   <trans loc="es" val="Dirección"/>
+                  <trans loc="fr" val="Adresse"/>
                   <trans loc="sl" val="Naslov"/>
                 </trans_set>
                 <data_layout_item name="address_street" editable="true" use_default_formatting="true">
@@ -497,6 +530,7 @@
                   <trans loc="cs" val="Název"/>
                   <trans loc="de" val="Name"/>
                   <trans loc="es" val="Nombre"/>
+                  <trans loc="fr" val="Nom"/>
                   <trans loc="sl" val="Ime"/>
                 </trans_set>
                 <data_layout_item name="name_title" editable="true" use_default_formatting="true">
@@ -585,6 +619,7 @@
         <trans_set>
           <trans loc="cs" val="Kontakty podle země"/>
           <trans loc="es" val="Contactos por país"/>
+          <trans loc="fr" val="Contacts par pays"/>
           <trans loc="sl" val="Stiki po državah"/>
         </trans_set>
       </report>
@@ -611,6 +646,7 @@
         <trans_set>
           <trans loc="cs" val="Podle země, podle města"/>
           <trans loc="es" val="Por país, por ciudad"/>
+          <trans loc="fr" val="Par pays, par ville"/>
           <trans loc="sl" val="Po državi, po mestu"/>
         </trans_set>
       </report>
@@ -635,6 +671,7 @@
     <trans_set>
       <trans loc="cs" val="Projekty"/>
       <trans loc="es" val="Proyectos"/>
+      <trans loc="fr" val="Projets"/>
       <trans loc="sl" val="Projekti"/>
     </trans_set>
     <fields>
@@ -643,6 +680,7 @@
         <trans_set>
           <trans loc="cs" val="ID projektu"/>
           <trans loc="es" val="ID del proyecto"/>
+          <trans loc="fr" val="ID du projet"/>
           <trans loc="sl" val="ID projekta"/>
         </trans_set>
       </field>
@@ -651,6 +689,7 @@
         <trans_set>
           <trans loc="cs" val="Popis"/>
           <trans loc="es" val="Descripción"/>
+          <trans loc="fr" val="Description"/>
           <trans loc="sl" val="Opis"/>
         </trans_set>
       </field>
@@ -659,6 +698,7 @@
         <trans_set>
           <trans loc="cs" val="Poznámky"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="fr" val="Commentaires"/>
           <trans loc="sl" val="Opombe"/>
         </trans_set>
       </field>
@@ -667,6 +707,7 @@
         <trans_set>
           <trans loc="cs" val="Název"/>
           <trans loc="es" val="Nombre"/>
+          <trans loc="fr" val="Nom"/>
           <trans loc="sl" val="Ime"/>
         </trans_set>
       </field>
@@ -676,6 +717,7 @@
         <trans_set>
           <trans loc="cs" val="Týmy"/>
           <trans loc="es" val="Equipos"/>
+          <trans loc="fr" val="Équipes"/>
           <trans loc="sl" val="Skupine"/>
         </trans_set>
       </relationship>
@@ -687,6 +729,7 @@
             <trans_set>
               <trans loc="cs" val="Přehled"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="fr" val="Résumé"/>
               <trans loc="sl" val="Pregled"/>
             </trans_set>
             <data_layout_item name="project_id" editable="true" use_default_formatting="true">
@@ -700,6 +743,7 @@
             <trans_set>
               <trans loc="cs" val="Podrobnosti"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="fr" val="Détails"/>
               <trans loc="sl" val="Podrobnosti"/>
             </trans_set>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
@@ -764,6 +808,7 @@
     <trans_set>
       <trans loc="cs" val="Týmy projektu"/>
       <trans loc="es" val="Equipos de proyectos"/>
+      <trans loc="fr" val="Équipes du projet"/>
       <trans loc="sl" val="Skupine projekta"/>
     </trans_set>
     <fields>
@@ -772,6 +817,7 @@
         <trans_set>
           <trans loc="cs" val="ID týmu projektu"/>
           <trans loc="es" val="ID del equipo de proyecto"/>
+          <trans loc="fr" val="ID de l'équipe du projet"/>
           <trans loc="sl" val="ID skupine projekta"/>
         </trans_set>
       </field>
@@ -780,6 +826,7 @@
         <trans_set>
           <trans loc="cs" val="Poznámky"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="fr" val="Commentaires"/>
           <trans loc="sl" val="Opombe"/>
         </trans_set>
       </field>
@@ -798,6 +845,7 @@
         <trans_set>
           <trans loc="cs" val="ID týmu"/>
           <trans loc="es" val="ID del equipo"/>
+          <trans loc="fr" val="ID de l'équipe"/>
           <trans loc="sl" val="ID skupine"/>
         </trans_set>
       </field>
@@ -816,6 +864,7 @@
         <trans_set>
           <trans loc="cs" val="ID projektu"/>
           <trans loc="es" val="ID del proyecto"/>
+          <trans loc="fr" val="ID du projet"/>
           <trans loc="sl" val="ID projekta"/>
         </trans_set>
       </field>
@@ -825,6 +874,7 @@
         <trans_set>
           <trans loc="cs" val="Tým"/>
           <trans loc="es" val="Equipo"/>
+          <trans loc="fr" val="Équipe"/>
           <trans loc="sl" val="Skupina"/>
         </trans_set>
       </relationship>
@@ -832,6 +882,7 @@
         <trans_set>
           <trans loc="cs" val="Projekt"/>
           <trans loc="es" val="Proyecto"/>
+          <trans loc="fr" val="Projet"/>
           <trans loc="sl" val="Projekt"/>
         </trans_set>
       </relationship>
@@ -861,6 +912,7 @@
             <trans_set>
               <trans loc="cs" val="Přehled"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="fr" val="Résumé"/>
               <trans loc="sl" val="Pregled"/>
             </trans_set>
             <data_layout_item name="project_team_id" editable="true" use_default_formatting="true">
@@ -871,6 +923,7 @@
             <trans_set>
               <trans loc="cs" val="Podrobnosti"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="fr" val="Détails"/>
               <trans loc="sl" val="Podrobnosti"/>
             </trans_set>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
@@ -884,6 +937,7 @@
                 <trans_set>
                   <trans loc="cs" val="Název týmu"/>
                   <trans loc="es" val="Nombre del equipo"/>
+                  <trans loc="fr" val="Nom de l'équipe"/>
                   <trans loc="sl" val="Ime skupine"/>
                 </trans_set>
               </title_custom>
@@ -897,6 +951,7 @@
                 <trans_set>
                   <trans loc="cs" val="Název projektu"/>
                   <trans loc="es" val="Nombre del proyecto"/>
+                  <trans loc="fr" val="Nom du projet"/>
                   <trans loc="sl" val="Ime projekta"/>
                 </trans_set>
               </title_custom>
@@ -931,6 +986,7 @@
     <trans_set>
       <trans loc="cs" val="Členové týmu"/>
       <trans loc="es" val="Miembros del equipo"/>
+      <trans loc="fr" val="Membres de l'équipe"/>
       <trans loc="sl" val="Člani skupine"/>
     </trans_set>
     <fields>
@@ -939,6 +995,7 @@
         <trans_set>
           <trans loc="cs" val="ID členů týmu"/>
           <trans loc="es" val="ID de los miembros del equipo"/>
+          <trans loc="fr" val="ID team_members"/>
           <trans loc="sl" val="ID članov skupineVeljavnost uporabniškega ID: %s"/>
         </trans_set>
       </field>
@@ -947,6 +1004,7 @@
         <trans_set>
           <trans loc="cs" val="Popis"/>
           <trans loc="es" val="Descripción"/>
+          <trans loc="fr" val="Description"/>
           <trans loc="sl" val="Opis"/>
         </trans_set>
       </field>
@@ -955,6 +1013,7 @@
         <trans_set>
           <trans loc="cs" val="Poznámky"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="fr" val="Commentaires"/>
           <trans loc="sl" val="Opombe"/>
         </trans_set>
       </field>
@@ -973,6 +1032,7 @@
         <trans_set>
           <trans loc="cs" val="ID kontaktu"/>
           <trans loc="es" val="ID del contacto"/>
+          <trans loc="fr" val="ID du contact"/>
           <trans loc="sl" val="ID stika"/>
         </trans_set>
       </field>
@@ -991,6 +1051,7 @@
         <trans_set>
           <trans loc="cs" val="ID týmu"/>
           <trans loc="es" val="ID del equipo"/>
+          <trans loc="fr" val="ID de l'équipe"/>
           <trans loc="sl" val="ID skupine"/>
         </trans_set>
       </field>
@@ -999,6 +1060,7 @@
         <trans_set>
           <trans loc="cs" val="Postavení"/>
           <trans loc="es" val="Rol"/>
+          <trans loc="fr" val="Rôle"/>
           <trans loc="sl" val="Vloga"/>
         </trans_set>
       </field>
@@ -1008,6 +1070,7 @@
         <trans_set>
           <trans loc="cs" val="Kontakty"/>
           <trans loc="es" val="Contactos"/>
+          <trans loc="fr" val="Contacts"/>
           <trans loc="sl" val="Stiki"/>
         </trans_set>
       </relationship>
@@ -1015,6 +1078,7 @@
         <trans_set>
           <trans loc="cs" val="Tým"/>
           <trans loc="es" val="Equipo"/>
+          <trans loc="fr" val="Équipe"/>
           <trans loc="sl" val="Skupina"/>
         </trans_set>
       </relationship>
@@ -1050,6 +1114,7 @@
             <trans_set>
               <trans loc="cs" val="Přehled"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="fr" val="Résumé"/>
               <trans loc="sl" val="Pregled"/>
             </trans_set>
             <data_layout_item name="team_members_id" editable="true" use_default_formatting="true">
@@ -1060,6 +1125,7 @@
             <trans_set>
               <trans loc="cs" val="Podrobnosti"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="fr" val="Détails"/>
               <trans loc="sl" val="Podrobnosti"/>
             </trans_set>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
@@ -1102,6 +1168,7 @@
     <trans_set>
       <trans loc="cs" val="Týmy"/>
       <trans loc="es" val="Equipos"/>
+      <trans loc="fr" val="Équipes"/>
       <trans loc="sl" val="Skupine"/>
     </trans_set>
     <fields>
@@ -1110,6 +1177,7 @@
         <trans_set>
           <trans loc="cs" val="ID týmu"/>
           <trans loc="es" val="ID del equipo"/>
+          <trans loc="fr" val="ID de l'équipe"/>
           <trans loc="sl" val="ID skupine"/>
         </trans_set>
       </field>
@@ -1118,6 +1186,7 @@
         <trans_set>
           <trans loc="cs" val="Popis"/>
           <trans loc="es" val="Descripción"/>
+          <trans loc="fr" val="Description"/>
           <trans loc="sl" val="Opis"/>
         </trans_set>
       </field>
@@ -1126,6 +1195,7 @@
         <trans_set>
           <trans loc="cs" val="Poznámky"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="fr" val="Commentaires"/>
           <trans loc="sl" val="Opombe"/>
         </trans_set>
       </field>
@@ -1134,6 +1204,7 @@
         <trans_set>
           <trans loc="cs" val="Název"/>
           <trans loc="es" val="Nombre"/>
+          <trans loc="fr" val="Nom"/>
           <trans loc="sl" val="Ime"/>
         </trans_set>
       </field>
@@ -1143,6 +1214,7 @@
         <trans_set>
           <trans loc="cs" val="Členové"/>
           <trans loc="es" val="Miembros"/>
+          <trans loc="fr" val="Membres"/>
           <trans loc="sl" val="Člani"/>
         </trans_set>
       </relationship>
@@ -1150,6 +1222,7 @@
         <trans_set>
           <trans loc="cs" val="Projekty"/>
           <trans loc="es" val="Proyectos"/>
+          <trans loc="fr" val="Projets"/>
           <trans loc="sl" val="Projekti"/>
         </trans_set>
       </relationship>
@@ -1161,6 +1234,7 @@
             <trans_set>
               <trans loc="cs" val="Přehled"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="fr" val="Résumé"/>
               <trans loc="sl" val="Pregled"/>
             </trans_set>
             <data_layout_item name="team_id" editable="true" use_default_formatting="true">
@@ -1174,6 +1248,7 @@
             <trans_set>
               <trans loc="cs" val="Podrobnosti"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="fr" val="Détails"/>
               <trans loc="sl" val="Podrobnosti"/>
             </trans_set>
             <data_layout_item name="description" editable="true" use_default_formatting="true">

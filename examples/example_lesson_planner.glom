@@ -3,6 +3,7 @@
   <trans_set>
     <trans loc="cs" val="Rozvrh výuky"/>
     <trans loc="es" val="Planificador de lecciones"/>
+    <trans loc="fr" val="Planificateur de leçons"/>
     <trans loc="sl" val="Planer pouka"/>
   </trans_set>
   <connection hosting_mode="postgres_self" server="localhost" port="5433" try_other_ports="false" database="glom_example_lessonplanner_v2"/>
@@ -85,6 +86,7 @@
           <trans loc="cs" val="Název produktu"/>
           <trans loc="de" val="Produkt Name"/>
           <trans loc="es" val="Nombre del producto"/>
+          <trans loc="fr" val="Nom du produit"/>
           <trans loc="sl" val="Ime izdelka"/>
         </trans_set>
       </field>
@@ -94,6 +96,7 @@
           <trans loc="cs" val="ID produktu"/>
           <trans loc="de" val="Produkt ID"/>
           <trans loc="es" val="ID del producto"/>
+          <trans loc="fr" val="ID du produit"/>
           <trans loc="sl" val="ID izdelka"/>
         </trans_set>
       </field>
@@ -103,6 +106,7 @@
           <trans loc="cs" val="Cena produktu"/>
           <trans loc="de" val="Produkt Preis"/>
           <trans loc="es" val="Precio del producto"/>
+          <trans loc="fr" val="Prix du produit"/>
           <trans loc="sl" val="Cena izdelka"/>
         </trans_set>
       </field>
@@ -112,6 +116,7 @@
           <trans loc="cs" val="ID faktury"/>
           <trans loc="de" val="Rechnung ID"/>
           <trans loc="es" val="ID de la factura"/>
+          <trans loc="fr" val="ID de la facture"/>
           <trans loc="sl" val="ID računa"/>
         </trans_set>
       </field>
@@ -121,6 +126,7 @@
           <trans loc="cs" val="Počet"/>
           <trans loc="de" val="Menge"/>
           <trans loc="es" val="Número de"/>
+          <trans loc="fr" val="Nombre de"/>
           <trans loc="sl" val="Število"/>
         </trans_set>
       </field>
@@ -131,6 +137,7 @@
           <trans loc="cs" val="Cena celkem"/>
           <trans loc="de" val="Gesamtpreis"/>
           <trans loc="es" val="Precio total"/>
+          <trans loc="fr" val="Prix total"/>
           <trans loc="sl" val="Skupna cena"/>
         </trans_set>
       </field>
@@ -140,6 +147,7 @@
           <trans loc="cs" val="Sazba DPH"/>
           <trans loc="de" val="MwST Prozent"/>
           <trans loc="es" val="% IVA"/>
+          <trans loc="fr" val="Taux de TVA"/>
           <trans loc="sl" val="Odstotek DDV"/>
         </trans_set>
       </field>
@@ -150,6 +158,7 @@
           <trans loc="cs" val="DPH celkem"/>
           <trans loc="de" val="Gesamt MwST"/>
           <trans loc="es" val="IVA total"/>
+          <trans loc="fr" val="Total TVA"/>
           <trans loc="sl" val="Skupni DDV"/>
         </trans_set>
       </field>
@@ -270,6 +279,7 @@
     <trans_set>
       <trans loc="cs" val="Vyučovací hodiny"/>
       <trans loc="es" val="Lecciones"/>
+      <trans loc="fr" val="Leçons"/>
       <trans loc="sl" val="Ure"/>
     </trans_set>
     <fields>
@@ -278,6 +288,7 @@
         <trans_set>
           <trans loc="cs" val="ID vyučovací hodiny"/>
           <trans loc="es" val="ID de la lección"/>
+          <trans loc="fr" val="ID de la leçon"/>
           <trans loc="sl" val="ID ure"/>
         </trans_set>
       </field>
@@ -286,6 +297,7 @@
         <trans_set>
           <trans loc="cs" val="Popis"/>
           <trans loc="es" val="Descripción"/>
+          <trans loc="fr" val="Description"/>
           <trans loc="sl" val="Opis"/>
         </trans_set>
       </field>
@@ -294,6 +306,7 @@
         <trans_set>
           <trans loc="cs" val="Poznámky"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="fr" val="Commentaires"/>
           <trans loc="sl" val="Opombe"/>
         </trans_set>
       </field>
@@ -312,6 +325,7 @@
         <trans_set>
           <trans loc="cs" val="ID předmětu"/>
           <trans loc="es" val="ID del asunto"/>
+          <trans loc="fr" val="ID du sujet"/>
           <trans loc="sl" val="ID predmeta"/>
         </trans_set>
       </field>
@@ -330,6 +344,7 @@
         <trans_set>
           <trans loc="cs" val="ID učitele"/>
           <trans loc="es" val="ID del profesor"/>
+          <trans loc="fr" val="ID du professeur"/>
           <trans loc="sl" val="ID učitelja"/>
         </trans_set>
       </field>
@@ -338,6 +353,7 @@
         <trans_set>
           <trans loc="cs" val="Datum"/>
           <trans loc="es" val="Fecha"/>
+          <trans loc="fr" val="Date"/>
           <trans loc="sl" val="Datum"/>
         </trans_set>
       </field>
@@ -346,6 +362,7 @@
         <trans_set>
           <trans loc="cs" val="Čas začátku"/>
           <trans loc="es" val="Fecha de inicio"/>
+          <trans loc="fr" val="Heure de début "/>
           <trans loc="sl" val="Čas začetka"/>
         </trans_set>
       </field>
@@ -354,6 +371,7 @@
         <trans_set>
           <trans loc="cs" val="Počet hodin"/>
           <trans loc="es" val="Horas"/>
+          <trans loc="fr" val="Heures"/>
           <trans loc="sl" val="Ure"/>
         </trans_set>
       </field>
@@ -372,6 +390,7 @@
         <trans_set>
           <trans loc="cs" val="ID místnosti"/>
           <trans loc="es" val="ID del aula"/>
+          <trans loc="fr" val="ID de la salle"/>
           <trans loc="sl" val="ID prostora"/>
         </trans_set>
       </field>
@@ -381,6 +400,7 @@
         <trans_set>
           <trans loc="cs" val="Předmět"/>
           <trans loc="es" val="Asunto"/>
+          <trans loc="fr" val="Sujet"/>
           <trans loc="sl" val="Predmet"/>
         </trans_set>
       </relationship>
@@ -388,6 +408,7 @@
         <trans_set>
           <trans loc="cs" val="Učitel"/>
           <trans loc="es" val="Profesor"/>
+          <trans loc="fr" val="Professeur"/>
           <trans loc="sl" val="Učitelj"/>
         </trans_set>
       </relationship>
@@ -395,6 +416,7 @@
         <trans_set>
           <trans loc="cs" val="Místnost"/>
           <trans loc="es" val="Aula"/>
+          <trans loc="fr" val="Salle"/>
           <trans loc="sl" val="Prostor"/>
         </trans_set>
       </relationship>
@@ -433,6 +455,7 @@
             <trans_set>
               <trans loc="cs" val="Přehled"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="fr" val="Résumé"/>
               <trans loc="sl" val="Pregled"/>
             </trans_set>
             <data_layout_item name="lesson_id" editable="true" use_default_formatting="true">
@@ -452,12 +475,14 @@
             <trans_set>
               <trans loc="cs" val="Podrobnosti"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="fr" val="Détails"/>
               <trans loc="sl" val="Podrobnosti"/>
             </trans_set>
             <data_layout_group name="subject" title="Subject">
               <trans_set>
                 <trans loc="cs" val="Předmět"/>
                 <trans loc="es" val="Asunto"/>
+                <trans loc="fr" val="Sujet"/>
                 <trans loc="sl" val="Predmet"/>
               </trans_set>
               <data_layout_item name="subject_id" editable="true" use_default_formatting="true">
@@ -471,6 +496,7 @@
               <trans_set>
                 <trans loc="cs" val="Místnost"/>
                 <trans loc="es" val="Aula"/>
+                <trans loc="fr" val="Salle"/>
                 <trans loc="sl" val="Prostor"/>
               </trans_set>
               <data_layout_item name="room_id" editable="true" use_default_formatting="true">
@@ -484,6 +510,7 @@
               <trans_set>
                 <trans loc="cs" val="Učitel"/>
                 <trans loc="es" val="Profesor"/>
+                <trans loc="fr" val="Professeur"/>
                 <trans loc="sl" val="Učitelj"/>
               </trans_set>
               <data_layout_item name="teacher_id" editable="true" use_default_formatting="true">
@@ -546,6 +573,7 @@
     <trans_set>
       <trans loc="cs" val="Místnosti"/>
       <trans loc="es" val="Aulas"/>
+      <trans loc="fr" val="Salles"/>
       <trans loc="sl" val="Prostori"/>
     </trans_set>
     <fields>
@@ -554,6 +582,7 @@
         <trans_set>
           <trans loc="cs" val="ID místnosti"/>
           <trans loc="es" val="ID del aula"/>
+          <trans loc="fr" val="ID de la salle"/>
           <trans loc="sl" val="ID prostora"/>
         </trans_set>
       </field>
@@ -562,6 +591,7 @@
         <trans_set>
           <trans loc="cs" val="Popis"/>
           <trans loc="es" val="Descripción"/>
+          <trans loc="fr" val="Description"/>
           <trans loc="sl" val="Opis"/>
         </trans_set>
       </field>
@@ -570,6 +600,7 @@
         <trans_set>
           <trans loc="cs" val="Poznámky"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="fr" val="Commentaires"/>
           <trans loc="sl" val="Opombe"/>
         </trans_set>
       </field>
@@ -578,6 +609,7 @@
         <trans_set>
           <trans loc="cs" val="Patro"/>
           <trans loc="es" val="Planta"/>
+          <trans loc="fr" val="Étage"/>
           <trans loc="sl" val="Nadstropje"/>
         </trans_set>
       </field>
@@ -588,6 +620,7 @@
               <trans_set>
                 <trans loc="cs" val="Hlavní budova"/>
                 <trans loc="es" val="Edificio principal"/>
+                <trans loc="fr" val="Bâtiment principal"/>
                 <trans loc="sl" val="Glavna stavba"/>
               </trans_set>
             </custom_choice>
@@ -595,6 +628,7 @@
               <trans_set>
                 <trans loc="cs" val="Laboratoře"/>
                 <trans loc="es" val="Bloque de ciencias"/>
+                <trans loc="fr" val="Bâtiment pour la science"/>
                 <trans loc="sl" val="Oddelek za naravoslovje"/>
               </trans_set>
             </custom_choice>
@@ -602,6 +636,7 @@
               <trans_set>
                 <trans loc="cs" val="Sportovní hala"/>
                 <trans loc="es" val="Pabellón de deportes"/>
+                <trans loc="fr" val="Hall des sports"/>
                 <trans loc="sl" val="Športna dvorana"/>
               </trans_set>
             </custom_choice>
@@ -610,6 +645,7 @@
         <trans_set>
           <trans loc="cs" val="Budova"/>
           <trans loc="es" val="Edificio"/>
+          <trans loc="fr" val="Bâtiment"/>
           <trans loc="sl" val="Zgradba"/>
         </trans_set>
       </field>
@@ -640,6 +676,7 @@
             <trans_set>
               <trans loc="cs" val="Přehled"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="fr" val="Résumé"/>
               <trans loc="sl" val="Pregled"/>
             </trans_set>
             <data_layout_item name="room_id" editable="true" use_default_formatting="true">
@@ -653,6 +690,7 @@
             <trans_set>
               <trans loc="cs" val="Podrobnosti"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="fr" val="Détails"/>
               <trans loc="sl" val="Podrobnosti"/>
             </trans_set>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
@@ -732,6 +770,7 @@
     <trans_set>
       <trans loc="cs" val="Předměty"/>
       <trans loc="es" val="Materias"/>
+      <trans loc="fr" val="Sujets"/>
       <trans loc="sl" val="Predmeti"/>
     </trans_set>
     <fields>
@@ -740,6 +779,7 @@
         <trans_set>
           <trans loc="cs" val="ID předmětu"/>
           <trans loc="es" val="ID de materia"/>
+          <trans loc="fr" val="ID du sujet"/>
           <trans loc="sl" val="ID predmeta"/>
         </trans_set>
       </field>
@@ -748,6 +788,7 @@
         <trans_set>
           <trans loc="cs" val="Název"/>
           <trans loc="es" val="Nombre"/>
+          <trans loc="fr" val="Nom"/>
           <trans loc="sl" val="Ime"/>
         </trans_set>
       </field>
@@ -756,6 +797,7 @@
         <trans_set>
           <trans loc="cs" val="Poznámky"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="fr" val="Commentaires"/>
           <trans loc="sl" val="Opombe"/>
         </trans_set>
       </field>
@@ -765,6 +807,7 @@
         <trans_set>
           <trans loc="cs" val="Vyučovací hodiny"/>
           <trans loc="es" val="Lecciones"/>
+          <trans loc="fr" val="Leçons"/>
           <trans loc="sl" val="Ure"/>
         </trans_set>
       </relationship>
@@ -791,6 +834,7 @@
             <trans_set>
               <trans loc="cs" val="Přehled"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="fr" val="Résumé"/>
               <trans loc="sl" val="Pregled"/>
             </trans_set>
             <data_layout_item name="subject_id" editable="true" use_default_formatting="true">
@@ -804,6 +848,7 @@
             <trans_set>
               <trans loc="cs" val="Poznámky"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="fr" val="Détails"/>
               <trans loc="sl" val="Podrobnosti"/>
             </trans_set>
             <data_layout_portal relationship="lessons" portal_rows_count_min="6" portal_rows_count_max="6">
@@ -818,6 +863,7 @@
                   <trans_set>
                     <trans loc="cs" val="Jméno učitele"/>
                     <trans loc="es" val="Nombre del profesor"/>
+                    <trans loc="fr" val="Nom du professeur"/>
                     <trans loc="sl" val="Ime učitelja"/>
                   </trans_set>
                 </title_custom>
@@ -1017,6 +1063,7 @@
       <trans loc="cs" val="Učitelé"/>
       <trans loc="de" val="Kontakten"/>
       <trans loc="es" val="Profesores"/>
+      <trans loc="fr" val="Professeurs"/>
       <trans loc="sl" val="Učitelji"/>
     </trans_set>
     <fields>
@@ -1026,6 +1073,7 @@
           <trans loc="cs" val="ID učitele"/>
           <trans loc="de" val="Kontakt ID"/>
           <trans loc="es" val="ID del profesor"/>
+          <trans loc="fr" val="ID du professeur"/>
           <trans loc="sl" val="ID učitelja"/>
         </trans_set>
       </field>
@@ -1035,6 +1083,7 @@
           <trans loc="cs" val="Křestní jméno"/>
           <trans loc="de" val="Vorname"/>
           <trans loc="es" val="Nombre"/>
+          <trans loc="fr" val="Prénom"/>
           <trans loc="sl" val="Ime"/>
         </trans_set>
       </field>
@@ -1044,6 +1093,7 @@
           <trans loc="cs" val="Prostřední jméno"/>
           <trans loc="de" val="Zweite Name"/>
           <trans loc="es" val="Primer apellido"/>
+          <trans loc="fr" val="Nom intermédiaire"/>
           <trans loc="sl" val="Drugo ime"/>
         </trans_set>
       </field>
@@ -1053,6 +1103,7 @@
           <trans loc="cs" val="Příjmení"/>
           <trans loc="de" val="Familiename"/>
           <trans loc="es" val="Segundo apellido"/>
+          <trans loc="fr" val="Nom"/>
           <trans loc="sl" val="Priimek"/>
         </trans_set>
       </field>
@@ -1063,6 +1114,7 @@
               <trans_set>
                 <trans loc="cs" val="pan"/>
                 <trans loc="es" val="Sr."/>
+                <trans loc="fr" val="M."/>
                 <trans loc="sl" val="g."/>
               </trans_set>
             </custom_choice>
@@ -1070,6 +1122,7 @@
               <trans_set>
                 <trans loc="cs" val="paní"/>
                 <trans loc="es" val="Srta."/>
+                <trans loc="fr" val="Mme"/>
                 <trans loc="sl" val="ga."/>
               </trans_set>
             </custom_choice>
@@ -1077,6 +1130,7 @@
               <trans_set>
                 <trans loc="cs" val="paní/slečna"/>
                 <trans loc="es" val="Sra."/>
+                <trans loc="fr" val="Mme"/>
                 <trans loc="sl" val="ga."/>
               </trans_set>
             </custom_choice>
@@ -1084,6 +1138,7 @@
               <trans_set>
                 <trans loc="cs" val="slečna"/>
                 <trans loc="es" val="Señorita"/>
+                <trans loc="fr" val="Mlle"/>
                 <trans loc="sl" val="gdč."/>
               </trans_set>
             </custom_choice>
@@ -1091,6 +1146,7 @@
               <trans_set>
                 <trans loc="cs" val="Dr."/>
                 <trans loc="es" val="Dr"/>
+                <trans loc="fr" val="Dr"/>
                 <trans loc="sl" val="dr."/>
               </trans_set>
             </custom_choice>
@@ -1098,6 +1154,7 @@
               <trans_set>
                 <trans loc="cs" val="Prof."/>
                 <trans loc="es" val="Prof"/>
+                <trans loc="fr" val="Pr"/>
                 <trans loc="sl" val="prof."/>
               </trans_set>
             </custom_choice>
@@ -1107,6 +1164,7 @@
           <trans loc="cs" val="Oslovení"/>
           <trans loc="de" val="Titel"/>
           <trans loc="es" val="Título"/>
+          <trans loc="fr" val="Titre"/>
           <trans loc="sl" val="Naziv"/>
         </trans_set>
       </field>
@@ -1116,6 +1174,7 @@
           <trans loc="cs" val="Ulice"/>
           <trans loc="de" val="Strasse"/>
           <trans loc="es" val="Calle"/>
+          <trans loc="fr" val="Rue"/>
           <trans loc="sl" val="Ulica"/>
         </trans_set>
       </field>
@@ -1125,6 +1184,7 @@
           <trans loc="cs" val="Město"/>
           <trans loc="de" val="Ort"/>
           <trans loc="es" val="Ciudad"/>
+          <trans loc="fr" val="Ville"/>
           <trans loc="sl" val="Mesto"/>
         </trans_set>
       </field>
@@ -1134,6 +1194,7 @@
           <trans loc="cs" val="Stát"/>
           <trans loc="de" val="Bundesland/Kanton"/>
           <trans loc="es" val="Estado"/>
+          <trans loc="fr" val="État"/>
           <trans loc="sl" val="Okraj"/>
         </trans_set>
       </field>
@@ -1143,6 +1204,7 @@
           <trans loc="cs" val="Země"/>
           <trans loc="de" val="Land"/>
           <trans loc="es" val="País"/>
+          <trans loc="fr" val="Pays"/>
           <trans loc="sl" val="Država"/>
         </trans_set>
       </field>
@@ -1152,6 +1214,7 @@
           <trans loc="cs" val="PSČ"/>
           <trans loc="de" val="Postleitzahl"/>
           <trans loc="es" val="Código postal"/>
+          <trans loc="fr" val="Code postal"/>
           <trans loc="sl" val="Poštna koda"/>
         </trans_set>
       </field>
@@ -1161,6 +1224,7 @@
           <trans loc="cs" val="Datum narození"/>
           <trans loc="de" val="Geburtsdatum"/>
           <trans loc="es" val="Fecha de nacimiento"/>
+          <trans loc="fr" val="Date de naissance"/>
           <trans loc="sl" val="Datum rojstva"/>
         </trans_set>
       </field>
@@ -1170,6 +1234,7 @@
           <trans loc="cs" val="Poznámky"/>
           <trans loc="de" val="Kommentar"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="fr" val="Commentaires"/>
           <trans loc="sl" val="Opombe"/>
         </trans_set>
       </field>
@@ -1180,6 +1245,7 @@
           <trans loc="cs" val="Celé jméno"/>
           <trans loc="de" val="Vollname"/>
           <trans loc="es" val="Nombre completo"/>
+          <trans loc="fr" val="Nom complet"/>
           <trans loc="sl" val="Polno ime"/>
         </trans_set>
       </field>
@@ -1189,6 +1255,7 @@
           <trans loc="cs" val="Obrázek"/>
           <trans loc="de" val="Bild"/>
           <trans loc="es" val="Foto"/>
+          <trans loc="fr" val="Image"/>
           <trans loc="sl" val="Slika"/>
         </trans_set>
       </field>
@@ -1198,6 +1265,7 @@
           <trans loc="cs" val="E-mailová adresa"/>
           <trans loc="de" val="E-mail Addresse"/>
           <trans loc="es" val="Dirección de correo-e"/>
+          <trans loc="fr" val="Adresse électronique"/>
           <trans loc="sl" val="Elektronski naslov"/>
         </trans_set>
       </field>
@@ -1207,6 +1275,7 @@
           <trans loc="cs" val="Webové stránky"/>
           <trans loc="de" val="Website"/>
           <trans loc="es" val="Página web"/>
+          <trans loc="fr" val="Site Web"/>
           <trans loc="sl" val="Spletna stran"/>
         </trans_set>
       </field>
@@ -1215,6 +1284,7 @@
         <trans_set>
           <trans loc="cs" val="Telefon domů"/>
           <trans loc="es" val="Teléfono de casa"/>
+          <trans loc="fr" val="Téléphone domicile"/>
           <trans loc="sl" val="Telefon doma"/>
         </trans_set>
       </field>
@@ -1223,6 +1293,7 @@
         <trans_set>
           <trans loc="cs" val="Telefon do práce"/>
           <trans loc="es" val="Teléfono del trabajo"/>
+          <trans loc="fr" val="Téléphone travail"/>
           <trans loc="sl" val="Telefon v službi"/>
         </trans_set>
       </field>
@@ -1231,6 +1302,7 @@
         <trans_set>
           <trans loc="cs" val="Mobilní telefon"/>
           <trans loc="es" val="Móvil"/>
+          <trans loc="fr" val="Téléphone portable"/>
           <trans loc="sl" val="Mobilni telefon"/>
         </trans_set>
       </field>
@@ -1240,6 +1312,7 @@
           <trans loc="cs" val="Fax"/>
           <trans loc="de" val="Fax"/>
           <trans loc="es" val="Fax"/>
+          <trans loc="fr" val="Fax"/>
           <trans loc="sl" val="Faks"/>
         </trans_set>
       </field>
@@ -1249,6 +1322,7 @@
         <trans_set>
           <trans loc="cs" val="Vyučovací hodiny"/>
           <trans loc="es" val="Lecciones"/>
+          <trans loc="fr" val="Leçons"/>
           <trans loc="sl" val="Ure"/>
         </trans_set>
       </relationship>
@@ -1326,6 +1400,7 @@
             <trans_set>
               <trans loc="cs" val="Přehled"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="fr" val="Résumé"/>
               <trans loc="sl" val="Pregled"/>
             </trans_set>
             <data_layout_item name="teacher_id" editable="true" use_default_formatting="true">
@@ -1339,6 +1414,7 @@
             <trans_set>
               <trans loc="cs" val="Podrobnosti"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="fr" val="Détails"/>
               <trans loc="sl" val="Podrobnosti"/>
             </trans_set>
             <data_layout_notebook name="notebook">
@@ -1346,6 +1422,7 @@
                 <trans_set>
                   <trans loc="cs" val="Název"/>
                   <trans loc="es" val="Nombre"/>
+                  <trans loc="fr" val="Nom"/>
                   <trans loc="sl" val="Ime"/>
                 </trans_set>
                 <data_layout_item name="name_title" editable="true" use_default_formatting="true">
@@ -1365,6 +1442,7 @@
                 <trans_set>
                   <trans loc="cs" val="Adresa"/>
                   <trans loc="es" val="Dirección"/>
+                  <trans loc="fr" val="Adresse"/>
                   <trans loc="sl" val="Naslov"/>
                 </trans_set>
                 <data_layout_item name="address_street" editable="true" use_default_formatting="true">
@@ -1387,6 +1465,7 @@
                 <trans_set>
                   <trans loc="cs" val="Telefon"/>
                   <trans loc="es" val="Teléfono"/>
+                  <trans loc="fr" val="Téléphone"/>
                   <trans loc="sl" val="Telefon"/>
                 </trans_set>
                 <data_layout_item name="tel_home" editable="true" use_default_formatting="true">
@@ -1414,6 +1493,7 @@
                 <trans_set>
                   <trans loc="cs" val="Ostatní"/>
                   <trans loc="es" val="Otro"/>
+                  <trans loc="fr" val="Autre"/>
                   <trans loc="sl" val="Drugo"/>
                 </trans_set>
                 <data_layout_item name="date_of_birth" editable="true" use_default_formatting="true">
@@ -1439,6 +1519,7 @@
                   <trans_set>
                     <trans loc="cs" val="Název předmětu"/>
                     <trans loc="es" val="Nombre de la materia"/>
+                    <trans loc="fr" val="Nom du sujet"/>
                     <trans loc="sl" val="Ime predmeta"/>
                   </trans_set>
                 </title_custom>
@@ -1481,6 +1562,7 @@
         <trans_set>
           <trans loc="cs" val="Kontakty podle země"/>
           <trans loc="es" val="Contactos por país"/>
+          <trans loc="fr" val="Contacts par pays"/>
           <trans loc="sl" val="Stiki po državah"/>
         </trans_set>
       </report>
@@ -1507,6 +1589,7 @@
         <trans_set>
           <trans loc="cs" val="Podle země, podle města"/>
           <trans loc="es" val="Por país, por ciudad"/>
+          <trans loc="fr" val="Par pays, par ville"/>
           <trans loc="sl" val="Po državi, po mestu"/>
         </trans_set>
       </report>
