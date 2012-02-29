@@ -29,6 +29,7 @@
 #include <gtkmm/handlebox.h>
 #include <gtkmm/uimanager.h>
 #include <gtkmm/builder.h>
+#include <gtkmm/applicationwindow.h>
 
 
 #include <libglom/document/bakery/document.h>
@@ -48,10 +49,10 @@ namespace GlomBakery
  */
 class AppWindow_WithDoc_Gtk
   : public AppWindow_WithDoc,
-    public Gtk::Window //inherit virtually to share sigc::trackable.
+    public Gtk::ApplicationWindow //inherit virtually to share sigc::trackable.
 {
 public:
-  typedef Gtk::Window ParentWindow;
+  typedef Gtk::ApplicationWindow ParentWindow;
 
   ///Don't forget to call init() too.
   AppWindow_WithDoc_Gtk(const Glib::ustring& appname);

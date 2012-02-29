@@ -1,3 +1,10 @@
+2012-02-29  Murray Cumming  <murrayc@murrayc.com>
+
+	Use Gtk::ApplicationWindow.
+
+	* glom/bakery/appwindow_withdoc_gtk.[h|cc]: Use Gtk::ApplicationWindow
+	instead of Gtk::Window.
+
 2012-02-15  Murray Cumming  <murrayc@murrayc.com>
 
 	Remove now-unnecessary call to init_gtkmm.
