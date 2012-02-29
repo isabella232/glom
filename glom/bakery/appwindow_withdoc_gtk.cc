@@ -280,7 +280,7 @@ void AppWindow_WithDoc_Gtk::init_menus_edit()
   //Edit menu
   
   //Build actions:
-  m_refEditActionGroup = ActionGroup::create("BakeryEditActions");
+  m_refEditActionGroup = Gtk::ActionGroup::create("BakeryEditActions");
   m_refEditActionGroup->add(Action::create("BakeryAction_Menu_Edit", _("_Edit")));
   
   m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Cut", Gtk::Stock::CUT),
