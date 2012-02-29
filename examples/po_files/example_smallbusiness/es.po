@@ -226,7 +226,7 @@ msgctxt "Relationship (contacts). Parent table: invoices"
 msgid "Contacts"
 msgstr "Contactos"
 
-msgctxt "Report (By Customer). Parent table: invoices"
+msgctxt "Report (by_customer). Parent table: invoices"
 msgid "By Customer"
 msgstr "Por cliente"
 
