@@ -38,6 +38,8 @@
 #include <iostream>
 #include <stdexcept>
 
+#include <unistd.h> //For getpass().
+
 #include <glibmm/i18n.h>
 
 class GlomCreateOptionGroup : public Glib::OptionGroup

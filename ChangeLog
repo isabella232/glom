@@ -1,5 +1,12 @@
 2012-03-01  Murray Cumming  <murrayc@murrayc.com>
 
+	Add a unistd.h include to fix the mingw MS Windows build.
+
+	* glom/glom_create_from_example.cc: include unistd.h for getpass().
+	Bug #671120 (alien)
+
+2012-03-01  Murray Cumming  <murrayc@murrayc.com>
+
 	Make auto-increment fields work even if they are not primary keys.
 
 	* glom/libglom/db_utils.h: get_next_auto_increment_value(): Document that
