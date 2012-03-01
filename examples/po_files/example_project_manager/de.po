@@ -1,17 +1,23 @@
+# German translation of glom (Project manager example)
+# Mario Blättermann <mario.blaettermann@gmail.com>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Project Manager Example\n"
-"product=glom&keywords=I18N+L10N&component=general\n"
-"PO-Revision-Date: 2012-01-24 14:23+0100\n"
-"Last-Translator: Someone <someone@someone.com>\n"
-"Language-Team:  <someone@someone.com>\n"
+"Project-Id-Version: glom Project Manager Example\n"
+"POT-Creation-Date: 2012-03-01 12:28+0100\n"
+"PO-Revision-Date: 2012-03-01 12:29+0100\n"
+"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
+"Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
 
 msgctxt "Database Title"
 msgid "Project Manager Example"
-msgstr ""
+msgstr "Projektverwaltung"
 
 msgctxt "Table (contacts)"
 msgid "Contacts"
@@ -39,27 +45,27 @@ msgstr "Titel"
 
 msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
 msgid "Mr"
-msgstr ""
+msgstr "Herr"
 
 msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
 msgid "Mrs"
-msgstr ""
+msgstr "Frau"
 
 msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
 msgid "Ms"
-msgstr ""
+msgstr "Frau"
 
 msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
 msgid "Miss"
-msgstr ""
+msgstr "Frau"
 
 msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
 msgid "Dr"
-msgstr ""
+msgstr "Dr."
 
 msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
 msgid "Prof"
-msgstr ""
+msgstr "Prof."
 
 msgctxt "Field (address_street). Parent table: contacts"
 msgid "Street"
@@ -107,15 +113,15 @@ msgstr "Website"
 
 msgctxt "Field (tel_home). Parent table: contacts"
 msgid "Home Telephone"
-msgstr ""
+msgstr "Telefon (privat)"
 
 msgctxt "Field (tel_work). Parent table: contacts"
 msgid "Work Telephone"
-msgstr ""
+msgstr "Telefon (Büro)"
 
 msgctxt "Field (tel_mobile). Parent table: contacts"
 msgid "Mobile Telephone"
-msgstr ""
+msgstr "Telefon (mobil)"
 
 msgctxt "Field (tel_fax). Parent table: contacts"
 msgid "Fax"
@@ -123,15 +129,15 @@ msgstr "Fax"
 
 msgctxt "Relationship (team_members). Parent table: contacts"
 msgid "Team Membership"
-msgstr ""
+msgstr "Team-Mitgliedschaft"
 
 msgctxt "Report (by_country). Parent table: contacts"
 msgid "Contacts By Country"
-msgstr ""
+msgstr "Kontakte nach Land"
 
 msgctxt "Report (by_country_by_town). Parent table: contacts"
 msgid "By Country, By Town"
-msgstr ""
+msgstr "Nach Land, nach Ort"
 
 msgctxt "Layout Group (overview). Parent table: contacts"
 msgid "Overview"
@@ -139,173 +145,178 @@ msgstr "Ubersicht"
 
 msgctxt "Layout Group (notebook). Parent table: contacts, Parent Group: details"
 msgid "(Notebook)"
-msgstr ""
+msgstr "(Reitermappe)"
 
-msgctxt "Layout Group (telephone). Parent table: contacts, Parent Group: details, Parent Group: notebook"
+msgctxt ""
+"Layout Group (telephone). Parent table: contacts, Parent Group: details, "
+"Parent Group: notebook"
 msgid "Telephone"
 msgstr "Telefon"
 
-msgctxt "Layout Group (address). Parent table: contacts, Parent Group: details, Parent Group: notebook"
+msgctxt ""
+"Layout Group (address). Parent table: contacts, Parent Group: details, Parent "
+"Group: notebook"
 msgid "Address"
 msgstr "Addresse"
 
-msgctxt "Layout Group (name). Parent table: contacts, Parent Group: details, Parent Group: notebook"
+msgctxt ""
+"Layout Group (name). Parent table: contacts, Parent Group: details, Parent "
+"Group: notebook"
 msgid "Name"
 msgstr "Name"
 
 msgctxt "Table (projects)"
 msgid "Projects"
-msgstr ""
+msgstr "Projekte"
 
 msgctxt "Field (project_id). Parent table: projects"
 msgid "Project ID"
-msgstr ""
+msgstr "Projektkennung"
 
 msgctxt "Field (description). Parent table: projects"
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 msgctxt "Field (comments). Parent table: projects"
 msgid "Comments"
-msgstr ""
+msgstr "Kommentare"
 
 msgctxt "Field (name). Parent table: projects"
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 msgctxt "Relationship (teams). Parent table: projects"
 msgid "Teams"
-msgstr ""
+msgstr "Teams"
 
 msgctxt "Layout Group (overview). Parent table: projects"
 msgid "Overview"
-msgstr ""
+msgstr "Übersicht"
 
 msgctxt "Layout Group (details). Parent table: projects"
 msgid "Details"
-msgstr ""
+msgstr "Details"
 
 msgctxt "Table (project_teams)"
 msgid "Project Teams"
-msgstr ""
+msgstr "Projektteams"
 
 msgctxt "Field (project_team_id). Parent table: project_teams"
 msgid "Project Team ID"
-msgstr ""
+msgstr "Kennung des Project-Teams"
 
 msgctxt "Field (comments). Parent table: project_teams"
 msgid "Comments"
-msgstr ""
+msgstr "Kommentare"
 
 msgctxt "Field (team_id). Parent table: project_teams"
 msgid "Team ID"
-msgstr ""
+msgstr "Teamkennung"
 
 msgctxt "Field (project_id). Parent table: project_teams"
 msgid "Project ID"
-msgstr ""
+msgstr "Projektkennung"
 
 msgctxt "Relationship (team). Parent table: project_teams"
 msgid "Team"
-msgstr ""
+msgstr "Team"
 
 msgctxt "Relationship (project). Parent table: project_teams"
 msgid "Project"
-msgstr ""
+msgstr "Projekt"
 
 msgctxt "Layout Group (overview). Parent table: project_teams"
 msgid "Overview"
-msgstr ""
+msgstr "Übersicht"
 
 msgctxt "Layout Group (details). Parent table: project_teams"
 msgid "Details"
-msgstr ""
+msgstr "Details"
 
 msgctxt "Custom Title. Parent table: project_teams"
 msgid "Team Name"
-msgstr ""
+msgstr "Teamname"
 
 msgctxt "Custom Title. Parent table: project_teams"
 msgid "Project Name"
-msgstr ""
+msgstr "Projektname"
 
 msgctxt "Table (team_members)"
 msgid "Team Members"
-msgstr ""
+msgstr "Team-Mitglieder"
 
 msgctxt "Field (team_members_id). Parent table: team_members"
 msgid "team_members ID"
-msgstr ""
+msgstr "Kennung der Team-Mitglieder"
 
 msgctxt "Field (description). Parent table: team_members"
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 msgctxt "Field (comments). Parent table: team_members"
 msgid "Comments"
-msgstr ""
+msgstr "Kommentare"
 
 msgctxt "Field (contact_id). Parent table: team_members"
 msgid "Contact ID"
-msgstr ""
+msgstr "Kontaktkennung"
 
 msgctxt "Field (team_id). Parent table: team_members"
 msgid "Team ID"
-msgstr ""
+msgstr "Teamkennung"
 
 msgctxt "Field (role). Parent table: team_members"
 msgid "Role"
-msgstr ""
+msgstr "Position"
 
 msgctxt "Relationship (contacts). Parent table: team_members"
 msgid "Contacts"
-msgstr ""
+msgstr "Kontakte"
 
 msgctxt "Relationship (team). Parent table: team_members"
 msgid "Team"
-msgstr ""
+msgstr "Team"
 
 msgctxt "Layout Group (overview). Parent table: team_members"
 msgid "Overview"
-msgstr ""
+msgstr "Übersicht"
 
 msgctxt "Layout Group (details). Parent table: team_members"
 msgid "Details"
-msgstr ""
+msgstr "Details"
 
 msgctxt "Table (teams)"
 msgid "Teams"
-msgstr ""
+msgstr "Teams"
 
 msgctxt "Field (team_id). Parent table: teams"
 msgid "Team ID"
-msgstr ""
+msgstr "Teamkennung"
 
 msgctxt "Field (description). Parent table: teams"
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 msgctxt "Field (comments). Parent table: teams"
 msgid "Comments"
-msgstr ""
+msgstr "Kommentare"
 
 msgctxt "Field (name). Parent table: teams"
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 msgctxt "Relationship (members). Parent table: teams"
 msgid "Members"
-msgstr ""
+msgstr "Mitglieder"
 
 msgctxt "Relationship (projects). Parent table: teams"
 msgid "Projects"
-msgstr ""
+msgstr "Projekte"
 
 msgctxt "Layout Group (overview). Parent table: teams"
 msgid "Overview"
-msgstr ""
+msgstr "Übersicht"
 
 msgctxt "Layout Group (details). Parent table: teams"
 msgid "Details"
-msgstr ""
-
+msgstr "Details"
