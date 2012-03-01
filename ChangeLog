@@ -1,5 +1,12 @@
 2012-03-01  Murray Cumming  <murrayc@murrayc.com>
 
+	Tests: Update the expected number of locales.
+
+	* tests/test_document_load_translations.cc: There are now 7 locales in the
+	example document.
+
+2012-03-01  Murray Cumming  <murrayc@murrayc.com>
+
 	More windows build fixes.
 
 	* glom/libglom/connectionpool_backends/postgres.cc: Add an include and change
