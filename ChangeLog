@@ -1,5 +1,12 @@
 2012-03-01  Murray Cumming  <murrayc@murrayc.com>
 
+	Make the --debug_sql option work again.
+
+	* glom/appwindow.cc: set_show_sql_debug(): Set it in the ConnectionPool
+	too. This was broken since the change to Gtk::Application.
+
+2012-03-01  Murray Cumming  <murrayc@murrayc.com>
+
 	ConnectionPool::change_columns(): Add/Remove autoincement rows here.
 
 	* glom/libglom/connectionpool.cc: change_columns(): Add or remove the

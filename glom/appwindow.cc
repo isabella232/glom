@@ -208,6 +208,8 @@ bool AppWindow::get_show_sql_debug() const
 void AppWindow::set_show_sql_debug(bool val)
 {
   m_show_sql_debug = val;
+
+  ConnectionPool::get_instance()->set_show_debug_output(val);
 }
 
 void AppWindow::set_stop_auto_server_shutdown(bool val)
