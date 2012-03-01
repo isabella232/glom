@@ -45,6 +45,8 @@
 
 #include <stack>
 
+#include <fcntl.h> //For close(). This include is needed in mingw on MS Windows.
+
 namespace Glom
 {
 
