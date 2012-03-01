@@ -28,6 +28,7 @@
 #include <libgdamm/config.h>
 #include <giomm/file.h>
 #include <glibmm/convert.h>
+#include <glibmm/fileutils.h> //For Glib::file_test().
 #include <glibmm/miscutils.h>
 #include <glibmm/shell.h>
 #include <glib/gstdio.h> /* For g_rename(). TODO: Wrap this in glibmm? */
@@ -477,7 +478,7 @@ std::string Postgres::get_path_to_postgres_executable(const std::string& program
   if(Glib::file_test(test, Glib::FILE_TEST_IS_EXECUTABLE))
   {
     if(quoted)
-      test = Glib::shell_quote(path);
+      test = Glib::shell_quote(test);
     return test;
   }
 
