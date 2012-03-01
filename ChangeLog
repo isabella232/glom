@@ -1,5 +1,17 @@
 2012-03-01  Murray Cumming  <murrayc@murrayc.com>
 
+	ConnectionPool::change_columns(): Add/Remove autoincement rows here.
+
+	* glom/libglom/connectionpool.cc: change_columns(): Add or remove the
+	auto-increment row from the database preferences table. This would 
+	be added automatically anyway but this makes sure that it is there
+	for editing as soon as the field is added, and makes sure that it is 
+	removed.
+	* tests/test_selfhosting_new_then_change_columns.cc: Try setting a 
+	field as auto-increment.
+
+2012-03-01  Murray Cumming  <murrayc@murrayc.com>
+
 	Tests: Update the expected number of locales.
 
 	* tests/test_document_load_translations.cc: There are now 7 locales in the

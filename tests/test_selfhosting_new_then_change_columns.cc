@@ -22,6 +22,7 @@
 #include <libglom/init.h>
 #include <libglom/utils.h>
 #include <libglom/db_utils.h>
+#include <libglom/data_structure/glomconversions.h>
 #include <libglom/connectionpool.h>
 #include <glibmm/fileutils.h>
 #include <glibmm/miscutils.h>
@@ -44,7 +45,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   
   const Glib::ustring table_name = "contacts";
   const Glib::ustring field_name_original = "date_of_birth";
-  const Glom::sharedptr<const Glom::Field> field = document.get_field(table_name, field_name_original);
+  Glom::sharedptr<const Glom::Field> field = document.get_field(table_name, field_name_original);
   if(!field)
   {
     std::cerr << "Failure: Could not get field." << std::endl;
@@ -85,6 +86,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   //Try another change:
+  field = Glom::glom_sharedptr_clone(field_new);
   field_new->set_glom_type(Glom::Field::TYPE_NUMERIC);
   try
   {
@@ -102,6 +104,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   //Try another change:
+  field = Glom::glom_sharedptr_clone(field_new);
   field_new->set_name("somenewfieldname");
   try
   {
@@ -117,6 +120,37 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     std::cerr << "Failure: change_column() threw an exception: " << ex.what() << std::endl;
     return false;
   }
+
+  //Try to make it auto-increment:
+  field = Glom::glom_sharedptr_clone(field_new);
+  field_new->set_auto_increment();
+  try
+  {
+    const bool test = connection_pool->change_column(table_name, field, field_new);
+    if(!test)
+    {
+      std::cerr << "Failure: change_column() failed." << std::endl;
+      return false;
+    }
+  }
+  catch(const Glib::Error& ex)
+  { 
+    std::cerr << "Failure: change_column() threw an exception: " << ex.what() << std::endl;
+    return false;
+  }
+
+  //Check that the auto-increment works:
+  //Actually checking for a 0 here is not very useful,
+  //but at least we are running some of the relevant code:
+  const Gnome::Gda::Value value_next = 
+    Glom::DbUtils::get_next_auto_increment_value(table_name, field_new->get_name());
+  const double value_next_as_double = Glom::Conversions::get_double_for_gda_value_numeric(value_next);
+  if(value_next_as_double != 0)
+  {
+    std::cerr << "Failure: The next auto-increment value is not 0 as expected. Instead it is: " << value_next_as_double << std::endl;
+    return false;
+  }
+
   
   //Add a field:
   try

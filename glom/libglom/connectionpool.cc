@@ -23,6 +23,7 @@
 #include <libglom/connectionpool.h>
 #include <libglom/document/document.h>
 #include <libglom/utils.h>
+#include <libglom/db_utils.h>
 //#include <libgdamm/connectionevent.h>
 
 #include <libglom/connectionpool_backends/postgres_central.h>
@@ -762,7 +763,31 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
 
   const bool result = m_backend->change_columns(m_refGdaConnection, table_name, old_fields, new_fields);
   m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
+  if(!result)
+    return false;
 
+  //Add or remove any auto-increment rows:
+  //The new auto-increment row would actually be added automatically,
+  //but this makes it available even before a record has been added. 
+  type_vec_const_fields::const_iterator iter_old = old_fields.begin();
+  type_vec_const_fields::const_iterator iter_new = new_fields.begin();
+  while( (iter_old != old_fields.end()) && (iter_new != new_fields.end()) )
+  {
+    const sharedptr<const Field> field_old = *iter_old;
+    const sharedptr<const Field> field_new = *iter_new;
+    if(field_old && field_new
+      && field_old->get_auto_increment() != field_new->get_auto_increment())
+    {
+      if(field_new->get_auto_increment())
+        DbUtils::auto_increment_insert_first_if_necessary(table_name, field_new->get_name());
+      else
+        DbUtils::remove_auto_increment(table_name, field_new->get_name());
+    }
+
+    ++iter_old;
+    ++iter_new;
+  }
+ 
   return result;
 }
 
