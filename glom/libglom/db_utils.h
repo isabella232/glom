@@ -70,8 +70,11 @@ type_vec_fields get_fields_for_table(const Document* document, const Glib::ustri
  */
 sharedptr<Field> get_fields_for_table_one_field(const Document* document, const Glib::ustring& table_name, const Glib::ustring& field_name);
 
-//TODO: Is this used directly?
 typedef std::vector<Glib::ustring> type_vec_strings;
+
+/** Get the table names from the database server.
+ * This could theoretically be different than the ones listed in the document.
+ */
 type_vec_strings get_table_names_from_database(bool ignore_system_tables = false);
 
 bool get_table_exists_in_database(const Glib::ustring& table_name);
@@ -90,7 +93,8 @@ bool add_column(const Glib::ustring& table_name, const sharedptr<const Field>& f
 bool drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
 
-//TODO: Is this used directly?
+/** Insert example data, from the document, into the table on the database server.
+ */
 bool insert_example_data(Document* document, const Glib::ustring& table_name);
 
 /** Execute a SQL Select command, returning the result.
@@ -114,7 +118,9 @@ bool query_execute_string(const Glib::ustring& strQuery,
   */
 bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder);
 
-//TODO: Is this used directly?
+/** Insert the auto-increment row in the database preferences table, if necessary,
+ * returning the next value.
+ */
 Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
 /** Get the next auto-increment value for this primary key, from the glom system table.
