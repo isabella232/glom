@@ -1,5 +1,13 @@
 2012-03-01  Murray Cumming  <murrayc@murrayc.com>
 
+	More windows build fixes.
+
+	* glom/libglom/connectionpool_backends/postgres.cc: Add an include and change
+	the ifdefed code slightly to fix the mingw build on Windows.
+	Bug #670903 (alien)
+
+2012-03-01  Murray Cumming  <murrayc@murrayc.com>
+
 	Add a fcntl.h include.
 
 	* glom/libglom/utils.cc: Include fcntl.h to fix the mingw build
