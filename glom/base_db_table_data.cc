@@ -67,6 +67,8 @@ Gtk::TreeModel::iterator Base_DB_Table_Data::get_row_selected()
 
 bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value)
 {
+  //std::cout << G_STRFUNC << ": debug: use_entered_data=" << use_entered_data << std::endl;
+
   Document* document = get_document();
 
   sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
@@ -78,7 +80,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
     m_TableFields = DbUtils::get_fields_for_table(document, m_table_name);
 
   //Add values for all fields, not just the shown ones:
-  //For instance, we must always add the primary key, and fields with default/calculated/lookup values:
+  //For instance, we must always add the primary key, and fields with default/calculated/lookup/auto-incremented values:
   for(type_vec_fields::const_iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
   {
     //TODO: Search for the non-related field with the name, not just the field with the name:
@@ -89,58 +91,6 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
       layout_item->set_full_field_details(*iter);
 
       fieldsToAdd.push_back(layout_item);
-    }
-  }
-
-  //Calculate any necessary field values and enter them:
-  for(type_vecConstLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
-  {
-    sharedptr<const LayoutItem_Field> layout_item = *iter;
-
-    //If the user did not enter something in this field:
-    Gnome::Gda::Value value = get_entered_field_data(layout_item);
-
-    if(Conversions::value_is_empty(value)) //This deals with empty strings too.
-    {
-      const sharedptr<const Field>& field = layout_item->get_full_field_details();
-      if(field)
-      {
-        //If the default value should be calculated, then calculate it:
-        if(field->get_has_calculation())
-        {
-          const Glib::ustring calculation = field->get_calculation();
-          const type_map_fields field_values = get_record_field_values_for_calculation(m_table_name, fieldPrimaryKey, primary_key_value);
-
-          //We need the connection when we run the script, so that the script may use it.
-          // TODO: Is this function supposed to throw an exception?
-          sharedptr<SharedConnection> sharedconnection = connect_to_server(AppWindow::get_appwindow());
-
-            Glib::ustring error_message; //TODO: Check this.
-            const Gnome::Gda::Value value =
-              glom_evaluate_python_function_implementation(
-                field->get_glom_type(),
-                calculation,
-                field_values,
-                document,
-                m_table_name,
-                fieldPrimaryKey, primary_key_value,
-                sharedconnection->get_gda_connection(),
-                error_message);
-            set_entered_field_data(layout_item, value);
-        }
-
-        //Use default values (These are also specified in postgres as part of the field definition,
-        //so we could theoretically just not specify it here.)
-        //TODO_Performance: Add has_default_value()?
-        if(Conversions::value_is_empty(value))
-        {
-          const Gnome::Gda::Value default_value = field->get_default_value();
-          if(!Conversions::value_is_empty(default_value))
-          {
-            set_entered_field_data(layout_item, default_value);
-          }
-        }
-      }
     }
   }
 
@@ -165,34 +115,79 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
         Gnome::Gda::Value value;
 
         const sharedptr<const Field>& field = layout_item->get_full_field_details();
-        if(field)
+        if(!field)
+          continue;
+        
+        //Use the specified (generated) primary key value, if there is one:
+        if(primary_key_name == field_name && !Conversions::value_is_empty(primary_key_value))
         {
-          //Use the specified (generated) primary key value, if there is one:
-          if(primary_key_name == field_name && !Conversions::value_is_empty(primary_key_value))
-          {
-            value = primary_key_value;
-          }
-          else
-          {
-            if(use_entered_data)
-              value = get_entered_field_data(layout_item);
-          }
+          value = primary_key_value;
+        }
+        else
+        {
+          if(use_entered_data)
+            value = get_entered_field_data(layout_item);
+        }
 
-          /* //TODO: This would be too many small queries when adding one record.
-          //Check whether the value meets uniqueness constraints:
-          if(field->get_primary_key() || field->get_unique_key())
+        if(Conversions::value_is_empty(value)) //This deals with empty strings too.
+        {
+          //If the default value should be calculated, then calculate it:
+          if(field->get_has_calculation())
           {
-            if(!get_field_value_is_unique(m_table_name, layout_item, value))
-            {
-              //Ignore this field value. TODO: Warn the user about it.
-            }
+            const Glib::ustring calculation = field->get_calculation();
+            const type_map_fields field_values = get_record_field_values_for_calculation(m_table_name, fieldPrimaryKey, primary_key_value);
+
+            //We need the connection when we run the script, so that the script may use it.
+            // TODO: Is this function supposed to throw an exception?
+            sharedptr<SharedConnection> sharedconnection = connect_to_server(AppWindow::get_appwindow());
+
+            Glib::ustring error_message; //TODO: Check this.
+            value =
+              glom_evaluate_python_function_implementation(
+                field->get_glom_type(),
+                calculation,
+                field_values,
+                document,
+                m_table_name,
+                fieldPrimaryKey, primary_key_value,
+                sharedconnection->get_gda_connection(),
+                error_message);
           }
-          */
-          if(!value.is_null())
+        }
+
+        //Use default values (These are also specified in postgres as part of the field definition,
+        //so we could theoretically just not specify it here.)
+        //TODO_Performance: Add has_default_value()?
+        if(Conversions::value_is_empty(value))
+        {
+          value = field->get_default_value();
+        }
+
+        //Use auto-increment values:
+        if(field->get_auto_increment() && Conversions::value_is_empty(value))
+        {
+          value = 
+            DbUtils::get_next_auto_increment_value(m_table_name, field->get_name());
+        }
+
+        /* //TODO: This would be too many small queries when adding one record.
+        //Check whether the value meets uniqueness constraints:
+        if(field->get_primary_key() || field->get_unique_key())
+        {
+          if(!get_field_value_is_unique(m_table_name, layout_item, value))
           {
-            builder->add_field_value(field_name, value);
-            map_added[field_name] = true;
+            //Ignore this field value. TODO: Warn the user about it.
           }
+        }
+        */
+        if(!value.is_null())
+        {
+          builder->add_field_value(field_name, value);
+          map_added[field_name] = true;
+        }
+        else
+        {
+          std::cerr << G_STRFUNC << ": value is null for field: " << field_name << std::endl;
         }
       }
     }

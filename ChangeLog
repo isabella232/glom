@@ -1,5 +1,18 @@
 2012-03-01  Murray Cumming  <murrayc@murrayc.com>
 
+	Make auto-increment fields work even if they are not primary keys.
+
+	* glom/libglom/db_utils.h: get_next_auto_increment_value(): Document that
+	this also increments the value ready for the next call.
+	* glom/base_db_table_data.cc: record_new(): Decide auto-increment values
+	as well as just default values and calculated values. And do this while
+	building the SQL, instead of first setting it in the widget, because we
+	do not always want to use the entered data, so we would then ignore those
+	automatic values accidentally.
+	Bug #661702
+
+2012-03-01  Murray Cumming  <murrayc@murrayc.com>
+
 	Make the --debug_sql option work again.
 
 	* glom/appwindow.cc: set_show_sql_debug(): Set it in the ConnectionPool

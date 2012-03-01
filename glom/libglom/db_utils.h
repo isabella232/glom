@@ -119,6 +119,7 @@ Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& 
 
 /** Get the next auto-increment value for this primary key, from the glom system table.
   * Add a row for this field in the system table if it does not exist already.
+  * This increments the next value after obtaining the current next value.
   */
 Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
