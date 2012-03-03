@@ -19,7 +19,7 @@
 
 #include <gtkmm/builder.h>
 #include <gtkmm/dialog.h>
-#include <gtkmm/main.h>
+#include <gtkmm/application.h>
 #include <gtksourceviewmm/init.h>
 #include <libxml++/libxml++.h>
 
@@ -90,7 +90,8 @@ static bool attempt_instantiation(const std::string& filepath, const xmlpp::Elem
 
 int main(int argc, char* argv[])
 {
-  Gtk::Main kit(argc, argv);
+  Glib::RefPtr<Gtk::Application> app = 
+    Gtk::Application::create(argc, argv, "org.glom.test_glade_toplevels_instantiation");
   Gsv::init(); //Our .glade files contain gtksourceview widgets too.
 
   std::string filepath;

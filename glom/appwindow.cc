@@ -1610,8 +1610,8 @@ void AppWindow::on_recreate_database_progress()
   pulse_progress_message();
 
   //Ensure that the infobar is shown, instead of waiting for the application to be idle.
-  while(Gtk::Main::instance()->events_pending())
-    Gtk::Main::instance()->iteration();
+  while(Gtk::Main::events_pending())
+    Gtk::Main::iteration();
 }
 
 bool AppWindow::recreate_database_from_example(bool& user_cancelled)
@@ -1682,8 +1682,8 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
   pulse_progress_message();
 
   //Ensure that the infobar is shown, instead of waiting for the application to be idle.
-  while(Gtk::Main::instance()->events_pending())
-    Gtk::Main::instance()->iteration();
+  while(Gtk::Main::events_pending())
+    Gtk::Main::iteration();
 
   //Create the database: (This will show a connection dialog)
   connection_pool->set_database( Glib::ustring() );
@@ -1861,8 +1861,8 @@ bool AppWindow::recreate_database_from_backup(const Glib::ustring& backup_uri, b
   pulse_progress_message();
 
   //Ensure that the infobar is shown, instead of waiting for the application to be idle.
-  while(Gtk::Main::instance()->events_pending())
-    Gtk::Main::instance()->iteration();
+  while(Gtk::Main::events_pending())
+    Gtk::Main::iteration();
 
   pulse_progress_message();
 

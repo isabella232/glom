@@ -32,7 +32,7 @@
 #include <gtkmm/frame.h>
 #include <gtkmm/comboboxtext.h>
 #include <gtkmm/scrolledwindow.h>
-#include <gtkmm/main.h>
+#include <gtkmm/application.h>
 
 static const guint INITIAL_HSPACING = 2;
 static const guint INITIAL_VSPACING = 2;
@@ -358,10 +358,9 @@ create_window()
 int
 main(int argc, char *argv[])
 {
-  Gtk::Main kit(argc, argv);
+  Glib::RefPtr<Gtk::Application> app = 
+    Gtk::Application::create(argc, argv, "org.glom.test_spreadtablednd");
 
   Gtk::Window* window = create_window();
-  Gtk::Main::run(*window);
-
-  return 0;
+  return app->run(*window);
 }

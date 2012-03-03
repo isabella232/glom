@@ -73,7 +73,7 @@
 #include <glom/mode_design/print_layouts/dialog_text_formatting.h>
 #include <glom/dialog_invalid_data.h>
 #include <gtkmm/builder.h>
-#include <gtkmm/main.h>
+#include <gtkmm/application.h>
 #include <gtksourceviewmm/init.h>
 
 const int GLOM_MAX_WINDOW_WIDTH = 800;
@@ -115,7 +115,8 @@ bool instantiate_widget()
 
 int main(int argc, char *argv[])
 {
-  Gtk::Main kit(argc, argv);
+  Glib::RefPtr<Gtk::Application> app = 
+    Gtk::Application::create(argc, argv, "org.glom.test_glade_derived_instantiation");
   Gsv::init(); //Our .glade files contain gtksourceview widgets too.
 
   using namespace Glom;

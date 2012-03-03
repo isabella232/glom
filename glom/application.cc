@@ -22,7 +22,6 @@
 #include <glom/appwindow.h>
 #include <glom/main_local_options.h>
 #include <glom/glade_utils.h>
-#include <gtkmm/main.h>
 #include <glibmm/optioncontext.h>
 #include <iostream>
 
