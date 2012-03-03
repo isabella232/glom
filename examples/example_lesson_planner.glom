@@ -479,7 +479,6 @@
               <formatting/>
             </data_layout_item>
           </data_layout_group>
-          <data_layout_group name="main"/>
         </data_layout_groups>
       </data_layout>
     </data_layouts>

@@ -1,3 +1,13 @@
+2012-03-03  Ben Konrath  <ben@bagu.org>
+
+	Remove empty group in the Lesson Planner example file.
+
+	The empty group was at the bottome of the Rooms table details view.
+
+	https://bugzilla.gnome.org/show_bug.cgi?id=671263
+
+	* examples/example_lesson_planner.glom:
+
 2012-03-01  Murray Cumming  <murrayc@murrayc.com>
 
 	Add a unistd.h include to fix the mingw MS Windows build.
