@@ -1103,6 +1103,15 @@ std::string Utils::sqlbuilder_get_full_query(
 
 Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const Document* document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search)
 {
+  if(table_name.empty())
+  {
+    std::cerr << G_STRFUNC << ": table_name is empty." << std::endl;
+    return Gnome::Gda::SqlExpr();
+  }
+
+  if(Conversions::value_is_empty(quick_search))
+    return Gnome::Gda::SqlExpr();
+  
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_target(table_name);

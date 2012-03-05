@@ -1,3 +1,11 @@
+2012-03-05  Murray Cumming  <murrayc@murrayc.com>
+
+	Utils::get_find_where_clause_quick(): Handle an empty value properly.
+
+	* glom/libglom/utils.cc: get_find_where_clause_quick():
+	Handle an empty quick_search value properly, returning an empty
+	where clause.
+
 2012-03-03  Ben Konrath  <ben@bagu.org>
 
 	Remove empty group in the Lesson Planner example file.
