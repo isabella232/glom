@@ -1,7 +1,16 @@
+1.20.10 (stable):
+
+* Examples: Remove empty group in the Lesson Planner example file.
+  (Ben Konrath) Bug #671263
+* libglom: Glom::Utils::get_find_where_clause_quick(): Handle an empty value properly.
+  (Murray Cumming)
+* Windows build fixes (not complete).
+  (Murray Cumming) Bug ##671120 (alien), Bug #670903 (alien)
+
 1.20.9 (stable):
 
 * Users: Warn if we cannot get the list of users.
-	Bug #669178 (alien)
+  Bug #669178 (alien)
 * Print Layout: Avoid sometimes over-scaled images.
   Bug #668901 (alien)
 	

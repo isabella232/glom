@@ -1,3 +1,5 @@
+1.20.10:
+
 2012-03-05  Murray Cumming  <murrayc@murrayc.com>
 
 	Utils::get_find_where_clause_quick(): Handle an empty value properly.
