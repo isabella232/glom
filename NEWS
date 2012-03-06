@@ -1,3 +1,51 @@
+1.21.6 (unstable):
+
+* Make auto-increment fields work even if they are not primary keys.
+  (Murray Cumming) Bug #661702
+* Do not hide the database structure if the user does not have view rights,
+  and prevent SQL errors in that case.
+  (Murray Cumming) Bug #669299
+* Allow printing of print layouts from the List view too, to avoid confusion.
+  (Murray Cumming) Bug #670462 (alien)
+* Print Layout: Avoid sometimes over-scaled images.
+  (Murray Cumming) Bug #668901 (alien)
+* Users/Groups:
+  - Example files: Really load the table privileges.
+  - Really prevent changing to developer mode for non-developers.
+    Bug #669043 (alien)
+  - Allow user and group names to have spaces and other special characters.
+    Bug #669012 (alien)
+  - Limit user and group name lengths because PostgreSQL seems to have an
+    (undocumented) limit.
+  - Warn if we cannot get the list of users. Bug #669178 (alien)
+  - Add tests.
+    (Murray Cumming)
+* Button scripts: Check and warn about pygtk2 instead of crashing.
+  (Murray Cumming) Bug #669196 (alien) and ##661766 (Andre Klapper) .
+* ReportBuilder:
+  - Make summary fields work again.
+  - Add error checking.
+  (Murray Cumming) Bug #669281 (alien)
+* Database Preferences: Really store the organization name in the database.
+  (Murray Cumming) Bug #668836 (alien)
+* Field Formatting: Related Choices: Default to showing the primary key
+  (Murray Cumming) Bug #668759#c21 (alien)
+* Choices: Allow the field to be be other than the primary key and do not
+  crash if it is not, or if it is hidden.
+  (Murray Cumming) Bug #668759 (alien).
+* Document: Avoid accumulating old nodes in the XML.
+  (Murray Cumming)
+* Examples: Remove empty group in the Lesson Planner example file.
+  (Ben Konrath) Bug #671263
+* libglom: Glom::Utils::get_find_where_clause_quick(): Handle an empty value properly.
+  (Murray Cumming)
+* Use Gtk::Application and Gtk::ApplicationWindow instead of Gtk::Main.
+  So far this does not change anything whatosever for the user,
+  though --help now doesn't list all options by default.
+  (Murray Cumming)  
+* Windows build fixes (not complete).
+  (Murray Cumming) Bug ##671120 (alien), Bug #670903 (alien)
+
 1.21.5 (unstable):
 
 * Depend on libgda 5.0.3 because we need the GdaNumeric corrections.
