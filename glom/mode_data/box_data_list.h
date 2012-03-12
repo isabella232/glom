@@ -110,7 +110,6 @@ protected:
   //Member widgets:
   mutable DbAddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
 
-  bool m_has_one_or_more_records;
   bool m_read_only;
 };
 

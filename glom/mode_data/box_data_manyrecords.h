@@ -63,8 +63,6 @@ protected:
   virtual void print_layout();
   virtual void print_layout_group(xmlpp::Element* node_parent, const sharedptr<const LayoutGroup>& group);
 
-  //TODO: remove?
-  bool m_has_one_or_more_records;
   bool m_read_only;
 
 

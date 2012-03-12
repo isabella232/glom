@@ -34,8 +34,7 @@ namespace Glom
 {
 
 Box_Data_ManyRecords::Box_Data_ManyRecords()
-: m_has_one_or_more_records(false),
-  m_read_only(false)
+: m_read_only(false)
 {
   //We do not actually use this,
   //so it is a bug if this appears in the .glom file:

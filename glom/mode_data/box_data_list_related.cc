@@ -156,15 +156,6 @@ bool Box_Data_List_Related::fill_from_database()
   {
     result = Box_Data_Portal::fill_from_database();
 
-
-    //Is there already one record here?
-    if(m_has_one_or_more_records) //This was set by Box_Data_Portal::fill_from_database().
-    {
-      //Is the to_field unique? If so, there can not be more than one.
-      if(m_key_field && m_key_field->get_unique_key()) //automatically true if it is a primary key
-        allow_add = false;
-    }
-
     //TODO: Disable add if the from_field already has a value and the to_field is auto-incrementing because
     //- we cannot override the auto-increment in the to_field.
     //- we cannot change the value in the from_field to the new auto_increment value in the to_field.

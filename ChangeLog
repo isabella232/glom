@@ -1,5 +1,15 @@
 2012-03-12  Murray Cumming  <murrayc@murrayc.com>
 
+	Remove some unused member variables.
+
+	* glom/mode_data/box_data_list.[h|cc]:
+	* glom/mode_data/box_data_manyrecords.[h|cc]:
+	Remove m_has_one_or_more_records.
+	* glom/mode_data/box_data_list_related.cc:
+	Adapted.
+
+2012-03-12  Murray Cumming  <murrayc@murrayc.com>
+
 	Document: Move XML utilities into a new file.
 
 	* glom/libglom/document/document.[h|cc]: Move the static

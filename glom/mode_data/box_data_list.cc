@@ -33,8 +33,7 @@ namespace Glom
 {
 
 Box_Data_List::Box_Data_List()
-: m_has_one_or_more_records(false),
-  m_read_only(false)
+:  m_read_only(false)
 {
   m_layout_name = "list";
 
