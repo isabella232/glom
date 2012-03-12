@@ -1,5 +1,16 @@
 2012-03-12  Murray Cumming  <murrayc@murrayc.com>
 
+	Document: Move XML utilities into a new file.
+
+	* glom/libglom/document/document.[h|cc]: Move the static
+	XML utility methods into:
+	* glom/libglom/fileslist.am:
+	* glom/libglom/xml_utils.[h|cc]: New file.
+	* glom/libglom/report_builder.cc: Adapted, removing the 
+	need for the friend declaration in Document.
+
+2012-03-12  Murray Cumming  <murrayc@murrayc.com>
+
 	Field: Removed deprecated methods.
 
 	* glom/libglom/data_structure/field.[h.cc]: Removed the sql()

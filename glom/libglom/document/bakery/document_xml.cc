@@ -17,6 +17,7 @@
  */
 
 #include <libglom/document/bakery/document_xml.h>
+#include <libglom/xml_utils.h>
 #include <iostream>
 
 namespace GlomBakery
@@ -113,68 +114,6 @@ void Document_XML::Util_DOM_Write(Glib::ustring& refstrXML) const
     std::cerr << G_STRFUNC << ": exception caught: " << ex.what() << std::endl;
   }
 #endif
-}
-
-Glib::ustring Document_XML::get_node_attribute_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName)
-{
-  if(node)
-  {
-    const xmlpp::Attribute* attribute = node->get_attribute(strAttributeName);
-    if(attribute)
-    {
-      Glib::ustring value = attribute->get_value(); //Success.
-      return value;
-    }
-  }
-
-  return ""; //Failed.
-}
-
-void Document_XML::set_node_attribute_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Glib::ustring& strValue)
-{
-  if(node)
-  {
-    xmlpp::Attribute* attribute = node->get_attribute(strAttributeName);
-    if(attribute)
-      attribute->set_value(strValue);
-    else
-    {
-      if(!strValue.empty()) //Don't add an attribute if the value is empty, to keep the document smaller.
-        node->set_attribute(strAttributeName, strValue);
-    }
-  }
-}
-
-xmlpp::Element* Document_XML::get_node_child_named(const xmlpp::Element* node, const Glib::ustring& strName)
-{
-  xmlpp::Element* nodeResult = 0;
-
-  if(node)
-  { 
-    xmlpp::Node::NodeList list = node->get_children(strName);
-
-    //We check all of them, instead of just the first, until we find one,
-    //because get_children() returns, for instance, TextNodes (which are not Elements) for "text", 
-    //as well as Elements with the name "text".
-    for(xmlpp::Node::NodeList::iterator iter = list.begin(); iter != list.end(); ++iter)
-    {
-      nodeResult = dynamic_cast<xmlpp::Element*>(*iter);  
-      if(nodeResult)
-        return nodeResult;
-    }                       
-  }
-
-  return nodeResult;
-}
-
-xmlpp::Element* Document_XML::get_node_child_named_with_add(xmlpp::Element* node, const Glib::ustring& strName)
-{
-  xmlpp::Element* nodeResult = get_node_child_named(node, strName);
-
-  if(!nodeResult)
-    nodeResult = node->add_child(strName);
-
-  return nodeResult;
 }
 
 void Document_XML::set_dtd_name(const std::string& strVal)

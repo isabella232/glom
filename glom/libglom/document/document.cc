@@ -19,6 +19,7 @@
  */
 
 #include <libglom/document/document.h>
+#include <libglom/xml_utils.h>
 #include <libglom/utils.h>
 //#include <libglom/data_structure/glomconversions.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_summary.h>
@@ -1126,198 +1127,6 @@ void Document::change_relationship_name(const Glib::ustring& table_name, const G
  }
 
 
-bool Document::get_node_attribute_value_as_bool(const xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value_default)
-{
-  bool result = value_default;
-  const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
-
-  //Get number for string:
-  if(!value_string.empty())
-  {
-    result = (value_string == "true");
-  }
-
-  return result;
-}
-
-Glib::ustring Document::get_child_text_node(const xmlpp::Element* node, const Glib::ustring& child_node_name) const
-{
-  const xmlpp::Element* child = get_node_child_named(node, child_node_name);
-  if(child)
-  {
-     const xmlpp::TextNode* text_child = child->get_child_text();
-     if(text_child)
-       return text_child->get_content();
-  }
-
-  return Glib::ustring();
-}
-
-void Document::set_child_text_node(xmlpp::Element* node, const Glib::ustring& child_node_name, const Glib::ustring& text)
-{
-  xmlpp::Element* child = get_node_child_named(node, child_node_name);
-  if(!child)
-  {
-    if(text.empty())
-      return; //Keep the document smaller by avoiding empty nodes.
-
-    child = node->add_child(child_node_name);
-  }
-
-  const Glib::ustring text_used = Utils::string_clean_for_xml(text);
-
-  xmlpp::TextNode* text_child = child->get_child_text();
-  if(!text_child)
-    child->add_child_text(text_used);
-  else
-    text_child->set_content(text_used);
-}
-
-void Document::set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value, bool value_default)
-{
-  if((value == value_default) && !node->get_attribute(strAttributeName))
-    return; //Use the non-existance of an attribute to mean zero, to save space.
-
-  Glib::ustring strValue = (value ? "true" : "false");
-  set_node_attribute_value(node, strAttributeName, strValue);
-}
-
-void Document::set_node_attribute_value_as_decimal(xmlpp::Element* node, const Glib::ustring& strAttributeName, guint value, guint value_default)
-{
-  if((value == value_default) && !node->get_attribute(strAttributeName))
-    return; //Use the non-existance of an attribute to mean zero, to save space.
-
-  //Get text representation of int:
-  std::stringstream thestream;
-  thestream.imbue( std::locale::classic() ); //The C locale.
-  thestream << value;
-  const Glib::ustring value_string = thestream.str();
-
-  set_node_attribute_value(node, strAttributeName, value_string);
-}
-
-void Document::set_node_attribute_value_as_decimal_double(xmlpp::Element* node, const Glib::ustring& strAttributeName, double value)
-{
-  if(!value && !node->get_attribute(strAttributeName))
-    return; //Use the non-existance of an attribute to mean zero, to save space.
-
-  //Get text representation of int:
-  std::stringstream thestream;
-  thestream.imbue( std::locale::classic() ); //The C locale.
-  thestream << value;
-  const Glib::ustring value_string = thestream.str();
-
-  set_node_attribute_value(node, strAttributeName, value_string);
-}
-
-guint Document::get_node_attribute_value_as_decimal(const xmlpp::Element* node, const Glib::ustring& strAttributeName, guint value_default)
-{
-  guint result = value_default;
-  const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
-
-  //Get number for string:
-  if(!value_string.empty())
-  {
-    std::stringstream thestream;
-    thestream.imbue( std::locale::classic() ); //The C locale.
-    thestream.str(value_string);
-    thestream >> result;
-  }
-
-  return result;
-}
-
-double Document::get_node_attribute_value_as_decimal_double(const xmlpp::Element* node, const Glib::ustring& strAttributeName)
-{
-  double result = 0;
-  const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
-
-  //Get number for string:
-  if(!value_string.empty())
-  {
-    std::stringstream thestream;
-    thestream.imbue( std::locale::classic() ); //The C locale.
-    thestream.str(value_string);
-    thestream >> result;
-  }
-
-  return result;
-}
-
-void Document::set_node_attribute_value_as_float(xmlpp::Element* node, const Glib::ustring& strAttributeName, float value)
-{
-    if(value == std::numeric_limits<float>::infinity() && !node->get_attribute(strAttributeName))
-    return; //Use the non-existance of an attribute to mean "invalid"/infinity, to save space.
-
-  //Get text representation of float:
-  std::stringstream thestream;
-  thestream.imbue( std::locale::classic() ); //The C locale.
-  thestream << value;
-  const Glib::ustring value_string = thestream.str();
-
-  set_node_attribute_value(node, strAttributeName, value_string);
-}
-
-float Document::get_node_attribute_value_as_float(const xmlpp::Element* node, const Glib::ustring& strAttributeName)
-{
-  float result = std::numeric_limits<float>::infinity();
-  const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
-
-  //Get number for string:
-  if(!value_string.empty())
-  {
-    std::stringstream thestream;
-    thestream.imbue( std::locale::classic() ); //The C locale.
-    thestream.str(value_string);
-    thestream >> result;
-  }
-
-  return result;
-}
-
-void Document::set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Gnome::Gda::Value& value,  Field::glom_field_type field_type)
-{
-  NumericFormat format_ignored; //Because we use ISO format.
-  const Glib::ustring value_as_text = Field::to_file_format(value, field_type);
-  set_node_attribute_value(node, strAttributeName, value_as_text);
-}
-
-void Document::set_node_text_child_as_value(xmlpp::Element* node, const Gnome::Gda::Value& value, Field::glom_field_type field_type)
-{
-  if(!node)
-    return;
-
-  const Glib::ustring value_as_text = Field::to_file_format(value, field_type);
-  node->set_child_text( Utils::string_clean_for_xml(value_as_text) );
-}
-
-Gnome::Gda::Value Document::get_node_attribute_value_as_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName, Field::glom_field_type field_type)
-{
-  const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
-
-  bool success = false;
-  const Gnome::Gda::Value result = Field::from_file_format(value_string, field_type, success);
-  if(success)
-    return result;
-  else
-    return Gnome::Gda::Value();
-}
-
-Gnome::Gda::Value Document::get_node_text_child_as_value(const xmlpp::Element* node, Field::glom_field_type field_type)
-{
-  const xmlpp::TextNode* text_child = node->get_child_text();
-  if(!text_child)
-    return Gnome::Gda::Value();
-
-  const Glib::ustring value_string = text_child->get_content();
-
-  bool success = false;
-  const Gnome::Gda::Value result = Field::from_file_format(value_string, field_type, success);
-  if(success)
-    return result;
-  else
-    return Gnome::Gda::Value();
-}
 
 Document::type_listTableInfo Document::get_tables(bool plus_system_prefs) const
 {
@@ -2033,29 +1842,29 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
   //Numeric formatting:
   if(!field_name.empty() && (field_type == Field::TYPE_NUMERIC))
   {
-    format.m_numeric_format.m_use_thousands_separator = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR);
-    format.m_numeric_format.m_decimal_places_restricted = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED);
-    format.m_numeric_format.m_decimal_places = get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES);
-    format.m_numeric_format.m_currency_symbol = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL);
+    format.m_numeric_format.m_use_thousands_separator = XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR);
+    format.m_numeric_format.m_decimal_places_restricted = XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED);
+    format.m_numeric_format.m_decimal_places = XmlUtils::get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES);
+    format.m_numeric_format.m_currency_symbol = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL);
     format.m_numeric_format.m_alt_foreground_color_for_negatives =
-      get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_USE_ALT_NEGATIVE_COLOR);
+      XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_USE_ALT_NEGATIVE_COLOR);
   }
 
   //Text formatting:
   if(field_type == Field::TYPE_TEXT)
   {
-    format.set_text_format_multiline( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE) );
-    format.set_text_format_multiline_height_lines( get_node_attribute_value_as_decimal(element, 
+    format.set_text_format_multiline( XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE) );
+    format.set_text_format_multiline_height_lines( XmlUtils::get_node_attribute_value_as_decimal(element, 
       GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES_DEFAULT) );
   }
 
-  format.set_text_format_font( get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_TEXT_FONT) );
-  format.set_text_format_color_foreground( get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_FOREGROUND) );
-  format.set_text_format_color_background( get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_BACKGROUND) );
+  format.set_text_format_font( XmlUtils::get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_TEXT_FONT) );
+  format.set_text_format_color_foreground( XmlUtils::get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_FOREGROUND) );
+  format.set_text_format_color_background( XmlUtils::get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_BACKGROUND) );
 
   //Alignment. Not-specified means auto.
   FieldFormatting::HorizontalAlignment alignment = FieldFormatting::HORIZONTAL_ALIGNMENT_AUTO;
-  const Glib::ustring alignment_str = get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT);
+  const Glib::ustring alignment_str = XmlUtils::get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT);
   if(alignment_str == GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_LEFT)
     alignment = FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT;
   else if(alignment_str == GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_RIGHT)
@@ -2067,13 +1876,13 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
   if(!field_name.empty())
   {
     format.set_choices_restricted(
-      get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED),
-      get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED_AS_RADIO_BUTTONS) );
-    format.set_has_custom_choices( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM) );
+      XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED),
+      XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED_AS_RADIO_BUTTONS) );
+    format.set_has_custom_choices( XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM) );
 
     if(format.get_has_custom_choices())
     {
-      const xmlpp::Element* nodeChoiceList = get_node_child_named(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM_LIST);
+      const xmlpp::Element* nodeChoiceList = XmlUtils::get_node_child_named(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM_LIST);
       if(nodeChoiceList)
       {
         FieldFormatting::type_list_values list_values;
@@ -2104,20 +1913,20 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
       }
     }
 
-    format.set_has_related_choices( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED) );
+    format.set_has_related_choices( XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED) );
 
-    const Glib::ustring relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP);
+    const Glib::ustring relationship_name = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP);
     if(!relationship_name.empty())
     {
       sharedptr<const Relationship> relationship = get_relationship(table_name, relationship_name);
 
-      bool show_all = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SHOW_ALL);
+      bool show_all = XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SHOW_ALL);
       if(get_document_format_version() < 6)
       {
         show_all = true; //This was the behaviour before this checkbox existed.
       }
 
-      const Glib::ustring field_first = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD);
+      const Glib::ustring field_first = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD);
       sharedptr<LayoutItem_Field> layout_field_first = sharedptr<LayoutItem_Field>::create();
       layout_field_first->set_name(field_first);
 
@@ -2127,7 +1936,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
       if(m_document_format_version < 6)
       {
         //The deprecated way:
-        const Glib::ustring field_second = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND);
+        const Glib::ustring field_second = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND);
         if(!field_second.empty())
         {
           extra_layouts = sharedptr<LayoutGroup>::create();
@@ -2139,10 +1948,10 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
       else
       {
         //Get the extra layout for related choices:
-        xmlpp::Element* nodeExtraLayout = get_node_child_named(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_EXTRA_LAYOUT);
+        xmlpp::Element* nodeExtraLayout = XmlUtils::get_node_child_named(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_EXTRA_LAYOUT);
         if(nodeExtraLayout)
         {
-          xmlpp::Element* nodeGroups = get_node_child_named(nodeExtraLayout, GLOM_NODE_DATA_LAYOUT_GROUPS);
+          xmlpp::Element* nodeGroups = XmlUtils::get_node_child_named(nodeExtraLayout, GLOM_NODE_DATA_LAYOUT_GROUPS);
           if(nodeGroups)
           {
 
@@ -2159,7 +1968,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
 
       //Sort fields:
       FieldFormatting::type_list_sort_fields sort_fields;
-      xmlpp::Element* elementSortBy = get_node_child_named(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SORTBY);
+      xmlpp::Element* elementSortBy = XmlUtils::get_node_child_named(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SORTBY);
       if(elementSortBy)
       {
         load_after_sort_by(elementSortBy, table_name, sort_fields);
@@ -2179,7 +1988,7 @@ void Document::load_after_layout_item_usesrelationship(const xmlpp::Element* ele
   if(!element || !item)
     return;
 
-  const Glib::ustring relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
+  const Glib::ustring relationship_name = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
   sharedptr<Relationship> relationship;
   if(!relationship_name.empty())
   {
@@ -2193,7 +2002,7 @@ void Document::load_after_layout_item_usesrelationship(const xmlpp::Element* ele
     }
   }
 
-  const Glib::ustring related_relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATED_RELATIONSHIP_NAME);
+  const Glib::ustring related_relationship_name = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATED_RELATIONSHIP_NAME);
   if(!related_relationship_name.empty() && relationship)
   {
     sharedptr<Relationship> related_relationship = get_relationship(relationship->get_to_table(), related_relationship_name);
@@ -2206,7 +2015,7 @@ void Document::load_after_layout_item_usesrelationship(const xmlpp::Element* ele
 
 void Document::load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& item)
 {
-  const Glib::ustring name = get_node_attribute_value(element, GLOM_ATTRIBUTE_NAME);
+  const Glib::ustring name = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_NAME);
   item->set_name(name);
 
   load_after_layout_item_usesrelationship(element, table_name, item);
@@ -2223,16 +2032,16 @@ void Document::load_after_layout_item_field(const xmlpp::Element* element, const
   //}
   item->set_full_field_details(field);
 
-  item->set_editable( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_EDITABLE) );
+  item->set_editable( XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_EDITABLE) );
 
-  item->set_formatting_use_default( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING) );
+  item->set_formatting_use_default( XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING) );
 
 
-  const xmlpp::Element* nodeCustomTitle = get_node_child_named(element, GLOM_NODE_LAYOUT_ITEM_CUSTOM_TITLE);
+  const xmlpp::Element* nodeCustomTitle = XmlUtils::get_node_child_named(element, GLOM_NODE_LAYOUT_ITEM_CUSTOM_TITLE);
   if(nodeCustomTitle)
   {
     sharedptr<CustomTitle> custom_title = sharedptr<CustomTitle>::create();
-    custom_title->set_use_custom_title( get_node_attribute_value_as_bool(nodeCustomTitle, GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE_USE) );
+    custom_title->set_use_custom_title( XmlUtils::get_node_attribute_value_as_bool(nodeCustomTitle, GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE_USE) );
 
     load_after_translations(nodeCustomTitle, custom_title);
     item->set_title_custom(custom_title);
@@ -2257,7 +2066,7 @@ void Document::load_after_sort_by(const xmlpp::Element* node, const Glib::ustrin
       load_after_layout_item_field(element, table_name, item);
       item->set_full_field_details( get_field(item->get_table_used(table_name), item->get_name()) );
 
-      const bool ascending = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_SORT_ASCENDING);
+      const bool ascending = XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_SORT_ASCENDING);
 
       list_fields.push_back( LayoutItem_GroupBy::type_pair_sort_field(item, ascending) );
     }
@@ -2273,11 +2082,11 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
   }
 
   //Get the group details:
-  group->set_name( get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME) );
-  group->set_title_original( get_node_attribute_value(node, GLOM_ATTRIBUTE_TITLE) );
+  group->set_name( XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME) );
+  group->set_title_original( XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_TITLE) );
   group->set_columns_count(
-    get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_COLUMNS_COUNT, 1)); //default to 1, because 0 is meaningless.
-  group->set_border_width( get_node_attribute_value_as_decimal_double(node, GLOM_ATTRIBUTE_BORDER_WIDTH) );
+    XmlUtils::get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_COLUMNS_COUNT, 1)); //default to 1, because 0 is meaningless.
+  group->set_border_width( XmlUtils::get_node_attribute_value_as_decimal_double(node, GLOM_ATTRIBUTE_BORDER_WIDTH) );
 
   //Translations:
   sharedptr<LayoutGroup> temp = group;
@@ -2305,9 +2114,9 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       {
         sharedptr<LayoutItem_Button> item = sharedptr<LayoutItem_Button>::create();
 
-        item->set_script( get_child_text_node(element, GLOM_NODE_BUTTON_SCRIPT) );
+        item->set_script( XmlUtils::get_child_text_node(element, GLOM_NODE_BUTTON_SCRIPT) );
         if(!(item->get_has_script())) //Try the deprecated attribute instead
-           item->set_script( get_node_attribute_value(element, GLOM_DEPRECATED_ATTRIBUTE_BUTTON_SCRIPT) );
+           item->set_script( XmlUtils::get_node_attribute_value(element, GLOM_DEPRECATED_ATTRIBUTE_BUTTON_SCRIPT) );
 
         load_after_translations(element, item);
 
@@ -2319,7 +2128,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         load_after_translations(element, item);
 
         //The text can be translated too, so it has its own node:
-        const xmlpp::Element* element_text = get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT);
+        const xmlpp::Element* element_text = XmlUtils::get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT);
         if(element_text)
         {
           sharedptr<TranslatableItem> translatable_text = sharedptr<TranslatableItem>::create();
@@ -2335,7 +2144,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         sharedptr<LayoutItem_Image> item = sharedptr<LayoutItem_Image>::create();
         load_after_translations(element, item);
 
-        item->set_image(get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, Field::TYPE_IMAGE));
+        item->set_image(XmlUtils::get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, Field::TYPE_IMAGE));
 
         item_added = item;
       }
@@ -2345,16 +2154,16 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         //Has no translations: load_after_translations(element, item);
 
         item->set_coordinates(
-          get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_X),
-          get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_Y),
-          get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_X),
-          get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_Y) );
+          XmlUtils::get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_X),
+          XmlUtils::get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_Y),
+          XmlUtils::get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_X),
+          XmlUtils::get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_Y) );
           
         item->set_line_width(
-          get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_WIDTH) );
+          XmlUtils::get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_WIDTH) );
           
         item->set_line_color(
-          get_node_attribute_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_COLOR) );
+          XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_COLOR) );
 
         item_added = item;
       }
@@ -2364,7 +2173,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         //item.set_full_field_details_empty();
         load_after_layout_item_field(element, table_name, item);
         item->set_full_field_details( get_field(item->get_table_used(table_name), item->get_name()) );
-        item->set_summary_type_from_sql( get_node_attribute_value(element, GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE) );
+        item->set_summary_type_from_sql( XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE) );
 
         item_added = item;
       }
@@ -2410,11 +2219,11 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
 
         load_after_layout_item_usesrelationship(element, table_name, portal);
 
-        xmlpp::Element* elementNavigationRelationshipSpecific = get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP);
+        xmlpp::Element* elementNavigationRelationshipSpecific = XmlUtils::get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP);
         if(elementNavigationRelationshipSpecific)
         {
           const Glib::ustring navigation_type_as_string =
-            get_node_attribute_value(elementNavigationRelationshipSpecific,
+            XmlUtils::get_node_attribute_value(elementNavigationRelationshipSpecific,
             GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE);
           if(navigation_type_as_string.empty() ||
              navigation_type_as_string == GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_AUTOMATIC)
@@ -2439,7 +2248,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         //Get the calendar portal's date field:
         if(calendar_portal)
         {
-          const Glib::ustring date_field_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_PORTAL_CALENDAR_DATE_FIELD);
+          const Glib::ustring date_field_name = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_PORTAL_CALENDAR_DATE_FIELD);
           sharedptr<Field> date_field = get_field(calendar_portal->get_table_used(table_name), date_field_name);
           calendar_portal->set_date_field(date_field);
         }
@@ -2447,27 +2256,27 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         if(!calendar_portal)
         {
           const gulong rows_count_min = 
-            get_node_attribute_value_as_decimal_double(element, 
+            XmlUtils::get_node_attribute_value_as_decimal_double(element, 
               GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT_MIN);
           const gulong rows_count_max = 
-            get_node_attribute_value_as_decimal_double(element, 
+            XmlUtils::get_node_attribute_value_as_decimal_double(element, 
               GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT_MAX);
           if(rows_count_min || rows_count_max) //Ignore useless 0, 0 values.
             portal->set_rows_count(rows_count_min, rows_count_max);
             
           //Print Layout specific stuff:
           portal->set_print_layout_row_height(
-            get_node_attribute_value_as_decimal(element, 
+            XmlUtils::get_node_attribute_value_as_decimal(element, 
               GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT) );
             
           portal->set_print_layout_row_line_width(
-            get_node_attribute_value_as_decimal(element, 
+            XmlUtils::get_node_attribute_value_as_decimal(element, 
               GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_WIDTH) );
           portal->set_print_layout_column_line_width(
-            get_node_attribute_value_as_decimal(element, 
+            XmlUtils::get_node_attribute_value_as_decimal(element, 
               GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_COLUMN_LINE_WIDTH) );
           portal->set_print_layout_line_color(
-            get_node_attribute_value(element, 
+            XmlUtils::get_node_attribute_value(element, 
               GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_LINE_COLOR) );
         }
                 
@@ -2481,7 +2290,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
 
         //Group-By field:
         sharedptr<LayoutItem_Field> field_groupby = sharedptr<LayoutItem_Field>::create();
-        xmlpp::Element* elementGroupBy = get_node_child_named(element, GLOM_NODE_REPORT_ITEM_GROUPBY_GROUPBY);
+        xmlpp::Element* elementGroupBy = XmlUtils::get_node_child_named(element, GLOM_NODE_REPORT_ITEM_GROUPBY_GROUPBY);
         if(elementGroupBy)
         {
           load_after_layout_item_field(elementGroupBy, table_name, field_groupby);
@@ -2493,7 +2302,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         //field_groupby.set_full_field_details_empty();
 
         //Sort fields:
-        xmlpp::Element* elementSortBy = get_node_child_named(element, GLOM_NODE_REPORT_ITEM_GROUPBY_SORTBY);
+        xmlpp::Element* elementSortBy = XmlUtils::get_node_child_named(element, GLOM_NODE_REPORT_ITEM_GROUPBY_SORTBY);
         if(elementSortBy)
         {
           LayoutItem_GroupBy::type_list_sort_fields sort_fields;
@@ -2502,10 +2311,10 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         }
 
         //Secondary fields:
-        xmlpp::Element* elementSecondary = get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS);
+        xmlpp::Element* elementSecondary = XmlUtils::get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS);
         if(elementSecondary)
         {
-          xmlpp::Element* elementGroup = get_node_child_named(elementSecondary, GLOM_NODE_DATA_LAYOUT_GROUP);
+          xmlpp::Element* elementGroup = XmlUtils::get_node_child_named(elementSecondary, GLOM_NODE_DATA_LAYOUT_GROUP);
           if(elementGroup)
           {
             load_after_layout_group(elementGroup, table_name, child_group->get_secondary_fields(), with_print_layout_positions);
@@ -2537,7 +2346,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
     sharedptr<LayoutItem_WithFormatting> withformatting = sharedptr<LayoutItem_WithFormatting>::cast_dynamic(item_added);
     if(withformatting)
     {
-       const xmlpp::Element* elementFormatting = get_node_child_named(element, GLOM_NODE_FORMAT);
+       const xmlpp::Element* elementFormatting = XmlUtils::get_node_child_named(element, GLOM_NODE_FORMAT);
        if(elementFormatting)
        {
          //TODO: Provide the name of the relationship's table if there is a relationship:
@@ -2551,7 +2360,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       group->add_item(item_added);
 
       //Attributes that all items could have:
-      item_added->set_display_width( get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_LAYOUT_ITEM_COLUMN_WIDTH) );
+      item_added->set_display_width( XmlUtils::get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_LAYOUT_ITEM_COLUMN_WIDTH) );
 
       if(with_print_layout_positions)
         load_after_print_layout_position(element, item_added);
@@ -2567,10 +2376,10 @@ void Document::load_after_translations(const xmlpp::Element* element, const shar
   const sharedptr<ChoiceValue> choicevalue = sharedptr<ChoiceValue>::cast_dynamic(item);
   if(!choicevalue) //This item does not use the title, but uses the title translations to translate its value, if it is of type text.
   {
-    item->set_title_original( get_node_attribute_value(element, GLOM_ATTRIBUTE_TITLE));
+    item->set_title_original( XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_TITLE));
   }
 
-  const xmlpp::Element* nodeTranslations = get_node_child_named(element, GLOM_NODE_TRANSLATIONS_SET);
+  const xmlpp::Element* nodeTranslations = XmlUtils::get_node_child_named(element, GLOM_NODE_TRANSLATIONS_SET);
   if(nodeTranslations)
   {
     xmlpp::Node::NodeList listNodesTranslations = nodeTranslations->get_children(GLOM_NODE_TRANSLATION);
@@ -2579,8 +2388,8 @@ void Document::load_after_translations(const xmlpp::Element* element, const shar
       const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
       if(element)
       {
-        const Glib::ustring locale = get_node_attribute_value(element, GLOM_ATTRIBUTE_TRANSLATION_LOCALE);
-        const Glib::ustring translation = get_node_attribute_value(element, GLOM_ATTRIBUTE_TRANSLATION_VALUE);
+        const Glib::ustring locale = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_TRANSLATION_LOCALE);
+        const Glib::ustring translation = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_TRANSLATION_VALUE);
         item->set_title(translation, locale);
 
         //Remember any new translation locales in our cached list:
@@ -2598,7 +2407,7 @@ void Document::load_after_translations(const xmlpp::Element* element, const shar
      sharedptr<HasTitleSingular>::cast_dynamic(item);
   if(has_title_singular)
   {
-    const xmlpp::Element* nodeTitleSingular = get_node_child_named(element, GLOM_NODE_TABLE_TITLE_SINGULAR);
+    const xmlpp::Element* nodeTitleSingular = XmlUtils::get_node_child_named(element, GLOM_NODE_TABLE_TITLE_SINGULAR);
 
     if(!has_title_singular->m_title_singular)
      has_title_singular->m_title_singular = sharedptr<TranslatableItem>::create();
@@ -2612,20 +2421,20 @@ void Document::load_after_print_layout_position(const xmlpp::Element* nodeItem, 
   if(!nodeItem)
     return;
 
-  const xmlpp::Element* child = get_node_child_named(nodeItem, GLOM_NODE_POSITION);
+  const xmlpp::Element* child = XmlUtils::get_node_child_named(nodeItem, GLOM_NODE_POSITION);
   if(child)
   {
-    const double x = get_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_X);
-    const double y = get_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_Y);
-    const double width = get_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_WIDTH);
-    const double height = get_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_HEIGHT);
+    const double x = XmlUtils::get_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_X);
+    const double y = XmlUtils::get_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_Y);
+    const double width = XmlUtils::get_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_WIDTH);
+    const double height = XmlUtils::get_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_HEIGHT);
     item->set_print_layout_position(x, y, width, height);
   }
 }
 
 void Document::load_after_choicevalue(const xmlpp::Element* element, const sharedptr<ChoiceValue>& item, Field::glom_field_type field_type)
 {
-  const Gnome::Gda::Value value = get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_VALUE, field_type);
+  const Gnome::Gda::Value value = XmlUtils::get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_VALUE, field_type);
   item->set_value(value);
 
   sharedptr<ChoiceValue> nonconst_item = item; //TODO: Avoid this.
@@ -2659,7 +2468,7 @@ bool Document::load_after(int& failure_code)
     const xmlpp::Element* nodeRoot = get_node_document();
     if(nodeRoot)
     {
-      m_document_format_version = get_node_attribute_value_as_decimal(nodeRoot, GLOM_ATTRIBUTE_FORMAT_VERSION);
+      m_document_format_version = XmlUtils::get_node_attribute_value_as_decimal(nodeRoot, GLOM_ATTRIBUTE_FORMAT_VERSION);
 
       if(m_document_format_version > get_latest_known_document_format_version())
       {
@@ -2668,8 +2477,8 @@ bool Document::load_after(int& failure_code)
         return false;
       }
 
-      m_is_example = get_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE);
-      m_is_backup = get_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_BACKUP);
+      m_is_example = XmlUtils::get_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE);
+      m_is_backup = XmlUtils::get_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_BACKUP);
 
       load_after_translations(nodeRoot, m_database_title);
 
@@ -2677,20 +2486,20 @@ bool Document::load_after(int& failure_code)
       //load_after_translations(), but load this from old documents if
       //if it is present, and the only thing present:
       const Glib::ustring database_title_deprecated = 
-        get_node_attribute_value(nodeRoot, GLOM_DEPRECATED_ATTRIBUTE_CONNECTION_DATABASE_TITLE);
+        XmlUtils::get_node_attribute_value(nodeRoot, GLOM_DEPRECATED_ATTRIBUTE_CONNECTION_DATABASE_TITLE);
       if(!database_title_deprecated.empty() && get_database_title_original().empty())
         m_database_title->set_title_original(database_title_deprecated);
 
-      m_startup_script = get_child_text_node(nodeRoot, GLOM_NODE_STARTUP_SCRIPT);
+      m_startup_script = XmlUtils::get_child_text_node(nodeRoot, GLOM_NODE_STARTUP_SCRIPT);
 
-      m_translation_original_locale = get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE);
+      m_translation_original_locale = XmlUtils::get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE);
       m_translation_available_locales.push_back(m_translation_original_locale); //Just a cache.
 
-      const xmlpp::Element* nodeConnection = get_node_child_named(nodeRoot, GLOM_NODE_CONNECTION);
+      const xmlpp::Element* nodeConnection = XmlUtils::get_node_child_named(nodeRoot, GLOM_NODE_CONNECTION);
       if(nodeConnection)
       {
         //Connection information:
-        m_network_shared = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_NETWORK_SHARED, false /* default */);
+        m_network_shared = XmlUtils::get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_NETWORK_SHARED, false /* default */);
 
         //Older documents always defaulted to network-sharing with self-hosting.
         if(!m_network_shared && !m_is_example && (get_document_format_version() < 4))
@@ -2700,12 +2509,12 @@ bool Document::load_after(int& failure_code)
           m_network_shared = true;
         }
 
-        m_connection_server = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER);
-        m_connection_port = get_node_attribute_value_as_decimal(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_PORT);
-        m_connection_try_other_ports = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_TRY_OTHER_PORTS, true /* default */);
-        m_connection_database = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_DATABASE);
+        m_connection_server = XmlUtils::get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER);
+        m_connection_port = XmlUtils::get_node_attribute_value_as_decimal(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_PORT);
+        m_connection_try_other_ports = XmlUtils::get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_TRY_OTHER_PORTS, true /* default */);
+        m_connection_database = XmlUtils::get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_DATABASE);
 
-        const Glib::ustring attr_mode = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE);
+        const Glib::ustring attr_mode = XmlUtils::get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE);
 
         HostingMode mode = HOSTING_MODE_DEFAULT;
 
@@ -2713,7 +2522,7 @@ bool Document::load_after(int& failure_code)
         {
           // If no hosting mode is set, then try the self_hosted flag which
           // was used before sqlite support was implemented.
-          const bool self_hosted = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED);
+          const bool self_hosted = XmlUtils::get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED);
           mode = self_hosted ? HOSTING_MODE_POSTGRES_SELF : HOSTING_MODE_POSTGRES_CENTRAL;
         }
         else
@@ -2744,27 +2553,27 @@ bool Document::load_after(int& failure_code)
         xmlpp::Element* nodeTable = dynamic_cast<xmlpp::Element*>(*iter);
         if(nodeTable)
         {
-          const Glib::ustring table_name = get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME);
+          const Glib::ustring table_name = XmlUtils::get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME);
 
           m_tables[table_name] = DocumentTableInfo();
           DocumentTableInfo& doctableinfo = m_tables[table_name]; //Setting stuff directly in the reference is more efficient than copying it later:
 
           sharedptr<TableInfo> table_info(new TableInfo());
           table_info->set_name(table_name);
-          table_info->set_hidden( get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN) );
-          table_info->set_default( get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT) );
+          table_info->set_hidden( XmlUtils::get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN) );
+          table_info->set_default( XmlUtils::get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT) );
 
           doctableinfo.m_info = table_info;
 
-          doctableinfo.m_overviewx = get_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_X);
-          doctableinfo.m_overviewy = get_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_Y);
+          doctableinfo.m_overviewx = XmlUtils::get_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_X);
+          doctableinfo.m_overviewy = XmlUtils::get_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_Y);
 
           //Translations:
           load_after_translations(nodeTable, doctableinfo.m_info);
 
           //Relationships:
           //These should be loaded before the fields, because the fields use them.
-          const xmlpp::Element* nodeRelationships = get_node_child_named(nodeTable, GLOM_NODE_RELATIONSHIPS);
+          const xmlpp::Element* nodeRelationships = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_RELATIONSHIPS);
           if(nodeRelationships)
           {
             const xmlpp::Node::NodeList listNodes = nodeRelationships->get_children(GLOM_NODE_RELATIONSHIP);
@@ -2774,16 +2583,16 @@ bool Document::load_after(int& failure_code)
               if(nodeChild)
               {
                 sharedptr<Relationship> relationship = sharedptr<Relationship>::create();
-                const Glib::ustring relationship_name = get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_NAME);
+                const Glib::ustring relationship_name = XmlUtils::get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_NAME);
 
                 relationship->set_from_table(table_name);
                 relationship->set_name(relationship_name);;
 
-                relationship->set_from_field( get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_KEY) );
-                relationship->set_to_table( get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_OTHER_TABLE) );
-                relationship->set_to_field( get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_OTHER_KEY) );
-                relationship->set_auto_create( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_AUTO_CREATE) );
-                relationship->set_allow_edit( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_ALLOW_EDIT) );
+                relationship->set_from_field( XmlUtils::get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_KEY) );
+                relationship->set_to_table( XmlUtils::get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_OTHER_TABLE) );
+                relationship->set_to_field( XmlUtils::get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_OTHER_KEY) );
+                relationship->set_auto_create( XmlUtils::get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_AUTO_CREATE) );
+                relationship->set_allow_edit( XmlUtils::get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_ALLOW_EDIT) );
 
                 //Translations:
                 load_after_translations(nodeChild, relationship);
@@ -2794,7 +2603,7 @@ bool Document::load_after(int& failure_code)
           }
 
           //Fields:
-          const xmlpp::Element* nodeFields = get_node_child_named(nodeTable, GLOM_NODE_FIELDS);
+          const xmlpp::Element* nodeFields = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_FIELDS);
           if(nodeFields)
           {
             const Field::type_map_type_names type_names = Field::get_type_names();
@@ -2808,30 +2617,30 @@ bool Document::load_after(int& failure_code)
               {
                 sharedptr<Field> field(new Field());
 
-                const Glib::ustring strName = get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_NAME);
+                const Glib::ustring strName = XmlUtils::get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_NAME);
                 field->set_name( strName );
 
-                field->set_primary_key( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_PRIMARY_KEY) );
-                field->set_unique_key( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_UNIQUE) );
-                field->set_auto_increment( get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_AUTOINCREMENT) );
+                field->set_primary_key( XmlUtils::get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_PRIMARY_KEY) );
+                field->set_unique_key( XmlUtils::get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_UNIQUE) );
+                field->set_auto_increment( XmlUtils::get_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_AUTOINCREMENT) );
 
                 //Get lookup information, if present.
-                xmlpp::Element* nodeLookup = get_node_child_named(nodeChild, GLOM_NODE_FIELD_LOOKUP);
+                xmlpp::Element* nodeLookup = XmlUtils::get_node_child_named(nodeChild, GLOM_NODE_FIELD_LOOKUP);
                 if(nodeLookup)
                 {
-                  const Glib::ustring lookup_relationship_name = get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
+                  const Glib::ustring lookup_relationship_name = XmlUtils::get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
                   sharedptr<Relationship> lookup_relationship = get_relationship(table_name, lookup_relationship_name);
                   field->set_lookup_relationship(lookup_relationship);
 
-                  field->set_lookup_field( get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_FIELD) );
+                  field->set_lookup_field( XmlUtils::get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_FIELD) );
                 }
 
-                field->set_calculation( get_child_text_node(nodeChild, GLOM_NODE_CALCULATION) );
+                field->set_calculation( XmlUtils::get_child_text_node(nodeChild, GLOM_NODE_CALCULATION) );
                 if(!(field->get_has_calculation())) //Try the deprecated attribute instead
-                  field->set_calculation( get_node_attribute_value(nodeChild, GLOM_DEPRECATED_ATTRIBUTE_CALCULATION) );
+                  field->set_calculation( XmlUtils::get_node_attribute_value(nodeChild, GLOM_DEPRECATED_ATTRIBUTE_CALCULATION) );
 
                 //Field Type:
-                const Glib::ustring field_type = get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_TYPE);
+                const Glib::ustring field_type = XmlUtils::get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_TYPE);
 
                 //Get the type enum for this string representation of the type:
                 Field::glom_field_type field_type_enum = Field::TYPE_INVALID;
@@ -2848,10 +2657,10 @@ bool Document::load_after(int& failure_code)
                 //We set this after set_field_info(), because that gets a glom type from the (not-specified) gdatype. Yes, that's strange, and should probably be more explicit.
                 field->set_glom_type(field_type_enum);
 
-                field->set_default_value( get_node_attribute_value_as_value(nodeChild, GLOM_ATTRIBUTE_DEFAULT_VALUE, field_type_enum) );
+                field->set_default_value( XmlUtils::get_node_attribute_value_as_value(nodeChild, GLOM_ATTRIBUTE_DEFAULT_VALUE, field_type_enum) );
 
                 //Default Formatting:
-                const xmlpp::Element* elementFormatting = get_node_child_named(nodeChild, GLOM_NODE_FORMAT);
+                const xmlpp::Element* elementFormatting = XmlUtils::get_node_child_named(nodeChild, GLOM_NODE_FORMAT);
                 if(elementFormatting)
                   load_after_layout_item_formatting(elementFormatting, field->m_default_formatting, field_type_enum, table_name, strName);
 
@@ -2865,7 +2674,7 @@ bool Document::load_after(int& failure_code)
 
           // Load Example Rows after fields have been loaded, because they
           // need the fields to be able to associate a value to a named field.
-          const xmlpp::Element* nodeExampleRows = get_node_child_named(nodeTable, GLOM_NODE_EXAMPLE_ROWS);
+          const xmlpp::Element* nodeExampleRows = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_EXAMPLE_ROWS);
           if(nodeExampleRows)
           {
             //Loop through example_row child nodes:
@@ -2896,7 +2705,7 @@ bool Document::load_after(int& failure_code)
                         //std::cout << "  DEBUG: searching: field i=" << i << " =" << field->get_name() << std::endl;
                         if(field && (field->get_name() == column_name->get_value()))
                         {
-                          field_values[i] = get_node_text_child_as_value(nodeChild, field->get_glom_type());
+                          field_values[i] = XmlUtils::get_node_text_child_as_value(nodeChild, field->get_glom_type());
                           //std::cout << "    DEBUG: document example value: field=" << field->get_name() << ", value=" << field_values[i].to_string() << std::endl;
                           break;
                         }
@@ -2924,11 +2733,11 @@ bool Document::load_after(int& failure_code)
         xmlpp::Element* nodeTable = dynamic_cast<xmlpp::Element*>(*iter);
         if(nodeTable)
         {
-          const Glib::ustring table_name = get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME);
+          const Glib::ustring table_name = XmlUtils::get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME);
           DocumentTableInfo& doctableinfo = m_tables[table_name]; //Setting stuff directly in the reference is more efficient than copying it later:
 
           //Layouts:
-          const xmlpp::Element* nodeDataLayouts = get_node_child_named(nodeTable, GLOM_NODE_DATA_LAYOUTS);
+          const xmlpp::Element* nodeDataLayouts = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_DATA_LAYOUTS);
           if(nodeDataLayouts)
           {
             xmlpp::Node::NodeList listNodes = nodeDataLayouts->get_children(GLOM_NODE_DATA_LAYOUT);
@@ -2937,16 +2746,16 @@ bool Document::load_after(int& failure_code)
               xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
               if(node)
               {
-                const Glib::ustring layout_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
-                const Glib::ustring layout_platform = get_node_attribute_value(node, GLOM_ATTRIBUTE_LAYOUT_PLATFORM);
+                const Glib::ustring layout_name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
+                const Glib::ustring layout_platform = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_LAYOUT_PLATFORM);
 
-                Glib::ustring parent_table = get_node_attribute_value(node, GLOM_ATTRIBUTE_PARENT_TABLE_NAME);
+                Glib::ustring parent_table = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_PARENT_TABLE_NAME);
                 if(parent_table.empty())
                   parent_table = table_name; //Deal with the earlier file format that did not include this.
 
                 type_list_layout_groups layout_groups;
 
-                const xmlpp::Element* nodeGroups = get_node_child_named(node, GLOM_NODE_DATA_LAYOUT_GROUPS);
+                const xmlpp::Element* nodeGroups = XmlUtils::get_node_child_named(node, GLOM_NODE_DATA_LAYOUT_GROUPS);
                 if(nodeGroups)
                 {
                   //Look at all its children:
@@ -2956,7 +2765,7 @@ bool Document::load_after(int& failure_code)
                     const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(*iter);
                     if(node)
                     {
-                      const Glib::ustring group_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
+                      const Glib::ustring group_name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
                       if(!group_name.empty())
                       {
                         sharedptr<LayoutGroup> group(new LayoutGroup());
@@ -2980,7 +2789,7 @@ bool Document::load_after(int& failure_code)
 
 
           //Reports:
-          const xmlpp::Element* nodeReports = get_node_child_named(nodeTable, GLOM_NODE_REPORTS);
+          const xmlpp::Element* nodeReports = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_REPORTS);
           if(nodeReports)
           {
             xmlpp::Node::NodeList listNodes = nodeReports->get_children(GLOM_NODE_REPORT);
@@ -2989,8 +2798,8 @@ bool Document::load_after(int& failure_code)
               xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
               if(node)
               {
-                const Glib::ustring report_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
-                const bool show_table_title = get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE);
+                const Glib::ustring report_name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
+                const bool show_table_title = XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE);
 
                 //type_list_layout_groups layout_groups;
 
@@ -2998,7 +2807,7 @@ bool Document::load_after(int& failure_code)
                 report->set_name(report_name);
                 report->set_show_table_title(show_table_title);
 
-                const xmlpp::Element* nodeGroups = get_node_child_named(node, GLOM_NODE_DATA_LAYOUT_GROUPS);
+                const xmlpp::Element* nodeGroups = XmlUtils::get_node_child_named(node, GLOM_NODE_DATA_LAYOUT_GROUPS);
                 if(nodeGroups)
                 {
                   //Look at all its children:
@@ -3027,7 +2836,7 @@ bool Document::load_after(int& failure_code)
 
 
           //Print Layouts:
-          const xmlpp::Element* nodePrintLayouts = get_node_child_named(nodeTable, GLOM_NODE_PRINT_LAYOUTS);
+          const xmlpp::Element* nodePrintLayouts = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_PRINT_LAYOUTS);
           if(nodePrintLayouts)
           {
             xmlpp::Node::NodeList listNodes = nodePrintLayouts->get_children(GLOM_NODE_PRINT_LAYOUT);
@@ -3036,19 +2845,19 @@ bool Document::load_after(int& failure_code)
               xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
               if(node)
               {
-                const Glib::ustring name = get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
-                const bool show_table_title = get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE);
+                const Glib::ustring name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
+                const bool show_table_title = XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE);
 
                 sharedptr<PrintLayout> print_layout(new PrintLayout());
                 print_layout->set_name(name);
                 print_layout->set_show_table_title(show_table_title);
 
                 print_layout->set_show_grid(
-                  get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_GRID) );
+                  XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_GRID) );
                 print_layout->set_show_rules(
-                  get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_RULES) );
+                  XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_RULES) );
                 print_layout->set_show_outlines(
-                  get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_OUTLINES) );
+                  XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_OUTLINES) );
 
                 //Get the horizontal and vertical rules:
                 PrintLayout::type_vec_doubles vec_rules_h;
@@ -3059,7 +2868,7 @@ bool Document::load_after(int& failure_code)
                   if(!node)
                     continue;
 
-                  const double pos = get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_RULE_POSITION);
+                  const double pos = XmlUtils::get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_RULE_POSITION);
                   vec_rules_h.push_back(pos);
                 }
 		print_layout->set_horizontal_rules(vec_rules_h);
@@ -3072,22 +2881,22 @@ bool Document::load_after(int& failure_code)
                   if(!node)
                     continue;
 
-                  const double pos = get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_RULE_POSITION);
+                  const double pos = XmlUtils::get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_RULE_POSITION);
                   vec_rules_v.push_back(pos);
                 }
 		print_layout->set_vertical_rules(vec_rules_v);
 
 
                 //Page Setup:
-                const Glib::ustring key_file_text = get_child_text_node(node, GLOM_NODE_PAGE_SETUP);
+                const Glib::ustring key_file_text = XmlUtils::get_child_text_node(node, GLOM_NODE_PAGE_SETUP);
                 print_layout->set_page_setup(key_file_text);
                 
                 print_layout->set_page_count(
-                  get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_PRINT_LAYOUT_PAGE_COUNT, 1));
+                  XmlUtils::get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_PRINT_LAYOUT_PAGE_COUNT, 1));
                  
 
                 //Layout Groups:
-                const xmlpp::Element* nodeGroups = get_node_child_named(node, GLOM_NODE_DATA_LAYOUT_GROUPS);
+                const xmlpp::Element* nodeGroups = XmlUtils::get_node_child_named(node, GLOM_NODE_DATA_LAYOUT_GROUPS);
                 if(nodeGroups)
                 {
                   //Look at all its children:
@@ -3119,7 +2928,7 @@ bool Document::load_after(int& failure_code)
           //These are only used when recreating the database, for instance from an example file.
           m_groups.clear();
 
-          const xmlpp::Element* nodeGroups = get_node_child_named(nodeRoot, GLOM_NODE_GROUPS);
+          const xmlpp::Element* nodeGroups = XmlUtils::get_node_child_named(nodeRoot, GLOM_NODE_GROUPS);
           if(nodeGroups)
           {
             xmlpp::Node::NodeList listNodes = nodeGroups->get_children(GLOM_NODE_GROUP);
@@ -3130,8 +2939,8 @@ bool Document::load_after(int& failure_code)
               {
                 GroupInfo group_info;
 
-                group_info.set_name( get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME) );
-                group_info.m_developer = get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_DEVELOPER);
+                group_info.set_name( XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME) );
+                group_info.m_developer = XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_DEVELOPER);
 
                 xmlpp::Node::NodeList listTablePrivs = node->get_children(GLOM_NODE_TABLE_PRIVS);
                 for(xmlpp::Node::NodeList::iterator iter = listTablePrivs.begin(); iter != listTablePrivs.end(); ++iter)
@@ -3139,13 +2948,13 @@ bool Document::load_after(int& failure_code)
                   xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
                   if(node)
                   {
-                    const Glib::ustring table_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_TABLE_NAME);
+                    const Glib::ustring table_name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_TABLE_NAME);
 
                     Privileges privs;
-                    privs.m_view = get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRIV_VIEW);
-                    privs.m_edit = get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRIV_EDIT);
-                    privs.m_create = get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRIV_CREATE);
-                    privs.m_delete = get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRIV_DELETE);
+                    privs.m_view = XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRIV_VIEW);
+                    privs.m_edit = XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRIV_EDIT);
+                    privs.m_create = XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRIV_CREATE);
+                    privs.m_delete = XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_PRIV_DELETE);
 
                     group_info.m_map_privileges[table_name] = privs;
                   }
@@ -3160,7 +2969,7 @@ bool Document::load_after(int& failure_code)
           //Library Modules:
           m_map_library_scripts.clear();
 
-          const xmlpp::Element* nodeModules = get_node_child_named(nodeRoot, GLOM_NODE_LIBRARY_MODULES);
+          const xmlpp::Element* nodeModules = XmlUtils::get_node_child_named(nodeRoot, GLOM_NODE_LIBRARY_MODULES);
           if(nodeModules)
           {
             xmlpp::Node::NodeList listNodes = nodeModules->get_children(GLOM_NODE_LIBRARY_MODULE);
@@ -3170,7 +2979,7 @@ bool Document::load_after(int& failure_code)
               if(node)
               {
                 //The name is in an attribute:
-                const Glib::ustring module_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME);
+                const Glib::ustring module_name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME);
 
                 //The string is in a child text node:
                 Glib::ustring script;
@@ -3181,7 +2990,7 @@ bool Document::load_after(int& failure_code)
 
                 //Fall back to the deprecated attribute:
                 if(script.empty())
-                  script = get_node_attribute_value(node, GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT);
+                  script = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT);
 
                 m_map_library_scripts[module_name] = script;
               }
@@ -3223,32 +3032,32 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
   {
     if(field_type == Field::TYPE_NUMERIC)
     {
-      set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR,  format.m_numeric_format.m_use_thousands_separator);
-      set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED, format.m_numeric_format.m_decimal_places_restricted);
-      set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES, format.m_numeric_format.m_decimal_places);
-      set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL, format.m_numeric_format.m_currency_symbol);
-      set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_USE_ALT_NEGATIVE_COLOR,
+      XmlUtils::set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR,  format.m_numeric_format.m_use_thousands_separator);
+      XmlUtils::set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED, format.m_numeric_format.m_decimal_places_restricted);
+      XmlUtils::set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES, format.m_numeric_format.m_decimal_places);
+      XmlUtils::set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL, format.m_numeric_format.m_currency_symbol);
+      XmlUtils::set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_USE_ALT_NEGATIVE_COLOR,
         format.m_numeric_format.m_alt_foreground_color_for_negatives);
     }
 
     bool as_radio_buttons = false;
     const bool choices_restricted = format.get_choices_restricted(as_radio_buttons);
-    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED, choices_restricted);
-    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED_AS_RADIO_BUTTONS, as_radio_buttons);
-    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM, format.get_has_custom_choices());
+    XmlUtils::set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED, choices_restricted);
+    XmlUtils::set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED_AS_RADIO_BUTTONS, as_radio_buttons);
+    XmlUtils::set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM, format.get_has_custom_choices());
   }
 
   //Text formatting:
   if(field_type == Field::TYPE_TEXT)
   {
-    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE, format.get_text_format_multiline());
-    set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES, 
+    XmlUtils::set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE, format.get_text_format_multiline());
+    XmlUtils::set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES, 
       format.get_text_format_multiline_height_lines(), GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES_DEFAULT);
   }
 
-  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_FONT, format.get_text_format_font());
-  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_FOREGROUND, format.get_text_format_color_foreground());
-  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_BACKGROUND, format.get_text_format_color_background());
+  XmlUtils::set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_FONT, format.get_text_format_font());
+  XmlUtils::set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_FOREGROUND, format.get_text_format_color_foreground());
+  XmlUtils::set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_BACKGROUND, format.get_text_format_color_background());
 
   //Alignment:
   const FieldFormatting::HorizontalAlignment alignment = format.get_horizontal_alignment();
@@ -3256,7 +3065,7 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
   {
     const Glib::ustring alignment_str =
       (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT  ? GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_LEFT : GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_RIGHT);
-    set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT, alignment_str);
+    XmlUtils::set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT, alignment_str);
   }
 
   //Choices:
@@ -3275,7 +3084,7 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
       }
     }
 
-    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED, format.get_has_related_choices() );
+    XmlUtils::set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED, format.get_has_related_choices() );
 
     sharedptr<const Relationship> choice_relationship;
     sharedptr<const LayoutItem_Field> choice_layout_first;
@@ -3290,9 +3099,9 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
       if(choice_layout_first)
         choice_field = choice_layout_first->get_name();
 
-      set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP, glom_get_sharedptr_name(choice_relationship));
-      set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD, choice_field);
-      set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SHOW_ALL, choice_show_all);
+      XmlUtils::set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP, glom_get_sharedptr_name(choice_relationship));
+      XmlUtils::set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD, choice_field);
+      XmlUtils::set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SHOW_ALL, choice_show_all);
 
       //Save the extra fields to show for related choices:
       if(choice_extra_layouts)
@@ -3316,8 +3125,8 @@ void Document::save_before_layout_item_usesrelationship(xmlpp::Element* nodeItem
   if(!item)
     return;
 
-  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_RELATIONSHIP_NAME, item->get_relationship_name());
-  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_RELATED_RELATIONSHIP_NAME, item->get_related_relationship_name());
+  XmlUtils::set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_RELATIONSHIP_NAME, item->get_relationship_name());
+  XmlUtils::set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_RELATED_RELATIONSHIP_NAME, item->get_related_relationship_name());
 }
 
 void Document::save_before_layout_item_field(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem_Field>& field)
@@ -3325,17 +3134,17 @@ void Document::save_before_layout_item_field(xmlpp::Element* nodeItem, const sha
   if(!field)
     return;
 
-  set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_NAME, field->get_name());
+  XmlUtils::set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_NAME, field->get_name());
   save_before_layout_item_usesrelationship(nodeItem, field);
-  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_EDITABLE, field->get_editable());
+  XmlUtils::set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_EDITABLE, field->get_editable());
 
-  set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING, field->get_formatting_use_default());
+  XmlUtils::set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING, field->get_formatting_use_default());
 
   sharedptr<const CustomTitle> custom_title = field->get_title_custom();
   if(custom_title)
   {
     xmlpp::Element* elementCustomTitle = nodeItem->add_child(GLOM_NODE_LAYOUT_ITEM_CUSTOM_TITLE);
-    set_node_attribute_value_as_bool(elementCustomTitle, GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE_USE, custom_title->get_use_custom_title());
+    XmlUtils::set_node_attribute_value_as_bool(elementCustomTitle, GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE_USE, custom_title->get_use_custom_title());
 
     save_before_translations(elementCustomTitle, custom_title);
   }
@@ -3353,7 +3162,7 @@ void Document::save_before_sort_by(xmlpp::Element* node, const LayoutItem_GroupB
     xmlpp::Element* nodeChild = node->add_child(GLOM_NODE_DATA_LAYOUT_ITEM);
     save_before_layout_item_field(nodeChild, field);
 
-    set_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_SORT_ASCENDING, iter->second);
+    XmlUtils::set_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_SORT_ASCENDING, iter->second);
   }
 }
 
@@ -3431,7 +3240,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
                 child = node->add_child(GLOM_NODE_DATA_LAYOUT_CALENDAR_PORTAL);
                 sharedptr<const Field> date_field = calendar_portal->get_date_field();
                 if(date_field)
-                  set_node_attribute_value(child, GLOM_ATTRIBUTE_PORTAL_CALENDAR_DATE_FIELD, date_field->get_name());
+                  XmlUtils::set_node_attribute_value(child, GLOM_ATTRIBUTE_PORTAL_CALENDAR_DATE_FIELD, date_field->get_name());
               }
               else
                 child = node->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL);
@@ -3464,7 +3273,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
                 xmlpp::Element* child_navigation_relationship = child->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP);
 
                 save_before_layout_item_usesrelationship(child_navigation_relationship, relationship_navigation_specific);
-                set_node_attribute_value(child_navigation_relationship,
+                XmlUtils::set_node_attribute_value(child_navigation_relationship,
                   GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE, navigation_type_string);
               }
 
@@ -3473,23 +3282,23 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
                 gulong rows_count_min = 0;
                 gulong rows_count_max = 0;
                 portal->get_rows_count(rows_count_min, rows_count_max);
-                set_node_attribute_value_as_decimal_double(child, 
+                XmlUtils::set_node_attribute_value_as_decimal_double(child, 
                   GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT_MIN, rows_count_min);
-                set_node_attribute_value_as_decimal_double(child, 
+                XmlUtils::set_node_attribute_value_as_decimal_double(child, 
                   GLOM_ATTRIBUTE_PORTAL_ROWS_COUNT_MAX, rows_count_max);
 
                 //Print Layout specific stuff:
-                set_node_attribute_value_as_decimal(child,
+                XmlUtils::set_node_attribute_value_as_decimal(child,
                   GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT, 
                   portal->get_print_layout_row_height());
                 
-                set_node_attribute_value_as_decimal(child,
+                XmlUtils::set_node_attribute_value_as_decimal(child,
                   GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_WIDTH, 
                   portal->get_print_layout_row_line_width());
-                set_node_attribute_value(child,
+                XmlUtils::set_node_attribute_value(child,
                   GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_COLOR, 
                   portal->get_print_layout_line_color());
-                set_node_attribute_value(child,
+                XmlUtils::set_node_attribute_value(child,
                   GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_LINE_COLOR, 
                   portal->get_print_layout_line_color());
               }
@@ -3515,10 +3324,10 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
   if(!child)
     return;
 
-  set_node_attribute_value(child, GLOM_ATTRIBUTE_NAME, group->get_name());
-  set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_COLUMNS_COUNT, group->get_columns_count(), 1); //Default to 1 because 0 is meaningless.
+  XmlUtils::set_node_attribute_value(child, GLOM_ATTRIBUTE_NAME, group->get_name());
+  XmlUtils::set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_COLUMNS_COUNT, group->get_columns_count(), 1); //Default to 1 because 0 is meaningless.
 
-  set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_BORDER_WIDTH, group->get_border_width());
+  XmlUtils::set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_BORDER_WIDTH, group->get_border_width());
 
   //Translations:
   save_before_translations(child, group);
@@ -3549,7 +3358,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
       {
         nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY);
         save_before_layout_item_field(nodeItem, fieldsummary);
-        set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE, fieldsummary->get_summary_type_sql()); //The SQL name is as good as anything as an identifier for the summary function.
+        XmlUtils::set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE, fieldsummary->get_summary_type_sql()); //The SQL name is as good as anything as an identifier for the summary function.
       }
       else
       {
@@ -3565,7 +3374,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
           if(button) //If it is a button
           {
             nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_BUTTON);
-            set_child_text_node(nodeItem, GLOM_NODE_BUTTON_SCRIPT, button->get_script());
+            XmlUtils::set_child_text_node(nodeItem, GLOM_NODE_BUTTON_SCRIPT, button->get_script());
             save_before_translations(nodeItem, button);
           }
           else
@@ -3588,7 +3397,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
                 nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_IMAGEOBJECT);
                 save_before_translations(nodeItem, imageobject);
 
-                set_node_attribute_value_as_value(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, imageobject->get_image(), Field::TYPE_IMAGE);
+                XmlUtils::set_node_attribute_value_as_value(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, imageobject->get_image(), Field::TYPE_IMAGE);
               }
               else
               {
@@ -3604,14 +3413,14 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
                   double end_y = 0;
                   line->get_coordinates(start_x, start_y, end_x, end_y);
 
-                  set_node_attribute_value_as_decimal_double(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_X, start_x);
-                  set_node_attribute_value_as_decimal_double(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_Y, start_y);
-                  set_node_attribute_value_as_decimal_double(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_X, end_x);
-                  set_node_attribute_value_as_decimal_double(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_Y, end_y);
+                  XmlUtils::set_node_attribute_value_as_decimal_double(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_X, start_x);
+                  XmlUtils::set_node_attribute_value_as_decimal_double(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_Y, start_y);
+                  XmlUtils::set_node_attribute_value_as_decimal_double(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_X, end_x);
+                  XmlUtils::set_node_attribute_value_as_decimal_double(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_Y, end_y);
                   
-                  set_node_attribute_value_as_decimal_double(nodeItem, 
+                  XmlUtils::set_node_attribute_value_as_decimal_double(nodeItem, 
                     GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_WIDTH, line->get_line_width());
-                  set_node_attribute_value(nodeItem, 
+                  XmlUtils::set_node_attribute_value(nodeItem, 
                     GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_COLOR, line->get_line_color());
                 }
               }
@@ -3632,7 +3441,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
       {
         //Attributes that any layout item could have:
         const guint column_width = item->get_display_width();
-        set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_LAYOUT_ITEM_COLUMN_WIDTH, column_width);
+        XmlUtils::set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_LAYOUT_ITEM_COLUMN_WIDTH, column_width);
 
         if(with_print_layout_positions)
           save_before_print_layout_position(nodeItem, item);
@@ -3651,7 +3460,7 @@ void Document::save_before_translations(xmlpp::Element* element, const sharedptr
   const sharedptr<const ChoiceValue> choicevalue = sharedptr<const ChoiceValue>::cast_dynamic(item);
   if(!choicevalue) //This item does not use the title, but uses the title translations to translate its value, if it is of type text.
   {
-    set_node_attribute_value(element, GLOM_ATTRIBUTE_TITLE, item->get_title_original());
+    XmlUtils::set_node_attribute_value(element, GLOM_ATTRIBUTE_TITLE, item->get_title_original());
   }
 
   if(!item->get_has_translations())
@@ -3663,8 +3472,8 @@ void Document::save_before_translations(xmlpp::Element* element, const sharedptr
   for(TranslatableItem::type_map_locale_to_translations::const_iterator iter = map_translations.begin(); iter != map_translations.end(); ++iter)
   {
     xmlpp::Element* childItem = child->add_child(GLOM_NODE_TRANSLATION);
-    set_node_attribute_value(childItem, GLOM_ATTRIBUTE_TRANSLATION_LOCALE, iter->first);
-    set_node_attribute_value(childItem, GLOM_ATTRIBUTE_TRANSLATION_VALUE, iter->second);
+    XmlUtils::set_node_attribute_value(childItem, GLOM_ATTRIBUTE_TRANSLATION_LOCALE, iter->first);
+    XmlUtils::set_node_attribute_value(childItem, GLOM_ATTRIBUTE_TRANSLATION_VALUE, iter->second);
   }
 
   //If it has a singular title, then save that too:
@@ -3688,10 +3497,10 @@ void Document::save_before_print_layout_position(xmlpp::Element* nodeItem, const
   double height = 0;
   item->get_print_layout_position(x, y, width, height);
 
-  set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_X, x);
-  set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_Y, y);
-  set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_WIDTH, width);
-  set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_HEIGHT, height);
+  XmlUtils::set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_X, x);
+  XmlUtils::set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_Y, y);
+  XmlUtils::set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_WIDTH, width);
+  XmlUtils::set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_POSITION_HEIGHT, height);
 
   //Avoid having an empty (or useless) XML element:
   if(child->get_attributes().empty())
@@ -3703,7 +3512,7 @@ void Document::save_before_choicevalue(xmlpp::Element* nodeItem, const sharedptr
   if(!item)
     return;
 
-  set_node_attribute_value_as_value(nodeItem, GLOM_ATTRIBUTE_VALUE, item->get_value(), field_type);
+  XmlUtils::set_node_attribute_value_as_value(nodeItem, GLOM_ATTRIBUTE_VALUE, item->get_value(), field_type);
   save_before_translations(nodeItem, item);
 }
 
@@ -3731,40 +3540,40 @@ bool Document::save_before()
     //Always save as the latest format,
     //possibly making it impossible to open this document in older versions of Glom:
     m_document_format_version = get_latest_known_document_format_version();
-    set_node_attribute_value_as_decimal(nodeRoot, GLOM_ATTRIBUTE_FORMAT_VERSION, m_document_format_version);
+    XmlUtils::set_node_attribute_value_as_decimal(nodeRoot, GLOM_ATTRIBUTE_FORMAT_VERSION, m_document_format_version);
 
-    set_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE, m_is_example);
-    set_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_BACKUP, m_is_backup);
-    set_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE, m_translation_original_locale);
+    XmlUtils::set_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE, m_is_example);
+    XmlUtils::set_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_BACKUP, m_is_backup);
+    XmlUtils::set_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE, m_translation_original_locale);
 
     save_before_translations(nodeRoot, m_database_title);
 
-    set_child_text_node(nodeRoot, GLOM_NODE_STARTUP_SCRIPT, m_startup_script);
+    XmlUtils::set_child_text_node(nodeRoot, GLOM_NODE_STARTUP_SCRIPT, m_startup_script);
 
-    xmlpp::Element* nodeConnection = get_node_child_named_with_add(nodeRoot, GLOM_NODE_CONNECTION);
+    xmlpp::Element* nodeConnection = XmlUtils::get_node_child_named_with_add(nodeRoot, GLOM_NODE_CONNECTION);
 
     switch(m_hosting_mode)
     {
     case HOSTING_MODE_POSTGRES_CENTRAL:
-      set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL);
+      XmlUtils::set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL);
       break;
     case HOSTING_MODE_POSTGRES_SELF:
-      set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF);
+      XmlUtils::set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF);
       break;
     case HOSTING_MODE_SQLITE:
-      set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE);
+      XmlUtils::set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE);
       break;
     default:
       g_assert_not_reached();
       break;
     }
 
-    set_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_NETWORK_SHARED, m_network_shared);
+    XmlUtils::set_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_NETWORK_SHARED, m_network_shared);
 
-    set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER, m_connection_server);
-    set_node_attribute_value_as_decimal(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_PORT, m_connection_port);
-    set_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_TRY_OTHER_PORTS, m_connection_try_other_ports, true /* default */);
-    set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_DATABASE, m_connection_database);
+    XmlUtils::set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER, m_connection_server);
+    XmlUtils::set_node_attribute_value_as_decimal(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_PORT, m_connection_port);
+    XmlUtils::set_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_TRY_OTHER_PORTS, m_connection_try_other_ports, true /* default */);
+    XmlUtils::set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_DATABASE, m_connection_database);
 
     //Remove existing tables:
     xmlpp::Node::NodeList listNodes = nodeRoot->get_children(GLOM_NODE_TABLE);
@@ -3783,12 +3592,12 @@ bool Document::save_before()
       if(!table_name.empty())
       {
         xmlpp::Element* nodeTable = nodeRoot->add_child(GLOM_NODE_TABLE);
-        set_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME, table_name);
-        set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN, doctableinfo.m_info->get_hidden());
-        set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT, doctableinfo.m_info->get_default());
+        XmlUtils::set_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME, table_name);
+        XmlUtils::set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN, doctableinfo.m_info->get_hidden());
+        XmlUtils::set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT, doctableinfo.m_info->get_default());
 
-        set_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_X, doctableinfo.m_overviewx);
-        set_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_Y, doctableinfo.m_overviewy);
+        XmlUtils::set_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_X, doctableinfo.m_overviewx);
+        XmlUtils::set_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_Y, doctableinfo.m_overviewy);
 
         if(m_is_example) //The example data is useless to non-example files (and is big):
         {
@@ -3807,8 +3616,8 @@ bool Document::save_before()
                   break;
 
                 xmlpp::Element* nodeField = nodeExampleRow->add_child(GLOM_NODE_VALUE);
-                set_node_attribute_value(nodeField, GLOM_ATTRIBUTE_COLUMN, field->get_name());
-                set_node_text_child_as_value(nodeField, row_data[i], field->get_glom_type());
+                XmlUtils::set_node_attribute_value(nodeField, GLOM_ATTRIBUTE_COLUMN, field->get_name());
+                XmlUtils::set_node_text_child_as_value(nodeField, row_data[i], field->get_glom_type());
               } // for each value
             } // !row_data.empty
           } // for each row
@@ -3828,21 +3637,21 @@ bool Document::save_before()
           sharedptr<const Field> field = *iter;
 
           xmlpp::Element* elemField = elemFields->add_child(GLOM_NODE_FIELD);
-          set_node_attribute_value(elemField, GLOM_ATTRIBUTE_NAME, field->get_name());
+          XmlUtils::set_node_attribute_value(elemField, GLOM_ATTRIBUTE_NAME, field->get_name());
 
-          set_node_attribute_value_as_bool(elemField, GLOM_ATTRIBUTE_PRIMARY_KEY, field->get_primary_key());
-          set_node_attribute_value_as_bool(elemField, GLOM_ATTRIBUTE_UNIQUE, field->get_unique_key());
-          set_node_attribute_value_as_bool(elemField, GLOM_ATTRIBUTE_AUTOINCREMENT, field->get_auto_increment());
-          set_node_attribute_value_as_value(elemField, GLOM_ATTRIBUTE_DEFAULT_VALUE, field->get_default_value(), field->get_glom_type());
+          XmlUtils::set_node_attribute_value_as_bool(elemField, GLOM_ATTRIBUTE_PRIMARY_KEY, field->get_primary_key());
+          XmlUtils::set_node_attribute_value_as_bool(elemField, GLOM_ATTRIBUTE_UNIQUE, field->get_unique_key());
+          XmlUtils::set_node_attribute_value_as_bool(elemField, GLOM_ATTRIBUTE_AUTOINCREMENT, field->get_auto_increment());
+          XmlUtils::set_node_attribute_value_as_value(elemField, GLOM_ATTRIBUTE_DEFAULT_VALUE, field->get_default_value(), field->get_glom_type());
 
-          set_child_text_node(elemField, GLOM_NODE_CALCULATION, field->get_calculation());
+          XmlUtils::set_child_text_node(elemField, GLOM_NODE_CALCULATION, field->get_calculation());
 
           Glib::ustring field_type;
           Field::type_map_type_names::const_iterator iterTypes = type_names.find( field->get_glom_type() );
           if(iterTypes != type_names.end())
             field_type = iterTypes->second;
 
-          set_node_attribute_value(elemField, GLOM_ATTRIBUTE_TYPE, field_type);
+          XmlUtils::set_node_attribute_value(elemField, GLOM_ATTRIBUTE_TYPE, field_type);
 
           //Add Lookup sub-node:
           if(field->get_is_lookup())
@@ -3850,9 +3659,9 @@ bool Document::save_before()
             xmlpp::Element* elemFieldLookup = elemField->add_child(GLOM_NODE_FIELD_LOOKUP);
 
             sharedptr<Relationship> lookup_relationship = field->get_lookup_relationship();
-            set_node_attribute_value(elemFieldLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME, glom_get_sharedptr_name(lookup_relationship));
+            XmlUtils::set_node_attribute_value(elemFieldLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME, glom_get_sharedptr_name(lookup_relationship));
 
-            set_node_attribute_value(elemFieldLookup, GLOM_ATTRIBUTE_FIELD, field->get_lookup_field());
+            XmlUtils::set_node_attribute_value(elemFieldLookup, GLOM_ATTRIBUTE_FIELD, field->get_lookup_field());
           }
 
           //Default Formatting:
@@ -3874,12 +3683,12 @@ bool Document::save_before()
           if(relationship)
           {
             xmlpp::Element* elemRelationship = elemRelationships->add_child(GLOM_NODE_RELATIONSHIP);
-            set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_NAME, relationship->get_name());
-            set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_KEY, relationship->get_from_field());
-            set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_OTHER_TABLE, relationship->get_to_table());
-            set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_OTHER_KEY, relationship->get_to_field());
-            set_node_attribute_value_as_bool(elemRelationship, GLOM_ATTRIBUTE_AUTO_CREATE, relationship->get_auto_create());
-            set_node_attribute_value_as_bool(elemRelationship, GLOM_ATTRIBUTE_ALLOW_EDIT, relationship->get_allow_edit());
+            XmlUtils::set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_NAME, relationship->get_name());
+            XmlUtils::set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_KEY, relationship->get_from_field());
+            XmlUtils::set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_OTHER_TABLE, relationship->get_to_table());
+            XmlUtils::set_node_attribute_value(elemRelationship, GLOM_ATTRIBUTE_OTHER_KEY, relationship->get_to_field());
+            XmlUtils::set_node_attribute_value_as_bool(elemRelationship, GLOM_ATTRIBUTE_AUTO_CREATE, relationship->get_auto_create());
+            XmlUtils::set_node_attribute_value_as_bool(elemRelationship, GLOM_ATTRIBUTE_ALLOW_EDIT, relationship->get_allow_edit());
 
             //Translations:
             save_before_translations(elemRelationship, relationship);
@@ -3894,9 +3703,9 @@ bool Document::save_before()
         for(DocumentTableInfo::type_layouts::const_iterator iter = doctableinfo.m_layouts.begin(); iter != doctableinfo.m_layouts.end(); ++iter)
         {
           xmlpp::Element* nodeLayout = nodeDataLayouts->add_child(GLOM_NODE_DATA_LAYOUT);
-          set_node_attribute_value(nodeLayout, GLOM_ATTRIBUTE_NAME, iter->m_layout_name);
-          set_node_attribute_value(nodeLayout, GLOM_ATTRIBUTE_LAYOUT_PLATFORM, iter->m_layout_platform);
-          set_node_attribute_value(nodeLayout, GLOM_ATTRIBUTE_PARENT_TABLE_NAME, iter->m_parent_table);
+          XmlUtils::set_node_attribute_value(nodeLayout, GLOM_ATTRIBUTE_NAME, iter->m_layout_name);
+          XmlUtils::set_node_attribute_value(nodeLayout, GLOM_ATTRIBUTE_LAYOUT_PLATFORM, iter->m_layout_platform);
+          XmlUtils::set_node_attribute_value(nodeLayout, GLOM_ATTRIBUTE_PARENT_TABLE_NAME, iter->m_parent_table);
 
           xmlpp::Element* nodeGroups = nodeLayout->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
 
@@ -3916,8 +3725,8 @@ bool Document::save_before()
           xmlpp::Element* nodeReport = nodeReports->add_child(GLOM_NODE_REPORT);
 
           sharedptr<const Report> report = iter->second;
-          set_node_attribute_value(nodeReport, GLOM_ATTRIBUTE_NAME, report->get_name());
-          set_node_attribute_value_as_bool(nodeReport, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE, report->get_show_table_title());
+          XmlUtils::set_node_attribute_value(nodeReport, GLOM_ATTRIBUTE_NAME, report->get_name());
+          XmlUtils::set_node_attribute_value_as_bool(nodeReport, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE, report->get_show_table_title());
 
           xmlpp::Element* nodeGroups = nodeReport->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
           save_before_layout_group(nodeGroups, report->get_layout_group());
@@ -3935,12 +3744,12 @@ bool Document::save_before()
           xmlpp::Element* nodePrintLayout = nodePrintLayouts->add_child(GLOM_NODE_PRINT_LAYOUT);
 
           sharedptr<const PrintLayout> print_layout = iter->second;
-          set_node_attribute_value(nodePrintLayout, GLOM_ATTRIBUTE_NAME, print_layout->get_name());
-          set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE, print_layout->get_show_table_title());
+          XmlUtils::set_node_attribute_value(nodePrintLayout, GLOM_ATTRIBUTE_NAME, print_layout->get_name());
+          XmlUtils::set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE, print_layout->get_show_table_title());
 
-          set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_GRID, print_layout->get_show_grid());
-          set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_RULES, print_layout->get_show_rules());
-          set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_OUTLINES, print_layout->get_show_outlines());
+          XmlUtils::set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_GRID, print_layout->get_show_grid());
+          XmlUtils::set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_RULES, print_layout->get_show_rules());
+          XmlUtils::set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_PRINT_LAYOUT_SHOW_OUTLINES, print_layout->get_show_outlines());
 
           //Save the rule lines:
           const PrintLayout::type_vec_doubles h_rules = print_layout->get_horizontal_rules();
@@ -3948,7 +3757,7 @@ bool Document::save_before()
             iter != h_rules.end(); ++iter)
           {
             xmlpp::Element* child = nodePrintLayout->add_child(GLOM_NODE_HORIZONTAL_RULE);
-            set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_RULE_POSITION, *iter);
+            XmlUtils::set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_RULE_POSITION, *iter);
           }
 
           const PrintLayout::type_vec_doubles v_rules = print_layout->get_vertical_rules();
@@ -3956,7 +3765,7 @@ bool Document::save_before()
             iter != v_rules.end(); ++iter)
           {
             xmlpp::Element* child = nodePrintLayout->add_child(GLOM_NODE_VERTICAL_RULE);
-            set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_RULE_POSITION, *iter);
+            XmlUtils::set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_RULE_POSITION, *iter);
           }
 
           //Page Setup:
@@ -3967,7 +3776,7 @@ bool Document::save_before()
             child->add_child_text( Utils::string_clean_for_xml(page_setup) );
           }
           
-          set_node_attribute_value_as_decimal(nodePrintLayout, GLOM_ATTRIBUTE_PRINT_LAYOUT_PAGE_COUNT, 
+          XmlUtils::set_node_attribute_value_as_decimal(nodePrintLayout, GLOM_ATTRIBUTE_PRINT_LAYOUT_PAGE_COUNT, 
             print_layout->get_page_count(), 1);
 
           xmlpp::Element* nodeGroups = nodePrintLayout->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
@@ -4004,21 +3813,21 @@ bool Document::save_before()
       }
 
       xmlpp::Element* nodeGroup = nodeGroups->add_child(GLOM_NODE_GROUP);
-      set_node_attribute_value(nodeGroup, GLOM_ATTRIBUTE_NAME, group_name);
-      set_node_attribute_value_as_bool(nodeGroup, GLOM_ATTRIBUTE_DEVELOPER, group_info.m_developer);
+      XmlUtils::set_node_attribute_value(nodeGroup, GLOM_ATTRIBUTE_NAME, group_name);
+      XmlUtils::set_node_attribute_value_as_bool(nodeGroup, GLOM_ATTRIBUTE_DEVELOPER, group_info.m_developer);
 
       //The privileges for each table, for this group:
       for(GroupInfo::type_map_table_privileges::const_iterator iter = group_info.m_map_privileges.begin(); iter != group_info.m_map_privileges.end(); ++iter)
       {
         xmlpp::Element* nodeTablePrivs = nodeGroup->add_child(GLOM_NODE_TABLE_PRIVS);
 
-        set_node_attribute_value(nodeTablePrivs, GLOM_ATTRIBUTE_TABLE_NAME, iter->first);
+        XmlUtils::set_node_attribute_value(nodeTablePrivs, GLOM_ATTRIBUTE_TABLE_NAME, iter->first);
 
         const Privileges& privs = iter->second;
-        set_node_attribute_value_as_bool(nodeTablePrivs, GLOM_ATTRIBUTE_PRIV_VIEW, privs.m_view);
-        set_node_attribute_value_as_bool(nodeTablePrivs, GLOM_ATTRIBUTE_PRIV_EDIT, privs.m_edit);
-        set_node_attribute_value_as_bool(nodeTablePrivs, GLOM_ATTRIBUTE_PRIV_CREATE, privs.m_create);
-        set_node_attribute_value_as_bool(nodeTablePrivs, GLOM_ATTRIBUTE_PRIV_DELETE, privs.m_delete);
+        XmlUtils::set_node_attribute_value_as_bool(nodeTablePrivs, GLOM_ATTRIBUTE_PRIV_VIEW, privs.m_view);
+        XmlUtils::set_node_attribute_value_as_bool(nodeTablePrivs, GLOM_ATTRIBUTE_PRIV_EDIT, privs.m_edit);
+        XmlUtils::set_node_attribute_value_as_bool(nodeTablePrivs, GLOM_ATTRIBUTE_PRIV_CREATE, privs.m_create);
+        XmlUtils::set_node_attribute_value_as_bool(nodeTablePrivs, GLOM_ATTRIBUTE_PRIV_DELETE, privs.m_delete);
       }
     }
 
@@ -4038,7 +3847,7 @@ bool Document::save_before()
       xmlpp::Element* nodeModule = nodeModules->add_child(GLOM_NODE_LIBRARY_MODULE);
 
       //The name is in an attribute:
-      set_node_attribute_value(nodeModule, GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME, name);
+      XmlUtils::set_node_attribute_value(nodeModule, GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME, name);
 
       //The script is in a child text node:
       xmlpp::TextNode* text_child = nodeModule->get_child_text();

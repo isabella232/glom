@@ -120,6 +120,8 @@ libglom_sources =							\
 	glom/libglom/utils.h						\
 	glom/libglom/xsl_utils.cc					\
 	glom/libglom/xsl_utils.h					\
+	glom/libglom/xml_utils.cc					\
+	glom/libglom/xml_utils.h					\
 	glom/libglom/connectionpool_backends/backend.cc			\
 	glom/libglom/connectionpool_backends/backend.h			\
   glom/libglom/data_structure/database_title.cc \

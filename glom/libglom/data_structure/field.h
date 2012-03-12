@@ -167,12 +167,6 @@ public:
    */
   Glib::ustring sql(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnome::Gda::Connection>& connection) const;
 
-  //TODO: Remove this:
-  /** Escape and quote the value so that it can be used in a SQL command.
-   * Uses the sql_format of the current connectionpool backend.
-   */
-  //Glib::ustring sql(const Gnome::Gda::Value& value) const;
-
   /** Get the canonical format for a file, for instance for 
    * a default value or for example data.
    * This does not add quotes for text fields so the caller may need to do that.

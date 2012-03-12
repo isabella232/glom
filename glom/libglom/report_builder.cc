@@ -23,6 +23,7 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
 #include <libglom/xsl_utils.h>
+#include <libglom/xml_utils.h>
 #include <iostream>
 #include <glibmm/miscutils.h>
 #include <glibmm/i18n.h>
@@ -256,7 +257,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
 
         //Add XML node:
         xmlpp::Element* nodeGroupBy = parent_node.add_child(group_by->get_report_part_id());
-        Document::set_node_attribute_value_as_decimal_double(nodeGroupBy, "border_width", group_by->get_border_width());
+        XmlUtils::set_node_attribute_value_as_decimal_double(nodeGroupBy, "border_width", group_by->get_border_width());
 
         nodeGroupBy->set_attribute("group_field", field_group_by->get_title_or_name(m_locale));
         nodeGroupBy->set_attribute("group_value",
@@ -311,7 +312,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
     //There is no group-by field, so ouput all the found records.
     //For instance, the user could use the GroupBy part just to specify a sort, though that would be a bit of a hack:
     xmlpp::Element* nodeGroupBy = parent_node.add_child(group_by->get_report_part_id()); //We need this to create the HTML table.
-    Document::set_node_attribute_value_as_decimal_double(nodeGroupBy, "border_width", group_by->get_border_width());
+    XmlUtils::set_node_attribute_value_as_decimal_double(nodeGroupBy, "border_width", group_by->get_border_width());
     return report_build_groupby_children(found_set_parent, *nodeGroupBy, group_by);
   }
 

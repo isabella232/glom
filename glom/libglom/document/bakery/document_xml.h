@@ -55,11 +55,6 @@ public:
   Glib::ustring get_xml() const; //Get the text for the XML.
 
 protected:
-  static Glib::ustring get_node_attribute_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
-  static void set_node_attribute_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Glib::ustring& strValue);
-
-  static xmlpp::Element* get_node_child_named(const xmlpp::Element* node, const Glib::ustring& strName);
-  static xmlpp::Element* get_node_child_named_with_add(xmlpp::Element* node, const Glib::ustring& strName);
 
   const xmlpp::Element* get_node_document() const; //e.g. <glom_document> (root name)
   xmlpp::Element* get_node_document(); //e.g. <glom_document> (root name)
