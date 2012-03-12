@@ -85,32 +85,6 @@ LayoutGroup& LayoutGroup::operator=(const LayoutGroup& src)
   return *this;
 }
 
-bool LayoutGroup::has_field(const Glib::ustring& field_name) const
-{
-  for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
-  {
-    sharedptr<LayoutItem> item = *iter;
-    sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
-    if(field_item)
-    {
-      if(field_item->get_name() == field_name)
-        return true;
-    }
-    else
-    {
-      //Recurse into the child groups:
-      sharedptr<LayoutGroup> group_item = sharedptr<LayoutGroup>::cast_dynamic(item);
-      if(group_item)
-      {
-        if(group_item->has_field(field_name))
-          return true;
-      }
-    }
-  }
-
-  return false;
-}
-
 bool LayoutGroup::has_field(const Glib::ustring& parent_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name) const
 {
   for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
@@ -296,72 +270,6 @@ void LayoutGroup::remove_relationship(const sharedptr<const Relationship>& relat
     sharedptr<LayoutGroup> sub_group = sharedptr<LayoutGroup>::cast_dynamic(item);
     if(sub_group)
       sub_group->remove_relationship(relationship);
-
-    ++iterItem;
-  }
-}
-
-void LayoutGroup::remove_field(const Glib::ustring& field_name)
-{
-  //Look at each item:
-  LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin();
-  while(iterItem != m_list_items.end())
-  {
-    sharedptr<LayoutItem> item = *iterItem;
-    sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
-    if(field_item)
-    {
-      if(!(field_item->get_has_relationship_name())) //If it's not a related table.
-      {
-        if(field_item->get_name() == field_name)
-        {
-          m_list_items.erase(iterItem);
-          iterItem = m_list_items.begin(); //Start again, because we changed the container.AddDel
-          continue;
-        }
-      }
-    }
-    else
-    {
-      sharedptr<LayoutItem_Portal> sub_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(item);
-      if(!sub_portal) //It could only be a related field in a portal - use remove_field(table, field) for that.
-      {
-        sharedptr<LayoutGroup> sub_group = sharedptr<LayoutGroup>::cast_dynamic(item);
-        if(sub_group)
-          sub_group->remove_field(field_name);
-      }
-    }
-
-    ++iterItem;
-  }
-}
-
-void LayoutGroup::remove_field(const Glib::ustring& table_name, const Glib::ustring& field_name)
-{
-  //Look at each item:
-  LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin();
-  while(iterItem != m_list_items.end())
-  {
-    sharedptr<LayoutItem> item = *iterItem;
-    sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
-    if(field_item)
-    {
-      if(field_item->get_table_used(Glib::ustring()) == table_name)
-      {
-        if(field_item->get_name() == field_name)
-        {
-          m_list_items.erase(iterItem);
-          iterItem = m_list_items.begin(); //Start again, because we changed the container.AddDel
-          continue;
-        }
-      }
-    }
-    else
-    {
-      sharedptr<LayoutGroup> sub_group = sharedptr<LayoutGroup>::cast_dynamic(item);
-      if(sub_group)
-        sub_group->remove_field(table_name, field_name);
-    }
 
     ++iterItem;
   }

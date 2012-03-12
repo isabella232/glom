@@ -1,3 +1,10 @@
+2012-03-12  Murray Cumming  <murrayc@murrayc.com>
+
+	libglom: LayoutGroup: Remove deprecated remove_field() and has_field().
+
+	* glom/libglom/data_structure/layout/layoutgroup.[h|cc]: Remove 
+	deprecated method overloads.
+
 1.21.6:
 
 2012-03-05  Murray Cumming  <murrayc@murrayc.com>

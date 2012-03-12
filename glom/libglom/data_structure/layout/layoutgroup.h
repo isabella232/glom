@@ -39,15 +39,6 @@ public:
   virtual ~LayoutGroup();
 
   virtual LayoutItem* clone() const;
-  
-  //TODO: Remove this now-unused method overload.
-  /** Discover whether the layout group contains the specified related field,
-   * @param field_name The name of the field to search for.
-   * @result True if the field is in the layout group (or its child groups).
-   *
-   * @deprecated Use has_field(parent_table_name, table_name, field_name) instead.
-   */
-  bool has_field(const Glib::ustring& field_name) const;
 
   /** Discover whether the layout group contains the specified field (from the current table).
    * @param parent_table_name The table to which this layout belongs.
@@ -78,21 +69,6 @@ public:
    * @param item The item to remove.
    */
   void remove_item(const sharedptr<LayoutItem>& item);
-
-  /** Remove any instance of the field (from the current table) from the layout.
-   * @deprecated Use remove_field(parent_table_name, table_name, field_name) instead.
-   */
-  virtual void remove_field(const Glib::ustring& field_name);
-
-  //TODO: Remove this unused method overload, and remove virtual from all these method overloads.
-  /** Remove any instance of the related field from the layout.
-   *
-   * @param table_name The table to which the field, specified by @a field_name, belongs.
-   * @param field_name The name of the field to search for.
-   *
-   * @deprecated Use remove_field(parent_table_name, table_name, field_name) instead.
-   */
-  virtual void remove_field(const Glib::ustring& table_name, const Glib::ustring& field_name);
   
   /** Remove any instance of the field from the layout.
    *
