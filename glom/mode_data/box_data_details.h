@@ -119,8 +119,9 @@ protected:
   //Signal handler: The last arg is bind-ed.
   //virtual void on_related_user_requested_details(Gnome::Gda::Value key_value, Glib::ustring table_name);
 
-  //TODO: Does this need to be virtual?
+  //This is virtual so it can be overriden in Box_Data_Details_Find.
   virtual void on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& value);
+
   void on_flowtable_field_choices_changed(const sharedptr<const LayoutItem_Field>& layout_field);
   void on_flowtable_field_open_details_requested(const sharedptr<const LayoutItem_Field>& id, const Gnome::Gda::Value& value);
   void on_flowtable_related_record_changed(const Glib::ustring& relationship_name);
