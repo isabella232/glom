@@ -1,5 +1,16 @@
 2012-03-12  Murray Cumming  <murrayc@murrayc.com>
 
+	Field: Removed deprecated methods.
+
+	* glom/libglom/data_structure/field.[h.cc]: Removed the sql()
+	overload that takes no connection. sql_find(): Add a connection
+	parameter.
+	* glom/libglom/data_structure/layout/layoutgroup.h:
+	* glom/libglom/utils.cc:
+	* glom/mode_data/box_data.cc: Adapted.
+
+2012-03-12  Murray Cumming  <murrayc@murrayc.com>
+
 	LayoutItem_GroupBy: Add get and set methods for members.
 
 	* glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.[h|cc]: 

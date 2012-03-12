@@ -92,6 +92,13 @@ Gnome::Gda::SqlExpr Box_Data::get_find_where_clause() const
   builder->select_add_target(m_table_name);  //This might not be necessary.
   guint where_cond_id = 0;
 
+  Glib::RefPtr<Gnome::Gda::Connection> connection = get_connection();
+  if(!connection)
+  {
+    std::cerr << G_STRFUNC << ": connection was null." << std::endl;
+    return Gnome::Gda::SqlExpr();
+  }
+
   //Look at each field entry and build e.g. 'Name = "Bob"'
   for(type_vecConstLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
   {
@@ -113,7 +120,7 @@ Gnome::Gda::SqlExpr Box_Data::get_find_where_clause() const
         {
           const guint cond_id = builder->add_cond(field->sql_find_operator(),
             builder->add_field_id(field->get_name(), m_table_name),
-            builder->add_expr( field->sql_find(data) ));
+            builder->add_expr( field->sql_find(data, connection) ));
 
           //And with previous condition, if any:
           if(where_cond_id)

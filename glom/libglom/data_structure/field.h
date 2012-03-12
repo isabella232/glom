@@ -171,7 +171,7 @@ public:
   /** Escape and quote the value so that it can be used in a SQL command.
    * Uses the sql_format of the current connectionpool backend.
    */
-  Glib::ustring sql(const Gnome::Gda::Value& value) const;
+  //Glib::ustring sql(const Gnome::Gda::Value& value) const;
 
   /** Get the canonical format for a file, for instance for 
    * a default value or for example data.
@@ -194,7 +194,7 @@ public:
 
   /** Escape the value so that it can be used in a SQL command for a find.
    */
-  Glib::ustring sql_find(const Gnome::Gda::Value& value) const;
+  Glib::ustring sql_find(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnome::Gda::Connection>& connection) const;
 
   /** Get a suitable operator to use when finding records.
    * For instance, == for numbers, or LIKE for text.

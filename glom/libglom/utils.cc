@@ -1126,6 +1126,14 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const Document* document,
     return Gnome::Gda::SqlExpr();
   }
 
+  //We need the connection to generate the correct SQL syntax:
+  Glib::RefPtr<Gnome::Gda::Connection> connection = get_connection();
+  if(!connection)
+  {
+    std::cerr << G_STRFUNC << ": connection was null." << std::endl;
+    return Gnome::Gda::SqlExpr();
+  }
+
   //TODO: Cache the list of all fields, as well as caching (m_Fields) the list of all visible fields:
   const Document::type_vec_fields fields = document->get_table_fields(table_name);
 
@@ -1149,7 +1157,7 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const Document* document,
       //std::cout << "Using field: " << field->get_name() << std::endl;
       const guint eq_id = builder->add_cond(field->sql_find_operator(),
         builder->add_field_id(field->get_name(), table_name),
-        builder->add_expr( field->sql_find(quick_search) )); //sql_find() modifies the value for the operator.
+        builder->add_expr( field->sql_find(quick_search, connection) )); //sql_find() modifies the value for the operator.
 
       if(previous_id)
       {

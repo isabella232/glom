@@ -78,7 +78,7 @@ public:
    */
   void remove_field(const Glib::ustring& parent_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name);
 
-  //TODO: Do these need to be virtual?
+  //These are virtual so that the portal item can do more.
   virtual void change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
   virtual void change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
 

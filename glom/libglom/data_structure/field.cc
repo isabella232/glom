@@ -262,28 +262,6 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnom
   return Glib::ustring();
 }
 
-Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
-{
-  sharedptr<SharedConnection> connection;
-  try
-  {
-    connection = ConnectionPool::get_instance()->connect();
-  }
-  catch (Glom::ExceptionConnection& ex)
-  {
-    //TODO: Do something more useful here
-    std::cerr << "Field::sql, connection failed: " << ex.what() << std::endl;
-  }
-  if(connection)
-  {
-    Glib::RefPtr<Gnome::Gda::Connection> gda_connection = connection->get_gda_connection();
-    if(gda_connection)
-      return sql(value, gda_connection);
-  }
-
-  return Glib::ustring();
-}
-
 #define GLOM_QUOTE_FOR_FILE_FORMAT "\""
 
 Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value) const
@@ -407,7 +385,7 @@ Gnome::Gda::Value Field::from_file_format(const Glib::ustring& str, glom_field_t
   }
 }
 
-Glib::ustring Field::sql_find(const Gnome::Gda::Value& value) const
+Glib::ustring Field::sql_find(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnome::Gda::Connection>& connection) const
 {
   switch(get_glom_type())
   {
@@ -428,7 +406,7 @@ Glib::ustring Field::sql_find(const Gnome::Gda::Value& value) const
     case(TYPE_BOOLEAN):
     default:
     {
-      return sql(value);
+      return sql(value, connection);
       break;
     }
   }
