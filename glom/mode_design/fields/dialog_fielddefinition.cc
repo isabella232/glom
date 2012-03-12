@@ -59,7 +59,7 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
   builder->get_widget("checkbutton_lookup",  m_pCheck_Lookup);
   builder->get_widget("table_lookup",  m_pTable_Lookup);
   builder->get_widget_derived("combobox_lookup_relationship",  m_pCombo_LookupRelationship);
-  builder->get_widget_derived("combobox_lookup_field",  m_pCombo_LookupField);
+  builder->get_widget("combobox_lookup_field",  m_pCombo_LookupField);
 
   builder->get_widget("radiobutton_calculate",  m_pRadio_Calculate);
   builder->get_widget("alignment_calculate",  m_pAlignment_Calculate);

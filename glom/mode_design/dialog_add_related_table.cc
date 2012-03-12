@@ -40,7 +40,7 @@ Dialog_AddRelatedTable::Dialog_AddRelatedTable(BaseObjectType* cobject, const Gl
 {
   builder->get_widget("entry_related_table_name", m_entry_table_name);
   builder->get_widget("entry_relationship_name", m_entry_relationship_name);
-  builder->get_widget_derived("combobox_from_key", m_combo_from_field);
+  builder->get_widget("combobox_from_key", m_combo_from_field);
 
   //Connect signals:
   m_combo_from_field->signal_changed().connect( sigc::mem_fun(*this, &Dialog_AddRelatedTable::on_combo_field_name) );

@@ -23,9 +23,9 @@
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/checkbutton.h>
+#include <gtkmm/comboboxtext.h>
 #include <gtkmm/alignment.h>
 #include <gtkmm/entry.h>
-#include "../../utility_widgets/combo_textglade.h"
 #include <glom/mode_design/layout/combobox_relationship.h>
 #include "combo_fieldtype.h"
 //#include "../../utility_widgets/entry_numerical.h"
@@ -83,7 +83,7 @@ private:
   Gtk::CheckButton* m_pCheck_Lookup;
   Gtk::Widget* m_pTable_Lookup; //So we can make it insensitive.
   ComboBox_Relationship* m_pCombo_LookupRelationship;
-  Combo_TextGlade* m_pCombo_LookupField;
+  Gtk::ComboBoxText* m_pCombo_LookupField;
 
   Gtk::RadioButton* m_pRadio_Calculate;
   Gtk::Alignment* m_pAlignment_Calculate;

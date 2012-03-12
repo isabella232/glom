@@ -24,7 +24,7 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/builder.h>
 #include <gtkmm/entry.h>
-#include <glom/utility_widgets/combo_textglade.h>
+#include <gtkmm/comboboxtext.h>
 #include <glom/base_db.h>
 
 namespace Glom
@@ -57,7 +57,7 @@ private:
 
   Gtk::Entry* m_entry_table_name;
   Gtk::Entry* m_entry_relationship_name;
-  Combo_TextGlade* m_combo_from_field;
+  Gtk::ComboBoxText* m_combo_from_field;
   Gtk::Button* m_button_edit_fields;
   Gtk::Button* m_button_ok;
 

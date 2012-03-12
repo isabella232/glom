@@ -44,7 +44,7 @@ Dialog_UsersList::Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<G
   m_button_user_delete(0),
   m_button_user_edit(0)
 {
-  builder->get_widget_derived("combobox_group", m_combo_group);
+  builder->get_widget("combobox_group", m_combo_group);
   m_combo_group->signal_changed().connect(sigc::mem_fun(*this, &Dialog_UsersList::on_combo_group_changed));
 
 

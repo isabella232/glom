@@ -28,7 +28,6 @@
 #include <libglom/document/document.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <glom/box_withbuttons.h>
-#include <glom/utility_widgets/combo_textglade.h>
 #include "combo_summarytype.h"
 
 namespace Glom

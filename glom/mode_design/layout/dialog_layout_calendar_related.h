@@ -23,7 +23,6 @@
 
 #include <glom/mode_design/layout/dialog_layout_list.h>
 #include <libglom/data_structure/layout/layoutitem_calendarportal.h>
-#include <glom/utility_widgets/combo_textglade.h>
 #include <glom/mode_design/layout/combobox_relationship.h>
 #include <glom/mode_design/layout/combobox_fields.h>
 #include <gtkmm/checkbutton.h>

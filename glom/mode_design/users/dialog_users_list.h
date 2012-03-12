@@ -24,8 +24,9 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/builder.h>
+#include <gtkmm/comboboxtext.h>
+#include <gtkmm/liststore.h>
 #include <glom/base_db.h>
-#include "../../utility_widgets/combo_textglade.h"
 
 namespace Glom
 {
@@ -89,7 +90,7 @@ private:
   ModelColumnsUsers m_model_columns_users;
 
   Gtk::TreeView* m_treeview_users;
-  Combo_TextGlade* m_combo_group;
+  Gtk::ComboBoxText* m_combo_group;
   Gtk::Button* m_button_user_add;
   Gtk::Button* m_button_user_remove;
   Gtk::Button* m_button_user_new;

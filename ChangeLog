@@ -1,5 +1,9 @@
 2012-03-12  Murray Cumming  <murrayc@murrayc.com>
 
+	Reduce use of the derived ComboBoxText.
+
+2012-03-12  Murray Cumming  <murrayc@murrayc.com>
+
 	Remove some unused member variables.
 
 	* glom/mode_data/box_data_list.[h|cc]:

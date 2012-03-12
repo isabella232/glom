@@ -22,7 +22,6 @@
 #define GLOM_MODE_DESIGN_DIALOG_LAYOUT_LIST_RELATED_H
 
 #include <glom/mode_design/layout/dialog_layout_list.h>
-#include <glom/utility_widgets/combo_textglade.h>
 #include <glom/mode_design/layout/combobox_relationship.h>
 #include <gtkmm/checkbutton.h>
 #include <gtkmm/radiobutton.h>
