@@ -212,18 +212,8 @@ private:
   void on_entry_edited(const Gnome::Gda::Value& value, const sharedptr<const LayoutItem_Field> field);
   void on_entry_choices_changed(const sharedptr<const LayoutItem_Field> field);
   void on_entry_open_details_requested(const Gnome::Gda::Value& value, const sharedptr<const LayoutItem_Field> field);
-  void on_flowtable_entry_edited(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
-  void on_flowtable_entry_choices_changed(const sharedptr<const LayoutItem_Field>& field);
-  void on_flowtable_entry_open_details_requested(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
-  void on_flowtable_related_record_changed(const Glib::ustring& relationship_name);
-  void on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
 
   void on_script_button_clicked(const sharedptr<LayoutItem_Button>& layout_item);
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  /// Remember the layout widget so we can iterate through them later.
-  void on_layoutwidget_changed();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_datawidget_layout_item_added(LayoutWidgetBase::enumType item_type, DataWidget* pDataWidget);

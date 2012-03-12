@@ -235,12 +235,12 @@ void FlowTableWithFields::add_layout_group(const sharedptr<LayoutGroup>& group, 
     add_layoutwidgetbase(flow_table);
 
     //Connect signals:
-    //TODO: Find a less repetitive way to do this chaining-up of signal emissions:
-    flow_table->signal_field_edited().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_edited) );
-    flow_table->signal_field_choices_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_choices_changed) );
-    flow_table->signal_field_open_details_requested().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_open_details_requested) );
-    flow_table->signal_related_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_related_record_changed) );
-    flow_table->signal_requested_related_details().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_requested_related_details) );
+    signal_connect_for_reemit_2args(flow_table->signal_field_edited(), m_signal_field_edited);
+    signal_connect_for_reemit_1arg(flow_table->signal_field_choices_changed(), m_signal_field_choices_changed);
+    signal_connect_for_reemit_2args(flow_table->signal_field_open_details_requested(), m_signal_field_open_details_requested);
+    signal_connect_for_reemit_1arg(flow_table->signal_related_record_changed(), m_signal_related_record_changed);
+    signal_connect_for_reemit_2args(flow_table->signal_requested_related_details(), m_signal_requested_related_details);
+
     flow_table->signal_script_button_clicked().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_script_button_clicked) );
 
     flow_table->align_child_group_labels();
@@ -430,10 +430,11 @@ void FlowTableWithFields::add_layout_notebook(const sharedptr<LayoutItem_Noteboo
         add_layoutwidgetbase(flow_table);
 
         //Connect signal:
-        flow_table->signal_field_edited().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_edited) );
-        flow_table->signal_field_open_details_requested().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_open_details_requested) );
-        flow_table->signal_related_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_related_record_changed) );
-        flow_table->signal_requested_related_details().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_requested_related_details) );
+        signal_connect_for_reemit_2args(flow_table->signal_field_edited(), m_signal_field_edited);
+        signal_connect_for_reemit_2args(flow_table->signal_field_open_details_requested(), m_signal_field_open_details_requested);
+        signal_connect_for_reemit_1arg(flow_table->signal_related_record_changed(), signal_related_record_changed());
+        signal_connect_for_reemit_2args(flow_table->signal_requested_related_details(), signal_requested_related_details());
+
 
         flow_table->signal_script_button_clicked().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_script_button_clicked) );
       }
@@ -547,6 +548,7 @@ void FlowTableWithFields::add_field(const sharedptr<LayoutItem_Field>& layoutite
   add(*eventbox, *(info.m_second), true);
 
   info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  ); //TODO:  Is it a good idea to bind the LayoutItem? sigc::bind() probably stores a copy at this point.
+
   info.m_second->signal_choices_changed().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_choices_changed), layoutitem_field)  );
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -1095,21 +1097,6 @@ void FlowTableWithFields::on_entry_open_details_requested(const Gnome::Gda::Valu
   m_signal_field_open_details_requested.emit(field, value);
 }
 
-void FlowTableWithFields::on_flowtable_entry_edited(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
-{
-  m_signal_field_edited.emit(field, value);
-}
-
-void FlowTableWithFields::on_flowtable_entry_choices_changed(const sharedptr<const LayoutItem_Field>& field)
-{
-  m_signal_field_choices_changed.emit(field);
-}
-
-void FlowTableWithFields::on_flowtable_entry_open_details_requested(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
-{
-  m_signal_field_open_details_requested.emit(field, value);
-}
-
 void FlowTableWithFields::set_design_mode(bool value)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -1133,18 +1120,9 @@ void FlowTableWithFields::add_layoutwidgetbase(LayoutWidgetBase* layout_widget)
 
   //Handle layout_changed signal:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  layout_widget->signal_layout_changed().connect(sigc::mem_fun(*this, &FlowTableWithFields::on_layoutwidget_changed));
+  layout_widget->signal_layout_changed().connect(signal_layout_changed().make_slot());
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-void FlowTableWithFields::on_layoutwidget_changed()
-{
-  //Forward the signal to the container,
-  //so it can make sure that the change is saved in the document.
-  signal_layout_changed().emit();
-}
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enumType item_type, DataWidget* pDataWidget)
@@ -1237,14 +1215,6 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-void FlowTableWithFields::on_flowtable_related_record_changed(const Glib::ustring& relationship_name)
-{
-  //TODO_DoublyRelated
-
-  //Forward it to the parent:
-  signal_related_record_changed().emit(relationship_name);
-}
-
 //TODO: Use Value by const &
 void FlowTableWithFields::on_portal_user_requested_details(Gnome::Gda::Value primary_key_value, Box_Data_Portal* portal_box)
 {
@@ -1260,13 +1230,6 @@ void FlowTableWithFields::on_portal_user_requested_details(Gnome::Gda::Value pri
 
   if(!(table_name.empty()) && !Conversions::value_is_empty(primary_key))
     signal_requested_related_details().emit(table_name, primary_key);
-}
-
-
-void FlowTableWithFields::on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
-{
-  //Forward it to the parent:
-  signal_requested_related_details().emit(table_name, primary_key_value);
 }
 
 void FlowTableWithFields::apply_size_groups_to_labels(const type_vec_sizegroups& size_groups)

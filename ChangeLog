@@ -1,5 +1,9 @@
 2012-03-12  Murray Cumming  <murrayc@murrayc.com>
 
+	Simplify code that just re-emits signals.
+
+2012-03-12  Murray Cumming  <murrayc@murrayc.com>
+
 	Reduce use of the derived ComboBoxText.
 
 2012-03-12  Murray Cumming  <murrayc@murrayc.com>

@@ -80,8 +80,7 @@ Notebook_Data::Notebook_Data()
     &Notebook_Data::on_list_user_requested_details));
   
   //Allow the parent widget to detect list selection changes:
-  m_Box_List.signal_record_selection_changed().connect(sigc::mem_fun(*this,
-    &Notebook_Data::on_list_selection_changed));
+  m_Box_List.signal_record_selection_changed().connect(m_signal_record_selection_changed.make_slot());
 
   //Allow Details to ask List to ask Details to show a different record:
   m_Box_Details.signal_nav_first().connect(sigc::mem_fun(m_Box_List, &Box_Data_List::on_details_nav_first));
@@ -249,11 +248,6 @@ void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& prim
     sigc::bind(
       sigc::mem_fun(*this, &Notebook_Data::on_idle_show_details),
       primary_key_value));
-}
-
-void Notebook_Data::on_list_selection_changed()
-{
-  m_signal_record_selection_changed.emit();
 }
 
 void Notebook_Data::on_details_user_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)

@@ -99,7 +99,6 @@ protected:
 private:
 
   bool on_idle_show_details(const Gnome::Gda::Value& primary_key_value);
-  void on_list_selection_changed();
 
 protected:
   //Member widgets:

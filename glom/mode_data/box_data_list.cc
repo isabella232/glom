@@ -47,8 +47,7 @@ Box_Data_List::Box_Data_List()
   m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_requested_edit));
   m_AddDel.signal_script_button_clicked().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_script_button_clicked));
   m_AddDel.signal_sort_clause_changed().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_sort_clause_changed));
-  m_AddDel.signal_record_selection_changed().connect(
-    sigc::mem_fun(*this, &Box_Data_List::on_adddel_record_selection_changed));
+  m_AddDel.signal_record_selection_changed().connect(m_signal_record_selection_changed.make_slot());
 
   //TODO: Re-add this signal if this is really wanted, but make it part of a complete drag-and-drop feature for list views:
   //m_AddDel.signal_user_reordered_columns().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_reordered_columns));
@@ -541,11 +540,6 @@ void Box_Data_List::on_adddel_user_sort_clause_changed()
   Document* document = get_document();
   if(document)
     document->set_criteria_current(m_table_name, m_found_set);
-}
-
-void Box_Data_List::on_adddel_record_selection_changed()
-{
-  m_signal_record_selection_changed.emit();
 }
 
 Gtk::TreeModel::iterator Box_Data_List::get_row_selected()
