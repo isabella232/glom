@@ -19,6 +19,7 @@
  */
 
 #include "notebook_find.h"
+#include <glom/signal_reemitter.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -29,7 +30,6 @@ Notebook_Find::Notebook_Find()
   m_iPage_List(0)
 {
   append_page(m_Box_List, _("List"));
-  m_Box_List.signal_find_criteria.connect(sigc::mem_fun(*this, &Notebook_Find::on_page_find_criteria));
   m_iPage_List = 0;
   m_iPage_Details = 1;
 
@@ -42,7 +42,10 @@ Notebook_Find::Notebook_Find()
   //TODO: Show the same layout that is being edited at the time that the mode was changed.
 
   //Connect Signals:
-  m_Box_Details.signal_find_criteria.connect(sigc::mem_fun(*this, &Notebook_Find::on_page_find_criteria));
+  //Pass it up to the application:
+  signal_connect_for_reemit_1arg(m_Box_List.signal_find_criteria, signal_find_criteria);
+  signal_connect_for_reemit_1arg(m_Box_Details.signal_find_criteria, signal_find_criteria);
+  
 
   add_view(&m_Box_Details);
 
@@ -66,12 +69,6 @@ bool Notebook_Find::init_db_details(const Glib::ustring& table_name, const Glib:
   m_Box_Details.init_db_details(table_name, layout_platform);
 
   return result;
-}
-
-void Notebook_Find::on_page_find_criteria(const Gnome::Gda::SqlExpr& where_clause)
-{
-  //Pass it up to the application.
-  signal_find_criteria.emit(where_clause);
 }
 
 void Notebook_Find::set_current_view(Notebook_Data::dataview view)

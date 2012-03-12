@@ -92,7 +92,6 @@ protected:
 
   //Signal handlers:
   virtual void on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value);
-  void on_details_user_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
 
   virtual void on_switch_page_handler(Gtk::Widget* pPage, guint uiPageNumber);
 

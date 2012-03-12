@@ -19,6 +19,7 @@
  */
 
 #include <glom/mode_data/notebook_data.h>
+#include <glom/signal_reemitter.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glibmm/main.h>
 #include <glibmm/i18n.h>
@@ -92,7 +93,7 @@ Notebook_Data::Notebook_Data()
   m_Box_Details.signal_record_deleted().connect(sigc::mem_fun(m_Box_List, &Box_Data_List::on_details_record_deleted));
 
   //Allow Details to ask to show a different record in a different table:
-  m_Box_Details.signal_requested_related_details().connect(sigc::mem_fun(*this, &Notebook_Data::on_details_user_requested_related_details));
+  signal_connect_for_reemit_2args(m_Box_Details.signal_requested_related_details(), m_signal_record_details_requested);
   
 
   //Fill composite view:
@@ -248,19 +249,6 @@ void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& prim
     sigc::bind(
       sigc::mem_fun(*this, &Notebook_Data::on_idle_show_details),
       primary_key_value));
-}
-
-void Notebook_Data::on_details_user_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
-{
-  signal_record_details_requested().emit(table_name, primary_key_value);
-
-  /*
-  //Show a different table:
-  init_db_details(m_table_name);
-
-  //Show the specific record:
-  on_list_user_requested_details(primary_key_value);
-  */
 }
 
 FoundSet Notebook_Data::get_found_set_selected() const

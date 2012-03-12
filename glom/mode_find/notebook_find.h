@@ -46,10 +46,6 @@ public:
 
 private:
 
-
-  //Signal handlers:
-  void on_page_find_criteria(const Gnome::Gda::SqlExpr& where_clause);
-
   //Member widgets:
   Box_Data_List_Find m_Box_List;
   
