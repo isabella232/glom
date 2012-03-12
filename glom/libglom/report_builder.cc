@@ -276,12 +276,12 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
         found_set_records.m_where_clause = where_clause;
 
         //Secondary fields. For instance, the Contact Name, in addition to the Contact ID that we group by.
-        if(!(group_by->m_group_secondary_fields->m_list_items.empty()))
+        if(!(group_by->get_secondary_fields()->m_list_items.empty()))
         {
           xmlpp::Element* nodeSecondaryFields = nodeGroupBy->add_child("secondary_fields");
 
           type_vecLayoutItems itemsToGet;
-          for(LayoutGroup::type_list_items::iterator iterChildren = group_by->m_group_secondary_fields->m_list_items.begin(); iterChildren != group_by->m_group_secondary_fields->m_list_items.end(); ++iterChildren)
+          for(LayoutGroup::type_list_items::iterator iterChildren = group_by->get_secondary_fields()->m_list_items.begin(); iterChildren != group_by->get_secondary_fields()->m_list_items.end(); ++iterChildren)
           {
             sharedptr<LayoutItem> item = *iterChildren;
             itemsToGet.push_back( glom_sharedptr_clone(item) );

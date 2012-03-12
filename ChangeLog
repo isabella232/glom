@@ -1,5 +1,16 @@
 2012-03-12  Murray Cumming  <murrayc@murrayc.com>
 
+	LayoutItem_GroupBy: Add get and set methods for members.
+
+	* glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.[h|cc]: 
+	Make the members private, adding getters. With smartpointers, the direct 
+	access is not necessary for performance.
+	* glom/libglom/document/document.cc:
+	* glom/libglom/report_builder.cc:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc: Adapted.
+
+2012-03-12  Murray Cumming  <murrayc@murrayc.com>
+
 	libglom: LayoutGroup: Remove deprecated remove_field() and has_field().
 
 	* glom/libglom/data_structure/layout/layoutgroup.[h|cc]: Remove 

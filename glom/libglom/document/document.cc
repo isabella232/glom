@@ -2508,8 +2508,8 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
           xmlpp::Element* elementGroup = get_node_child_named(elementSecondary, GLOM_NODE_DATA_LAYOUT_GROUP);
           if(elementGroup)
           {
-            load_after_layout_group(elementGroup, table_name, child_group->m_group_secondary_fields, with_print_layout_positions);
-            fill_layout_field_details(table_name, child_group->m_group_secondary_fields); //Get full field details from the field names.
+            load_after_layout_group(elementGroup, table_name, child_group->get_secondary_fields(), with_print_layout_positions);
+            fill_layout_field_details(table_name, child_group->get_secondary_fields()); //Get full field details from the field names.
           }
         }
 
@@ -3385,10 +3385,10 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
     }
 
     //Secondary fields:
-    if(!group_by->m_group_secondary_fields->m_list_items.empty())
+    if(!group_by->get_secondary_fields()->m_list_items.empty())
     {
       xmlpp::Element* secondary_fields = child->add_child(GLOM_NODE_DATA_LAYOUT_GROUP_SECONDARYFIELDS);
-      save_before_layout_group(secondary_fields, group_by->m_group_secondary_fields, with_print_layout_positions);
+      save_before_layout_group(secondary_fields, group_by->get_secondary_fields(), with_print_layout_positions);
     }
   }
   else
@@ -4612,7 +4612,7 @@ void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& grou
         sharedptr<LayoutItem_Field> field = group_by->get_field_group_by();
         fill_translatable_layout_items(field, the_list, hint);
 
-        fill_translatable_layout_items(group_by->m_group_secondary_fields, the_list, this_hint);
+        fill_translatable_layout_items(group_by->get_secondary_fields(), the_list, this_hint);
       }
 
       //recurse:

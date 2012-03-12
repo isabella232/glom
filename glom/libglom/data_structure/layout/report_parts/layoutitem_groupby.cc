@@ -32,9 +32,9 @@ LayoutItem_GroupBy::LayoutItem_GroupBy()
 
 LayoutItem_GroupBy::LayoutItem_GroupBy(const LayoutItem_GroupBy& src)
 : LayoutGroup(src),
+  m_field_group_by(src.m_field_group_by),
   m_group_secondary_fields(src.m_group_secondary_fields),
-  m_fields_sort_by(src.m_fields_sort_by),
-  m_field_group_by(src.m_field_group_by)
+  m_fields_sort_by(src.m_fields_sort_by)
 {
 }
 
@@ -145,6 +145,26 @@ Glib::ustring LayoutItem_GroupBy::get_layout_display_name() const
 Glib::ustring LayoutItem_GroupBy::get_report_part_id() const
 {
   return "group_by";
+}
+
+sharedptr<LayoutGroup> LayoutItem_GroupBy::get_secondary_fields()
+{
+  return m_group_secondary_fields;
+}
+
+sharedptr<const LayoutGroup> LayoutItem_GroupBy::get_secondary_fields() const
+{
+  return m_group_secondary_fields;
+}
+
+LayoutItem_GroupBy::type_list_sort_fields LayoutItem_GroupBy::get_sort_by() const
+{
+  return m_fields_sort_by;
+}
+
+void LayoutItem_GroupBy::set_sort_by(const type_list_sort_fields& sort_by)
+{
+  m_fields_sort_by = sort_by;
 }
 
 } //namespace Glom

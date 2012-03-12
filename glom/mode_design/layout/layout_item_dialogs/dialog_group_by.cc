@@ -163,14 +163,14 @@ void Dialog_GroupBy::on_button_secondary_fields()
 
   if(m_dialog_choose_secondary_fields)
   {
-    m_dialog_choose_secondary_fields->set_fields(m_table_name, m_layout_item->m_group_secondary_fields->m_list_items);
+    m_dialog_choose_secondary_fields->set_fields(m_table_name, m_layout_item->get_secondary_fields()->m_list_items);
 
     const int response = Glom::Utils::dialog_run_with_help(m_dialog_choose_secondary_fields);
     m_dialog_choose_secondary_fields->hide();
     if(response == Gtk::RESPONSE_OK && m_dialog_choose_secondary_fields->get_modified())
     {
-      m_layout_item->m_group_secondary_fields->remove_all_items(); //Free the existing member items.
-      m_layout_item->m_group_secondary_fields->m_list_items = m_dialog_choose_secondary_fields->get_fields();
+      m_layout_item->get_secondary_fields()->remove_all_items(); //Free the existing member items.
+      m_layout_item->get_secondary_fields()->m_list_items = m_dialog_choose_secondary_fields->get_fields();
     }
   }
 
@@ -196,7 +196,7 @@ void Dialog_GroupBy::update_labels()
 
   //Secondary Fields:
   const Glib::ustring text_secondary_fields =
-    Utils::get_list_of_layout_items_for_display(m_layout_item->m_group_secondary_fields);
+    Utils::get_list_of_layout_items_for_display(m_layout_item->get_secondary_fields());
   m_label_secondary_fields->set_text(text_secondary_fields);
 }
 
