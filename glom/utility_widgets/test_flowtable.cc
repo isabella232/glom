@@ -54,7 +54,7 @@ static void fill_flowtable(Glom::FlowTable& flowtable)
 
   Gtk::Entry* button2 = Gtk::manage(new Gtk::Entry());
   button2->set_text("two");
-  flowtable.add(*button1, *button2);
+  flowtable.add_widgets(*button1, *button2);
   button2->show();
   //button2->set_size_request(100, 100);
   vec_child_widgets.push_back(button2);
@@ -67,7 +67,7 @@ static void fill_flowtable(Glom::FlowTable& flowtable)
 
   Gtk::Entry* button4 = Gtk::manage(new Gtk::Entry());
   button4->set_text("four");
-  flowtable.add(*button3, *button4);
+  flowtable.add_widgets(*button3, *button4);
   button4->show();
   vec_child_widgets.push_back(button4);
 
@@ -75,7 +75,7 @@ static void fill_flowtable(Glom::FlowTable& flowtable)
   button5->set_text("five");
   Gtk::Entry* button6 = Gtk::manage(new Gtk::Entry());
   button6->set_text("size");
-  flowtable.add(*button5, *button6);
+  flowtable.add_widgets(*button5, *button6);
   button5->show();
   button6->show();
   vec_child_widgets.push_back(button5);
