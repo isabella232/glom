@@ -52,7 +52,7 @@ private:
 
   void begin_import();
 
-  void on_state_changed();
+  void on_data_source_state_changed();
   bool on_idle_import();
 
   virtual void on_response(int response_id); // Override from Gtk::Dialog

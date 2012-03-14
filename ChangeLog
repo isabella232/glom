@@ -1,5 +1,12 @@
 2012-03-14  Murray Cumming  <murrayc@murrayc.com>
 
+	Dialog_ImportCSVProgress: rename a signal handler.
+
+	* glom/import_csv/dialog_import_csv_progress[h|cc]: Avoid a clash with 
+	a virtual method of the same name in Gtk::Widget.
+
+2012-03-14  Murray Cumming  <murrayc@murrayc.com>
+
 	Make sure that get_appwindow() overrides are const.
 
 	* glom/mode_data/buttonglom.[h|cc]:

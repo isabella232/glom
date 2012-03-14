@@ -83,7 +83,7 @@ void Dialog_Import_CSV_Progress::import(Dialog_Import_CSV& data_source)
     }
 
     m_progress_bar->set_text(Glib::ustring::compose(_("Parsing CSV file %1"), filename));
-    m_ready_connection = data_source.signal_state_changed().connect(sigc::mem_fun(*this, &Dialog_Import_CSV_Progress::on_state_changed));
+    m_ready_connection = data_source.signal_state_changed().connect(sigc::mem_fun(*this, &Dialog_Import_CSV_Progress::on_data_source_state_changed));
     break;
   }
   case CsvParser::STATE_PARSED:
@@ -123,7 +123,7 @@ void Dialog_Import_CSV_Progress::begin_import()
   m_progress_connection = Glib::signal_idle().connect(sigc::mem_fun(*this, &Dialog_Import_CSV_Progress::on_idle_import));
 }
 
-void Dialog_Import_CSV_Progress::on_state_changed()
+void Dialog_Import_CSV_Progress::on_data_source_state_changed()
 {
   switch(m_data_source->get_state())
   {
