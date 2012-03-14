@@ -1,3 +1,9 @@
+1.21.7 (unstable):
+
+* Build: Fix some warnings from clang++.
+* libglom: Remove some deprecated methods.
+* libglom: LayoutItem_GroupBy: Add get and set methods for members.
+
 1.21.6 (unstable):
 
 * Make auto-increment fields work even if they are not primary keys.
