@@ -385,11 +385,11 @@ void Box_Data_Calendar_Related::prepare_layout_dialog(Dialog_Layout* dialog)
   sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
   if(derived_portal && derived_portal->get_has_relationship_name())
   {
-    related_dialog->set_document(m_layout_name, m_layout_platform, get_document(), derived_portal);
+    related_dialog->init_with_portal(m_layout_name, m_layout_platform, get_document(), derived_portal);
   }
   else
   {
-    related_dialog->set_document(m_layout_name, m_layout_platform, get_document(), m_parent_table);
+    related_dialog->init_with_tablename(m_layout_name, m_layout_platform, get_document(), m_parent_table);
   }
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY

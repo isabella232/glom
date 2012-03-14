@@ -40,7 +40,7 @@ public:
   
   Dialog_Import_CSV_Progress(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
-  virtual bool init_db_details(const Glib::ustring& table_name);
+  bool init_db_details(const Glib::ustring& table_name);
 
   // Reads the data from the Dialog_Import_CSV. We might want to wrap the
   // parsed data within a separate class.

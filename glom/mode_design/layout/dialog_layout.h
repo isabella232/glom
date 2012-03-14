@@ -38,6 +38,8 @@ public:
   Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder, bool with_table_title = true);
   virtual ~Dialog_Layout();
 
+  virtual bool get_modified() const;
+
   /**
    * @param layout_name "list" or "details"
    * @param layout_platform As in the document. Empty or "maemo".
@@ -45,10 +47,8 @@ public:
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  virtual void set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecConstLayoutFields& table_fields);
-
-  virtual bool get_modified() const;
-
+  virtual void init(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecConstLayoutFields& table_fields);
+  
 protected:
 
   virtual void treeview_fill_sequences(const Glib::RefPtr<Gtk::TreeModel> model, const Gtk::TreeModelColumn<guint>& sequence_column);
@@ -60,6 +60,7 @@ protected:
   void move_treeview_selection_up(Gtk::TreeView* treeview, const Gtk::TreeModelColumn<guint>& sequence_column);
 
   //signal handlers:
+  //TODO: Do these need to be virtual?
   virtual void on_treemodel_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
   virtual void on_entry_table_title_changed();
   virtual void on_button_close();

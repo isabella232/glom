@@ -114,7 +114,7 @@ Dialog_Layout_List_Related::~Dialog_Layout_List_Related()
 }
 
 
-void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const sharedptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table, bool for_print_layout)
+void Dialog_Layout_List_Related::init_with_portal(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const sharedptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table, bool for_print_layout)
 {
   m_for_print_layout = for_print_layout;
 
@@ -142,7 +142,7 @@ void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout_name, 
   m_spinbutton_rows_count_max->set_value(rows_count_max);
 
   type_vecConstLayoutFields empty_fields; //Just to satisfy the base class.
-  Dialog_Layout::set_document(layout_name, layout_platform, document, actual_from_table, empty_fields);
+  Dialog_Layout::init(layout_name, layout_platform, document, actual_from_table, empty_fields);
   //m_table_name is now actually the parent_table_name.
 
   //Hide unwanted widgets and show extra ones:

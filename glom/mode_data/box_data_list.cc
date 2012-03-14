@@ -563,7 +563,7 @@ Dialog_Layout* Box_Data_List::create_layout_dialog() const
 
 void Box_Data_List::prepare_layout_dialog(Dialog_Layout* dialog)
 {
-  dialog->set_document(m_layout_name, m_layout_platform, get_document(), m_table_name, m_FieldsShown); //TODO: Use m_TableFields?
+  dialog->init(m_layout_name, m_layout_platform, get_document(), m_table_name, m_FieldsShown); //TODO: Use m_TableFields?
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

@@ -967,7 +967,7 @@ Dialog_Layout* Box_Data_Details::create_layout_dialog() const
 void Box_Data_Details::prepare_layout_dialog(Dialog_Layout* dialog)
 {
   if(dialog)
-    dialog->set_document(m_layout_name, m_layout_platform, get_document(), m_table_name, m_FieldsShown); //TODO: Use m_TableFields?
+    dialog->init(m_layout_name, m_layout_platform, get_document(), m_table_name, m_FieldsShown); //TODO: Use m_TableFields?
 }
 
 void Box_Data_Details::show_layout_toolbar(bool show)

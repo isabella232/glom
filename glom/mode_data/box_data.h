@@ -48,7 +48,7 @@ public:
 
   //TODO: Put this in Base_DB_Table_Data?
   ///Create the layout for the database structure, and fill it with data from the database.
-  virtual bool init_db_details(const FoundSet& found_set, const Glib::ustring& layout_platform);
+  bool init_db_details(const FoundSet& found_set, const Glib::ustring& layout_platform);
 
   //Fill the existing layout with data from the database:
   virtual bool refresh_data_from_database_with_where_clause(const FoundSet& found_set);

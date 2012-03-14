@@ -165,12 +165,7 @@ void AppWindow::on_connection_avahi_done()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-bool AppWindow::init(const Glib::ustring& document_uri)
-{
-  return init(document_uri, false);
-}
-
-bool AppWindow::init(const Glib::ustring& document_uri, bool restore)
+bool AppWindow::init_with_document(const Glib::ustring& document_uri, bool restore)
 {
   type_base::init(); //calls init_menus() and init_toolbars()
 

@@ -45,7 +45,7 @@ public:
   Dialog_ChooseID(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_ChooseID();
 
-  virtual bool init_db_details(const Glib::ustring& table_name, const Glib::ustring& layout_platform);
+  bool init_db_details(const Glib::ustring& table_name, const Glib::ustring& layout_platform);
 
   bool get_id_chosen(Gnome::Gda::Value& chosen_id) const;
 

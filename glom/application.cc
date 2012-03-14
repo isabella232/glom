@@ -67,7 +67,7 @@ void Application::create_window(const Glib::RefPtr<Gio::File>& file)
     input_uri = file->get_uri();
   }
 
-  const bool test = window->init(input_uri, m_remote_option_group.m_arg_restore); //Sets it up and shows it.
+  const bool test = window->init_with_document(input_uri, m_remote_option_group.m_arg_restore); //Sets it up and shows it.
   if(!test) //The user could cancel the offer of a new or existing database.
   {
     window->hide(); //This will cause it to be deleted by on_window_hide.

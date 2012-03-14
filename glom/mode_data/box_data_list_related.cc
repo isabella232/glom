@@ -347,7 +347,7 @@ void Box_Data_List_Related::prepare_layout_dialog(Dialog_Layout* dialog)
   Dialog_Layout_List_Related* related_dialog = dynamic_cast<Dialog_Layout_List_Related*>(dialog);
   g_assert(related_dialog);
 
-  related_dialog->set_document(m_layout_name, m_layout_platform, get_document(), m_portal, m_parent_table);
+  related_dialog->init_with_portal(m_layout_name, m_layout_platform, get_document(), m_portal, m_parent_table);
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

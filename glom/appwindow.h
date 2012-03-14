@@ -52,12 +52,10 @@ public:
   AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~AppWindow();
 
-  virtual bool init(const Glib::ustring& document_uri = Glib::ustring()); //override
-
   /**
    * @param restore Whether @a document_uri is a .tar.gz backup file to restore.
    */
-  bool init(const Glib::ustring& document_uri, bool restore);
+  bool init_with_document(const Glib::ustring& document_uri = Glib::ustring(), bool restore = false); //override
 
   //virtual void statusbar_set_text(const Glib::ustring& strText);
   //virtual void statusbar_clear();

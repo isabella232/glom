@@ -56,7 +56,7 @@ public:
   virtual ~Base_DB();
 
   /// Specify the structure of what will be shown, and fill it.
-  virtual bool init_db_details();
+  bool init_db_details();
 
   /** Returns whether we are in developer mode.
    * Some functionality will be deactivated when not in developer mode.
@@ -261,6 +261,7 @@ protected:
   bool check_entered_value_for_uniqueness(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value, Gtk::Window* parent_window);
   bool check_entered_value_for_uniqueness(const Glib::ustring& table_name, const Gtk::TreeModel::iterator& /* row */,  const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value, Gtk::Window* parent_window);
 
+  //TODO: Make this private?
   /** Fill the UI with information (data or structure, depending on the widget).
    * Overridden by derived widgets to provide implementation.
    */

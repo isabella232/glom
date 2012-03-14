@@ -1,5 +1,29 @@
 2012-03-14  Murray Cumming  <murrayc@murrayc.com>
 
+	set_document(), init() methods: Avoid the appearance that these are virtual.
+
+	* glom/application.cc:
+	* glom/appwindow.[h|cc]:
+	* glom/base_db.h:
+	* glom/base_db_table.h:
+	* glom/import_csv/dialog_import_csv_progress.h:
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data_calendar_related.cc:
+	* glom/mode_data/box_data_details.[h|cc]:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/datawidget/dialog_choose_id.h:
+	* glom/mode_data/datawidget/dialog_new_record.h:
+	* glom/mode_design/layout/dialog_layout.[h|cc]:
+	* glom/mode_design/layout/dialog_layout_calendar_related.[h|cc]:
+	* glom/mode_design/layout/dialog_layout_details.[h|cc]:
+	* glom/mode_design/layout/dialog_layout_list_related.[h|cc]:
+	* glom/mode_find/box_data_details_find.h:
+	* glom/print_layout/canvas_print_layout.cc:
+	This fixes warnings found by clang++.
+
+2012-03-14  Murray Cumming  <murrayc@murrayc.com>
+
 	FlowTable::add(): Rename to add_widgets().
 
 	* glom/mode_data/flowtablewithfields.cc:
