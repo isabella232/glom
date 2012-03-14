@@ -54,7 +54,7 @@ private:
   virtual bool on_button_press_event(GdkEventButton *event); //override
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  virtual AppWindow* get_appwindow();
+  virtual AppWindow* get_appwindow() const;
 };
 
 } //namespace DataWidetChildren

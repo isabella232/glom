@@ -77,7 +77,7 @@ private:
   virtual bool on_button_press_event(GdkEventButton *event);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  virtual AppWindow* get_appwindow();
+  virtual AppWindow* get_appwindow() const;
 
 
   Gnome::Gda::Value m_old_value; //TODO: Only useful for navigation, which currently has no implementation.

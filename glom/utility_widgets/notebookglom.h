@@ -48,7 +48,7 @@ protected:
 protected:
   void init();
 
-  virtual AppWindow* get_appwindow();
+  virtual AppWindow* get_appwindow() const;
 };
 
 } //namespace Glom

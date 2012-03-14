@@ -567,9 +567,9 @@ void DataWidget::on_child_user_requested_layout()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-AppWindow* DataWidget::get_appwindow()
+AppWindow* DataWidget::get_appwindow() const
 {
-  Gtk::Container* pWindow = get_toplevel();
+  Gtk::Container* pWindow = const_cast<Gtk::Container*>(get_toplevel());
   //TODO: This only works when the child widget is already in its parent.
 
   return dynamic_cast<AppWindow*>(pWindow);

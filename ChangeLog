@@ -1,5 +1,23 @@
 2012-03-14  Murray Cumming  <murrayc@murrayc.com>
 
+	Make sure that get_appwindow() overrides are const.
+
+	* glom/mode_data/buttonglom.[h|cc]:
+	* glom/mode_data/datawidget/checkbutton.[h|cc]:
+	* glom/mode_data/datawidget/combo.[h|cc]:
+	* glom/mode_data/datawidget/combo_as_radio_buttons.[h|cc]:
+	* glom/mode_data/datawidget/datawidget.[h|cc]:
+	* glom/mode_data/datawidget/entry.[h|cc]:
+	* glom/mode_data/datawidget/label.[h|cc]:
+	* glom/mode_data/datawidget/textview.[h|cc]:
+	* glom/utility_widgets/imageglom.[h|cc]:
+	* glom/utility_widgets/notebookglom.[h|cc]: get_appwindow(): This should
+	be const because the pure virtual function (that it is meant to override)
+	is const.
+	This fixes warnings found by clang++.
+
+2012-03-14  Murray Cumming  <murrayc@murrayc.com>
+
 	Fix some simple warnings found by clang++
 
 	* glom/appwindow.cc:

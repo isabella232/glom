@@ -79,7 +79,7 @@ private:
   virtual bool on_button_press_event(GdkEventButton *event); //override
 #endif
 
-  virtual AppWindow* get_appwindow();
+  virtual AppWindow* get_appwindow() const;
 
   Glib::ustring m_old_text;
   Field::glom_field_type m_glom_type; //Store the type so we can validate the text accordingly.

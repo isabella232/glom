@@ -88,7 +88,7 @@ private:
   void show_context_menu(GdkEventButton *event);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  virtual AppWindow* get_appwindow();
+  virtual AppWindow* get_appwindow() const;
 
 
   Glib::ustring m_old_text;

@@ -349,9 +349,9 @@ g_warning("ComboGlom::on_button_press_event()");
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-AppWindow* ComboGlom::get_appwindow()
+AppWindow* ComboGlom::get_appwindow() const
 {
-  Gtk::Container* pWindow = get_toplevel();
+  Gtk::Container* pWindow = const_cast<Gtk::Container*>(get_toplevel());
   //TODO: This only works when the child widget is already in its parent.
 
   return dynamic_cast<AppWindow*>(pWindow);

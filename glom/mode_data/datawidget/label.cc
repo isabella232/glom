@@ -66,9 +66,9 @@ void Label::init()
   m_label.set_line_wrap();
 }
 
-AppWindow* Label::get_appwindow()
+AppWindow* Label::get_appwindow() const
 {
-  Gtk::Container* pWindow = get_toplevel();
+  Gtk::Container* pWindow = const_cast<Gtk::Container*>(get_toplevel());
   //TODO: This only works when the child widget is already in its parent.
 
   return dynamic_cast<AppWindow*>(pWindow);

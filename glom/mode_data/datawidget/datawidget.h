@@ -117,7 +117,7 @@ private:
   //virtual void on_menupopup_add_item(LayoutWidgetBase::enumType item);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  AppWindow* get_appwindow();
+  virtual AppWindow* get_appwindow() const;
 
   void set_child_size_by_field(const sharedptr<const LayoutItem_Field>& field);
   int get_suitable_width(const sharedptr<const LayoutItem_Field>& field_layout);

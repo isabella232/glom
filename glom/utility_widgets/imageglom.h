@@ -81,7 +81,7 @@ private:
   void on_clipboard_clear();
   void on_clipboard_received_image(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf);
 
-  virtual AppWindow* get_appwindow();
+  virtual AppWindow* get_appwindow() const;
 
   void setup_menu_usermode();
   void show_image_data();

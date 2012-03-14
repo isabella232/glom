@@ -43,7 +43,8 @@ public:
 private:
   void init();
 
-  virtual AppWindow* get_appwindow();
+  virtual AppWindow* get_appwindow() const;
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY    
   virtual void on_menu_properties_activate();
   virtual bool on_button_press_event(GdkEventButton *event);

@@ -157,9 +157,9 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
   return Gtk::EventBox::on_button_press_event(event);
 }
 
-AppWindow* ImageGlom::get_appwindow()
+AppWindow* ImageGlom::get_appwindow() const
 {
-  Gtk::Container* pWindow = get_toplevel();
+  Gtk::Container* pWindow = const_cast<Gtk::Container*>(get_toplevel());
   //TODO: This only works when the child widget is already in its parent.
 
   return dynamic_cast<AppWindow*>(pWindow);
