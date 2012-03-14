@@ -1,4 +1,17 @@
-1.20.10:
+2012-03-14  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix some simple warnings found by clang++
+
+	* glom/appwindow.cc:
+	* glom/dialog_existing_or_new.cc:
+	* glom/frame_glom.cc:
+	* glom/glom_import_po_all.cc:
+	* glom/libglom/data_structure/layout/layoutitem_field.cc:
+	* glom/mode_data/db_adddel/db_adddel.cc:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:
+	* glom/utility_widgets/adddel/adddel.cc:
+	I just did export CXX=clang++ before running autogen.sh.
 
 2012-03-05  Murray Cumming  <murrayc@murrayc.com>
 

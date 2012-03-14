@@ -143,8 +143,8 @@ bool Box_DB_Table_Definition::fill_from_database()
       const sharedptr<const Field>& field = *iter;
 
       //Name:
-      Gtk::TreeModel::iterator iter= m_AddDel.add_item(field->get_name());
-      fill_field_row(iter, field);
+      Gtk::TreeModel::iterator tree_iter= m_AddDel.add_item(field->get_name());
+      fill_field_row(tree_iter, field);
     }
 
     result = true;

@@ -76,7 +76,7 @@ Application::Application(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
   m_pBoxTop(0),
   m_pFrame(0),
   m_bAboutShown(false),
-  m_pAbout(false),
+  m_pAbout(0),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_window_translations(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY

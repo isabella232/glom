@@ -1402,7 +1402,7 @@ void Frame_Glom::update_table_in_document_from_database()
   //Get the fields information from the database:
   DbUtils::type_vec_fields fieldsDatabase = DbUtils::get_fields_for_table_from_database(m_table_name);
 
-  Document* pDoc = dynamic_cast<const Document*>(get_document());
+  Document* pDoc = dynamic_cast<Document*>(get_document());
   if(pDoc)
   {
     bool document_must_be_updated = false;

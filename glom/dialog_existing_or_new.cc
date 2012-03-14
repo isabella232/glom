@@ -277,7 +277,7 @@ bool Dialog_ExistingOrNew::list_examples_at_path(const std::string& path)
   {
     Glib::RefPtr<Gio::FileEnumerator> examples = examples_dir->enumerate_children(G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE","G_FILE_ATTRIBUTE_STANDARD_NAME);
     bool example_found = false;
-    while(info = examples->next_file())
+    while( (info = examples->next_file()) )
     {
       const Glib::ustring title = get_title_from_example(info, examples_dir);
       if(!title.empty())

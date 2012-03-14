@@ -69,12 +69,12 @@ bool LayoutItem_Field::operator==(const LayoutItem_Field& src) const
     (m_field_cache_valid == src.m_field_cache_valid);
 
   if(m_field && src.m_field)
-    result == result && (*m_field == *(src.m_field));
+    result = result && (*m_field == *(src.m_field));
   else
     result = result && (m_field == src.m_field);
 
   if(m_title_custom && src.m_title_custom)
-    result == result && (*m_title_custom == *(src.m_title_custom));
+    result = result && (*m_title_custom == *(src.m_title_custom));
   else
     result = result && (m_title_custom == src.m_title_custom);
 
