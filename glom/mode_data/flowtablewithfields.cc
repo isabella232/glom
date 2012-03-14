@@ -228,7 +228,7 @@ void FlowTableWithFields::add_layout_group(const sharedptr<LayoutGroup>& group, 
       }
     }
 
-    add(*frame, true /* expand */);
+    add_widgets(*frame, true /* expand */);
 
     m_sub_flow_tables.push_back(flow_table);
     flow_table->set_layout_item(group, m_table_name);
@@ -338,7 +338,7 @@ void FlowTableWithFields::add_layout_portal(const sharedptr<LayoutItem_Portal>& 
 
   if(portal_box)
   {
-    add(*portal_box, true /* expand */);
+    add_widgets(*portal_box, true /* expand */);
     add_layoutwidgetbase(portal_box);
   }
   else
@@ -444,7 +444,7 @@ void FlowTableWithFields::add_layout_notebook(const sharedptr<LayoutItem_Noteboo
 
   add_layoutwidgetbase(notebook_widget);
   //add_view(button); //So it can get the document.
-  add(*notebook_widget, true /* expand */);
+  add_widgets(*notebook_widget, true /* expand */);
 }
 
 /*
@@ -490,7 +490,7 @@ void FlowTableWithFields::add_group(const Glib::ustring& group_name, const Glib:
       flow_table->add_field(*iter);
     }
 
-    add(*frame);
+    add_widgets(*frame);
 
     m_sub_flow_tables.push_back(flow_table);
 
@@ -545,7 +545,7 @@ void FlowTableWithFields::add_field(const sharedptr<LayoutItem_Field>& layoutite
   eventbox->set_events(Gdk::ALL_EVENTS_MASK);
   eventbox->show_all();
 
-  add(*eventbox, *(info.m_second), true);
+  add_widgets(*eventbox, *(info.m_second), true);
 
   info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  ); //TODO:  Is it a good idea to bind the LayoutItem? sigc::bind() probably stores a copy at this point.
 
@@ -598,7 +598,7 @@ void FlowTableWithFields::add_button(const sharedptr<LayoutItem_Button>& layouti
     expand = true;
   }
 
-  add(*widget_to_add, expand);
+  add_widgets(*widget_to_add, expand);
 
   apply_formatting(*button, layoutitem_button);
 }
@@ -627,7 +627,7 @@ void FlowTableWithFields::add_textobject(const sharedptr<LayoutItem_Text>& layou
   const Glib::ustring title = item_get_title(layoutitem_text);
   if(title.empty())
   {
-    add(*alignment_label, true /* expand */);
+    add_widgets(*alignment_label, true /* expand */);
   }
   else
   {
@@ -641,7 +641,7 @@ void FlowTableWithFields::add_textobject(const sharedptr<LayoutItem_Text>& layou
     alignment_title->add(*title_label);
     add_layoutwidgetbase(title_label);
 
-    add(*alignment_title, *alignment_label, true /* expand */);
+    add_widgets(*alignment_title, *alignment_label, true /* expand */);
   }
 }
 
@@ -661,7 +661,7 @@ void FlowTableWithFields::add_imageobject(const sharedptr<LayoutItem_Image>& lay
   const Glib::ustring title = item_get_title(layoutitem_image);
   if(title.empty())
   {
-    add(*image, true /* expand */);
+    add_widgets(*image, true /* expand */);
   }
   else
   {
@@ -672,7 +672,7 @@ void FlowTableWithFields::add_imageobject(const sharedptr<LayoutItem_Image>& lay
     Gtk::Label* title_label = Gtk::manage(new Gtk::Label(title));
     title_label->show();
     alignment_title->add(*title_label);
-    add(*alignment_title, *image, true /* expand */);
+    add_widgets(*alignment_title, *image, true /* expand */);
   }
 }
 

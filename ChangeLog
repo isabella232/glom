@@ -1,9 +1,19 @@
 2012-03-14  Murray Cumming  <murrayc@murrayc.com>
 
+	FlowTable::add(): Rename to add_widgets().
+
+	* glom/mode_data/flowtablewithfields.cc:
+	* glom/utility_widgets/flowtable.[h|cc]: This avoids a clash with 
+	Gtk::Widget::add(), which is virtual, but takes different parameters.
+	This fixes warnings found by clang++.
+
+2012-03-14  Murray Cumming  <murrayc@murrayc.com>
+
 	Dialog_ImportCSVProgress: rename a signal handler.
 
 	* glom/import_csv/dialog_import_csv_progress[h|cc]: Avoid a clash with 
 	a virtual method of the same name in Gtk::Widget.
+	This fixes warnings found by clang++.
 
 2012-03-14  Murray Cumming  <murrayc@murrayc.com>
 

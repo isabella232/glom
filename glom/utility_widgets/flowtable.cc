@@ -125,12 +125,12 @@ void FlowTable::set_design_mode(bool value)
   queue_draw(); //because this changes how the widget would be drawn.
 }
 
-void FlowTable::add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second)
+void FlowTable::add_widgets(Gtk::Widget& first, Gtk::Widget& second, bool expand_second)
 {
   insert(&first, &second, -1, expand_second);
 }
 
-void FlowTable::add(Gtk::Widget& first, bool expand)
+void FlowTable::add_widgets(Gtk::Widget& first, bool expand)
 {
   insert(&first, 0 /* second */, -1, expand);
 }

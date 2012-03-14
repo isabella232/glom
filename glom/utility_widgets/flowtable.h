@@ -36,8 +36,8 @@ public:
 
   typedef Gtk::Container type_base;
 
-  virtual void add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second = false);
-  virtual void add(Gtk::Widget& first, bool expand = false); //override
+  void add_widgets(Gtk::Widget& first, Gtk::Widget& second, bool expand_second = false);
+  void add_widgets(Gtk::Widget& first, bool expand = false); //override
  
   /** Show extra UI that is useful in RAD tools:
    */
