@@ -192,7 +192,7 @@ int main(int argc, char* argv[])
   //Import all .po files from the directory:
   Glib::RefPtr<Gio::FileEnumerator> enumerator = file_output->enumerate_children();
   Glib::RefPtr<Gio::FileInfo> info;
-  while(info = enumerator->next_file())
+  while( (info = enumerator->next_file()) )
   {
     Glib::RefPtr<Gio::File> child = file_output->get_child(info->get_name());
     if(child->query_file_type() == Gio::FILE_TYPE_DIRECTORY)

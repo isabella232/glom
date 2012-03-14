@@ -1415,7 +1415,7 @@ void Frame_Glom::update_table_in_document_from_database()
       " Falling back to the field details in the document." << std::endl;
   }
 
-  Document* pDoc = dynamic_cast<const Document*>(get_document());
+  Document* pDoc = dynamic_cast<Document*>(get_document());
   if(pDoc)
   {
     bool document_must_be_updated = false;

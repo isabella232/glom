@@ -1070,7 +1070,7 @@ AddDel::InnerIgnore::~InnerIgnore()
     m_pOuter->set_ignore_treeview_signals(m_bIgnoreSheetSignals);
   }
 
-  m_pOuter = false;
+  m_pOuter = 0;
 }
 
 Glib::ustring AddDel::treeview_get_key(const Gtk::TreeModel::iterator& row)
