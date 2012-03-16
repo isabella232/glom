@@ -419,7 +419,7 @@ gimp_unit_format_string (const gchar *format,
 
   g_return_val_if_fail (format != NULL, NULL);
   g_return_val_if_fail ((gint)unit == GIMP_UNIT_PERCENT ||
-                        ( /* unsigned, so always true: unit >= GIMP_UNIT_PIXEL && */
+                        ( /* A change for Glom: This is unsigned, so always true: unit >= GIMP_UNIT_PIXEL && */
                          (gint)unit < gimp_unit_get_number_of_units ()), NULL);
 
   while (i < ((gint)sizeof (buffer) - 1) && *format)
@@ -653,4 +653,31 @@ gimp_units_to_pixels (gdouble  value,
     return value;
 
   return value * resolution / gimp_unit_get_factor (unit);
+}
+
+/**
+ * gimp_units_to_points:
+ * @value:      value in units
+ * @unit:       unit of @value
+ * @resolution: resloution in DPI
+ *
+ * Converts a @value specified in @unit to points.
+ *
+ * Returns: @value converted to points.
+ *
+ * Since: GIMP 2.8
+ **/
+gdouble
+gimp_units_to_points (gdouble  value,
+                      GimpUnit unit,
+                      gdouble  resolution)
+{
+  if (unit == GIMP_UNIT_POINT)
+    return value;
+
+  if (unit == GIMP_UNIT_PIXEL)
+    return (value * gimp_unit_get_factor (GIMP_UNIT_POINT) / resolution);
+
+  return (value *
+          gimp_unit_get_factor (GIMP_UNIT_POINT) / gimp_unit_get_factor (unit));
 }

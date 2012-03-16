@@ -19,25 +19,28 @@
 #ifndef __GIMP_BASE_H__
 #define __GIMP_BASE_H__
 
+#define __GIMP_BASE_H_INSIDE__
 
 #include <libgimpbase/gimpbasetypes.h>
 
-/* #include <libgimpbase/gimpchecks.h> */
-/* #include <libgimpbase/gimpcpuaccel.h> */
-/* #include <libgimpbase/gimpdatafiles.h> */
-/* #include <libgimpbase/gimpenv.h> */
-/* #include <libgimpbase/gimplimits.h> */
-/* #include <libgimpbase/gimpmemsize.h> */
-/* #include <libgimpbase/gimpparasite.h> */
-/* #include <libgimpbase/gimprectangle.h> */
+/* A change for Glom:
+#include <libgimpbase/gimpchecks.h>
+#include <libgimpbase/gimpcpuaccel.h>
+#include <libgimpbase/gimpdatafiles.h>
+#include <libgimpbase/gimpenv.h>
+#include <libgimpbase/gimplimits.h>
+#include <libgimpbase/gimpmemsize.h>
+#include <libgimpbase/gimpparasite.h>
+#include <libgimpbase/gimprectangle.h>
 #include <libgimpbase/gimpunit.h>
-/* #include <libgimpbase/gimputils.h> */
-/* #include <libgimpbase/gimpversion.h> */
+#include <libgimpbase/gimputils.h>
+#include <libgimpbase/gimpversion.h>
 
-/*
 #ifndef G_OS_WIN32
 #include <libgimpbase/gimpsignal.h>
 #endif
 */
+
+#undef __GIMP_BASE_H_INSIDE__
 
 #endif  /* __GIMP_BASE_H__ */

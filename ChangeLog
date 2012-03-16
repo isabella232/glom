@@ -1,3 +1,9 @@
+2012-03-16  Murray Cumming  <murrayc@murrayc.com>
+
+	Update GimpRuler from the Gimp source code.
+
+	With the same changes to make it build in Glom.
+
 1.21.7:
 
 2012-03-14  Murray Cumming  <murrayc@murrayc.com>

@@ -268,7 +268,7 @@ typedef enum
 {
   GIMP_PAINT_CONSTANT,    /*< desc="Constant"    >*/
   GIMP_PAINT_INCREMENTAL  /*< desc="Incremental" >*/
-} GimpPaintAppWindowMode;
+} GimpPaintApplicationMode;
 
 
 #define GIMP_TYPE_REPEAT_MODE (gimp_repeat_mode_get_type ())

@@ -25,8 +25,9 @@
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
 
-/* A change for Glom: */
-/* #include "libgimpwidgets/gimpwidgetstypes.h" */
+/* A change for Glom:
+#include "gimpwidgetstypes.h"
+*/
 
 #include "gimpruler.h"
 

@@ -19,9 +19,10 @@
 #ifndef __GIMP_BASE_TYPES_H__
 #define __GIMP_BASE_TYPES_H__
 
-
-/* #include <libgimpcolor/gimpcolortypes.h> */
-/* #include <libgimpmath/gimpmathtypes.h> */
+/* A change for Glom:
+#include <libgimpcolor/gimpcolortypes.h>
+#include <libgimpmath/gimpmathtypes.h>
+*/
 
 #include <libgimpbase/gimpbaseenums.h>
 #include <libgimpbase/gimpparam.h>

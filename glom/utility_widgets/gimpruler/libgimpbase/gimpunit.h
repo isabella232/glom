@@ -19,14 +19,19 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+/* We disable this so we can use gimpruler.h in Glom without the other files.
+#if !defined (__GIMP_BASE_H_INSIDE__) && !defined (GIMP_BASE_COMPILATION)
+#error "Only <libgimpbase/gimpbase.h> can be included directly."
+#endif
+*/
+
 #ifndef __GIMP_UNIT_H__
 #define __GIMP_UNIT_H__
 
-/* This is not in the original gimp source code. */
+/* A change for Glom: */
 #include <libgimpbase/gimpbaseenums.h>
 
 G_BEGIN_DECLS
-
 
 /* For information look into the C source or the html documentation */
 
@@ -94,6 +99,9 @@ gdouble       gimp_pixels_to_units          (gdouble      pixels,
                                              GimpUnit     unit,
                                              gdouble      resolution);
 gdouble       gimp_units_to_pixels          (gdouble      value,
+                                             GimpUnit     unit,
+                                             gdouble      resolution);
+gdouble       gimp_units_to_points          (gdouble      value,
                                              GimpUnit     unit,
                                              gdouble      resolution);
 
