@@ -23,7 +23,6 @@
 #include <glom/utils_ui.h>
 #include <gtkmm/stock.h>
 #include <libglom/appstate.h>
-//#include <libgnomeui/gnome-app-helper.h>
 
 #include <sstream> //For stringstream
 

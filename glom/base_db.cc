@@ -48,12 +48,6 @@
 #include <libglom/privs.h>
 #include <libglom/db_utils.h>
 #include <glibmm/i18n.h>
-//#include <libgnomeui/gnome-app-helper.h>
-
-//#include <libgdamm/metastore.h> //For MetaStoreError
-//#undef GDA_DISABLE_DEPRECATED
-//#include <sql-parser/gda-statement-struct-util.h> //For gda_sql_identifier_remove_quotes().
-
 
 #include <sstream> //For stringstream
 
