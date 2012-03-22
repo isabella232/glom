@@ -1,3 +1,11 @@
+2012-03-22  Murray Cumming  <murrayc@murrayc.com>
+
+	Tests: Set LC_TIME too.
+
+	* tests/test_glom_date_in_locales.sh:
+	* tests/test_selfhosting_new_from_example_in_locales.sh:
+	This seems to be necessary in Ubuntu Precise.
+
 2012-03-14  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix some simple warnings found by clang++

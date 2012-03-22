@@ -22,5 +22,6 @@ do
   echo testing with LANG and LANGUAGE="$x"
   export LANG="$x"
   export LANGUAGE="$x"
+  export LC_TIME="$x"
   tests/test_selfhosting_new_from_example || exit 1
 done

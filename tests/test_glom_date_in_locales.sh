@@ -22,5 +22,6 @@ do
   echo testing with LANG and LANGUAGE="$x"
   export LANG="$x"
   export LANGUAGE="$x"
+  export LC_TIME="$x"
   ${buildir}glom --debug-date-check || exit 1
 done
