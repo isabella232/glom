@@ -144,7 +144,7 @@ bool Conversions::sanity_check_date_parsing()
      parsed_date.tm_mday != the_c_time.tm_mday)
   {
     //Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
-    std::cerr << _("ERROR: sanity_check_date_parsing(): Sanity check failed: Glom could not parse a date's text representation that it generated itself, in this locale.") << std::endl;
+    std::cerr << _("ERROR: sanity_check_date_parsing(): Sanity check failed: Glom could not parse a date's text representation that it generated itself, in this locale.") << " (" << std::locale("").name() << ")" << std::endl;
 
     //If translators cannot be relied upon to do this, maybe we should default to "%d/%m/%Y" when "%x" fails this test.
 
@@ -169,7 +169,9 @@ bool Conversions::sanity_check_date_text_representation_uses_4_digit_years(bool 
   const Glib::ustring date_text = format_date(the_c_time);
 
   if(debug_output)
-    std::cout << "DEBUG: 22nd November 2008 in this locale has this text represention: " << date_text << std::endl;
+  {
+    std::cout << "DEBUG: 22nd November 2008 in this locale (" << std::locale("").name() << ") has this text represention: " << date_text << std::endl;
+  }
 
   //See if the year appears in full in that date.
   //There are probably some locales for which this fails.

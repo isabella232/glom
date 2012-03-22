@@ -1,3 +1,12 @@
+2012-03-22  Murray Cumming  <murrayc@murrayc.com>
+
+	Improve the command-line parse/print locale warnings.
+
+	* glom/libglom/data_structure/glomconversions.cc:
+	Mention the locale details when complaining that 
+	date parsing or rendering is not working correctly for
+	a locale.
+
 2012-03-16  Murray Cumming  <murrayc@murrayc.com>
 
 	Update GimpRuler from the Gimp source code.
