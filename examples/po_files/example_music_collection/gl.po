@@ -1,0 +1,193 @@
+# Galician translation for glom.
+# Copyright (C) 2012 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Fran Dieguez <frandieguez@gnome.org>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glom master\n"
+"product=glom&keywords=I18N+L10N&component=general\n"
+"PO-Revision-Date: 2012-03-25 16:48+0200\n"
+"Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
+"Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+msgctxt "Database Title"
+msgid "Music Collection"
+msgstr "Colección de música"
+
+msgctxt "Table (albums)"
+msgid "Albums"
+msgstr "Álbums"
+
+msgctxt "Field (album_id). Parent table: albums"
+msgid "Album ID"
+msgstr "ID do álbum"
+
+msgctxt "Field (comments). Parent table: albums"
+msgid "Comments"
+msgstr "Comentarios"
+
+msgctxt "Field (name). Parent table: albums"
+msgid "Name"
+msgstr "Nome"
+
+msgctxt "Field (artist_id). Parent table: albums"
+msgid "Artist ID"
+msgstr "ID do artista"
+
+msgctxt "Field (publisher_id). Parent table: albums"
+msgid "Publisher ID"
+msgstr "ID da editorial"
+
+msgctxt "Field (year). Parent table: albums"
+msgid "Year"
+msgstr "Ano"
+
+msgctxt "Relationship (artist). Parent table: albums"
+msgid "Artist"
+msgstr "Artista"
+
+msgctxt "Relationship (publisher). Parent table: albums"
+msgid "Publisher"
+msgstr "Editorial"
+
+msgctxt "Relationship (songs). Parent table: albums"
+msgid "Songs"
+msgstr "Cancións"
+
+msgctxt "Report (albums_by_artist). Parent table: albums"
+msgid "Albums By Artist"
+msgstr "Álbums por artista"
+
+msgctxt "Custom Title. Parent table: albums, Parent Report: albums_by_artist"
+msgid "Artist Name"
+msgstr "Nome do artista"
+
+msgctxt "Layout Group (overview). Parent table: albums"
+msgid "Overview"
+msgstr "Vista xeral"
+
+msgctxt "Layout Group (details). Parent table: albums"
+msgid "Details"
+msgstr "Detalles"
+
+msgctxt "Layout Group (artist). Parent table: albums, Parent Group: details"
+msgid "Artist"
+msgstr "Artista"
+
+msgctxt "Layout Group (publisher). Parent table: albums, Parent Group: details"
+msgid "Publisher"
+msgstr "Editorial"
+
+msgctxt "Custom Title. Parent table: albums"
+msgid "Artist Name"
+msgstr "Nome do artista"
+
+msgctxt "Custom Title. Parent table: albums"
+msgid "Publisher Name"
+msgstr "Nome da editorial"
+
+msgctxt "Table (artists)"
+msgid "Artists"
+msgstr "Artistas"
+
+msgctxt "Field (artist_id). Parent table: artists"
+msgid "Artist ID"
+msgstr "ID do artista"
+
+msgctxt "Field (description). Parent table: artists"
+msgid "Description"
+msgstr "Descrición"
+
+msgctxt "Field (comments). Parent table: artists"
+msgid "Comments"
+msgstr "Comentarios"
+
+msgctxt "Field (name). Parent table: artists"
+msgid "Name"
+msgstr "Nome"
+
+msgctxt "Relationship (albums). Parent table: artists"
+msgid "Albums"
+msgstr "Álbums"
+
+msgctxt "Layout Group (overview). Parent table: artists"
+msgid "Overview"
+msgstr "Vista xeral"
+
+msgctxt "Layout Group (details). Parent table: artists"
+msgid "Details"
+msgstr "Detalles"
+
+msgctxt "Table (publishers)"
+msgid "Publishers"
+msgstr "Editoriais"
+
+msgctxt "Field (publishers_id). Parent table: publishers"
+msgid "Publisher ID"
+msgstr "ID da editorial"
+
+msgctxt "Field (comments). Parent table: publishers"
+msgid "Comments"
+msgstr "Comentarios"
+
+msgctxt "Field (name). Parent table: publishers"
+msgid "Name"
+msgstr "Nome"
+
+msgctxt "Relationship (albums). Parent table: publishers"
+msgid "Albums"
+msgstr "Álbums"
+
+msgctxt "Layout Group (overview). Parent table: publishers"
+msgid "Overview"
+msgstr "Vista xeral"
+
+msgctxt "Layout Group (details). Parent table: publishers"
+msgid "Details"
+msgstr "Detalles"
+
+msgctxt "Table (songs)"
+msgid "Songs"
+msgstr "Cancións"
+
+msgctxt "Field (song_id). Parent table: songs"
+msgid "Song ID"
+msgstr "ID da canción"
+
+msgctxt "Field (comments). Parent table: songs"
+msgid "Comments"
+msgstr "Comentarios"
+
+msgctxt "Field (album_id). Parent table: songs"
+msgid "Album ID"
+msgstr "ID do álbum"
+
+msgctxt "Field (name). Parent table: songs"
+msgid "Name"
+msgstr "Nome"
+
+msgctxt "Relationship (album). Parent table: songs"
+msgid "Album"
+msgstr "Álbum"
+
+msgctxt "Layout Group (overview). Parent table: songs"
+msgid "Overview"
+msgstr "Vista xeral"
+
+msgctxt "Layout Group (details). Parent table: songs"
+msgid "Details"
+msgstr "Detlles"
+
+msgctxt "Layout Group (album). Parent table: songs, Parent Group: details"
+msgid "Album"
+msgstr "Álbum"
+
+msgctxt "Layout Group (artist). Parent table: songs, Parent Group: details"
+msgid "Album Artist"
+msgstr "Artista do álbum"
