@@ -125,7 +125,7 @@ void Dialog_Import_CSV_Progress::begin_import()
 
 void Dialog_Import_CSV_Progress::on_data_source_state_changed()
 {
-  switch(m_data_source->get_state())
+  switch(m_data_source->get_parser_state())
   {
   case CsvParser::STATE_ENCODING_ERROR:
     // Cancel on error

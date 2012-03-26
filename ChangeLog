@@ -1,3 +1,12 @@
+2012-03-26  Murray Cumming  <murrayc@murrayc.com>
+
+	Dialog_Import_CSV_Progress: Fix a typo.
+
+	* glom/import_csv/dialog_import_csv_progress.cc: Call get_parser_state()
+	instead of get_state(). It was calling Widget::get_state() and the 
+	compiler did not complain that we did not get the enum type that we
+	expected.
+
 2012-03-22  Murray Cumming  <murrayc@murrayc.com>
 
 	Tests: Set LC_TIME too.
