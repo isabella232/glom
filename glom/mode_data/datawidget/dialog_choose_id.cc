@@ -59,10 +59,8 @@ Dialog_ChooseID::Dialog_ChooseID(BaseObjectType* cobject, const Glib::RefPtr<Gtk
 
   builder->get_widget("hbox_quickfind", m_pBox_QuickFind);
   builder->get_widget("entry_quickfind", m_pEntry_QuickFind);
-  m_pEntry_QuickFind->signal_activate().connect(
-   sigc::mem_fun(*this, &Dialog_ChooseID::on_button_quickfind) ); //Pressing Enter here is like pressing Find.
-
   builder->get_widget("button_quickfind", m_pButton_QuickFind);
+
   m_pButton_QuickFind->signal_clicked().connect(
     sigc::mem_fun(*this, &Dialog_ChooseID::on_button_quickfind) );
 

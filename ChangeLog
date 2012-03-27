@@ -1,3 +1,13 @@
+2012-03-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Dialog_Choose_ID: Remove use of a deprecated signal.
+
+	* glom/mode_data/datawidget/dialog_choose_id.cc:
+	Do not connect to Gtk::Entry::signal_activate(),
+	which is deprecated. It is unnecessary anyway,
+	because the entry already activates the button
+	via the activates-default and can/has-default properties.
+
 2012-03-26  Murray Cumming  <murrayc@murrayc.com>
 
 	Dialog_Import_CSV_Progress: Fix a typo.
