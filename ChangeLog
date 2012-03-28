@@ -1,3 +1,29 @@
+1.21.8:
+
+2012-03-28  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build with the latest gtkmm, with --enable-warnings=fatal.
+
+	* glom/mode_data/box_data.[h|cc]: on_Button_Find(): Let the signal
+	handler do the check and warning about no criteria.
+	* glom/frame_glom.cc: on_notebook_find_criteria(): Check for quickfind
+	criteria here too, so we can use this to do quick finds too, which lets
+	use just use the existing Find button (the window's default activate widget),
+	instead of trying to make the separate quickfind Find button be the default
+	for the entry, but not for other widgets.
+	on_button_quickfind(): Just call on_notebook_find_criteria(), letting it do 
+	all the work.
+	Constructor: Call set_activates_default() on the quickfind entry so that the
+	regular Find button will be activated when enter is pressed.
+	
+2012-03-28  Murray Cumming  <murrayc@murrayc.com>
+
+	Slight code improvement.
+
+	* glom/mode_find/box_data_details_find.cc:
+	* glom/mode_find/box_data_list_find.cc: Use C++ instead of C 
+	to set can_default.
+
 2012-03-28  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the build with the latest gtkmm, with --enable-warnings=fatal.

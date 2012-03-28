@@ -1,3 +1,10 @@
+1.21.8 (unstable):
+
+* Fix the build with the latest gtkmm, with --enable-warnings=fatal.
+* Dialog_Import_CSV_Progress: Fix an important typo.
+* Tests: Set LC_TIME too.
+* Improve the command-line parse/print locale warnings.
+
 1.21.7 (unstable):
 
 * Build: Fix some warnings from clang++.
