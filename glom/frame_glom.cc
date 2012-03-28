@@ -1330,40 +1330,43 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
   //std::cout << "debug: " << G_STRFUNC << ": " << where_clause << std::endl;
 
   AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
-  if(pApp)
+  if(!pApp)
   {
-    bool records_found = false;
+    std::cerr << G_STRFUNC << ": get_app_window() failed." << std::endl;
+    return;
+  }
+  
+  bool records_found = false;
 
-    { //Extra scope, to control the lifetime of the busy cursor.
-      BusyCursor busy_cursor(pApp);
+  { //Extra scope, to control the lifetime of the busy cursor.
+    BusyCursor busy_cursor(pApp);
 
-      pApp->set_mode_data();
+    pApp->set_mode_data();
 
-      //std::cout << "Frame_Glom::on_notebook_find_criteria: where_clause=" << where_clause << std::endl;
-      FoundSet found_set;
-      found_set.m_table_name = m_table_name;
-      found_set.m_where_clause = where_clause;
-      records_found = m_Notebook_Data.init_db_details(found_set);
+    //std::cout << "Frame_Glom::on_notebook_find_criteria: where_clause=" << where_clause << std::endl;
+    FoundSet found_set;
+    found_set.m_table_name = m_table_name;
+    found_set.m_where_clause = where_clause;
+    records_found = m_Notebook_Data.init_db_details(found_set);
 
-      //std::cout << "debug: " << G_STRFUNC << ": BEFORE  m_Notebook_Data.select_page_for_find_results()" << std::endl;
-      m_Notebook_Data.select_page_for_find_results();
-      //std::cout << "debug: " << G_STRFUNC << ": AFTER  m_Notebook_Data.select_page_for_find_results()" << std::endl;
-    }
+    //std::cout << "debug: " << G_STRFUNC << ": BEFORE  m_Notebook_Data.select_page_for_find_results()" << std::endl;
+    m_Notebook_Data.select_page_for_find_results();
+    //std::cout << "debug: " << G_STRFUNC << ": AFTER  m_Notebook_Data.select_page_for_find_results()" << std::endl;
+  }
 
-    if(!records_found)
-    {
-      const bool find_again = Utils::show_warning_no_records_found(*get_app_window());
+  if(!records_found)
+  {
+    const bool find_again = Utils::show_warning_no_records_found(*get_app_window());
 
-      if(find_again)
-        pApp->set_mode_find();
-      else
-        on_button_find_all();
-    }
+    if(find_again)
+      pApp->set_mode_find();
     else
-    {
-      //Show how many records were found:
-      update_records_count();
-    }
+      on_button_find_all();
+  }
+  else
+  {
+    //Show how many records were found:
+    update_records_count();
   }
 }
 
