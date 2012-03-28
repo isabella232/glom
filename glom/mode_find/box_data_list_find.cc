@@ -33,7 +33,8 @@ Box_Data_List_Find::Box_Data_List_Find()
   m_HBox.pack_end(m_Button_Find, Gtk::PACK_SHRINK);
   pack_start(m_HBox, Gtk::PACK_SHRINK);
 
-  g_object_set(m_Button_Find.gobj(), "can-default", TRUE, (gpointer)0); //TODO: Make this a real method in gtkmm?
+  //A signal handler is connected in the Box_Data base class.
+  m_Button_Find.set_can_default();
 
   //Prevent the widget from trying to add or change records:
   m_AddDel.set_find_mode();

@@ -1,3 +1,11 @@
+2012-03-28  Murray Cumming  <murrayc@murrayc.com>
+
+	Slight code improvement.
+
+	* glom/mode_find/box_data_details_find.cc:
+	* glom/mode_find/box_data_list_find.cc: Use C++ instead of C 
+	to set can_default.
+
 2012-03-27  Murray Cumming  <murrayc@murrayc.com>
 
 	Dialog_Choose_ID: Remove use of a deprecated signal.

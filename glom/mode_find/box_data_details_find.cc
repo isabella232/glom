@@ -32,7 +32,8 @@ Box_Data_Details_Find::Box_Data_Details_Find()
   //Instead of nav buttons:
   m_hbox_buttons.pack_end(m_Button_Find, Gtk::PACK_SHRINK);
 
-  g_object_set(m_Button_Find.gobj(), "can-default", TRUE, (gpointer)0); //TODO: Make this a real method in gtkmm?
+  //A signal handler is connected in the Box_Data base class.
+  m_Button_Find.set_can_default();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Hide this because it is useless for Find mode:
