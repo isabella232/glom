@@ -114,8 +114,9 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_pBox_QuickFind->pack_start(*label, Gtk::PACK_SHRINK);
 
   m_pEntry_QuickFind = Gtk::manage(new Gtk::Entry());
-  m_pEntry_QuickFind->signal_activate().connect(
-   sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) ); //Pressing Enter here is like pressing Find.
+
+  //Pressing Enter here is like pressing Find:
+  m_pEntry_QuickFind->set_activates_default();
 
   label->set_mnemonic_widget(*m_pEntry_QuickFind);
 
@@ -304,7 +305,6 @@ bool Frame_Glom::set_mode(enumModes mode)
 
       //Put the cursor in the quick find entry:
       m_pEntry_QuickFind->grab_focus();
-      //m_pButton_QuickFind->grab_default();
     }
   }
   else
@@ -1308,45 +1308,53 @@ void Frame_Glom::show_ok_dialog(const Glib::ustring& title, const Glib::ustring&
 
 void Frame_Glom::on_button_quickfind()
 {
-  const Glib::ustring criteria = m_pEntry_QuickFind->get_text();
-  if(criteria.empty())
-  {
-    Glib::ustring message(_("You have not entered any quick find criteria."));
-    Gtk::MessageDialog dialog(Utils::bold_message(_("No find criteria")), true, Gtk::MESSAGE_WARNING );
-    dialog.set_secondary_text(message);
-    dialog.set_transient_for(*get_app_window());
-    dialog.run();
-  }
-  else
-  {
-    const Gnome::Gda::SqlExpr where_clause = Utils::get_find_where_clause_quick(get_document(), m_table_name, Gnome::Gda::Value(criteria));
-    //std::cout << "debug: " << G_STRFUNC << ": where_clause=" << where_clause.serialize() << std::endl;
-    on_notebook_find_criteria(where_clause);
-  }
+  //This will get the criteria for the quick find:
+  on_notebook_find_criteria(Gnome::Gda::SqlExpr());
 }
 
 void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clause)
 {
-  //std::cout << "debug: " << G_STRFUNC << ": " << where_clause << std::endl;
-
-  AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
-  if(!pApp)
+  AppWindow* app = dynamic_cast<AppWindow*>(get_app_window());
+  if(!app)
   {
     std::cerr << G_STRFUNC << ": get_app_window() failed." << std::endl;
     return;
   }
   
+  Gnome::Gda::SqlExpr where_clause_to_use = where_clause;
+
+  //Prefer the quick find text if any was entered:
+  const Glib::ustring quickfind_criteria = m_pEntry_QuickFind->get_text();
+  if(!quickfind_criteria.empty())
+  {
+    where_clause_to_use = 
+      Utils::get_find_where_clause_quick(get_document(), m_table_name, Gnome::Gda::Value(quickfind_criteria));
+  }
+
+  if(where_clause_to_use.empty())
+  {
+    const Glib::ustring message = _("You have not entered any find criteria. Try entering information in the fields.");
+
+    Gtk::MessageDialog dialog(Utils::bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
+    dialog.set_secondary_text(message);
+    dialog.set_transient_for(*app);
+    dialog.run();
+    return;
+  }
+
+  //std::cout << "debug: " << G_STRFUNC << ": " << where_clause << std::endl;
+  
   bool records_found = false;
 
   { //Extra scope, to control the lifetime of the busy cursor.
-    BusyCursor busy_cursor(pApp);
+    BusyCursor busy_cursor(app);
 
-    pApp->set_mode_data();
+    app->set_mode_data();
 
     //std::cout << "Frame_Glom::on_notebook_find_criteria: where_clause=" << where_clause << std::endl;
     FoundSet found_set;
     found_set.m_table_name = m_table_name;
-    found_set.m_where_clause = where_clause;
+    found_set.m_where_clause = where_clause_to_use;
     records_found = m_Notebook_Data.init_db_details(found_set);
 
     //std::cout << "debug: " << G_STRFUNC << ": BEFORE  m_Notebook_Data.select_page_for_find_results()" << std::endl;
@@ -1356,10 +1364,10 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
 
   if(!records_found)
   {
-    const bool find_again = Utils::show_warning_no_records_found(*get_app_window());
+    const bool find_again = Utils::show_warning_no_records_found(*app);
 
     if(find_again)
-      pApp->set_mode_find();
+      app->set_mode_find();
     else
       on_button_find_all();
   }

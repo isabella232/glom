@@ -150,18 +150,11 @@ void Box_Data::on_Button_Find()
   //Make sure that the cell is updated:
   //m_AddDel.finish_editing();
 
+  //Call the virtual method to get the find criteria for a details or list view:
   const Gnome::Gda::SqlExpr where_clause = get_find_where_clause();
-  if(where_clause.empty())
-  {
-    const Glib::ustring message = _("You have not entered any find criteria. Try entering information in the fields.");
 
-    Gtk::MessageDialog dialog(Utils::bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
-    dialog.set_secondary_text(message);
-    dialog.set_transient_for(*get_app_window());
-    dialog.run();
-  }
-  else
-    signal_find_criteria.emit(where_clause);
+  //The signal handler then checks and warns if no find criteria were entered.
+  signal_find_criteria.emit(where_clause);
 }
 
 void Box_Data::set_unstored_data(bool bVal)
