@@ -159,10 +159,6 @@ public:
   Glib::ustring get_sql_type() const;
   Glib::ustring get_gda_type_name() const;
 
-  //TODO: Shouldn't this be called get_gda_holder_name()?
-  /// A convenience when using parameters with a libgda SQL query.
-  Glib::RefPtr<Gnome::Gda::Holder> get_holder(const Gnome::Gda::Value& value, const Glib::ustring& name = Glib::ustring()) const;
-
   /** Escape and quote the value so that it can be used in a SQL command.
    */
   Glib::ustring sql(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnome::Gda::Connection>& connection) const;

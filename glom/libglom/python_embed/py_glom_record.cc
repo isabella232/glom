@@ -181,10 +181,6 @@ void PyGlomRecord::setitem(const boost::python::object& key, const boost::python
     return;
   }
 
-  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
-  params->add_holder(field->get_holder(field_value));
-  params->add_holder(m_key_field->get_holder(m_key_field_value));
-
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
   builder->set_table(m_table_name);
@@ -210,25 +206,7 @@ void PyGlomRecord::setitem(const boost::python::object& key, const boost::python
 
   if(!updated)
   {
-    Glib::ustring failed_query;
-
     std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
-    /*
-    if(stmt)
-      failed_query = stmt->to_sql(params); //this throws too.
-    else
-      failed_query = strQuery;
-
-    try
-    {
-      std::cerr << "  with SQL query: " << failed_query << std::endl;
-    }
-    catch(const Glib::Exception& ex)
-    {
-      std::cerr << "  query string could not be converted to std::cerr" << std::endl;
-    }
-    */
-
   }
 
   //TODO: Do dependent calculations and lookups. Or just do them for all fields for this record when finishing the script?

@@ -1,5 +1,14 @@
 2012-03-29  Murray Cumming  <murrayc@murrayc.com>
 
+	Field: Remove get_holder().
+
+	* glom/libglom/data_structure/field.[h|cc]:
+	* glom/libglom/python_embed/py_glom_record.cc:
+	* glom/mode_data/datawidget/treemodel_db.cc: Replace or remove use
+	of Field::get_holder().
+
+2012-03-29  Murray Cumming  <murrayc@murrayc.com>
+
 	ConnectionPool: create_database(): Take a progress slot.
 
 	* glom/libglom/connectionpool.[h|cc]::

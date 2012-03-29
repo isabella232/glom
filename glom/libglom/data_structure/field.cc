@@ -553,32 +553,6 @@ Glib::ustring Field::get_gda_type_name() const
   return g_type_name( m_field_info->get_g_type());
 }
 
-Glib::RefPtr<Gnome::Gda::Holder> Field::get_holder(const Gnome::Gda::Value& value, const Glib::ustring& name) const
-{
-  const Glib::ustring real_name = name.empty() ? get_name() : name;
-
-  const GType gtype = value.get_value_type();
-
-  /*
-  const GType field_type = m_field_info->get_g_type();
-  if(m_field_info->get_g_type() != gtype)
-  {
-    // This currently happens with SQLite for pictures. The value type is
-    // GdaBinary, but the field type is GdaBlob. This is not an optimal
-    // solution this way. We should maybe check fallback types here, or
-    // investigate why the field type is not GdaBinary as well.
-    // Maybe get_gda_type_for_glom_type() should already return fallback
-    // types if necessary.
-    // Reply from murray: sqlite returns GdaBlob by default, and that should be OK. Is this causing a problem?
-    std::cout << "debug: " << G_STRFUNC << ": Field type " << g_type_name(field_type) << " and value type " << g_type_name(gtype) << " don't match." << std::endl;
-  }
-  */
-
-  Glib::RefPtr<Gnome::Gda::Holder> holder = Gnome::Gda::Holder::create(gtype, real_name);
-  holder->set_value_as_value(value);
-  return holder;
-}
-
 /// Ignores any part of FieldAttributes that libgda does not properly fill.
 bool Field::field_info_from_database_is_equal(const Glib::RefPtr<const Gnome::Gda::Column>& field)
 {

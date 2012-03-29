@@ -70,25 +70,29 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
         const int cols_count = model.m_data_model_columns_count;
         for(int i = 0; i < cols_count; ++i)
         {
-          //TODO: Use iter->get_value_at(i) with try/catch instead when we can depend on libgdamm >= 4.99.4.2
-          Glib::RefPtr<const Gnome::Gda::Holder> holder = iter->get_holder_for_field(i);
-          if(holder)
-            m_db_values[i] = holder->get_value();
-          else
+          try
+          {
+            m_db_values[i] = iter->get_value_at(i);
+          }
+          catch(const Glib::Error& ex)
           {
             // This is quite possible, for example for unset dates. jhs
-            //std::cerr << G_STRFUNC << ": NULL Gnome::Gda::Holder for field=" << i << std::endl;
+            std::cerr << G_STRFUNC << ": get_value_at() failed for column=" << i << ", with exception: " << ex.what() << std::endl;
           }
 
           //std::cout << "  debug: col=" << i << ", GType=" << m_db_values[i].get_value_type() << ", string=" << m_db_values[i].to_string() << std::endl;
         }
 
         //TODO: Use iter->get_value_at(i) with try/catch instead when we can depend on libgdamm >= 4.99.4.2
-        Glib::RefPtr<const Gnome::Gda::Holder> holder = iter->get_holder_for_field(model.m_column_index_key);
-        if(holder)
-          m_key = holder->get_value();  //TODO_gda: Why not just use get_value_at()?
-        else
-          std::cerr << G_STRFUNC << ": NULL Gnome::Gda::Holder for key field" << std::endl;
+        try
+        {
+          m_key = iter->get_value_at(model.m_column_index_key);
+        }
+        catch(const Glib::Error& ex)
+        {
+          // This is quite possible, for example for unset dates. jhs
+          std::cerr << G_STRFUNC << ": get_value_at() failed for model.m_column_index_key=" << model.m_column_index_key << ", with exception: " << ex.what() << std::endl;
+        }
 
         m_extra = false;
         m_removed = false;
