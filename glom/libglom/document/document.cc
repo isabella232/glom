@@ -952,7 +952,7 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
           continue;
 
         //Formatting:
-        FieldFormatting& formatting = field->m_default_formatting;
+        Formatting& formatting = field->m_default_formatting;
         formatting.change_field_item_name(table_name, strFieldNameOld, strFieldNameNew);
       }
 
@@ -1246,9 +1246,9 @@ void Document::set_tables(const type_listTableInfo& tables)
     set_modified();
 }
 
-void Document::fill_sort_field_details(const Glib::ustring& parent_table_name, FieldFormatting::type_list_sort_fields& sort_fields) const
+void Document::fill_sort_field_details(const Glib::ustring& parent_table_name, Formatting::type_list_sort_fields& sort_fields) const
 {
-  for(FieldFormatting::type_list_sort_fields::iterator iter = sort_fields.begin(); iter != sort_fields.end(); ++iter)
+  for(Formatting::type_list_sort_fields::iterator iter = sort_fields.begin(); iter != sort_fields.end(); ++iter)
   {
     sharedptr<const LayoutItem_Field> sort_field = iter->first;
     if(!sort_field)
@@ -1280,7 +1280,7 @@ void Document::fill_layout_field_details(const Glib::ustring& parent_table_name,
       sharedptr<const Relationship> choice_relationship;
       sharedptr<LayoutItem_Field> choice_layout_first;
       sharedptr<LayoutGroup> choice_extra_layouts;
-      FieldFormatting::type_list_sort_fields choice_sort_fields;
+      Formatting::type_list_sort_fields choice_sort_fields;
       bool choice_show_all = false;
       layout_withformatting->m_formatting.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_sort_fields, choice_show_all);
       
@@ -1303,7 +1303,7 @@ void Document::fill_layout_field_details(const Glib::ustring& parent_table_name,
         sharedptr<const Relationship> choice_relationship;
         sharedptr<LayoutItem_Field> choice_layout_first;
         sharedptr<LayoutGroup> choice_extra_layouts;
-        FieldFormatting::type_list_sort_fields choice_sort_fields;
+        Formatting::type_list_sort_fields choice_sort_fields;
         bool choice_show_all = false;
         field->m_default_formatting.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_sort_fields, choice_show_all);
         
@@ -1822,7 +1822,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
   if(!layout_item)
     return;
 
-  FieldFormatting& format = layout_item->m_formatting;
+  Formatting& format = layout_item->m_formatting;
 
   sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
 
@@ -1837,7 +1837,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
   load_after_layout_item_formatting(element, format, field_type, table_name, field_name);
 }
 
-void Document::load_after_layout_item_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name)
+void Document::load_after_layout_item_formatting(const xmlpp::Element* element, Formatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   //Numeric formatting:
   if(!field_name.empty() && (field_type == Field::TYPE_NUMERIC))
@@ -1863,12 +1863,12 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
   format.set_text_format_color_background( XmlUtils::get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_BACKGROUND) );
 
   //Alignment. Not-specified means auto.
-  FieldFormatting::HorizontalAlignment alignment = FieldFormatting::HORIZONTAL_ALIGNMENT_AUTO;
+  Formatting::HorizontalAlignment alignment = Formatting::HORIZONTAL_ALIGNMENT_AUTO;
   const Glib::ustring alignment_str = XmlUtils::get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT);
   if(alignment_str == GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_LEFT)
-    alignment = FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT;
+    alignment = Formatting::HORIZONTAL_ALIGNMENT_LEFT;
   else if(alignment_str == GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_RIGHT)
-    alignment = FieldFormatting::HORIZONTAL_ALIGNMENT_RIGHT;
+    alignment = Formatting::HORIZONTAL_ALIGNMENT_RIGHT;
 
   format.set_horizontal_alignment(alignment);
 
@@ -1885,7 +1885,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
       const xmlpp::Element* nodeChoiceList = XmlUtils::get_node_child_named(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM_LIST);
       if(nodeChoiceList)
       {
-        FieldFormatting::type_list_values list_values;
+        Formatting::type_list_values list_values;
 
         xmlpp::Node::NodeList listNodesCustomChoices = nodeChoiceList->get_children(GLOM_NODE_FORMAT_CUSTOM_CHOICE);
         for(xmlpp::Node::NodeList::iterator iter = listNodesCustomChoices.begin(); iter != listNodesCustomChoices.end(); ++iter)
@@ -1967,7 +1967,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
       }
 
       //Sort fields:
-      FieldFormatting::type_list_sort_fields sort_fields;
+      Formatting::type_list_sort_fields sort_fields;
       xmlpp::Element* elementSortBy = XmlUtils::get_node_child_named(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SORTBY);
       if(elementSortBy)
       {
@@ -3014,7 +3014,7 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
   if(!layout_item)
     return;
 
-  const FieldFormatting& format = layout_item->m_formatting;
+  const Formatting& format = layout_item->m_formatting;
 
   sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
 
@@ -3025,7 +3025,7 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
   save_before_layout_item_formatting(nodeItem, format, field_type);
 }
 
-void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, Field::glom_field_type field_type)
+void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, const Formatting& format, Field::glom_field_type field_type)
 {
   //Numeric format:
   if(field_type != Field::TYPE_INVALID)  //These options are only for fields:
@@ -3060,11 +3060,11 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
   XmlUtils::set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_BACKGROUND, format.get_text_format_color_background());
 
   //Alignment:
-  const FieldFormatting::HorizontalAlignment alignment = format.get_horizontal_alignment();
-  if(alignment != FieldFormatting::HORIZONTAL_ALIGNMENT_AUTO) //Save file-size by not even writing this.
+  const Formatting::HorizontalAlignment alignment = format.get_horizontal_alignment();
+  if(alignment != Formatting::HORIZONTAL_ALIGNMENT_AUTO) //Save file-size by not even writing this.
   {
     const Glib::ustring alignment_str =
-      (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT  ? GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_LEFT : GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_RIGHT);
+      (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT  ? GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_LEFT : GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_RIGHT);
     XmlUtils::set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT, alignment_str);
   }
 
@@ -3075,8 +3075,8 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
     {
       xmlpp::Element* child = nodeItem->add_child(GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM_LIST);
 
-      const FieldFormatting::type_list_values list_values = format.get_choices_custom();
-      for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+      const Formatting::type_list_values list_values = format.get_choices_custom();
+      for(Formatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
       {
         const sharedptr<const ChoiceValue> value = *iter; 
         xmlpp::Element* childChoice = child->add_child(GLOM_NODE_FORMAT_CUSTOM_CHOICE);
@@ -3089,7 +3089,7 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
     sharedptr<const Relationship> choice_relationship;
     sharedptr<const LayoutItem_Field> choice_layout_first;
     sharedptr<const LayoutGroup> choice_extra_layouts;
-    FieldFormatting::type_list_sort_fields choice_sort_fields;
+    Formatting::type_list_sort_fields choice_sort_fields;
     bool choice_show_all = false;
     format.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_sort_fields, choice_show_all);
 
@@ -4356,13 +4356,13 @@ Document::type_list_translatables Document::get_translatable_report_items(const 
   return the_list;
 }
 
-void Document::fill_translatable_custom_choices(FieldFormatting& formatting, type_list_translatables& the_list, const Glib::ustring& hint)
+void Document::fill_translatable_custom_choices(Formatting& formatting, type_list_translatables& the_list, const Glib::ustring& hint)
 {
   if(!formatting.get_has_custom_choices())
     return;
 
-  FieldFormatting::type_list_values values = formatting.get_choices_custom();
-  for(FieldFormatting::type_list_values::iterator iter = values.begin(); iter != values.end(); ++iter)
+  Formatting::type_list_values values = formatting.get_choices_custom();
+  for(Formatting::type_list_values::iterator iter = values.begin(); iter != values.end(); ++iter)
   {
     sharedptr<ChoiceValue> value = *iter;
 

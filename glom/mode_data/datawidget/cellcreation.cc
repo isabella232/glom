@@ -46,12 +46,12 @@ static void apply_formatting(Gtk::CellRenderer* renderer, const sharedptr<const 
   //Use the text formatting:
 
   //Horizontal alignment:
-  const FieldFormatting::HorizontalAlignment alignment =
+  const Formatting::HorizontalAlignment alignment =
     layout_item->get_formatting_used_horizontal_alignment();
-  const float x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
+  const float x_align = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
   text_renderer->property_xalign() = x_align;
 
-  const FieldFormatting& formatting = layout_item->get_formatting_used();
+  const Formatting& formatting = layout_item->get_formatting_used();
 
   const Glib::ustring font_desc = formatting.get_text_format_font();
   if(!font_desc.empty())
@@ -99,7 +99,7 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
       }
       default:
       {
-        const FieldFormatting& formatting = item_field->get_formatting_used();
+        const Formatting& formatting = item_field->get_formatting_used();
         if(formatting.get_has_choices())
         {
           CellRendererDbList* rendererList = Gtk::manage( new CellRendererDbList() );
@@ -209,8 +209,8 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
     {
       //set_choices_fixed() needs this, for the numeric layout:
       //pCellRendererCombo->set_layout_item(get_layout_item()->clone(), table_name); //TODO_Performance: We only need this for the numerical format.
-      const FieldFormatting::type_list_values list_values = item_field->get_formatting_used().get_choices_custom();
-      for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+      const Formatting::type_list_values list_values = item_field->get_formatting_used().get_choices_custom();
+      for(Formatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
       {
         const sharedptr< const ChoiceValue> value = *iter;
         if(!value)
@@ -227,7 +227,7 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
       sharedptr<const Relationship> choice_relationship;
       sharedptr<const LayoutItem_Field> choice_field;
       sharedptr<const LayoutGroup> choice_extras; //Ignored
-      FieldFormatting::type_list_sort_fields choice_sort_fields; //Ignored
+      Formatting::type_list_sort_fields choice_sort_fields; //Ignored
       bool choice_show_all = false;
       item_field->get_formatting_used().get_choices_related(choice_relationship, choice_field, choice_extras, choice_sort_fields, choice_show_all);
 

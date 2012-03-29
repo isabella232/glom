@@ -65,11 +65,11 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
 
   sharedptr<LayoutItem_Field> layout_item =
     sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
-  const FieldFormatting& format = layout_item->get_formatting_used();
+  const Formatting& format = layout_item->get_formatting_used();
   sharedptr<const Relationship> choice_relationship;
   sharedptr<const LayoutItem_Field> layout_choice_first;
   sharedptr<const LayoutGroup> layout_choice_extra;
-  FieldFormatting::type_list_sort_fields choice_sort_fields; //Ignored. TODO?
+  Formatting::type_list_sort_fields choice_sort_fields; //Ignored. TODO?
   bool choice_show_all = false;
   format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_extra, choice_sort_fields, choice_show_all);
 
@@ -121,7 +121,7 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
   }
 }
 
-void ComboAsRadioButtons::set_choices_fixed(const FieldFormatting::type_list_values& list_values, bool /* restricted */)
+void ComboAsRadioButtons::set_choices_fixed(const Formatting::type_list_values& list_values, bool /* restricted */)
 {
   //Clear existing buttons:
   for(type_map_buttons::iterator iter = m_map_buttons.begin();
@@ -134,7 +134,7 @@ void ComboAsRadioButtons::set_choices_fixed(const FieldFormatting::type_list_val
 
   //Add new buttons:
   Gtk::RadioButton::Group group;
-  for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+  for(Formatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
   {
     sharedptr<const LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
     if(layout_item)

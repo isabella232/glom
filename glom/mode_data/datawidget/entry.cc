@@ -75,14 +75,14 @@ void Entry::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib
 #endif
 
   //Horizontal Alignment:
-  FieldFormatting::HorizontalAlignment alignment = 
-    FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT;
+  Formatting::HorizontalAlignment alignment = 
+    Formatting::HORIZONTAL_ALIGNMENT_LEFT;
   sharedptr<LayoutItem_Field> layout_field =
     sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
   if(layout_field)
     alignment = layout_field->get_formatting_used_horizontal_alignment(true /* for details view */);
 
-  const float x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
+  const float x_align = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
   set_alignment(x_align);
 }
 

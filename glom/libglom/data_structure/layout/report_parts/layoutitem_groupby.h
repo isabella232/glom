@@ -45,8 +45,8 @@ public:
 
   virtual LayoutItem* clone() const;
 
-  typedef FieldFormatting::type_pair_sort_field type_pair_sort_field;
-  typedef FieldFormatting::type_list_sort_fields type_list_sort_fields;
+  typedef Formatting::type_pair_sort_field type_pair_sort_field;
+  typedef Formatting::type_list_sort_fields type_list_sort_fields;
 
   sharedptr<LayoutItem_Field> get_field_group_by();
   sharedptr<const LayoutItem_Field> get_field_group_by() const;

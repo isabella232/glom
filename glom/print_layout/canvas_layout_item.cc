@@ -72,12 +72,12 @@ void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& c
     return;
 
   //Horizontal alignment:
-  const FieldFormatting::HorizontalAlignment alignment =
+  const Formatting::HorizontalAlignment alignment =
     layout_item->get_formatting_used_horizontal_alignment();
-  const Pango::Alignment x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? Pango::ALIGN_LEFT : Pango::ALIGN_RIGHT);
+  const Pango::Alignment x_align = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Pango::ALIGN_LEFT : Pango::ALIGN_RIGHT);
   canvas_item->property_alignment() = x_align;
 
-  const FieldFormatting& formatting = layout_item->get_formatting_used();
+  const Formatting& formatting = layout_item->get_formatting_used();
 
   Glib::ustring font = formatting.get_text_format_font();
   if(font.empty())

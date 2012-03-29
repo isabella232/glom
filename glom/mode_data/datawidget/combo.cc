@@ -85,7 +85,7 @@ void ComboGlom::on_fixed_cell_data(const Gtk::TreeModel::iterator& iter, Gtk::Ce
   set_cell_for_field_value(cell, field, value);
 }
 
-void ComboGlom::set_choices_fixed(const FieldFormatting::type_list_values& list_values, bool restricted)
+void ComboGlom::set_choices_fixed(const Formatting::type_list_values& list_values, bool restricted)
 {
   ComboChoicesWithTreeModel::set_choices_fixed(list_values, restricted);
 

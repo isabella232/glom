@@ -18,8 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "fieldformatting.h"
-#include <libglom/data_structure/layout/fieldformatting.h>
+#include <libglom/data_structure/layout/formatting.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/document/document.h>
 #include <glibmm/i18n.h>
@@ -29,7 +28,7 @@ const guint MULTILINE_TEXT_DEFAULT_HEIGHT_LINES = 6;
 namespace Glom
 {
 
-FieldFormatting::FieldFormatting()
+Formatting::Formatting()
 : m_choices_restricted(false),
   m_choices_restricted_as_radio_buttons(false),
   m_choices_custom(false),
@@ -41,7 +40,7 @@ FieldFormatting::FieldFormatting()
 {
 }
 
-FieldFormatting::FieldFormatting(const FieldFormatting& src)
+Formatting::Formatting(const Formatting& src)
 : UsesRelationship(src),
   m_numeric_format(src.m_numeric_format),
   m_choices_custom_list(src.m_choices_custom_list),
@@ -62,11 +61,11 @@ FieldFormatting::FieldFormatting(const FieldFormatting& src)
 {
 }
 
-FieldFormatting::~FieldFormatting()
+Formatting::~Formatting()
 {
 }
 
-bool FieldFormatting::operator==(const FieldFormatting& src) const
+bool Formatting::operator==(const Formatting& src) const
 {
   return UsesRelationship::operator==(src) &&
     (m_numeric_format == src.m_numeric_format) &&
@@ -88,7 +87,7 @@ bool FieldFormatting::operator==(const FieldFormatting& src) const
 }
 
 
-FieldFormatting& FieldFormatting::operator=(const FieldFormatting& src)
+Formatting& Formatting::operator=(const Formatting& src)
 {
   UsesRelationship::operator=(src);
 
@@ -115,22 +114,22 @@ FieldFormatting& FieldFormatting::operator=(const FieldFormatting& src)
   return *this;
 }
 
-bool FieldFormatting::get_text_format_multiline() const
+bool Formatting::get_text_format_multiline() const
 {
   return m_text_format_multiline;
 }
 
-void FieldFormatting::set_text_format_multiline(bool value)
+void Formatting::set_text_format_multiline(bool value)
 {
   m_text_format_multiline = value;
 }
 
-guint FieldFormatting::get_text_format_multiline_height_lines() const
+guint Formatting::get_text_format_multiline_height_lines() const
 {
   return m_text_multiline_height_lines;
 }
 
-void FieldFormatting::set_text_format_multiline_height_lines(guint value)
+void Formatting::set_text_format_multiline_height_lines(guint value)
 {
   //Do not allow inappropriate values. TODO: Respond when they are entered, not later here.
   if(value < 2)
@@ -139,27 +138,27 @@ void FieldFormatting::set_text_format_multiline_height_lines(guint value)
   m_text_multiline_height_lines = value;
 }
 
-void FieldFormatting::set_text_format_font(const Glib::ustring& font_desc)
+void Formatting::set_text_format_font(const Glib::ustring& font_desc)
 {
   m_text_font = font_desc;
 }
 
-Glib::ustring FieldFormatting::get_text_format_font() const
+Glib::ustring Formatting::get_text_format_font() const
 {
   return m_text_font;
 }
 
-void FieldFormatting::set_text_format_color_foreground(const Glib::ustring& color)
+void Formatting::set_text_format_color_foreground(const Glib::ustring& color)
 {
   m_text_color_foreground = color;
 }
 
-Glib::ustring FieldFormatting::get_text_format_color_foreground() const
+Glib::ustring Formatting::get_text_format_color_foreground() const
 {
   return m_text_color_foreground;
 }
 
-Glib::ustring FieldFormatting::get_text_format_color_foreground_to_use(const Gnome::Gda::Value& value) const
+Glib::ustring Formatting::get_text_format_color_foreground_to_use(const Gnome::Gda::Value& value) const
 {
   if(m_numeric_format.m_alt_foreground_color_for_negatives)
   {
@@ -171,45 +170,45 @@ Glib::ustring FieldFormatting::get_text_format_color_foreground_to_use(const Gno
   return m_text_color_foreground;
 }
 
-void FieldFormatting::set_text_format_color_background(const Glib::ustring& color)
+void Formatting::set_text_format_color_background(const Glib::ustring& color)
 {
   m_text_color_background = color;
 }
 
-Glib::ustring FieldFormatting::get_text_format_color_background() const
+Glib::ustring Formatting::get_text_format_color_background() const
 {
   return m_text_color_background;
 }
 
-void FieldFormatting::set_horizontal_alignment(HorizontalAlignment alignment)
+void Formatting::set_horizontal_alignment(HorizontalAlignment alignment)
 {
   m_horizontal_alignment = alignment;
 }
 
-FieldFormatting::HorizontalAlignment FieldFormatting::get_horizontal_alignment() const
+Formatting::HorizontalAlignment Formatting::get_horizontal_alignment() const
 {
   return m_horizontal_alignment;
 }
 
-bool FieldFormatting::get_has_choices() const
+bool Formatting::get_has_choices() const
 {
   return ( m_choices_related && get_has_relationship_name() && m_choices_related_field ) ||
          ( m_choices_custom && !m_choices_custom_list.empty() );
 }
 
-FieldFormatting::type_list_values FieldFormatting::get_choices_custom() const
+Formatting::type_list_values Formatting::get_choices_custom() const
 {
   return m_choices_custom_list;
 }
 
-void FieldFormatting::set_choices_custom(const type_list_values& choices)
+void Formatting::set_choices_custom(const type_list_values& choices)
 {
   m_choices_custom_list = choices;
 }
 
-Glib::ustring FieldFormatting::get_custom_choice_original_for_translated_text(const Glib::ustring& text, const Glib::ustring& locale) const
+Glib::ustring Formatting::get_custom_choice_original_for_translated_text(const Glib::ustring& text, const Glib::ustring& locale) const
 {
-  for(FieldFormatting::type_list_values::const_iterator iter = m_choices_custom_list.begin(); iter != m_choices_custom_list.end(); ++iter)
+  for(Formatting::type_list_values::const_iterator iter = m_choices_custom_list.begin(); iter != m_choices_custom_list.end(); ++iter)
   {
     const sharedptr<const ChoiceValue> value = *iter;
     if(!value)
@@ -222,9 +221,9 @@ Glib::ustring FieldFormatting::get_custom_choice_original_for_translated_text(co
   return Glib::ustring();
 }
 
-Glib::ustring FieldFormatting::get_custom_choice_translated(const Glib::ustring& original_text, const Glib::ustring& locale) const
+Glib::ustring Formatting::get_custom_choice_translated(const Glib::ustring& original_text, const Glib::ustring& locale) const
 {
-  for(FieldFormatting::type_list_values::const_iterator iter = m_choices_custom_list.begin(); iter != m_choices_custom_list.end(); ++iter)
+  for(Formatting::type_list_values::const_iterator iter = m_choices_custom_list.begin(); iter != m_choices_custom_list.end(); ++iter)
   {
     const sharedptr<const ChoiceValue> value = *iter;
     if(!value)
@@ -238,46 +237,46 @@ Glib::ustring FieldFormatting::get_custom_choice_translated(const Glib::ustring&
 }
 
 
-bool FieldFormatting::get_choices_restricted(bool& as_radio_buttons) const
+bool Formatting::get_choices_restricted(bool& as_radio_buttons) const
 {
   as_radio_buttons = m_choices_restricted_as_radio_buttons;
   return m_choices_restricted;
 }
 
-void FieldFormatting::set_choices_restricted(bool val, bool as_radio_buttons)
+void Formatting::set_choices_restricted(bool val, bool as_radio_buttons)
 {
   m_choices_restricted = val;
   m_choices_restricted_as_radio_buttons = as_radio_buttons;
 }
 
-bool FieldFormatting::get_has_custom_choices() const
+bool Formatting::get_has_custom_choices() const
 {
   return m_choices_custom;
 }
 
-void FieldFormatting::set_has_custom_choices(bool val)
+void Formatting::set_has_custom_choices(bool val)
 {
   m_choices_custom = val;
 }
 
-bool FieldFormatting::get_has_related_choices() const
+bool Formatting::get_has_related_choices() const
 {
   return m_choices_related;
 }
 
-bool FieldFormatting::get_has_related_choices(bool& show_all, bool& with_second) const
+bool Formatting::get_has_related_choices(bool& show_all, bool& with_second) const
 {
   show_all = m_choices_related_show_all;
   with_second = m_choices_extra_layout_group;
   return m_choices_related;
 }
 
-void FieldFormatting::set_has_related_choices(bool val)
+void Formatting::set_has_related_choices(bool val)
 {
   m_choices_related = val;
 }
 
-void FieldFormatting::set_choices_related(const sharedptr<const Relationship>& relationship, const sharedptr<LayoutItem_Field>& field, const sharedptr<LayoutGroup>& extra_layout, const type_list_sort_fields& sort_fields, bool show_all)
+void Formatting::set_choices_related(const sharedptr<const Relationship>& relationship, const sharedptr<LayoutItem_Field>& field, const sharedptr<LayoutGroup>& extra_layout, const type_list_sort_fields& sort_fields, bool show_all)
 {
   set_relationship(relationship);
 
@@ -287,7 +286,7 @@ void FieldFormatting::set_choices_related(const sharedptr<const Relationship>& r
   m_choices_related_show_all = show_all;
 }
 
-void FieldFormatting::get_choices_related(sharedptr<const Relationship>& relationship, sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutGroup>& extra_layout, type_list_sort_fields& sort_fields, bool& show_all) const
+void Formatting::get_choices_related(sharedptr<const Relationship>& relationship, sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutGroup>& extra_layout, type_list_sort_fields& sort_fields, bool& show_all) const
 {
   relationship = get_relationship();
 
@@ -298,7 +297,7 @@ void FieldFormatting::get_choices_related(sharedptr<const Relationship>& relatio
 }
 
 
-void FieldFormatting::get_choices_related(sharedptr<const Relationship>& relationship, sharedptr<LayoutItem_Field>& field, sharedptr<LayoutGroup>& extra_layout, type_list_sort_fields& sort_fields, bool& show_all)
+void Formatting::get_choices_related(sharedptr<const Relationship>& relationship, sharedptr<LayoutItem_Field>& field, sharedptr<LayoutGroup>& extra_layout, type_list_sort_fields& sort_fields, bool& show_all)
 {
   relationship = get_relationship();
 
@@ -308,13 +307,13 @@ void FieldFormatting::get_choices_related(sharedptr<const Relationship>& relatio
   show_all = m_choices_related_show_all;
 }
 
-sharedptr<const Relationship> FieldFormatting::get_choices_related_relationship(bool& show_all) const
+sharedptr<const Relationship> Formatting::get_choices_related_relationship(bool& show_all) const
 {
   show_all = m_choices_related_show_all;
   return get_relationship();
 }
 
-bool FieldFormatting::change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name_old, const Glib::ustring& field_name_new)
+bool Formatting::change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name_old, const Glib::ustring& field_name_new)
 {
   if(!m_choices_related_field)
     return false; //Nothing changed.

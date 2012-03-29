@@ -110,15 +110,15 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   m_model_alignment = Gtk::ListStore::create(m_columns_alignment);
 
   Gtk::TreeModel::iterator iter = m_model_alignment->append();
-  (*iter)[m_columns_alignment.m_col_alignment] = FieldFormatting::HORIZONTAL_ALIGNMENT_AUTO;
+  (*iter)[m_columns_alignment.m_col_alignment] = Formatting::HORIZONTAL_ALIGNMENT_AUTO;
   //Translators: This is Automatic text alignment.
   (*iter)[m_columns_alignment.m_col_title] = _("Automatic");
   iter = m_model_alignment->append();
-  (*iter)[m_columns_alignment.m_col_alignment] = FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT;
+  (*iter)[m_columns_alignment.m_col_alignment] = Formatting::HORIZONTAL_ALIGNMENT_LEFT;
   //Translators: This is Left text alignment.
   (*iter)[m_columns_alignment.m_col_title] = _("Left");
   iter = m_model_alignment->append();
-  (*iter)[m_columns_alignment.m_col_alignment] = FieldFormatting::HORIZONTAL_ALIGNMENT_RIGHT;
+  (*iter)[m_columns_alignment.m_col_alignment] = Formatting::HORIZONTAL_ALIGNMENT_RIGHT;
   //Translators: This is Right text alignment.
   (*iter)[m_columns_alignment.m_col_title] = _("Right");
 
@@ -211,7 +211,7 @@ void Box_Formatting::set_is_for_non_editable()
   enforce_constraints();
 }
 
-void Box_Formatting::set_formatting_for_field(const FieldFormatting& format, const Glib::ustring& table_name, const sharedptr<const Field>& field)
+void Box_Formatting::set_formatting_for_field(const Formatting& format, const Glib::ustring& table_name, const sharedptr<const Field>& field)
 {
   //Used for choices and some extra text formatting:
   m_table_name = table_name;
@@ -221,7 +221,7 @@ void Box_Formatting::set_formatting_for_field(const FieldFormatting& format, con
     true /* show_numeric, ignoring anyway when m_field is set */);
 }
 
-void Box_Formatting::set_formatting_for_non_field(const FieldFormatting& format, bool show_numeric)
+void Box_Formatting::set_formatting_for_non_field(const Formatting& format, bool show_numeric)
 {
   //TODO: Split this into a private method, so that previously-set m_table_name and m_field (from set_formatting_for_field()) will not stay set.
 
@@ -243,7 +243,7 @@ void Box_Formatting::set_formatting_for_non_field(const FieldFormatting& format,
     format.m_numeric_format.m_alt_foreground_color_for_negatives );
 
   //Text formatting
-  const FieldFormatting::HorizontalAlignment alignment =
+  const Formatting::HorizontalAlignment alignment =
     format.get_horizontal_alignment();
   Gtk::TreeModel::Children children = m_model_alignment->children();
   for(Gtk::TreeModel::Children::iterator iter = children.begin(); iter != children.end(); ++iter)
@@ -290,7 +290,7 @@ void Box_Formatting::set_formatting_for_non_field(const FieldFormatting& format,
     sharedptr<const Relationship> choices_relationship;
     sharedptr<const LayoutItem_Field> choices_field;
     sharedptr<const LayoutGroup> choices_field_extras;
-    FieldFormatting::type_list_sort_fields choices_sort_fields;
+    Formatting::type_list_sort_fields choices_sort_fields;
     bool choices_show_all = false;
     format.get_choices_related(choices_relationship, choices_field, choices_field_extras, choices_sort_fields, choices_show_all);
 
@@ -326,8 +326,8 @@ void Box_Formatting::set_formatting_for_non_field(const FieldFormatting& format,
 
     //Custom choices:
     m_adddel_choices_custom->remove_all();
-    FieldFormatting::type_list_values list_choice_values = format.get_choices_custom();
-    for(FieldFormatting::type_list_values::const_iterator iter = list_choice_values.begin(); iter != list_choice_values.end(); ++iter)
+    Formatting::type_list_values list_choice_values = format.get_choices_custom();
+    for(Formatting::type_list_values::const_iterator iter = list_choice_values.begin(); iter != list_choice_values.end(); ++iter)
     {
       const sharedptr<ChoiceValue> choicevalue = *iter;
       Gnome::Gda::Value value;
@@ -347,7 +347,7 @@ void Box_Formatting::set_formatting_for_non_field(const FieldFormatting& format,
   enforce_constraints();
 }
 
-bool Box_Formatting::get_formatting(FieldFormatting& format) const
+bool Box_Formatting::get_formatting(Formatting& format) const
 {
   //Numeric Formatting:
   m_format.m_numeric_format.m_use_thousands_separator = m_checkbox_format_use_thousands->get_active();
@@ -363,7 +363,7 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
 
   //Text formatting:
   Gtk::TreeModel::iterator iter = m_combo_format_text_horizontal_alignment->get_active();
-  FieldFormatting::HorizontalAlignment alignment = FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT;
+  Formatting::HorizontalAlignment alignment = Formatting::HORIZONTAL_ALIGNMENT_LEFT;
   if(iter)
     alignment = (*iter)[m_columns_alignment.m_col_alignment];
   m_format.set_horizontal_alignment(alignment);
@@ -401,7 +401,7 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
     sharedptr<LayoutGroup> layout_choice_extra = sharedptr<LayoutGroup>::create();
     layout_choice_extra->m_list_items = m_dialog_choices_extra_fields->get_fields();
 
-    const FieldFormatting::type_list_sort_fields sort_fields = m_dialog_choices_sortby->get_fields();
+    const Formatting::type_list_sort_fields sort_fields = m_dialog_choices_sortby->get_fields();
 
     m_format.set_choices_related(choices_relationship,
       layout_choice_first, layout_choice_extra,
@@ -409,7 +409,7 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
       m_checkbutton_choices_related_show_all->get_active());
 
     //Custom choices:
-    FieldFormatting::type_list_values list_choice_values;
+    Formatting::type_list_values list_choice_values;
     Glib::RefPtr<Gtk::TreeModel> choices_model = m_adddel_choices_custom->get_model();
     if(choices_model)
     {
@@ -474,7 +474,7 @@ void Box_Formatting::on_combo_choices_relationship_changed()
 
       //If the related table name has changed then the list of sort fields will probably
       //be ignored, clearing the list, but we try to preserve it if possible:
-      const FieldFormatting::type_list_sort_fields sort_fields = m_dialog_choices_sortby->get_fields();
+      const Formatting::type_list_sort_fields sort_fields = m_dialog_choices_sortby->get_fields();
       m_dialog_choices_sortby->set_fields(relationship->get_to_table(), sort_fields);
 
       //Update the label: //TODO: Do the label updating in a shared function.

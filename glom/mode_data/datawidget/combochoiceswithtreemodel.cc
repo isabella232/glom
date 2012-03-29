@@ -142,7 +142,7 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
   //Fill the model with data:
   sharedptr<LayoutItem_Field> layout_item =
     sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
-  const FieldFormatting& format = layout_item->get_formatting_used();
+  const Formatting& format = layout_item->get_formatting_used();
   sharedptr<const Relationship> choice_relationship;
   sharedptr<const LayoutItem_Field> layout_choice_first;
   sharedptr<const LayoutGroup> layout_choice_extra;
@@ -205,7 +205,7 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
 */
 
 
-void ComboChoicesWithTreeModel::set_choices_fixed(const FieldFormatting::type_list_values& list_values, bool restricted)
+void ComboChoicesWithTreeModel::set_choices_fixed(const Formatting::type_list_values& list_values, bool restricted)
 {
   create_model_non_db(1); //Use a regular ListStore without a dynamic column?
 
@@ -216,7 +216,7 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const FieldFormatting::type_li
     return;
   }
 
-  for(FieldFormatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+  for(Formatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
   {
     Gtk::TreeModel::iterator iterTree = list_store->append();
     Gtk::TreeModel::Row row = *iterTree;
@@ -263,11 +263,11 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
     return;
   }
 
-  const FieldFormatting& format = layout_field->get_formatting_used();
+  const Formatting& format = layout_field->get_formatting_used();
   sharedptr<const Relationship> choice_relationship;
   sharedptr<const LayoutItem_Field> layout_choice_first;
   sharedptr<const LayoutGroup> layout_choice_extra;
-  FieldFormatting::type_list_sort_fields choice_sort_fields;
+  Formatting::type_list_sort_fields choice_sort_fields;
   bool choice_show_all = false;
   format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_extra, choice_sort_fields, choice_show_all);
   if(layout_choice_first->get_glom_type() == Field::TYPE_INVALID)
@@ -466,7 +466,7 @@ int ComboChoicesWithTreeModel::get_fixed_cell_height(Gtk::Widget& widget)
       const sharedptr<const LayoutItem_WithFormatting> item_withformatting = sharedptr<const LayoutItem_WithFormatting>::cast_dynamic(*iter);
       if(item_withformatting)
       {
-         const FieldFormatting& formatting = item_withformatting->get_formatting_used();
+         const Formatting& formatting = item_withformatting->get_formatting_used();
          font_name = formatting.get_text_format_font();
       }
 

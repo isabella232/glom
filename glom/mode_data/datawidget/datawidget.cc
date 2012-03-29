@@ -123,7 +123,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
         //set_choices_fixed() needs this, for the numeric layout:
         combo->set_layout_item( get_layout_item(), table_name);
 
-	const FieldFormatting& formatting = field->get_formatting_used();
+	const Formatting& formatting = field->get_formatting_used();
 	bool as_radio_buttons = false; //Ignored;
         combo->set_choices_fixed( formatting.get_choices_custom(), formatting.get_choices_restricted(as_radio_buttons));
       }

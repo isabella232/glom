@@ -374,7 +374,7 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
         sharedptr<LayoutItem_WithFormatting>::cast_dynamic(item);
       if(with_formatting)
       {
-        FieldFormatting& formatting = with_formatting->m_formatting;
+        Formatting& formatting = with_formatting->m_formatting;
         formatting.change_field_item_name(table_name, field_name, field_name_new);
       }
    

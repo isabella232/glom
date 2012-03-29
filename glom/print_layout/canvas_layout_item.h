@@ -31,7 +31,7 @@ namespace Glom
 
 class CanvasTextMovable;
 class CanvasTableMovable;
-class FieldFormatting;
+class Formatting;
 class LayoutItem_Portal;
 
 /** This has the appropriate child canvas item, depending on the type of the child LayoutItem.

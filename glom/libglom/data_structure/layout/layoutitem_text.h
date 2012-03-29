@@ -22,7 +22,7 @@
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_TEXT_H
 
 #include <libglom/data_structure/layout/layoutitem_withformatting.h>
-#include <libglom/data_structure/layout/fieldformatting.h>
+#include <libglom/data_structure/layout/formatting.h>
 
 namespace Glom
 {

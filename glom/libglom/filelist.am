@@ -48,7 +48,7 @@ libglom_data_structure_headers =				\
 
 libglom_ds_layout_headers =						\
 	glom/libglom/data_structure/layout/custom_title.h		\
-	glom/libglom/data_structure/layout/fieldformatting.h		\
+	glom/libglom/data_structure/layout/formatting.h		\
 	glom/libglom/data_structure/layout/layoutgroup.h		\
 	glom/libglom/data_structure/layout/layoutitem.h			\
 	glom/libglom/data_structure/layout/layoutitem_button.h		\
@@ -141,7 +141,7 @@ libglom_sources =							\
 	glom/libglom/data_structure/tableinfo.cc			\
 	glom/libglom/data_structure/translatable_item.cc		\
 	glom/libglom/data_structure/layout/custom_title.cc		\
-	glom/libglom/data_structure/layout/fieldformatting.cc		\
+	glom/libglom/data_structure/layout/formatting.cc		\
 	glom/libglom/data_structure/layout/layoutgroup.cc		\
 	glom/libglom/data_structure/layout/layoutitem.cc		\
 	glom/libglom/data_structure/layout/layoutitem_button.cc		\

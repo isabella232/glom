@@ -274,7 +274,7 @@ static void create_standard(const sharedptr<const LayoutGroup>& layout_group, co
       double this_field_height = field_height;
       if(field)
       {
-        const FieldFormatting& formatting = field->get_formatting_used();
+        const Formatting& formatting = field->get_formatting_used();
         if(formatting.get_text_format_multiline())
         {
           const guint lines = formatting.get_text_format_multiline_height_lines();

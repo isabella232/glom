@@ -265,9 +265,9 @@ int main()
   g_assert(field);
   check_title(field, "Day/Night", "Tag/Nacht");
 
-  Glom::FieldFormatting formatting = field->m_default_formatting;
+  Glom::Formatting formatting = field->m_default_formatting;
   g_assert(formatting.get_has_custom_choices());
-  Glom::FieldFormatting::type_list_values values = formatting.get_choices_custom();
+  Glom::Formatting::type_list_values values = formatting.get_choices_custom();
   //g_assert(contains(values, "Day"));
   Glom::sharedptr<Glom::ChoiceValue> value = get_titled(values, "Day");
   g_assert(value);

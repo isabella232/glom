@@ -578,18 +578,18 @@ void FlowTableWithFields::add_button(const sharedptr<LayoutItem_Button>& layouti
   add_layoutwidgetbase(button);
   //add_view(button); //So it can get the document.
 
-  const FieldFormatting::HorizontalAlignment alignment =
+  const Formatting::HorizontalAlignment alignment =
     layoutitem_button->get_formatting_used_horizontal_alignment();
   Gtk::Widget* widget_to_add = button;
   bool expand = false;
-  if(alignment != FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT)
+  if(alignment != Formatting::HORIZONTAL_ALIGNMENT_LEFT)
   {
     //Put the button in a Gtk::Box so we can have non-default alignment in
     //its space. Note that we will need a different technique if we ever
     //support center alignment.
     Gtk::Box* box_button = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
     box_button->show();
-    if(alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_RIGHT)
+    if(alignment == Formatting::HORIZONTAL_ALIGNMENT_RIGHT)
       box_button->pack_end(*button, Gtk::PACK_SHRINK);
     else
       box_button->pack_start(*button, Gtk::PACK_SHRINK);
@@ -607,9 +607,9 @@ void FlowTableWithFields::add_textobject(const sharedptr<LayoutItem_Text>& layou
 {
   //Add the widget:
 
-  const FieldFormatting::HorizontalAlignment alignment =
+  const Formatting::HorizontalAlignment alignment =
     layoutitem_text->get_formatting_used_horizontal_alignment();
-  const Gtk::Align x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::ALIGN_START : Gtk::ALIGN_END);
+  const Gtk::Align x_align = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::ALIGN_START : Gtk::ALIGN_END);
   Gtk::Alignment* alignment_label = Gtk::manage(new Gtk::Alignment());
   alignment_label->set(x_align, Gtk::ALIGN_CENTER);
   alignment_label->show();
@@ -897,7 +897,7 @@ FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets
     if(!field)
       continue;
 
-    const FieldFormatting& format = field->get_formatting_used();
+    const Formatting& format = field->get_formatting_used();
 
     bool choice_show_all = false;
     const sharedptr<const Relationship> choice_relationship =

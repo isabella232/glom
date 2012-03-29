@@ -48,7 +48,7 @@ public:
   /** Set a list of choice values, for instance for a list of custom choices.
    * You should first call set_layout_item() to provide formatting details.
    */
-  virtual void set_choices_fixed(const FieldFormatting::type_list_values& list_values, bool restricted = false) = 0;
+  virtual void set_choices_fixed(const Formatting::type_list_values& list_values, bool restricted = false) = 0;
 
   /** Show the list of related chocie values based on the LayoutItem's formatting choices.
    * You should first call set_layout_item() to provide that formatting detail,

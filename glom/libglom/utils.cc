@@ -551,11 +551,11 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
   }
   */
 
-  const FieldFormatting& format = field->get_formatting_used();
+  const Formatting& format = field->get_formatting_used();
   sharedptr<const Relationship> choice_relationship;
   sharedptr<const LayoutItem_Field> layout_choice_first;
   sharedptr<const LayoutGroup> layout_choice_extra;
-  FieldFormatting::type_list_sort_fields choice_sort_fields;
+  Formatting::type_list_sort_fields choice_sort_fields;
   bool choice_show_all = false;
   format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_extra, choice_sort_fields, choice_show_all);
 
@@ -1375,10 +1375,10 @@ Glib::ustring Utils::get_list_of_layout_items_for_display(const sharedptr<const 
     return Glib::ustring();
 }
 
-Glib::ustring Utils::get_list_of_sort_fields_for_display(const FieldFormatting::type_list_sort_fields& sort_fields)
+Glib::ustring Utils::get_list_of_sort_fields_for_display(const Formatting::type_list_sort_fields& sort_fields)
 {
   Glib::ustring text;
-  for(FieldFormatting::type_list_sort_fields::const_iterator iter = sort_fields.begin(); iter != sort_fields.end(); ++iter)
+  for(Formatting::type_list_sort_fields::const_iterator iter = sort_fields.begin(); iter != sort_fields.end(); ++iter)
   {
     const sharedptr<const LayoutItem_Field> item = iter->first;
     if(!item)

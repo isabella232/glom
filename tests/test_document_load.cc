@@ -245,13 +245,13 @@ int main()
   field = document.get_field("contacts", "name_title");  
   g_assert(field);
   g_assert(field->get_glom_type() == Glom::Field::TYPE_TEXT);
-  const Glom::FieldFormatting& formatting = field->m_default_formatting;
-  g_assert(formatting.get_horizontal_alignment() == Glom::FieldFormatting::HORIZONTAL_ALIGNMENT_AUTO);
+  const Glom::Formatting& formatting = field->m_default_formatting;
+  g_assert(formatting.get_horizontal_alignment() == Glom::Formatting::HORIZONTAL_ALIGNMENT_AUTO);
   
   g_assert(formatting.get_has_choices());
   g_assert(formatting.get_has_custom_choices());
   g_assert(!formatting.get_has_related_choices());
-  Glom::FieldFormatting::type_list_values choices = formatting.get_choices_custom();
+  Glom::Formatting::type_list_values choices = formatting.get_choices_custom();
   g_assert(!choices.empty());
   g_assert(contains_value(choices, "Mr"));
   g_assert(contains_value(choices, "Mrs"));

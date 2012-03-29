@@ -22,7 +22,7 @@
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_WITHFORMATTING_H
 
 #include "layoutitem.h"
-#include "fieldformatting.h"
+#include "formatting.h"
 
 namespace Glom
 {
@@ -42,18 +42,18 @@ public:
 
   bool operator==(const LayoutItem_WithFormatting& src) const;
 
-  FieldFormatting m_formatting;
+  Formatting m_formatting;
 
   /** Get the field formatting used by this layout item, which 
    * may be either custom field formatting or the default field formatting.
    */
-  virtual const FieldFormatting& get_formatting_used() const;
+  virtual const Formatting& get_formatting_used() const;
 
   /** Get the alignment for the formatting used (see get_formatting_used()),
    * choosing an appropriate alignment if it is set to HORIZONTAL_ALIGNMENT_AUTO.
    * Note that this never returns HORIZONTAL_ALIGNMENT_AUTO.
    */
-  virtual FieldFormatting::HorizontalAlignment get_formatting_used_horizontal_alignment(bool for_details_view = false) const;
+  virtual Formatting::HorizontalAlignment get_formatting_used_horizontal_alignment(bool for_details_view = false) const;
 };
 
 } //namespace Glom

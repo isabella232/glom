@@ -25,7 +25,7 @@
 #include <libgdamm/holder.h>
 #include <libgdamm/connection.h>
 #include <libglom/data_structure/translatable_item.h>
-#include <libglom/data_structure/layout/fieldformatting.h>
+#include <libglom/data_structure/layout/formatting.h>
 #include <libglom/sharedptr.h>
 
 //Predicate, for use with std::find_if():
@@ -230,7 +230,7 @@ public:
 
   static bool get_conversion_possible(glom_field_type field_type_src, glom_field_type field_type_dest);
 
-  FieldFormatting m_default_formatting;
+  Formatting m_default_formatting;
 
 private:
 

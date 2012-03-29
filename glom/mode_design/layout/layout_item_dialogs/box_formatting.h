@@ -55,15 +55,15 @@ public:
   /**
    * @param format The starting information.
    */
-  void set_formatting_for_non_field(const FieldFormatting& format, bool show_numeric = true);
+  void set_formatting_for_non_field(const Formatting& format, bool show_numeric = true);
 
   /**
    * @param format The starting information.
    * @param table_name The field's table.
    * @param The field that will have this formatting, so we know what formatting options to allow.
    */
-  void set_formatting_for_field(const FieldFormatting& format, const Glib::ustring& table_name, const sharedptr<const Field>& field);
-  bool get_formatting(FieldFormatting& format) const;
+  void set_formatting_for_field(const Formatting& format, const Glib::ustring& table_name, const sharedptr<const Field>& field);
+  bool get_formatting(Formatting& format) const;
 
   /** When used, for instance, for print layout items or choice lists,
    * where the user could not edit the field anyway.
@@ -123,7 +123,7 @@ private:
   Dialog_FieldsList* m_dialog_choices_extra_fields;
   Dialog_SortFields* m_dialog_choices_sortby;
 
-  mutable FieldFormatting m_format;
+  mutable Formatting m_format;
 
   Glib::ustring m_table_name;
   sharedptr<const Field> m_field;
@@ -144,7 +144,7 @@ private:
     AlignmentColumns()
     { add(m_col_alignment); add(m_col_title); }
 
-    Gtk::TreeModelColumn<FieldFormatting::HorizontalAlignment> m_col_alignment;
+    Gtk::TreeModelColumn<Formatting::HorizontalAlignment> m_col_alignment;
     Gtk::TreeModelColumn<Glib::ustring> m_col_title;
   };
 

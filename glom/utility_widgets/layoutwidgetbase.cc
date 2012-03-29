@@ -107,9 +107,9 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
     return;
 
   //Horizontal alignment:
-  const FieldFormatting::HorizontalAlignment alignment =
+  const Formatting::HorizontalAlignment alignment =
     layout_item->get_formatting_used_horizontal_alignment(true /* for details view */);
-  const float x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
+  const float x_align = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
   Gtk::Misc* misc = dynamic_cast<Gtk::Misc*>(widget_to_change);
   if(misc)
     misc->set_alignment(x_align);
@@ -121,12 +121,12 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
     Gtk::Label* label = dynamic_cast<Gtk::Label*>(widget_to_change);
     if(label)
     {    
-      const Gtk::Justification justification = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::JUSTIFY_LEFT : Gtk::JUSTIFY_RIGHT);
+      const Gtk::Justification justification = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::JUSTIFY_LEFT : Gtk::JUSTIFY_RIGHT);
       label->set_justify(justification);
     }
   }
 
-  const FieldFormatting& formatting = layout_item->get_formatting_used();
+  const Formatting& formatting = layout_item->get_formatting_used();
 
   //Use the text formatting:
   const Glib::ustring font_desc = formatting.get_text_format_font();

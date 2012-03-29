@@ -56,19 +56,19 @@ LayoutItem_WithFormatting& LayoutItem_WithFormatting::operator=(const LayoutItem
   return *this;
 }
 
-const FieldFormatting& LayoutItem_WithFormatting::get_formatting_used() const
+const Formatting& LayoutItem_WithFormatting::get_formatting_used() const
 {
   return m_formatting;
 }
 
-FieldFormatting::HorizontalAlignment LayoutItem_WithFormatting::get_formatting_used_horizontal_alignment(bool /* for_details_view */) const
+Formatting::HorizontalAlignment LayoutItem_WithFormatting::get_formatting_used_horizontal_alignment(bool /* for_details_view */) const
 {
-  const FieldFormatting& format = get_formatting_used();
-  FieldFormatting::HorizontalAlignment alignment = 
+  const Formatting& format = get_formatting_used();
+  Formatting::HorizontalAlignment alignment = 
     format.get_horizontal_alignment();
   
-  if(alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_AUTO)
-    alignment = FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT;
+  if(alignment == Formatting::HORIZONTAL_ALIGNMENT_AUTO)
+    alignment = Formatting::HORIZONTAL_ALIGNMENT_LEFT;
   
   return alignment;
 }

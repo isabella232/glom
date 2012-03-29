@@ -264,7 +264,7 @@ public:
   typedef std::vector<pair_translatable_item_and_hint> type_list_translatables;
   type_list_translatables get_translatable_items();
 
-  static void fill_translatable_custom_choices(FieldFormatting& formatting, type_list_translatables& the_list, const Glib::ustring& hint);
+  static void fill_translatable_custom_choices(Formatting& formatting, type_list_translatables& the_list, const Glib::ustring& hint);
 
 
   void fill_layout_field_details(const Glib::ustring& parent_table_name, const sharedptr<LayoutGroup>& layout_group) const;
@@ -491,7 +491,7 @@ private:
   void save_before_sort_by(xmlpp::Element* node, const LayoutItem_GroupBy::type_list_sort_fields& list_fields);
   void save_before_layout_item_usesrelationship(xmlpp::Element* nodeItem, const sharedptr<const UsesRelationship>& item);
   void save_before_layout_item_field(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem_Field>& item);
-  void save_before_layout_item_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, Field::glom_field_type field_type = Field::TYPE_INVALID);
+  void save_before_layout_item_formatting(xmlpp::Element* nodeItem, const Formatting& format, Field::glom_field_type field_type = Field::TYPE_INVALID);
   void save_before_layout_item_formatting(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem_WithFormatting>& layout_item);
 
   void save_before_translations(xmlpp::Element* nodeItem, const sharedptr<const TranslatableItem>& item);
@@ -505,7 +505,7 @@ private:
   void load_after_sort_by(const xmlpp::Element* node, const Glib::ustring& table_name, LayoutItem_GroupBy::type_list_sort_fields& list_fields);
   void load_after_layout_item_usesrelationship(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<UsesRelationship>& item);
   void load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& item);
-  void load_after_layout_item_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type = Field::TYPE_INVALID, const Glib::ustring& table_name = Glib::ustring(), const Glib::ustring& field_name = Glib::ustring());
+  void load_after_layout_item_formatting(const xmlpp::Element* element, Formatting& format, Field::glom_field_type field_type = Field::TYPE_INVALID, const Glib::ustring& table_name = Glib::ustring(), const Glib::ustring& field_name = Glib::ustring());
  void load_after_layout_item_formatting(const xmlpp::Element* element, const sharedptr<LayoutItem_WithFormatting>& layout_item, const Glib::ustring& table_name = Glib::ustring());
 
   void load_after_translations(const xmlpp::Element* element, const sharedptr<TranslatableItem>& item);
@@ -517,7 +517,7 @@ private:
   static void fill_translatable_layout_items(const sharedptr<LayoutItem_Field>& layout_field, type_list_translatables& the_list, const Glib::ustring& hint);
   static void fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list, const Glib::ustring& hint);
 
-  void fill_sort_field_details(const Glib::ustring& parent_table_name, FieldFormatting::type_list_sort_fields& sort_fields) const;
+  void fill_sort_field_details(const Glib::ustring& parent_table_name, Formatting::type_list_sort_fields& sort_fields) const;
 
   type_list_translatables get_translatable_layout_items(const Glib::ustring& table_name, const Glib::ustring& hint);
   type_list_translatables get_translatable_report_items(const Glib::ustring& table_name, const Glib::ustring& report_title, const Glib::ustring& hint);

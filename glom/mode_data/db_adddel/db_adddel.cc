@@ -553,7 +553,7 @@ guint DbAddDel::get_fixed_cell_height()
       sharedptr<const LayoutItem_WithFormatting> item_withformatting = sharedptr<const LayoutItem_WithFormatting>::cast_dynamic(*iter);
       if(item_withformatting)
       {
-         const FieldFormatting& formatting = item_withformatting->get_formatting_used();
+         const Formatting& formatting = item_withformatting->get_formatting_used();
          font_name = formatting.get_text_format_font();
       }
 
@@ -1045,7 +1045,7 @@ DbAddDel::type_list_indexes DbAddDel::get_choice_index(const sharedptr<const Lay
     if(!field)
        continue;
 
-    const FieldFormatting& format = field->get_formatting_used();
+    const Formatting& format = field->get_formatting_used();
 
     bool choice_show_all = false;
     const sharedptr<const Relationship> choice_relationship =
@@ -1486,7 +1486,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
       //then make sure that we only write the original to the database, though we display the translated version:
       if(item_field->get_formatting_used_has_translatable_choices())
       {
-        const FieldFormatting& formatting = item_field->get_formatting_used();
+        const Formatting& formatting = item_field->get_formatting_used();
         new_text_to_save = formatting.get_custom_choice_original_for_translated_text(new_text);
 
         //If somehow (though this should be impossible), the user entered a 
@@ -1987,7 +1987,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
             //then make sure that we show the translated version, never showing the original text from the database:
             if(field->get_formatting_used_has_translatable_choices())
             {
-              const FieldFormatting& formatting = field->get_formatting_used();
+              const Formatting& formatting = field->get_formatting_used();
               const Glib::ustring text_to_show = formatting.get_custom_choice_translated(text);
 
               //Use the translation if there is one.

@@ -212,7 +212,7 @@ Glib::ustring get_list_of_layout_items_for_display(const sharedptr<const LayoutG
 
 /** Get a string to display to the user, as a representation of a sort order
  */
-Glib::ustring get_list_of_sort_fields_for_display(const FieldFormatting::type_list_sort_fields& sort_fields);
+Glib::ustring get_list_of_sort_fields_for_display(const Formatting::type_list_sort_fields& sort_fields);
 
 /** This returns the provided list of layout items,
  * plus the primary key, if the primary key is not already present in the list

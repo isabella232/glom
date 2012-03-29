@@ -244,7 +244,7 @@ void LayoutItem_Field::set_formatting_use_default(bool use_default)
   m_formatting_use_default = use_default;
 }
 
-const FieldFormatting& LayoutItem_Field::get_formatting_used() const
+const Formatting& LayoutItem_Field::get_formatting_used() const
 {
   if(m_formatting_use_default && m_field_cache_valid && m_field)
     return m_field->m_default_formatting;
@@ -252,23 +252,23 @@ const FieldFormatting& LayoutItem_Field::get_formatting_used() const
     return m_formatting;
 }
 
-FieldFormatting::HorizontalAlignment LayoutItem_Field::get_formatting_used_horizontal_alignment(bool for_details_view) const
+Formatting::HorizontalAlignment LayoutItem_Field::get_formatting_used_horizontal_alignment(bool for_details_view) const
 {
-  const FieldFormatting& format = get_formatting_used();
-  FieldFormatting::HorizontalAlignment alignment = 
+  const Formatting& format = get_formatting_used();
+  Formatting::HorizontalAlignment alignment = 
     format.get_horizontal_alignment();
   
-  if(alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_AUTO)
+  if(alignment == Formatting::HORIZONTAL_ALIGNMENT_AUTO)
   {
     //By default, right-align numbers on list views, unless they are ID fields.
     //And left-align them on details views, because that looks silly otherwise.
     if(!for_details_view && (m_field && !m_field->get_primary_key())) //TODO: Also prevent this when it is a foreign key.
     {
       //Align numbers to the right by default:
-      alignment = (m_field->get_glom_type() == Field::TYPE_NUMERIC ? FieldFormatting::HORIZONTAL_ALIGNMENT_RIGHT : FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT);
+      alignment = (m_field->get_glom_type() == Field::TYPE_NUMERIC ? Formatting::HORIZONTAL_ALIGNMENT_RIGHT : Formatting::HORIZONTAL_ALIGNMENT_LEFT);
     }
     else
-      alignment = FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT;
+      alignment = Formatting::HORIZONTAL_ALIGNMENT_LEFT;
   }
   
   return alignment;
@@ -276,7 +276,7 @@ FieldFormatting::HorizontalAlignment LayoutItem_Field::get_formatting_used_horiz
 
 bool LayoutItem_Field::get_formatting_used_has_translatable_choices() const
 {
-  const FieldFormatting& formatting = get_formatting_used();
+  const Formatting& formatting = get_formatting_used();
   if(!formatting.get_has_custom_choices())
     return false;
 

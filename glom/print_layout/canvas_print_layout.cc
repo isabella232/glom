@@ -496,12 +496,12 @@ void Canvas_PrintLayout::on_context_menu_formatting()
   //TODO: Maybe they should. TODO: Maybe they already do.
   if(layout_item_field)
   {
-    const FieldFormatting& formatting = layout_item_field->m_formatting;
+    const Formatting& formatting = layout_item_field->m_formatting;
     m_dialog_format->m_box_formatting->set_formatting_for_field(formatting, m_table_name, layout_item_field->get_full_field_details());
   }
   else
   {
-    const FieldFormatting& formatting = layout_item_text->m_formatting;
+    const Formatting& formatting = layout_item_text->m_formatting;
     m_dialog_format->m_box_formatting->set_formatting_for_non_field(
       formatting, false /* don't show numeric options */);
   }
@@ -1047,7 +1047,7 @@ void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanva
       sharedptr<const LayoutItem_WithFormatting>::cast_dynamic(field);
     if(with_formatting)
     {
-      const FieldFormatting& formatting = with_formatting->get_formatting_used();
+      const Formatting& formatting = with_formatting->get_formatting_used();
       text = Conversions::get_text_for_gda_value(field->get_glom_type(), 
         value, formatting.m_numeric_format);
     }

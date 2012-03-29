@@ -34,17 +34,18 @@ namespace Glom
 class LayoutItem_Field;
 class LayoutGroup;
 
-//TODO: This should probably be renamed to Formatting, because it is used for static text items too.
-class FieldFormatting : public UsesRelationship //The UsesRelationship base has the relationship for the choices.
+/** This specifies how to display data for fields or static text items.
+ */
+class Formatting : public UsesRelationship //The UsesRelationship base has the relationship for the choices.
 {
 public:
 
-  FieldFormatting();
-  FieldFormatting(const FieldFormatting& src);
-  FieldFormatting& operator=(const FieldFormatting& src);
-  virtual ~FieldFormatting();
+  Formatting();
+  Formatting(const Formatting& src);
+  Formatting& operator=(const Formatting& src);
+  virtual ~Formatting();
 
-  bool operator==(const FieldFormatting& src) const;
+  bool operator==(const Formatting& src) const;
 
   bool get_has_choices() const;
 
