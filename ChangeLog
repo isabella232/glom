@@ -1,5 +1,15 @@
 2012-03-29  Murray Cumming  <murrayc@murrayc.com>
 
+	Fixed some simple warnings found by scan-build.
+
+	* glom/libglom/report_builder.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/python_embed/glom_python.cc: Mostly variables that were
+	set but then not used.
+
+2012-03-29  Murray Cumming  <murrayc@murrayc.com>
+
 	Field: Remove get_holder().
 
 	* glom/libglom/data_structure/field.[h|cc]:

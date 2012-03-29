@@ -149,12 +149,20 @@ bool Box_Data_List_Related::fill_from_database()
   {
     //No Foreign Key value, so just show the field names:
     result = Base_DB_Table_Data::fill_from_database();
+    if(!result)
+    {
+      std::cerr << G_STRFUNC << ": Base_DB_Table_Data::fill_from_database() failed." << std::endl;
+    }
 
     //create_layout();
   }
   else
   {
     result = Box_Data_Portal::fill_from_database();
+    if(!result)
+    {
+      std::cerr << G_STRFUNC << ": Box_Data_Portal::fill_from_database() failed." << std::endl;
+    }
 
     //TODO: Disable add if the from_field already has a value and the to_field is auto-incrementing because
     //- we cannot override the auto-increment in the to_field.
