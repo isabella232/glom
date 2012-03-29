@@ -199,8 +199,10 @@ public:
 
   //TODO_refactor: make private.
 
+private:
   void user_added(const Gtk::TreeModel::iterator& row);
 
+public:
   Glib::RefPtr<Gtk::TreeModel> get_model();
   Glib::RefPtr<const Gtk::TreeModel> get_model() const;
 
@@ -322,7 +324,6 @@ private:
   void on_treeview_cell_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& path);
 
 
-  //TODO: Remove virtuals after checking that there are no method overrides:
   void on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index, int data_model_column_index);
   void on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index, int data_model_column_index);
   void on_idle_treeview_cell_edited_revert(const Gtk::TreeModel::Row& row, guint model_column_index);
@@ -338,6 +339,7 @@ protected:
   void on_MenuPopup_activate_Edit();
   void on_MenuPopup_activate_Add();
   void on_MenuPopup_activate_Delete();
+
 private:
 
 
@@ -393,7 +395,6 @@ private:
   Gtk::ScrolledWindow m_ScrolledWindow;
   Gtk::TreeView m_TreeView;
 
-private:
   Glib::RefPtr<DbTreeModel> m_refListStore;
 
   //Columns, not including the hidden internal columns:
@@ -493,8 +494,6 @@ private:
   Glib::RefPtr<Gtk::ListStore> m_model_hint;
 
   guint m_fixed_cell_height;
-
-private:
 
   /// Discover the right-most text column, so we can make it expand.
   bool get_column_to_expand(guint& column_to_expand) const;
