@@ -220,6 +220,7 @@ private:
 
   virtual void new_instance(const Glib::ustring& uri = Glib::ustring()); //Override
 
+  void on_connection_create_database_progress();
   void on_connection_close_progress();
   void on_connection_save_backup_progress();
   void on_connection_convert_backup_progress();

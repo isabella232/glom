@@ -105,23 +105,29 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
   return connection;
 }
 
-bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ustring& /* username */, const Glib::ustring& /* password */)
+bool Sqlite::create_database(const SlotProgress& slot_progress, const Glib::ustring& database_name, const Glib::ustring& /* username */, const Glib::ustring& /* password */)
 {
   if(m_database_directory_uri.empty())
   {
     std::cerr << G_STRFUNC << ": m_database_directory_uri was empty." << std::endl;
     return false;
   }
-  
+ 
+  slot_progress();
+ 
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(m_database_directory_uri);
   const std::string database_directory = file->get_path();
   const Glib::ustring cnc_string = Glib::ustring::compose("DB_DIR=%1;DB_NAME=%2", 
     DbUtils::gda_cnc_string_encode(database_directory), DbUtils::gda_cnc_string_encode(database_name));
 
+  slot_progress();
+
   Glib::RefPtr<Gnome::Gda::Connection> cnc =
     Gnome::Gda::Connection::open_from_string("SQLite",
       cnc_string, "",
       Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
+
+  slot_progress();
 
   return true;
 }

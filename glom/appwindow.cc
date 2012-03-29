@@ -1269,6 +1269,11 @@ bool AppWindow::on_document_load()
   return true; //Loading of the document into the application succeeded.
 }
 
+void AppWindow::on_connection_create_database_progress()
+{
+  pulse_progress_message();
+}
+
 void AppWindow::on_connection_close_progress()
 {
   //TODO_murrayc
@@ -1865,7 +1870,9 @@ bool AppWindow::recreate_database_from_backup(const Glib::ustring& backup_uri, b
   connection_pool->set_database( Glib::ustring() );
   try
   {
-    ConnectionPool::get_instance()->create_database(db_name);
+    ConnectionPool::get_instance()->create_database(
+      sigc::mem_fun(*this, &AppWindow::on_connection_convert_backup_progress),
+      db_name);
   }
   catch(const Glib::Exception& ex) // libgda does not set error domain
   {

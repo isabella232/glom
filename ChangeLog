@@ -1,3 +1,17 @@
+2012-03-29  Murray Cumming  <murrayc@murrayc.com>
+
+	ConnectionPool: create_database(): Take a progress slot.
+
+	* glom/libglom/connectionpool.[h|cc]::
+	* glom/libglom/connectionpool_backends/backend.h: create_database():
+	Add a progress_slot parameter, to be emitted.
+	* glom/libglom/connectionpool_backends/postgres.[h|cc]:
+	* glom/libglom/connectionpool_backends/postgres_central.[h|cc]:
+	* glom/libglom/connectionpool_backends/postgres_self.[h|cc]:
+	* glom/libglom/connectionpool_backends/sqlite.[h|cc]:
+	* glom/libglom/db_utils.cc:
+	* glom/appwindow.[h|cc]: Adapt.
+
 1.21.8:
 
 2012-03-28  Murray Cumming  <murrayc@murrayc.com>

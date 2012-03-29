@@ -105,7 +105,7 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
 
   try
   {
-    ConnectionPool::get_instance()->create_database(database_name);
+    ConnectionPool::get_instance()->create_database(progress, database_name);
   }
   catch(const Glib::Exception& ex) // libgda does not set error domain
   {

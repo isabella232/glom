@@ -388,10 +388,15 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
   return false;
 }
 
-bool Postgres::attempt_create_database(const Glib::ustring& database_name, const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& username, const Glib::ustring& password)
+bool Postgres::attempt_create_database(const SlotProgress& slot_progress, const Glib::ustring& database_name, const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& username, const Glib::ustring& password)
 {
-  Glib::RefPtr<Gnome::Gda::ServerOperation> op = Gnome::Gda::ServerOperation::prepare_create_database("PostgreSQL",
-                                                              database_name);
+  slot_progress();
+
+  Glib::RefPtr<Gnome::Gda::ServerOperation> op = 
+    Gnome::Gda::ServerOperation::prepare_create_database("PostgreSQL", database_name);
+
+  slot_progress();
+
   g_assert(op);
   try
   {
@@ -406,6 +411,8 @@ bool Postgres::attempt_create_database(const Glib::ustring& database_name, const
     std::cerr << G_STRFUNC << ": exception: " << ex.what() << std::endl;
     return false;
   }
+
+  slot_progress();
 
   return true;
 }

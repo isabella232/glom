@@ -162,10 +162,9 @@ public:
    */
   typedef Backend::SlotProgress SlotProgress;
 
- //TODO: Add SlotProgress?
   /** Creates a new database.
    */
-  void create_database(const Glib::ustring& database_name);
+  void create_database(const SlotProgress& slot_progress, const Glib::ustring& database_name);
 
   /** Save a backup of the database in a tarball.
    * This backup can later be used to recreate the database,

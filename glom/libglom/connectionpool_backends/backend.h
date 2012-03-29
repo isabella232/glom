@@ -181,7 +181,7 @@ protected:
 
   /** This method is called to create a new database on the
    * database server. */
-  virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password) = 0;
+  virtual bool create_database(const SlotProgress& slot_progress, const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password) = 0;
 
   /** Save a backup of the database in a tarball.
    * This backup can later be used to recreate the database,

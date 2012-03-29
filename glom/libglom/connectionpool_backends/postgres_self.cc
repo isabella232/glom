@@ -669,9 +669,9 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
   return result;
 }
 
-bool PostgresSelfHosted::create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password)
+bool PostgresSelfHosted::create_database(const SlotProgress& slot_progress, const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password)
 {
-  return attempt_create_database(database_name, "localhost", port_as_string(m_port), username, password);
+  return attempt_create_database(slot_progress, database_name, "localhost", port_as_string(m_port), username, password);
 }
 
 unsigned int PostgresSelfHosted::discover_first_free_port(unsigned int start_port, unsigned int end_port)

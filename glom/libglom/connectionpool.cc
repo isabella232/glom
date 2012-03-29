@@ -390,10 +390,10 @@ sharedptr<SharedConnection> ConnectionPool::connect()
   return sharedptr<SharedConnection>(0);
 }
 
-void ConnectionPool::create_database(const Glib::ustring& database_name)
+void ConnectionPool::create_database(const SlotProgress& slot_progress, const Glib::ustring& database_name)
 {
   if(m_backend.get())
-    m_backend->create_database(database_name, get_user(), get_password());
+    m_backend->create_database(slot_progress, database_name, get_user(), get_password());
 }
 
 void ConnectionPool::set_user(const Glib::ustring& value)

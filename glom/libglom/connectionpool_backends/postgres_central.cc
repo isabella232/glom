@@ -159,9 +159,9 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
   return connection;
 }
 
-bool PostgresCentralHosted::create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password)
+bool PostgresCentralHosted::create_database(const SlotProgress& slot_progress, const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password)
 {
-  return attempt_create_database(database_name, get_host(), port_as_string(m_port), username, password);
+  return attempt_create_database(slot_progress, database_name, get_host(), port_as_string(m_port), username, password);
 }
 
 }
