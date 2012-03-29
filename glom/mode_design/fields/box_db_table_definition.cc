@@ -125,6 +125,11 @@ void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& ite
 bool Box_DB_Table_Definition::fill_from_database()
 {
   bool result = Box_DB_Table::fill_from_database();
+  if(!result)
+  {
+    std::cerr << G_STRFUNC << ":  Box_DB_Table::fill_from_database() failed." << std::endl;
+    return false;
+  }
 
   if(!(ConnectionPool::get_instance()->get_ready_to_connect()))
     return false;

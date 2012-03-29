@@ -114,7 +114,12 @@ static Glib::ustring get_traceback()
         chrRetval = g_strdup(PyString_AsString(strRetval));
 
       Py_DECREF(tbList);
-      Py_DECREF(strRetval);
+
+      if(strRetval)
+      {
+        Py_DECREF(strRetval);
+      }
+
       Py_DECREF(tracebackModule);
     }
     else

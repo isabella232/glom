@@ -495,7 +495,6 @@ bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
 
     value = datamodel->get_value_at(colField, row); //TODO: Catch exceptions.
     colField = 0;
-    row = 0;
   }
   else
   {
