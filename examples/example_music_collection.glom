@@ -5,6 +5,8 @@
     <trans loc="de" val="Musiksammlung"/>
     <trans loc="es" val="Colección de música"/>
     <trans loc="fr" val="Collection de musique"/>
+    <trans loc="gl" val="Colección de música"/>
+    <trans loc="pt_BR" val="Coleção de música"/>
     <trans loc="sl" val="Zbirka glasbe"/>
   </trans_set>
   <connection hosting_mode="postgres_self" server="localhost" port="5433" try_other_ports="false" database="glom_musiccollection211"/>
@@ -56,6 +58,8 @@
       <trans loc="de" val="Alben"/>
       <trans loc="es" val="Álbumes"/>
       <trans loc="fr" val="Albums"/>
+      <trans loc="gl" val="Álbums"/>
+      <trans loc="pt_BR" val="Álbuns"/>
       <trans loc="sl" val="Albumi"/>
     </trans_set>
     <fields>
@@ -66,6 +70,8 @@
           <trans loc="de" val="Albenkennung"/>
           <trans loc="es" val="ID del álbum"/>
           <trans loc="fr" val="ID de l'album"/>
+          <trans loc="gl" val="ID do álbum"/>
+          <trans loc="pt_BR" val="ID de álbum"/>
           <trans loc="sl" val="ID albuma"/>
         </trans_set>
       </field>
@@ -76,6 +82,8 @@
           <trans loc="de" val="Kommentare"/>
           <trans loc="es" val="Comentarios"/>
           <trans loc="fr" val="Commentaires"/>
+          <trans loc="gl" val="Comentarios"/>
+          <trans loc="pt_BR" val="Comentários"/>
           <trans loc="sl" val="Opombe"/>
         </trans_set>
       </field>
@@ -86,6 +94,8 @@
           <trans loc="de" val="Name"/>
           <trans loc="es" val="Nombre"/>
           <trans loc="fr" val="Nom"/>
+          <trans loc="gl" val="Nome"/>
+          <trans loc="pt_BR" val="Nome"/>
           <trans loc="sl" val="Ime"/>
         </trans_set>
       </field>
@@ -106,6 +116,8 @@
           <trans loc="de" val="Künstlerkennung"/>
           <trans loc="es" val="ID del artista"/>
           <trans loc="fr" val="ID de l'artiste"/>
+          <trans loc="gl" val="ID do artista"/>
+          <trans loc="pt_BR" val="ID de artista"/>
           <trans loc="sl" val="ID izvajalca"/>
         </trans_set>
       </field>
@@ -126,6 +138,8 @@
           <trans loc="de" val="Herausgeber-Kennung"/>
           <trans loc="es" val="ID de la editorial"/>
           <trans loc="fr" val="ID de l'éditeur"/>
+          <trans loc="gl" val="ID da editorial"/>
+          <trans loc="pt_BR" val="ID de editor"/>
           <trans loc="sl" val="ID založnika"/>
         </trans_set>
       </field>
@@ -136,6 +150,8 @@
           <trans loc="de" val="Jahr"/>
           <trans loc="es" val="Año"/>
           <trans loc="fr" val="Année"/>
+          <trans loc="gl" val="Ano"/>
+          <trans loc="pt_BR" val="Ano"/>
           <trans loc="sl" val="Leto"/>
         </trans_set>
       </field>
@@ -147,6 +163,8 @@
           <trans loc="de" val="Künstler"/>
           <trans loc="es" val="Artista"/>
           <trans loc="fr" val="Artiste"/>
+          <trans loc="gl" val="Artista"/>
+          <trans loc="pt_BR" val="Artista"/>
           <trans loc="sl" val="Izvajalec"/>
         </trans_set>
       </relationship>
@@ -156,6 +174,8 @@
           <trans loc="de" val="Herausgeber"/>
           <trans loc="es" val="Editorial"/>
           <trans loc="fr" val="Éditeur"/>
+          <trans loc="gl" val="Editorial"/>
+          <trans loc="pt_BR" val="Editor"/>
           <trans loc="sl" val="Založnik"/>
         </trans_set>
       </relationship>
@@ -165,6 +185,8 @@
           <trans loc="de" val="Lieder"/>
           <trans loc="es" val="Canciones"/>
           <trans loc="fr" val="Chansons"/>
+          <trans loc="gl" val="Cancións"/>
+          <trans loc="pt_BR" val="Canções"/>
           <trans loc="sl" val="Skladbe"/>
         </trans_set>
       </relationship>
@@ -178,6 +200,8 @@
               <trans loc="de" val="Overview"/>
               <trans loc="es" val="Visión general"/>
               <trans loc="fr" val="Résumé"/>
+              <trans loc="gl" val="Vista xeral"/>
+              <trans loc="pt_BR" val="Visão geral"/>
               <trans loc="sl" val="Pregled"/>
             </trans_set>
             <data_layout_item name="album_id" editable="true" use_default_formatting="true">
@@ -193,6 +217,8 @@
               <trans loc="de" val="Details"/>
               <trans loc="es" val="Detalles"/>
               <trans loc="fr" val="Détails"/>
+              <trans loc="gl" val="Detalles"/>
+              <trans loc="pt_BR" val="Detalhes"/>
               <trans loc="sl" val="Podrobnosti"/>
             </trans_set>
             <data_layout_group name="artist" title="Artist">
@@ -201,6 +227,8 @@
                 <trans loc="de" val="Artist"/>
                 <trans loc="es" val="Artista"/>
                 <trans loc="fr" val="Artiste"/>
+                <trans loc="gl" val="Artista"/>
+                <trans loc="pt_BR" val="Artista"/>
                 <trans loc="sl" val="Izvajalec"/>
               </trans_set>
               <data_layout_item name="artist_id" editable="true" use_default_formatting="true">
@@ -216,6 +244,8 @@
                 <trans loc="de" val="Publisher"/>
                 <trans loc="es" val="Editorial"/>
                 <trans loc="fr" val="Éditeur"/>
+                <trans loc="gl" val="Editorial"/>
+                <trans loc="pt_BR" val="Editor"/>
                 <trans loc="sl" val="Založnik"/>
               </trans_set>
               <data_layout_item name="publisher_id" editable="true" use_default_formatting="true">
@@ -258,6 +288,8 @@
                   <trans loc="de" val="Künstlername"/>
                   <trans loc="es" val="Nombre del artista"/>
                   <trans loc="fr" val="Nom de l'artiste"/>
+                  <trans loc="gl" val="Nome do artista"/>
+                  <trans loc="pt_BR" val="Nome do artista"/>
                   <trans loc="sl" val="Ime izvajalca"/>
                 </trans_set>
               </title_custom>
@@ -273,6 +305,8 @@
                   <trans loc="de" val="Name des Herausgebers"/>
                   <trans loc="es" val="Nombre de la editorial"/>
                   <trans loc="fr" val="Nom de l'éditeur"/>
+                  <trans loc="gl" val="Nome da editorial"/>
+                  <trans loc="pt_BR" val="Nome do editor"/>
                   <trans loc="sl" val="Ime izdajatelja"/>
                 </trans_set>
               </title_custom>
@@ -300,6 +334,8 @@
                         <trans loc="de" val="Künstlername"/>
                         <trans loc="es" val="Nombre del artista"/>
                         <trans loc="fr" val="Nom de l'artiste"/>
+                        <trans loc="gl" val="Nome do artista"/>
+                        <trans loc="pt_BR" val="Nome do artista"/>
                         <trans loc="sl" val="Ime izvajalca"/>
                       </trans_set>
                     </title_custom>
@@ -321,6 +357,8 @@
           <trans loc="de" val="Alben nach Künstler"/>
           <trans loc="es" val="Álbumes por artista"/>
           <trans loc="fr" val="Albums par artiste"/>
+          <trans loc="gl" val="Álbums por artista"/>
+          <trans loc="pt_BR" val="Álbuns por artista"/>
           <trans loc="sl" val="Albumi izvajalca"/>
         </trans_set>
       </report>
@@ -359,6 +397,8 @@
       <trans loc="de" val="Künstler"/>
       <trans loc="es" val="Artistas"/>
       <trans loc="fr" val="Artistes"/>
+      <trans loc="gl" val="Artistas"/>
+      <trans loc="pt_BR" val="Artistas"/>
       <trans loc="sl" val="Izvajalci"/>
     </trans_set>
     <fields>
@@ -369,6 +409,8 @@
           <trans loc="de" val="Künstlerkennung"/>
           <trans loc="es" val="ID del artista"/>
           <trans loc="fr" val="ID de l'artiste"/>
+          <trans loc="gl" val="ID do artista"/>
+          <trans loc="pt_BR" val="ID de artista"/>
           <trans loc="sl" val="ID izvajalca"/>
         </trans_set>
       </field>
@@ -379,6 +421,8 @@
           <trans loc="de" val="Beschreibung"/>
           <trans loc="es" val="Descripción"/>
           <trans loc="fr" val="Description"/>
+          <trans loc="gl" val="Descrición"/>
+          <trans loc="pt_BR" val="Descrição"/>
           <trans loc="sl" val="Opis"/>
         </trans_set>
       </field>
@@ -389,6 +433,8 @@
           <trans loc="de" val="Kommentare"/>
           <trans loc="es" val="Comentarios"/>
           <trans loc="fr" val="Commentaires"/>
+          <trans loc="gl" val="Comentarios"/>
+          <trans loc="pt_BR" val="Comentários"/>
           <trans loc="sl" val="Opombe"/>
         </trans_set>
       </field>
@@ -399,6 +445,8 @@
           <trans loc="de" val="Name"/>
           <trans loc="es" val="Nombre"/>
           <trans loc="fr" val="Nom"/>
+          <trans loc="gl" val="Nome"/>
+          <trans loc="pt_BR" val="Nome"/>
           <trans loc="sl" val="Ime"/>
         </trans_set>
       </field>
@@ -410,6 +458,8 @@
           <trans loc="de" val="Alben"/>
           <trans loc="es" val="Álbumes"/>
           <trans loc="fr" val="Albums"/>
+          <trans loc="gl" val="Álbums"/>
+          <trans loc="pt_BR" val="Álbuns"/>
           <trans loc="sl" val="Albumi"/>
         </trans_set>
       </relationship>
@@ -423,6 +473,8 @@
               <trans loc="de" val="Overview"/>
               <trans loc="es" val="Visión general"/>
               <trans loc="fr" val="Résumé"/>
+              <trans loc="gl" val="Vista xeral"/>
+              <trans loc="pt_BR" val="Visão geral"/>
               <trans loc="sl" val="Pregled"/>
             </trans_set>
             <data_layout_item name="artist_id" editable="true" use_default_formatting="true">
@@ -438,6 +490,8 @@
               <trans loc="de" val="Details"/>
               <trans loc="es" val="Detalles"/>
               <trans loc="fr" val="Détails"/>
+              <trans loc="gl" val="Detalles"/>
+              <trans loc="pt_BR" val="Detalhes"/>
               <trans loc="sl" val="Podrobnosti"/>
             </trans_set>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
@@ -502,6 +556,8 @@
       <trans loc="de" val="Herausgeber"/>
       <trans loc="es" val="Editoriales"/>
       <trans loc="fr" val="Éditeurs"/>
+      <trans loc="gl" val="Editoriais"/>
+      <trans loc="pt_BR" val="Editores"/>
       <trans loc="sl" val="Založniki"/>
     </trans_set>
     <fields>
@@ -512,6 +568,8 @@
           <trans loc="de" val="Herausgeber-Kennung"/>
           <trans loc="es" val="ID de la editorial"/>
           <trans loc="fr" val="ID de l'éditeur"/>
+          <trans loc="gl" val="ID da editorial"/>
+          <trans loc="pt_BR" val="ID de editor"/>
           <trans loc="sl" val="ID založnika"/>
         </trans_set>
       </field>
@@ -522,6 +580,8 @@
           <trans loc="de" val="Kommentare"/>
           <trans loc="es" val="Comentarios"/>
           <trans loc="fr" val="Commentaires"/>
+          <trans loc="gl" val="Comentarios"/>
+          <trans loc="pt_BR" val="Comentários"/>
           <trans loc="sl" val="Opombe"/>
         </trans_set>
       </field>
@@ -532,6 +592,8 @@
           <trans loc="de" val="Name"/>
           <trans loc="es" val="Nombre"/>
           <trans loc="fr" val="Nom"/>
+          <trans loc="gl" val="Nome"/>
+          <trans loc="pt_BR" val="Nome"/>
           <trans loc="sl" val="Ime"/>
         </trans_set>
       </field>
@@ -543,6 +605,8 @@
           <trans loc="de" val="Alben"/>
           <trans loc="es" val="Álbumes"/>
           <trans loc="fr" val="Albums"/>
+          <trans loc="gl" val="Álbums"/>
+          <trans loc="pt_BR" val="Álbuns"/>
           <trans loc="sl" val="Albumi"/>
         </trans_set>
       </relationship>
@@ -556,6 +620,8 @@
               <trans loc="de" val="Overview"/>
               <trans loc="es" val="Visión general"/>
               <trans loc="fr" val="Résumé"/>
+              <trans loc="gl" val="Vista xeral"/>
+              <trans loc="pt_BR" val="Visão geral"/>
               <trans loc="sl" val="Pregled"/>
             </trans_set>
             <data_layout_item name="publishers_id" editable="true" use_default_formatting="true">
@@ -571,6 +637,8 @@
               <trans loc="de" val="Details"/>
               <trans loc="es" val="Detalles"/>
               <trans loc="fr" val="Détails"/>
+              <trans loc="gl" val="Detalles"/>
+              <trans loc="pt_BR" val="Detalhes"/>
               <trans loc="sl" val="Podrobnosti"/>
             </trans_set>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
@@ -911,6 +979,8 @@
       <trans loc="de" val="Lieder"/>
       <trans loc="es" val="Canciones"/>
       <trans loc="fr" val="Chansons"/>
+      <trans loc="gl" val="Cancións"/>
+      <trans loc="pt_BR" val="Canções"/>
       <trans loc="sl" val="Skladbe"/>
     </trans_set>
     <fields>
@@ -921,6 +991,8 @@
           <trans loc="de" val="Lied-Kennung"/>
           <trans loc="es" val="ID de la canción"/>
           <trans loc="fr" val="ID de la chanson"/>
+          <trans loc="gl" val="ID da canción"/>
+          <trans loc="pt_BR" val="ID de canção"/>
           <trans loc="sl" val="ID skladbe"/>
         </trans_set>
       </field>
@@ -931,6 +1003,8 @@
           <trans loc="de" val="Kommentare"/>
           <trans loc="es" val="Comentarios"/>
           <trans loc="fr" val="Commentaires"/>
+          <trans loc="gl" val="Comentarios"/>
+          <trans loc="pt_BR" val="Comentários"/>
           <trans loc="sl" val="Opombe"/>
         </trans_set>
       </field>
@@ -941,6 +1015,8 @@
           <trans loc="de" val="Albenkennung"/>
           <trans loc="es" val="ID del álbum"/>
           <trans loc="fr" val="ID de l'album"/>
+          <trans loc="gl" val="ID do álbum"/>
+          <trans loc="pt_BR" val="ID de álbum"/>
           <trans loc="sl" val="ID albuma"/>
         </trans_set>
       </field>
@@ -951,6 +1027,8 @@
           <trans loc="de" val="Name"/>
           <trans loc="es" val="Nombre"/>
           <trans loc="fr" val="Nom"/>
+          <trans loc="gl" val="Nome"/>
+          <trans loc="pt_BR" val="Nome"/>
           <trans loc="sl" val="Ime"/>
         </trans_set>
       </field>
@@ -962,6 +1040,8 @@
           <trans loc="de" val="Album"/>
           <trans loc="es" val="Álbum"/>
           <trans loc="fr" val="Album"/>
+          <trans loc="gl" val="Álbum"/>
+          <trans loc="pt_BR" val="Álbum"/>
           <trans loc="sl" val="Album"/>
         </trans_set>
       </relationship>
@@ -975,6 +1055,8 @@
               <trans loc="de" val="Overview"/>
               <trans loc="es" val="Visión general"/>
               <trans loc="fr" val="Résumé"/>
+              <trans loc="gl" val="Vista xeral"/>
+              <trans loc="pt_BR" val="Visão geral"/>
               <trans loc="sl" val="Pregled"/>
             </trans_set>
             <data_layout_item name="song_id" editable="true" use_default_formatting="true">
@@ -990,6 +1072,8 @@
               <trans loc="de" val="Details"/>
               <trans loc="es" val="Detalles"/>
               <trans loc="fr" val="Détails"/>
+              <trans loc="gl" val="Detlles"/>
+              <trans loc="pt_BR" val="Detalhes"/>
               <trans loc="sl" val="Podrobnosti"/>
             </trans_set>
             <data_layout_group name="album" title="Album">
@@ -998,6 +1082,8 @@
                 <trans loc="de" val="Album-Künstler"/>
                 <trans loc="es" val="Álbum"/>
                 <trans loc="fr" val="Album"/>
+                <trans loc="gl" val="Álbum"/>
+                <trans loc="pt_BR" val="Álbum"/>
                 <trans loc="sl" val="Album"/>
               </trans_set>
               <data_layout_item name="album_id" editable="true" use_default_formatting="true">
@@ -1013,6 +1099,8 @@
                 <trans loc="de" val="Album-Künstler"/>
                 <trans loc="es" val="Artista del álbum"/>
                 <trans loc="fr" val="Artiste de l'album"/>
+                <trans loc="gl" val="Artista do álbum"/>
+                <trans loc="pt_BR" val="Álbum de artista"/>
                 <trans loc="sl" val="Izvajalec albuma"/>
               </trans_set>
               <data_layout_item name="artist_id" relationship="album" related_relationship="artist" editable="true" use_default_formatting="true">
