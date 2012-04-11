@@ -1,19 +1,13 @@
-# German translation of glom (Film manager example)
-# Mario Blättermann <mario.blaettermann@gmail.com>, 2012.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: glom Openismus Film Manager\n"
-"POT-Creation-Date: 2012-02-29 21:24+0100\n"
-"PO-Revision-Date: 2012-02-29 21:25+0100\n"
-"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
-"Language-Team: German <gnome-de@gnome.org>\n"
+"Project-Id-Version: Openismus Film Manager\n"
+"product=glom&keywords=I18N+L10N&component=general\n"
+"PO-Revision-Date: 2012-04-11 10:32+0200\n"
+"Last-Translator: Someone <someone@someone.com>\n"
+"Language-Team:  <someone@someone.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: GERMANY\n"
 
 msgctxt "Database Title"
 msgid "Openismus Film Manager"
@@ -71,13 +65,11 @@ msgctxt "Layout Group (overview). Parent table: accommodation"
 msgid "Overview"
 msgstr "Übersicht"
 
-msgctxt ""
-"Layout Group (address). Parent table: accommodation, Parent Group: details"
+msgctxt "Layout Group (address). Parent table: accommodation, Parent Group: details"
 msgid "Address"
 msgstr "Adresse"
 
-msgctxt ""
-"Layout Group (contact). Parent table: accommodation, Parent Group: details"
+msgctxt "Layout Group (contact). Parent table: accommodation, Parent Group: details"
 msgid "Contact"
 msgstr "Kontakt"
 
@@ -169,9 +161,7 @@ msgctxt "Layout Group (details). Parent table: characters, Parent Group: main"
 msgid "Details"
 msgstr "Details"
 
-msgctxt ""
-"Layout Group (actor). Parent table: characters, Parent Group: main, Parent "
-"Group: details"
+msgctxt "Layout Group (actor). Parent table: characters, Parent Group: main, Parent Group: details"
 msgid "Actor"
 msgstr "Schauspieler"
 
@@ -249,7 +239,7 @@ msgstr "Kontakte"
 
 msgctxt "Field (contact_id). Parent table: contacts"
 msgid "Contact ID"
-msgstr "Kontakt ID"
+msgstr "Kontaktkennung"
 
 msgctxt "Field (name_first). Parent table: contacts"
 msgid "First Name"
@@ -419,33 +409,23 @@ msgctxt "Layout Group (details). Parent table: contacts"
 msgid "Details"
 msgstr "Details"
 
-msgctxt ""
-"Layout Group (name). Parent table: contacts, Parent Group: details, Parent "
-"Group: notebook_contact"
+msgctxt "Layout Group (name). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
 msgid "Name"
 msgstr "Name"
 
-msgctxt ""
-"Layout Group (company). Parent table: contacts, Parent Group: details, Parent "
-"Group: notebook_contact"
+msgctxt "Layout Group (company). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
 msgid "Company"
 msgstr "Firma"
 
-msgctxt ""
-"Layout Group (address). Parent table: contacts, Parent Group: details, Parent "
-"Group: notebook_contact"
+msgctxt "Layout Group (address). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
 msgid "Address"
 msgstr "Adresse"
 
-msgctxt ""
-"Layout Group (telephone). Parent table: contacts, Parent Group: details, "
-"Parent Group: notebook_contact"
+msgctxt "Layout Group (telephone). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
 msgid "Telephone"
 msgstr "Telefon"
 
-msgctxt ""
-"Layout Group (agent). Parent table: contacts, Parent Group: details, Parent "
-"Group: notebook_contact"
+msgctxt "Layout Group (agent). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
 msgid "Agent"
 msgstr "Agent"
 
@@ -537,15 +517,11 @@ msgctxt "Layout Group (contact). Parent table: crew, Parent Group: details"
 msgid "Contact"
 msgstr "Kontakt"
 
-msgctxt ""
-"Layout Group (address). Parent table: crew, Parent Group: details, Parent "
-"Group: contact"
+msgctxt "Layout Group (address). Parent table: crew, Parent Group: details, Parent Group: contact"
 msgid "Address"
 msgstr "Adresse"
 
-msgctxt ""
-"Layout Group (agent). Parent table: crew, Parent Group: details, Parent "
-"Group: contact"
+msgctxt "Layout Group (agent). Parent table: crew, Parent Group: details, Parent Group: contact"
 msgid "Agent"
 msgstr "Agent"
 
@@ -621,13 +597,11 @@ msgctxt "Layout Group (overview). Parent table: deliveries"
 msgid "Overview"
 msgstr "Übersicht"
 
-msgctxt ""
-"Layout Group (departure). Parent table: deliveries, Parent Group: details"
+msgctxt "Layout Group (departure). Parent table: deliveries, Parent Group: details"
 msgid "Departure"
 msgstr "Departure"
 
-msgctxt ""
-"Layout Group (arrival). Parent table: deliveries, Parent Group: details"
+msgctxt "Layout Group (arrival). Parent table: deliveries, Parent Group: details"
 msgid "Arrival"
 msgstr "Arrival"
 
@@ -739,8 +713,7 @@ msgctxt "Layout Group (person). Parent table: journeys, Parent Group: details"
 msgid "Person"
 msgstr "Person"
 
-msgctxt ""
-"Layout Group (departure). Parent table: journeys, Parent Group: details"
+msgctxt "Layout Group (departure). Parent table: journeys, Parent Group: details"
 msgid "Departure"
 msgstr "Abfahrt"
 
@@ -808,8 +781,7 @@ msgctxt "Layout Group (address). Parent table: locations, Parent Group: details"
 msgid "Address"
 msgstr "Adresse"
 
-msgctxt ""
-"Layout Group (contact_person). Parent table: locations, Parent Group: details"
+msgctxt "Layout Group (contact_person). Parent table: locations, Parent Group: details"
 msgid "Contact Person"
 msgstr "Kontakterson"
 
@@ -817,7 +789,6 @@ msgctxt "Table (props)"
 msgid "Props"
 msgstr ""
 
-#, fuzzy
 msgctxt "Field (prop_id). Parent table: props"
 msgid "Prop ID"
 msgstr "Themenkennung"
@@ -874,12 +845,10 @@ msgctxt "Layout Group (details). Parent table: scene_cast, Parent Group: main"
 msgid "Details"
 msgstr "Details"
 
-#, fuzzy
 msgctxt "Table (scene_costume)"
 msgid "Scene Costume"
 msgstr "Szene Besetzung"
 
-#, fuzzy
 msgctxt "Field (scene_costume_id). Parent table: scene_costume"
 msgid "Scene Costume ID"
 msgstr "Szene Besetzung ID"
@@ -948,7 +917,6 @@ msgctxt "Layout Group (details). Parent table: scene_crew, Parent Group: main"
 msgid "Details"
 msgstr "Details"
 
-#, fuzzy
 msgctxt "Field (scene_equipment_id). Parent table: scene_equipment"
 msgid "Scene Equipment ID"
 msgstr "Szene Besetzung ID"
@@ -973,12 +941,10 @@ msgctxt "Layout Group (details). Parent table: scene_equipment"
 msgid "Details"
 msgstr "Details"
 
-#, fuzzy
 msgctxt "Table (scene_extras)"
 msgid "Scene Extras"
 msgstr "Szene Besetzung"
 
-#, fuzzy
 msgctxt "Field (scene_extras_id). Parent table: scene_extras"
 msgid "Scene Extras ID"
 msgstr "Szene Besetzung ID"
@@ -1003,8 +969,7 @@ msgctxt "Relationship (contact). Parent table: scene_extras"
 msgid "Contact"
 msgstr "Kontakt"
 
-msgctxt ""
-"Layout Group (overview). Parent table: scene_extras, Parent Group: main"
+msgctxt "Layout Group (overview). Parent table: scene_extras, Parent Group: main"
 msgid "Overview"
 msgstr "Übersicht"
 
@@ -1040,12 +1005,10 @@ msgctxt "Layout Group (details). Parent table: scene_makeup"
 msgid "Details"
 msgstr "Details"
 
-#, fuzzy
 msgctxt "Table (scene_props)"
 msgid "Scene Props"
 msgstr "Szene Besetzung"
 
-#, fuzzy
 msgctxt "Field (scene_props_id). Parent table: scene_props"
 msgid "Scene Prop ID"
 msgstr "Szene Besetzung ID"
@@ -1058,7 +1021,6 @@ msgctxt "Field (scene_id). Parent table: scene_props"
 msgid "Scene ID"
 msgstr "Szenenkennung"
 
-#, fuzzy
 msgctxt "Field (prop_id). Parent table: scene_props"
 msgid "Prop ID"
 msgstr "Themenkennung"
@@ -1211,8 +1173,7 @@ msgctxt "Custom Title. Parent table: scenes, Parent Group: details"
 msgid "Contact Name"
 msgstr "Kontaktname"
 
-msgctxt ""
-"Custom Title. Parent table: scenes, Parent Group: details_lower, Parent "
-"Group: notebook"
+msgctxt "Custom Title. Parent table: scenes, Parent Group: details_lower, Parent Group: notebook"
 msgid "Actor's Name"
 msgstr "Name des Schauspielers"
+

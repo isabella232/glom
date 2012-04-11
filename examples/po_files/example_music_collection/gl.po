@@ -1,20 +1,13 @@
-# Galician translation for glom.
-# Copyright (C) 2012 glom's COPYRIGHT HOLDER
-# This file is distributed under the same license as the glom package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# Fran Dieguez <frandieguez@gnome.org>, 2012.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: glom master\n"
+"Project-Id-Version: Music Collection\n"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"PO-Revision-Date: 2012-03-25 16:48+0200\n"
-"Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
-"Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
+"PO-Revision-Date: 2012-04-11 10:32+0200\n"
+"Last-Translator: Someone <someone@someone.com>\n"
+"Language-Team:  <someone@someone.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 msgctxt "Database Title"
 msgid "Music Collection"
@@ -191,3 +184,4 @@ msgstr "Álbum"
 msgctxt "Layout Group (artist). Parent table: songs, Parent Group: details"
 msgid "Album Artist"
 msgstr "Artista do álbum"
+
