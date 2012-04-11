@@ -1,5 +1,12 @@
 2012-04-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Windows build: Add some includes.
+
+	* glom/dialog_existing_or_new.cc: As suggested by 
+	alien in bug #673093
+
+2012-04-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Windows build: Add a windows.h include.
 
 	* glom/utility_widgets/imageglom.cc: As suggested by 

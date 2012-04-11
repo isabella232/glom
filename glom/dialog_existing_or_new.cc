@@ -32,9 +32,10 @@
 #include <glibmm/miscutils.h>
 
 #ifdef G_OS_WIN32
-# include <glib/gwin32.h>
+#include <glibmm/fileutils.h>
+#include <glib.h>
 #else
-# include <libepc/service-type.h>
+#include <libepc/service-type.h>
 #endif
 
 #include <iostream>
