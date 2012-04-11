@@ -34,6 +34,10 @@
 #include <libgda/gda-blob-op.h>
 #include <glibmm/convert.h>
 
+#ifdef G_OS_WIN32
+#include <windows.h>
+#endif
+
 #include <iostream>   // for cout, endl
 
 namespace Glom
