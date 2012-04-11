@@ -20,6 +20,8 @@
 
 #include "config.h"
 
+#include <iostream>
+
 #include <glom/main_local_options.h>
 
 // For sanity checks:

@@ -18,6 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <iostream>
+
 #include <libglom/python_embed/py_glom_relatedrecord.h>
 #include <libglom/python_embed/py_glom_record.h>
 #include <libglom/python_embed/pygdavalue_conversions.h> //For pygda_value_as_pyobject().

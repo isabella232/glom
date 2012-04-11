@@ -20,6 +20,8 @@
 
 #include "config.h"
 
+#include <iostream>
+
 //We use Python for calculated fields.
 //#include <Python.h> //Include it before anything else to avoid "_POSIX_C_SOURCE redefined".
 #include <boost/python.hpp>
