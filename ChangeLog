@@ -1,5 +1,16 @@
 2012-04-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Windows build: ifdef out the use of getpass().
+
+	* glom/glom_create_from_example.cc:
+	* glom/glom_test_connection.cc: And show a warning
+	on stderr. This is better than disabling all the functionality
+	in this file, and lets us fix it easily if we ever have a
+	getpass() function on Windows.
+	Bug #672881 (alien)
+
+2012-04-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Windows build: Add some includes.
 
 	* glom/dialog_existing_or_new.cc: As suggested by 

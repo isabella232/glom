@@ -422,7 +422,13 @@ int main(int argc, char* argv[])
     //TODO: Support alternatives such as using a file.
     const Glib::ustring prompt = Glib::ustring::compose(
       _("Please enter the PostgreSQL server's password for the user %1: "), group.m_arg_server_username);
+
+#ifdef G_OS_WIN32
+    const char* password = "";
+    std::cerr << _("Error: getpass() is not implemented in the Windows build. The connection will fail." << std::endl;
+#else
     const char* password = ::getpass(prompt.c_str());
+#endif
 
     //Central hosting:
     connection_pool->set_user(group.m_arg_server_username);
