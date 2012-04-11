@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([Glom],[1.21.8],[http://bugzilla.gnome.org/enter_bug.cgi?product=Glom],[glom])
+AC_INIT([Glom],[1.22.0],[http://bugzilla.gnome.org/enter_bug.cgi?product=Glom],[glom])
 AC_PREREQ(2.63)
 
 AC_CONFIG_SRCDIR([glom/main.cc])
@@ -131,13 +131,13 @@ AS_IF([test "x$glom_enable_postgresql" = xyes],
                  [Whether to enable support for PostgreSQL databases.])])
 
 # Libraries used by libglom:
-REQUIRED_LIBGLOM_LIBS='giomm-2.4 >= 2.31.0 libxml++-2.6 >= 2.23.1 libxslt >= 1.1.10 pygobject-3.0 >= 2.29.0 libgdamm-5.0 >= 4.99.6 libgda-5.0 >= 5.0.3 libgda-postgres-5.0'
+REQUIRED_LIBGLOM_LIBS='giomm-2.4 >= 2.32.0 libxml++-2.6 >= 2.23.1 libxslt >= 1.1.10 pygobject-3.0 >= 2.29.0 libgdamm-5.0 >= 4.99.6 libgda-5.0 >= 5.0.3 libgda-postgres-5.0'
 
 AS_IF([test "x$glom_host_win32" != xyes],
       [REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS libepc-1.0 >= 0.4.0"])
 
 # Libraries used by Glom:
-REQUIRED_GLOM_LIBS="$REQUIRED_LIBGLOM_LIBS gtkmm-3.0 >= 3.2.20 goocanvasmm-2.0 >= 1.90.8  goocanvas-2.0 >= 2.0.1 evince-view-3.0"
+REQUIRED_GLOM_LIBS="$REQUIRED_LIBGLOM_LIBS gtkmm-3.0 >= 3.4.0 goocanvasmm-2.0 >= 1.90.8  goocanvas-2.0 >= 2.0.1 evince-view-3.0"
 
 # Do not require iso-codes in client-only mode, or on Windows:
 # TODO: Package iso-codes for Windows?

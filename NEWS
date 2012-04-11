@@ -1,3 +1,15 @@
+1.22.0 (stable):
+
+libglom:
+* Field: Remove get_holder().
+* ConnectionPool: create_database(): Take a progress slot.
+
+Build:
+* Windows build fixes.
+  (Murray Cumming, alien)
+* Fix some warnings found by scan-build.
+  (Murray Cumming)
+
 1.21.8 (unstable):
 
 * Fix the build with the latest gtkmm, with --enable-warnings=fatal.
