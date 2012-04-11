@@ -1382,7 +1382,7 @@
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
           <trans loc="cs" val="ID kontaktu"/>
-          <trans loc="de" val="Kontakt ID"/>
+          <trans loc="de" val="Kontaktkennung"/>
           <trans loc="eo" val="Kontakto-ID"/>
           <trans loc="es" val="ID del contacto"/>
           <trans loc="fr" val="ID du contact"/>

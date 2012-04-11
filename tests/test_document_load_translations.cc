@@ -243,7 +243,7 @@ int main()
   }
 
   const std::vector<Glib::ustring> locales = document.get_translation_available_locales();
-  g_assert(locales.size() == 7);
+  g_assert(locales.size() == 8);
   g_assert(contains(locales, "de"));
 
   const std::vector<Glib::ustring> table_names = document.get_table_names();
@@ -258,7 +258,7 @@ int main()
   //Check a field:
   Glom::sharedptr<const Glom::Field> field = document.get_field("contacts", "contact_id");
   g_assert(field);
-  check_title(field, "Contact ID", "Kontakt ID");
+  check_title(field, "Contact ID", "Kontaktkennung");
 
   //Check a field and its custom choices:
   field = document.get_field("scenes", "day_or_night");
@@ -290,7 +290,7 @@ int main()
   Glom::sharedptr<const Glom::LayoutItem_Field> field_on_layout = 
     get_field_on_layout(document, "characters", "contacts", "name_full");
   g_assert(field_on_layout);
-  check_title(field_on_layout, "Actor's Name", "Schauspieler Name");
+  check_title(field_on_layout, "Actor's Name", "Name des Schauspielers");
 
   //Check a LayoutItemField's Field title:
   field_on_layout = 

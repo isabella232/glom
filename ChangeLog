@@ -1,5 +1,14 @@
 2012-04-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix make check.
+
+	* tests/test_document_load_translations.cc: Increase the number of
+	expected translations.
+	* examples/example_film_manager.glom: Fix an inconsistency in the 
+	German translation.
+
+2012-04-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Windows build: ifdef out the use of getpass().
 
 	* glom/glom_create_from_example.cc:
