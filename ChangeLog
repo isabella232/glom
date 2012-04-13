@@ -1,3 +1,12 @@
+2012-04-13  Murray Cumming  <murrayc@murrayc.com>
+
+	Windows build: Fix some typos.
+
+	* glom/glom_create_from_example.cc:
+	* glom/glom_test_connection.cc: Add closing
+	).
+	Bug #674009 (alien)
+
 2012-04-12  Malcolm Lewis  <malcolmlewis@opensuse.org>
 
 	Update the FSF address in comment blocks.

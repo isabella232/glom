@@ -425,7 +425,7 @@ int main(int argc, char* argv[])
 
 #ifdef G_OS_WIN32
     const char* password = "";
-    std::cerr << _("Error: getpass() is not implemented in the Windows build. The connection will fail." << std::endl;
+    std::cerr << _("Error: getpass() is not implemented in the Windows build. The connection will fail.") << std::endl;
 #else
     const char* password = ::getpass(prompt.c_str());
 #endif
