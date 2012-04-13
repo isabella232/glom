@@ -1,5 +1,13 @@
 2012-04-13  Murray Cumming  <murrayc@murrayc.com>
 
+	Film Manager example: Correct the Contacts reports.
+
+	* examples/example_film_manager.glom: Copy them 
+	from the Small Business example. They were missing
+	the Group By fields.
+
+2012-04-13  Murray Cumming  <murrayc@murrayc.com>
+
 	Windows build: Fix some typos.
 
 	* glom/glom_create_from_example.cc:

@@ -2068,8 +2068,9 @@
         <data_layout_groups>
           <data_layout_group>
             <data_layout_item_groupby>
-              <data_layout_item name="character_id" editable="true" use_default_formatting="true">
-                <formatting/>
+              <groupby name="address_country" editable="true" use_default_formatting="true"/>
+              <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="name_full" editable="true" use_default_formatting="true">
                 <formatting/>
@@ -2082,6 +2083,7 @@
           <trans loc="de" val="Kontakte nach Land"/>
           <trans loc="es" val="Contactos por país"/>
           <trans loc="fr" val="Contacts par pays"/>
+          <trans loc="gl" val="Contactos por país"/>
           <trans loc="pt_BR" val="Contatos por país"/>
           <trans loc="sl" val="Stiki po državah"/>
         </trans_set>
@@ -2090,9 +2092,11 @@
         <data_layout_groups>
           <data_layout_group>
             <data_layout_item_groupby>
+              <groupby name="address_country" editable="true" use_default_formatting="true"/>
               <data_layout_item_groupby>
-                <data_layout_item name="character_id" editable="true" use_default_formatting="true">
-                  <formatting/>
+                <groupby name="address_town" editable="true" use_default_formatting="true"/>
+                <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
+                  <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
                 <data_layout_item name="name_full" editable="true" use_default_formatting="true">
                   <formatting/>
@@ -2100,6 +2104,28 @@
                 <data_layout_item name="address_postcode" editable="true" use_default_formatting="true">
                   <formatting/>
                 </data_layout_item>
+                <data_layout_item_verticalgroup>
+                  <data_layout_item name="name_title" editable="true" use_default_formatting="true">
+                    <formatting/>
+                  </data_layout_item>
+                  <data_layout_item name="name_first" editable="true" use_default_formatting="true">
+                    <formatting/>
+                  </data_layout_item>
+                  <data_layout_item name="name_last" editable="true" use_default_formatting="true">
+                    <formatting/>
+                  </data_layout_item>
+                </data_layout_item_verticalgroup>
+                <data_layout_item_verticalgroup>
+                  <data_layout_item name="address_street1" editable="true" use_default_formatting="true">
+                    <formatting/>
+                  </data_layout_item>
+                  <data_layout_item name="address_street2" editable="true" use_default_formatting="true">
+                    <formatting/>
+                  </data_layout_item>
+                  <data_layout_item name="address_postcode" editable="true" use_default_formatting="true">
+                    <formatting/>
+                  </data_layout_item>
+                </data_layout_item_verticalgroup>
               </data_layout_item_groupby>
             </data_layout_item_groupby>
           </data_layout_group>
@@ -2109,6 +2135,7 @@
           <trans loc="de" val="Nach Land, nach Ort"/>
           <trans loc="es" val="Por país, por ciudad"/>
           <trans loc="fr" val="Par pays, par ville"/>
+          <trans loc="gl" val="Por país, por cidade"/>
           <trans loc="pt_BR" val="Por país, Por cidade"/>
           <trans loc="sl" val="Po državi, po mestu"/>
         </trans_set>
