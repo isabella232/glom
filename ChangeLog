@@ -1,3 +1,10 @@
+2012-04-16  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix make check.
+
+	* tests/test_document_load_translations.cc: Update the
+	number of translations.
+
 2012-04-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Film Manager example: Correct the Contacts reports.
