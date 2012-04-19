@@ -1,3 +1,10 @@
+2012-04-19  Murray Cumming  <murrayc@murrayc.com>
+
+	Add some translatable strings for Online Glom
+
+	* glom/onlineglom_strings.cc: Add some strings needed by
+	the new reports feature in gwt-glom.
+
 2012-04-16  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix make check.

@@ -30,4 +30,6 @@ const char* online_glom_search = _("Search");
 const char* online_glom_backToList = _("Back to List");
 const char* online_glom_details = _("Details");
 const char* online_glom_open = _("Open");
+const char* online_glom_reports = _("Reports");
+const char* online_glom_generating_report = _("Generating the report...");
 
