@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-04-13 13:15+0000\n"
-"PO-Revision-Date: 2012-04-14 09:55+0100\n"
+"POT-Creation-Date: 2012-04-19 14:32+0000\n"
+"PO-Revision-Date: 2012-04-21 12:26+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -790,6 +790,7 @@ msgid "No Find Criteria"
 msgstr "Ni kriterijev iskanja"
 
 #: ../glom/frame_glom.cc:1690
+#: ../glom/onlineglom_strings.cc:33
 #: ../ui/developer/box_reports.glade.h:1
 msgid "Reports"
 msgstr "Poročila"
@@ -886,6 +887,10 @@ msgstr "Podrobnosti"
 #: ../glom/onlineglom_strings.cc:32
 msgid "Open"
 msgstr "Odpri"
+
+#: ../glom/onlineglom_strings.cc:34
+msgid "Generating the report..."
+msgstr "Poteka ustvarjanje poročila ..."
 
 #: ../glom/bakery/appwindow_withdoc_gtk.cc:284
 #: ../ui/developer/window_field_definition_edit.glade.h:13
