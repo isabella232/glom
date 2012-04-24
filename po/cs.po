@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-04-11 07:30+0000\n"
-"PO-Revision-Date: 2012-04-19 07:03+0200\n"
+"POT-Creation-Date: 2012-04-22 13:53+0000\n"
+"PO-Revision-Date: 2012-04-24 18:36+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -857,7 +857,8 @@ msgstr "Nezadali jste žádná kritéria hledání. Zkuste do polí zadat inform
 msgid "No Find Criteria"
 msgstr "Žádná kritéria hledání"
 
-#: ../glom/frame_glom.cc:1690 ../ui/developer/box_reports.glade.h:1
+#: ../glom/frame_glom.cc:1690 ../glom/onlineglom_strings.cc:33
+#: ../ui/developer/box_reports.glade.h:1
 msgid "Reports"
 msgstr "Sestavy"
 
@@ -958,6 +959,10 @@ msgstr "Podrobnosti"
 #: ../glom/onlineglom_strings.cc:32
 msgid "Open"
 msgstr "Otevřít"
+
+#: ../glom/onlineglom_strings.cc:34
+msgid "Generating the report..."
+msgstr "Generuje se sestava…"
 
 #: ../glom/bakery/appwindow_withdoc_gtk.cc:284
 #: ../ui/developer/window_field_definition_edit.glade.h:13
@@ -1571,7 +1576,7 @@ msgstr "Název pro vytvořený soubor .glom, např. něco.glom"
 
 #: ../glom/glom_create_from_example.cc:87 ../glom/glom_export_po.cc:72
 #: ../glom/glom_export_po_all.cc:60 ../glom/glom_import_po_all.cc:61
-#: ../glom/glom_test_connection.cc:63 ../glom/main_local_options.cc:45
+#: ../glom/glom_test_connection.cc:63 ../glom/main_local_options.cc:47
 msgid "The version of this application."
 msgstr "Verze tohoto programu."
 
@@ -1736,7 +1741,7 @@ msgstr "Chyba: Nelze se připojit k zadané databázi."
 msgid "Successful connection."
 msgstr "Úspěšné připojení."
 
-#: ../glom/main.cc:187
+#: ../glom/main.cc:189
 msgid ""
 "You seem to be running Glom as a user with administrator privileges. Glom "
 "may not be run with such privileges for security reasons.\n"
@@ -1747,7 +1752,7 @@ msgstr ""
 "Prosím přihlaste se do systému jako obyčejný uživatel."
 
 #. Warn the user:
-#: ../glom/main.cc:201
+#: ../glom/main.cc:203
 msgid ""
 "You seem to be running Glom as root. Glom may not be run as root.\n"
 "Please login to your system as a normal user."
@@ -1755,20 +1760,20 @@ msgstr ""
 "Zdá se, že Glom běží jako root. Glom nemůže být spuštěn jako root.\n"
 "Prosím přihlašte se k vašemu systému jako běžný uživatel."
 
-#: ../glom/main.cc:207
+#: ../glom/main.cc:209
 msgid "Running As Root"
 msgstr "Běžící jako root"
 
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
-#: ../glom/main.cc:250 ../glom/main.cc:263 ../glom/main.cc:424
+#: ../glom/main.cc:252 ../glom/main.cc:265 ../glom/main.cc:426
 msgid "Incomplete Glom Installation"
 msgstr "Nekompletní instalace programu Glom"
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:251
+#: ../glom/main.cc:253
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -1781,13 +1786,13 @@ msgstr ""
 "\n"
 "Nyní můžete nainstalovat PostgreSQL a instalace Glomu bude dokončena."
 
-#: ../glom/main.cc:253
+#: ../glom/main.cc:255
 msgid "Install PostgreSQL"
 msgstr "Instalovat PostgreSQL"
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:264
+#: ../glom/main.cc:266
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -1803,7 +1808,7 @@ msgstr ""
 "nápravy."
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:280
+#: ../glom/main.cc:282
 msgid ""
 "Your installation of Glom is not complete, because the Glom Python module is "
 "not available on your system.\n"
@@ -1817,12 +1822,12 @@ msgstr ""
 "Prosím nahlaste tuto chybu vašemu dodavateli nebo správci systému za účelem "
 "nápravy."
 
-#: ../glom/main.cc:282
+#: ../glom/main.cc:284
 msgid "Glom Python Module Not Installed"
 msgstr "Modul Glom pro jazyk Python není nainstalovaný"
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:295
+#: ../glom/main.cc:297
 msgid ""
 "Your installation of Glom is not complete, because the gi.repository Python "
 "module is not available on your system.\n"
@@ -1836,12 +1841,12 @@ msgstr ""
 "Prosím nahlaste tuto chybu vašemu dodavateli nebo správci systému za účelem "
 "nápravy."
 
-#: ../glom/main.cc:297
+#: ../glom/main.cc:299
 msgid "gi.repository Python Module Not Installed"
 msgstr "Modul gi.repository pro jazyk Python není nainstalovaný"
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:310
+#: ../glom/main.cc:312
 msgid ""
 "Your installation of Glom is not complete, because the gi.repository.Gda "
 "python module is not available on your system.\n"
@@ -1855,12 +1860,12 @@ msgstr ""
 "Prosím nahlaste tuto chybu vašemu dodavateli nebo správci systému za účelem "
 "nápravy."
 
-#: ../glom/main.cc:312
+#: ../glom/main.cc:314
 msgid "gi.repository.Gda Python Module Not Installed"
 msgstr "Modul gi.repository.Gda pro jazyk Python není nainstalovaný"
 
 #. The Postgres provider was not found, so warn the user:
-#: ../glom/main.cc:422
+#: ../glom/main.cc:424
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda "
 "provider is not available on your system. This provider is needed to access "
@@ -1876,15 +1881,15 @@ msgstr ""
 "Prosím nahlaste chybu vašemu dodavateli nebo správci systému za účelem "
 "nápravy."
 
-#: ../glom/main_local_options.cc:37
+#: ../glom/main_local_options.cc:39
 msgid "Extra Glom options"
 msgstr "Další přepínače programu Glom"
 
-#: ../glom/main_local_options.cc:37
+#: ../glom/main_local_options.cc:39
 msgid "Extra command-line options for glom"
 msgstr "Další přepínače příkazového řádku pro glom"
 
-#: ../glom/main_local_options.cc:50
+#: ../glom/main_local_options.cc:52
 msgid "Show how Glom outputs a date in this locale, then stop."
 msgstr ""
 "Ukáže, jak bude vypadat výstupní formám data pro tuto lokalizaci a skončí."
