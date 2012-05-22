@@ -2237,7 +2237,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
           else if(navigation_type_as_string == GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_SPECIFIC)
           {
             //Read the specified relationship name:
-            sharedptr<UsesRelationship>relationship_navigation_specific = sharedptr<UsesRelationship>::create();
+            sharedptr<UsesRelationship> relationship_navigation_specific = sharedptr<UsesRelationship>::create();
             load_after_layout_item_usesrelationship(elementNavigationRelationshipSpecific, portal->get_table_used(table_name), relationship_navigation_specific);
             portal->set_navigation_relationship_specific(relationship_navigation_specific);
           }

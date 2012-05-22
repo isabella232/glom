@@ -102,6 +102,7 @@ public:
    * @returns whether the text should be displayed with multiple lines
    */
   bool get_text_format_multiline() const;
+
   /** Set whether the text should be displayed with multiple lines in the
    * details view. Text is displayed with a single line in the list view.
    * @param[in] value whether the text should be displayed with multiple lines
