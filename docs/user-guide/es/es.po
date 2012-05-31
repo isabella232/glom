@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom.userguide.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-03 09:41+0000\n"
+"POT-Creation-Date: 2012-01-13 13:25+0000\n"
 "PO-Revision-Date: 2011-11-03 15:26+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
@@ -157,9 +157,6 @@ msgstr ""
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:275(None)
-#| msgid ""
-#| "@@image: 'figures/glom_data_details.png'; "
-#| "md5=5444ab817d4e4e4da6899abbc5cbfd2f"
 msgid ""
 "@@image: 'figures/glom_data_details.png'; "
 "md5=455bde435350fd53401213dff235bfb3"
@@ -170,9 +167,6 @@ msgstr ""
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:305(None)
-#| msgid ""
-#| "@@image: 'figures/glom_report_result.png'; "
-#| "md5=ceeb0ce107453125736a604d91165bf4"
 msgid ""
 "@@image: 'figures/glom_report_result.png'; "
 "md5=2b752779eb0ed68724d094f6e1fef699"
@@ -183,9 +177,6 @@ msgstr ""
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:343(None)
-#| msgid ""
-#| "@@image: 'figures/glom_design_fields.png'; "
-#| "md5=e7137a37c7c74a96a914b0df777f5f6b"
 msgid ""
 "@@image: 'figures/glom_design_fields.png'; "
 "md5=39a13053db33b9c45bc1f61a0f31a199"
@@ -206,9 +197,6 @@ msgstr ""
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:412(None)
-#| msgid ""
-#| "@@image: 'figures/glom_design_layout_details.png'; "
-#| "md5=ad66696c0ad88b1dc7fa8618bb57eb8b"
 msgid ""
 "@@image: 'figures/glom_design_layout_details.png'; "
 "md5=6f1d78f90d6ec0ea338014d2ac697a90"
@@ -1338,7 +1326,7 @@ msgstr "Diálogo: Cuaderno de notas"
 
 #: C/glom.xml:630(title)
 msgid "Dialog: Data invalid format"
-msgstr "Diálogo: Formato de datos inválido"
+msgstr "Diálogo: Formato de datos no válido"
 
 #: C/glom.xml:635(title)
 msgid "Dialog: Relationship overview"
