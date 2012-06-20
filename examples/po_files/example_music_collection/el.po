@@ -1,0 +1,192 @@
+# Greek translation for glom.
+# Copyright (C) 2012 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glom master\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2012-06-18 13:42+0200\n"
+"Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
+"Language-Team: Greek <team@lists.gnome.gr>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "Database Title"
+msgid "Music Collection"
+msgstr "Μουσική συλλογή"
+
+msgctxt "Table (albums)"
+msgid "Albums"
+msgstr "Δίσκοι"
+
+msgctxt "Field (album_id). Parent table: albums"
+msgid "Album ID"
+msgstr "Αναγνωριστικό δίσκου"
+
+msgctxt "Field (comments). Parent table: albums"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (name). Parent table: albums"
+msgid "Name"
+msgstr "Όνομα"
+
+msgctxt "Field (artist_id). Parent table: albums"
+msgid "Artist ID"
+msgstr "Αναγνωριστικό καλλιτέχνη"
+
+msgctxt "Field (publisher_id). Parent table: albums"
+msgid "Publisher ID"
+msgstr "Αναγνωριστικό εκδότη"
+
+msgctxt "Field (year). Parent table: albums"
+msgid "Year"
+msgstr "Έτος"
+
+msgctxt "Relationship (artist). Parent table: albums"
+msgid "Artist"
+msgstr "Καλλιτέχνης"
+
+msgctxt "Relationship (publisher). Parent table: albums"
+msgid "Publisher"
+msgstr "Εκδότης"
+
+msgctxt "Relationship (songs). Parent table: albums"
+msgid "Songs"
+msgstr "Τραγούδια"
+
+msgctxt "Report (albums_by_artist). Parent table: albums"
+msgid "Albums By Artist"
+msgstr "Δίσκοι κατά καλλιτέχνες"
+
+msgctxt "Custom Title. Parent table: albums, Parent Report: albums_by_artist"
+msgid "Artist Name"
+msgstr "Όνομα καλλιτέχνη"
+
+msgctxt "Layout Group (overview). Parent table: albums"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: albums"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Layout Group (artist). Parent table: albums, Parent Group: details"
+msgid "Artist"
+msgstr "Καλλιτέχνης"
+
+msgctxt "Layout Group (publisher). Parent table: albums, Parent Group: details"
+msgid "Publisher"
+msgstr "Εκδότης"
+
+msgctxt "Custom Title. Parent table: albums"
+msgid "Artist Name"
+msgstr "Όνομα καλλιτέχνη"
+
+msgctxt "Custom Title. Parent table: albums"
+msgid "Publisher Name"
+msgstr "Όνομα εκδότη"
+
+msgctxt "Table (artists)"
+msgid "Artists"
+msgstr "Καλλιτέχνες"
+
+msgctxt "Field (artist_id). Parent table: artists"
+msgid "Artist ID"
+msgstr "Αναγνωριστικό καλλιτέχνη"
+
+msgctxt "Field (description). Parent table: artists"
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgctxt "Field (comments). Parent table: artists"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (name). Parent table: artists"
+msgid "Name"
+msgstr "Όνομα"
+
+msgctxt "Relationship (albums). Parent table: artists"
+msgid "Albums"
+msgstr "Δίσκοι"
+
+msgctxt "Layout Group (overview). Parent table: artists"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: artists"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Table (publishers)"
+msgid "Publishers"
+msgstr "Εκδότες"
+
+msgctxt "Field (publishers_id). Parent table: publishers"
+msgid "Publisher ID"
+msgstr "Αναγνωριστικό εκδότη"
+
+msgctxt "Field (comments). Parent table: publishers"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (name). Parent table: publishers"
+msgid "Name"
+msgstr "Όνομα"
+
+msgctxt "Relationship (albums). Parent table: publishers"
+msgid "Albums"
+msgstr "Δίσκοι"
+
+msgctxt "Layout Group (overview). Parent table: publishers"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: publishers"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Table (songs)"
+msgid "Songs"
+msgstr "Τραγούδια"
+
+msgctxt "Field (song_id). Parent table: songs"
+msgid "Song ID"
+msgstr "Αναγνωριστικό τραγουδιού"
+
+msgctxt "Field (comments). Parent table: songs"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (album_id). Parent table: songs"
+msgid "Album ID"
+msgstr "Αναγνωριστικό δίσκου"
+
+msgctxt "Field (name). Parent table: songs"
+msgid "Name"
+msgstr "Όνομα"
+
+msgctxt "Relationship (album). Parent table: songs"
+msgid "Album"
+msgstr "Δίσκος"
+
+msgctxt "Layout Group (overview). Parent table: songs"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: songs"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Layout Group (album). Parent table: songs, Parent Group: details"
+msgid "Album"
+msgstr "Δίσκος"
+
+msgctxt "Layout Group (artist). Parent table: songs, Parent Group: details"
+msgid "Album Artist"
+msgstr "Δίσκος καλλιτέχνη"

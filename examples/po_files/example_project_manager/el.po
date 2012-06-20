@@ -1,0 +1,323 @@
+# Greek translation for glom.
+# Copyright (C) 2012 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glom master\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2012-06-18 13:43+0200\n"
+"Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
+"Language-Team: Greek <team@lists.gnome.gr>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "Database Title"
+msgid "Project Manager Example"
+msgstr "Παράδειγμα υπεύθυνου έργου"
+
+msgctxt "Table (contacts)"
+msgid "Contacts"
+msgstr "Επαφές"
+
+msgctxt "Field (contact_id). Parent table: contacts"
+msgid "Contact ID"
+msgstr "Αναγνωριστικό επαφής"
+
+msgctxt "Field (name_first). Parent table: contacts"
+msgid "First Name"
+msgstr "Όνομα:"
+
+msgctxt "Field (name_middle). Parent table: contacts"
+msgid "Middle Name"
+msgstr "Μεσαίο όνομα"
+
+msgctxt "Field (name_last). Parent table: contacts"
+msgid "Last Name"
+msgstr "Επώνυμο"
+
+msgctxt "Field (name_title). Parent table: contacts"
+msgid "Title"
+msgstr "Τίτλος"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mr"
+msgstr "Κος"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mrs"
+msgstr "Κα"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Ms"
+msgstr "Κα"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Miss"
+msgstr "Δις"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Dr"
+msgstr "Δρ"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Prof"
+msgstr "Καθ"
+
+msgctxt "Field (address_street). Parent table: contacts"
+msgid "Street"
+msgstr "Οδός"
+
+msgctxt "Field (address_town). Parent table: contacts"
+msgid "Town"
+msgstr "Πόλη"
+
+msgctxt "Field (address_state). Parent table: contacts"
+msgid "State"
+msgstr "Πολιτεία"
+
+msgctxt "Field (address_country). Parent table: contacts"
+msgid "Country"
+msgstr "Χώρα"
+
+msgctxt "Field (address_postcode). Parent table: contacts"
+msgid "Postcode"
+msgstr "Ταχ. κώδικας"
+
+msgctxt "Field (date_of_birth). Parent table: contacts"
+msgid "Date of Birth"
+msgstr "Ημερομηνία γέννησης"
+
+msgctxt "Field (comments). Parent table: contacts"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (name_full). Parent table: contacts"
+msgid "Full Name"
+msgstr "Πλήρες Όνομα"
+
+msgctxt "Field (picture). Parent table: contacts"
+msgid "Picture"
+msgstr "Εικόνα"
+
+msgctxt "Field (email). Parent table: contacts"
+msgid "Email Address"
+msgstr "Διεύθυνση ηλεκτρονικού ταχυδρομείου"
+
+msgctxt "Field (website). Parent table: contacts"
+msgid "Web Site"
+msgstr "Ιστοσελίδα"
+
+msgctxt "Field (tel_home). Parent table: contacts"
+msgid "Home Telephone"
+msgstr "Τηλέφωνο σπιτιού"
+
+msgctxt "Field (tel_work). Parent table: contacts"
+msgid "Work Telephone"
+msgstr "Τηλέφωνο εργασίας"
+
+msgctxt "Field (tel_mobile). Parent table: contacts"
+msgid "Mobile Telephone"
+msgstr "Κινητό τηλέφωνο"
+
+msgctxt "Field (tel_fax). Parent table: contacts"
+msgid "Fax"
+msgstr "Φαξ"
+
+msgctxt "Relationship (team_members). Parent table: contacts"
+msgid "Team Membership"
+msgstr "Μέλος της ομάδας"
+
+msgctxt "Report (by_country). Parent table: contacts"
+msgid "Contacts By Country"
+msgstr "Επαφές κατά χώρα"
+
+msgctxt "Report (by_country_by_town). Parent table: contacts"
+msgid "By Country, By Town"
+msgstr "Κατά χώρα, Κατά πόλη"
+
+msgctxt "Layout Group (overview). Parent table: contacts"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt ""
+"Layout Group (notebook). Parent table: contacts, Parent Group: details"
+msgid "(Notebook)"
+msgstr "(Σημειωματάριο)"
+
+msgctxt ""
+"Layout Group (telephone). Parent table: contacts, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Telephone"
+msgstr "Τηλέφωνο"
+
+msgctxt ""
+"Layout Group (address). Parent table: contacts, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Address"
+msgstr "Διεύθυνση"
+
+msgctxt ""
+"Layout Group (name). Parent table: contacts, Parent Group: details, Parent "
+"Group: notebook"
+msgid "Name"
+msgstr "Όνομα"
+
+msgctxt "Table (projects)"
+msgid "Projects"
+msgstr "Έργα"
+
+msgctxt "Field (project_id). Parent table: projects"
+msgid "Project ID"
+msgstr "Αναγνωριστικό έργου"
+
+msgctxt "Field (description). Parent table: projects"
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgctxt "Field (comments). Parent table: projects"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (name). Parent table: projects"
+msgid "Name"
+msgstr "Όνομα"
+
+msgctxt "Relationship (teams). Parent table: projects"
+msgid "Teams"
+msgstr "Ομάδες"
+
+msgctxt "Layout Group (overview). Parent table: projects"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: projects"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Table (project_teams)"
+msgid "Project Teams"
+msgstr "Ομάδες έργων"
+
+msgctxt "Field (project_team_id). Parent table: project_teams"
+msgid "Project Team ID"
+msgstr "Αναγνωριστικό ομάδας έργου"
+
+msgctxt "Field (comments). Parent table: project_teams"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (team_id). Parent table: project_teams"
+msgid "Team ID"
+msgstr "Αναγνωριστικό ομάδας"
+
+msgctxt "Field (project_id). Parent table: project_teams"
+msgid "Project ID"
+msgstr "Αναγνωριστικό έργου"
+
+msgctxt "Relationship (team). Parent table: project_teams"
+msgid "Team"
+msgstr "Ομάδα"
+
+msgctxt "Relationship (project). Parent table: project_teams"
+msgid "Project"
+msgstr "Έργο"
+
+msgctxt "Layout Group (overview). Parent table: project_teams"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: project_teams"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Custom Title. Parent table: project_teams"
+msgid "Team Name"
+msgstr "Όνομα ομάδας"
+
+msgctxt "Custom Title. Parent table: project_teams"
+msgid "Project Name"
+msgstr "Όνομα έργου"
+
+msgctxt "Table (team_members)"
+msgid "Team Members"
+msgstr "Μέλη ομάδας"
+
+msgctxt "Field (team_members_id). Parent table: team_members"
+msgid "team_members ID"
+msgstr "Αναγνωριστικό μελών ομάδας"
+
+msgctxt "Field (description). Parent table: team_members"
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgctxt "Field (comments). Parent table: team_members"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (contact_id). Parent table: team_members"
+msgid "Contact ID"
+msgstr "Αναγνωριστικό επαφής"
+
+msgctxt "Field (team_id). Parent table: team_members"
+msgid "Team ID"
+msgstr "Αναγνωριστικό ομάδας"
+
+msgctxt "Field (role). Parent table: team_members"
+msgid "Role"
+msgstr "Ρόλος"
+
+msgctxt "Relationship (contacts). Parent table: team_members"
+msgid "Contacts"
+msgstr "Επαφές"
+
+msgctxt "Relationship (team). Parent table: team_members"
+msgid "Team"
+msgstr "Ομάδα"
+
+msgctxt "Layout Group (overview). Parent table: team_members"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: team_members"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Table (teams)"
+msgid "Teams"
+msgstr "Ομάδες"
+
+msgctxt "Field (team_id). Parent table: teams"
+msgid "Team ID"
+msgstr "Αναγνωριστικό ομάδας"
+
+msgctxt "Field (description). Parent table: teams"
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgctxt "Field (comments). Parent table: teams"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (name). Parent table: teams"
+msgid "Name"
+msgstr "Όνομα"
+
+msgctxt "Relationship (members). Parent table: teams"
+msgid "Members"
+msgstr "Μέλη"
+
+msgctxt "Relationship (projects). Parent table: teams"
+msgid "Projects"
+msgstr "Έργα"
+
+msgctxt "Layout Group (overview). Parent table: teams"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: teams"
+msgid "Details"
+msgstr "Λεπτομέρειες"

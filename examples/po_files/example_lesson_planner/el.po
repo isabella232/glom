@@ -1,0 +1,356 @@
+# Greek translation for glom.
+# Copyright (C) 2012 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glom master\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2012-06-18 14:16+0200\n"
+"Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
+"Language-Team: Greek <team@lists.gnome.gr>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "Database Title"
+msgid "Lesson Planner"
+msgstr "Οργανωτής μαθημάτων"
+
+msgctxt "Field (product_name). Parent table: invoice_lines"
+msgid "Product Name"
+msgstr "Όνομα προιόντος"
+
+msgctxt "Field (product_id). Parent table: invoice_lines"
+msgid "Product Id"
+msgstr "Αναγνωριστικό προιόντος"
+
+msgctxt "Field (product_price). Parent table: invoice_lines"
+msgid "Product Price"
+msgstr "Τιμή προιόντος"
+
+msgctxt "Field (invoice_id). Parent table: invoice_lines"
+msgid "Invoice ID"
+msgstr "Αναγνωριστικό τιμολογίου"
+
+msgctxt "Field (count). Parent table: invoice_lines"
+msgid "Number Of"
+msgstr "Αριθμός από"
+
+msgctxt "Field (total_price). Parent table: invoice_lines"
+msgid "Total Price"
+msgstr "Συνολική τιμή"
+
+msgctxt "Field (vat_percentage). Parent table: invoice_lines"
+msgid "VAT Percentage"
+msgstr "Ποσοστό Φ.Π.Α"
+
+msgctxt "Field (total_price_vat). Parent table: invoice_lines"
+msgid "Total VAT"
+msgstr "Συνολικό Φ.Π.Α"
+
+msgctxt "Table (lessons)"
+msgid "Lessons"
+msgstr "Μαθήματα"
+
+msgctxt "Field (lesson_id). Parent table: lessons"
+msgid "Lesson ID"
+msgstr "Αναγνωριστικό μαθήματος"
+
+msgctxt "Field (description). Parent table: lessons"
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgctxt "Field (comments). Parent table: lessons"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (subject_id). Parent table: lessons"
+msgid "Subject ID"
+msgstr "Αναγνωριστικό θέματος"
+
+msgctxt "Field (teacher_id). Parent table: lessons"
+msgid "Teacher ID"
+msgstr "Αναγνωριστικό δασκάλου"
+
+msgctxt "Field (date). Parent table: lessons"
+msgid "Date"
+msgstr "Ημερομηνία"
+
+msgctxt "Field (time_start). Parent table: lessons"
+msgid "Start Time"
+msgstr "Χρόνος έναρξης"
+
+msgctxt "Field (hours). Parent table: lessons"
+msgid "Hours"
+msgstr "Ώρες"
+
+msgctxt "Field (room_id). Parent table: lessons"
+msgid "Room ID"
+msgstr "Αναγνωριστικό αίθουσας"
+
+msgctxt "Relationship (subject). Parent table: lessons"
+msgid "Subject"
+msgstr "Θέμα"
+
+msgctxt "Relationship (teacher). Parent table: lessons"
+msgid "Teacher"
+msgstr "Δάσκαλος"
+
+msgctxt "Relationship (room). Parent table: lessons"
+msgid "Room"
+msgstr "Αίθουσα"
+
+msgctxt "Layout Group (overview). Parent table: lessons"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: lessons"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Layout Group (subject). Parent table: lessons, Parent Group: details"
+msgid "Subject"
+msgstr "Θέμα"
+
+msgctxt "Layout Group (room). Parent table: lessons, Parent Group: details"
+msgid "Room"
+msgstr "Αίθουσα"
+
+msgctxt "Layout Group (teacher). Parent table: lessons, Parent Group: details"
+msgid "Teacher"
+msgstr "Δάσκαλος"
+
+msgctxt "Table (rooms)"
+msgid "Rooms"
+msgstr "Αίθουσες"
+
+msgctxt "Field (room_id). Parent table: rooms"
+msgid "Room ID"
+msgstr "Αναγνωριστικό αίθουσας"
+
+msgctxt "Field (description). Parent table: rooms"
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgctxt "Field (comments). Parent table: rooms"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (floor). Parent table: rooms"
+msgid "Floor"
+msgstr "Όροφος"
+
+msgctxt "Field (building). Parent table: rooms"
+msgid "Building"
+msgstr "Κτίριο"
+
+msgctxt "Field Choice. Parent table: rooms, Parent Field: building"
+msgid "Main Building"
+msgstr "Κυρίως κτίριο"
+
+msgctxt "Field Choice. Parent table: rooms, Parent Field: building"
+msgid "Science Block"
+msgstr "Χώρος επιστήμης"
+
+msgctxt "Field Choice. Parent table: rooms, Parent Field: building"
+msgid "Sports Hall"
+msgstr "Κλειστό Γυμναστήριο"
+
+msgctxt "Layout Group (overview). Parent table: rooms"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: rooms"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Table (subjects)"
+msgid "Subjects"
+msgstr "Θέματα"
+
+msgctxt "Field (subject_id). Parent table: subjects"
+msgid "Subject ID"
+msgstr "Αναγνωριστικό θέματος"
+
+msgctxt "Field (name). Parent table: subjects"
+msgid "Name"
+msgstr "Όνομα"
+
+msgctxt "Field (comments). Parent table: subjects"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Relationship (lessons). Parent table: subjects"
+msgid "Lessons"
+msgstr "Μαθήματα"
+
+msgctxt "Layout Group (overview). Parent table: subjects"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: subjects"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Custom Title. Parent table: subjects, Parent Group: details"
+msgid "Teacher Name"
+msgstr "Όνομα δασκάλου"
+
+msgctxt "Table (teachers)"
+msgid "Teachers"
+msgstr "Δάσκαλοι"
+
+msgctxt "Field (teacher_id). Parent table: teachers"
+msgid "Teacher ID"
+msgstr "Αναγνωριστικό δασκάλου"
+
+msgctxt "Field (name_first). Parent table: teachers"
+msgid "First Name"
+msgstr "Όνομα"
+
+msgctxt "Field (name_middle). Parent table: teachers"
+msgid "Middle Name"
+msgstr "Μεσαίο όνομα"
+
+msgctxt "Field (name_last). Parent table: teachers"
+msgid "Last Name"
+msgstr "Επώνυμο"
+
+msgctxt "Field (name_title). Parent table: teachers"
+msgid "Title"
+msgstr "Τίτλος"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Mr"
+msgstr "Κος"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Mrs"
+msgstr "Κα"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Ms"
+msgstr "Κα"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Miss"
+msgstr "Δις"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Dr"
+msgstr "Δρ"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Prof"
+msgstr "Καθ"
+
+msgctxt "Field (address_street). Parent table: teachers"
+msgid "Street"
+msgstr "Οδός"
+
+msgctxt "Field (address_town). Parent table: teachers"
+msgid "Town"
+msgstr "Πόλη"
+
+msgctxt "Field (address_state). Parent table: teachers"
+msgid "State"
+msgstr "Πολιτεία"
+
+msgctxt "Field (address_country). Parent table: teachers"
+msgid "Country"
+msgstr "Χώρα"
+
+msgctxt "Field (address_postcode). Parent table: teachers"
+msgid "Postcode"
+msgstr "Ταχ. κώδικας"
+
+msgctxt "Field (date_of_birth). Parent table: teachers"
+msgid "Date of Birth"
+msgstr "Ημερομηνία γέννησης"
+
+msgctxt "Field (comments). Parent table: teachers"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (name_full). Parent table: teachers"
+msgid "Full Name"
+msgstr "Πλήρες Όνομα"
+
+msgctxt "Field (picture). Parent table: teachers"
+msgid "Picture"
+msgstr "Εικόνα"
+
+msgctxt "Field (email). Parent table: teachers"
+msgid "Email Address"
+msgstr "Διεύθυνση ηλεκτρονικού ταχυδρομείου"
+
+msgctxt "Field (website). Parent table: teachers"
+msgid "Web Site"
+msgstr "Ιστοσελίδα"
+
+msgctxt "Field (tel_home). Parent table: teachers"
+msgid "Home Telephone"
+msgstr "Τηλέφωνο σπιτιού"
+
+msgctxt "Field (tel_work). Parent table: teachers"
+msgid "Work Telephone"
+msgstr "Τηλέφωνο εργασίας"
+
+msgctxt "Field (tel_mobile). Parent table: teachers"
+msgid "Mobile Telephone"
+msgstr "Κινητό τηλέφωνο"
+
+msgctxt "Field (tel_fax). Parent table: teachers"
+msgid "Fax"
+msgstr "Φαξ"
+
+msgctxt "Relationship (lessons). Parent table: teachers"
+msgid "Lessons"
+msgstr "Μαθήματα"
+
+msgctxt "Report (by_country). Parent table: teachers"
+msgid "Contacts By Country"
+msgstr "Επαφές κατά χώρα"
+
+msgctxt "Report (by_country_by_town). Parent table: teachers"
+msgid "By Country, By Town"
+msgstr "Κατά χώρα, Κατά πόλη"
+
+msgctxt "Layout Group (overview). Parent table: teachers"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: teachers"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt ""
+"Layout Group (name). Parent table: teachers, Parent Group: details, Parent "
+"Group: notebook"
+msgid "Name"
+msgstr "Όνομα"
+
+msgctxt ""
+"Layout Group (address). Parent table: teachers, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Address"
+msgstr "Διεύθυνση"
+
+msgctxt ""
+"Layout Group (telephone). Parent table: teachers, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Telephone"
+msgstr "Τηλέφωνο"
+
+msgctxt ""
+"Layout Group (other). Parent table: teachers, Parent Group: details, Parent "
+"Group: notebook"
+msgid "Other"
+msgstr "Άλλο"
+
+msgctxt "Custom Title. Parent table: teachers, Parent Group: details"
+msgid "Subject Name"
+msgstr "Όνομα θέματος"

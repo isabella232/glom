@@ -1,0 +1,1185 @@
+# Greek translation for glom.
+# Copyright (C) 2012 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glom master\n"
+"PO-Revision-Date: 2012-06-20 13:08+0200\n"
+"Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
+"Language-Team: Greek <team@lists.gnome.gr>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"POT-Creation-Date: \n"
+
+msgctxt "Database Title"
+msgid "Openismus Film Manager"
+msgstr "Υπεύθυνος κινηματογράφου Openismus"
+
+msgctxt "Table (accommodation)"
+msgid "Accommodation"
+msgstr "Στέγαση"
+
+msgctxt "Field (accommodation_id). Parent table: accommodation"
+msgid "Accommodation ID"
+msgstr "Αναγνωριστικό μακιγιάζ σκηνής"
+
+msgctxt "Field (description). Parent table: accommodation"
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgctxt "Field (comments). Parent table: accommodation"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (address_street). Parent table: accommodation"
+msgid "Street"
+msgstr "Οδός"
+
+msgctxt "Field (address_town). Parent table: accommodation"
+msgid "Town"
+msgstr "Πόλη"
+
+msgctxt "Field (address_county). Parent table: accommodation"
+msgid "County"
+msgstr "Νομός"
+
+msgctxt "Field (address_country). Parent table: accommodation"
+msgid "Country"
+msgstr "Χώρα"
+
+msgctxt "Field (address_postcode). Parent table: accommodation"
+msgid "Postcode"
+msgstr "Ταχ. κώδικας"
+
+msgctxt "Field (contact_id). Parent table: accommodation"
+msgid "Contact ID"
+msgstr "Αναγνωριστικό επαφής"
+
+msgctxt "Field (name). Parent table: accommodation"
+msgid "Name"
+msgstr "Όνομα"
+
+msgctxt "Relationship (contacts). Parent table: accommodation"
+msgid "Contacts"
+msgstr "Επαφές"
+
+msgctxt "Layout Group (overview). Parent table: accommodation"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (address). Parent table: accommodation, Parent Group: details"
+msgid "Address"
+msgstr "Διεύθυνση"
+
+msgctxt "Layout Group (contact). Parent table: accommodation, Parent Group: details"
+msgid "Contact"
+msgstr "Επαφή"
+
+msgctxt "Table (cars)"
+msgid "Cars"
+msgstr "Αυτοκίνητα"
+
+msgctxt "Field (car_id). Parent table: cars"
+msgid "Car ID"
+msgstr "Αναγνωριστικό αυτοκινήτου"
+
+msgctxt "Field (manufacturer). Parent table: cars"
+msgid "Manufacturer"
+msgstr "Κατασκευαστής"
+
+msgctxt "Field (model). Parent table: cars"
+msgid "Model"
+msgstr "Μοντέλο"
+
+msgctxt "Field (registration). Parent table: cars"
+msgid "Registration"
+msgstr "Εγγραφή"
+
+msgctxt "Field (description). Parent table: cars"
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgctxt "Field (comment). Parent table: cars"
+msgid "Comment"
+msgstr "Σχόλιο"
+
+msgctxt "Layout Group (overview). Parent table: cars"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: cars"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Table (characters)"
+msgid "Characters"
+msgstr "Χαρακτήρες"
+
+msgctxt "Field (character_id). Parent table: characters"
+msgid "Cast ID"
+msgstr "Αναγνωριστικό πρωταγωνιστλων"
+
+msgctxt "Field (character). Parent table: characters"
+msgid "Character"
+msgstr "Χαρακτήρας"
+
+msgctxt "Field (comments). Parent table: characters"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (contact_id). Parent table: characters"
+msgid "Contact ID"
+msgstr "Αναγνωριστικό επαφής"
+
+msgctxt "Field (mainpart). Parent table: characters"
+msgid "Main Part"
+msgstr "Κύριο μέρος"
+
+msgctxt "Relationship (contacts_actor). Parent table: characters"
+msgid "Actor"
+msgstr "Ηθοποιός"
+
+msgctxt "Relationship (scenes). Parent table: characters"
+msgid "Scenes"
+msgstr "Σκηνές"
+
+msgctxt "Report (cast_list). Parent table: characters"
+msgid "Cast List"
+msgstr "Λίστα πρωταγωνιστών"
+
+msgctxt "Custom Title. Parent table: characters, Parent Report: cast_list"
+msgid "Actor"
+msgstr "Ηθοποιός"
+
+msgctxt "Custom Title. Parent table: characters, Parent Report: cast_list"
+msgid "Agent"
+msgstr "Συντελεστής"
+
+msgctxt "Layout Group (overview). Parent table: characters, Parent Group: main"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: characters, Parent Group: main"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Layout Group (actor). Parent table: characters, Parent Group: main, Parent Group: details"
+msgid "Actor"
+msgstr "Ηθοποιός"
+
+msgctxt "Custom Title. Parent table: characters"
+msgid "Actor's Contact ID"
+msgstr "Αναγνωριστικό επικοινωνίας ηθοποιού"
+
+msgctxt "Custom Title. Parent table: characters"
+msgid "Actor's Name"
+msgstr "Όνομα ηθοποιού"
+
+msgctxt "Layout Group (overview). Parent table: characters"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: characters"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Layout Group (actor). Parent table: characters, Parent Group: details"
+msgid "Actor"
+msgstr "Ηθοποιός"
+
+msgctxt "Custom Title. Parent table: characters, Parent Group: details"
+msgid "Actor's Name"
+msgstr "Όνομα ηθοποιού"
+
+msgctxt "Custom Title. Parent table: characters"
+msgid "Actor"
+msgstr "Ηθοποιός"
+
+msgctxt "Table (companies)"
+msgid "Companies"
+msgstr "Εταιρίες"
+
+msgctxt "Field (company_id). Parent table: companies"
+msgid "Company ID"
+msgstr "Αναγνωριστικό εταιρίας"
+
+msgctxt "Field (name). Parent table: companies"
+msgid "Name"
+msgstr "Όνομα"
+
+msgctxt "Field (comments). Parent table: companies"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (description). Parent table: companies"
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgctxt "Field (logo). Parent table: companies"
+msgid "Logo"
+msgstr "Λογότυπο"
+
+msgctxt "Field (website). Parent table: companies"
+msgid "Web Site"
+msgstr "Ιστοσελίδα"
+
+msgctxt "Relationship (staff). Parent table: companies"
+msgid "Staff"
+msgstr "Προσωπικό"
+
+msgctxt "Layout Group (overview). Parent table: companies"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: companies"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Table (contacts)"
+msgid "Contacts"
+msgstr "Επαφές"
+
+msgctxt "Field (contact_id). Parent table: contacts"
+msgid "Contact ID"
+msgstr "Αναγνωριστικό επαφής"
+
+msgctxt "Field (name_first). Parent table: contacts"
+msgid "First Name"
+msgstr "Όνομα"
+
+msgctxt "Field (name_middle). Parent table: contacts"
+msgid "Second Name"
+msgstr "Δεύτερο όνομα"
+
+msgctxt "Field (name_last). Parent table: contacts"
+msgid "Last Name"
+msgstr "Επώνυμο"
+
+msgctxt "Field (name_title). Parent table: contacts"
+msgid "Title"
+msgstr "Τίτλος"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mr"
+msgstr "Κος"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Ms"
+msgstr "Κα"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mrs"
+msgstr "Κα"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Miss"
+msgstr "Δις"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Dr"
+msgstr "Δρ"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Prof"
+msgstr "Καθ"
+
+msgctxt "Field (address_street2). Parent table: contacts"
+msgid "Street (line 2)"
+msgstr "Οδός (γραμμή 2)"
+
+msgctxt "Field (address_town). Parent table: contacts"
+msgid "Town"
+msgstr "Πόλη"
+
+msgctxt "Field (address_state). Parent table: contacts"
+msgid "State"
+msgstr "Πολιτεία"
+
+msgctxt "Field (address_country). Parent table: contacts"
+msgid "Country"
+msgstr "Χώρα"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "Germany"
+msgstr "Γερμανία"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "United Kingdom"
+msgstr "Ηνωμένο Βασίλειο"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "USA"
+msgstr "Η.Π.Α"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "France"
+msgstr "Γαλλία"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "Spain"
+msgstr "Ισπανία"
+
+msgctxt "Field (address_postcode). Parent table: contacts"
+msgid "Postcode"
+msgstr "Ταχ. κώδικας"
+
+msgctxt "Field (date_of_birth). Parent table: contacts"
+msgid "Date Of Birth"
+msgstr "Ημερομηνία Γέννησης"
+
+msgctxt "Field (comments). Parent table: contacts"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (name_full). Parent table: contacts"
+msgid "Full Name"
+msgstr "Πλήρες Όνομα"
+
+msgctxt "Field (company_id). Parent table: contacts"
+msgid "Company ID"
+msgstr "Αναγνωριστικό εταιρίας"
+
+msgctxt "Field (picture). Parent table: contacts"
+msgid "Picture"
+msgstr "Εικόνα"
+
+msgctxt "Field (tel_home). Parent table: contacts"
+msgid "Home Telephone"
+msgstr "Τηλέφωνο σπιτιού"
+
+msgctxt "Field (tel_mobile). Parent table: contacts"
+msgid "Mobile Telephone"
+msgstr "Κινητό τηλέφωνο"
+
+msgctxt "Field (tel_fax). Parent table: contacts"
+msgid "Fax"
+msgstr "Φαξ"
+
+msgctxt "Field (tel_work). Parent table: contacts"
+msgid "Work Telephone"
+msgstr "Τηλέφωνο εργασίας"
+
+msgctxt "Field (email). Parent table: contacts"
+msgid "Email"
+msgstr "Email"
+
+msgctxt "Field (address_street1). Parent table: contacts"
+msgid "Street (line 1)"
+msgstr "Οδός (γραμμή 1)"
+
+msgctxt "Field (website). Parent table: contacts"
+msgid "Web Site"
+msgstr "Ιστοσελίδα"
+
+msgctxt "Field (agent_id). Parent table: contacts"
+msgid "Agent ID"
+msgstr "Αναγνωριστικό ατζέντη"
+
+msgctxt "Field (stagename). Parent table: contacts"
+msgid "Stagename"
+msgstr "Όνομα σκηνής"
+
+msgctxt "Relationship (company). Parent table: contacts"
+msgid "Company"
+msgstr "Εταιρία"
+
+msgctxt "Relationship (agent). Parent table: contacts"
+msgid "Agent"
+msgstr "Συντελεστής"
+
+msgctxt "Relationship (crew). Parent table: contacts"
+msgid "Crew"
+msgstr "Πλήρωμα"
+
+msgctxt "Relationship (cast). Parent table: contacts"
+msgid "Cast"
+msgstr "Πρωταγωνιστές"
+
+msgctxt "Report (by_country). Parent table: contacts"
+msgid "Contacts By Country"
+msgstr "Επαφές κατά χώρα"
+
+msgctxt "Report (by_country_by_town). Parent table: contacts"
+msgid "By Country, By Town"
+msgstr "Κατά χώρα, Κατά πόλη"
+
+msgctxt "Layout Group (overview). Parent table: contacts"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: contacts"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Layout Group (name). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
+msgid "Name"
+msgstr "Όνομα"
+
+msgctxt "Layout Group (company). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
+msgid "Company"
+msgstr "Εταιρία"
+
+msgctxt "Layout Group (address). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
+msgid "Address"
+msgstr "Διεύθυνση"
+
+msgctxt "Layout Group (telephone). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
+msgid "Telephone"
+msgstr "Τηλέφωνο"
+
+msgctxt "Layout Group (agent). Parent table: contacts, Parent Group: details, Parent Group: notebook_contact"
+msgid "Agent"
+msgstr "Συντελεστής"
+
+msgctxt "Custom Title. Parent table: contacts"
+msgid "Company Name"
+msgstr "Όνομα εταιρίας"
+
+msgctxt "Table (costume)"
+msgid "Costume"
+msgstr "Ενδυμασία"
+
+msgctxt "Field (costume_id). Parent table: costume"
+msgid "Costume ID"
+msgstr "Αναγνωριστικό ενδυμασίας"
+
+msgctxt "Field (description). Parent table: costume"
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgctxt "Field (comments). Parent table: costume"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (name). Parent table: costume"
+msgid "Name"
+msgstr "Όνομα"
+
+msgctxt "Layout Group (overview). Parent table: costume"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: costume"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Table (crew)"
+msgid "Crew"
+msgstr "Πλήρωμα"
+
+msgctxt "Field (crew_id). Parent table: crew"
+msgid "Crew ID"
+msgstr "Αναγνωριστικό πληρώματος"
+
+msgctxt "Field (description). Parent table: crew"
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgctxt "Field (comments). Parent table: crew"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (dept_id). Parent table: crew"
+msgid "Department ID"
+msgstr "Αναγνωριστικό διαμερίσματος"
+
+msgctxt "Field (contact_id). Parent table: crew"
+msgid "Contact ID"
+msgstr "Αναγνωριστικό επαφής"
+
+msgctxt "Relationship (contacts). Parent table: crew"
+msgid "Contacts"
+msgstr "Επαφές"
+
+msgctxt "Relationship (departments). Parent table: crew"
+msgid "Departments"
+msgstr "Αναχωρήσεις"
+
+msgctxt "Relationship (scenes). Parent table: crew"
+msgid "Scenes"
+msgstr "Σκηνές"
+
+msgctxt "Report (crew_list). Parent table: crew"
+msgid "Crew List"
+msgstr "Λίστα πληρώματος"
+
+msgctxt "Custom Title. Parent table: crew, Parent Report: crew_list"
+msgid "Department Name"
+msgstr "Όνομα διαμερίσματος"
+
+msgctxt "Layout Group (overview). Parent table: crew"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (department). Parent table: crew, Parent Group: details"
+msgid "Department"
+msgstr "Διαμέρισμα"
+
+msgctxt "Layout Group (contact). Parent table: crew, Parent Group: details"
+msgid "Contact"
+msgstr "Επαφή"
+
+msgctxt "Layout Group (address). Parent table: crew, Parent Group: details, Parent Group: contact"
+msgid "Address"
+msgstr "Διεύθυνση"
+
+msgctxt "Layout Group (agent). Parent table: crew, Parent Group: details, Parent Group: contact"
+msgid "Agent"
+msgstr "Συντελεστής"
+
+msgctxt "Custom Title. Parent table: crew"
+msgid "Department Name"
+msgstr "Όνομα διαμερίσματος"
+
+msgctxt "Table (deliveries)"
+msgid "Deliveries"
+msgstr "Παραδόσεις"
+
+msgctxt "Field (delivery_id). Parent table: deliveries"
+msgid "Delivery ID"
+msgstr "Αναγνωριστικό διανομής"
+
+msgctxt "Field (arrival_date). Parent table: deliveries"
+msgid "Arrival Date"
+msgstr "Ημερομηνία άφιξης"
+
+msgctxt "Field (departure_contact_id). Parent table: deliveries"
+msgid "Contact ID"
+msgstr "Αναγνωριστικό επαφής"
+
+msgctxt "Field (arrival_contact_id). Parent table: deliveries"
+msgid "Contact ID"
+msgstr "Αναγνωριστικό επαφής"
+
+msgctxt "Field (arrival_time). Parent table: deliveries"
+msgid "Arrival Time"
+msgstr "Ώρα άφιξης"
+
+msgctxt "Field (arrival_place). Parent table: deliveries"
+msgid "Arrival Place"
+msgstr "Τοποθεσία άφιξης"
+
+msgctxt "Field (departure_time). Parent table: deliveries"
+msgid "Departure Time"
+msgstr "Ώρα αναχώρησης"
+
+msgctxt "Field (departure_date). Parent table: deliveries"
+msgid "Departure Date"
+msgstr "Ημερομηνία αναχώρησης"
+
+msgctxt "Field (departure_place). Parent table: deliveries"
+msgid "Departure Place"
+msgstr "Τοποθεσία αναχώρησης"
+
+msgctxt "Field (comments). Parent table: deliveries"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (description). Parent table: deliveries"
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgctxt "Relationship (departure_contact). Parent table: deliveries"
+msgid "Departure Contact"
+msgstr "Επικοινωνία αναχώρησης"
+
+msgctxt "Relationship (arrival_contact). Parent table: deliveries"
+msgid "Arrival Contact"
+msgstr "Επικοινωνία άφιξης"
+
+msgctxt "Custom Title. Parent table: deliveries"
+msgid "Departure Name"
+msgstr "Όνομα αναχώρησης"
+
+msgctxt "Custom Title. Parent table: deliveries"
+msgid "Arrival Name"
+msgstr "Όνομα άφιξης"
+
+msgctxt "Layout Group (overview). Parent table: deliveries"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (departure). Parent table: deliveries, Parent Group: details"
+msgid "Departure"
+msgstr "Αναχώρηση"
+
+msgctxt "Layout Group (arrival). Parent table: deliveries, Parent Group: details"
+msgid "Arrival"
+msgstr "Άφιξη"
+
+msgctxt "Table (departments)"
+msgid "Departments"
+msgstr "Αναχωρήσεις"
+
+msgctxt "Field (departments_id). Parent table: departments"
+msgid "Department ID"
+msgstr "Αναγνωριστικό διαμερίσματος"
+
+msgctxt "Field (name). Parent table: departments"
+msgid "Name"
+msgstr "Όνομα"
+
+msgctxt "Field (comments). Parent table: departments"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Relationship (department_crew). Parent table: departments"
+msgid "Department Crew"
+msgstr "Διαμέρισμα πληρώματος"
+
+msgctxt "Layout Group (overview). Parent table: departments"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Table (equipment)"
+msgid "Equipment"
+msgstr "Εξοπλισμός"
+
+msgctxt "Field (equipment_id). Parent table: equipment"
+msgid "Equipment ID"
+msgstr "Αναγνωριστικό εξοπλισμού"
+
+msgctxt "Field (description). Parent table: equipment"
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgctxt "Field (comments). Parent table: equipment"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Relationship (scenes). Parent table: equipment"
+msgid "Scenes"
+msgstr "Σκηνές"
+
+msgctxt "Layout Group (overview). Parent table: equipment"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: equipment"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Table (journeys)"
+msgid "Journeys"
+msgstr "Ταξίδια"
+
+msgctxt "Field (journey_id). Parent table: journeys"
+msgid "Journey ID"
+msgstr "Αναγνωριστικό ταξιδιού"
+
+msgctxt "Field (comment). Parent table: journeys"
+msgid "Comment"
+msgstr "Σχολιασμός"
+
+msgctxt "Field (description). Parent table: journeys"
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgctxt "Field (arrival_date). Parent table: journeys"
+msgid "Arrival Date"
+msgstr "Ημερομηνία άφιξης"
+
+msgctxt "Field (arrival_time). Parent table: journeys"
+msgid "Arrival Time"
+msgstr "ΏRA άφιξης"
+
+msgctxt "Field (arrival_place). Parent table: journeys"
+msgid "Arrival Place"
+msgstr "Τοποθεσία άφιξης"
+
+msgctxt "Field (departure_date). Parent table: journeys"
+msgid "Departure Date"
+msgstr "Ημερομηνία αναχώρησης"
+
+msgctxt "Field (departure_time). Parent table: journeys"
+msgid "Departure Time"
+msgstr "Ώρα αναχώρησης"
+
+msgctxt "Field (departure_place). Parent table: journeys"
+msgid "Departure Place"
+msgstr "Τοποθεσία αναχώρησης"
+
+msgctxt "Field (contact_id). Parent table: journeys"
+msgid "Contact ID"
+msgstr "Αναγνωριστικό επαφής"
+
+msgctxt "Relationship (contacts). Parent table: journeys"
+msgid "Contacts"
+msgstr "Επαφές"
+
+msgctxt "Layout Group (overview). Parent table: journeys"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (person). Parent table: journeys, Parent Group: details"
+msgid "Person"
+msgstr "Άτομο"
+
+msgctxt "Layout Group (departure). Parent table: journeys, Parent Group: details"
+msgid "Departure"
+msgstr "Αναχώρηση"
+
+msgctxt "Layout Group (arrival). Parent table: journeys, Parent Group: details"
+msgid "Arrival"
+msgstr "Άφιξη"
+
+msgctxt "Table (locations)"
+msgid "Locations"
+msgstr "Τοποθεσίες"
+
+msgctxt "Field (location_id). Parent table: locations"
+msgid "Location ID"
+msgstr "Αναγνωριστικό τοποθεσίας"
+
+msgctxt "Field (name). Parent table: locations"
+msgid "Name"
+msgstr "Όνομα"
+
+msgctxt "Field (address_street). Parent table: locations"
+msgid "Street"
+msgstr "Οδός"
+
+msgctxt "Field (address_town). Parent table: locations"
+msgid "Town"
+msgstr "Πόλη"
+
+msgctxt "Field (address_county). Parent table: locations"
+msgid "County"
+msgstr "Νομός"
+
+msgctxt "Field (address_country). Parent table: locations"
+msgid "Country"
+msgstr "Χώρα"
+
+msgctxt "Field (address_postcode). Parent table: locations"
+msgid "Postcode"
+msgstr "Ταχ. κώδικας"
+
+msgctxt "Field (comments). Parent table: locations"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (contact_id). Parent table: locations"
+msgid "Contact ID"
+msgstr "Αναγνωριστικό επαφής"
+
+msgctxt "Field (rent). Parent table: locations"
+msgid "Rent"
+msgstr ""
+
+msgctxt "Relationship (scenes). Parent table: locations"
+msgid "Scenes"
+msgstr "Σκηνές"
+
+msgctxt "Relationship (contacts). Parent table: locations"
+msgid "Contacts"
+msgstr "Επαφές"
+
+msgctxt "Layout Group (overview). Parent table: locations"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (address). Parent table: locations, Parent Group: details"
+msgid "Address"
+msgstr "Διεύθυνση"
+
+msgctxt "Layout Group (contact_person). Parent table: locations, Parent Group: details"
+msgid "Contact Person"
+msgstr "Επικοινωνία ατόμου"
+
+msgctxt "Table (props)"
+msgid "Props"
+msgstr ""
+
+msgctxt "Field (prop_id). Parent table: props"
+msgid "Prop ID"
+msgstr ""
+
+msgctxt "Field (description). Parent table: props"
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgctxt "Field (comments). Parent table: props"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (name). Parent table: props"
+msgid "Name"
+msgstr "Όνομα"
+
+msgctxt "Layout Group (overview). Parent table: props"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: props"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Table (scene_cast)"
+msgid "Scene Cast"
+msgstr "Πρωταγωνιστές σκηνής"
+
+msgctxt "Field (scene_cast_id). Parent table: scene_cast"
+msgid "Scene Cast ID"
+msgstr "Αναγνωριστικό πρωταγωνιστών σκηνής"
+
+msgctxt "Field (comments). Parent table: scene_cast"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (cast_id). Parent table: scene_cast"
+msgid "Cast ID"
+msgstr "Αναγνωριστικό πρωταγωνιστών"
+
+msgctxt "Field (scene_id). Parent table: scene_cast"
+msgid "Scene ID"
+msgstr "Αναγνωριστικό σκηνής"
+
+msgctxt "Relationship (cast). Parent table: scene_cast"
+msgid "Cast"
+msgstr "Πρωταγωνιστές"
+
+msgctxt "Layout Group (overview). Parent table: scene_cast, Parent Group: main"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: scene_cast, Parent Group: main"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Table (scene_costume)"
+msgid "Scene Costume"
+msgstr "Ενδυμασία σκηνής"
+
+msgctxt "Field (scene_costume_id). Parent table: scene_costume"
+msgid "Scene Costume ID"
+msgstr "Αναγνωριστικό ενδυμασίας σκηνής"
+
+msgctxt "Field (comments). Parent table: scene_costume"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (scene_id). Parent table: scene_costume"
+msgid "Scene Id"
+msgstr "Αναγνωριστικό σκηνής"
+
+msgctxt "Field (costume_id). Parent table: scene_costume"
+msgid "Costume ID"
+msgstr "Αναγνωριστικό ενδυμασίας"
+
+msgctxt "Relationship (costume). Parent table: scene_costume"
+msgid "Costume"
+msgstr "Ενδυμασία"
+
+msgctxt "Layout Group (overview). Parent table: scene_costume"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: scene_costume"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Custom Title. Parent table: scene_costume"
+msgid "Costume Name"
+msgstr "Όνομα ενδυμασίας"
+
+msgctxt "Table (scene_crew)"
+msgid "Scene Crew"
+msgstr "Πλήρωμα σκηνής"
+
+msgctxt "Field (scene_crew_id). Parent table: scene_crew"
+msgid "Scene Crew ID"
+msgstr "Αναγνωριστικό πληρώματος σκηνής"
+
+msgctxt "Field (comments). Parent table: scene_crew"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (scene_id). Parent table: scene_crew"
+msgid "Scene ID"
+msgstr "Αναγνωριστικό σκηνής"
+
+msgctxt "Field (department_id). Parent table: scene_crew"
+msgid "Department ID"
+msgstr "Αναγνωριστικό διαμερίσματος"
+
+msgctxt "Relationship (department). Parent table: scene_crew"
+msgid "Department"
+msgstr "Διαμέρισμα"
+
+msgctxt "Relationship (scenes). Parent table: scene_crew"
+msgid "Scenes"
+msgstr "Σκηνές"
+
+msgctxt "Layout Group (overview). Parent table: scene_crew, Parent Group: main"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: scene_crew, Parent Group: main"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Field (scene_equipment_id). Parent table: scene_equipment"
+msgid "Scene Equipment ID"
+msgstr "Αναγνωριστικό εξοπλισμού σκηνής"
+
+msgctxt "Field (comments). Parent table: scene_equipment"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (equipment_id). Parent table: scene_equipment"
+msgid "Equipment ID"
+msgstr "Αναγνωριστικό εξοπλισμού"
+
+msgctxt "Field (scene_id). Parent table: scene_equipment"
+msgid "Scene ID"
+msgstr "Αναγνωριστικό σκηνής"
+
+msgctxt "Layout Group (overview). Parent table: scene_equipment"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: scene_equipment"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Table (scene_extras)"
+msgid "Scene Extras"
+msgstr "Πρόσθετα σκηνής"
+
+msgctxt "Field (scene_extras_id). Parent table: scene_extras"
+msgid "Scene Extras ID"
+msgstr "Αναγνωριστικό πρόσθετων σκηνής"
+
+msgctxt "Field (description). Parent table: scene_extras"
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgctxt "Field (comments). Parent table: scene_extras"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (scene_id). Parent table: scene_extras"
+msgid "Scene ID"
+msgstr "Αναγνωριστικό σκηνής"
+
+msgctxt "Field (contact_id). Parent table: scene_extras"
+msgid "Contact ID"
+msgstr "Αναγνωριστικό επαφής"
+
+msgctxt "Relationship (contact). Parent table: scene_extras"
+msgid "Contact"
+msgstr "Επαφή"
+
+msgctxt "Layout Group (overview). Parent table: scene_extras, Parent Group: main"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: scene_extras, Parent Group: main"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Table (scene_makeup)"
+msgid "Scene Makeup"
+msgstr "Μακιγιάζ σκηνής"
+
+msgctxt "Field (scene_makeup_id). Parent table: scene_makeup"
+msgid "Scene Makeup ID"
+msgstr "Αναγνωριστικό μακιγιάζ σκηνής"
+
+msgctxt "Field (description). Parent table: scene_makeup"
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgctxt "Field (comments). Parent table: scene_makeup"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (scene_id). Parent table: scene_makeup"
+msgid "Scene ID"
+msgstr "Αναγνωριστικό σκηνής"
+
+msgctxt "Layout Group (overview). Parent table: scene_makeup"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: scene_makeup"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Table (scene_props)"
+msgid "Scene Props"
+msgstr ""
+
+msgctxt "Field (scene_props_id). Parent table: scene_props"
+msgid "Scene Prop ID"
+msgstr ""
+
+msgctxt "Field (comments). Parent table: scene_props"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (scene_id). Parent table: scene_props"
+msgid "Scene ID"
+msgstr "Αναγνωριστικό σκηνής"
+
+msgctxt "Field (prop_id). Parent table: scene_props"
+msgid "Prop ID"
+msgstr ""
+
+msgctxt "Relationship (props). Parent table: scene_props"
+msgid "Props"
+msgstr ""
+
+msgctxt "Layout Group (overview). Parent table: scene_props"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: scene_props"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Table (scenes)"
+msgid "Scenes"
+msgstr "Σκηνές"
+
+msgctxt "Field (scene_id). Parent table: scenes"
+msgid "Scene ID"
+msgstr "Αναγνωριστικό σκηνής"
+
+msgctxt "Field (comments). Parent table: scenes"
+msgid "Comments"
+msgstr "Σχόλια"
+
+msgctxt "Field (description). Parent table: scenes"
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgctxt "Field (location_id). Parent table: scenes"
+msgid "Location ID"
+msgstr "Αναγνωριστικό τοποθεσίας"
+
+msgctxt "Field (date). Parent table: scenes"
+msgid "Date"
+msgstr "Ημερομηνία"
+
+msgctxt "Field (time). Parent table: scenes"
+msgid "Time"
+msgstr "Χρόνος"
+
+msgctxt "Field (minutes). Parent table: scenes"
+msgid "Stop (minutes)"
+msgstr "Διακοπή (λεπτά)"
+
+msgctxt "Field (day_or_night). Parent table: scenes"
+msgid "Day/Night"
+msgstr "Μέρα/Νύχτα"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Day"
+msgstr "Ημέρα"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Night"
+msgstr "Νύχτα"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Morning"
+msgstr "Πρωί"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Evening"
+msgstr "Απόγευμα"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Dawn"
+msgstr "Αυγή"
+
+msgctxt "Field (interior_or_exterior). Parent table: scenes"
+msgid "Interior/Exterior"
+msgstr "Εσωτερικού/Εξωτερικού"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: interior_or_exterior"
+msgid "Interior"
+msgstr "Εσωτερικού"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: interior_or_exterior"
+msgid "Exterior"
+msgstr "Εξωτερικός"
+
+msgctxt "Field (name). Parent table: scenes"
+msgid "Name"
+msgstr "Όνομα"
+
+msgctxt "Field (overview_name). Parent table: scenes"
+msgid "Scene"
+msgstr "Σκηνή"
+
+msgctxt "Field (pages). Parent table: scenes"
+msgid "Pages"
+msgstr "Σελίδες"
+
+msgctxt "Field (script_day). Parent table: scenes"
+msgid "Script Day"
+msgstr "Σενάριο ημέρας"
+
+msgctxt "Relationship (location). Parent table: scenes"
+msgid "Locations"
+msgstr "Τοποθεσίες"
+
+msgctxt "Relationship (scene_crew). Parent table: scenes"
+msgid "Additional Crew"
+msgstr "Επιπλέον πλήρωμα"
+
+msgctxt "Relationship (scene_cast). Parent table: scenes"
+msgid "Cast"
+msgstr "Πρωταγωνιστές"
+
+msgctxt "Relationship (scene_equipment). Parent table: scenes"
+msgid "Additional Equipment"
+msgstr "Επιπλέον εξοπλισμός:"
+
+msgctxt "Relationship (scene_extras). Parent table: scenes"
+msgid "Extras"
+msgstr "Πρόσθετα"
+
+msgctxt "Relationship (scene_props). Parent table: scenes"
+msgid "Props"
+msgstr ""
+
+msgctxt "Relationship (scene_costume). Parent table: scenes"
+msgid "Costume"
+msgstr "Ενδυμασία"
+
+msgctxt "Relationship (scene_makeup). Parent table: scenes"
+msgid "Additional Makeup"
+msgstr "Επιπλέον μακιγιάζ"
+
+msgctxt "Layout Group (overview). Parent table: scenes"
+msgid "Overview"
+msgstr "Επισκόπηση"
+
+msgctxt "Layout Group (details). Parent table: scenes"
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgctxt "Layout Group (scenario). Parent table: scenes, Parent Group: details"
+msgid "Scenario"
+msgstr "Σενάριο"
+
+msgctxt "Layout Group (location). Parent table: scenes, Parent Group: details"
+msgid "Location"
+msgstr "Τοποθεσία"
+
+msgctxt "Custom Title. Parent table: scenes, Parent Group: details"
+msgid "Contact Name"
+msgstr "Όνομα επαφής"
+
+msgctxt "Custom Title. Parent table: scenes, Parent Group: details_lower, Parent Group: notebook"
+msgid "Actor's Name"
+msgstr "Όνομα καλλιτέχνη"
+
