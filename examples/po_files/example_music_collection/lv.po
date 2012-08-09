@@ -1,0 +1,198 @@
+# Latvian translation for glom.
+# Copyright (C) 2012 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+#
+# arvislacis <arvis.lacis@gmail.com>, 2012.
+# Anita Reitere <nitalynx@gmail.com>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: glom master\n"
+"product=glom&keywords=I18N+L10N&component=general\n"
+"PO-Revision-Date: 2012-08-09 16:45+0300\n"
+"Last-Translator: Anita Reitere <nitalynx@gmail.com>\n"
+"Language-Team: Latviešu <kde-i18n-doc@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: lv\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
+"2);\n"
+"X-Generator: Lokalize 1.0\n"
+
+msgctxt "Database Title"
+msgid "Music Collection"
+msgstr "Mūzikas kolekcija"
+
+msgctxt "Table (albums)"
+msgid "Albums"
+msgstr "Albumi"
+
+msgctxt "Field (album_id). Parent table: albums"
+msgid "Album ID"
+msgstr "Albuma ID"
+
+msgctxt "Field (comments). Parent table: albums"
+msgid "Comments"
+msgstr "Komentāri"
+
+msgctxt "Field (name). Parent table: albums"
+msgid "Name"
+msgstr "Nosaukums"
+
+msgctxt "Field (artist_id). Parent table: albums"
+msgid "Artist ID"
+msgstr "Izpildītāja ID"
+
+msgctxt "Field (publisher_id). Parent table: albums"
+msgid "Publisher ID"
+msgstr "Izdevēja ID"
+
+msgctxt "Field (year). Parent table: albums"
+msgid "Year"
+msgstr "Gads"
+
+msgctxt "Relationship (artist). Parent table: albums"
+msgid "Artist"
+msgstr "Izpildītājs"
+
+msgctxt "Relationship (publisher). Parent table: albums"
+msgid "Publisher"
+msgstr "Izdevējs"
+
+msgctxt "Relationship (songs). Parent table: albums"
+msgid "Songs"
+msgstr "Dziesmas"
+
+msgctxt "Report (albums_by_artist). Parent table: albums"
+msgid "Albums By Artist"
+msgstr "Albumi pēc izpildītāja"
+
+msgctxt "Custom Title. Parent table: albums, Parent Report: albums_by_artist"
+msgid "Artist Name"
+msgstr "Izpildītāja vārds"
+
+msgctxt "Layout Group (overview). Parent table: albums"
+msgid "Overview"
+msgstr "Pārskats"
+
+msgctxt "Layout Group (details). Parent table: albums"
+msgid "Details"
+msgstr "Sīkāka informācija"
+
+msgctxt "Layout Group (artist). Parent table: albums, Parent Group: details"
+msgid "Artist"
+msgstr "Izpildītājs"
+
+msgctxt "Layout Group (publisher). Parent table: albums, Parent Group: details"
+msgid "Publisher"
+msgstr "Izdevējs"
+
+msgctxt "Custom Title. Parent table: albums"
+msgid "Artist Name"
+msgstr "Izpildītāja vārds"
+
+msgctxt "Custom Title. Parent table: albums"
+msgid "Publisher Name"
+msgstr "Izdevēja nosaukums"
+
+msgctxt "Table (artists)"
+msgid "Artists"
+msgstr "Izpildītāji"
+
+msgctxt "Field (artist_id). Parent table: artists"
+msgid "Artist ID"
+msgstr "Izpildītāja ID"
+
+msgctxt "Field (description). Parent table: artists"
+msgid "Description"
+msgstr "Apraksts"
+
+msgctxt "Field (comments). Parent table: artists"
+msgid "Comments"
+msgstr "Komentāri"
+
+msgctxt "Field (name). Parent table: artists"
+msgid "Name"
+msgstr "Vārds"
+
+msgctxt "Relationship (albums). Parent table: artists"
+msgid "Albums"
+msgstr "Albumi"
+
+msgctxt "Layout Group (overview). Parent table: artists"
+msgid "Overview"
+msgstr "Pārskats"
+
+msgctxt "Layout Group (details). Parent table: artists"
+msgid "Details"
+msgstr "Sīkāka informācija"
+
+msgctxt "Table (publishers)"
+msgid "Publishers"
+msgstr "Izdevēji"
+
+msgctxt "Field (publishers_id). Parent table: publishers"
+msgid "Publisher ID"
+msgstr "Izdevēja ID"
+
+msgctxt "Field (comments). Parent table: publishers"
+msgid "Comments"
+msgstr "Komentāri"
+
+msgctxt "Field (name). Parent table: publishers"
+msgid "Name"
+msgstr "Nosaukums"
+
+msgctxt "Relationship (albums). Parent table: publishers"
+msgid "Albums"
+msgstr "Albumi"
+
+msgctxt "Layout Group (overview). Parent table: publishers"
+msgid "Overview"
+msgstr "Pārskats"
+
+msgctxt "Layout Group (details). Parent table: publishers"
+msgid "Details"
+msgstr "Sīkāka informācija"
+
+msgctxt "Table (songs)"
+msgid "Songs"
+msgstr "Dziesmas"
+
+msgctxt "Field (song_id). Parent table: songs"
+msgid "Song ID"
+msgstr "Dziesmas ID"
+
+msgctxt "Field (comments). Parent table: songs"
+msgid "Comments"
+msgstr "Komentāri"
+
+msgctxt "Field (album_id). Parent table: songs"
+msgid "Album ID"
+msgstr "Albuma ID"
+
+msgctxt "Field (name). Parent table: songs"
+msgid "Name"
+msgstr "Nosaukums"
+
+msgctxt "Relationship (album). Parent table: songs"
+msgid "Album"
+msgstr "Albums"
+
+msgctxt "Layout Group (overview). Parent table: songs"
+msgid "Overview"
+msgstr "Pārskats"
+
+msgctxt "Layout Group (details). Parent table: songs"
+msgid "Details"
+msgstr "Sīkāka informācija"
+
+msgctxt "Layout Group (album). Parent table: songs, Parent Group: details"
+msgid "Album"
+msgstr "Albums"
+
+msgctxt "Layout Group (artist). Parent table: songs, Parent Group: details"
+msgid "Album Artist"
+msgstr "Albuma izpildītājs"
+
+
