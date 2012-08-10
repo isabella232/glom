@@ -1,0 +1,362 @@
+# Latvian translation for glom.
+# Copyright (C) 2012 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+# Arvis Lācis <arvis.lacis@gmail.com>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glom master\n"
+"PO-Revision-Date: 2012-08-10 19:30+0300\n"
+"Last-Translator: Arvis Lācis <arvis.lacis@gmail.com>\n"
+"Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: lv\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
+"POT-Creation-Date: \n"
+
+msgctxt "Database Title"
+msgid "Small Business Example"
+msgstr "Maza uzņēmuma piemērs"
+
+msgctxt "Table (contacts)"
+msgid "Contacts"
+msgstr "Kontakti"
+
+msgctxt "Field (contact_id). Parent table: contacts"
+msgid "Contact ID"
+msgstr "Kontakta ID"
+
+msgctxt "Field (name_first). Parent table: contacts"
+msgid "First Name"
+msgstr "Vārds"
+
+msgctxt "Field (name_middle). Parent table: contacts"
+msgid "Middle Name"
+msgstr "Otrais vārds"
+
+msgctxt "Field (name_last). Parent table: contacts"
+msgid "Last Name"
+msgstr "Uzvārds"
+
+msgctxt "Field (name_title). Parent table: contacts"
+msgid "Title"
+msgstr "Virsraksts"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mr"
+msgstr ""
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mrs"
+msgstr ""
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Ms"
+msgstr ""
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Miss"
+msgstr ""
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr."
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Prof"
+msgstr "Prof."
+
+msgctxt "Field (address_street). Parent table: contacts"
+msgid "Street"
+msgstr "Iela"
+
+msgctxt "Field (address_town). Parent table: contacts"
+msgid "Town"
+msgstr "Pilsēta"
+
+msgctxt "Field (address_state). Parent table: contacts"
+msgid "State"
+msgstr "Štats"
+
+msgctxt "Field (address_country). Parent table: contacts"
+msgid "Country"
+msgstr "Valsts"
+
+msgctxt "Field (address_postcode). Parent table: contacts"
+msgid "Postcode"
+msgstr "Pasta indekss"
+
+msgctxt "Field (date_of_birth). Parent table: contacts"
+msgid "Date of Birth"
+msgstr "Dzimšanas datums"
+
+msgctxt "Field (comments). Parent table: contacts"
+msgid "Comments"
+msgstr "Komentāri"
+
+msgctxt "Field (name_full). Parent table: contacts"
+msgid "Full Name"
+msgstr "Pilns vārds"
+
+msgctxt "Field (picture). Parent table: contacts"
+msgid "Picture"
+msgstr "Attēls"
+
+msgctxt "Field (email). Parent table: contacts"
+msgid "Email Address"
+msgstr "E-pasta adrese"
+
+msgctxt "Field (website). Parent table: contacts"
+msgid "Web Site"
+msgstr "Tīmekļa vietne"
+
+msgctxt "Field (tel_home). Parent table: contacts"
+msgid "Home Telephone"
+msgstr "Mājas tālrunis"
+
+msgctxt "Field (tel_work). Parent table: contacts"
+msgid "Work Telephone"
+msgstr "Darba tālrunis"
+
+msgctxt "Field (tel_mobile). Parent table: contacts"
+msgid "Mobile Telephone"
+msgstr "Mobilais tālrunis"
+
+msgctxt "Field (tel_fax). Parent table: contacts"
+msgid "Fax"
+msgstr "Fakss"
+
+msgctxt "Report (by_country). Parent table: contacts"
+msgid "Contacts By Country"
+msgstr "Kontakti pēc valsts"
+
+msgctxt "Report (by_country_by_town). Parent table: contacts"
+msgid "By Country, By Town"
+msgstr "Pēc valsts, pēc pilsētas"
+
+msgctxt "Layout Group (overview). Parent table: contacts"
+msgid "Overview"
+msgstr "Pārskats"
+
+msgctxt "Layout Group (name). Parent table: contacts, Parent Group: details"
+msgid "Name"
+msgstr "Nosaukums"
+
+msgctxt "Layout Group (address). Parent table: contacts, Parent Group: details"
+msgid "Address"
+msgstr "Adrese"
+
+msgctxt "Layout Group (telephone). Parent table: contacts, Parent Group: details"
+msgid "Telephone"
+msgstr "Tālrunis"
+
+msgctxt "Button. Parent table: contacts, Parent Group: details"
+msgid "Test Button"
+msgstr "Testa poga"
+
+msgctxt "Field (product_name). Parent table: invoice_lines"
+msgid "Product Name"
+msgstr "Produkta nosaukums"
+
+msgctxt "Field (product_id). Parent table: invoice_lines"
+msgid "Product Id"
+msgstr "Produkta ID"
+
+msgctxt "Field (product_price). Parent table: invoice_lines"
+msgid "Product Price"
+msgstr "Produkta cena"
+
+msgctxt "Field (invoice_id). Parent table: invoice_lines"
+msgid "Invoice ID"
+msgstr "Pavadzīmes ID"
+
+msgctxt "Field (count). Parent table: invoice_lines"
+msgid "Number Of"
+msgstr "Skaits"
+
+msgctxt "Field (total_price). Parent table: invoice_lines"
+msgid "Total Price"
+msgstr "Kopējā cena"
+
+msgctxt "Field (vat_percentage). Parent table: invoice_lines"
+msgid "VAT Percentage"
+msgstr "PVN likme"
+
+msgctxt "Field (total_price_vat). Parent table: invoice_lines"
+msgid "Total VAT"
+msgstr "PVN kopā"
+
+msgctxt "Table (invoices)"
+msgid "Invoices"
+msgstr "Pavadzīmes"
+
+msgctxt "Field (invoice_id). Parent table: invoices"
+msgid "Invoice ID"
+msgstr "Pavadzīmes ID"
+
+msgctxt "Field (contact_id). Parent table: invoices"
+msgid "Contact ID"
+msgstr "Kontakta ID"
+
+msgctxt "Field (date). Parent table: invoices"
+msgid "Date"
+msgstr "Datums"
+
+msgctxt "Field (comment). Parent table: invoices"
+msgid "Comment"
+msgstr "Komentārs"
+
+msgctxt "Field (price_total). Parent table: invoices"
+msgid "Total Price"
+msgstr "Kopējā cena"
+
+msgctxt "Field (vat_total). Parent table: invoices"
+msgid "Total VAT"
+msgstr "PVN kopā"
+
+msgctxt "Field (price_total_with_vat). Parent table: invoices"
+msgid "Total Price With Vat"
+msgstr "Kopējā cena ar PVN"
+
+msgctxt "Relationship (invoice_lines). Parent table: invoices"
+msgid "Invoice Lines"
+msgstr "Pavadzīmes rindiņas"
+
+msgctxt "Relationship (contacts). Parent table: invoices"
+msgid "Contacts"
+msgstr "Kontakti"
+
+msgctxt "Report (by_customer). Parent table: invoices"
+msgid "By Customer"
+msgstr "Pēc pircēja"
+
+msgctxt "Layout Group (overview). Parent table: invoices"
+msgid "Overview"
+msgstr "Pārskats"
+
+msgctxt "Layout Group (customer). Parent table: invoices, Parent Group: details"
+msgid "Customer"
+msgstr "Pircējs"
+
+msgctxt "Table (products)"
+msgid "Products"
+msgstr "Produkti"
+
+msgctxt "Field (product_id). Parent table: products"
+msgid "Product ID"
+msgstr "Produkta ID"
+
+msgctxt "Field (comment). Parent table: products"
+msgid "Comment"
+msgstr "Komentārs"
+
+msgctxt "Field (description). Parent table: products"
+msgid "Description"
+msgstr "Apraksts"
+
+msgctxt "Field (name). Parent table: products"
+msgid "Name"
+msgstr "Nosaukums"
+
+msgctxt "Field (price). Parent table: products"
+msgid "Price"
+msgstr "Cena"
+
+msgctxt "Field (vat_percent). Parent table: products"
+msgid "Vat Percent"
+msgstr "PVN likme"
+
+msgctxt "Layout Group (overview). Parent table: products"
+msgid "Overview"
+msgstr "Pārskats"
+
+msgctxt "Layout Group (details). Parent table: products"
+msgid "Details"
+msgstr "Sīkāka informācija"
+
+msgctxt "Table (staff)"
+msgid "Staff"
+msgstr "Darbinieki"
+
+msgctxt "Field (staff_id). Parent table: staff"
+msgid "Staff ID"
+msgstr "Darbinieka ID"
+
+msgctxt "Field (name_title). Parent table: staff"
+msgid "Title"
+msgstr "Virsraksts"
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Mr"
+msgstr ""
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Mrs"
+msgstr ""
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Miss"
+msgstr ""
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr."
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Prof"
+msgstr "Prof."
+
+msgctxt "Field (name_first). Parent table: staff"
+msgid "First Name"
+msgstr "Vārds"
+
+msgctxt "Field (name_second). Parent table: staff"
+msgid "Second Name"
+msgstr "Otrais vārds"
+
+msgctxt "Field (name_last). Parent table: staff"
+msgid "Last Name"
+msgstr "Uzvārds"
+
+msgctxt "Field (address_street). Parent table: staff"
+msgid "Street"
+msgstr "Iela"
+
+msgctxt "Field (address_town). Parent table: staff"
+msgid "Town"
+msgstr "Pilsēta"
+
+msgctxt "Field (address_state). Parent table: staff"
+msgid "State"
+msgstr "Stāvoklis"
+
+msgctxt "Field (address_country). Parent table: staff"
+msgid "Country"
+msgstr "Valsts"
+
+msgctxt "Field (address_postcode). Parent table: staff"
+msgid "Postcode"
+msgstr "Pasta indekss"
+
+msgctxt "Field (date_of_birth). Parent table: staff"
+msgid "Date Of Birth"
+msgstr "Dzimšanas datums"
+
+msgctxt "Field (position). Parent table: staff"
+msgid "Position"
+msgstr ""
+
+msgctxt "Layout Group (overview). Parent table: staff"
+msgid "Overview"
+msgstr "Pārskats"
+
+msgctxt "Layout Group (name). Parent table: staff, Parent Group: details"
+msgid "Name"
+msgstr "Nosaukums"
+
+msgctxt "Layout Group (address). Parent table: staff, Parent Group: details"
+msgid "Address"
+msgstr "Adrese"
+
