@@ -762,7 +762,17 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
     return false;
 
   const bool result = m_backend->change_columns(m_refGdaConnection, table_name, old_fields, new_fields);
-  m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
+
+  try
+  {
+    m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": update_meta_store_table() failed: " << ex.what() << std::endl;
+    return false;
+  }
+
   if(!result)
     return false;
 

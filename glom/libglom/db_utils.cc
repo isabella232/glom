@@ -68,27 +68,37 @@ static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
   * Call this whenever changing the table structure, for instance with an ALTER query.
   * This may take a few seconds to return.
   */
-static void update_gda_metastore_for_table(const Glib::ustring& table_name)
+static bool update_gda_metastore_for_table(const Glib::ustring& table_name)
 {
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
   if(!gda_connection)
   {
     std::cerr << G_STRFUNC << ": No gda_connection." << std::endl;
-    return;
+    return false;
   }
 
   if(table_name.empty())
   {
     std::cerr << G_STRFUNC << ": table_name is empty." << std::endl;
-    return;
+    return false;
   }
 
   //std::cout << "debug: " << G_STRFUNC << ": Calling Gda::Connection::update_meta_store_table(" << table_name << ") ..." << std::endl;
   //TODO: This doesn't seem to quite work yet:
-  gda_connection->update_meta_store_table(table_name);
+  try
+  {
+    gda_connection->update_meta_store_table(table_name);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": update_meta_store_table() failed: " << ex.what() << std::endl;
+    return false;
+  }
 
   //This does work, though it takes ages: gda_connection->update_meta_store();
   //std::cout << "debug: " << G_STRFUNC << ": ... Finished calling Gda::Connection::update_meta_store_table()" << std::endl;
+
+  return true;
 }
 
 bool create_database(Document* document, const Glib::ustring& database_name, const Glib::ustring& title, const sigc::slot<void>& progress)
@@ -1271,7 +1281,8 @@ bool create_table(const sharedptr<const TableInfo>& table_info, const Document::
   {
     // Update the libgda meta store, so that get_fields_for_table_from_database()
     // returns the fields correctly for the new table.
-    update_gda_metastore_for_table(table_info->get_name());
+    if(!update_gda_metastore_for_table(table_info->get_name()))
+      return false;
 
     // TODO: Maybe we should create the table directly via libgda instead of
     // executing an SQL query ourselves, so that libgda has the chance to
