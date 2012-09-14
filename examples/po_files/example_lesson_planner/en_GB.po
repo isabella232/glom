@@ -1,0 +1,357 @@
+# British English translation for glom.
+# Copyright (C) 2012 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+# olpc user <cjlhomeaddress@gmail.com>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: glom master\n"
+"PO-Revision-Date: 2012-09-12 04:52+0000\n"
+"Last-Translator: olpc user <cjlhomeaddress@gmail.com>\n"
+"Language-Team: Sugar Labs L10n Team\n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
+
+msgctxt "Database Title"
+msgid "Lesson Planner"
+msgstr "Lesson Planner"
+
+msgctxt "Field (product_name). Parent table: invoice_lines"
+msgid "Product Name"
+msgstr "Product Name"
+
+msgctxt "Field (product_id). Parent table: invoice_lines"
+msgid "Product Id"
+msgstr "Product Id"
+
+msgctxt "Field (product_price). Parent table: invoice_lines"
+msgid "Product Price"
+msgstr "Product Price"
+
+msgctxt "Field (invoice_id). Parent table: invoice_lines"
+msgid "Invoice ID"
+msgstr "Invoice ID"
+
+msgctxt "Field (count). Parent table: invoice_lines"
+msgid "Number Of"
+msgstr "Number Of"
+
+msgctxt "Field (total_price). Parent table: invoice_lines"
+msgid "Total Price"
+msgstr "Total Price"
+
+msgctxt "Field (vat_percentage). Parent table: invoice_lines"
+msgid "VAT Percentage"
+msgstr "VAT Percentage"
+
+msgctxt "Field (total_price_vat). Parent table: invoice_lines"
+msgid "Total VAT"
+msgstr "Total VAT"
+
+msgctxt "Table (lessons)"
+msgid "Lessons"
+msgstr "Lessons"
+
+msgctxt "Field (lesson_id). Parent table: lessons"
+msgid "Lesson ID"
+msgstr "Lesson ID"
+
+msgctxt "Field (description). Parent table: lessons"
+msgid "Description"
+msgstr "Description"
+
+msgctxt "Field (comments). Parent table: lessons"
+msgid "Comments"
+msgstr "Comments"
+
+msgctxt "Field (subject_id). Parent table: lessons"
+msgid "Subject ID"
+msgstr "Subject ID"
+
+msgctxt "Field (teacher_id). Parent table: lessons"
+msgid "Teacher ID"
+msgstr "Teacher ID"
+
+msgctxt "Field (date). Parent table: lessons"
+msgid "Date"
+msgstr "Date"
+
+msgctxt "Field (time_start). Parent table: lessons"
+msgid "Start Time"
+msgstr "Start Time"
+
+msgctxt "Field (hours). Parent table: lessons"
+msgid "Hours"
+msgstr "Hours"
+
+msgctxt "Field (room_id). Parent table: lessons"
+msgid "Room ID"
+msgstr "Room ID"
+
+msgctxt "Relationship (subject). Parent table: lessons"
+msgid "Subject"
+msgstr "Subject"
+
+msgctxt "Relationship (teacher). Parent table: lessons"
+msgid "Teacher"
+msgstr "Teacher"
+
+msgctxt "Relationship (room). Parent table: lessons"
+msgid "Room"
+msgstr "Room"
+
+msgctxt "Layout Group (overview). Parent table: lessons"
+msgid "Overview"
+msgstr "Overview"
+
+msgctxt "Layout Group (details). Parent table: lessons"
+msgid "Details"
+msgstr "Details"
+
+msgctxt "Layout Group (subject). Parent table: lessons, Parent Group: details"
+msgid "Subject"
+msgstr "Subject"
+
+msgctxt "Layout Group (room). Parent table: lessons, Parent Group: details"
+msgid "Room"
+msgstr "Room"
+
+msgctxt "Layout Group (teacher). Parent table: lessons, Parent Group: details"
+msgid "Teacher"
+msgstr "Teacher"
+
+msgctxt "Table (rooms)"
+msgid "Rooms"
+msgstr "Rooms"
+
+msgctxt "Field (room_id). Parent table: rooms"
+msgid "Room ID"
+msgstr "Room ID"
+
+msgctxt "Field (description). Parent table: rooms"
+msgid "Description"
+msgstr "Description"
+
+msgctxt "Field (comments). Parent table: rooms"
+msgid "Comments"
+msgstr "Comments"
+
+msgctxt "Field (floor). Parent table: rooms"
+msgid "Floor"
+msgstr "Floor"
+
+msgctxt "Field (building). Parent table: rooms"
+msgid "Building"
+msgstr "Building"
+
+msgctxt "Field Choice. Parent table: rooms, Parent Field: building"
+msgid "Main Building"
+msgstr "Main Building"
+
+msgctxt "Field Choice. Parent table: rooms, Parent Field: building"
+msgid "Science Block"
+msgstr "Science Block"
+
+msgctxt "Field Choice. Parent table: rooms, Parent Field: building"
+msgid "Sports Hall"
+msgstr "Sports Hall"
+
+msgctxt "Layout Group (overview). Parent table: rooms"
+msgid "Overview"
+msgstr "Overview"
+
+msgctxt "Layout Group (details). Parent table: rooms"
+msgid "Details"
+msgstr "Details"
+
+msgctxt "Table (subjects)"
+msgid "Subjects"
+msgstr "Subjects"
+
+msgctxt "Field (subject_id). Parent table: subjects"
+msgid "Subject ID"
+msgstr "Subject ID"
+
+msgctxt "Field (name). Parent table: subjects"
+msgid "Name"
+msgstr "Name"
+
+msgctxt "Field (comments). Parent table: subjects"
+msgid "Comments"
+msgstr "Comments"
+
+msgctxt "Relationship (lessons). Parent table: subjects"
+msgid "Lessons"
+msgstr "Lessons"
+
+msgctxt "Layout Group (overview). Parent table: subjects"
+msgid "Overview"
+msgstr "Overview"
+
+msgctxt "Layout Group (details). Parent table: subjects"
+msgid "Details"
+msgstr "Details"
+
+msgctxt "Custom Title. Parent table: subjects, Parent Group: details"
+msgid "Teacher Name"
+msgstr "Teacher Name"
+
+msgctxt "Table (teachers)"
+msgid "Teachers"
+msgstr "Teachers"
+
+msgctxt "Field (teacher_id). Parent table: teachers"
+msgid "Teacher ID"
+msgstr "Teacher ID"
+
+msgctxt "Field (name_first). Parent table: teachers"
+msgid "First Name"
+msgstr "Given Name"
+
+msgctxt "Field (name_middle). Parent table: teachers"
+msgid "Middle Name"
+msgstr "Middle Name"
+
+msgctxt "Field (name_last). Parent table: teachers"
+msgid "Last Name"
+msgstr "Surname"
+
+msgctxt "Field (name_title). Parent table: teachers"
+msgid "Title"
+msgstr "Title"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Mr"
+msgstr "Mr."
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Mrs"
+msgstr "Mrs."
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Ms"
+msgstr "Ms."
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Miss"
+msgstr "Miss"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr."
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Prof"
+msgstr "Prof."
+
+msgctxt "Field (address_street). Parent table: teachers"
+msgid "Street"
+msgstr "Street"
+
+msgctxt "Field (address_town). Parent table: teachers"
+msgid "Town"
+msgstr "Town"
+
+#, fuzzy
+msgctxt "Field (address_state). Parent table: teachers"
+msgid "State"
+msgstr "County"
+
+msgctxt "Field (address_country). Parent table: teachers"
+msgid "Country"
+msgstr "Country"
+
+msgctxt "Field (address_postcode). Parent table: teachers"
+msgid "Postcode"
+msgstr "Postcode"
+
+msgctxt "Field (date_of_birth). Parent table: teachers"
+msgid "Date of Birth"
+msgstr "Date of Birth"
+
+msgctxt "Field (comments). Parent table: teachers"
+msgid "Comments"
+msgstr "Comments"
+
+msgctxt "Field (name_full). Parent table: teachers"
+msgid "Full Name"
+msgstr "Full Name"
+
+msgctxt "Field (picture). Parent table: teachers"
+msgid "Picture"
+msgstr "Picture"
+
+msgctxt "Field (email). Parent table: teachers"
+msgid "Email Address"
+msgstr "Email Address"
+
+msgctxt "Field (website). Parent table: teachers"
+msgid "Web Site"
+msgstr "Web Site"
+
+msgctxt "Field (tel_home). Parent table: teachers"
+msgid "Home Telephone"
+msgstr "Home Telephone"
+
+msgctxt "Field (tel_work). Parent table: teachers"
+msgid "Work Telephone"
+msgstr "Work Telephone"
+
+msgctxt "Field (tel_mobile). Parent table: teachers"
+msgid "Mobile Telephone"
+msgstr "Mobile Telephone"
+
+msgctxt "Field (tel_fax). Parent table: teachers"
+msgid "Fax"
+msgstr "Fax"
+
+msgctxt "Relationship (lessons). Parent table: teachers"
+msgid "Lessons"
+msgstr "Lessons"
+
+msgctxt "Report (by_country). Parent table: teachers"
+msgid "Contacts By Country"
+msgstr "Contacts By Country"
+
+msgctxt "Report (by_country_by_town). Parent table: teachers"
+msgid "By Country, By Town"
+msgstr "By Country, By Town"
+
+msgctxt "Layout Group (overview). Parent table: teachers"
+msgid "Overview"
+msgstr "Overview"
+
+msgctxt "Layout Group (details). Parent table: teachers"
+msgid "Details"
+msgstr "Details"
+
+msgctxt ""
+"Layout Group (name). Parent table: teachers, Parent Group: details, Parent "
+"Group: notebook"
+msgid "Name"
+msgstr "Name"
+
+msgctxt ""
+"Layout Group (address). Parent table: teachers, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Address"
+msgstr "Address"
+
+msgctxt ""
+"Layout Group (telephone). Parent table: teachers, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Telephone"
+msgstr "Telephone"
+
+msgctxt ""
+"Layout Group (other). Parent table: teachers, Parent Group: details, Parent "
+"Group: notebook"
+msgid "Other"
+msgstr "Other"
+
+msgctxt "Custom Title. Parent table: teachers, Parent Group: details"
+msgid "Subject Name"
+msgstr "Subject Name"
