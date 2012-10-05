@@ -6,36 +6,38 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glom glom-1-20\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glom&keywords=I18N+L10N&component=general\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glom&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-05-12 07:58+0000\n"
-"PO-Revision-Date: 2012-07-24 00:22+0700\n"
+"PO-Revision-Date: 2012-10-05 21:47+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Poedit-Language: Indonesian\n"
-"X-Poedit-Country: INDONESIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"Language: id_ID\n"
+"X-Generator: Poedit 1.5.3\n"
 
 #: ../glom/application.cc:145
 msgid "Glom: Generating Encryption Certificates"
 msgstr "Glom: Menjangkitkan Sertifikat Enkripsi"
 
 #: ../glom/application.cc:146
-msgid "Please wait while Glom prepares your system for publishing over the network."
-msgstr "Mohon tunggu saat Glom menyiapkan sistem Anda untuk publikasi melalui jaringan."
+msgid ""
+"Please wait while Glom prepares your system for publishing over the network."
+msgstr ""
+"Mohon tunggu saat Glom menyiapkan sistem Anda untuk publikasi melalui "
+"jaringan."
 
-#: ../glom/application.cc:266
-#: ../glom/bakery/app_withdoc_gtk.cc:228
+#: ../glom/application.cc:266 ../glom/bakery/app_withdoc_gtk.cc:228
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:197
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:58
 msgid "_File"
 msgstr "_Berkas"
 
-#: ../glom/application.cc:267
-#: ../glom/bakery/app_withdoc_gtk.cc:229
+#: ../glom/application.cc:267 ../glom/bakery/app_withdoc_gtk.cc:229
 msgid "_Recent Files"
 msgstr "Berkas Te_rkini"
 
@@ -43,13 +45,11 @@ msgstr "Berkas Te_rkini"
 msgid "_Save as Example"
 msgstr "_Simpan sebagai Contoh"
 
-#: ../glom/application.cc:282
-#: ../glom/filechooser_export.cc:41
+#: ../glom/application.cc:282 ../glom/filechooser_export.cc:41
 msgid "_Export"
 msgstr "_Ekspor"
 
-#: ../glom/application.cc:286
-#: ../ui/operator/dialog_import_csv.glade.h:2
+#: ../glom/application.cc:286 ../ui/operator/dialog_import_csv.glade.h:2
 msgid "I_mport"
 msgstr "I_mpor"
 
@@ -84,8 +84,7 @@ msgid "_Edit Reports"
 msgstr "S_unting Laporan"
 
 #. We remember this action, so that it can be explicitly activated later.
-#: ../glom/application.cc:402
-#: ../glom/frame_glom.cc:123
+#: ../glom/application.cc:402 ../glom/frame_glom.cc:123
 msgid "_Find"
 msgstr "_Cari"
 
@@ -216,8 +215,7 @@ msgid "© 2000-2011 Murray Cumming, Openismus GmbH"
 msgstr "© 2000-2011 Murray Cumming, Openismus GmbH"
 
 #. TODO: Put this in the generic bakery code.
-#: ../glom/application.cc:713
-#: ../glom/application.cc:722
+#: ../glom/application.cc:713 ../glom/application.cc:722
 msgid "Open Failed"
 msgstr "Gagal Membuka"
 
@@ -226,35 +224,54 @@ msgid "The document could not be found."
 msgstr "Dokumen tak dapat ditemukan."
 
 #: ../glom/application.cc:723
-msgid "The document could not be opened because it was created or modified by a newer version of Glom."
-msgstr "Dokumen tak dapat dibuka karena dibuat atau diubah oleh versi Glom yang lebih baru."
+msgid ""
+"The document could not be opened because it was created or modified by a "
+"newer version of Glom."
+msgstr ""
+"Dokumen tak dapat dibuka karena dibuat atau diubah oleh versi Glom yang "
+"lebih baru."
 
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
 #. Warn the user, and let him try again:
-#: ../glom/application.cc:773
-#: ../glom/frame_glom.cc:2045
+#: ../glom/application.cc:773 ../glom/frame_glom.cc:2045
 #: ../glom/frame_glom.cc:2116
 msgid "Connection Failed"
 msgstr "Koneksi Gagal"
 
-#: ../glom/application.cc:773
-#: ../glom/frame_glom.cc:2045
+#: ../glom/application.cc:773 ../glom/frame_glom.cc:2045
 #: ../glom/frame_glom.cc:2116
-msgid "Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."
-msgstr "Glom tak bisa menyambung ke server basis data. Mungkin Anda memasukkan nama pengguna atau sandi yang salah, atau mungkin server basis data postgres tidak sedang berjalan."
+msgid ""
+"Glom could not connect to the database server. Maybe you entered an "
+"incorrect user name or password, or maybe the postgres database server is "
+"not running."
+msgstr ""
+"Glom tak bisa menyambung ke server basis data. Mungkin Anda memasukkan nama "
+"pengguna atau sandi yang salah, atau mungkin server basis data postgres "
+"tidak sedang berjalan."
 
 #: ../glom/application.cc:937
-msgid "The file cannot be opened because this version of Glom does not support self-hosting of databases."
-msgstr "Berkas tak dapat dibuka karena Glom versi ini tak mendukung hosting mandiri dari basis data."
+msgid ""
+"The file cannot be opened because this version of Glom does not support self-"
+"hosting of databases."
+msgstr ""
+"Berkas tak dapat dibuka karena Glom versi ini tak mendukung hosting mandiri "
+"dari basis data."
 
-#: ../glom/application.cc:942
-#: ../glom/application.cc:951
-msgid "The file cannot be opened because this version of Glom does not support PostgreSQL databases."
-msgstr "Berkas tak dapat dibuka karena Glom versi ini tak mendukung basis data PostgreSQL."
+#: ../glom/application.cc:942 ../glom/application.cc:951
+msgid ""
+"The file cannot be opened because this version of Glom does not support "
+"PostgreSQL databases."
+msgstr ""
+"Berkas tak dapat dibuka karena Glom versi ini tak mendukung basis data "
+"PostgreSQL."
 
 #: ../glom/application.cc:959
-msgid "The file cannot be opened because this version of Glom does not support SQLite databases."
-msgstr "Berkas tak dapat dibuka karena Glom versi ini tak mendukung basis data SQLite."
+msgid ""
+"The file cannot be opened because this version of Glom does not support "
+"SQLite databases."
+msgstr ""
+"Berkas tak dapat dibuka karena Glom versi ini tak mendukung basis data "
+"SQLite."
 
 #. Warn the user.
 #: ../glom/application.cc:977
@@ -266,24 +283,36 @@ msgid "Creating From Example File"
 msgstr "Membuat Dari Berkas Contoh"
 
 #: ../glom/application.cc:1038
-msgid "To use this example file you must save an editable copy of the file. A new database will also be created on the server."
-msgstr "Untuk memakai berkas contoh ini Anda mesti menyimpan salinan berkas yang dapat disunting. Suatu basis data baru juga akan dibuat pada server."
+msgid ""
+"To use this example file you must save an editable copy of the file. A new "
+"database will also be created on the server."
+msgstr ""
+"Untuk memakai berkas contoh ini Anda mesti menyimpan salinan berkas yang "
+"dapat disunting. Suatu basis data baru juga akan dibuat pada server."
 
 #: ../glom/application.cc:1042
 msgid "Creating From Backup File"
 msgstr "Membuat Dari Berkas Cadangan"
 
 #: ../glom/application.cc:1043
-msgid "To use this backup file you must save an editable copy of the file. A new database will also be created on the server."
-msgstr "Untuk memakai berkas cadangan ini Anda mesti menyimpan salinan berkas yang dapat disunting. Suatu basis data baru juga akan dibuat pada server."
+msgid ""
+"To use this backup file you must save an editable copy of the file. A new "
+"database will also be created on the server."
+msgstr ""
+"Untuk memakai berkas cadangan ini Anda mesti menyimpan salinan berkas yang "
+"dapat disunting. Suatu basis data baru juga akan dibuat pada server."
 
 #: ../glom/application.cc:1104
 msgid "Opening Read-Only File."
 msgstr "Membuka Berkas Hanya-Baca."
 
 #: ../glom/application.cc:1105
-msgid "This file is read only, so you will not be able to enter Developer mode to make design changes."
-msgstr "Berkas ini hanya dapat dibaca, sehingga Anda tak akan bisa masuk ke mode Pengembang untuk membuat perubahan rancangan."
+msgid ""
+"This file is read only, so you will not be able to enter Developer mode to "
+"make design changes."
+msgstr ""
+"Berkas ini hanya dapat dibaca, sehingga Anda tak akan bisa masuk ke mode "
+"Pengembang untuk membuat perubahan rancangan."
 
 #: ../glom/application.cc:1108
 msgid "Continue without Developer Mode"
@@ -295,8 +324,12 @@ msgid "Database Not Found On Server"
 msgstr "Basis Data Tak Ditemukan Pada Server"
 
 #: ../glom/application.cc:1166
-msgid "The database could not be found on the server. Please consult your system administrator."
-msgstr "Basis data tak dapat ditemukan pada server. Mohon tanyakan ke administrator sistem Anda."
+msgid ""
+"The database could not be found on the server. Please consult your system "
+"administrator."
+msgstr ""
+"Basis data tak dapat ditemukan pada server. Mohon tanyakan ke administrator "
+"sistem Anda."
 
 #. std::cerr might show some hints, but we don't want to confront the user with them:
 #. TODO: Actually complain about specific stuff such as missing data, because the user might really play with the file system.
@@ -317,8 +350,7 @@ msgid "Creating Glom database from backup file."
 msgstr "Membuat basis data Glom dari berkas cadangan."
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/application.cc:2258
-#: ../glom/bakery/app_withdoc.cc:237
+#: ../glom/application.cc:2258 ../glom/bakery/app_withdoc.cc:237
 #: ../glom/bakery/app_withdoc.cc:288
 msgid "Save failed."
 msgstr "Gagal menyimpan."
@@ -327,33 +359,36 @@ msgstr "Gagal menyimpan."
 msgid "There was an error while saving the example file."
 msgstr "Ada galat saat menyimpan berkas contoh."
 
-#: ../glom/application.cc:2299
-#: ../glom/application.cc:2304
+#: ../glom/application.cc:2299 ../glom/application.cc:2304
 #: ../glom/bakery/app_withdoc_gtk.cc:425
 msgid "Save Document"
 msgstr "Simpan Dokumen"
 
 #. Warn the user:
-#: ../glom/application.cc:2391
-#: ../glom/bakery/app_withdoc_gtk.cc:473
+#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc_gtk.cc:473
 msgid "Read-only File."
 msgstr "Berkas Hanya-baca."
 
-#: ../glom/application.cc:2391
-#: ../glom/bakery/app_withdoc_gtk.cc:473
-msgid "You may not overwrite the existing file, because you do not have sufficient access rights."
-msgstr "Anda tak boleh menimpa berkas yang ada, karena Anda tak memiliki cukup hak akses."
+#: ../glom/application.cc:2391 ../glom/bakery/app_withdoc_gtk.cc:473
+msgid ""
+"You may not overwrite the existing file, because you do not have sufficient "
+"access rights."
+msgstr ""
+"Anda tak boleh menimpa berkas yang ada, karena Anda tak memiliki cukup hak "
+"akses."
 
 #. Warn the user:
-#: ../glom/application.cc:2405
-#: ../glom/bakery/app_withdoc_gtk.cc:487
+#: ../glom/application.cc:2405 ../glom/bakery/app_withdoc_gtk.cc:487
 msgid "Read-only Directory."
 msgstr "Direktori Hanya-baca"
 
-#: ../glom/application.cc:2405
-#: ../glom/bakery/app_withdoc_gtk.cc:487
-msgid "You may not create a file in this directory, because you do not have sufficient access rights."
-msgstr "Anda tak boleh membuat berkas pada direktori ini, karena Anda tak memiliki cukup hak akses."
+#: ../glom/application.cc:2405 ../glom/bakery/app_withdoc_gtk.cc:487
+msgid ""
+"You may not create a file in this directory, because you do not have "
+"sufficient access rights."
+msgstr ""
+"Anda tak boleh membuat berkas pada direktori ini, karena Anda tak memiliki "
+"cukup hak akses."
 
 #: ../glom/application.cc:2422
 msgid "Database Title missing"
@@ -363,15 +398,18 @@ msgstr "Kurang Judul Basis Data"
 msgid "You must specify a title for the new database."
 msgstr "Anda mesti menyatakan judul bagi basis data baru."
 
-#: ../glom/application.cc:2451
-#: ../glom/frame_glom.cc:1805
+#: ../glom/application.cc:2451 ../glom/frame_glom.cc:1805
 msgid "Directory Already Exists"
 msgstr "Direktori Telah Ada"
 
-#: ../glom/application.cc:2451
-#: ../glom/frame_glom.cc:1806
-msgid "There is an existing directory with the same name as the directory that should be created for the new database files. You should specify a different filename to use a new directory instead."
-msgstr "Telah ada direktori dengan nama sama dengan yang mesti dibuat bagi berkas basis data baru. Anda mesti menyatakan nama lain."
+#: ../glom/application.cc:2451 ../glom/frame_glom.cc:1806
+msgid ""
+"There is an existing directory with the same name as the directory that "
+"should be created for the new database files. You should specify a different "
+"filename to use a new directory instead."
+msgstr ""
+"Telah ada direktori dengan nama sama dengan yang mesti dibuat bagi berkas "
+"basis data baru. Anda mesti menyatakan nama lain."
 
 #. This actually creates the directory:
 #: ../glom/application.cc:2590
@@ -414,18 +452,15 @@ msgstr "Mengembalikan dari Cadangan gagal."
 msgid "There was an error while restoring the backup."
 msgstr "Ada galat ketike mengembalikan dari cadangan."
 
-#: ../glom/application.cc:2758
-#: ../glom/bakery/app_withdoc_gtk.cc:346
+#: ../glom/application.cc:2758 ../glom/bakery/app_withdoc_gtk.cc:346
 msgid " (read-only)"
 msgstr " (hanya-baca)"
 
-#: ../glom/application.cc:2806
-#: ../ui/operator/window_main.glade.h:2
+#: ../glom/application.cc:2806 ../ui/operator/window_main.glade.h:2
 msgid "Processing"
 msgstr "Memroses"
 
-#: ../glom/base_db.cc:129
-#: ../glom/base_db.cc:139
+#: ../glom/base_db.cc:129 ../glom/base_db.cc:139
 msgid "Internal error"
 msgstr "Galat internal"
 
@@ -434,14 +469,22 @@ msgid "Value Is Not Unique"
 msgstr "Nilai Tidak Unik"
 
 #: ../glom/base_db.cc:1612
-msgid "The field's value must be unique, but a record with this value already exists."
+msgid ""
+"The field's value must be unique, but a record with this value already "
+"exists."
 msgstr "Nilai ruas mesti unik, tapi record dengan nilai ini telah ada."
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
 #: ../glom/base_db_table_data.cc:262
-msgid "Data may not be entered into this related field, because the related record does not yet exist, and the relationship does not allow automatic creation of new related records."
-msgstr "Data tak boleh dimasukkan ke dalam ruas yang terkait ini, karena record yang terkait belum ada, dan hubungan tak mengijinkan pembuatan otomatis record baru yang terkait."
+msgid ""
+"Data may not be entered into this related field, because the related record "
+"does not yet exist, and the relationship does not allow automatic creation "
+"of new related records."
+msgstr ""
+"Data tak boleh dimasukkan ke dalam ruas yang terkait ini, karena record yang "
+"terkait belum ada, dan hubungan tak mengijinkan pembuatan otomatis record "
+"baru yang terkait."
 
 #: ../glom/base_db_table_data.cc:263
 msgid "Related Record Does Not Exist"
@@ -450,8 +493,14 @@ msgstr "Record Terkait Tidak Ada"
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
 #: ../glom/base_db_table_data.cc:282
-msgid "Data may not be entered into this related field, because the related record does not yet exist, and the key in the related record is auto-generated and therefore can not be created with the key value in this record."
-msgstr "Data tak boleh dimasukkan ke dalam ruas yang terkait ini, karena record yang terkait belum ada, dan kunci pada record yang terkait dibuat secara otomatis sehingga tak dapat dibuat dengan nilai kunci dalam record ini."
+msgid ""
+"Data may not be entered into this related field, because the related record "
+"does not yet exist, and the key in the related record is auto-generated and "
+"therefore can not be created with the key value in this record."
+msgstr ""
+"Data tak boleh dimasukkan ke dalam ruas yang terkait ini, karena record yang "
+"terkait belum ada, dan kunci pada record yang terkait dibuat secara otomatis "
+"sehingga tak dapat dibuat dengan nilai kunci dalam record ini."
 
 #: ../glom/base_db_table_data.cc:284
 msgid "Related Record Cannot Be Created"
@@ -459,8 +508,12 @@ msgstr "Record Yang Terkait Tak Dapat Dibuat"
 
 #. Ask the user for confirmation:
 #: ../glom/base_db_table_data.cc:393
-msgid "Are you sure that you would like to delete this record? The data in this record will then be permanently lost."
-msgstr "Apakah Anda yakin ingin menghapus record ini? Data dalam record ini akan hilang secara permanen."
+msgid ""
+"Are you sure that you would like to delete this record? The data in this "
+"record will then be permanently lost."
+msgstr ""
+"Apakah Anda yakin ingin menghapus record ini? Data dalam record ini akan "
+"hilang secara permanen."
 
 #: ../glom/base_db_table_data.cc:394
 msgid "Delete record"
@@ -512,8 +565,7 @@ msgid "Rename Report"
 msgstr "Ubah Nama Laporan"
 
 #. namespace Glom
-#: ../glom.desktop.in.in.h:1
-#: ../ui/operator/window_main.glade.h:1
+#: ../glom.desktop.in.in.h:1 ../ui/operator/window_main.glade.h:1
 msgid "Glom"
 msgstr "Glom"
 
@@ -579,13 +631,11 @@ msgstr "Definisikan _Format Data"
 msgid "Find All"
 msgstr "Cari Semua"
 
-#: ../glom/frame_glom.cc:102
-#: ../glom/frame_glom.cc:106
+#: ../glom/frame_glom.cc:102 ../glom/frame_glom.cc:106
 msgid "No Table Selected"
 msgstr "Tak Ada Tabel Yang Dipilih"
 
-#: ../glom/frame_glom.cc:113
-#: ../ui/operator/dialog_find_id.glade.h:4
+#: ../glom/frame_glom.cc:113 ../ui/operator/dialog_find_id.glade.h:4
 msgid "Quick _search:"
 msgstr "Pencarian _kilat:"
 
@@ -613,24 +663,38 @@ msgid "Developer mode not available."
 msgstr "Mode pengembang tak tersedia."
 
 #: ../glom/frame_glom.cc:492
-msgid "Developer mode is not available because the file was opened over the network from a running Glom. Only the original file may be edited."
-msgstr "Mode pengembang tak tersedia karena berkas dibuka melalui jaringan dari Glom yang sedang berjalan. Hanya berkas asli yang dapat disunting."
+msgid ""
+"Developer mode is not available because the file was opened over the network "
+"from a running Glom. Only the original file may be edited."
+msgstr ""
+"Mode pengembang tak tersedia karena berkas dibuka melalui jaringan dari Glom "
+"yang sedang berjalan. Hanya berkas asli yang dapat disunting."
 
 #: ../glom/frame_glom.cc:498
 msgid "Developer mode not available"
 msgstr "Mode pengembang tak tersedia"
 
 #: ../glom/frame_glom.cc:499
-msgid "Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."
-msgstr "Mode pengembang tak tersedia. Periksalah apakah Anda punya hak akses basis data yang cukup dan berkas glom tak hanya dapat dibaca."
+msgid ""
+"Developer mode is not available. Check that you have sufficient database "
+"access rights and that the glom file is not read-only."
+msgstr ""
+"Mode pengembang tak tersedia. Periksalah apakah Anda punya hak akses basis "
+"data yang cukup dan berkas glom tak hanya dapat dibaca."
 
 #: ../glom/frame_glom.cc:506
 msgid "Saving in new document format"
 msgstr "Menyimpan dalam format dokumen baru"
 
 #: ../glom/frame_glom.cc:507
-msgid "The document was created by an earlier version of the application. Making changes to the document will mean that the document cannot be opened by some earlier versions of the application."
-msgstr "Dokumen dibuat oleh aplikasi versi lebih lama. Membuat perubahan ke dokumen akan berarti bahwa dokumen tak dapat dibuka oleh versi aplikasi yang lebih lama."
+msgid ""
+"The document was created by an earlier version of the application. Making "
+"changes to the document will mean that the document cannot be opened by some "
+"earlier versions of the application."
+msgstr ""
+"Dokumen dibuat oleh aplikasi versi lebih lama. Membuat perubahan ke dokumen "
+"akan berarti bahwa dokumen tak dapat dibuka oleh versi aplikasi yang lebih "
+"lama."
 
 #: ../glom/frame_glom.cc:510
 msgid "Continue"
@@ -641,8 +705,12 @@ msgid "Export Not Allowed."
 msgstr "Ekspor Tak Diijinkan."
 
 #: ../glom/frame_glom.cc:559
-msgid "You do not have permission to view the data in this table, so you may not export the data."
-msgstr "Anda tak punya hak untuk menilik data pada tabel ini, sehingga Anda tak bisa mengekspor data."
+msgid ""
+"You do not have permission to view the data in this table, so you may not "
+"export the data."
+msgstr ""
+"Anda tak punya hak untuk menilik data pada tabel ini, sehingga Anda tak bisa "
+"mengekspor data."
 
 #: ../glom/frame_glom.cc:590
 msgid "Could Not Create File."
@@ -678,7 +746,8 @@ msgstr "Berbagi pada jaringan"
 
 #: ../glom/frame_glom.cc:829
 msgid "This will allow other users on the network to use this database."
-msgstr "Ini akan mengijinkan pengguna lain pada jaringa untuk memakai basis data ini."
+msgstr ""
+"Ini akan mengijinkan pengguna lain pada jaringa untuk memakai basis data ini."
 
 #: ../glom/frame_glom.cc:832
 msgid "_Share"
@@ -691,20 +760,19 @@ msgstr "Berhenti berbagi pada jaringan"
 
 #: ../glom/frame_glom.cc:934
 msgid "This will prevent other users on the network from using this database."
-msgstr "Ini akan mencegah pengguna lain pada jaringan untuk memakai basis data ini."
+msgstr ""
+"Ini akan mencegah pengguna lain pada jaringan untuk memakai basis data ini."
 
 #: ../glom/frame_glom.cc:937
 msgid "_Stop Sharing"
 msgstr "Berhenti Pakai Ber_sama"
 
-#: ../glom/frame_glom.cc:985
-#: ../glom/frame_glom.cc:2102
+#: ../glom/frame_glom.cc:985 ../glom/frame_glom.cc:2102
 msgid "Stopping Database Server"
 msgstr "Menghentikan Server Basis Data"
 
 #. Do startup, such as starting the self-hosting database server
-#: ../glom/frame_glom.cc:988
-#: ../glom/frame_glom.cc:1990
+#: ../glom/frame_glom.cc:988 ../glom/frame_glom.cc:1990
 #: ../glom/frame_glom.cc:2148
 msgid "Starting Database Server"
 msgstr "Memulai Server Basis Data"
@@ -714,16 +782,24 @@ msgid "Table Exists Already"
 msgstr "Tabel Telah Ada"
 
 #: ../glom/frame_glom.cc:1143
-msgid "A table with this name already exists in the database. Please choose a different table name."
-msgstr "Tabel dengan nama ini sudah ada dalam basis data. Silakan pilih nama tabel lain."
+msgid ""
+"A table with this name already exists in the database. Please choose a "
+"different table name."
+msgstr ""
+"Tabel dengan nama ini sudah ada dalam basis data. Silakan pilih nama tabel "
+"lain."
 
 #: ../glom/frame_glom.cc:1147
 msgid "Relationship Exists Already"
 msgstr "Relasi Telah Ada"
 
 #: ../glom/frame_glom.cc:1147
-msgid "A relationship with this name already exists for this table. Please choose a different relationship name."
-msgstr "Relasi dengan nama ini telah ada bagi tabel ini. Silakan pilih nama relasi lain."
+msgid ""
+"A relationship with this name already exists for this table. Please choose a "
+"different relationship name."
+msgstr ""
+"Relasi dengan nama ini telah ada bagi tabel ini. Silakan pilih nama relasi "
+"lain."
 
 #: ../glom/frame_glom.cc:1151
 msgid "More information needed"
@@ -742,8 +818,7 @@ msgid "The new related table has been created."
 msgstr "Tabel baru yang berrelasi telah dibuat."
 
 #. namespace Glom
-#: ../glom/frame_glom.cc:1234
-#: ../ui/operator/box_navigation_tables.glade.h:1
+#: ../glom/frame_glom.cc:1234 ../ui/operator/box_navigation_tables.glade.h:1
 msgid "Edit Tables"
 msgstr "Sunting Tabel"
 
@@ -756,13 +831,11 @@ msgstr "Anda belum memasukkan kriteria pencarian cepat."
 msgid "No find criteria"
 msgstr "Tak ada kriteria pencarian"
 
-#: ../glom/frame_glom.cc:1663
-#: ../ui/developer/box_reports.glade.h:1
+#: ../glom/frame_glom.cc:1663 ../ui/developer/box_reports.glade.h:1
 msgid "Reports"
 msgstr "Laporan"
 
-#: ../glom/frame_glom.cc:1694
-#: ../ui/developer/box_print_layouts.glade.h:1
+#: ../glom/frame_glom.cc:1694 ../ui/developer/box_print_layouts.glade.h:1
 msgid "Print Layouts"
 msgstr "Tata Letak Cetak"
 
@@ -771,8 +844,11 @@ msgid "Could Not Create Directory"
 msgstr "Tak bisa Membuat Direktori"
 
 #: ../glom/frame_glom.cc:1811
-msgid "There was an error when attempting to create the directory for the new database files."
-msgstr "Ada galat ketika mencoba membuat direktori bagi berkas basis data baru."
+msgid ""
+"There was an error when attempting to create the directory for the new "
+"database files."
+msgstr ""
+"Ada galat ketika mencoba membuat direktori bagi berkas basis data baru."
 
 #: ../glom/frame_glom.cc:1815
 msgid "Could Not Start Database Server"
@@ -824,8 +900,12 @@ msgid "Script Uses PyGTK 2"
 msgstr "Skrip Memakai PyGTK 2"
 
 #: ../glom/utils_ui.cc:542
-msgid "Glom cannot run this script because it uses pygtk 2, but Glom uses GTK+ 3, and attempting to use pygtk 2 would cause Glom to crash."
-msgstr "Glom tak bisa menjalankan skrip ini karena memakai pygtk 2, tetapi Glom memakai GTK+ 3, mencoba memakai pygtk 2 akan menyebabkan Glom crash."
+msgid ""
+"Glom cannot run this script because it uses pygtk 2, but Glom uses GTK+ 3, "
+"and attempting to use pygtk 2 would cause Glom to crash."
+msgstr ""
+"Glom tak bisa menjalankan skrip ini karena memakai pygtk 2, tetapi Glom "
+"memakai GTK+ 3, mencoba memakai pygtk 2 akan menyebabkan Glom crash."
 
 #: ../glom/bakery/app_withdoc_gtk.cc:284
 #: ../ui/developer/window_field_definition_edit.glade.h:13
@@ -836,9 +916,9 @@ msgstr "_Sunting"
 msgid "Open Document"
 msgstr "Buka Dokumen"
 
-#: ../glom/bakery/app_withdoc.cc:237
-#: ../glom/bakery/app_withdoc.cc:288
-msgid "There was an error while saving the file. Your changes have not been saved."
+#: ../glom/bakery/app_withdoc.cc:237 ../glom/bakery/app_withdoc.cc:288
+msgid ""
+"There was an error while saving the file. Your changes have not been saved."
 msgstr "Ada galat saat menyimpan berkas. Perubahan Anda belum disimpan."
 
 #: ../glom/bakery/app_withdoc.cc:493
@@ -851,7 +931,9 @@ msgstr "Dokumen tak dapat dibuka."
 
 #: ../glom/bakery/dialog_offersave.cc:31
 msgid "This document has unsaved changes. Would you like to save the document?"
-msgstr "Dokumen ini memiliki perubahan yang belum disimpan. Apakah Anda ingin menyimpan dokumen?"
+msgstr ""
+"Dokumen ini memiliki perubahan yang belum disimpan. Apakah Anda ingin "
+"menyimpan dokumen?"
 
 #: ../glom/bakery/dialog_offersave.cc:35
 msgid ""
@@ -881,8 +963,12 @@ msgstr "Deteksi Otomatis"
 #. ignored
 #. iso_format
 #: ../glom/import_csv/dialog_import_csv.cc:154
-msgid "Note that the source file should contain numbers and dates in international ISO format. For instance, 22nd November 2008 should be %1."
-msgstr "Perhatikan bahwa berkas sumber mesti memuat angka dan tanggal dalam format ISO internasional. Sebagai contoh, 22nd November 2008 mestinya %1."
+msgid ""
+"Note that the source file should contain numbers and dates in international "
+"ISO format. For instance, 22nd November 2008 should be %1."
+msgstr ""
+"Perhatikan bahwa berkas sumber mesti memuat angka dan tanggal dalam format "
+"ISO internasional. Sebagai contoh, 22nd November 2008 mestinya %1."
 
 #: ../glom/import_csv/dialog_import_csv.cc:183
 msgid "No Document Available"
@@ -911,11 +997,16 @@ msgstr "Pengkodean terdeteksi sebagai: %1"
 
 #: ../glom/import_csv/dialog_import_csv.cc:467
 msgid "Encoding detection failed. Please manually choose one from the box."
-msgstr "Pendeteksian pengkodean gagal. Silakan pilih satu secara manual dari kotak."
+msgstr ""
+"Pendeteksian pengkodean gagal. Silakan pilih satu secara manual dari kotak."
 
 #: ../glom/import_csv/dialog_import_csv.cc:471
-msgid "The file contains data not in the specified encoding. Please choose another one, or try \"Auto Detect\"."
-msgstr "Berkas yang memuat data tidak dalam pengkodean yang dinyatakan. Silakan pilih yang lain, atau coba \"Deteksi Otomatis\"."
+msgid ""
+"The file contains data not in the specified encoding. Please choose another "
+"one, or try \"Auto Detect\"."
+msgstr ""
+"Berkas yang memuat data tidak dalam pengkodean yang dinyatakan. Silakan "
+"pilih yang lain, atau coba \"Deteksi Otomatis\"."
 
 #. Translators: This is the name of a UI element (a layout part name).
 #. This is a straight line, not a database row.
@@ -937,8 +1028,12 @@ msgid "<Picture>"
 msgstr "<Gambar>"
 
 #: ../glom/import_csv/dialog_import_csv.cc:710
-msgid "One column needs to be assigned the table's primary key (<b>%1</b>) as target field before importing"
-msgstr "Satu kolom perlu diberi kunci primer tabel (<b>%1</b>) sebagai ruas target sebelum mengimpor"
+msgid ""
+"One column needs to be assigned the table's primary key (<b>%1</b>) as "
+"target field before importing"
+msgstr ""
+"Satu kolom perlu diberi kunci primer tabel (<b>%1</b>) sebagai ruas target "
+"sebelum mengimpor"
 
 #: ../glom/import_csv/dialog_import_csv.cc:738
 msgid "Could Not Open file"
@@ -961,16 +1056,28 @@ msgid "Import complete\n"
 msgstr "Impor selesai\n"
 
 #: ../glom/import_csv/dialog_import_csv_progress.cc:203
-msgid "Warning: Importing row %1: The value for field %2 must be unique, but is already in use. The value will not be imported.\n"
-msgstr "Peringatan: Mengimpor baris %1: Nilai bagi ruas %2 harus unik, tapi telah dipakai. Nilai tak akan diimpor.\n"
+msgid ""
+"Warning: Importing row %1: The value for field %2 must be unique, but is "
+"already in use. The value will not be imported.\n"
+msgstr ""
+"Peringatan: Mengimpor baris %1: Nilai bagi ruas %2 harus unik, tapi telah "
+"dipakai. Nilai tak akan diimpor.\n"
 
 #: ../glom/import_csv/dialog_import_csv_progress.cc:212
-msgid "Warning: Importing row %1: The value for field %2, \"%3\" could not be converted to the field's type. The value will not be imported.\n"
-msgstr "Peringatan: Mengimpor baris %1: Nilai bagi ruas %2, \"%3\" tak dapat dikonversi ke tipe ruas. Nilai tak akan diimpor.\n"
+msgid ""
+"Warning: Importing row %1: The value for field %2, \"%3\" could not be "
+"converted to the field's type. The value will not be imported.\n"
+msgstr ""
+"Peringatan: Mengimpor baris %1: Nilai bagi ruas %2, \"%3\" tak dapat "
+"dikonversi ke tipe ruas. Nilai tak akan diimpor.\n"
 
 #: ../glom/import_csv/dialog_import_csv_progress.cc:237
-msgid "Error importing row %1: Cannot import the row because the primary key is empty.\n"
-msgstr "Galat saat mengimpor baris %1: Tak bisa mengimpor baris karena kunci primer kosong.\n"
+msgid ""
+"Error importing row %1: Cannot import the row because the primary key is "
+"empty.\n"
+msgstr ""
+"Galat saat mengimpor baris %1: Tak bisa mengimpor baris karena kunci primer "
+"kosong.\n"
 
 #. TODO: Can we get this from anywhere else, such as iso-codes? murrayc
 #. TODO: Make this generally more efficient.
@@ -1116,13 +1223,29 @@ msgstr "%d/%m/%Y"
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
 #: ../glom/libglom/data_structure/glomconversions.cc:147
-msgid "ERROR: sanity_check_date_parsing(): Sanity check failed: Glom could not parse a date's text representation that it generated itself, in this locale."
-msgstr "GALAT: sanity_check_date_parsing(): Pemeriksaan kewajaran gagal: Glom tak bisa mengurai representasi teks dari tanggal yang dibuatnya sendiri, dalam locale ini."
+msgid ""
+"ERROR: sanity_check_date_parsing(): Sanity check failed: Glom could not "
+"parse a date's text representation that it generated itself, in this locale."
+msgstr ""
+"GALAT: sanity_check_date_parsing(): Pemeriksaan kewajaran gagal: Glom tak "
+"bisa mengurai representasi teks dari tanggal yang dibuatnya sendiri, dalam "
+"locale ini."
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
 #: ../glom/libglom/data_structure/glomconversions.cc:181
-msgid "ERROR: sanity_check_date_text_representation_uses_4_digit_year(): Sanity check failed: Glom does not seem to use 4 digits to display years in a date's text representation, in this locale. Defaulting to dd/mm/yyyy though this might be incorrect for your locale. This needs attention from a translator. Please file a bug - see http://www.glom.org"
-msgstr "GALAT: sanity_check_date_text_representasion_uses_4_digit_year(): Pemeriksaan kewajaran gagal: Glom nampaknya tak memakai 4 digit untuk menampilkan tahun dalam representasi teks tanggal, dalam locale ini. Ditata ke baku dd/mm/yyyy walaupun ini mungkin tidak benar bagi locale Anda. Ini perlu perhatian dari penerjemah. Silakan laporkan kutu - lihat http://www.glom.org"
+msgid ""
+"ERROR: sanity_check_date_text_representation_uses_4_digit_year(): Sanity "
+"check failed: Glom does not seem to use 4 digits to display years in a "
+"date's text representation, in this locale. Defaulting to dd/mm/yyyy though "
+"this might be incorrect for your locale. This needs attention from a "
+"translator. Please file a bug - see http://www.glom.org"
+msgstr ""
+"GALAT: sanity_check_date_text_representasion_uses_4_digit_year(): "
+"Pemeriksaan kewajaran gagal: Glom nampaknya tak memakai 4 digit untuk "
+"menampilkan tahun dalam representasi teks tanggal, dalam locale ini. Ditata "
+"ke baku dd/mm/yyyy walaupun ini mungkin tidak benar bagi locale Anda. Ini "
+"perlu perhatian dari penerjemah. Silakan laporkan kutu - lihat http://www."
+"glom.org"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutgroup.cc:514
@@ -1342,20 +1465,17 @@ msgstr "Komentar"
 #. Translators: This is a noun. It is the title of a report.
 #. Add Pages:
 #. Translators: This is a noun. It is a notebook tab title.
-#: ../glom/libglom/report_builder.cc:768
-#: ../glom/mode_data/notebook_data.cc:62
+#: ../glom/libglom/report_builder.cc:768 ../glom/mode_data/notebook_data.cc:62
 #: ../glom/mode_find/notebook_find.cc:31
 msgid "List"
 msgstr "Daftar"
 
-#: ../glom/glom_create_from_example.cc:65
-#: ../glom/glom_test_connection.cc:55
+#: ../glom/glom_create_from_example.cc:65 ../glom/glom_test_connection.cc:55
 #: ../glom/main.cc:197
 msgid "Glom options"
 msgstr "Opsi Glom"
 
-#: ../glom/glom_create_from_example.cc:65
-#: ../glom/glom_test_connection.cc:55
+#: ../glom/glom_create_from_example.cc:65 ../glom/glom_test_connection.cc:55
 msgid "Command-line options"
 msgstr "Opsi baris perintah"
 
@@ -1364,53 +1484,54 @@ msgid "The example .glom file to open."
 msgstr "Berkas contoh .glom yang akan dibuka."
 
 #: ../glom/glom_create_from_example.cc:77
-msgid "The directory in which to save the created .glom file, or sub-directory if necessary, such as /home/someuser/ ."
-msgstr "Direktori tempat menyimpan berkas .glom yang dibuat, atau sub direktorinya bila diperlukan, seperti misalnya /home/namapengguna/ ."
+msgid ""
+"The directory in which to save the created .glom file, or sub-directory if "
+"necessary, such as /home/someuser/ ."
+msgstr ""
+"Direktori tempat menyimpan berkas .glom yang dibuat, atau sub direktorinya "
+"bila diperlukan, seperti misalnya /home/namapengguna/ ."
 
 #: ../glom/glom_create_from_example.cc:82
 msgid "The name for the created .glom file, such as something.glom ."
 msgstr "Nama bagi berkas .glom yang dibuat, seperti misalnya sesuatu.glom ."
 
-#: ../glom/glom_create_from_example.cc:87
-#: ../glom/glom_test_connection.cc:63
+#: ../glom/glom_create_from_example.cc:87 ../glom/glom_test_connection.cc:63
 #: ../glom/main.cc:212
 msgid "The version of this application."
 msgstr "Versi aplikasi ini."
 
 #: ../glom/glom_create_from_example.cc:93
-msgid "The hostname of the PostgreSQL server, such as localhost. If this is not specified then a self-hosted database will be created."
-msgstr "Nama host dari server PostgreSQL, seperti misalnya localhost. Bila ini tak dinyatakan maka basis data yang dihost mandiri akan dibuat."
+msgid ""
+"The hostname of the PostgreSQL server, such as localhost. If this is not "
+"specified then a self-hosted database will be created."
+msgstr ""
+"Nama host dari server PostgreSQL, seperti misalnya localhost. Bila ini tak "
+"dinyatakan maka basis data yang dihost mandiri akan dibuat."
 
-#: ../glom/glom_create_from_example.cc:98
-#: ../glom/glom_test_connection.cc:73
+#: ../glom/glom_create_from_example.cc:98 ../glom/glom_test_connection.cc:73
 msgid "The port of the PostgreSQL server, such as 5434."
 msgstr "Port dari server PostgreSQL, seperti misalnya 5434."
 
-#: ../glom/glom_create_from_example.cc:103
-#: ../glom/glom_test_connection.cc:78
+#: ../glom/glom_create_from_example.cc:103 ../glom/glom_test_connection.cc:78
 msgid "The username for the PostgreSQL server."
 msgstr "Nama pengguna bagi server PostgreSQL."
 
-#: ../glom/glom_create_from_example.cc:240
-#: ../glom/glom_test_connection.cc:131
+#: ../glom/glom_create_from_example.cc:240 ../glom/glom_test_connection.cc:131
 #: ../glom/main.cc:486
 msgid "Error while parsing command-line options: "
 msgstr "Galat saat mengurai opsi baris perintah:"
 
 #. TODO: How can we just print them out?
-#: ../glom/glom_create_from_example.cc:241
-#: ../glom/glom_test_connection.cc:91
+#: ../glom/glom_create_from_example.cc:241 ../glom/glom_test_connection.cc:91
 #: ../glom/main.cc:487
 msgid "Use --help to see a list of available command-line options."
 msgstr "Gunakan --help untuk melihat daftar opsi baris perintah yang tersedia."
 
-#: ../glom/glom_create_from_example.cc:275
-#: ../glom/main.cc:531
+#: ../glom/glom_create_from_example.cc:275 ../glom/main.cc:531
 msgid "Glom: The file does not exist."
 msgstr "Glom: Berkas tak ada."
 
-#: ../glom/glom_create_from_example.cc:285
-#: ../glom/main.cc:541
+#: ../glom/glom_create_from_example.cc:285 ../glom/main.cc:541
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: Path berkas adalah direktori, bukan berkas."
 
@@ -1422,8 +1543,7 @@ msgstr "Glom: Direktori keluaran tidak ada."
 msgid "Glom: The output path is not a directory."
 msgstr "Glom: Path keluaran bukan direktori."
 
-#: ../glom/glom_create_from_example.cc:424
-#: ../glom/glom_test_connection.cc:166
+#: ../glom/glom_create_from_example.cc:424 ../glom/glom_test_connection.cc:166
 msgid "Please enter the PostgreSQL server's password for the user %1: "
 msgstr "Silakan masukkan sandi server PostgreSQL bagi pengguna %1:"
 
@@ -1433,27 +1553,30 @@ msgstr "Nama host bagi server PostgreSQL, seperti misalnya localhost."
 
 #: ../glom/glom_test_connection.cc:84
 msgid "The specific database on the PostgreSQL server (Optional)."
-msgstr ""
+msgstr "Basis data spesifik pada server PostgreSQL (Opsional)."
 
 #: ../glom/glom_test_connection.cc:156
 msgid "Please provide a database username."
-msgstr ""
+msgstr "Harap berikan suatu nama pengguna basis data."
 
 #: ../glom/glom_test_connection.cc:215
-msgid "Error: Could not connect to the server even without specifying a database."
+msgid ""
+"Error: Could not connect to the server even without specifying a database."
 msgstr ""
+"Galat: Tak bisa menyambung ke server bahkan tanpa menyatakan suatu basis "
+"data."
 
 #: ../glom/glom_test_connection.cc:223
 msgid "Error: Could not connect to the specified database."
-msgstr ""
+msgstr "Galat: Tak bisa menyambing ke basis data yang dinyatakan."
 
 #: ../glom/glom_test_connection.cc:229
 msgid "Successful connection."
-msgstr ""
+msgstr "Koneksi yang sukses."
 
 #: ../glom/main.cc:197
 msgid "Command-line options for glom"
-msgstr ""
+msgstr "Opsi baris perintah bagi glom"
 
 #: ../glom/main.cc:207
 msgid "The Filename"
@@ -1461,25 +1584,36 @@ msgstr "Nama Berkas"
 
 #: ../glom/main.cc:217
 msgid "Whether the filename is a .tar.gz backup to be restored."
-msgstr ""
+msgstr "Apakah nama berkas adalah suatu cadangan .tar.gz yang akan dipulihkan."
 
 #: ../glom/main.cc:222
-msgid "Do not automatically stop the database server if Glom quits. This is helpful for debugging with gdb."
+msgid ""
+"Do not automatically stop the database server if Glom quits. This is helpful "
+"for debugging with gdb."
 msgstr ""
+"Jangan menghentikan server basis data secara otomatis ketika Glom keluar. "
+"Ini berguna untuk pengawakutuan memakai gdb."
 
 #: ../glom/main.cc:227
 msgid "Show the generated SQL queries on stdout, for debugging."
-msgstr ""
+msgstr "Tampilkan query SQL yang dihasilkan pada stdout, untuk pengawakutuan."
 
 #: ../glom/main.cc:232
 msgid "Show how Glom outputs a date in this locale, then stop."
 msgstr ""
+"Tampilkan bagaimana Glom mengeluarkan suatu tanggal dalam locale ini, lalu "
+"berhenti."
 
 #: ../glom/main.cc:245
 msgid ""
-"You seem to be running Glom as a user with administrator privileges. Glom may not be run with such privileges for security reasons.\n"
+"You seem to be running Glom as a user with administrator privileges. Glom "
+"may not be run with such privileges for security reasons.\n"
 "Please login to your system as a normal user."
 msgstr ""
+"Nampaknya Anda menjalankan Glom sebagai pengguna dengan hak administrator. "
+"Glom tak boleh dijalankan dengan privilese seperti itu untuk alasan "
+"keamanan.\n"
+"Harap log masuk ke sistem Anda sebagai pengguna normal."
 
 #. Warn the user:
 #: ../glom/main.cc:259
@@ -1487,17 +1621,18 @@ msgid ""
 "You seem to be running Glom as root. Glom may not be run as root.\n"
 "Please login to your system as a normal user."
 msgstr ""
+"Nampaknya Anda menjalankan Glom sebagai root. Glom tak boleh dijalankan "
+"sebagai root.\n"
+"Harap log masuk ke sistem Anda sebagai pengguna normal."
 
 #: ../glom/main.cc:265
 msgid "Running As Root"
-msgstr ""
+msgstr "Berjalan Sebagai Root"
 
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
-#: ../glom/main.cc:308
-#: ../glom/main.cc:321
-#: ../glom/main.cc:564
+#: ../glom/main.cc:308 ../glom/main.cc:321 ../glom/main.cc:564
 msgid "Incomplete Glom Installation"
 msgstr "Instalasi Glom Tak Lengkap"
 
@@ -1505,10 +1640,17 @@ msgstr "Instalasi Glom Tak Lengkap"
 #. modal
 #: ../glom/main.cc:309
 msgid ""
-"Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n"
+"Your installation of Glom is not complete, because PostgreSQL is not "
+"available on your system. PostgreSQL is needed for self-hosting of Glom "
+"databases.\n"
 "\n"
 "You may now install PostgreSQL to complete the Glom installation."
 msgstr ""
+"Instalasi Glom Anda belum lengkap, karena PostgreSQL tak tersedia pada "
+"sistem Anda. PostgreSQL diperlukan bagi basis data Glom yang terhosting "
+"mandiri.\n"
+"\n"
+"Kini Anda dapat memasang PostgreSQL untuk melengkapi instalasi Glom."
 
 #: ../glom/main.cc:311
 msgid "Install PostgreSQL"
@@ -1518,54 +1660,93 @@ msgstr "Pasang PostgreSQL"
 #. modal
 #: ../glom/main.cc:322
 msgid ""
-"Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n"
+"Your installation of Glom is not complete, because PostgreSQL is not "
+"available on your system. PostgreSQL is needed for self-hosting of Glom "
+"databases.\n"
 "\n"
-"Please report this bug to your vendor, or your system administrator so it can be corrected."
+"Please report this bug to your vendor, or your system administrator so it "
+"can be corrected."
 msgstr ""
+"Instalasi Glom Anda belum lengkap, karena PostgreSQL tak tersedia pada "
+"sistem Anda. PostgreSQL diperlukan bagi basis data Glom yang terhosting "
+"mandiri.\n"
+"\n"
+"Harap laporkan kutu ini ke vendor Anda, atau administrator sistem Anda, "
+"sehingga ini dapat diperbaiki."
 
 #. The python module could not be imported by Glom, so warn the user:
 #: ../glom/main.cc:338
 msgid ""
-"Your installation of Glom is not complete, because the Glom Python module is not available on your system.\n"
+"Your installation of Glom is not complete, because the Glom Python module is "
+"not available on your system.\n"
 "\n"
-"Please report this bug to your vendor, or your system administrator so it can be corrected."
+"Please report this bug to your vendor, or your system administrator so it "
+"can be corrected."
 msgstr ""
+"Instalasi Glom Anda belum lengkap, karena modul Python Glom tak tersedia "
+"pada sistem Anda.\n"
+"\n"
+"Harap laporkan kutu ini ke vendor Anda, atau administrator sistem Anda, "
+"sehingga ini dapat diperbaiki."
 
 #: ../glom/main.cc:340
 msgid "Glom Python Module Not Installed"
-msgstr ""
+msgstr "Modul Python Glom Tak Terpasang"
 
 #. The python module could not be imported by Glom, so warn the user:
 #: ../glom/main.cc:353
 msgid ""
-"Your installation of Glom is not complete, because the gi.repository Python module is not available on your system.\n"
+"Your installation of Glom is not complete, because the gi.repository Python "
+"module is not available on your system.\n"
 "\n"
-"Please report this bug to your vendor, or your system administrator so it can be corrected."
+"Please report this bug to your vendor, or your system administrator so it "
+"can be corrected."
 msgstr ""
+"Instalasi Glom Anda belum lengkap, karena modul Python gi.repository tak "
+"tersedia pada sistem Anda.\n"
+"\n"
+"Harap laporkan kutu ini ke vendor Anda, atau administrator sistem Anda, "
+"sehingga ini dapat diperbaiki."
 
 #: ../glom/main.cc:355
 msgid "gi.repository Python Module Not Installed"
-msgstr ""
+msgstr "Modul Python gi.repository Tak Terpasang"
 
 #. The python module could not be imported by Glom, so warn the user:
 #: ../glom/main.cc:368
 msgid ""
-"Your installation of Glom is not complete, because the gi.repository.Gda python module is not available on your system.\n"
+"Your installation of Glom is not complete, because the gi.repository.Gda "
+"python module is not available on your system.\n"
 "\n"
-"Please report this bug to your vendor, or your system administrator so it can be corrected."
+"Please report this bug to your vendor, or your system administrator so it "
+"can be corrected."
 msgstr ""
+"Instalasi Glom Anda belum lengkap, karena modul Python gi.repository.Gda tak "
+"tersedia pada sistem Anda.\n"
+"\n"
+"Harap laporkan kutu ini ke vendor Anda, atau administrator sistem Anda, "
+"sehingga ini dapat diperbaiki."
 
 #: ../glom/main.cc:370
 msgid "gi.repository.Gda Python Module Not Installed"
-msgstr ""
+msgstr "Modul Python gi.repository.Gda Tak Terpasang"
 
 #. The Postgres provider was not found, so warn the user:
 #: ../glom/main.cc:562
 msgid ""
-"Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n"
+"Your installation of Glom is not complete, because the PostgreSQL libgda "
+"provider is not available on your system. This provider is needed to access "
+"Postgres database servers.\n"
 "\n"
-"Please report this bug to your vendor, or your system administrator so it can be corrected."
+"Please report this bug to your vendor, or your system administrator so it "
+"can be corrected."
 msgstr ""
+"Instalasi Glom Anda belum lengkap, karena penyedia libgda PostgreSQL tak "
+"tersedia pada sistem Anda. Penyedia ini diperlukan untuk mengakses server "
+"basis data Postgres.\n"
+"\n"
+"Harap laporkan kutu ini ke vendor Anda atau administrator sistem Anda, "
+"sehingga dapat diperbaiki."
 
 #. Don't add ContextLayout in client only mode because it would never
 #. be sensitive anyway
@@ -1576,19 +1757,27 @@ msgid "Layout"
 msgstr "Tata Letak"
 
 #: ../glom/mode_data/box_data.cc:148
-msgid "You have not entered any find criteria. Try entering information in the fields."
+msgid ""
+"You have not entered any find criteria. Try entering information in the "
+"fields."
 msgstr ""
+"Ada belum memasukkan kriteria cari apapun. Cobalah memasukkan informasi "
+"dalam ruas."
 
 #: ../glom/mode_data/box_data.cc:150
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:109
 msgid "No Find Criteria"
-msgstr ""
+msgstr "Tak Ada Kriteria Cari"
 
 #: ../glom/mode_data/box_data.cc:188
 msgid ""
-"This data cannot be stored in the database because you have not provided a primary key.\n"
+"This data cannot be stored in the database because you have not provided a "
+"primary key.\n"
 "Do you really want to discard this data?"
 msgstr ""
+"Data ini tak dapat disimpan dalam basis data karena Anda belum memberikan "
+"suatu kunci primer.\n"
+"Apakah Anda benar-benar ingin membuang data ini?"
 
 #. Ask user to confirm loss of data:
 #: ../glom/mode_data/box_data.cc:190
@@ -1621,39 +1810,49 @@ msgstr "Tilik record terakhir dalam daftar."
 
 #: ../glom/mode_data/box_data_details.cc:416
 msgid "Layout Contains No Fields"
-msgstr ""
+msgstr "Tata Letak Tak Memuat Ruas"
 
 #: ../glom/mode_data/box_data_details.cc:416
-msgid "There are no fields on the layout, so there is no way to enter data in a new record."
+msgid ""
+"There are no fields on the layout, so there is no way to enter data in a new "
+"record."
 msgstr ""
+"Tak ada ruas dalam tata letak, sehingga tak ada cara untuk memasukkan data "
+"dalam record baru."
 
 #. Tell user that a primary key is needed to delete a record:
 #: ../glom/mode_data/box_data_details.cc:443
 msgid "No primary key value."
-msgstr ""
+msgstr "Tak ada nilai kunci primer."
 
 #: ../glom/mode_data/box_data_details.cc:444
 msgid "This record cannot be deleted because there is no primary key."
-msgstr ""
+msgstr "Record ini tak dapat dihapus karena tak ada kunci primer."
 
 #. Warn user that they can't choose their own primary key:
 #: ../glom/mode_data/box_data_details.cc:850
 msgid "Primary key auto increments"
-msgstr ""
+msgstr "Kunci primer dinaikkan otomatis"
 
 #: ../glom/mode_data/box_data_details.cc:851
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
 msgstr ""
+"Nilai kunci primer dinaikkan otomatis.\n"
+"Anda tak boleh memasukkan nilai kunci primer Anda sendiri."
 
 #: ../glom/mode_data/box_data_portal.cc:337
 msgid "No Corresponding Record Exists"
-msgstr ""
+msgstr "Tak Ada Record Yang Berkaitan"
 
 #: ../glom/mode_data/box_data_portal.cc:337
-msgid "No record with this value exists. Therefore navigation to the related record is not possible."
+msgid ""
+"No record with this value exists. Therefore navigation to the related record "
+"is not possible."
 msgstr ""
+"Tak ada record dengan nilai ini. Maka navigasi ke record yang terkait tak "
+"mungkin."
 
 #: ../glom/mode_data/flowtablewithfields.cc:1142
 #: ../glom/utility_widgets/notebooklabelglom.cc:75
@@ -1674,7 +1873,7 @@ msgstr "tab1"
 #. Note to translators: This is the default label text for a notebook tab.
 #: ../glom/mode_data/flowtablewithfields.cc:1157
 msgid "Tab One"
-msgstr ""
+msgstr "Tab Satu"
 
 #: ../glom/mode_data/flowtablewithfields.cc:1170
 msgid "button"
@@ -1720,7 +1919,8 @@ msgstr "Tilikan Daftar Atau Rincian"
 
 #. Don't allow a relationship to be added twice.
 #: ../glom/mode_design/box_db_table_relationships.cc:45
-msgid "This relationship already exists. Please choose a different relationship name"
+msgid ""
+"This relationship already exists. Please choose a different relationship name"
 msgstr "Relasi ini sudah ada. Silakan pilih nama relasi yang lain"
 
 #. Translators: FROM as in SQL's FROM
@@ -1771,8 +1971,12 @@ msgstr "Sandi Tak Cocok"
 
 #: ../glom/mode_design/dialog_initial_password.cc:88
 #: ../glom/mode_design/users/dialog_user.cc:58
-msgid "The entered password does not match the entered password confirmation. Please try again."
-msgstr "Sandi yang dimasukkan tak cocok dengan sandi konfirmasi yang dimasukkan. Silakan coba lagi."
+msgid ""
+"The entered password does not match the entered password confirmation. "
+"Please try again."
+msgstr ""
+"Sandi yang dimasukkan tak cocok dengan sandi konfirmasi yang dimasukkan. "
+"Silakan coba lagi."
 
 #: ../glom/mode_design/dialog_initial_password.cc:93
 #: ../glom/mode_design/users/dialog_user.cc:63
@@ -1800,8 +2004,14 @@ msgid "Recalculation Required"
 msgstr "Diperlukan Kalkulasi Ulang"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:269
-msgid "You have changed the calculation used by this field so Glom must recalculate the value in all records. If the table contains many records then this could take a long time."
+msgid ""
+"You have changed the calculation used by this field so Glom must recalculate "
+"the value in all records. If the table contains many records then this could "
+"take a long time."
 msgstr ""
+"Anda telah mengubah kalkulasi yang dipakai oleh ruas ini sehingga Glom mesti "
+"menghitung ulang nilai dalam semua record. Bila tabel memuat banyak record "
+"maka ini bisa makan waktu lama."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:274
 msgid "Recalculate"
@@ -1812,50 +2022,73 @@ msgid "Invalid database structure"
 msgstr "Struktur basis data tak valid"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:284
-msgid "This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."
-msgstr "Ruas basis data ini dibuat atau disunting di luar Glom. Ini memiliki tipe data yang tak didukung oleh Glom. Administrator sistem Anda mungkin bisa memperbaiki ini."
+msgid ""
+"This database field was created or edited outside of Glom. It has a data "
+"type that is not supported by Glom. Your system administrator may be able to "
+"correct this."
+msgstr ""
+"Ruas basis data ini dibuat atau disunting di luar Glom. Ini memiliki tipe "
+"data yang tak didukung oleh Glom. Administrator sistem Anda mungkin bisa "
+"memperbaiki ini."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:292
 msgid "Primary key required"
 msgstr "Diperlukan kunci primer"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:293
-msgid "You may not unset the primary key because the table must have a primary key. You may set another field as the primary key instead."
+msgid ""
+"You may not unset the primary key because the table must have a primary key. "
+"You may set another field as the primary key instead."
 msgstr ""
+"Anda tak boleh meniadakan kunci primer karena tabel mesti memiliki suatu "
+"kunci primer. Sebagai gantinya, Anda boleh menata ruas lain menjadi kunci "
+"primer."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:305
 msgid "Field contains empty values."
-msgstr ""
+msgstr "Ruas memuat nilai kosong."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:305
-msgid "The field may not yet be used as a primary key because it contains empty values."
+msgid ""
+"The field may not yet be used as a primary key because it contains empty "
+"values."
 msgstr ""
+"Ruas belum boleh dipakai sebagai kunci primer karena memuat nilai-nilai yang "
+"kosong."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:314
 msgid "Field contains non-unique values."
-msgstr ""
+msgstr "Ruas memuat nilai-nilai yang tak unik."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:314
-msgid "The field may not yet be used as a primary key because it contains values that are not unique."
+msgid ""
+"The field may not yet be used as a primary key because it contains values "
+"that are not unique."
 msgstr ""
+"Ruas belum boleh dipakai sebagai kunci primer karena memuat nilai-nilai yang "
+"tak unik."
 
 #. Ask the user to confirm this major change:
 #: ../glom/mode_design/fields/box_db_table_definition.cc:319
 msgid "Change primary key"
-msgstr ""
+msgstr "Ubah kunci primer"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:320
-msgid "Are you sure that you wish to set this field as the primary key, instead of the existing primary key?"
+msgid ""
+"Are you sure that you wish to set this field as the primary key, instead of "
+"the existing primary key?"
 msgstr ""
+"Apakah Anda yakin hendak menata ruas ini sebagai kunci primer, menggantikan "
+"kunci primer yang ada?"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:325
 msgid "Change Primary Key"
-msgstr ""
+msgstr "Ubah Kunci Primer"
 
 #. Warn the user and refuse to make the change:
 #: ../glom/mode_design/fields/box_db_table_definition.cc:337
 msgid "Field Name Already Exists"
-msgstr ""
+msgstr "Nama Ruas Sudah Ada"
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:102
 msgid "Calculation Error"
@@ -1863,22 +2096,24 @@ msgstr "Galat Perhitungan"
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:102
 msgid "The calculation does not have a return statement."
-msgstr ""
+msgstr "Kalkulasi tak memiliki pernyataan return."
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:147
 msgid "Calculation result"
-msgstr ""
+msgstr "Hasil perhitungan"
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:147
 msgid ""
 "The result of the calculation is:\n"
 "%1"
 msgstr ""
+"Hasil kalkulasi adalah:\n"
+"%1"
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:149
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc:139
 msgid "Calculation failed"
-msgstr ""
+msgstr "Perhitungan gagal"
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:149
 #, c-format
@@ -1886,6 +2121,8 @@ msgid ""
 "The calculation failed with this error:\n"
 "%s"
 msgstr ""
+"Kalkulasi gagal dengan galat ini:\n"
+"%s"
 
 #: ../glom/mode_design/fields/dialog_fielddefinition.cc:157
 msgid "Default Value"
@@ -1912,7 +2149,7 @@ msgstr " Melalui: %1"
 #: ../glom/mode_design/layout/dialog_layout_calendar_related.cc:239
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:293
 msgid "None: No visible tables are specified by the fields."
-msgstr ""
+msgstr "Nihil: Tak ada tabel yang nampak yang dinyatakan oleh ruas."
 
 #. Columns-count column:
 #. Note to translators: This is the number of columns in a group (group being a noun)
@@ -1924,7 +2161,7 @@ msgstr "Kolom Grup"
 #. Note to translators: This is a name (the width of a UI element in the display), not an action.
 #: ../glom/mode_design/layout/dialog_layout_details.cc:141
 msgid "Display Width"
-msgstr ""
+msgstr "Lebar Tampilan"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:686
 msgid "Text Title"
@@ -1932,7 +2169,7 @@ msgstr "Judul Teks"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:711
 msgid "Image Title"
-msgstr ""
+msgstr "Judul Gambar"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:866
 msgid "group"
@@ -1941,19 +2178,19 @@ msgstr "grup"
 #: ../glom/mode_design/layout/dialog_layout_details.cc:958
 #: ../ui/developer/dialog_notebook.glade.h:1
 msgid "Notebook Tabs"
-msgstr ""
+msgstr "Tab Buku Catatan"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:958
 msgid "Add child groups to the notebook to add tabs."
-msgstr ""
+msgstr "Tambahkan grup anak ke buku catatan untuk menambah tab."
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1121
 msgid "Related Calendar: %1"
-msgstr ""
+msgstr "Kalendar Terkait: %1"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1123
 msgid "Related List: %1"
-msgstr ""
+msgstr "Daftar Terkait: %1"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1140
 msgid "Field: %1"
@@ -1970,18 +2207,26 @@ msgstr "Ruas"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:405
 msgid "Invalid Relationship"
-msgstr ""
+msgstr "Relasi Yang Tak Valid"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:406
-msgid "The relationship may not be used to show related records because the relationship does not specify a field in the related table."
+msgid ""
+"The relationship may not be used to show related records because the "
+"relationship does not specify a field in the related table."
 msgstr ""
+"Hubungan tak boleh dipakai untuk menunjukkan record yang terkait karena "
+"hubungan tak menyatakan suatu ruas dalam tabel terkait."
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:412
 msgid "Relationship Uses a Related Primary Key"
-msgstr ""
+msgstr "Hubungan Memakai suatu Kunci Primer Terkait"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:413
-msgid "The relationship may not be used to show related records because the relationship uses a primary key field in the related table, which must contain unique values. This would prevent the relationship from specifying multiple related records."
+msgid ""
+"The relationship may not be used to show related records because the "
+"relationship uses a primary key field in the related table, which must "
+"contain unique values. This would prevent the relationship from specifying "
+"multiple related records."
 msgstr ""
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:419
@@ -1989,7 +2234,10 @@ msgid "Relationship Uses a Related Unique Field"
 msgstr ""
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:420
-msgid "The relationship may not be used to show related records because the relationship uses a unique-values field in the related table. This would prevent the relationship from specifying multiple related records."
+msgid ""
+"The relationship may not be used to show related records because the "
+"relationship uses a unique-values field in the related table. This would "
+"prevent the relationship from specifying multiple related records."
 msgstr ""
 
 #. Translators: This is Automatic text alignment.
@@ -2010,7 +2258,7 @@ msgstr "Kanan"
 #. Give it access to the document.
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:159
 msgid "Extra Fields"
-msgstr ""
+msgstr "Ruas-Ruas Ekstra"
 
 #. Add labels (because we will hide the checkboxes):
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:180
@@ -2030,6 +2278,8 @@ msgid ""
 "The calculation failed with this error:\n"
 "%1"
 msgstr ""
+"Kalkulasi gagal dengan galat ini:\n"
+"%1"
 
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:33
 #: ../ui/developer/dialog_fieldslist.glade.h:2
@@ -2041,7 +2291,7 @@ msgstr "Pemformatan"
 #. Give it access to the document.
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc:161
 msgid "Group By - Secondary Fields"
-msgstr ""
+msgstr "Group By - Ruas Sekunder"
 
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_groupby_sortfields.cc:59
 msgid "Ascending"
@@ -2058,16 +2308,16 @@ msgstr "Bagian"
 #. Don't allow a relationship to be added twice.
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:95
 msgid "This item already exists. Please choose a different item name"
-msgstr ""
+msgstr "Butir ini sudah ada. Harap pilih nama butir lain"
 
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:223
 msgid "Are you sure that you want to rename this print layout?"
-msgstr ""
+msgstr "Apakah Anda yakin Anda hendak mengubah nama tata letak cetak ini?"
 
 #. TODO: Show old and new names?
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:224
 msgid "<b>Rename Print Layout</b>"
-msgstr ""
+msgstr "<b>Ubah Nama Tata Letak Cetak</b>"
 
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:226
 #: ../glom/navigation/box_tables.cc:403
@@ -2095,17 +2345,17 @@ msgstr "Ruas Basis Data"
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:34
 #: ../glom/utility_widgets/layouttoolbar.cc:39
 msgid "Drag this to the layout to add a new database field."
-msgstr ""
+msgstr "Seret ini ke tata letak untuk menambah ruas basis data baru."
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:36
 #: ../glom/utility_widgets/layouttoolbar.cc:45
 msgid "Drag this to the layout to add a new static text box."
-msgstr ""
+msgstr "Seret ini ke tata letak untuk menambah kotak teks statik baru."
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:38
 #: ../glom/utility_widgets/layouttoolbar.cc:47
 msgid "Drag this to the layout to add a new static image."
-msgstr ""
+msgstr "Seret ini ke tata letak untuk menambah gambar statik baru."
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:40
 msgid "Horizontal Line"
@@ -2113,7 +2363,7 @@ msgstr "Garis Horisontal"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:40
 msgid "Drag this to the layout to add a new horizontal line."
-msgstr ""
+msgstr "Seret ini ke tata letak untuk menambah garis horisontal baru."
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:42
 msgid "Vertical Line"
@@ -2121,16 +2371,17 @@ msgstr "Garis Vertikal"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:42
 msgid "Drag this to the layout to add a new vertical line."
-msgstr ""
+msgstr "Seret ini ke tata letak untuk menambah garis vertikal baru."
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:44
 #: ../glom/utility_widgets/layouttoolbar.cc:41
 msgid "Related Records"
-msgstr ""
+msgstr "Record Yang Berrelasi"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:44
 msgid "Drag this to the layout to add a new related records portal."
 msgstr ""
+"Seret ini ke tata letak untuk menambah portal record terkait yang baru."
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:228
 msgid "Unselect All"
@@ -2142,7 +2393,7 @@ msgstr "S_isipkan"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:232
 msgid "Insert _Field"
-msgstr ""
+msgstr "Sisipkan _Ruas"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:234
 msgid "Insert _Text"
@@ -2154,19 +2405,19 @@ msgstr "S_isipkan Gambat"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:238
 msgid "Insert _Related Records"
-msgstr ""
+msgstr "Sisipkan _Record Yang Berrelasi"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:240
 msgid "Insert _Horizontal Line"
-msgstr ""
+msgstr "Sisipkan Garis _Horisontal"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:242
 msgid "Insert _Vertical Line"
-msgstr ""
+msgstr "Sisipkan Garis _Vertikal"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:244
 msgid "_Create Standard Layout"
-msgstr ""
+msgstr "_Buat Tata Letak Standar"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:246
 msgid "_Add Page"
@@ -2174,7 +2425,7 @@ msgstr "T_ambah Halaman"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:248
 msgid "_Delete Page"
-msgstr ""
+msgstr "_Hapus Halaman"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:252
 msgid "_Align"
@@ -2207,11 +2458,11 @@ msgstr "Tampilkan Kisi"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:274
 msgid "Show Rules"
-msgstr ""
+msgstr "Tunjukkan Aturan"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:276
 msgid "Show Outlines"
-msgstr ""
+msgstr "Tunjukkan Kerangka"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:280
 msgid "Fit Page _Width"
@@ -2236,11 +2487,17 @@ msgstr "Sisipkan"
 #. Ask for confirmation:
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:915
 msgid "Create Standard Layout"
-msgstr ""
+msgstr "Buat Tata Letak Standar"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:916
-msgid "This is an experimental feature. It will remove all items from the print layout and then try to create a layout similar to the layout of the detail view."
+msgid ""
+"This is an experimental feature. It will remove all items from the print "
+"layout and then try to create a layout similar to the layout of the detail "
+"view."
 msgstr ""
+"Ini adalah fitur eksperimen. Ini akan menghapus semua butir dari tata letak "
+"cetak dan mencoba membuat suatu tata letak yang mirip dengan dengan tata "
+"letak dari tilikan terrinci."
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:919
 #: ../glom/mode_design/users/dialog_groups_list.cc:80
@@ -2253,8 +2510,12 @@ msgid "Remove page"
 msgstr "Hapus halaman"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:960
-msgid "Are you sure that you wish to remove the last page and any items on that page?"
+msgid ""
+"Are you sure that you wish to remove the last page and any items on that "
+"page?"
 msgstr ""
+"Apakah Anda yakin Anda hendak menghapus halaman terakhir dan sebarang butir "
+"pada halaman itu?"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:963
 msgid "Remove Page"
@@ -2270,19 +2531,21 @@ msgstr "Tampilkan _Kisi"
 
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:475
 msgid "Edit _Fields"
-msgstr ""
+msgstr "Sunting _Ruas"
 
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:478
 msgid "Edit _Relationships"
-msgstr ""
+msgstr "Sunting _Relasi"
 
 #: ../glom/mode_design/script_library/dialog_script_library.cc:130
 msgid "Remove library script"
-msgstr ""
+msgstr "Hapus skrip pustaka"
 
 #: ../glom/mode_design/script_library/dialog_script_library.cc:131
-msgid "Do you really want to delete this script? This data can not be recovered"
+msgid ""
+"Do you really want to delete this script? This data can not be recovered"
 msgstr ""
+"Apakah Anda yakin hendak menghapus skrip ini? Data ini tak dapat dipulihkan"
 
 #: ../glom/mode_design/users/dialog_groups_list.cc:74
 msgid "View"
@@ -2306,7 +2569,7 @@ msgstr "Hapus Grup"
 
 #: ../glom/mode_design/users/dialog_groups_list.cc:217
 msgid "Are your sure that you wish to delete this group?"
-msgstr ""
+msgstr "Apakah Anda yakin Anda hendak menghapus grup ini?"
 
 #: ../glom/mode_design/users/dialog_groups_list.cc:356
 msgid "Full access."
@@ -2324,28 +2587,32 @@ msgstr "Hapus Pengguna"
 
 #: ../glom/mode_design/users/dialog_users_list.cc:164
 msgid "Are your sure that you wish to delete this user?"
-msgstr ""
+msgstr "Apakah Anda yakin Anda hendak menghapus pengguna ini?"
 
 #: ../glom/mode_design/users/dialog_users_list.cc:189
 msgid "Error Retrieving the List of Users"
-msgstr ""
+msgstr "Galat Saat Mengambil Daftar Pengguna"
 
 #: ../glom/mode_design/users/dialog_users_list.cc:190
-msgid "Glom could not get the list of users from the database server. You probably do not have enough permissions. You should be a superuser."
+msgid ""
+"Glom could not get the list of users from the database server. You probably "
+"do not have enough permissions. You should be a superuser."
 msgstr ""
+"Glom tak dapat memperoleh daftar pengguna dari server basis data. Anda "
+"mungkin tak punya hak yang cukup. Anda mesti sebagai seorang pengguna super."
 
 #: ../glom/mode_design/users/dialog_users_list.cc:414
 msgid "Developer group may not be empty."
-msgstr ""
+msgstr "Grup pengembang tak boleh kosong."
 
 #: ../glom/mode_design/users/dialog_users_list.cc:415
 msgid "The developer group must contain at least one user."
-msgstr ""
+msgstr "Grup pengembang mesti berisi paling tidak satu pengguna."
 
 #. Prevent two tables with the same name from being added.
 #: ../glom/navigation/box_tables.cc:134
 msgid "This table already exists. Please choose a different table name"
-msgstr ""
+msgstr "Tabel ini sudah ada. Silakan pilih nama tabel lain"
 
 #: ../glom/navigation/box_tables.cc:136
 msgid "Hidden"
@@ -2359,15 +2626,20 @@ msgstr "Baku"
 #. Ask the user if they want us to try to cope with this:
 #: ../glom/navigation/box_tables.cc:236
 msgid "Table Already Exists"
-msgstr ""
+msgstr "Tabel Telah Ada"
 
 #: ../glom/navigation/box_tables.cc:237
-msgid "This table already exists on the database server, though it is not mentioned in the .glom file. This should not happen. Would you like Glom to attempt to use the existing table?"
+msgid ""
+"This table already exists on the database server, though it is not mentioned "
+"in the .glom file. This should not happen. Would you like Glom to attempt to "
+"use the existing table?"
 msgstr ""
 
 #. TODO: Do not show tables that are not in the document.
 #: ../glom/navigation/box_tables.cc:297
-msgid "You cannot delete this table, because there is no information about this table in the document."
+msgid ""
+"You cannot delete this table, because there is no information about this "
+"table in the document."
 msgstr ""
 
 #. Ask the user to confirm:
@@ -2382,8 +2654,9 @@ msgid "Delete Table"
 msgstr "Hapus Tabel"
 
 #: ../glom/navigation/box_tables.cc:400
+#, fuzzy
 msgid "Are you sure that you want to rename this table?"
-msgstr ""
+msgstr "Apakah Anda yakin ingin mengubah nama laporan ini?"
 
 #. TODO: Show old and new names?
 #: ../glom/navigation/box_tables.cc:401
@@ -2395,7 +2668,9 @@ msgid "Unknown Table"
 msgstr "Tabel Tak Dikenal"
 
 #: ../glom/navigation/box_tables.cc:444
-msgid "You cannot open this table, because there is no information about this table in the document."
+msgid ""
+"You cannot open this table, because there is no information about this table "
+"in the document."
 msgstr ""
 
 #: ../glom/print_layout/canvas_layout_item.cc:262
@@ -2479,15 +2754,18 @@ msgstr "..."
 
 #. TODO: A better label/icon for "Choose Date".
 #: ../glom/mode_data/datawidget/datawidget.cc:211
+#, fuzzy
 msgid "Choose a date from an on-screen calendar."
-msgstr ""
+msgstr "Tampilkan janji temu Anda pada kalender di puncak layar."
 
 #: ../glom/mode_data/datawidget/datawidget.cc:221
 msgid "Open the record identified by this ID, in the other table."
 msgstr ""
 
 #: ../glom/mode_data/datawidget/datawidget.cc:231
-msgid "Enter search criteria to identify records in the other table, to choose an ID for this field."
+msgid ""
+"Enter search criteria to identify records in the other table, to choose an "
+"ID for this field."
 msgstr ""
 
 #: ../glom/mode_data/db_adddel/db_adddel.cc:78
@@ -2505,11 +2783,14 @@ msgstr ""
 
 #. Tell user that they can't do that:
 #: ../glom/mode_data/db_adddel/db_adddel.cc:2273
+#, fuzzy
 msgid "Extra Related Records Not Possible"
-msgstr ""
+msgstr "Record Terkait Tidak Ada"
 
 #: ../glom/mode_data/db_adddel/db_adddel.cc:2274
-msgid "You attempted to add a new related record, but there can only be one related record, because the relationship uses a unique key."
+msgid ""
+"You attempted to add a new related record, but there can only be one related "
+"record, because the relationship uses a unique key."
 msgstr ""
 
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:91
@@ -2546,7 +2827,9 @@ msgstr "Basis Data Baru"
 
 #. For instance, an extra hint when saving from an example, saying that a new file must be saved.
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:99
-msgid "Please choose a human-readable title for the new database. You can change this later in the database properties. It may contain any characters."
+msgid ""
+"Please choose a human-readable title for the new database. You can change "
+"this later in the database properties. It may contain any characters."
 msgstr ""
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:105
@@ -2557,24 +2840,32 @@ msgstr "_Judul:"
 
 #. Use titles that show the distinction between PostgreSQL and SQLite:
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:121
-msgid "Create PostgreSQL database in its own folder, to be hosted by this computer."
+msgid ""
+"Create PostgreSQL database in its own folder, to be hosted by this computer."
 msgstr ""
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:125
-msgid "Create database on an external PostgreSQL database server, to be specified in the next step."
+msgid ""
+"Create database on an external PostgreSQL database server, to be specified "
+"in the next step."
 msgstr ""
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:131
-msgid "Create SQLite database in its own folder, to be hosted by this computer."
+msgid ""
+"Create SQLite database in its own folder, to be hosted by this computer."
 msgstr ""
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:132
-msgid "SQLite does not support authentication or remote access but is suitable for embedded devices."
+msgid ""
+"SQLite does not support authentication or remote access but is suitable for "
+"embedded devices."
 msgstr ""
 
 #. TODO: Hide this because it's the only radio button, so it's not a choice:
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:142
-msgid "Create database in its own folder, to be hosted by this computer, using SQLite"
+msgid ""
+"Create database in its own folder, to be hosted by this computer, using "
+"SQLite"
 msgstr ""
 
 #. Only PostgreSQL:
@@ -2584,7 +2875,9 @@ msgid "Create database in its own folder, to be hosted by this computer."
 msgstr ""
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:155
-msgid "Create database on an external database server, to be specified in the next step."
+msgid ""
+"Create database on an external database server, to be specified in the next "
+"step."
 msgstr ""
 
 #: ../glom/utility_widgets/imageglom.cc:655
@@ -2665,16 +2958,19 @@ msgid "Properties"
 msgstr "Properti"
 
 #: ../glom/utility_widgets/notebooklabelglom.cc:89
+#, fuzzy
 msgid "Delete whole notebook \"%1\"?"
-msgstr ""
+msgstr "Hapus notebook yang dipilih"
 
 #: ../glom/utility_widgets/notebooklabelglom.cc:94
+#, fuzzy
 msgid "Delete whole notebook?"
-msgstr ""
+msgstr "Hapus notebook yang dipilih"
 
 #: ../ui/operator/box_navigation_tables.glade.h:2
+#, fuzzy
 msgid "_Show hidden tables"
-msgstr ""
+msgstr "Tampilkan folder ter_sembunyi"
 
 #: ../ui/operator/dialog_choose_date.glade.h:1
 msgid "Choose Date"
@@ -2686,6 +2982,9 @@ msgid ""
 "\n"
 "Please select a date to enter in this field."
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Pilih Tanggal</span>\n"
+"\n"
+"Harap pilih suatu tanggal untuk dimasukkan ke dalam ruas ini."
 
 #: ../ui/operator/dialog_connection.glade.h:1
 msgid "Connect to Server"
@@ -2735,12 +3034,20 @@ msgstr "Basis data"
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
-"The data in the field was not recognized. Please try to correct the data or revert to the previous value. Here is an example of correctly-formatted data for this field.\n"
+"The data in the field was not recognized. Please try to correct the data or "
+"revert to the previous value. Here is an example of correctly-formatted data "
+"for this field.\n"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Format tak valid</span>\n"
+"\n"
+"Data dalam ruas tak dikenali. Harap coba perbaiki data atau kembalikan ke "
+"nilai sebelumnya. Ini adalah contoh data dengan format yang benar bagi ruas "
+"ini.\n"
 
 #: ../ui/operator/dialog_data_invalid_format.glade.h:5
+#, fuzzy
 msgid "example data format"
-msgstr ""
+msgstr "Definisikan _Format Data"
 
 #: ../ui/operator/dialog_existing_or_new.glade.h:1
 msgid "Welcome to Glom"
@@ -2754,10 +3061,12 @@ msgstr "_Pilih"
 #: ../ui/operator/dialog_existing_or_new.glade.h:3
 msgid "<span weight=\"bold\" size=\"larger\">Open or create a Document</span>"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Buka atau buat suatu Dokumen</span>"
 
 #: ../ui/operator/dialog_existing_or_new.glade.h:4
+#, fuzzy
 msgid "Open or create Document"
-msgstr ""
+msgstr "Gagal saat membuat atau membuka '%s'"
 
 #: ../ui/operator/dialog_existing_or_new.glade.h:5
 msgid "Open Existing Document"
@@ -2768,8 +3077,9 @@ msgid "Create New Document"
 msgstr "Buat Dokumen Baru"
 
 #: ../ui/operator/dialog_find_id.glade.h:1
+#, fuzzy
 msgid "Find Related Record"
-msgstr ""
+msgstr "Record Terkait Tidak Ada"
 
 #: ../ui/operator/dialog_find_id.glade.h:2
 #: ../ui/developer/window_data_layout_export.glade.h:2
@@ -2813,8 +3123,9 @@ msgid "Import Into _Table:"
 msgstr "Impor Ke Dalam _Tabel:"
 
 #: ../ui/operator/dialog_import_csv.glade.h:7
+#, fuzzy
 msgid "Encoding detected as: UTF-8"
-msgstr ""
+msgstr "Media telah terdeteksi sebagai \"%s\"."
 
 #. Import is a noun here. This is the title for a window showing options for an import operation.
 #: ../ui/operator/dialog_import_csv.glade.h:9
@@ -2822,13 +3133,14 @@ msgid "<b>Import Options</b>"
 msgstr "<b>Opsi Impor</b>"
 
 #: ../ui/operator/dialog_import_csv.glade.h:10
+#, fuzzy
 msgid "_Number of sample rows:"
-msgstr ""
+msgstr "baris per _contoh:"
 
 #. Import is a noun here. This is the title for a list of fields to import.
 #: ../ui/operator/dialog_import_csv.glade.h:12
 msgid "<b>Import Fields</b>"
-msgstr ""
+msgstr "<b>Ruas Impor</b>"
 
 #. This is a status message for a progress dialog. It says that importing is currently happenning.
 #: ../ui/operator/dialog_import_csv_progress.glade.h:2
@@ -2836,32 +3148,39 @@ msgid "Importing Data"
 msgstr "Mengimpor Data"
 
 #: ../ui/operator/dialog_import_csv_progress.glade.h:3
+#, fuzzy
 msgid "Please wait while your data is imported."
-msgstr ""
+msgstr "Silakan tunggu saat Evolution melakukan restore data anda."
 
 #: ../ui/developer/dialog_add_related_table.glade.h:1
+#, fuzzy
 msgid "Add Related Table"
-msgstr ""
+msgstr "Tabel Yang Berhubungan Dibuat"
 
 #: ../ui/developer/dialog_add_related_table.glade.h:2
 msgid ""
-"This will add a new table and add a relationship that refers to the new  table, as a convenient alternative to doing this in separate steps.\n"
+"This will add a new table and add a relationship that refers to the new  "
+"table, as a convenient alternative to doing this in separate steps.\n"
 "\n"
-"If a suitable related table already exists then you should instead cancel and just add a relationship."
+"If a suitable related table already exists then you should instead cancel "
+"and just add a relationship."
 msgstr ""
 
 #. Translators: FROM as in SQL's FROM
 #: ../ui/developer/dialog_add_related_table.glade.h:6
+#, fuzzy
 msgid "From field:"
-msgstr ""
+msgstr "Kolom _Dari"
 
 #: ../ui/developer/dialog_add_related_table.glade.h:7
+#, fuzzy
 msgid "Name of new related table:"
-msgstr ""
+msgstr "Tabel baru yang berrelasi telah dibuat."
 
 #: ../ui/developer/dialog_add_related_table.glade.h:8
+#, fuzzy
 msgid "Name of new relationship:"
-msgstr ""
+msgstr "Nama tampilan baru:"
 
 #: ../ui/developer/dialog_change_language.glade.h:1
 msgid "Test Translation"
@@ -2871,30 +3190,46 @@ msgstr "Uji Terjemahan"
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Test Translation</span>\n"
 "\n"
-"Choose a language to use temporarily to test the translations. These translations are normally used automatically when the application is started on a computer that uses the language.\n"
+"Choose a language to use temporarily to test the translations. These "
+"translations are normally used automatically when the application is started "
+"on a computer that uses the language.\n"
 "\n"
-"Note that the standard parts of the Glom user interface, such as menus and dialog windows, will only be translated when you start Glom on a computer that uses that language."
+"Note that the standard parts of the Glom user interface, such as menus and "
+"dialog windows, will only be translated when you start Glom on a computer "
+"that uses that language."
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Uji Terjemahan</span>\n"
+"\n"
+"Pilih suatu bahasa yang dipakai sementara untuk menguji terjemahan. "
+"Terjemahan ini biasanya dipakai secara otomatis ketika aplikasi dimulai pada "
+"suatu komputer yang memakai bahasa tersebut.\n"
+"\n"
+"Catat bahwa bagian-bagian standar dari antar muka pengguna Glom, seperti "
+"menu dan jendela dialog, hanya akan diterjemahkan ketika Anda memulai Glom "
+"pada suatu komputer yang memakai bahasa tersebut."
 
 #: ../ui/developer/dialog_change_language.glade.h:7
 msgid "Locale:"
 msgstr "Locale:"
 
 #: ../ui/developer/dialog_choose_field.glade.h:1
+#, fuzzy
 msgid "Select Field"
-msgstr ""
+msgstr "Kurang ekspresi dalam ruas select"
 
 #: ../ui/developer/dialog_choose_field.glade.h:3
+#, fuzzy
 msgid "Show _Related Relationships"
-msgstr ""
+msgstr "Judul berhubungan poros"
 
 #: ../ui/developer/dialog_choose_field.glade.h:4
 msgid "_Table:"
 msgstr "_Tabel:"
 
 #: ../ui/developer/dialog_choose_relationship.glade.h:1
+#, fuzzy
 msgid "Select Relationship"
-msgstr ""
+msgstr "<b>Pilih Hubungan</b>"
 
 #: ../ui/developer/dialog_choose_relationship.glade.h:2
 msgid "Table:"
@@ -2902,7 +3237,7 @@ msgstr "Tabel:"
 
 #: ../ui/developer/dialog_choose_relationship.glade.h:3
 msgid "<b>Select Relationship</b>"
-msgstr ""
+msgstr "<b>Pilih Hubungan</b>"
 
 #: ../ui/developer/dialog_choose_user.glade.h:1
 msgid "Choose User"
@@ -2914,6 +3249,9 @@ msgid ""
 "\n"
 "Which user should be added to this group?"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Tambah Pengguna Ke Grop</span>\n"
+"\n"
+"Pengguna mana yang mesti ditambahkan ke grup ini?"
 
 #: ../ui/developer/dialog_database_preferences.glade.h:1
 msgid "Database Preferences"
@@ -2964,11 +3302,13 @@ msgid "Logo"
 msgstr "Logo"
 
 #: ../ui/developer/dialog_database_preferences.glade.h:13
+#, fuzzy
 msgid "Auto-increment values"
-msgstr ""
+msgstr "Nilai inkremen otomatis"
 
 #: ../ui/developer/dialog_database_preferences.glade.h:14
-msgid "When the database is opened the python function implemented here will run."
+msgid ""
+"When the database is opened the python function implemented here will run."
 msgstr ""
 
 #: ../ui/developer/dialog_database_preferences.glade.h:15
@@ -2985,8 +3325,13 @@ msgstr "Skrip Awal Mula"
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
 "\n"
-"Glom could not create the new database. Maybe you do not have the necessary access rights. Please contact your system administrator."
+"Glom could not create the new database. Maybe you do not have the necessary "
+"access rights. Please contact your system administrator."
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Pembuatan basis data gagal</span>\n"
+"\n"
+"Glom tak bisa membuat basis data baru. Mungkin Anda tak memiliki hak akses "
+"yang diperlukan. Harap kontak administrator sistem Anda."
 
 #: ../ui/developer/dialog_fieldslist.glade.h:1
 #: ../ui/developer/dialog_groupby_sort_fields.glade.h:2
@@ -3034,27 +3379,32 @@ msgid "Secondary Fields:"
 msgstr "Ruas Sekunder:"
 
 #: ../ui/developer/dialog_group_by.glade.h:7
+#, fuzzy
 msgid "Border Width (ems)"
-msgstr ""
+msgstr "Lebar tepi persegi panjang"
 
 #: ../ui/developer/dialog_group_by.glade.h:8
 msgid "<b>Group By</b>"
 msgstr "<b>Kelompokkan Berdasarkan</b>"
 
 #: ../ui/developer/dialog_groupby_sort_fields.glade.h:1
+#, fuzzy
 msgid "Group By - Sort Fields"
-msgstr ""
+msgstr "Urutkan menurut _Tanggal Diubah"
 
 #: ../ui/developer/dialog_groupby_sort_fields.glade.h:3
 msgid "<b>Sort Fields</b>"
-msgstr ""
+msgstr "<b>Ruas Pengurutan</b>"
 
 #: ../ui/developer/dialog_initial_password.glade.h:1
 msgid "Database User"
 msgstr "Pengguna Basis Data"
 
 #: ../ui/developer/dialog_initial_password.glade.h:2
-msgid "Please enter the initial connection details for your database. You may add additional users later. Remember to keep this password secret because it allows access to your data from other computers on the network."
+msgid ""
+"Please enter the initial connection details for your database. You may add "
+"additional users later. Remember to keep this password secret because it "
+"allows access to your data from other computers on the network."
 msgstr ""
 
 #: ../ui/developer/dialog_initial_password.glade.h:5
@@ -3123,6 +3473,9 @@ msgid ""
 "\n"
 "What name should this group have?"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Buat Grup</span>\n"
+"\n"
+"Grup ini mesti dinamai apa?"
 
 #: ../ui/developer/dialog_new_group.glade.h:6
 msgid "Group name:"
@@ -3134,6 +3487,9 @@ msgid ""
 "\n"
 "What name should this module have?"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Tambah Modul</span>\n"
+"\n"
+"Modul ini mesti dinamai apa?"
 
 #: ../ui/developer/dialog_new_library_script.glade.h:6
 msgid "Script name:"
@@ -3141,7 +3497,7 @@ msgstr "Nama skrip:"
 
 #: ../ui/developer/dialog_notebook.glade.h:2
 msgid "<b>Notebook Tabs</b>"
-msgstr ""
+msgstr "<b>Tab Buku Catatan</b>"
 
 #: ../ui/developer/dialog_relationships_overview.glade.h:1
 msgid "Relationships Overview"
@@ -3152,7 +3508,9 @@ msgid "Script Library"
 msgstr "Pustaka Skrip"
 
 #: ../ui/developer/dialog_script_library.glade.h:2
-msgid "These modules will be available to your button scripts and field calculations via the python import keyword."
+msgid ""
+"These modules will be available to your button scripts and field "
+"calculations via the python import keyword."
 msgstr ""
 
 #: ../ui/developer/dialog_script_library.glade.h:3
@@ -3166,15 +3524,21 @@ msgstr "_Periksa"
 
 #: ../ui/developer/dialog_translation_copy.glade.h:1
 #: ../ui/developer/dialog_translation_identify_original.glade.h:1
+#, fuzzy
 msgid "Identify Original"
-msgstr ""
+msgstr "String asli"
 
 #: ../ui/developer/dialog_translation_copy.glade.h:2
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Copy Translation</span>\n"
 "\n"
-"From what language would you like to copy the translations to use as the start of the current translation?"
+"From what language would you like to copy the translations to use as the "
+"start of the current translation?"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Salin Terjemahan</span>\n"
+"\n"
+"Anda hendak menyalin terjemahan untuk dipakai sebagai awal dari terjemahan "
+"kini dari bahasa apa?"
 
 #: ../ui/developer/dialog_translation_copy.glade.h:5
 #: ../ui/developer/dialog_translation_identify_original.glade.h:7
@@ -3187,13 +3551,18 @@ msgid ""
 "\n"
 "The language of the original text is currently identified as:"
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Identifikasikan Yang Asli</span>\n"
+"\n"
+"Bahasa dari teks asli saat ini diidentifikasikan sebagai:"
 
 #: ../ui/developer/dialog_translation_identify_original.glade.h:5
 msgid "<b>English</b>"
 msgstr "<b>Inggris</b>"
 
 #: ../ui/developer/dialog_translation_identify_original.glade.h:6
-msgid "If the text is not actually in this language, please choose the correct language."
+msgid ""
+"If the text is not actually in this language, please choose the correct "
+"language."
 msgstr ""
 
 #: ../ui/developer/dialog_user.glade.h:2
@@ -3228,12 +3597,15 @@ msgid "<b>Title:</b>"
 msgstr "<b>Judul:</b>"
 
 #: ../ui/developer/window_button_script.glade.h:3
-msgid "When the button is clicked it will run the python function which you implement here."
+msgid ""
+"When the button is clicked it will run the python function which you "
+"implement here."
 msgstr ""
 
 #: ../ui/developer/window_data_layout_export.glade.h:1
+#, fuzzy
 msgid "Export Format"
-msgstr ""
+msgstr "_Format = Dialirkan"
 
 #: ../ui/developer/window_data_layout.glade.h:3
 #: ../ui/developer/window_report_layout.glade.h:3
@@ -3245,55 +3617,96 @@ msgid "<b>Relationship:</b>"
 msgstr "<b>Hubungan:</b>"
 
 #: ../ui/developer/window_data_layout.glade.h:5
+#, fuzzy
 msgid "Show child relationships"
-msgstr ""
+msgstr "Menampilkan hubungan induk/anak antara proses"
 
 #: ../ui/developer/window_data_layout.glade.h:7
-msgid "Add a layout item that shows the data from a field in the record, and allows the user to edit that value."
+msgid ""
+"Add a layout item that shows the data from a field in the record, and allows "
+"the user to edit that value."
 msgstr ""
+"Tambahkan suatu butir tata letak yang menunjukkan data dari suatu ruas dalam "
+"record, dan mengijinkan pengguna untuk menyunting nilai tersebut."
 
 #: ../ui/developer/window_data_layout.glade.h:9
-msgid "Add text to a layout, such as an explanation or a warning. The text will be the same for every record viewed."
+msgid ""
+"Add text to a layout, such as an explanation or a warning. The text will be "
+"the same for every record viewed."
 msgstr ""
 
 #: ../ui/developer/window_data_layout.glade.h:11
-msgid "Add an image to the layout, such as a logo. The image will be the same for every record viewed. To show an image field from a record, to show different images for each field, use the field layout item."
+msgid ""
+"Add an image to the layout, such as a logo. The image will be the same for "
+"every record viewed. To show an image field from a record, to show different "
+"images for each field, use the field layout item."
 msgstr ""
 
 #: ../ui/developer/window_data_layout.glade.h:12
-msgid "Add a button. Edit the button to define the script that will be run when the button is clicked."
+msgid ""
+"Add a button. Edit the button to define the script that will be run when the "
+"button is clicked."
 msgstr ""
+"Tambah suatu tombol. Sunting tombol untuk mendefinisikan skrip yang akan "
+"dijalankan ketika tombol diklik."
 
 #: ../ui/developer/window_data_layout.glade.h:14
-msgid "Add a group which can contain other layout items. Use this to group items together, such as fields."
+msgid ""
+"Add a group which can contain other layout items. Use this to group items "
+"together, such as fields."
 msgstr ""
+"Tambah suatu grup yang dapat memuat butir-butir tata letak lain. Pakailah "
+"ini untuk mengelompokkan butir-butir menjadi satu, seperti ruas-ruas."
 
 #: ../ui/developer/window_data_layout.glade.h:15
 msgid "Add _Group"
 msgstr "Tambah _Grup"
 
 #: ../ui/developer/window_data_layout.glade.h:16
-msgid "Add a tabbed notebook. Each page of the notebook may contain several other layout items, but only one page will be visible at one time."
+msgid ""
+"Add a tabbed notebook. Each page of the notebook may contain several other "
+"layout items, but only one page will be visible at one time."
 msgstr ""
 
 #: ../ui/developer/window_data_layout.glade.h:18
-msgid "Add a related records portal. This is a list of records in a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table."
+#, fuzzy
+msgid ""
+"Add a related records portal. This is a list of records in a related table. "
+"Remember to edit this layout item to specify the relationship to use, and "
+"the fields to show from the related table."
 msgstr ""
+"Tambahkan suatu record portal kalender yang berhubungan. Ini adalah suatu "
+"kalender yang menunjukkan record dari tabel yang terkait. Ingatlah untuk "
+"menyunting butir tata letak ini untuk menyatakan hubungan yang dipakai, dan "
+"ruas yang ditampilkan dari tabel terkait."
 
 #: ../ui/developer/window_data_layout.glade.h:20
-msgid "Add a related records calendar portal. This is a calendar showing records from a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table."
+msgid ""
+"Add a related records calendar portal. This is a calendar showing records "
+"from a related table. Remember to edit this layout item to specify the "
+"relationship to use, and the fields to show from the related table."
 msgstr ""
+"Tambahkan suatu record portal kalender yang berhubungan. Ini adalah suatu "
+"kalender yang menunjukkan record dari tabel yang terkait. Ingatlah untuk "
+"menyunting butir tata letak ini untuk menyatakan hubungan yang dipakai, dan "
+"ruas yang ditampilkan dari tabel terkait."
 
 #: ../ui/developer/window_data_layout.glade.h:21
+#, fuzzy
 msgid "Add Related Calendar"
-msgstr ""
+msgstr "Tambah kalender baru"
 
 #: ../ui/developer/window_data_layout.glade.h:22
-msgid "Remove the item from the layout. If you remove a field layout item, it will not remove the field from the table itself. It just will not be seen on the layout."
+msgid ""
+"Remove the item from the layout. If you remove a field layout item, it will "
+"not remove the field from the table itself. It just will not be seen on the "
+"layout."
 msgstr ""
 
 #: ../ui/developer/window_data_layout.glade.h:25
-msgid "Clicking the row button takes the user to the table specified by this relationship:"
+msgid ""
+"Clicking the row button takes the user to the table specified by this "
+"relationship:"
 msgstr ""
 
 #: ../ui/developer/window_data_layout.glade.h:26
@@ -3357,7 +3770,9 @@ msgid "Field Calculation"
 msgstr "Kalkulasi Ruas"
 
 #: ../ui/developer/window_field_calculation.glade.h:2
-msgid "The field value will be the return value of the python function, which you implement here."
+msgid ""
+"The field value will be the return value of the python function, which you "
+"implement here."
 msgstr ""
 
 #: ../ui/developer/window_field_calculation.glade.h:4
@@ -3389,8 +3804,9 @@ msgid "_Auto-increment"
 msgstr "N_aik otomatis"
 
 #: ../ui/developer/window_field_definition_edit.glade.h:9
+#, fuzzy
 msgid "_Lookup value when a field changes."
-msgstr ""
+msgstr "Buat watchpoint yang memicu ketika nilai ekspresi berubah"
 
 #: ../ui/developer/window_field_definition_edit.glade.h:10
 msgid "_Relationship:"
@@ -3401,12 +3817,14 @@ msgid "_Field:"
 msgstr "_Ruas:"
 
 #: ../ui/developer/window_field_definition_edit.glade.h:12
+#, fuzzy
 msgid "_User Entry"
-msgstr ""
+msgstr "Cari entri"
 
 #: ../ui/developer/window_field_definition_edit.glade.h:14
+#, fuzzy
 msgid "_Calculate Value"
-msgstr ""
+msgstr "Nilai sekarang"
 
 #: ../ui/developer/window_field_definition_edit.glade.h:15
 msgid "Value"
@@ -3421,7 +3839,10 @@ msgid "Use 1000s separator"
 msgstr "Pakai pemisah ribuan"
 
 #: ../ui/developer/box_formatting.glade.h:2
-msgid "If this is not selected then a thousands separator will not be used, even if your locale would normally use one. If it is selected then a thousands separator will be used only if your locale normally uses one."
+msgid ""
+"If this is not selected then a thousands separator will not be used, even if "
+"your locale would normally use one. If it is selected then a thousands "
+"separator will be used only if your locale normally uses one."
 msgstr ""
 
 #: ../ui/developer/box_formatting.glade.h:3
@@ -3437,7 +3858,9 @@ msgid "Alternative Color for Negative Values"
 msgstr "Warna Alternatif bagi Nilai Negatif"
 
 #: ../ui/developer/box_formatting.glade.h:6
-msgid "Click this check box to use a different foreground color to display negative values."
+msgid ""
+"Click this check box to use a different foreground color to display negative "
+"values."
 msgstr ""
 
 #: ../ui/developer/box_formatting.glade.h:7
@@ -3449,11 +3872,14 @@ msgid "Horizontal Alignment:"
 msgstr "Perataan Horisontal:"
 
 #: ../ui/developer/box_formatting.glade.h:9
+#, fuzzy
 msgid "Multi-line"
-msgstr ""
+msgstr "Alamat multi baris"
 
 #: ../ui/developer/box_formatting.glade.h:10
-msgid "If this is selected then the field value will be shown in a multi-line box with a scrollbar."
+msgid ""
+"If this is selected then the field value will be shown in a multi-line box "
+"with a scrollbar."
 msgstr ""
 
 #: ../ui/developer/box_formatting.glade.h:11
@@ -3489,8 +3915,9 @@ msgid "<b>Text Formatting</b>"
 msgstr "<b>Pemformatan Teks</b>"
 
 #: ../ui/developer/box_formatting.glade.h:19
+#, fuzzy
 msgid "No Choices"
-msgstr ""
+msgstr "Lebih banyak pilihan..."
 
 #: ../ui/developer/box_formatting.glade.h:21
 msgid "Relationship:"
@@ -3505,8 +3932,14 @@ msgid "Show all records"
 msgstr "Tampilkan semua rekaman"
 
 #: ../ui/developer/box_formatting.glade.h:25
-msgid "If this option is selected then the choices will list values from all records in the related table. If this option is not selected then the choices will list values only from related records."
-msgstr "Bila opsi ini dipilih maka pilihan akan mendaftar nilai dari semua record dalam tabel yang terkait. Bila opsi ini tak dipilih maka pilihan akan mendaftar hanya nilai dari record yang terkait."
+msgid ""
+"If this option is selected then the choices will list values from all "
+"records in the related table. If this option is not selected then the "
+"choices will list values only from related records."
+msgstr ""
+"Bila opsi ini dipilih maka pilihan akan mendaftar nilai dari semua record "
+"dalam tabel yang terkait. Bila opsi ini tak dipilih maka pilihan akan "
+"mendaftar hanya nilai dari record yang terkait."
 
 #: ../ui/developer/box_formatting.glade.h:26
 msgid "Choices From Related Records"
@@ -3590,8 +4023,12 @@ msgid "_Show table title"
 msgstr "_Tampilkan judul tabel"
 
 #: ../ui/developer/window_report_layout.glade.h:5
-msgid "When this is checked the table's title will be shown at the top of the report in addition to the report title."
-msgstr "Ketika ini dicontreng, judul tabel akan ditampilkan di puncak laporan selain judul laporan."
+msgid ""
+"When this is checked the table's title will be shown at the top of the "
+"report in addition to the report title."
+msgstr ""
+"Ketika ini dicontreng, judul tabel akan ditampilkan di puncak laporan selain "
+"judul laporan."
 
 #: ../ui/developer/window_report_layout.glade.h:6
 msgid "_Report name:"
@@ -3643,8 +4080,12 @@ msgid "Copy From Existing Translation"
 msgstr "Salin Dari Terjemahan Yang Ada"
 
 #: ../ui/developer/window_translations.glade.h:9
-msgid "Start a translation for this target locale by copying the strings from another target locale."
-msgstr "Mulai suatu terjemahan bagi locale target ini dengan cara menyalin string dari locale target lain."
+msgid ""
+"Start a translation for this target locale by copying the strings from "
+"another target locale."
+msgstr ""
+"Mulai suatu terjemahan bagi locale target ini dengan cara menyalin string "
+"dari locale target lain."
 
 #: ../ui/developer/window_translations.glade.h:10
 msgid "<b>Translations</b>"
@@ -3657,4 +4098,3 @@ msgstr "<b>Grup:</b>"
 #: ../ui/developer/window_users.glade.h:3
 msgid "<b>Users</b>"
 msgstr "<b>Pengguna</b>"
-
