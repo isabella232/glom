@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-05-12 07:58+0000\n"
-"PO-Revision-Date: 2012-10-05 21:47+0700\n"
+"PO-Revision-Date: 2012-10-06 12:08+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "MIME-Version: 1.0\n"
@@ -2228,10 +2228,14 @@ msgid ""
 "contain unique values. This would prevent the relationship from specifying "
 "multiple related records."
 msgstr ""
+"Hubungan tak boleh dipakai untuk menunjukkan record yang terkait karena "
+"hubungan memakai suatu ruas kunci primer dalam tabel terkait, yang mesti "
+"memuat nilai-nilai unik. Ini akan mencegah hubungan untuk menyatakan record "
+"terkait yang berganda."
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:419
 msgid "Relationship Uses a Related Unique Field"
-msgstr ""
+msgstr "Hubungan Memakai suatu Ruas Unik yang Terkait"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:420
 msgid ""
@@ -2239,6 +2243,9 @@ msgid ""
 "relationship uses a unique-values field in the related table. This would "
 "prevent the relationship from specifying multiple related records."
 msgstr ""
+"Hubungan tak boleh dipakai untuk menunjukkan record yang terkait karena "
+"hubungan memakai suatu ruas bernilai unik dalam tabel terkait. Ini akan "
+"mencegah hubungan untuk menyatakan record terkait yang berganda."
 
 #. Translators: This is Automatic text alignment.
 #: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:112
@@ -2634,6 +2641,9 @@ msgid ""
 "in the .glom file. This should not happen. Would you like Glom to attempt to "
 "use the existing table?"
 msgstr ""
+"Tabel ini telah ada dalam server basis data, walaupun itu tak disinggung "
+"dalam berkas .glom. Ini tak boleh terjadi. Apakah Anda ingin Glom mencoba "
+"memakai tabel yang telah ada?"
 
 #. TODO: Do not show tables that are not in the document.
 #: ../glom/navigation/box_tables.cc:297
@@ -2641,6 +2651,8 @@ msgid ""
 "You cannot delete this table, because there is no information about this "
 "table in the document."
 msgstr ""
+"Ada tak bisa menghapus tabel ini, karena tak ada informasi tentang tabel ini "
+"dalam dokumen."
 
 #. Ask the user to confirm:
 #: ../glom/navigation/box_tables.cc:304
@@ -2648,15 +2660,16 @@ msgid ""
 "Are you sure that you want to delete this table?\n"
 "Table name: %1"
 msgstr ""
+"Apakah Anda yakin ingin menghapus tabel ini?\n"
+"Nama tabel: %1"
 
 #: ../glom/navigation/box_tables.cc:305
 msgid "Delete Table"
 msgstr "Hapus Tabel"
 
 #: ../glom/navigation/box_tables.cc:400
-#, fuzzy
 msgid "Are you sure that you want to rename this table?"
-msgstr "Apakah Anda yakin ingin mengubah nama laporan ini?"
+msgstr "Apakah Anda yakin ingin mengubah nama tabel ini?"
 
 #. TODO: Show old and new names?
 #: ../glom/navigation/box_tables.cc:401
@@ -2672,6 +2685,8 @@ msgid ""
 "You cannot open this table, because there is no information about this table "
 "in the document."
 msgstr ""
+"Ada tak bisa membuka tabel ini, karena tak ada informasi tentang tabel ini "
+"dalam dokumen."
 
 #: ../glom/print_layout/canvas_layout_item.cc:262
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:39
@@ -2729,7 +2744,7 @@ msgstr "Impor"
 
 #: ../glom/utility_widgets/adddel/adddel.cc:157
 msgid "This item already exists. Please try again."
-msgstr ""
+msgstr "Butir ini sudah ada. Harap coba lagi."
 
 #. Something more specific and helpful.
 #: ../glom/utility_widgets/adddel/adddel.cc:161
@@ -2754,19 +2769,20 @@ msgstr "..."
 
 #. TODO: A better label/icon for "Choose Date".
 #: ../glom/mode_data/datawidget/datawidget.cc:211
-#, fuzzy
 msgid "Choose a date from an on-screen calendar."
-msgstr "Tampilkan janji temu Anda pada kalender di puncak layar."
+msgstr "Pilih suatu tanggal dari kalender di layar."
 
 #: ../glom/mode_data/datawidget/datawidget.cc:221
 msgid "Open the record identified by this ID, in the other table."
-msgstr ""
+msgstr "Buka record yang diidentifikasi oleh ID ini, dalam tabel lain."
 
 #: ../glom/mode_data/datawidget/datawidget.cc:231
 msgid ""
 "Enter search criteria to identify records in the other table, to choose an "
 "ID for this field."
 msgstr ""
+"Masukkan kriteria cari untuk mengidentifikasi record dalam tabel lain, untuk "
+"memilih suatu ID bagi ruas ini."
 
 #: ../glom/mode_data/db_adddel/db_adddel.cc:78
 msgid "Table Content"
@@ -2775,23 +2791,24 @@ msgstr "Isi Tabel"
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
 #: ../glom/mode_data/db_adddel/db_adddel.cc:564
 msgid "ExampleEg"
-msgstr ""
+msgstr "ExampleEg"
 
 #: ../glom/mode_data/db_adddel/db_adddel.cc:2057
 msgid "Right-click to layout, to specify the related fields."
-msgstr ""
+msgstr "Klik kanan ke tata letak, untuk menyatakan ruas-ruas terkait."
 
 #. Tell user that they can't do that:
 #: ../glom/mode_data/db_adddel/db_adddel.cc:2273
-#, fuzzy
 msgid "Extra Related Records Not Possible"
-msgstr "Record Terkait Tidak Ada"
+msgstr "Record Terkait Ekstra Tak Mungkin"
 
 #: ../glom/mode_data/db_adddel/db_adddel.cc:2274
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
 msgstr ""
+"Anda mencoba menambah suatu record terkait baru, tapi hanya boleh ada satu "
+"record terkait, karena hubungan memakai kunci unik."
 
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:91
 #: ../glom/utility_widgets/imageglom.cc:770
@@ -2831,6 +2848,9 @@ msgid ""
 "Please choose a human-readable title for the new database. You can change "
 "this later in the database properties. It may contain any characters."
 msgstr ""
+"Harap pilih judul yang dapat dibaca manusia bagi basis data baru. Anda dapat "
+"mengubah ini nanti dalam properti basis data. Ini boleh memuat karakter "
+"apapun."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:105
 #: ../ui/developer/window_field_definition_edit.glade.h:4
@@ -2843,23 +2863,31 @@ msgstr "_Judul:"
 msgid ""
 "Create PostgreSQL database in its own folder, to be hosted by this computer."
 msgstr ""
+"Buat basis data PostgreSQL dalam foldernya sendiri, untuk dihosting oleh "
+"komputer ini."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:125
 msgid ""
 "Create database on an external PostgreSQL database server, to be specified "
 "in the next step."
 msgstr ""
+"Buat basis data pada server basis data PostgreSQL eksternal, yang akan "
+"dinyatakan pada langkah selanjutnya."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:131
 msgid ""
 "Create SQLite database in its own folder, to be hosted by this computer."
 msgstr ""
+"Buat basis data SQLite dalam foldernya sendiri, untuk dihosting oleh "
+"komputer ini."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:132
 msgid ""
 "SQLite does not support authentication or remote access but is suitable for "
 "embedded devices."
 msgstr ""
+"SQLite tak mendukunga otentikasi atau akses jauh tapi cocok bagi perangkat "
+"embedded."
 
 #. TODO: Hide this because it's the only radio button, so it's not a choice:
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:142
@@ -2867,18 +2895,23 @@ msgid ""
 "Create database in its own folder, to be hosted by this computer, using "
 "SQLite"
 msgstr ""
+"Buat basis data dalam foldernya sendiri, untuk dihosting oleh komputer ini, "
+"memakai SQLite"
 
 #. Only PostgreSQL:
 #. Use titles that don't mention the boring name of the backend:
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:151
 msgid "Create database in its own folder, to be hosted by this computer."
 msgstr ""
+"Buat basis data dalam foldernya sendiri, untuk dihosting oleh komputer ini."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:155
 msgid ""
 "Create database on an external database server, to be specified in the next "
 "step."
 msgstr ""
+"Buat basis data pada suatu server basis data eksternal, yang akan dinyatakan "
+"pada langkah selanjutnya."
 
 #: ../glom/utility_widgets/imageglom.cc:655
 msgid "Images"
@@ -2958,19 +2991,16 @@ msgid "Properties"
 msgstr "Properti"
 
 #: ../glom/utility_widgets/notebooklabelglom.cc:89
-#, fuzzy
 msgid "Delete whole notebook \"%1\"?"
-msgstr "Hapus notebook yang dipilih"
+msgstr "Hapus seluruh buku catatan \"%1\"?"
 
 #: ../glom/utility_widgets/notebooklabelglom.cc:94
-#, fuzzy
 msgid "Delete whole notebook?"
-msgstr "Hapus notebook yang dipilih"
+msgstr "Hapus seluruh buku catatan?"
 
 #: ../ui/operator/box_navigation_tables.glade.h:2
-#, fuzzy
 msgid "_Show hidden tables"
-msgstr "Tampilkan folder ter_sembunyi"
+msgstr "Tampilkan tabel-tabel ter_sembunyi"
 
 #: ../ui/operator/dialog_choose_date.glade.h:1
 msgid "Choose Date"
@@ -2992,7 +3022,7 @@ msgstr "Menyambung ke Server"
 
 #: ../ui/operator/dialog_connection.glade.h:2
 msgid "Please enter the connection details for your database server."
-msgstr ""
+msgstr "Harap masukkan rincian koneksi bagi server basis data Anda."
 
 #: ../ui/operator/dialog_connection.glade.h:3
 msgid "Host"
@@ -3045,9 +3075,8 @@ msgstr ""
 "ini.\n"
 
 #: ../ui/operator/dialog_data_invalid_format.glade.h:5
-#, fuzzy
 msgid "example data format"
-msgstr "Definisikan _Format Data"
+msgstr "format data contoh"
 
 #: ../ui/operator/dialog_existing_or_new.glade.h:1
 msgid "Welcome to Glom"
@@ -3064,9 +3093,8 @@ msgstr ""
 "<span weight=\"bold\" size=\"larger\">Buka atau buat suatu Dokumen</span>"
 
 #: ../ui/operator/dialog_existing_or_new.glade.h:4
-#, fuzzy
 msgid "Open or create Document"
-msgstr "Gagal saat membuat atau membuka '%s'"
+msgstr "Buat atau buka Dokumen"
 
 #: ../ui/operator/dialog_existing_or_new.glade.h:5
 msgid "Open Existing Document"
@@ -3077,9 +3105,8 @@ msgid "Create New Document"
 msgstr "Buat Dokumen Baru"
 
 #: ../ui/operator/dialog_find_id.glade.h:1
-#, fuzzy
 msgid "Find Related Record"
-msgstr "Record Terkait Tidak Ada"
+msgstr "Cari Record Terkait"
 
 #: ../ui/operator/dialog_find_id.glade.h:2
 #: ../ui/developer/window_data_layout_export.glade.h:2
@@ -3123,9 +3150,8 @@ msgid "Import Into _Table:"
 msgstr "Impor Ke Dalam _Tabel:"
 
 #: ../ui/operator/dialog_import_csv.glade.h:7
-#, fuzzy
 msgid "Encoding detected as: UTF-8"
-msgstr "Media telah terdeteksi sebagai \"%s\"."
+msgstr "Pengkodean terdeteksi sebagai: UTF-8"
 
 #. Import is a noun here. This is the title for a window showing options for an import operation.
 #: ../ui/operator/dialog_import_csv.glade.h:9
@@ -3133,9 +3159,8 @@ msgid "<b>Import Options</b>"
 msgstr "<b>Opsi Impor</b>"
 
 #: ../ui/operator/dialog_import_csv.glade.h:10
-#, fuzzy
 msgid "_Number of sample rows:"
-msgstr "baris per _contoh:"
+msgstr "Cacah baris co_ntoh:"
 
 #. Import is a noun here. This is the title for a list of fields to import.
 #: ../ui/operator/dialog_import_csv.glade.h:12
@@ -3148,14 +3173,12 @@ msgid "Importing Data"
 msgstr "Mengimpor Data"
 
 #: ../ui/operator/dialog_import_csv_progress.glade.h:3
-#, fuzzy
 msgid "Please wait while your data is imported."
-msgstr "Silakan tunggu saat Evolution melakukan restore data anda."
+msgstr "Harap tunggu saat data Anda diimpor."
 
 #: ../ui/developer/dialog_add_related_table.glade.h:1
-#, fuzzy
 msgid "Add Related Table"
-msgstr "Tabel Yang Berhubungan Dibuat"
+msgstr "Tambah Tabel Terkait"
 
 #: ../ui/developer/dialog_add_related_table.glade.h:2
 msgid ""
@@ -3165,22 +3188,25 @@ msgid ""
 "If a suitable related table already exists then you should instead cancel "
 "and just add a relationship."
 msgstr ""
+"Ini akan menambah suatu tabel baru dan menambah hubungan yang mengacu ke "
+"tabel baru, sebagai alternatif mudah dari melakukan ini dalam langkah-"
+"langkah terpisah.\n"
+"\n"
+"Bila suatu tabel terkait yang cocok telah ada maka Anda mestinya membatalkan "
+"dan menambah suatu hubungan saja."
 
 #. Translators: FROM as in SQL's FROM
 #: ../ui/developer/dialog_add_related_table.glade.h:6
-#, fuzzy
 msgid "From field:"
-msgstr "Kolom _Dari"
+msgstr "Ruas FROM:"
 
 #: ../ui/developer/dialog_add_related_table.glade.h:7
-#, fuzzy
 msgid "Name of new related table:"
-msgstr "Tabel baru yang berrelasi telah dibuat."
+msgstr "Nama tabel terkait yang baru:"
 
 #: ../ui/developer/dialog_add_related_table.glade.h:8
-#, fuzzy
 msgid "Name of new relationship:"
-msgstr "Nama tampilan baru:"
+msgstr "Nama hubungan baru:"
 
 #: ../ui/developer/dialog_change_language.glade.h:1
 msgid "Test Translation"
@@ -3213,23 +3239,20 @@ msgid "Locale:"
 msgstr "Locale:"
 
 #: ../ui/developer/dialog_choose_field.glade.h:1
-#, fuzzy
 msgid "Select Field"
-msgstr "Kurang ekspresi dalam ruas select"
+msgstr "Pilih Ruas"
 
 #: ../ui/developer/dialog_choose_field.glade.h:3
-#, fuzzy
 msgid "Show _Related Relationships"
-msgstr "Judul berhubungan poros"
+msgstr "Tunjukkan Hubungan Te_rkait"
 
 #: ../ui/developer/dialog_choose_field.glade.h:4
 msgid "_Table:"
 msgstr "_Tabel:"
 
 #: ../ui/developer/dialog_choose_relationship.glade.h:1
-#, fuzzy
 msgid "Select Relationship"
-msgstr "<b>Pilih Hubungan</b>"
+msgstr "Pilih Hubungan"
 
 #: ../ui/developer/dialog_choose_relationship.glade.h:2
 msgid "Table:"
@@ -3302,7 +3325,6 @@ msgid "Logo"
 msgstr "Logo"
 
 #: ../ui/developer/dialog_database_preferences.glade.h:13
-#, fuzzy
 msgid "Auto-increment values"
 msgstr "Nilai inkremen otomatis"
 
@@ -3310,6 +3332,8 @@ msgstr "Nilai inkremen otomatis"
 msgid ""
 "When the database is opened the python function implemented here will run."
 msgstr ""
+"Ketika basis data dibuka, fungsi python yang diimplementasikan di sini akan "
+"berjalan."
 
 #: ../ui/developer/dialog_database_preferences.glade.h:15
 #: ../ui/developer/window_button_script.glade.h:4
@@ -3379,18 +3403,16 @@ msgid "Secondary Fields:"
 msgstr "Ruas Sekunder:"
 
 #: ../ui/developer/dialog_group_by.glade.h:7
-#, fuzzy
 msgid "Border Width (ems)"
-msgstr "Lebar tepi persegi panjang"
+msgstr "Lebar Batas (ems)"
 
 #: ../ui/developer/dialog_group_by.glade.h:8
 msgid "<b>Group By</b>"
-msgstr "<b>Kelompokkan Berdasarkan</b>"
+msgstr "<b>Group By</b>"
 
 #: ../ui/developer/dialog_groupby_sort_fields.glade.h:1
-#, fuzzy
 msgid "Group By - Sort Fields"
-msgstr "Urutkan menurut _Tanggal Diubah"
+msgstr "Group By - Ruas Pengurutan"
 
 #: ../ui/developer/dialog_groupby_sort_fields.glade.h:3
 msgid "<b>Sort Fields</b>"
@@ -3406,6 +3428,10 @@ msgid ""
 "additional users later. Remember to keep this password secret because it "
 "allows access to your data from other computers on the network."
 msgstr ""
+"Harap masukkan rincian koneksi awal bagi basis data Anda. Anda dapat "
+"menambahkan pengguna lain nanti. Ingatlah untuk menjaga sandi ini tetap "
+"rahasia karena ini mengijinkan akses ke data Anda dari komputer lain pada "
+"jaringan."
 
 #: ../ui/developer/dialog_initial_password.glade.h:5
 msgid "_Confirm Password:"
@@ -3512,6 +3538,8 @@ msgid ""
 "These modules will be available to your button scripts and field "
 "calculations via the python import keyword."
 msgstr ""
+"Modul-modul ini akan tersedia bagi skrip tombol Anda dan kalkulasi ruas "
+"melalui kata kunci import python."
 
 #: ../ui/developer/dialog_script_library.glade.h:3
 msgid "Module name:"
@@ -3524,9 +3552,8 @@ msgstr "_Periksa"
 
 #: ../ui/developer/dialog_translation_copy.glade.h:1
 #: ../ui/developer/dialog_translation_identify_original.glade.h:1
-#, fuzzy
 msgid "Identify Original"
-msgstr "String asli"
+msgstr "Identifikasi Asli"
 
 #: ../ui/developer/dialog_translation_copy.glade.h:2
 msgid ""
@@ -3564,6 +3591,7 @@ msgid ""
 "If the text is not actually in this language, please choose the correct "
 "language."
 msgstr ""
+"Bila teks sebenarnya bukan dalam bahasa ini, harap pilih bahasa yang benar."
 
 #: ../ui/developer/dialog_user.glade.h:2
 msgid "Group:"
@@ -3601,11 +3629,12 @@ msgid ""
 "When the button is clicked it will run the python function which you "
 "implement here."
 msgstr ""
+"Ketika tombol diklik ini akan menjalankan fungsi python yang Anda "
+"implementasikan di sini."
 
 #: ../ui/developer/window_data_layout_export.glade.h:1
-#, fuzzy
 msgid "Export Format"
-msgstr "_Format = Dialirkan"
+msgstr "Format Ekspor"
 
 #: ../ui/developer/window_data_layout.glade.h:3
 #: ../ui/developer/window_report_layout.glade.h:3
@@ -3617,9 +3646,8 @@ msgid "<b>Relationship:</b>"
 msgstr "<b>Hubungan:</b>"
 
 #: ../ui/developer/window_data_layout.glade.h:5
-#, fuzzy
 msgid "Show child relationships"
-msgstr "Menampilkan hubungan induk/anak antara proses"
+msgstr "Tampilkan hubungan anak"
 
 #: ../ui/developer/window_data_layout.glade.h:7
 msgid ""
@@ -3634,6 +3662,8 @@ msgid ""
 "Add text to a layout, such as an explanation or a warning. The text will be "
 "the same for every record viewed."
 msgstr ""
+"Tambah teks ke suatu tata letak, seperti suatu keterangan atau peringatan. "
+"Teks tersebut akan sama bagi setiap record yang dilihat."
 
 #: ../ui/developer/window_data_layout.glade.h:11
 msgid ""
@@ -3641,6 +3671,10 @@ msgid ""
 "every record viewed. To show an image field from a record, to show different "
 "images for each field, use the field layout item."
 msgstr ""
+"Tambah gambar ke suatu tata letak, seperti suatu logo. Gambar tersebut akan "
+"sama bagi setiap record yang dilihat. Untuk menampilkan ruas gambar dari "
+"suatu record, agar menampilkan gambar yang berbeda bagi setiap ruas, gunakan "
+"butir tata letak ruas."
 
 #: ../ui/developer/window_data_layout.glade.h:12
 msgid ""
@@ -3667,18 +3701,20 @@ msgid ""
 "Add a tabbed notebook. Each page of the notebook may contain several other "
 "layout items, but only one page will be visible at one time."
 msgstr ""
+"Tambah buku catatan bertab. Setiap halaman dari buku catatan mungkin memuat "
+"beberapa butir tata letak lain, tapi hanya satu halaman yang akan nampak "
+"setiap saat."
 
 #: ../ui/developer/window_data_layout.glade.h:18
-#, fuzzy
 msgid ""
 "Add a related records portal. This is a list of records in a related table. "
 "Remember to edit this layout item to specify the relationship to use, and "
 "the fields to show from the related table."
 msgstr ""
-"Tambahkan suatu record portal kalender yang berhubungan. Ini adalah suatu "
-"kalender yang menunjukkan record dari tabel yang terkait. Ingatlah untuk "
-"menyunting butir tata letak ini untuk menyatakan hubungan yang dipakai, dan "
-"ruas yang ditampilkan dari tabel terkait."
+"Tambah suatu portal record yang terkait. Ini adalah suatu daftar record dari "
+"tabel yang terkait. Ingatlah untuk menyunting butir tata letak ini untuk "
+"menyatakan hubungan yang dipakai, dan ruas yang ditampilkan dari tabel "
+"terkait."
 
 #: ../ui/developer/window_data_layout.glade.h:20
 msgid ""
@@ -3692,9 +3728,8 @@ msgstr ""
 "ruas yang ditampilkan dari tabel terkait."
 
 #: ../ui/developer/window_data_layout.glade.h:21
-#, fuzzy
 msgid "Add Related Calendar"
-msgstr "Tambah kalender baru"
+msgstr "Tambah Kalender Terkait"
 
 #: ../ui/developer/window_data_layout.glade.h:22
 msgid ""
@@ -3702,12 +3737,17 @@ msgid ""
 "not remove the field from the table itself. It just will not be seen on the "
 "layout."
 msgstr ""
+"Hapus butir dari tata letak. Bila Anda menghapus suatu butir tata letak "
+"ruas, itu tidak akan menghapus ruas dari tabel. Itu hanya tidak akan "
+"terlihat pada tata letak."
 
 #: ../ui/developer/window_data_layout.glade.h:25
 msgid ""
 "Clicking the row button takes the user to the table specified by this "
 "relationship:"
 msgstr ""
+"Mengklik tombol baris membawa pengguna ke tabel yang dinyatakan oleh "
+"hubungan ini:"
 
 #: ../ui/developer/window_data_layout.glade.h:26
 msgid "Automatic:"
@@ -3774,6 +3814,8 @@ msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
 msgstr ""
+"Nilai ruas akan diisi dengan nilai kembalian dari fungsi python, yang Anda "
+"implementasikan di sini."
 
 #: ../ui/developer/window_field_calculation.glade.h:4
 msgid "Triggered by:"
@@ -3804,9 +3846,8 @@ msgid "_Auto-increment"
 msgstr "N_aik otomatis"
 
 #: ../ui/developer/window_field_definition_edit.glade.h:9
-#, fuzzy
 msgid "_Lookup value when a field changes."
-msgstr "Buat watchpoint yang memicu ketika nilai ekspresi berubah"
+msgstr "Nilai _lookup ketika suatu ruas berubah."
 
 #: ../ui/developer/window_field_definition_edit.glade.h:10
 msgid "_Relationship:"
@@ -3817,14 +3858,12 @@ msgid "_Field:"
 msgstr "_Ruas:"
 
 #: ../ui/developer/window_field_definition_edit.glade.h:12
-#, fuzzy
 msgid "_User Entry"
-msgstr "Cari entri"
+msgstr "Entri Pengg_una"
 
 #: ../ui/developer/window_field_definition_edit.glade.h:14
-#, fuzzy
 msgid "_Calculate Value"
-msgstr "Nilai sekarang"
+msgstr "_Hitung Nilai"
 
 #: ../ui/developer/window_field_definition_edit.glade.h:15
 msgid "Value"
@@ -3844,6 +3883,9 @@ msgid ""
 "your locale would normally use one. If it is selected then a thousands "
 "separator will be used only if your locale normally uses one."
 msgstr ""
+"Bila ini tak dipilih maka suatu pemisah ribuan tak akan dipakai, bahkan bila "
+"locale Anda biasanya memakai itu. Bila itu dipilih maka suatu pemisah ribuan "
+"akan dipakai hanya jika locale Anda secara normal menggunakannya."
 
 #: ../ui/developer/box_formatting.glade.h:3
 msgid "Decimal Places"
@@ -3862,6 +3904,8 @@ msgid ""
 "Click this check box to use a different foreground color to display negative "
 "values."
 msgstr ""
+"Klik kotak contreng ini untuk memakai warna latar depan lain untuk "
+"menampilkan nilai negatif."
 
 #: ../ui/developer/box_formatting.glade.h:7
 msgid "<b>Numeric Formatting</b>"
@@ -3872,15 +3916,16 @@ msgid "Horizontal Alignment:"
 msgstr "Perataan Horisontal:"
 
 #: ../ui/developer/box_formatting.glade.h:9
-#, fuzzy
 msgid "Multi-line"
-msgstr "Alamat multi baris"
+msgstr "Multi baris"
 
 #: ../ui/developer/box_formatting.glade.h:10
 msgid ""
 "If this is selected then the field value will be shown in a multi-line box "
 "with a scrollbar."
 msgstr ""
+"Bila ini dipilih maka nilai ruas akan ditunjukkan dalam suatu kotak multi "
+"baris dengan bilah penggulung."
 
 #: ../ui/developer/box_formatting.glade.h:11
 msgid "Height (lines)"
@@ -3892,7 +3937,7 @@ msgstr "Fonta:"
 
 #: ../ui/developer/box_formatting.glade.h:13
 msgid "Click this check box to use a non-standard font."
-msgstr ""
+msgstr "Klik kotak contreng ini untuk memakai fonta bukan standar."
 
 #: ../ui/developer/box_formatting.glade.h:14
 msgid "Foreground Color:"
@@ -3900,7 +3945,7 @@ msgstr "Warna Depan:"
 
 #: ../ui/developer/box_formatting.glade.h:15
 msgid "Click this check box to use a non-standard foreground color."
-msgstr ""
+msgstr "Klik kotak contreng ini untuk memakai warna latar depan bukan standar."
 
 #: ../ui/developer/box_formatting.glade.h:16
 msgid "Background Color:"
@@ -3909,15 +3954,15 @@ msgstr "Warna Latar:"
 #: ../ui/developer/box_formatting.glade.h:17
 msgid "Click this check box to use a non-standard background color."
 msgstr ""
+"Klik kotak contreng ini untuk memakai warna latar belakang bukan standar."
 
 #: ../ui/developer/box_formatting.glade.h:18
 msgid "<b>Text Formatting</b>"
 msgstr "<b>Pemformatan Teks</b>"
 
 #: ../ui/developer/box_formatting.glade.h:19
-#, fuzzy
 msgid "No Choices"
-msgstr "Lebih banyak pilihan..."
+msgstr "Tak Ada Pilihan"
 
 #: ../ui/developer/box_formatting.glade.h:21
 msgid "Relationship:"
