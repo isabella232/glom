@@ -1,0 +1,359 @@
+# Indonesian translation for glom.
+# Copyright (C) 2012 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+# Andika Triwidada <andika@gmail.com>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glom master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glom&keywords=I18N+L10N&component=general\n"
+"PO-Revision-Date: 2012-10-20 13:47+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: id\n"
+"POT-Creation-Date: \n"
+"X-Generator: Poedit 1.5.4\n"
+
+msgctxt "Database Title"
+msgid "Lesson Planner"
+msgstr "Perencana Pelajaran"
+
+msgctxt "Field (product_name). Parent table: invoice_lines"
+msgid "Product Name"
+msgstr "Nama Produk"
+
+msgctxt "Field (product_id). Parent table: invoice_lines"
+msgid "Product Id"
+msgstr "Id Produk"
+
+msgctxt "Field (product_price). Parent table: invoice_lines"
+msgid "Product Price"
+msgstr "Harga Produk"
+
+msgctxt "Field (invoice_id). Parent table: invoice_lines"
+msgid "Invoice ID"
+msgstr "ID Invoice"
+
+msgctxt "Field (count). Parent table: invoice_lines"
+msgid "Number Of"
+msgstr "Banyaknya"
+
+msgctxt "Field (total_price). Parent table: invoice_lines"
+msgid "Total Price"
+msgstr "Harga Total"
+
+msgctxt "Field (vat_percentage). Parent table: invoice_lines"
+msgid "VAT Percentage"
+msgstr "Persentase Pajak"
+
+msgctxt "Field (total_price_vat). Parent table: invoice_lines"
+msgid "Total VAT"
+msgstr "Pajak Total"
+
+msgctxt "Table (lessons)"
+msgid "Lessons"
+msgstr "Pelajaran"
+
+msgctxt "Field (lesson_id). Parent table: lessons"
+msgid "Lesson ID"
+msgstr "ID Pelajaran"
+
+msgctxt "Field (description). Parent table: lessons"
+msgid "Description"
+msgstr "Deskripsi"
+
+msgctxt "Field (comments). Parent table: lessons"
+msgid "Comments"
+msgstr "Komentar"
+
+msgctxt "Field (subject_id). Parent table: lessons"
+msgid "Subject ID"
+msgstr "ID Perihal"
+
+msgctxt "Field (teacher_id). Parent table: lessons"
+msgid "Teacher ID"
+msgstr "ID Pengajar"
+
+msgctxt "Field (date). Parent table: lessons"
+msgid "Date"
+msgstr "Tanggal"
+
+msgctxt "Field (time_start). Parent table: lessons"
+msgid "Start Time"
+msgstr "Waktu Awal"
+
+msgctxt "Field (hours). Parent table: lessons"
+msgid "Hours"
+msgstr "Jam"
+
+msgctxt "Field (room_id). Parent table: lessons"
+msgid "Room ID"
+msgstr "ID Ruang"
+
+msgctxt "Relationship (subject). Parent table: lessons"
+msgid "Subject"
+msgstr "Perihal"
+
+msgctxt "Relationship (teacher). Parent table: lessons"
+msgid "Teacher"
+msgstr "Pengajar"
+
+msgctxt "Relationship (room). Parent table: lessons"
+msgid "Room"
+msgstr "Ruang"
+
+msgctxt "Layout Group (overview). Parent table: lessons"
+msgid "Overview"
+msgstr "Ringkasan"
+
+msgctxt "Layout Group (details). Parent table: lessons"
+msgid "Details"
+msgstr "Rincian"
+
+msgctxt "Layout Group (subject). Parent table: lessons, Parent Group: details"
+msgid "Subject"
+msgstr "Perihal"
+
+msgctxt "Layout Group (room). Parent table: lessons, Parent Group: details"
+msgid "Room"
+msgstr "Ruang"
+
+msgctxt "Layout Group (teacher). Parent table: lessons, Parent Group: details"
+msgid "Teacher"
+msgstr "Pengajar"
+
+msgctxt "Table (rooms)"
+msgid "Rooms"
+msgstr "Ruang"
+
+msgctxt "Field (room_id). Parent table: rooms"
+msgid "Room ID"
+msgstr "ID Ruang"
+
+msgctxt "Field (description). Parent table: rooms"
+msgid "Description"
+msgstr "Deskripsi"
+
+msgctxt "Field (comments). Parent table: rooms"
+msgid "Comments"
+msgstr "Komentar"
+
+msgctxt "Field (floor). Parent table: rooms"
+msgid "Floor"
+msgstr "Lantai"
+
+msgctxt "Field (building). Parent table: rooms"
+msgid "Building"
+msgstr "Bangunan"
+
+msgctxt "Field Choice. Parent table: rooms, Parent Field: building"
+msgid "Main Building"
+msgstr "Bangunan Utama"
+
+msgctxt "Field Choice. Parent table: rooms, Parent Field: building"
+msgid "Science Block"
+msgstr "Blok Sains"
+
+msgctxt "Field Choice. Parent table: rooms, Parent Field: building"
+msgid "Sports Hall"
+msgstr "Gedung Olah Raga"
+
+msgctxt "Layout Group (overview). Parent table: rooms"
+msgid "Overview"
+msgstr "Ringkasan"
+
+msgctxt "Layout Group (details). Parent table: rooms"
+msgid "Details"
+msgstr "Rincian"
+
+msgctxt "Table (subjects)"
+msgid "Subjects"
+msgstr "Subjek"
+
+msgctxt "Field (subject_id). Parent table: subjects"
+msgid "Subject ID"
+msgstr "ID Perihal"
+
+msgctxt "Field (name). Parent table: subjects"
+msgid "Name"
+msgstr "Nama"
+
+msgctxt "Field (comments). Parent table: subjects"
+msgid "Comments"
+msgstr "Komentar"
+
+msgctxt "Relationship (lessons). Parent table: subjects"
+msgid "Lessons"
+msgstr "Pelajaran"
+
+msgctxt "Layout Group (overview). Parent table: subjects"
+msgid "Overview"
+msgstr "Ringkasan"
+
+msgctxt "Layout Group (details). Parent table: subjects"
+msgid "Details"
+msgstr "Rincian"
+
+msgctxt "Custom Title. Parent table: subjects, Parent Group: details"
+msgid "Teacher Name"
+msgstr "Nama Pengajar"
+
+msgctxt "Table (teachers)"
+msgid "Teachers"
+msgstr "Pengajar"
+
+msgctxt "Field (teacher_id). Parent table: teachers"
+msgid "Teacher ID"
+msgstr "ID Pengajar"
+
+msgctxt "Field (name_first). Parent table: teachers"
+msgid "First Name"
+msgstr "Nama Depan"
+
+msgctxt "Field (name_middle). Parent table: teachers"
+msgid "Middle Name"
+msgstr "Nama Tengah"
+
+msgctxt "Field (name_last). Parent table: teachers"
+msgid "Last Name"
+msgstr "Nama Belakang"
+
+msgctxt "Field (name_title). Parent table: teachers"
+msgid "Title"
+msgstr "Gelar"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Mr"
+msgstr "Tuan"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Mrs"
+msgstr "Ny"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Ms"
+msgstr "Nona"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Miss"
+msgstr "Nona"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Prof"
+msgstr "Prof"
+
+msgctxt "Field (address_street). Parent table: teachers"
+msgid "Street"
+msgstr "Jalan"
+
+msgctxt "Field (address_town). Parent table: teachers"
+msgid "Town"
+msgstr "Kota"
+
+msgctxt "Field (address_state). Parent table: teachers"
+msgid "State"
+msgstr "Negara Bagian"
+
+msgctxt "Field (address_country). Parent table: teachers"
+msgid "Country"
+msgstr "Negara"
+
+msgctxt "Field (address_postcode). Parent table: teachers"
+msgid "Postcode"
+msgstr "Kode Pos"
+
+msgctxt "Field (date_of_birth). Parent table: teachers"
+msgid "Date of Birth"
+msgstr "Tanggal Lahir"
+
+msgctxt "Field (comments). Parent table: teachers"
+msgid "Comments"
+msgstr "Komentar"
+
+msgctxt "Field (name_full). Parent table: teachers"
+msgid "Full Name"
+msgstr "Nama Lengkap"
+
+msgctxt "Field (picture). Parent table: teachers"
+msgid "Picture"
+msgstr "Gambar"
+
+msgctxt "Field (email). Parent table: teachers"
+msgid "Email Address"
+msgstr "Alamat Surel"
+
+msgctxt "Field (website). Parent table: teachers"
+msgid "Web Site"
+msgstr "Situs Web"
+
+msgctxt "Field (tel_home). Parent table: teachers"
+msgid "Home Telephone"
+msgstr "Nomor Telepon Rumah"
+
+msgctxt "Field (tel_work). Parent table: teachers"
+msgid "Work Telephone"
+msgstr "Nomor Telepon Kantor"
+
+msgctxt "Field (tel_mobile). Parent table: teachers"
+msgid "Mobile Telephone"
+msgstr "Nomor Telepon Seluler"
+
+msgctxt "Field (tel_fax). Parent table: teachers"
+msgid "Fax"
+msgstr "Faks"
+
+msgctxt "Relationship (lessons). Parent table: teachers"
+msgid "Lessons"
+msgstr "Pelajaran"
+
+msgctxt "Report (by_country). Parent table: teachers"
+msgid "Contacts By Country"
+msgstr "Kontak Menurut Negara"
+
+msgctxt "Report (by_country_by_town). Parent table: teachers"
+msgid "By Country, By Town"
+msgstr "Menurut Negara, Menurut Kota"
+
+msgctxt "Layout Group (overview). Parent table: teachers"
+msgid "Overview"
+msgstr "Ringkasan"
+
+msgctxt "Layout Group (details). Parent table: teachers"
+msgid "Details"
+msgstr "Rincian"
+
+msgctxt ""
+"Layout Group (name). Parent table: teachers, Parent Group: details, Parent "
+"Group: notebook"
+msgid "Name"
+msgstr "Nama"
+
+msgctxt ""
+"Layout Group (address). Parent table: teachers, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Address"
+msgstr "Alamat"
+
+msgctxt ""
+"Layout Group (telephone). Parent table: teachers, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Telephone"
+msgstr "Telepon"
+
+msgctxt ""
+"Layout Group (other). Parent table: teachers, Parent Group: details, Parent "
+"Group: notebook"
+msgid "Other"
+msgstr "Lainnya"
+
+msgctxt "Custom Title. Parent table: teachers, Parent Group: details"
+msgid "Subject Name"
+msgstr "Nama Subjek"
