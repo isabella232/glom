@@ -1,3 +1,16 @@
+2012-10-25  Murray Cumming  <murrayc@murrayc.com>
+
+        Self hosting: Avoid use of unix-domain sockets.
+
+        * glom/libglom/connectionpool_backends/postgres_self.cc:
+	Use -k '' with the postgres executable, and remove any local lines in
+	pg_hba.conf, to (hopefully, presumably) allow only TCP connections
+	and no unix-domain socket connections.
+	This avoids the new restricitons on the characters allowed in the 
+	path given to -k (unix_socket_directory or unix_socket_directories 
+	in postgresql.conf).
+	Therefore, this fixes the tests on Fedora 17.
+
 2012-08-31  Murray Cumming  <murrayc@murrayc.com>
 
         Catch exceptions when updating the libgda metastore.

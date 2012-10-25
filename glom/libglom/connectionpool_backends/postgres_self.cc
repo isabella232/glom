@@ -67,11 +67,9 @@ namespace ConnectionPoolBackends
 #define DEFAULT_CONFIG_PG_HBA_LOCAL_8p3 \
 "# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD\n" \
 "\n" \
-"# local is for Unix domain socket connections only\n" \
 "# trust allows connection from the current PC without a password:\n" \
-"local   all         all                               trust\n" \
-"local   all         all                               ident sameuser\n" \
-"local   all         all                               md5\n" \
+"host    all         all         127.0.0.1    255.255.255.255    trust\n" \
+"host    all         all         ::1/128               trust\n" \
 "\n" \
 "# TCP connections from the same computer, with a password:\n" \
 "host    all         all         127.0.0.1    255.255.255.255    md5\n" \
@@ -81,11 +79,9 @@ namespace ConnectionPoolBackends
 #define DEFAULT_CONFIG_PG_HBA_LOCAL_8p4 \
 "# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD\n" \
 "\n" \
-"# local is for Unix domain socket connections only\n" \
 "# trust allows connection from the current PC without a password:\n" \
-"local   all         all                               trust\n" \
-"local   all         all                               ident\n" \
-"local   all         all                               md5\n" \
+"host    all         all         127.0.0.1    255.255.255.255    trust\n" \
+"host    all         all         ::1/128               trust\n" \
 "\n" \
 "# TCP connections from the same computer, with a password:\n" \
 "host    all         all         127.0.0.1    255.255.255.255    md5\n" \
@@ -430,10 +426,16 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
   const std::string dbdir_pid = Glib::build_filename(dbdir, "pid");
   const std::string command_postgres_start = get_path_to_postgres_executable("postgres") + " -D " + Glib::shell_quote(dbdir_data)
                                   + " -p " + port_as_text
-                                  + " -i " //Equivalent to -h "*", which in turn is equivalent to listen_addresses in postgresql.conf. Listen to all IP addresses, so any client can connect (with a username+password)
+                                  + " -i " //Equivalent to -h "*", which in turn is equivalent to listen_addresses in postgresql.conf. Listen to all IP addresses, so any client can connect (with a username+password). TODO: -i is deprecated in favour of -h
                                   + " -c hba_file=" + Glib::shell_quote(dbdir_hba)
                                   + " -c ident_file=" + Glib::shell_quote(dbdir_ident)
-                                  + " -k " + Glib::shell_quote(dbdir)
+
+                                  // This seems to be a way to disable unix sockets.
+                                  // See http://archives.postgresql.org/pgsql-general/2012-10/msg00727.php
+                                  // Recent versions of PostgreSQL (patched 9.1 in Fedora)
+                                  // do not allow some unusual characters in the path, so it is better to avoid it altogether.
+                                  + " -k ''"
+
                                   + " --external_pid_file=" + Glib::shell_quote(dbdir_pid);
   //std::cout << G_STRFUNC << ": debug: " << command_postgres_start << std::endl;
 
