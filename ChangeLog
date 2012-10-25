@@ -1,5 +1,15 @@
 2012-10-25  Murray Cumming  <murrayc@murrayc.com>
 
+        Self hosting: Only allow attempts from localhost when not shared.
+
+        * glom/libglom/connectionpool_backends/postgres_self.cc:
+	When the Glom system should not be shared on the network (the 
+	default for new files), do not even allow connection attempts
+	from non-localhost. This also removes the use of the deprecated 
+	postgres -i option.
+
+2012-10-25  Murray Cumming  <murrayc@murrayc.com>
+
         Self hosting: Avoid use of unix-domain sockets.
 
         * glom/libglom/connectionpool_backends/postgres_self.cc:
