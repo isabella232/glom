@@ -1,13 +1,5 @@
 2012-10-25  Murray Cumming  <murrayc@murrayc.com>
 
-        SelfHosting: Do not generate and specify pg_ident.conf
-
-        * glom/libglom/connectionpool_backends/postgres_self.cc:
-	Do not bother creating and using the pg_ident.conf file because
-	we do not use ident authentication.
-
-2012-10-25  Murray Cumming  <murrayc@murrayc.com>
-
         Self hosting: Only allow attempts from localhost when not shared.
 
         * glom/libglom/connectionpool_backends/postgres_self.cc:

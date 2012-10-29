@@ -422,12 +422,14 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
   // CreateProcess() API used on Windows does not support single quotes.
   const std::string dbdir_config = Glib::build_filename(dbdir, "config");
   const std::string dbdir_hba = Glib::build_filename(dbdir_config, "pg_hba.conf");
+  const std::string dbdir_ident = Glib::build_filename(dbdir_config, "pg_ident.conf");
   const std::string dbdir_pid = Glib::build_filename(dbdir, "pid");
   const std::string listen_address = (m_network_shared ? "*" : "localhost");
   const std::string command_postgres_start = get_path_to_postgres_executable("postgres") + " -D " + Glib::shell_quote(dbdir_data)
                                   + " -p " + port_as_text
                                   + " -h " + listen_address
                                   + " -c hba_file=" + Glib::shell_quote(dbdir_hba)
+                                  + " -c ident_file=" + Glib::shell_quote(dbdir_ident)
 
                                   // This seems to be a way to disable unix sockets.
                                   // See http://archives.postgresql.org/pgsql-general/2012-10/msg00727.php
@@ -589,6 +591,9 @@ bool PostgresSelfHosted::set_network_shared(const SlotProgress& slot_progress, b
   g_assert(hba_conf_creation_succeeded);
   if(!hba_conf_creation_succeeded)
     return false;
+
+  const bool ident_conf_creation_succeeded = create_text_file(dbdir_uri_config + "/pg_ident.conf", DEFAULT_CONFIG_PG_IDENT);
+  g_assert(ident_conf_creation_succeeded);
 
   return hba_conf_creation_succeeded;
 }
