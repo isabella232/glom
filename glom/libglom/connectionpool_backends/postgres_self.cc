@@ -67,9 +67,11 @@ namespace ConnectionPoolBackends
 #define DEFAULT_CONFIG_PG_HBA_LOCAL_8p3 \
 "# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD\n" \
 "\n" \
+"# local is for Unix domain socket connections only\n" \
 "# trust allows connection from the current PC without a password:\n" \
-"host    all         all         127.0.0.1    255.255.255.255    trust\n" \
-"host    all         all         ::1/128               trust\n" \
+"local   all         all                               trust\n" \
+"local   all         all                               ident sameuser\n" \
+"local   all         all                               md5\n" \
 "\n" \
 "# TCP connections from the same computer, with a password:\n" \
 "host    all         all         127.0.0.1    255.255.255.255    md5\n" \
@@ -79,9 +81,11 @@ namespace ConnectionPoolBackends
 #define DEFAULT_CONFIG_PG_HBA_LOCAL_8p4 \
 "# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD\n" \
 "\n" \
+"# local is for Unix domain socket connections only\n" \
 "# trust allows connection from the current PC without a password:\n" \
-"host    all         all         127.0.0.1    255.255.255.255    trust\n" \
-"host    all         all         ::1/128               trust\n" \
+"local   all         all                               trust\n" \
+"local   all         all                               ident\n" \
+"local   all         all                               md5\n" \
 "\n" \
 "# TCP connections from the same computer, with a password:\n" \
 "host    all         all         127.0.0.1    255.255.255.255    md5\n" \
@@ -430,13 +434,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
                                   + " -h " + listen_address
                                   + " -c hba_file=" + Glib::shell_quote(dbdir_hba)
                                   + " -c ident_file=" + Glib::shell_quote(dbdir_ident)
-
-                                  // This seems to be a way to disable unix sockets.
-                                  // See http://archives.postgresql.org/pgsql-general/2012-10/msg00727.php
-                                  // Recent versions of PostgreSQL (patched 9.1 in Fedora)
-                                  // do not allow some unusual characters in the path, so it is better to avoid it altogether.
-                                  + " -k ''"
-
+                                  + " -k " + Glib::shell_quote(dbdir)
                                   + " --external_pid_file=" + Glib::shell_quote(dbdir_pid);
   //std::cout << G_STRFUNC << ": debug: " << command_postgres_start << std::endl;
 
