@@ -535,7 +535,7 @@ bool PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
 
 
 
-bool PostgresSelfHosted::set_network_shared(const SlotProgress& slot_progress, bool network_shared)
+bool PostgresSelfHosted::set_network_shared(const SlotProgress& /* slot_progress */, bool network_shared)
 {
   //TODO: Use slot_progress, while doing async IO for create_text_file().
 
@@ -547,9 +547,9 @@ bool PostgresSelfHosted::set_network_shared(const SlotProgress& slot_progress, b
   const std::string dbdir_uri_config = dbdir_uri + "/config";
   const char* default_conf_contents = 0;
 
-  // Choose the configuration contents based on the postgresql version
-  // and whether we want to be network-shared:
-  const float postgresql_version = get_postgresql_utils_version_as_number(slot_progress);
+  // Choose the configuration contents based on 
+  // whether we want to be network-shared:
+  //const float postgresql_version = get_postgresql_utils_version_as_number(slot_progress);
   //std::cout << "DEBUG: postgresql_version=" << postgresql_version << std::endl;
 
   default_conf_contents = m_network_shared ? DEFAULT_CONFIG_PG_HBA_REMOTE : DEFAULT_CONFIG_PG_HBA_LOCAL;
