@@ -290,8 +290,8 @@ tests_test_selfhosting_sqlinjection_SOURCES = tests/test_selfhosting_sqlinjectio
 tests_test_selfhosting_sqlinjection_LDADD = $(tests_ldadd)
 tests_test_selfhosting_sqlinjection_CPPFLAGS = $(tests_cppflags)
 
-# UI Tests:
-
+# Tests of code used by the application,
+# and not just the library or the command-line utilities.
 if GLOM_ENABLE_UI
 
 # TODO: Shouldn't test_pyembed be non-UI?
@@ -310,10 +310,9 @@ check_PROGRAMS += \
 	tests/test_iso_codes
 #	glom/mode_data/test_flowtablewithfields
 #	glom/utility_widgets/canvas/test_canvas_editable
+
 	
 TESTS += \
-	tests/test_glade_toplevels_instantiation.sh \
-	tests/test_glade_derived_instantiation \
 	tests/python/test_python_execute_func \
 	tests/python/test_python_execute_func_bad_syntax \
 	tests/python/test_python_execute_func_date \
@@ -321,6 +320,15 @@ TESTS += \
 	tests/python/test_python_execute_func_with_record \
 	tests/python/test_python_execute_script \
 	tests/test_iso_codes
+
+# Some continuous-integration systems won't have an X server,
+# so they will want to disable these in configure.
+if GLOM_ENABLE_UI_TESTS
+TESTS += \
+	tests/test_glade_toplevels_instantiation.sh \
+	tests/test_glade_derived_instantiation
+endif #GLOM_ENABLE_UI_TESTS
+
 
 glom_utility_widgets_test_flowtable_SOURCES =	\
 	glom/utility_widgets/flowtable.cc	\

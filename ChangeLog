@@ -1,5 +1,14 @@
 2012-11-02  Murray Cumming  <murrayc@murrayc.com>
 
+        Add --enable-ui-tests.
+
+	* configure.ac, Makefile_tests.am:
+	Allow the tests that actually instantiate windows to 
+	be disabled, for running under headless continuous
+	integration systems.
+
+2012-11-02  Murray Cumming  <murrayc@murrayc.com>
+
         Self hosting: Do not allow ident authorization.
 
         * glom/libglom/connectionpool_backends/postgres_self.cc:

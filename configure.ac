@@ -84,7 +84,7 @@ AM_CONDITIONAL([HOST_WIN32], [test "x$glom_host_win32" = xyes])
 
 AC_ARG_ENABLE([glom-ui],
               [AS_HELP_STRING([--enable-glom-ui],
-                              [build the glom UI application instead of just libglom [default=yes]])],
+                              [build the glom UI application instead of just libglom. The command-line utilities are always built. [default=yes]])],
               [glom_enable_ui=$enableval],
               [glom_enable_ui=yes])
 AM_CONDITIONAL([GLOM_ENABLE_UI], [test "x$glom_enable_ui" = xyes])
@@ -102,6 +102,13 @@ AM_CONDITIONAL([GLOM_ENABLE_CLIENT_ONLY], [test "x$glom_enable_client_only" = xy
 AS_IF([test "x$glom_enable_client_only" = xyes],
          AC_DEFINE([GLOM_ENABLE_CLIENT_ONLY], [1],
                  [Define to disable support for self-hosting and developer mode.])])
+
+AC_ARG_ENABLE([ui-tests],
+              [AS_HELP_STRING([--enable-ui-tests],
+                              [Run UI tests during make check. [default=yes]])],
+              [glom_enable_ui_tests=$enableval],
+              [glom_enable_ui_tests=yes])
+AM_CONDITIONAL([GLOM_ENABLE_UI_TESTS], [test "x$glom_enable_ui_tests" = xyes])
 
 AC_ARG_ENABLE([sqlite],
               [AS_HELP_STRING([--enable-sqlite],
