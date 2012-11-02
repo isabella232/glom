@@ -59,32 +59,13 @@ namespace Glom
 namespace ConnectionPoolBackends
 {
 
-//TODO: Do we need these sameuser lines?
 
-// We need both <=8.3 and >=8.4 versions, because the ident line changed syntax
-// incompatibly: http://www.postgresql.org/about/press/features84#security
-
-#define DEFAULT_CONFIG_PG_HBA_LOCAL_8p3 \
+#define DEFAULT_CONFIG_PG_HBA_LOCAL \
 "# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD\n" \
 "\n" \
 "# local is for Unix domain socket connections only\n" \
 "# trust allows connection from the current PC without a password:\n" \
 "local   all         all                               trust\n" \
-"local   all         all                               ident sameuser\n" \
-"local   all         all                               md5\n" \
-"\n" \
-"# TCP connections from the same computer, with a password:\n" \
-"host    all         all         127.0.0.1    255.255.255.255    md5\n" \
-"# IPv6 local connections:\n" \
-"host    all         all         ::1/128               md5\n"
-
-#define DEFAULT_CONFIG_PG_HBA_LOCAL_8p4 \
-"# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD\n" \
-"\n" \
-"# local is for Unix domain socket connections only\n" \
-"# trust allows connection from the current PC without a password:\n" \
-"local   all         all                               trust\n" \
-"local   all         all                               ident\n" \
 "local   all         all                               md5\n" \
 "\n" \
 "# TCP connections from the same computer, with a password:\n" \
@@ -99,18 +80,13 @@ namespace ConnectionPoolBackends
 "# IPv6 local connections:\n" \
 "host    all         all         ::1/128               md5\n"
 
-#define DEFAULT_CONFIG_PG_HBA_REMOTE_8p3 \
-DEFAULT_CONFIG_PG_HBA_LOCAL_8p3 \
-DEFAULT_CONFIG_PG_HBA_REMOTE_EXTRA
-
-#define DEFAULT_CONFIG_PG_HBA_REMOTE_8p4 \
-DEFAULT_CONFIG_PG_HBA_LOCAL_8p3 \
+#define DEFAULT_CONFIG_PG_HBA_REMOTE \
+DEFAULT_CONFIG_PG_HBA_LOCAL \
 DEFAULT_CONFIG_PG_HBA_REMOTE_EXTRA
 
 static const int PORT_POSTGRESQL_SELF_HOSTED_START = 5433;
 static const int PORT_POSTGRESQL_SELF_HOSTED_END = 5500;
 
-static const char DEFAULT_CONFIG_PG_IDENT[] = "";
 static const char FILENAME_DATA[] = "data";
 static const char FILENAME_BACKUP[] = "backup";
 
@@ -212,8 +188,8 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
     return INITERROR_COULD_NOT_CREATE_DIRECTORY;
   }
 
-  //Create these files: environment  pg_hba.conf  pg_ident.conf  start.conf
-  set_network_shared(slot_progress, m_network_shared); //Creates pg_hba.conf and pg_ident.conf
+  //Create these files: environment, pg_hba.conf, start.conf
+  set_network_shared(slot_progress, m_network_shared); //Creates pg_hba.conf
 
   //Check that there is not an existing data directory:
   const std::string dbdir_data = get_self_hosting_data_path(true /* create */);
@@ -405,7 +381,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
   }
 
   //Attempt to ensure that the config files are correct:
-  set_network_shared(slot_progress, m_network_shared); //Creates pg_hba.conf and pg_ident.conf
+  set_network_shared(slot_progress, m_network_shared); //Creates pg_hba.conf
 
   const unsigned int available_port = discover_first_free_port(PORT_POSTGRESQL_SELF_HOSTED_START, PORT_POSTGRESQL_SELF_HOSTED_END);
   //std::cout << "debug: " << G_STRFUNC << ":() : debug: Available port for self-hosting: " << available_port << std::endl;
@@ -426,14 +402,12 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
   // CreateProcess() API used on Windows does not support single quotes.
   const std::string dbdir_config = Glib::build_filename(dbdir, "config");
   const std::string dbdir_hba = Glib::build_filename(dbdir_config, "pg_hba.conf");
-  const std::string dbdir_ident = Glib::build_filename(dbdir_config, "pg_ident.conf");
   const std::string dbdir_pid = Glib::build_filename(dbdir, "pid");
   const std::string listen_address = (m_network_shared ? "*" : "localhost");
   const std::string command_postgres_start = get_path_to_postgres_executable("postgres") + " -D " + Glib::shell_quote(dbdir_data)
                                   + " -p " + port_as_text
                                   + " -h " + listen_address
                                   + " -c hba_file=" + Glib::shell_quote(dbdir_hba)
-                                  + " -c ident_file=" + Glib::shell_quote(dbdir_ident)
                                   + " -k " + Glib::shell_quote(dbdir)
                                   + " --external_pid_file=" + Glib::shell_quote(dbdir_pid);
   //std::cout << G_STRFUNC << ": debug: " << command_postgres_start << std::endl;
@@ -578,10 +552,7 @@ bool PostgresSelfHosted::set_network_shared(const SlotProgress& slot_progress, b
   const float postgresql_version = get_postgresql_utils_version_as_number(slot_progress);
   //std::cout << "DEBUG: postgresql_version=" << postgresql_version << std::endl;
 
-  if(postgresql_version >= 8.4f)
-    default_conf_contents = m_network_shared ? DEFAULT_CONFIG_PG_HBA_REMOTE_8p4 : DEFAULT_CONFIG_PG_HBA_LOCAL_8p4;
-  else
-    default_conf_contents = m_network_shared ? DEFAULT_CONFIG_PG_HBA_REMOTE_8p3 : DEFAULT_CONFIG_PG_HBA_LOCAL_8p3;
+  default_conf_contents = m_network_shared ? DEFAULT_CONFIG_PG_HBA_REMOTE : DEFAULT_CONFIG_PG_HBA_LOCAL;
 
   //std::cout << "DEBUG: default_conf_contents=" << default_conf_contents << std::endl;
 
@@ -589,9 +560,6 @@ bool PostgresSelfHosted::set_network_shared(const SlotProgress& slot_progress, b
   g_assert(hba_conf_creation_succeeded);
   if(!hba_conf_creation_succeeded)
     return false;
-
-  const bool ident_conf_creation_succeeded = create_text_file(dbdir_uri_config + "/pg_ident.conf", DEFAULT_CONFIG_PG_IDENT);
-  g_assert(ident_conf_creation_succeeded);
 
   return hba_conf_creation_succeeded;
 }

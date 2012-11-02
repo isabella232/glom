@@ -1,3 +1,11 @@
+2012-11-02  Murray Cumming  <murrayc@murrayc.com>
+
+        Self hosting: Do not allow ident authorization.
+
+        * glom/libglom/connectionpool_backends/postgres_self.cc:
+	Remove the ident lines from pg_hba.conf. We use trust already,
+	so we do not need both.
+
 2012-10-25  Murray Cumming  <murrayc@murrayc.com>
 
         Self hosting: Only allow attempts from localhost when not shared.
