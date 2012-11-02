@@ -1,5 +1,13 @@
 2012-11-02  Murray Cumming  <murrayc@murrayc.com>
 
+        Move a test out the ui tests.
+
+	* Because it uses the glom executable, which needs an
+	X display, even when parsing the command line parameters.
+	I blame GtkApplication.
+
+2012-11-02  Murray Cumming  <murrayc@murrayc.com>
+
         Add --enable-ui-tests.
 
 	* configure.ac, Makefile_tests.am:

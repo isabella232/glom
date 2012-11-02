@@ -15,9 +15,6 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Note that test_glom_date_in_locales.sh requires us to have certain locales 
-# installed and configured.
-
 check_PROGRAMS =						\
 	glom/libglom/test_connectionpool			\
 	glom/libglom/example_document_load \
@@ -68,7 +65,6 @@ TESTS =	tests/test_document_load	\
 	tests/test_dtd_file_validation.sh \
 	tests/test_glade_file_validation.sh \
 	tests/test_xslt_file_validation.sh \
-	tests/test_glom_date_in_locales.sh \
 	tests/python/test_load_python_library \
 	tests/python/test_python_module \
 	tests/test_fake_connection \
@@ -321,12 +317,19 @@ TESTS += \
 	tests/python/test_python_execute_script \
 	tests/test_iso_codes
 
+# Note that test_glom_date_in_locales.sh requires us to have certain locales 
+# installed and configured.
+# Also note: This is only in the UI tests because it use the glom executable,
+# and GtkApplication will not let us handle the command-line argument 
+# before initializing GTK+. See the comments in the code.
+
 # Some continuous-integration systems won't have an X server,
 # so they will want to disable these in configure.
 if GLOM_ENABLE_UI_TESTS
 TESTS += \
 	tests/test_glade_toplevels_instantiation.sh \
-	tests/test_glade_derived_instantiation
+	tests/test_glade_derived_instantiation \
+	tests/test_glom_date_in_locales.sh
 endif #GLOM_ENABLE_UI_TESTS
 
 
