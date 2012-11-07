@@ -1,3 +1,22 @@
+1.22.1 (stable):
+
+* Self hosting:
+  - Do not allow ident authorization.
+    We use trust instead when not sharing.
+  - Only allow attempts from localhost when not shared.
+  (Murray Cumming)
+* Film Manager example: Correct the Contacts reports.
+  (Murray Cumming)
+
+Build:
+* Add the --enable-ui-tests configure option.
+  This lets package builders (debian and Ubuntu, for instance)
+  run make check as a sanity check.
+* Windows build: Fix some typos.
+  (Murray Cumming) Bug #674009 (alien)
+* OpenBSD: std:cerr needs <iostream>.
+  (Antoine Jacoutot) Bug #673914
+
 1.22.0 (stable):
 
 libglom:
