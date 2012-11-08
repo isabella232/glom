@@ -15,6 +15,7 @@
 /test_document_load_and_save
 /test_document_change
 /test_document_load_translations
+/test_fake_connection
 /test_glade_derived_instantiation
 /test_script_check_for_problems
 /test_selfhosting_new_empty
@@ -30,8 +31,8 @@
 /test_selfhosting_new_then_report_summary
 /test_selfhosting_new_then_choices
 /test_selfhosting_new_then_lookup
+/test_selfhosting_new_then_report_summary
 /test_selfhosting_sqlinjection
-/test_fake_connection
 /test_selfhosting_new_from_example_strangepath
 /test_selfhosting_new_then_change_columns
 
