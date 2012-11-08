@@ -1,3 +1,15 @@
+2012-11-08  Murray Cumming  <murrayc@murrayc.com>
+
+	Import example .po translations into the examples.
+
+	* examples/example_film_manager.glom:
+	* examples/example_lesson_planner.glom:
+	* examples/example_music_collection.glom:
+	* examples/example_project_manager.glom:
+	* examples/example_smallbusiness.glom:
+	There are some new translations for el, id, and lv and en_GB,
+	though only a few of the en_GB translated strings are different.
+
 1.22.1 (stable):
 
 2012-11-02  Murray Cumming  <murrayc@murrayc.com>

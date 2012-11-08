@@ -3,9 +3,13 @@
   <trans_set>
     <trans loc="cs" val="Správa projektu"/>
     <trans loc="de" val="Projektverwaltung"/>
+    <trans loc="el" val="Παράδειγμα υπεύθυνου έργου"/>
+    <trans loc="en_GB" val="Project Manager Example"/>
     <trans loc="es" val="Ejemplo de gestor de proyectos"/>
     <trans loc="fr" val="Exemple de gestion de projet"/>
     <trans loc="gl" val="Exemplo de xestor de proxectos"/>
+    <trans loc="id" val="Contoh Manajer Projek"/>
+    <trans loc="lv" val="Projektu pārvaldnieka piemērs"/>
     <trans loc="pt_BR" val="Exemplo do gerenciador de projeto"/>
     <trans loc="sl" val="Primer zbirke upravljalnika projektov"/>
   </trans_set>
@@ -192,9 +196,13 @@
     <trans_set>
       <trans loc="cs" val="Kontakty"/>
       <trans loc="de" val="Kontakten"/>
+      <trans loc="el" val="Επαφές"/>
+      <trans loc="en_GB" val="Contacts"/>
       <trans loc="es" val="Contactos"/>
       <trans loc="fr" val="Contacts"/>
       <trans loc="gl" val="Contactos"/>
+      <trans loc="id" val="Kontak"/>
+      <trans loc="lv" val="Kontakti"/>
       <trans loc="pt_BR" val="Contatos"/>
       <trans loc="sl" val="Stiki"/>
     </trans_set>
@@ -204,9 +212,13 @@
         <trans_set>
           <trans loc="cs" val="ID kontaktu"/>
           <trans loc="de" val="Kontakt ID"/>
+          <trans loc="el" val="Αναγνωριστικό επαφής"/>
+          <trans loc="en_GB" val="Contact ID"/>
           <trans loc="es" val="ID del contacto"/>
           <trans loc="fr" val="ID du contact"/>
           <trans loc="gl" val="ID do contacto"/>
+          <trans loc="id" val="ID Kontak"/>
+          <trans loc="lv" val="Kontakta ID"/>
           <trans loc="pt_BR" val="ID de Contato"/>
           <trans loc="sl" val="ID stika"/>
         </trans_set>
@@ -216,9 +228,13 @@
         <trans_set>
           <trans loc="cs" val="Křestní jméno"/>
           <trans loc="de" val="Vorname"/>
+          <trans loc="el" val="Όνομα:"/>
+          <trans loc="en_GB" val="Given Name"/>
           <trans loc="es" val="Nombre"/>
           <trans loc="fr" val="Prénom"/>
           <trans loc="gl" val="Nome"/>
+          <trans loc="id" val="Nama Depan"/>
+          <trans loc="lv" val="Vārds"/>
           <trans loc="pt_BR" val="Primeiro nome"/>
           <trans loc="sl" val="Ime"/>
         </trans_set>
@@ -228,9 +244,13 @@
         <trans_set>
           <trans loc="cs" val="Prostřední jméno"/>
           <trans loc="de" val="Zweite Name"/>
+          <trans loc="el" val="Μεσαίο όνομα"/>
+          <trans loc="en_GB" val="Middle Name"/>
           <trans loc="es" val="Primer apellido"/>
           <trans loc="fr" val="Nom intermédiaire"/>
           <trans loc="gl" val="Primeiro apelido"/>
+          <trans loc="id" val="Nama Tengah"/>
+          <trans loc="lv" val="Otrais vārds"/>
           <trans loc="pt_BR" val="Nome do meio"/>
           <trans loc="sl" val="Drugo ime"/>
         </trans_set>
@@ -240,9 +260,13 @@
         <trans_set>
           <trans loc="cs" val="Příjmení"/>
           <trans loc="de" val="Familiename"/>
+          <trans loc="el" val="Επώνυμο"/>
+          <trans loc="en_GB" val="Surname"/>
           <trans loc="es" val="Segundo apellido"/>
           <trans loc="fr" val="Nom"/>
           <trans loc="gl" val="Segundo apelido"/>
+          <trans loc="id" val="Nama Belakang"/>
+          <trans loc="lv" val="Uzvārds"/>
           <trans loc="pt_BR" val="Último nome"/>
           <trans loc="sl" val="Priimek"/>
         </trans_set>
@@ -254,9 +278,12 @@
               <trans_set>
                 <trans loc="cs" val="pan"/>
                 <trans loc="de" val="Herr"/>
+                <trans loc="el" val="Κος"/>
+                <trans loc="en_GB" val="Mr."/>
                 <trans loc="es" val="Sr."/>
                 <trans loc="fr" val="M."/>
                 <trans loc="gl" val="Sr."/>
+                <trans loc="id" val="Tn"/>
                 <trans loc="pt_BR" val="Sr"/>
                 <trans loc="sl" val="g."/>
               </trans_set>
@@ -265,9 +292,12 @@
               <trans_set>
                 <trans loc="cs" val="paní"/>
                 <trans loc="de" val="Frau"/>
+                <trans loc="el" val="Κα"/>
+                <trans loc="en_GB" val="Mrs."/>
                 <trans loc="es" val="Srta."/>
                 <trans loc="fr" val="Mme"/>
                 <trans loc="gl" val="Srta."/>
+                <trans loc="id" val="Ny"/>
                 <trans loc="pt_BR" val="Sra"/>
                 <trans loc="sl" val="ga."/>
               </trans_set>
@@ -276,9 +306,12 @@
               <trans_set>
                 <trans loc="cs" val="paní/slečna"/>
                 <trans loc="de" val="Frau"/>
+                <trans loc="el" val="Κα"/>
+                <trans loc="en_GB" val="Ms."/>
                 <trans loc="es" val="Sra."/>
                 <trans loc="fr" val="Mme"/>
                 <trans loc="gl" val="Sra."/>
+                <trans loc="id" val="Nn"/>
                 <trans loc="pt_BR" val="Srta"/>
                 <trans loc="sl" val="ga."/>
               </trans_set>
@@ -287,9 +320,12 @@
               <trans_set>
                 <trans loc="cs" val="slečna"/>
                 <trans loc="de" val="Frau"/>
+                <trans loc="el" val="Δις"/>
+                <trans loc="en_GB" val="Miss"/>
                 <trans loc="es" val="Señorita"/>
                 <trans loc="fr" val="Mlle"/>
                 <trans loc="gl" val="Señorita"/>
+                <trans loc="id" val="Nona"/>
                 <trans loc="pt_BR" val="Senhorita"/>
                 <trans loc="sl" val="gdč."/>
               </trans_set>
@@ -298,9 +334,13 @@
               <trans_set>
                 <trans loc="cs" val="Dr."/>
                 <trans loc="de" val="Dr."/>
+                <trans loc="el" val="Δρ"/>
+                <trans loc="en_GB" val="Dr."/>
                 <trans loc="es" val="Dr"/>
                 <trans loc="fr" val="Dr"/>
                 <trans loc="gl" val="Dr"/>
+                <trans loc="id" val="Dr"/>
+                <trans loc="lv" val="Dr."/>
                 <trans loc="pt_BR" val="Dr."/>
                 <trans loc="sl" val="dr."/>
               </trans_set>
@@ -309,9 +349,13 @@
               <trans_set>
                 <trans loc="cs" val="Prof."/>
                 <trans loc="de" val="Prof."/>
+                <trans loc="el" val="Καθ"/>
+                <trans loc="en_GB" val="Prof."/>
                 <trans loc="es" val="Prof"/>
                 <trans loc="fr" val="Pr"/>
                 <trans loc="gl" val="Prof"/>
+                <trans loc="id" val="Prof"/>
+                <trans loc="lv" val="Prof."/>
                 <trans loc="pt_BR" val="Prof."/>
                 <trans loc="sl" val="prof."/>
               </trans_set>
@@ -321,9 +365,13 @@
         <trans_set>
           <trans loc="cs" val="Oslovení"/>
           <trans loc="de" val="Titel"/>
+          <trans loc="el" val="Τίτλος"/>
+          <trans loc="en_GB" val="Title"/>
           <trans loc="es" val="Título"/>
           <trans loc="fr" val="Titre"/>
           <trans loc="gl" val="Título"/>
+          <trans loc="id" val="Gelar"/>
+          <trans loc="lv" val="Uzruna"/>
           <trans loc="pt_BR" val="Título"/>
           <trans loc="sl" val="Naziv"/>
         </trans_set>
@@ -333,9 +381,13 @@
         <trans_set>
           <trans loc="cs" val="Ulice"/>
           <trans loc="de" val="Strasse"/>
+          <trans loc="el" val="Οδός"/>
+          <trans loc="en_GB" val="Street"/>
           <trans loc="es" val="Calle"/>
           <trans loc="fr" val="Rue"/>
           <trans loc="gl" val="Rúa"/>
+          <trans loc="id" val="Jalan"/>
+          <trans loc="lv" val="Iela"/>
           <trans loc="pt_BR" val="Rua"/>
           <trans loc="sl" val="Ulica"/>
         </trans_set>
@@ -345,9 +397,13 @@
         <trans_set>
           <trans loc="cs" val="Město"/>
           <trans loc="de" val="Ort"/>
+          <trans loc="el" val="Πόλη"/>
+          <trans loc="en_GB" val="Town"/>
           <trans loc="es" val="Ciudad"/>
           <trans loc="fr" val="Ville"/>
           <trans loc="gl" val="Cidade"/>
+          <trans loc="id" val="Kota"/>
+          <trans loc="lv" val="Pilsēta"/>
           <trans loc="pt_BR" val="Cidade"/>
           <trans loc="sl" val="Mesto"/>
         </trans_set>
@@ -357,9 +413,13 @@
         <trans_set>
           <trans loc="cs" val="Stát"/>
           <trans loc="de" val="Bundesland/Kanton"/>
+          <trans loc="el" val="Πολιτεία"/>
+          <trans loc="en_GB" val="County"/>
           <trans loc="es" val="Estado"/>
           <trans loc="fr" val="État"/>
           <trans loc="gl" val="Estado"/>
+          <trans loc="id" val="Negara Bagian"/>
+          <trans loc="lv" val="Novads"/>
           <trans loc="pt_BR" val="Estado"/>
           <trans loc="sl" val="Okraj"/>
         </trans_set>
@@ -369,9 +429,13 @@
         <trans_set>
           <trans loc="cs" val="Země"/>
           <trans loc="de" val="Land"/>
+          <trans loc="el" val="Χώρα"/>
+          <trans loc="en_GB" val="Country"/>
           <trans loc="es" val="País"/>
           <trans loc="fr" val="Pays"/>
           <trans loc="gl" val="País"/>
+          <trans loc="id" val="Negara"/>
+          <trans loc="lv" val="Valsts"/>
           <trans loc="pt_BR" val="País"/>
           <trans loc="sl" val="Država"/>
         </trans_set>
@@ -381,9 +445,13 @@
         <trans_set>
           <trans loc="cs" val="PSČ"/>
           <trans loc="de" val="Postleitzahl"/>
+          <trans loc="el" val="Ταχ. κώδικας"/>
+          <trans loc="en_GB" val="Postcode"/>
           <trans loc="es" val="Código postal"/>
           <trans loc="fr" val="Code postal"/>
           <trans loc="gl" val="Código postal"/>
+          <trans loc="id" val="Kode Pos"/>
+          <trans loc="lv" val="Pasta indekss"/>
           <trans loc="pt_BR" val="CEP"/>
           <trans loc="sl" val="Poštna koda"/>
         </trans_set>
@@ -393,9 +461,13 @@
         <trans_set>
           <trans loc="cs" val="Datum narození"/>
           <trans loc="de" val="Geburtsdatum"/>
+          <trans loc="el" val="Ημερομηνία γέννησης"/>
+          <trans loc="en_GB" val="Date of Birth"/>
           <trans loc="es" val="Fecha de nacimiento"/>
           <trans loc="fr" val="Date de naissance"/>
           <trans loc="gl" val="Data de nacemento"/>
+          <trans loc="id" val="Tanggal Lahir"/>
+          <trans loc="lv" val="Dzimšanas datums"/>
           <trans loc="pt_BR" val="Data de nascimento"/>
           <trans loc="sl" val="Datum rojstva"/>
         </trans_set>
@@ -405,9 +477,13 @@
         <trans_set>
           <trans loc="cs" val="Poznámky"/>
           <trans loc="de" val="Kommentar"/>
+          <trans loc="el" val="Σχόλια"/>
+          <trans loc="en_GB" val="Comments"/>
           <trans loc="es" val="Comentarios"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="gl" val="Comentarios"/>
+          <trans loc="id" val="Komentar"/>
+          <trans loc="lv" val="Komentāri"/>
           <trans loc="pt_BR" val="Comentários"/>
           <trans loc="sl" val="Opombe"/>
         </trans_set>
@@ -418,9 +494,13 @@
         <trans_set>
           <trans loc="cs" val="Celé jméno"/>
           <trans loc="de" val="Vollname"/>
+          <trans loc="el" val="Πλήρες Όνομα"/>
+          <trans loc="en_GB" val="Full Name"/>
           <trans loc="es" val="Nombre completo"/>
           <trans loc="fr" val="Nom complet"/>
           <trans loc="gl" val="Nome completo"/>
+          <trans loc="id" val="Nama Lengkap"/>
+          <trans loc="lv" val="Pilns vārds"/>
           <trans loc="pt_BR" val="Nome completo"/>
           <trans loc="sl" val="Polno ime"/>
         </trans_set>
@@ -430,9 +510,13 @@
         <trans_set>
           <trans loc="cs" val="Obrázek"/>
           <trans loc="de" val="Bild"/>
+          <trans loc="el" val="Εικόνα"/>
+          <trans loc="en_GB" val="Picture"/>
           <trans loc="es" val="Foto"/>
           <trans loc="fr" val="Image"/>
           <trans loc="gl" val="Foto"/>
+          <trans loc="id" val="Gambar"/>
+          <trans loc="lv" val="Attēls"/>
           <trans loc="pt_BR" val="Foto"/>
           <trans loc="sl" val="Slika"/>
         </trans_set>
@@ -442,9 +526,13 @@
         <trans_set>
           <trans loc="cs" val="E-mailová adresa"/>
           <trans loc="de" val="E-mail Addresse"/>
+          <trans loc="el" val="Διεύθυνση ηλεκτρονικού ταχυδρομείου"/>
+          <trans loc="en_GB" val="Email Address"/>
           <trans loc="es" val="Dirección de correo-e"/>
           <trans loc="fr" val="Adresse électronique"/>
           <trans loc="gl" val="Enderezo de correo-e"/>
+          <trans loc="id" val="Alamat Surel"/>
+          <trans loc="lv" val="E-pasta adrese"/>
           <trans loc="pt_BR" val="Endereço de e-mail"/>
           <trans loc="sl" val="Elektronski naslov"/>
         </trans_set>
@@ -454,9 +542,13 @@
         <trans_set>
           <trans loc="cs" val="Webové stránky"/>
           <trans loc="de" val="Website"/>
+          <trans loc="el" val="Ιστοσελίδα"/>
+          <trans loc="en_GB" val="Web Site"/>
           <trans loc="es" val="Página web"/>
           <trans loc="fr" val="Site Web"/>
           <trans loc="gl" val="Páxina web"/>
+          <trans loc="id" val="Situs Web"/>
+          <trans loc="lv" val="Tīmekļa vietne"/>
           <trans loc="pt_BR" val="Página web"/>
           <trans loc="sl" val="Spletna stran"/>
         </trans_set>
@@ -466,9 +558,13 @@
         <trans_set>
           <trans loc="cs" val="Telefon domů"/>
           <trans loc="de" val="Telefon (privat)"/>
+          <trans loc="el" val="Τηλέφωνο σπιτιού"/>
+          <trans loc="en_GB" val="Home Telephone"/>
           <trans loc="es" val="Teléfono de casa"/>
           <trans loc="fr" val="Téléphone domicile"/>
           <trans loc="gl" val="Teléfono de casa"/>
+          <trans loc="id" val="Nomor Telepon Rumah"/>
+          <trans loc="lv" val="Mājas telefons"/>
           <trans loc="pt_BR" val="Telefone residencial"/>
           <trans loc="sl" val="Telefon doma"/>
         </trans_set>
@@ -478,9 +574,13 @@
         <trans_set>
           <trans loc="cs" val="Telefon do práce"/>
           <trans loc="de" val="Telefon (Büro)"/>
+          <trans loc="el" val="Τηλέφωνο εργασίας"/>
+          <trans loc="en_GB" val="Work Telephone"/>
           <trans loc="es" val="Teléfono del trabajo"/>
           <trans loc="fr" val="Téléphone travail"/>
           <trans loc="gl" val="Teléfono do traballo"/>
+          <trans loc="id" val="Nomor Telepon Kantor"/>
+          <trans loc="lv" val="Darba telefons"/>
           <trans loc="pt_BR" val="Telefone de trabalho"/>
           <trans loc="sl" val="Telefon v službi"/>
         </trans_set>
@@ -490,9 +590,13 @@
         <trans_set>
           <trans loc="cs" val="Mobilní telefon"/>
           <trans loc="de" val="Telefon (mobil)"/>
+          <trans loc="el" val="Κινητό τηλέφωνο"/>
+          <trans loc="en_GB" val="Mobile Telephone"/>
           <trans loc="es" val="Móvil"/>
           <trans loc="fr" val="Téléphone portable"/>
           <trans loc="gl" val="Móbil"/>
+          <trans loc="id" val="Nomor Telepon Seluler"/>
+          <trans loc="lv" val="Mobilais telefons"/>
           <trans loc="pt_BR" val="Telefone celular"/>
           <trans loc="sl" val="Mobilni telefon"/>
         </trans_set>
@@ -502,9 +606,13 @@
         <trans_set>
           <trans loc="cs" val="Fax"/>
           <trans loc="de" val="Fax"/>
+          <trans loc="el" val="Φαξ"/>
+          <trans loc="en_GB" val="Fax"/>
           <trans loc="es" val="Fax"/>
           <trans loc="fr" val="Fax"/>
           <trans loc="gl" val="Fax"/>
+          <trans loc="id" val="Faks"/>
+          <trans loc="lv" val="Fakss"/>
           <trans loc="pt_BR" val="Fax"/>
           <trans loc="sl" val="Faks"/>
         </trans_set>
@@ -515,9 +623,13 @@
         <trans_set>
           <trans loc="cs" val="Členství v týmu"/>
           <trans loc="de" val="Team-Mitgliedschaft"/>
+          <trans loc="el" val="Μέλος της ομάδας"/>
+          <trans loc="en_GB" val="Team Membership"/>
           <trans loc="es" val="Miembro del equipo"/>
           <trans loc="fr" val="Membres de l'équipe"/>
           <trans loc="gl" val="Membro do equipo"/>
+          <trans loc="id" val="Keanggotaan Tim"/>
+          <trans loc="lv" val="Komandas piederība"/>
           <trans loc="pt_BR" val="Equipe pertencente"/>
           <trans loc="sl" val="Članstvo v skupini"/>
         </trans_set>
@@ -530,9 +642,13 @@
             <trans_set>
               <trans loc="cs" val="Přehled"/>
               <trans loc="de" val="Ubersicht"/>
+              <trans loc="el" val="Επισκόπηση"/>
+              <trans loc="en_GB" val="Overview"/>
               <trans loc="es" val="Visión general"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="gl" val="Vista xeral"/>
+              <trans loc="id" val="Ringkasan"/>
+              <trans loc="lv" val="Pārskats"/>
               <trans loc="pt_BR" val="Visão geral"/>
               <trans loc="sl" val="Pregled"/>
             </trans_set>
@@ -548,9 +664,13 @@
               <trans_set>
                 <trans loc="cs" val="(Sešit)"/>
                 <trans loc="de" val="(Reitermappe)"/>
+                <trans loc="el" val="(Σημειωματάριο)"/>
+                <trans loc="en_GB" val="(Notebook)"/>
                 <trans loc="es" val="(Cuaderno de notas)"/>
                 <trans loc="fr" val="(Répertoire)"/>
                 <trans loc="gl" val="(Caderno de notas)"/>
+                <trans loc="id" val="(Buku catatan)"/>
+                <trans loc="lv" val="(Piezīmju grāmatiņa)"/>
                 <trans loc="pt_BR" val="(Agenda)"/>
                 <trans loc="sl" val="(Beležka)"/>
               </trans_set>
@@ -558,9 +678,13 @@
                 <trans_set>
                   <trans loc="cs" val="Telefon"/>
                   <trans loc="de" val="Telefon"/>
+                  <trans loc="el" val="Τηλέφωνο"/>
+                  <trans loc="en_GB" val="Telephone"/>
                   <trans loc="es" val="Teléfono"/>
                   <trans loc="fr" val="Téléphone"/>
                   <trans loc="gl" val="Teléfono"/>
+                  <trans loc="id" val="Telepon"/>
+                  <trans loc="lv" val="Telefons"/>
                   <trans loc="pt_BR" val="Telefone"/>
                   <trans loc="sl" val="Telefon"/>
                 </trans_set>
@@ -581,9 +705,13 @@
                 <trans_set>
                   <trans loc="cs" val="Adresa"/>
                   <trans loc="de" val="Addresse"/>
+                  <trans loc="el" val="Διεύθυνση"/>
+                  <trans loc="en_GB" val="Address"/>
                   <trans loc="es" val="Dirección"/>
                   <trans loc="fr" val="Adresse"/>
                   <trans loc="gl" val="Enderezo"/>
+                  <trans loc="id" val="Alamat"/>
+                  <trans loc="lv" val="Adrese"/>
                   <trans loc="pt_BR" val="Endereço"/>
                   <trans loc="sl" val="Naslov"/>
                 </trans_set>
@@ -607,9 +735,13 @@
                 <trans_set>
                   <trans loc="cs" val="Název"/>
                   <trans loc="de" val="Name"/>
+                  <trans loc="el" val="Όνομα"/>
+                  <trans loc="en_GB" val="Name"/>
                   <trans loc="es" val="Nombre"/>
                   <trans loc="fr" val="Nom"/>
                   <trans loc="gl" val="Nome"/>
+                  <trans loc="id" val="Nama"/>
+                  <trans loc="lv" val="Vārds"/>
                   <trans loc="pt_BR" val="Nome"/>
                   <trans loc="sl" val="Ime"/>
                 </trans_set>
@@ -699,9 +831,13 @@
         <trans_set>
           <trans loc="cs" val="Kontakty podle země"/>
           <trans loc="de" val="Kontakte nach Land"/>
+          <trans loc="el" val="Επαφές κατά χώρα"/>
+          <trans loc="en_GB" val="Contacts By Country"/>
           <trans loc="es" val="Contactos por país"/>
           <trans loc="fr" val="Contacts par pays"/>
           <trans loc="gl" val="Contactos por país"/>
+          <trans loc="id" val="Kontak Menurut Negara"/>
+          <trans loc="lv" val="Kontakti pēc valsts"/>
           <trans loc="pt_BR" val="Contatos por país"/>
           <trans loc="sl" val="Stiki po državah"/>
         </trans_set>
@@ -729,9 +865,13 @@
         <trans_set>
           <trans loc="cs" val="Podle země, podle města"/>
           <trans loc="de" val="Nach Land, nach Ort"/>
+          <trans loc="el" val="Κατά χώρα, Κατά πόλη"/>
+          <trans loc="en_GB" val="By Country, By Town"/>
           <trans loc="es" val="Por país, por ciudad"/>
           <trans loc="fr" val="Par pays, par ville"/>
           <trans loc="gl" val="Por país, por cidade"/>
+          <trans loc="id" val="Menurut Negara, Menurut Kota"/>
+          <trans loc="lv" val="Kontakti pēc valsts, pēc pilsētas"/>
           <trans loc="pt_BR" val="Por país, Por cidade"/>
           <trans loc="sl" val="Po državi, po mestu"/>
         </trans_set>
@@ -757,9 +897,13 @@
     <trans_set>
       <trans loc="cs" val="Projekty"/>
       <trans loc="de" val="Projekte"/>
+      <trans loc="el" val="Έργα"/>
+      <trans loc="en_GB" val="Projects"/>
       <trans loc="es" val="Proyectos"/>
       <trans loc="fr" val="Projets"/>
       <trans loc="gl" val="Proxectos"/>
+      <trans loc="id" val="Projek"/>
+      <trans loc="lv" val="Projekti"/>
       <trans loc="pt_BR" val="Projetos"/>
       <trans loc="sl" val="Projekti"/>
     </trans_set>
@@ -769,9 +913,13 @@
         <trans_set>
           <trans loc="cs" val="ID projektu"/>
           <trans loc="de" val="Projektkennung"/>
+          <trans loc="el" val="Αναγνωριστικό έργου"/>
+          <trans loc="en_GB" val="Project ID"/>
           <trans loc="es" val="ID del proyecto"/>
           <trans loc="fr" val="ID du projet"/>
           <trans loc="gl" val="ID do proxecto"/>
+          <trans loc="id" val="ID Projek"/>
+          <trans loc="lv" val="Projekta ID"/>
           <trans loc="pt_BR" val="ID de projeto"/>
           <trans loc="sl" val="ID projekta"/>
         </trans_set>
@@ -781,9 +929,13 @@
         <trans_set>
           <trans loc="cs" val="Popis"/>
           <trans loc="de" val="Beschreibung"/>
+          <trans loc="el" val="Περιγραφή"/>
+          <trans loc="en_GB" val="Description"/>
           <trans loc="es" val="Descripción"/>
           <trans loc="fr" val="Description"/>
           <trans loc="gl" val="Descrición"/>
+          <trans loc="id" val="Deskripsi"/>
+          <trans loc="lv" val="Apraksts"/>
           <trans loc="pt_BR" val="Descrição"/>
           <trans loc="sl" val="Opis"/>
         </trans_set>
@@ -793,9 +945,13 @@
         <trans_set>
           <trans loc="cs" val="Poznámky"/>
           <trans loc="de" val="Kommentare"/>
+          <trans loc="el" val="Σχόλια"/>
+          <trans loc="en_GB" val="Comments"/>
           <trans loc="es" val="Comentarios"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="gl" val="Comentarios"/>
+          <trans loc="id" val="Komentar"/>
+          <trans loc="lv" val="Komentāri"/>
           <trans loc="pt_BR" val="Comentários"/>
           <trans loc="sl" val="Opombe"/>
         </trans_set>
@@ -805,9 +961,13 @@
         <trans_set>
           <trans loc="cs" val="Název"/>
           <trans loc="de" val="Name"/>
+          <trans loc="el" val="Όνομα"/>
+          <trans loc="en_GB" val="Name"/>
           <trans loc="es" val="Nombre"/>
           <trans loc="fr" val="Nom"/>
           <trans loc="gl" val="Nome"/>
+          <trans loc="id" val="Nama"/>
+          <trans loc="lv" val="Nosaukums"/>
           <trans loc="pt_BR" val="Nome"/>
           <trans loc="sl" val="Ime"/>
         </trans_set>
@@ -818,9 +978,13 @@
         <trans_set>
           <trans loc="cs" val="Týmy"/>
           <trans loc="de" val="Teams"/>
+          <trans loc="el" val="Ομάδες"/>
+          <trans loc="en_GB" val="Teams"/>
           <trans loc="es" val="Equipos"/>
           <trans loc="fr" val="Équipes"/>
           <trans loc="gl" val="Equipos"/>
+          <trans loc="id" val="Tim"/>
+          <trans loc="lv" val="Komandas"/>
           <trans loc="pt_BR" val="Equipes"/>
           <trans loc="sl" val="Skupine"/>
         </trans_set>
@@ -833,9 +997,13 @@
             <trans_set>
               <trans loc="cs" val="Přehled"/>
               <trans loc="de" val="Übersicht"/>
+              <trans loc="el" val="Επισκόπηση"/>
+              <trans loc="en_GB" val="Overview"/>
               <trans loc="es" val="Visión general"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="gl" val="Vista xeral"/>
+              <trans loc="id" val="Ringkasan"/>
+              <trans loc="lv" val="Pārskats"/>
               <trans loc="pt_BR" val="Visão geral"/>
               <trans loc="sl" val="Pregled"/>
             </trans_set>
@@ -850,9 +1018,13 @@
             <trans_set>
               <trans loc="cs" val="Podrobnosti"/>
               <trans loc="de" val="Details"/>
+              <trans loc="el" val="Λεπτομέρειες"/>
+              <trans loc="en_GB" val="Details"/>
               <trans loc="es" val="Detalles"/>
               <trans loc="fr" val="Détails"/>
               <trans loc="gl" val="Detalles"/>
+              <trans loc="id" val="Rincian"/>
+              <trans loc="lv" val="Sīkāka informācija"/>
               <trans loc="pt_BR" val="Detalhes"/>
               <trans loc="sl" val="Podrobnosti"/>
             </trans_set>
@@ -918,9 +1090,13 @@
     <trans_set>
       <trans loc="cs" val="Týmy projektu"/>
       <trans loc="de" val="Projektteams"/>
+      <trans loc="el" val="Ομάδες έργων"/>
+      <trans loc="en_GB" val="Project Teams"/>
       <trans loc="es" val="Equipos de proyectos"/>
       <trans loc="fr" val="Équipes du projet"/>
       <trans loc="gl" val="Equipos de proxectos"/>
+      <trans loc="id" val="Tim Projek"/>
+      <trans loc="lv" val="Projekta komandas"/>
       <trans loc="pt_BR" val="Equipes de projeto"/>
       <trans loc="sl" val="Skupine projekta"/>
     </trans_set>
@@ -930,9 +1106,13 @@
         <trans_set>
           <trans loc="cs" val="ID týmu projektu"/>
           <trans loc="de" val="Kennung des Project-Teams"/>
+          <trans loc="el" val="Αναγνωριστικό ομάδας έργου"/>
+          <trans loc="en_GB" val="Project Team ID"/>
           <trans loc="es" val="ID del equipo de proyecto"/>
           <trans loc="fr" val="ID de l'équipe du projet"/>
           <trans loc="gl" val="ID do equipo do proxecto"/>
+          <trans loc="id" val="ID Tim Projek"/>
+          <trans loc="lv" val="Projekta komandas ID"/>
           <trans loc="pt_BR" val="ID de equipe de projeto"/>
           <trans loc="sl" val="ID skupine projekta"/>
         </trans_set>
@@ -942,9 +1122,13 @@
         <trans_set>
           <trans loc="cs" val="Poznámky"/>
           <trans loc="de" val="Kommentare"/>
+          <trans loc="el" val="Σχόλια"/>
+          <trans loc="en_GB" val="Comments"/>
           <trans loc="es" val="Comentarios"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="gl" val="Comentarios"/>
+          <trans loc="id" val="Komentar"/>
+          <trans loc="lv" val="Komentāri"/>
           <trans loc="pt_BR" val="Comentário"/>
           <trans loc="sl" val="Opombe"/>
         </trans_set>
@@ -964,9 +1148,13 @@
         <trans_set>
           <trans loc="cs" val="ID týmu"/>
           <trans loc="de" val="Teamkennung"/>
+          <trans loc="el" val="Αναγνωριστικό ομάδας"/>
+          <trans loc="en_GB" val="Team ID"/>
           <trans loc="es" val="ID del equipo"/>
           <trans loc="fr" val="ID de l'équipe"/>
           <trans loc="gl" val="ID do equipo"/>
+          <trans loc="id" val="ID Tim"/>
+          <trans loc="lv" val="Komandas ID"/>
           <trans loc="pt_BR" val="ID de equipe"/>
           <trans loc="sl" val="ID skupine"/>
         </trans_set>
@@ -986,9 +1174,13 @@
         <trans_set>
           <trans loc="cs" val="ID projektu"/>
           <trans loc="de" val="Projektkennung"/>
+          <trans loc="el" val="Αναγνωριστικό έργου"/>
+          <trans loc="en_GB" val="Project ID"/>
           <trans loc="es" val="ID del proyecto"/>
           <trans loc="fr" val="ID du projet"/>
           <trans loc="gl" val="ID do proxecto"/>
+          <trans loc="id" val="ID Projek"/>
+          <trans loc="lv" val="Projekta ID"/>
           <trans loc="pt_BR" val="ID de projeto"/>
           <trans loc="sl" val="ID projekta"/>
         </trans_set>
@@ -999,9 +1191,13 @@
         <trans_set>
           <trans loc="cs" val="Tým"/>
           <trans loc="de" val="Team"/>
+          <trans loc="el" val="Ομάδα"/>
+          <trans loc="en_GB" val="Team"/>
           <trans loc="es" val="Equipo"/>
           <trans loc="fr" val="Équipe"/>
           <trans loc="gl" val="Equipo"/>
+          <trans loc="id" val="Tim"/>
+          <trans loc="lv" val="Komanda"/>
           <trans loc="pt_BR" val="Equipe"/>
           <trans loc="sl" val="Skupina"/>
         </trans_set>
@@ -1010,9 +1206,13 @@
         <trans_set>
           <trans loc="cs" val="Projekt"/>
           <trans loc="de" val="Projekt"/>
+          <trans loc="el" val="Έργο"/>
+          <trans loc="en_GB" val="Project"/>
           <trans loc="es" val="Proyecto"/>
           <trans loc="fr" val="Projet"/>
           <trans loc="gl" val="Proxecto"/>
+          <trans loc="id" val="Projek"/>
+          <trans loc="lv" val="Projekts"/>
           <trans loc="pt_BR" val="Projeto"/>
           <trans loc="sl" val="Projekt"/>
         </trans_set>
@@ -1043,9 +1243,13 @@
             <trans_set>
               <trans loc="cs" val="Přehled"/>
               <trans loc="de" val="Übersicht"/>
+              <trans loc="el" val="Επισκόπηση"/>
+              <trans loc="en_GB" val="Overview"/>
               <trans loc="es" val="Visión general"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="gl" val="Vista xeral"/>
+              <trans loc="id" val="Ringkasan"/>
+              <trans loc="lv" val="Pārskats"/>
               <trans loc="pt_BR" val="Visão geral"/>
               <trans loc="sl" val="Pregled"/>
             </trans_set>
@@ -1057,9 +1261,13 @@
             <trans_set>
               <trans loc="cs" val="Podrobnosti"/>
               <trans loc="de" val="Details"/>
+              <trans loc="el" val="Λεπτομέρειες"/>
+              <trans loc="en_GB" val="Details"/>
               <trans loc="es" val="Detalles"/>
               <trans loc="fr" val="Détails"/>
               <trans loc="gl" val="Detalles"/>
+              <trans loc="id" val="Rincian"/>
+              <trans loc="lv" val="Sīkāka informācija"/>
               <trans loc="pt_BR" val="Detalhes"/>
               <trans loc="sl" val="Podrobnosti"/>
             </trans_set>
@@ -1074,9 +1282,13 @@
                 <trans_set>
                   <trans loc="cs" val="Název týmu"/>
                   <trans loc="de" val="Teamname"/>
+                  <trans loc="el" val="Όνομα ομάδας"/>
+                  <trans loc="en_GB" val="Team Name"/>
                   <trans loc="es" val="Nombre del equipo"/>
                   <trans loc="fr" val="Nom de l'équipe"/>
                   <trans loc="gl" val="Nome do equipo"/>
+                  <trans loc="id" val="Nama Tim"/>
+                  <trans loc="lv" val="Komandas nosaukums"/>
                   <trans loc="pt_BR" val="Nome da equipe"/>
                   <trans loc="sl" val="Ime skupine"/>
                 </trans_set>
@@ -1091,9 +1303,13 @@
                 <trans_set>
                   <trans loc="cs" val="Název projektu"/>
                   <trans loc="de" val="Projektname"/>
+                  <trans loc="el" val="Όνομα έργου"/>
+                  <trans loc="en_GB" val="Project Name"/>
                   <trans loc="es" val="Nombre del proyecto"/>
                   <trans loc="fr" val="Nom du projet"/>
                   <trans loc="gl" val="Nome do proxecto"/>
+                  <trans loc="id" val="Nama Projek"/>
+                  <trans loc="lv" val="Projekta nosaukums"/>
                   <trans loc="pt_BR" val="Nome de projeto"/>
                   <trans loc="sl" val="Ime projekta"/>
                 </trans_set>
@@ -1129,9 +1345,13 @@
     <trans_set>
       <trans loc="cs" val="Členové týmu"/>
       <trans loc="de" val="Team-Mitglieder"/>
+      <trans loc="el" val="Μέλη ομάδας"/>
+      <trans loc="en_GB" val="Team Members"/>
       <trans loc="es" val="Miembros del equipo"/>
       <trans loc="fr" val="Membres de l'équipe"/>
       <trans loc="gl" val="Membros do equipo"/>
+      <trans loc="id" val="Anggota Tim"/>
+      <trans loc="lv" val="Komandas dalībnieki"/>
       <trans loc="pt_BR" val="Membros de equipe"/>
       <trans loc="sl" val="Člani skupine"/>
     </trans_set>
@@ -1141,9 +1361,13 @@
         <trans_set>
           <trans loc="cs" val="ID členů týmu"/>
           <trans loc="de" val="Kennung der Team-Mitglieder"/>
+          <trans loc="el" val="Αναγνωριστικό μελών ομάδας"/>
+          <trans loc="en_GB" val="team_members ID"/>
           <trans loc="es" val="ID de los miembros del equipo"/>
           <trans loc="fr" val="ID team_members"/>
           <trans loc="gl" val="ID dos membros do equipo"/>
+          <trans loc="id" val="ID anggota_tim"/>
+          <trans loc="lv" val="Komandas dalībnieka ID"/>
           <trans loc="pt_BR" val="ID de membros_equipe"/>
           <trans loc="sl" val="ID članov skupineVeljavnost uporabniškega ID: %s"/>
         </trans_set>
@@ -1153,9 +1377,13 @@
         <trans_set>
           <trans loc="cs" val="Popis"/>
           <trans loc="de" val="Beschreibung"/>
+          <trans loc="el" val="Περιγραφή"/>
+          <trans loc="en_GB" val="Description"/>
           <trans loc="es" val="Descripción"/>
           <trans loc="fr" val="Description"/>
           <trans loc="gl" val="Descrición"/>
+          <trans loc="id" val="Deskripsi"/>
+          <trans loc="lv" val="Apraksts"/>
           <trans loc="pt_BR" val="Descrição"/>
           <trans loc="sl" val="Opis"/>
         </trans_set>
@@ -1165,9 +1393,13 @@
         <trans_set>
           <trans loc="cs" val="Poznámky"/>
           <trans loc="de" val="Kommentare"/>
+          <trans loc="el" val="Σχόλια"/>
+          <trans loc="en_GB" val="Comments"/>
           <trans loc="es" val="Comentarios"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="gl" val="Comentarios"/>
+          <trans loc="id" val="Komentar"/>
+          <trans loc="lv" val="Komentāri"/>
           <trans loc="pt_BR" val="Comentários"/>
           <trans loc="sl" val="Opombe"/>
         </trans_set>
@@ -1187,9 +1419,13 @@
         <trans_set>
           <trans loc="cs" val="ID kontaktu"/>
           <trans loc="de" val="Kontaktkennung"/>
+          <trans loc="el" val="Αναγνωριστικό επαφής"/>
+          <trans loc="en_GB" val="Contact ID"/>
           <trans loc="es" val="ID del contacto"/>
           <trans loc="fr" val="ID du contact"/>
           <trans loc="gl" val="ID do contacto"/>
+          <trans loc="id" val="ID Kontak"/>
+          <trans loc="lv" val="Kontakta ID"/>
           <trans loc="pt_BR" val="ID de contato"/>
           <trans loc="sl" val="ID stika"/>
         </trans_set>
@@ -1209,9 +1445,13 @@
         <trans_set>
           <trans loc="cs" val="ID týmu"/>
           <trans loc="de" val="Teamkennung"/>
+          <trans loc="el" val="Αναγνωριστικό ομάδας"/>
+          <trans loc="en_GB" val="Team ID"/>
           <trans loc="es" val="ID del equipo"/>
           <trans loc="fr" val="ID de l'équipe"/>
           <trans loc="gl" val="ID do equipo"/>
+          <trans loc="id" val="ID Tim"/>
+          <trans loc="lv" val="Komandas ID"/>
           <trans loc="pt_BR" val="ID de equipe"/>
           <trans loc="sl" val="ID skupine"/>
         </trans_set>
@@ -1221,9 +1461,13 @@
         <trans_set>
           <trans loc="cs" val="Postavení"/>
           <trans loc="de" val="Position"/>
+          <trans loc="el" val="Ρόλος"/>
+          <trans loc="en_GB" val="Role"/>
           <trans loc="es" val="Rol"/>
           <trans loc="fr" val="Rôle"/>
           <trans loc="gl" val="Rol"/>
+          <trans loc="id" val="Peran"/>
+          <trans loc="lv" val="Loma"/>
           <trans loc="pt_BR" val="Função"/>
           <trans loc="sl" val="Vloga"/>
         </trans_set>
@@ -1234,9 +1478,13 @@
         <trans_set>
           <trans loc="cs" val="Kontakty"/>
           <trans loc="de" val="Kontakte"/>
+          <trans loc="el" val="Επαφές"/>
+          <trans loc="en_GB" val="Contacts"/>
           <trans loc="es" val="Contactos"/>
           <trans loc="fr" val="Contacts"/>
           <trans loc="gl" val="Contactos"/>
+          <trans loc="id" val="Kontak"/>
+          <trans loc="lv" val="Kontakti"/>
           <trans loc="pt_BR" val="Contatos"/>
           <trans loc="sl" val="Stiki"/>
         </trans_set>
@@ -1245,9 +1493,13 @@
         <trans_set>
           <trans loc="cs" val="Tým"/>
           <trans loc="de" val="Team"/>
+          <trans loc="el" val="Ομάδα"/>
+          <trans loc="en_GB" val="Team"/>
           <trans loc="es" val="Equipo"/>
           <trans loc="fr" val="Équipe"/>
           <trans loc="gl" val="Equipo"/>
+          <trans loc="id" val="Tim"/>
+          <trans loc="lv" val="Komanda"/>
           <trans loc="pt_BR" val="Equipe"/>
           <trans loc="sl" val="Skupina"/>
         </trans_set>
@@ -1284,9 +1536,13 @@
             <trans_set>
               <trans loc="cs" val="Přehled"/>
               <trans loc="de" val="Übersicht"/>
+              <trans loc="el" val="Επισκόπηση"/>
+              <trans loc="en_GB" val="Overview"/>
               <trans loc="es" val="Visión general"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="gl" val="Vista xeral"/>
+              <trans loc="id" val="Ringkasan"/>
+              <trans loc="lv" val="Pārskats"/>
               <trans loc="pt_BR" val="Visão geral"/>
               <trans loc="sl" val="Pregled"/>
             </trans_set>
@@ -1298,9 +1554,13 @@
             <trans_set>
               <trans loc="cs" val="Podrobnosti"/>
               <trans loc="de" val="Details"/>
+              <trans loc="el" val="Λεπτομέρειες"/>
+              <trans loc="en_GB" val="Details"/>
               <trans loc="es" val="Detalles"/>
               <trans loc="fr" val="Détails"/>
               <trans loc="gl" val="Detalles"/>
+              <trans loc="id" val="Rincian"/>
+              <trans loc="lv" val="Sīkāka informācija"/>
               <trans loc="pt_BR" val="Detalhes"/>
               <trans loc="sl" val="Podrobnosti"/>
             </trans_set>
@@ -1344,9 +1604,13 @@
     <trans_set>
       <trans loc="cs" val="Týmy"/>
       <trans loc="de" val="Teams"/>
+      <trans loc="el" val="Ομάδες"/>
+      <trans loc="en_GB" val="Teams"/>
       <trans loc="es" val="Equipos"/>
       <trans loc="fr" val="Équipes"/>
       <trans loc="gl" val="Equipos"/>
+      <trans loc="id" val="Tim"/>
+      <trans loc="lv" val="Komandas"/>
       <trans loc="pt_BR" val="Equipes"/>
       <trans loc="sl" val="Skupine"/>
     </trans_set>
@@ -1356,9 +1620,13 @@
         <trans_set>
           <trans loc="cs" val="ID týmu"/>
           <trans loc="de" val="Teamkennung"/>
+          <trans loc="el" val="Αναγνωριστικό ομάδας"/>
+          <trans loc="en_GB" val="Team ID"/>
           <trans loc="es" val="ID del equipo"/>
           <trans loc="fr" val="ID de l'équipe"/>
           <trans loc="gl" val="ID do equipo"/>
+          <trans loc="id" val="ID Tim"/>
+          <trans loc="lv" val="Komandas ID"/>
           <trans loc="pt_BR" val="ID de equipe"/>
           <trans loc="sl" val="ID skupine"/>
         </trans_set>
@@ -1368,9 +1636,13 @@
         <trans_set>
           <trans loc="cs" val="Popis"/>
           <trans loc="de" val="Beschreibung"/>
+          <trans loc="el" val="Περιγραφή"/>
+          <trans loc="en_GB" val="Description"/>
           <trans loc="es" val="Descripción"/>
           <trans loc="fr" val="Description"/>
           <trans loc="gl" val="Descrición"/>
+          <trans loc="id" val="Deskripsi"/>
+          <trans loc="lv" val="Apraksts"/>
           <trans loc="pt_BR" val="Descrição"/>
           <trans loc="sl" val="Opis"/>
         </trans_set>
@@ -1380,9 +1652,13 @@
         <trans_set>
           <trans loc="cs" val="Poznámky"/>
           <trans loc="de" val="Kommentare"/>
+          <trans loc="el" val="Σχόλια"/>
+          <trans loc="en_GB" val="Comments"/>
           <trans loc="es" val="Comentarios"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="gl" val="Comentarios"/>
+          <trans loc="id" val="Komentar"/>
+          <trans loc="lv" val="Komentāri"/>
           <trans loc="pt_BR" val="Comentários"/>
           <trans loc="sl" val="Opombe"/>
         </trans_set>
@@ -1392,9 +1668,13 @@
         <trans_set>
           <trans loc="cs" val="Název"/>
           <trans loc="de" val="Name"/>
+          <trans loc="el" val="Όνομα"/>
+          <trans loc="en_GB" val="Name"/>
           <trans loc="es" val="Nombre"/>
           <trans loc="fr" val="Nom"/>
           <trans loc="gl" val="Nome"/>
+          <trans loc="id" val="Nama"/>
+          <trans loc="lv" val="Nosaukums"/>
           <trans loc="pt_BR" val="Nome"/>
           <trans loc="sl" val="Ime"/>
         </trans_set>
@@ -1405,9 +1685,13 @@
         <trans_set>
           <trans loc="cs" val="Členové"/>
           <trans loc="de" val="Mitglieder"/>
+          <trans loc="el" val="Μέλη"/>
+          <trans loc="en_GB" val="Members"/>
           <trans loc="es" val="Miembros"/>
           <trans loc="fr" val="Membres"/>
           <trans loc="gl" val="Membros"/>
+          <trans loc="id" val="Anggota"/>
+          <trans loc="lv" val="Dalībnieki"/>
           <trans loc="pt_BR" val="Membros"/>
           <trans loc="sl" val="Člani"/>
         </trans_set>
@@ -1416,9 +1700,13 @@
         <trans_set>
           <trans loc="cs" val="Projekty"/>
           <trans loc="de" val="Projekte"/>
+          <trans loc="el" val="Έργα"/>
+          <trans loc="en_GB" val="Projects"/>
           <trans loc="es" val="Proyectos"/>
           <trans loc="fr" val="Projets"/>
           <trans loc="gl" val="Proxectos"/>
+          <trans loc="id" val="Projek"/>
+          <trans loc="lv" val="Projekti"/>
           <trans loc="pt_BR" val="Projetos"/>
           <trans loc="sl" val="Projekti"/>
         </trans_set>
@@ -1431,9 +1719,13 @@
             <trans_set>
               <trans loc="cs" val="Přehled"/>
               <trans loc="de" val="Übersicht"/>
+              <trans loc="el" val="Επισκόπηση"/>
+              <trans loc="en_GB" val="Overview"/>
               <trans loc="es" val="Visión general"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="gl" val="Vista xeral"/>
+              <trans loc="id" val="Ringkasan"/>
+              <trans loc="lv" val="Pārskats"/>
               <trans loc="pt_BR" val="Visão geral"/>
               <trans loc="sl" val="Pregled"/>
             </trans_set>
@@ -1448,9 +1740,13 @@
             <trans_set>
               <trans loc="cs" val="Podrobnosti"/>
               <trans loc="de" val="Details"/>
+              <trans loc="el" val="Λεπτομέρειες"/>
+              <trans loc="en_GB" val="Details"/>
               <trans loc="es" val="Detalles"/>
               <trans loc="fr" val="Détails"/>
               <trans loc="gl" val="Detalles"/>
+              <trans loc="id" val="Rincian"/>
+              <trans loc="lv" val="Sīkāka informācija"/>
               <trans loc="pt_BR" val="Detalhes"/>
               <trans loc="sl" val="Podrobnosti"/>
             </trans_set>
