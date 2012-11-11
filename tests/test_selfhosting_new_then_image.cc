@@ -20,6 +20,7 @@
 
 #include "tests/test_selfhosting_utils.h"
 #include "tests/test_utils.h"
+#include "tests/test_utils_images.h"
 #include <libglom/init.h>
 #include <libglom/utils.h>
 #include <libglom/db_utils.h>
@@ -61,6 +62,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   //Set the value, from an image file:
   const Gnome::Gda::Value value_set = get_value_for_image();
+  g_assert(check_value_is_an_image(value_set));
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder_set = 
     Glom::Utils::build_sql_update_with_where_clause(table_name,
       field, value_set, where_clause);

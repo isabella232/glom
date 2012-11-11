@@ -134,7 +134,11 @@ tests_test_document_load_and_save_SOURCES = tests/test_document_load_and_save.cc
 tests_test_document_load_and_save_LDADD = $(tests_ldadd)
 tests_test_document_load_and_save_CPPFLAGS = $(tests_cppflags)
 
-tests_test_document_load_image_SOURCES = tests/test_document_load_image.cc
+sources_test_utils_images = tests/test_utils_images.h \
+	tests/test_utils_images.cc
+
+tests_test_document_load_image_SOURCES = tests/test_document_load_image.cc \
+	$(sources_test_utils_images)
 tests_test_document_load_image_LDADD = $(tests_ldadd) $(GDKMM_LIBS)
 tests_test_document_load_image_CPPFLAGS = $(tests_cppflags) $(GDKMM_CFLAGS)
 
@@ -150,9 +154,11 @@ tests_test_document_autosave_SOURCES = tests/test_document_autosave.cc
 tests_test_document_autosave_LDADD = $(tests_ldadd)
 tests_test_document_autosave_CPPFLAGS = $(tests_cppflags)
 
-tests_test_field_file_format_SOURCES = tests/test_field_file_format.cc $(sources_test_utils)
-tests_test_field_file_format_LDADD = $(tests_ldadd)
-tests_test_field_file_format_CPPFLAGS = $(tests_cppflags) $(glom_test_image_defines)
+tests_test_field_file_format_SOURCES = tests/test_field_file_format.cc \
+	$(sources_test_utils) \
+	$(sources_test_utils_images)
+tests_test_field_file_format_LDADD = $(tests_ldadd) $(GDKMM_LIBS)
+tests_test_field_file_format_CPPFLAGS = $(tests_cppflags)  $(GDKMM_CFLAGS) $(glom_test_image_defines)
 
 tests_test_parsing_time_SOURCES = tests/test_parsing_time.cc
 tests_test_parsing_time_LDADD = $(tests_ldadd)
@@ -260,9 +266,12 @@ tests_test_selfhosting_new_then_report_summary_SOURCES = tests/test_selfhosting_
 tests_test_selfhosting_new_then_report_summary_LDADD = $(tests_ldadd)
 tests_test_selfhosting_new_then_report_summary_CPPFLAGS = $(tests_cppflags)
 
-tests_test_selfhosting_new_then_image_SOURCES = tests/test_selfhosting_new_then_image.cc $(sources_test_selfhosting_utils) $(sources_test_utils)
-tests_test_selfhosting_new_then_image_LDADD = $(tests_ldadd)
-tests_test_selfhosting_new_then_image_CPPFLAGS = $(tests_cppflags) $(glom_test_image_defines)
+tests_test_selfhosting_new_then_image_SOURCES = tests/test_selfhosting_new_then_image.cc \
+	$(sources_test_selfhosting_utils) \
+	$(sources_test_utils) \
+	$(sources_test_utils_images)
+tests_test_selfhosting_new_then_image_LDADD = $(tests_ldadd) $(GDKMM_LIBS)
+tests_test_selfhosting_new_then_image_CPPFLAGS = $(tests_cppflags) $(GDKMM_CFLAGS) $(glom_test_image_defines)
 
 tests_test_selfhosting_new_then_lookup_SOURCES = tests/test_selfhosting_new_then_lookup.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_then_lookup_LDADD = $(tests_ldadd)

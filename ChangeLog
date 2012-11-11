@@ -1,5 +1,16 @@
 2012-11-11  Murray Cumming  <murrayc@murrayc.com>
 
+        Tests: Add pixbuf-loading tests in more places.
+
+        * tests/test_document_load_image.cc:
+        * Makefile_tests.am:
+        * tests/test_utils_images.[h|cc]: Move the use of GdkPixbufLoader
+	into a check_value_is_an_image() utility function.
+        * tests/test_field_file_format.cc:
+        * tests/test_selfhosting_new_then_image.cc: Use it here too.
+
+2012-11-11  Murray Cumming  <murrayc@murrayc.com>
+
         examples: Add a static image item to the Project Manager example.
 
         * examples/example_project_manager.glom: This is just so we 

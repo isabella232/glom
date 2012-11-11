@@ -19,6 +19,7 @@
  */
 
 #include "tests/test_utils.h"
+#include "tests/test_utils_images.h"
 #include <libglom/init.h>
 #include <libglom/data_structure/field.h>
 #include <iostream>
@@ -28,7 +29,6 @@ static void test_text_field()
   Glom::sharedptr<Glom::Field> field = Glom::sharedptr<Glom::Field>::create();
   field->set_glom_type(Glom::Field::TYPE_TEXT);
 
-  //TODO: Test an image too:
   const Gnome::Gda::Value value_original("text with \" double quote and ' single quote");
   const Glib::ustring str = field->to_file_format(value_original);
   g_assert(!str.empty());
@@ -46,6 +46,8 @@ static void test_image_field()
 
   //TODO: Test an image too:
   const Gnome::Gda::Value value_original = get_value_for_image();
+  g_assert(check_value_is_an_image(value_original));
+
   const Glib::ustring str = field->to_file_format(value_original);
   g_assert(!str.empty());
 
@@ -53,6 +55,8 @@ static void test_image_field()
   const Gnome::Gda::Value value = field->from_file_format(str, converted);
   g_assert(converted);
   g_assert(value == value_original);
+
+  g_assert(check_value_is_an_image(value));
 }
 
 int main()

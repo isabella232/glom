@@ -18,15 +18,13 @@
  * Boston, MA 02110-1301 USA.
  */
 
-#include "tests/test_utils.h"
+#include "tests/test_utils_images.h"
 #include <libglom/document/document.h>
 #include <libglom/init.h>
 #include <libglom/db_utils.h>
 #include <giomm/file.h>
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
-#include <gdkmm/wrap_init.h> //TODO: Add a Gdk::init() to gtkmm.
-#include <gdkmm/pixbufloader.h>
 
 #include <iostream>
  
@@ -90,40 +88,7 @@ int main()
   g_assert(image_item);
 
   const Gnome::Gda::Value value = image_item->get_image();
-  g_assert(!value.is_null());
-  g_assert(value.get_value_type() == GDA_TYPE_BINARY);
-  long data_length = 0;
-  const guchar* data = value.get_binary(data_length);
-  g_assert(data);
-  g_assert(data_length);
-
-  //Check that it can be interpreted as an image:
-  //Luckily, the use of GdkPixbufLoader here does not seem to require an X display.
-  Gdk::wrap_init();
-  Glib::RefPtr<Gdk::PixbufLoader> refPixbufLoader;      
-  try
-  {
-    refPixbufLoader = Gdk::PixbufLoader::create();
-  }
-  catch(const Gdk::PixbufError& ex)
-  {
-    std::cerr << "PixbufLoader::create failed: " << ex.what() << std::endl;
-    return EXIT_FAILURE;
-  }
-
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf;
-  guint8* puiData = (guint8*)data;
-  try
-  {
-    refPixbufLoader->write(puiData, static_cast<gsize>(data_length));
-    pixbuf = refPixbufLoader->get_pixbuf();
-    refPixbufLoader->close(); //This throws if write() threw, so it must be inside the try block.
-  }
-  catch(const Glib::Exception& ex)
-  {
-    std::cerr << "PixbufLoader::write() failed: " << ex.what() << std::endl;
-    return EXIT_FAILURE;
-  }
+  g_assert(check_value_is_an_image(value));
 
   Glom::libglom_deinit();
 
