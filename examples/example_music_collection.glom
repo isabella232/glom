@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<glom_document xmlns="http://glom.org/glom_document" translation_original_locale="en" database_title="Music Collection" is_example="true" format_version="8" title="Music Collection">
+<glom_document xmlns="http://glom.org/glom_document" translation_original_locale="en" database_title="Music Collection" is_example="true" format_version="9" title="Music Collection">
   <trans_set>
     <trans loc="cs" val="Hudební sbírka"/>
     <trans loc="de" val="Musiksammlung"/>

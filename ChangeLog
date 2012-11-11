@@ -1,5 +1,16 @@
 2012-11-10  Murray Cumming  <murrayc@murrayc.com>
 
+        Resave all the examples in the latest file format.
+
+        * examples/example_film_manager.glom:
+        * examples/example_lesson_planner.glom:
+        * examples/example_music_collection.glom:
+        * examples/example_project_manager.glom:
+        * examples/example_smallbusiness.glom:
+	Using make examples_import_po
+
+2012-11-10  Murray Cumming  <murrayc@murrayc.com>
+
         Document: Save image data in base64 format rather than GDA format.
 
         * glom/libglom/document/document.cc: Increase the file format
