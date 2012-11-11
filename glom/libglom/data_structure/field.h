@@ -180,7 +180,7 @@ public:
    */
   Gnome::Gda::Value from_file_format(const Glib::ustring& str, bool& success) const;
 
-  static Gnome::Gda::Value from_file_format(const Glib::ustring& str, glom_field_type glom_type, bool& success);
+  static Gnome::Gda::Value from_file_format(const Glib::ustring& str, glom_field_type glom_type, bool& success, bool old_image_format = false);
 
   /** Escape the value so that it can be used in a SQL command for a find.
    */

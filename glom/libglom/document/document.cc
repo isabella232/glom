@@ -4485,9 +4485,10 @@ guint Document::get_latest_known_document_format_version()
   // Version 5: (Glom 1.14). Extra layout item formatting options were added, plus a startup script.
   // Version 6: (Glom 1.16). Extra show_all option for choices that show related records. Extra related choice fields are now a layout group instead of just a second field name.
   // Version 7: (Glom 1.20). New print layout details. Related records: Number of rows can be specified. All colors can now be in CSS3 string format (via GdkRGBA)
-  // Version 8: (Glom 1.22). The database_title attribute is replaced by the title attribute. 
+  // Version 8: (Glom 1.22). The database_title attribute is replaced by the title attribute.
+  // Version 9: (Glom 1.24). <value> tags now have a format="base64" attribute by default. Having no format attribute is deprecated.
 
-  return 8;
+  return 9;
 }
 
 std::vector<Glib::ustring> Document::get_library_module_names() const

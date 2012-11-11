@@ -1,5 +1,23 @@
 2012-11-10  Murray Cumming  <murrayc@murrayc.com>
 
+        Document: Save image data in base64 format rather than GDA format.
+
+        * glom/libglom/document/document.cc: Increase the file format
+	version.
+        * glom/libglom/data_structure/field.[h|cc]:
+	to_file_format(): Save the data in the XML as base64 instead 
+	of using gda_binary_to_string().
+	from_file_format(): Optionally interpret image data as the old 
+	GDA image format. Otherwise, use base64.
+        * glom/libglom/xml_utils.cc: set_node_text_child_as_value():
+	Set the attribute format="base64" for image data.
+	get_node_attribute_value_as_value(): Check for the format
+	attribute and optionally ask from_file_format() to use the old
+	format.
+        * glom/glom_document.dtd: value: Mention the format attribute.
+
+2012-11-10  Murray Cumming  <murrayc@murrayc.com>
+
         Update a test for the newer translations.
 
         * tests/test_document_load_translations.cc: Increase the number

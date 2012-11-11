@@ -286,17 +286,38 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_t
         return Glib::ustring();
       else
       {
-        str = gda_binary_to_string(gdabinary, 0);
+        gchar* base64 = g_base64_encode(gdabinary->data, gdabinary->binary_length);
+        if(!base64)
+          return Glib::ustring();
+        else
+        {
+          str = base64;
+        }
       }
     }
     else if(value_type == GDA_TYPE_BLOB)
     {
       const GdaBlob* gdablob = gda_value_get_blob(value.gobj());
-      if(!gdablob)
+
+      if(!gdablob || !gdablob->op)
         return Glib::ustring();
       else
       {
-        str = gda_blob_to_string(const_cast<GdaBlob*>(gdablob), 0);
+        if(!gda_blob_op_read_all(const_cast<GdaBlobOp*>(gdablob->op), const_cast<GdaBlob*>(gdablob)))
+        {
+          return Glib::ustring();
+        }
+        else
+        {
+          const GdaBinary* gdabinary = &(gdablob->data);
+          gchar* base64 = g_base64_encode(gdabinary->data, gdabinary->binary_length);
+          if(!base64)
+            return Glib::ustring();
+          else
+          {
+            str = base64;
+          }
+        }
       }
     }
 
@@ -345,7 +366,7 @@ Gnome::Gda::Value Field::from_file_format(const Glib::ustring& str, bool& succes
   return from_file_format(str, m_glom_type, success);
 }
 
-Gnome::Gda::Value Field::from_file_format(const Glib::ustring& str, glom_field_type glom_type, bool& success)
+Gnome::Gda::Value Field::from_file_format(const Glib::ustring& str, glom_field_type glom_type, bool& success, bool old_image_format)
 {
   success = true;
 
@@ -365,17 +386,33 @@ Gnome::Gda::Value Field::from_file_format(const Glib::ustring& str, glom_field_t
   if(glom_type == TYPE_IMAGE)
   {
     if(string_unescaped.empty())
-      return  Gnome::Gda::Value();
-
-    GdaBinary* gdabinary = gda_string_to_binary(string_unescaped.c_str());
-    if(!success || !gdabinary)
       return Gnome::Gda::Value();
-    else
+
+    if(old_image_format)
     {
+      //We used the GDA format before:
+      GdaBinary* gdabinary = gda_string_to_binary(string_unescaped.c_str());
+      if(!success || !gdabinary)
+        return Gnome::Gda::Value();
+      else
+      {
+        Gnome::Gda::Value value;
+        value_reinit(value.gobj(), GDA_TYPE_BINARY);
+        gda_value_take_binary(value.gobj(), gdabinary);
+        return value;
+      }
+    } else {
+      //What we use now in new files:
+
+      GdaBinary* gdabinary = g_new(GdaBinary, 1);
+      gsize len = 0;
+      gdabinary->data = g_base64_decode(string_unescaped.c_str(), &len);
+      gdabinary->binary_length = len;
+
       Gnome::Gda::Value value;
       value_reinit(value.gobj(), GDA_TYPE_BINARY);
       gda_value_take_binary(value.gobj(), gdabinary);
-      return value; 
+      return value;
     }
   }
   else

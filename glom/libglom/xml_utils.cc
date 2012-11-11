@@ -22,6 +22,9 @@
 #include <libglom/utils.h>
 #include <limits> // for numeric_limits
 
+static const char GLOM_ATTRIBUTE_IMAGE_DATA_FORMAT[] = "format";
+static const char GLOM_ATTRIBUTE_IMAGE_DATA_FORMAT_BASE64[] = "base64"; //No attribute here means the old GDA format.
+
 namespace Glom
 {
 
@@ -220,6 +223,11 @@ void set_node_text_child_as_value(xmlpp::Element* node, const Gnome::Gda::Value&
 
   const Glib::ustring value_as_text = Field::to_file_format(value, field_type);
   node->set_child_text( Utils::string_clean_for_xml(value_as_text) );
+
+  if(field_type == Field::TYPE_IMAGE)
+  {
+    set_node_attribute_value(node, GLOM_ATTRIBUTE_IMAGE_DATA_FORMAT, GLOM_ATTRIBUTE_IMAGE_DATA_FORMAT_BASE64);
+  }
 }
 
 Gnome::Gda::Value get_node_attribute_value_as_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName, Field::glom_field_type field_type)
@@ -242,12 +250,17 @@ Gnome::Gda::Value get_node_text_child_as_value(const xmlpp::Element* node, Field
 
   const Glib::ustring value_string = text_child->get_content();
 
+  bool old_image_format = false;
+  const Glib::ustring format = get_node_attribute_value(node, GLOM_ATTRIBUTE_IMAGE_DATA_FORMAT);
+  if(format.empty()) //We previously used the GDA format, before we even specified it.
+    old_image_format = true;
+    
   bool success = false;
-  const Gnome::Gda::Value result = Field::from_file_format(value_string, field_type, success);
+  const Gnome::Gda::Value result = Field::from_file_format(value_string, field_type, success, old_image_format);
   if(success)
     return result;
-  else
-    return Gnome::Gda::Value();
+
+  return Gnome::Gda::Value();
 }
 
 

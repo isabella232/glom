@@ -110,7 +110,8 @@ TODO: Should we specify the presence of child text nodes in the ELEMENT somehow?
 
     <!ELEMENT value (#PCDATA)>
     <!ATTLIST value
-        column CDATA #REQUIRED>
+        column CDATA #REQUIRED
+        format CDATA #IMPLIED>
 
 <!-- relationships describe connections between databases. -->
 
