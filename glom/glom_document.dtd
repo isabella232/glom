@@ -222,7 +222,7 @@ TODO: Should we specify the presence of child text nodes in the ELEMENT somehow?
 <!-- A data_layout_group is is a list of layout items. It can contain sub-groups. -->
 
     <!-- TODO: The comma separator specifies a fixed child node sequence, but we don't want to enforce that. -->
-    <!ELEMENT data_layout_group (trans_set?, (data_layout_group | data_layout_item | data_layout_portal | data_layout_calendar_portal | data_layout_item_groupby | data_layout_button | data_layout_notebook | data_layout_item_header | data_layout_text)*)>
+    <!ELEMENT data_layout_group (trans_set?, (data_layout_group | data_layout_item | data_layout_portal | data_layout_calendar_portal | data_layout_item_groupby | data_layout_button | data_layout_notebook | data_layout_item_header | data_layout_text | data_layout_image)*)>
     <!ATTLIST data_layout_group
         name CDATA #IMPLIED
         title CDATA #IMPLIED
@@ -248,12 +248,20 @@ TODO: Should we specify the presence of child text nodes in the ELEMENT somehow?
         columns_count CDATA #IMPLIED
         border_width CDATA #IMPLIED>
 
-<!-- data_layout_text and text are for displaying text. -->
-
+<!-- data_layout_text displays static text (text that is not from the database). -->
     <!ELEMENT data_layout_text (text?, formatting?, position?)>
     <!ATTLIST data_layout_text
         sequence CDATA #IMPLIED>
 
+<!-- data_layout_image displays a static image (an image that is not from the database).
+     The text attribute is the base64-encoded image data (if format="base64". Otherwise it is the deprecated GDA image text format.) -->
+    <!ELEMENT data_layout_image (formatting?, position?)>
+    <!ATTLIST data_layout_image
+        text CDATA #IMPLIED
+        title CDATA #IMPLIED
+        sequence CDATA #IMPLIED>
+
+<!-- The text tag contains the text of a data_layout_text, and its translations. TODO: Add the translations. -->
     <!ELEMENT text EMPTY>
     <!ATTLIST text
         title CDATA #REQUIRED>

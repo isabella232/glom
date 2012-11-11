@@ -175,6 +175,8 @@ MM_PKG_CONFIG_SUBST([ISO_CODES_PREFIX], [--variable=prefix iso-codes])
 AC_DEFINE_UNQUOTED([ISO_CODES_PREFIX], ["$ISO_CODES_PREFIX"],
                    [Define to the installation prefix of the iso-codes module.])
 
+# This is used in one test:
+PKG_CHECK_MODULES([GDKMM], [gdkmm-3.0 >= 3.4.0])
 
 # Allow use of mm-common macros for the warnings option and for installing developer documentation.
 MM_PREREQ([0.9.5])

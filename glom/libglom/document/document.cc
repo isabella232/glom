@@ -101,7 +101,7 @@ static const char GLOM_NODE_DATA_LAYOUT_BUTTON[] = "data_layout_button";
 static const char GLOM_NODE_DATA_LAYOUT_TEXTOBJECT[] = "data_layout_text";
 static const char GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT[] = "text";
 static const char GLOM_NODE_DATA_LAYOUT_IMAGEOBJECT[] = "data_layout_image";
-static const char GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE[] = "text";
+static const char GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE[] = "text"; //TODO: Deprecate this and replace it with "image"
 static const char GLOM_NODE_DATA_LAYOUT_LINE[] = "data_layout_line";
 static const char GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_X[] = "start_x";
 static const char GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_Y[] = "start_y";
@@ -4432,13 +4432,19 @@ void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& grou
       //Buttons too:
       sharedptr<LayoutItem_Button> button = sharedptr<LayoutItem_Button>::cast_dynamic(item);
       if(button)
-        the_list.push_back( pair_translatable_item_and_hint(button, this_hint) ); 
+        the_list.push_back( pair_translatable_item_and_hint(button, this_hint) );
       else
       {
-        sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
-        if(layout_field)
+        sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::cast_dynamic(item);
+        if(text)
+          the_list.push_back( pair_translatable_item_and_hint(text, this_hint) );
+        else
         {
-          fill_translatable_layout_items(layout_field, the_list, hint);
+          sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+          if(layout_field)
+          {
+            fill_translatable_layout_items(layout_field, the_list, hint);
+          }
         }
       }
     }

@@ -1,3 +1,16 @@
+2012-11-11  Murray Cumming  <murrayc@murrayc.com>
+
+        examples: Add a static image item to the Project Manager example.
+
+        * examples/example_project_manager.glom: This is just so we 
+	use this layout item somewhere, so we can test it.
+        * glom/glom_document.dtd: Mention the layout_item_image tag.
+	* configure.ac:
+	* Makefile_tests.am:
+	* tests/test_document_load_image.cc: Add a new test for this
+	feature, using GdkPixbufLoader to check that we can interpret
+	the data as an image.
+
 2012-11-10  Murray Cumming  <murrayc@murrayc.com>
 
         Resave all the examples in the latest file format.

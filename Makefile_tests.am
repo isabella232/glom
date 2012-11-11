@@ -22,6 +22,7 @@ check_PROGRAMS =						\
 	tests/test_document_load			\
 	tests/test_document_load_and_change		\
 	tests/test_document_load_and_save		\
+	tests/test_document_load_image			\
 	tests/test_document_load_translations		\
 	tests/test_document_change			\
 	tests/test_document_autosave			\
@@ -56,6 +57,7 @@ check_PROGRAMS =						\
 TESTS =	tests/test_document_load	\
 	tests/test_document_load_and_change	\
 	tests/test_document_load_and_save_all.sh \
+	tests/test_document_load_image \
 	tests/test_document_load_translations	\
 	tests/test_document_change	\
 	tests/test_document_autosave	\
@@ -131,6 +133,10 @@ tests_test_document_load_and_change_CPPFLAGS = $(tests_cppflags) $(glom_test_ima
 tests_test_document_load_and_save_SOURCES = tests/test_document_load_and_save.cc
 tests_test_document_load_and_save_LDADD = $(tests_ldadd)
 tests_test_document_load_and_save_CPPFLAGS = $(tests_cppflags)
+
+tests_test_document_load_image_SOURCES = tests/test_document_load_image.cc
+tests_test_document_load_image_LDADD = $(tests_ldadd) $(GDKMM_LIBS)
+tests_test_document_load_image_CPPFLAGS = $(tests_cppflags) $(GDKMM_CFLAGS)
 
 tests_test_document_load_translations_SOURCES = tests/test_document_load_translations.cc
 tests_test_document_load_translations_LDADD = $(tests_ldadd)
