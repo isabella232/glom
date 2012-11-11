@@ -1,3 +1,11 @@
+2012-11-10  Murray Cumming  <murrayc@murrayc.com>
+
+        Update a test for the newer translations.
+
+        * tests/test_document_load_translations.cc: Increase the number
+	of expected translation locales and adapt to us having a 
+	(mostly useless) en_GB translation.
+
 2013-02-25  Murray Cumming  <murrayc@murrayc.com>
 
         Fix the build on Ubuntu Raring.
