@@ -248,10 +248,17 @@ TODO: Should we specify the presence of child text nodes in the ELEMENT somehow?
         columns_count CDATA #IMPLIED
         border_width CDATA #IMPLIED>
 
-<!-- data_layout_text displays static text (text that is not from the database). -->
-    <!ELEMENT data_layout_text (text?, formatting?, position?)>
+<!-- data_layout_text displays static text (text that is not from the database).
+     It may have a title, which may be translated. -->
+    <!ELEMENT data_layout_text (trans_set?, text?, formatting?, position?)>
     <!ATTLIST data_layout_text
+        title CDATA #IMPLIED
         sequence CDATA #IMPLIED>
+
+<!-- The text tag contains the text of a data_layout_text, and its translations. TODO: Add the translations. -->
+    <!ELEMENT text (trans_set?)>
+    <!ATTLIST text
+        title CDATA #REQUIRED>
 
 <!-- data_layout_image displays a static image (an image that is not from the database).
      The text attribute is the base64-encoded image data (if format="base64". Otherwise it is the deprecated GDA image text format.) -->
@@ -260,11 +267,6 @@ TODO: Should we specify the presence of child text nodes in the ELEMENT somehow?
         text CDATA #IMPLIED
         title CDATA #IMPLIED
         sequence CDATA #IMPLIED>
-
-<!-- The text tag contains the text of a data_layout_text, and its translations. TODO: Add the translations. -->
-    <!ELEMENT text EMPTY>
-    <!ATTLIST text
-        title CDATA #REQUIRED>
 
 <!-- sortby describes what a data_layout_item_groupby sorts by. -->
 

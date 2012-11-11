@@ -337,6 +337,9 @@ int main()
   const bool contains_customtitle =
     contains_item_type<Glom::CustomTitle>(list_layout_items);
   g_assert( contains_customtitle );
+  const bool contains_static_text =
+    contains_item_type<Glom::LayoutItem_Text>(list_layout_items);
+  g_assert( contains_static_text );
   const bool contains_report =
     contains_item_type<Glom::Report>(list_layout_items);
   g_assert( contains_report );

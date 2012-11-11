@@ -1,5 +1,29 @@
 2012-11-11  Murray Cumming  <murrayc@murrayc.com>
 
+        Export to .po files: Make sure we export static text items.
+
+        * glom/libglom/document/document.cc: fill_translatable_layout_items():
+	Add the member text (a translatable item) of LayoutItem_Text items.
+	Also add LayoutItem_Images items, which may have titles.
+        * tests/test_document_load_translations.cc: Check that a LayoutItem_Text
+	is present.
+        * glom/glom_document.dtd: Improve this for these items.
+
+2012-11-11  Murray Cumming  <murrayc@murrayc.com>
+
+        Need a short description (OOPS!).
+        Need the bug URL (OOPS!).
+
+        Reviewed by NOBODY (OOPS!).
+
+        Additional information of the change such as approach, rationale. Please add per-function descriptions below (OOPS!).
+
+        * glom/glom_document.dtd:
+        * glom/libglom/document/document.cc:
+        * tests/test_document_load_translations.cc:
+
+2012-11-11  Murray Cumming  <murrayc@murrayc.com>
+
         Tests: Add pixbuf-loading tests in more places.
 
         * tests/test_document_load_image.cc:

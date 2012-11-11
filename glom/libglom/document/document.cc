@@ -4437,13 +4437,24 @@ void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& grou
       {
         sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::cast_dynamic(item);
         if(text)
+        {
           the_list.push_back( pair_translatable_item_and_hint(text, this_hint) );
+          if(text->m_text)
+            the_list.push_back( pair_translatable_item_and_hint(text->m_text, this_hint) );
+        }
         else
         {
-          sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
-          if(layout_field)
+          //Images have titles:
+          sharedptr<LayoutItem_Image> image = sharedptr<LayoutItem_Image>::cast_dynamic(item);
+          if(image)
+            the_list.push_back( pair_translatable_item_and_hint(image, this_hint) );
+          else
           {
-            fill_translatable_layout_items(layout_field, the_list, hint);
+            sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+            if(layout_field)
+            {
+              fill_translatable_layout_items(layout_field, the_list, hint);
+            }
           }
         }
       }
