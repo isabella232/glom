@@ -520,7 +520,8 @@ private:
   void fill_sort_field_details(const Glib::ustring& parent_table_name, Formatting::type_list_sort_fields& sort_fields) const;
 
   type_list_translatables get_translatable_layout_items(const Glib::ustring& table_name, const Glib::ustring& hint);
-  type_list_translatables get_translatable_report_items(const Glib::ustring& table_name, const Glib::ustring& report_title, const Glib::ustring& hint);
+  type_list_translatables get_translatable_report_items(const Glib::ustring& table_name, const Glib::ustring& report_name, const Glib::ustring& hint);
+  type_list_translatables get_translatable_print_layout_items(const Glib::ustring& table_name, const Glib::ustring& print_layout_name, const Glib::ustring& hint);
 
   AppState m_app_state;
   type_signal_userlevel_changed m_signal_userlevel_changed;

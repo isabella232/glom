@@ -211,13 +211,15 @@ Glib::ustring TranslatableItem::get_translatable_type_name_nontranslated(enumTra
   else if(item_type == TRANSLATABLE_TYPE_BUTTON)
     return "Button";
   else if(item_type == TRANSLATABLE_TYPE_TEXTOBJECT)
-    return "Text";
+    return "Text Item";
   else if(item_type == TRANSLATABLE_TYPE_IMAGEOBJECT)
     return "Image";
   else if(item_type == TRANSLATABLE_TYPE_CHOICEVALUE)
     return "Field Choice";
   else if(item_type == TRANSLATABLE_TYPE_DATABASE_TITLE)
     return "Database Title";
+  else if(item_type == TRANSLATABLE_TYPE_STATIC_TEXT)
+    return "Text";
   else
     return "Unknown";
 }
@@ -245,13 +247,15 @@ Glib::ustring TranslatableItem::get_translatable_type_name(enumTranslatableItemT
   else if(item_type == TRANSLATABLE_TYPE_BUTTON)
     return _("Button");
   else if(item_type == TRANSLATABLE_TYPE_TEXTOBJECT)
-    return _("Text");
+    return _("Text Item");
   else if(item_type == TRANSLATABLE_TYPE_IMAGEOBJECT)
     return _("Image");
   else if(item_type == TRANSLATABLE_TYPE_CHOICEVALUE)
     return _("Field Choice");
   else if(item_type == TRANSLATABLE_TYPE_DATABASE_TITLE)
     return _("Database Title");
+  else if(item_type == TRANSLATABLE_TYPE_STATIC_TEXT)
+    return _("Text");
   else
     return _("Unknown");
 }

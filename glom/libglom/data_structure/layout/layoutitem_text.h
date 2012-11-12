@@ -21,12 +21,17 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_TEXT_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_TEXT_H
 
+#include <libglom/data_structure/layout/static_text.h>
 #include <libglom/data_structure/layout/layoutitem_withformatting.h>
 #include <libglom/data_structure/layout/formatting.h>
 
 namespace Glom
 {
 
+/** A layout item for static text, and an optional title.
+ * The base class TranslatableItem holds the title,
+ * and the actual (translatable) text is in the m_text member.
+ */
 class LayoutItem_Text 
  : public LayoutItem_WithFormatting
 {
@@ -57,7 +62,7 @@ public:
    */
   void set_text_original(const Glib::ustring& text);
 
-  sharedptr<TranslatableItem> m_text; //Reuse the title concept of this class to give us translatable text.
+  sharedptr<StaticText> m_text; //Reuse the title concept of the TranslatableItem base class to give us translatable text.
 };
 
 } //namespace Glom

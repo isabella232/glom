@@ -343,6 +343,9 @@ int main()
   const bool contains_report =
     contains_item_type<Glom::Report>(list_layout_items);
   g_assert( contains_report );
+  const bool contains_print_layout =
+    contains_item_type<Glom::PrintLayout>(list_layout_items);
+  g_assert( contains_print_layout );
 
   Glom::libglom_deinit();
 

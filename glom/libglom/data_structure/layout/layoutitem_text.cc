@@ -27,15 +27,15 @@ namespace Glom
 LayoutItem_Text::LayoutItem_Text()
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_TEXTOBJECT;
-  m_text = sharedptr<TranslatableItem>::create(); //TODO: Why use a smartpointer?
+  m_text = sharedptr<StaticText>::create(); //TODO: Why use a smartpointer?
 }
 
 LayoutItem_Text::LayoutItem_Text(const LayoutItem_Text& src)
 : LayoutItem_WithFormatting(src)
 {
-  //Copy the underlying TranslatableItem, not the shardptr to it:
-  const TranslatableItem& src_item = *(src.m_text);
-  m_text = sharedptr<TranslatableItem>(new TranslatableItem(src_item));
+  //Copy the underlying TranslatableItem, not the sharedptr to it:
+  const StaticText& src_item = *(src.m_text);
+  m_text = sharedptr<StaticText>(new StaticText(src_item));
 }
 
 LayoutItem_Text::~LayoutItem_Text()
@@ -61,8 +61,8 @@ LayoutItem_Text& LayoutItem_Text::operator=(const LayoutItem_Text& src)
   LayoutItem_WithFormatting::operator=(src);
 
   //Copy the underlying TranslatableItem, not the shardptr to it:
-  const TranslatableItem& src_item = *(src.m_text);
-  m_text = sharedptr<TranslatableItem>(new TranslatableItem(src_item));
+  const StaticText& src_item = *(src.m_text);
+  m_text = sharedptr<StaticText>(new StaticText(src_item));
 
   return *this;
 }

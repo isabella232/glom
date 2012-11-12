@@ -61,6 +61,7 @@ libglom_ds_layout_headers =						\
 	glom/libglom/data_structure/layout/layoutitem_portal.h		\
 	glom/libglom/data_structure/layout/layoutitem_text.h		\
 	glom/libglom/data_structure/layout/layoutitem_withformatting.h	\
+	glom/libglom/data_structure/layout/static_text.h \
 	glom/libglom/data_structure/layout/usesrelationship.h
 
 libglom_ds_l_report_parts_headers =							\
@@ -154,6 +155,7 @@ libglom_sources =							\
 	glom/libglom/data_structure/layout/layoutitem_portal.cc		\
 	glom/libglom/data_structure/layout/layoutitem_text.cc		\
 	glom/libglom/data_structure/layout/layoutitem_withformatting.cc	\
+	glom/libglom/data_structure/layout/static_text.cc		\
 	glom/libglom/data_structure/layout/usesrelationship.cc		\
 	glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc	\
 	glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc		\

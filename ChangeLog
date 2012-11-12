@@ -1,5 +1,26 @@
 2012-11-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Export to po files: Also export text items from Print Layouts.
+        
+        * glom/libglom/data_structure/layout/static_text.[h|cc]:
+	A new derived TranslatableItem, just so we can identify its
+	purpose polymorphically.
+        * glom/libglom/filelist.am: Mention the new files.
+        * glom/libglom/data_structure/layout/layoutitem_text.[h|cc]:
+	Use StaticText instead of TranslatableItem for m_text.
+        * glom/libglom/data_structure/translatable_item.[h|cc]:
+	Add an enum for the new derived type, and return its name
+	from the get_translatable_type*() methods.
+	These are used of in PrintLayouts.
+        * glom/libglom/document/document.[h|cc]:
+	load_after_layout_group(): Adapt.
+	Add get_translatable_print_layout_items() and use it in
+	get_translatable_items().
+        * tests/test_document_load_translations.cc: Check that 
+	get_translatable_items() returns some PrintLayouts.
+
+2012-11-11  Murray Cumming  <murrayc@murrayc.com>
+
         Export to .po files: Make sure we export static text items.
 
         * glom/libglom/document/document.cc: fill_translatable_layout_items():

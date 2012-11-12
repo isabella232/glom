@@ -13,6 +13,7 @@
 /test_document_load
 /test_document_load_and_change
 /test_document_load_and_save
+/test_document_load_image
 /test_document_change
 /test_document_load_translations
 /test_fake_connection

@@ -2131,7 +2131,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         const xmlpp::Element* element_text = XmlUtils::get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT);
         if(element_text)
         {
-          sharedptr<TranslatableItem> translatable_text = sharedptr<TranslatableItem>::create();
+          sharedptr<StaticText> translatable_text = sharedptr<StaticText>::create();
           load_after_translations(element_text, translatable_text);
           item->m_text = translatable_text;
           //std::cout << "  DEBUG: text: " << item->m_text->get_title_or_name() << std::endl;
@@ -4311,6 +4311,23 @@ Document::type_list_translatables Document::get_translatable_items()
       result.insert(result.end(), list_layout_items.begin(), list_layout_items.end());
     }
 
+    //The table's print layout titles:
+    std::vector<Glib::ustring> listPrintLayouts = get_print_layout_names(table_name);
+    for(std::vector<Glib::ustring>::iterator iter = listPrintLayouts.begin(); iter != listPrintLayouts.end(); ++iter)
+    {
+      const Glib::ustring print_layout_name = *iter;
+      sharedptr<PrintLayout> print_layout = get_print_layout(table_name, print_layout_name);
+      if(!print_layout)
+        continue;
+
+      result.push_back( pair_translatable_item_and_hint(print_layout, hint) );
+      
+      //Translatable print layout items:
+      const Glib::ustring this_hint = hint + ", Print Layout: " + print_layout->get_name();
+      type_list_translatables list_layout_items = get_translatable_print_layout_items(table_name, print_layout_name, this_hint);
+      result.insert(result.end(), list_layout_items.begin(), list_layout_items.end());
+    }
+
     //The table's translatable layout items:
     type_list_translatables list_layout_items = get_translatable_layout_items(table_name, hint);
     result.insert(result.end(), list_layout_items.begin(), list_layout_items.end());
@@ -4345,13 +4362,24 @@ Document::type_list_translatables Document::get_translatable_layout_items(const 
 }
 
 
-Document::type_list_translatables Document::get_translatable_report_items(const Glib::ustring& table_name, const Glib::ustring& report_title, const Glib::ustring& hint)
+Document::type_list_translatables Document::get_translatable_report_items(const Glib::ustring& table_name, const Glib::ustring& report_name, const Glib::ustring& hint)
 {
   Document::type_list_translatables the_list;
 
-  sharedptr<Report> report = get_report(table_name, report_title);
+  sharedptr<Report> report = get_report(table_name, report_name);
   if(report)
     fill_translatable_layout_items(report->get_layout_group(), the_list, hint);
+
+  return the_list;
+}
+
+Document::type_list_translatables Document::get_translatable_print_layout_items(const Glib::ustring& table_name, const Glib::ustring& print_layout_name, const Glib::ustring& hint)
+{
+  Document::type_list_translatables the_list;
+
+  sharedptr<PrintLayout> print_layout = get_print_layout(table_name, print_layout_name);
+  if(print_layout)
+    fill_translatable_layout_items(print_layout->get_layout_group(), the_list, hint);
 
   return the_list;
 }
