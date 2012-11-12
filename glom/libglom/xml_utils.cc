@@ -209,6 +209,7 @@ float get_node_attribute_value_as_float(const xmlpp::Element* node, const Glib::
   return result;
 }
 
+//TODO: Stop using this. It's a bad idea to put values in attributes, which cannot escape all characters.
 void set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Gnome::Gda::Value& value,  Field::glom_field_type field_type)
 {
   NumericFormat format_ignored; //Because we use ISO format.

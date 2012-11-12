@@ -108,9 +108,12 @@ TODO: Should we specify the presence of child text nodes in the ELEMENT somehow?
 
     <!ELEMENT example_row (value*)>
 
+<!-- This node contains a value in its child text node.
+     column attribute: Optionally, what column number in a table this value is for.
+     format: Optionally, "base64" for base64-encoded image data. Otherwise, the deprecated GDA image format. -->
     <!ELEMENT value (#PCDATA)>
     <!ATTLIST value
-        column CDATA #REQUIRED
+        column CDATA #IMPLIED
         format CDATA #IMPLIED>
 
 <!-- relationships describe connections between databases. -->
@@ -261,8 +264,10 @@ TODO: Should we specify the presence of child text nodes in the ELEMENT somehow?
         title CDATA #REQUIRED>
 
 <!-- data_layout_image displays a static image (an image that is not from the database).
-     The text attribute is the base64-encoded image data (if format="base64". Otherwise it is the deprecated GDA image text format.) -->
-    <!ELEMENT data_layout_image (formatting?, position?)>
+     text attribute: Deprecated. This was the gda-formatted image data.
+     format attribute: Always "base64", unless the deprecated text attribute is used.
+     The child value node contains the image data.-->
+    <!ELEMENT data_layout_image (value?, formatting?, position?)>
     <!ATTLIST data_layout_image
         text CDATA #IMPLIED
         title CDATA #IMPLIED

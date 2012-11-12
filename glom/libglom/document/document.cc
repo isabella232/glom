@@ -102,7 +102,7 @@ static const char GLOM_NODE_DATA_LAYOUT_BUTTON[] = "data_layout_button";
 static const char GLOM_NODE_DATA_LAYOUT_TEXTOBJECT[] = "data_layout_text";
 static const char GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT[] = "text";
 static const char GLOM_NODE_DATA_LAYOUT_IMAGEOBJECT[] = "data_layout_image";
-static const char GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE[] = "text"; //TODO: Deprecate this and replace it with "image"
+static const char GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE[] = "text"; //Was gda-formatted image data. Deprecated in favour of a child text node containing base64-formatted image data.
 static const char GLOM_NODE_DATA_LAYOUT_LINE[] = "data_layout_line";
 static const char GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_X[] = "start_x";
 static const char GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_START_Y[] = "start_y";
@@ -2145,7 +2145,20 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         sharedptr<LayoutItem_Image> item = sharedptr<LayoutItem_Image>::create();
         load_after_translations(element, item);
 
-        item->set_image(XmlUtils::get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, Field::TYPE_IMAGE));
+        Gnome::Gda::Value value_image;
+        const xmlpp::Element* nodeValue = XmlUtils::get_node_child_named(element, GLOM_NODE_VALUE);
+        if(nodeValue)
+        {
+          value_image = XmlUtils::get_node_text_child_as_value(nodeValue, Field::TYPE_IMAGE);
+        }
+
+        if(value_image.is_null())
+        {
+          //Try the deprecated way:
+          value_image = XmlUtils::get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, Field::TYPE_IMAGE);
+        }
+
+        item->set_image(value_image);
 
         item_added = item;
       }
@@ -3398,7 +3411,8 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
                 nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_IMAGEOBJECT);
                 save_before_translations(nodeItem, imageobject);
 
-                XmlUtils::set_node_attribute_value_as_value(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, imageobject->get_image(), Field::TYPE_IMAGE);
+                xmlpp::Element* nodeValue = nodeItem->add_child(GLOM_NODE_VALUE);
+                XmlUtils::set_node_text_child_as_value(nodeValue, imageobject->get_image(), Field::TYPE_IMAGE);
               }
               else
               {
@@ -4601,7 +4615,7 @@ guint Document::get_latest_known_document_format_version()
   // Version 6: (Glom 1.16). Extra show_all option for choices that show related records. Extra related choice fields are now a layout group instead of just a second field name.
   // Version 7: (Glom 1.20). New print layout details. Related records: Number of rows can be specified. All colors can now be in CSS3 string format (via GdkRGBA)
   // Version 8: (Glom 1.22). The database_title attribute is replaced by the title attribute.
-  // Version 9: (Glom 1.24). <value> tags now have a format="base64" attribute by default. Having no format attribute is deprecated.
+  // Version 9: (Glom 1.24). <value> tags now have a format="base64" attribute by default. Having no format attribute is deprecated. data_layout_image nodes now have child <value> nodes instead of using the "text" attribute to store image data.
 
   return 9;
 }

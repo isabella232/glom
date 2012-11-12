@@ -1,5 +1,16 @@
 2012-11-12  Murray Cumming  <murrayc@murrayc.com>
 
+        Document: Save static image data as a child text node, not an attribute.
+
+        * glom/libglom/document/document.cc: load_after_layout_group(),
+	save_before_layout_group(): Save LayoutItem_Image data as 
+	a child text node of a <value> node, instead of as an attribute,
+	because this is generally better for large chunks of arbitrary text,
+	and because this lets us specify the format using the existing code.
+        * glom/glom_document.dtd: Update appropriately.
+
+2012-11-12  Murray Cumming  <murrayc@murrayc.com>
+
         Export to po files: Avoid duplicates.
 
         * glom/libglom/document/document.cc: Use a std::find_if()
