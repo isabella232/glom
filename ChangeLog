@@ -1,3 +1,11 @@
+2012-11-12  Murray Cumming  <murrayc@murrayc.com>
+
+        Export to po files: Avoid duplicates.
+
+        * glom/libglom/document/document.cc: Use a std::find_if()
+	predicate to avoid adding a duplicate item/hint pair,
+	which would result in a msgfmt -C error.
+
 2012-11-11  Murray Cumming  <murrayc@murrayc.com>
 
 	Export to po files: Also export text items from Print Layouts.

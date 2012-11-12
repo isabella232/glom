@@ -34,6 +34,7 @@
 #include <libglom/data_structure/layout/layoutitem_line.h>
 #include <libglom/standard_table_prefs_fields.h>
 #include <libglom/spawn_with_feedback.h>
+#include <libglom/translations_po.h>
 #include <giomm/file.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/convert.h>
@@ -4242,20 +4243,89 @@ std::vector<Glib::ustring> Document::get_translation_available_locales() const
   return m_translation_available_locales;
 }
 
+namespace {
+
+/** A predicate for use with std::find_if() to find a pair which contains the same information.
+ */
+class predicate_ItemAndHintEqual
+{
+public:
+  predicate_ItemAndHintEqual(const Document::pair_translatable_item_and_hint& item_and_hint)
+  {
+    m_item_and_hint = item_and_hint;
+  }
+
+  virtual ~predicate_ItemAndHintEqual()
+  {
+  }
+
+  bool operator() (const Document::pair_translatable_item_and_hint& item_and_hint)
+  {
+    if(!item_and_hint.first && m_item_and_hint.first)
+      return true;
+
+    if(item_and_hint.first && !m_item_and_hint.first)
+      return true;
+
+    if(item_and_hint.first && m_item_and_hint.first)
+    {
+      if(item_and_hint.first->get_title_original() != m_item_and_hint.first->get_title_original())
+        return false;
+    }
+
+    if(get_po_context_for_item(item_and_hint.first, item_and_hint.second) != 
+      get_po_context_for_item(m_item_and_hint.first, m_item_and_hint.second))
+    {
+      return false;
+    }
+
+    return true;
+  }
+
+private:
+  Document::pair_translatable_item_and_hint m_item_and_hint;
+};
+
+} //anonymous namespace
+
+static void add_to_translatable_list(Document::type_list_translatables& list, const sharedptr<TranslatableItem>& item, const Glib::ustring& hint)
+{
+  // Only add the item/hint combination if it is not there already:
+  const Document::pair_translatable_item_and_hint item_and_hint(item, hint);
+  if(std::find_if(list.begin(), list.end(),
+    predicate_ItemAndHintEqual(item_and_hint)) == list.end())
+  {
+    list.push_back( item_and_hint );
+  }
+}
+
+static void add_to_translatable_list(Document::type_list_translatables& list, const Document::type_list_translatables& sublist)
+{
+  // Only add the item/hint combination if it is not there already:
+  for(Document::type_list_translatables::const_iterator iter = sublist.begin(); iter != sublist.end(); ++iter)
+  {
+    const Document::pair_translatable_item_and_hint& item_and_hint = *iter;
+    if(std::find_if(list.begin(), list.end(),
+      predicate_ItemAndHintEqual(item_and_hint)) == list.end())
+    {
+      list.push_back( item_and_hint );
+    }
+  }
+}
+
 template <typename T_List>
 static void translatable_items_append_with_hint(Document::type_list_translatables& result, T_List& list_items, const Glib::ustring& hint)
 {
   for(typename T_List::iterator iter = list_items.begin(); iter != list_items.end(); ++iter)
   {
-    result.push_back( Document::pair_translatable_item_and_hint(*iter, hint) );
+    add_to_translatable_list(result, *iter, hint);
   }
 }
 
 Document::type_list_translatables Document::get_translatable_items()
 {
   type_list_translatables result;
-  
-  result.push_back( pair_translatable_item_and_hint(m_database_title, "") );
+  add_to_translatable_list(result, m_database_title, "");
 
   //Add tables:
   type_listTableInfo tables = get_tables();
@@ -4265,7 +4335,7 @@ Document::type_list_translatables Document::get_translatable_items()
     if(!tableinfo)
       continue;
 
-    result.push_back( pair_translatable_item_and_hint(tableinfo, "") );
+    add_to_translatable_list(result, tableinfo, "");
 
     const Glib::ustring table_name = tableinfo->get_name();
 
@@ -4278,7 +4348,7 @@ Document::type_list_translatables Document::get_translatable_items()
       if(!field)
         continue;
 
-      result.push_back( pair_translatable_item_and_hint(field, hint) );
+      add_to_translatable_list(result, field, hint);
 
       //Custom Choices, if any:
       if(field->get_glom_type() == Field::TYPE_TEXT) //Choices for other field types could not be translated.
@@ -4286,7 +4356,7 @@ Document::type_list_translatables Document::get_translatable_items()
         const Glib::ustring this_hint = hint + ", Parent Field: " + field->get_name();   
         type_list_translatables list_choice_items;
         Document::fill_translatable_custom_choices(field->m_default_formatting, list_choice_items, this_hint);
-        result.insert(result.end(), list_choice_items.begin(), list_choice_items.end());
+        add_to_translatable_list(result, list_choice_items);
       }
     }
 
@@ -4303,12 +4373,12 @@ Document::type_list_translatables Document::get_translatable_items()
       if(!report)
         continue;
 
-      result.push_back( pair_translatable_item_and_hint(report, hint) );
+      add_to_translatable_list(result, report, hint);
       
       //Translatable report items:
       const Glib::ustring this_hint = hint + ", Parent Report: " + report->get_name();
       type_list_translatables list_layout_items = get_translatable_report_items(table_name, report_name, this_hint);
-      result.insert(result.end(), list_layout_items.begin(), list_layout_items.end());
+      add_to_translatable_list(result, list_layout_items);
     }
 
     //The table's print layout titles:
@@ -4320,17 +4390,17 @@ Document::type_list_translatables Document::get_translatable_items()
       if(!print_layout)
         continue;
 
-      result.push_back( pair_translatable_item_and_hint(print_layout, hint) );
+      add_to_translatable_list(result, print_layout, hint);
       
       //Translatable print layout items:
       const Glib::ustring this_hint = hint + ", Print Layout: " + print_layout->get_name();
       type_list_translatables list_layout_items = get_translatable_print_layout_items(table_name, print_layout_name, this_hint);
-      result.insert(result.end(), list_layout_items.begin(), list_layout_items.end());
+      add_to_translatable_list(result, list_layout_items);
     }
 
     //The table's translatable layout items:
     type_list_translatables list_layout_items = get_translatable_layout_items(table_name, hint);
-    result.insert(result.end(), list_layout_items.begin(), list_layout_items.end());
+    add_to_translatable_list(result, list_layout_items);
   } //for
 
   return result;
