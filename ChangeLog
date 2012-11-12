@@ -1,5 +1,12 @@
 2012-11-12  Murray Cumming  <murrayc@murrayc.com>
 
+        Resave the examples.
+
+        * examples/example_project_manager.glom:
+	Using make examples_import_po.
+
+2012-11-12  Murray Cumming  <murrayc@murrayc.com>
+
         Document: Save static image data as a child text node, not an attribute.
 
         * glom/libglom/document/document.cc: load_after_layout_group(),
