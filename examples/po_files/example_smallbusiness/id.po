@@ -138,6 +138,110 @@ msgctxt "Report (by_country_by_town). Parent table: contacts"
 msgid "By Country, By Town"
 msgstr "Menurut Negara, Menurut Kota"
 
+msgctxt "Print Layout (contact_details). Parent table: contacts"
+msgid "Contact Details"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Contacts"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Overview"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Contact ID:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Full Name:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Name"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Title:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "First Name:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Middle Name:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Last Name:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Address"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Street:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Town:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "State:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Postcode:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Country:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Telephone"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Work Telephone:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Mobile Telephone:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Home Telephone:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Fax:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Date of Birth:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Picture:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Comments:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Web Site:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Email Address:"
+msgstr ""
+
 msgctxt "Layout Group (overview). Parent table: contacts"
 msgid "Overview"
 msgstr "Ringkasan"

@@ -401,6 +401,146 @@ msgctxt "Report (by_country_by_town). Parent table: contacts"
 msgid "By Country, By Town"
 msgstr "Par pays, par ville"
 
+msgctxt "Print Layout (contact_details). Parent table: contacts"
+msgid "Contact Details"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Contacts"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Overview"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Contact ID:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Full Name:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Details"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Name"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Title:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "First Name:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Second Name:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Last Name:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Company"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Company ID:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Name:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Address"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Street (line 1):"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Street (line 2):"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Town:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "State:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Country:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Postcode:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Telephone"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Work Telephone:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Mobile Telephone:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Home Telephone:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Fax:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Agent"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Agent ID:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Crew"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Cast"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Email:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Web Site:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Date Of Birth:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Picture:"
+msgstr ""
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Comments:"
+msgstr ""
+
 msgctxt "Layout Group (overview). Parent table: contacts"
 msgid "Overview"
 msgstr "Résumé"
@@ -1160,6 +1300,10 @@ msgstr "Résumé"
 msgctxt "Layout Group (details). Parent table: scenes"
 msgid "Details"
 msgstr "Détails"
+
+msgctxt "Text. Parent table: scenes, Parent Group: details"
+msgid "The location name will be used if the name is empty."
+msgstr ""
 
 msgctxt "Layout Group (scenario). Parent table: scenes, Parent Group: details"
 msgid "Scenario"

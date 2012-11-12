@@ -8,6 +8,14 @@
 
 2012-11-11  Murray Cumming  <murrayc@murrayc.com>
 
+        Regenerate .po files for examples, adding Print Layout items.
+
+        * examples/po_files/:
+	Using make example_export_po, and only committing the
+	relevant changes.
+
+2012-11-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Export to po files: Also export text items from Print Layouts.
         
         * glom/libglom/data_structure/layout/static_text.[h|cc]:
