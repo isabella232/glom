@@ -13,14 +13,15 @@ msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-22 06:56+0000\n"
-"PO-Revision-Date: 2012-04-19 16:30+0200\n"
+"POT-Creation-Date: 2012-11-12 20:16+0000\n"
+"PO-Revision-Date: 2012-11-14 13:00+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: ../glom/application.cc:138 ../glom/glom_create_from_example.cc:240
 #: ../glom/glom_export_po.cc:112 ../glom/glom_export_po_all.cc:100
@@ -961,7 +962,7 @@ msgstr "Volver a la lista"
 
 #. Translators: This is a noun. It is a notebook tab title.
 #. Details column:
-#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1361
+#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1362
 #: ../glom/mode_data/notebook_data.cc:67
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:215
 #: ../glom/mode_find/notebook_find.cc:39
@@ -1229,22 +1230,22 @@ msgid "Vietnamese"
 msgstr "Vietnamita"
 
 #. Translators: This means an unknown or unnacceptable value type in a database.
-#: ../glom/libglom/data_structure/field.cc:643
+#: ../glom/libglom/data_structure/field.cc:680
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:151
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:159
 msgid "Invalid"
 msgstr "No válido"
 
 #. Translators: This means a numeric value type in a database.
-#: ../glom/libglom/data_structure/field.cc:646
+#: ../glom/libglom/data_structure/field.cc:683
 msgid "Number"
 msgstr "Número"
 
 #. Translators: This means a text/string value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/field.cc:649
+#: ../glom/libglom/data_structure/field.cc:686
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:73
-#: ../glom/libglom/data_structure/translatable_item.cc:248
+#: ../glom/libglom/data_structure/translatable_item.cc:258
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1159
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:36
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:759
@@ -1252,25 +1253,25 @@ msgid "Text"
 msgstr "Texto"
 
 #. Translators: This means a time value type in a database.
-#: ../glom/libglom/data_structure/field.cc:652
+#: ../glom/libglom/data_structure/field.cc:689
 msgid "Time"
 msgstr "Hora"
 
 #. Translators: This means a time value type in a database.
-#: ../glom/libglom/data_structure/field.cc:655
+#: ../glom/libglom/data_structure/field.cc:692
 msgid "Date"
 msgstr "Fecha"
 
 #. Translators: This means a true/false value type in a database.
-#: ../glom/libglom/data_structure/field.cc:658
+#: ../glom/libglom/data_structure/field.cc:695
 msgid "Boolean"
 msgstr "Booleano"
 
 #. Translators: This means a picture value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/field.cc:661
+#: ../glom/libglom/data_structure/field.cc:698
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:70
-#: ../glom/libglom/data_structure/translatable_item.cc:250
+#: ../glom/libglom/data_structure/translatable_item.cc:252
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1166
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:38
 #: ../glom/utility_widgets/layouttoolbar.cc:47
@@ -1325,7 +1326,7 @@ msgstr "Agrupar"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:68
-#: ../glom/libglom/data_structure/translatable_item.cc:246
+#: ../glom/libglom/data_structure/translatable_item.cc:248
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1152
 #: ../glom/utility_widgets/layouttoolbar.cc:43
 msgid "Button"
@@ -1338,7 +1339,7 @@ msgstr "Calendario del portal"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:229
-#: ../glom/libglom/data_structure/translatable_item.cc:228
+#: ../glom/libglom/data_structure/translatable_item.cc:230
 #: ../glom/mode_design/dialog_database_preferences.cc:62
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:755
 #: ../ui/developer/window_field_definition_edit.glade.h:8
@@ -1426,28 +1427,28 @@ msgstr "Resumen"
 msgid "Vertical Group"
 msgstr "Grupo vertical"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:230
+#: ../glom/libglom/data_structure/translatable_item.cc:232
 msgid "Custom Title"
 msgstr "Título personalizado"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:232
+#: ../glom/libglom/data_structure/translatable_item.cc:234
 msgid "Relationship"
 msgstr "Relación"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:234
+#: ../glom/libglom/data_structure/translatable_item.cc:236
 msgid "Layout Item"
 msgstr "Distribución de los objetos"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:236
+#: ../glom/libglom/data_structure/translatable_item.cc:238
 msgid "Print Layout"
 msgstr "Distribución de impresión"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:238
+#: ../glom/libglom/data_structure/translatable_item.cc:240
 msgid "Report"
 msgstr "Informe"
 
 #. Tables:
-#: ../glom/libglom/data_structure/translatable_item.cc:240
+#: ../glom/libglom/data_structure/translatable_item.cc:242
 #: ../glom/mode_design/box_db_table_relationships.cc:53
 #: ../glom/mode_design/dialog_database_preferences.cc:61
 #: ../glom/mode_design/users/dialog_groups_list.cc:73
@@ -1455,69 +1456,74 @@ msgstr "Informe"
 msgid "Table"
 msgstr "Tabla"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:242
+#: ../glom/libglom/data_structure/translatable_item.cc:244
 msgid "Layout Group"
 msgstr "Distribución del grupo"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:244
+#: ../glom/libglom/data_structure/translatable_item.cc:246
 msgid "Field Title"
 msgstr "Campo del título"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:252
+#: ../glom/libglom/data_structure/translatable_item.cc:250
+#| msgid "Text Title"
+msgid "Text Item"
+msgstr "Elemento de texto"
+
+#: ../glom/libglom/data_structure/translatable_item.cc:254
 msgid "Field Choice"
 msgstr "Campo de opción"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:254
+#: ../glom/libglom/data_structure/translatable_item.cc:256
 msgid "Database Title"
 msgstr "Título de la base de datos"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:256
+#: ../glom/libglom/data_structure/translatable_item.cc:260
 #: ../glom/mode_design/translation/window_translations.cc:217
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: ../glom/libglom/document/document.cc:508
-#: ../glom/libglom/document/document.cc:526
+#: ../glom/libglom/document/document.cc:509
+#: ../glom/libglom/document/document.cc:527
 msgid "System Preferences"
 msgstr "Preferencias del sistema"
 
-#: ../glom/libglom/document/document.cc:539
+#: ../glom/libglom/document/document.cc:540
 msgid "System Name"
 msgstr "Nombre del sistema"
 
-#: ../glom/libglom/document/document.cc:545
+#: ../glom/libglom/document/document.cc:546
 msgid "Organisation Name"
 msgstr "Nombre de la organización"
 
-#: ../glom/libglom/document/document.cc:551
+#: ../glom/libglom/document/document.cc:552
 msgid "Organisation Logo"
 msgstr "Logotipo de la organización"
 
-#: ../glom/libglom/document/document.cc:557
+#: ../glom/libglom/document/document.cc:558
 msgid "Street"
 msgstr "Calle"
 
-#: ../glom/libglom/document/document.cc:563
+#: ../glom/libglom/document/document.cc:564
 msgid "Street (line 2)"
 msgstr "Calle (línea 2)"
 
-#: ../glom/libglom/document/document.cc:569
+#: ../glom/libglom/document/document.cc:570
 msgid "City"
 msgstr "Ciudad"
 
-#: ../glom/libglom/document/document.cc:575
+#: ../glom/libglom/document/document.cc:576
 msgid "State"
 msgstr "Estado"
 
-#: ../glom/libglom/document/document.cc:581
+#: ../glom/libglom/document/document.cc:582
 msgid "Country"
 msgstr "País"
 
-#: ../glom/libglom/document/document.cc:587
+#: ../glom/libglom/document/document.cc:588
 msgid "Zip Code"
 msgstr "Código postal"
 
-#: ../glom/libglom/document/document.cc:1355
+#: ../glom/libglom/document/document.cc:1356
 msgid "Overview"
 msgstr "Visión general"
 
@@ -1540,16 +1546,16 @@ msgstr ""
 msgid "Gettext-Warning: "
 msgstr "Alerta de gettext"
 
-#: ../glom/libglom/db_utils.cc:503
+#: ../glom/libglom/db_utils.cc:513
 msgid "System: Auto Increments"
 msgstr "Sistema: autoincrementos"
 
-#: ../glom/libglom/db_utils.cc:1176
+#: ../glom/libglom/db_utils.cc:1186
 #: ../glom/mode_design/users/dialog_groups_list.cc:70
 msgid "Description"
 msgstr "Descripción"
 
-#: ../glom/libglom/db_utils.cc:1183
+#: ../glom/libglom/db_utils.cc:1193
 msgid "Comments"
 msgstr "Comentarios"
 
