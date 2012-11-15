@@ -1,13 +1,24 @@
+#'glom/examples/po_files/example_smallbusiness
+# Slovenian translation for glom smallbusiness example.
+# Copyright (C) 2012 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+#
+# Matej Urbančič <mateju@svn.gnome.org>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Small Business Example\n"
-"product=glom&keywords=I18N+L10N&component=general\n"
-"PO-Revision-Date: 2012-04-11 10:32+0200\n"
-"Last-Translator: Someone <someone@someone.com>\n"
-"Language-Team:  <someone@someone.com>\n"
+"Project-Id-Version: glom master\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2012-11-15 12:57+0100\n"
+"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
+"Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
+"Language: sl_SI\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 1.5.4\n"
 
 msgctxt "Database Title"
 msgid "Small Business Example"
@@ -131,107 +142,107 @@ msgstr "Po državi, po mestu"
 
 msgctxt "Print Layout (contact_details). Parent table: contacts"
 msgid "Contact Details"
-msgstr ""
+msgstr "Podrobnosti stika"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Contacts"
-msgstr ""
+msgstr "Stiki"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Overview"
-msgstr ""
+msgstr "Pregled"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Contact ID:"
-msgstr ""
+msgstr "ID stika:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Full Name:"
-msgstr ""
+msgstr "Polno Ime:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Name"
-msgstr ""
+msgstr "Ime"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Title:"
-msgstr ""
+msgstr "Naslov:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "First Name:"
-msgstr ""
+msgstr "Ime:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Middle Name:"
-msgstr ""
+msgstr "Drugo ime"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Last Name:"
-msgstr ""
+msgstr "Priimek:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Address"
-msgstr ""
+msgstr "Naslov"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Street:"
-msgstr ""
+msgstr "Ulica:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Town:"
-msgstr ""
+msgstr "Mesto:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "State:"
-msgstr ""
+msgstr "Okraj:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Postcode:"
-msgstr ""
+msgstr "Poštna številka:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Country:"
-msgstr ""
+msgstr "Država:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Telephone"
-msgstr ""
+msgstr "Telefon"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Work Telephone:"
-msgstr ""
+msgstr "Telefon v službi:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Mobile Telephone:"
-msgstr ""
+msgstr "Mobilni telefon:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Home Telephone:"
-msgstr ""
+msgstr "Telefon doma:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Fax:"
-msgstr ""
+msgstr "Faks:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Date of Birth:"
-msgstr ""
+msgstr "Datum rojstva:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Picture:"
-msgstr ""
+msgstr "Slika:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Comments:"
-msgstr ""
+msgstr "Opombe:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Web Site:"
-msgstr ""
+msgstr "Spletna stran:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Email Address:"
-msgstr ""
+msgstr "Elektronski naslov:"
 
 msgctxt "Layout Group (overview). Parent table: contacts"
 msgid "Overview"
@@ -245,7 +256,8 @@ msgctxt "Layout Group (address). Parent table: contacts, Parent Group: details"
 msgid "Address"
 msgstr "Naslov"
 
-msgctxt "Layout Group (telephone). Parent table: contacts, Parent Group: details"
+msgctxt ""
+"Layout Group (telephone). Parent table: contacts, Parent Group: details"
 msgid "Telephone"
 msgstr "Telefon"
 
@@ -333,7 +345,8 @@ msgctxt "Layout Group (overview). Parent table: invoices"
 msgid "Overview"
 msgstr "Pregled"
 
-msgctxt "Layout Group (customer). Parent table: invoices, Parent Group: details"
+msgctxt ""
+"Layout Group (customer). Parent table: invoices, Parent Group: details"
 msgid "Customer"
 msgstr "Stranka"
 
@@ -456,4 +469,3 @@ msgstr "Ime"
 msgctxt "Layout Group (address). Parent table: staff, Parent Group: details"
 msgid "Address"
 msgstr "Naslov"
-
