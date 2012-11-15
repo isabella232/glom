@@ -45,7 +45,7 @@ msgstr "Glom: Soubor neexistuje."
 #: ../glom/application.cc:190 ../glom/glom_create_from_example.cc:285
 #: ../glom/glom_export_po.cc:172
 msgid "Glom: The file path is a directory instead of a file."
-msgstr "Glom: Cesta k souboru je složka namísto souboru."
+msgstr "Glom: Cesta k souboru je složkou namísto souborem."
 
 #: ../glom/appwindow.cc:148
 msgid "Glom: Generating Encryption Certificates"
