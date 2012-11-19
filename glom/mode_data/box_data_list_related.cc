@@ -54,7 +54,7 @@ Box_Data_List_Related::Box_Data_List_Related()
 
   //We do not actually use this,
   //so it is a bug if this appears in the .glom file:
-  m_layout_name = "list_related";
+  m_layout_name = "NotUsedlist_related";
 }
 
 void Box_Data_List_Related::enable_buttons()

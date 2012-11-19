@@ -54,7 +54,9 @@ Box_Data_Calendar_Related::Box_Data_Calendar_Related()
   //m_calendar.add_events(Gdk::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
   m_calendar.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_calendar_button_press_event) );
 
-  m_layout_name = "list_related_calendar"; //TODO: We need a unique name when 2 portals use the same table.
+  //We do not actually use this,
+  //so it is a bug if this appears in the .glom file:
+  m_layout_name = "NotUsedlist_related_calendar";
 }
 
 Box_Data_Calendar_Related::~Box_Data_Calendar_Related()

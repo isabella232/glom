@@ -4082,21 +4082,6 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list_related_related_department_crew" parent_table="crew">
-        <data_layout_groups>
-          <data_layout_group name="main">
-            <data_layout_item name="description" editable="true" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-            <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-            <data_layout_item name="name_full" editable="true" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-          </data_layout_group>
-        </data_layout_groups>
-      </data_layout>
       <data_layout name="list" parent_table="departments">
         <data_layout_groups>
           <data_layout_group name="main">
@@ -7095,21 +7080,6 @@ else:
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-          </data_layout_group>
-        </data_layout_groups>
-      </data_layout>
-      <data_layout name="list_related_related_scene_crew" parent_table="scene_crew">
-        <data_layout_groups>
-          <data_layout_group name="main">
-            <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-            <data_layout_item name="name_full" editable="true" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-            <data_layout_item name="comments" editable="true" use_default_formatting="true">
               <formatting/>
             </data_layout_item>
           </data_layout_group>

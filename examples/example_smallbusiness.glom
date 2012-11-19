@@ -1840,60 +1840,6 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list_related_related_invoice_lines" parent_table="invoices">
-        <data_layout_groups>
-          <data_layout_group name="main">
-            <data_layout_item name="product_id" editable="true" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-            <data_layout_item name="product_name" editable="true" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-            <data_layout_item name="product_price" editable="true" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-            <data_layout_item name="count" editable="true" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-            <data_layout_item name="total_price" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-            <data_layout_item name="vat_percentage" editable="true" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-            <data_layout_item name="total_price_vat" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-          </data_layout_group>
-        </data_layout_groups>
-      </data_layout>
-      <data_layout name="list_related_related_invoice_lines" parent_table="invoice_lines">
-        <data_layout_groups>
-          <data_layout_group name="main">
-            <data_layout_item name="product_id" editable="true" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-            <data_layout_item name="product_name" editable="true" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-            <data_layout_item name="product_price" editable="true" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-            <data_layout_item name="count" editable="true" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-            <data_layout_item name="total_price" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-            <data_layout_item name="vat_percentage" editable="true" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-            <data_layout_item name="total_price_vat" use_default_formatting="true">
-              <formatting/>
-            </data_layout_item>
-          </data_layout_group>
-        </data_layout_groups>
-      </data_layout>
     </data_layouts>
     <reports>
       <report name="by_customer" title="By Customer">

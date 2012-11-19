@@ -1,3 +1,16 @@
+2012-11-19  Murray Cumming  <murrayc@murrayc.com>
+
+        Examples: Remove unused list_related_* layouts.
+
+        * examples/example_film_manager.glom:
+        * examples/example_smallbusiness.glom:
+        * glom/mode_data/box_data_calendar_related.cc:
+        * glom/mode_data/box_data_list_related.cc:
+        * ldtp/database-templates/PostgresCentral/Test.glom:
+        * ldtp/database-templates/SQLite/Test.glom: These were
+	saved by very old versions of Glom and not automatically
+	removed by newer versions.
+
 1.23.1:
 
 2012-11-19  Murray Cumming  <murrayc@murrayc.com>
