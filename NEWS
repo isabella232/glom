@@ -1,3 +1,21 @@
+1.23.1 (unstable):
+
+* Document:
+  - Save static image data as a child text node, not an attribute.
+  - Save image data (example data or static images) in base64 format,
+    instead of the GDA format.
+  (Murray Cumming)
+* Export to po files:
+  - Also export static text items, and print layouts.
+  - Avoid duplicates.
+    (Murray Cumming)
+* Examples: Add a static image item to the Project Manager example.
+  This is just so that the feature gets some testing.
+  (Murray Cumming)
+* Tests: Add new tests using GdkPixbufLoader to check that we can interpret
+	image data as an image.
+  (Murray Cumming)
+
 1.22.1 (stable):
 
 * Self hosting:
