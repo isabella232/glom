@@ -896,17 +896,35 @@ Orientation=portrait
         <data_layout_groups>
           <data_layout_group>
             <data_layout_text>
-              <text title="Contacts"/>
+              <text title="Contacts">
+                <trans_set>
+                  <trans loc="cs" val="Kontakty"/>
+                  <trans loc="es" val="Contactos"/>
+                  <trans loc="sl" val="Stiki"/>
+                </trans_set>
+              </text>
               <formatting font="Sans Bold 12"/>
               <position x="12" y="12" width="84" height="11.5563"/>
             </data_layout_text>
             <data_layout_text>
-              <text title="Overview"/>
+              <text title="Overview">
+                <trans_set>
+                  <trans loc="cs" val="Přehled"/>
+                  <trans loc="es" val="Vista general"/>
+                  <trans loc="sl" val="Pregled"/>
+                </trans_set>
+              </text>
               <formatting font="Sans Bold 10"/>
               <position x="12" y="24" width="191.55" height="6"/>
             </data_layout_text>
             <data_layout_text>
-              <text title="Contact ID:"/>
+              <text title="Contact ID:">
+                <trans_set>
+                  <trans loc="cs" val="ID kontaktu:"/>
+                  <trans loc="es" val="ID de contacto:"/>
+                  <trans loc="sl" val="ID stika:"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="36" width="60" height="6"/>
             </data_layout_text>
@@ -915,7 +933,13 @@ Orientation=portrait
               <position x="78" y="36" width="125.55" height="6"/>
             </data_layout_item>
             <data_layout_text>
-              <text title="Full Name:"/>
+              <text title="Full Name:">
+                <trans_set>
+                  <trans loc="cs" val="Celé jméno:"/>
+                  <trans loc="es" val="Nombre completo:"/>
+                  <trans loc="sl" val="Polno Ime:"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="48" width="60" height="6"/>
             </data_layout_text>
@@ -924,12 +948,24 @@ Orientation=portrait
               <position x="78" y="48" width="125.55" height="6"/>
             </data_layout_item>
             <data_layout_text>
-              <text title="Name"/>
+              <text title="Name">
+                <trans_set>
+                  <trans loc="cs" val="Jméno"/>
+                  <trans loc="es" val="Nombre"/>
+                  <trans loc="sl" val="Ime"/>
+                </trans_set>
+              </text>
               <formatting font="Sans Bold 10"/>
               <position x="12" y="60" width="191.55" height="6"/>
             </data_layout_text>
             <data_layout_text>
-              <text title="Title:"/>
+              <text title="Title:">
+                <trans_set>
+                  <trans loc="cs" val="Titul:"/>
+                  <trans loc="es" val="Título:"/>
+                  <trans loc="sl" val="Naslov:"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="72" width="60" height="6"/>
             </data_layout_text>
@@ -938,7 +974,13 @@ Orientation=portrait
               <position x="78" y="72" width="125.55" height="6"/>
             </data_layout_item>
             <data_layout_text>
-              <text title="First Name:"/>
+              <text title="First Name:">
+                <trans_set>
+                  <trans loc="cs" val="Křestní jméno:"/>
+                  <trans loc="es" val="Nombre:"/>
+                  <trans loc="sl" val="Ime:"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="84" width="60" height="6"/>
             </data_layout_text>
@@ -947,7 +989,13 @@ Orientation=portrait
               <position x="78" y="84" width="125.55" height="6"/>
             </data_layout_item>
             <data_layout_text>
-              <text title="Middle Name:"/>
+              <text title="Middle Name:">
+                <trans_set>
+                  <trans loc="cs" val="Prostřední jméno:"/>
+                  <trans loc="es" val="Nombre de pila:"/>
+                  <trans loc="sl" val="Drugo ime"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="96" width="60" height="6"/>
             </data_layout_text>
@@ -956,7 +1004,13 @@ Orientation=portrait
               <position x="78" y="96" width="125.55" height="6"/>
             </data_layout_item>
             <data_layout_text>
-              <text title="Last Name:"/>
+              <text title="Last Name:">
+                <trans_set>
+                  <trans loc="cs" val="Příjmení:"/>
+                  <trans loc="es" val="Apellido:"/>
+                  <trans loc="sl" val="Priimek:"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="108" width="60" height="6"/>
             </data_layout_text>
@@ -965,12 +1019,24 @@ Orientation=portrait
               <position x="78" y="108" width="125.55" height="6"/>
             </data_layout_item>
             <data_layout_text>
-              <text title="Address"/>
+              <text title="Address">
+                <trans_set>
+                  <trans loc="cs" val="Adresa"/>
+                  <trans loc="es" val="Dirección"/>
+                  <trans loc="sl" val="Naslov"/>
+                </trans_set>
+              </text>
               <formatting font="Sans Bold 10"/>
               <position x="12" y="120" width="191.55" height="6"/>
             </data_layout_text>
             <data_layout_text>
-              <text title="Street:"/>
+              <text title="Street:">
+                <trans_set>
+                  <trans loc="cs" val="Ulice:"/>
+                  <trans loc="es" val="Calle:"/>
+                  <trans loc="sl" val="Ulica:"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="132" width="60" height="6"/>
             </data_layout_text>
@@ -979,7 +1045,13 @@ Orientation=portrait
               <position x="78" y="132" width="125.55" height="6"/>
             </data_layout_item>
             <data_layout_text>
-              <text title="Town:"/>
+              <text title="Town:">
+                <trans_set>
+                  <trans loc="cs" val="Město:"/>
+                  <trans loc="es" val="Ciudad:"/>
+                  <trans loc="sl" val="Mesto:"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="144" width="60" height="6"/>
             </data_layout_text>
@@ -988,7 +1060,13 @@ Orientation=portrait
               <position x="78" y="144" width="125.55" height="6"/>
             </data_layout_item>
             <data_layout_text>
-              <text title="State:"/>
+              <text title="State:">
+                <trans_set>
+                  <trans loc="cs" val="Stát:"/>
+                  <trans loc="es" val="Estado:"/>
+                  <trans loc="sl" val="Okraj:"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="156" width="60" height="6"/>
             </data_layout_text>
@@ -997,7 +1075,13 @@ Orientation=portrait
               <position x="78" y="156" width="125.55" height="6"/>
             </data_layout_item>
             <data_layout_text>
-              <text title="Postcode:"/>
+              <text title="Postcode:">
+                <trans_set>
+                  <trans loc="cs" val="PSČ:"/>
+                  <trans loc="es" val="Código postal:"/>
+                  <trans loc="sl" val="Poštna številka:"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="168" width="60" height="6"/>
             </data_layout_text>
@@ -1006,7 +1090,13 @@ Orientation=portrait
               <position x="78" y="168" width="125.55" height="6"/>
             </data_layout_item>
             <data_layout_text>
-              <text title="Country:"/>
+              <text title="Country:">
+                <trans_set>
+                  <trans loc="cs" val="Země:"/>
+                  <trans loc="es" val="País:"/>
+                  <trans loc="sl" val="Država:"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="180" width="60" height="6"/>
             </data_layout_text>
@@ -1015,12 +1105,24 @@ Orientation=portrait
               <position x="78" y="180" width="125.55" height="6"/>
             </data_layout_item>
             <data_layout_text>
-              <text title="Telephone"/>
+              <text title="Telephone">
+                <trans_set>
+                  <trans loc="cs" val="Telefon"/>
+                  <trans loc="es" val="Teléfono"/>
+                  <trans loc="sl" val="Telefon"/>
+                </trans_set>
+              </text>
               <formatting font="Sans Bold 10"/>
               <position x="12" y="192" width="191.55" height="6"/>
             </data_layout_text>
             <data_layout_text>
-              <text title="Work Telephone:"/>
+              <text title="Work Telephone:">
+                <trans_set>
+                  <trans loc="cs" val="Pracovní telefon:"/>
+                  <trans loc="es" val="Teléfono del trabajo:"/>
+                  <trans loc="sl" val="Telefon v službi:"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="204" width="60" height="6"/>
             </data_layout_text>
@@ -1029,7 +1131,13 @@ Orientation=portrait
               <position x="78" y="204" width="125.55" height="6"/>
             </data_layout_item>
             <data_layout_text>
-              <text title="Mobile Telephone:"/>
+              <text title="Mobile Telephone:">
+                <trans_set>
+                  <trans loc="cs" val="Mobilní telefon:"/>
+                  <trans loc="es" val="Teléfono móvil:"/>
+                  <trans loc="sl" val="Mobilni telefon:"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="216" width="60" height="6"/>
             </data_layout_text>
@@ -1038,7 +1146,13 @@ Orientation=portrait
               <position x="78" y="216" width="125.55" height="6"/>
             </data_layout_item>
             <data_layout_text>
-              <text title="Home Telephone:"/>
+              <text title="Home Telephone:">
+                <trans_set>
+                  <trans loc="cs" val="Domácí telefon:"/>
+                  <trans loc="es" val="Teléfono particular:"/>
+                  <trans loc="sl" val="Telefon doma:"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="228" width="60" height="6"/>
             </data_layout_text>
@@ -1047,7 +1161,13 @@ Orientation=portrait
               <position x="78" y="228" width="125.55" height="6"/>
             </data_layout_item>
             <data_layout_text>
-              <text title="Fax:"/>
+              <text title="Fax:">
+                <trans_set>
+                  <trans loc="cs" val="Fax:"/>
+                  <trans loc="es" val="Fax:"/>
+                  <trans loc="sl" val="Faks:"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="240" width="60" height="6"/>
             </data_layout_text>
@@ -1056,7 +1176,13 @@ Orientation=portrait
               <position x="78" y="240" width="125.55" height="6"/>
             </data_layout_item>
             <data_layout_text>
-              <text title="Date of Birth:"/>
+              <text title="Date of Birth:">
+                <trans_set>
+                  <trans loc="cs" val="Datum narození:"/>
+                  <trans loc="es" val="Fecha de nacimiento:"/>
+                  <trans loc="sl" val="Datum rojstva:"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="252" width="60" height="6"/>
             </data_layout_text>
@@ -1065,7 +1191,13 @@ Orientation=portrait
               <position x="78" y="252" width="125.55" height="6"/>
             </data_layout_item>
             <data_layout_text>
-              <text title="Picture:"/>
+              <text title="Picture:">
+                <trans_set>
+                  <trans loc="cs" val="Obrázek:"/>
+                  <trans loc="es" val="Imagen:"/>
+                  <trans loc="sl" val="Slika:"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="291.75" width="60" height="6"/>
             </data_layout_text>
@@ -1074,7 +1206,13 @@ Orientation=portrait
               <position x="78" y="291.75" width="125.55" height="6"/>
             </data_layout_item>
             <data_layout_text>
-              <text title="Comments:"/>
+              <text title="Comments:">
+                <trans_set>
+                  <trans loc="cs" val="Poznámky:"/>
+                  <trans loc="es" val="Comentarios:"/>
+                  <trans loc="sl" val="Opombe:"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="303.75" width="60" height="6"/>
             </data_layout_text>
@@ -1083,7 +1221,13 @@ Orientation=portrait
               <position x="78" y="303.75" width="125.55" height="36"/>
             </data_layout_item>
             <data_layout_text>
-              <text title="Web Site:"/>
+              <text title="Web Site:">
+                <trans_set>
+                  <trans loc="cs" val="Webové stránky:"/>
+                  <trans loc="es" val="Sitio web:"/>
+                  <trans loc="sl" val="Spletna stran:"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="345.75" width="60" height="6"/>
             </data_layout_text>
@@ -1092,7 +1236,13 @@ Orientation=portrait
               <position x="78" y="345.75" width="125.55" height="6"/>
             </data_layout_item>
             <data_layout_text>
-              <text title="Email Address:"/>
+              <text title="Email Address:">
+                <trans_set>
+                  <trans loc="cs" val="E-mailová adresa:"/>
+                  <trans loc="es" val="Dirección de correo-e:"/>
+                  <trans loc="sl" val="Elektronski naslov:"/>
+                </trans_set>
+              </text>
               <formatting font="Sans 10"/>
               <position x="12" y="357.75" width="60" height="6"/>
             </data_layout_text>
@@ -1102,6 +1252,11 @@ Orientation=portrait
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
+        <trans_set>
+          <trans loc="cs" val="Podrobnosti kontaktu"/>
+          <trans loc="es" val="Detalles del contacto"/>
+          <trans loc="sl" val="Podrobnosti stika"/>
+        </trans_set>
       </print_layout>
     </print_layouts>
   </table>
