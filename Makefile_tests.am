@@ -106,6 +106,11 @@ dist_noinst_SCRIPTS = tests/test_dtd_file_validation.sh \
 
 #TESTS_ENVIRONMENT=which valgrind && valgrind --tool=memcheck --leak-check=full --leak-resolution=high --trace-children=yes --num-callers=30
 
+# Tell python to use the python modules that we have built,
+# instead of just looking in the installed paths,
+# so the test can run before installation::
+TESTS_ENVIRONMENT = PYTHONPATH=${PYTHONPATH}:$(abs_top_builddir)/glom/python_embed/python_module/.libs
+
 tests_ldadd = glom/libglom/libglom-$(GLOM_ABI_VERSION).la $(libglom_all_libs)
 tests_cppflags = $(glom_includes) $(LIBGLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(glom_defines)
 tests_cppflags_ui = $(glom_includes) $(GLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(glom_defines)
