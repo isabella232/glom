@@ -1,3 +1,12 @@
+2012-11-22  Murray Cumming  <murrayc@murrayc.com>
+
+        Tests: Use the locally-built python module.
+
+        * Makefile_tests.am: Set the PYTHONPATH in
+	automake's TESTS_ENVIRONMENT variable
+	to fix make check before make install has run,
+	and generally to be a correct check.
+
 2012-11-08  Murray Cumming  <murrayc@murrayc.com>
 
 	Import example .po translations into the examples.
