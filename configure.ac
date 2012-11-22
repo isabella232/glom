@@ -334,4 +334,7 @@ AC_CONFIG_FILES([Makefile
                  docs/pyglom_reference/conf.py
                  docs/pyglom_reference/index.rst
                  win32/glom.iss])
+
+AC_CONFIG_FILES([tests/test_glom_date_in_locales.sh], [chmod u+x tests/test_glom_date_in_locales.sh])
+
 AC_OUTPUT

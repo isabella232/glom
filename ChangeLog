@@ -1,5 +1,17 @@
 2012-11-22  Murray Cumming  <murrayc@murrayc.com>
 
+        Tests: Use the locally-built glom.
+
+	* configure.ac:
+        * Makefile_tests.am:
+	* tests/tests_glom_date_in_locales.sh.in:
+	Generate tests/tests_glom_date_in_locales.sh from
+	tests/tests_glom_date_in_locales.sh.in, so it can 
+	include the path to the locally-built glom
+	executable.
+
+2012-11-22  Murray Cumming  <murrayc@murrayc.com>
+
         Tests: Use the locally-built python module.
 
         * Makefile_tests.am: Set the PYTHONPATH in
