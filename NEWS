@@ -1,3 +1,10 @@
+1.23.2:
+
+* Tests:
+  - Use the locally-built glom.
+  - Use the locally-built python module.
+* Examples: Remove unused list_related_* layouts.
+
 1.23.1 (unstable):
 
 * Document:
