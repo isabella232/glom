@@ -338,19 +338,19 @@ bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Gl
 
   if(!test)
   {
-    std::cerr << G_STRFUNC << ": Document::load() failed with failure_code=" << failure_code << std::endl;
+    std::cerr << G_STRFUNC << ": Document::load() failed with failure_code=" << failure_code << " for uri=" << example_file_uri << std::endl;
     return false;
   }
 
   if(!document.get_is_example_file() && !document.get_is_backup_file())
   {
-    std::cerr << G_STRFUNC << ": The document is not an example or a backup." << std::endl;
+    std::cerr << G_STRFUNC << ": The document is not an example or a backup. uri=" << example_file_uri << std::endl;
     return false;
   }
 
   if(!test_create_and_selfhost_new_empty(document, hosting_mode, subdirectory_path))
   {
-    std::cerr << G_STRFUNC << ": test_create_and_selfhost_new_empty() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": test_create_and_selfhost_new_empty() failed. uri=" << example_file_uri << std::endl;
     return false;
   }
 
@@ -361,7 +361,7 @@ bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Gl
   return recreated;
 }
 
-bool test_model_expected_size(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, guint columns_count, guint rows_count)
+bool test_model_expected_size(const Glib::RefPtr<const Gnome::Gda::DataModel>& data_model, guint columns_count, guint rows_count)
 {
   if(!data_model)
   {
@@ -389,6 +389,12 @@ bool test_table_exists(const Glib::ustring& table_name, const Glom::Document& do
   //Try to get more rows than intended:
   Glom::Utils::type_vecLayoutFields fieldsToGet;
   Glom::sharedptr<const Glom::Field> field = document.get_field_primary_key(table_name); //To to get some field.
+  if(!field)
+  {
+    std::cerr << G_STRFUNC << "Failure: Could not get primary key for table=" << table_name << std::endl;
+    return false;
+  }
+
   Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
@@ -396,7 +402,7 @@ bool test_table_exists(const Glib::ustring& table_name, const Glom::Document& do
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
     Glom::Utils::build_sql_select_with_where_clause(table_name,
       fieldsToGet);
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = 
+  const Glib::RefPtr<const Gnome::Gda::DataModel> data_model = 
     Glom::DbUtils::query_execute_select(builder);
   if(!data_model || !(data_model->get_n_columns()))
   {
@@ -404,6 +410,63 @@ bool test_table_exists(const Glib::ustring& table_name, const Glom::Document& do
     return false;
   }
 
+  return true;
+}
+
+static bool test_example_musiccollection_data_related(const Glom::Document* document, const Gnome::Gda::Value& album_id)
+{
+  if(!document)
+  {
+    std::cerr << G_STRFUNC << ": document is null" << std::endl;
+    return false;
+  }
+
+  Glom::Utils::type_vecLayoutFields fieldsToGet;
+
+  //Normal fields:
+  Glom::sharedptr<const Glom::Field> field_album_id = document->get_field("albums", "album_id");
+  Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem->set_full_field_details(field_album_id);
+  fieldsToGet.push_back(layoutitem);
+  Glom::sharedptr<const Glom::Field> field = document->get_field("albums", "name");
+  if(!field)
+  {
+    std::cerr << G_STRFUNC << "Failure: Could not get field." << std::endl;
+    return false;
+  }
+  layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem->set_full_field_details(field);
+  fieldsToGet.push_back(layoutitem);
+
+  //Related field:
+  const Glom::sharedptr<Glom::Relationship> relationship = document->get_relationship("albums", "artist");
+  if(!relationship)
+  {
+    std::cerr << "Failure: The relationship could not be found." << std::endl;
+    return false;
+  }
+  layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem->set_relationship(relationship);
+  field = document->get_field("artists", "name");
+  if(!field)
+  {
+    std::cerr << G_STRFUNC << "Failure: Could not get field." << std::endl;
+    return false;
+  }
+  layoutitem->set_full_field_details(field);
+  fieldsToGet.push_back(layoutitem);
+
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder =
+    Glom::Utils::build_sql_select_with_key("albums", fieldsToGet, field_album_id, album_id);
+  const Glib::RefPtr<const Gnome::Gda::DataModel> data_model = 
+    Glom::DbUtils::query_execute_select(builder);
+  if(!test_model_expected_size(data_model, 3, 1))
+  {
+    std::cerr << "Failure: Unexpected data model size with query: " << 
+      Glom::Utils::sqlbuilder_get_full_query(builder) << std::endl;
+    return false;
+  }
+  
   return true;
 }
 
@@ -425,7 +488,13 @@ bool test_example_musiccollection_data(const Glom::Document* document)
   Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
+
   field = document->get_field("albums", "name");
+  if(!field)
+  {
+    std::cerr << G_STRFUNC << "Failure: Could not get field." << std::endl;
+    return false;
+  }
   layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
@@ -433,22 +502,24 @@ bool test_example_musiccollection_data(const Glom::Document* document)
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder> builder = 
     Glom::Utils::build_sql_select_with_where_clause("albums",
       fieldsToGet, where_clause);
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = 
+  const Glib::RefPtr<const Gnome::Gda::DataModel> data_model = 
     Glom::DbUtils::query_execute_select(builder);
   if(!test_model_expected_size(data_model, 2, 1))
   {
-    std::cerr << "Failure: Unexpected data model size with query: " << 
+    std::cerr << G_STRFUNC << "Failure: Unexpected data model size with query: " << 
       Glom::Utils::sqlbuilder_get_full_query(builder) << std::endl;
     return false;
   }
-  
+
   const int count = Glom::DbUtils::count_rows_returned_by(builder);
   if(count != 1 )
   {
-    std::cerr << "Failure: The COUNT query returned an unexpected value: " << count << std::endl;
+    std::cerr << G_STRFUNC << "Failure: The COUNT query returned an unexpected value: " << count << std::endl;
     return false;
   }
-  
-  return true;
-}
 
+
+  //Get the album's related artist name:
+  const Gnome::Gda::Value album_id = data_model->get_value_at(0, 0);
+  return test_example_musiccollection_data_related(document, album_id);
+}

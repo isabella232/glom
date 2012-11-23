@@ -1,5 +1,13 @@
 2012-11-23  Murray Cumming  <murrayc@murrayc.com>
 
+        tests: Test the use of a relationship to get data.
+        * tests/test_selfhosting_utils.cc:
+	test_example_musiccollection_data(): Also get the value 
+	of a related field, to test value comparison with both
+	numeric and text fields (this is used by at least two tests).
+
+2012-11-23  Murray Cumming  <murrayc@murrayc.com>
+
         tests: Add a test that uses an example with text primary keys.
 
         * Makefile_tests.am:
