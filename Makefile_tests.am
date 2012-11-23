@@ -48,6 +48,7 @@ check_PROGRAMS =						\
 	tests/test_selfhosting_new_then_get_privs \
 	tests/test_selfhosting_new_then_alter_table \
 	tests/test_selfhosting_new_then_change_columns \
+	tests/test_selfhosting_non_numeric_primary_keys \
 	tests/test_selfhosting_sqlinjection \
 	tests/import/test_parsing \
 	tests/import/test_signals \
@@ -87,6 +88,7 @@ TESTS =	tests/test_document_load	\
 	tests/test_selfhosting_new_then_get_privs \
 	tests/test_selfhosting_new_then_alter_table \
 	tests/test_selfhosting_new_then_change_columns \
+	tests/test_selfhosting_non_numeric_primary_keys \
 	tests/test_selfhosting_sqlinjection \
 	tests/import/test_parsing \
 	tests/import/test_signals \
@@ -112,7 +114,8 @@ dist_noinst_SCRIPTS = tests/test_dtd_file_validation.sh \
 TESTS_ENVIRONMENT = PYTHONPATH=${PYTHONPATH}:$(abs_top_builddir)/glom/python_embed/python_module/.libs
 
 tests_ldadd = glom/libglom/libglom-$(GLOM_ABI_VERSION).la $(libglom_all_libs)
-tests_cppflags = $(glom_includes) $(LIBGLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(glom_defines)
+tests_cppflags = $(glom_includes) $(LIBGLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(glom_defines)\
+	-DGLOM_TEST_EXAMPLES_NOTINSTALLED=\""$(abs_top_srcdir)/tests"\"
 tests_cppflags_ui = $(glom_includes) $(GLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(glom_defines)
 
 glom_libglom_test_connectionpool_SOURCES = glom/libglom/test_connectionpool.cc
@@ -301,6 +304,10 @@ tests_test_selfhosting_new_then_alter_table_CPPFLAGS = $(tests_cppflags)
 tests_test_selfhosting_new_then_change_columns_SOURCES = tests/test_selfhosting_new_then_change_columns.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_then_change_columns_LDADD = $(tests_ldadd)
 tests_test_selfhosting_new_then_change_columns_CPPFLAGS = $(tests_cppflags)
+
+tests_test_selfhosting_non_numeric_primary_keys_SOURCES = tests/test_selfhosting_non_numeric_primary_keys.cc $(sources_test_selfhosting_utils)
+tests_test_selfhosting_non_numeric_primary_keys_LDADD = $(tests_ldadd)
+tests_test_selfhosting_non_numeric_primary_keys_CPPFLAGS = $(tests_cppflags)
 
 tests_test_selfhosting_sqlinjection_SOURCES = tests/test_selfhosting_sqlinjection.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_sqlinjection_LDADD = $(tests_ldadd)

@@ -1,3 +1,13 @@
+2012-11-23  Murray Cumming  <murrayc@murrayc.com>
+
+        tests: Add a test that uses an example with text primary keys.
+
+        * Makefile_tests.am:
+        * tests/test_example_music_collection_text_pk_fields.glom:
+        * tests/test_selfhosting_non_numeric_primary_keys.cc: Added a test
+	that uses a test-only .glom file that has had all its primary keys
+	changed to text fields.
+
 1.23.2:
 
 2012-11-22  Murray Cumming  <murrayc@murrayc.com>

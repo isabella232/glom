@@ -1,0 +1,103 @@
+/* Glom
+ *
+ * Copyright (C) 2010 Openismus GmbH
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+71 * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301 USA.
+ */
+
+#include "tests/test_selfhosting_utils.h"
+#include <libglom/init.h>
+#include <libglom/utils.h>
+#include <libglom/db_utils.h>
+#include <glib.h> //For g_assert()
+#include <iostream>
+#include <cstdlib> //For EXIT_SUCCESS and EXIT_FAILURE
+
+static bool test(Glom::Document::HostingMode hosting_mode)
+{
+  Glom::Document document;
+  const bool recreated = 
+    test_create_and_selfhost_from_test_example("test_example_music_collection_text_pk_fields.glom", document, hosting_mode);
+  if(!recreated)
+  {
+    std::cerr << "Recreation failed." << std::endl;
+    return false;
+  }
+  
+  if(!test_example_musiccollection_data(&document))
+  {
+    std::cerr << "test_example_musiccollection_data() failed." << std::endl;
+    return false;
+  }
+
+  if(!test_table_exists("songs", document))
+  {
+    return false;
+  }
+
+  if(!test_table_exists("publishers", document))
+  {
+    return false;
+  }
+
+  //Test the system preferences for the database:
+  //TODO: We should store this only in the document anyway,
+  //and make it translatable:
+  /* TODO: This is not stored in the examples. Should it be?
+  const Glom::SystemPrefs prefs = 
+    Glom::DbUtils::get_database_preferences(&document);
+  g_return_val_if_fail(prefs.m_name == "Music Collection", false);
+  g_return_val_if_fail(prefs.m_org_name == "SomeOrganization Incorporated", false);
+  g_return_val_if_fail(prefs.m_org_address_street == "Some House", false);
+  g_return_val_if_fail(prefs.m_org_address_street2 == "123 Some Street", false);
+  g_return_val_if_fail(prefs.m_org_address_town == "Some Town", false);
+  g_return_val_if_fail(prefs.m_org_address_county == "Some State", false);
+  g_return_val_if_fail(prefs.m_org_address_postcode == "12345", false);
+  g_return_val_if_fail(prefs.m_org_address_country == "USA", false);
+  */
+
+  test_selfhosting_cleanup();
+ 
+  return true; 
+}
+
+int main()
+{
+  Glom::libglom_init();
+
+  //We run this test in several locales via 
+  //test_selfhosting_new_from_example_in_locales.sh,
+  //so we do this so the locale will really be used:
+  setlocale(LC_ALL, "");
+  
+  if(!test(Glom::Document::HOSTING_MODE_POSTGRES_SELF))
+  {
+    std::cerr << "Failed with PostgreSQL" << std::endl;
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
+  
+  if(!test(Glom::Document::HOSTING_MODE_SQLITE))
+  {
+    std::cerr << "Failed with SQLite" << std::endl;
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
+
+  Glom::libglom_deinit();
+
+  return EXIT_SUCCESS;
+}

@@ -262,26 +262,62 @@ bool test_create_and_selfhost_new_database(Glom::Document& document, Glom::Docum
   return true;
 }
 
-
-bool test_create_and_selfhost_from_example(const std::string& example_filename, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
+static bool test_create_and_selfhost_from_example_full_path(const std::string& example_path, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path = std::string())
 {
   Glib::ustring uri;
-  
-  // Get a URI for the example file:
   try
   {
-    const std::string path =
-       Glib::build_filename(GLOM_DOCDIR_EXAMPLES_NOTINSTALLED,
-         example_filename);
-    uri = Glib::filename_to_uri(path);
+    uri = Glib::filename_to_uri(example_path);
   }
   catch(const Glib::ConvertError& ex)
   {
     std::cerr << G_STRFUNC << ": " << ex.what();
     return false;
   }
-  
+
   return test_create_and_selfhost_from_uri(uri, document, hosting_mode, subdirectory_path);
+}
+
+bool test_create_and_selfhost_from_example(const std::string& example_filename, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
+{
+  Glib::ustring uri;
+  
+  // Get a URI for the example file:
+  std::string path;
+  try
+  {
+    path =
+       Glib::build_filename(GLOM_DOCDIR_EXAMPLES_NOTINSTALLED,
+         example_filename);
+  }
+  catch(const Glib::ConvertError& ex)
+  {
+    std::cerr << G_STRFUNC << ": " << ex.what();
+    return false;
+  }
+
+  return test_create_and_selfhost_from_example_full_path(path, document, hosting_mode, subdirectory_path);
+}
+
+bool test_create_and_selfhost_from_test_example(const std::string& example_filename, Glom::Document& document, Glom::Document::HostingMode hosting_mode)
+{
+  Glib::ustring uri;
+  
+  // Get a URI for the example file:
+  std::string path;
+  try
+  {
+    path =
+       Glib::build_filename(GLOM_TEST_EXAMPLES_NOTINSTALLED,
+         example_filename);
+  }
+  catch(const Glib::ConvertError& ex)
+  {
+    std::cerr << G_STRFUNC << ": " << ex.what();
+    return false;
+  }
+
+  return test_create_and_selfhost_from_example_full_path(path, document, hosting_mode);
 }
 
 bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)

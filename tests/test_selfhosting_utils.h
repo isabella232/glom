@@ -44,13 +44,23 @@ bool test_create_and_selfhost_new_database(Glom::Document& document, Glom::Docum
 
 /** Create a .glom file from an example, with database data, and start a PostgreSQL server if necessary.
  *
+ * @param example_filename The filename (not the full path) of the example .glom file.
  * @param hosting_mode Either HOSTING_MODE_POSTGRES_SELF or HOSTING_MODE_SQLITE
  * @param subdirectory_path: An additional directory path to use under the temporary directory that will be used to save the file.
  */
 bool test_create_and_selfhost_from_example(const std::string& example_filename, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path = std::string());
 
+/** Create a .glom file from a test example, with database data, and start a PostgreSQL server if necessary.
+ *
+ * @param example_filename The filename (not the full path) of the example .glom file.
+ * @param hosting_mode Either HOSTING_MODE_POSTGRES_SELF or HOSTING_MODE_SQLITE
+ */
+bool test_create_and_selfhost_from_test_example(const std::string& example_filename, Glom::Document& document, Glom::Document::HostingMode hosting_mode);
+
+
 /** Create a .glom file from an existing .glom example file with database data, and start a PostgreSQL server if necessary.
  *
+ * @param file_uri The full URI of the example .glom file.
  * @param hosting_mode Either HOSTING_MODE_POSTGRES_SELF or HOSTING_MODE_SQLITE
  * @param subdirectory_path: An additional directory path to use under the temporary directory that will be used to save the file.
  */
@@ -62,7 +72,7 @@ bool test_create_and_selfhost_from_uri(const Glib::ustring& file_uri, Glom::Docu
 bool test_selfhost(Glom::Document& document, const Glib::ustring& user, const Glib::ustring& password);
 
 
-bool test_model_expected_size(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, guint columns_count, guint rows_count);
+bool test_model_expected_size(const Glib::RefPtr<const Gnome::Gda::DataModel>& data_model, guint columns_count, guint rows_count);
 bool test_table_exists(const Glib::ustring& table_name, const Glom::Document& document);
 
 /** Return the URI of the temporary .glom file created by the test_create_and_selfhost_*() methods.
