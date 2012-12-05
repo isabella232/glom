@@ -1,3 +1,10 @@
+2012-12-05  Murray Cumming  <murrayc@murrayc.com>
+
+        Added some strings that need translations for gwt-glom.
+
+        * glom/onlineglom_strings.cc: Added strings used by
+	the login page.
+
 2012-11-23  Murray Cumming  <murrayc@murrayc.com>
 
         tests: Test the use of a relationship to get data.
