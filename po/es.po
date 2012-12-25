@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-12-12 09:35+0000\n"
-"PO-Revision-Date: 2012-12-16 19:13+0100\n"
+"POT-Creation-Date: 2012-12-20 16:30+0000\n"
+"PO-Revision-Date: 2012-12-25 11:52+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -983,12 +983,10 @@ msgid "Login"
 msgstr "Iniciar sesión"
 
 #: ../glom/onlineglom_strings.cc:36
-#| msgid "Please enter the PostgreSQL server's password for the user %1: "
 msgid "Enter the PostgreSQL username and password."
 msgstr "Introduzca el nombre de usuario y la contraseña de PostgreSQL."
 
 #: ../glom/onlineglom_strings.cc:37
-#| msgid "Rename"
 msgid "Username"
 msgstr "Nombre de usuario"
 
@@ -1007,6 +1005,16 @@ msgstr "Cancelar"
 #: ../glom/onlineglom_strings.cc:41
 msgid "The username or password are not correct."
 msgstr "El nombre de usuario o la contraseña no son correctos."
+
+#: ../glom/onlineglom_strings.cc:42
+msgid ""
+"Login seems to be necessary, but will not be attempted. This site is not "
+"being served via HTTPS, which is required for secure login. Please contact "
+"your system administrator."
+msgstr ""
+"Al parecer, el inicio de sesión es necesario, pero no se intentará. Este "
+"sitio no usa HTTPS, requerido para iniciar sesión de manera segura. Contacte "
+"con el administrador de su sistema."
 
 #: ../glom/bakery/appwindow_withdoc_gtk.cc:284
 #: ../ui/developer/window_field_definition_edit.glade.h:13
