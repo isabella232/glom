@@ -29,6 +29,8 @@
 #include <libglom/connectionpool_backends/postgres_central.h>
 #include <libglom/connectionpool_backends/postgres_self.h>
 #include <libglom/connectionpool_backends/sqlite.h>
+#include <libglom/connectionpool_backends/mysql_central.h>
+#include <libglom/connectionpool_backends/mysql_self.h>
 
 #include <glibmm/main.h>
 
@@ -161,6 +163,22 @@ void ConnectionPool::setup_from_document(const Document* document)
     {
       ConnectionPoolBackends::Sqlite* backend = new ConnectionPoolBackends::Sqlite;
       backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
+      set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
+    }
+    break;
+  case Document::HOSTING_MODE_MYSQL_SELF:
+    {
+      ConnectionPoolBackends::MySQLSelfHosted* backend = new ConnectionPoolBackends::MySQLSelfHosted;
+      backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
+      set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
+    }
+    break;
+  case Document::HOSTING_MODE_MYSQL_CENTRAL:
+    {
+      ConnectionPoolBackends::MySQLCentralHosted* backend = new ConnectionPoolBackends::MySQLCentralHosted;
+      backend->set_host(document->get_connection_server());
+      backend->set_port(document->get_connection_port());
+      backend->set_try_other_ports(document->get_connection_try_other_ports());
       set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
     }
     break;
@@ -420,6 +438,7 @@ bool ConnectionPool::save_backup(const SlotProgress& slot_progress, const std::s
   std::string uri;
   try
   {
+    //TODO_MySQL:
     //TODO: Avoid the copy/paste of glom_postgres_data and make it work for sqlite too.
     const std::string subdir = Glib::build_filename(path_dir, "glom_postgres_data");
     uri = Glib::filename_to_uri(subdir);
@@ -440,6 +459,7 @@ bool ConnectionPool::convert_backup(const SlotProgress& slot_progress, const std
 {
   g_assert(m_backend.get());
 
+  //TODO_MySQL:
   //TODO: Avoid this copy/paste of the directory name:
   std::string path_dir_to_use = path_dir;
   if(!path_dir_to_use.empty())

@@ -332,6 +332,8 @@ void Dialog_UsersList::on_button_user_edit()
 
       if(!user.empty() && !password.empty())
       {
+        //TODO: Can this change the username too?
+        //Note: If using MySQL, we need MySQL 5.6.7 for ALTER USER:
         const Glib::ustring strQuery = "ALTER USER " + DbUtils::escape_sql_id(user) + " PASSWORD '" + password + "'" ; //TODO: Escape the password.
         const bool test = DbUtils::query_execute_string(strQuery);
         if(!test)

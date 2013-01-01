@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2001-2004 Murray Cumming
+ * Copyright (C) 2001-2013 Murray Cumming
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,10 +18,10 @@
  * Boston, MA 02110-1301 USA.
  */
 
-#include "config.h" // For POSTGRES_UTILS_PATH
+#include "config.h" // For MYSQL_UTILS_PATH
 #include <libglom/libglom_config.h>
 
-#include <libglom/connectionpool_backends/postgres.h>
+#include <libglom/connectionpool_backends/mysql.h>
 #include <libglom/spawn_with_feedback.h>
 #include <libglom/utils.h>
 #include <libglom/db_utils.h>
@@ -47,8 +47,16 @@ static Glib::ustring create_auth_string(const Glib::ustring& username, const Gli
   if(username.empty() and password.empty())
     return Glib::ustring();
   else
-    return "USERNAME=" + Glom::DbUtils::gda_cnc_string_encode(username) + 
-      ";PASSWORD=" + Glom::DbUtils::gda_cnc_string_encode(password);
+  {
+    Glib::ustring result = "USERNAME=" + Glom::DbUtils::gda_cnc_string_encode(username);
+
+    if(!password.empty()) //There is no password initially, at least with MySQL 5.5:
+    {
+      result +=";PASSWORD=" + Glom::DbUtils::gda_cnc_string_encode(password);
+    }
+
+    return result;
+  }
 }
 
 } //anonymous namespace
@@ -59,22 +67,26 @@ namespace Glom
 namespace ConnectionPoolBackends
 {
 
-Postgres::Postgres()
+MySQL::MySQL()
 : m_port(0),
-  m_postgres_server_version(0.0f)
+  m_mysql_server_version(0.0f)
 {
 }
 
-//TODO: We need to specify TCP for the connection: https://bugzilla.gnome.org/show_bug.cgi?id=691069
-Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, bool fake_connection)
+//TODO: Avoid copy/paste with Postgres::attempt_connect()
+Glib::RefPtr<Gnome::Gda::Connection> MySQL::attempt_connect(const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, bool fake_connection)
 {
-  //We must specify _some_ database even when we just want to create a database.
-  //This _might_ be different on some systems. I hope not. murrayc
-  const Glib::ustring default_database = "template1";
+  if(database.empty())
+  {
+    std::cerr << G_STRFUNC << ": The database name is empty. This is strange." << std::endl;
+    return Glib::RefPtr<Gnome::Gda::Connection>();
+  }
+
+  const Glib::ustring default_database = "INFORMATION_SCHEMA";
   //const Glib::ustring& actual_database = (!database.empty()) ? database : default_database;;
   const Glib::ustring cnc_string_main = "HOST=" + DbUtils::gda_cnc_string_encode(m_host)
    + ";PORT=" + DbUtils::gda_cnc_string_encode(port);
-  const Glib::ustring cnc_string = cnc_string_main + ";DB_NAME=" + DbUtils::gda_cnc_string_encode(database);
+  const Glib::ustring cnc_string = cnc_string_main +";DB_NAME=" + DbUtils::gda_cnc_string_encode(database);
 
   Glib::RefPtr<Gnome::Gda::Connection> connection;
   Glib::RefPtr<Gnome::Gda::DataModel> data_model;
@@ -91,17 +103,17 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   {
     if(fake_connection)
     {
-      connection = Gnome::Gda::Connection::create_from_string("PostgreSQL",
+      connection = Gnome::Gda::Connection::create_from_string("MySQL",
         cnc_string, auth_string,
         Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
     }
     else
     {
-      connection = Gnome::Gda::Connection::open_from_string("PostgreSQL",
+      connection = Gnome::Gda::Connection::open_from_string("MySQL",
         cnc_string, auth_string,
         Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
 
-      connection->statement_execute_non_select("SET DATESTYLE = 'ISO'");
+      //connection->statement_execute_non_select("SET DATESTYLE = 'ISO'");
       data_model = connection->statement_execute_select("SELECT version()");
     }
   }
@@ -117,14 +129,14 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
     Glib::ustring auth_string = create_auth_string(username, password);
     try
     {
-      temp_conn = Gnome::Gda::Connection::open_from_string("PostgreSQL",
+      temp_conn = Gnome::Gda::Connection::open_from_string("MySQL",
         cnc_string, auth_string,
         Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
     }
     catch(const Glib::Error& /* ex */)
     {
       //Show this on stderr because it can contain useful clues such as a hostname that cannot be resolved.
-      //std::cerr << G_STRFUNC << ": Attempt to connect to default database failed on port=" << port << " : " << "error code=" << ex.code() << ", error message: " <<  ex.what() << std::endl;
+      std::cerr << G_STRFUNC << ": Attempt to connect to default database failed on port=" << port << " : " << "error code=" << ex.code() << ", error message: " <<  ex.what() << std::endl;
     }
 
 #ifdef GLOM_CONNECTION_DEBUG
@@ -144,16 +156,16 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
     if(value.get_value_type() == G_TYPE_STRING)
     {
       const Glib::ustring version_text = value.get_string();
-      //This seems to have the format "PostgreSQL 7.4.11 on i486-pc-linux"
-      const Glib::ustring namePart = "PostgreSQL ";
+      //This seems to have the format "MySQL 7.4.11 on i486-pc-linux"
+      const Glib::ustring namePart = "MySQL ";
       const Glib::ustring::size_type posName = version_text.find(namePart);
       if(posName != Glib::ustring::npos)
       {
         const Glib::ustring versionPart = version_text.substr(namePart.size());
-        m_postgres_server_version = strtof(versionPart.c_str(), 0);
+        m_mysql_server_version = strtof(versionPart.c_str(), 0);
 
 #ifdef GLOM_CONNECTION_DEBUG
-        std::cout << "  Postgres Server version: " << m_postgres_server_version << std::endl;
+        std::cout << "  MySQL Server version: " << m_mysql_server_version << std::endl;
 #endif
       }
     }
@@ -162,7 +174,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   return connection;
 }
 
-bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) throw()
+bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) throw()
 {
   static const char TRANSACTION_NAME[] = "glom_change_columns_transaction";
   static const char TEMP_COLUMN_NAME[] = "glom_temp_column"; // TODO: Find a unique name.
@@ -183,7 +195,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
 		for(unsigned int i = 0; i < old_fields.size(); ++ i)
 		{
 		  // If the type did change, then we need to recreate the column. See
-		  // http://www.postgresql.org/docs/faqs.FAQ.html#item4.3
+		  // http://www.mysqlql.org/docs/faqs.FAQ.html#item4.3
 		  if(old_fields[i]->get_field_info()->get_g_type() != new_fields[i]->get_field_info()->get_g_type())
 		  {
 		    // Create a temporary column
@@ -207,7 +219,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
 
 		    if(Field::get_conversion_possible(old_fields[i]->get_glom_type(), new_fields[i]->get_glom_type()))
 		    {
-		      //TODO: postgres seems to give an error if the data cannot be converted (for instance if the text is not a numeric digit when converting to numeric) instead of using 0.
+		      //TODO: mysql seems to give an error if the data cannot be converted (for instance if the text is not a numeric digit when converting to numeric) instead of using 0.
 		      /*
 		      Maybe, for instance:
 		      http://groups.google.de/groups?hl=en&lr=&ie=UTF-8&frame=right&th=a7a62337ad5a8f13&seekm=23739.1073660245%40sss.pgh.pa.us#link5
@@ -341,7 +353,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
 		    // Uniqueness
 		    if(old_fields[i]->get_unique_key() != new_fields[i]->get_unique_key())
 		    {
-		      // Postgres automatically makes primary keys unique, so we do not need
+		      // MySQL automatically makes primary keys unique, so we do not need
 		      // to do that separately if we already made it a primary key
 		      if(!primary_key_was_set && new_fields[i]->get_unique_key())
 		      {
@@ -389,12 +401,12 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
   return false;
 }
 
-bool Postgres::attempt_create_database(const SlotProgress& slot_progress, const Glib::ustring& database_name, const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& username, const Glib::ustring& password)
+bool MySQL::attempt_create_database(const SlotProgress& slot_progress, const Glib::ustring& database_name, const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& username, const Glib::ustring& password)
 {
   slot_progress();
 
   Glib::RefPtr<Gnome::Gda::ServerOperation> op = 
-    Gnome::Gda::ServerOperation::prepare_create_database("PostgreSQL", database_name);
+    Gnome::Gda::ServerOperation::prepare_create_database("MySQL", database_name);
 
   slot_progress();
 
@@ -405,7 +417,7 @@ bool Postgres::attempt_create_database(const SlotProgress& slot_progress, const 
     op->set_value_at("/SERVER_CNX_P/PORT", port);
     op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", username);
     op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", password);
-    op->perform_create_database("PostgreSQL");
+    op->perform_create_database("MySQL");
   }
   catch(const Glib::Error& ex)
   {
@@ -418,7 +430,7 @@ bool Postgres::attempt_create_database(const SlotProgress& slot_progress, const 
   return true;
 }
 
-bool Postgres::check_postgres_gda_client_is_available()
+bool MySQL::check_mysql_gda_client_is_available()
 {
   //This API is horrible.
   //See libgda bug http://bugzilla.gnome.org/show_bug.cgi?id=575754
@@ -446,7 +458,7 @@ bool Postgres::check_postgres_gda_client_is_available()
 
       const Glib::ustring name_as_string = name.get_string();
       //std::cout << "DEBUG: Provider name:" << name_as_string << std::endl;
-      if(name_as_string == "PostgreSQL")
+      if(name_as_string == "MySQL")
         return true;
     }
     while(iter->move_next());
@@ -455,19 +467,19 @@ bool Postgres::check_postgres_gda_client_is_available()
   return false;
 }
 
-std::string Postgres::get_path_to_postgres_executable(const std::string& program, bool quoted)
+std::string MySQL::get_path_to_mysql_executable(const std::string& program, bool quoted)
 {
 #ifdef G_OS_WIN32
   // Add the .exe extension on Windows:
   std::string real_program = program + EXEEXT;
 
   // Have a look at the bin directory of the application executable first.
-  // The installer installs postgres there. postgres needs to be installed
+  // The installer installs mysql there. mysql needs to be installed
   // in a directory called bin for its relocation stuff to work, so that
   // it finds the share data in share. Unfortunately it does not look into
-  // share/postgresql which would be nice to separate the postgres stuff
+  // share/mysqlql which would be nice to separate the mysql stuff
   // from the other shared data. We can perhaps still change this later by
-  // building postgres with another prefix than /local/pgsql.
+  // building mysql with another prefix than /local/pgsql.
   gchar* installation_directory = g_win32_get_package_installation_directory_of_module(0);
   std::string test;
 
@@ -496,10 +508,10 @@ std::string Postgres::get_path_to_postgres_executable(const std::string& program
     path = Glib::shell_quote(path);
   return path;
 #else // G_OS_WIN32
-  // POSTGRES_UTILS_PATH is defined in config.h, based on the configure.
+  // MYSQL_UTILS_PATH is defined in config.h, based on the configure.
   try
   {
-    std::string path = Glib::build_filename(POSTGRES_UTILS_PATH, program + EXEEXT);
+    std::string path = Glib::build_filename(MYSQL_UTILS_PATH, program + EXEEXT);
     if(quoted)
       path = Glib::shell_quote(path);
     return path;
@@ -513,7 +525,7 @@ std::string Postgres::get_path_to_postgres_executable(const std::string& program
 }
 
 
-Glib::ustring Postgres::port_as_string(unsigned int port_num)
+Glib::ustring MySQL::port_as_string(unsigned int port_num)
 {
   Glib::ustring result;
   char* cresult = g_strdup_printf("%u", port_num);
@@ -524,63 +536,7 @@ Glib::ustring Postgres::port_as_string(unsigned int port_num)
   return result;
 }
 
-//Because ~/.pgpass is not an absolute path.
-static std::string get_absolute_pgpass_filepath()
-{
-  return Glib::build_filename(
-    Glib::get_home_dir(), ".pgpass");
-}
-
-bool Postgres::save_password_to_pgpass(const Glib::ustring username, const Glib::ustring& password, std::string& filepath_previous, std::string& filepath_original)
-{
-  //Initialize output variables:
-  filepath_previous.clear();
-  filepath_original.clear();
-
-  const std::string filepath_pgpass = get_absolute_pgpass_filepath();
-  filepath_original = filepath_pgpass;
-
-  //Move any existing file out of the way:
-  if(file_exists_filepath(filepath_pgpass))
-  {
-    //std::cout << "DEBUG: File exists: " << filepath_pgpass << std::endl;
-    filepath_previous = filepath_pgpass + ".glombackup";
-    if(g_rename(filepath_pgpass.c_str(), filepath_previous.c_str()) != 0)
-    {
-      std::cerr << G_STRFUNC << "Could not rename file: from=" << filepath_pgpass << ", to=" << filepath_previous << std::endl;
-      return false;
-    }
-  }
-
-  //See http://www.postgresql.org/docs/8.4/static/libpq-pgpass.html
-  //TODO: Escape \ and : characters.
-  const Glib::ustring contents =
-    m_host + ":" + port_as_string(m_port) + ":*:" + username + ":" + password;
-
-  std::string uri;
-  try
-  {
-    uri = Glib::filename_to_uri(filepath_pgpass);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": exception from Glib::filename_from_uri(): " << ex.what() << std::endl;
-    g_rename(filepath_previous.c_str(), filepath_pgpass.c_str());
-    return false;
-  }
-
-  const bool result = create_text_file(uri, contents, true /* current user only */);
-  if(!result)
-  {
-    std::cerr << G_STRFUNC << ": create_text_file() failed." << std::endl;
-    g_rename(filepath_previous.c_str(), filepath_pgpass.c_str());
-    return false;
-  }
-
-  return result;
-}
-
-bool Postgres::save_backup(const SlotProgress& slot_progress, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name)
+bool MySQL::save_backup(const SlotProgress& slot_progress, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& /* database_name */)
 {
 /* TODO:
   if(m_network_shared && !running)
@@ -615,42 +571,18 @@ bool Postgres::save_backup(const SlotProgress& slot_progress, const Glib::ustrin
     return false;
   }
 
-  // Save the password to ~/.pgpass, because this is the only way to use
-  // pg_dump without it asking for the password:
-  std::string pgpass_backup, pgpass_original;
-  const bool pgpass_created = save_password_to_pgpass(username, password, pgpass_backup, pgpass_original);
-  if(!pgpass_created)
-  {
-    std::cerr << G_STRFUNC << ": save_password_to_pgpass() failed." << std::endl;
-    return false;
-  }
-
   const std::string path_backup = get_self_hosting_backup_path(std::string(), true /* create parent directory if necessary */);
   if(path_backup.empty())
     return false;
 
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
-  const std::string command_dump = get_path_to_postgres_executable("pg_dump") +
-    " --format=c " + // The default (plain) format cannot be used with pg_restore.
-    " --create --file=" + Glib::shell_quote(path_backup) +
-    " --host=" + Glib::shell_quote(m_host) +
-    " --port=" + port_as_string(m_port) +
-    " --username=" + Glib::shell_quote(username) +
-    " " + database_name; //TODO: Quote database_name?
+  const std::string command_dump; //TODO_MySQL
 
 
   //std::cout << "DEBUG: command_dump=" << command_dump << std::endl;
 
   const bool result = Glom::Spawn::execute_command_line_and_wait(command_dump, slot_progress);
-
-  //Move the previously-existing .pgpass file back:
-  //TODO: Really, we should just edit the file instead of completely replacing it,
-  //      because another application might try to edit it in the meantime.
-  if(!pgpass_backup.empty())
-  {
-    g_rename(pgpass_backup.c_str(), pgpass_original.c_str());
-  }
 
   if(!result)
   {
@@ -660,7 +592,7 @@ bool Postgres::save_backup(const SlotProgress& slot_progress, const Glib::ustrin
   return result;
 }
 
-bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::string& base_directory, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name)
+bool MySQL::convert_backup(const SlotProgress& slot_progress, const std::string& base_directory, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& /* database_name */)
 {
 /* TODO:
   if(m_network_shared && !running)
@@ -703,38 +635,15 @@ bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::stri
     return false;
   }
 
-  // Save the password to ~/.pgpass, because this is the only way to use
-  // pg_dump without it asking for the password:
-  std::string pgpass_backup, pgpass_original;
-  const bool pgpass_created = save_password_to_pgpass(username, password, pgpass_backup, pgpass_original);
-  if(!pgpass_created)
-  {
-    std::cerr << G_STRFUNC << ": save_password_to_pgpass() failed." << std::endl;
-    return false;
-  }
-
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
-  const std::string command_restore = get_path_to_postgres_executable("pg_restore") +
-    " -d " + database_name + //TODO: Quote database name?
-    " --host=" + Glib::shell_quote(m_host) +
-    " --port=" + port_as_string(m_port) +
-    " --username=" + Glib::shell_quote(username) +
-    " " + path_backup;
+  const std::string command_restore; //TODO_MySQL
 
   std::cout << "DEBUG: command_restore=" << command_restore << std::endl;
 
   //TODO: Put the password in .pgpass
 
   const bool result = Glom::Spawn::execute_command_line_and_wait(command_restore, slot_progress);
-
-  //Move the previously-existing .pgpass file back:
-  //TODO: Really, we should just edit the file instead of completely replacing it,
-  //      because another application might try to edit it in the meantime.
-  if(!pgpass_backup.empty())
-  {
-    g_rename(pgpass_backup.c_str(), pgpass_original.c_str());
-  }
 
   if(!result)
   {
@@ -744,7 +653,7 @@ bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::stri
   return result;
 }
 
-std::string Postgres::get_self_hosting_path(bool create, const std::string& child_directory)
+std::string MySQL::get_self_hosting_path(bool create, const std::string& child_directory)
 {
   //Get the filepath of the directory that we should create:
   const std::string dbdir_uri = m_database_directory_uri;
@@ -777,17 +686,17 @@ std::string Postgres::get_self_hosting_path(bool create, const std::string& chil
     return std::string();
 }
 
-std::string Postgres::get_self_hosting_config_path(bool create)
+std::string MySQL::get_self_hosting_config_path(bool create)
 {
   return get_self_hosting_path(create, "config");
 }
 
-std::string Postgres::get_self_hosting_data_path(bool create)
+std::string MySQL::get_self_hosting_data_path(bool create)
 {
   return get_self_hosting_path(create, "data");
 }
 
-std::string Postgres::get_self_hosting_backup_path(const std::string& base_directory, bool create_parent_dir)
+std::string MySQL::get_self_hosting_backup_path(const std::string& base_directory, bool create_parent_dir)
 {
   //This is a file, not a directory, so we don't use get_self_hosting_path("backup");
   std::string dbdir;
@@ -812,7 +721,7 @@ std::string Postgres::get_self_hosting_backup_path(const std::string& base_direc
   }
 }
 
-bool Postgres::create_directory_filepath(const std::string& filepath)
+bool MySQL::create_directory_filepath(const std::string& filepath)
 {
   if(filepath.empty())
     return false;
@@ -829,7 +738,7 @@ bool Postgres::create_directory_filepath(const std::string& filepath)
   return true;
 }
 
-bool Postgres::file_exists_filepath(const std::string& filepath)
+bool MySQL::file_exists_filepath(const std::string& filepath)
 {
   if(filepath.empty())
     return false;
@@ -838,7 +747,7 @@ bool Postgres::file_exists_filepath(const std::string& filepath)
   return file && file->query_exists();
 }
 
-bool Postgres::file_exists_uri(const std::string& uri) const
+bool MySQL::file_exists_uri(const std::string& uri) const
 {
   if(uri.empty())
     return false;
@@ -849,7 +758,7 @@ bool Postgres::file_exists_uri(const std::string& uri) const
 
 
 
-bool Postgres::create_text_file(const std::string& file_uri, const std::string& contents, bool current_user_only)
+bool MySQL::create_text_file(const std::string& file_uri, const std::string& contents, bool current_user_only)
 {
   if(file_uri.empty())
     return false;
@@ -940,21 +849,22 @@ bool Postgres::create_text_file(const std::string& file_uri, const std::string& 
   return true; //Success.
 }
 
-bool Postgres::supports_remote_access() const
+bool MySQL::supports_remote_access() const
 {
   return true;
 }
 
-Gnome::Gda::SqlOperatorType Postgres::get_string_find_operator() const
+Gnome::Gda::SqlOperatorType MySQL::get_string_find_operator() const
 {
-  // ILIKE is a PostgreSQL extension for locale-dependent case-insensitive matches.
-  //See http://developer.postgresql.org/pgdocs/postgres/functions-matching.html
+  //TODO_MySQL:
+  // ILIKE is a MySQL extension for locale-dependent case-insensitive matches.
+  //See http://developer.mysqlql.org/pgdocs/mysql/functions-matching.html
   return Gnome::Gda::SQL_OPERATOR_TYPE_ILIKE;
 }
 
-const char* Postgres::get_public_schema_name() const
+const char* MySQL::get_public_schema_name() const
 {
-  return "public";
+  return ""; //TODO_MySQL: Find out what to use here, to speed up the metadata update.
 }
 
 } //namespace ConnectionPoolBackends

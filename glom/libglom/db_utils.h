@@ -174,6 +174,7 @@ bool rename_table(const Glib::ustring& table_name, const Glib::ustring& new_tabl
 bool drop_table(const Glib::ustring& table_name);
 
 /** Escape, and quote, SQL identifiers such as table names.
+ * This requires a current connection.
  */
 Glib::ustring escape_sql_id(const Glib::ustring& id);
 

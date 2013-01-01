@@ -1245,7 +1245,13 @@ bool create_table(const sharedptr<const TableInfo>& table_info, const Document::
     info->set_g_type( Field::get_gda_type_for_glom_type(field->get_glom_type()) );
     field->set_field_info(info); //TODO_Performance
 
-    Glib::ustring sql_field_description = escape_sql_id(field->get_name()) + " " + field->get_sql_type();
+    Glib::ustring field_type = field->get_sql_type();
+    if(field_type == "varchar")
+      field_type = "varchar(255)"; //For MySQL.
+    else if(field_type == "VARBINARY")
+      field_type = "blob"; //For MySQL.
+
+    Glib::ustring sql_field_description = escape_sql_id(field->get_name()) + " " + field_type;
 
     if(field->get_primary_key())
       sql_field_description += " NOT NULL  PRIMARY KEY";

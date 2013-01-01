@@ -110,6 +110,8 @@ AC_ARG_ENABLE([ui-tests],
               [glom_enable_ui_tests=yes])
 AM_CONDITIONAL([GLOM_ENABLE_UI_TESTS], [test "x$glom_enable_ui_tests" = xyes])
 
+
+# SQLite support:
 AC_ARG_ENABLE([sqlite],
               [AS_HELP_STRING([--enable-sqlite],
                               [Allow creation of SQLite databases and opening
@@ -125,6 +127,22 @@ AS_IF([test "x$glom_enable_sqlite" = xyes],
       [AC_DEFINE([GLOM_ENABLE_SQLITE], [1],
                  [Whether to enable support for SQLite databases.])])
 
+
+# MySQL support:
+AC_ARG_ENABLE([mysql],
+              [AS_HELP_STRING([--disable-mysql],
+                              [do not build with support for MySQL databases])],
+              [glom_enable_mysql=$enableval],
+              [glom_enable_mysql=no])
+
+AM_CONDITIONAL([GLOM_ENABLE_MYSQL], [test "x$glom_enable_mysql" = xyes])
+
+AS_IF([test "x$glom_enable_mysql" = xyes],
+      [AC_DEFINE([GLOM_ENABLE_MYSQL], [1],
+                 [Whether to enable support for MySQL databases.])])
+
+
+# PostgreSQL support:
 AC_ARG_ENABLE([postgresql],
               [AS_HELP_STRING([--disable-postgresql],
                               [do not build with support for PostgreSQL databases])],
@@ -137,8 +155,9 @@ AS_IF([test "x$glom_enable_postgresql" = xyes],
       [AC_DEFINE([GLOM_ENABLE_POSTGRESQL], [1],
                  [Whether to enable support for PostgreSQL databases.])])
 
+
 # Libraries used by libglom:
-REQUIRED_LIBGLOM_LIBS='giomm-2.4 >= 2.32.0 libxml++-2.6 >= 2.23.1 libxslt >= 1.1.10 pygobject-3.0 >= 2.29.0 libgdamm-5.0 >= 4.99.6 libgda-5.0 >= 5.0.3 libgda-postgres-5.0'
+REQUIRED_LIBGLOM_LIBS='giomm-2.4 >= 2.32.0 libxml++-2.6 >= 2.23.1 libxslt >= 1.1.10 pygobject-3.0 >= 2.29.0 libgdamm-5.0 >= 4.99.6 libgda-5.0 >= 5.0.3 libgda-postgres-5.0 libgda-postgres-5.0 libgda-mysql-5.0'
 
 AS_IF([test "x$glom_host_win32" != xyes],
       [REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS libepc-1.0 >= 0.4.0"])
@@ -224,8 +243,9 @@ AC_ARG_ENABLE([update-mime-database],
 
 AM_CONDITIONAL([UPDATE_MIME_DATABASE], [test "x$glom_update_mime_database" != xno])
 
-# Locate the directory containing the postgresql utilities, such as the
-# postmaster executable, so we can self-host postgresql databases.
+
+# Locate the directory containing the PostgreSQL utilities, such as the
+# postmaster executable, so we can self-host PostgreSQL databases.
 AC_ARG_WITH([postgres-utils],
             [AS_HELP_STRING([--with-postgres-utils=DIR],
                             [path to PostgreSQL utilities (overriding pg_config)])],
@@ -238,8 +258,8 @@ AS_IF([test "x$glom_host_win32" != xyes && test "x$glom_enable_client_only" != x
   POSTGRES_UTILS_PATH=`pg_config --bindir 2>&AS_MESSAGE_LOG_FD`
   AS_IF(["$POSTGRES_UTILS_PATH/pg_ctl" --version >/dev/null 2>&AS_MESSAGE_LOG_FD],,
         [AC_MSG_ERROR([[
-The Postgres utilities could not be found. They are needed for
-self-hosting of Glom databases. Please make sure that Postgres
+The PostgreSQL utilities could not be found. They are needed for
+self-hosting of Glom databases. Please make sure that PostgreSQL
 is installed, and if necessary specify the correct directory
 explicitly with the --with-postgres-utils option.
 ]])])])])
@@ -247,6 +267,25 @@ AC_DEFINE_UNQUOTED([POSTGRES_UTILS_PATH], ["$POSTGRES_UTILS_PATH"],
                    [Define to the location of the PostgreSQL utilities.])
 AC_DEFINE_UNQUOTED([EXEEXT], ["$EXEEXT"],
                    [Define to the file extension of executables on the target.])
+
+
+# Locate the directory containing the MySQL utilities, such as the
+# postmaster executable, so we can self-host MySQL databases.
+AC_ARG_WITH([mysql-utils],
+            [AS_HELP_STRING([--with-mysql-utils=DIR],
+                            [path to MySQL utilities.])],
+            [MYSQL_UTILS_PATH=$withval])
+# Path not needed on Windows
+AS_IF([test "x$glom_host_win32" != xyes && test "x$glom_enable_client_only" != xyes],
+      [AS_CASE([$MYSQL_UTILS_PATH], [""|no|yes],
+[
+  # TODO: Check properly instead of hard-coding /usr/bin
+  MYSQL_UTILS_PATH="/usr/bin"
+])])
+
+AC_DEFINE_UNQUOTED([MYSQL_UTILS_PATH], ["$MYSQL_UTILS_PATH"],
+                   [Define to the location of the MySQL utilities.])
+
 
 GNOME_DOC_INIT([0.9.0],,
   [AC_MSG_WARN([[gnome-doc-utils not found: documentation will not be built.]])])

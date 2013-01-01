@@ -106,9 +106,11 @@ public:
   /// How the database is hosted.
   enum HostingMode
   {
-    HOSTING_MODE_POSTGRES_CENTRAL, /*!< The database is hosted on an external postgresql server. */
-    HOSTING_MODE_POSTGRES_SELF, /*!< A new postgres database process is spawned that hosts the data. */
+    HOSTING_MODE_POSTGRES_CENTRAL, /*!< The database is hosted on an external PostgreSQL server. */
+    HOSTING_MODE_POSTGRES_SELF, /*!< A new PostgreSQL database process is spawned that hosts the data. */
     HOSTING_MODE_SQLITE, /*!< A sqlite database file is used. */
+    HOSTING_MODE_MYSQL_CENTRAL, /*!< The database is hosted on an external MySQL server. */
+    HOSTING_MODE_MYSQL_SELF,  /*!< A new MySQL database process is spawned that hosts the data. */
     HOSTING_MODE_DEFAULT = HOSTING_MODE_POSTGRES_SELF /*!- Arbitrary default. */
   };
 

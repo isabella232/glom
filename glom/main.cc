@@ -36,13 +36,21 @@
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
 
-// For postgres availability checks:
+// For PostgreSQL availability checks:
 #ifdef GLOM_ENABLE_POSTGRESQL
 #include <libglom/connectionpool_backends/postgres.h>
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <libglom/connectionpool_backends/postgres_self.h>
 #endif //GLOM_ENABLE_CLIENT_ONLY
 #endif //GLOM_ENABLE_POSTGRESQL
+
+// For MySQL availability checks:
+#ifdef GLOM_ENABLE_MYSQL
+#include <libglom/connectionpool_backends/mysql.h>
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+#include <libglom/connectionpool_backends/mysql_self.h>
+#endif //GLOM_ENABLE_CLIENT_ONLY
+#endif //GLOM_ENABLE_MYSQL
 
 // For sanity checks:
 #include <glom/python_embed/glom_python.h>
@@ -220,7 +228,7 @@ bool check_user_is_not_root_with_warning()
 // Message to packagers:
 // If your Glom package does not depend on PostgreSQL, for some reason,
 // then your distro-specific patch should uncomment this #define.
-// and implement ConnectionPool::install_posgres().
+// and implement ConnectionPool::install_postgres().
 // But please, just make your Glom package depend on PostgreSQL instead,
 // because this is silly.
 //
@@ -272,6 +280,57 @@ bool check_postgres_is_available_with_warning()
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
 #endif //GLOM_ENABLE_POSTGRESQL
+
+#ifdef GLOM_ENABLE_MYSQL
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+
+/** Check whether MySQL is really available for self-hosting,
+ * in case the distro package has incorrect dependencies.
+ *
+ * @results True if everything is OK.
+ */
+bool check_mysql_is_available_with_warning()
+{
+  const std::string binpath = Glom::ConnectionPoolBackends::MySQLSelfHosted::get_path_to_mysql_executable("mysql", false /* not quoted */);
+
+  // TODO: At least on Windows we should probably also check for initdb and
+  // pg_ctl. Perhaps it would also be a good idea to access these files as
+  // long as glom runs so they cannot be (re)moved.
+  if(!binpath.empty())
+  {
+    const Glib::ustring uri_binpath = Glib::filename_to_uri(binpath);
+    if(Utils::file_exists(uri_binpath))
+      return true;
+  }
+
+  #ifdef DISTRO_SPECIFIC_MYSQL_INSTALL_IMPLEMENTED
+
+  //Show message to the user about the broken installation:
+  //This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
+  //Unlike for PostgreSQL, this warning is only shown if MySQL was specified in the build.
+  Gtk::MessageDialog dialog(Utils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_NONE, true /* modal */);
+  dialog.set_secondary_text(_("Your installation of Glom is not complete, because MySQL is not available on your system. MySQL is needed for self-hosting of some Glom databases.\n\nYou may now install MySQL to complete the Glom installation."));
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(_("Install MySQL"), Gtk::RESPONSE_OK);
+  const int response = dialog.run();
+  if(response != Gtk::RESPONSE_OK)
+    return false; //Failure. Glom should now quit.
+  else
+    return install_mysql(&dialog);
+
+  #else  //DISTRO_SPECIFIC_MYSQL_INSTALL_IMPLEMENTED
+
+  //Show message to the user about the broken installation:
+  Gtk::MessageDialog dialog(Utils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+  dialog.set_secondary_text(_("Your installation of Glom is not complete, because MySQL is not available on your system. MySQL is needed for self-hosting of some Glom databases.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected."));
+  dialog.run();
+  return false;
+
+  #endif //DISTRO_SPECIFIC_MYSQL_INSTALL_IMPLEMENTED
+}
+#endif //GLOM_ENABLE_CLIENT_ONLY
+
+#endif //GLOM_ENABLE_MYSQL
 
 bool check_pyglom_is_available_with_warning()
 {
