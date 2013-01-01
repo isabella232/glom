@@ -59,6 +59,13 @@ int main()
 
   const int result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
+  if(!test(Glom::Document::HOSTING_MODE_MYSQL_SELF))
+  {
+    std::cerr << "Failed with MySQL" << std::endl;
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
+
   Glom::libglom_deinit();
 
   return result;

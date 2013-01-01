@@ -58,6 +58,8 @@ static const char GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE[] = "hosting_mode";
 static const char GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL[] = "postgres_central";
 static const char GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF[] = "postgres_self";
 static const char GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE[] = "sqlite";
+static const char GLOM_ATTRIBUTE_CONNECTION_HOSTING_MYSQL_CENTRAL[] = "mysql_central";
+static const char GLOM_ATTRIBUTE_CONNECTION_HOSTING_MYSQL_SELF[] = "mysql_self";
 static const char GLOM_ATTRIBUTE_CONNECTION_NETWORK_SHARED[] = "network_shared";
 static const char GLOM_ATTRIBUTE_CONNECTION_SERVER[] = "server";
 static const char GLOM_ATTRIBUTE_CONNECTION_PORT[] = "port";
@@ -341,8 +343,11 @@ bool Document::get_network_shared() const
 
   //Enforce constraints:
   const HostingMode hosting_mode = get_hosting_mode();
-  if(hosting_mode == HOSTING_MODE_POSTGRES_CENTRAL)
+  if( (hosting_mode == HOSTING_MODE_POSTGRES_CENTRAL) ||
+    (hosting_mode == HOSTING_MODE_MYSQL_CENTRAL) )
+  {
     shared = true; //Central hosting means that it must be shared on the network.
+  }
   else if(hosting_mode == HOSTING_MODE_SQLITE)
     shared = false; //sqlite does not allow network sharing.
 
@@ -376,6 +381,12 @@ std::string Document::get_connection_self_hosted_directory_uri() const
         datadir = parent;
         break;
       case HOSTING_MODE_SQLITE:
+        datadir = parent;
+        break;
+      case HOSTING_MODE_MYSQL_SELF:
+        datadir = parent->get_child("glom_mysql_data");
+        break;
+      case HOSTING_MODE_MYSQL_CENTRAL:
         datadir = parent;
         break;
       default:
@@ -2547,6 +2558,10 @@ bool Document::load_after(int& failure_code)
             mode = HOSTING_MODE_POSTGRES_SELF;
           else if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE)
             mode = HOSTING_MODE_SQLITE;
+          else if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_MYSQL_CENTRAL)
+            mode = HOSTING_MODE_MYSQL_CENTRAL;
+          else if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_MYSQL_SELF)
+            mode = HOSTING_MODE_MYSQL_SELF;
           else
 	  {
             std::cerr << G_STRFUNC << ": Hosting mode " << attr_mode << " is not supported" << std::endl;
@@ -3570,13 +3585,24 @@ bool Document::save_before()
     switch(m_hosting_mode)
     {
     case HOSTING_MODE_POSTGRES_CENTRAL:
-      XmlUtils::set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL);
+      XmlUtils::set_node_attribute_value(nodeConnection, 
+        GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL);
       break;
     case HOSTING_MODE_POSTGRES_SELF:
-      XmlUtils::set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF);
+      XmlUtils::set_node_attribute_value(nodeConnection,
+        GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF);
       break;
     case HOSTING_MODE_SQLITE:
-      XmlUtils::set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE);
+      XmlUtils::set_node_attribute_value(nodeConnection,
+        GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE);
+      break;
+    case HOSTING_MODE_MYSQL_CENTRAL:
+      XmlUtils::set_node_attribute_value(nodeConnection, 
+        GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MYSQL_CENTRAL);
+      break;
+    case HOSTING_MODE_MYSQL_SELF:
+      XmlUtils::set_node_attribute_value(nodeConnection,
+        GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MYSQL_SELF);
       break;
     default:
       g_assert_not_reached();

@@ -173,6 +173,7 @@ bool test_selfhost(Glom::Document& document, const Glib::ustring& user, const Gl
 bool test_create_and_selfhost_new_empty(Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
 {
   if( (hosting_mode != Glom::Document::HOSTING_MODE_POSTGRES_SELF) &&
+    (hosting_mode != Glom::Document::HOSTING_MODE_MYSQL_SELF) &&
     (hosting_mode != Glom::Document::HOSTING_MODE_SQLITE) )
   {
     std::cerr << G_STRFUNC << ": This test function does not support the specified hosting_mode: " << hosting_mode << std::endl;
@@ -323,6 +324,7 @@ bool test_create_and_selfhost_from_test_example(const std::string& example_filen
 bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
 {
   if( (hosting_mode != Glom::Document::HOSTING_MODE_POSTGRES_SELF) &&
+    (hosting_mode != Glom::Document::HOSTING_MODE_MYSQL_SELF) &&
     (hosting_mode != Glom::Document::HOSTING_MODE_SQLITE) )
   {
     std::cerr << G_STRFUNC << ": This test function does not support the specified hosting_mode: " << hosting_mode << std::endl;

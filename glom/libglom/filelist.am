@@ -180,6 +180,10 @@ libglom_sources =							\
 	glom/libglom/python_embed/py_glom_ui_callbacks.h		\
 	glom/libglom/python_embed/pygdavalue_conversions.cc		\
 	glom/libglom/python_embed/pygdavalue_conversions.h		\
+	glom/libglom/connectionpool_backends/mysql.cc			\
+	glom/libglom/connectionpool_backends/mysql.h			\
+	glom/libglom/connectionpool_backends/mysql_central.cc \
+	glom/libglom/connectionpool_backends/mysql_central.h \
 	glom/libglom/connectionpool_backends/sqlite.cc			\
 	glom/libglom/connectionpool_backends/sqlite.h			\
 	glom/libglom/connectionpool_backends/postgres.cc		\
@@ -190,5 +194,7 @@ libglom_sources =							\
 if !GLOM_ENABLE_CLIENT_ONLY
 libglom_sources +=						\
 	glom/libglom/connectionpool_backends/postgres_self.cc	\
-	glom/libglom/connectionpool_backends/postgres_self.h
+	glom/libglom/connectionpool_backends/postgres_self.h \
+	glom/libglom/connectionpool_backends/mysql_self.cc \
+	glom/libglom/connectionpool_backends/mysql_self.h
 endif
