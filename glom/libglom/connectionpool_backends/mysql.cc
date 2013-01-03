@@ -857,10 +857,7 @@ bool MySQL::supports_remote_access() const
 
 Gnome::Gda::SqlOperatorType MySQL::get_string_find_operator() const
 {
-  //TODO_MySQL:
-  // ILIKE is a MySQL extension for locale-dependent case-insensitive matches.
-  //See http://developer.mysqlql.org/pgdocs/mysql/functions-matching.html
-  return Gnome::Gda::SQL_OPERATOR_TYPE_ILIKE;
+  return Gnome::Gda::SQL_OPERATOR_TYPE_LIKE;
 }
 
 const char* MySQL::get_public_schema_name() const

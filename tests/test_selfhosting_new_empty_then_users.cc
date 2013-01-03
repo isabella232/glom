@@ -138,7 +138,12 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   table_names.push_back("sometable with space characters");
   table_names.push_back("sometable with a \" doublequote character");
   table_names.push_back("sometable with a ' quote character");
-  table_names.push_back("sometablewithaverylongnameyaddayaddayaddayaddayaddyaddayaddayaddayaddayaddayaddayaddayaddayaddayaddayaddayadda");
+
+  //MySQL has a 64-character limit on SQL identifiers:
+  if(hosting_mode != Glom::Document::HOSTING_MODE_MYSQL_SELF)
+  {
+    table_names.push_back("sometablewithaverylongnameyaddayaddayaddayaddayaddyaddayaddayaddayaddayaddayaddayaddayaddayaddayaddayaddayadda");
+  }
 
   //Add some tables, for the groups to have rights for:
   for(type_vec_strings::const_iterator iter = table_names.begin(); iter != table_names.end(); ++iter)
@@ -148,6 +153,14 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       std::cerr << "Failure: create_table_with_default_fields() failed." << std::endl;
       return false;
     }
+  }
+
+
+  //TODO_MySQL: Implement groups/users code.
+  if(hosting_mode == Glom::Document::HOSTING_MODE_MYSQL_SELF)
+  {
+    test_selfhosting_cleanup(false /* do not delete the file. */);
+    return true;
   }
 
 

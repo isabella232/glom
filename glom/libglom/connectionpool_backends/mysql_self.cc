@@ -363,7 +363,6 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
   //std::cout << G_STRFUNC << ": debug: command_check_mysql_has_started=" << command_check_mysql_has_started << std::endl;
 
   const bool result = Glom::Spawn::execute_command_line_and_wait_until_second_command_returns_success(command_mysql_start, command_check_mysql_has_started, slot_progress, second_command_success_text);
-  std::cout << G_STRFUNC << std::cout << "  DEBUG: started" << std::endl;
 
   if(!result)
   {
