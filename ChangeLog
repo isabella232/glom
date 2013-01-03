@@ -1,6 +1,14 @@
 2013-01-03  Murray Cumming  <murrayc@murrayc.com>
 
-	Privs::get_default_developer_user_name(): Take hosting_mode parameters.
+        MySQL: Use the new PROTOCOL connection parameter with libgda.
+
+        * glom/libglom/connectionpool_backends/mysql.cc: attempt_connect():
+	We must specify the TCP protocol when using MySQL on a non-standard 
+	port. See libgda bug #691069
+
+2013-01-03  Murray Cumming  <murrayc@murrayc.com>
+
+        Privs::get_default_developer_user_name(): Take hosting_mode parameters.
 
         * glom/libglom/privs.[h|cc]:
 	get_default_developer_user_name(): Take the hosting_mode as a parameter
