@@ -1,5 +1,28 @@
 2013-01-03  Murray Cumming  <murrayc@murrayc.com>
 
+        tests: Avoid some copy/pasting.
+
+	* tests/test_selfhosting_utils.[h|cc]:
+	Add test_all_hosting_modes().
+        * tests/test_selfhosting_new_empty.cc:
+        * tests/test_selfhosting_new_empty_change_sysprefs.cc:
+        * tests/test_selfhosting_new_empty_then_users.cc:
+        * tests/test_selfhosting_new_from_example.cc:
+        * tests/test_selfhosting_new_from_example_operator.cc:
+        * tests/test_selfhosting_new_from_example_strangepath.cc:
+        * tests/test_selfhosting_new_then_alter_table.cc:
+        * tests/test_selfhosting_new_then_change_columns.cc:
+        * tests/test_selfhosting_new_then_choices.cc:
+        * tests/test_selfhosting_new_then_image.cc:
+        * tests/test_selfhosting_new_then_lookup.cc:
+        * tests/test_selfhosting_new_then_report.cc:
+        * tests/test_selfhosting_non_numeric_primary_keys.cc:
+        * tests/test_selfhosting_sqlinjection.cc: Use this,
+	passing a callback slot, instead of having the same repeated
+	code in each file.
+
+2013-01-03  Murray Cumming  <murrayc@murrayc.com>
+
         MySQL: Use the new PROTOCOL connection parameter with libgda.
 
         * glom/libglom/connectionpool_backends/mysql.cc: attempt_connect():
