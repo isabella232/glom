@@ -13,6 +13,19 @@
 
 2013-01-03  Murray Cumming  <murrayc@murrayc.com>
 
+	Privs::get_default_developer_user_name(): Take hosting_mode parameters.
+
+        * glom/libglom/privs.[h|cc]:
+	get_default_developer_user_name(): Take the hosting_mode as a parameter
+	so we can use a shortened username for MySQL without changing it
+	for PostgreSQL.
+        * glom/appwindow.cc:
+        * glom/frame_glom.cc:
+        * glom/glom_create_from_example.cc:
+        * tests/test_selfhosting_utils.cc: Adapted.
+
+2013-01-03  Murray Cumming  <murrayc@murrayc.com>
+
         tests: Avoid some copy/pasting.
 
 	* tests/test_selfhosting_utils.[h|cc]:

@@ -1156,8 +1156,9 @@ bool AppWindow::on_document_load()
           // If the document is centrally hosted, don't pretend to know the
           // username or password, because we don't. The user will enter
           // the login credentials in a dialog.
-          if(pDocument->get_hosting_mode() != Document::HOSTING_MODE_POSTGRES_CENTRAL)
-            m_temp_username = Privs::get_default_developer_user_name(m_temp_password);
+          const Document::HostingMode hosting_mode = pDocument->get_hosting_mode();
+          if(hosting_mode != Document::HOSTING_MODE_POSTGRES_CENTRAL)
+            m_temp_username = Privs::get_default_developer_user_name(m_temp_password, hosting_mode);
         }
 
         bool database_not_found = false;

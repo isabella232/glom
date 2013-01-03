@@ -58,10 +58,10 @@ Privs::type_vec_strings Privs::get_database_groups()
   return result;
 }
 
-bool Privs::get_default_developer_user_exists()
+bool Privs::get_default_developer_user_exists(Document::HostingMode hosting_mode)
 {
   Glib::ustring default_password;
-  const Glib::ustring default_user = get_default_developer_user_name(default_password);
+  const Glib::ustring default_user = get_default_developer_user_name(default_password, hosting_mode);
 
   const type_vec_strings users = get_database_users();
   type_vec_strings::const_iterator iterFind = std::find(users.begin(), users.end(), default_user);
@@ -71,10 +71,10 @@ bool Privs::get_default_developer_user_exists()
   return false; //The default user is not there.
 }
 
-bool Privs::get_developer_user_exists_with_password()
+bool Privs::get_developer_user_exists_with_password(Document::HostingMode hosting_mode)
 {
   Glib::ustring default_password;
-  const Glib::ustring default_user = get_default_developer_user_name(default_password);
+  const Glib::ustring default_user = get_default_developer_user_name(default_password, hosting_mode);
 
   const type_vec_strings users = get_database_users();
   for(type_vec_strings::const_iterator iter = users.begin(); iter != users.end(); ++iter)
@@ -90,9 +90,16 @@ bool Privs::get_developer_user_exists_with_password()
   return false;
 }
 
-Glib::ustring Privs::get_default_developer_user_name(Glib::ustring& password)
+Glib::ustring Privs::get_default_developer_user_name(Glib::ustring& password, Document::HostingMode hosting_mode)
 {
   password = "glom_default_developer_password";
+
+  if((hosting_mode == Document::HOSTING_MODE_MYSQL_CENTRAL) ||
+   (hosting_mode == Document::HOSTING_MODE_MYSQL_SELF))
+  {
+    return "glom_dev_user"; //MySQL restricts user names to 16 characters.
+  }
+
   return "glom_default_developer_user";
 }
 

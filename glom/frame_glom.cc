@@ -845,7 +845,7 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
       shared = true;
 
       //Ask for a user/password if none is set:
-      const bool real_user_exists = Privs::get_developer_user_exists_with_password();
+      const bool real_user_exists = Privs::get_developer_user_exists_with_password(document->get_hosting_mode());
       if(!real_user_exists)
       {
         //Ask for an initial user:
@@ -888,7 +888,8 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
         //Remove the default no-password user, because that would be a security hole:
         //We do this after adding/using the non-default user, because we can't
         //remove a currently-used user.
-        const bool default_user_exists = Privs::get_default_developer_user_exists();
+        const Document::HostingMode hosting_mode = document->get_hosting_mode();
+        const bool default_user_exists = Privs::get_default_developer_user_exists(hosting_mode);
         if(default_user_exists)
         {
           //Force a reconnection with the new password:
@@ -897,7 +898,7 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
           //Remove it, after stopping it from being the database owner:
           bool disabled = true;
           Glib::ustring default_password;
-          const Glib::ustring default_user = Privs::get_default_developer_user_name(default_password);
+          const Glib::ustring default_user = Privs::get_default_developer_user_name(default_password, hosting_mode);
 
           ConnectionPool* connectionpool = ConnectionPool::get_instance();
           const bool reowned = set_database_owner_user(connectionpool->get_user());
@@ -950,12 +951,13 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
       shared = false;
 
       //Make sure the default no-password user exists:
-      const bool default_user_exists = Privs::get_default_developer_user_exists();
+      const Document::HostingMode hosting_mode = document->get_hosting_mode();
+      const bool default_user_exists = Privs::get_default_developer_user_exists(hosting_mode);
       if(!default_user_exists)
       {
         //Add it:
         Glib::ustring default_password;
-        const Glib::ustring default_user = Privs::get_default_developer_user_name(default_password);
+        const Glib::ustring default_user = Privs::get_default_developer_user_name(default_password, hosting_mode);
 
         const bool added = DbUtils::add_user(document, default_user, default_password, GLOM_STANDARD_GROUP_NAME_DEVELOPER);
         if(!added)
@@ -1920,7 +1922,8 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     add_view(m_pDialogConnection); //Also a composite view.
   }
 
-  switch(document->get_hosting_mode())
+  const Document::HostingMode hosting_mode = document->get_hosting_mode();
+  switch(hosting_mode)
   {
     case Document::HOSTING_MODE_POSTGRES_SELF:
     {
@@ -1935,7 +1938,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       else
       {
         //Use the default user because we are not network shared:
-        user = Privs::get_default_developer_user_name(password);
+        user = Privs::get_default_developer_user_name(password, hosting_mode);
       }
 
       // Create the requested self-hosting database:

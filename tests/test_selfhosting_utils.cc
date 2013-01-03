@@ -212,7 +212,7 @@ bool test_create_and_selfhost_new_empty(Glom::Document& document, Glom::Document
 
   //We must specify a default username and password:
   Glib::ustring password;
-  const Glib::ustring user = Glom::Privs::get_default_developer_user_name(password);
+  const Glib::ustring user = Glom::Privs::get_default_developer_user_name(password, hosting_mode);
   connection_pool->set_user(user);
   connection_pool->set_password(password);
 
