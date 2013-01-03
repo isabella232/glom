@@ -410,7 +410,7 @@ int main(int argc, char* argv[])
   if(self_hosting)
   {
     Glib::ustring password;
-    const Glib::ustring user = Glom::Privs::get_default_developer_user_name(password);
+    const Glib::ustring user = Glom::Privs::get_default_developer_user_name(password, document.get_hosting_mode());
     connection_pool->set_user(user);
     connection_pool->set_password(password);
   }

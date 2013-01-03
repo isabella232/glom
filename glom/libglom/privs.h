@@ -57,18 +57,20 @@ public:
    * instead of just a default glom user and default password,
    * The user should be forced to choose a user/password when network sharing is active.
    */
-  static bool get_developer_user_exists_with_password();
+  static bool get_developer_user_exists_with_password(Document::HostingMode hosting_mode);
 
   /** Discover whether the default developer user exists (which has a known password).
    * The user should be forced to choose a user/password when network sharing is active,
    * and this default user should no longer exist in that case.
    */
-  static bool get_default_developer_user_exists();
+  static bool get_default_developer_user_exists(Document::HostingMode hosting_mode);
 
   /** Get the standard username and password used for the no-password user,
    * which should only be used when network sharing is not active.
+   *
+   * @param hosting_mode So we can use a shorter name for MySQL to avoid an error about the name being too long.
    */
-  static Glib::ustring get_default_developer_user_name(Glib::ustring& password);
+  static Glib::ustring get_default_developer_user_name(Glib::ustring& password, Document::HostingMode hosting_mode);
 
   static Privileges get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name);
   static bool set_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name, const Privileges& privs, bool developer_privs = false);
