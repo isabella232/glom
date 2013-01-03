@@ -114,6 +114,14 @@ static bool change_privileges(const Glib::ustring& group_name, const Glib::ustri
 
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
+  /* SQLite does not have user/group access levels,
+   * so the SQL queries would fail.
+   */
+  if(hosting_mode == Glom::Document::HOSTING_MODE_SQLITE)
+  {
+    return true;
+  }
+
   //Create and self-host the document:
   Glom::Document document;
     if(!(test_create_and_selfhost_new_database(document, hosting_mode, "test_db")))
@@ -261,25 +269,10 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 int main()
 {
   Glom::libglom_init();
-  
-  if(!test(Glom::Document::HOSTING_MODE_POSTGRES_SELF))
-  {
-    std::cerr << "Failed with PostgreSQL" << std::endl;
-    test_selfhosting_cleanup();
-    return EXIT_FAILURE;
-  }
-  
-  /* SQLite does not have user/group access levels,
-   * so the SQL queries woudl fail.
-  if(!test(Glom::Document::HOSTING_MODE_SQLITE))
-  {
-    std::cerr << "Failed with SQLite" << std::endl;
-    test_selfhosting_cleanup();
-    return EXIT_FAILURE;
-  }
-  */
+
+  const int result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();
 
-  return EXIT_SUCCESS;
+  return result;
 }

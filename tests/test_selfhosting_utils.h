@@ -87,5 +87,12 @@ void test_selfhosting_cleanup(bool delete_file = true);
 
 bool test_example_musiccollection_data(const Glom::Document* document);
 
+typedef sigc::slot<bool, Glom::Document::HostingMode> SlotTest;
+
+/** Call the test @a slot with various hosting modes.
+ * @result A result code for main().
+ */
+int test_all_hosting_modes(const SlotTest& slot);
+
 #endif //GLOM_TEST_SELFHOSTING_UTILS_H
 

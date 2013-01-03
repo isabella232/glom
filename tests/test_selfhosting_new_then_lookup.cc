@@ -205,22 +205,10 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 int main()
 {
   Glom::libglom_init();
-
-  if(!test(Glom::Document::HOSTING_MODE_POSTGRES_SELF))
-  {
-    std::cerr << "Failed with PostgreSQL" << std::endl;
-    test_selfhosting_cleanup();
-    return EXIT_FAILURE;
-  }
   
-  if(!test(Glom::Document::HOSTING_MODE_SQLITE))
-  {
-    std::cerr << "Failed with SQLite" << std::endl;
-    test_selfhosting_cleanup();
-    return EXIT_FAILURE;
-  }
+  const int result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();
 
-  return EXIT_SUCCESS;
+  return result;
 }

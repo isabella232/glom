@@ -83,21 +83,9 @@ int main()
   //so we do this so the locale will really be used:
   setlocale(LC_ALL, "");
   
-  if(!test(Glom::Document::HOSTING_MODE_POSTGRES_SELF))
-  {
-    std::cerr << "Failed with PostgreSQL" << std::endl;
-    test_selfhosting_cleanup();
-    return EXIT_FAILURE;
-  }
-  
-  if(!test(Glom::Document::HOSTING_MODE_SQLITE))
-  {
-    std::cerr << "Failed with SQLite" << std::endl;
-    test_selfhosting_cleanup();
-    return EXIT_FAILURE;
-  }
+  const int result = test_all_hosting_modes(sigc::ptr_fun(&test));
 
   Glom::libglom_deinit();
 
-  return EXIT_SUCCESS;
+  return result;
 }

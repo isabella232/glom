@@ -523,3 +523,23 @@ bool test_example_musiccollection_data(const Glom::Document* document)
   const Gnome::Gda::Value album_id = data_model->get_value_at(0, 0);
   return test_example_musiccollection_data_related(document, album_id);
 }
+
+int test_all_hosting_modes(const SlotTest& slot)
+{
+  if(!slot(Glom::Document::HOSTING_MODE_POSTGRES_SELF))
+  {
+    std::cerr << "Failed with PostgreSQL" << std::endl;
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
+  
+  if(!slot(Glom::Document::HOSTING_MODE_SQLITE))
+  {
+    std::cerr << "Failed with SQLite" << std::endl;
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
+
