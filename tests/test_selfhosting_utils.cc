@@ -542,6 +542,13 @@ int test_all_hosting_modes(const SlotTest& slot)
     return EXIT_FAILURE;
   }
 
+  if(!slot(Glom::Document::HOSTING_MODE_MYSQL_SELF))
+  {
+    std::cerr << "Failed with MySQL" << std::endl;
+    test_selfhosting_cleanup();
+    return EXIT_FAILURE;
+  }
+
   return EXIT_SUCCESS;
 }
 
