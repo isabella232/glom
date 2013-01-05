@@ -1098,7 +1098,14 @@ std::string Utils::sqlbuilder_get_full_query(
     "ISO-8859-1", "UTF-8",
     (char*)"?",
     0, 0, 0));
-  return std::string(buf.get());
+
+  const Glib::ustring str = std::string(buf.get());
+  if(str.empty())
+  {
+    std::cerr << G_STRFUNC << ": Returning an empty string." << std::endl;
+  }
+
+  return str;
 }
 
 Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const Document* document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search)
