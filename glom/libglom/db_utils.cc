@@ -1954,6 +1954,10 @@ int count_rows_returned_by(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql
     {
       result = value.get_int(); //With the SQLite backend.
     }
+    else if(value.get_value_type() == G_TYPE_LONG) //With the MySQL backend.
+    {
+      result = (int)value.get_long(); //With the SQLite backend.
+    }
     else
     {
       std::cerr << G_STRFUNC << ": The COUNT query returned an unexpected value type: " << g_type_name(value.get_value_type()) << std::endl;
