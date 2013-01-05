@@ -193,7 +193,8 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   if(Glom::Conversions::get_double_for_gda_value_numeric(value) != 3.5f)
   {
-    std::cerr << "Failure: The value has an unexpected value: " << value.to_string() << std::endl;
+    std::cerr << "Failure: The value has an unexpected value: " << value.to_string() << " instead of 3.5" << std::endl;
+    std::cerr << "    value as string: " << value.to_string() << std::endl;
     return false;
   }
 
