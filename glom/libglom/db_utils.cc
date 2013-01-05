@@ -1585,7 +1585,7 @@ bool insert_example_data(Document* document, const Glib::ustring& table_name)
 
 
   //Get field names:
-  Document::type_vec_fields vec_fields = document->get_table_fields(table_name);
+  const Document::type_vec_fields vec_fields = document->get_table_fields(table_name);
 
   //Actually insert the data:
   //std::cout << "debug: " << G_STRFUNC << ": number of rows of data: " << vec_rows.size() << std::endl;
@@ -1603,6 +1603,8 @@ bool insert_example_data(Document* document, const Glib::ustring& table_name)
 
     //std::cout << "DEBUG: row_data size = " << row_data.size() << ", (fields size= " << vec_fields.size() << " )" << std::endl;
 
+    const Document::HostingMode hosting_mode = document->get_hosting_mode();
+
     Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
     builder->set_table(table_name);
     for(unsigned int i = 0; i < row_data.size(); ++i) //TODO_Performance: Avoid calling size() so much.
@@ -1614,6 +1616,17 @@ bool insert_example_data(Document* document, const Glib::ustring& table_name)
       {
         std::cerr << G_STRFUNC << ": field was null for field num=" << i << std::endl;
         break;
+      }
+
+      if(field->get_glom_type() == Field::TYPE_IMAGE)
+      {
+        if((hosting_mode == Document::HOSTING_MODE_MYSQL_CENTRAL) ||
+          (hosting_mode == Document::HOSTING_MODE_MYSQL_SELF))
+        {
+          //TODO: See https://bugzilla.gnome.org/show_bug.cgi?id=691099
+          std::cerr << G_STRFUNC << ": Skipping Image field because libgda does not support it for MySQL." << std::endl;
+          break;
+        }
       }
 
       builder->add_field_value(field->get_name(), row_data[i]);

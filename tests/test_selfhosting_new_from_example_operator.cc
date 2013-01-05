@@ -68,6 +68,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       return false;
     }
 
+    //TODO_MySQL: Implement groups/users code.
+    if(hosting_mode == Glom::Document::HOSTING_MODE_MYSQL_SELF)
+    {
+      test_selfhosting_cleanup(false /* do not delete the file. */);
+      return true;
+    }
+
     //Add an operator user:
     const Glib::ustring operator_group_name = "personnel_department";
     const Glom::DbUtils::type_vec_strings group_list = 
