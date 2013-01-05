@@ -1504,6 +1504,14 @@ static void recalculate_next_auto_increment_value(const Glib::ustring& table_nam
   {
     //Increment it:
     const Gnome::Gda::Value value_max = datamodel->get_value_at(0, 0); // A GdaNumeric.
+
+    //TODO: This happens with MySQL. Maybe it is OK, when there are no records or no values:
+    if(Glom::Conversions::value_is_empty(value_max))
+    {
+      std::cerr << G_STRFUNC << ": The MAX() value is null for query: " <<
+        Utils::sqlbuilder_get_full_query(builder) << std::endl;
+    }
+
     double num_max = Conversions::get_double_for_gda_value_numeric(value_max);
     ++num_max;
 
@@ -1611,7 +1619,11 @@ bool insert_example_data(Document* document, const Glib::ustring& table_name)
 
     insert_succeeded = query_execute(builder);
     if(!insert_succeeded)
+    {
+      std::cerr << G_STRFUNC << ": The INSERT query failed: " <<
+        Utils::sqlbuilder_get_full_query(builder) << std::endl;
       break;
+    }
   }
 
   for(Document::type_vec_fields::const_iterator iter = vec_fields.begin(); iter != vec_fields.end(); ++iter)
