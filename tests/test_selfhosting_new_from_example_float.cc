@@ -32,8 +32,6 @@
 
 static bool test(Glom::Document::HostingMode hosting_mode)
 {
-  std::cout << "debug: hosting_mode=" << hosting_mode << std::endl;
-
   Glom::Document document;
   const bool recreated = 
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
@@ -101,8 +99,6 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   test_selfhosting_cleanup();
- 
-  std::cout << "debug: end hosting_mode=" << hosting_mode << std::endl;
 
   return true; 
 }

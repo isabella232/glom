@@ -578,7 +578,7 @@ bool test_check_numeric_value_type(Glom::Document::HostingMode hosting_mode, con
   } else if( (hosting_mode == Glom::Document::HOSTING_MODE_MYSQL_CENTRAL) ||
     (hosting_mode == Glom::Document::HOSTING_MODE_MYSQL_SELF) )
   {
-    if(gtype == G_TYPE_FLOAT)
+    if(gtype == G_TYPE_DOUBLE)
       return true;
   }
 

@@ -1247,9 +1247,11 @@ bool create_table(const sharedptr<const TableInfo>& table_info, const Document::
 
     Glib::ustring field_type = field->get_sql_type();
     if(field_type == "varchar")
-      field_type = "varchar(255)"; //For MySQL.
+      field_type = "varchar(255)"; //For MySQL. //TODO: Avoid this for PostgreSQL
     else if(field_type == "VARBINARY")
       field_type = "blob"; //For MySQL.
+    else if(field_type == "DECIMAL")
+      field_type = "double"; //For MySQL, because DECIMAL with no parameters means no decimal points.
 
     Glib::ustring sql_field_description = escape_sql_id(field->get_name()) + " " + field_type;
 
@@ -1638,6 +1640,9 @@ bool insert_example_data(Document* document, const Glib::ustring& table_name)
     //Create and parse the SQL query:
     //After this, the Parser will know how many SQL parameters there are in
     //the query, and allow us to set their values.
+
+    //std::cout << G_STRFUNC << ": debug: INSERT query: " << std::endl
+    //  << "    " << Utils::sqlbuilder_get_full_query(builder) << std::endl;
 
     insert_succeeded = query_execute(builder);
     if(!insert_succeeded)

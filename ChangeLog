@@ -1,5 +1,14 @@
 2013-01-06  Murray Cumming  <murrayc@murrayc.com>
 
+        MySQL: Use double instead of DECIMAL for numeric values.
+
+        * glom/libglom/db_utils.cc: create_table():
+	Do not use DECIMAL with no parameters because that means
+	0 decimal points, so we lose data when reading values
+	back.
+
+2013-01-06  Murray Cumming  <murrayc@murrayc.com>
+
         tests: Add try/catch around all calls of the test functions.
 
         * tests/test_selfhosting_utils.[h|cc]: 
