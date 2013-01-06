@@ -526,28 +526,43 @@ bool test_example_musiccollection_data(const Glom::Document* document)
   return test_example_musiccollection_data_related(document, album_id);
 }
 
-int test_all_hosting_modes(const SlotTest& slot)
+static bool test_hosting_mode(const SlotTest& slot, Glom::Document::HostingMode hosting_mode, const Glib::ustring name)
 {
-  if(!slot(Glom::Document::HOSTING_MODE_POSTGRES_SELF))
+  try
   {
-    std::cerr << "Failed with PostgreSQL" << std::endl;
-    test_selfhosting_cleanup();
-    return EXIT_FAILURE;
+    if(!slot(hosting_mode))
+    {
+      std::cerr << "Failed with " << name << std::endl;
+      test_selfhosting_cleanup();
+      return false;
+    }
   }
-  
-  if(!slot(Glom::Document::HOSTING_MODE_SQLITE))
+  catch(const std::exception& ex)
   {
-    std::cerr << "Failed with SQLite" << std::endl;
+    std::cerr << "Failed with " << name << " with exception: " << ex.what() << std::endl;
     test_selfhosting_cleanup();
-    return EXIT_FAILURE;
+    return false;
+  }
+  catch(...)
+  {
+    std::cerr << "Failed with " << name << " with unknown exception: " << std::endl;
+    test_selfhosting_cleanup();
+    return false;
   }
 
-  if(!slot(Glom::Document::HOSTING_MODE_MYSQL_SELF))
-  {
-    std::cerr << "Failed with MySQL" << std::endl;
-    test_selfhosting_cleanup();
+  return true;
+}
+
+int test_all_hosting_modes(const SlotTest& slot)
+{
+  if(!test_hosting_mode(slot, Glom::Document::HOSTING_MODE_SQLITE, "SQLite"))
     return EXIT_FAILURE;
-  }
+
+  if(!test_hosting_mode(slot, Glom::Document::HOSTING_MODE_MYSQL_SELF, "MySQL"))
+    return EXIT_FAILURE;
+
+  if(!test_hosting_mode(slot, Glom::Document::HOSTING_MODE_POSTGRES_SELF, "PostgreSQL"))
+    return EXIT_FAILURE;
 
   return EXIT_SUCCESS;
 }
