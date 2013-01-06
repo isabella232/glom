@@ -1,5 +1,14 @@
 2013-01-06  Murray Cumming  <murrayc@murrayc.com>
 
+        MySQL: Avoid affecting PostgreSQL field types.
+
+        * glom/libglom/db_utils.[h|cc]: create_table():
+	Take the hosting mode so we can only do checks for
+	relevant hosting modes.
+        * glom/appwindow.cc: Adapt.
+
+2013-01-06  Murray Cumming  <murrayc@murrayc.com>
+
         MySQL: Use double instead of DECIMAL for numeric values.
 
         * glom/libglom/db_utils.cc: create_table():

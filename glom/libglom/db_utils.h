@@ -79,7 +79,7 @@ type_vec_strings get_table_names_from_database(bool ignore_system_tables = false
 
 bool get_table_exists_in_database(const Glib::ustring& table_name);
 
-bool create_table(const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields);
+bool create_table(Document::HostingMode hosting_mode, const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields);
 
 /// Also saves the table information in the document:
 bool create_table_with_default_fields(Document* document, const Glib::ustring& table_name);
