@@ -94,5 +94,7 @@ typedef sigc::slot<bool, Glom::Document::HostingMode> SlotTest;
  */
 int test_all_hosting_modes(const SlotTest& slot);
 
+bool test_check_numeric_value_type(Glom::Document::HostingMode hosting_mode, const Gnome::Gda::Value& value);
+
 #endif //GLOM_TEST_SELFHOSTING_UTILS_H
 
