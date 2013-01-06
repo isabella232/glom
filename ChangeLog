@@ -1,3 +1,16 @@
+2013-01-06  Murray Cumming  <murrayc@murrayc.com>
+
+        tests: Add: test_selfhosting_new_from_example_float.cc
+
+        * Makefile_tests.am:
+        * tests/test_selfhosting_utils.[h|cc]:
+	Add test_check_numeric_value_type().
+        * tests/test_selfhosting_new_from_example_float.cc: Add
+	this simple test that gets a float value, to check that
+	we do not lose precision. It seems to fail with MySQL.
+	It also seems to cause a crash or hang with PostgreSQL
+	during cleanup.
+
 2013-01-03  Murray Cumming  <murrayc@murrayc.com>
 
         tests: Avoid some copy/pasting.
