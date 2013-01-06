@@ -176,15 +176,12 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   //Lookup the value from the related record.
-  //TODO: 
   const Glom::sharedptr<Glom::Field> field_source = 
     document.get_field(relationship->get_to_table(), field->get_lookup_field());
   const Gnome::Gda::Value value = Glom::DbUtils::get_lookup_value(&document, 
     table_name, relationship, field_source, Gnome::Gda::Value(2));
 
-  const GType expected_type = 
-    (hosting_mode != Glom::Document::HOSTING_MODE_SQLITE ? GDA_TYPE_NUMERIC : G_TYPE_DOUBLE);
-  if(value.get_value_type() != expected_type)
+  if(!test_check_numeric_value_type(hosting_mode, value))
   {
     std::cerr << "Failure: The value has an unexpected type: " << 
       g_type_name(value.get_value_type()) << std::endl;
@@ -193,7 +190,9 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   if(Glom::Conversions::get_double_for_gda_value_numeric(value) != 3.5f)
   {
-    std::cerr << "Failure: The value has an unexpected value: " << value.to_string() << std::endl;
+    std::cerr << "Failure: The value has an unexpected value: " << value.to_string() << " instead of 3.5" << std::endl;
+    std::cerr << "    value as string: " << value.to_string() << std::endl;
+    std::cerr << "    value GType: " << g_type_name(value.get_value_type()) << std::endl;
     return false;
   }
 

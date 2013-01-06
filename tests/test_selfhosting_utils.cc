@@ -543,3 +543,16 @@ int test_all_hosting_modes(const SlotTest& slot)
   return EXIT_SUCCESS;
 }
 
+bool test_check_numeric_value_type(Glom::Document::HostingMode hosting_mode, const Gnome::Gda::Value& value)
+{
+  const GType gtype = value.get_value_type();
+  //std::cout << "debug: gtype=" << g_type_name(gtype) << std::endl;
+  if(hosting_mode == Glom::Document::HOSTING_MODE_SQLITE)
+  {
+    if(gtype == G_TYPE_DOUBLE)
+      return true;
+  }
+
+  //The normal type for PostgreSQL:
+  return (gtype == GDA_TYPE_NUMERIC);
+}

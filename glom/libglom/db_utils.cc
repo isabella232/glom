@@ -1267,7 +1267,10 @@ bool create_table(const sharedptr<const TableInfo>& table_info, const Document::
   {
     //TODO: Escape the table name?
     //TODO: Use GDA_SERVER_OPERATION_CREATE_TABLE instead?
-    table_creation_succeeded = query_execute_string( "CREATE TABLE " + escape_sql_id(table_info->get_name()) + " (" + sql_fields + ");" );
+    const Glib::ustring query = "CREATE TABLE " + escape_sql_id(table_info->get_name()) + " (" + sql_fields + ");";
+    //std::cout << G_STRFUNC << ": debug: CREATE TABLE query:" << std::endl;
+    //std::cout << "    " << query << std::endl;
+    table_creation_succeeded = query_execute_string(query);
     if(!table_creation_succeeded)
       std::cerr << G_STRFUNC << ": CREATE TABLE failed." << std::endl;
   }
