@@ -1,5 +1,12 @@
 2013-01-06  Murray Cumming  <murrayc@murrayc.com>
 
+        tests: Add try/catch around all calls of the test functions.
+
+        * tests/test_selfhosting_utils.[h|cc]: 
+	Check for uncaught exceptions.
+
+2013-01-06  Murray Cumming  <murrayc@murrayc.com>
+
         tests: Add: test_selfhosting_new_from_example_float.cc
 
         * Makefile_tests.am:
