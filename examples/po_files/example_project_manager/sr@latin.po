@@ -1,0 +1,323 @@
+# Serbian translation for glom.
+# Copyright (C) 2013 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: glom master\n"
+"PO-Revision-Date: 2013-01-09 22:40+0200\n"
+"Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
+"Language-Team: Serbian <gnom@prevod.org>\n"
+"Language: sr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
+"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+
+msgctxt "Database Title"
+msgid "Project Manager Example"
+msgstr "Primer upravnika projekta"
+
+msgctxt "Table (contacts)"
+msgid "Contacts"
+msgstr "Kontakti"
+
+msgctxt "Field (contact_id). Parent table: contacts"
+msgid "Contact ID"
+msgstr "IB kontakta"
+
+msgctxt "Field (name_first). Parent table: contacts"
+msgid "First Name"
+msgstr "Ime"
+
+msgctxt "Field (name_middle). Parent table: contacts"
+msgid "Middle Name"
+msgstr "Ime oca"
+
+msgctxt "Field (name_last). Parent table: contacts"
+msgid "Last Name"
+msgstr "Prezime"
+
+msgctxt "Field (name_title). Parent table: contacts"
+msgid "Title"
+msgstr "Zvanje"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mr"
+msgstr "G-din"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mrs"
+msgstr "G-đa"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Ms"
+msgstr "G-din"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Miss"
+msgstr "G-đica"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr."
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Prof"
+msgstr "Prof."
+
+msgctxt "Field (address_street). Parent table: contacts"
+msgid "Street"
+msgstr "Ulica"
+
+msgctxt "Field (address_town). Parent table: contacts"
+msgid "Town"
+msgstr "Grad"
+
+msgctxt "Field (address_state). Parent table: contacts"
+msgid "State"
+msgstr "Republika"
+
+msgctxt "Field (address_country). Parent table: contacts"
+msgid "Country"
+msgstr "Država"
+
+msgctxt "Field (address_postcode). Parent table: contacts"
+msgid "Postcode"
+msgstr "Poštanski broj"
+
+msgctxt "Field (date_of_birth). Parent table: contacts"
+msgid "Date of Birth"
+msgstr "Datum rođenja"
+
+msgctxt "Field (comments). Parent table: contacts"
+msgid "Comments"
+msgstr "Napomene"
+
+msgctxt "Field (name_full). Parent table: contacts"
+msgid "Full Name"
+msgstr "Ime i prezime"
+
+msgctxt "Field (picture). Parent table: contacts"
+msgid "Picture"
+msgstr "Slika"
+
+msgctxt "Field (email). Parent table: contacts"
+msgid "Email Address"
+msgstr "Adresa el. pošte"
+
+msgctxt "Field (website). Parent table: contacts"
+msgid "Web Site"
+msgstr "Veb stranica"
+
+msgctxt "Field (tel_home). Parent table: contacts"
+msgid "Home Telephone"
+msgstr "Kućni telefon"
+
+msgctxt "Field (tel_work). Parent table: contacts"
+msgid "Work Telephone"
+msgstr "Poslovni telefon"
+
+msgctxt "Field (tel_mobile). Parent table: contacts"
+msgid "Mobile Telephone"
+msgstr "Mobilni telefon"
+
+msgctxt "Field (tel_fax). Parent table: contacts"
+msgid "Fax"
+msgstr "Faks"
+
+msgctxt "Relationship (team_members). Parent table: contacts"
+msgid "Team Membership"
+msgstr "Članstvo u timu"
+
+msgctxt "Report (by_country). Parent table: contacts"
+msgid "Contacts By Country"
+msgstr "Kontakata po državi"
+
+msgctxt "Report (by_country_by_town). Parent table: contacts"
+msgid "By Country, By Town"
+msgstr "Prema državi, prema gradu"
+
+msgctxt "Layout Group (overview). Parent table: contacts"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt ""
+"Layout Group (notebook). Parent table: contacts, Parent Group: details"
+msgid "(Notebook)"
+msgstr "(Beležnica)"
+
+msgctxt ""
+"Layout Group (telephone). Parent table: contacts, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Telephone"
+msgstr "Telefon"
+
+msgctxt ""
+"Layout Group (address). Parent table: contacts, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Address"
+msgstr "Adresa"
+
+msgctxt ""
+"Layout Group (name). Parent table: contacts, Parent Group: details, Parent "
+"Group: notebook"
+msgid "Name"
+msgstr "Naziv"
+
+msgctxt "Table (projects)"
+msgid "Projects"
+msgstr "Projekti"
+
+msgctxt "Field (project_id). Parent table: projects"
+msgid "Project ID"
+msgstr "IB projekta"
+
+msgctxt "Field (description). Parent table: projects"
+msgid "Description"
+msgstr "Opis"
+
+msgctxt "Field (comments). Parent table: projects"
+msgid "Comments"
+msgstr "Napomene"
+
+msgctxt "Field (name). Parent table: projects"
+msgid "Name"
+msgstr "Naziv"
+
+msgctxt "Relationship (teams). Parent table: projects"
+msgid "Teams"
+msgstr "Timovi"
+
+msgctxt "Layout Group (overview). Parent table: projects"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: projects"
+msgid "Details"
+msgstr "Podaci"
+
+msgctxt "Table (project_teams)"
+msgid "Project Teams"
+msgstr "Timovi projekta"
+
+msgctxt "Field (project_team_id). Parent table: project_teams"
+msgid "Project Team ID"
+msgstr "IB tima projekta"
+
+msgctxt "Field (comments). Parent table: project_teams"
+msgid "Comments"
+msgstr "Napomene"
+
+msgctxt "Field (team_id). Parent table: project_teams"
+msgid "Team ID"
+msgstr "IB tima"
+
+msgctxt "Field (project_id). Parent table: project_teams"
+msgid "Project ID"
+msgstr "IB projekta"
+
+msgctxt "Relationship (team). Parent table: project_teams"
+msgid "Team"
+msgstr "Tim"
+
+msgctxt "Relationship (project). Parent table: project_teams"
+msgid "Project"
+msgstr "Projekat"
+
+msgctxt "Layout Group (overview). Parent table: project_teams"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: project_teams"
+msgid "Details"
+msgstr "Podaci"
+
+msgctxt "Custom Title. Parent table: project_teams"
+msgid "Team Name"
+msgstr "Ime tima"
+
+msgctxt "Custom Title. Parent table: project_teams"
+msgid "Project Name"
+msgstr "Naziv projekta"
+
+msgctxt "Table (team_members)"
+msgid "Team Members"
+msgstr "Članovi tima"
+
+msgctxt "Field (team_members_id). Parent table: team_members"
+msgid "team_members ID"
+msgstr "IB članova_tima"
+
+msgctxt "Field (description). Parent table: team_members"
+msgid "Description"
+msgstr "Opis"
+
+msgctxt "Field (comments). Parent table: team_members"
+msgid "Comments"
+msgstr "Napomene"
+
+msgctxt "Field (contact_id). Parent table: team_members"
+msgid "Contact ID"
+msgstr "IB kontakta"
+
+msgctxt "Field (team_id). Parent table: team_members"
+msgid "Team ID"
+msgstr "IB tima"
+
+msgctxt "Field (role). Parent table: team_members"
+msgid "Role"
+msgstr "Uloga"
+
+msgctxt "Relationship (contacts). Parent table: team_members"
+msgid "Contacts"
+msgstr "Kontakti"
+
+msgctxt "Relationship (team). Parent table: team_members"
+msgid "Team"
+msgstr "Tim"
+
+msgctxt "Layout Group (overview). Parent table: team_members"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: team_members"
+msgid "Details"
+msgstr "Podaci"
+
+msgctxt "Table (teams)"
+msgid "Teams"
+msgstr "Timovi"
+
+msgctxt "Field (team_id). Parent table: teams"
+msgid "Team ID"
+msgstr "IB tima"
+
+msgctxt "Field (description). Parent table: teams"
+msgid "Description"
+msgstr "Opis"
+
+msgctxt "Field (comments). Parent table: teams"
+msgid "Comments"
+msgstr "Napomene"
+
+msgctxt "Field (name). Parent table: teams"
+msgid "Name"
+msgstr "Ime"
+
+msgctxt "Relationship (members). Parent table: teams"
+msgid "Members"
+msgstr "Članovi"
+
+msgctxt "Relationship (projects). Parent table: teams"
+msgid "Projects"
+msgstr "Projekti"
+
+msgctxt "Layout Group (overview). Parent table: teams"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: teams"
+msgid "Details"
+msgstr "Podaci"
