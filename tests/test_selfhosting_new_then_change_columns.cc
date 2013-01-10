@@ -67,13 +67,6 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
-  //TODO_MySQL: Implement column changing.
-  if(hosting_mode == Glom::Document::HOSTING_MODE_MYSQL_SELF)
-  {
-    test_selfhosting_cleanup(false /* do not delete the file. */);
-    return true;
-  }
-
   //Test that change_column() does not fail horribly:
   //TODO: Start with some data that can be converted meaningfully,
   //and check that the result is as expected:

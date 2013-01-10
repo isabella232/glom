@@ -309,7 +309,8 @@ bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connectio
 
 		    drop_column(connection, table_name, old_fields[i]->get_name());
 
-		    connection->statement_execute_non_select("ALTER TABLE " + DbUtils::escape_sql_id(table_name) + " RENAME COLUMN " + DbUtils::escape_sql_id(TEMP_COLUMN_NAME) + " TO " + DbUtils::escape_sql_id(new_fields[i]->get_name()));
+                    //This part is different compared to PostgreSQL:
+		    connection->statement_execute_non_select("ALTER TABLE " + DbUtils::escape_sql_id(table_name) + " CHANGE " + DbUtils::escape_sql_id(TEMP_COLUMN_NAME) + " " + DbUtils::escape_sql_id(new_fields[i]->get_name()) + " " + new_fields[i]->get_sql_type());
 
 		    // Read primary key constraint
 		    if(new_fields[i]->get_primary_key())
@@ -376,7 +377,8 @@ bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connectio
 
 		    if(old_fields[i]->get_name() != new_fields[i]->get_name())
 		    {
-		      connection->statement_execute_non_select("ALTER TABLE " + DbUtils::escape_sql_id(table_name) + " RENAME COLUMN " + DbUtils::escape_sql_id(old_fields[i]->get_name()) + " TO " + DbUtils::escape_sql_id(new_fields[i]->get_name()));
+                      //This part is different compared to PostgreSQL
+		      connection->statement_execute_non_select("ALTER TABLE " + DbUtils::escape_sql_id(table_name) + " CHANGE " + DbUtils::escape_sql_id(old_fields[i]->get_name()) + " " + DbUtils::escape_sql_id(new_fields[i]->get_name()) + " " + new_fields[i]->get_sql_type());
 		    }
 		  }
 		}
@@ -386,8 +388,8 @@ bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connectio
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "Exception: " << ex.what() << std::endl;
-    std::cerr << "Reverting the transaction." << std::endl;
+    std::cerr << G_STRFUNC << "Exception: " << ex.what() << std::endl;
+    std::cerr << "  Reverting the transaction." << std::endl;
     
     try
     {
@@ -395,7 +397,7 @@ bool MySQL::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connectio
     }
     catch(const Glib::Error& ex)
     {
-      std::cerr << "Could not rollback the transaction: Exception: " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << "Could not rollback the transaction: Exception: " << ex.what() << std::endl;
     }
   }
   

@@ -1,5 +1,15 @@
 2013-01-06  Murray Cumming  <murrayc@murrayc.com>
 
+        MySQL:Use MySQL syntax to change columns
+
+	* glom/libglom/connnectionpool_backends/mysql.cc:
+	MYSQL uses:
+	ALTER TABLE tablename CHANGE oldfieldname newfieldname oldfieldtype
+	to rename columns, instead of PostgreSQL's:
+	ALTER TABLE tablename RENAME oldfieldname TO newfieldname
+
+2013-01-06  Murray Cumming  <murrayc@murrayc.com>
+
         MySQL: Avoid affecting PostgreSQL field types.
 
         * glom/libglom/db_utils.[h|cc]: create_table():
