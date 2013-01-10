@@ -58,6 +58,8 @@ private:
   //Fallback types used if the database system does not support a type natively
   typedef std::map<GType, GType> type_mapFallbackTypes;
   type_mapFallbackTypes m_mapFallbackTypes;
+
+  bool m_is_mysql;
 };
 
 } //namespace Glom

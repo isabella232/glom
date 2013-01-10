@@ -27,7 +27,20 @@ namespace Glom
 {
 
 FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connection)
+: m_is_mysql(false)
 {
+  if(!gda_connection)
+  {
+    std::cerr << G_STRFUNC << ": gda_connection is null." << std::endl;
+    return;
+  }
+
+  //Let us do some special-casing for MySQL:
+  if(gda_connection->get_provider_name() == "MySQL")
+  {
+    m_is_mysql = true;
+  }
+ 
   // These are documented here:
   // http://library.gnome.org/devel/libgda-4.0/3.99/connection.html#GdaConnectionMetaTypeHead
   enum GlomGdaDataModelTypesColumns
@@ -193,11 +206,21 @@ guint FieldTypes::get_types_count() const
 
 Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(GType field_type) const
 {
+  //Some overrides for MySQL:
+  if(m_is_mysql)
+  {
+    if(field_type == G_TYPE_STRING)
+      return "varchar(255)";
+    else if(field_type == GDA_TYPE_BINARY)
+      return "blob"; //Because VARBINARY needs us to specify a size.
+  }
   //Special-case gchararray (G_TYPE_STRING) because Gda reports this GType for several 
   //postgres field types (xml, inet, tinterval, etc),
   //though we only care about varchar:
-  if(field_type == G_TYPE_STRING)
+  else if(field_type == G_TYPE_STRING)
+  {
     return "varchar";
+  }
 
   type_mapGdaTypesToSchemaStrings::const_iterator iterFind = m_mapGdaTypesToSchemaStrings.find(field_type);
   if(iterFind == m_mapGdaTypesToSchemaStrings.end())
@@ -217,7 +240,16 @@ Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(GType field_type) con
     return "unknowntype";
   }
   else
-    return iterFind->second;
+  {
+    const Glib::ustring result = iterFind->second;
+    if(m_is_mysql)
+    {
+      if(result == "DECIMAL")
+        return "double"; //Because DECIMAL with no parameters means no decimal points.
+    }
+
+    return result;
+  }
 }
 
 GType FieldTypes::get_fallback_type_for_gdavaluetype(GType field_type) const
