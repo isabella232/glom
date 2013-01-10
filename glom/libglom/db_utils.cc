@@ -278,7 +278,7 @@ bool recreate_database_from_document(Document* document, const sigc::slot<void>&
     Document::type_vec_fields fields = document->get_table_fields(table_info->get_name());
 
     progress();
-    const bool table_creation_succeeded = create_table(document->get_hosting_mode(), table_info, fields);
+    const bool table_creation_succeeded = create_table(table_info, fields);
     progress();
     if(!table_creation_succeeded)
     {
@@ -465,7 +465,7 @@ bool add_standard_tables(Document* document)
     //Name, address, etc:
     if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME))
     {
-      const bool test = create_table(document->get_hosting_mode(), prefs_table_info, pref_fields);
+      const bool test = create_table(prefs_table_info, pref_fields);
 
       if(test)
       {
@@ -535,7 +535,7 @@ bool add_standard_tables(Document* document)
       field_next_value->set_glom_type(Field::TYPE_TEXT);
       fields.push_back(field_next_value);
 
-      const bool test = create_table(document->get_hosting_mode(), table_info, fields);
+      const bool test = create_table(table_info, fields);
       if(!test)
       {
         std::cerr << G_STRFUNC << ": add_standard_tables(): create_table(autoincrements) failed." << std::endl;
@@ -1199,7 +1199,7 @@ bool create_table_with_default_fields(Document* document, const Glib::ustring& t
   table_info->set_name(table_name);
   table_info->set_title_original( Utils::title_from_string( table_name ) ); //Start with a title that might be appropriate.
 
-  created = create_table(document->get_hosting_mode(), table_info, fields);
+  created = create_table(table_info, fields);
 
   if(created)
   {
@@ -1213,7 +1213,7 @@ bool create_table_with_default_fields(Document* document, const Glib::ustring& t
 
   return created;
 }
-bool create_table(Document::HostingMode hosting_mode, const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields_in)
+bool create_table(const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields_in)
 {
   //std::cout << "debug: " << G_STRFUNC << ": " << table_info->get_name() << ", title=" << table_info->get_title() << std::endl;
 
@@ -1246,17 +1246,12 @@ bool create_table(Document::HostingMode hosting_mode, const sharedptr<const Tabl
     field->set_field_info(info); //TODO_Performance
 
     Glib::ustring field_type = field->get_sql_type();
-
-    if( (hosting_mode == Document::HOSTING_MODE_MYSQL_CENTRAL) ||
-      (hosting_mode == Document::HOSTING_MODE_MYSQL_SELF) )
-    {
-      if(field_type == "varchar")
-        field_type = "varchar(255)";
-      else if(field_type == "VARBINARY")
-        field_type = "blob"; //Because VARBINARY needs us to specify a size.
-      else if(field_type == "DECIMAL")
-        field_type = "double"; //Because DECIMAL with no parameters means no decimal points.
-    }
+    if(field_type == "varchar")
+      field_type = "varchar(255)"; //For MySQL. //TODO: Avoid this for PostgreSQL
+    else if(field_type == "VARBINARY")
+      field_type = "blob"; //For MySQL.
+    else if(field_type == "DECIMAL")
+      field_type = "double"; //For MySQL, because DECIMAL with no parameters means no decimal points.
 
     Glib::ustring sql_field_description = escape_sql_id(field->get_name()) + " " + field_type;
 

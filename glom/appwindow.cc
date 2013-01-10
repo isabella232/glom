@@ -1748,7 +1748,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
     Document::type_vec_fields fields = pDocument->get_table_fields(table_info->get_name());
 
     pulse_progress_message();
-    const bool table_creation_succeeded = DbUtils::create_table(pDocument->get_hosting_mode(), table_info, fields);
+    const bool table_creation_succeeded = DbUtils::create_table(table_info, fields);
     pulse_progress_message();
     if(!table_creation_succeeded)
     {
