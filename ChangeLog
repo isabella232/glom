@@ -1,5 +1,15 @@
 2013-01-11  Murray Cumming  <murrayc@murrayc.com>
 
+        MySQL: Add checkboxes to select MySQL when it is in the build.
+
+        * glom/utility_widgets/filechooserdialog_saveextras.[h|cc]:
+	Add checkboxes for self-hosting and central MySQL servers.
+        * glom/frame_glom.cc: Handle MySQL too, though the 
+	MySQL startup does not actually work here, though it
+	does in the tests.
+
+2013-01-11  Murray Cumming  <murrayc@murrayc.com>
+
         FileChooserDialog_SaveExtras: Simplify the ifdefing.
 
         * glom/utility_widgets/filechooserdialog_saveextras.cc:

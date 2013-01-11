@@ -77,6 +77,11 @@ private:
   Gtk::RadioButton m_radiobutton_server_sqlite;
 #endif // GLOM_ENABLE_SQLITE
 
+#ifdef GLOM_ENABLE_MYSQL
+  Gtk::RadioButton m_radiobutton_server_mysql_central;
+  Gtk::RadioButton m_radiobutton_server_mysql_selfhosted;
+#endif // GLOM_ENABLE_MYSQL
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 };
 

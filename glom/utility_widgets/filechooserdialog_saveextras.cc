@@ -143,8 +143,20 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   m_radiobutton_server_sqlite.set_group(group);
   vbox->pack_start(m_radiobutton_server_sqlite);
   m_radiobutton_server_sqlite.show();
+#endif
 
-  //m_radiobutton_server_postgres_selfhosted.set_active(true); // Default
+#ifdef GLOM_ENABLE_MYSQL
+  m_radiobutton_server_mysql_selfhosted.set_label(_("Create MySQL database in its own folder, to be hosted by this computer."));
+  m_radiobutton_server_mysql_selfhosted.set_tooltip_text(_("MySQL support in Glom is experimental and unlikely to work properly."));
+  m_radiobutton_server_mysql_selfhosted.set_group(group);
+  vbox->pack_start(m_radiobutton_server_mysql_selfhosted);
+  m_radiobutton_server_mysql_selfhosted.show();
+
+  m_radiobutton_server_mysql_central.set_label(_("Create database on an external MySQL database server, to be specified in the next step."));
+  m_radiobutton_server_mysql_central.set_tooltip_text(_("MySQL support in Glom is experimental and unlikely to work properly."));
+  m_radiobutton_server_mysql_central.set_group(group);
+  vbox->pack_start(m_radiobutton_server_mysql_central);
+  m_radiobutton_server_mysql_central.show();
 #endif
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -179,6 +191,16 @@ void FileChooserDialog_SaveExtras::set_extra_newdb_hosting_mode(Document::Hostin
     m_radiobutton_server_sqlite.set_active();
     break;
 #endif //GLOM_ENABLE_SQLITE
+
+#ifdef GLOM_ENABLE_MYSQL
+  case Document::HOSTING_MODE_MYSQL_CENTRAL:
+    m_radiobutton_server_mysql_central.set_active();
+    break;
+  case Document::HOSTING_MODE_MYSQL_SELF:
+    m_radiobutton_server_mysql_selfhosted.set_active();
+    break;
+#endif //GLOM_ENABLE_SQLITE
+
   default:
     g_assert_not_reached();
     break;
@@ -203,6 +225,13 @@ Document::HostingMode FileChooserDialog_SaveExtras::get_extra_newdb_hosting_mode
   if(m_radiobutton_server_sqlite.get_active())
     return Document::HOSTING_MODE_SQLITE;
 #endif //GLOM_ENABLE_SQLITE
+
+#ifdef GLOM_ENABLE_MYSQL
+  if(m_radiobutton_server_mysql_central.get_active())
+    return Document::HOSTING_MODE_MYSQL_CENTRAL;
+  else if(m_radiobutton_server_mysql_selfhosted.get_active())
+    return Document::HOSTING_MODE_MYSQL_SELF;
+#endif //GLOM_ENABLE_MYSQL
 
   g_assert_not_reached();
 

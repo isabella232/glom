@@ -1926,6 +1926,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   switch(hosting_mode)
   {
     case Document::HOSTING_MODE_POSTGRES_SELF:
+    case Document::HOSTING_MODE_MYSQL_SELF:
     {
       Glib::ustring user, password;
 
@@ -1964,8 +1965,8 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 
     break;
 
-#ifdef GLOM_ENABLE_POSTGRESQL
     case Document::HOSTING_MODE_POSTGRES_CENTRAL:
+    case Document::HOSTING_MODE_MYSQL_CENTRAL:
     {
       //Ask for connection details:
       m_pDialogConnection->load_from_document(); //Get good defaults.
@@ -1996,11 +1997,10 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     }
 
     break;
-#endif //GLOM_ENABLE_POSTGRESQL
 #ifdef GLOM_ENABLE_SQLITE
   case Document::HOSTING_MODE_SQLITE:
     {
-      // sqlite
+      // SQLite:
       ConnectionPool::SlotProgress slot_ignored;
       if(!handle_connection_initialize_errors( connection_pool->initialize(slot_ignored)) )
         return false;
