@@ -31,6 +31,7 @@
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
 #include <iostream>
+#include "config.h"
 
 static void on_initialize_progress()
 {
@@ -558,8 +559,14 @@ int test_all_hosting_modes(const SlotTest& slot)
   if(!test_hosting_mode(slot, Glom::Document::HOSTING_MODE_SQLITE, "SQLite"))
     return EXIT_FAILURE;
 
+//Do not test MySQL unless it is enabled in the build,
+//though the functionality is always built in libglom.
+//We usually use GLOM_ENABLE_MYSQL only in the UI code,
+//but let's avoid forcing people to install the MySQL server.
+#ifdef GLOM_ENABLE_MYSQL
   if(!test_hosting_mode(slot, Glom::Document::HOSTING_MODE_MYSQL_SELF, "MySQL"))
     return EXIT_FAILURE;
+#endif //GLOM_ENABLE_MYSQL
 
   if(!test_hosting_mode(slot, Glom::Document::HOSTING_MODE_POSTGRES_SELF, "PostgreSQL"))
     return EXIT_FAILURE;
