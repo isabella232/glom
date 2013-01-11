@@ -1,3 +1,11 @@
+2013-01-11  Murray Cumming  <murrayc@murrayc.com>
+
+        FileChooserDialog_SaveExtras: Simplify the ifdefing.
+
+        * glom/utility_widgets/filechooserdialog_saveextras.cc:
+	Do not worry about so many combinations of options.
+	Let people worry about that if they use it.
+
 2013-01-06  Murray Cumming  <murrayc@murrayc.com>
 
         MySQL:Use MySQL syntax to change columns

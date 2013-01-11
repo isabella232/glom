@@ -111,58 +111,41 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   box_label->show();
   vbox->pack_start(*box_label);
 
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 
-#ifdef GLOM_ENABLE_SQLITE
-
 #ifdef GLOM_ENABLE_POSTGRESQL
-  //Use titles that show the distinction between PostgreSQL and SQLite:
-  m_radiobutton_server_postgres_selfhosted.set_label(_("Create PostgreSQL database in its own folder, to be hosted by this computer."));
+
+#if defined(GLOM_ENABLE_SQLITE) || defined(GLOM_ENABLE_MYSQL)
+  //Use titles that show the distinction between PostgreSQL and the alternatives:
+  const Glib::ustring postgresql_selfhost_label = _("Create PostgreSQL database in its own folder, to be hosted by this computer.");
+  const Glib::ustring postgresql_central_label = _("Create database on an external PostgreSQL database server, to be specified in the next step.");
+#else
+  const Glib::ustring postgresql_selfhost_label = _("Create database in its own folder, to be hosted by this computer.");
+  const Glib::ustring postgresql_central_label = _("Create database on an external database server, to be specified in the next step.");
+#endif
+
+  m_radiobutton_server_postgres_selfhosted.set_label(postgresql_selfhost_label);
   vbox->pack_start(m_radiobutton_server_postgres_selfhosted);
   m_radiobutton_server_postgres_selfhosted.show();
 
-  m_radiobutton_server_postgres_central.set_label(_("Create database on an external PostgreSQL database server, to be specified in the next step."));
+  m_radiobutton_server_postgres_central.set_label(postgresql_central_label);
   Gtk::RadioButton::Group group = m_radiobutton_server_postgres_selfhosted.get_group();
   m_radiobutton_server_postgres_central.set_group(group);
   vbox->pack_start(m_radiobutton_server_postgres_central);
   m_radiobutton_server_postgres_central.show();
 
+  m_radiobutton_server_postgres_selfhosted.set_active(true); // Default
+#endif
+
+#ifdef GLOM_ENABLE_SQLITE
   m_radiobutton_server_sqlite.set_label(_("Create SQLite database in its own folder, to be hosted by this computer."));
   m_radiobutton_server_sqlite.set_tooltip_text(_("SQLite does not support authentication or remote access but is suitable for embedded devices."));
   m_radiobutton_server_sqlite.set_group(group);
   vbox->pack_start(m_radiobutton_server_sqlite);
   m_radiobutton_server_sqlite.show();
 
-  m_radiobutton_server_postgres_selfhosted.set_active(true); // Default
-#else
-  //Only SQLite:
-  std::cerr << "WARNING: Glom was built with developer mode (not client-only) but with only support for SQLite. This is very unusual. Postgres is the default backend so it should not be hidden from developers." << std::endl; 
-  //TODO: Hide this because it's the only radio button, so it's not a choice:
-  m_radiobutton_server_sqlite.set_label(_("Create database in its own folder, to be hosted by this computer, using SQLite"));
-  //m_radiobutton_server_sqlite.set_group(group);
-  vbox->pack_start(m_radiobutton_server_sqlite);
-  m_radiobutton_server_sqlite.show();
-#endif // GLOM_ENABLE_POSTGRESQL
-
-#else //GLOM_ENABLE_SQLITE
-  //Only PostgreSQL:
-  //Use titles that don't mention the boring name of the backend:
-  m_radiobutton_server_postgres_selfhosted.set_label(_("Create database in its own folder, to be hosted by this computer."));
-  vbox->pack_start(m_radiobutton_server_postgres_selfhosted);
-  m_radiobutton_server_postgres_selfhosted.show();
-
-  m_radiobutton_server_postgres_central.set_label(_("Create database on an external database server, to be specified in the next step."));
-  Gtk::RadioButton::Group group = m_radiobutton_server_postgres_selfhosted.get_group();
-  m_radiobutton_server_postgres_central.set_group(group);
-  vbox->pack_start(m_radiobutton_server_postgres_central);
-  m_radiobutton_server_postgres_central.show();
-
-  m_radiobutton_server_postgres_selfhosted.set_active(true); // Default
-
-#endif //GLOM_ENABLE_SQLITE
-
-
+  //m_radiobutton_server_postgres_selfhosted.set_active(true); // Default
+#endif
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
