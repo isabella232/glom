@@ -7,22 +7,23 @@
 # Petr Kovar <pknbe@volny.cz>, 2009.
 # Pavel Mlčoch <pavkamlc@centrum.cz>, 2009.
 # Lucas Lommer <llommer@svn.gnome.org>, 2009.
-# Marek Černocký <marek@manet.cz>, 2009, 2010, 2011, 2012.
+# Marek Černocký <marek@manet.cz>, 2009, 2010, 2011, 2012, 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-11-12 20:16+0000\n"
-"PO-Revision-Date: 2012-11-13 15:09+0200\n"
+"POT-Creation-Date: 2013-01-06 16:44+0000\n"
+"PO-Revision-Date: 2013-01-09 13:05+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
-"Language-Team: Czech <gnome-cs-list@gnome.org>\n"
+"Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
 #: ../glom/application.cc:138 ../glom/glom_create_from_example.cc:240
 #: ../glom/glom_export_po.cc:112 ../glom/glom_export_po_all.cc:100
@@ -136,11 +137,11 @@ msgstr "_Pole"
 
 #: ../glom/appwindow.cc:433
 msgid "Relationships _Overview"
-msgstr "Přehled _relací"
+msgstr "Přehled _vztahů"
 
 #: ../glom/appwindow.cc:438
 msgid "_Relationships for this Table"
-msgstr "_Relace pro tuto tabulku"
+msgstr "_Vztahy pro tuto tabulku"
 
 #: ../glom/appwindow.cc:443
 msgid "_Users"
@@ -160,7 +161,7 @@ msgstr "K_nihovna skriptů"
 
 #: ../glom/appwindow.cc:462
 msgid "_Layout"
-msgstr "_Rozložení"
+msgstr "_Rozvržení"
 
 #: ../glom/appwindow.cc:467
 msgid "Test Tra_nslation"
@@ -508,7 +509,7 @@ msgid ""
 "of new related records."
 msgstr ""
 "Data ještě nelze vložit do tohoto souvisejícího pole, protože související "
-"záznam ještě neexistuje, a relace nedovoluje automatické vytváření nových "
+"záznam ještě neexistuje, a vztah nedovoluje automatické vytváření nových "
 "souvisejících záznamů."
 
 #: ../glom/base_db_table_data.cc:258
@@ -815,15 +816,15 @@ msgstr ""
 
 #: ../glom/frame_glom.cc:1154
 msgid "Relationship Exists Already"
-msgstr "Relace již existuje"
+msgstr "Vztah již existuje"
 
 #: ../glom/frame_glom.cc:1154
 msgid ""
 "A relationship with this name already exists for this table. Please choose a "
 "different relationship name."
 msgstr ""
-"Relace s tímto názvem již pro tuto tabulku existuje. Zvolte prosím jiný "
-"název relace."
+"Vztah s tímto názvem již pro tuto tabulku existuje. Zvolte prosím jiný "
+"název vztah."
 
 #: ../glom/frame_glom.cc:1158
 msgid "More information needed"
@@ -831,7 +832,7 @@ msgstr "Jsou vyžadovány další informace"
 
 #: ../glom/frame_glom.cc:1158
 msgid "You must specify a field, a table name, and a relationship name."
-msgstr "Musíte určit pole, název tabulky a název relace."
+msgstr "Musíte určit pole, název tabulky a název vztahu."
 
 #: ../glom/frame_glom.cc:1212
 msgid "Related Table Created"
@@ -963,6 +964,47 @@ msgstr "Otevřít"
 #: ../glom/onlineglom_strings.cc:34
 msgid "Generating the report..."
 msgstr "Generuje se sestava…"
+
+#: ../glom/onlineglom_strings.cc:35
+msgid "Login"
+msgstr "Přihlásit"
+
+#: ../glom/onlineglom_strings.cc:36
+#| msgid "Please enter the PostgreSQL server's password for the user %1: "
+msgid "Enter the PostgreSQL username and password."
+msgstr "Zadejte jméno uživatele a heslo pro PostgreSQL."
+
+#: ../glom/onlineglom_strings.cc:37
+#| msgid "Rename"
+msgid "Username"
+msgstr "Jméno uživatele"
+
+#: ../glom/onlineglom_strings.cc:38 ../ui/operator/dialog_connection.glade.h:4
+msgid "Password"
+msgstr "Heslo"
+
+#: ../glom/onlineglom_strings.cc:39
+msgid "Log Out"
+msgstr "Odhlásit"
+
+#: ../glom/onlineglom_strings.cc:40
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: ../glom/onlineglom_strings.cc:41
+#| msgid "The username for the PostgreSQL server."
+msgid "The username or password are not correct."
+msgstr "Jméno uživatele a/nebo heslo nejsou správně."
+
+#: ../glom/onlineglom_strings.cc:42
+msgid ""
+"Login seems to be necessary, but will not be attempted. This site is not "
+"being served via HTTPS, which is required for secure login. Please contact "
+"your system administrator."
+msgstr ""
+"Vypadá to, že je potřeba se přihlásit, ale nebude se to zkoušet. Tento web "
+"není obsluhován přes HTTPS, které je vyžadováno pro bezpečné přihlášení. "
+"Kontaktujte prosím svého správce systému."
 
 #: ../glom/bakery/appwindow_withdoc_gtk.cc:284
 #: ../ui/developer/window_field_definition_edit.glade.h:13
@@ -1419,7 +1461,7 @@ msgstr "Vlastní nadpis"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:234
 msgid "Relationship"
-msgstr "Relace"
+msgstr "Vztah"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:236
 msgid "Layout Item"
@@ -1928,7 +1970,7 @@ msgstr "Zobrazit vygenerované SQL dotazy na standardním výstupu, pro ladění
 
 #. Don't add ContextLayout in client only mode because it would never
 #. be sensitive anyway
-#: ../glom/mode_data/box_data_calendar_related.cc:512
+#: ../glom/mode_data/box_data_calendar_related.cc:514
 #: ../glom/mode_data/db_adddel/db_adddel.cc:249
 #: ../ui/developer/window_data_layout.glade.h:1
 msgid "Layout"
@@ -2076,7 +2118,7 @@ msgstr "Zobrazení Seznamu nebo Podrobností"
 #: ../glom/mode_design/box_db_table_relationships.cc:47
 msgid ""
 "This relationship already exists. Please choose a different relationship name"
-msgstr "Relace již existuje. Prosím zvolte jiný název relace"
+msgstr "Vztah již existuje. Prosím zvolte jiný název vztahu"
 
 #. Translators: FROM as in SQL's FROM
 #: ../glom/mode_design/box_db_table_relationships.cc:52
@@ -2359,19 +2401,19 @@ msgstr "Pole"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:406
 msgid "Invalid Relationship"
-msgstr "Neplatná relace"
+msgstr "Neplatný vztah"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:407
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship does not specify a field in the related table."
 msgstr ""
-"Vzájemnou relaci nelze použít pro zobrazení odpovídajících záznamů, protože "
-"relace nemá určené pole v odkazované tabulce."
+"Vzájemný vztah nelze použít pro zobrazení odpovídajících záznamů, protože "
+"vztah nemá určené pole v odkazované tabulce."
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:413
 msgid "Relationship Uses a Related Primary Key"
-msgstr "Relace používající příslušný primární klíč"
+msgstr "Vztah používající příslušný primární klíč"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:414
 msgid ""
@@ -2380,13 +2422,13 @@ msgid ""
 "contain unique values. This would prevent the relationship from specifying "
 "multiple related records."
 msgstr ""
-"Vzájemnou relaci nelze použít pro zobrazení odpovídajících záznamů, protože "
-"relace používá primární klíč v odkazované tabulce, který musí obsahovat "
+"Vzájemný vztah nelze použít pro zobrazení odpovídajících záznamů, protože "
+"vztah používá primární klíč v odkazované tabulce, který musí obsahovat "
 "jedinečné hodnoty. To by mělo zabrání vzniku vícenásobnému odkazu."
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:420
 msgid "Relationship Uses a Related Unique Field"
-msgstr "Relace používající příslušný jednoznačné pole"
+msgstr "Vztah používající příslušný jednoznačné pole"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:421
 msgid ""
@@ -2394,8 +2436,8 @@ msgid ""
 "relationship uses a unique-values field in the related table. This would "
 "prevent the relationship from specifying multiple related records."
 msgstr ""
-"Vzájemnou relaci nelze použít pro zobrazení odpovídajících záznamů, protože "
-"relace používá pole s jedinečnou hodnotou v odkazované tabulce. To by mělo "
+"Vzájemný vztah nelze použít pro zobrazení odpovídajících záznamů, protože "
+"vztah používá pole s jedinečnou hodnotou v odkazované tabulce. To by mělo "
 "zabrání vzniku vícenásobnému odkazu."
 
 #. Translators: This is Automatic text alignment.
@@ -2696,7 +2738,7 @@ msgstr "Upravit _pole"
 
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:478
 msgid "Edit _Relationships"
-msgstr "Up_ravit relace"
+msgstr "Up_ravit vztahy"
 
 #: ../glom/mode_design/script_library/dialog_script_library.cc:130
 msgid "Remove library script"
@@ -2873,7 +2915,7 @@ msgstr "Zvolte název souboru .po"
 #: ../glom/mode_design/translation/window_translations.cc:338
 #: ../glom/mode_design/translation/window_translations.cc:377
 msgid "Po files"
-msgstr "Soubory Po"
+msgstr "Soubory PO"
 
 #: ../glom/mode_design/translation/window_translations.cc:343
 #: ../ui/developer/window_translations.glade.h:7
@@ -2961,7 +3003,7 @@ msgid ""
 "record, because the relationship uses a unique key."
 msgstr ""
 "Pokusili jste se přidat nový související záznam, ale může být jen jeden "
-"související záznam, protože relace používá jedinečný klíč."
+"související záznam, protože vztah používá jedinečný klíč."
 
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:90
 #: ../glom/utility_widgets/imageglom.cc:774
@@ -3157,7 +3199,7 @@ msgstr "Zobrazovat _skryté tabulky"
 
 #: ../ui/operator/dialog_choose_date.glade.h:1
 msgid "Choose Date"
-msgstr "Vyberte datum"
+msgstr "Výběr data"
 
 #: ../ui/operator/dialog_choose_date.glade.h:2
 msgid ""
@@ -3165,7 +3207,7 @@ msgid ""
 "\n"
 "Please select a date to enter in this field."
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">Vyberte data</span>\n"
+"<span weight=\"bold\" size=\"larger\">Vyberte datum</span>\n"
 "\n"
 "Zvolte prosím datum, které do tohoto pole vložíte."
 
@@ -3180,10 +3222,6 @@ msgstr "Zadejte prosím podrobnosti o připojení k vašemu databázovému serve
 #: ../ui/operator/dialog_connection.glade.h:3
 msgid "Host"
 msgstr "Hostitel"
-
-#: ../ui/operator/dialog_connection.glade.h:4
-msgid "Password"
-msgstr "Heslo"
 
 #: ../ui/operator/dialog_connection.glade.h:5
 #: ../ui/developer/dialog_choose_user.glade.h:5
@@ -3343,11 +3381,11 @@ msgid ""
 "If a suitable related table already exists then you should instead cancel "
 "and just add a relationship."
 msgstr ""
-"Tato volba přidá novou tabulku a relace na ni odkazuje. To je snazší volbou "
-"než několik oddělených kroků.\n"
+"Tato volba přidá novou tabulku a vztah, který na ni odkazuje. To je snazší "
+"volbou než několik oddělených kroků.\n"
 "\n"
 "Jestliže již vhodná související tabulka existuje, měli byste akci zrušit a "
-"přidat jen relaci."
+"přidat jen vztah."
 
 #. Translators: FROM as in SQL's FROM
 #: ../ui/developer/dialog_add_related_table.glade.h:6
@@ -3360,7 +3398,7 @@ msgstr "Název nové související tabulky:"
 
 #: ../ui/developer/dialog_add_related_table.glade.h:8
 msgid "Name of new relationship:"
-msgstr "Název nové relace:"
+msgstr "Název nového vztahu:"
 
 #: ../ui/developer/dialog_change_language.glade.h:1
 msgid "Test Translation"
@@ -3378,7 +3416,7 @@ msgid ""
 "dialog windows, will only be translated when you start Glom on a computer "
 "that uses that language."
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">Test Translation</span>\n"
+"<span weight=\"bold\" size=\"larger\">Testování překladu</span>\n"
 "\n"
 "Vyberte jazyk pro dočasné vyzkoušení překladů. Tyto překlady jsou běžně "
 "automaticky používány v případě, že je aplikace spuštěna na počítači, který "
@@ -3398,7 +3436,7 @@ msgstr "Zvolte pole"
 
 #: ../ui/developer/dialog_choose_field.glade.h:3
 msgid "Show _Related Relationships"
-msgstr "Zob_razit související relace"
+msgstr "Zob_razit související vztahy"
 
 #: ../ui/developer/dialog_choose_field.glade.h:4
 msgid "_Table:"
@@ -3406,7 +3444,7 @@ msgstr "_Tabulka:"
 
 #: ../ui/developer/dialog_choose_relationship.glade.h:1
 msgid "Select Relationship"
-msgstr "Zvolte relaci"
+msgstr "Výběr vztahu"
 
 #: ../ui/developer/dialog_choose_relationship.glade.h:2
 msgid "Table:"
@@ -3414,11 +3452,11 @@ msgstr "Tabulka:"
 
 #: ../ui/developer/dialog_choose_relationship.glade.h:3
 msgid "<b>Select Relationship</b>"
-msgstr "<b>Zvolte relaci</b>"
+msgstr "<b>Vyberte vztah</b>"
 
 #: ../ui/developer/dialog_choose_user.glade.h:1
 msgid "Choose User"
-msgstr "Zvolte uživatele"
+msgstr "Výběr uživatele"
 
 #: ../ui/developer/dialog_choose_user.glade.h:2
 msgid ""
@@ -3672,7 +3710,7 @@ msgstr "<b>Karty poznámek</b>"
 
 #: ../ui/developer/dialog_relationships_overview.glade.h:1
 msgid "Relationships Overview"
-msgstr "Přehled relací"
+msgstr "Přehled vztahů"
 
 #: ../ui/developer/dialog_script_library.glade.h:1
 msgid "Script Library"
@@ -3715,7 +3753,7 @@ msgid ""
 "From what language would you like to copy the translations to use as the "
 "start of the current translation?"
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">Kopírovat překlad</span>\n"
+"<span weight=\"bold\" size=\"larger\">Kopírování překladu</span>\n"
 "\n"
 "Ze kterého jazyka chcete kopírovat překlad jako začátek tohoto překladu?"
 
@@ -3794,11 +3832,11 @@ msgstr "název tabulky"
 
 #: ../ui/developer/window_data_layout.glade.h:4
 msgid "<b>Relationship:</b>"
-msgstr "<b>Relace:</b>"
+msgstr "<b>Vztah:</b>"
 
 #: ../ui/developer/window_data_layout.glade.h:5
 msgid "Show child relationships"
-msgstr "Zobrazit zděděné relace"
+msgstr "Zobrazit zděděné vztahy"
 
 #: ../ui/developer/window_data_layout.glade.h:7
 msgid ""
@@ -3862,8 +3900,8 @@ msgid ""
 "the fields to show from the related table."
 msgstr ""
 "Přidat portál souvisejících záznamů. Toto je seznam záznamů v související "
-"tabulce. Nezapomeňte upravit tuto položku sestavy pro určení použité relace "
-"a zobrazovaných polí ze související tabulky."
+"tabulce. Nezapomeňte upravit tuto položku sestavy pro určení použitého "
+"vztahu a zobrazovaných polí ze související tabulky."
 
 #: ../ui/developer/window_data_layout.glade.h:20
 msgid ""
@@ -3873,7 +3911,7 @@ msgid ""
 msgstr ""
 "Přidá související záznamy portálu kalendáře. Tento kalendář zobrazuje "
 "záznamy z odkazované tabulky. Nezapomeňte upravit tuto položku sestavy pro "
-"určení použité relace a zobrazených polí z odkazované tabulky."
+"určení použitého vztahu a zobrazených polí z odkazované tabulky."
 
 #: ../ui/developer/window_data_layout.glade.h:21
 msgid "Add Related Calendar"
@@ -3893,7 +3931,7 @@ msgid ""
 "Clicking the row button takes the user to the table specified by this "
 "relationship:"
 msgstr ""
-"Kliknutím na tlačítko řádku přenese uživatele do tabulky určené touto relací:"
+"Kliknutím na tlačítko řádku přenese uživatele do tabulky určené tímto vztahem:"
 
 #: ../ui/developer/window_data_layout.glade.h:26
 msgid "Automatic:"
@@ -4112,7 +4150,7 @@ msgstr "Žádné možnosti"
 
 #: ../ui/developer/box_formatting.glade.h:21
 msgid "Relationship:"
-msgstr "Relace:"
+msgstr "Vztah:"
 
 #: ../ui/developer/box_formatting.glade.h:23
 msgid "Also show:"
@@ -4231,7 +4269,7 @@ msgstr "<b>Název _sestavy:</b>"
 
 #: ../ui/developer/window_report_layout.glade.h:8
 msgid "<b>Available Parts</b>"
-msgstr "<b>Dostupné části</b>"
+msgstr "<b>Dostupné součásti</b>"
 
 #. Translators: The Main part of the report (not the footer or header)
 #: ../ui/developer/window_report_layout.glade.h:11
@@ -4240,7 +4278,7 @@ msgstr "Hlavní"
 
 #: ../ui/developer/window_report_layout.glade.h:13
 msgid "<b>Parts</b>"
-msgstr "<b>Části</b>"
+msgstr "<b>Součásti</b>"
 
 #: ../ui/developer/window_text_format.glade.h:1
 msgid "Text Format"
