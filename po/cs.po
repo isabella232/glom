@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-01-06 16:44+0000\n"
-"PO-Revision-Date: 2013-01-09 13:05+0100\n"
+"POT-Creation-Date: 2013-01-12 09:57+0000\n"
+"PO-Revision-Date: 2013-01-12 11:02+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -259,13 +259,13 @@ msgstr ""
 
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
 #. Warn the user, and let him try again:
-#: ../glom/appwindow.cc:773 ../glom/frame_glom.cc:2072
-#: ../glom/frame_glom.cc:2143
+#: ../glom/appwindow.cc:773 ../glom/frame_glom.cc:2075
+#: ../glom/frame_glom.cc:2146
 msgid "Connection Failed"
 msgstr "Připojení selhalo"
 
-#: ../glom/appwindow.cc:773 ../glom/frame_glom.cc:2072
-#: ../glom/frame_glom.cc:2143
+#: ../glom/appwindow.cc:773 ../glom/frame_glom.cc:2075
+#: ../glom/frame_glom.cc:2146
 msgid ""
 "Glom could not connect to the database server. Maybe you entered an "
 "incorrect user name or password, or maybe the postgres database server is "
@@ -344,11 +344,11 @@ msgid "Continue without Developer Mode"
 msgstr "Pokračovat bez vývojářského režimu"
 
 #. The connection to the server is OK, but the database is not there yet.
-#: ../glom/appwindow.cc:1174
+#: ../glom/appwindow.cc:1175
 msgid "Database Not Found On Server"
 msgstr "Na serveru nebyla databáze nalezena"
 
-#: ../glom/appwindow.cc:1174
+#: ../glom/appwindow.cc:1175
 msgid ""
 "The database could not be found on the server. Please consult your system "
 "administrator."
@@ -358,43 +358,43 @@ msgstr ""
 
 #. std::cerr might show some hints, but we don't want to confront the user with them:
 #. TODO: Actually complain about specific stuff such as missing data, because the user might really play with the file system.
-#: ../glom/appwindow.cc:1184
+#: ../glom/appwindow.cc:1185
 msgid "Problem Loading Document"
 msgstr "Problém s načítáním dokumentu"
 
-#: ../glom/appwindow.cc:1184
+#: ../glom/appwindow.cc:1185
 msgid "Glom could not load the document."
 msgstr "Glom nemohl načíst dokument."
 
-#: ../glom/appwindow.cc:1619
+#: ../glom/appwindow.cc:1620
 msgid "Creating Glom database from example file."
 msgstr "Ze vzorového souboru se vytváří databáze Glom"
 
-#: ../glom/appwindow.cc:1798
+#: ../glom/appwindow.cc:1799
 msgid "Creating Glom database from backup file."
 msgstr "Vytvoření databáze Glom ze záložního souboru."
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/appwindow.cc:2274 ../glom/bakery/appwindow_withdoc.cc:237
+#: ../glom/appwindow.cc:2275 ../glom/bakery/appwindow_withdoc.cc:237
 #: ../glom/bakery/appwindow_withdoc.cc:288
 msgid "Save failed."
 msgstr "Ukládání selhalo."
 
-#: ../glom/appwindow.cc:2274
+#: ../glom/appwindow.cc:2275
 msgid "There was an error while saving the example file."
 msgstr "Vyskytla se chyba během ukládání ukázkového souboru."
 
-#: ../glom/appwindow.cc:2315 ../glom/appwindow.cc:2320
+#: ../glom/appwindow.cc:2316 ../glom/appwindow.cc:2321
 #: ../glom/bakery/appwindow_withdoc_gtk.cc:425
 msgid "Save Document"
 msgstr "Uložit dokument"
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2407 ../glom/bakery/appwindow_withdoc_gtk.cc:473
+#: ../glom/appwindow.cc:2408 ../glom/bakery/appwindow_withdoc_gtk.cc:473
 msgid "Read-only File."
 msgstr "Soubor pouze pro čtení."
 
-#: ../glom/appwindow.cc:2407 ../glom/bakery/appwindow_withdoc_gtk.cc:473
+#: ../glom/appwindow.cc:2408 ../glom/bakery/appwindow_withdoc_gtk.cc:473
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -402,11 +402,11 @@ msgstr ""
 "Nemůžete přepsat existující soubor, protože nemáte potřebná přístupová práva."
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2421 ../glom/bakery/appwindow_withdoc_gtk.cc:487
+#: ../glom/appwindow.cc:2422 ../glom/bakery/appwindow_withdoc_gtk.cc:487
 msgid "Read-only Directory."
 msgstr "Adresář pouze pro čtení."
 
-#: ../glom/appwindow.cc:2421 ../glom/bakery/appwindow_withdoc_gtk.cc:487
+#: ../glom/appwindow.cc:2422 ../glom/bakery/appwindow_withdoc_gtk.cc:487
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -414,19 +414,19 @@ msgstr ""
 "V tomto adresáři nemůžete soubor vytvořit, protože nemáte potřebná "
 "přístupová práva."
 
-#: ../glom/appwindow.cc:2438
+#: ../glom/appwindow.cc:2439
 msgid "Database Title missing"
 msgstr "Chybí nadpis databáze"
 
-#: ../glom/appwindow.cc:2438
+#: ../glom/appwindow.cc:2439
 msgid "You must specify a title for the new database."
 msgstr "Musíte zadat název pro novou databázi."
 
-#: ../glom/appwindow.cc:2467 ../glom/frame_glom.cc:1832
+#: ../glom/appwindow.cc:2468 ../glom/frame_glom.cc:1834
 msgid "Directory Already Exists"
 msgstr "Adresář již existuje"
 
-#: ../glom/appwindow.cc:2467 ../glom/frame_glom.cc:1833
+#: ../glom/appwindow.cc:2468 ../glom/frame_glom.cc:1835
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
@@ -437,51 +437,51 @@ msgstr ""
 "vytvoření nového adresáře."
 
 #. This actually creates the directory:
-#: ../glom/appwindow.cc:2606
+#: ../glom/appwindow.cc:2607
 msgid "Save Backup"
 msgstr "Uložit zálohu"
 
-#: ../glom/appwindow.cc:2622
+#: ../glom/appwindow.cc:2623
 msgid "Exporting backup"
 msgstr "Exportuje se záloha"
 
-#: ../glom/appwindow.cc:2628
+#: ../glom/appwindow.cc:2629
 msgid "Export Backup failed."
 msgstr "Export zálohy selhal."
 
-#: ../glom/appwindow.cc:2628
+#: ../glom/appwindow.cc:2629
 msgid "There was an error while exporting the backup."
 msgstr "Vyskytla se chyba během exportu zálohy."
 
-#: ../glom/appwindow.cc:2634
+#: ../glom/appwindow.cc:2635
 msgid "Choose a backup file"
 msgstr "Volba záložního souboru"
 
-#: ../glom/appwindow.cc:2639
+#: ../glom/appwindow.cc:2640
 msgid ".tar.gz Backup files"
 msgstr "Záložní soubory .tar.gz"
 
-#: ../glom/appwindow.cc:2645
+#: ../glom/appwindow.cc:2646
 msgid "Restore"
 msgstr "Obnovit"
 
-#: ../glom/appwindow.cc:2670
+#: ../glom/appwindow.cc:2671
 msgid "Restoring backup"
 msgstr "Obnovuje se ze zálohy"
 
-#: ../glom/appwindow.cc:2677
+#: ../glom/appwindow.cc:2678
 msgid "Restore Backup failed."
 msgstr "Obnovení ze zálohy selhalo."
 
-#: ../glom/appwindow.cc:2677
+#: ../glom/appwindow.cc:2678
 msgid "There was an error while restoring the backup."
 msgstr "Vyskytla se chyba během obnovy ze zálohy."
 
-#: ../glom/appwindow.cc:2774 ../glom/bakery/appwindow_withdoc_gtk.cc:346
+#: ../glom/appwindow.cc:2775 ../glom/bakery/appwindow_withdoc_gtk.cc:346
 msgid " (read-only)"
 msgstr " (pouze čtení)"
 
-#: ../glom/appwindow.cc:2822 ../ui/operator/window_main.glade.h:2
+#: ../glom/appwindow.cc:2823 ../ui/operator/window_main.glade.h:2
 msgid "Processing"
 msgstr "Zpracování"
 
@@ -780,33 +780,33 @@ msgid "_Share"
 msgstr "_Sdílet"
 
 #. TODO: Warn about connected users if possible.
-#: ../glom/frame_glom.cc:940
+#: ../glom/frame_glom.cc:941
 msgid "Stop sharing on the network"
 msgstr "Zastavit sdílení na síti"
 
-#: ../glom/frame_glom.cc:941
+#: ../glom/frame_glom.cc:942
 msgid "This will prevent other users on the network from using this database."
 msgstr "Tímto zabráníte ostatním uživatelům na síti v používání této databáze."
 
-#: ../glom/frame_glom.cc:944
+#: ../glom/frame_glom.cc:945
 msgid "_Stop Sharing"
 msgstr "_Zastavit sdílení"
 
-#: ../glom/frame_glom.cc:992 ../glom/frame_glom.cc:2129
+#: ../glom/frame_glom.cc:994 ../glom/frame_glom.cc:2132
 msgid "Stopping Database Server"
 msgstr "Zastavuje se databázový server"
 
 #. Do startup, such as starting the self-hosting database server
-#: ../glom/frame_glom.cc:995 ../glom/frame_glom.cc:2017
-#: ../glom/frame_glom.cc:2175
+#: ../glom/frame_glom.cc:997 ../glom/frame_glom.cc:2020
+#: ../glom/frame_glom.cc:2178
 msgid "Starting Database Server"
 msgstr "Startuje se databázový server"
 
-#: ../glom/frame_glom.cc:1150
+#: ../glom/frame_glom.cc:1152
 msgid "Table Exists Already"
 msgstr "Tabulka již existuje"
 
-#: ../glom/frame_glom.cc:1150
+#: ../glom/frame_glom.cc:1152
 msgid ""
 "A table with this name already exists in the database. Please choose a "
 "different table name."
@@ -814,84 +814,84 @@ msgstr ""
 "Tabulka s tímto názvem již v databázi existuje. Zvolte prosím jiný název "
 "tabulky."
 
-#: ../glom/frame_glom.cc:1154
+#: ../glom/frame_glom.cc:1156
 msgid "Relationship Exists Already"
 msgstr "Vztah již existuje"
 
-#: ../glom/frame_glom.cc:1154
+#: ../glom/frame_glom.cc:1156
 msgid ""
 "A relationship with this name already exists for this table. Please choose a "
 "different relationship name."
 msgstr ""
-"Vztah s tímto názvem již pro tuto tabulku existuje. Zvolte prosím jiný "
-"název vztah."
+"Vztah s tímto názvem již pro tuto tabulku existuje. Zvolte prosím jiný název "
+"vztah."
 
-#: ../glom/frame_glom.cc:1158
+#: ../glom/frame_glom.cc:1160
 msgid "More information needed"
 msgstr "Jsou vyžadovány další informace"
 
-#: ../glom/frame_glom.cc:1158
+#: ../glom/frame_glom.cc:1160
 msgid "You must specify a field, a table name, and a relationship name."
 msgstr "Musíte určit pole, název tabulky a název vztahu."
 
-#: ../glom/frame_glom.cc:1212
+#: ../glom/frame_glom.cc:1214
 msgid "Related Table Created"
 msgstr "Související záznam byl vytvořen"
 
-#: ../glom/frame_glom.cc:1212
+#: ../glom/frame_glom.cc:1214
 msgid "The new related table has been created."
 msgstr "Nová související tabulka byla vytvořena."
 
 #. namespace Glom
-#: ../glom/frame_glom.cc:1241 ../ui/operator/box_navigation_tables.glade.h:1
+#: ../glom/frame_glom.cc:1243 ../ui/operator/box_navigation_tables.glade.h:1
 msgid "Edit Tables"
 msgstr "Upravit tabulky"
 
-#: ../glom/frame_glom.cc:1336
+#: ../glom/frame_glom.cc:1338
 msgid ""
 "You have not entered any find criteria. Try entering information in the "
 "fields."
 msgstr "Nezadali jste žádná kritéria hledání. Zkuste do polí zadat informace."
 
-#: ../glom/frame_glom.cc:1338
+#: ../glom/frame_glom.cc:1340
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:108
 msgid "No Find Criteria"
 msgstr "Žádná kritéria hledání"
 
-#: ../glom/frame_glom.cc:1690 ../glom/onlineglom_strings.cc:33
+#: ../glom/frame_glom.cc:1692 ../glom/onlineglom_strings.cc:33
 #: ../ui/developer/box_reports.glade.h:1
 msgid "Reports"
 msgstr "Sestavy"
 
-#: ../glom/frame_glom.cc:1721 ../ui/developer/box_print_layouts.glade.h:1
+#: ../glom/frame_glom.cc:1723 ../ui/developer/box_print_layouts.glade.h:1
 msgid "Print Layouts"
 msgstr "Rozvržení tisku"
 
-#: ../glom/frame_glom.cc:1837
+#: ../glom/frame_glom.cc:1839
 msgid "Could Not Create Directory"
 msgstr "Nelze vytvořit adresář"
 
-#: ../glom/frame_glom.cc:1838
+#: ../glom/frame_glom.cc:1840
 msgid ""
 "There was an error when attempting to create the directory for the new "
 "database files."
 msgstr ""
 "Vyskytla se chyba při pokusu o vytvoření adresáře pro soubory nové databáze."
 
-#: ../glom/frame_glom.cc:1842
+#: ../glom/frame_glom.cc:1844
 msgid "Could Not Start Database Server"
 msgstr "Nelze spustit databázový server"
 
-#: ../glom/frame_glom.cc:1843
+#: ../glom/frame_glom.cc:1845
 msgid "There was an error when attempting to start the database server."
 msgstr "Vyskytla se chyba při pokusu o spuštění databázového serveru."
 
-#: ../glom/frame_glom.cc:1948
+#: ../glom/frame_glom.cc:1952
 msgid "Initializing Database Data"
 msgstr "Inicializují se databázová data"
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2489
+#: ../glom/frame_glom.cc:2492
 msgid "All"
 msgstr "Vše"
 
@@ -950,7 +950,7 @@ msgstr "Zpět na seznam"
 
 #. Translators: This is a noun. It is a notebook tab title.
 #. Details column:
-#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1362
+#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1373
 #: ../glom/mode_data/notebook_data.cc:67
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:215
 #: ../glom/mode_find/notebook_find.cc:39
@@ -970,12 +970,10 @@ msgid "Login"
 msgstr "Přihlásit"
 
 #: ../glom/onlineglom_strings.cc:36
-#| msgid "Please enter the PostgreSQL server's password for the user %1: "
 msgid "Enter the PostgreSQL username and password."
 msgstr "Zadejte jméno uživatele a heslo pro PostgreSQL."
 
 #: ../glom/onlineglom_strings.cc:37
-#| msgid "Rename"
 msgid "Username"
 msgstr "Jméno uživatele"
 
@@ -992,7 +990,6 @@ msgid "Cancel"
 msgstr "Zrušit"
 
 #: ../glom/onlineglom_strings.cc:41
-#| msgid "The username for the PostgreSQL server."
 msgid "The username or password are not correct."
 msgstr "Jméno uživatele a/nebo heslo nejsou správně."
 
@@ -1509,48 +1506,48 @@ msgstr "Název databáze"
 msgid "Unknown"
 msgstr "Neznámé"
 
-#: ../glom/libglom/document/document.cc:509
-#: ../glom/libglom/document/document.cc:527
+#: ../glom/libglom/document/document.cc:520
+#: ../glom/libglom/document/document.cc:538
 msgid "System Preferences"
 msgstr "Nastavení systému"
 
-#: ../glom/libglom/document/document.cc:540
+#: ../glom/libglom/document/document.cc:551
 msgid "System Name"
 msgstr "Název systému"
 
-#: ../glom/libglom/document/document.cc:546
+#: ../glom/libglom/document/document.cc:557
 msgid "Organisation Name"
 msgstr "Název organizace"
 
-#: ../glom/libglom/document/document.cc:552
+#: ../glom/libglom/document/document.cc:563
 msgid "Organisation Logo"
 msgstr "Logo organizace"
 
-#: ../glom/libglom/document/document.cc:558
+#: ../glom/libglom/document/document.cc:569
 msgid "Street"
 msgstr "Ulice"
 
-#: ../glom/libglom/document/document.cc:564
+#: ../glom/libglom/document/document.cc:575
 msgid "Street (line 2)"
 msgstr "Ulice (řádek 2)"
 
-#: ../glom/libglom/document/document.cc:570
+#: ../glom/libglom/document/document.cc:581
 msgid "City"
 msgstr "Město"
 
-#: ../glom/libglom/document/document.cc:576
+#: ../glom/libglom/document/document.cc:587
 msgid "State"
 msgstr "Stát"
 
-#: ../glom/libglom/document/document.cc:582
+#: ../glom/libglom/document/document.cc:593
 msgid "Country"
 msgstr "Země"
 
-#: ../glom/libglom/document/document.cc:588
+#: ../glom/libglom/document/document.cc:599
 msgid "Zip Code"
 msgstr "Směrovací číslo"
 
-#: ../glom/libglom/document/document.cc:1356
+#: ../glom/libglom/document/document.cc:1367
 msgid "Overview"
 msgstr "Přehled"
 
@@ -1787,7 +1784,7 @@ msgstr "Chyba: Nelze se připojit k zadané databázi."
 msgid "Successful connection."
 msgstr "Úspěšné připojení."
 
-#: ../glom/main.cc:189
+#: ../glom/main.cc:197
 msgid ""
 "You seem to be running Glom as a user with administrator privileges. Glom "
 "may not be run with such privileges for security reasons.\n"
@@ -1798,7 +1795,7 @@ msgstr ""
 "Prosím přihlaste se do systému jako obyčejný uživatel."
 
 #. Warn the user:
-#: ../glom/main.cc:203
+#: ../glom/main.cc:211
 msgid ""
 "You seem to be running Glom as root. Glom may not be run as root.\n"
 "Please login to your system as a normal user."
@@ -1806,20 +1803,25 @@ msgstr ""
 "Zdá se, že Glom běží jako root. Glom nemůže být spuštěn jako root.\n"
 "Prosím přihlašte se k vašemu systému jako běžný uživatel."
 
-#: ../glom/main.cc:209
+#: ../glom/main.cc:217
 msgid "Running As Root"
 msgstr "Běžící jako root"
 
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
-#: ../glom/main.cc:252 ../glom/main.cc:265 ../glom/main.cc:426
+#. Show message to the user about the broken installation:
+#. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
+#. Unlike for PostgreSQL, this warning is only shown if MySQL was specified in the build.
+#. Show message to the user about the broken installation:
+#: ../glom/main.cc:260 ../glom/main.cc:273 ../glom/main.cc:311
+#: ../glom/main.cc:324 ../glom/main.cc:485
 msgid "Incomplete Glom Installation"
 msgstr "Nekompletní instalace programu Glom"
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:253
+#: ../glom/main.cc:261
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -1828,17 +1830,17 @@ msgid ""
 "You may now install PostgreSQL to complete the Glom installation."
 msgstr ""
 "Vaše instalace Glomu není kompletní, protože PostgreSQL není na vašem "
-"systému dostupná. PostgreSQL je vyžadována pro provoz databází Glomu.\n"
+"systému dostupná. PostgreSQL je vyžadována pro provoz databází Glom.\n"
 "\n"
 "Nyní můžete nainstalovat PostgreSQL a instalace Glomu bude dokončena."
 
-#: ../glom/main.cc:255
+#: ../glom/main.cc:263
 msgid "Install PostgreSQL"
 msgstr "Instalovat PostgreSQL"
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:266
+#: ../glom/main.cc:274
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -1848,13 +1850,61 @@ msgid ""
 "can be corrected."
 msgstr ""
 "Vaše instalace Glomu není kompletní, protože PostgreSQL není na vašem "
-"systému dostupná. PostgreSQL je nutná pro hostování databází Glomu.\n"
+"systému dostupná. PostgreSQL je nutná pro hostování databází Glom.\n"
 "\n"
-"Prosím nahlašte tuto chybu vašemu dodavateli nebo správci systému za účelem "
+"Nahlaste prosím tuto chybu vašemu dodavateli nebo správci systému za účelem "
+"nápravy."
+
+#. use_markup
+#. modal
+#: ../glom/main.cc:312
+#| msgid ""
+#| "Your installation of Glom is not complete, because PostgreSQL is not "
+#| "available on your system. PostgreSQL is needed for self-hosting of Glom "
+#| "databases.\n"
+#| "\n"
+#| "You may now install PostgreSQL to complete the Glom installation."
+msgid ""
+"Your installation of Glom is not complete, because MySQL is not available on "
+"your system. MySQL is needed for self-hosting of some Glom databases.\n"
+"\n"
+"You may now install MySQL to complete the Glom installation."
+msgstr ""
+"Vaše instalace Glomu není kompletní, protože MySQL není na vašem systému "
+"dostupná. MySQL je vyžadována pro provoz databází Glom.\n"
+"\n"
+"Nyní můžete nainstalovat PostgreSQL a instalace Glomu bude dokončena."
+
+#: ../glom/main.cc:314
+#| msgid "Install PostgreSQL"
+msgid "Install MySQL"
+msgstr "Instalovat MySQL"
+
+#. use_markup
+#. modal
+#: ../glom/main.cc:325
+#| msgid ""
+#| "Your installation of Glom is not complete, because PostgreSQL is not "
+#| "available on your system. PostgreSQL is needed for self-hosting of Glom "
+#| "databases.\n"
+#| "\n"
+#| "Please report this bug to your vendor, or your system administrator so it "
+#| "can be corrected."
+msgid ""
+"Your installation of Glom is not complete, because MySQL is not available on "
+"your system. MySQL is needed for self-hosting of some Glom databases.\n"
+"\n"
+"Please report this bug to your vendor, or your system administrator so it "
+"can be corrected."
+msgstr ""
+"Vaše instalace Glomu není kompletní, protože MySQL není na vašem systému "
+"dostupná. MySQL je nutná pro hostování databází Glom.\n"
+"\n"
+"Nahlaste prosím tuto chybu vašemu dodavateli nebo správci systému za účelem "
 "nápravy."
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:282
+#: ../glom/main.cc:341
 msgid ""
 "Your installation of Glom is not complete, because the Glom Python module is "
 "not available on your system.\n"
@@ -1868,12 +1918,12 @@ msgstr ""
 "Prosím nahlaste tuto chybu vašemu dodavateli nebo správci systému za účelem "
 "nápravy."
 
-#: ../glom/main.cc:284
+#: ../glom/main.cc:343
 msgid "Glom Python Module Not Installed"
 msgstr "Modul Glom pro jazyk Python není nainstalovaný"
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:297
+#: ../glom/main.cc:356
 msgid ""
 "Your installation of Glom is not complete, because the gi.repository Python "
 "module is not available on your system.\n"
@@ -1887,12 +1937,12 @@ msgstr ""
 "Prosím nahlaste tuto chybu vašemu dodavateli nebo správci systému za účelem "
 "nápravy."
 
-#: ../glom/main.cc:299
+#: ../glom/main.cc:358
 msgid "gi.repository Python Module Not Installed"
 msgstr "Modul gi.repository pro jazyk Python není nainstalovaný"
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:312
+#: ../glom/main.cc:371
 msgid ""
 "Your installation of Glom is not complete, because the gi.repository.Gda "
 "python module is not available on your system.\n"
@@ -1906,12 +1956,12 @@ msgstr ""
 "Prosím nahlaste tuto chybu vašemu dodavateli nebo správci systému za účelem "
 "nápravy."
 
-#: ../glom/main.cc:314
+#: ../glom/main.cc:373
 msgid "gi.repository.Gda Python Module Not Installed"
 msgstr "Modul gi.repository.Gda pro jazyk Python není nainstalovaný"
 
 #. The Postgres provider was not found, so warn the user:
-#: ../glom/main.cc:424
+#: ../glom/main.cc:483
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda "
 "provider is not available on your system. This provider is needed to access "
@@ -2803,11 +2853,11 @@ msgstr ""
 "Glom nemůže od databázového serveru získat seznam uživatelů. Pravděpodobně k "
 "tomu nemáte dostatečná oprávnění. Měli byste být superuživateli."
 
-#: ../glom/mode_design/users/dialog_users_list.cc:412
+#: ../glom/mode_design/users/dialog_users_list.cc:414
 msgid "Developer group may not be empty."
 msgstr "Skupina vývojářů nemůže být prázdná."
 
-#: ../glom/mode_design/users/dialog_users_list.cc:413
+#: ../glom/mode_design/users/dialog_users_list.cc:415
 msgid "The developer group must contain at least one user."
 msgstr "Skupina vývojářů musí obsahovat alespoň jednoho uživatele."
 
@@ -3056,14 +3106,14 @@ msgstr ""
 msgid "_Title:"
 msgstr "_Nadpis:"
 
-#. Use titles that show the distinction between PostgreSQL and SQLite:
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:121
+#. Use titles that show the distinction between PostgreSQL and the alternatives:
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:120
 msgid ""
 "Create PostgreSQL database in its own folder, to be hosted by this computer."
 msgstr ""
 "Vytvořit databázi PostgreSQL ve vlastní složce, pro provoz na tomto počítači."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:125
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:121
 msgid ""
 "Create database on an external PostgreSQL database server, to be specified "
 "in the next step."
@@ -3071,13 +3121,25 @@ msgstr ""
 "Vytvořit databázi na vzdáleném databázovém serveru PostgreSQL, který určíte "
 "v dalším kroku."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:131
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:123
+msgid "Create database in its own folder, to be hosted by this computer."
+msgstr "Vytvořit databázi ve vlastní složce, pro provoz na tomto počítači."
+
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:124
+msgid ""
+"Create database on an external database server, to be specified in the next "
+"step."
+msgstr ""
+"Vytvořit databázi na vzdáleném databázovém serveru, který určíte v dalším "
+"kroku."
+
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:141
 msgid ""
 "Create SQLite database in its own folder, to be hosted by this computer."
 msgstr ""
 "Vytvořit databázi SQLite ve vlastní složce, pro provoz na tomto počítači."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:132
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:142
 msgid ""
 "SQLite does not support authentication or remote access but is suitable for "
 "embedded devices."
@@ -3085,28 +3147,30 @@ msgstr ""
 "SQLite nepodporuje ověřování a vzdálený přístup, ale je vhodná pro různá "
 "samostatná zařízení."
 
-#. TODO: Hide this because it's the only radio button, so it's not a choice:
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:142
-msgid ""
-"Create database in its own folder, to be hosted by this computer, using "
-"SQLite"
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:149
+#| msgid ""
+#| "Create SQLite database in its own folder, to be hosted by this computer."
+msgid "Create MySQL database in its own folder, to be hosted by this computer."
 msgstr ""
-"Vytvořit databázi ve vlastní složce, pro provoz na tomto počítači, použít "
-"SQLite."
+"Vytvořit databázi MySQL ve vlastní složce, pro provoz na tomto počítači."
 
-#. Only PostgreSQL:
-#. Use titles that don't mention the boring name of the backend:
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:151
-msgid "Create database in its own folder, to be hosted by this computer."
-msgstr "Vytvořit databázi ve vlastní složce, pro provoz na tomto počítači."
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:150
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:156
+msgid "MySQL support in Glom is experimental and unlikely to work properly."
+msgstr ""
+"Podpora MySQL je v aplikaci Glom zatím experimentální a nemusí pracovat "
+"zcela korektně."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:155
+#| msgid ""
+#| "Create database on an external database server, to be specified in the "
+#| "next step."
 msgid ""
-"Create database on an external database server, to be specified in the next "
-"step."
+"Create database on an external MySQL database server, to be specified in the "
+"next step."
 msgstr ""
-"Vytvořit databázi na vzdáleném databázovém serveru, který určíte v dalším "
-"kroku."
+"Vytvořit databázi na vzdáleném databázovém serveru MySQL, který určíte v "
+"dalším kroku."
 
 #: ../glom/utility_widgets/imageglom.cc:659
 msgid "Images"
@@ -3931,7 +3995,8 @@ msgid ""
 "Clicking the row button takes the user to the table specified by this "
 "relationship:"
 msgstr ""
-"Kliknutím na tlačítko řádku přenese uživatele do tabulky určené tímto vztahem:"
+"Kliknutím na tlačítko řádku přenese uživatele do tabulky určené tímto "
+"vztahem:"
 
 #: ../ui/developer/window_data_layout.glade.h:26
 msgid "Automatic:"
