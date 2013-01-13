@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-01-10 10:59+0000\n"
-"PO-Revision-Date: 2013-01-10 21:22+0100\n"
+"POT-Creation-Date: 2013-01-13 13:16+0000\n"
+"PO-Revision-Date: 2013-01-13 15:12+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -22,26 +22,26 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: ../glom/application.cc:138 ../glom/glom_create_from_example.cc:240
+#: ../glom/application.cc:138 ../glom/glom_create_from_example.cc:256
 #: ../glom/glom_export_po.cc:112 ../glom/glom_export_po_all.cc:100
-#: ../glom/glom_import_po_all.cc:101 ../glom/glom_test_connection.cc:131
+#: ../glom/glom_import_po_all.cc:101 ../glom/glom_test_connection.cc:145
 msgid "Error while parsing command-line options: "
 msgstr "Napaka med razčlenjevanem možnosti ukazne vrstice:"
 
 #. TODO: How can we just print them out?
-#: ../glom/application.cc:139 ../glom/glom_create_from_example.cc:241
+#: ../glom/application.cc:139 ../glom/glom_create_from_example.cc:257
 #: ../glom/glom_export_po.cc:113 ../glom/glom_export_po_all.cc:101
-#: ../glom/glom_import_po_all.cc:102 ../glom/glom_test_connection.cc:91
+#: ../glom/glom_import_po_all.cc:102 ../glom/glom_test_connection.cc:105
 msgid "Use --help to see a list of available command-line options."
 msgstr ""
 "Uporabite --help za ogled seznama razpoložljivih možnosti ukazne vrstice."
 
-#: ../glom/application.cc:180 ../glom/glom_create_from_example.cc:275
+#: ../glom/application.cc:180 ../glom/glom_create_from_example.cc:291
 #: ../glom/glom_export_po.cc:162
 msgid "Glom: The file does not exist."
 msgstr "Glom: Datoteka ne obstaja."
 
-#: ../glom/application.cc:190 ../glom/glom_create_from_example.cc:285
+#: ../glom/application.cc:190 ../glom/glom_create_from_example.cc:301
 #: ../glom/glom_export_po.cc:172
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: Pot datoteke je mapa namesto datoteke."
@@ -258,13 +258,13 @@ msgstr ""
 
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
 #. Warn the user, and let him try again:
-#: ../glom/appwindow.cc:773 ../glom/frame_glom.cc:2072
-#: ../glom/frame_glom.cc:2143
+#: ../glom/appwindow.cc:773 ../glom/frame_glom.cc:2075
+#: ../glom/frame_glom.cc:2146
 msgid "Connection Failed"
 msgstr "Povezava je spodletela"
 
-#: ../glom/appwindow.cc:773 ../glom/frame_glom.cc:2072
-#: ../glom/frame_glom.cc:2143
+#: ../glom/appwindow.cc:773 ../glom/frame_glom.cc:2075
+#: ../glom/frame_glom.cc:2146
 msgid ""
 "Glom could not connect to the database server. Maybe you entered an "
 "incorrect user name or password, or maybe the postgres database server is "
@@ -344,11 +344,11 @@ msgid "Continue without Developer Mode"
 msgstr "Nadaljuj brez razvijalskega načina"
 
 #. The connection to the server is OK, but the database is not there yet.
-#: ../glom/appwindow.cc:1174
+#: ../glom/appwindow.cc:1175
 msgid "Database Not Found On Server"
 msgstr "Podatkovne zbirke ni mogoče najti na strežniku"
 
-#: ../glom/appwindow.cc:1174
+#: ../glom/appwindow.cc:1175
 msgid ""
 "The database could not be found on the server. Please consult your system "
 "administrator."
@@ -358,43 +358,43 @@ msgstr ""
 
 #. std::cerr might show some hints, but we don't want to confront the user with them:
 #. TODO: Actually complain about specific stuff such as missing data, because the user might really play with the file system.
-#: ../glom/appwindow.cc:1184
+#: ../glom/appwindow.cc:1185
 msgid "Problem Loading Document"
 msgstr "Težava med nalaganjem dokumenta"
 
-#: ../glom/appwindow.cc:1184
+#: ../glom/appwindow.cc:1185
 msgid "Glom could not load the document."
 msgstr "Glom ni mogel naložiti dokumenta."
 
-#: ../glom/appwindow.cc:1619
+#: ../glom/appwindow.cc:1620
 msgid "Creating Glom database from example file."
 msgstr "Ustvarjanje podatkovne zbirke Glom iz poskusne datoteke."
 
-#: ../glom/appwindow.cc:1798
+#: ../glom/appwindow.cc:1799
 msgid "Creating Glom database from backup file."
 msgstr "Ustvarjanje podatkovne zbirke Glom iz datoteke varnostne kopije."
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/appwindow.cc:2274 ../glom/bakery/appwindow_withdoc.cc:237
+#: ../glom/appwindow.cc:2275 ../glom/bakery/appwindow_withdoc.cc:237
 #: ../glom/bakery/appwindow_withdoc.cc:288
 msgid "Save failed."
 msgstr "Napaka med shranjevanjem."
 
-#: ../glom/appwindow.cc:2274
+#: ../glom/appwindow.cc:2275
 msgid "There was an error while saving the example file."
 msgstr "Prišlo je do napake med shranjevanjem datoteke primera."
 
-#: ../glom/appwindow.cc:2315 ../glom/appwindow.cc:2320
+#: ../glom/appwindow.cc:2316 ../glom/appwindow.cc:2321
 #: ../glom/bakery/appwindow_withdoc_gtk.cc:425
 msgid "Save Document"
 msgstr "Shrani dokument"
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2407 ../glom/bakery/appwindow_withdoc_gtk.cc:473
+#: ../glom/appwindow.cc:2408 ../glom/bakery/appwindow_withdoc_gtk.cc:473
 msgid "Read-only File."
 msgstr "Datoteka le za branje."
 
-#: ../glom/appwindow.cc:2407 ../glom/bakery/appwindow_withdoc_gtk.cc:473
+#: ../glom/appwindow.cc:2408 ../glom/bakery/appwindow_withdoc_gtk.cc:473
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -403,11 +403,11 @@ msgstr ""
 "dostopa."
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2421 ../glom/bakery/appwindow_withdoc_gtk.cc:487
+#: ../glom/appwindow.cc:2422 ../glom/bakery/appwindow_withdoc_gtk.cc:487
 msgid "Read-only Directory."
 msgstr "Mapa le za branje."
 
-#: ../glom/appwindow.cc:2421 ../glom/bakery/appwindow_withdoc_gtk.cc:487
+#: ../glom/appwindow.cc:2422 ../glom/bakery/appwindow_withdoc_gtk.cc:487
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -415,19 +415,19 @@ msgstr ""
 "V tej mapi datoteke ni mogoče ustvariti, saj nimate ustreznih dovoljenj "
 "dostopa."
 
-#: ../glom/appwindow.cc:2438
+#: ../glom/appwindow.cc:2439
 msgid "Database Title missing"
 msgstr "Naslov podatkovne zbirke manjka"
 
-#: ../glom/appwindow.cc:2438
+#: ../glom/appwindow.cc:2439
 msgid "You must specify a title for the new database."
 msgstr "Navesti morate naslov za drugo podatkovno zbirko."
 
-#: ../glom/appwindow.cc:2467 ../glom/frame_glom.cc:1832
+#: ../glom/appwindow.cc:2468 ../glom/frame_glom.cc:1834
 msgid "Directory Already Exists"
 msgstr "Mapa že obstaja"
 
-#: ../glom/appwindow.cc:2467 ../glom/frame_glom.cc:1833
+#: ../glom/appwindow.cc:2468 ../glom/frame_glom.cc:1835
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
@@ -437,51 +437,51 @@ msgstr ""
 "obstoječa mapa. Navedite drugo ime mape za nove datoteke podatkovne zbirke. "
 
 #. This actually creates the directory:
-#: ../glom/appwindow.cc:2606
+#: ../glom/appwindow.cc:2607
 msgid "Save Backup"
 msgstr "Shrani varnostno kopijo"
 
-#: ../glom/appwindow.cc:2622
+#: ../glom/appwindow.cc:2623
 msgid "Exporting backup"
 msgstr "Izvažanje varnostne kopije"
 
-#: ../glom/appwindow.cc:2628
+#: ../glom/appwindow.cc:2629
 msgid "Export Backup failed."
 msgstr "Izvoz varnostne kopije je spodletel."
 
-#: ../glom/appwindow.cc:2628
+#: ../glom/appwindow.cc:2629
 msgid "There was an error while exporting the backup."
 msgstr "Prišlo je do napake med izvažanjem varnostne kopije."
 
-#: ../glom/appwindow.cc:2634
+#: ../glom/appwindow.cc:2635
 msgid "Choose a backup file"
 msgstr "Izbor datoteke varnostne kopije"
 
-#: ../glom/appwindow.cc:2639
+#: ../glom/appwindow.cc:2640
 msgid ".tar.gz Backup files"
 msgstr "Datoteke varnostnih kopij .tar.gz"
 
-#: ../glom/appwindow.cc:2645
+#: ../glom/appwindow.cc:2646
 msgid "Restore"
 msgstr "Obnovi"
 
-#: ../glom/appwindow.cc:2670
+#: ../glom/appwindow.cc:2671
 msgid "Restoring backup"
 msgstr "Obnavljanje varnostne kopije"
 
-#: ../glom/appwindow.cc:2677
+#: ../glom/appwindow.cc:2678
 msgid "Restore Backup failed."
 msgstr "Obnova varnostne kopije je spodletela."
 
-#: ../glom/appwindow.cc:2677
+#: ../glom/appwindow.cc:2678
 msgid "There was an error while restoring the backup."
 msgstr "Prišlo je do napake med obnavljanjem varnostne kopije."
 
-#: ../glom/appwindow.cc:2774 ../glom/bakery/appwindow_withdoc_gtk.cc:346
+#: ../glom/appwindow.cc:2775 ../glom/bakery/appwindow_withdoc_gtk.cc:346
 msgid " (read-only)"
 msgstr " (le za branje)"
 
-#: ../glom/appwindow.cc:2822 ../ui/operator/window_main.glade.h:2
+#: ../glom/appwindow.cc:2823 ../ui/operator/window_main.glade.h:2
 msgid "Processing"
 msgstr "Obdelovanje"
 
@@ -780,34 +780,34 @@ msgid "_Share"
 msgstr "_Souporaba"
 
 #. TODO: Warn about connected users if possible.
-#: ../glom/frame_glom.cc:940
+#: ../glom/frame_glom.cc:941
 msgid "Stop sharing on the network"
 msgstr "Zaustavi souporabo na omrežju"
 
-#: ../glom/frame_glom.cc:941
+#: ../glom/frame_glom.cc:942
 msgid "This will prevent other users on the network from using this database."
 msgstr ""
 "To bo drugim uporabnikom na omrežju preprečilo uporabo te podatkovne zbirke."
 
-#: ../glom/frame_glom.cc:944
+#: ../glom/frame_glom.cc:945
 msgid "_Stop Sharing"
 msgstr "_Zaustavi souporabo"
 
-#: ../glom/frame_glom.cc:992 ../glom/frame_glom.cc:2129
+#: ../glom/frame_glom.cc:994 ../glom/frame_glom.cc:2132
 msgid "Stopping Database Server"
 msgstr "Zaustavljanje strežnika podatkovne zbirke"
 
 #. Do startup, such as starting the self-hosting database server
-#: ../glom/frame_glom.cc:995 ../glom/frame_glom.cc:2017
-#: ../glom/frame_glom.cc:2175
+#: ../glom/frame_glom.cc:997 ../glom/frame_glom.cc:2020
+#: ../glom/frame_glom.cc:2178
 msgid "Starting Database Server"
 msgstr "Zaganjanje strežnika podatkovne zbirke"
 
-#: ../glom/frame_glom.cc:1150
+#: ../glom/frame_glom.cc:1152
 msgid "Table Exists Already"
 msgstr "Razpredelnica že obstaja"
 
-#: ../glom/frame_glom.cc:1150
+#: ../glom/frame_glom.cc:1152
 msgid ""
 "A table with this name already exists in the database. Please choose a "
 "different table name."
@@ -815,11 +815,11 @@ msgstr ""
 "Razpredelnica s tem imenom že obstaja v podatkovni zbirki. Izberite drugo "
 "ime razpredelnice."
 
-#: ../glom/frame_glom.cc:1154
+#: ../glom/frame_glom.cc:1156
 msgid "Relationship Exists Already"
 msgstr "Razmerje že obstaja"
 
-#: ../glom/frame_glom.cc:1154
+#: ../glom/frame_glom.cc:1156
 msgid ""
 "A relationship with this name already exists for this table. Please choose a "
 "different relationship name."
@@ -827,52 +827,52 @@ msgstr ""
 "Razmerje s tem imenom že obstaja za to razpredelnico. Izberite drugo ime "
 "razmerja."
 
-#: ../glom/frame_glom.cc:1158
+#: ../glom/frame_glom.cc:1160
 msgid "More information needed"
 msgstr "Zahtevanih je več podrobnosti"
 
-#: ../glom/frame_glom.cc:1158
+#: ../glom/frame_glom.cc:1160
 msgid "You must specify a field, a table name, and a relationship name."
 msgstr "Določiti morate polje, ime razpredelnice in ime razmerja."
 
-#: ../glom/frame_glom.cc:1212
+#: ../glom/frame_glom.cc:1214
 msgid "Related Table Created"
 msgstr "Ustvarjena je bila povezana razpredelnica"
 
-#: ../glom/frame_glom.cc:1212
+#: ../glom/frame_glom.cc:1214
 msgid "The new related table has been created."
 msgstr "Ustvarjena je bila nova povezana razpredelnica."
 
 #. namespace Glom
-#: ../glom/frame_glom.cc:1241 ../ui/operator/box_navigation_tables.glade.h:1
+#: ../glom/frame_glom.cc:1243 ../ui/operator/box_navigation_tables.glade.h:1
 msgid "Edit Tables"
 msgstr "Uredi razpredelnice"
 
-#: ../glom/frame_glom.cc:1336
+#: ../glom/frame_glom.cc:1338
 msgid ""
 "You have not entered any find criteria. Try entering information in the "
 "fields."
 msgstr "Niste vnesli kriterijev iskanja. Poskusite vnesti podatke v poljih."
 
-#: ../glom/frame_glom.cc:1338
+#: ../glom/frame_glom.cc:1340
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:108
 msgid "No Find Criteria"
 msgstr "Ni kriterijev iskanja"
 
-#: ../glom/frame_glom.cc:1690 ../glom/onlineglom_strings.cc:33
+#: ../glom/frame_glom.cc:1692 ../glom/onlineglom_strings.cc:33
 #: ../ui/developer/box_reports.glade.h:1
 msgid "Reports"
 msgstr "Poročila"
 
-#: ../glom/frame_glom.cc:1721 ../ui/developer/box_print_layouts.glade.h:1
+#: ../glom/frame_glom.cc:1723 ../ui/developer/box_print_layouts.glade.h:1
 msgid "Print Layouts"
 msgstr "Razporeditve tiskanja"
 
-#: ../glom/frame_glom.cc:1837
+#: ../glom/frame_glom.cc:1839
 msgid "Could Not Create Directory"
 msgstr "Mape ni mogoče ustvariti"
 
-#: ../glom/frame_glom.cc:1838
+#: ../glom/frame_glom.cc:1840
 msgid ""
 "There was an error when attempting to create the directory for the new "
 "database files."
@@ -880,21 +880,21 @@ msgstr ""
 "Med poskusom ustvarjanja mape za nove datoteke podatkovne zbirke je prišlo "
 "do napake."
 
-#: ../glom/frame_glom.cc:1842
+#: ../glom/frame_glom.cc:1844
 msgid "Could Not Start Database Server"
 msgstr "Strežnika podatkovne zbirke ni mogoče zagnati"
 
-#: ../glom/frame_glom.cc:1843
+#: ../glom/frame_glom.cc:1845
 msgid "There was an error when attempting to start the database server."
 msgstr ""
 "Med poskusom zaganjanja strežnika podatkovne zbirke je prišlo do napake."
 
-#: ../glom/frame_glom.cc:1948
+#: ../glom/frame_glom.cc:1952
 msgid "Initializing Database Data"
 msgstr "Zaganjanje podatkov podatkovne zbirke"
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2489
+#: ../glom/frame_glom.cc:2492
 msgid "All"
 msgstr "Vse"
 
@@ -955,7 +955,7 @@ msgstr "Nazaj na seznam"
 
 #. Translators: This is a noun. It is a notebook tab title.
 #. Details column:
-#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1362
+#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1373
 #: ../glom/mode_data/notebook_data.cc:67
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:215
 #: ../glom/mode_find/notebook_find.cc:39
@@ -1512,48 +1512,48 @@ msgstr "Naslov podatkovne zbirke"
 msgid "Unknown"
 msgstr "Neznano"
 
-#: ../glom/libglom/document/document.cc:509
-#: ../glom/libglom/document/document.cc:527
+#: ../glom/libglom/document/document.cc:520
+#: ../glom/libglom/document/document.cc:538
 msgid "System Preferences"
 msgstr "Možnosti sistema"
 
-#: ../glom/libglom/document/document.cc:540
+#: ../glom/libglom/document/document.cc:551
 msgid "System Name"
 msgstr "Ime sistema"
 
-#: ../glom/libglom/document/document.cc:546
+#: ../glom/libglom/document/document.cc:557
 msgid "Organisation Name"
 msgstr "Ime organizacije"
 
-#: ../glom/libglom/document/document.cc:552
+#: ../glom/libglom/document/document.cc:563
 msgid "Organisation Logo"
 msgstr "Logotip organizacije"
 
-#: ../glom/libglom/document/document.cc:558
+#: ../glom/libglom/document/document.cc:569
 msgid "Street"
 msgstr "Ulica"
 
-#: ../glom/libglom/document/document.cc:564
+#: ../glom/libglom/document/document.cc:575
 msgid "Street (line 2)"
 msgstr "Ulica (druga vrstica)"
 
-#: ../glom/libglom/document/document.cc:570
+#: ../glom/libglom/document/document.cc:581
 msgid "City"
 msgstr "Mesto"
 
-#: ../glom/libglom/document/document.cc:576
+#: ../glom/libglom/document/document.cc:587
 msgid "State"
 msgstr "Regija"
 
-#: ../glom/libglom/document/document.cc:582
+#: ../glom/libglom/document/document.cc:593
 msgid "Country"
 msgstr "Država"
 
-#: ../glom/libglom/document/document.cc:588
+#: ../glom/libglom/document/document.cc:599
 msgid "Zip Code"
 msgstr "Poštna številka"
 
-#: ../glom/libglom/document/document.cc:1356
+#: ../glom/libglom/document/document.cc:1367
 msgid "Overview"
 msgstr "Pregled"
 
@@ -1595,23 +1595,23 @@ msgstr "Opombe"
 msgid "List"
 msgstr "Seznam"
 
-#: ../glom/glom_create_from_example.cc:65 ../glom/glom_export_po.cc:51
+#: ../glom/glom_create_from_example.cc:73 ../glom/glom_export_po.cc:51
 #: ../glom/glom_export_po_all.cc:49 ../glom/glom_import_po_all.cc:50
-#: ../glom/glom_test_connection.cc:55
+#: ../glom/glom_test_connection.cc:60
 msgid "Glom options"
 msgstr "Možnosti glom"
 
-#: ../glom/glom_create_from_example.cc:65 ../glom/glom_export_po.cc:51
+#: ../glom/glom_create_from_example.cc:73 ../glom/glom_export_po.cc:51
 #: ../glom/glom_export_po_all.cc:49 ../glom/glom_import_po_all.cc:50
-#: ../glom/glom_test_connection.cc:55
+#: ../glom/glom_test_connection.cc:60
 msgid "Command-line options"
 msgstr "Možnosti ukazne vrstice"
 
-#: ../glom/glom_create_from_example.cc:72
+#: ../glom/glom_create_from_example.cc:81
 msgid "The example .glom file to open."
 msgstr "Odprta je vzorčna datoteka .glom."
 
-#: ../glom/glom_create_from_example.cc:77
+#: ../glom/glom_create_from_example.cc:86
 msgid ""
 "The directory in which to save the created .glom file, or sub-directory if "
 "necessary, such as /home/someuser/ ."
@@ -1619,17 +1619,17 @@ msgstr ""
 "Mapa za shranjevanje ustvarjene datoteke .glom ali pa podrejena mapa, na "
 "primer /home/uporabnik/ ."
 
-#: ../glom/glom_create_from_example.cc:82
+#: ../glom/glom_create_from_example.cc:91
 msgid "The name for the created .glom file, such as something.glom ."
 msgstr "Ime ustvarjene datoteke .glom, na primer imedatoteke.glom ."
 
-#: ../glom/glom_create_from_example.cc:87 ../glom/glom_export_po.cc:72
+#: ../glom/glom_create_from_example.cc:96 ../glom/glom_export_po.cc:72
 #: ../glom/glom_export_po_all.cc:60 ../glom/glom_import_po_all.cc:61
-#: ../glom/glom_test_connection.cc:63 ../glom/main_local_options.cc:47
+#: ../glom/glom_test_connection.cc:69 ../glom/main_local_options.cc:47
 msgid "The version of this application."
 msgstr "Različica tega programa."
 
-#: ../glom/glom_create_from_example.cc:93
+#: ../glom/glom_create_from_example.cc:102
 msgid ""
 "The hostname of the PostgreSQL server, such as localhost. If this is not "
 "specified then a self-hosted database will be created."
@@ -1638,31 +1638,30 @@ msgstr ""
 "ni navedena, bo samodejno ustvarjena  podatkovna zbirka z lastnim "
 "gostiteljem."
 
-#: ../glom/glom_create_from_example.cc:98 ../glom/glom_test_connection.cc:73
+#: ../glom/glom_create_from_example.cc:107 ../glom/glom_test_connection.cc:79
 msgid "The port of the PostgreSQL server, such as 5434."
 msgstr "Vrata strežnika PostgreSQL, na primer 5434."
 
-#: ../glom/glom_create_from_example.cc:103 ../glom/glom_test_connection.cc:78
+#: ../glom/glom_create_from_example.cc:112 ../glom/glom_test_connection.cc:84
 msgid "The username for the PostgreSQL server."
 msgstr "Uporabniško ime za povezavo s strežnikom PostgreSQL."
 
-#: ../glom/glom_create_from_example.cc:316
+#: ../glom/glom_create_from_example.cc:118 ../glom/glom_test_connection.cc:97
+msgid "Use MySQL instead of PostgreSQL."
+msgstr "Uporabi MySQL namesto PostgreSQL."
+
+#: ../glom/glom_create_from_example.cc:332
 msgid "Glom: The output directory does not exist."
 msgstr "Glom: odvodna mapa ne obstaja."
 
-#: ../glom/glom_create_from_example.cc:326
+#: ../glom/glom_create_from_example.cc:342
 msgid "Glom: The output path is not a directory."
 msgstr "Glom: odvodna pot je mapa."
 
-#: ../glom/glom_create_from_example.cc:424 ../glom/glom_test_connection.cc:166
-msgid "Please enter the PostgreSQL server's password for the user %1: "
-msgstr "Vnesite geslo za povezavo s strežnikom PostgreSQL za uporabnika %1:"
-
-#: ../glom/glom_create_from_example.cc:428 ../glom/glom_test_connection.cc:170
-msgid ""
-"Error: getpass() is not implemented in the Windows build. The connection "
-"will fail."
-msgstr "Napaka: getpass() ni vgrajen v izgradnji okna. Povezava bo spodletela."
+#: ../glom/glom_create_from_example.cc:455
+msgid "Please enter the database server's password for the user %1: "
+msgstr ""
+"Vnesite geslo za povezavo s strežnikom podatkovne zbirke za uporabnika %1:"
 
 #: ../glom/glom_export_po.cc:57
 msgid ""
@@ -1765,33 +1764,37 @@ msgstr "Uvažanje datoteke po za jezikovni nabor %1 je spodletelo."
 msgid "Po file imported for locale: %1 for file %2"
 msgstr "Datoteka po %2 je uvožena za jezikovni nabor %1."
 
-#: ../glom/glom_test_connection.cc:68
+#: ../glom/glom_test_connection.cc:74
 msgid "The hostname of the PostgreSQL server, such as localhost."
 msgstr "Ime gostitelja strežnika PostgreSQL, na primer localhost."
 
-#: ../glom/glom_test_connection.cc:84
+#: ../glom/glom_test_connection.cc:90
 msgid "The specific database on the PostgreSQL server (Optional)."
 msgstr "Podatkovna zbirka na strežniku PostgreSQL (izbirno)."
 
-#: ../glom/glom_test_connection.cc:156
+#: ../glom/glom_test_connection.cc:170
 msgid "Please provide a database username."
 msgstr "Vnesite uporabniško ime za podatkovno zbirko."
 
-#: ../glom/glom_test_connection.cc:220
+#: ../glom/glom_test_connection.cc:180
+msgid "Please enter the PostgreSQL server's password for the user %1: "
+msgstr "Vnesite geslo za povezavo s strežnikom PostgreSQL za uporabnika %1:"
+
+#: ../glom/glom_test_connection.cc:261
 msgid ""
 "Error: Could not connect to the server even without specifying a database."
 msgstr ""
 "Napaka: ni se mogoče povezati s strežnikom brez določila podatkovne zbirke."
 
-#: ../glom/glom_test_connection.cc:228
+#: ../glom/glom_test_connection.cc:269
 msgid "Error: Could not connect to the specified database."
 msgstr "Napaka: povezava z določeno podatkovno zbirko ni mogoča."
 
-#: ../glom/glom_test_connection.cc:234
+#: ../glom/glom_test_connection.cc:275
 msgid "Successful connection."
 msgstr "Povezava je uspešno vzpostavljena."
 
-#: ../glom/main.cc:189
+#: ../glom/main.cc:197
 msgid ""
 "You seem to be running Glom as a user with administrator privileges. Glom "
 "may not be run with such privileges for security reasons.\n"
@@ -1802,7 +1805,7 @@ msgstr ""
 "Prijavite se v svoj sistem kot običajni uporabnik."
 
 #. Warn the user:
-#: ../glom/main.cc:203
+#: ../glom/main.cc:211
 msgid ""
 "You seem to be running Glom as root. Glom may not be run as root.\n"
 "Please login to your system as a normal user."
@@ -1811,20 +1814,25 @@ msgstr ""
 "tak skrbnik.\n"
 "Prijavite se v svoj sistem kot običajen uporabnik."
 
-#: ../glom/main.cc:209
+#: ../glom/main.cc:217
 msgid "Running As Root"
 msgstr "Zagnano s skrbniškim računom"
 
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
-#: ../glom/main.cc:252 ../glom/main.cc:265 ../glom/main.cc:426
+#. Show message to the user about the broken installation:
+#. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
+#. Unlike for PostgreSQL, this warning is only shown if MySQL was specified in the build.
+#. Show message to the user about the broken installation:
+#: ../glom/main.cc:260 ../glom/main.cc:273 ../glom/main.cc:311
+#: ../glom/main.cc:324 ../glom/main.cc:485
 msgid "Incomplete Glom Installation"
 msgstr "Nepopolna namestitev Gloma"
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:253
+#: ../glom/main.cc:261
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -1837,13 +1845,13 @@ msgstr ""
 "\n"
 "Za končanje namestitve Gloma namestite PostgreSQL."
 
-#: ../glom/main.cc:255
+#: ../glom/main.cc:263
 msgid "Install PostgreSQL"
 msgstr "Namesti PostgreSQL"
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:266
+#: ../glom/main.cc:274
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -1858,8 +1866,42 @@ msgstr ""
 "Pošljite poročilo o tem hrošču svojemu proizvajalcu ali skrbniku sistema, da "
 "bo lahko popravljen."
 
+#. use_markup
+#. modal
+#: ../glom/main.cc:312
+msgid ""
+"Your installation of Glom is not complete, because MySQL is not available on "
+"your system. MySQL is needed for self-hosting of some Glom databases.\n"
+"\n"
+"You may now install MySQL to complete the Glom installation."
+msgstr ""
+"Vaša namestitev Gloma ni končana, ker MySQL na vašem sistemu ni na voljo. "
+"MySQL je zahtevan za samo-gostovanje podatkovnih zbirk Glom.\n"
+"\n"
+"Za končanje namestitve programa Glom namestite MySQL."
+
+#: ../glom/main.cc:314
+msgid "Install MySQL"
+msgstr "Namestiti MySQL"
+
+#. use_markup
+#. modal
+#: ../glom/main.cc:325
+msgid ""
+"Your installation of Glom is not complete, because MySQL is not available on "
+"your system. MySQL is needed for self-hosting of some Glom databases.\n"
+"\n"
+"Please report this bug to your vendor, or your system administrator so it "
+"can be corrected."
+msgstr ""
+"Vaša namestitev programa Glom ni končana, ker MySQL na vašem sistemu ni na "
+"voljo. MySQL je zahtevan za samo-gostovanje podatkovnih zbirk Glom.\n"
+"\n"
+"Pošljite poročilo o tem hrošču svojemu proizvajalcu ali skrbniku sistema, da "
+"bo lahko popravljen."
+
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:282
+#: ../glom/main.cc:341
 msgid ""
 "Your installation of Glom is not complete, because the Glom Python module is "
 "not available on your system.\n"
@@ -1873,12 +1915,12 @@ msgstr ""
 "Pošljite poročilo o tem hrošču svojemu proizvajalcu ali skrbniku sistema, da "
 "bo lahko popravljen."
 
-#: ../glom/main.cc:284
+#: ../glom/main.cc:343
 msgid "Glom Python Module Not Installed"
 msgstr "Python module glom ni nameščen"
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:297
+#: ../glom/main.cc:356
 msgid ""
 "Your installation of Glom is not complete, because the gi.repository Python "
 "module is not available on your system.\n"
@@ -1891,12 +1933,12 @@ msgstr ""
 "\n"
 "Pošljite poročilo o tem hrošču skrbniku sistema, da bo lahko popravljen."
 
-#: ../glom/main.cc:299
+#: ../glom/main.cc:358
 msgid "gi.repository Python Module Not Installed"
 msgstr "Python modul gi.repository ni nameščen"
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:312
+#: ../glom/main.cc:371
 msgid ""
 "Your installation of Glom is not complete, because the gi.repository.Gda "
 "python module is not available on your system.\n"
@@ -1909,12 +1951,12 @@ msgstr ""
 "\n"
 "Pošljite poročilo o hrošču skrbniku sistema, da bo lahko popravljen."
 
-#: ../glom/main.cc:314
+#: ../glom/main.cc:373
 msgid "gi.repository.Gda Python Module Not Installed"
 msgstr "Python modul gi.repository.Gda ni nameščen"
 
 #. The Postgres provider was not found, so warn the user:
-#: ../glom/main.cc:424
+#: ../glom/main.cc:483
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda "
 "provider is not available on your system. This provider is needed to access "
@@ -2808,11 +2850,11 @@ msgstr ""
 "Ni mogoče pridobiti seznama uporabnikov s strežnika. Najverjetneje ni "
 "ustreznih dovoljenje za skrbniška opravila."
 
-#: ../glom/mode_design/users/dialog_users_list.cc:412
+#: ../glom/mode_design/users/dialog_users_list.cc:414
 msgid "Developer group may not be empty."
 msgstr "Skupina razvijalcev ne sme biti prazna."
 
-#: ../glom/mode_design/users/dialog_users_list.cc:413
+#: ../glom/mode_design/users/dialog_users_list.cc:415
 msgid "The developer group must contain at least one user."
 msgstr "Skupina razvijalcev mora vsebovati vsaj enega uporabnika."
 
@@ -3061,26 +3103,38 @@ msgstr ""
 msgid "_Title:"
 msgstr "_Naslov:"
 
-#. Use titles that show the distinction between PostgreSQL and SQLite:
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:121
+#. Use titles that show the distinction between PostgreSQL and the alternatives:
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:120
 msgid ""
 "Create PostgreSQL database in its own folder, to be hosted by this computer."
 msgstr "Ustvari podatkovno zbirko PostgreSQL v svoji mapi na tem računalniku."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:125
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:121
 msgid ""
 "Create database on an external PostgreSQL database server, to be specified "
 "in the next step."
 msgstr ""
 "Ustvari podatkovno zbirko na zunanjem strežniku podatkovne zbirke "
-"PostgreSQL, ki bo naveden v naslednjem koraku."
+"PostgreSQL, ki ga je treba navesti v naslednjem koraku."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:131
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:123
+msgid "Create database in its own folder, to be hosted by this computer."
+msgstr "Ustvari podatkovno zbirko v svoji lastni mapi na tem računalniku."
+
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:124
+msgid ""
+"Create database on an external database server, to be specified in the next "
+"step."
+msgstr ""
+"Ustvari podatkovno zbirko na zunanjem strežniku podatkovne zbirke, ki ga je "
+"treba navesti v naslednjem koraku."
+
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:141
 msgid ""
 "Create SQLite database in its own folder, to be hosted by this computer."
 msgstr "Ustvari podatkovno zbirko SQLite v svoji mapi na tem računalniku."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:132
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:142
 msgid ""
 "SQLite does not support authentication or remote access but is suitable for "
 "embedded devices."
@@ -3088,28 +3142,26 @@ msgstr ""
 "SQLite ne podpira overitve ali oddaljenega dostopa, vendar je primeren za "
 "vstavljene naprave."
 
-#. TODO: Hide this because it's the only radio button, so it's not a choice:
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:142
-msgid ""
-"Create database in its own folder, to be hosted by this computer, using "
-"SQLite"
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:149
+msgid "Create MySQL database in its own folder, to be hosted by this computer."
 msgstr ""
-"Ustvari podatkovno zbirko v svoji lastni mapi na tem računalniku z uporabo "
-"SQLite"
+"Ustvari podatkovno zbirko MySQL v svoji mapi za gostovanje na tem "
+"računalniku."
 
-#. Only PostgreSQL:
-#. Use titles that don't mention the boring name of the backend:
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:151
-msgid "Create database in its own folder, to be hosted by this computer."
-msgstr "Ustvari podatkovno zbirko v svoji lastni mapi na tem računalniku."
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:150
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:156
+msgid "MySQL support in Glom is experimental and unlikely to work properly."
+msgstr ""
+"Podpora za MySQL je v programu Glom še preizkusna, zato najverjetneje ne bo "
+"deloval pravilno."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:155
 msgid ""
-"Create database on an external database server, to be specified in the next "
-"step."
+"Create database on an external MySQL database server, to be specified in the "
+"next step."
 msgstr ""
-"Ustvari podatkovno zbirko na zunanjem strežniku podatkovne zbirke, ki bo "
-"naveden v naslednjem koraku."
+"Ustvari podatkovno zbirko na zunanjem strežniku podatkovne zbirke MySQL, ki "
+"ga je treba navesti v naslednjem koraku."
 
 #: ../glom/utility_widgets/imageglom.cc:659
 msgid "Images"
@@ -4331,6 +4383,19 @@ msgstr "<b>Skupina:</b>"
 #: ../ui/developer/window_users.glade.h:3
 msgid "<b>Users</b>"
 msgstr "<b>Uporabniki</b>"
+
+#~ msgid ""
+#~ "Error: getpass() is not implemented in the Windows build. The connection "
+#~ "will fail."
+#~ msgstr ""
+#~ "Napaka: getpass() ni vgrajen v izgradnji okna. Povezava bo spodletela."
+
+#~ msgid ""
+#~ "Create database in its own folder, to be hosted by this computer, using "
+#~ "SQLite"
+#~ msgstr ""
+#~ "Ustvari podatkovno zbirko v svoji lastni mapi na tem računalniku z "
+#~ "uporabo SQLite"
 
 #~ msgid "No find criteria"
 #~ msgstr "Ni kriterijev iskanja"
