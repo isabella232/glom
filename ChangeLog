@@ -1,5 +1,13 @@
 2013-01-13  Murray Cumming  <murrayc@murrayc.com>
 
+        MySQL: Actually allow self-hosting in Glom itself.
+
+        * glom/appwindow.cc: ui_file_select_save():
+	Recognise MySQL self-hosting as self-hosting, so we 
+	create a sub-directory and initialize the data.
+
+2013-01-13  Murray Cumming  <murrayc@murrayc.com>
+
         MySQL: Support MySQL in the command-line utiltiies.
 
         * glom/glom_create_from_example.cc:

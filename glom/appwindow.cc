@@ -2450,6 +2450,11 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
         is_self_hosted = true;
 #endif //GLOM_ENABLE_POSTGRESQL
 
+#ifdef GLOM_ENABLE_MYSQL
+      if(m_ui_save_extra_newdb_hosting_mode == Document::HOSTING_MODE_MYSQL_SELF)
+        is_self_hosted = true;
+#endif // GLOM_ENABLE_MYSQL
+
 #ifdef GLOM_ENABLE_SQLITE
       if(m_ui_save_extra_newdb_hosting_mode == Document::HOSTING_MODE_SQLITE)
         is_self_hosted = true;
