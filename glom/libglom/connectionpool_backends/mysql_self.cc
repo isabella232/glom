@@ -178,6 +178,9 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
   // We don't use mysql_secure_installation because it only takes the details via prompts.
   // TODO: With MySQL 5.6, use the new --random-passwords option, because otherwise the root password will be blank,
   // and, at least on Ubuntu, we will then not be able to connect with mysqladmin.
+  //
+  // Note: This will fail on Ubuntu because its AppArmor configuration prevents use of MySQL in non-default directories:
+  // https://bugs.launchpad.net/ubuntu/+source/mysql-5.5/+bug/1095370
   const std::string command_initdb = get_path_to_mysql_executable("mysql_install_db")
     + " --no-defaults" //Otherwise Ubuntu specifies --user=mysql
     + " --datadir=" + Glib::shell_quote(dbdir_data);

@@ -1,3 +1,11 @@
+2013-01-13  Murray Cumming  <murrayc@murrayc.com>
+
+        MySQL: Add comments about AppArmor stopping use of MySQL on Ubuntu.
+
+        * glom/libglom/connectionpool_backends/mysql_self.cc:
+        * tests/test_selfhosting_utils.cc: Mention this bug:
+	https://bugs.launchpad.net/ubuntu/+source/mysql-5.5/+bug/1095370
+
 2013-01-11  Murray Cumming  <murrayc@murrayc.com>
 
         MySQL: Add checkboxes to select MySQL when it is in the build.

@@ -563,6 +563,8 @@ int test_all_hosting_modes(const SlotTest& slot)
 //though the functionality is always built in libglom.
 //We usually use GLOM_ENABLE_MYSQL only in the UI code,
 //but let's avoid forcing people to install the MySQL server.
+//Also, Ubuntu's AppArmor will not let use start a MySQL process by default anyway.
+//See https://bugs.launchpad.net/ubuntu/+source/mysql-5.5/+bug/1095370
 #ifdef GLOM_ENABLE_MYSQL
   if(!test_hosting_mode(slot, Glom::Document::HOSTING_MODE_MYSQL_SELF, "MySQL"))
     return EXIT_FAILURE;
