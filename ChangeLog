@@ -1,5 +1,12 @@
 2013-01-13  Murray Cumming  <murrayc@murrayc.com>
 
+        MySQL: Support MySQL in the command-line utiltiies.
+
+        * glom/glom_create_from_example.cc:
+        * glom/glom_test_connection.cc: Add ifdefed code for MySQL.
+
+2013-01-13  Murray Cumming  <murrayc@murrayc.com>
+
         MySQL: Add comments about AppArmor stopping use of MySQL on Ubuntu.
 
         * glom/libglom/connectionpool_backends/mysql_self.cc:

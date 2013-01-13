@@ -25,6 +25,7 @@
 
 #include <libglom/connectionpool.h>
 #include <libglom/connectionpool_backends/postgres_central.h>
+#include <libglom/connectionpool_backends/mysql_central.h>
 #include <libglom/init.h>
 #include <libglom/privs.h>
 #include <libglom/utils.h>
@@ -49,12 +50,17 @@ public:
   Glib::ustring m_arg_server_username;
   Glib::ustring m_arg_server_password;
   Glib::ustring m_arg_server_database;
+
+#ifdef GLOM_ENABLE_MYSQL
+  bool m_arg_use_mysql;
+#endif //GLOM_ENABLE_MYSQL
 };
 
 GlomCreateOptionGroup::GlomCreateOptionGroup()
 : Glib::OptionGroup("glom_create_from_example", _("Glom options"), _("Command-line options")),
   m_arg_version(false),
-  m_arg_server_port(0)
+  m_arg_server_port(0),
+  m_arg_use_mysql(false)
 {
   Glib::OptionEntry entry;
 
@@ -83,6 +89,14 @@ GlomCreateOptionGroup::GlomCreateOptionGroup()
   entry.set_short_name('d');
   entry.set_description(_("The specific database on the PostgreSQL server (Optional)."));
   add_entry(entry, m_arg_server_database);
+
+
+#ifdef GLOM_ENABLE_MYSQL
+  entry.set_long_name("use-mysql");
+  entry.set_short_name('m');
+  entry.set_description(_("Use MySQL instead of PostgreSQL."));
+  add_entry(entry, m_arg_use_mysql);
+#endif //GLOM_ENABLE_MYSQL
 }
 
 static void print_options_hint()
@@ -167,7 +181,7 @@ int main(int argc, char* argv[])
 
 #ifdef G_OS_WIN32
   const char* password = "";
-  std::cerr << _("Error: getpass() is not implemented in the Windows build. The connection will fail.") << std::endl;
+  std::cerr << "Error: getpass() is not implemented in the Windows build. The connection will fail." << std::endl;
 #else
   const char* password = ::getpass(prompt.c_str());
 #endif
@@ -177,19 +191,46 @@ int main(int argc, char* argv[])
 
   //Specify the backend and backend-specific details to be used by the connectionpool.
   //This is usually done by ConnectionPool::setup_from_document():
-  Glom::ConnectionPoolBackends::PostgresCentralHosted* backend = 
-    new Glom::ConnectionPoolBackends::PostgresCentralHosted;
-  backend->set_host(group.m_arg_server_hostname);
-
-  //Use a specified port, or try all suitable ports:
-  if(group.m_arg_server_port)
+#ifdef GLOM_ENABLE_MYSQL
+  Glom::ConnectionPoolBackends::Backend* backend = 0;
+  if(group.m_arg_use_mysql)
   {
-    backend->set_port(group.m_arg_server_port);
-    backend->set_try_other_ports(false);
+    //TODO: Move some of the *CentralHosted API into a multiply-inherited Server base class,
+    //to avoid the duplication?
+    Glom::ConnectionPoolBackends::MySQLCentralHosted* derived_backend = new Glom::ConnectionPoolBackends::MySQLCentralHosted;
+
+    //Use a specified port, or try all suitable ports:
+    if(group.m_arg_server_port)
+    {
+      derived_backend->set_port(group.m_arg_server_port);
+      derived_backend->set_try_other_ports(false);
+    }
+    else
+    {
+      derived_backend->set_try_other_ports(true);
+    }
+
+    derived_backend->set_host(group.m_arg_server_hostname);
+    backend = derived_backend;
   }
   else
+#endif //GLOM_ENABLE_MYSQL
   {
-    backend->set_try_other_ports(true);
+    Glom::ConnectionPoolBackends::PostgresCentralHosted* derived_backend = new Glom::ConnectionPoolBackends::PostgresCentralHosted;
+
+    //Use a specified port, or try all suitable ports:
+    if(group.m_arg_server_port)
+    {
+      derived_backend->set_port(group.m_arg_server_port);
+      derived_backend->set_try_other_ports(false);
+    }
+    else
+    {
+      derived_backend->set_try_other_ports(true);
+    }
+
+    derived_backend->set_host(group.m_arg_server_hostname);
+    backend = derived_backend;
   }
 
   connection_pool->set_user(group.m_arg_server_username);

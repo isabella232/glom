@@ -27,6 +27,8 @@
 #include <libglom/connectionpool.h>
 #include <libglom/connectionpool_backends/postgres_self.h>
 #include <libglom/connectionpool_backends/postgres_central.h>
+#include <libglom/connectionpool_backends/mysql_self.h>
+#include <libglom/connectionpool_backends/mysql_central.h>
 #include <libglom/init.h>
 #include <libglom/privs.h>
 #include <libglom/db_utils.h>
@@ -41,6 +43,8 @@
 #include <unistd.h> //For getpass().
 
 #include <glibmm/i18n.h>
+
+#include "config.h"
 
 class GlomCreateOptionGroup : public Glib::OptionGroup
 {
@@ -59,12 +63,17 @@ public:
   double m_arg_server_port;
   Glib::ustring m_arg_server_username;
   Glib::ustring m_arg_server_password;
+
+#ifdef GLOM_ENABLE_MYSQL
+  bool m_arg_use_mysql;
+#endif //GLOM_ENABLE_MYSQL
 };
 
 GlomCreateOptionGroup::GlomCreateOptionGroup()
 : Glib::OptionGroup("glom_create_from_example", _("Glom options"), _("Command-line options")),
   m_arg_version(false),
-  m_arg_server_port(0)
+  m_arg_server_port(0),
+  m_arg_use_mysql(false)
 {
   Glib::OptionEntry entry;
   entry.set_long_name("input");
@@ -102,6 +111,13 @@ GlomCreateOptionGroup::GlomCreateOptionGroup()
   entry.set_short_name('u');
   entry.set_description(_("The username for the PostgreSQL server."));
   add_entry(entry, m_arg_server_username);
+
+#ifdef GLOM_ENABLE_MYSQL
+  entry.set_long_name("use-mysql");
+  entry.set_short_name('m');
+  entry.set_description(_("Use MySQL instead of PostgreSQL."));
+  add_entry(entry, m_arg_use_mysql);
+#endif //GLOM_ENABLE_MYSQL
 }
 
 static void on_initialize_progress()
@@ -385,17 +401,32 @@ int main(int argc, char* argv[])
 
   document.set_file_uri(file_uri);
 
-
   const bool self_hosting = group.m_arg_server_hostname.empty();
   if(self_hosting)
   {
-    std::cout << "Using self-hosting instead of a central PostgreSQL server." << std::endl;
-    document.set_hosting_mode(Glom::Document::HOSTING_MODE_POSTGRES_SELF);
+    std::cout << "Using self-hosting instead of a central database server." << std::endl;
+
+#if GLOM_ENABLE_MYSQL
+    if(group.m_arg_use_mysql)
+      document.set_hosting_mode(Glom::Document::HOSTING_MODE_MYSQL_SELF);
+    else
+#endif //GLOM_ENABLE_MYSQL
+    {
+      document.set_hosting_mode(Glom::Document::HOSTING_MODE_POSTGRES_SELF);
+    }
   }
   else
   {
-    std::cout << "Using the PostgreSQL server with host: " << group.m_arg_server_hostname << std::endl;
-    document.set_hosting_mode(Glom::Document::HOSTING_MODE_POSTGRES_CENTRAL);
+    std::cout << "Using the database server with host: " << group.m_arg_server_hostname << std::endl;
+
+#if GLOM_ENABLE_MYSQL
+    if(group.m_arg_use_mysql)
+      document.set_hosting_mode(Glom::Document::HOSTING_MODE_MYSQL_CENTRAL);
+    else
+#endif //GLOM_ENABLE_MYSQL
+    {
+      document.set_hosting_mode(Glom::Document::HOSTING_MODE_POSTGRES_CENTRAL);
+    }
   }
    
   document.set_is_example_file(false);
@@ -421,11 +452,11 @@ int main(int argc, char* argv[])
     //Other command-line utilities such as psql don't do this either.
     //TODO: Support alternatives such as using a file.
     const Glib::ustring prompt = Glib::ustring::compose(
-      _("Please enter the PostgreSQL server's password for the user %1: "), group.m_arg_server_username);
+      _("Please enter the database server's password for the user %1: "), group.m_arg_server_username);
 
 #ifdef G_OS_WIN32
     const char* password = "";
-    std::cerr << _("Error: getpass() is not implemented in the Windows build. The connection will fail.") << std::endl;
+    std::cerr << "Error: getpass() is not implemented in the Windows build. The connection will fail." << std::endl;
 #else
     const char* password = ::getpass(prompt.c_str());
 #endif
