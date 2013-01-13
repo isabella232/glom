@@ -59,8 +59,11 @@ public:
 GlomCreateOptionGroup::GlomCreateOptionGroup()
 : Glib::OptionGroup("glom_create_from_example", _("Glom options"), _("Command-line options")),
   m_arg_version(false),
-  m_arg_server_port(0),
+  m_arg_server_port(0)
+#ifdef GLOM_ENABLE_MYSQL
+  ,
   m_arg_use_mysql(false)
+#endif //GLOM_ENABLE_MYSQL
 {
   Glib::OptionEntry entry;
 
@@ -191,8 +194,8 @@ int main(int argc, char* argv[])
 
   //Specify the backend and backend-specific details to be used by the connectionpool.
   //This is usually done by ConnectionPool::setup_from_document():
-#ifdef GLOM_ENABLE_MYSQL
   Glom::ConnectionPoolBackends::Backend* backend = 0;
+#ifdef GLOM_ENABLE_MYSQL
   if(group.m_arg_use_mysql)
   {
     //TODO: Move some of the *CentralHosted API into a multiply-inherited Server base class,

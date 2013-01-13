@@ -72,8 +72,11 @@ public:
 GlomCreateOptionGroup::GlomCreateOptionGroup()
 : Glib::OptionGroup("glom_create_from_example", _("Glom options"), _("Command-line options")),
   m_arg_version(false),
-  m_arg_server_port(0),
+  m_arg_server_port(0)
+#ifdef GLOM_ENABLE_MYSQL
+  ,
   m_arg_use_mysql(false)
+#endif //GLOM_ENABLE_MYSQL
 {
   Glib::OptionEntry entry;
   entry.set_long_name("input");

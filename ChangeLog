@@ -1,5 +1,12 @@
 2013-01-13  Murray Cumming  <murrayc@murrayc.com>
 
+        Fix the build with MySQL disabled.
+
+        * glom/glom_create_from_example.cc:
+        * glom/glom_test_connection.cc: Move the ifdefs around.
+
+2013-01-13  Murray Cumming  <murrayc@murrayc.com>
+
         MySQL: Actually allow self-hosting in Glom itself.
 
         * glom/appwindow.cc: ui_file_select_save():
