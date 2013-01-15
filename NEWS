@@ -1,4 +1,19 @@
-1.23.2:
+1.23.3 (unstable):
+
+* Added an --enable-mysql configure option.
+  When enabled, this adds a PostgreSQL/MySQL choice in the UI,
+  as with the existing --enable-sqlite configure option.
+  The MySQL support is very experimental and unsupported.
+  It might be removed later if nobody chooses to work on it.
+* libglom: Added a dependency on libgda-mysql-5.0, because
+  libglom always supports all backends regardless of the build
+  option.
+* Tests:
+  - Simplify the code a litte.
+  - Test the use of a relationship to get data.
+  - Add a test that uses an example with text primary keys.
+
+1.23.2 (unstable):
 
 * Tests:
   - Use the locally-built glom.

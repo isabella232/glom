@@ -1026,7 +1026,7 @@ bool Utils::file_exists(const Glib::RefPtr<Gio::File>& file)
 }
 
 //TODO: This is a duplicate of the one in db_utils.cc:
-//Merge all db utilities into db_utils in glom 1.22:
+//Merge all db utilities into db_utils in glom 1.24:
 static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
 {
   sharedptr<SharedConnection> sharedconnection;
