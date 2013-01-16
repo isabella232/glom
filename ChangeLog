@@ -1,3 +1,10 @@
+2013-01-16  Murray Cumming  <murrayc@murrayc.com>
+
+        Reduce the libgda dependency version again.
+
+        * configure.ac: The latest libgda is only needed for MySQL,
+	which almost nobody will use.
+
 1.23.3:
 
 2013-01-13  Murray Cumming  <murrayc@murrayc.com>
