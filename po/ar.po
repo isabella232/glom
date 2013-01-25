@@ -472,7 +472,7 @@ msgstr "إذهب"
 #: ../glom/dialog_connection.cc:212
 #, fuzzy
 msgid "Not yet created."
-msgstr "غير مضاف حاليا!"
+msgstr "غير مضاف حاليا"
 
 #. Tables:
 #: ../glom/dialog_database_preferences.cc:54

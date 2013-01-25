@@ -1006,7 +1006,7 @@ msgid ""
 msgstr ""
 "Videti je, da je prijava zahtevana, vendar ne bo izvedena. Stran se ne "
 "objavlja preko protokola HTTPS, ki zahteva varno prijavo. Stopite v stik s "
-"skrbnikom!"
+"skrbnikom"
 
 #: ../glom/bakery/appwindow_withdoc_gtk.cc:284
 #: ../ui/developer/window_field_definition_edit.glade.h:13
