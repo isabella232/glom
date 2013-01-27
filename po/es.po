@@ -13,15 +13,15 @@ msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-01-13 19:38+0000\n"
-"PO-Revision-Date: 2013-01-15 11:36+0100\n"
+"POT-Creation-Date: 2013-01-25 09:15+0000\n"
+"PO-Revision-Date: 2013-01-27 12:54+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
-"Language-Team: Español <gnome-es-list@gnome.org>\n"
+"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Gtranslator 2.91.5\n"
 
 #: ../glom/application.cc:138 ../glom/glom_create_from_example.cc:259
@@ -983,8 +983,9 @@ msgid "Login"
 msgstr "Iniciar sesión"
 
 #: ../glom/onlineglom_strings.cc:36
-msgid "Enter the PostgreSQL username and password."
-msgstr "Introduzca el nombre de usuario y la contraseña de PostgreSQL."
+#| msgid "Enter the PostgreSQL username and password."
+msgid "Enter the username and password."
+msgstr "Introduzca el nombre de usuario y la contraseña."
 
 #: ../glom/onlineglom_strings.cc:37
 msgid "Username"
@@ -1656,7 +1657,6 @@ msgid "The username for the PostgreSQL server."
 msgstr "El nombre de usuario para el servidor PostgreSQL."
 
 #: ../glom/glom_create_from_example.cc:121 ../glom/glom_test_connection.cc:100
-#| msgid "Install PostgreSQL"
 msgid "Use MySQL instead of PostgreSQL."
 msgstr "usar MySQL en lugar de PostreSQL."
 
@@ -1669,7 +1669,6 @@ msgid "Glom: The output path is not a directory."
 msgstr "Glom: la ruta de salida no es una carpeta."
 
 #: ../glom/glom_create_from_example.cc:458
-#| msgid "Please enter the PostgreSQL server's password for the user %1: "
 msgid "Please enter the database server's password for the user %1: "
 msgstr ""
 "Introduzca la contraseña del servidor de bases de datos para el usuario %1: "
@@ -1886,12 +1885,6 @@ msgstr ""
 #. use_markup
 #. modal
 #: ../glom/main.cc:312
-#| msgid ""
-#| "Your installation of Glom is not complete, because PostgreSQL is not "
-#| "available on your system. PostgreSQL is needed for self-hosting of Glom "
-#| "databases.\n"
-#| "\n"
-#| "You may now install PostgreSQL to complete the Glom installation."
 msgid ""
 "Your installation of Glom is not complete, because MySQL is not available on "
 "your system. MySQL is needed for self-hosting of some Glom databases.\n"
@@ -1904,20 +1897,12 @@ msgstr ""
 "Ahora debe instalar MySQL para completar la instalación de Glom."
 
 #: ../glom/main.cc:314
-#| msgid "Install PostgreSQL"
 msgid "Install MySQL"
 msgstr "Instalar MySQL"
 
 #. use_markup
 #. modal
 #: ../glom/main.cc:325
-#| msgid ""
-#| "Your installation of Glom is not complete, because PostgreSQL is not "
-#| "available on your system. PostgreSQL is needed for self-hosting of Glom "
-#| "databases.\n"
-#| "\n"
-#| "Please report this bug to your vendor, or your system administrator so it "
-#| "can be corrected."
 msgid ""
 "Your installation of Glom is not complete, because MySQL is not available on "
 "your system. MySQL is needed for self-hosting of some Glom databases.\n"
@@ -3193,8 +3178,6 @@ msgstr ""
 "dispositivos empotrados."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:149
-#| msgid ""
-#| "Create SQLite database in its own folder, to be hosted by this computer."
 msgid "Create MySQL database in its own folder, to be hosted by this computer."
 msgstr ""
 "Crear la base de datos MySQL en su propia carpeta, para alojarla en este "
@@ -3208,9 +3191,6 @@ msgstr ""
 "correctamente."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:155
-#| msgid ""
-#| "Create database on an external database server, to be specified in the "
-#| "next step."
 msgid ""
 "Create database on an external MySQL database server, to be specified in the "
 "next step."
