@@ -12,6 +12,8 @@
     <trans loc="lv" val="Projektu pārvaldnieka piemērs"/>
     <trans loc="pt_BR" val="Exemplo do gerenciador de projeto"/>
     <trans loc="sl" val="Primer zbirke upravljalnika projektov"/>
+    <trans loc="sr" val="Пример управника пројекта"/>
+    <trans loc="sr@latin" val="Primer upravnika projekta"/>
   </trans_set>
   <connection hosting_mode="postgres_self" server="localhost" port="5433" try_other_ports="false" database="glom_example_project_manager_v3"/>
   <table name="contacts" title="Contacts">
@@ -205,6 +207,8 @@
       <trans loc="lv" val="Kontakti"/>
       <trans loc="pt_BR" val="Contatos"/>
       <trans loc="sl" val="Stiki"/>
+      <trans loc="sr" val="Контакти"/>
+      <trans loc="sr@latin" val="Kontakti"/>
     </trans_set>
     <fields>
       <field name="contact_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Contact ID">
@@ -221,6 +225,8 @@
           <trans loc="lv" val="Kontakta ID"/>
           <trans loc="pt_BR" val="ID de Contato"/>
           <trans loc="sl" val="ID stika"/>
+          <trans loc="sr" val="ИБ контакта"/>
+          <trans loc="sr@latin" val="IB kontakta"/>
         </trans_set>
       </field>
       <field name="name_first" type="Text" title="First Name">
@@ -237,6 +243,8 @@
           <trans loc="lv" val="Vārds"/>
           <trans loc="pt_BR" val="Primeiro nome"/>
           <trans loc="sl" val="Ime"/>
+          <trans loc="sr" val="Име"/>
+          <trans loc="sr@latin" val="Ime"/>
         </trans_set>
       </field>
       <field name="name_middle" type="Text" title="Middle Name">
@@ -253,6 +261,8 @@
           <trans loc="lv" val="Otrais vārds"/>
           <trans loc="pt_BR" val="Nome do meio"/>
           <trans loc="sl" val="Drugo ime"/>
+          <trans loc="sr" val="Име оца"/>
+          <trans loc="sr@latin" val="Ime oca"/>
         </trans_set>
       </field>
       <field name="name_last" type="Text" title="Last Name">
@@ -269,6 +279,8 @@
           <trans loc="lv" val="Uzvārds"/>
           <trans loc="pt_BR" val="Último nome"/>
           <trans loc="sl" val="Priimek"/>
+          <trans loc="sr" val="Презиме"/>
+          <trans loc="sr@latin" val="Prezime"/>
         </trans_set>
       </field>
       <field name="name_title" type="Text" title="Title">
@@ -286,6 +298,8 @@
                 <trans loc="id" val="Tn"/>
                 <trans loc="pt_BR" val="Sr"/>
                 <trans loc="sl" val="g."/>
+                <trans loc="sr" val="Г-дин"/>
+                <trans loc="sr@latin" val="G-din"/>
               </trans_set>
             </custom_choice>
             <custom_choice value="Mrs">
@@ -300,6 +314,8 @@
                 <trans loc="id" val="Ny"/>
                 <trans loc="pt_BR" val="Sra"/>
                 <trans loc="sl" val="ga."/>
+                <trans loc="sr" val="Г-ђа"/>
+                <trans loc="sr@latin" val="G-đa"/>
               </trans_set>
             </custom_choice>
             <custom_choice value="Ms">
@@ -314,6 +330,8 @@
                 <trans loc="id" val="Nn"/>
                 <trans loc="pt_BR" val="Srta"/>
                 <trans loc="sl" val="ga."/>
+                <trans loc="sr" val="Г-дин"/>
+                <trans loc="sr@latin" val="G-din"/>
               </trans_set>
             </custom_choice>
             <custom_choice value="Miss">
@@ -328,6 +346,8 @@
                 <trans loc="id" val="Nona"/>
                 <trans loc="pt_BR" val="Senhorita"/>
                 <trans loc="sl" val="gdč."/>
+                <trans loc="sr" val="Г-ђица"/>
+                <trans loc="sr@latin" val="G-đica"/>
               </trans_set>
             </custom_choice>
             <custom_choice value="Dr">
@@ -343,6 +363,8 @@
                 <trans loc="lv" val="Dr."/>
                 <trans loc="pt_BR" val="Dr."/>
                 <trans loc="sl" val="dr."/>
+                <trans loc="sr" val="Др."/>
+                <trans loc="sr@latin" val="Dr."/>
               </trans_set>
             </custom_choice>
             <custom_choice value="Prof">
@@ -358,6 +380,8 @@
                 <trans loc="lv" val="Prof."/>
                 <trans loc="pt_BR" val="Prof."/>
                 <trans loc="sl" val="prof."/>
+                <trans loc="sr" val="Проф."/>
+                <trans loc="sr@latin" val="Prof."/>
               </trans_set>
             </custom_choice>
           </custom_choice_list>
@@ -374,6 +398,8 @@
           <trans loc="lv" val="Uzruna"/>
           <trans loc="pt_BR" val="Título"/>
           <trans loc="sl" val="Naziv"/>
+          <trans loc="sr" val="Звање"/>
+          <trans loc="sr@latin" val="Zvanje"/>
         </trans_set>
       </field>
       <field name="address_street" type="Text" title="Street">
@@ -390,6 +416,8 @@
           <trans loc="lv" val="Iela"/>
           <trans loc="pt_BR" val="Rua"/>
           <trans loc="sl" val="Ulica"/>
+          <trans loc="sr" val="Улица"/>
+          <trans loc="sr@latin" val="Ulica"/>
         </trans_set>
       </field>
       <field name="address_town" type="Text" title="Town">
@@ -406,6 +434,8 @@
           <trans loc="lv" val="Pilsēta"/>
           <trans loc="pt_BR" val="Cidade"/>
           <trans loc="sl" val="Mesto"/>
+          <trans loc="sr" val="Град"/>
+          <trans loc="sr@latin" val="Grad"/>
         </trans_set>
       </field>
       <field name="address_state" type="Text" title="State">
@@ -422,6 +452,8 @@
           <trans loc="lv" val="Novads"/>
           <trans loc="pt_BR" val="Estado"/>
           <trans loc="sl" val="Okraj"/>
+          <trans loc="sr" val="Република"/>
+          <trans loc="sr@latin" val="Republika"/>
         </trans_set>
       </field>
       <field name="address_country" type="Text" title="Country">
@@ -438,6 +470,8 @@
           <trans loc="lv" val="Valsts"/>
           <trans loc="pt_BR" val="País"/>
           <trans loc="sl" val="Država"/>
+          <trans loc="sr" val="Држава"/>
+          <trans loc="sr@latin" val="Država"/>
         </trans_set>
       </field>
       <field name="address_postcode" type="Text" title="Postcode">
@@ -454,6 +488,8 @@
           <trans loc="lv" val="Pasta indekss"/>
           <trans loc="pt_BR" val="CEP"/>
           <trans loc="sl" val="Poštna koda"/>
+          <trans loc="sr" val="Поштански број"/>
+          <trans loc="sr@latin" val="Poštanski broj"/>
         </trans_set>
       </field>
       <field name="date_of_birth" type="Date" title="Date of Birth">
@@ -470,6 +506,8 @@
           <trans loc="lv" val="Dzimšanas datums"/>
           <trans loc="pt_BR" val="Data de nascimento"/>
           <trans loc="sl" val="Datum rojstva"/>
+          <trans loc="sr" val="Датум рођења"/>
+          <trans loc="sr@latin" val="Datum rođenja"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
@@ -486,6 +524,8 @@
           <trans loc="lv" val="Komentāri"/>
           <trans loc="pt_BR" val="Comentários"/>
           <trans loc="sl" val="Opombe"/>
+          <trans loc="sr" val="Напомене"/>
+          <trans loc="sr@latin" val="Napomene"/>
         </trans_set>
       </field>
       <field name="name_full" type="Text" title="Full Name">
@@ -503,6 +543,8 @@
           <trans loc="lv" val="Pilns vārds"/>
           <trans loc="pt_BR" val="Nome completo"/>
           <trans loc="sl" val="Polno ime"/>
+          <trans loc="sr" val="Име и презиме"/>
+          <trans loc="sr@latin" val="Ime i prezime"/>
         </trans_set>
       </field>
       <field name="picture" type="Image" title="Picture">
@@ -519,6 +561,8 @@
           <trans loc="lv" val="Attēls"/>
           <trans loc="pt_BR" val="Foto"/>
           <trans loc="sl" val="Slika"/>
+          <trans loc="sr" val="Слика"/>
+          <trans loc="sr@latin" val="Slika"/>
         </trans_set>
       </field>
       <field name="email" type="Text" title="Email Address">
@@ -535,6 +579,8 @@
           <trans loc="lv" val="E-pasta adrese"/>
           <trans loc="pt_BR" val="Endereço de e-mail"/>
           <trans loc="sl" val="Elektronski naslov"/>
+          <trans loc="sr" val="Адреса ел. поште"/>
+          <trans loc="sr@latin" val="Adresa el. pošte"/>
         </trans_set>
       </field>
       <field name="website" type="Text" title="Web Site">
@@ -551,6 +597,8 @@
           <trans loc="lv" val="Tīmekļa vietne"/>
           <trans loc="pt_BR" val="Página web"/>
           <trans loc="sl" val="Spletna stran"/>
+          <trans loc="sr" val="Веб страница"/>
+          <trans loc="sr@latin" val="Veb stranica"/>
         </trans_set>
       </field>
       <field name="tel_home" type="Text" title="Home Telephone">
@@ -567,6 +615,8 @@
           <trans loc="lv" val="Mājas telefons"/>
           <trans loc="pt_BR" val="Telefone residencial"/>
           <trans loc="sl" val="Telefon doma"/>
+          <trans loc="sr" val="Кућни телефон"/>
+          <trans loc="sr@latin" val="Kućni telefon"/>
         </trans_set>
       </field>
       <field name="tel_work" type="Text" title="Work Telephone">
@@ -583,6 +633,8 @@
           <trans loc="lv" val="Darba telefons"/>
           <trans loc="pt_BR" val="Telefone de trabalho"/>
           <trans loc="sl" val="Telefon v službi"/>
+          <trans loc="sr" val="Пословни телефон"/>
+          <trans loc="sr@latin" val="Poslovni telefon"/>
         </trans_set>
       </field>
       <field name="tel_mobile" type="Text" title="Mobile Telephone">
@@ -599,6 +651,8 @@
           <trans loc="lv" val="Mobilais telefons"/>
           <trans loc="pt_BR" val="Telefone celular"/>
           <trans loc="sl" val="Mobilni telefon"/>
+          <trans loc="sr" val="Мобилни телефон"/>
+          <trans loc="sr@latin" val="Mobilni telefon"/>
         </trans_set>
       </field>
       <field name="tel_fax" type="Text" title="Fax">
@@ -615,6 +669,8 @@
           <trans loc="lv" val="Fakss"/>
           <trans loc="pt_BR" val="Fax"/>
           <trans loc="sl" val="Faks"/>
+          <trans loc="sr" val="Факс"/>
+          <trans loc="sr@latin" val="Faks"/>
         </trans_set>
       </field>
     </fields>
@@ -632,6 +688,8 @@
           <trans loc="lv" val="Komandas piederība"/>
           <trans loc="pt_BR" val="Equipe pertencente"/>
           <trans loc="sl" val="Članstvo v skupini"/>
+          <trans loc="sr" val="Чланство у тиму"/>
+          <trans loc="sr@latin" val="Članstvo u timu"/>
         </trans_set>
       </relationship>
     </relationships>
@@ -651,6 +709,8 @@
               <trans loc="lv" val="Pārskats"/>
               <trans loc="pt_BR" val="Visão geral"/>
               <trans loc="sl" val="Pregled"/>
+              <trans loc="sr" val="Преглед"/>
+              <trans loc="sr@latin" val="Pregled"/>
             </trans_set>
             <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -673,6 +733,8 @@
                 <trans loc="lv" val="(Piezīmju grāmatiņa)"/>
                 <trans loc="pt_BR" val="(Agenda)"/>
                 <trans loc="sl" val="(Beležka)"/>
+                <trans loc="sr" val="(Бележница)"/>
+                <trans loc="sr@latin" val="(Beležnica)"/>
               </trans_set>
               <data_layout_group name="telephone" title="Telephone">
                 <trans_set>
@@ -687,6 +749,8 @@
                   <trans loc="lv" val="Telefons"/>
                   <trans loc="pt_BR" val="Telefone"/>
                   <trans loc="sl" val="Telefon"/>
+                  <trans loc="sr" val="Телефон"/>
+                  <trans loc="sr@latin" val="Telefon"/>
                 </trans_set>
                 <data_layout_item name="tel_work" editable="true" use_default_formatting="true">
                   <formatting/>
@@ -714,6 +778,8 @@
                   <trans loc="lv" val="Adrese"/>
                   <trans loc="pt_BR" val="Endereço"/>
                   <trans loc="sl" val="Naslov"/>
+                  <trans loc="sr" val="Адреса"/>
+                  <trans loc="sr@latin" val="Adresa"/>
                 </trans_set>
                 <data_layout_item name="address_street" editable="true" use_default_formatting="true">
                   <formatting/>
@@ -744,6 +810,8 @@
                   <trans loc="lv" val="Vārds"/>
                   <trans loc="pt_BR" val="Nome"/>
                   <trans loc="sl" val="Ime"/>
+                  <trans loc="sr" val="Назив"/>
+                  <trans loc="sr@latin" val="Naziv"/>
                 </trans_set>
                 <data_layout_item name="name_title" editable="true" use_default_formatting="true">
                   <formatting/>
@@ -840,6 +908,8 @@
           <trans loc="lv" val="Kontakti pēc valsts"/>
           <trans loc="pt_BR" val="Contatos por país"/>
           <trans loc="sl" val="Stiki po državah"/>
+          <trans loc="sr" val="Контаката по држави"/>
+          <trans loc="sr@latin" val="Kontakata po državi"/>
         </trans_set>
       </report>
       <report name="by_country_by_town" title="By Country, By Town">
@@ -874,6 +944,8 @@
           <trans loc="lv" val="Kontakti pēc valsts, pēc pilsētas"/>
           <trans loc="pt_BR" val="Por país, Por cidade"/>
           <trans loc="sl" val="Po državi, po mestu"/>
+          <trans loc="sr" val="Према држави, према граду"/>
+          <trans loc="sr@latin" val="Prema državi, prema gradu"/>
         </trans_set>
       </report>
     </reports>
@@ -906,6 +978,8 @@
       <trans loc="lv" val="Projekti"/>
       <trans loc="pt_BR" val="Projetos"/>
       <trans loc="sl" val="Projekti"/>
+      <trans loc="sr" val="Пројекти"/>
+      <trans loc="sr@latin" val="Projekti"/>
     </trans_set>
     <fields>
       <field name="project_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Project ID">
@@ -922,6 +996,8 @@
           <trans loc="lv" val="Projekta ID"/>
           <trans loc="pt_BR" val="ID de projeto"/>
           <trans loc="sl" val="ID projekta"/>
+          <trans loc="sr" val="ИБ пројекта"/>
+          <trans loc="sr@latin" val="IB projekta"/>
         </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
@@ -938,6 +1014,8 @@
           <trans loc="lv" val="Apraksts"/>
           <trans loc="pt_BR" val="Descrição"/>
           <trans loc="sl" val="Opis"/>
+          <trans loc="sr" val="Опис"/>
+          <trans loc="sr@latin" val="Opis"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
@@ -954,6 +1032,8 @@
           <trans loc="lv" val="Komentāri"/>
           <trans loc="pt_BR" val="Comentários"/>
           <trans loc="sl" val="Opombe"/>
+          <trans loc="sr" val="Напомене"/>
+          <trans loc="sr@latin" val="Napomene"/>
         </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
@@ -970,6 +1050,8 @@
           <trans loc="lv" val="Nosaukums"/>
           <trans loc="pt_BR" val="Nome"/>
           <trans loc="sl" val="Ime"/>
+          <trans loc="sr" val="Назив"/>
+          <trans loc="sr@latin" val="Naziv"/>
         </trans_set>
       </field>
     </fields>
@@ -987,6 +1069,8 @@
           <trans loc="lv" val="Komandas"/>
           <trans loc="pt_BR" val="Equipes"/>
           <trans loc="sl" val="Skupine"/>
+          <trans loc="sr" val="Тимови"/>
+          <trans loc="sr@latin" val="Timovi"/>
         </trans_set>
       </relationship>
     </relationships>
@@ -1006,6 +1090,8 @@
               <trans loc="lv" val="Pārskats"/>
               <trans loc="pt_BR" val="Visão geral"/>
               <trans loc="sl" val="Pregled"/>
+              <trans loc="sr" val="Преглед"/>
+              <trans loc="sr@latin" val="Pregled"/>
             </trans_set>
             <data_layout_item name="project_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -1030,6 +1116,8 @@
               <trans loc="lv" val="Sīkāka informācija"/>
               <trans loc="pt_BR" val="Detalhes"/>
               <trans loc="sl" val="Podrobnosti"/>
+              <trans loc="sr" val="Подаци"/>
+              <trans loc="sr@latin" val="Podaci"/>
             </trans_set>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
               <formatting/>
@@ -1102,6 +1190,8 @@
       <trans loc="lv" val="Projekta komandas"/>
       <trans loc="pt_BR" val="Equipes de projeto"/>
       <trans loc="sl" val="Skupine projekta"/>
+      <trans loc="sr" val="Тимови пројекта"/>
+      <trans loc="sr@latin" val="Timovi projekta"/>
     </trans_set>
     <fields>
       <field name="project_team_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Project Team ID">
@@ -1118,6 +1208,8 @@
           <trans loc="lv" val="Projekta komandas ID"/>
           <trans loc="pt_BR" val="ID de equipe de projeto"/>
           <trans loc="sl" val="ID skupine projekta"/>
+          <trans loc="sr" val="ИБ тима пројекта"/>
+          <trans loc="sr@latin" val="IB tima projekta"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
@@ -1134,6 +1226,8 @@
           <trans loc="lv" val="Komentāri"/>
           <trans loc="pt_BR" val="Comentário"/>
           <trans loc="sl" val="Opombe"/>
+          <trans loc="sr" val="Напомене"/>
+          <trans loc="sr@latin" val="Napomene"/>
         </trans_set>
       </field>
       <field name="team_id" type="Number" title="Team ID">
@@ -1160,6 +1254,8 @@
           <trans loc="lv" val="Komandas ID"/>
           <trans loc="pt_BR" val="ID de equipe"/>
           <trans loc="sl" val="ID skupine"/>
+          <trans loc="sr" val="ИБ тима"/>
+          <trans loc="sr@latin" val="IB tima"/>
         </trans_set>
       </field>
       <field name="project_id" type="Number" title="Project ID">
@@ -1186,6 +1282,8 @@
           <trans loc="lv" val="Projekta ID"/>
           <trans loc="pt_BR" val="ID de projeto"/>
           <trans loc="sl" val="ID projekta"/>
+          <trans loc="sr" val="ИБ пројекта"/>
+          <trans loc="sr@latin" val="IB projekta"/>
         </trans_set>
       </field>
     </fields>
@@ -1203,6 +1301,8 @@
           <trans loc="lv" val="Komanda"/>
           <trans loc="pt_BR" val="Equipe"/>
           <trans loc="sl" val="Skupina"/>
+          <trans loc="sr" val="Тим"/>
+          <trans loc="sr@latin" val="Tim"/>
         </trans_set>
       </relationship>
       <relationship name="project" key="project_id" other_table="projects" other_key="project_id" title="Project">
@@ -1218,6 +1318,8 @@
           <trans loc="lv" val="Projekts"/>
           <trans loc="pt_BR" val="Projeto"/>
           <trans loc="sl" val="Projekt"/>
+          <trans loc="sr" val="Пројекат"/>
+          <trans loc="sr@latin" val="Projekat"/>
         </trans_set>
       </relationship>
     </relationships>
@@ -1255,6 +1357,8 @@
               <trans loc="lv" val="Pārskats"/>
               <trans loc="pt_BR" val="Visão geral"/>
               <trans loc="sl" val="Pregled"/>
+              <trans loc="sr" val="Преглед"/>
+              <trans loc="sr@latin" val="Pregled"/>
             </trans_set>
             <data_layout_item name="project_team_id" editable="true" use_default_formatting="true">
               <formatting/>
@@ -1273,6 +1377,8 @@
               <trans loc="lv" val="Sīkāka informācija"/>
               <trans loc="pt_BR" val="Detalhes"/>
               <trans loc="sl" val="Podrobnosti"/>
+              <trans loc="sr" val="Подаци"/>
+              <trans loc="sr@latin" val="Podaci"/>
             </trans_set>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
               <formatting/>
@@ -1294,6 +1400,8 @@
                   <trans loc="lv" val="Komandas nosaukums"/>
                   <trans loc="pt_BR" val="Nome da equipe"/>
                   <trans loc="sl" val="Ime skupine"/>
+                  <trans loc="sr" val="Име тима"/>
+                  <trans loc="sr@latin" val="Ime tima"/>
                 </trans_set>
               </title_custom>
               <formatting/>
@@ -1315,6 +1423,8 @@
                   <trans loc="lv" val="Projekta nosaukums"/>
                   <trans loc="pt_BR" val="Nome de projeto"/>
                   <trans loc="sl" val="Ime projekta"/>
+                  <trans loc="sr" val="Назив пројекта"/>
+                  <trans loc="sr@latin" val="Naziv projekta"/>
                 </trans_set>
               </title_custom>
               <formatting/>
@@ -1357,6 +1467,8 @@
       <trans loc="lv" val="Komandas dalībnieki"/>
       <trans loc="pt_BR" val="Membros de equipe"/>
       <trans loc="sl" val="Člani skupine"/>
+      <trans loc="sr" val="Чланови тима"/>
+      <trans loc="sr@latin" val="Članovi tima"/>
     </trans_set>
     <fields>
       <field name="team_members_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="team_members ID">
@@ -1373,6 +1485,8 @@
           <trans loc="lv" val="Komandas dalībnieka ID"/>
           <trans loc="pt_BR" val="ID de membros_equipe"/>
           <trans loc="sl" val="ID članov skupineVeljavnost uporabniškega ID: %s"/>
+          <trans loc="sr" val="ИБ чланова_тима"/>
+          <trans loc="sr@latin" val="IB članova_tima"/>
         </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
@@ -1389,6 +1503,8 @@
           <trans loc="lv" val="Apraksts"/>
           <trans loc="pt_BR" val="Descrição"/>
           <trans loc="sl" val="Opis"/>
+          <trans loc="sr" val="Опис"/>
+          <trans loc="sr@latin" val="Opis"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
@@ -1405,6 +1521,8 @@
           <trans loc="lv" val="Komentāri"/>
           <trans loc="pt_BR" val="Comentários"/>
           <trans loc="sl" val="Opombe"/>
+          <trans loc="sr" val="Напомене"/>
+          <trans loc="sr@latin" val="Napomene"/>
         </trans_set>
       </field>
       <field name="contact_id" type="Number" title="Contact ID">
@@ -1431,6 +1549,8 @@
           <trans loc="lv" val="Kontakta ID"/>
           <trans loc="pt_BR" val="ID de contato"/>
           <trans loc="sl" val="ID stika"/>
+          <trans loc="sr" val="ИБ контакта"/>
+          <trans loc="sr@latin" val="IB kontakta"/>
         </trans_set>
       </field>
       <field name="team_id" type="Number" title="Team ID">
@@ -1457,6 +1577,8 @@
           <trans loc="lv" val="Komandas ID"/>
           <trans loc="pt_BR" val="ID de equipe"/>
           <trans loc="sl" val="ID skupine"/>
+          <trans loc="sr" val="ИБ тима"/>
+          <trans loc="sr@latin" val="IB tima"/>
         </trans_set>
       </field>
       <field name="role" type="Text" title="Role">
@@ -1473,6 +1595,8 @@
           <trans loc="lv" val="Loma"/>
           <trans loc="pt_BR" val="Função"/>
           <trans loc="sl" val="Vloga"/>
+          <trans loc="sr" val="Улога"/>
+          <trans loc="sr@latin" val="Uloga"/>
         </trans_set>
       </field>
     </fields>
@@ -1490,6 +1614,8 @@
           <trans loc="lv" val="Kontakti"/>
           <trans loc="pt_BR" val="Contatos"/>
           <trans loc="sl" val="Stiki"/>
+          <trans loc="sr" val="Контакти"/>
+          <trans loc="sr@latin" val="Kontakti"/>
         </trans_set>
       </relationship>
       <relationship name="team" key="team_id" other_table="teams" other_key="team_id" title="Team">
@@ -1505,6 +1631,8 @@
           <trans loc="lv" val="Komanda"/>
           <trans loc="pt_BR" val="Equipe"/>
           <trans loc="sl" val="Skupina"/>
+          <trans loc="sr" val="Тим"/>
+          <trans loc="sr@latin" val="Tim"/>
         </trans_set>
       </relationship>
     </relationships>
@@ -1548,6 +1676,8 @@
               <trans loc="lv" val="Pārskats"/>
               <trans loc="pt_BR" val="Visão geral"/>
               <trans loc="sl" val="Pregled"/>
+              <trans loc="sr" val="Преглед"/>
+              <trans loc="sr@latin" val="Pregled"/>
             </trans_set>
             <data_layout_item name="team_members_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -1566,6 +1696,8 @@
               <trans loc="lv" val="Sīkāka informācija"/>
               <trans loc="pt_BR" val="Detalhes"/>
               <trans loc="sl" val="Podrobnosti"/>
+              <trans loc="sr" val="Подаци"/>
+              <trans loc="sr@latin" val="Podaci"/>
             </trans_set>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
               <formatting/>
@@ -1616,6 +1748,8 @@
       <trans loc="lv" val="Komandas"/>
       <trans loc="pt_BR" val="Equipes"/>
       <trans loc="sl" val="Skupine"/>
+      <trans loc="sr" val="Тимови"/>
+      <trans loc="sr@latin" val="Timovi"/>
     </trans_set>
     <fields>
       <field name="team_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Team ID">
@@ -1632,6 +1766,8 @@
           <trans loc="lv" val="Komandas ID"/>
           <trans loc="pt_BR" val="ID de equipe"/>
           <trans loc="sl" val="ID skupine"/>
+          <trans loc="sr" val="ИБ тима"/>
+          <trans loc="sr@latin" val="IB tima"/>
         </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
@@ -1648,6 +1784,8 @@
           <trans loc="lv" val="Apraksts"/>
           <trans loc="pt_BR" val="Descrição"/>
           <trans loc="sl" val="Opis"/>
+          <trans loc="sr" val="Опис"/>
+          <trans loc="sr@latin" val="Opis"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
@@ -1664,6 +1802,8 @@
           <trans loc="lv" val="Komentāri"/>
           <trans loc="pt_BR" val="Comentários"/>
           <trans loc="sl" val="Opombe"/>
+          <trans loc="sr" val="Напомене"/>
+          <trans loc="sr@latin" val="Napomene"/>
         </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
@@ -1680,6 +1820,8 @@
           <trans loc="lv" val="Nosaukums"/>
           <trans loc="pt_BR" val="Nome"/>
           <trans loc="sl" val="Ime"/>
+          <trans loc="sr" val="Име"/>
+          <trans loc="sr@latin" val="Ime"/>
         </trans_set>
       </field>
     </fields>
@@ -1697,6 +1839,8 @@
           <trans loc="lv" val="Dalībnieki"/>
           <trans loc="pt_BR" val="Membros"/>
           <trans loc="sl" val="Člani"/>
+          <trans loc="sr" val="Чланови"/>
+          <trans loc="sr@latin" val="Članovi"/>
         </trans_set>
       </relationship>
       <relationship name="projects" key="team_id" other_table="project_teams" other_key="team_id" title="Projects">
@@ -1712,6 +1856,8 @@
           <trans loc="lv" val="Projekti"/>
           <trans loc="pt_BR" val="Projetos"/>
           <trans loc="sl" val="Projekti"/>
+          <trans loc="sr" val="Пројекти"/>
+          <trans loc="sr@latin" val="Projekti"/>
         </trans_set>
       </relationship>
     </relationships>
@@ -1731,6 +1877,8 @@
               <trans loc="lv" val="Pārskats"/>
               <trans loc="pt_BR" val="Visão geral"/>
               <trans loc="sl" val="Pregled"/>
+              <trans loc="sr" val="Преглед"/>
+              <trans loc="sr@latin" val="Pregled"/>
             </trans_set>
             <data_layout_item name="team_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -1752,6 +1900,8 @@
               <trans loc="lv" val="Sīkāka informācija"/>
               <trans loc="pt_BR" val="Detalhes"/>
               <trans loc="sl" val="Podrobnosti"/>
+              <trans loc="sr" val="Подаци"/>
+              <trans loc="sr@latin" val="Podaci"/>
             </trans_set>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
               <formatting/>

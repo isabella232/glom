@@ -11,6 +11,8 @@
     <trans loc="lv" val="Mūzikas kolekcija"/>
     <trans loc="pt_BR" val="Coleção de música"/>
     <trans loc="sl" val="Zbirka glasbe"/>
+    <trans loc="sr" val="Музичка збирка"/>
+    <trans loc="sr@latin" val="Muzička zbirka"/>
   </trans_set>
   <connection hosting_mode="postgres_self" server="localhost" port="5433" try_other_ports="false" database="glom_musiccollection211"/>
   <table name="albums" overview_x="15" overview_y="9" title="Albums">
@@ -67,6 +69,8 @@
       <trans loc="lv" val="Albumi"/>
       <trans loc="pt_BR" val="Álbuns"/>
       <trans loc="sl" val="Albumi"/>
+      <trans loc="sr" val="Албуми"/>
+      <trans loc="sr@latin" val="Albumi"/>
     </trans_set>
     <fields>
       <field name="album_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Album ID">
@@ -82,6 +86,8 @@
           <trans loc="lv" val="Albuma ID"/>
           <trans loc="pt_BR" val="ID de álbum"/>
           <trans loc="sl" val="ID albuma"/>
+          <trans loc="sr" val="ИБ албума"/>
+          <trans loc="sr@latin" val="IB albuma"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
@@ -97,6 +103,8 @@
           <trans loc="lv" val="Komentāri"/>
           <trans loc="pt_BR" val="Comentários"/>
           <trans loc="sl" val="Opombe"/>
+          <trans loc="sr" val="Напомене"/>
+          <trans loc="sr@latin" val="Napomene"/>
         </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
@@ -112,6 +120,8 @@
           <trans loc="lv" val="Nosaukums"/>
           <trans loc="pt_BR" val="Nome"/>
           <trans loc="sl" val="Ime"/>
+          <trans loc="sr" val="Назив"/>
+          <trans loc="sr@latin" val="Naziv"/>
         </trans_set>
       </field>
       <field name="artist_id" type="Number" title="Artist ID">
@@ -137,6 +147,8 @@
           <trans loc="lv" val="Izpildītāja ID"/>
           <trans loc="pt_BR" val="ID de artista"/>
           <trans loc="sl" val="ID izvajalca"/>
+          <trans loc="sr" val="ИБ извођача"/>
+          <trans loc="sr@latin" val="IB izvođača"/>
         </trans_set>
       </field>
       <field name="publisher_id" type="Number" title="Publisher ID">
@@ -162,6 +174,8 @@
           <trans loc="lv" val="Izdevēja ID"/>
           <trans loc="pt_BR" val="ID de editor"/>
           <trans loc="sl" val="ID založnika"/>
+          <trans loc="sr" val="ИБ издавача"/>
+          <trans loc="sr@latin" val="IB izdavača"/>
         </trans_set>
       </field>
       <field name="year" type="Number" title="Year">
@@ -177,6 +191,8 @@
           <trans loc="lv" val="Gads"/>
           <trans loc="pt_BR" val="Ano"/>
           <trans loc="sl" val="Leto"/>
+          <trans loc="sr" val="Година"/>
+          <trans loc="sr@latin" val="Godina"/>
         </trans_set>
       </field>
     </fields>
@@ -193,6 +209,8 @@
           <trans loc="lv" val="Izpildītājs"/>
           <trans loc="pt_BR" val="Artista"/>
           <trans loc="sl" val="Izvajalec"/>
+          <trans loc="sr" val="Извођач"/>
+          <trans loc="sr@latin" val="Izvođač"/>
         </trans_set>
       </relationship>
       <relationship name="publisher" key="publisher_id" other_table="publishers" other_key="publishers_id" title="Publisher">
@@ -207,6 +225,8 @@
           <trans loc="lv" val="Izdevējs"/>
           <trans loc="pt_BR" val="Editor"/>
           <trans loc="sl" val="Založnik"/>
+          <trans loc="sr" val="Издавач"/>
+          <trans loc="sr@latin" val="Izdavač"/>
         </trans_set>
       </relationship>
       <relationship name="songs" key="album_id" other_table="songs" other_key="album_id" auto_create="true" allow_edit="true" title="Songs">
@@ -221,6 +241,8 @@
           <trans loc="lv" val="Dziesmas"/>
           <trans loc="pt_BR" val="Canções"/>
           <trans loc="sl" val="Skladbe"/>
+          <trans loc="sr" val="Песме"/>
+          <trans loc="sr@latin" val="Pesme"/>
         </trans_set>
       </relationship>
     </relationships>
@@ -239,6 +261,8 @@
               <trans loc="lv" val="Pārskats"/>
               <trans loc="pt_BR" val="Visão geral"/>
               <trans loc="sl" val="Pregled"/>
+              <trans loc="sr" val="Преглед"/>
+              <trans loc="sr@latin" val="Pregled"/>
             </trans_set>
             <data_layout_item name="album_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -259,6 +283,8 @@
               <trans loc="lv" val="Sīkāka informācija"/>
               <trans loc="pt_BR" val="Detalhes"/>
               <trans loc="sl" val="Podrobnosti"/>
+              <trans loc="sr" val="Подаци"/>
+              <trans loc="sr@latin" val="Podaci"/>
             </trans_set>
             <data_layout_group name="artist" title="Artist">
               <trans_set>
@@ -272,6 +298,8 @@
                 <trans loc="lv" val="Izpildītājs"/>
                 <trans loc="pt_BR" val="Artista"/>
                 <trans loc="sl" val="Izvajalec"/>
+                <trans loc="sr" val="Извођач"/>
+                <trans loc="sr@latin" val="Izvođač"/>
               </trans_set>
               <data_layout_item name="artist_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -292,6 +320,8 @@
                 <trans loc="lv" val="Izdevējs"/>
                 <trans loc="pt_BR" val="Editor"/>
                 <trans loc="sl" val="Založnik"/>
+                <trans loc="sr" val="Издавач"/>
+                <trans loc="sr@latin" val="Izdavač"/>
               </trans_set>
               <data_layout_item name="publisher_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -339,6 +369,8 @@
                   <trans loc="lv" val="Izpildītāja vārds"/>
                   <trans loc="pt_BR" val="Nome do artista"/>
                   <trans loc="sl" val="Ime izvajalca"/>
+                  <trans loc="sr" val="Име извођача"/>
+                  <trans loc="sr@latin" val="Ime izvođača"/>
                 </trans_set>
               </title_custom>
               <formatting/>
@@ -359,6 +391,8 @@
                   <trans loc="lv" val="Izdevēja nosaukums"/>
                   <trans loc="pt_BR" val="Nome do editor"/>
                   <trans loc="sl" val="Ime izdajatelja"/>
+                  <trans loc="sr" val="Име издавача"/>
+                  <trans loc="sr@latin" val="Ime izdavača"/>
                 </trans_set>
               </title_custom>
               <formatting/>
@@ -391,6 +425,8 @@
                         <trans loc="lv" val="Izpildītāja vārds"/>
                         <trans loc="pt_BR" val="Nome do artista"/>
                         <trans loc="sl" val="Ime izvajalca"/>
+                        <trans loc="sr" val="Име извођача"/>
+                        <trans loc="sr@latin" val="Ime izvođača"/>
                       </trans_set>
                     </title_custom>
                     <formatting/>
@@ -417,6 +453,8 @@
           <trans loc="lv" val="Albumi pēc izpildītāja"/>
           <trans loc="pt_BR" val="Álbuns por artista"/>
           <trans loc="sl" val="Albumi izvajalca"/>
+          <trans loc="sr" val="Албуми према извођачима"/>
+          <trans loc="sr@latin" val="Albumi prema izvođačima"/>
         </trans_set>
       </report>
     </reports>
@@ -460,6 +498,8 @@
       <trans loc="lv" val="Izpildītāji"/>
       <trans loc="pt_BR" val="Artistas"/>
       <trans loc="sl" val="Izvajalci"/>
+      <trans loc="sr" val="Извођачи"/>
+      <trans loc="sr@latin" val="Izvođači"/>
     </trans_set>
     <fields>
       <field name="artist_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Artist ID">
@@ -475,6 +515,8 @@
           <trans loc="lv" val="Izpildītāja ID"/>
           <trans loc="pt_BR" val="ID de artista"/>
           <trans loc="sl" val="ID izvajalca"/>
+          <trans loc="sr" val="ИБ извођача"/>
+          <trans loc="sr@latin" val="IB izvođača"/>
         </trans_set>
       </field>
       <field name="description" type="Text" title="Description">
@@ -490,6 +532,8 @@
           <trans loc="lv" val="Apraksts"/>
           <trans loc="pt_BR" val="Descrição"/>
           <trans loc="sl" val="Opis"/>
+          <trans loc="sr" val="Опис"/>
+          <trans loc="sr@latin" val="Opis"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
@@ -505,6 +549,8 @@
           <trans loc="lv" val="Komentāri"/>
           <trans loc="pt_BR" val="Comentários"/>
           <trans loc="sl" val="Opombe"/>
+          <trans loc="sr" val="Напомене"/>
+          <trans loc="sr@latin" val="Napomene"/>
         </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
@@ -520,6 +566,8 @@
           <trans loc="lv" val="Vārds"/>
           <trans loc="pt_BR" val="Nome"/>
           <trans loc="sl" val="Ime"/>
+          <trans loc="sr" val="Име"/>
+          <trans loc="sr@latin" val="Ime"/>
         </trans_set>
       </field>
     </fields>
@@ -536,6 +584,8 @@
           <trans loc="lv" val="Albumi"/>
           <trans loc="pt_BR" val="Álbuns"/>
           <trans loc="sl" val="Albumi"/>
+          <trans loc="sr" val="Албуми"/>
+          <trans loc="sr@latin" val="Albumi"/>
         </trans_set>
       </relationship>
     </relationships>
@@ -554,6 +604,8 @@
               <trans loc="lv" val="Pārskats"/>
               <trans loc="pt_BR" val="Visão geral"/>
               <trans loc="sl" val="Pregled"/>
+              <trans loc="sr" val="Преглед"/>
+              <trans loc="sr@latin" val="Pregled"/>
             </trans_set>
             <data_layout_item name="artist_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -574,6 +626,8 @@
               <trans loc="lv" val="Sīkāka informācija"/>
               <trans loc="pt_BR" val="Detalhes"/>
               <trans loc="sl" val="Podrobnosti"/>
+              <trans loc="sr" val="Подаци"/>
+              <trans loc="sr@latin" val="Podaci"/>
             </trans_set>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
               <formatting/>
@@ -643,6 +697,8 @@
       <trans loc="lv" val="Izdevēji"/>
       <trans loc="pt_BR" val="Editores"/>
       <trans loc="sl" val="Založniki"/>
+      <trans loc="sr" val="Издавачи"/>
+      <trans loc="sr@latin" val="Izdavači"/>
     </trans_set>
     <fields>
       <field name="publishers_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Publisher ID">
@@ -658,6 +714,8 @@
           <trans loc="lv" val="Izdevēja ID"/>
           <trans loc="pt_BR" val="ID de editor"/>
           <trans loc="sl" val="ID založnika"/>
+          <trans loc="sr" val="ИБ издавача"/>
+          <trans loc="sr@latin" val="IB izdavača"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
@@ -673,6 +731,8 @@
           <trans loc="lv" val="Komentāri"/>
           <trans loc="pt_BR" val="Comentários"/>
           <trans loc="sl" val="Opombe"/>
+          <trans loc="sr" val="Напомене"/>
+          <trans loc="sr@latin" val="Napomene"/>
         </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
@@ -688,6 +748,8 @@
           <trans loc="lv" val="Nosaukums"/>
           <trans loc="pt_BR" val="Nome"/>
           <trans loc="sl" val="Ime"/>
+          <trans loc="sr" val="Име"/>
+          <trans loc="sr@latin" val="Ime"/>
         </trans_set>
       </field>
     </fields>
@@ -704,6 +766,8 @@
           <trans loc="lv" val="Albumi"/>
           <trans loc="pt_BR" val="Álbuns"/>
           <trans loc="sl" val="Albumi"/>
+          <trans loc="sr" val="Албуми"/>
+          <trans loc="sr@latin" val="Albumi"/>
         </trans_set>
       </relationship>
     </relationships>
@@ -722,6 +786,8 @@
               <trans loc="lv" val="Pārskats"/>
               <trans loc="pt_BR" val="Visão geral"/>
               <trans loc="sl" val="Pregled"/>
+              <trans loc="sr" val="Преглед"/>
+              <trans loc="sr@latin" val="Pregled"/>
             </trans_set>
             <data_layout_item name="publishers_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -742,6 +808,8 @@
               <trans loc="lv" val="Sīkāka informācija"/>
               <trans loc="pt_BR" val="Detalhes"/>
               <trans loc="sl" val="Podrobnosti"/>
+              <trans loc="sr" val="Подаци"/>
+              <trans loc="sr@latin" val="Podaci"/>
             </trans_set>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
               <formatting/>
@@ -1087,6 +1155,8 @@
       <trans loc="lv" val="Dziesmas"/>
       <trans loc="pt_BR" val="Canções"/>
       <trans loc="sl" val="Skladbe"/>
+      <trans loc="sr" val="Песме"/>
+      <trans loc="sr@latin" val="Pesme"/>
     </trans_set>
     <fields>
       <field name="song_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Song ID">
@@ -1102,6 +1172,8 @@
           <trans loc="lv" val="Dziesmas ID"/>
           <trans loc="pt_BR" val="ID de canção"/>
           <trans loc="sl" val="ID skladbe"/>
+          <trans loc="sr" val="ИБ песме"/>
+          <trans loc="sr@latin" val="IB pesme"/>
         </trans_set>
       </field>
       <field name="comments" type="Text" title="Comments">
@@ -1117,6 +1189,8 @@
           <trans loc="lv" val="Komentāri"/>
           <trans loc="pt_BR" val="Comentários"/>
           <trans loc="sl" val="Opombe"/>
+          <trans loc="sr" val="Напомене"/>
+          <trans loc="sr@latin" val="Napomene"/>
         </trans_set>
       </field>
       <field name="album_id" type="Number" title="Album ID">
@@ -1132,6 +1206,8 @@
           <trans loc="lv" val="Albuma ID"/>
           <trans loc="pt_BR" val="ID de álbum"/>
           <trans loc="sl" val="ID albuma"/>
+          <trans loc="sr" val="ИБ албума"/>
+          <trans loc="sr@latin" val="IB albuma"/>
         </trans_set>
       </field>
       <field name="name" type="Text" title="Name">
@@ -1147,6 +1223,8 @@
           <trans loc="lv" val="Nosaukums"/>
           <trans loc="pt_BR" val="Nome"/>
           <trans loc="sl" val="Ime"/>
+          <trans loc="sr" val="Назив"/>
+          <trans loc="sr@latin" val="Naziv"/>
         </trans_set>
       </field>
     </fields>
@@ -1163,6 +1241,8 @@
           <trans loc="lv" val="Albums"/>
           <trans loc="pt_BR" val="Álbum"/>
           <trans loc="sl" val="Album"/>
+          <trans loc="sr" val="Албум"/>
+          <trans loc="sr@latin" val="Album"/>
         </trans_set>
       </relationship>
     </relationships>
@@ -1181,6 +1261,8 @@
               <trans loc="lv" val="Pārskats"/>
               <trans loc="pt_BR" val="Visão geral"/>
               <trans loc="sl" val="Pregled"/>
+              <trans loc="sr" val="Преглед"/>
+              <trans loc="sr@latin" val="Pregled"/>
             </trans_set>
             <data_layout_item name="song_id" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -1201,6 +1283,8 @@
               <trans loc="lv" val="Sīkāka informācija"/>
               <trans loc="pt_BR" val="Detalhes"/>
               <trans loc="sl" val="Podrobnosti"/>
+              <trans loc="sr" val="Подаци"/>
+              <trans loc="sr@latin" val="Podaci"/>
             </trans_set>
             <data_layout_group name="album" title="Album">
               <trans_set>
@@ -1214,6 +1298,8 @@
                 <trans loc="lv" val="Albums"/>
                 <trans loc="pt_BR" val="Álbum"/>
                 <trans loc="sl" val="Album"/>
+                <trans loc="sr" val="Албум"/>
+                <trans loc="sr@latin" val="Album"/>
               </trans_set>
               <data_layout_item name="album_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -1234,6 +1320,8 @@
                 <trans loc="lv" val="Albuma izpildītājs"/>
                 <trans loc="pt_BR" val="Álbum de artista"/>
                 <trans loc="sl" val="Izvajalec albuma"/>
+                <trans loc="sr" val="Извођач албума"/>
+                <trans loc="sr@latin" val="Izvođač albuma"/>
               </trans_set>
               <data_layout_item name="artist_id" relationship="album" related_relationship="artist" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
