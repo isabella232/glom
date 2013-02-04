@@ -644,8 +644,6 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQLSelfHosted::connect(const Glib::ustrin
   }
 
   //Save the connection details _only_ for later debug use:
-  
-  m_saved_database_name = database;
   m_saved_username = username;
   m_saved_password = password;
   return result;

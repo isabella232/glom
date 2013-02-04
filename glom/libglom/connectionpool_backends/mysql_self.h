@@ -86,7 +86,7 @@ private:
   bool m_network_shared;
   
   //These are remembered in order to use them to issue the shutdown command via mysqladmin:
-  Glib::ustring m_saved_database_name, m_saved_username, m_saved_password;
+  Glib::ustring m_saved_username, m_saved_password;
 
   bool m_temporary_password_active; //Whether the password is an initial temporary one.
   Glib::ustring m_initial_password_to_set, m_initial_username_to_set;

@@ -1,5 +1,12 @@
 2013-02-04  Murray Cumming  <murrayc@murrayc.com>
 
+        MySQL backend: Removed some unnused variables.
+
+        * glom/libglom/connectionpool_backends/mysql_self.[h|cc]:
+        m_saved_database_name was set not used anywhere.
+
+2013-02-04  Murray Cumming  <murrayc@murrayc.com>
+
         test_document_load_translations: Update the translations count.
 
         * tests/test_document_load_translations.cc:
