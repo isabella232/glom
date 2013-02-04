@@ -1,3 +1,10 @@
+2013-02-04  Murray Cumming  <murrayc@murrayc.com>
+
+        test_document_load_translations: Update the translations count.
+
+        * tests/test_document_load_translations.cc:
+	This fixes make distcheck again.
+
 2013-01-28  Murray Cumming  <murrayc@murrayc.com>
 
 	Import example .po translations into the examples.
