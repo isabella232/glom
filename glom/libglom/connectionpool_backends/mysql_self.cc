@@ -371,7 +371,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
   {
     m_port = 0;
 
-    std::cerr << "Error while attempting to self-host a MySQL database." << std::endl;
+    std::cerr << G_STRFUNC << "Error while attempting to self-host a MySQL database." << std::endl;
     return STARTUPERROR_FAILED_UNKNOWN_REASON;
   }
 
@@ -380,6 +380,12 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
   //If necessary, set the initial root password and rename the root user:
   if(m_temporary_password_active)
   {
+    if(m_initial_password_to_set.empty()) {
+      //If this is empty then mysqladmin will ask for it on stdout, blocking us.
+      std::cerr << G_STRFUNC << "Error while attempting to self-host a MySQL database: m_initial_password_to_set is empty." << std::endl;
+      return STARTUPERROR_FAILED_UNKNOWN_REASON;
+    }
+
     //Set the root password:
     const std::string command_initdb_set_initial_password = get_mysqladmin_command("root", m_temporary_password)
       + " password " + Glib::shell_quote(m_initial_password_to_set);

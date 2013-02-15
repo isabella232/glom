@@ -1,3 +1,11 @@
+2013-02-15  Murray Cumming  <murrayc@murrayc.com>
+
+        MySQL support: Add a check for an empty initial password.
+
+        * glom/libglom/connectionpool_backends/mysql_self.cc:
+	This doesn't happen, but it would be nice to avoid it if it ever
+	does somehow.
+
 1.23.4:
 
 2013-03-11  Murray Cumming  <murrayc@murrayc.com>
