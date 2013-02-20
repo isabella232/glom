@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glom&k"
 "eywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-01-12 08:50+0000\n"
-"PO-Revision-Date: 2013-01-12 10:00+0200\n"
+"POT-Creation-Date: 2013-01-25 09:15+0000\n"
+"PO-Revision-Date: 2013-02-20 20:08+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -19,26 +19,26 @@ msgstr ""
 "n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
 
-#: ../glom/application.cc:138 ../glom/glom_create_from_example.cc:240
+#: ../glom/application.cc:138 ../glom/glom_create_from_example.cc:259
 #: ../glom/glom_export_po.cc:112 ../glom/glom_export_po_all.cc:100
-#: ../glom/glom_import_po_all.cc:101 ../glom/glom_test_connection.cc:131
+#: ../glom/glom_import_po_all.cc:101 ../glom/glom_test_connection.cc:148
 msgid "Error while parsing command-line options: "
 msgstr "Greška prilikom obrade mogućnosti linije naredbi: "
 
 #. TODO: How can we just print them out?
-#: ../glom/application.cc:139 ../glom/glom_create_from_example.cc:241
+#: ../glom/application.cc:139 ../glom/glom_create_from_example.cc:260
 #: ../glom/glom_export_po.cc:113 ../glom/glom_export_po_all.cc:101
-#: ../glom/glom_import_po_all.cc:102 ../glom/glom_test_connection.cc:91
+#: ../glom/glom_import_po_all.cc:102 ../glom/glom_test_connection.cc:108
 msgid "Use --help to see a list of available command-line options."
 msgstr ""
 "Koristite „--help“ da vidite spisak dostupnih mogućnosti linije naredbi."
 
-#: ../glom/application.cc:180 ../glom/glom_create_from_example.cc:275
+#: ../glom/application.cc:180 ../glom/glom_create_from_example.cc:294
 #: ../glom/glom_export_po.cc:162
 msgid "Glom: The file does not exist."
 msgstr "Glom: Datoteka ne postoji."
 
-#: ../glom/application.cc:190 ../glom/glom_create_from_example.cc:285
+#: ../glom/application.cc:190 ../glom/glom_create_from_example.cc:304
 #: ../glom/glom_export_po.cc:172
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: Putanja datoteke je direktorijum a ne datoteka."
@@ -419,11 +419,11 @@ msgstr "Nedostaje naslov baze podataka"
 msgid "You must specify a title for the new database."
 msgstr "Morate da navedete naslov za novu bazu podataka."
 
-#: ../glom/appwindow.cc:2468 ../glom/frame_glom.cc:1834
+#: ../glom/appwindow.cc:2473 ../glom/frame_glom.cc:1834
 msgid "Directory Already Exists"
 msgstr "Direktorijum već postoji"
 
-#: ../glom/appwindow.cc:2468 ../glom/frame_glom.cc:1835
+#: ../glom/appwindow.cc:2473 ../glom/frame_glom.cc:1835
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
@@ -434,51 +434,51 @@ msgstr ""
 "naziv datoteke da koristi novi direktorijum."
 
 #. This actually creates the directory:
-#: ../glom/appwindow.cc:2607
+#: ../glom/appwindow.cc:2612
 msgid "Save Backup"
 msgstr "Sačuvaj rezervu"
 
-#: ../glom/appwindow.cc:2623
+#: ../glom/appwindow.cc:2628
 msgid "Exporting backup"
 msgstr "Izvozim rezervu"
 
-#: ../glom/appwindow.cc:2629
+#: ../glom/appwindow.cc:2634
 msgid "Export Backup failed."
 msgstr "Izvoz rezerve nije uspeo."
 
-#: ../glom/appwindow.cc:2629
+#: ../glom/appwindow.cc:2634
 msgid "There was an error while exporting the backup."
 msgstr "Došlo je do greške prilikom izvoza rezerve."
 
-#: ../glom/appwindow.cc:2635
+#: ../glom/appwindow.cc:2640
 msgid "Choose a backup file"
 msgstr "Izaberite datoteku rezerve"
 
-#: ../glom/appwindow.cc:2640
+#: ../glom/appwindow.cc:2645
 msgid ".tar.gz Backup files"
 msgstr "„.tar.gz“ datoteke rezerve"
 
-#: ../glom/appwindow.cc:2646
+#: ../glom/appwindow.cc:2651
 msgid "Restore"
 msgstr "Povrati"
 
-#: ../glom/appwindow.cc:2671
+#: ../glom/appwindow.cc:2676
 msgid "Restoring backup"
 msgstr "Vraćam rezervu"
 
-#: ../glom/appwindow.cc:2678
+#: ../glom/appwindow.cc:2683
 msgid "Restore Backup failed."
 msgstr "Vraćanje rezerve nije uspelo."
 
-#: ../glom/appwindow.cc:2678
+#: ../glom/appwindow.cc:2683
 msgid "There was an error while restoring the backup."
 msgstr "Došlo je do greške prilikom vraćanja rezerve."
 
-#: ../glom/appwindow.cc:2775 ../glom/bakery/appwindow_withdoc_gtk.cc:346
+#: ../glom/appwindow.cc:2780 ../glom/bakery/appwindow_withdoc_gtk.cc:346
 msgid " (read-only)"
 msgstr " (samo za čitanje)"
 
-#: ../glom/appwindow.cc:2823 ../ui/operator/window_main.glade.h:2
+#: ../glom/appwindow.cc:2828 ../ui/operator/window_main.glade.h:2
 msgid "Processing"
 msgstr "Obrađujem"
 
@@ -968,8 +968,9 @@ msgid "Login"
 msgstr "Prijavi me"
 
 #: ../glom/onlineglom_strings.cc:36
-msgid "Enter the PostgreSQL username and password."
-msgstr "Unesite korisničko ime i lozinku za PostgreSKuL."
+#| msgid "Enter the PostgreSQL username and password."
+msgid "Enter the username and password."
+msgstr "Unesite korisničko ime i lozinku."
 
 #: ../glom/onlineglom_strings.cc:37
 msgid "Username"
@@ -1589,23 +1590,23 @@ msgstr "Napomene"
 msgid "List"
 msgstr "Spisak"
 
-#: ../glom/glom_create_from_example.cc:65 ../glom/glom_export_po.cc:51
+#: ../glom/glom_create_from_example.cc:73 ../glom/glom_export_po.cc:51
 #: ../glom/glom_export_po_all.cc:49 ../glom/glom_import_po_all.cc:50
-#: ../glom/glom_test_connection.cc:55
+#: ../glom/glom_test_connection.cc:60
 msgid "Glom options"
 msgstr "Opcije Gloma"
 
-#: ../glom/glom_create_from_example.cc:65 ../glom/glom_export_po.cc:51
+#: ../glom/glom_create_from_example.cc:73 ../glom/glom_export_po.cc:51
 #: ../glom/glom_export_po_all.cc:49 ../glom/glom_import_po_all.cc:50
-#: ../glom/glom_test_connection.cc:55
+#: ../glom/glom_test_connection.cc:60
 msgid "Command-line options"
 msgstr "Opcije linije naredbi"
 
-#: ../glom/glom_create_from_example.cc:72
+#: ../glom/glom_create_from_example.cc:84
 msgid "The example .glom file to open."
 msgstr "Primer „.glom“ datoteke za otvaranje."
 
-#: ../glom/glom_create_from_example.cc:77
+#: ../glom/glom_create_from_example.cc:89
 msgid ""
 "The directory in which to save the created .glom file, or sub-directory if "
 "necessary, such as /home/someuser/ ."
@@ -1613,17 +1614,17 @@ msgstr ""
 "Direktorijum u kome će biti sačuvana napravljena „.glom“ datoteka, ili pod-"
 "direktorijum ako je potrebno, kao što je „/home/someuser/“ ."
 
-#: ../glom/glom_create_from_example.cc:82
+#: ../glom/glom_create_from_example.cc:94
 msgid "The name for the created .glom file, such as something.glom ."
 msgstr "Naziv za napravljenu „.glom“ datoteku, kao što je „nešto.glom“ ."
 
-#: ../glom/glom_create_from_example.cc:87 ../glom/glom_export_po.cc:72
+#: ../glom/glom_create_from_example.cc:99 ../glom/glom_export_po.cc:72
 #: ../glom/glom_export_po_all.cc:60 ../glom/glom_import_po_all.cc:61
-#: ../glom/glom_test_connection.cc:63 ../glom/main_local_options.cc:47
+#: ../glom/glom_test_connection.cc:72 ../glom/main_local_options.cc:47
 msgid "The version of this application."
 msgstr "Izdanje ovog programa."
 
-#: ../glom/glom_create_from_example.cc:93
+#: ../glom/glom_create_from_example.cc:105
 msgid ""
 "The hostname of the PostgreSQL server, such as localhost. If this is not "
 "specified then a self-hosted database will be created."
@@ -1631,31 +1632,31 @@ msgstr ""
 "Naziv računara PostgreSKuL servera, kao što je mesni računar. Ako ovo nije "
 "navedeno onda će biti napravljena samo-udomljena baza podataka."
 
-#: ../glom/glom_create_from_example.cc:98 ../glom/glom_test_connection.cc:73
+#: ../glom/glom_create_from_example.cc:110 ../glom/glom_test_connection.cc:82
 msgid "The port of the PostgreSQL server, such as 5434."
 msgstr "Priključnik PostgreSKuL servera, kao npr. 5434."
 
-#: ../glom/glom_create_from_example.cc:103 ../glom/glom_test_connection.cc:78
+#: ../glom/glom_create_from_example.cc:115 ../glom/glom_test_connection.cc:87
 msgid "The username for the PostgreSQL server."
 msgstr "Korisničko ime PostgreSKuL servera."
 
-#: ../glom/glom_create_from_example.cc:316
+#: ../glom/glom_create_from_example.cc:121 ../glom/glom_test_connection.cc:100
+#| msgid "Install PostgreSQL"
+msgid "Use MySQL instead of PostgreSQL."
+msgstr "Koristi MajSKuL umesto PostgreSKuL-a."
+
+#: ../glom/glom_create_from_example.cc:335
 msgid "Glom: The output directory does not exist."
 msgstr "Glom: Izlazni direktorijum ne postoji."
 
-#: ../glom/glom_create_from_example.cc:326
+#: ../glom/glom_create_from_example.cc:345
 msgid "Glom: The output path is not a directory."
 msgstr "Glom: Izlazna putanja nije direktorijum."
 
-#: ../glom/glom_create_from_example.cc:424 ../glom/glom_test_connection.cc:166
-msgid "Please enter the PostgreSQL server's password for the user %1: "
-msgstr "Molim unesite lozinku PostgreSKuL servera za korisnika %1: "
-
-#: ../glom/glom_create_from_example.cc:428 ../glom/glom_test_connection.cc:170
-msgid ""
-"Error: getpass() is not implemented in the Windows build. The connection "
-"will fail."
-msgstr "Greška: „getpass()“ nije primenjeno u Vindouz izgradnji. Veza će pasti."
+#: ../glom/glom_create_from_example.cc:458
+#| msgid "Please enter the PostgreSQL server's password for the user %1: "
+msgid "Please enter the database server's password for the user %1: "
+msgstr "Molim unesite lozinku servera baze podataka za korisnika %1: "
 
 #: ../glom/glom_export_po.cc:57
 msgid ""
@@ -1757,29 +1758,33 @@ msgstr "Uvoz po datoteke nije uspeo za jezik: %1"
 msgid "Po file imported for locale: %1 for file %2"
 msgstr "Po datoteka je uvezena za jezik: %1 za datoteku %2"
 
-#: ../glom/glom_test_connection.cc:68
+#: ../glom/glom_test_connection.cc:77
 msgid "The hostname of the PostgreSQL server, such as localhost."
 msgstr "Naziv domaćina PostgreSKuL servera, kao npr. mesni domaćin."
 
-#: ../glom/glom_test_connection.cc:84
+#: ../glom/glom_test_connection.cc:93
 msgid "The specific database on the PostgreSQL server (Optional)."
 msgstr "Posebna baza podataka na PostgreSKuL serveru (neobavezno)."
 
-#: ../glom/glom_test_connection.cc:156
+#: ../glom/glom_test_connection.cc:173
 msgid "Please provide a database username."
 msgstr "Molim dostavite korisničko ime baze podataka."
 
-#: ../glom/glom_test_connection.cc:220
+#: ../glom/glom_test_connection.cc:183
+msgid "Please enter the PostgreSQL server's password for the user %1: "
+msgstr "Molim unesite lozinku PostgreSKuL servera za korisnika %1: "
+
+#: ../glom/glom_test_connection.cc:264
 msgid ""
 "Error: Could not connect to the server even without specifying a database."
 msgstr ""
 "Greška: Ne mogu da se povežem na server čak i bez navođenja baze podataka."
 
-#: ../glom/glom_test_connection.cc:228
+#: ../glom/glom_test_connection.cc:272
 msgid "Error: Could not connect to the specified database."
 msgstr "Greška: Ne mogu da se povežem na navedenu bazu podataka."
 
-#: ../glom/glom_test_connection.cc:234
+#: ../glom/glom_test_connection.cc:278
 msgid "Successful connection."
 msgstr "Povezivanje je uspelo."
 
@@ -1860,12 +1865,6 @@ msgstr ""
 #. use_markup
 #. modal
 #: ../glom/main.cc:312
-#| msgid ""
-#| "Your installation of Glom is not complete, because PostgreSQL is not "
-#| "available on your system. PostgreSQL is needed for self-hosting of Glom "
-#| "databases.\n"
-#| "\n"
-#| "You may now install PostgreSQL to complete the Glom installation."
 msgid ""
 "Your installation of Glom is not complete, because MySQL is not available on "
 "your system. MySQL is needed for self-hosting of some Glom databases.\n"
@@ -1878,20 +1877,12 @@ msgstr ""
 "Sada možete da instalirate MajSKuL da dovršite instalaciju Gloma."
 
 #: ../glom/main.cc:314
-#| msgid "Install PostgreSQL"
 msgid "Install MySQL"
 msgstr "Instaliraj MajSKuL"
 
 #. use_markup
 #. modal
 #: ../glom/main.cc:325
-#| msgid ""
-#| "Your installation of Glom is not complete, because PostgreSQL is not "
-#| "available on your system. PostgreSQL is needed for self-hosting of Glom "
-#| "databases.\n"
-#| "\n"
-#| "Please report this bug to your vendor, or your system administrator so it "
-#| "can be corrected."
 msgid ""
 "Your installation of Glom is not complete, because MySQL is not available on "
 "your system. MySQL is needed for self-hosting of some Glom databases.\n"
@@ -3162,8 +3153,6 @@ msgstr ""
 "pogodan za ugneždene uređaje."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:149
-#| msgid ""
-#| "Create SQLite database in its own folder, to be hosted by this computer."
 msgid "Create MySQL database in its own folder, to be hosted by this computer."
 msgstr ""
 "Napravite MajSKuL bazu podataka u njegovoj ličnoj fascikli, koja će biti "
@@ -3173,13 +3162,9 @@ msgstr ""
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:156
 msgid "MySQL support in Glom is experimental and unlikely to work properly."
 msgstr ""
-"MajSKuL podrška u Glomu je probna i malo je verovatno da će da radi "
-"ispravno."
+"MajSKuL podrška u Glomu je probna i malo je verovatno da će da radi ispravno."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:155
-#| msgid ""
-#| "Create database on an external database server, to be specified in the "
-#| "next step."
 msgid ""
 "Create database on an external MySQL database server, to be specified in the "
 "next step."
@@ -4415,10 +4400,3 @@ msgstr "<b>Grupa:</b>"
 #: ../ui/developer/window_users.glade.h:3
 msgid "<b>Users</b>"
 msgstr "<b>Korisnici</b>"
-
-#~ msgid ""
-#~ "Create database in its own folder, to be hosted by this computer, using "
-#~ "SQLite"
-#~ msgstr ""
-#~ "Napravite bazu podataka u njegovoj ličnoj fascikli, koja će biti udomljena "
-#~ "na ovom računaru, koristeći SKuLajt"
