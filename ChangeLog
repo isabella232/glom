@@ -1,3 +1,11 @@
+2013-02-25  Murray Cumming  <murrayc@murrayc.com>
+
+        Fix the build on Ubuntu Raring.
+
+        * macros/macros/mm-python.m4: Also check in
+        /usr/lib/i386-linux-gnu/ because that is where Ubuntu Raring
+        (and maybe Debian) put libpython2.7 there.
+        
 2013-02-04  Murray Cumming  <murrayc@murrayc.com>
 
         MySQL backend: Removed some unnused variables.
