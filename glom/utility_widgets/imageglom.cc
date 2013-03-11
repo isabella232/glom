@@ -628,12 +628,7 @@ void ImageGlom::open_with(const Glib::RefPtr<Gio::AppInfo>& app_info)
 
   if(app_info)
   {
-    std::vector<std::string> vec_uris;
-    vec_uris.push_back(uri);
-    app_info->launch_uris(vec_uris, 0); //TODO: Get a GdkAppLaunchContext?
-    
-    //TODO Use this instead when we can use glibmm 3.2:
-    //app_info->launch_uri(uri);
+    app_info->launch_uri(uri); //TODO: Get a GdkAppLaunchContext?
   }
   else
   {
