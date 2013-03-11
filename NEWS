@@ -1,3 +1,11 @@
+1.23.4 (unstable):
+
+* Fix the build with --enable-warnings=fatal.
+  Do not use ev_view_set_loading() because it is deprecated.
+* Fix the build on Ubuntu Raring.
+  It puts libpython2.7 in /usr/lib/i386-linux-gnu/ .
+* Reduce the libgda dependency version again.
+
 1.23.3 (unstable):
 
 * Added an --enable-mysql configure option.

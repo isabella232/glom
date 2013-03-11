@@ -1,3 +1,5 @@
+1.23.4:
+
 2013-03-11  Murray Cumming  <murrayc@murrayc.com>
 
         Fix the build with --enable-warnings=fatal.
