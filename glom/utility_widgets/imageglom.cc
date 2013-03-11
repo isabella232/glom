@@ -230,7 +230,8 @@ void ImageGlom::on_ev_job_finished(EvJob* job)
 	ev_document_model_set_page(m_ev_document_model, 1);
 	g_object_unref (job);
 	
-	ev_view_set_loading(m_ev_view, FALSE);
+        //TODO: Show that we are no longer loading.
+	//ev_view_set_loading(m_ev_view, FALSE);
 }
 
 const GdaBinary* ImageGlom::get_binary() const
@@ -382,12 +383,14 @@ void ImageGlom::show_image_data()
   
     m_ev_document_model = ev_document_model_new();
     ev_view_set_model(m_ev_view, m_ev_document_model);
-	  ev_document_model_set_continuous(m_ev_document_model, FALSE); //Show only one page.
-	  ev_view_set_loading(m_ev_view, TRUE);
+    ev_document_model_set_continuous(m_ev_document_model, FALSE); //Show only one page.
+
+    //TODO: Show that we are loading.
+    //ev_view_set_loading(m_ev_view, TRUE);
 	
     g_signal_connect (job, "finished",
-		  G_CALLBACK (image_glom_ev_job_finished), this);
-	  ev_job_scheduler_push_job (job, EV_JOB_PRIORITY_NONE);
+      G_CALLBACK (image_glom_ev_job_finished), this);
+    ev_job_scheduler_push_job (job, EV_JOB_PRIORITY_NONE);
   }
   else
   {
