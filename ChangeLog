@@ -1,3 +1,11 @@
+2013-03-21  Murray Cumming  <murrayc@murrayc.com>
+
+        Add a translation file for an example.
+
+        * examples/po_files/example_film_manager/gl.po:
+	Add this missing file. The translations seem to have got into
+	the .glom file somehow, but this .po file was not in git.
+
 2013-02-15  Murray Cumming  <murrayc@murrayc.com>
 
         MySQL support: Add a check for an empty initial password.
