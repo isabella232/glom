@@ -1,0 +1,195 @@
+# Hungarian translation for glom.
+# Copyright (C) 2013 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+#
+# Balázs Úr <urbalazs at gmail dot com>, 2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: glom master\n"
+"product=glom&keywords=I18N+L10N&component=general\n"
+"PO-Revision-Date: 2013-03-26 18:46+0100\n"
+"Last-Translator: Balázs Úr <urbalazs at gmail dot com>\n"
+"Language-Team: Hungarian <gnome-hu-list@gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: hu\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 1.2\n"
+
+msgctxt "Database Title"
+msgid "Music Collection"
+msgstr "Zenegyűjtemény"
+
+msgctxt "Table (albums)"
+msgid "Albums"
+msgstr "Albumok"
+
+msgctxt "Field (album_id). Parent table: albums"
+msgid "Album ID"
+msgstr "Album azonosító"
+
+msgctxt "Field (comments). Parent table: albums"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (name). Parent table: albums"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "Field (artist_id). Parent table: albums"
+msgid "Artist ID"
+msgstr "Előadó azonosító"
+
+msgctxt "Field (publisher_id). Parent table: albums"
+msgid "Publisher ID"
+msgstr "Kiadó azonosító"
+
+msgctxt "Field (year). Parent table: albums"
+msgid "Year"
+msgstr "Év"
+
+msgctxt "Relationship (artist). Parent table: albums"
+msgid "Artist"
+msgstr "Előadó"
+
+msgctxt "Relationship (publisher). Parent table: albums"
+msgid "Publisher"
+msgstr "Kiadó"
+
+msgctxt "Relationship (songs). Parent table: albums"
+msgid "Songs"
+msgstr "Számok"
+
+msgctxt "Report (albums_by_artist). Parent table: albums"
+msgid "Albums By Artist"
+msgstr "Albumok előadó szerint"
+
+msgctxt "Custom Title. Parent table: albums, Parent Report: albums_by_artist"
+msgid "Artist Name"
+msgstr "Előadó neve"
+
+msgctxt "Layout Group (overview). Parent table: albums"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: albums"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Layout Group (artist). Parent table: albums, Parent Group: details"
+msgid "Artist"
+msgstr "Előadó"
+
+msgctxt "Layout Group (publisher). Parent table: albums, Parent Group: details"
+msgid "Publisher"
+msgstr "Kiadó"
+
+msgctxt "Custom Title. Parent table: albums"
+msgid "Artist Name"
+msgstr "Előadó neve"
+
+msgctxt "Custom Title. Parent table: albums"
+msgid "Publisher Name"
+msgstr "Kiadó neve"
+
+msgctxt "Table (artists)"
+msgid "Artists"
+msgstr "Előadók"
+
+msgctxt "Field (artist_id). Parent table: artists"
+msgid "Artist ID"
+msgstr "Előadó azonosító"
+
+msgctxt "Field (description). Parent table: artists"
+msgid "Description"
+msgstr "Leírás"
+
+msgctxt "Field (comments). Parent table: artists"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (name). Parent table: artists"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "Relationship (albums). Parent table: artists"
+msgid "Albums"
+msgstr "Albumok"
+
+msgctxt "Layout Group (overview). Parent table: artists"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: artists"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Table (publishers)"
+msgid "Publishers"
+msgstr "Kiadók"
+
+msgctxt "Field (publishers_id). Parent table: publishers"
+msgid "Publisher ID"
+msgstr "Kiadó azonosító"
+
+msgctxt "Field (comments). Parent table: publishers"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (name). Parent table: publishers"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "Relationship (albums). Parent table: publishers"
+msgid "Albums"
+msgstr "Albumok"
+
+msgctxt "Layout Group (overview). Parent table: publishers"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: publishers"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Table (songs)"
+msgid "Songs"
+msgstr "Számok"
+
+msgctxt "Field (song_id). Parent table: songs"
+msgid "Song ID"
+msgstr "Szám azonosító"
+
+msgctxt "Field (comments). Parent table: songs"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (album_id). Parent table: songs"
+msgid "Album ID"
+msgstr "Album azonosító"
+
+msgctxt "Field (name). Parent table: songs"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "Relationship (album). Parent table: songs"
+msgid "Album"
+msgstr "Album"
+
+msgctxt "Layout Group (overview). Parent table: songs"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: songs"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Layout Group (album). Parent table: songs, Parent Group: details"
+msgid "Album"
+msgstr "Album"
+
+msgctxt "Layout Group (artist). Parent table: songs, Parent Group: details"
+msgid "Album Artist"
+msgstr "Album előadója"
+
