@@ -1,0 +1,1360 @@
+# Hungarian translation for glom.
+# Copyright (C) 2013 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+#
+# Balázs Úr <urbalazs at gmail dot com>, 2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: glom master\n"
+"product=glom&keywords=I18N+L10N&component=general\n"
+"PO-Revision-Date: 2013-03-26 20:25+0100\n"
+"Last-Translator: Balázs Úr <urbalazs at gmail dot com>\n"
+"Language-Team: Hungarian <gnome-hu-list@gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: hu\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 1.2\n"
+
+msgctxt "Database Title"
+msgid "Openismus Film Manager"
+msgstr "Openismus filmkezelő"
+
+msgctxt "Table (accommodation)"
+msgid "Accommodation"
+msgstr "Szállás"
+
+msgctxt "Field (accommodation_id). Parent table: accommodation"
+msgid "Accommodation ID"
+msgstr "Szállás azonosító"
+
+msgctxt "Field (description). Parent table: accommodation"
+msgid "Description"
+msgstr "Leírás"
+
+msgctxt "Field (comments). Parent table: accommodation"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (address_street). Parent table: accommodation"
+msgid "Street"
+msgstr "Utca"
+
+msgctxt "Field (address_town). Parent table: accommodation"
+msgid "Town"
+msgstr "Település"
+
+msgctxt "Field (address_county). Parent table: accommodation"
+msgid "County"
+msgstr "Megye"
+
+msgctxt "Field (address_country). Parent table: accommodation"
+msgid "Country"
+msgstr "Ország"
+
+msgctxt "Field (address_postcode). Parent table: accommodation"
+msgid "Postcode"
+msgstr "Irányítószám"
+
+msgctxt "Field (contact_id). Parent table: accommodation"
+msgid "Contact ID"
+msgstr "Partner azonosító"
+
+msgctxt "Field (name). Parent table: accommodation"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "Relationship (contacts). Parent table: accommodation"
+msgid "Contacts"
+msgstr "Partnerek"
+
+msgctxt "Layout Group (overview). Parent table: accommodation"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt ""
+"Layout Group (address). Parent table: accommodation, Parent Group: details"
+msgid "Address"
+msgstr "Cím"
+
+msgctxt ""
+"Layout Group (contact). Parent table: accommodation, Parent Group: details"
+msgid "Contact"
+msgstr "Partner"
+
+msgctxt "Table (cars)"
+msgid "Cars"
+msgstr "Autók"
+
+msgctxt "Field (car_id). Parent table: cars"
+msgid "Car ID"
+msgstr "Autó azonosító"
+
+msgctxt "Field (manufacturer). Parent table: cars"
+msgid "Manufacturer"
+msgstr "Gyártó"
+
+msgctxt "Field (model). Parent table: cars"
+msgid "Model"
+msgstr "Modell"
+
+msgctxt "Field (registration). Parent table: cars"
+msgid "Registration"
+msgstr "Regisztráció"
+
+msgctxt "Field (description). Parent table: cars"
+msgid "Description"
+msgstr "Leírás"
+
+msgctxt "Field (comment). Parent table: cars"
+msgid "Comment"
+msgstr "Megjegyzés"
+
+msgctxt "Layout Group (overview). Parent table: cars"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: cars"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Table (characters)"
+msgid "Characters"
+msgstr "Karakterek"
+
+msgctxt "Field (character_id). Parent table: characters"
+msgid "Cast ID"
+msgstr "Szerep azonosító"
+
+msgctxt "Field (character). Parent table: characters"
+msgid "Character"
+msgstr "Karakter"
+
+msgctxt "Field (comments). Parent table: characters"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (contact_id). Parent table: characters"
+msgid "Contact ID"
+msgstr "Partner azonosító"
+
+msgctxt "Field (mainpart). Parent table: characters"
+msgid "Main Part"
+msgstr "Fő rész"
+
+msgctxt "Relationship (contacts_actor). Parent table: characters"
+msgid "Actor"
+msgstr "Színész"
+
+msgctxt "Relationship (scenes). Parent table: characters"
+msgid "Scenes"
+msgstr "Jelenetek"
+
+msgctxt "Report (cast_list). Parent table: characters"
+msgid "Cast List"
+msgstr "Szereplők"
+
+msgctxt "Custom Title. Parent table: characters, Parent Report: cast_list"
+msgid "Actor"
+msgstr "Színész"
+
+msgctxt "Custom Title. Parent table: characters, Parent Report: cast_list"
+msgid "Agent"
+msgstr "Ügynök"
+
+msgctxt "Layout Group (overview). Parent table: characters, Parent Group: main"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: characters, Parent Group: main"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt ""
+"Layout Group (actor). Parent table: characters, Parent Group: main, Parent "
+"Group: details"
+msgid "Actor"
+msgstr "Színész"
+
+msgctxt "Custom Title. Parent table: characters"
+msgid "Actor's Contact ID"
+msgstr "Színész partner azonosítója"
+
+msgctxt "Custom Title. Parent table: characters"
+msgid "Actor's Name"
+msgstr "Színész neve"
+
+msgctxt "Layout Group (overview). Parent table: characters"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: characters"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Layout Group (actor). Parent table: characters, Parent Group: details"
+msgid "Actor"
+msgstr "Színész"
+
+msgctxt "Custom Title. Parent table: characters, Parent Group: details"
+msgid "Actor's Name"
+msgstr "Színész neve"
+
+msgctxt "Custom Title. Parent table: characters"
+msgid "Actor"
+msgstr "Színész"
+
+msgctxt "Table (companies)"
+msgid "Companies"
+msgstr "Társaságok"
+
+msgctxt "Field (company_id). Parent table: companies"
+msgid "Company ID"
+msgstr "Társaság azonosító"
+
+msgctxt "Field (name). Parent table: companies"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "Field (comments). Parent table: companies"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (description). Parent table: companies"
+msgid "Description"
+msgstr "Leírás"
+
+msgctxt "Field (logo). Parent table: companies"
+msgid "Logo"
+msgstr "Logó"
+
+msgctxt "Field (website). Parent table: companies"
+msgid "Web Site"
+msgstr "Weboldal"
+
+msgctxt "Relationship (staff). Parent table: companies"
+msgid "Staff"
+msgstr "Személyzet"
+
+msgctxt "Layout Group (overview). Parent table: companies"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: companies"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Table (contacts)"
+msgid "Contacts"
+msgstr "Partnerek"
+
+msgctxt "Field (contact_id). Parent table: contacts"
+msgid "Contact ID"
+msgstr "Partner azonosító"
+
+msgctxt "Field (name_first). Parent table: contacts"
+msgid "First Name"
+msgstr "Utónév"
+
+msgctxt "Field (name_middle). Parent table: contacts"
+msgid "Second Name"
+msgstr "Második név"
+
+msgctxt "Field (name_last). Parent table: contacts"
+msgid "Last Name"
+msgstr "Vezetéknév"
+
+msgctxt "Field (name_title). Parent table: contacts"
+msgid "Title"
+msgstr "Megszólítás"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mr"
+msgstr "Mr"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Ms"
+msgstr "Ms"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mrs"
+msgstr "Mrs"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Miss"
+msgstr "Miss"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Prof"
+msgstr "Prof"
+
+msgctxt "Field (address_street2). Parent table: contacts"
+msgid "Street (line 2)"
+msgstr "Utca (2. sor)"
+
+msgctxt "Field (address_town). Parent table: contacts"
+msgid "Town"
+msgstr "Település"
+
+msgctxt "Field (address_state). Parent table: contacts"
+msgid "State"
+msgstr "Állam"
+
+msgctxt "Field (address_country). Parent table: contacts"
+msgid "Country"
+msgstr "Ország"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "Germany"
+msgstr "Németország"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "United Kingdom"
+msgstr "Egyesült Királyság"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "USA"
+msgstr "USA"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "France"
+msgstr "Franciaország"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: address_country"
+msgid "Spain"
+msgstr "Spanyolország"
+
+msgctxt "Field (address_postcode). Parent table: contacts"
+msgid "Postcode"
+msgstr "Irányítószám"
+
+msgctxt "Field (date_of_birth). Parent table: contacts"
+msgid "Date Of Birth"
+msgstr "Születési dátum"
+
+msgctxt "Field (comments). Parent table: contacts"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (name_full). Parent table: contacts"
+msgid "Full Name"
+msgstr "Teljes név"
+
+msgctxt "Field (company_id). Parent table: contacts"
+msgid "Company ID"
+msgstr "Társaság azonosító"
+
+msgctxt "Field (picture). Parent table: contacts"
+msgid "Picture"
+msgstr "Kép"
+
+msgctxt "Field (tel_home). Parent table: contacts"
+msgid "Home Telephone"
+msgstr "Otthoni telefon"
+
+msgctxt "Field (tel_mobile). Parent table: contacts"
+msgid "Mobile Telephone"
+msgstr "Mobiltelefon"
+
+msgctxt "Field (tel_fax). Parent table: contacts"
+msgid "Fax"
+msgstr "Fax"
+
+msgctxt "Field (tel_work). Parent table: contacts"
+msgid "Work Telephone"
+msgstr "Munkahelyi telefon"
+
+msgctxt "Field (email). Parent table: contacts"
+msgid "Email"
+msgstr "E-mail"
+
+msgctxt "Field (address_street1). Parent table: contacts"
+msgid "Street (line 1)"
+msgstr "Utca (1. sor)"
+
+msgctxt "Field (website). Parent table: contacts"
+msgid "Web Site"
+msgstr "Weboldal"
+
+msgctxt "Field (agent_id). Parent table: contacts"
+msgid "Agent ID"
+msgstr "Ügynök azonosító"
+
+msgctxt "Field (stagename). Parent table: contacts"
+msgid "Stagename"
+msgstr "Színpadi név"
+
+msgctxt "Relationship (company). Parent table: contacts"
+msgid "Company"
+msgstr "Társaság"
+
+msgctxt "Relationship (agent). Parent table: contacts"
+msgid "Agent"
+msgstr "Ügynök"
+
+msgctxt "Relationship (crew). Parent table: contacts"
+msgid "Crew"
+msgstr "Személyzet"
+
+msgctxt "Relationship (cast). Parent table: contacts"
+msgid "Cast"
+msgstr "Szerep"
+
+msgctxt "Report (by_country). Parent table: contacts"
+msgid "Contacts By Country"
+msgstr "Partnerek ország szerint"
+
+msgctxt "Report (by_country_by_town). Parent table: contacts"
+msgid "By Country, By Town"
+msgstr "Ország szerint, település szerint"
+
+msgctxt "Print Layout (contact_details). Parent table: contacts"
+msgid "Contact Details"
+msgstr "Partner részletei"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Contacts"
+msgstr "Partnerek"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Contact ID:"
+msgstr "Partner azonosító:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Full Name:"
+msgstr "Teljes név:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Title:"
+msgstr "Megszólítás:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "First Name:"
+msgstr "Utónév:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Second Name:"
+msgstr "Második név:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Last Name:"
+msgstr "Vezetéknév:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Company"
+msgstr "Társaság"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Company ID:"
+msgstr "Társaság azonosító:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Name:"
+msgstr "Név:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Address"
+msgstr "Cím"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Street (line 1):"
+msgstr "Utca (1. sor):"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Street (line 2):"
+msgstr "Utca (2. sor):"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Town:"
+msgstr "Település:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "State:"
+msgstr "Állam:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Country:"
+msgstr "Ország:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Postcode:"
+msgstr "Irányítószám:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Telephone"
+msgstr "Telefon"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Work Telephone:"
+msgstr "Munkahelyi telefon:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Mobile Telephone:"
+msgstr "Mobiltelefon:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Home Telephone:"
+msgstr "Otthoni telefon:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Fax:"
+msgstr "Fax:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Agent"
+msgstr "Ügynök"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Agent ID:"
+msgstr "Ügynök azonosító:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Crew"
+msgstr "Személyzet"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Cast"
+msgstr "Szerep"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Email:"
+msgstr "E-mail:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Web Site:"
+msgstr "Weboldal:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Date Of Birth:"
+msgstr "Születési dátum:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Picture:"
+msgstr "Kép:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Comments:"
+msgstr "Megjegyzések:"
+
+msgctxt "Layout Group (overview). Parent table: contacts"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: contacts"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt ""
+"Layout Group (name). Parent table: contacts, Parent Group: details, Parent "
+"Group: notebook_contact"
+msgid "Name"
+msgstr "Név"
+
+msgctxt ""
+"Layout Group (company). Parent table: contacts, Parent Group: details, "
+"Parent Group: notebook_contact"
+msgid "Company"
+msgstr "Társaság"
+
+msgctxt ""
+"Layout Group (address). Parent table: contacts, Parent Group: details, "
+"Parent Group: notebook_contact"
+msgid "Address"
+msgstr "Cím"
+
+msgctxt ""
+"Layout Group (telephone). Parent table: contacts, Parent Group: details, "
+"Parent Group: notebook_contact"
+msgid "Telephone"
+msgstr "Telefon"
+
+msgctxt ""
+"Layout Group (agent). Parent table: contacts, Parent Group: details, Parent "
+"Group: notebook_contact"
+msgid "Agent"
+msgstr "Ügynök"
+
+msgctxt "Custom Title. Parent table: contacts"
+msgid "Company Name"
+msgstr "Társaság neve"
+
+msgctxt "Table (costume)"
+msgid "Costume"
+msgstr "Jelmez"
+
+msgctxt "Field (costume_id). Parent table: costume"
+msgid "Costume ID"
+msgstr "Jelmez azonosító"
+
+msgctxt "Field (description). Parent table: costume"
+msgid "Description"
+msgstr "Leírás"
+
+msgctxt "Field (comments). Parent table: costume"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (name). Parent table: costume"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "Layout Group (overview). Parent table: costume"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: costume"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Table (crew)"
+msgid "Crew"
+msgstr "Személyzet"
+
+msgctxt "Field (crew_id). Parent table: crew"
+msgid "Crew ID"
+msgstr "Személyzet azonosító"
+
+msgctxt "Field (description). Parent table: crew"
+msgid "Description"
+msgstr "Leírás"
+
+msgctxt "Field (comments). Parent table: crew"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (dept_id). Parent table: crew"
+msgid "Department ID"
+msgstr "Részleg azonosító"
+
+msgctxt "Field (contact_id). Parent table: crew"
+msgid "Contact ID"
+msgstr "Partner azonosító"
+
+msgctxt "Relationship (contacts). Parent table: crew"
+msgid "Contacts"
+msgstr "Partnerek"
+
+msgctxt "Relationship (departments). Parent table: crew"
+msgid "Departments"
+msgstr "Részlegek"
+
+msgctxt "Relationship (scenes). Parent table: crew"
+msgid "Scenes"
+msgstr "Jelenetek"
+
+msgctxt "Report (crew_list). Parent table: crew"
+msgid "Crew List"
+msgstr "Személyzet lista"
+
+msgctxt "Custom Title. Parent table: crew, Parent Report: crew_list"
+msgid "Department Name"
+msgstr "Részleg neve"
+
+msgctxt "Layout Group (overview). Parent table: crew"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (department). Parent table: crew, Parent Group: details"
+msgid "Department"
+msgstr "Részleg"
+
+msgctxt "Layout Group (contact). Parent table: crew, Parent Group: details"
+msgid "Contact"
+msgstr "Partner"
+
+msgctxt ""
+"Layout Group (address). Parent table: crew, Parent Group: details, Parent "
+"Group: contact"
+msgid "Address"
+msgstr "Cím"
+
+msgctxt ""
+"Layout Group (agent). Parent table: crew, Parent Group: details, Parent "
+"Group: contact"
+msgid "Agent"
+msgstr "Ügynök"
+
+msgctxt "Custom Title. Parent table: crew"
+msgid "Department Name"
+msgstr "Részleg neve"
+
+msgctxt "Table (deliveries)"
+msgid "Deliveries"
+msgstr "Kézbesítések"
+
+msgctxt "Field (delivery_id). Parent table: deliveries"
+msgid "Delivery ID"
+msgstr "Kézbesítés azonosító"
+
+msgctxt "Field (arrival_date). Parent table: deliveries"
+msgid "Arrival Date"
+msgstr "Érkezési dátum"
+
+msgctxt "Field (departure_contact_id). Parent table: deliveries"
+msgid "Contact ID"
+msgstr "Partner azonosító"
+
+msgctxt "Field (arrival_contact_id). Parent table: deliveries"
+msgid "Contact ID"
+msgstr "Partner azonosító"
+
+msgctxt "Field (arrival_time). Parent table: deliveries"
+msgid "Arrival Time"
+msgstr "Érkezési idő"
+
+msgctxt "Field (arrival_place). Parent table: deliveries"
+msgid "Arrival Place"
+msgstr "Érkezési hely"
+
+msgctxt "Field (departure_time). Parent table: deliveries"
+msgid "Departure Time"
+msgstr "Indulási idő"
+
+msgctxt "Field (departure_date). Parent table: deliveries"
+msgid "Departure Date"
+msgstr "Indulási dátum"
+
+msgctxt "Field (departure_place). Parent table: deliveries"
+msgid "Departure Place"
+msgstr "Indulási hely"
+
+msgctxt "Field (comments). Parent table: deliveries"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (description). Parent table: deliveries"
+msgid "Description"
+msgstr "Leírás"
+
+msgctxt "Relationship (departure_contact). Parent table: deliveries"
+msgid "Departure Contact"
+msgstr "Indulási partner"
+
+msgctxt "Relationship (arrival_contact). Parent table: deliveries"
+msgid "Arrival Contact"
+msgstr "Érkezési partner"
+
+msgctxt "Custom Title. Parent table: deliveries"
+msgid "Departure Name"
+msgstr "Indulási név"
+
+msgctxt "Custom Title. Parent table: deliveries"
+msgid "Arrival Name"
+msgstr "Érkezési név"
+
+msgctxt "Layout Group (overview). Parent table: deliveries"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt ""
+"Layout Group (departure). Parent table: deliveries, Parent Group: details"
+msgid "Departure"
+msgstr "Indulás"
+
+msgctxt ""
+"Layout Group (arrival). Parent table: deliveries, Parent Group: details"
+msgid "Arrival"
+msgstr "Érkezés"
+
+msgctxt "Table (departments)"
+msgid "Departments"
+msgstr "Részlegek"
+
+msgctxt "Field (departments_id). Parent table: departments"
+msgid "Department ID"
+msgstr "Részleg azonosító"
+
+msgctxt "Field (name). Parent table: departments"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "Field (comments). Parent table: departments"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Relationship (department_crew). Parent table: departments"
+msgid "Department Crew"
+msgstr "Részleg személyzet"
+
+msgctxt "Layout Group (overview). Parent table: departments"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Table (equipment)"
+msgid "Equipment"
+msgstr "Felszerelés"
+
+msgctxt "Field (equipment_id). Parent table: equipment"
+msgid "Equipment ID"
+msgstr "Felszerelés azonosító"
+
+msgctxt "Field (description). Parent table: equipment"
+msgid "Description"
+msgstr "Leírás"
+
+msgctxt "Field (comments). Parent table: equipment"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Relationship (scenes). Parent table: equipment"
+msgid "Scenes"
+msgstr "Jelenetek"
+
+msgctxt "Layout Group (overview). Parent table: equipment"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: equipment"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Table (journeys)"
+msgid "Journeys"
+msgstr "Utazások"
+
+msgctxt "Field (journey_id). Parent table: journeys"
+msgid "Journey ID"
+msgstr "Utazás azonosító"
+
+msgctxt "Field (comment). Parent table: journeys"
+msgid "Comment"
+msgstr "Megjegyzés"
+
+msgctxt "Field (description). Parent table: journeys"
+msgid "Description"
+msgstr "Leírás"
+
+msgctxt "Field (arrival_date). Parent table: journeys"
+msgid "Arrival Date"
+msgstr "Érkezési dátum"
+
+msgctxt "Field (arrival_time). Parent table: journeys"
+msgid "Arrival Time"
+msgstr "Érkezési idő"
+
+msgctxt "Field (arrival_place). Parent table: journeys"
+msgid "Arrival Place"
+msgstr "Érkezési hely"
+
+msgctxt "Field (departure_date). Parent table: journeys"
+msgid "Departure Date"
+msgstr "Indulási dátum"
+
+msgctxt "Field (departure_time). Parent table: journeys"
+msgid "Departure Time"
+msgstr "Indulási idő"
+
+msgctxt "Field (departure_place). Parent table: journeys"
+msgid "Departure Place"
+msgstr "Indulási hely"
+
+msgctxt "Field (contact_id). Parent table: journeys"
+msgid "Contact ID"
+msgstr "Partner azonosító"
+
+msgctxt "Relationship (contacts). Parent table: journeys"
+msgid "Contacts"
+msgstr "Partnerek"
+
+msgctxt "Layout Group (overview). Parent table: journeys"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (person). Parent table: journeys, Parent Group: details"
+msgid "Person"
+msgstr "Személy"
+
+msgctxt ""
+"Layout Group (departure). Parent table: journeys, Parent Group: details"
+msgid "Departure"
+msgstr "Részleg"
+
+msgctxt "Layout Group (arrival). Parent table: journeys, Parent Group: details"
+msgid "Arrival"
+msgstr "Érkezés"
+
+msgctxt "Table (locations)"
+msgid "Locations"
+msgstr "Helyek"
+
+msgctxt "Field (location_id). Parent table: locations"
+msgid "Location ID"
+msgstr "Hely azonosító"
+
+msgctxt "Field (name). Parent table: locations"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "Field (address_street). Parent table: locations"
+msgid "Street"
+msgstr "Utca"
+
+msgctxt "Field (address_town). Parent table: locations"
+msgid "Town"
+msgstr "Település"
+
+msgctxt "Field (address_county). Parent table: locations"
+msgid "County"
+msgstr "Megye"
+
+msgctxt "Field (address_country). Parent table: locations"
+msgid "Country"
+msgstr "Ország"
+
+msgctxt "Field (address_postcode). Parent table: locations"
+msgid "Postcode"
+msgstr "Irányítószám"
+
+msgctxt "Field (comments). Parent table: locations"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (contact_id). Parent table: locations"
+msgid "Contact ID"
+msgstr "Partner azonosító"
+
+msgctxt "Field (rent). Parent table: locations"
+msgid "Rent"
+msgstr "Bérlés"
+
+msgctxt "Relationship (scenes). Parent table: locations"
+msgid "Scenes"
+msgstr "Jelenetek"
+
+msgctxt "Relationship (contacts). Parent table: locations"
+msgid "Contacts"
+msgstr "Partnerek"
+
+msgctxt "Layout Group (overview). Parent table: locations"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt ""
+"Layout Group (address). Parent table: locations, Parent Group: details"
+msgid "Address"
+msgstr "Cím"
+
+msgctxt ""
+"Layout Group (contact_person). Parent table: locations, Parent Group: details"
+msgid "Contact Person"
+msgstr "Kapcsolati személy"
+
+msgctxt "Table (props)"
+msgid "Props"
+msgstr "Kellékek"
+
+msgctxt "Field (prop_id). Parent table: props"
+msgid "Prop ID"
+msgstr "Kellék azonosító"
+
+msgctxt "Field (description). Parent table: props"
+msgid "Description"
+msgstr "Leírás"
+
+msgctxt "Field (comments). Parent table: props"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (name). Parent table: props"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "Layout Group (overview). Parent table: props"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: props"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Table (scene_cast)"
+msgid "Scene Cast"
+msgstr "Jelenet szerep"
+
+msgctxt "Field (scene_cast_id). Parent table: scene_cast"
+msgid "Scene Cast ID"
+msgstr "Jelenet szerep azonosító"
+
+msgctxt "Field (comments). Parent table: scene_cast"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (cast_id). Parent table: scene_cast"
+msgid "Cast ID"
+msgstr "Szerep azonosító"
+
+msgctxt "Field (scene_id). Parent table: scene_cast"
+msgid "Scene ID"
+msgstr "Jelenet azonosító"
+
+msgctxt "Relationship (cast). Parent table: scene_cast"
+msgid "Cast"
+msgstr "Szerep"
+
+msgctxt "Layout Group (overview). Parent table: scene_cast, Parent Group: main"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: scene_cast, Parent Group: main"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Table (scene_costume)"
+msgid "Scene Costume"
+msgstr "Jelenet jelmez"
+
+msgctxt "Field (scene_costume_id). Parent table: scene_costume"
+msgid "Scene Costume ID"
+msgstr "Jelenet jelmez azonosító"
+
+msgctxt "Field (comments). Parent table: scene_costume"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (scene_id). Parent table: scene_costume"
+msgid "Scene Id"
+msgstr "Jelenet azonosító"
+
+msgctxt "Field (costume_id). Parent table: scene_costume"
+msgid "Costume ID"
+msgstr "Jelmez azonosító"
+
+msgctxt "Relationship (costume). Parent table: scene_costume"
+msgid "Costume"
+msgstr "Jelmez"
+
+msgctxt "Layout Group (overview). Parent table: scene_costume"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: scene_costume"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Custom Title. Parent table: scene_costume"
+msgid "Costume Name"
+msgstr "Jelmez neve"
+
+msgctxt "Table (scene_crew)"
+msgid "Scene Crew"
+msgstr "Jelenet személyzet"
+
+msgctxt "Field (scene_crew_id). Parent table: scene_crew"
+msgid "Scene Crew ID"
+msgstr "Jelenet személyzet azonosító"
+
+msgctxt "Field (comments). Parent table: scene_crew"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (scene_id). Parent table: scene_crew"
+msgid "Scene ID"
+msgstr "Jelenet azonosító"
+
+msgctxt "Field (department_id). Parent table: scene_crew"
+msgid "Department ID"
+msgstr "Részleg azonosító"
+
+msgctxt "Relationship (department). Parent table: scene_crew"
+msgid "Department"
+msgstr "Részleg"
+
+msgctxt "Relationship (scenes). Parent table: scene_crew"
+msgid "Scenes"
+msgstr "Jelenetek"
+
+msgctxt "Layout Group (overview). Parent table: scene_crew, Parent Group: main"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: scene_crew, Parent Group: main"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Field (scene_equipment_id). Parent table: scene_equipment"
+msgid "Scene Equipment ID"
+msgstr "Jelenet felszerelés azonosító"
+
+msgctxt "Field (comments). Parent table: scene_equipment"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (equipment_id). Parent table: scene_equipment"
+msgid "Equipment ID"
+msgstr "Felszerelés azonosító"
+
+msgctxt "Field (scene_id). Parent table: scene_equipment"
+msgid "Scene ID"
+msgstr "Jelenet azonosító"
+
+msgctxt "Layout Group (overview). Parent table: scene_equipment"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: scene_equipment"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Table (scene_extras)"
+msgid "Scene Extras"
+msgstr "Jelenet extrák"
+
+msgctxt "Field (scene_extras_id). Parent table: scene_extras"
+msgid "Scene Extras ID"
+msgstr "Jelenet extrák azonosító"
+
+msgctxt "Field (description). Parent table: scene_extras"
+msgid "Description"
+msgstr "Leírás"
+
+msgctxt "Field (comments). Parent table: scene_extras"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (scene_id). Parent table: scene_extras"
+msgid "Scene ID"
+msgstr "Jelenet azonosító"
+
+msgctxt "Field (contact_id). Parent table: scene_extras"
+msgid "Contact ID"
+msgstr "Partner azonosító"
+
+msgctxt "Relationship (contact). Parent table: scene_extras"
+msgid "Contact"
+msgstr "Partner"
+
+msgctxt ""
+"Layout Group (overview). Parent table: scene_extras, Parent Group: main"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt ""
+"Layout Group (details). Parent table: scene_extras, Parent Group: main"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Table (scene_makeup)"
+msgid "Scene Makeup"
+msgstr "Jelenet smink"
+
+msgctxt "Field (scene_makeup_id). Parent table: scene_makeup"
+msgid "Scene Makeup ID"
+msgstr "Jelenet smink azonosító"
+
+msgctxt "Field (description). Parent table: scene_makeup"
+msgid "Description"
+msgstr "Leírás"
+
+msgctxt "Field (comments). Parent table: scene_makeup"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (scene_id). Parent table: scene_makeup"
+msgid "Scene ID"
+msgstr "Jelenet azonosító"
+
+msgctxt "Layout Group (overview). Parent table: scene_makeup"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: scene_makeup"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Table (scene_props)"
+msgid "Scene Props"
+msgstr "Jelenet kellékek"
+
+msgctxt "Field (scene_props_id). Parent table: scene_props"
+msgid "Scene Prop ID"
+msgstr "Jelenet kellék azonosító"
+
+msgctxt "Field (comments). Parent table: scene_props"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (scene_id). Parent table: scene_props"
+msgid "Scene ID"
+msgstr "Jelenet azonosító"
+
+msgctxt "Field (prop_id). Parent table: scene_props"
+msgid "Prop ID"
+msgstr "Kellék azonosító"
+
+msgctxt "Relationship (props). Parent table: scene_props"
+msgid "Props"
+msgstr "Kellékek"
+
+msgctxt "Layout Group (overview). Parent table: scene_props"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: scene_props"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Table (scenes)"
+msgid "Scenes"
+msgstr "Jelenetek"
+
+msgctxt "Field (scene_id). Parent table: scenes"
+msgid "Scene ID"
+msgstr "Jelenet azonosító"
+
+msgctxt "Field (comments). Parent table: scenes"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (description). Parent table: scenes"
+msgid "Description"
+msgstr "Leírás"
+
+msgctxt "Field (location_id). Parent table: scenes"
+msgid "Location ID"
+msgstr "Hely azonosító"
+
+msgctxt "Field (date). Parent table: scenes"
+msgid "Date"
+msgstr "Dátum"
+
+msgctxt "Field (time). Parent table: scenes"
+msgid "Time"
+msgstr "Idő"
+
+msgctxt "Field (minutes). Parent table: scenes"
+msgid "Stop (minutes)"
+msgstr "Megállás (perc)"
+
+msgctxt "Field (day_or_night). Parent table: scenes"
+msgid "Day/Night"
+msgstr "Nappal/Éjszaka"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Day"
+msgstr "Nappal"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Night"
+msgstr "Éjszaka"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Morning"
+msgstr "Reggel"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Evening"
+msgstr "Este"
+
+msgctxt "Field Choice. Parent table: scenes, Parent Field: day_or_night"
+msgid "Dawn"
+msgstr "Hajnal"
+
+msgctxt "Field (interior_or_exterior). Parent table: scenes"
+msgid "Interior/Exterior"
+msgstr "Belső/Külső"
+
+msgctxt ""
+"Field Choice. Parent table: scenes, Parent Field: interior_or_exterior"
+msgid "Interior"
+msgstr "Belső"
+
+msgctxt ""
+"Field Choice. Parent table: scenes, Parent Field: interior_or_exterior"
+msgid "Exterior"
+msgstr "Külső"
+
+msgctxt "Field (name). Parent table: scenes"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "Field (overview_name). Parent table: scenes"
+msgid "Scene"
+msgstr "Jelenet"
+
+msgctxt "Field (pages). Parent table: scenes"
+msgid "Pages"
+msgstr "Oldalak"
+
+msgctxt "Field (script_day). Parent table: scenes"
+msgid "Script Day"
+msgstr "Kézirat nap"
+
+msgctxt "Relationship (location). Parent table: scenes"
+msgid "Locations"
+msgstr "Helyek"
+
+msgctxt "Relationship (scene_crew). Parent table: scenes"
+msgid "Additional Crew"
+msgstr "További személyzet"
+
+msgctxt "Relationship (scene_cast). Parent table: scenes"
+msgid "Cast"
+msgstr "Szerep"
+
+msgctxt "Relationship (scene_equipment). Parent table: scenes"
+msgid "Additional Equipment"
+msgstr "További felszerelés"
+
+msgctxt "Relationship (scene_extras). Parent table: scenes"
+msgid "Extras"
+msgstr "Extrák"
+
+msgctxt "Relationship (scene_props). Parent table: scenes"
+msgid "Props"
+msgstr "Kellékek"
+
+msgctxt "Relationship (scene_costume). Parent table: scenes"
+msgid "Costume"
+msgstr "Jelmez"
+
+msgctxt "Relationship (scene_makeup). Parent table: scenes"
+msgid "Additional Makeup"
+msgstr "További smink"
+
+msgctxt "Layout Group (overview). Parent table: scenes"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: scenes"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Text. Parent table: scenes, Parent Group: details"
+msgid "The location name will be used if the name is empty."
+msgstr "A hely neve lesz használva, ha a név üres."
+
+msgctxt "Layout Group (scenario). Parent table: scenes, Parent Group: details"
+msgid "Scenario"
+msgstr "Forgatókönyv"
+
+msgctxt "Layout Group (location). Parent table: scenes, Parent Group: details"
+msgid "Location"
+msgstr "Hely"
+
+msgctxt "Custom Title. Parent table: scenes, Parent Group: details"
+msgid "Contact Name"
+msgstr "Partner neve"
+
+msgctxt ""
+"Custom Title. Parent table: scenes, Parent Group: details_lower, Parent "
+"Group: notebook"
+msgid "Actor's Name"
+msgstr "Színész neve"
+
