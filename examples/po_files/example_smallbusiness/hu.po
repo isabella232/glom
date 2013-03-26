@@ -1,0 +1,469 @@
+# Hungarian translation for glom.
+# Copyright (C) 2013 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+#
+# Balázs Úr <urbalazs at gmail dot com>, 2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: glom master\n"
+"product=glom&keywords=I18N+L10N&component=general\n"
+"PO-Revision-Date: 2013-03-26 19:34+0100\n"
+"Last-Translator: Balázs Úr <urbalazs at gmail dot com>\n"
+"Language-Team: Hungarian <gnome-hu-list@gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: hu\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 1.2\n"
+
+msgctxt "Database Title"
+msgid "Small Business Example"
+msgstr "Kisvállalat példa"
+
+msgctxt "Table (contacts)"
+msgid "Contacts"
+msgstr "Partnerek"
+
+msgctxt "Field (contact_id). Parent table: contacts"
+msgid "Contact ID"
+msgstr "Partner azonosító"
+
+msgctxt "Field (name_first). Parent table: contacts"
+msgid "First Name"
+msgstr "Utónév"
+
+msgctxt "Field (name_middle). Parent table: contacts"
+msgid "Middle Name"
+msgstr "Középső név"
+
+msgctxt "Field (name_last). Parent table: contacts"
+msgid "Last Name"
+msgstr "Vezetéknév"
+
+msgctxt "Field (name_title). Parent table: contacts"
+msgid "Title"
+msgstr "Megszólítás"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mr"
+msgstr "Mr"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mrs"
+msgstr "Mrs"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Ms"
+msgstr "Ms"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Miss"
+msgstr "Miss"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Prof"
+msgstr "Prof"
+
+msgctxt "Field (address_street). Parent table: contacts"
+msgid "Street"
+msgstr "Utca"
+
+msgctxt "Field (address_town). Parent table: contacts"
+msgid "Town"
+msgstr "Település"
+
+msgctxt "Field (address_state). Parent table: contacts"
+msgid "State"
+msgstr "Állam"
+
+msgctxt "Field (address_country). Parent table: contacts"
+msgid "Country"
+msgstr "Ország"
+
+msgctxt "Field (address_postcode). Parent table: contacts"
+msgid "Postcode"
+msgstr "Irányítószám"
+
+msgctxt "Field (date_of_birth). Parent table: contacts"
+msgid "Date of Birth"
+msgstr "Születési dátum"
+
+msgctxt "Field (comments). Parent table: contacts"
+msgid "Comments"
+msgstr "Megjegyzések"
+
+msgctxt "Field (name_full). Parent table: contacts"
+msgid "Full Name"
+msgstr "Teljes név"
+
+msgctxt "Field (picture). Parent table: contacts"
+msgid "Picture"
+msgstr "Kép"
+
+msgctxt "Field (email). Parent table: contacts"
+msgid "Email Address"
+msgstr "E-mail cím"
+
+msgctxt "Field (website). Parent table: contacts"
+msgid "Web Site"
+msgstr "Weboldal"
+
+msgctxt "Field (tel_home). Parent table: contacts"
+msgid "Home Telephone"
+msgstr "Otthoni telefon"
+
+msgctxt "Field (tel_work). Parent table: contacts"
+msgid "Work Telephone"
+msgstr "Munkahelyi telefon"
+
+msgctxt "Field (tel_mobile). Parent table: contacts"
+msgid "Mobile Telephone"
+msgstr "Mobiltelefon"
+
+msgctxt "Field (tel_fax). Parent table: contacts"
+msgid "Fax"
+msgstr "Fax"
+
+msgctxt "Report (by_country). Parent table: contacts"
+msgid "Contacts By Country"
+msgstr "Partnerek ország szerint"
+
+msgctxt "Report (by_country_by_town). Parent table: contacts"
+msgid "By Country, By Town"
+msgstr "Ország szerint, település szerint"
+
+msgctxt "Print Layout (contact_details). Parent table: contacts"
+msgid "Contact Details"
+msgstr "Partner részletei"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Contacts"
+msgstr "Partnerek"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Contact ID:"
+msgstr "Partner azonosító:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Full Name:"
+msgstr "Teljes név:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Title:"
+msgstr "Megszólítás:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "First Name:"
+msgstr "Utónév:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Middle Name:"
+msgstr "Középső név:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Last Name:"
+msgstr "Vezetéknév:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Address"
+msgstr "Cím"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Street:"
+msgstr "Utca:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Town:"
+msgstr "Település:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "State:"
+msgstr "Állam:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Postcode:"
+msgstr "Irányítószám:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Country:"
+msgstr "Ország:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Telephone"
+msgstr "Telefon"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Work Telephone:"
+msgstr "Munkahelyi telefon:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Mobile Telephone:"
+msgstr "Mobiltelefon:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Home Telephone:"
+msgstr "Otthoni telefon:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Fax:"
+msgstr "Fax:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Date of Birth:"
+msgstr "Születési dátum:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Picture:"
+msgstr "Kép:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Comments:"
+msgstr "Megjegyzések:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Web Site:"
+msgstr "Weboldal:"
+
+msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
+msgid "Email Address:"
+msgstr "E-mail cím:"
+
+msgctxt "Layout Group (overview). Parent table: contacts"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (name). Parent table: contacts, Parent Group: details"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "Layout Group (address). Parent table: contacts, Parent Group: details"
+msgid "Address"
+msgstr "Cím"
+
+msgctxt ""
+"Layout Group (telephone). Parent table: contacts, Parent Group: details"
+msgid "Telephone"
+msgstr "Telefon"
+
+msgctxt "Button. Parent table: contacts, Parent Group: details"
+msgid "Test Button"
+msgstr "Teszt gomb"
+
+msgctxt "Field (product_name). Parent table: invoice_lines"
+msgid "Product Name"
+msgstr "Termék neve"
+
+msgctxt "Field (product_id). Parent table: invoice_lines"
+msgid "Product Id"
+msgstr "Termék azonosító"
+
+msgctxt "Field (product_price). Parent table: invoice_lines"
+msgid "Product Price"
+msgstr "Termék ára"
+
+msgctxt "Field (invoice_id). Parent table: invoice_lines"
+msgid "Invoice ID"
+msgstr "Számla azonosító"
+
+msgctxt "Field (count). Parent table: invoice_lines"
+msgid "Number Of"
+msgstr "Ezek száma:"
+
+msgctxt "Field (total_price). Parent table: invoice_lines"
+msgid "Total Price"
+msgstr "Teljes ár"
+
+msgctxt "Field (vat_percentage). Parent table: invoice_lines"
+msgid "VAT Percentage"
+msgstr "ÁFA százalék"
+
+msgctxt "Field (total_price_vat). Parent table: invoice_lines"
+msgid "Total VAT"
+msgstr "Teljes ÁFA"
+
+msgctxt "Table (invoices)"
+msgid "Invoices"
+msgstr "Számlák"
+
+msgctxt "Field (invoice_id). Parent table: invoices"
+msgid "Invoice ID"
+msgstr "Számla azonosító"
+
+msgctxt "Field (contact_id). Parent table: invoices"
+msgid "Contact ID"
+msgstr "Partner azonosító"
+
+msgctxt "Field (date). Parent table: invoices"
+msgid "Date"
+msgstr "Dátum"
+
+msgctxt "Field (comment). Parent table: invoices"
+msgid "Comment"
+msgstr "Megjegyzés"
+
+msgctxt "Field (price_total). Parent table: invoices"
+msgid "Total Price"
+msgstr "Teljes ár"
+
+msgctxt "Field (vat_total). Parent table: invoices"
+msgid "Total VAT"
+msgstr "Teljes ÁFA"
+
+msgctxt "Field (price_total_with_vat). Parent table: invoices"
+msgid "Total Price With Vat"
+msgstr "Teljes ár ÁFÁ-val"
+
+msgctxt "Relationship (invoice_lines). Parent table: invoices"
+msgid "Invoice Lines"
+msgstr "Számla sorai"
+
+msgctxt "Relationship (contacts). Parent table: invoices"
+msgid "Contacts"
+msgstr "Partnerek"
+
+msgctxt "Report (by_customer). Parent table: invoices"
+msgid "By Customer"
+msgstr "Ügyfél szerint"
+
+msgctxt "Layout Group (overview). Parent table: invoices"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt ""
+"Layout Group (customer). Parent table: invoices, Parent Group: details"
+msgid "Customer"
+msgstr "Ügyfél"
+
+msgctxt "Table (products)"
+msgid "Products"
+msgstr "Termékek"
+
+msgctxt "Field (product_id). Parent table: products"
+msgid "Product ID"
+msgstr "Termék azonosító"
+
+msgctxt "Field (comment). Parent table: products"
+msgid "Comment"
+msgstr "Megjegyzés"
+
+msgctxt "Field (description). Parent table: products"
+msgid "Description"
+msgstr "Leírás"
+
+msgctxt "Field (name). Parent table: products"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "Field (price). Parent table: products"
+msgid "Price"
+msgstr "Ár"
+
+msgctxt "Field (vat_percent). Parent table: products"
+msgid "Vat Percent"
+msgstr "ÁFA százalék"
+
+msgctxt "Layout Group (overview). Parent table: products"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (details). Parent table: products"
+msgid "Details"
+msgstr "Részletek"
+
+msgctxt "Table (staff)"
+msgid "Staff"
+msgstr "Személyzet"
+
+msgctxt "Field (staff_id). Parent table: staff"
+msgid "Staff ID"
+msgstr "Személyzet azonosító"
+
+msgctxt "Field (name_title). Parent table: staff"
+msgid "Title"
+msgstr "Megszólítás"
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Mr"
+msgstr "Mr"
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Mrs"
+msgstr "Mrs"
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Miss"
+msgstr "Miss"
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr"
+
+msgctxt "Field Choice. Parent table: staff, Parent Field: name_title"
+msgid "Prof"
+msgstr "Prof"
+
+msgctxt "Field (name_first). Parent table: staff"
+msgid "First Name"
+msgstr "Utónév"
+
+msgctxt "Field (name_second). Parent table: staff"
+msgid "Second Name"
+msgstr "Második név"
+
+msgctxt "Field (name_last). Parent table: staff"
+msgid "Last Name"
+msgstr "Vezetéknév"
+
+msgctxt "Field (address_street). Parent table: staff"
+msgid "Street"
+msgstr "Utca"
+
+msgctxt "Field (address_town). Parent table: staff"
+msgid "Town"
+msgstr "Település"
+
+msgctxt "Field (address_state). Parent table: staff"
+msgid "State"
+msgstr "Állam"
+
+msgctxt "Field (address_country). Parent table: staff"
+msgid "Country"
+msgstr "Ország"
+
+msgctxt "Field (address_postcode). Parent table: staff"
+msgid "Postcode"
+msgstr "Irányítószám"
+
+msgctxt "Field (date_of_birth). Parent table: staff"
+msgid "Date Of Birth"
+msgstr "Születési dátum"
+
+msgctxt "Field (position). Parent table: staff"
+msgid "Position"
+msgstr "Beosztás"
+
+msgctxt "Layout Group (overview). Parent table: staff"
+msgid "Overview"
+msgstr "Áttekintés"
+
+msgctxt "Layout Group (name). Parent table: staff, Parent Group: details"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "Layout Group (address). Parent table: staff, Parent Group: details"
+msgid "Address"
+msgstr "Cím"
+
