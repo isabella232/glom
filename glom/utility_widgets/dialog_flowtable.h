@@ -46,8 +46,12 @@ public:
 
   void set_flowtable(FlowTableWithFields* flowtable);
   
-  gint get_columns_count(); //TODO: Make const?
-  Glib::ustring get_title(); //TODO: Isn't this the same as Widget::get_title()?
+  gint get_columns_count() const;
+
+  //TODO: Isn't this the same as Window::get_title()?
+  //  Probably, yes, at least when it is properly const.
+  //  so, TODO: find out what calls it.
+  Glib::ustring get_title();
     
 private:
   Gtk::Entry* m_entry_title;

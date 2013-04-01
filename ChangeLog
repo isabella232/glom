@@ -1,5 +1,12 @@
 2013-04-01  Murray Cumming  <murrayc@murrayc.com>
 
+        Dialog_FlowTable: Make a getter const.
+
+        * glom/utility_widgets/dialog_flowtable.[h|cc]:
+	Make get_columns_count() const.
+
+2013-04-01  Murray Cumming  <murrayc@murrayc.com>
+
         LayoutItem_Portal: Do not implement get_part_type_name().
 
         * glom/libglom/data_structure/layout/layoutitem_portal.[h|cc]:

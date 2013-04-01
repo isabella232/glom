@@ -66,7 +66,7 @@ Glib::ustring Dialog_FlowTable::get_title()
   return m_entry_title->get_text();
 }
 
-gint Dialog_FlowTable::get_columns_count()
+gint Dialog_FlowTable::get_columns_count() const
 {
   return m_spin_columns->get_value_as_int();
 }
