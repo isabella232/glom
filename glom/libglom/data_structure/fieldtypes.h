@@ -48,9 +48,6 @@ private:
    */
   void fill_with_default_data();
 
-  typedef std::map<Glib::ustring, GType> type_mapSchemaStringsToGdaTypes;
-  type_mapSchemaStringsToGdaTypes m_mapSchemaStringsToGdaTypes;
-
   //Duplicate information, to make searching easier:
   typedef std::map<GType, Glib::ustring> type_mapGdaTypesToSchemaStrings;
   type_mapGdaTypesToSchemaStrings m_mapGdaTypesToSchemaStrings;

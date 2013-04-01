@@ -8,6 +8,13 @@
 
 2013-02-15  Murray Cumming  <murrayc@murrayc.com>
 
+        FieldTypes: Some simplification.
+
+        * glom/libglom/data_structure/fieldtypes.[h|cc]:
+	Remove a now-unused duplicate map of types.
+
+2013-02-15  Murray Cumming  <murrayc@murrayc.com>
+
         MySQL support: Add a check for an empty initial password.
 
         * glom/libglom/connectionpool_backends/mysql_self.cc:

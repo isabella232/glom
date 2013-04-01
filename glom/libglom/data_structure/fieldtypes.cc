@@ -87,10 +87,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
 
             //Save it for later:
             const Glib::ustring gdatypestring = gda_g_type_to_string(gdatype); // TODO: What is this actually used for?
-            //std::cout << G_STRFUNC << ": m_mapSchemaStringsToGdaTypes[\"" << schema_type_string << "\"] = " << gdatypestring << ";" << std::endl;
-            m_mapSchemaStringsToGdaTypes[schema_type_string] = gdatype;
-
-            
+           
             //std::cout << "schema type: " << schema_type_string << " = gdatype " << (guint)gdatype << "(" << gdatypestring << ")" << std::endl;
             
             m_mapGdaTypesToSchemaStrings[gdatype] = schema_type_string; //We save it twice, to just to make searching easier, without using a predicate.
@@ -105,7 +102,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
 
   //Use some default mappings if we could not get them from the database server.
   //For instance, this can happen if the user does not have read access.
-  if(m_mapSchemaStringsToGdaTypes.empty())
+  if(m_mapGdaTypesToSchemaStrings.empty())
   {
     fill_with_default_data();
   }
@@ -126,69 +123,50 @@ void FieldTypes::fill_with_default_data()
   //in the constructor.
   //This is appropriate for PostgreSQL, but SQLite should never need these defaults anyway.
   //TODO: Make something like libgda's static postgres_name_to_g_type() method public?
-  m_mapSchemaStringsToGdaTypes["abstime"] = G_TYPE_INT;
-  m_mapSchemaStringsToGdaTypes["bit"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["bool"] = G_TYPE_BOOLEAN;
-  m_mapSchemaStringsToGdaTypes["bpchar"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["bytea"] = GDA_TYPE_BINARY;
-  m_mapSchemaStringsToGdaTypes["char"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["cidr"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["circle"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["date"] = G_TYPE_DATE;
-  m_mapSchemaStringsToGdaTypes["float4"] = G_TYPE_FLOAT;
-  m_mapSchemaStringsToGdaTypes["float8"] = G_TYPE_DOUBLE;
-  m_mapSchemaStringsToGdaTypes["gtsvector"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["inet"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["int2"] = GDA_TYPE_SHORT;
-  m_mapSchemaStringsToGdaTypes["int4"] = G_TYPE_INT;
-  m_mapSchemaStringsToGdaTypes["int8"] = G_TYPE_INT64;
-  m_mapSchemaStringsToGdaTypes["interval"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["macaddr"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["money"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["numeric"] = GDA_TYPE_NUMERIC;
-  m_mapSchemaStringsToGdaTypes["path"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["pg_node_tree"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["polygon"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["regconfig"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["regdictionary"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["reltime"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["text"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["time"] = GDA_TYPE_TIME;
-  m_mapSchemaStringsToGdaTypes["timestamp"] = GDA_TYPE_TIMESTAMP;
-  m_mapSchemaStringsToGdaTypes["timestamptz"] = GDA_TYPE_TIMESTAMP;
-  m_mapSchemaStringsToGdaTypes["timetz"] = GDA_TYPE_TIME;
-  m_mapSchemaStringsToGdaTypes["tinterval"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["tsquery"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["tsvector"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["txid_snapshot"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["uuid"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["varbit"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["varchar"] = G_TYPE_STRING;
-  m_mapSchemaStringsToGdaTypes["xml"] = G_TYPE_STRING;
-
-  //Fill the reverse map too:
-  for(type_mapSchemaStringsToGdaTypes::const_iterator iter = m_mapSchemaStringsToGdaTypes.begin();
-    iter != m_mapSchemaStringsToGdaTypes.end(); ++iter)
-  {
-    const Glib::ustring str = iter->first;
-    const GType gtype = iter->second;
-    m_mapGdaTypesToSchemaStrings[gtype] = str;
-  }
+  m_mapGdaTypesToSchemaStrings[G_TYPE_INT] = "abstime";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "bit";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_BOOLEAN] = "bool";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "bpchar";
+  m_mapGdaTypesToSchemaStrings[GDA_TYPE_BINARY] = "bytea";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "char";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "cidr";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "circle";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_DATE] = "date";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_FLOAT] = "float4";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_DOUBLE] = "float8";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "gtsvector";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "inet";
+  m_mapGdaTypesToSchemaStrings[GDA_TYPE_SHORT] = "int2";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_INT] = "int4";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_INT64] = "int8";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "interval";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "macaddr";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "money";
+  m_mapGdaTypesToSchemaStrings[GDA_TYPE_NUMERIC] = "numeric";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "path";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "pg_node_tree";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "polygon";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "regconfig";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "regdictionary";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "reltime";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "text";
+  m_mapGdaTypesToSchemaStrings[GDA_TYPE_TIME] = "time";
+  m_mapGdaTypesToSchemaStrings[GDA_TYPE_TIMESTAMP] = "timestamp";
+  m_mapGdaTypesToSchemaStrings[GDA_TYPE_TIMESTAMP] = "timestamptz";
+  m_mapGdaTypesToSchemaStrings[GDA_TYPE_TIME] = "timetz";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "tinterval";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "tsquery";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "tsvector";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "txid_snapshot";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "uuid";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "varbit";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "varchar";
+  m_mapGdaTypesToSchemaStrings[G_TYPE_STRING] = "xml";
 }
 
 guint FieldTypes::get_types_count() const
 {
-/*
-  if(!m_mapSchemaStringsToGdaTypes.empty())
-  {
-    const type_mapSchemaStringsToGdaTypes::const_iterator iter = m_mapSchemaStringsToGdaTypes.begin();
-    const Glib::ustring schema_type_string = iter->first;
-    const GType gdatype = iter->second;
-    std::cout << G_STRFUNC << ": debug: schema_type_string=" << schema_type_string << ", gdatype=" << g_type_name(gdatype) << std::endl;
-  }
-*/
-
-  return m_mapSchemaStringsToGdaTypes.size();
+  return m_mapGdaTypesToSchemaStrings.size();
 }
 
 Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(GType field_type) const
