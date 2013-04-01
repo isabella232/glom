@@ -54,7 +54,10 @@ public:
 
   virtual Glib::ustring get_title(const Glib::ustring& locale) const;
   virtual Glib::ustring get_title_or_name(const Glib::ustring& locale) const;
-  virtual Glib::ustring get_part_type_name() const;
+
+  //We do not implement this, because we only ever want to use the method
+  //in the derived class.
+  //virtual Glib::ustring get_part_type_name() const;
 
   virtual void change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
   virtual void change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);

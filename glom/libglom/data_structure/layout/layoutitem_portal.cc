@@ -79,16 +79,6 @@ LayoutItem_Portal& LayoutItem_Portal::operator=(const LayoutItem_Portal& src)
   return *this;
 }
 
-Glib::ustring LayoutItem_Portal::get_part_type_name() const
-{
-  //TODO: "Portal" probably shouldn't appear in the UI.
-  //We should use "Related Records instead.
-  //Translators: This is the name of a UI element (a layout part name).
-  //It means a list of related records.
-  return _("Portal");
-}
-
-
 void LayoutItem_Portal::change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)
 {
   LayoutGroup::change_related_field_item_name(table_name, field_name, field_name_new);

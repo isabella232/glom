@@ -1,3 +1,19 @@
+2013-04-01  Murray Cumming  <murrayc@murrayc.com>
+
+        LayoutItem_Portal: Do not implement get_part_type_name().
+
+        * glom/libglom/data_structure/layout/layoutitem_portal.[h|cc]:
+	Remove the get_part_type_name() override because it adds
+	a translation that we never use. We only ever instantiate the
+	derived portal types.
+
+2013-04-01  Murray Cumming  <murrayc@murrayc.com>
+
+        FieldTypes: Some simplification.
+
+        * glom/libglom/data_structure/fieldtypes.[h|cc]:
+	Remove a now-unused duplicate map of types.
+
 2013-03-21  Murray Cumming  <murrayc@murrayc.com>
 
         Add a translation file for an example.
@@ -5,13 +21,6 @@
         * examples/po_files/example_film_manager/gl.po:
 	Add this missing file. The translations seem to have got into
 	the .glom file somehow, but this .po file was not in git.
-
-2013-02-15  Murray Cumming  <murrayc@murrayc.com>
-
-        FieldTypes: Some simplification.
-
-        * glom/libglom/data_structure/fieldtypes.[h|cc]:
-	Remove a now-unused duplicate map of types.
 
 2013-02-15  Murray Cumming  <murrayc@murrayc.com>
 
