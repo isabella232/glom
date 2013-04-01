@@ -552,13 +552,7 @@ void AppWindow_WithDoc_Gtk::document_history_add(const Glib::ustring& file_uri)
   if(!file_exists(file_uri))
     return;
 
-  {
-    //TODO: Wrap gnome_vfs_escape_path_string() in gnome-vfsmm.
-    //Glib::ustring filename_e = Gnome::Vfs::escape_path_string(file_uri);
-    const Glib::ustring uri = file_uri; // "file://" + filename_e;
-
-    Gtk::RecentManager::get_default()->add_item(uri);
-  }
+  Gtk::RecentManager::get_default()->add_item(file_uri);
 }
 
 void AppWindow_WithDoc_Gtk::document_history_remove(const Glib::ustring& file_uri)

@@ -71,7 +71,6 @@ public:
   sharedptr<LayoutGroup> get_secondary_fields();
   sharedptr<const LayoutGroup> get_secondary_fields() const;
 
-  //TODO: Is this used by anything?
   type_list_sort_fields get_sort_by() const;
   void set_sort_by(const type_list_sort_fields& sort_by);
   
