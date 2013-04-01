@@ -322,8 +322,8 @@ double Conversions::get_double_for_gda_value_numeric(const Gnome::Gda::Value& va
         return value.get_int();
       case G_TYPE_UINT:
         return value.get_uint();
-      //case G_TYPE_LONG:
-      //TODO: Add this to libgdamm:  return value.get_long();
+      case G_TYPE_LONG:
+        return value.get_long();
       case G_TYPE_ULONG:
         return value.get_ulong();
       case G_TYPE_INT64:

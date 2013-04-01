@@ -32,7 +32,10 @@ namespace
     if(!file_uri.empty())
     {
       message += "\n\n";
-      message += Glib::ustring::compose(_("Document:\n%1"), Glib::filename_display_basename(file_uri)); //TODO: Can we use filename_display_basename() with a URI?
+
+      //TODO: Can we use filename_display_basename() with a URI?
+      // No, almost certainly not. murrayc.
+      message += Glib::ustring::compose(_("Document:\n%1"), Glib::filename_display_basename(file_uri));
     }
 
     return message;

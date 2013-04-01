@@ -55,8 +55,12 @@ public:
   double get_line_width() const;
   void set_line_width(double line_width);
   
-  //TODO: Document the format:
+  /** Get the line color in CSS3 format.
+   */
   Glib::ustring get_line_color() const;
+
+  /** Set the line color in CSS3 format.
+   */
   void set_line_color(const Glib::ustring& color);
 
 private:

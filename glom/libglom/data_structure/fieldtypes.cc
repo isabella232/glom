@@ -86,7 +86,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
             //std::cout << "debug: schema_type_string=" << schema_type_string << ", gda type=" << gdatype << "(" << g_type_name(gdatype) << ")" << std::endl;
 
             //Save it for later:
-            const Glib::ustring gdatypestring = gda_g_type_to_string(gdatype); // TODO: What is this actually used for?
+            //const Glib::ustring gdatypestring = gda_g_type_to_string(gdatype);
            
             //std::cout << "schema type: " << schema_type_string << " = gdatype " << (guint)gdatype << "(" << gdatypestring << ")" << std::endl;
             
