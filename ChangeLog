@@ -1,5 +1,12 @@
 2013-04-01  Murray Cumming  <murrayc@murrayc.com>
 
+        Update another test .glom file.
+
+	* examples/sqlite/test_sqlite_music/test_sqlite_music.glom:
+	Remove the parent_table attributes.
+
+2013-04-01  Murray Cumming  <murrayc@murrayc.com>
+
         LayoutInfo: Remove the superfluous parent_table.
 
         * glom/glom/libglom/document/document.[h|cc]:

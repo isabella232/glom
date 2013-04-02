@@ -34,7 +34,7 @@
       <relationship name="songs" key="album_id" other_table="songs" other_key="album_id" auto_create="true" allow_edit="true" title="Songs"/>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="albums">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_group name="overview" columns_count="2" title="Overview">
@@ -90,7 +90,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="albums">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="toplevel">
             <data_layout_item name="album_id" use_default_formatting="true">
@@ -155,7 +155,7 @@
       <relationship name="albums" key="artist_id" other_table="albums" other_key="artist_id" auto_create="true" allow_edit="true" title="Albums"/>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="artists">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_group name="overview" columns_count="2" title="Overview">
@@ -191,7 +191,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="artists">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="artist_id" editable="true" use_default_formatting="true">
@@ -235,7 +235,7 @@
       <relationship name="albums" key="publishers_id" other_table="albums" other_key="publisher_id" title="Albums"/>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="publishers">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_group name="overview" columns_count="2" title="Overview">
@@ -271,7 +271,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="publishers">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="publishers_id" editable="true" use_default_formatting="true">
@@ -313,7 +313,7 @@
       <relationship name="album" key="album_id" other_table="albums" other_key="album_id" title="Album"/>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="songs">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_group name="overview" columns_count="2" title="Overview">
@@ -354,7 +354,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="songs">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="songs_id" editable="true" use_default_formatting="true">
