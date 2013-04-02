@@ -1,5 +1,18 @@
 2013-04-01  Murray Cumming  <murrayc@murrayc.com>
 
+        LayoutInfo: Remove the superfluous parent_table.
+
+        * glom/glom/libglom/document/document.[h|cc]:
+	LayoutInfo: Do not bother storing the parent table here because
+	these are all stored in a table-specific map anyway.
+        * glom/glom/glom_document.dtd: Remove the mention of the
+	parent_table attribute. The parent table node already specifies
+	it.
+        * glom/examples/*.glom: Resave these without the parent_table
+	attributes.
+
+2013-04-01  Murray Cumming  <murrayc@murrayc.com>
+
         Dialog_FlowTable: Make a getter const.
 
         * glom/utility_widgets/dialog_flowtable.[h|cc]:

@@ -678,7 +678,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
     </fields>
     <relationships/>
     <data_layouts>
-      <data_layout name="details" parent_table="contacts">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -837,7 +837,7 @@ dialog.hide();
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="contacts">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="contact_id" use_default_formatting="true">
@@ -1675,7 +1675,7 @@ Orientation=portrait
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="invoice_lines">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="invoice_lines_id" editable="true" use_default_formatting="true">
@@ -1708,7 +1708,7 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="invoice_lines">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="invoice_lines_id" editable="true" use_default_formatting="true">
@@ -1943,7 +1943,7 @@ Orientation=portrait
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="invoices">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -2030,7 +2030,7 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="invoices">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="invoice_id" use_default_formatting="true">
@@ -2260,7 +2260,7 @@ Orientation=portrait
     </fields>
     <relationships/>
     <data_layouts>
-      <data_layout name="details" parent_table="products">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -2316,7 +2316,7 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="products">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="product_id" use_default_formatting="true">
@@ -2691,7 +2691,7 @@ Orientation=portrait
     </fields>
     <relationships/>
     <data_layouts>
-      <data_layout name="details" parent_table="staff">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -2787,7 +2787,7 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="staff">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="staff_id" use_default_formatting="true">

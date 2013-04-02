@@ -217,7 +217,7 @@
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="accommodation">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -304,7 +304,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="accommodation">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="accommodation_id" editable="true" use_default_formatting="true">
@@ -473,7 +473,7 @@
     </fields>
     <relationships/>
     <data_layouts>
-      <data_layout name="details" parent_table="cars">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -527,7 +527,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="cars">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="car_id" editable="true" use_default_formatting="true">
@@ -730,7 +730,7 @@
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="cast">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_group name="overview" columns_count="2" title="Overview">
@@ -792,6 +792,21 @@
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
                 <data_layout_item name="name_full" relationship="contacts_actor" editable="true" use_default_formatting="true">
+                  <title_custom use_custom="true" title="Actor's Name">
+                    <trans_set>
+                      <trans loc="cs" val="Jméno herce"/>
+                      <trans loc="de" val="Name des Schauspielers"/>
+                      <trans loc="el" val="Όνομα ηθοποιού"/>
+                      <trans loc="en_GB" val="Actor's Name"/>
+                      <trans loc="es" val="Nombre del actor"/>
+                      <trans loc="fr" val="Nom de l'acteur"/>
+                      <trans loc="id" val="Nama Aktor"/>
+                      <trans loc="pt_BR" val="Nome do ator"/>
+                      <trans loc="sl" val="Ime igralca"/>
+                      <trans loc="sr" val="Име глумца"/>
+                      <trans loc="sr@latin" val="Ime glumca"/>
+                    </trans_set>
+                  </title_custom>
                   <formatting/>
                 </data_layout_item>
                 <data_layout_item name="address_street1" relationship="contacts_actor" editable="true" use_default_formatting="true">
@@ -845,7 +860,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="cast">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="character_id" editable="true" use_default_formatting="true">
@@ -899,7 +914,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="details" parent_table="characters">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -1003,7 +1018,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="characters">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="character_id" editable="true" use_default_formatting="true">
@@ -1315,7 +1330,7 @@
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="companies">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -1388,7 +1403,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="companies">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="company_id" editable="true" use_default_formatting="true">
@@ -2329,7 +2344,7 @@
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="contacts">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -2542,7 +2557,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="contacts">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
@@ -3449,7 +3464,7 @@ Orientation=portrait
     </fields>
     <relationships/>
     <data_layouts>
-      <data_layout name="list" parent_table="costume">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="costume_id" editable="true" use_default_formatting="true">
@@ -3464,7 +3479,7 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="details" parent_table="costume">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -3700,7 +3715,7 @@ Orientation=portrait
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="crew">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -3840,7 +3855,7 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="crew">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="crew_id" editable="true" use_default_formatting="true">
@@ -4212,7 +4227,7 @@ Orientation=portrait
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="list" parent_table="deliveries">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="delivery_id" editable="true" use_default_formatting="true">
@@ -4272,7 +4287,7 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="details" parent_table="deliveries">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -4496,7 +4511,7 @@ Orientation=portrait
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="departments">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -4545,7 +4560,7 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="departments">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="departments_id" editable="true" use_default_formatting="true">
@@ -4665,7 +4680,7 @@ Orientation=portrait
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="equipment">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -4718,7 +4733,7 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="equipment">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="equipment_id" editable="true" use_default_formatting="true">
@@ -4959,7 +4974,7 @@ Orientation=portrait
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="list" parent_table="journeys">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="journey_id" editable="true" use_default_formatting="true">
@@ -4986,7 +5001,7 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="details" parent_table="journeys">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -5343,7 +5358,7 @@ Orientation=portrait
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="locations">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -5447,7 +5462,7 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="locations">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="location_id" editable="true" use_default_formatting="true">
@@ -5589,7 +5604,7 @@ Orientation=portrait
     </fields>
     <relationships/>
     <data_layouts>
-      <data_layout name="list" parent_table="props">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="prop_id" editable="true" use_default_formatting="true">
@@ -5604,7 +5619,7 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="details" parent_table="props">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -5807,7 +5822,7 @@ Orientation=portrait
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="list" parent_table="scene_cast">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="scene_cast_id" editable="true" use_default_formatting="true">
@@ -5825,7 +5840,7 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="details" parent_table="scene_cast">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_group name="overview" columns_count="2" title="Overview">
@@ -6014,7 +6029,7 @@ Orientation=portrait
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="list" parent_table="scene_costume">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="scene_costume_id" editable="true" use_default_formatting="true">
@@ -6029,7 +6044,7 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="details" parent_table="scene_costume">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -6240,7 +6255,7 @@ Orientation=portrait
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="scene_crew">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_group name="overview" columns_count="2" title="Overview">
@@ -6293,7 +6308,7 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="scene_crew">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="scene_crew_id" editable="true" use_default_formatting="true">
@@ -6418,7 +6433,7 @@ Orientation=portrait
       <relationship name="scene" key="scene_id" other_table="scenes" other_key="scene_id"/>
     </relationships>
     <data_layouts>
-      <data_layout name="list" parent_table="scene_equipment">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="scene_equipment_id" editable="true" use_default_formatting="true">
@@ -6436,7 +6451,7 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="details" parent_table="scene_equipment">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -6616,7 +6631,7 @@ Orientation=portrait
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="scene_extras">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_group name="overview" columns_count="2" title="Overview">
@@ -6672,7 +6687,7 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="scene_extras">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="scene_extras_id" editable="true" use_default_formatting="true">
@@ -6782,7 +6797,7 @@ Orientation=portrait
     </fields>
     <relationships/>
     <data_layouts>
-      <data_layout name="list" parent_table="scene_makeup">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="scene_makeup_id" editable="true" use_default_formatting="true">
@@ -6800,7 +6815,7 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="details" parent_table="scene_makeup">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -6974,7 +6989,7 @@ Orientation=portrait
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="list" parent_table="scene_props">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="scene_props_id" editable="true" use_default_formatting="true">
@@ -6989,7 +7004,7 @@ Orientation=portrait
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="details" parent_table="scene_props">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -7556,7 +7571,7 @@ else:
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="scenes">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -7800,7 +7815,7 @@ else:
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="scenes">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="scene_id" editable="true" use_default_formatting="true">

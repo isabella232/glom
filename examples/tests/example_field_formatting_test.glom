@@ -30,7 +30,7 @@
     </fields>
     <relationships/>
     <data_layouts>
-      <data_layout name="list" parent_table="alignment">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="alignment_id" editable="true" use_default_formatting="true">
@@ -53,7 +53,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="details" parent_table="alignment">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <data_layout_item name="alignment_id" editable="true" use_default_formatting="true">
@@ -118,7 +118,7 @@
     </fields>
     <relationships/>
     <data_layouts>
-      <data_layout name="list" parent_table="colours">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="colours_id" editable="true" use_default_formatting="true">
@@ -140,7 +140,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="details" parent_table="colours">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_group name="overview" columns_count="2" title="Overview">

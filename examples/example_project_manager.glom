@@ -694,7 +694,7 @@
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="contacts">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -856,7 +856,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="contacts">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="contact_id" use_default_formatting="true">
@@ -1075,7 +1075,7 @@
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="projects">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -1141,7 +1141,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="projects">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="project_id" editable="true" use_default_formatting="true">
@@ -1324,7 +1324,7 @@
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="list" parent_table="project_teams">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="project_team_id" editable="true" use_default_formatting="true">
@@ -1342,7 +1342,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="details" parent_table="project_teams">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -1637,7 +1637,7 @@
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="list" parent_table="team_members">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="team_members_id" editable="true" use_default_formatting="true">
@@ -1661,7 +1661,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="details" parent_table="team_members">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -1862,7 +1862,7 @@
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="details" parent_table="teams">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -1933,7 +1933,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="teams">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="team_id" editable="true" use_default_formatting="true">

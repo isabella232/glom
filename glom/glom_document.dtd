@@ -216,8 +216,7 @@ TODO: Should we specify the presence of child text nodes in the ELEMENT somehow?
 
     <!ELEMENT data_layout (data_layout_groups)>
     <!ATTLIST data_layout
-        name CDATA #REQUIRED
-        parent_table CDATA #IMPLIED>
+        name CDATA #REQUIRED>
 
     <!ELEMENT data_layout_groups (data_layout_group*)>
     <!ATTLIST data_layout_groups>

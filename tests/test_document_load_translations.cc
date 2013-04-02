@@ -172,7 +172,7 @@ void check_title(const T_Item& item, const char* title_en, const char* title_de)
 
   if(has_own_title)
     g_assert( item->get_title_original() == title_en );
-    
+
   g_assert( item->get_title(Glib::ustring()) == title_en );
   g_assert( item->get_title("en_US") == title_en );
 
@@ -289,6 +289,8 @@ int main()
   Glom::sharedptr<const Glom::LayoutItem_Field> field_on_layout = 
     get_field_on_layout(document, "characters", "contacts", "name_full");
   g_assert(field_on_layout);
+  g_assert(field_on_layout->get_has_relationship_name());
+  g_assert(field_on_layout->get_relationship_name() == "contacts_actor");
   check_title(field_on_layout, "Actor's Name", "Name des Schauspielers");
 
   //Check a LayoutItemField's Field title:

@@ -229,7 +229,7 @@
     </fields>
     <relationships/>
     <data_layouts>
-      <data_layout name="details" parent_table="invoice_lines">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="invoice_lines_id" editable="true" use_default_formatting="true">
@@ -262,7 +262,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="list" parent_table="invoice_lines">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="invoice_lines_id" editable="true" use_default_formatting="true">
@@ -590,7 +590,7 @@
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="list" parent_table="lessons">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="lesson_id" editable="true" use_default_formatting="true">
@@ -617,7 +617,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="details" parent_table="lessons">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -932,7 +932,7 @@
     </fields>
     <relationships/>
     <data_layouts>
-      <data_layout name="list" parent_table="rooms">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="room_id" editable="true" use_default_formatting="true">
@@ -950,7 +950,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="details" parent_table="rooms">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -1148,7 +1148,7 @@
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="list" parent_table="subjects">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="subject_id" editable="true" use_default_formatting="true">
@@ -1163,7 +1163,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="details" parent_table="subjects">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>
@@ -1889,7 +1889,7 @@
       </relationship>
     </relationships>
     <data_layouts>
-      <data_layout name="list" parent_table="teachers">
+      <data_layout name="list">
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_item name="teacher_id" editable="true" use_default_formatting="true">
@@ -1955,7 +1955,7 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
-      <data_layout name="details" parent_table="teachers">
+      <data_layout name="details">
         <data_layout_groups>
           <data_layout_group name="overview" columns_count="2" title="Overview">
             <trans_set>

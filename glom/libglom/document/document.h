@@ -541,7 +541,6 @@ private:
   public:
     Glib::ustring m_layout_name;
     Glib::ustring m_layout_platform; //Empty string (meaning normal platforms), or "maemo", or something else.
-    Glib::ustring m_parent_table;
 
     type_list_layout_groups m_layout_groups;
   };
