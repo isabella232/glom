@@ -1,5 +1,11 @@
 2013-04-03  Murray Cumming  <murrayc@murrayc.com>
 
+	Deal with a minor TODO.
+
+	* glom/frame_glom.h: Make the signal handlers private.
+
+2013-04-03  Murray Cumming  <murrayc@murrayc.com>
+
 	DbUtis: Some const improvements.
 
 	* glom/libglom/db_utils.cc: Make the Document* const
