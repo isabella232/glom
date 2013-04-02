@@ -1,5 +1,12 @@
 2013-04-03  Murray Cumming  <murrayc@murrayc.com>
 
+	DbUtis: Some const improvements.
+
+	* glom/libglom/db_utils.cc: Make the Document* const
+	where possible.
+
+2013-04-03  Murray Cumming  <murrayc@murrayc.com>
+
 	Document: Use DocumentTableInfo by sharedptr<>.
 
 	* glom/glom/libglom/document/document.[h|cc]:

@@ -335,7 +335,7 @@ bool recreate_database_from_document(Document* document, const sigc::slot<void>&
 }
 
 
-SystemPrefs get_database_preferences(Document* document)
+SystemPrefs get_database_preferences(const Document* document)
 {
   //if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   //  add_standard_tables(document);
@@ -455,7 +455,7 @@ void set_database_preferences(Document* document, const SystemPrefs& prefs)
 }
 
 
-bool add_standard_tables(Document* document)
+bool add_standard_tables(const Document* document)
 {
   try
   {
@@ -637,7 +637,7 @@ bool add_standard_groups(Document* document)
   return true;
 }
 
-bool add_groups_from_document(Document* document)
+bool add_groups_from_document(const Document* document)
 {
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
   if(!gda_connection)
@@ -678,12 +678,12 @@ bool add_groups_from_document(Document* document)
   return true;
 }
 
-bool set_table_privileges_groups_from_document(Document* document)
+bool set_table_privileges_groups_from_document(const Document* document)
 {
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << G_STRFUNC << ": add_standard_groups(): No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
   }
 
   // If the connection doesn't support users we can skip this step
@@ -697,7 +697,7 @@ bool set_table_privileges_groups_from_document(Document* document)
   const Document::type_list_groups document_groups = document->get_groups();
 
   //Get the list of tables:
-  const Document::type_listTableInfo table_list = document->get_tables();
+  //const Document::type_listConstTableInfo table_list = document->get_tables();
 
   bool result = true;
 
@@ -1572,7 +1572,7 @@ void remove_auto_increment(const Glib::ustring& table_name, const Glib::ustring&
     std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
 }
 
-bool insert_example_data(Document* document, const Glib::ustring& table_name)
+bool insert_example_data(const Document* document, const Glib::ustring& table_name)
 {
   //TODO_Performance: Avoid copying:
   const Document::type_example_rows example_rows = document->get_table_example_data(table_name);
@@ -1850,7 +1850,7 @@ bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
   return (exec_retval >= 0);
 }
 
-void layout_item_fill_field_details(Document* document, const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item)
+void layout_item_fill_field_details(const Document* document, const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item)
 {
   if(!document)
   {
@@ -2251,7 +2251,7 @@ void set_fake_connection()
   connection_pool->set_fake_connection();
 }
 
-Gnome::Gda::Value get_lookup_value(Document* document, const Glib::ustring& /* table_name */, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value& key_value)
+Gnome::Gda::Value get_lookup_value(const Document* document, const Glib::ustring& /* table_name */, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value& key_value)
 {
   Gnome::Gda::Value result;
 

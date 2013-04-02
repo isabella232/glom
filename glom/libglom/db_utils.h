@@ -30,25 +30,36 @@ namespace Glom
 namespace DbUtils
 {
 
+/**
+ * This also saves the connection port in the document if self-hosting.
+ */
 bool create_database(Document* document, const Glib::ustring& database_name, const Glib::ustring& title, const sigc::slot<void>& progress);
 
 //TODO: Use this in Glom::AppWindow?
 /** Create the database on an already-connected server.
+ * This also saves some details in the document.
  */
 bool recreate_database_from_document(Document* document, const sigc::slot<void>& progress);
 
 /** This creates the standard tables if necessary,
  * filling them with some information from the document.
  */
-SystemPrefs get_database_preferences(Document* document);
+SystemPrefs get_database_preferences(const Document* document);
 
+/**
+ * This also saves the preferences in the document.
+ */
 void set_database_preferences(Document* document, const SystemPrefs& prefs);
 
-bool add_standard_tables(Document* document);
+bool add_standard_tables(const Document* document);
 
+/**
+ * This also saves the groups in the document.
+ */
 bool add_standard_groups(Document* document);
-bool add_groups_from_document(Document* document);
-bool set_table_privileges_groups_from_document(Document* document);
+
+bool add_groups_from_document(const Document* document);
+bool set_table_privileges_groups_from_document(const Document* document);
 
 typedef std::vector< sharedptr<Field> > type_vec_fields;
 type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_name, bool including_system_fields = false);
@@ -95,7 +106,7 @@ bool drop_column(const Glib::ustring& table_name, const Glib::ustring& field_nam
 
 /** Insert example data, from the document, into the table on the database server.
  */
-bool insert_example_data(Document* document, const Glib::ustring& table_name);
+bool insert_example_data(const Document* document, const Glib::ustring& table_name);
 
 /** Execute a SQL Select command, returning the result.
  * @param builder The finished SqlBuilder object.
@@ -133,7 +144,7 @@ Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name,
  */
 void remove_auto_increment(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
-void layout_item_fill_field_details(Document* document, const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item);
+void layout_item_fill_field_details(const Document* document, const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item);
 
 
 //TODO: It would be nice to use sharedptr<const Relationship>& instead of sharedptr<Relationship>&,
@@ -206,7 +217,7 @@ bool remove_user_from_group(const Glib::ustring& user, const Glib::ustring& grou
 
 /** Get the value of the @a source_field from the @a relationship, using the @a key_value.
  */
-Gnome::Gda::Value get_lookup_value(Document* document, const Glib::ustring& table_name, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value & key_value);
+Gnome::Gda::Value get_lookup_value(const Document* document, const Glib::ustring& table_name, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value & key_value);
   
 /** Allow a fake connection, so sqlbuilder_get_full_query() can work.
  */
