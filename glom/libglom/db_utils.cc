@@ -609,7 +609,7 @@ bool add_standard_groups(Document* document)
       priv_devs.m_create = true;
       priv_devs.m_delete = true;
 
-      Document::type_listTableInfo table_list = document->get_tables(true /* including system prefs */);
+      const Document::type_listTableInfo table_list = document->get_tables(true /* including system prefs */);
 
       for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
       {
@@ -2146,9 +2146,9 @@ bool add_user(const Document* document, const Glib::ustring& user, const Glib::u
   }
 
   //Remove any user rights, so that all rights come from the user's presence in the group:
-  Document::type_listTableInfo table_list = document->get_tables();
+  const Document::type_listConstTableInfo table_list = document->get_tables();
 
-  for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+  for(Document::type_listConstTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
   {
     const Glib::ustring table_name = (*iter)->get_name();
     const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON " + DbUtils::escape_sql_id(table_name) + " FROM " + DbUtils::escape_sql_id(user);

@@ -282,7 +282,10 @@ public:
   void change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new);
 
   typedef std::vector< sharedptr<TableInfo> > type_listTableInfo;
-  type_listTableInfo get_tables(bool plus_system_prefs = false) const;
+  type_listTableInfo get_tables(bool plus_system_prefs = false);
+
+  typedef std::vector< sharedptr<const TableInfo> > type_listConstTableInfo;
+  type_listConstTableInfo get_tables(bool plus_system_prefs = false) const;
   std::vector<Glib::ustring> get_table_names(bool plus_system_prefs = false) const;
 
   void set_tables(const type_listTableInfo& tables);

@@ -3,6 +3,15 @@
 	Document: Use DocumentTableInfo by sharedptr<>.
 
 	* glom/glom/libglom/document/document.[h|cc]:
+	get_tables(): Have both const and non-const overloads of this
+	method, to allow proper use of const elsewhere.
+	* glom/libglom/db_utils.cc: Adapted.
+
+2013-04-03  Murray Cumming  <murrayc@murrayc.com>
+
+	Document: Use DocumentTableInfo by sharedptr<>.
+
+	* glom/glom/libglom/document/document.[h|cc]:
 	DocumentTableInfo: Remove the copy constructor and operator=(),
 	making them private and unimplemented. Use it by sharedptr<>
 	instead to be more efficient and simpler.

@@ -1164,8 +1164,32 @@ void Document::change_relationship_name(const Glib::ustring& table_name, const G
  }
 
 
-//TODO: Have a const and non-const version()?
-Document::type_listTableInfo Document::get_tables(bool plus_system_prefs) const
+Document::type_listConstTableInfo Document::get_tables(bool plus_system_prefs) const
+{
+  //TODO: Avoid the almost-duplicate implementation in the const and non-const methods.
+
+  type_listConstTableInfo result;
+
+  for(type_tables::const_iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
+  {
+    const sharedptr<const DocumentTableInfo> doctableinfo = iter->second;
+    if(doctableinfo)
+      result.push_back(doctableinfo->m_info);
+
+    //std::cout << "debug: " << G_STRFUNC << ": title=" << iter->second->m_info->get_title() << std::endl;
+  }
+
+  //Add the system properties if necessary:
+  if(plus_system_prefs)
+  {
+    if(std::find_if(result.begin(), result.end(), predicate_FieldHasName<TableInfo>(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME)) == result.end())
+      result.push_back(create_table_system_preferences());
+  }
+
+  return result;
+}
+
+Document::type_listTableInfo Document::get_tables(bool plus_system_prefs)
 {
   type_listTableInfo result;
 
@@ -1181,8 +1205,8 @@ Document::type_listTableInfo Document::get_tables(bool plus_system_prefs) const
   //Add the system properties if necessary:
   if(plus_system_prefs)
   {
-      if(std::find_if(result.begin(), result.end(), predicate_FieldHasName<TableInfo>(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME)) == result.end())
-        result.push_back(create_table_system_preferences());
+    if(std::find_if(result.begin(), result.end(), predicate_FieldHasName<TableInfo>(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME)) == result.end())
+      result.push_back(create_table_system_preferences());
   }
 
   return result;
@@ -1190,11 +1214,11 @@ Document::type_listTableInfo Document::get_tables(bool plus_system_prefs) const
 
 std::vector<Glib::ustring> Document::get_table_names(bool plus_system_prefs) const
 {
-  type_listTableInfo list_full = get_tables(plus_system_prefs);
+  type_listConstTableInfo list_full = get_tables(plus_system_prefs);
   std::vector<Glib::ustring> result;
-  for(type_listTableInfo::iterator iter = list_full.begin(); iter != list_full.end(); ++iter)
+  for(type_listConstTableInfo::const_iterator iter = list_full.begin(); iter != list_full.end(); ++iter)
   {
-    sharedptr<TableInfo> info = *iter;
+    const sharedptr<const TableInfo> info = *iter;
     if(info)
       result.push_back(info->get_name());
   }
