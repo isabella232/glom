@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2001-2009 Openismus GmbH
+ * Copyright (C) 2001-2013 Openismus GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -484,29 +484,28 @@ void Document::set_connection_try_other_ports(bool val)
 void Document::set_relationship(const Glib::ustring& table_name, const sharedptr<Relationship>& relationship)
 {
   //Find the existing relationship:
-  type_tables::iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
+  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  if(!info)
+    return;
+   
+  //Look for the relationship with this name:
+  bool existing = false;
+  const Glib::ustring relationship_name = glom_get_sharedptr_name(relationship);
+
+  type_vec_relationships relationships = info->m_relationships;
+  for(type_vec_relationships::iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
   {
-    DocumentTableInfo& info = iterFind->second;
-
-    //Look for the relationship with this name:
-    bool existing = false;
-    const Glib::ustring relationship_name = glom_get_sharedptr_name(relationship);
-
-    for(type_vec_relationships::iterator iter = info.m_relationships.begin(); iter != info.m_relationships.end(); ++iter)
+    if((*iter)->get_name() == relationship_name)
     {
-      if((*iter)->get_name() == relationship_name)
-      {
-        *iter = relationship; //Changes the relationship. All references (sharedptrs) to the relationship will get the informatin too, because it is shared.
-        existing = true;
-      }
+      *iter = relationship; //Changes the relationship. All references (sharedptrs) to the relationship will get the informatin too, because it is shared.
+      existing = true;
     }
+  }
 
-    if(!existing)
-    {
-      //Add a new one if it's not there.
-      info.m_relationships.push_back(relationship);
-    }
+  if(!existing)
+  {
+    //Add a new one if it's not there.
+    info->m_relationships.push_back(relationship);
   }
 }
 
@@ -614,13 +613,12 @@ sharedptr<Relationship> Document::get_relationship(const Glib::ustring& table_na
     return create_relationship_system_preferences(table_name);
   }
 
-  type_tables::const_iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
+  const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+  if(info)
   {
-    const DocumentTableInfo& info = iterFind->second;
-
     //Look for the relationship with this name:
-    for(type_vec_relationships::const_iterator iter = info.m_relationships.begin(); iter != info.m_relationships.end(); ++iter)
+    const type_vec_relationships relationships = info->m_relationships;
+    for(type_vec_relationships::const_iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
     {
       if(*iter && ((*iter)->get_name() == relationship_name))
       {
@@ -634,10 +632,10 @@ sharedptr<Relationship> Document::get_relationship(const Glib::ustring& table_na
 
 Document::type_vec_relationships Document::get_relationships(const Glib::ustring& table_name, bool plus_system_prefs) const
 {
-  type_tables::const_iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
+  const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+  if(info)
   {
-    type_vec_relationships result = iterFind->second.m_relationships;
+    type_vec_relationships result = info->m_relationships;
 
     //Add the system properties if necessary:
     if(plus_system_prefs)
@@ -656,8 +654,9 @@ void Document::set_relationships(const Glib::ustring& table_name, const type_vec
 {
   if(!table_name.empty())
   {
-    DocumentTableInfo& info = get_table_info_with_add(table_name);
-    info.m_relationships = vecRelationships;
+    const sharedptr<DocumentTableInfo> info = get_table_info_with_add(table_name);
+    if(info)
+      info->m_relationships = vecRelationships;
 
     set_modified();
   }
@@ -666,72 +665,73 @@ void Document::set_relationships(const Glib::ustring& table_name, const type_vec
 void Document::remove_relationship(const sharedptr<const Relationship>& relationship)
 {
   //Get the table that this relationship is part of:
-  type_tables::iterator iter = m_tables.find(relationship->get_from_table());
-  if(iter != m_tables.end())
+  const sharedptr<DocumentTableInfo> info = get_table_info(relationship->get_from_table());
+  if(!info)
+    return;
+
+  const Glib::ustring relationship_name = glom_get_sharedptr_name(relationship);
+
+  //Find the relationship and remove it:
+  type_vec_relationships& relationships = info->m_relationships;
+  type_vec_relationships::iterator iterRel = std::find_if(relationships.begin(), relationships.end(), predicate_FieldHasName<Relationship>(relationship_name));
+  if(iterRel != relationships.end())
   {
-    DocumentTableInfo& info = iter->second;
+    relationships.erase(iterRel);
 
-    const Glib::ustring relationship_name = glom_get_sharedptr_name(relationship);
+    set_modified();
+  }
 
-    //Find the relationship and remove it:
-    type_vec_relationships::iterator iterRel = std::find_if(info.m_relationships.begin(), info.m_relationships.end(), predicate_FieldHasName<Relationship>(relationship_name));
-    if(iterRel != info.m_relationships.end())
+  //Remove relationship from any layouts:
+  DocumentTableInfo::type_layouts layouts = info->m_layouts;
+  DocumentTableInfo::type_layouts::iterator iterLayouts = layouts.begin();
+  while(iterLayouts != layouts.end())
+  {
+    LayoutInfo& layout_info = *iterLayouts;
+
+    type_list_layout_groups::iterator iterGroups = layout_info.m_layout_groups.begin();
+    while(iterGroups != layout_info.m_layout_groups.end())
     {
-      info.m_relationships.erase(iterRel);
-
-      set_modified();
-    }
-
-    //Remove relationship from any layouts:
-    DocumentTableInfo::type_layouts::iterator iterLayouts = info.m_layouts.begin();
-    while(iterLayouts != info.m_layouts.end())
-    {
-      LayoutInfo& layout_info = *iterLayouts;
-
-      type_list_layout_groups::iterator iterGroups = layout_info.m_layout_groups.begin();
-      while(iterGroups != layout_info.m_layout_groups.end())
+      //Remove any layout parts that use this relationship:
+      sharedptr<LayoutGroup> group = *iterGroups;
+      sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::cast_dynamic(group);
+      if(uses_rel && uses_rel->get_has_relationship_name())
       {
-        //Remove any layout parts that use this relationship:
-        sharedptr<LayoutGroup> group = *iterGroups;
-        sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::cast_dynamic(group);
-        if(uses_rel && uses_rel->get_has_relationship_name())
+        if(*(uses_rel->get_relationship()) == *relationship) //TODO_Performance: Slow when there are many translations.
         {
-          if(*(uses_rel->get_relationship()) == *relationship) //TODO_Performance: Slow when there are many translations.
-          {
-            layout_info.m_layout_groups.erase(iterGroups);
-            iterGroups = layout_info.m_layout_groups.begin(); //Start again because we changed the structure.
-            continue;
-          }
+          layout_info.m_layout_groups.erase(iterGroups);
+          iterGroups = layout_info.m_layout_groups.begin(); //Start again because we changed the structure.
+          continue;
         }
-
-        if(group)
-          group->remove_relationship(relationship);
-
-        ++iterGroups;
       }
 
-       ++iterLayouts;
+      if(group)
+        group->remove_relationship(relationship);
+
+      ++iterGroups;
     }
 
-     //Remove relationshp from any reports:
-    for(DocumentTableInfo::type_reports::iterator iterReports = info.m_reports.begin(); iterReports != info.m_reports.end(); ++iterReports)
-    {
-      sharedptr<Report> report = iterReports->second;
-      sharedptr<LayoutGroup> group = report->get_layout_group();
+     ++iterLayouts;
+  }
 
-      //Remove the field wherever it is a related field:
-      group->remove_relationship(relationship);
-    }
+  //Remove relationshp from any reports:
+  DocumentTableInfo::type_reports reports = info->m_reports;
+  for(DocumentTableInfo::type_reports::iterator iterReports = reports.begin(); iterReports != reports.end(); ++iterReports)
+  {
+    sharedptr<Report> report = iterReports->second;
+    sharedptr<LayoutGroup> group = report->get_layout_group();
+
+    //Remove the field wherever it is a related field:
+    group->remove_relationship(relationship);
   }
 }
 
 void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   //Remove the field itself:
-  type_tables::iterator iterFindTable = m_tables.find(table_name);
-  if(iterFindTable != m_tables.end())
+  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  if(info)
   {
-    type_vec_fields& vecFields = iterFindTable->second.m_fields;
+    type_vec_fields& vecFields = info->m_fields;
     type_vec_fields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name) );
     if(iterFind != vecFields.end()) //If it was found:
     {
@@ -745,13 +745,15 @@ void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring
   //Remove any relationships that use this field:
   for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
-    DocumentTableInfo& info = iter->second;
+    const sharedptr<DocumentTableInfo> info = iter->second;
+    if(!info)
+      continue;
 
-    if(!(info.m_relationships.empty()))
+    if(!(info->m_relationships.empty()))
     {
-      type_vec_relationships::iterator iterRel = info.m_relationships.begin();
+      type_vec_relationships::iterator iterRel = info->m_relationships.begin();
       bool something_changed = true;
-      while(something_changed && !info.m_relationships.empty())
+      while(something_changed && !info->m_relationships.empty())
       {
         sharedptr<Relationship> relationship = *iterRel;
 
@@ -762,20 +764,21 @@ void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring
           remove_relationship(relationship); //Also removes anything that uses the relationship.
 
           something_changed = true;
-          iterRel = info.m_relationships.begin();
+          iterRel = info->m_relationships.begin();
         }
         else
         {
           ++iterRel;
 
-          if(iterRel == info.m_relationships.end())
+          if(iterRel == info->m_relationships.end())
             something_changed = false; //We've looked at them all, without changing things.
         }
       }
     }
 
     //Remove field from any layouts:
-    for(DocumentTableInfo::type_layouts::iterator iterLayouts = info.m_layouts.begin(); iterLayouts != info.m_layouts.end(); ++iterLayouts)
+    DocumentTableInfo::type_layouts layouts = info->m_layouts;
+    for(DocumentTableInfo::type_layouts::iterator iterLayouts = layouts.begin(); iterLayouts != layouts.end(); ++iterLayouts)
     {
       LayoutInfo& layout_info = *iterLayouts;
       for(type_list_layout_groups::iterator iter = layout_info.m_layout_groups.begin(); iter != layout_info.m_layout_groups.end(); ++iter)
@@ -786,20 +789,27 @@ void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring
 
 
         //Remove regular field from the layout:
-        const Glib::ustring layout_table_name = info.m_info->get_name();
-        group->remove_field(layout_table_name, table_name, field_name);
+        if(info->m_info)
+        {
+          const Glib::ustring layout_table_name = info->m_info->get_name();
+          group->remove_field(layout_table_name, table_name, field_name);
+        }
       }
     }
 
     //Remove field from any reports:
-    for(DocumentTableInfo::type_reports::iterator iterReports = info.m_reports.begin(); iterReports != info.m_reports.end(); ++iterReports)
+    DocumentTableInfo::type_reports reports = info->m_reports;
+    for(DocumentTableInfo::type_reports::iterator iterReports = reports.begin(); iterReports != reports.end(); ++iterReports)
     {
       sharedptr<Report> report = iterReports->second;
       sharedptr<LayoutGroup> group = report->get_layout_group();
 
       //Remove regular fields if the field is in this layout's table:
-      const Glib::ustring layout_table_name = info.m_info->get_name();
-      group->remove_field(layout_table_name, table_name, field_name);
+      if(info->m_info)
+      {
+        const Glib::ustring layout_table_name = info->m_info->get_name();
+        group->remove_field(layout_table_name, table_name, field_name);
+      }
     }
   }
 }
@@ -816,13 +826,15 @@ void Document::remove_table(const Glib::ustring& table_name)
   //Remove any relationships that use this table:
   for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
-    DocumentTableInfo& info = iter->second;
+    const sharedptr<DocumentTableInfo> info = iter->second;
+    if(!info)
+      continue;
 
-    if(!(info.m_relationships.empty()))
+    if(!(info->m_relationships.empty()))
     {
-      type_vec_relationships::iterator iterRel = info.m_relationships.begin();
+      type_vec_relationships::iterator iterRel = info->m_relationships.begin();
       bool something_changed = true;
-      while(something_changed && !info.m_relationships.empty())
+      while(something_changed && !info->m_relationships.empty())
       {
         sharedptr<Relationship> relationship = *iterRel;
 
@@ -832,13 +844,13 @@ void Document::remove_table(const Glib::ustring& table_name)
           remove_relationship(relationship); //Also removes anything that uses the relationship.
 
           something_changed = true;
-          iterRel = info.m_relationships.begin();
+          iterRel = info->m_relationships.begin();
         }
         else
         {
           ++iterRel;
 
-          if(iterRel == info.m_relationships.end())
+          if(iterRel == info->m_relationships.end())
             something_changed = false; //We've looked at them all, without changing things.
         }
       }
@@ -854,15 +866,15 @@ Document::type_vec_fields Document::get_table_fields(const Glib::ustring& table_
 
   if(!table_name.empty())
   {
-    type_tables::const_iterator iterFind = m_tables.find(table_name);
-    if(iterFind != m_tables.end())
+    const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+    if(info)
     {
-      if(iterFind->second.m_fields.empty())
+      if(info->m_fields.empty())
       {
          std::cerr << G_STRFUNC << ": table found, but m_fields is empty. table_name=" << table_name << std::endl;
       }
 
-      return iterFind->second.m_fields;
+      return info->m_fields;
     }
     else
     {
@@ -901,9 +913,12 @@ void Document::set_table_fields(const Glib::ustring& table_name, const type_vec_
       std::cerr << ": vecFields is empty: table_name=" << table_name << std::endl;
     }
 
-    DocumentTableInfo& info = get_table_info_with_add(table_name);
+    const sharedptr<DocumentTableInfo> info = get_table_info_with_add(table_name);
+    if(!info)
+      return;
+
     const bool will_change = true; //This won't work because we didn't clone the fields before changing them: (info.m_fields != vecFields); //TODO: Does this do a deep comparison?
-    info.m_fields = vecFields;
+    info->m_fields = vecFields;
 
     set_modified(will_change);
   }
@@ -936,11 +951,11 @@ sharedptr<Field> Document::get_field_primary_key(const Glib::ustring& table_name
 
 void Document::change_field_name(const Glib::ustring& table_name, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew)
 {
-  type_tables::iterator iterFindTable = m_tables.find(table_name);
-  if(iterFindTable != m_tables.end())
+  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  if(info)
   {
     //Fields:
-    type_vec_fields& vecFields = iterFindTable->second.m_fields;
+    type_vec_fields& vecFields = info->m_fields;
     type_vec_fields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldNameOld) );
     if(iterFind != vecFields.end()) //If it was found:
     {
@@ -952,8 +967,12 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
     //Look at each table:
     for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
     {
+      const sharedptr<DocumentTableInfo> infoInner = iter->second;
+      if(!infoInner)
+        continue;
+
       //Fields:
-      type_vec_fields& vecFields = iter->second.m_fields;
+      type_vec_fields& vecFields = infoInner->m_fields;
       for(type_vec_fields::iterator iterField = vecFields.begin(); iterField != vecFields.end(); ++iterField)
       {
         sharedptr<Field> field = *iterField;
@@ -966,7 +985,7 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
       }
 
       //Look at each relationship in the table:
-      for(type_vec_relationships::iterator iterRels = iter->second.m_relationships.begin(); iterRels != iter->second.m_relationships.end(); ++iterRels)
+      for(type_vec_relationships::iterator iterRels = infoInner->m_relationships.begin(); iterRels != infoInner->m_relationships.end(); ++iterRels)
       {
         sharedptr<Relationship> relationship = *iterRels;
 
@@ -989,10 +1008,10 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
         }
       }
 
-      const bool is_parent_table = (iter->second.m_info->get_name() == table_name);
+      const bool is_parent_table = (infoInner->m_info->get_name() == table_name);
 
       //Look at each layout:
-      for(DocumentTableInfo::type_layouts::iterator iterLayouts = iter->second.m_layouts.begin(); iterLayouts != iter->second.m_layouts.end(); ++iterLayouts)
+      for(DocumentTableInfo::type_layouts::iterator iterLayouts = infoInner->m_layouts.begin(); iterLayouts != infoInner->m_layouts.end(); ++iterLayouts)
       {
         //Look at each group:
         for(type_list_layout_groups::iterator iterGroup = iterLayouts->m_layout_groups.begin(); iterGroup != iterLayouts->m_layout_groups.end(); ++iterGroup)
@@ -1011,7 +1030,7 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
 
 
       //Look at each report:
-      for(DocumentTableInfo::type_reports::iterator iterReports = iter->second.m_reports.begin(); iterReports != iter->second.m_reports.end(); ++iterReports)
+      for(DocumentTableInfo::type_reports::iterator iterReports = infoInner->m_reports.begin(); iterReports != infoInner->m_reports.end(); ++iterReports)
       {
         //Change the field if it is in this group:
         sharedptr<Report> report = iterReports->second;
@@ -1040,10 +1059,12 @@ void Document::change_table_name(const Glib::ustring& table_name_old, const Glib
     //so we copy the whole thing and put it back in the map under a different key:
 
     //iterFindTable->first = table_name_new;
-    DocumentTableInfo doctableinfo = iterFindTable->second;
+    const sharedptr<DocumentTableInfo> doctableinfo = iterFindTable->second;
     m_tables.erase(iterFindTable);
 
-    doctableinfo.m_info->set_name(table_name_new);
+    if(doctableinfo && doctableinfo->m_info)
+      doctableinfo->m_info->set_name(table_name_new);
+
     m_tables[table_name_new] = doctableinfo;
 
     //Find any relationships or layouts that use this table
@@ -1051,20 +1072,25 @@ void Document::change_table_name(const Glib::ustring& table_name_old, const Glib
     for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
     {
       //Look at each relationship in the table:
-      for(type_vec_relationships::iterator iterRels = iter->second.m_relationships.begin(); iterRels != iter->second.m_relationships.end(); ++iterRels)
+      const sharedptr<DocumentTableInfo> doctableinfo = iter->second;
+      if(!doctableinfo)
+        continue;
+
+      type_vec_relationships relationships = doctableinfo->m_relationships;
+      for(type_vec_relationships::iterator iterRels = relationships.begin(); iterRels != relationships.end(); ++iterRels)
       {
         sharedptr<Relationship> relationship = *iterRels;
 
         if(relationship->get_from_table() == table_name_old)
         {
           //Change it:
-           relationship->set_from_table(table_name_new);
+          relationship->set_from_table(table_name_new);
         }
 
         if(relationship->get_to_table() == table_name_old)
         {
           //Change it:
-           relationship->set_to_table(table_name_new);
+          relationship->set_to_table(table_name_new);
         }
       }
     }
@@ -1077,12 +1103,14 @@ void Document::change_table_name(const Glib::ustring& table_name_old, const Glib
 
 void Document::change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new)
 {
-  type_tables::iterator iterFindTable = m_tables.find(table_name);
-  if(iterFindTable != m_tables.end())
+  const sharedptr<DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  if(doctableinfo)
   {
+    type_vec_relationships relationships = doctableinfo->m_relationships;
+      
     //Change the relationship name:
-    type_vec_relationships::iterator iterRelFind = std::find_if( iterFindTable->second.m_relationships.begin(), iterFindTable->second.m_relationships.end(), predicate_FieldHasName<Relationship>(name) );
-    if(iterRelFind != iterFindTable->second.m_relationships.end())
+    type_vec_relationships::iterator iterRelFind = std::find_if(relationships.begin(), relationships.end(), predicate_FieldHasName<Relationship>(name) );
+    if(iterRelFind != relationships.end())
       (*iterRelFind)->set_name(name_new);
 
 
@@ -1094,15 +1122,15 @@ void Document::change_relationship_name(const Glib::ustring& table_name, const G
     {
       /*
        //Look at all field formatting:
-      for(type_vec_fields::iterator iterFields = iter->second.m_fields.begin(); iterFields != iter->second.m_fields.end(); ++iterFields)
+      for(type_vec_fields::iterator iterFields = iter->second->m_fields.begin(); iterFields != iter->second->m_fields.end(); ++iterFields)
       {
         (*iterFields)->m_default_formatting.change_relationship_name(table_name, name, name_new);
       }
 
-      const bool is_parent_table = (iter->second.m_info->get_name() == table_name);
+      const bool is_parent_table = (iter->second->m_info->get_name() == table_name);
 
       //Look at each layout:
-      for(DocumentTableInfo::type_layouts::iterator iterLayouts = iter->second.m_layouts.begin(); iterLayouts != iter->second.m_layouts.end(); ++iterLayouts)
+      for(DocumentTableInfo::type_layouts::iterator iterLayouts = iter->second->m_layouts.begin(); iterLayouts != iter->second->m_layouts.end(); ++iterLayouts)
       {
         //Look at each group:
         for(type_list_layout_groups::iterator iterGroup = iterLayouts->m_layout_groups.begin(); iterGroup != iterLayouts->m_layout_groups.end(); ++iterGroup)
@@ -1117,7 +1145,7 @@ void Document::change_relationship_name(const Glib::ustring& table_name, const G
 
 
       //Look at each report:
-      for(DocumentTableInfo::type_reports::iterator iterReports = iter->second.m_reports.begin(); iterReports != iter->second.m_reports.end(); ++iterReports)
+      for(DocumentTableInfo::type_reports::iterator iterReports = iter->second->m_reports.begin(); iterReports != iter->second->m_reports.end(); ++iterReports)
       {
         //Change the field if it is in this group:
         if(is_parent_table)
@@ -1136,15 +1164,18 @@ void Document::change_relationship_name(const Glib::ustring& table_name, const G
  }
 
 
-
+//TODO: Have a const and non-const version()?
 Document::type_listTableInfo Document::get_tables(bool plus_system_prefs) const
 {
   type_listTableInfo result;
 
   for(type_tables::const_iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
-    result.push_back(iter->second.m_info);
-    //std::cout << "debug: " << G_STRFUNC << ": title=" << iter->second.m_info->get_title() << std::endl;
+    const sharedptr<DocumentTableInfo> doctableinfo = iter->second;
+    if(doctableinfo)
+      result.push_back(doctableinfo->m_info);
+
+    //std::cout << "debug: " << G_STRFUNC << ": title=" << iter->second->m_info->get_title() << std::endl;
   }
 
   //Add the system properties if necessary:
@@ -1173,11 +1204,11 @@ std::vector<Glib::ustring> Document::get_table_names(bool plus_system_prefs) con
 
 sharedptr<TableInfo> Document::get_table(const Glib::ustring& table_name) const
 {
-  type_tables::const_iterator iterfind = m_tables.find(table_name);
-  if(iterfind != m_tables.end())
-    return iterfind->second.m_info;
-  else
-    return sharedptr<TableInfo>();
+  const sharedptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  if(doctableinfo)
+    return doctableinfo->m_info;
+
+  return sharedptr<TableInfo>();
 }
 
 void Document::add_table(const sharedptr<TableInfo>& table_info)
@@ -1188,8 +1219,8 @@ void Document::add_table(const sharedptr<TableInfo>& table_info)
   type_tables::const_iterator iterfind = m_tables.find(table_info->get_name());
   if(iterfind == m_tables.end())
   {
-    DocumentTableInfo item;
-    item.m_info = table_info;
+    const sharedptr<DocumentTableInfo> item = sharedptr<DocumentTableInfo>::create();
+    item->m_info = table_info;
     m_tables[table_info->get_name()] = item;
     set_modified();
   }
@@ -1197,17 +1228,17 @@ void Document::add_table(const sharedptr<TableInfo>& table_info)
 
 bool Document::get_table_overview_position(const Glib::ustring& table_name, float& x, float& y) const
 {
-  type_tables::const_iterator it = m_tables.find(table_name);
-  if(it != m_tables.end())
+  const sharedptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  if(doctableinfo)
   {
-    if( it->second.m_overviewx == std::numeric_limits<float>::infinity() ||
-         it->second.m_overviewy == std::numeric_limits<float>::infinity() )
+    if( doctableinfo->m_overviewx == std::numeric_limits<float>::infinity() ||
+         doctableinfo->m_overviewy == std::numeric_limits<float>::infinity() )
     {
       return false;
     }
 
-    x = it->second.m_overviewx;
-    y = it->second.m_overviewy;
+    x = doctableinfo->m_overviewx;
+    y = doctableinfo->m_overviewy;
     return true;
   }
   else
@@ -1216,13 +1247,13 @@ bool Document::get_table_overview_position(const Glib::ustring& table_name, floa
   }
 }
 
-void Document::set_table_overview_position(const Glib::ustring &table_name, float x, float y)
+void Document::set_table_overview_position(const Glib::ustring& table_name, float x, float y)
 {
-  type_tables::iterator it = m_tables.find(table_name);
-  if(it != m_tables.end())
+  const sharedptr<DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  if(doctableinfo)
   {
-    it->second.m_overviewx = x;
-    it->second.m_overviewy = y;
+    doctableinfo->m_overviewx = x;
+    doctableinfo->m_overviewy = y;
   }
 }
 
@@ -1234,16 +1265,20 @@ void Document::set_tables(const type_listTableInfo& tables)
   bool something_changed = false;
   for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
-    const DocumentTableInfo& doctableinfo = iter->second;
+    const sharedptr<DocumentTableInfo> doctableinfo = iter->second;
+    if(!doctableinfo)
+      continue;
 
-    const Glib::ustring table_name = doctableinfo.m_info->get_name();
+    sharedptr<TableInfo> info = doctableinfo->m_info;
+    if(!info)
+      continue;
+
+    const Glib::ustring table_name = info->get_name();
 
     //If the table is also in the supplied list:
     type_listTableInfo::const_iterator iterfind = std::find_if(tables.begin(), tables.end(), predicate_FieldHasName<TableInfo>(table_name));
     if(iterfind != tables.end())
     {
-      sharedptr<TableInfo> info = doctableinfo.m_info;
-
       sharedptr<TableInfo> infoFound = *iterfind;
       *info = *infoFound; //TODO: Check that it has really changed, to avoid calling set_modified() unnecessarily?
 
@@ -1481,14 +1516,14 @@ Document::type_list_layout_groups Document::get_data_layout_groups(const Glib::u
 {
   //std::cout << "debug: " << G_STRFUNC << ": layout_name=" << layout_name << ", parent_table_name=" << parent_table_name << ", layout_platform=" << layout_platform << std::endl;
 
-  type_tables::const_iterator iterFind = m_tables.find(parent_table_name);
-  if(iterFind != m_tables.end())
+  const sharedptr<const DocumentTableInfo> info = get_table_info(parent_table_name);
+  if(info)
   {
-    const DocumentTableInfo& info = iterFind->second;
+    const DocumentTableInfo::type_layouts layouts = info->m_layouts;
 
     //Look for the layout with this name:
-    DocumentTableInfo::type_layouts::const_iterator iter = std::find_if(info.m_layouts.begin(), info.m_layouts.end(), predicate_Layout<LayoutInfo>(layout_name, layout_platform));
-    if(iter != info.m_layouts.end())
+    DocumentTableInfo::type_layouts::const_iterator iter = std::find_if(layouts.begin(), layouts.end(), predicate_Layout<LayoutInfo>(layout_name, layout_platform));
+    if(iter != layouts.end())
     {
       return iter->m_layout_groups; //found
     }
@@ -1519,15 +1554,18 @@ void Document::set_data_layout_groups(const Glib::ustring& layout_name, const Gl
 
   if(!parent_table_name.empty())
   {
-    DocumentTableInfo& info = get_table_info_with_add(parent_table_name);
+    const sharedptr<DocumentTableInfo> info = get_table_info_with_add(parent_table_name);
+    if(!info)
+      return;
 
     LayoutInfo layout_info;
     layout_info.m_layout_name = layout_name;
     layout_info.m_layout_groups = groups;
 
-    DocumentTableInfo::type_layouts::iterator iter = std::find_if(info.m_layouts.begin(), info.m_layouts.end(), predicate_Layout<LayoutInfo>(layout_name, layout_platform));
-    if(iter == info.m_layouts.end())
-      info.m_layouts.push_back(layout_info);
+    DocumentTableInfo::type_layouts& layouts = info->m_layouts;
+    DocumentTableInfo::type_layouts::iterator iter = std::find_if(layouts.begin(), layouts.end(), predicate_Layout<LayoutInfo>(layout_name, layout_platform));
+    if(iter == layouts.end())
+      layouts.push_back(layout_info);
     else
       *iter = layout_info;
 
@@ -1535,55 +1573,74 @@ void Document::set_data_layout_groups(const Glib::ustring& layout_name, const Gl
   }
 }
 
-Document::DocumentTableInfo& Document::get_table_info_with_add(const Glib::ustring& table_name)
+sharedptr<Document::DocumentTableInfo> Document::get_table_info(const Glib::ustring& table_name)
 {
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
-  {
     return iterFind->second;
+
+  return sharedptr<DocumentTableInfo>();
+}
+
+sharedptr<const Document::DocumentTableInfo> Document::get_table_info(const Glib::ustring& table_name) const
+{
+  type_tables::const_iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+    return iterFind->second;
+
+  return sharedptr<const DocumentTableInfo>();
+}
+
+sharedptr<Document::DocumentTableInfo> Document::get_table_info_with_add(const Glib::ustring& table_name)
+{
+  sharedptr<DocumentTableInfo>  doctableinfo = get_table_info(table_name);
+  if(doctableinfo)
+  {
+    return doctableinfo;
   }
   else
   {
-    m_tables[table_name] = DocumentTableInfo();
-    m_tables[table_name].m_info->set_name(table_name);
-    return get_table_info_with_add(table_name);
+    doctableinfo = sharedptr<DocumentTableInfo>::create();
+    doctableinfo->m_info->set_name(table_name);
+    m_tables[table_name] = doctableinfo;
+    return doctableinfo;
   }
 }
 
 Glib::ustring Document::get_table_title(const Glib::ustring& table_name, const Glib::ustring& locale) const
 {
-  type_tables::const_iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
-    return iterFind->second.m_info->get_title(locale);
-  else
-    return Glib::ustring();
+  const sharedptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  if(doctableinfo && doctableinfo->m_info)
+    return doctableinfo->m_info->get_title(locale);
+
+  return Glib::ustring();
 }
 
 Glib::ustring Document::get_table_title_original(const Glib::ustring& table_name) const
 {
-  type_tables::const_iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
-    return iterFind->second.m_info->get_title_original();
-  else
-    return Glib::ustring();
+  const sharedptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  if(doctableinfo && doctableinfo->m_info)
+    return doctableinfo->m_info->get_title_original();
+
+  return Glib::ustring();
 }
 
 Glib::ustring Document::get_table_title_singular(const Glib::ustring& table_name, const Glib::ustring& locale) const
 {
-  type_tables::const_iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
-    return iterFind->second.m_info->get_title_singular_with_fallback(locale);
-  else
-    return Glib::ustring();
+  const sharedptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  if(doctableinfo && doctableinfo->m_info)
+    return doctableinfo->m_info->get_title_singular_with_fallback(locale);
+
+  return Glib::ustring();
 }
 
 Glib::ustring Document::get_table_title_singular_original(const Glib::ustring& table_name) const
 {
-  type_tables::const_iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
-    return iterFind->second.m_info->get_title_singular_original();
-  else
-    return Glib::ustring();
+  const sharedptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  if(doctableinfo && doctableinfo->m_info)
+    return doctableinfo->m_info->get_title_singular_original();
+
+  return Glib::ustring();
 }
 
 void Document::set_table_title(const Glib::ustring& table_name, const Glib::ustring& value, const Glib::ustring& locale)
@@ -1591,10 +1648,10 @@ void Document::set_table_title(const Glib::ustring& table_name, const Glib::ustr
   //std::cout << "debug: " << G_STRFUNC << ": table_name=" << table_name << ", value=" << value << std::endl;
   if(!table_name.empty())
   {
-    DocumentTableInfo& info = get_table_info_with_add(table_name);
-    if(info.m_info->get_title(locale) != value)
+    const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+    if(info && info->m_info && info->m_info->get_title(locale) != value)
     {
-      info.m_info->set_title(value, locale);
+      info->m_info->set_title(value, locale);
       set_modified();
     }
   }
@@ -1604,10 +1661,10 @@ void Document::set_table_example_data(const Glib::ustring& table_name, const typ
 {
   if(!table_name.empty())
   {
-    DocumentTableInfo& info = get_table_info_with_add(table_name);
-    if(info.m_example_rows != rows)
+    const sharedptr<DocumentTableInfo> info = get_table_info_with_add(table_name);
+    if(info && info->m_example_rows != rows)
     {
-      info.m_example_rows = rows;
+      info->m_example_rows = rows;
       set_modified();
     }
   }
@@ -1615,11 +1672,11 @@ void Document::set_table_example_data(const Glib::ustring& table_name, const typ
 
 Document::type_example_rows Document::get_table_example_data(const Glib::ustring& table_name) const
 {
-  type_tables::const_iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
-    return iterFind->second.m_example_rows;
-  else
-    return type_example_rows();
+  const sharedptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  if(doctableinfo)
+   return doctableinfo->m_example_rows;
+
+  return type_example_rows();
 }
 
 bool Document::get_table_is_known(const Glib::ustring& table_name) const
@@ -1630,11 +1687,11 @@ bool Document::get_table_is_known(const Glib::ustring& table_name) const
 
 bool Document::get_table_is_hidden(const Glib::ustring& table_name) const
 {
-  type_tables::const_iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
-    return iterFind->second.m_info->get_hidden();
-  else
-    return false; //It's not even known.
+  const sharedptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  if(doctableinfo && doctableinfo->m_info)
+      return doctableinfo->m_info->get_hidden();
+
+  return false; //It's not even known.
 }
 
 AppState::userlevels Document::get_userlevel() const
@@ -1721,7 +1778,11 @@ Glib::ustring Document::get_default_table() const
 {
   for(type_tables::const_iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
-    const sharedptr<const TableInfo> info = iter->second.m_info;
+    const sharedptr<const DocumentTableInfo> doctableinfo = iter->second;
+    if(!doctableinfo)
+      continue;
+
+    const sharedptr<const TableInfo> info = doctableinfo->m_info;
     if(info && info->get_default())
       return info->get_name();
   }
@@ -1730,7 +1791,10 @@ Glib::ustring Document::get_default_table() const
   if(m_tables.size() == 1)
   {
     type_tables::const_iterator iter = m_tables.begin();
-    return iter->second.m_info->get_name();
+
+    const sharedptr<const DocumentTableInfo> doctableinfo = iter->second;
+    if(doctableinfo && doctableinfo->m_info)
+      return doctableinfo->m_info->get_name();
   }
 
   return Glib::ustring();
@@ -1742,7 +1806,11 @@ Glib::ustring Document::get_first_table() const
     return Glib::ustring();
 
   type_tables::const_iterator iter = m_tables.begin();
-  return iter->second.m_info->get_name();
+  const sharedptr<const DocumentTableInfo> doctableinfo = iter->second;
+  if(doctableinfo && doctableinfo->m_info)
+    return doctableinfo->m_info->get_name();
+
+  return Glib::ustring();
 }
 
 void Document::set_allow_autosave(bool value)
@@ -1904,7 +1972,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
               //Discover the field type, so we can interpret the text as a value.
               //Not all calling functions know this, so they don't all supply the correct value.
               //TODO_Performance.
-              sharedptr<const Field> field_temp = get_field(table_name, field_name);
+              const sharedptr<const Field> field_temp = get_field(table_name, field_name);
               if(field_temp)
                 field_type = field_temp->get_glom_type();
             }
@@ -2578,21 +2646,21 @@ bool Document::load_after(int& failure_code)
         {
           const Glib::ustring table_name = XmlUtils::get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME);
 
-          m_tables[table_name] = DocumentTableInfo();
-          DocumentTableInfo& doctableinfo = m_tables[table_name]; //Setting stuff directly in the reference is more efficient than copying it later:
+          const sharedptr<DocumentTableInfo> doctableinfo = sharedptr<DocumentTableInfo>::create();
+          m_tables[table_name] = doctableinfo;
 
           sharedptr<TableInfo> table_info(new TableInfo());
           table_info->set_name(table_name);
           table_info->set_hidden( XmlUtils::get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN) );
           table_info->set_default( XmlUtils::get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT) );
 
-          doctableinfo.m_info = table_info;
+          doctableinfo->m_info = table_info;
 
-          doctableinfo.m_overviewx = XmlUtils::get_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_X);
-          doctableinfo.m_overviewy = XmlUtils::get_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_Y);
+          doctableinfo->m_overviewx = XmlUtils::get_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_X);
+          doctableinfo->m_overviewy = XmlUtils::get_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_Y);
 
           //Translations:
-          load_after_translations(nodeTable, doctableinfo.m_info);
+          load_after_translations(nodeTable, doctableinfo->m_info);
 
           //Relationships:
           //These should be loaded before the fields, because the fields use them.
@@ -2620,7 +2688,7 @@ bool Document::load_after(int& failure_code)
                 //Translations:
                 load_after_translations(nodeChild, relationship);
 
-                doctableinfo.m_relationships.push_back(relationship);
+                doctableinfo->m_relationships.push_back(relationship);
               }
             }
           }
@@ -2690,7 +2758,7 @@ bool Document::load_after(int& failure_code)
                 //Translations:
                 load_after_translations(nodeChild, field);
 
-                doctableinfo.m_fields.push_back(field);
+                doctableinfo->m_fields.push_back(field);
               }
             }
           } //Fields
@@ -2707,7 +2775,7 @@ bool Document::load_after(int& failure_code)
               const xmlpp::Element* nodeChild = dynamic_cast<xmlpp::Element*>(*iter);
               if(nodeChild)
               {
-                type_row_data field_values(doctableinfo.m_fields.size());
+                type_row_data field_values(doctableinfo->m_fields.size());
                 //Loop through value child nodes
                 xmlpp::Node::NodeList listNodes = nodeChild->get_children(GLOM_NODE_VALUE);
                 for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); ++ iter)
@@ -2718,13 +2786,13 @@ bool Document::load_after(int& failure_code)
                     const xmlpp::Attribute* column_name = nodeChild->get_attribute(GLOM_ATTRIBUTE_COLUMN);
                     if(column_name)
                     {
-                      //std::cout << "DEBUG: column_name = " << column_name->get_value() << " fields size=" << doctableinfo.m_fields.size() << std::endl;
+                      //std::cout << "DEBUG: column_name = " << column_name->get_value() << " fields size=" << doctableinfo->m_fields.size() << std::endl;
 
                       // TODO_Performance: If it's too many rows we could
                       // consider a map to find the column more quickly.
-                      for(unsigned int i = 0; i < doctableinfo.m_fields.size(); ++i)
+                      for(unsigned int i = 0; i < doctableinfo->m_fields.size(); ++i)
                       {
-                        sharedptr<const Field> field = doctableinfo.m_fields[i];
+                        sharedptr<const Field> field = doctableinfo->m_fields[i];
                         //std::cout << "  DEBUG: searching: field i=" << i << " =" << field->get_name() << std::endl;
                         if(field && (field->get_name() == column_name->get_value()))
                         {
@@ -2737,13 +2805,13 @@ bool Document::load_after(int& failure_code)
                   }
                 }
 
-                // Append line to doctableinfo.m_example_rows
-                doctableinfo.m_example_rows.push_back(field_values);
+                // Append line to doctableinfo->m_example_rows
+                doctableinfo->m_example_rows.push_back(field_values);
               }
             }
           } // Example Rows
 
-          //std::cout << "  debug: loading: table=" << table_name << ", m_example_rows.size()=" << doctableinfo.m_example_rows.size() << std::endl;
+          //std::cout << "  debug: loading: table=" << table_name << ", m_example_rows.size()=" << doctableinfo->m_example_rows.size() << std::endl;
 
         } //if(table)
       } //Tables.
@@ -2757,7 +2825,7 @@ bool Document::load_after(int& failure_code)
         if(nodeTable)
         {
           const Glib::ustring table_name = XmlUtils::get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME);
-          DocumentTableInfo& doctableinfo = m_tables[table_name]; //Setting stuff directly in the reference is more efficient than copying it later:
+          const sharedptr<DocumentTableInfo> doctableinfo = m_tables[table_name];
 
           //Layouts:
           const xmlpp::Element* nodeDataLayouts = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_DATA_LAYOUTS);
@@ -2800,7 +2868,7 @@ bool Document::load_after(int& failure_code)
                 layout_info.m_layout_name = layout_name;
                 layout_info.m_layout_platform = layout_platform;
                 layout_info.m_layout_groups = layout_groups;
-                doctableinfo.m_layouts.push_back(layout_info);
+                doctableinfo->m_layouts.push_back(layout_info);
               }
             }
           } //if(nodeDataLayouts)
@@ -2847,7 +2915,7 @@ bool Document::load_after(int& failure_code)
                 //Translations:
                 load_after_translations(node, report);
 
-                doctableinfo.m_reports[report->get_name()] = report;
+                doctableinfo->m_reports[report->get_name()] = report;
               }
             }
           } //if(nodeReports)
@@ -2936,7 +3004,7 @@ bool Document::load_after(int& failure_code)
                 //Translations:
                 load_after_translations(node, print_layout);
 
-                doctableinfo.m_print_layouts[print_layout->get_name()] = print_layout;
+                doctableinfo->m_print_layouts[print_layout->get_name()] = print_layout;
               }
             }
           } //if(nodePrintLayouts)
@@ -3613,9 +3681,11 @@ bool Document::save_before()
     //Add tables:
     for(type_tables::const_iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
     {
-      const DocumentTableInfo& doctableinfo = iter->second;
+      const sharedptr<const DocumentTableInfo> doctableinfo = iter->second;
+      if(!doctableinfo || !doctableinfo->m_info)
+        continue;
 
-      const Glib::ustring table_name = doctableinfo.m_info->get_name();
+      const Glib::ustring table_name = doctableinfo->m_info->get_name();
       if(table_name.empty())
         std::cerr << G_STRFUNC << ": table name is empty." << std::endl;
 
@@ -3623,25 +3693,26 @@ bool Document::save_before()
       {
         xmlpp::Element* nodeTable = nodeRoot->add_child(GLOM_NODE_TABLE);
         XmlUtils::set_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME, table_name);
-        XmlUtils::set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN, doctableinfo.m_info->get_hidden());
-        XmlUtils::set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT, doctableinfo.m_info->get_default());
+        XmlUtils::set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN, doctableinfo->m_info->get_hidden());
+        XmlUtils::set_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT, doctableinfo->m_info->get_default());
 
-        XmlUtils::set_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_X, doctableinfo.m_overviewx);
-        XmlUtils::set_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_Y, doctableinfo.m_overviewy);
+        XmlUtils::set_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_X, doctableinfo->m_overviewx);
+        XmlUtils::set_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_Y, doctableinfo->m_overviewy);
 
         if(m_is_example) //The example data is useless to non-example files (and is big):
         {
           xmlpp::Element* nodeExampleRows = nodeTable->add_child(GLOM_NODE_EXAMPLE_ROWS);
 
-          for(type_example_rows::const_iterator iter = doctableinfo.m_example_rows.begin(); iter != doctableinfo.m_example_rows.end(); ++iter)
+          for(type_example_rows::const_iterator iter = doctableinfo->m_example_rows.begin(); iter != doctableinfo->m_example_rows.end(); ++iter)
           {
             xmlpp::Element* nodeExampleRow = nodeExampleRows->add_child(GLOM_NODE_EXAMPLE_ROW);
             const type_row_data& row_data = *iter;
             if(!row_data.empty())
             {
-              for(unsigned int i = 0; i < row_data.size(); ++i) //TODO_Performance: don't call size() so much.
+              const unsigned int row_data_size = row_data.size();
+              for(unsigned int i = 0; i < row_data_size; ++i)
               {
-                sharedptr<const Field> field = doctableinfo.m_fields[i];
+                sharedptr<const Field> field = doctableinfo->m_fields[i];
                 if(!field)
                   break;
 
@@ -3655,14 +3726,14 @@ bool Document::save_before()
 
 
         //Translations:
-        save_before_translations(nodeTable, doctableinfo.m_info);
+        save_before_translations(nodeTable, doctableinfo->m_info);
 
         //Fields:
         xmlpp::Element* elemFields = nodeTable->add_child(GLOM_NODE_FIELDS);
 
         const Field::type_map_type_names type_names = Field::get_type_names();
 
-        for(type_vec_fields::const_iterator iter = doctableinfo.m_fields.begin(); iter != doctableinfo.m_fields.end(); ++iter)
+        for(type_vec_fields::const_iterator iter = doctableinfo->m_fields.begin(); iter != doctableinfo->m_fields.end(); ++iter)
         {
           sharedptr<const Field> field = *iter;
 
@@ -3707,7 +3778,8 @@ bool Document::save_before()
         xmlpp::Element* elemRelationships = nodeTable->add_child(GLOM_NODE_RELATIONSHIPS);
 
         //Add each <relationship> node:
-        for(type_vec_relationships::const_iterator iter = doctableinfo.m_relationships.begin(); iter != doctableinfo.m_relationships.end(); ++iter)
+        const type_vec_relationships relationships = doctableinfo->m_relationships;
+        for(type_vec_relationships::const_iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
         {
           sharedptr<const Relationship> relationship = *iter;
           if(relationship)
@@ -3730,7 +3802,7 @@ bool Document::save_before()
 
         //Add the groups:
         //Make sure that we always get these _after_ the relationships.
-        for(DocumentTableInfo::type_layouts::const_iterator iter = doctableinfo.m_layouts.begin(); iter != doctableinfo.m_layouts.end(); ++iter)
+        for(DocumentTableInfo::type_layouts::const_iterator iter = doctableinfo->m_layouts.begin(); iter != doctableinfo->m_layouts.end(); ++iter)
         {
           xmlpp::Element* nodeLayout = nodeDataLayouts->add_child(GLOM_NODE_DATA_LAYOUT);
           XmlUtils::set_node_attribute_value(nodeLayout, GLOM_ATTRIBUTE_NAME, iter->m_layout_name);
@@ -3749,7 +3821,7 @@ bool Document::save_before()
         xmlpp::Element* nodeReports = nodeTable->add_child(GLOM_NODE_REPORTS);
 
         //Add the groups:
-        for(DocumentTableInfo::type_reports::const_iterator iter = doctableinfo.m_reports.begin(); iter != doctableinfo.m_reports.end(); ++iter)
+        for(DocumentTableInfo::type_reports::const_iterator iter = doctableinfo->m_reports.begin(); iter != doctableinfo->m_reports.end(); ++iter)
         {
           xmlpp::Element* nodeReport = nodeReports->add_child(GLOM_NODE_REPORT);
 
@@ -3768,7 +3840,7 @@ bool Document::save_before()
         xmlpp::Element* nodePrintLayouts = nodeTable->add_child(GLOM_NODE_PRINT_LAYOUTS);
 
         //Add the print :
-        for(DocumentTableInfo::type_print_layouts::const_iterator iter = doctableinfo.m_print_layouts.begin(); iter != doctableinfo.m_print_layouts.end(); ++iter)
+        for(DocumentTableInfo::type_print_layouts::const_iterator iter = doctableinfo->m_print_layouts.begin(); iter != doctableinfo->m_print_layouts.end(); ++iter)
         {
           xmlpp::Element* nodePrintLayout = nodePrintLayouts->add_child(GLOM_NODE_PRINT_LAYOUT);
 
@@ -3967,11 +4039,11 @@ void Document::remove_group(const Glib::ustring& group_name)
 
 std::vector<Glib::ustring> Document::get_report_names(const Glib::ustring& table_name) const
 {
-  type_tables::const_iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
+  const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+  if(info)
   {
     std::vector<Glib::ustring> result;
-    for(DocumentTableInfo::type_reports::const_iterator iter = iterFind->second.m_reports.begin(); iter != iterFind->second.m_reports.end(); ++iter)
+    for(DocumentTableInfo::type_reports::const_iterator iter = info->m_reports.begin(); iter != info->m_reports.end(); ++iter)
     {
       result.push_back(iter->second->get_name());
     }
@@ -3984,21 +4056,21 @@ std::vector<Glib::ustring> Document::get_report_names(const Glib::ustring& table
 
 void Document::set_report(const Glib::ustring& table_name, const sharedptr<Report>& report)
 {
-  type_tables::iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
+  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  if(info)
   {
-    iterFind->second.m_reports[report->get_name()] = report;
+    info->m_reports[report->get_name()] = report;
     set_modified();
   }
 }
 
 sharedptr<Report> Document::get_report(const Glib::ustring& table_name, const Glib::ustring& report_name) const
 {
-  type_tables::const_iterator iterFindTable = m_tables.find(table_name);
-  if(iterFindTable != m_tables.end())
+  const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+  if(info)
   {
-    DocumentTableInfo::type_reports::const_iterator iterFindReport = iterFindTable->second.m_reports.find(report_name);
-    if(iterFindReport != iterFindTable->second.m_reports.end())
+    DocumentTableInfo::type_reports::const_iterator iterFindReport = info->m_reports.find(report_name);
+    if(iterFindReport != info->m_reports.end())
     {
       return iterFindReport->second;
     }
@@ -4009,13 +4081,13 @@ sharedptr<Report> Document::get_report(const Glib::ustring& table_name, const Gl
 
 void Document::remove_report(const Glib::ustring& table_name, const Glib::ustring& report_name)
 {
-  type_tables::iterator iterFindTable = m_tables.find(table_name);
-  if(iterFindTable != m_tables.end())
+  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  if(info)
   {
-    DocumentTableInfo::type_reports::iterator iterFindReport = iterFindTable->second.m_reports.find(report_name);
-    if(iterFindReport != iterFindTable->second.m_reports.end())
+    DocumentTableInfo::type_reports::iterator iterFindReport = info->m_reports.find(report_name);
+    if(iterFindReport != info->m_reports.end())
     {
-      iterFindTable->second.m_reports.erase(iterFindReport);
+      info->m_reports.erase(iterFindReport);
 
       set_modified();
     }
@@ -4025,11 +4097,11 @@ void Document::remove_report(const Glib::ustring& table_name, const Glib::ustrin
 
 std::vector<Glib::ustring> Document::get_print_layout_names(const Glib::ustring& table_name) const
 {
-  type_tables::const_iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
+  const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+  if(info)
   {
     std::vector<Glib::ustring> result;
-    for(DocumentTableInfo::type_print_layouts::const_iterator iter = iterFind->second.m_print_layouts.begin(); iter != iterFind->second.m_print_layouts.end(); ++iter)
+    for(DocumentTableInfo::type_print_layouts::const_iterator iter = info->m_print_layouts.begin(); iter != info->m_print_layouts.end(); ++iter)
     {
       result.push_back(iter->second->get_name());
     }
@@ -4043,21 +4115,21 @@ std::vector<Glib::ustring> Document::get_print_layout_names(const Glib::ustring&
 
 void Document::set_print_layout(const Glib::ustring& table_name, const sharedptr<PrintLayout>& print_layout)
 {
-  type_tables::iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
+  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  if(info)
   {
-    iterFind->second.m_print_layouts[print_layout->get_name()] = print_layout;
+    info->m_print_layouts[print_layout->get_name()] = print_layout;
     set_modified();
   }
 }
 
 sharedptr<PrintLayout> Document::get_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name) const
 {
-  type_tables::const_iterator iterFindTable = m_tables.find(table_name);
-  if(iterFindTable != m_tables.end())
+  const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+  if(info)
   {
-    DocumentTableInfo::type_print_layouts::const_iterator iterFindPrintLayout = iterFindTable->second.m_print_layouts.find(print_layout_name);
-    if(iterFindPrintLayout != iterFindTable->second.m_print_layouts.end())
+    DocumentTableInfo::type_print_layouts::const_iterator iterFindPrintLayout = info->m_print_layouts.find(print_layout_name);
+    if(iterFindPrintLayout != info->m_print_layouts.end())
     {
       return iterFindPrintLayout->second;
     }
@@ -4068,13 +4140,13 @@ sharedptr<PrintLayout> Document::get_print_layout(const Glib::ustring& table_nam
 
 void Document::remove_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name)
 {
-  type_tables::iterator iterFindTable = m_tables.find(table_name);
-  if(iterFindTable != m_tables.end())
+  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  if(info)
   {
-    DocumentTableInfo::type_print_layouts::iterator iterFindPrintLayout = iterFindTable->second.m_print_layouts.find(print_layout_name);
-    if(iterFindPrintLayout != iterFindTable->second.m_print_layouts.end())
+    DocumentTableInfo::type_print_layouts::iterator iterFindPrintLayout = info->m_print_layouts.find(print_layout_name);
+    if(iterFindPrintLayout != info->m_print_layouts.end())
     {
-      iterFindTable->second.m_print_layouts.erase(iterFindPrintLayout);
+      info->m_print_layouts.erase(iterFindPrintLayout);
 
       set_modified();
     }
@@ -4107,8 +4179,8 @@ sharedptr<const Relationship> Document::get_field_used_in_relationship_to_one(co
   }
 
   const Glib::ustring table_used = layout_field->get_table_used(table_name);
-  type_tables::const_iterator iterFind = m_tables.find(table_used);
-  if(iterFind == m_tables.end())
+  const sharedptr<const DocumentTableInfo> table_info = get_table_info(table_used);
+  if(!table_info)
   {
     //This table is special. We would not create a relationship to it using a field:
     if(table_used == GLOM_STANDARD_TABLE_PREFS_TABLE_NAME)
@@ -4119,9 +4191,8 @@ sharedptr<const Relationship> Document::get_field_used_in_relationship_to_one(co
   }
 
   //Look at each relationship:
-  const DocumentTableInfo& table_info = iterFind->second;
   const Glib::ustring field_name = layout_field->get_name();
-  for(type_vec_relationships::const_iterator iterRel = table_info.m_relationships.begin(); iterRel != table_info.m_relationships.end(); ++iterRel)
+  for(type_vec_relationships::const_iterator iterRel = table_info->m_relationships.begin(); iterRel != table_info->m_relationships.end(); ++iterRel)
   {
     sharedptr<const Relationship> relationship = *iterRel;
     if(relationship)
@@ -4147,30 +4218,25 @@ sharedptr<const Relationship> Document::get_field_used_in_relationship_to_one(co
 
 void Document::forget_layout_record_viewed(const Glib::ustring& table_name)
 {
-  type_tables::iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
-  {
-    iterFind->second.m_map_current_record.clear();
-  }
+  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  if(info)
+    info->m_map_current_record.clear();
 }
 
 void Document::set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Gnome::Gda::Value& primary_key_value)
 {
-  type_tables::iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
-  {
-    iterFind->second.m_map_current_record[layout_name] = primary_key_value;
-  }
+  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  if(info)
+    info->m_map_current_record[layout_name] = primary_key_value;
 }
 
 Gnome::Gda::Value Document::get_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name) const
 {
-  type_tables::const_iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
+  const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+  if(info)
   {
-    const DocumentTableInfo& info = iterFind->second;
-    DocumentTableInfo::type_map_layout_primarykeys::const_iterator iterLayoutKeys = info.m_map_current_record.find(layout_name);
-    if(iterLayoutKeys != info.m_map_current_record.end())
+    DocumentTableInfo::type_map_layout_primarykeys::const_iterator iterLayoutKeys = info->m_map_current_record.find(layout_name);
+    if(iterLayoutKeys != info->m_map_current_record.end())
       return iterLayoutKeys->second;
   }
 
@@ -4179,44 +4245,32 @@ Gnome::Gda::Value Document::get_layout_record_viewed(const Glib::ustring& table_
 
 void Document::set_layout_current(const Glib::ustring& table_name, const Glib::ustring& layout_name)
 {
-  type_tables::iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
-  {
-    DocumentTableInfo& table_info = iterFind->second;
-    table_info.m_layout_current = layout_name;
-  }
+  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  if(info)
+    info->m_layout_current = layout_name;
 }
 
 void Document::set_criteria_current(const Glib::ustring& table_name, const FoundSet& found_set)
 {
-  type_tables::iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
-  {
-    DocumentTableInfo& table_info = iterFind->second;
-    table_info.m_foundset_current = found_set;
-  }
+  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  if(info)
+    info->m_foundset_current = found_set;
 }
 
 Glib::ustring Document::get_layout_current(const Glib::ustring& table_name) const
 {
-  type_tables::const_iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
-  {
-    const DocumentTableInfo& table_info = iterFind->second;
-    return table_info.m_layout_current;
-  }
+  const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+  if(info)
+    return info->m_layout_current;
 
   return Glib::ustring(); //not found.
 }
 
 FoundSet Document::get_criteria_current(const Glib::ustring& table_name) const
 {
-  type_tables::const_iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
-  {
-    const DocumentTableInfo& table_info = iterFind->second;
-    return table_info.m_foundset_current;
-  }
+  const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+  if(info)
+    return info->m_foundset_current;
 
   return FoundSet();
 }
@@ -4438,20 +4492,21 @@ Document::type_list_translatables Document::get_translatable_layout_items(const 
 {
   type_list_translatables result;
 
-  type_tables::iterator iterFindTable = m_tables.find(table_name);
-  if(iterFindTable != m_tables.end())
+  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  if(!info)
+    return result;
+
+  //Look at each layout:
+  DocumentTableInfo::type_layouts layouts = info->m_layouts;
+  for(DocumentTableInfo::type_layouts::iterator iterLayouts = info->m_layouts.begin(); iterLayouts != info->m_layouts.end(); ++iterLayouts)
   {
-    //Look at each layout:
-    for(DocumentTableInfo::type_layouts::iterator iterLayouts = iterFindTable->second.m_layouts.begin(); iterLayouts != iterFindTable->second.m_layouts.end(); ++iterLayouts)
+    //Look at each group:
+    for(type_list_layout_groups::iterator iterGroup = iterLayouts->m_layout_groups.begin(); iterGroup != iterLayouts->m_layout_groups.end(); ++iterGroup)
     {
-      //Look at each group:
-      for(type_list_layout_groups::iterator iterGroup = iterLayouts->m_layout_groups.begin(); iterGroup != iterLayouts->m_layout_groups.end(); ++iterGroup)
+      sharedptr<LayoutGroup> group = *iterGroup;
+      if(group)
       {
-        sharedptr<LayoutGroup> group = *iterGroup;
-        if(group)
-        {
-          fill_translatable_layout_items(group, result, hint);
-        }
+        fill_translatable_layout_items(group, result, hint);
       }
     }
   }

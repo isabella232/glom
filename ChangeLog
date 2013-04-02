@@ -1,3 +1,14 @@
+2013-04-03  Murray Cumming  <murrayc@murrayc.com>
+
+	Document: Use DocumentTableInfo by sharedptr<>.
+
+	* glom/glom/libglom/document/document.[h|cc]:
+	DocumentTableInfo: Remove the copy constructor and operator=(),
+	making them private and unimplemented. Use it by sharedptr<>
+	instead to be more efficient and simpler.
+	Add get_table_info() so we can check for a null sharedptr<>
+	instead of repeatedly using std::map::find() awkwardly.
+
 2013-04-01  Murray Cumming  <murrayc@murrayc.com>
 
         Update another test .glom file.

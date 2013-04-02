@@ -555,42 +555,6 @@ private:
       m_info = sharedptr<TableInfo>(new TableInfo()); //Avoid a null sharedptr.
     }
 
-    //TODO: Avoid the use of this:
-    DocumentTableInfo(const DocumentTableInfo& src)
-      : m_info(src.m_info),
-        m_fields(src.m_fields),
-        m_relationships(src.m_relationships),
-        m_layouts(src.m_layouts),
-        m_reports(src.m_reports),
-        m_print_layouts(src.m_print_layouts),
-        m_example_rows(src.m_example_rows),
-        m_map_current_record(src.m_map_current_record),
-        m_layout_current(src.m_layout_current),
-        m_foundset_current(src.m_foundset_current),
-        m_overviewx(src.m_overviewx),
-        m_overviewy(src.m_overviewy)
-    {
-    }
-
-    //TODO: Avoid the use of this:
-    DocumentTableInfo& operator=(const DocumentTableInfo& src)
-    {
-      m_info = src.m_info;
-      m_fields = src.m_fields;
-      m_relationships = src.m_relationships;
-      m_layouts = src.m_layouts;
-      m_reports = src.m_reports;
-      m_print_layouts = src.m_print_layouts;
-      m_example_rows = src.m_example_rows;
-      m_map_current_record = src.m_map_current_record;
-      m_layout_current = src.m_layout_current;
-      m_foundset_current = src.m_foundset_current;
-      m_overviewx = src.m_overviewx;
-      m_overviewy = src.m_overviewy;
-
-      return *this;
-    }
-
     sharedptr<TableInfo> m_info;
 
     type_vec_fields m_fields;
@@ -615,11 +579,19 @@ private:
     FoundSet m_foundset_current;
 
     float m_overviewx, m_overviewy;
+
+  private:
+    //Prevent copying:
+    DocumentTableInfo(const DocumentTableInfo& src);
+    DocumentTableInfo& operator=(const DocumentTableInfo& src);
   };
 
-  DocumentTableInfo& get_table_info_with_add(const Glib::ustring& table_name);
+  sharedptr<DocumentTableInfo> get_table_info_with_add(const Glib::ustring& table_name);
 
-  typedef std::map<Glib::ustring, DocumentTableInfo> type_tables;
+  sharedptr<DocumentTableInfo> get_table_info(const Glib::ustring& table_name);
+  sharedptr<const DocumentTableInfo> get_table_info(const Glib::ustring& table_name) const;
+
+  typedef std::map<Glib::ustring, sharedptr<DocumentTableInfo> > type_tables;
   type_tables m_tables;
 
 
