@@ -1199,16 +1199,18 @@ bool create_table_with_default_fields(Document* document, const Glib::ustring& t
   table_info->set_name(table_name);
   table_info->set_title_original( Utils::title_from_string( table_name ) ); //Start with a title that might be appropriate.
 
+  if(!document)
+  {
+    std::cerr << G_STRFUNC << ": document was null." << std::endl;
+    return false;
+  }
+  
   created = create_table(document->get_hosting_mode(), table_info, fields);
-
   if(created)
   {
     //Save the changes in the document:
-    if(document)
-    {
       document->add_table(table_info);
       document->set_table_fields(table_info->get_name(), fields);
-    }
   }
 
   return created;

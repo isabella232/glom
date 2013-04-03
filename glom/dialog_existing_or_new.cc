@@ -766,13 +766,18 @@ void Dialog_ExistingOrNew::on_service_removed(const Glib::ustring& name, const G
     if((*iter)[m_existing_columns.m_col_service_name] == name)
     {
       const bool was_expanded = m_existing_view->row_expanded(m_existing_model->get_path(iter));
+
       // Remove from store
       epc_service_info_unref((*iter)[m_existing_columns.m_col_service_info]);
       m_existing_model->erase(iter);
+
       // Reinsert dummy, if necessary
       if(children.begin() == children.end())
         m_iter_existing_network_dummy = create_dummy_item_existing(m_iter_existing_network, _(NETWORK_DUMMY_TEXT));
-      if(was_expanded) m_existing_view->expand_row(m_existing_model->get_path(iter), false);
+
+      if(was_expanded)
+        m_existing_view->expand_row(m_existing_model->get_path(iter), false);
+
       break;
     }
   }
