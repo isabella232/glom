@@ -9,6 +9,14 @@
 	
 2013-04-03  Murray Cumming  <murrayc@murrayc.com>
 
+	Python embedding: Python >2.7 build fixes.
+
+	* glom/libglom/python_embed/pygdavalue_conversions.cc:
+	More use of the redefinition of PyDateTime_IMPORT for 
+	python versions before 2.7, but not after.
+
+2013-04-03  Murray Cumming  <murrayc@murrayc.com>
+
 	Python embedding: Deal with TODO.
 
 	* glom/libglom/python_embed/pygdavalue_conversions.cc:

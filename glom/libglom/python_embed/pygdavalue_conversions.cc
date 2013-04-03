@@ -11,6 +11,15 @@
 #include <libgda/gda-blob-op.h>
 #include <iostream>
 
+//Python versions before python 2.7 have a compiler error in their PyDateTime_IMPORT macro:
+// http://bugs.python.org/issue7463
+// so we reimplement the macro for older versions:
+#if PY_VERSION_HEX < 0x02070000
+#undef PyDateTime_IMPORT
+#define PyDateTime_IMPORT \
+        PyDateTimeAPI = (PyDateTime_CAPI*) PyCObject_Import((char*)"datetime", \
+                                                            (char*)"datetime_CAPI")
+#endif //PY_VERSION_HEX
 
 /**
  * pygda_value_from_pyobject:
@@ -104,16 +113,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
     // Note that this sets a local copy of PyDateTimeAPI (in Python's datetime.h
     // header) so it _must_ be repeated and called before any code that use the
     // Python PyDate* macros (!) such as PyDateTime_Check
-
-    //Python versions before python 2.7 have a compiler error in their PyDateTime_IMPORT macro:
-    // http://bugs.python.org/issue7463
-    // so we reimplement the macro for older versions:
-#if PY_VERSION_HEX >= 0x02070000
     PyDateTime_IMPORT; //A macro, needed to use PyDate_Check(), PyDateTime_Check(), etc.
-#else
-    PyDateTimeAPI = (PyDateTime_CAPI*) PyCObject_Import((char*)"datetime", (char*)"datetime_CAPI");
-#endif
-
     if(PyDateTimeAPI) //This should have been set but it can fail: https://bugzilla.gnome.org/show_bug.cgi?id=644702
     {
       //TODO: Find some way to do this with boost::python
@@ -169,14 +169,10 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
        (value_type == GDA_TYPE_TIME) ||
        (value_type == GDA_TYPE_TIMESTAMP))
     {
-      // We shouldn't need to call PyDateTime_IMPORT again,
-      // after already doing it in libglom_init(),
-      // but PyDate_FromDate() crashes (with valgrind warnings) if we don't.
-      //
-      // Causes a C++ compiler warning, so we use its definition directly.
-      // See http://bugs.python.org/issue7463.
-      // PyDateTime_IMPORT; //A macro, needed to use PyDate_Check(), PyDateTime_Check(), etc.
-      PyDateTimeAPI = (PyDateTime_CAPI*) PyCObject_Import((char*)"datetime", (char*)"datetime_CAPI");
+      // Note that this sets a local copy of PyDateTimeAPI (in Python's datetime.h
+      // header) so it _must_ be repeated and called before any code that use the
+      // Python PyDate* macros (!) such as PyDateTime_Check
+      PyDateTime_IMPORT; //A macro, needed to use PyDate_Check(), PyDateTime_Check(), etc.
       g_assert(PyDateTimeAPI); //This should have been set by the PyDateTime_IMPORT macro
     }
 #endif

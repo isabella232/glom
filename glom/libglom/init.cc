@@ -31,15 +31,15 @@
 
 #include <pygobject.h>
 
-//TODO: Remove this redefine when Python fixes the compiler error in their macro:
+//Python versions before python 2.7 have a compiler error in their PyDateTime_IMPORT macro:
 // http://bugs.python.org/issue7463
-// Note that this sets a local copy of PyDateTimeAPI (in Python's datetime.h
-// header) so it _must_ be repeated and called before any code that use the
-// Python PyDate* macros (!) such as PyDateTime_Check
+// so we reimplement the macro for older versions:
+#if PY_VERSION_HEX < 0x02070000
 #undef PyDateTime_IMPORT
 #define PyDateTime_IMPORT \
         PyDateTimeAPI = (PyDateTime_CAPI*) PyCObject_Import((char*)"datetime", \
                                                             (char*)"datetime_CAPI")
+#endif //PY_VERSION_HEX
 
 namespace Glom
 {
@@ -57,6 +57,10 @@ void libglom_init()
   Gio::init();
 
   Py_Initialize();
+
+  // Note that this sets a local copy of PyDateTimeAPI (in Python's datetime.h
+  // header) so it _must_ be repeated and called before any code that use the
+  // Python PyDate* macros (!) such as PyDateTime_Check
   PyDateTime_IMPORT; //A macro, needed to use PyDate_Check(), PyDateTime_Check(), etc.
   if(!PyDateTimeAPI)
   {
