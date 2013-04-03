@@ -1,5 +1,13 @@
 2013-04-03  Murray Cumming  <murrayc@murrayc.com>
 
+	Python embedding: Deal with TODO.
+
+	* glom/libglom/python_embed/pygdavalue_conversions.cc:
+	Avoid a redefinition of PyDateTime_IMPORT for python 2.7
+	and later, which fixes the compiler error.
+
+2013-04-03  Murray Cumming  <murrayc@murrayc.com>
+
 	Deal with a minor TODO.
 
 	* glom/frame_glom.h: Make the signal handlers private.

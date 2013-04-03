@@ -100,14 +100,20 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
     }
     
 #if PY_VERSION_HEX >= 0x02040000
-    //TODO: Remove this redefine when Python fixes the compiler error in their macro:
-    // http://bugs.python.org/issue7463
+
     // Note that this sets a local copy of PyDateTimeAPI (in Python's datetime.h
     // header) so it _must_ be repeated and called before any code that use the
     // Python PyDate* macros (!) such as PyDateTime_Check
 
-    // PyDateTime_IMPORT; //A macro, needed to use PyDate_Check(), PyDateTime_Check(), etc.
+    //Python versions before python 2.7 have a compiler error in their PyDateTime_IMPORT macro:
+    // http://bugs.python.org/issue7463
+    // so we reimplement the macro for older versions:
+#if PY_VERSION_HEX >= 0x02070000
+    PyDateTime_IMPORT; //A macro, needed to use PyDate_Check(), PyDateTime_Check(), etc.
+#else
     PyDateTimeAPI = (PyDateTime_CAPI*) PyCObject_Import((char*)"datetime", (char*)"datetime_CAPI");
+#endif
+
     if(PyDateTimeAPI) //This should have been set but it can fail: https://bugzilla.gnome.org/show_bug.cgi?id=644702
     {
       //TODO: Find some way to do this with boost::python
