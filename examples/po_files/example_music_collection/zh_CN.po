@@ -1,0 +1,192 @@
+# Chinese (China) translation for glom.
+# Copyright (C) 2012 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+# Aron Xu <aronxu@gnome.org>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: glom master\n"
+"PO-Revision-Date: 2012-08-08 14:14+0800\n"
+"Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
+"Language-Team: Chinese (Simplified) <i18n-zh@googlegroups.com>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgctxt "Database Title"
+msgid "Music Collection"
+msgstr "音乐收藏"
+
+msgctxt "Table (albums)"
+msgid "Albums"
+msgstr "专辑"
+
+msgctxt "Field (album_id). Parent table: albums"
+msgid "Album ID"
+msgstr "专辑编号"
+
+msgctxt "Field (comments). Parent table: albums"
+msgid "Comments"
+msgstr "注释"
+
+msgctxt "Field (name). Parent table: albums"
+msgid "Name"
+msgstr "名称"
+
+msgctxt "Field (artist_id). Parent table: albums"
+msgid "Artist ID"
+msgstr "艺人编号"
+
+msgctxt "Field (publisher_id). Parent table: albums"
+msgid "Publisher ID"
+msgstr "发行商编号"
+
+msgctxt "Field (year). Parent table: albums"
+msgid "Year"
+msgstr "年份"
+
+msgctxt "Relationship (artist). Parent table: albums"
+msgid "Artist"
+msgstr "艺人"
+
+msgctxt "Relationship (publisher). Parent table: albums"
+msgid "Publisher"
+msgstr "发行商"
+
+msgctxt "Relationship (songs). Parent table: albums"
+msgid "Songs"
+msgstr "歌曲"
+
+msgctxt "Report (albums_by_artist). Parent table: albums"
+msgid "Albums By Artist"
+msgstr "按艺人分类的专辑"
+
+msgctxt "Custom Title. Parent table: albums, Parent Report: albums_by_artist"
+msgid "Artist Name"
+msgstr "艺人姓名"
+
+msgctxt "Layout Group (overview). Parent table: albums"
+msgid "Overview"
+msgstr "概述"
+
+msgctxt "Layout Group (details). Parent table: albums"
+msgid "Details"
+msgstr "详情"
+
+msgctxt "Layout Group (artist). Parent table: albums, Parent Group: details"
+msgid "Artist"
+msgstr "艺人"
+
+msgctxt "Layout Group (publisher). Parent table: albums, Parent Group: details"
+msgid "Publisher"
+msgstr "发行商"
+
+msgctxt "Custom Title. Parent table: albums"
+msgid "Artist Name"
+msgstr "艺人姓名"
+
+msgctxt "Custom Title. Parent table: albums"
+msgid "Publisher Name"
+msgstr "发行商姓名"
+
+msgctxt "Table (artists)"
+msgid "Artists"
+msgstr "艺人"
+
+msgctxt "Field (artist_id). Parent table: artists"
+msgid "Artist ID"
+msgstr "艺人编号"
+
+msgctxt "Field (description). Parent table: artists"
+msgid "Description"
+msgstr "描述"
+
+msgctxt "Field (comments). Parent table: artists"
+msgid "Comments"
+msgstr "注释"
+
+msgctxt "Field (name). Parent table: artists"
+msgid "Name"
+msgstr "名称"
+
+msgctxt "Relationship (albums). Parent table: artists"
+msgid "Albums"
+msgstr "专辑"
+
+msgctxt "Layout Group (overview). Parent table: artists"
+msgid "Overview"
+msgstr "概述"
+
+msgctxt "Layout Group (details). Parent table: artists"
+msgid "Details"
+msgstr "详述"
+
+msgctxt "Table (publishers)"
+msgid "Publishers"
+msgstr "发行商"
+
+msgctxt "Field (publishers_id). Parent table: publishers"
+msgid "Publisher ID"
+msgstr "发行商编号"
+
+msgctxt "Field (comments). Parent table: publishers"
+msgid "Comments"
+msgstr "注释"
+
+msgctxt "Field (name). Parent table: publishers"
+msgid "Name"
+msgstr "名称"
+
+msgctxt "Relationship (albums). Parent table: publishers"
+msgid "Albums"
+msgstr "专辑"
+
+msgctxt "Layout Group (overview). Parent table: publishers"
+msgid "Overview"
+msgstr "概述"
+
+msgctxt "Layout Group (details). Parent table: publishers"
+msgid "Details"
+msgstr "详情"
+
+msgctxt "Table (songs)"
+msgid "Songs"
+msgstr "歌曲"
+
+msgctxt "Field (song_id). Parent table: songs"
+msgid "Song ID"
+msgstr "歌曲编号"
+
+msgctxt "Field (comments). Parent table: songs"
+msgid "Comments"
+msgstr "注释"
+
+msgctxt "Field (album_id). Parent table: songs"
+msgid "Album ID"
+msgstr "专辑编号"
+
+msgctxt "Field (name). Parent table: songs"
+msgid "Name"
+msgstr "名称"
+
+msgctxt "Relationship (album). Parent table: songs"
+msgid "Album"
+msgstr "专辑"
+
+msgctxt "Layout Group (overview). Parent table: songs"
+msgid "Overview"
+msgstr "概述"
+
+msgctxt "Layout Group (details). Parent table: songs"
+msgid "Details"
+msgstr "详述"
+
+msgctxt "Layout Group (album). Parent table: songs, Parent Group: details"
+msgid "Album"
+msgstr "专辑"
+
+msgctxt "Layout Group (artist). Parent table: songs, Parent Group: details"
+msgid "Album Artist"
+msgstr "专辑艺人"
