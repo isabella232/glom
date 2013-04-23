@@ -1,3 +1,10 @@
+2013-04-23  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix distcheck.
+
+	* Makefile_tests.am: Dist the recently-added
+	.glom test file.
+	
 2013-04-03  Murray Cumming  <murrayc@murrayc.com>
 
 	Python embedding: Deal with TODO.
@@ -14,7 +21,7 @@
 
 2013-04-03  Murray Cumming  <murrayc@murrayc.com>
 
-	DbUtis: Some const improvements.
+	DbUtils: Some const improvements.
 
 	* glom/libglom/db_utils.cc: Make the Document* const
 	where possible.

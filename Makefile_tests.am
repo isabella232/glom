@@ -191,7 +191,8 @@ tests_python_test_python_module_CPPFLAGS = $(tests_cppflags)
 dist_noinst_DATA = \
 	tests/import/data/albums.csv \
 	tests/translations_po/data/test.po \
-	tests/test_image.jpg
+	tests/test_image.jpg \
+	tests/test_example_music_collection_text_pk_fields.glom
 
 # Let the .cc source code know about this path:
 glom_test_import_defines = -DGLOM_TESTS_IMPORT_DATA_NOTINSTALLED=\""$(abs_top_srcdir)/tests/import/data/"\"
