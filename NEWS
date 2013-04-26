@@ -1,3 +1,9 @@
+1.24.0 (stable):
+
+* Document format: table node: Remove superfluous parent_table
+  attribute.
+* libglom: Various minor code cleanups.
+
 1.23.4 (unstable):
 
 * Fix the build with --enable-warnings=fatal.
