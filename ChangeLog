@@ -1,3 +1,12 @@
+2013-06-10  Murray Cumming  <murrayc@murrayc.com>
+
+	Initial dialog: Fix the notebook vertical expansion.
+
+	* ui/operator/dialog_existing_or_new.glade: Set the 
+	parent GtkHBox to expand, because there is some change
+	of behaviour with the latest GTK+ from git master.
+	Before this expanded already.
+
 1.24.0:
 
 2013-04-23  Murray Cumming  <murrayc@murrayc.com>
