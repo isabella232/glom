@@ -1,19 +1,21 @@
 # Greek translation for glom.
 # Copyright (C) 2012 glom's COPYRIGHT HOLDER
 # This file is distributed under the same license as the glom package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# keratea <dmtrs32@gmail.com>, 2013.
+# Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: glom master\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-06-18 13:53+0200\n"
-"Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
-"Language-Team: Greek <team@lists.gnome.gr>\n"
+"PO-Revision-Date: 2013-06-24 07:39+0300\n"
+"Last-Translator: Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>\n"
+"Language-Team: team@gnome.gr\n"
+"Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
 
 msgctxt "Database Title"
 msgid "Small Business Example"
@@ -77,7 +79,7 @@ msgstr "Πόλη"
 
 msgctxt "Field (address_state). Parent table: contacts"
 msgid "State"
-msgstr "Κατάσταση"
+msgstr "Πολιτεία"
 
 msgctxt "Field (address_country). Parent table: contacts"
 msgid "Country"
@@ -109,11 +111,11 @@ msgstr "Διεύθυνση ηλεκτρονικού ταχυδρομείου"
 
 msgctxt "Field (website). Parent table: contacts"
 msgid "Web Site"
-msgstr "Ιστοσελίδα"
+msgstr "Ιστότοπος"
 
 msgctxt "Field (tel_home). Parent table: contacts"
 msgid "Home Telephone"
-msgstr "Τηλέφωνο σπιτιού"
+msgstr "Τηλέφωνο οικίας"
 
 msgctxt "Field (tel_work). Parent table: contacts"
 msgid "Work Telephone"
@@ -137,107 +139,107 @@ msgstr "Κατά χώρα, Κατά πόλη"
 
 msgctxt "Print Layout (contact_details). Parent table: contacts"
 msgid "Contact Details"
-msgstr ""
+msgstr "Λεπτομέρειες επαφής"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Contacts"
-msgstr ""
+msgstr "Επαφές"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Overview"
-msgstr ""
+msgstr "Επισκόπηση"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Contact ID:"
-msgstr ""
+msgstr "Αναγνωριστικό επαφής:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Full Name:"
-msgstr ""
+msgstr "Πλήρες όνομα:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Name"
-msgstr ""
+msgstr "Όνομα"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Title:"
-msgstr ""
+msgstr "Τίτλος:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "First Name:"
-msgstr ""
+msgstr "Όνομα:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Middle Name:"
-msgstr ""
+msgstr "Μεσαίο όνομα:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Last Name:"
-msgstr ""
+msgstr "Επώνυμο:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Address"
-msgstr ""
+msgstr "Διεύθυνση"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Street:"
-msgstr ""
+msgstr "Οδός:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Town:"
-msgstr ""
+msgstr "Πόλη:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "State:"
-msgstr ""
+msgstr "Πολιτεία:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Postcode:"
-msgstr ""
+msgstr "Ταχ. κώδικας:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Country:"
-msgstr ""
+msgstr "Χώρα:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Telephone"
-msgstr ""
+msgstr "Τηλέφωνο"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Work Telephone:"
-msgstr ""
+msgstr "Τηλέφωνο εργασίας:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Mobile Telephone:"
-msgstr ""
+msgstr "Κινητό τηλέφωνο:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Home Telephone:"
-msgstr ""
+msgstr "Τηλέφωνο οικίας:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Fax:"
-msgstr ""
+msgstr "Φαξ:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Date of Birth:"
-msgstr ""
+msgstr "Ημερομηνία γέννησης:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Picture:"
-msgstr ""
+msgstr "Εικόνα:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Comments:"
-msgstr ""
+msgstr "Σχόλια:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Web Site:"
-msgstr ""
+msgstr "Ιστότοπος:"
 
 msgctxt "Text. Parent table: contacts, Print Layout: contact_details"
 msgid "Email Address:"
-msgstr ""
+msgstr "Διεύθυνση ηλ. αλληλογραφίας:"
 
 msgctxt "Layout Group (overview). Parent table: contacts"
 msgid "Overview"
@@ -262,15 +264,15 @@ msgstr "Κουμπί δοκιμής"
 
 msgctxt "Field (product_name). Parent table: invoice_lines"
 msgid "Product Name"
-msgstr "Όνομα προιόντος"
+msgstr "Όνομα προϊόντος"
 
 msgctxt "Field (product_id). Parent table: invoice_lines"
 msgid "Product Id"
-msgstr "Αναγνωριστικό προιόντος"
+msgstr "Αναγνωριστικό προϊόντος"
 
 msgctxt "Field (product_price). Parent table: invoice_lines"
 msgid "Product Price"
-msgstr "Τιμή προιόντος"
+msgstr "Τιμή προϊόντος"
 
 msgctxt "Field (invoice_id). Parent table: invoice_lines"
 msgid "Invoice ID"
@@ -347,11 +349,11 @@ msgstr "Πελάτης"
 
 msgctxt "Table (products)"
 msgid "Products"
-msgstr "Προιόντα"
+msgstr "Προϊόντα"
 
 msgctxt "Field (product_id). Parent table: products"
 msgid "Product ID"
-msgstr "Αναγνωριστικό προιόντος"
+msgstr "Αναγνωριστικό προϊόντος"
 
 msgctxt "Field (comment). Parent table: products"
 msgid "Comment"
