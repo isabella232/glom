@@ -54,13 +54,13 @@ public:
 
   //Creates a new canvas item, with an appropriate child canvas item,
   //and sets the position and size of this canvas item to the position in the LayoutItem.
-  static Glib::RefPtr<CanvasLayoutItem> create(const sharedptr<LayoutItem>& layout_item);
+  static Glib::RefPtr<CanvasLayoutItem> create(const std::shared_ptr<LayoutItem>& layout_item);
 
-  sharedptr<LayoutItem> get_layout_item();
+  std::shared_ptr<LayoutItem> get_layout_item();
 
   //Create an appropriate child canvas item,
   //and sets the position and size of this canvas item to the position in the LayoutItem.
-  void set_layout_item(const sharedptr<LayoutItem>& layout_item);
+  void set_layout_item(const std::shared_ptr<LayoutItem>& layout_item);
   
   /// Make the canvas item show actual data instead of, for instance, a field name.
   void set_db_data(const Gnome::Gda::Value& value);
@@ -68,7 +68,7 @@ public:
   /// Hide the missing-image pixbuf from images, for instance.
   void remove_empty_indicators();
 
-  static int get_rows_count_for_portal(const sharedptr<const LayoutItem_Portal>& portal, double& row_height);
+  static int get_rows_count_for_portal(const std::shared_ptr<const LayoutItem_Portal>& portal, double& row_height);
 
   /** Make sure that the LayoutItem has the same position info as the CanvasItem that represents it.
    */
@@ -83,15 +83,15 @@ public:
 
 private:
   /// Create the appropriate inner canvas item to represent the layout item.
-  static Glib::RefPtr<CanvasItemMovable> create_canvas_item_for_layout_item(const sharedptr<LayoutItem>& layout_item);
+  static Glib::RefPtr<CanvasItemMovable> create_canvas_item_for_layout_item(const std::shared_ptr<LayoutItem>& layout_item);
 
-  static void apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, const sharedptr<const LayoutItem_WithFormatting>& layout_item);
+  static void apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, const std::shared_ptr<const LayoutItem_WithFormatting>& layout_item);
   
-  static void add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTableMovable>& canvas_table, const sharedptr<LayoutItem_Portal>& portal, guint rows_count);
+  static void add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTableMovable>& canvas_table, const std::shared_ptr<LayoutItem_Portal>& portal, guint rows_count);
 
   void on_resized();
 
-  sharedptr<LayoutItem> m_layout_item;
+  std::shared_ptr<LayoutItem> m_layout_item;
 };
 
 } //namespace Glom

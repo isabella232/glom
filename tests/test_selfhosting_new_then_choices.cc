@@ -45,7 +45,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   
   const Glib::ustring table_name = "invoice_lines";
  
-  const Glom::sharedptr<const Glom::LayoutItem_Field> field_with_choice = 
+  const std::shared_ptr<const Glom::LayoutItem_Field> field_with_choice = 
     get_field_on_layout(document, table_name, table_name, "product_id");
   if(!field_with_choice)
   {

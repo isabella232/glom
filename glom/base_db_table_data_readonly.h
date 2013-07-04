@@ -43,7 +43,7 @@ public:
 protected:
 
   //TODO: Move these to Base_DB_Table_Data too?
-  virtual sharedptr<Field> get_field_primary_key() const = 0;
+  virtual std::shared_ptr<Field> get_field_primary_key() const = 0;
 
   //TODO: Document whether these get the primary key in an existing record,
   //or the primary key value as it is entered in the UI, even before a record exists,

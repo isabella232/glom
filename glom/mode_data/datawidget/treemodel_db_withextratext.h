@@ -63,7 +63,7 @@ private:
   
   
   int m_column_index_first; //The index of the first field in the TreeModel.
-  sharedptr<const LayoutItem_Field> m_item_first;
+  std::shared_ptr<const LayoutItem_Field> m_item_first;
 };
 
 } //namespace Glom

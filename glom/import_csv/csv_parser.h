@@ -215,7 +215,7 @@ private:
   {
     char buf[1024];
   };
-  std::auto_ptr<Buffer> m_buffer;
+  std::shared_ptr<Buffer> m_buffer;
 };
 
 } //namespace Glom

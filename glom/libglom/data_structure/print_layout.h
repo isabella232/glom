@@ -38,8 +38,8 @@ public:
   bool get_show_table_title() const;
   void set_show_table_title(bool show_table_title = true);
 
-  sharedptr<LayoutGroup> get_layout_group();
-  sharedptr<const LayoutGroup> get_layout_group() const;
+  std::shared_ptr<LayoutGroup> get_layout_group();
+  std::shared_ptr<const LayoutGroup> get_layout_group() const;
 
   /** Sets the Page Setup as it would be created by a Gtk::PageSetup.
    */
@@ -74,7 +74,7 @@ public:
   void set_vertical_rules(const type_vec_doubles& rules);
 
 private:
-  sharedptr<LayoutGroup> m_layout_group;
+  std::shared_ptr<LayoutGroup> m_layout_group;
   bool m_show_table_title;
 
   bool m_show_grid;

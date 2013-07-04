@@ -65,7 +65,7 @@ bool Backend::set_network_shared(const SlotProgress& /* slot_progress */, bool /
   return true; //Success at doing nothing.
 }
 
-bool Backend::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const sharedptr<const Field>& field)
+bool Backend::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const std::shared_ptr<const Field>& field)
 {
   Glib::RefPtr<Gnome::Gda::ServerProvider> provider = connection->get_provider();
   Glib::RefPtr<Gnome::Gda::ServerOperation> operation = provider->create_operation(connection, Gnome::Gda::SERVER_OPERATION_ADD_COLUMN);

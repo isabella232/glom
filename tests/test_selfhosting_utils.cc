@@ -391,14 +391,14 @@ bool test_table_exists(const Glib::ustring& table_name, const Glom::Document& do
 {
   //Try to get more rows than intended:
   Glom::Utils::type_vecLayoutFields fieldsToGet;
-  Glom::sharedptr<const Glom::Field> field = document.get_field_primary_key(table_name); //To to get some field.
+  std::shared_ptr<const Glom::Field> field = document.get_field_primary_key(table_name); //To to get some field.
   if(!field)
   {
     std::cerr << G_STRFUNC << "Failure: Could not get primary key for table=" << table_name << std::endl;
     return false;
   }
 
-  Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 
@@ -427,28 +427,28 @@ static bool test_example_musiccollection_data_related(const Glom::Document* docu
   Glom::Utils::type_vecLayoutFields fieldsToGet;
 
   //Normal fields:
-  Glom::sharedptr<const Glom::Field> field_album_id = document->get_field("albums", "album_id");
-  Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  std::shared_ptr<const Glom::Field> field_album_id = document->get_field("albums", "album_id");
+  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
   layoutitem->set_full_field_details(field_album_id);
   fieldsToGet.push_back(layoutitem);
-  Glom::sharedptr<const Glom::Field> field = document->get_field("albums", "name");
+  std::shared_ptr<const Glom::Field> field = document->get_field("albums", "name");
   if(!field)
   {
     std::cerr << G_STRFUNC << "Failure: Could not get field." << std::endl;
     return false;
   }
-  layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 
   //Related field:
-  const Glom::sharedptr<Glom::Relationship> relationship = document->get_relationship("albums", "artist");
+  const std::shared_ptr<Glom::Relationship> relationship = document->get_relationship("albums", "artist");
   if(!relationship)
   {
     std::cerr << "Failure: The relationship could not be found." << std::endl;
     return false;
   }
-  layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
   layoutitem->set_relationship(relationship);
   field = document->get_field("artists", "name");
   if(!field)
@@ -487,8 +487,8 @@ bool test_example_musiccollection_data(const Glom::Document* document)
     Glom::Utils::get_find_where_clause_quick(document, "albums", value);
   
   Glom::Utils::type_vecLayoutFields fieldsToGet;
-  Glom::sharedptr<const Glom::Field> field = document->get_field("albums", "album_id");
-  Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  std::shared_ptr<const Glom::Field> field = document->get_field("albums", "album_id");
+  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 
@@ -498,7 +498,7 @@ bool test_example_musiccollection_data(const Glom::Document* document)
     std::cerr << G_STRFUNC << "Failure: Could not get field." << std::endl;
     return false;
   }
-  layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 

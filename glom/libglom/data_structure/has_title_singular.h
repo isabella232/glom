@@ -64,7 +64,7 @@ public:
   /** For instance, "Customer" if the table is titled "Customers".
    * This is useful in some UI strings.
    */
-  sharedptr<TranslatableItem> m_title_singular;
+  std::shared_ptr<TranslatableItem> m_title_singular;
 };
 
 } //namespace Glom

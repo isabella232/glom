@@ -52,7 +52,7 @@ bool import_translations_from_po_file(Document* document, const Glib::ustring& p
  * because not all text with the same contents should be translated the same 
  * way in all languages - the context might change the translation.
  */ 
-Glib::ustring get_po_context_for_item(const sharedptr<const TranslatableItem>& item, const Glib::ustring& hint);
+Glib::ustring get_po_context_for_item(const std::shared_ptr<const TranslatableItem>& item, const Glib::ustring& hint);
 
 } //namespace Glom
 

@@ -82,7 +82,7 @@ void Dialog_ChooseRelationship::set_document(Document* document, const Glib::ust
       Gtk::TreeModel::iterator iterRow = m_model->append();
       Gtk::TreeModel::Row row = *iterRow;
 
-      sharedptr<Relationship> relationship = *iter;
+      std::shared_ptr<Relationship> relationship = *iter;
       if(relationship)
         row[m_ColumnsRelationships.m_col_name] = glom_get_sharedptr_name(relationship);
 
@@ -92,7 +92,7 @@ void Dialog_ChooseRelationship::set_document(Document* document, const Glib::ust
   }
 }
 
-void Dialog_ChooseRelationship::select_item(const sharedptr<const Relationship>& relationship)
+void Dialog_ChooseRelationship::select_item(const std::shared_ptr<const Relationship>& relationship)
 {
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview->get_selection();
   if(!refTreeSelection)
@@ -108,7 +108,7 @@ void Dialog_ChooseRelationship::select_item(const sharedptr<const Relationship>&
       const Glib::ustring relationship_name = glom_get_sharedptr_name(relationship);
 
       Gtk::TreeModel::Row row = *iter;
-      sharedptr<Relationship> relationship_item = row[m_ColumnsRelationships.m_col_relationship];
+      std::shared_ptr<Relationship> relationship_item = row[m_ColumnsRelationships.m_col_relationship];
       if(glom_get_sharedptr_name(relationship_item) == relationship_name)
       {
         //Select the item:
@@ -118,9 +118,9 @@ void Dialog_ChooseRelationship::select_item(const sharedptr<const Relationship>&
   }
 }
 
-sharedptr<Relationship> Dialog_ChooseRelationship::get_relationship_chosen() const
+std::shared_ptr<Relationship> Dialog_ChooseRelationship::get_relationship_chosen() const
 {
-  sharedptr<Relationship> result;
+  std::shared_ptr<Relationship> result;
 
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview->get_selection();
   if(refTreeSelection)

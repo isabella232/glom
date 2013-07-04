@@ -59,7 +59,7 @@ public:
   const Glib::ustring& get_file_uri() const;
 
 
-  sharedptr<const Field> get_field_for_column(unsigned int col) const;
+  std::shared_ptr<const Field> get_field_for_column(unsigned int col) const;
   const Glib::ustring& get_data(unsigned int row, unsigned int col);
 
   // TODO: perhaps it would be safer to just wrap the needed parser API here.
@@ -118,7 +118,7 @@ private:
     FieldColumns() { add(m_col_field_name); add(m_col_field); }
 
     Gtk::TreeModelColumn<Glib::ustring> m_col_field_name;
-    Gtk::TreeModelColumn<sharedptr<Field> > m_col_field;
+    Gtk::TreeModelColumn<std::shared_ptr<Field> > m_col_field;
   };
 
   class SampleColumns: public Gtk::TreeModelColumnRecord
@@ -129,7 +129,7 @@ private:
     Gtk::TreeModelColumn<int> m_col_row;
   };
 
-  std::auto_ptr<CsvParser> m_parser;
+  std::shared_ptr<CsvParser> m_parser;
 
   EncodingColumns m_encoding_columns;
   Glib::RefPtr<Gtk::ListStore> m_encoding_model;
@@ -162,7 +162,7 @@ private:
   guint m_cols_count;
 
   // The fields into which to import the data:
-  typedef std::vector< sharedptr<Field> > type_vec_fields;
+  typedef std::vector< std::shared_ptr<Field> > type_vec_fields;
   type_vec_fields m_fields;
 
   type_signal_state_changed m_signal_state_changed;

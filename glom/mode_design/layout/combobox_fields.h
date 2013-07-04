@@ -38,7 +38,7 @@ public:
   ComboBox_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~ComboBox_Fields();
 
-  typedef std::vector< sharedptr<Field> > type_vec_fields;
+  typedef std::vector< std::shared_ptr<Field> > type_vec_fields;
     
   /** Fill the combo box with fields.
    * @param fields The fields to show in the combo box.
@@ -60,10 +60,10 @@ public:
    */
   void set_fields(Document* document, const Glib::ustring parent_table_name, Field::glom_field_type field_type);
 
-  void set_selected_field(const sharedptr<const Field>& field);
+  void set_selected_field(const std::shared_ptr<const Field>& field);
   void set_selected_field(const Glib::ustring& field_name);
  
-  sharedptr<Field> get_selected_field() const;
+  std::shared_ptr<Field> get_selected_field() const;
   Glib::ustring get_selected_field_name() const;
 
 
@@ -82,7 +82,7 @@ private:
     ModelColumns()
     { add(m_field); add(m_separator); }
 
-    Gtk::TreeModelColumn< sharedptr<Field> > m_field;
+    Gtk::TreeModelColumn< std::shared_ptr<Field> > m_field;
     Gtk::TreeModelColumn<bool> m_separator;
   };
 

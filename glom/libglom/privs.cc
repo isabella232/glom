@@ -274,7 +274,7 @@ bool Privs::set_table_privileges(const Glib::ustring& group_name, const Glib::us
 
 static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
 {
-  sharedptr<SharedConnection> sharedconnection;
+  std::shared_ptr<SharedConnection> sharedconnection;
   try
   {
      sharedconnection = ConnectionPool::get_and_connect();
@@ -475,7 +475,7 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
     result.m_developer = true;
   }
   */
-  sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
+  std::shared_ptr<SharedConnection> sharedconnection = connection_pool->connect();
   if(sharedconnection && sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
   {
     //Get the "true" rights for any groups that the user is in:

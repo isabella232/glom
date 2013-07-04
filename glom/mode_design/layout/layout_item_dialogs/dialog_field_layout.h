@@ -49,9 +49,9 @@ public:
    * @param field The starting field information.
    * @param table_name The field's table.
    */
-  virtual void set_field(const sharedptr<const LayoutItem_Field>& field, const Glib::ustring& table_name, bool show_editable_options = true);
+  virtual void set_field(const std::shared_ptr<const LayoutItem_Field>& field, const Glib::ustring& table_name, bool show_editable_options = true);
 
-  sharedptr<LayoutItem_Field> get_field_chosen() const;
+  std::shared_ptr<LayoutItem_Field> get_field_chosen() const;
 
 private:
   void on_radiobutton_custom_formatting();
@@ -70,7 +70,7 @@ private:
   Gtk::RadioButton* m_radiobutton_custom_formatting;
   Box_Formatting* m_box_formatting;
 
-  mutable sharedptr<LayoutItem_Field> m_layout_item;
+  mutable std::shared_ptr<LayoutItem_Field> m_layout_item;
 
   Glib::ustring m_table_name;
 };

@@ -98,7 +98,7 @@ ImageGlom::~ImageGlom()
 {
 }
 
-void ImageGlom::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
+void ImageGlom::set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
 {
   LayoutWidgetField::set_layout_item(layout_item, table_name);
 #ifdef GTKMM_ATKMM_ENABLED
@@ -737,7 +737,7 @@ bool ImageGlom::save_file(const Glib::ustring& uri)
     return false;
     
   // Automatically delete the dialog when we no longer need it:
-  std::auto_ptr<Gtk::Dialog> dialog_keeper(dialog_save);
+  std::shared_ptr<Gtk::Dialog> dialog_keeper(dialog_save);
 
   AppWindow* pApp = get_appwindow();
   if(pApp)
@@ -783,7 +783,7 @@ void ImageGlom::on_menupopup_activate_select_file()
       if(dialog)
       {
         // Automatically delete the dialog when we no longer need it:
-        std::auto_ptr<Gtk::Dialog> dialog_keeper(dialog);
+        std::shared_ptr<Gtk::Dialog> dialog_keeper(dialog);
 
         if(pApp)
           dialog->set_transient_for(*pApp);
@@ -793,7 +793,7 @@ void ImageGlom::on_menupopup_activate_select_file()
         if(dialog->run() == Gtk::RESPONSE_ACCEPT)
         {
           GdaBinary* bin = g_new(GdaBinary, 1);
-          std::auto_ptr<GdaBinary> image_data = dialog->get_image_data();
+          std::shared_ptr<GdaBinary> image_data = dialog->get_image_data();
           bin->data = image_data->data;
           bin->binary_length = image_data->binary_length;
 

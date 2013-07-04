@@ -210,7 +210,7 @@ Glib::ustring Formatting::get_custom_choice_original_for_translated_text(const G
 {
   for(Formatting::type_list_values::const_iterator iter = m_choices_custom_list.begin(); iter != m_choices_custom_list.end(); ++iter)
   {
-    const sharedptr<const ChoiceValue> value = *iter;
+    const std::shared_ptr<const ChoiceValue> value = *iter;
     if(!value)
       continue;
 
@@ -225,7 +225,7 @@ Glib::ustring Formatting::get_custom_choice_translated(const Glib::ustring& orig
 {
   for(Formatting::type_list_values::const_iterator iter = m_choices_custom_list.begin(); iter != m_choices_custom_list.end(); ++iter)
   {
-    const sharedptr<const ChoiceValue> value = *iter;
+    const std::shared_ptr<const ChoiceValue> value = *iter;
     if(!value)
       continue;
 
@@ -267,7 +267,7 @@ bool Formatting::get_has_related_choices() const
 bool Formatting::get_has_related_choices(bool& show_all, bool& with_second) const
 {
   show_all = m_choices_related_show_all;
-  with_second = m_choices_extra_layout_group;
+  with_second = (bool)m_choices_extra_layout_group;
   return m_choices_related;
 }
 
@@ -276,7 +276,7 @@ void Formatting::set_has_related_choices(bool val)
   m_choices_related = val;
 }
 
-void Formatting::set_choices_related(const sharedptr<const Relationship>& relationship, const sharedptr<LayoutItem_Field>& field, const sharedptr<LayoutGroup>& extra_layout, const type_list_sort_fields& sort_fields, bool show_all)
+void Formatting::set_choices_related(const std::shared_ptr<const Relationship>& relationship, const std::shared_ptr<LayoutItem_Field>& field, const std::shared_ptr<LayoutGroup>& extra_layout, const type_list_sort_fields& sort_fields, bool show_all)
 {
   set_relationship(relationship);
 
@@ -286,7 +286,7 @@ void Formatting::set_choices_related(const sharedptr<const Relationship>& relati
   m_choices_related_show_all = show_all;
 }
 
-void Formatting::get_choices_related(sharedptr<const Relationship>& relationship, sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutGroup>& extra_layout, type_list_sort_fields& sort_fields, bool& show_all) const
+void Formatting::get_choices_related(std::shared_ptr<const Relationship>& relationship, std::shared_ptr<const LayoutItem_Field>& field, std::shared_ptr<const LayoutGroup>& extra_layout, type_list_sort_fields& sort_fields, bool& show_all) const
 {
   relationship = get_relationship();
 
@@ -297,7 +297,7 @@ void Formatting::get_choices_related(sharedptr<const Relationship>& relationship
 }
 
 
-void Formatting::get_choices_related(sharedptr<const Relationship>& relationship, sharedptr<LayoutItem_Field>& field, sharedptr<LayoutGroup>& extra_layout, type_list_sort_fields& sort_fields, bool& show_all)
+void Formatting::get_choices_related(std::shared_ptr<const Relationship>& relationship, std::shared_ptr<LayoutItem_Field>& field, std::shared_ptr<LayoutGroup>& extra_layout, type_list_sort_fields& sort_fields, bool& show_all)
 {
   relationship = get_relationship();
 
@@ -307,7 +307,7 @@ void Formatting::get_choices_related(sharedptr<const Relationship>& relationship
   show_all = m_choices_related_show_all;
 }
 
-sharedptr<const Relationship> Formatting::get_choices_related_relationship(bool& show_all) const
+std::shared_ptr<const Relationship> Formatting::get_choices_related_relationship(bool& show_all) const
 {
   show_all = m_choices_related_show_all;
   return get_relationship();
@@ -318,7 +318,7 @@ bool Formatting::change_field_item_name(const Glib::ustring& table_name, const G
   if(!m_choices_related_field)
     return false; //Nothing changed.
 
-  sharedptr<const Relationship> relationship = get_relationship();
+  std::shared_ptr<const Relationship> relationship = get_relationship();
   
   const Glib::ustring field_table = 
     m_choices_related_field->get_table_used( relationship->get_to_table() );

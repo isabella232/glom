@@ -49,19 +49,19 @@ public:
 
 protected:
 
-  virtual void add_group(const Gtk::TreeModel::iterator& parent, const sharedptr<const LayoutGroup>& group);
-  virtual void fill_group(const Gtk::TreeModel::iterator& iter, sharedptr<LayoutGroup>& group);
+  virtual void add_group(const Gtk::TreeModel::iterator& parent, const std::shared_ptr<const LayoutGroup>& group);
+  virtual void fill_group(const Gtk::TreeModel::iterator& iter, std::shared_ptr<LayoutGroup>& group);
 
   //Enable/disable buttons, depending on treeview selection:
   virtual void enable_buttons();
 
   virtual void save_to_document();
 
-  sharedptr<Relationship> offer_relationship_list();
-  sharedptr<Relationship> offer_relationship_list(const sharedptr<const Relationship>& relationship);
+  std::shared_ptr<Relationship> offer_relationship_list();
+  std::shared_ptr<Relationship> offer_relationship_list(const std::shared_ptr<const Relationship>& relationship);
 
   Gtk::TreeModel::iterator get_selected_group_parent() const;
-  sharedptr<LayoutItem_Button> offer_button_script_edit(const sharedptr<const LayoutItem_Button>& button);
+  std::shared_ptr<LayoutItem_Button> offer_button_script_edit(const std::shared_ptr<const LayoutItem_Button>& button);
 
   /** Get the table that the fields belong to.
    * This is usually the regular table name (m_table_name),

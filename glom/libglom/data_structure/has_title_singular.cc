@@ -96,7 +96,7 @@ Glib::ustring HasTitleSingular::get_title_singular_with_fallback(const Glib::ust
 void HasTitleSingular::set_title_singular(const Glib::ustring& title, const Glib::ustring& locale)
 {
   if(!m_title_singular)
-    m_title_singular = sharedptr<TranslatableItem>::create();
+    m_title_singular = std::shared_ptr<TranslatableItem>(new TranslatableItem());
 
   m_title_singular->set_title(title, locale);
 }

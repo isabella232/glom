@@ -56,7 +56,7 @@ public:
   bool get_has_custom_choices() const;
   void set_has_custom_choices(bool val = true);
 
-  typedef std::vector< sharedptr<ChoiceValue> > type_list_values;
+  typedef std::vector< std::shared_ptr<ChoiceValue> > type_list_values;
   virtual type_list_values get_choices_custom() const;
   virtual void set_choices_custom(const type_list_values& choices);
 
@@ -70,7 +70,7 @@ public:
    */
   Glib::ustring get_custom_choice_translated(const Glib::ustring& original_text, const Glib::ustring& locale = Glib::ustring()) const;
 
-  typedef std::pair< sharedptr<const LayoutItem_Field>, bool /* is_ascending */> type_pair_sort_field;
+  typedef std::pair< std::shared_ptr<const LayoutItem_Field>, bool /* is_ascending */> type_pair_sort_field;
   typedef std::vector<type_pair_sort_field> type_list_sort_fields;
 
   /** Discover whether the entered data should only be one of the available
@@ -87,12 +87,12 @@ public:
   //TODO: Add a ChoicesRelated class?
 
   
-  void get_choices_related(sharedptr<const Relationship>& relationship, sharedptr<LayoutItem_Field>& field, sharedptr<LayoutGroup>& extra_layout, type_list_sort_fields& sort_fields, bool& show_all);
-  void get_choices_related(sharedptr<const Relationship>& relationship, sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutGroup>& extra_layout, type_list_sort_fields& sort_fields, bool& show_all) const;
-  void set_choices_related(const sharedptr<const Relationship>& relationship_name, const sharedptr<LayoutItem_Field>& field, const sharedptr<LayoutGroup>& extra_layout, const type_list_sort_fields& sort_fields, bool show_all);
+  void get_choices_related(std::shared_ptr<const Relationship>& relationship, std::shared_ptr<LayoutItem_Field>& field, std::shared_ptr<LayoutGroup>& extra_layout, type_list_sort_fields& sort_fields, bool& show_all);
+  void get_choices_related(std::shared_ptr<const Relationship>& relationship, std::shared_ptr<const LayoutItem_Field>& field, std::shared_ptr<const LayoutGroup>& extra_layout, type_list_sort_fields& sort_fields, bool& show_all) const;
+  void set_choices_related(const std::shared_ptr<const Relationship>& relationship_name, const std::shared_ptr<LayoutItem_Field>& field, const std::shared_ptr<LayoutGroup>& extra_layout, const type_list_sort_fields& sort_fields, bool show_all);
 
   //Just for convenience:
-  sharedptr<const Relationship> get_choices_related_relationship(bool& show_all) const;
+  std::shared_ptr<const Relationship> get_choices_related_relationship(bool& show_all) const;
 
 
 
@@ -195,8 +195,8 @@ private:
   Glib::ustring m_text_color_foreground, m_text_color_background;
   HorizontalAlignment m_horizontal_alignment;
 
-  sharedptr<LayoutItem_Field> m_choices_related_field;
-  sharedptr<LayoutGroup> m_choices_extra_layout_group;
+  std::shared_ptr<LayoutItem_Field> m_choices_related_field;
+  std::shared_ptr<LayoutGroup> m_choices_extra_layout_group;
   type_list_sort_fields m_choices_related_sort_fields;
   bool m_choices_related_show_all;
 };

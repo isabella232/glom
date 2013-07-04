@@ -36,7 +36,7 @@ public:
   PyGlomRelated();
   ~PyGlomRelated();
 
-  typedef std::map<Glib::ustring, sharedptr<Relationship> > type_map_relationships;
+  typedef std::map<Glib::ustring, std::shared_ptr<Relationship> > type_map_relationships;
   void set_relationships(const PyGlomRelated::type_map_relationships& relationships);
 
 

@@ -73,8 +73,8 @@ public:
   friend class DbTreeModelRow;
 
 public:
-  typedef std::vector< sharedptr<LayoutItem> > type_vec_layout_items;
-  typedef std::vector< sharedptr<const LayoutItem> > type_vec_const_layout_items;
+  typedef std::vector< std::shared_ptr<LayoutItem> > type_vec_layout_items;
+  typedef std::vector< std::shared_ptr<const LayoutItem> > type_vec_const_layout_items;
   
 protected:
 
@@ -199,7 +199,7 @@ private:
    int m_column_index_key; //The index of the primary key in the Gda::DataModel.
 
    //Data:
-   sharedptr<SharedConnection> m_connection;
+   std::shared_ptr<SharedConnection> m_connection;
    Glib::RefPtr<Gnome::Gda::DataModel> m_gda_datamodel;
    guint m_data_model_rows_count;
    guint m_data_model_columns_count; //1 less than m_columns_count, which also has a model column for the key.

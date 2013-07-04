@@ -43,9 +43,9 @@ public:
   virtual Gnome::Gda::Value get_primary_key_value_selected() const;
   virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
 
-  virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
-  virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
-  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  virtual Gnome::Gda::Value get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const;
+  virtual void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
 
   virtual Gtk::TreeModel::iterator get_row_selected();
 
@@ -86,7 +86,7 @@ protected:
   virtual bool fill_from_database(); //override.
   virtual void enable_buttons();
 
-  virtual sharedptr<Field> get_field_primary_key() const;
+  virtual std::shared_ptr<Field> get_field_primary_key() const;
 
   //Signal handlers:
   void on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row);
@@ -98,8 +98,8 @@ protected:
   void on_adddel_user_requested_layout();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  void on_adddel_script_button_clicked(const sharedptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row);
-  bool on_script_button_idle(const sharedptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key);
+  void on_adddel_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row);
+  bool on_script_button_idle(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual Dialog_Layout* create_layout_dialog() const; // override.

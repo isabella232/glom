@@ -53,7 +53,7 @@ Dialog_TextObject::~Dialog_TextObject()
 {
 }
 
-void Dialog_TextObject::set_textobject(const sharedptr<const LayoutItem_Text>& textobject, const Glib::ustring& table_name, bool show_title)
+void Dialog_TextObject::set_textobject(const std::shared_ptr<const LayoutItem_Text>& textobject, const Glib::ustring& table_name, bool show_title)
 {
   //set_blocked();
 
@@ -73,16 +73,16 @@ void Dialog_TextObject::set_textobject(const sharedptr<const LayoutItem_Text>& t
   //Dialog_Properties::set_modified(false);
 }
 
-sharedptr<LayoutItem_Text> Dialog_TextObject::get_textobject() const
+std::shared_ptr<LayoutItem_Text> Dialog_TextObject::get_textobject() const
 {
-  sharedptr<LayoutItem_Text> result = glom_sharedptr_clone(m_textobject); //Start with the old details, to preserve anything that is not in our UI.
+  std::shared_ptr<LayoutItem_Text> result = glom_sharedptr_clone(m_textobject); //Start with the old details, to preserve anything that is not in our UI.
 
   get_textobject(result);
 
   return result;
 }
 
-void Dialog_TextObject::get_textobject(sharedptr<LayoutItem_Text>& textobject) const
+void Dialog_TextObject::get_textobject(std::shared_ptr<LayoutItem_Text>& textobject) const
 {
   textobject->set_title(m_entry_title->get_text(), AppWindow::get_current_locale());
   textobject->set_text( m_text_view->get_buffer()->get_text(), AppWindow::get_current_locale());

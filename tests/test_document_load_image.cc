@@ -72,7 +72,7 @@ int main()
   const Glom::Document::type_list_layout_groups groups = 
     document.get_data_layout_groups("details", "projects");
   g_assert(groups.size() == 3);
-  const Glom::sharedptr<const Glom::LayoutGroup> group =
+  const std::shared_ptr<const Glom::LayoutGroup> group =
     groups[0];
   g_assert(group);
   g_assert(group->get_name() == "overview");
@@ -81,10 +81,10 @@ int main()
     group->get_items();
   //std::cout << "size: " << items.size() << std::endl;
   g_assert(items.size() == 3);
-  Glom::sharedptr<const Glom::LayoutItem> item = items[2];
+  std::shared_ptr<const Glom::LayoutItem> item = items[2];
   g_assert(item);
-  Glom::sharedptr<const Glom::LayoutItem_Image> image_item =
-    Glom::sharedptr<const Glom::LayoutItem_Image>::cast_dynamic(item);
+  std::shared_ptr<const Glom::LayoutItem_Image> image_item =
+    std::dynamic_pointer_cast<const Glom::LayoutItem_Image>(item);
   g_assert(image_item);
 
   const Gnome::Gda::Value value = image_item->get_image();

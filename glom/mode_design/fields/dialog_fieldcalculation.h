@@ -44,8 +44,8 @@ public:
   Dialog_FieldCalculation(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_FieldCalculation();
 
-  void set_field(const sharedptr<const Field>& field, const Glib::ustring& table_name);
-  sharedptr<Field> get_field() const;
+  void set_field(const std::shared_ptr<const Field>& field, const Glib::ustring& table_name);
+  std::shared_ptr<Field> get_field() const;
 
 private:
   void on_button_test();
@@ -55,7 +55,7 @@ private:
   Gtk::Button* m_button_test;
   Gtk::Label* m_label_triggered_by;
 
-  sharedptr<Field> m_field;
+  std::shared_ptr<Field> m_field;
   Glib::ustring m_table_name;
 };
 

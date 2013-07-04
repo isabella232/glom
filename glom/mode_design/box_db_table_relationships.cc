@@ -86,7 +86,7 @@ bool Box_DB_Table_Relationships::fill_from_database()
 
   m_AddDel.remove_all();
 
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
+  std::shared_ptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
   if(sharedconnection)
   {
     Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
@@ -104,7 +104,7 @@ bool Box_DB_Table_Relationships::fill_from_database()
     //Add the relationships:
     for(Document::type_vec_relationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
     {
-      sharedptr<const Relationship> relationship = *iter;
+      std::shared_ptr<const Relationship> relationship = *iter;
       if(relationship)
       {
         //Name:
@@ -154,9 +154,9 @@ void Box_DB_Table_Relationships::save_to_document()
 
       if(std::find_if(vecRelationships.begin(), vecRelationships.end(), predicate_FieldHasName<Relationship>(name)) == vecRelationships.end()) //Don't add 2 relationships with the same name.
       {
-        sharedptr<Relationship> relationship = document->get_relationship(m_table_name, name); //Preserve other information, such as translations.
+        std::shared_ptr<Relationship> relationship = document->get_relationship(m_table_name, name); //Preserve other information, such as translations.
         if(!relationship)
-          relationship = sharedptr<Relationship>::create();
+          relationship = std::shared_ptr<Relationship>(new Relationship());
 
         relationship->set_name(name);
         relationship->set_title(m_AddDel.get_value(iter, m_colTitle), AppWindow::get_current_locale());
@@ -243,7 +243,7 @@ void Box_DB_Table_Relationships::on_adddel_user_activated(const Gtk::TreeModel::
       //Set list of 'To' fields depending on table:
       m_AddDel.set_value(row, m_colToField, Glib::ustring(""));
 
-      sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
+      std::shared_ptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
       if(sharedconnection)
       {
         Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
@@ -282,7 +282,7 @@ void Box_DB_Table_Relationships::on_adddel_user_requested_delete(const Gtk::Tree
     Document* document = get_document();
     if(document)
     {
-      sharedptr<const Relationship> relationship = document->get_relationship(m_table_name, relationship_name);
+      std::shared_ptr<const Relationship> relationship = document->get_relationship(m_table_name, relationship_name);
       if(relationship)
       {
         document->remove_relationship(relationship);

@@ -211,7 +211,7 @@ void Box_Formatting::set_is_for_non_editable()
   enforce_constraints();
 }
 
-void Box_Formatting::set_formatting_for_field(const Formatting& format, const Glib::ustring& table_name, const sharedptr<const Field>& field)
+void Box_Formatting::set_formatting_for_field(const Formatting& format, const Glib::ustring& table_name, const std::shared_ptr<const Field>& field)
 {
   //Used for choices and some extra text formatting:
   m_table_name = table_name;
@@ -287,9 +287,9 @@ void Box_Formatting::set_formatting_for_non_field(const Formatting& format, bool
     const Document::type_vec_relationships vecRelationships = document->get_relationships(m_table_name);
     m_combo_choices_relationship->set_relationships(vecRelationships);
 
-    sharedptr<const Relationship> choices_relationship;
-    sharedptr<const LayoutItem_Field> choices_field;
-    sharedptr<const LayoutGroup> choices_field_extras;
+    std::shared_ptr<const Relationship> choices_relationship;
+    std::shared_ptr<const LayoutItem_Field> choices_field;
+    std::shared_ptr<const LayoutGroup> choices_field_extras;
     Formatting::type_list_sort_fields choices_sort_fields;
     bool choices_show_all = false;
     format.get_choices_related(choices_relationship, choices_field, choices_field_extras, choices_sort_fields, choices_show_all);
@@ -329,7 +329,7 @@ void Box_Formatting::set_formatting_for_non_field(const Formatting& format, bool
     Formatting::type_list_values list_choice_values = format.get_choices_custom();
     for(Formatting::type_list_values::const_iterator iter = list_choice_values.begin(); iter != list_choice_values.end(); ++iter)
     {
-      const sharedptr<ChoiceValue> choicevalue = *iter;
+      const std::shared_ptr<ChoiceValue> choicevalue = *iter;
       Gnome::Gda::Value value;
       if(choicevalue)
         value = choicevalue->get_value();
@@ -394,11 +394,11 @@ bool Box_Formatting::get_formatting(Formatting& format) const
       m_checkbutton_choices_restricted->get_active(),
       m_checkbutton_choices_restricted_as_radio_buttons->get_active());
 
-    const sharedptr<const Relationship> choices_relationship = m_combo_choices_relationship->get_selected_relationship();
-    sharedptr<LayoutItem_Field> layout_choice_first = sharedptr<LayoutItem_Field>::create();
+    const std::shared_ptr<const Relationship> choices_relationship = m_combo_choices_relationship->get_selected_relationship();
+    std::shared_ptr<LayoutItem_Field> layout_choice_first = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
     layout_choice_first->set_name(m_combo_choices_field->get_selected_field_name());
 
-    sharedptr<LayoutGroup> layout_choice_extra = sharedptr<LayoutGroup>::create();
+    std::shared_ptr<LayoutGroup> layout_choice_extra = std::shared_ptr<LayoutGroup>(new LayoutGroup());
     layout_choice_extra->m_list_items = m_dialog_choices_extra_fields->get_fields();
 
     const Formatting::type_list_sort_fields sort_fields = m_dialog_choices_sortby->get_fields();
@@ -423,7 +423,7 @@ bool Box_Formatting::get_formatting(Formatting& format) const
 
           if(success)
           {
-            sharedptr<ChoiceValue> choicevalue = sharedptr<ChoiceValue>::create();
+            std::shared_ptr<ChoiceValue> choicevalue = std::shared_ptr<ChoiceValue>(new ChoiceValue());
             choicevalue->set_value(value);
             list_choice_values.push_back(choicevalue);
           }
@@ -442,7 +442,7 @@ bool Box_Formatting::get_formatting(Formatting& format) const
 
 void Box_Formatting::on_combo_choices_relationship_changed()
 {
-  sharedptr<Relationship> relationship = m_combo_choices_relationship->get_selected_relationship();
+  std::shared_ptr<Relationship> relationship = m_combo_choices_relationship->get_selected_relationship();
 
   Document* pDocument = get_document();
   if(pDocument)
@@ -456,7 +456,7 @@ void Box_Formatting::on_combo_choices_relationship_changed()
 
       //Default to using the Primary Key field from the related table,
       //because this is almost always what people want to use:
-      const sharedptr<Field> related_primary_key = pDocument->get_field_primary_key(related_table);
+      const std::shared_ptr<Field> related_primary_key = pDocument->get_field_primary_key(related_table);
       if(related_primary_key)
         m_combo_choices_field->set_selected_field(related_primary_key);
 

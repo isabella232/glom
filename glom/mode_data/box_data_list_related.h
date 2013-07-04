@@ -36,7 +36,7 @@ public:
   /**
    * @param portal: The full portal details
    */
-  virtual bool init_db_details(const sharedptr<const LayoutItem_Portal>& portal, bool show_title = true);
+  virtual bool init_db_details(const std::shared_ptr<const LayoutItem_Portal>& portal, bool show_title = true);
 
   /** Use this if no portal is yet defined, so the user can use the context menu to define a portal.
    */
@@ -53,8 +53,8 @@ protected:
   void on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
   void on_adddel_user_reordered_columns();
 
-  void on_adddel_script_button_clicked(const sharedptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row);
-  bool on_script_button_idle(const sharedptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key);
+  void on_adddel_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row);
+  bool on_script_button_idle(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key);
 
   void on_adddel_record_added(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& primary_key_value);
 
@@ -67,7 +67,7 @@ protected:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   //Implementations of pure virtual methods from Base_DB_Table_Data:
-  virtual sharedptr<Field> get_field_primary_key() const; //TODO: Already in base class?
+  virtual std::shared_ptr<Field> get_field_primary_key() const; //TODO: Already in base class?
   virtual Gnome::Gda::Value get_primary_key_value_selected() const;
   virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
   virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const;

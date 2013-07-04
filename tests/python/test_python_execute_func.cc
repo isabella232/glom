@@ -20,7 +20,7 @@ int main()
     value = Glom::glom_evaluate_python_function_implementation(
       Glom::Field::TYPE_NUMERIC, calculation, field_values,
       0 /* document */, "" /* table name */,
-      Glom::sharedptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
+      std::shared_ptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
       connection,
       error_message);
   }

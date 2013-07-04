@@ -179,7 +179,7 @@ bool LayoutItem_Field::get_editable_and_allowed() const
   //The relationship might forbid editing of any fields through itself:
   if(get_has_relationship_name())
   {
-    sharedptr<const Relationship> rel = get_relationship();
+    std::shared_ptr<const Relationship> rel = get_relationship();
     if(rel)
     {
       if(!(rel->get_allow_edit()))
@@ -288,7 +288,7 @@ bool LayoutItem_Field::get_formatting_used_has_translatable_choices() const
 }
 
 
-void LayoutItem_Field::set_full_field_details(const sharedptr<const Field>& field)
+void LayoutItem_Field::set_full_field_details(const std::shared_ptr<const Field>& field)
 {
 
   if(field)
@@ -303,12 +303,12 @@ void LayoutItem_Field::set_full_field_details(const sharedptr<const Field>& fiel
   else
   {
     //std::cout << "LayoutItem_Field::set_full_field_details(null): previous name=" << m_name << std::endl;
-    m_field = sharedptr<const Field>();
+    m_field = std::shared_ptr<const Field>();
     m_field_cache_valid = false;
   }
 }
 
-sharedptr<const Field> LayoutItem_Field::get_full_field_details() const
+std::shared_ptr<const Field> LayoutItem_Field::get_full_field_details() const
 {
   return m_field;
 }
@@ -322,22 +322,22 @@ Field::glom_field_type LayoutItem_Field::get_glom_type() const
 }
 
 
-sharedptr<const CustomTitle> LayoutItem_Field::get_title_custom() const
+std::shared_ptr<const CustomTitle> LayoutItem_Field::get_title_custom() const
 {
   return m_title_custom;
 }
 
-sharedptr<CustomTitle> LayoutItem_Field::get_title_custom()
+std::shared_ptr<CustomTitle> LayoutItem_Field::get_title_custom()
 {
   return m_title_custom;
 }
 
-void LayoutItem_Field::set_title_custom(const sharedptr<CustomTitle>& title)
+void LayoutItem_Field::set_title_custom(const std::shared_ptr<CustomTitle>& title)
 {
   m_title_custom = title;
 }
 
-bool LayoutItem_Field::is_same_field(const sharedptr<const LayoutItem_Field>& field) const
+bool LayoutItem_Field::is_same_field(const std::shared_ptr<const LayoutItem_Field>& field) const
 {
   const UsesRelationship* uses_a = this;
   const UsesRelationship* uses_b = &(*field);

@@ -40,8 +40,8 @@ public:
   virtual ~Dialog_Notebook();
 
 
-  void set_notebook(const sharedptr<const LayoutItem_Notebook>& start_notebook);
-  sharedptr<LayoutItem_Notebook> get_notebook() const;
+  void set_notebook(const std::shared_ptr<const LayoutItem_Notebook>& start_notebook);
+  std::shared_ptr<LayoutItem_Notebook> get_notebook() const;
 
 private:
 
@@ -66,7 +66,7 @@ private:
     Gtk::TreeModelColumn<Glib::ustring> m_col_name;
     Gtk::TreeModelColumn<Glib::ustring> m_col_title;
     Gtk::TreeModelColumn<guint> m_col_sequence;
-    Gtk::TreeModelColumn< sharedptr<LayoutGroup> > m_col_item;
+    Gtk::TreeModelColumn< std::shared_ptr<LayoutGroup> > m_col_item;
   };
 
   ModelColumns_Tabs m_ColumnsTabs;
@@ -80,7 +80,7 @@ private:
 
   Glib::RefPtr<Gtk::ListStore> m_model;
 
-  sharedptr<const LayoutItem_Notebook> m_layout_item;
+  std::shared_ptr<const LayoutItem_Notebook> m_layout_item;
 };
 
 } //namespace Glom

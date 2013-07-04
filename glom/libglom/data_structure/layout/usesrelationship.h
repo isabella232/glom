@@ -55,21 +55,21 @@ public:
    */
   Glib::ustring get_related_relationship_name() const;
 
-  /** Return the relationship used by this item, if any, or a null sharedptr.
+  /** Return the relationship used by this item, if any, or a null std::shared_ptr.
    * See also get_has_relationship_name() which can prevent the need for your  
-   * own null sharedptr check.
+   * own null std::shared_ptr check.
    */ 
-  sharedptr<const Relationship> get_relationship() const;
+  std::shared_ptr<const Relationship> get_relationship() const;
 
-  void set_relationship(const sharedptr<const Relationship>& relationship);
+  void set_relationship(const std::shared_ptr<const Relationship>& relationship);
 
-  /** Return the related relationship used by this item, if any, or a null sharedptr.
+  /** Return the related relationship used by this item, if any, or a null std::shared_ptr.
    * See also get_has_related_relationship_name() which can prevent the need for your  
-   * own null sharedptr check.
+   * own null std::shared_ptr check.
    */ 
-  sharedptr<const Relationship> get_related_relationship() const;
+  std::shared_ptr<const Relationship> get_related_relationship() const;
 
-  void set_related_relationship(const sharedptr<const Relationship>& relationship);
+  void set_related_relationship(const std::shared_ptr<const Relationship>& relationship);
 
   /** Returns either the @a parent_table, related to table, or doubly-related to-table.
    */
@@ -119,8 +119,8 @@ public:
 private:
 
   //This is just cached data, so we don't need to always lookup the relationship details from the document, from the name.
-  sharedptr<const Relationship> m_relationship;
-  sharedptr<const Relationship> m_related_relationship; //Rarely used. It is for showing fields from the (related) relationships of related tables.
+  std::shared_ptr<const Relationship> m_relationship;
+  std::shared_ptr<const Relationship> m_related_relationship; //Rarely used. It is for showing fields from the (related) relationships of related tables.
 };
 
 } //namespace Glom

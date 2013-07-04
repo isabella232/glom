@@ -276,7 +276,7 @@ bool Dialog_ExistingOrNew::list_examples_at_path(const std::string& path)
 
   try
   {
-    Glib::RefPtr<Gio::FileEnumerator> examples = examples_dir->enumerate_children(G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE","G_FILE_ATTRIBUTE_STANDARD_NAME);
+    Glib::RefPtr<Gio::FileEnumerator> examples = examples_dir->enumerate_children(G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE "," G_FILE_ATTRIBUTE_STANDARD_NAME);
     bool example_found = false;
     while( (info = examples->next_file()) )
     {
@@ -448,19 +448,19 @@ Glib::ustring Dialog_ExistingOrNew::get_service_name() const
 }
 #endif
 
-std::auto_ptr<Gtk::TreeModel::iterator> Dialog_ExistingOrNew::create_dummy_item_existing(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text)
+std::shared_ptr<Gtk::TreeModel::iterator> Dialog_ExistingOrNew::create_dummy_item_existing(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text)
 {
   Gtk::TreeModel::iterator iter = m_existing_model->append(parent->children());
   (*iter)[m_existing_columns.m_col_title] = text;
-  return std::auto_ptr<Gtk::TreeModel::iterator>(new Gtk::TreeModel::iterator(iter));
+  return std::shared_ptr<Gtk::TreeModel::iterator>(new Gtk::TreeModel::iterator(iter));
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-std::auto_ptr<Gtk::TreeModel::iterator> Dialog_ExistingOrNew::create_dummy_item_new(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text)
+std::shared_ptr<Gtk::TreeModel::iterator> Dialog_ExistingOrNew::create_dummy_item_new(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text)
 {
   Gtk::TreeModel::iterator iter = m_new_model->append(parent->children());
   (*iter)[m_new_columns.m_col_title] = text;
-  return std::auto_ptr<Gtk::TreeModel::iterator>(new Gtk::TreeModel::iterator(iter));
+  return std::shared_ptr<Gtk::TreeModel::iterator>(new Gtk::TreeModel::iterator(iter));
 }
 #endif //GLOM_ENABLE_CLIENT_ONLY
 

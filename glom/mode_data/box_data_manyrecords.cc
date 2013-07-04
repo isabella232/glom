@@ -85,7 +85,7 @@ void Box_Data_ManyRecords::print_layout()
   {
     //Create a simple report on the fly:
     Document* document = get_document();
-    sharedptr<Report> report_temp = ReportBuilder::create_standard_list_report(document, m_table_name);
+    std::shared_ptr<Report> report_temp = ReportBuilder::create_standard_list_report(document, m_table_name);
 
     ReportBuilder report_builder(AppWindow::get_current_locale());
     report_builder.set_document(document);
@@ -95,7 +95,7 @@ void Box_Data_ManyRecords::print_layout()
   }
 }
 
-void Box_Data_ManyRecords::print_layout_group(xmlpp::Element* /* node_parent */, const sharedptr<const LayoutGroup>& /* group */)
+void Box_Data_ManyRecords::print_layout_group(xmlpp::Element* /* node_parent */, const std::shared_ptr<const LayoutGroup>& /* group */)
 {
 }
 

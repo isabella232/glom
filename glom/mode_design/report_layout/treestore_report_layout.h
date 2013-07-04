@@ -42,7 +42,7 @@ public:
     ModelColumns()
     { add(m_col_item); add(m_col_sequence); }
 
-    Gtk::TreeModelColumn< sharedptr<LayoutItem> > m_col_item;
+    Gtk::TreeModelColumn< std::shared_ptr<LayoutItem> > m_col_item;
     Gtk::TreeModelColumn<guint> m_col_sequence;
   };
 
@@ -53,7 +53,7 @@ public:
   void fill_sequences();
   void fill_sequences(const iterator& iter);
 
-  static bool may_be_child_of(const sharedptr<const LayoutItem>& parent, const sharedptr<const LayoutItem>& suggested_child);
+  static bool may_be_child_of(const std::shared_ptr<const LayoutItem>& parent, const std::shared_ptr<const LayoutItem>& suggested_child);
 
 private:
   //Overridden virtual functions:

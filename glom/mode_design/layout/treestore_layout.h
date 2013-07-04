@@ -43,7 +43,7 @@ public:
     ModelColumns()
     { add(m_col_layout_item); add(m_col_sequence); }
 
-    Gtk::TreeModelColumn< sharedptr<LayoutItem> > m_col_layout_item;
+    Gtk::TreeModelColumn< std::shared_ptr<LayoutItem> > m_col_layout_item;
     Gtk::TreeModelColumn<guint> m_col_sequence;
   };
 

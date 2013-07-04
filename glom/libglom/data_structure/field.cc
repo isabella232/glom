@@ -200,12 +200,12 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
   }
 }
 
-sharedptr<Relationship> Field::get_lookup_relationship() const
+std::shared_ptr<Relationship> Field::get_lookup_relationship() const
 {
   return m_lookup_relationship;
 }
 
-void Field::set_lookup_relationship(const sharedptr<Relationship>& relationship)
+void Field::set_lookup_relationship(const std::shared_ptr<Relationship>& relationship)
 {
   m_lookup_relationship = relationship;
 }

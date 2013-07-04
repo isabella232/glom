@@ -79,7 +79,7 @@ Dialog_GroupBy::~Dialog_GroupBy()
   }
 }
 
-void Dialog_GroupBy::set_item(const sharedptr<const LayoutItem_GroupBy>& item, const Glib::ustring& table_name)
+void Dialog_GroupBy::set_item(const std::shared_ptr<const LayoutItem_GroupBy>& item, const Glib::ustring& table_name)
 {
   m_layout_item = glom_sharedptr_clone(item);
   m_table_name = table_name;
@@ -94,7 +94,7 @@ void Dialog_GroupBy::set_item(const sharedptr<const LayoutItem_GroupBy>& item, c
   m_comboboxentry_border_width->get_entry()->set_text(border_width_as_text);
 }
 
-sharedptr<LayoutItem_GroupBy> Dialog_GroupBy::get_item() const
+std::shared_ptr<LayoutItem_GroupBy> Dialog_GroupBy::get_item() const
 {
   std::stringstream the_stream;
   the_stream.imbue(std::locale("")); //Current locale.
@@ -108,7 +108,7 @@ sharedptr<LayoutItem_GroupBy> Dialog_GroupBy::get_item() const
 
 void Dialog_GroupBy::on_button_field_group_by()
 {
-  sharedptr<LayoutItem_Field> field = offer_field_list_select_one_field(m_layout_item->get_field_group_by(), m_table_name, this);
+  std::shared_ptr<LayoutItem_Field> field = offer_field_list_select_one_field(m_layout_item->get_field_group_by(), m_table_name, this);
   if(field)
   {
     m_layout_item->set_field_group_by(field);
@@ -120,7 +120,7 @@ void Dialog_GroupBy::on_button_formatting_group_by()
 {
   if(m_layout_item)
   {
-    sharedptr<LayoutItem_Field> field = offer_field_formatting(m_layout_item->get_field_group_by(), m_table_name, this, false /* no editing options. */);
+    std::shared_ptr<LayoutItem_Field> field = offer_field_formatting(m_layout_item->get_field_group_by(), m_table_name, this, false /* no editing options. */);
     if(field)
     {
       m_layout_item->set_field_group_by(field);

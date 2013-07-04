@@ -62,7 +62,7 @@ public:
    * @param table_name The field's table.
    * @param The field that will have this formatting, so we know what formatting options to allow.
    */
-  void set_formatting_for_field(const Formatting& format, const Glib::ustring& table_name, const sharedptr<const Field>& field);
+  void set_formatting_for_field(const Formatting& format, const Glib::ustring& table_name, const std::shared_ptr<const Field>& field);
   bool get_formatting(Formatting& format) const;
 
   /** When used, for instance, for print layout items or choice lists,
@@ -126,7 +126,7 @@ private:
   mutable Formatting m_format;
 
   Glib::ustring m_table_name;
-  sharedptr<const Field> m_field;
+  std::shared_ptr<const Field> m_field;
 
   //We show different options when
   //showing this on a print layout.

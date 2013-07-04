@@ -84,7 +84,7 @@ Dialog_Notebook::~Dialog_Notebook()
 {
 }
 
-void Dialog_Notebook::set_notebook(const sharedptr<const LayoutItem_Notebook>& start_notebook)
+void Dialog_Notebook::set_notebook(const std::shared_ptr<const LayoutItem_Notebook>& start_notebook)
 {
   m_layout_item = start_notebook; //So we can preserve information for later.
   m_modified = false;
@@ -94,7 +94,7 @@ void Dialog_Notebook::set_notebook(const sharedptr<const LayoutItem_Notebook>& s
   guint sequence = 1;
   for(LayoutGroup::type_list_items::const_iterator iter = start_notebook->m_list_items.begin(); iter != start_notebook->m_list_items.end(); ++iter)
   {
-    sharedptr<const LayoutGroup> item = sharedptr<const LayoutGroup>::cast_dynamic(*iter);
+    std::shared_ptr<const LayoutGroup> item = std::dynamic_pointer_cast<const LayoutGroup>(*iter);
     if(item)
     {
       Gtk::TreeModel::iterator iterTree = m_model->append();
@@ -165,9 +165,9 @@ void Dialog_Notebook::on_button_down()
   move_treeview_selection_down(m_treeview, m_ColumnsTabs.m_col_sequence);
 }
 
-sharedptr<LayoutItem_Notebook> Dialog_Notebook::get_notebook() const
+std::shared_ptr<LayoutItem_Notebook> Dialog_Notebook::get_notebook() const
 {
-  sharedptr<LayoutItem_Notebook> result = glom_sharedptr_clone(m_layout_item);
+  std::shared_ptr<LayoutItem_Notebook> result = glom_sharedptr_clone(m_layout_item);
   result->remove_all_items();
 
   for(Gtk::TreeModel::iterator iterFields = m_model->children().begin(); iterFields != m_model->children().end(); ++iterFields)
@@ -177,12 +177,12 @@ sharedptr<LayoutItem_Notebook> Dialog_Notebook::get_notebook() const
     const Glib::ustring name = row[m_ColumnsTabs.m_col_name];
     if(!name.empty())
     {
-      sharedptr<LayoutGroup> item = row[m_ColumnsTabs.m_col_item];
-      sharedptr<LayoutGroup> group_copy;
+      std::shared_ptr<LayoutGroup> item = row[m_ColumnsTabs.m_col_item];
+      std::shared_ptr<LayoutGroup> group_copy;
       if(item)
         group_copy = glom_sharedptr_clone(item);
       else
-        group_copy = sharedptr<LayoutGroup>::create();
+        group_copy = std::shared_ptr<LayoutGroup>(new LayoutGroup());
 
       group_copy->set_name(name);
       group_copy->set_title( row[m_ColumnsTabs.m_col_title] , AppWindow::get_current_locale());

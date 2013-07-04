@@ -46,15 +46,15 @@ public:
    * @param table_name The table name.
    * @param field The starting field information.
    */
-  virtual void set_document(Document* document, const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field);
+  virtual void set_document(Document* document, const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& field);
   virtual void set_document(Document* document, const Glib::ustring& table_name);
 
 
-  //void select_item(const sharedptr<const Field>& field);
+  //void select_item(const std::shared_ptr<const Field>& field);
 
-  sharedptr<LayoutItem_Field> get_field_chosen() const;
+  std::shared_ptr<LayoutItem_Field> get_field_chosen() const;
   
-  typedef std::list< sharedptr<LayoutItem_Field> > type_list_field_items;
+  typedef std::list< std::shared_ptr<LayoutItem_Field> > type_list_field_items;
   type_list_field_items get_fields_chosen() const;
 
 private:
@@ -74,7 +74,7 @@ private:
 
     Gtk::TreeModelColumn<Glib::ustring> m_col_name;
     Gtk::TreeModelColumn<Glib::ustring> m_col_title;
-    Gtk::TreeModelColumn< sharedptr<Field> > m_col_field;
+    Gtk::TreeModelColumn< std::shared_ptr<Field> > m_col_field;
   };
 
   ModelColumns_Fields m_ColumnsFields;
@@ -86,7 +86,7 @@ private:
   Glib::RefPtr<Gtk::ListStore> m_model;
 
   Glib::ustring m_table_name;
-  sharedptr<LayoutItem_Field> m_start_field; //stored so we can preserve extra information that's not changed here.
+  std::shared_ptr<LayoutItem_Field> m_start_field; //stored so we can preserve extra information that's not changed here.
 
   Document* m_document;
 };

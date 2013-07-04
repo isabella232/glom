@@ -37,7 +37,7 @@ bool contains(const T_Container& container, const Glib::ustring& name)
 template<typename T_Container>
 bool contains_named(const T_Container& container, const Glib::ustring& name)
 {
-  typedef typename T_Container::value_type::object_type type_item;
+  typedef typename T_Container::value_type::element_type type_item;
   typename T_Container::const_iterator iter =
     std::find_if(container.begin(), container.end(),
       Glom::predicate_FieldHasName<type_item>(name));
@@ -82,7 +82,7 @@ int main()
 
 
   const Glib::ustring table_name = "sometable";
-  Glom::sharedptr<Glom::TableInfo> table_info(new Glom::TableInfo());
+  std::shared_ptr<Glom::TableInfo> table_info(new Glom::TableInfo());
   table_info->set_name(table_name);
   
   const Glib::ustring table_title = "sometabletitle";

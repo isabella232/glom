@@ -39,7 +39,7 @@ public:
 private:
   virtual bool fill_from_database(); //override
 
-  virtual void fill_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const Report>& report);
+  virtual void fill_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const Report>& report);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void save_to_document();

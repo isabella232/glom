@@ -57,18 +57,18 @@ public:
   /** Add the item to the end of the list.
    * @param item The item to add.
    */
-  void add_item(const sharedptr<LayoutItem>& item);
+  void add_item(const std::shared_ptr<LayoutItem>& item);
 
   /** Add the item after the specified existing item.
    * @param item The item to add.
    * @param position The item after which the item should be added.
    */
-  void add_item(const sharedptr<LayoutItem>& item, const sharedptr<const LayoutItem>& position);
+  void add_item(const std::shared_ptr<LayoutItem>& item, const std::shared_ptr<const LayoutItem>& position);
 
   /** Remove a layout item from the group
    * @param item The item to remove.
    */
-  void remove_item(const sharedptr<LayoutItem>& item);
+  void remove_item(const std::shared_ptr<LayoutItem>& item);
   
   /** Remove any instance of the field from the layout.
    *
@@ -84,7 +84,7 @@ public:
 
   /** Remove any use of the relationship from the layout.
    */
-  virtual void remove_relationship(const sharedptr<const Relationship>& relationship);
+  virtual void remove_relationship(const std::shared_ptr<const Relationship>& relationship);
 
 
   void remove_all_items();
@@ -99,10 +99,10 @@ public:
   guint get_columns_count() const;
   void set_columns_count(guint columns_count);
 
-  typedef std::vector< sharedptr<LayoutItem> > type_list_items;
+  typedef std::vector< std::shared_ptr<LayoutItem> > type_list_items;
   type_list_items get_items();
 
-  typedef std::vector< sharedptr<const LayoutItem> > type_list_const_items;
+  typedef std::vector< std::shared_ptr<const LayoutItem> > type_list_const_items;
   type_list_const_items get_items() const;
 
   /** Get the items recursively, depth-first, not returning any groups.

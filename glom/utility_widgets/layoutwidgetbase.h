@@ -39,11 +39,11 @@ public:
   virtual ~LayoutWidgetBase();
 
   ///Takes ownership.
-  virtual void set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name);
+  virtual void set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, const Glib::ustring& table_name);
 
   //The caller should call clone().
-  sharedptr<const LayoutItem> get_layout_item() const;
-  sharedptr<LayoutItem> get_layout_item();
+  std::shared_ptr<const LayoutItem> get_layout_item() const;
+  std::shared_ptr<LayoutItem> get_layout_item();
 
   enum enumType
   {
@@ -87,10 +87,10 @@ protected:
   virtual AppWindow* get_appwindow() const; // = 0;
 
 
-  static void apply_formatting(Gtk::Widget& widget, const sharedptr<const LayoutItem_WithFormatting>& layout_item);
+  static void apply_formatting(Gtk::Widget& widget, const std::shared_ptr<const LayoutItem_WithFormatting>& layout_item);
 
 protected: //TODO: Add accessor?
-  sharedptr<LayoutItem> m_pLayoutItem;
+  std::shared_ptr<LayoutItem> m_pLayoutItem;
 
 protected: //TODO: Add accessor?
   Glib::ustring m_table_name;

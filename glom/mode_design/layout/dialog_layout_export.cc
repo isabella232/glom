@@ -143,7 +143,7 @@ void Dialog_Layout_Export::set_layout_groups(Document::type_list_layout_groups& 
     guint field_sequence = 1; //0 means no sequence
     for(Document::type_list_layout_groups::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
     {
-      sharedptr<const LayoutGroup> group = *iter;
+      std::shared_ptr<const LayoutGroup> group = *iter;
       if(!group)
         continue;
 
@@ -151,7 +151,7 @@ void Dialog_Layout_Export::set_layout_groups(Document::type_list_layout_groups& 
       LayoutGroup::type_list_const_items items = group->get_items();
       for(LayoutGroup::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
       {
-        sharedptr<const LayoutItem_Field> item = sharedptr<const LayoutItem_Field>::cast_dynamic(*iter); 
+        std::shared_ptr<const LayoutItem_Field> item = std::dynamic_pointer_cast<const LayoutItem_Field>(*iter); 
         if(item)
         {
           Gtk::TreeModel::iterator iterTree = m_model_fields->append();
@@ -230,7 +230,7 @@ void Dialog_Layout_Export::get_layout_groups(Document::type_list_layout_groups& 
   Document::type_list_layout_groups groups;
 
   //Add the fields to the one group:
-  sharedptr<LayoutGroup> others = sharedptr<LayoutGroup>::create();
+  std::shared_ptr<LayoutGroup> others = std::shared_ptr<LayoutGroup>(new LayoutGroup());
   others->set_name("main");
 
   guint field_sequence = 1; //0 means no sequence
@@ -238,7 +238,7 @@ void Dialog_Layout_Export::get_layout_groups(Document::type_list_layout_groups& 
   {
     Gtk::TreeModel::Row row = *iterFields;
 
-    sharedptr<LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item];
+    std::shared_ptr<LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item];
     const Glib::ustring field_name = item->get_name();
     if(!field_name.empty())
     {
@@ -263,7 +263,7 @@ void Dialog_Layout_Export::on_button_add_field()
   type_list_field_items fields_list = offer_field_list(m_table_name, this);
   for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); ++iter_chosen) 
   {
-    sharedptr<LayoutItem_Field> field = *iter_chosen;
+    std::shared_ptr<LayoutItem_Field> field = *iter_chosen;
     if(!field)
       continue;
 
@@ -319,7 +319,7 @@ void Dialog_Layout_Export::on_cell_data_name(Gtk::CellRenderer* renderer, const 
       Gtk::TreeModel::Row row = *iter;
 
       //Indicate that it's a field in another table.
-      sharedptr<LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item];
+      std::shared_ptr<LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item];
 
       //Names can never be edited.
       renderer_text->property_markup() = item->get_layout_display_name();
@@ -338,10 +338,10 @@ void Dialog_Layout_Export::on_button_edit_field()
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      sharedptr<LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
+      std::shared_ptr<LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
 
       //Get the chosen field:
-      sharedptr<LayoutItem_Field> field_chosen = offer_field_list_select_one_field(field, m_table_name, this);
+      std::shared_ptr<LayoutItem_Field> field_chosen = offer_field_list_select_one_field(field, m_table_name, this);
       if(field_chosen)
       {
         //Set the field details in the layout treeview:

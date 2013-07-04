@@ -89,8 +89,8 @@ bool LayoutGroup::has_field(const Glib::ustring& parent_table_name, const Glib::
 {
   for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
   {
-    sharedptr<LayoutItem> item = *iter;
-    sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+    std::shared_ptr<LayoutItem> item = *iter;
+    std::shared_ptr<LayoutItem_Field> field_item = std::dynamic_pointer_cast<LayoutItem_Field>(item);
     if(field_item)
     {
       if( (field_item->get_name() == field_name) &&
@@ -102,7 +102,7 @@ bool LayoutGroup::has_field(const Glib::ustring& parent_table_name, const Glib::
     else
     {
       //Recurse into the child groups:
-      sharedptr<LayoutGroup> group_item = sharedptr<LayoutGroup>::cast_dynamic(item);
+      std::shared_ptr<LayoutGroup> group_item = std::dynamic_pointer_cast<LayoutGroup>(item);
       if(group_item)
       {
         if(group_item->has_field(parent_table_name, table_name, field_name))
@@ -118,8 +118,8 @@ bool LayoutGroup::has_any_fields() const
 {
   for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
   {
-    sharedptr<LayoutItem> item = *iter;
-    sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+    std::shared_ptr<LayoutItem> item = *iter;
+    std::shared_ptr<LayoutItem_Field> field_item = std::dynamic_pointer_cast<LayoutItem_Field>(item);
     if(field_item)
     {
       return true;
@@ -127,7 +127,7 @@ bool LayoutGroup::has_any_fields() const
     else
     {
       //Recurse into the child groups:
-      sharedptr<LayoutGroup> group_item = sharedptr<LayoutGroup>::cast_dynamic(item);
+      std::shared_ptr<LayoutGroup> group_item = std::dynamic_pointer_cast<LayoutGroup>(item);
       if(group_item)
       {
         if(group_item->has_any_fields())
@@ -139,15 +139,15 @@ bool LayoutGroup::has_any_fields() const
   return false;
 }
 
-void LayoutGroup::add_item(const sharedptr<LayoutItem>& item)
+void LayoutGroup::add_item(const std::shared_ptr<LayoutItem>& item)
 {
   m_list_items.push_back(item);
 }
 
-void LayoutGroup::add_item(const sharedptr<LayoutItem>& item, const sharedptr<const LayoutItem>& position)
+void LayoutGroup::add_item(const std::shared_ptr<LayoutItem>& item, const std::shared_ptr<const LayoutItem>& position)
 {
   //Find the position of the item.
-  sharedptr<LayoutItem> unconst = sharedptr<LayoutItem>::cast_const(position);
+  std::shared_ptr<LayoutItem> unconst = std::const_pointer_cast<LayoutItem>(position);
   type_list_items::iterator iter = std::find(m_list_items.begin(), m_list_items.end(), unconst);
 
   //std::vector::insert() adds before rather than after:
@@ -157,9 +157,9 @@ void LayoutGroup::add_item(const sharedptr<LayoutItem>& item, const sharedptr<co
   m_list_items.insert(iter, item);
 }
 
-void LayoutGroup::remove_item (const sharedptr<LayoutItem>& item)
+void LayoutGroup::remove_item (const std::shared_ptr<LayoutItem>& item)
 {
-  sharedptr<LayoutItem> unconst = sharedptr<LayoutItem>::cast_const(item);
+  std::shared_ptr<LayoutItem> unconst = std::const_pointer_cast<LayoutItem>(item);
   type_list_items::iterator iter = std::find(m_list_items.begin(), m_list_items.end(), unconst);
   m_list_items.erase(iter);
 }
@@ -189,9 +189,9 @@ LayoutGroup::type_list_const_items LayoutGroup::get_items_recursive() const
 
   for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
   {
-    const sharedptr<const LayoutItem> item = *iter;
+    const std::shared_ptr<const LayoutItem> item = *iter;
     
-    sharedptr<const LayoutGroup> group = sharedptr<const LayoutGroup>::cast_dynamic(item);
+    std::shared_ptr<const LayoutGroup> group = std::dynamic_pointer_cast<const LayoutGroup>(item);
     if(group)
     {
       const type_list_const_items sub_result = group->get_items_recursive();
@@ -210,9 +210,9 @@ LayoutGroup::type_list_items LayoutGroup::get_items_recursive()
 
   for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
   {
-    const sharedptr<LayoutItem> item = *iter;
+    const std::shared_ptr<LayoutItem> item = *iter;
     
-    sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(item);
+    std::shared_ptr<LayoutGroup> group = std::dynamic_pointer_cast<LayoutGroup>(item);
     if(group)
     {
       const type_list_items sub_result = group->get_items_recursive();
@@ -231,12 +231,12 @@ LayoutGroup::type_list_const_items LayoutGroup::get_items_recursive_with_groups(
 
   for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
   {
-    const sharedptr<const LayoutItem> item = *iter;
+    const std::shared_ptr<const LayoutItem> item = *iter;
     
     //Add the item itself:
     result.push_back(item);
     
-    sharedptr<const LayoutGroup> group = sharedptr<const LayoutGroup>::cast_dynamic(item);
+    std::shared_ptr<const LayoutGroup> group = std::dynamic_pointer_cast<const LayoutGroup>(item);
     if(group)
     {
       const type_list_const_items sub_result = group->get_items_recursive_with_groups();
@@ -247,13 +247,13 @@ LayoutGroup::type_list_const_items LayoutGroup::get_items_recursive_with_groups(
   return result;
 }
 
-void LayoutGroup::remove_relationship(const sharedptr<const Relationship>& relationship)
+void LayoutGroup::remove_relationship(const std::shared_ptr<const Relationship>& relationship)
 {
   LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin();
   while(iterItem != m_list_items.end())
   {
-    sharedptr<LayoutItem> item = *iterItem;
-    sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::cast_dynamic(item);
+    std::shared_ptr<LayoutItem> item = *iterItem;
+    std::shared_ptr<UsesRelationship> uses_rel = std::dynamic_pointer_cast<UsesRelationship>(item);
     if(uses_rel)
     {
       if(uses_rel->get_has_relationship_name())
@@ -267,7 +267,7 @@ void LayoutGroup::remove_relationship(const sharedptr<const Relationship>& relat
       }
     }
 
-    sharedptr<LayoutGroup> sub_group = sharedptr<LayoutGroup>::cast_dynamic(item);
+    std::shared_ptr<LayoutGroup> sub_group = std::dynamic_pointer_cast<LayoutGroup>(item);
     if(sub_group)
       sub_group->remove_relationship(relationship);
 
@@ -281,8 +281,8 @@ void LayoutGroup::remove_field(const Glib::ustring& parent_table_name, const Gli
   LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin();
   while(iterItem != m_list_items.end())
   {
-    sharedptr<LayoutItem> item = *iterItem;
-    sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+    std::shared_ptr<LayoutItem> item = *iterItem;
+    std::shared_ptr<LayoutItem_Field> field_item = std::dynamic_pointer_cast<LayoutItem_Field>(item);
     if(field_item)
     {
       if(field_item->get_table_used(parent_table_name) == table_name)
@@ -297,7 +297,7 @@ void LayoutGroup::remove_field(const Glib::ustring& parent_table_name, const Gli
     }
     else
     {
-      sharedptr<LayoutGroup> sub_group = sharedptr<LayoutGroup>::cast_dynamic(item);
+      std::shared_ptr<LayoutGroup> sub_group = std::dynamic_pointer_cast<LayoutGroup>(item);
       if(sub_group)
         sub_group->remove_field(parent_table_name, table_name, field_name);
     }
@@ -311,13 +311,13 @@ void LayoutGroup::change_related_field_item_name(const Glib::ustring& table_name
   //Look at each item:
   for(LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin(); iterItem != m_list_items.end(); ++iterItem)
   {
-    sharedptr<LayoutItem> item = *iterItem;
-    sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+    std::shared_ptr<LayoutItem> item = *iterItem;
+    std::shared_ptr<LayoutItem_Field> field_item = std::dynamic_pointer_cast<LayoutItem_Field>(item);
     if(field_item)
     {
       if(field_item->get_has_relationship_name()) //If it's related table.
       {
-        sharedptr<const Relationship> relationship = field_item->get_relationship();
+        std::shared_ptr<const Relationship> relationship = field_item->get_relationship();
         if(relationship)
         {
           if(relationship->get_to_table() == table_name)
@@ -330,7 +330,7 @@ void LayoutGroup::change_related_field_item_name(const Glib::ustring& table_name
     }
     else
     {
-      sharedptr<LayoutGroup> sub_group = sharedptr<LayoutGroup>::cast_dynamic(item);
+      std::shared_ptr<LayoutGroup> sub_group = std::dynamic_pointer_cast<LayoutGroup>(item);
       if(sub_group)
         sub_group->change_field_item_name(table_name, field_name, field_name_new);
     }
@@ -342,16 +342,16 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
   //Look at each item:
   for(LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin(); iterItem != m_list_items.end(); ++iterItem)
   {
-    sharedptr<LayoutItem> item = *iterItem;
-    sharedptr<LayoutItem_Field> field_item = 
-      sharedptr<LayoutItem_Field>::cast_dynamic(item);
+    std::shared_ptr<LayoutItem> item = *iterItem;
+    std::shared_ptr<LayoutItem_Field> field_item = 
+      std::dynamic_pointer_cast<LayoutItem_Field>(item);
     
     //Field layout items:
     if(field_item)
     {
       if(field_item->get_has_relationship_name()) //If it's a related table (this would be a self-relationship)
       {
-        sharedptr<const Relationship> rel = field_item->get_relationship();
+        std::shared_ptr<const Relationship> rel = field_item->get_relationship();
         if(rel)
         {
           if(rel->get_to_table() == table_name)
@@ -370,8 +370,8 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
     else
     {
       //Formatting:
-      sharedptr<LayoutItem_WithFormatting> with_formatting = 
-        sharedptr<LayoutItem_WithFormatting>::cast_dynamic(item);
+      std::shared_ptr<LayoutItem_WithFormatting> with_formatting = 
+        std::dynamic_pointer_cast<LayoutItem_WithFormatting>(item);
       if(with_formatting)
       {
         Formatting& formatting = with_formatting->m_formatting;
@@ -379,7 +379,7 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
       }
    
       //Recurse into sub-groups:
-      sharedptr<LayoutGroup> sub_group = sharedptr<LayoutGroup>::cast_dynamic(item);
+      std::shared_ptr<LayoutGroup> sub_group = std::dynamic_pointer_cast<LayoutGroup>(item);
       if(sub_group)
         sub_group->change_field_item_name(table_name, field_name, field_name_new);
     }
@@ -442,12 +442,12 @@ void LayoutGroup::debug(guint level) const
 
   for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
   {
-    sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(*iter);
+    std::shared_ptr<LayoutGroup> group = std::dynamic_pointer_cast<LayoutGroup>(*iter);
     if(group)
       group->debug(level + 1);
     else
     {
-      sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(*iter);
+      std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>(*iter);
       if(field)
       {
         for(int i = 0; i < level; ++i)

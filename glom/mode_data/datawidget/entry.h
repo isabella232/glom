@@ -46,7 +46,7 @@ public:
   explicit Entry(Field::glom_field_type glom_type = Field::TYPE_TEXT);
   virtual ~Entry();
 
-  virtual void set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name);
+  virtual void set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, const Glib::ustring& table_name);
 
   void set_glom_type(Field::glom_field_type glom_type);
 

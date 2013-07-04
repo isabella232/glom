@@ -43,7 +43,7 @@ public:
   virtual void set_choices_fixed(const Formatting::type_list_values& list_values, bool restricted = false);
 
   //This creates a db-based tree model, with appropriate cell renderers:
-  virtual void set_choices_related(const Document* document, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value);
+  virtual void set_choices_related(const Document* document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value);
 
 
   //Not named get_model(), to avoid clashing with ComboBox::get_model().
@@ -74,7 +74,7 @@ protected:
   int get_fixed_model_text_column() const;
 
 
-  typedef std::vector< sharedptr<const LayoutItem_Field> > type_vec_const_layout_items;
+  typedef std::vector< std::shared_ptr<const LayoutItem_Field> > type_vec_const_layout_items;
   type_vec_const_layout_items m_db_layout_items; //If set_choices_related() was used.
 
   //This avoids us making on_cell_data() public just so that derived classes can use it,
@@ -83,7 +83,7 @@ protected:
 
   /** Display the value in the cell according to the layout field's type and formatting.
    */
-  void set_cell_for_field_value(Gtk::CellRenderer* cell, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  void set_cell_for_field_value(Gtk::CellRenderer* cell, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
 
 private:
   /// Render the model data to the cells in the view.

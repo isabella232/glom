@@ -71,7 +71,7 @@ bool TreeStore_ReportLayout::row_drop_possible_vfunc(const Gtk::TreeModel::Path&
   if(!iter_dragged_row)
     return false;
 
-  sharedptr<LayoutItem> item_dragged_row = (*iter_dragged_row)[m_columns.m_col_item];
+  std::shared_ptr<LayoutItem> item_dragged_row = (*iter_dragged_row)[m_columns.m_col_item];
 
   //dest is the path that the row would have after it has been dropped:
   //But in this case we are more interested in the parent row:
@@ -79,7 +79,7 @@ bool TreeStore_ReportLayout::row_drop_possible_vfunc(const Gtk::TreeModel::Path&
   bool dest_is_not_top_level = dest_parent.up();
   if(!dest_is_not_top_level || dest_parent.empty())
   {
-    return may_be_child_of(sharedptr<const LayoutItem>() /* parent */, item_dragged_row);
+    return may_be_child_of(std::shared_ptr<const LayoutItem>() /* parent */, item_dragged_row);
   }
   else
   {
@@ -94,7 +94,7 @@ bool TreeStore_ReportLayout::row_drop_possible_vfunc(const Gtk::TreeModel::Path&
     if(iter_dest_parent)
     {
       Gtk::TreeModel::Row row_parent = *iter_dest_parent;
-      sharedptr<LayoutItem> item_parent = (row_parent)[m_columns.m_col_item];
+      std::shared_ptr<LayoutItem> item_parent = (row_parent)[m_columns.m_col_item];
 
       return may_be_child_of(item_parent, item_dragged_row);
     }
@@ -132,20 +132,20 @@ void TreeStore_ReportLayout::fill_sequences(const iterator& iter)
   }
 }
 
-bool TreeStore_ReportLayout::may_be_child_of(const sharedptr<const LayoutItem>& parent, const sharedptr<const LayoutItem>& suggested_child)
+bool TreeStore_ReportLayout::may_be_child_of(const std::shared_ptr<const LayoutItem>& parent, const std::shared_ptr<const LayoutItem>& suggested_child)
 {
   if(!parent)
     return true; //Anything may be at the top-level.
 
-  if(!(sharedptr<const LayoutGroup>::cast_dynamic(parent)))
+  if(!(std::dynamic_pointer_cast<const LayoutGroup>(parent)))
     return false; //Only LayoutGroup (and derived types) may have children.
 
-  const bool child_fieldsummary = sharedptr<const LayoutItem_FieldSummary>::cast_dynamic(suggested_child);
+  const bool child_fieldsummary = (bool)std::dynamic_pointer_cast<const LayoutItem_FieldSummary>(suggested_child);
 
-  sharedptr<const LayoutItem_Summary> summary =  sharedptr<const LayoutItem_Summary>::cast_dynamic(parent);
+  std::shared_ptr<const LayoutItem_Summary> summary = std::dynamic_pointer_cast<const LayoutItem_Summary>(parent);
 
   //A Summary may only have FieldSummary children:
-  if(summary && !child_fieldsummary)
+  if(summary && !(bool)child_fieldsummary)
       return false;
 
   //FieldSummary may only be a member of Summary:
@@ -153,12 +153,12 @@ bool TreeStore_ReportLayout::may_be_child_of(const sharedptr<const LayoutItem>& 
     return false;
 
 
-  const bool header = sharedptr<const LayoutItem_Header>::cast_dynamic(parent);
+  const bool header = (bool)std::dynamic_pointer_cast<const LayoutItem_Header>(parent);
 
-  const bool footer = sharedptr<const LayoutItem_Footer>::cast_dynamic(parent);
+  const bool footer = (bool)std::dynamic_pointer_cast<const LayoutItem_Footer>(parent);
 
-  const bool child_groupby = sharedptr<const LayoutItem_GroupBy>::cast_dynamic(suggested_child);
-  const bool child_summary = sharedptr<const LayoutItem_Summary>::cast_dynamic(suggested_child);
+  const bool child_groupby = (bool)std::dynamic_pointer_cast<const LayoutItem_GroupBy>(suggested_child);
+  const bool child_summary = (bool)std::dynamic_pointer_cast<const LayoutItem_Summary>(suggested_child);
 
   if((header || footer) && (child_summary || child_groupby))
     return false; //Nothing that needs data can be in a Header or Footer. A field is allowed because it could show constans from System Preferences.

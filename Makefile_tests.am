@@ -18,7 +18,6 @@
 check_PROGRAMS =						\
 	glom/libglom/test_connectionpool			\
 	glom/libglom/example_document_load \
-	glom/libglom/test_sharedptr_layoutitem		\
 	tests/test_document_load			\
 	tests/test_document_load_and_change		\
 	tests/test_document_load_and_save		\

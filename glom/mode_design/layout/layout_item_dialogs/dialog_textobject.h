@@ -43,16 +43,16 @@ public:
   Dialog_TextObject(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_TextObject();
 
-  void set_textobject(const sharedptr<const LayoutItem_Text>& textobject, const Glib::ustring& table_name, bool show_title = true);
-  sharedptr<LayoutItem_Text> get_textobject() const;
-  void get_textobject(sharedptr<LayoutItem_Text>& textobject) const;
+  void set_textobject(const std::shared_ptr<const LayoutItem_Text>& textobject, const Glib::ustring& table_name, bool show_title = true);
+  std::shared_ptr<LayoutItem_Text> get_textobject() const;
+  void get_textobject(std::shared_ptr<LayoutItem_Text>& textobject) const;
 
 private:
   Gtk::Box* m_box_title;
   Gtk::Entry* m_entry_title;
   Gtk::TextView* m_text_view;
 
-  sharedptr<LayoutItem_Text> m_textobject;
+  std::shared_ptr<LayoutItem_Text> m_textobject;
   Glib::ustring m_table_name;
 };
 

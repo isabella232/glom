@@ -31,7 +31,7 @@ PrintLayout::PrintLayout()
   m_page_count(1) //A sensible default
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_PRINT_LAYOUT;
-  m_layout_group = sharedptr<LayoutGroup>::create();
+  m_layout_group = std::shared_ptr<LayoutGroup>(new LayoutGroup());
 }
 
 PrintLayout::PrintLayout(const PrintLayout& src)
@@ -75,12 +75,12 @@ void PrintLayout::set_show_table_title(bool show_table_title)
   m_show_table_title = show_table_title;
 }
 
-sharedptr<LayoutGroup> PrintLayout::get_layout_group()
+std::shared_ptr<LayoutGroup> PrintLayout::get_layout_group()
 {
   return m_layout_group;
 }
 
-sharedptr<const LayoutGroup> PrintLayout::get_layout_group() const
+std::shared_ptr<const LayoutGroup> PrintLayout::get_layout_group() const
 {
   return m_layout_group;
 }

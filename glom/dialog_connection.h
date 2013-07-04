@@ -42,7 +42,7 @@ public:
   Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_Connection();
 
-  sharedptr<SharedConnection> connect_to_server_with_connection_settings() const;
+  std::shared_ptr<SharedConnection> connect_to_server_with_connection_settings() const;
 
   ///Disable irrelevant fields:
   void set_connect_to_browsed();

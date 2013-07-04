@@ -69,7 +69,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
 
   //Check whether the field exists in the table.
   //TODO_Performance: Do this without the useless Field information?
-  sharedptr<const Field> field = m_document->get_field(m_relationship->get_to_table(), field_name);
+  std::shared_ptr<const Field> field = m_document->get_field(m_relationship->get_to_table(), field_name);
   if(!field)
   {
     std::cerr << G_STRFUNC << ": field " << field_name << " not found in table " << m_relationship->get_to_table() << std::endl;
@@ -80,7 +80,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
   {
     //Try to get the value from the database:
     //const Glib::ustring parent_key_name;
-    sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect();
+    std::shared_ptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect();
 
     if(!sharedconnection)
     {
@@ -156,7 +156,7 @@ boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& 
 
   //Check whether the field exists in the table.
   //TODO_Performance: Do this without the useless Field information?
-  sharedptr<Field> field = m_document->get_field(m_relationship->get_to_table(), field_name);
+  std::shared_ptr<Field> field = m_document->get_field(m_relationship->get_to_table(), field_name);
   if(!field)
   {
     g_warning("RelatedRecord_sum: field %s not found in table %s", field_name.c_str(), m_relationship->get_to_table().c_str());
@@ -165,7 +165,7 @@ boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& 
 
   //Try to get the value from the database:
   //const Glib::ustring parent_key_name;
-  sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect();
+  std::shared_ptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect();
   if(!sharedconnection)
   {
     g_warning("RelatedRecord_sum: no connection.");
@@ -244,7 +244,7 @@ boost::python::object PyGlomRelatedRecord::max(const std::string& field_name) co
   return generic_aggregate(field_name, "max");
 }
 
-void PyGlomRelatedRecord::set_relationship(const sharedptr<const Relationship>& relationship, const Gnome::Gda::Value& from_key_value,  Document* document)
+void PyGlomRelatedRecord::set_relationship(const std::shared_ptr<const Relationship>& relationship, const Gnome::Gda::Value& from_key_value,  Document* document)
 {
   m_relationship = relationship;
   m_from_key_value = from_key_value;

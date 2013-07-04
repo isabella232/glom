@@ -48,11 +48,11 @@ public:
   typedef Formatting::type_pair_sort_field type_pair_sort_field;
   typedef Formatting::type_list_sort_fields type_list_sort_fields;
 
-  sharedptr<LayoutItem_Field> get_field_group_by();
-  sharedptr<const LayoutItem_Field> get_field_group_by() const;
+  std::shared_ptr<LayoutItem_Field> get_field_group_by();
+  std::shared_ptr<const LayoutItem_Field> get_field_group_by() const;
   bool get_has_field_group_by() const;
 
-  void set_field_group_by(const sharedptr<LayoutItem_Field>& field);
+  void set_field_group_by(const std::shared_ptr<LayoutItem_Field>& field);
 
   //How to sort the records in this group:
   type_list_sort_fields get_fields_sort_by();
@@ -68,16 +68,16 @@ public:
   virtual Glib::ustring get_part_type_name() const;
   virtual Glib::ustring get_report_part_id() const;
 
-  sharedptr<LayoutGroup> get_secondary_fields();
-  sharedptr<const LayoutGroup> get_secondary_fields() const;
+  std::shared_ptr<LayoutGroup> get_secondary_fields();
+  std::shared_ptr<const LayoutGroup> get_secondary_fields() const;
 
   type_list_sort_fields get_sort_by() const;
   void set_sort_by(const type_list_sort_fields& sort_by);
   
 private:
 
-  sharedptr<LayoutItem_Field> m_field_group_by;
-  sharedptr<LayoutGroup> m_group_secondary_fields; //For instance, show a contact name as well as the contact ID that we group by.
+  std::shared_ptr<LayoutItem_Field> m_field_group_by;
+  std::shared_ptr<LayoutGroup> m_group_secondary_fields; //For instance, show a contact name as well as the contact ID that we group by.
   type_list_sort_fields m_fields_sort_by;
 };
 

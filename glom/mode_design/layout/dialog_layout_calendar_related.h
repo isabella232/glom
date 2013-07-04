@@ -46,14 +46,14 @@ public:
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  void init_with_portal(const Glib::ustring& layout, const Glib::ustring& layout_platform, Document* document, const sharedptr<const LayoutItem_CalendarPortal>& portal);
+  void init_with_portal(const Glib::ustring& layout, const Glib::ustring& layout_platform, Document* document, const std::shared_ptr<const LayoutItem_CalendarPortal>& portal);
 
   void init_with_tablename(const Glib::ustring& layout, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& parent_table);
 
   virtual void update_ui(bool including_relationships_list = true);
 
-  sharedptr<Relationship> get_relationship() const;
-  sharedptr<LayoutItem_CalendarPortal>  get_portal_layout();
+  std::shared_ptr<Relationship> get_relationship() const;
+  std::shared_ptr<LayoutItem_CalendarPortal>  get_portal_layout();
 
 private:
 
@@ -72,7 +72,7 @@ private:
 
   ComboBox_Relationship* m_combo_relationship;
   Gtk::CheckButton* m_checkbutton_show_child_relationships;
-  sharedptr<LayoutItem_CalendarPortal> m_portal;
+  std::shared_ptr<LayoutItem_CalendarPortal> m_portal;
 
   Gtk::RadioButton* m_radio_navigation_automatic;
   Gtk::RadioButton* m_radio_navigation_specify;

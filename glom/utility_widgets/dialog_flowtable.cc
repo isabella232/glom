@@ -56,7 +56,7 @@ Dialog_FlowTable::~Dialog_FlowTable()
 void Dialog_FlowTable::set_flowtable(FlowTableWithFields* flowtable)
 {
   m_flowtable = flowtable;
-  m_layoutgroup = sharedptr<LayoutGroup>::cast_dynamic(flowtable->get_layout_item());
+  m_layoutgroup = std::dynamic_pointer_cast<LayoutGroup>(flowtable->get_layout_item());
   m_entry_title->set_text(item_get_title(m_layoutgroup));
   m_spin_columns->set_value(m_layoutgroup->get_columns_count());
 }

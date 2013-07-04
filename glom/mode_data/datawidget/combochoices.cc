@@ -53,8 +53,8 @@ ComboChoices::~ComboChoices()
 bool ComboChoices::refresh_data_from_database_with_foreign_key(const Document* /* document */, const Gnome::Gda::Value& /* foreign_key_value */)
 {
   /** TODO:
-  sharedptr<LayoutItem_Field> layout_item =
-    sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+  std::shared_ptr<LayoutItem_Field> layout_item =
+    std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
 
   if(!layout_item || Conversions::value_is_empty(foreign_key_value))
   {
@@ -73,17 +73,17 @@ bool ComboChoices::refresh_data_from_database_with_foreign_key(const Document* /
   return true;
 }
 
-void ComboChoices::set_choices_related(const Document* /* document */, const sharedptr<const LayoutItem_Field>& /* layout_field */, const Gnome::Gda::Value& /* foreign_key_value */)
+void ComboChoices::set_choices_related(const Document* /* document */, const std::shared_ptr<const LayoutItem_Field>& /* layout_field */, const Gnome::Gda::Value& /* foreign_key_value */)
 {
   /* TODO:
   type_list_values_with_second list_values;
 
-  sharedptr<LayoutItem_Field> layout_item =
-    sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+  std::shared_ptr<LayoutItem_Field> layout_item =
+    std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
   if(layout_item)
   {
     bool choice_show_all = false;
-    const sharedptr<const Relationship> choice_relationship =
+    const std::shared_ptr<const Relationship> choice_relationship =
       layout_item->get_formatting_used().get_choices_related_relationship(choice_show_all);
 
     //Set the values now because if it will be the same regardless of the foreign key value.

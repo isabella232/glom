@@ -45,9 +45,9 @@ public:
    */
   virtual void set_document(Document* document, const Glib::ustring& table_name);
 
-  void select_item(const sharedptr<const Relationship>& relationship);
+  void select_item(const std::shared_ptr<const Relationship>& relationship);
 
-  sharedptr<Relationship> get_relationship_chosen() const;
+  std::shared_ptr<Relationship> get_relationship_chosen() const;
 
 private:
 
@@ -61,7 +61,7 @@ private:
 
     Gtk::TreeModelColumn<Glib::ustring> m_col_name;
     //Gtk::TreeModelColumn<Glib::ustring> m_col_title;
-    Gtk::TreeModelColumn< sharedptr<Relationship> > m_col_relationship;
+    Gtk::TreeModelColumn< std::shared_ptr<Relationship> > m_col_relationship;
   };
 
   ModelColumns_Relationships m_ColumnsRelationships;

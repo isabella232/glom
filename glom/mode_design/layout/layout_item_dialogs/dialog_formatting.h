@@ -46,12 +46,12 @@ public:
    * @param document The document, so that the dialog can load the previous layout, and save changes.
    * @param field The starting item information.
    */
-  void set_item(const sharedptr<const LayoutItem_WithFormatting>& field, bool show_numeric);
+  void set_item(const std::shared_ptr<const LayoutItem_WithFormatting>& field, bool show_numeric);
 
   /** Set the @a layout_item's formatting to the formatting specified in the
    * dialog by the user.
    */
-  void use_item_chosen(const sharedptr<LayoutItem_WithFormatting>& layout_item);
+  void use_item_chosen(const std::shared_ptr<LayoutItem_WithFormatting>& layout_item);
 
 private:
   void enforce_constraints();

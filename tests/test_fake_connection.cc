@@ -66,17 +66,17 @@ int main()
 
   //Build a SQL query and get the string for it:
   const Gnome::Gda::Value value("Born To Run");
-  Glom::sharedptr<const Glom::Field> where_field = document.get_field("albums", "name");
+  std::shared_ptr<const Glom::Field> where_field = document.get_field("albums", "name");
   const Gnome::Gda::SqlExpr where_clause = 
     Glom::Utils::build_simple_where_expression("albums", where_field, value);
   
   Glom::Utils::type_vecLayoutFields fieldsToGet;
-  Glom::sharedptr<const Glom::Field> field = document.get_field("albums", "album_id");
-  Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  std::shared_ptr<const Glom::Field> field = document.get_field("albums", "album_id");
+  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
   field = document.get_field("albums", "name");
-  layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 

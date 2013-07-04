@@ -64,7 +64,7 @@ private:
     ModelColumns_Fields()
     { add(m_col_layout_item); add(m_col_ascending); add(m_col_sequence); }
 
-    Gtk::TreeModelColumn< sharedptr<const LayoutItem_Field> > m_col_layout_item;
+    Gtk::TreeModelColumn< std::shared_ptr<const LayoutItem_Field> > m_col_layout_item;
     Gtk::TreeModelColumn<bool> m_col_ascending;
     Gtk::TreeModelColumn<guint> m_col_sequence;
   };
