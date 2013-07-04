@@ -41,3 +41,10 @@ const char* online_glom_login_cancel = _("Cancel");
 const char* online_glom_login_wrong = _("The username or password are not correct.");
 const char* online_glom_login_needs_https = _("Login seems to be necessary, but will not be attempted. This site is not being served via HTTPS, which is required for secure login. Please contact your system administrator.");
 
+/// Translators: This is the title of a button used to register a new user.
+const char* online_glom_login_register = _("Register");
+
+/// Translators: This is the title of a button used to reset a user's password.
+const char* online_glom_login_forgot = _("Forgot Password");
+
+
