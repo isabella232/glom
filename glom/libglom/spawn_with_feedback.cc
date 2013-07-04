@@ -27,7 +27,7 @@
 #include <glibmm/fileutils.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/i18n.h>
-#include <memory> //For auto_ptr.
+#include <memory> //For shared_ptr.
 #include <stdexcept>
 #include <iostream>
 
@@ -300,16 +300,16 @@ private:
 #endif
 };
 
-static std::auto_ptr<const SpawnInfo> spawn_async(const Glib::ustring& command_line, int redirect)
+static std::shared_ptr<const SpawnInfo> spawn_async(const Glib::ustring& command_line, int redirect)
 {
-  return std::auto_ptr<const SpawnInfo>(new SpawnInfo(command_line, redirect));
+  return std::shared_ptr<const SpawnInfo>(new SpawnInfo(command_line, redirect));
 }
 
 /**
  * @param return_status: The return value of the command.
  * @result Whether we successfully ended the async spawn.
  */
-static bool spawn_async_end(std::auto_ptr<const SpawnInfo> info, std::string* stdout_text = 0, std::string* stderr_text = 0, int* return_status = 0)
+static bool spawn_async_end(std::shared_ptr<const SpawnInfo> info, std::string* stdout_text = 0, std::string* stderr_text = 0, int* return_status = 0)
 {
   if(stdout_text)
     info->get_stdout(*stdout_text);
@@ -334,7 +334,7 @@ static int spawn_sync(const Glib::ustring& command_line, std::string* stdout_tex
 
   Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
 
-  std::auto_ptr<const SpawnInfo> info = spawn_async(command_line, redirect_flags); //This could throw
+  std::shared_ptr<const SpawnInfo> info = spawn_async(command_line, redirect_flags); //This could throw
   info->signal_finished().connect(
     sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), sigc::ref(mainloop) ) );
 
@@ -353,7 +353,7 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
 {
   //Show UI progress feedback while we wait for the command to finish:
 
-  std::auto_ptr<const Impl::SpawnInfo> info;
+  std::shared_ptr<const Impl::SpawnInfo> info;
   
   try
   {
@@ -396,7 +396,7 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
 
   //Show UI progress feedback while we wait for the command to finish:
 
-  std::auto_ptr<const Impl::SpawnInfo> info;
+  std::shared_ptr<const Impl::SpawnInfo> info;
   
   try
   {
@@ -558,7 +558,7 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
   std::cout << "debug: Command: " << command << std::endl;
   #endif //GLOM_SPAWN_DEBUG
 
-  std::auto_ptr<const Impl::SpawnInfo> info;
+  std::shared_ptr<const Impl::SpawnInfo> info;
 
   try
   {
@@ -619,7 +619,7 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
     {
       /* TODO: Allow the caller to show a dialog?
       // Command failed
-      std::auto_ptr<Gtk::MessageDialog> error_dialog;
+      std::shared_ptr<Gtk::MessageDialog> error_dialog;
       if(parent_window)
         error_dialog.reset(new Gtk::MessageDialog(*parent_window, "Child command failed", false, Gtk::MESSAGE_ERROR));
       else

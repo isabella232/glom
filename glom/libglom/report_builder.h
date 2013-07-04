@@ -39,41 +39,41 @@ public:
 
   virtual ~ReportBuilder();
 
-  static sharedptr<Report> create_standard_list_report(const Document* document, const Glib::ustring& table_name);
+  static std::shared_ptr<Report> create_standard_list_report(const Document* document, const Glib::ustring& table_name);
 
   //TODO: Remove set_document() and get_document()?
   void set_document(Document* document);
 
-  //void set_report(const Glib::ustring& table_name, const sharedptr<const Report>& report);
-  //sharedptr<Report> get_report();
+  //void set_report(const Glib::ustring& table_name, const std::shared_ptr<const Report>& report);
+  //std::shared_ptr<Report> get_report();
 
   /**
    * @result The HTML of the generated report.
    */
-  Glib::ustring report_build(const FoundSet& found_set, const sharedptr<const Report>& report);
+  Glib::ustring report_build(const FoundSet& found_set, const std::shared_ptr<const Report>& report);
 
   /**
    * @result The filepath of a temporary file containing the generated HTML file.
    */
-  std::string report_build_and_save(const FoundSet& found_set, const sharedptr<const Report>& report);
+  std::string report_build_and_save(const FoundSet& found_set, const std::shared_ptr<const Report>& report);
  
  
 private:
 
-  bool report_build_groupby(const FoundSet& found_set_parent, xmlpp::Element& parent_node, const sharedptr<LayoutItem_GroupBy>& group_by);
-  bool report_build_groupby_children(const FoundSet& found_set, xmlpp::Element& nodeGroupBy, const sharedptr<LayoutItem_GroupBy>& group_by);
-  bool report_build_summary(const FoundSet& found_set_parent, xmlpp::Element& parent_node, const sharedptr<LayoutItem_Summary>& summary);
-  bool report_build_headerfooter(const FoundSet& found_set, xmlpp::Element& parent_node, const sharedptr<LayoutGroup>& group);
+  bool report_build_groupby(const FoundSet& found_set_parent, xmlpp::Element& parent_node, const std::shared_ptr<LayoutItem_GroupBy>& group_by);
+  bool report_build_groupby_children(const FoundSet& found_set, xmlpp::Element& nodeGroupBy, const std::shared_ptr<LayoutItem_GroupBy>& group_by);
+  bool report_build_summary(const FoundSet& found_set_parent, xmlpp::Element& parent_node, const std::shared_ptr<LayoutItem_Summary>& summary);
+  bool report_build_headerfooter(const FoundSet& found_set, xmlpp::Element& parent_node, const std::shared_ptr<LayoutGroup>& group);
 
-  typedef std::vector< sharedptr<LayoutItem> > type_vecLayoutItems;
-  typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
+  typedef std::vector< std::shared_ptr<LayoutItem> > type_vecLayoutItems;
+  typedef std::vector< std::shared_ptr<LayoutItem_Field> > type_vecLayoutFields;
 
   bool report_build_records(const FoundSet& found_set, xmlpp::Element& parent_node, const type_vecLayoutItems& items, bool one_record_only = false);
-  bool report_build_records_get_fields(const FoundSet& found_set, const sharedptr<LayoutGroup>& group, type_vecLayoutFields& items);
-  bool report_build_records_field(const FoundSet& found_set, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Field>& field, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& colField, bool vertical = false);
-  bool report_build_records_text(const FoundSet& found_set, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Text>& textobject, bool vertical = false);
-  bool report_build_records_image(const FoundSet& found_set, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Image>& imageobject, bool vertical = false);
-  bool report_build_records_vertical_group(const FoundSet& found_set, xmlpp::Element& vertical_group_node, const sharedptr<LayoutItem_VerticalGroup>& group, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& field_index);
+  bool report_build_records_get_fields(const FoundSet& found_set, const std::shared_ptr<LayoutGroup>& group, type_vecLayoutFields& items);
+  bool report_build_records_field(const FoundSet& found_set, xmlpp::Element& nodeParent, const std::shared_ptr<const LayoutItem_Field>& field, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& colField, bool vertical = false);
+  bool report_build_records_text(const FoundSet& found_set, xmlpp::Element& nodeParent, const std::shared_ptr<const LayoutItem_Text>& textobject, bool vertical = false);
+  bool report_build_records_image(const FoundSet& found_set, xmlpp::Element& nodeParent, const std::shared_ptr<const LayoutItem_Image>& imageobject, bool vertical = false);
+  bool report_build_records_vertical_group(const FoundSet& found_set, xmlpp::Element& vertical_group_node, const std::shared_ptr<LayoutItem_VerticalGroup>& group, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& field_index);
 
   Document* get_document();
 

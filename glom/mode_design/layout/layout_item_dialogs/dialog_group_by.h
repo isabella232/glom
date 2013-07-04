@@ -50,10 +50,10 @@ public:
    * @param item The starting information.
    * @param table_name The item's table.
    */
-  virtual void set_item(const sharedptr<const LayoutItem_GroupBy>& item, const Glib::ustring& table_name);
+  virtual void set_item(const std::shared_ptr<const LayoutItem_GroupBy>& item, const Glib::ustring& table_name);
 
 
-  sharedptr<LayoutItem_GroupBy> get_item() const;
+  std::shared_ptr<LayoutItem_GroupBy> get_item() const;
 
 private:
   //Signal handlers:
@@ -77,7 +77,7 @@ private:
   Dialog_FieldsList* m_dialog_choose_secondary_fields;
   Dialog_SortFields* m_dialog_choose_sort_fields;
 
-  mutable sharedptr<LayoutItem_GroupBy> m_layout_item;
+  mutable std::shared_ptr<LayoutItem_GroupBy> m_layout_item;
 
   Glib::ustring m_table_name;
 };

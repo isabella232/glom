@@ -44,8 +44,8 @@ public:
   Dialog_ImageObject(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_ImageObject();
 
-  void set_imageobject(const sharedptr<const LayoutItem_Image>& imageobject, const Glib::ustring& table_name, bool show_title = true);
-  sharedptr<LayoutItem_Image> get_imageobject() const;
+  void set_imageobject(const std::shared_ptr<const LayoutItem_Image>& imageobject, const Glib::ustring& table_name, bool show_title = true);
+  std::shared_ptr<LayoutItem_Image> get_imageobject() const;
 
 private:
   void on_button_choose();
@@ -55,7 +55,7 @@ private:
   ImageGlom* m_image;
   Gtk::Button* m_button_choose_image;
 
-  sharedptr<LayoutItem_Image> m_imageobject;
+  std::shared_ptr<LayoutItem_Image> m_imageobject;
   Glib::ustring m_table_name;
 };
 

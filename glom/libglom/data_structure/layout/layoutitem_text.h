@@ -62,7 +62,7 @@ public:
    */
   void set_text_original(const Glib::ustring& text);
 
-  sharedptr<StaticText> m_text; //Reuse the title concept of the TranslatableItem base class to give us translatable text.
+  std::shared_ptr<StaticText> m_text; //Reuse the title concept of the TranslatableItem base class to give us translatable text.
 };
 
 } //namespace Glom

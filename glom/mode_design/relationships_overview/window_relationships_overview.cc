@@ -165,7 +165,7 @@ void Window_RelationshipsOverview::draw_tables()
     Document::type_listTableInfo tables = document->get_tables();
     for(Document::type_listTableInfo::iterator iter = tables.begin(); iter != tables.end(); ++iter)
     {
-      sharedptr<TableInfo> info = *iter;
+      std::shared_ptr<TableInfo> info = *iter;
       const Glib::ustring table_name = info->get_name();
 
       float table_x = 0;
@@ -219,7 +219,7 @@ void Window_RelationshipsOverview::draw_lines()
     Document::type_listTableInfo tables = document->get_tables();
     for(Document::type_listTableInfo::iterator iter = tables.begin(); iter != tables.end(); ++iter)
     {
-      sharedptr<TableInfo> info = *iter;
+      std::shared_ptr<TableInfo> info = *iter;
       const Glib::ustring table_name = info->get_name();
 
       Document::type_vec_relationships m_relationships = document->get_relationships(table_name);
@@ -227,7 +227,7 @@ void Window_RelationshipsOverview::draw_lines()
 
       for(Document::type_vec_relationships::const_iterator rit = m_relationships.begin(); rit != m_relationships.end(); ++rit)
       {
-        sharedptr<const Relationship> relationship = *rit;
+        std::shared_ptr<const Relationship> relationship = *rit;
         if(!relationship)
           continue;
 

@@ -60,7 +60,7 @@ Box_Reports::~Box_Reports()
 {
 }
 
-void Box_Reports::fill_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const Report>& report)
+void Box_Reports::fill_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const Report>& report)
 {
   if(iter)
   {
@@ -106,7 +106,7 @@ bool Box_Reports::fill_from_database()
     listTableReports = document->get_report_names(m_table_name);
     for(std::vector<Glib::ustring>::const_iterator iter = listTableReports.begin(); iter != listTableReports.end(); ++iter)
     {
-      sharedptr<Report> report = document->get_report(m_table_name, *iter);
+      std::shared_ptr<Report> report = document->get_report(m_table_name, *iter);
       if(report)
       {
         Gtk::TreeModel::iterator row = m_AddDel.add_item(report->get_name());
@@ -127,7 +127,7 @@ bool Box_Reports::fill_from_database()
 
 void Box_Reports::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 {
-  sharedptr<Report> report = sharedptr<Report>::create();
+  std::shared_ptr<Report> report = std::shared_ptr<Report>(new Report());
 
   const Glib::ustring report_name = m_AddDel.get_value(row, m_colReportName);
   if(!report_name.empty())
@@ -188,7 +188,7 @@ void Box_Reports::save_to_document()
 
       if(!report_name.empty() && std::find(listReports.begin(), listReports.end(), report_name) == listReports.end())
       {
-        sharedptr<Report> report(new Report());
+        std::shared_ptr<Report> report(new Report());
         report->set_name(report_name);
 
         report->set_title( m_AddDel.get_value(iter, m_colTitle) , AppWindow::get_current_locale()); //TODO: Translations: Store the original in the TreeView.
@@ -211,7 +211,7 @@ void Box_Reports::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint c
     const Glib::ustring report_name = m_AddDel.get_value_key(row);
     Document* document = get_document();
 
-    sharedptr<Report> report = document->get_report(m_table_name, report_name);
+    std::shared_ptr<Report> report = document->get_report(m_table_name, report_name);
     if(report)
     {
       if(column == m_colTitle)

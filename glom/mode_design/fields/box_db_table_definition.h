@@ -40,14 +40,14 @@ private:
   virtual bool fill_from_database();
   virtual void fill_fields();
 
-  void fill_field_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const Field>& field);
+  void fill_field_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const Field>& field);
 
-  sharedptr<Field> get_field_definition(const Gtk::TreeModel::iterator& row);
+  std::shared_ptr<Field> get_field_definition(const Gtk::TreeModel::iterator& row);
 
-  sharedptr<Field> change_definition(const sharedptr<const Field>& fieldOld, const sharedptr<const Field>& field);
+  std::shared_ptr<Field> change_definition(const std::shared_ptr<const Field>& fieldOld, const std::shared_ptr<const Field>& field);
 
-  bool field_has_null_values(const sharedptr<const Field>& field);
-  bool field_has_non_unique_values(const sharedptr<const Field>& field);
+  bool field_has_null_values(const std::shared_ptr<const Field>& field);
+  bool field_has_non_unique_values(const std::shared_ptr<const Field>& field);
 
   //Signal handlers:
   void on_adddel_add(const Gtk::TreeModel::iterator& row);
@@ -59,17 +59,16 @@ private:
   void on_field_definition_apply();
   void on_default_formatting_apply();
 
-  bool check_field_change(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field_new);
+  bool check_field_change(const std::shared_ptr<const Field>& field_old, const std::shared_ptr<const Field>& field_new);
 
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
 
   guint m_colName, m_colTitle, m_colType, m_colUnique, m_colPrimaryKey;
 
   Dialog_FieldDefinition* m_dialog_field_definition;
-
+  std::shared_ptr<const Field> m_Field_BeingEdited; //TODO_FieldShared
   Dialog_DefaultFormatting* m_dialog_default_formatting;
 
-  sharedptr<const Field> m_Field_BeingEdited; //TODO_FieldShared
   type_vec_fields m_vecFields;
 };
 

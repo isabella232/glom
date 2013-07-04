@@ -68,7 +68,7 @@ Dialog_FieldLayout::~Dialog_FieldLayout()
   remove_view(m_box_formatting);
 }
 
-void Dialog_FieldLayout::set_field(const sharedptr<const LayoutItem_Field>& field, const Glib::ustring& table_name, bool show_editable_options)
+void Dialog_FieldLayout::set_field(const std::shared_ptr<const LayoutItem_Field>& field, const Glib::ustring& table_name, bool show_editable_options)
 {
   m_layout_item = glom_sharedptr_clone(field);
 
@@ -79,7 +79,7 @@ void Dialog_FieldLayout::set_field(const sharedptr<const LayoutItem_Field>& fiel
   m_checkbutton_editable->set_active( field->get_editable() );
 
   //Calculated fields can never be edited:
-  sharedptr<const Field> field_details = field->get_full_field_details();
+  std::shared_ptr<const Field> field_details = field->get_full_field_details();
   const bool editable_allowed = field_details && !field_details->get_has_calculation();
   m_checkbutton_editable->set_sensitive(editable_allowed);
 
@@ -104,14 +104,14 @@ void Dialog_FieldLayout::set_field(const sharedptr<const LayoutItem_Field>& fiel
   enforce_constraints();
 }
 
-sharedptr<LayoutItem_Field> Dialog_FieldLayout::get_field_chosen() const
+std::shared_ptr<LayoutItem_Field> Dialog_FieldLayout::get_field_chosen() const
 {
   m_layout_item->set_editable( m_checkbutton_editable->get_active() );
 
   m_layout_item->set_formatting_use_default( !m_radiobutton_custom_formatting->get_active() );
   m_box_formatting->get_formatting(m_layout_item->m_formatting);
 
-  sharedptr<CustomTitle> title_custom = sharedptr<CustomTitle>::create();
+  std::shared_ptr<CustomTitle> title_custom = std::shared_ptr<CustomTitle>(new CustomTitle());
   title_custom->set_use_custom_title(m_radiobutton_title_custom->get_active()); //For instance, tell it to really use a blank title.
   title_custom->set_title(m_entry_title_custom->get_text(), AppWindow::get_current_locale());
 

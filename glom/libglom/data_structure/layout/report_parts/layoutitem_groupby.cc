@@ -27,7 +27,7 @@ namespace Glom
 
 LayoutItem_GroupBy::LayoutItem_GroupBy()
 {
-  m_group_secondary_fields = sharedptr<LayoutGroup>::create(); //So that we dont need to create it from outside.
+  m_group_secondary_fields = std::shared_ptr<LayoutGroup>(new LayoutGroup()); //So that we dont need to create it from outside.
 }
 
 LayoutItem_GroupBy::LayoutItem_GroupBy(const LayoutItem_GroupBy& src)
@@ -64,12 +64,12 @@ LayoutItem_GroupBy& LayoutItem_GroupBy::operator=(const LayoutItem_GroupBy& src)
   return *this;
 }
 
-sharedptr<LayoutItem_Field> LayoutItem_GroupBy::get_field_group_by()
+std::shared_ptr<LayoutItem_Field> LayoutItem_GroupBy::get_field_group_by()
 {
   return m_field_group_by;
 }
 
-sharedptr<const LayoutItem_Field> LayoutItem_GroupBy::get_field_group_by() const
+std::shared_ptr<const LayoutItem_Field> LayoutItem_GroupBy::get_field_group_by() const
 {
   return m_field_group_by;
 }
@@ -103,7 +103,7 @@ Glib::ustring LayoutItem_GroupBy::get_part_type_name() const
   return _("Group By");
 }
 
-void LayoutItem_GroupBy::set_field_group_by(const sharedptr<LayoutItem_Field>& field)
+void LayoutItem_GroupBy::set_field_group_by(const std::shared_ptr<LayoutItem_Field>& field)
 {
   m_field_group_by = field;
 }
@@ -147,12 +147,12 @@ Glib::ustring LayoutItem_GroupBy::get_report_part_id() const
   return "group_by";
 }
 
-sharedptr<LayoutGroup> LayoutItem_GroupBy::get_secondary_fields()
+std::shared_ptr<LayoutGroup> LayoutItem_GroupBy::get_secondary_fields()
 {
   return m_group_secondary_fields;
 }
 
-sharedptr<const LayoutGroup> LayoutItem_GroupBy::get_secondary_fields() const
+std::shared_ptr<const LayoutGroup> LayoutItem_GroupBy::get_secondary_fields() const
 {
   return m_group_secondary_fields;
 }

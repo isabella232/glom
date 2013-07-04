@@ -63,7 +63,7 @@ public:
   void set_fields(const PyGlomRecord::type_map_field_values& field_values,
     const Document* document,
     const Glib::ustring& table_name,
-    const sharedptr<const Field>& key_field,
+    const std::shared_ptr<const Field>& key_field,
     const Gnome::Gda::Value& key_field_value,
     const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);
 
@@ -72,7 +72,7 @@ public:
   Glib::ustring m_table_name;
   type_map_field_values m_map_field_values;
 private:
-  sharedptr<const Field> m_key_field;
+  std::shared_ptr<const Field> m_key_field;
   Gnome::Gda::Value m_key_field_value;
 
   boost::python::object m_related; //Actually a PyGlomRelated

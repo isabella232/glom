@@ -85,7 +85,7 @@ Glib::RefPtr<Gdk::Pixbuf> get_pixbuf_for_gda_value(const Gnome::Gda::Value& valu
  * @or_title If true, check the width of the item's title too, returning the larger of the two values.
  * @result The width in pixels.
  */
-int get_suitable_field_width_for_widget(Gtk::Widget& widget, const sharedptr<const LayoutItem_Field>& field_layout, bool or_title = false, bool for_treeview = false);
+int get_suitable_field_width_for_widget(Gtk::Widget& widget, const std::shared_ptr<const LayoutItem_Field>& field_layout, bool or_title = false, bool for_treeview = false);
 
 /// Add the @a extension if no extension is there already:
 std::string get_filepath_with_extension(const std::string& filepath, const std::string& extension);

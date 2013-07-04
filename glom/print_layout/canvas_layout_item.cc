@@ -58,12 +58,12 @@ Glib::RefPtr<CanvasLayoutItem> CanvasLayoutItem::create()
   return Glib::RefPtr<CanvasLayoutItem>(new CanvasLayoutItem());
 }
 
-sharedptr<LayoutItem> CanvasLayoutItem::get_layout_item()
+std::shared_ptr<LayoutItem> CanvasLayoutItem::get_layout_item()
 {
   return m_layout_item;
 }
 
-void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, const sharedptr<const LayoutItem_WithFormatting>& layout_item)
+void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, const std::shared_ptr<const LayoutItem_WithFormatting>& layout_item)
 {
   if(!canvas_item)
     return;
@@ -113,7 +113,7 @@ void CanvasLayoutItem::on_resized()
     canvas_image->scale_to_size();
 }
 
-void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& layout_item)
+void CanvasLayoutItem::set_layout_item(const std::shared_ptr<LayoutItem>& layout_item)
 {
   //TODO: If we can ever avoid this the also update the CanvasLayoutItem class documentation.
   if(!get_canvas())
@@ -158,7 +158,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& layout_item)
 }
 
 //TODO: Remove this?
-int CanvasLayoutItem::get_rows_count_for_portal(const sharedptr<const LayoutItem_Portal>& portal, double& row_height)
+int CanvasLayoutItem::get_rows_count_for_portal(const std::shared_ptr<const LayoutItem_Portal>& portal, double& row_height)
 {
   if(!portal)
   {
@@ -182,11 +182,11 @@ int CanvasLayoutItem::get_rows_count_for_portal(const sharedptr<const LayoutItem
   return max_rows;
 }
 
-Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_item(const sharedptr<LayoutItem>& layout_item)
+Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_item(const std::shared_ptr<LayoutItem>& layout_item)
 {
   Glib::RefPtr<CanvasItemMovable> child;
   Glib::RefPtr<Goocanvas::Item> child_item;
-  sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::cast_dynamic(layout_item);
+  std::shared_ptr<LayoutItem_Text> text = std::dynamic_pointer_cast<LayoutItem_Text>(layout_item);
   if(text)
   {
     Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
@@ -200,7 +200,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
   }
   else
   {
-    sharedptr<LayoutItem_Image> image = sharedptr<LayoutItem_Image>::cast_dynamic(layout_item);
+    std::shared_ptr<LayoutItem_Image> image = std::dynamic_pointer_cast<LayoutItem_Image>(layout_item);
     if(image)
     {
       Glib::RefPtr<CanvasImageMovable> canvas_item = CanvasImageMovable::create();
@@ -218,7 +218,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
     }
     else
     {
-      sharedptr<LayoutItem_Line> line = sharedptr<LayoutItem_Line>::cast_dynamic(layout_item);
+      std::shared_ptr<LayoutItem_Line> line = std::dynamic_pointer_cast<LayoutItem_Line>(layout_item);
       if(line)
       {
         double start_x = 0;
@@ -240,7 +240,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
       }
       else
       {
-        sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+        std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
         if(field)
         {
           //Create an appropriate canvas item for the field type:
@@ -270,7 +270,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
         }
         else
         {
-          sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
+          std::shared_ptr<LayoutItem_Portal> portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
           if(portal)
           {
             Glib::RefPtr<CanvasTableMovable> canvas_item = CanvasTableMovable::create();
@@ -343,8 +343,8 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(guint rows_count)
   if(!canvas_table)
     return;
 
-  sharedptr<LayoutItem_Portal> portal = 
-    sharedptr<LayoutItem_Portal>::cast_dynamic(get_layout_item());
+  std::shared_ptr<LayoutItem_Portal> portal = 
+    std::dynamic_pointer_cast<LayoutItem_Portal>(get_layout_item());
   if(!portal)
   {
     std::cerr << G_STRFUNC << ": The layout item was not a portal." << std::endl;
@@ -354,7 +354,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(guint rows_count)
   add_portal_rows_if_necessary(canvas_table, portal, rows_count);
 }
 
-void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTableMovable>& canvas_table, const sharedptr<LayoutItem_Portal>& portal, guint rows_count)
+void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTableMovable>& canvas_table, const std::shared_ptr<LayoutItem_Portal>& portal, guint rows_count)
 {
   const double row_height = portal->get_print_layout_row_height();
   const LayoutGroup::type_list_items child_items = portal->get_items();
@@ -367,7 +367,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
     for(LayoutGroup::type_list_items::const_iterator iter = child_items.begin(); iter != child_items.end(); ++iter)
     {
       //std::cout << "  row=" << row << ", col=" << col << std::endl;
-      sharedptr<LayoutItem> layout_item = *iter;
+      std::shared_ptr<LayoutItem> layout_item = *iter;
 
       //Check if a child already exists:
       Glib::RefPtr<Goocanvas::Item> existing_child = 
@@ -444,7 +444,7 @@ void CanvasLayoutItem::add_portal_rows_if_necessary(const Glib::RefPtr<CanvasTab
 
 void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
 {
-  sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(m_layout_item);
+  std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>(m_layout_item);
   if(!field)
     return;
 
@@ -468,7 +468,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
       Glib::ustring text_value = Conversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
 
       //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:
-      if(text_value.empty() && sharedptr<const LayoutItem_FieldSummary>::cast_dynamic(field) && (field_type == Field::TYPE_NUMERIC))
+      if(text_value.empty() && std::dynamic_pointer_cast<const LayoutItem_FieldSummary>(field) && (field_type == Field::TYPE_NUMERIC))
       {
         //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
         const Gnome::Gda::Value value = Conversions::parse_value(0);
@@ -521,7 +521,7 @@ void CanvasLayoutItem::remove_empty_indicators()
 
 void CanvasLayoutItem::update_layout_position_from_canvas()
 {
-  sharedptr<LayoutItem> layout_item = get_layout_item();
+  std::shared_ptr<LayoutItem> layout_item = get_layout_item();
   if(!layout_item)
     return;
 

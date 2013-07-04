@@ -40,15 +40,15 @@ Base_DB_Table_Data::~Base_DB_Table_Data()
 {
 }
 
-Gnome::Gda::Value Base_DB_Table_Data::get_entered_field_data_field_only(const sharedptr<const Field>& field) const
+Gnome::Gda::Value Base_DB_Table_Data::get_entered_field_data_field_only(const std::shared_ptr<const Field>& field) const
 {
-  sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+  std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
   layout_item->set_full_field_details(field);
 
   return get_entered_field_data(layout_item);
 }
 
-Gnome::Gda::Value Base_DB_Table_Data::get_entered_field_data(const sharedptr<const LayoutItem_Field>& /* field */) const
+Gnome::Gda::Value Base_DB_Table_Data::get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& /* field */) const
 {
   //Override this to use Field::set_data() too.
 
@@ -70,7 +70,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
 
   Document* document = get_document();
 
-  sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
+  std::shared_ptr<const Field> fieldPrimaryKey = get_field_primary_key();
 
   const Glib::ustring primary_key_name = fieldPrimaryKey->get_name();
 
@@ -86,7 +86,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
     type_vecConstLayoutFields::const_iterator iterFind = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<LayoutItem_Field>((*iter)->get_name()));
     if(iterFind == fieldsToAdd.end())
     {
-      sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+      std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
       layout_item->set_full_field_details(*iter);
 
       fieldsToAdd.push_back(layout_item);
@@ -104,7 +104,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
 
   for(type_vecConstLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
   {
-    sharedptr<const LayoutItem_Field> layout_item = *iter;
+    std::shared_ptr<const LayoutItem_Field> layout_item = *iter;
     const Glib::ustring field_name = layout_item->get_name();
     if(!layout_item->get_has_relationship_name()) //TODO: Allow people to add a related record also by entering new data in a related field of the related record.
     {
@@ -113,7 +113,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
       {
         Gnome::Gda::Value value;
 
-        const sharedptr<const Field>& field = layout_item->get_full_field_details();
+        const std::shared_ptr<const Field>& field = layout_item->get_full_field_details();
         if(!field)
           continue;
         
@@ -138,7 +138,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
 
             //We need the connection when we run the script, so that the script may use it.
             // TODO: Is this function supposed to throw an exception?
-            sharedptr<SharedConnection> sharedconnection = connect_to_server(AppWindow::get_appwindow());
+            std::shared_ptr<SharedConnection> sharedconnection = connect_to_server(AppWindow::get_appwindow());
 
             Glib::ustring error_message; //TODO: Check this.
             value =
@@ -206,7 +206,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
       //Update any lookups, related fields, or calculations:
       for(type_vecConstLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
       {
-        sharedptr<const LayoutItem_Field> layout_item = *iter;
+        std::shared_ptr<const LayoutItem_Field> layout_item = *iter;
 
         //TODO_Performance: We just set this with set_entered_field_data() above. Maybe we could just remember it.
         const Gnome::Gda::Value field_value = get_entered_field_data(layout_item);
@@ -231,9 +231,9 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   return false; //Failed.
 }
 
-bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Field>& layout_item_parent,
-  const sharedptr<const Relationship>& relationship,
-  const sharedptr<const Field>& primary_key_field,
+bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<const LayoutItem_Field>& layout_item_parent,
+  const std::shared_ptr<const Relationship>& relationship,
+  const std::shared_ptr<const Field>& primary_key_field,
   const Gnome::Gda::Value& primary_key_value_provided,
   Gnome::Gda::Value& primary_key_value_used)
 {
@@ -311,7 +311,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
       if(key_is_auto_increment)
       {
         //Set the key in the parent table
-        sharedptr<LayoutItem_Field> item_from_key = sharedptr<LayoutItem_Field>::create();
+        std::shared_ptr<LayoutItem_Field> item_from_key = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
         item_from_key->set_name(relationship->get_from_field());
 
         //Show the new from key in the parent table's layout:
@@ -319,7 +319,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
 
         //Set it in the database too:
         Document* document = get_document();
-        sharedptr<Field> field_from_key = DbUtils::get_fields_for_table_one_field(document,
+        std::shared_ptr<Field> field_from_key = DbUtils::get_fields_for_table_one_field(document,
           relationship->get_from_table(), relationship->get_from_field()); //TODO_Performance.
         if(!field_from_key)
         {
@@ -327,7 +327,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
           return false;
         }
 
-        sharedptr<Field> parent_primary_key_field = get_field_primary_key();
+        std::shared_ptr<Field> parent_primary_key_field = get_field_primary_key();
         if(!parent_primary_key_field)
         {
           std::cerr << G_STRFUNC << ": get_field_primary_key() failed. table = " << get_table_name() << std::endl;
@@ -399,7 +399,7 @@ bool Base_DB_Table_Data::confirm_delete_record()
 
 bool Base_DB_Table_Data::record_delete(const Gnome::Gda::Value& primary_key_value)
 {
-  sharedptr<Field> field_primary_key = get_field_primary_key();
+  std::shared_ptr<Field> field_primary_key = get_field_primary_key();
   if(field_primary_key && !Conversions::value_is_empty(primary_key_value))
   {
     Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
@@ -423,7 +423,7 @@ Base_DB_Table_Data::type_signal_record_changed Base_DB_Table_Data::signal_record
 }
 
 
-bool Base_DB_Table_Data::get_related_record_exists(const sharedptr<const Relationship>& relationship, const Gnome::Gda::Value& key_value)
+bool Base_DB_Table_Data::get_related_record_exists(const std::shared_ptr<const Relationship>& relationship, const Gnome::Gda::Value& key_value)
 {
   BusyCursor cursor(AppWindow::get_appwindow());
 
@@ -464,7 +464,7 @@ bool Base_DB_Table_Data::get_related_record_exists(const sharedptr<const Relatio
 
 /** Get the shown fields that are in related tables, via a relationship using @a field_name changes.
  */
-Base_DB_Table_Data::type_vecConstLayoutFields Base_DB_Table_Data::get_related_fields(const sharedptr<const LayoutItem_Field>& field) const
+Base_DB_Table_Data::type_vecConstLayoutFields Base_DB_Table_Data::get_related_fields(const std::shared_ptr<const LayoutItem_Field>& field) const
 {
   type_vecConstLayoutFields result;
 
@@ -474,12 +474,12 @@ Base_DB_Table_Data::type_vecConstLayoutFields Base_DB_Table_Data::get_related_fi
     const Glib::ustring field_name = field->get_name(); //At the moment, relationships can not be based on related fields on the from side.
     for(type_vecConstLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end();  ++iter)
     {
-      const sharedptr<const LayoutItem_Field> layout_field = *iter;
+      const std::shared_ptr<const LayoutItem_Field> layout_field = *iter;
       //Examine each field that looks up its data from a relationship:
       if(layout_field->get_has_relationship_name())
       {
         //Get the relationship information:
-        sharedptr<const Relationship> relationship = document->get_relationship(m_table_name, layout_field->get_relationship_name());
+        std::shared_ptr<const Relationship> relationship = document->get_relationship(m_table_name, layout_field->get_relationship_name());
         if(relationship)
         {
           //If the relationship uses the specified field:
@@ -535,7 +535,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
         for(guint uiCol = 0; uiCol < cols_count; ++uiCol)
         {
           const Gnome::Gda::Value value = result->get_value_at(uiCol, 0 /* row */);
-          sharedptr<const LayoutItem_Field> layout_item = *iterFields;
+          std::shared_ptr<const LayoutItem_Field> layout_item = *iterFields;
           if(!layout_item)
             std::cerr << G_STRFUNC << ": The layout_item was null." << std::endl;
           else

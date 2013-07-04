@@ -57,13 +57,13 @@ Dialog_Connection::~Dialog_Connection()
 {
 }
 
-sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection_settings() const
+std::shared_ptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection_settings() const
 {
   //std::cout << "debug: Dialog_Connection::connect_to_server_with_connection_settings()" << std::endl;
 
   //TODO: BusyCursor busy_cursor(get_app_window());
 
-  sharedptr<SharedConnection> result(0);
+  std::shared_ptr<SharedConnection> result(0);
 
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   g_assert(connection_pool);

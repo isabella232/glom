@@ -61,7 +61,7 @@ public:
   {
   }
 
-  predicate_UsesRelationshipHasRelationships(const sharedptr<const UsesRelationship> uses_relationship_name, bool first_level_only = false)
+  predicate_UsesRelationshipHasRelationships(const std::shared_ptr<const UsesRelationship> uses_relationship_name, bool first_level_only = false)
   : m_relationship_name(uses_relationship_name->get_relationship_name()),
     m_related_relationship_name(uses_relationship_name->get_related_relationship_name())
   {
@@ -79,12 +79,12 @@ public:
     return (element.get_relationship_name() == m_relationship_name) && (element.get_related_relationship_name() == m_related_relationship_name);
   }
 
-  bool operator() (const sharedptr<T_Element>& element)
+  bool operator() (const std::shared_ptr<T_Element>& element)
   {
     return (element->get_relationship_name() == m_relationship_name) && (element->get_related_relationship_name() == m_related_relationship_name);
   }
 
-  bool operator() (const sharedptr<const T_Element>& element)
+  bool operator() (const std::shared_ptr<const T_Element>& element)
   {
     return (element->get_relationship_name() == m_relationship_name) && (element->get_related_relationship_name() == m_related_relationship_name);
   }
@@ -210,7 +210,7 @@ Glib::ustring Utils::string_clean_for_xml(const Glib::ustring& src)
 }
 
 
-Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Gnome::Gda::SqlExpr& where_clause, const sharedptr<const Relationship>& extra_join, const type_sort_clause& sort_clause, guint limit)
+Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Gnome::Gda::SqlExpr& where_clause, const std::shared_ptr<const Relationship>& extra_join, const type_sort_clause& sort_clause, guint limit)
 {
   //TODO_Performance:
   type_vecConstLayoutFields constFieldsToGet;
@@ -253,9 +253,9 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_count_rows(const Gl
   return result;
 }
 
-typedef std::list< sharedptr<const UsesRelationship> > type_list_relationships;
+typedef std::list< std::shared_ptr<const UsesRelationship> > type_list_relationships;
 
-static void add_to_relationships_list(type_list_relationships& list_relationships, const sharedptr<const LayoutItem_Field>& layout_item)
+static void add_to_relationships_list(type_list_relationships& list_relationships, const std::shared_ptr<const LayoutItem_Field>& layout_item)
 {
   g_return_if_fail(layout_item);
 
@@ -266,7 +266,7 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
   type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_UsesRelationshipHasRelationships<UsesRelationship>(layout_item, true /* top_level_only */) );
   if(iterFind == list_relationships.end()) //If the table is not yet in the list:
   {
-    sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::create();
+    std::shared_ptr<UsesRelationship> uses_rel = std::shared_ptr<UsesRelationship>(new UsesRelationship());
     uses_rel->set_relationship(layout_item->get_relationship());
     list_relationships.push_front(uses_rel); //These need to be at the front, so that related relationships can use them later in the SQL statement.
   }
@@ -275,7 +275,7 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
   iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_UsesRelationshipHasRelationships<UsesRelationship>(layout_item) );
   if(iterFind == list_relationships.end()) //If the table is not yet in the list:
   {
-    sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::create();
+    std::shared_ptr<UsesRelationship> uses_rel = std::shared_ptr<UsesRelationship>(new UsesRelationship());
     uses_rel->set_relationship(layout_item->get_relationship());
     uses_rel->set_related_relationship(layout_item->get_related_relationship());
     list_relationships.push_back(uses_rel);
@@ -283,9 +283,9 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
 
 }
 
-static void builder_add_join(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder, const sharedptr<const UsesRelationship>& uses_relationship)
+static void builder_add_join(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder, const std::shared_ptr<const UsesRelationship>& uses_relationship)
 {
-  sharedptr<const Relationship> relationship = uses_relationship->get_relationship();
+  std::shared_ptr<const Relationship> relationship = uses_relationship->get_relationship();
   if(!relationship->get_has_fields()) //TODO: Handle related_record has_fields.
   {
     if(relationship->get_has_to_table())
@@ -320,7 +320,7 @@ static void builder_add_join(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder
   {
      UsesRelationship parent_relationship;
      parent_relationship.set_relationship(relationship);
-     sharedptr<const Relationship> related_relationship = uses_relationship->get_related_relationship();
+     std::shared_ptr<const Relationship> related_relationship = uses_relationship->get_related_relationship();
 
      const guint to_target_id = builder->select_add_target(related_relationship->get_to_table(), alias_name);
 
@@ -338,18 +338,18 @@ static void builder_add_join(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder
 void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder, const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const type_sort_clause& sort_clause, bool extra_join)
 {
   //Get all relationships used in the query:
-  typedef std::list< sharedptr<const UsesRelationship> > type_list_relationships;
+  typedef std::list< std::shared_ptr<const UsesRelationship> > type_list_relationships;
   type_list_relationships list_relationships;
 
   for(type_vecConstLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
   {
-    sharedptr<const LayoutItem_Field> layout_item = *iter;
+    std::shared_ptr<const LayoutItem_Field> layout_item = *iter;
     add_to_relationships_list(list_relationships, layout_item);
   }
 
   for(type_sort_clause::const_iterator iter = sort_clause.begin(); iter != sort_clause.end(); ++iter)
   {
-    sharedptr<const LayoutItem_Field> layout_item = iter->first;
+    std::shared_ptr<const LayoutItem_Field> layout_item = iter->first;
     add_to_relationships_list(list_relationships, layout_item);
   }
 
@@ -358,7 +358,7 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
   //and give us our fields for this table even if there is no corresponding value in the other table.
   for(type_list_relationships::const_iterator iter = list_relationships.begin(); iter != list_relationships.end(); ++iter)
   {
-    sharedptr<const UsesRelationship> uses_relationship = *iter;
+    std::shared_ptr<const UsesRelationship> uses_relationship = *iter;
     builder_add_join(builder, uses_relationship);
   }
 
@@ -367,7 +367,7 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
   {
     Glib::ustring one_sql_part;
 
-    sharedptr<const LayoutItem_Field> layout_item = *iter;
+    std::shared_ptr<const LayoutItem_Field> layout_item = *iter;
     if(!layout_item)
     {
       g_warn_if_reached();
@@ -377,7 +377,8 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
     //Get the parent, such as the table name, or the alias name for the join:
     const Glib::ustring parent = layout_item->get_sql_table_or_join_alias_name(table_name);
 
-    const LayoutItem_FieldSummary* fieldsummary = dynamic_cast<const LayoutItem_FieldSummary*>(layout_item.obj());
+    //TODO: Use std::dynamic_pointer_cast?
+    const LayoutItem_FieldSummary* fieldsummary = dynamic_cast<const LayoutItem_FieldSummary*>(layout_item.get());
     if(fieldsummary)
     {
       const Gnome::Gda::SqlBuilder::Id id_function = builder->add_function(
@@ -410,7 +411,7 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
 }
 
 
-Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Gnome::Gda::SqlExpr& where_clause, const sharedptr<const Relationship>& extra_join, const type_sort_clause& sort_clause, guint limit)
+Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Gnome::Gda::SqlExpr& where_clause, const std::shared_ptr<const Relationship>& extra_join, const type_sort_clause& sort_clause, guint limit)
 {
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder;
 
@@ -423,11 +424,11 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(c
     //Add the fields to SELECT, plus the tables that they are selected FROM.
     //We tell it whether extra_join is empty, so it can do an extra GROUP BY if necessary.
     //TODO: Try to use DISTINCT instead, with a proper test case.
-    Utils::build_sql_select_add_fields_to_get(builder, table_name, fieldsToGet, sort_clause, extra_join /* bool */);
+    Utils::build_sql_select_add_fields_to_get(builder, table_name, fieldsToGet, sort_clause, (bool)extra_join);
 
     if(extra_join)
     {
-      sharedptr<UsesRelationship> uses_relationship = sharedptr<UsesRelationship>::create();
+      std::shared_ptr<UsesRelationship> uses_relationship = std::shared_ptr<UsesRelationship>(new UsesRelationship());
       uses_relationship->set_relationship(extra_join);
       builder_add_join(builder, uses_relationship);
     }
@@ -444,7 +445,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(c
     {
       for(type_sort_clause::const_iterator iter = sort_clause.begin(); iter != sort_clause.end(); ++iter)
       {
-        sharedptr<const LayoutItem_Field> layout_item = iter->first;
+        std::shared_ptr<const LayoutItem_Field> layout_item = iter->first;
         if(layout_item)
         {
           const bool ascending = iter->second;
@@ -472,7 +473,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(c
 }
 
 
-Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value, const type_sort_clause& sort_clause, guint limit)
+Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const std::shared_ptr<const Field>& key_field, const Gnome::Gda::Value& key_value, const type_sort_clause& sort_clause, guint limit)
 {
   //TODO_Performance:
   type_vecConstLayoutFields constFieldsToGet;
@@ -484,7 +485,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib
   return build_sql_select_with_key(table_name, constFieldsToGet, key_field, key_value, sort_clause, limit);
 }
 
-Gnome::Gda::SqlExpr Utils::build_simple_where_expression(const Glib::ustring& table_name, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
+Gnome::Gda::SqlExpr Utils::build_simple_where_expression(const Glib::ustring& table_name, const std::shared_ptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
 {
   if(!key_field)
   {
@@ -514,7 +515,7 @@ Gnome::Gda::SqlExpr Utils::build_combined_where_expression(const Gnome::Gda::Sql
   return builder->export_expression(id);
 }
 
-Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value, const type_sort_clause& sort_clause, guint limit)
+Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const std::shared_ptr<const Field>& key_field, const Gnome::Gda::Value& key_value, const type_sort_clause& sort_clause, guint limit)
 {
   //We choose instead to have no where clause in this case,
   //because that is useful to some callers:
@@ -528,16 +529,16 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib
   }
 
   return Utils::build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause,
-    sharedptr<const Relationship>(), sort_clause, limit);
+    std::shared_ptr<const Relationship>(), sort_clause, limit);
 }
 
-Utils::type_list_values_with_second Utils::get_choice_values_all(const Document* document, const sharedptr<const LayoutItem_Field>& field)
+Utils::type_list_values_with_second Utils::get_choice_values_all(const Document* document, const std::shared_ptr<const LayoutItem_Field>& field)
 {
   return get_choice_values(document, field,
     Gnome::Gda::Value() /* means get all with no WHERE clause */);
 }
 
-Utils::type_list_values_with_second Utils::get_choice_values(const Document* document, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value)
+Utils::type_list_values_with_second Utils::get_choice_values(const Document* document, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value)
 {
   //TODO: Reduce duplication between this and get_choice_values(field).
 
@@ -553,9 +554,9 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
   */
 
   const Formatting& format = field->get_formatting_used();
-  sharedptr<const Relationship> choice_relationship;
-  sharedptr<const LayoutItem_Field> layout_choice_first;
-  sharedptr<const LayoutGroup> layout_choice_extra;
+  std::shared_ptr<const Relationship> choice_relationship;
+  std::shared_ptr<const LayoutItem_Field> layout_choice_first;
+  std::shared_ptr<const LayoutGroup> layout_choice_extra;
   Formatting::type_list_sort_fields choice_sort_fields;
   bool choice_show_all = false;
   format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_extra, choice_sort_fields, choice_show_all);
@@ -575,15 +576,15 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
     for(LayoutGroup::type_list_const_items::const_iterator iter = extra_fields.begin();
       iter != extra_fields.end(); ++iter)
     {
-      const sharedptr<const LayoutItem> item = *iter;
-      const sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
+      const std::shared_ptr<const LayoutItem> item = *iter;
+      const std::shared_ptr<const LayoutItem_Field> item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
       if(item_field)
          fields.push_back(item_field); //TODO: Don't ignore other usable items such as static text.
     }
   }
 
   const Glib::ustring to_table = choice_relationship->get_to_table();
-  const sharedptr<const Field> to_field = document->get_field(to_table, choice_relationship->get_to_field());
+  const std::shared_ptr<const Field> to_field = document->get_field(to_table, choice_relationship->get_to_field());
 
   if(!to_field)
   {
@@ -613,7 +614,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
   //TODO: builder->select_order_by(choice_field_id);
 
   //Connect to database and get the related values:
-  sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();
+  std::shared_ptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();
 
   if(!connection)
   {
@@ -1030,7 +1031,7 @@ bool Utils::file_exists(const Glib::RefPtr<Gio::File>& file)
 //Merge all db utilities into db_utils in glom 1.24:
 static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
 {
-  sharedptr<SharedConnection> sharedconnection;
+  std::shared_ptr<SharedConnection> sharedconnection;
   try
   {
      sharedconnection = ConnectionPool::get_and_connect();
@@ -1146,13 +1147,13 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const Document* document,
   const Document::type_vec_fields fields = document->get_table_fields(table_name);
 
   guint previous_id = 0;
-  typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
+  typedef std::vector< std::shared_ptr<LayoutItem_Field> > type_vecLayoutFields;
   type_vecLayoutFields fieldsToGet;
   for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
   {
     Glib::ustring strClausePart;
 
-    sharedptr<const Field> field = *iter;
+    std::shared_ptr<const Field> field = *iter;
 
     bool use_this_field = true;
     if(field->get_glom_type() != Field::TYPE_TEXT)
@@ -1193,7 +1194,7 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const Document* document,
 
 Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_update_with_where_clause(
   const Glib::ustring& table_name,
-  const sharedptr<const Field>& field, const Gnome::Gda::Value& value,
+  const std::shared_ptr<const Field>& field, const Gnome::Gda::Value& value,
   const Gnome::Gda::SqlExpr& where_clause)
 {
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder;
@@ -1393,7 +1394,7 @@ Glib::ustring Utils::get_list_of_layout_items_for_display(const LayoutGroup::typ
   Glib::ustring result;
   for(LayoutGroup::type_list_items::const_iterator iter = list_layout_fields.begin(); iter != list_layout_fields.end(); ++iter)
   {
-    const sharedptr<LayoutItem> item = *iter;
+    const std::shared_ptr<LayoutItem> item = *iter;
     if(item)
     {
       if(!result.empty())
@@ -1406,7 +1407,7 @@ Glib::ustring Utils::get_list_of_layout_items_for_display(const LayoutGroup::typ
   return result;
 }
 
-Glib::ustring Utils::get_list_of_layout_items_for_display(const sharedptr<const LayoutGroup>& layout_group)
+Glib::ustring Utils::get_list_of_layout_items_for_display(const std::shared_ptr<const LayoutGroup>& layout_group)
 {
   if(layout_group)
     return get_list_of_layout_items_for_display(layout_group->m_list_items);
@@ -1419,7 +1420,7 @@ Glib::ustring Utils::get_list_of_sort_fields_for_display(const Formatting::type_
   Glib::ustring text;
   for(Formatting::type_list_sort_fields::const_iterator iter = sort_fields.begin(); iter != sort_fields.end(); ++iter)
   {
-    const sharedptr<const LayoutItem_Field> item = iter->first;
+    const std::shared_ptr<const LayoutItem_Field> item = iter->first;
     if(!item)
       continue;
     
@@ -1510,14 +1511,14 @@ LayoutGroup::type_list_const_items Utils::get_layout_items_plus_primary_key(cons
     return items;
   }
 
-  const sharedptr<Field> field_primary_key = document->get_field_primary_key(table_name);
+  const std::shared_ptr<Field> field_primary_key = document->get_field_primary_key(table_name);
   if(!field_primary_key)
   {
     std::cerr << G_STRFUNC << ": Could not find the primary key." << std::endl;
     return items;
   }
 
-  sharedptr<LayoutItem_Field> pk_layout_item = sharedptr<LayoutItem_Field>::create();
+  std::shared_ptr<LayoutItem_Field> pk_layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
   pk_layout_item->set_hidden();
   pk_layout_item->set_full_field_details(field_primary_key);
   
@@ -1539,14 +1540,14 @@ LayoutGroup::type_list_items Utils::get_layout_items_plus_primary_key(const Layo
     return items;
   }
 
-  const sharedptr<Field> field_primary_key = document->get_field_primary_key(table_name);
+  const std::shared_ptr<Field> field_primary_key = document->get_field_primary_key(table_name);
   if(!field_primary_key)
   {
     std::cerr << G_STRFUNC << ": Could not find the primary key." << std::endl;
     return items;
   }
 
-  sharedptr<LayoutItem_Field> pk_layout_item = sharedptr<LayoutItem_Field>::create();
+  std::shared_ptr<LayoutItem_Field> pk_layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
   pk_layout_item->set_hidden();
   pk_layout_item->set_full_field_details(field_primary_key);
   

@@ -23,6 +23,7 @@
 
 #include <libglom/document/document.h>
 #include <libglom/data_structure/system_prefs.h>
+#include <memory> //For shared_ptr<>.
 
 namespace Glom
 {
@@ -61,7 +62,7 @@ bool add_standard_groups(Document* document);
 bool add_groups_from_document(const Document* document);
 bool set_table_privileges_groups_from_document(const Document* document);
 
-typedef std::vector< sharedptr<Field> > type_vec_fields;
+typedef std::vector< std::shared_ptr<Field> > type_vec_fields;
 type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_name, bool including_system_fields = false);
 bool get_field_exists_in_database(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
@@ -79,7 +80,7 @@ type_vec_fields get_fields_for_table(const Document* document, const Glib::ustri
  * @param field_name The name of the field for which to get the definition.
  * @result The field definition.
  */
-sharedptr<Field> get_fields_for_table_one_field(const Document* document, const Glib::ustring& table_name, const Glib::ustring& field_name);
+std::shared_ptr<Field> get_fields_for_table_one_field(const Document* document, const Glib::ustring& table_name, const Glib::ustring& field_name);
 
 typedef std::vector<Glib::ustring> type_vec_strings;
 
@@ -90,16 +91,16 @@ type_vec_strings get_table_names_from_database(bool ignore_system_tables = false
 
 bool get_table_exists_in_database(const Glib::ustring& table_name);
 
-bool create_table(Document::HostingMode hosting_mode, const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields);
+bool create_table(Document::HostingMode hosting_mode, const std::shared_ptr<const TableInfo>& table_info, const Document::type_vec_fields& fields);
 
 /// Also saves the table information in the document:
 bool create_table_with_default_fields(Document* document, const Glib::ustring& table_name);
 
-bool create_table_add_missing_fields(const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields);
+bool create_table_add_missing_fields(const std::shared_ptr<const TableInfo>& table_info, const Document::type_vec_fields& fields);
 
 // TODO: Should these functions update the document, so callers don't need
 // to do it?
-bool add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field, Gtk::Window* parent_window);
+bool add_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field, Gtk::Window* parent_window);
 
 bool drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
@@ -144,16 +145,18 @@ Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name,
  */
 void remove_auto_increment(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
-void layout_item_fill_field_details(const Document* document, const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item);
+void layout_item_fill_field_details(const Document* document, const Glib::ustring& parent_table_name, std::shared_ptr<LayoutItem_Field>& layout_item);
 
 
+//TODO: It would be nice to use std::shared_ptr<const Relationship>& instead of std::shared_ptr<Relationship>&,
+//but it does not seem possible to pass a std::shared_ptr<const Relationship> for a std::shared_ptr<const Relationship>&.
 /** Decides whether a field should have an Open button next to it,
  * allowing the user to navigate to a related record.
  *
  * @param layout_item A field on a layout. This must have full field details.
  * @param field_used_in_relationship_to_one A relationship, if the field identifies a single record, so a Find button would also make sense, to choose the ID, in editing mode.
  */
-bool layout_field_should_have_navigation(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_item, const Document* document, sharedptr<const Relationship>& field_used_in_relationship_to_one);
+bool layout_field_should_have_navigation(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& layout_item, const Document* document, std::shared_ptr<Relationship>& field_used_in_relationship_to_one);
 
 /** Discover a database name that is not yet used.
  * This assumes that all other connection details are correctly set.
@@ -214,12 +217,12 @@ bool remove_user_from_group(const Glib::ustring& user, const Glib::ustring& grou
 
 /** Get the value of the @a source_field from the @a relationship, using the @a key_value.
  */
-Gnome::Gda::Value get_lookup_value(const Document* document, const Glib::ustring& table_name, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value& key_value);
+Gnome::Gda::Value get_lookup_value(const Document* document, const Glib::ustring& table_name, const std::shared_ptr<const Relationship>& relationship, const std::shared_ptr<const Field>& source_field, const Gnome::Gda::Value & key_value);
 
 typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
 
 //TODO: Performance: This is massively inefficient:
-type_map_fields get_record_field_values(const Document* document, const Glib::ustring& table_name, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
+type_map_fields get_record_field_values(const Document* document, const Glib::ustring& table_name, const std::shared_ptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
   
 /** Allow a fake connection, so sqlbuilder_get_full_query() can work.
  */

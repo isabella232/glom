@@ -114,7 +114,7 @@ void Dialog_SortFields::set_fields(const Glib::ustring& table_name, const Layout
     guint field_sequence = 0;
     for(LayoutItem_GroupBy::type_list_sort_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
-      sharedptr<const LayoutItem_Field> item = sharedptr<const LayoutItem_Field>::cast_dynamic(iter->first);
+      std::shared_ptr<const LayoutItem_Field> item = std::dynamic_pointer_cast<const LayoutItem_Field>(iter->first);
 
       Gtk::TreeModel::iterator iterTree = m_model_fields->append();
       Gtk::TreeModel::Row row = *iterTree;
@@ -192,11 +192,11 @@ LayoutItem_GroupBy::type_list_sort_fields Dialog_SortFields::get_fields() const
   {
     Gtk::TreeModel::Row row = *iterFields;
 
-    sharedptr<const LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item];
+    std::shared_ptr<const LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item];
     const Glib::ustring field_name = item->get_name();
     if(!field_name.empty())
     {
-      sharedptr<LayoutItem_Field> field_copy = glom_sharedptr_clone(item);
+      std::shared_ptr<LayoutItem_Field> field_copy = glom_sharedptr_clone(item);
 
       const bool ascending = row[m_ColumnsFields.m_col_ascending];
       result.push_back( LayoutItem_GroupBy::type_pair_sort_field(field_copy, ascending) );
@@ -220,7 +220,7 @@ void Dialog_SortFields::on_button_add_field()
   for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); ++iter_chosen) 
   {
 
-    sharedptr<LayoutItem_Field> field = *iter_chosen;
+    std::shared_ptr<LayoutItem_Field> field = *iter_chosen;
     if(!field)
       continue;
 
@@ -272,7 +272,7 @@ void Dialog_SortFields::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk
     {
       Gtk::TreeModel::Row row = *iter;
 
-      sharedptr<const LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item]; //TODO_performance: Reduce copying.
+      std::shared_ptr<const LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item]; //TODO_performance: Reduce copying.
       renderer_text->property_markup() = item->get_layout_display_name();
       renderer_text->property_editable() = false; //Names can never be edited.
     }
@@ -290,10 +290,10 @@ void Dialog_SortFields::on_button_edit_field()
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      sharedptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
+      std::shared_ptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
 
       //Get the chosen field:
-      sharedptr<LayoutItem_Field> field_chosen = 
+      std::shared_ptr<LayoutItem_Field> field_chosen = 
         offer_field_list_select_one_field(field, m_table_name, this);
       if(field_chosen)
 

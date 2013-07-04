@@ -105,7 +105,7 @@ Dialog_Layout_Calendar_Related::~Dialog_Layout_Calendar_Related()
 }
 
 
-void Dialog_Layout_Calendar_Related::init_with_portal(const Glib::ustring& layout, const Glib::ustring& layout_platform, Document* document, const sharedptr<const LayoutItem_CalendarPortal>& portal)
+void Dialog_Layout_Calendar_Related::init_with_portal(const Glib::ustring& layout, const Glib::ustring& layout_platform, Document* document, const std::shared_ptr<const LayoutItem_CalendarPortal>& portal)
 {
   m_portal = glom_sharedptr_clone(portal);
 
@@ -120,7 +120,7 @@ void Dialog_Layout_Calendar_Related::init_with_tablename(const Glib::ustring& la
 {
   if(!m_portal)
   {
-    m_portal = sharedptr<LayoutItem_CalendarPortal>::create(); //The rest of the class assumes that this is not null.
+    m_portal = std::shared_ptr<LayoutItem_CalendarPortal>(new LayoutItem_CalendarPortal()); //The rest of the class assumes that this is not null.
   }
 
   type_vecConstLayoutFields empty_fields; //Just to satisfy the base class.
@@ -168,7 +168,7 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
     }
 
     //Set the table name and title:
-    //sharedptr<LayoutItem_CalendarPortal> portal_temp = m_portal;
+    //std::shared_ptr<LayoutItem_CalendarPortal> portal_temp = m_portal;
     m_combo_relationship->set_selected_relationship(m_portal->get_relationship(), m_portal->get_related_relationship());
 
     Document::type_list_layout_groups mapGroups;
@@ -185,14 +185,14 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
 
     for(Document::type_list_layout_groups::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
     {
-      sharedptr<const LayoutGroup> group = *iter;
-      sharedptr<const LayoutGroup> portal = sharedptr<const LayoutItem_CalendarPortal>::cast_dynamic(group);
+      std::shared_ptr<const LayoutGroup> group = *iter;
+      std::shared_ptr<const LayoutGroup> portal = std::dynamic_pointer_cast<const LayoutItem_CalendarPortal>(group);
       if(portal)
       {
         for(LayoutGroup::type_list_items::const_iterator iterInner = group->m_list_items.begin(); iterInner != group->m_list_items.end(); ++iterInner)
         {
-          sharedptr<const LayoutItem> item = *iterInner;
-          sharedptr<const LayoutGroup> groupInner = sharedptr<const LayoutGroup>::cast_dynamic(item);
+          std::shared_ptr<const LayoutItem> item = *iterInner;
+          std::shared_ptr<const LayoutGroup> groupInner = std::dynamic_pointer_cast<const LayoutGroup>(item);
 
           if(groupInner)
             add_group(Gtk::TreeModel::iterator() /* null == top-level */, groupInner);
@@ -216,7 +216,7 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
   bool navigation_is_automatic = false;
   if(m_portal->get_navigation_type() == LayoutItem_Portal::NAVIGATION_SPECIFIC)
   {
-    sharedptr<UsesRelationship> navrel = m_portal->get_navigation_relationship_specific();
+    std::shared_ptr<UsesRelationship> navrel = m_portal->get_navigation_relationship_specific();
     //std::cout << "debug navrel=" << navrel->get_relationship()->get_name() << std::endl;
     m_combo_navigation_specify->set_selected_relationship(navrel->get_relationship(), navrel->get_related_relationship());
   }
@@ -224,7 +224,7 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
   {
     navigation_is_automatic = true;
 
-    sharedptr<const Relationship> none;
+    std::shared_ptr<const Relationship> none;
     m_combo_navigation_specify->set_selected_relationship(none);
   }
 
@@ -235,7 +235,7 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
 
 
   //Describe the automatic navigation:
-  sharedptr<const UsesRelationship> relationship_navigation_automatic
+  std::shared_ptr<const UsesRelationship> relationship_navigation_automatic
     = m_portal->get_portal_navigation_relationship_automatic(document);
   Glib::ustring automatic_navigation_description = 
     m_portal->get_relationship_name_used(); //TODO: Use get_relationship_display_name() instead?
@@ -251,7 +251,7 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
 
   m_label_navigation_automatic->set_text(automatic_navigation_description);
 
-  sharedptr<Field> debugfield = m_portal->get_date_field();
+  std::shared_ptr<Field> debugfield = m_portal->get_date_field();
   if(!debugfield)
     std::cout << "debug: " << G_STRFUNC << ": date field is NULL" << std::endl;
   else
@@ -283,7 +283,7 @@ void Dialog_Layout_Calendar_Related::save_to_document()
     {
       Gtk::TreeModel::Row row = *iterFields;
 
-      sharedptr<LayoutItem> item = row[m_model_items->m_columns.m_col_layout_item];
+      std::shared_ptr<LayoutItem> item = row[m_model_items->m_columns.m_col_layout_item];
       const Glib::ustring field_name = item->get_name();
       if(!field_name.empty())
       {
@@ -295,10 +295,10 @@ void Dialog_Layout_Calendar_Related::save_to_document()
 
     if(m_radio_navigation_specify->get_active())
     {
-      sharedptr<Relationship> rel, rel_related;
+      std::shared_ptr<Relationship> rel, rel_related;
       rel = m_combo_navigation_specify->get_selected_relationship(rel_related);
 
-      sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::create();
+      std::shared_ptr<UsesRelationship> uses_rel = std::shared_ptr<UsesRelationship>(new UsesRelationship());
       uses_rel->set_relationship(rel);
       uses_rel->set_related_relationship(rel_related);
 
@@ -309,13 +309,13 @@ void Dialog_Layout_Calendar_Related::save_to_document()
     else
     {
       //std::cout << "debug: set_navigation_relationship_specific(false, none)" << std::endl;
-      sharedptr<UsesRelationship> none;
+      std::shared_ptr<UsesRelationship> none;
       m_portal->set_navigation_relationship_specific(none);
     }
 
     m_portal->set_date_field( m_combobox_date_field->get_selected_field() );
 
-    sharedptr<Field> debugfield = m_portal->get_date_field();
+    std::shared_ptr<Field> debugfield = m_portal->get_date_field();
     if(!debugfield)
       std::cout << "debug: " << G_STRFUNC << ": date field is NULL" << std::endl;
     else
@@ -333,8 +333,8 @@ void Dialog_Layout_Calendar_Related::on_combo_relationship_changed()
   if(!m_portal)
     return;
 
-  sharedptr<Relationship> relationship_related;
-  sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship(relationship_related);
+  std::shared_ptr<Relationship> relationship_related;
+  std::shared_ptr<Relationship> relationship = m_combo_relationship->get_selected_relationship(relationship_related);
   if(relationship)
   {
     //Clear the list of fields if the relationship has changed, because the fields could not possible be correct for the new table:
@@ -358,7 +358,7 @@ void Dialog_Layout_Calendar_Related::on_combo_relationship_changed()
   }
 }
 
-sharedptr<Relationship> Dialog_Layout_Calendar_Related::get_relationship() const
+std::shared_ptr<Relationship> Dialog_Layout_Calendar_Related::get_relationship() const
 {
   std::cout << "debug: I wonder if this function is used." << std::endl;
   return m_combo_relationship->get_selected_relationship();
@@ -384,7 +384,7 @@ void Dialog_Layout_Calendar_Related::on_button_add_field()
   type_list_field_items fields_list = offer_field_list(m_table_name, this);
   for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); ++iter_chosen)
   {
-    sharedptr<LayoutItem_Field> field = *iter_chosen;
+    std::shared_ptr<LayoutItem_Field> field = *iter_chosen;
     if(!field)
       continue;
 
@@ -415,11 +415,11 @@ void Dialog_Layout_Calendar_Related::on_button_edit()
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
-      sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+      std::shared_ptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+      std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
 
       //Get the chosen field:
-      sharedptr<LayoutItem_Field> field_chosen = offer_field_list_select_one_field(field, m_portal->get_table_used(m_table_name), this);
+      std::shared_ptr<LayoutItem_Field> field_chosen = offer_field_list_select_one_field(field, m_portal->get_table_used(m_table_name), this);
       if(field_chosen)
       {
         //Set the field details in the layout treeview:
@@ -441,7 +441,7 @@ void Dialog_Layout_Calendar_Related::on_button_edit()
   }
 }
 
-sharedptr<LayoutItem_CalendarPortal> Dialog_Layout_Calendar_Related::get_portal_layout()
+std::shared_ptr<LayoutItem_CalendarPortal> Dialog_Layout_Calendar_Related::get_portal_layout()
 {
   return m_portal;
 }

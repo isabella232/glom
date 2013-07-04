@@ -70,7 +70,7 @@ public:
 private:
   Action get_action_impl(Gtk::TreeModel::iterator& iter) const;
 
-  std::auto_ptr<Gtk::TreeModel::iterator> create_dummy_item_existing(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text);
+  std::shared_ptr<Gtk::TreeModel::iterator> create_dummy_item_existing(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text);
 
 
   void existing_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
@@ -85,7 +85,7 @@ private:
   void update_ui_sensitivity();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  std::auto_ptr<Gtk::TreeModel::iterator> create_dummy_item_new(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text);
+  std::shared_ptr<Gtk::TreeModel::iterator> create_dummy_item_new(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text);
   void on_new_selection_changed();
   void new_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
   void new_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
@@ -172,7 +172,7 @@ private:
   Gtk::CellRendererText m_new_title_renderer;
   Gtk::TreeModel::iterator m_iter_new_empty;
   Gtk::TreeModel::iterator m_iter_new_template;
-  std::auto_ptr<Gtk::TreeModel::iterator> m_iter_new_template_dummy;
+  std::shared_ptr<Gtk::TreeModel::iterator> m_iter_new_template_dummy;
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
   Gtk::TreeViewColumn m_existing_column_title;
@@ -189,14 +189,14 @@ private:
  
   // Dummy children to indicate that a parent item has no (real) children
 #ifndef G_OS_WIN32
-  std::auto_ptr<Gtk::TreeModel::iterator> m_iter_existing_network_dummy;
+  std::shared_ptr<Gtk::TreeModel::iterator> m_iter_existing_network_dummy;
 #endif
-  std::auto_ptr<Gtk::TreeModel::iterator> m_iter_existing_recent_dummy;
+  std::shared_ptr<Gtk::TreeModel::iterator> m_iter_existing_recent_dummy;
 
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   struct buffer { static const guint SIZE = 1024; char buf[SIZE]; };
-  std::auto_ptr<buffer> m_current_buffer;
+  std::shared_ptr<buffer> m_current_buffer;
 #endif /* !GLOM_ENABLE_CLIENT_ONLY */
     
 #ifndef G_OS_WIN32

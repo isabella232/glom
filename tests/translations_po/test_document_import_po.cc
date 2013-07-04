@@ -100,7 +100,7 @@ int main()
 
 
   //Check that some expected translated titles are now in the document:
-  Glom::sharedptr<const Glom::TableInfo> table = document.get_table("scenes");
+  std::shared_ptr<const Glom::TableInfo> table = document.get_table("scenes");
   g_assert(table);
   g_assert( table->get_title_original() == "Scenes" ); //The original title should be unchanged:
 
@@ -111,7 +111,7 @@ int main()
     return EXIT_FAILURE;
   }
 
-  const Glom::sharedptr<const Glom::Report> report = document.get_report("crew", "crew_list");
+  const std::shared_ptr<const Glom::Report> report = document.get_report("crew", "crew_list");
   g_assert(report);
   g_assert(report->get_title_original() == "Crew List"); //The original title should be unchanged:
 

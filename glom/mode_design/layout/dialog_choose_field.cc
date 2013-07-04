@@ -77,7 +77,7 @@ Dialog_ChooseField::~Dialog_ChooseField()
 {
 }
 
-void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field)
+void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& field)
 {
   set_document(document, table_name);
 
@@ -132,7 +132,7 @@ void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& t
 {
   m_document = document;
   m_table_name = table_name;
-  m_start_field.clear();
+  m_start_field.reset();
 
   if(!m_document)
   {
@@ -171,7 +171,7 @@ void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& t
       Gtk::TreeModel::iterator iterRow = m_model->append();
       Gtk::TreeModel::Row row = *iterRow;
 
-      sharedptr<Field> field = *iter;
+      std::shared_ptr<Field> field = *iter;
       row[m_ColumnsFields.m_col_name] = field->get_name();
       row[m_ColumnsFields.m_col_title] = item_get_title(field);
       row[m_ColumnsFields.m_col_field] = field;
@@ -200,9 +200,9 @@ void Dialog_ChooseField::select_item(const Field& field)
 }
 */
 
-sharedptr<LayoutItem_Field> Dialog_ChooseField::get_field_chosen() const
+std::shared_ptr<LayoutItem_Field> Dialog_ChooseField::get_field_chosen() const
 {
-  sharedptr<LayoutItem_Field> field;
+  std::shared_ptr<LayoutItem_Field> field;
 
   type_list_field_items list_fields = get_fields_chosen();
   if(!(list_fields.empty()))
@@ -240,8 +240,8 @@ Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen(
     
   //Relationship:
   //Note that a null relationship means that the parent table was selected instead.
-  sharedptr<Relationship> related_relationship;
-  sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship(related_relationship);
+  std::shared_ptr<Relationship> related_relationship;
+  std::shared_ptr<Relationship> relationship = m_combo_relationship->get_selected_relationship(related_relationship);
 
     
   typedef std::vector<Gtk::TreeModel::Path> type_list_paths;
@@ -256,12 +256,12 @@ Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen(
 
     // Setup a LayoutItem_Field for the Field, 
     // so is_same_field() can work:
-    sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::create();
+    std::shared_ptr<LayoutItem_Field> field = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
     field->set_relationship(relationship);
     field->set_related_relationship(related_relationship);
       
     Gtk::TreeModel::Row row = *tree_iter;
-    sharedptr<Field> field_details = row[m_ColumnsFields.m_col_field];
+    std::shared_ptr<Field> field_details = row[m_ColumnsFields.m_col_field];
     field->set_full_field_details(field_details); 
       
     // Start with the original LayoutItem_Field, 
@@ -269,7 +269,7 @@ Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen(
     if(m_start_field && m_start_field->is_same_field(field))
       field = m_start_field; 
     else
-      field = sharedptr<LayoutItem_Field>::create();
+      field = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
 
     //Use the chosen field:
     field->set_relationship(relationship);
@@ -298,8 +298,8 @@ void Dialog_ChooseField::on_checkbutton_related_relationships_toggled()
   const bool show_related_relationships = m_checkbutton_show_related_relationships->get_active();
 
   //Preserve the selection:
-  sharedptr<Relationship> related_relationship;
-  sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship(related_relationship);
+  std::shared_ptr<Relationship> related_relationship;
+  std::shared_ptr<Relationship> relationship = m_combo_relationship->get_selected_relationship(related_relationship);
 
   //Refresh the list, hiding or showing the child relationships:
   m_combo_relationship->set_relationships(m_document, m_table_name, show_related_relationships);
@@ -309,7 +309,7 @@ void Dialog_ChooseField::on_checkbutton_related_relationships_toggled()
 
 void Dialog_ChooseField::on_combo_relationship_changed()
 {
-  sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship();
+  std::shared_ptr<Relationship> relationship = m_combo_relationship->get_selected_relationship();
 
   Document* pDocument = m_document;
   if(pDocument)
@@ -330,7 +330,7 @@ void Dialog_ChooseField::on_combo_relationship_changed()
       Gtk::TreeModel::iterator iterRow = m_model->append();
       Gtk::TreeModel::Row row = *iterRow;
 
-      sharedptr<Field> field = *iter;
+      std::shared_ptr<Field> field = *iter;
       row[m_ColumnsFields.m_col_name] = field->get_name();
       row[m_ColumnsFields.m_col_title] = item_get_title(field);
       row[m_ColumnsFields.m_col_field] = field;

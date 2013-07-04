@@ -44,9 +44,9 @@ public:
   Dialog_ButtonScript(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_ButtonScript();
 
-  void set_script(const sharedptr<const LayoutItem_Button>& script, const Glib::ustring& table_name);
-  sharedptr<LayoutItem_Button> get_script() const;
-  void get_script (const sharedptr<LayoutItem_Button>& script) const;
+  void set_script(const std::shared_ptr<const LayoutItem_Button>& script, const Glib::ustring& table_name);
+  std::shared_ptr<LayoutItem_Button> get_script() const;
+  void get_script (const std::shared_ptr<LayoutItem_Button>& script) const;
 
 private:
   void on_button_test_script();
@@ -55,7 +55,7 @@ private:
   Gsv::View* m_text_view_script;
   Gtk::Button* m_button_test_script;
 
-  sharedptr<LayoutItem_Button> m_script;
+  std::shared_ptr<LayoutItem_Button> m_script;
   Glib::ustring m_table_name;
 };
 

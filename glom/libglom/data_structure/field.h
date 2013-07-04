@@ -54,12 +54,12 @@ public:
     return (element.get_name() == m_strName);
   }
 
-  bool operator() (const sharedptr<T_Element>& element)
+  bool operator() (const std::shared_ptr<T_Element>& element)
   {
     return (element->get_name() == m_strName);
   }
 
-  bool operator() (const sharedptr<const T_Element>& element)
+  bool operator() (const std::shared_ptr<const T_Element>& element)
   {
     return (element->get_name() == m_strName);
   }
@@ -150,8 +150,8 @@ public:
   //Lookup stuff:
   bool get_is_lookup() const;
 
-  sharedptr<Relationship> get_lookup_relationship() const;
-  void set_lookup_relationship(const sharedptr<Relationship>& strRelationship);
+  std::shared_ptr<Relationship> get_lookup_relationship() const;
+  void set_lookup_relationship(const std::shared_ptr<Relationship>& strRelationship);
 
   Glib::ustring get_lookup_field() const;
   void set_lookup_field(const Glib::ustring& strField);
@@ -253,7 +253,7 @@ private:
   glom_field_type m_glom_type;
   Glib::RefPtr<Gnome::Gda::Column> m_field_info;
 
-  sharedptr<Relationship> m_lookup_relationship;
+  std::shared_ptr<Relationship> m_lookup_relationship;
   Glib::ustring m_strLookupField;
   Glib::ustring m_calculation;
   bool m_visible; //Whether it will be shown to the user.

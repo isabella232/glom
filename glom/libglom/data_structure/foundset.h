@@ -48,12 +48,12 @@ private:
 
 public:
   Glib::ustring m_table_name;
-  sharedptr<const Relationship> m_extra_join; // Only used for doubly-related related records (portals), in which case the WHERE clause is also slightly different.
+  std::shared_ptr<const Relationship> m_extra_join; // Only used for doubly-related related records (portals), in which case the WHERE clause is also slightly different.
   Gnome::Gda::SqlExpr m_where_clause;
 
   //TODO: Avoid duplication with types in Formatting.
   ///field, ascending
-  typedef std::pair< sharedptr<const LayoutItem_Field>, bool> type_pair_sort_field;
+  typedef std::pair< std::shared_ptr<const LayoutItem_Field>, bool> type_pair_sort_field;
   typedef std::vector<type_pair_sort_field> type_sort_clause;
   type_sort_clause m_sort_clause;
 };

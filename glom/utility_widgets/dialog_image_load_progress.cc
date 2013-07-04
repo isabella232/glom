@@ -165,7 +165,7 @@ void DialogImageLoadProgress::error(const Glib::ustring& error_message)
   response(Gtk::RESPONSE_REJECT);
 }
 
-std::auto_ptr<GdaBinary> DialogImageLoadProgress::get_image_data()
+std::shared_ptr<GdaBinary> DialogImageLoadProgress::get_image_data()
 {
   return m_data;
 }

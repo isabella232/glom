@@ -53,7 +53,7 @@ ComboBox_Fields::~ComboBox_Fields()
 
 }
 
-sharedptr<Field> ComboBox_Fields::get_selected_field() const
+std::shared_ptr<Field> ComboBox_Fields::get_selected_field() const
 {
   Gtk::TreeModel::iterator iter = get_active();
   if(iter)
@@ -62,16 +62,16 @@ sharedptr<Field> ComboBox_Fields::get_selected_field() const
     return row[m_model_columns.m_field];
   }
   else
-    return sharedptr<Field>();
+    return std::shared_ptr<Field>();
 }
 
 Glib::ustring ComboBox_Fields::get_selected_field_name() const
 {
-  sharedptr<Field> field = get_selected_field();
+  std::shared_ptr<Field> field = get_selected_field();
   return glom_get_sharedptr_name(field);
 }
 
-void ComboBox_Fields::set_selected_field(const sharedptr<const Field>& field)
+void ComboBox_Fields::set_selected_field(const std::shared_ptr<const Field>& field)
 {
   if(field)
     set_selected_field(field->get_name());
@@ -88,7 +88,7 @@ void ComboBox_Fields::set_selected_field(const Glib::ustring& field_name)
     for(Gtk::TreeModel::iterator iter = model->children().begin(); iter != model->children().end(); ++iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      sharedptr<Field> field = row[m_model_columns.m_field];
+      std::shared_ptr<Field> field = row[m_model_columns.m_field];
       const Glib::ustring this_name = glom_get_sharedptr_name(field);
 
       //(An empty name means Select the parent table item.)
@@ -126,7 +126,7 @@ void ComboBox_Fields::set_fields(Document* document, const Glib::ustring parent_
     Gtk::TreeModel::iterator tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;
 
-    sharedptr<Field> rel = *iter;
+    std::shared_ptr<Field> rel = *iter;
     row[m_model_columns.m_field] = rel;
     row[m_model_columns.m_separator] = false;
   }
@@ -147,7 +147,7 @@ void ComboBox_Fields::set_fields(Document* document, const Glib::ustring parent_
   //Fill the model:
   for(type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
   {
-    sharedptr<Field> rel = *iter;
+    std::shared_ptr<Field> rel = *iter;
     if(rel && (rel->get_glom_type() == field_type))
     {
       std::cout << "DEBUG: ComboBox_Fields::set_fields() 1" << std::endl;
@@ -174,14 +174,14 @@ void ComboBox_Fields::set_fields(const type_vec_fields& fields, bool with_none_i
     Gtk::TreeModel::iterator tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;
 
-    row[m_model_columns.m_field] = sharedptr<Field>(); 
+    row[m_model_columns.m_field] = std::shared_ptr<Field>(); 
     row[m_model_columns.m_separator] = false;
 
     //Add a separator after the "None" item:
     tree_iter = m_model->append();
     row = *tree_iter;
 
-    row[m_model_columns.m_field] = sharedptr<Field>(); 
+    row[m_model_columns.m_field] = std::shared_ptr<Field>(); 
     row[m_model_columns.m_separator] = true;
   }
 
@@ -199,7 +199,7 @@ void ComboBox_Fields::set_fields(const type_vec_fields& fields, bool with_none_i
 void ComboBox_Fields::on_cell_data_title(const Gtk::TreeModel::const_iterator& iter)
 {
   Gtk::TreeModel::Row row = *iter;
-  sharedptr<Field> field = row[m_model_columns.m_field];
+  std::shared_ptr<Field> field = row[m_model_columns.m_field];
   if(field)
   {
     m_renderer_title->set_property("text", item_get_title_or_name(field));

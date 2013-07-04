@@ -41,18 +41,18 @@ LayoutWidgetBase::~LayoutWidgetBase()
 {
 }
 
-void LayoutWidgetBase::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
+void LayoutWidgetBase::set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
 {
   m_pLayoutItem = layout_item;
   m_table_name = table_name;
 }
 
-sharedptr<const LayoutItem> LayoutWidgetBase::get_layout_item() const
+std::shared_ptr<const LayoutItem> LayoutWidgetBase::get_layout_item() const
 {
   return m_pLayoutItem;
 }
 
-sharedptr<LayoutItem> LayoutWidgetBase::get_layout_item()
+std::shared_ptr<LayoutItem> LayoutWidgetBase::get_layout_item()
 {
   return m_pLayoutItem;
 }
@@ -88,7 +88,7 @@ void LayoutWidgetBase::set_read_only(bool /* read_only */)
 {
 }
 
-void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<const LayoutItem_WithFormatting>& layout_item)
+void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const std::shared_ptr<const LayoutItem_WithFormatting>& layout_item)
 {
   Gtk::Widget* widget_to_change = &widget;
 

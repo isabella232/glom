@@ -186,7 +186,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
 		  if(old_fields[i]->get_field_info()->get_g_type() != new_fields[i]->get_field_info()->get_g_type())
 		  {
 		    // Create a temporary column
-		    sharedptr<Field> temp_field = glom_sharedptr_clone(new_fields[i]);
+		    std::shared_ptr<Field> temp_field = glom_sharedptr_clone(new_fields[i]);
 		    temp_field->set_name(TEMP_COLUMN_NAME);
 		    // The temporary column must not be primary key as long as the original
 		    // (primary key) column is still present, because there cannot be two
@@ -901,7 +901,7 @@ bool Postgres::create_text_file(const std::string& file_uri, const std::string& 
   catch(const Gio::Error& ex)
   {
 #else
-  std::auto_ptr<Gio::Error> error;
+  std::shared_ptr<Gio::Error> error;
   stream.create(error);
   if(error.get())
   {

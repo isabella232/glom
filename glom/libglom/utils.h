@@ -34,7 +34,7 @@ namespace Glom
 {
 
 ///field, ascending
-typedef std::pair< sharedptr<const LayoutItem_Field>, bool> type_pair_sort_field;
+typedef std::pair< std::shared_ptr<const LayoutItem_Field>, bool> type_pair_sort_field;
 typedef std::vector<type_pair_sort_field> type_sort_clause;
 
 namespace Utils
@@ -49,13 +49,13 @@ Glib::ustring string_replace(const Glib::ustring& src, const Glib::ustring& sear
 Glib::ustring string_clean_for_xml(const Glib::ustring& src);
 
 //typedef Base_DB::type_vecLayoutFields type_vecLayoutFields;
-typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
-typedef std::vector< sharedptr<const LayoutItem_Field> > type_vecConstLayoutFields;
+typedef std::vector< std::shared_ptr<LayoutItem_Field> > type_vecLayoutFields;
+typedef std::vector< std::shared_ptr<const LayoutItem_Field> > type_vecConstLayoutFields;
 
 //TODO: Move these to their own file:
 
 // Create a Gnome::Gda::SqlExpr.
-Gnome::Gda::SqlExpr build_simple_where_expression(const Glib::ustring& table_name, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value);
+Gnome::Gda::SqlExpr build_simple_where_expression(const Glib::ustring& table_name, const std::shared_ptr<const Field>& key_field, const Gnome::Gda::Value& key_value);
 
 // Create a where clause that is two other conditions combined together.
 Gnome::Gda::SqlExpr build_combined_where_expression(const Gnome::Gda::SqlExpr& a, const Gnome::Gda::SqlExpr& b, Gnome::Gda::SqlOperatorType op);
@@ -78,7 +78,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_where_clause(
   const Glib::ustring& table_name,
   const type_vecLayoutFields& fieldsToGet,
   const Gnome::Gda::SqlExpr& where_clause = Gnome::Gda::SqlExpr(),
-  const sharedptr<const Relationship>& extra_join = sharedptr<const Relationship>(),
+  const std::shared_ptr<const Relationship>& extra_join = std::shared_ptr<const Relationship>(),
   const type_sort_clause& sort_clause = type_sort_clause(),
   guint limit = 0);
 
@@ -88,7 +88,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_where_clause(
   const Glib::ustring& table_name,
   const type_vecConstLayoutFields& fieldsToGet,
   const Gnome::Gda::SqlExpr& where_clause = Gnome::Gda::SqlExpr(),
-  const sharedptr<const Relationship>& extra_join = sharedptr<const Relationship>(),
+  const std::shared_ptr<const Relationship>& extra_join = std::shared_ptr<const Relationship>(),
   const type_sort_clause& sort_clause = type_sort_clause(),
   guint limit = 0);
 
@@ -98,7 +98,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_where_clause(
 Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_key(
   const Glib::ustring& table_name,
   const type_vecLayoutFields& fieldsToGet,
-  const sharedptr<const Field>& key_field,
+  const std::shared_ptr<const Field>& key_field,
   const Gnome::Gda::Value& key_value,
   const type_sort_clause& sort_clause = type_sort_clause(),
   guint limit = 0);
@@ -108,7 +108,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_key(
 Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_key(
   const Glib::ustring& table_name,
   const type_vecConstLayoutFields& fieldsToGet,
-  const sharedptr<const Field>& key_field,
+  const std::shared_ptr<const Field>& key_field,
   const Gnome::Gda::Value& key_value,
   const type_sort_clause& sort_clause = type_sort_clause(),
   guint limit = 0);
@@ -130,14 +130,14 @@ Gnome::Gda::SqlExpr get_find_where_clause_quick(const Document* document, const 
  */
 Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_update_with_where_clause(
   const Glib::ustring& table_name,
-  const sharedptr<const Field>& field, const Gnome::Gda::Value& value,
+  const std::shared_ptr<const Field>& field, const Gnome::Gda::Value& value,
   const Gnome::Gda::SqlExpr& where_clause);
 
 typedef std::vector<Gnome::Gda::Value> type_list_values;
 typedef std::vector< std::pair<Gnome::Gda::Value, type_list_values> > type_list_values_with_second; //TODO: Rename this now that we have more than just 1 extra field.
-type_list_values_with_second get_choice_values_all(const Document* document, const sharedptr<const LayoutItem_Field>& field);
+type_list_values_with_second get_choice_values_all(const Document* document, const std::shared_ptr<const LayoutItem_Field>& field);
 
-type_list_values_with_second get_choice_values(const Document* document, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value);
+type_list_values_with_second get_choice_values(const Document* document, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value);
 
 /// Get the full query string suitable for use with std::cout.
 std::string sqlbuilder_get_full_query(
@@ -214,7 +214,7 @@ Glib::ustring get_list_of_layout_items_for_display(const LayoutGroup::type_list_
 
 /** Get a string to display to the user, as a representation of a list of layout items.
  */
-Glib::ustring get_list_of_layout_items_for_display(const sharedptr<const LayoutGroup>& layout_group);
+Glib::ustring get_list_of_layout_items_for_display(const std::shared_ptr<const LayoutGroup>& layout_group);
 
 /** Get a string to display to the user, as a representation of a sort order
  */

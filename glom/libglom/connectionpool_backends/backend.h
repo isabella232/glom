@@ -66,7 +66,7 @@ class Backend
   friend class Glom::ConnectionPool;
 public:
   virtual ~Backend() {}
-  typedef std::vector<sharedptr<const Field> > type_vec_const_fields;
+  typedef std::vector<std::shared_ptr<const Field> > type_vec_const_fields;
 
   enum InitErrors
   {
@@ -173,7 +173,7 @@ protected:
 
   /** @throws Glib::Error (from libgdamm)
    */
-  virtual bool add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const sharedptr<const Field>& field);
+  virtual bool add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const std::shared_ptr<const Field>& field);
 
   /** @throws Glib::Error (from libgdamm)
    */

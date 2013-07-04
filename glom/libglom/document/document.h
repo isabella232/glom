@@ -182,14 +182,14 @@ public:
    */
   std::vector<Glib::ustring> get_translation_available_locales() const;
 
-  typedef std::vector< sharedptr<Relationship> > type_vec_relationships;
+  typedef std::vector< std::shared_ptr<Relationship> > type_vec_relationships;
   type_vec_relationships get_relationships(const Glib::ustring& table_name, bool plus_system_prefs = false) const;
   void set_relationships(const Glib::ustring& table_name, const type_vec_relationships& vecRelationships);
 
-  sharedptr<Relationship> get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const;
-  void set_relationship(const Glib::ustring& table_name, const sharedptr<Relationship>& relationship);
+  std::shared_ptr<Relationship> get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const;
+  void set_relationship(const Glib::ustring& table_name, const std::shared_ptr<Relationship>& relationship);
 
-  void remove_relationship(const sharedptr<const Relationship>& relationship);
+  void remove_relationship(const std::shared_ptr<const Relationship>& relationship);
 
   /** Returns whether the relationship's to-field is a primary key  or unique field, meaning
    * that there can be only one related record for each value of the from-field.
@@ -199,15 +199,15 @@ public:
   /** Returns whether the field is the from-field in a to-one relationship.
    * @see get_relationship_is_to_one(). Ignores hidden tables.
    */
-  sharedptr<const Relationship> get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_field) const;
+  std::shared_ptr<const Relationship> get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& layout_field) const;
 
-  typedef std::vector< sharedptr<Field> > type_vec_fields;
+  typedef std::vector< std::shared_ptr<Field> > type_vec_fields;
   type_vec_fields get_table_fields(const Glib::ustring& table_name) const;
   void set_table_fields(const Glib::ustring& table_name, const type_vec_fields& vecFields);
 
-  sharedptr<Field> get_field(const Glib::ustring& table_name, const Glib::ustring& strFieldName) const;
+  std::shared_ptr<Field> get_field(const Glib::ustring& table_name, const Glib::ustring& strFieldName) const;
 
-  sharedptr<Field> get_field_primary_key(const Glib::ustring& table_name) const;
+  std::shared_ptr<Field> get_field_primary_key(const Glib::ustring& table_name) const;
 
   /** Use this after removing a field from a table,
    * so that it is not used anymore in relationships, layouts, reports, etc.
@@ -215,7 +215,7 @@ public:
   void remove_field(const Glib::ustring& table_name, const Glib::ustring& field_name);
   
   
-  typedef std::pair< sharedptr<LayoutItem_Field>, sharedptr<Relationship> > type_pairFieldTrigger;
+  typedef std::pair< std::shared_ptr<LayoutItem_Field>, std::shared_ptr<Relationship> > type_pairFieldTrigger;
   typedef std::vector<type_pairFieldTrigger> type_list_lookups;
   
   /** Get the fields whose values should be looked up when @a field_name changes, with
@@ -225,7 +225,7 @@ public:
 
 
 
-  typedef std::vector< sharedptr<LayoutGroup> > type_list_layout_groups;
+  typedef std::vector< std::shared_ptr<LayoutGroup> > type_list_layout_groups;
 
   /** Get the layout groups for a layout.
    * @param layout_name The name of the layout, such as list or details.
@@ -261,7 +261,7 @@ public:
   type_list_layout_groups get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform = Glib::ustring()) const;
 
   /// The translatable item and a hint about what it is.
-  typedef std::pair< sharedptr<TranslatableItem>, Glib::ustring> pair_translatable_item_and_hint;
+  typedef std::pair< std::shared_ptr<TranslatableItem>, Glib::ustring> pair_translatable_item_and_hint;
 
   typedef std::vector<pair_translatable_item_and_hint> type_list_translatables;
   type_list_translatables get_translatable_items();
@@ -269,7 +269,7 @@ public:
   static void fill_translatable_custom_choices(Formatting& formatting, type_list_translatables& the_list, const Glib::ustring& hint);
 
 
-  void fill_layout_field_details(const Glib::ustring& parent_table_name, const sharedptr<LayoutGroup>& layout_group) const;
+  void fill_layout_field_details(const Glib::ustring& parent_table_name, const std::shared_ptr<LayoutGroup>& layout_group) const;
   void fill_layout_field_details(const Glib::ustring& parent_table_name, type_list_layout_groups& groups) const;
 
   ///When a field name is changed, change it in the relationships, layouts, reports, and fields data:
@@ -281,17 +281,17 @@ public:
   ///When a relationship name is changed, change it in layouts and reports:
   void change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new);
 
-  typedef std::vector< sharedptr<TableInfo> > type_listTableInfo;
+  typedef std::vector< std::shared_ptr<TableInfo> > type_listTableInfo;
   type_listTableInfo get_tables(bool plus_system_prefs = false);
 
-  typedef std::vector< sharedptr<const TableInfo> > type_listConstTableInfo;
+  typedef std::vector< std::shared_ptr<const TableInfo> > type_listConstTableInfo;
   type_listConstTableInfo get_tables(bool plus_system_prefs = false) const;
   std::vector<Glib::ustring> get_table_names(bool plus_system_prefs = false) const;
 
   void set_tables(const type_listTableInfo& tables);
 
-  sharedptr<TableInfo> get_table(const Glib::ustring& table_name) const;
-  void add_table(const sharedptr<TableInfo>& table_name);
+  std::shared_ptr<TableInfo> get_table(const Glib::ustring& table_name) const;
+  void add_table(const std::shared_ptr<TableInfo>& table_name);
 
   /** Use this after DROPing the table.
    * It removes information about the table, including fields and layouts,
@@ -355,14 +355,14 @@ public:
 
   std::vector<Glib::ustring> get_report_names(const Glib::ustring& table_name) const;
 
-  void set_report(const Glib::ustring& table_name, const sharedptr<Report>& report);
-  sharedptr<Report> get_report(const Glib::ustring& table_name, const Glib::ustring& report_name) const;
+  void set_report(const Glib::ustring& table_name, const std::shared_ptr<Report>& report);
+  std::shared_ptr<Report> get_report(const Glib::ustring& table_name, const Glib::ustring& report_name) const;
   void remove_report(const Glib::ustring& table_name, const Glib::ustring& report_name);
 
   //Print Layouts are precisely positioned layouts for printing to a printer:
   std::vector<Glib::ustring> get_print_layout_names(const Glib::ustring& table_name) const;
-  void set_print_layout(const Glib::ustring& table_name, const sharedptr<PrintLayout>& print_layout);
-  sharedptr<PrintLayout> get_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name) const;
+  void set_print_layout(const Glib::ustring& table_name, const std::shared_ptr<PrintLayout>& print_layout);
+  std::shared_ptr<PrintLayout> get_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name) const;
   void remove_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name);
 
   void set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Gnome::Gda::Value& primary_key_value);
@@ -481,10 +481,10 @@ protected:
 
 #ifndef SWIG
 public:
-  static sharedptr<TableInfo> create_table_system_preferences();
-  static sharedptr<TableInfo> create_table_system_preferences(type_vec_fields& fields);
-  static sharedptr<Relationship> create_relationship_system_preferences(const Glib::ustring& table_name);
-  static bool get_relationship_is_system_properties(const sharedptr<const Relationship>& relationship);
+  static std::shared_ptr<TableInfo> create_table_system_preferences();
+  static std::shared_ptr<TableInfo> create_table_system_preferences(type_vec_fields& fields);
+  static std::shared_ptr<Relationship> create_relationship_system_preferences(const Glib::ustring& table_name);
+  static bool get_relationship_is_system_properties(const std::shared_ptr<const Relationship>& relationship);
 #endif //SWIG
 
   /// Failure codes that could be returned by load_after()
@@ -497,35 +497,35 @@ private:
   //Overrides:
 
   virtual bool save_before();
-  void save_before_layout_group(xmlpp::Element* node, const sharedptr<const LayoutGroup>& group, bool with_print_layout_positions = false);
+  void save_before_layout_group(xmlpp::Element* node, const std::shared_ptr<const LayoutGroup>& group, bool with_print_layout_positions = false);
   void save_before_sort_by(xmlpp::Element* node, const LayoutItem_GroupBy::type_list_sort_fields& list_fields);
-  void save_before_layout_item_usesrelationship(xmlpp::Element* nodeItem, const sharedptr<const UsesRelationship>& item);
-  void save_before_layout_item_field(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem_Field>& item);
+  void save_before_layout_item_usesrelationship(xmlpp::Element* nodeItem, const std::shared_ptr<const UsesRelationship>& item);
+  void save_before_layout_item_field(xmlpp::Element* nodeItem, const std::shared_ptr<const LayoutItem_Field>& item);
   void save_before_layout_item_formatting(xmlpp::Element* nodeItem, const Formatting& format, Field::glom_field_type field_type = Field::TYPE_INVALID);
-  void save_before_layout_item_formatting(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem_WithFormatting>& layout_item);
+  void save_before_layout_item_formatting(xmlpp::Element* nodeItem, const std::shared_ptr<const LayoutItem_WithFormatting>& layout_item);
 
-  void save_before_translations(xmlpp::Element* nodeItem, const sharedptr<const TranslatableItem>& item);
-  void save_before_print_layout_position(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem>& item);
-  void save_before_choicevalue(xmlpp::Element* nodeItem, const sharedptr<const ChoiceValue>& item, Field::glom_field_type field_type);
+  void save_before_translations(xmlpp::Element* nodeItem, const std::shared_ptr<const TranslatableItem>& item);
+  void save_before_print_layout_position(xmlpp::Element* nodeItem, const std::shared_ptr<const LayoutItem>& item);
+  void save_before_choicevalue(xmlpp::Element* nodeItem, const std::shared_ptr<const ChoiceValue>& item, Field::glom_field_type field_type);
 
   void save_changes();
 
   virtual bool load_after(int& failure_code);
-  void load_after_layout_group(const xmlpp::Element* node, const Glib::ustring& table_name, const sharedptr<LayoutGroup>& group, bool with_print_layout_positions = false);
+  void load_after_layout_group(const xmlpp::Element* node, const Glib::ustring& table_name, const std::shared_ptr<LayoutGroup>& group, bool with_print_layout_positions = false);
   void load_after_sort_by(const xmlpp::Element* node, const Glib::ustring& table_name, LayoutItem_GroupBy::type_list_sort_fields& list_fields);
-  void load_after_layout_item_usesrelationship(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<UsesRelationship>& item);
-  void load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& item);
+  void load_after_layout_item_usesrelationship(const xmlpp::Element* element, const Glib::ustring& table_name, const std::shared_ptr<UsesRelationship>& item);
+  void load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const std::shared_ptr<LayoutItem_Field>& item);
   void load_after_layout_item_formatting(const xmlpp::Element* element, Formatting& format, Field::glom_field_type field_type = Field::TYPE_INVALID, const Glib::ustring& table_name = Glib::ustring(), const Glib::ustring& field_name = Glib::ustring());
- void load_after_layout_item_formatting(const xmlpp::Element* element, const sharedptr<LayoutItem_WithFormatting>& layout_item, const Glib::ustring& table_name = Glib::ustring());
+ void load_after_layout_item_formatting(const xmlpp::Element* element, const std::shared_ptr<LayoutItem_WithFormatting>& layout_item, const Glib::ustring& table_name = Glib::ustring());
 
-  void load_after_translations(const xmlpp::Element* element, const sharedptr<TranslatableItem>& item);
-  void load_after_print_layout_position(const xmlpp::Element* nodeItem, const sharedptr<LayoutItem>& item);
-  void load_after_choicevalue(const xmlpp::Element* element, const sharedptr<ChoiceValue>& item, Field::glom_field_type field_type);
+  void load_after_translations(const xmlpp::Element* element, const std::shared_ptr<TranslatableItem>& item);
+  void load_after_print_layout_position(const xmlpp::Element* nodeItem, const std::shared_ptr<LayoutItem>& item);
+  void load_after_choicevalue(const xmlpp::Element* element, const std::shared_ptr<ChoiceValue>& item, Field::glom_field_type field_type);
 
   void on_app_state_userlevel_changed(AppState::userlevels userlevel);
 
-  static void fill_translatable_layout_items(const sharedptr<LayoutItem_Field>& layout_field, type_list_translatables& the_list, const Glib::ustring& hint);
-  static void fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list, const Glib::ustring& hint);
+  static void fill_translatable_layout_items(const std::shared_ptr<LayoutItem_Field>& layout_field, type_list_translatables& the_list, const Glib::ustring& hint);
+  static void fill_translatable_layout_items(const std::shared_ptr<LayoutGroup>& group, type_list_translatables& the_list, const Glib::ustring& hint);
 
   void fill_sort_field_details(const Glib::ustring& parent_table_name, Formatting::type_list_sort_fields& sort_fields) const;
 
@@ -579,10 +579,10 @@ private:
       : m_overviewx ( ),
         m_overviewy ( std::numeric_limits<float>::infinity () )
     {
-      m_info = sharedptr<TableInfo>(new TableInfo()); //Avoid a null sharedptr.
+      m_info = std::shared_ptr<TableInfo>(new TableInfo()); //Avoid a null std::shared_ptr.
     }
 
-    sharedptr<TableInfo> m_info;
+    std::shared_ptr<TableInfo> m_info;
 
     type_vec_fields m_fields;
     type_vec_relationships m_relationships;
@@ -590,10 +590,10 @@ private:
     typedef std::vector< LayoutInfo > type_layouts;
     type_layouts m_layouts;
 
-    typedef std::map< Glib::ustring, sharedptr<Report> > type_reports; //map of report names to reports
+    typedef std::map< Glib::ustring, std::shared_ptr<Report> > type_reports; //map of report names to reports
     type_reports m_reports;
 
-    typedef std::map< Glib::ustring, sharedptr<PrintLayout> > type_print_layouts; //map of print layout names to print layouts
+    typedef std::map< Glib::ustring, std::shared_ptr<PrintLayout> > type_print_layouts; //map of print layout names to print layouts
     type_print_layouts m_print_layouts;
 
     //Example data, used when creating a database from an example.
@@ -613,12 +613,12 @@ private:
     DocumentTableInfo& operator=(const DocumentTableInfo& src);
   };
 
-  sharedptr<DocumentTableInfo> get_table_info_with_add(const Glib::ustring& table_name);
+  std::shared_ptr<DocumentTableInfo> get_table_info_with_add(const Glib::ustring& table_name);
 
-  sharedptr<DocumentTableInfo> get_table_info(const Glib::ustring& table_name);
-  sharedptr<const DocumentTableInfo> get_table_info(const Glib::ustring& table_name) const;
+  std::shared_ptr<DocumentTableInfo> get_table_info(const Glib::ustring& table_name);
+  std::shared_ptr<const DocumentTableInfo> get_table_info(const Glib::ustring& table_name) const;
 
-  typedef std::map<Glib::ustring, sharedptr<DocumentTableInfo> > type_tables;
+  typedef std::map<Glib::ustring, std::shared_ptr<DocumentTableInfo> > type_tables;
   type_tables m_tables;
 
 
@@ -626,7 +626,7 @@ private:
   typedef std::map<Glib::ustring, GroupInfo> type_map_groups;
   type_map_groups m_groups;
 
-  sharedptr<DatabaseTitle> m_database_title;
+  std::shared_ptr<DatabaseTitle> m_database_title;
   Glib::ustring m_translation_original_locale;
   std::vector<Glib::ustring> m_translation_available_locales; //Just a cache, based on other data.
 

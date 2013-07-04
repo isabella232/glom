@@ -40,36 +40,36 @@ void on_drag_data_get_entry(const Glib::RefPtr<Gdk::DragContext>&, Gtk::Selectio
 static void fill_flowtable(Glom::FlowTableWithFields& flowtable)
 {
   {
-    Glom::sharedptr<Glom::LayoutItem_Text> item =
-      Glom::sharedptr<Glom::LayoutItem_Text>::create();
+    std::shared_ptr<Glom::LayoutItem_Text> item =
+      std::shared_ptr<Glom::LayoutItem_Text>(new Glom::LayoutItem_Text());
     item->set_text("test static text 1");
     flowtable.add_layout_item(item);
   }
 
   {
-    Glom::sharedptr<Glom::LayoutItem_Text> item =
-      Glom::sharedptr<Glom::LayoutItem_Text>::create();
+    std::shared_ptr<Glom::LayoutItem_Text> item =
+      std::shared_ptr<Glom::LayoutItem_Text>(new Glom::LayoutItem_Text());
     item->set_text("test static text 2");
     item->set_title("title for text 2", AppWindow::get_current_locale());
     flowtable.add_layout_item(item);
   }
 
   {
-    Glom::sharedptr<Glom::LayoutItem_Image> item =
-      Glom::sharedptr<Glom::LayoutItem_Image>::create();
+    std::shared_ptr<Glom::LayoutItem_Image> item =
+      std::shared_ptr<Glom::LayoutItem_Image>(new Glom::LayoutItem_Image());
     //item->set_image(somevalue);
     item->set_title("title for image", AppWindow::get_current_locale());
     flowtable.add_layout_item(item);
   }
   
-  Glom::sharedptr<Glom::LayoutGroup> group = 
-    Glom::sharedptr<Glom::LayoutGroup>::create();
-  Glom::sharedptr<Glom::LayoutItem_Text> item =
-    Glom::sharedptr<Glom::LayoutItem_Text>::create();
+  std::shared_ptr<Glom::LayoutGroup> group = 
+    std::shared_ptr<Glom::LayoutGroup>(new Glom::LayoutGroup());
+  std::shared_ptr<Glom::LayoutItem_Text> item =
+    std::shared_ptr<Glom::LayoutItem_Text>(new Glom::LayoutItem_Text());
   item->set_text("inner text 1");
   group->add_item(item);
   item =
-    Glom::sharedptr<Glom::LayoutItem_Text>::create();
+    std::shared_ptr<Glom::LayoutItem_Text>(new Glom::LayoutItem_Text());
   item->set_text("inner text 2");
   group->add_item(item);
   flowtable.add_layout_item(group);

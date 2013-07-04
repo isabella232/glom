@@ -38,19 +38,19 @@ template<class T_ElementField, class T_Element = T_ElementField>
 class predicate_LayoutItem_Field_IsSameField
 {
 public:
-  predicate_LayoutItem_Field_IsSameField(const sharedptr<const T_ElementField>& layout_item)
+  predicate_LayoutItem_Field_IsSameField(const std::shared_ptr<const T_ElementField>& layout_item)
   {
     m_layout_item = layout_item;
   }
 
-  bool operator() (const sharedptr<const T_Element>& element)
+  bool operator() (const std::shared_ptr<const T_Element>& element)
   {
     if(!m_layout_item && !element)
       return true;
 
     //Allow this to be used on a container of LayoutItems,
     //as well as just of LayoutItem_Fields.
-    sharedptr<const T_ElementField> element_field = sharedptr<const T_ElementField>::cast_dynamic(element);
+    std::shared_ptr<const T_ElementField> element_field = std::dynamic_pointer_cast<const T_ElementField>(element);
     if(!element_field)
       return false;
        
@@ -58,7 +58,7 @@ public:
   }
     
 private:
-  sharedptr<const T_ElementField> m_layout_item;
+  std::shared_ptr<const T_ElementField> m_layout_item;
 };
 
 /** A LayoutItem that shows the data from a table field.
@@ -104,9 +104,9 @@ public:
 
   Glib::ustring get_title_or_name_no_custom(const Glib::ustring& locale) const;
 
-  sharedptr<const CustomTitle> get_title_custom() const;
-  sharedptr<CustomTitle> get_title_custom();
-  void set_title_custom(const sharedptr<CustomTitle>& title);
+  std::shared_ptr<const CustomTitle> get_title_custom() const;
+  std::shared_ptr<CustomTitle> get_title_custom();
+  void set_title_custom(const std::shared_ptr<CustomTitle>& title);
 
   //virtual Glib::ustring get_table_name() const;
   //virtual void set_table_name(const Glib::ustring& table_name);
@@ -119,8 +119,8 @@ public:
 
   virtual Glib::ustring get_report_part_id() const;
 
-  void set_full_field_details(const sharedptr<const Field>& field);
-  sharedptr<const Field> get_full_field_details() const;
+  void set_full_field_details(const std::shared_ptr<const Field>& field);
+  std::shared_ptr<const Field> get_full_field_details() const;
 
   ///Convenience function, to avoid use of get_full_field_details().
   Field::glom_field_type get_glom_type() const;
@@ -169,7 +169,7 @@ public:
 
   /** Compare the name, relationship, and related_relationship.
    */
-  bool is_same_field(const sharedptr<const LayoutItem_Field>& field) const;
+  bool is_same_field(const std::shared_ptr<const LayoutItem_Field>& field) const;
 
 private:
 
@@ -179,12 +179,12 @@ private:
 
 
   //This is just a cache, filled in by looking at the database structure:
-  sharedptr<const Field> m_field;
+  std::shared_ptr<const Field> m_field;
   bool m_field_cache_valid; //Whetehr m_field is up-to-date.
 
   bool m_hidden;
   bool m_formatting_use_default;
-  sharedptr<CustomTitle> m_title_custom; //translatable.
+  std::shared_ptr<CustomTitle> m_title_custom; //translatable.
 };
 
 } //namespace Glom

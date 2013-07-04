@@ -70,7 +70,7 @@ Box_Tables::~Box_Tables()
 {
 }
 
-void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const TableInfo>& table_info)
+void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const TableInfo>& table_info)
 {
   if(!table_info)
   {
@@ -153,7 +153,7 @@ bool Box_Tables::fill_from_database()
     std::cerr << G_STRFUNC << ": document is null" << std::endl;
 
   //Get the list of tables in the database, from the server:
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(AppWindow::get_appwindow());
+  std::shared_ptr<SharedConnection> sharedconnection = connect_to_server(AppWindow::get_appwindow());
 
   if(sharedconnection)
   {
@@ -166,7 +166,7 @@ bool Box_Tables::fill_from_database()
     {
       const Glib::ustring strName = *iter;
 
-      sharedptr<TableInfo> table_info;
+      std::shared_ptr<TableInfo> table_info;
 
       //Check whether it should be hidden:
       Document::type_listTableInfo::const_iterator iterFind = std::find_if(listTablesDocument.begin(), listTablesDocument.end(), predicate_FieldHasName<TableInfo>(strName));
@@ -180,7 +180,7 @@ bool Box_Tables::fill_from_database()
       {
         //This table is in the database, but not in the document.
         //Show it as hidden:
-        table_info = sharedptr<TableInfo>(new TableInfo());
+        table_info = std::shared_ptr<TableInfo>(new TableInfo());
         table_info->set_name(strName);
         table_info->set_hidden(true);
       }
@@ -257,7 +257,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
     Document* document = get_document();
     if(document)
     {
-      sharedptr<TableInfo> table_info = document->get_table(table_name);
+      std::shared_ptr<TableInfo> table_info = document->get_table(table_name);
       fill_table_row(row, table_info);
 
       //Save the field information directly into the database, because we cannot get all the correct information from the database.
@@ -328,7 +328,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
             //Otherwise it would not start at 0 if a table with the same name, and same field, is added again later.
             for(Glom::Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
             {
-              const Glom::sharedptr<const Glom::Field> field = *iter;
+              const std::shared_ptr<const Glom::Field> field = *iter;
               if(!field || !field->get_auto_increment())
                 continue;
                 
@@ -469,7 +469,7 @@ void Box_Tables::save_to_document()
     for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
     {
       const Glib::ustring table_name = m_AddDel.get_value(iter, m_colTableName); //The name has already been changed in the document.
-      sharedptr<TableInfo> table_info = document->get_table(table_name); //Start with the existing table_info, to preserve extra information, such as translations.
+      std::shared_ptr<TableInfo> table_info = document->get_table(table_name); //Start with the existing table_info, to preserve extra information, such as translations.
       if(table_info)
       {
         table_info->set_name( m_AddDel.get_value(iter, m_colTableName) );

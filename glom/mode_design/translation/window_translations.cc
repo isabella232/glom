@@ -188,7 +188,7 @@ void Window_Translations::on_cell_data_original(Gtk::CellRenderer* renderer, con
       Gtk::TreeModel::Row row = *iter;
 
       Glib::ustring text;
-      sharedptr<TranslatableItem> item = row[m_columns.m_col_item];
+      std::shared_ptr<TranslatableItem> item = row[m_columns.m_col_item];
       if(item)
         text = item->get_title_original();
 
@@ -216,7 +216,7 @@ void Window_Translations::on_cell_data_item_itemhint(Gtk::CellRenderer* renderer
   Gtk::TreeModel::Row row = *iter;
 
   Glib::ustring item_type_name;
-  sharedptr<TranslatableItem> item = row[m_columns.m_col_item];
+  std::shared_ptr<TranslatableItem> item = row[m_columns.m_col_item];
   const Glib::ustring hint = row[m_columns.m_col_hint];
 
   renderer_text->property_text() = get_po_context_for_item(item, hint);
@@ -240,7 +240,7 @@ void Window_Translations::load_from_document()
   Document::type_list_translatables list_layout_items = document->get_translatable_items();
   for(Document::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
   {
-    sharedptr<TranslatableItem> item = iter->first;
+    std::shared_ptr<TranslatableItem> item = iter->first;
     if(!item)
       continue;
 
@@ -268,8 +268,8 @@ void Window_Translations::save_to_document()
   {
     Gtk::TreeModel::Row row = *iter;
 
-    //We have stored a sharedptr to the original item, so we can just change it directly:
-    sharedptr<TranslatableItem> item = row[m_columns.m_col_item];
+    //We have stored a std::shared_ptr to the original item, so we can just change it directly:
+    std::shared_ptr<TranslatableItem> item = row[m_columns.m_col_item];
     if(item)
     {
       const Glib::ustring translation = row[m_columns.m_col_translation];
@@ -315,7 +315,7 @@ void Window_Translations::on_button_copy_translation()
       {
         Gtk::TreeModel::Row row = *iter;
 
-        sharedptr<TranslatableItem> item = row[m_columns.m_col_item];
+        std::shared_ptr<TranslatableItem> item = row[m_columns.m_col_item];
         if(item)
         {
           //Copy the translation from the chosen locale to the current locale:

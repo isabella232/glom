@@ -372,10 +372,10 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
       //then sort by the ID, just so we sort by something, so that the order is predictable:
       if(found_set.m_sort_clause.empty())
       {
-        sharedptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
+        std::shared_ptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
         if(field_primary_key)
         {
-          sharedptr<LayoutItem_Field> layout_item_sort = sharedptr<LayoutItem_Field>::create();
+          std::shared_ptr<LayoutItem_Field> layout_item_sort = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
           layout_item_sort->set_full_field_details(field_primary_key);
 
           found_set.m_sort_clause.clear();
@@ -384,7 +384,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
           //because that would be too slow.
           //The user can explicitly request a sort later, by clicking on a column header.
           //TODO_Performance: This causes an almost-duplicate COUNT query (we do it in the treemodel too), but it's not that slow.
-          sharedptr<LayoutItem_Field> layout_item_temp = sharedptr<LayoutItem_Field>::create();
+          std::shared_ptr<LayoutItem_Field> layout_item_temp = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
           layout_item_temp->set_full_field_details(field_primary_key);
           type_vecLayoutFields layout_fields;
           layout_fields.push_back(layout_item_temp);
@@ -461,7 +461,7 @@ bool Frame_Glom::attempt_change_usermode_to_developer()
 
   //Check whether the current user has developer privileges:
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
+      std::shared_ptr<SharedConnection> sharedconnection = connection_pool->connect();
 
   // Default to true; if we don't support users, we always have
   // priviliges to change things in developer mode.
@@ -617,7 +617,7 @@ void Frame_Glom::export_data_to_vector(Document::type_example_rows& the_vector, 
         {
           const Gnome::Gda::Value value = result->get_value_at(col_index, row_index);
 
-          sharedptr<const LayoutItem_Field> layout_item = fieldsSequence[col_index];
+          std::shared_ptr<const LayoutItem_Field> layout_item = fieldsSequence[col_index];
           //if(layout_item->m_field.get_glom_type() != Field::TYPE_IMAGE) //This is too much data.
           //{
 
@@ -667,14 +667,14 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
         {
           const Gnome::Gda::Value value = result->get_value_at(col_index, row_index);
 
-          sharedptr<const LayoutItem_Field> layout_item = fieldsSequence[col_index];
+          std::shared_ptr<const LayoutItem_Field> layout_item = fieldsSequence[col_index];
           //if(layout_item->m_field.get_glom_type() != Field::TYPE_IMAGE) //This is too much data.
           //{
             if(!row_string.empty())
               row_string += ",";
 
             //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
-            sharedptr<const Field> field = layout_item->get_full_field_details();
+            std::shared_ptr<const Field> field = layout_item->get_full_field_details();
             if(!field)
             {
               std::cerr << G_STRFUNC << ": A field was null." << std::endl;
@@ -970,11 +970,11 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
   if(change)
   {
     ConnectionPool* connectionpool = ConnectionPool::get_instance();
-    sharedptr<SharedConnection> sharedconnection = connectionpool->connect();
+    std::shared_ptr<SharedConnection> sharedconnection = connectionpool->connect();
     if(sharedconnection)
     {
       sharedconnection->close();
-      sharedconnection.clear();
+      sharedconnection.reset();
     }
 
     ShowProgressMessage cleanup_message(_("Stopping Database Server"));
@@ -1174,7 +1174,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
       }
 
       //Create the new relationship:
-      sharedptr<Relationship> relationship = sharedptr<Relationship>::create();
+      std::shared_ptr<Relationship> relationship = std::shared_ptr<Relationship>(new Relationship());
 
       relationship->set_name(relationship_name);
       relationship->set_title(Utils::title_from_string(relationship_name), AppWindow::get_current_locale());
@@ -1182,7 +1182,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
       relationship->set_from_field(from_key_name);
       relationship->set_to_table(table_name);
 
-      sharedptr<Field> related_primary_key = get_field_primary_key_for_table(table_name); //This field was created by create_table_with_default_fields().
+      std::shared_ptr<Field> related_primary_key = get_field_primary_key_for_table(table_name); //This field was created by create_table_with_default_fields().
       if(!related_primary_key)
       {
         std::cerr << G_STRFUNC << ": get_field_primary_key_for_table() failed." << std::endl;
@@ -1444,7 +1444,7 @@ void Frame_Glom::update_table_in_document_from_database()
 
     for(Base_DB::type_vec_fields::const_iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
     {
-      sharedptr<Field> field_database = *iter;
+      std::shared_ptr<Field> field_database = *iter;
       if(field_database)
       {
         //Is the field already in the document?
@@ -1459,7 +1459,7 @@ void Frame_Glom::update_table_in_document_from_database()
         {
           //Compare the information:
           Glib::RefPtr<Gnome::Gda::Column> field_info_db = field_database->get_field_info();
-          sharedptr<Field> field_document =  *iterFindDoc;
+          std::shared_ptr<Field> field_document =  *iterFindDoc;
           if(field_document)
           {
             if(!field_document->field_info_from_database_is_equal( field_info_db )) //ignores auto_increment because libgda does not report it from the database properly.
@@ -1492,7 +1492,7 @@ void Frame_Glom::update_table_in_document_from_database()
       type_vec_fields fieldsActual;
       for(type_vec_fields::const_iterator iter = fieldsDocument.begin(); iter != fieldsDocument.end(); ++iter)
       {
-        sharedptr<Field> field = *iter;
+        std::shared_ptr<Field> field = *iter;
 
         //Check whether it's in the database:
         type_vec_fields::iterator iterFindDatabase = std::find_if( fieldsDatabase.begin(), fieldsDatabase.end(), predicate_FieldHasName<Field>( field->get_name() ) );
@@ -1785,7 +1785,7 @@ void Frame_Glom::on_box_reports_selected(const Glib::ustring& report_name)
 {
   m_pDialog_Reports->hide();
 
-  sharedptr<Report> report = get_document()->get_report(m_table_name, report_name);
+  std::shared_ptr<Report> report = get_document()->get_report(m_table_name, report_name);
   if(report)
   {
     m_pDialogLayoutReport->set_transient_for(*get_app_window());
@@ -1846,7 +1846,7 @@ void Frame_Glom::on_box_print_layouts_selected(const Glib::ustring& print_layout
 
   m_pDialog_PrintLayouts->hide();
 
-  sharedptr<PrintLayout> print_layout = get_document()->get_print_layout(m_table_name, print_layout_name);
+  std::shared_ptr<PrintLayout> print_layout = get_document()->get_print_layout(m_table_name, print_layout_name);
   if(print_layout)
   {
     m_pDialogLayoutPrint->set_transient_for(*app_window);
@@ -2141,7 +2141,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     try
     {
       g_assert(m_pDialogConnection);
-      sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
+      std::shared_ptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
       //If no exception was thrown then the database exists.
       //But we are looking for an unused database name, so we will try again.
     }
@@ -2329,7 +2329,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
     //Try to use the entered username/password:
     if(response == Gtk::RESPONSE_OK)
     {
-      sharedptr<SharedConnection> sharedconnection;
+      std::shared_ptr<SharedConnection> sharedconnection;
 
       //Ask for the user/password if necessary:
       //TODO: Remove any previous database setting?
@@ -2425,7 +2425,7 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
   }
 
   Document* document = get_document();
-  sharedptr<Report> report = document->get_report(m_table_name, report_name);
+  std::shared_ptr<Report> report = document->get_report(m_table_name, report_name);
   if(!report)
     return;
 
@@ -2449,7 +2449,7 @@ void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout
 void Frame_Glom::do_print_layout(const Glib::ustring& print_layout_name, bool preview, Gtk::Window* transient_for)
 {
   const Document* document = get_document();
-  sharedptr<const PrintLayout> print_layout = document->get_print_layout(m_table_name, print_layout_name);
+  std::shared_ptr<const PrintLayout> print_layout = document->get_print_layout(m_table_name, print_layout_name);
     
   const Privileges table_privs = Privs::get_current_privs(m_table_name);
 
@@ -2480,7 +2480,7 @@ void Frame_Glom::on_dialog_layout_report_hide()
   if(document && true) //m_pDialogLayoutReport->get_modified())
   {
     const Glib::ustring original_name = m_pDialogLayoutReport->get_original_report_name();
-    sharedptr<Report> report = m_pDialogLayoutReport->get_report();
+    std::shared_ptr<Report> report = m_pDialogLayoutReport->get_report();
     if(report && (original_name != report->get_name()))
       document->remove_report(m_table_name, original_name);
 
@@ -2500,7 +2500,7 @@ void Frame_Glom::on_dialog_layout_print_hide()
   if(document && true) //m_pDialogLayoutReport->get_modified())
   {
     const Glib::ustring original_name = m_pDialogLayoutPrint->get_original_name();
-    sharedptr<PrintLayout> print_layout = m_pDialogLayoutPrint->get_print_layout();
+    std::shared_ptr<PrintLayout> print_layout = m_pDialogLayoutPrint->get_print_layout();
     if(print_layout && (original_name != print_layout->get_name()))
       document->remove_report(m_table_name, original_name);
 

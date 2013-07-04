@@ -209,7 +209,7 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
   {
     for(type_vec_const_layout_items::const_iterator iter = layout_items.begin(); iter != layout_items.end(); ++iter)
     {
-      sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(*iter);
+      std::shared_ptr<const LayoutItem_Field> item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(*iter);
       if(item_field)
       {
         if(item_field->get_glom_type() == Field::TYPE_INVALID)
@@ -228,13 +228,13 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
     bool key_found = false;
     for( DbTreeModel::type_vec_const_fields::const_iterator iter = m_column_fields.begin(); iter != m_column_fields.end(); ++iter)
     {
-      const sharedptr<const LayoutItem_Field> layout_item = *iter;
+      const std::shared_ptr<const LayoutItem_Field> layout_item = *iter;
       if(!layout_item)
         continue;
 
       if( !(layout_item->get_has_relationship_name()) )
       {
-        const sharedptr<const Field> field_full = layout_item->get_full_field_details();
+        const std::shared_ptr<const Field> field_full = layout_item->get_full_field_details();
         if(!field_full)
           std::cerr << G_STRFUNC << ": The layout item (" << layout_item->get_name() << ") has no field details." << std::endl;
         else if(field_full->get_primary_key() )
@@ -252,7 +252,7 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
       std::cerr << G_STRFUNC << ": no primary key field found in the list of items:" << std::endl;
       for(DbTreeModel::type_vec_const_fields::const_iterator iter = m_column_fields.begin(); iter != m_column_fields.end(); ++iter)
       {
-        const sharedptr<const LayoutItem_Field> layout_item = *iter;
+        const std::shared_ptr<const LayoutItem_Field> layout_item = *iter;
         if(layout_item)
           std::cerr << G_STRFUNC << ":   field: " << layout_item->get_name() << std::endl;
       }
@@ -312,7 +312,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     int col = 0;
     for(type_vec_const_fields::const_iterator iter = m_column_fields.begin(); iter != m_column_fields.end(); ++iter)
     {
-      sharedptr<const LayoutItem_Field> layout_item = *iter;
+      std::shared_ptr<const LayoutItem_Field> layout_item = *iter;
       if(layout_item)
       {
         const Field::glom_field_type glom_type = layout_item->get_glom_type();

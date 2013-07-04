@@ -109,7 +109,7 @@ bool Box_Data_List::fill_from_database()
 
   BusyCursor busy_cursor(get_app_window());
 
-  sharedptr<SharedConnection> sharedconnection;
+  std::shared_ptr<SharedConnection> sharedconnection;
 
   try
   {
@@ -185,14 +185,14 @@ void Box_Data_List::on_adddel_user_reordered_columns()
   Document* pDoc = dynamic_cast<Document*>(get_document());
   if(pDoc)
   {
-    sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
+    std::shared_ptr<LayoutGroup> group = std::shared_ptr<LayoutGroup>(new LayoutGroup());
     group->set_name("toplevel");
 
     AddDel::type_vec_strings vec_field_names = m_AddDel.get_columns_order();
 
     for(AddDel::type_vec_strings::iterator iter = vec_field_names.begin(); iter != vec_field_names.end(); ++iter)
     {
-      sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+      std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
       layout_item->set_name(*iter);
       group->add_item(layout_item);
     }
@@ -204,7 +204,7 @@ void Box_Data_List::on_adddel_user_reordered_columns()
   }
 }
 
-void Box_Data_List::on_adddel_script_button_clicked(const sharedptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row)
+void Box_Data_List::on_adddel_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row)
 {
   if(!layout_item)
     return;
@@ -224,7 +224,7 @@ void Box_Data_List::on_adddel_script_button_clicked(const sharedptr<const Layout
       primary_key_value));
 }
 
-bool Box_Data_List::on_script_button_idle(const sharedptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key)
+bool Box_Data_List::on_script_button_idle(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key)
 {
   execute_button_script(layout_item, primary_key);
 
@@ -372,17 +372,17 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_first() const
   return Gnome::Gda::Value();
 }
 
-Gnome::Gda::Value Box_Data_List::get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const
+Gnome::Gda::Value Box_Data_List::get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const
 {
   return m_AddDel.get_value_selected(field);
 }
 
-void Box_Data_List::set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void Box_Data_List::set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
 {
   return m_AddDel.set_value_selected(field, value);
 }
 
-void Box_Data_List::set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void Box_Data_List::set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
 {
   return m_AddDel.set_value(row, field, value);
 }
@@ -415,7 +415,7 @@ void Box_Data_List::create_layout()
   m_AddDel.set_table_name(m_table_name);
 
 
-  sharedptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
+  std::shared_ptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
   if(!field_primary_key)
   {
     std::cerr << G_STRFUNC << ": primary key not found for table: " << m_table_name << std::endl;
@@ -432,20 +432,20 @@ void Box_Data_List::create_layout()
   Document::type_list_layout_groups layout_groups = create_layout_get_layout();
   for(Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
   {
-    const sharedptr<LayoutGroup> layout_group = *iter;
+    const std::shared_ptr<LayoutGroup> layout_group = *iter;
     if(!layout_group)
       continue;
 
     const LayoutGroup::type_list_items child_items = layout_group->get_items_recursive();
     for(LayoutGroup::type_list_items::const_iterator iterItems = child_items.begin(); iterItems != child_items.end(); ++iterItems)
     {
-      sharedptr<LayoutItem> child_item = *iterItems;
+      std::shared_ptr<LayoutItem> child_item = *iterItems;
 
       //TODO: Set the whole thing as read-only instead:
       if(m_read_only)
         child_item->set_editable(false);
 
-      sharedptr<const LayoutItem_Field> child_field = sharedptr<const LayoutItem_Field>::cast_dynamic(child_item);
+      std::shared_ptr<const LayoutItem_Field> child_field = std::dynamic_pointer_cast<const LayoutItem_Field>(child_item);
 
       //This check has already happened in Frame_Glom::update_table_in_document_from_database().
       //It is inefficient and unnecessary to do it here too.
@@ -472,7 +472,7 @@ void Box_Data_List::create_layout()
   items_to_use = Utils::get_layout_items_plus_primary_key(items_to_use, pDoc, m_table_name);
   if(field_primary_key)
   {
-    sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+    std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
     layout_item->set_hidden();
     layout_item->set_full_field_details(m_AddDel.get_key_field());
 
@@ -488,7 +488,7 @@ void Box_Data_List::create_layout()
   m_FieldsShown = get_fields_to_show();
 }
 
-sharedptr<Field> Box_Data_List::get_field_primary_key() const
+std::shared_ptr<Field> Box_Data_List::get_field_primary_key() const
 {
   return m_AddDel.get_key_field();
 }

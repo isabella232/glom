@@ -73,11 +73,11 @@ AppWindow* NotebookLabel::get_appwindow()
 
 void NotebookLabel::on_menu_new_group_activate()
 {
-  sharedptr<LayoutGroup> group(new LayoutGroup());
+  std::shared_ptr<LayoutGroup> group(new LayoutGroup());
   group->set_title_original(_("New Group"));
   group->set_name(_("Group"));
   
-  sharedptr<LayoutGroup> notebook_group = sharedptr<LayoutGroup>::cast_dynamic (m_notebook->get_layout_item());
+  std::shared_ptr<LayoutGroup> notebook_group = std::dynamic_pointer_cast<LayoutGroup>(m_notebook->get_layout_item());
   notebook_group->add_item(group);
   
   m_notebook->signal_layout_changed().emit();

@@ -260,7 +260,7 @@ bool Box_Data_Details::fill_from_database()
 
   //TODO: This should keep the connection open, so we don't need to
   //reconnect many times..
-  sharedptr<SharedConnection> sharedconnection;
+  std::shared_ptr<SharedConnection> sharedconnection;
 
   try
   {
@@ -297,7 +297,7 @@ bool Box_Data_Details::fill_from_database()
       if(table_privs.m_view)
       {
         //Add extra possibly-non-visible columns that we need:
-        sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+        std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
         layout_item->set_full_field_details(m_field_primary_key);
 
         //Get the primary key index, adding the primary key if necessary:
@@ -317,7 +317,7 @@ bool Box_Data_Details::fill_from_database()
           const type_vecLayoutFields::size_type count = fieldsToGet.size();
           for(type_vecLayoutFields::size_type i = 0; i < count; ++i)
           {
-            sharedptr<const LayoutItem_Field> element = fieldsToGet[i];
+            std::shared_ptr<const LayoutItem_Field> element = fieldsToGet[i];
             if(!element)
               continue;
 
@@ -325,8 +325,8 @@ bool Box_Data_Details::fill_from_database()
               continue;
 
             //Compare the relationship and related relationship:
-            sharedptr<const UsesRelationship> uses_a = layout_item;
-            sharedptr<const UsesRelationship> uses_b = element;
+            std::shared_ptr<const UsesRelationship> uses_a = layout_item;
+            std::shared_ptr<const UsesRelationship> uses_b = element;
             if(*uses_a == *uses_b)
             {
               index_primary_key = i;
@@ -369,7 +369,7 @@ bool Box_Data_Details::fill_from_database()
             //Get field values to show:
             for(int i = 0; i < cols_count; ++i)
             {
-              sharedptr<const LayoutItem_Field> layout_item = fieldsToGet[i];
+              std::shared_ptr<const LayoutItem_Field> layout_item = fieldsToGet[i];
 
               //Field value:
               Gnome::Gda::Value value;
@@ -487,17 +487,17 @@ void Box_Data_Details::on_button_nav_last()
     signal_nav_last().emit();
 }
 
-Gnome::Gda::Value Box_Data_Details::get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const
+Gnome::Gda::Value Box_Data_Details::get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const
 {
   return m_FlowTable.get_field_value(field);
 }
 
-void Box_Data_Details::set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void Box_Data_Details::set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
 {
   m_FlowTable.set_field_value(field, value);
 }
 
-void Box_Data_Details::set_entered_field_data(const Gtk::TreeModel::iterator& /* row */, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void Box_Data_Details::set_entered_field_data(const Gtk::TreeModel::iterator& /* row */, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
 {
   set_entered_field_data(field, value);
 }
@@ -515,23 +515,23 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
   const Gnome::Gda::Value primary_key_value = get_primary_key_value_selected();
   for(type_vec_fields::iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
   {
-    const sharedptr<const Field> field = *iter;
+    const std::shared_ptr<const Field> field = *iter;
 
     //Is this field triggered by this relationship?
     const Field::type_list_strings triggered_by = field->get_calculation_relationships();
     Field::type_list_strings::const_iterator iterFind = std::find(triggered_by.begin(), triggered_by.end(), relationship_name);
     if(iterFind != triggered_by.end()) //If it was found
     {
-      sharedptr<Field> field = *iter;
+      std::shared_ptr<Field> field = *iter;
       if(field)
       {
-        sharedptr<LayoutItem_Field> layoutitem_field = sharedptr<LayoutItem_Field>::create();
+        std::shared_ptr<LayoutItem_Field> layoutitem_field = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
         layoutitem_field->set_full_field_details(field);
         LayoutFieldInRecord field_in_record(layoutitem_field, m_table_name, m_field_primary_key, primary_key_value);
         calculate_field(field_in_record); //And any dependencies.
 
         //Calculate anything that depends on this.
-        //sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+        //std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
         //layout_item->set_full_field_details(field);
 
         do_calculations(field_in_record, false /* recurse, reusing m_FieldsCalculationInProgress */);
@@ -642,18 +642,18 @@ void Box_Data_Details::on_flowtable_related_record_changed(const Glib::ustring& 
   recalculate_fields_for_related_records(relationship_name);
 }
 
-void Box_Data_Details::on_flowtable_field_open_details_requested(const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& field_value)
+void Box_Data_Details::on_flowtable_field_open_details_requested(const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& field_value)
 {
   if(Conversions::value_is_empty(field_value))
     return; //Ignore empty ID fields.
 
   //Updating doesn't seem necessary. The field details seem to be full already.
   //Update the field details from the document:
-  ////sharedptr<LayoutItem_Field> unconst_field = sharedptr<LayoutItem_Field>::cast_const(layout_field); //A hack, because layout_field_should_have_navigation() needs to get full field details.
+  ////std::shared_ptr<LayoutItem_Field> unconst_field = std::const_pointer_cast<LayoutItem_Field>(layout_field); //A hack, because layout_field_should_have_navigation() needs to get full field details.
   //unconst_field->set_full_field_details(
   //  document->get_field(field->get_table_used(table_name), field->get_name()) ); //Otherwise get_primary_key() returns false always.
       
-  sharedptr<const Relationship> field_used_in_relationship_to_one;
+  std::shared_ptr<Relationship> field_used_in_relationship_to_one;
   const bool has_open_button = 
     DbUtils::layout_field_should_have_navigation(m_table_name, layout_field, get_document(), 
     field_used_in_relationship_to_one);
@@ -674,7 +674,7 @@ void Box_Data_Details::on_flowtable_field_open_details_requested(const sharedptr
   }
 }
 
-void Box_Data_Details::on_flowtable_script_button_clicked(const sharedptr<const LayoutItem_Button>& layout_item)
+void Box_Data_Details::on_flowtable_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item)
 {
   if(!layout_item)
   {
@@ -703,7 +703,7 @@ void Box_Data_Details::on_flowtable_script_button_clicked(const sharedptr<const 
   }
 }
 
-void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& field_value)
+void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& field_value)
 {
   if(m_ignore_signals)
     return;
@@ -719,7 +719,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
   if(!Conversions::value_is_empty(primary_key_value)) //If there is not a stored primary key value yet:
   {
     Glib::ustring table_name;
-    sharedptr<Field> primary_key_field;
+    std::shared_ptr<Field> primary_key_field;
     Gnome::Gda::Value primary_key_value;
 
     if(!layout_field->get_has_relationship_name())
@@ -734,7 +734,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
       //plus how to identify the record in that table.
       const Glib::ustring relationship_name = layout_field->get_relationship_name();
 
-      sharedptr<Relationship> relationship = document->get_relationship(get_table_name(), relationship_name);
+      std::shared_ptr<Relationship> relationship = document->get_relationship(get_table_name(), relationship_name);
       if(relationship)
       {
         table_name = relationship->get_to_table();
@@ -744,7 +744,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
         if(primary_key_field)
         {
           //Get the value of the corresponding key in the current table (that identifies the record in the table that we will change)
-          sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+          std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
           layout_item->set_full_field_details( document->get_field(relationship->get_from_table(), relationship->get_from_field()) );
 
           primary_key_value = get_entered_field_data(layout_item);
@@ -897,7 +897,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
   } //if(get_primary_key_value_selected().size())
 }
 
-void Box_Data_Details::on_flowtable_field_choices_changed(const sharedptr<const LayoutItem_Field>& layout_field)
+void Box_Data_Details::on_flowtable_field_choices_changed(const std::shared_ptr<const LayoutItem_Field>& layout_field)
 {
   if(m_ignore_signals)
     return;
@@ -916,7 +916,7 @@ void Box_Data_Details::on_userlevel_changed(AppState::userlevels user_level)
 #endif
 }
 
-sharedptr<Field> Box_Data_Details::get_field_primary_key() const
+std::shared_ptr<Field> Box_Data_Details::get_field_primary_key() const
 {
   return m_field_primary_key;
 }
@@ -947,7 +947,7 @@ void Box_Data_Details::print_layout()
   //breaks because those spaces would be empty space on the page after
   //we have moved items down when expanding:
   //TODO: Squash that space when expanding custom layouts.
-  sharedptr<PrintLayout> print_layout = 
+  std::shared_ptr<PrintLayout> print_layout = 
     PrintLayoutUtils::create_standard(page_setup, m_table_name, document,
       false /* do not avoid page margins */);
   

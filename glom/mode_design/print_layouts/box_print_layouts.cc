@@ -59,7 +59,7 @@ Box_Print_Layouts::~Box_Print_Layouts()
 {
 }
 
-void Box_Print_Layouts::fill_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const PrintLayout>& item)
+void Box_Print_Layouts::fill_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const PrintLayout>& item)
 {
   if(iter)
   {
@@ -105,7 +105,7 @@ bool Box_Print_Layouts::fill_from_database()
     listItems = document->get_print_layout_names(m_table_name);
     for(std::vector<Glib::ustring>::const_iterator iter = listItems.begin(); iter != listItems.end(); ++iter)
     {
-      sharedptr<PrintLayout> item = document->get_print_layout(m_table_name, *iter);
+      std::shared_ptr<PrintLayout> item = document->get_print_layout(m_table_name, *iter);
       if(item)
       {
         Gtk::TreeModel::iterator row = m_AddDel.add_item(item->get_name());
@@ -126,7 +126,7 @@ bool Box_Print_Layouts::fill_from_database()
 
 void Box_Print_Layouts::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
 {
-  sharedptr<PrintLayout> item = sharedptr<PrintLayout>::create();
+  std::shared_ptr<PrintLayout> item = std::shared_ptr<PrintLayout>(new PrintLayout());
 
   const Glib::ustring name = m_AddDel.get_value(row, m_colName);
   if(!name.empty())
@@ -186,7 +186,7 @@ void Box_Print_Layouts::save_to_document()
 
       if(!name.empty() && std::find(listItems.begin(), listItems.end(), name) == listItems.end())
       {
-        sharedptr<PrintLayout> item(new PrintLayout());
+        std::shared_ptr<PrintLayout> item(new PrintLayout());
         item->set_name(name);
 
         item->set_title( m_AddDel.get_value(iter, m_colTitle) , AppWindow::get_current_locale()); //TODO: Translations: Store the original in the TreeView.
@@ -208,7 +208,7 @@ void Box_Print_Layouts::on_adddel_user_changed(const Gtk::TreeModel::iterator& r
     const Glib::ustring name = m_AddDel.get_value_key(row);
     Document* document = get_document();
 
-    sharedptr<PrintLayout> item = document->get_print_layout(m_table_name, name);
+    std::shared_ptr<PrintLayout> item = document->get_print_layout(m_table_name, name);
     if(item)
     {
       if(column == m_colTitle)

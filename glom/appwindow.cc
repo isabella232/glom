@@ -43,7 +43,7 @@
 #include <gtkmm/main.h>
 
 #include <cstdio>
-#include <memory> //For std::auto_ptr<>
+#include <memory> //For std::shared_ptr<>
 #include <giomm/file.h>
 #include <glibmm/spawn.h>
 #include <glibmm/convert.h>
@@ -1121,13 +1121,13 @@ bool AppWindow::on_document_load()
   {
     Glib::ustring error_message; //TODO: Check this and tell the user.
     ConnectionPool* connection_pool = ConnectionPool::get_instance();
-    sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
+    std::shared_ptr<SharedConnection> sharedconnection = connection_pool->connect();
     AppPythonUICallbacks callbacks;
     glom_execute_python_function_implementation(script,
       type_map_fields(), //only used when there is a current table and record.
       pDocument,
       Glib::ustring() /* table_name */,
-      sharedptr<Field>(), Gnome::Gda::Value(), // primary key - only used when there is a current table and record.
+      std::shared_ptr<Field>(), Gnome::Gda::Value(), // primary key - only used when there is a current table and record.
       sharedconnection->get_gda_connection(),
       callbacks,
       error_message);
@@ -1268,7 +1268,7 @@ void AppWindow::update_userlevel_ui()
   {
     if(ConnectionPool::get_instance_is_ready())
     {
-      sharedptr<SharedConnection> connection = ConnectionPool::get_and_connect();
+      std::shared_ptr<SharedConnection> connection = ConnectionPool::get_and_connect();
       if(connection && !connection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
         m_action_developer_users->set_enabled(false);
     }
@@ -1299,7 +1299,7 @@ bool AppWindow::offer_new_or_existing()
   //Offer to load an existing document, or start a new one.
   Dialog_ExistingOrNew* dialog_raw = 0;
   Utils::get_glade_widget_derived_with_warning(dialog_raw);
-  std::auto_ptr<Dialog_ExistingOrNew> dialog(dialog_raw);
+  std::shared_ptr<Dialog_ExistingOrNew> dialog(dialog_raw);
   dialog->set_transient_for(*this);
 /*
   dialog->signal_new().connect(sigc::mem_fun(*this, &AppWindow::on_existing_or_new_new));
@@ -1522,14 +1522,14 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
 #else
-  std::auto_ptr<std::exception> error;
+  std::shared_ptr<std::exception> error;
 #endif // GLIBMM_EXCEPTIONS_ENABLED
   {
     connection_pool->set_ready_to_connect(); //This has succeeded already.
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-    sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
+    std::shared_ptr<SharedConnection> sharedconnection = connection_pool->connect();
 #else
-    sharedptr<SharedConnection> sharedconnection = connection_pool->connect(error);
+    std::shared_ptr<SharedConnection> sharedconnection = connection_pool->connect(error);
     if(!error.get())
     {
 #endif // GLIBMM_EXCEPTIONS_ENABLED
@@ -1585,7 +1585,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
   pulse_progress_message();
   BusyCursor busy_cursor(this);
 
-  sharedptr<SharedConnection> sharedconnection;
+  std::shared_ptr<SharedConnection> sharedconnection;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
 #endif // GLIBMM_EXCEPTIONS_ENABLED
@@ -1626,7 +1626,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
   Document::type_listTableInfo tables = pDocument->get_tables();
   for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
-    sharedptr<const TableInfo> table_info = *iter;
+    std::shared_ptr<const TableInfo> table_info = *iter;
 
     //Create SQL to describe all fields in this table:
     Glib::ustring sql_fields;
@@ -1653,7 +1653,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
 
   for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
-    sharedptr<const TableInfo> table_info = *iter;
+    std::shared_ptr<const TableInfo> table_info = *iter;
 
     //Add any example data to the table:
     pulse_progress_message();
@@ -1708,14 +1708,14 @@ bool AppWindow::recreate_database_from_backup(const std::string& backup_data_fil
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
 #else
-  std::auto_ptr<std::exception> error;
+  std::shared_ptr<std::exception> error;
 #endif // GLIBMM_EXCEPTIONS_ENABLED
   {
     connection_pool->set_ready_to_connect(); //This has succeeded already.
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-    sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
+    std::shared_ptr<SharedConnection> sharedconnection = connection_pool->connect();
 #else
-    sharedptr<SharedConnection> sharedconnection = connection_pool->connect(error);
+    std::shared_ptr<SharedConnection> sharedconnection = connection_pool->connect(error);
     if(!error.get())
     {
 #endif // GLIBMM_EXCEPTIONS_ENABLED
@@ -1892,7 +1892,7 @@ void AppWindow::fill_menu_tables()
   const Document::type_listTableInfo tables = document->get_tables();
   for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
-    sharedptr<const TableInfo> table_info = *iter;
+    std::shared_ptr<const TableInfo> table_info = *iter;
     if(!table_info->get_hidden())
     {
       const Glib::ustring title = Utils::string_escape_underscores(item_get_title_or_name(table_info));
@@ -1948,7 +1948,7 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
   const std::vector<Glib::ustring> reports = document->get_report_names(table_name);
   for(std::vector<Glib::ustring>::const_iterator iter = reports.begin(); iter != reports.end(); ++iter)
   {
-    sharedptr<Report> report = document->get_report(table_name, *iter);
+    std::shared_ptr<Report> report = document->get_report(table_name, *iter);
     if(report)
     {
       const Glib::ustring report_name = report->get_name();
@@ -2036,7 +2036,7 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   for(std::vector<Glib::ustring>::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
-    sharedptr<PrintLayout> print_layout = document->get_print_layout(table_name, *iter);
+    std::shared_ptr<PrintLayout> print_layout = document->get_print_layout(table_name, *iter);
     if(print_layout)
     {
       const Glib::ustring name = print_layout->get_name();
@@ -2150,7 +2150,7 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
   //Reimplement this whole function, just so we can use our custom FileChooserDialog class:
   AppWindow& app = *this;
 
-  std::auto_ptr<Gtk::FileChooserDialog> fileChooser_Save;
+  std::shared_ptr<Gtk::FileChooserDialog> fileChooser_Save;
   Glom::FileChooserDialog_SaveExtras* fileChooser_SaveExtras = 0;
 
   //Create the appropriate dialog, depending on how the caller set m_ui_save_extra_showextras:
@@ -2764,7 +2764,7 @@ Glib::ustring AppWindow::get_current_locale()
     return "C";
 }
 
-Glib::ustring item_get_title(const sharedptr<const TranslatableItem>& item)
+Glib::ustring item_get_title(const std::shared_ptr<const TranslatableItem>& item)
 {
   if(!item)
     return Glib::ustring();
@@ -2772,7 +2772,7 @@ Glib::ustring item_get_title(const sharedptr<const TranslatableItem>& item)
   return item->get_title(AppWindow::get_current_locale());
 }
 
-Glib::ustring item_get_title_or_name(const sharedptr<const TranslatableItem>& item)
+Glib::ustring item_get_title_or_name(const std::shared_ptr<const TranslatableItem>& item)
 {
   if(!item)
     return Glib::ustring();

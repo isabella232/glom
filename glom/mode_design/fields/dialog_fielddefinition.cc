@@ -109,7 +109,7 @@ Dialog_FieldDefinition::~Dialog_FieldDefinition()
 {
 }
 
-void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, const Glib::ustring& table_name)
+void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field, const Glib::ustring& table_name)
 {
   set_blocked();
 
@@ -144,8 +144,8 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
 
   //We use a regular DataWidget for the default value, so we can reuse its functionality,
   //but it's not a real field - hence the special title.
-  sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
-  sharedptr<Field> field_default_value = glom_sharedptr_clone(m_Field);
+  std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+  std::shared_ptr<Field> field_default_value = glom_sharedptr_clone(m_Field);
   field_default_value->set_name("glom_temp_default_value");
   field_default_value->set_title_original(_("Default Value"));
   layout_item->set_full_field_details(field_default_value);
@@ -179,7 +179,7 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
     m_pCombo_LookupRelationship->set_relationships(vecRelationships);
   }
 
-  sharedptr<Relationship> lookup_relationship;
+  std::shared_ptr<Relationship> lookup_relationship;
   if(!disable_default_value)
     lookup_relationship = m_Field->get_lookup_relationship();
 
@@ -213,11 +213,11 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
   Dialog_Properties::set_modified(false);
 }
 
-sharedptr<Field> Dialog_FieldDefinition::get_field() const
+std::shared_ptr<Field> Dialog_FieldDefinition::get_field() const
 {
-  sharedptr<Field> field = glom_sharedptr_clone(m_Field); //Start with the old details, to preserve anything that is not in our UI.
+  std::shared_ptr<Field> field = glom_sharedptr_clone(m_Field); //Start with the old details, to preserve anything that is not in our UI.
   // const_cast is necessary and save here for the window (jhs)
-  sharedptr<SharedConnection> sharedcnc = connect_to_server(const_cast<Dialog_FieldDefinition*>(this));
+  std::shared_ptr<SharedConnection> sharedcnc = connect_to_server(const_cast<Dialog_FieldDefinition*>(this));
   Glib::RefPtr<Gnome::Gda::Connection> cnc = sharedcnc->get_gda_connection();
 
   //Get the field info from the widgets:
@@ -238,7 +238,7 @@ sharedptr<Field> Dialog_FieldDefinition::get_field() const
 
   //Lookup:
   const bool is_lookup = m_pCheck_Lookup->get_active();
-  sharedptr<Relationship> relationship;
+  std::shared_ptr<Relationship> relationship;
   if(is_lookup)
     relationship = m_pCombo_LookupRelationship->get_selected_relationship();
   field->set_lookup_relationship(relationship);
@@ -341,7 +341,7 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
   m_pCombo_LookupField->remove_all();
 
   //Get the relationship name:
-  sharedptr<const Relationship> relationship = m_pCombo_LookupRelationship->get_selected_relationship();
+  std::shared_ptr<const Relationship> relationship = m_pCombo_LookupRelationship->get_selected_relationship();
   if(relationship)
   {
     //Get the relationship details:

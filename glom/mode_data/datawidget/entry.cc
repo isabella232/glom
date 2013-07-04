@@ -63,7 +63,7 @@ void Entry::init()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
-void Entry::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
+void Entry::set_layout_item(const std::shared_ptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
 {
   LayoutWidgetField::set_layout_item(layout_item, table_name);
 #ifdef GTKMM_ATKMM_ENABLED
@@ -73,8 +73,8 @@ void Entry::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib
   //Horizontal Alignment:
   Formatting::HorizontalAlignment alignment = 
     Formatting::HORIZONTAL_ALIGNMENT_LEFT;
-  sharedptr<LayoutItem_Field> layout_field =
-    sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+  std::shared_ptr<LayoutItem_Field> layout_field =
+    std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
   if(layout_field)
     alignment = layout_field->get_formatting_used_horizontal_alignment(true /* for details view */);
 
@@ -95,7 +95,7 @@ void Entry::check_for_change()
     //Validate the input:
     bool success = false;
 
-    sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
+    std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
     Gnome::Gda::Value value = Conversions::parse_value(m_glom_type, get_text(), layout_item->get_formatting_used().m_numeric_format, success);
 
     if(success)
@@ -148,7 +148,7 @@ void Entry::on_changed()
 
 void Entry::set_value(const Gnome::Gda::Value& value)
 {
-  sharedptr<const LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+  std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
   if(!layout_item)
     return;
 
@@ -183,7 +183,7 @@ Gnome::Gda::Value Entry::get_value() const
 {
   bool success = false;
 
-  sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
+  std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
   return Conversions::parse_value(m_glom_type, get_text(), layout_item->get_formatting_used().m_numeric_format, success);
 }
 

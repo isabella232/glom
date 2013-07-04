@@ -203,12 +203,12 @@ GType Field::get_gda_data_type_with_fallback(const Gnome::Gda::Value& value)
   return cur_type;
 }
 
-sharedptr<Relationship> Field::get_lookup_relationship() const
+std::shared_ptr<Relationship> Field::get_lookup_relationship() const
 {
   return m_lookup_relationship;
 }
 
-void Field::set_lookup_relationship(const sharedptr<Relationship>& relationship)
+void Field::set_lookup_relationship(const std::shared_ptr<Relationship>& relationship)
 {
   m_lookup_relationship = relationship;
 }

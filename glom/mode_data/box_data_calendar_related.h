@@ -43,7 +43,7 @@ public:
   /**
    * @param portal: The full portal details
    */
-  virtual bool init_db_details(const sharedptr<const LayoutItem_Portal>& portal, bool show_title = true);
+  virtual bool init_db_details(const std::shared_ptr<const LayoutItem_Portal>& portal, bool show_title = true);
 
   /** Use this if no portal is yet defined, so the user can use the context menu to define a portal.
    */

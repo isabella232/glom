@@ -48,7 +48,7 @@ public:
 private:
   bool fill_from_database(); //override
 
-  void fill_table_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const TableInfo>& table_info);
+  void fill_table_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const TableInfo>& table_info);
 
   //Signal handlers:
 #ifndef GLOM_ENABLE_CLIENT_ONLY

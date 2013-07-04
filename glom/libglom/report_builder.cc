@@ -42,7 +42,7 @@ ReportBuilder::~ReportBuilder()
 {
 }
 
-bool ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::Element& parent_node, const sharedptr<LayoutGroup>& group)
+bool ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::Element& parent_node, const std::shared_ptr<LayoutGroup>& group)
 {
   //Add XML node:
   xmlpp::Element* node = parent_node.add_child(group->get_report_part_id());
@@ -51,9 +51,9 @@ bool ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::
   type_vecLayoutItems itemsToGet;
   for(LayoutGroup::type_list_items::iterator iterChildren = group->m_list_items.begin(); iterChildren != group->m_list_items.end(); ++iterChildren)
   {
-    sharedptr<LayoutItem> item = *iterChildren;
+    std::shared_ptr<LayoutItem> item = *iterChildren;
 
-    sharedptr<LayoutItem_Text> item_text = sharedptr<LayoutItem_Text>::cast_dynamic(item);
+    std::shared_ptr<LayoutItem_Text> item_text = std::dynamic_pointer_cast<LayoutItem_Text>(item);
     if(item_text)
     {
       if(!report_build_records_text(found_set, *node, item_text))
@@ -64,7 +64,7 @@ bool ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::
     }
     else
     {
-      sharedptr<LayoutItem_Image> item_image = sharedptr<LayoutItem_Image>::cast_dynamic(item);
+      std::shared_ptr<LayoutItem_Image> item_image = std::dynamic_pointer_cast<LayoutItem_Image>(item);
       if(item_image)
       {
         if(!report_build_records_image(found_set, *node, item_image))
@@ -75,7 +75,7 @@ bool ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::
       }
       else
       {
-        sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+        std::shared_ptr<LayoutItem_Field> pField = std::dynamic_pointer_cast<LayoutItem_Field>(item);
         if(pField)
         {
           guint col_index = 0; //ignored.
@@ -87,7 +87,7 @@ bool ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::
         }
         else
         {
-          sharedptr<LayoutItem_VerticalGroup> vertical_group = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
+          std::shared_ptr<LayoutItem_VerticalGroup> vertical_group = std::dynamic_pointer_cast<LayoutItem_VerticalGroup>(item);
           if(vertical_group)
           {
             //Reuse (a bit hacky) this function for the header and footer:
@@ -106,7 +106,7 @@ bool ReportBuilder::report_build_headerfooter(const FoundSet& found_set, xmlpp::
   return true;
 }
 
-bool ReportBuilder::report_build_summary(const FoundSet& found_set, xmlpp::Element& parent_node, const sharedptr<LayoutItem_Summary>& summary)
+bool ReportBuilder::report_build_summary(const FoundSet& found_set, xmlpp::Element& parent_node, const std::shared_ptr<LayoutItem_Summary>& summary)
 {
   //Add XML node:
   xmlpp::Element* node = parent_node.add_child(summary->get_report_part_id());
@@ -115,9 +115,9 @@ bool ReportBuilder::report_build_summary(const FoundSet& found_set, xmlpp::Eleme
   type_vecLayoutItems itemsToGet;
   for(LayoutGroup::type_list_items::iterator iterChildren = summary->m_list_items.begin(); iterChildren != summary->m_list_items.end(); ++iterChildren)
   {
-    sharedptr<LayoutItem> item = *iterChildren;
+    std::shared_ptr<LayoutItem> item = *iterChildren;
 
-    sharedptr<LayoutItem_GroupBy> pGroupBy = sharedptr<LayoutItem_GroupBy>::cast_dynamic(item);
+    std::shared_ptr<LayoutItem_GroupBy> pGroupBy = std::dynamic_pointer_cast<LayoutItem_GroupBy>(item);
     if(pGroupBy)
     {
       //Recurse, adding a sub-groupby block:
@@ -129,7 +129,7 @@ bool ReportBuilder::report_build_summary(const FoundSet& found_set, xmlpp::Eleme
     }
     else
     {
-      sharedptr<LayoutItem_Summary> pSummary = sharedptr<LayoutItem_Summary>::cast_dynamic(item);
+      std::shared_ptr<LayoutItem_Summary> pSummary = std::dynamic_pointer_cast<LayoutItem_Summary>(item);
       if(pSummary)
       {
         //Recurse, adding a summary block:
@@ -167,15 +167,15 @@ bool ReportBuilder::report_build_summary(const FoundSet& found_set, xmlpp::Eleme
 
 
 
-bool ReportBuilder::report_build_groupby_children(const FoundSet& found_set, xmlpp::Element& node, const sharedptr<LayoutItem_GroupBy>& group_by)
+bool ReportBuilder::report_build_groupby_children(const FoundSet& found_set, xmlpp::Element& node, const std::shared_ptr<LayoutItem_GroupBy>& group_by)
 {
   //Get data and add child rows:
   type_vecLayoutItems itemsToGet;
   for(LayoutGroup::type_list_items::iterator iterChildren = group_by->m_list_items.begin(); iterChildren != group_by->m_list_items.end(); ++iterChildren)
   {
-    sharedptr<LayoutItem> item = *iterChildren;
+    std::shared_ptr<LayoutItem> item = *iterChildren;
 
-    sharedptr<LayoutItem_GroupBy> pGroupBy = sharedptr<LayoutItem_GroupBy>::cast_dynamic(item);
+    std::shared_ptr<LayoutItem_GroupBy> pGroupBy = std::dynamic_pointer_cast<LayoutItem_GroupBy>(item);
     if(pGroupBy)
     {
       //Recurse, adding a sub-groupby block:
@@ -187,7 +187,7 @@ bool ReportBuilder::report_build_groupby_children(const FoundSet& found_set, xml
     }
     else
     {
-      sharedptr<LayoutItem_Summary> pSummary = sharedptr<LayoutItem_Summary>::cast_dynamic(item);
+      std::shared_ptr<LayoutItem_Summary> pSummary = std::dynamic_pointer_cast<LayoutItem_Summary>(item);
       if(pSummary)
       {
         //Recurse, adding a summary block:
@@ -219,12 +219,12 @@ bool ReportBuilder::report_build_groupby_children(const FoundSet& found_set, xml
   return true;
 }
 
-bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp::Element& parent_node, const sharedptr<LayoutItem_GroupBy>& group_by)
+bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp::Element& parent_node, const std::shared_ptr<LayoutItem_GroupBy>& group_by)
 {
   //Get the possible heading values.
   if(group_by->get_has_field_group_by())
   {
-    sharedptr<LayoutItem_Field> field_group_by = group_by->get_field_group_by();
+    std::shared_ptr<LayoutItem_Field> field_group_by = group_by->get_field_group_by();
     DbUtils::layout_item_fill_field_details(get_document(), found_set_parent.m_table_name, field_group_by);
 
     //Get the possible group values, ignoring repeats by using GROUP BY.
@@ -285,7 +285,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
           type_vecLayoutItems itemsToGet;
           for(LayoutGroup::type_list_items::iterator iterChildren = group_by->get_secondary_fields()->m_list_items.begin(); iterChildren != group_by->get_secondary_fields()->m_list_items.end(); ++iterChildren)
           {
-            sharedptr<LayoutItem> item = *iterChildren;
+            std::shared_ptr<LayoutItem> item = *iterChildren;
             itemsToGet.push_back( glom_sharedptr_clone(item) );
           }
 
@@ -320,13 +320,13 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
   return true;
 }
 
-bool ReportBuilder::report_build_records_get_fields(const FoundSet& found_set, const sharedptr<LayoutGroup>& group, type_vecLayoutFields& items)
+bool ReportBuilder::report_build_records_get_fields(const FoundSet& found_set, const std::shared_ptr<LayoutGroup>& group, type_vecLayoutFields& items)
 {
   for(LayoutGroup::type_list_items::iterator iterChildren = group->m_list_items.begin(); iterChildren != group->m_list_items.end(); ++iterChildren)
   {
-    sharedptr<LayoutItem> item = *iterChildren;
+    std::shared_ptr<LayoutItem> item = *iterChildren;
 
-    sharedptr<LayoutItem_VerticalGroup> pVerticalGroup = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
+    std::shared_ptr<LayoutItem_VerticalGroup> pVerticalGroup = std::dynamic_pointer_cast<LayoutItem_VerticalGroup>(item);
     if(pVerticalGroup)
     {
       if(!report_build_records_get_fields(found_set, pVerticalGroup, items))
@@ -337,7 +337,7 @@ bool ReportBuilder::report_build_records_get_fields(const FoundSet& found_set, c
     }
     else
     {
-      sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+      std::shared_ptr<LayoutItem_Field> pField = std::dynamic_pointer_cast<LayoutItem_Field>(item);
       if(pField)
         items.push_back(pField);
     }
@@ -353,8 +353,8 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
     //Add Field headings:
     for(type_vecLayoutItems::const_iterator iter = items.begin(); iter != items.end(); ++iter)
     {
-      sharedptr<LayoutItem> layout_item = *iter;
-      sharedptr<LayoutItem_Field> layoutitem_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+      std::shared_ptr<LayoutItem> layout_item = *iter;
+      std::shared_ptr<LayoutItem_Field> layoutitem_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
 
       //This adds a field heading (and therefore, column) for fields, or for a vertical group.
       xmlpp::Element* nodeFieldHeading = parent_node.add_child("field_heading");
@@ -369,13 +369,13 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
     Utils::type_vecLayoutFields fieldsToGet;
     for(type_vecLayoutItems::const_iterator iter = items.begin(); iter != items.end(); ++iter)
     {
-      sharedptr<LayoutItem> layout_item = *iter;
-      sharedptr<LayoutItem_Field> layoutitem_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+      std::shared_ptr<LayoutItem> layout_item = *iter;
+      std::shared_ptr<LayoutItem_Field> layoutitem_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
       if(layoutitem_field)
         fieldsToGet.push_back(layoutitem_field);
       else
       {
-        sharedptr<LayoutItem_VerticalGroup> vertical_group = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(layout_item);
+        std::shared_ptr<LayoutItem_VerticalGroup> vertical_group = std::dynamic_pointer_cast<LayoutItem_VerticalGroup>(layout_item);
         if(vertical_group)
         {
           //Get all the fields in this group:
@@ -395,7 +395,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
 
     Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
       fieldsToGet,
-      found_set.m_where_clause, sharedptr<const Relationship>() /* extra_join */, found_set.m_sort_clause,
+      found_set.m_where_clause, std::shared_ptr<const Relationship>() /* extra_join */, found_set.m_sort_clause,
       limit);
 
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(sql_query);
@@ -415,8 +415,8 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
         guint colField = 0;
         for(type_vecLayoutItems::const_iterator iter = items.begin(); iter != items.end(); ++iter)
         {
-          sharedptr<LayoutItem> item = *iter;
-          sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+          std::shared_ptr<LayoutItem> item = *iter;
+          std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
           if(field)
           {
             if(!report_build_records_field(found_set, *nodeRow, field, datamodel, row, colField))
@@ -427,7 +427,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
           }
           else
           {
-            sharedptr<LayoutItem_Text> item_text = sharedptr<LayoutItem_Text>::cast_dynamic(item);
+            std::shared_ptr<LayoutItem_Text> item_text = std::dynamic_pointer_cast<LayoutItem_Text>(item);
             if(item_text)
             {
               if(!report_build_records_text(found_set, *nodeRow, item_text))
@@ -438,7 +438,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
             }
             else
             {
-              sharedptr<LayoutItem_VerticalGroup> item_verticalgroup = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
+              std::shared_ptr<LayoutItem_VerticalGroup> item_verticalgroup = std::dynamic_pointer_cast<LayoutItem_VerticalGroup>(item);
               if(item_verticalgroup)
               {
                 if(!report_build_records_vertical_group(found_set, *nodeRow, item_verticalgroup, datamodel, row, colField))
@@ -461,7 +461,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
   return true;
 }
 
-bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Field>& field, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& colField, bool vertical)
+bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp::Element& nodeParent, const std::shared_ptr<const LayoutItem_Field>& field, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& colField, bool vertical)
 {
   const Field::glom_field_type field_type = field->get_glom_type();
 
@@ -509,7 +509,7 @@ bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
     Glib::ustring text_value = Conversions::get_text_for_gda_value(field_type, value, m_locale, field->get_formatting_used().m_numeric_format);
 
     //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:
-    if(text_value.empty() && sharedptr<const LayoutItem_FieldSummary>::cast_dynamic(field) && (field_type == Field::TYPE_NUMERIC))
+    if(text_value.empty() && std::dynamic_pointer_cast<const LayoutItem_FieldSummary>(field) && (field_type == Field::TYPE_NUMERIC))
     {
       //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
       const Gnome::Gda::Value value = Conversions::parse_value(0);
@@ -524,7 +524,7 @@ bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
   return true;
 }
 
-bool ReportBuilder::report_build_records_text(const FoundSet& /* found_set */, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Text>& textobject, bool vertical)
+bool ReportBuilder::report_build_records_text(const FoundSet& /* found_set */, xmlpp::Element& nodeParent, const std::shared_ptr<const LayoutItem_Text>& textobject, bool vertical)
 {
   //Text object:
   xmlpp::Element* nodeField = nodeParent.add_child(textobject->get_report_part_id()); //We reuse this node type for text objects.
@@ -536,7 +536,7 @@ bool ReportBuilder::report_build_records_text(const FoundSet& /* found_set */, x
   return true;
 }
 
-bool ReportBuilder::report_build_records_image(const FoundSet& /* found_set */, xmlpp::Element& nodeParent, const sharedptr<const LayoutItem_Image>& imageobject, bool vertical)
+bool ReportBuilder::report_build_records_image(const FoundSet& /* found_set */, xmlpp::Element& nodeParent, const std::shared_ptr<const LayoutItem_Image>& imageobject, bool vertical)
 {
   //Text object:
   xmlpp::Element* nodeImage = nodeParent.add_child(imageobject->get_report_part_id()); //We reuse this node type for text objects.
@@ -548,15 +548,15 @@ bool ReportBuilder::report_build_records_image(const FoundSet& /* found_set */, 
   return true;
 }
 
-bool ReportBuilder::report_build_records_vertical_group(const FoundSet& found_set, xmlpp::Element& parentNode, const sharedptr<LayoutItem_VerticalGroup>& group, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& field_index)
+bool ReportBuilder::report_build_records_vertical_group(const FoundSet& found_set, xmlpp::Element& parentNode, const std::shared_ptr<LayoutItem_VerticalGroup>& group, const Glib::RefPtr<Gnome::Gda::DataModel>& datamodel, guint row, guint& field_index)
 {
   xmlpp::Element* nodeGroupVertical = parentNode.add_child(group->get_report_part_id());
 
   for(LayoutGroup::type_list_items::iterator iterChildren = group->m_list_items.begin(); iterChildren != group->m_list_items.end(); ++iterChildren)
   {
-    sharedptr<LayoutItem> item = *iterChildren;
+    std::shared_ptr<LayoutItem> item = *iterChildren;
 
-    sharedptr<LayoutItem_VerticalGroup> pVerticalGroup = sharedptr<LayoutItem_VerticalGroup>::cast_dynamic(item);
+    std::shared_ptr<LayoutItem_VerticalGroup> pVerticalGroup = std::dynamic_pointer_cast<LayoutItem_VerticalGroup>(item);
     if(pVerticalGroup)
     {
       if(!report_build_records_vertical_group(found_set, *nodeGroupVertical, pVerticalGroup, datamodel, row, field_index))
@@ -567,7 +567,7 @@ bool ReportBuilder::report_build_records_vertical_group(const FoundSet& found_se
     }
     else
     {
-      sharedptr<LayoutItem_Field> pField = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+      std::shared_ptr<LayoutItem_Field> pField = std::dynamic_pointer_cast<LayoutItem_Field>(item);
       if(pField)
       {
         if(!report_build_records_field(found_set, *nodeGroupVertical, pField, datamodel, row, field_index, true /* vertical, so we get a row for each field too. */))
@@ -578,7 +578,7 @@ bool ReportBuilder::report_build_records_vertical_group(const FoundSet& found_se
       }
       else
       {
-        sharedptr<LayoutItem_Text> pText = sharedptr<LayoutItem_Text>::cast_dynamic(item);
+        std::shared_ptr<LayoutItem_Text> pText = std::dynamic_pointer_cast<LayoutItem_Text>(item);
         if(pText)
         {
           if(!report_build_records_text(found_set, *nodeGroupVertical, pText, true))
@@ -595,7 +595,7 @@ bool ReportBuilder::report_build_records_vertical_group(const FoundSet& found_se
 }
 
 //TODO: Return a URI
-std::string ReportBuilder::report_build_and_save(const FoundSet& found_set, const sharedptr<const Report>& report)
+std::string ReportBuilder::report_build_and_save(const FoundSet& found_set, const std::shared_ptr<const Report>& report)
 {
   const Glib::ustring contents = report_build(found_set, report);
 
@@ -646,7 +646,7 @@ std::string ReportBuilder::report_build_and_save(const FoundSet& found_set, cons
 }
  
 
-Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const sharedptr<const Report>& report)
+Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const std::shared_ptr<const Report>& report)
 {
   //Create a DOM Document with the XML:
   xmlpp::DomParser dom_parser;;
@@ -676,13 +676,13 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const share
 
   type_vecLayoutItems itemsToGet_TopLevel;
 
-  const sharedptr<const LayoutGroup> group = report->get_layout_group();
+  const std::shared_ptr<const LayoutGroup> group = report->get_layout_group();
   for(LayoutGroup::type_list_items::const_iterator iter = group->m_list_items.begin(); iter != group->m_list_items.end(); ++iter)
   {
-    sharedptr<LayoutItem> pPart = *iter;
+    std::shared_ptr<LayoutItem> pPart = *iter;
 
     //The Group, and the details for each record in the group:
-    sharedptr<LayoutItem_GroupBy> pGroupBy = sharedptr<LayoutItem_GroupBy>::cast_dynamic(pPart);
+    std::shared_ptr<LayoutItem_GroupBy> pGroupBy = std::dynamic_pointer_cast<LayoutItem_GroupBy>(pPart);
     if(pGroupBy)
     {
       if(!report_build_groupby(found_set, *nodeParent, pGroupBy))
@@ -693,7 +693,7 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const share
     }
     else
     {
-      sharedptr<LayoutItem_Summary> pSummary = sharedptr<LayoutItem_Summary>::cast_dynamic(pPart);
+      std::shared_ptr<LayoutItem_Summary> pSummary = std::dynamic_pointer_cast<LayoutItem_Summary>(pPart);
       if(pSummary)
       {
         //Recurse, adding a summary block:
@@ -705,11 +705,11 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const share
       }
       else
       {
-        sharedptr<LayoutGroup> pGroup = sharedptr<LayoutGroup>::cast_dynamic(pPart);
+        std::shared_ptr<LayoutGroup> pGroup = std::dynamic_pointer_cast<LayoutGroup>(pPart);
         if(pGroup)
         {
-          sharedptr<LayoutItem_Header> pHeader = sharedptr<LayoutItem_Header>::cast_dynamic(pPart);
-          sharedptr<LayoutItem_Footer> pFooter = sharedptr<LayoutItem_Footer>::cast_dynamic(pPart);
+          std::shared_ptr<LayoutItem_Header> pHeader = std::dynamic_pointer_cast<LayoutItem_Header>(pPart);
+          std::shared_ptr<LayoutItem_Footer> pFooter = std::dynamic_pointer_cast<LayoutItem_Footer>(pPart);
           if(pHeader || pFooter)
           {
             //Recurse, adding a summary block:
@@ -740,7 +740,7 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const share
   return GlomXslUtils::transform(*pDocument, "print_report_to_html.xsl");
 }
 
-static void fill_standard_list_report_fill(const sharedptr<Report>& report, const sharedptr<const LayoutGroup>& layout_group)
+static void fill_standard_list_report_fill(const std::shared_ptr<Report>& report, const std::shared_ptr<const LayoutGroup>& layout_group)
 {
   if(!report)
     return;
@@ -750,18 +750,18 @@ static void fill_standard_list_report_fill(const sharedptr<Report>& report, cons
 
   for(LayoutGroup::type_list_items::const_iterator iter = layout_group->m_list_items.begin(); iter != layout_group->m_list_items.end(); ++iter)
   {
-    const sharedptr<const LayoutItem> item = *iter;
+    const std::shared_ptr<const LayoutItem> item = *iter;
     if(!item)
       continue;
 
-    const sharedptr<LayoutItem> unconst = sharedptr<LayoutItem>::cast_const(item); //TODO: Avoid this?
+    const std::shared_ptr<LayoutItem> unconst = std::const_pointer_cast<LayoutItem>(item); //TODO: Avoid this?
     report->get_layout_group()->add_item(unconst);
   }
 }
 
-sharedptr<Report> ReportBuilder::create_standard_list_report(const Document* document, const Glib::ustring& table_name)
+std::shared_ptr<Report> ReportBuilder::create_standard_list_report(const Document* document, const Glib::ustring& table_name)
 {
-  sharedptr<Report> result(new Report());
+  std::shared_ptr<Report> result(new Report());
   result->set_name("list");
   //Translators: This is a noun. It is the title of a report.
   result->set_title_original(_("List"));
@@ -770,7 +770,7 @@ sharedptr<Report> ReportBuilder::create_standard_list_report(const Document* doc
     document->get_data_layout_groups("list", table_name); //TODO: layout_platform.
   for(Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
   {
-    const sharedptr<const LayoutGroup> group = *iter;
+    const std::shared_ptr<const LayoutGroup> group = *iter;
     if(group)
       fill_standard_list_report_fill(result, group);
   }

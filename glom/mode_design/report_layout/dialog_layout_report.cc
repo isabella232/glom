@@ -102,30 +102,30 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
       m_model_available_parts_main = type_model::create();
 
   //     Gtk::TreeModel::iterator iterHeader = m_model_available_parts_main->append();
-  //     (*iterHeader)[m_model_available_parts_main->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Header()));
+  //     (*iterHeader)[m_model_available_parts_main->m_columns.m_col_item] = std::shared_ptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Header()));
 
       Gtk::TreeModel::iterator iter = m_model_available_parts_main->append();
-      (*iter)[m_model_available_parts_main->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_GroupBy()));
+      (*iter)[m_model_available_parts_main->m_columns.m_col_item] = std::shared_ptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_GroupBy()));
 
       Gtk::TreeModel::iterator iterField = m_model_available_parts_main->append(iter->children()); //Place Field under GroupBy to indicate that that's where it belongs in the actual layout.
-      (*iterField)[m_model_available_parts_main->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Field()));
+      (*iterField)[m_model_available_parts_main->m_columns.m_col_item] = std::shared_ptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Field()));
 
       Gtk::TreeModel::iterator iterText = m_model_available_parts_main->append(iter->children());
-      (*iterText)[m_model_available_parts_main->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Text()));
+      (*iterText)[m_model_available_parts_main->m_columns.m_col_item] = std::shared_ptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Text()));
 
       Gtk::TreeModel::iterator iterImage = m_model_available_parts_main->append(iter->children());
-      (*iterImage)[m_model_available_parts_main->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Image()));
+      (*iterImage)[m_model_available_parts_main->m_columns.m_col_item] = std::shared_ptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Image()));
 
       Gtk::TreeModel::iterator iterVerticalGroup = m_model_available_parts_main->append(iter->children());
-      (*iterVerticalGroup)[m_model_available_parts_main->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_VerticalGroup()));
+      (*iterVerticalGroup)[m_model_available_parts_main->m_columns.m_col_item] = std::shared_ptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_VerticalGroup()));
 
       iter = m_model_available_parts_main->append();
-      (*iter)[m_model_available_parts_main->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Summary()));
+      (*iter)[m_model_available_parts_main->m_columns.m_col_item] = std::shared_ptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Summary()));
       iter = m_model_available_parts_main->append(iter->children());
-      (*iter)[m_model_available_parts_main->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_FieldSummary()));
+      (*iter)[m_model_available_parts_main->m_columns.m_col_item] = std::shared_ptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_FieldSummary()));
 
 //     Gtk::TreeModel::iterator iterFooter = m_model_available_parts_main->append();
-//     (*iterFooter)[m_model_available_parts_main->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Footer()));
+//     (*iterFooter)[m_model_available_parts_main->m_columns.m_col_item] = std::shared_ptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Footer()));
     }
 
     //Header/Footer parts:
@@ -133,16 +133,16 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
       m_model_available_parts_headerfooter = type_model::create();
 
       Gtk::TreeModel::iterator iterVerticalGroup = m_model_available_parts_headerfooter->append();
-      (*iterVerticalGroup)[m_model_available_parts_headerfooter->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_VerticalGroup()));
+      (*iterVerticalGroup)[m_model_available_parts_headerfooter->m_columns.m_col_item] = std::shared_ptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_VerticalGroup()));
 
       Gtk::TreeModel::iterator iterField = m_model_available_parts_headerfooter->append(iterVerticalGroup->children());
-      (*iterField)[m_model_available_parts_headerfooter->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Field()));
+      (*iterField)[m_model_available_parts_headerfooter->m_columns.m_col_item] = std::shared_ptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Field()));
 
       Gtk::TreeModel::iterator iterText = m_model_available_parts_headerfooter->append(iterVerticalGroup->children());
-      (*iterText)[m_model_available_parts_headerfooter->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Text()));
+      (*iterText)[m_model_available_parts_headerfooter->m_columns.m_col_item] = std::shared_ptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Text()));
 
       Gtk::TreeModel::iterator iterImage = m_model_available_parts_headerfooter->append(iterVerticalGroup->children());
-      (*iterImage)[m_model_available_parts_headerfooter->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Image()));
+      (*iterImage)[m_model_available_parts_headerfooter->m_columns.m_col_item] = std::shared_ptr<LayoutItem>(static_cast<LayoutItem*>(new LayoutItem_Image()));
     }
 
     m_treeview_available_parts->set_model(m_model_available_parts_main);
@@ -235,14 +235,14 @@ void Dialog_Layout_Report::setup_model(Gtk::TreeView& treeview, Glib::RefPtr<typ
   //m_model_parts_main->signal_row_changed().connect( sigc::mem_fun(*this, &Dialog_Layout_Report::on_treemodel_row_changed) );
 }
 
-sharedptr<LayoutGroup> Dialog_Layout_Report::fill_group(const Gtk::TreeModel::iterator& iter, const Glib::RefPtr<const type_model> model)
+std::shared_ptr<LayoutGroup> Dialog_Layout_Report::fill_group(const Gtk::TreeModel::iterator& iter, const Glib::RefPtr<const type_model> model)
 {
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;
 
-    sharedptr<LayoutItem> pItem = row[model->m_columns.m_col_item];
-    sharedptr<LayoutGroup> pGroup = sharedptr<LayoutGroup>::cast_dynamic(pItem);
+    std::shared_ptr<LayoutItem> pItem = row[model->m_columns.m_col_item];
+    std::shared_ptr<LayoutGroup> pGroup = std::dynamic_pointer_cast<LayoutGroup>(pItem);
     if(pGroup)
     {
       //Make sure that it contains the child items:
@@ -252,10 +252,10 @@ sharedptr<LayoutGroup> Dialog_Layout_Report::fill_group(const Gtk::TreeModel::it
 
   }
 
-  return  sharedptr<LayoutGroup>();
+  return  std::shared_ptr<LayoutGroup>();
 }
 
-void Dialog_Layout_Report::fill_group_children(const sharedptr<LayoutGroup>& group, const Gtk::TreeModel::iterator& iter, const Glib::RefPtr<const type_model> model)
+void Dialog_Layout_Report::fill_group_children(const std::shared_ptr<LayoutGroup>& group, const Gtk::TreeModel::iterator& iter, const Glib::RefPtr<const type_model> model)
 {
   if(iter)
   {
@@ -265,10 +265,10 @@ void Dialog_Layout_Report::fill_group_children(const sharedptr<LayoutGroup>& gro
     for(Gtk::TreeModel::iterator iterChild = row.children().begin(); iterChild != row.children().end(); ++iterChild)
     {
       Gtk::TreeModel::Row row = *iterChild;
-      sharedptr<LayoutItem> item = row[model->m_columns.m_col_item];
+      std::shared_ptr<LayoutItem> item = row[model->m_columns.m_col_item];
 
       //Recurse:
-      sharedptr<LayoutGroup> child_group = sharedptr<LayoutGroup>::cast_dynamic(item);
+      std::shared_ptr<LayoutGroup> child_group = std::dynamic_pointer_cast<LayoutGroup>(item);
       if(child_group)
         fill_group_children(child_group, iterChild, model);
 
@@ -279,16 +279,16 @@ void Dialog_Layout_Report::fill_group_children(const sharedptr<LayoutGroup>& gro
   }
 }
 
-void Dialog_Layout_Report::add_group_children(const Glib::RefPtr<type_model>& model_parts, const Gtk::TreeModel::iterator& parent, const sharedptr<const LayoutGroup>& group)
+void Dialog_Layout_Report::add_group_children(const Glib::RefPtr<type_model>& model_parts, const Gtk::TreeModel::iterator& parent, const std::shared_ptr<const LayoutGroup>& group)
 {
   for(LayoutGroup::type_list_items::const_iterator iter = group->m_list_items.begin(); iter != group->m_list_items.end(); ++iter)
   {
-    sharedptr<const LayoutItem> item = *iter;
-    sharedptr<const LayoutGroup> group = sharedptr<const LayoutGroup>::cast_dynamic(item);
+    std::shared_ptr<const LayoutItem> item = *iter;
+    std::shared_ptr<const LayoutGroup> group = std::dynamic_pointer_cast<const LayoutGroup>(item);
     if(group)
     {
-      sharedptr<const LayoutItem_Header> header = sharedptr<const LayoutItem_Header>::cast_dynamic(item);
-      sharedptr<const LayoutItem_Footer> footer = sharedptr<const LayoutItem_Footer>::cast_dynamic(item);
+      std::shared_ptr<const LayoutItem_Header> header = std::dynamic_pointer_cast<const LayoutItem_Header>(item);
+      std::shared_ptr<const LayoutItem_Footer> footer = std::dynamic_pointer_cast<const LayoutItem_Footer>(item);
 
       //Special-case the header and footer so that their items go into the separate treeviews:
       if(header)
@@ -311,7 +311,7 @@ void Dialog_Layout_Report::add_group_children(const Glib::RefPtr<type_model>& mo
   m_modified = true;
 }
 
-void Dialog_Layout_Report::add_group(const Glib::RefPtr<type_model>& model_parts, const Gtk::TreeModel::iterator& parent, const sharedptr<const LayoutGroup>& group)
+void Dialog_Layout_Report::add_group(const Glib::RefPtr<type_model>& model_parts, const Gtk::TreeModel::iterator& parent, const std::shared_ptr<const LayoutGroup>& group)
 {
   Gtk::TreeModel::iterator iterNewItem;
   if(!parent)
@@ -328,7 +328,7 @@ void Dialog_Layout_Report::add_group(const Glib::RefPtr<type_model>& model_parts
   {
     Gtk::TreeModel::Row row = *iterNewItem;
 
-    row[model_parts->m_columns.m_col_item] = sharedptr<LayoutItem>(static_cast<LayoutItem*>(group->clone()));
+    row[model_parts->m_columns.m_col_item] = std::shared_ptr<LayoutItem>(static_cast<LayoutItem*>(group->clone()));
 
     add_group_children(model_parts, iterNewItem /* parent */, group);
 
@@ -337,12 +337,12 @@ void Dialog_Layout_Report::add_group(const Glib::RefPtr<type_model>& model_parts
 }
 
 //void Dialog_Layout_Report::set_document(const Glib::ustring& layout, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields)
-void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const sharedptr<const Report>& report)
+void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const std::shared_ptr<const Report>& report)
 {
   m_modified = false;
 
   m_name_original = report->get_name();
-  m_report = sharedptr<Report>(new Report(*report)); //Copy it, so we only use the changes when we want to.
+  m_report = std::shared_ptr<Report>(new Report(*report)); //Copy it, so we only use the changes when we want to.
   m_table_name = table_name;
 
   //Dialog_Layout::set_document(layout, document, table_name, table_fields);
@@ -389,7 +389,7 @@ void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const sha
 
 void Dialog_Layout_Report::enable_buttons()
 {
-  sharedptr<LayoutItem> layout_item_available;
+  std::shared_ptr<LayoutItem> layout_item_available;
   bool enable_add = false;
 
   //Available Parts:
@@ -409,7 +409,7 @@ void Dialog_Layout_Report::enable_buttons()
     }
   }
 
-  sharedptr<LayoutItem> layout_item_parent;
+  std::shared_ptr<LayoutItem> layout_item_parent;
 
   Gtk::TreeView* treeview = get_selected_treeview();
   if(!treeview)
@@ -448,7 +448,7 @@ void Dialog_Layout_Report::enable_buttons()
 
       //The [Formatting] button:
       bool enable_formatting = false;
-      sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item_parent);
+      std::shared_ptr<LayoutItem_Field> item_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item_parent);
       if(item_field)
         enable_formatting = true;
 
@@ -474,7 +474,7 @@ void Dialog_Layout_Report::enable_buttons()
       if(!may_be_child_of_parent)
       {
         //Maybe it can be a sibling of the parent instead (and that's what would happen if Add was clicked).
-        sharedptr<LayoutItem> layout_item_parent_of_parent;
+        std::shared_ptr<LayoutItem> layout_item_parent_of_parent;
 
         Gtk::TreeModel::iterator iterParent = iter->parent();
         if(iterParent)
@@ -639,18 +639,18 @@ void Dialog_Layout_Report::on_button_add()
   Glib::RefPtr<type_model> model_available = Glib::RefPtr<type_model>::cast_dynamic(m_treeview_available_parts->get_model());
 
   Gtk::TreeModel::iterator parent = get_selected_group_parent();
-  sharedptr<const LayoutItem> pParentPart;
+  std::shared_ptr<const LayoutItem> pParentPart;
   if(parent)
   {
-    sharedptr<LayoutItem> temp = (*parent)[m_model_available_parts_main->m_columns.m_col_item];
+    std::shared_ptr<LayoutItem> temp = (*parent)[m_model_available_parts_main->m_columns.m_col_item];
     pParentPart = temp;
   }
 
   Gtk::TreeModel::iterator available = get_selected_available();
-  sharedptr<const LayoutItem> pAvailablePart;
+  std::shared_ptr<const LayoutItem> pAvailablePart;
   if(available)
   {
-    sharedptr<LayoutItem> temp = (*available)[model_available->m_columns.m_col_item];
+    std::shared_ptr<LayoutItem> temp = (*available)[model_available->m_columns.m_col_item];
     pAvailablePart = temp;
   }
 
@@ -663,7 +663,7 @@ void Dialog_Layout_Report::on_button_add()
     parent = (*parent).parent();
     if(parent)
     {
-      sharedptr<LayoutItem> temp = (*parent)[model_available->m_columns.m_col_item];
+      std::shared_ptr<LayoutItem> temp = (*parent)[model_available->m_columns.m_col_item];
       pParentPart = temp;
 
       if(!TreeStore_ReportLayout::may_be_child_of(pParentPart, pAvailablePart))
@@ -683,7 +683,7 @@ void Dialog_Layout_Report::on_button_add()
     else
       iter = model->append();
 
-    (*iter)[model->m_columns.m_col_item] = sharedptr<LayoutItem>(pAvailablePart->clone());
+    (*iter)[model->m_columns.m_col_item] = std::shared_ptr<LayoutItem>(pAvailablePart->clone());
   }
 
   if(parent)
@@ -693,9 +693,9 @@ void Dialog_Layout_Report::on_button_add()
 }
 
 
-sharedptr<Relationship> Dialog_Layout_Report::offer_relationship_list()
+std::shared_ptr<Relationship> Dialog_Layout_Report::offer_relationship_list()
 {
-  sharedptr<Relationship> result;
+  std::shared_ptr<Relationship> result;
 
   Dialog_ChooseRelationship* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
@@ -737,8 +737,8 @@ Gtk::TreeModel::iterator Dialog_Layout_Report::get_selected_group_parent() const
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      sharedptr<LayoutItem> layout_item = row[model->m_columns.m_col_item];
-      if(sharedptr<LayoutGroup>::cast_dynamic(layout_item))
+      std::shared_ptr<LayoutItem> layout_item = row[model->m_columns.m_col_item];
+      if(std::dynamic_pointer_cast<LayoutGroup>(layout_item))
       {
         //Add a group under this group:
         parent = iter;
@@ -786,12 +786,12 @@ void Dialog_Layout_Report::on_button_formatting()
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      sharedptr<LayoutItem> item = row[model->m_columns.m_col_item];
+      std::shared_ptr<LayoutItem> item = row[model->m_columns.m_col_item];
 
-      sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+      std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
       if(field)
       {
-        sharedptr<LayoutItem_Field> field_chosen = offer_field_formatting(field, m_table_name, this, false /* no editing options */);
+        std::shared_ptr<LayoutItem_Field> field_chosen = offer_field_formatting(field, m_table_name, this, false /* no editing options */);
         if(field_chosen)
         {
           *field = *field_chosen;
@@ -819,9 +819,9 @@ void Dialog_Layout_Report::on_button_edit()
     {
       //Do something different for each type of item:
       Gtk::TreeModel::Row row = *iter;
-      sharedptr<LayoutItem> item = row[model->m_columns.m_col_item];
+      std::shared_ptr<LayoutItem> item = row[model->m_columns.m_col_item];
 
-      sharedptr<LayoutItem_FieldSummary> fieldsummary = sharedptr<LayoutItem_FieldSummary>::cast_dynamic(item);
+      std::shared_ptr<LayoutItem_FieldSummary> fieldsummary = std::dynamic_pointer_cast<LayoutItem_FieldSummary>(item);
       if(fieldsummary)
       {
         Dialog_FieldSummary* dialog = 0;
@@ -836,7 +836,7 @@ void Dialog_Layout_Report::on_button_edit()
         if(response == Gtk::RESPONSE_OK)
         {
           //Get the chosen relationship:
-          sharedptr<LayoutItem_FieldSummary> chosenitem = dialog->get_item();
+          std::shared_ptr<LayoutItem_FieldSummary> chosenitem = dialog->get_item();
           if(chosenitem)
           {
             *fieldsummary = *chosenitem; //TODO_Performance.
@@ -851,10 +851,10 @@ void Dialog_Layout_Report::on_button_edit()
       }
       else
       {
-        sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+        std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
         if(field)
         {
-          sharedptr<LayoutItem_Field> chosenitem = offer_field_list_select_one_field(field, m_table_name, this);
+          std::shared_ptr<LayoutItem_Field> chosenitem = offer_field_list_select_one_field(field, m_table_name, this);
           if(chosenitem)
           {
             *field = *chosenitem; //TODO_Performance.
@@ -864,10 +864,10 @@ void Dialog_Layout_Report::on_button_edit()
         }
         else
         {
-          sharedptr<LayoutItem_Text> layout_item_text = sharedptr<LayoutItem_Text>::cast_dynamic(item);
+          std::shared_ptr<LayoutItem_Text> layout_item_text = std::dynamic_pointer_cast<LayoutItem_Text>(item);
           if(layout_item_text)
           {
-            sharedptr<LayoutItem_Text> chosen = offer_textobject(layout_item_text);
+            std::shared_ptr<LayoutItem_Text> chosen = offer_textobject(layout_item_text);
             if(chosen)
             {
               *layout_item_text = *chosen;
@@ -877,10 +877,10 @@ void Dialog_Layout_Report::on_button_edit()
           }
           else
           {
-            sharedptr<LayoutItem_Image> layout_item_image = sharedptr<LayoutItem_Image>::cast_dynamic(item);
+            std::shared_ptr<LayoutItem_Image> layout_item_image = std::dynamic_pointer_cast<LayoutItem_Image>(item);
             if(layout_item_image)
             {
-              sharedptr<LayoutItem_Image> chosen = offer_imageobject(layout_item_image);
+              std::shared_ptr<LayoutItem_Image> chosen = offer_imageobject(layout_item_image);
               if(chosen)
               {
                 *layout_item_image = *chosen;
@@ -890,7 +890,7 @@ void Dialog_Layout_Report::on_button_edit()
             }
             else
             {
-              sharedptr<LayoutItem_GroupBy> group_by = sharedptr<LayoutItem_GroupBy>::cast_dynamic(item);
+              std::shared_ptr<LayoutItem_GroupBy> group_by = std::dynamic_pointer_cast<LayoutItem_GroupBy>(item);
               if(group_by)
               {
                 Dialog_GroupBy* dialog = 0;
@@ -908,7 +908,7 @@ void Dialog_Layout_Report::on_button_edit()
                 if(response == Gtk::RESPONSE_OK)
                 {
                   //Get the chosen relationship:
-                  sharedptr<LayoutItem_GroupBy> chosenitem = dialog->get_item();
+                  std::shared_ptr<LayoutItem_GroupBy> chosenitem = dialog->get_item();
                   if(chosenitem)
                   {
                     *group_by = *chosenitem;
@@ -955,7 +955,7 @@ void Dialog_Layout_Report::on_cell_data_part(Gtk::CellRenderer* renderer, const 
     {
       Gtk::TreeModel::Row row = *iter;
 
-      sharedptr<LayoutItem> pItem = row[model->m_columns.m_col_item];
+      std::shared_ptr<LayoutItem> pItem = row[model->m_columns.m_col_item];
       const Glib::ustring part = pItem->get_part_type_name();
 
       renderer_text->property_text() = part;
@@ -975,7 +975,7 @@ void Dialog_Layout_Report::on_cell_data_details(Gtk::CellRenderer* renderer, con
       Glib::ustring text;
 
       Gtk::TreeModel::Row row = *iter;
-      sharedptr<LayoutItem> pItem = row[model->m_columns.m_col_item];
+      std::shared_ptr<LayoutItem> pItem = row[model->m_columns.m_col_item];
       renderer_text->property_text() = pItem->get_layout_display_name();
       renderer_text->property_editable() = false;
     }
@@ -995,7 +995,7 @@ void Dialog_Layout_Report::on_cell_data_available_part(Gtk::CellRenderer* render
     {
       Gtk::TreeModel::Row row = *iter;
       Glib::RefPtr<type_model> model = Glib::RefPtr<type_model>::cast_dynamic(m_treeview_available_parts->get_model());
-      sharedptr<LayoutItem> pItem = row[model->m_columns.m_col_item];
+      std::shared_ptr<LayoutItem> pItem = row[model->m_columns.m_col_item];
       Glib::ustring part = pItem->get_part_type_name();
 
       renderer_text->property_text() = part;
@@ -1009,25 +1009,25 @@ Glib::ustring Dialog_Layout_Report::get_original_report_name() const
   return m_name_original;
 }
 
-sharedptr<Report> Dialog_Layout_Report::get_report()
+std::shared_ptr<Report> Dialog_Layout_Report::get_report()
 {
   m_report->set_name( m_entry_name->get_text() );
   m_report->set_title( m_entry_title->get_text() , AppWindow::get_current_locale());
   m_report->set_show_table_title( m_checkbutton_table_title->get_active() );
 
-  sharedptr<LayoutGroup> group = m_report->get_layout_group();
+  std::shared_ptr<LayoutGroup> group = m_report->get_layout_group();
   group->remove_all_items();
 
   //The Header and Footer parts are implicit (they are the whole header or footer treeview)
-  sharedptr<LayoutItem_Header> header = sharedptr<LayoutItem_Header>::create();
-  sharedptr<LayoutGroup> group_temp = header;
+  std::shared_ptr<LayoutItem_Header> header = std::shared_ptr<LayoutItem_Header>(new LayoutItem_Header());
+  std::shared_ptr<LayoutGroup> group_temp = header;
   fill_report_parts(group_temp, m_model_parts_header);
   if(header->get_items_count())
     group->add_item(header);
 
   fill_report_parts(group, m_model_parts_main);
 
-  sharedptr<LayoutItem_Footer> footer = sharedptr<LayoutItem_Footer>::create();
+  std::shared_ptr<LayoutItem_Footer> footer = std::shared_ptr<LayoutItem_Footer>(new LayoutItem_Footer());
   group_temp = footer;
   fill_report_parts(group_temp, m_model_parts_footer);
   if(footer->get_items_count())
@@ -1036,12 +1036,12 @@ sharedptr<Report> Dialog_Layout_Report::get_report()
   return m_report;
 }
 
-void Dialog_Layout_Report::fill_report_parts(sharedptr<LayoutGroup>& group, const Glib::RefPtr<const type_model> parts_model)
+void Dialog_Layout_Report::fill_report_parts(std::shared_ptr<LayoutGroup>& group, const Glib::RefPtr<const type_model> parts_model)
 {
   for(Gtk::TreeModel::iterator iter = parts_model->children().begin(); iter != parts_model->children().end(); ++iter)
   {
     //Recurse into a group if necessary:
-    sharedptr<LayoutGroup> group_child = fill_group(iter, parts_model);
+    std::shared_ptr<LayoutGroup> group_child = fill_group(iter, parts_model);
     if(group_child)
     {
       //Add the group:
@@ -1049,7 +1049,7 @@ void Dialog_Layout_Report::fill_report_parts(sharedptr<LayoutGroup>& group, cons
     }
     else
     {
-      sharedptr<LayoutItem> item = (*iter)[parts_model->m_columns.m_col_item];
+      std::shared_ptr<LayoutItem> item = (*iter)[parts_model->m_columns.m_col_item];
       if(item)
       {
         group->add_item(item);

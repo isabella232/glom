@@ -329,7 +329,7 @@ Gtk::TreeModel::iterator DbAddDel::get_item_placeholder()
    return Gtk::TreeModel::iterator();
 }
 
-Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item) const
+Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const LayoutItem_Field>& layout_item) const
 {
   Gnome::Gda::Value value;
 
@@ -364,7 +364,7 @@ Gnome::Gda::Value DbAddDel::get_value_key_selected() const
     return Gnome::Gda::Value();
 }
 
-Gnome::Gda::Value DbAddDel::get_value_selected(const sharedptr<const LayoutItem_Field>& layout_item) const
+Gnome::Gda::Value DbAddDel::get_value_selected(const std::shared_ptr<const LayoutItem_Field>& layout_item) const
 {
   return get_value(get_item_selected(), layout_item);
 }
@@ -420,7 +420,7 @@ Gtk::TreeModel::iterator DbAddDel::get_row(const Gnome::Gda::Value& key)
 bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, bool start_editing)
 {
   //Find the first column with a layout_item:
-  sharedptr<const LayoutItem> layout_item;
+  std::shared_ptr<const LayoutItem> layout_item;
   for(type_column_items::const_iterator iter_columns = m_column_items.begin(); iter_columns != m_column_items.end(); ++iter_columns)
   {
     layout_item = *iter_columns;
@@ -431,7 +431,7 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, bool start_edit
   return select_item(iter, layout_item, start_editing);
 }
 
-bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem>& layout_item, bool start_editing)
+bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const LayoutItem>& layout_item, bool start_editing)
 {
   if(!m_refListStore)
     return false;
@@ -524,7 +524,7 @@ guint DbAddDel::get_fixed_cell_height()
     {
       Glib::ustring font_name;
 
-      sharedptr<const LayoutItem_WithFormatting> item_withformatting = sharedptr<const LayoutItem_WithFormatting>::cast_dynamic(*iter);
+      std::shared_ptr<const LayoutItem_WithFormatting> item_withformatting = std::dynamic_pointer_cast<const LayoutItem_WithFormatting>(*iter);
       if(item_withformatting)
       {
          const Formatting& formatting = item_withformatting->get_formatting_used();
@@ -558,13 +558,13 @@ guint DbAddDel::get_fixed_cell_height()
 }
 
 
-Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const sharedptr<LayoutItem>& layout_item, int model_column_index, int data_model_column_index)
+Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const std::shared_ptr<LayoutItem>& layout_item, int model_column_index, int data_model_column_index)
 {
   InnerIgnore innerIgnore(this); //see comments for InnerIgnore class
 
   Gtk::CellRenderer* pCellRenderer = create_cell(layout_item, m_table_name, get_document(), get_fixed_cell_height());
 
-  sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+  std::shared_ptr<const LayoutItem_Field> item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
 
   //Set extra cellrenderer attributes, depending on the type used,
   //to support editing:
@@ -612,7 +612,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
   GlomCellRenderer_ButtonText* pCellButton = Gtk::manage( new GlomCellRenderer_ButtonText() );
   if(pCellButton)
   {
-    sharedptr<const LayoutItem_Button> item_button = sharedptr<const LayoutItem_Button>::cast_dynamic(layout_item);
+    std::shared_ptr<const LayoutItem_Button> item_button = std::dynamic_pointer_cast<const LayoutItem_Button>(layout_item);
     if(item_button)
     {
       pCellButton->signal_clicked().connect(
@@ -697,7 +697,7 @@ void DbAddDel::construct_specified_columns()
 
   for(type_column_items::iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
   {
-    const sharedptr<LayoutItem> layout_item = m_column_items[model_column_index]; //TODO: Inefficient.
+    const std::shared_ptr<LayoutItem> layout_item = m_column_items[model_column_index]; //TODO: Inefficient.
     if(layout_item) //column_info.m_visible)
     {
       no_columns_used = false;
@@ -708,7 +708,7 @@ void DbAddDel::construct_specified_columns()
       // Whenever we are dealing with real database fields,
       // we need to know the index of the field in the query:
       int item_data_model_column_index = -1;
-      sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+      std::shared_ptr<const LayoutItem_Field> item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
       if(item_field)
       {
         item_data_model_column_index = data_model_column_index;
@@ -809,12 +809,12 @@ bool DbAddDel::refresh_from_database_blank()
   return true;
 }
 
-void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value)
+void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value)
 {
   set_value(iter, layout_item, value, true /* including the specified field */);
 }
 
-void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value, bool set_specified_field_layout)
+void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value, bool set_specified_field_layout)
 {
   //g_warning("DbAddDel::set_value begin");
 
@@ -852,7 +852,7 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<c
   //g_warning("DbAddDel::set_value end");
 }
 
-void DbAddDel::set_value_selected(const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value)
+void DbAddDel::set_value_selected(const std::shared_ptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value)
 {
   set_value(get_item_selected(), layout_item, value);
 }
@@ -865,8 +865,8 @@ void DbAddDel::refresh_cell_choices_data_from_database_with_foreign_key(guint mo
     return;
   }
 
-  sharedptr<const LayoutItem> item = m_column_items[model_index];
-  sharedptr<const LayoutItem_Field> layout_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
+  std::shared_ptr<const LayoutItem> item = m_column_items[model_index];
+  std::shared_ptr<const LayoutItem_Field> layout_field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
   if(!layout_field)
   {
     std::cerr << G_STRFUNC << ": The layout item was not a LayoutItem_Field." << std::endl;
@@ -911,7 +911,7 @@ void DbAddDel::set_columns(const LayoutGroup::type_list_items& layout_items)
 
   for(LayoutGroup::type_list_items::const_iterator iter = layout_items.begin(); iter != layout_items.end(); ++iter)
   {
-    sharedptr<LayoutItem> layout_item = *iter;
+    std::shared_ptr<LayoutItem> layout_item = *iter;
 
     if(!layout_item)
       continue; //TODO: Do something more sensible.
@@ -919,10 +919,10 @@ void DbAddDel::set_columns(const LayoutGroup::type_list_items& layout_items)
     //Make it non-editable if it is auto-generated:
     //TODO: Actually use this bool:
     /*
-    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+    std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
     if(field)
     {
-      sharedptr<const Field> field_full = field->get_full_field_details();
+      std::shared_ptr<const Field> field_full = field->get_full_field_details();
       if(field_full && field_full->get_auto_increment())
         column_info.m_editable = false;
       else
@@ -947,7 +947,7 @@ FoundSet DbAddDel::get_found_set() const
   return m_found_set;
 }
 
-DbAddDel::type_list_indexes DbAddDel::get_data_model_column_index(const sharedptr<const LayoutItem_Field>& layout_item_field, bool including_specified_field_layout) const
+DbAddDel::type_list_indexes DbAddDel::get_data_model_column_index(const std::shared_ptr<const LayoutItem_Field>& layout_item_field, bool including_specified_field_layout) const
 {
   //TODO_Performance: Replace all this looping by a cache/map:
 
@@ -959,7 +959,7 @@ DbAddDel::type_list_indexes DbAddDel::get_data_model_column_index(const sharedpt
   guint data_model_column_index = 0;
   for(type_column_items::const_iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
   {
-    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(*iter); //TODO_Performance: This would be unnecessary if !layout_item_field
+    std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(*iter); //TODO_Performance: This would be unnecessary if !layout_item_field
     if(field)
     {
       if(field->is_same_field(layout_item_field)
@@ -975,19 +975,19 @@ DbAddDel::type_list_indexes DbAddDel::get_data_model_column_index(const sharedpt
   return list_indexes;
 }
 
-DbAddDel::type_list_indexes DbAddDel::get_column_index(const sharedptr<const LayoutItem>& layout_item) const
+DbAddDel::type_list_indexes DbAddDel::get_column_index(const std::shared_ptr<const LayoutItem>& layout_item) const
 {
   //TODO_Performance: Replace all this looping by a cache/map:
 
   type_list_indexes list_indexes;
 
-  sharedptr<const LayoutItem_Field> layout_item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+  std::shared_ptr<const LayoutItem_Field> layout_item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
 
   guint i = 0;
   for(type_column_items::const_iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
   {
-    const sharedptr<const LayoutItem> item = *iter;
-    const sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(item); //TODO_Performance: This would be unnecessary if !layout_item_field
+    const std::shared_ptr<const LayoutItem> item = *iter;
+    const std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(item); //TODO_Performance: This would be unnecessary if !layout_item_field
     if(field && layout_item_field && field->is_same_field(layout_item_field))
     {
       list_indexes.push_back(i);
@@ -1003,7 +1003,7 @@ DbAddDel::type_list_indexes DbAddDel::get_column_index(const sharedptr<const Lay
   return list_indexes;
 }
 
-DbAddDel::type_list_indexes DbAddDel::get_choice_index(const sharedptr<const LayoutItem_Field>& from_key)
+DbAddDel::type_list_indexes DbAddDel::get_choice_index(const std::shared_ptr<const LayoutItem_Field>& from_key)
 {
   type_list_indexes result;
 
@@ -1015,14 +1015,14 @@ DbAddDel::type_list_indexes DbAddDel::get_choice_index(const sharedptr<const Lay
   guint index = 0;
   for(type_column_items::const_iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
   {
-    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(*iter);
+    std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(*iter);
     if(!field)
        continue;
 
     const Formatting& format = field->get_formatting_used();
 
     bool choice_show_all = false;
-    const sharedptr<const Relationship> choice_relationship =
+    const std::shared_ptr<const Relationship> choice_relationship =
       format.get_choices_related_relationship(choice_show_all);
     if(choice_relationship && !choice_show_all) //"Show All" choices don't use the ID field values.
     {
@@ -1037,16 +1037,16 @@ DbAddDel::type_list_indexes DbAddDel::get_choice_index(const sharedptr<const Lay
 }
 
 
-sharedptr<const LayoutItem_Field> DbAddDel::get_column_field(guint column_index) const
+std::shared_ptr<const LayoutItem_Field> DbAddDel::get_column_field(guint column_index) const
 {
   if(column_index < m_column_items.size())
   {
-    sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic( m_column_items[column_index] );
+    std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>( m_column_items[column_index] );
     if(field)
       return field;
   }
 
-  return sharedptr<const LayoutItem_Field>();
+  return std::shared_ptr<const LayoutItem_Field>();
 }
 
 bool DbAddDel::get_prevent_user_signals() const
@@ -1262,8 +1262,8 @@ void DbAddDel::on_cell_layout_button_clicked(const Gtk::TreeModel::Path& path, i
   Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
   if(iter)
   {
-    sharedptr<const LayoutItem> layout_item = m_column_items[model_column_index];
-    sharedptr<const LayoutItem_Button> item_button = sharedptr<const LayoutItem_Button>::cast_dynamic(layout_item);
+    std::shared_ptr<const LayoutItem> layout_item = m_column_items[model_column_index];
+    std::shared_ptr<const LayoutItem_Button> item_button = std::dynamic_pointer_cast<const LayoutItem_Button>(layout_item);
     if(item_button)
     {
       m_signal_script_button_clicked.emit(item_button, iter);
@@ -1444,7 +1444,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
     }
 
 
-    sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(m_column_items[model_column_index]);
+    std::shared_ptr<LayoutItem_Field> item_field = std::dynamic_pointer_cast<LayoutItem_Field>(m_column_items[model_column_index]);
     if(!item_field)
       return;
 
@@ -1576,7 +1576,7 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
   if(n_view_columns && (view_column == m_TreeView.get_column(n_view_columns -1)))
     return;
 
-  const sharedptr<LayoutItem>& layout_item = m_column_items[model_column_index];
+  const std::shared_ptr<LayoutItem>& layout_item = m_column_items[model_column_index];
 
   const int width = view_column->get_width();
   //std::cout << "debug: " << G_STRFUNC << ": width=" << width << std::endl;
@@ -1596,7 +1596,7 @@ void DbAddDel::on_treeview_column_clicked(int model_column_index)
   if(model_column_index >= (int)m_column_items.size())
     return;
 
-  sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(m_column_items[model_column_index]); //We can only sort on fields, not on other layout item.
+  std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(m_column_items[model_column_index]); //We can only sort on fields, not on other layout item.
   if(layout_item && layout_item->get_name_not_empty())
   {
     bool ascending = true;
@@ -1657,9 +1657,9 @@ bool DbAddDel::get_column_to_expand(guint& column_to_expand) const
   guint i = 0;
   for(type_column_items::const_iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
   {
-    sharedptr<LayoutItem> layout_item = *iter;
+    std::shared_ptr<LayoutItem> layout_item = *iter;
 
-    sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+    std::shared_ptr<LayoutItem_Field> layout_item_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
     if(layout_item_field)
     {
       //Only text columns should expand.
@@ -1696,8 +1696,8 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
 
   guint cols_count = m_TreeView.append_column(*pViewColumn);
 
-  sharedptr<const LayoutItem> layout_item = m_column_items[model_column_index];
-  sharedptr<const LayoutItem_Field> layout_item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+  std::shared_ptr<const LayoutItem> layout_item = m_column_items[model_column_index];
+  std::shared_ptr<const LayoutItem_Field> layout_item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
 
   //Tell the Treeview.how to render the Gnome::Gda::Values:
   if(layout_item_field)
@@ -1885,12 +1885,12 @@ guint DbAddDel::get_count_hidden_system_columns() const
   //return 2; //The key and the placeholder boolean.
 }
 
-sharedptr<Field> DbAddDel::get_key_field() const
+std::shared_ptr<Field> DbAddDel::get_key_field() const
 {
   return m_key_field;
 }
 
-void DbAddDel::set_key_field(const sharedptr<Field>& field)
+void DbAddDel::set_key_field(const std::shared_ptr<Field>& field)
 {
   m_key_field = field;
 }
@@ -1901,9 +1901,9 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
 
   if(iter)
   {
-    const sharedptr<LayoutItem>& layout_item = m_column_items[model_column_index];
+    const std::shared_ptr<LayoutItem>& layout_item = m_column_items[model_column_index];
 
-    sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+    std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
     if(field)
     {
       const guint col_real = data_model_column_index + get_count_hidden_system_columns();
@@ -2076,7 +2076,7 @@ bool DbAddDel::start_new_record()
   if(!iter)
     return false;
 
-  sharedptr<LayoutItem_Field> fieldToEdit;
+  std::shared_ptr<LayoutItem_Field> fieldToEdit;
 
   //Start editing in the primary key or the first cell if the primary key is auto-incremented (because there is no point in editing an auto-generated value)
   //guint index_primary_key = 0;
@@ -2084,14 +2084,14 @@ bool DbAddDel::start_new_record()
   if(!bPresent)
     return false;
 
-  sharedptr<Field> fieldPrimaryKey = get_key_field();
+  std::shared_ptr<Field> fieldPrimaryKey = get_key_field();
   if(fieldPrimaryKey && fieldPrimaryKey->get_auto_increment())
   {
     //Start editing in the first cell that is not auto_increment:
     for(type_column_items::iterator iter = m_column_items.begin(); iter != m_column_items.end(); ++iter)
     {
-      sharedptr<LayoutItem> layout_item = *iter;
-      sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+      std::shared_ptr<LayoutItem> layout_item = *iter;
+      std::shared_ptr<LayoutItem_Field> layout_item_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
       if(!(layout_item_field->get_full_field_details()->get_auto_increment()))
       {
         fieldToEdit = layout_item_field;
@@ -2102,7 +2102,7 @@ bool DbAddDel::start_new_record()
   else
   {
     //The primary key is not auto-increment, so start by editing it:
-    fieldToEdit = sharedptr<LayoutItem_Field>::create();
+    fieldToEdit = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
     fieldToEdit->set_full_field_details(fieldPrimaryKey);
   }
 
@@ -2127,12 +2127,12 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
   const Gnome::Gda::Value parent_primary_key_value = get_value_key(row);
   //std::cout << "debug: " << G_STRFUNC << ": parent_primary_key_value=" << parent_primary_key_value.to_string() << std::endl;
 
-  sharedptr<const LayoutItem_Field> layout_field = get_column_field(col);
+  std::shared_ptr<const LayoutItem_Field> layout_field = get_column_field(col);
 
   if(!Conversions::value_is_empty(parent_primary_key_value)) //If the record's primary key is filled in:
   {
     Glib::ustring table_name = m_found_set.m_table_name;
-    sharedptr<Field> primary_key_field;
+    std::shared_ptr<Field> primary_key_field;
     Gnome::Gda::Value primary_key_value;
     Gtk::Window* window = get_appwindow();
 
@@ -2153,7 +2153,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
 
         Document* document = dynamic_cast<Document*>(get_document());
 
-        sharedptr<Relationship> relationship = document->get_relationship(m_found_set.m_table_name, relationship_name);
+        std::shared_ptr<Relationship> relationship = document->get_relationship(m_found_set.m_table_name, relationship_name);
         if(relationship)
         {
           table_name = relationship->get_to_table();
@@ -2164,7 +2164,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
           if(primary_key_field)
           {
             //Get the value of the corresponding key in the current table (that identifies the record in the table that we will change)
-            sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+            std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
             layout_item->set_full_field_details( document->get_field(relationship->get_from_table(), relationship->get_from_field()) );
 
             primary_key_value = get_value_selected(layout_item);
@@ -2193,7 +2193,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
       //Update the field in the record (the record with this primary key):
       const Gnome::Gda::Value field_value = get_value(row, layout_field);
       //std::cout << "debug: " << G_STRFUNC << ": field_value = " << field_value.to_string() << std::endl;
-      //const sharedptr<const Field>& field = layout_field->m_field;
+      //const std::shared_ptr<const Field>& field = layout_field->m_field;
       //const Glib::ustring strFieldName = layout_field->get_name();
 
       LayoutFieldInRecord field_in_record(layout_field, m_found_set.m_table_name /* parent */, primary_key_field, primary_key_value);
@@ -2292,7 +2292,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
 
   Gnome::Gda::Value primary_key_value;
 
-  sharedptr<const Field> primary_key_field = get_key_field();
+  std::shared_ptr<const Field> primary_key_field = get_key_field();
 
   //Get the new primary key value, if one is available now:
   if(primary_key_field->get_auto_increment())
@@ -2308,7 +2308,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
     //This only works when the primary key is already stored: primary_key_value = get_value_key(row);
     //primary_key_value = get_value_key_selected();
 
-    sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::create();
+    std::shared_ptr<LayoutItem_Field> layout_field = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
     layout_field->set_full_field_details(primary_key_field);
     primary_key_value = get_value_selected(layout_field);
     std::cout << "DEBUG: get_value_key_selected(): " << primary_key_value.to_string() << std::endl;
@@ -2318,7 +2318,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
   if(Conversions::value_is_empty(primary_key_value))
     return;
 
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(get_appwindow()); //Keep it alive while we need the data_model.
+  std::shared_ptr<SharedConnection> sharedconnection = connect_to_server(get_appwindow()); //Keep it alive while we need the data_model.
   if(!sharedconnection)
   {
     //Add Record failed.
@@ -2328,7 +2328,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
   }
 
 
-  sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::create();
+  std::shared_ptr<LayoutItem_Field> layout_field = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
   layout_field->set_full_field_details(primary_key_field);
   if(!check_entered_value_for_uniqueness(m_found_set.m_table_name, layout_field, primary_key_value, get_appwindow()))
   {
@@ -2356,7 +2356,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
   //If it's an auto-increment, then get the value and show it:
   if(primary_key_field->get_auto_increment())
   {
-    sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+    std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
     layout_item->set_full_field_details(primary_key_field);
     set_value(row, layout_item, primary_key_value);
   }
@@ -2385,23 +2385,23 @@ void DbAddDel::user_requested_delete(const Gtk::TreeModel::iterator& rowStart, c
 }
 
 //An override of the Base_DB method:
-void DbAddDel::set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void DbAddDel::set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
 {
   return set_value_selected(field, value);
 }
 
 //An override of the Base_DB method:
-void DbAddDel::set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void DbAddDel::set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
 {
   return set_value(row, field, value);
 }
 
-Gnome::Gda::Value DbAddDel::get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const
+Gnome::Gda::Value DbAddDel::get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const
 {
   return get_value_selected(field);
 }
 
-sharedptr<Field> DbAddDel::get_field_primary_key() const
+std::shared_ptr<Field> DbAddDel::get_field_primary_key() const
 {
   return get_key_field();
 }

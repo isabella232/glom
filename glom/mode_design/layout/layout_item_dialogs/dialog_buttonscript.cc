@@ -73,7 +73,7 @@ Dialog_ButtonScript::~Dialog_ButtonScript()
 {
 }
 
-void Dialog_ButtonScript::set_script(const sharedptr<const LayoutItem_Button>& script, const Glib::ustring& table_name)
+void Dialog_ButtonScript::set_script(const std::shared_ptr<const LayoutItem_Button>& script, const Glib::ustring& table_name)
 {
   //set_blocked();
 
@@ -88,16 +88,16 @@ void Dialog_ButtonScript::set_script(const sharedptr<const LayoutItem_Button>& s
   //Dialog_Properties::set_modified(false);
 }
 
-sharedptr<LayoutItem_Button> Dialog_ButtonScript::get_script() const
+std::shared_ptr<LayoutItem_Button> Dialog_ButtonScript::get_script() const
 {
-  sharedptr<LayoutItem_Button> result = glom_sharedptr_clone(m_script); //Start with the old details, to preserve anything that is not in our UI.
+  std::shared_ptr<LayoutItem_Button> result = glom_sharedptr_clone(m_script); //Start with the old details, to preserve anything that is not in our UI.
 
   get_script(result);
 
   return result;
 }
 
-void Dialog_ButtonScript::get_script(const sharedptr<LayoutItem_Button>& script) const
+void Dialog_ButtonScript::get_script(const std::shared_ptr<LayoutItem_Button>& script) const
 {
   script->set_script(m_text_view_script->get_buffer()->get_text() );
   script->set_title(m_entry_title->get_text(), AppWindow::get_current_locale());
@@ -117,14 +117,14 @@ void Dialog_ButtonScript::on_button_test_script()
     const Document::type_vec_fields fields = document->get_table_fields(m_table_name);
     for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
-      const sharedptr<const Field> field = *iter;
+      const std::shared_ptr<const Field> field = *iter;
       const Gnome::Gda::Value example_value = Conversions::get_example_value(field->get_glom_type());
       field_values[field->get_name()] = example_value;
     }
   }
 
   //We need the connection when we run the script, so that the script may use it.
-  sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_and_connect();
+  std::shared_ptr<SharedConnection> sharedconnection = ConnectionPool::get_and_connect();
 
   Glib::ustring error_message;
   PythonUICallbacks callbacks;
@@ -132,7 +132,7 @@ void Dialog_ButtonScript::on_button_test_script()
     field_values, //TODO: Maybe use the field's type here.
     document,
     m_table_name,
-    sharedptr<Field>(), Gnome::Gda::Value(), // primary key - only used when setting values in the DB, which we would not encourage in a test.
+    std::shared_ptr<Field>(), Gnome::Gda::Value(), // primary key - only used when setting values in the DB, which we would not encourage in a test.
     sharedconnection->get_gda_connection(),
     callbacks,
     error_message);

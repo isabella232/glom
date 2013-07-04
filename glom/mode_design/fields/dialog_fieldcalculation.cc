@@ -72,7 +72,7 @@ Dialog_FieldCalculation::~Dialog_FieldCalculation()
 {
 }
 
-void Dialog_FieldCalculation::set_field(const sharedptr<const Field>& field, const Glib::ustring& table_name)
+void Dialog_FieldCalculation::set_field(const std::shared_ptr<const Field>& field, const Glib::ustring& table_name)
 {
   //set_blocked();
 
@@ -87,9 +87,9 @@ void Dialog_FieldCalculation::set_field(const sharedptr<const Field>& field, con
   //Dialog_Properties::set_modified(false);
 }
 
-sharedptr<Field> Dialog_FieldCalculation::get_field() const
+std::shared_ptr<Field> Dialog_FieldCalculation::get_field() const
 {
-  sharedptr<Field> field = glom_sharedptr_clone(m_field); //Start with the old details, to preserve anything that is not in our UI.
+  std::shared_ptr<Field> field = glom_sharedptr_clone(m_field); //Start with the old details, to preserve anything that is not in our UI.
 
   field->set_calculation( m_text_view->get_buffer()->get_text() );
 
@@ -124,14 +124,14 @@ void Dialog_FieldCalculation::on_button_test()
     const Document::type_vec_fields fields = document->get_table_fields(m_table_name);
     for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
-      const sharedptr<const Field> field = *iter;
+      const std::shared_ptr<const Field> field = *iter;
       const Gnome::Gda::Value example_value = Conversions::get_example_value(field->get_glom_type());
       field_values[field->get_name()] = example_value;
     }
   }
 
   //We need the connection when we run the script, so that the script may use it.
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(this /* parent window */);
+  std::shared_ptr<SharedConnection> sharedconnection = connect_to_server(this /* parent window */);
 
   Glib::ustring error_message;
   const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(
@@ -140,7 +140,7 @@ void Dialog_FieldCalculation::on_button_test()
     field_values, //TODO: Maybe use the field's type here.
     document,
     m_table_name,
-    sharedptr<Field>(), Gnome::Gda::Value(), // primary key - only used when setting values in the DB.
+    std::shared_ptr<Field>(), Gnome::Gda::Value(), // primary key - only used when setting values in the DB.
     sharedconnection->get_gda_connection(),
     error_message);
 
@@ -150,9 +150,9 @@ void Dialog_FieldCalculation::on_button_test()
     UiUtils::show_ok_dialog( _("Calculation failed"), Glib::ustring::compose(_("The calculation failed with this error:\n%s"), error_message), *this, Gtk::MESSAGE_ERROR);
 
   //Show what fields would trigger the recalculation:
-  sharedptr<Field> temp = sharedptr<Field>::create();
+  std::shared_ptr<Field> temp = std::shared_ptr<Field>(new Field());
   temp->set_calculation(calculation);
-  sharedptr<LayoutItem_Field> layoutitem_temp = sharedptr<LayoutItem_Field>::create();
+  std::shared_ptr<LayoutItem_Field> layoutitem_temp = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
   layoutitem_temp->set_full_field_details(temp);
   const type_list_const_field_items triggered_fields = get_calculation_fields(m_table_name, layoutitem_temp);
 

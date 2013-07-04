@@ -33,7 +33,7 @@
 static bool get_field_result(const Glom::Document& document,
   const Glib::RefPtr<Gnome::Gda::Connection>& gda_connection,
   const Glib::ustring& table_name,
-  const Glom::sharedptr<const Glom::Field>& primary_key_field,
+  const std::shared_ptr<const Glom::Field>& primary_key_field,
   const Gnome::Gda::Value& primary_key_value,
   const Glom::type_map_fields field_values,
   const Glib::ustring& field_name, const Gnome::Gda::Value& expected_value)
@@ -105,7 +105,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
-  Glom::sharedptr<Glom::SharedConnection> connection = connection_pool->connect();
+  std::shared_ptr<Glom::SharedConnection> connection = connection_pool->connect();
   g_assert(connection);
 
   const Glib::RefPtr<Gnome::Gda::Connection> gda_connection = connection->get_gda_connection();
@@ -114,7 +114,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   //Some python code just to exercise our PyGlomRecord API:
   const Glib::ustring table_name = "products";
-  const Glom::sharedptr<const Glom::Field> primary_key_field =
+  const std::shared_ptr<const Glom::Field> primary_key_field =
     document.get_field_primary_key(table_name);
   if(!primary_key_field)
   {

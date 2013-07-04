@@ -64,7 +64,7 @@ Dialog_DefaultFormatting::~Dialog_DefaultFormatting()
   remove_view(m_box_formatting);
 }
 
-void Dialog_DefaultFormatting::set_field(const sharedptr<const Field>& field, const Glib::ustring& table_name)
+void Dialog_DefaultFormatting::set_field(const std::shared_ptr<const Field>& field, const Glib::ustring& table_name)
 {
   set_blocked();
 
@@ -79,11 +79,11 @@ void Dialog_DefaultFormatting::set_field(const sharedptr<const Field>& field, co
   Dialog_Properties::set_modified(false);
 }
 
-sharedptr<Field> Dialog_DefaultFormatting::get_field() const
+std::shared_ptr<Field> Dialog_DefaultFormatting::get_field() const
 {
-  sharedptr<Field> field = glom_sharedptr_clone(m_Field); //Start with the old details, to preserve anything that is not in our UI.
+  std::shared_ptr<Field> field = glom_sharedptr_clone(m_Field); //Start with the old details, to preserve anything that is not in our UI.
   // const_cast is necessary and save here for the window (jhs)
-  sharedptr<SharedConnection> sharedcnc = connect_to_server(const_cast<Dialog_DefaultFormatting*>(this));
+  std::shared_ptr<SharedConnection> sharedcnc = connect_to_server(const_cast<Dialog_DefaultFormatting*>(this));
   Glib::RefPtr<Gnome::Gda::Connection> cnc = sharedcnc->get_gda_connection();
 
   //Get the field info from the widgets:

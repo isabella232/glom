@@ -113,7 +113,7 @@ Box_DB_Table_Definition::~Box_DB_Table_Definition()
   }
 }
 
-void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const Field>& field)
+void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& iter, const std::shared_ptr<const Field>& field)
 {
   m_AddDel.set_value_key(iter, field->get_name());
 
@@ -165,7 +165,7 @@ bool Box_DB_Table_Definition::fill_from_database()
 
     for(type_vec_fields::iterator iter = m_vecFields.begin(); iter != m_vecFields.end(); ++iter)
     {
-      const sharedptr<const Field>& field = *iter;
+      const std::shared_ptr<const Field>& field = *iter;
 
       //Name:
       Gtk::TreeModel::iterator tree_iter= m_AddDel.add_item(field->get_name());
@@ -193,7 +193,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
   Glib::ustring name = m_AddDel.get_value(row, m_colName);
   if(!name.empty())
   {
-    sharedptr<Field> field(new Field());
+    std::shared_ptr<Field> field(new Field());
     field->set_name(name);
     field->set_title( Utils::title_from_string(name) , AppWindow::get_current_locale()); //Start with a title that might be useful.
     field->set_glom_type(Field::TYPE_NUMERIC);
@@ -273,7 +273,7 @@ void Box_DB_Table_Definition::on_adddel_delete(const Gtk::TreeModel::iterator& r
   fill_from_database();
 }
 
-bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field_new)
+bool Box_DB_Table_Definition::check_field_change(const std::shared_ptr<const Field>& field_old, const std::shared_ptr<const Field>& field_new)
 {
   bool result = true; //Tells the caller whether to continue.
 
@@ -371,7 +371,7 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
   {
     const Glib::ustring strFieldNameBeingEdited = m_AddDel.get_value_key(row);
 
-    sharedptr<const Field> constfield = pDoc->get_field(m_table_name, strFieldNameBeingEdited);
+    std::shared_ptr<const Field> constfield = pDoc->get_field(m_table_name, strFieldNameBeingEdited);
     m_Field_BeingEdited = constfield;
 
     //Get DB field info: (TODO: This might be unnecessary).
@@ -380,11 +380,11 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
       std::cerr << G_STRFUNC << ": field not found: " << strFieldNameBeingEdited << std::endl;
     else
     {
-      sharedptr<const Field> constfield = *iterFind;
+      std::shared_ptr<const Field> constfield = *iterFind;
       m_Field_BeingEdited = constfield;
 
       //Get new field definition:
-      sharedptr<Field> fieldNew = get_field_definition(row);
+      std::shared_ptr<Field> fieldNew = get_field_definition(row);
 
       //Change it:
       if(*m_Field_BeingEdited != *fieldNew) //If it has really changed.
@@ -392,7 +392,7 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
         const bool bcontinue = check_field_change(m_Field_BeingEdited, fieldNew);
         if(bcontinue)
         {
-          sharedptr<Field> fieldNewWithModifications = change_definition(m_Field_BeingEdited, fieldNew);
+          std::shared_ptr<Field> fieldNewWithModifications = change_definition(m_Field_BeingEdited, fieldNew);
 
           //Update the row to show any extra changes (such as unique being set/unset whenever the primary key is set/unset) 
 	  // TODO: When change_definition decides to unset another column from
@@ -412,7 +412,7 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
 
 void Box_DB_Table_Definition::on_adddel_edit(const Gtk::TreeModel::iterator& row)
 {
-  sharedptr<const Field> constfield = get_field_definition(row);
+  std::shared_ptr<const Field> constfield = get_field_definition(row);
   m_Field_BeingEdited = constfield;
 
   m_dialog_field_definition->set_field(m_Field_BeingEdited, m_table_name);
@@ -428,7 +428,7 @@ void Box_DB_Table_Definition::on_adddel_edit(const Gtk::TreeModel::iterator& row
 
 void Box_DB_Table_Definition::on_adddel_extra(const Gtk::TreeModel::iterator& row)
 {
-  sharedptr<const Field> constfield = get_field_definition(row);
+  std::shared_ptr<const Field> constfield = get_field_definition(row);
   m_Field_BeingEdited = constfield;
 
   m_dialog_default_formatting->set_field(m_Field_BeingEdited, m_table_name);
@@ -442,9 +442,9 @@ void Box_DB_Table_Definition::on_adddel_extra(const Gtk::TreeModel::iterator& ro
   m_dialog_default_formatting->show();
 }
 
-sharedptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::iterator& row)
+std::shared_ptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::iterator& row)
 {
-  sharedptr<Field> fieldResult;
+  std::shared_ptr<Field> fieldResult;
 
   //Get old field definition (to preserve anything that the user doesn't have access to):
 
@@ -464,7 +464,7 @@ sharedptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeMo
     else
     {
       //Start with a default:
-      fieldResult = sharedptr<Field>(new Field());
+      fieldResult = std::shared_ptr<Field>(new Field());
     }
   }
 
@@ -473,7 +473,7 @@ sharedptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeMo
 
   //Start with original definitions, so that we preserve things like UNSIGNED.
   //TODO maybe use document's fieldinfo instead of m_vecFields.
-  sharedptr<const Field> field_temp = 
+  std::shared_ptr<const Field> field_temp = 
     DbUtils::get_fields_for_table_one_field(pDoc, m_table_name, strFieldNameBeforeEdit);
   if(field_temp)
   {
@@ -520,7 +520,7 @@ sharedptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeMo
 
 void Box_DB_Table_Definition::on_field_definition_apply()
 {
-  sharedptr<Field> field_New = m_dialog_field_definition->get_field();
+  std::shared_ptr<Field> field_New = m_dialog_field_definition->get_field();
 
   if(*m_Field_BeingEdited != *field_New)
   {
@@ -540,7 +540,7 @@ void Box_DB_Table_Definition::on_field_definition_apply()
 
 void Box_DB_Table_Definition::on_default_formatting_apply()
 {
-  sharedptr<Field> field_New = m_dialog_default_formatting->get_field();
+  std::shared_ptr<Field> field_New = m_dialog_default_formatting->get_field();
 
   if(*m_Field_BeingEdited != *field_New)
   {
@@ -558,13 +558,13 @@ void Box_DB_Table_Definition::on_default_formatting_apply()
   m_dialog_default_formatting->hide();
 }
 
-sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<const Field>& fieldOld, const sharedptr<const Field>& field)
+std::shared_ptr<Field> Box_DB_Table_Definition::change_definition(const std::shared_ptr<const Field>& fieldOld, const std::shared_ptr<const Field>& field)
 {
   BusyCursor busy_cursor(get_app_window());
 
   //DB field definition:
 
-  sharedptr<Field> result;
+  std::shared_ptr<Field> result;
   
   if(!fieldOld || !field)
     return result;
@@ -580,10 +580,10 @@ sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<cons
     {
       //Unset the current primary key:
       //(There should be one.)
-      sharedptr<Field> existing_primary_key = get_field_primary_key_for_table(m_table_name);
+      std::shared_ptr<Field> existing_primary_key = get_field_primary_key_for_table(m_table_name);
       if(existing_primary_key)
       {
-        sharedptr<Field> existing_primary_key_unset = glom_sharedptr_clone(existing_primary_key);
+        std::shared_ptr<Field> existing_primary_key_unset = glom_sharedptr_clone(existing_primary_key);
         existing_primary_key_unset->set_primary_key(false);
 	old_fields.push_back(existing_primary_key);
 	new_fields.push_back(existing_primary_key_unset);
@@ -683,7 +683,7 @@ void Box_DB_Table_Definition::fill_fields()
   m_vecFields = DbUtils::get_fields_for_table(get_document(), m_table_name);
 }
 
-bool Box_DB_Table_Definition::field_has_null_values(const sharedptr<const Field>& field)
+bool Box_DB_Table_Definition::field_has_null_values(const std::shared_ptr<const Field>& field)
 {
   //Note that "= Null" doesn't work, though it doesn't error either.
   //Note also that SELECT COUNT always returns 0 if all the values are NULL, so we can't use that to be more efficient.
@@ -713,7 +713,7 @@ bool Box_DB_Table_Definition::field_has_null_values(const sharedptr<const Field>
   return null_count > 0; 
 }
 
-bool Box_DB_Table_Definition::field_has_non_unique_values(const sharedptr<const Field>& field)
+bool Box_DB_Table_Definition::field_has_non_unique_values(const std::shared_ptr<const Field>& field)
 {
   long count_distinct = 0;
   long count_all = 0;

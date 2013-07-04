@@ -126,7 +126,7 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   m_encoding_combo->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_combo_encoding_changed));
 
   // TODO: Reset parser encoding on selection changed.
-  m_parser = std::auto_ptr<CsvParser>(new CsvParser(get_current_encoding().c_str()));
+  m_parser = std::shared_ptr<CsvParser>(new CsvParser(get_current_encoding().c_str()));
   m_parser->signal_file_read_error().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_parser_file_read_error));
   m_parser->signal_have_display_name().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_parser_have_display_name));
   m_parser->signal_encoding_error().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_parser_encoding_error));
@@ -203,7 +203,7 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
     const Document::type_vec_fields fields(document->get_table_fields(into_table));
     for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++ iter)
     {
-      sharedptr<Field> field = *iter;
+      std::shared_ptr<Field> field = *iter;
       if(!field)
         continue;
 
@@ -228,10 +228,10 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
   }
 }
 
-sharedptr<const Field> Dialog_Import_CSV::get_field_for_column(guint col) const
+std::shared_ptr<const Field> Dialog_Import_CSV::get_field_for_column(guint col) const
 {
   if(col >= m_fields.size())
-    return sharedptr<const Field>();
+    return std::shared_ptr<const Field>();
 
   return m_fields[col];
 }
@@ -571,7 +571,7 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
 
   if(row == -1)
   {
-    sharedptr<Field> field = m_fields[column_number];
+    std::shared_ptr<Field> field = m_fields[column_number];
     if(field)
       text = field->get_name();
     else
@@ -586,7 +586,7 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
 
     if(column_number < m_fields.size())
     {
-      sharedptr<Field> field = m_fields[column_number];
+      std::shared_ptr<Field> field = m_fields[column_number];
 
       if(row != -1) // && static_cast<unsigned int>(row) < m_parser->get_rows_count())
       {
@@ -649,11 +649,11 @@ void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::u
   {
     if( (*field_iter)[m_field_columns.m_col_field_name] == new_text)
     {
-      sharedptr<Field> field = (*field_iter)[m_field_columns.m_col_field];
+      std::shared_ptr<Field> field = (*field_iter)[m_field_columns.m_col_field];
       // Check whether another column is already using that field
       type_vec_fields::iterator vec_field_iter = std::find(m_fields.begin(), m_fields.end(), field);
       // Reset the old column since two different columns cannot be imported into the same field
-      if(vec_field_iter != m_fields.end()) *vec_field_iter = sharedptr<Field>();
+      if(vec_field_iter != m_fields.end()) *vec_field_iter = std::shared_ptr<Field>();
 
       m_fields[column_number] = field;
 
@@ -687,7 +687,7 @@ void Dialog_Import_CSV::validate_primary_key()
   {
     // Allow the import button to be pressed when the value for the primary key
     // has been chosen:
-    sharedptr<Field> primary_key = get_field_primary_key_for_table(get_target_table_name());
+    std::shared_ptr<Field> primary_key = get_field_primary_key_for_table(get_target_table_name());
     bool primary_key_selected = false;
 
     if(primary_key && !primary_key->get_auto_increment())

@@ -42,7 +42,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
   
   const Glib::ustring table_name = "products";
-  Glom::sharedptr<const Glom::Field> primary_key_field = document.get_field_primary_key(table_name);
+  std::shared_ptr<const Glom::Field> primary_key_field = document.get_field_primary_key(table_name);
   if(!primary_key_field)
   {
     std::cerr << G_STRFUNC << ": Failure: primary_key_field is empty." << std::endl;
@@ -55,8 +55,8 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     Glom::Utils::build_simple_where_expression(table_name, primary_key_field, pk_value);
   
   Glom::Utils::type_vecLayoutFields fieldsToGet;
-  Glom::sharedptr<const Glom::Field> field = document.get_field(table_name, "price");
-  Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  std::shared_ptr<const Glom::Field> field = document.get_field(table_name, "price");
+  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 

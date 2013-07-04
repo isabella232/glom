@@ -19,7 +19,7 @@ void execute_func_with_date_return_value()
   const Gnome::Gda::Value value = Glom::glom_evaluate_python_function_implementation(
     Glom::Field::TYPE_DATE, calculation, field_values,
     0 /* document */, "" /* table name */,
-    Glom::sharedptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
+    std::shared_ptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
     connection,
     error_message);
 
@@ -54,7 +54,7 @@ void execute_func_with_date_input_value()
   const Gnome::Gda::Value value = Glom::glom_evaluate_python_function_implementation(
     Glom::Field::TYPE_NUMERIC, calculation, field_values,
     0 /* document */, "" /* table name */,
-    Glom::sharedptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
+    std::shared_ptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
     connection,
     error_message);
 
@@ -91,7 +91,7 @@ void execute_func_with_date_input_value_relativedelta()
   const Gnome::Gda::Value value = Glom::glom_evaluate_python_function_implementation(
     Glom::Field::TYPE_NUMERIC, calculation, field_values,
     0, "",
-    Glom::sharedptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
+    std::shared_ptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
     connection);
 
   //std::cout << "type=" << g_type_name(value.get_value_type()) << std::endl;

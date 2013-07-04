@@ -73,8 +73,8 @@ void ComboGlom::on_fixed_cell_data(const Gtk::TreeModel::iterator& iter, Gtk::Ce
   if(!iter)
     return;
 
-  const sharedptr<const LayoutItem>& layout_item = get_layout_item();
-  const sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+  const std::shared_ptr<const LayoutItem>& layout_item = get_layout_item();
+  const std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
   if(!field)
     return;
 
@@ -120,8 +120,8 @@ void ComboGlom::set_choices_fixed(const Formatting::type_list_values& list_value
   if(columns_count)
     columns_count -= 1; //The last one is the just the extra text-equivalent of the first one, for GtkComboBox with has-entry=true, or for translations.
 
-  const sharedptr<const LayoutItem>& layout_item = get_layout_item();
-  const sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+  const std::shared_ptr<const LayoutItem>& layout_item = get_layout_item();
+  const std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
 
   //For fixed (custom) choices, this will always be 1 column anyway,
   //so the for() loop here is excessive.
@@ -154,7 +154,7 @@ void ComboGlom::set_choices_fixed(const Formatting::type_list_values& list_value
   }
 }
 
-void ComboGlom::set_choices_related(const Document* document, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value)
+void ComboGlom::set_choices_related(const Document* document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value)
 {
   ComboChoicesWithTreeModel::set_choices_related(document, layout_field, foreign_key_value);
 
@@ -193,7 +193,7 @@ void ComboGlom::set_choices_related(const Document* document, const sharedptr<co
   guint model_column_index = 0;
   for(type_vec_const_layout_items::const_iterator iter = m_db_layout_items.begin(); iter != m_db_layout_items.end(); ++iter)
   {
-    const sharedptr<const LayoutItem> layout_item = *iter;
+    const std::shared_ptr<const LayoutItem> layout_item = *iter;
     if(!layout_item) //column_info.m_visible)
     {
       ++model_column_index;
@@ -233,7 +233,7 @@ void ComboGlom::check_for_change()
 
 void ComboGlom::set_value(const Gnome::Gda::Value& value)
 {
-  sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
+  std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
   if(!layout_item)
     return;
 

@@ -46,12 +46,12 @@ public:
    * @param portal The layout item, which knows its from_table, for instance.
    * @apram for_print_layout If true, don't show the navigation options, for instance.
    */
-  void init_with_portal(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const sharedptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table, bool for_print_layout = false);
+  void init_with_portal(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const std::shared_ptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table, bool for_print_layout = false);
 
   virtual void update_ui(bool including_relationships_list = true);
 
-  sharedptr<Relationship> get_relationship() const;
-  sharedptr<LayoutItem_Portal>  get_portal_layout();
+  std::shared_ptr<Relationship> get_relationship() const;
+  std::shared_ptr<LayoutItem_Portal>  get_portal_layout();
 
 protected:
 
@@ -72,7 +72,7 @@ protected:
 
   ComboBox_Relationship* m_combo_relationship;
   Gtk::CheckButton* m_checkbutton_show_child_relationships;
-  sharedptr<LayoutItem_Portal> m_portal;
+  std::shared_ptr<LayoutItem_Portal> m_portal;
 
   Gtk::RadioButton* m_radio_navigation_automatic;
   Gtk::RadioButton* m_radio_navigation_none;

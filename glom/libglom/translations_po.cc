@@ -127,7 +127,7 @@ static void on_gettextpo_error(int status, int errnum, const char * /* format */
 }
 #endif //HAVE_GETTEXTPO_XERROR
 
-Glib::ustring get_po_context_for_item(const sharedptr<const TranslatableItem>& item, const Glib::ustring& hint)
+Glib::ustring get_po_context_for_item(const std::shared_ptr<const TranslatableItem>& item, const Glib::ustring& hint)
 {
   // Note that this context string should use English rather than the translated strings,
   // or the context would change depending on the locale of the user doing the export:
@@ -213,7 +213,7 @@ bool write_translations_to_po_file(Document* document, const Glib::ustring& po_f
   Document::type_list_translatables list_layout_items = document->get_translatable_items();
   for(Document::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
   {
-    sharedptr<TranslatableItem> item = iter->first;
+    std::shared_ptr<TranslatableItem> item = iter->first;
     if(!item)
       continue;
 
@@ -303,7 +303,7 @@ bool import_translations_from_po_file(Document* document, const Glib::ustring& p
       //Find the matching item in the list:
       for(Document::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
       {
-        sharedptr<TranslatableItem> item = iter->first;
+        std::shared_ptr<TranslatableItem> item = iter->first;
         if(!item)
           continue;
 

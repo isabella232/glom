@@ -76,7 +76,7 @@ private:
     ModelColumns()
     { add(m_col_item); add(m_col_translation); add(m_col_hint); }
 
-    Gtk::TreeModelColumn< sharedptr<TranslatableItem> > m_col_item; //The table name, field name, etc.
+    Gtk::TreeModelColumn< std::shared_ptr<TranslatableItem> > m_col_item; //The table name, field name, etc.
     Gtk::TreeModelColumn<Glib::ustring> m_col_translation;
     Gtk::TreeModelColumn<Glib::ustring> m_col_hint;
   };

@@ -436,19 +436,19 @@ Glib::ustring Dialog_ExistingOrNew::get_service_name() const
 }
 #endif
 
-std::auto_ptr<Gtk::TreeModel::iterator> Dialog_ExistingOrNew::create_dummy_item_existing(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text)
+std::shared_ptr<Gtk::TreeModel::iterator> Dialog_ExistingOrNew::create_dummy_item_existing(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text)
 {
   Gtk::TreeModel::iterator iter = m_existing_model->append(parent->children());
   (*iter)[m_existing_columns.m_col_title] = text;
-  return std::auto_ptr<Gtk::TreeModel::iterator>(new Gtk::TreeModel::iterator(iter));
+  return std::shared_ptr<Gtk::TreeModel::iterator>(new Gtk::TreeModel::iterator(iter));
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-std::auto_ptr<Gtk::TreeModel::iterator> Dialog_ExistingOrNew::create_dummy_item_new(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text)
+std::shared_ptr<Gtk::TreeModel::iterator> Dialog_ExistingOrNew::create_dummy_item_new(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text)
 {
   Gtk::TreeModel::iterator iter = m_new_model->append(parent->children());
   (*iter)[m_new_columns.m_col_title] = text;
-  return std::auto_ptr<Gtk::TreeModel::iterator>(new Gtk::TreeModel::iterator(iter));
+  return std::shared_ptr<Gtk::TreeModel::iterator>(new Gtk::TreeModel::iterator(iter));
 }
 #endif //GLOM_ENABLE_CLIENT_ONLY
 

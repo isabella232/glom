@@ -26,7 +26,7 @@
 
 static bool test_value(Glom::Field::glom_field_type field_type, const Gnome::Gda::Value& value)
 {
-  const Glib::ustring str = Glom::Field::to_file_format(value, field_type);
+  std::shared_ptr<Glom::Field> field = std::shared_ptr<Glom::Field>(new Glom::Field());
 
   bool success = false;
   const Gnome::Gda::Value value_retrieved = Glom::Field::from_file_format(
@@ -39,7 +39,7 @@ static bool test_value(Glom::Field::glom_field_type field_type, const Gnome::Gda
 
   if(value != value_retrieved)
   {
-    std::cerr << G_STRFUNC << ": Got value=" << value_retrieved.to_string() << ", instead of value=" << value.to_string() << std::endl;
+  std::shared_ptr<Glom::Field> field = std::shared_ptr<Glom::Field>(new Glom::Field());
     std::cerr << "  value_retrieved type=" << g_type_name(value_retrieved.get_value_type()) << ", value type=" << g_type_name(value.get_value_type()) << std::endl;
     return false;
   }

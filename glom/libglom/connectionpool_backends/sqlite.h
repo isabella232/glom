@@ -43,15 +43,15 @@ private:
   virtual const char* get_public_schema_name() const;
 
   bool add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, GdaMetaTableColumn* column, unsigned int i);
-  bool add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const sharedptr<const Field>& column, unsigned int i);
+  bool add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const std::shared_ptr<const Field>& column, unsigned int i);
 
   typedef std::vector<Glib::ustring> type_vec_strings;
-  //typedef std::vector<sharedptr<const Field> > type_vec_fields;
-  typedef std::map<Glib::ustring, sharedptr<const Field> > type_mapFieldChanges;
+  //typedef std::vector<std::shared_ptr<const Field> > type_vec_fields;
+  typedef std::map<Glib::ustring, std::shared_ptr<const Field> > type_mapFieldChanges;
 
   bool recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_strings& fields_removed, const type_vec_const_fields& fields_added, const type_mapFieldChanges& fields_changed) throw();
 
-  virtual bool add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const sharedptr<const Field>& field);
+  virtual bool add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const std::shared_ptr<const Field>& field);
   virtual bool drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name);
   virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) throw();
 

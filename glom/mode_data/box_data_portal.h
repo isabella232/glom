@@ -47,7 +47,7 @@ public:
   /**
    * @param portal: The full portal details
    */
-  virtual bool init_db_details(const sharedptr<const LayoutItem_Portal>& portal, bool show_title = true);
+  virtual bool init_db_details(const std::shared_ptr<const LayoutItem_Portal>& portal, bool show_title = true);
 
   /** Use this if no portal is yet defined, so the user can use the context menu to define a portal.
    */
@@ -59,8 +59,8 @@ public:
    */
   bool refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value);
 
-  virtual sharedptr<LayoutItem_Portal> get_portal() const;
-  virtual sharedptr<const Field> get_key_field() const;
+  virtual std::shared_ptr<LayoutItem_Portal> get_portal() const;
+  virtual std::shared_ptr<const Field> get_key_field() const;
 
   sigc::signal<void, Gnome::Gda::Value> signal_record_added;
 
@@ -96,7 +96,7 @@ protected:
   virtual type_vecConstLayoutFields get_fields_to_show() const; //override
     
   //Implementations of pure virtual methods from Base_DB_Table_Data:
-  virtual sharedptr<Field> get_field_primary_key() const;
+  virtual std::shared_ptr<Field> get_field_primary_key() const;
 
   //Overrides of virtual methods from Base_Db_Table_Data: 
   virtual void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row); //Override. Not a signal handler.
@@ -122,12 +122,12 @@ protected:
   Gtk::Frame m_Frame;
   Gtk::Label m_Label;
 
-  sharedptr<LayoutItem_Portal> m_portal;
+  std::shared_ptr<LayoutItem_Portal> m_portal;
   Glib::ustring m_parent_table; //A duplicate of the from_table in m_portal, but only when m_portal is not null.
   
   // m_key_field and m_key_value are the field and its value in this table that 
   // must match another field in the parent table.
-  sharedptr<Field> m_key_field;
+  std::shared_ptr<Field> m_key_field;
   Gnome::Gda::Value m_key_value;
 
   bool m_find_mode;

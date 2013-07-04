@@ -42,7 +42,7 @@ namespace DbUtils
 
 static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
 {
-  sharedptr<SharedConnection> sharedconnection;
+  std::shared_ptr<SharedConnection> sharedconnection;
   try
   {
      sharedconnection = ConnectionPool::get_and_connect();
@@ -132,7 +132,7 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
 
   progress();
 
-  sharedptr<SharedConnection> sharedconnection;
+  std::shared_ptr<SharedConnection> sharedconnection;
   try
   {
     sharedconnection = connection_pool->connect();
@@ -222,7 +222,7 @@ bool recreate_database_from_document(Document* document, const sigc::slot<void>&
   try
   {
     connection_pool->set_ready_to_connect(); //This has succeeded already.
-    sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
+    std::shared_ptr<SharedConnection> sharedconnection = connection_pool->connect();
     std::cerr << G_STRFUNC << ": Failed because database exists already." << std::endl;
 
     return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
@@ -253,7 +253,7 @@ bool recreate_database_from_document(Document* document, const sigc::slot<void>&
 
   progress();
 
-  sharedptr<SharedConnection> sharedconnection;
+  std::shared_ptr<SharedConnection> sharedconnection;
   try
   {
     //Check that we can connect:
@@ -271,7 +271,7 @@ bool recreate_database_from_document(Document* document, const sigc::slot<void>&
   Document::type_listTableInfo tables = document->get_tables();
   for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
-    sharedptr<const TableInfo> table_info = *iter;
+    std::shared_ptr<const TableInfo> table_info = *iter;
 
     //Create SQL to describe all fields in this table:
     Glib::ustring sql_fields;
@@ -307,7 +307,7 @@ bool recreate_database_from_document(Document* document, const sigc::slot<void>&
     
   for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
-    sharedptr<const TableInfo> table_info = *iter;
+    std::shared_ptr<const TableInfo> table_info = *iter;
 
     //Add any example data to the table:
     progress();
@@ -461,7 +461,7 @@ bool add_standard_tables(const Document* document)
   try
   {
     Document::type_vec_fields pref_fields;
-    sharedptr<TableInfo> prefs_table_info = Document::create_table_system_preferences(pref_fields);
+    std::shared_ptr<TableInfo> prefs_table_info = Document::create_table_system_preferences(pref_fields);
 
     //Name, address, etc:
     if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME))
@@ -509,29 +509,29 @@ bool add_standard_tables(const Document* document)
     //Auto-increment next values:
     if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME))
     {
-      sharedptr<TableInfo> table_info(new TableInfo());
+      std::shared_ptr<TableInfo> table_info(new TableInfo());
       table_info->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
       table_info->set_title_original(_("System: Auto Increments"));
       table_info->set_hidden(true);
 
       Document::type_vec_fields fields;
 
-      sharedptr<Field> primary_key(new Field()); //It's not used, because there's only one record, but we must have one.
+      std::shared_ptr<Field> primary_key(new Field()); //It's not used, because there's only one record, but we must have one.
       primary_key->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_ID);
       primary_key->set_glom_type(Field::TYPE_NUMERIC);
       fields.push_back(primary_key);
 
-      sharedptr<Field> field_table_name(new Field());
+      std::shared_ptr<Field> field_table_name(new Field());
       field_table_name->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME);
       field_table_name->set_glom_type(Field::TYPE_TEXT);
       fields.push_back(field_table_name);
 
-      sharedptr<Field> field_field_name(new Field());
+      std::shared_ptr<Field> field_field_name(new Field());
       field_field_name->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME);
       field_field_name->set_glom_type(Field::TYPE_TEXT);
       fields.push_back(field_field_name);
 
-      sharedptr<Field> field_next_value(new Field());
+      std::shared_ptr<Field> field_next_value(new Field());
       field_next_value->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE);
       field_next_value->set_glom_type(Field::TYPE_TEXT);
       fields.push_back(field_next_value);
@@ -614,7 +614,7 @@ bool add_standard_groups(Document* document)
 
       for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
       {
-        sharedptr<const TableInfo> table_info = *iter;
+        std::shared_ptr<const TableInfo> table_info = *iter;
         if(table_info)
         {
           const Glib::ustring table_name = table_info->get_name();
@@ -941,7 +941,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
           field_info->set_allow_null(value_notnull.get_boolean());
 
 
-        sharedptr<Field> field = sharedptr<Field>::create(); //TODO: Get glom-specific information from the document?
+        std::shared_ptr<Field> field = std::shared_ptr<Field>(new Field()); //TODO: Get glom-specific information from the document?
         field->set_field_info(field_info);
 
 
@@ -990,7 +990,7 @@ type_vec_fields get_fields_for_table(const Document* document, const Glib::ustri
   /*
   for(type_vec_fields::iterator iter = fieldsDocument.begin(); iter != fieldsDocument.end(); ++iter)
   {
-    sharedptr<Field> field = *iter;
+    std::shared_ptr<Field> field = *iter;
     const Glib::ustring field_name = field->get_name();
 
     //Get the field info from the database:
@@ -1037,10 +1037,10 @@ type_vec_fields get_fields_for_table(const Document* document, const Glib::ustri
   return result;
 }
 
-sharedptr<Field> get_fields_for_table_one_field(const Document* document, const Glib::ustring& table_name, const Glib::ustring& field_name)
+std::shared_ptr<Field> get_fields_for_table_one_field(const Document* document, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   //Initialize output parameter:
-  sharedptr<Field> result;
+  std::shared_ptr<Field> result;
 
   if(field_name.empty() || table_name.empty())
     return result;
@@ -1052,7 +1052,7 @@ sharedptr<Field> get_fields_for_table_one_field(const Document* document, const 
     return *iter;
   }
 
-  return sharedptr<Field>();
+  return std::shared_ptr<Field>();
 }
 
 //TODO_Performance: Avoid calling this so often.
@@ -1164,7 +1164,7 @@ bool create_table_with_default_fields(Document* document, const Glib::ustring& t
   bool created = false;
 
   //Primary key:
-  sharedptr<Field> field_primary_key(new Field());
+  std::shared_ptr<Field> field_primary_key(new Field());
   field_primary_key->set_name(table_name + "_id");
   field_primary_key->set_title_original( Glib::ustring::compose("%1 ID", table_name) );
   field_primary_key->set_primary_key();
@@ -1181,21 +1181,21 @@ bool create_table_with_default_fields(Document* document, const Glib::ustring& t
   fields.push_back(field_primary_key);
 
   //Description:
-  sharedptr<Field> field_description(new Field());
+  std::shared_ptr<Field> field_description(new Field());
   field_description->set_name("description");
   field_description->set_title_original(_("Description")); //Use a translation, because the original locale will be marked as non-English if the current locale is non-English.
   field_description->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_description);
 
   //Comments:
-  sharedptr<Field> field_comments(new Field());
+  std::shared_ptr<Field> field_comments(new Field());
   field_comments->set_name("comments");
   field_comments->set_title_original(_("Comments"));
   field_comments->set_glom_type(Field::TYPE_TEXT);
   field_comments->m_default_formatting.set_text_format_multiline();
   fields.push_back(field_comments);
 
-  sharedptr<TableInfo> table_info(new TableInfo());
+  std::shared_ptr<TableInfo> table_info(new TableInfo());
   table_info->set_name(table_name);
   table_info->set_title_original( Utils::title_from_string( table_name ) ); //Start with a title that might be appropriate.
 
@@ -1215,7 +1215,7 @@ bool create_table_with_default_fields(Document* document, const Glib::ustring& t
 
   return created;
 }
-bool create_table(Document::HostingMode hosting_mode, const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields_in)
+bool create_table(Document::HostingMode hosting_mode, const std::shared_ptr<const TableInfo>& table_info, const Document::type_vec_fields& fields_in)
 {
   //std::cout << "debug: " << G_STRFUNC << ": " << table_info->get_name() << ", title=" << table_info->get_title() << std::endl;
 
@@ -1228,7 +1228,7 @@ bool create_table(Document::HostingMode hosting_mode, const sharedptr<const Tabl
   //(We don't actually use this yet)
   if(std::find_if(fields.begin(), fields.end(), predicate_FieldHasName<Field>(GLOM_STANDARD_FIELD_LOCK)) == fields.end())
   {
-    sharedptr<Field> field = sharedptr<Field>::create();
+    std::shared_ptr<Field> field = std::shared_ptr<Field>(new Field());
     field->set_name(GLOM_STANDARD_FIELD_LOCK);
     field->set_glom_type(Field::TYPE_TEXT);
     fields.push_back(field);
@@ -1239,7 +1239,7 @@ bool create_table(Document::HostingMode hosting_mode, const sharedptr<const Tabl
   for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
   {
     //Create SQL to describe this field:
-    sharedptr<Field> field = *iter;
+    std::shared_ptr<Field> field = *iter;
 
     //The field has no gda type, so we set that:
     //This usually comes from the database, but that's a bit strange.
@@ -1311,13 +1311,13 @@ bool create_table(Document::HostingMode hosting_mode, const sharedptr<const Tabl
   return table_creation_succeeded;
 }
 
-bool create_table_add_missing_fields(const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields)
+bool create_table_add_missing_fields(const std::shared_ptr<const TableInfo>& table_info, const Document::type_vec_fields& fields)
 {
   const Glib::ustring table_name = table_info->get_name();
 
   for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
   {
-    sharedptr<const Field> field = *iter;
+    std::shared_ptr<const Field> field = *iter;
     if(!get_field_exists_in_database(table_name, field->get_name()))
     {
       const bool test = add_column(table_name, field, 0); /* TODO: parent_window */
@@ -1330,7 +1330,7 @@ bool create_table_add_missing_fields(const sharedptr<const TableInfo>& table_inf
 }
 
 
-bool add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field, Gtk::Window* /* parent_window */)
+bool add_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field, Gtk::Window* /* parent_window */)
 {
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
 
@@ -1623,7 +1623,7 @@ bool insert_example_data(const Document* document, const Glib::ustring& table_na
     {
       //std::cout << "  DEBUG: i=" << i << ", row_data.size()=" << row_data.size() << std::endl;
 
-      sharedptr<Field> field = vec_fields[i];
+      std::shared_ptr<Field> field = vec_fields[i];
       if(!field)
       {
         std::cerr << G_STRFUNC << ": field was null for field num=" << i << std::endl;
@@ -1852,7 +1852,7 @@ bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
   return (exec_retval >= 0);
 }
 
-void layout_item_fill_field_details(const Document* document, const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item)
+void layout_item_fill_field_details(const Document* document, const Glib::ustring& parent_table_name, std::shared_ptr<LayoutItem_Field>& layout_item)
 {
   if(!document)
   {
@@ -1869,10 +1869,10 @@ void layout_item_fill_field_details(const Document* document, const Glib::ustrin
   layout_item->set_full_field_details( document->get_field(table_name, layout_item->get_name()) );
 }
 
-bool layout_field_should_have_navigation(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_item, const Document* document, sharedptr<const Relationship>& field_used_in_relationship_to_one)
+bool layout_field_should_have_navigation(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& layout_item, const Document* document, std::shared_ptr<Relationship>& field_used_in_relationship_to_one)
 {
   //Initialize output parameter:
-  field_used_in_relationship_to_one = sharedptr<Relationship>();
+  field_used_in_relationship_to_one = std::shared_ptr<Relationship>();
   
   if(!document)
   {
@@ -1894,14 +1894,14 @@ bool layout_field_should_have_navigation(const Glib::ustring& table_name, const 
 
   //Check whether the field controls a relationship,
   //meaning it identifies a record in another table.
-  sharedptr<const Relationship> const_relationship =
+  std::shared_ptr<const Relationship> const_relationship =
     document->get_field_used_in_relationship_to_one(table_name, layout_item);
-  field_used_in_relationship_to_one = sharedptr<Relationship>::cast_const(const_relationship); //This is just because we can't seem to have a sharedptr<const Relationship>& output parameter.
+  field_used_in_relationship_to_one = std::const_pointer_cast<Relationship>(const_relationship); //This is just because we can't seem to have a std::shared_ptr<const Relationship>& output parameter.
   // std::cout << "DEBUG: table_name=" << table_name << ", table_used=" << layout_item->get_table_used(table_name) << ", layout_item=" << layout_item->get_name() << ", field_used_in_relationship_to_one=" << field_used_in_relationship_to_one << std::endl;
 
   //Check whether the field identifies a record in another table
   //just because it is a primary key in that table:
-  const sharedptr<const Field> field_info = layout_item->get_full_field_details();
+  const std::shared_ptr<const Field> field_info = layout_item->get_full_field_details();
   const bool field_is_related_primary_key =
     layout_item->get_has_relationship_name() &&
     field_info && field_info->get_primary_key();
@@ -1942,7 +1942,7 @@ Glib::ustring get_unused_database_name(const Glib::ustring& base_name)
     connection_pool->set_database(database_name_possible);
     connection_pool->set_ready_to_connect();
 
-    Glom::sharedptr<Glom::SharedConnection> connection;
+    std::shared_ptr<Glom::SharedConnection> connection;
 
     try
     {
@@ -2254,15 +2254,15 @@ void set_fake_connection()
   Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
   Glom::ConnectionPoolBackends::Backend* backend = 
     new Glom::ConnectionPoolBackends::PostgresCentralHosted();
-  connection_pool->set_backend(std::auto_ptr<Glom::ConnectionPool::Backend>(backend));
+  connection_pool->set_backend(std::shared_ptr<Glom::ConnectionPool::Backend>(backend));
   connection_pool->set_fake_connection();
 }
 
-Gnome::Gda::Value get_lookup_value(const Document* document, const Glib::ustring& /* table_name */, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value& key_value)
+Gnome::Gda::Value get_lookup_value(const Document* document, const Glib::ustring& /* table_name */, const std::shared_ptr<const Relationship>& relationship, const std::shared_ptr<const Field>& source_field, const Gnome::Gda::Value& key_value)
 {
   Gnome::Gda::Value result;
 
-  sharedptr<Field> to_key_field = get_fields_for_table_one_field(document, relationship->get_to_table(), relationship->get_to_field());
+  std::shared_ptr<Field> to_key_field = get_fields_for_table_one_field(document, relationship->get_to_table(), relationship->get_to_field());
   if(to_key_field)
   {
     //Convert the value, in case the from and to fields have different types:
@@ -2293,7 +2293,7 @@ Gnome::Gda::Value get_lookup_value(const Document* document, const Glib::ustring
   return result;
 }
 
-type_map_fields get_record_field_values(const Document* document, const Glib::ustring& table_name, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
+type_map_fields get_record_field_values(const Document* document, const Glib::ustring& table_name, const std::shared_ptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
   type_map_fields field_values;
 
@@ -2307,11 +2307,11 @@ type_map_fields get_record_field_values(const Document* document, const Glib::us
   const Document::type_vec_fields fields = document->get_table_fields(table_name);
 
   //TODO: This seems silly. We should just have a build_sql_select() that can take this container:
-  typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
+  typedef std::vector< std::shared_ptr<LayoutItem_Field> > type_vecLayoutFields;
   type_vecLayoutFields fieldsToGet;
   for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
   {
-    const sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+    const std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
     layout_item->set_full_field_details(*iter);
 
     fieldsToGet.push_back(layout_item);
@@ -2341,7 +2341,7 @@ type_map_fields get_record_field_values(const Document* document, const Glib::us
       for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
       {
         //There should be only 1 row. Well, there could be more but we will ignore them.
-        sharedptr<const Field> field = *iter;
+        std::shared_ptr<const Field> field = *iter;
         Gnome::Gda::Value value = data_model->get_value_at(col_index, 0);
         //Never give a NULL-type value to the python calculation for types that don't use them:
         //to prevent errors:
@@ -2365,7 +2365,7 @@ type_map_fields get_record_field_values(const Document* document, const Glib::us
     //Create appropriate empty values:
     for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
-      sharedptr<const Field> field = *iter;
+      std::shared_ptr<const Field> field = *iter;
       field_values[field->get_name()] = Conversions::get_empty_value(field->get_glom_type());
     }
   }

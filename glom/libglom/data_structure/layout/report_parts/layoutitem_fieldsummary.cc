@@ -120,7 +120,7 @@ void LayoutItem_FieldSummary::set_summary_type_from_sql(const Glib::ustring& sum
     m_summary_type = TYPE_INVALID;
 }
 
-void LayoutItem_FieldSummary::set_field(const sharedptr<LayoutItem_Field>& field)
+void LayoutItem_FieldSummary::set_field(const std::shared_ptr<LayoutItem_Field>& field)
 {
   if(field)
     LayoutItem_Field::operator=(*field);

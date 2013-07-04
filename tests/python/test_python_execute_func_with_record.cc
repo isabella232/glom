@@ -79,7 +79,7 @@ int main()
   }
   g_assert(started == Glom::ConnectionPool::Backend::STARTUPERROR_NONE);
 
-  Glom::sharedptr<Glom::SharedConnection> connection = connection_pool->connect();
+  std::shared_ptr<Glom::SharedConnection> connection = connection_pool->connect();
   g_assert(connection);
 
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = connection->get_gda_connection();
@@ -101,7 +101,7 @@ int main()
     value = Glom::glom_evaluate_python_function_implementation(
       Glom::Field::TYPE_BOOLEAN, calculation, field_values,
       0 /* document */, "" /* table name */,
-      Glom::sharedptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
+      std::shared_ptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
       gda_connection,
       error_message);
   }

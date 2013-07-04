@@ -45,14 +45,14 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   
   const Glib::ustring table_name = "contacts";
   const Glib::ustring field_name_original = "date_of_birth";
-  Glom::sharedptr<const Glom::Field> field = document.get_field(table_name, field_name_original);
+  std::shared_ptr<const Glom::Field> field = document.get_field(table_name, field_name_original);
   if(!field)
   {
     std::cerr << G_STRFUNC << ": Failure: Could not get field." << std::endl;
     return false;
   }
 
-  Glom::sharedptr<Glom::Field> field_new = Glom::glom_sharedptr_clone(field);
+  std::shared_ptr<Glom::Field> field_new = Glom::glom_sharedptr_clone(field);
   if(!field_new)
   {
     std::cerr << G_STRFUNC << ": Failure: field_new is null." << std::endl;
@@ -156,7 +156,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   try
   {
     //TODO: Avoid the need for this awkward use of set_g_type():
-    Glom::sharedptr<Glom::Field> field = Glom::sharedptr<Glom::Field>::create();
+    std::shared_ptr<Glom::Field> field = std::shared_ptr<Glom::Field>(new Glom::Field());
     field->set_name("newfield");
     field->set_glom_type(Glom::Field::TYPE_NUMERIC);
     Glib::RefPtr<Gnome::Gda::Column> field_info = field->get_field_info();

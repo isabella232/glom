@@ -147,7 +147,7 @@ void ConnectionPool::setup_from_document(const Document* document)
     {
       ConnectionPoolBackends::PostgresSelfHosted* backend = new ConnectionPoolBackends::PostgresSelfHosted;
       backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
-      set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
+      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend));
     }
     break;
   case Document::HOSTING_MODE_POSTGRES_CENTRAL:
@@ -156,21 +156,21 @@ void ConnectionPool::setup_from_document(const Document* document)
       backend->set_host(document->get_connection_server());
       backend->set_port(document->get_connection_port());
       backend->set_try_other_ports(document->get_connection_try_other_ports());
-      set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
+      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend));
     }
     break;
   case Document::HOSTING_MODE_SQLITE:
     {
       ConnectionPoolBackends::Sqlite* backend = new ConnectionPoolBackends::Sqlite;
       backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
-      set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
+      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend));
     }
     break;
   case Document::HOSTING_MODE_MYSQL_SELF:
     {
       ConnectionPoolBackends::MySQLSelfHosted* backend = new ConnectionPoolBackends::MySQLSelfHosted;
       backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
-      set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
+      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend));
     }
     break;
   case Document::HOSTING_MODE_MYSQL_CENTRAL:
@@ -179,7 +179,7 @@ void ConnectionPool::setup_from_document(const Document* document)
       backend->set_host(document->get_connection_server());
       backend->set_port(document->get_connection_port());
       backend->set_try_other_ports(document->get_connection_try_other_ports());
-      set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
+      set_backend(std::shared_ptr<ConnectionPool::Backend>(backend));
     }
     break;
 
@@ -213,7 +213,7 @@ void ConnectionPool::set_ready_to_connect(bool val)
   m_ready_to_connect = val;
 }
 
-void ConnectionPool::set_backend(std::auto_ptr<Backend> backend)
+void ConnectionPool::set_backend(std::shared_ptr<Backend> backend)
 {
   m_backend = backend;
 }
@@ -237,9 +237,9 @@ bool ConnectionPool::get_backend_supports_cursor() const
 }
 
 //static:
-sharedptr<SharedConnection> ConnectionPool::get_and_connect()
+std::shared_ptr<SharedConnection> ConnectionPool::get_and_connect()
 {
-  sharedptr<SharedConnection> result(0);
+  std::shared_ptr<SharedConnection> result(0);
 
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)
@@ -270,7 +270,7 @@ bool ConnectionPool::get_instance_is_ready()
 // is immediately requested again, to avoid making a new connection
 // and introspecting again, which is slow.
 // TODO: Why aren't these member variables?
-static sharedptr<SharedConnection> connection_cached;
+static std::shared_ptr<SharedConnection> connection_cached;
 static sigc::connection connection_cached_timeout_connection;
 static sigc::connection connection_cached_finished_connection;
 
@@ -279,18 +279,18 @@ static bool on_connection_pool_cache_timeout()
   //std::cout << "DEBUG: Clearing connection cache." << std::endl;
 
   //Forget the cached connection after a few seconds:
-  connection_cached.clear();
+  connection_cached.reset();
 
   return false; //Don't call this again.
 }
 
 
-sharedptr<SharedConnection> ConnectionPool::connect()
+std::shared_ptr<SharedConnection> ConnectionPool::connect()
 {
   //std::cout << G_STRFUNC << ": debug" << std::endl;
 
   //Don't try to connect if we don't have a backend to connect to.
-  g_return_val_if_fail(m_backend.get(), sharedptr<SharedConnection>(0));
+  g_return_val_if_fail(m_backend.get(), std::shared_ptr<SharedConnection>(0));
 
   if(get_ready_to_connect() || m_fake_connection)
   {
@@ -302,7 +302,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
     //If the connection is already open (because it is being used by somebody):
     else if(m_refGdaConnection)
     {
-      sharedptr<SharedConnection> sharedConnection( new SharedConnection(m_refGdaConnection) );
+      std::shared_ptr<SharedConnection> sharedConnection( new SharedConnection(m_refGdaConnection) );
 
       //Ask for notification when the SharedConnection has been finished with:
       //TODO: Note that we are overwriting the connection to a signal of a
@@ -398,7 +398,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
     //std::cerr << G_STRFUNC << ": not ready to connect." << std::endl;
   }
 
-  return sharedptr<SharedConnection>(0);
+  return std::shared_ptr<SharedConnection>(0);
 }
 
 void ConnectionPool::create_database(const SlotProgress& slot_progress, const Glib::ustring& database_name)
@@ -525,7 +525,7 @@ Gnome::Gda::SqlOperatorType ConnectionPool::get_string_find_operator() const
 void ConnectionPool::invalidate_connection()
 {
   //std::cerr << G_STRFUNC << ": debug" << std::endl;
-  connection_cached.clear();
+  connection_cached.reset();
   connection_cached_timeout_connection.disconnect();
   connection_cached_finished_connection.disconnect();
 
@@ -568,7 +568,7 @@ void ConnectionPool::on_sharedconnection_finished()
 //static
 bool ConnectionPool::handle_error_cerr_only()
 {
-  sharedptr<SharedConnection> sharedconnection = get_and_connect();
+  std::shared_ptr<SharedConnection> sharedconnection = get_and_connect();
 
   if(sharedconnection)
   {
@@ -716,7 +716,7 @@ bool ConnectionPool::connect_nothrow()
 }
 
 //TODO: Why do we use throw() here and on change_columns()?
-bool ConnectionPool::add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field) throw()
+bool ConnectionPool::add_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field) throw()
 {
   if(!connect_nothrow())
     return false;
@@ -754,7 +754,7 @@ bool ConnectionPool::drop_column(const Glib::ustring& table_name, const Glib::us
   return false;
 }
 
-bool ConnectionPool::change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field) throw()
+bool ConnectionPool::change_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field_old, const std::shared_ptr<const Field>& field) throw()
 {
   type_vec_const_fields old_fields(1, field_old);
   type_vec_const_fields new_fields(1, field);
@@ -789,8 +789,8 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
   type_vec_const_fields::const_iterator iter_new = new_fields.begin();
   while( (iter_old != old_fields.end()) && (iter_new != new_fields.end()) )
   {
-    const sharedptr<const Field> field_old = *iter_old;
-    const sharedptr<const Field> field_new = *iter_new;
+    const std::shared_ptr<const Field> field_old = *iter_old;
+    const std::shared_ptr<const Field> field_new = *iter_new;
     if(field_old && field_new
       && field_old->get_auto_increment() != field_new->get_auto_increment())
     {
@@ -865,7 +865,7 @@ gboolean ConnectionPool::on_publisher_document_authentication(EpcAuthContext* co
   g_return_val_if_fail(connection_pool->m_backend.get(), false);
 
   //Attempt a connection with this username/password:
-  std::auto_ptr<ExceptionConnection> error;
+  std::shared_ptr<ExceptionConnection> error;
   Glib::RefPtr<Gnome::Gda::Connection> connection = connection_pool->m_backend->connect(connection_pool->get_database(), user_name, password);
 
   if(connection)

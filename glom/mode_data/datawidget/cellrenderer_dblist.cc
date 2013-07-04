@@ -54,7 +54,7 @@ void CellRendererDbList::set_choices_fixed(const Formatting::type_list_values& l
   //The other cells are added in on_editing_started().
 }
 
-void CellRendererDbList::set_choices_related(const Document* document, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value)
+void CellRendererDbList::set_choices_related(const Document* document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value)
 {
   ComboChoicesWithTreeModel::set_choices_related(document, layout_field, foreign_key_value);
 
@@ -132,7 +132,7 @@ void CellRendererDbList::repack_cells_fixed(Gtk::CellLayout* combobox)
         cell = Gtk::manage(new Gtk::CellRendererText);
       else if(col < m_db_layout_items.size())
       {
-        sharedptr<const LayoutItem_Field> layout_item = m_db_layout_items[col];
+        std::shared_ptr<const LayoutItem_Field> layout_item = m_db_layout_items[col];
         cell = create_cell(layout_item, m_table_name, m_document, get_fixed_cell_height(*widget));
       }
 
@@ -165,7 +165,7 @@ void CellRendererDbList::repack_cells_related(Gtk::CellLayout* combobox)
   guint i = 0;
   for(type_vec_const_layout_items::const_iterator iter = m_db_layout_items.begin(); iter != m_db_layout_items.end(); ++iter)
   {
-    const sharedptr<const LayoutItem> layout_item = *iter;
+    const std::shared_ptr<const LayoutItem> layout_item = *iter;
     Gtk::CellRenderer* cell = 0;
 
     if(i == 0 && !m_repacked_first_cell)
@@ -238,7 +238,7 @@ void CellRendererDbList::on_editing_started(Gtk::CellEditable* cell_editable, co
 
 void CellRendererDbList::set_value(const Gnome::Gda::Value& value)
 {
-  sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
+  std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
   if(!layout_item)
     return;
 
@@ -271,7 +271,7 @@ void CellRendererDbList::set_value(const Gnome::Gda::Value& value)
 
 Gnome::Gda::Value CellRendererDbList::get_value() const
 {
-  sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
+  std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
   bool success = false;
 
   const Glib::ustring text = get_text();

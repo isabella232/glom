@@ -156,7 +156,7 @@ bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::Serve
   return true;
 }
 
-bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const sharedptr<const Field>& column, unsigned int i)
+bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const std::shared_ptr<const Field>& column, unsigned int i)
 {
   //TODO: Quote column name?
   const Glib::ustring name_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_NAME/%1", i);
@@ -297,7 +297,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   {
     // Add new fields to the table. Fields that have changed have already
     // been handled above.
-    const sharedptr<const Field>& field = *iter;
+    const std::shared_ptr<const Field>& field = *iter;
     type_vec_strings::const_iterator removed_iter = std::find(fields_removed.begin(), fields_removed.end(), field->get_name());
     if(removed_iter == fields_removed.end())
     {
@@ -376,7 +376,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   return false;
 }
 
-bool Sqlite::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const sharedptr<const Field>& field)
+bool Sqlite::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const std::shared_ptr<const Field>& field)
 {
   // Sqlite does not support adding primary key columns. So recreate the table
   // in that case.

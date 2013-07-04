@@ -38,16 +38,16 @@ public:
   ComboBox_Relationship(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~ComboBox_Relationship();
 
-  typedef std::vector< sharedptr<Relationship> > type_vec_relationships;
+  typedef std::vector< std::shared_ptr<Relationship> > type_vec_relationships;
   void set_relationships(const type_vec_relationships& relationships, const Glib::ustring& parent_table_name = Glib::ustring(), const Glib::ustring& parent_table_title = Glib::ustring());
 
   void set_relationships(Document* document, const Glib::ustring parent_table_name, bool show_related_relationships = false, bool show_parent_table = true);
 
-  void set_selected_relationship(const sharedptr<const Relationship>& relationship);
-  void set_selected_relationship(const sharedptr<const Relationship>& relationship, const sharedptr<const Relationship>& related_relationship);
+  void set_selected_relationship(const std::shared_ptr<const Relationship>& relationship);
+  void set_selected_relationship(const std::shared_ptr<const Relationship>& relationship, const std::shared_ptr<const Relationship>& related_relationship);
   void set_selected_relationship(const Glib::ustring& name, const Glib::ustring& related_relationship_name = Glib::ustring());
-  sharedptr<Relationship> get_selected_relationship() const;
-  sharedptr<Relationship> get_selected_relationship(sharedptr<Relationship>& related_relatioship) const;
+  std::shared_ptr<Relationship> get_selected_relationship() const;
+  std::shared_ptr<Relationship> get_selected_relationship(std::shared_ptr<Relationship>& related_relatioship) const;
 
   //Sometimes we want to show the parent table as an option too, instead of just relationships:
 
@@ -74,7 +74,7 @@ private:
     ModelColumns()
     { add(m_relationship); add(m_separator); }
 
-    Gtk::TreeModelColumn< sharedptr<Relationship> > m_relationship;
+    Gtk::TreeModelColumn< std::shared_ptr<Relationship> > m_relationship;
     Gtk::TreeModelColumn<bool> m_separator;
   };
 

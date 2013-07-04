@@ -48,10 +48,10 @@ public:
    * @param item The starting information.
    * @param table_name The item's table.
    */
-  virtual void set_item(const sharedptr<const LayoutItem_FieldSummary>& item, const Glib::ustring& table_name);
+  virtual void set_item(const std::shared_ptr<const LayoutItem_FieldSummary>& item, const Glib::ustring& table_name);
 
 
-  sharedptr<LayoutItem_FieldSummary> get_item() const;
+  std::shared_ptr<LayoutItem_FieldSummary> get_item() const;
 
 private:
   //Signal handlers:
@@ -61,7 +61,7 @@ private:
   Combo_SummaryType* m_combo_summarytype;
   Gtk::Button* m_button_field;
 
-  mutable sharedptr<LayoutItem_FieldSummary> m_layout_item;
+  mutable std::shared_ptr<LayoutItem_FieldSummary> m_layout_item;
 
   Glib::ustring m_table_name;
 };

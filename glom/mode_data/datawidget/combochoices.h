@@ -41,7 +41,7 @@ public:
   explicit ComboChoices();
 
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
-  explicit ComboChoices(const sharedptr<LayoutItem_Field>& field_second);
+  explicit ComboChoices(const std::shared_ptr<LayoutItem_Field>& field_second);
 
   virtual ~ComboChoices();
 
@@ -58,7 +58,7 @@ public:
    *
    * See also refresh_data_from_database_with_foreign_key().
    */
-  virtual void set_choices_related(const Document* document, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value) = 0;
+  virtual void set_choices_related(const Document* document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value) = 0;
 
   /** Update a choices widget's list of related choices if a relevant value in its parent table has changed.
    *

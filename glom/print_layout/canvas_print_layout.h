@@ -45,8 +45,8 @@ public:
   Canvas_PrintLayout();
   virtual ~Canvas_PrintLayout();
 
-  void set_print_layout(const Glib::ustring& table_name, const sharedptr<PrintLayout>& print_layout);
-  sharedptr<PrintLayout> get_print_layout();
+  void set_print_layout(const Glib::ustring& table_name, const std::shared_ptr<PrintLayout>& print_layout);
+  std::shared_ptr<PrintLayout> get_print_layout();
 
   void set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page_setup);
   Glib::RefPtr<Gtk::PageSetup> get_page_setup();
@@ -102,22 +102,22 @@ private:
   void setup_context_menu();
 #endif
 
-  void add_layout_group(const sharedptr<LayoutGroup>& group, bool is_top_level = false);
-  void add_layout_group_children(const sharedptr<LayoutGroup>& group);
-  void fill_layout_group(const sharedptr<LayoutGroup>& group);
+  void add_layout_group(const std::shared_ptr<LayoutGroup>& group, bool is_top_level = false);
+  void add_layout_group_children(const std::shared_ptr<LayoutGroup>& group);
+  void fill_layout_group(const std::shared_ptr<LayoutGroup>& group);
 
   //These are not static, because they need access to the document:
   void fill_with_data(const Glib::RefPtr<Goocanvas::Group>& canvas_group, const FoundSet& found_set, bool avoid_page_margins);
   void fill_with_data_portal(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, const Gnome::Gda::Value& foreign_key_value);
-  static void set_canvas_item_field_value(const Glib::RefPtr<Goocanvas::Item>& canvas_item, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  static void set_canvas_item_field_value(const Glib::RefPtr<Goocanvas::Item>& canvas_item, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
   
-  type_vecConstLayoutFields get_portal_fields_to_show(const sharedptr<LayoutItem_Portal>& portal);
+  type_vecConstLayoutFields get_portal_fields_to_show(const std::shared_ptr<LayoutItem_Portal>& portal);
 
-  void create_canvas_layout_item_and_add(const sharedptr<LayoutItem>& layout_item);
+  void create_canvas_layout_item_and_add(const std::shared_ptr<LayoutItem>& layout_item);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  sharedptr<LayoutItem_Portal> offer_related_records(const sharedptr<LayoutItem_Portal>& portal, Gtk::Window* parent);
-  sharedptr<LayoutItem_Line> offer_line(const sharedptr<LayoutItem_Line>& portal, Gtk::Window* parent);
+  std::shared_ptr<LayoutItem_Portal> offer_related_records(const std::shared_ptr<LayoutItem_Portal>& portal, Gtk::Window* parent);
+  std::shared_ptr<LayoutItem_Line> offer_line(const std::shared_ptr<LayoutItem_Line>& portal, Gtk::Window* parent);
   
   //TODO: Make the signal send the item, so we can pass it by const reference:
   void on_item_show_context_menu(guint button, guint32 activate_time, Glib::RefPtr<CanvasLayoutItem> item);

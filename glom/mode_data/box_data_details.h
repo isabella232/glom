@@ -82,16 +82,16 @@ protected:
   virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
   virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const; //Actual primary key value of this record.
 
-  virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
-  virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
-  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  virtual Gnome::Gda::Value get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const;
+  virtual void set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
 
 
   virtual bool fill_from_database(); //override.
   virtual void create_layout();
   //virtual void fill_related();
 
-  virtual sharedptr<Field> get_field_primary_key() const;
+  virtual std::shared_ptr<Field> get_field_primary_key() const;
   void set_found_set_from_primary_key_value();
 
 private:
@@ -120,14 +120,14 @@ protected:
   //virtual void on_related_user_requested_details(Gnome::Gda::Value key_value, Glib::ustring table_name);
 
   //This is virtual so it can be overriden in Box_Data_Details_Find.
-  virtual void on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& value);
+  virtual void on_flowtable_field_edited(const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& value);
 
-  void on_flowtable_field_choices_changed(const sharedptr<const LayoutItem_Field>& layout_field);
-  void on_flowtable_field_open_details_requested(const sharedptr<const LayoutItem_Field>& id, const Gnome::Gda::Value& value);
+  void on_flowtable_field_choices_changed(const std::shared_ptr<const LayoutItem_Field>& layout_field);
+  void on_flowtable_field_open_details_requested(const std::shared_ptr<const LayoutItem_Field>& id, const Gnome::Gda::Value& value);
   void on_flowtable_related_record_changed(const Glib::ustring& relationship_name);
   void on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
 
-  void on_flowtable_script_button_clicked(const sharedptr<const LayoutItem_Button>& layout_item);
+  void on_flowtable_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item);
 
   virtual void recalculate_fields_for_related_records(const Glib::ustring& relationship_name);
 
@@ -136,10 +136,9 @@ protected:
   virtual void prepare_layout_dialog(Dialog_Layout* dialog); // override.
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-
+  std::shared_ptr<Field> m_field_primary_key;
  virtual void show_all_vfunc(); //override.
 
-  sharedptr<Field> m_field_primary_key;
   Gnome::Gda::Value m_primary_key_value;
 
   //Member widgets:

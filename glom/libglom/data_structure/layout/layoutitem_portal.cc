@@ -89,8 +89,8 @@ void LayoutItem_Portal::change_field_item_name(const Glib::ustring& table_name, 
   //Look at each item:
   for(LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin(); iterItem != m_list_items.end(); ++iterItem)
   {
-    sharedptr<LayoutItem> item = *iterItem;
-    sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+    std::shared_ptr<LayoutItem> item = *iterItem;
+    std::shared_ptr<LayoutItem_Field> field_item = std::dynamic_pointer_cast<LayoutItem_Field>(item);
     if(field_item)
     {
       if(field_item->get_table_used(Glib::ustring()) == table_name) //If it's a related table (this would be a self-relationship)
@@ -100,37 +100,37 @@ void LayoutItem_Portal::change_field_item_name(const Glib::ustring& table_name, 
       }
       else
       {
-        sharedptr<const Relationship> relationship = get_relationship();
+        std::shared_ptr<const Relationship> relationship = get_relationship();
         if(relationship && (relationship->get_to_table() == table_name) && (field_item->get_name() == field_name))
           field_item->set_name(field_name_new); //Change it.
       }
     }
     else
     {
-      sharedptr<LayoutGroup> sub_group = sharedptr<LayoutGroup>::cast_dynamic(item);
+      std::shared_ptr<LayoutGroup> sub_group = std::dynamic_pointer_cast<LayoutGroup>(item);
       if(sub_group)
         sub_group->change_field_item_name(table_name, field_name, field_name_new);
     }
   }
 }
 
-sharedptr<UsesRelationship> LayoutItem_Portal::get_navigation_relationship_specific()
+std::shared_ptr<UsesRelationship> LayoutItem_Portal::get_navigation_relationship_specific()
 {
   if(get_navigation_type() == LayoutItem_Portal::NAVIGATION_SPECIFIC)
     return m_navigation_relationship_specific;
   else
-    return sharedptr<UsesRelationship>();
+    return std::shared_ptr<UsesRelationship>();
 }
 
-sharedptr<const UsesRelationship> LayoutItem_Portal::get_navigation_relationship_specific() const
+std::shared_ptr<const UsesRelationship> LayoutItem_Portal::get_navigation_relationship_specific() const
 {
   if(get_navigation_type() == LayoutItem_Portal::NAVIGATION_SPECIFIC)
     return m_navigation_relationship_specific;
   else
-    return sharedptr<UsesRelationship>();
+    return std::shared_ptr<UsesRelationship>();
 }
 
-void LayoutItem_Portal::set_navigation_relationship_specific(const sharedptr<UsesRelationship>& relationship)
+void LayoutItem_Portal::set_navigation_relationship_specific(const std::shared_ptr<UsesRelationship>& relationship)
 {
   m_navigation_relationship_specific = relationship;
   m_navigation_type = LayoutItem_Portal::NAVIGATION_SPECIFIC;
@@ -138,7 +138,7 @@ void LayoutItem_Portal::set_navigation_relationship_specific(const sharedptr<Use
 
 void LayoutItem_Portal::reset_navigation_relationship()
 {
-    m_navigation_relationship_specific = sharedptr<UsesRelationship>();
+    m_navigation_relationship_specific = std::shared_ptr<UsesRelationship>();
     m_navigation_type = LayoutItem_Portal::NAVIGATION_AUTOMATIC;
 }
 
@@ -146,7 +146,7 @@ Glib::ustring LayoutItem_Portal::get_from_table() const
 {
   Glib::ustring from_table;
 
-  sharedptr<const Relationship> relationship = get_relationship();
+  std::shared_ptr<const Relationship> relationship = get_relationship();
   if(relationship)
     from_table = relationship->get_from_table();
 
@@ -219,12 +219,12 @@ void LayoutItem_Portal::set_print_layout_line_color(const Glib::ustring& color)
   m_print_layout_line_color = color;
 }
 
-void LayoutItem_Portal::get_suitable_table_to_view_details(Glib::ustring& table_name, sharedptr<const UsesRelationship>& relationship, const Document* document) const
+void LayoutItem_Portal::get_suitable_table_to_view_details(Glib::ustring& table_name, std::shared_ptr<const UsesRelationship>& relationship, const Document* document) const
 {
   //Initialize output parameters:
   table_name = Glib::ustring();
 
-  sharedptr<const UsesRelationship> navigation_relationship;
+  std::shared_ptr<const UsesRelationship> navigation_relationship;
 
   //Check whether a relationship was specified:
   if(get_navigation_type() == LayoutItem_Portal::NAVIGATION_AUTOMATIC)
@@ -283,12 +283,12 @@ void LayoutItem_Portal::get_suitable_table_to_view_details(Glib::ustring& table_
   relationship = navigation_relationship;
 }
 
-sharedptr<const UsesRelationship> LayoutItem_Portal::get_portal_navigation_relationship_automatic(const Document* document) const
+std::shared_ptr<const UsesRelationship> LayoutItem_Portal::get_portal_navigation_relationship_automatic(const Document* document) const
 {
   if(!document)
   {
     std::cerr << G_STRFUNC << ": document was null" << std::endl;
-    return sharedptr<const UsesRelationship>();
+    return std::shared_ptr<const UsesRelationship>();
   }
 
   //If the related table is not hidden then we can just navigate to that:
@@ -296,17 +296,17 @@ sharedptr<const UsesRelationship> LayoutItem_Portal::get_portal_navigation_relat
   if(!(document->get_table_is_hidden(direct_related_table_name)))
   {
     //Non-hidden tables can just be shown directly. Navigate to it:
-    return sharedptr<const UsesRelationship>();
+    return std::shared_ptr<const UsesRelationship>();
   }
   else
   {
     //If the related table is hidden,
     //then find a suitable related non-hidden table by finding the first layout field that mentions one:
-    sharedptr<const LayoutItem_Field> field = get_field_is_from_non_hidden_related_record(document);
+    std::shared_ptr<const LayoutItem_Field> field = get_field_is_from_non_hidden_related_record(document);
     if(field)
     {
       return field; //Returns the UsesRelationship base part. (A relationship belonging to the portal's related table.)
-      //sharedptr<UsesRelationship> result = sharedptr<UsesRelationship>::create();
+      //std::shared_ptr<UsesRelationship> result = std::shared_ptr<UsesRelationship>(new UsesRelationship());
       //result->set_relationship( get_relationship() );
       //result->set_related_relationship( field->get_relationship() );
 
@@ -316,13 +316,13 @@ sharedptr<const UsesRelationship> LayoutItem_Portal::get_portal_navigation_relat
     {
       //Instead, find a key field that's used in a relationship,
       //and pretend that we are showing the to field as a related field:
-      sharedptr<const Relationship> used_in_relationship;
-      sharedptr<const LayoutItem_Field> field_identifies = get_field_identifies_non_hidden_related_record(used_in_relationship, document);
+      std::shared_ptr<const Relationship> used_in_relationship;
+      std::shared_ptr<const LayoutItem_Field> field_identifies = get_field_identifies_non_hidden_related_record(used_in_relationship, document);
       if(field_identifies)
       {
-        sharedptr<UsesRelationship> result = sharedptr<UsesRelationship>::create();
+        std::shared_ptr<UsesRelationship> result = std::shared_ptr<UsesRelationship>(new UsesRelationship());
 
-        sharedptr<Relationship> rel_nonconst = sharedptr<Relationship>::cast_const(used_in_relationship);
+        std::shared_ptr<Relationship> rel_nonconst = std::const_pointer_cast<Relationship>(used_in_relationship);
         result->set_relationship(rel_nonconst);
 
         return result;
@@ -331,13 +331,13 @@ sharedptr<const UsesRelationship> LayoutItem_Portal::get_portal_navigation_relat
   }
 
   //There was no suitable related table to show:
-  return sharedptr<const UsesRelationship>();
+  return std::shared_ptr<const UsesRelationship>();
 }
 
-sharedptr<const LayoutItem_Field> LayoutItem_Portal::get_field_is_from_non_hidden_related_record(const Document* document) const
+std::shared_ptr<const LayoutItem_Field> LayoutItem_Portal::get_field_is_from_non_hidden_related_record(const Document* document) const
 {
   //Find the first field that is from a non-hidden related table.
-  sharedptr<LayoutItem_Field> result;
+  std::shared_ptr<LayoutItem_Field> result;
 
   if(!document)
   {
@@ -350,7 +350,7 @@ sharedptr<const LayoutItem_Field> LayoutItem_Portal::get_field_is_from_non_hidde
   LayoutItem_Portal::type_list_const_items items = get_items();
   for(LayoutItem_Portal::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
   {
-    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(*iter);
+    std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(*iter);
     if(field)
     {
       if(field->get_has_relationship_name())
@@ -366,10 +366,10 @@ sharedptr<const LayoutItem_Field> LayoutItem_Portal::get_field_is_from_non_hidde
   return result;
 }
 
-sharedptr<const LayoutItem_Field> LayoutItem_Portal::get_field_identifies_non_hidden_related_record(sharedptr<const Relationship>& used_in_relationship, const Document* document) const
+std::shared_ptr<const LayoutItem_Field> LayoutItem_Portal::get_field_identifies_non_hidden_related_record(std::shared_ptr<const Relationship>& used_in_relationship, const Document* document) const
 {
   //Find the first field that is from a non-hidden related table.
-  sharedptr<LayoutItem_Field> result;
+  std::shared_ptr<LayoutItem_Field> result;
 
   if(!document)
   {
@@ -382,10 +382,10 @@ sharedptr<const LayoutItem_Field> LayoutItem_Portal::get_field_identifies_non_hi
   LayoutItem_Portal::type_list_const_items items = get_items();
   for(LayoutItem_Portal::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
   {
-    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(*iter);
+    std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(*iter);
     if(field && !(field->get_has_relationship_name()))
     {
-      sharedptr<const Relationship> relationship = document->get_field_used_in_relationship_to_one(parent_table_name, field);
+      std::shared_ptr<const Relationship> relationship = document->get_field_used_in_relationship_to_one(parent_table_name, field);
       if(relationship)
       {
         const Glib::ustring table_name = relationship->get_to_table();

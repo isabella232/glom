@@ -338,7 +338,7 @@ static int get_width_for_text(Gtk::Widget& widget, const Glib::ustring& text)
   return result;
 }
 
-} //anonymous namespace
+int Utils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const std::shared_ptr<const LayoutItem_Field>& field_layout, bool or_title, bool for_treeview)
 
 int UiUtils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const sharedptr<const LayoutItem_Field>& field_layout, bool or_title, bool for_treeview)
 {

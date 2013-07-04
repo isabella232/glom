@@ -21,7 +21,7 @@ libglom_toplevel_headers =				\
 	glom/libglom/appstate.h				\
 	glom/libglom/init.h				\
 	glom/libglom/libglom_config.h			\
-	glom/libglom/sharedptr.h			\
+	glom/libglom/sharedptr.h                        \
 	glom/libglom/standard_table_prefs_fields.h	\
 	glom/libglom/utils.h				\
 	glom/libglom/db_utils.h \

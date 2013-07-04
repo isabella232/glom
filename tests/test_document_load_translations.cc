@@ -56,12 +56,12 @@ public:
   {
   }
 
-  bool operator() (const Glom::sharedptr<T_Element>& element)
+  bool operator() (const std::shared_ptr<T_Element>& element)
   {
     return (element->get_title_original() == m_title);
   }
 
-  bool operator() (const Glom::sharedptr<const T_Element>& element)
+  bool operator() (const std::shared_ptr<const T_Element>& element)
   {
     return (element->get_title_original() == m_title);
   }
@@ -86,8 +86,8 @@ public:
 
   bool operator() (const Glom::Document::pair_translatable_item_and_hint& element)
   {
-    Glom::sharedptr<Glom::TranslatableItem> item = element.first;
-    Glom::sharedptr<T_TypeToFind> derived = Glom::sharedptr<T_TypeToFind>::cast_dynamic(item);
+    std::shared_ptr<Glom::TranslatableItem> item = element.first;
+    std::shared_ptr<T_TypeToFind> derived = std::dynamic_pointer_cast<T_TypeToFind>(item);
     if(derived)
       return true;
     else
@@ -102,7 +102,7 @@ typename T_Container::value_type get_titled(const T_Container& container, const 
   typedef typename T_Container::value_type type_sharedptr;
   type_sharedptr result;
 
-  typedef typename T_Container::value_type::object_type type_item;
+  typedef typename T_Container::value_type::element_type type_item;
   typename T_Container::const_iterator iter =
     std::find_if(container.begin(), container.end(),
       predicate_ItemHasTitle<type_item>(title));
@@ -124,23 +124,23 @@ bool contains_item_type(const Glom::Document::type_list_translatables& container
   return false;
 }
 
-static Glom::sharedptr<const Glom::LayoutItem_Field> get_field_on_layout(const Glom::Document& document, const Glib::ustring& layout_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name)
+static std::shared_ptr<const Glom::LayoutItem_Field> get_field_on_layout(const Glom::Document& document, const Glib::ustring& layout_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   const Glom::Document::type_list_layout_groups groups = 
     document.get_data_layout_groups("details", layout_table_name);
 
   for(Glom::Document::type_list_layout_groups::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
   {
-    const Glom::sharedptr<const Glom::LayoutGroup> group = *iter;
+    const std::shared_ptr<const Glom::LayoutGroup> group = *iter;
     if(!group)
       continue;
     
     const Glom::LayoutGroup::type_list_const_items items = group->get_items_recursive();
     for(Glom::LayoutGroup::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
     {
-      const Glom::sharedptr<const Glom::LayoutItem> layout_item = *iter;
-      const Glom::sharedptr<const Glom::LayoutItem_Field> layout_item_field =
-        Glom::sharedptr<const Glom::LayoutItem_Field>::cast_dynamic(layout_item);
+      const std::shared_ptr<const Glom::LayoutItem> layout_item = *iter;
+      const std::shared_ptr<const Glom::LayoutItem_Field> layout_item_field =
+        std::dynamic_pointer_cast<const Glom::LayoutItem_Field>(layout_item);
       if(!layout_item_field)
         continue;
 
@@ -152,7 +152,7 @@ static Glom::sharedptr<const Glom::LayoutItem_Field> get_field_on_layout(const G
     }
   }
   
-  return Glom::sharedptr<const Glom::LayoutItem_Field>();
+  return std::shared_ptr<const Glom::LayoutItem_Field>();
 }
 
 static const char* locale_de = "de_DE.UTF-8";
@@ -165,8 +165,8 @@ void check_title(const T_Item& item, const char* title_en, const char* title_de)
   //The get_title_original() and get_title_translation() should not be called 
   //on items that delegate to a child item:
   bool has_own_title = true;
-  Glom::sharedptr<const Glom::LayoutItem_Field> field = 
-    Glom::sharedptr<const Glom::LayoutItem_Field>::cast_dynamic(item);
+  std::shared_ptr<const Glom::LayoutItem_Field> field = 
+    std::dynamic_pointer_cast<const Glom::LayoutItem_Field>(item);
   if(field)
      has_own_title = false;
 
@@ -255,7 +255,7 @@ int main()
   g_assert( document.get_table_title_singular("scenes", locale_de) == "Szene" );
 
   //Check a field:
-  Glom::sharedptr<const Glom::Field> field = document.get_field("contacts", "contact_id");
+  std::shared_ptr<const Glom::Field> field = document.get_field("contacts", "contact_id");
   g_assert(field);
   check_title(field, "Contact ID", "Kontaktkennung");
 
@@ -268,7 +268,7 @@ int main()
   g_assert(formatting.get_has_custom_choices());
   Glom::Formatting::type_list_values values = formatting.get_choices_custom();
   //g_assert(contains(values, "Day"));
-  Glom::sharedptr<Glom::ChoiceValue> value = get_titled(values, "Day");
+  std::shared_ptr<Glom::ChoiceValue> value = get_titled(values, "Day");
   g_assert(value);
   check_title(value, "Day", "Tag");
   g_assert(value->get_value() == Gnome::Gda::Value("Day"));
@@ -281,12 +281,12 @@ int main()
   g_assert( value->get_title_original() == "Day" );
 
   //Check a relationship:
-  const Glom::sharedptr<const Glom::Relationship> relationship = document.get_relationship("characters", "contacts_actor");
+  const std::shared_ptr<const Glom::Relationship> relationship = document.get_relationship("characters", "contacts_actor");
   g_assert(relationship);
   check_title(relationship, "Actor", "Schauspieler");
 
   //Check a LayoutItemField's CustomTitle:
-  Glom::sharedptr<const Glom::LayoutItem_Field> field_on_layout = 
+  std::shared_ptr<const Glom::LayoutItem_Field> field_on_layout = 
     get_field_on_layout(document, "characters", "contacts", "name_full");
   g_assert(field_on_layout);
   g_assert(field_on_layout->get_has_relationship_name());
@@ -306,7 +306,7 @@ int main()
   g_assert(field_on_layout->get_formatting_used_has_translatable_choices());
 
   //Check a print layout:
-  const Glom::sharedptr<const Glom::PrintLayout> print_layout = document.get_print_layout("contacts", "contact_details");
+  const std::shared_ptr<const Glom::PrintLayout> print_layout = document.get_print_layout("contacts", "contact_details");
   g_assert(print_layout);
   check_title(print_layout, "Contact Details", "Kontakt Details" );
 

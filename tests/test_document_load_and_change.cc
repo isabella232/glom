@@ -39,7 +39,7 @@ static bool field_is_on_a_layout(Glom::Document& document, const Glib::ustring& 
 
     for(Glom::Document::type_list_layout_groups::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
     {
-      const Glom::sharedptr<Glom::LayoutGroup> group = *iter;
+      const std::shared_ptr<Glom::LayoutGroup> group = *iter;
       if(group->has_field(layout_table_name, table_name, field_name))
       {
         //std::cerr << G_STRFUNC << ": Failure: The field is still used on a layout for table: " << layout_table_name << std::endl;
@@ -119,7 +119,7 @@ int main()
   }
 
   //Check that the original field name is no longer used in the relationship:
-  Glom::sharedptr<const Glom::Relationship> relationship = document.get_relationship("invoice_lines", "products");
+  std::shared_ptr<const Glom::Relationship> relationship = document.get_relationship("invoice_lines", "products");
   if(!relationship)
   {
     std::cerr << G_STRFUNC << ": Failure: The relationship could not be found in the document." << std::endl;
@@ -159,7 +159,7 @@ int main()
     }
 
     //Check that the old relationship name is not used.
-    Glom::sharedptr<const Glom::LayoutItem_Field> field_on_layout = 
+    std::shared_ptr<const Glom::LayoutItem_Field> field_on_layout = 
       get_field_on_layout(document, table_name, "contacts", "name_full");
     g_assert(field_on_layout);
     if(field_on_layout->get_relationship_name() != relationship_name_new)
@@ -217,7 +217,7 @@ int main()
 
  
   //Remove a print layout:
-  Glom::sharedptr<const Glom::PrintLayout> print_layout = 
+  std::shared_ptr<const Glom::PrintLayout> print_layout = 
     document.get_print_layout("contacts", "contact_details");
   if(!print_layout)
   {

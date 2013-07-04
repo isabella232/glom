@@ -27,7 +27,7 @@ Report::Report()
 : m_show_table_title(true)
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_REPORT;
-  m_layout_group = sharedptr<LayoutGroup>::create();
+  m_layout_group = std::shared_ptr<LayoutGroup>(new LayoutGroup());
 }
 
 Report::Report(const Report& src)
@@ -58,12 +58,12 @@ void Report::set_show_table_title(bool show_table_title)
 }
 
 
-sharedptr<LayoutGroup> Report::get_layout_group()
+std::shared_ptr<LayoutGroup> Report::get_layout_group()
 {
   return m_layout_group;
 }
 
-sharedptr<const LayoutGroup> Report::get_layout_group() const
+std::shared_ptr<const LayoutGroup> Report::get_layout_group() const
 {
   return m_layout_group;
 }

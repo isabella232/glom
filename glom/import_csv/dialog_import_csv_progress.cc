@@ -184,7 +184,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
       iter != row.end();
       ++iter)
   {
-    sharedptr<const Field> field = m_data_source->get_field_for_column(col_index++);
+    std::shared_ptr<const Field> field = m_data_source->get_field_for_column(col_index++);
     if(field)
     {
       // We always assume exported data is in standard CSV format, since
@@ -197,7 +197,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
         // Make the value empty if the value is not unique.
         if(field->get_unique_key())
         {
-          sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+          std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
           layout_item->set_full_field_details(field);
           if(!get_field_value_is_unique(m_table_name, layout_item, value))
           {
@@ -228,7 +228,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
   {
     // No auto-increment primary key: Check for uniqueness
     Gnome::Gda::Value primary_key_value = m_current_row_values[m_field_primary_key->get_name()];
-    sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+    std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
     layout_item->set_full_field_details(m_field_primary_key);
 
     if(!get_field_value_is_unique(m_table_name, layout_item, primary_key_value))
@@ -260,7 +260,7 @@ void Dialog_Import_CSV_Progress::on_response(int /* response_id */)
   clear();
 }
 
-Gnome::Gda::Value Dialog_Import_CSV_Progress::get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const
+Gnome::Gda::Value Dialog_Import_CSV_Progress::get_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field) const
 {
   type_mapValues::const_iterator iter = m_current_row_values.find(field->get_name());
   if(iter == m_current_row_values.end())
@@ -269,12 +269,12 @@ Gnome::Gda::Value Dialog_Import_CSV_Progress::get_entered_field_data(const share
   return iter->second;
 }
 
-void Dialog_Import_CSV_Progress::set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value&  value)
+void Dialog_Import_CSV_Progress::set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value&  value)
 {
   m_current_row_values[field->get_name()] = value;
 }
 
-sharedptr<Field> Dialog_Import_CSV_Progress::get_field_primary_key() const
+std::shared_ptr<Field> Dialog_Import_CSV_Progress::get_field_primary_key() const
 {
   return m_field_primary_key;
 }

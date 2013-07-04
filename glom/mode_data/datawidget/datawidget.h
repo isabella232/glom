@@ -44,7 +44,7 @@ class DataWidget
    public View_Composite_Glom
 {
 public:
-  explicit DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const Document* document);
+  explicit DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const Document* document);
   virtual ~DataWidget();
 
   virtual Gtk::Label* get_label();
@@ -62,11 +62,11 @@ public:
   virtual void set_viewable(bool viewable = true);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  static sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document* document, AppWindow* app);
-  sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name);
-  sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field);
+  static std::shared_ptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& start_field, Document* document, AppWindow* app);
+  std::shared_ptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name);
+  std::shared_ptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& start_field);
 
-  sharedptr<LayoutItem_Field> offer_field_layout(const sharedptr<const LayoutItem_Field>& start_field);
+  std::shared_ptr<LayoutItem_Field> offer_field_layout(const std::shared_ptr<const LayoutItem_Field>& start_field);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   /// Get the actual child widget used to show the data:
@@ -119,10 +119,9 @@ private:
 
   virtual AppWindow* get_appwindow() const;
 
-  /// Set the minimum widget size, depending on the type of fields.
-  void set_child_size_by_field(const sharedptr<const LayoutItem_Field>& field);
+  void set_child_size_by_field(const std::shared_ptr<const LayoutItem_Field>& field);
+  int get_suitable_width(const std::shared_ptr<const LayoutItem_Field>& field_layout);
 
-  int get_suitable_width(const sharedptr<const LayoutItem_Field>& field_layout);
 
   /** Show a dialog with a Find so that the user can choose an ID value to indicate the related record.
    */

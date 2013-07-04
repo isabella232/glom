@@ -29,7 +29,7 @@
 #include <libglom/data_structure/field.h>
 #include <libglom/connectionpool_backends/backend.h>
 
-#include <memory> // For std::auto_ptr
+#include <memory> // For std::shared_ptr
 
 //Avoid including the header here:
 extern "C"
@@ -134,7 +134,7 @@ public:
    */
   void set_fake_connection();
 
-  void set_backend(std::auto_ptr<Backend> backend);
+  void set_backend(std::shared_ptr<Backend> backend);
 
   Backend* get_backend();
   const Backend* get_backend() const;
@@ -149,13 +149,13 @@ public:
    * When that SharedConnection is destroyed, or when SharedConnection::close() is called, then the ConnectionPool will be informed.
    * The connection will only be closed when all SharedConnections have finished with their connections.
    *
-   * @result a sharedptr to a SharedConnection. This sharedptr will be null if the connection failed.
+   * @result a std::shared_ptr to a SharedConnection. This std::shared_ptr will be null if the connection failed.
    *
    * @throws an ExceptionConnection when the connection fails.
    */
-  sharedptr<SharedConnection> connect();
+  std::shared_ptr<SharedConnection> connect();
 
-  static sharedptr<SharedConnection> get_and_connect();
+  static std::shared_ptr<SharedConnection> get_and_connect();
 
   /** This callback should show UI to indicate that work is still happening.
    * For instance, a pulsing ProgressBar.
@@ -248,7 +248,7 @@ public:
    * @param table_name The parent table of the fields to be changed.
    * @param field The field to be added.
    */
-  bool add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field) throw();
+  bool add_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field) throw();
 
   /** Remove a field from the database.
    * The caller should then update the document's list of fields,
@@ -267,7 +267,7 @@ public:
    * @param field_old The old field information.
    * @param field The new field information. 
    */
-  bool change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field) throw();
+  bool change_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field_old, const std::shared_ptr<const Field>& field) throw();
 
   /** Change some detail about some fields in the database.
    * The caller should then update the document's list of fields,
@@ -331,7 +331,7 @@ private:
   EpcPublisher* m_epc_publisher;
   Gtk::Dialog* m_dialog_epc_progress; //For progress while generating certificates.
 
-  std::auto_ptr<Backend> m_backend;
+  std::shared_ptr<Backend> m_backend;
   Glib::RefPtr<Gnome::Gda::Connection> m_refGdaConnection;
   guint m_sharedconnection_refcount;
   bool m_ready_to_connect;

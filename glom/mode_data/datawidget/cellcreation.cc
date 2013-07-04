@@ -36,7 +36,7 @@
 namespace Glom
 {
 
-static void apply_formatting(Gtk::CellRenderer* renderer, const sharedptr<const LayoutItem_WithFormatting>& layout_item)
+static void apply_formatting(Gtk::CellRenderer* renderer, const std::shared_ptr<const LayoutItem_WithFormatting>& layout_item)
 {
   Gtk::CellRendererText* text_renderer = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(!text_renderer)
@@ -65,12 +65,12 @@ static void apply_formatting(Gtk::CellRenderer* renderer, const sharedptr<const 
     text_renderer->property_background() = bg;
 }
 
-Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, const Glib::ustring& table_name, const Document* document, guint fixed_cell_height)
+Gtk::CellRenderer* create_cell(const std::shared_ptr<const LayoutItem>& layout_item, const Glib::ustring& table_name, const Document* document, guint fixed_cell_height)
 {
   Gtk::CellRenderer* cell = 0;
 
   //Create the appropriate cellrenderer type:
-  sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+  std::shared_ptr<const LayoutItem_Field> item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
   if(item_field)
   {
     //Ignore hiddent fields.
@@ -102,7 +102,7 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
         if(formatting.get_has_choices())
         {
           CellRendererDbList* rendererList = Gtk::manage( new CellRendererDbList() );
-          sharedptr<LayoutItem> unconst = sharedptr<LayoutItem>::cast_const(layout_item); //TODO: Avoid this.
+          std::shared_ptr<LayoutItem> unconst = std::const_pointer_cast<LayoutItem>(layout_item); //TODO: Avoid this.
           rendererList->set_layout_item(unconst, table_name);
           bool as_radio_buttons = false; //Can't really be done in a list, so we ignore it.
           const bool restricted = formatting.get_choices_restricted(as_radio_buttons);
@@ -128,7 +128,7 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
   {
     //Non-fields:
 
-    sharedptr<const LayoutItem_Image> item_image = sharedptr<const LayoutItem_Image>::cast_dynamic(layout_item);
+    std::shared_ptr<const LayoutItem_Image> item_image = std::dynamic_pointer_cast<const LayoutItem_Image>(layout_item);
     if(item_image)
     {
       Gtk::CellRendererPixbuf* pixbuf_renderer = Gtk::manage( new Gtk::CellRendererPixbuf() );
@@ -143,7 +143,7 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
     }
     else
     {
-      sharedptr<const LayoutItem_Text> item_text = sharedptr<const LayoutItem_Text>::cast_dynamic(layout_item);
+      std::shared_ptr<const LayoutItem_Text> item_text = std::dynamic_pointer_cast<const LayoutItem_Text>(layout_item);
       if(item_text)
       {
         Gtk::CellRendererText* pCellText = Gtk::manage( new Gtk::CellRendererText() );
@@ -153,7 +153,7 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
       }
       else
       {
-        sharedptr<const LayoutItem_Button> item_button = sharedptr<const LayoutItem_Button>::cast_dynamic(layout_item);
+        std::shared_ptr<const LayoutItem_Button> item_button = std::dynamic_pointer_cast<const LayoutItem_Button>(layout_item);
         if(item_button)
         {
           GlomCellRenderer_ButtonText* pCellButton = Gtk::manage( new GlomCellRenderer_ButtonText() );
@@ -173,8 +173,8 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
   }
 
   //Use formatting:
-  sharedptr<const LayoutItem_WithFormatting> item_withformatting =
-    sharedptr<const LayoutItem_WithFormatting>::cast_dynamic(layout_item);
+  std::shared_ptr<const LayoutItem_WithFormatting> item_withformatting =
+    std::dynamic_pointer_cast<const LayoutItem_WithFormatting>(layout_item);
   if(item_withformatting)
   {
     apply_formatting(cell, item_withformatting);
@@ -211,7 +211,7 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
       const Formatting::type_list_values list_values = item_field->get_formatting_used().get_choices_custom();
       for(Formatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
       {
-        const sharedptr< const ChoiceValue> value = *iter;
+        const std::shared_ptr< const ChoiceValue> value = *iter;
         if(!value)
           continue;
 
@@ -223,9 +223,9 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
   {
     if(item_field && item_field->get_formatting_used().get_has_related_choices())
     {
-      sharedptr<const Relationship> choice_relationship;
-      sharedptr<const LayoutItem_Field> choice_field;
-      sharedptr<const LayoutGroup> choice_extras; //Ignored
+      std::shared_ptr<const Relationship> choice_relationship;
+      std::shared_ptr<const LayoutItem_Field> choice_field;
+      std::shared_ptr<const LayoutGroup> choice_extras; //Ignored
       Formatting::type_list_sort_fields choice_sort_fields; //Ignored
       bool choice_show_all = false;
       item_field->get_formatting_used().get_choices_related(choice_relationship, choice_field, choice_extras, choice_sort_fields, choice_show_all);

@@ -266,7 +266,7 @@ Glib::ustring::const_iterator CsvParser::advance_field(const Glib::ustring::cons
 
 void CsvParser::clear()
 {
-  m_buffer.reset(0);
+  m_buffer.reset();
 
   //m_stream.reset();
   //m_raw.clear();
@@ -538,7 +538,7 @@ void CsvParser::copy_buffer_and_continue_reading(gssize size)
   else // When size == 0 we finished reading.
   {
     //TODO: put in proper data reset method?
-    m_buffer.reset(0);
+    m_buffer.reset();
     m_stream.reset();
   }
 

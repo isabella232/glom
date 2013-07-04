@@ -238,7 +238,7 @@ int main(int argc, char* argv[])
 
   connection_pool->set_user(group.m_arg_server_username);
   connection_pool->set_password(password);
-  connection_pool->set_backend(std::auto_ptr<Glom::ConnectionPool::Backend>(backend));
+  connection_pool->set_backend(std::shared_ptr<Glom::ConnectionPool::Backend>(backend));
 
   if(group.m_arg_server_database.empty())
   {

@@ -58,7 +58,7 @@ private:
   Gtk::SpinButton* m_spin_columns;
    
   FlowTableWithFields* m_flowtable;
-  sharedptr<LayoutGroup> m_layoutgroup;
+  std::shared_ptr<LayoutGroup> m_layoutgroup;
 };
 
 } //namespace Glom

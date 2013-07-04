@@ -88,7 +88,7 @@ void TextView::check_for_change()
     //Validate the input:
     bool success = false;
 
-    sharedptr<const LayoutItem_Field>layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
+    std::shared_ptr<const LayoutItem_Field>layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
     Gnome::Gda::Value value = Conversions::parse_value(m_glom_type, new_text, layout_item->get_formatting_used().m_numeric_format, success);
 
     if(success)
@@ -150,7 +150,7 @@ void TextView::on_insert_text(const Glib::ustring& text, int* position)
 
 void TextView::set_value(const Gnome::Gda::Value& value)
 {
-  sharedptr<const LayoutItem_Field>layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
+  std::shared_ptr<const LayoutItem_Field>layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
   if(layout_item)
     set_text(Conversions::get_text_for_gda_value(m_glom_type, value, layout_item->get_formatting_used().m_numeric_format));
 }
@@ -167,7 +167,7 @@ Gnome::Gda::Value TextView::get_value() const
 {
   bool success = false;
 
-  sharedptr<const LayoutItem_Field>layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
+  std::shared_ptr<const LayoutItem_Field>layout_item = std::dynamic_pointer_cast<const LayoutItem_Field>(get_layout_item());
 
   TextView* pNonConstThis = const_cast<TextView*>(this); //Gtk::TextBuffer::get_text() is non-const in gtkmm <=2.6.
   return Conversions::parse_value(m_glom_type, pNonConstThis->m_TextView.get_buffer()->get_text(true), layout_item->get_formatting_used().m_numeric_format, success);

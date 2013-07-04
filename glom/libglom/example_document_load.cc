@@ -27,7 +27,7 @@
 
 #include <iostream>
 
-void print_layout_group(const Glom::sharedptr<Glom::LayoutGroup>& layout_group, const Glib::ustring& indent)
+void print_layout_group(const std::shared_ptr<Glom::LayoutGroup>& layout_group, const Glib::ustring& indent)
 {
   if(!layout_group)
     return;
@@ -36,7 +36,7 @@ void print_layout_group(const Glom::sharedptr<Glom::LayoutGroup>& layout_group, 
   const Glom::LayoutGroup::type_list_items items = layout_group->get_items();
   for(Glom::LayoutGroup::type_list_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
   {
-    Glom::sharedptr<Glom::LayoutItem> layout_item = *iter;
+    std::shared_ptr<Glom::LayoutItem> layout_item = *iter;
     if(!layout_item)
       continue;
 
@@ -50,7 +50,7 @@ void print_layout_group(const Glom::sharedptr<Glom::LayoutGroup>& layout_group, 
     std::cout << std::endl;
 
     //Recurse into child groups:
-    Glom::sharedptr<Glom::LayoutGroup> group = Glom::sharedptr<Glom::LayoutGroup>::cast_dynamic(layout_item);
+    std::shared_ptr<Glom::LayoutGroup> group = std::dynamic_pointer_cast<Glom::LayoutGroup>(layout_item);
     if(group)
     {
       print_layout_group(group, indent + "  ");
@@ -62,7 +62,7 @@ void print_layout(const Glom::Document::type_list_layout_groups& layout_groups)
 {
   for(Glom::Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
   {
-    Glom::sharedptr<Glom::LayoutGroup> layout_group = *iter;
+    std::shared_ptr<Glom::LayoutGroup> layout_group = *iter;
     if(!layout_group)
       continue;
 
@@ -118,7 +118,7 @@ int main()
     Glom::Document::type_vec_fields fields = document.get_table_fields(table_name);
     for(Glom::Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
-       const Glom::sharedptr<const Glom::Field> field = *iter;
+       const std::shared_ptr<const Glom::Field> field = *iter;
        if(!field)
          continue;
 
@@ -134,7 +134,7 @@ int main()
     Glom::Document::type_vec_relationships relationships = document.get_relationships(table_name);
     for(Glom::Document::type_vec_relationships::const_iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
     {
-       const Glom::sharedptr<const Glom::Relationship> relationship = *iter;
+       const std::shared_ptr<const Glom::Relationship> relationship = *iter;
        if(!relationship)
          continue;
 

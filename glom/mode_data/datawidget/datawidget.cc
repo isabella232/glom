@@ -43,7 +43,7 @@
 namespace Glom
 {
 
-static DataWidgetChildren::ComboChoices* create_combo_widget_for_field(const sharedptr<LayoutItem_Field>& field)
+static DataWidgetChildren::ComboChoices* create_combo_widget_for_field(const std::shared_ptr<LayoutItem_Field>& field)
 {
   DataWidgetChildren::ComboChoices* result = 0;
   bool as_radio_buttons = false;
@@ -61,7 +61,7 @@ static DataWidgetChildren::ComboChoices* create_combo_widget_for_field(const sha
   return result;
 }
 
-DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const Document* document)
+DataWidget::DataWidget(const std::shared_ptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const Document* document)
 :  m_child(0),
    m_button_go_to_details(0)
 {
@@ -186,7 +186,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     field->set_full_field_details(
       document->get_field(field->get_table_used(table_name), field->get_name()) ); //Otherwise get_primary_key() returns false always.
 
-    sharedptr<const Relationship> field_used_in_relationship_to_one;
+    std::shared_ptr<Relationship> field_used_in_relationship_to_one;
     const bool add_open_button = 
        DbUtils::layout_field_should_have_navigation(table_name, field, document, 
          field_used_in_relationship_to_one);
@@ -340,7 +340,7 @@ const Gtk::Label* DataWidget::get_label() const
   return &m_label;
 }
 
-void DataWidget::set_child_size_by_field(const sharedptr<const LayoutItem_Field>& field)
+void DataWidget::set_child_size_by_field(const std::shared_ptr<const LayoutItem_Field>& field)
 {
   const Field::glom_field_type glom_type = field->get_glom_type();
   int width = get_suitable_width(field);
@@ -365,7 +365,7 @@ void DataWidget::set_child_size_by_field(const sharedptr<const LayoutItem_Field>
   }
 }
 
-int DataWidget::get_suitable_width(const sharedptr<const LayoutItem_Field>& field_layout)
+int DataWidget::get_suitable_width(const std::shared_ptr<const LayoutItem_Field>& field_layout)
 {
   return UiUtils::get_suitable_field_width_for_widget(*this, field_layout);
 }
@@ -455,19 +455,19 @@ bool DataWidget::on_button_press_event(GdkEventButton *event)
   return Gtk::EventBox::on_button_press_event(event);
 }
 
-sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name)
+std::shared_ptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name)
 {
-  return offer_field_list(table_name, sharedptr<LayoutItem_Field>());
+  return offer_field_list(table_name, std::shared_ptr<LayoutItem_Field>());
 }
 
-sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field)
+std::shared_ptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& start_field)
 {
   return offer_field_list(table_name, start_field, get_document(), get_appwindow());
 }
 
-sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document* document, AppWindow* app)
+std::shared_ptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& start_field, Document* document, AppWindow* app)
 {
-  sharedptr<LayoutItem_Field> result;
+  std::shared_ptr<LayoutItem_Field> result;
 
   Dialog_ChooseField* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
@@ -492,9 +492,9 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
   return result;
 }
 
-sharedptr<LayoutItem_Field> DataWidget::offer_field_layout(const sharedptr<const LayoutItem_Field>& start_field)
+std::shared_ptr<LayoutItem_Field> DataWidget::offer_field_layout(const std::shared_ptr<const LayoutItem_Field>& start_field)
 {
-  sharedptr<LayoutItem_Field> result;
+  std::shared_ptr<LayoutItem_Field> result;
 
   Dialog_FieldLayout* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
@@ -526,10 +526,10 @@ void DataWidget::on_menupopup_activate_layout()
 {
   //finish_editing();
 
-  sharedptr<LayoutItem_Field> layoutField = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+  std::shared_ptr<LayoutItem_Field> layoutField = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
   if(layoutField)
   {
-    sharedptr<LayoutItem_Field> itemchosen = offer_field_list(m_table_name, layoutField);
+    std::shared_ptr<LayoutItem_Field> itemchosen = offer_field_list(m_table_name, layoutField);
     if(itemchosen)
     {
       *layoutField = *itemchosen;
@@ -542,10 +542,10 @@ void DataWidget::on_menupopup_activate_layout_properties()
 {
   //finish_editing();
 
-  sharedptr<LayoutItem_Field> layoutField = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+  std::shared_ptr<LayoutItem_Field> layoutField = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
   if(layoutField)
   {
-    sharedptr<LayoutItem_Field> itemchosen = offer_field_layout(layoutField);
+    std::shared_ptr<LayoutItem_Field> itemchosen = offer_field_layout(layoutField);
     if(itemchosen)
     {
       *layoutField = *itemchosen;
@@ -657,7 +657,7 @@ void DataWidget::on_button_choose_date()
 
 void DataWidget::on_self_style_changed(const Glib::RefPtr<Gtk::Style>& /* style */)
 {
-  sharedptr<LayoutItem_Field> layoutField = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+  std::shared_ptr<LayoutItem_Field> layoutField = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
   set_child_size_by_field(layoutField);
 }
 
@@ -681,10 +681,10 @@ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
 
     //Discover the related table, in the relationship that uses this ID field:
     Glib::ustring related_table_name;
-    sharedptr<const LayoutItem_Field> layoutField = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+    std::shared_ptr<const LayoutItem_Field> layoutField = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
     if(layoutField)
     {
-      sharedptr<const Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layoutField);
+      std::shared_ptr<const Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layoutField);
       if(relationship)
         related_table_name = relationship->get_to_table();
     }
@@ -730,10 +730,10 @@ bool DataWidget::offer_related_record_id_new(Gnome::Gda::Value& chosen_id)
 
     //Discover the related table, in the relationship that uses this ID field:
     Glib::ustring related_table_name;
-    sharedptr<const LayoutItem_Field> layoutField = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+    std::shared_ptr<const LayoutItem_Field> layoutField = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
     if(layoutField)
     {
-      sharedptr<const Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layoutField);
+      std::shared_ptr<const Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layoutField);
       if(relationship)
         related_table_name = relationship->get_to_table();
     }

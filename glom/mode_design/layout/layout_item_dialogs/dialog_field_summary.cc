@@ -49,7 +49,7 @@ Dialog_FieldSummary::~Dialog_FieldSummary()
 {
 }
 
-void Dialog_FieldSummary::set_item(const sharedptr<const LayoutItem_FieldSummary>& item, const Glib::ustring& table_name)
+void Dialog_FieldSummary::set_item(const std::shared_ptr<const LayoutItem_FieldSummary>& item, const Glib::ustring& table_name)
 {
   m_layout_item = glom_sharedptr_clone(item);
   m_table_name = table_name;
@@ -58,9 +58,9 @@ void Dialog_FieldSummary::set_item(const sharedptr<const LayoutItem_FieldSummary
   m_combo_summarytype->set_summary_type( item->get_summary_type() );
 }
 
-sharedptr<LayoutItem_FieldSummary> Dialog_FieldSummary::get_item() const
+std::shared_ptr<LayoutItem_FieldSummary> Dialog_FieldSummary::get_item() const
 {
-  sharedptr<LayoutItem_FieldSummary> result = glom_sharedptr_clone(m_layout_item);
+  std::shared_ptr<LayoutItem_FieldSummary> result = glom_sharedptr_clone(m_layout_item);
   result->set_summary_type( m_combo_summarytype->get_summary_type() );
 
   return result;
@@ -68,7 +68,7 @@ sharedptr<LayoutItem_FieldSummary> Dialog_FieldSummary::get_item() const
 
 void Dialog_FieldSummary::on_button_field()
 {
-  sharedptr<LayoutItem_Field> field = offer_field_list_select_one_field(m_layout_item, m_table_name, this);
+  std::shared_ptr<LayoutItem_Field> field = offer_field_list_select_one_field(m_layout_item, m_table_name, this);
   if(field)
   {
     m_layout_item->set_field(field);

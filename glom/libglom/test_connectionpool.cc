@@ -58,12 +58,12 @@ int main()
       Glom::ConnectionPoolBackends::Sqlite* backend = new Glom::ConnectionPoolBackends::Sqlite;
 #endif //GLOM_ENABLE_POSTGRESQL
 
-      connection_pool->set_backend(std::auto_ptr<Glom::ConnectionPool::Backend>(backend));
+      connection_pool->set_backend(std::shared_ptr<Glom::ConnectionPool::Backend>(backend));
       connection_pool->set_ready_to_connect(); //connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
     }
 
     //Connect:
-    Glom::sharedptr<Glom::SharedConnection> connection;
+    std::shared_ptr<Glom::SharedConnection> connection;
     
     try
     {

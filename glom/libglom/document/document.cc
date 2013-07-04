@@ -285,7 +285,7 @@ Document::Document()
   m_is_backup(false),
   m_opened_from_browse(false)
 {
-  m_database_title = sharedptr<DatabaseTitle>::create();
+  m_database_title = std::shared_ptr<DatabaseTitle>(new DatabaseTitle());
 
   //Prevent autosaving during the constructor:
   set_allow_autosave(false); //Prevent saving while we modify the document.
@@ -484,10 +484,10 @@ void Document::set_connection_try_other_ports(bool val)
 }
 
 
-void Document::set_relationship(const Glib::ustring& table_name, const sharedptr<Relationship>& relationship)
+void Document::set_relationship(const Glib::ustring& table_name, const std::shared_ptr<Relationship>& relationship)
 {
   //Find the existing relationship:
-  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<DocumentTableInfo> info = get_table_info(table_name);
   if(!info)
     return;
    
@@ -500,7 +500,7 @@ void Document::set_relationship(const Glib::ustring& table_name, const sharedptr
   {
     if((*iter)->get_name() == relationship_name)
     {
-      *iter = relationship; //Changes the relationship. All references (sharedptrs) to the relationship will get the informatin too, because it is shared.
+      *iter = relationship; //Changes the relationship. All references (std::shared_ptrs) to the relationship will get the informatin too, because it is shared.
       existing = true;
     }
   }
@@ -512,9 +512,9 @@ void Document::set_relationship(const Glib::ustring& table_name, const sharedptr
   }
 }
 
-sharedptr<Relationship> Document::create_relationship_system_preferences(const Glib::ustring& table_name)
+std::shared_ptr<Relationship> Document::create_relationship_system_preferences(const Glib::ustring& table_name)
 {
-  sharedptr<Relationship> relationship = sharedptr<Relationship>::create();
+  std::shared_ptr<Relationship> relationship = std::shared_ptr<Relationship>(new Relationship());
   relationship->set_name(GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES);
   relationship->set_title_original(_("System Preferences"));
   relationship->set_from_table(table_name);
@@ -524,15 +524,15 @@ sharedptr<Relationship> Document::create_relationship_system_preferences(const G
   return relationship;
 }
 
-sharedptr<TableInfo> Document::create_table_system_preferences()
+std::shared_ptr<TableInfo> Document::create_table_system_preferences()
 {
   type_vec_fields fields_ignored;
   return create_table_system_preferences(fields_ignored);
 }
 
-sharedptr<TableInfo> Document::create_table_system_preferences(type_vec_fields& fields)
+std::shared_ptr<TableInfo> Document::create_table_system_preferences(type_vec_fields& fields)
 {
-  sharedptr<TableInfo> prefs_table_info = sharedptr<TableInfo>::create();
+  std::shared_ptr<TableInfo> prefs_table_info = std::shared_ptr<TableInfo>(new TableInfo());
   prefs_table_info->set_name(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
   prefs_table_info->set_title_original(_("System Preferences"));
   prefs_table_info->set_hidden(true);
@@ -540,60 +540,60 @@ sharedptr<TableInfo> Document::create_table_system_preferences(type_vec_fields& 
 
   fields.clear();
 
-  sharedptr<Field> primary_key(new Field()); //It's not used, because there's only one record, but we must have one.
+  std::shared_ptr<Field> primary_key(new Field()); //It's not used, because there's only one record, but we must have one.
   primary_key->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ID);
   primary_key->set_glom_type(Field::TYPE_NUMERIC);
   fields.push_back(primary_key);
 
-  sharedptr<Field> field_name(new Field());
+  std::shared_ptr<Field> field_name(new Field());
   field_name->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME);
   field_name->set_title_original(_("System Name"));
   field_name->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_name);
 
-  sharedptr<Field> field_org_name(new Field());
+  std::shared_ptr<Field> field_org_name(new Field());
   field_org_name->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME);
   field_org_name->set_title_original(_("Organisation Name"));
   field_org_name->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_name);
 
-  sharedptr<Field> field_org_logo(new Field());
+  std::shared_ptr<Field> field_org_logo(new Field());
   field_org_logo->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO);
   field_org_logo->set_title_original(_("Organisation Logo"));
   field_org_logo->set_glom_type(Field::TYPE_IMAGE);
   fields.push_back(field_org_logo);
 
-  sharedptr<Field> field_org_address_street(new Field());
+  std::shared_ptr<Field> field_org_address_street(new Field());
   field_org_address_street->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET);
   field_org_address_street->set_title_original(_("Street"));
   field_org_address_street->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_address_street);
 
-  sharedptr<Field> field_org_address_street2(new Field());
+  std::shared_ptr<Field> field_org_address_street2(new Field());
   field_org_address_street2->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2);
   field_org_address_street2->set_title_original(_("Street (line 2)"));
   field_org_address_street2->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_address_street2);
 
-  sharedptr<Field> field_org_address_town(new Field());
+  std::shared_ptr<Field> field_org_address_town(new Field());
   field_org_address_town->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN);
   field_org_address_town->set_title_original(_("City"));
   field_org_address_town->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_address_town);
 
-  sharedptr<Field> field_org_address_county(new Field());
+  std::shared_ptr<Field> field_org_address_county(new Field());
   field_org_address_county->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY);
   field_org_address_county->set_title_original(_("State"));
   field_org_address_county->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_address_county);
 
-  sharedptr<Field> field_org_address_country(new Field());
+  std::shared_ptr<Field> field_org_address_country(new Field());
   field_org_address_country->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY);
   field_org_address_country->set_title_original(_("Country"));
   field_org_address_country->set_glom_type(Field::TYPE_TEXT);
   fields.push_back(field_org_address_country);
 
-  sharedptr<Field> field_org_address_postcode(new Field());
+  std::shared_ptr<Field> field_org_address_postcode(new Field());
   field_org_address_postcode->set_name(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE);
   field_org_address_postcode->set_title_original(_("Zip Code"));
   field_org_address_postcode->set_glom_type(Field::TYPE_TEXT);
@@ -602,21 +602,21 @@ sharedptr<TableInfo> Document::create_table_system_preferences(type_vec_fields& 
   return prefs_table_info;
 }
 
-bool Document::get_relationship_is_system_properties(const sharedptr<const Relationship>& relationship)
+bool Document::get_relationship_is_system_properties(const std::shared_ptr<const Relationship>& relationship)
 {
   return relationship && (relationship->get_name() == GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES);
 }
 
-sharedptr<Relationship> Document::get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const
+std::shared_ptr<Relationship> Document::get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const
 {
-  sharedptr<Relationship> result;
+  std::shared_ptr<Relationship> result;
 
   if(relationship_name == GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES)
   {
     return create_relationship_system_preferences(table_name);
   }
 
-  const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<const DocumentTableInfo> info = get_table_info(table_name);
   if(info)
   {
     //Look for the relationship with this name:
@@ -635,7 +635,7 @@ sharedptr<Relationship> Document::get_relationship(const Glib::ustring& table_na
 
 Document::type_vec_relationships Document::get_relationships(const Glib::ustring& table_name, bool plus_system_prefs) const
 {
-  const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<const DocumentTableInfo> info = get_table_info(table_name);
   if(info)
   {
     type_vec_relationships result = info->m_relationships;
@@ -657,7 +657,7 @@ void Document::set_relationships(const Glib::ustring& table_name, const type_vec
 {
   if(!table_name.empty())
   {
-    const sharedptr<DocumentTableInfo> info = get_table_info_with_add(table_name);
+    const std::shared_ptr<DocumentTableInfo> info = get_table_info_with_add(table_name);
     if(info)
       info->m_relationships = vecRelationships;
 
@@ -665,10 +665,10 @@ void Document::set_relationships(const Glib::ustring& table_name, const type_vec
   }
 }
 
-void Document::remove_relationship(const sharedptr<const Relationship>& relationship)
+void Document::remove_relationship(const std::shared_ptr<const Relationship>& relationship)
 {
   //Get the table that this relationship is part of:
-  const sharedptr<DocumentTableInfo> info = get_table_info(relationship->get_from_table());
+  const std::shared_ptr<DocumentTableInfo> info = get_table_info(relationship->get_from_table());
   if(!info)
     return;
 
@@ -695,8 +695,8 @@ void Document::remove_relationship(const sharedptr<const Relationship>& relation
     while(iterGroups != layout_info.m_layout_groups.end())
     {
       //Remove any layout parts that use this relationship:
-      sharedptr<LayoutGroup> group = *iterGroups;
-      sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::cast_dynamic(group);
+      std::shared_ptr<LayoutGroup> group = *iterGroups;
+      std::shared_ptr<UsesRelationship> uses_rel = std::dynamic_pointer_cast<UsesRelationship>(group);
       if(uses_rel && uses_rel->get_has_relationship_name())
       {
         if(*(uses_rel->get_relationship()) == *relationship) //TODO_Performance: Slow when there are many translations.
@@ -720,8 +720,8 @@ void Document::remove_relationship(const sharedptr<const Relationship>& relation
   DocumentTableInfo::type_reports reports = info->m_reports;
   for(DocumentTableInfo::type_reports::iterator iterReports = reports.begin(); iterReports != reports.end(); ++iterReports)
   {
-    sharedptr<Report> report = iterReports->second;
-    sharedptr<LayoutGroup> group = report->get_layout_group();
+    std::shared_ptr<Report> report = iterReports->second;
+    std::shared_ptr<LayoutGroup> group = report->get_layout_group();
 
     //Remove the field wherever it is a related field:
     group->remove_relationship(relationship);
@@ -731,7 +731,7 @@ void Document::remove_relationship(const sharedptr<const Relationship>& relation
 void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   //Remove the field itself:
-  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<DocumentTableInfo> info = get_table_info(table_name);
   if(info)
   {
     type_vec_fields& vecFields = info->m_fields;
@@ -748,7 +748,7 @@ void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring
   //Remove any relationships that use this field:
   for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
-    const sharedptr<DocumentTableInfo> info = iter->second;
+    const std::shared_ptr<DocumentTableInfo> info = iter->second;
     if(!info)
       continue;
 
@@ -758,7 +758,7 @@ void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring
       bool something_changed = true;
       while(something_changed && !info->m_relationships.empty())
       {
-        sharedptr<Relationship> relationship = *iterRel;
+        std::shared_ptr<Relationship> relationship = *iterRel;
 
         if( ((relationship->get_from_table() == table_name) && (relationship->get_from_field() == field_name))
           || ((relationship->get_to_table() == table_name) && (relationship->get_to_field() == field_name)) )
@@ -786,7 +786,7 @@ void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring
       LayoutInfo& layout_info = *iterLayouts;
       for(type_list_layout_groups::iterator iter = layout_info.m_layout_groups.begin(); iter != layout_info.m_layout_groups.end(); ++iter)
       {
-        sharedptr<LayoutGroup> group = *iter;
+        std::shared_ptr<LayoutGroup> group = *iter;
         if(!group)
           continue;
 
@@ -804,8 +804,8 @@ void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring
     DocumentTableInfo::type_reports reports = info->m_reports;
     for(DocumentTableInfo::type_reports::iterator iterReports = reports.begin(); iterReports != reports.end(); ++iterReports)
     {
-      sharedptr<Report> report = iterReports->second;
-      sharedptr<LayoutGroup> group = report->get_layout_group();
+      std::shared_ptr<Report> report = iterReports->second;
+      std::shared_ptr<LayoutGroup> group = report->get_layout_group();
 
       //Remove regular fields if the field is in this layout's table:
       if(info->m_info)
@@ -829,7 +829,7 @@ void Document::remove_table(const Glib::ustring& table_name)
   //Remove any relationships that use this table:
   for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
-    const sharedptr<DocumentTableInfo> info = iter->second;
+    const std::shared_ptr<DocumentTableInfo> info = iter->second;
     if(!info)
       continue;
 
@@ -839,7 +839,7 @@ void Document::remove_table(const Glib::ustring& table_name)
       bool something_changed = true;
       while(something_changed && !info->m_relationships.empty())
       {
-        sharedptr<Relationship> relationship = *iterRel;
+        std::shared_ptr<Relationship> relationship = *iterRel;
 
         if(relationship->get_to_table() == table_name)
         {
@@ -869,7 +869,7 @@ Document::type_vec_fields Document::get_table_fields(const Glib::ustring& table_
 
   if(!table_name.empty())
   {
-    const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+    const std::shared_ptr<const DocumentTableInfo> info = get_table_info(table_name);
     if(info)
     {
       if(info->m_fields.empty())
@@ -916,7 +916,7 @@ void Document::set_table_fields(const Glib::ustring& table_name, const type_vec_
       std::cerr << G_STRFUNC << ": : vecFields is empty: table_name=" << table_name << std::endl;
     }
 
-    const sharedptr<DocumentTableInfo> info = get_table_info_with_add(table_name);
+    const std::shared_ptr<DocumentTableInfo> info = get_table_info_with_add(table_name);
     if(!info)
       return;
 
@@ -927,7 +927,7 @@ void Document::set_table_fields(const Glib::ustring& table_name, const type_vec_
   }
 }
 
-sharedptr<Field> Document::get_field(const Glib::ustring& table_name, const Glib::ustring& strFieldName) const
+std::shared_ptr<Field> Document::get_field(const Glib::ustring& table_name, const Glib::ustring& strFieldName) const
 {
   type_vec_fields vecFields = get_table_fields(table_name);
   type_vec_fields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldName) );
@@ -936,25 +936,25 @@ sharedptr<Field> Document::get_field(const Glib::ustring& table_name, const Glib
     return  *iterFind; //A reference, not a copy.
   }
 
-  return sharedptr<Field>();
+  return std::shared_ptr<Field>();
 }
 
-sharedptr<Field> Document::get_field_primary_key(const Glib::ustring& table_name) const
+std::shared_ptr<Field> Document::get_field_primary_key(const Glib::ustring& table_name) const
 {
   type_vec_fields vecFields = get_table_fields(table_name);
   for(type_vec_fields::const_iterator iter = vecFields.begin(); iter != vecFields.end(); ++iter)
   {
-    sharedptr<Field> field = *iter;
+    std::shared_ptr<Field> field = *iter;
     if(field && field->get_primary_key())
       return field;
   }
 
-  return sharedptr<Field>();
+  return std::shared_ptr<Field>();
 }
 
 void Document::change_field_name(const Glib::ustring& table_name, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew)
 {
-  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<DocumentTableInfo> info = get_table_info(table_name);
   if(info)
   {
     //Fields:
@@ -970,7 +970,7 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
     //Look at each table:
     for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
     {
-      const sharedptr<DocumentTableInfo> infoInner = iter->second;
+      const std::shared_ptr<DocumentTableInfo> infoInner = iter->second;
       if(!infoInner)
         continue;
 
@@ -978,7 +978,7 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
       type_vec_fields& vecFields = infoInner->m_fields;
       for(type_vec_fields::iterator iterField = vecFields.begin(); iterField != vecFields.end(); ++iterField)
       {
-        sharedptr<Field> field = *iterField;
+        std::shared_ptr<Field> field = *iterField;
         if(!field)
           continue;
 
@@ -990,7 +990,7 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
       //Look at each relationship in the table:
       for(type_vec_relationships::iterator iterRels = infoInner->m_relationships.begin(); iterRels != infoInner->m_relationships.end(); ++iterRels)
       {
-        sharedptr<Relationship> relationship = *iterRels;
+        std::shared_ptr<Relationship> relationship = *iterRels;
 
         if(relationship->get_from_table() == table_name)
         {
@@ -1019,7 +1019,7 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
         //Look at each group:
         for(type_list_layout_groups::iterator iterGroup = iterLayouts->m_layout_groups.begin(); iterGroup != iterLayouts->m_layout_groups.end(); ++iterGroup)
         {
-          sharedptr<LayoutGroup> group = *iterGroup;
+          std::shared_ptr<LayoutGroup> group = *iterGroup;
           if(group)
           {
             //Change the field if it is in this group:
@@ -1036,7 +1036,7 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
       for(DocumentTableInfo::type_reports::iterator iterReports = infoInner->m_reports.begin(); iterReports != infoInner->m_reports.end(); ++iterReports)
       {
         //Change the field if it is in this group:
-        sharedptr<Report> report = iterReports->second;
+        std::shared_ptr<Report> report = iterReports->second;
         if(report)
         {
           if(is_parent_table)
@@ -1062,7 +1062,7 @@ void Document::change_table_name(const Glib::ustring& table_name_old, const Glib
     //so we copy the whole thing and put it back in the map under a different key:
 
     //iterFindTable->first = table_name_new;
-    const sharedptr<DocumentTableInfo> doctableinfo = iterFindTable->second;
+    const std::shared_ptr<DocumentTableInfo> doctableinfo = iterFindTable->second;
     m_tables.erase(iterFindTable);
 
     if(doctableinfo && doctableinfo->m_info)
@@ -1075,14 +1075,14 @@ void Document::change_table_name(const Glib::ustring& table_name_old, const Glib
     for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
     {
       //Look at each relationship in the table:
-      const sharedptr<DocumentTableInfo> doctableinfo = iter->second;
+      const std::shared_ptr<DocumentTableInfo> doctableinfo = iter->second;
       if(!doctableinfo)
         continue;
 
       type_vec_relationships relationships = doctableinfo->m_relationships;
       for(type_vec_relationships::iterator iterRels = relationships.begin(); iterRels != relationships.end(); ++iterRels)
       {
-        sharedptr<Relationship> relationship = *iterRels;
+        std::shared_ptr<Relationship> relationship = *iterRels;
 
         if(relationship->get_from_table() == table_name_old)
         {
@@ -1106,7 +1106,7 @@ void Document::change_table_name(const Glib::ustring& table_name_old, const Glib
 
 void Document::change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new)
 {
-  const sharedptr<DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  const std::shared_ptr<DocumentTableInfo> doctableinfo = get_table_info(table_name);
   if(doctableinfo)
   {
     type_vec_relationships relationships = doctableinfo->m_relationships;
@@ -1117,7 +1117,7 @@ void Document::change_relationship_name(const Glib::ustring& table_name, const G
       (*iterRelFind)->set_name(name_new);
 
 
-    //Any layouts, reports, etc that use this relationship will already have the new name via the sharedptr<Relationship>.
+    //Any layouts, reports, etc that use this relationship will already have the new name via the std::shared_ptr<Relationship>.
 
 
     //Look at each table:
@@ -1175,7 +1175,7 @@ Document::type_listConstTableInfo Document::get_tables(bool plus_system_prefs) c
 
   for(type_tables::const_iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
-    const sharedptr<const DocumentTableInfo> doctableinfo = iter->second;
+    const std::shared_ptr<const DocumentTableInfo> doctableinfo = iter->second;
     if(doctableinfo)
       result.push_back(doctableinfo->m_info);
 
@@ -1198,7 +1198,7 @@ Document::type_listTableInfo Document::get_tables(bool plus_system_prefs)
 
   for(type_tables::const_iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
-    const sharedptr<DocumentTableInfo> doctableinfo = iter->second;
+    const std::shared_ptr<DocumentTableInfo> doctableinfo = iter->second;
     if(doctableinfo)
       result.push_back(doctableinfo->m_info);
 
@@ -1221,7 +1221,7 @@ std::vector<Glib::ustring> Document::get_table_names(bool plus_system_prefs) con
   std::vector<Glib::ustring> result;
   for(type_listConstTableInfo::const_iterator iter = list_full.begin(); iter != list_full.end(); ++iter)
   {
-    const sharedptr<const TableInfo> info = *iter;
+    const std::shared_ptr<const TableInfo> info = *iter;
     if(info)
       result.push_back(info->get_name());
   }
@@ -1229,16 +1229,16 @@ std::vector<Glib::ustring> Document::get_table_names(bool plus_system_prefs) con
   return result;
 }
 
-sharedptr<TableInfo> Document::get_table(const Glib::ustring& table_name) const
+std::shared_ptr<TableInfo> Document::get_table(const Glib::ustring& table_name) const
 {
-  const sharedptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  const std::shared_ptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
   if(doctableinfo)
     return doctableinfo->m_info;
 
-  return sharedptr<TableInfo>();
+  return std::shared_ptr<TableInfo>();
 }
 
-void Document::add_table(const sharedptr<TableInfo>& table_info)
+void Document::add_table(const std::shared_ptr<TableInfo>& table_info)
 {
   if(!table_info)
     return;
@@ -1246,7 +1246,7 @@ void Document::add_table(const sharedptr<TableInfo>& table_info)
   type_tables::const_iterator iterfind = m_tables.find(table_info->get_name());
   if(iterfind == m_tables.end())
   {
-    const sharedptr<DocumentTableInfo> item = sharedptr<DocumentTableInfo>::create();
+    const std::shared_ptr<DocumentTableInfo> item = std::shared_ptr<DocumentTableInfo>(new DocumentTableInfo());
     item->m_info = table_info;
     m_tables[table_info->get_name()] = item;
     set_modified();
@@ -1255,7 +1255,7 @@ void Document::add_table(const sharedptr<TableInfo>& table_info)
 
 bool Document::get_table_overview_position(const Glib::ustring& table_name, float& x, float& y) const
 {
-  const sharedptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  const std::shared_ptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
   if(doctableinfo)
   {
     if( doctableinfo->m_overviewx == std::numeric_limits<float>::infinity() ||
@@ -1276,7 +1276,7 @@ bool Document::get_table_overview_position(const Glib::ustring& table_name, floa
 
 void Document::set_table_overview_position(const Glib::ustring& table_name, float x, float y)
 {
-  const sharedptr<DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  const std::shared_ptr<DocumentTableInfo> doctableinfo = get_table_info(table_name);
   if(doctableinfo)
   {
     doctableinfo->m_overviewx = x;
@@ -1292,11 +1292,11 @@ void Document::set_tables(const type_listTableInfo& tables)
   bool something_changed = false;
   for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
-    const sharedptr<DocumentTableInfo> doctableinfo = iter->second;
+    const std::shared_ptr<DocumentTableInfo> doctableinfo = iter->second;
     if(!doctableinfo)
       continue;
 
-    sharedptr<TableInfo> info = doctableinfo->m_info;
+    std::shared_ptr<TableInfo> info = doctableinfo->m_info;
     if(!info)
       continue;
 
@@ -1306,7 +1306,7 @@ void Document::set_tables(const type_listTableInfo& tables)
     type_listTableInfo::const_iterator iterfind = std::find_if(tables.begin(), tables.end(), predicate_FieldHasName<TableInfo>(table_name));
     if(iterfind != tables.end())
     {
-      sharedptr<TableInfo> infoFound = *iterfind;
+      std::shared_ptr<TableInfo> infoFound = *iterfind;
       if(infoFound && (*infoFound != *info))
       {
         *info = *infoFound;
@@ -1324,18 +1324,18 @@ void Document::fill_sort_field_details(const Glib::ustring& parent_table_name, F
 {
   for(Formatting::type_list_sort_fields::iterator iter = sort_fields.begin(); iter != sort_fields.end(); ++iter)
   {
-    sharedptr<const LayoutItem_Field> sort_field = iter->first;
+    std::shared_ptr<const LayoutItem_Field> sort_field = iter->first;
     if(!sort_field)
      continue;
  
     //TODO: Avoid this unconst?
-    sharedptr<LayoutItem_Field> unconst_sort_field = sharedptr<LayoutItem_Field>::cast_const(sort_field);
-    sharedptr<Field> field = get_field( sort_field->get_table_used(parent_table_name), sort_field->get_name() );
+    std::shared_ptr<LayoutItem_Field> unconst_sort_field = std::const_pointer_cast<LayoutItem_Field>(sort_field);
+    std::shared_ptr<Field> field = get_field( sort_field->get_table_used(parent_table_name), sort_field->get_name() );
     unconst_sort_field->set_full_field_details(field);
   }
 }
 
-void Document::fill_layout_field_details(const Glib::ustring& parent_table_name, const sharedptr<LayoutGroup>& layout_group) const
+void Document::fill_layout_field_details(const Glib::ustring& parent_table_name, const std::shared_ptr<LayoutGroup>& layout_group) const
 {
   if(!layout_group)
     return;
@@ -1344,16 +1344,16 @@ void Document::fill_layout_field_details(const Glib::ustring& parent_table_name,
 
   for(LayoutGroup::type_list_items::iterator iter = layout_group->m_list_items.begin(); iter != layout_group->m_list_items.end(); ++iter)
   {
-    sharedptr<LayoutItem> layout_item = *iter;
+    std::shared_ptr<LayoutItem> layout_item = *iter;
 
     //Check custom Field Formatting:
-    sharedptr<LayoutItem_WithFormatting> layout_withformatting = 
-      sharedptr<LayoutItem_WithFormatting>::cast_dynamic(layout_item);
+    std::shared_ptr<LayoutItem_WithFormatting> layout_withformatting = 
+      std::dynamic_pointer_cast<LayoutItem_WithFormatting>(layout_item);
     if(layout_withformatting)
     {
-      sharedptr<const Relationship> choice_relationship;
-      sharedptr<LayoutItem_Field> choice_layout_first;
-      sharedptr<LayoutGroup> choice_extra_layouts;
+      std::shared_ptr<const Relationship> choice_relationship;
+      std::shared_ptr<LayoutItem_Field> choice_layout_first;
+      std::shared_ptr<LayoutGroup> choice_extra_layouts;
       Formatting::type_list_sort_fields choice_sort_fields;
       bool choice_show_all = false;
       layout_withformatting->m_formatting.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_sort_fields, choice_show_all);
@@ -1366,17 +1366,17 @@ void Document::fill_layout_field_details(const Glib::ustring& parent_table_name,
       fill_sort_field_details(table_name, choice_sort_fields);
     }
 
-    sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+    std::shared_ptr<LayoutItem_Field> layout_field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
     if(layout_field)
     {
-      const sharedptr<Field> field = get_field(layout_field->get_table_used(parent_table_name), layout_field->get_name());
+      const std::shared_ptr<Field> field = get_field(layout_field->get_table_used(parent_table_name), layout_field->get_name());
       layout_field->set_full_field_details(field);
       if(field)
       {
         //Check default Field Formatting:
-        sharedptr<const Relationship> choice_relationship;
-        sharedptr<LayoutItem_Field> choice_layout_first;
-        sharedptr<LayoutGroup> choice_extra_layouts;
+        std::shared_ptr<const Relationship> choice_relationship;
+        std::shared_ptr<LayoutItem_Field> choice_layout_first;
+        std::shared_ptr<LayoutGroup> choice_extra_layouts;
         Formatting::type_list_sort_fields choice_sort_fields;
         bool choice_show_all = false;
         field->m_default_formatting.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_sort_fields, choice_show_all);
@@ -1391,12 +1391,12 @@ void Document::fill_layout_field_details(const Glib::ustring& parent_table_name,
     }
     else
     {
-      sharedptr<LayoutItem_Portal> layout_portal_child = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
+      std::shared_ptr<LayoutItem_Portal> layout_portal_child = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
       if(layout_portal_child)
         fill_layout_field_details(layout_portal_child->get_table_used(parent_table_name), layout_portal_child); //recurse
       else
       {
-        sharedptr<LayoutGroup> layout_group_child = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
+        std::shared_ptr<LayoutGroup> layout_group_child = std::dynamic_pointer_cast<LayoutGroup>(layout_item);
         if(layout_group_child)
           fill_layout_field_details(parent_table_name, layout_group_child); //recurse
       }
@@ -1408,7 +1408,7 @@ void Document::fill_layout_field_details(const Glib::ustring& parent_table_name,
 {
   for(type_list_layout_groups::iterator iterGroups = groups.begin(); iterGroups != groups.end(); ++iterGroups)
   {
-    sharedptr<LayoutGroup> group = *iterGroups;
+    std::shared_ptr<LayoutGroup> group = *iterGroups;
     if(group)
       fill_layout_field_details(parent_table_name, group);
   }
@@ -1419,18 +1419,18 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
   type_list_layout_groups result;
 
   //Add one if necessary:
-  sharedptr<LayoutGroup> overview;
-  sharedptr<LayoutGroup> details;
+  std::shared_ptr<LayoutGroup> overview;
+  std::shared_ptr<LayoutGroup> details;
 
   if(layout_name == "details") //The Details default layout is a bit more complicated.
   {
-    overview = sharedptr<LayoutGroup>::create();;
+    overview = std::shared_ptr<LayoutGroup>(new LayoutGroup());;
     overview->set_name("overview");
     overview->set_title_original(_("Overview"));
     overview->set_columns_count(2);
     result.push_back(overview);
 
-    details = sharedptr<LayoutGroup>::create();
+    details = std::shared_ptr<LayoutGroup>(new LayoutGroup());
     details->set_name("details");
     details->set_title_original(_("Details"));
     details->set_columns_count(2);
@@ -1440,7 +1440,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
   //If, for some reason, we didn't create the-subgroups, add everything to a top level group:
   if(!overview && !details)
   {
-    overview = sharedptr<LayoutGroup>::create();
+    overview = std::shared_ptr<LayoutGroup>(new LayoutGroup());
     overview->set_name("main");
     overview->set_columns_count(1);
     result.push_back(overview);
@@ -1461,7 +1461,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
       bool found = false; //TODO: This is horrible.
       for(type_list_layout_groups::const_iterator iterFind = result.begin(); iterFind != result.end(); ++iterFind)
       {
-        sharedptr<const LayoutGroup> group = *iterFind;
+        std::shared_ptr<const LayoutGroup> group = *iterFind;
         if(group && group->has_field(parent_table_name, parent_table_name, field_name))
         {
           found = true;
@@ -1471,7 +1471,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
 
       if(!found)
       {
-        sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+        std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
         layout_item->set_full_field_details(*iter);
         //layout_item.set_table_name(child_table_name); //TODO: Allow viewing of fields through relationships.
         //layout_item.m_sequence = sequence;  add_item() will fill this.
@@ -1517,7 +1517,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_plus_new_fiel
     {
       for(type_list_layout_groups::iterator iter = result.begin(); iter != result.end(); ++iter)
       {
-        sharedptr<LayoutGroup> layout_group = *iter;
+        std::shared_ptr<LayoutGroup> layout_group = *iter;
         if(!layout_group)
           continue;
 
@@ -1546,7 +1546,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups(const Glib::u
 {
   //std::cout << "debug: " << G_STRFUNC << ": layout_name=" << layout_name << ", parent_table_name=" << parent_table_name << ", layout_platform=" << layout_platform << std::endl;
 
-  const sharedptr<const DocumentTableInfo> info = get_table_info(parent_table_name);
+  const std::shared_ptr<const DocumentTableInfo> info = get_table_info(parent_table_name);
   if(info)
   {
     const DocumentTableInfo::type_layouts layouts = info->m_layouts;
@@ -1568,7 +1568,7 @@ bool Document::get_data_layout_groups_have_any_fields(const Glib::ustring& layou
   type_list_layout_groups layout_groups = get_data_layout_groups(layout_name, parent_table_name, layout_platform);
   for(type_list_layout_groups::iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
   {
-    sharedptr<LayoutGroup> layout_group = *iter;
+    std::shared_ptr<LayoutGroup> layout_group = *iter;
     if(layout_group && layout_group->has_any_fields())
       return true;
   }
@@ -1584,7 +1584,7 @@ void Document::set_data_layout_groups(const Glib::ustring& layout_name, const Gl
 
   if(!parent_table_name.empty())
   {
-    const sharedptr<DocumentTableInfo> info = get_table_info_with_add(parent_table_name);
+    const std::shared_ptr<DocumentTableInfo> info = get_table_info_with_add(parent_table_name);
     if(!info)
       return;
 
@@ -1603,34 +1603,34 @@ void Document::set_data_layout_groups(const Glib::ustring& layout_name, const Gl
   }
 }
 
-sharedptr<Document::DocumentTableInfo> Document::get_table_info(const Glib::ustring& table_name)
+std::shared_ptr<Document::DocumentTableInfo> Document::get_table_info(const Glib::ustring& table_name)
 {
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
     return iterFind->second;
 
-  return sharedptr<DocumentTableInfo>();
+  return std::shared_ptr<DocumentTableInfo>();
 }
 
-sharedptr<const Document::DocumentTableInfo> Document::get_table_info(const Glib::ustring& table_name) const
+std::shared_ptr<const Document::DocumentTableInfo> Document::get_table_info(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
     return iterFind->second;
 
-  return sharedptr<const DocumentTableInfo>();
+  return std::shared_ptr<const DocumentTableInfo>();
 }
 
-sharedptr<Document::DocumentTableInfo> Document::get_table_info_with_add(const Glib::ustring& table_name)
+std::shared_ptr<Document::DocumentTableInfo> Document::get_table_info_with_add(const Glib::ustring& table_name)
 {
-  sharedptr<DocumentTableInfo>  doctableinfo = get_table_info(table_name);
+  std::shared_ptr<DocumentTableInfo>  doctableinfo = get_table_info(table_name);
   if(doctableinfo)
   {
     return doctableinfo;
   }
   else
   {
-    doctableinfo = sharedptr<DocumentTableInfo>::create();
+    doctableinfo = std::shared_ptr<DocumentTableInfo>(new DocumentTableInfo());
     doctableinfo->m_info->set_name(table_name);
     m_tables[table_name] = doctableinfo;
     return doctableinfo;
@@ -1639,7 +1639,7 @@ sharedptr<Document::DocumentTableInfo> Document::get_table_info_with_add(const G
 
 Glib::ustring Document::get_table_title(const Glib::ustring& table_name, const Glib::ustring& locale) const
 {
-  const sharedptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  const std::shared_ptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
   if(doctableinfo && doctableinfo->m_info)
     return doctableinfo->m_info->get_title(locale);
 
@@ -1648,7 +1648,7 @@ Glib::ustring Document::get_table_title(const Glib::ustring& table_name, const G
 
 Glib::ustring Document::get_table_title_original(const Glib::ustring& table_name) const
 {
-  const sharedptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  const std::shared_ptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
   if(doctableinfo && doctableinfo->m_info)
     return doctableinfo->m_info->get_title_original();
 
@@ -1657,7 +1657,7 @@ Glib::ustring Document::get_table_title_original(const Glib::ustring& table_name
 
 Glib::ustring Document::get_table_title_singular(const Glib::ustring& table_name, const Glib::ustring& locale) const
 {
-  const sharedptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  const std::shared_ptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
   if(doctableinfo && doctableinfo->m_info)
     return doctableinfo->m_info->get_title_singular_with_fallback(locale);
 
@@ -1666,7 +1666,7 @@ Glib::ustring Document::get_table_title_singular(const Glib::ustring& table_name
 
 Glib::ustring Document::get_table_title_singular_original(const Glib::ustring& table_name) const
 {
-  const sharedptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  const std::shared_ptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
   if(doctableinfo && doctableinfo->m_info)
     return doctableinfo->m_info->get_title_singular_original();
 
@@ -1678,7 +1678,7 @@ void Document::set_table_title(const Glib::ustring& table_name, const Glib::ustr
   //std::cout << "debug: " << G_STRFUNC << ": table_name=" << table_name << ", value=" << value << std::endl;
   if(!table_name.empty())
   {
-    const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+    const std::shared_ptr<DocumentTableInfo> info = get_table_info(table_name);
     if(info && info->m_info && info->m_info->get_title(locale) != value)
     {
       info->m_info->set_title(value, locale);
@@ -1692,7 +1692,7 @@ void Document::set_table_example_data(const Glib::ustring& table_name, const typ
 {
   if(!table_name.empty())
   {
-    const sharedptr<DocumentTableInfo> info = get_table_info_with_add(table_name);
+    const std::shared_ptr<DocumentTableInfo> info = get_table_info_with_add(table_name);
     if(info && info->m_example_rows != rows)
     {
       info->m_example_rows = rows;
@@ -1704,7 +1704,7 @@ void Document::set_table_example_data(const Glib::ustring& table_name, const typ
 //TODO: Avoid doing this all in one go, because that leaves all the data in memory at once.
 Document::type_example_rows Document::get_table_example_data(const Glib::ustring& table_name) const
 {
-  const sharedptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  const std::shared_ptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
   if(doctableinfo)
    return doctableinfo->m_example_rows;
 
@@ -1719,7 +1719,7 @@ bool Document::get_table_is_known(const Glib::ustring& table_name) const
 
 bool Document::get_table_is_hidden(const Glib::ustring& table_name) const
 {
-  const sharedptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
+  const std::shared_ptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
   if(doctableinfo && doctableinfo->m_info)
       return doctableinfo->m_info->get_hidden();
 
@@ -1810,11 +1810,11 @@ Glib::ustring Document::get_default_table() const
 {
   for(type_tables::const_iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
-    const sharedptr<const DocumentTableInfo> doctableinfo = iter->second;
+    const std::shared_ptr<const DocumentTableInfo> doctableinfo = iter->second;
     if(!doctableinfo)
       continue;
 
-    const sharedptr<const TableInfo> info = doctableinfo->m_info;
+    const std::shared_ptr<const TableInfo> info = doctableinfo->m_info;
     if(info && info->get_default())
       return info->get_name();
   }
@@ -1824,7 +1824,7 @@ Glib::ustring Document::get_default_table() const
   {
     type_tables::const_iterator iter = m_tables.begin();
 
-    const sharedptr<const DocumentTableInfo> doctableinfo = iter->second;
+    const std::shared_ptr<const DocumentTableInfo> doctableinfo = iter->second;
     if(doctableinfo && doctableinfo->m_info)
       return doctableinfo->m_info->get_name();
   }
@@ -1838,7 +1838,7 @@ Glib::ustring Document::get_first_table() const
     return Glib::ustring();
 
   type_tables::const_iterator iter = m_tables.begin();
-  const sharedptr<const DocumentTableInfo> doctableinfo = iter->second;
+  const std::shared_ptr<const DocumentTableInfo> doctableinfo = iter->second;
   if(doctableinfo && doctableinfo->m_info)
     return doctableinfo->m_info->get_name();
 
@@ -1923,14 +1923,14 @@ void Document::set_modified(bool value)
   //}
 }
 
-void Document::load_after_layout_item_formatting(const xmlpp::Element* element, const sharedptr<LayoutItem_WithFormatting>& layout_item, const Glib::ustring& table_name)
+void Document::load_after_layout_item_formatting(const xmlpp::Element* element, const std::shared_ptr<LayoutItem_WithFormatting>& layout_item, const Glib::ustring& table_name)
 {
   if(!layout_item)
     return;
 
   Formatting& format = layout_item->m_formatting;
 
-  sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+  std::shared_ptr<LayoutItem_Field> field = std::dynamic_pointer_cast<LayoutItem_Field>(layout_item);
 
   Field::glom_field_type field_type = Field::TYPE_INVALID;
   if(field)
@@ -2004,12 +2004,12 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
               //Discover the field type, so we can interpret the text as a value.
               //Not all calling functions know this, so they don't all supply the correct value.
               //TODO_Performance.
-              const sharedptr<const Field> field_temp = get_field(table_name, field_name);
+              const std::shared_ptr<const Field> field_temp = get_field(table_name, field_name);
               if(field_temp)
                 field_type = field_temp->get_glom_type();
             }
 
-            sharedptr<ChoiceValue> value = sharedptr<ChoiceValue>::create();
+            std::shared_ptr<ChoiceValue> value = std::shared_ptr<ChoiceValue>(new ChoiceValue());
             load_after_choicevalue(element, value, field_type);
             list_values.push_back(value);
           }
@@ -2024,7 +2024,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
     const Glib::ustring relationship_name = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP);
     if(!relationship_name.empty())
     {
-      sharedptr<const Relationship> relationship = get_relationship(table_name, relationship_name);
+      std::shared_ptr<const Relationship> relationship = get_relationship(table_name, relationship_name);
 
       bool show_all = XmlUtils::get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SHOW_ALL);
       if(get_document_format_version() < 6)
@@ -2033,10 +2033,10 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
       }
 
       const Glib::ustring field_first = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD);
-      sharedptr<LayoutItem_Field> layout_field_first = sharedptr<LayoutItem_Field>::create();
+      std::shared_ptr<LayoutItem_Field> layout_field_first = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
       layout_field_first->set_name(field_first);
 
-      sharedptr<LayoutGroup> extra_layouts;
+      std::shared_ptr<LayoutGroup> extra_layouts;
 
       //Previous versions just saved a single extra field name, instead of a whole set of layoutgroups:
       if(m_document_format_version < 6)
@@ -2045,8 +2045,8 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
         const Glib::ustring field_second = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND);
         if(!field_second.empty())
         {
-          extra_layouts = sharedptr<LayoutGroup>::create();
-          sharedptr<LayoutItem_Field> item = sharedptr<LayoutItem_Field>::create();
+          extra_layouts = std::shared_ptr<LayoutGroup>(new LayoutGroup());
+          std::shared_ptr<LayoutItem_Field> item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
           item->set_name(field_second);
           extra_layouts->add_item(item);
         }
@@ -2061,12 +2061,12 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
           if(nodeGroups)
           {
 
-            sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::create();
+            std::shared_ptr<LayoutGroup> layout_group = std::shared_ptr<LayoutGroup>(new LayoutGroup());
             load_after_layout_group(nodeGroups, relationship->get_to_table(), layout_group);
             if(layout_group && !(layout_group->m_list_items.empty()))
             {
               //We actually want the sub-group:
-              extra_layouts = sharedptr<LayoutGroup>::cast_dynamic( layout_group->m_list_items[0] );
+              extra_layouts = std::dynamic_pointer_cast<LayoutGroup>( layout_group->m_list_items[0] );
             }
           }
         }
@@ -2089,13 +2089,13 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
   }
 }
 
-void Document::load_after_layout_item_usesrelationship(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<UsesRelationship>& item)
+void Document::load_after_layout_item_usesrelationship(const xmlpp::Element* element, const Glib::ustring& table_name, const std::shared_ptr<UsesRelationship>& item)
 {
   if(!element || !item)
     return;
 
   const Glib::ustring relationship_name = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
-  sharedptr<Relationship> relationship;
+  std::shared_ptr<Relationship> relationship;
   if(!relationship_name.empty())
   {
     //std::cout << "  debug in : table_name=" << table_name << ", relationship_name=" << relationship_name << std::endl;
@@ -2111,7 +2111,7 @@ void Document::load_after_layout_item_usesrelationship(const xmlpp::Element* ele
   const Glib::ustring related_relationship_name = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_RELATED_RELATIONSHIP_NAME);
   if(!related_relationship_name.empty() && relationship)
   {
-    sharedptr<Relationship> related_relationship = get_relationship(relationship->get_to_table(), related_relationship_name);
+    std::shared_ptr<Relationship> related_relationship = get_relationship(relationship->get_to_table(), related_relationship_name);
     if(!related_relationship)
       std::cerr << G_STRFUNC << ": related relationship not found in table=" << relationship->get_to_table() << ",  name=" << related_relationship_name << std::endl;
 
@@ -2119,7 +2119,7 @@ void Document::load_after_layout_item_usesrelationship(const xmlpp::Element* ele
   }
 }
 
-void Document::load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& item)
+void Document::load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const std::shared_ptr<LayoutItem_Field>& item)
 {
   const Glib::ustring name = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_NAME);
   item->set_name(name);
@@ -2127,7 +2127,7 @@ void Document::load_after_layout_item_field(const xmlpp::Element* element, const
   load_after_layout_item_usesrelationship(element, table_name, item);
 
   //Needed to decide what formatting to load/save:
-  const sharedptr<const Field> field = get_field(item->get_table_used(table_name), name);
+  const std::shared_ptr<const Field> field = get_field(item->get_table_used(table_name), name);
   
   // This is not unusual, because tables often refer to tables that have not been loaded yet.
   // Code should sometimes check this before returning the layout items.
@@ -2146,7 +2146,7 @@ void Document::load_after_layout_item_field(const xmlpp::Element* element, const
   const xmlpp::Element* nodeCustomTitle = XmlUtils::get_node_child_named(element, GLOM_NODE_LAYOUT_ITEM_CUSTOM_TITLE);
   if(nodeCustomTitle)
   {
-    sharedptr<CustomTitle> custom_title = sharedptr<CustomTitle>::create();
+    std::shared_ptr<CustomTitle> custom_title = std::shared_ptr<CustomTitle>(new CustomTitle());
     custom_title->set_use_custom_title( XmlUtils::get_node_attribute_value_as_bool(nodeCustomTitle, GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE_USE) );
 
     load_after_translations(nodeCustomTitle, custom_title);
@@ -2167,7 +2167,7 @@ void Document::load_after_sort_by(const xmlpp::Element* node, const Glib::ustrin
     const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
     if(element)
     {
-      sharedptr<LayoutItem_Field> item = sharedptr<LayoutItem_Field>::create();
+      std::shared_ptr<LayoutItem_Field> item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
       //item.set_full_field_details_empty();
       load_after_layout_item_field(element, table_name, item);
       item->set_full_field_details( get_field(item->get_table_used(table_name), item->get_name()) );
@@ -2179,7 +2179,7 @@ void Document::load_after_sort_by(const xmlpp::Element* node, const Glib::ustrin
   }
 }
 
-void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::ustring& table_name, const sharedptr<LayoutGroup>& group, bool with_print_layout_positions)
+void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::ustring& table_name, const std::shared_ptr<LayoutGroup>& group, bool with_print_layout_positions)
 {
   if(!node || !group)
   {
@@ -2195,14 +2195,14 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
   group->set_border_width( XmlUtils::get_node_attribute_value_as_decimal_double(node, GLOM_ATTRIBUTE_BORDER_WIDTH) );
 
   //Translations:
-  sharedptr<LayoutGroup> temp = group;
+  std::shared_ptr<LayoutGroup> temp = group;
   load_after_translations(node, temp);
 
   //Get the child items:
   xmlpp::Node::NodeList listNodes = node->get_children();
   for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
   {
-    sharedptr<LayoutItem> item_added;
+    std::shared_ptr<LayoutItem> item_added;
 
     //Create the layout item:
     const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
@@ -2210,7 +2210,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
     {
       if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELD)
       {
-        sharedptr<LayoutItem_Field> item = sharedptr<LayoutItem_Field>::create();
+        std::shared_ptr<LayoutItem_Field> item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
         //item.set_full_field_details_empty();
         load_after_layout_item_field(element, table_name, item);
 
@@ -2218,7 +2218,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_BUTTON)
       {
-        sharedptr<LayoutItem_Button> item = sharedptr<LayoutItem_Button>::create();
+        std::shared_ptr<LayoutItem_Button> item = std::shared_ptr<LayoutItem_Button>(new LayoutItem_Button());
 
         item->set_script( XmlUtils::get_child_text_node(element, GLOM_NODE_BUTTON_SCRIPT) );
         if(!(item->get_has_script())) //Try the deprecated attribute instead
@@ -2230,14 +2230,14 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_TEXTOBJECT)
       {
-        sharedptr<LayoutItem_Text> item = sharedptr<LayoutItem_Text>::create();
+        std::shared_ptr<LayoutItem_Text> item = std::shared_ptr<LayoutItem_Text>(new LayoutItem_Text());
         load_after_translations(element, item);
 
         //The text can be translated too, so it has its own node:
         const xmlpp::Element* element_text = XmlUtils::get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT);
         if(element_text)
         {
-          sharedptr<StaticText> translatable_text = sharedptr<StaticText>::create();
+          std::shared_ptr<StaticText> translatable_text = std::shared_ptr<StaticText>(new StaticText());
           load_after_translations(element_text, translatable_text);
           item->m_text = translatable_text;
           //std::cout << "  DEBUG: text: " << item->m_text->get_title_or_name() << std::endl;
@@ -2247,7 +2247,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_IMAGEOBJECT)
       {
-        sharedptr<LayoutItem_Image> item = sharedptr<LayoutItem_Image>::create();
+        std::shared_ptr<LayoutItem_Image> item = std::shared_ptr<LayoutItem_Image>(new LayoutItem_Image());
         load_after_translations(element, item);
 
         Gnome::Gda::Value value_image;
@@ -2269,7 +2269,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_LINE)
       {
-        sharedptr<LayoutItem_Line> item = sharedptr<LayoutItem_Line>::create();
+        std::shared_ptr<LayoutItem_Line> item = std::shared_ptr<LayoutItem_Line>(new LayoutItem_Line());
         //Has no translations: load_after_translations(element, item);
 
         item->set_coordinates(
@@ -2288,7 +2288,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY)
       {
-        sharedptr<LayoutItem_FieldSummary> item = sharedptr<LayoutItem_FieldSummary>::create();
+        std::shared_ptr<LayoutItem_FieldSummary> item = std::shared_ptr<LayoutItem_FieldSummary>(new LayoutItem_FieldSummary());
         //item.set_full_field_details_empty();
         load_after_layout_item_field(element, table_name, item);
         item->set_full_field_details( get_field(item->get_table_used(table_name), item->get_name()) );
@@ -2298,41 +2298,41 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_HEADER)
       {
-        sharedptr<LayoutItem_Header> child_group = sharedptr<LayoutItem_Header>::create();
+        std::shared_ptr<LayoutItem_Header> child_group = std::shared_ptr<LayoutItem_Header>(new LayoutItem_Header());
         //Recurse:
         load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
         item_added = child_group;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FOOTER)
       {
-        sharedptr<LayoutItem_Footer> child_group = sharedptr<LayoutItem_Footer>::create();
+        std::shared_ptr<LayoutItem_Footer> child_group = std::shared_ptr<LayoutItem_Footer>(new LayoutItem_Footer());
         //Recurse:
         load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
         item_added = child_group;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_GROUP)
       {
-        sharedptr<LayoutGroup> child_group = sharedptr<LayoutGroup>::create();
+        std::shared_ptr<LayoutGroup> child_group = std::shared_ptr<LayoutGroup>(new LayoutGroup());
         //Recurse:
         load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
         item_added = child_group;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_NOTEBOOK)
       {
-        sharedptr<LayoutItem_Notebook> notebook = sharedptr<LayoutItem_Notebook>::create();
+        std::shared_ptr<LayoutItem_Notebook> notebook = std::shared_ptr<LayoutItem_Notebook>(new LayoutItem_Notebook());
         load_after_layout_group(element, table_name, notebook, with_print_layout_positions);
         item_added = notebook;
       }
       else if( (element->get_name() == GLOM_NODE_DATA_LAYOUT_PORTAL) || (element->get_name() == GLOM_NODE_DATA_LAYOUT_CALENDAR_PORTAL) )
       {
-        sharedptr<LayoutItem_Portal> portal;
-        sharedptr<LayoutItem_CalendarPortal> calendar_portal;
+        std::shared_ptr<LayoutItem_Portal> portal;
+        std::shared_ptr<LayoutItem_CalendarPortal> calendar_portal;
 
         if(element->get_name() == GLOM_NODE_DATA_LAYOUT_PORTAL)
-          portal = sharedptr<LayoutItem_Portal>::create();
+          portal = std::shared_ptr<LayoutItem_Portal>(new LayoutItem_Portal());
         else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_CALENDAR_PORTAL)
         {
-          calendar_portal = sharedptr<LayoutItem_CalendarPortal>::create();
+          calendar_portal = std::shared_ptr<LayoutItem_CalendarPortal>(new LayoutItem_CalendarPortal());
           portal = calendar_portal;
         }
 
@@ -2356,7 +2356,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
           else if(navigation_type_as_string == GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_SPECIFIC)
           {
             //Read the specified relationship name:
-            sharedptr<UsesRelationship> relationship_navigation_specific = sharedptr<UsesRelationship>::create();
+            std::shared_ptr<UsesRelationship> relationship_navigation_specific = std::shared_ptr<UsesRelationship>(new UsesRelationship());
             load_after_layout_item_usesrelationship(elementNavigationRelationshipSpecific, portal->get_table_used(table_name), relationship_navigation_specific);
             portal->set_navigation_relationship_specific(relationship_navigation_specific);
           }
@@ -2368,7 +2368,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         if(calendar_portal)
         {
           const Glib::ustring date_field_name = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_PORTAL_CALENDAR_DATE_FIELD);
-          sharedptr<Field> date_field = get_field(calendar_portal->get_table_used(table_name), date_field_name);
+          std::shared_ptr<Field> date_field = get_field(calendar_portal->get_table_used(table_name), date_field_name);
           calendar_portal->set_date_field(date_field);
         }
 
@@ -2403,12 +2403,12 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY)
       {
-        sharedptr<LayoutItem_GroupBy> child_group = sharedptr<LayoutItem_GroupBy>::create();
+        std::shared_ptr<LayoutItem_GroupBy> child_group = std::shared_ptr<LayoutItem_GroupBy>(new LayoutItem_GroupBy());
         //Recurse:
         load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
 
         //Group-By field:
-        sharedptr<LayoutItem_Field> field_groupby = sharedptr<LayoutItem_Field>::create();
+        std::shared_ptr<LayoutItem_Field> field_groupby = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
         xmlpp::Element* elementGroupBy = XmlUtils::get_node_child_named(element, GLOM_NODE_REPORT_ITEM_GROUPBY_GROUPBY);
         if(elementGroupBy)
         {
@@ -2445,7 +2445,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_VERTICALGROUP)
       {
-        sharedptr<LayoutItem_VerticalGroup> child_group = sharedptr<LayoutItem_VerticalGroup>::create();
+        std::shared_ptr<LayoutItem_VerticalGroup> child_group = std::shared_ptr<LayoutItem_VerticalGroup>(new LayoutItem_VerticalGroup());
         //Recurse:
         load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
 
@@ -2453,7 +2453,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_SUMMARY)
       {
-        sharedptr<LayoutItem_Summary> child_group = sharedptr<LayoutItem_Summary>::create();
+        std::shared_ptr<LayoutItem_Summary> child_group = std::shared_ptr<LayoutItem_Summary>(new LayoutItem_Summary());
         //Recurse:
         load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
 
@@ -2462,7 +2462,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
     }
 
     //Load formatting for any layout type that uses it:
-    sharedptr<LayoutItem_WithFormatting> withformatting = sharedptr<LayoutItem_WithFormatting>::cast_dynamic(item_added);
+    std::shared_ptr<LayoutItem_WithFormatting> withformatting = std::dynamic_pointer_cast<LayoutItem_WithFormatting>(item_added);
     if(withformatting)
     {
        const xmlpp::Element* elementFormatting = XmlUtils::get_node_child_named(element, GLOM_NODE_FORMAT);
@@ -2487,12 +2487,12 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
   } //for
 }
 
-void Document::load_after_translations(const xmlpp::Element* element, const sharedptr<TranslatableItem>& item)
+void Document::load_after_translations(const xmlpp::Element* element, const std::shared_ptr<TranslatableItem>& item)
 {
   if(!element)
     return;
 
-  const sharedptr<ChoiceValue> choicevalue = sharedptr<ChoiceValue>::cast_dynamic(item);
+  const std::shared_ptr<ChoiceValue> choicevalue = std::dynamic_pointer_cast<ChoiceValue>(item);
   if(!choicevalue) //This item does not use the title, but uses the title translations to translate its value, if it is of type text.
   {
     item->set_title_original( XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_TITLE));
@@ -2522,20 +2522,20 @@ void Document::load_after_translations(const xmlpp::Element* element, const shar
   }
 
   //If it has a singular title, then load that too:
-  const sharedptr<HasTitleSingular> has_title_singular =
-     sharedptr<HasTitleSingular>::cast_dynamic(item);
+  const std::shared_ptr<HasTitleSingular> has_title_singular =
+     std::dynamic_pointer_cast<HasTitleSingular>(item);
   if(has_title_singular)
   {
     const xmlpp::Element* nodeTitleSingular = XmlUtils::get_node_child_named(element, GLOM_NODE_TABLE_TITLE_SINGULAR);
 
     if(!has_title_singular->m_title_singular)
-     has_title_singular->m_title_singular = sharedptr<TranslatableItem>::create();
+     has_title_singular->m_title_singular = std::shared_ptr<TranslatableItem>(new TranslatableItem());
 
     load_after_translations(nodeTitleSingular, has_title_singular->m_title_singular);
   }
 }
 
-void Document::load_after_print_layout_position(const xmlpp::Element* nodeItem, const sharedptr<LayoutItem>& item)
+void Document::load_after_print_layout_position(const xmlpp::Element* nodeItem, const std::shared_ptr<LayoutItem>& item)
 {
   if(!nodeItem)
     return;
@@ -2551,12 +2551,12 @@ void Document::load_after_print_layout_position(const xmlpp::Element* nodeItem, 
   }
 }
 
-void Document::load_after_choicevalue(const xmlpp::Element* element, const sharedptr<ChoiceValue>& item, Field::glom_field_type field_type)
+void Document::load_after_choicevalue(const xmlpp::Element* element, const std::shared_ptr<ChoiceValue>& item, Field::glom_field_type field_type)
 {
   const Gnome::Gda::Value value = XmlUtils::get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_VALUE, field_type);
   item->set_value(value);
 
-  sharedptr<ChoiceValue> nonconst_item = item; //TODO: Avoid this.
+  std::shared_ptr<ChoiceValue> nonconst_item = item; //TODO: Avoid this.
   load_after_translations(element, nonconst_item);
 }
 
@@ -2567,11 +2567,11 @@ bool Document::load_after(int& failure_code)
 
   //TODO: Use some callback UI to show a busy cursor?
   /*
-  //Use a std::auto_ptr<> to avoid even unncessarily instantiating a BusyCursor,
+  //Use a std::shared_ptr<> to avoid even unncessarily instantiating a BusyCursor,
   //which would require GTK+ to be initialized:
-  std::auto_ptr<BusyCursor> auto_cursor;
+  std::shared_ptr<BusyCursor> auto_cursor;
   if(m_parent_window)
-    auto_cursor = std::auto_ptr<BusyCursor>( new BusyCursor(m_parent_window) );
+    auto_cursor = std::shared_ptr<BusyCursor>( new BusyCursor(m_parent_window) );
   */
 
   m_block_modified_set = true; //Prevent the set_ functions from triggering a save.
@@ -2678,10 +2678,10 @@ bool Document::load_after(int& failure_code)
         {
           const Glib::ustring table_name = XmlUtils::get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME);
 
-          const sharedptr<DocumentTableInfo> doctableinfo = sharedptr<DocumentTableInfo>::create();
+          const std::shared_ptr<DocumentTableInfo> doctableinfo = std::shared_ptr<DocumentTableInfo>(new DocumentTableInfo());
           m_tables[table_name] = doctableinfo;
 
-          sharedptr<TableInfo> table_info(new TableInfo());
+          std::shared_ptr<TableInfo> table_info(new TableInfo());
           table_info->set_name(table_name);
           table_info->set_hidden( XmlUtils::get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_HIDDEN) );
           table_info->set_default( XmlUtils::get_node_attribute_value_as_bool(nodeTable, GLOM_ATTRIBUTE_DEFAULT) );
@@ -2705,7 +2705,7 @@ bool Document::load_after(int& failure_code)
               const xmlpp::Element* nodeChild = dynamic_cast<xmlpp::Element*>(*iter);
               if(nodeChild)
               {
-                sharedptr<Relationship> relationship = sharedptr<Relationship>::create();
+                std::shared_ptr<Relationship> relationship = std::shared_ptr<Relationship>(new Relationship());
                 const Glib::ustring relationship_name = XmlUtils::get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_NAME);
 
                 relationship->set_from_table(table_name);
@@ -2738,7 +2738,7 @@ bool Document::load_after(int& failure_code)
               const xmlpp::Element* nodeChild = dynamic_cast<xmlpp::Element*>(*iter);
               if(nodeChild)
               {
-                sharedptr<Field> field(new Field());
+                std::shared_ptr<Field> field(new Field());
 
                 const Glib::ustring strName = XmlUtils::get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_NAME);
                 field->set_name( strName );
@@ -2752,7 +2752,7 @@ bool Document::load_after(int& failure_code)
                 if(nodeLookup)
                 {
                   const Glib::ustring lookup_relationship_name = XmlUtils::get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME);
-                  sharedptr<Relationship> lookup_relationship = get_relationship(table_name, lookup_relationship_name);
+                  std::shared_ptr<Relationship> lookup_relationship = get_relationship(table_name, lookup_relationship_name);
                   field->set_lookup_relationship(lookup_relationship);
 
                   field->set_lookup_field( XmlUtils::get_node_attribute_value(nodeLookup, GLOM_ATTRIBUTE_FIELD) );
@@ -2826,7 +2826,7 @@ bool Document::load_after(int& failure_code)
                       // consider a map to find the column more quickly.
                       for(unsigned int i = 0; i < doctableinfo->m_fields.size(); ++i)
                       {
-                        sharedptr<const Field> field = doctableinfo->m_fields[i];
+                        std::shared_ptr<const Field> field = doctableinfo->m_fields[i];
                         //std::cout << "  DEBUG: searching: field i=" << i << " =" << field->get_name() << std::endl;
                         if(field && (field->get_name() == column_name->get_value()))
                         {
@@ -2859,7 +2859,7 @@ bool Document::load_after(int& failure_code)
         if(nodeTable)
         {
           const Glib::ustring table_name = XmlUtils::get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME);
-          const sharedptr<DocumentTableInfo> doctableinfo = m_tables[table_name];
+          const std::shared_ptr<DocumentTableInfo> doctableinfo = m_tables[table_name];
 
           //Layouts:
           const xmlpp::Element* nodeDataLayouts = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_DATA_LAYOUTS);
@@ -2889,7 +2889,7 @@ bool Document::load_after(int& failure_code)
                       const Glib::ustring group_name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
                       if(!group_name.empty())
                       {
-                        sharedptr<LayoutGroup> group(new LayoutGroup());
+                        std::shared_ptr<LayoutGroup> group(new LayoutGroup());
                         load_after_layout_group(node, table_name, group);
 
                         layout_groups.push_back(group);
@@ -2923,7 +2923,7 @@ bool Document::load_after(int& failure_code)
 
                 //type_list_layout_groups layout_groups;
 
-                sharedptr<Report> report(new Report());
+                std::shared_ptr<Report> report(new Report());
                 report->set_name(report_name);
                 report->set_show_table_title(show_table_title);
 
@@ -2937,7 +2937,7 @@ bool Document::load_after(int& failure_code)
                     const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(*iter);
                     if(node)
                     {
-                      sharedptr<LayoutGroup> group = report->get_layout_group();
+                      std::shared_ptr<LayoutGroup> group = report->get_layout_group();
                       group->remove_all_items();
                       load_after_layout_group(node, table_name, group);
 
@@ -2968,7 +2968,7 @@ bool Document::load_after(int& failure_code)
                 const Glib::ustring name = XmlUtils::get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
                 const bool show_table_title = XmlUtils::get_node_attribute_value_as_bool(node, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE);
 
-                sharedptr<PrintLayout> print_layout(new PrintLayout());
+                std::shared_ptr<PrintLayout> print_layout(new PrintLayout());
                 print_layout->set_name(name);
                 print_layout->set_show_table_title(show_table_title);
 
@@ -3026,7 +3026,7 @@ bool Document::load_after(int& failure_code)
                     const xmlpp::Element* node = dynamic_cast<const xmlpp::Element*>(*iter);
                     if(node)
                     {
-                      sharedptr<LayoutGroup> group = print_layout->get_layout_group();
+                      std::shared_ptr<LayoutGroup> group = print_layout->get_layout_group();
                       group->remove_all_items();
                       load_after_layout_group(node, table_name, group, true /* load positions too. */);
 
@@ -3129,14 +3129,14 @@ bool Document::load_after(int& failure_code)
   return result;
 }
 
-void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem_WithFormatting>& layout_item)
+void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, const std::shared_ptr<const LayoutItem_WithFormatting>& layout_item)
 {
   if(!layout_item)
     return;
 
   const Formatting& format = layout_item->m_formatting;
 
-  sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+  std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
 
   Field::glom_field_type field_type = Field::TYPE_INVALID;
   if(field)
@@ -3198,7 +3198,7 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
       const Formatting::type_list_values list_values = format.get_choices_custom();
       for(Formatting::type_list_values::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
       {
-        const sharedptr<const ChoiceValue> value = *iter; 
+        const std::shared_ptr<const ChoiceValue> value = *iter; 
         xmlpp::Element* childChoice = child->add_child(GLOM_NODE_FORMAT_CUSTOM_CHOICE);
         save_before_choicevalue(childChoice, value, field_type);
       }
@@ -3206,9 +3206,9 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
 
     XmlUtils::set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED, format.get_has_related_choices() );
 
-    sharedptr<const Relationship> choice_relationship;
-    sharedptr<const LayoutItem_Field> choice_layout_first;
-    sharedptr<const LayoutGroup> choice_extra_layouts;
+    std::shared_ptr<const Relationship> choice_relationship;
+    std::shared_ptr<const LayoutItem_Field> choice_layout_first;
+    std::shared_ptr<const LayoutGroup> choice_extra_layouts;
     Formatting::type_list_sort_fields choice_sort_fields;
     bool choice_show_all = false;
     format.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_sort_fields, choice_show_all);
@@ -3240,7 +3240,7 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
   }
 }
 
-void Document::save_before_layout_item_usesrelationship(xmlpp::Element* nodeItem, const sharedptr<const UsesRelationship>& item)
+void Document::save_before_layout_item_usesrelationship(xmlpp::Element* nodeItem, const std::shared_ptr<const UsesRelationship>& item)
 {
   if(!item)
     return;
@@ -3249,7 +3249,7 @@ void Document::save_before_layout_item_usesrelationship(xmlpp::Element* nodeItem
   XmlUtils::set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_RELATED_RELATIONSHIP_NAME, item->get_related_relationship_name());
 }
 
-void Document::save_before_layout_item_field(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem_Field>& field)
+void Document::save_before_layout_item_field(xmlpp::Element* nodeItem, const std::shared_ptr<const LayoutItem_Field>& field)
 {
   if(!field)
     return;
@@ -3260,7 +3260,7 @@ void Document::save_before_layout_item_field(xmlpp::Element* nodeItem, const sha
 
   XmlUtils::set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING, field->get_formatting_use_default());
 
-  sharedptr<const CustomTitle> custom_title = field->get_title_custom();
+  std::shared_ptr<const CustomTitle> custom_title = field->get_title_custom();
   if(custom_title)
   {
     xmlpp::Element* elementCustomTitle = nodeItem->add_child(GLOM_NODE_LAYOUT_ITEM_CUSTOM_TITLE);
@@ -3277,7 +3277,7 @@ void Document::save_before_sort_by(xmlpp::Element* node, const LayoutItem_GroupB
 
   for(LayoutItem_GroupBy::type_list_sort_fields::const_iterator iter = list_fields.begin(); iter != list_fields.end(); ++iter)
   {
-    sharedptr<const LayoutItem_Field> field = iter->first;
+    std::shared_ptr<const LayoutItem_Field> field = iter->first;
 
     xmlpp::Element* nodeChild = node->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_FIELD);
     save_before_layout_item_field(nodeChild, field);
@@ -3286,7 +3286,7 @@ void Document::save_before_sort_by(xmlpp::Element* node, const LayoutItem_GroupB
   }
 }
 
-void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<const LayoutGroup>& group, bool with_print_layout_positions)
+void Document::save_before_layout_group(xmlpp::Element* node, const std::shared_ptr<const LayoutGroup>& group, bool with_print_layout_positions)
 {
   if(!node || !group)
     return;
@@ -3295,7 +3295,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
 
   xmlpp::Element* child = 0;
 
-  sharedptr<const LayoutItem_GroupBy> group_by = sharedptr<const LayoutItem_GroupBy>::cast_dynamic(group);
+  std::shared_ptr<const LayoutItem_GroupBy> group_by = std::dynamic_pointer_cast<const LayoutItem_GroupBy>(group);
   if(group_by) //If it is a GroupBy report part.
   {
     child = node->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY);
@@ -3322,7 +3322,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
   }
   else
   {
-    sharedptr<const LayoutItem_Summary> summary = sharedptr<const LayoutItem_Summary>::cast_dynamic(group);
+    std::shared_ptr<const LayoutItem_Summary> summary = std::dynamic_pointer_cast<const LayoutItem_Summary>(group);
     if(summary) //If it is a GroupBy report part.
     {
       child = node->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_SUMMARY);
@@ -3330,35 +3330,35 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
     }
     else
     {
-      sharedptr<const LayoutItem_VerticalGroup> verticalgroup = sharedptr<const LayoutItem_VerticalGroup>::cast_dynamic(group);
+      std::shared_ptr<const LayoutItem_VerticalGroup> verticalgroup = std::dynamic_pointer_cast<const LayoutItem_VerticalGroup>(group);
       if(verticalgroup) //If it is a GroupBy report part.
       {
         child = node->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_VERTICALGROUP);
       }
       else
       {
-        sharedptr<const LayoutItem_Header> headerGroup = sharedptr<const LayoutItem_Header>::cast_dynamic(group);
+        std::shared_ptr<const LayoutItem_Header> headerGroup = std::dynamic_pointer_cast<const LayoutItem_Header>(group);
         if(headerGroup) //If it is a GroupBy report part.
         {
           child = node->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_HEADER);
         }
         else
         {
-          sharedptr<const LayoutItem_Footer> footerGroup = sharedptr<const LayoutItem_Footer>::cast_dynamic(group);
+          std::shared_ptr<const LayoutItem_Footer> footerGroup = std::dynamic_pointer_cast<const LayoutItem_Footer>(group);
           if(footerGroup) //If it is a GroupBy report part.
           {
             child = node->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_FOOTER);
           }
           else
           {
-            sharedptr<const LayoutItem_Portal> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(group);
+            std::shared_ptr<const LayoutItem_Portal> portal = std::dynamic_pointer_cast<const LayoutItem_Portal>(group);
             if(portal) //If it is a related records portal
             {
-              sharedptr<const LayoutItem_CalendarPortal> calendar_portal = sharedptr<const LayoutItem_CalendarPortal>::cast_dynamic(portal);
+              std::shared_ptr<const LayoutItem_CalendarPortal> calendar_portal = std::dynamic_pointer_cast<const LayoutItem_CalendarPortal>(portal);
               if(calendar_portal)
               {
                 child = node->add_child(GLOM_NODE_DATA_LAYOUT_CALENDAR_PORTAL);
-                sharedptr<const Field> date_field = calendar_portal->get_date_field();
+                std::shared_ptr<const Field> date_field = calendar_portal->get_date_field();
                 if(date_field)
                   XmlUtils::set_node_attribute_value(child, GLOM_ATTRIBUTE_PORTAL_CALENDAR_DATE_FIELD, date_field->get_name());
               }
@@ -3369,7 +3369,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
 
               //Portal navigation details:
               Glib::ustring navigation_type_string;
-              sharedptr<const UsesRelationship> relationship_navigation_specific;
+              std::shared_ptr<const UsesRelationship> relationship_navigation_specific;
 
               switch(portal->get_navigation_type())
               {
@@ -3425,7 +3425,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
             }
             else
             {
-              sharedptr<const LayoutItem_Notebook> notebook = sharedptr<const LayoutItem_Notebook>::cast_dynamic(group);
+              std::shared_ptr<const LayoutItem_Notebook> notebook = std::dynamic_pointer_cast<const LayoutItem_Notebook>(group);
               if(notebook) //If it is a notebook.
               {
                 child = node->add_child(GLOM_NODE_DATA_LAYOUT_NOTEBOOK);
@@ -3460,10 +3460,10 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
   LayoutGroup::type_list_const_items items = group->get_items();
   for(LayoutGroup::type_list_const_items::const_iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
   {
-    sharedptr<const LayoutItem> item = *iterItems;
+    std::shared_ptr<const LayoutItem> item = *iterItems;
     //g_warning("save_before_layout_group: child part type=%s", item->get_part_type_name().c_str());
 
-    sharedptr<const LayoutGroup> child_group = sharedptr<const LayoutGroup>::cast_dynamic(item);
+    std::shared_ptr<const LayoutGroup> child_group = std::dynamic_pointer_cast<const LayoutGroup>(item);
     if(child_group) //If it is a group, portal, summary, or groupby.
     {
       //recurse:
@@ -3473,7 +3473,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
     {
       xmlpp::Element* nodeItem = 0;
 
-      sharedptr<const LayoutItem_FieldSummary> fieldsummary = sharedptr<const LayoutItem_FieldSummary>::cast_dynamic(item);
+      std::shared_ptr<const LayoutItem_FieldSummary> fieldsummary = std::dynamic_pointer_cast<const LayoutItem_FieldSummary>(item);
       if(fieldsummary) //If it is a summaryfield
       {
         nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY);
@@ -3482,7 +3482,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
       }
       else
       {
-        sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
+        std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
         if(field) //If it is a field
         {
           nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_FIELD);
@@ -3490,7 +3490,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
         }
         else
         {
-          sharedptr<const LayoutItem_Button> button = sharedptr<const LayoutItem_Button>::cast_dynamic(item);
+          std::shared_ptr<const LayoutItem_Button> button = std::dynamic_pointer_cast<const LayoutItem_Button>(item);
           if(button) //If it is a button
           {
             nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_BUTTON);
@@ -3499,7 +3499,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
           }
           else
           {
-            sharedptr<const LayoutItem_Text> textobject = sharedptr<const LayoutItem_Text>::cast_dynamic(item);
+            std::shared_ptr<const LayoutItem_Text> textobject = std::dynamic_pointer_cast<const LayoutItem_Text>(item);
             if(textobject) //If it is a text object.
             {
               nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_TEXTOBJECT);
@@ -3511,7 +3511,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
             }
             else
             {
-              sharedptr<const LayoutItem_Image> imageobject = sharedptr<const LayoutItem_Image>::cast_dynamic(item);
+              std::shared_ptr<const LayoutItem_Image> imageobject = std::dynamic_pointer_cast<const LayoutItem_Image>(item);
               if(imageobject) //If it is an image object.
               {
                 nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_IMAGEOBJECT);
@@ -3522,7 +3522,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
               }
               else
               {
-                sharedptr<const LayoutItem_Line> line = sharedptr<const LayoutItem_Line>::cast_dynamic(item);
+                std::shared_ptr<const LayoutItem_Line> line = std::dynamic_pointer_cast<const LayoutItem_Line>(item);
                 if(line) //If it is a line
                 {
                   nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_LINE);
@@ -3552,7 +3552,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
         if(nodeItem)
         {
           //Save formatting for any layout items that use it:
-          sharedptr<const LayoutItem_WithFormatting> withformatting = sharedptr<const LayoutItem_WithFormatting>::cast_dynamic(item);
+        std::shared_ptr<const LayoutItem_WithFormatting> withformatting = std::dynamic_pointer_cast<const LayoutItem_WithFormatting>(item);
           if(withformatting)
           {
             xmlpp::Element* elementFormat = nodeItem->add_child(GLOM_NODE_FORMAT);
@@ -3576,12 +3576,12 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
   }
 }
 
-void Document::save_before_translations(xmlpp::Element* element, const sharedptr<const TranslatableItem>& item)
+void Document::save_before_translations(xmlpp::Element* element, const std::shared_ptr<const TranslatableItem>& item)
 {
   if(!element)
     return;
 
-  const sharedptr<const ChoiceValue> choicevalue = sharedptr<const ChoiceValue>::cast_dynamic(item);
+  const std::shared_ptr<const ChoiceValue> choicevalue = std::dynamic_pointer_cast<const ChoiceValue>(item);
   if(!choicevalue) //This item does not use the title, but uses the title translations to translate its value, if it is of type text.
   {
     XmlUtils::set_node_attribute_value(element, GLOM_ATTRIBUTE_TITLE, item->get_title_original());
@@ -3601,8 +3601,8 @@ void Document::save_before_translations(xmlpp::Element* element, const sharedptr
   }
 
   //If it has a singular title, then save that too:
-  const sharedptr<const HasTitleSingular> has_title_singular =
-    sharedptr<const HasTitleSingular>::cast_dynamic(item);
+  const std::shared_ptr<const HasTitleSingular> has_title_singular =
+    std::dynamic_pointer_cast<const HasTitleSingular>(item);
   if(has_title_singular && has_title_singular->m_title_singular
     && !(has_title_singular->m_title_singular->get_title_original().empty()))
   {
@@ -3611,7 +3611,7 @@ void Document::save_before_translations(xmlpp::Element* element, const sharedptr
   }
 }
 
-void Document::save_before_print_layout_position(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem>& item)
+void Document::save_before_print_layout_position(xmlpp::Element* nodeItem, const std::shared_ptr<const LayoutItem>& item)
 {
   xmlpp::Element* child = nodeItem->add_child(GLOM_NODE_POSITION);
 
@@ -3631,7 +3631,7 @@ void Document::save_before_print_layout_position(xmlpp::Element* nodeItem, const
     nodeItem->remove_child(child);
 }
 
-void Document::save_before_choicevalue(xmlpp::Element* nodeItem, const sharedptr<const ChoiceValue>& item, Field::glom_field_type field_type)
+void Document::save_before_choicevalue(xmlpp::Element* nodeItem, const std::shared_ptr<const ChoiceValue>& item, Field::glom_field_type field_type)
 {
   if(!item)
     return;
@@ -3644,11 +3644,11 @@ bool Document::save_before()
 {
   //TODO: Use some callback UI to show a busy cursor?
   /*
-  //Use a std::auto_ptr<> to avoid even unncessarily instantiating a BusyCursor,
+  //Use a std::shared_ptr<> to avoid even unncessarily instantiating a BusyCursor,
   //which would require GTK+ to be initialized:
-  std::auto_ptr<BusyCursor> auto_cursor;
+  std::shared_ptr<BusyCursor> auto_cursor;
   if(m_parent_window)
-    auto_cursor = std::auto_ptr<BusyCursor>( new BusyCursor(m_parent_window) );
+    auto_cursor = std::shared_ptr<BusyCursor>( new BusyCursor(m_parent_window) );
   */
 
   //TODO: Add xmlpp::Document::remove_root_node() to libxml++
@@ -3718,7 +3718,7 @@ bool Document::save_before()
     //Add tables:
     for(type_tables::const_iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
     {
-      const sharedptr<const DocumentTableInfo> doctableinfo = iter->second;
+      const std::shared_ptr<const DocumentTableInfo> doctableinfo = iter->second;
       if(!doctableinfo || !doctableinfo->m_info)
         continue;
 
@@ -3749,7 +3749,7 @@ bool Document::save_before()
               const unsigned int row_data_size = row_data.size();
               for(unsigned int i = 0; i < row_data_size; ++i)
               {
-                sharedptr<const Field> field = doctableinfo->m_fields[i];
+                std::shared_ptr<const Field> field = doctableinfo->m_fields[i];
                 if(!field)
                   break;
 
@@ -3772,7 +3772,7 @@ bool Document::save_before()
 
         for(type_vec_fields::const_iterator iter = doctableinfo->m_fields.begin(); iter != doctableinfo->m_fields.end(); ++iter)
         {
-          sharedptr<const Field> field = *iter;
+          std::shared_ptr<const Field> field = *iter;
 
           xmlpp::Element* elemField = elemFields->add_child(GLOM_NODE_FIELD);
           XmlUtils::set_node_attribute_value(elemField, GLOM_ATTRIBUTE_NAME, field->get_name());
@@ -3796,7 +3796,7 @@ bool Document::save_before()
           {
             xmlpp::Element* elemFieldLookup = elemField->add_child(GLOM_NODE_FIELD_LOOKUP);
 
-            sharedptr<Relationship> lookup_relationship = field->get_lookup_relationship();
+            std::shared_ptr<Relationship> lookup_relationship = field->get_lookup_relationship();
             XmlUtils::set_node_attribute_value(elemFieldLookup, GLOM_ATTRIBUTE_RELATIONSHIP_NAME, glom_get_sharedptr_name(lookup_relationship));
 
             XmlUtils::set_node_attribute_value(elemFieldLookup, GLOM_ATTRIBUTE_FIELD, field->get_lookup_field());
@@ -3818,7 +3818,7 @@ bool Document::save_before()
         const type_vec_relationships relationships = doctableinfo->m_relationships;
         for(type_vec_relationships::const_iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
         {
-          sharedptr<const Relationship> relationship = *iter;
+          std::shared_ptr<const Relationship> relationship = *iter;
           if(relationship)
           {
             xmlpp::Element* elemRelationship = elemRelationships->add_child(GLOM_NODE_RELATIONSHIP);
@@ -3862,7 +3862,7 @@ bool Document::save_before()
         {
           xmlpp::Element* nodeReport = nodeReports->add_child(GLOM_NODE_REPORT);
 
-          sharedptr<const Report> report = iter->second;
+          std::shared_ptr<const Report> report = iter->second;
           XmlUtils::set_node_attribute_value(nodeReport, GLOM_ATTRIBUTE_NAME, report->get_name());
           XmlUtils::set_node_attribute_value_as_bool(nodeReport, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE, report->get_show_table_title());
 
@@ -3881,7 +3881,7 @@ bool Document::save_before()
         {
           xmlpp::Element* nodePrintLayout = nodePrintLayouts->add_child(GLOM_NODE_PRINT_LAYOUT);
 
-          sharedptr<const PrintLayout> print_layout = iter->second;
+          std::shared_ptr<const PrintLayout> print_layout = iter->second;
           XmlUtils::set_node_attribute_value(nodePrintLayout, GLOM_ATTRIBUTE_NAME, print_layout->get_name());
           XmlUtils::set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE, print_layout->get_show_table_title());
 
@@ -4076,7 +4076,7 @@ void Document::remove_group(const Glib::ustring& group_name)
 
 std::vector<Glib::ustring> Document::get_report_names(const Glib::ustring& table_name) const
 {
-  const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<const DocumentTableInfo> info = get_table_info(table_name);
   if(info)
   {
     std::vector<Glib::ustring> result;
@@ -4091,9 +4091,9 @@ std::vector<Glib::ustring> Document::get_report_names(const Glib::ustring& table
     return std::vector<Glib::ustring>();
 }
 
-void Document::set_report(const Glib::ustring& table_name, const sharedptr<Report>& report)
+void Document::set_report(const Glib::ustring& table_name, const std::shared_ptr<Report>& report)
 {
-  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<DocumentTableInfo> info = get_table_info(table_name);
   if(info)
   {
     info->m_reports[report->get_name()] = report;
@@ -4101,9 +4101,9 @@ void Document::set_report(const Glib::ustring& table_name, const sharedptr<Repor
   }
 }
 
-sharedptr<Report> Document::get_report(const Glib::ustring& table_name, const Glib::ustring& report_name) const
+std::shared_ptr<Report> Document::get_report(const Glib::ustring& table_name, const Glib::ustring& report_name) const
 {
-  const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<const DocumentTableInfo> info = get_table_info(table_name);
   if(info)
   {
     DocumentTableInfo::type_reports::const_iterator iterFindReport = info->m_reports.find(report_name);
@@ -4113,12 +4113,12 @@ sharedptr<Report> Document::get_report(const Glib::ustring& table_name, const Gl
     }
   }
 
-  return sharedptr<Report>();
+  return std::shared_ptr<Report>();
 }
 
 void Document::remove_report(const Glib::ustring& table_name, const Glib::ustring& report_name)
 {
-  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<DocumentTableInfo> info = get_table_info(table_name);
   if(info)
   {
     DocumentTableInfo::type_reports::iterator iterFindReport = info->m_reports.find(report_name);
@@ -4134,7 +4134,7 @@ void Document::remove_report(const Glib::ustring& table_name, const Glib::ustrin
 
 std::vector<Glib::ustring> Document::get_print_layout_names(const Glib::ustring& table_name) const
 {
-  const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<const DocumentTableInfo> info = get_table_info(table_name);
   if(info)
   {
     std::vector<Glib::ustring> result;
@@ -4150,9 +4150,9 @@ std::vector<Glib::ustring> Document::get_print_layout_names(const Glib::ustring&
 }
 
 
-void Document::set_print_layout(const Glib::ustring& table_name, const sharedptr<PrintLayout>& print_layout)
+void Document::set_print_layout(const Glib::ustring& table_name, const std::shared_ptr<PrintLayout>& print_layout)
 {
-  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<DocumentTableInfo> info = get_table_info(table_name);
   if(info)
   {
     info->m_print_layouts[print_layout->get_name()] = print_layout;
@@ -4160,9 +4160,9 @@ void Document::set_print_layout(const Glib::ustring& table_name, const sharedptr
   }
 }
 
-sharedptr<PrintLayout> Document::get_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name) const
+std::shared_ptr<PrintLayout> Document::get_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name) const
 {
-  const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<const DocumentTableInfo> info = get_table_info(table_name);
   if(info)
   {
     DocumentTableInfo::type_print_layouts::const_iterator iterFindPrintLayout = info->m_print_layouts.find(print_layout_name);
@@ -4172,12 +4172,12 @@ sharedptr<PrintLayout> Document::get_print_layout(const Glib::ustring& table_nam
     }
   }
 
-  return sharedptr<PrintLayout>();
+  return std::shared_ptr<PrintLayout>();
 }
 
 void Document::remove_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name)
 {
-  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<DocumentTableInfo> info = get_table_info(table_name);
   if(info)
   {
     DocumentTableInfo::type_print_layouts::iterator iterFindPrintLayout = info->m_print_layouts.find(print_layout_name);
@@ -4194,10 +4194,10 @@ void Document::remove_print_layout(const Glib::ustring& table_name, const Glib::
 
 bool Document::get_relationship_is_to_one(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const
 {
-  sharedptr<const Relationship> relationship = get_relationship(table_name, relationship_name);
+  std::shared_ptr<const Relationship> relationship = get_relationship(table_name, relationship_name);
   if(relationship)
   {
-    sharedptr<const Field> field_to = get_field(relationship->get_to_table(), relationship->get_to_field());
+    std::shared_ptr<const Field> field_to = get_field(relationship->get_to_table(), relationship->get_to_field());
     if(field_to)
       return (field_to->get_primary_key() || field_to->get_unique_key());
   }
@@ -4205,9 +4205,9 @@ bool Document::get_relationship_is_to_one(const Glib::ustring& table_name, const
   return false;
 }
 
-sharedptr<const Relationship> Document::get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_field) const
+std::shared_ptr<const Relationship> Document::get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const std::shared_ptr<const LayoutItem_Field>& layout_field) const
 {
-  sharedptr<const Relationship> result;
+  std::shared_ptr<const Relationship> result;
 
   if(!layout_field)
   {
@@ -4216,7 +4216,7 @@ sharedptr<const Relationship> Document::get_field_used_in_relationship_to_one(co
   }
 
   const Glib::ustring table_used = layout_field->get_table_used(table_name);
-  const sharedptr<const DocumentTableInfo> table_info = get_table_info(table_used);
+  const std::shared_ptr<const DocumentTableInfo> table_info = get_table_info(table_used);
   if(!table_info)
   {
     //This table is special. We would not create a relationship to it using a field:
@@ -4231,7 +4231,7 @@ sharedptr<const Relationship> Document::get_field_used_in_relationship_to_one(co
   const Glib::ustring field_name = layout_field->get_name();
   for(type_vec_relationships::const_iterator iterRel = table_info->m_relationships.begin(); iterRel != table_info->m_relationships.end(); ++iterRel)
   {
-    sharedptr<const Relationship> relationship = *iterRel;
+    std::shared_ptr<const Relationship> relationship = *iterRel;
     if(relationship)
     {
       //If the relationship uses the field
@@ -4255,21 +4255,21 @@ sharedptr<const Relationship> Document::get_field_used_in_relationship_to_one(co
 
 void Document::forget_layout_record_viewed(const Glib::ustring& table_name)
 {
-  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<DocumentTableInfo> info = get_table_info(table_name);
   if(info)
     info->m_map_current_record.clear();
 }
 
 void Document::set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Gnome::Gda::Value& primary_key_value)
 {
-  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<DocumentTableInfo> info = get_table_info(table_name);
   if(info)
     info->m_map_current_record[layout_name] = primary_key_value;
 }
 
 Gnome::Gda::Value Document::get_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name) const
 {
-  const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<const DocumentTableInfo> info = get_table_info(table_name);
   if(info)
   {
     DocumentTableInfo::type_map_layout_primarykeys::const_iterator iterLayoutKeys = info->m_map_current_record.find(layout_name);
@@ -4282,21 +4282,21 @@ Gnome::Gda::Value Document::get_layout_record_viewed(const Glib::ustring& table_
 
 void Document::set_layout_current(const Glib::ustring& table_name, const Glib::ustring& layout_name)
 {
-  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<DocumentTableInfo> info = get_table_info(table_name);
   if(info)
     info->m_layout_current = layout_name;
 }
 
 void Document::set_criteria_current(const Glib::ustring& table_name, const FoundSet& found_set)
 {
-  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<DocumentTableInfo> info = get_table_info(table_name);
   if(info)
     info->m_foundset_current = found_set;
 }
 
 Glib::ustring Document::get_layout_current(const Glib::ustring& table_name) const
 {
-  const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<const DocumentTableInfo> info = get_table_info(table_name);
   if(info)
     return info->m_layout_current;
 
@@ -4305,7 +4305,7 @@ Glib::ustring Document::get_layout_current(const Glib::ustring& table_name) cons
 
 FoundSet Document::get_criteria_current(const Glib::ustring& table_name) const
 {
-  const sharedptr<const DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<const DocumentTableInfo> info = get_table_info(table_name);
   if(info)
     return info->m_foundset_current;
 
@@ -4407,7 +4407,7 @@ private:
 
 } //anonymous namespace
 
-static void add_to_translatable_list(Document::type_list_translatables& list, const sharedptr<TranslatableItem>& item, const Glib::ustring& hint)
+static void add_to_translatable_list(Document::type_list_translatables& list, const std::shared_ptr<TranslatableItem>& item, const Glib::ustring& hint)
 {
   // Only add the item/hint combination if it is not there already:
   const Document::pair_translatable_item_and_hint item_and_hint(item, hint);
@@ -4450,7 +4450,7 @@ Document::type_list_translatables Document::get_translatable_items()
   type_listTableInfo tables = get_tables();
   for(type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
-    sharedptr<TableInfo> tableinfo = *iter;
+    std::shared_ptr<TableInfo> tableinfo = *iter;
     if(!tableinfo)
       continue;
 
@@ -4463,7 +4463,7 @@ Document::type_list_translatables Document::get_translatable_items()
     type_vec_fields fields = get_table_fields(table_name);
     for(type_vec_fields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
-      sharedptr<Field> field = *iter;
+      std::shared_ptr<Field> field = *iter;
       if(!field)
         continue;
 
@@ -4488,7 +4488,7 @@ Document::type_list_translatables Document::get_translatable_items()
     for(std::vector<Glib::ustring>::iterator iter = listReports.begin(); iter != listReports.end(); ++iter)
     {
       const Glib::ustring report_name = *iter;
-      sharedptr<Report> report = get_report(table_name, report_name);
+      std::shared_ptr<Report> report = get_report(table_name, report_name);
       if(!report)
         continue;
 
@@ -4505,7 +4505,7 @@ Document::type_list_translatables Document::get_translatable_items()
     for(std::vector<Glib::ustring>::iterator iter = listPrintLayouts.begin(); iter != listPrintLayouts.end(); ++iter)
     {
       const Glib::ustring print_layout_name = *iter;
-      sharedptr<PrintLayout> print_layout = get_print_layout(table_name, print_layout_name);
+      std::shared_ptr<PrintLayout> print_layout = get_print_layout(table_name, print_layout_name);
       if(!print_layout)
         continue;
 
@@ -4529,7 +4529,7 @@ Document::type_list_translatables Document::get_translatable_layout_items(const 
 {
   type_list_translatables result;
 
-  const sharedptr<DocumentTableInfo> info = get_table_info(table_name);
+  const std::shared_ptr<DocumentTableInfo> info = get_table_info(table_name);
   if(!info)
     return result;
 
@@ -4540,7 +4540,7 @@ Document::type_list_translatables Document::get_translatable_layout_items(const 
     //Look at each group:
     for(type_list_layout_groups::iterator iterGroup = iterLayouts->m_layout_groups.begin(); iterGroup != iterLayouts->m_layout_groups.end(); ++iterGroup)
     {
-      sharedptr<LayoutGroup> group = *iterGroup;
+      std::shared_ptr<LayoutGroup> group = *iterGroup;
       if(group)
       {
         fill_translatable_layout_items(group, result, hint);
@@ -4556,7 +4556,7 @@ Document::type_list_translatables Document::get_translatable_report_items(const 
 {
   Document::type_list_translatables the_list;
 
-  sharedptr<Report> report = get_report(table_name, report_name);
+  std::shared_ptr<Report> report = get_report(table_name, report_name);
   if(report)
     fill_translatable_layout_items(report->get_layout_group(), the_list, hint);
 
@@ -4567,7 +4567,7 @@ Document::type_list_translatables Document::get_translatable_print_layout_items(
 {
   Document::type_list_translatables the_list;
 
-  sharedptr<PrintLayout> print_layout = get_print_layout(table_name, print_layout_name);
+  std::shared_ptr<PrintLayout> print_layout = get_print_layout(table_name, print_layout_name);
   if(print_layout)
     fill_translatable_layout_items(print_layout->get_layout_group(), the_list, hint);
 
@@ -4582,17 +4582,17 @@ void Document::fill_translatable_custom_choices(Formatting& formatting, type_lis
   Formatting::type_list_values values = formatting.get_choices_custom();
   for(Formatting::type_list_values::iterator iter = values.begin(); iter != values.end(); ++iter)
   {
-    sharedptr<ChoiceValue> value = *iter;
+    std::shared_ptr<ChoiceValue> value = *iter;
 
     the_list.push_back( pair_translatable_item_and_hint(value, hint) );
   }
 }
 
-void Document::fill_translatable_layout_items(const sharedptr<LayoutItem_Field>& layout_field, type_list_translatables& the_list, const Glib::ustring& hint)
+void Document::fill_translatable_layout_items(const std::shared_ptr<LayoutItem_Field>& layout_field, type_list_translatables& the_list, const Glib::ustring& hint)
 {
   //LayoutItem_Field items do not have their own titles.
   //They use either the field's title or a custom title:
-  sharedptr<CustomTitle> custom_title = layout_field->get_title_custom();
+  std::shared_ptr<CustomTitle> custom_title = layout_field->get_title_custom();
   if(custom_title)
   {
     the_list.push_back( pair_translatable_item_and_hint(custom_title, hint) ); 
@@ -4610,10 +4610,10 @@ void Document::fill_translatable_layout_items(const sharedptr<LayoutItem_Field>&
 }
 
 
-void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list, const Glib::ustring& hint)
+void Document::fill_translatable_layout_items(const std::shared_ptr<LayoutGroup>& group, type_list_translatables& the_list, const Glib::ustring& hint)
 {
   //Portals don't have their own titles - they use the relationship title (though we might want to allow custom titles)
-  sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(group);
+  std::shared_ptr<LayoutItem_Portal> portal = std::dynamic_pointer_cast<LayoutItem_Portal>(group);
   if(!portal)
   {
     the_list.push_back( pair_translatable_item_and_hint(group, hint) );
@@ -4628,15 +4628,15 @@ void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& grou
   LayoutGroup::type_list_items items = group->get_items();
   for(LayoutGroup::type_list_items::const_iterator iterItems = items.begin(); iterItems != items.end(); ++iterItems)
   {
-    sharedptr<LayoutItem> item = *iterItems;
+    std::shared_ptr<LayoutItem> item = *iterItems;
 
-    sharedptr<LayoutGroup> child_group = sharedptr<LayoutGroup>::cast_dynamic(item);
+    std::shared_ptr<LayoutGroup> child_group = std::dynamic_pointer_cast<LayoutGroup>(item);
     if(child_group) //If it is a group, portal, summary, or groupby.
     {
-      sharedptr<LayoutItem_GroupBy> group_by = sharedptr<LayoutItem_GroupBy>::cast_dynamic(child_group);
+      std::shared_ptr<LayoutItem_GroupBy> group_by = std::dynamic_pointer_cast<LayoutItem_GroupBy>(child_group);
       if(group_by)
       {
-        sharedptr<LayoutItem_Field> field = group_by->get_field_group_by();
+        std::shared_ptr<LayoutItem_Field> field = group_by->get_field_group_by();
         fill_translatable_layout_items(field, the_list, hint);
 
         fill_translatable_layout_items(group_by->get_secondary_fields(), the_list, this_hint);
@@ -4648,12 +4648,12 @@ void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& grou
     else
     {
       //Buttons too:
-      sharedptr<LayoutItem_Button> button = sharedptr<LayoutItem_Button>::cast_dynamic(item);
+      std::shared_ptr<LayoutItem_Button> button = std::dynamic_pointer_cast<LayoutItem_Button>(item);
       if(button)
         the_list.push_back( pair_translatable_item_and_hint(button, this_hint) );
       else
       {
-        sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::cast_dynamic(item);
+        std::shared_ptr<LayoutItem_Text> text = std::dynamic_pointer_cast<LayoutItem_Text>(item);
         if(text)
         {
           the_list.push_back( pair_translatable_item_and_hint(text, this_hint) );
@@ -4663,12 +4663,12 @@ void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& grou
         else
         {
           //Images have titles:
-          sharedptr<LayoutItem_Image> image = sharedptr<LayoutItem_Image>::cast_dynamic(item);
+          std::shared_ptr<LayoutItem_Image> image = std::dynamic_pointer_cast<LayoutItem_Image>(item);
           if(image)
             the_list.push_back( pair_translatable_item_and_hint(image, this_hint) );
           else
           {
-            sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+            std::shared_ptr<LayoutItem_Field> layout_field = std::dynamic_pointer_cast<LayoutItem_Field>(item);
             if(layout_field)
             {
               fill_translatable_layout_items(layout_field, the_list, hint);
@@ -5197,20 +5197,20 @@ Document::type_list_lookups Document::get_lookup_fields(const Glib::ustring& tab
   const type_vec_fields fields = get_table_fields(table_name); //TODO_Performance: Cache this?
   for(type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end();  ++iter)
   {
-    sharedptr<Field> field = *iter;
+    std::shared_ptr<Field> field = *iter;
 
     //Examine each field that looks up its data from a relationship:
     if(field && field->get_is_lookup())
     {
       //Get the relationship information:
-      sharedptr<Relationship> relationship = field->get_lookup_relationship();
+      std::shared_ptr<Relationship> relationship = field->get_lookup_relationship();
       if(relationship)
       {
         //If the relationship is triggererd by the specified field:
         if(relationship->get_from_field() == field_name)
         {
           //Add it:
-          sharedptr<LayoutItem_Field> item = sharedptr<LayoutItem_Field>::create();
+          std::shared_ptr<LayoutItem_Field> item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
           item->set_full_field_details(field);
           result.push_back( type_pairFieldTrigger(item, relationship) );
         }

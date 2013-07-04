@@ -33,17 +33,17 @@ static bool check_get_extra_rows(const Glib::ustring& quote_char)
 {
   //Try to get more rows than intended:
   const Gnome::Gda::Value value("Born To Run" + quote_char + " OR " + quote_char + "x" + quote_char + "=" + quote_char + "x");
-  Glom::sharedptr<const Glom::Field> where_field = document.get_field("albums", "name");
+  std::shared_ptr<const Glom::Field> where_field = document.get_field("albums", "name");
   const Gnome::Gda::SqlExpr where_clause = 
     Glom::Utils::build_simple_where_expression("albums", where_field, value);
   
   Glom::Utils::type_vecLayoutFields fieldsToGet;
-  Glom::sharedptr<const Glom::Field> field = document.get_field("albums", "album_id");
-  Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  std::shared_ptr<const Glom::Field> field = document.get_field("albums", "album_id");
+  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
   field = document.get_field("albums", "name");
-  layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 
@@ -65,18 +65,18 @@ static bool check_drop_table(const Glib::ustring& quote_char)
 {
   //Try to drop the table in a second SQL statement:
   const Gnome::Gda::Value value("True Blue" + quote_char + "; DROP TABLE songs; --");
-  Glom::sharedptr<const Glom::Field> where_field = 
+  std::shared_ptr<const Glom::Field> where_field = 
     document.get_field("albums", "name");
   const Gnome::Gda::SqlExpr where_clause = 
     Glom::Utils::build_simple_where_expression("albums", where_field, value);
   
   Glom::Utils::type_vecLayoutFields fieldsToGet;
-  Glom::sharedptr<const Glom::Field> field = document.get_field("albums", "album_id");
-  Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  std::shared_ptr<const Glom::Field> field = document.get_field("albums", "album_id");
+  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
   field = document.get_field("albums", "name");
-  layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 
@@ -105,18 +105,18 @@ static bool check_avoid_quotes_and_drop_table_with_false_value_type()
   //Try to drop the table in a second SQL statement,
   //by using a text value for a field whose type should not need quoting:
   const Gnome::Gda::Value value("1;DROP TABLE songs");
-  Glom::sharedptr<const Glom::Field> where_field = 
+  std::shared_ptr<const Glom::Field> where_field = 
     document.get_field("albums", "album_id");
   const Gnome::Gda::SqlExpr where_clause = 
     Glom::Utils::build_simple_where_expression("albums", where_field, value);
   
   Glom::Utils::type_vecLayoutFields fieldsToGet;
-  Glom::sharedptr<const Glom::Field> field = document.get_field("albums", "album_id");
-  Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  std::shared_ptr<const Glom::Field> field = document.get_field("albums", "album_id");
+  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
   field = document.get_field("albums", "name");
-  layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 
@@ -162,7 +162,7 @@ static bool check_avoid_quotes_and_drop_table_with_false_field_type()
   const Gnome::Gda::Value value("\"Born To Run\";DROP TABLE songs");
 
   //Specify a field with incorrect type information:
-  Glom::sharedptr<Glom::Field> where_field = 
+  std::shared_ptr<Glom::Field> where_field = 
     document.get_field("albums", "name");
   where_field->set_glom_type(Glom::Field::TYPE_NUMERIC);
   //const GType gda_type = Glom::Field::get_gda_type_for_glom_type(Glom::TYPE_NUMERIC); 
@@ -171,12 +171,12 @@ static bool check_avoid_quotes_and_drop_table_with_false_field_type()
     Glom::Utils::build_simple_where_expression("albums", where_field, value);
  
   Glom::Utils::type_vecLayoutFields fieldsToGet;
-  Glom::sharedptr<const Glom::Field> field = document.get_field("albums", "album_id");
-  Glom::sharedptr<Glom::LayoutItem_Field> layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  std::shared_ptr<const Glom::Field> field = document.get_field("albums", "album_id");
+  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
   field = document.get_field("albums", "name");
-  layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
+  layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 

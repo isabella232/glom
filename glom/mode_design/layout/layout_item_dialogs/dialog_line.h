@@ -43,14 +43,14 @@ public:
   Dialog_Line(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_Line();
 
-  void set_line(const sharedptr<const LayoutItem_Line>& line);
-  sharedptr<LayoutItem_Line> get_line() const;
+  void set_line(const std::shared_ptr<const LayoutItem_Line>& line);
+  std::shared_ptr<LayoutItem_Line> get_line() const;
 
 private:
   Gtk::SpinButton* m_spinbutton_line_width;
   Gtk::ColorButton* m_colorbutton;
 
-  sharedptr<LayoutItem_Line> m_line;
+  std::shared_ptr<LayoutItem_Line> m_line;
 };
 
 } //namespace Glom

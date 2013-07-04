@@ -30,18 +30,18 @@
 #include <iostream>
 #include <cstdlib> //For EXIT_SUCCESS and EXIT_FAILURE
 
-static Glom::sharedptr<const Glom::LayoutItem_Field> get_lookup_field(const Glom::Document::type_list_lookups& container, const Glib::ustring& table_name, const Glib::ustring& field_name, Glom::sharedptr<const Glom::Relationship>& relationship)
+static std::shared_ptr<const Glom::LayoutItem_Field> get_lookup_field(const Glom::Document::type_list_lookups& container, const Glib::ustring& table_name, const Glib::ustring& field_name, std::shared_ptr<const Glom::Relationship>& relationship)
 {
-  relationship.clear();
-  Glom::sharedptr<const Glom::LayoutItem_Field> result;
+  relationship.reset();
+  std::shared_ptr<const Glom::LayoutItem_Field> result;
 
   for(Glom::Document::type_list_lookups::const_iterator iter = container.begin(); iter != container.end(); ++iter)
   {
-    const Glom::sharedptr<const Glom::LayoutItem_Field> layout_item = iter->first;
+    const std::shared_ptr<const Glom::LayoutItem_Field> layout_item = iter->first;
     if(!layout_item)
       return result;
 
-    const Glom::sharedptr<const Glom::Relationship> this_relationship = iter->second;
+    const std::shared_ptr<const Glom::Relationship> this_relationship = iter->second;
     if(!this_relationship)
       return result;
 
@@ -60,8 +60,8 @@ static Glom::sharedptr<const Glom::LayoutItem_Field> get_lookup_field(const Glom
 
 static bool contains_field(const Glom::Document::type_list_lookups& container, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
-  Glom::sharedptr<const Glom::Relationship> relationship;
-  return get_lookup_field(container, table_name, field_name, relationship);
+  std::shared_ptr<const Glom::Relationship> relationship;
+  return (bool)get_lookup_field(container, table_name, field_name, relationship);
 }
 
 static bool test(Glom::Document::HostingMode hosting_mode)
@@ -76,7 +76,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
   
   const Glib::ustring table_name = "invoice_lines";
-  Glom::sharedptr<const Glom::Field> primary_key_field = document.get_field_primary_key(table_name);
+  std::shared_ptr<const Glom::Field> primary_key_field = document.get_field_primary_key(table_name);
   if(!primary_key_field)
   {
     std::cerr << G_STRFUNC << ": Failure: primary_key_field is empty." << std::endl;
@@ -111,8 +111,8 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   const Glib::ustring field_name = "product_price";
-  Glom::sharedptr<const Glom::Relationship> relationship;
-  const Glom::sharedptr<const Glom::LayoutItem_Field> layout_field = 
+  std::shared_ptr<const Glom::Relationship> relationship;
+  const std::shared_ptr<const Glom::LayoutItem_Field> layout_field = 
     get_lookup_field(lookups, table_name, field_name, relationship);
   if(!layout_field)
   {
@@ -144,7 +144,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
-  const Glom::sharedptr<const Glom::Field> field = layout_field->get_full_field_details();
+  const std::shared_ptr<const Glom::Field> field = layout_field->get_full_field_details();
   if(!field)
   {
     std::cerr << G_STRFUNC << ": Failure: The lookup item's field is empty." << std::endl;
@@ -176,7 +176,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   //Lookup the value from the related record.
-  const Glom::sharedptr<Glom::Field> field_source = 
+  const std::shared_ptr<Glom::Field> field_source = 
     document.get_field(relationship->get_to_table(), field->get_lookup_field());
   const Gnome::Gda::Value value = Glom::DbUtils::get_lookup_value(&document, 
     table_name, relationship, field_source, Gnome::Gda::Value(2));

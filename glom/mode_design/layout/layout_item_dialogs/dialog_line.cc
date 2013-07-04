@@ -51,7 +51,7 @@ Dialog_Line::~Dialog_Line()
 {
 }
 
-void Dialog_Line::set_line(const sharedptr<const LayoutItem_Line>& line)
+void Dialog_Line::set_line(const std::shared_ptr<const LayoutItem_Line>& line)
 {
   if(!line)
   {
@@ -72,14 +72,14 @@ void Dialog_Line::set_line(const sharedptr<const LayoutItem_Line>& line)
   //Dialog_Properties::set_modified(false);
 }
 
-sharedptr<LayoutItem_Line> Dialog_Line::get_line() const
+std::shared_ptr<LayoutItem_Line> Dialog_Line::get_line() const
 {
   if(!m_line)
   {
     std::cerr << G_STRFUNC <<  ": m_line is null" << std::endl;
   }
   
-  sharedptr<LayoutItem_Line> result = glom_sharedptr_clone(m_line); //Start with the old details, to preserve anything that is not in our UI.
+  std::shared_ptr<LayoutItem_Line> result = glom_sharedptr_clone(m_line); //Start with the old details, to preserve anything that is not in our UI.
 
   if(!result)
   {

@@ -68,23 +68,23 @@ void LayoutItem_CalendarPortal::change_field_item_name(const Glib::ustring& tabl
 {
   LayoutItem_Portal::change_field_item_name(table_name, field_name, field_name_new);
   
-  sharedptr<const Relationship> relationship = get_relationship();
+  std::shared_ptr<const Relationship> relationship = get_relationship();
         
   if(relationship && (relationship->get_to_table() == table_name) && (m_date_field->get_name() == field_name))
       m_date_field->set_name(field_name_new); //Change it.
 }
 
-sharedptr<Field> LayoutItem_CalendarPortal::get_date_field()
+std::shared_ptr<Field> LayoutItem_CalendarPortal::get_date_field()
 {
   return m_date_field;
 }
 
-sharedptr<const Field> LayoutItem_CalendarPortal::get_date_field() const
+std::shared_ptr<const Field> LayoutItem_CalendarPortal::get_date_field() const
 {
   return m_date_field;
 }
 
-void LayoutItem_CalendarPortal::set_date_field(const sharedptr<Field>& field)
+void LayoutItem_CalendarPortal::set_date_field(const std::shared_ptr<Field>& field)
 {
   m_date_field = field;
 }

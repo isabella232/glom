@@ -140,12 +140,12 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
   create_model(columns_count);
 
   //Fill the model with data:
-  sharedptr<LayoutItem_Field> layout_item =
-    sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+  std::shared_ptr<LayoutItem_Field> layout_item =
+    std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
   const Formatting& format = layout_item->get_formatting_used();
-  sharedptr<const Relationship> choice_relationship;
-  sharedptr<const LayoutItem_Field> layout_choice_first;
-  sharedptr<const LayoutGroup> layout_choice_extra;
+  std::shared_ptr<const Relationship> choice_relationship;
+  std::shared_ptr<const LayoutItem_Field> layout_choice_first;
+  std::shared_ptr<const LayoutGroup> layout_choice_extra;
   bool choice_show_all = false;
   format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_extra, choice_show_all);
 
@@ -185,8 +185,8 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
           if(iterValues == extra_values.end())
             break;
 
-          const sharedptr<const LayoutItem> item = *iterExtra;
-          const sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
+          const std::shared_ptr<const LayoutItem> item = *iterExtra;
+          const std::shared_ptr<const LayoutItem_Field> item_field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
           if(item_field)
           {
             const Gnome::Gda::Value value = *iterValues;
@@ -221,11 +221,11 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const Formatting::type_list_va
     Gtk::TreeModel::iterator iterTree = list_store->append();
     Gtk::TreeModel::Row row = *iterTree;
 
-    sharedptr<const LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+    std::shared_ptr<const LayoutItem_Field> layout_item = std::dynamic_pointer_cast<LayoutItem_Field>(get_layout_item());
     if(!layout_item)
       continue;
     
-    const sharedptr<ChoiceValue> choicevalue = *iter;
+    const std::shared_ptr<ChoiceValue> choicevalue = *iter;
     if(!choicevalue)
       continue;
 
@@ -255,7 +255,7 @@ void ComboChoicesWithTreeModel::set_choices_fixed(const Formatting::type_list_va
   //then sets up the view, using the model.
 }
 
-void ComboChoicesWithTreeModel::set_choices_related(const Document* document, const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value)
+void ComboChoicesWithTreeModel::set_choices_related(const Document* document, const std::shared_ptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& foreign_key_value)
 {
   if(!document)
   {
@@ -264,9 +264,9 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
   }
 
   const Formatting& format = layout_field->get_formatting_used();
-  sharedptr<const Relationship> choice_relationship;
-  sharedptr<const LayoutItem_Field> layout_choice_first;
-  sharedptr<const LayoutGroup> layout_choice_extra;
+  std::shared_ptr<const Relationship> choice_relationship;
+  std::shared_ptr<const LayoutItem_Field> layout_choice_first;
+  std::shared_ptr<const LayoutGroup> layout_choice_extra;
   Formatting::type_list_sort_fields choice_sort_fields;
   bool choice_show_all = false;
   format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_extra, choice_sort_fields, choice_show_all);
@@ -274,7 +274,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
     std::cerr << G_STRFUNC << ": layout_choice_first has invalid type. field name: " << layout_choice_first->get_name() << std::endl;
 
   //Set full field details, cloning the group to avoid the constness:
-  sharedptr<LayoutGroup> layout_choice_extra_full = glom_sharedptr_clone(layout_choice_extra);
+  std::shared_ptr<LayoutGroup> layout_choice_extra_full = glom_sharedptr_clone(layout_choice_extra);
   const Glib::ustring table_name = choice_relationship->get_to_table();
   document->fill_layout_field_details(table_name,  layout_choice_extra_full);
 
@@ -298,7 +298,7 @@ void ComboChoicesWithTreeModel::set_choices_related(const Document* document, co
 
   if(!foreign_key_value.is_null())
   {
-    const sharedptr<const Field> to_field = document->get_field(to_table, choice_relationship->get_to_field());
+    const std::shared_ptr<const Field> to_field = document->get_field(to_table, choice_relationship->get_to_field());
 
     found_set.m_where_clause = Utils::build_simple_where_expression(
       to_table, to_field, foreign_key_value);
@@ -332,7 +332,7 @@ Glib::RefPtr<Gtk::TreeModel> ComboChoicesWithTreeModel::get_choices_model()
   return m_refModel;
 }
 
-void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell, const std::shared_ptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
 {
   if(!field)
     return;
@@ -417,8 +417,8 @@ void ComboChoicesWithTreeModel::on_cell_data(const Gtk::TreeModel::iterator& ite
   if(!iter)
     return;
 
-  const sharedptr<const LayoutItem>& layout_item = m_db_layout_items[model_column_index];
-  sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+  const std::shared_ptr<const LayoutItem>& layout_item = m_db_layout_items[model_column_index];
+  std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(layout_item);
   if(!field)
     return;
 
@@ -462,7 +462,7 @@ int ComboChoicesWithTreeModel::get_fixed_cell_height(Gtk::Widget& widget)
     {
       Glib::ustring font_name;
 
-      const sharedptr<const LayoutItem_WithFormatting> item_withformatting = sharedptr<const LayoutItem_WithFormatting>::cast_dynamic(*iter);
+      const std::shared_ptr<const LayoutItem_WithFormatting> item_withformatting = std::dynamic_pointer_cast<const LayoutItem_WithFormatting>(*iter);
       if(item_withformatting)
       {
          const Formatting& formatting = item_withformatting->get_formatting_used();

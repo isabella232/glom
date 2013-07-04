@@ -68,7 +68,7 @@ void Box_Data_List_Related::enable_buttons()
   m_AddDel.set_allow_view_details(view_details_possible);
 }
 
-bool Box_Data_List_Related::init_db_details(const sharedptr<const LayoutItem_Portal>& portal, bool show_title)
+bool Box_Data_List_Related::init_db_details(const std::shared_ptr<const LayoutItem_Portal>& portal, bool show_title)
 {
   //This calls the other method overload:
   return Box_Data_Portal::init_db_details(portal, show_title);
@@ -124,7 +124,7 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
       LayoutWidgetBase::m_table_name, m_portal->get_to_field_used());
   }
   else
-    m_key_field.clear();
+    m_key_field.reset();
 
 
   //Prevent impossible multiple related records:
@@ -220,7 +220,7 @@ void Box_Data_List_Related::on_adddel_user_requested_layout()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 
-void Box_Data_List_Related::on_adddel_script_button_clicked(const sharedptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row)
+void Box_Data_List_Related::on_adddel_script_button_clicked(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row)
 {
   if(!layout_item)
     return;
@@ -240,7 +240,7 @@ void Box_Data_List_Related::on_adddel_script_button_clicked(const sharedptr<cons
       primary_key_value));
 }
 
-bool Box_Data_List_Related::on_script_button_idle(const sharedptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key)
+bool Box_Data_List_Related::on_script_button_idle(const std::shared_ptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key)
 {
   execute_button_script(layout_item, primary_key);
 
@@ -279,7 +279,7 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
   if(m_key_field)
   {
     //m_key_field is the field in this table that must match another field in the parent table.
-    sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+    std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
     layout_item->set_full_field_details(m_key_field);
     key_value = m_AddDel.get_value(row, layout_item);
   }
@@ -299,7 +299,7 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
   }
   else
   {
-    sharedptr<Field> field_primary_key = m_AddDel.get_key_field();
+    std::shared_ptr<Field> field_primary_key = m_AddDel.get_key_field();
 
     //Create the link by setting the foreign key
     if(m_key_field && m_portal)
@@ -307,7 +307,7 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
       make_record_related(primary_key_value);
 
       //Show it on the view, if it's visible:
-      sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+      std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
       layout_item->set_full_field_details(m_key_field);
 
       //TODO: Although the to-field value is visible on the new related record, get_value() returns NULL so you can't immediately navigate to the new record:
@@ -337,7 +337,7 @@ void Box_Data_List_Related::on_dialog_layout_hide()
 
   Box_Data::on_dialog_layout_hide();
 
-  sharedptr<LayoutItem_Portal> pLayoutItem = sharedptr<LayoutItem_Portal>::cast_dynamic(get_layout_item());
+  std::shared_ptr<LayoutItem_Portal> pLayoutItem = std::dynamic_pointer_cast<LayoutItem_Portal>(get_layout_item());
   if(pLayoutItem)
   {
     *pLayoutItem = *m_portal;
@@ -368,7 +368,7 @@ Gnome::Gda::Value Box_Data_List_Related::get_primary_key_value_selected() const
   return m_AddDel.get_value_key_selected();
 }
 
-sharedptr<Field> Box_Data_List_Related::get_field_primary_key() const
+std::shared_ptr<Field> Box_Data_List_Related::get_field_primary_key() const
 {
   return m_AddDel.get_key_field();
 }
@@ -418,7 +418,7 @@ void Box_Data_List_Related::create_layout()
       m_AddDel.set_height_rows(rows_count_min, rows_count_max);
   }
 
-  sharedptr<Field> field_primary_key = get_field_primary_key_for_table(Base_DB_Table::m_table_name);
+  std::shared_ptr<Field> field_primary_key = get_field_primary_key_for_table(Base_DB_Table::m_table_name);
   if(!field_primary_key)
   {
     std::cerr << G_STRFUNC << ": primary key not found." << std::endl;
@@ -435,20 +435,20 @@ void Box_Data_List_Related::create_layout()
   Document::type_list_layout_groups layout_groups = create_layout_get_layout();
   for(Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
   {
-    const sharedptr<LayoutGroup> layout_group = *iter;
+    const std::shared_ptr<LayoutGroup> layout_group = *iter;
     if(!layout_group)
       continue;
 
     const LayoutGroup::type_list_items child_items = layout_group->get_items_recursive();
     for(LayoutGroup::type_list_items::const_iterator iterItems = child_items.begin(); iterItems != child_items.end(); ++iterItems)
     {
-      sharedptr<LayoutItem> child_item = *iterItems;
+      std::shared_ptr<LayoutItem> child_item = *iterItems;
 
       //TODO: Set the whole thing as read-only instead:
       if(m_read_only)
         child_item->set_editable(false);
 
-      sharedptr<const LayoutItem_Field> child_field = sharedptr<const LayoutItem_Field>::cast_dynamic(child_item);
+      std::shared_ptr<const LayoutItem_Field> child_field = std::dynamic_pointer_cast<const LayoutItem_Field>(child_item);
       
       //This check has already happened in Frame_Glom::update_table_in_document_from_database().
       //It is inefficient and unnecessary to do it here too.
@@ -474,7 +474,7 @@ void Box_Data_List_Related::create_layout()
   //TODO: Only add it if it is not already there.
   if(field_primary_key)
   {
-    sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+    std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
     layout_item->set_hidden();
     layout_item->set_full_field_details(m_AddDel.get_key_field());
     m_FieldsShown.push_back(layout_item);

@@ -50,8 +50,8 @@ public:
   Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_FieldDefinition();
 
-  virtual void set_field(const sharedptr<const Field>& field, const Glib::ustring& table_name);
-  virtual sharedptr<Field> get_field() const; //TODO_FieldShared
+  virtual void set_field(const std::shared_ptr<const Field>& field, const Glib::ustring& table_name);
+  virtual std::shared_ptr<Field> get_field() const; //TODO_FieldShared
 
 private:
 
@@ -93,7 +93,7 @@ private:
 
   DataWidget* m_pDataWidget_DefaultValueSimple;
 
-  sharedptr<Field> m_Field;
+  std::shared_ptr<Field> m_Field;
   Glib::ustring m_table_name;
 };
 

@@ -23,23 +23,23 @@
 #include <glibmm/fileutils.h>
 #include <iostream>
 
-Glom::sharedptr<const Glom::LayoutItem_Field> get_field_on_layout(const Glom::Document& document, const Glib::ustring& layout_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name)
+std::shared_ptr<const Glom::LayoutItem_Field> get_field_on_layout(const Glom::Document& document, const Glib::ustring& layout_table_name, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   const Glom::Document::type_list_layout_groups groups = 
     document.get_data_layout_groups("details", layout_table_name);
 
   for(Glom::Document::type_list_layout_groups::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
   {
-    const Glom::sharedptr<const Glom::LayoutGroup> group = *iter;
+    const std::shared_ptr<const Glom::LayoutGroup> group = *iter;
     if(!group)
       continue;
     
     const Glom::LayoutGroup::type_list_const_items items = group->get_items_recursive();
     for(Glom::LayoutGroup::type_list_const_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
     {
-      const Glom::sharedptr<const Glom::LayoutItem> layout_item = *iter;
-      const Glom::sharedptr<const Glom::LayoutItem_Field> layout_item_field =
-        Glom::sharedptr<const Glom::LayoutItem_Field>::cast_dynamic(layout_item);
+      const std::shared_ptr<const Glom::LayoutItem> layout_item = *iter;
+      const std::shared_ptr<const Glom::LayoutItem_Field> layout_item_field =
+        std::dynamic_pointer_cast<const Glom::LayoutItem_Field>(layout_item);
       if(!layout_item_field)
         continue;
 
@@ -51,7 +51,7 @@ Glom::sharedptr<const Glom::LayoutItem_Field> get_field_on_layout(const Glom::Do
     }
   }
   
-  return Glom::sharedptr<const Glom::LayoutItem_Field>();
+  return std::shared_ptr<const Glom::LayoutItem_Field>();
 }
 
 Gnome::Gda::Value get_value_for_image()

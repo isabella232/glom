@@ -37,7 +37,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     return false;
   }
 
-  const Glom::sharedptr<const Glom::Report> report = 
+  const std::shared_ptr<const Glom::Report> report = 
     document.get_report("invoices", "by_customer");
   if(!report)
   {

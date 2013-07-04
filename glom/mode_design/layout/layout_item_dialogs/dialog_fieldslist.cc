@@ -117,7 +117,7 @@ void Dialog_FieldsList::set_fields(const Glib::ustring& table_name, const Layout
     guint field_sequence = 0;
     for(LayoutGroup::type_list_items::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
-      sharedptr<const LayoutItem_Field> item = sharedptr<const LayoutItem_Field>::cast_dynamic(*iter);
+      std::shared_ptr<const LayoutItem_Field> item = std::dynamic_pointer_cast<const LayoutItem_Field>(*iter);
       if(!item)
         continue;
 
@@ -198,11 +198,11 @@ LayoutGroup::type_list_items Dialog_FieldsList::get_fields() const
   {
     Gtk::TreeModel::Row row = *iterFields;
 
-    sharedptr<const LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item];
+    std::shared_ptr<const LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item];
     const Glib::ustring field_name = item->get_name();
     if(!field_name.empty())
     {
-      sharedptr<LayoutItem_Field> field_copy = glom_sharedptr_clone(item);
+      std::shared_ptr<LayoutItem_Field> field_copy = glom_sharedptr_clone(item);
 
       //TODO: This seems to overwrite the sequence set when the user reorders an item.
       result[field_sequence] = field_copy;
@@ -246,7 +246,7 @@ void Dialog_FieldsList::on_button_add_field()
   type_list_field_items fields_list = offer_field_list(m_table_name, this);
   for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); ++iter_chosen)
   {
-    sharedptr<LayoutItem_Field> field = *iter_chosen;
+    std::shared_ptr<LayoutItem_Field> field = *iter_chosen;
     if(!field)
       continue;
 
@@ -297,7 +297,7 @@ void Dialog_FieldsList::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk
     {
       Gtk::TreeModel::Row row = *iter;
 
-      sharedptr<const LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item]; //TODO_performance: Reduce copying.
+      std::shared_ptr<const LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item]; //TODO_performance: Reduce copying.
       if(item)
       {
         renderer_text->property_markup() = item->get_layout_display_name();
@@ -324,10 +324,10 @@ void Dialog_FieldsList::on_button_edit_field()
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      sharedptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
+      std::shared_ptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
 
       //Get the chosen field:
-      sharedptr<LayoutItem_Field> field_chosen =
+      std::shared_ptr<LayoutItem_Field> field_chosen =
         offer_field_list_select_one_field(field, m_table_name, this);
 
       //Set the field details in the layout treeview:
@@ -358,7 +358,7 @@ void Dialog_FieldsList::on_button_formatting()
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
-      sharedptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
+      std::shared_ptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
       if(field)
       {
         field = offer_field_formatting(field, m_table_name, this, false /* no editing options */);

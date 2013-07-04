@@ -42,8 +42,8 @@ DbTreeModelWithExtraText::DbTreeModelWithExtraText(const FoundSet& found_set, co
   int column_index = 0;
   for(type_vec_const_layout_items::const_iterator iter = layout_items.begin(); iter != layout_items.end(); ++iter)
   {
-    const sharedptr<const LayoutItem_Field> item_field = 
-      sharedptr<const LayoutItem_Field>::cast_dynamic(*iter);
+    const std::shared_ptr<const LayoutItem_Field> item_field = 
+      std::dynamic_pointer_cast<const LayoutItem_Field>(*iter);
     if(item_field)
     {
       m_item_first = item_field;

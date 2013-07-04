@@ -48,14 +48,14 @@ public:
   Dialog_DefaultFormatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_DefaultFormatting();
 
-  virtual void set_field(const sharedptr<const Field>& field, const Glib::ustring& table_name);
-  virtual sharedptr<Field> get_field() const; //TODO_FieldShared
+  virtual void set_field(const std::shared_ptr<const Field>& field, const Glib::ustring& table_name);
+  virtual std::shared_ptr<Field> get_field() const; //TODO_FieldShared
 
 private:
   Gtk::Box* m_box_formatting_placeholder;
   Box_Formatting* m_box_formatting;
 
-  sharedptr<Field> m_Field;
+  std::shared_ptr<Field> m_Field;
   Glib::ustring m_table_name;
 };
 

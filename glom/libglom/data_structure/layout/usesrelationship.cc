@@ -86,22 +86,22 @@ Glib::ustring UsesRelationship::get_related_relationship_name() const
     return Glib::ustring();
 }
 
-sharedptr<const Relationship> UsesRelationship::get_relationship() const
+std::shared_ptr<const Relationship> UsesRelationship::get_relationship() const
 {
   return m_relationship;
 }
 
-void UsesRelationship::set_relationship(const sharedptr<const Relationship>& relationship)
+void UsesRelationship::set_relationship(const std::shared_ptr<const Relationship>& relationship)
 {
   m_relationship = relationship;
 }
 
-sharedptr<const Relationship> UsesRelationship::get_related_relationship() const
+std::shared_ptr<const Relationship> UsesRelationship::get_related_relationship() const
 {
   return m_related_relationship;
 }
 
-void UsesRelationship::set_related_relationship(const sharedptr<const Relationship>& relationship)
+void UsesRelationship::set_related_relationship(const std::shared_ptr<const Relationship>& relationship)
 {
   m_related_relationship = relationship;
 }
@@ -147,7 +147,7 @@ Glib::ustring UsesRelationship::get_title_used(const Glib::ustring& parent_table
 
 Glib::ustring UsesRelationship::get_title_singular_used(const Glib::ustring& parent_table_title, const Glib::ustring& locale) const
 {
-  sharedptr<const Relationship> used = m_related_relationship;
+  std::shared_ptr<const Relationship> used = m_related_relationship;
   if(!used)
     used = m_relationship;
 

@@ -357,9 +357,9 @@ private:
   static Glib::ustring m_current_locale, m_original_locale;
 };
 
-Glib::ustring item_get_title(const sharedptr<const TranslatableItem>& item);
+Glib::ustring item_get_title(const std::shared_ptr<const TranslatableItem>& item);
 
-Glib::ustring item_get_title_or_name(const sharedptr<const TranslatableItem>& item);
+Glib::ustring item_get_title_or_name(const std::shared_ptr<const TranslatableItem>& item);
 
 } //namespace Glom
 

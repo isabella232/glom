@@ -166,7 +166,7 @@ void Dialog_Database_Preferences::load_from_document()
     const Document::type_vec_fields fields = document->get_table_fields((*iter)->get_name());
     for(Document::type_vec_fields::const_iterator iterFields = fields.begin(); iterFields != fields.end(); ++iterFields)
     {
-      sharedptr<Field> field = *iterFields;
+      std::shared_ptr<Field> field = *iterFields;
       if(field->get_primary_key())
         DbUtils::auto_increment_insert_first_if_necessary((*iter)->get_name(), field->get_name());
     }
@@ -271,7 +271,7 @@ void Dialog_Database_Preferences::on_button_test_script()
     return;
 
   //We need the connection when we run the script, so that the script may use it.
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(this /* parent window */);
+  std::shared_ptr<SharedConnection> sharedconnection = connect_to_server(this /* parent window */);
 
   Glib::ustring error_message; //TODO: Check this and tell the user.
   PythonUICallbacks callbacks;
@@ -279,7 +279,7 @@ void Dialog_Database_Preferences::on_button_test_script()
     type_map_fields(),
     document,
     Glib::ustring() /* table_name */,
-    sharedptr<Field>(), Gnome::Gda::Value(), // primary key - only used when setting values in the DB, which we would not encourage in a test.
+    std::shared_ptr<Field>(), Gnome::Gda::Value(), // primary key - only used when setting values in the DB, which we would not encourage in a test.
     sharedconnection->get_gda_connection(),
     callbacks,
     error_message);

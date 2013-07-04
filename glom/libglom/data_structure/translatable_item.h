@@ -145,7 +145,7 @@ private:
 };
 
 template <class T_object>
-Glib::ustring glom_get_sharedptr_name(const sharedptr<T_object>& item)
+Glib::ustring glom_get_sharedptr_name(const std::shared_ptr<T_object>& item)
 {
   if(item)
     return item->get_name();

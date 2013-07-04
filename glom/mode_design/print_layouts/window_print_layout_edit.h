@@ -52,16 +52,16 @@ public:
 
   virtual bool init_db_details(const Glib::ustring& table_name);
 
-  void set_print_layout(const Glib::ustring& table_name, const sharedptr<const PrintLayout>& print_layout);
+  void set_print_layout(const Glib::ustring& table_name, const std::shared_ptr<const PrintLayout>& print_layout);
   Glib::ustring get_original_name() const;
-  sharedptr<PrintLayout> get_print_layout();
+  std::shared_ptr<PrintLayout> get_print_layout();
 
 private:
 
   void enable_buttons();
   void init_menu();
 
-  sharedptr<LayoutItem> create_empty_item(PrintLayoutToolbarButton::enumItems item_type);
+  std::shared_ptr<LayoutItem> create_empty_item(PrintLayoutToolbarButton::enumItems item_type);
 
   void on_menu_file_page_setup();
   void on_menu_file_print_preview();
@@ -130,19 +130,19 @@ private:
   void set_ruler_sizes();
 
   bool get_is_item_at(double x, double y);
-  void set_default_position(const sharedptr<LayoutItem>& item);
+  void set_default_position(const std::shared_ptr<LayoutItem>& item);
   
   void canvas_convert_from_drag_pixels(double& x, double& y, bool adjust_for_scrolling = false) const;
   void get_dimensions_of_multiple_selected_items(double& x, double& y, double& width, double& height);
 
-  Glib::RefPtr<CanvasLayoutItem> create_canvas_layout_item_and_add(const sharedptr<LayoutItem>& layout_item);
+  Glib::RefPtr<CanvasLayoutItem> create_canvas_layout_item_and_add(const std::shared_ptr<LayoutItem>& layout_item);
 
   //Box_DB_Table_Definition* m_box;
   Glib::ustring m_name_original;
   Glib::ustring m_table_name;
   bool m_modified;
 
-  sharedptr<PrintLayout> m_print_layout;
+  std::shared_ptr<PrintLayout> m_print_layout;
 
   Gtk::Entry* m_entry_name;
   Gtk::Entry* m_entry_title;
