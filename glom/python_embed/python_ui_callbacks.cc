@@ -27,15 +27,15 @@ namespace Glom
 AppPythonUICallbacks::AppPythonUICallbacks()
 {
   m_slot_show_table_details =
-    sigc::mem_fun(*this, &AppPythonUICallbacks::on_show_table_details);
+    std::bind(&AppPythonUICallbacks::on_show_table_details, this, std::placeholders::_1, std::placeholders::_2);
   m_slot_show_table_list =
-    sigc::mem_fun(*this, &AppPythonUICallbacks::on_show_table_list);
+    std::bind(&AppPythonUICallbacks::on_show_table_list, this, std::placeholders::_1);
   m_slot_print_report =
-    sigc::mem_fun(*this, &AppPythonUICallbacks::on_print_report);
+    std::bind(&AppPythonUICallbacks::on_print_report, this, std::placeholders::_1);
   m_slot_print_layout =
-    sigc::mem_fun(*this, &AppPythonUICallbacks::on_print_layout);
+    std::bind(&AppPythonUICallbacks::on_print_layout, this);
   m_slot_start_new_record =
-    sigc::mem_fun(*this, &AppPythonUICallbacks::on_start_new_record);
+    std::bind(&AppPythonUICallbacks::on_start_new_record, this);
 }
 
 void AppPythonUICallbacks::on_show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value)

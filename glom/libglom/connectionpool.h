@@ -111,7 +111,7 @@ public:
   /// Delete the singleton so it doesn't show up as leaked memory in, for instance, valgrind.
   static void delete_instance();
 
-  typedef sigc::slot<void> type_void_slot;
+  typedef std::function<void()> type_void_slot;
 
 #ifndef G_OS_WIN32
   /** Set callbacks that will be called to show UI while starting to advertise
@@ -283,7 +283,7 @@ public:
    * This callback avoids Connection having to link to AppWindow,
    * and avoids us worrying about whether a previously-set document (via a set_document() method) is still valid.
    */
-  typedef sigc::slot<Document*> SlotGetDocument;
+  typedef std::function<Document*()> SlotGetDocument;
   void set_get_document_func(const SlotGetDocument& slot);
 
 #ifndef G_OS_WIN32

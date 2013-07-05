@@ -254,7 +254,7 @@ bool test_create_and_selfhost_new_database(Glom::Document& document, Glom::Docum
 
   //Create a database:
   const bool created = Glom::DbUtils::create_database(&document, db_name,
-    "test title", sigc::ptr_fun(&on_db_creation_progress));
+    "test title", &on_db_creation_progress);
   if(!created)
   {
     std::cerr << "DbUtils::create_database() failed." << std::endl;
@@ -357,7 +357,7 @@ bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Gl
     return false;
   }
 
-  const bool recreated = Glom::DbUtils::recreate_database_from_document(&document, sigc::ptr_fun(&on_recreate_progress) );
+  const bool recreated = Glom::DbUtils::recreate_database_from_document(&document, &on_recreate_progress );
   if(!recreated)
     test_selfhosting_cleanup();
 

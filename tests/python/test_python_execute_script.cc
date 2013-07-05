@@ -69,15 +69,15 @@ int main()
 
   Glom::PythonUICallbacks callbacks;
   callbacks.m_slot_show_table_list =
-    sigc::ptr_fun(&on_script_ui_show_table_list);
+    &on_script_ui_show_table_list;
   callbacks.m_slot_show_table_details =
-    sigc::ptr_fun(&on_script_ui_show_table_details);
+    &on_script_ui_show_table_details;
   callbacks.m_slot_print_report =
-    sigc::ptr_fun(&on_script_ui_print_report);
+    &on_script_ui_print_report;
   callbacks.m_slot_print_layout =
-    sigc::ptr_fun(&on_script_ui_print_layout);
+    &on_script_ui_print_layout;
   callbacks.m_slot_start_new_record =
-    sigc::ptr_fun(&on_script_ui_start_new_record);
+    &on_script_ui_start_new_record;
 
   //Execute a python script:
   Glib::ustring error_message;
