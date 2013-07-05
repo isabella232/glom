@@ -156,7 +156,7 @@ void Box_DB_Table_Relationships::save_to_document()
       {
         std::shared_ptr<Relationship> relationship = document->get_relationship(m_table_name, name); //Preserve other information, such as translations.
         if(!relationship)
-          relationship = std::shared_ptr<Relationship>(new Relationship());
+          relationship = std::make_shared<Relationship>();
 
         relationship->set_name(name);
         relationship->set_title(m_AddDel.get_value(iter, m_colTitle), AppWindow::get_current_locale());

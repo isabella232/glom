@@ -26,7 +26,7 @@
 
 static void test_text_field()
 {
-  std::shared_ptr<Glom::Field> field = std::shared_ptr<Glom::Field>(new Glom::Field());
+  std::shared_ptr<Glom::Field> field = std::make_shared<Glom::Field>();
   field->set_glom_type(Glom::Field::TYPE_TEXT);
 
   const Gnome::Gda::Value value_original("text with \" double quote and ' single quote");
@@ -41,7 +41,7 @@ static void test_text_field()
 
 static void test_image_field()
 {
-  std::shared_ptr<Glom::Field> field = std::shared_ptr<Glom::Field>(new Glom::Field());
+  std::shared_ptr<Glom::Field> field = std::make_shared<Glom::Field>();
   field->set_glom_type(Glom::Field::TYPE_IMAGE);
 
   //TODO: Test an image too:

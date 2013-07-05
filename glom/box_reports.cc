@@ -127,7 +127,7 @@ bool Box_Reports::fill_from_database()
 
 void Box_Reports::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 {
-  std::shared_ptr<Report> report = std::shared_ptr<Report>(new Report());
+  std::shared_ptr<Report> report = std::make_shared<Report>();
 
   const Glib::ustring report_name = m_AddDel.get_value(row, m_colReportName);
   if(!report_name.empty())

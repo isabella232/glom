@@ -395,10 +395,10 @@ bool Box_Formatting::get_formatting(Formatting& format) const
       m_checkbutton_choices_restricted_as_radio_buttons->get_active());
 
     const std::shared_ptr<const Relationship> choices_relationship = m_combo_choices_relationship->get_selected_relationship();
-    std::shared_ptr<LayoutItem_Field> layout_choice_first = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+    std::shared_ptr<LayoutItem_Field> layout_choice_first = std::make_shared<LayoutItem_Field>();
     layout_choice_first->set_name(m_combo_choices_field->get_selected_field_name());
 
-    std::shared_ptr<LayoutGroup> layout_choice_extra = std::shared_ptr<LayoutGroup>(new LayoutGroup());
+    std::shared_ptr<LayoutGroup> layout_choice_extra = std::make_shared<LayoutGroup>();
     layout_choice_extra->m_list_items = m_dialog_choices_extra_fields->get_fields();
 
     const Formatting::type_list_sort_fields sort_fields = m_dialog_choices_sortby->get_fields();
@@ -423,7 +423,7 @@ bool Box_Formatting::get_formatting(Formatting& format) const
 
           if(success)
           {
-            std::shared_ptr<ChoiceValue> choicevalue = std::shared_ptr<ChoiceValue>(new ChoiceValue());
+            std::shared_ptr<ChoiceValue> choicevalue = std::make_shared<ChoiceValue>();
             choicevalue->set_value(value);
             list_choice_values.push_back(choicevalue);
           }

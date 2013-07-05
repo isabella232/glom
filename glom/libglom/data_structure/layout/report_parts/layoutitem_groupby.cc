@@ -27,7 +27,7 @@ namespace Glom
 
 LayoutItem_GroupBy::LayoutItem_GroupBy()
 {
-  m_group_secondary_fields = std::shared_ptr<LayoutGroup>(new LayoutGroup()); //So that we dont need to create it from outside.
+  m_group_secondary_fields = std::make_shared<LayoutGroup>(); //So that we dont need to create it from outside.
 }
 
 LayoutItem_GroupBy::LayoutItem_GroupBy(const LayoutItem_GroupBy& src)

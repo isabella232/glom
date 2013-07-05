@@ -39,11 +39,11 @@ static bool check_get_extra_rows(const Glib::ustring& quote_char)
   
   Glom::Utils::type_vecLayoutFields fieldsToGet;
   std::shared_ptr<const Glom::Field> field = document.get_field("albums", "album_id");
-  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
+  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
   field = document.get_field("albums", "name");
-  layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
+  layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 
@@ -72,11 +72,11 @@ static bool check_drop_table(const Glib::ustring& quote_char)
   
   Glom::Utils::type_vecLayoutFields fieldsToGet;
   std::shared_ptr<const Glom::Field> field = document.get_field("albums", "album_id");
-  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
+  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
   field = document.get_field("albums", "name");
-  layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
+  layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 
@@ -112,11 +112,11 @@ static bool check_avoid_quotes_and_drop_table_with_false_value_type()
   
   Glom::Utils::type_vecLayoutFields fieldsToGet;
   std::shared_ptr<const Glom::Field> field = document.get_field("albums", "album_id");
-  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
+  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
   field = document.get_field("albums", "name");
-  layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
+  layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 
@@ -172,11 +172,11 @@ static bool check_avoid_quotes_and_drop_table_with_false_field_type()
  
   Glom::Utils::type_vecLayoutFields fieldsToGet;
   std::shared_ptr<const Glom::Field> field = document.get_field("albums", "album_id");
-  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
+  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
   field = document.get_field("albums", "name");
-  layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
+  layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 
