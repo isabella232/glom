@@ -511,7 +511,7 @@ int main(int argc, char* argv[])
   }
   g_assert(started == Glom::ConnectionPool::Backend::STARTUPERROR_NONE);
 
-  const bool recreated = Glom::DbUtils::recreate_database_from_document(&document, sigc::ptr_fun(&on_recreate_progress) );
+  const bool recreated = Glom::DbUtils::recreate_database_from_document(&document, &on_recreate_progress);
   if(!recreated)
     cleanup();
   g_assert(recreated);

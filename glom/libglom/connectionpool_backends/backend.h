@@ -27,6 +27,7 @@
 #include <libglom/data_structure/field.h>
 
 #include <memory>
+#include <functional>
 
 namespace Glom
 {
@@ -121,7 +122,7 @@ protected:
   /** This callback should show UI to indicate that work is still happening.
    * For instance, a pulsing ProgressBar.
    */
-  typedef sigc::slot<void> SlotProgress;
+  typedef std::function<void()> SlotProgress;
 
   /** This method is called for one-time initialization of the database
    * storage. There is no need to implement this function if the data is centrally

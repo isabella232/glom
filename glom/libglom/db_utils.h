@@ -34,13 +34,13 @@ namespace DbUtils
 /**
  * This also saves the connection port in the document if self-hosting.
  */
-bool create_database(Document* document, const Glib::ustring& database_name, const Glib::ustring& title, const sigc::slot<void>& progress);
+bool create_database(Document* document, const Glib::ustring& database_name, const Glib::ustring& title, const std::function<void()>& progress);
 
 //TODO: Use this in Glom::AppWindow?
 /** Create the database on an already-connected server.
  * This also saves some details in the document.
  */
-bool recreate_database_from_document(Document* document, const sigc::slot<void>& progress);
+bool recreate_database_from_document(Document* document, const std::function<void()>& progress);
 
 /** This creates the standard tables if necessary,
  * filling them with some information from the document.

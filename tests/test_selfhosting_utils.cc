@@ -254,7 +254,7 @@ bool test_create_and_selfhost_new_database(Glom::Document& document, Glom::Docum
 
   //Create a database:
   const bool created = Glom::DbUtils::create_database(&document, db_name,
-    "test title", sigc::ptr_fun(&on_db_creation_progress));
+    "test title", &on_db_creation_progress);
   if(!created)
   {
     std::cerr << G_STRFUNC << ": DbUtils::create_database() failed." << std::endl;
@@ -379,7 +379,7 @@ bool test_create_and_selfhost_from_data(const Glib::ustring& example_file_conten
     return false;
   }
 
-  document.set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
+  const bool recreated = Glom::DbUtils::recreate_database_from_document(&document, &on_recreate_progress );
 
   int failure_code = 0;
   const bool test = document.load_from_data((const guchar*)example_file_contents.c_str(), example_file_contents.bytes(), failure_code);

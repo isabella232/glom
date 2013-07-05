@@ -39,28 +39,28 @@ public:
   /** For example,
    * void on_show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value);
    */
-  sigc::slot<void, const Glib::ustring&, const Gnome::Gda::Value&> m_slot_show_table_details;
+  std::function<void(const Glib::ustring&, const Gnome::Gda::Value&)> m_slot_show_table_details;
 
    /** For example,
    * void on_show_table_list(const Glib::ustring& table_name);
    */
-  sigc::slot<void, const Glib::ustring&> m_slot_show_table_list;
+  std::function<void(const Glib::ustring&)> m_slot_show_table_list;
 
    /** For example,
    * void on_print_report(const Glib::ustring& report_name);
    */
-  sigc::slot<void, const Glib::ustring&> m_slot_print_report;
+  std::function<void(const Glib::ustring&)> m_slot_print_report;
 
    /** For example,
    * void on_print_layout();
    */
-  sigc::slot<void> m_slot_print_layout;
+  std::function<void()> m_slot_print_layout;
 
   /** For example,
    * void on_start_new_record();
    * Use an empty Value for auto-created fields.
    */
-  sigc::slot<void> m_slot_start_new_record;
+  std::function<void()> m_slot_start_new_record;
 };
 
 } //namespace Glom

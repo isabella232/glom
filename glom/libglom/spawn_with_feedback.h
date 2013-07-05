@@ -22,7 +22,7 @@
 #define GLOM_SPAWN_WITH_FEEDBACK_H
 
 #include <glibmm/ustring.h>
-#include <sigc++/sigc++.h>
+#include <functional>
 
 namespace Glom
 {
@@ -33,7 +33,7 @@ namespace Spawn
 /** This callback should show UI to indicate that work is still happening.
  * For instance, a pulsing ProgressBar.
  */
-typedef sigc::slot<void> SlotProgress;
+typedef std::function<void()> SlotProgress;
 
 /** Execute a command-line command, and wait for it to return.
  * @param command The command-line command.

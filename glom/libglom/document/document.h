@@ -42,6 +42,7 @@
 #include <vector>
 #include <map>
 #include <limits> // for numeric_limits
+#include <functional>
 
 namespace Gtk
 {
@@ -455,7 +456,7 @@ public:
   /** This callback should show UI to indicate that work is still happening.
    * For instance, a pulsing ProgressBar.
    */
-  typedef sigc::slot<void> SlotProgress;
+  typedef std::function<void()> SlotProgress;
   
   /** Save a copy of the document as a backup.
    * This document (and its URI) will not be changed.

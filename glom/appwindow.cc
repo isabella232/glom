@@ -134,9 +134,9 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
   if(connection_pool)
   {
     connection_pool->set_avahi_publish_callbacks(
-      sigc::mem_fun(*this, &AppWindow::on_connection_avahi_begin),
-      sigc::mem_fun(*this, &AppWindow::on_connection_avahi_progress),
-      sigc::mem_fun(*this, &AppWindow::on_connection_avahi_done) );
+      sigc::bind(&AppWindow::on_connection_avahi_begin, this),
+      sigc::bind(&AppWindow::on_connection_avahi_progress, this),
+      sigc::bind(&AppWindow::on_connection_avahi_done, this) );
   }
 #endif
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -1001,7 +1001,7 @@ bool AppWindow::on_document_load()
     else
     {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-      connection_pool->set_get_document_func( sigc::mem_fun(*this, &AppWindow::on_connection_pool_get_document) );
+      connection_pool->set_get_document_func( std::bind(&AppWindow::on_connection_pool_get_document, this) );
 #endif
 
       connection_pool->set_ready_to_connect(true); //connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
@@ -1424,7 +1424,7 @@ void AppWindow::existing_or_new_new()
    //Tell the connection pool about the document:
    ConnectionPool* connection_pool = ConnectionPool::get_instance();
    if(connection_pool)
-     connection_pool->set_get_document_func( sigc::mem_fun(*this, &AppWindow::on_connection_pool_get_document) );
+     connection_pool->set_get_document_func( std::bind(&AppWindow::on_connection_pool_get_document, this) );
 
     const bool connected = m_pFrame->connection_request_password_and_choose_new_database_name();
     if(!connected)

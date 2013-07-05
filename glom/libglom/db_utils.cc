@@ -101,7 +101,7 @@ static bool update_gda_metastore_for_table(const Glib::ustring& table_name)
   return true;
 }
 
-bool create_database(Document* document, const Glib::ustring& database_name, const Glib::ustring& title, const sigc::slot<void>& progress)
+bool create_database(Document* document, const Glib::ustring& database_name, const Glib::ustring& title, const std::function<void()>& progress)
 {
 #if 1
   // This seems to increase the chance that the database creation does not
@@ -207,7 +207,7 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
   }
 }
 
-bool recreate_database_from_document(Document* document, const sigc::slot<void>& progress)
+bool recreate_database_from_document(Document* document, const std::function<void()>& progress)
 {
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)

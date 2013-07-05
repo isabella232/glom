@@ -2387,7 +2387,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
   {
     BusyCursor busycursor(*pWindowApp);
 
-    sigc::slot<void> onProgress; //TODO: Show visual feedback.
+    std::function<void()> onProgress; //TODO: Show visual feedback.
     result = DbUtils::create_database(get_document(), database_name, title, onProgress);
   }
 
