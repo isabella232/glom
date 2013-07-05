@@ -80,7 +80,7 @@ static bool get_group_named(const Glom::Document::type_list_groups& container, c
 
 static bool needs_navigation(Glom::Document& document, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
-  std::shared_ptr<Glom::LayoutItem_Field> layout_item = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
+  std::shared_ptr<Glom::LayoutItem_Field> layout_item = std::make_shared<Glom::LayoutItem_Field>();
   layout_item->set_name(field_name);
   layout_item->set_full_field_details(
     document.get_field(table_name, field_name));

@@ -76,7 +76,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   //Get the value:
   Glom::Utils::type_vecLayoutFields fieldsToGet;
-  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
+  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 

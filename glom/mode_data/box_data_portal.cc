@@ -271,7 +271,7 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   std::shared_ptr<Field> navigation_table_primary_key = get_field_primary_key_for_table(navigation_table_name);
 
   //Build a layout item to get the field's value:
-  std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+  std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
   layout_item->set_full_field_details(navigation_table_primary_key);
 
   if(navigation_relationship)

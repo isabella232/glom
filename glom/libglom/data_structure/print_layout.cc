@@ -31,7 +31,7 @@ PrintLayout::PrintLayout()
   m_page_count(1) //A sensible default
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_PRINT_LAYOUT;
-  m_layout_group = std::shared_ptr<LayoutGroup>(new LayoutGroup());
+  m_layout_group = std::make_shared<LayoutGroup>();
 }
 
 PrintLayout::PrintLayout(const PrintLayout& src)

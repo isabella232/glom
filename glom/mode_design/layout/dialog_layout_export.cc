@@ -228,7 +228,7 @@ void Dialog_Layout_Export::get_layout_groups(Document::type_list_layout_groups& 
   Document::type_list_layout_groups groups;
 
   //Add the fields to the one group:
-  std::shared_ptr<LayoutGroup> others = std::shared_ptr<LayoutGroup>(new LayoutGroup());
+  std::shared_ptr<LayoutGroup> others = std::make_shared<LayoutGroup>();
   others->set_name("main");
 
   guint field_sequence = 1; //0 means no sequence

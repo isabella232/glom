@@ -351,7 +351,7 @@ void Dialog_Layout_Details::init(const Glib::ustring& layout_name, const Glib::u
 
     if(list_groups.empty())
     {
-      std::shared_ptr<LayoutGroup> group = std::shared_ptr<LayoutGroup>(new LayoutGroup());
+      std::shared_ptr<LayoutGroup> group = std::make_shared<LayoutGroup>();
       group->set_name("main");
       group->set_columns_count(1);
 
@@ -658,7 +658,7 @@ void Dialog_Layout_Details::on_button_add_button()
     Gtk::TreeModel::Row row = *iter;
 
     //Add a new button:
-    std::shared_ptr<LayoutItem_Button> button = std::shared_ptr<LayoutItem_Button>(new LayoutItem_Button());
+    std::shared_ptr<LayoutItem_Button> button = std::make_shared<LayoutItem_Button>();
     button->set_title_original(_("New Button")); //Give the button a default title, so it is big enough, and so people see that they should change it.
     row[m_model_items->m_columns.m_col_layout_item] = button;
 
@@ -683,7 +683,7 @@ void Dialog_Layout_Details::on_button_add_text()
     Gtk::TreeModel::Row row = *iter;
 
     //Add a new button:
-    std::shared_ptr<LayoutItem_Text> textobject = std::shared_ptr<LayoutItem_Text>(new LayoutItem_Text());
+    std::shared_ptr<LayoutItem_Text> textobject = std::make_shared<LayoutItem_Text>();
     textobject->set_title_original(_("Text Title")); //Give the button a default title, so it is big enough, and so people see that they should change it.
     row[m_model_items->m_columns.m_col_layout_item] = textobject;
 
@@ -708,7 +708,7 @@ void Dialog_Layout_Details::on_button_add_image()
     Gtk::TreeModel::Row row = *iter;
 
     //Add a new button:
-    std::shared_ptr<LayoutItem_Image> imageobject = std::shared_ptr<LayoutItem_Image>(new LayoutItem_Image());
+    std::shared_ptr<LayoutItem_Image> imageobject = std::make_shared<LayoutItem_Image>();
     imageobject->set_title_original(_("Image Title")); //Give the item a default title, so it is big enough, and so people see that they should change it.
     row[m_model_items->m_columns.m_col_layout_item] = imageobject;
 
@@ -732,7 +732,7 @@ void Dialog_Layout_Details::on_button_add_notebook()
   {
     Gtk::TreeModel::Row row = *iter;
 
-    std::shared_ptr<LayoutItem_Notebook> notebook = std::shared_ptr<LayoutItem_Notebook>(new LayoutItem_Notebook());
+    std::shared_ptr<LayoutItem_Notebook> notebook = std::make_shared<LayoutItem_Notebook>();
     notebook->set_name(_("notebook"));
     row[m_model_items->m_columns.m_col_layout_item] = notebook;
 
@@ -761,7 +761,7 @@ void Dialog_Layout_Details::on_button_add_related()
     {
       Gtk::TreeModel::Row row = *iter;
 
-      std::shared_ptr<LayoutItem_Portal> portal = std::shared_ptr<LayoutItem_Portal>(new LayoutItem_Portal());
+      std::shared_ptr<LayoutItem_Portal> portal = std::make_shared<LayoutItem_Portal>();
       //portal->set_relationship(relationship);
       row[m_model_items->m_columns.m_col_layout_item] = portal;
 
@@ -793,7 +793,7 @@ void Dialog_Layout_Details::on_button_add_related_calendar()
     {
       Gtk::TreeModel::Row row = *iter;
 
-      std::shared_ptr<LayoutItem_Portal> portal = std::shared_ptr<LayoutItem_CalendarPortal>(new LayoutItem_CalendarPortal());
+      std::shared_ptr<LayoutItem_Portal> portal = std::make_shared<LayoutItem_CalendarPortal>();
       //portal->set_relationship(relationship);
       row[m_model_items->m_columns.m_col_layout_item] = portal;
 
@@ -863,7 +863,7 @@ void Dialog_Layout_Details::on_button_add_group()
   if(iterNewGroup)
   {
     Gtk::TreeModel::Row row = *iterNewGroup;
-    std::shared_ptr<LayoutGroup> layout_item = std::shared_ptr<LayoutGroup>(new LayoutGroup());
+    std::shared_ptr<LayoutGroup> layout_item = std::make_shared<LayoutGroup>();
     layout_item->set_name(_("group"));
     row[m_model_items->m_columns.m_col_layout_item] = layout_item;
 
@@ -1075,7 +1075,7 @@ void Dialog_Layout_Details::save_to_document()
       std::shared_ptr<LayoutItem_Portal> layout_portal = std::dynamic_pointer_cast<LayoutItem_Portal>(layout_item);
       if(layout_group && !layout_portal) //There may be top-level groups, but no top-level fields, because the fields must be in a group (so that they are in columns)
       {
-        std::shared_ptr<LayoutGroup> group = std::shared_ptr<LayoutGroup>(new LayoutGroup());
+        std::shared_ptr<LayoutGroup> group = std::make_shared<LayoutGroup>();
         fill_group(iterFields, group);
 
         list_groups.push_back(group);

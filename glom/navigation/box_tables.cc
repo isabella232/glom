@@ -180,7 +180,7 @@ bool Box_Tables::fill_from_database()
       {
         //This table is in the database, but not in the document.
         //Show it as hidden:
-        table_info = std::shared_ptr<TableInfo>(new TableInfo());
+        table_info = std::make_shared<TableInfo>();
         table_info->set_name(strName);
         table_info->set_hidden(true);
       }

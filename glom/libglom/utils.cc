@@ -266,7 +266,7 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
   type_list_relationships::const_iterator iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_UsesRelationshipHasRelationships<UsesRelationship>(layout_item, true /* top_level_only */) );
   if(iterFind == list_relationships.end()) //If the table is not yet in the list:
   {
-    std::shared_ptr<UsesRelationship> uses_rel = std::shared_ptr<UsesRelationship>(new UsesRelationship());
+    std::shared_ptr<UsesRelationship> uses_rel = std::make_shared<UsesRelationship>();
     uses_rel->set_relationship(layout_item->get_relationship());
     list_relationships.push_front(uses_rel); //These need to be at the front, so that related relationships can use them later in the SQL statement.
   }
@@ -275,7 +275,7 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
   iterFind = std::find_if(list_relationships.begin(), list_relationships.end(), predicate_UsesRelationshipHasRelationships<UsesRelationship>(layout_item) );
   if(iterFind == list_relationships.end()) //If the table is not yet in the list:
   {
-    std::shared_ptr<UsesRelationship> uses_rel = std::shared_ptr<UsesRelationship>(new UsesRelationship());
+    std::shared_ptr<UsesRelationship> uses_rel = std::make_shared<UsesRelationship>();
     uses_rel->set_relationship(layout_item->get_relationship());
     uses_rel->set_related_relationship(layout_item->get_related_relationship());
     list_relationships.push_back(uses_rel);
@@ -428,7 +428,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(c
 
     if(extra_join)
     {
-      std::shared_ptr<UsesRelationship> uses_relationship = std::shared_ptr<UsesRelationship>(new UsesRelationship());
+      std::shared_ptr<UsesRelationship> uses_relationship = std::make_shared<UsesRelationship>();
       uses_relationship->set_relationship(extra_join);
       builder_add_join(builder, uses_relationship);
     }
@@ -1518,7 +1518,7 @@ LayoutGroup::type_list_const_items Utils::get_layout_items_plus_primary_key(cons
     return items;
   }
 
-  std::shared_ptr<LayoutItem_Field> pk_layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+  std::shared_ptr<LayoutItem_Field> pk_layout_item = std::make_shared<LayoutItem_Field>();
   pk_layout_item->set_hidden();
   pk_layout_item->set_full_field_details(field_primary_key);
   
@@ -1547,7 +1547,7 @@ LayoutGroup::type_list_items Utils::get_layout_items_plus_primary_key(const Layo
     return items;
   }
 
-  std::shared_ptr<LayoutItem_Field> pk_layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+  std::shared_ptr<LayoutItem_Field> pk_layout_item = std::make_shared<LayoutItem_Field>();
   pk_layout_item->set_hidden();
   pk_layout_item->set_full_field_details(field_primary_key);
   

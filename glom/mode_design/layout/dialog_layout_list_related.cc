@@ -152,7 +152,7 @@ void Dialog_Layout_List_Related::init_with_portal(const Glib::ustring& layout_na
   if(portal)
     m_portal = glom_sharedptr_clone(portal);
   else
-    m_portal = std::shared_ptr<LayoutItem_Portal>(new LayoutItem_Portal()); //The rest of the class assumes that this is not null.
+    m_portal = std::make_shared<LayoutItem_Portal>(); //The rest of the class assumes that this is not null.
 
   gulong rows_count_min = 0;
   gulong rows_count_max = 0;
@@ -354,7 +354,7 @@ void Dialog_Layout_List_Related::save_to_document()
       std::shared_ptr<Relationship> rel, rel_related;
       rel = m_combo_navigation_specify->get_selected_relationship(rel_related);
 
-      std::shared_ptr<UsesRelationship> uses_rel = std::shared_ptr<UsesRelationship>(new UsesRelationship());
+      std::shared_ptr<UsesRelationship> uses_rel = std::make_shared<UsesRelationship>();
       uses_rel->set_relationship(rel);
       uses_rel->set_related_relationship(rel_related);
 
@@ -377,7 +377,7 @@ void Dialog_Layout_List_Related::save_to_document()
 
     if(m_radio_navigation_none->get_active())
     {
-      std::shared_ptr<UsesRelationship> uses_rel = std::shared_ptr<UsesRelationship>(new UsesRelationship());
+      std::shared_ptr<UsesRelationship> uses_rel = std::make_shared<UsesRelationship>();
       uses_rel->set_related_relationship(std::shared_ptr<Relationship>());
       m_portal->set_navigation_type(LayoutItem_Portal::NAVIGATION_NONE);
     }

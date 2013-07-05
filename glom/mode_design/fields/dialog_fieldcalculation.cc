@@ -150,9 +150,9 @@ void Dialog_FieldCalculation::on_button_test()
     UiUtils::show_ok_dialog( _("Calculation failed"), Glib::ustring::compose(_("The calculation failed with this error:\n%s"), error_message), *this, Gtk::MESSAGE_ERROR);
 
   //Show what fields would trigger the recalculation:
-  std::shared_ptr<Field> temp = std::shared_ptr<Field>(new Field());
+  std::shared_ptr<Field> temp = std::make_shared<Field>();
   temp->set_calculation(calculation);
-  std::shared_ptr<LayoutItem_Field> layoutitem_temp = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+  std::shared_ptr<LayoutItem_Field> layoutitem_temp = std::make_shared<LayoutItem_Field>();
   layoutitem_temp->set_full_field_details(temp);
   const type_list_const_field_items triggered_fields = get_calculation_fields(m_table_name, layoutitem_temp);
 

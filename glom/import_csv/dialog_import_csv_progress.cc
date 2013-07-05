@@ -197,7 +197,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
         // Make the value empty if the value is not unique.
         if(field->get_unique_key())
         {
-          std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+          std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
           layout_item->set_full_field_details(field);
           if(!get_field_value_is_unique(m_table_name, layout_item, value))
           {
@@ -228,7 +228,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
   {
     // No auto-increment primary key: Check for uniqueness
     Gnome::Gda::Value primary_key_value = m_current_row_values[m_field_primary_key->get_name()];
-    std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+    std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
     layout_item->set_full_field_details(m_field_primary_key);
 
     if(!get_field_value_is_unique(m_table_name, layout_item, primary_key_value))

@@ -27,7 +27,7 @@ namespace Glom
 LayoutItem_Text::LayoutItem_Text()
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_TEXTOBJECT;
-  m_text = std::shared_ptr<StaticText>(new StaticText()); //TODO: Why use a smartpointer?
+  m_text = std::make_shared<StaticText>(); //TODO: Why use a smartpointer?
 }
 
 LayoutItem_Text::LayoutItem_Text(const LayoutItem_Text& src)

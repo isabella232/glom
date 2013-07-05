@@ -187,7 +187,7 @@ static void create_standard(const std::shared_ptr<const LayoutGroup>& layout_gro
   const Glib::ustring title = item_get_title(layout_group);
   if(!title.empty())
   {
-    std::shared_ptr<LayoutItem_Text> text = std::shared_ptr<LayoutItem_Text>(new LayoutItem_Text());
+    std::shared_ptr<LayoutItem_Text> text = std::make_shared<LayoutItem_Text>();
     text->set_text(title, AppWindow::get_current_locale());
     text->m_formatting.set_text_format_font("Sans Bold 10");
 
@@ -247,7 +247,7 @@ static void create_standard(const std::shared_ptr<const LayoutGroup>& layout_gro
       const std::shared_ptr<const LayoutItem_Field> field = std::dynamic_pointer_cast<const LayoutItem_Field>(item);
       if(field)
       {
-        text_title = std::shared_ptr<LayoutItem_Text>(new LayoutItem_Text());
+        text_title = std::make_shared<LayoutItem_Text>();
         const Glib::ustring field_title = item_get_title_or_name(field);
         text_title->set_text(field_title + ":", AppWindow::get_current_locale());
         
@@ -314,7 +314,7 @@ guint get_page_for_y(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, Gtk::
 std::shared_ptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageSetup>& page_setup, const Glib::ustring& table_name, const Document* document, bool avoid_page_margins)
 {
   const Gtk::Unit units = Gtk::UNIT_MM;
-  std::shared_ptr<PrintLayout> print_layout = std::shared_ptr<PrintLayout>(new PrintLayout());  
+  std::shared_ptr<PrintLayout> print_layout = std::make_shared<PrintLayout>();  
   
   //Start inside the border, on the next grid line:
   double y = 0;
@@ -332,7 +332,7 @@ std::shared_ptr<PrintLayout> create_standard(const Glib::RefPtr<const Gtk::PageS
   const Glib::ustring title = document->get_table_title_singular(table_name, AppWindow::get_current_locale());
   if(!title.empty())
   {
-    std::shared_ptr<LayoutItem_Text> text = std::shared_ptr<LayoutItem_Text>(new LayoutItem_Text());
+    std::shared_ptr<LayoutItem_Text> text = std::make_shared<LayoutItem_Text>();
     text->set_text(title, AppWindow::get_current_locale());
     text->m_formatting.set_text_format_font("Sans Bold 12");
 

@@ -579,7 +579,7 @@ private:
       : m_overviewx ( ),
         m_overviewy ( std::numeric_limits<float>::infinity () )
     {
-      m_info = std::shared_ptr<TableInfo>(new TableInfo()); //Avoid a null std::shared_ptr.
+      m_info = std::make_shared<TableInfo>(); //Avoid a null std::shared_ptr.
     }
 
     std::shared_ptr<TableInfo> m_info;

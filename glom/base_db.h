@@ -237,7 +237,7 @@ protected:
 
   typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
   //TODO: Performance: This is massively inefficient:
-  type_map_fields get_record_field_values_for_calculation(const Glib::ustring& table_name, const std::shared_ptr<const Field> primary_key, const Gnome::Gda::Value& primary_key_value);
+  type_map_fields get_record_field_values_for_calculation(const Glib::ustring& table_name, const std::shared_ptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
 
 
   void do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value);

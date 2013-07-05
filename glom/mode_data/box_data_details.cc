@@ -297,7 +297,7 @@ bool Box_Data_Details::fill_from_database()
       if(table_privs.m_view)
       {
         //Add extra possibly-non-visible columns that we need:
-        std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+        std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
         layout_item->set_full_field_details(m_field_primary_key);
 
         //Get the primary key index, adding the primary key if necessary:
@@ -525,13 +525,13 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
       std::shared_ptr<Field> field = *iter;
       if(field)
       {
-        std::shared_ptr<LayoutItem_Field> layoutitem_field = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+        std::shared_ptr<LayoutItem_Field> layoutitem_field = std::make_shared<LayoutItem_Field>();
         layoutitem_field->set_full_field_details(field);
         LayoutFieldInRecord field_in_record(layoutitem_field, m_table_name, m_field_primary_key, primary_key_value);
         calculate_field(field_in_record); //And any dependencies.
 
         //Calculate anything that depends on this.
-        //std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+        //std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
         //layout_item->set_full_field_details(field);
 
         do_calculations(field_in_record, false /* recurse, reusing m_FieldsCalculationInProgress */);
@@ -744,7 +744,7 @@ void Box_Data_Details::on_flowtable_field_edited(const std::shared_ptr<const Lay
         if(primary_key_field)
         {
           //Get the value of the corresponding key in the current table (that identifies the record in the table that we will change)
-          std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+          std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
           layout_item->set_full_field_details( document->get_field(relationship->get_from_table(), relationship->get_from_field()) );
 
           primary_key_value = get_entered_field_data(layout_item);

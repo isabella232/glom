@@ -941,7 +941,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
           field_info->set_allow_null(value_notnull.get_boolean());
 
 
-        std::shared_ptr<Field> field = std::shared_ptr<Field>(new Field()); //TODO: Get glom-specific information from the document?
+        std::shared_ptr<Field> field = std::make_shared<Field>(); //TODO: Get glom-specific information from the document?
         field->set_field_info(field_info);
 
 
@@ -1228,7 +1228,7 @@ bool create_table(Document::HostingMode hosting_mode, const std::shared_ptr<cons
   //(We don't actually use this yet)
   if(std::find_if(fields.begin(), fields.end(), predicate_FieldHasName<Field>(GLOM_STANDARD_FIELD_LOCK)) == fields.end())
   {
-    std::shared_ptr<Field> field = std::shared_ptr<Field>(new Field());
+    std::shared_ptr<Field> field = std::make_shared<Field>();
     field->set_name(GLOM_STANDARD_FIELD_LOCK);
     field->set_glom_type(Field::TYPE_TEXT);
     fields.push_back(field);

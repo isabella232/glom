@@ -464,7 +464,7 @@ std::shared_ptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::
     else
     {
       //Start with a default:
-      fieldResult = std::shared_ptr<Field>(new Field());
+      fieldResult = std::make_shared<Field>();
     }
   }
 

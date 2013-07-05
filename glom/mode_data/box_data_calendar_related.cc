@@ -179,7 +179,7 @@ bool Box_Data_Calendar_Related::fill_from_database()
     if(relationship_related)
     {
       //Adjust the WHERE clause appropriately for the extra JOIN:
-      std::shared_ptr<UsesRelationship> uses_rel_temp = std::shared_ptr<UsesRelationship>(new UsesRelationship());
+      std::shared_ptr<UsesRelationship> uses_rel_temp = std::make_shared<UsesRelationship>();
       uses_rel_temp->set_relationship(relationship);
       where_clause_to_table_name = uses_rel_temp->get_sql_join_alias_name();
     }
@@ -276,7 +276,7 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
   if(m_key_field)
   {
     //m_key_field is the field in this table that must match another field in the parent table.
-    std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+    std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
     layout_item->set_full_field_details(m_key_field);
     //TODO: key_value = m_calendar.get_value(row, layout_item);
   }
@@ -313,7 +313,7 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
       if(test)
       {
         //Show it on the view, if it's visible:
-        std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+        std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
         layout_item->set_full_field_details(field_primary_key);
 
         //TODO: m_calendar.set_value(row, layout_item, m_key_value);
@@ -343,7 +343,7 @@ Box_Data_Calendar_Related::type_vecConstLayoutFields Box_Data_Calendar_Related::
   }
 
   //Add it to the list to ensure that we request the date (though it will not really be shown in the calendar):
-  std::shared_ptr<LayoutItem_Field> layout_item_date_field = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+  std::shared_ptr<LayoutItem_Field> layout_item_date_field = std::make_shared<LayoutItem_Field>();
   layout_item_date_field->set_full_field_details(date_field);
   layout_fields.push_back(layout_item_date_field);
   m_query_column_date_field = layout_fields.size() - 1;

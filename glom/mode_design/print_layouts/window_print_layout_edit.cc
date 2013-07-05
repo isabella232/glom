@@ -369,7 +369,7 @@ std::shared_ptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayo
 
   if(item_type == PrintLayoutToolbarButton::ITEM_FIELD)
   {
-    std::shared_ptr<LayoutItem_Field> layout_item_derived  = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+    std::shared_ptr<LayoutItem_Field> layout_item_derived  = std::make_shared<LayoutItem_Field>();
     layout_item = layout_item_derived;
     layout_item->set_print_layout_position(0, 0,
       PrintLayoutUtils::ITEM_WIDTH_WIDE, PrintLayoutUtils::ITEM_HEIGHT);
@@ -379,7 +379,7 @@ std::shared_ptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayo
   }
   else if(item_type == PrintLayoutToolbarButton::ITEM_TEXT)
   {
-    std::shared_ptr<LayoutItem_Text> layout_item_derived = std::shared_ptr<LayoutItem_Text>(new LayoutItem_Text());
+    std::shared_ptr<LayoutItem_Text> layout_item_derived = std::make_shared<LayoutItem_Text>();
 
     // Note to translators: This is the default contents of a text item on a print layout: 
     layout_item_derived->set_text_original(_("text")); //TODO: Choose some other longer default because this is hidden under the drag icon?
@@ -389,26 +389,26 @@ std::shared_ptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayo
   }
   else if(item_type == PrintLayoutToolbarButton::ITEM_IMAGE)
   {
-    layout_item = std::shared_ptr<LayoutItem_Image>(new LayoutItem_Image());
+    layout_item = std::make_shared<LayoutItem_Image>();
     layout_item->set_print_layout_position(0, 0,
       PrintLayoutUtils::ITEM_WIDTH_WIDE, PrintLayoutUtils::ITEM_WIDTH_WIDE);
   }
   else if(item_type == PrintLayoutToolbarButton::ITEM_LINE_HORIZONTAL)
   {
-    std::shared_ptr<LayoutItem_Line> layout_item_derived = std::shared_ptr<LayoutItem_Line>(new LayoutItem_Line());
+    std::shared_ptr<LayoutItem_Line> layout_item_derived = std::make_shared<LayoutItem_Line>();
     layout_item_derived->set_coordinates(0, 0,
       PrintLayoutUtils::ITEM_WIDTH_WIDE * 2, 0);
     layout_item = layout_item_derived;
   }
   else if(item_type == PrintLayoutToolbarButton::ITEM_LINE_VERTICAL)
   {
-    std::shared_ptr<LayoutItem_Line> layout_item_derived = std::shared_ptr<LayoutItem_Line>(new LayoutItem_Line());
+    std::shared_ptr<LayoutItem_Line> layout_item_derived = std::make_shared<LayoutItem_Line>();
     layout_item_derived->set_coordinates(0, 0, 0, PrintLayoutUtils::ITEM_WIDTH_WIDE * 2);
     layout_item = layout_item_derived;
   }
   else if(item_type == PrintLayoutToolbarButton::ITEM_PORTAL)
   {
-    std::shared_ptr<LayoutItem_Portal> portal = std::shared_ptr<LayoutItem_Portal>(new LayoutItem_Portal());
+    std::shared_ptr<LayoutItem_Portal> portal = std::make_shared<LayoutItem_Portal>();
     portal->set_print_layout_row_height(10); //Otherwise it will be 0, which is useless.
     layout_item = portal;
     layout_item->set_print_layout_position(0, 0,
@@ -602,7 +602,7 @@ void Window_PrintLayout_Edit::set_print_layout(const Glib::ustring& table_name, 
   m_modified = false;
 
   m_name_original = print_layout->get_name();
-  m_print_layout = std::shared_ptr<PrintLayout>(new PrintLayout(*print_layout)); //Copy it, so we only use the changes when we want to.
+  m_print_layout = std::make_shared<PrintLayout>(*print_layout); //Copy it, so we only use the changes when we want to.
   m_canvas.set_print_layout(table_name, m_print_layout);
   m_table_name = table_name;
 
@@ -655,7 +655,7 @@ std::shared_ptr<PrintLayout> Window_PrintLayout_Edit::get_print_layout()
   m_print_layout->get_layout_group()->remove_all_items();
 
   //The Header and Footer parts are implicit (they are the whole header or footer treeview)
-  std::shared_ptr<LayoutItem_Header> header = std::shared_ptr<LayoutItem_Header>(new LayoutItem_Header());
+  std::shared_ptr<LayoutItem_Header> header = std::make_shared<LayoutItem_Header>();
   std::shared_ptr<LayoutGroup> group_temp = header;
   fill_print_layout_parts(group_temp, m_model_parts_header);
   if(header->get_items_count())
@@ -663,7 +663,7 @@ std::shared_ptr<PrintLayout> Window_PrintLayout_Edit::get_print_layout()
 
   fill_print_layout_parts(m_print_layout->get_layout_group(), m_model_parts_main);
 
-  std::shared_ptr<LayoutItem_Footer> footer = std::shared_ptr<LayoutItem_Footer>(new LayoutItem_Footer());
+  std::shared_ptr<LayoutItem_Footer> footer = std::make_shared<LayoutItem_Footer>();
   group_temp = footer;
   fill_print_layout_parts(group_temp, m_model_parts_footer);
   if(footer->get_items_count())

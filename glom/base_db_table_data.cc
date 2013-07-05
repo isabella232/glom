@@ -42,7 +42,7 @@ Base_DB_Table_Data::~Base_DB_Table_Data()
 
 Gnome::Gda::Value Base_DB_Table_Data::get_entered_field_data_field_only(const std::shared_ptr<const Field>& field) const
 {
-  std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+  std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
   layout_item->set_full_field_details(field);
 
   return get_entered_field_data(layout_item);
@@ -86,7 +86,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
     type_vecConstLayoutFields::const_iterator iterFind = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<LayoutItem_Field>((*iter)->get_name()));
     if(iterFind == fieldsToAdd.end())
     {
-      std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+      std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
       layout_item->set_full_field_details(*iter);
 
       fieldsToAdd.push_back(layout_item);
@@ -311,7 +311,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const std::shared_ptr<cons
       if(key_is_auto_increment)
       {
         //Set the key in the parent table
-        std::shared_ptr<LayoutItem_Field> item_from_key = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+        std::shared_ptr<LayoutItem_Field> item_from_key = std::make_shared<LayoutItem_Field>();
         item_from_key->set_name(relationship->get_from_field());
 
         //Show the new from key in the parent table's layout:

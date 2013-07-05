@@ -72,11 +72,11 @@ int main()
   
   Glom::Utils::type_vecLayoutFields fieldsToGet;
   std::shared_ptr<const Glom::Field> field = document.get_field("albums", "album_id");
-  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
+  std::shared_ptr<Glom::LayoutItem_Field> layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
   field = document.get_field("albums", "name");
-  layoutitem = std::shared_ptr<Glom::LayoutItem_Field>(new Glom::LayoutItem_Field());
+  layoutitem = std::make_shared<Glom::LayoutItem_Field>();
   layoutitem->set_full_field_details(field);
   fieldsToGet.push_back(layoutitem);
 

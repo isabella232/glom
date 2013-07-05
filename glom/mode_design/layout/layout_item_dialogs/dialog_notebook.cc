@@ -182,7 +182,7 @@ std::shared_ptr<LayoutItem_Notebook> Dialog_Notebook::get_notebook() const
       if(item)
         group_copy = glom_sharedptr_clone(item);
       else
-        group_copy = std::shared_ptr<LayoutGroup>(new LayoutGroup());
+        group_copy = std::make_shared<LayoutGroup>();
 
       group_copy->set_name(name);
       group_copy->set_title( row[m_ColumnsTabs.m_col_title] , AppWindow::get_current_locale());

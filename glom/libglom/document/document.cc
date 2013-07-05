@@ -285,7 +285,7 @@ Document::Document()
   m_is_backup(false),
   m_opened_from_browse(false)
 {
-  m_database_title = std::shared_ptr<DatabaseTitle>(new DatabaseTitle());
+  m_database_title = std::make_shared<DatabaseTitle>();
 
   //Prevent autosaving during the constructor:
   set_allow_autosave(false); //Prevent saving while we modify the document.
@@ -514,7 +514,7 @@ void Document::set_relationship(const Glib::ustring& table_name, const std::shar
 
 std::shared_ptr<Relationship> Document::create_relationship_system_preferences(const Glib::ustring& table_name)
 {
-  std::shared_ptr<Relationship> relationship = std::shared_ptr<Relationship>(new Relationship());
+  std::shared_ptr<Relationship> relationship = std::make_shared<Relationship>();
   relationship->set_name(GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES);
   relationship->set_title_original(_("System Preferences"));
   relationship->set_from_table(table_name);
@@ -532,7 +532,7 @@ std::shared_ptr<TableInfo> Document::create_table_system_preferences()
 
 std::shared_ptr<TableInfo> Document::create_table_system_preferences(type_vec_fields& fields)
 {
-  std::shared_ptr<TableInfo> prefs_table_info = std::shared_ptr<TableInfo>(new TableInfo());
+  std::shared_ptr<TableInfo> prefs_table_info = std::make_shared<TableInfo>();
   prefs_table_info->set_name(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
   prefs_table_info->set_title_original(_("System Preferences"));
   prefs_table_info->set_hidden(true);
@@ -1246,7 +1246,7 @@ void Document::add_table(const std::shared_ptr<TableInfo>& table_info)
   type_tables::const_iterator iterfind = m_tables.find(table_info->get_name());
   if(iterfind == m_tables.end())
   {
-    const std::shared_ptr<DocumentTableInfo> item = std::shared_ptr<DocumentTableInfo>(new DocumentTableInfo());
+    const std::shared_ptr<DocumentTableInfo> item = std::make_shared<DocumentTableInfo>();
     item->m_info = table_info;
     m_tables[table_info->get_name()] = item;
     set_modified();
@@ -1424,13 +1424,13 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
 
   if(layout_name == "details") //The Details default layout is a bit more complicated.
   {
-    overview = std::shared_ptr<LayoutGroup>(new LayoutGroup());;
+    overview = std::make_shared<LayoutGroup>();;
     overview->set_name("overview");
     overview->set_title_original(_("Overview"));
     overview->set_columns_count(2);
     result.push_back(overview);
 
-    details = std::shared_ptr<LayoutGroup>(new LayoutGroup());
+    details = std::make_shared<LayoutGroup>();
     details->set_name("details");
     details->set_title_original(_("Details"));
     details->set_columns_count(2);
@@ -1440,7 +1440,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
   //If, for some reason, we didn't create the-subgroups, add everything to a top level group:
   if(!overview && !details)
   {
-    overview = std::shared_ptr<LayoutGroup>(new LayoutGroup());
+    overview = std::make_shared<LayoutGroup>();
     overview->set_name("main");
     overview->set_columns_count(1);
     result.push_back(overview);
@@ -1471,7 +1471,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
 
       if(!found)
       {
-        std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+        std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
         layout_item->set_full_field_details(*iter);
         //layout_item.set_table_name(child_table_name); //TODO: Allow viewing of fields through relationships.
         //layout_item.m_sequence = sequence;  add_item() will fill this.
@@ -1630,7 +1630,7 @@ std::shared_ptr<Document::DocumentTableInfo> Document::get_table_info_with_add(c
   }
   else
   {
-    doctableinfo = std::shared_ptr<DocumentTableInfo>(new DocumentTableInfo());
+    doctableinfo = std::make_shared<DocumentTableInfo>();
     doctableinfo->m_info->set_name(table_name);
     m_tables[table_name] = doctableinfo;
     return doctableinfo;
@@ -2009,7 +2009,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
                 field_type = field_temp->get_glom_type();
             }
 
-            std::shared_ptr<ChoiceValue> value = std::shared_ptr<ChoiceValue>(new ChoiceValue());
+            std::shared_ptr<ChoiceValue> value = std::make_shared<ChoiceValue>();
             load_after_choicevalue(element, value, field_type);
             list_values.push_back(value);
           }
@@ -2033,7 +2033,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
       }
 
       const Glib::ustring field_first = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD);
-      std::shared_ptr<LayoutItem_Field> layout_field_first = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+      std::shared_ptr<LayoutItem_Field> layout_field_first = std::make_shared<LayoutItem_Field>();
       layout_field_first->set_name(field_first);
 
       std::shared_ptr<LayoutGroup> extra_layouts;
@@ -2045,8 +2045,8 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
         const Glib::ustring field_second = XmlUtils::get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND);
         if(!field_second.empty())
         {
-          extra_layouts = std::shared_ptr<LayoutGroup>(new LayoutGroup());
-          std::shared_ptr<LayoutItem_Field> item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+          extra_layouts = std::make_shared<LayoutGroup>();
+          std::shared_ptr<LayoutItem_Field> item = std::make_shared<LayoutItem_Field>();
           item->set_name(field_second);
           extra_layouts->add_item(item);
         }
@@ -2061,7 +2061,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
           if(nodeGroups)
           {
 
-            std::shared_ptr<LayoutGroup> layout_group = std::shared_ptr<LayoutGroup>(new LayoutGroup());
+            std::shared_ptr<LayoutGroup> layout_group = std::make_shared<LayoutGroup>();
             load_after_layout_group(nodeGroups, relationship->get_to_table(), layout_group);
             if(layout_group && !(layout_group->m_list_items.empty()))
             {
@@ -2146,7 +2146,7 @@ void Document::load_after_layout_item_field(const xmlpp::Element* element, const
   const xmlpp::Element* nodeCustomTitle = XmlUtils::get_node_child_named(element, GLOM_NODE_LAYOUT_ITEM_CUSTOM_TITLE);
   if(nodeCustomTitle)
   {
-    std::shared_ptr<CustomTitle> custom_title = std::shared_ptr<CustomTitle>(new CustomTitle());
+    std::shared_ptr<CustomTitle> custom_title = std::make_shared<CustomTitle>();
     custom_title->set_use_custom_title( XmlUtils::get_node_attribute_value_as_bool(nodeCustomTitle, GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE_USE) );
 
     load_after_translations(nodeCustomTitle, custom_title);
@@ -2167,7 +2167,7 @@ void Document::load_after_sort_by(const xmlpp::Element* node, const Glib::ustrin
     const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
     if(element)
     {
-      std::shared_ptr<LayoutItem_Field> item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+      std::shared_ptr<LayoutItem_Field> item = std::make_shared<LayoutItem_Field>();
       //item.set_full_field_details_empty();
       load_after_layout_item_field(element, table_name, item);
       item->set_full_field_details( get_field(item->get_table_used(table_name), item->get_name()) );
@@ -2210,7 +2210,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
     {
       if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELD)
       {
-        std::shared_ptr<LayoutItem_Field> item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+        std::shared_ptr<LayoutItem_Field> item = std::make_shared<LayoutItem_Field>();
         //item.set_full_field_details_empty();
         load_after_layout_item_field(element, table_name, item);
 
@@ -2218,7 +2218,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_BUTTON)
       {
-        std::shared_ptr<LayoutItem_Button> item = std::shared_ptr<LayoutItem_Button>(new LayoutItem_Button());
+        std::shared_ptr<LayoutItem_Button> item = std::make_shared<LayoutItem_Button>();
 
         item->set_script( XmlUtils::get_child_text_node(element, GLOM_NODE_BUTTON_SCRIPT) );
         if(!(item->get_has_script())) //Try the deprecated attribute instead
@@ -2230,14 +2230,14 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_TEXTOBJECT)
       {
-        std::shared_ptr<LayoutItem_Text> item = std::shared_ptr<LayoutItem_Text>(new LayoutItem_Text());
+        std::shared_ptr<LayoutItem_Text> item = std::make_shared<LayoutItem_Text>();
         load_after_translations(element, item);
 
         //The text can be translated too, so it has its own node:
         const xmlpp::Element* element_text = XmlUtils::get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT);
         if(element_text)
         {
-          std::shared_ptr<StaticText> translatable_text = std::shared_ptr<StaticText>(new StaticText());
+          std::shared_ptr<StaticText> translatable_text = std::make_shared<StaticText>();
           load_after_translations(element_text, translatable_text);
           item->m_text = translatable_text;
           //std::cout << "  DEBUG: text: " << item->m_text->get_title_or_name() << std::endl;
@@ -2247,7 +2247,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_IMAGEOBJECT)
       {
-        std::shared_ptr<LayoutItem_Image> item = std::shared_ptr<LayoutItem_Image>(new LayoutItem_Image());
+        std::shared_ptr<LayoutItem_Image> item = std::make_shared<LayoutItem_Image>();
         load_after_translations(element, item);
 
         Gnome::Gda::Value value_image;
@@ -2269,7 +2269,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_LINE)
       {
-        std::shared_ptr<LayoutItem_Line> item = std::shared_ptr<LayoutItem_Line>(new LayoutItem_Line());
+        std::shared_ptr<LayoutItem_Line> item = std::make_shared<LayoutItem_Line>();
         //Has no translations: load_after_translations(element, item);
 
         item->set_coordinates(
@@ -2288,7 +2288,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY)
       {
-        std::shared_ptr<LayoutItem_FieldSummary> item = std::shared_ptr<LayoutItem_FieldSummary>(new LayoutItem_FieldSummary());
+        std::shared_ptr<LayoutItem_FieldSummary> item = std::make_shared<LayoutItem_FieldSummary>();
         //item.set_full_field_details_empty();
         load_after_layout_item_field(element, table_name, item);
         item->set_full_field_details( get_field(item->get_table_used(table_name), item->get_name()) );
@@ -2298,28 +2298,28 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_HEADER)
       {
-        std::shared_ptr<LayoutItem_Header> child_group = std::shared_ptr<LayoutItem_Header>(new LayoutItem_Header());
+        std::shared_ptr<LayoutItem_Header> child_group = std::make_shared<LayoutItem_Header>();
         //Recurse:
         load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
         item_added = child_group;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FOOTER)
       {
-        std::shared_ptr<LayoutItem_Footer> child_group = std::shared_ptr<LayoutItem_Footer>(new LayoutItem_Footer());
+        std::shared_ptr<LayoutItem_Footer> child_group = std::make_shared<LayoutItem_Footer>();
         //Recurse:
         load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
         item_added = child_group;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_GROUP)
       {
-        std::shared_ptr<LayoutGroup> child_group = std::shared_ptr<LayoutGroup>(new LayoutGroup());
+        std::shared_ptr<LayoutGroup> child_group = std::make_shared<LayoutGroup>();
         //Recurse:
         load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
         item_added = child_group;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_NOTEBOOK)
       {
-        std::shared_ptr<LayoutItem_Notebook> notebook = std::shared_ptr<LayoutItem_Notebook>(new LayoutItem_Notebook());
+        std::shared_ptr<LayoutItem_Notebook> notebook = std::make_shared<LayoutItem_Notebook>();
         load_after_layout_group(element, table_name, notebook, with_print_layout_positions);
         item_added = notebook;
       }
@@ -2329,10 +2329,10 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         std::shared_ptr<LayoutItem_CalendarPortal> calendar_portal;
 
         if(element->get_name() == GLOM_NODE_DATA_LAYOUT_PORTAL)
-          portal = std::shared_ptr<LayoutItem_Portal>(new LayoutItem_Portal());
+          portal = std::make_shared<LayoutItem_Portal>();
         else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_CALENDAR_PORTAL)
         {
-          calendar_portal = std::shared_ptr<LayoutItem_CalendarPortal>(new LayoutItem_CalendarPortal());
+          calendar_portal = std::make_shared<LayoutItem_CalendarPortal>();
           portal = calendar_portal;
         }
 
@@ -2356,7 +2356,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
           else if(navigation_type_as_string == GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_SPECIFIC)
           {
             //Read the specified relationship name:
-            std::shared_ptr<UsesRelationship> relationship_navigation_specific = std::shared_ptr<UsesRelationship>(new UsesRelationship());
+            std::shared_ptr<UsesRelationship> relationship_navigation_specific = std::make_shared<UsesRelationship>();
             load_after_layout_item_usesrelationship(elementNavigationRelationshipSpecific, portal->get_table_used(table_name), relationship_navigation_specific);
             portal->set_navigation_relationship_specific(relationship_navigation_specific);
           }
@@ -2403,12 +2403,12 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY)
       {
-        std::shared_ptr<LayoutItem_GroupBy> child_group = std::shared_ptr<LayoutItem_GroupBy>(new LayoutItem_GroupBy());
+        std::shared_ptr<LayoutItem_GroupBy> child_group = std::make_shared<LayoutItem_GroupBy>();
         //Recurse:
         load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
 
         //Group-By field:
-        std::shared_ptr<LayoutItem_Field> field_groupby = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+        std::shared_ptr<LayoutItem_Field> field_groupby = std::make_shared<LayoutItem_Field>();
         xmlpp::Element* elementGroupBy = XmlUtils::get_node_child_named(element, GLOM_NODE_REPORT_ITEM_GROUPBY_GROUPBY);
         if(elementGroupBy)
         {
@@ -2445,7 +2445,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_VERTICALGROUP)
       {
-        std::shared_ptr<LayoutItem_VerticalGroup> child_group = std::shared_ptr<LayoutItem_VerticalGroup>(new LayoutItem_VerticalGroup());
+        std::shared_ptr<LayoutItem_VerticalGroup> child_group = std::make_shared<LayoutItem_VerticalGroup>();
         //Recurse:
         load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
 
@@ -2453,7 +2453,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_SUMMARY)
       {
-        std::shared_ptr<LayoutItem_Summary> child_group = std::shared_ptr<LayoutItem_Summary>(new LayoutItem_Summary());
+        std::shared_ptr<LayoutItem_Summary> child_group = std::make_shared<LayoutItem_Summary>();
         //Recurse:
         load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
 
@@ -2529,7 +2529,7 @@ void Document::load_after_translations(const xmlpp::Element* element, const std:
     const xmlpp::Element* nodeTitleSingular = XmlUtils::get_node_child_named(element, GLOM_NODE_TABLE_TITLE_SINGULAR);
 
     if(!has_title_singular->m_title_singular)
-     has_title_singular->m_title_singular = std::shared_ptr<TranslatableItem>(new TranslatableItem());
+     has_title_singular->m_title_singular = std::make_shared<TranslatableItem>();
 
     load_after_translations(nodeTitleSingular, has_title_singular->m_title_singular);
   }
@@ -2678,7 +2678,7 @@ bool Document::load_after(int& failure_code)
         {
           const Glib::ustring table_name = XmlUtils::get_node_attribute_value(nodeTable, GLOM_ATTRIBUTE_NAME);
 
-          const std::shared_ptr<DocumentTableInfo> doctableinfo = std::shared_ptr<DocumentTableInfo>(new DocumentTableInfo());
+          const std::shared_ptr<DocumentTableInfo> doctableinfo = std::make_shared<DocumentTableInfo>();
           m_tables[table_name] = doctableinfo;
 
           std::shared_ptr<TableInfo> table_info(new TableInfo());
@@ -2705,7 +2705,7 @@ bool Document::load_after(int& failure_code)
               const xmlpp::Element* nodeChild = dynamic_cast<xmlpp::Element*>(*iter);
               if(nodeChild)
               {
-                std::shared_ptr<Relationship> relationship = std::shared_ptr<Relationship>(new Relationship());
+                std::shared_ptr<Relationship> relationship = std::make_shared<Relationship>();
                 const Glib::ustring relationship_name = XmlUtils::get_node_attribute_value(nodeChild, GLOM_ATTRIBUTE_NAME);
 
                 relationship->set_from_table(table_name);
@@ -5210,7 +5210,7 @@ Document::type_list_lookups Document::get_lookup_fields(const Glib::ustring& tab
         if(relationship->get_from_field() == field_name)
         {
           //Add it:
-          std::shared_ptr<LayoutItem_Field> item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+          std::shared_ptr<LayoutItem_Field> item = std::make_shared<LayoutItem_Field>();
           item->set_full_field_details(field);
           result.push_back( type_pairFieldTrigger(item, relationship) );
         }

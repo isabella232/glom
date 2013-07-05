@@ -375,7 +375,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
         std::shared_ptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
         if(field_primary_key)
         {
-          std::shared_ptr<LayoutItem_Field> layout_item_sort = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+          std::shared_ptr<LayoutItem_Field> layout_item_sort = std::make_shared<LayoutItem_Field>();
           layout_item_sort->set_full_field_details(field_primary_key);
 
           found_set.m_sort_clause.clear();
@@ -384,7 +384,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
           //because that would be too slow.
           //The user can explicitly request a sort later, by clicking on a column header.
           //TODO_Performance: This causes an almost-duplicate COUNT query (we do it in the treemodel too), but it's not that slow.
-          std::shared_ptr<LayoutItem_Field> layout_item_temp = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+          std::shared_ptr<LayoutItem_Field> layout_item_temp = std::make_shared<LayoutItem_Field>();
           layout_item_temp->set_full_field_details(field_primary_key);
           type_vecLayoutFields layout_fields;
           layout_fields.push_back(layout_item_temp);
@@ -1174,7 +1174,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
       }
 
       //Create the new relationship:
-      std::shared_ptr<Relationship> relationship = std::shared_ptr<Relationship>(new Relationship());
+      std::shared_ptr<Relationship> relationship = std::make_shared<Relationship>();
 
       relationship->set_name(relationship_name);
       relationship->set_title(Utils::title_from_string(relationship_name), AppWindow::get_current_locale());

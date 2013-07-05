@@ -156,7 +156,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   try
   {
     //TODO: Avoid the need for this awkward use of set_g_type():
-    std::shared_ptr<Glom::Field> field = std::shared_ptr<Glom::Field>(new Glom::Field());
+    std::shared_ptr<Glom::Field> field = std::make_shared<Glom::Field>();
     field->set_name("newfield");
     field->set_glom_type(Glom::Field::TYPE_NUMERIC);
     Glib::RefPtr<Gnome::Gda::Column> field_info = field->get_field_info();

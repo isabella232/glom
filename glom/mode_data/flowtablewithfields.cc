@@ -1113,17 +1113,17 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
   }
   else if(item_type == LayoutWidgetBase::TYPE_GROUP)
   {
-    std::shared_ptr<LayoutGroup> layout_item = std::shared_ptr<LayoutGroup>(new LayoutGroup());
+    std::shared_ptr<LayoutGroup> layout_item = std::make_shared<LayoutGroup>();
     layout_item->set_title_original(_("New Group"));
     layout_item_new = layout_item;
   }
   else if(item_type == LayoutWidgetBase::TYPE_NOTEBOOK)
   {
-    std::shared_ptr<LayoutItem_Notebook> layout_item = std::shared_ptr<LayoutItem_Notebook>(new LayoutItem_Notebook());
+    std::shared_ptr<LayoutItem_Notebook> layout_item = std::make_shared<LayoutItem_Notebook>();
     layout_item->set_name(_("notebook"));
 
     //Add an example tab, so that it shows up.
-    std::shared_ptr<LayoutGroup> group_tab = std::shared_ptr<LayoutGroup>(new LayoutGroup());
+    std::shared_ptr<LayoutGroup> group_tab = std::make_shared<LayoutGroup>();
 
     //Note to translators: This is the default name (not seen by most users) for a notebook tab.
     group_tab->set_name(_("tab1"));
@@ -1141,14 +1141,14 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
   }
   else if(item_type == LayoutWidgetBase::TYPE_BUTTON)
   {
-    std::shared_ptr<LayoutItem_Button> layout_item = std::shared_ptr<LayoutItem_Button>(new LayoutItem_Button());
+    std::shared_ptr<LayoutItem_Button> layout_item = std::make_shared<LayoutItem_Button>();
     layout_item->set_name(_("button"));
     layout_item->set_title_original(_("New Button"));
     layout_item_new = layout_item;
   }
   else if(item_type == LayoutWidgetBase::TYPE_TEXT)
   {
-    std::shared_ptr<LayoutItem_Text> layout_item = std::shared_ptr<LayoutItem_Text>(new LayoutItem_Text());
+    std::shared_ptr<LayoutItem_Text> layout_item = std::make_shared<LayoutItem_Text>();
     layout_item->set_name(_("text"));
     layout_item->set_text_original(_("New Text"));
     layout_item_new = layout_item;
@@ -1360,7 +1360,7 @@ std::shared_ptr<LayoutItem_Portal> FlowTableWithFields::get_portal_relationship(
     std::shared_ptr<Relationship> relationship  = dialog->get_relationship_chosen();
     if(relationship)
     {
-      std::shared_ptr<LayoutItem_Portal> layout_item = std::shared_ptr<LayoutItem_Portal>(new LayoutItem_Portal());
+      std::shared_ptr<LayoutItem_Portal> layout_item = std::make_shared<LayoutItem_Portal>();
       layout_item->set_relationship(relationship);
       delete dialog;
       return layout_item;

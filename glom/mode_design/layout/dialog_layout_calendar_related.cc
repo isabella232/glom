@@ -120,7 +120,7 @@ void Dialog_Layout_Calendar_Related::init_with_tablename(const Glib::ustring& la
 {
   if(!m_portal)
   {
-    m_portal = std::shared_ptr<LayoutItem_CalendarPortal>(new LayoutItem_CalendarPortal()); //The rest of the class assumes that this is not null.
+    m_portal = std::make_shared<LayoutItem_CalendarPortal>(); //The rest of the class assumes that this is not null.
   }
 
   type_vecConstLayoutFields empty_fields; //Just to satisfy the base class.
@@ -298,7 +298,7 @@ void Dialog_Layout_Calendar_Related::save_to_document()
       std::shared_ptr<Relationship> rel, rel_related;
       rel = m_combo_navigation_specify->get_selected_relationship(rel_related);
 
-      std::shared_ptr<UsesRelationship> uses_rel = std::shared_ptr<UsesRelationship>(new UsesRelationship());
+      std::shared_ptr<UsesRelationship> uses_rel = std::make_shared<UsesRelationship>();
       uses_rel->set_relationship(rel);
       uses_rel->set_related_relationship(rel_related);
 

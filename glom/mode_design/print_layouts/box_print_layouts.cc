@@ -126,7 +126,7 @@ bool Box_Print_Layouts::fill_from_database()
 
 void Box_Print_Layouts::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
 {
-  std::shared_ptr<PrintLayout> item = std::shared_ptr<PrintLayout>(new PrintLayout());
+  std::shared_ptr<PrintLayout> item = std::make_shared<PrintLayout>();
 
   const Glib::ustring name = m_AddDel.get_value(row, m_colName);
   if(!name.empty())

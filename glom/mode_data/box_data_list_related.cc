@@ -279,7 +279,7 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
   if(m_key_field)
   {
     //m_key_field is the field in this table that must match another field in the parent table.
-    std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+    std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
     layout_item->set_full_field_details(m_key_field);
     key_value = m_AddDel.get_value(row, layout_item);
   }
@@ -307,7 +307,7 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
       make_record_related(primary_key_value);
 
       //Show it on the view, if it's visible:
-      std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+      std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
       layout_item->set_full_field_details(m_key_field);
 
       //TODO: Although the to-field value is visible on the new related record, get_value() returns NULL so you can't immediately navigate to the new record:
@@ -474,7 +474,7 @@ void Box_Data_List_Related::create_layout()
   //TODO: Only add it if it is not already there.
   if(field_primary_key)
   {
-    std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+    std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
     layout_item->set_hidden();
     layout_item->set_full_field_details(m_AddDel.get_key_field());
     m_FieldsShown.push_back(layout_item);

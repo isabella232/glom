@@ -185,14 +185,14 @@ void Box_Data_List::on_adddel_user_reordered_columns()
   Document* pDoc = dynamic_cast<Document*>(get_document());
   if(pDoc)
   {
-    std::shared_ptr<LayoutGroup> group = std::shared_ptr<LayoutGroup>(new LayoutGroup());
+    std::shared_ptr<LayoutGroup> group = std::make_shared<LayoutGroup>();
     group->set_name("toplevel");
 
     AddDel::type_vec_strings vec_field_names = m_AddDel.get_columns_order();
 
     for(AddDel::type_vec_strings::iterator iter = vec_field_names.begin(); iter != vec_field_names.end(); ++iter)
     {
-      std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+      std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
       layout_item->set_name(*iter);
       group->add_item(layout_item);
     }
@@ -472,7 +472,7 @@ void Box_Data_List::create_layout()
   items_to_use = Utils::get_layout_items_plus_primary_key(items_to_use, pDoc, m_table_name);
   if(field_primary_key)
   {
-    std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+    std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
     layout_item->set_hidden();
     layout_item->set_full_field_details(m_AddDel.get_key_field());
 

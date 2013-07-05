@@ -144,7 +144,7 @@ void Dialog_FieldDefinition::set_field(const std::shared_ptr<const Field>& field
 
   //We use a regular DataWidget for the default value, so we can reuse its functionality,
   //but it's not a real field - hence the special title.
-  std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+  std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
   std::shared_ptr<Field> field_default_value = glom_sharedptr_clone(m_Field);
   field_default_value->set_name("glom_temp_default_value");
   field_default_value->set_title_original(_("Default Value"));

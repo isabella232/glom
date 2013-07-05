@@ -121,7 +121,7 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
 
 std::shared_ptr<PrintLayout> Canvas_PrintLayout::get_print_layout()
 {
-  std::shared_ptr<PrintLayout> result = std::shared_ptr<PrintLayout>(new PrintLayout());
+  std::shared_ptr<PrintLayout> result = std::make_shared<PrintLayout>();
   fill_layout_group(result->get_layout_group());
 
   //Page Setup:
@@ -219,7 +219,7 @@ void Canvas_PrintLayout::remove_canvas_layout_item(const Glib::RefPtr<CanvasLayo
 
 void Canvas_PrintLayout::add_layout_group(const std::shared_ptr<LayoutGroup>& group, bool is_top_level)
 {
-  //row[model_parts->m_columns.m_col_item] = std::shared_ptr<LayoutItem>(static_cast<LayoutItem*>(group->clone()));
+  //row[model_parts->m_columns.m_col_item] = group->clone();
 
   //Add the group item:
   if(!is_top_level)

@@ -256,7 +256,7 @@ Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen(
 
     // Setup a LayoutItem_Field for the Field, 
     // so is_same_field() can work:
-    std::shared_ptr<LayoutItem_Field> field = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+    std::shared_ptr<LayoutItem_Field> field = std::make_shared<LayoutItem_Field>();
     field->set_relationship(relationship);
     field->set_related_relationship(related_relationship);
       
@@ -269,7 +269,7 @@ Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen(
     if(m_start_field && m_start_field->is_same_field(field))
       field = m_start_field; 
     else
-      field = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+      field = std::make_shared<LayoutItem_Field>();
 
     //Use the chosen field:
     field->set_relationship(relationship);

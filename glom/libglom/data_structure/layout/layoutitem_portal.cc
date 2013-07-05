@@ -306,7 +306,7 @@ std::shared_ptr<const UsesRelationship> LayoutItem_Portal::get_portal_navigation
     if(field)
     {
       return field; //Returns the UsesRelationship base part. (A relationship belonging to the portal's related table.)
-      //std::shared_ptr<UsesRelationship> result = std::shared_ptr<UsesRelationship>(new UsesRelationship());
+      //std::shared_ptr<UsesRelationship> result = std::make_shared<UsesRelationship>();
       //result->set_relationship( get_relationship() );
       //result->set_related_relationship( field->get_relationship() );
 
@@ -320,7 +320,7 @@ std::shared_ptr<const UsesRelationship> LayoutItem_Portal::get_portal_navigation
       std::shared_ptr<const LayoutItem_Field> field_identifies = get_field_identifies_non_hidden_related_record(used_in_relationship, document);
       if(field_identifies)
       {
-        std::shared_ptr<UsesRelationship> result = std::shared_ptr<UsesRelationship>(new UsesRelationship());
+        std::shared_ptr<UsesRelationship> result = std::make_shared<UsesRelationship>();
 
         std::shared_ptr<Relationship> rel_nonconst = std::const_pointer_cast<Relationship>(used_in_relationship);
         result->set_relationship(rel_nonconst);

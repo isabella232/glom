@@ -261,7 +261,7 @@ namespace
   }
 }
 
-std::shared_ptr<Field> Base_DB::change_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field_old, const std::shared_ptr<const Field>& field, Gtk::Window* /* parent_window */) const
+std::shared_ptr<Field> Base_DB::change_column(const Glib::ustring& table_name, const std::shared_ptr<const Field>& field_old, const std::shared_ptr<const Field>& field, Gtk::Window* parent_window) const
 {
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   std::shared_ptr<Field> result = check_field_change_constraints(field_old, field);
@@ -272,7 +272,7 @@ std::shared_ptr<Field> Base_DB::change_column(const Glib::ustring& table_name, c
     if(!connection_pool->change_column(table_name, field_old, result))
     {
       std::cerr << G_STRFUNC << ": change_column() failed." << std::endl;
-      return sharedptr<Field>();
+      return std::shared_ptr<Field>();
     }
   }
   catch(const Glib::Error& ex)
@@ -716,7 +716,7 @@ Base_DB::type_vecConstLayoutFields Base_DB::get_table_fields_to_show_for_sequenc
       Glib::ustring primary_key_field_name;
       if(bPrimaryKeyFound)
       {
-        std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+        std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
         layout_item->set_full_field_details(all_fields[iPrimaryKey]);
 
         //Don't use thousands separators with ID numbers:
@@ -738,7 +738,7 @@ Base_DB::type_vecConstLayoutFields Base_DB::get_table_fields_to_show_for_sequenc
 
         if((*iter)->get_name() != primary_key_field_name) //We already added the primary key.
         {
-          std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+          std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
           layout_item->set_full_field_details(field_info);
 
           layout_item->set_editable(true); //A sensible default.
@@ -801,7 +801,7 @@ void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, co
   LayoutFieldInRecord field_in_record;
   field_in_record.m_table_name = table_name;
 
-  std::shared_ptr<LayoutItem_Field> layoutitem_field = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+  std::shared_ptr<LayoutItem_Field> layoutitem_field = std::make_shared<LayoutItem_Field>();
   layoutitem_field->set_full_field_details(field);
   field_in_record.m_field = layoutitem_field;
   field_in_record.m_key = primary_key;
@@ -859,7 +859,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
 
     refCalcProgress.m_calc_in_progress = true; //Let the recursive calls to calculate_field() check this.
 
-    std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+    std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
     layout_item->set_full_field_details(refCalcProgress.m_field);
 
     //Calculate dependencies first:
@@ -933,7 +933,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
           refCalcProgress.m_calc_finished = true;
           refCalcProgress.m_calc_in_progress = false;
 
-          std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+          std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
           layout_item->set_full_field_details(field);
 
           //show it:
@@ -956,14 +956,10 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
 
 }
 
-Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const Glib::ustring& table_name, const std::shared_ptr<const Field> primary_key, const Gnome::Gda::Value& primary_key_value)
+Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const Glib::ustring& table_name, const std::shared_ptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
 {
   const Document* document = get_document();
   return DbUtils::get_record_field_values(document, table_name, primary_key, primary_key_value);
-      std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
-      //std::shared_ptr<const Field> fieldPrimaryKey = get_field_primary_key();
-          std::shared_ptr<const Field> field = *iter;
-        std::shared_ptr<const Field> field = *iter;
 }
 
 void Base_DB::set_entered_field_data(const std::shared_ptr<const LayoutItem_Field>& /* field */, const Gnome::Gda::Value& /* value */)
@@ -1122,7 +1118,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const std::shared_ptr<Fie
   }
 
   type_vecConstLayoutFields list_fields;
-  std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+  std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
   layout_item->set_full_field_details(field);
   list_fields.push_back(layout_item);
   Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
@@ -1199,7 +1195,7 @@ Base_DB::type_list_const_field_items Base_DB::get_calculated_fields(const Glib::
     for(type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end();  ++iter)
     {
       std::shared_ptr<Field> field_to_examine = *iter;
-      std::shared_ptr<LayoutItem_Field> layoutitem_field_to_examine = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+      std::shared_ptr<LayoutItem_Field> layoutitem_field_to_examine = std::make_shared<LayoutItem_Field>();
       layoutitem_field_to_examine->set_full_field_details(field_to_examine);
 
       //std::cout << "  debug: examining field=" << field_to_examine->get_name() << std::endl;
@@ -1261,7 +1257,7 @@ Base_DB::type_list_const_field_items Base_DB::get_calculation_fields(const Glib:
         std::shared_ptr<Field> field_found = document->get_field(table_name, field_name);
         if(field)
         {
-          std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+          std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
           layout_item->set_full_field_details(field_found);
 
           result.push_back(layout_item);
@@ -1286,7 +1282,7 @@ Base_DB::type_list_const_field_items Base_DB::get_calculation_fields(const Glib:
       std::shared_ptr<Field> field_from = document->get_field(table_name, field_from_name);
       if(field_from)
       {
-        std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+        std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
         layout_item->set_full_field_details(field_from);
 
         result.push_back(layout_item);
@@ -1430,7 +1426,7 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
 
   type_vecLayoutFields fieldsToGet;
 
-  std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+  std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
   layout_item->set_full_field_details(primary_key);
   fieldsToGet.push_back(layout_item);
 
@@ -1499,7 +1495,7 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
   if(relationship_related)
   {
     //Add the extra JOIN:
-    std::shared_ptr<UsesRelationship> uses_rel_temp = std::shared_ptr<UsesRelationship>(new UsesRelationship());
+    std::shared_ptr<UsesRelationship> uses_rel_temp = std::make_shared<UsesRelationship>();
     uses_rel_temp->set_relationship(relationship);
     found_set.m_extra_join = relationship;
 

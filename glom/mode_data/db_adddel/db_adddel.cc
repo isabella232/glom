@@ -2102,7 +2102,7 @@ bool DbAddDel::start_new_record()
   else
   {
     //The primary key is not auto-increment, so start by editing it:
-    fieldToEdit = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+    fieldToEdit = std::make_shared<LayoutItem_Field>();
     fieldToEdit->set_full_field_details(fieldPrimaryKey);
   }
 
@@ -2164,7 +2164,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
           if(primary_key_field)
           {
             //Get the value of the corresponding key in the current table (that identifies the record in the table that we will change)
-            std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+            std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
             layout_item->set_full_field_details( document->get_field(relationship->get_from_table(), relationship->get_from_field()) );
 
             primary_key_value = get_value_selected(layout_item);
@@ -2308,7 +2308,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
     //This only works when the primary key is already stored: primary_key_value = get_value_key(row);
     //primary_key_value = get_value_key_selected();
 
-    std::shared_ptr<LayoutItem_Field> layout_field = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+    std::shared_ptr<LayoutItem_Field> layout_field = std::make_shared<LayoutItem_Field>();
     layout_field->set_full_field_details(primary_key_field);
     primary_key_value = get_value_selected(layout_field);
     std::cout << "DEBUG: get_value_key_selected(): " << primary_key_value.to_string() << std::endl;
@@ -2328,7 +2328,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
   }
 
 
-  std::shared_ptr<LayoutItem_Field> layout_field = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+  std::shared_ptr<LayoutItem_Field> layout_field = std::make_shared<LayoutItem_Field>();
   layout_field->set_full_field_details(primary_key_field);
   if(!check_entered_value_for_uniqueness(m_found_set.m_table_name, layout_field, primary_key_value, get_appwindow()))
   {
@@ -2356,7 +2356,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
   //If it's an auto-increment, then get the value and show it:
   if(primary_key_field->get_auto_increment())
   {
-    std::shared_ptr<LayoutItem_Field> layout_item = std::shared_ptr<LayoutItem_Field>(new LayoutItem_Field());
+    std::shared_ptr<LayoutItem_Field> layout_item = std::make_shared<LayoutItem_Field>();
     layout_item->set_full_field_details(primary_key_field);
     set_value(row, layout_item, primary_key_value);
   }
