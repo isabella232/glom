@@ -1,3 +1,16 @@
+2013-07-18  Murray Cumming  <murrayc@murrayc.com>
+
+	Initial dialog: Fix crash with latest libxml.
+
+	* glom/dialog_existing_or_new.cc: Catch exceptions from
+	xmlpp::SaxParser::parse_chunk() because libxml nows
+	returns an error code from xmlParserChunk when we call
+	xmlStopParser(), which libxml++ then throws as an
+	exception. Maybe libxml++ should not do that for that
+	new error code.
+	This is the libxml commit:
+	https://git.gnome.org/browse/libxml2/commit/?id=e50ba8164eee06461c73cd8abb9b46aa0be81869
+
 2013-06-10  Murray Cumming  <murrayc@murrayc.com>
 
 	Initial dialog: Fix the notebook vertical expansion.
