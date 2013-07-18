@@ -64,7 +64,17 @@ public:
 
   Glib::ustring get_example_title(const std::string& beginning)
   {
-    parse_chunk(beginning);
+    try
+    {
+      parse_chunk(beginning);
+    }
+    catch(const xmlpp::exception& /* ex */)
+    {
+      //Ignore these, returning as much of the title as we have managed to retrieve.
+      //Recent versions of libxml now cause an exception after we call xmlStopParser() anyway.
+      //TODO: How can we get the error code from the exception anyway?
+    }
+
     return m_title;
   }
 
