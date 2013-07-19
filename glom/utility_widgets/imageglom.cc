@@ -28,7 +28,6 @@
 #include <glom/utility_widgets/dialog_image_save_progress.h>
 #include <gtkmm/appchooserdialog.h>
 #include <gtkmm/filechooserdialog.h>
-#include <gtkmm/stock.h>
 #include <giomm/file.h>
 #include <giomm/contenttype.h>
 #include <libgda/gda-blob-op.h>
@@ -434,7 +433,7 @@ void ImageGlom::show_image_data()
     }
     else
     {
-      m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
+      m_image.set_from_icon_name("image-missing", Gtk::ICON_SIZE_DIALOG);
     }
   }
 }
@@ -681,8 +680,8 @@ void ImageGlom::on_menupopup_activate_save_file()
           
   set_file_filter_images(dialog);
 
-  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  dialog.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
+  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
+  dialog.add_button(_("_Save"), Gtk::RESPONSE_OK);
   const int response = dialog.run();
   dialog.hide();
   if(response != Gtk::RESPONSE_OK)
@@ -768,7 +767,7 @@ void ImageGlom::on_menupopup_activate_select_file()
           
   set_file_filter_images(dialog);
 
-  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("Select"), Gtk::RESPONSE_OK);
   int response = dialog.run();
   dialog.hide();
@@ -923,13 +922,13 @@ void ImageGlom::setup_menu_usermode()
 
   m_refActionGroup_UserModePopup->add(Gtk::Action::create("ContextMenu_UserMode", "Context Menu") );
   
-  m_refActionOpenFile =  Gtk::Action::create("ContextOpenFile", Gtk::Stock::OPEN);
-  m_refActionOpenFileWith =  Gtk::Action::create("ContextOpenFileWith", Gtk::Stock::OPEN, _("Open With"));
-  m_refActionSaveFile =  Gtk::Action::create("ContextSaveFile", Gtk::Stock::SAVE);
-  m_refActionSelectFile =  Gtk::Action::create("ContextSelectFile", Gtk::Stock::EDIT, _("Choose File"));
-  m_refActionCopy = Gtk::Action::create("ContextCopy", Gtk::Stock::COPY);
-  m_refActionPaste = Gtk::Action::create("ContextPaste", Gtk::Stock::PASTE);
-  m_refActionClear = Gtk::Action::create("ContextClear", Gtk::Stock::CLEAR);
+  m_refActionOpenFile =  Gtk::Action::create("ContextOpenFile", _("_Open"));
+  m_refActionOpenFileWith =  Gtk::Action::create("ContextOpenFileWith", _("Open With"));
+  m_refActionSaveFile =  Gtk::Action::create("ContextSaveFile", _("_Save"));
+  m_refActionSelectFile =  Gtk::Action::create("ContextSelectFile", _("Choose File"));
+  m_refActionCopy = Gtk::Action::create("ContextCopy", _("_Copy"));
+  m_refActionPaste = Gtk::Action::create("ContextPaste", _("_Paste"));
+  m_refActionClear = Gtk::Action::create("ContextClear", _("_Clear"));
 
   m_refActionGroup_UserModePopup->add(m_refActionOpenFile,
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_open_file) );

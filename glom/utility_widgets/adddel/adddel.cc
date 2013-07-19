@@ -28,7 +28,6 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/dialog_invalid_data.h>
 #include <glom/utils_ui.h>
-#include <gtkmm/stock.h>
 #include <libglom/utils.h>
 //#include <glom/bakery/app_gtk.h>
 #include <iostream> //For debug output.
@@ -232,13 +231,13 @@ void AddDel::setup_menu()
   m_refActionGroup = Gtk::ActionGroup::create();
   m_refActionGroup->add(Gtk::Action::create("ContextMenu", "Context Menu") );
 
-  m_refContextEdit = Gtk::Action::create("ContextEdit", Gtk::Stock::EDIT);
+  m_refContextEdit = Gtk::Action::create("ContextEdit", _("_Edit"));
   m_refActionGroup->add(m_refContextEdit,
     sigc::mem_fun(*this, &AddDel::on_MenuPopup_activate_Edit) );
 
   if(get_allow_user_actions())
   {
-    m_refContextDelete =  Gtk::Action::create("ContextDelete", Gtk::Stock::DELETE);
+    m_refContextDelete =  Gtk::Action::create("ContextDelete", _("_Delete"));
     m_refActionGroup->add(m_refContextDelete,
       sigc::mem_fun(*this, &AddDel::on_MenuPopup_activate_Delete) );
   }

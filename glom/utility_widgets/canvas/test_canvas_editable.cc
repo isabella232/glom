@@ -171,11 +171,11 @@ private:
 
     m_context_menu_action_group->add(Gtk::Action::create("ContextMenu", "Context Menu") );
 
-    Glib::RefPtr<Gtk::Action> action =  Gtk::Action::create("ContextEdit", Gtk::Stock::EDIT);
+    Glib::RefPtr<Gtk::Action> action =  Gtk::Action::create("ContextEdit", _("_Edit"));
     m_context_menu_action_group->add(action,
       sigc::mem_fun(*this, &MyCanvas::on_context_menu_edit) );
 
-    action =  Gtk::Action::create("ContextDelete", Gtk::Stock::DELETE);
+    action =  Gtk::Action::create("ContextDelete", _("_Delete"));
     m_context_menu_action_group->add(action,
       sigc::mem_fun(*this, &MyCanvas::on_context_menu_delete) );
 

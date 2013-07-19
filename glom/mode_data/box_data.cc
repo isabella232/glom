@@ -29,7 +29,6 @@
 #include <glom/python_embed/glom_python.h>
 #include <glom/python_embed/python_ui_callbacks.h>
 #include <glom/appwindow.h>
-#include <gtkmm/stock.h>
 #include <algorithm> //For std::find()
 #include <libglom/libglom_config.h>
 #include <iostream>
@@ -40,7 +39,7 @@ namespace Glom
 {
 
 Box_Data::Box_Data()
-: m_Button_Find(Gtk::Stock::FIND)
+: m_Button_Find(_("_Find"))
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   ,m_pDialogLayout(0)
 #endif // !GLOM_ENABLE_CLIENT_ONLY

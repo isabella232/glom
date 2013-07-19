@@ -19,7 +19,6 @@
  */
 
 #include "print_layout_toolbar.h"
-#include <gtkmm/stock.h>
 #include <glibmm/i18n.h>
 #include <libglom/libglom_config.h>
 

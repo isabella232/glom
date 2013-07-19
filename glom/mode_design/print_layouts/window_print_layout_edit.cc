@@ -26,7 +26,6 @@
 #include <glom/print_layout/print_layout_utils.h>
 #include <gtkmm/radioaction.h>
 #include <gtkmm/printsettings.h>
-#include <gtkmm/stock.h>
 #include <gtkmm/grid.h>
 #include <gtkmm/printoperation.h>
 #include <libglom/data_structure/layout/layoutitem_line.h>
@@ -196,33 +195,33 @@ void Window_PrintLayout_Edit::init_menu()
   m_action_group = Gtk::ActionGroup::create();
 
   m_action_group->add(Gtk::Action::create("Menu_File", _("_File")));
-  m_action_group->add(Gtk::Action::create("Action_Menu_File_PageSetup", Gtk::Stock::PAGE_SETUP),
+  m_action_group->add(Gtk::Action::create("Action_Menu_File_PageSetup", _("Page Set_up")),
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_file_page_setup));
-  m_action_group->add(Gtk::Action::create("Action_Menu_File_PrintPreview", Gtk::Stock::PRINT_PREVIEW),
+  m_action_group->add(Gtk::Action::create("Action_Menu_File_PrintPreview", _("Print Pre_view")),
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_file_print_preview));
 
 
-  m_action_group->add(Gtk::Action::create("Menu_Edit", Gtk::Stock::EDIT));
+  m_action_group->add(Gtk::Action::create("Menu_Edit", _("_Edit")));
 
-  m_action_edit_cut = Gtk::Action::create("Action_Menu_Edit_Cut", Gtk::Stock::CUT);
+  m_action_edit_cut = Gtk::Action::create("Action_Menu_Edit_Cut", _("Cu_t"));
   m_action_group->add(m_action_edit_cut,
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_cut) );
 
-  m_action_edit_copy = Gtk::Action::create("Action_Menu_Edit_Copy", Gtk::Stock::COPY);
+  m_action_edit_copy = Gtk::Action::create("Action_Menu_Edit_Copy", _("_Copy"));
   m_action_group->add(m_action_edit_copy,
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_copy) );
   
-  m_action_edit_paste = Gtk::Action::create("Action_Menu_Edit_Paste", Gtk::Stock::PASTE);
+  m_action_edit_paste = Gtk::Action::create("Action_Menu_Edit_Paste", _("_Paste"));
   m_action_group->add(m_action_edit_paste,
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_paste) );
   m_action_edit_paste->set_sensitive(false); //This is enable when something is copied or cut.
 
-  m_action_edit_delete = Gtk::Action::create("Action_Menu_Edit_Delete", Gtk::Stock::DELETE);
+  m_action_edit_delete = Gtk::Action::create("Action_Menu_Edit_Delete", _("_Delete"));
   m_action_group->add(m_action_edit_delete,
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_delete) );
 
   m_action_group->add(
-    Gtk::Action::create("Action_Menu_Edit_SelectAll", Gtk::Stock::SELECT_ALL),
+    Gtk::Action::create("Action_Menu_Edit_SelectAll", _("Select _All")),
     Gtk::AccelKey("<control>A"), //TODO: Suggest this as part of the stock item in GTK+?
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_selectall) );
   m_action_group->add(
@@ -286,7 +285,7 @@ void Window_PrintLayout_Edit::init_menu()
     sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 200));
 
   Glib::RefPtr<Gtk::RadioAction> action_zoom100 = 
-    Gtk::RadioAction::create(group_zoom, "Action_Menu_View_Zoom100", Gtk::Stock::ZOOM_100);
+    Gtk::RadioAction::create(group_zoom, "Action_Menu_View_Zoom100", _("_Normal Size"));
   m_action_group->add(action_zoom100,
     sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 100));
 
@@ -761,7 +760,7 @@ void Window_PrintLayout_Edit::setup_context_menu()
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_context_menu_insert_text) );
 
   /*
-  action =  Gtk::Action::create("ContextDelete", Gtk::Stock::DELETE);
+  action =  Gtk::Action::create("ContextDelete", _("_Delete"));
   m_context_menu_action_group->add(action,
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_context_menu_delete) );
   */
@@ -914,7 +913,7 @@ void Window_PrintLayout_Edit::on_menu_insert_create_standard()
   Gtk::MessageDialog dialog(Utils::bold_message(_("Create Standard Layout")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
   dialog.set_secondary_text(_("This is an experimental feature. It will remove all items from the print layout and then try to create a layout similar to the layout of the detail view."));
   dialog.set_transient_for(*this);
-  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("Create"), Gtk::RESPONSE_OK);
 
   const int response = dialog.run();
@@ -958,7 +957,7 @@ void Window_PrintLayout_Edit::on_menu_insert_delete_page()
   Gtk::MessageDialog dialog(Utils::bold_message(_("Remove page")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
   dialog.set_secondary_text(_("Are you sure that you wish to remove the last page and any items on that page?"));
   dialog.set_transient_for(*this);
-  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("Remove Page"), Gtk::RESPONSE_OK);
   if(dialog.run() != Gtk::RESPONSE_OK)
     return;

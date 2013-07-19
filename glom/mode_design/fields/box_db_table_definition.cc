@@ -25,7 +25,6 @@
 #include <glom/appwindow.h>
 #include <libglom/libglom_config.h>
 #include <libglom/db_utils.h>
-#include <gtkmm/stock.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -271,7 +270,7 @@ bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& f
       if(parent_window)
         dialog.set_transient_for(*parent_window);
 
-      dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+      dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
       dialog.add_button(_("Recalculate"), Gtk::RESPONSE_OK);
       result = (dialog.run() == Gtk::RESPONSE_OK);
     }
@@ -322,7 +321,7 @@ bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& f
     if(parent_window)
       dialog.set_transient_for(*parent_window);
 
-    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
     dialog.add_button(_("Change Primary Key"), Gtk::RESPONSE_OK);
     if(dialog.run() != Gtk::RESPONSE_OK)
       return false; //Otherwise, continue, allowing the change.

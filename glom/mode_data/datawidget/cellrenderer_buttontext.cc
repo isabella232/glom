@@ -26,7 +26,7 @@ namespace Glom
 GlomCellRenderer_ButtonText::GlomCellRenderer_ButtonText():
   Glib::ObjectBase("GlomCellRenderer_ButtonText") // Create a new GType for us
 {
-  //const Gtk::StockID stock_id = Gtk::Stock::OPEN; //A default.
+  //const Gtk::StockID stock_id = _("_Open"); //A default.
   //property_stock_id() = stock_id.get_string();
 
   set_property("mode", Gtk::CELL_RENDERER_MODE_ACTIVATABLE); //So that it calls activate_vfunc().

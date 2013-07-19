@@ -76,13 +76,13 @@ Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr
   treeview_append_bool_column(*m_treeview_tables, _("View"), m_model_columns_tables.m_col_view,
     sigc::mem_fun( *this, &Dialog_GroupsList::on_treeview_tables_toggled_view) );
 
-  treeview_append_bool_column(*m_treeview_tables, _("Edit"), m_model_columns_tables.m_col_edit,
+  treeview_append_bool_column(*m_treeview_tables, _("_Edit"), m_model_columns_tables.m_col_edit,
     sigc::mem_fun( *this, &Dialog_GroupsList::on_treeview_tables_toggled_edit) );
 
   treeview_append_bool_column(*m_treeview_tables, _("Create"), m_model_columns_tables.m_col_create,
     sigc::mem_fun( *this, &Dialog_GroupsList::on_treeview_tables_toggled_create) );
 
-  treeview_append_bool_column(*m_treeview_tables, _("Delete"), m_model_columns_tables.m_col_delete,
+  treeview_append_bool_column(*m_treeview_tables, _("_Delete"), m_model_columns_tables.m_col_delete,
     sigc::mem_fun( *this, &Dialog_GroupsList::on_treeview_tables_toggled_delete) );
 
 

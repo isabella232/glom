@@ -44,7 +44,7 @@ LayoutWidgetMenu::LayoutWidgetMenu()
   m_refContextAddGroup =  Gtk::Action::create("ContextAddGroup", _("Add Group"));
   m_refContextAddButton =  Gtk::Action::create("ContextAddButton", _("Add Button"));
   m_refContextAddText =  Gtk::Action::create("ContextAddText", _("Add Text"));
-  m_refContextDelete = Gtk::Action::create("ContextDelete", _("Delete"));
+  m_refContextDelete = Gtk::Action::create("ContextDelete", _("_Delete"));
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 

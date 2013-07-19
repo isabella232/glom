@@ -21,7 +21,6 @@
 
 #include "canvas_print_layout.h"
 #include <glom/utils_ui.h> //For bold_message()).
-#include <gtkmm/stock.h>
 #include <glom/mode_design/print_layouts/dialog_text_formatting.h>
 #include <glom/mode_design/layout/dialog_layout_list_related.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_line.h>
@@ -280,11 +279,11 @@ void Canvas_PrintLayout::setup_context_menu()
     sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_insert_text) );
 */
 
-  m_action_edit = Gtk::Action::create("ContextMenuEdit", Gtk::Stock::EDIT);
+  m_action_edit = Gtk::Action::create("ContextMenuEdit", _("_Edit"));
   m_context_menu_action_group->add(m_action_edit);
   m_action_formatting =  Gtk::Action::create("ContextMenuFormatting", _("_Formatting"));
   m_context_menu_action_group->add(m_action_formatting);
-  m_action_delete =  Gtk::Action::create("ContextMenuDelete", Gtk::Stock::DELETE);
+  m_action_delete =  Gtk::Action::create("ContextMenuDelete", _("_Delete"));
   m_context_menu_action_group->add(m_action_delete);
 
   m_action_edit->signal_activate().connect( sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_edit) );

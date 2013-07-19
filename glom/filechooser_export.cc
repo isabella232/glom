@@ -22,7 +22,6 @@
 #include <glom/mode_design/layout/dialog_layout_export.h>
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
-#include <gtkmm/stock.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -37,7 +36,7 @@ FileChooser_Export::FileChooser_Export()
 #endif //GLOM_ENABLE_CLIENT_ONLY
   m_document(0)
 {
-  add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   add_button(_("_Export"), Gtk::RESPONSE_OK);
 
   m_extra_widget.pack_start(m_button_format, Gtk::PACK_SHRINK);

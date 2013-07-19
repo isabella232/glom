@@ -22,8 +22,8 @@
 
 #include "canvas_image_movable.h"
 #include <goocanvasmm/canvas.h>
-#include <gtkmm/stock.h>
 #include <glom/utils_ui.h> //For Utils::image_scale_keeping_ratio().
+#include <gtkmm/icontheme.h>
 #include <iostream>
 
 namespace Glom
@@ -211,8 +211,20 @@ void CanvasImageMovable::set_image_empty()
 
   Glib::RefPtr<Gdk::Pixbuf> pixbuf;
   if(widget)
-    pixbuf = widget->render_icon_pixbuf(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
-    property_pixbuf() = pixbuf;
+  {
+    Glib::RefPtr<Gtk::IconTheme> theme = Gtk::IconTheme::get_default();
+
+    try
+    {
+      pixbuf = theme->load_icon("image-missing", Gtk::ICON_SIZE_DIALOG);
+    }
+    catch(const Glib::Error& ex)
+    {
+      std::cerr << G_STRFUNC << ": Could not load the icon: " << ex.what() << std::endl;
+    }
+  }
+
+  property_pixbuf() = pixbuf;
 }
 
 bool CanvasImageMovable::get_image_empty() const

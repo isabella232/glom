@@ -21,7 +21,6 @@
 #include "dialog_formatting.h"
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/glade_utils.h>
-#include <gtkmm/stock.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -39,8 +38,8 @@ Dialog_Formatting::Dialog_Formatting()
   get_content_area()->pack_start(*m_box_formatting, Gtk::PACK_EXPAND_WIDGET);
   add_view(m_box_formatting);
 
-  add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
+  add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
+  add_button(_("_Save"), Gtk::RESPONSE_OK);
 
   show_all_children();
 }

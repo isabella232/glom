@@ -27,7 +27,6 @@
 #include <glom/mode_design/script_library/dialog_new_script.h>
 #include <gtksourceviewmm/languagemanager.h>
 #include <glom/appwindow.h>
-#include <gtkmm/stock.h>
 
 
 //#include <libgnome/gnome-i18n.h>
@@ -129,8 +128,8 @@ void Dialog_ScriptLibrary::on_button_remove()
 
   Gtk::MessageDialog dialog(Utils::bold_message(_("Remove library script")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE );
   dialog.set_secondary_text(_("Do you really want to delete this script? This data can not be recovered"));
-  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  dialog.add_button(Gtk::Stock::REMOVE, Gtk::RESPONSE_OK);
+  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
+  dialog.add_button(_("_Remove"), Gtk::RESPONSE_OK);
   dialog.set_transient_for(*this);
   const int response = dialog.run();
   dialog.hide();

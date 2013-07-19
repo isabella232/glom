@@ -25,7 +25,6 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
-#include <gtkmm/stock.h>
 #include <glom/glade_utils.h>
 #include <glibmm/i18n.h>
 
@@ -503,7 +502,7 @@ void Box_Data_Calendar_Related::setup_menu()
 
   m_refActionGroup->add(Gtk::Action::create("ContextMenu", "Context Menu") );
 
-  m_refContextEdit =  Gtk::Action::create("ContextEdit", Gtk::Stock::EDIT);
+  m_refContextEdit =  Gtk::Action::create("ContextEdit", _("_Edit"));
 
   m_refActionGroup->add(m_refContextEdit,
     sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_MenuPopup_activate_Edit) );

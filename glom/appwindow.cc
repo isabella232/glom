@@ -39,7 +39,6 @@
 #include <libglom/spawn_with_feedback.h>
 
 #include <gtkmm/radioaction.h>
-#include <gtkmm/stock.h>
 #include <gtkmm/main.h>
 
 #include <cstdio>
@@ -267,9 +266,9 @@ void AppWindow::init_menus_file()
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File_RecentFiles", _("_Recent Files")));
 
   //File actions
-  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_New", Gtk::Stock::NEW),
+  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_New", _("_New")),
                         sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_file_new));
-  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Open", Gtk::Stock::OPEN),
+  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Open", _("_Open")),
                         sigc::mem_fun((AppWindow_WithDoc&)*this, &AppWindow_WithDoc::on_menu_file_open));
 
   Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("BakeryAction_File_SaveAsExample", _("_Save as Example"));
@@ -299,7 +298,7 @@ void AppWindow::init_menus_file()
   m_listDeveloperActions.push_back(m_toggleaction_network_shared);
 #endif //!GLOM_ENABLE_CLIENT_ONLY
 
-  action = Gtk::Action::create("GlomAction_Menu_File_Print", Gtk::Stock::PRINT);
+  action = Gtk::Action::create("GlomAction_Menu_File_Print", _("_Print"));
   m_refFileActionGroup->add(action);
   m_listTableSensitiveActions.push_back(action);
   m_refFileActionGroup->add(Gtk::Action::create("GlomAction_File_Print", _("_Standard")),
@@ -311,7 +310,7 @@ void AppWindow::init_menus_file()
   m_listDeveloperActions.push_back(action_print_edit);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Close", Gtk::Stock::CLOSE),
+  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Close", _("_Close")),
                         sigc::mem_fun((AppWindow_WithDoc&)*this, &AppWindow_WithDoc::on_menu_file_close));
 
   m_refUIManager->insert_action_group(m_refFileActionGroup);
@@ -1112,7 +1111,7 @@ bool AppWindow::on_document_load()
       Gtk::MessageDialog dialog(Utils::bold_message(_("Opening Read-Only File.")), true,  Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE);
       dialog.set_secondary_text(_("This file is read only, so you will not be able to enter Developer mode to make design changes."));
       dialog.set_transient_for(*this);
-      dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+      dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
       dialog.add_button(_("Continue without Developer Mode"), Gtk::RESPONSE_OK); //arbitrary response code.
 
       const int response = dialog.run();
@@ -2327,8 +2326,8 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
   if(pWindow)
     fileChooser_Save->set_transient_for(*pWindow);
 
-  fileChooser_Save->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  fileChooser_Save->add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
+  fileChooser_Save->add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
+  fileChooser_Save->add_button(_("_Save"), Gtk::RESPONSE_OK);
 
   fileChooser_Save->set_default_response(Gtk::RESPONSE_OK);
 
@@ -2610,8 +2609,8 @@ void AppWindow::on_menu_developer_export_backup()
 
   // This actually creates the directory:
   Gtk::FileChooserDialog dialog(*this, _("Save Backup"), Gtk::FILE_CHOOSER_ACTION_CREATE_FOLDER);
-  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  dialog.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
+  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
+  dialog.add_button(_("_Save"), Gtk::RESPONSE_ACCEPT);
   dialog.set_local_only(); //Because pg_dump, pg_restore and tar can't use URIs.
   dialog.set_current_name(starting_name);
   const int result = dialog.run();
@@ -2647,7 +2646,7 @@ void AppWindow::on_menu_developer_restore_backup()
   filter->add_pattern("*.tgz");
   file_dlg.add_filter(filter);
 
-  file_dlg.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  file_dlg.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   file_dlg.add_button(_("Restore"), Gtk::RESPONSE_OK);
 
   const int result = file_dlg.run();

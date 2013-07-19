@@ -21,16 +21,16 @@
 #include "db_adddel_withbuttons.h"
 #include <glom/utils_ui.h>
 #include <gtkmm/buttonbox.h>
-#include <gtkmm/stock.h>
+#include <glibmm/i18n.h>
 
 namespace Glom
 {
 
 DbAddDel_WithButtons::DbAddDel_WithButtons()
 : m_ButtonBox(Gtk::ORIENTATION_HORIZONTAL),
-  m_Button_Del(Gtk::Stock::DELETE),
-  m_Button_Edit(Gtk::Stock::OPEN),
-  m_Button_Add(Gtk::Stock::ADD)
+  m_Button_Del(_("_Delete"), true),
+  m_Button_Edit(_("_Open"), true),
+  m_Button_Add(_("_Add"), true)
 {
   m_ButtonBox.set_layout(Gtk::BUTTONBOX_END);
   m_ButtonBox.set_spacing(Utils::DEFAULT_SPACING_SMALL);

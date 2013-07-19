@@ -62,7 +62,6 @@
 #include <glom/print_layout/print_layout_utils.h>
 
 #include <glom/filechooser_export.h>
-#include <gtkmm/stock.h>
 #include <gtkmm/radioaction.h>
 #include <libglom/privs.h>
 #include <libglom/db_utils.h>
@@ -513,7 +512,7 @@ void Frame_Glom::on_menu_developer_developer(const Glib::RefPtr<Gtk::RadioAction
         Gtk::MessageDialog dialog(Utils::bold_message(_("Saving in new document format")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
         dialog.set_secondary_text(_("The document was created by an earlier version of the application. Making changes to the document will mean that the document cannot be opened by some earlier versions of the application."));
         dialog.set_transient_for(*get_app_window());
-        dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+        dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
         dialog.add_button(_("Continue"), Gtk::RESPONSE_OK);
         const int response = dialog.run();
         test = (response == Gtk::RESPONSE_OK);
@@ -750,8 +749,8 @@ void Frame_Glom::on_menu_file_import()
   else
   {
     Gtk::FileChooserDialog file_chooser(*get_app_window(), _("Open CSV Document"), Gtk::FILE_CHOOSER_ACTION_OPEN);
-    file_chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-    file_chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
+    file_chooser.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
+    file_chooser.add_button(_("_Open"), Gtk::RESPONSE_ACCEPT);
     Glib::RefPtr<Gtk::FileFilter> filter_csv = Gtk::FileFilter::create();
     filter_csv->set_name(_("CSV files"));
     filter_csv->add_mime_type("text/csv");
@@ -835,7 +834,7 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
     Gtk::MessageDialog dialog(Utils::bold_message(_("Share on the network")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
     dialog.set_secondary_text(_("This will allow other users on the network to use this database."));
     dialog.set_transient_for(*get_app_window());
-    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
     dialog.add_button(_("_Share"), Gtk::RESPONSE_OK);
 
     const int response = dialog.run();
@@ -941,7 +940,7 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
     Gtk::MessageDialog dialog(Utils::bold_message(_("Stop sharing on the network")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
     dialog.set_secondary_text(_("This will prevent other users on the network from using this database."));
     dialog.set_transient_for(*get_app_window());
-    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
     dialog.add_button(_("_Stop Sharing"), Gtk::RESPONSE_OK);
 
     const int response = dialog.run();

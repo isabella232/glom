@@ -259,7 +259,7 @@ bool check_postgres_is_available_with_warning()
   //This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
   Gtk::MessageDialog dialog(Utils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_NONE, true /* modal */);
   dialog.set_secondary_text(_("Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n\nYou may now install PostgreSQL to complete the Glom installation."));
-  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("Install PostgreSQL"), Gtk::RESPONSE_OK);
   const int response = dialog.run();
   if(response != Gtk::RESPONSE_OK)
@@ -310,7 +310,7 @@ bool check_mysql_is_available_with_warning()
   //Unlike for PostgreSQL, this warning is only shown if MySQL was specified in the build.
   Gtk::MessageDialog dialog(Utils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_NONE, true /* modal */);
   dialog.set_secondary_text(_("Your installation of Glom is not complete, because MySQL is not available on your system. MySQL is needed for self-hosting of some Glom databases.\n\nYou may now install MySQL to complete the Glom installation."));
-  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("Install MySQL"), Gtk::RESPONSE_OK);
   const int response = dialog.run();
   if(response != Gtk::RESPONSE_OK)

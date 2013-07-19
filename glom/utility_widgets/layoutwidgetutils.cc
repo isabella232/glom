@@ -34,7 +34,7 @@ LayoutWidgetUtils::LayoutWidgetUtils() :
 
   m_refActionGroup->add(Gtk::Action::create("UtilMenu", "Utility Menu") );
   m_refUtilProperties = Gtk::Action::create("UtilProperties", _("Properties"));
-  m_refUtilDelete = Gtk::Action::create("UtilDelete", _("Delete"));
+  m_refUtilDelete = Gtk::Action::create("UtilDelete", _("_Delete"));
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_util_menu();
 #endif

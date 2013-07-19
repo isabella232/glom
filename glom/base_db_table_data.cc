@@ -24,7 +24,6 @@
 #include <glom/appwindow.h>
 #include <glom/python_embed/glom_python.h>
 #include <glom/utils_ui.h>
-#include <gtkmm/stock.h>
 #include <libglom/db_utils.h>
 #include <sstream>
 #include <iostream>
@@ -391,8 +390,8 @@ bool Base_DB_Table_Data::confirm_delete_record()
   Gtk::MessageDialog dialog(Utils::bold_message(_("Delete record")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
   dialog.set_secondary_text(message);
   dialog.set_transient_for(*AppWindow::get_appwindow());
-  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  dialog.add_button(Gtk::Stock::DELETE, Gtk::RESPONSE_OK);
+  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
+  dialog.add_button(_("_Delete"), Gtk::RESPONSE_OK);
 
   const int response = dialog.run();
   return (response == Gtk::RESPONSE_OK);

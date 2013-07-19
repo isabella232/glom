@@ -28,7 +28,6 @@
 #include <giomm/contenttype.h>
 #include <gtkmm/recentmanager.h>
 #include <gtkmm/filechooserdialog.h>
-#include <gtkmm/stock.h>
 #include <glibmm/miscutils.h>
 
 #ifdef G_OS_WIN32
@@ -203,8 +202,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 #endif
 
   m_select_button->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_select_clicked));
-  m_select_button->set_image(*Gtk::manage(new Gtk::Image(Gtk::Stock::APPLY, Gtk::ICON_SIZE_BUTTON)));
-
+ 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_notebook->signal_switch_page().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_switch_page));
 #endif /* !GLOM_ENABLE_CLIENT_ONLY */
@@ -481,29 +479,29 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
   throw std::logic_error("Renderer not a pixbuf renderer in existing_icon_data_func");
 
   pixbuf_renderer->property_stock_size() = Gtk::ICON_SIZE_BUTTON;
-  pixbuf_renderer->property_stock_id() = "";
+  pixbuf_renderer->property_icon_name() = "";
   pixbuf_renderer->property_pixbuf() = Glib::RefPtr<Gdk::Pixbuf>();
 
   if(iter == m_iter_existing_recent)
-    pixbuf_renderer->property_stock_id() = Gtk::Stock::INDEX.id; // TODO: More meaningful icon?
+    pixbuf_renderer->property_icon_name() = "folder";
 
   pixbuf_renderer->set_property("stock-size", Gtk::ICON_SIZE_BUTTON);
-  pixbuf_renderer->set_property("stock-id", std::string());
+  pixbuf_renderer->property_icon_name() = std::string();
   pixbuf_renderer->set_property("pixbuf", Glib::RefPtr<Gdk::Pixbuf>());
 
   if(iter == m_iter_existing_recent)
-    pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::INDEX));
+    pixbuf_renderer->property_icon_name() = "folder";
 #ifndef G_OS_WIN32
   else if(iter == m_iter_existing_network)
-    pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::NETWORK));
+    pixbuf_renderer->property_icon_name() = "folder";
 #endif
   else if(iter == m_iter_existing_other)
-    pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::OPEN));
+    pixbuf_renderer->property_icon_name() = "folder";
   else if(m_iter_existing_recent_dummy.get() && iter == *m_iter_existing_recent_dummy)
-    pixbuf_renderer->set_property("stock-id", std::string()); // TODO: Use Stock::STOP instead?
+    pixbuf_renderer->property_icon_name() = std::string(); // TODO: Use Stock::STOP instead?
 #ifndef G_OS_WIN32
   else if(m_iter_existing_network_dummy.get() && iter == *m_iter_existing_network_dummy)
-    pixbuf_renderer->set_property("stock-id", std::string()); // TODO: Use Stock::STOP instead?
+    pixbuf_renderer->property_icon_name() = std::string(); // TODO: Use Stock::STOP instead?
 #endif
   else
   {
@@ -516,7 +514,7 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
 #ifndef G_OS_WIN32
     else if(m_existing_model->is_ancestor(m_iter_existing_network, iter))
     {
-      //pixbuf_renderer->property_stock_id() = Gtk::Stock::CONNECT.id;
+      //pixbuf_renderer->property_icon_name() = Gtk::Stock::CONNECT.id;
       pixbuf_renderer->set_property("icon-name", Glib::ustring("glom"));
     }
 #endif
@@ -558,15 +556,15 @@ void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const
     throw std::logic_error("Renderer not a pixbuf renderer in new_icon_data_func");
 
   pixbuf_renderer->property_stock_size() = Gtk::ICON_SIZE_BUTTON;
-  pixbuf_renderer->property_stock_id() = "";
+  pixbuf_renderer->property_icon_name() = "";
   pixbuf_renderer->property_pixbuf() = Glib::RefPtr<Gdk::Pixbuf>();
 
   if(iter == m_iter_new_empty)
-    pixbuf_renderer->property_stock_id() = Gtk::Stock::NEW.id;
+    pixbuf_renderer->property_icon_name() = "folder";
   else if(iter == m_iter_new_template)
-    pixbuf_renderer->property_stock_id() = Gtk::Stock::EDIT.id; // TODO: More meaningful icon?
+    pixbuf_renderer->property_icon_name() = "folder"; // TODO: More meaningful icon?
   else if(m_iter_new_template_dummy.get() && iter == *m_iter_new_template_dummy)
-    pixbuf_renderer->property_stock_id() = Gtk::Stock::DIALOG_ERROR.id; // TODO: Use Stock::STOP instead?
+    pixbuf_renderer->property_icon_name() = "dialog-error"; // TODO: Use Stock::STOP instead?
   else
   {
     if(m_new_model->is_ancestor(m_iter_new_template, iter))
@@ -832,8 +830,8 @@ void Dialog_ExistingOrNew::on_select_clicked()
   if(action == OPEN_URI && iter == m_iter_existing_other)
   {
     Gtk::FileChooserDialog dialog(*this, "Open Glom File");
-    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-    dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+    dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
+    dialog.add_button(_("_Open"), Gtk::RESPONSE_OK);
     dialog.set_default_response(Gtk::RESPONSE_OK);
 
     Glib::RefPtr<Gtk::FileFilter> filter = Gtk::FileFilter::create();

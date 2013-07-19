@@ -20,7 +20,7 @@
 
 #include "adddel_withbuttons.h"
 #include <glom/utils_ui.h>
-#include <gtkmm/stock.h>
+#include <glibmm/i18n.h>
 
 //#include <libgnome/gnome-i18n.h>
 
@@ -29,9 +29,9 @@ namespace Glom
 
 AddDel_WithButtons::AddDel_WithButtons()
 : m_ButtonBox(Gtk::ORIENTATION_HORIZONTAL),
-  m_Button_Add(Gtk::Stock::ADD),
-  m_Button_Del(Gtk::Stock::DELETE),
-  m_Button_Edit(Gtk::Stock::OPEN)
+  m_Button_Add(_("_Add"), true),
+  m_Button_Del(_("_Delete"), true),
+  m_Button_Edit(_("_Open"), true)
 {
   init();
 }
@@ -39,9 +39,9 @@ AddDel_WithButtons::AddDel_WithButtons()
 AddDel_WithButtons::AddDel_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : AddDel(cobject, builder),
   m_ButtonBox(Gtk::ORIENTATION_HORIZONTAL),
-  m_Button_Add(Gtk::Stock::ADD),
-  m_Button_Del(Gtk::Stock::DELETE),
-  m_Button_Edit(Gtk::Stock::OPEN)
+  m_Button_Add(_("_Add"), true),
+  m_Button_Del(_("_Delete"), true),
+  m_Button_Edit(_("_Open"), true)
 {
   init();
 }

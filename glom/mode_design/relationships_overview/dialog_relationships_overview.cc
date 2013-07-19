@@ -25,7 +25,6 @@
 #include <glom/mode_design/layout/dialog_choose_relationship.h>
 #include "printoperation_relationshipsoverview.h"
 #include "glom/appwindow.h"
-#include <gtkmm/stock.h>
 #include <goocanvas.h>
 #include <glibmm/i18n.h>
 #include <iostream>
@@ -58,7 +57,7 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   m_refActionGroup->add(Gtk::Action::create("Overview_MainMenu_File", _("_File")) );
   m_refActionGroup->add(Gtk::Action::create("Overview_MainMenu_File_PageSetup", _("Page _Setup")),
     sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_menu_file_page_setup) );
-  m_refActionGroup->add(Gtk::Action::create("Overview_MainMenu_File_Print", Gtk::Stock::PRINT),
+  m_refActionGroup->add(Gtk::Action::create("Overview_MainMenu_File_Print", _("_Print")),
     sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_menu_file_print) );
 
   m_refActionGroup->add(Gtk::Action::create("Overview_MainMenu_View", _("_View")) );

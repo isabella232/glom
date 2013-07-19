@@ -21,10 +21,11 @@
 #include <glom/box_withbuttons.h>
 #include <glom/appwindow.h> //AppWindow.
 #include <glom/utils_ui.h>
-#include <gtkmm/stock.h>
 #include <libglom/appstate.h>
 
 #include <sstream> //For stringstream
+
+#include <glibmm/i18n-lib.h>
 
 namespace Glom
 {
@@ -32,7 +33,7 @@ namespace Glom
 Box_WithButtons::Box_WithButtons()
 : Gtk::Box(Gtk::ORIENTATION_VERTICAL),
   m_Box_Buttons(Gtk::ORIENTATION_HORIZONTAL, Utils::DEFAULT_SPACING_SMALL),
-  m_Button_Cancel(Gtk::Stock::CANCEL)
+  m_Button_Cancel(_("_Cancel"))
 {
   //m_pDocument = 0;
 
@@ -46,7 +47,7 @@ Box_WithButtons::Box_WithButtons()
 Box_WithButtons::Box_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::Box(cobject),
   m_Box_Buttons(Gtk::ORIENTATION_HORIZONTAL, Utils::DEFAULT_SPACING_SMALL),
-  m_Button_Cancel(Gtk::Stock::CANCEL)
+  m_Button_Cancel(_("_Cancel"))
 {
   //m_pDocument = 0;
 
@@ -60,7 +61,7 @@ Box_WithButtons::Box_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk
 Box_WithButtons::Box_WithButtons(BaseObjectType* cobject)
 : Gtk::Box(cobject),
   m_Box_Buttons(Gtk::ORIENTATION_HORIZONTAL, Utils::DEFAULT_SPACING_SMALL),
-  m_Button_Cancel(Gtk::Stock::CANCEL)
+  m_Button_Cancel(_("_Cancel"))
 {
 }
 

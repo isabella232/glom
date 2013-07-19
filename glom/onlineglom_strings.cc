@@ -29,7 +29,7 @@
 const char* online_glom_search = _("Search");
 const char* online_glom_backToList = _("Back to List");
 const char* online_glom_details = _("Details");
-const char* online_glom_open = _("Open");
+const char* online_glom_open = _("_Open");
 const char* online_glom_reports = _("Reports");
 const char* online_glom_generating_report = _("Generating the report...");
 const char* online_glom_login_login = _("Login");
@@ -37,7 +37,7 @@ const char* online_glom_login_enter = _("Enter the username and password.");
 const char* online_glom_login_username = _("Username");
 const char* online_glom_login_password = _("Password");
 const char* online_glom_login_logout = _("Log Out");
-const char* online_glom_login_cancel = _("Cancel");
+const char* online_glom_login_cancel = _("_Cancel");
 const char* online_glom_login_wrong = _("The username or password are not correct.");
 const char* online_glom_login_needs_https = _("Login seems to be necessary, but will not be attempted. This site is not being served via HTTPS, which is required for secure login. Please contact your system administrator.");
 

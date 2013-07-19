@@ -31,7 +31,6 @@
 #include <libgda/gda-blob-op.h> // For gda_blob_op_read_all()
 
 #include <gtkmm/messagedialog.h>
-#include <gtkmm/stock.h>
 #include <glibmm/convert.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/fileutils.h>
@@ -479,7 +478,7 @@ bool Utils::show_warning_no_records_found(Gtk::Window& transient_for)
   dialog.set_secondary_text(message);
   dialog.set_transient_for(transient_for);
 
-  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("New Find"), Gtk::RESPONSE_OK);
 
   const bool find_again = (dialog.run() == Gtk::RESPONSE_OK);

@@ -22,7 +22,6 @@
 #include <glom/appwindow.h>
 #include <gtkmm/alignment.h>
 #include <gtkmm/messagedialog.h>
-#include <gtkmm/stock.h>
 #include <libglom/utils.h> //For bold_message()).
 #include <glibmm/i18n.h>
 
@@ -225,7 +224,7 @@ void Box_Print_Layouts::on_adddel_user_changed(const Gtk::TreeModel::iterator& r
         {
           Glib::ustring strMsg = _("Are you sure that you want to rename this print layout?");  //TODO: Show old and new names?
           Gtk::MessageDialog dialog(_("<b>Rename Print Layout</b>"), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE );
-          dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+          dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
           dialog.add_button(_("Rename"), Gtk::RESPONSE_OK);
           dialog.set_secondary_text(strMsg);
           const int iButtonClicked = dialog.run();

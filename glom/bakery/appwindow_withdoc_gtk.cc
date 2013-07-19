@@ -21,7 +21,6 @@
 //#include <libgnomevfsmm/utils.h> //For escape_path_string()
 //#include <libgnomevfsmm/mime-handlers.h> //For type_is_known(). 
 #include <gtkmm/toolbutton.h>
-#include <gtkmm/stock.h>
 #include <gtkmm/recentchoosermenu.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/filechooserdialog.h>
@@ -229,21 +228,21 @@ void AppWindow_WithDoc_Gtk::init_menus_file()
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File_RecentFiles", _("_Recent Files")));
 
   //File actions
-  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_New", Gtk::Stock::NEW),
+  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_New", _("_New")),
                         sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_file_new));
-  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Open", Gtk::Stock::OPEN),
+  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Open", _("_Open")),
                         sigc::mem_fun((AppWindow_WithDoc&)*this, &AppWindow_WithDoc::on_menu_file_open));
 
   //Remember thes ones for later, so we can disable Save menu and toolbar items:
-  m_action_save = Gtk::Action::create("BakeryAction_File_Save", Gtk::Stock::SAVE);
+  m_action_save = Gtk::Action::create("BakeryAction_File_Save", _("_Save"));
   m_refFileActionGroup->add(m_action_save,
                         sigc::mem_fun((AppWindow_WithDoc&)*this, &AppWindow_WithDoc::on_menu_file_save));
 
-  m_action_saveas = Gtk::Action::create("BakeryAction_File_SaveAs", Gtk::Stock::SAVE_AS);                   
+  m_action_saveas = Gtk::Action::create("BakeryAction_File_SaveAs", _("Save _As"));                   
   m_refFileActionGroup->add(m_action_saveas,
                         sigc::mem_fun((AppWindow_WithDoc&)*this, &AppWindow_WithDoc::on_menu_file_saveas));
                         
-  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Close", Gtk::Stock::CLOSE),
+  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Close", _("_Close")),
                         sigc::mem_fun((AppWindow_WithDoc&)*this, &AppWindow_WithDoc::on_menu_file_close));
                         
   m_refUIManager->insert_action_group(m_refFileActionGroup);
@@ -283,13 +282,13 @@ void AppWindow_WithDoc_Gtk::init_menus_edit()
   m_refEditActionGroup = Gtk::ActionGroup::create("BakeryEditActions");
   m_refEditActionGroup->add(Action::create("BakeryAction_Menu_Edit", _("_Edit")));
   
-  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Cut", Gtk::Stock::CUT),
+  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Cut", _("Cu_t")),
                         sigc::mem_fun((AppWindow_WithDoc_Gtk&)*this, &AppWindow_WithDoc_Gtk::on_menu_edit_cut_activate));
-  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Copy", Gtk::Stock::COPY),
+  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Copy", _("_Copy")),
                         sigc::mem_fun((AppWindow_WithDoc_Gtk&)*this, &AppWindow_WithDoc_Gtk::on_menu_edit_copy_activate));
-  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Paste", Gtk::Stock::PASTE),
+  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Paste", _("_Paste")),
                         sigc::mem_fun((AppWindow_WithDoc_Gtk&)*this, &AppWindow_WithDoc_Gtk::on_menu_edit_paste_activate));
-  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Clear", Gtk::Stock::CLEAR));
+  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Clear", _("_Clear")));
 
   m_refUIManager->insert_action_group(m_refEditActionGroup);
   
@@ -374,8 +373,8 @@ Glib::ustring AppWindow_WithDoc_Gtk::ui_file_select_open(const Glib::ustring& st
   Gtk::Window* pWindow = this;
 
   Gtk::FileChooserDialog fileChooser_Open(_("Open Document"), Gtk::FILE_CHOOSER_ACTION_OPEN);
-  fileChooser_Open.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  fileChooser_Open.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+  fileChooser_Open.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
+  fileChooser_Open.add_button(_("_Open"), Gtk::RESPONSE_OK);
   fileChooser_Open.set_default_response(Gtk::RESPONSE_OK);
 
   if(pWindow)
@@ -423,8 +422,8 @@ Glib::ustring AppWindow_WithDoc_Gtk::ui_file_select_save(const Glib::ustring& ol
  Gtk::Window* pWindow = this;
 
   Gtk::FileChooserDialog fileChooser_Save(_("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE);
-  fileChooser_Save.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  fileChooser_Save.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
+  fileChooser_Save.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
+  fileChooser_Save.add_button(_("_Save"), Gtk::RESPONSE_OK);
   fileChooser_Save.set_default_response(Gtk::RESPONSE_OK);
 
   if(pWindow)

@@ -1,3 +1,18 @@
+2013-07-19  Murray Cumming  <murrayc@murrayc.com>
+
+	Avoid deprecated Gtk::Stock* API.
+
+	Gtk::Stock::* and Gtk::StockID are now deprecated,
+	because they are deprecated in GTK+, though that is 
+	rather annoying.
+	This replaces them with standard icon names (or
+	legacy gtk names) where there is no standard icon
+	name, or with the recommended label string, both 
+	as listed here:
+	https://docs.google.com/spreadsheet/pub?key=0AsPAM3pPwxagdGF4THNMMUpjUW5xMXZfdUNzMXhEa2c&output=html
+	See
+	https://mail.gnome.org/archives/gtk-devel-list/2013-July/msg00005.html
+
 2013-07-18  Murray Cumming  <murrayc@murrayc.com>
 
 	Initial dialog: Fix crash with latest libxml.

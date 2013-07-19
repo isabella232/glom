@@ -25,7 +25,6 @@
 #include <glom/utils_ui.h>
 #include <glom/appwindow.h>
 #include <gtkmm/cellrenderertext.h>
-#include <gtkmm/stock.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <libglom/data_structure/layout/layoutitem_image.h>
 #include <libglom/utils.h>
@@ -138,7 +137,7 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
       if(pixbuf)
         pixbuf_renderer->set_property("pixbuf", pixbuf);
       else
-        pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::MISSING_IMAGE));
+        pixbuf_renderer->property_icon_name() = "image-missing";
 
       cell = pixbuf_renderer;
     }

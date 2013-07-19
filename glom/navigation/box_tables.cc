@@ -22,7 +22,6 @@
 #include <glom/utils_ui.h> //For bold_message()).
 #include <libglom/db_utils.h>
 #include <glom/appwindow.h>
-#include <gtkmm/stock.h>
 #include <glibmm/i18n.h>
 
 #include <iostream>
@@ -399,7 +398,7 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
       {
         Glib::ustring strMsg = _("Are you sure that you want to rename this table?");  //TODO: Show old and new names?
         Gtk::MessageDialog dialog(_("<b>Rename Table</b>"), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE );
-        dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+        dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
         dialog.add_button(_("Rename"), Gtk::RESPONSE_OK);
         dialog.set_secondary_text(strMsg);
         int iButtonClicked = dialog.run();

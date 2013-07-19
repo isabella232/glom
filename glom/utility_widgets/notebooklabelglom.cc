@@ -114,7 +114,7 @@ void NotebookLabel::setup_menu()
 
   m_refActionGroup->add(Gtk::Action::create("NotebookMenu", "Notebook Menu") );
   m_refNewGroup = Gtk::Action::create("NewGroup", _("New Group"));
-  m_refDelete = Gtk::Action::create("Delete", _("Delete"));
+  m_refDelete = Gtk::Action::create("Delete", _("_Delete"));
   
   m_refActionGroup->add(m_refNewGroup,
     sigc::mem_fun(*this, &NotebookLabel::on_menu_new_group_activate) );

@@ -20,7 +20,6 @@
 #include <gtkmm/box.h>
 #include <glom/bakery/dialog_offersave.h>
 #include <glom/bakery/appwindow_withdoc_gtk.h>
-#include <gtkmm/stock.h>
 #include <glibmm/convert.h> 
 #include <glibmm/i18n-lib.h>
 
@@ -54,8 +53,8 @@ Dialog_OfferSave::Dialog_OfferSave(const Glib::ustring& file_uri)
   set_secondary_text(get_confirmation_message(file_uri));
 
   add_button(_("Discard"), BUTTON_Discard);
-  Gtk::Button* cancel_button = add_button(Gtk::Stock::CANCEL, BUTTON_Cancel);
-  add_button(Gtk::Stock::SAVE, BUTTON_Save);
+  Gtk::Button* cancel_button = add_button(_("_Cancel"), BUTTON_Cancel);
+  add_button(_("_Save"), BUTTON_Save);
 
   // Otherwise Discard has focus initially which seems inconvenient:
   cancel_button->grab_focus();

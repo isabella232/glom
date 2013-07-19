@@ -19,8 +19,6 @@
  */
 
 #include "cellrenderer_buttonimage.h"
-#include <gtkmm/stock.h>
-
 
 namespace Glom
 {
@@ -28,9 +26,8 @@ namespace Glom
 GlomCellRenderer_ButtonImage::GlomCellRenderer_ButtonImage():
   Glib::ObjectBase("GlomCellRenderer_ButtonImage") // Create a new GType for us
 {
-  const Gtk::StockID stock_id = Gtk::Stock::OPEN; //A default.
+  property_icon_name() = "document-open"; //A default.
 
-  set_property("stock_id", stock_id.get_string());
   //So that it calls activate_vfunc():
   set_property("mode", Gtk::CELL_RENDERER_MODE_ACTIVATABLE);
 }

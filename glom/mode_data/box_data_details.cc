@@ -32,7 +32,6 @@
 #include <glom/python_embed/glom_python.h>
 #include <glom/print_layout/print_layout_utils.h>
 #include <glom/appwindow.h>
-#include <gtkmm/stock.h>
 #include <gtkmm/viewport.h>
 #include <sstream> //For stringstream
 #include <glibmm/i18n.h>
@@ -43,12 +42,12 @@ namespace Glom
 Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 : m_hbox_content(Gtk::ORIENTATION_HORIZONTAL, Utils::DEFAULT_SPACING_SMALL),
   m_hbox_buttons(Gtk::ORIENTATION_HORIZONTAL),
-  m_Button_New(Gtk::Stock::ADD),
-  m_Button_Del(Gtk::Stock::DELETE),
-  m_Button_Nav_First(Gtk::Stock::GOTO_FIRST),
-  m_Button_Nav_Prev(Gtk::Stock::GO_BACK),
-  m_Button_Nav_Next(Gtk::Stock::GO_FORWARD),
-  m_Button_Nav_Last(Gtk::Stock::GOTO_LAST),
+  m_Button_New(_("_Add"), true),
+  m_Button_Del(_("_Delete"), true),
+  m_Button_Nav_First(_("_First"), true),
+  m_Button_Nav_Prev(_("_Back"), true),
+  m_Button_Nav_Next(_("_Forward"), true),
+  m_Button_Nav_Last(_("_Last"), true),
   m_bDoNotRefreshRelated(false),
   m_ignore_signals(true)
 #ifndef GLOM_ENABLE_CLIENT_ONLY

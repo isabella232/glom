@@ -28,7 +28,6 @@
 #include <glom/glade_utils.h>
 #include <glom/appwindow.h>
 #include <gtkmm/filefilter.h>
-#include <gtkmm/stock.h>
 #include <gtkmm/filechooserdialog.h>
 
 #include <glibmm/i18n.h>
@@ -339,7 +338,7 @@ void Window_Translations::on_button_export()
   filter->add_pattern("*.po");
   file_dlg.add_filter(filter);
 
-  file_dlg.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  file_dlg.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   file_dlg.add_button(_("Export"), Gtk::RESPONSE_OK); 
   
   const int result = file_dlg.run();
@@ -378,7 +377,7 @@ void Window_Translations::on_button_import()
   filter->add_pattern("*.po");
   file_dlg.add_filter(filter);
 
-  file_dlg.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  file_dlg.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
 
   //Note to translators: "Import" here is an action verb - it's a button. 
   file_dlg.add_button(_("Import"), Gtk::RESPONSE_OK);

@@ -31,7 +31,6 @@
 #include <glom/appwindow.h>
 #include <glom/utils_ui.h> //For Utils::image_scale_keeping_ratio().
 #include <glom/mode_data/datawidget/cellcreation.h>
-#include <gtkmm/stock.h>
 #include <glibmm/main.h>
 #include <libglom/db_utils.h>
 
@@ -227,18 +226,18 @@ void DbAddDel::setup_menu()
   m_refActionGroup->add(Gtk::Action::create("ContextMenu", "Context Menu") );
 
   if(m_open_button_title.empty())
-    m_refContextEdit =  Gtk::Action::create("ContextEdit", Gtk::Stock::EDIT);
+    m_refContextEdit =  Gtk::Action::create("ContextEdit", _("_Edit"));
   else
     m_refContextEdit =  Gtk::Action::create("ContextEdit", m_open_button_title);
 
   m_refActionGroup->add(m_refContextEdit,
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Edit) );
 
-  m_refContextDelete =  Gtk::Action::create("ContextDelete", Gtk::Stock::DELETE);
+  m_refContextDelete =  Gtk::Action::create("ContextDelete", _("_Delete"));
   m_refActionGroup->add(m_refContextDelete,
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Delete) );
 
-  m_refContextAdd =  Gtk::Action::create("ContextAdd", Gtk::Stock::ADD);
+  m_refContextAdd =  Gtk::Action::create("ContextAdd", _("_Add"));
   m_refActionGroup->add(m_refContextAdd,
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Add) );
   m_refContextAdd->set_sensitive(m_allow_add);
