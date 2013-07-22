@@ -7,6 +7,7 @@ glom/base_db.cc
 glom/base_db_table_data.cc
 glom/base_db_table_data_readonly.cc
 glom/box_reports.cc
+glom/box_withbuttons.cc
 glom.desktop.in.in
 glom/dialog_connection.cc
 glom/dialog_existing_or_new.cc
@@ -129,10 +130,13 @@ glom/mode_design/translation/combobox_locale.cc
 glom/mode_design/translation/dialog_change_language.cc
 glom/mode_design/translation/window_translations.cc
 glom/utility_widgets/adddel/adddel.cc
+glom/utility_widgets/adddel/adddel_withbuttons.cc
 glom/mode_data/datawidget/combochoiceswithtreemodel.cc
 glom/mode_data/datawidget/datawidget.cc
 glom/mode_data/db_adddel/db_adddel.cc
+glom/mode_data/db_adddel/db_adddel_withbuttons.cc
 glom/mode_data/datawidget/dialog_choose_id.cc
+glom/utility_widgets/canvas/test_canvas_editable.cc
 glom/utility_widgets/dialog_image_load_progress.cc
 glom/utility_widgets/dialog_image_save_progress.cc
 glom/mode_data/datawidget/entry.cc
