@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2001-2004 Murray Cumming
+ * Copyright (C) 2001-2013 Murray Cumming
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -179,20 +179,28 @@ private:
     m_context_menu_action_group->add(action,
       sigc::mem_fun(*this, &MyCanvas::on_context_menu_delete) );
 
-    m_context_menu_uimanager = Gtk::UIManager::create();
-    m_context_menu_uimanager->insert_action_group(m_context_menu_action_group);
+    m_context_menu_builder = Gtk::Builder::create();
+    m_context_menu_builder->insert_action_group(m_context_menu_action_group);
 
     try
     {
       Glib::ustring ui_info = 
-        "<ui>"
-        "  <popup name='ContextMenu'>"
-        "    <menuitem action='ContextEdit'/>"
-        "    <menuitem action='ContextDelete'/>"
-        "  </popup>"
-        "</ui>";
+        "<interface>"
+        "  <menu id='ContextMenu'>"
+        "    <section>
+        "      <item>
+        "        <attribute name='label' translatable='yes'>Edit</attribute>"
+        "        <attribute name='action'>context.edit</attribute>"
+        "      </item>
+        "      <item>
+        "        <attribute name='label' translatable='yes'>Delete</attribute>"
+        "        <attribute name='action'>context.delete</attribute>"
+        "      </item>"
+        "    </section>"
+        "  </menu>
+        "</interface>";
 
-      m_context_menu_uimanager->add_ui_from_string(ui_info);
+      m_context_menu_builder->add_from_string(ui_info);
     }
     catch(const Glib::Error& ex)
     {
@@ -200,12 +208,12 @@ private:
     }
 
     //Get the menu:
-    m_context_menu = dynamic_cast<Gtk::Menu*>( m_context_menu_uimanager->get_widget("/ContextMenu") ); 
+    m_context_menu = dynamic_cast<Gtk::Menu*>( m_context_menu_builder->get_widget("/ContextMenu") ); 
   }
  
   Gtk::Menu* m_context_menu;
   Glib::RefPtr<Gtk::ActionGroup> m_context_menu_action_group;
-  Glib::RefPtr<Gtk::UIManager> m_context_menu_uimanager;
+  Glib::RefPtr<Gtk::Builder> m_context_menu_builder;
 };
 
 int

@@ -30,6 +30,7 @@
 #include <gtkmm/filechooserdialog.h>
 #include <giomm/file.h>
 #include <giomm/contenttype.h>
+#include <giomm/menu.h>
 #include <libgda/gda-blob-op.h>
 #include <glibmm/convert.h>
 
@@ -95,6 +96,7 @@ void ImageGlom::init()
 
 ImageGlom::~ImageGlom()
 {
+  delete m_pMenuPopup_UserMode;
 }
 
 void ImageGlom::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
@@ -132,7 +134,8 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
       if(mods & GDK_BUTTON3_MASK)
       {
         //Give user choices of actions on this item:
-        m_pMenuPopup->popup(event->button, event->time);
+        popup_menu(event->button, event->time);
+       
         return true; //We handled this event.
       }
     }
@@ -143,7 +146,8 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
       if(mods & GDK_BUTTON3_MASK)
       {
         //Give user choices of actions on this item:
-        m_pMenuPopup_UserMode->popup(event->button, event->time);
+        popup_menu(event->button, event->time);
+
         return true; //We handled this event.
       }
     }
@@ -151,7 +155,8 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
     //Single-click to select file:
     if(mods & GDK_BUTTON1_MASK)
     {
-      on_menupopup_activate_select_file();
+      Glib::VariantBase parameter;
+      on_menupopup_activate_select_file(parameter);
       return true; //We handled this event.
 
     }
@@ -494,12 +499,12 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
   return pixbuf;
 }
 
-void ImageGlom::on_menupopup_activate_open_file()
+void ImageGlom::on_menupopup_activate_open_file(const Glib::VariantBase& /* parameter */)
 {
   open_with();
 }
 
-void ImageGlom::on_menupopup_activate_open_file_with()
+void ImageGlom::on_menupopup_activate_open_file_with(const Glib::VariantBase& /* parameter */)
 {
   AppWindow* pApp = get_appwindow();
 
@@ -670,7 +675,7 @@ static void set_file_filter_images(Gtk::FileChooser& file_chooser)
   */
 }
 
-void ImageGlom::on_menupopup_activate_save_file()
+void ImageGlom::on_menupopup_activate_save_file(const Glib::VariantBase& /* parameter */)
 {
   AppWindow* pApp = get_appwindow();
 
@@ -754,7 +759,7 @@ bool ImageGlom::save_file(const Glib::ustring& uri)
   return true;
 }
 
-void ImageGlom::on_menupopup_activate_select_file()
+void ImageGlom::on_menupopup_activate_select_file(const Glib::VariantBase& /* parameter */)
 {
   if(m_read_only)
     return;
@@ -851,7 +856,7 @@ void ImageGlom::on_clipboard_clear()
   m_pixbuf_clipboard.reset();
 }
 
-void ImageGlom::on_menupopup_activate_copy()
+void ImageGlom::on_menupopup_activate_copy(const Glib::VariantBase& /* parameter */)
 {
   if(m_pixbuf_original)
   {
@@ -894,7 +899,7 @@ void ImageGlom::on_clipboard_received_image(const Glib::RefPtr<Gdk::Pixbuf>& pix
 }
 
 
-void ImageGlom::on_menupopup_activate_paste()
+void ImageGlom::on_menupopup_activate_paste(const Glib::VariantBase& /* parameter */)
 {
   if(m_read_only)
     return;
@@ -906,7 +911,7 @@ void ImageGlom::on_menupopup_activate_paste()
     refClipboard->request_image( sigc::mem_fun(*this, &ImageGlom::on_clipboard_received_image) );
 }
 
-void ImageGlom::on_menupopup_activate_clear()
+void ImageGlom::on_menupopup_activate_clear(const Glib::VariantBase& /* parameter */)
 {
   if(m_read_only)
     return;
@@ -918,61 +923,72 @@ void ImageGlom::on_menupopup_activate_clear()
 
 void ImageGlom::setup_menu_usermode()
 {
-  m_refActionGroup_UserModePopup = Gtk::ActionGroup::create();
+  //Create the Gio::ActionGroup and associate it with this widget:
+  m_refActionGroup_UserModePopup = Gio::SimpleActionGroup::create();
 
-  m_refActionGroup_UserModePopup->add(Gtk::Action::create("ContextMenu_UserMode", "Context Menu") );
-  
-  m_refActionOpenFile =  Gtk::Action::create("ContextOpenFile", _("_Open"));
-  m_refActionOpenFileWith =  Gtk::Action::create("ContextOpenFileWith", _("Open With"));
-  m_refActionSaveFile =  Gtk::Action::create("ContextSaveFile", _("_Save"));
-  m_refActionSelectFile =  Gtk::Action::create("ContextSelectFile", _("Choose File"));
-  m_refActionCopy = Gtk::Action::create("ContextCopy", _("_Copy"));
-  m_refActionPaste = Gtk::Action::create("ContextPaste", _("_Paste"));
-  m_refActionClear = Gtk::Action::create("ContextClear", _("_Clear"));
-
-  m_refActionGroup_UserModePopup->add(m_refActionOpenFile,
+  m_refActionOpenFile = m_refActionGroup_UserModePopup->add_action("openfile",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_open_file) );
 
-  m_refActionGroup_UserModePopup->add(m_refActionOpenFileWith,
+  m_refActionOpenFileWith = m_refActionGroup_UserModePopup->add_action("openfilewith",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_open_file_with) );
     
-  m_refActionGroup_UserModePopup->add(m_refActionSaveFile,
+  m_refActionSaveFile = m_refActionGroup_UserModePopup->add_action("savefile",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_save_file) );
     
-  m_refActionGroup_UserModePopup->add(m_refActionSelectFile,
+  m_refActionSelectFile = m_refActionGroup_UserModePopup->add_action("selectfile",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_select_file) );
 
-  m_refActionGroup_UserModePopup->add(m_refActionCopy,
+  m_refActionCopy = m_refActionGroup_UserModePopup->add_action("copy",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_copy) );
 
-  m_refActionGroup_UserModePopup->add(m_refActionPaste,
+  m_refActionPaste = m_refActionGroup_UserModePopup->add_action("paste",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_paste) );
 
-  m_refActionGroup_UserModePopup->add(m_refActionClear,
+  m_refActionClear = m_refActionGroup_UserModePopup->add_action("clear",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_clear) );
 
-  m_refUIManager_UserModePopup = Gtk::UIManager::create();
+  insert_action_group ("imagecontext", m_refActionGroup_UserModePopup);
 
-  m_refUIManager_UserModePopup->insert_action_group(m_refActionGroup_UserModePopup);
 
-  //TODO: add_accel_group(m_refUIManager_UserModePopup->get_accel_group());
+  //Create the UI for the menu whose items will activate the actions,
+  //when this UI (a GtkMenu) is added and shown:
+  m_refBuilder_UserModePopup = Gtk::Builder::create();
 
   try
   {
     Glib::ustring ui_info = 
-        "<ui>"
-        "  <popup name='ContextMenu_UserMode'>"
-        "    <menuitem action='ContextOpenFile'/>"
-        "    <menuitem action='ContextOpenFileWith'/>"
-        "    <menuitem action='ContextSaveFile'/>"
-        "    <menuitem action='ContextSelectFile'/>"
-        "    <menuitem action='ContextCopy'/>"
-        "    <menuitem action='ContextPaste'/>"
-        "    <menuitem action='ContextClear'/>"
-        "  </popup>"
-        "</ui>";
+        "<interface>"
+        "  <menu id='ContextMenu_UserMode'>"
+        "    <section>"
+        "      <item>"
+        "        <attribute name='label' translatable='yes'>_Open File</attribute>"
+        "        <attribute name='action'>imagecontext.openfile</attribute>"
+        "      </item>"
+        "      <item>"
+        "        <attribute name='label' translatable='yes'>Open File With</attribute>"
+        "        <attribute name='action'>imagecontext.openfilewith</attribute>"
+        "      </item>"
+        "      <item>"
+        "        <attribute name='label' translatable='yes'>Select File</attribute>"
+        "        <attribute name='action'>imagecontext.selectfile</attribute>"
+        "      </item>"
+        "      <item>"
+        "        <attribute name='label' translatable='yes'>_Copy</attribute>"
+        "        <attribute name='action'>imagecontext.copy</attribute>"
+        "      </item>"
+        "      <item>"
+        "        <attribute name='label' translatable='yes'>_Paste</attribute>"
+        "        <attribute name='action'>imagecontext.paste</attribute>"
+        "      </item>"
+        "      <item>"
+        "        <attribute name='label' translatable='yes'>_Clear</attribute>"
+        "        <attribute name='action'>imagecontext.clear</attribute>"
+        "      </item>"
+        "    </section>"
+        "  </menu>"
+        "</interface>";
 
-    m_refUIManager_UserModePopup->add_ui_from_string(ui_info);
+    m_refBuilder_UserModePopup->add_from_string(ui_info);
   }
   catch(const Glib::Error& ex)
   {
@@ -980,19 +996,43 @@ void ImageGlom::setup_menu_usermode()
   }
 
   //Get the menu:
-  m_pMenuPopup_UserMode = dynamic_cast<Gtk::Menu*>( m_refUIManager_UserModePopup->get_widget("/ContextMenu_UserMode") ); 
-  if(!m_pMenuPopup_UserMode)
-    g_warning("menu not found");
+  Glib::RefPtr<Glib::Object> object =
+    m_refBuilder_UserModePopup->get_object("ContextMenu_UserMode");
+  Glib::RefPtr<Gio::Menu> gmenu =
+    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  if(!gmenu)
+    g_warning("GMenu not found");
+
+  m_pMenuPopup_UserMode = new Gtk::Menu(gmenu);
 }
 
 void ImageGlom::do_choose_image()
 {
-  on_menupopup_activate_select_file();
+  Glib::VariantBase parameter;
+  on_menupopup_activate_select_file(parameter);
 }
 
 void ImageGlom::set_read_only(bool read_only)
 {
   m_read_only = read_only;
+}
+
+void ImageGlom::popup_menu(guint button, guint32 activate_time)
+{
+  if(!m_pMenuPopup_UserMode)
+  {
+    std::cerr << G_STRFUNC << ": m_pMenuPopup_UserMode is null" << std::endl;
+    return;
+  }
+
+  if(!m_pMenuPopup_UserMode->get_attach_widget())
+  {
+    m_pMenuPopup_UserMode->attach_to_widget(*this);
+  }
+
+  m_pMenuPopup_UserMode->popup(button, activate_time);
+
+  m_refActionSelectFile->set_enabled();
 }
 
 
