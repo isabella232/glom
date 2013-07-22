@@ -29,6 +29,7 @@
 #include <gtkmm/frame.h>
 #include <gtkmm/builder.h>
 #include <giomm/appinfo.h>
+#include <giomm/simpleactiongroup.h>
 #include <evince-view.h>
 
 namespace Glom
@@ -69,13 +70,13 @@ private:
 
   virtual bool on_button_press_event(GdkEventButton *event);
 
-  void on_menupopup_activate_open_file();
-  void on_menupopup_activate_open_file_with();
-  void on_menupopup_activate_save_file();
-  void on_menupopup_activate_select_file();
-  void on_menupopup_activate_copy();
-  void on_menupopup_activate_paste();
-  void on_menupopup_activate_clear();
+  void on_menupopup_activate_open_file(const Glib::VariantBase& parameter);
+  void on_menupopup_activate_open_file_with(const Glib::VariantBase& parameter);
+  void on_menupopup_activate_save_file(const Glib::VariantBase& parameter);
+  void on_menupopup_activate_select_file(const Glib::VariantBase& parameter);
+  void on_menupopup_activate_copy(const Glib::VariantBase& parameter);
+  void on_menupopup_activate_paste(const Glib::VariantBase& parameter);
+  void on_menupopup_activate_clear(const Glib::VariantBase& parameter);
 
   void on_clipboard_get(Gtk::SelectionData& selection_data, guint /* info */);
   void on_clipboard_clear();
@@ -85,6 +86,8 @@ private:
 
   void setup_menu_usermode();
   void show_image_data();
+
+  void popup_menu(guint button, guint32 activate_time);
   
   const GdaBinary* get_binary() const;
   
@@ -116,9 +119,15 @@ private:
 
 
   Gtk::Menu* m_pMenuPopup_UserMode;
-  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup_UserModePopup;
-  Glib::RefPtr<Gtk::UIManager> m_refUIManager_UserModePopup;
-  Glib::RefPtr<Gtk::Action> m_refActionOpenFile, m_refActionOpenFileWith, 
+
+  //TODO: Use just the Gio::ActionGroup type when it derives from Gio::ActionMap. 
+  Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup_UserModePopup;
+
+  Glib::RefPtr<Gtk::Builder> m_refBuilder_UserModePopup;
+
+  //We use Gio::SimpleAction rather than Gio::Action
+  //because Gio::Action has no way to enable/disable it.
+  Glib::RefPtr<Gio::SimpleAction> m_refActionOpenFile, m_refActionOpenFileWith, 
     m_refActionSaveFile, m_refActionSelectFile, m_refActionCopy, m_refActionPaste, m_refActionClear;
 
   bool m_read_only;
