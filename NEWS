@@ -1,3 +1,18 @@
+1.22.2 (stable):
+
+* Initial dialog: Fix crash with latest libxml.
+  (Murray Cumming)
+* Initial dialog: Fix the notebook vertical expansion.
+  This is a problem with newer GTK+ versions.
+  (Murray Cumming)
+* Fix the build on Ubuntu Raring.
+  It puts libpython2.7 in /usr/lib/i386-linux-gnu/ .
+  (Murray Cumming)
+* Tests:
+  - Use the locally-built glom.
+  - Use the locally-built python module.
+  (Murray Cumming)
+
 1.22.1 (stable):
 
 * Self hosting:
