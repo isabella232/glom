@@ -216,7 +216,7 @@ AC_LANG([C++])
 MM_ARG_ENABLE_WARNINGS([GLOM_WXXFLAGS],
                        [-Wall],
                        [-Wall -Wextra -Wno-missing-field-initializers -DGSEAL_ENABLE],
-                       [G GDK GDK_PIXBUF GTK GLIBMM GDKMM CAIROMM PANGOMM GTKMM])
+                       [G GDK GDK_PIXBUF GTK GLIBMM GDKMM CAIROMM PANGOMM GTKMM SIGCXX])
 
 AC_CHECK_FUNCS([strptime])
 
