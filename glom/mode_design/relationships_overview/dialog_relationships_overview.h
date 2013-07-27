@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2001-2004 Murray Cumming
+ * Copyright (C) 2001-2013 Murray Cumming
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -26,7 +26,6 @@
 #include "canvas_group_dbtable.h"
 #include <gtkmm/dialog.h>
 #include <gtkmm/widget.h>
-#include <gtkmm/uimanager.h>
 #include <gtkmm/menubar.h>
 #include <gtkmm/printoperation.h>
 #include <gtkmm/scrolledwindow.h>
@@ -64,24 +63,22 @@ private:
   void print_or_preview(Gtk::PrintOperationAction print_action);
   void on_response(int id);
 
-  void on_menu_file_print();
-  void on_menu_file_page_setup();
-  void on_menu_file_save();
-  void on_menu_view_showgrid();
+  void on_menu_file_print(const Glib::VariantBase& parameter);
+  void on_menu_file_page_setup(const Glib::VariantBase& parameter);
+  void on_menu_file_save(const Glib::VariantBase& parameter);
+  void on_menu_view_showgrid(const Glib::VariantBase& parameter);
 
   void on_table_moved(const Glib::RefPtr<CanvasItemMovable>& item, double x_offset, double y_offset);
   void on_table_show_context(guint button, guint32 activate_time, Glib::RefPtr<CanvasGroupDbTable> table);
 
-  void on_context_menu_edit_fields(Glib::RefPtr<CanvasGroupDbTable> table);
-  void on_context_menu_edit_relationships(Glib::RefPtr<CanvasGroupDbTable> table);
+  void on_context_menu_edit_fields(const Glib::VariantBase& parameter, Glib::RefPtr<CanvasGroupDbTable> table);
+  void on_context_menu_edit_relationships(const Glib::VariantBase& parameter, Glib::RefPtr<CanvasGroupDbTable> table);
 
   void on_scroll_value_changed();
 
   Glib::RefPtr<CanvasGroupDbTable> get_table_group(const Glib::ustring& table_name);
-  
-  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
-  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
-  Glib::RefPtr<Gtk::ToggleAction> m_action_showgrid;
+
+  Glib::RefPtr<Gio::SimpleAction> m_action_showgrid;
   Gtk::MenuBar* m_menu;
 
   bool m_modified;
@@ -101,9 +98,8 @@ private:
   
   //Context menu:
   Gtk::Menu* m_context_menu;
-  Glib::RefPtr<Gtk::ActionGroup> m_context_menu_action_group;
-  Glib::RefPtr<Gtk::UIManager> m_context_menu_uimanager;
-  Glib::RefPtr<Gtk::Action> m_action_edit_fields, m_action_edit_relationships;
+  Glib::RefPtr<Gtk::Builder> m_context_menu_builder;
+  Glib::RefPtr<Gio::SimpleAction> m_action_edit_fields, m_action_edit_relationships;
   sigc::connection m_connection_edit_fields, m_connection_edit_relationships;
 
   //Printing:

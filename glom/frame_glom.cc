@@ -266,8 +266,6 @@ void Frame_Glom::set_mode_widget(Gtk::Widget& widget)
   AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
   if(pApp)
   {
-    //Glib::RefPtr<Gtk::UIManager> ui_manager = pApp->get_ui_manager();
-
     Notebook_Glom* notebook_current = dynamic_cast<Notebook_Glom*>(m_pBox_Mode->get_child());
     if(notebook_current)
     {

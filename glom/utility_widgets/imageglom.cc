@@ -947,7 +947,7 @@ void ImageGlom::setup_menu_usermode()
   m_refActionClear = m_refActionGroup_UserModePopup->add_action("clear",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_clear) );
 
-  insert_action_group ("imagecontext", m_refActionGroup_UserModePopup);
+  insert_action_group("imagecontext", m_refActionGroup_UserModePopup);
 
 
   //Create the UI for the menu whose items will activate the actions,

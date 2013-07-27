@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2001-2004 Murray Cumming
+ * Copyright (C) 2001-2013 Murray Cumming
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -26,6 +26,8 @@
 #include "printoperation_relationshipsoverview.h"
 #include "glom/appwindow.h"
 #include <goocanvas.h>
+#include <giomm/menu.h>
+#include <giomm/simpleactiongroup.h>
 #include <glibmm/i18n.h>
 #include <iostream>
 
@@ -52,40 +54,54 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   Gtk::Box* vbox = 0;
   builder->get_widget("vbox_placeholder_menubar", vbox);
 
-  m_refActionGroup = Gtk::ActionGroup::create();
+  Glib::RefPtr<Gio::SimpleActionGroup> action_group = Gio::SimpleActionGroup::create();
 
-  m_refActionGroup->add(Gtk::Action::create("Overview_MainMenu_File", _("_File")) );
-  m_refActionGroup->add(Gtk::Action::create("Overview_MainMenu_File_PageSetup", _("Page _Setup")),
+  action_group->add_action("pagesetup",
     sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_menu_file_page_setup) );
-  m_refActionGroup->add(Gtk::Action::create("Overview_MainMenu_File_Print", _("_Print")),
+  action_group->add_action("print",
     sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_menu_file_print) );
 
-  m_refActionGroup->add(Gtk::Action::create("Overview_MainMenu_View", _("_View")) );
-  m_action_showgrid = Gtk::ToggleAction::create("Overview_MainMenu_View_Grid", _("Show _Grid"));
-  m_refActionGroup->add(m_action_showgrid,
-    sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_menu_view_showgrid) );
+  m_action_showgrid = Gio::SimpleAction::create_bool("showgrid", false);
+  action_group->add_action(m_action_showgrid);
+  m_action_showgrid->signal_activate().connect(
+    sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_menu_view_showgrid)
+  );
 
-  Glib::RefPtr<Gtk::UIManager> m_refUIManager = Gtk::UIManager::create();
+  insert_action_group("relationshipsoverview", action_group);
 
-  m_refUIManager->insert_action_group(m_refActionGroup);
-  add_accel_group(m_refUIManager->get_accel_group());
+  Glib::RefPtr<Gtk::Builder> refUIBuilder = Gtk::Builder::create();
 
   try
   {
     static const Glib::ustring ui_description =
-    "<ui>"
-    "  <menubar name='Overview_MainMenu'>"
-    "    <menu action='Overview_MainMenu_File'>"
-    "      <menuitem action='Overview_MainMenu_File_PageSetup' />"
-    "      <menuitem action='Overview_MainMenu_File_Print' />"
-    "    </menu>"
-    "    <menu action='Overview_MainMenu_View'>"
-    "      <menuitem action='Overview_MainMenu_View_Grid' />"
-    "    </menu>"
-    "  </menubar>"
-    "</ui>";
+      "<interface>"
+      "  <menu id='Overview_MainMenu'>"
+      "    <submenu>"
+      "      <attribute name='label' translatable='yes'>_File</attribute>"
+      "      <section>"
+      "        <item>"
+      "          <attribute name='label' translatable='yes'>Page _Setup</attribute>"
+      "          <attribute name='action'>relationshipsoverview.pagesetup</attribute>"
+      "        </item>"
+      "        <item>"
+      "          <attribute name='label' translatable='yes'>_Print</attribute>"
+      "          <attribute name='action'>relationshipsoverview.print</attribute>"
+      "        </item>"
+      "      </section>"
+      "    </submenu>"
+      "    <submenu>"
+      "      <attribute name='label' translatable='yes'>_View</attribute>"
+      "      <section>"
+      "        <item>"
+      "          <attribute name='label' translatable='yes'>Show _Grid</attribute>"
+      "          <attribute name='action'>relationshipsoverview.showgrid</attribute>"
+      "        </item>"
+      "      </section>"
+      "    </submenu>"
+      "  </menu>"
+      "</interface>";
 
-    m_refUIManager->add_ui_from_string(ui_description);
+    refUIBuilder->add_from_string(ui_description);
   }
   catch(const Glib::Error& ex)
   {
@@ -93,9 +109,14 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   }
 
   //Get the menu:
-  m_menu = dynamic_cast<Gtk::MenuBar*>( m_refUIManager->get_widget("/Overview_MainMenu") );
-  if(!m_menu)
-    g_warning("menu not found");
+  Glib::RefPtr<Glib::Object> object =
+    refUIBuilder->get_object("Overview_MainMenu");
+  Glib::RefPtr<Gio::Menu> gmenu =
+    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  if(!gmenu)
+    g_warning("GMenu not found");
+
+  m_menu = new Gtk::MenuBar(gmenu);
 
   vbox->pack_start(*m_menu, Gtk::PACK_SHRINK);
   m_menu->show();
@@ -347,12 +368,12 @@ void Dialog_RelationshipsOverview::on_response(int /* id */)
   hide();
 }
 
-void Dialog_RelationshipsOverview::on_menu_file_print()
+void Dialog_RelationshipsOverview::on_menu_file_print(const Glib::VariantBase& /* parameter */)
 {
   print_or_preview(Gtk::PRINT_OPERATION_ACTION_PRINT_DIALOG);
 }
 
-void Dialog_RelationshipsOverview::on_menu_file_page_setup()
+void Dialog_RelationshipsOverview::on_menu_file_page_setup(const Glib::VariantBase& /* parameter */)
 {
   //Show the page setup dialog, asking it to start with the existing settings:
   Glib::RefPtr<Gtk::PageSetup> new_page_setup =
@@ -363,9 +384,9 @@ void Dialog_RelationshipsOverview::on_menu_file_page_setup()
   m_refPageSetup = new_page_setup;
 }
 
-void Dialog_RelationshipsOverview::on_menu_view_showgrid()
+void Dialog_RelationshipsOverview::on_menu_view_showgrid(const Glib::VariantBase& /* parameter */)
 {
-  if(m_action_showgrid->get_active())
+  if(m_action_showgrid->get_state_bool())
   {
     m_canvas.set_grid_gap(40);
   }
@@ -375,7 +396,8 @@ void Dialog_RelationshipsOverview::on_menu_view_showgrid()
   }
 }
 
-void Dialog_RelationshipsOverview::on_menu_file_save()
+//TODO: Is this used?
+void Dialog_RelationshipsOverview::on_menu_file_save(const Glib::VariantBase& parameter)
 {
 }
 
@@ -460,6 +482,11 @@ void Dialog_RelationshipsOverview::on_table_show_context(guint button, guint32 a
       sigc::bind( sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_context_menu_edit_relationships), table ));
   }
 
+  if(!m_context_menu->get_attach_widget())
+  {
+    m_context_menu->attach_to_widget(*this);
+  }
+
   if(m_context_menu)
     m_context_menu->popup(button, activate_time);
 
@@ -467,30 +494,37 @@ void Dialog_RelationshipsOverview::on_table_show_context(guint button, guint32 a
 
 void Dialog_RelationshipsOverview::setup_context_menu()
 {
-  m_context_menu_action_group = Gtk::ActionGroup::create();
+  Glib::RefPtr<Gio::SimpleActionGroup> action_group = Gio::SimpleActionGroup::create();
 
-  m_context_menu_action_group->add(Gtk::Action::create("ContextMenu", "Context Menu") );
+  m_action_edit_fields = Gio::SimpleAction::create("editfields");
+  action_group->add_action(m_action_edit_fields);
 
-  m_action_edit_fields = Gtk::Action::create("ContextEditFields", _("Edit _Fields"));
-  m_context_menu_action_group->add(m_action_edit_fields);
+  m_action_edit_relationships = Gio::SimpleAction::create("editrelationships");
+  action_group->add_action(m_action_edit_relationships);
 
-  m_action_edit_relationships = Gtk::Action::create("ContextEditRelationships", _("Edit _Relationships"));
-  m_context_menu_action_group->add(m_action_edit_relationships);
+  insert_action_group("context", action_group);
 
-  m_context_menu_uimanager = Gtk::UIManager::create();
-  m_context_menu_uimanager->insert_action_group(m_context_menu_action_group);
+  m_context_menu_builder = Gtk::Builder::create();
 
   try
   {
     Glib::ustring ui_info =
-    "<ui>"
-    "  <popup name='ContextMenu'>"
-    "  <menuitem action='ContextEditFields'/>"
-    "  <menuitem action='ContextEditRelationships'/>"
-    "  </popup>"
-    "</ui>";
+      "<interface>"
+      "  <menu id='ContextMenu'>"
+      "    <section>"
+      "      <item>"
+      "        <attribute name='label' translatable='yes'>Edit _Fields</attribute>"
+      "        <attribute name='action'>context.editfields</attribute>"
+      "      </item>"
+      "      <item>"
+      "        <attribute name='label' translatable='yes'>Edit _Relationships</attribute>"
+      "        <attribute name='action'>context.editrelationships</attribute>"
+      "      </item>"
+      "    </section>"
+      "  </menu>"
+      "</interface>";
 
-    m_context_menu_uimanager->add_ui_from_string(ui_info);
+    m_context_menu_builder->add_from_string(ui_info);
   }
   catch(const Glib::Error& ex)
   {
@@ -498,10 +532,17 @@ void Dialog_RelationshipsOverview::setup_context_menu()
   }
 
   //Get the menu:
-  m_context_menu = dynamic_cast<Gtk::Menu*>( m_context_menu_uimanager->get_widget("/ContextMenu") );
+  Glib::RefPtr<Glib::Object> object =
+    m_context_menu_builder->get_object("ContextMenu");
+  Glib::RefPtr<Gio::Menu> gmenu =
+    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  if(!gmenu)
+    g_warning("GMenu not found");
+
+  m_context_menu = new Gtk::Menu(gmenu);
 }
 
-void Dialog_RelationshipsOverview::on_context_menu_edit_fields(Glib::RefPtr<CanvasGroupDbTable> table)
+void Dialog_RelationshipsOverview::on_context_menu_edit_fields(const Glib::VariantBase& /* parameter */, Glib::RefPtr<CanvasGroupDbTable> table)
 {
   AppWindow* pApp = AppWindow::get_appwindow();
   if(pApp && table)
@@ -512,7 +553,7 @@ void Dialog_RelationshipsOverview::on_context_menu_edit_fields(Glib::RefPtr<Canv
   }
 }
 
-void Dialog_RelationshipsOverview::on_context_menu_edit_relationships(Glib::RefPtr<CanvasGroupDbTable> table)
+void Dialog_RelationshipsOverview::on_context_menu_edit_relationships(const Glib::VariantBase& /* parameter */, Glib::RefPtr<CanvasGroupDbTable> table)
 {
   AppWindow* pApp = AppWindow::get_appwindow();
   if(pApp && table)
