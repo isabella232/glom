@@ -98,7 +98,6 @@ private:
   
   //Context menu:
   Gtk::Menu* m_context_menu;
-  Glib::RefPtr<Gtk::Builder> m_context_menu_builder;
   Glib::RefPtr<Gio::SimpleAction> m_action_edit_fields, m_action_edit_relationships;
   sigc::connection m_connection_edit_fields, m_connection_edit_relationships;
 
