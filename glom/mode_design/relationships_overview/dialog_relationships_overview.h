@@ -63,10 +63,10 @@ private:
   void print_or_preview(Gtk::PrintOperationAction print_action);
   void on_response(int id);
 
-  void on_menu_file_print(const Glib::VariantBase& parameter);
-  void on_menu_file_page_setup(const Glib::VariantBase& parameter);
-  void on_menu_file_save(const Glib::VariantBase& parameter);
-  void on_menu_view_showgrid(const Glib::VariantBase& parameter);
+  void on_menu_file_print();
+  void on_menu_file_page_setup();
+  void on_menu_file_save();
+  void on_menu_view_showgrid(const Glib::VariantBase& /* parameter */);
 
   void on_table_moved(const Glib::RefPtr<CanvasItemMovable>& item, double x_offset, double y_offset);
   void on_table_show_context(guint button, guint32 activate_time, Glib::RefPtr<CanvasGroupDbTable> table);

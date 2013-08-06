@@ -24,13 +24,14 @@
 #include <glom/utils_ui.h>
 #include <glom/appwindow.h>
 #include <glom/print_layout/print_layout_utils.h>
-#include <gtkmm/radioaction.h>
 #include <gtkmm/printsettings.h>
 #include <gtkmm/grid.h>
 #include <gtkmm/printoperation.h>
 #include <libglom/data_structure/layout/layoutitem_line.h>
 #include <libglom/data_structure/layout/layoutitem_portal.h>
-#include <libglom/utils.h> //For bold_message()).>
+#include <libglom/utils.h> //For bold_message().
+#include <giomm/menu.h>
+#include <giomm/simpleactiongroup.h>
 #include <glibmm/i18n.h>
 
 #include <iostream>
@@ -192,178 +193,271 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
 
 void Window_PrintLayout_Edit::init_menu()
 {
-  m_action_group = Gtk::ActionGroup::create();
+  Glib::RefPtr<Gio::SimpleActionGroup> action_group = Gio::SimpleActionGroup::create();
 
-  m_action_group->add(Gtk::Action::create("Menu_File", _("_File")));
-  m_action_group->add(Gtk::Action::create("Action_Menu_File_PageSetup", _("Page Set_up")),
+  action_group->add_action("pagesetup",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_file_page_setup));
-  m_action_group->add(Gtk::Action::create("Action_Menu_File_PrintPreview", _("Print Pre_view")),
-    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_file_print_preview));
+  action_group->add_action("printpreview",
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_file_print_preview) );
 
-
-  m_action_group->add(Gtk::Action::create("Menu_Edit", _("_Edit")));
-
-  m_action_edit_cut = Gtk::Action::create("Action_Menu_Edit_Cut", _("Cu_t"));
-  m_action_group->add(m_action_edit_cut,
+  m_action_edit_cut = action_group->add_action("cut",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_cut) );
 
-  m_action_edit_copy = Gtk::Action::create("Action_Menu_Edit_Copy", _("_Copy"));
-  m_action_group->add(m_action_edit_copy,
+  m_action_edit_copy = action_group->add_action("copy",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_copy) );
   
-  m_action_edit_paste = Gtk::Action::create("Action_Menu_Edit_Paste", _("_Paste"));
-  m_action_group->add(m_action_edit_paste,
+  m_action_edit_paste = action_group->add_action("paste", 
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_paste) );
-  m_action_edit_paste->set_sensitive(false); //This is enable when something is copied or cut.
+  m_action_edit_paste->set_enabled(false); //This is enabled when something is copied or cut.
 
-  m_action_edit_delete = Gtk::Action::create("Action_Menu_Edit_Delete", _("_Delete"));
-  m_action_group->add(m_action_edit_delete,
+  m_action_edit_delete = action_group->add_action("delete",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_delete) );
 
-  m_action_group->add(
-    Gtk::Action::create("Action_Menu_Edit_SelectAll", _("Select _All")),
-    Gtk::AccelKey("<control>A"), //TODO: Suggest this as part of the stock item in GTK+?
-    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_selectall) );
-  m_action_group->add(
-    Gtk::Action::create("Action_Menu_Edit_UnselectAll", _("Unselect All")), //TODO: Propose a new stock item for GTK+.
+  action_group->add_action("selectall",
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_selectall) ); //TODO: Gtk::AccelKey("<control>A"), //TODO: Suggest this as part of the stock item in GTK+?
+  action_group->add_action("unnselectall", //TODO: Propose a new stock item for GTK+.
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_unselectall) );
 
-  m_action_group->add(Gtk::Action::create("Menu_Insert", _("_Insert")));
-  m_action_group->add(Gtk::Action::create("Action_Menu_Insert_Field", _("Insert _Field")),
-                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_field) );
-  m_action_group->add(Gtk::Action::create("Action_Menu_Insert_Text", _("Insert _Text")),
-                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_text) );
-  m_action_group->add(Gtk::Action::create("Action_Menu_Insert_Image", _("Insert _Image")),
-                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_image) );
-  m_action_group->add(Gtk::Action::create("Action_Menu_Insert_RelatedRecords", _("Insert _Related Records")),
-                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_relatedrecords) );
-  m_action_group->add(Gtk::Action::create("Action_Menu_Insert_LineHorizontal", _("Insert _Horizontal Line")),
-                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_line_horizontal) );
-  m_action_group->add(Gtk::Action::create("Action_Menu_Insert_LineVertical", _("Insert _Vertical Line")),
-                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_line_vertical) );
-  m_action_group->add(Gtk::Action::create("Action_Menu_Insert_CreateStandard", _("_Create Standard Layout")),
-                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_create_standard) );
-  m_action_group->add(Gtk::Action::create("Action_Menu_Insert_AddPage", _("_Add Page")),
-                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_add_page) );
-  m_action_group->add(Gtk::Action::create("Action_Menu_Insert_DeletePage", _("_Delete Page")),
-                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_delete_page) );
+  action_group->add_action("insertfield",
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_field) );
+  action_group->add_action("inserttext",
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_text) );
+  action_group->add_action("insertimage",
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_image) );
+  action_group->add_action("insertrelatedrecords",
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_relatedrecords) );
+  action_group->add_action("inserthoriztonalline",
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_line_horizontal) );
+  action_group->add_action("insertveticalline",
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_line_vertical) );
+  action_group->add_action("createstandard",
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_create_standard) );
+  action_group->add_action("addpage",
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_add_page) );
+  action_group->add_action("deletepage",
+   sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_delete_page) );
 
 
-  m_action_group->add(Gtk::Action::create("Menu_Align", _("_Align")));
-
-  m_action_align_top = Gtk::Action::create("Action_Menu_Align_Top", _("Align _Top"));
-  m_action_group->add(m_action_align_top,
+  m_action_align_top = action_group->add_action("aligntop", 
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_align_top) );
 
-  m_action_align_bottom = Gtk::Action::create("Action_Menu_Align_Bottom", _("Align _Bottom"));
-  m_action_group->add(m_action_align_bottom,
+  m_action_align_bottom = action_group->add_action("alignbottom",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_align_bottom) );
   
-  m_action_align_left = Gtk::Action::create("Action_Menu_Align_Left", _("Align _Left"));
-  m_action_group->add(m_action_align_left,
+  m_action_align_left = action_group->add_action("alignleft",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_align_left) );
 
-  m_action_align_right = Gtk::Action::create("Action_Menu_Align_Right", _("Align _Right"));
-  m_action_group->add(m_action_align_right,
+  m_action_align_right = action_group->add_action("alignright",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_align_right) );
 
 
-  m_action_group->add(Gtk::Action::create("Menu_View", _("_View")));
-  m_action_showgrid = Gtk::ToggleAction::create("Action_Menu_View_ShowGrid", _("Show Grid"));
-  m_action_group->add(m_action_showgrid, sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_show_grid));
-  m_action_showrules = Gtk::ToggleAction::create("Action_Menu_View_ShowRules", _("Show Rules"));
-  m_action_group->add(m_action_showrules, sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_show_rules));
-  m_action_showoutlines = Gtk::ToggleAction::create("Action_Menu_View_ShowOutlines", _("Show Outlines"));
-  m_action_group->add(m_action_showoutlines, sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_show_outlines));
+  m_action_showgrid = action_group->add_action_bool("showgrid",
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_show_grid),
+    false);
+  m_action_showrules = action_group->add_action_bool("showrules",
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_show_rules),
+    false);
+  m_action_showoutlines = action_group->add_action_bool("showoutlines",
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_show_outlines),
+    false);
 
-  Gtk::RadioAction::Group group_zoom;
-  m_action_zoom_fit_page_width = Gtk::RadioAction::create(group_zoom, "Action_Menu_View_ZoomFitPageWidth", _("Fit Page _Width"));
-  m_action_group->add(m_action_zoom_fit_page_width,
-    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_fitpagewidth));
 
-  m_action_group->add(Gtk::RadioAction::create(group_zoom, "Action_Menu_View_Zoom200", _("Zoom 200%")),
-    sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 200));
+  m_action_zoom = action_group->add_action_radio_integer("zoom",
+    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom),
+    100); //This seems like a sane default.
 
-  Glib::RefPtr<Gtk::RadioAction> action_zoom100 = 
-    Gtk::RadioAction::create(group_zoom, "Action_Menu_View_Zoom100", _("_Normal Size"));
-  m_action_group->add(action_zoom100,
-    sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 100));
+  insert_action_group("printlayout", action_group);
 
-  Glib::RefPtr<Gtk::Action> action_50 = Gtk::RadioAction::create(group_zoom, "Action_Menu_View_Zoom50", _("Zoom 50%"));
-  m_action_group->add(action_50,
-    sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 50));
-
-  m_action_group->add(Gtk::RadioAction::create(group_zoom, "Action_Menu_View_Zoom25", _("Zoom 25%")),
-    sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom), 25));
-
-  action_zoom100->activate(); //This seems like a sane default.
-
-  //Build part of the menu structure, to be merged in by using the "PH" placeholders:
-  static const Glib::ustring ui_description =
-    "<ui>"
-    "  <menubar name='Menubar'>"
-    "      <menu action='Menu_File'>"
-    "        <menuitem action='Action_Menu_File_PageSetup' />"
-    "        <menuitem action='Action_Menu_File_PrintPreview' />"
-    "      </menu>"
-    "      <menu action='Menu_Edit'>"
-    "        <menuitem action='Action_Menu_Edit_Cut' />"
-    "        <menuitem action='Action_Menu_Edit_Copy' />"
-    "        <menuitem action='Action_Menu_Edit_Paste' />"
-    "        <menuitem action='Action_Menu_Edit_Delete' />"
-    "        <separator />"
-    "        <menuitem action='Action_Menu_Edit_SelectAll' />"
-    "        <menuitem action='Action_Menu_Edit_UnselectAll' />"
-    "      </menu>"
-    "      <menu action='Menu_Insert'>"
-    "        <menuitem action='Action_Menu_Insert_Field' />"
-    "        <menuitem action='Action_Menu_Insert_Text' />"
-    "        <menuitem action='Action_Menu_Insert_Image' />"
-    "        <menuitem action='Action_Menu_Insert_RelatedRecords' />"
-    "        <menuitem action='Action_Menu_Insert_LineHorizontal' />"
-    "        <menuitem action='Action_Menu_Insert_LineVertical' />"
-    "        <separator />"
-    "        <menuitem action='Action_Menu_Insert_CreateStandard' />"
-    "        <separator />"
-    "        <menuitem action='Action_Menu_Insert_AddPage' />"
-    "        <menuitem action='Action_Menu_Insert_DeletePage' />"
-    "      </menu>"
-    "      <menu action='Menu_Align'>"
-    "        <menuitem action='Action_Menu_Align_Top' />"
-    "        <menuitem action='Action_Menu_Align_Bottom' />"
-    "        <menuitem action='Action_Menu_Align_Left' />"
-    "        <menuitem action='Action_Menu_Align_Right' />"
-    "      </menu>"
-    "      <menu action='Menu_View'>"
-    "        <menuitem action='Action_Menu_View_ShowGrid' />"
-    "        <menuitem action='Action_Menu_View_ShowRules' />"
-    "        <menuitem action='Action_Menu_View_ShowOutlines' />"
-    "        <separator />"
-    "        <menuitem action='Action_Menu_View_ZoomFitPageWidth' />"
-    "        <menuitem action='Action_Menu_View_Zoom200' />"
-    "        <menuitem action='Action_Menu_View_Zoom100' />"
-    "        <menuitem action='Action_Menu_View_Zoom50' />"
-    "        <menuitem action='Action_Menu_View_Zoom25' />"
-    "      </menu>"
-    "  </menubar>"
-    "</ui>";
+  static const char* ui_description =
+    "<interface>"
+    "  <menu id='Menubar'>"
+    "    <submenu>"
+    "      <attribute name='label' translatable='yes'>_File</attribute>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Page Set_up</attribute>"
+    "          <attribute name='action'>printlayout.pagesetup</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Print Pre_view</attribute>"
+    "          <attribute name='action'>printlayout.printpreview</attribute>"
+    "        </item>"
+    "      </section>"
+    "    </submenu>"
+    "    <submenu>"
+    "      <attribute name='label' translatable='yes'>_Edit</attribute>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Cu_t</attribute>"
+    "          <attribute name='action'>printlayout.cut</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Copy</attribute>"
+    "          <attribute name='action'>printlayout.copy</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Paste</attribute>"
+    "          <attribute name='action'>printlayout.paste</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Delete</attribute>"
+    "          <attribute name='action'>printlayout.delete</attribute>"
+    "        </item>"
+    "      </section>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Select _All</attribute>"
+    "          <attribute name='action'>printlayout.selectall</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Unselect All</attribute>"
+    "          <attribute name='action'>printlayout.unselectall</attribute>"
+    "        </item>"
+    "      </section>"
+    "    </submenu>"
+    "    <submenu>"
+    "      <attribute name='label' translatable='yes'>_Insert</attribute>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Insert _Field</attribute>"
+    "          <attribute name='action'>printlayout.insertfield</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Insert _Text</attribute>"
+    "          <attribute name='action'>printlayout.inserttext</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Insert _Image</attribute>"
+    "          <attribute name='action'>printlayout.insertimage</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Insert _Related Records</attribute>"
+    "          <attribute name='action'>printlayout.insertrelatedrecords</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Insert _Horizontal Line</attribute>"
+    "          <attribute name='action'>printlayout.inserthorizontalline</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Insert _Vertical Line</attribute>"
+    "          <attribute name='action'>printlayout.insertverticalline</attribute>"
+    "        </item>"
+    "      </section>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Create _Standard</attribute>"
+    "          <attribute name='action'>printlayout.createstandard</attribute>"
+    "        </item>"
+    "      </section>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Add Page</attribute>"
+    "          <attribute name='action'>printlayout.addpage</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Delete Page</attribute>"
+    "          <attribute name='action'>printlayout.deletepage</attribute>"
+    "        </item>"
+    "      </section>"
+    "    </submenu>"
+    "    <submenu>"
+    "      <attribute name='label' translatable='yes'>_Align</attribute>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Align _Top</attribute>"
+    "          <attribute name='action'>printlayout.aligntop</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Align _Bottom</attribute>"
+    "          <attribute name='action'>printlayout.alignbottom</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Align _Left</attribute>"
+    "          <attribute name='action'>printlayout.alignleft</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Align _Right</attribute>"
+    "          <attribute name='action'>printlayout.alignright</attribute>"
+    "        </item>"
+    "      </section>"
+    "    </submenu>"
+    "    <submenu>"
+    "      <attribute name='label' translatable='yes'>_View</attribute>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Show _Grid</attribute>"
+    "          <attribute name='action'>printlayout.showgrid</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Show _Rules</attribute>"
+    "          <attribute name='action'>printlayout.showrules</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Show _Outlines</attribute>"
+    "          <attribute name='action'>printlayout.showoutlines</attribute>"
+    "        </item>"
+    "      </section>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Fit Page _Width</attribute>"
+    "          <attribute name='action'>printlayout.zoom</attribute>"
+    "          <attribute name='target' type='i'>0</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Zoom 200%</attribute>"
+    "          <attribute name='action'>printlayout.zoom</attribute>"
+    "          <attribute name='target' type='i'>200</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Zoom 100%</attribute>"
+    "          <attribute name='action'>printlayout.zoom</attribute>"
+    "          <attribute name='target' type='i'>100</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Zoom 50%</attribute>"
+    "          <attribute name='action'>printlayout.zoom</attribute>"
+    "          <attribute name='target' type='i'>50</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Zoom 25%</attribute>"
+    "          <attribute name='action'>printlayout.zoom</attribute>"
+    "          <attribute name='target' type='i'>25</attribute>"
+    "        </item>"
+    "      </section>"
+    "    </submenu>"
+    "  </menu>"
+    "</interface>";
 
   //Add menu:
-  m_uimanager = Gtk::UIManager::create();
-  m_uimanager->insert_action_group(m_action_group);
-  m_uimanager->add_ui_from_string(ui_description);
+  Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create();
+
+  try
+  {
+    builder->add_from_string(ui_description);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
+  }
+
+  //Get the menu:
+  Glib::RefPtr<Glib::Object> object =
+    builder->get_object("Menubar");
+  Glib::RefPtr<Gio::Menu> gmenu =
+    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  if(!gmenu)
+    g_warning("GMenu not found");
 
   //Menubar:
-  Gtk::MenuBar* pMenuBar = static_cast<Gtk::MenuBar*>(m_uimanager->get_widget("/Menubar"));
+  Gtk::MenuBar* pMenuBar = new Gtk::MenuBar(gmenu);
   m_box_menu->pack_start(*pMenuBar, Gtk::PACK_SHRINK);
   pMenuBar->show();
 
   //TODO: Add a toolbar if it would be useful:
-  //Gtk::Toolbar* pToolBar = static_cast<Gtk::Toolbar*>(m_uimanager->get_widget("/Bakery_ToolBar"));
+  //Gtk::Toolbar* pToolBar = static_cast<Gtk::Toolbar*>(builder->get_widget("/Bakery_ToolBar"));
   //m_HandleBox_Toolbar.add(*pToolBar);
   //m_HandleBox_Toolbar.show();
 
-  add_accel_group(m_uimanager->get_accel_group());
 }
 
 bool Window_PrintLayout_Edit::on_canvas_drag_drop(const Glib::RefPtr<Gdk::DragContext>& drag_context, int /* x */, int /* y */, guint timestamp)
@@ -399,7 +493,9 @@ bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::Drag
   //Handle dragging of the rule from the GimpRuler widget:
   if(target == DRAG_TARGET_NAME_RULE)
   {
-    if(!m_action_showrules->get_active())
+    bool showrules = false;
+    m_action_showrules->get_state(showrules);
+    if(!showrules)
       return false; //Don't allow the drop.
 
     if(m_temp_rule_horizontal)
@@ -534,7 +630,9 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
   //Handle dragging of the rule from the GimpRuler widget:
   if(target == DRAG_TARGET_NAME_RULE)
   {
-    if(!m_action_showrules->get_active())
+    bool showrules = false;
+    m_action_showrules->get_state(showrules);
+    if(!showrules)
       return;
 
     m_canvas.show_temp_rule(0, 0, false);
@@ -685,9 +783,9 @@ void Window_PrintLayout_Edit::set_print_layout(const Glib::ustring& table_name, 
 
   set_ruler_sizes();
 
-  m_action_showgrid->set_active( print_layout->get_show_grid() );
-  m_action_showrules->set_active( print_layout->get_show_rules() );
-  m_action_showoutlines->set_active( print_layout->get_show_outlines() );
+  do_menu_view_show_grid( print_layout->get_show_grid() );
+  do_menu_view_show_rules( print_layout->get_show_rules() );
+  do_menu_view_show_outlines( print_layout->get_show_outlines() );
 
   m_modified = false;
 }
@@ -705,9 +803,17 @@ sharedptr<PrintLayout> Window_PrintLayout_Edit::get_print_layout()
   m_print_layout->set_name( m_entry_name->get_text() );
   m_print_layout->set_title( m_entry_title->get_text() , AppWindow::get_current_locale());
 
-  m_print_layout->set_show_grid( m_action_showgrid->get_active() );
-  m_print_layout->set_show_rules( m_action_showrules->get_active() );
-  m_print_layout->set_show_outlines( m_action_showoutlines->get_active() );
+  bool showgrid = false;
+  m_action_showgrid->get_state(showgrid); 
+  m_print_layout->set_show_grid(showgrid);
+
+  bool showrules = false;
+  m_action_showrules->get_state(showrules);
+  m_print_layout->set_show_rules(showrules);
+
+  bool showoutlines = false;
+  m_action_showoutlines->get_state(showrules);
+  m_print_layout->set_show_outlines(showoutlines);
 
   m_print_layout->set_horizontal_rules( m_canvas.get_horizontal_rules() );
   m_print_layout->set_vertical_rules( m_canvas.get_vertical_rules() );
@@ -746,41 +852,44 @@ void Window_PrintLayout_Edit::on_context_menu_insert_text()
 
 void Window_PrintLayout_Edit::setup_context_menu()
 {
-  m_context_menu_action_group = Gtk::ActionGroup::create();
+  Glib::RefPtr<Gio::SimpleActionGroup> action_group = Gio::SimpleActionGroup::create();
 
-  m_context_menu_action_group->add(Gtk::Action::create("ContextMenu", "Context Menu") );
-  m_context_menu_action_group->add(Gtk::Action::create("ContextMenuInsert", _("Insert")) );
-
-  Glib::RefPtr<Gtk::Action> action =  Gtk::Action::create("ContextInsertField", _("Field"));
-  m_context_menu_action_group->add(action,
+  action_group->add_action("insertfield",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_context_menu_insert_field) );
 
-  action = Gtk::Action::create("ContextInsertText", _("Text"));
-  m_context_menu_action_group->add(action,
+  action_group->add_action("insertrelationships",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_context_menu_insert_text) );
 
   /*
-  action =  Gtk::Action::create("ContextDelete", _("_Delete"));
-  m_context_menu_action_group->add(action,
+  action =  Gio::SimpleAction::create("ContextDelete", _("_Delete"));
+  m_context_menu_action_group->add_action(action,
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_context_menu_delete) );
   */
 
-  m_context_menu_uimanager = Gtk::UIManager::create();
-  m_context_menu_uimanager->insert_action_group(m_context_menu_action_group);
+  insert_action_group("context", action_group);
+
+
+  Glib::RefPtr<Gtk::Builder> context_menu_builder = Gtk::Builder::create();
 
   try
   {
-    Glib::ustring ui_info = 
-      "<ui>"
-      "  <popup name='ContextMenu'>"
-      "    <menu action='ContextMenuInsert'>"
-      "      <menuitem action='ContextInsertField'/>"
-      "      <menuitem action='ContextInsertText'/>"
-      "    </menu>"
-      "  </popup>"
-      "</ui>";
+    const char* ui_info =
+      "<interface>"
+      "  <menu id='ContextMenu'>"
+      "    <section>"
+      "      <item>"
+      "        <attribute name='label' translatable='yes'>Insert _Field</attribute>"
+      "        <attribute name='action'>context.insertfield</attribute>"
+      "      </item>"
+      "      <item>"
+      "        <attribute name='label' translatable='yes'>Insert _Text</attribute>"
+      "        <attribute name='action'>context.inserttext</attribute>"
+      "      </item>"
+      "    </section>"
+      "  </menu>"
+      "</interface>";
 
-    m_context_menu_uimanager->add_ui_from_string(ui_info);
+    context_menu_builder->add_from_string(ui_info);
   }
   catch(const Glib::Error& ex)
   {
@@ -788,7 +897,14 @@ void Window_PrintLayout_Edit::setup_context_menu()
   }
 
   //Get the menu:
-  m_context_menu = dynamic_cast<Gtk::Menu*>( m_context_menu_uimanager->get_widget("/ContextMenu") ); 
+  Glib::RefPtr<Glib::Object> object =
+    context_menu_builder->get_object("ContextMenu");
+  Glib::RefPtr<Gio::Menu> gmenu =
+    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  if(!gmenu)
+    g_warning("GMenu not found");
+
+  m_context_menu = new Gtk::Menu(gmenu);
 }
 
 bool Window_PrintLayout_Edit::on_canvas_motion_notify_event(GdkEventMotion* event)
@@ -972,7 +1088,19 @@ void Window_PrintLayout_Edit::on_button_close()
 
 void Window_PrintLayout_Edit::on_menu_view_show_grid()
 {
-  if(m_action_showgrid->get_active())
+  //The state is not changed automatically:
+  bool active = false;
+  m_action_showgrid->get_state(active);
+  do_menu_view_show_grid(!active);
+}
+
+void Window_PrintLayout_Edit::do_menu_view_show_grid(bool active)
+{
+  //This doesn't seem to trigger the activate signal,
+  //so we don't risk this being called in an infinite loop:
+  m_action_showgrid->change_state(active);
+
+  if(active)
   {
     m_canvas.set_grid_gap(PrintLayoutUtils::GRID_GAP);
   }
@@ -984,7 +1112,18 @@ void Window_PrintLayout_Edit::on_menu_view_show_grid()
 
 void Window_PrintLayout_Edit::on_menu_view_show_rules()
 {
-  const bool active = m_action_showrules->get_active();
+  //The state is not changed automatically:
+  bool active = false;
+  m_action_showrules->get_state(active);
+  do_menu_view_show_rules(!active);
+}
+
+void Window_PrintLayout_Edit::do_menu_view_show_rules(bool active)
+{
+  //This doesn't seem to trigger the activate signal,
+  //so we don't risk this being called in an infinite loop:
+  m_action_showrules->change_state(active);
+
   m_canvas.set_rules_visibility(active);
 
   Gtk::Widget* hruler = Glib::wrap(GTK_WIDGET(m_hruler));
@@ -1005,39 +1144,55 @@ void Window_PrintLayout_Edit::on_menu_view_show_rules()
 
 void Window_PrintLayout_Edit::on_menu_view_show_outlines()
 {
-  m_canvas.set_outlines_visibility(
-    m_action_showoutlines->get_active());
+  //The state is not changed automatically:
+  bool active = false;
+  m_action_showoutlines->get_state(active);
+  do_menu_view_show_rules(!active);
 }
 
-void Window_PrintLayout_Edit::on_menu_view_zoom(guint percent)
+void Window_PrintLayout_Edit::do_menu_view_show_outlines(bool active)
 {
-  m_canvas.set_zoom_percent(percent);
+  //This doesn't seem to trigger the activate signal,
+  //so we don't risk this being called in an infinite loop:
+  m_action_showoutlines->change_state(active);
+
+  m_canvas.set_outlines_visibility(active);
 }
 
-void Window_PrintLayout_Edit::on_menu_view_fitpagewidth()
+void Window_PrintLayout_Edit::on_menu_view_zoom(int parameter)
 {
-  //Get the canvas size:
-  Goocanvas::Bounds bounds;
-  m_canvas.get_bounds(bounds);
-  
-  double canvas_width_pixels = bounds.get_x2() - bounds.get_x1();
-  double canvas_height_pixels = bounds.get_y2() - bounds.get_y1();
-  m_canvas.convert_to_pixels(canvas_width_pixels, canvas_height_pixels);
-  canvas_width_pixels = canvas_width_pixels / m_canvas.property_scale();
+  //The state is not changed automatically:
+  m_action_zoom->change_state(parameter);
 
-  //Get the viewport size:
-  Gtk::Widget* child = m_scrolled_window.get_child();
-  if(child)
+  if(parameter == 0) //For us, this means Fit Page Width.
   {
-    Gtk::Allocation widget_allocation = child->get_allocation();
-    const double viewport_width = widget_allocation.get_width();
-    if(canvas_width_pixels)
+    //Get the canvas size:
+    Goocanvas::Bounds bounds;
+    m_canvas.get_bounds(bounds);
+  
+    double canvas_width_pixels = bounds.get_x2() - bounds.get_x1();
+    double canvas_height_pixels = bounds.get_y2() - bounds.get_y1();
+    m_canvas.convert_to_pixels(canvas_width_pixels, canvas_height_pixels);
+    canvas_width_pixels = canvas_width_pixels / m_canvas.property_scale();
+
+    //Get the viewport size:
+    Gtk::Widget* child = m_scrolled_window.get_child();
+    if(child)
     {
-      //scale the canvas so it fits perfectly in the viewport:
-      const double scale = viewport_width / canvas_width_pixels;
-      m_canvas.set_zoom_percent((guint)(scale * 100));
+      Gtk::Allocation widget_allocation = child->get_allocation();
+      const double viewport_width = widget_allocation.get_width();
+      if(canvas_width_pixels)
+      {
+        //scale the canvas so it fits perfectly in the viewport:
+        const double scale = viewport_width / canvas_width_pixels;
+        m_canvas.set_zoom_percent((guint)(scale * 100));
+      }
     }
   }
+  else
+  {
+    m_canvas.set_zoom_percent(parameter);
+  }  
 }
 
 void Window_PrintLayout_Edit::on_menu_file_page_setup()
@@ -1102,7 +1257,7 @@ void Window_PrintLayout_Edit::on_menu_edit_copy()
     m_layout_items_to_paste.push_back(cloned);
   }
 
-  m_action_edit_paste->set_sensitive();
+  m_action_edit_paste->set_enabled();
 }
 
 void Window_PrintLayout_Edit::on_menu_edit_paste()
@@ -1386,8 +1541,13 @@ bool Window_PrintLayout_Edit::on_configure_event(GdkEventConfigure* event)
   const bool result = Gtk::Window::on_configure_event(event);
 
   //If we are in fit-page-width then rescale the canvas:
-  if(m_action_zoom_fit_page_width->get_active())
-    on_menu_view_fitpagewidth();
+  int percent = 0;
+  m_action_zoom->get_state(percent);
+
+  if(percent == 0) //Fit Page Width
+  {
+    on_menu_view_zoom(percent);
+  }
 
   return result;
 }
@@ -1497,13 +1657,13 @@ void Window_PrintLayout_Edit::on_canvas_selection_changed()
   m_spinbutton_height->set_sensitive(one_selected);
 
   if(m_action_edit_cut)
-    m_action_edit_cut->set_sensitive(some_selected);
+    m_action_edit_cut->set_enabled(some_selected);
 
   if(m_action_edit_copy)
-    m_action_edit_copy->set_sensitive(some_selected);
+    m_action_edit_copy->set_enabled(some_selected);
 
   if(m_action_edit_delete)
-    m_action_edit_delete->set_sensitive(some_selected);
+    m_action_edit_delete->set_enabled(some_selected);
 }
 
 void Window_PrintLayout_Edit::on_selected_item_moved(const Glib::RefPtr<CanvasItemMovable>& item, double x_offset, double y_offset)

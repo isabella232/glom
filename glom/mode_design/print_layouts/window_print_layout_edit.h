@@ -30,7 +30,6 @@
 #include <gtkmm/window.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
-#include <gtkmm/uimanager.h>
 #include <glom/utility_widgets/gimpruler/gimpruler.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/spinbutton.h>
@@ -79,8 +78,7 @@ private:
   void on_menu_view_show_grid();
   void on_menu_view_show_rules();
   void on_menu_view_show_outlines();
-  void on_menu_view_zoom(guint percent);
-  void on_menu_view_fitpagewidth();
+  void on_menu_view_zoom(int parameter);
 
   void on_menu_edit_cut();
   void on_menu_edit_copy();
@@ -122,6 +120,10 @@ private:
 
   //override:
   virtual bool on_configure_event(GdkEventConfigure* event);
+
+  void do_menu_view_show_grid(bool active);
+  void do_menu_view_show_rules(bool active);
+  void do_menu_view_show_outlines(bool active);
 
   void update_table_title();
   void setup_context_menu();
@@ -185,17 +187,15 @@ private:
   GimpRuler* m_hruler;
 
   //Main menu:
-  Glib::RefPtr<Gtk::ActionGroup> m_action_group;
-  Glib::RefPtr<Gtk::UIManager> m_uimanager;
-  Glib::RefPtr<Gtk::ToggleAction> m_action_showgrid, m_action_showrules, m_action_showoutlines;
-  Glib::RefPtr<Gtk::ToggleAction> m_action_zoom_fit_page_width;
+  Glib::RefPtr<Gio::SimpleAction> m_action_showgrid, m_action_showrules, m_action_showoutlines;
+  Glib::RefPtr<Gio::SimpleAction> m_action_zoom;
 
   //Edit menu:
-  Glib::RefPtr<Gtk::Action> m_action_edit_cut, m_action_edit_copy, 
+  Glib::RefPtr<Gio::SimpleAction> m_action_edit_cut, m_action_edit_copy, 
     m_action_edit_paste, m_action_edit_delete;
     
   //Align menu:
-  Glib::RefPtr<Gtk::Action> m_action_align_top, m_action_align_bottom, 
+  Glib::RefPtr<Gio::SimpleAction> m_action_align_top, m_action_align_bottom, 
     m_action_align_left, m_action_align_right;
 
   //Toolbar:
@@ -205,9 +205,6 @@ private:
   
   //Context menu for clicking on empty space on the canvas:
   Gtk::Menu* m_context_menu;
-  Glib::RefPtr<Gtk::ActionGroup> m_context_menu_action_group;
-  Glib::RefPtr<Gtk::UIManager> m_context_menu_uimanager;
-
 };
 
 } //namespace Glom

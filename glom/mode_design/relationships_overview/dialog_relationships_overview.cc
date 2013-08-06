@@ -368,12 +368,12 @@ void Dialog_RelationshipsOverview::on_response(int /* id */)
   hide();
 }
 
-void Dialog_RelationshipsOverview::on_menu_file_print(const Glib::VariantBase& /* parameter */)
+void Dialog_RelationshipsOverview::on_menu_file_print()
 {
   print_or_preview(Gtk::PRINT_OPERATION_ACTION_PRINT_DIALOG);
 }
 
-void Dialog_RelationshipsOverview::on_menu_file_page_setup(const Glib::VariantBase& /* parameter */)
+void Dialog_RelationshipsOverview::on_menu_file_page_setup()
 {
   //Show the page setup dialog, asking it to start with the existing settings:
   Glib::RefPtr<Gtk::PageSetup> new_page_setup =
@@ -386,7 +386,9 @@ void Dialog_RelationshipsOverview::on_menu_file_page_setup(const Glib::VariantBa
 
 void Dialog_RelationshipsOverview::on_menu_view_showgrid(const Glib::VariantBase& /* parameter */)
 {
-  if(m_action_showgrid->get_state_bool())
+  bool showgrid = false;
+  m_action_showgrid->get_state(showgrid);
+  if(showgrid)
   {
     m_canvas.set_grid_gap(40);
   }
@@ -397,7 +399,7 @@ void Dialog_RelationshipsOverview::on_menu_view_showgrid(const Glib::VariantBase
 }
 
 //TODO: Is this used?
-void Dialog_RelationshipsOverview::on_menu_file_save(const Glib::VariantBase& parameter)
+void Dialog_RelationshipsOverview::on_menu_file_save()
 {
 }
 

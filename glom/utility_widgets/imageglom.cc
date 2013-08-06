@@ -155,8 +155,7 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
     //Single-click to select file:
     if(mods & GDK_BUTTON1_MASK)
     {
-      Glib::VariantBase parameter;
-      on_menupopup_activate_select_file(parameter);
+      on_menupopup_activate_select_file();
       return true; //We handled this event.
 
     }
@@ -499,12 +498,12 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
   return pixbuf;
 }
 
-void ImageGlom::on_menupopup_activate_open_file(const Glib::VariantBase& /* parameter */)
+void ImageGlom::on_menupopup_activate_open_file()
 {
   open_with();
 }
 
-void ImageGlom::on_menupopup_activate_open_file_with(const Glib::VariantBase& /* parameter */)
+void ImageGlom::on_menupopup_activate_open_file_with()
 {
   AppWindow* pApp = get_appwindow();
 
@@ -675,7 +674,7 @@ static void set_file_filter_images(Gtk::FileChooser& file_chooser)
   */
 }
 
-void ImageGlom::on_menupopup_activate_save_file(const Glib::VariantBase& /* parameter */)
+void ImageGlom::on_menupopup_activate_save_file()
 {
   AppWindow* pApp = get_appwindow();
 
@@ -759,7 +758,7 @@ bool ImageGlom::save_file(const Glib::ustring& uri)
   return true;
 }
 
-void ImageGlom::on_menupopup_activate_select_file(const Glib::VariantBase& /* parameter */)
+void ImageGlom::on_menupopup_activate_select_file()
 {
   if(m_read_only)
     return;
@@ -856,7 +855,7 @@ void ImageGlom::on_clipboard_clear()
   m_pixbuf_clipboard.reset();
 }
 
-void ImageGlom::on_menupopup_activate_copy(const Glib::VariantBase& /* parameter */)
+void ImageGlom::on_menupopup_activate_copy()
 {
   if(m_pixbuf_original)
   {
@@ -899,7 +898,7 @@ void ImageGlom::on_clipboard_received_image(const Glib::RefPtr<Gdk::Pixbuf>& pix
 }
 
 
-void ImageGlom::on_menupopup_activate_paste(const Glib::VariantBase& /* parameter */)
+void ImageGlom::on_menupopup_activate_paste()
 {
   if(m_read_only)
     return;
@@ -911,7 +910,7 @@ void ImageGlom::on_menupopup_activate_paste(const Glib::VariantBase& /* paramete
     refClipboard->request_image( sigc::mem_fun(*this, &ImageGlom::on_clipboard_received_image) );
 }
 
-void ImageGlom::on_menupopup_activate_clear(const Glib::VariantBase& /* parameter */)
+void ImageGlom::on_menupopup_activate_clear()
 {
   if(m_read_only)
     return;
@@ -1008,8 +1007,7 @@ void ImageGlom::setup_menu_usermode()
 
 void ImageGlom::do_choose_image()
 {
-  Glib::VariantBase parameter;
-  on_menupopup_activate_select_file(parameter);
+  on_menupopup_activate_select_file();
 }
 
 void ImageGlom::set_read_only(bool read_only)

@@ -70,13 +70,13 @@ private:
 
   virtual bool on_button_press_event(GdkEventButton *event);
 
-  void on_menupopup_activate_open_file(const Glib::VariantBase& parameter);
-  void on_menupopup_activate_open_file_with(const Glib::VariantBase& parameter);
-  void on_menupopup_activate_save_file(const Glib::VariantBase& parameter);
-  void on_menupopup_activate_select_file(const Glib::VariantBase& parameter);
-  void on_menupopup_activate_copy(const Glib::VariantBase& parameter);
-  void on_menupopup_activate_paste(const Glib::VariantBase& parameter);
-  void on_menupopup_activate_clear(const Glib::VariantBase& parameter);
+  void on_menupopup_activate_open_file();
+  void on_menupopup_activate_open_file_with();
+  void on_menupopup_activate_save_file();
+  void on_menupopup_activate_select_file();
+  void on_menupopup_activate_copy();
+  void on_menupopup_activate_paste();
+  void on_menupopup_activate_clear();
 
   void on_clipboard_get(Gtk::SelectionData& selection_data, guint /* info */);
   void on_clipboard_clear();
