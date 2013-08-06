@@ -266,9 +266,6 @@ void Window_PrintLayout_Edit::init_menu()
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_zoom),
     100); //This seems like a sane default.
 
-  //const Glib::Variant<int> zoom = Glib::Variant<int>::create(100);
-  //m_action_zoom->activate(zoom); //This seems like a sane default.
-
   insert_action_group("printlayout", action_group);
 
   static const char* ui_description =
@@ -496,7 +493,9 @@ bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::Drag
   //Handle dragging of the rule from the GimpRuler widget:
   if(target == DRAG_TARGET_NAME_RULE)
   {
-    if(!m_action_showrules->get_state_bool())
+    bool showrules = false;
+    m_action_showrules->get_state(showrules);
+    if(!showrules)
       return false; //Don't allow the drop.
 
     if(m_temp_rule_horizontal)
@@ -631,7 +630,9 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
   //Handle dragging of the rule from the GimpRuler widget:
   if(target == DRAG_TARGET_NAME_RULE)
   {
-    if(!m_action_showrules->get_state_bool())
+    bool showrules = false;
+    m_action_showrules->get_state(showrules);
+    if(!showrules)
       return;
 
     m_canvas.show_temp_rule(0, 0, false);
@@ -802,9 +803,17 @@ sharedptr<PrintLayout> Window_PrintLayout_Edit::get_print_layout()
   m_print_layout->set_name( m_entry_name->get_text() );
   m_print_layout->set_title( m_entry_title->get_text() , AppWindow::get_current_locale());
 
-  m_print_layout->set_show_grid( m_action_showgrid->get_state_bool() );
-  m_print_layout->set_show_rules( m_action_showrules->get_state_bool() );
-  m_print_layout->set_show_outlines( m_action_showoutlines->get_state_bool() );
+  bool showgrid = false;
+  m_action_showgrid->get_state(showgrid); 
+  m_print_layout->set_show_grid(showgrid);
+
+  bool showrules = false;
+  m_action_showrules->get_state(showrules);
+  m_print_layout->set_show_rules(showrules);
+
+  bool showoutlines = false;
+  m_action_showoutlines->get_state(showrules);
+  m_print_layout->set_show_outlines(showoutlines);
 
   m_print_layout->set_horizontal_rules( m_canvas.get_horizontal_rules() );
   m_print_layout->set_vertical_rules( m_canvas.get_vertical_rules() );
@@ -1080,8 +1089,9 @@ void Window_PrintLayout_Edit::on_button_close()
 void Window_PrintLayout_Edit::on_menu_view_show_grid(const Glib::VariantBase& /* parameter */)
 {
   //The state is not changed automatically:
-  const bool active = !m_action_showgrid->get_state_bool();
-  do_menu_view_show_grid(active);
+  bool active = false;
+  m_action_showgrid->get_state(active);
+  do_menu_view_show_grid(!active);
 }
 
 void Window_PrintLayout_Edit::do_menu_view_show_grid(bool active)
@@ -1103,8 +1113,9 @@ void Window_PrintLayout_Edit::do_menu_view_show_grid(bool active)
 void Window_PrintLayout_Edit::on_menu_view_show_rules(const Glib::VariantBase& parameter)
 {
   //The state is not changed automatically:
-  const bool active = !m_action_showrules->get_state_bool();
-  do_menu_view_show_rules(active);
+  bool active = false;
+  m_action_showrules->get_state(active);
+  do_menu_view_show_rules(!active);
 }
 
 void Window_PrintLayout_Edit::do_menu_view_show_rules(bool active)
@@ -1134,8 +1145,9 @@ void Window_PrintLayout_Edit::do_menu_view_show_rules(bool active)
 void Window_PrintLayout_Edit::on_menu_view_show_outlines(const Glib::VariantBase& parameter)
 {
   //The state is not changed automatically:
-  const bool active = !m_action_showoutlines->get_state_bool();
-  do_menu_view_show_rules(active);
+  bool active = false;
+  m_action_showoutlines->get_state(active);
+  do_menu_view_show_rules(!active);
 }
 
 void Window_PrintLayout_Edit::do_menu_view_show_outlines(bool active)
@@ -1153,7 +1165,7 @@ void Window_PrintLayout_Edit::on_menu_view_zoom(const Glib::VariantBase& paramet
   const int percent = variantInt.get();
 
   //The state is not changed automatically:
-  m_action_zoom->change_state(variantInt);
+  m_action_zoom->change_state(variantInt); //Change to change_state(percent) if we ever make that templated in glibmm.
 
   if(percent == 0) //For us, this means Fit Page Width.
   {
@@ -1532,13 +1544,12 @@ bool Window_PrintLayout_Edit::on_configure_event(GdkEventConfigure* event)
   const bool result = Gtk::Window::on_configure_event(event);
 
   //If we are in fit-page-width then rescale the canvas:
-  const Glib::VariantBase variant = m_action_zoom->get_state();
-  const Glib::Variant<int> variantInt = variant.cast_dynamic< Glib::Variant<int> >(variant);
-  const int percent = variantInt.get();
+  int percent = 0;
+  m_action_zoom->get_state(percent);
 
   if(percent == 0) //Fit Page Width
   {
-    on_menu_view_zoom(variantInt);
+    on_menu_view_zoom( Glib::Variant<int>::create(percent) );
   }
 
   return result;

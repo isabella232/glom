@@ -386,7 +386,9 @@ void Dialog_RelationshipsOverview::on_menu_file_page_setup(const Glib::VariantBa
 
 void Dialog_RelationshipsOverview::on_menu_view_showgrid(const Glib::VariantBase& /* parameter */)
 {
-  if(m_action_showgrid->get_state_bool())
+  bool showgrid = false;
+  m_action_showgrid->get_state(showgrid);
+  if(showgrid)
   {
     m_canvas.set_grid_gap(40);
   }
