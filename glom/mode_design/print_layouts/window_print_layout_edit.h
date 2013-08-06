@@ -30,7 +30,6 @@
 #include <gtkmm/window.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
-#include <gtkmm/uimanager.h>
 #include <glom/utility_widgets/gimpruler/gimpruler.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/spinbutton.h>
@@ -64,40 +63,39 @@ private:
 
   sharedptr<LayoutItem> create_empty_item(PrintLayoutToolbarButton::enumItems item_type);
 
-  void on_menu_file_page_setup();
-  void on_menu_file_print_preview();
-  void on_menu_insert_field();
-  void on_menu_insert_text();
-  void on_menu_insert_image();
-  void on_menu_insert_relatedrecords();
-  void on_menu_insert_line_horizontal();
-  void on_menu_insert_line_vertical();
-  void on_menu_insert_create_standard();
-  void on_menu_insert_add_page();
-  void on_menu_insert_delete_page();
+  void on_menu_file_page_setup(const Glib::VariantBase& parameter);
+  void on_menu_file_print_preview(const Glib::VariantBase& parameter);
+  void on_menu_insert_field(const Glib::VariantBase& parameter);
+  void on_menu_insert_text(const Glib::VariantBase& parameter);
+  void on_menu_insert_image(const Glib::VariantBase& parameter);
+  void on_menu_insert_relatedrecords(const Glib::VariantBase& parameter);
+  void on_menu_insert_line_horizontal(const Glib::VariantBase& parameter);
+  void on_menu_insert_line_vertical(const Glib::VariantBase& parameter);
+  void on_menu_insert_create_standard(const Glib::VariantBase& parameter);
+  void on_menu_insert_add_page(const Glib::VariantBase& parameter);
+  void on_menu_insert_delete_page(const Glib::VariantBase& parameter);
   
-  void on_menu_view_show_grid();
-  void on_menu_view_show_rules();
-  void on_menu_view_show_outlines();
-  void on_menu_view_zoom(guint percent);
-  void on_menu_view_fitpagewidth();
+  void on_menu_view_show_grid(const Glib::VariantBase& parameter);
+  void on_menu_view_show_rules(const Glib::VariantBase& parameter);
+  void on_menu_view_show_outlines(const Glib::VariantBase& parameter);
+  void on_menu_view_zoom(const Glib::VariantBase& parameter);
 
-  void on_menu_edit_cut();
-  void on_menu_edit_copy();
-  void on_menu_edit_paste();
-  void on_menu_edit_delete();
-  void on_menu_edit_selectall();
-  void on_menu_edit_unselectall();
+  void on_menu_edit_cut(const Glib::VariantBase& parameter);
+  void on_menu_edit_copy(const Glib::VariantBase& parameter);
+  void on_menu_edit_paste(const Glib::VariantBase& parameter);
+  void on_menu_edit_delete(const Glib::VariantBase& parameter);
+  void on_menu_edit_selectall(const Glib::VariantBase& parameter);
+  void on_menu_edit_unselectall(const Glib::VariantBase& parameter);
   
-  void on_menu_align_top();
-  void on_menu_align_bottom();
-  void on_menu_align_left();
-  void on_menu_align_right();
+  void on_menu_align_top(const Glib::VariantBase& parameter);
+  void on_menu_align_bottom(const Glib::VariantBase& parameter);
+  void on_menu_align_left(const Glib::VariantBase& parameter);
+  void on_menu_align_right(const Glib::VariantBase& parameter);
 
   bool on_canvas_motion_notify_event(GdkEventMotion* event);
   void on_canvas_show_context_menu(guint button, guint32 activate_time);
-  void on_context_menu_insert_field();
-  void on_context_menu_insert_text();
+  void on_context_menu_insert_field(const Glib::VariantBase& parameter);
+  void on_context_menu_insert_text(const Glib::VariantBase& parameter);
 
   void on_scroll_value_changed();
   void on_button_close();
@@ -122,6 +120,10 @@ private:
 
   //override:
   virtual bool on_configure_event(GdkEventConfigure* event);
+
+  void do_menu_view_show_grid(bool active);
+  void do_menu_view_show_rules(bool active);
+  void do_menu_view_show_outlines(bool active);
 
   void update_table_title();
   void setup_context_menu();
@@ -185,17 +187,15 @@ private:
   GimpRuler* m_hruler;
 
   //Main menu:
-  Glib::RefPtr<Gtk::ActionGroup> m_action_group;
-  Glib::RefPtr<Gtk::UIManager> m_uimanager;
-  Glib::RefPtr<Gtk::ToggleAction> m_action_showgrid, m_action_showrules, m_action_showoutlines;
-  Glib::RefPtr<Gtk::ToggleAction> m_action_zoom_fit_page_width;
+  Glib::RefPtr<Gio::SimpleAction> m_action_showgrid, m_action_showrules, m_action_showoutlines;
+  Glib::RefPtr<Gio::SimpleAction> m_action_zoom;
 
   //Edit menu:
-  Glib::RefPtr<Gtk::Action> m_action_edit_cut, m_action_edit_copy, 
+  Glib::RefPtr<Gio::SimpleAction> m_action_edit_cut, m_action_edit_copy, 
     m_action_edit_paste, m_action_edit_delete;
     
   //Align menu:
-  Glib::RefPtr<Gtk::Action> m_action_align_top, m_action_align_bottom, 
+  Glib::RefPtr<Gio::SimpleAction> m_action_align_top, m_action_align_bottom, 
     m_action_align_left, m_action_align_right;
 
   //Toolbar:
@@ -205,9 +205,6 @@ private:
   
   //Context menu for clicking on empty space on the canvas:
   Gtk::Menu* m_context_menu;
-  Glib::RefPtr<Gtk::ActionGroup> m_context_menu_action_group;
-  Glib::RefPtr<Gtk::UIManager> m_context_menu_uimanager;
-
 };
 
 } //namespace Glom
