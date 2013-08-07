@@ -63,39 +63,39 @@ private:
 
   sharedptr<LayoutItem> create_empty_item(PrintLayoutToolbarButton::enumItems item_type);
 
-  void on_menu_file_page_setup(const Glib::VariantBase& parameter);
-  void on_menu_file_print_preview(const Glib::VariantBase& parameter);
-  void on_menu_insert_field(const Glib::VariantBase& parameter);
-  void on_menu_insert_text(const Glib::VariantBase& parameter);
-  void on_menu_insert_image(const Glib::VariantBase& parameter);
-  void on_menu_insert_relatedrecords(const Glib::VariantBase& parameter);
-  void on_menu_insert_line_horizontal(const Glib::VariantBase& parameter);
-  void on_menu_insert_line_vertical(const Glib::VariantBase& parameter);
-  void on_menu_insert_create_standard(const Glib::VariantBase& parameter);
-  void on_menu_insert_add_page(const Glib::VariantBase& parameter);
-  void on_menu_insert_delete_page(const Glib::VariantBase& parameter);
+  void on_menu_file_page_setup();
+  void on_menu_file_print_preview();
+  void on_menu_insert_field();
+  void on_menu_insert_text();
+  void on_menu_insert_image();
+  void on_menu_insert_relatedrecords();
+  void on_menu_insert_line_horizontal();
+  void on_menu_insert_line_vertical();
+  void on_menu_insert_create_standard();
+  void on_menu_insert_add_page();
+  void on_menu_insert_delete_page();
   
-  void on_menu_view_show_grid(const Glib::VariantBase& parameter);
-  void on_menu_view_show_rules(const Glib::VariantBase& parameter);
-  void on_menu_view_show_outlines(const Glib::VariantBase& parameter);
-  void on_menu_view_zoom(const Glib::VariantBase& parameter);
+  void on_menu_view_show_grid();
+  void on_menu_view_show_rules();
+  void on_menu_view_show_outlines();
+  void on_menu_view_zoom(int parameter);
 
-  void on_menu_edit_cut(const Glib::VariantBase& parameter);
-  void on_menu_edit_copy(const Glib::VariantBase& parameter);
-  void on_menu_edit_paste(const Glib::VariantBase& parameter);
-  void on_menu_edit_delete(const Glib::VariantBase& parameter);
-  void on_menu_edit_selectall(const Glib::VariantBase& parameter);
-  void on_menu_edit_unselectall(const Glib::VariantBase& parameter);
+  void on_menu_edit_cut();
+  void on_menu_edit_copy();
+  void on_menu_edit_paste();
+  void on_menu_edit_delete();
+  void on_menu_edit_selectall();
+  void on_menu_edit_unselectall();
   
-  void on_menu_align_top(const Glib::VariantBase& parameter);
-  void on_menu_align_bottom(const Glib::VariantBase& parameter);
-  void on_menu_align_left(const Glib::VariantBase& parameter);
-  void on_menu_align_right(const Glib::VariantBase& parameter);
+  void on_menu_align_top();
+  void on_menu_align_bottom();
+  void on_menu_align_left();
+  void on_menu_align_right();
 
   bool on_canvas_motion_notify_event(GdkEventMotion* event);
   void on_canvas_show_context_menu(guint button, guint32 activate_time);
-  void on_context_menu_insert_field(const Glib::VariantBase& parameter);
-  void on_context_menu_insert_text(const Glib::VariantBase& parameter);
+  void on_context_menu_insert_field();
+  void on_context_menu_insert_text();
 
   void on_scroll_value_changed();
   void on_button_close();

@@ -840,14 +840,14 @@ sharedptr<PrintLayout> Window_PrintLayout_Edit::get_print_layout()
   return m_print_layout;
 }
 
-void Window_PrintLayout_Edit::on_context_menu_insert_field(const Glib::VariantBase& parameter)
+void Window_PrintLayout_Edit::on_context_menu_insert_field()
 {
-  on_menu_insert_field(parameter);
+  on_menu_insert_field();
 }
 
-void Window_PrintLayout_Edit::on_context_menu_insert_text(const Glib::VariantBase& parameter)
+void Window_PrintLayout_Edit::on_context_menu_insert_text()
 {
-  on_menu_insert_text(parameter);
+  on_menu_insert_text();
 }
 
 void Window_PrintLayout_Edit::setup_context_menu()
@@ -963,7 +963,7 @@ void Window_PrintLayout_Edit::set_default_position(const sharedptr<LayoutItem>& 
   item->set_print_layout_position(item_x, item_y, old_width, old_height);
 }
 
-void Window_PrintLayout_Edit::on_menu_insert_field(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_insert_field()
 {
   sharedptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::ITEM_FIELD);
 
@@ -973,7 +973,7 @@ void Window_PrintLayout_Edit::on_menu_insert_field(const Glib::VariantBase& /* p
   create_canvas_layout_item_and_add(layout_item);
 }
 
-void Window_PrintLayout_Edit::on_menu_insert_text(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_insert_text()
 {
   sharedptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::ITEM_TEXT);
   set_default_position(layout_item);
@@ -981,7 +981,7 @@ void Window_PrintLayout_Edit::on_menu_insert_text(const Glib::VariantBase& /* pa
   create_canvas_layout_item_and_add(layout_item);
 }
 
-void Window_PrintLayout_Edit::on_menu_insert_image(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_insert_image()
 {
   sharedptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::ITEM_IMAGE);
   // Note to translators: This is the default contents of a text item on a print layout: 
@@ -991,7 +991,7 @@ void Window_PrintLayout_Edit::on_menu_insert_image(const Glib::VariantBase& /* p
   create_canvas_layout_item_and_add(layout_item);
 }
 
-void Window_PrintLayout_Edit::on_menu_insert_relatedrecords(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_insert_relatedrecords()
 {
   sharedptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::ITEM_PORTAL);
   set_default_position(layout_item);
@@ -999,7 +999,7 @@ void Window_PrintLayout_Edit::on_menu_insert_relatedrecords(const Glib::VariantB
   create_canvas_layout_item_and_add(layout_item);
 }
 
-void Window_PrintLayout_Edit::on_menu_insert_line_horizontal(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_insert_line_horizontal()
 {
   sharedptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::ITEM_LINE_HORIZONTAL);
 
@@ -1016,14 +1016,14 @@ void Window_PrintLayout_Edit::on_menu_insert_line_horizontal(const Glib::Variant
   create_canvas_layout_item_and_add(layout_item);
 }
 
-void Window_PrintLayout_Edit::on_menu_insert_line_vertical(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_insert_line_vertical()
 {
   sharedptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::ITEM_LINE_VERTICAL);
 
   create_canvas_layout_item_and_add(layout_item);
 }
 
-void Window_PrintLayout_Edit::on_menu_insert_create_standard(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_insert_create_standard()
 {
   //Ask for confirmation:
   Gtk::MessageDialog dialog(Utils::bold_message(_("Create Standard Layout")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
@@ -1056,14 +1056,14 @@ void Window_PrintLayout_Edit::on_menu_insert_create_standard(const Glib::Variant
 }
 
 
-void Window_PrintLayout_Edit::on_menu_insert_add_page(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_insert_add_page()
 {
   m_canvas.set_page_count(
     m_canvas.get_page_count() + 1);
 }
 
 //TODO: Disable this menu item when there is only one page:
-void Window_PrintLayout_Edit::on_menu_insert_delete_page(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_insert_delete_page()
 {
   const guint page_count = m_canvas.get_page_count();
   if(page_count <= 1)
@@ -1086,7 +1086,7 @@ void Window_PrintLayout_Edit::on_button_close()
   hide();
 }
 
-void Window_PrintLayout_Edit::on_menu_view_show_grid(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_view_show_grid()
 {
   //The state is not changed automatically:
   bool active = false;
@@ -1110,7 +1110,7 @@ void Window_PrintLayout_Edit::do_menu_view_show_grid(bool active)
   }
 }
 
-void Window_PrintLayout_Edit::on_menu_view_show_rules(const Glib::VariantBase& parameter)
+void Window_PrintLayout_Edit::on_menu_view_show_rules()
 {
   //The state is not changed automatically:
   bool active = false;
@@ -1142,7 +1142,7 @@ void Window_PrintLayout_Edit::do_menu_view_show_rules(bool active)
 }
 
 
-void Window_PrintLayout_Edit::on_menu_view_show_outlines(const Glib::VariantBase& parameter)
+void Window_PrintLayout_Edit::on_menu_view_show_outlines()
 {
   //The state is not changed automatically:
   bool active = false;
@@ -1159,15 +1159,12 @@ void Window_PrintLayout_Edit::do_menu_view_show_outlines(bool active)
   m_canvas.set_outlines_visibility(active);
 }
 
-void Window_PrintLayout_Edit::on_menu_view_zoom(const Glib::VariantBase& parameter)
+void Window_PrintLayout_Edit::on_menu_view_zoom(int parameter)
 {
-  const Glib::Variant<int> variantInt = parameter.cast_dynamic< Glib::Variant<int> >(parameter);
-  const int percent = variantInt.get();
-
   //The state is not changed automatically:
-  m_action_zoom->change_state(variantInt); //Change to change_state(percent) if we ever make that templated in glibmm.
+  m_action_zoom->change_state(Glib::Variant<int>::create(parameter)); //Change to change_state(percent) if we ever make that templated in glibmm.
 
-  if(percent == 0) //For us, this means Fit Page Width.
+  if(parameter == 0) //For us, this means Fit Page Width.
   {
     //Get the canvas size:
     Goocanvas::Bounds bounds;
@@ -1194,11 +1191,11 @@ void Window_PrintLayout_Edit::on_menu_view_zoom(const Glib::VariantBase& paramet
   }
   else
   {
-    m_canvas.set_zoom_percent(percent);
+    m_canvas.set_zoom_percent(parameter);
   }  
 }
 
-void Window_PrintLayout_Edit::on_menu_file_page_setup(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_file_page_setup()
 {
   Glib::RefPtr<Gtk::PageSetup> page_setup = m_canvas.get_page_setup();
 
@@ -1213,7 +1210,7 @@ void Window_PrintLayout_Edit::on_menu_file_page_setup(const Glib::VariantBase& /
   set_ruler_sizes();
 }
 
-void Window_PrintLayout_Edit::on_menu_file_print_preview(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_file_print_preview()
 {
   //Save any recent changes in the document,
   //so that the preview will show them:
@@ -1234,13 +1231,13 @@ void Window_PrintLayout_Edit::on_menu_file_print_preview(const Glib::VariantBase
     app->do_print_layout(m_print_layout->get_name(), true /* preview */, this);
 }
 
-void Window_PrintLayout_Edit::on_menu_edit_cut(const Glib::VariantBase& parameter)
+void Window_PrintLayout_Edit::on_menu_edit_cut()
 {
-  on_menu_edit_copy(parameter);
-  on_menu_edit_delete(parameter);
+  on_menu_edit_copy();
+  on_menu_edit_delete();
 }
 
-void Window_PrintLayout_Edit::on_menu_edit_copy(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_edit_copy()
 {
   if(m_layout_items_selected.empty())
     return;
@@ -1263,7 +1260,7 @@ void Window_PrintLayout_Edit::on_menu_edit_copy(const Glib::VariantBase& /* para
   m_action_edit_paste->set_enabled();
 }
 
-void Window_PrintLayout_Edit::on_menu_edit_paste(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_edit_paste()
 {
   if(m_layout_items_to_paste.empty())
     return;
@@ -1304,7 +1301,7 @@ Glib::RefPtr<CanvasLayoutItem> Window_PrintLayout_Edit::create_canvas_layout_ite
   return canvas_item;
 }
 
-void Window_PrintLayout_Edit::on_menu_edit_delete(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_edit_delete()
 {
   while(!m_layout_items_selected.empty())
   {
@@ -1316,17 +1313,17 @@ void Window_PrintLayout_Edit::on_menu_edit_delete(const Glib::VariantBase& /* pa
   m_layout_items_selected.clear();
 }
 
-void Window_PrintLayout_Edit::on_menu_edit_selectall(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_edit_selectall()
 {
   m_canvas.select_all();
 }
 
-void Window_PrintLayout_Edit::on_menu_edit_unselectall(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_edit_unselectall()
 {
   m_canvas.select_all(false);
 }
 
-void Window_PrintLayout_Edit::on_menu_align_top(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_align_top()
 {
   //Get the top-most position:
   double top = 0;
@@ -1362,7 +1359,7 @@ void Window_PrintLayout_Edit::on_menu_align_top(const Glib::VariantBase& /* para
   }
 }
 
-void Window_PrintLayout_Edit::on_menu_align_bottom(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_align_bottom()
 {
   //Get the bottom-most position:
   double bottom = 0;
@@ -1410,7 +1407,7 @@ void Window_PrintLayout_Edit::on_menu_align_bottom(const Glib::VariantBase& /* p
   }
 }
 
-void Window_PrintLayout_Edit::on_menu_align_left(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_align_left()
 {
   //Get the left-most position:
   double left = 0;
@@ -1446,7 +1443,7 @@ void Window_PrintLayout_Edit::on_menu_align_left(const Glib::VariantBase& /* par
   }
 }
 
-void Window_PrintLayout_Edit::on_menu_align_right(const Glib::VariantBase& /* parameter */)
+void Window_PrintLayout_Edit::on_menu_align_right()
 {
   //Get the right-most position:
   double right = 0;
@@ -1549,7 +1546,7 @@ bool Window_PrintLayout_Edit::on_configure_event(GdkEventConfigure* event)
 
   if(percent == 0) //Fit Page Width
   {
-    on_menu_view_zoom( Glib::Variant<int>::create(percent) );
+    on_menu_view_zoom(percent);
   }
 
   return result;
