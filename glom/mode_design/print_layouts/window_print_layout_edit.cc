@@ -1162,7 +1162,7 @@ void Window_PrintLayout_Edit::do_menu_view_show_outlines(bool active)
 void Window_PrintLayout_Edit::on_menu_view_zoom(int parameter)
 {
   //The state is not changed automatically:
-  m_action_zoom->change_state(Glib::Variant<int>::create(parameter)); //Change to change_state(percent) if we ever make that templated in glibmm.
+  m_action_zoom->change_state(parameter);
 
   if(parameter == 0) //For us, this means Fit Page Width.
   {
