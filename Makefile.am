@@ -239,6 +239,16 @@ else
 desktop_DATA = glom.desktop
 endif
 
+
+appdatadir = $(datadir)/appdata
+
+if HOST_WIN32
+appdata_DATA =
+else
+appdata_DATA = glom.appdata.xml
+endif
+
+
 mimedir = $(datadir)/mime
 mimepackagesdir = $(mimedir)/packages
 dist_mimepackages_DATA = glom.xml
@@ -257,7 +267,7 @@ dist_noinst_SCRIPTS += autogen.sh win32/build-installer
 
 # messages.mo is apparently generated because we have .po files under examples/po_files, in git,
 # TODO: Is there some way to tell the build to ignore them?
-CLEANFILES = $(dbusservice_DATA) $(desktop_DATA) $(win_resfile) $(top_builddir)/messages.mo
+CLEANFILES = $(dbusservice_DATA) $(desktop_DATA) $(appdata_DATA) $(win_resfile) $(top_builddir)/messages.mo
 DISTCLEANFILES = intltool-extract intltool-merge intltool-update
 MAINTAINERCLEANFILES += \
 	$(dist_docutils) $(dist_intltool) \

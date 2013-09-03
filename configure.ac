@@ -365,6 +365,7 @@ AC_MSG_RESULT($enable_gcov)
 AC_CONFIG_FILES([Makefile
                  docs/user-guide/Makefile
                  po/Makefile.in
+                 glom.appdata.xml
                  glom.desktop.in
                  glom/libglom/glom-${GLOM_ABI_VERSION}.pc:glom/libglom/glom.pc.in
                  docs/libglom_reference/Makefile
