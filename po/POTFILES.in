@@ -8,6 +8,7 @@ glom/base_db_table_data.cc
 glom/base_db_table_data_readonly.cc
 glom/box_reports.cc
 glom/box_withbuttons.cc
+glom.appdata.xml.in
 glom.desktop.in.in
 glom/dialog_connection.cc
 glom/dialog_existing_or_new.cc

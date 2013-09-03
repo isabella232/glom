@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+  <id type="desktop">org.gnome.glom.desktop</id>
+  <licence>CC0</licence>
+  <description>
+    <_p>
+      With Glom you can design database systems - the database and the user interface.
+    </_p>
+  </description>
+  <screenshots>
+    <screenshot type="default">http://www.glom.org/wiki/images/7/7b/Small_glom_data_details.png</screenshot>
+  </screenshots>
+  <url type="homepage">http://www.glom.org/</url>
+  <updatecontact>murrayc_at_murrayc.com</updatecontact>
+</application>
+
