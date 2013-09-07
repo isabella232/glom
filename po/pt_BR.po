@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-07-26 11:16+0000\n"
-"PO-Revision-Date: 2013-07-26 11:17-0300\n"
+"POT-Creation-Date: 2013-09-03 14:12+0000\n"
+"PO-Revision-Date: 2013-09-03 15:23-0300\n"
 "Last-Translator: Antonio Fernandes C. Neto <fernandesn@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -688,6 +688,14 @@ msgid "Rename Report"
 msgstr "Renomear relatório"
 
 #. namespace Glom
+#: ../glom.appdata.xml.in.h:1
+msgid ""
+"With Glom you can design database systems - the database and the user "
+"interface."
+msgstr ""
+"Com o Glom, você pode projetar sistemas de bancos de dados - o banco de "
+"dados e a interface gráfica."
+
 #: ../glom.desktop.in.in.h:1 ../ui/operator/window_main.glade.h:1
 msgid "Glom"
 msgstr "Glom"
