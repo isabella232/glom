@@ -31,7 +31,7 @@ msgstr ""
 "Free Documentation License (GFDL) ve verzi 1.1 nebo v jakékoli další verzi "
 "vydané nadací Free Software Foundation; bez neměnných oddílů, bez textů "
 "předních desek a bez textů zadních desek. Kopii licence GFDL naleznete pod "
-"tímto <ulink type=\\\"help\\\" url=\\\"ghelp:fdl\\\">odkazem</ulink> nebo v "
+"tímto <ulink type=\"help\" url=\"ghelp:fdl\">odkazem</ulink> nebo v "
 "souboru COPYING-DOCS dodávaném s touto příručkou."
 
 #: C/legal.xml:12(para) C/glom.xml:12(para)
@@ -1412,7 +1412,7 @@ msgstr ""
 "Tento program je šířen podle ustanovení GNU General Public License, vydávané "
 "Free Software Foundation; a to buď verze 2 této licence anebo (podle "
 "vlastního uvážení) kterékoliv pozdější verze. Kopii této licence naleznete "
-"pod tímto <ulink url=\\\"ghelp:gpl\\\" type=\\\"help\\\">odkazem</ulink> "
+"pod tímto <ulink url=\"ghelp:gpl\" type=\"help\">odkazem</ulink> "
 "nebo v souboru COPYING přiloženém ke zdrojovým kódům tohoto programu."
 
 #: C/glom.xml:745(title)
