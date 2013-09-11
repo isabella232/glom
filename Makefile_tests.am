@@ -116,9 +116,9 @@ dist_noinst_SCRIPTS = tests/test_dtd_file_validation.sh \
 TESTS_ENVIRONMENT = PYTHONPATH=${PYTHONPATH}:$(abs_top_builddir)/glom/python_embed/python_module/.libs
 
 tests_ldadd = glom/libglom/libglom-$(GLOM_ABI_VERSION).la $(libglom_all_libs)
-tests_cppflags = $(glom_includes) $(LIBGLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(glom_defines)\
+tests_cppflags = $(glom_includes) $(LIBGLOM_CFLAGS)  $(boost_python_cflags) $(glom_defines)\
 	-DGLOM_TEST_EXAMPLES_NOTINSTALLED=\""$(abs_top_srcdir)/tests"\"
-tests_cppflags_ui = $(glom_includes) $(GLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(glom_defines)
+tests_cppflags_ui = $(glom_includes) $(GLOM_CFLAGS)  $(boost_python_cflags) $(glom_defines)
 
 glom_libglom_test_connectionpool_SOURCES = glom/libglom/test_connectionpool.cc
 glom_libglom_test_connectionpool_LDADD = $(tests_ldadd)
@@ -183,7 +183,7 @@ tests_python_test_load_python_library_LDADD = $(LIBGLOM_LIBS) $(DL_LIB)
 tests_python_test_load_python_library_CPPFLAGS = $(tests_cppflags)
 
 tests_python_test_python_module_SOURCES = tests/python/test_python_module.cc
-tests_python_test_python_module_LDADD = $(tests_ldadd) $(PYTHON_LIBS)
+tests_python_test_python_module_LDADD = $(tests_ldadd) $(PYTHON_LDFLAGS)
 tests_python_test_python_module_CPPFLAGS = $(tests_cppflags)
 
 
@@ -398,29 +398,29 @@ glom_utility_widgets_eggspreadtablemm_test_spreadtablednd_CPPFLAGS = $(tests_cpp
 
 tests_python_test_python_execute_func_SOURCES = tests/python/test_python_execute_func.cc \
   glom/python_embed/glom_python.cc
-tests_python_test_python_execute_func_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
+tests_python_test_python_execute_func_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(boost_python_libs)
 tests_python_test_python_execute_func_CPPFLAGS = $(tests_cppflags_ui)
 tests_python_test_python_execute_func_CFLAGS = $(tests_cflags)
 tests_python_test_python_execute_func_CXXFLAGS = $(tests_cxxflags)
 
 tests_python_test_python_execute_func_bad_syntax_SOURCES = tests/python/test_python_execute_func_bad_syntax.cc \
   glom/python_embed/glom_python.cc
-tests_python_test_python_execute_func_bad_syntax_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
+tests_python_test_python_execute_func_bad_syntax_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(boost_python_libs)
 tests_python_test_python_execute_func_bad_syntax_CPPFLAGS = $(tests_cppflags_ui)
 
 tests_python_test_python_execute_func_date_SOURCES = tests/python/test_python_execute_func_date.cc \
   glom/python_embed/glom_python.cc
-tests_python_test_python_execute_func_date_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
+tests_python_test_python_execute_func_date_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(boost_python_libs)
 tests_python_test_python_execute_func_date_CPPFLAGS = $(tests_cppflags_ui)
 
 tests_python_test_python_execute_func_change_result_type_SOURCES = tests/python/test_python_execute_func_change_result_type.cc \
   glom/python_embed/glom_python.cc
-tests_python_test_python_execute_func_change_result_type_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
+tests_python_test_python_execute_func_change_result_type_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(boost_python_libs)
 tests_python_test_python_execute_func_change_result_type_CPPFLAGS = $(tests_cppflags_ui)
 
 tests_python_test_python_execute_func_with_record_SOURCES = tests/python/test_python_execute_func_with_record.cc \
   glom/python_embed/glom_python.cc
-tests_python_test_python_execute_func_with_record_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
+tests_python_test_python_execute_func_with_record_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(boost_python_libs)
 tests_python_test_python_execute_func_with_record_CPPFLAGS = $(tests_cppflags_ui)
 
 tests_python_test_python_execute_script_SOURCES = tests/python/test_python_execute_script.cc \
@@ -458,7 +458,7 @@ tests_glade_toplevels_instantiation_LDADD = $(tests_ldadd) $(GLOM_LIBS)
 tests_glade_toplevels_instantiation_CPPFLAGS = $(tests_cppflags_ui)
 
 glom_test_pyembed_SOURCES = glom/test_pyembed.cc
-glom_test_pyembed_LDADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS)
+glom_test_pyembed_LDADD = $(LIBGLOM_LIBS) $(PYTHON_LDFLAGS)
 glom_test_pyembed_CPPFLAGS = $(tests_cppflags_ui)
 
 endif #GLOM_ENABLE_UI

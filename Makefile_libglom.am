@@ -24,6 +24,19 @@ lib_LTLIBRARIES = glom/libglom/libglom-@GLOM_ABI_VERSION@.la
 
 include $(top_srcdir)/glom/libglom/filelist.am
 
+# Gather together the various variables for Boost::Python.
+#
+# Note that AX_BOOST_PYTHON just gives us the name of the library (BOOST_PYTHON_LIB),
+# not giving us the actual linker flag, so we must add the -l prefix manually,
+# and it does not give us the location of the library, so we have no -L linker option,
+# so we must just hope that it is somewhere common.
+# 
+# Note also that AX_BOOST_PYTHON does not provide any CPPFLAGS,
+# so we must assume that they are at the top of /usr/include,
+# or at least next to the python headers.
+boost_python_cflags = $(PYTHON_CPPFLAGS)
+boost_python_libs = $(PYTHON_LDFLAGS) $(PYTHON_EXTRA_LDFLAGS) -l$(BOOST_PYTHON_LIB)
+
 libglom_includedir = $(includedir)/glom-$(GLOM_ABI_VERSION)/libglom
 libglom_include_HEADERS = $(libglom_toplevel_headers)
 
@@ -47,7 +60,7 @@ libglom_d_b_view_include_HEADERS = $(libglom_d_b_view_headers)
 
 glom_libglom_libglom_@GLOM_ABI_VERSION@_la_SOURCES = $(libglom_sources)
 
-libglom_all_libs = $(LIBGLOM_LIBS) $(PYTHON_LIBS) $(BOOST_PYTHON_LIBS) -lgettextpo $(GCOV_CFLAGS)
+libglom_all_libs = $(LIBGLOM_LIBS) $(boost_python_libs) -lgettextpo $(GCOV_CFLAGS)
 glom_libglom_libglom_@GLOM_ABI_VERSION@_la_LIBADD = $(libglom_all_libs)
 
 if HOST_WIN32
@@ -55,7 +68,7 @@ glom_libglom_libglom_@GLOM_ABI_VERSION@_la_LIBADD += -lws2_32
 endif
 glom_libglom_libglom_@GLOM_ABI_VERSION@_la_LDFLAGS = -no-undefined
 
-glom_libglom_libglom_@GLOM_ABI_VERSION@_la_CPPFLAGS = $(glom_includes) $(LIBGLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(GCOV_CFLAGS) $(libglom_defines)
+glom_libglom_libglom_@GLOM_ABI_VERSION@_la_CPPFLAGS = $(glom_includes) $(LIBGLOM_CFLAGS) $(boost_python_cflags) $(GCOV_CFLAGS) $(libglom_defines)
 
 pyexec_LTLIBRARIES = glom/python_embed/python_module/glom_@GLOM_ABI_VERSION_UNDERLINED@.la
 
@@ -65,7 +78,7 @@ glom_python_embed_python_module_glom_@GLOM_ABI_VERSION_UNDERLINED@_la_SOURCES = 
 
 glom_python_embed_python_module_glom_@GLOM_ABI_VERSION_UNDERLINED@_la_LIBADD = \
 	glom/libglom/libglom-$(GLOM_ABI_VERSION).la \
-	$(PYTHON_LIBS) $(BOOST_PYTHON_LIBS)
+	$(boost_python_libs)
 
 if HOST_WIN32
 pymod_ldflags = -module -avoid-version -no-undefined -shrext .pyd
@@ -74,7 +87,7 @@ pymod_ldflags = -module -avoid-version -no-undefined
 endif
 glom_pyexport = -export-symbols-regex '^_*initglom'
 glom_python_embed_python_module_glom_@GLOM_ABI_VERSION_UNDERLINED@_la_LDFLAGS = $(pymod_ldflags) $(glom_pyexport)
-glom_python_embed_python_module_glom_@GLOM_ABI_VERSION_UNDERLINED@_la_CPPFLAGS = $(glom_includes) $(LIBGLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS)
+glom_python_embed_python_module_glom_@GLOM_ABI_VERSION_UNDERLINED@_la_CPPFLAGS = $(glom_includes) $(LIBGLOM_CFLAGS) $(boost_python_cflags)
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = glom/libglom/glom-@GLOM_ABI_VERSION@.pc
@@ -83,7 +96,7 @@ pkgconfig_DATA = glom/libglom/glom-@GLOM_ABI_VERSION@.pc
 # Command-line tools:
 
 glom_commandline_ldadd = glom/libglom/libglom-$(GLOM_ABI_VERSION).la $(libglom_all_libs)
-glom_commandline_cppflags = $(glom_includes) $(LIBGLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(glom_defines)
+glom_commandline_cppflags = $(glom_includes) $(LIBGLOM_CFLAGS) $(boost_python_cflags) $(glom_defines)
 
 bin_PROGRAMS = glom/glom_create_from_example \
   glom/glom_test_connection \

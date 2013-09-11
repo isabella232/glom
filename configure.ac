@@ -220,18 +220,21 @@ MM_ARG_ENABLE_WARNINGS([GLOM_WXXFLAGS],
 
 AC_CHECK_FUNCS([strptime])
 
+# Get the path to python, to define pyexecdir,
+# so we can use pyexec_LTLIBRARIES in the .am files:
+AM_PATH_PYTHON
+
 # Get the compiler and linker flags for embedding Python.
 # To specify a particular python version set an environment variable.
 # For instance: PYTHON=python2.5
-MM_CHECK_MODULE_PYTHON
-AC_SUBST(PYTHON_CPPFLAGS)
-#Not used, because boost::python has it as a dependency: AC_SUBST(PYTHON_LIBS)
+# See http://www.gnu.org/software/autoconf-archive/ax_python_devel.html
+AX_PYTHON_DEVEL
 
 # Get the CFLAGS and LIBS for boost::python.
-# Note that we have hacked this script to work with MM_CHECK_MODULE_PYTHON instead of AX_PYTHON
-# This does an AC_SUBST() of BOOST_PYTHON_LIBS
-# For the CFLAGS we must assume that boost is at the top-level, for instance in /usr/include/:
-AX_BOOST_PYTHON_MURRAYC
+# See http://www.gnu.org/software/autoconf-archive/ax_boost_base.html
+AX_BOOST_BASE
+# See http://www.gnu.org/software/autoconf-archive/ax_boost_python.html
+AX_BOOST_PYTHON
 
 
 AC_ARG_ENABLE([update-mime-database],
