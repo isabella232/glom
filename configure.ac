@@ -228,7 +228,8 @@ AM_PATH_PYTHON
 # To specify a particular python version set an environment variable.
 # For instance: PYTHON=python3.3
 # See http://www.gnu.org/software/autoconf-archive/ax_python_devel.html
-AX_PYTHON_DEVEL(>= '3.0.0')
+# TODO: Use AX_PYTHON_DEVEL(>= '3.0.0') when we can make the build use the python3 version of boost-python by default.
+AX_PYTHON_DEVEL
 
 # Get the CFLAGS and LIBS for boost::python.
 # To use a non-default Boost::Python library, for instance to use
