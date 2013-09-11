@@ -226,11 +226,17 @@ AM_PATH_PYTHON
 
 # Get the compiler and linker flags for embedding Python.
 # To specify a particular python version set an environment variable.
-# For instance: PYTHON=python2.5
+# For instance: PYTHON=python3.3
 # See http://www.gnu.org/software/autoconf-archive/ax_python_devel.html
-AX_PYTHON_DEVEL
+AX_PYTHON_DEVEL(>= '3.0.0')
 
 # Get the CFLAGS and LIBS for boost::python.
+# To use a non-default Boost::Python library, for instance to use
+# the version for Python3, if you already have set PYTHON=python3.3,
+# you'll need to pass something like this to configure to make it
+# link to the correct library (Yes, this is tedious).
+#   --with-boost-python=boost_python-mt-py33
+#
 # See http://www.gnu.org/software/autoconf-archive/ax_boost_base.html
 AX_BOOST_BASE
 # See http://www.gnu.org/software/autoconf-archive/ax_boost_python.html
