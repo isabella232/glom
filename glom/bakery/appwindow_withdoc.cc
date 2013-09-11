@@ -58,10 +58,14 @@ void AppWindow_WithDoc::on_menu_file_close()
     offer_to_save_changes(); //If a File|Exit is in progress, this could cancel it.
   }
 
-  if(!get_operation_cancelled())
-    ui_hide();
-
   on_document_close();
+
+  if(!get_operation_cancelled())
+  {
+    //Note that this can result in this appwindow being deleted,
+    //so we do it last.
+    ui_hide();
+  }
 }
 
 bool AppWindow_WithDoc::open_document_from_data(const guchar* data, std::size_t length)
