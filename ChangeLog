@@ -1,4 +1,20 @@
-2013-08-19  Murray Cumming  <murrayc@murrayc.com>
+2013-09-11  Murray Cumming  <murrayc@murrayc.com>
+
+	Use the regular AX_BOOST_PYTHON configure.ac macro.
+
+	* macros/ax_boost_python_murrayc.m4: Remove this heavily changed
+	version of AX_BOOST_PYTHON because it is hard to use this while getting
+	improvements to the official one.
+	* macros/mm-python.m4: Remove this, which we used in
+	AX_BOOST_PYTHON_MURRAYC.
+	* macros/: Add the latest versions of ax_python_devel.m4,
+	ax_boost_base.m4 and ax_boost_python.m4.
+	* configure.ac: Use the official macros.
+	* Makefile_libglom.am: Create some variables to build the
+	flags and concatenate them together for simple use, and use them.
+	* Makefile_tests.am: Use the variables here too.
+
+2013-09-11  Murray Cumming  <murrayc@murrayc.com>
 
 	Avoid a crash at shutdown.
 
