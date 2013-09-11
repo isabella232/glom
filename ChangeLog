@@ -1,3 +1,12 @@
+2013-09-11  Murray Cumming  <murrayc@murrayc.com>
+
+	Avoid a crash at shutdown.
+
+	* glom/bakery/appwindow_withdoc.cc: on_menu_file_close():
+	Close the document after hiding the UI, instead of the other way
+	around because, with Gio::Application, hiding the window can cause
+	it to be deleted, making any further use of it impossible.
+
 1.22.2 (stable):
 
 2012-11-10  Murray Cumming  <murrayc@murrayc.com>
