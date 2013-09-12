@@ -48,6 +48,8 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
     //We check for bool first, 
     //because bool is derived from int in Python,
     //so PyInt_Check() would also succeed on a bool object.
+    //  This comment probably only applies to Python 2,
+    //  because Python 3 doesn't seem to have an integer type any more.
     if(PyBool_Check(input_c))
     {
       boost::python::extract<bool> extractor_bool(input);
@@ -59,7 +61,9 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
         return true;
       }
     }
-    
+ 
+#if PY_MAJOR_VERSION < 3
+    //Python 3 doesn't seem to have an Integer type.
     if(PyInt_Check(input_c))
     {
       boost::python::extract<int> extractor_int(input);
@@ -71,6 +75,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
         return true;
       }
     }
+#endif
 
     if(PyLong_Check(input_c))
     {
@@ -96,7 +101,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
       }
     }
     
-    if(PyString_Check(input_c))
+    if(PyUnicode_Check(input_c))
     {
       boost::python::extract<std::string> extractor_string(input);
       if(extractor_string.check())

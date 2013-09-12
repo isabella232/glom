@@ -356,7 +356,10 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   }
 
   //TODO: Why do we do this?
-  Py_FlushLine();
+#if PY_MAJOR_VERSION < 3
+  //There is no Py_FlushLine in Python 3
+  //Py_FlushLine();
+#endif
   PyErr_Clear();
 
   //We did this in main(): Py_Finalize();
