@@ -39,7 +39,10 @@ void evaluate_function_implementation(const Glib::ustring& func_impl)
     Py_DECREF(pyValue);
   }
 
-  Py_FlushLine();
+#if PY_MAJOR_VERSION < 3
+  //There is no Py_FlushLine in Python 3
+  //Py_FlushLine();
+#endif
   PyErr_Clear();
 
 

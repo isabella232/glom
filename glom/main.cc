@@ -462,7 +462,11 @@ main(int argc, char* argv[])
   Glom::libglom_init(); //Also initializes python.
 
   //We use python for calculated-fields:
+#if PY_MAJOR_VERSION < 3
+  //Python 3 uses wchar* so we can't just pass argv.
+  //TODO: Find out why we would want to do this anyway.
   PySys_SetArgv(argc, argv);
+#endif
 
   try
   {

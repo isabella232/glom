@@ -73,13 +73,16 @@ void evaluate_function_implementation(const Glib::ustring& func_impl)
       PyObject* pyStringObject = PyObject_Str(pyValue);
       if(pyStringObject)
       {
-        if(PyString_Check(pyStringObject))
+        if(PyUnicode_Check(pyStringObject))
         {
-          const char* pchResult = PyString_AsString(pyStringObject);
+          PyObject* pyStr = PyUnicode_AsEncodedString(pyStringObject, "utf-8", "Error ~");
+          const char* pchResult = PyBytes_AS_STRING(pyStr);
           if(pchResult)
             g_warning("result is %s", pchResult);
           else
             g_warning("pchResult is null");
+
+          Py_DECREF(pyStr);
         }
         else
           g_warning("PyString_Check returned false");
@@ -91,7 +94,10 @@ void evaluate_function_implementation(const Glib::ustring& func_impl)
     }
   }
 
-  Py_FlushLine();
+#if PY_MAJOR_VERSION < 3
+  //There is no Py_FlushLine in Python 3
+  //Py_FlushLine();
+#endif
   PyErr_Clear();
 
 
