@@ -72,7 +72,6 @@ public:
 
 protected:
   virtual void init_layout(); //Arranges the menu, toolbar, etc.
-  void init_menus_file_recentfiles(const Glib::ustring& path); // call this in init_menus_file()
   virtual void init_ui_manager(); //Override this to add more UI placeholders
   virtual void init_menus(); //Override this to add more or different menus.
   virtual void init_menus_file(); //Call this from init_menus() to add the standard file menu.
