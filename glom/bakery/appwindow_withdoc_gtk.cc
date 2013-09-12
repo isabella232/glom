@@ -179,44 +179,6 @@ void AppWindow_WithDoc_Gtk::init_menus()
   init_menus_edit();
 }
 
-void AppWindow_WithDoc_Gtk::init_menus_file_recentfiles(const Glib::ustring& path)
-{
-  if(!m_mime_types.empty()) //"Recent-files" is useless unless it knows what documents (which MIME-types) to show.
-  {
-    //Add recent-files submenu:
-    Gtk::MenuItem* pMenuItem = dynamic_cast<Gtk::MenuItem*>(m_refUIManager->get_widget(path));
-    if(pMenuItem)
-    {
-      Glib::RefPtr<Gtk::RecentFilter> filter = Gtk::RecentFilter::create();
-
-      //Add the mime-types, so that it only shows those documents:
-      for(type_list_strings::iterator iter = m_mime_types.begin(); iter != m_mime_types.end(); ++iter)
-      {
-        const Glib::ustring mime_type = *iter;
-
-        //TODO: Find a gio equivalent for gnome_vfs_mime_type_is_known(). murrayc.
-        filter->add_mime_type(mime_type);
-      }
-
-      Gtk::RecentChooserMenu* menu = Gtk::manage(new Gtk::RecentChooserMenu);
-      menu->set_filter(filter);
-      menu->set_show_numbers(false);
-      menu->set_sort_type(Gtk::RECENT_SORT_MRU);
-      menu->signal_item_activated().connect(sigc::bind(sigc::mem_fun(*this, static_cast<void(AppWindow_WithDoc_Gtk::*)(Gtk::RecentChooser&)>(&AppWindow_WithDoc_Gtk::on_recent_files_activate)), sigc::ref(*menu)));
-
-      pMenuItem->set_submenu(*menu);
-    }
-    else
-    {
-      std::cout << "debug: recent files menu not found" << std::endl;
-    }
-  }
-  else
-  {
-    //std::cout << "debug: " << G_STRFUNC << ": No recent files sub-menu added, because no MIME types are specified." << std::endl;
-  }
-}
-
 void AppWindow_WithDoc_Gtk::init_menus_file()
 {
   // File menu
@@ -225,7 +187,6 @@ void AppWindow_WithDoc_Gtk::init_menus_file()
   m_refFileActionGroup = Gtk::ActionGroup::create("BakeryFileActions");
 
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File", _("_File")));
-  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File_RecentFiles", _("_Recent Files")));
 
   //File actions
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_New", _("_New")),
@@ -255,8 +216,6 @@ void AppWindow_WithDoc_Gtk::init_menus_file()
     "      <menu action='BakeryAction_Menu_File'>"
     "        <menuitem action='BakeryAction_File_New' />"
     "        <menuitem action='BakeryAction_File_Open' />"
-    "        <menu action='BakeryAction_Menu_File_RecentFiles'>"
-    "        </menu>"
     "        <menuitem action='BakeryAction_File_Save' />"
     "        <menuitem action='BakeryAction_File_SaveAs' />"
     "        <separator/>"
@@ -268,9 +227,6 @@ void AppWindow_WithDoc_Gtk::init_menus_file()
   
   //Add menu:
   add_ui_from_string(ui_description);
- 
-  //Add recent-files submenu:
-  init_menus_file_recentfiles("/Bakery_MainMenu/Bakery_MenuPH_File/BakeryAction_Menu_File/BakeryAction_Menu_File_RecentFiles");
 }
 
 void AppWindow_WithDoc_Gtk::init_menus_edit()

@@ -263,7 +263,6 @@ void AppWindow::init_menus_file()
   m_refFileActionGroup = Gtk::ActionGroup::create("BakeryFileActions");
 
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File", _("_File")));
-  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File_RecentFiles", _("_Recent Files")));
 
   //File actions
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_New", _("_New")),
@@ -323,8 +322,6 @@ void AppWindow::init_menus_file()
     "      <menu action='BakeryAction_Menu_File'>"
     "        <menuitem action='BakeryAction_File_New' />"
     "        <menuitem action='BakeryAction_File_Open' />"
-    "        <menu action='BakeryAction_Menu_File_RecentFiles'>"
-    "        </menu>"
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     "        <menuitem action='BakeryAction_File_SaveAsExample' />"
     "        <separator/>"
@@ -349,9 +346,6 @@ void AppWindow::init_menus_file()
 
   //Add menu:
   add_ui_from_string(ui_description);
-
-  //Add recent-files submenu:
-  init_menus_file_recentfiles("/Bakery_MainMenu/Bakery_MenuPH_File/BakeryAction_Menu_File/BakeryAction_Menu_File_RecentFiles");
 }
 
 void AppWindow::init_menus()
