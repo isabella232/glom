@@ -75,13 +75,18 @@ static void HandlePythonError()
 // Show python coding errors of the user
 static Glib::ustring get_traceback()
 {
-  // Python equivilant:
+  // Python equivalent:
   // import traceback, sys
   // return "".join(traceback.format_exception(sys.exc_type,
   //    sys.exc_value, sys.exc_traceback))
+  //
+  // See https://wiki.python.org/moin/boost.python/EmbeddingPython
+  //   for the Boost::Python code that this is based on:
 
-  PyObject *type, *value, *traceback;
 
+  PyObject* type = 0;
+  PyObject* value = 0;
+  PyObject* traceback = 0;
   PyErr_Fetch(&type, &value, &traceback);
 
   if(!traceback)
@@ -89,57 +94,26 @@ static Glib::ustring get_traceback()
     std::cerr << "traceback = 0" << std::endl;
   }
 
-  PyObject *tracebackModule = PyImport_ImportModule((char*)"traceback");
-  gchar* chrRetval = 0;
-  if(tracebackModule)
+  PyErr_NormalizeException(&type, &value, &traceback);
+
+
+  boost::python::handle<> hexc(type);
+  boost::python::handle<> hval(boost::python::allow_null(value));
+  boost::python::handle<> htb(boost::python::allow_null(traceback));
+  if(!hval)
   {
-      PyObject* tbList = PyObject_CallMethod(
-          tracebackModule,
-          (char*)"format_exception",
-          (char*)"OOO",
-          type,
-          value == 0 ? Py_None : value,
-          traceback == 0 ? Py_None : traceback);
-
-      if(!tbList)
-      {
-        std::cerr << "Glom: format_exception failed while trying to show Python TraceBack." << std::endl;
-        return "<traceback failed>";
-      }
-
-      boost::python::str emptyString("");
-      PyObject* strRetval = PyObject_CallMethod(emptyString.ptr(), (char*)"join",
-            (char*)"O", tbList);
-      if(strRetval)
-        chrRetval = g_strdup(PyString_AsString(strRetval));
-
-      Py_DECREF(tbList);
-
-      if(strRetval)
-      {
-        Py_DECREF(strRetval);
-      }
-
-      Py_DECREF(tracebackModule);
-    }
-    else
-    {
-        std::cerr << "Unable to import traceback module." << std::endl;
-
-    }
-
-    Py_DECREF(type);
-    Py_XDECREF(value);
-    Py_XDECREF(traceback);
-
-  Glib::ustring result;
-  if(chrRetval)
-  {
-    result = chrRetval;
-    g_free(chrRetval);
+    const std::string result = boost::python::extract<std::string>(boost::python::str(hexc));
+    return result;
   }
-
-  return result;
+  else
+  {
+    boost::python::object traceback(boost::python::import("traceback"));
+    boost::python::object format_exception(traceback.attr("format_exception"));
+    boost::python::object formatted_list(format_exception(hexc,hval,htb));
+    boost::python::object formatted(boost::python::str("").join(formatted_list));
+    const std::string result = boost::python::extract<std::string>(formatted);
+    return result;
+  }
 }
 
 static void ShowTrace()
