@@ -62,8 +62,8 @@ public:
 
 
 class DbTreeModel
-  : public Glib::Object,
-    public Gtk::TreeModel
+  : public Gtk::TreeModel,
+    public Glib::Object
 {
 public:
   //typedef unsigned int size_type;
