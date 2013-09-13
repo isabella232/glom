@@ -179,7 +179,7 @@ void AppWindow::init()
 
 bool AppWindow::init_with_document(const Glib::ustring& document_uri, bool restore)
 {
-  init(); //calls init_menus() and init_toolbars()
+  init(); //calls init_menus()
 
   //m_pFrame->set_shadow_type(Gtk::SHADOW_IN);
 
@@ -240,29 +240,6 @@ void AppWindow::init_layout()
   //Add placeholder, to be used by add():
   //m_pBoxTop->pack_start(m_VBox_PlaceHolder);
   //m_VBox_PlaceHolder.show();
-}
-
-void AppWindow::init_toolbars()
-{
-  //We override this because
-  //a) We don't want a toolbar, and
-  //b) The default toolbar layout has actions that we don't have.
-
-/*
-  //Build part of the menu structure, to be merged in by using the "PH" placeholders:
-  static const Glib::ustring ui_description =
-    "<ui>"
-    "  <toolbar name='Bakery_ToolBar'>"
-    "    <placeholder name='Bakery_ToolBarItemsPH'>"
-    "      <toolitem action='BakeryAction_File_New' />"
-    "      <toolitem action='BakeryAction_File_Open' />"
-    "      <toolitem action='BakeryAction_File_Save' />"
-    "    </placeholder>"
-    "  </toolbar>"
-    "</ui>";
-
-  add_ui_from_string(ui_description);
-*/
 }
 
 void AppWindow::init_menus_file()
