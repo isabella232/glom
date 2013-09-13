@@ -113,8 +113,6 @@ glom_source_files = \
 	glom/bakery/appwindow.h						\
 	glom/bakery/appwindow_withdoc.cc					\
 	glom/bakery/appwindow_withdoc.h					\
-	glom/bakery/appwindow_withdoc_gtk.cc					\
-	glom/bakery/appwindow_withdoc_gtk.h					\
 	glom/bakery/busy_cursor.cc					\
 	glom/bakery/busy_cursor.h					\
 	glom/bakery/dialog_offersave.cc					\
