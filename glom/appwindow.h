@@ -176,7 +176,6 @@ public:
 
 protected:
   virtual void init_layout(); //Arranges the menu, toolbar, etc.
-  virtual void init_ui_manager(); //Override this to add more UI placeholders
   virtual void init_menus(); //Override this to add more or different menus.
   virtual void init_menus_file(); //Call this from init_menus() to add the standard file menu.
   virtual void init_menus_edit(); //Call this from init_menus() to add the standard edit menu
