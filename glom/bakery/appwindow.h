@@ -83,8 +83,6 @@ protected:
   /** Call this from init_menus() to add the standard edit menu
    */ 
   virtual void init_menus_edit() = 0;
-
-  virtual void init_toolbars();
   
   virtual void new_instance(const Glib::ustring& uri = Glib::ustring()) = 0; //Must override in order to new() the derived document class.
 

@@ -180,7 +180,6 @@ protected:
   virtual void init_menus(); //Override this to add more or different menus.
   virtual void init_menus_file(); //Call this from init_menus() to add the standard file menu.
   virtual void init_menus_edit(); //Call this from init_menus() to add the standard edit menu
-  virtual void init_toolbars();
 
   void add_ui_from_string(const Glib::ustring& ui_description); //Convenience function
 

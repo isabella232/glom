@@ -51,7 +51,6 @@ void AppWindow::init()
 
   init_ui_manager();
   init_menus();
-  init_toolbars();
 
   //on_document_load(); //Show the document (even if it is empty).
 }
@@ -70,11 +69,6 @@ void AppWindow::init_menus()
   //install_menu_hints();
 
   //Override this to add more menus.
-}
-
-void AppWindow::init_toolbars()
-{
-  
 }
 
 void AppWindow::on_menu_file_new()
