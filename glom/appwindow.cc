@@ -244,9 +244,6 @@ void AppWindow::init_layout()
 
 void AppWindow::init_menus_file()
 {
-  //Overridden to remove the Save and Save-As menu items,
-  //because all changes are saved immediately and automatically.
-
   // File menu
 
   //Build actions:
@@ -303,45 +300,15 @@ void AppWindow::init_menus_file()
                         sigc::mem_fun((GlomBakery::AppWindow_WithDoc&)*this, &GlomBakery::AppWindow_WithDoc::on_menu_file_close));
 
   m_refUIManager->insert_action_group(m_refFileActionGroup);
-
-  //Build part of the menu structure, to be merged in by using the "PH" placeholders:
-  static const Glib::ustring ui_description =
-    "<ui>"
-    "  <menubar name='Bakery_MainMenu'>"
-    "    <placeholder name='Bakery_MenuPH_File'>"
-    "      <menu action='BakeryAction_Menu_File'>"
-    "        <menuitem action='BakeryAction_File_New' />"
-    "        <menuitem action='BakeryAction_File_Open' />"
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-    "        <menuitem action='BakeryAction_File_SaveAsExample' />"
-    "        <separator/>"
-    "        <menuitem action='BakeryAction_Menu_File_Export' />"
-    "        <menuitem action='BakeryAction_Menu_File_Import' />"
-    "        <menuitem action='BakeryAction_Menu_File_Share' />"
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-    "        <separator/>"
-    "        <menu action='GlomAction_Menu_File_Print'>"
-    "          <menuitem action='GlomAction_File_Print' />"
-    "          <placeholder name='Menu_PrintLayouts_Dynamic' />"
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-    "          <menuitem action='GlomAction_File_PrintEdit' />"
-#endif //GLOM_ENABLE_CLIENT_ONLY
-    "        </menu>"
-    "        <separator/>"
-    "        <menuitem action='BakeryAction_File_Close' />"
-    "      </menu>"
-    "    </placeholder>"
-    "  </menubar>"
-    "</ui>";
-
-  //Add menu:
-  add_ui_from_string(ui_description);
 }
 
 void AppWindow::init_menus()
 {
+  m_refUIManager = Gtk::UIManager::create();
+
   init_menus_file();
   init_menus_edit();
+
 
   //Build actions:
   m_refActionGroup_Others = Gtk::ActionGroup::create("GlomOthersActions");
@@ -506,79 +473,98 @@ void AppWindow::init_menus()
                         sigc::mem_fun(*this, &AppWindow::on_menu_help_contents) );
   m_refUIManager->insert_action_group(m_refHelpActionGroup);                       
 
-  //Build part of the menu structure, to be merged in by using the "Bakery_MenuPH_Others" placeholder:
+
+  //This is just a skeleton structure.
+  //The placeholders allow us to merge the menus and toolbars in later,
+  //by adding a us string with one of the placeholders, but with menu items underneath it.
   static const Glib::ustring ui_description =
     "<ui>"
     "  <menubar name='Bakery_MainMenu'>"
-    "    <placeholder name='Bakery_MenuPH_Edit'>"
-    "      <menu action='BakeryAction_Menu_Edit'>"
-    "        <menuitem action='BakeryAction_Edit_Cut' />"
-    "        <menuitem action='BakeryAction_Edit_Copy' />"
-    "        <menuitem action='BakeryAction_Edit_Paste' />"
-    "        <menuitem action='BakeryAction_Edit_Clear' />"
-    "        <separator />"
-    "        <menuitem action='GlomAction_Menu_Edit_Find' />"
-    "      </menu>"
-    "    </placeholder>"
-    "    <placeholder name='Bakery_MenuPH_Others'>"
-    "      <menu action='Glom_Menu_Tables'>"
-    "        <placeholder name='Menu_Tables_Dynamic' />"
-    "        <separator />"
+    "    <menu action='BakeryAction_Menu_File'>"
+    "      <menuitem action='BakeryAction_File_New' />"
+    "      <menuitem action='BakeryAction_File_Open' />"
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    "        <menuitem action='GlomAction_Menu_EditTables' />"
+    "      <menuitem action='BakeryAction_File_SaveAsExample' />"
+    "      <separator/>"
+    "      <menuitem action='BakeryAction_Menu_File_Export' />"
+    "      <menuitem action='BakeryAction_Menu_File_Import' />"
+    "      <menuitem action='BakeryAction_Menu_File_Share' />"
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+    "      <separator/>"
+    "      <menu action='GlomAction_Menu_File_Print'>"
+    "        <menuitem action='GlomAction_File_Print' />"
+    "        <placeholder name='Menu_PrintLayouts_Dynamic' />"
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+    "        <menuitem action='GlomAction_File_PrintEdit' />"
+#endif //GLOM_ENABLE_CLIENT_ONLY
+    "      </menu>"
+    "      <separator/>"
+    "      <menuitem action='BakeryAction_File_Close' />"
+    "    </menu>"
+   "     <menu action='BakeryAction_Menu_Edit'>"
+    "      <menuitem action='BakeryAction_Edit_Cut' />"
+    "      <menuitem action='BakeryAction_Edit_Copy' />"
+    "      <menuitem action='BakeryAction_Edit_Paste' />"
+    "      <menuitem action='BakeryAction_Edit_Clear' />"
+    "      <separator />"
+    "      <menuitem action='GlomAction_Menu_Edit_Find' />"
+    "    </menu>"
+    "    <menu action='Glom_Menu_Tables'>"
+    "      <placeholder name='Menu_Tables_Dynamic' />"
+    "      <separator />"
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+    "      <menuitem action='GlomAction_Menu_EditTables' />"
 /* Commented out because it is useful but confusing to new users:
-    "        <menuitem action='GlomAction_Menu_AddRelatedTable' />"
+    "      <menuitem action='GlomAction_Menu_AddRelatedTable' />"
 */
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-    "     </menu>"
-    "     <menu action='Glom_Menu_Reports'>"
-    "        <placeholder name='Menu_Reports_Dynamic' />"
+    "   </menu>"
+    "   <menu action='Glom_Menu_Reports'>"
+    "      <placeholder name='Menu_Reports_Dynamic' />"
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    "        <separator />"
-    "        <menuitem action='GlomAction_Menu_EditReports' />"
+    "      <separator />"
+    "      <menuitem action='GlomAction_Menu_EditReports' />"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-    "     </menu>"
+    "   </menu>"
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    "      <menu action='Glom_Menu_Developer'>"
-    "        <menuitem action='GlomAction_Menu_Developer_Operator' />"
-    "        <menuitem action='GlomAction_Menu_Developer_Developer' />"
-    "        <separator />"
-    "        <menuitem action='GlomAction_Menu_Developer_Fields' />"
-    "        <menuitem action='GlomAction_Menu_Developer_Relationships' />"
-    "        <menuitem action='GlomAction_Menu_Developer_RelationshipsOverview' />"
-    "        <menuitem action='GlomAction_Menu_Developer_Layout' />"
-    "        <menuitem action='GlomAction_Menu_Developer_PrintLayouts' />"
-    "        <menuitem action='GlomAction_Menu_Developer_Reports' />"
-    "        <separator />"
-    "        <menuitem action='GlomAction_Menu_Developer_Database_Preferences' />"
-    "        <menuitem action='GlomAction_Menu_Developer_Users' />"
-    "        <menuitem action='GlomAction_Menu_Developer_Script_Library' />"
-    "        <separator />"
-    "        <menuitem action='GlomAction_Menu_Developer_Translations' />"
-    "        <menuitem action='GlomAction_Menu_Developer_ChangeLanguage' />"
-    "        <separator />"
-    "        <menu action='Glom_Menu_Developer_ActivePlatform'>"
-    "          <menuitem action='GlomAction_Menu_Developer_ActivePlatform_Normal' />"
-    "          <menuitem action='GlomAction_Menu_Developer_ActivePlatform_Maemo' />"
-    "        </menu>"
-    "        <menuitem action='GlomAction_Menu_Developer_EnableLayoutDragAndDrop' />"
-    "        <separator />"
-    "        <menuitem action='GlomAction_Menu_Developer_ExportBackup' />"
-    "        <menuitem action='GlomAction_Menu_Developer_RestoreBackup' />"
+    "    <menu action='Glom_Menu_Developer'>"
+    "      <menuitem action='GlomAction_Menu_Developer_Operator' />"
+    "      <menuitem action='GlomAction_Menu_Developer_Developer' />"
+    "      <separator />"
+    "      <menuitem action='GlomAction_Menu_Developer_Fields' />"
+    "      <menuitem action='GlomAction_Menu_Developer_Relationships' />"
+    "      <menuitem action='GlomAction_Menu_Developer_RelationshipsOverview' />"
+    "      <menuitem action='GlomAction_Menu_Developer_Layout' />"
+    "      <menuitem action='GlomAction_Menu_Developer_PrintLayouts' />"
+    "      <menuitem action='GlomAction_Menu_Developer_Reports' />"
+    "      <separator />"
+    "      <menuitem action='GlomAction_Menu_Developer_Database_Preferences' />"
+    "      <menuitem action='GlomAction_Menu_Developer_Users' />"
+    "      <menuitem action='GlomAction_Menu_Developer_Script_Library' />"
+    "      <separator />"
+    "      <menuitem action='GlomAction_Menu_Developer_Translations' />"
+    "      <menuitem action='GlomAction_Menu_Developer_ChangeLanguage' />"
+    "      <separator />"
+    "      <menu action='Glom_Menu_Developer_ActivePlatform'>"
+    "        <menuitem action='GlomAction_Menu_Developer_ActivePlatform_Normal' />"
+    "        <menuitem action='GlomAction_Menu_Developer_ActivePlatform_Maemo' />"
     "      </menu>"
-    "      <menu action='Glom_Menu_Help'>"
-    "        <menuitem action='GlomAction_Menu_Help_About' />"
-    "        <menuitem action='GlomAction_Menu_Help_Contents' />"
-    "      </menu>"
+    "      <menuitem action='GlomAction_Menu_Developer_EnableLayoutDragAndDrop' />"
+    "      <separator />"
+    "      <menuitem action='GlomAction_Menu_Developer_ExportBackup' />"
+    "      <menuitem action='GlomAction_Menu_Developer_RestoreBackup' />"
+    "    </menu>"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-    "    </placeholder>"
+    "    <menu action='Glom_Menu_Help'>"
+    "      <menuitem action='GlomAction_Menu_Help_About' />"
+    "      <menuitem action='GlomAction_Menu_Help_Contents' />"
+    "    </menu>"
     "  </menubar>"
     "</ui>";
-
-/*  "        <menuitem action='GlomAction_Menu_Developer_RelationshipsOverview' />" */
-
-  //Add menu:
+  
   add_ui_from_string(ui_description);
+
+
 
   update_table_sensitive_ui();
 
@@ -1982,9 +1968,8 @@ void AppWindow::fill_menu_tables()
   Glib::ustring ui_description =
     "<ui>"
     "  <menubar name='Bakery_MainMenu'>"
-    "    <placeholder name='Bakery_MenuPH_Others'>"
-    "      <menu action='Glom_Menu_Tables'>"
-    "        <placeholder name='Menu_Tables_Dynamic'>";
+    "    <menu action='Glom_Menu_Tables'>"
+    "      <placeholder name='Menu_Tables_Dynamic'>";
 
   Document* document = dynamic_cast<Document*>(get_document());
   const Document::type_listTableInfo tables = document->get_tables();
@@ -2013,7 +1998,6 @@ void AppWindow::fill_menu_tables()
   ui_description +=
     "     </placeholder>"
     "    </menu>"
-    "    </placeholder>"
     "  </menubar>"
     "</ui>";
 
@@ -2048,9 +2032,8 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
   Glib::ustring ui_description =
     "<ui>"
     "  <menubar name='Bakery_MainMenu'>"
-    "    <placeholder name='Bakery_MenuPH_Others'>"
-    "     <menu action='Glom_Menu_Reports'>"
-    "        <placeholder name='Menu_Reports_Dynamic'>";
+    "   <menu action='Glom_Menu_Reports'>"
+    "     <placeholder name='Menu_Reports_Dynamic'>";
 
   Document* document = dynamic_cast<Document*>(get_document());
   const std::vector<Glib::ustring> reports = document->get_report_names(table_name);
@@ -2083,7 +2066,6 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
   ui_description +=
     "     </placeholder>"
     "    </menu>"
-    "    </placeholder>"
     "  </menubar>"
     "</ui>";
 
@@ -2125,10 +2107,9 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
   Glib::ustring ui_description =
     "<ui>"
     "  <menubar name='Bakery_MainMenu'>"
-    "    <placeholder name='Bakery_MenuPH_File'>"
-    "      <menu action='BakeryAction_Menu_File'>"
-    "        <menu action='GlomAction_Menu_File_Print'>"
-    "          <placeholder name='Menu_PrintLayouts_Dynamic'>";
+    "    <menu action='BakeryAction_Menu_File'>"
+    "      <menu action='GlomAction_Menu_File_Print'>"
+    "        <placeholder name='Menu_PrintLayouts_Dynamic'>";
 
   Document* document = dynamic_cast<Document*>(get_document());
   const std::vector<Glib::ustring> tables = document->get_print_layout_names(table_name);
@@ -2167,7 +2148,6 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
     "       </placeholder>"
     "      </menu>"
     "    </menu>"
-    "    </placeholder>"
     "  </menubar>"
     "</ui>";
 
@@ -2953,31 +2933,6 @@ void AppWindow::add_ui_from_string(const Glib::ustring& ui_description)
   }
 }
 
-void AppWindow::init_ui_manager()
-{
-  using namespace Gtk;
-
-  m_refUIManager = UIManager::create();
-
-  //This is just a skeleton structure.
-  //The placeholders allow us to merge the menus and toolbars in later,
-  //by adding a us string with one of the placeholders, but with menu items underneath it.
-  static const Glib::ustring ui_description =
-    "<ui>"
-    "  <menubar name='Bakery_MainMenu'>"
-    "    <placeholder name='Bakery_MenuPH_File' />"
-    "    <placeholder name='Bakery_MenuPH_Edit' />"
-    "    <placeholder name='Bakery_MenuPH_Others' />" //Note that extra menus should be inserted before the Help menu, which should always be at the end.
-    "    <placeholder name='Bakery_MenuPH_Help' />"
-    "  </menubar>"
-    "  <toolbar name='Bakery_ToolBar'>"
-    "    <placeholder name='Bakery_ToolBarItemsPH' />"
-    "  </toolbar>"
-    "</ui>";
-  
-  add_ui_from_string(ui_description);
-}
-
 void AppWindow::init_menus_edit()
 {
   using namespace Gtk;
@@ -2996,24 +2951,6 @@ void AppWindow::init_menus_edit()
   m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Clear", _("_Clear")));
 
   m_refUIManager->insert_action_group(m_refEditActionGroup);
-  
-  //Build part of the menu structure, to be merged in by using the "PH" placeholders:
-  static const Glib::ustring ui_description =
-    "<ui>"
-    "  <menubar name='Bakery_MainMenu'>"
-    "    <placeholder name='Bakery_MenuPH_Edit'>"
-    "      <menu action='BakeryAction_Menu_Edit'>"
-    "        <menuitem action='BakeryAction_Edit_Cut' />"
-    "        <menuitem action='BakeryAction_Edit_Copy' />"
-    "        <menuitem action='BakeryAction_Edit_Paste' />"
-    "        <menuitem action='BakeryAction_Edit_Clear' />"
-    "      </menu>"
-    "    </placeholder>"
-    "  </menubar>"
-    "</ui>";
-
-  //Add menu:
-  add_ui_from_string(ui_description);
 }
 
 void AppWindow::add(Gtk::Widget& child)

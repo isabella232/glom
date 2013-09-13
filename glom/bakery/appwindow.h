@@ -67,11 +67,6 @@ public:
 protected:
   static void init_app_name(const Glib::ustring& appname);
 
-  /** Builds the intial ui string, with placeholders.
-   * This allows us to merge in actual menus and toolbars in the other init_*() methods.
-   */
-  virtual void init_ui_manager();
-
   /** Override this to add more menus or different menus.
    */
   virtual void init_menus();

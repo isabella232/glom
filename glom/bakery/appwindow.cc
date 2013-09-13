@@ -49,15 +49,9 @@ void AppWindow::init()
 {
   //set_wmclass(m_strAppName, m_strTitle); //The docs say "Don't use this".
 
-  init_ui_manager();
   init_menus();
 
   //on_document_load(); //Show the document (even if it is empty).
-}
-
-void AppWindow::init_ui_manager()
-{
-  
 }
 
 void AppWindow::init_menus()
