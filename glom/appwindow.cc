@@ -22,6 +22,7 @@
 
 #include <glom/appwindow.h>
 #include <glom/dialog_existing_or_new.h>
+#include <glom/bakery/dialog_offersave.h>
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/mode_design/translation/dialog_change_language.h>
@@ -74,7 +75,10 @@ const char* AppWindow::glade_id("window_main");
 const bool AppWindow::glade_developer(false);
 
 AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
-: type_base(cobject, "Glom"),
+: GlomBakery::AppWindow_WithDoc("Glom"),
+  Gtk::ApplicationWindow(cobject), 
+  m_pVBox(0),
+  m_VBox_PlaceHolder(Gtk::ORIENTATION_VERTICAL),
   m_pBoxTop(0),
   m_pFrame(0),
   m_bAboutShown(false),
@@ -92,6 +96,8 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_show_sql_debug(false)
 {
+  init_app_name("Glom");
+
   Gtk::Window::set_default_icon_name("glom");
 
   //Load widgets from glade file:
@@ -164,9 +170,16 @@ void AppWindow::on_connection_avahi_done()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+void AppWindow::init()
+{  
+  GlomBakery::AppWindow_WithDoc::init(); //Create document and ask to show it in the UI.
+  init_layout(); // start setting up layout after we've gotten all widgets from UIManager
+  show();
+}
+
 bool AppWindow::init_with_document(const Glib::ustring& document_uri, bool restore)
 {
-  type_base::init(); //calls init_menus() and init_toolbars()
+  init(); //calls init_menus() and init_toolbars()
 
   //m_pFrame->set_shadow_type(Gtk::SHADOW_IN);
 
@@ -268,7 +281,7 @@ void AppWindow::init_menus_file()
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_New", _("_New")),
                         sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_file_new));
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Open", _("_Open")),
-                        sigc::mem_fun((AppWindow_WithDoc&)*this, &AppWindow_WithDoc::on_menu_file_open));
+                        sigc::mem_fun((GlomBakery::AppWindow_WithDoc&)*this, &GlomBakery::AppWindow_WithDoc::on_menu_file_open));
 
   Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("BakeryAction_File_SaveAsExample", _("_Save as Example"));
   m_listDeveloperActions.push_back(action);
@@ -310,7 +323,7 @@ void AppWindow::init_menus_file()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Close", _("_Close")),
-                        sigc::mem_fun((AppWindow_WithDoc&)*this, &AppWindow_WithDoc::on_menu_file_close));
+                        sigc::mem_fun((GlomBakery::AppWindow_WithDoc&)*this, &GlomBakery::AppWindow_WithDoc::on_menu_file_close));
 
   m_refUIManager->insert_action_group(m_refFileActionGroup);
 
@@ -706,7 +719,7 @@ void AppWindow::ui_warning_load_failed(int failure_code)
     ui_warning(_("Open Failed"),
       _("The document could not be found."));
 
-    //TODO: Glom::Bakery::AppWindow_WithDoc removes the file from the recent history,
+    //TODO: Glom::Bakery::GlomBakery::AppWindow_WithDoc removes the file from the recent history,
     //but the initial/welcome dialog doesn't yet update its list when the
     //recent history changes.
   }
@@ -716,7 +729,7 @@ void AppWindow::ui_warning_load_failed(int failure_code)
       _("The document could not be opened because it was created or modified by a newer version of Glom."));
   }
   else
-    GlomBakery::AppWindow_WithDoc_Gtk::ui_warning_load_failed();
+    ui_warning_load_failed();
 }
 
 
@@ -915,7 +928,7 @@ void AppWindow::init_create_document()
     m_pFrame->set_document(static_cast<Document*>(m_pDocument));
   }
 
-  type_base::init_create_document(); //Sets window title. Doesn't recreate doc.
+  GlomBakery::AppWindow_WithDoc::init_create_document(); //Sets window title. Doesn't recreate doc.
 }
 
 bool AppWindow::check_document_hosting_mode_is_supported(Document* document)
@@ -2195,7 +2208,7 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void AppWindow::on_menu_file_save_as_example()
 {
-  //Based on the implementation of GlomBakery::AppWindow_WithDoc::on_menu_file_saveas()
+  //Based on the implementation of GlomBakery::GlomBakery::AppWindow_WithDoc::on_menu_file_saveas()
 
   //Display File Save dialog and respond to choice:
 
@@ -2391,7 +2404,7 @@ Glib::ustring AppWindow::ui_file_select_save(const Glib::ustring& old_file_uri) 
 
 
       //If the file exists (the FileChooser offers a "replace?" dialog, so this is not possible.):
-      if(AppWindow_WithDoc::file_exists(uri))
+      if(GlomBakery::AppWindow_WithDoc::file_exists(uri))
       {
         //Check whether we have rights to the file to change it:
         //Really, GtkFileChooser should do this for us.
@@ -2706,6 +2719,9 @@ void AppWindow::document_history_add(const Glib::ustring& file_uri)
 {
   // We override this so we can prevent example files from being saved in the recently-used list:
 
+  if(file_uri.empty())
+    return;
+
   bool prevent = false;
   if(!file_uri.empty())
   {
@@ -2714,7 +2730,14 @@ void AppWindow::document_history_add(const Glib::ustring& file_uri)
       return;
   }
 
-  GlomBakery::AppWindow_WithDoc_Gtk::document_history_add(file_uri);
+  //This can sometimes be called for a file that does not yet exist on disk.
+  //Avoid warning in RecentManager if that is the case.
+  //For instance, Glom does this when the user chooses a new filename, 
+  //but before Glom has enough information to save a useful file.
+  if(!file_exists(file_uri))
+    return;
+
+  Gtk::RecentManager::get_default()->add_item(file_uri);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -2734,7 +2757,7 @@ Document* AppWindow::on_connection_pool_get_document()
 }
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
-//overridden to show the current table name in the window's title:
+//Show the current table name in the window's title:
 void AppWindow::update_window_title()
 {
   //Set application's main window title:
@@ -2926,5 +2949,291 @@ Glib::ustring item_get_title_or_name(const sharedptr<const TranslatableItem>& it
 }
 
 
+void AppWindow::on_hide()
+{
+  ui_signal_hide().emit();
+}
+
+void AppWindow::ui_hide()
+{
+  hide();  
+}
+
+void AppWindow::ui_bring_to_front()
+{
+  get_window()->raise();
+}
+
+void AppWindow::add_ui_from_string(const Glib::ustring& ui_description)
+{
+  try
+  {
+    m_refUIManager->add_ui_from_string(ui_description);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "building menus failed: " <<  ex.what();
+  }
+}
+
+void AppWindow::init_ui_manager()
+{
+  using namespace Gtk;
+
+  m_refUIManager = UIManager::create();
+
+  //This is just a skeleton structure.
+  //The placeholders allow us to merge the menus and toolbars in later,
+  //by adding a us string with one of the placeholders, but with menu items underneath it.
+  static const Glib::ustring ui_description =
+    "<ui>"
+    "  <menubar name='Bakery_MainMenu'>"
+    "    <placeholder name='Bakery_MenuPH_File' />"
+    "    <placeholder name='Bakery_MenuPH_Edit' />"
+    "    <placeholder name='Bakery_MenuPH_Others' />" //Note that extra menus should be inserted before the Help menu, which should always be at the end.
+    "    <placeholder name='Bakery_MenuPH_Help' />"
+    "  </menubar>"
+    "  <toolbar name='Bakery_ToolBar'>"
+    "    <placeholder name='Bakery_ToolBarItemsPH' />"
+    "  </toolbar>"
+    "</ui>";
+  
+  add_ui_from_string(ui_description);
+}
+
+void AppWindow::init_menus_edit()
+{
+  using namespace Gtk;
+  //Edit menu
+  
+  //Build actions:
+  m_refEditActionGroup = Gtk::ActionGroup::create("BakeryEditActions");
+  m_refEditActionGroup->add(Action::create("BakeryAction_Menu_Edit", _("_Edit")));
+  
+  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Cut", _("Cu_t")),
+                        sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_cut_activate));
+  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Copy", _("_Copy")),
+                        sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_copy_activate));
+  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Paste", _("_Paste")),
+                        sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_paste_activate));
+  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Clear", _("_Clear")));
+
+  m_refUIManager->insert_action_group(m_refEditActionGroup);
+  
+  //Build part of the menu structure, to be merged in by using the "PH" placeholders:
+  static const Glib::ustring ui_description =
+    "<ui>"
+    "  <menubar name='Bakery_MainMenu'>"
+    "    <placeholder name='Bakery_MenuPH_Edit'>"
+    "      <menu action='BakeryAction_Menu_Edit'>"
+    "        <menuitem action='BakeryAction_Edit_Cut' />"
+    "        <menuitem action='BakeryAction_Edit_Copy' />"
+    "        <menuitem action='BakeryAction_Edit_Paste' />"
+    "        <menuitem action='BakeryAction_Edit_Clear' />"
+    "      </menu>"
+    "    </placeholder>"
+    "  </menubar>"
+    "</ui>";
+
+  //Add menu:
+  add_ui_from_string(ui_description);
+}
+
+void AppWindow::add(Gtk::Widget& child)
+{
+  m_VBox_PlaceHolder.pack_start(child);
+}
+
+bool AppWindow::on_delete_event(GdkEventAny* /* event */)
+{
+  //Clicking on the [x] in the title bar should be like choosing File|Close
+  on_menu_file_close();
+
+  return true; // true = don't hide, don't destroy
+}
+
+void AppWindow::ui_warning(const Glib::ustring& text, const Glib::ustring& secondary_text)
+{
+  Gtk::Window* pWindow = this;
+
+  Gtk::MessageDialog dialog(AppWindow::util_bold_message(text), true /* use markup */, Gtk::MESSAGE_WARNING);
+  dialog.set_secondary_text(secondary_text);
+
+  dialog.set_title(""); //The HIG says that alert dialogs should not have titles. The default comes from the message type.
+
+  if(pWindow)
+    dialog.set_transient_for(*pWindow);
+
+  dialog.run();
+}
+
+
+Glib::ustring AppWindow::util_bold_message(const Glib::ustring& message)
+{
+  return "<b>" + message + "</b>";
+}
+
+Glib::ustring AppWindow::ui_file_select_open(const Glib::ustring& starting_folder_uri)
+{
+  Gtk::Window* pWindow = this;
+
+  Gtk::FileChooserDialog fileChooser_Open(_("Open Document"), Gtk::FILE_CHOOSER_ACTION_OPEN);
+  fileChooser_Open.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
+  fileChooser_Open.add_button(_("_Open"), Gtk::RESPONSE_OK);
+  fileChooser_Open.set_default_response(Gtk::RESPONSE_OK);
+
+  if(pWindow)
+    fileChooser_Open.set_transient_for(*pWindow);
+
+  if(!starting_folder_uri.empty())
+    fileChooser_Open.set_current_folder_uri(starting_folder_uri);
+
+  const int response_id = fileChooser_Open.run();
+  fileChooser_Open.hide();
+  if(response_id != Gtk::RESPONSE_CANCEL)
+  {
+    return fileChooser_Open.get_uri();
+  }
+  else
+    return Glib::ustring();
+}
+
+
+void AppWindow::ui_show_modification_status()
+{
+  const bool modified = m_pDocument->get_modified();
+
+  //Enable Save and SaveAs menu items:
+  if(m_action_save)
+    m_action_save->set_sensitive(modified);
+
+  if(m_action_saveas)
+    m_action_saveas->set_sensitive(modified);
+}
+
+AppWindow::enumSaveChanges AppWindow::ui_offer_to_save_changes()
+{
+  GlomBakery::AppWindow_WithDoc::enumSaveChanges result = GlomBakery::AppWindow_WithDoc::SAVECHANGES_Cancel;
+
+  if(!m_pDocument)
+    return result;
+
+  GlomBakery::Dialog_OfferSave* pDialogQuestion 
+    = new GlomBakery::Dialog_OfferSave( m_pDocument->get_file_uri() );
+
+  Gtk::Window* pWindow = this;
+  if(pWindow)
+    pDialogQuestion->set_transient_for(*pWindow);
+
+  GlomBakery::Dialog_OfferSave::enumButtons buttonClicked = (GlomBakery::Dialog_OfferSave::enumButtons)pDialogQuestion->run();
+  delete pDialogQuestion;
+  pDialogQuestion = 0;
+
+  if(buttonClicked == GlomBakery::Dialog_OfferSave::BUTTON_Save)
+     result = GlomBakery::AppWindow_WithDoc::SAVECHANGES_Save;
+  else if(buttonClicked == GlomBakery::Dialog_OfferSave::BUTTON_Discard)
+     result = GlomBakery::AppWindow_WithDoc::SAVECHANGES_Discard;
+  else
+     result = GlomBakery::AppWindow_WithDoc::SAVECHANGES_Cancel;
+
+  return result;
+}
+
+void AppWindow::document_history_remove(const Glib::ustring& file_uri)
+{
+  if(!file_uri.empty())
+  {
+    //Glib::ustring filename_e = Gnome::Vfs::escape_path_string(file_uri.c_str());
+    const Glib::ustring uri = file_uri; //"file://" + filename_e;
+
+    Gtk::RecentManager::get_default()->remove_item(uri);
+  }
+}
+
+void AppWindow::on_menu_edit_copy_activate()
+{
+  Gtk::Widget* widget = get_focus();
+  Gtk::Editable* editable = dynamic_cast<Gtk::Editable*>(widget);
+
+  if(editable)
+  {
+    editable->copy_clipboard();
+    return;
+  }
+
+  //GtkTextView does not implement GtkTextView.
+  //See GTK+ bug: https://bugzilla.gnome.org/show_bug.cgi?id=667008
+  Gtk::TextView* textview = dynamic_cast<Gtk::TextView*>(widget);
+  if(textview)
+  {
+    Glib::RefPtr<Gtk::TextBuffer> buffer = textview->get_buffer();
+    if(buffer)
+    {
+      Glib::RefPtr<Gtk::Clipboard> clipboard = 
+        Gtk::Clipboard::get_for_display(get_display());
+      buffer->copy_clipboard(clipboard);
+    }
+  }
+}
+
+void AppWindow::on_menu_edit_cut_activate()
+{
+  Gtk::Widget* widget = get_focus();
+  Gtk::Editable* editable = dynamic_cast<Gtk::Editable*>(widget);
+
+  if(editable)
+  {
+    editable->cut_clipboard();
+    return;
+  }
+
+  //GtkTextView does not implement GtkTextView.
+  //See GTK+ bug: https://bugzilla.gnome.org/show_bug.cgi?id=667008
+  Gtk::TextView* textview = dynamic_cast<Gtk::TextView*>(widget);
+  if(textview)
+  {
+    Glib::RefPtr<Gtk::TextBuffer> buffer = textview->get_buffer();
+    if(buffer)
+    {
+      Glib::RefPtr<Gtk::Clipboard> clipboard = 
+        Gtk::Clipboard::get_for_display(get_display());
+      buffer->cut_clipboard(clipboard, textview->get_editable());
+    }
+  }
+}
+
+void AppWindow::on_menu_edit_paste_activate()
+{
+  Gtk::Widget* widget = get_focus();
+  Gtk::Editable* editable = dynamic_cast<Gtk::Editable*>(widget);
+
+  if(editable)
+  {
+    editable->paste_clipboard();
+    return;
+  }
+
+  //GtkTextView does not implement GtkTextView.
+  //See GTK+ bug: https://bugzilla.gnome.org/show_bug.cgi?id=667008
+  Gtk::TextView* textview = dynamic_cast<Gtk::TextView*>(widget);
+  if(textview)
+  {
+    Glib::RefPtr<Gtk::TextBuffer> buffer = textview->get_buffer();
+    if(buffer)
+    {
+      Glib::RefPtr<Gtk::Clipboard> clipboard = 
+        Gtk::Clipboard::get_for_display(get_display());
+      buffer->paste_clipboard(clipboard);
+    }
+  }
+}
+
+void AppWindow::on_recent_files_activate(Gtk::RecentChooser& chooser)
+{
+  const Glib::ustring uri = chooser.get_current_uri();
+  const bool bTest = open_document(uri);
+  if(!bTest)
+    document_history_remove(uri);
+}
 
 } //namespace Glom

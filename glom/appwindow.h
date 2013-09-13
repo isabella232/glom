@@ -23,12 +23,27 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
-#include <glom/bakery/appwindow_withdoc_gtk.h>
+#include <glom/bakery/appwindow_withdoc.h>
 #include <glom/frame_glom.h>
 #include <glom/show_progress_message.h>
 #include <glom/infobar_progress_creating.h>
 #include <gtkmm/aboutdialog.h>
 #include <gtkmm/messagedialog.h>
+
+#include <gtkmm/dialog.h>
+#include <gtkmm/menubar.h>
+#include <gtkmm/menu.h>
+#include <gtkmm/toolbar.h>
+#include <gtkmm/handlebox.h>
+#include <gtkmm/uimanager.h>
+#include <gtkmm/builder.h>
+#include <gtkmm/applicationwindow.h>
+
+
+#include <libglom/document/bakery/document.h>
+#include <gtkmm/toolbutton.h>
+#include <gtkmm/recentmanager.h>
+#include <gtkmm/recentchooser.h>
 
 //Avoid including the header here:
 extern "C"
@@ -43,7 +58,9 @@ namespace Glom
 
 class Window_Translations;
 
-class AppWindow : public GlomBakery::AppWindow_WithDoc_Gtk
+class AppWindow
+  : public GlomBakery::AppWindow_WithDoc,
+    public Gtk::ApplicationWindow //inherit virtually to share sigc::trackable.
 {
 public:
   static const char* glade_id;
@@ -51,6 +68,8 @@ public:
 
   AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~AppWindow();
+
+  virtual void init(); //Unique final overrider.
 
   /**
    * @param restore Whether @a document_uri is a .tar.gz backup file to restore.
@@ -149,19 +168,69 @@ public:
 
   static AppWindow* get_appwindow();
 
+  /// Overidden to add a widget in the middle, under the menu, instead of replacing the whole contents.
+  virtual void add(Gtk::Widget& child);
+
+  /// For instance, to create bold primary text for a dialog box, without marking the markup for translation.
+  static Glib::ustring util_bold_message(const Glib::ustring& message);
+
+protected:
+  virtual void init_layout(); //Arranges the menu, toolbar, etc.
+  virtual void init_ui_manager(); //Override this to add more UI placeholders
+  virtual void init_menus(); //Override this to add more or different menus.
+  virtual void init_menus_file(); //Call this from init_menus() to add the standard file menu.
+  virtual void init_menus_edit(); //Call this from init_menus() to add the standard edit menu
+  virtual void init_toolbars();
+
+  void add_ui_from_string(const Glib::ustring& ui_description); //Convenience function
+
+  virtual void on_hide(); //override.
+
+  //Overrides from AppWindow_WithDoc:
+  virtual void document_history_add(const Glib::ustring& file_uri); //overridden.
+  virtual void document_history_remove(const Glib::ustring& file_uri); //overridden.
+  virtual void update_window_title();
+  virtual void ui_warning(const Glib::ustring& text, const Glib::ustring& secondary_text);
+  virtual Glib::ustring ui_file_select_open(const Glib::ustring& starting_folder_uri = Glib::ustring());
+  virtual Glib::ustring ui_file_select_save(const Glib::ustring& old_file_uri);
+  virtual void ui_show_modification_status();
+  virtual enumSaveChanges ui_offer_to_save_changes();
+
+
+  //Signal handlers:
+
+  //Menus:
+
+
+  virtual void ui_hide();
+  virtual void ui_bring_to_front();
+
+  virtual bool on_delete_event(GdkEventAny* event); //override
+
+  void on_menu_edit_copy_activate();
+  void on_menu_edit_cut_activate();
+  void on_menu_edit_paste_activate();
+  void on_recent_files_activate(Gtk::RecentChooser& recent_chooser);
+
+  //UIManager and Actions
+  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
+  Glib::RefPtr<Gtk::ActionGroup> m_refFileActionGroup;
+  Glib::RefPtr<Gtk::ActionGroup> m_refEditActionGroup;
+
+  //Member widgets:
+  Gtk::Box* m_pVBox;
+  Gtk::Box m_VBox_PlaceHolder;
+
+  //Menu stuff:
+  Glib::RefPtr<Gtk::Action> m_action_save, m_action_saveas;
+
 protected:
   virtual void ui_warning_load_failed(int failure_code = 0); //Override.
 
 private:
-  virtual void init_layout(); //override.
-  virtual void init_menus(); //override.
-  virtual void init_toolbars(); //override
   virtual void init_create_document(); //override
   virtual bool on_document_load(); //override.
   virtual void on_document_close(); //override.
-  virtual void update_window_title(); //override.
-
-  virtual void init_menus_file(); //override.
 
   bool offer_new_or_existing();
 
@@ -189,7 +258,6 @@ private:
 
   void on_window_translations_hide();
 
-  virtual Glib::ustring ui_file_select_save(const Glib::ustring& old_file_uri); //overridden.
   void on_userlevel_changed(AppState::userlevels userlevel);
 
   Document* on_connection_pool_get_document();
@@ -216,8 +284,6 @@ private:
   Glib::ustring ui_file_select_open_with_browse(bool& browsed, EpcServiceInfo*& browsed_server, Glib::ustring& browsed_service_name, const Glib::ustring& starting_folder_uri = Glib::ustring());
 #endif // !G_OS_WIN32
 
-  virtual void document_history_add(const Glib::ustring& file_uri); //overridden.
-
   virtual void new_instance(const Glib::ustring& uri = Glib::ustring()); //Override
 
   void on_connection_create_database_progress();
@@ -228,8 +294,6 @@ private:
 #ifndef G_OS_WIN32
   void open_browsed_document(const EpcServiceInfo* server, const Glib::ustring& service_name);
 #endif // !G_OS_WIN32
-
-  typedef GlomBakery::AppWindow_WithDoc_Gtk type_base;
 
   //Widgets:
 
