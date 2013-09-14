@@ -22,6 +22,7 @@
 #include <glibmm/i18n.h>
 #include <glom/appwindow.h>
 #include "../mode_data/flowtablewithfields.h"
+#include <giomm/menu.h>
 #include <iostream>
 
 namespace Glom
@@ -33,18 +34,17 @@ LayoutWidgetMenu::LayoutWidgetMenu()
 #endif
 {
   #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_refActionGroup = Gtk::ActionGroup::create();
+  m_refActionGroup = Gio::SimpleActionGroup::create();
 
-  m_refActionGroup->add(Gtk::Action::create("ContextMenu", "Context Menu") );
-  m_refContextLayout =  Gtk::Action::create("ContextLayout", _("Choose Field"));
-  m_refContextLayoutProperties =  Gtk::Action::create("ContextLayoutProperties", _("Field Layout Properties"));
-  m_refContextAddField =  Gtk::Action::create("ContextAddField", _("Add Field"));
-  m_refContextAddRelatedRecords =  Gtk::Action::create("ContextAddRelatedRecords", _("Add Related Records"));
-  m_refContextAddNotebook =  Gtk::Action::create("ContextAddNotebook", _("Add Notebook"));
-  m_refContextAddGroup =  Gtk::Action::create("ContextAddGroup", _("Add Group"));
-  m_refContextAddButton =  Gtk::Action::create("ContextAddButton", _("Add Button"));
-  m_refContextAddText =  Gtk::Action::create("ContextAddText", _("Add Text"));
-  m_refContextDelete = Gtk::Action::create("ContextDelete", _("_Delete"));
+  m_refContextLayout = Gio::SimpleAction::create("choose-field");
+  m_refContextLayoutProperties = Gio::SimpleAction::create("field-layout-properties");
+  m_refContextAddField = Gio::SimpleAction::create("add-field");
+  m_refContextAddRelatedRecords = Gio::SimpleAction::create("add-related-records");
+  m_refContextAddNotebook = Gio::SimpleAction::create("add-notebook");
+  m_refContextAddGroup = Gio::SimpleAction::create("add-group");
+  m_refContextAddButton = Gio::SimpleAction::create("add-button");
+  m_refContextAddText = Gio::SimpleAction::create("add-text");
+  m_refContextDelete = Gio::SimpleAction::create("delete");
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
@@ -53,33 +53,50 @@ LayoutWidgetMenu::~LayoutWidgetMenu()
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void LayoutWidgetMenu::setup_menu()
+
+void LayoutWidgetMenu::add_action(const Glib::RefPtr<Gio::SimpleAction>& action, const Gio::ActionMap::ActivateSlot& slot)
 {
-  m_refActionGroup->add(m_refContextLayout,
+  if(!action)
+    return;
+
+  m_refActionGroup->add_action(m_refContextLayout);
+  action->signal_activate().connect(
+    sigc::hide(slot));
+}
+
+void LayoutWidgetMenu::setup_menu(Gtk::Widget* widget)
+{
+  if(!widget)
+  {
+    std::cerr << G_STRFUNC << ": parent is NULL." << std::endl;
+    return;
+  }
+
+  add_action(m_refContextLayout,
     sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_activate_layout) );
 
-  m_refActionGroup->add(m_refContextLayoutProperties,
+  add_action(m_refContextLayoutProperties,
     sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_activate_layout_properties) );
 
-  m_refActionGroup->add(m_refContextAddField,
+  add_action(m_refContextAddField,
     sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), TYPE_FIELD ) );
 
-  m_refActionGroup->add(m_refContextAddRelatedRecords,
+  add_action(m_refContextAddRelatedRecords,
     sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), TYPE_PORTAL ) );
 
-  m_refActionGroup->add(m_refContextAddGroup,
+  add_action(m_refContextAddGroup,
     sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), TYPE_GROUP ) );
 
-  m_refActionGroup->add(m_refContextAddNotebook,
+  add_action(m_refContextAddNotebook,
     sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), TYPE_NOTEBOOK ) );
 
-  m_refActionGroup->add(m_refContextAddButton,
+  add_action(m_refContextAddButton,
     sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), TYPE_BUTTON ) );
 
-  m_refActionGroup->add(m_refContextAddText,
+  add_action(m_refContextAddText,
     sigc::bind( sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_add_item), TYPE_TEXT ) );
   
-  m_refActionGroup->add(m_refContextDelete,
+  add_action(m_refContextDelete,
     sigc::mem_fun(*this, &LayoutWidgetMenu::on_menupopup_activate_delete) );
 
   //TODO: This does not work until this widget is in a container in the window:s
@@ -98,45 +115,76 @@ void LayoutWidgetMenu::setup_menu()
     pApp->update_userlevel_ui(); //Update our action's sensitivity. 
   }
 
-  m_refUIManager = Gtk::UIManager::create();
-
-  m_refUIManager->insert_action_group(m_refActionGroup);
+  Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create();
 
   //TODO: add_accel_group(m_refUIManager->get_accel_group());
 
+  const Glib::ustring ui_info =
+    "<interface>"
+    "  <menu id='ContextMenu'>"
+    "    <section>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>Choose Field</attribute>"
+    "        <attribute name='action'>context.choose-field</attribute>"
+    "      </item>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>Field Layout Properties</attribute>"
+    "        <attribute name='action'>context.field-layout-properties</attribute>"
+    "      </item>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>Add Related Records</attribute>"
+    "        <attribute name='action'>context.add-related-records</attribute>"
+    "      </item>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>Add Notebook</attribute>"
+    "        <attribute name='action'>context.add-notebook</attribute>"
+    "      </item>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>Add Group</attribute>"
+    "        <attribute name='action'>context.add-group</attribute>"
+    "      </item>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>Add Button</attribute>"
+    "        <attribute name='action'>context.add-button</attribute>"
+    "      </item>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>Add Text</attribute>"
+    "        <attribute name='action'>context.add-text</attribute>"
+    "      </item>"
+    "    </section>"
+    "    <section>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>Delete</attribute>"
+    "        <attribute name='action'>context.delete</attribute>"
+    "      </item>"
+    "    </section>"
+    "  </menu>"
+    "</interface>";
+
   try
   {
-    Glib::ustring ui_info = 
-        "<ui>"
-        "  <popup name='ContextMenu'>"
-        "    <menuitem action='ContextLayout'/>"
-        "    <menuitem action='ContextLayoutProperties'/>"
-        "    <menuitem action='ContextAddField'/>"
-        "    <menuitem action='ContextAddRelatedRecords'/>"
-        "    <menuitem action='ContextAddNotebook'/>"
-        "    <menuitem action='ContextAddGroup'/>"
-        "    <menuitem action='ContextAddButton'/>"
-        "    <menuitem action='ContextAddText'/>"
-        "    <separator />"
-        "    <menuitem action='ContextDelete' />"
-        "  </popup>"
-        "</ui>";
-
-    m_refUIManager->add_ui_from_string(ui_info);
+    builder->add_from_string(ui_info);
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "building menus failed: " <<  ex.what();
+    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
   }
 
   //Get the menu:
-  m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") ); 
-  if(!m_pMenuPopup)
-    g_warning("menu not found");
+  Glib::RefPtr<Glib::Object> object =
+    builder->get_object("ContextMenu");
+  Glib::RefPtr<Gio::Menu> gmenu =
+    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  if(!gmenu)
+    g_warning("GMenu not found");
 
+  m_pMenuPopup = new Gtk::Menu(gmenu);
 
   if(pApp)
-    m_refContextLayout->set_sensitive(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+    m_refContextLayout->set_enabled(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+
+  //Make our popup menu work:
+  widget->insert_action_group("context", m_refActionGroup);
 }
 
 void LayoutWidgetMenu::on_menupopup_add_item(enumType item)

@@ -26,7 +26,6 @@
 #include "window_boxholder.h"
 
 #include <gtkmm/frame.h>
-#include <gtkmm/toggleaction.h>
 #include <libglom/document/bakery/view/view_composite.h>
 #include <libglom/document/document.h>
 
@@ -76,15 +75,15 @@ public:
   void on_box_reports_selected(const Glib::ustring& strName);
   void on_box_print_layouts_selected(const Glib::ustring& strName);
 
-  void on_menu_developer_developer(const Glib::RefPtr<Gtk::RadioAction>& action, const Glib::RefPtr<Gtk::RadioAction>& operator_action);
-  void on_menu_developer_operator(const Glib::RefPtr<Gtk::RadioAction>& action);
+  bool attempt_change_usermode_to_developer();
+  bool attempt_change_usermode_to_operator();
 
   void on_menu_file_export();
   void on_menu_file_import();
   void on_menu_file_print_edit_layouts();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  void on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>& action);
+  bool attempt_toggle_shared(bool shared);
   void on_menu_file_print();
 
   void on_menu_Edit_Find();

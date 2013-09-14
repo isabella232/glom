@@ -78,7 +78,7 @@ void ImageGlom::init()
   m_read_only = false;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_menu();
+  setup_menu(this);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   setup_menu_usermode();
@@ -991,7 +991,7 @@ void ImageGlom::setup_menu_usermode()
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "building menus failed: " <<  ex.what();
+    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
   }
 
   //Get the menu:

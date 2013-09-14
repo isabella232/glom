@@ -246,7 +246,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
   }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_menu();
+  setup_menu(this);
 #endif // GLOM_ENABLE_CLIENT_ONLY
 
   set_events(Gdk::BUTTON_PRESS_MASK);
@@ -429,6 +429,7 @@ bool DataWidget::on_button_press_event(GdkEventButton *event)
   AppWindow* pApp = get_appwindow();
   if(pApp)
   {
+    //TODO: Avoid doing this multiple times:
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
     pApp->add_developer_action(m_refContextAddField);
     pApp->add_developer_action(m_refContextAddRelatedRecords);

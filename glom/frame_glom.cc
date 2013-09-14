@@ -62,7 +62,6 @@
 #include <glom/print_layout/print_layout_utils.h>
 
 #include <glom/filechooser_export.h>
-#include <gtkmm/radioaction.h>
 #include <libglom/privs.h>
 #include <libglom/db_utils.h>
 #include <sstream> //For stringstream.
@@ -452,95 +451,81 @@ void Frame_Glom::show_no_table()
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void Frame_Glom::on_menu_developer_developer(const Glib::RefPtr<Gtk::RadioAction>& action, const Glib::RefPtr<Gtk::RadioAction>& operator_action)
+bool Frame_Glom::attempt_change_usermode_to_developer()
 {
-  if(action && action->get_active())
+  Document* document = dynamic_cast<Document*>(get_document());
+  if(!document)
+    return false;
+
+  //Check whether the current user has developer privileges:
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
+
+  // Default to true; if we don't support users, we always have
+  // priviliges to change things in developer mode.
+  bool test = true;
+
+  if(sharedconnection && sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
   {
-    Document* document = dynamic_cast<Document*>(get_document());
-    if(document)
+    test = Privs::get_user_is_in_group(connection_pool->get_user(), GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+  }
+
+  if(test)
+  {
+    std::cout << "DEBUG: User=" << connection_pool->get_user() << " _is_ in the developer group on the server." << std::endl;
+    //Avoid double signals:
+    //if(document->get_userlevel() != AppState::USERLEVEL_DEVELOPER)
+    test = document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
+    if(!test)
+      std::cout << "  DEBUG: But document->set_userlevel(AppState::USERLEVEL_DEVELOPER) failed." << std::endl;
+  }
+  else
+  {
+    std::cout << "DEBUG: User=" << connection_pool->get_user() << " is _not_ in the developer group on the server." << std::endl;
+  }
+
+  //If this was not possible then revert the menu:
+  if(!test)
+  {
+    if(document->get_opened_from_browse())
     {
-      //Check whether the current user has developer privileges:
-      ConnectionPool* connection_pool = ConnectionPool::get_instance();
-      sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
-
-      // Default to true; if we don't support users, we always have
-      // priviliges to change things in developer mode.
-      bool test = true;
-
-      if(sharedconnection && sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
-      {
-        test = Privs::get_user_is_in_group(connection_pool->get_user(), GLOM_STANDARD_GROUP_NAME_DEVELOPER);
-      }
-
-      if(test)
-      {
-        std::cout << "DEBUG: User=" << connection_pool->get_user() << " _is_ in the developer group on the server." << std::endl;
-        //Avoid double signals:
-        //if(document->get_userlevel() != AppState::USERLEVEL_DEVELOPER)
-        test = document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
-        if(!test)
-          std::cout << "  DEBUG: But document->set_userlevel(AppState::USERLEVEL_DEVELOPER) failed." << std::endl;
-      }
-      else
-      {
-        std::cout << "DEBUG: User=" << connection_pool->get_user() << " is _not_ in the developer group on the server." << std::endl;
-      }
-
-      //If this was not possible then revert the menu:
-      if(!test)
-      {
-        if(document->get_opened_from_browse())
-        {
-          //TODO: Obviously this could be possible but it would require a network protocol and some work:
-          Gtk::MessageDialog dialog(Utils::bold_message(_("Developer mode not available.")), true, Gtk::MESSAGE_WARNING);
-          dialog.set_secondary_text(_("Developer mode is not available because the file was opened over the network from a running Glom. Only the original file may be edited."));
-          dialog.set_transient_for(*get_app_window());
-          dialog.run();
-        }
-        else
-        {
-          Gtk::MessageDialog dialog(Utils::bold_message(_("Developer mode not available")), true, Gtk::MESSAGE_WARNING);
-          dialog.set_secondary_text(_("Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."));
-          dialog.set_transient_for(*get_app_window());
-          dialog.run();
-        }
-      }
-      else if(document->get_document_format_version() < Document::get_latest_known_document_format_version())
-      {
-        Gtk::MessageDialog dialog(Utils::bold_message(_("Saving in new document format")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
-        dialog.set_secondary_text(_("The document was created by an earlier version of the application. Making changes to the document will mean that the document cannot be opened by some earlier versions of the application."));
-        dialog.set_transient_for(*get_app_window());
-        dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
-        dialog.add_button(_("Continue"), Gtk::RESPONSE_OK);
-        const int response = dialog.run();
-        test = (response == Gtk::RESPONSE_OK);
-      }
-
-      if(!test)
-      {
-        //Abort the change of user level:
-
-        //This causes an endless loop, but it is not recursive so we can't block it.
-        //TODO: Submit GTK+ bug.
-        //action->set_active(false);
-        operator_action->set_active();
-      }
+      //TODO: Obviously this could be possible but it would require a network protocol and some work:
+      Gtk::MessageDialog dialog(Utils::bold_message(_("Developer mode not available.")), true, Gtk::MESSAGE_WARNING);
+      dialog.set_secondary_text(_("Developer mode is not available because the file was opened over the network from a running Glom. Only the original file may be edited."));
+      dialog.set_transient_for(*get_app_window());
+      dialog.run();
+    }
+    else
+    {
+      Gtk::MessageDialog dialog(Utils::bold_message(_("Developer mode not available")), true, Gtk::MESSAGE_WARNING);
+      dialog.set_secondary_text(_("Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."));
+      dialog.set_transient_for(*get_app_window());
+      dialog.run();
     }
   }
+  else if(document->get_document_format_version() < Document::get_latest_known_document_format_version())
+  {
+    Gtk::MessageDialog dialog(Utils::bold_message(_("Saving in new document format")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+    dialog.set_secondary_text(_("The document was created by an earlier version of the application. Making changes to the document will mean that the document cannot be opened by some earlier versions of the application."));
+    dialog.set_transient_for(*get_app_window());
+    dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
+    dialog.add_button(_("Continue"), Gtk::RESPONSE_OK);
+    const int response = dialog.run();
+    test = (response == Gtk::RESPONSE_OK);
+  }
+
+  return test;
 }
 
-void Frame_Glom::on_menu_developer_operator(const Glib::RefPtr<Gtk::RadioAction>& action)
+bool Frame_Glom::attempt_change_usermode_to_operator()
 {
-  if(action &&  action->get_active())
-  {
-    Document* document = dynamic_cast<Document*>(get_document());
-    if(document)
-    {
-      //Avoid double signals:
-      //if(document->get_userlevel() != AppState::USERLEVEL_OPERATOR)
-        document->set_userlevel(AppState::USERLEVEL_OPERATOR);
-    }
-  }
+  Document* document = dynamic_cast<Document*>(get_document());
+  if(!document)
+    return false;
+    
+  document->set_userlevel(AppState::USERLEVEL_OPERATOR);
+
+  return true;
 }
 
 void Frame_Glom::on_menu_file_export()
@@ -801,26 +786,20 @@ void Frame_Glom::on_menu_file_import()
   }
 }
 
-void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>& action)
+bool Frame_Glom::attempt_toggle_shared(bool shared)
 {
-  if(!action)
-  {
-    std::cerr << G_STRFUNC << ": action was null." << std::endl;
-  }
-
   //Prevent this change if not in developer mode,
   //though the menu item should be disabled then anyway.
   Document* document = dynamic_cast<Document*>(get_document());
   if(!document || document->get_userlevel() != AppState::USERLEVEL_DEVELOPER)
-    return;
+    return false;
 
-  bool shared = action->get_active(); //Whether it should be shared.
   if(shared == document->get_network_shared())
   {
     //Do nothing, because things are already as requested.
     //This is probably just an extra signal emitted when we set the toggle in the UI.
     //So we avoid the endless loop:
-    return;
+    return false;
   }
 
   bool change = true;
@@ -1009,6 +988,8 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
   {
     pApp->update_network_shared_ui();
   }
+
+  return true;
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

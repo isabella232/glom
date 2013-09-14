@@ -131,7 +131,7 @@ void AddDel_WithButtons::set_allow_user_actions(bool bVal)
   }
 
   //Recreate popup menu with correct items:
-  setup_menu();
+  setup_menu(this);
 }
 
 void AddDel_WithButtons::setup_buttons()

@@ -32,6 +32,7 @@
 #include <glom/utils_ui.h> //For Utils::image_scale_keeping_ratio().
 #include <glom/mode_data/datawidget/cellcreation.h>
 #include <glibmm/main.h>
+#include <giomm/menu.h>
 #include <libglom/db_utils.h>
 
 #include <iostream> //For debug output.
@@ -98,7 +99,7 @@ DbAddDel::DbAddDel()
   //signal_button_press_event().connect(sigc::mem_fun(*this, &DbAddDel::on_button_press_event_Popup));
   //add_blank();
 
-  setup_menu();
+  setup_menu(this);
 
 
   set_prevent_user_signals(false);
@@ -219,34 +220,27 @@ void DbAddDel::on_MenuPopup_activate_layout()
   signal_user_requested_layout().emit();
 }
 
-void DbAddDel::setup_menu()
+void DbAddDel::setup_menu(Gtk::Widget* /* widget */)
 {
-  m_refActionGroup = Gtk::ActionGroup::create();
+  m_refActionGroup = Gio::SimpleActionGroup::create();
 
-  m_refActionGroup->add(Gtk::Action::create("ContextMenu", "Context Menu") );
+  const Glib::ustring edit_title =
+    (m_open_button_title.empty() ? _("_Edit") : m_open_button_title); //TODO: Use this?
 
-  if(m_open_button_title.empty())
-    m_refContextEdit =  Gtk::Action::create("ContextEdit", _("_Edit"));
-  else
-    m_refContextEdit =  Gtk::Action::create("ContextEdit", m_open_button_title);
-
-  m_refActionGroup->add(m_refContextEdit,
+  m_refContextEdit = m_refActionGroup->add_action("edit",
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Edit) );
 
-  m_refContextDelete =  Gtk::Action::create("ContextDelete", _("_Delete"));
-  m_refActionGroup->add(m_refContextDelete,
+  m_refContextDelete = m_refActionGroup->add_action("delete",
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Delete) );
 
-  m_refContextAdd =  Gtk::Action::create("ContextAdd", _("_Add"));
-  m_refActionGroup->add(m_refContextAdd,
+  m_refContextAdd = m_refActionGroup->add_action("add",
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_Add) );
-  m_refContextAdd->set_sensitive(m_allow_add);
+  m_refContextAdd->set_enabled(m_allow_add);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   // Don't add ContextLayout in client only mode because it would never
   // be sensitive anyway
-  m_refContextLayout =  Gtk::Action::create("ContextLayout", _("Layout"));
-  m_refActionGroup->add(m_refContextLayout,
+  m_refContextLayout =  m_refActionGroup->add_action("layout",
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_layout) );
 
   //TODO: This does not work until this widget is in a container in the window:
@@ -258,53 +252,72 @@ void DbAddDel::setup_menu()
   }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  m_refUIManager = Gtk::UIManager::create();
+  Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create();
 
-  m_refUIManager->insert_action_group(m_refActionGroup);
+  insert_action_group("context", m_refActionGroup);
 
-  //TODO: add_accel_group(m_refUIManager->get_accel_group());
+  //TODO: add_accel_group(builder->get_accel_group());
+
+  Glib::ustring ui_info =
+       "<interface>"
+        "  <menu id='ContextMenu'>"
+        "    <section>"
+        "      <item>"
+        "        <attribute name='label' translatable='yes'>_Edit</attribute>"
+        "        <attribute name='action'>context.edit</attribute>"
+        "      </item>"
+        "      <item>"
+        "        <attribute name='label' translatable='yes'>_Add</attribute>"
+        "        <attribute name='action'>context.add</attribute>"
+        "      </item>"
+        "      <item>"
+        "        <attribute name='label' translatable='yes'>_Delete</attribute>"
+        "        <attribute name='action'>context.delete</attribute>"
+        "      </item>"
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+        "      <item>"
+        "        <attribute name='label' translatable='yes'>_Layout</attribute>"
+        "        <attribute name='action'>context.layout</attribute>"
+        "      </item>"
+#endif
+        "    </section>"
+        "  </menu>"
+        "</interface>";
 
   try
   {
-    Glib::ustring ui_info =
-        "<ui>"
-        "  <popup name='ContextMenu'>"
-        "    <menuitem action='ContextEdit'/>"
-        "    <menuitem action='ContextAdd'/>"
-        "    <menuitem action='ContextDelete'/>"
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-        "    <menuitem action='ContextLayout'/>"
-#endif
-        "  </popup>"
-        "</ui>";
-
-    m_refUIManager->add_ui_from_string(ui_info);
+    builder->add_from_string(ui_info);
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "building menus failed: " <<  ex.what();
+    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
   }
 
   //Get the menu:
-  m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") );
-  if(!m_pMenuPopup)
-    g_warning("menu not found");
+  Glib::RefPtr<Glib::Object> object =
+    builder->get_object("ContextMenu");
+  Glib::RefPtr<Gio::Menu> gmenu =
+    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  if(!gmenu)
+    g_warning("GMenu not found");
+
+  m_pMenuPopup = new Gtk::Menu(gmenu);
 
 
   if(get_allow_user_actions())
   {
-    m_refContextEdit->set_sensitive();
-    m_refContextDelete->set_sensitive();
+    m_refContextEdit->set_enabled();
+    m_refContextDelete->set_enabled();
   }
   else
   {
-    m_refContextEdit->set_sensitive(false);
-    m_refContextDelete->set_sensitive(false);
+    m_refContextEdit->set_enabled(false);
+    m_refContextDelete->set_enabled(false);
   }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   if(pApp)
-    m_refContextLayout->set_sensitive(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+    m_refContextLayout->set_enabled(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
@@ -1121,7 +1134,7 @@ void DbAddDel::set_allow_add(bool val)
 {
   m_allow_add = val;
 
-  m_refContextAdd->set_sensitive(val);
+  m_refContextAdd->set_enabled(val);
 }
 
 void DbAddDel::set_allow_delete(bool val)
@@ -2463,8 +2476,8 @@ void DbAddDel::on_treeview_selection_changed()
 
 void DbAddDel::on_selection_changed(bool selection)
 {
-  m_refContextDelete->set_sensitive(selection);
-  m_refContextAdd->set_sensitive(selection);
+  m_refContextDelete->set_enabled(selection);
+  m_refContextAdd->set_enabled(selection);
   
   m_signal_record_selection_changed.emit();
 }

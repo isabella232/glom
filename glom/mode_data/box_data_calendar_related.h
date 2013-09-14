@@ -27,6 +27,7 @@
 #include <libglom/data_structure/layout/layoutitem_calendarportal.h>
 #include <glom/utility_widgets/layoutwidgetbase.h>
 #include <gtkmm/calendar.h>
+#include <giomm/simpleactiongroup.h>
 
 namespace Glom
 {
@@ -78,7 +79,7 @@ private:
   Glib::ustring on_calendar_details(guint year, guint month, guint day);
   void on_calendar_month_changed();
     
-  void setup_menu();
+  void setup_menu(Gtk::Widget* widget);
   void on_calendar_button_press_event(GdkEventButton *event);
  
   void on_MenuPopup_activate_Edit();
@@ -96,12 +97,11 @@ private:
     
   //TODO: Avoid repeating these in so many widgets:
   Gtk::Menu* m_pMenuPopup;
-  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
-  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
-  Glib::RefPtr<Gtk::Action> m_refContextEdit, m_refContextAdd, m_refContextDelete;
+  Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup;
+  Glib::RefPtr<Gio::SimpleAction> m_refContextEdit, m_refContextAdd, m_refContextDelete;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  Glib::RefPtr<Gtk::Action> m_refContextLayout;
+  Glib::RefPtr<Gio::SimpleAction> m_refContextLayout;
 #endif
     
   //The cached data for the month:

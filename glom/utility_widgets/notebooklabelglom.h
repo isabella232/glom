@@ -26,6 +26,7 @@
 #include <gtkmm/label.h>
 #include <gtkmm/menu.h>
 #include <gtkmm/builder.h>
+#include <gtkmm/uimanager.h>
 
 namespace Glom
 {
@@ -50,7 +51,7 @@ private:
   Gtk::Label m_label;
   NotebookGlom* m_notebook;
   
-  void setup_menu();
+  void setup_menu(Gtk::Widget* widget);
   Gtk::Menu* m_pPopupMenu;
   
   void on_menu_new_group_activate();

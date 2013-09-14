@@ -36,7 +36,7 @@ CheckButton::CheckButton(const Glib::ustring& title)
   : Gtk::CheckButton(title)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_menu();
+  setup_menu(this);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   init();
@@ -48,7 +48,6 @@ CheckButton::~CheckButton()
 
 void CheckButton::init()
 {
-
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

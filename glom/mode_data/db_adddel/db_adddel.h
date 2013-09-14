@@ -25,11 +25,12 @@
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
-#include <gtkmm/uimanager.h>
+#include <gtkmm/builder.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <glom/mode_data/datawidget/treemodel_db.h>
 #include <libglom/document/document.h>
 #include <glom/base_db_table_data.h>
+#include <giomm/simpleactiongroup.h>
 
 #include <vector>
 #include <map>
@@ -306,7 +307,7 @@ private:
   type_list_indexes get_data_model_column_index(const sharedptr<const LayoutItem_Field>& layout_item_field, bool including_specified_field_layout = true) const;
 
 protected:
-  void setup_menu();
+  void setup_menu(Gtk::Widget* widget);
 
   /// A common handler for the edit button, the context menu, etc.
   void do_user_requested_edit();
@@ -412,12 +413,11 @@ protected:
 private:
   //TODO: Avoid repeating these in so many widgets:
   Gtk::Menu* m_pMenuPopup;
-  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
-  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
-  Glib::RefPtr<Gtk::Action> m_refContextEdit, m_refContextAdd, m_refContextDelete;
+  Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup;
+  Glib::RefPtr<Gio::SimpleAction> m_refContextEdit, m_refContextAdd, m_refContextDelete;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  Glib::RefPtr<Gtk::Action> m_refContextLayout;
+  Glib::RefPtr<Gio::SimpleAction> m_refContextLayout;
 #endif
 
   bool m_bAllowUserActions;

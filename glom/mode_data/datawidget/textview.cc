@@ -53,7 +53,7 @@ TextView::TextView(Field::glom_field_type glom_type)
 void TextView::init()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_menu();
+  setup_menu(this);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   set_shadow_type(Gtk::SHADOW_IN);

@@ -225,7 +225,7 @@ protected:
    */
   Gtk::TreeModel::iterator add_item_placeholder(); //Return index of new row.
 
-  void setup_menu();
+  void setup_menu(Gtk::Widget* widget);
   Glib::ustring treeview_get_key(const Gtk::TreeModel::iterator& row);
 
   ///Add a blank row, or return the existing blank row if there already is one.
