@@ -76,12 +76,6 @@ public:
    */
   bool init_with_document(const Glib::ustring& document_uri = Glib::ustring(), bool restore = false); //override
 
-  //virtual void statusbar_set_text(const Glib::ustring& strText);
-  //virtual void statusbar_clear();
-
-  /// Get the UIManager so we can merge new menus in.
-  Glib::RefPtr<Gtk::UIManager> get_ui_manager();
-
   /** Changes the mode to Data mode, as if the user had selected the Data Mode menu item.
    */
   void set_mode_data();

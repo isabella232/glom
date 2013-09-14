@@ -1384,12 +1384,6 @@ void AppWindow::update_userlevel_ui()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-Glib::RefPtr<Gtk::UIManager> AppWindow::get_ui_manager()
-{
-  return m_refUIManager;
-}
-
-
 bool AppWindow::offer_new_or_existing()
 {
   //Offer to load an existing document, or start a new one.

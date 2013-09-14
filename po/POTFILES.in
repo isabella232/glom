@@ -18,7 +18,6 @@ glom/glade_utils.cc
 glom/utils_ui.cc
 glom/onlineglom_strings.cc
 glom/bakery/appwindow.cc
-glom/bakery/appwindow_withdoc_gtk.cc
 glom/bakery/appwindow_withdoc.cc
 glom/bakery/dialog_offersave.cc
 
