@@ -309,7 +309,7 @@ void Canvas_PrintLayout::setup_context_menu()
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "building menus failed: " <<  ex.what();
+    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
   }
 
   //Get the menu:

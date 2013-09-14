@@ -29,6 +29,7 @@
 #include <gtkmm/uimanager.h>
 #include <gtkmm/toggleaction.h>
 #include <gtkmm/pagesetup.h>
+#include <gtkmm/menu.h>
 
 namespace Glom
 {

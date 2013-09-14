@@ -22,7 +22,9 @@
 #define GLOM_MODE_DATA_LAYOUT_WIDGET_MENU_H
 
 #include "layoutwidgetbase.h"
-#include <gtkmm/uimanager.h>
+#include <gtkmm/builder.h>
+#include <gtkmm/menu.h>
+#include <giomm/simpleactiongroup.h>
 
 namespace Glom
 {
@@ -35,7 +37,11 @@ public:
   
   //Popup-menu:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void setup_menu();
+  /**
+   * @widget The widget instance, such as "this" in a derived class.
+   */
+  virtual void setup_menu(Gtk::Widget* widget); //TODO: Make this protected?
+
   virtual void on_menupopup_activate_layout();
   virtual void on_menupopup_activate_layout_properties();
   virtual void on_menupopup_add_item(enumType item);
@@ -47,14 +53,16 @@ protected:
   Gtk::Menu* m_pMenuPopup;
 
   //TODO_Performance: //Presumably we waste lots of memory by having this in each layout widget. Maybe we can use one shared menu.
-  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
-  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
+  Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup;
 
-  Glib::RefPtr<Gtk::Action> m_refContextLayout, m_refContextLayoutProperties;
-  Glib::RefPtr<Gtk::Action> m_refContextAddField, m_refContextAddRelatedRecords, 
+  Glib::RefPtr<Gio::SimpleAction> m_refContextLayout, m_refContextLayoutProperties;
+  Glib::RefPtr<Gio::SimpleAction> m_refContextAddField, m_refContextAddRelatedRecords, 
     m_refContextAddGroup, m_refContextAddNotebook, m_refContextAddButton, m_refContextAddText;
-  Glib::RefPtr<Gtk::Action> m_refContextDelete;
+  Glib::RefPtr<Gio::SimpleAction> m_refContextDelete;
 #endif // GLOM_ENABLE_CLIENT_ONLY
+
+private:
+  void add_action(const Glib::RefPtr<Gio::SimpleAction>& action, const Gio::ActionMap::ActivateSlot& slot);
 };
 
 } //namespace Glom

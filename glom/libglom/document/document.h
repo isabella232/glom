@@ -439,10 +439,12 @@ public:
 #endif //SWIG
 
   /** This is transitory information, not saved to disk.
+   * @result the active platform name - see get_data_layout_groups().
    */
   Glib::ustring get_active_layout_platform() const;
 
   /** This is transitory information, not saved to disk.
+   * @layout_platform the active platform name - see get_data_layout_groups().
    */
   void set_active_layout_platform(const Glib::ustring& layout_platform = Glib::ustring());
 

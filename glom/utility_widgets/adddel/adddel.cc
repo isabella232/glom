@@ -125,7 +125,7 @@ void AddDel::init()
   m_TreeView.signal_columns_changed().connect( sigc::mem_fun(*this, &AddDel::on_treeview_columns_changed) );
   //add_blank();
 
-  setup_menu();
+  setup_menu(this);
   signal_button_press_event().connect(sigc::mem_fun(*this, &AddDel::on_button_press_event_Popup));
 
   set_prevent_user_signals(false);
@@ -226,7 +226,7 @@ void AddDel::on_MenuPopup_activate_Delete()
   }
 }
 
-void AddDel::setup_menu()
+void AddDel::setup_menu(Gtk::Widget* /* widget */)
 {
   m_refActionGroup = Gtk::ActionGroup::create();
   m_refActionGroup->add(Gtk::Action::create("ContextMenu", "Context Menu") );
@@ -262,7 +262,7 @@ void AddDel::setup_menu()
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "building menus failed: " <<  ex.what();
+    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
   }
 
   //Get the menu:

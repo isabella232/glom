@@ -53,7 +53,7 @@ void NotebookLabel::init()
   m_label.show();
   set_events (Gdk::ALL_EVENTS_MASK);
   set_visible_window (false);
-  setup_menu();
+  setup_menu(this);
 }
 
 void NotebookLabel::set_label (const Glib::ustring& title)
@@ -107,7 +107,7 @@ void NotebookLabel::on_menu_delete_activate()
   }
 }
 
-void NotebookLabel::setup_menu()
+void NotebookLabel::setup_menu(Gtk::Widget* /* widget */)
 {
   m_refUIManager = Gtk::UIManager::create();
   m_refActionGroup = Gtk::ActionGroup::create();
@@ -138,7 +138,7 @@ void NotebookLabel::setup_menu()
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "building menus failed: " <<  ex.what();
+    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
   }
 
   //Get the menu:

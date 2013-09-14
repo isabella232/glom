@@ -35,7 +35,6 @@
 #include <gtkmm/menu.h>
 #include <gtkmm/toolbar.h>
 #include <gtkmm/handlebox.h>
-#include <gtkmm/uimanager.h>
 #include <gtkmm/builder.h>
 #include <gtkmm/applicationwindow.h>
 
@@ -86,8 +85,8 @@ public:
   void update_network_shared_ui();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  void add_developer_action(const Glib::RefPtr<Gtk::Action>& refAction);
-  void remove_developer_action(const Glib::RefPtr<Gtk::Action>& refAction);
+  void add_developer_action(const Glib::RefPtr<Gio::SimpleAction>& refAction);
+  void remove_developer_action(const Glib::RefPtr<Gio::SimpleAction>& refAction);
 
   /** Show in the UI whether the document is in developer or operator mode.
    */
@@ -174,8 +173,6 @@ protected:
   virtual void init_menus_file(); //Call this from init_menus() to add the standard file menu.
   virtual void init_menus_edit(); //Call this from init_menus() to add the standard edit menu
 
-  void add_ui_from_string(const Glib::ustring& ui_description); //Convenience function
-
   virtual void on_hide(); //override.
 
   //Overrides from AppWindow_WithDoc:
@@ -202,19 +199,23 @@ protected:
   void on_menu_edit_copy_activate();
   void on_menu_edit_cut_activate();
   void on_menu_edit_paste_activate();
+  void on_menu_edit_find();
   void on_recent_files_activate(Gtk::RecentChooser& recent_chooser);
 
-  //UIManager and Actions
-  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
-  Glib::RefPtr<Gtk::ActionGroup> m_refFileActionGroup;
-  Glib::RefPtr<Gtk::ActionGroup> m_refEditActionGroup;
+  //Menu Builder and Actions
+  Gtk::MenuBar* m_menubar;
+  Glib::RefPtr<Gtk::Builder> m_builder_menu;
+  Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup_File,
+     m_refActionGroup_Edit, m_refActionGroup_Tables,
+     m_refActionGroup_Developer, m_refActionGroup_Reports;
+
 
   //Member widgets:
   Gtk::Box* m_pVBox;
   Gtk::Box m_VBox_PlaceHolder;
 
   //Menu stuff:
-  Glib::RefPtr<Gtk::Action> m_action_save, m_action_saveas;
+  Glib::RefPtr<Gio::SimpleAction> m_action_save, m_action_saveas;
 
 protected:
   virtual void ui_warning_load_failed(int failure_code = 0); //Override.
@@ -237,16 +238,14 @@ private:
   void existing_or_new_new();
 
   void on_menu_file_toggle_share();
-  void on_menu_developer_developer();
-  void on_menu_developer_operator();
+  void on_menu_developer_usermode(int parameter);
   void on_menu_file_save_as_example();
   void on_menu_developer_changelanguage();
   void on_menu_developer_translations();
-  void on_menu_developer_active_platform_normal();
-  void on_menu_developer_active_platform_maemo();
+  void on_menu_developer_active_platform(const Glib::ustring& parameter);
   void on_menu_developer_export_backup();
   void on_menu_developer_restore_backup();
-  void on_menu_developer_enable_layout_drag_and_drop ();
+  void on_menu_developer_enable_layout_drag_and_drop();
 
   void on_window_translations_hide();
 
@@ -289,19 +288,18 @@ private:
 
   //Widgets:
 
-  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup_Others;
-
-  typedef std::list< Glib::RefPtr<Gtk::Action> > type_listActions;
+  typedef std::list< Glib::RefPtr<Gio::SimpleAction> > type_listActions;
   type_listActions m_listDeveloperActions; //Only enabled when in developer mode.
   type_listActions m_listTableSensitiveActions; // Only enabled when a table is loaded.
-  Glib::RefPtr<Gtk::Action> m_action_mode_find;
+  Glib::RefPtr<Gio::SimpleAction> m_action_mode_find;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  Glib::RefPtr<Gtk::Action> m_action_developer_users;
-  Glib::RefPtr<Gtk::RadioAction> m_action_menu_developer_developer, m_action_menu_developer_operator;
-  Glib::RefPtr<Gtk::ToggleAction> m_action_enable_layout_drag_and_drop ;
+  Glib::RefPtr<Gio::SimpleAction> m_action_developer_users;
+  Glib::RefPtr<Gio::SimpleAction> m_action_menu_developer_usermode;
+  Glib::RefPtr<Gio::SimpleAction> m_action_menu_developer_active_platform;
+  Glib::RefPtr<Gio::SimpleAction> m_action_enable_layout_drag_and_drop ;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  Glib::RefPtr<Gtk::ToggleAction> m_toggleaction_network_shared;
+  Glib::RefPtr<Gio::SimpleAction> m_toggleaction_network_shared;
   sigc::connection m_connection_toggleaction_network_shared;
 
   Gtk::Box* m_pBoxTop;
@@ -318,10 +316,9 @@ private:
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  Glib::RefPtr<Gtk::ActionGroup> m_refHelpActionGroup;
-  Glib::RefPtr<Gtk::ActionGroup> m_refNavTablesActionGroup, m_refNavReportsActionGroup, m_refNavPrintLayoutsActionGroup;
+  Glib::RefPtr<Gio::SimpleActionGroup> m_refHelpActionGroup;
+  Glib::RefPtr<Gio::SimpleActionGroup> m_refNavTablesActionGroup, m_refNavReportsActionGroup, m_refNavPrintLayoutsActionGroup;
   type_listActions m_listNavTableActions, m_listNavReportActions, m_listNavPrintLayoutActions;
-  Gtk::UIManager::ui_merge_id m_menu_tables_ui_merge_id, m_menu_reports_ui_merge_id, m_menu_print_layouts_ui_merge_id;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Set these before calling offer_saveas() (which uses ui_file_select_save()), and clear it afterwards.

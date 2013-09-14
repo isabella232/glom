@@ -48,7 +48,7 @@ ComboGlom::ComboGlom(bool has_entry)
   m_ignore_changed(false)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_menu();
+  setup_menu(this);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   //if(m_glom_type == Field::TYPE_NUMERIC)

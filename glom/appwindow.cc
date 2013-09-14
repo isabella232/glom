@@ -38,8 +38,8 @@
 #include <glom/python_embed/python_ui_callbacks.h>
 #include <glom/python_embed/glom_python.h>
 #include <libglom/spawn_with_feedback.h>
+#include <giomm/menu.h>
 
-#include <gtkmm/radioaction.h>
 #include <gtkmm/main.h>
 
 #include <cstdio>
@@ -77,6 +77,7 @@ const bool AppWindow::glade_developer(false);
 AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : GlomBakery::AppWindow_WithDoc("Glom"),
   Gtk::ApplicationWindow(cobject), 
+  m_menubar(0),
   m_pVBox(0),
   m_VBox_PlaceHolder(Gtk::ORIENTATION_VERTICAL),
   m_pBoxTop(0),
@@ -86,9 +87,6 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_window_translations(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-  m_menu_tables_ui_merge_id(0),
-  m_menu_reports_ui_merge_id(0),
-  m_menu_print_layouts_ui_merge_id(0),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_ui_save_extra_showextras(false),
   m_ui_save_extra_newdb_hosting_mode(Document::HOSTING_MODE_DEFAULT),
@@ -228,14 +226,8 @@ void AppWindow::set_stop_auto_server_shutdown(bool val)
 
 void AppWindow::init_layout()
 {
-  //We override this method so that we can put everything in the vbox from the glade file, instead of the vbox from AppWindow_Gtk.
-
   //Add menu bar at the top:
-  //These were defined in init_uimanager().
-  Gtk::MenuBar* pMenuBar = static_cast<Gtk::MenuBar*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
-  m_pBoxTop->pack_start(*pMenuBar, Gtk::PACK_SHRINK);
-
-  add_accel_group(m_refUIManager->get_accel_group());
+  m_pBoxTop->pack_start(*m_menubar, Gtk::PACK_SHRINK);
 
   //Add placeholder, to be used by add():
   //m_pBoxTop->pack_start(m_VBox_PlaceHolder);
@@ -247,323 +239,434 @@ void AppWindow::init_menus_file()
   // File menu
 
   //Build actions:
-  m_refFileActionGroup = Gtk::ActionGroup::create("BakeryFileActions");
-
-  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File", _("_File")));
+  m_refActionGroup_File = Gio::SimpleActionGroup::create();
 
   //File actions
-  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_New", _("_New")),
-                        sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_file_new));
-  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Open", _("_Open")),
-                        sigc::mem_fun((GlomBakery::AppWindow_WithDoc&)*this, &GlomBakery::AppWindow_WithDoc::on_menu_file_open));
+  m_refActionGroup_File->add_action("new",
+    sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_file_new));
+  m_refActionGroup_File->add_action("open",
+    sigc::mem_fun((GlomBakery::AppWindow_WithDoc&)*this, &GlomBakery::AppWindow_WithDoc::on_menu_file_open));
 
-  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("BakeryAction_File_SaveAsExample", _("_Save as Example"));
-  m_listDeveloperActions.push_back(action);
-
+  Glib::RefPtr<Gio::SimpleAction> action;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_refFileActionGroup->add(action,
-                        sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_file_save_as_example));
+  action = m_refActionGroup_File->add_action("save-as-example",
+    sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_file_save_as_example));
+  add_developer_action(action);
 
-  action = Gtk::Action::create("BakeryAction_Menu_File_Export", _("_Export"));
-  m_refFileActionGroup->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_export));
+  action = m_refActionGroup_File->add_action("export",
+    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_export));
   m_listTableSensitiveActions.push_back(action);
 
-  action = Gtk::Action::create("BakeryAction_Menu_File_Import", _("I_mport"));
-  m_refFileActionGroup->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_import));
+  action = m_refActionGroup_File->add_action("import",
+    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_import));
   m_listTableSensitiveActions.push_back(action);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  m_toggleaction_network_shared = Gtk::ToggleAction::create("BakeryAction_Menu_File_Share", _("S_hared on Network"));
-  m_refFileActionGroup->add(m_toggleaction_network_shared);
+  m_toggleaction_network_shared = m_refActionGroup_File->add_action_bool("share",
+    sigc::mem_fun(*this, &AppWindow::on_menu_file_toggle_share) );
   m_listTableSensitiveActions.push_back(m_toggleaction_network_shared);
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_connection_toggleaction_network_shared =
-    m_toggleaction_network_shared->signal_toggled().connect(
-      sigc::mem_fun(*this, &AppWindow::on_menu_file_toggle_share) );
-  m_listDeveloperActions.push_back(m_toggleaction_network_shared);
 #endif //!GLOM_ENABLE_CLIENT_ONLY
 
-  action = Gtk::Action::create("GlomAction_Menu_File_Print", _("_Print"));
-  m_refFileActionGroup->add(action);
+  action = m_refActionGroup_File->add_action("print",
+    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print) );
   m_listTableSensitiveActions.push_back(action);
-  m_refFileActionGroup->add(Gtk::Action::create("GlomAction_File_Print", _("_Standard")),
-                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print) );
+
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  Glib::RefPtr<Gtk::Action> action_print_edit = Gtk::Action::create("GlomAction_File_PrintEdit", _("_Edit Print Layouts"));
-  m_refFileActionGroup->add(action_print_edit, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print_edit_layouts));
+  Glib::RefPtr<Gio::SimpleAction> action_print_edit =
+    m_refActionGroup_File->add_action("edit-print-layouts",
+      sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print_edit_layouts));
   m_listDeveloperActions.push_back(action_print_edit);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Close", _("_Close")),
-                        sigc::mem_fun((GlomBakery::AppWindow_WithDoc&)*this, &GlomBakery::AppWindow_WithDoc::on_menu_file_close));
+  m_refActionGroup_File->add_action("close",
+    sigc::mem_fun((GlomBakery::AppWindow_WithDoc&)*this, &GlomBakery::AppWindow_WithDoc::on_menu_file_close));
 
-  m_refUIManager->insert_action_group(m_refFileActionGroup);
+  insert_action_group("file", m_refActionGroup_File);
 }
 
 void AppWindow::init_menus()
 {
-  m_refUIManager = Gtk::UIManager::create();
+  m_builder_menu = Gtk::Builder::create();
 
   init_menus_file();
   init_menus_edit();
 
 
   //Build actions:
-  m_refActionGroup_Others = Gtk::ActionGroup::create("GlomOthersActions");
+  m_refActionGroup_Tables = Gio::SimpleActionGroup::create();
 
-  //"Tables" menu:
-  m_refActionGroup_Others->add( Gtk::Action::create("Glom_Menu_Tables", _("_Tables")) );
-
-//  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("GlomAction_Menu_Navigate_Database", _("_Database"));
-//  m_listDeveloperActions.push_back(action);
-//  m_refActionGroup_Others->add(action,
-//                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Navigate_Database) );
-
-  Glib::RefPtr<Gtk::Action> action;
+  Glib::RefPtr<Gio::SimpleAction> action;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  action = Gtk::Action::create("GlomAction_Menu_EditTables", _("_Edit Tables"));
-  m_refActionGroup_Others->add(action,
-                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_EditTables) );
+  action = m_refActionGroup_Tables->add_action("edit-tables",
+    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_EditTables) );
   m_listDeveloperActions.push_back(action);
 
 /* Commented out because it is useful but confusing to new users:
-  action = Gtk::Action::create("GlomAction_Menu_AddRelatedTable", _("Add _Related Table"));
-  m_refActionGroup_Others->add(action,
-                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_AddRelatedTable) );
+  action = m_refActionGroup_Tables->add_action("GlomAction_Menu_AddRelatedTable", //_("Add _Related Table"));
+    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_AddRelatedTable) );
   m_listDeveloperActions.push_back(action);
 */
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+  insert_action_group("tables", m_refActionGroup_Tables);
+
+
   //"Reports" menu:
-  m_refActionGroup_Others->add( Gtk::Action::create("Glom_Menu_Reports", _("_Reports")) );
+  m_refActionGroup_Reports = Gio::SimpleActionGroup::create();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  action = Gtk::Action::create("GlomAction_Menu_EditReports", _("_Edit Reports"));
-  m_refActionGroup_Others->add(action,
-                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Reports_EditReports) );
+  m_refActionGroup_Reports->add_action("edit-reports",
+    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Reports_EditReports) );
   m_listDeveloperActions.push_back(action);
   m_listTableSensitiveActions.push_back(action);
 #endif
 
-  //We remember this action, so that it can be explicitly activated later.
-  m_action_mode_find = Gtk::ToggleAction::create("GlomAction_Menu_Edit_Find", _("_Find"), "", false);
-  m_refActionGroup_Others->add(m_action_mode_find,  Gtk::AccelKey("<control>F"),
-                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Edit_Find) );
-  m_listTableSensitiveActions.push_back(m_action_mode_find);
+  insert_action_group("reports", m_refActionGroup_Developer);
+
+  //Developer menu:
+  m_refActionGroup_Developer = Gio::SimpleActionGroup::create();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  action = Gtk::Action::create("Glom_Menu_Developer", C_("Developer menu title", "_Developer"));
-  m_refActionGroup_Others->add(action);
+  m_action_menu_developer_usermode =
+    m_refActionGroup_Developer->add_action_radio_integer("usermode",
+      sigc::mem_fun(*this, &AppWindow::on_menu_developer_usermode),
+      AppState::USERLEVEL_OPERATOR );
 
-
-  Gtk::RadioAction::Group group_userlevel;
-
-  m_action_menu_developer_developer = Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_Developer_Developer", _("_Developer Mode"));
-  m_refActionGroup_Others->add(m_action_menu_developer_developer,
-                        sigc::mem_fun(*this, &AppWindow::on_menu_developer_developer) );
-
-  m_action_menu_developer_operator =  Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_Developer_Operator", _("_Operator Mode"));
-  m_refActionGroup_Others->add(m_action_menu_developer_operator,
-                          sigc::mem_fun(*this, &AppWindow::on_menu_developer_operator) );
-
-
-  action = Gtk::Action::create("GlomAction_Menu_Developer_Database_Preferences", _("_Database Preferences"));
+  action = m_refActionGroup_Developer->add_action("database-preferences",
+    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_database_preferences) );
   m_listDeveloperActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_database_preferences) );
 
-
-  action = Gtk::Action::create("GlomAction_Menu_Developer_Fields", _("_Fields"));
+  action = m_refActionGroup_Developer->add_action("fields",
+   sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_fields) );
   m_listDeveloperActions.push_back(action);
   m_listTableSensitiveActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_fields) );
 
-  action = Gtk::Action::create("GlomAction_Menu_Developer_RelationshipsOverview", _("Relationships _Overview"));
+  action = m_refActionGroup_Developer->add_action("relationships-overview",
+    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_relationships_overview) );
   m_listDeveloperActions.push_back(action);
   m_listTableSensitiveActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_relationships_overview) );
 
-  action = Gtk::Action::create("GlomAction_Menu_Developer_Relationships", _("_Relationships for this Table"));
+  action = m_refActionGroup_Developer->add_action("relationships",
+    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_relationships) );
   m_listDeveloperActions.push_back(action);
   m_listTableSensitiveActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_relationships) );
 
-  m_action_developer_users = Gtk::Action::create("GlomAction_Menu_Developer_Users", _("_Users"));
+  m_action_developer_users = m_refActionGroup_Developer->add_action("users",
+    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_users));
   m_listDeveloperActions.push_back(m_action_developer_users);
-  m_refActionGroup_Others->add(m_action_developer_users, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_users));
 
-  action = Gtk::Action::create("GlomAction_Menu_Developer_PrintLayouts", _("_Print Layouts")); //TODO: Rename? This looks like an action rather than a noun. It won't actually start printing.
+  action = m_refActionGroup_Developer->add_action("print-layouts",
+    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_print_layouts));
   m_listDeveloperActions.push_back(action);
   m_listTableSensitiveActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_print_layouts));
 
-  action = Gtk::Action::create("GlomAction_Menu_Developer_Reports", _("R_eports"));
+  action = m_refActionGroup_Developer->add_action("reports",
+    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_reports));
   m_listDeveloperActions.push_back(action);
   m_listTableSensitiveActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_reports));
 
-  action = Gtk::Action::create("GlomAction_Menu_Developer_Script_Library", _("Script _Library"));
+  action = m_refActionGroup_Developer->add_action("script-library",
+    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_script_library));
   m_listDeveloperActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_script_library));
 
-
-  action = Gtk::Action::create("GlomAction_Menu_Developer_Layout", _("_Layout"));
+  action = m_refActionGroup_Developer->add_action("layout",
+    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_layout));
   m_listDeveloperActions.push_back(action);
   m_listTableSensitiveActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_layout));
 
-  action = Gtk::Action::create("GlomAction_Menu_Developer_ChangeLanguage", _("Test Tra_nslation"));
+  action = m_refActionGroup_Developer->add_action("change-language",
+    sigc::mem_fun(*this, &AppWindow::on_menu_developer_changelanguage));
   m_listDeveloperActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &AppWindow::on_menu_developer_changelanguage));
 
-  action = Gtk::Action::create("GlomAction_Menu_Developer_Translations", _("_Translations"));
+  action = m_refActionGroup_Developer->add_action("translations",
+    sigc::mem_fun(*this, &AppWindow::on_menu_developer_translations));
   m_listDeveloperActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &AppWindow::on_menu_developer_translations));
-
 
   //"Active Platform" menu:
-  action =  Gtk::Action::create("Glom_Menu_Developer_ActivePlatform", _("_Active Platform"));
-  m_listDeveloperActions.push_back(action);
-  m_refActionGroup_Others->add(action);
-  Gtk::RadioAction::Group group_active_platform;
+  m_action_menu_developer_active_platform = m_refActionGroup_Developer->add_action_radio_string("active-platform",
+    sigc::mem_fun(*this, &AppWindow::on_menu_developer_active_platform),
+    "");
+  m_listDeveloperActions.push_back(m_action_menu_developer_active_platform);
 
-  action = Gtk::RadioAction::create(group_active_platform, "GlomAction_Menu_Developer_ActivePlatform_Normal",
-    _("_Normal"), _("The layout to use for normal desktop environments."));
+  action = m_refActionGroup_Developer->add_action("export-backup",
+    sigc::mem_fun(*this, &AppWindow::on_menu_developer_export_backup));
   m_listDeveloperActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &AppWindow::on_menu_developer_active_platform_normal));
 
-  action = Gtk::RadioAction::create(group_active_platform, "GlomAction_Menu_Developer_ActivePlatform_Maemo",
-    _("_Maemo"), _("The layout to use for Maemo devices."));
+  action = m_refActionGroup_Developer->add_action("restore-backup",
+    sigc::mem_fun(*this, &AppWindow::on_menu_developer_restore_backup));
   m_listDeveloperActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &AppWindow::on_menu_developer_active_platform_maemo));
-
-
-  action = Gtk::Action::create("GlomAction_Menu_Developer_ExportBackup", _("_Export Backup"));
-  m_listDeveloperActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &AppWindow::on_menu_developer_export_backup));
-
-  action = Gtk::Action::create("GlomAction_Menu_Developer_RestoreBackup", _("_Restore Backup"));
-  m_listDeveloperActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &AppWindow::on_menu_developer_restore_backup));
 
   //TODO: Think of a better name for this menu item,
   //though it mostly only exists because it is not quite ready to be on by default:
   //Note to translators: Drag and Drop is part of the name, not a verb or action:
-  m_action_enable_layout_drag_and_drop = Gtk::ToggleAction::create("GlomAction_Menu_Developer_EnableLayoutDragAndDrop", _("_Drag and Drop Layout"));
+  m_action_enable_layout_drag_and_drop =
+    m_refActionGroup_Developer->add_action_bool("drag-and-drop-layout",
+      sigc::mem_fun(*this, &AppWindow::on_menu_developer_enable_layout_drag_and_drop));
   m_listDeveloperActions.push_back(m_action_enable_layout_drag_and_drop);
-  m_refActionGroup_Others->add(m_action_enable_layout_drag_and_drop, sigc::mem_fun(*this, &AppWindow::on_menu_developer_enable_layout_drag_and_drop));
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  m_refUIManager->insert_action_group(m_refActionGroup_Others);
+  insert_action_group("developer", m_refActionGroup_Developer);
+
   
-  action = Gtk::Action::create("Glom_Menu_Help", C_("Help menu title", "_Help"));
-  m_refActionGroup_Others->add(action);
-  
-  m_refHelpActionGroup = Gtk::ActionGroup::create("GlomHelpActions");
-  m_refHelpActionGroup->add(Gtk::Action::create("GlomAction_Menu_Help", _("_Help")));
-  
-  m_refHelpActionGroup->add( Gtk::Action::create("GlomAction_Menu_Help_About",
-                        _("_About"), _("About the application")),
-                        sigc::mem_fun(*this, &AppWindow::on_menu_help_about) );
-  m_refHelpActionGroup->add( Gtk::Action::create("GlomAction_Menu_Help_Contents",
-                        _("_Contents"), _("Help with the application")),
-                        sigc::mem_fun(*this, &AppWindow::on_menu_help_contents) );
-  m_refUIManager->insert_action_group(m_refHelpActionGroup);                       
+  m_refHelpActionGroup = Gio::SimpleActionGroup::create();
+ 
+  m_refHelpActionGroup->add_action("about",
+    sigc::mem_fun(*this, &AppWindow::on_menu_help_about) );
+  m_refHelpActionGroup->add_action("contents",
+    sigc::mem_fun(*this, &AppWindow::on_menu_help_contents) );
+  insert_action_group("help", m_refHelpActionGroup);                       
 
 
-  //This is just a skeleton structure.
-  //The placeholders allow us to merge the menus and toolbars in later,
-  //by adding a us string with one of the placeholders, but with menu items underneath it.
+  //The placeholders allow us to merge menu items in later:
   static const Glib::ustring ui_description =
-    "<ui>"
-    "  <menubar name='Bakery_MainMenu'>"
-    "    <menu action='BakeryAction_Menu_File'>"
-    "      <menuitem action='BakeryAction_File_New' />"
-    "      <menuitem action='BakeryAction_File_Open' />"
+    "<interface>"
+    "  <menu id='mainmenu'>"
+    "    <submenu>"
+    "      <attribute name='label' translatable='yes'>_File</attribute>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_New</attribute>"
+    "          <attribute name='action'>file.new</attribute>"
+    "          <attribute name='accel'>&lt;Primary&gt;n</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Open</attribute>"
+    "          <attribute name='action'>file.open</attribute>"
+    "          <attribute name='accel'>&lt;Primary&gt;o</attribute>"
+    "        </item>"
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    "      <menuitem action='BakeryAction_File_SaveAsExample' />"
-    "      <separator/>"
-    "      <menuitem action='BakeryAction_Menu_File_Export' />"
-    "      <menuitem action='BakeryAction_Menu_File_Import' />"
-    "      <menuitem action='BakeryAction_Menu_File_Share' />"
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-    "      <separator/>"
-    "      <menu action='GlomAction_Menu_File_Print'>"
-    "        <menuitem action='GlomAction_File_Print' />"
-    "        <placeholder name='Menu_PrintLayouts_Dynamic' />"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Save as Example</attribute>"
+    "          <attribute name='action'>file.save-as-example</attribute>"
+    "        </item>"
+#endif // GLOM_ENABLE_CLIENT_ONLY
+    "      </section>"
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    "        <menuitem action='GlomAction_File_PrintEdit' />"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Export</attribute>"
+    "          <attribute name='action'>file.export</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>I_mport</attribute>"
+    "          <attribute name='action'>file.import</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>S_hared on Network</attribute>"
+    "          <attribute name='action'>file.share</attribute>"
+    "        </item>"
+    "      </section>"
+#endif // GLOM_ENABLE_CLIENT_ONLY
+    "      <submenu>"
+    "        <attribute name='label' translatable='yes'>_Print</attribute>"
+    "        <section id='print-layouts-list'/>"
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+    "        <section>"
+    "          <item>"
+    "            <attribute name='label' translatable='yes'>_Edit Print Layouts</attribute>"
+    "            <attribute name='action'>file.edit-print-layouts</attribute>"
+    "          </item>"
+    "        </section>"
 #endif //GLOM_ENABLE_CLIENT_ONLY
-    "      </menu>"
-    "      <separator/>"
-    "      <menuitem action='BakeryAction_File_Close' />"
-    "    </menu>"
-   "     <menu action='BakeryAction_Menu_Edit'>"
-    "      <menuitem action='BakeryAction_Edit_Cut' />"
-    "      <menuitem action='BakeryAction_Edit_Copy' />"
-    "      <menuitem action='BakeryAction_Edit_Paste' />"
-    "      <menuitem action='BakeryAction_Edit_Clear' />"
-    "      <separator />"
-    "      <menuitem action='GlomAction_Menu_Edit_Find' />"
-    "    </menu>"
-    "    <menu action='Glom_Menu_Tables'>"
-    "      <placeholder name='Menu_Tables_Dynamic' />"
-    "      <separator />"
+    "      </submenu>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Close</attribute>"
+    "          <attribute name='action'>file.close</attribute>"
+    "          <attribute name='accel'>&lt;Primary&gt;w</attribute>"
+    "        </item>"
+    "      </section>"
+    "    </submenu>"
+    "    <submenu>"
+    "      <attribute name='label' translatable='yes'>_Edit</attribute>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Cu_t</attribute>"
+    "          <attribute name='action'>edit.cut</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Copy</attribute>"
+    "          <attribute name='action'>edit.copy</attribute>"
+    "          <attribute name='accel'>&lt;Primary&gt;c</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Paste</attribute>"
+    "          <attribute name='action'>edit.paste</attribute>"
+    "          <attribute name='accel'>&lt;Primary&gt;v</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Clear</attribute>"
+    "          <attribute name='action'>edit.clear</attribute>"
+    "        </item>"
+    "      </section>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Find</attribute>"
+    "          <attribute name='action'>edit.find</attribute>"
+    "          <attribute name='accel'>&lt;control&gt;F</attribute>"
+    "        </item>"
+    "      </section>"
+    "    </submenu>"
+    "    <submenu id='tables'>"
+    "      <attribute name='label' translatable='yes'>_Tables</attribute>"
+    "      <section id='tables-list'/>"
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    "      <menuitem action='GlomAction_Menu_EditTables' />"
-/* Commented out because it is useful but confusing to new users:
-    "      <menuitem action='GlomAction_Menu_AddRelatedTable' />"
-*/
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-    "   </menu>"
-    "   <menu action='Glom_Menu_Reports'>"
-    "      <placeholder name='Menu_Reports_Dynamic' />"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Edit Tables</attribute>"
+    "          <attribute name='action'>tables.edit-tables</attribute>"
+    "        </item>"
+    "      </section>"
+#endif //GLOM_ENABLE_CLIENT_ONLY
+    "    </submenu>"
+    "    <submenu>"
+    "      <attribute name='label' translatable='yes'>R_eports</attribute>"
+    "      <section id='reports-list'/>"
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    "      <separator />"
-    "      <menuitem action='GlomAction_Menu_EditReports' />"
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-    "   </menu>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Edit Reports</attribute>"
+    "          <attribute name='action'>reports.edit-reports</attribute>"
+    "        </item>"
+    "      </section>"
+#endif //GLOM_ENABLE_CLIENT_ONLY
+    "    </submenu>"
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    "    <menu action='Glom_Menu_Developer'>"
-    "      <menuitem action='GlomAction_Menu_Developer_Operator' />"
-    "      <menuitem action='GlomAction_Menu_Developer_Developer' />"
-    "      <separator />"
-    "      <menuitem action='GlomAction_Menu_Developer_Fields' />"
-    "      <menuitem action='GlomAction_Menu_Developer_Relationships' />"
-    "      <menuitem action='GlomAction_Menu_Developer_RelationshipsOverview' />"
-    "      <menuitem action='GlomAction_Menu_Developer_Layout' />"
-    "      <menuitem action='GlomAction_Menu_Developer_PrintLayouts' />"
-    "      <menuitem action='GlomAction_Menu_Developer_Reports' />"
-    "      <separator />"
-    "      <menuitem action='GlomAction_Menu_Developer_Database_Preferences' />"
-    "      <menuitem action='GlomAction_Menu_Developer_Users' />"
-    "      <menuitem action='GlomAction_Menu_Developer_Script_Library' />"
-    "      <separator />"
-    "      <menuitem action='GlomAction_Menu_Developer_Translations' />"
-    "      <menuitem action='GlomAction_Menu_Developer_ChangeLanguage' />"
-    "      <separator />"
-    "      <menu action='Glom_Menu_Developer_ActivePlatform'>"
-    "        <menuitem action='GlomAction_Menu_Developer_ActivePlatform_Normal' />"
-    "        <menuitem action='GlomAction_Menu_Developer_ActivePlatform_Maemo' />"
-    "      </menu>"
-    "      <menuitem action='GlomAction_Menu_Developer_EnableLayoutDragAndDrop' />"
-    "      <separator />"
-    "      <menuitem action='GlomAction_Menu_Developer_ExportBackup' />"
-    "      <menuitem action='GlomAction_Menu_Developer_RestoreBackup' />"
-    "    </menu>"
+    "    <submenu>"
+    "      <attribute name='label' translatable='yes'>_Developer</attribute>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Operator</attribute>"
+    "          <attribute name='action'>developer.usermode</attribute>"
+    "          <attribute name='target' type='i'>0</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Developer</attribute>"
+    "          <attribute name='action'>developer.usermode</attribute>"
+    "          <attribute name='target' type='i'>1</attribute>"
+    "        </item>"
+    "      </section>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Fields</attribute>"
+    "          <attribute name='action'>developer.fields</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Relationships</attribute>"
+    "          <attribute name='action'>developer.relationships</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Relationships _Overview</attribute>"
+    "          <attribute name='action'>developer.relationships-overview</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Layout</attribute>"
+    "          <attribute name='action'>developer.layout</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Print Layouts</attribute>"
+    "          <attribute name='action'>developer.print-layouts</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Reports</attribute>"
+    "          <attribute name='action'>developer.reports</attribute>"
+    "        </item>"
+    "      </section>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Database Preferences</attribute>"
+    "          <attribute name='action'>developer.database-preferences</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Users</attribute>"
+    "          <attribute name='action'>developer.users</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Script _Library</attribute>"
+    "          <attribute name='action'>developer.script-library</attribute>"
+    "        </item>"
+    "      </section>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Translations</attribute>"
+    "          <attribute name='action'>developer.translations</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>Test Tra_nslation</attribute>"
+    "          <attribute name='action'>developer.change-language</attribute>"
+    "        </item>"
+    "      </section>"
+    "      <section>"
+    "      <submenu>"
+    "        <attribute name='label' translatable='yes'>Active Platform</attribute>"
+    "        <item>"
+    "         <attribute name='label' translatable='yes'>_Normal</attribute>"
+    "          <attribute name='action'>developer.active-platform</attribute>"
+//TODO:    "          <attribute >The layout to use for normal desktop environments.</attribute>
+    "          <attribute name='target'></attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Maemo</attribute>" //TODO: This is obsolete
+    "          <attribute name='action'>developer.active-platform</attribute>"
+//TODO:    "          <attribute >The layout to use for Maemo devices.</attribute>"
+    "          <attribute name='target'>maemo</attribute>"
+    "        </item>"
+    "      </submenu>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>_Drag and Drop Layout</attribute>" //TODO: This is obsolete
+    "        <attribute name='action'>developer.drag-and-drop-layout</attribute>"
+    "      </item>"
+    "      </section>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Export Backup</attribute>"
+    "          <attribute name='action'>developer.export-backup</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Restore Backup</attribute>"
+    "          <attribute name='action'>developer.restore-backup</attribute>"
+    "        </item>"
+    "      </section>"
+    "    </submenu>"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-    "    <menu action='Glom_Menu_Help'>"
-    "      <menuitem action='GlomAction_Menu_Help_About' />"
-    "      <menuitem action='GlomAction_Menu_Help_Contents' />"
-    "    </menu>"
-    "  </menubar>"
-    "</ui>";
+    "    <submenu>"
+    "      <attribute name='label' translatable='yes'>_Help</attribute>"
+    "      <section>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_About</attribute>"
+    "          <attribute name='action'>help.about</attribute>"
+//TODO:    "          <attribute >About the application</attribute>"
+    "        </item>"
+    "        <item>"
+    "          <attribute name='label' translatable='yes'>_Contents</attribute>"
+    "          <attribute name='action'>help.contents</attribute>"
+//TODO:    "          <attribute >Help with the application</attribute>"
+    "        </item>"
+    "      </section>"
+    "    </submenu>"
+    "  </menu>"
+    "</interface>";
   
-  add_ui_from_string(ui_description);
+   try
+  {
+    m_builder_menu->add_from_string(ui_description);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what() << std::endl;
+  }
 
+  Glib::RefPtr<Glib::Object> object =
+    m_builder_menu->get_object("mainmenu");
+  Glib::RefPtr<Gio::Menu> gmenu =
+    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  if(!gmenu)
+    g_warning("GMenu not found");
+
+  m_menubar = new Gtk::MenuBar(gmenu);
+  m_menubar->show();
 
 
   update_table_sensitive_ui();
@@ -624,25 +727,34 @@ void AppWindow::on_menu_file_toggle_share()
   if(!m_pFrame)
     return;
 
-  m_pFrame->on_menu_file_toggle_share(m_toggleaction_network_shared);
+  //The state is not changed automatically:
+  bool active = false;
+  m_toggleaction_network_shared->get_state(active);
+
+  const bool changed = m_pFrame->attempt_toggle_shared(!active);
+
+  if(changed)
+    m_toggleaction_network_shared->change_state(!active);
 }
 
-void AppWindow::on_menu_developer_developer()
+void AppWindow::on_menu_developer_usermode(int parameter)
 {
   if(!m_pFrame)
     return;
 
-  m_pFrame->on_menu_developer_developer(m_action_menu_developer_developer, m_action_menu_developer_operator);
-  m_pFrame->set_enable_layout_drag_and_drop(m_action_enable_layout_drag_and_drop->get_active());
-}
+  const bool developer = parameter == AppState::USERLEVEL_DEVELOPER;
 
-void AppWindow::on_menu_developer_operator()
-{
-  if(m_pFrame)
-  {
-    m_pFrame->on_menu_developer_operator(m_action_menu_developer_operator);
-    m_pFrame->set_enable_layout_drag_and_drop(false);
-  }
+  bool changed = false;
+  if(developer)
+    changed = m_pFrame->attempt_change_usermode_to_developer();
+  else
+    changed = m_pFrame->attempt_change_usermode_to_operator();
+
+  //Change the menu's state:
+  if(changed)
+    m_action_menu_developer_usermode->change_state(parameter);
+
+  m_pFrame->set_enable_layout_drag_and_drop(false);
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -826,7 +938,6 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
 #endif // !G_OS_WIN32
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-//Copied from bakery:
 static bool uri_is_writable(const Glib::RefPtr<const Gio::File>& uri)
 {
   if(!uri)
@@ -1299,14 +1410,14 @@ void AppWindow::update_network_shared_ui()
   const bool shared = document->get_network_shared();
   //TODO: Our use of block() does not seem to work. The signal actually seems to be emitted some time later instead.
   m_connection_toggleaction_network_shared.block(); //Prevent signal handling.
-  m_toggleaction_network_shared->set_active(shared);
+  m_toggleaction_network_shared->change_state(shared);
 
   //Do not allow impossible changes:
   const Document::HostingMode hosting_mode = document->get_hosting_mode();
   if( (hosting_mode == Document::HOSTING_MODE_POSTGRES_CENTRAL) //Central hosting means that it must be shared on the network.
     || (hosting_mode == Document::HOSTING_MODE_SQLITE) ) //sqlite does not allow network sharing.
   {
-    m_toggleaction_network_shared->set_sensitive(false);
+    m_toggleaction_network_shared->set_enabled(false);
   }
 
   m_connection_toggleaction_network_shared.unblock();
@@ -1329,7 +1440,7 @@ void AppWindow::update_table_sensitive_ui()
 
   for(type_listActions::iterator iter = m_listTableSensitiveActions.begin(); iter != m_listTableSensitiveActions.end(); ++iter)
   {
-    Glib::RefPtr<Gtk::Action> action = *iter;
+    Glib::RefPtr<Gio::SimpleAction> action = *iter;
  
     bool sensitive = has_table;
 
@@ -1338,7 +1449,7 @@ void AppWindow::update_table_sensitive_ui()
     if(is_developer_item)
       sensitive = sensitive && (userlevel == AppState::USERLEVEL_DEVELOPER);
 
-    action->set_sensitive(sensitive);
+    action->set_enabled(sensitive);
   }
 }
 
@@ -1349,8 +1460,8 @@ void AppWindow::update_userlevel_ui()
   //Disable/Enable developer actions:
   for(type_listActions::iterator iter = m_listDeveloperActions.begin(); iter != m_listDeveloperActions.end(); ++iter)
   {
-    Glib::RefPtr<Gtk::Action> action = *iter;
-     action->set_sensitive( userlevel == AppState::USERLEVEL_DEVELOPER );
+    Glib::RefPtr<Gio::SimpleAction> action = *iter;
+     action->set_enabled( userlevel == AppState::USERLEVEL_DEVELOPER );
   }
 
   //Ensure table sensitive menus stay disabled if necessary.
@@ -1364,12 +1475,14 @@ void AppWindow::update_userlevel_ui()
     {
       sharedptr<SharedConnection> connection = ConnectionPool::get_and_connect();
       if(connection && !connection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
-        m_action_developer_users->set_sensitive(false);
+        m_action_developer_users->set_enabled(false);
     }
   }
 
   //Make sure that the correct radio menu item is activated (the userlevel might have been set programmatically):
   //We only need to set/unset one, because the others are in the same radio group.
+  //TODO:
+  /*
   if(userlevel == AppState::USERLEVEL_DEVELOPER)
   {
     if(!m_action_menu_developer_developer->get_active())
@@ -1381,6 +1494,8 @@ void AppWindow::update_userlevel_ui()
       m_action_menu_developer_operator->set_active();
     // Remove the drag layout toolbar
   }
+  */
+  
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -1549,7 +1664,7 @@ void AppWindow::set_mode_data()
     return;
 
   if (m_pFrame->m_Mode == Frame_Glom::MODE_Find)
-    m_action_mode_find->activate();
+    m_action_mode_find->change_state(true);
 }
 
 void AppWindow::set_mode_find()
@@ -1558,7 +1673,7 @@ void AppWindow::set_mode_find()
     return;
 
   if (m_pFrame->m_Mode == Frame_Glom::MODE_Data)
-    m_action_mode_find->activate();
+    m_action_mode_find->change_state(true);
 }
 
 void AppWindow::on_menu_help_contents()
@@ -1922,7 +2037,8 @@ AppState::userlevels AppWindow::get_userlevel() const
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void AppWindow::add_developer_action(const Glib::RefPtr<Gtk::Action>& refAction)
+
+void AppWindow::add_developer_action(const Glib::RefPtr<Gio::SimpleAction>& refAction)
 {
   //Prevent it from being added twice:
   remove_developer_action(refAction);
@@ -1930,7 +2046,7 @@ void AppWindow::add_developer_action(const Glib::RefPtr<Gtk::Action>& refAction)
   m_listDeveloperActions.push_back(refAction);
 }
 
-void AppWindow::remove_developer_action(const Glib::RefPtr<Gtk::Action>& refAction)
+void AppWindow::remove_developer_action(const Glib::RefPtr<Gio::SimpleAction>& refAction)
 {
   for(type_listActions::iterator iter = m_listDeveloperActions.begin(); iter != m_listDeveloperActions.end(); ++iter)
   {
@@ -1941,29 +2057,39 @@ void AppWindow::remove_developer_action(const Glib::RefPtr<Gtk::Action>& refActi
     }
   }
 }
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void AppWindow::fill_menu_tables()
 {
-  //TODO: There must be a better way than building a ui_string like this:
-
   m_listNavTableActions.clear();
-  if(m_menu_tables_ui_merge_id)
-    m_refUIManager->remove_ui(m_menu_tables_ui_merge_id);
+  //TODO: Clear existing items
 
   if(m_refNavTablesActionGroup)
   {
-    m_refUIManager->remove_action_group(m_refNavTablesActionGroup);
+    //TODO? m_builder_menu->remove_action_group(m_refNavTablesActionGroup);
     m_refNavTablesActionGroup.reset();
   }
 
-  m_refNavTablesActionGroup = Gtk::ActionGroup::create("NavTablesActions");
+  m_refNavTablesActionGroup = Gio::SimpleActionGroup::create();
 
-  Glib::ustring ui_description =
-    "<ui>"
-    "  <menubar name='Bakery_MainMenu'>"
-    "    <menu action='Glom_Menu_Tables'>"
-    "      <placeholder name='Menu_Tables_Dynamic'>";
+  Glib::RefPtr<Glib::Object> object =
+    m_builder_menu->get_object("tables-list");
+  Glib::RefPtr<Gio::Menu> menu =
+    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  if(!menu)
+  {
+    std::cerr << G_STRFUNC << ": GMenu not found" << std::endl;
+    return;
+  }
+
+  //TODO: Add API for this?
+  while(menu->get_n_items())
+  {
+    menu->remove(0);
+  }
+
+  const Glib::ustring action_group_name = "tables-list";
 
   Document* document = dynamic_cast<Document*>(get_document());
   const Document::type_listTableInfo tables = document->get_tables();
@@ -1972,62 +2098,50 @@ void AppWindow::fill_menu_tables()
     sharedptr<const TableInfo> table_info = *iter;
     if(!table_info->get_hidden())
     {
-      const Glib::ustring action_name = "NavTableAction_" + table_info->get_name();
+      const Glib::ustring title = Utils::string_escape_underscores(item_get_title_or_name(table_info));
+      const Glib::ustring action_name = table_info->get_name();
+  
+      menu->append(title, action_group_name + "." + action_name);
 
-      ui_description += "<menuitem action='" + action_name + "' />";
-
-      Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create(action_name, Utils::string_escape_underscores(item_get_title_or_name(table_info)));
-      m_refNavTablesActionGroup->add(refAction,
+      Glib::RefPtr<Gio::SimpleAction> action = m_refNavTablesActionGroup->add_action(action_name,
         sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_box_tables_selected), table_info->get_name()) );
-
-      m_listNavTableActions.push_back(refAction);
-
-      //m_refUIManager->add_ui(merge_id, path, table_info->m_title, refAction, UI_MANAGER_MENUITEM);
+      m_listNavTableActions.push_back(action);
     }
   }
 
-  m_refUIManager->insert_action_group(m_refNavTablesActionGroup);
-
-
-  ui_description +=
-    "     </placeholder>"
-    "    </menu>"
-    "  </menubar>"
-    "</ui>";
-
-  //Add menus:
-  try
-  {
-    m_menu_tables_ui_merge_id = m_refUIManager->add_ui_from_string(ui_description);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what() << std::endl;
-    std::cerr << "   The ui_description was: " <<  ui_description << std::endl;
-  }
+  insert_action_group(action_group_name, m_refNavTablesActionGroup);
 }
 
 void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
 {
-  //TODO: There must be a better way than building a ui_string like this:
-
   m_listNavReportActions.clear();
-  if(m_menu_reports_ui_merge_id)
-    m_refUIManager->remove_ui(m_menu_reports_ui_merge_id);
+
+  //Remove existing items.
+  Glib::RefPtr<Glib::Object> object =
+    m_builder_menu->get_object("reports-list");
+  Glib::RefPtr<Gio::Menu> menu =
+    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  if(!menu)
+  {
+    std::cerr << G_STRFUNC << ": GMenu not found" << std::endl;
+    return;
+  }
+
+  //TODO: Add API for this?
+  while(menu->get_n_items())
+  {
+    menu->remove(0);
+  }
+
+  const Glib::ustring action_group_name = "reports-list";
 
   if(m_refNavReportsActionGroup)
   {
-    m_refUIManager->remove_action_group(m_refNavReportsActionGroup);
+    //TODO? m_builder_menu->remove_action_group(m_refNavReportsActionGroup);
     m_refNavReportsActionGroup.reset();
   }
 
-  m_refNavReportsActionGroup = Gtk::ActionGroup::create("NavReportsActions");
-
-  Glib::ustring ui_description =
-    "<ui>"
-    "  <menubar name='Bakery_MainMenu'>"
-    "   <menu action='Glom_Menu_Reports'>"
-    "     <placeholder name='Menu_Reports_Dynamic'>";
+  m_refNavReportsActionGroup = Gio::SimpleActionGroup::create();
 
   Document* document = dynamic_cast<Document*>(get_document());
   const std::vector<Glib::ustring> reports = document->get_report_names(table_name);
@@ -2039,71 +2153,76 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
       const Glib::ustring report_name = report->get_name();
       if(!report_name.empty())
       {
-        const Glib::ustring action_name = "NavReportAction_" + report_name;
+        const Glib::ustring title = Utils::string_escape_underscores(item_get_title_or_name(report));
+        const Glib::ustring action_name = report_name;
+  
+        menu->append(title, action_group_name + "." + report_name);
 
-        ui_description += "<menuitem action='" + action_name + "' />";
-
-        Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create( action_name, Utils::string_escape_underscores(item_get_title_or_name(report)) );
-        m_refNavReportsActionGroup->add(refAction,
+        Glib::RefPtr<Gio::SimpleAction> action = m_refNavReportsActionGroup->add_action(action_name,
           sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_report_selected), report->get_name()) );
-
-        m_listNavReportActions.push_back(refAction);
-
-        //m_refUIManager->add_ui(merge_id, path, table_info->m_title, refAction, UI_MANAGER_MENUITEM);
-      }
+        m_listNavReportActions.push_back(action);
+     }
     }
   }
 
-  m_refUIManager->insert_action_group(m_refNavReportsActionGroup);
-
-
-  ui_description +=
-    "     </placeholder>"
-    "    </menu>"
-    "  </menubar>"
-    "</ui>";
-
-  //Add menus:
-  try
-  {
-    m_menu_reports_ui_merge_id = m_refUIManager->add_ui_from_string(ui_description);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
-  }
+  insert_action_group(action_group_name, m_refNavReportsActionGroup);
 }
 
 void AppWindow::enable_menu_print_layouts_details(bool enable)
 {
- if(m_refNavPrintLayoutsActionGroup)
-    m_refNavPrintLayoutsActionGroup->set_sensitive(enable);
+  if(!m_refNavPrintLayoutsActionGroup)
+    return;
+
+  //TODO: See https://bugzilla.gnome.org/show_bug.cgi?id=708149 about having this API in GSimpleActionGroup:
+  //m_refNavPrintLayoutsActionGroup->set_enabled(enable);
+
+  //Enable/Disable each action in the group:
+  //TODO: Suggest a simpler get_actions() method?
+  typedef std::vector<Glib::ustring> type_vec_action_names;
+  type_vec_action_names actions = m_refNavPrintLayoutsActionGroup->list_actions();
+  for(type_vec_action_names::const_iterator iter = actions.begin(); iter != actions.end(); ++iter)
+  {
+    const Glib::ustring name = *iter;
+    Glib::RefPtr<Gio::SimpleAction> action = 
+      Glib::RefPtr<Gio::SimpleAction>::cast_dynamic(m_refNavPrintLayoutsActionGroup->lookup_action(name));
+    if(action)
+      action->set_enabled(enable);
+  }
 }
 
 void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
 {
-  //TODO: This is copy/pasted from fill_menu_print_reports. Can we generalize it?
-
-  //TODO: There must be a better way than building a ui_string like this:
+  //TODO: This is copy/pasted from fill_menu_reports(). Can we generalize it?
 
   m_listNavPrintLayoutActions.clear();
-  if(m_menu_print_layouts_ui_merge_id)
-    m_refUIManager->remove_ui(m_menu_print_layouts_ui_merge_id);
+
+  //Remove existing items.
+  Glib::RefPtr<Glib::Object> object =
+    m_builder_menu->get_object("print-layouts-list");
+  Glib::RefPtr<Gio::Menu> menu =
+    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  if(!menu)
+  {
+    std::cerr << G_STRFUNC << ": GMenu not found" << std::endl;
+    return;
+  }
+
+  //TODO: Add API for this?
+  while(menu->get_n_items())
+  {
+    menu->remove(0);
+  }
+
+  const Glib::ustring action_group_name = "print-layouts-list";
 
   if(m_refNavPrintLayoutsActionGroup)
   {
-    m_refUIManager->remove_action_group(m_refNavPrintLayoutsActionGroup);
+    //TODO: See   //TODO: See https://bugzilla.gnome.org/show_bug.cgi?id=708150 about adding this API:
+    //m_builder_menu->remove_action_group(m_refNavPrintLayoutsActionGroup);
     m_refNavPrintLayoutsActionGroup.reset();
   }
 
-  m_refNavPrintLayoutsActionGroup = Gtk::ActionGroup::create("NavPrintLayoutsActions");
-
-  Glib::ustring ui_description =
-    "<ui>"
-    "  <menubar name='Bakery_MainMenu'>"
-    "    <menu action='BakeryAction_Menu_File'>"
-    "      <menu action='GlomAction_Menu_File_Print'>"
-    "        <placeholder name='Menu_PrintLayouts_Dynamic'>";
+  m_refNavPrintLayoutsActionGroup = Gio::SimpleActionGroup::create();
 
   Document* document = dynamic_cast<Document*>(get_document());
   const std::vector<Glib::ustring> tables = document->get_print_layout_names(table_name);
@@ -2119,41 +2238,21 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
       const Glib::ustring name = print_layout->get_name();
       if(!name.empty())
       {
-        const Glib::ustring action_name = "NavPrintLayoutAction_" + name;
+        const Glib::ustring title = Utils::string_escape_underscores(item_get_title(print_layout));
+        const Glib::ustring action_name = name;
 
-        ui_description += "<menuitem action='" + action_name + "' />";
+        menu->append(title, action_group_name + "." + action_name);
 
-        Glib::RefPtr<Gtk::Action> refAction = Gtk::Action::create( action_name, Utils::string_escape_underscores(item_get_title(print_layout)) );
-        m_refNavPrintLayoutsActionGroup->add(refAction,
-          sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_print_layout_selected), print_layout->get_name()) );
+        Glib::RefPtr<Gio::SimpleAction> action = m_refNavPrintLayoutsActionGroup->add_action(action_name,
+          sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_print_layout_selected), name) );
 
-        m_listNavPrintLayoutActions.push_back(refAction);
-
-        //m_refUIManager->add_ui(merge_id, path, table_info->m_title, refAction, UI_MANAGER_MENUITEM);
+        m_listNavPrintLayoutActions.push_back(action);
       }
     }
   }
 #endif
 
-  m_refUIManager->insert_action_group(m_refNavPrintLayoutsActionGroup);
-
-
-  ui_description +=
-    "       </placeholder>"
-    "      </menu>"
-    "    </menu>"
-    "  </menubar>"
-    "</ui>";
-
-  //Add menus:
-  try
-  {
-    m_menu_print_layouts_ui_merge_id = m_refUIManager->add_ui_from_string(ui_description);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
-  }
+  insert_action_group(action_group_name, m_refNavPrintLayoutsActionGroup);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -2528,20 +2627,14 @@ void AppWindow::on_menu_developer_translations()
   }
 }
 
-void AppWindow::on_menu_developer_active_platform_normal()
+void AppWindow::on_menu_developer_active_platform(const Glib::ustring& parameter)
 {
+  //The state is not changed automatically:
+  m_action_menu_developer_active_platform->change_state(parameter);
+
   Document* document = dynamic_cast<Document*>(get_document());
   if(document)
-   document->set_active_layout_platform("");
-
-  m_pFrame->show_table_refresh();
-}
-
-void AppWindow::on_menu_developer_active_platform_maemo()
-{
-  Document* document = dynamic_cast<Document*>(get_document());
-  if(document)
-   document->set_active_layout_platform("maemo");
+   document->set_active_layout_platform(parameter);
 
   m_pFrame->show_table_refresh();
 }
@@ -2648,7 +2741,10 @@ bool AppWindow::do_restore_backup(const Glib::ustring& backup_uri)
 
 void AppWindow::on_menu_developer_enable_layout_drag_and_drop()
 {
-  m_pFrame->set_enable_layout_drag_and_drop(m_action_enable_layout_drag_and_drop->get_active());
+  bool state = false;
+  m_action_enable_layout_drag_and_drop->get_state(state);
+
+  m_pFrame->set_enable_layout_drag_and_drop(state); //TODO: Change the menu's state.
 }
 
 
@@ -2807,9 +2903,9 @@ void AppWindow::set_progress_message(const Glib::ustring& message)
   m_infobar_progress->pulse();
   
   //Block interaction with the rest of the UI.
-  Gtk::MenuBar* pMenuBar = static_cast<Gtk::MenuBar*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
-  if(pMenuBar)
-    pMenuBar->set_sensitive(false);
+  if(m_menubar)
+    m_menubar->set_sensitive(false);
+
   m_pFrame->set_sensitive(false);
 }
 
@@ -2823,9 +2919,9 @@ void AppWindow::clear_progress_message()
   m_progress_collate_key.clear();
   m_infobar_progress->hide();
 
-  Gtk::MenuBar* pMenuBar = static_cast<Gtk::MenuBar*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
-  if(pMenuBar)
-    pMenuBar->set_sensitive();
+  if(m_menubar)
+    m_menubar->set_sensitive();
+
   m_pFrame->set_sensitive();
 }
 
@@ -2915,36 +3011,29 @@ void AppWindow::ui_bring_to_front()
   get_window()->raise();
 }
 
-void AppWindow::add_ui_from_string(const Glib::ustring& ui_description)
-{
-  try
-  {
-    m_refUIManager->add_ui_from_string(ui_description);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << "building menus failed: " <<  ex.what();
-  }
-}
-
 void AppWindow::init_menus_edit()
 {
-  using namespace Gtk;
   //Edit menu
   
   //Build actions:
-  m_refEditActionGroup = Gtk::ActionGroup::create("BakeryEditActions");
-  m_refEditActionGroup->add(Action::create("BakeryAction_Menu_Edit", _("_Edit")));
-  
-  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Cut", _("Cu_t")),
-                        sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_cut_activate));
-  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Copy", _("_Copy")),
-                        sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_copy_activate));
-  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Paste", _("_Paste")),
-                        sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_paste_activate));
-  m_refEditActionGroup->add(Action::create("BakeryAction_Edit_Clear", _("_Clear")));
+  m_refActionGroup_Edit = Gio::SimpleActionGroup::create();
 
-  m_refUIManager->insert_action_group(m_refEditActionGroup);
+  m_refActionGroup_Edit->add_action("cut",
+    sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_cut_activate));
+  m_refActionGroup_Edit->add_action("copy",
+    sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_copy_activate));
+  m_refActionGroup_Edit->add_action("paste",
+    sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_paste_activate));
+  m_refActionGroup_Edit->add_action("clear");
+    //TODO? sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_clear_activate));
+
+  //We remember this action, so that it can be explicitly activated later.
+  m_action_mode_find = m_refActionGroup_Edit->add_action_bool("find",
+    sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_find),
+    false);
+  m_listTableSensitiveActions.push_back(m_action_mode_find);
+
+  insert_action_group("edit", m_refActionGroup_Edit);
 }
 
 void AppWindow::add(Gtk::Widget& child)
@@ -3013,10 +3102,10 @@ void AppWindow::ui_show_modification_status()
 
   //Enable Save and SaveAs menu items:
   if(m_action_save)
-    m_action_save->set_sensitive(modified);
+    m_action_save->set_enabled(modified);
 
   if(m_action_saveas)
-    m_action_saveas->set_sensitive(modified);
+    m_action_saveas->set_enabled(modified);
 }
 
 AppWindow::enumSaveChanges AppWindow::ui_offer_to_save_changes()
@@ -3135,6 +3224,17 @@ void AppWindow::on_menu_edit_paste_activate()
     }
   }
 }
+
+void AppWindow::on_menu_edit_find()
+{
+  //The state is not changed automatically:
+  bool active = false;
+  m_action_mode_find->get_state(active);
+  m_action_mode_find->change_state(!active);
+
+  m_pFrame->on_menu_Edit_Find();
+}
+
 
 void AppWindow::on_recent_files_activate(Gtk::RecentChooser& chooser)
 {

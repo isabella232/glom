@@ -26,6 +26,7 @@
 #include <libglom/db_utils.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
 #include <glom/glade_utils.h>
+#include <giomm/menu.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -49,7 +50,7 @@ Box_Data_Calendar_Related::Box_Data_Calendar_Related()
 
   m_calendar.signal_month_changed().connect( sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_calendar_month_changed) );
 
-  setup_menu();
+  setup_menu(this);
   //m_calendar.add_events(Gdk::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
   m_calendar.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_calendar_button_press_event) );
 
@@ -496,22 +497,17 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
   return result;
 }
 
-void Box_Data_Calendar_Related::setup_menu()
+void Box_Data_Calendar_Related::setup_menu(Gtk::Widget* /* this */)
 {
-  m_refActionGroup = Gtk::ActionGroup::create();
+  m_refActionGroup = Gio::SimpleActionGroup::create();
 
-  m_refActionGroup->add(Gtk::Action::create("ContextMenu", "Context Menu") );
-
-  m_refContextEdit =  Gtk::Action::create("ContextEdit", _("_Edit"));
-
-  m_refActionGroup->add(m_refContextEdit,
+  m_refContextEdit = m_refActionGroup->add_action("edit",
     sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_MenuPopup_activate_Edit) );
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   // Don't add ContextLayout in client only mode because it would never
   // be sensitive anyway
-  m_refContextLayout =  Gtk::Action::create("ContextLayout", _("Layout"));
-  m_refActionGroup->add(m_refContextLayout,
+  m_refContextLayout =  m_refActionGroup->add_action("layout",
     sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_MenuPopup_activate_layout) );
 
   //TODO: This does not work until this widget is in a container in the window:
@@ -523,40 +519,50 @@ void Box_Data_Calendar_Related::setup_menu()
   }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  m_refUIManager = Gtk::UIManager::create();
+  Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create();
 
-  m_refUIManager->insert_action_group(m_refActionGroup);
+  insert_action_group("context", m_refActionGroup);
 
   //TODO: add_accel_group(m_refUIManager->get_accel_group());
 
+  const Glib::ustring ui_info =
+    "<interface>"
+    "  <menu id='ContextMenu'>"
+    "    <section>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>_Edit</attribute>"
+    "        <attribute name='action'>context.edit</attribute>"
+    "      </item>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>_Layout</attribute>"
+    "        <attribute name='action'>context.layout</attribute>"
+    "      </item>"
+    "    </section>"
+    "  </menu>"
+    "</interface>";
+
   try
   {
-    Glib::ustring ui_info =
-        "<ui>"
-        "  <popup name='ContextMenu'>"
-        "    <menuitem action='ContextEdit'/>"
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-        "    <menuitem action='ContextLayout'/>"
-#endif
-        "  </popup>"
-        "</ui>";
-
-    m_refUIManager->add_ui_from_string(ui_info);
+    builder->add_from_string(ui_info);
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "building menus failed: " <<  ex.what();
+    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
   }
 
   //Get the menu:
-  m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") );
-  if(!m_pMenuPopup)
-    g_warning("menu not found");
+  Glib::RefPtr<Glib::Object> object =
+    builder->get_object("ContextMenu");
+  Glib::RefPtr<Gio::Menu> gmenu =
+    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  if(!gmenu)
+    g_warning("GMenu not found");
 
+  m_pMenuPopup = new Gtk::Menu(gmenu);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   if(pApp)
-    m_refContextLayout->set_sensitive(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
+    m_refContextLayout->set_enabled(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 

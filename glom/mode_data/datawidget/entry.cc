@@ -42,20 +42,12 @@ Entry::Entry(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* build
   Gtk::Entry(cobject),
   m_glom_type(Field::TYPE_TEXT)
 {
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_menu();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
   init();
 }
 
 Entry::Entry(Field::glom_field_type glom_type)
-:
-  m_glom_type(glom_type)
+: m_glom_type(glom_type)
 {
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_menu();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
   init();
 }
 
@@ -65,6 +57,9 @@ Entry::~Entry()
 
 void Entry::init()
 {
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  setup_menu(this);
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
 void Entry::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)

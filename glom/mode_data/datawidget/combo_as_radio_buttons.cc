@@ -40,7 +40,7 @@ ComboAsRadioButtons::ComboAsRadioButtons()
   ComboChoices()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_menu();
+  setup_menu(this);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   init();
