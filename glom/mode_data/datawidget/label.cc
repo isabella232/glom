@@ -56,6 +56,8 @@ Label::~Label()
 
 void Label::init()
 {
+  setup_util_menu(this);
+
   add(m_label);
   m_label.show();
   set_events(Gdk::ALL_EVENTS_MASK);
