@@ -112,9 +112,7 @@ void Dialog_FieldsList::set_fields(const Glib::ustring& table_name, const Layout
     m_label_table_name->set_text(table_name);
 
 
-    //Show the field layout
-    typedef std::list< Glib::ustring > type_listStrings;
-
+    //Show the field layout:
     m_model_fields->clear();
     guint field_sequence = 0;
     for(LayoutGroup::type_list_items::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)

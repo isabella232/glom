@@ -135,9 +135,7 @@ void Dialog_Layout_Export::set_layout_groups(Document::type_list_layout_groups& 
     }
     */
 
-    //Show the field layout
-    typedef std::list< Glib::ustring > type_listStrings;
-
+    //Show the field layout:
     m_model_fields->clear();
 
     guint field_sequence = 1; //0 means no sequence

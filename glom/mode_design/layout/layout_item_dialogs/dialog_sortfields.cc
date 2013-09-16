@@ -110,8 +110,6 @@ void Dialog_SortFields::set_fields(const Glib::ustring& table_name, const Layout
 
 
     //Show the field layout
-    typedef std::list< Glib::ustring > type_listStrings;
-
     m_model_fields->clear();
     guint field_sequence = 0;
     for(LayoutItem_GroupBy::type_list_sort_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
