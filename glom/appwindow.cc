@@ -171,7 +171,7 @@ void AppWindow::on_connection_avahi_done()
 void AppWindow::init()
 {  
   GlomBakery::AppWindow_WithDoc::init(); //Create document and ask to show it in the UI.
-  init_layout(); // start setting up layout after we've gotten all widgets from UIManager
+  init_layout();
   show();
 }
 
