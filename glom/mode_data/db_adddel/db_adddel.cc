@@ -258,7 +258,7 @@ void DbAddDel::setup_menu(Gtk::Widget* /* widget */)
 
   //TODO: add_accel_group(builder->get_accel_group());
 
-  Glib::ustring ui_info =
+  const Glib::ustring ui_info =
     "<interface>"
     "  <menu id='ContextMenu'>"
     "    <section>"

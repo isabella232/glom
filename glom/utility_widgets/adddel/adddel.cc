@@ -29,6 +29,8 @@
 #include <glom/dialog_invalid_data.h>
 #include <glom/utils_ui.h>
 #include <libglom/utils.h>
+#include <gtkmm/builder.h>
+#include <giomm/menu.h>
 //#include <glom/bakery/app_gtk.h>
 #include <iostream> //For debug output.
 
@@ -228,37 +230,43 @@ void AddDel::on_MenuPopup_activate_Delete()
 
 void AddDel::setup_menu(Gtk::Widget* /* widget */)
 {
-  m_refActionGroup = Gtk::ActionGroup::create();
-  m_refActionGroup->add(Gtk::Action::create("ContextMenu", "Context Menu") );
+  m_refActionGroup = Gio::SimpleActionGroup::create();
 
-  m_refContextEdit = Gtk::Action::create("ContextEdit", _("_Edit"));
-  m_refActionGroup->add(m_refContextEdit,
-    sigc::mem_fun(*this, &AddDel::on_MenuPopup_activate_Edit) );
+  m_refContextEdit = m_refActionGroup->add_action("edit",
+   sigc::mem_fun(*this, &AddDel::on_MenuPopup_activate_Edit) );
 
   if(get_allow_user_actions())
   {
-    m_refContextDelete =  Gtk::Action::create("ContextDelete", _("_Delete"));
-    m_refActionGroup->add(m_refContextDelete,
+    m_refContextDelete = m_refActionGroup->add_action("delete",
       sigc::mem_fun(*this, &AddDel::on_MenuPopup_activate_Delete) );
   }
 
-  m_refUIManager = Gtk::UIManager::create();
+  insert_action_group("context", m_refActionGroup);
 
-  m_refUIManager->insert_action_group(m_refActionGroup);
 
-  //TODO: add_accel_group(m_refUIManager->get_accel_group());
+  Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create();
+  
+  //TODO: add_accel_group(builder->get_accel_group());
+
+  const Glib::ustring ui_info =
+    "<interface>"
+    "  <menu id='ContextMenu'>"
+    "    <section>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>_Edit</attribute>"
+    "        <attribute name='action'>context.edit</attribute>"
+    "      </item>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>_Delete</attribute>"
+    "        <attribute name='action'>context.delete</attribute>"
+    "      </item>"
+    "    </section>"
+    "  </menu>"
+    "</interface>";
 
   try
   {
-    Glib::ustring ui_info =
-        "<ui>"
-        "  <popup name='ContextMenu'>"
-        "    <menuitem action='ContextEdit'/>"
-        "    <menuitem action='ContextDelete'/>"
-        "  </popup>"
-        "</ui>";
-
-    m_refUIManager->add_ui_from_string(ui_info);
+    builder->add_from_string(ui_info);
   }
   catch(const Glib::Error& ex)
   {
@@ -266,9 +274,14 @@ void AddDel::setup_menu(Gtk::Widget* /* widget */)
   }
 
   //Get the menu:
-  m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") );
-  if(!m_pMenuPopup)
-    g_warning("menu not found");
+  Glib::RefPtr<Glib::Object> object =
+    builder->get_object("ContextMenu");
+  Glib::RefPtr<Gio::Menu> gmenu =
+    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  if(!gmenu)
+    g_warning("GMenu not found");
+
+  m_pMenuPopup = new Gtk::Menu(gmenu);
 }
 
 bool AddDel::on_button_press_event_Popup(GdkEventButton *event)
