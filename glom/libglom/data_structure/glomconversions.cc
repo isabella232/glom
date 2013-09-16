@@ -208,7 +208,6 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
 
   // Get a time_put face:
   typedef std::time_put<char> type_time_put;
-  typedef type_time_put::iter_type type_iterator;
   const type_time_put& tp = std::use_facet<type_time_put>(locale);
 
   //type_iterator begin(the_stream);
