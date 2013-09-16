@@ -28,6 +28,7 @@
 #include <gtkmm/box.h>
 #include <gtkmm/liststore.h>
 #include <gtkmm/uimanager.h>
+#include <giomm/simpleactiongroup.h>
 
 #include <vector>
 #include <map>
@@ -295,9 +296,8 @@ protected:
 
   Glib::ustring m_strTextActiveCell; //value before the change
   Gtk::Menu* m_pMenuPopup;
-  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
-  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
-  Glib::RefPtr<Gtk::Action> m_refContextEdit, m_refContextDelete;
+  Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup;
+  Glib::RefPtr<Gio::SimpleAction> m_refContextEdit, m_refContextDelete;
 
   bool m_auto_add;
   bool m_allow_add;
