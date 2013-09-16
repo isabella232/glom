@@ -20,6 +20,8 @@
 
 #include "notebooklabelglom.h"
 #include <glom/appwindow.h>
+#include <gtkmm/menu.h>
+#include <giomm/menu.h>
 #include <glibmm/i18n.h>
 
 #include <iostream>
@@ -109,42 +111,52 @@ void NotebookLabel::on_menu_delete_activate()
 
 void NotebookLabel::setup_menu(Gtk::Widget* /* widget */)
 {
-  m_refUIManager = Gtk::UIManager::create();
-  m_refActionGroup = Gtk::ActionGroup::create();
+  m_refActionGroup = Gio::SimpleActionGroup::create();
 
-  m_refActionGroup->add(Gtk::Action::create("NotebookMenu", "Notebook Menu") );
-  m_refNewGroup = Gtk::Action::create("NewGroup", _("New Group"));
-  m_refDelete = Gtk::Action::create("Delete", _("_Delete"));
-  
-  m_refActionGroup->add(m_refNewGroup,
+  m_refNewGroup = m_refActionGroup->add_action("new-group",
     sigc::mem_fun(*this, &NotebookLabel::on_menu_new_group_activate) );
-  m_refActionGroup->add(m_refDelete,
+  m_refDelete = m_refActionGroup->add_action("delete",
     sigc::mem_fun(*this, &NotebookLabel::on_menu_delete_activate) );
-    
-  m_refUIManager->insert_action_group(m_refActionGroup);
+ 
+  insert_action_group("context", m_refActionGroup);
+
+
+  Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create();
+
+  const Glib::ustring ui_info =
+    "<interface>"
+    "  <menu id='ContextMenu'>"
+    "    <section>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>New Group</attribute>"
+    "        <attribute name='action'>context.new-group</attribute>"
+    "      </item>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>_Delete</attribute>"
+    "        <attribute name='action'>context.delete</attribute>"
+    "      </item>"
+    "    </section>"
+    "  </menu>"
+    "</interface>";
 
   try
   {
-    Glib::ustring ui_info = 
-        "<ui>"
-        "  <popup name='NotebookMenu'>"
-        "    <menuitem action='NewGroup'/>"
-        "    <separator />"
-        "    <menuitem action='Delete' />"
-        "  </popup>"
-        "</ui>";
-
-    m_refUIManager->add_ui_from_string(ui_info);
+    builder->add_from_string(ui_info);
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
+    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what() << std::endl;
   }
 
   //Get the menu:
-  m_pPopupMenu = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/NotebookMenu") ); 
-  if(!m_pPopupMenu)
-    g_warning("menu not found");
+  Glib::RefPtr<Glib::Object> object =
+    builder->get_object("ContextMenu");
+  Glib::RefPtr<Gio::Menu> gmenu =
+    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  if(!gmenu)
+    g_warning("GMenu not found");
+
+  m_pPopupMenu = new Gtk::Menu(gmenu);
 }
 
 bool NotebookLabel::on_button_press_event(GdkEventButton *event)

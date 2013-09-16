@@ -25,8 +25,7 @@
 #include <gtkmm/eventbox.h>
 #include <gtkmm/label.h>
 #include <gtkmm/menu.h>
-#include <gtkmm/builder.h>
-#include <gtkmm/uimanager.h>
+#include <giomm/simpleactiongroup.h>
 
 namespace Glom
 {
@@ -59,10 +58,9 @@ private:
     
   virtual bool on_button_press_event(GdkEventButton *event);
   
-  Glib::RefPtr<Gtk::Action> m_refNewGroup;
-  Glib::RefPtr<Gtk::Action> m_refDelete;  
-  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
-  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
+  Glib::RefPtr<Gio::SimpleAction> m_refNewGroup;
+  Glib::RefPtr<Gio::SimpleAction> m_refDelete;  
+  Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup;
 };
 
 } //namespace Glom
