@@ -49,7 +49,7 @@ ButtonGlom::~ButtonGlom()
 
 void ButtonGlom::init()
 {
-
+  setup_util_menu(this);
 }
 
 AppWindow* ButtonGlom::get_appwindow() const

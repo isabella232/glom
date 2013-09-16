@@ -25,8 +25,8 @@
 
 #include <gtkmm/widget.h>
 #include <gtkmm/menu.h>
+#include <giomm/simpleactiongroup.h>
 #include "layoutwidgetbase.h"
-#include <gtkmm/uimanager.h>
 
 namespace Glom
 {
@@ -38,7 +38,8 @@ public:
   virtual ~LayoutWidgetUtils();
   
 protected:
-  void setup_util_menu();
+  void setup_util_menu(Gtk::Widget* widget);
+
   Gtk::Menu* m_pPopupMenuUtils;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_menu_properties_activate();
@@ -47,11 +48,10 @@ protected:
   virtual void on_menu_delete_activate();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-//private:  
-  Glib::RefPtr<Gtk::Action> m_refUtilProperties;
-  Glib::RefPtr<Gtk::Action> m_refUtilDelete;  
-  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
-  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
+private:  
+  Glib::RefPtr<Gio::SimpleAction> m_refUtilProperties;
+  Glib::RefPtr<Gio::SimpleAction> m_refUtilDelete;  
+  Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup;
 };
 
 } // namespace Glom

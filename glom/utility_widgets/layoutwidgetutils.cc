@@ -21,6 +21,8 @@
  */
 
 #include "layoutwidgetutils.h"
+#include <gtkmm/builder.h>
+#include <giomm/menu.h>
 #include <glibmm/i18n.h>
 #include <iostream>
 
@@ -30,14 +32,8 @@ namespace Glom
 LayoutWidgetUtils::LayoutWidgetUtils() :
   m_pPopupMenuUtils(0)
 {
-  m_refActionGroup = Gtk::ActionGroup::create();
-
-  m_refActionGroup->add(Gtk::Action::create("UtilMenu", "Utility Menu") );
-  m_refUtilProperties = Gtk::Action::create("UtilProperties", _("Properties"));
-  m_refUtilDelete = Gtk::Action::create("UtilDelete", _("_Delete"));
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_util_menu();
-#endif
+  //Derived class's constructors must call this:
+  //setup_util_menu(this);
 }
 
 LayoutWidgetUtils::~LayoutWidgetUtils()
@@ -46,29 +42,39 @@ LayoutWidgetUtils::~LayoutWidgetUtils()
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void LayoutWidgetUtils::setup_util_menu()
+void LayoutWidgetUtils::setup_util_menu(Gtk::Widget* widget)
 {
-  m_refUIManager = Gtk::UIManager::create();
-	
-  m_refActionGroup->add(m_refUtilProperties,
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  m_refActionGroup = Gio::SimpleActionGroup::create();
+
+  m_refUtilProperties = m_refActionGroup->add_action("properties",
     sigc::mem_fun(*this, &LayoutWidgetUtils::on_menu_properties_activate) );
-  m_refActionGroup->add(m_refUtilDelete,
+  m_refUtilDelete = m_refActionGroup->add_action("delete",
     sigc::mem_fun(*this, &LayoutWidgetUtils::on_menu_delete_activate) );
-    
-  m_refUIManager->insert_action_group(m_refActionGroup);
+  
+  widget->insert_action_group("utility", m_refActionGroup);
+
+  Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create();
+
+  Glib::ustring ui_info =
+    "<interface>"
+    "  <menu id='UtilMenu'>"
+    "    <section>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>Properties</attribute>"
+    "        <attribute name='action'>utility.properties</attribute>"
+    "      </item>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>_Delete</attribute>"
+    "        <attribute name='action'>utility.delete</attribute>"
+    "      </item>"
+    "    </section>"
+    "  </menu>"
+    "</interface";
 
   try
   {
-    Glib::ustring ui_info = 
-        "<ui>"
-        "  <popup name='UtilMenu'>"
-        "    <menuitem action='UtilProperties'/>"
-        "    <separator />"
-        "    <menuitem action='UtilDelete' />"
-        "  </popup>"
-        "</ui>";
-
-    m_refUIManager->add_ui_from_string(ui_info);
+    builder->add_from_string(ui_info);
   }
   catch(const Glib::Error& ex)
   {
@@ -76,9 +82,15 @@ void LayoutWidgetUtils::setup_util_menu()
   }
 
   //Get the menu:
-  m_pPopupMenuUtils = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/UtilMenu") ); 
-  if(!m_pPopupMenuUtils)
-    g_warning("menu not found");
+  Glib::RefPtr<Glib::Object> object =
+    builder->get_object("UtilMenu");
+  Glib::RefPtr<Gio::Menu> gmenu =
+    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  if(!gmenu)
+    g_warning("GMenu not found");
+
+  m_pPopupMenuUtils = new Gtk::Menu(gmenu);
+#endif
 }
 
 void LayoutWidgetUtils::on_menu_delete_activate()

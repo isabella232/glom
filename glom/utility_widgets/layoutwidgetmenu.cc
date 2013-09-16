@@ -213,8 +213,8 @@ void LayoutWidgetMenu::on_menupopup_activate_delete()
   Gtk::Widget* parent = dynamic_cast<Gtk::Widget*>(this);
   if(!parent)
   {
-    // Should never happen!
-    std::cerr << "LayoutWidgetUtils is no Gtk::Widget" << std::endl;
+    // Should never happen:
+    std::cerr << G_STRFUNC << ": this is not a Gtk::Widget" << std::endl;
     return;
   }
 

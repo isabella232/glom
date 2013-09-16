@@ -56,6 +56,7 @@ FlowTableWithFields::FlowTableWithFields(const Glib::ustring& table_name)
   m_table_name(table_name),
   m_find_mode(false)
 {
+  setup_util_menu(this);
 }
 
 FlowTableWithFields::~FlowTableWithFields()
