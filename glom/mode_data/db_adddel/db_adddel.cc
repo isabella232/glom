@@ -259,30 +259,30 @@ void DbAddDel::setup_menu(Gtk::Widget* /* widget */)
   //TODO: add_accel_group(builder->get_accel_group());
 
   Glib::ustring ui_info =
-       "<interface>"
-        "  <menu id='ContextMenu'>"
-        "    <section>"
-        "      <item>"
-        "        <attribute name='label' translatable='yes'>_Edit</attribute>"
-        "        <attribute name='action'>context.edit</attribute>"
-        "      </item>"
-        "      <item>"
-        "        <attribute name='label' translatable='yes'>_Add</attribute>"
-        "        <attribute name='action'>context.add</attribute>"
-        "      </item>"
-        "      <item>"
-        "        <attribute name='label' translatable='yes'>_Delete</attribute>"
-        "        <attribute name='action'>context.delete</attribute>"
-        "      </item>"
+    "<interface>"
+    "  <menu id='ContextMenu'>"
+    "    <section>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>_Edit</attribute>"
+    "        <attribute name='action'>context.edit</attribute>"
+    "      </item>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>_Add</attribute>"
+    "        <attribute name='action'>context.add</attribute>"
+    "      </item>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>_Delete</attribute>"
+    "        <attribute name='action'>context.delete</attribute>"
+    "      </item>"
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-        "      <item>"
-        "        <attribute name='label' translatable='yes'>_Layout</attribute>"
-        "        <attribute name='action'>context.layout</attribute>"
-        "      </item>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>_Layout</attribute>"
+    "        <attribute name='action'>context.layout</attribute>"
+    "      </item>"
 #endif
-        "    </section>"
-        "  </menu>"
-        "</interface>";
+    "    </section>"
+    "  </menu>"
+    "</interface>";
 
   try
   {

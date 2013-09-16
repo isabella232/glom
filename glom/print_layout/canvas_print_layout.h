@@ -26,8 +26,7 @@
 #include <glom/print_layout/canvas_layout_item.h>
 #include <libglom/data_structure/print_layout.h>
 #include <libglom/data_structure/layout/layoutitem_line.h>
-#include <gtkmm/uimanager.h>
-#include <gtkmm/toggleaction.h>
+#include <giomm/simpleactiongroup.h>
 #include <gtkmm/pagesetup.h>
 #include <gtkmm/menu.h>
 
@@ -154,10 +153,8 @@ private:
 
   //Context menu for existing items:
   Gtk::Menu* m_context_menu;
-  Glib::RefPtr<Gtk::ActionGroup> m_context_menu_action_group;
-  Glib::RefPtr<Gtk::UIManager> m_context_menu_uimanager;
-
-  Glib::RefPtr<Gtk::Action> m_action_edit, m_action_formatting, m_action_delete;
+  Glib::RefPtr<Gio::SimpleActionGroup> m_context_menu_action_group;
+  Glib::RefPtr<Gio::SimpleAction> m_action_edit, m_action_formatting, m_action_delete;
   Glib::RefPtr<CanvasLayoutItem> m_context_item; //The selected item when showing the context menu.,
 
   Glib::RefPtr<Gtk::PageSetup> m_page_setup;

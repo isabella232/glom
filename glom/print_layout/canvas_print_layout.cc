@@ -1,7 +1,7 @@
 
 /* Glom
  *
- * Copyright (C) 2001-2004 Murray Cumming
+ * Copyright (C) 2001-2013 Murray Cumming
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -35,6 +35,8 @@
 #include <libglom/db_utils.h>
 
 #include <glom/glade_utils.h>
+#include <gtkmm/builder.h>
+#include <giomm/menu.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -265,9 +267,7 @@ void Canvas_PrintLayout::fill_layout_group(const sharedptr<LayoutGroup>& group)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Canvas_PrintLayout::setup_context_menu()
 {
-  m_context_menu_action_group = Gtk::ActionGroup::create();
-
-  m_context_menu_action_group->add(Gtk::Action::create("ContextMenu", "Context Menu") );
+  m_context_menu_action_group = Gio::SimpleActionGroup::create();
 
 /*
   Glib::RefPtr<Gtk::Action> action =  Gtk::Action::create("ContextInsertField", _("Field"));
@@ -279,33 +279,40 @@ void Canvas_PrintLayout::setup_context_menu()
     sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_insert_text) );
 */
 
-  m_action_edit = Gtk::Action::create("ContextMenuEdit", _("_Edit"));
-  m_context_menu_action_group->add(m_action_edit);
-  m_action_formatting =  Gtk::Action::create("ContextMenuFormatting", _("_Formatting"));
-  m_context_menu_action_group->add(m_action_formatting);
-  m_action_delete =  Gtk::Action::create("ContextMenuDelete", _("_Delete"));
-  m_context_menu_action_group->add(m_action_delete);
+  m_action_edit = m_context_menu_action_group->add_action("edit",
+    sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_edit));
+  m_action_formatting = m_context_menu_action_group->add_action("formatting",
+    sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_formatting));
+  m_action_delete = m_context_menu_action_group->add_action("delete",
+    sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_delete));
 
-  m_action_edit->signal_activate().connect( sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_edit) );
-  m_action_formatting->signal_activate().connect( sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_formatting) );
-  m_action_delete->signal_activate().connect( sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_delete) );
+  insert_action_group("context", m_context_menu_action_group);
 
+  Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create();
 
-  m_context_menu_uimanager = Gtk::UIManager::create();
-  m_context_menu_uimanager->insert_action_group(m_context_menu_action_group);
+  const Glib::ustring ui_info =
+    "<interface>"
+    "  <menu id='ContextMenu'>"
+    "    <section>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>_Edit</attribute>"
+    "        <attribute name='action'>context.edit</attribute>"
+    "      </item>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>_Formatting</attribute>"
+    "        <attribute name='action'>context.formatting</attribute>"
+    "      </item>"
+    "      <item>"
+    "        <attribute name='label' translatable='yes'>_delete</attribute>"
+    "        <attribute name='action'>context.delete</attribute>"
+    "      </item>"
+    "    </section>"
+    "  </menu>"
+    "</interface>";
 
   try
   {
-    Glib::ustring ui_info =
-      "<ui>"
-      "  <popup name='ContextMenu'>"
-      "    <menuitem action='ContextMenuEdit' />"
-      "    <menuitem action='ContextMenuFormatting' />"
-      "    <menuitem action='ContextMenuDelete' />"
-      "  </popup>"
-      "</ui>";
-
-    m_context_menu_uimanager->add_ui_from_string(ui_info);
+    builder->add_from_string(ui_info);
   }
   catch(const Glib::Error& ex)
   {
@@ -313,7 +320,14 @@ void Canvas_PrintLayout::setup_context_menu()
   }
 
   //Get the menu:
-  m_context_menu = dynamic_cast<Gtk::Menu*>( m_context_menu_uimanager->get_widget("/ContextMenu") );
+  Glib::RefPtr<Glib::Object> object =
+    builder->get_object("ContextMenu");
+  Glib::RefPtr<Gio::Menu> gmenu =
+    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  if(!gmenu)
+    g_warning("GMenu not found");
+
+  m_context_menu = new Gtk::Menu(gmenu);
 }
 
 
@@ -332,7 +346,7 @@ void Canvas_PrintLayout::on_item_show_context_menu(guint button, guint32 activat
     enable_formatting = true;
   }
 
-  m_action_formatting->set_sensitive(enable_formatting);
+  m_action_formatting->set_enabled(enable_formatting);
 
   m_context_menu->popup(button, activate_time);
 }
