@@ -203,8 +203,8 @@ protected:
   void on_recent_files_activate(Gtk::RecentChooser& recent_chooser);
 
   //Menu Builder and Actions
+  Glib::RefPtr<Gtk::Builder> m_builder;
   Gtk::MenuBar* m_menubar;
-  Glib::RefPtr<Gtk::Builder> m_builder_menu;
   Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup_File,
      m_refActionGroup_Edit, m_refActionGroup_Tables,
      m_refActionGroup_Developer, m_refActionGroup_Reports;
@@ -287,7 +287,6 @@ private:
 #endif // !G_OS_WIN32
 
   //Widgets:
-
   typedef std::list< Glib::RefPtr<Gio::SimpleAction> > type_listActions;
   type_listActions m_listDeveloperActions; //Only enabled when in developer mode.
   type_listActions m_listTableSensitiveActions; // Only enabled when a table is loaded.
