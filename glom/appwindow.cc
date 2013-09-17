@@ -229,8 +229,6 @@ void AppWindow::init_layout()
   //Add menu bar at the top:
   m_pBoxTop->pack_start(*m_menubar, Gtk::PACK_SHRINK);
 
-  //TODO? add_accel_group(m_builder_menu->get_accel_group());
-
   //Add placeholder, to be used by add():
   //m_pBoxTop->pack_start(m_VBox_PlaceHolder);
   //m_VBox_PlaceHolder.show();
@@ -241,49 +239,49 @@ void AppWindow::init_menus_file()
   // File menu
 
   //Build actions:
-  m_refFileActionGroup = Gio::SimpleActionGroup::create();
+  m_refActionGroup_File = Gio::SimpleActionGroup::create();
 
   //File actions
-  m_refFileActionGroup->add_action("new",
+  m_refActionGroup_File->add_action("new",
     sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_file_new));
-  m_refFileActionGroup->add_action("open",
+  m_refActionGroup_File->add_action("open",
     sigc::mem_fun((GlomBakery::AppWindow_WithDoc&)*this, &GlomBakery::AppWindow_WithDoc::on_menu_file_open));
 
   Glib::RefPtr<Gio::SimpleAction> action;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  action = m_refFileActionGroup->add_action("save-as-example",
+  action = m_refActionGroup_File->add_action("save-as-example",
     sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_file_save_as_example));
   add_developer_action(action);
 
-  action = m_refFileActionGroup->add_action("export",
+  action = m_refActionGroup_File->add_action("export",
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_export));
   m_listTableSensitiveActions.push_back(action);
 
-  action = m_refFileActionGroup->add_action("import",
+  action = m_refActionGroup_File->add_action("import",
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_import));
   m_listTableSensitiveActions.push_back(action);
 
-  m_toggleaction_network_shared = m_refFileActionGroup->add_action_bool("share",
+  m_toggleaction_network_shared = m_refActionGroup_File->add_action_bool("share",
     sigc::mem_fun(*this, &AppWindow::on_menu_file_toggle_share) );
   m_listTableSensitiveActions.push_back(m_toggleaction_network_shared);
 #endif //!GLOM_ENABLE_CLIENT_ONLY
 
-  action = m_refFileActionGroup->add_action("print",
+  action = m_refActionGroup_File->add_action("print",
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print) );
   m_listTableSensitiveActions.push_back(action);
 
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gio::SimpleAction> action_print_edit =
-    m_refFileActionGroup->add_action("edit-print-layouts",
+    m_refActionGroup_File->add_action("edit-print-layouts",
       sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print_edit_layouts));
   m_listDeveloperActions.push_back(action_print_edit);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  m_refFileActionGroup->add_action("close",
+  m_refActionGroup_File->add_action("close",
     sigc::mem_fun((GlomBakery::AppWindow_WithDoc&)*this, &GlomBakery::AppWindow_WithDoc::on_menu_file_close));
 
-  insert_action_group("file", m_refFileActionGroup);
+  insert_action_group("file", m_refActionGroup_File);
 }
 
 void AppWindow::init_menus()
@@ -318,25 +316,13 @@ void AppWindow::init_menus()
   m_refActionGroup_Reports = Gio::SimpleActionGroup::create();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_refActionGroup_Reports->add_action("GlomAction_Menu_EditReports",
+  m_refActionGroup_Reports->add_action("edit-reports",
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Reports_EditReports) );
   m_listDeveloperActions.push_back(action);
   m_listTableSensitiveActions.push_back(action);
 #endif
 
   insert_action_group("reports", m_refActionGroup_Developer);
-
-
-  //Edit menu:
-  m_refActionGroup_Edit = Gio::SimpleActionGroup::create();
-
-  //We remember this action, so that it can be explicitly activated later.
-  m_action_mode_find = m_refActionGroup_Edit->add_action("GlomAction_Menu_Edit_Find", //TODO: Gtk::AccelKey("<control>F"),
-    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Edit_Find) );
-  m_listTableSensitiveActions.push_back(m_action_mode_find);
-
-  insert_action_group("edit", m_refActionGroup_Developer);
-
 
   //Developer menu:
   m_refActionGroup_Developer = Gio::SimpleActionGroup::create();
@@ -514,6 +500,7 @@ void AppWindow::init_menus()
     "        <item>"
     "          <attribute name='label' translatable='yes'>_Find</attribute>"
     "          <attribute name='action'>edit.find</attribute>"
+    "          <attribute name='accel'>&lt;control&gt;F</attribute>"
     "        </item>"
     "      </section>"
     "    </submenu>"
@@ -3020,18 +3007,24 @@ void AppWindow::init_menus_edit()
   //Edit menu
   
   //Build actions:
-  m_refEditActionGroup = Gio::SimpleActionGroup::create();
+  m_refActionGroup_Edit = Gio::SimpleActionGroup::create();
 
-  m_refEditActionGroup->add_action("cut",
+  m_refActionGroup_Edit->add_action("cut",
     sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_cut_activate));
-  m_refEditActionGroup->add_action("copy",
+  m_refActionGroup_Edit->add_action("copy",
     sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_copy_activate));
-  m_refEditActionGroup->add_action("paste",
+  m_refActionGroup_Edit->add_action("paste",
     sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_paste_activate));
-  m_refEditActionGroup->add_action("clear");
+  m_refActionGroup_Edit->add_action("clear");
     //TODO? sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_clear_activate));
 
-  insert_action_group("edit", m_refEditActionGroup);
+  //We remember this action, so that it can be explicitly activated later.
+  m_action_mode_find = m_refActionGroup_Edit->add_action_bool("find",
+    sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_find),
+    false);
+  m_listTableSensitiveActions.push_back(m_action_mode_find);
+
+  insert_action_group("edit", m_refActionGroup_Edit);
 }
 
 void AppWindow::add(Gtk::Widget& child)
@@ -3222,6 +3215,17 @@ void AppWindow::on_menu_edit_paste_activate()
     }
   }
 }
+
+void AppWindow::on_menu_edit_find()
+{
+  //The state is not changed automatically:
+  bool active = false;
+  m_action_mode_find->get_state(active);
+  m_action_mode_find->change_state(!active);
+
+  m_pFrame->on_menu_Edit_Find();
+}
+
 
 void AppWindow::on_recent_files_activate(Gtk::RecentChooser& chooser)
 {
