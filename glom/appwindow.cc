@@ -597,13 +597,15 @@ void AppWindow::init_menus()
     "      <submenu>"
     "        <attribute name='label' translatable='yes'>Active Platform</attribute>"
     "        <item>"
-    "         <attribute name='label' translatable='yes'>_Normal</attribute>" //TODO: _("The layout to use for normal desktop environments."));
+    "         <attribute name='label' translatable='yes'>_Normal</attribute>"
     "          <attribute name='action'>developer.active-platform</attribute>"
+//TODO:    "          <attribute >The layout to use for normal desktop environments.</attribute>
     "          <attribute name='target'></attribute>"
     "        </item>"
     "        <item>"
-    "          <attribute name='label' translatable='yes'>_Maemo</attribute>" //TODO: This is obsolete //TODO: _("The layout to use for Maemo devices."));
+    "          <attribute name='label' translatable='yes'>_Maemo</attribute>" //TODO: This is obsolete
     "          <attribute name='action'>developer.active-platform</attribute>"
+//TODO:    "          <attribute >The layout to use for Maemo devices.</attribute>"
     "          <attribute name='target'>maemo</attribute>"
     "        </item>"
     "      </submenu>"
@@ -628,12 +630,14 @@ void AppWindow::init_menus()
     "      <attribute name='label' translatable='yes'>_Help</attribute>"
     "      <section>"
     "        <item>"
-    "          <attribute name='label' translatable='yes'>_About</attribute>" //TODO: _("About the application")),
+    "          <attribute name='label' translatable='yes'>_About</attribute>"
     "          <attribute name='action'>help.about</attribute>"
+//TODO:    "          <attribute >About the application</attribute>"
     "        </item>"
     "        <item>"
-    "          <attribute name='label' translatable='yes'>_Contents</attribute>" //TODO: "Help with the application")
+    "          <attribute name='label' translatable='yes'>_Contents</attribute>"
     "          <attribute name='action'>help.contents</attribute>"
+//TODO:    "          <attribute >Help with the application</attribute>"
     "        </item>"
     "      </section>"
     "    </submenu>"
