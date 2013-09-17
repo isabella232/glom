@@ -76,7 +76,8 @@ const bool AppWindow::glade_developer(false);
 
 AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : GlomBakery::AppWindow_WithDoc("Glom"),
-  Gtk::ApplicationWindow(cobject), 
+  Gtk::ApplicationWindow(cobject),
+  m_builder(builder),
   m_menubar(0),
   m_pVBox(0),
   m_VBox_PlaceHolder(Gtk::ORIENTATION_VERTICAL),
@@ -102,6 +103,19 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
   builder->get_widget("bakery_vbox", m_pBoxTop);
   builder->get_widget_derived("vbox_frame", m_pFrame); //This one is derived. There's a lot happening here.
   builder->get_widget_derived("infobar_progress", m_infobar_progress);
+
+  //Add menu bar at the top:
+  Glib::RefPtr<Glib::Object> object =
+    builder->get_object("mainmenu");
+  Glib::RefPtr<Gio::Menu> gmenu =
+    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
+  if(!gmenu)
+    g_warning("GMenu not found");
+
+  m_menubar = new Gtk::MenuBar(gmenu);
+  m_menubar->show();
+  m_pBoxTop->pack_start(*m_menubar, Gtk::PACK_SHRINK);
+
 
   add_mime_type("application/x-glom"); //TODO: make this actually work - we need to register it properly.
 
@@ -226,12 +240,6 @@ void AppWindow::set_stop_auto_server_shutdown(bool val)
 
 void AppWindow::init_layout()
 {
-  //Add menu bar at the top:
-  m_pBoxTop->pack_start(*m_menubar, Gtk::PACK_SHRINK);
-
-  //Add placeholder, to be used by add():
-  //m_pBoxTop->pack_start(m_VBox_PlaceHolder);
-  //m_VBox_PlaceHolder.show();
 }
 
 void AppWindow::init_menus_file()
@@ -286,8 +294,6 @@ void AppWindow::init_menus_file()
 
 void AppWindow::init_menus()
 {
-  m_builder_menu = Gtk::Builder::create();
-
   init_menus_file();
   init_menus_edit();
 
@@ -417,257 +423,6 @@ void AppWindow::init_menus()
   m_refHelpActionGroup->add_action("contents",
     sigc::mem_fun(*this, &AppWindow::on_menu_help_contents) );
   insert_action_group("help", m_refHelpActionGroup);                       
-
-
-  //The placeholders allow us to merge menu items in later:
-  static const Glib::ustring ui_description =
-    "<interface>"
-    "  <menu id='mainmenu'>"
-    "    <submenu>"
-    "      <attribute name='label' translatable='yes'>_File</attribute>"
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_New</attribute>"
-    "          <attribute name='action'>file.new</attribute>"
-    "          <attribute name='accel'>&lt;Primary&gt;n</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Open</attribute>"
-    "          <attribute name='action'>file.open</attribute>"
-    "          <attribute name='accel'>&lt;Primary&gt;o</attribute>"
-    "        </item>"
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Save as Example</attribute>"
-    "          <attribute name='action'>file.save-as-example</attribute>"
-    "        </item>"
-#endif // GLOM_ENABLE_CLIENT_ONLY
-    "      </section>"
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Export</attribute>"
-    "          <attribute name='action'>file.export</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>I_mport</attribute>"
-    "          <attribute name='action'>file.import</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>S_hared on Network</attribute>"
-    "          <attribute name='action'>file.share</attribute>"
-    "        </item>"
-    "      </section>"
-#endif // GLOM_ENABLE_CLIENT_ONLY
-    "      <submenu>"
-    "        <attribute name='label' translatable='yes'>_Print</attribute>"
-    "        <section id='print-layouts-list'/>"
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-    "        <section>"
-    "          <item>"
-    "            <attribute name='label' translatable='yes'>_Edit Print Layouts</attribute>"
-    "            <attribute name='action'>file.edit-print-layouts</attribute>"
-    "          </item>"
-    "        </section>"
-#endif //GLOM_ENABLE_CLIENT_ONLY
-    "      </submenu>"
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Close</attribute>"
-    "          <attribute name='action'>file.close</attribute>"
-    "          <attribute name='accel'>&lt;Primary&gt;w</attribute>"
-    "        </item>"
-    "      </section>"
-    "    </submenu>"
-    "    <submenu>"
-    "      <attribute name='label' translatable='yes'>_Edit</attribute>"
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Cu_t</attribute>"
-    "          <attribute name='action'>edit.cut</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Copy</attribute>"
-    "          <attribute name='action'>edit.copy</attribute>"
-    "          <attribute name='accel'>&lt;Primary&gt;c</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Paste</attribute>"
-    "          <attribute name='action'>edit.paste</attribute>"
-    "          <attribute name='accel'>&lt;Primary&gt;v</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Clear</attribute>"
-    "          <attribute name='action'>edit.clear</attribute>"
-    "        </item>"
-    "      </section>"
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Find</attribute>"
-    "          <attribute name='action'>edit.find</attribute>"
-    "          <attribute name='accel'>&lt;control&gt;F</attribute>"
-    "        </item>"
-    "      </section>"
-    "    </submenu>"
-    "    <submenu id='tables'>"
-    "      <attribute name='label' translatable='yes'>_Tables</attribute>"
-    "      <section id='tables-list'/>"
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Edit Tables</attribute>"
-    "          <attribute name='action'>tables.edit-tables</attribute>"
-    "        </item>"
-    "      </section>"
-#endif //GLOM_ENABLE_CLIENT_ONLY
-    "    </submenu>"
-    "    <submenu>"
-    "      <attribute name='label' translatable='yes'>R_eports</attribute>"
-    "      <section id='reports-list'/>"
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Edit Reports</attribute>"
-    "          <attribute name='action'>reports.edit-reports</attribute>"
-    "        </item>"
-    "      </section>"
-#endif //GLOM_ENABLE_CLIENT_ONLY
-    "    </submenu>"
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-    "    <submenu>"
-    "      <attribute name='label' translatable='yes'>_Developer</attribute>"
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Operator</attribute>"
-    "          <attribute name='action'>developer.usermode</attribute>"
-    "          <attribute name='target' type='i'>0</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Developer</attribute>"
-    "          <attribute name='action'>developer.usermode</attribute>"
-    "          <attribute name='target' type='i'>1</attribute>"
-    "        </item>"
-    "      </section>"
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Fields</attribute>"
-    "          <attribute name='action'>developer.fields</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Relationships</attribute>"
-    "          <attribute name='action'>developer.relationships</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Relationships _Overview</attribute>"
-    "          <attribute name='action'>developer.relationships-overview</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Layout</attribute>"
-    "          <attribute name='action'>developer.layout</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Print Layouts</attribute>"
-    "          <attribute name='action'>developer.print-layouts</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Reports</attribute>"
-    "          <attribute name='action'>developer.reports</attribute>"
-    "        </item>"
-    "      </section>"
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Database Preferences</attribute>"
-    "          <attribute name='action'>developer.database-preferences</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Users</attribute>"
-    "          <attribute name='action'>developer.users</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Script _Library</attribute>"
-    "          <attribute name='action'>developer.script-library</attribute>"
-    "        </item>"
-    "      </section>"
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Translations</attribute>"
-    "          <attribute name='action'>developer.translations</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Test Tra_nslation</attribute>"
-    "          <attribute name='action'>developer.change-language</attribute>"
-    "        </item>"
-    "      </section>"
-    "      <section>"
-    "      <submenu>"
-    "        <attribute name='label' translatable='yes'>Active Platform</attribute>"
-    "        <item>"
-    "         <attribute name='label' translatable='yes'>_Normal</attribute>"
-    "          <attribute name='action'>developer.active-platform</attribute>"
-//TODO:    "          <attribute >The layout to use for normal desktop environments.</attribute>
-    "          <attribute name='target'></attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Maemo</attribute>" //TODO: This is obsolete
-    "          <attribute name='action'>developer.active-platform</attribute>"
-//TODO:    "          <attribute >The layout to use for Maemo devices.</attribute>"
-    "          <attribute name='target'>maemo</attribute>"
-    "        </item>"
-    "      </submenu>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>_Drag and Drop Layout</attribute>" //TODO: This is obsolete
-    "        <attribute name='action'>developer.drag-and-drop-layout</attribute>"
-    "      </item>"
-    "      </section>"
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Export Backup</attribute>"
-    "          <attribute name='action'>developer.export-backup</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Restore Backup</attribute>"
-    "          <attribute name='action'>developer.restore-backup</attribute>"
-    "        </item>"
-    "      </section>"
-    "    </submenu>"
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-    "    <submenu>"
-    "      <attribute name='label' translatable='yes'>_Help</attribute>"
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_About</attribute>"
-    "          <attribute name='action'>help.about</attribute>"
-//TODO:    "          <attribute >About the application</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Contents</attribute>"
-    "          <attribute name='action'>help.contents</attribute>"
-//TODO:    "          <attribute >Help with the application</attribute>"
-    "        </item>"
-    "      </section>"
-    "    </submenu>"
-    "  </menu>"
-    "</interface>";
-  
-   try
-  {
-    m_builder_menu->add_from_string(ui_description);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what() << std::endl;
-  }
-
-  Glib::RefPtr<Glib::Object> object =
-    m_builder_menu->get_object("mainmenu");
-  Glib::RefPtr<Gio::Menu> gmenu =
-    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
-  if(!gmenu)
-    g_warning("GMenu not found");
-
-  m_menubar = new Gtk::MenuBar(gmenu);
-  m_menubar->show();
-
 
   update_table_sensitive_ui();
 
@@ -2067,14 +1822,14 @@ void AppWindow::fill_menu_tables()
 
   if(m_refNavTablesActionGroup)
   {
-    //TODO? m_builder_menu->remove_action_group(m_refNavTablesActionGroup);
+    //TODO? remove_action_group(m_refNavTablesActionGroup);
     m_refNavTablesActionGroup.reset();
   }
 
   m_refNavTablesActionGroup = Gio::SimpleActionGroup::create();
 
   Glib::RefPtr<Glib::Object> object =
-    m_builder_menu->get_object("tables-list");
+    m_builder->get_object("tables-list");
   Glib::RefPtr<Gio::Menu> menu =
     Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
   if(!menu)
@@ -2118,7 +1873,7 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
 
   //Remove existing items.
   Glib::RefPtr<Glib::Object> object =
-    m_builder_menu->get_object("reports-list");
+    m_builder->get_object("reports-list");
   Glib::RefPtr<Gio::Menu> menu =
     Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
   if(!menu)
@@ -2198,7 +1953,7 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
 
   //Remove existing items.
   Glib::RefPtr<Glib::Object> object =
-    m_builder_menu->get_object("print-layouts-list");
+    m_builder->get_object("print-layouts-list");
   Glib::RefPtr<Gio::Menu> menu =
     Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
   if(!menu)

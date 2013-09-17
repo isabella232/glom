@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
+  <!-- interface-requires gtk+ 3.10 -->
   <object class="GtkWindow" id="window_main">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Glom</property>
@@ -143,4 +143,218 @@
       </object>
     </child>
   </object>
+
+  <menu id='mainmenu'>
+    <submenu>
+      <attribute name='label' translatable='yes'>_File</attribute>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_New</attribute>
+          <attribute name='action'>file.new</attribute>
+          <attribute name='accel'>&lt;Primary&gt;n</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Open</attribute>
+          <attribute name='action'>file.open</attribute>
+          <attribute name='accel'>&lt;Primary&gt;o</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Save as Example</attribute>
+          <attribute name='action'>file.save-as-example</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Export</attribute>
+          <attribute name='action'>file.export</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>I_mport</attribute>
+          <attribute name='action'>file.import</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>S_hared on Network</attribute>
+          <attribute name='action'>file.share</attribute>
+        </item>
+      </section>
+      <submenu>
+        <attribute name='label' translatable='yes'>_Print</attribute>
+        <section id='print-layouts-list'/>
+        <section>
+          <item>
+            <attribute name='label' translatable='yes'>_Edit Print Layouts</attribute>
+            <attribute name='action'>file.edit-print-layouts</attribute>
+          </item>
+        </section>
+      </submenu>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Close</attribute>
+          <attribute name='action'>file.close</attribute>
+          <attribute name='accel'>&lt;Primary&gt;w</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu>
+      <attribute name='label' translatable='yes'>_Edit</attribute>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>Cu_t</attribute>
+          <attribute name='action'>edit.cut</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Copy</attribute>
+          <attribute name='action'>edit.copy</attribute>
+          <attribute name='accel'>&lt;Primary&gt;c</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Paste</attribute>
+          <attribute name='action'>edit.paste</attribute>
+          <attribute name='accel'>&lt;Primary&gt;v</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Clear</attribute>
+          <attribute name='action'>edit.clear</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Find</attribute>
+          <attribute name='action'>edit.find</attribute>
+          <attribute name='accel'>&lt;control&gt;F</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu id='tables'>
+      <attribute name='label' translatable='yes'>_Tables</attribute>
+      <section id='tables-list'/>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Edit Tables</attribute>
+          <attribute name='action'>tables.edit-tables</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu>
+      <attribute name='label' translatable='yes'>R_eports</attribute>
+      <section id='reports-list'/>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Edit Reports</attribute>
+          <attribute name='action'>reports.edit-reports</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu>
+      <attribute name='label' translatable='yes'>_Developer</attribute>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Operator</attribute>
+          <attribute name='action'>developer.usermode</attribute>
+          <attribute name='target' type='i'>0</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Developer</attribute>
+          <attribute name='action'>developer.usermode</attribute>
+          <attribute name='target' type='i'>1</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Fields</attribute>
+          <attribute name='action'>developer.fields</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Relationships</attribute>
+          <attribute name='action'>developer.relationships</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>Relationships _Overview</attribute>
+          <attribute name='action'>developer.relationships-overview</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Layout</attribute>
+          <attribute name='action'>developer.layout</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Print Layouts</attribute>
+          <attribute name='action'>developer.print-layouts</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Reports</attribute>
+          <attribute name='action'>developer.reports</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Database Preferences</attribute>
+          <attribute name='action'>developer.database-preferences</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Users</attribute>
+          <attribute name='action'>developer.users</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>Script _Library</attribute>
+          <attribute name='action'>developer.script-library</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Translations</attribute>
+          <attribute name='action'>developer.translations</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>Test Tra_nslation</attribute>
+          <attribute name='action'>developer.change-language</attribute>
+        </item>
+      </section>
+      <section>
+      <submenu>
+        <attribute name='label' translatable='yes'>Active Platform</attribute>
+        <item>
+         <attribute name='label' translatable='yes'>_Normal</attribute>
+          <attribute name='action'>developer.active-platform</attribute>
+<!-- TODO:          <attribute >The layout to use for normal desktop environments.</attribute> -->
+          <attribute name='target'></attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Maemo</attribute> <!-- //TODO: This is obsolete -->
+          <attribute name='action'>developer.active-platform</attribute>
+<!-- TODO:          <attribute >The layout to use for Maemo devices.</attribute> -->
+          <attribute name='target'>maemo</attribute>
+        </item>
+      </submenu>
+      <item>
+        <attribute name='label' translatable='yes'>_Drag and Drop Layout</attribute> <!-- //TODO: This is obsolete -->
+        <attribute name='action'>developer.drag-and-drop-layout</attribute>
+      </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Export Backup</attribute>
+          <attribute name='action'>developer.export-backup</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Restore Backup</attribute>
+          <attribute name='action'>developer.restore-backup</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu>
+      <attribute name='label' translatable='yes'>_Help</attribute>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_About</attribute>
+          <attribute name='action'>help.about</attribute>
+<!-- TODO:         <attribute >About the application</attribute> -->
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Contents</attribute>
+          <attribute name='action'>help.contents</attribute>
+<!-- TODO:          <attribute >Help with the application</attribute> -->
+        </item>
+      </section>
+    </submenu>
+  </menu>
 </interface>
