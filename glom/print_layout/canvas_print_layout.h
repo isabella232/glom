@@ -28,6 +28,7 @@
 #include <libglom/data_structure/layout/layoutitem_line.h>
 #include <giomm/simpleactiongroup.h>
 #include <gtkmm/pagesetup.h>
+#include <gtkmm/menu.h>
 
 namespace Glom
 {

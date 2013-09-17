@@ -239,7 +239,7 @@ private:
   void on_menu_file_save_as_example();
   void on_menu_developer_changelanguage();
   void on_menu_developer_translations();
-  void on_menu_developer_active_platform(int state);
+  void on_menu_developer_active_platform(const Glib::ustring& parameter);
   void on_menu_developer_export_backup();
   void on_menu_developer_restore_backup();
   void on_menu_developer_enable_layout_drag_and_drop();
@@ -295,6 +295,7 @@ private:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gio::SimpleAction> m_action_developer_users;
   Glib::RefPtr<Gio::SimpleAction> m_action_menu_developer_usermode;
+  Glib::RefPtr<Gio::SimpleAction> m_action_menu_developer_active_platform;
   Glib::RefPtr<Gio::SimpleAction> m_action_enable_layout_drag_and_drop ;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

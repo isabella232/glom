@@ -398,10 +398,10 @@ void AppWindow::init_menus()
   m_listDeveloperActions.push_back(action);
 
   //"Active Platform" menu:
-  action = m_refActionGroup_Developer->add_action_radio_integer("active-platform",
+  m_action_menu_developer_active_platform = m_refActionGroup_Developer->add_action_radio_string("active-platform",
     sigc::mem_fun(*this, &AppWindow::on_menu_developer_active_platform),
-    0); //TODO: No magic number
-  m_listDeveloperActions.push_back(action);
+    "");
+  m_listDeveloperActions.push_back(m_action_menu_developer_active_platform);
 
   action = m_refActionGroup_Developer->add_action("export-backup",
     sigc::mem_fun(*this, &AppWindow::on_menu_developer_export_backup));
@@ -612,12 +612,12 @@ void AppWindow::init_menus()
     "        <item>"
     "         <attribute name='label' translatable='yes'>_Normal</attribute>" //TODO: _("The layout to use for normal desktop environments."));
     "          <attribute name='action'>developer.active-platform</attribute>"
-    "          <attribute name='target' type='i'>0</attribute>"
+    "          <attribute name='target'></attribute>"
     "        </item>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>_Maemo</attribute>" //TODO: This is obsolete //TODO: _("The layout to use for Maemo devices."));
     "          <attribute name='action'>developer.active-platform</attribute>"
-    "          <attribute name='target' type='i'>1</attribute>"
+    "          <attribute name='target'>maemo</attribute>"
     "        </item>"
     "      </submenu>"
     "      <item>"
@@ -2631,12 +2631,14 @@ void AppWindow::on_menu_developer_translations()
   }
 }
 
-void AppWindow::on_menu_developer_active_platform(int parameter)
+void AppWindow::on_menu_developer_active_platform(const Glib::ustring& parameter)
 {
-  //TODO:
+  //The state is not changed automatically:
+  m_action_menu_developer_active_platform->change_state(parameter);
+
   Document* document = dynamic_cast<Document*>(get_document());
   if(document)
-   document->set_active_layout_platform("");
+   document->set_active_layout_platform(parameter);
 
   m_pFrame->show_table_refresh();
 }
