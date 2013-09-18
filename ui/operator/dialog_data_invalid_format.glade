@@ -74,7 +74,8 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="hbox11">
+          <object class="GtkBox" id="hbox11">
+            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="border_width">6</property>
@@ -95,7 +96,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkVBox" id="vbox18">
+              <object class="GtkBox" id="vbox18">
+                <property name="orientation">vertical</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>

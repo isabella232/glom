@@ -10,18 +10,21 @@
     <property name="default_height">600</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox2">
+      <object class="GtkBox" id="dialog-vbox2">
+        <property name="orientation">vertical</property>
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <property name="spacing">12</property>
         <child>
-          <object class="GtkVBox" id="vbox21">
+          <object class="GtkBox" id="vbox21">
+            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="border_width">6</property>
             <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
-              <object class="GtkHBox" id="hbox3">
+              <object class="GtkBox" id="hbox3">
+                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="spacing">5</property>
                 <child>
@@ -107,7 +110,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkHButtonBox" id="hbuttonbox43">
+              <object class="GtkButtonBox" id="hbuttonbox43">
+                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="layout_style">end</property>
                 <child>
@@ -138,7 +142,8 @@
           </packing>
         </child>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area2">
+          <object class="GtkButtonBox" id="dialog-action_area2">
+            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>

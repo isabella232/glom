@@ -72,12 +72,14 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="vbox47">
+          <object class="GtkBox" id="vbox47">
+            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="spacing">6</property>
             <child>
-              <object class="GtkHBox" id="hbox42">
+              <object class="GtkBox" id="hbox42">
+                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="border_width">12</property>
@@ -98,7 +100,8 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkVBox" id="vbox48">
+                  <object class="GtkBox" id="vbox48">
+                    <property name="orientation">vertical</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
@@ -135,7 +138,8 @@ Which user should be added to this group?</property>
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="hbox43">
+              <object class="GtkBox" id="hbox43">
+                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="border_width">12</property>

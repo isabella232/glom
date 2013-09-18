@@ -77,7 +77,8 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="vbox28">
+          <object class="GtkBox" id="vbox28">
+            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="border_width">6</property>

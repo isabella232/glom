@@ -7,15 +7,18 @@
     <property name="default_width">600</property>
     <property name="default_height">550</property>
     <child>
-      <object class="GtkVBox" id="bakery_vbox">
+      <object class="GtkBox" id="bakery_vbox">
+        <property name="orientation">vertical</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkVBox" id="vbox_top">
+          <object class="GtkBox" id="vbox_top">
+            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkVBox" id="vbox_frame">
+              <object class="GtkBox" id="vbox_frame">
+                <property name="orientation">vertical</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="border_width">12</property>
@@ -24,7 +27,8 @@
                   <placeholder/>
                 </child>
                 <child>
-                  <object class="GtkVBox" id="vbox_quickfind">
+                  <object class="GtkBox" id="vbox_quickfind">
+                    <property name="orientation">vertical</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
@@ -38,11 +42,13 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkHBox" id="vbox_main">
+                  <object class="GtkBox" id="vbox_main">
+                    <property name="orientation">horizontal</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkVBox" id="sidebar_vbox">
+                      <object class="GtkBox" id="sidebar_vbox">
+                        <property name="orientation">vertical</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                       </object>
@@ -53,7 +59,8 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkVBox" id="vbox_mode">
+                      <object class="GtkBox" id="vbox_mode">
+                        <property name="orientation">vertical</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>

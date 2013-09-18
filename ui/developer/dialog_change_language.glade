@@ -9,11 +9,13 @@
     <property name="title" translatable="yes">Test Translation</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="vbox86">
+      <object class="GtkBox" id="vbox86">
+        <property name="orientation">vertical</property>
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkHBox" id="hbox84">
+          <object class="GtkBox" id="hbox84">
+            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="border_width">12</property>
             <property name="spacing">6</property>
@@ -32,7 +34,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkVBox" id="vbox87">
+              <object class="GtkBox" id="vbox87">
+                <property name="orientation">vertical</property>
                 <property name="visible">True</property>
                 <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
@@ -58,7 +61,8 @@ Note that the standard parts of the Glom user interface, such as menus and dialo
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkHBox" id="hbox85">
+                  <object class="GtkBox" id="hbox85">
+                    <property name="orientation">horizontal</property>
                     <property name="visible">True</property>
                     <property name="spacing">6</property>
                     <child>
@@ -98,7 +102,8 @@ Note that the standard parts of the Glom user interface, such as menus and dialo
           </packing>
         </child>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="hbuttonbox40">
+          <object class="GtkButtonBox" id="hbuttonbox40">
+            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
@@ -143,7 +148,8 @@ Note that the standard parts of the Glom user interface, such as menus and dialo
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
-                      <object class="GtkHBox" id="hbox86">
+                      <object class="GtkBox" id="hbox86">
+                        <property name="orientation">horizontal</property>
                         <property name="visible">True</property>
                         <property name="spacing">2</property>
                         <child>

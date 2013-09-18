@@ -6,7 +6,8 @@
     <property name="border_width">12</property>
     <property name="title" translatable="yes">Edit Tables</property>
     <child>
-      <object class="GtkVBox" id="box_navigation_tables">
+      <object class="GtkBox" id="box_navigation_tables">
+        <property name="orientation">vertical</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="spacing">6</property>
@@ -15,7 +16,8 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkVBox" id="vbox5">
+              <object class="GtkBox" id="vbox5">
+                <property name="orientation">vertical</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="spacing">6</property>
@@ -60,7 +62,8 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHButtonBox" id="hbuttonbox3">
+          <object class="GtkButtonBox" id="hbuttonbox3">
+            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
