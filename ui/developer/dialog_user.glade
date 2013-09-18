@@ -72,7 +72,8 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="vbox42">
+          <object class="GtkBox" id="vbox42">
+            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="border_width">6</property>
@@ -89,7 +90,8 @@
                     <property name="can_focus">False</property>
                     <property name="left_padding">12</property>
                     <child>
-                      <object class="GtkVBox" id="vbox43">
+                      <object class="GtkBox" id="vbox43">
+                        <property name="orientation">vertical</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="spacing">6</property>

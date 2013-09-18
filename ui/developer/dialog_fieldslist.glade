@@ -8,17 +8,20 @@
     <property name="title" translatable="no"></property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox8">
+      <object class="GtkBox" id="dialog-vbox8">
+        <property name="orientation">vertical</property>
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkVBox" id="vbox78">
+          <object class="GtkBox" id="vbox78">
+            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="border_width">6</property>
             <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
-              <object class="GtkHBox" id="hbox78">
+              <object class="GtkBox" id="hbox78">
+                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="spacing">6</property>
                 <child>
@@ -58,7 +61,8 @@
                     <property name="visible">True</property>
                     <property name="left_padding">12</property>
                     <child>
-                      <object class="GtkVBox" id="vbox1">
+                      <object class="GtkBox" id="vbox1">
+                        <property name="orientation">vertical</property>
                         <property name="visible">True</property>
                         <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
@@ -81,10 +85,12 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkHBox" id="hbox77">
+                          <object class="GtkBox" id="hbox77">
+                            <property name="orientation">horizontal</property>
                             <property name="visible">True</property>
                             <child>
-                              <object class="GtkHButtonBox" id="hbuttonbox36">
+                              <object class="GtkButtonBox" id="hbuttonbox36">
+                                <property name="orientation">horizontal</property>
                                 <property name="visible">True</property>
                                 <property name="spacing">6</property>
                                 <property name="layout_style">start</property>
@@ -124,7 +130,8 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkHButtonBox" id="hbuttonbox37">
+                              <object class="GtkButtonBox" id="hbuttonbox37">
+                                <property name="orientation">horizontal</property>
                                 <property name="visible">True</property>
                                 <property name="spacing">6</property>
                                 <property name="layout_style">end</property>
@@ -170,7 +177,8 @@
                                         <property name="xscale">0</property>
                                         <property name="yscale">0</property>
                                         <child>
-                                          <object class="GtkHBox" id="hbox1">
+                                          <object class="GtkBox" id="hbox1">
+                                            <property name="orientation">horizontal</property>
                                             <property name="visible">True</property>
                                             <property name="spacing">2</property>
                                             <child>
@@ -256,7 +264,8 @@
           </packing>
         </child>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area8">
+          <object class="GtkButtonBox" id="dialog-action_area8">
+            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>

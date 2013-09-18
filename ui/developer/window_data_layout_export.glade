@@ -11,12 +11,14 @@
     <property name="default_height">500</property>
     <property name="icon_name">glom</property>
     <child>
-      <object class="GtkVBox" id="vbox7">
+      <object class="GtkBox" id="vbox7">
+        <property name="orientation">vertical</property>
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <property name="spacing">18</property>
         <child>
-          <object class="GtkHBox" id="hbox9">
+          <object class="GtkBox" id="hbox9">
+            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="spacing">6</property>
             <child>
@@ -50,7 +52,8 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="vbox9">
+          <object class="GtkBox" id="vbox9">
+            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
             <property name="spacing">6</property>
@@ -73,10 +76,12 @@
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="hbox5">
+              <object class="GtkBox" id="hbox5">
+                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <child>
-                  <object class="GtkHButtonBox" id="hbuttonbox9">
+                  <object class="GtkButtonBox" id="hbuttonbox9">
+                    <property name="orientation">horizontal</property>
                     <property name="visible">True</property>
                     <property name="spacing">6</property>
                     <property name="layout_style">start</property>
@@ -116,7 +121,8 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkHButtonBox" id="hbuttonbox5">
+                  <object class="GtkButtonBox" id="hbuttonbox5">
+                    <property name="orientation">horizontal</property>
                     <property name="visible">True</property>
                     <property name="spacing">6</property>
                     <property name="layout_style">end</property>
@@ -183,7 +189,8 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHButtonBox" id="hbuttonbox7">
+          <object class="GtkButtonBox" id="hbuttonbox7">
+            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="spacing">6</property>
             <property name="layout_style">end</property>

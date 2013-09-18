@@ -8,11 +8,13 @@
     <property name="title" translatable="yes">Group By</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="vbox72">
+      <object class="GtkBox" id="vbox72">
+        <property name="orientation">vertical</property>
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkVBox" id="vbox73">
+          <object class="GtkBox" id="vbox73">
+            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="border_width">6</property>
             <property name="orientation">vertical</property>
@@ -28,12 +30,14 @@
                     <property name="top_padding">6</property>
                     <property name="left_padding">12</property>
                     <child>
-                      <object class="GtkVBox" id="vbox74">
+                      <object class="GtkBox" id="vbox74">
+                        <property name="orientation">vertical</property>
                         <property name="visible">True</property>
                         <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
-                          <object class="GtkHBox" id="hbox70">
+                          <object class="GtkBox" id="hbox70">
+                            <property name="orientation">horizontal</property>
                             <property name="visible">True</property>
                             <property name="spacing">6</property>
                             <child>
@@ -68,7 +72,8 @@
                                     <property name="xscale">0</property>
                                     <property name="yscale">0</property>
                                     <child>
-                                      <object class="GtkHBox" id="hbox75">
+                                      <object class="GtkBox" id="hbox75">
+                                        <property name="orientation">horizontal</property>
                                         <property name="visible">True</property>
                                         <property name="spacing">2</property>
                                         <child>
@@ -117,7 +122,8 @@
                                     <property name="xscale">0</property>
                                     <property name="yscale">0</property>
                                     <child>
-                                      <object class="GtkHBox" id="hbox108">
+                                      <object class="GtkBox" id="hbox108">
+                                        <property name="orientation">horizontal</property>
                                         <property name="visible">True</property>
                                         <property name="spacing">2</property>
                                         <child>
@@ -163,7 +169,8 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkHBox" id="hbox71">
+                          <object class="GtkBox" id="hbox71">
+                            <property name="orientation">horizontal</property>
                             <property name="visible">True</property>
                             <property name="spacing">6</property>
                             <child>
@@ -210,7 +217,8 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkHBox" id="hbox74">
+                          <object class="GtkBox" id="hbox74">
+                            <property name="orientation">horizontal</property>
                             <property name="visible">True</property>
                             <property name="spacing">6</property>
                             <child>
@@ -256,7 +264,8 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkHBox" id="hbox105">
+                          <object class="GtkBox" id="hbox105">
+                            <property name="orientation">horizontal</property>
                             <property name="visible">True</property>
                             <property name="spacing">6</property>
                             <child>
@@ -308,7 +317,8 @@
           </packing>
         </child>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="hbuttonbox34">
+          <object class="GtkButtonBox" id="hbuttonbox34">
+            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>

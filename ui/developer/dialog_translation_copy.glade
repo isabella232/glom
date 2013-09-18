@@ -9,11 +9,13 @@
     <property name="title" translatable="yes">Identify Original</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="vbox91">
+      <object class="GtkBox" id="vbox91">
+        <property name="orientation">vertical</property>
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkHBox" id="hbox93">
+          <object class="GtkBox" id="hbox93">
+            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="border_width">12</property>
             <property name="spacing">6</property>
@@ -32,7 +34,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkVBox" id="vbox92">
+              <object class="GtkBox" id="vbox92">
+                <property name="orientation">vertical</property>
                 <property name="visible">True</property>
                 <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
@@ -56,7 +59,8 @@ From what language would you like to copy the translations to use as the start o
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkHBox" id="hbox94">
+                  <object class="GtkBox" id="hbox94">
+                    <property name="orientation">horizontal</property>
                     <property name="visible">True</property>
                     <property name="spacing">6</property>
                     <child>
@@ -96,7 +100,8 @@ From what language would you like to copy the translations to use as the start o
           </packing>
         </child>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="hbuttonbox42">
+          <object class="GtkButtonBox" id="hbuttonbox42">
+            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
@@ -141,7 +146,8 @@ From what language would you like to copy the translations to use as the start o
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
-                      <object class="GtkHBox" id="hbox96">
+                      <object class="GtkBox" id="hbox96">
+                        <property name="orientation">horizontal</property>
                         <property name="visible">True</property>
                         <property name="spacing">2</property>
                         <child>

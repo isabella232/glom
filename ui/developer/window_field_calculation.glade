@@ -10,12 +10,14 @@
     <property name="default_height">400</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox2">
+      <object class="GtkBox" id="dialog-vbox2">
+        <property name="orientation">vertical</property>
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <property name="spacing">12</property>
         <child>
-          <object class="GtkVBox" id="vbox21">
+          <object class="GtkBox" id="vbox21">
+            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="border_width">6</property>
             <property name="orientation">vertical</property>
@@ -75,7 +77,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkHButtonBox" id="hbuttonbox14">
+              <object class="GtkButtonBox" id="hbuttonbox14">
+                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="layout_style">end</property>
                 <child>
@@ -101,7 +104,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="hbox50">
+              <object class="GtkBox" id="hbox50">
+                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="spacing">6</property>
                 <child>
@@ -138,7 +142,8 @@
           </packing>
         </child>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area2">
+          <object class="GtkButtonBox" id="dialog-action_area2">
+            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>

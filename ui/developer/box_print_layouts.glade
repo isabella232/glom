@@ -8,12 +8,13 @@
     <property name="border_width">12</property>
     <property name="title" translatable="yes">Print Layouts</property>
     <child>
-      <object class="GtkVBox" id="box_print_layouts">
+      <object class="GtkBox" id="box_print_layouts">
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <property name="spacing">18</property>
         <child>
-          <object class="GtkVBox" id="vbox71">
+          <object class="GtkBox" id="vbox71">
+            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
             <property name="spacing">6</property>
@@ -34,7 +35,8 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHButtonBox" id="hbuttonbox33">
+          <object class="GtkButtonBox" id="hbuttonbox33">
+            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>

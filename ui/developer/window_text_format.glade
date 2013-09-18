@@ -9,13 +9,15 @@
     <property name="default_width">700</property>
     <property name="default_height">500</property>
     <child>
-      <object class="GtkVBox" id="vbox6">
+      <object class="GtkBox" id="vbox6">
+        <property name="orientation">vertical</property>
         <property name="visible">True</property>
         <property name="border_width">12</property>
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
-          <object class="GtkVBox" id="box_formatting_placeholder">
+          <object class="GtkBox" id="box_formatting_placeholder">
+            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
             <child>
@@ -27,7 +29,8 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHButtonBox" id="hbuttonbox3">
+          <object class="GtkButtonBox" id="hbuttonbox3">
+            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="spacing">6</property>
             <property name="layout_style">end</property>

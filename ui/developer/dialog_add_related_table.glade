@@ -47,7 +47,8 @@
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
-                      <object class="GtkHBox" id="hbox128">
+                      <object class="GtkBox" id="hbox128">
+                        <property name="orientation">horizontal</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="spacing">2</property>
@@ -96,7 +97,8 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="vbox104">
+          <object class="GtkBox" id="vbox104">
+            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="border_width">6</property>
@@ -119,7 +121,8 @@ If a suitable related table already exists then you should instead cancel and ju
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="hbox125">
+              <object class="GtkBox" id="hbox125">
+                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="spacing">12</property>
@@ -159,7 +162,8 @@ If a suitable related table already exists then you should instead cancel and ju
                         <property name="xscale">0</property>
                         <property name="yscale">0</property>
                         <child>
-                          <object class="GtkHBox" id="hbox127">
+                          <object class="GtkBox" id="hbox127">
+                            <property name="orientation">horizontal</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="spacing">2</property>
