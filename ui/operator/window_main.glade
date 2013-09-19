@@ -228,7 +228,7 @@
         <item>
           <attribute name='label' translatable='yes'>_Find</attribute>
           <attribute name='action'>edit.find</attribute>
-          <attribute name='accel'>&lt;control&gt;F</attribute>
+          <attribute name='accel'>&lt;Primary&gt;f</attribute>
         </item>
       </section>
     </submenu>
