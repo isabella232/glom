@@ -313,6 +313,11 @@ endif
 	install-update-mime-database uninstall-update-mime-database \
         $(gcov_phony_files)
 
+# Optional: auto-generate the ChangeLog file from the git log on make dist
+# dist-changelog.am is added by mm-common-prepare in autogen.sh.
+include $(top_srcdir)/dist-changelog.am
+
+
 # Instruct GNU make to delete the targets of a rule after it failed, in
 # order to avoid the complication of handling that situation manually.
 .DELETE_ON_ERROR:
