@@ -57,6 +57,8 @@
 
 #include <evince-view.h>
 
+#include <gtkmm/main.h>
+
 #include <glibmm/i18n.h>
 
 #ifdef G_OS_WIN32
@@ -206,6 +208,9 @@ bool check_user_is_not_root_with_warning()
 
   if(!message.empty())
   {
+    //Make sure this is on stderr too, in case something goes wrong with the UI:
+    std::cerr << message << std::endl;
+
     Gtk::MessageDialog dialog(Utils::bold_message(_("Running As Root")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
     dialog.set_secondary_text(message);
     dialog.run();
@@ -262,8 +267,13 @@ bool check_postgres_is_available_with_warning()
   #else  //DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED
 
   //Show message to the user about the broken installation:
+  const Glib::ustring message = _("Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
+
+  //Make sure this is on stderr too, in case something goes wrong with the UI:
+  std::cerr << message << std::endl;
+
   Gtk::MessageDialog dialog(Utils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
-  dialog.set_secondary_text(_("Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected."));
+  dialog.set_secondary_text(message);
   dialog.run();
   return false;
 
@@ -278,8 +288,11 @@ bool check_pyglom_is_available_with_warning()
   if(glom_python_module_is_available())
     return true;
 
-   /* The python module could not be imported by Glom, so warn the user: */
-   const Glib::ustring message = _("Your installation of Glom is not complete, because the Glom Python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
+  /* The python module could not be imported by Glom, so warn the user: */
+  const Glib::ustring message = _("Your installation of Glom is not complete, because the Glom Python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
+
+  //Make sure this is on stderr too, in case something goes wrong with the UI:
+  std::cerr << message << std::endl;
 
   Gtk::MessageDialog dialog(Utils::bold_message(_("Glom Python Module Not Installed")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
   dialog.set_secondary_text(message);
@@ -296,6 +309,9 @@ bool check_gir_is_available_with_warning()
   /* The python module could not be imported by Glom, so warn the user: */
   const Glib::ustring message = _("Your installation of Glom is not complete, because the gi.repository Python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
 
+  //Make sure this is on stderr too, in case something goes wrong with the UI:
+  std::cerr << message << std::endl;
+
   Gtk::MessageDialog dialog(Utils::bold_message(_("gi.repository Python Module Not Installed")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
   dialog.set_secondary_text(message);
   dialog.run();
@@ -310,6 +326,9 @@ bool check_pygda_is_available_with_warning()
 
   /* The python module could not be imported by Glom, so warn the user: */
   const Glib::ustring message = _("Your installation of Glom is not complete, because the gi.repository.Gda python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
+
+  //Make sure this is on stderr too, in case something goes wrong with the UI:
+  std::cerr << message << std::endl;
 
   Gtk::MessageDialog dialog(Utils::bold_message(_("gi.repository.Gda Python Module Not Installed")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
   dialog.set_secondary_text(message);
@@ -422,6 +441,9 @@ main(int argc, char* argv[])
     {
       /* The Postgres provider was not found, so warn the user: */
       const Glib::ustring message = _("Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
+
+      //Make sure this is on stderr too, in case something goes wrong with the UI:
+      std::cerr << message << std::endl;
 
       Gtk::MessageDialog dialog(Glom::Utils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
       dialog.set_secondary_text(message);
