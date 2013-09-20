@@ -426,6 +426,17 @@ main(int argc, char* argv[])
 
   try
   {
+    //Create the app here,
+    //so we can use UI, for instance with Gtk::MessageDialog,
+    //even before calling run().
+    Glib::RefPtr<Glom::Application> application = 
+      Glom::Application::create();
+
+    //Call gtk_init() too, because earlier (< 3.9.17) versions
+    //of gtkmm do not do this in the default Gtk::Application constructor.
+    //TODO: Remove this when we can depend on a newer gtkmm:
+    gtk_init(0, 0);
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     Gsv::init();
     Goocanvas::init();
@@ -474,8 +485,6 @@ main(int argc, char* argv[])
       return EXIT_FAILURE;
 
 
-    Glib::RefPtr<Glom::Application> application = 
-      Glom::Application::create();
     const int status = application->run(argc, argv);
     if(status != EXIT_SUCCESS) //TODO: Is this right?
       return status;
