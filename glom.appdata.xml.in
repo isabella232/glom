@@ -3,9 +3,12 @@
   <id type="desktop">org.gnome.glom.desktop</id>
   <licence>CC0</licence>
   <description>
-    <_p>
+    <p>
       With Glom you can design database systems - the database and the user interface.
-    </_p>
+    </p>
+    <p>
+      Glom has high-level features such as relationships, lookups, related fields, related records, calculated fields, drop-down choices, searching, reports, users and groups. It has simple Numeric, Text, Date, Time, Boolean, and Image field types.
+    </p>
   </description>
   <screenshots>
     <screenshot type="default">http://www.glom.org/wiki/images/7/7b/Small_glom_data_details.png</screenshot>
