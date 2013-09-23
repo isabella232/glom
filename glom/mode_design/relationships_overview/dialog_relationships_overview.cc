@@ -43,6 +43,7 @@ const bool Dialog_RelationshipsOverview::glade_developer(true);
 
 Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
   : Gtk::Dialog(cobject),
+    m_builder(builder),
     m_menu(0),
     m_modified(false),
     m_scrolledwindow_canvas(0)
@@ -69,48 +70,9 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
 
   insert_action_group("relationshipsoverview", action_group);
 
-  Glib::RefPtr<Gtk::Builder> refUIBuilder = Gtk::Builder::create();
-
-  try
-  {
-    static const Glib::ustring ui_description =
-      "<interface>"
-      "  <menu id='Overview_MainMenu'>"
-      "    <submenu>"
-      "      <attribute name='label' translatable='yes'>_File</attribute>"
-      "      <section>"
-      "        <item>"
-      "          <attribute name='label' translatable='yes'>Page _Setup</attribute>"
-      "          <attribute name='action'>relationshipsoverview.pagesetup</attribute>"
-      "        </item>"
-      "        <item>"
-      "          <attribute name='label' translatable='yes'>_Print</attribute>"
-      "          <attribute name='action'>relationshipsoverview.print</attribute>"
-      "        </item>"
-      "      </section>"
-      "    </submenu>"
-      "    <submenu>"
-      "      <attribute name='label' translatable='yes'>_View</attribute>"
-      "      <section>"
-      "        <item>"
-      "          <attribute name='label' translatable='yes'>Show _Grid</attribute>"
-      "          <attribute name='action'>relationshipsoverview.showgrid</attribute>"
-      "        </item>"
-      "      </section>"
-      "    </submenu>"
-      "  </menu>"
-      "</interface>";
-
-    refUIBuilder->add_from_string(ui_description);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
-  }
-
   //Get the menu:
   Glib::RefPtr<Glib::Object> object =
-    refUIBuilder->get_object("Overview_MainMenu");
+    builder->get_object("Overview_MainMenu");
   Glib::RefPtr<Gio::Menu> gmenu =
     Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
   if(!gmenu)
