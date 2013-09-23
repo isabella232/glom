@@ -350,6 +350,11 @@ void Dialog_RelationshipsOverview::on_menu_view_showgrid(const Glib::VariantBase
 {
   bool showgrid = false;
   m_action_showgrid->get_state(showgrid);
+
+  //Change the state, because this doesn't happen automatically:
+  showgrid = !showgrid;
+  m_action_showgrid->change_state(showgrid);
+
   if(showgrid)
   {
     m_canvas.set_grid_gap(40);
