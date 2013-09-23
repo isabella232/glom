@@ -78,6 +78,7 @@ private:
 
   Glib::RefPtr<CanvasGroupDbTable> get_table_group(const Glib::ustring& table_name);
 
+  Glib::RefPtr<Gtk::Builder> m_builder;
   Glib::RefPtr<Gio::SimpleAction> m_action_showgrid;
   Gtk::MenuBar* m_menu;
 
