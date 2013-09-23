@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.15.4 on Tue Sep 24 11:04:34 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
 
@@ -164,14 +165,14 @@
     <property name="title" translatable="yes">Print Layout Editor</property>
     <child>
       <object class="GtkBox" id="vbox2">
-        <property name="orientation">vertical</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkBox" id="vbox_menu">
-            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
             <child>
               <placeholder/>
             </child>
@@ -184,7 +185,6 @@
         </child>
         <child>
           <object class="GtkBox" id="hbox_inner">
-            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
@@ -192,13 +192,12 @@
             <property name="spacing">6</property>
             <child>
               <object class="GtkBox" id="vbox_inner">
-                <property name="orientation">vertical</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkBox" id="hbox20">
-                    <property name="orientation">horizontal</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="spacing">6</property>
@@ -277,9 +276,9 @@
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <child>
                       <object class="GtkBox" id="vbox_canvas">
-                        <property name="orientation">vertical</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
                         <child>
                           <placeholder/>
                         </child>
@@ -353,7 +352,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
-                        <property name="invisible_char_set">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -378,7 +376,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
-                        <property name="invisible_char_set">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -403,7 +400,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
-                        <property name="invisible_char_set">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -420,7 +416,6 @@
                 </child>
                 <child>
                   <object class="GtkButtonBox" id="hbuttonbox43">
-                    <property name="orientation">horizontal</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="layout_style">end</property>
@@ -432,7 +427,6 @@
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                       </object>
                       <packing>

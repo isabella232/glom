@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
+  <requires lib="gtk+" version="3.6"/>
   <!-- interface-requires gtksourceview 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
 
@@ -11,13 +11,11 @@
       <object class="GtkBox" id="box_reports">
         <property name="orientation">vertical</property>
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <property name="spacing">12</property>
         <child>
           <object class="GtkBox" id="vbox71">
             <property name="orientation">vertical</property>
             <property name="visible">True</property>
-            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkAlignment" id="alignment_placeholder_adddel">
@@ -27,11 +25,15 @@
                 </child>
               </object>
               <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
             </child>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
