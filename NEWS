@@ -1,3 +1,17 @@
+1.24.1 (stable):
+
+* Startup: Do not crash when reporting check problems.
+  (Murray Cumming) Bug #680411 (Bjørn Lie, Dominique Leuenberger)
+* Initial dialog:
+  * Fix crash with latest libxml.
+  (Murray Cumming)
+  * Fix the notebook vertical expansion with latest GTK+.
+  (Murray Cumming)
+* Avoid a crash at shutdown.
+  (Murray Cumming) 
+* Add an AppData file for "GNOME Software".
+  (Murray Cumming)
+
 1.24.0 (stable):
 
 * Document format: table node: Remove superfluous parent_table
