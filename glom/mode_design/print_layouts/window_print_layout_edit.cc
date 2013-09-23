@@ -976,7 +976,7 @@ void Window_PrintLayout_Edit::on_menu_view_show_outlines()
   //The state is not changed automatically:
   bool active = false;
   m_action_showoutlines->get_state(active);
-  do_menu_view_show_rules(!active);
+  do_menu_view_show_outlines(!active);
 }
 
 void Window_PrintLayout_Edit::do_menu_view_show_outlines(bool active)
