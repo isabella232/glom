@@ -150,6 +150,7 @@ private:
   //Gtk::Label* m_label_table_title;
   Gtk::Button* m_button_close;
 
+  Glib::RefPtr<Gtk::Builder> m_builder;
   Gtk::Box* m_box_menu;
   Gtk::Box* m_box_canvas;
   Gtk::Box* m_box;
