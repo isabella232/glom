@@ -1,3 +1,12 @@
+1.22.3 (stable):
+
+* Startup: Do not crash when reporting check problems.
+  (Murray Cumming) Bug #680411 (Bjørn Lie, Dominique Leuenberger)
+* Avoid a crash at shutdown.
+  (Murray Cumming)
+* Tests: Avoid a too-long path with recent PostgreSQL
+  (Murray Cumming)
+
 1.22.2 (stable):
 
 * Initial dialog: Fix crash with latest libxml.
