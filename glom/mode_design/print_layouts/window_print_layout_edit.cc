@@ -854,10 +854,10 @@ void Window_PrintLayout_Edit::setup_context_menu()
 {
   Glib::RefPtr<Gio::SimpleActionGroup> action_group = Gio::SimpleActionGroup::create();
 
-  action_group->add_action("insertfield",
+  action_group->add_action("insert-field",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_context_menu_insert_field) );
 
-  action_group->add_action("insertrelationships",
+  action_group->add_action("insert-text",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_context_menu_insert_text) );
 
   /*
@@ -868,37 +868,9 @@ void Window_PrintLayout_Edit::setup_context_menu()
 
   insert_action_group("context", action_group);
 
-
-  Glib::RefPtr<Gtk::Builder> context_menu_builder = Gtk::Builder::create();
-
-  try
-  {
-    const char* ui_info =
-      "<interface>"
-      "  <menu id='ContextMenu'>"
-      "    <section>"
-      "      <item>"
-      "        <attribute name='label' translatable='yes'>Insert _Field</attribute>"
-      "        <attribute name='action'>context.insertfield</attribute>"
-      "      </item>"
-      "      <item>"
-      "        <attribute name='label' translatable='yes'>Insert _Text</attribute>"
-      "        <attribute name='action'>context.inserttext</attribute>"
-      "      </item>"
-      "    </section>"
-      "  </menu>"
-      "</interface>";
-
-    context_menu_builder->add_from_string(ui_info);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
-  }
-
   //Get the menu:
   Glib::RefPtr<Glib::Object> object =
-    context_menu_builder->get_object("ContextMenu");
+    m_builder->get_object("ContextMenu");
   Glib::RefPtr<Gio::Menu> gmenu =
     Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
   if(!gmenu)
@@ -923,6 +895,9 @@ bool Window_PrintLayout_Edit::on_canvas_motion_notify_event(GdkEventMotion* even
 
 void Window_PrintLayout_Edit::on_canvas_show_context_menu(guint button, guint32 activate_time)
 {
+  //TODO: This is never called when right-clicking on the canvas.
+  //std::cout << G_STRFUNC << ": debug" << std::endl;
+
   if(m_context_menu)
     m_context_menu->popup(button, activate_time);
 }
