@@ -125,6 +125,7 @@ void NotebookLabel::setup_menu(Gtk::Widget* /* widget */)
   menu->append(_("_Delete"), "context.delete");
 
   m_pPopupMenu = new Gtk::Menu(menu);
+  m_pPopupMenu->attach_to_widget(*this);
 }
 
 bool NotebookLabel::on_button_press_event(GdkEventButton *event)

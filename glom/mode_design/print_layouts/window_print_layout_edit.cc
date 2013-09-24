@@ -877,6 +877,7 @@ void Window_PrintLayout_Edit::setup_context_menu()
     g_warning("GMenu not found");
 
   m_context_menu = new Gtk::Menu(gmenu);
+  m_context_menu->attach_to_widget(*this);
 }
 
 bool Window_PrintLayout_Edit::on_canvas_motion_notify_event(GdkEventMotion* event)

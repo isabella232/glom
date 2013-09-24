@@ -961,6 +961,7 @@ void ImageGlom::setup_menu_usermode()
   menu->append(_("_Clear"), "context.clear");
 
   m_pMenuPopup_UserMode = new Gtk::Menu(menu);
+  m_pMenuPopup_UserMode->attach_to_widget(*this);
 }
 
 void ImageGlom::do_choose_image()
@@ -979,11 +980,6 @@ void ImageGlom::popup_menu(guint button, guint32 activate_time)
   {
     std::cerr << G_STRFUNC << ": m_pMenuPopup_UserMode is null" << std::endl;
     return;
-  }
-
-  if(!m_pMenuPopup_UserMode->get_attach_widget())
-  {
-    m_pMenuPopup_UserMode->attach_to_widget(*this);
   }
 
   m_pMenuPopup_UserMode->popup(button, activate_time);
