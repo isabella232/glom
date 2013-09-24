@@ -13,6 +13,7 @@
         <item>
           <attribute name='label' translatable='yes'>_Print</attribute>
           <attribute name='action'>relationshipsoverview.print</attribute>
+          <attribute name='accel'>&lt;Primary&gt;p</attribute>
         </item>
       </section>
     </submenu>
@@ -25,6 +26,19 @@
         </item>
       </section>
     </submenu>
+  </menu>
+
+  <menu id='ContextMenu'>
+    <section>
+      <item>
+        <attribute name='label' translatable='yes'>Edit _Fields</attribute>
+        <attribute name='action'>context.edit-fields</attribute>
+      </item>
+      <item>
+        <attribute name='label' translatable='yes'>Edit _Relationships</attribute>
+        <attribute name='action'>context.edit-relationships</attribute>
+      </item>
+    </section>
   </menu>
 
   <object class="GtkDialog" id="dialog_relationships_overview">

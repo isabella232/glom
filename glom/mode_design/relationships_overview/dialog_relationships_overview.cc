@@ -465,42 +465,14 @@ void Dialog_RelationshipsOverview::setup_context_menu()
 {
   Glib::RefPtr<Gio::SimpleActionGroup> action_group = Gio::SimpleActionGroup::create();
 
-  m_action_edit_fields = action_group->add_action("editfields");
-
-  m_action_edit_relationships = action_group->add_action("editrelationships");
+  m_action_edit_fields = action_group->add_action("edit-fields");
+  m_action_edit_relationships = action_group->add_action("edit-relationships");
 
   insert_action_group("context", action_group);
 
-  Glib::RefPtr<Gtk::Builder> context_menu_builder = Gtk::Builder::create();
-
-  try
-  {
-    const char* ui_info =
-      "<interface>"
-      "  <menu id='ContextMenu'>"
-      "    <section>"
-      "      <item>"
-      "        <attribute name='label' translatable='yes'>Edit _Fields</attribute>"
-      "        <attribute name='action'>context.editfields</attribute>"
-      "      </item>"
-      "      <item>"
-      "        <attribute name='label' translatable='yes'>Edit _Relationships</attribute>"
-      "        <attribute name='action'>context.editrelationships</attribute>"
-      "      </item>"
-      "    </section>"
-      "  </menu>"
-      "</interface>";
-
-    context_menu_builder->add_from_string(ui_info);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
-  }
-
   //Get the menu:
   Glib::RefPtr<Glib::Object> object =
-    context_menu_builder->get_object("ContextMenu");
+    m_builder->get_object("ContextMenu");
   Glib::RefPtr<Gio::Menu> gmenu =
     Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
   if(!gmenu)
