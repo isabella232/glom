@@ -115,70 +115,18 @@ void LayoutWidgetMenu::setup_menu(Gtk::Widget* widget)
     pApp->update_userlevel_ui(); //Update our action's sensitivity. 
   }
 
-  Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create();
+  Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
+  menu->append(_("Choose Field"), "context.choose-field");
+  menu->append(_("Field Layout Properties"), "context.field-layout-properties");
+  menu->append(_("Add Related Records"), "context.add-related-records");
+  menu->append(_("Add Notebook"), "context.add-notebook");
+  menu->append(_("Add Group"), "context.add-group");
+  menu->append(_("Add Button"), "context.add-button");
+  menu->append(_("Add Text"), "context.add-text");
+  menu->append(_("Delete"), "context.delete");
 
-  //TODO: add_accel_group(m_refUIManager->get_accel_group());
 
-  const Glib::ustring ui_info =
-    "<interface>"
-    "  <menu id='ContextMenu'>"
-    "    <section>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>Choose Field</attribute>"
-    "        <attribute name='action'>context.choose-field</attribute>"
-    "      </item>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>Field Layout Properties</attribute>"
-    "        <attribute name='action'>context.field-layout-properties</attribute>"
-    "      </item>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>Add Related Records</attribute>"
-    "        <attribute name='action'>context.add-related-records</attribute>"
-    "      </item>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>Add Notebook</attribute>"
-    "        <attribute name='action'>context.add-notebook</attribute>"
-    "      </item>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>Add Group</attribute>"
-    "        <attribute name='action'>context.add-group</attribute>"
-    "      </item>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>Add Button</attribute>"
-    "        <attribute name='action'>context.add-button</attribute>"
-    "      </item>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>Add Text</attribute>"
-    "        <attribute name='action'>context.add-text</attribute>"
-    "      </item>"
-    "    </section>"
-    "    <section>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>Delete</attribute>"
-    "        <attribute name='action'>context.delete</attribute>"
-    "      </item>"
-    "    </section>"
-    "  </menu>"
-    "</interface>";
-
-  try
-  {
-    builder->add_from_string(ui_info);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
-  }
-
-  //Get the menu:
-  Glib::RefPtr<Glib::Object> object =
-    builder->get_object("ContextMenu");
-  Glib::RefPtr<Gio::Menu> gmenu =
-    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
-  if(!gmenu)
-    g_warning("GMenu not found");
-
-  m_pMenuPopup = new Gtk::Menu(gmenu);
+  m_pMenuPopup = new Gtk::Menu(menu);
 
   if(pApp)
     m_refContextLayout->set_enabled(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);

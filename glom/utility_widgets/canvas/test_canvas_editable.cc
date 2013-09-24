@@ -179,36 +179,12 @@ private:
     m_context_menu_action_group->add(action,
       sigc::mem_fun(*this, &MyCanvas::on_context_menu_delete) );
 
-    m_context_menu_builder = Gtk::Builder::create();
-    m_context_menu_builder->insert_action_group(m_context_menu_action_group);
-
-    try
-    {
-      Glib::ustring ui_info = 
-        "<interface>"
-        "  <menu id='ContextMenu'>"
-        "    <section>
-        "      <item>
-        "        <attribute name='label' translatable='yes'>Edit</attribute>"
-        "        <attribute name='action'>context.edit</attribute>"
-        "      </item>
-        "      <item>
-        "        <attribute name='label' translatable='yes'>Delete</attribute>"
-        "        <attribute name='action'>context.delete</attribute>"
-        "      </item>"
-        "    </section>"
-        "  </menu>
-        "</interface>";
-
-      m_context_menu_builder->add_from_string(ui_info);
-    }
-    catch(const Glib::Error& ex)
-    {
-      std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
-    }
-
+    Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
+    menu->append(_("_Edit"), "context.edit");
+    menu->append(_("_Delete"), "context.delete");
+    
     //Get the menu:
-    m_context_menu = dynamic_cast<Gtk::Menu*>( m_context_menu_builder->get_widget("/ContextMenu") ); 
+    m_context_menu = new Gtk::Menu(menu); 
   }
  
   Gtk::Menu* m_context_menu;

@@ -120,43 +120,11 @@ void NotebookLabel::setup_menu(Gtk::Widget* /* widget */)
  
   insert_action_group("context", m_refActionGroup);
 
+  Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
+  menu->append(_("New Group"), "context.new-group");
+  menu->append(_("_Delete"), "context.delete");
 
-  Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create();
-
-  const Glib::ustring ui_info =
-    "<interface>"
-    "  <menu id='ContextMenu'>"
-    "    <section>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>New Group</attribute>"
-    "        <attribute name='action'>context.new-group</attribute>"
-    "      </item>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>_Delete</attribute>"
-    "        <attribute name='action'>context.delete</attribute>"
-    "      </item>"
-    "    </section>"
-    "  </menu>"
-    "</interface>";
-
-  try
-  {
-    builder->add_from_string(ui_info);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what() << std::endl;
-  }
-
-  //Get the menu:
-  Glib::RefPtr<Glib::Object> object =
-    builder->get_object("ContextMenu");
-  Glib::RefPtr<Gio::Menu> gmenu =
-    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
-  if(!gmenu)
-    g_warning("GMenu not found");
-
-  m_pPopupMenu = new Gtk::Menu(gmenu);
+  m_pPopupMenu = new Gtk::Menu(menu);
 }
 
 bool NotebookLabel::on_button_press_event(GdkEventButton *event)

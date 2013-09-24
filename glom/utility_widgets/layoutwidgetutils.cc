@@ -54,42 +54,11 @@ void LayoutWidgetUtils::setup_util_menu(Gtk::Widget* widget)
   
   widget->insert_action_group("utility", m_refActionGroup);
 
-  Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create();
+  Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
+  menu->append(_("Properties"), "context.properties");
+  menu->append(_("_Delete"), "context.delete");
 
-  Glib::ustring ui_info =
-    "<interface>"
-    "  <menu id='UtilMenu'>"
-    "    <section>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>Properties</attribute>"
-    "        <attribute name='action'>utility.properties</attribute>"
-    "      </item>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>_Delete</attribute>"
-    "        <attribute name='action'>utility.delete</attribute>"
-    "      </item>"
-    "    </section>"
-    "  </menu>"
-    "</interface";
-
-  try
-  {
-    builder->add_from_string(ui_info);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
-  }
-
-  //Get the menu:
-  Glib::RefPtr<Glib::Object> object =
-    builder->get_object("UtilMenu");
-  Glib::RefPtr<Gio::Menu> gmenu =
-    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
-  if(!gmenu)
-    g_warning("GMenu not found");
-
-  m_pPopupMenuUtils = new Gtk::Menu(gmenu);
+  m_pPopupMenuUtils = new Gtk::Menu(menu);
 #endif
 }
 

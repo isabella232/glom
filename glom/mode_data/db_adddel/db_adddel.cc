@@ -252,56 +252,19 @@ void DbAddDel::setup_menu(Gtk::Widget* /* widget */)
   }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create();
-
   insert_action_group("context", m_refActionGroup);
 
   //TODO: add_accel_group(builder->get_accel_group());
 
-  const Glib::ustring ui_info =
-    "<interface>"
-    "  <menu id='ContextMenu'>"
-    "    <section>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>_Edit</attribute>"
-    "        <attribute name='action'>context.edit</attribute>"
-    "      </item>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>_Add</attribute>"
-    "        <attribute name='action'>context.add</attribute>"
-    "      </item>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>_Delete</attribute>"
-    "        <attribute name='action'>context.delete</attribute>"
-    "      </item>"
+  Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
+  menu->append(_("_Edit"), "context.edit");
+  menu->append(_("_Add"), "context.add");
+  menu->append(_("_Delete"), "context.delete");
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>_Layout</attribute>"
-    "        <attribute name='action'>context.layout</attribute>"
-    "      </item>"
+  menu->append(_("_Layout"), "context.layout");
 #endif
-    "    </section>"
-    "  </menu>"
-    "</interface>";
 
-  try
-  {
-    builder->add_from_string(ui_info);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
-  }
-
-  //Get the menu:
-  Glib::RefPtr<Glib::Object> object =
-    builder->get_object("ContextMenu");
-  Glib::RefPtr<Gio::Menu> gmenu =
-    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
-  if(!gmenu)
-    g_warning("GMenu not found");
-
-  m_pMenuPopup = new Gtk::Menu(gmenu);
+  m_pMenuPopup = new Gtk::Menu(menu);
 
 
   if(get_allow_user_actions())

@@ -123,8 +123,6 @@ private:
   //TODO: Use just the Gio::ActionGroup type when it derives from Gio::ActionMap. 
   Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup_UserModePopup;
 
-  Glib::RefPtr<Gtk::Builder> m_refBuilder_UserModePopup;
-
   //We use Gio::SimpleAction rather than Gio::Action
   //because Gio::Action has no way to enable/disable it.
   Glib::RefPtr<Gio::SimpleAction> m_refActionOpenFile, m_refActionOpenFileWith, 

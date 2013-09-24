@@ -288,46 +288,11 @@ void Canvas_PrintLayout::setup_context_menu()
 
   insert_action_group("context", m_context_menu_action_group);
 
-  Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create();
-
-  const Glib::ustring ui_info =
-    "<interface>"
-    "  <menu id='ContextMenu'>"
-    "    <section>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>_Edit</attribute>"
-    "        <attribute name='action'>context.edit</attribute>"
-    "      </item>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>_Formatting</attribute>"
-    "        <attribute name='action'>context.formatting</attribute>"
-    "      </item>"
-    "      <item>"
-    "        <attribute name='label' translatable='yes'>_delete</attribute>"
-    "        <attribute name='action'>context.delete</attribute>"
-    "      </item>"
-    "    </section>"
-    "  </menu>"
-    "</interface>";
-
-  try
-  {
-    builder->add_from_string(ui_info);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
-  }
-
-  //Get the menu:
-  Glib::RefPtr<Glib::Object> object =
-    builder->get_object("ContextMenu");
-  Glib::RefPtr<Gio::Menu> gmenu =
-    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
-  if(!gmenu)
-    g_warning("GMenu not found");
-
-  m_context_menu = new Gtk::Menu(gmenu);
+  Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
+  menu->append(_("_Edit"), "context.edit");
+  menu->append(_("_Formatting"), "context.formatting");
+  menu->append(_("_Delete"), "context.delete");
+  m_context_menu = new Gtk::Menu(menu);
 }
 
 

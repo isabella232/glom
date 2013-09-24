@@ -925,16 +925,16 @@ void ImageGlom::setup_menu_usermode()
   //Create the Gio::ActionGroup and associate it with this widget:
   m_refActionGroup_UserModePopup = Gio::SimpleActionGroup::create();
 
-  m_refActionOpenFile = m_refActionGroup_UserModePopup->add_action("openfile",
+  m_refActionOpenFile = m_refActionGroup_UserModePopup->add_action("open-file",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_open_file) );
 
-  m_refActionOpenFileWith = m_refActionGroup_UserModePopup->add_action("openfilewith",
+  m_refActionOpenFileWith = m_refActionGroup_UserModePopup->add_action("open-fil-ewith",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_open_file_with) );
     
-  m_refActionSaveFile = m_refActionGroup_UserModePopup->add_action("savefile",
+  m_refActionSaveFile = m_refActionGroup_UserModePopup->add_action("save-file",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_save_file) );
     
-  m_refActionSelectFile = m_refActionGroup_UserModePopup->add_action("selectfile",
+  m_refActionSelectFile = m_refActionGroup_UserModePopup->add_action("select-file",
     sigc::mem_fun(*this, &ImageGlom::on_menupopup_activate_select_file) );
 
   m_refActionCopy = m_refActionGroup_UserModePopup->add_action("copy",
@@ -951,58 +951,16 @@ void ImageGlom::setup_menu_usermode()
 
   //Create the UI for the menu whose items will activate the actions,
   //when this UI (a GtkMenu) is added and shown:
-  m_refBuilder_UserModePopup = Gtk::Builder::create();
 
-  try
-  {
-    Glib::ustring ui_info = 
-        "<interface>"
-        "  <menu id='ContextMenu_UserMode'>"
-        "    <section>"
-        "      <item>"
-        "        <attribute name='label' translatable='yes'>_Open File</attribute>"
-        "        <attribute name='action'>imagecontext.openfile</attribute>"
-        "      </item>"
-        "      <item>"
-        "        <attribute name='label' translatable='yes'>Open File With</attribute>"
-        "        <attribute name='action'>imagecontext.openfilewith</attribute>"
-        "      </item>"
-        "      <item>"
-        "        <attribute name='label' translatable='yes'>Select File</attribute>"
-        "        <attribute name='action'>imagecontext.selectfile</attribute>"
-        "      </item>"
-        "      <item>"
-        "        <attribute name='label' translatable='yes'>_Copy</attribute>"
-        "        <attribute name='action'>imagecontext.copy</attribute>"
-        "      </item>"
-        "      <item>"
-        "        <attribute name='label' translatable='yes'>_Paste</attribute>"
-        "        <attribute name='action'>imagecontext.paste</attribute>"
-        "      </item>"
-        "      <item>"
-        "        <attribute name='label' translatable='yes'>_Clear</attribute>"
-        "        <attribute name='action'>imagecontext.clear</attribute>"
-        "      </item>"
-        "    </section>"
-        "  </menu>"
-        "</interface>";
+  Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
+  menu->append(_("_Open File"), "context.open-file");
+  menu->append(_("Open File With"), "context.open-file-with");
+  menu->append(_("Select Fie"), "context.select-file");
+  menu->append(_("_Copy"), "context.copy");
+  menu->append(_("_Paste"), "context.paste");
+  menu->append(_("_Clear"), "context.clear");
 
-    m_refBuilder_UserModePopup->add_from_string(ui_info);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
-  }
-
-  //Get the menu:
-  Glib::RefPtr<Glib::Object> object =
-    m_refBuilder_UserModePopup->get_object("ContextMenu_UserMode");
-  Glib::RefPtr<Gio::Menu> gmenu =
-    Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
-  if(!gmenu)
-    g_warning("GMenu not found");
-
-  m_pMenuPopup_UserMode = new Gtk::Menu(gmenu);
+  m_pMenuPopup_UserMode = new Gtk::Menu(menu);
 }
 
 void ImageGlom::do_choose_image()
