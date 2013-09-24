@@ -2,7 +2,6 @@
 <!-- Generated with glade 3.15.4 on Tue Sep 24 11:06:30 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.6 -->
-  <!-- interface-requires gtksourceview 0.0 -->
   <object class="GtkWindow" id="window_translations">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Translations</property>

@@ -2,7 +2,6 @@
 <!-- Generated with glade 3.15.4 on Tue Sep 24 11:07:05 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.6 -->
-  <!-- interface-requires gtksourceview 0.0 -->
   <object class="GtkDialog" id="window_users">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
