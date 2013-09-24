@@ -13,6 +13,7 @@
         <item>
           <attribute name='label' translatable='yes'>_Print</attribute>
           <attribute name='action'>relationshipsoverview.print</attribute>
+          <attribute name='accel'>&lt;Primary&gt;p</attribute>
         </item>
       </section>
     </submenu>
