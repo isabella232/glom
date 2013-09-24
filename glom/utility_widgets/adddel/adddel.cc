@@ -251,6 +251,7 @@ void AddDel::setup_menu(Gtk::Widget* /* widget */)
   menu->append(_("_Delete"), "context.delete");
 
   m_pMenuPopup = new Gtk::Menu(menu);
+  m_pMenuPopup->attach_to_widget(*this);
 }
 
 bool AddDel::on_button_press_event_Popup(GdkEventButton *event)

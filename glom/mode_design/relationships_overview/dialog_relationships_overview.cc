@@ -451,14 +451,8 @@ void Dialog_RelationshipsOverview::on_table_show_context(guint button, guint32 a
       sigc::bind( sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_context_menu_edit_relationships), table ));
   }
 
-  if(!m_context_menu->get_attach_widget())
-  {
-    m_context_menu->attach_to_widget(*this);
-  }
-
   if(m_context_menu)
     m_context_menu->popup(button, activate_time);
-
 }
 
 void Dialog_RelationshipsOverview::setup_context_menu()
@@ -479,6 +473,7 @@ void Dialog_RelationshipsOverview::setup_context_menu()
     g_warning("GMenu not found");
 
   m_context_menu = new Gtk::Menu(gmenu);
+  m_context_menu->attach_to_widget(*this);
 }
 
 void Dialog_RelationshipsOverview::on_context_menu_edit_fields(const Glib::VariantBase& /* parameter */, Glib::RefPtr<CanvasGroupDbTable> table)

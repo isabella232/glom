@@ -127,6 +127,7 @@ void LayoutWidgetMenu::setup_menu(Gtk::Widget* widget)
 
 
   m_pMenuPopup = new Gtk::Menu(menu);
+  m_pMenuPopup->attach_to_widget(*widget);
 
   if(pApp)
     m_refContextLayout->set_enabled(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);

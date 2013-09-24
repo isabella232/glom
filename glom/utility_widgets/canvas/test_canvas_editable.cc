@@ -185,6 +185,7 @@ private:
     
     //Get the menu:
     m_context_menu = new Gtk::Menu(menu); 
+    m_context_menu->attach_to_widget(*this);
   }
  
   Gtk::Menu* m_context_menu;
