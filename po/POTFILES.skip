@@ -1,2 +1,3 @@
 glom.desktop.in
 glom.appdata.xml
+glom/utility_widgets/canvas/test_canvas_editable.cc
