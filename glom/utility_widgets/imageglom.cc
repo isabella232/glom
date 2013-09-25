@@ -955,7 +955,7 @@ void ImageGlom::setup_menu_usermode()
   Glib::RefPtr<Gio::Menu> menu = Gio::Menu::create();
   menu->append(_("_Open File"), "context.open-file");
   menu->append(_("Open File With"), "context.open-file-with");
-  menu->append(_("Select Fie"), "context.select-file");
+  menu->append(_("Select File"), "context.select-file");
   menu->append(_("_Copy"), "context.copy");
   menu->append(_("_Paste"), "context.paste");
   menu->append(_("_Clear"), "context.clear");
