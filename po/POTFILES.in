@@ -136,7 +136,6 @@ glom/mode_data/datawidget/datawidget.cc
 glom/mode_data/db_adddel/db_adddel.cc
 glom/mode_data/db_adddel/db_adddel_withbuttons.cc
 glom/mode_data/datawidget/dialog_choose_id.cc
-glom/utility_widgets/canvas/test_canvas_editable.cc
 glom/utility_widgets/dialog_image_load_progress.cc
 glom/utility_widgets/dialog_image_save_progress.cc
 glom/mode_data/datawidget/entry.cc
