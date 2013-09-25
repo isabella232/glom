@@ -187,6 +187,7 @@ private:
   GimpRuler* m_hruler;
 
   //Main menu:
+  Glib::RefPtr<Gtk::Builder> m_builder;
   Glib::RefPtr<Gio::SimpleAction> m_action_showgrid, m_action_showrules, m_action_showoutlines;
   Glib::RefPtr<Gio::SimpleAction> m_action_zoom;
 

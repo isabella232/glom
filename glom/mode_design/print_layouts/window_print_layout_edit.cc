@@ -61,6 +61,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_temp_rule_horizontal(false),
   m_vruler(0),
   m_hruler(0),
+  m_builder(builder),
   m_context_menu(0)
 {
   //See CanvasPrintLayout's commented-out use of set_size_request()
