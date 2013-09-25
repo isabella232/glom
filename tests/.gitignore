@@ -18,11 +18,13 @@
 /test_document_load_translations
 /test_fake_connection
 /test_glade_derived_instantiation
+/test_glom_date_in_locales.sh
 /test_script_check_for_problems
 /test_selfhosting_new_empty
 /test_selfhosting_new_empty_change_sysprefs
 /test_selfhosting_new_empty_then_users
 /test_selfhosting_new_from_example
+/test_selfhosting_new_from_example_float
 /test_selfhosting_new_from_example_operator
 /test_selfhosting_new_then_alter_table
 /test_selfhosting_new_then_backup_restore
@@ -33,9 +35,12 @@
 /test_selfhosting_new_then_choices
 /test_selfhosting_new_then_lookup
 /test_selfhosting_new_then_report_summary
+/test_selfhosting_non_numeric_primary_keys
 /test_selfhosting_sqlinjection
 /test_selfhosting_new_from_example_strangepath
 /test_selfhosting_new_then_change_columns
 
 coverage/
 
+*.log
+*.trs

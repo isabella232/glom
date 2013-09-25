@@ -49,5 +49,8 @@ Makefile.in
 
 /glom.desktop
 /glom.desktop.in
+/glom.appdata.xml
+
+/test-driver
 
 /glom-?.*.tar.*
