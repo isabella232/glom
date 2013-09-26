@@ -1036,7 +1036,7 @@ gimp_ruler_draw_ticks (GimpRuler *ruler)
   g_snprintf (unit_str, sizeof (unit_str), "%d", scale);
   text_size = strlen (unit_str) * digit_height + 1;
 
-  for (scale = 0; scale < G_N_ELEMENTS (ruler_metric.ruler_scale); scale++)
+  for (scale = 0; scale < (gint)G_N_ELEMENTS (ruler_metric.ruler_scale); scale++)
     if (ruler_metric.ruler_scale[scale] * fabs (increment) > 2 * text_size)
       break;
 

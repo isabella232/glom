@@ -421,12 +421,12 @@ gimp_unit_format_string (const gchar *format,
                          GimpUnit     unit)
 {
   gchar buffer[1024];
-  gint  i = 0;
+  guint  i = 0;
 
   g_return_val_if_fail (format != NULL, NULL);
   g_return_val_if_fail (unit == GIMP_UNIT_PERCENT ||
                         (unit >= GIMP_UNIT_PIXEL &&
-                         unit < gimp_unit_get_number_of_units ()), NULL);
+                         unit < (guint)gimp_unit_get_number_of_units ()), NULL);
 
   while (i < (sizeof (buffer) - 1) && *format)
     {
