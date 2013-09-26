@@ -109,7 +109,7 @@ string_to_unit (const GValue *src_value,
   return;
 
  error:
-  g_warning ("Can't convert string to GimpUnit.");
+  g_warning ("Can't convert string '%s' to GimpUnit.", str);
 }
 
 
@@ -345,6 +345,12 @@ gimp_unit_get_plural (GimpUnit unit)
   return _gimp_unit_vtable.unit_get_plural (unit);
 }
 
+static gint print (gchar       *buf,
+                   gint         len,
+                   gint         start,
+                   const gchar *fmt,
+                   ...) G_GNUC_PRINTF (4, 5);
+
 static gint
 print (gchar       *buf,
        gint         len,
@@ -418,11 +424,11 @@ gimp_unit_format_string (const gchar *format,
   gint  i = 0;
 
   g_return_val_if_fail (format != NULL, NULL);
-  g_return_val_if_fail ((gint)unit == GIMP_UNIT_PERCENT ||
-                        ( /* A change for Glom: This is unsigned, so always true: unit >= GIMP_UNIT_PIXEL && */
-                         (gint)unit < gimp_unit_get_number_of_units ()), NULL);
+  g_return_val_if_fail (unit == GIMP_UNIT_PERCENT ||
+                        (unit >= GIMP_UNIT_PIXEL &&
+                         unit < gimp_unit_get_number_of_units ()), NULL);
 
-  while (i < ((gint)sizeof (buffer) - 1) && *format)
+  while (i < (sizeof (buffer) - 1) && *format)
     {
       switch (*format)
         {
@@ -479,7 +485,7 @@ gimp_unit_format_string (const gchar *format,
       format++;
     }
 
-  buffer[MIN (i, (gint)sizeof (buffer) - 1)] = 0;
+  buffer[MIN (i, sizeof (buffer) - 1)] = 0;
 
   return g_strdup (buffer);
 }
@@ -681,3 +687,4 @@ gimp_units_to_points (gdouble  value,
   return (value *
           gimp_unit_get_factor (GIMP_UNIT_POINT) / gimp_unit_get_factor (unit));
 }
+

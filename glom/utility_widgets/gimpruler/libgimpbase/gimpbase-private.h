@@ -66,3 +66,4 @@ void  gimp_base_init (GimpUnitVtable *vtable);
 G_END_DECLS
 
 #endif /* __GIMP_BASE_PRIVATE_H__ */
+

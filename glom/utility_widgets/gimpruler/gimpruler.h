@@ -16,6 +16,9 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+/* A change for Glom: */
+#include "libgimpbase/gimpunit.h"
+
 /* We disable this so we can use it in Glom without the other files.
 #if !defined (__GIMP_WIDGETS_H_INSIDE__) && !defined (GIMP_WIDGETS_COMPILATION)
 #error "Only <libgimpwidgets/gimpwidgets.h> can be included directly."
@@ -27,9 +30,6 @@
 
 G_BEGIN_DECLS
 
-/* This is not in the original gimp source code. */
-#include <libgimpbase/gimpunit.h>
-
 #define GIMP_TYPE_RULER            (gimp_ruler_get_type ())
 #define GIMP_RULER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_RULER, GimpRuler))
 #define GIMP_RULER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_RULER, GimpRulerClass))
@@ -37,8 +37,9 @@ G_BEGIN_DECLS
 #define GIMP_IS_RULER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_RULER))
 #define GIMP_RULER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_RULER, GimpRulerClass))
 
+/* A change for Glom: */
 /* In the original gimp source code, this is in libgimpwidgets/gimpwidgetstypes.h */
-typedef struct _GimpRuler                 GimpRuler;
+typedef struct _GimpRuler   GimpRuler;
 
 typedef struct _GimpRulerClass   GimpRulerClass;
 
@@ -86,3 +87,4 @@ void        gimp_ruler_get_range           (GimpRuler      *ruler,
 G_END_DECLS
 
 #endif /* __GIMP_RULER_H__ */
+

@@ -76,9 +76,17 @@ G_BEGIN_DECLS
  * ROUND:
  * @x: the value to be rounded.
  *
- * This macro rounds its argument @x to the nearest integer.
+ * This macro rounds its positive argument @x to the nearest integer.
  **/
 #define ROUND(x) ((int) ((x) + 0.5))
+
+/**
+ * SIGNED_ROUND:
+ * @x: the value to be rounded.
+ *
+ * This macro rounds its argument @x to the nearest integer.
+ **/
+#define SIGNED_ROUND(x) ((int) ((((x) < 0) ? (x) - 0.5 : (x) + 0.5)))
 
 /**
  * SQR:
@@ -125,3 +133,4 @@ G_BEGIN_DECLS
 G_END_DECLS
 
 #endif /* __GIMP_MATH_H__ */
+

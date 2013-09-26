@@ -22,7 +22,10 @@
 
 #include <gtk/gtk.h>
 
+/* A change for Glom:
 #include "libgimpbase/gimpbase.h"
+*/
+
 #include "libgimpmath/gimpmath.h"
 
 /* A change for Glom:
@@ -30,6 +33,11 @@
 */
 
 #include "gimpruler.h"
+
+/* A change for Glom: */
+#include "libgimpbase/gimpparam.h"
+#include "libgimpbase/gimpunit.h"
+#include "libgimpbase/gimpbaseenums.h"
 
 
 /**
@@ -741,8 +749,7 @@ gimp_ruler_realize (GtkWidget *widget)
   attributes.wclass      = GDK_INPUT_ONLY;
   attributes.event_mask  = (gtk_widget_get_events (widget) |
                             GDK_EXPOSURE_MASK              |
-                            GDK_POINTER_MOTION_MASK        |
-                            GDK_POINTER_MOTION_HINT_MASK);
+                            GDK_POINTER_MOTION_MASK);
 
   attributes_mask = GDK_WA_X | GDK_WA_Y;
 
@@ -910,8 +917,6 @@ gimp_ruler_motion_notify (GtkWidget      *widget,
 {
   GimpRuler *ruler = GIMP_RULER (widget);
 
-  gdk_event_request_motions (event);
-
   gimp_ruler_update_position (ruler, event->x, event->y);
 
   return FALSE;
@@ -1031,7 +1036,7 @@ gimp_ruler_draw_ticks (GimpRuler *ruler)
   g_snprintf (unit_str, sizeof (unit_str), "%d", scale);
   text_size = strlen (unit_str) * digit_height + 1;
 
-  for (scale = 0; scale < (gint)G_N_ELEMENTS (ruler_metric.ruler_scale); scale++)
+  for (scale = 0; scale < G_N_ELEMENTS (ruler_metric.ruler_scale); scale++)
     if (ruler_metric.ruler_scale[scale] * fabs (increment) > 2 * text_size)
       break;
 
@@ -1299,3 +1304,4 @@ gimp_ruler_get_layout (GtkWidget   *widget,
 
   return priv->layout;
 }
+

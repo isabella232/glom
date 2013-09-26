@@ -47,3 +47,4 @@ gimp_base_init (GimpUnitVtable *vtable)
 
   gimp_base_initialized = TRUE;
 }
+
