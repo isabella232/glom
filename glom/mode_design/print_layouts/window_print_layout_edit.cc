@@ -196,9 +196,9 @@ void Window_PrintLayout_Edit::init_menu()
 {
   Glib::RefPtr<Gio::SimpleActionGroup> action_group = Gio::SimpleActionGroup::create();
 
-  action_group->add_action("pagesetup",
+  action_group->add_action("page-setup",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_file_page_setup));
-  action_group->add_action("printpreview",
+  action_group->add_action("print-preview",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_file_print_preview) );
 
   m_action_edit_cut = action_group->add_action("cut",
@@ -214,51 +214,51 @@ void Window_PrintLayout_Edit::init_menu()
   m_action_edit_delete = action_group->add_action("delete",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_delete) );
 
-  action_group->add_action("selectall",
+  action_group->add_action("select-all",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_selectall) ); //TODO: Gtk::AccelKey("<control>A"), //TODO: Suggest this as part of the stock item in GTK+?
-  action_group->add_action("unnselectall", //TODO: Propose a new stock item for GTK+.
+  action_group->add_action("unselect-all", //TODO: Propose a new stock item for GTK+.
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_unselectall) );
 
-  action_group->add_action("insertfield",
+  action_group->add_action("insert-field",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_field) );
-  action_group->add_action("inserttext",
+  action_group->add_action("insert-text",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_text) );
-  action_group->add_action("insertimage",
+  action_group->add_action("insert-image",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_image) );
-  action_group->add_action("insertrelatedrecords",
+  action_group->add_action("insert-related-records",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_relatedrecords) );
-  action_group->add_action("inserthoriztonalline",
+  action_group->add_action("insert-horizontal-line",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_line_horizontal) );
-  action_group->add_action("insertveticalline",
+  action_group->add_action("insert-vertical-line",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_line_vertical) );
-  action_group->add_action("createstandard",
+  action_group->add_action("create-standard",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_create_standard) );
-  action_group->add_action("addpage",
+  action_group->add_action("add-page",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_add_page) );
-  action_group->add_action("deletepage",
+  action_group->add_action("delete-page",
    sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_delete_page) );
 
 
-  m_action_align_top = action_group->add_action("aligntop", 
+  m_action_align_top = action_group->add_action("align-top", 
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_align_top) );
 
-  m_action_align_bottom = action_group->add_action("alignbottom",
+  m_action_align_bottom = action_group->add_action("align-bottom",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_align_bottom) );
   
-  m_action_align_left = action_group->add_action("alignleft",
+  m_action_align_left = action_group->add_action("align-left",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_align_left) );
 
-  m_action_align_right = action_group->add_action("alignright",
+  m_action_align_right = action_group->add_action("align-right",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_align_right) );
 
 
-  m_action_showgrid = action_group->add_action_bool("showgrid",
+  m_action_showgrid = action_group->add_action_bool("show-grid",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_show_grid),
     false);
-  m_action_showrules = action_group->add_action_bool("showrules",
+  m_action_showrules = action_group->add_action_bool("show-rules",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_show_rules),
     false);
-  m_action_showoutlines = action_group->add_action_bool("showoutlines",
+  m_action_showoutlines = action_group->add_action_bool("show-outlines",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_view_show_outlines),
     false);
 
@@ -277,11 +277,11 @@ void Window_PrintLayout_Edit::init_menu()
     "      <section>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>Page Set_up</attribute>"
-    "          <attribute name='action'>printlayout.pagesetup</attribute>"
+    "          <attribute name='action'>printlayout.page-setup</attribute>"
     "        </item>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>Print Pre_view</attribute>"
-    "          <attribute name='action'>printlayout.printpreview</attribute>"
+    "          <attribute name='action'>printlayout.print-preview</attribute>"
     "        </item>"
     "      </section>"
     "    </submenu>"
@@ -308,11 +308,11 @@ void Window_PrintLayout_Edit::init_menu()
     "      <section>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>Select _All</attribute>"
-    "          <attribute name='action'>printlayout.selectall</attribute>"
+    "          <attribute name='action'>printlayout.select-all</attribute>"
     "        </item>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>_Unselect All</attribute>"
-    "          <attribute name='action'>printlayout.unselectall</attribute>"
+    "          <attribute name='action'>printlayout.unselect-all</attribute>"
     "        </item>"
     "      </section>"
     "    </submenu>"
@@ -321,43 +321,43 @@ void Window_PrintLayout_Edit::init_menu()
     "      <section>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>Insert _Field</attribute>"
-    "          <attribute name='action'>printlayout.insertfield</attribute>"
+    "          <attribute name='action'>printlayout.insert-field</attribute>"
     "        </item>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>Insert _Text</attribute>"
-    "          <attribute name='action'>printlayout.inserttext</attribute>"
+    "          <attribute name='action'>printlayout.insert-text</attribute>"
     "        </item>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>Insert _Image</attribute>"
-    "          <attribute name='action'>printlayout.insertimage</attribute>"
+    "          <attribute name='action'>printlayout.insert-image</attribute>"
     "        </item>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>Insert _Related Records</attribute>"
-    "          <attribute name='action'>printlayout.insertrelatedrecords</attribute>"
+    "          <attribute name='action'>printlayout.insert-related-records</attribute>"
     "        </item>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>Insert _Horizontal Line</attribute>"
-    "          <attribute name='action'>printlayout.inserthorizontalline</attribute>"
+    "          <attribute name='action'>printlayout.insert-horizontal-line</attribute>"
     "        </item>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>Insert _Vertical Line</attribute>"
-    "          <attribute name='action'>printlayout.insertverticalline</attribute>"
+    "          <attribute name='action'>printlayout.insert-vertical-line</attribute>"
     "        </item>"
     "      </section>"
     "      <section>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>Create _Standard</attribute>"
-    "          <attribute name='action'>printlayout.createstandard</attribute>"
+    "          <attribute name='action'>printlayout.create-standard</attribute>"
     "        </item>"
     "      </section>"
     "      <section>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>Add Page</attribute>"
-    "          <attribute name='action'>printlayout.addpage</attribute>"
+    "          <attribute name='action'>printlayout.add-page</attribute>"
     "        </item>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>Delete Page</attribute>"
-    "          <attribute name='action'>printlayout.deletepage</attribute>"
+    "          <attribute name='action'>printlayout.delete-page</attribute>"
     "        </item>"
     "      </section>"
     "    </submenu>"
@@ -366,19 +366,19 @@ void Window_PrintLayout_Edit::init_menu()
     "      <section>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>Align _Top</attribute>"
-    "          <attribute name='action'>printlayout.aligntop</attribute>"
+    "          <attribute name='action'>printlayout.align-top</attribute>"
     "        </item>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>Align _Bottom</attribute>"
-    "          <attribute name='action'>printlayout.alignbottom</attribute>"
+    "          <attribute name='action'>printlayout.align-bottom</attribute>"
     "        </item>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>Align _Left</attribute>"
-    "          <attribute name='action'>printlayout.alignleft</attribute>"
+    "          <attribute name='action'>printlayout.align-left</attribute>"
     "        </item>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>Align _Right</attribute>"
-    "          <attribute name='action'>printlayout.alignright</attribute>"
+    "          <attribute name='action'>printlayout.align-right</attribute>"
     "        </item>"
     "      </section>"
     "    </submenu>"
@@ -387,15 +387,15 @@ void Window_PrintLayout_Edit::init_menu()
     "      <section>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>Show _Grid</attribute>"
-    "          <attribute name='action'>printlayout.showgrid</attribute>"
+    "          <attribute name='action'>printlayout.show-grid</attribute>"
     "        </item>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>Show _Rules</attribute>"
-    "          <attribute name='action'>printlayout.showrules</attribute>"
+    "          <attribute name='action'>printlayout.show-rules</attribute>"
     "        </item>"
     "        <item>"
     "          <attribute name='label' translatable='yes'>Show _Outlines</attribute>"
-    "          <attribute name='action'>printlayout.showoutlines</attribute>"
+    "          <attribute name='action'>printlayout.show-outlines</attribute>"
     "        </item>"
     "      </section>"
     "      <section>"
@@ -453,6 +453,9 @@ void Window_PrintLayout_Edit::init_menu()
   Gtk::MenuBar* pMenuBar = new Gtk::MenuBar(gmenu);
   m_box_menu->pack_start(*pMenuBar, Gtk::PACK_SHRINK);
   pMenuBar->show();
+
+  //TODO: Create a generic checking method to test that
+  //  all actions from the action group are in the GMenu?
 
   //TODO: Add a toolbar if it would be useful:
   //Gtk::Toolbar* pToolBar = static_cast<Gtk::Toolbar*>(builder->get_widget("/Bakery_ToolBar"));
