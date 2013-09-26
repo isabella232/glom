@@ -126,7 +126,7 @@ void LayoutWidgetMenu::setup_menu(Gtk::Widget* widget)
   menu->append(_("Delete"), "context.delete");
 
 
-  m_pMenuPopup = new Gtk::Menu(menu);
+  m_pMenuPopup = Gtk::manage(new Gtk::Menu(menu));
   m_pMenuPopup->attach_to_widget(*widget);
 
   if(pApp)

@@ -527,7 +527,7 @@ void Box_Data_Calendar_Related::setup_menu(Gtk::Widget* /* this */)
   menu->append(_("_Edit"), "context.edit");
   menu->append(_("_Layout"), "context.layout");
 
-  m_pMenuPopup = new Gtk::Menu(menu);
+  m_pMenuPopup = Gtk::manage(new Gtk::Menu(menu));
   m_pMenuPopup->attach_to_widget(*this);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

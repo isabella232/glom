@@ -78,7 +78,7 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   if(!gmenu)
     g_warning("GMenu not found");
 
-  m_menu = new Gtk::MenuBar(gmenu);
+  m_menu = Gtk::manage(new Gtk::MenuBar(gmenu));
 
   vbox->pack_start(*m_menu, Gtk::PACK_SHRINK);
   m_menu->show();
@@ -472,7 +472,7 @@ void Dialog_RelationshipsOverview::setup_context_menu()
   if(!gmenu)
     g_warning("GMenu not found");
 
-  m_context_menu = new Gtk::Menu(gmenu);
+  m_context_menu = Gtk::manage(new Gtk::Menu(gmenu));
   m_context_menu->attach_to_widget(*this);
 }
 

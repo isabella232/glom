@@ -292,7 +292,7 @@ void Canvas_PrintLayout::setup_context_menu()
   menu->append(_("_Edit"), "context.edit");
   menu->append(_("_Formatting"), "context.formatting");
   menu->append(_("_Delete"), "context.delete");
-  m_context_menu = new Gtk::Menu(menu);
+  m_context_menu = Gtk::manage(new Gtk::Menu(menu));
   m_context_menu->attach_to_widget(*this);
 }
 

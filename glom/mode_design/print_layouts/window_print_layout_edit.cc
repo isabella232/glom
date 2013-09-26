@@ -278,7 +278,7 @@ void Window_PrintLayout_Edit::init_menu()
     g_warning("GMenu not found");
 
   //Menubar:
-  Gtk::MenuBar* pMenuBar = new Gtk::MenuBar(gmenu);
+  Gtk::MenuBar* pMenuBar = Gtk::manage(new Gtk::MenuBar(gmenu));
   m_box_menu->pack_start(*pMenuBar, Gtk::PACK_SHRINK);
   pMenuBar->show();
 
@@ -705,7 +705,7 @@ void Window_PrintLayout_Edit::setup_context_menu()
   if(!gmenu)
     g_warning("GMenu not found");
 
-  m_context_menu = new Gtk::Menu(gmenu);
+  m_context_menu = Gtk::manage(new Gtk::Menu(gmenu));
   m_context_menu->attach_to_widget(*this);
 }
 

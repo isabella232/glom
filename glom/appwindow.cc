@@ -112,7 +112,7 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
   if(!gmenu)
     g_warning("GMenu not found");
 
-  m_menubar = new Gtk::MenuBar(gmenu);
+  m_menubar = Gtk::manage(new Gtk::MenuBar(gmenu));
   m_menubar->show();
   m_pBoxTop->pack_start(*m_menubar, Gtk::PACK_SHRINK);
 

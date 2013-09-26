@@ -960,7 +960,7 @@ void ImageGlom::setup_menu_usermode()
   menu->append(_("_Paste"), "context.paste");
   menu->append(_("_Clear"), "context.clear");
 
-  m_pMenuPopup_UserMode = new Gtk::Menu(menu);
+  m_pMenuPopup_UserMode = Gtk::manage(new Gtk::Menu(menu));
   m_pMenuPopup_UserMode->attach_to_widget(*this);
 }
 

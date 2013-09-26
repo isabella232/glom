@@ -264,7 +264,7 @@ void DbAddDel::setup_menu(Gtk::Widget* /* widget */)
   menu->append(_("_Layout"), "context.layout");
 #endif
 
-  m_pMenuPopup = new Gtk::Menu(menu);
+  m_pMenuPopup = Gtk::manage(new Gtk::Menu(menu));
   m_pMenuPopup->attach_to_widget(*this);
 
   if(get_allow_user_actions())
