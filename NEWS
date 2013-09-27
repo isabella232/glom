@@ -1,3 +1,16 @@
+1.25.2 (unstable):
+
+Build:
+* Fix the build with --enable-warnings=fatal,
+  by replacing all uses of GtkUIManager and GtkAction with
+  GtkBuilder, GAction and GMenu.
+  (Accelerators, such as Ctrl-Q are currently not working.)
+  (Murray Cumming)
+* Replace depreacted GtkHBox and GtkVBox with GtkBox in Glade files.
+  (This can cause strange layout issues, but I think I caught them all.)
+  (Murray Cumming)
+
+
 1.25.1 (unstable):
 
 * Startup: Do not crash when reporting check problems.
