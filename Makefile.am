@@ -251,7 +251,7 @@ endif
 
 #Validate the AppData File:
 #TODO: Run this during make check when appdata-tools is widespread.
-validate-appdata:
+validate-appdata: $(appdata_DATA)
 	appdata-validate --strict $(appdata_DATA)
 
 
