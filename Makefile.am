@@ -241,18 +241,20 @@ endif
 
 
 # The AppData file:
+appdata_in_files = glom.appdata.xml.in
+appdata_files = $(appdata_in_files:.xml.in=.xml)
 appdatadir = $(datadir)/appdata
+dist_appdata_DATA = $(appdata_files)
 
-if HOST_WIN32
-appdata_DATA =
-else
-appdata_DATA = glom.appdata.xml
-endif
+EXTRA_DIST = $(appdata_in_files)
+
+@INTLTOOL_XML_RULE@
+
 
 #Validate the AppData File:
 #TODO: Run this during make check when appdata-tools is widespread.
-validate-appdata: $(appdata_DATA)
-	appdata-validate --strict $(appdata_DATA)
+validate-appdata: $(appdata_files)
+	appdata-validate --strict $(appdata_files)
 
 
 mimedir = $(datadir)/mime
