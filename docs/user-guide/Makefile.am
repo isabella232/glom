@@ -1,12 +1,11 @@
 AUTOMAKE_OPTIONS = -Wno-portability
 
-include $(top_srcdir)/gnome-doc-utils.make
+@YELP_HELP_RULES@
 dist-hook: doc-dist-hook
 
-DOC_MODULE = glom
-DOC_ENTITIES =
-DOC_INCLUDES = legal.xml 
-DOC_FIGURES = \
+HELP_ID = glom
+HELP_EXTRA = legal.xml 
+HELP_MEDIA = \
 	figures/glom_data_details.png \
 	figures/glom_design_layout_details.png \
 	figures/glom_design_reports.png \
@@ -25,4 +24,4 @@ DOC_FIGURES = \
 	figures/glom_design_reports_group_by.png \
 	figures/glom_report_result.png
 
-DOC_LINGUAS = cs de en_GB es fr sl sv
+HELP_LINGUAS = cs de en_GB es fr sl sv

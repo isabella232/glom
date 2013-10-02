@@ -1,9 +1,0 @@
-<?xml version="1.0" standalone="no"?>
-<omf>
-  <resource>
-    <subject category="GNOME|Applications|Office"/>
-    <type>user's guide</type>
-    <relation seriesid="0f51b462-10d8-11da-85a3-fc84e721c7fe"/>
-    <rights type="GNU FDL" license.version="1.1" holder="Murray Cumming"/>
-  </resource>        
-</omf>

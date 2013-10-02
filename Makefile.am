@@ -17,7 +17,7 @@
 
 ## This project does not use recursive make, but a single toplevel Makefile
 ## to build the entire tree (excluding po and docs/user-guide as gettext and
-## gnome-doc-utils come with their own build systems).  Read Peter Miller's
+## yelp-tools (TODO: Still?) come with their own build systems).  Read Peter Miller's
 ## excellent paper to learn why recursive make invocations are both slow and
 ## error-prone:  http://miller.emu.id.au/pmiller/books/rmch/
 
@@ -40,12 +40,11 @@ doc_subdirs = docs/libglom_reference docs/pyglom_reference
 else
 doc_subdirs =
 endif
-if HAVE_GNOME_DOC_UTILS
-gnome_doc_subdirs = docs/user-guide
-else
-gnome_doc_subdirs =
-endif
-SUBDIRS = po $(doc_subdirs) $(gnome_doc_subdirs)
+
+# TODO: Allow this to be disabled, by letting YELP_HELP_INIT fail nicely as it could with GNOME_DOC_INIT?
+yelp_doc_subdirs = docs/user-guide
+
+SUBDIRS = po $(doc_subdirs) $(yelp_doc_subdirs)
 
 if HOST_WIN32
 win_resfile = glom/glom.res
@@ -262,7 +261,7 @@ mimepackagesdir = $(mimedir)/packages
 dist_mimepackages_DATA = glom.xml
 
 dist_template = glom/glom.rc glom.service.in
-dist_docutils = gnome-doc-utils.make omf.make xmldocs.make
+dist_docutils =
 dist_intltool = intltool-extract.in intltool-merge.in intltool-update.in
 dist_docfiles = docs/overview.txt docs/developer_documentation.txt \
 		docs/postgres_test.c docs/postgres_gda_test.c win32/README
@@ -279,7 +278,7 @@ CLEANFILES = $(dbusservice_DATA) $(desktop_DATA) $(appdata_DATA) $(win_resfile) 
 DISTCLEANFILES = intltool-extract intltool-merge intltool-update
 MAINTAINERCLEANFILES += \
 	$(dist_docutils) $(dist_intltool) \
-	macros/gnome-doc-utils.m4 macros/intltool.m4 \
+	macros/intltool.m4 \
 	macros/libtool.m4 macros/ltoptions.m4 macros/ltsugar.m4 \
 	macros/ltversion.m4 macros/lt~obsolete.m4
 

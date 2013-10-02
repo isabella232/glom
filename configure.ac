@@ -301,8 +301,7 @@ AC_DEFINE_UNQUOTED([MYSQL_UTILS_PATH], ["$MYSQL_UTILS_PATH"],
                    [Define to the location of the MySQL utilities.])
 
 
-GNOME_DOC_INIT([0.9.0],,
-  [AC_MSG_WARN([[gnome-doc-utils not found: documentation will not be built.]])])
+YELP_HELP_INIT
 
 MM_ARG_ENABLE_DOCUMENTATION
 MM_ARG_WITH_TAGFILE_DOC([libstdc++.tag], [mm-common-libstdc++])
