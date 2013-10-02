@@ -240,6 +240,7 @@ desktop_DATA = glom.desktop
 endif
 
 
+# The AppData file:
 appdatadir = $(datadir)/appdata
 
 if HOST_WIN32
@@ -247,6 +248,11 @@ appdata_DATA =
 else
 appdata_DATA = glom.appdata.xml
 endif
+
+#Validate the AppData File:
+#TODO: Run this during make check when appdata-tools is widespread.
+validate-appdata:
+	appdata-validate --strict $(appdata_DATA)
 
 
 mimedir = $(datadir)/mime
