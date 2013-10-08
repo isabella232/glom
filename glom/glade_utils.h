@@ -35,28 +35,10 @@ namespace Glom
 namespace Utils
 {
 
-inline std::string get_glade_file_path(const std::string& filename)
+inline std::string get_glade_resource_path(const std::string& filename)
 {
-#ifdef G_OS_WIN32
-  gchar* directory = g_win32_get_package_installation_directory_of_module(0);
-  const std::string result = Glib::build_filename(directory, Glib::build_filename("share/glom/glade", filename));
-  g_free(directory);
-  directory = 0;
-#else
-  const std::string result = Glib::build_filename(GLOM_PKGDATADIR, Glib::build_filename("glade", filename));
-#endif
-
-  // Check that it exists:
-  const Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(result);
-  if(file && file->query_exists())
-    return result;
-
-  // Try to fall back to the uninstalled file in the source tree,
-  // for instance when running "make distcheck", which doesn't install to _inst/
-  // before running check.
-  std::cout << "Glade file not found: " << result << std::endl;
-  std::cout << "Falling back to the local file." << std::endl;
-  return Glib::build_filename(GLOM_PKGDATADIR_NOTINSTALLED, filename);
+  // This is the same prefix that is in the *gresource.xml.in file.
+  return "/org/gnome/glom/ui/" + filename;
 }
 
 /** This assumes that there are no other top-level windows in the glade file.
@@ -70,11 +52,11 @@ void helper_get_glade_widget_derived_with_warning(const std::string& filename, c
 
   try
   {
-    const std::string filepath = Utils::get_glade_file_path(filename);
+    const std::string filepath = Utils::get_glade_resource_path(filename);
     if(load_all)
-      refXml = Gtk::Builder::create_from_file(filepath);
+      refXml = Gtk::Builder::create_from_resource(filepath);
      else
-      refXml = Gtk::Builder::create_from_file(filepath, id);
+      refXml = Gtk::Builder::create_from_resource(filepath, id);
   }
   catch(const Gtk::BuilderError& ex)
   {
@@ -109,6 +91,7 @@ void get_glade_child_widget_derived_with_warning(T_Widget*& widget)
 
   // Check the path to the installed .glade file:
   // The id is the same as the filename, in a developer/operator sub-directory:
+  // TODO: Should we use build_filename()?
   const std::string filename = Glib::build_filename(
       (T_Widget::glade_developer ? "developer" : "operator"),
       std::string(T_Widget::glade_id) + ".glade"); 
@@ -142,7 +125,7 @@ void get_glade_widget_with_warning(const std::string& filename, const Glib::ustr
 
   try
   {
-    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path(filename), id);
+    refXml = Gtk::Builder::create_from_resource(Utils::get_glade_resource_path(filename), id);
   }
   catch(const Gtk::BuilderError& ex)
   {
@@ -153,6 +136,10 @@ void get_glade_widget_with_warning(const std::string& filename, const Glib::ustr
     std::cerr << ex.what() << std::endl;
   }
   catch(const Glib::FileError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+  catch(const Gio::ResourceError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }

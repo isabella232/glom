@@ -28,6 +28,16 @@ bin_PROGRAMS += glom/glom
 
 glom_glom_CPPFLAGS = $(glom_includes) $(GLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(GCOV_CFLAGS) $(glom_defines)
 
+# Generate the GResource source file:
+# TODO: Do not use all .glade files in the client-only build.
+glom_resource_file = ui/glom.gresource.xml
+BUILT_SOURCES = ui/glom-resources.c
+ui/glom-resources.c: $(glom_resource_file) $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies $(glom_resource_file))
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate-source $(glom_resource_file)
+
+EXTRA_DIST = \
+	$(glom_resource_file)
+
 glom_eggspreadtable_files =  \
   glom/utility_widgets/eggspreadtable/eggmarshalers.c \
 	glom/utility_widgets/eggspreadtable/eggmarshalers.h \
@@ -64,7 +74,8 @@ glom_canvas_files =  \
 	glom/utility_widgets/canvas/canvas_table_movable.cc		\
 	glom/utility_widgets/canvas/canvas_table_movable.h		\
 	glom/utility_widgets/canvas/canvas_text_movable.cc		\
-	glom/utility_widgets/canvas/canvas_text_movable.h
+	glom/utility_widgets/canvas/canvas_text_movable.h \
+	$(BUILT_SOURCES)
 
 glom_source_files = \
 	glom/appwindow.cc						\

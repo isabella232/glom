@@ -240,12 +240,9 @@ endif
 
 
 # The AppData file:
-appdata_in_files = glom.appdata.xml.in
-appdata_files = $(appdata_in_files:.xml.in=.xml)
+appdata_files = glom.appdata.xml
 appdatadir = $(datadir)/appdata
 dist_appdata_DATA = $(appdata_files)
-
-EXTRA_DIST = $(appdata_in_files)
 
 @INTLTOOL_XML_RULE@
 

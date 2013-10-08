@@ -374,12 +374,15 @@ fi
 AM_CONDITIONAL(GCOV_ENABLED, test x$enable_gcov = xyes)
 AC_MSG_RESULT($enable_gcov)
 
+# GResources
+GLIB_COMPILE_RESOURCES=`$PKG_CONFIG --variable glib_compile_resources gio-2.0`
+AC_SUBST(GLIB_COMPILE_RESOURCES)
 
 AC_CONFIG_FILES([Makefile
-                 docs/user-guide/Makefile
                  po/Makefile.in
                  glom.desktop.in
                  glom/libglom/glom-${GLOM_ABI_VERSION}.pc:glom/libglom/glom.pc.in
+                 docs/user-guide/Makefile
                  docs/libglom_reference/Makefile
                  docs/libglom_reference/Doxyfile
                  docs/pyglom_reference/Makefile

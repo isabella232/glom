@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/gnome/glom">
+    <file preprocess="xml-stripblanks">ui/developer/box_formatting.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/box_print_layouts.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/box_reports.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_add_related_table.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_change_language.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_choose_field.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_choose_relationship.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_choose_user.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_database_preferences.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_error_create_database.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_fieldslist.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_field_summary.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_flowtable.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_group_by.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_initial_password.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_layout_field_properties.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_line.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_new_group.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_new_library_script.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_notebook.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_relationships_overview.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_script_library.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_sort_fields.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_translation_copy.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_translation_identify_original.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/dialog_user.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/window_button_script.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/window_data_layout_export.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/window_data_layout.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/window_design.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/window_field_calculation.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/window_field_definition_edit.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/window_groups.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/window_imageobject.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/window_print_layout_edit.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/window_report_layout.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/window_text_format.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/window_textobject.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/window_translations.glade</file>
+    <file preprocess="xml-stripblanks">ui/developer/window_users.glade</file>
+    <file preprocess="xml-stripblanks">ui/operator/box_navigation_tables.glade</file>
+    <file preprocess="xml-stripblanks">ui/operator/dialog_choose_date.glade</file>
+    <file preprocess="xml-stripblanks">ui/operator/dialog_connection.glade</file>
+    <file preprocess="xml-stripblanks">ui/operator/dialog_data_invalid_format.glade</file>
+    <file preprocess="xml-stripblanks">ui/operator/dialog_existing_or_new.glade</file>
+    <file preprocess="xml-stripblanks">ui/operator/dialog_find_id.glade</file>
+    <file preprocess="xml-stripblanks">ui/operator/dialog_image_load_progress.glade</file>
+    <file preprocess="xml-stripblanks">ui/operator/dialog_image_save_progress.glade</file>
+    <file preprocess="xml-stripblanks">ui/operator/dialog_import_csv.glade</file>
+    <file preprocess="xml-stripblanks">ui/operator/dialog_import_csv_progress.glade</file>
+    <file preprocess="xml-stripblanks">ui/operator/dialog_new_record.glade</file>
+    <file preprocess="xml-stripblanks">ui/operator/window_main.glade</file>
+
+  </gresource>
+</gresources>
+
+
+
+
+ 
+
+
