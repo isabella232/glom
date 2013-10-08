@@ -425,7 +425,7 @@ gimp_unit_format_string (const gchar *format,
 
   g_return_val_if_fail (format != NULL, NULL);
   g_return_val_if_fail (unit == GIMP_UNIT_PERCENT ||
-                        (unit >= GIMP_UNIT_PIXEL &&
+                        ( /* Change for Glom: This is always true: unit >= GIMP_UNIT_PIXEL && */
                          unit < (guint)gimp_unit_get_number_of_units ()), NULL);
 
   while (i < (sizeof (buffer) - 1) && *format)
