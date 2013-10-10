@@ -147,7 +147,7 @@
                             <property name="can_focus">True</property>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
+                            <property name="expand">True</property>
                             <property name="fill">True</property>
                             <property name="position">1</property>
                           </packing>
@@ -172,7 +172,7 @@
                             <property name="top_padding">6</property>
                             <property name="left_padding">12</property>
                             <child>
-                              <object class="GtkTable" id="table10">
+                              <object class="GtkGrid" id="table10">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="n_rows">6</property>
@@ -183,76 +183,76 @@
                                   <object class="GtkEntry" id="entry_org_address_country">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="hexpand">True</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="right_attach">2</property>
+                                    <property name="width">1</property>
                                     <property name="top_attach">5</property>
-                                    <property name="bottom_attach">6</property>
-                                    <property name="y_options"/>
+                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkEntry" id="entry_org_address_postcode">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="hexpand">True</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="right_attach">2</property>
+                                    <property name="width">1</property>
                                     <property name="top_attach">4</property>
-                                    <property name="bottom_attach">5</property>
-                                    <property name="y_options"/>
+                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkEntry" id="entry_org_address_county">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="hexpand">True</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="right_attach">2</property>
+                                    <property name="width">1</property>
                                     <property name="top_attach">3</property>
-                                    <property name="bottom_attach">4</property>
-                                    <property name="y_options"/>
+                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkEntry" id="entry_org_address_town">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="hexpand">True</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="right_attach">2</property>
+                                    <property name="width">1</property>
                                     <property name="top_attach">2</property>
-                                    <property name="bottom_attach">3</property>
-                                    <property name="y_options"/>
+                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkEntry" id="entry_org_address_street2">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="hexpand">True</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="right_attach">2</property>
+                                    <property name="width">1</property>
                                     <property name="top_attach">1</property>
-                                    <property name="bottom_attach">2</property>
-                                    <property name="y_options"/>
+                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkEntry" id="entry_org_address_street">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="hexpand">True</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="right_attach">2</property>
-                                    <property name="y_options"/>
+                                    <property name="width">1</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -263,10 +263,10 @@
                                     <property name="label" translatable="yes">Country:</property>
                                   </object>
                                   <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="width">1</property>
                                     <property name="top_attach">5</property>
-                                    <property name="bottom_attach">6</property>
-                                    <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options"/>
+                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -277,10 +277,10 @@
                                     <property name="label" translatable="yes">Zip/Postal Code:</property>
                                   </object>
                                   <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="width">1</property>
                                     <property name="top_attach">4</property>
-                                    <property name="bottom_attach">5</property>
-                                    <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options"/>
+                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -291,10 +291,10 @@
                                     <property name="label" translatable="yes">State/County:</property>
                                   </object>
                                   <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="width">1</property>
                                     <property name="top_attach">3</property>
-                                    <property name="bottom_attach">4</property>
-                                    <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options"/>
+                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -305,10 +305,10 @@
                                     <property name="label" translatable="yes">Town:</property>
                                   </object>
                                   <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="width">1</property>
                                     <property name="top_attach">2</property>
-                                    <property name="bottom_attach">3</property>
-                                    <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options"/>
+                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -319,10 +319,10 @@
                                     <property name="label" translatable="yes">Street (Line 2):</property>
                                   </object>
                                   <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="width">1</property>
                                     <property name="top_attach">1</property>
-                                    <property name="bottom_attach">2</property>
-                                    <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options"/>
+                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -333,8 +333,10 @@
                                     <property name="label" translatable="yes">Street:</property>
                                   </object>
                                   <packing>
-                                    <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options"/>
+                                    <property name="left_attach">0</property>
+                                    <property name="width">1</property>
+                                    <property name="top_attach">0</property>
+                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                               </object>

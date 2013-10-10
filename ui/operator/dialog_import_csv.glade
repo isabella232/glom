@@ -130,7 +130,7 @@
                         <property name="top_padding">6</property>
                         <property name="left_padding">12</property>
                         <child>
-                          <object class="GtkTable" id="table1">
+                          <object class="GtkGrid" id="table1">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="n_rows">3</property>
@@ -141,13 +141,15 @@
                               <object class="GtkLabel" id="import_csv_target_table">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="hexpand">True</property>
                                 <property name="xalign">0</property>
                                 <property name="label" translatable="yes">label</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="right_attach">2</property>
-                                <property name="y_options"></property>
+                                <property name="width">1</property>
+                                <property name="top_attach">0</property>
+                                <property name="height">1</property>
                               </packing>
                             </child>
                             <child>
@@ -155,6 +157,7 @@
                                 <property name="label" translatable="yes">_First line as title</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="hexpand">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="use_action_appearance">False</property>
                                 <property name="use_underline">True</property>
@@ -162,10 +165,9 @@
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="right_attach">2</property>
+                                <property name="width">1</property>
                                 <property name="top_attach">2</property>
-                                <property name="bottom_attach">3</property>
-                                <property name="y_options"></property>
+                                <property name="height">1</property>
                               </packing>
                             </child>
                             <child>
@@ -177,23 +179,23 @@
                                 <property name="use_underline">True</property>
                               </object>
                               <packing>
+                                <property name="left_attach">0</property>
+                                <property name="width">1</property>
                                 <property name="top_attach">1</property>
-                                <property name="bottom_attach">2</property>
-                                <property name="x_options">GTK_FILL</property>
-                                <property name="y_options"></property>
+                                <property name="height">1</property>
                               </packing>
                             </child>
                             <child>
                               <object class="GtkComboBox" id="import_csv_encoding">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="hexpand">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="right_attach">2</property>
+                                <property name="width">1</property>
                                 <property name="top_attach">1</property>
-                                <property name="bottom_attach">2</property>
-                                <property name="y_options"></property>
+                                <property name="height">1</property>
                               </packing>
                             </child>
                             <child>
@@ -202,10 +204,10 @@
                                 <property name="can_focus">False</property>
                               </object>
                               <packing>
+                                <property name="left_attach">0</property>
+                                <property name="width">1</property>
                                 <property name="top_attach">2</property>
-                                <property name="bottom_attach">3</property>
-                                <property name="x_options"></property>
-                                <property name="y_options"></property>
+                                <property name="height">1</property>
                               </packing>
                             </child>
                             <child>
@@ -217,8 +219,10 @@
                                 <property name="use_underline">True</property>
                               </object>
                               <packing>
-                                <property name="x_options"></property>
-                                <property name="y_options"></property>
+                                <property name="left_attach">0</property>
+                                <property name="width">1</property>
+                                <property name="top_attach">0</property>
+                                <property name="height">1</property>
                               </packing>
                             </child>
                           </object>

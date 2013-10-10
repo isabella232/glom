@@ -468,7 +468,7 @@
                             <property name="xalign">0</property>
                             <property name="left_padding">12</property>
                             <child>
-                              <object class="GtkTable" id="table8">
+                              <object class="GtkGrid" id="table8">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="n_rows">5</property>
@@ -480,6 +480,7 @@
                                     <property name="orientation">horizontal</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
                                     <child>
                                       <object class="GtkLabel" id="label_choices_related_extra_fields">
                                         <property name="visible">True</property>
@@ -511,23 +512,22 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="right_attach">2</property>
+                                    <property name="width">1</property>
                                     <property name="top_attach">2</property>
-                                    <property name="bottom_attach">3</property>
-                                    <property name="y_options"></property>
+                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkComboBox" id="combobox_choices_related_field">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="right_attach">2</property>
+                                    <property name="width">1</property>
                                     <property name="top_attach">1</property>
-                                    <property name="bottom_attach">2</property>
-                                    <property name="y_options"></property>
+                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -540,8 +540,10 @@
                                     <property name="single_line_mode">True</property>
                                   </object>
                                   <packing>
-                                    <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options"></property>
+                                    <property name="left_attach">0</property>
+                                    <property name="width">1</property>
+                                    <property name="top_attach">0</property>
+                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -554,10 +556,10 @@
                                     <property name="single_line_mode">True</property>
                                   </object>
                                   <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="width">1</property>
                                     <property name="top_attach">1</property>
-                                    <property name="bottom_attach">2</property>
-                                    <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options"></property>
+                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -570,16 +572,17 @@
                                     <property name="single_line_mode">True</property>
                                   </object>
                                   <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="width">1</property>
                                     <property name="top_attach">2</property>
-                                    <property name="bottom_attach">3</property>
-                                    <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options"></property>
+                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkComboBox" id="combobox_choices_related_relationship">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
@@ -592,6 +595,7 @@
                                     <property name="label" translatable="yes">Show all records</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="hexpand">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="has_tooltip">True</property>
                                     <property name="tooltip_markup" translatable="yes">If this option is selected then the choices will list values from all records in the related table. If this option is not selected then the choices will list values only from related records.</property>
@@ -602,10 +606,9 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="right_attach">2</property>
+                                    <property name="width">1</property>
                                     <property name="top_attach">4</property>
-                                    <property name="bottom_attach">5</property>
-                                    <property name="y_options"></property>
+                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -618,10 +621,10 @@
                                     <property name="single_line_mode">True</property>
                                   </object>
                                   <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="width">1</property>
                                     <property name="top_attach">3</property>
-                                    <property name="bottom_attach">4</property>
-                                    <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options"></property>
+                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -632,6 +635,7 @@
                                     <property name="orientation">horizontal</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
                                     <child>
                                       <object class="GtkLabel" id="label_choices_related_sortby">
                                         <property name="visible">True</property>
@@ -663,10 +667,9 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="right_attach">2</property>
+                                    <property name="width">1</property>
                                     <property name="top_attach">3</property>
-                                    <property name="bottom_attach">4</property>
-                                    <property name="y_options"></property>
+                                    <property name="height">1</property>
                                   </packing>
                                 </child>
                               </object>

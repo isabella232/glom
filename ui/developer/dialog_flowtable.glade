@@ -57,7 +57,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkTable" id="table2">
+          <object class="GtkGrid" id="table2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="n_rows">2</property>
@@ -68,14 +68,14 @@
               <object class="GtkSpinButton" id="spin_columns">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="hexpand">True</property>
                 <property name="numeric">True</property>
               </object>
               <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-                <property name="y_options">GTK_FILL</property>
+                    <property name="left_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="top_attach">1</property>
+                    <property name="height">1</property>
               </packing>
             </child>
             <child>
@@ -86,21 +86,23 @@
                 <property name="label" translatable="yes">Columns:</property>
               </object>
               <packing>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-                <property name="x_options"></property>
-                <property name="y_options">GTK_FILL</property>
+                    <property name="left_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="top_attach">1</property>
+                    <property name="height">1</property>
               </packing>
             </child>
             <child>
               <object class="GtkEntry" id="entry_title">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="hexpand">True</property>
               </object>
               <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="y_options">GTK_FILL</property>
+                    <property name="left_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="top_attach">0</property>
+                    <property name="height">1</property>
               </packing>
             </child>
             <child>
@@ -111,8 +113,10 @@
                 <property name="label" translatable="yes">Title:</property>
               </object>
               <packing>
-                <property name="x_options"></property>
-                <property name="y_options">GTK_FILL</property>
+                    <property name="left_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="top_attach">0</property>
+                    <property name="height">1</property>
               </packing>
             </child>
           </object>
