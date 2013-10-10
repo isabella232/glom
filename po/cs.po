@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-25 08:14+0000\n"
-"PO-Revision-Date: 2013-09-25 12:48+0200\n"
+"POT-Creation-Date: 2013-10-10 11:25+0000\n"
+"PO-Revision-Date: 2013-10-10 19:12+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -178,8 +178,8 @@ msgstr ""
 #: ../glom/mode_design/fields/box_db_table_definition.cc:324
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:41
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:227
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1008
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1052
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1012
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1056
 #: ../glom/mode_design/script_library/dialog_script_library.cc:131
 #: ../glom/navigation/box_tables.cc:401
 #: ../glom/mode_design/translation/window_translations.cc:341
@@ -423,8 +423,6 @@ msgstr "Odstranit záznam"
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:43
 #: ../glom/mode_data/db_adddel/db_adddel.cc:262
 #: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:31
-#: ../glom/utility_widgets/canvas/test_canvas_editable.cc:178
-#: ../glom/utility_widgets/canvas/test_canvas_editable.cc:184
 #: ../glom/utility_widgets/layoutwidgetutils.cc:59
 #: ../glom/utility_widgets/notebooklabelglom.cc:125
 msgid "_Delete"
@@ -505,6 +503,7 @@ msgid "Open a Document"
 msgstr "Otevřít dokument"
 
 #: ../glom/dialog_existing_or_new.cc:140
+#: ../glom/utility_widgets/imageglom.cc:958
 msgid "Select File"
 msgstr "Vybrat soubor"
 
@@ -1887,8 +1886,6 @@ msgstr "Zobrazit vygenerované SQL dotazy na standardním výstupu, pro ladění
 #: ../glom/utility_widgets/adddel/adddel.cc:250
 #: ../glom/mode_data/db_adddel/db_adddel.cc:228
 #: ../glom/mode_data/db_adddel/db_adddel.cc:260
-#: ../glom/utility_widgets/canvas/test_canvas_editable.cc:174
-#: ../glom/utility_widgets/canvas/test_canvas_editable.cc:183
 #: ../ui/developer/window_field_definition_edit.glade.h:13
 msgid "_Edit"
 msgstr "_Upravit"
@@ -2037,7 +2034,7 @@ msgstr "Nové tlačítko"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
 #: ../glom/mode_data/flowtablewithfields.cc:1202
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:552
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:556
 msgid "text"
 msgstr "text"
 
@@ -2094,7 +2091,7 @@ msgid "Next Value"
 msgstr "Následující hodnota"
 
 #: ../glom/mode_design/dialog_design.cc:53
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:737
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:741
 #: ../ui/developer/window_design.glade.h:3
 msgid "None selected"
 msgstr "Nic nevybráno"
@@ -2534,11 +2531,11 @@ msgid "Drag this to the layout to add a new related records portal."
 msgstr "Přetažením na plochu přidáte nový portál souvisejících záznamů."
 
 #. Ask for confirmation:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1005
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1009
 msgid "Create Standard Layout"
 msgstr "Vytvoření standardního rozvržení"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1006
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1010
 msgid ""
 "This is an experimental feature. It will remove all items from the print "
 "layout and then try to create a layout similar to the layout of the detail "
@@ -2548,24 +2545,24 @@ msgstr ""
 "rozvržení a po té zkusí vytvořit rozvržení s podobným rozložením jako v "
 "detailním zobrazení."
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1009
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1013
 #: ../glom/mode_design/users/dialog_groups_list.cc:82
 msgid "Create"
 msgstr "Vytvořit"
 
 #. Ask the user to confirm:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1049
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1053
 msgid "Remove page"
 msgstr "Odstranění stránky"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1050
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1054
 msgid ""
 "Are you sure that you wish to remove the last page and any items on that "
 "page?"
 msgstr ""
 "Opravdu chcete odstranit poslední stránku a položky, které se na ní nachází?"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1053
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1057
 msgid "Remove Page"
 msgstr "Odstranit stránku"
 
@@ -2962,10 +2959,6 @@ msgstr "_Otevřít soubor"
 #: ../glom/utility_widgets/imageglom.cc:957
 msgid "Open File With"
 msgstr "Otevřít soubor pomocí"
-
-#: ../glom/utility_widgets/imageglom.cc:958
-msgid "Select Fie"
-msgstr "Vybrat soubor"
 
 #: ../glom/utility_widgets/imageglom.cc:959
 msgid "_Copy"
@@ -3841,10 +3834,10 @@ msgid "Column Line Width:"
 msgstr "Tloušťka čáry mezi sloupci:"
 
 #: ../ui/developer/window_data_layout.glade.h:37
-msgid "Line Color:\n"
-msgstr "Barva čáry:\n"
+msgid "Line Color:"
+msgstr "Barva čáry:"
 
-#: ../ui/developer/window_data_layout.glade.h:39
+#: ../ui/developer/window_data_layout.glade.h:38
 msgid "<b>Lines</b>"
 msgstr "<b>Čáry</b>"
 
