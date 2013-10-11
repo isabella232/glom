@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom.userguide.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-02 10:59+0000\n"
-"PO-Revision-Date: 2013-10-03 18:26+0200\n"
+"POT-Creation-Date: 2013-10-03 16:27+0000\n"
+"PO-Revision-Date: 2013-10-11 17:52+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -20,7 +20,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
-#| msgid "translator-credits"
 msgctxt "_"
 msgid "translator-credits"
 msgstr ""
@@ -34,8 +33,6 @@ msgstr ""
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
 #: C/glom.xml:181
-#| msgid ""
-#| "@@image: 'figures/start_open.png'; md5=adac27f11f2324c3da2349f72d554994"
 msgctxt "_"
 msgid ""
 "external ref='figures/start_open.png' md5='adac27f11f2324c3da2349f72d554994'"
@@ -48,8 +45,6 @@ msgstr ""
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
 #: C/glom.xml:195
-#| msgid ""
-#| "@@image: 'figures/start_create.png'; md5=f1e4c22fd6811e4ba908e290e76f0474"
 msgctxt "_"
 msgid ""
 "external ref='figures/start_create.png' "
@@ -64,8 +59,6 @@ msgstr ""
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
 #: C/glom.xml:226
-#| msgid ""
-#| "@@image: 'figures/glom_tables.png'; md5=a61ac5516314b38c6c7a3f3fd534427f"
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_tables.png' md5='a61ac5516314b38c6c7a3f3fd534427f'"
@@ -78,9 +71,6 @@ msgstr ""
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
 #: C/glom.xml:252
-#| msgid ""
-#| "@@image: 'figures/glom_data_list.png'; "
-#| "md5=3b7469ee1de77081b435db5ac2d48953"
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_data_list.png' "
@@ -95,9 +85,6 @@ msgstr ""
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
 #: C/glom.xml:275
-#| msgid ""
-#| "@@image: 'figures/glom_data_details.png'; "
-#| "md5=455bde435350fd53401213dff235bfb3"
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_data_details.png' "
@@ -112,9 +99,6 @@ msgstr ""
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
 #: C/glom.xml:305
-#| msgid ""
-#| "@@image: 'figures/glom_report_result.png'; "
-#| "md5=2b752779eb0ed68724d094f6e1fef699"
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_report_result.png' "
@@ -129,9 +113,6 @@ msgstr ""
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
 #: C/glom.xml:343
-#| msgid ""
-#| "@@image: 'figures/glom_design_fields.png'; "
-#| "md5=39a13053db33b9c45bc1f61a0f31a199"
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_design_fields.png' "
@@ -146,9 +127,6 @@ msgstr ""
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
 #: C/glom.xml:393
-#| msgid ""
-#| "@@image: 'figures/glom_design_layout_list.png'; "
-#| "md5=213888ef5cd3037b2fa61155b4fe5136"
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_design_layout_list.png' "
@@ -163,9 +141,6 @@ msgstr ""
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
 #: C/glom.xml:412
-#| msgid ""
-#| "@@image: 'figures/glom_design_layout_details.png'; "
-#| "md5=6f1d78f90d6ec0ea338014d2ac697a90"
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_design_layout_details.png' "
@@ -180,9 +155,6 @@ msgstr ""
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
 #: C/glom.xml:458
-#| msgid ""
-#| "@@image: 'figures/glom_design_translations.png'; "
-#| "md5=92b8e4905d0b85ef7f7d248420942a97"
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_design_translations.png' "
@@ -197,9 +169,6 @@ msgstr ""
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
 #: C/glom.xml:485
-#| msgid ""
-#| "@@image: 'figures/glom_design_reports.png'; "
-#| "md5=697eb7cc6baebae8b374e474b4fa0899"
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_design_reports.png' "
@@ -214,9 +183,6 @@ msgstr ""
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
 #: C/glom.xml:517
-#| msgid ""
-#| "@@image: 'figures/glom_design_reports_details.png'; "
-#| "md5=00ac05c3515a4db2175a47047ec3b98e"
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_design_reports_details.png' "
@@ -231,9 +197,6 @@ msgstr ""
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
 #: C/glom.xml:534
-#| msgid ""
-#| "@@image: 'figures/glom_design_reports_group_by.png'; "
-#| "md5=21168c2a89f9febf6905a59c24a3d6de"
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_design_reports_group_by.png' "
@@ -248,9 +211,6 @@ msgstr ""
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
 #: C/glom.xml:550
-#| msgid ""
-#| "@@image: 'figures/glom_design_reports_vertical_group.png'; "
-#| "md5=001b3021da2dc0de68358b0b41215afb"
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_design_reports_vertical_group.png' "
@@ -265,9 +225,6 @@ msgstr ""
 #. update your localized copy. The msgstr is not used at all. Set it to
 #. whatever you like once you have updated your copy of the file.
 #: C/glom.xml:766
-#| msgid ""
-#| "@@image: 'figures/glom_design_fields_dialog_calculated.png'; "
-#| "md5=21b9fc570ff40883d1d283d960e45767"
 msgctxt "_"
 msgid ""
 "external ref='figures/glom_design_fields_dialog_calculated.png' "
@@ -398,10 +355,6 @@ msgstr ""
 
 #. (itstool) path: legalnotice/para
 #: C/glom.xml:28
-#| msgid ""
-#| "DOCUMENT AND MODIFIED VERSIONS OF THE DOCUMENT ARE PROVIDED UNDER THE "
-#| "TERMS OF THE GNU FREE DOCUMENTATION LICENSE WITH THE FURTHER "
-#| "UNDERSTANDING THAT: <placeholder-1/>"
 msgid ""
 "DOCUMENT AND MODIFIED VERSIONS OF THE DOCUMENT ARE PROVIDED UNDER THE TERMS "
 "OF THE GNU FREE DOCUMENTATION LICENSE WITH THE FURTHER UNDERSTANDING THAT: "
@@ -508,9 +461,6 @@ msgstr "Menú de <guimenu>Aplicaciones</guimenu>"
 
 #. (itstool) path: listitem/para
 #: C/glom.xml:160
-#| msgid ""
-#| "Choose <menuchoice><guisubmenu>Office</guisubmenu><guimenuitem>Glom</"
-#| "guimenuitem></menuchoice>."
 msgid ""
 "Choose <menuchoice> <guisubmenu>Office</guisubmenu> <guimenuitem>Glom</"
 "guimenuitem> </menuchoice>."
@@ -546,6 +496,9 @@ msgid ""
 "</imageobject> <textobject> <phrase>Shows Glom main window used to open an "
 "existing Glom file.</phrase> </textobject>"
 msgstr ""
+"<imageobject><imagedata fileref=\"figures/start_open.png\" format=\"PNG\"/> "
+"</imageobject> <textobject> <phrase>Muestra la ventana principal de Glom, "
+"usada para abrir un archivo de Glom existente.</phrase> </textobject>"
 
 #. (itstool) path: figure/title
 #: C/glom.xml:191
@@ -559,6 +512,9 @@ msgid ""
 "> </imageobject> <textobject> <phrase>Shows Glom main window used to create "
 "a new Glom file.</phrase> </textobject>"
 msgstr ""
+"<imageobject><imagedata fileref=\"figures/start_create.png\" format=\"PNG\"/"
+"> </imageobject> <textobject> <phrase>Muestra la ventana principal de Glom, "
+"usada para crear un nuevo archivo de Glom.</phrase> </textobject>"
 
 #. (itstool) path: sect1/title
 #: C/glom.xml:212
@@ -582,11 +538,6 @@ msgstr ""
 
 #. (itstool) path: sect1/para
 #: C/glom.xml:215
-#| msgid ""
-#| "When you open an existing document, Glom will be in <literal>Operator</"
-#| "literal><literal>user level</literal>. This user level allows you to find "
-#| "and edit records, but does not allow you to change the fundamental "
-#| "structure of the database."
 msgid ""
 "When you open an existing document, Glom will be in <literal>Operator</"
 "literal> <literal>user level</literal>. This user level allows you to find "
@@ -628,6 +579,9 @@ msgid ""
 "</imageobject> <textobject> <phrase>Navigating to a Table.</phrase> </"
 "textobject>"
 msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_tables.png\" format=\"PNG\"/> "
+"</imageobject> <textobject> <phrase>Navegar a una tabla.</phrase> </"
+"textobject>"
 
 #. (itstool) path: sect2/title
 #: C/glom.xml:238
@@ -688,6 +642,9 @@ msgid ""
 "\"/> </imageobject> <textobject> <phrase>The List View.</phrase> </"
 "textobject>"
 msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_data_list.png\" format=\"PNG"
+"\"/> </imageobject> <textobject> <phrase>La vista de lista.</phrase> </"
+"textobject>"
 
 #. (itstool) path: sect3/para
 #: C/glom.xml:261
@@ -731,6 +688,9 @@ msgid ""
 "\"PNG\"/> </imageobject> <textobject> <phrase>The Details View.</phrase> </"
 "textobject>"
 msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_data_details.png\" format="
+"\"PNG\"/> </imageobject> <textobject> <phrase>La vista de detalles.</phrase> "
+"</textobject>"
 
 #. (itstool) path: sect2/title
 #: C/glom.xml:289
@@ -809,6 +769,9 @@ msgid ""
 "\"PNG\"/> </imageobject> <textobject> <phrase>A report.</phrase> </"
 "textobject>"
 msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_report_result.png\" format="
+"\"PNG\"/> </imageobject> <textobject> <phrase>Un informe.</phrase> </"
+"textobject>"
 
 #. (itstool) path: sect1/title
 #: C/glom.xml:320
@@ -817,12 +780,6 @@ msgstr "Uso de Glom como desarrollador"
 
 #. (itstool) path: sect1/para
 #: C/glom.xml:321
-#| msgid ""
-#| "When you create a new document, Glom will be in the <literal>Developer</"
-#| "literal><literal>user level</literal>. You can also change to the "
-#| "Developer user level after opening an existing document, with the "
-#| "<literal>User Level</literal> menu. Glom will only allow this if the "
-#| "administrator has allowed it."
 msgid ""
 "When you create a new document, Glom will be in the <literal>Developer</"
 "literal> <literal>user level</literal>. You can also change to the Developer "
@@ -937,6 +894,9 @@ msgid ""
 "\"PNG\"/> </imageobject> <textobject> <phrase>Editing the table's fields.</"
 "phrase> </textobject>"
 msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_design_fields.png\" format="
+"\"PNG\"/> </imageobject> <textobject> <phrase>Editar los campos de la tabla."
+"</phrase> </textobject>"
 
 #. (itstool) path: sect3/title
 #: C/glom.xml:354
@@ -1000,7 +960,6 @@ msgstr "Imagen"
 
 #. (itstool) path: sect3/para
 #: C/glom.xml:360
-#| msgid "Glom offers a few simple field types: <placeholder-1/>"
 msgid "Glom offers a few simple field types: <_:orderedlist-1/>"
 msgstr "Glom ofrece algunos tipos simples de campos: <_:orderedlist-1/>"
 
@@ -1087,6 +1046,9 @@ msgid ""
 "format=\"PNG\"/> </imageobject> <textobject> <phrase>Editing the list layout."
 "</phrase> </textobject>"
 msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_design_layout_list.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Editar la distribución "
+"de la lista.</phrase> </textobject>"
 
 #. (itstool) path: sect3/title
 #: C/glom.xml:404
@@ -1123,6 +1085,9 @@ msgid ""
 "format=\"PNG\"/> </imageobject> <textobject> <phrase>Editing the Details "
 "Layout.</phrase> </textobject>"
 msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_design_layout_details.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Editar la distribución "
+"de detalles.</phrase> </textobject>"
 
 #. (itstool) path: sect2/title
 #: C/glom.xml:425
@@ -1196,8 +1161,6 @@ msgstr "Para calcular el valor de un campo."
 
 #. (itstool) path: sect2/para
 #: C/glom.xml:429
-#| msgid ""
-#| "You can use the relationship in the following places. <placeholder-1/>"
 msgid ""
 "You can use the relationship in the following places. <_:orderedlist-1/>"
 msgstr ""
@@ -1276,6 +1239,9 @@ msgid ""
 "format=\"PNG\"/> </imageobject> <textobject> <phrase>Translations.</phrase> "
 "</textobject>"
 msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_design_translations.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Traducciones.</phrase> "
+"</textobject>"
 
 #. (itstool) path: sect2/para
 #: C/glom.xml:467
@@ -1341,6 +1307,9 @@ msgid ""
 "\"PNG\"/> </imageobject> <textobject> <phrase>Creating or editing reports.</"
 "phrase> </textobject>"
 msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_design_reports.png\" format="
+"\"PNG\"/> </imageobject> <textobject> <phrase>Crear o editar informes.</"
+"phrase> </textobject>"
 
 #. (itstool) path: sect3/para
 #: C/glom.xml:494
@@ -1380,7 +1349,6 @@ msgstr "El pie, que aparecerá al final del informe."
 
 #. (itstool) path: sect3/para
 #: C/glom.xml:501
-#| msgid "A Glom report has three areas: <placeholder-1/>"
 msgid "A Glom report has three areas: <_:orderedlist-1/>"
 msgstr "Un informe de Glom tiene tres áreas: <_:orderedlist-1/>"
 
@@ -1427,6 +1395,9 @@ msgid ""
 "format=\"PNG\"/> </imageobject> <textobject> <phrase>Editing a report.</"
 "phrase> </textobject>"
 msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_design_reports_details.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Editar un informe.</"
+"phrase> </textobject>"
 
 #. (itstool) path: sect3/para
 #: C/glom.xml:526
@@ -1486,6 +1457,9 @@ msgid ""
 "format=\"PNG\"/> </imageobject> <textobject> <phrase>Editing a report.</"
 "phrase> </textobject>"
 msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_design_reports_group_by.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Editar un informe.</"
+"phrase> </textobject>"
 
 #. (itstool) path: sect3/para
 #: C/glom.xml:543
@@ -1514,6 +1488,9 @@ msgid ""
 "png\" format=\"PNG\"/> </imageobject> <textobject> <phrase>A Report with "
 "Vertical Groups.</phrase> </textobject>"
 msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_design_reports_vertical_group."
+"png\" format=\"PNG\"/> </imageobject> <textobject> <phrase>Un informe con "
+"grupos verticales.</phrase> </textobject>"
 
 #. (itstool) path: sect3/para
 #: C/glom.xml:559
@@ -1865,9 +1842,6 @@ msgstr ""
 
 #. (itstool) path: appendix/para
 #: C/glom.xml:746
-#| msgid ""
-#| "Glom is easy to use, but you must understand the following basic "
-#| "concepts. <placeholder-1/>"
 msgid ""
 "Glom is easy to use, but you must understand the following basic concepts. "
 "<_:orderedlist-1/>"
@@ -1904,6 +1878,10 @@ msgid ""
 "<textobject> <phrase>Editing the definition of a calculated field.</phrase> "
 "</textobject>"
 msgstr ""
+"<imageobject><imagedata fileref=\"figures/"
+"glom_design_fields_dialog_calculated.png\" format=\"PNG\"/> </imageobject> "
+"<textobject> <phrase>Editar la definición de un campo calculado.</phrase> </"
+"textobject>"
 
 #. (itstool) path: sect1/title
 #: C/glom.xml:776
@@ -1918,9 +1896,6 @@ msgstr "record[\"name_first\"]"
 
 #. (itstool) path: sect1/para
 #: C/glom.xml:777
-#| msgid ""
-#| "For instance, <placeholder-1/> is the value of the name_first field in "
-#| "the current record."
 msgid ""
 "For instance, <_:programlisting-1/> is the value of the name_first field in "
 "the current record."
@@ -1941,9 +1916,6 @@ msgstr "record.related[\"ubicación\"]"
 
 #. (itstool) path: sect1/para
 #: C/glom.xml:782
-#| msgid ""
-#| "For instance, <placeholder-1/> provides the related records for the "
-#| "current record."
 msgid ""
 "For instance, <_:programlisting-1/> provides the related records for the "
 "current record."
@@ -1964,11 +1936,6 @@ msgstr "record.related[\"ubicación\"][\"nombre\"]"
 
 #. (itstool) path: sect2/para
 #: C/glom.xml:786
-#| msgid ""
-#| "For relationships that specify a single record, you can get the value of "
-#| "a field in that record. For instance, <placeholder-1/> is the value of "
-#| "the name field in the table indicated by the location relationship (often "
-#| "called location::name)."
 msgid ""
 "For relationships that specify a single record, you can get the value of a "
 "field in that record. For instance, <_:programlisting-1/> is the value of "
@@ -1993,10 +1960,6 @@ msgstr "record.related[\"lineas_de_factura\"].sum(\"precio_total\")"
 
 #. (itstool) path: sect2/para
 #: C/glom.xml:791
-#| msgid ""
-#| "For relationships that specify multiple records, you can use the "
-#| "aggregate functions (sum, count, average) to get overall values. For "
-#| "instance, <placeholder-1/>."
 msgid ""
 "For relationships that specify multiple records, you can use the aggregate "
 "functions (sum, count, average) to get overall values. For instance, <_:"
