@@ -18,9 +18,9 @@ msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-25 14:55+0000\n"
-"PO-Revision-Date: 2013-09-25 09:31-0300\n"
-"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
+"POT-Creation-Date: 2013-10-10 11:25+0000\n"
+"PO-Revision-Date: 2013-10-11 07:26-0300\n"
+"Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -187,8 +187,8 @@ msgstr ""
 #: ../glom/mode_design/fields/box_db_table_definition.cc:324
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:41
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:227
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1009
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1053
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1012
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1056
 #: ../glom/mode_design/script_library/dialog_script_library.cc:131
 #: ../glom/navigation/box_tables.cc:401
 #: ../glom/mode_design/translation/window_translations.cc:341
@@ -2071,7 +2071,7 @@ msgstr "Novo botão"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
 #: ../glom/mode_data/flowtablewithfields.cc:1202
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:553
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:556
 msgid "text"
 msgstr "texto"
 
@@ -2130,7 +2130,7 @@ msgid "Next Value"
 msgstr "Próximo valor"
 
 #: ../glom/mode_design/dialog_design.cc:53
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:738
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:741
 #: ../ui/developer/window_design.glade.h:3
 msgid "None selected"
 msgstr "Nenhum selecionado"
@@ -2585,11 +2585,11 @@ msgstr ""
 "relacionados."
 
 #. Ask for confirmation:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1006
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1009
 msgid "Create Standard Layout"
 msgstr "Criar layout padrão"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1007
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1010
 msgid ""
 "This is an experimental feature. It will remove all items from the print "
 "layout and then try to create a layout similar to the layout of the detail "
@@ -2599,24 +2599,24 @@ msgstr ""
 "impressão e, então, vai tentar criar um layout similar àquele da exibição de "
 "detalhes."
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1010
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1013
 #: ../glom/mode_design/users/dialog_groups_list.cc:82
 msgid "Create"
 msgstr "Criar"
 
 #. Ask the user to confirm:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1050
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1053
 msgid "Remove page"
 msgstr "Remover página"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1051
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1054
 msgid ""
 "Are you sure that you wish to remove the last page and any items on that "
 "page?"
 msgstr ""
 "Você tem certeza que quer remover esta última página e quaisquer itens nela?"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1054
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1057
 msgid "Remove Page"
 msgstr "Remover página"
 
@@ -3915,10 +3915,10 @@ msgid "Column Line Width:"
 msgstr "Largura do traço da coluna:"
 
 #: ../ui/developer/window_data_layout.glade.h:37
-msgid "Line Color:\n"
-msgstr "Cor da linha:\n"
+msgid "Line Color:"
+msgstr "Cor da linha:"
 
-#: ../ui/developer/window_data_layout.glade.h:39
+#: ../ui/developer/window_data_layout.glade.h:38
 msgid "<b>Lines</b>"
 msgstr "<b>Linhas</b>"
 
