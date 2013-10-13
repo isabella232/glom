@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: Glom HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-03 14:12+0000\n"
-"PO-Revision-Date: 2013-09-03 21:21+0200\n"
+"POT-Creation-Date: 2013-10-10 11:25+0000\n"
+"PO-Revision-Date: 2013-10-13 13:28+0200\n"
 "Last-Translator: Balázs Úr <urbalazs at gmail dot com>\n"
 "Language-Team: Hungarian <gnome@gnome.hu>\n"
 "Language: hu\n"
@@ -46,240 +46,35 @@ msgstr "Glom: A fájl nem létezik."
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: A fájl útvonala egy könyvtár, nem pedig fájl."
 
-#: ../glom/appwindow.cc:147
+#: ../glom/appwindow.cc:165
 msgid "Glom: Generating Encryption Certificates"
 msgstr "Glom: Titkosítási tanúsítványok előállítása"
 
-#: ../glom/appwindow.cc:148
+#: ../glom/appwindow.cc:166
 msgid ""
 "Please wait while Glom prepares your system for publishing over the network."
 msgstr ""
 "Kérem várjon, amíg a Glom előkészíti a rendszerét a hálózaton keresztüli "
 "közzétételre."
 
-#: ../glom/appwindow.cc:265 ../glom/bakery/appwindow_withdoc_gtk.cc:227
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:197
-#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:57
-msgid "_File"
-msgstr "_Fájl"
-
-#: ../glom/appwindow.cc:266 ../glom/bakery/appwindow_withdoc_gtk.cc:228
-msgid "_Recent Files"
-msgstr "Le_gutóbbi fájlok"
-
-#. File actions
-#: ../glom/appwindow.cc:269 ../glom/bakery/appwindow_withdoc_gtk.cc:231
-#: ../glom/mode_data/datawidget/datawidget.cc:237
-msgid "_New"
-msgstr "Ú_j"
-
-#. Add a button for related record navigation:
-#: ../glom/appwindow.cc:271 ../glom/dialog_existing_or_new.cc:834
-#: ../glom/frame_glom.cc:753 ../glom/onlineglom_strings.cc:32
-#: ../glom/bakery/appwindow_withdoc_gtk.cc:233
-#: ../glom/bakery/appwindow_withdoc_gtk.cc:377
-#: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:34
-#: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:44
-#: ../glom/mode_data/datawidget/datawidget.cc:222
-#: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:32
-#: ../glom/utility_widgets/imageglom.cc:925
-msgid "_Open"
-msgstr "_Megnyitás"
-
-#: ../glom/appwindow.cc:274
-msgid "_Save as Example"
-msgstr "_Mentés példaként"
-
-#: ../glom/appwindow.cc:281 ../glom/filechooser_export.cc:40
-msgid "_Export"
-msgstr "E_xportálás"
-
-#: ../glom/appwindow.cc:285 ../ui/operator/dialog_import_csv.glade.h:2
-msgid "I_mport"
-msgstr "_Importálás"
-
-#: ../glom/appwindow.cc:290
-msgid "S_hared on Network"
-msgstr "Meg_osztva a hálózaton"
-
-#: ../glom/appwindow.cc:301
-#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:60
-msgid "_Print"
-msgstr "_Nyomtatás"
-
-#: ../glom/appwindow.cc:304
-msgid "_Standard"
-msgstr "S_zabványos"
-
-#: ../glom/appwindow.cc:308
-msgid "_Edit Print Layouts"
-msgstr "_Nyomtatási elrendezések szerkesztése"
-
-#: ../glom/appwindow.cc:313 ../glom/bakery/appwindow_withdoc_gtk.cc:245
-msgid "_Close"
-msgstr "_Bezárás"
-
-#. "Tables" menu:
-#: ../glom/appwindow.cc:366
-msgid "_Tables"
-msgstr "_Táblák"
-
-#: ../glom/appwindow.cc:376
-msgid "_Edit Tables"
-msgstr "Táblák _szerkesztése"
-
-#. "Reports" menu:
-#: ../glom/appwindow.cc:390
-msgid "_Reports"
-msgstr "_Jelentések"
-
-#: ../glom/appwindow.cc:393
-msgid "_Edit Reports"
-msgstr "Jelentések sze_rkesztése"
-
-#. We remember this action, so that it can be explicitly activated later.
-#: ../glom/appwindow.cc:401 ../glom/frame_glom.cc:123
-#: ../glom/mode_data/box_data.cc:42
-#: ../glom/mode_data/datawidget/datawidget.cc:232
-msgid "_Find"
-msgstr "Ke_resés"
-
-#: ../glom/appwindow.cc:407
-msgctxt "Developer menu title"
-msgid "_Developer"
-msgstr "_Fejlesztő"
-
-#: ../glom/appwindow.cc:413
-msgid "_Developer Mode"
-msgstr "_Fejlesztő mód"
-
-#: ../glom/appwindow.cc:417
-msgid "_Operator Mode"
-msgstr "_Operátor mód"
-
-#: ../glom/appwindow.cc:422
-msgid "_Database Preferences"
-msgstr "Adat_bázis tulajdonságok"
-
-#: ../glom/appwindow.cc:427
-msgid "_Fields"
-msgstr "_Mezők"
-
-#: ../glom/appwindow.cc:432
-msgid "Relationships _Overview"
-msgstr "Kapcsolatok átt_ekintése"
-
-#: ../glom/appwindow.cc:437
-msgid "_Relationships for this Table"
-msgstr "A tábla ka_pcsolatai"
-
-#: ../glom/appwindow.cc:442
-msgid "_Users"
-msgstr "_Felhasználók"
-
-#: ../glom/appwindow.cc:446
-msgid "_Print Layouts"
-msgstr "Nyomtatási _elrendezések"
-
-#: ../glom/appwindow.cc:451
-msgid "R_eports"
-msgstr "_Jelentések"
-
-#: ../glom/appwindow.cc:456
-msgid "Script _Library"
-msgstr "Parancsfájl-_könyvtár"
-
-#: ../glom/appwindow.cc:461
-msgid "_Layout"
-msgstr "_Elrendezés"
-
-#: ../glom/appwindow.cc:466
-msgid "Test Tra_nslation"
-msgstr "For_dítás tesztelése"
-
-#: ../glom/appwindow.cc:470
-msgid "_Translations"
-msgstr "_Fordítások"
-
-#. "Active Platform" menu:
-#: ../glom/appwindow.cc:476
-msgid "_Active Platform"
-msgstr "_Aktív platform"
-
-#: ../glom/appwindow.cc:482
-msgid "_Normal"
-msgstr "_Normál"
-
-#: ../glom/appwindow.cc:482
-msgid "The layout to use for normal desktop environments."
-msgstr "A normál asztali környezetekhez használt elrendezés."
-
-#: ../glom/appwindow.cc:487
-msgid "_Maemo"
-msgstr "_Maemo"
-
-#: ../glom/appwindow.cc:487
-msgid "The layout to use for Maemo devices."
-msgstr "A Maemo eszközökhöz használt elrendezés."
-
-#: ../glom/appwindow.cc:492
-msgid "_Export Backup"
-msgstr "Biztonsági mentés _exportálása"
-
-#: ../glom/appwindow.cc:496
-msgid "_Restore Backup"
-msgstr "Biztonsági mentés _visszaállítása"
-
-#. TODO: Think of a better name for this menu item,
-#. though it mostly only exists because it is not quite ready to be on by default:
-#. Note to translators: Drag and Drop is part of the name, not a verb or action:
-#: ../glom/appwindow.cc:503
-msgid "_Drag and Drop Layout"
-msgstr "_Fogd és vidd elrendezés"
-
-#: ../glom/appwindow.cc:511
-msgctxt "Help menu title"
-msgid "_Help"
-msgstr "_Súgó"
-
-#: ../glom/appwindow.cc:515
-msgid "_Help"
-msgstr "_Súgó"
-
-#: ../glom/appwindow.cc:518
-msgid "_About"
-msgstr "_Névjegy"
-
-#: ../glom/appwindow.cc:518
-msgid "About the application"
-msgstr "Az alkalmazás névjegye"
-
-#: ../glom/appwindow.cc:521
-msgid "_Contents"
-msgstr "_Tartalom"
-
-#: ../glom/appwindow.cc:521
-msgid "Help with the application"
-msgstr "Az alkalmazás súgója"
-
-#: ../glom/appwindow.cc:626
+#: ../glom/appwindow.cc:454
 msgid "A Database GUI"
 msgstr "Egy adatbázis GUI"
 
-#: ../glom/appwindow.cc:628
+#: ../glom/appwindow.cc:456
 msgid "© 2000-2011 Murray Cumming, Openismus GmbH"
 msgstr "© Murray Cumming, Openismus GmbH, 2000-2011."
 
 #. TODO: Put this in the generic bakery code.
-#: ../glom/appwindow.cc:712 ../glom/appwindow.cc:721
+#: ../glom/appwindow.cc:549 ../glom/appwindow.cc:558
 msgid "Open Failed"
 msgstr "A megnyitás sikertelen"
 
-#: ../glom/appwindow.cc:713
+#: ../glom/appwindow.cc:550
 msgid "The document could not be found."
 msgstr "A dokumentum nem található."
 
-#: ../glom/appwindow.cc:722
+#: ../glom/appwindow.cc:559
 msgid ""
 "The document could not be opened because it was created or modified by a "
 "newer version of Glom."
@@ -289,13 +84,13 @@ msgstr ""
 
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
 #. Warn the user, and let him try again:
-#: ../glom/appwindow.cc:772 ../glom/frame_glom.cc:2074
-#: ../glom/frame_glom.cc:2145
+#: ../glom/appwindow.cc:609 ../glom/frame_glom.cc:2053
+#: ../glom/frame_glom.cc:2124
 msgid "Connection Failed"
 msgstr "A kapcsolódás meghiúsult"
 
-#: ../glom/appwindow.cc:772 ../glom/frame_glom.cc:2074
-#: ../glom/frame_glom.cc:2145
+#: ../glom/appwindow.cc:609 ../glom/frame_glom.cc:2053
+#: ../glom/frame_glom.cc:2124
 msgid ""
 "Glom could not connect to the database server. Maybe you entered an "
 "incorrect user name or password, or maybe the postgres database server is "
@@ -305,7 +100,7 @@ msgstr ""
 "hogy hibásan adta meg a felhasználónevet, vagy a jelszót, illetve "
 "előfordulhat, hogy a postgres adatbázis-kiszolgáló nem fut."
 
-#: ../glom/appwindow.cc:941
+#: ../glom/appwindow.cc:777
 msgid ""
 "The file cannot be opened because this version of Glom does not support self-"
 "hosting of databases."
@@ -313,7 +108,7 @@ msgstr ""
 "A fájl nem nyitható meg, mert a Glom ezen verziója nem támogatja az "
 "adatbázisok önálló kiszolgálását."
 
-#: ../glom/appwindow.cc:946 ../glom/appwindow.cc:955
+#: ../glom/appwindow.cc:782 ../glom/appwindow.cc:791
 msgid ""
 "The file cannot be opened because this version of Glom does not support "
 "PostgreSQL databases."
@@ -321,7 +116,7 @@ msgstr ""
 "A fájl nem nyitható meg, mert a Glom ezen verziója nem támogatja a "
 "PostgreSQL adatbázisokat."
 
-#: ../glom/appwindow.cc:963
+#: ../glom/appwindow.cc:799
 msgid ""
 "The file cannot be opened because this version of Glom does not support "
 "SQLite databases."
@@ -330,15 +125,15 @@ msgstr ""
 "adatbázisokat."
 
 #. Warn the user.
-#: ../glom/appwindow.cc:981
+#: ../glom/appwindow.cc:817
 msgid "File Uses Unsupported Database Backend"
 msgstr "A fájl nem támogatott adatbázis háttérprogramot használ"
 
-#: ../glom/appwindow.cc:1044
+#: ../glom/appwindow.cc:880
 msgid "Creating From Example File"
 msgstr "Létrehozás példafájlból"
 
-#: ../glom/appwindow.cc:1045
+#: ../glom/appwindow.cc:881
 msgid ""
 "To use this example file you must save an editable copy of the file. A new "
 "database will also be created on the server."
@@ -346,11 +141,11 @@ msgstr ""
 "A példafájl használatához először egy szerkeszthető másolatot kell "
 "elmentenie a fájlról. Egy új adatbázis is létre lesz hozva a kiszolgálón."
 
-#: ../glom/appwindow.cc:1049
+#: ../glom/appwindow.cc:885
 msgid "Creating From Backup File"
 msgstr "Létrehozás biztonsági mentés fájlból"
 
-#: ../glom/appwindow.cc:1050
+#: ../glom/appwindow.cc:886
 msgid ""
 "To use this backup file you must save an editable copy of the file. A new "
 "database will also be created on the server."
@@ -359,11 +154,11 @@ msgstr ""
 "kell elmentenie a fájlról. Egy új adatbázis is létre lesz hozva a "
 "kiszolgálón."
 
-#: ../glom/appwindow.cc:1111
+#: ../glom/appwindow.cc:947
 msgid "Opening Read-Only File."
 msgstr "Csak olvasható fájl megnyitása."
 
-#: ../glom/appwindow.cc:1112
+#: ../glom/appwindow.cc:948
 msgid ""
 "This file is read only, so you will not be able to enter Developer mode to "
 "make design changes."
@@ -371,43 +166,41 @@ msgstr ""
 "Ez a fájl csak olvasható, ezért nem válthat át fejlesztő módra és nem "
 "módosíthatja azt."
 
-#: ../glom/appwindow.cc:1114 ../glom/appwindow.cc:2329
-#: ../glom/appwindow.cc:2612 ../glom/appwindow.cc:2649
-#: ../glom/base_db_table_data.cc:393 ../glom/box_withbuttons.cc:36
-#: ../glom/box_withbuttons.cc:50 ../glom/box_withbuttons.cc:64
-#: ../glom/dialog_existing_or_new.cc:833 ../glom/filechooser_export.cc:39
-#: ../glom/frame_glom.cc:515 ../glom/frame_glom.cc:752
-#: ../glom/frame_glom.cc:837 ../glom/frame_glom.cc:943 ../glom/utils_ui.cc:481
-#: ../glom/onlineglom_strings.cc:40
-#: ../glom/bakery/appwindow_withdoc_gtk.cc:376
-#: ../glom/bakery/appwindow_withdoc_gtk.cc:425
-#: ../glom/bakery/dialog_offersave.cc:56 ../glom/main.cc:262
-#: ../glom/main.cc:313
+#: ../glom/appwindow.cc:950 ../glom/appwindow.cc:2141
+#: ../glom/appwindow.cc:2418 ../glom/appwindow.cc:2455
+#: ../glom/appwindow.cc:2833 ../glom/base_db_table_data.cc:393
+#: ../glom/box_withbuttons.cc:36 ../glom/box_withbuttons.cc:50
+#: ../glom/box_withbuttons.cc:64 ../glom/dialog_existing_or_new.cc:833
+#: ../glom/filechooser_export.cc:39 ../glom/frame_glom.cc:511
+#: ../glom/frame_glom.cc:735 ../glom/frame_glom.cc:814
+#: ../glom/frame_glom.cc:920 ../glom/utils_ui.cc:481
+#: ../glom/onlineglom_strings.cc:40 ../glom/bakery/dialog_offersave.cc:56
+#: ../glom/main.cc:267 ../glom/main.cc:323
 #: ../glom/mode_design/fields/box_db_table_definition.cc:273
 #: ../glom/mode_design/fields/box_db_table_definition.cc:324
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:41
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:227
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:916
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:960
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1012
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1056
 #: ../glom/mode_design/script_library/dialog_script_library.cc:131
 #: ../glom/navigation/box_tables.cc:401
 #: ../glom/mode_design/translation/window_translations.cc:341
 #: ../glom/mode_design/translation/window_translations.cc:380
-#: ../glom/utility_widgets/imageglom.cc:683
-#: ../glom/utility_widgets/imageglom.cc:770
+#: ../glom/utility_widgets/imageglom.cc:687
+#: ../glom/utility_widgets/imageglom.cc:774
 msgid "_Cancel"
 msgstr "_Mégse"
 
-#: ../glom/appwindow.cc:1115
+#: ../glom/appwindow.cc:951
 msgid "Continue without Developer Mode"
 msgstr "Folytatás fejlesztő mód nélkül"
 
 #. The connection to the server is OK, but the database is not there yet.
-#: ../glom/appwindow.cc:1174
+#: ../glom/appwindow.cc:1010
 msgid "Database Not Found On Server"
 msgstr "Az adatbázis nem található a kiszolgálón"
 
-#: ../glom/appwindow.cc:1174
+#: ../glom/appwindow.cc:1010
 msgid ""
 "The database could not be found on the server. Please consult your system "
 "administrator."
@@ -417,54 +210,49 @@ msgstr ""
 
 #. std::cerr might show some hints, but we don't want to confront the user with them:
 #. TODO: Actually complain about specific stuff such as missing data, because the user might really play with the file system.
-#: ../glom/appwindow.cc:1184
+#: ../glom/appwindow.cc:1020
 msgid "Problem Loading Document"
 msgstr "Hiba a dokumentum betöltése közben"
 
-#: ../glom/appwindow.cc:1184
+#: ../glom/appwindow.cc:1020
 msgid "Glom could not load the document."
 msgstr "A Glom nem tudta betölteni a dokumentumot."
 
-#: ../glom/appwindow.cc:1619
+#: ../glom/appwindow.cc:1453
 msgid "Creating Glom database from example file."
 msgstr "Glom adatbázis létrehozása példafájlból."
 
-#: ../glom/appwindow.cc:1798
+#: ../glom/appwindow.cc:1632
 msgid "Creating Glom database from backup file."
 msgstr "Glom adatbázis létrehozása biztonsági mentés fájlból."
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/appwindow.cc:2274 ../glom/bakery/appwindow_withdoc.cc:237
-#: ../glom/bakery/appwindow_withdoc.cc:288
+#: ../glom/appwindow.cc:2086 ../glom/bakery/appwindow_withdoc.cc:241
+#: ../glom/bakery/appwindow_withdoc.cc:292
 msgid "Save failed."
 msgstr "A mentés meghiúsult."
 
-#: ../glom/appwindow.cc:2274
+#: ../glom/appwindow.cc:2086
 msgid "There was an error while saving the example file."
 msgstr "Hiba történt a példafájl mentése közben."
 
-#: ../glom/appwindow.cc:2315 ../glom/appwindow.cc:2320
-#: ../glom/bakery/appwindow_withdoc_gtk.cc:424
+#: ../glom/appwindow.cc:2127 ../glom/appwindow.cc:2132
 msgid "Save Document"
 msgstr "Dokumentum mentése"
 
-#. Remember thes ones for later, so we can disable Save menu and toolbar items:
-#: ../glom/appwindow.cc:2330 ../glom/appwindow.cc:2613
-#: ../glom/bakery/appwindow_withdoc_gtk.cc:237
-#: ../glom/bakery/appwindow_withdoc_gtk.cc:426
+#: ../glom/appwindow.cc:2142 ../glom/appwindow.cc:2419
 #: ../glom/bakery/dialog_offersave.cc:57
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:42
-#: ../glom/utility_widgets/imageglom.cc:684
-#: ../glom/utility_widgets/imageglom.cc:927
+#: ../glom/utility_widgets/imageglom.cc:688
 msgid "_Save"
 msgstr "M_entés"
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2407 ../glom/bakery/appwindow_withdoc_gtk.cc:472
+#: ../glom/appwindow.cc:2219
 msgid "Read-only File."
 msgstr "Csak olvasható fájl."
 
-#: ../glom/appwindow.cc:2407 ../glom/bakery/appwindow_withdoc_gtk.cc:472
+#: ../glom/appwindow.cc:2219
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -473,11 +261,11 @@ msgstr ""
 "jogai."
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2421 ../glom/bakery/appwindow_withdoc_gtk.cc:486
+#: ../glom/appwindow.cc:2233
 msgid "Read-only Directory."
 msgstr "Csak olvasható könyvtár."
 
-#: ../glom/appwindow.cc:2421 ../glom/bakery/appwindow_withdoc_gtk.cc:486
+#: ../glom/appwindow.cc:2233
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -485,19 +273,19 @@ msgstr ""
 "Nem hozhat létre fájlokat ebben a könyvtárban, mivel nincsenek megfelelő "
 "hozzáférési jogai."
 
-#: ../glom/appwindow.cc:2438
+#: ../glom/appwindow.cc:2250
 msgid "Database Title missing"
 msgstr "Az adatbázis címe hiányzik"
 
-#: ../glom/appwindow.cc:2438
+#: ../glom/appwindow.cc:2250
 msgid "You must specify a title for the new database."
 msgstr "Meg kell adnia az új adatbázis címét."
 
-#: ../glom/appwindow.cc:2472 ../glom/frame_glom.cc:1833
+#: ../glom/appwindow.cc:2284 ../glom/frame_glom.cc:1812
 msgid "Directory Already Exists"
 msgstr "A könyvtár már létezik"
 
-#: ../glom/appwindow.cc:2472 ../glom/frame_glom.cc:1834
+#: ../glom/appwindow.cc:2284 ../glom/frame_glom.cc:1813
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
@@ -507,53 +295,67 @@ msgstr ""
 "könyvtár. Adjon meg másik fájlnevet egy új könyvtár használatához."
 
 #. This actually creates the directory:
-#: ../glom/appwindow.cc:2611
+#: ../glom/appwindow.cc:2417
 msgid "Save Backup"
 msgstr "Biztonsági másolat mentése"
 
-#: ../glom/appwindow.cc:2627
+#: ../glom/appwindow.cc:2433
 msgid "Exporting backup"
 msgstr "Biztonsági mentés exportálása"
 
-#: ../glom/appwindow.cc:2633
+#: ../glom/appwindow.cc:2439
 msgid "Export Backup failed."
 msgstr "A biztonsági mentés exportálása nem sikerült."
 
-#: ../glom/appwindow.cc:2633
+#: ../glom/appwindow.cc:2439
 msgid "There was an error while exporting the backup."
 msgstr "Hiba történt a biztonsági mentés exportálása közben."
 
-#: ../glom/appwindow.cc:2639
+#: ../glom/appwindow.cc:2445
 msgid "Choose a backup file"
 msgstr "Válasszon biztonsági mentés fájlt"
 
-#: ../glom/appwindow.cc:2644
+#: ../glom/appwindow.cc:2450
 msgid ".tar.gz Backup files"
 msgstr ".tar.gz Biztonsági mentés fájlok"
 
-#: ../glom/appwindow.cc:2650
+#: ../glom/appwindow.cc:2456
 msgid "Restore"
 msgstr "Visszaállítás"
 
-#: ../glom/appwindow.cc:2675
+#: ../glom/appwindow.cc:2481
 msgid "Restoring backup"
 msgstr "Biztonsági mentés visszaállítása"
 
-#: ../glom/appwindow.cc:2682
+#: ../glom/appwindow.cc:2488
 msgid "Restore Backup failed."
 msgstr "A biztonsági mentés visszaállítása nem sikerült."
 
-#: ../glom/appwindow.cc:2682
+#: ../glom/appwindow.cc:2488
 msgid "There was an error while restoring the backup."
 msgstr "Hiba történt a biztonsági mentés visszaállítása közben."
 
-#: ../glom/appwindow.cc:2779 ../glom/bakery/appwindow_withdoc_gtk.cc:345
+#: ../glom/appwindow.cc:2598
 msgid " (read-only)"
 msgstr " (csak olvasható)"
 
-#: ../glom/appwindow.cc:2827 ../ui/operator/window_main.glade.h:2
+#: ../glom/appwindow.cc:2646 ../ui/operator/window_main.glade.h:2
 msgid "Processing"
 msgstr "Feldolgozás"
+
+#: ../glom/appwindow.cc:2832
+msgid "Open Document"
+msgstr "Dokumentum megnyitása"
+
+#. Add a button for related record navigation:
+#: ../glom/appwindow.cc:2834 ../glom/dialog_existing_or_new.cc:834
+#: ../glom/frame_glom.cc:736 ../glom/onlineglom_strings.cc:32
+#: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:34
+#: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:44
+#: ../glom/mode_data/datawidget/datawidget.cc:222
+#: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:32
+msgid "_Open"
+msgstr "_Megnyitás"
 
 #: ../glom/base_db.cc:122 ../glom/base_db.cc:132
 msgid "Internal error"
@@ -616,20 +418,16 @@ msgstr ""
 msgid "Delete record"
 msgstr "Rekord törlése"
 
-#. This is enable when something is copied or cut.
 #: ../glom/base_db_table_data.cc:394 ../glom/mode_data/box_data_details.cc:46
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:219
 #: ../glom/mode_design/users/dialog_groups_list.cc:85
-#: ../glom/print_layout/canvas_print_layout.cc:286
-#: ../glom/utility_widgets/adddel/adddel.cc:240
+#: ../glom/print_layout/canvas_print_layout.cc:294
+#: ../glom/utility_widgets/adddel/adddel.cc:251
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:33
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:43
-#: ../glom/mode_data/db_adddel/db_adddel.cc:236
+#: ../glom/mode_data/db_adddel/db_adddel.cc:262
 #: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:31
-#: ../glom/utility_widgets/canvas/test_canvas_editable.cc:178
-#: ../glom/utility_widgets/layoutwidgetmenu.cc:47
-#: ../glom/utility_widgets/layoutwidgetutils.cc:37
-#: ../glom/utility_widgets/notebooklabelglom.cc:117
+#: ../glom/utility_widgets/layoutwidgetutils.cc:59
+#: ../glom/utility_widgets/notebooklabelglom.cc:125
 msgid "_Delete"
 msgstr "_Törlés"
 
@@ -680,14 +478,6 @@ msgid "Rename Report"
 msgstr "Jelentés átnevezése"
 
 #. namespace Glom
-#: ../glom.appdata.xml.in.h:1
-msgid ""
-"With Glom you can design database systems - the database and the user "
-"interface."
-msgstr ""
-"A Glom segítségével adatbázis-rendszereket tervezhet - az adatbázist és a "
-"felhasználói felületet."
-
 #: ../glom.desktop.in.in.h:1 ../ui/operator/window_main.glade.h:1
 msgid "Glom"
 msgstr "Glom"
@@ -717,6 +507,7 @@ msgid "Open a Document"
 msgstr "Dokumentum megnyitása"
 
 #: ../glom/dialog_existing_or_new.cc:140
+#: ../glom/utility_widgets/imageglom.cc:958
 msgid "Select File"
 msgstr "Fájl kiválasztása"
 
@@ -750,42 +541,51 @@ msgstr "Exportálás fájlba"
 msgid "Define Data _Format"
 msgstr "Adat_formátum definiálása"
 
-#: ../glom/frame_glom.cc:80
+#: ../glom/filechooser_export.cc:40
+msgid "_Export"
+msgstr "E_xportálás"
+
+#: ../glom/frame_glom.cc:79
 msgid "Find All"
 msgstr "Összes keresése"
 
-#: ../glom/frame_glom.cc:101 ../glom/frame_glom.cc:105
+#: ../glom/frame_glom.cc:100 ../glom/frame_glom.cc:104
 msgid "No Table Selected"
 msgstr "Nincs tábla kiválasztva"
 
-#: ../glom/frame_glom.cc:112 ../ui/operator/dialog_find_id.glade.h:4
+#: ../glom/frame_glom.cc:111 ../ui/operator/dialog_find_id.glade.h:4
 msgid "Quick _search:"
 msgstr "Gyors _keresés:"
 
-#: ../glom/frame_glom.cc:137
+#: ../glom/frame_glom.cc:122 ../glom/mode_data/box_data.cc:42
+#: ../glom/mode_data/datawidget/datawidget.cc:232
+msgid "_Find"
+msgstr "Ke_resés"
+
+#: ../glom/frame_glom.cc:136
 msgid "Records:"
 msgstr "Rekordok: "
 
-#: ../glom/frame_glom.cc:140
+#: ../glom/frame_glom.cc:139
 msgid "Found:"
 msgstr "Találatok:"
 
 #. TODO: Obviously this document should have been deleted when the database-creation was cancelled.
 #. Note that "canceled" is the correct US spelling.
-#: ../glom/frame_glom.cc:325
+#: ../glom/frame_glom.cc:322
 msgid "No table"
 msgstr "Nincs tábla"
 
-#: ../glom/frame_glom.cc:325
+#: ../glom/frame_glom.cc:322
 msgid "This database has no tables yet."
 msgstr "Az adatbázisban még nincsenek táblák."
 
 #. TODO: Obviously this could be possible but it would require a network protocol and some work:
-#: ../glom/frame_glom.cc:497
+#: ../glom/frame_glom.cc:493
 msgid "Developer mode not available."
 msgstr "A fejlesztő mód nem érhető el."
 
-#: ../glom/frame_glom.cc:498
+#: ../glom/frame_glom.cc:494
 msgid ""
 "Developer mode is not available because the file was opened over the network "
 "from a running Glom. Only the original file may be edited."
@@ -793,11 +593,11 @@ msgstr ""
 "A fejlesztő mód nem érhető el, mert a fájl a hálózaton futó Glom programból "
 "lett megnyitva. Csak az eredeti fájlt lehet szerkeszteni."
 
-#: ../glom/frame_glom.cc:504
+#: ../glom/frame_glom.cc:500
 msgid "Developer mode not available"
 msgstr "A fejlesztő mód nem érhető el"
 
-#: ../glom/frame_glom.cc:505
+#: ../glom/frame_glom.cc:501
 msgid ""
 "Developer mode is not available. Check that you have sufficient database "
 "access rights and that the glom file is not read-only."
@@ -805,11 +605,11 @@ msgstr ""
 "A fejlesztő mód nem érhető el. Kérem ellenőrizze, hogy rendelkezik-e a "
 "szükséges adatbázis-elérési jogokkal, és hogy a glom fájl írható-e."
 
-#: ../glom/frame_glom.cc:512
+#: ../glom/frame_glom.cc:508
 msgid "Saving in new document format"
 msgstr "Mentés új dokumentumformátumban"
 
-#: ../glom/frame_glom.cc:513
+#: ../glom/frame_glom.cc:509
 msgid ""
 "The document was created by an earlier version of the application. Making "
 "changes to the document will mean that the document cannot be opened by some "
@@ -818,15 +618,15 @@ msgstr ""
 "A dokumentum az alkalmazás korábbi verziójával készült. A dokumentum "
 "módosítás után az alkalmazás korábbi verziójával nem lesz megnyitható."
 
-#: ../glom/frame_glom.cc:516
+#: ../glom/frame_glom.cc:512
 msgid "Continue"
 msgstr "Folytatás"
 
-#: ../glom/frame_glom.cc:565
+#: ../glom/frame_glom.cc:548
 msgid "Export Not Allowed."
 msgstr "Az exportálás nem engedélyezett."
 
-#: ../glom/frame_glom.cc:565
+#: ../glom/frame_glom.cc:548
 msgid ""
 "You do not have permission to view the data in this table, so you may not "
 "export the data."
@@ -834,117 +634,117 @@ msgstr ""
 "Nem rendelkezik az ebben a táblában levő adatok megtekintéséhez szükséges "
 "elérési joggal, ezért nem exportálhatja az adatokat."
 
-#: ../glom/frame_glom.cc:596
+#: ../glom/frame_glom.cc:579
 msgid "Could Not Create File."
 msgstr "A fájl létrehozása nem sikerült."
 
-#: ../glom/frame_glom.cc:596
+#: ../glom/frame_glom.cc:579
 msgid "Glom could not create the specified file."
 msgstr "A Glom nem tudta létrehozni a megadott fájlt."
 
-#: ../glom/frame_glom.cc:747
+#: ../glom/frame_glom.cc:730
 msgid "No Table"
 msgstr "Nincs tábla"
 
-#: ../glom/frame_glom.cc:747
+#: ../glom/frame_glom.cc:730
 msgid "There is no table in to which data could be imported."
 msgstr "Nincs olyan tábla, amelybe adatokat lehetne importálni."
 
-#: ../glom/frame_glom.cc:751
+#: ../glom/frame_glom.cc:734
 msgid "Open CSV Document"
 msgstr "CSV dokumentum megnyitása"
 
-#: ../glom/frame_glom.cc:755
+#: ../glom/frame_glom.cc:738
 msgid "CSV files"
 msgstr "CSV fájlok"
 
-#: ../glom/frame_glom.cc:759
+#: ../glom/frame_glom.cc:742
 msgid "All files"
 msgstr "Minden fájl"
 
-#: ../glom/frame_glom.cc:834
+#: ../glom/frame_glom.cc:811
 msgid "Share on the network"
 msgstr "Megosztás a hálózaton"
 
-#: ../glom/frame_glom.cc:835
+#: ../glom/frame_glom.cc:812
 msgid "This will allow other users on the network to use this database."
 msgstr ""
 "Ez lehetővé fogja tenni az adatbázis használatát a hálózat más "
 "felhasználóinak."
 
-#: ../glom/frame_glom.cc:838
+#: ../glom/frame_glom.cc:815
 msgid "_Share"
 msgstr "_Megosztás"
 
 #. TODO: Warn about connected users if possible.
-#: ../glom/frame_glom.cc:940
+#: ../glom/frame_glom.cc:917
 msgid "Stop sharing on the network"
 msgstr "Megosztás leállítása a hálózaton"
 
-#: ../glom/frame_glom.cc:941
+#: ../glom/frame_glom.cc:918
 msgid "This will prevent other users on the network from using this database."
 msgstr ""
 "Ez meg fogja akadályozni az adatbázis használatát a hálózat más "
 "felhasználóinak."
 
-#: ../glom/frame_glom.cc:944
+#: ../glom/frame_glom.cc:921
 msgid "_Stop Sharing"
 msgstr "Megosztás _leállítása"
 
-#: ../glom/frame_glom.cc:993 ../glom/frame_glom.cc:2131
+#: ../glom/frame_glom.cc:970 ../glom/frame_glom.cc:2110
 msgid "Stopping Database Server"
 msgstr "Adatbázis-kiszolgáló leállítása"
 
 #. Do startup, such as starting the self-hosting database server
-#: ../glom/frame_glom.cc:996 ../glom/frame_glom.cc:2019
-#: ../glom/frame_glom.cc:2177
+#: ../glom/frame_glom.cc:973 ../glom/frame_glom.cc:1998
+#: ../glom/frame_glom.cc:2156
 msgid "Starting Database Server"
 msgstr "Adatbázis-kiszolgáló indítása"
 
-#: ../glom/frame_glom.cc:1151
+#: ../glom/frame_glom.cc:1130
 msgid "Table Exists Already"
 msgstr "A tábla már létezik"
 
-#: ../glom/frame_glom.cc:1151
+#: ../glom/frame_glom.cc:1130
 msgid ""
 "A table with this name already exists in the database. Please choose a "
 "different table name."
 msgstr ""
 "Már létezik ilyen nevű tábla az adatbázisban. Válasszon másik táblanevet."
 
-#: ../glom/frame_glom.cc:1155
+#: ../glom/frame_glom.cc:1134
 msgid "Relationship Exists Already"
 msgstr "A kapcsolat már létezik"
 
-#: ../glom/frame_glom.cc:1155
+#: ../glom/frame_glom.cc:1134
 msgid ""
 "A relationship with this name already exists for this table. Please choose a "
 "different relationship name."
 msgstr ""
 "Már létezik ilyen nevű kapcsolat a táblához. Válasszon másik kapcsolatnevet."
 
-#: ../glom/frame_glom.cc:1159
+#: ../glom/frame_glom.cc:1138
 msgid "More information needed"
 msgstr "További információk szükségesek"
 
-#: ../glom/frame_glom.cc:1159
+#: ../glom/frame_glom.cc:1138
 msgid "You must specify a field, a table name, and a relationship name."
 msgstr "Meg kell adnia egy mezőt, egy táblanevet és egy kapcsolatnevet."
 
-#: ../glom/frame_glom.cc:1213
+#: ../glom/frame_glom.cc:1192
 msgid "Related Table Created"
 msgstr "A kapcsolódó tábla létrejött"
 
-#: ../glom/frame_glom.cc:1213
+#: ../glom/frame_glom.cc:1192
 msgid "The new related table has been created."
 msgstr "Az új kapcsolódó tábla létrejött."
 
 #. namespace Glom
-#: ../glom/frame_glom.cc:1242 ../ui/operator/box_navigation_tables.glade.h:1
+#: ../glom/frame_glom.cc:1221 ../ui/operator/box_navigation_tables.glade.h:1
 msgid "Edit Tables"
 msgstr "Táblák szerkesztése"
 
-#: ../glom/frame_glom.cc:1337
+#: ../glom/frame_glom.cc:1316
 msgid ""
 "You have not entered any find criteria. Try entering information in the "
 "fields."
@@ -952,45 +752,45 @@ msgstr ""
 "Nem adott meg semmilyen keresési feltételt. Adja meg az információkat a "
 "mezőkben."
 
-#: ../glom/frame_glom.cc:1339
+#: ../glom/frame_glom.cc:1318
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:108
 msgid "No Find Criteria"
 msgstr "Nincs keresési feltétel"
 
-#: ../glom/frame_glom.cc:1691 ../glom/onlineglom_strings.cc:33
+#: ../glom/frame_glom.cc:1670 ../glom/onlineglom_strings.cc:33
 #: ../ui/developer/box_reports.glade.h:1
 msgid "Reports"
 msgstr "Jelentések"
 
-#: ../glom/frame_glom.cc:1722 ../ui/developer/box_print_layouts.glade.h:1
+#: ../glom/frame_glom.cc:1701 ../ui/developer/box_print_layouts.glade.h:1
 msgid "Print Layouts"
 msgstr "Nyomtatási elrendezések"
 
-#: ../glom/frame_glom.cc:1838
+#: ../glom/frame_glom.cc:1817
 msgid "Could Not Create Directory"
 msgstr "A könyvtár nem hozható létre"
 
-#: ../glom/frame_glom.cc:1839
+#: ../glom/frame_glom.cc:1818
 msgid ""
 "There was an error when attempting to create the directory for the new "
 "database files."
 msgstr ""
 "Hiba történt az új adatbázisfájlok könyvtárának létrehozási kísérlete közben."
 
-#: ../glom/frame_glom.cc:1843
+#: ../glom/frame_glom.cc:1822
 msgid "Could Not Start Database Server"
 msgstr "Nem indítható el az adatbázis-kiszolgáló"
 
-#: ../glom/frame_glom.cc:1844
+#: ../glom/frame_glom.cc:1823
 msgid "There was an error when attempting to start the database server."
 msgstr "Hiba történt az adatbázis kiszolgáló indítási kísérlete közben."
 
-#: ../glom/frame_glom.cc:1951
+#: ../glom/frame_glom.cc:1930
 msgid "Initializing Database Data"
 msgstr "Adatbázis adatok előkészítése"
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2491
+#: ../glom/frame_glom.cc:2470
 msgid "All"
 msgstr "Mind"
 
@@ -1105,68 +905,17 @@ msgstr "Regisztrálás"
 msgid "Forgot Password"
 msgstr "Jelszó elfelejtése"
 
-#: ../glom/bakery/appwindow_withdoc_gtk.cc:241
-msgid "Save _As"
-msgstr "Men_tés másként"
-
-#.
-#. Glib::RefPtr<Gtk::Action> action =  Gtk::Action::create("ContextInsertField", _("Field"));
-#. m_context_menu_action_group->add(action,
-#. sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_insert_field) );
-#.
-#. action = Gtk::Action::create("ContextInsertText", _("Text"));
-#. m_context_menu_action_group->add(action,
-#. sigc::mem_fun(*this, &Canvas_PrintLayout::on_context_menu_insert_text) );
-#.
-#: ../glom/bakery/appwindow_withdoc_gtk.cc:283
-#: ../glom/mode_data/box_data_calendar_related.cc:505
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:204
-#: ../glom/mode_design/users/dialog_groups_list.cc:79
-#: ../glom/print_layout/canvas_print_layout.cc:282
-#: ../glom/utility_widgets/adddel/adddel.cc:234
-#: ../glom/mode_data/db_adddel/db_adddel.cc:229
-#: ../glom/utility_widgets/canvas/test_canvas_editable.cc:174
-#: ../ui/developer/window_field_definition_edit.glade.h:13
-msgid "_Edit"
-msgstr "_Szerkesztés"
-
-#: ../glom/bakery/appwindow_withdoc_gtk.cc:285
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:206
-msgid "Cu_t"
-msgstr "_Kivágás"
-
-#: ../glom/bakery/appwindow_withdoc_gtk.cc:287
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:210
-#: ../glom/utility_widgets/imageglom.cc:929
-msgid "_Copy"
-msgstr "Má_solás"
-
-#: ../glom/bakery/appwindow_withdoc_gtk.cc:289
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:214
-#: ../glom/utility_widgets/imageglom.cc:930
-msgid "_Paste"
-msgstr "_Beillesztés"
-
-#: ../glom/bakery/appwindow_withdoc_gtk.cc:291
-#: ../glom/utility_widgets/imageglom.cc:931
-msgid "_Clear"
-msgstr "_Törlés"
-
-#: ../glom/bakery/appwindow_withdoc_gtk.cc:375
-msgid "Open Document"
-msgstr "Dokumentum megnyitása"
-
-#: ../glom/bakery/appwindow_withdoc.cc:237
-#: ../glom/bakery/appwindow_withdoc.cc:288
+#: ../glom/bakery/appwindow_withdoc.cc:241
+#: ../glom/bakery/appwindow_withdoc.cc:292
 msgid ""
 "There was an error while saving the file. Your changes have not been saved."
 msgstr "Hiba történt a fájl mentése közben. A módosítások nincsenek elmentve."
 
-#: ../glom/bakery/appwindow_withdoc.cc:493
+#: ../glom/bakery/appwindow_withdoc.cc:497
 msgid "Open Failed."
 msgstr "A megnyitás nem sikerült."
 
-#: ../glom/bakery/appwindow_withdoc.cc:493
+#: ../glom/bakery/appwindow_withdoc.cc:497
 msgid "The document could not be opened."
 msgstr "A dokumentum nem nyitható meg."
 
@@ -1422,7 +1171,6 @@ msgstr "Szám"
 #: ../glom/libglom/data_structure/translatable_item.cc:258
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1159
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:35
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:758
 msgid "Text"
 msgstr "Szöveg"
 
@@ -1494,7 +1242,7 @@ msgstr ""
 #: ../glom/libglom/data_structure/layout/layoutgroup.cc:422
 #: ../glom/utility_widgets/layouttoolbar.cc:34
 #: ../glom/utility_widgets/layouttoolbar.cc:44
-#: ../glom/utility_widgets/notebooklabelglom.cc:76
+#: ../glom/utility_widgets/notebooklabelglom.cc:78
 msgid "Group"
 msgstr "Csoport"
 
@@ -1515,7 +1263,6 @@ msgstr "Naptár portál"
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:229
 #: ../glom/libglom/data_structure/translatable_item.cc:230
 #: ../glom/mode_design/dialog_database_preferences.cc:62
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:754
 #: ../ui/developer/window_field_definition_edit.glade.h:8
 msgid "Field"
 msgstr "Mező"
@@ -1930,7 +1677,7 @@ msgstr "Hiba: Nem sikerült csatlakozni a megadott adatbázishoz."
 msgid "Successful connection."
 msgstr "Sikeres kapcsolat."
 
-#: ../glom/main.cc:197
+#: ../glom/main.cc:199
 msgid ""
 "You seem to be running Glom as a user with administrator privileges. Glom "
 "may not be run with such privileges for security reasons.\n"
@@ -1942,7 +1689,7 @@ msgstr ""
 "Jelentkezzen be a rendszerbe normál felhasználóként."
 
 #. Warn the user:
-#: ../glom/main.cc:211
+#: ../glom/main.cc:213
 msgid ""
 "You seem to be running Glom as root. Glom may not be run as root.\n"
 "Please login to your system as a normal user."
@@ -1951,25 +1698,24 @@ msgstr ""
 "rendszergazdaként.\n"
 "Jelentkezzen be a rendszerbe normál felhasználóként."
 
-#: ../glom/main.cc:217
+#: ../glom/main.cc:222
 msgid "Running As Root"
 msgstr "Futtatás rendszergazdaként"
 
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
-#. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Unlike for PostgreSQL, this warning is only shown if MySQL was specified in the build.
 #. Show message to the user about the broken installation:
-#: ../glom/main.cc:260 ../glom/main.cc:273 ../glom/main.cc:311
-#: ../glom/main.cc:324 ../glom/main.cc:485
+#: ../glom/main.cc:265 ../glom/main.cc:283 ../glom/main.cc:321
+#: ../glom/main.cc:334 ../glom/main.cc:522
 msgid "Incomplete Glom Installation"
 msgstr "Befejezetlen Glom telepítés"
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:261
+#: ../glom/main.cc:266
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -1982,13 +1728,12 @@ msgstr ""
 "\n"
 "A Glom telepítésének befejezése érdekében most telepítheti a PostgreSQL-t."
 
-#: ../glom/main.cc:263
+#: ../glom/main.cc:268
 msgid "Install PostgreSQL"
 msgstr "PostgreSQL telepítése"
 
-#. use_markup
-#. modal
-#: ../glom/main.cc:274
+#. Show message to the user about the broken installation:
+#: ../glom/main.cc:278
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -2005,7 +1750,7 @@ msgstr ""
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:312
+#: ../glom/main.cc:322
 msgid ""
 "Your installation of Glom is not complete, because MySQL is not available on "
 "your system. MySQL is needed for self-hosting of some Glom databases.\n"
@@ -2017,13 +1762,13 @@ msgstr ""
 "\n"
 "A Glom telepítésének befejezése érdekében most telepítheti a MySQL-t."
 
-#: ../glom/main.cc:314
+#: ../glom/main.cc:324
 msgid "Install MySQL"
 msgstr "MySQL telepítése"
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:325
+#: ../glom/main.cc:335
 msgid ""
 "Your installation of Glom is not complete, because MySQL is not available on "
 "your system. MySQL is needed for self-hosting of some Glom databases.\n"
@@ -2038,7 +1783,7 @@ msgstr ""
 "rendszergazdának, hogy javítani lehessen azt."
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:341
+#: ../glom/main.cc:351
 msgid ""
 "Your installation of Glom is not complete, because the Glom Python module is "
 "not available on your system.\n"
@@ -2052,12 +1797,12 @@ msgstr ""
 "Jelentse ezt a hibát az operációs rendszer szállítójának vagy a "
 "rendszergazdának, hogy javítani lehessen azt."
 
-#: ../glom/main.cc:343
+#: ../glom/main.cc:356
 msgid "Glom Python Module Not Installed"
 msgstr "A Glom Python modul nincs telepítve"
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:356
+#: ../glom/main.cc:369
 msgid ""
 "Your installation of Glom is not complete, because the gi.repository Python "
 "module is not available on your system.\n"
@@ -2071,12 +1816,12 @@ msgstr ""
 "Jelentse ezt a hibát az operációs rendszer szállítójának vagy a "
 "rendszergazdának, hogy javítani lehessen azt."
 
-#: ../glom/main.cc:358
+#: ../glom/main.cc:374
 msgid "gi.repository Python Module Not Installed"
 msgstr "A gi.repository Python modul nincs telepítve"
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:371
+#: ../glom/main.cc:387
 msgid ""
 "Your installation of Glom is not complete, because the gi.repository.Gda "
 "python module is not available on your system.\n"
@@ -2090,12 +1835,12 @@ msgstr ""
 "Jelentse ezt a hibát az operációs rendszer szállítójának vagy a "
 "rendszergazdának, hogy javítani lehessen azt."
 
-#: ../glom/main.cc:373
+#: ../glom/main.cc:392
 msgid "gi.repository.Gda Python Module Not Installed"
 msgstr "A gi.repository.Gda Python modul nincs telepítve"
 
 #. The Postgres provider was not found, so warn the user:
-#: ../glom/main.cc:483
+#: ../glom/main.cc:517
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda "
 "provider is not available on your system. This provider is needed to access "
@@ -2155,13 +1900,20 @@ msgstr ""
 "Az előállított SQL lekérdezések megjelenítése a szabványos kimeneten, "
 "hibakeresési céllal."
 
-#. Don't add ContextLayout in client only mode because it would never
-#. be sensitive anyway
-#: ../glom/mode_data/box_data_calendar_related.cc:513
-#: ../glom/mode_data/db_adddel/db_adddel.cc:248
-#: ../ui/developer/window_data_layout.glade.h:1
-msgid "Layout"
-msgstr "Elrendezés"
+#: ../glom/mode_data/box_data_calendar_related.cc:527
+#: ../glom/mode_design/users/dialog_groups_list.cc:79
+#: ../glom/print_layout/canvas_print_layout.cc:292
+#: ../glom/utility_widgets/adddel/adddel.cc:250
+#: ../glom/mode_data/db_adddel/db_adddel.cc:228
+#: ../glom/mode_data/db_adddel/db_adddel.cc:260
+#: ../ui/developer/window_field_definition_edit.glade.h:13
+msgid "_Edit"
+msgstr "_Szerkesztés"
+
+#: ../glom/mode_data/box_data_calendar_related.cc:528
+#: ../glom/mode_data/db_adddel/db_adddel.cc:264
+msgid "_Layout"
+msgstr "_Elrendezés"
 
 #: ../glom/mode_data/box_data.cc:189
 msgid ""
@@ -2181,7 +1933,7 @@ msgstr "Nincs elsődleges kulcsérték"
 #: ../glom/mode_data/box_data_details.cc:45
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:32
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:42
-#: ../glom/mode_data/db_adddel/db_adddel.cc:240
+#: ../glom/mode_data/db_adddel/db_adddel.cc:261
 #: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:33
 msgid "_Add"
 msgstr "_Hozzáadás"
@@ -2272,53 +2024,53 @@ msgstr ""
 "Nem létezik ilyen értékű rekord. Emiatt nem lehet a kapcsolódó rekordra "
 "lépni."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1166
-#: ../glom/utility_widgets/notebooklabelglom.cc:75
-#: ../glom/utility_widgets/notebooklabelglom.cc:116
+#: ../glom/mode_data/flowtablewithfields.cc:1167
+#: ../glom/utility_widgets/notebooklabelglom.cc:77
+#: ../glom/utility_widgets/notebooklabelglom.cc:124
 msgid "New Group"
 msgstr "Új csoport"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1172
+#: ../glom/mode_data/flowtablewithfields.cc:1173
 #: ../glom/mode_design/layout/dialog_layout_details.cc:736
 msgid "notebook"
 msgstr "jegyzettömb"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1178
+#: ../glom/mode_data/flowtablewithfields.cc:1179
 msgid "tab1"
 msgstr "lap1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1181
+#: ../glom/mode_data/flowtablewithfields.cc:1182
 msgid "Tab One"
 msgstr "Első lap"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1194
+#: ../glom/mode_data/flowtablewithfields.cc:1195
 msgid "button"
 msgstr "gomb"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1195
+#: ../glom/mode_data/flowtablewithfields.cc:1196
 #: ../glom/mode_design/layout/dialog_layout_details.cc:662
 msgid "New Button"
 msgstr "Új gomb"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1201
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:456
+#: ../glom/mode_data/flowtablewithfields.cc:1202
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:556
 msgid "text"
 msgstr "szöveg"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1202
+#: ../glom/mode_data/flowtablewithfields.cc:1203
 msgid "New Text"
 msgstr "Új szöveg"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1355
+#: ../glom/mode_data/flowtablewithfields.cc:1356
 msgid "Delete whole group \"%1\"?"
 msgstr "A teljes „%1” csoport törlése?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1361
+#: ../glom/mode_data/flowtablewithfields.cc:1362
 msgid "Delete whole group?"
 msgstr "A teljes csoport törlése?"
 
@@ -2361,7 +2113,7 @@ msgid "Next Value"
 msgstr "Következő érték"
 
 #: ../glom/mode_design/dialog_design.cc:53
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:639
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:741
 #: ../ui/developer/window_design.glade.h:3
 msgid "None selected"
 msgstr "Nincs kiválasztva"
@@ -2705,7 +2457,7 @@ msgstr ""
 
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:32
 #: ../ui/developer/dialog_fieldslist.glade.h:2
-#: ../ui/developer/dialog_group_by.glade.h:4
+#: ../ui/developer/dialog_group_by.glade.h:3
 #: ../ui/developer/window_data_layout.glade.h:23
 msgid "Formatting"
 msgstr "Formázás"
@@ -2804,129 +2556,12 @@ msgstr "Kapcsolódó rekordok"
 msgid "Drag this to the layout to add a new related records portal."
 msgstr "Húzza ezt az elrendezésre új kapcsolódó rekordok hozzáadásához."
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:198
-msgid "Page Set_up"
-msgstr "_Oldalbeállítás"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:200
-msgid "Print Pre_view"
-msgstr "Nyomtatási _kép"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:224
-msgid "Select _All"
-msgstr "Ö_sszes kijelölése"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:228
-msgid "Unselect All"
-msgstr "Kijelölés megszüntetése"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:231
-msgid "_Insert"
-msgstr "_Beszúrás"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:232
-msgid "Insert _Field"
-msgstr "_Mező beszúrása"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:234
-msgid "Insert _Text"
-msgstr "S_zöveg beszúrása"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:236
-msgid "Insert _Image"
-msgstr "_Kép beszúrása"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:238
-msgid "Insert _Related Records"
-msgstr "Kap_csolódó rekordok beszúrása"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:240
-msgid "Insert _Horizontal Line"
-msgstr "_Vízszintes vonal beszúrása"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:242
-msgid "Insert _Vertical Line"
-msgstr "_Függőleges vonal beszúrása"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:244
-msgid "_Create Standard Layout"
-msgstr "Sz_abványos elrendezés létrehozása"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:246
-msgid "_Add Page"
-msgstr "_Oldal hozzáadása"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:248
-msgid "_Delete Page"
-msgstr "Ol_dal törlése"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:252
-msgid "_Align"
-msgstr "_Igazítás"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:254
-msgid "Align _Top"
-msgstr "Igazítás _fentre"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:258
-msgid "Align _Bottom"
-msgstr "Igazítás _lentre"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:262
-msgid "Align _Left"
-msgstr "Igazítás _balra"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:266
-msgid "Align _Right"
-msgstr "Igazítás _jobbra"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:271
-#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:63
-msgid "_View"
-msgstr "_Nézet"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:272
-msgid "Show Grid"
-msgstr "Rács megjelenítése"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:274
-msgid "Show Rules"
-msgstr "Szabályok megjelenítése"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:276
-msgid "Show Outlines"
-msgstr "Körvonalak megjelenítése"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:280
-msgid "Fit Page _Width"
-msgstr "Igazítás az _oldal szélességéhez"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:284
-msgid "Zoom 200%"
-msgstr "Nagyítás: 200%"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:288
-msgid "_Normal Size"
-msgstr "_Normál méret"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:292
-msgid "Zoom 50%"
-msgstr "Nagyítás: 50%"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:296
-msgid "Zoom 25%"
-msgstr "Nagyítás: 25%"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:752
-msgid "Insert"
-msgstr "Beszúrás"
-
 #. Ask for confirmation:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:913
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1009
 msgid "Create Standard Layout"
 msgstr "Szabványos elrendezés létrehozása"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:914
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1010
 msgid ""
 "This is an experimental feature. It will remove all items from the print "
 "layout and then try to create a layout similar to the layout of the detail "
@@ -2936,17 +2571,17 @@ msgstr ""
 "elrendezésről, majd ezután megpróbál egy olyan elrendezést létrehozni, amely "
 "hasonló a részletes nézet elrendezéséhez."
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:917
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1013
 #: ../glom/mode_design/users/dialog_groups_list.cc:82
 msgid "Create"
 msgstr "Létrehozás"
 
 #. Ask the user to confirm:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:957
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1053
 msgid "Remove page"
 msgstr "Oldal eltávolítása"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:958
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1054
 msgid ""
 "Are you sure that you wish to remove the last page and any items on that "
 "page?"
@@ -2954,25 +2589,9 @@ msgstr ""
 "Biztosan el szeretné távolítani az utolsó oldalt és az azon lévő összes "
 "elemet?"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:961
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1057
 msgid "Remove Page"
 msgstr "Oldal eltávolítása"
-
-#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:58
-msgid "Page _Setup"
-msgstr "_Oldalbeállítás"
-
-#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:64
-msgid "Show _Grid"
-msgstr "_Rács megjelenítése"
-
-#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:474
-msgid "Edit _Fields"
-msgstr "_Mezők szerkesztése"
-
-#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:477
-msgid "Edit _Relationships"
-msgstr "_Kapcsolatok szerkesztése"
 
 #: ../glom/mode_design/script_library/dialog_script_library.cc:129
 msgid "Remove library script"
@@ -3113,11 +2732,11 @@ msgstr ""
 "tartalmaz ezzel a táblával kapcsolatban."
 
 #: ../glom/print_layout/canvas_layout_item.cc:263
-#: ../glom/utility_widgets/layoutwidgetmenu.cc:39
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:119
 msgid "Choose Field"
 msgstr "Válasszon mezőt"
 
-#: ../glom/print_layout/canvas_print_layout.cc:284
+#: ../glom/print_layout/canvas_print_layout.cc:293
 msgid "_Formatting"
 msgstr "_Formázás"
 
@@ -3157,12 +2776,12 @@ msgstr "Exportálás"
 msgid "Import"
 msgstr "Importálás"
 
-#: ../glom/utility_widgets/adddel/adddel.cc:156
+#: ../glom/utility_widgets/adddel/adddel.cc:158
 msgid "This item already exists. Please try again."
 msgstr "Ez az elem már létezik. Próbálkozzon újra."
 
 #. Something more specific and helpful.
-#: ../glom/utility_widgets/adddel/adddel.cc:160
+#: ../glom/utility_widgets/adddel/adddel.cc:162
 msgid "Duplicate"
 msgstr "Megkettőzés"
 
@@ -3199,6 +2818,10 @@ msgstr ""
 "Adjon meg keresési feltételt a másik táblában lévő rekordok azonosításához "
 "egy azonosító választásával ehhez a mezőhöz."
 
+#: ../glom/mode_data/datawidget/datawidget.cc:237
+msgid "_New"
+msgstr "Ú_j"
+
 #: ../glom/mode_data/datawidget/datawidget.cc:238
 msgid ""
 "Enter details for a new record in the other table, then use its ID for this "
@@ -3207,27 +2830,27 @@ msgstr ""
 "Adja meg a másik táblában lévő új rekord részleteit, majd használja annak "
 "azonosítóját ehhez a mezőhöz."
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:77
+#: ../glom/mode_data/db_adddel/db_adddel.cc:78
 msgid "Table Content"
 msgstr "Tábla tartalom"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-#: ../glom/mode_data/db_adddel/db_adddel.cc:563
+#: ../glom/mode_data/db_adddel/db_adddel.cc:539
 msgid "ExampleEg"
 msgstr "PéldaPl"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2091
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2067
 msgid "Right-click to layout, to specify the related fields."
 msgstr ""
 "A kapcsolódó mezők megadásához kattintson az egér jobb gombjával az "
 "elrendezésre."
 
 #. Tell user that they can't do that:
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2308
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2284
 msgid "Extra Related Records Not Possible"
 msgstr "További kapcsolódó rekordok nem lehetségesek"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2309
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2285
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
@@ -3236,10 +2859,10 @@ msgstr ""
 "lehet, mivel a kapcsolat egyedi kulcsot használ."
 
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:90
-#: ../glom/utility_widgets/imageglom.cc:771
-#: ../ui/developer/dialog_choose_relationship.glade.h:4
+#: ../glom/utility_widgets/imageglom.cc:775
+#: ../ui/developer/dialog_choose_relationship.glade.h:2
 #: ../ui/developer/dialog_field_summary.glade.h:3
-#: ../ui/developer/dialog_group_by.glade.h:3
+#: ../ui/developer/dialog_group_by.glade.h:4
 msgid "Select"
 msgstr "Kiválasztás"
 
@@ -3353,25 +2976,39 @@ msgstr ""
 "Adatbázis létrehozása külső MySQL adatbázis-kiszolgálón, amely a következő "
 "lépésben adható meg."
 
-#: ../glom/utility_widgets/imageglom.cc:656
+#: ../glom/utility_widgets/imageglom.cc:660
 msgid "Images"
 msgstr "Képek"
 
-#: ../glom/utility_widgets/imageglom.cc:677
+#: ../glom/utility_widgets/imageglom.cc:681
 msgid "Save Image"
 msgstr "Kép mentése"
 
-#: ../glom/utility_widgets/imageglom.cc:764
+#: ../glom/utility_widgets/imageglom.cc:768
 msgid "Choose Image"
 msgstr "Válasszon képet"
 
-#: ../glom/utility_widgets/imageglom.cc:926
-msgid "Open With"
-msgstr "Megnyitás ezzel"
+#: ../glom/utility_widgets/imageglom.cc:956
+#| msgid "Open Failed"
+msgid "_Open File"
+msgstr "Fájl _megnyitása"
 
-#: ../glom/utility_widgets/imageglom.cc:928
-msgid "Choose File"
-msgstr "Válasszon fájlt"
+#: ../glom/utility_widgets/imageglom.cc:957
+#| msgid "Open With"
+msgid "Open File With"
+msgstr "Fájl megnyitása ezzel"
+
+#: ../glom/utility_widgets/imageglom.cc:959
+msgid "_Copy"
+msgstr "Má_solás"
+
+#: ../glom/utility_widgets/imageglom.cc:960
+msgid "_Paste"
+msgstr "_Beillesztés"
+
+#: ../glom/utility_widgets/imageglom.cc:961
+msgid "_Clear"
+msgstr "_Törlés"
 
 #: ../glom/utility_widgets/layouttoolbar.cc:32
 msgid "Containers"
@@ -3393,48 +3030,48 @@ msgstr "Húzza ezt az elrendezésre új kapcsolódó rekord hozzáadásához."
 msgid "Drag this to the layout to add a new button."
 msgstr "Húzza ezt az elrendezésre új gomb hozzáadásához."
 
-#: ../glom/utility_widgets/layoutwidgetmenu.cc:40
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:120
 msgid "Field Layout Properties"
 msgstr "Mezőelrendezés beállításai"
 
-#: ../glom/utility_widgets/layoutwidgetmenu.cc:41
-#: ../ui/developer/window_data_layout.glade.h:8
-msgid "Add Field"
-msgstr "Mező hozzáadása"
-
-#: ../glom/utility_widgets/layoutwidgetmenu.cc:42
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:121
 #: ../ui/developer/window_data_layout.glade.h:19
 msgid "Add Related Records"
 msgstr "Kapcsolódó rekordok hozzáadása"
 
-#: ../glom/utility_widgets/layoutwidgetmenu.cc:43
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:122
 #: ../ui/developer/window_data_layout.glade.h:17
 msgid "Add Notebook"
 msgstr "Jegyzettömb hozzáadása"
 
-#: ../glom/utility_widgets/layoutwidgetmenu.cc:44
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:123
 msgid "Add Group"
 msgstr "Csoport hozzáadása"
 
-#: ../glom/utility_widgets/layoutwidgetmenu.cc:45
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:124
 #: ../ui/developer/window_data_layout.glade.h:13
 msgid "Add Button"
 msgstr "Gomb hozzáadása"
 
-#: ../glom/utility_widgets/layoutwidgetmenu.cc:46
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:125
 #: ../ui/developer/window_data_layout.glade.h:10
 msgid "Add Text"
 msgstr "Szöveg hozzáadása"
 
-#: ../glom/utility_widgets/layoutwidgetutils.cc:36
+#: ../glom/utility_widgets/layoutwidgetmenu.cc:126
+#| msgid "_Delete"
+msgid "Delete"
+msgstr "Törlés"
+
+#: ../glom/utility_widgets/layoutwidgetutils.cc:58
 msgid "Properties"
 msgstr "Tulajdonságok"
 
-#: ../glom/utility_widgets/notebooklabelglom.cc:90
+#: ../glom/utility_widgets/notebooklabelglom.cc:92
 msgid "Delete whole notebook \"%1\"?"
 msgstr "Törli az egész „%1” jegyzettömböt?"
 
-#: ../glom/utility_widgets/notebooklabelglom.cc:95
+#: ../glom/utility_widgets/notebooklabelglom.cc:97
 msgid "Delete whole notebook?"
 msgstr "Törli az egész jegyzettömböt?"
 
@@ -3572,6 +3209,10 @@ msgstr "Kép mentése"
 msgid "bla.blub - Import from CSV"
 msgstr "bla.blub - Importálás CSV-ből"
 
+#: ../ui/operator/dialog_import_csv.glade.h:2
+msgid "I_mport"
+msgstr "_Importálás"
+
 #: ../ui/operator/dialog_import_csv.glade.h:3
 #: ../ui/developer/box_formatting.glade.h:20
 msgid "label"
@@ -3693,11 +3334,11 @@ msgstr "_Tábla:"
 msgid "Select Relationship"
 msgstr "Kapcsolat kiválasztása"
 
-#: ../ui/developer/dialog_choose_relationship.glade.h:2
+#: ../ui/developer/dialog_choose_relationship.glade.h:3
 msgid "Table:"
 msgstr "Tábla:"
 
-#: ../ui/developer/dialog_choose_relationship.glade.h:3
+#: ../ui/developer/dialog_choose_relationship.glade.h:4
 msgid "<b>Select Relationship</b>"
 msgstr "<b>Kapcsolat kiválasztása</b>"
 
@@ -4077,6 +3718,10 @@ msgstr ""
 msgid "Export Format"
 msgstr "Exportálási formátum"
 
+#: ../ui/developer/window_data_layout.glade.h:1
+msgid "Layout"
+msgstr "Elrendezés"
+
 #: ../ui/developer/window_data_layout.glade.h:3
 #: ../ui/developer/window_report_layout.glade.h:3
 msgid "table name"
@@ -4097,6 +3742,10 @@ msgid ""
 msgstr ""
 "A rekord egy mezőjének adatait megjelenítő és az érték szerkesztését a "
 "felhasználó számára lehetővé tevő elrendezéselem hozzáadása."
+
+#: ../ui/developer/window_data_layout.glade.h:8
+msgid "Add Field"
+msgstr "Mező hozzáadása"
 
 #: ../ui/developer/window_data_layout.glade.h:9
 msgid ""
@@ -4232,10 +3881,11 @@ msgid "Column Line Width:"
 msgstr "Oszlop sorszélessége:"
 
 #: ../ui/developer/window_data_layout.glade.h:37
-msgid "Line Color:\n"
-msgstr "Sor színe:\n"
+#| msgid "Line Color:\n"
+msgid "Line Color:"
+msgstr "Sor színe:"
 
-#: ../ui/developer/window_data_layout.glade.h:39
+#: ../ui/developer/window_data_layout.glade.h:38
 msgid "<b>Lines</b>"
 msgstr "<b>Sorok</b>"
 
@@ -4587,6 +4237,240 @@ msgstr "<b>Csoport:</b>"
 #: ../ui/developer/window_users.glade.h:3
 msgid "<b>Users</b>"
 msgstr "<b>Felhasználók</b>"
+
+#~ msgid "_File"
+#~ msgstr "_Fájl"
+
+#~ msgid "_Recent Files"
+#~ msgstr "Le_gutóbbi fájlok"
+
+#~ msgid "_Save as Example"
+#~ msgstr "_Mentés példaként"
+
+#~ msgid "S_hared on Network"
+#~ msgstr "Meg_osztva a hálózaton"
+
+#~ msgid "_Print"
+#~ msgstr "_Nyomtatás"
+
+#~ msgid "_Standard"
+#~ msgstr "S_zabványos"
+
+#~ msgid "_Edit Print Layouts"
+#~ msgstr "_Nyomtatási elrendezések szerkesztése"
+
+#~ msgid "_Close"
+#~ msgstr "_Bezárás"
+
+#~ msgid "_Tables"
+#~ msgstr "_Táblák"
+
+#~ msgid "_Edit Tables"
+#~ msgstr "Táblák _szerkesztése"
+
+#~ msgid "_Reports"
+#~ msgstr "_Jelentések"
+
+#~ msgid "_Edit Reports"
+#~ msgstr "Jelentések sze_rkesztése"
+
+#~ msgctxt "Developer menu title"
+#~ msgid "_Developer"
+#~ msgstr "_Fejlesztő"
+
+#~ msgid "_Developer Mode"
+#~ msgstr "_Fejlesztő mód"
+
+#~ msgid "_Operator Mode"
+#~ msgstr "_Operátor mód"
+
+#~ msgid "_Database Preferences"
+#~ msgstr "Adat_bázis tulajdonságok"
+
+#~ msgid "_Fields"
+#~ msgstr "_Mezők"
+
+#~ msgid "Relationships _Overview"
+#~ msgstr "Kapcsolatok átt_ekintése"
+
+#~ msgid "_Relationships for this Table"
+#~ msgstr "A tábla ka_pcsolatai"
+
+#~ msgid "_Users"
+#~ msgstr "_Felhasználók"
+
+#~ msgid "_Print Layouts"
+#~ msgstr "Nyomtatási _elrendezések"
+
+#~ msgid "R_eports"
+#~ msgstr "_Jelentések"
+
+#~ msgid "Script _Library"
+#~ msgstr "Parancsfájl-_könyvtár"
+
+#~ msgid "Test Tra_nslation"
+#~ msgstr "For_dítás tesztelése"
+
+#~ msgid "_Translations"
+#~ msgstr "_Fordítások"
+
+#~ msgid "_Active Platform"
+#~ msgstr "_Aktív platform"
+
+#~ msgid "_Normal"
+#~ msgstr "_Normál"
+
+#~ msgid "The layout to use for normal desktop environments."
+#~ msgstr "A normál asztali környezetekhez használt elrendezés."
+
+#~ msgid "_Maemo"
+#~ msgstr "_Maemo"
+
+#~ msgid "The layout to use for Maemo devices."
+#~ msgstr "A Maemo eszközökhöz használt elrendezés."
+
+#~ msgid "_Export Backup"
+#~ msgstr "Biztonsági mentés _exportálása"
+
+#~ msgid "_Restore Backup"
+#~ msgstr "Biztonsági mentés _visszaállítása"
+
+#~ msgid "_Drag and Drop Layout"
+#~ msgstr "_Fogd és vidd elrendezés"
+
+#~ msgctxt "Help menu title"
+#~ msgid "_Help"
+#~ msgstr "_Súgó"
+
+#~ msgid "_Help"
+#~ msgstr "_Súgó"
+
+#~ msgid "_About"
+#~ msgstr "_Névjegy"
+
+#~ msgid "About the application"
+#~ msgstr "Az alkalmazás névjegye"
+
+#~ msgid "_Contents"
+#~ msgstr "_Tartalom"
+
+#~ msgid "Help with the application"
+#~ msgstr "Az alkalmazás súgója"
+
+#~ msgid ""
+#~ "With Glom you can design database systems - the database and the user "
+#~ "interface."
+#~ msgstr ""
+#~ "A Glom segítségével adatbázis-rendszereket tervezhet - az adatbázist és a "
+#~ "felhasználói felületet."
+
+#~ msgid "Save _As"
+#~ msgstr "Men_tés másként"
+
+#~ msgid "Cu_t"
+#~ msgstr "_Kivágás"
+
+#~ msgid "Page Set_up"
+#~ msgstr "_Oldalbeállítás"
+
+#~ msgid "Print Pre_view"
+#~ msgstr "Nyomtatási _kép"
+
+#~ msgid "Select _All"
+#~ msgstr "Ö_sszes kijelölése"
+
+#~ msgid "Unselect All"
+#~ msgstr "Kijelölés megszüntetése"
+
+#~ msgid "_Insert"
+#~ msgstr "_Beszúrás"
+
+#~ msgid "Insert _Field"
+#~ msgstr "_Mező beszúrása"
+
+#~ msgid "Insert _Text"
+#~ msgstr "S_zöveg beszúrása"
+
+#~ msgid "Insert _Image"
+#~ msgstr "_Kép beszúrása"
+
+#~ msgid "Insert _Related Records"
+#~ msgstr "Kap_csolódó rekordok beszúrása"
+
+#~ msgid "Insert _Horizontal Line"
+#~ msgstr "_Vízszintes vonal beszúrása"
+
+#~ msgid "Insert _Vertical Line"
+#~ msgstr "_Függőleges vonal beszúrása"
+
+#~ msgid "_Create Standard Layout"
+#~ msgstr "Sz_abványos elrendezés létrehozása"
+
+#~ msgid "_Add Page"
+#~ msgstr "_Oldal hozzáadása"
+
+#~ msgid "_Delete Page"
+#~ msgstr "Ol_dal törlése"
+
+#~ msgid "_Align"
+#~ msgstr "_Igazítás"
+
+#~ msgid "Align _Top"
+#~ msgstr "Igazítás _fentre"
+
+#~ msgid "Align _Bottom"
+#~ msgstr "Igazítás _lentre"
+
+#~ msgid "Align _Left"
+#~ msgstr "Igazítás _balra"
+
+#~ msgid "Align _Right"
+#~ msgstr "Igazítás _jobbra"
+
+#~ msgid "_View"
+#~ msgstr "_Nézet"
+
+#~ msgid "Show Grid"
+#~ msgstr "Rács megjelenítése"
+
+#~ msgid "Show Rules"
+#~ msgstr "Szabályok megjelenítése"
+
+#~ msgid "Show Outlines"
+#~ msgstr "Körvonalak megjelenítése"
+
+#~ msgid "Fit Page _Width"
+#~ msgstr "Igazítás az _oldal szélességéhez"
+
+#~ msgid "Zoom 200%"
+#~ msgstr "Nagyítás: 200%"
+
+#~ msgid "_Normal Size"
+#~ msgstr "_Normál méret"
+
+#~ msgid "Zoom 50%"
+#~ msgstr "Nagyítás: 50%"
+
+#~ msgid "Zoom 25%"
+#~ msgstr "Nagyítás: 25%"
+
+#~ msgid "Insert"
+#~ msgstr "Beszúrás"
+
+#~ msgid "Page _Setup"
+#~ msgstr "_Oldalbeállítás"
+
+#~ msgid "Show _Grid"
+#~ msgstr "_Rács megjelenítése"
+
+#~ msgid "Edit _Fields"
+#~ msgstr "_Mezők szerkesztése"
+
+#~ msgid "Edit _Relationships"
+#~ msgstr "_Kapcsolatok szerkesztése"
+
+#~ msgid "Choose File"
+#~ msgstr "Válasszon fájlt"
 
 #~ msgid "Portal"
 #~ msgstr "Portál"
