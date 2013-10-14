@@ -131,7 +131,8 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 
   PlaceHolder* placeholder_quickfind = 0;
   builder->get_widget_derived("vbox_quickfind", placeholder_quickfind);
-  placeholder_quickfind->add(*m_pBox_QuickFind);
+  if(placeholder_quickfind)
+    placeholder_quickfind->add(*m_pBox_QuickFind);
 
   //Add the Records/Found widgets at the right of the notebook tabs:
   m_Box_RecordsCount.pack_start(
@@ -430,8 +431,11 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
   show_table_title();
 
   //List the reports and print layouts in the menus:
-  pApp->fill_menu_reports(table_name);
-  pApp->fill_menu_print_layouts(table_name);
+  if(pApp)
+  {
+    pApp->fill_menu_reports(table_name);
+    pApp->fill_menu_print_layouts(table_name);
+  }
 
   //show_all();
 }
@@ -779,23 +783,31 @@ void Frame_Glom::on_menu_file_import()
 
         Dialog_Import_CSV_Progress* progress_dialog = 0;
         Glom::Utils::get_glade_widget_derived_with_warning(progress_dialog);
-        add_view(progress_dialog);
+        int response = Gtk::RESPONSE_OK;
+        if(!progress_dialog)
+        {
+          std::cerr << G_STRFUNC << ": progress_dialog was null." << std::endl;
+        }
+        else
+        {
+          add_view(progress_dialog);
 
-        progress_dialog->init_db_details(dialog->get_target_table_name());
-        progress_dialog->import(*dialog);
-        const int response = progress_dialog->run();
+          progress_dialog->init_db_details(dialog->get_target_table_name());
+          progress_dialog->import(*dialog);
+          response = progress_dialog->run(); //TODO: Check response?
 
-        remove_view(progress_dialog);
-        delete progress_dialog;
-        progress_dialog = 0;
+          remove_view(progress_dialog);
+          delete progress_dialog;
+          progress_dialog = 0;
 
-        // Force update from database so the newly added entries are shown
-        show_table_refresh();
+          // Force update from database so the newly added entries are shown
+          show_table_refresh();
 
-        // Re-show chooser dialog when an error occured or when the user
-        // cancelled.
-        if(response == Gtk::RESPONSE_OK)
-          break;
+          // Re-show chooser dialog when an error occured or when the user
+          // cancelled.
+          if(response == Gtk::RESPONSE_OK)
+            break;
+        }
       }
 
       remove_view(dialog);
@@ -1621,6 +1633,12 @@ void Frame_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib
   if(!m_pDialog_Relationships)
   {
     Utils::get_glade_widget_derived_with_warning(m_pDialog_Relationships);
+    if(!m_pDialog_Relationships)
+    {
+      std::cerr << G_STRFUNC << ": m_pDialog_Relationships is null." << std::cerr;
+      return;
+    }
+    
     m_pDialog_Relationships->set_title("Relationships");
     m_pDialog_Relationships->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
     add_view(m_pDialog_Relationships); //Also a composite view.
@@ -1685,11 +1703,23 @@ void Frame_Glom::on_menu_developer_reports()
   if(!m_pBox_Reports)
   {
     Utils::get_glade_child_widget_derived_with_warning(m_pBox_Reports);
+    if(!m_pBox_Reports)
+    {
+      std::cerr << G_STRFUNC << ": m_pBox_Reports is null." << std::cerr;
+      return;
+    }
+
     m_pDialog_Reports = new Window_BoxHolder(m_pBox_Reports);
     m_pDialog_Reports->set_transient_for(*(get_app_window()));
     m_pDialog_Reports->set_title(_("Reports"));
 
     Utils::get_glade_widget_derived_with_warning(m_pDialogLayoutReport);
+    if(!m_pDialogLayoutReport)
+    {
+      std::cerr << G_STRFUNC << ": m_pDialogLayoutReport is null." << std::endl;
+      return;
+    }
+
     add_view(m_pDialogLayoutReport);
     m_pDialogLayoutReport->set_transient_for(*(get_app_window()));
     m_pDialogLayoutReport->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_report_hide) );
@@ -1715,6 +1745,12 @@ void Frame_Glom::on_menu_developer_print_layouts()
   if(!m_pBox_PrintLayouts)
   {
     Utils::get_glade_child_widget_derived_with_warning(m_pBox_PrintLayouts);
+    if(!m_pBox_PrintLayouts)
+    {
+      std::cerr << G_STRFUNC << ": m_pBox_PrintLayouts is null." << std::endl;
+      return;
+    }
+
     m_pDialog_PrintLayouts = new Window_BoxHolder(m_pBox_PrintLayouts);
 
     m_pDialog_PrintLayouts->set_transient_for(*get_app_window());
@@ -1764,9 +1800,15 @@ void Frame_Glom::on_box_reports_selected(const Glib::ustring& report_name)
 void Frame_Glom::on_box_print_layouts_selected(const Glib::ustring& print_layout_name)
 {
   //Create the dialog if necessary:
-  if(!m_pDialogLayoutPrint)
+  if(m_pDialogLayoutPrint)
   {
     Utils::get_glade_widget_derived_with_warning(m_pDialogLayoutPrint);
+    if(!m_pDialogLayoutPrint)
+    {
+      std::cerr << G_STRFUNC << ": m_pDialogLayoutPrint is null" << std::endl;
+      return;
+    }
+
     add_view(m_pDialogLayoutPrint);
     m_pDialogLayoutPrint->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_print_hide) );
   }
@@ -1776,7 +1818,10 @@ void Frame_Glom::on_box_print_layouts_selected(const Glib::ustring& print_layout
   sharedptr<PrintLayout> print_layout = get_document()->get_print_layout(m_table_name, print_layout_name);
   if(print_layout)
   {
-    m_pDialogLayoutPrint->set_transient_for(*get_app_window());
+    Gtk::Window* app_window = get_app_window();
+    if(app_window)
+      m_pDialogLayoutPrint->set_transient_for(*app_window);
+
     m_pDialogLayoutPrint->set_print_layout(m_table_name, print_layout);
     m_pDialogLayoutPrint->show();
   }
@@ -1917,6 +1962,12 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   if(!m_pDialogConnection)
   {
     Utils::get_glade_widget_derived_with_warning(m_pDialogConnection);
+    if(!m_pDialogConnection)
+    {
+      std::cerr << G_STRFUNC << ": m_pBox_Reports is null." << std::cerr;
+      return false;
+    }
+
     add_view(m_pDialogConnection); //Also a composite view.
   }
 
@@ -2195,6 +2246,12 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
     m_pDialogConnection = 0;
 
     Utils::get_glade_widget_derived_with_warning(m_pDialogConnection);
+    if(!m_pDialogConnection)
+    {
+      std::cerr << G_STRFUNC << ": m_pDialogConnection is null." << std::endl;
+      return false;
+    }
+
     add_view(m_pDialogConnection); //Also a composite view.
 
     m_pDialogConnection->load_from_document(); //Get good defaults.
@@ -2300,6 +2357,12 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
     //Tell the user:
     Gtk::Dialog* dialog = 0;
     Utils::get_glade_widget_with_warning("glom_developer.glade", "dialog_error_create_database", dialog);
+    if(!dialog)
+    {
+      std::cerr << G_STRFUNC << ": dialog is null." << std::cerr;
+      return false;
+    }
+
     dialog->set_transient_for(*pWindowApp);
     Glom::Utils::dialog_run_with_help(dialog, "dialog_error_create_database");
     delete dialog;

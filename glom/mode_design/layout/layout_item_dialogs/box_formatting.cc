@@ -159,17 +159,17 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   m_button_choices_sortby->signal_clicked().connect( sigc::mem_fun(*this, &Box_Formatting::on_button_choices_sortby) );
 
   //TODO: Delay this until it is used?
-  if(!m_dialog_choices_extra_fields)
+  Utils::get_glade_widget_derived_with_warning(m_dialog_choices_extra_fields);
+  if(m_dialog_choices_extra_fields)
   {
-    Utils::get_glade_widget_derived_with_warning(m_dialog_choices_extra_fields);
     add_view(m_dialog_choices_extra_fields); //Give it access to the document.
     m_dialog_choices_extra_fields->set_title(_("Extra Fields"));
   }
 
   //TODO: Delay this until it is used?
-  if(!m_dialog_choices_sortby)
+  Utils::get_glade_widget_derived_with_warning(m_dialog_choices_sortby);
+  if(m_dialog_choices_sortby)
   {
-    Utils::get_glade_widget_derived_with_warning(m_dialog_choices_sortby);
     add_view(m_dialog_choices_sortby); //Give it access to the document.
     m_dialog_choices_sortby->set_title(_("Sort Order"));
   }

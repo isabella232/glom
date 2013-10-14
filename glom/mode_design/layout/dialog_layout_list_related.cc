@@ -67,11 +67,16 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
     sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_spinbutton_changed));
 
   builder->get_widget_derived("combo_relationship_name", m_combo_relationship);
-  m_combo_relationship->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_combo_relationship_changed));
+  if(m_combo_relationship)
+  {
+    m_combo_relationship->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_combo_relationship_changed));
+  }
 
   builder->get_widget("checkbutton_show_child_relationships", m_checkbutton_show_child_relationships);
-  m_checkbutton_show_child_relationships->signal_toggled().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_checkbutton_show_child_relationships));
-
+  if(m_checkbutton_show_child_relationships)
+  {
+    m_checkbutton_show_child_relationships->signal_toggled().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_checkbutton_show_child_relationships));
+  }
 
 
   builder->get_widget("radiobutton_navigation_automatic", m_radio_navigation_automatic);
@@ -82,18 +87,32 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
 
   builder->get_widget("radiobutton_navigation_specify", m_radio_navigation_specify);
   builder->get_widget_derived("combobox_navigation_specify", m_combo_navigation_specify);
-  make_sensitivity_depend_on_toggle_button(*m_radio_navigation_specify, *m_combo_navigation_specify);
-  m_combo_navigation_specify->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_combo_navigation_specific_changed));
+  if(m_radio_navigation_specify && m_combo_navigation_specify)
+  {
+    make_sensitivity_depend_on_toggle_button(*m_radio_navigation_specify, *m_combo_navigation_specify);
+    m_combo_navigation_specify->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_combo_navigation_specific_changed));
+  }
 
   builder->get_widget("spinbutton_row_line_width", m_spinbutton_row_line_width);
-  m_spinbutton_row_line_width->signal_value_changed().connect(
-    sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_spinbutton_changed));
+  if(m_spinbutton_row_line_width)
+  {
+    m_spinbutton_row_line_width->signal_value_changed().connect(
+      sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_spinbutton_changed));
+  }
+
   builder->get_widget("spinbutton_column_line_width", m_spinbutton_column_line_width);
-  m_spinbutton_column_line_width->signal_value_changed().connect(
-    sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_spinbutton_changed));
+  if(m_spinbutton_column_line_width)
+  {
+    m_spinbutton_column_line_width->signal_value_changed().connect(
+      sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_spinbutton_changed));
+  }
+
   builder->get_widget("colorbutton_line", m_colorbutton_line);
-  m_colorbutton_line->signal_color_set().connect(
-    sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_spinbutton_changed));
+  if(m_colorbutton_line)
+  {
+    m_colorbutton_line->signal_color_set().connect(
+      sigc::mem_fun(*this, &Dialog_Layout_List_Related::on_spinbutton_changed));
+  }
 
 
   m_modified = false;

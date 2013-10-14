@@ -157,8 +157,11 @@ void Dialog_GroupBy::on_button_secondary_fields()
   if(!m_dialog_choose_secondary_fields)
   {
     Utils::get_glade_widget_derived_with_warning(m_dialog_choose_secondary_fields);
-    add_view(m_dialog_choose_secondary_fields); //Give it access to the document.
-    m_dialog_choose_secondary_fields->set_title(_("Group By - Secondary Fields"));
+    if(m_dialog_choose_secondary_fields)
+    {
+      add_view(m_dialog_choose_secondary_fields); //Give it access to the document.
+      m_dialog_choose_secondary_fields->set_title(_("Group By - Secondary Fields"));
+    }
   }
 
   if(m_dialog_choose_secondary_fields)

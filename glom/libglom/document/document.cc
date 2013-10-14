@@ -3428,12 +3428,15 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
           }
         }
 
-        //Save formatting for any layout items that use it:
-        sharedptr<const LayoutItem_WithFormatting> withformatting = sharedptr<const LayoutItem_WithFormatting>::cast_dynamic(item);
-        if(withformatting)
+        if(nodeItem)
         {
-          xmlpp::Element* elementFormat = nodeItem->add_child(GLOM_NODE_FORMAT);
-            save_before_layout_item_formatting(elementFormat, withformatting);
+          //Save formatting for any layout items that use it:
+          sharedptr<const LayoutItem_WithFormatting> withformatting = sharedptr<const LayoutItem_WithFormatting>::cast_dynamic(item);
+          if(withformatting)
+          {
+            xmlpp::Element* elementFormat = nodeItem->add_child(GLOM_NODE_FORMAT);
+              save_before_layout_item_formatting(elementFormat, withformatting);
+          }
         }
       }
 
