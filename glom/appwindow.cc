@@ -106,11 +106,13 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
 #ifndef G_OS_WIN32
   //Install UI hooks for this:
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  if(!connection_pool)
+  if(connection_pool)
+  {
     connection_pool->set_avahi_publish_callbacks(
       sigc::mem_fun(*this, &AppWindow::on_connection_avahi_begin),
       sigc::mem_fun(*this, &AppWindow::on_connection_avahi_progress),
       sigc::mem_fun(*this, &AppWindow::on_connection_avahi_done) );
+  }
 #endif
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -740,6 +742,12 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
     Dialog_Connection* dialog_connection = 0;
     //Load the Glade file and instantiate its widgets to get the dialog stuff:
     Utils::get_glade_widget_derived_with_warning(dialog_connection);
+    if(!dialog_connection)
+    {
+      std::cerr << G_STRFUNC << ": dialog_connection is null." << std::endl;
+      return;
+    }
+
     dialog_connection->set_transient_for(*this);
     dialog_connection->set_connect_to_browsed();
     dialog_connection->set_database_name(service_name);

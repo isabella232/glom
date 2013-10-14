@@ -45,7 +45,10 @@ Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefP
 
   builder->get_widget("button_select", m_button_select);
   builder->get_widget_derived("combobox_relationship", m_combo_relationship);
-  m_combo_relationship->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ChooseField::on_combo_relationship_changed));
+  if(m_combo_relationship)
+  {
+    m_combo_relationship->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ChooseField::on_combo_relationship_changed));
+  }
 
   builder->get_widget("treeview_fields", m_treeview);
 

@@ -55,6 +55,8 @@ FileChooser_Export::FileChooser_Export()
   //TODO: Use a generic layout dialog?
   Dialog_Layout_Export* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
+  if(!dialog)
+    return;
   
   m_pDialogLayout = dialog;
   //add_view(m_pDialogLayout); //Give it access to the document.

@@ -1997,17 +1997,17 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
             }
 
             pDerived->property_text() = text;
-          }
 
-          //Show a different color if the value is numeric, if that's specified:
-          if(type == Field::TYPE_NUMERIC)
-          {
-             const Glib::ustring fg_color =
-               field->get_formatting_used().get_text_format_color_foreground_to_use(value);
-             if(!fg_color.empty())
-                 pDerived->property_foreground() = fg_color;
-             else //TODO: Remove this when this GTK+ bug is fixed: https://bugzilla.gnome.org/show_bug.cgi?id=667415
-                 g_object_set(pDerived->gobj(), "foreground", (const char*)0, (gpointer)0);
+            //Show a different color if the value is numeric, if that's specified:
+            if(type == Field::TYPE_NUMERIC)
+            {
+               const Glib::ustring fg_color =
+                 field->get_formatting_used().get_text_format_color_foreground_to_use(value);
+               if(!fg_color.empty())
+                   pDerived->property_foreground() = fg_color;
+               else //TODO: Remove this when this GTK+ bug is fixed: https://bugzilla.gnome.org/show_bug.cgi?id=667415
+                   g_object_set(pDerived->gobj(), "foreground", (const char*)0, (gpointer)0);
+            }
           }
 
           break;

@@ -23,6 +23,7 @@
 #include <glom/appwindow.h>
 #include <glom/mode_data/datawidget/textview.h>
 #include <glom/mode_data/datawidget/label.h>
+#include <iostream>
 
 namespace Glom
 {
@@ -101,6 +102,12 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
       widget_to_change = textview->get_textview();
     else if(labelglom)
       widget_to_change = labelglom->get_label();
+  }
+
+  if(!widget_to_change)
+  {
+    std::cerr << G_STRFUNC << ": widget_to_change is null." << std::endl;
+    return;
   }
 
   if(!layout_item)
