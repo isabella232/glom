@@ -36,16 +36,22 @@ Dialog_TextFormatting::Dialog_TextFormatting(BaseObjectType* cobject, const Glib
 {
   Gtk::Button* button_close = 0;
   builder->get_widget("button_close",  button_close);
-  button_close->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_TextFormatting::on_button_close) );
+  if(button_close)
+  {
+    button_close->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_TextFormatting::on_button_close) );
+  }
 
   //Formatting:
   //Get the place to put the Formatting stuff:
   builder->get_widget("box_formatting_placeholder", m_box_formatting_placeholder);
  
   Utils::get_glade_child_widget_derived_with_warning(m_box_formatting);
-  m_box_formatting_placeholder->pack_start(*m_box_formatting);
-  add_view(m_box_formatting);
-  m_box_formatting->set_is_for_non_editable();
+  if(m_box_formatting)
+  {
+    m_box_formatting_placeholder->pack_start(*m_box_formatting);
+    add_view(m_box_formatting);
+    m_box_formatting->set_is_for_non_editable();
+  }
 
   set_modal(); //We don't want people to edit the main window while we are changing structure.
 

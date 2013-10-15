@@ -85,25 +85,46 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
   }
 
   builder->get_widget("button_identify", m_button_identify);
-  m_button_identify->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_identify) );
+  if(m_button_identify)
+  {
+    m_button_identify->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_identify) );
+  }
 
   builder->get_widget_derived("combobox_target_locale", m_combo_target_locale);
-  m_combo_target_locale->signal_changed().connect(sigc::mem_fun(*this, &Window_Translations::on_combo_target_locale_changed));
+  if(m_combo_target_locale)
+  {
+    m_combo_target_locale->signal_changed().connect(sigc::mem_fun(*this, &Window_Translations::on_combo_target_locale_changed));
+  }
 
   builder->get_widget("button_ok", m_button_ok);
-  m_button_ok->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_ok) );
+  if(m_button_ok)
+  {
+    m_button_ok->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_ok) );
+  }
 
   builder->get_widget("button_cancel", m_button_cancel);
-  m_button_cancel->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_cancel) );
+  if(m_button_cancel)
+  {
+    m_button_cancel->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_cancel) );
+  }
 
   builder->get_widget("button_copy_translation", m_button_copy_translation);
-  m_button_copy_translation->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_copy_translation) );
+  if(m_button_copy_translation)
+  {
+    m_button_copy_translation->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_copy_translation) );
+  }
 
   builder->get_widget("button_import", m_button_import);
-  m_button_import->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_import) );
+  if(m_button_import)
+  {
+    m_button_import->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_import) );
+  }
 
   builder->get_widget("button_export", m_button_export);
-  m_button_export->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_export) );
+  if(m_button_export)
+  {
+    m_button_export->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_export) );
+  }
 
   show_all_children();
 

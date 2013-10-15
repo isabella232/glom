@@ -34,8 +34,8 @@ Dialog_CopyTranslation::Dialog_CopyTranslation(BaseObjectType* cobject, const Gl
   m_combo_locale(0)
 {
   builder->get_widget_derived("combobox_locale", m_combo_locale);
-
-  m_combo_locale->set_selected_locale(AppWindow::get_current_locale());
+  if(m_combo_locale)
+    m_combo_locale->set_selected_locale(AppWindow::get_current_locale());
 }
 
 Dialog_CopyTranslation::~Dialog_CopyTranslation()
