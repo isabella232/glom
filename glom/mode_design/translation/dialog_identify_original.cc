@@ -39,8 +39,8 @@ Dialog_IdentifyOriginal::Dialog_IdentifyOriginal(BaseObjectType* cobject, const 
 {
   builder->get_widget("label_original", m_label_original);
   builder->get_widget_derived("combobox_locale", m_combo_locale);
-
-  m_combo_locale->set_selected_locale(AppWindow::get_current_locale());
+  if(m_combo_locale)
+    m_combo_locale->set_selected_locale(AppWindow::get_current_locale());
 }
 
 Dialog_IdentifyOriginal::~Dialog_IdentifyOriginal()

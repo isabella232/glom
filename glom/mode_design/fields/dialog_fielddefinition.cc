@@ -101,12 +101,14 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
   on_foreach_connect(*m_pBox_DefaultValueSimple);
   on_foreach_connect(*m_pBox_ValueTab);
 
-  if(m_box_formatting) ////Unlikely to fail and it already warns on stderr.
+  if(m_box_formatting)
+  {
     on_foreach_connect(*m_box_formatting);
 
-  //Plus an extra signal for the related extra show-also fields:
-  m_box_formatting->signal_modified().connect(
-   sigc::mem_fun(*this, &Dialog_FieldDefinition::on_anything_changed));
+    //Plus an extra signal for the related extra show-also fields:
+    m_box_formatting->signal_modified().connect(
+     sigc::mem_fun(*this, &Dialog_FieldDefinition::on_anything_changed));
+  }
 
   Dialog_Properties::set_modified(false);
 

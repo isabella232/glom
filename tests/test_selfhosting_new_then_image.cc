@@ -124,6 +124,12 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   const GdaBinary* binary_set = gda_value_get_binary(value_set.gobj());
+  if(!binary_set)
+  {
+    std::cerr << "Failure: The value read's data was null." << std::endl;
+    return false;
+  }
+
   if(binary_set->binary_length != binary_read->binary_length)
   {
     std::cerr << "Failure: The value read's data length was not equal to that of the value set." << std::endl;

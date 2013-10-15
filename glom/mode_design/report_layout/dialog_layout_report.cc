@@ -895,6 +895,9 @@ void Dialog_Layout_Report::on_button_edit()
               {
                 Dialog_GroupBy* dialog = 0;
                 Utils::get_glade_widget_derived_with_warning(dialog);
+                if(!dialog)
+                  return;
+
                 add_view(dialog);
                 dialog->set_item(group_by, m_table_name);
                 dialog->set_transient_for(*this);
