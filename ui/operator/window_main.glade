@@ -197,7 +197,7 @@
       <section>
         <item>
           <attribute name='label' translatable='yes'>_Close</attribute>
-          <attribute name='action'>file.close</attribute>
+          <attribute name='action'>win.close</attribute>
           <attribute name='accel'>&lt;Primary&gt;w</attribute>
         </item>
       </section>

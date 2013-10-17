@@ -288,7 +288,8 @@ void AppWindow::init_menus_file()
   m_listDeveloperActions.push_back(action_print_edit);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  m_refActionGroup_File->add_action("close",
+  //Add to the window's regular "win" ActionMap:
+  add_action("close",
     sigc::mem_fun((GlomBakery::AppWindow_WithDoc&)*this, &GlomBakery::AppWindow_WithDoc::on_menu_file_close));
 
   insert_action_group("file", m_refActionGroup_File);
