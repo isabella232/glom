@@ -116,6 +116,9 @@ AppWindow::AppWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
   m_menubar->show();
   m_pBoxTop->pack_start(*m_menubar, Gtk::PACK_SHRINK);
 
+  //TODO: Remove our use of add_accelerator() in application.cc,
+  //if there is ever an easier way to make the 'accel's from the .glade file just work.
+  //See https://bugzilla.gnome.org/show_bug.cgi?id=708905
 
   add_mime_type("application/x-glom"); //TODO: make this actually work - we need to register it properly.
 

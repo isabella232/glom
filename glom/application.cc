@@ -87,6 +87,25 @@ void Application::on_activate()
   create_window();
 }
 
+void Application::on_startup()
+{
+  //Call the base class:
+  Gtk::Application::on_startup();
+
+  //TODO: Remove this if there is ever an easier way to make 'accel's from the .glade file just work.
+  //See https://bugzilla.gnome.org/show_bug.cgi?id=708905
+
+  //From window_main.glade:
+  add_accelerator("<Primary>n", "file.new");
+  add_accelerator("<Primary>o", "file.open");
+  add_accelerator("<Primary>w", "win.close");
+  add_accelerator("<Primary>c", "edit.copy");
+  add_accelerator("<Primary>v", "edit.paste");
+  add_accelerator("<Primary>f", "edit.find");
+
+  std::cout << "debug" << std::endl;
+}
+
 void Application::on_open(const Gio::Application::type_vec_files& files,
   const Glib::ustring& hint)
 {
