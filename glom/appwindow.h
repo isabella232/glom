@@ -78,7 +78,13 @@ public:
   /** Changes the mode to Data mode, as if the user had selected the Data Mode menu item.
    */
   void set_mode_data();
+
+private:
+  /** Changes the mode to Find mode, as if the user had selected the Data Mode menu item.
+   */
   void set_mode_find();
+
+public:
 
   /** Show in the UI whether the database is shared on the network.
    */

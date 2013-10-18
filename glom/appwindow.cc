@@ -1427,20 +1427,26 @@ void AppWindow::existing_or_new_new()
 
 void AppWindow::set_mode_data()
 {
-  if (!m_pFrame)
+  if(!m_pFrame)
     return;
 
-  if (m_pFrame->m_Mode == Frame_Glom::MODE_Find)
-    m_action_mode_find->change_state(true);
+  //Update the visual feedback in the menu.
+  //This doesn't trigger the activate signal:
+  m_action_mode_find->change_state(false);
+
+  m_pFrame->set_mode_data();
 }
 
 void AppWindow::set_mode_find()
 {
-  if (!m_pFrame)
+  if(!m_pFrame)
     return;
 
-  if (m_pFrame->m_Mode == Frame_Glom::MODE_Data)
-    m_action_mode_find->change_state(true);
+  //Update the visual feedback in the menu.
+  //This doesn't trigger the activate signal:
+  m_action_mode_find->change_state(true);
+
+  m_pFrame->set_mode_find();
 }
 
 void AppWindow::on_menu_help_contents()
@@ -2997,9 +3003,13 @@ void AppWindow::on_menu_edit_find()
   //The state is not changed automatically:
   bool active = false;
   m_action_mode_find->get_state(active);
-  m_action_mode_find->change_state(!active);
+  active = !active;
+  m_action_mode_find->change_state(active);
 
-  m_pFrame->on_menu_Edit_Find();
+  if(active)
+    m_pFrame->set_mode_find();
+  else
+    m_pFrame->set_mode_data();
 }
 
 

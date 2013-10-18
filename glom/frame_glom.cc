@@ -1025,18 +1025,9 @@ void Frame_Glom::set_enable_layout_drag_and_drop(bool enable)
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-void Frame_Glom::on_menu_Edit_Find()
+void Frame_Glom::set_mode_find()
 {
-  //Switch back to data mode if we are in find mode.
-  if(m_Mode == MODE_Find)
-  {
-    //Switch to data mode
-    if(set_mode(MODE_Data))
-      show_table(m_table_name);
-    return;
-  }
-
-  //Otherwise switch to find mode.
+  //Switch to find mode.
   //This can take quite a long time, flicking between 1 or 2 intermediate screens.
   //It shouldn't, but until we fix that, let's show the busy cursor while it's working:
   BusyCursor busy_cursor(get_app_window());
@@ -1062,6 +1053,16 @@ void Frame_Glom::on_menu_Edit_Find()
     m_Notebook_Find.set_current_view(list_or_details);
   }
 }
+
+void Frame_Glom::set_mode_data()
+{
+  //Switch to data mode
+  if(!set_mode(MODE_Data))
+    return;
+
+  show_table(m_table_name);
+}
+
 
 void Frame_Glom::on_menu_add_record()
 {
@@ -1312,7 +1313,8 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
     std::cerr << G_STRFUNC << ": get_app_window() failed." << std::endl;
     return;
   }
-  
+
+  //Identify the where_clause:
   Gnome::Gda::SqlExpr where_clause_to_use = where_clause;
 
   //Prefer the quick find text if any was entered:
@@ -1323,6 +1325,7 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
       Utils::get_find_where_clause_quick(get_document(), m_table_name, Gnome::Gda::Value(quickfind_criteria));
   }
 
+  //Warn if there was no find criteria:
   if(where_clause_to_use.empty())
   {
     const Glib::ustring message = _("You have not entered any find criteria. Try entering information in the fields.");
@@ -1336,12 +1339,12 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
 
   //std::cout << "debug: " << G_STRFUNC << ": " << where_clause << std::endl;
   
+
+  //Try to find some records with the where_clause:
   bool records_found = false;
 
   { //Extra scope, to control the lifetime of the busy cursor.
     BusyCursor busy_cursor(app);
-
-    app->set_mode_data();
 
     //std::cout << "Frame_Glom::on_notebook_find_criteria: where_clause=" << where_clause << std::endl;
     FoundSet found_set;
@@ -1349,22 +1352,27 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
     found_set.m_where_clause = where_clause_to_use;
     records_found = m_Notebook_Data.init_db_details(found_set);
 
-    //std::cout << "debug: " << G_STRFUNC << ": BEFORE  m_Notebook_Data.select_page_for_find_results()" << std::endl;
     m_Notebook_Data.select_page_for_find_results();
-    //std::cout << "debug: " << G_STRFUNC << ": AFTER  m_Notebook_Data.select_page_for_find_results()" << std::endl;
   }
+
+  std::cout << G_STRFUNC << ": records_found=" << records_found << std::endl;
 
   if(!records_found)
   {
     const bool find_again = Utils::show_warning_no_records_found(*app);
 
-    if(find_again)
-      app->set_mode_find();
-    else
+    if(!find_again)
+    {
+      //Go back to data mode, showing all records:
       on_button_find_all();
+    }
   }
   else
   {
+    //Actually show the found data,
+    //and show that we are in data mode:
+    app->set_mode_data();
+
     //Show how many records were found:
     update_records_count();
   }

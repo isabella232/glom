@@ -86,7 +86,15 @@ public:
   bool attempt_toggle_shared(bool shared);
   void on_menu_file_print();
 
-  void on_menu_Edit_Find();
+  /** Show the widgets for find mode.
+   * It is up to the caller to indicate in the menu that find mode is active.
+   */
+  void set_mode_find();
+
+  /** Show the widgets for data mode.
+   * It is up to the caller to indicate in the menu that find mode is not active.
+   */
+  void set_mode_data();
   
   void on_menu_add_record();
 
@@ -178,9 +186,7 @@ public:
    */
   void show_table(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value_for_details = Gnome::Gda::Value());
 
-protected:
-
-
+private:
 
   //virtual void set_document(Document* pDocument); //override
 
@@ -214,7 +220,6 @@ protected:
 
   void alert_no_table();
 
-private:
   //Signal handlers:
   void on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clause);
   void on_button_quickfind();
