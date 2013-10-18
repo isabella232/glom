@@ -216,7 +216,10 @@ private:
   Gtk::Window* get_app_window();
   const Gtk::Window* get_app_window() const;
 
-  void update_records_count();
+  /** Show the number of records in the table, and the number found, in the UI.
+   * @result The number of records found, for convenience for the caller.
+   */
+  gulong update_records_count();
 
   void alert_no_table();
 

@@ -1350,9 +1350,15 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
     FoundSet found_set;
     found_set.m_table_name = m_table_name;
     found_set.m_where_clause = where_clause_to_use;
-    records_found = m_Notebook_Data.init_db_details(found_set);
+    const bool inited = m_Notebook_Data.init_db_details(found_set);
 
     m_Notebook_Data.select_page_for_find_results();
+
+    //Show how many records were found:
+    records_found = update_records_count();
+
+    if(!inited)
+      records_found = 0;
   }
 
   std::cout << G_STRFUNC << ": records_found=" << records_found << std::endl;
@@ -1365,6 +1371,7 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
     {
       //Go back to data mode, showing all records:
       on_button_find_all();
+      app->set_mode_data();
     }
   }
   else
@@ -1372,9 +1379,6 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
     //Actually show the found data,
     //and show that we are in data mode:
     app->set_mode_data();
-
-    //Show how many records were found:
-    update_records_count();
   }
 }
 
@@ -2519,10 +2523,10 @@ void Frame_Glom::on_notebook_data_record_selection_changed()
     pApp->enable_menu_print_layouts_details(something_selected);  
 }
 
-void Frame_Glom::update_records_count()
+gulong Frame_Glom::update_records_count()
 {
   //Get the number of records available and the number found,
-  //and all the user to find all if necessary.
+  //and allow the user to find all if necessary.
 
   gulong count_all = 0;
   gulong count_found = 0;
@@ -2556,6 +2560,7 @@ void Frame_Glom::update_records_count()
   m_Label_RecordsCount.set_text(str_count_all);
   m_Label_FoundCount.set_text(str_count_found);
 
+  return count_found;
 }
 
 void Frame_Glom::on_button_find_all()
