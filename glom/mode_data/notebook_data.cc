@@ -130,7 +130,6 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
     sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
 
     result = m_Box_List.init_db_details(found_set, get_active_layout_platform(get_document())); //TODO: Select the last selected record.
-    std::cout << G_STRFUNC << ": result=" << result << std::endl;
 
     //Show the previously-shown record, if there is one, if this is not a new found-set (via a new where_clause)
     //so that returning to this table will return the user to the same record:

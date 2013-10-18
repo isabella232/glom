@@ -264,17 +264,22 @@ void Frame_Glom::set_mode_widget(Gtk::Widget& widget)
   //and I don't see a way to get a list of children.
 
   AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
-  if(pApp)
-  {
-    Notebook_Glom* notebook_current = dynamic_cast<Notebook_Glom*>(m_pBox_Mode->get_child());
-    if(notebook_current)
-    {
-      m_pBox_Mode->remove();
-    }
+  if(!pApp)
+    return;
 
-    m_pBox_Mode->add(widget);
-    widget.show();
+  Notebook_Glom* notebook_current = dynamic_cast<Notebook_Glom*>(m_pBox_Mode->get_child());
+  if(notebook_current == &widget)
+  {
+    return; //No change necessary.
   }
+
+  if(notebook_current)
+  {
+    m_pBox_Mode->remove();
+  }
+
+  m_pBox_Mode->add(widget);
+  widget.show();
 }
 
 bool Frame_Glom::set_mode(enumModes mode)
@@ -308,6 +313,13 @@ bool Frame_Glom::set_mode(enumModes mode)
   {
     m_pBox_QuickFind->hide();
   }
+
+
+  //Show the main part of the UI:
+  if(m_Mode == MODE_Find)
+    set_mode_widget(m_Notebook_Find);
+  else
+    set_mode_widget(m_Notebook_Data);
 
   return changed;
 }
@@ -376,7 +388,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
       {
         sharedptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
         if(field_primary_key)
-      {
+        {
           sharedptr<LayoutItem_Field> layout_item_sort = sharedptr<LayoutItem_Field>::create();
           layout_item_sort->set_full_field_details(field_primary_key);
 
@@ -1060,7 +1072,8 @@ void Frame_Glom::set_mode_data()
   if(!set_mode(MODE_Data))
     return;
 
-  show_table(m_table_name);
+  //This would lose the current found set, if any:
+  //show_table(m_table_name);
 }
 
 
@@ -1355,7 +1368,7 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
     m_Notebook_Data.select_page_for_find_results();
 
     //Show how many records were found:
-    records_found = update_records_count();
+    records_found = (update_records_count() > 0);
 
     if(!inited)
       records_found = 0;
@@ -2531,6 +2544,7 @@ gulong Frame_Glom::update_records_count()
   gulong count_all = 0;
   gulong count_found = 0;
   m_Notebook_Data.get_record_counts(count_all, count_found);
+  std::cout << G_STRFUNC << ": count_all=" << count_all << ", count_found=" << count_found << std::endl;
 
   std::string str_count_all, str_count_found;
 
