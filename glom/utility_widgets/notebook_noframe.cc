@@ -29,18 +29,27 @@ namespace Glom
 {
 
 NotebookNoFrame::NotebookNoFrame()
-: m_current_page(0)
 {
   set_orientation(Gtk::ORIENTATION_VERTICAL);
   set_spacing(Utils::DEFAULT_SPACING_SMALL);
 
-  m_box_tabs.set_spacing(Utils::DEFAULT_SPACING_SMALL);
-  m_box_tabs.pack_start(m_box_action_left, Gtk::PACK_SHRINK);
-  m_box_tabs.pack_end(m_box_action_right, Gtk::PACK_SHRINK);
+  m_box_top.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
+  m_box_top.set_spacing(Utils::DEFAULT_SPACING_SMALL);
+  m_box_top.pack_start(m_box_action_left, Gtk::PACK_SHRINK);
+  m_box_top.pack_start(m_box_tabs);
+  m_box_top.pack_end(m_box_action_right, Gtk::PACK_SHRINK);
+  pack_start(m_box_top, Gtk::PACK_SHRINK);
 
-  pack_start(m_box_tabs, Gtk::PACK_SHRINK);
+  m_box_top.show();
+
+  //Let the StackSwitcher switch the Stack:
+  m_box_tabs.set_stack(m_box_pages);
+  m_box_pages.property_visible_child().signal_changed().connect(
+    sigc::mem_fun(*this, &NotebookNoFrame::on_visible_child_changed));
+
+  //m_box_tabs.set_spacing(Utils::DEFAULT_SPACING_SMALL);
+
   m_box_tabs.show();
-
 
   pack_start(m_box_pages);
   m_box_pages.show();
@@ -55,150 +64,35 @@ NotebookNoFrame::type_signal_switch_page NotebookNoFrame::signal_switch_page()
   return m_signal_switch_page;
 }
 
-Gtk::Widget* NotebookNoFrame::get_nth_page(int page_num)
+Glib::ustring NotebookNoFrame::get_visible_child_name() const
 {
-  if(page_num < 0)
-    return 0;
-
-  if(page_num >= (int)m_vec_page_widgets.size())
-    return 0;
-
-  Gtk::Box* box =  m_vec_page_widgets[page_num];
-  if(!box)
-    return 0;
-
-  std::vector<Gtk::Widget*> children = box->get_children();
-  if(children.empty())
-    return 0;
-
-  return children[0];
+  return m_box_pages.get_visible_child_name();
 }
 
-const Gtk::Widget* NotebookNoFrame::get_nth_page(int page_num) const
+Gtk::Widget* NotebookNoFrame::get_visible_child()
 {
-  NotebookNoFrame* unconstThis = const_cast<NotebookNoFrame*>(this);
-  return unconstThis->get_nth_page(page_num);
+  return m_box_pages.get_visible_child();
 }
 
-int NotebookNoFrame::get_current_page() const
+void NotebookNoFrame::set_visible_child(const Glib::ustring& name)
 {
-  return m_current_page;
+  m_box_pages.set_visible_child(name);
 }
 
-void NotebookNoFrame::set_current_page(int page_num)
+void NotebookNoFrame::append_page(Widget& child, const Glib::ustring& name, const Glib::ustring& tab_label, bool use_mnemonic)
 {
-  if(page_num < 0)
-    return;
-
-  const int size = (int)m_vec_page_widgets.size();
-  if(page_num >= size)
-    return;
-
-  m_current_page = page_num;
-
-  //TODO: Enable the tab button too.
-
-  //Show only the current page:
-  for(int i = 0; i < size; ++i)
-  {
-    Gtk::ToggleButton* tab = m_vec_tab_widgets[i];
-    if(!tab)
-      continue;
-
-    Gtk::Box* box = m_vec_page_widgets[i];
-    if(!box)
-      continue;
-
-    if(i == page_num)
-    {
-      if(!tab->get_active())
-        tab->set_active();
-
-      box->show();
-    }
-    else
-    {
-      if(tab->get_active())
-        tab->set_active(false);
-
-      box->hide();
-    }
-  }
+  m_box_pages.add(child, name, tab_label);
 }
 
-int NotebookNoFrame::append_page(Gtk::Widget& child, Gtk::Widget& tab_label)
+std::vector<Gtk::Widget*> NotebookNoFrame::get_page_children()
 {
-  Gtk::ToggleButton* toggle = Gtk::manage(new Gtk::ToggleButton());
-  toggle->set_active(false);
-  toggle->add(tab_label);
-  toggle->show();
-  m_box_tabs.pack_start(*toggle, Gtk::PACK_SHRINK);
-  m_vec_tab_widgets.push_back(toggle);
-
-  //We put the child into a box so we can show or hide it regardless of
-  //whether the callers calls show() or hide() on the child widget.
-  //Note that this would make the public list of children incorrect, if we supported that anyway.
-  Gtk::Box* box = Gtk::manage(new Gtk::Box());
-  box->pack_start(child, Gtk::PACK_EXPAND_WIDGET);
-  m_box_pages.pack_start(*box, Gtk::PACK_EXPAND_WIDGET);
-  m_vec_page_widgets.push_back(box);
-
-  const int index = m_vec_page_widgets.size() - 1;
-
-  //Make sure that the first one is showing:
-  if(index == 0)
-  {
-    m_current_page = 0;
-    toggle->set_active();
-    box->show();
-  }
-  else
-  {
-    toggle->set_active(false);
-    box->hide();
-  }
-
-  set_current_page(index);
-
-  toggle->signal_toggled().connect(
-    sigc::bind(
-      sigc::mem_fun(*this, &NotebookNoFrame::on_tab_toggled),
-      index));
-
-  return index;
+  return m_box_pages.get_children();
 }
 
-int NotebookNoFrame::append_page(Widget& child, const Glib::ustring& tab_label, bool use_mnemonic)
+void NotebookNoFrame::on_visible_child_changed()
 {
-  Gtk::Label* pLabel = Gtk::manage( new Gtk::Label(tab_label, use_mnemonic) );
-  pLabel->show();
-  return append_page(child, *pLabel);
-}
-
-void NotebookNoFrame::on_tab_toggled(int index)
-{
-  Gtk::ToggleButton* tab = m_vec_tab_widgets[index];
-  if(!tab)
-    return;
-
-  int new_current_page = 0;
-  if(tab->get_active())
-  {
-    //A different page was selected by clicking on its tab, pressing the button down:
-    new_current_page = index;
-  }
-  else
-  {
-    //A different page was selected by clicking on another tab, raising it's button:
-    //So let's choose another one:
-    new_current_page = index + 1;
-    if(new_current_page >= (int)m_vec_tab_widgets.size())
-      new_current_page = 0;
-  }
-
-  set_current_page(new_current_page);
-  Gtk::Widget* child = get_nth_page(new_current_page);
-  m_signal_switch_page.emit(child, new_current_page);
+  Gtk::Widget* widget = get_visible_child();
+  m_signal_switch_page.emit(widget);
 }
 
 void NotebookNoFrame::set_action_widget(Gtk::Widget* widget, Gtk::PackType pack_type)

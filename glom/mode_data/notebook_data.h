@@ -93,7 +93,7 @@ protected:
   //Signal handlers:
   virtual void on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value);
 
-  virtual void on_switch_page_handler(Gtk::Widget* pPage, guint uiPageNumber);
+  virtual void on_switch_page_handler(Gtk::Widget* pPage);
 
 private:
 
@@ -104,7 +104,7 @@ protected:
   Box_Data_List m_Box_List;
   Box_Data_Details m_Box_Details;
 
-  guint m_iPage_Details, m_iPage_List;
+  static const Glib::ustring m_pagename_details, m_pagename_list;
   Glib::ustring m_table_name;
 
   type_signal_record_details_requested m_signal_record_details_requested;

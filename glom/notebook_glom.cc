@@ -26,8 +26,6 @@ namespace Glom
 
 Notebook_Glom::Notebook_Glom()
 {
-  m_uiPreviousPage = 0;
-
   //Connect signals:
   //We do this on on_show() instead, because otherwise GtkNotebook emits the signal (and we catch it) during show:
   //signal_switch_page().connect(sigc::mem_fun(*this, &Notebook_Glom::on_switch_page_handler));
@@ -45,6 +43,7 @@ void Notebook_Glom::on_show()
 {
   NotebookNoFrame::on_show();
 
+  //TODO: Check this for GtkStack.
   //We do this only in on_show() because otherwise GtkNotebook emits the signal (and we catch it) during show:
   if(!m_connection_switch_page)
     m_connection_switch_page = signal_switch_page().connect(sigc::mem_fun(*this, &Notebook_Glom::on_switch_page_handler));
@@ -57,7 +56,7 @@ Notebook_Glom::type_signal_leave_page Notebook_Glom::signal_leave_page()
 }
 */
 
-void Notebook_Glom::on_switch_page_handler(Gtk::Widget* /* pPage */, guint uiPageNumber)
+void Notebook_Glom::on_switch_page_handler(Gtk::Widget* page)
 {
   //Remove the help hint for the previous page:
   Gtk::Window* pApp = get_app_window();
@@ -67,11 +66,8 @@ void Notebook_Glom::on_switch_page_handler(Gtk::Widget* /* pPage */, guint uiPag
   //  pAppGlom->statusbar_clear();
  // }
 
-  //m_signal_leave_page.emit(m_uiPreviousPage);
-  m_uiPreviousPage = uiPageNumber; //Remember the current page for next time.
-
   //Load the page as we enter it:
-  Gtk::Widget* pChild = get_nth_page(uiPageNumber);
+  Gtk::Widget* pChild = get_visible_child();
   if(pChild)
   {
     Box_WithButtons* pBox = dynamic_cast<Box_WithButtons*>(pChild);
@@ -104,9 +100,11 @@ void Notebook_Glom::on_leave_page(guint uiPageNumber)
   //Tell the page to save itself:
   if(!m_destructor_in_progress)
   {
-    Gtk::Widget* pChild  = get_nth_page(uiPageNumber);
-    if(pChild)
+    typedef std::vector<Gtk::Widget*> type_vec_widgets;
+    type_vec_widgets children = get_page_children();
+    for(type_vec_widgets::iterator iter = children.begin(); iter != children.end(); ++iter)
     {
+      Gtk::Widget* pChild = *iter;
       Base_DB* pBox = dynamic_cast<Base_DB*>(pChild);
       if(pBox)
       {

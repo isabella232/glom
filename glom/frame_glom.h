@@ -227,7 +227,7 @@ private:
   void on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clause);
   void on_button_quickfind();
   void on_button_find_all();
-  void on_notebook_data_switch_page(Gtk::Widget* page, guint page_num);
+  void on_notebook_data_switch_page(Gtk::Widget* page);
   void on_notebook_data_record_details_requested(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
   void on_userlevel_changed(AppState::userlevels userlevel);
 

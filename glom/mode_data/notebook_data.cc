@@ -29,12 +29,13 @@
 namespace Glom
 {
 
+//TODO: Remove this:
 static const gchar gNotebookCss[] = "gtkmm__GtkNotebook#glomnotebook { padding: 0 0 0 0; }";
 
+const Glib::ustring Notebook_Data::m_pagename_details = "details";
+const Glib::ustring Notebook_Data::m_pagename_list = "list";
 
 Notebook_Data::Notebook_Data()
-:
-  m_iPage_Details(0), m_iPage_List(0)
 {
 
   //Hide the GtkNotebook border:
@@ -60,12 +61,10 @@ Notebook_Data::Notebook_Data()
    
   //Add Pages:
   //Translators: This is a noun. It is a notebook tab title.
-  append_page(m_Box_List, _("List"));
-  m_iPage_List = 0;
+  append_page(m_Box_List, m_pagename_list, _("List"));
 
   //Translators: This is a noun. It is a notebook tab title.
-  append_page(m_Box_Details, _("Details"));
-  m_iPage_Details = 1;
+  append_page(m_Box_Details, m_pagename_details, _("Details"));
 
   // Set accessible name for the notebook, to be able to access it via LDTP
 #ifdef GTKMM_ATKMM_ENABLED
@@ -292,29 +291,27 @@ FoundSet Notebook_Data::get_found_set_selected() const
 void Notebook_Data::set_current_view(dataview view)
 {
   if(view == DATA_VIEW_List)
-    set_current_page(m_iPage_List);
+    set_visible_child(m_pagename_list);
   else
-    set_current_page(m_iPage_Details);
+    set_visible_child(m_pagename_details);
 }
 
 void Notebook_Data::select_page_for_find_results()
 {
   if(m_Box_List.get_showing_multiple_records())
   {
-    set_current_page(m_iPage_List);
+    set_visible_child(m_pagename_list);
   }
   else
   {
-    set_current_page(m_iPage_Details);
+    set_visible_child(m_pagename_details);
   }
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Notebook_Data::do_menu_developer_layout()
 {
-  int iPageCurrent = get_current_page();
-
-  Gtk::Widget* pChild  = get_nth_page(iPageCurrent);
+  Gtk::Widget* pChild  = get_visible_child();
   if(pChild)
   {
     Box_Data* pBox = dynamic_cast<Box_Data*>(pChild);
@@ -333,9 +330,7 @@ void Notebook_Data::set_enable_layout_drag_and_drop(bool enable)
 
 void Notebook_Data::do_menu_file_print()
 {
-  const int iPageCurrent = get_current_page();
-
-  Gtk::Widget* pChild  = get_nth_page(iPageCurrent);
+  Gtk::Widget* pChild = get_visible_child();
   if(pChild)
   {
     Box_Data* pBox = dynamic_cast<Box_Data*>(pChild);
@@ -352,10 +347,10 @@ enum dataview
 
 Notebook_Data::dataview Notebook_Data::get_current_view() const
 {
-  const int current_page = get_current_page();
+  const Glib::ustring current_page = get_visible_child_name();
 
   dataview result = DATA_VIEW_Details;
-  if(current_page == (int)m_iPage_List)
+  if(current_page == m_pagename_list)
     result = DATA_VIEW_List;
 
   return result;
@@ -371,13 +366,13 @@ Notebook_Data::type_signal_record_selection_changed Notebook_Data::signal_record
   return m_signal_record_selection_changed;
 }
 
-void Notebook_Data::on_switch_page_handler(Gtk::Widget* pPage, guint uiPageNumber)
+void Notebook_Data::on_switch_page_handler(Gtk::Widget* pPage)
 {
   //Call base class:
-  Notebook_Glom::on_switch_page_handler(pPage, uiPageNumber);
+  Notebook_Glom::on_switch_page_handler(pPage);
 
   //Remember that currently-viewed layout, so we can show it again when the user comes back to this table from elsewhere:
-  Box_Data* box = dynamic_cast<Box_Data*>(get_nth_page(uiPageNumber));
+  Box_Data* box = dynamic_cast<Box_Data*>(get_visible_child());
   if(box)
   {
     Document* document = get_document();

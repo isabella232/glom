@@ -2510,7 +2510,7 @@ void Frame_Glom::on_dialog_tables_hide()
   }
 }
 
-void Frame_Glom::on_notebook_data_switch_page(Gtk::Widget* /* page */, guint /* page_num */)
+void Frame_Glom::on_notebook_data_switch_page(Gtk::Widget* /* page */)
 {
   //Refill this menu, because it depends on whether list or details are visible:
   AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());

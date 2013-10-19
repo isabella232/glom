@@ -23,7 +23,8 @@
 
 #include <gtkmm/box.h>
 #include <gtkmm/buttonbox.h>
-#include <gtkmm/togglebutton.h>
+#include <gtkmm/stack.h>
+#include <gtkmm/stackswitcher.h>
 
 namespace Glom
 {
@@ -38,41 +39,29 @@ public:
   explicit NotebookNoFrame();
   virtual ~NotebookNoFrame();
 
-  int append_page(Gtk::Widget& child, Gtk::Widget& tab_label);
-  /*
-  int append_page(Widget& child);
-  */
-  int append_page(Widget& child, const Glib::ustring& tab_label, bool use_mnemonic = false);
+  void append_page(Widget& child, const Glib::ustring& name, const Glib::ustring& tab_label, bool use_mnemonic = false);
 
-  Widget* get_nth_page(int page_num);
-  const Widget* get_nth_page(int page_num) const;
+  Gtk::Widget* get_visible_child();
+  Glib::ustring get_visible_child_name() const;
+  void set_visible_child(const Glib::ustring& name);
 
-  int get_current_page() const;
-  void set_current_page(int page_num);
+  std::vector<Gtk::Widget*> get_page_children();
 
   void set_action_widget(Gtk::Widget* widget, Gtk::PackType pack_type);
 
-  typedef sigc::signal<void, Gtk::Widget*, guint> type_signal_switch_page;
+  typedef sigc::signal<void, Gtk::Widget*> type_signal_switch_page;
 
   type_signal_switch_page signal_switch_page();
 
-protected:
-  void on_tab_toggled(int index);
+private:
+  void on_visible_child_changed();
 
-  Gtk::Box m_box_tabs;
-  Gtk::Box m_box_pages;
+  Gtk::Box m_box_top;
+  Gtk::StackSwitcher m_box_tabs;
+  Gtk::Stack m_box_pages;
   Gtk::Box m_box_action_left, m_box_action_right;
 
   type_signal_switch_page m_signal_switch_page;
-
-  //Caching the widget pointers is nicer than repeatedly calling Gtk::Container::get_children().
-  typedef std::vector<Gtk::ToggleButton*> type_vec_togglebuttons;
-  type_vec_togglebuttons m_vec_tab_widgets;
-
-  typedef std::vector<Gtk::Box*> type_vec_widgets;
-  type_vec_widgets m_vec_page_widgets;
-
-  int m_current_page;
 };
 
 } //namespace Glom

@@ -56,12 +56,11 @@ protected:
   Gtk::Window* get_app_window();
 
   //Signal handlers:
-  virtual void on_switch_page_handler(Gtk::Widget* pPage, guint uiPageNumber);  //The _handler suffix is to avoid overriding the base class's method.
+  virtual void on_switch_page_handler(Gtk::Widget* pPage);  //The _handler suffix is to avoid overriding the base class's method.
   void on_leave_page(guint uiPageNumber);
 
   //type_signal_leave_page m_signal_leave_page; //Signals when the user leaves a page.
 
-  guint m_uiPreviousPage;
   bool m_destructor_in_progress; //A hack to prevent calling wrap() on dead C instances.
   sigc::connection m_connection_switch_page; //This allows us to delay connecting, and to block the handler temporarily.
 };
