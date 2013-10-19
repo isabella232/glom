@@ -29,36 +29,11 @@
 namespace Glom
 {
 
-//TODO: Remove this:
-static const gchar gNotebookCss[] = "gtkmm__GtkNotebook#glomnotebook { padding: 0 0 0 0; }";
-
 const Glib::ustring Notebook_Data::m_pagename_details = "details";
 const Glib::ustring Notebook_Data::m_pagename_list = "list";
 
 Notebook_Data::Notebook_Data()
 {
-
-  //Hide the GtkNotebook border:
-  set_name("glomnotebook");
-
-  GtkStyleContext *style_context;
-  GtkCssProvider *provider;
-  GError *error = NULL;
-
-  style_context = gtk_widget_get_style_context(GTK_WIDGET(gobj()));
-  provider = gtk_css_provider_new();
-  if (!gtk_css_provider_load_from_data(provider, gNotebookCss, -1,
-                                        &error)) {
-    g_error("%s", error->message);
-    g_error_free(error);
-    return;
-  }
-  gtk_style_context_add_provider(style_context,
-                                  GTK_STYLE_PROVIDER(provider),
-                                  GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-  g_object_unref(provider);
-   
-   
   //Add Pages:
   //Translators: This is a noun. It is a notebook tab title.
   append_page(m_Box_List, m_pagename_list, _("List"));
