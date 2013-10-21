@@ -142,7 +142,7 @@
                 <property name="receives_default">True</property>
                 <property name="hexpand">True</property>
                 <property name="use_action_appearance">False</property>
-                <property name="color">#000000000000</property>
+                <property name="rgba">rgb(0,0,0)</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
