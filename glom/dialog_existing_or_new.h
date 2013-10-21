@@ -94,9 +94,9 @@ private:
   void on_new_button_clicked(const Gtk::TreeModel::Path& path);
 
   
-  bool list_examples_at_path(const std::string& path);
-  Glib::ustring get_title_from_example(const Glib::RefPtr<Gio::FileInfo>& info, const Glib::RefPtr<Gio::File>& examples_dir);
-  void append_example(const Glib::ustring& title, const Glib::RefPtr<Gio::File>& file);
+  bool list_examples();
+  Glib::ustring get_title_from_example(const std::string& resource_name);
+  void append_example(const Glib::ustring& title, const std::string& resource_name);
 #endif /* !GLOM_ENABLE_CLIENT_ONLY */
     
 #ifndef G_OS_WIN32

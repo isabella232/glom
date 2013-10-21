@@ -59,8 +59,6 @@ include Makefile_libglom.am
 
 glom_defines = \
 -DGLOM_DATADIR=\""$(datadir)"\" \
--DGLOM_DOCDIR_EXAMPLES=\""$(docdir)/examples"\" \
--DGLOM_DOCDIR_EXAMPLES_NOTINSTALLED=\""$(abs_top_srcdir)/examples"\" \
 -DGLOM_LOCALEDIR=\""$(glom_localedir)"\" \
 -DGLOM_PKGDATADIR=\""$(pkgdatadir)"\" \
 -DGLOM_PKGDATADIR_NOTINSTALLED=\""$(top_srcdir)/ui"\"
@@ -164,17 +162,6 @@ dist_glade_developer_DATA = ui/developer/dialog_add_related_table.glade \
 
 xsltdir = $(pkgdatadir)/xslt
 dist_xslt_DATA = xslt/print_report_to_html.xsl
-
-exampledir = $(docdir)/examples
-example_files = \
-	examples/example_film_manager.glom	\
-	examples/example_lesson_planner.glom	\
-	examples/example_music_collection.glom	\
-	examples/example_project_manager.glom	\
-	examples/example_smallbusiness.glom
-dist_example_DATA = \
-	$(example_files) \
-	examples/README
 
 # Get the base filenames only, without the extension: 
 example_files_names ?= $(patsubst %.glom,%,$(notdir $(example_files)))

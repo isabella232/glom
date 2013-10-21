@@ -29,6 +29,7 @@
 #include <gtkmm/recentmanager.h>
 #include <gtkmm/filechooserdialog.h>
 #include <glibmm/miscutils.h>
+#include <glibmm/vectorutils.h>
 
 #ifdef G_OS_WIN32
 #include <glibmm/fileutils.h>
@@ -246,25 +247,8 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 
  // Load example files:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-
-#ifdef G_OS_WIN32
-  gchar* dir = g_win32_get_package_installation_directory_of_module(0);
-  std::string path = Glib::build_filename(dir, "share" G_DIR_SEPARATOR_S "doc"
-                                                       G_DIR_SEPARATOR_S "glom"
-                                                       G_DIR_SEPARATOR_S "examples");
-  g_free(dir);
-
-  if(!Glib::file_test(path, Glib::FILE_TEST_EXISTS))
-    path = GLOM_DOCDIR_EXAMPLES;
-#else
-  const char path[] = GLOM_DOCDIR_EXAMPLES;
-#endif //G_OS_WIN32
-
-  //Show the installed example files,
-  //falling back to the ones from the local source tree if none are installed:
-  if(!list_examples_at_path(path))
-    list_examples_at_path(GLOM_DOCDIR_EXAMPLES_NOTINSTALLED);
-
+  //Show the bundled (in a GResource) example files,
+  list_examples();
 #endif //!GLOM_ENABLE_CLIENT_ONLY
 
   //Make sure the first item is visible:
@@ -275,33 +259,45 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-bool Dialog_ExistingOrNew::list_examples_at_path(const std::string& path)
+bool Dialog_ExistingOrNew::list_examples()
 {
   //std::cout << "debug: " << G_STRFUNC << ": path=" << path << std::endl;
 
-  Glib::RefPtr<Gio::File> examples_dir = Gio::File::create_for_path(path);
-  Glib::RefPtr<Gio::FileInfo> info;
+  const char* examples_dir = "/org/gnome/glom/examples/";
 
   try
   {
-    Glib::RefPtr<Gio::FileEnumerator> examples = examples_dir->enumerate_children(G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE","G_FILE_ATTRIBUTE_STANDARD_NAME);
-    bool example_found = false;
-    while( (info = examples->next_file()) )
+    //TODO: Add to glibmm? const type_vec_strings examples = Gio::Resource::enumerate_children(examples_dir);
+    GError* gerror = 0;
+    char** cexamples = g_resources_enumerate_children(examples_dir, G_RESOURCE_LOOKUP_FLAGS_NONE, &gerror);
+    if(gerror)
     {
-      const Glib::ustring title = get_title_from_example(info, examples_dir);
+      Glib::Error::throw_exception(gerror);
+    }
+
+    typedef std::vector<Glib::ustring> type_vec_strings;
+    const type_vec_strings examples = 
+      Glib::ArrayHandler<Glib::ustring>::array_to_vector(cexamples, Glib::OWNERSHIP_DEEP);
+
+    bool example_found = false;
+    for(type_vec_strings::const_iterator iter = examples.begin(); iter != examples.end(); ++iter)
+    {
+      const std::string example_name = *iter;
+
+      const std::string full_path = Glib::build_filename(examples_dir, example_name);
+      const Glib::ustring title = get_title_from_example(full_path);
       if(!title.empty())
       {
-        append_example(title, Gio::File::create_for_path(Glib::build_filename(examples_dir->get_path(), info->get_name())));
+        append_example(title, full_path);
       	example_found = true;
       }
     }
 
-    // TODO: Monitor example directory for new/removed files?
     return example_found;
   }
   catch(const Glib::Exception& ex)
   {
-    std::cerr << "Could not enumerate examples at path=" << path << ", Error=" << ex.what() << std::endl;
+    std::cerr << "Could not enumerate examples. Error=" << ex.what() << std::endl;
   }
 
   return false;
@@ -661,27 +657,29 @@ void Dialog_ExistingOrNew::update_ui_sensitivity()
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-Glib::ustring Dialog_ExistingOrNew::get_title_from_example(const Glib::RefPtr<Gio::FileInfo>& info, const Glib::RefPtr<Gio::File>& examples_dir)
+Glib::ustring Dialog_ExistingOrNew::get_title_from_example(const std::string& resource_name)
 {
   try
   {
-    // Load file.
-    const Glib::ustring content_type = info->get_attribute_string(G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE);
-    const Glib::ustring mime_type = Gio::content_type_get_mime_type(content_type);
-
-    if(mime_type == "application/x-glom")
+    GError* gerror = 0;
+    GInputStream* cstream =
+      g_resources_open_stream(resource_name.c_str(),
+        G_RESOURCE_LOOKUP_FLAGS_NONE, &gerror);
+    if(gerror)
     {
-      const Glib::RefPtr<Gio::File> current_example =
-        Gio::File::create_for_path(Glib::build_filename(examples_dir->get_path(), info->get_name()));
-      Glib::RefPtr<Gio::FileInputStream> stream = current_example->read();
-      m_current_buffer.reset(new buffer);
-      const int bytes_read = stream->read(m_current_buffer->buf, buffer::SIZE);
-      const std::string data(m_current_buffer->buf, bytes_read);
-      // TODO: Check that data is valid UTF-8, the last character might be truncated
-
-      Parser parser;
-      return (Glib::ustring(parser.get_example_title(data)));
+      Glib::Error::throw_exception(gerror);
     }
+    
+    Glib::RefPtr<Gio::InputStream> stream = Glib::wrap(cstream);
+
+    //TODO: Really do this asynchronously?
+    m_current_buffer.reset(new buffer);
+    const int bytes_read = stream->read(m_current_buffer->buf, buffer::SIZE);
+    const std::string data(m_current_buffer->buf, bytes_read);
+    // TODO: Check that data is valid UTF-8, the last character might be truncated
+
+    Parser parser;
+    return (Glib::ustring(parser.get_example_title(data)));
   }
   catch(const Glib::Exception& exception)
   {
@@ -694,7 +692,7 @@ Glib::ustring Dialog_ExistingOrNew::get_title_from_example(const Glib::RefPtr<Gi
   return Glib::ustring();
 }
 
-void Dialog_ExistingOrNew::append_example(const Glib::ustring& title, const Glib::RefPtr<Gio::File>& file)
+void Dialog_ExistingOrNew::append_example(const Glib::ustring& title, const std::string& resource_name)
 {
   if(!m_new_model)
   {
@@ -715,7 +713,7 @@ void Dialog_ExistingOrNew::append_example(const Glib::ustring& title, const Glib
     // Add to list.
     Gtk::TreeModel::iterator iter = m_new_model->append(m_iter_new_template->children());
     (*iter)[m_new_columns.m_col_title] = title;
-    (*iter)[m_new_columns.m_col_template_uri] = file->get_uri();
+    (*iter)[m_new_columns.m_col_template_uri] = "resource://" + resource_name; //GFile understands this for actual files, though not directories.
 
     if(is_first_item)
     {
@@ -728,7 +726,7 @@ void Dialog_ExistingOrNew::append_example(const Glib::ustring& title, const Glib
   }
   catch(const Glib::Exception& ex)
   {
-    std::cerr << "Could not read example: " << file->get_path() << ": " << ex.what() << std::endl;
+    std::cerr << "Could not read example: " << resource_name << ": " << ex.what() << std::endl;
   }
 }
 #endif /* !GLOM_ENABLE_CLIENT_ONLY */

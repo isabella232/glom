@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/gnome/glom">
+    <file preprocess="xml-stripblanks" compressed="true">examples/example_film_manager.glom</file>
+    <file preprocess="xml-stripblanks" compressed="true">examples/example_lesson_planner.glom</file>
+    <file preprocess="xml-stripblanks" compressed="true">examples/example_music_collection.glom</file>
+    <file preprocess="xml-stripblanks" compressed="true">examples/example_project_manager.glom</file>
+    <file preprocess="xml-stripblanks" compressed="true">examples/example_smallbusiness.glom</file>
+  </gresource>
+</gresources>
+
+
+
+
+ 
+
+
