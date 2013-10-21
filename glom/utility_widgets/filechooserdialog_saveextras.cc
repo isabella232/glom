@@ -65,7 +65,7 @@ void FileChooserDialog_SaveExtras::set_extra_message(const Glib::ustring& messag
 {
   m_label_extra_message.set_text(message);
 
-  if (!message.empty()) {
+  if(!message.empty()) {
     m_label_extra_message.show();
   } else {
     m_label_extra_message.hide();

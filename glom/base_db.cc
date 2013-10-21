@@ -313,7 +313,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Base_DB::get_connection()
   {
      sharedconnection = connect_to_server();
   }
-  catch (const Glib::Error& error)
+  catch(const Glib::Error& error)
   {
     std::cerr << G_STRFUNC << ": " << error.what() << std::endl;
   }

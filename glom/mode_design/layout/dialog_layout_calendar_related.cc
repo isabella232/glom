@@ -302,7 +302,7 @@ void Dialog_Layout_Calendar_Related::save_to_document()
       uses_rel->set_relationship(rel);
       uses_rel->set_related_relationship(rel_related);
 
-      if (rel || rel_related)
+      if(rel || rel_related)
         m_portal->set_navigation_relationship_specific(uses_rel);
       //std::cout << "debug99 main=specify_main" << ", relationship=" << (rel ? rel->get_name() : "none") << std::endl;
     }

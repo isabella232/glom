@@ -40,7 +40,7 @@ glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input
        we must still have the get_*() functions in the python API.
      */
 
-    if (G_IS_VALUE (boxed))
+    if(G_IS_VALUE (boxed))
       g_value_unset(boxed);
       
     PyObject* input_c = input.ptr();
@@ -182,15 +182,15 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
     }
 #endif
 
-    if (value_type == G_TYPE_INT64) {
+    if(value_type == G_TYPE_INT64) {
         ret = boost::python::object(g_value_get_int64(boxed));
-    } else if (value_type == G_TYPE_UINT64) {
+    } else if(value_type == G_TYPE_UINT64) {
         ret = boost::python::object(g_value_get_uint64(boxed));
-    } else if (value_type == GDA_TYPE_BINARY) {
+    } else if(value_type == GDA_TYPE_BINARY) {
         const GdaBinary* gdabinary = gda_value_get_binary(boxed);
         if(gdabinary)
           ret = boost::python::object((const char*)gdabinary->data); /* TODO: Use the size. TODO: Check for null GdaBinary. */
-    } else if (value_type == GDA_TYPE_BLOB) {
+    } else if(value_type == GDA_TYPE_BLOB) {
         const GdaBlob* gdablob = gda_value_get_blob (boxed);
         if(gdablob && gdablob->op)
         {
@@ -199,10 +199,10 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
             ret = boost::python::object((const char*)gdablob->data.data); /* TODO: Use the size. TODO: Check for null GdaBinary. */
           }
         }
-    } else if (value_type == G_TYPE_BOOLEAN) {
+    } else if(value_type == G_TYPE_BOOLEAN) {
         ret = boost::python::object((bool)g_value_get_boolean(boxed));
 #if PY_VERSION_HEX >= 0x02040000
-    } else if (value_type == G_TYPE_DATE) {
+    } else if(value_type == G_TYPE_DATE) {
 
         const GDate* val = (const GDate*)g_value_get_boxed(boxed);
         if(val)
@@ -220,28 +220,28 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
           ret = boost::python::object( (boost::python::handle<>(cobject)) );
         }
 #endif
-    } else if (value_type == G_TYPE_DOUBLE) {
+    } else if(value_type == G_TYPE_DOUBLE) {
         ret = boost::python::object(g_value_get_double(boxed));
-    } else if (value_type == GDA_TYPE_GEOMETRIC_POINT) {
+    } else if(value_type == GDA_TYPE_GEOMETRIC_POINT) {
         const GdaGeometricPoint* val = gda_value_get_geometric_point(boxed);
         if(val)
         {
           PyObject* cobject = Py_BuildValue ("(ii)", val->x, val->y);
           ret = boost::python::object( (boost::python::handle<>(cobject)) );
         }
-    } else if (value_type == G_TYPE_INT) {
+    } else if(value_type == G_TYPE_INT) {
         ret = boost::python::object(g_value_get_int(boxed));
-    } else if (value_type == GDA_TYPE_NUMERIC) {
+    } else if(value_type == GDA_TYPE_NUMERIC) {
         const GdaNumeric* val = gda_value_get_numeric(boxed);
         ret = boost::python::object(gda_numeric_get_double((GdaNumeric*)val));
-    } else if (value_type == G_TYPE_FLOAT) {
+    } else if(value_type == G_TYPE_FLOAT) {
         ret = boost::python::object(g_value_get_float(boxed));
-    } else if (value_type == GDA_TYPE_SHORT) {
+    } else if(value_type == GDA_TYPE_SHORT) {
         ret = boost::python::object(gda_value_get_short(boxed));
-    } else if (value_type == G_TYPE_STRING) {
+    } else if(value_type == G_TYPE_STRING) {
         const gchar* val = g_value_get_string(boxed);
         ret = boost::python::object(val);
-    } else if (value_type == GDA_TYPE_TIME) {
+    } else if(value_type == GDA_TYPE_TIME) {
 #if PY_VERSION_HEX >= 0x02040000
         const GdaTime* val = gda_value_get_time(boxed);
         if(val)
@@ -249,7 +249,7 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
           PyObject* cobject = PyTime_FromTime(val->hour, val->minute, val->second, 0); /* TODO: Should we ignore GDate::timezone ? */
           ret = boost::python::object( (boost::python::handle<>(cobject)) );
         }
-    } else if (value_type == GDA_TYPE_TIMESTAMP) {
+    } else if(value_type == GDA_TYPE_TIMESTAMP) {
         const GdaTimestamp* val = gda_value_get_timestamp(boxed);
         if(val)
         {
@@ -257,11 +257,11 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
           ret = boost::python::object( (boost::python::handle<>(cobject)) );
         }
 #endif
-    } else if (value_type == GDA_TYPE_SHORT) {
+    } else if(value_type == GDA_TYPE_SHORT) {
         ret = boost::python::object(gda_value_get_short(boxed));
-    } else if (value_type == GDA_TYPE_USHORT) {
+    } else if(value_type == GDA_TYPE_USHORT) {
         ret = boost::python::object(gda_value_get_ushort(boxed));
-    } else if (value_type == G_TYPE_UINT) {
+    } else if(value_type == G_TYPE_UINT) {
         ret = boost::python::object(g_value_get_uint(boxed));
     } else {
       std::cerr << "Glom: G_VALUE_TYPE() returned unknown type: " << value_type << std::endl;

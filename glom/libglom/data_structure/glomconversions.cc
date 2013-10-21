@@ -500,7 +500,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
   {
      return value.get_string();
   }
-  else if (glom_type == Field::TYPE_BOOLEAN)
+  else if(glom_type == Field::TYPE_BOOLEAN)
   {
     //This is used only by Field::to_file_format(),
     //and should never be shown in the UI.
@@ -509,7 +509,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     else
       return "FALSE";
   }
-  else if (glom_type == Field::TYPE_IMAGE)
+  else if(glom_type == Field::TYPE_IMAGE)
   {
     //This function is only used for :
     //- UI-visible strings, but images should never be shown as text in the UI. 

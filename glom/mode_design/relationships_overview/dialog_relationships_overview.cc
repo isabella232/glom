@@ -388,7 +388,7 @@ void Dialog_RelationshipsOverview::print_or_preview(Gtk::PrintOperationAction pr
   {
     print->run(print_action /* print or preview */, *this);
   }
-  catch (const Gtk::PrintError& ex)
+  catch(const Gtk::PrintError& ex)
   {
     //See documentation for exact Gtk::PrintError error codes.
     std::cerr << "An error occurred while trying to run a print operation:"

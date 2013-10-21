@@ -151,7 +151,7 @@ bool AppWindow_WithDoc::open_document(const Glib::ustring& file_uri)
 
     if(bOpenFailed)
     {
-      if (bShowError)
+      if(bShowError)
         ui_warning_load_failed(failure_code);
 
       //Make sure that non-existant files are removed from the history list:

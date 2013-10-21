@@ -48,9 +48,9 @@ int main ()
 #endif
   Glom::libglom_init();  // Calls PyInitialize()
   
-  if (!Glom::gda_python_module_is_available())
+  if(!Glom::gda_python_module_is_available())
     return EXIT_FAILURE;
-  if (!Glom::glom_python_module_is_available())
+  if(!Glom::glom_python_module_is_available())
     return EXIT_FAILURE;
   
   Glom::libglom_deinit(); // Calls Py_Finalize();

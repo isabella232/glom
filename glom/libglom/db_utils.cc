@@ -47,7 +47,7 @@ static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
   {
      sharedconnection = ConnectionPool::get_and_connect();
   }
-  catch (const Glib::Error& error)
+  catch(const Glib::Error& error)
   {
     std::cerr << G_STRFUNC << ": " << error.what() << std::endl;
   }

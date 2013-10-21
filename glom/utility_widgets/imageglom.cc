@@ -222,7 +222,7 @@ static void image_glom_ev_job_finished(EvJob* job, void* user_data)
   
 void ImageGlom::on_ev_job_finished(EvJob* job)
 {
-  if (ev_job_is_failed (job)) {
+  if(ev_job_is_failed (job)) {
     g_warning ("%s", job->error->message);
     g_object_unref (job);
 

@@ -372,7 +372,7 @@ void Dialog_Layout_List_Related::save_to_document()
       m_portal->set_navigation_relationship_specific(none);
     }
 
-    if (m_radio_navigation_automatic->get_active())
+    if(m_radio_navigation_automatic->get_active())
       m_portal->set_navigation_type(LayoutItem_Portal::NAVIGATION_AUTOMATIC);
 
     if(m_radio_navigation_none->get_active())
