@@ -1804,6 +1804,13 @@ void Frame_Glom::on_box_reports_selected(const Glib::ustring& report_name)
 
 void Frame_Glom::on_box_print_layouts_selected(const Glib::ustring& print_layout_name)
 {
+  Gtk::Window* app_window = get_app_window();
+  if(!app_window)
+  {
+    std::cerr << G_STRFUNC << ": app_window is null" << std::endl;
+    return;
+  }
+
   //Create the dialog if necessary:
   if(!m_pDialogLayoutPrint)
   {
@@ -1816,6 +1823,11 @@ void Frame_Glom::on_box_print_layouts_selected(const Glib::ustring& print_layout
 
     add_view(m_pDialogLayoutPrint);
     m_pDialogLayoutPrint->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_print_hide) );
+
+    //This probably lets the GtkApplication know about the window's actions, which might be useful.
+    Glib::RefPtr<Gtk::Application> app = app_window->get_application();
+    if(app)
+      app->add_window(*m_pDialogLayoutPrint);
   }
 
   m_pDialog_PrintLayouts->hide();
@@ -1823,11 +1835,10 @@ void Frame_Glom::on_box_print_layouts_selected(const Glib::ustring& print_layout
   sharedptr<PrintLayout> print_layout = get_document()->get_print_layout(m_table_name, print_layout_name);
   if(print_layout)
   {
-    Gtk::Window* app_window = get_app_window();
-    if(app_window)
-      m_pDialogLayoutPrint->set_transient_for(*app_window);
+    m_pDialogLayoutPrint->set_transient_for(*app_window);
 
     m_pDialogLayoutPrint->set_print_layout(m_table_name, print_layout);
+
     m_pDialogLayoutPrint->show();
   }
 }
