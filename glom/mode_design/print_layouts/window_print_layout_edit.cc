@@ -196,27 +196,29 @@ void Window_PrintLayout_Edit::init_menu()
 {
   Glib::RefPtr<Gio::SimpleActionGroup> action_group = Gio::SimpleActionGroup::create();
 
-  add_action("page-setup",
+  action_group->add_action("page-setup",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_file_page_setup));
-  add_action("print-preview",
+  action_group->add_action("print-preview",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_file_print_preview) );
 
-  m_action_edit_cut = add_action("cut",
+  //TODO: Use the regular add_action() for the standard menu items, using the win. prefix in the .glade file,
+  //when we can get that to work:
+  m_action_edit_cut = action_group->add_action("cut",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_cut) );
 
-  m_action_edit_copy = add_action("copy",
+  m_action_edit_copy = action_group->add_action("copy",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_copy) );
   
-  m_action_edit_paste = add_action("paste", 
+  m_action_edit_paste = action_group->add_action("paste", 
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_paste) );
   m_action_edit_paste->set_enabled(false); //This is enabled when something is copied or cut.
 
-  m_action_edit_delete = add_action("delete",
+  m_action_edit_delete = action_group->add_action("delete",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_delete) );
 
-  add_action("select-all",
+  action_group->add_action("select-all",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_selectall) ); //TODO: Gtk::AccelKey("<control>A"), //TODO: Suggest this as part of the stock item in GTK+?
-  add_action("unselect-all", //TODO: Propose a new stock item for GTK+.
+  action_group->add_action("unselect-all", //TODO: Propose a new stock item for GTK+.
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_unselectall) );
 
   action_group->add_action("insert-field",

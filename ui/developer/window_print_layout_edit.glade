@@ -9,11 +9,11 @@
       <section>
         <item>
           <attribute name='label' translatable='yes'>Page Set_up</attribute>
-          <attribute name='action'>win.pagesetup</attribute>
+          <attribute name='action'>printlayout.pagesetup</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>Print Pre_view</attribute>
-          <attribute name='action'>win.printpreview</attribute>
+          <attribute name='action'>printlayout.printpreview</attribute>
         </item>
       </section>
     </submenu>
@@ -22,29 +22,29 @@
       <section>
         <item>
           <attribute name='label' translatable='yes'>Cu_t</attribute>
-          <attribute name='action'>win.cut</attribute>
+          <attribute name='action'>printlayout.cut</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>_Copy</attribute>
-          <attribute name='action'>win.copy</attribute>
+          <attribute name='action'>printlayout.copy</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>_Paste</attribute>
-          <attribute name='action'>win.paste</attribute>
+          <attribute name='action'>printlayout.paste</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>_Delete</attribute>
-          <attribute name='action'>win.delete</attribute>
+          <attribute name='action'>printlayout.delete</attribute>
         </item>
       </section>
       <section>
         <item>
           <attribute name='label' translatable='yes'>Select _All</attribute>
-          <attribute name='action'>win.selectall</attribute>
+          <attribute name='action'>printlayout.select-all</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>_Unselect All</attribute>
-          <attribute name='action'>win.unselectall</attribute>
+          <attribute name='action'>printlayout.unselect-all</attribute>
         </item>
       </section>
     </submenu>

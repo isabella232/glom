@@ -1828,6 +1828,10 @@ void Frame_Glom::on_box_print_layouts_selected(const Glib::ustring& print_layout
     Glib::RefPtr<Gtk::Application> app = app_window->get_application();
     if(app)
       app->add_window(*m_pDialogLayoutPrint);
+    else
+    {
+      std::cerr << G_STRFUNC << ": app is null." << std::endl;
+    }
   }
 
   m_pDialog_PrintLayouts->hide();
