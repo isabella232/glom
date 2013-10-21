@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.0 on Mon Oct 21 12:01:17 2013 -->
 <interface>
-  <requires lib="gtk+" version="3.6"/>
+  <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkWindow" id="window_formatting">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">window1</property>
     <child>
       <object class="GtkBox" id="box_formatting">
-        <property name="orientation">vertical</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
           <object class="GtkNotebook" id="notebook_formatting">
@@ -16,19 +17,19 @@
             <property name="can_focus">True</property>
             <child>
               <object class="GtkBox" id="vbox_numeric_format">
-                <property name="orientation">vertical</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="border_width">6</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkCheckButton" id="checkbutton_format_thousands">
                     <property name="label" translatable="yes">Use 1000s separator</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
                     <property name="tooltip_text" translatable="yes">If this is not selected then a thousands separator will not be used, even if your locale would normally use one. If it is selected then a thousands separator will be used only if your locale normally uses one.</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_underline">True</property>
                     <property name="xalign">0</property>
                     <property name="draw_indicator">True</property>
@@ -41,17 +42,16 @@
                 </child>
                 <child>
                   <object class="GtkBox" id="hbox48">
-                    <property name="orientation">horizontal</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkCheckButton" id="checkbutton_format_use_decimal_places">
                         <property name="label" translatable="yes">Decimal Places</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="xalign">0</property>
                         <property name="draw_indicator">True</property>
@@ -82,7 +82,6 @@
                 </child>
                 <child>
                   <object class="GtkBox" id="hbox49">
-                    <property name="orientation">horizontal</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="spacing">6</property>
@@ -126,11 +125,11 @@
                 <child>
                   <object class="GtkCheckButton" id="checkbutton_foreground_negatives">
                     <property name="label" translatable="yes">Alternative Color for Negative Values</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
                     <property name="tooltip_text" translatable="yes">Click this check box to use a different foreground color to display negative values.</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_underline">True</property>
                     <property name="xalign">0</property>
                     <property name="draw_indicator">True</property>
@@ -156,14 +155,13 @@
             </child>
             <child>
               <object class="GtkBox" id="vbox_text_format">
-                <property name="orientation">vertical</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="border_width">6</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkBox" id="hbox_">
-                    <property name="orientation">horizontal</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="spacing">6</property>
@@ -201,11 +199,11 @@
                 <child>
                   <object class="GtkCheckButton" id="checkbutton_format_text_multiline">
                     <property name="label" translatable="yes">Multi-line</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
                     <property name="tooltip_text" translatable="yes">If this is selected then the field value will be shown in a multi-line box with a scrollbar.</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_underline">True</property>
                     <property name="xalign">0</property>
                     <property name="draw_indicator">True</property>
@@ -218,7 +216,6 @@
                 </child>
                 <child>
                   <object class="GtkBox" id="hbox1206z">
-                    <property name="orientation">horizontal</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="spacing">6</property>
@@ -257,18 +254,17 @@
                 </child>
                 <child>
                   <object class="GtkBox" id="hbox_font">
-                    <property name="orientation">horizontal</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkCheckButton" id="checkbutton_font">
                         <property name="label" translatable="yes">Font:</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="tooltip_text" translatable="yes">Click this check box to use a non-standard font.</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="xalign">0</property>
                         <property name="draw_indicator">True</property>
@@ -281,10 +277,11 @@
                     </child>
                     <child>
                       <object class="GtkFontButton" id="fontbutton">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
+                        <property name="font">Sans 12</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -302,18 +299,17 @@
                 </child>
                 <child>
                   <object class="GtkBox" id="hbox_color_foreground">
-                    <property name="orientation">horizontal</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkCheckButton" id="checkbutton_color_foreground">
                         <property name="label" translatable="yes">Foreground Color:</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="tooltip_text" translatable="yes">Click this check box to use a non-standard foreground color.</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="xalign">0</property>
                         <property name="draw_indicator">True</property>
@@ -326,10 +322,10 @@
                     </child>
                     <child>
                       <object class="GtkColorButton" id="colorbutton_foreground">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -347,18 +343,17 @@
                 </child>
                 <child>
                   <object class="GtkBox" id="hbox_color_background">
-                    <property name="orientation">horizontal</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkCheckButton" id="checkbutton_color_background">
                         <property name="label" translatable="yes">Background Color:</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="tooltip_text" translatable="yes">Click this check box to use a non-standard background color.</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="xalign">0</property>
                         <property name="draw_indicator">True</property>
@@ -371,10 +366,10 @@
                     </child>
                     <child>
                       <object class="GtkColorButton" id="colorbutton_background">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -409,16 +404,16 @@
             </child>
             <child>
               <object class="GtkBox" id="vbox_choices">
-                <property name="orientation">vertical</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="border_width">6</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkBox" id="vbox56">
-                    <property name="orientation">vertical</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkFrame" id="frame13">
@@ -439,11 +434,12 @@
                         <child type="label">
                           <object class="GtkRadioButton" id="radiobutton_choices_no">
                             <property name="label" translatable="yes">No Choices</property>
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="use_underline">True</property>
+                            <property name="xalign">0.5</property>
                             <property name="active">True</property>
                             <property name="draw_indicator">True</property>
                           </object>
@@ -471,13 +467,10 @@
                               <object class="GtkGrid" id="table8">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="n_rows">5</property>
-                                <property name="n_columns">2</property>
-                                <property name="column_spacing">6</property>
                                 <property name="row_spacing">6</property>
+                                <property name="column_spacing">6</property>
                                 <child>
                                   <object class="GtkBox" id="hbox1">
-                                    <property name="orientation">horizontal</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="hexpand">True</property>
@@ -497,10 +490,10 @@
                                     <child>
                                       <object class="GtkButton" id="button_choices_related_extra_fields">
                                         <property name="label">gtk-edit</property>
+                                        <property name="use_action_appearance">False</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
-                                        <property name="use_action_appearance">False</property>
                                         <property name="use_stock">True</property>
                                       </object>
                                       <packing>
@@ -512,8 +505,8 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="width">1</property>
                                     <property name="top_attach">2</property>
+                                    <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
                                 </child>
@@ -525,8 +518,8 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="width">1</property>
                                     <property name="top_attach">1</property>
+                                    <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
                                 </child>
@@ -541,8 +534,8 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
-                                    <property name="width">1</property>
                                     <property name="top_attach">0</property>
+                                    <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
                                 </child>
@@ -557,8 +550,8 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
-                                    <property name="width">1</property>
                                     <property name="top_attach">1</property>
+                                    <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
                                 </child>
@@ -573,8 +566,8 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
-                                    <property name="width">1</property>
                                     <property name="top_attach">2</property>
+                                    <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
                                 </child>
@@ -586,29 +579,29 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="width">1</property>
                                     <property name="top_attach">0</property>
+                                    <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkCheckButton" id="checkbutton_choices_related_show_all">
                                     <property name="label" translatable="yes">Show all records</property>
+                                    <property name="use_action_appearance">False</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="hexpand">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="has_tooltip">True</property>
                                     <property name="tooltip_markup" translatable="yes">If this option is selected then the choices will list values from all records in the related table. If this option is not selected then the choices will list values only from related records.</property>
                                     <property name="tooltip_text" translatable="yes">If this option is selected then the choices will list values from all records in the related table. If this option is not selected then the choices will list values only from related records.</property>
-                                    <property name="use_action_appearance">False</property>
+                                    <property name="hexpand">True</property>
                                     <property name="xalign">0</property>
                                     <property name="draw_indicator">True</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="width">1</property>
                                     <property name="top_attach">4</property>
+                                    <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
                                 </child>
@@ -623,17 +616,13 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
-                                    <property name="width">1</property>
                                     <property name="top_attach">3</property>
+                                    <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <placeholder/>
-                                </child>
-                                <child>
                                   <object class="GtkBox" id="hbox2">
-                                    <property name="orientation">horizontal</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="hexpand">True</property>
@@ -653,10 +642,10 @@
                                     <child>
                                       <object class="GtkButton" id="button_choices_related_sortby">
                                         <property name="label">gtk-edit</property>
+                                        <property name="use_action_appearance">False</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
-                                        <property name="use_action_appearance">False</property>
                                         <property name="use_stock">True</property>
                                       </object>
                                       <packing>
@@ -668,10 +657,16 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="width">1</property>
                                     <property name="top_attach">3</property>
+                                    <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
                                 </child>
                               </object>
                             </child>
@@ -680,11 +675,12 @@
                         <child type="label">
                           <object class="GtkRadioButton" id="radiobutton_choices_related">
                             <property name="label" translatable="yes">Choices From Related Records</property>
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="use_underline">True</property>
+                            <property name="xalign">0.5</property>
                             <property name="draw_indicator">True</property>
                             <property name="group">radiobutton_choices_no</property>
                           </object>
@@ -710,9 +706,9 @@
                             <property name="left_padding">12</property>
                             <child>
                               <object class="GtkBox" id="adddel_choices">
-                                <property name="orientation">vertical</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
                                 <child>
                                   <placeholder/>
                                 </child>
@@ -723,11 +719,12 @@
                         <child type="label">
                           <object class="GtkRadioButton" id="radiobutton_choices_custom">
                             <property name="label" translatable="yes">Custom Choice List</property>
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="use_underline">True</property>
+                            <property name="xalign">0.5</property>
                             <property name="draw_indicator">True</property>
                             <property name="group">radiobutton_choices_no</property>
                           </object>
@@ -749,10 +746,10 @@
                 <child>
                   <object class="GtkCheckButton" id="checkbutton_choices_restrict">
                     <property name="label" translatable="yes">Restrict data to these choices</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_underline">True</property>
                     <property name="xalign">0</property>
                     <property name="draw_indicator">True</property>
@@ -766,10 +763,10 @@
                 <child>
                   <object class="GtkCheckButton" id="checkbutton_choices_restrict_as_radio_buttons">
                     <property name="label" translatable="yes">Display as radio buttons</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_underline">True</property>
                     <property name="xalign">0</property>
                     <property name="draw_indicator">True</property>

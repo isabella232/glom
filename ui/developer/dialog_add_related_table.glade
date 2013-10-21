@@ -215,8 +215,6 @@ If a suitable related table already exists then you should instead cancel and ju
               <object class="GtkGrid" id="table1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="n_rows">2</property>
-                <property name="n_columns">2</property>
                 <property name="column_spacing">12</property>
                 <property name="row_spacing">6</property>
                 <child>

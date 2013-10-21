@@ -104,8 +104,6 @@
               <object class="GtkGrid" id="table6">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="n_rows">4</property>
-                <property name="n_columns">2</property>
                 <property name="column_spacing">12</property>
                 <property name="row_spacing">6</property>
                 <child>
