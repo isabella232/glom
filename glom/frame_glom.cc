@@ -1800,7 +1800,7 @@ void Frame_Glom::on_box_reports_selected(const Glib::ustring& report_name)
 void Frame_Glom::on_box_print_layouts_selected(const Glib::ustring& print_layout_name)
 {
   //Create the dialog if necessary:
-  if(m_pDialogLayoutPrint)
+  if(!m_pDialogLayoutPrint)
   {
     Utils::get_glade_widget_derived_with_warning(m_pDialogLayoutPrint);
     if(!m_pDialogLayoutPrint)
