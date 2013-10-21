@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.0 on Mon Oct 21 12:33:21 2013 -->
 <interface>
-  <requires lib="gtk+" version="3.6"/>
+  <!-- interface-requires gtk+ 3.8 -->
   <object class="GtkAdjustment" id="adjustment_column_line_width">
     <property name="upper">100</property>
     <property name="step_increment">0.5</property>
@@ -19,19 +20,19 @@
     <property name="default_height">500</property>
     <child>
       <object class="GtkBox" id="vbox7">
-        <property name="orientation">vertical</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
           <object class="GtkBox" id="hbox9">
-            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">False</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkBox" id="hbox_table_widgets">
-                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="spacing">6</property>
@@ -69,7 +70,6 @@
             </child>
             <child>
               <object class="GtkBox" id="hbox_related_table_widgets">
-                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="spacing">6</property>
@@ -100,11 +100,12 @@
                 <child>
                   <object class="GtkCheckButton" id="checkbutton_show_child_relationships">
                     <property name="label" translatable="yes">Show child relationships</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_underline">True</property>
+                    <property name="xalign">0.5</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -162,24 +163,31 @@
           <object class="GtkFrame" id="frame3">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
             <property name="label_xalign">0</property>
             <property name="shadow_type">none</property>
             <child>
               <object class="GtkAlignment" id="alignment7">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
                 <property name="left_padding">12</property>
                 <child>
                   <object class="GtkGrid" id="table11">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="column_spacing">6</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                     <property name="row_spacing">6</property>
+                    <property name="column_spacing">6</property>
                     <child>
                       <object class="GtkScrolledWindow" id="scrolledwindow3">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
                         <property name="shadow_type">in</property>
                         <child>
                           <object class="GtkTreeView" id="treeview_fields">
@@ -193,19 +201,22 @@
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
-                        <property name="width">1</property>
                         <property name="top_attach">0</property>
+                        <property name="width">1</property>
                         <property name="height">1</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkBox" id="vbox93">
-                        <property name="orientation">vertical</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="hexpand">False</property>
+                        <property name="vexpand">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkButton" id="button_add_field">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
@@ -213,7 +224,6 @@
                             <property name="has_tooltip">True</property>
                             <property name="tooltip_markup" translatable="yes">Add a layout item that shows the data from a field in the record, and allows the user to edit that value.</property>
                             <property name="tooltip_text" translatable="yes">Add a layout item that shows the data from a field in the record, and allows the user to edit that value.</property>
-                            <property name="use_action_appearance">False</property>
                             <child>
                               <object class="GtkAlignment" id="alignment3">
                                 <property name="visible">True</property>
@@ -222,7 +232,6 @@
                                 <property name="yscale">0</property>
                                 <child>
                                   <object class="GtkBox" id="hbox3">
-                                    <property name="orientation">horizontal</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="spacing">2</property>
@@ -264,6 +273,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="button_add_text">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
@@ -271,7 +281,6 @@
                             <property name="has_tooltip">True</property>
                             <property name="tooltip_markup" translatable="yes">Add text to a layout, such as an explanation or a warning. The text will be the same for every record viewed.</property>
                             <property name="tooltip_text" translatable="yes">Add text to a layout, such as an explanation or a warning. The text will be the same for every record viewed.</property>
-                            <property name="use_action_appearance">False</property>
                             <child>
                               <object class="GtkAlignment" id="alignment81">
                                 <property name="visible">True</property>
@@ -280,7 +289,6 @@
                                 <property name="yscale">0</property>
                                 <child>
                                   <object class="GtkBox" id="hbox103">
-                                    <property name="orientation">horizontal</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="spacing">2</property>
@@ -322,6 +330,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="button_add_image">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
@@ -329,7 +338,6 @@
                             <property name="has_tooltip">True</property>
                             <property name="tooltip_markup" translatable="yes">Add an image to the layout, such as a logo. The image will be the same for every record viewed. To show an image field from a record, to show different images for each field, use the field layout item.</property>
                             <property name="tooltip_text" translatable="yes">Add an image to the layout, such as a logo. The image will be the same for every record viewed. To show an image field from a record, to show different images for each field, use the field layout item.</property>
-                            <property name="use_action_appearance">False</property>
                             <child>
                               <object class="GtkAlignment" id="alignment86">
                                 <property name="visible">True</property>
@@ -338,7 +346,6 @@
                                 <property name="yscale">0</property>
                                 <child>
                                   <object class="GtkBox" id="hbox110">
-                                    <property name="orientation">horizontal</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="spacing">2</property>
@@ -380,6 +387,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="button_add_button">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
@@ -387,7 +395,6 @@
                             <property name="has_tooltip">True</property>
                             <property name="tooltip_markup" translatable="yes">Add a button. Edit the button to define the script that will be run when the button is clicked.</property>
                             <property name="tooltip_text" translatable="yes">Add a button. Edit the button to define the script that will be run when the button is clicked.</property>
-                            <property name="use_action_appearance">False</property>
                             <child>
                               <object class="GtkAlignment" id="alignment78">
                                 <property name="visible">True</property>
@@ -396,7 +403,6 @@
                                 <property name="yscale">0</property>
                                 <child>
                                   <object class="GtkBox" id="hbox100">
-                                    <property name="orientation">horizontal</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="spacing">2</property>
@@ -438,6 +444,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="button_add_group">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
@@ -445,7 +452,6 @@
                             <property name="has_tooltip">True</property>
                             <property name="tooltip_markup" translatable="yes">Add a group which can contain other layout items. Use this to group items together, such as fields.</property>
                             <property name="tooltip_text" translatable="yes">Add a group which can contain other layout items. Use this to group items together, such as fields.</property>
-                            <property name="use_action_appearance">False</property>
                             <child>
                               <object class="GtkAlignment" id="alignment17">
                                 <property name="visible">True</property>
@@ -454,7 +460,6 @@
                                 <property name="yscale">0</property>
                                 <child>
                                   <object class="GtkBox" id="hbox17">
-                                    <property name="orientation">horizontal</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="spacing">2</property>
@@ -496,13 +501,13 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="button_add_notebook">
+                            <property name="use_action_appearance">False</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
                             <property name="receives_default">True</property>
                             <property name="has_tooltip">True</property>
                             <property name="tooltip_markup" translatable="yes">Add a tabbed notebook. Each page of the notebook may contain several other layout items, but only one page will be visible at one time.</property>
                             <property name="tooltip_text" translatable="yes">Add a tabbed notebook. Each page of the notebook may contain several other layout items, but only one page will be visible at one time.</property>
-                            <property name="use_action_appearance">False</property>
                             <child>
                               <object class="GtkAlignment" id="alignment85">
                                 <property name="visible">True</property>
@@ -511,7 +516,6 @@
                                 <property name="yscale">0</property>
                                 <child>
                                   <object class="GtkBox" id="hbox109">
-                                    <property name="orientation">horizontal</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="spacing">2</property>
@@ -553,6 +557,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="button_add_related">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
@@ -560,7 +565,6 @@
                             <property name="has_tooltip">True</property>
                             <property name="tooltip_markup" translatable="yes">Add a related records portal. This is a list of records in a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table.</property>
                             <property name="tooltip_text" translatable="yes">Add a related records portal. This is a list of records in a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table.</property>
-                            <property name="use_action_appearance">False</property>
                             <child>
                               <object class="GtkAlignment" id="alignment22">
                                 <property name="visible">True</property>
@@ -569,7 +573,6 @@
                                 <property name="yscale">0</property>
                                 <child>
                                   <object class="GtkBox" id="hbox29">
-                                    <property name="orientation">horizontal</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="spacing">2</property>
@@ -611,6 +614,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="button_add_related_calendar">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
@@ -618,7 +622,6 @@
                             <property name="has_tooltip">True</property>
                             <property name="tooltip_markup" translatable="yes">Add a related records calendar portal. This is a calendar showing records from a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table.</property>
                             <property name="tooltip_text" translatable="yes">Add a related records calendar portal. This is a calendar showing records from a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table.</property>
-                            <property name="use_action_appearance">False</property>
                             <child>
                               <object class="GtkAlignment" id="alignment1">
                                 <property name="visible">True</property>
@@ -627,7 +630,6 @@
                                 <property name="yscale">0</property>
                                 <child>
                                   <object class="GtkBox" id="hbox1">
-                                    <property name="orientation">horizontal</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="spacing">2</property>
@@ -670,20 +672,20 @@
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
-                        <property name="width">1</property>
                         <property name="top_attach">0</property>
+                        <property name="width">1</property>
                         <property name="height">1</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkBox" id="hbox5">
-                        <property name="orientation">horizontal</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">False</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkButtonBox" id="hbuttonbox9">
-                            <property name="orientation">horizontal</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="spacing">6</property>
@@ -691,11 +693,11 @@
                             <child>
                               <object class="GtkButton" id="button_up">
                                 <property name="label">gtk-go-up</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="use_stock">True</property>
                               </object>
                               <packing>
@@ -707,11 +709,11 @@
                             <child>
                               <object class="GtkButton" id="button_down">
                                 <property name="label">gtk-go-down</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="use_stock">True</property>
                               </object>
                               <packing>
@@ -722,14 +724,13 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="expand">True</property>
+                            <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
                           <object class="GtkButtonBox" id="hbuttonbox5">
-                            <property name="orientation">horizontal</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="spacing">6</property>
@@ -737,12 +738,12 @@
                             <child>
                               <object class="GtkButton" id="button_field_delete">
                                 <property name="label">gtk-delete</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="tooltip_text" translatable="yes">Remove the item from the layout. If you remove a field layout item, it will not remove the field from the table itself. It just will not be seen on the layout.</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="use_stock">True</property>
                               </object>
                               <packing>
@@ -753,11 +754,11 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="button_formatting">
+                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="use_action_appearance">False</property>
                                 <child>
                                   <object class="GtkAlignment" id="alignment42">
                                     <property name="visible">True</property>
@@ -766,7 +767,6 @@
                                     <property name="yscale">0</property>
                                     <child>
                                       <object class="GtkBox" id="hbox54">
-                                        <property name="orientation">horizontal</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="spacing">2</property>
@@ -809,11 +809,11 @@
                             <child>
                               <object class="GtkButton" id="button_edit">
                                 <property name="label">gtk-edit</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="use_stock">True</property>
                               </object>
                               <packing>
@@ -824,7 +824,7 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="expand">True</property>
+                            <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">1</property>
                           </packing>
@@ -832,8 +832,8 @@
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
-                        <property name="width">1</property>
                         <property name="top_attach">1</property>
+                        <property name="width">1</property>
                         <property name="height">1</property>
                       </packing>
                     </child>
@@ -848,6 +848,8 @@
               <object class="GtkLabel" id="label28">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">False</property>
+                <property name="vexpand">False</property>
                 <property name="label" translatable="yes">&lt;b&gt;Fields&lt;/b&gt;</property>
                 <property name="use_markup">True</property>
               </object>
@@ -872,9 +874,9 @@
                 <property name="left_padding">12</property>
                 <child>
                   <object class="GtkBox" id="vbox105">
-                    <property name="orientation">vertical</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkLabel" id="label261">
@@ -891,18 +893,18 @@
                     </child>
                     <child>
                       <object class="GtkBox" id="hbox130">
-                        <property name="orientation">horizontal</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkRadioButton" id="radiobutton_navigation_automatic">
                             <property name="label" translatable="yes">Automatic:</property>
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="use_underline">True</property>
+                            <property name="xalign">0.5</property>
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
@@ -932,18 +934,18 @@
                     </child>
                     <child>
                       <object class="GtkBox" id="hbox130b">
-                        <property name="orientation">horizontal</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkRadioButton" id="radiobutton_navigation_none">
                             <property name="label" translatable="yes">None</property>
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="use_underline">True</property>
+                            <property name="xalign">0.5</property>
                             <property name="draw_indicator">True</property>
                             <property name="group">radiobutton_navigation_automatic</property>
                           </object>
@@ -962,16 +964,16 @@
                     </child>
                     <child>
                       <object class="GtkBox" id="hbox131">
-                        <property name="orientation">horizontal</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>
                           <object class="GtkRadioButton" id="radiobutton_navigation_specify">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="use_underline">True</property>
+                            <property name="xalign">0.5</property>
                             <property name="draw_indicator">True</property>
                             <property name="group">radiobutton_navigation_automatic</property>
                           </object>
@@ -1020,7 +1022,6 @@
         </child>
         <child>
           <object class="GtkButtonBox" id="hbuttonbox7">
-            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="spacing">6</property>
@@ -1028,11 +1029,11 @@
             <child>
               <object class="GtkButton" id="button_close">
                 <property name="label">gtk-close</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -1062,7 +1063,6 @@
                 <property name="left_padding">12</property>
                 <child>
                   <object class="GtkBox" id="hbox44">
-                    <property name="orientation">horizontal</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="spacing">6</property>
@@ -1110,7 +1110,6 @@
         </child>
         <child>
           <object class="GtkBox" id="hbox_rows_count">
-            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="spacing">6</property>
@@ -1132,7 +1131,6 @@
                 <property name="can_focus">True</property>
                 <property name="tooltip_text" translatable="yes">Show at least this many rows.</property>
                 <property name="invisible_char">•</property>
-                <property name="invisible_char_set">True</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
               </object>
@@ -1160,7 +1158,6 @@
                 <property name="can_focus">True</property>
                 <property name="tooltip_text" translatable="yes">Show no more than this many rows.</property>
                 <property name="invisible_char">•</property>
-                <property name="invisible_char_set">True</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
               </object>
@@ -1190,15 +1187,14 @@
                 <property name="left_padding">12</property>
                 <child>
                   <object class="GtkBox" id="hbox2">
-                    <property name="orientation">horizontal</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkGrid" id="table1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="column_spacing">6</property>
                         <property name="row_spacing">6</property>
+                        <property name="column_spacing">6</property>
                         <child>
                           <object class="GtkLabel" id="label3">
                             <property name="visible">True</property>
@@ -1208,8 +1204,8 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="width">1</property>
                             <property name="top_attach">0</property>
+                            <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
                         </child>
@@ -1225,8 +1221,8 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="width">1</property>
                             <property name="top_attach">0</property>
+                            <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
                         </child>
@@ -1239,8 +1235,8 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="width">1</property>
                             <property name="top_attach">1</property>
+                            <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
                         </child>
@@ -1249,7 +1245,6 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="invisible_char">•</property>
-                            <property name="invisible_char_set">True</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
                             <property name="adjustment">adjustment_column_line_width</property>
@@ -1257,8 +1252,8 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="width">1</property>
                             <property name="top_attach">1</property>
+                            <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
                         </child>
@@ -1271,23 +1266,23 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="width">1</property>
                             <property name="top_attach">2</property>
+                            <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
                         </child>
                         <child>
                           <object class="GtkColorButton" id="colorbutton_line">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="use_action_appearance">False</property>
-                            <property name="color">#000000000000</property>
+                            <property name="rgba">rgb(0,0,0)</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="width">1</property>
                             <property name="top_attach">2</property>
+                            <property name="width">1</property>
                             <property name="height">1</property>
                           </packing>
                         </child>
@@ -1312,8 +1307,8 @@
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
             <property name="position">6</property>
           </packing>
         </child>
