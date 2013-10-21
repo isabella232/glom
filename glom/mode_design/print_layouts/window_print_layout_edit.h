@@ -27,7 +27,7 @@
 #include <glom/mode_design/print_layouts/print_layout_toolbar.h>
 #include <glom/mode_design/print_layouts/print_layout_toolbar_button.h>
 #include <libglom/document/document.h>
-#include <gtkmm/window.h>
+#include <gtkmm/applicationwindow.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
 #include <glom/utility_widgets/gimpruler/gimpruler.h>
@@ -40,7 +40,7 @@ namespace Glom
 {
 
 class Window_PrintLayout_Edit
-: public Gtk::Window,
+: public Gtk::ApplicationWindow,
   public View_Composite_Glom
 {
 public:

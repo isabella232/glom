@@ -2791,13 +2791,13 @@ void AppWindow::init_menus_edit()
   //Build actions:
   m_refActionGroup_Edit = Gio::SimpleActionGroup::create();
 
-  m_refActionGroup_Edit->add_action("cut",
+  add_action("cut",
     sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_cut_activate));
-  m_refActionGroup_Edit->add_action("copy",
+  add_action("copy",
     sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_copy_activate));
-  m_refActionGroup_Edit->add_action("paste",
+  add_action("paste",
     sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_paste_activate));
-  m_refActionGroup_Edit->add_action("clear");
+  add_action("clear");
     //TODO? sigc::mem_fun((AppWindow&)*this, &AppWindow::on_menu_edit_clear_activate));
 
   //We remember this action, so that it can be explicitly activated later.

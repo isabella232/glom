@@ -45,7 +45,7 @@ const bool Window_PrintLayout_Edit::glade_developer(true);
 static const char DRAG_TARGET_NAME_RULE[] = "application/x-glom-printoutlayout-rule";
 
 Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
-: Gtk::Window(cobject),
+: Gtk::ApplicationWindow(cobject),
   m_entry_name(0),
   m_entry_title(0),
   m_label_table_name(0),
@@ -196,27 +196,27 @@ void Window_PrintLayout_Edit::init_menu()
 {
   Glib::RefPtr<Gio::SimpleActionGroup> action_group = Gio::SimpleActionGroup::create();
 
-  action_group->add_action("page-setup",
+  add_action("page-setup",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_file_page_setup));
-  action_group->add_action("print-preview",
+  add_action("print-preview",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_file_print_preview) );
 
-  m_action_edit_cut = action_group->add_action("cut",
+  m_action_edit_cut = add_action("cut",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_cut) );
 
-  m_action_edit_copy = action_group->add_action("copy",
+  m_action_edit_copy = add_action("copy",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_copy) );
   
-  m_action_edit_paste = action_group->add_action("paste", 
+  m_action_edit_paste = add_action("paste", 
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_paste) );
   m_action_edit_paste->set_enabled(false); //This is enabled when something is copied or cut.
 
-  m_action_edit_delete = action_group->add_action("delete",
+  m_action_edit_delete = add_action("delete",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_delete) );
 
-  action_group->add_action("select-all",
+  add_action("select-all",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_selectall) ); //TODO: Gtk::AccelKey("<control>A"), //TODO: Suggest this as part of the stock item in GTK+?
-  action_group->add_action("unselect-all", //TODO: Propose a new stock item for GTK+.
+  add_action("unselect-all", //TODO: Propose a new stock item for GTK+.
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_unselectall) );
 
   action_group->add_action("insert-field",

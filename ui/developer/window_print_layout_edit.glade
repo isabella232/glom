@@ -9,11 +9,11 @@
       <section>
         <item>
           <attribute name='label' translatable='yes'>Page Set_up</attribute>
-          <attribute name='action'>printlayout.pagesetup</attribute>
+          <attribute name='action'>win.pagesetup</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>Print Pre_view</attribute>
-          <attribute name='action'>printlayout.printpreview</attribute>
+          <attribute name='action'>win.printpreview</attribute>
         </item>
       </section>
     </submenu>
@@ -22,29 +22,29 @@
       <section>
         <item>
           <attribute name='label' translatable='yes'>Cu_t</attribute>
-          <attribute name='action'>printlayout.cut</attribute>
+          <attribute name='action'>win.cut</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>_Copy</attribute>
-          <attribute name='action'>printlayout.copy</attribute>
+          <attribute name='action'>win.copy</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>_Paste</attribute>
-          <attribute name='action'>printlayout.paste</attribute>
+          <attribute name='action'>win.paste</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>_Delete</attribute>
-          <attribute name='action'>printlayout.delete</attribute>
+          <attribute name='action'>win.delete</attribute>
         </item>
       </section>
       <section>
         <item>
           <attribute name='label' translatable='yes'>Select _All</attribute>
-          <attribute name='action'>printlayout.selectall</attribute>
+          <attribute name='action'>win.selectall</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>_Unselect All</attribute>
-          <attribute name='action'>printlayout.unselectall</attribute>
+          <attribute name='action'>win.unselectall</attribute>
         </item>
       </section>
     </submenu>
@@ -173,7 +173,7 @@
     </section>
   </menu>
 
-  <object class="GtkWindow" id="window_print_layout_edit">
+  <object class="GtkApplicationWindow" id="window_print_layout_edit">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Print Layout Editor</property>
     <child>

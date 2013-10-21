@@ -207,21 +207,21 @@
       <section>
         <item>
           <attribute name='label' translatable='yes'>Cu_t</attribute>
-          <attribute name='action'>edit.cut</attribute>
+          <attribute name='action'>win.cut</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>_Copy</attribute>
-          <attribute name='action'>edit.copy</attribute>
+          <attribute name='action'>win.copy</attribute>
           <attribute name='accel'>&lt;Primary&gt;c</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>_Paste</attribute>
-          <attribute name='action'>edit.paste</attribute>
+          <attribute name='action'>win.paste</attribute>
           <attribute name='accel'>&lt;Primary&gt;v</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>_Clear</attribute>
-          <attribute name='action'>edit.clear</attribute>
+          <attribute name='action'>win.clear</attribute>
         </item>
       </section>
       <section>
