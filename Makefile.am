@@ -69,9 +69,7 @@ glom_defines = \
 AM_CFLAGS   = $(GLOM_WFLAGS)
 AM_CXXFLAGS = $(GLOM_WXXFLAGS)
 
-if GLOM_ENABLE_UI
 include Makefile_glom.am
-endif
 
 include Makefile_tests.am
 
@@ -103,8 +101,7 @@ endif
 dist_pkgdata_DATA = glom/glom_document.dtd
 
 
-glade_operatordir = $(pkgdatadir)/glade/operator
-dist_glade_operator_DATA = \
+EXTRA_DIST += \
 	ui/operator/box_navigation_tables.glade \
 	ui/operator/dialog_choose_date.glade \
 	ui/operator/dialog_connection.glade \
@@ -118,8 +115,8 @@ dist_glade_operator_DATA = \
 	ui/operator/dialog_new_record.glade \
 	ui/operator/window_main.glade
 		
-glade_developerdir = $(pkgdatadir)/glade/developer
-dist_glade_developer_DATA = ui/developer/dialog_add_related_table.glade \
+EXTRA_DIST += \
+	ui/developer/dialog_add_related_table.glade \
 	ui/developer/dialog_change_language.glade \
 	ui/developer/dialog_choose_field.glade \
 	ui/developer/dialog_choose_relationship.glade \
