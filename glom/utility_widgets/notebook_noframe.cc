@@ -79,7 +79,7 @@ void NotebookNoFrame::set_visible_child(const Glib::ustring& name)
   m_box_pages.set_visible_child(name);
 }
 
-void NotebookNoFrame::append_page(Widget& child, const Glib::ustring& name, const Glib::ustring& tab_label, bool use_mnemonic)
+void NotebookNoFrame::append_page(Widget& child, const Glib::ustring& name, const Glib::ustring& tab_label)
 {
   m_box_pages.add(child, name, tab_label);
 }

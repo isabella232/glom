@@ -57,7 +57,7 @@ protected:
 
   //Signal handlers:
   virtual void on_switch_page_handler(Gtk::Widget* pPage);  //The _handler suffix is to avoid overriding the base class's method.
-  void on_leave_page(guint uiPageNumber);
+  //void on_leave_page(guint uiPageNumber);
 
   //type_signal_leave_page m_signal_leave_page; //Signals when the user leaves a page.
 

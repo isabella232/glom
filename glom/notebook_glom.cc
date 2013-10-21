@@ -56,7 +56,7 @@ Notebook_Glom::type_signal_leave_page Notebook_Glom::signal_leave_page()
 }
 */
 
-void Notebook_Glom::on_switch_page_handler(Gtk::Widget* page)
+void Notebook_Glom::on_switch_page_handler(Gtk::Widget* /* page */)
 {
   //Remove the help hint for the previous page:
   Gtk::Window* pApp = get_app_window();
@@ -92,6 +92,7 @@ void Notebook_Glom::on_switch_page_handler(Gtk::Widget* page)
   }
 }
 
+/* TODO: What this ever necessary?
 void Notebook_Glom::on_leave_page(guint uiPageNumber)
 {
   //Call base class:
@@ -113,6 +114,7 @@ void Notebook_Glom::on_leave_page(guint uiPageNumber)
     }
   }
 }
+*/
 
 Gtk::Window* Notebook_Glom::get_app_window()
 {

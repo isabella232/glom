@@ -39,7 +39,7 @@ public:
   explicit NotebookNoFrame();
   virtual ~NotebookNoFrame();
 
-  void append_page(Widget& child, const Glib::ustring& name, const Glib::ustring& tab_label, bool use_mnemonic = false);
+  void append_page(Widget& child, const Glib::ustring& name, const Glib::ustring& tab_label);
 
   Gtk::Widget* get_visible_child();
   Glib::ustring get_visible_child_name() const;
