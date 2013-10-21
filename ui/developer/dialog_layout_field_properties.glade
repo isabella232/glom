@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.4 on Mon Sep 23 22:50:51 2013 -->
+<!-- Generated with glade 3.16.0 on Mon Oct 21 12:14:22 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkDialog" id="dialog_layout_field_properties">
@@ -296,7 +296,7 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="expand">True</property>
+                            <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">0</property>
                           </packing>
