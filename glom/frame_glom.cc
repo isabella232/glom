@@ -2559,7 +2559,7 @@ gulong Frame_Glom::update_records_count()
   gulong count_all = 0;
   gulong count_found = 0;
   m_Notebook_Data.get_record_counts(count_all, count_found);
-  std::cout << G_STRFUNC << ": count_all=" << count_all << ", count_found=" << count_found << std::endl;
+  //std::cout << G_STRFUNC << ": count_all=" << count_all << ", count_found=" << count_found << std::endl;
 
   std::string str_count_all, str_count_found;
 

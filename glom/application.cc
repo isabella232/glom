@@ -102,8 +102,6 @@ void Application::on_startup()
   add_accelerator("<Primary>c", "edit.copy");
   add_accelerator("<Primary>v", "edit.paste");
   add_accelerator("<Primary>f", "edit.find");
-
-  std::cout << "debug" << std::endl;
 }
 
 void Application::on_open(const Gio::Application::type_vec_files& files,
