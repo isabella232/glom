@@ -70,6 +70,9 @@ BUILT_SOURCES = glom/libglom/data/libglom-resources.c
 glom/libglom/data/libglom-resources.c: $(libglom_resource_file) $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies $(libglom_resource_file))
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate-source $(libglom_resource_file)
 
+EXTRA_DIST = \
+ 	$(libglom_resource_file) \
+	glom/libglom/data/xslt/print_report_to_html.xsl
 
 
 if HOST_WIN32

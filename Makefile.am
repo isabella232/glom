@@ -157,8 +157,6 @@ EXTRA_DIST += \
 	data/ui/developer/window_translations.glade \
 	data/ui/developer/window_users.glade
 
-EXTRA_DIST += data/xslt/print_report_to_html.xsl
-
 # Get the base filenames only, without the extension: 
 example_files_names ?= $(patsubst %.glom,%,$(notdir $(example_files)))
 
