@@ -56,10 +56,21 @@ libglom_d_bakery_include_HEADERS = $(libglom_d_bakery_headers)
 libglom_d_b_view_includedir = $(libglom_d_bakery_includedir)/view
 libglom_d_b_view_include_HEADERS = $(libglom_d_b_view_headers)
 
-glom_libglom_libglom_@GLOM_ABI_VERSION@_la_SOURCES = $(libglom_sources)
+glom_libglom_libglom_@GLOM_ABI_VERSION@_la_SOURCES = \
+	$(libglom_sources) \
+	glom/libglom/data/libglom-resources.c
 
 libglom_all_libs = $(LIBGLOM_LIBS) $(boost_python_libs) -lgettextpo $(GCOV_CFLAGS)
 glom_libglom_libglom_@GLOM_ABI_VERSION@_la_LIBADD = $(libglom_all_libs)
+
+
+# Generate the GResource source file for the xslt files:
+libglom_resource_file = glom/libglom/data/libglom.gresource.xml
+BUILT_SOURCES = glom/libglom/data/libglom-resources.c
+glom/libglom/data/libglom-resources.c: $(libglom_resource_file) $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies $(libglom_resource_file))
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate-source $(libglom_resource_file)
+
+
 
 if HOST_WIN32
 glom_libglom_libglom_@GLOM_ABI_VERSION@_la_LIBADD += -lws2_32

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/gnome/glom/libglom">
+    <file preprocess="xml-stripblanks" alias="data/xslt/print_report_to_html.xsl">glom/libglom/data/xslt/print_report_to_html.xsl</file> 
+  </gresource>
+</gresources>
+
+
+
+
+ 
+
+

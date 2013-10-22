@@ -46,7 +46,7 @@ namespace
 {
   static std::string get_xslt_filepath(const std::string& xsl_file)
   {
-    const std::string resource_path = "/org/gnome/glom/data/xslt/" + xsl_file;
+    const std::string resource_path = "/org/gnome/glom/libglom/data/xslt/" + xsl_file;
     if(!g_resources_get_info(resource_path.c_str(), G_RESOURCE_LOOKUP_FLAGS_NONE, 0, 0, 0))
     {
       std::cerr << G_STRFUNC << ": xslt resource not found: " << resource_path << std::endl;

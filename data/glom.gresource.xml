@@ -64,8 +64,6 @@
     <file>data/icons/glom-related-records.png</file>
     <file>data/icons/glom-text.png</file>
     <file>data/icons/48x48/glom.png</file>
-
-    <file preprocess="xml-stripblanks">data/xslt/print_report_to_html.xsl</file> 
   </gresource>
 </gresources>
 
