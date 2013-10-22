@@ -44,29 +44,15 @@
 
 namespace
 {
-  static std::string get_xsl_file_dir()
+  static std::string get_xslt_filepath(const std::string& xsl_file)
   {
-#ifdef G_OS_WIN32
-    gchar* directory = g_win32_get_package_installation_directory_of_module(0);
-    const std::string xsltdir = Glib::build_filename(directory,
-        "share" G_DIR_SEPARATOR_S "glom" G_DIR_SEPARATOR_S "xslt");
-    g_free(directory);
-    return xsltdir;
-#else
-    return GLOM_PKGDATADIR_XSLT;
-#endif
-  }
+    const std::string resource_path = "/org/gnome/glom/data/xslt/" + xsl_file;
+    if(!g_resources_get_info(resource_path.c_str(), G_RESOURCE_LOOKUP_FLAGS_NONE, 0, 0, 0))
+    {
+      std::cerr << G_STRFUNC << ": xslt resource not found: " << resource_path << std::endl;
+    }
 
-  static std::string get_xslt_file(const std::string& xsl_file)
-  {
-    const std::string result = Glib::build_filename(get_xsl_file_dir(), xsl_file);
-
-    // Check that it exists:
-    const Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(result);
-    if(file && file->query_exists())
-      return result;
-
-    return Glib::build_filename(GLOM_PKGDATADIR_XSLT_NOTINSTALLED, xsl_file);
+    return "resource://" + resource_path;
   }
 }
 
@@ -74,7 +60,7 @@ namespace Glom
 {
 
 
-static Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt)
+static Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std::string& resource_path_xslt)
 {
   //Debug output:
   //std::cout << "XML before XSLT processing: " << std::endl;
@@ -83,10 +69,23 @@ static Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std
   //nonconst.write_to_stream_formatted(std::cout);
   //std::cout << std::endl;
 
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(resource_path_xslt); //This must use a resource:// URI.
+  char* xslt_data = 0;
+  gsize xslt_length = 0;
+  try
+  {
+    file->load_contents(xslt_data, xslt_length);
+  }
+  catch(const xmlpp::exception& ex)
+  {
+    std::cerr << G_STRFUNC << ": Could not load XSLT from resource path: " << resource_path_xslt << std::endl;
+    return Glib::ustring();
+  }
+
   Glib::ustring result;
 
   //Use libxslt to transform the XML:
-  xmlDocPtr style = xmlReadFile(filepath_xslt.c_str(), 0, 0);
+  xmlDocPtr style = xmlReadDoc((xmlChar*)xslt_data, 0, 0, 0);
   if(style)
   {
     //We need this to be able to use the exsl: functions, even if we declare the namespace at the start of the xsl.
@@ -130,7 +129,7 @@ static Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std
 Glib::ustring GlomXslUtils::transform(const xmlpp::Document& xml_document, const std::string& xsl_file_path)
 {
   //Use libxslt to convert the XML to HTML:
-  return xslt_process(xml_document, get_xslt_file(xsl_file_path));
+  return xslt_process(xml_document, get_xslt_filepath(xsl_file_path));
   //std::cout << "After xslt: " << result << std::endl;
 }
 

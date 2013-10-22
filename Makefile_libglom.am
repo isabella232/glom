@@ -16,9 +16,7 @@
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-libglom_defines = \
--DGLOM_PKGDATADIR_XSLT=\""$(pkgdatadir)/xslt"\" \
--DGLOM_PKGDATADIR_XSLT_NOTINSTALLED=\""$(top_srcdir)/xslt"\"
+libglom_defines =
 
 lib_LTLIBRARIES = glom/libglom/libglom-@GLOM_ABI_VERSION@.la
 
