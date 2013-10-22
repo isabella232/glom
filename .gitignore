@@ -51,5 +51,10 @@ Makefile.in
 /glom.appdata.xml
 
 /test-driver
+/test-suite.log
+
+/data/glom-resources.c
+/examples/glom-examples-resources.c
+/glom/libglom/data/libglom-resources.c
 
 /glom-?.*.tar.*
