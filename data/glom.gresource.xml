@@ -53,7 +53,16 @@
     <file preprocess="xml-stripblanks">data/ui/operator/dialog_import_csv_progress.glade</file>
     <file preprocess="xml-stripblanks">data/ui/operator/dialog_new_record.glade</file>
     <file preprocess="xml-stripblanks">data/ui/operator/window_main.glade</file>
-
+    <file>data/icons/glom-button.png</file>
+    <file>data/icons/glom-field.png</file>
+    <file>data/icons/glom-group.png</file>
+    <file>data/icons/glom-image.png</file>
+    <file>data/icons/glom-line-horizontal.png</file>
+    <file>data/icons/glom-line-vertical.png</file>
+    <file>data/icons/glom-notebook.png</file>
+    <file>data/icons/glom-related-records.png</file>
+    <file>data/icons/glom-text.png</file>
+    <file>data/icons/48x48/glom.png</file>
   </gresource>
 </gresources>
 
