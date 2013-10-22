@@ -464,11 +464,28 @@ void AppWindow::on_menu_help_about()
     vecAuthors.push_back("Murray Cumming <murrayc@murrayc.com>");
     m_pAbout->set_authors(vecAuthors);
     
-    Glib::RefPtr<Gdk::Pixbuf> logo = Gdk::Pixbuf::create_from_file(GLOM_ICONPATH);
+    //For some reason this use of the resource:// syntax does not work:
+    const char* about_icon_name = "48x48/glom.png";
+    //const Glib::ustring glom_icon_path = "resource://" + Utils::get_icon_path(about_icon_name);
+    //Glib::RefPtr<Gdk::Pixbuf> logo = Gdk::Pixbuf::create_from_file(glom_icon_path);
+
+    const Glib::ustring glom_icon_path = Utils::get_icon_path(about_icon_name);
+
+    //TODO: Use this, instead of the C API, when we can depend on gtkmm 3.12, with a try/catch:
+    //Glib::RefPtr<Gdk::Pixbuf> logo = Gdk::Pixbuf::create_from_resource(glom_icon_path);
+    GError* gerror = 0;
+    Glib::RefPtr<Gdk::Pixbuf> logo =
+      Glib::wrap(gdk_pixbuf_new_from_resource(glom_icon_path.c_str(), &gerror));
+    if(gerror)
+    {
+      std::cerr << G_STRFUNC << ": Could not load icon from resource path=" << glom_icon_path << std::endl;
+      g_clear_error(&gerror);
+    }
+
     if(logo)
       m_pAbout->set_logo(logo);
     else
-      std::cout << G_STRFUNC << ": Could not load icon from path=" << GLOM_ICONPATH << std::endl;
+      std::cout << G_STRFUNC << ": Could not load icon from resource path=" << glom_icon_path << std::endl;
 
     m_pAbout->signal_hide().connect( sigc::mem_fun(*this, &AppWindow::on_about_close) );
     m_bAboutShown = true;

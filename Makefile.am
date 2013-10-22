@@ -190,9 +190,6 @@ appicon32dir = $(iconthemedir)/32x32/apps
 appicon48dir = $(iconthemedir)/48x48/apps
 appiconscdir = $(iconthemedir)/scalable/apps
 
-glom_defines += \
--DGLOM_ICONPATH=\""$(appicon24dir)/glom.png"\"
-
 dist_appicon16_DATA = icons/16x16/glom.png
 dist_appicon22_DATA = icons/22x22/glom.png
 dist_appicon24_DATA = icons/24x24/glom.png
@@ -202,17 +199,21 @@ dist_appiconsc_DATA = icons/scalable/glom.svg
 
 noinst_icons = icons/16x16/glom.svg icons/22x22/glom.svg icons/32x32/glom.svg icons/win32/glom.ico
 
-pixmapdir = $(pkgdatadir)/pixmaps
-dist_pixmap_DATA =				\
-	icons/16x16/glom-button.png		\
-	icons/16x16/glom-field.png		\
-	icons/16x16/glom-group.png		\
-	icons/16x16/glom-image.png		\
-	icons/16x16/glom-line-horizontal.png	\
-	icons/16x16/glom-line-vertical.png	\
-	icons/16x16/glom-notebook.png		\
-	icons/16x16/glom-related-records.png	\
-	icons/16x16/glom-text.png
+# These icons are used for toolpalette buttons, and an about dialog:
+icons_for_resources = \
+	icons/glom-button.png		\
+	icons/glom-field.png		\
+	icons/glom-group.png		\
+	icons/glom-image.png		\
+	icons/glom-line-horizontal.png	\
+	icons/glom-line-vertical.png	\
+	icons/glom-notebook.png		\
+	icons/glom-related-records.png	\
+	icons/glom-text.png \
+	icons/48x48/glom.png
+
+EXTRA_DIST += $(icons_for_resources)
+
 
 desktopdir = $(datadir)/applications
 

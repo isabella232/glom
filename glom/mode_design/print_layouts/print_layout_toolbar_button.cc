@@ -28,8 +28,20 @@ namespace Glom
 
 PrintLayoutToolbarButton::PrintLayoutToolbarButton(const std::string& icon_name, enumItems type,
                                          const Glib::ustring& title, const Glib::ustring& tooltip)
-: Gtk::ToolButton( *(Gtk::manage (new Gtk::Image(Utils::get_icon_path(icon_name)))) )
+: Gtk::ToolButton()
 {
+  Gtk::Image* image = Gtk::manage (new Gtk::Image());
+
+  const std::string resource_path = Utils::get_icon_path(icon_name);
+  if(!g_resources_get_info(resource_path.c_str(), G_RESOURCE_LOOKUP_FLAGS_NONE, 0, 0, 0))
+  {
+    std::cerr << G_STRFUNC << ": icon resource not found: " << resource_path << std::endl;
+  }
+
+  image->set_from_resource(resource_path);
+  set_icon_widget(*image);
+
+
   m_type = type;
   g_object_set_data(G_OBJECT(gobj()), "glom-type", GINT_TO_POINTER(type));
 

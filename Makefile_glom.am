@@ -36,15 +36,22 @@ ui/glom-ui-resources.c: $(glom_ui_resource_file) $(shell $(GLIB_COMPILE_RESOURCE
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate-source $(glom_ui_resource_file)
 
 # Generate the GResource source file for example .glom files:
-# TODO: Do not use all .glade files in the client-only build.
 glom_examples_resource_file = examples/glom-examples.gresource.xml
 BUILT_SOURCES += examples/glom-examples-resources.c
 examples/glom-examples-resources.c: $(glom_examples_resource_file) $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies $(glom_examples_resource_file))
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate-source $(glom_examples_resource_file)
 
+# Generate the GResource source file for icon files:
+glom_icons_resource_file = icons/glom-icons.gresource.xml
+BUILT_SOURCES += icons/glom-icons-resources.c
+icons/glom-icons-resources.c: $(glom_icons_resource_file) $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies $(glom_icons_resource_file))
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate-source $(glom_icons_resource_file)
+
 EXTRA_DIST = \
-	$(glom_ui_resource_file)\
-	$(glom_examples_resource_file)
+	$(glom_ui_resource_file) \
+	$(glom_examples_resource_file) \
+	$(glom_icons_resource_file)
+
 
 glom_eggspreadtable_files =  \
   glom/utility_widgets/eggspreadtable/eggmarshalers.c \
