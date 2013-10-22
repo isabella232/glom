@@ -30,9 +30,9 @@ glom_glom_CPPFLAGS = $(glom_includes) $(GLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_
 
 # Generate the GResource source file for .glade files:
 # TODO: Do not use all .glade files in the client-only build.
-glom_ui_resource_file = ui/glom-ui.gresource.xml
-BUILT_SOURCES = ui/glom-ui-resources.c
-ui/glom-ui-resources.c: $(glom_ui_resource_file) $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies $(glom_ui_resource_file))
+glom_ui_resource_file = data/ui/glom-ui.gresource.xml
+BUILT_SOURCES = data/ui/glom-ui-resources.c
+data/ui/glom-ui-resources.c: $(glom_ui_resource_file) $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies $(glom_ui_resource_file))
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate-source $(glom_ui_resource_file)
 
 # Generate the GResource source file for example .glom files:
@@ -42,9 +42,9 @@ examples/glom-examples-resources.c: $(glom_examples_resource_file) $(shell $(GLI
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate-source $(glom_examples_resource_file)
 
 # Generate the GResource source file for icon files:
-glom_icons_resource_file = icons/glom-icons.gresource.xml
-BUILT_SOURCES += icons/glom-icons-resources.c
-icons/glom-icons-resources.c: $(glom_icons_resource_file) $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies $(glom_icons_resource_file))
+glom_icons_resource_file = data/icons/glom-icons.gresource.xml
+BUILT_SOURCES += data/icons/glom-icons-resources.c
+data/icons/glom-icons-resources.c: $(glom_icons_resource_file) $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies $(glom_icons_resource_file))
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate-source $(glom_icons_resource_file)
 
 EXTRA_DIST = \

@@ -522,7 +522,7 @@ void Utils::show_report_in_browser(const std::string& filepath, Gtk::Window* par
 
 std::string Utils::get_icon_path(const Glib::ustring& filename)
 {
-  return  "/org/gnome/glom/icons/" + filename;
+  return  "/org/gnome/glom/data/icons/" + filename;
 }
 
 bool Utils::script_check_for_pygtk2_with_warning(const Glib::ustring& script, Gtk::Window* parent_window)

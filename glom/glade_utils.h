@@ -38,7 +38,7 @@ namespace Utils
 inline std::string get_glade_resource_path(const std::string& filename)
 {
   // This is the same prefix that is in the *gresource.xml.in file.
-  return "/org/gnome/glom/ui/" + filename;
+  return "/org/gnome/glom/data/ui/" + filename;
 }
 
 /** This assumes that there are no other top-level windows in the glade file.

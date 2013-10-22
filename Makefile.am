@@ -102,60 +102,60 @@ dist_pkgdata_DATA = glom/glom_document.dtd
 
 
 EXTRA_DIST += \
-	ui/operator/box_navigation_tables.glade \
-	ui/operator/dialog_choose_date.glade \
-	ui/operator/dialog_connection.glade \
-	ui/operator/dialog_data_invalid_format.glade \
-	ui/operator/dialog_existing_or_new.glade \
-	ui/operator/dialog_find_id.glade \
-	ui/operator/dialog_image_load_progress.glade \
-	ui/operator/dialog_image_save_progress.glade \
-	ui/operator/dialog_import_csv.glade \
-	ui/operator/dialog_import_csv_progress.glade \
-	ui/operator/dialog_new_record.glade \
-	ui/operator/window_main.glade
+	data/ui/operator/box_navigation_tables.glade \
+	data/ui/operator/dialog_choose_date.glade \
+	data/ui/operator/dialog_connection.glade \
+	data/ui/operator/dialog_data_invalid_format.glade \
+	data/ui/operator/dialog_existing_or_new.glade \
+	data/ui/operator/dialog_find_id.glade \
+	data/ui/operator/dialog_image_load_progress.glade \
+	data/ui/operator/dialog_image_save_progress.glade \
+	data/ui/operator/dialog_import_csv.glade \
+	data/ui/operator/dialog_import_csv_progress.glade \
+	data/ui/operator/dialog_new_record.glade \
+	data/ui/operator/window_main.glade
 		
 EXTRA_DIST += \
-	ui/developer/dialog_add_related_table.glade \
-	ui/developer/dialog_change_language.glade \
-	ui/developer/dialog_choose_field.glade \
-	ui/developer/dialog_choose_relationship.glade \
-	ui/developer/dialog_choose_user.glade \
-	ui/developer/dialog_database_preferences.glade \
-	ui/developer/dialog_error_create_database.glade \
-	ui/developer/dialog_fieldslist.glade \
-	ui/developer/dialog_field_summary.glade \
-	ui/developer/dialog_flowtable.glade \
-	ui/developer/dialog_group_by.glade \
-	ui/developer/dialog_initial_password.glade \
-	ui/developer/dialog_line.glade \
-	ui/developer/dialog_layout_field_properties.glade \
-	ui/developer/dialog_new_group.glade \
-	ui/developer/dialog_new_library_script.glade \
-	ui/developer/dialog_notebook.glade \
-	ui/developer/dialog_relationships_overview.glade \
-	ui/developer/dialog_script_library.glade \
-	ui/developer/dialog_sort_fields.glade \
-	ui/developer/dialog_translation_copy.glade \
-	ui/developer/dialog_translation_identify_original.glade \
-	ui/developer/dialog_user.glade \
-	ui/developer/window_button_script.glade \
-	ui/developer/window_data_layout_export.glade \
-	ui/developer/window_data_layout.glade \
-	ui/developer/window_design.glade \
-	ui/developer/window_field_calculation.glade \
-	ui/developer/window_field_definition_edit.glade \
-	ui/developer/box_formatting.glade \
-	ui/developer/window_groups.glade \
-	ui/developer/window_imageobject.glade \
-	ui/developer/window_print_layout_edit.glade \
-	ui/developer/box_print_layouts.glade \
-	ui/developer/window_report_layout.glade \
-	ui/developer/box_reports.glade \
-	ui/developer/window_text_format.glade \
-	ui/developer/window_textobject.glade \
-	ui/developer/window_translations.glade \
-	ui/developer/window_users.glade
+	data/ui/developer/dialog_add_related_table.glade \
+	data/ui/developer/dialog_change_language.glade \
+	data/ui/developer/dialog_choose_field.glade \
+	data/ui/developer/dialog_choose_relationship.glade \
+	data/ui/developer/dialog_choose_user.glade \
+	data/ui/developer/dialog_database_preferences.glade \
+	data/ui/developer/dialog_error_create_database.glade \
+	data/ui/developer/dialog_fieldslist.glade \
+	data/ui/developer/dialog_field_summary.glade \
+	data/ui/developer/dialog_flowtable.glade \
+	data/ui/developer/dialog_group_by.glade \
+	data/ui/developer/dialog_initial_password.glade \
+	data/ui/developer/dialog_line.glade \
+	data/ui/developer/dialog_layout_field_properties.glade \
+	data/ui/developer/dialog_new_group.glade \
+	data/ui/developer/dialog_new_library_script.glade \
+	data/ui/developer/dialog_notebook.glade \
+	data/ui/developer/dialog_relationships_overview.glade \
+	data/ui/developer/dialog_script_library.glade \
+	data/ui/developer/dialog_sort_fields.glade \
+	data/ui/developer/dialog_translation_copy.glade \
+	data/ui/developer/dialog_translation_identify_original.glade \
+	data/ui/developer/dialog_user.glade \
+	data/ui/developer/window_button_script.glade \
+	data/ui/developer/window_data_layout_export.glade \
+	data/ui/developer/window_data_layout.glade \
+	data/ui/developer/window_design.glade \
+	data/ui/developer/window_field_calculation.glade \
+	data/ui/developer/window_field_definition_edit.glade \
+	data/ui/developer/box_formatting.glade \
+	data/ui/developer/window_groups.glade \
+	data/ui/developer/window_imageobject.glade \
+	data/ui/developer/window_print_layout_edit.glade \
+	data/ui/developer/box_print_layouts.glade \
+	data/ui/developer/window_report_layout.glade \
+	data/ui/developer/box_reports.glade \
+	data/ui/developer/window_text_format.glade \
+	data/ui/developer/window_textobject.glade \
+	data/ui/developer/window_translations.glade \
+	data/ui/developer/window_users.glade
 
 xsltdir = $(pkgdatadir)/xslt
 dist_xslt_DATA = xslt/print_report_to_html.xsl
@@ -190,27 +190,31 @@ appicon32dir = $(iconthemedir)/32x32/apps
 appicon48dir = $(iconthemedir)/48x48/apps
 appiconscdir = $(iconthemedir)/scalable/apps
 
-dist_appicon16_DATA = icons/16x16/glom.png
-dist_appicon22_DATA = icons/22x22/glom.png
-dist_appicon24_DATA = icons/24x24/glom.png
-dist_appicon32_DATA = icons/32x32/glom.png
-dist_appicon48_DATA = icons/48x48/glom.png
-dist_appiconsc_DATA = icons/scalable/glom.svg
+dist_appicon16_DATA = data/icons/16x16/glom.png
+dist_appicon22_DATA = data/icons/22x22/glom.png
+dist_appicon24_DATA = data/icons/24x24/glom.png
+dist_appicon32_DATA = data/icons/32x32/glom.png
+dist_appicon48_DATA = data/icons/48x48/glom.png
+dist_appiconsc_DATA = data/icons/scalable/glom.svg
 
-noinst_icons = icons/16x16/glom.svg icons/22x22/glom.svg icons/32x32/glom.svg icons/win32/glom.ico
+noinst_icons = \
+	data/icons/16x16/glom.svg \
+	data/icons/22x22/glom.svg \
+	data/icons/32x32/glom.svg \
+	data/icons/win32/glom.ico
 
 # These icons are used for toolpalette buttons, and an about dialog:
 icons_for_resources = \
-	icons/glom-button.png		\
-	icons/glom-field.png		\
-	icons/glom-group.png		\
-	icons/glom-image.png		\
-	icons/glom-line-horizontal.png	\
-	icons/glom-line-vertical.png	\
-	icons/glom-notebook.png		\
-	icons/glom-related-records.png	\
-	icons/glom-text.png \
-	icons/48x48/glom.png
+	data/icons/glom-button.png \
+	data/icons/glom-field.png \
+	data/icons/glom-group.png \
+	data/icons/glom-image.png \
+	data/icons/glom-line-horizontal.png \
+	data/icons/glom-line-vertical.png \
+	data/icons/glom-notebook.png \
+	data/icons/glom-related-records.png \
+	data/icons/glom-text.png \
+	data/icons/48x48/glom.png
 
 EXTRA_DIST += $(icons_for_resources)
 
