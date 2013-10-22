@@ -116,9 +116,11 @@ dist_noinst_SCRIPTS = tests/test_dtd_file_validation.sh \
 TESTS_ENVIRONMENT = PYTHONPATH=${PYTHONPATH}:$(abs_top_builddir)/glom/python_embed/python_module/.libs
 
 tests_ldadd = glom/libglom/libglom-$(GLOM_ABI_VERSION).la $(libglom_all_libs)
-tests_cppflags = $(glom_includes) $(LIBGLOM_CFLAGS)  $(boost_python_cflags) $(glom_defines)\
+tests_cppflags = $(glom_includes) $(LIBGLOM_CFLAGS)  $(boost_python_cflags) $(glom_defines) \
+	-DGLOM_DOCDIR_EXAMPLES_NOTINSTALLED=\""$(abs_top_srcdir)/examples"\" \
 	-DGLOM_TEST_EXAMPLES_NOTINSTALLED=\""$(abs_top_srcdir)/tests"\"
 tests_cppflags_ui = $(glom_includes) $(GLOM_CFLAGS)  $(boost_python_cflags) $(glom_defines)
+
 
 glom_libglom_test_connectionpool_SOURCES = glom/libglom/test_connectionpool.cc
 glom_libglom_test_connectionpool_LDADD = $(tests_ldadd)
@@ -421,7 +423,7 @@ tests_python_test_python_execute_func_change_result_type_CPPFLAGS = $(tests_cppf
 tests_python_test_python_execute_func_with_record_SOURCES = tests/python/test_python_execute_func_with_record.cc \
   glom/python_embed/glom_python.cc
 tests_python_test_python_execute_func_with_record_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(boost_python_libs)
-tests_python_test_python_execute_func_with_record_CPPFLAGS = $(tests_cppflags_ui)
+tests_python_test_python_execute_func_with_record_CPPFLAGS = $(tests_cppflags) $(tests_cppflags_ui)
 
 tests_python_test_python_execute_script_SOURCES = tests/python/test_python_execute_script.cc \
   glom/python_embed/glom_python.cc
