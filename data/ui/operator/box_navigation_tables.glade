@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.15.4 on Wed Oct 23 11:27:25 2013 -->
 <interface>
-  <requires lib="gtk+" version="3.6"/>
+  <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkWindow" id="window_tables">
     <property name="can_focus">False</property>
     <property name="border_width">12</property>
     <property name="title" translatable="yes">Edit Tables</property>
     <child>
       <object class="GtkBox" id="box_navigation_tables">
-        <property name="orientation">vertical</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
           <object class="GtkAlignment" id="alignment">
@@ -17,9 +18,9 @@
             <property name="can_focus">False</property>
             <child>
               <object class="GtkBox" id="vbox5">
-                <property name="orientation">vertical</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkAlignment" id="alignment_placeholder_adddel">
@@ -38,12 +39,13 @@
                 <child>
                   <object class="GtkCheckButton" id="checkbutton_show_hidden">
                     <property name="label" translatable="yes">_Show hidden tables</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="relief">none</property>
                     <property name="use_underline">True</property>
+                    <property name="xalign">0</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -63,18 +65,17 @@
         </child>
         <child>
           <object class="GtkButtonBox" id="hbuttonbox3">
-            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="button_cancel_tables">
                 <property name="label">gtk-close</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>

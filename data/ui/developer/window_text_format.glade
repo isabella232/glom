@@ -1,36 +1,38 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.15.4 on Wed Oct 23 11:24:44 2013 -->
 <interface>
-  <requires lib="gtk+" version="3.6"/>
-  <!-- interface-naming-policy toplevel-contextual -->
-
+  <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkWindow" id="window_text_format">
+    <property name="can_focus">False</property>
+    <property name="border_width">12</property>
     <property name="title" translatable="yes">Text Format</property>
     <property name="default_width">700</property>
     <property name="default_height">500</property>
     <child>
       <object class="GtkBox" id="vbox6">
-        <property name="orientation">vertical</property>
         <property name="visible">True</property>
-        <property name="border_width">12</property>
+        <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
           <object class="GtkBox" id="box_formatting_placeholder">
-            <property name="orientation">vertical</property>
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
             <child>
               <placeholder/>
             </child>
           </object>
           <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkButtonBox" id="hbuttonbox3">
-            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="spacing">6</property>
             <property name="layout_style">end</property>
             <child>
@@ -52,6 +54,7 @@
           </object>
           <packing>
             <property name="expand">False</property>
+            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>

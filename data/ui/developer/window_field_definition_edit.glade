@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.15.4 on Wed Oct 23 11:20:54 2013 -->
 <interface>
-  <requires lib="gtk+" version="3.6"/>
+  <!-- interface-requires gtk+ 3.6 -->
   <!-- interface-requires gtksourceview 0.0 -->
   <object class="GtkWindow" id="window_field_definition_edit">
     <property name="can_focus">False</property>
+    <property name="border_width">12</property>
     <property name="title" translatable="yes">Field Definition</property>
     <property name="window_position">center-on-parent</property>
     <child>
       <object class="GtkBox" id="vbox11">
-        <property name="orientation">vertical</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="border_width">12</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
           <object class="GtkNotebook" id="notebook1">
@@ -19,18 +20,18 @@
             <property name="can_focus">True</property>
             <child>
               <object class="GtkBox" id="vbox13">
-                <property name="orientation">vertical</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="border_width">6</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkGrid" id="table4">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="border_width">6</property>
-                    <property name="column_spacing">12</property>
                     <property name="row_spacing">6</property>
+                    <property name="column_spacing">12</property>
                     <child>
                       <object class="GtkEntry" id="entry_name">
                         <property name="visible">True</property>
@@ -39,8 +40,8 @@
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
-                        <property name="width">1</property>
                         <property name="top_attach">0</property>
+                        <property name="width">1</property>
                         <property name="height">1</property>
                       </packing>
                     </child>
@@ -56,8 +57,8 @@
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
-                        <property name="width">1</property>
                         <property name="top_attach">0</property>
+                        <property name="width">1</property>
                         <property name="height">1</property>
                       </packing>
                     </child>
@@ -69,8 +70,8 @@
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
-                        <property name="width">1</property>
                         <property name="top_attach">1</property>
+                        <property name="width">1</property>
                         <property name="height">1</property>
                       </packing>
                     </child>
@@ -82,8 +83,8 @@
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
-                        <property name="width">1</property>
                         <property name="top_attach">2</property>
+                        <property name="width">1</property>
                         <property name="height">1</property>
                       </packing>
                     </child>
@@ -105,8 +106,8 @@
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
-                        <property name="width">1</property>
                         <property name="top_attach">2</property>
+                        <property name="width">1</property>
                         <property name="height">1</property>
                       </packing>
                     </child>
@@ -129,8 +130,8 @@
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
-                        <property name="width">1</property>
                         <property name="top_attach">1</property>
+                        <property name="width">1</property>
                         <property name="height">1</property>
                       </packing>
                     </child>
@@ -143,18 +144,18 @@
                 </child>
                 <child>
                   <object class="GtkBox" id="vbox12">
-                    <property name="orientation">vertical</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="border_width">6</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkCheckButton" id="checkbutton_primarykey">
                         <property name="label" translatable="yes">_Primary Key</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="xalign">0</property>
                         <property name="draw_indicator">True</property>
@@ -168,10 +169,10 @@
                     <child>
                       <object class="GtkCheckButton" id="checkbutton_unique">
                         <property name="label" translatable="yes">_Unique</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="xalign">0</property>
                         <property name="draw_indicator">True</property>
@@ -185,10 +186,10 @@
                     <child>
                       <object class="GtkCheckButton" id="checkbutton_autoincrement">
                         <property name="label" translatable="yes">_Auto-increment</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="xalign">0</property>
                         <property name="draw_indicator">True</property>
@@ -221,10 +222,10 @@
             </child>
             <child>
               <object class="GtkBox" id="box_default_value">
-                <property name="orientation">vertical</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="border_width">12</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">18</property>
                 <child>
                   <object class="GtkFrame" id="frame39">
@@ -240,13 +241,12 @@
                         <property name="left_padding">12</property>
                         <child>
                           <object class="GtkBox" id="vbox96">
-                            <property name="orientation">vertical</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkBox" id="hbox_default_value_simple">
-                                <property name="orientation">horizontal</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="spacing">12</property>
@@ -266,10 +266,10 @@
                             <child>
                               <object class="GtkCheckButton" id="checkbutton_lookup">
                                 <property name="label" translatable="yes">_Lookup value when a field changes.</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="use_underline">True</property>
                                 <property name="xalign">0</property>
                                 <property name="draw_indicator">True</property>
@@ -284,8 +284,8 @@
                               <object class="GtkGrid" id="table_lookup">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="column_spacing">12</property>
                                 <property name="row_spacing">6</property>
+                                <property name="column_spacing">12</property>
                                 <child>
                                   <object class="GtkComboBoxText" id="combobox_lookup_field">
                                     <property name="visible">True</property>
@@ -294,8 +294,8 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="width">1</property>
                                     <property name="top_attach">1</property>
+                                    <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
                                 </child>
@@ -307,8 +307,8 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="width">1</property>
                                     <property name="top_attach">0</property>
+                                    <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
                                 </child>
@@ -323,8 +323,8 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
-                                    <property name="width">1</property>
                                     <property name="top_attach">0</property>
+                                    <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
                                 </child>
@@ -346,8 +346,8 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
-                                    <property name="width">1</property>
                                     <property name="top_attach">1</property>
+                                    <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
                                 </child>
@@ -365,10 +365,10 @@
                     <child type="label">
                       <object class="GtkRadioButton" id="radiobutton_userentry">
                         <property name="label" translatable="yes">_User Entry</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="xalign">0</property>
                         <property name="draw_indicator">True</property>
@@ -395,7 +395,6 @@
                         <property name="left_padding">12</property>
                         <child>
                           <object class="GtkBox" id="hbox16">
-                            <property name="orientation">horizontal</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="spacing">6</property>
@@ -404,12 +403,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="shadow_type">in</property>
-                                <child>
-                                  <object class="GtkSourceView" id="textview_calculate">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                  </object>
-                                </child>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -419,16 +412,16 @@
                             </child>
                             <child>
                               <object class="GtkBox" id="vbox22">
-                                <property name="orientation">vertical</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
                                 <child>
                                   <object class="GtkButton" id="button_edit_calculation">
                                     <property name="label" translatable="yes">_Edit</property>
+                                    <property name="use_action_appearance">False</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
-                                    <property name="use_action_appearance">False</property>
                                     <property name="use_underline">True</property>
                                   </object>
                                   <packing>
@@ -451,10 +444,10 @@
                     <child type="label">
                       <object class="GtkRadioButton" id="radiobutton_calculate">
                         <property name="label" translatable="yes">_Calculate Value</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="xalign">0</property>
                         <property name="draw_indicator">True</property>
@@ -487,10 +480,10 @@
             </child>
             <child>
               <object class="GtkBox" id="box_formatting_placeholder">
-                <property name="orientation">vertical</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="border_width">6</property>
+                <property name="orientation">vertical</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -520,7 +513,6 @@
         </child>
         <child>
           <object class="GtkButtonBox" id="hbuttonbox8">
-            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="spacing">6</property>
@@ -528,11 +520,11 @@
             <child>
               <object class="GtkButton" id="button_cancel">
                 <property name="label">gtk-cancel</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -544,13 +536,13 @@
             <child>
               <object class="GtkButton" id="button_save">
                 <property name="label">gtk-save</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="has_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>

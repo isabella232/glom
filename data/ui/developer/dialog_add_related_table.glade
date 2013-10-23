@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.15.4 on Tue Oct 22 22:17:12 2013 -->
 <interface>
-  <requires lib="gtk+" version="3.6"/>
+  <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkDialog" id="dialog_add_related_table">
     <property name="can_focus">False</property>
+    <property name="border_width">6</property>
     <property name="title" translatable="yes">Add Related Table</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
@@ -19,11 +21,11 @@
             <child>
               <object class="GtkButton" id="button41">
                 <property name="label">gtk-cancel</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -34,12 +36,12 @@
             </child>
             <child>
               <object class="GtkButton" id="button_ok">
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="has_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <child>
                   <object class="GtkAlignment" id="alignment92">
                     <property name="visible">True</property>
@@ -48,7 +50,6 @@
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkBox" id="hbox128">
-                        <property name="orientation">horizontal</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="spacing">2</property>
@@ -98,10 +99,10 @@
         </child>
         <child>
           <object class="GtkBox" id="vbox104">
-            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">18</property>
             <child>
               <object class="GtkLabel" id="label259">
@@ -122,7 +123,6 @@ If a suitable related table already exists then you should instead cancel and ju
             </child>
             <child>
               <object class="GtkBox" id="hbox125">
-                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="spacing">12</property>
@@ -151,10 +151,10 @@ If a suitable related table already exists then you should instead cancel and ju
                 </child>
                 <child>
                   <object class="GtkButton" id="button_edit_fields">
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <child>
                       <object class="GtkAlignment" id="alignment91">
                         <property name="visible">True</property>
@@ -163,7 +163,6 @@ If a suitable related table already exists then you should instead cancel and ju
                         <property name="yscale">0</property>
                         <child>
                           <object class="GtkBox" id="hbox127">
-                            <property name="orientation">horizontal</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="spacing">2</property>
@@ -215,8 +214,8 @@ If a suitable related table already exists then you should instead cancel and ju
               <object class="GtkGrid" id="table1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="column_spacing">12</property>
                 <property name="row_spacing">6</property>
+                <property name="column_spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label247">
                     <property name="visible">True</property>
@@ -226,8 +225,8 @@ If a suitable related table already exists then you should instead cancel and ju
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="width">1</property>
                     <property name="top_attach">0</property>
+                    <property name="width">1</property>
                     <property name="height">1</property>
                   </packing>
                 </child>
@@ -240,8 +239,8 @@ If a suitable related table already exists then you should instead cancel and ju
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="width">1</property>
                     <property name="top_attach">0</property>
+                    <property name="width">1</property>
                     <property name="height">1</property>
                   </packing>
                 </child>
@@ -254,8 +253,8 @@ If a suitable related table already exists then you should instead cancel and ju
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="width">1</property>
                     <property name="top_attach">1</property>
+                    <property name="width">1</property>
                     <property name="height">1</property>
                   </packing>
                 </child>
@@ -269,8 +268,8 @@ If a suitable related table already exists then you should instead cancel and ju
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="width">1</property>
                     <property name="top_attach">1</property>
+                    <property name="width">1</property>
                     <property name="height">1</property>
                   </packing>
                 </child>

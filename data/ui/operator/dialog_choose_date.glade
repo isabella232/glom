@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.15.4 on Wed Oct 23 11:15:15 2013 -->
 <interface>
-  <requires lib="gtk+" version="3.6"/>
+  <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkDialog" id="dialog_choose_date">
     <property name="can_focus">False</property>
+    <property name="border_width">6</property>
     <property name="title" translatable="yes">Choose Date</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
@@ -18,11 +20,11 @@
             <child>
               <object class="GtkButton" id="button40">
                 <property name="label">gtk-help</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -34,11 +36,11 @@
             <child>
               <object class="GtkButton" id="button_cancel">
                 <property name="label">gtk-cancel</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -50,11 +52,11 @@
             <child>
               <object class="GtkButton" id="button_ok">
                 <property name="label">gtk-ok</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -73,14 +75,13 @@
         </child>
         <child>
           <object class="GtkBox" id="vbox100">
-            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkBox" id="hbox119">
-                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="border_width">12</property>
@@ -92,7 +93,7 @@
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
                     <property name="stock">gtk-dialog-question</property>
-                    <property name="icon-size">6</property>
+                    <property name="icon_size">6</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -102,9 +103,9 @@
                 </child>
                 <child>
                   <object class="GtkBox" id="vbox101">
-                    <property name="orientation">vertical</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkLabel" id="label244">
                         <property name="visible">True</property>
@@ -142,6 +143,8 @@ Please select a date to enter in this field.</property>
               <object class="GtkCalendar" id="calendar">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
               </object>
               <packing>
                 <property name="expand">True</property>

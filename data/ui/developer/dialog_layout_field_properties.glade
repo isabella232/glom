@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Mon Oct 21 12:14:22 2013 -->
+<!-- Generated with glade 3.15.4 on Wed Oct 23 11:05:59 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkDialog" id="dialog_layout_field_properties">
     <property name="can_focus">False</property>
+    <property name="border_width">6</property>
     <property name="title" translatable="yes">Field Layout</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">

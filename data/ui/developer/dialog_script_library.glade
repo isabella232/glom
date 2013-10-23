@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.15.4 on Tue Oct 22 22:16:16 2013 -->
 <interface>
-  <requires lib="gtk+" version="3.6"/>
+  <!-- interface-requires gtk+ 3.6 -->
   <!-- interface-requires gtksourceview 0.0 -->
   <object class="GtkDialog" id="dialog_script_library">
     <property name="can_focus">False</property>
+    <property name="border_width">6</property>
     <property name="title" translatable="yes">Script Library</property>
     <property name="default_width">500</property>
     <property name="default_height">600</property>
@@ -21,11 +23,11 @@
             <child>
               <object class="GtkButton" id="helpbutton1">
                 <property name="label">gtk-help</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -37,11 +39,11 @@
             <child>
               <object class="GtkButton" id="okbutton5">
                 <property name="label">gtk-ok</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -60,10 +62,10 @@
         </child>
         <child>
           <object class="GtkBox" id="vbox1">
-            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkLabel" id="label1">
@@ -81,7 +83,6 @@
             </child>
             <child>
               <object class="GtkBox" id="hbox1">
-                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="spacing">6</property>
@@ -111,10 +112,10 @@
                 <child>
                   <object class="GtkButton" id="button_add">
                     <property name="label">gtk-add</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
                   </object>
                   <packing>
@@ -126,10 +127,10 @@
                 <child>
                   <object class="GtkButton" id="button_remove">
                     <property name="label">gtk-remove</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
                   </object>
                   <packing>
@@ -151,14 +152,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="shadow_type">in</property>
-                <child>
-                  <object class="GtkSourceView" id="textview_script">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="left_margin">2</property>
-                    <property name="right_margin">2</property>
-                  </object>
-                </child>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -168,18 +161,17 @@
             </child>
             <child>
               <object class="GtkButtonBox" id="hbuttonbox1">
-                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="layout_style">end</property>
                 <child>
                   <object class="GtkButton" id="button_check">
                     <property name="label" translatable="yes" comments="Translators: This is the verb. It is for checking that a Python script works.">_Check</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="can_default">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_underline">True</property>
                   </object>
                   <packing>
