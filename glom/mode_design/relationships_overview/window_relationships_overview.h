@@ -25,7 +25,7 @@
 #include "glom/utility_widgets/canvas/canvas_editable.h"
 #include "canvas_group_dbtable.h"
 #include <gtkmm/dialog.h>
-#include <gtkmm/widget.h>
+#include <gtkmm/applicationwindow.h>
 #include <gtkmm/menubar.h>
 #include <gtkmm/printoperation.h>
 #include <gtkmm/scrolledwindow.h>
@@ -41,7 +41,7 @@ namespace Glom
 {
  
 class Window_RelationshipsOverview
- : public Gtk::Window,
+ : public Gtk::ApplicationWindow,
    public View_Composite_Glom
 {
 public:

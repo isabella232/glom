@@ -42,7 +42,7 @@ const char* Window_RelationshipsOverview::glade_id("window_relationships_overvie
 const bool Window_RelationshipsOverview::glade_developer(true);
 
 Window_RelationshipsOverview::Window_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
-  : Gtk::Window(cobject),
+  : Gtk::ApplicationWindow(cobject),
     m_builder(builder),
     m_menu(0),
     m_modified(false),
@@ -62,9 +62,9 @@ Window_RelationshipsOverview::Window_RelationshipsOverview(BaseObjectType* cobje
 
   Glib::RefPtr<Gio::SimpleActionGroup> action_group = Gio::SimpleActionGroup::create();
 
-  action_group->add_action("pagesetup",
+  add_action("pagesetup",
     sigc::mem_fun(*this, &Window_RelationshipsOverview::on_menu_file_page_setup) );
-  action_group->add_action("print",
+  add_action("print",
     sigc::mem_fun(*this, &Window_RelationshipsOverview::on_menu_file_print) );
 
   m_action_showgrid = Gio::SimpleAction::create_bool("showgrid", false);

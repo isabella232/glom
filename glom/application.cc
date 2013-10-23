@@ -99,6 +99,7 @@ void Application::on_startup()
   add_accelerator("<Primary>n", "file.new");
   add_accelerator("<Primary>o", "file.open");
   add_accelerator("<Primary>w", "win.close");
+  add_accelerator("<Primary>p", "win.print"); //Not in the main window, but in the Relationships Overview window, and maybe other.
   add_accelerator("<Primary>c", "edit.copy");
   add_accelerator("<Primary>v", "edit.paste");
   add_accelerator("<Primary>f", "edit.find");

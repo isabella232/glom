@@ -8,11 +8,11 @@
       <section>
         <item>
           <attribute name='label' translatable='yes'>Page _Setup</attribute>
-          <attribute name='action'>relationshipsoverview.pagesetup</attribute>
+          <attribute name='action'>win.pagesetup</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>_Print</attribute>
-          <attribute name='action'>relationshipsoverview.print</attribute>
+          <attribute name='action'>win.print</attribute>
           <attribute name='accel'>&lt;Primary&gt;p</attribute>
         </item>
       </section>
@@ -42,7 +42,7 @@
   </menu>
 
   <!-- interface-requires gtk+ 3.6 -->
-  <object class="GtkWindow" id="window_relationships_overview">
+  <object class="GtkApplicationWindow" id="window_relationships_overview">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Relationships Overview</property>
     <property name="default_width">400</property>

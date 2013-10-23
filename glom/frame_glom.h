@@ -42,6 +42,7 @@
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #include "dialog_connection.h"
+#include <gtkmm/applicationwindow.h>
 #include <libglom/utils.h>
 
 #include "mode_data/box_data_list_related.h" //only for m_HackToFixLinkerError.
@@ -215,6 +216,8 @@ private:
 
   Gtk::Window* get_app_window();
   const Gtk::Window* get_app_window() const;
+
+  void add_window_to_app(Gtk::ApplicationWindow* window);
 
   /** Show the number of records in the table, and the number found, in the UI.
    * @result The number of records found, for convenience for the caller.
