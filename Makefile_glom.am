@@ -354,10 +354,10 @@ glom_source_files +=							\
 	glom/mode_design/layout/layout_item_dialogs/dialog_textobject.h			\
 	glom/mode_design/relationships_overview/canvas_group_dbtable.cc			\
 	glom/mode_design/relationships_overview/canvas_group_dbtable.h			\
-	glom/mode_design/relationships_overview/dialog_relationships_overview.cc	\
-	glom/mode_design/relationships_overview/dialog_relationships_overview.h		\
 	glom/mode_design/relationships_overview/printoperation_relationshipsoverview.cc	\
 	glom/mode_design/relationships_overview/printoperation_relationshipsoverview.h	\
+	glom/mode_design/relationships_overview/window_relationships_overview.cc	\
+	glom/mode_design/relationships_overview/window_relationships_overview.h		\
 	glom/mode_design/print_layouts/box_print_layouts.cc		\
 	glom/mode_design/print_layouts/box_print_layouts.h		\
 	glom/mode_design/print_layouts/dialog_text_formatting.cc	\

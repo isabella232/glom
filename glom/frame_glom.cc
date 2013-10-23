@@ -42,7 +42,7 @@
 #include <glom/mode_design/dialog_add_related_table.h>
 #include <glom/mode_design/script_library/dialog_script_library.h>
 #include <glom/mode_design/dialog_initial_password.h>
-#include <glom/mode_design/relationships_overview/dialog_relationships_overview.h>
+#include <glom/mode_design/relationships_overview/window_relationships_overview.h>
 #include <glom/glade_utils.h>
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -93,7 +93,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_pDialog_Fields(0),
   m_pDialog_Relationships(0),
   m_dialog_addrelatedtable(0),
-  m_dialog_relationships_overview(0),
+  m_window_relationships_overview(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_pDialogConnection(0)
 {
@@ -228,11 +228,11 @@ Frame_Glom::~Frame_Glom()
     m_dialog_addrelatedtable = 0;
   }
 
-  if(m_dialog_relationships_overview)
+  if(m_window_relationships_overview)
   {
-    remove_view(m_dialog_relationships_overview);
-    delete m_dialog_relationships_overview;
-    m_dialog_relationships_overview = 0;
+    remove_view(m_window_relationships_overview);
+    delete m_window_relationships_overview;
+    m_window_relationships_overview = 0;
   }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
@@ -1613,22 +1613,20 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent)
 
 void Frame_Glom::on_menu_developer_relationships_overview()
 {
-  if(!m_dialog_relationships_overview)
+  if(!m_window_relationships_overview)
   {
-    Utils::get_glade_widget_derived_with_warning(m_dialog_relationships_overview);
-    add_view(m_dialog_relationships_overview);
+    Utils::get_glade_widget_derived_with_warning(m_window_relationships_overview);
+    add_view(m_window_relationships_overview);
+
+    m_window_relationships_overview->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
   }
 
-  if(m_dialog_relationships_overview)
+  if(m_window_relationships_overview)
   {
-    m_dialog_relationships_overview->set_transient_for(*(get_app_window()));
-    m_dialog_relationships_overview->load_from_document();
+    m_window_relationships_overview->set_transient_for(*(get_app_window()));
+    m_window_relationships_overview->load_from_document();
 
-    Glom::Utils::dialog_run_with_help(m_dialog_relationships_overview);
-
-    remove_view(m_dialog_relationships_overview);
-    delete m_dialog_relationships_overview;
-    m_dialog_relationships_overview = 0;
+    m_window_relationships_overview->show();
   }
 }
 
@@ -1857,8 +1855,8 @@ void Frame_Glom::on_developer_dialog_hide()
     m_dialog_addrelatedtable->set_fields(m_table_name);
 
   //Update the display. TODO: Shouldn't this happen automatically via the view?
-  if(m_dialog_relationships_overview)
-    m_dialog_relationships_overview->load_from_document();
+  if(m_window_relationships_overview)
+    m_window_relationships_overview->load_from_document();
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

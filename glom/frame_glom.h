@@ -53,7 +53,7 @@ namespace Glom
 class Dialog_Layout_Report;
 class Window_PrintLayout_Edit;
 class Dialog_AddRelatedTable;
-class Dialog_RelationshipsOverview;
+class Window_RelationshipsOverview;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 class Frame_Glom :
@@ -288,7 +288,7 @@ private:
   Dialog_Fields* m_pDialog_Fields;
   Dialog_Relationships* m_pDialog_Relationships;
   Dialog_AddRelatedTable* m_dialog_addrelatedtable;
-  Dialog_RelationshipsOverview* m_dialog_relationships_overview;
+  Window_RelationshipsOverview* m_window_relationships_overview;
 
 #endif //GLOM_ENABLE_CLIENT_ONLY
 

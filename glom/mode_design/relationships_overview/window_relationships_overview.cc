@@ -19,7 +19,7 @@
  */
 
 #include "config.h"
-#include "dialog_relationships_overview.h"
+#include "window_relationships_overview.h"
 #include "glom/utility_widgets/canvas/canvas_line_movable.h"
 #include "glom/utility_widgets/canvas/canvas_text_movable.h"
 #include <glom/mode_design/layout/dialog_choose_relationship.h>
@@ -35,19 +35,24 @@ namespace Glom
 {
 
 //static:
-int Dialog_RelationshipsOverview::m_last_size_x = 0;
-int Dialog_RelationshipsOverview::m_last_size_y = 0;
+int Window_RelationshipsOverview::m_last_size_x = 0;
+int Window_RelationshipsOverview::m_last_size_y = 0;
 
-const char* Dialog_RelationshipsOverview::glade_id("dialog_relationships_overview");
-const bool Dialog_RelationshipsOverview::glade_developer(true);
+const char* Window_RelationshipsOverview::glade_id("window_relationships_overview");
+const bool Window_RelationshipsOverview::glade_developer(true);
 
-Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
-  : Gtk::Dialog(cobject),
+Window_RelationshipsOverview::Window_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+  : Gtk::Window(cobject),
     m_builder(builder),
     m_menu(0),
     m_modified(false),
     m_scrolledwindow_canvas(0)
 {
+  Gtk::Button* button_close = 0;
+  builder->get_widget("button_close",  button_close);
+  if(button_close)
+    button_close->signal_clicked().connect( sigc::mem_fun(*this, &Window_RelationshipsOverview::on_button_close) );
+
   m_refPageSetup = Gtk::PageSetup::create();
   m_refSettings = Gtk::PrintSettings::create();
 
@@ -58,14 +63,14 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   Glib::RefPtr<Gio::SimpleActionGroup> action_group = Gio::SimpleActionGroup::create();
 
   action_group->add_action("pagesetup",
-    sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_menu_file_page_setup) );
+    sigc::mem_fun(*this, &Window_RelationshipsOverview::on_menu_file_page_setup) );
   action_group->add_action("print",
-    sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_menu_file_print) );
+    sigc::mem_fun(*this, &Window_RelationshipsOverview::on_menu_file_print) );
 
   m_action_showgrid = Gio::SimpleAction::create_bool("showgrid", false);
   action_group->add_action(m_action_showgrid);
   m_action_showgrid->signal_activate().connect(
-    sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_menu_view_showgrid)
+    sigc::mem_fun(*this, &Window_RelationshipsOverview::on_menu_view_showgrid)
   );
 
   insert_action_group("relationshipsoverview", action_group);
@@ -106,14 +111,14 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   //Respond to changes of window size,
   //so we always make the canvas bounds big enough:
   m_scrolledwindow_canvas->get_hadjustment()->signal_changed().connect(
-    sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_scroll_value_changed) );
+    sigc::mem_fun(*this, &Window_RelationshipsOverview::on_scroll_value_changed) );
   m_scrolledwindow_canvas->get_vadjustment()->signal_changed().connect(
-    sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_scroll_value_changed) );
+    sigc::mem_fun(*this, &Window_RelationshipsOverview::on_scroll_value_changed) );
 
   setup_context_menu();
 }
 
-Dialog_RelationshipsOverview::~Dialog_RelationshipsOverview()
+Window_RelationshipsOverview::~Window_RelationshipsOverview()
 {
   get_size(m_last_size_x, m_last_size_y);
 
@@ -133,7 +138,7 @@ Dialog_RelationshipsOverview::~Dialog_RelationshipsOverview()
 }
 
 
-void Dialog_RelationshipsOverview::draw_tables()
+void Window_RelationshipsOverview::draw_tables()
 {
   //Disconnect signal handlers for all current items,
   //so sigc::bind()ed RefPtrs can be released.
@@ -182,10 +187,10 @@ void Dialog_RelationshipsOverview::draw_tables()
       m_canvas.associate_with_grid(table_group); //Make snapping work.
 
       table_group->signal_moved().connect(
-        sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_moved));
+        sigc::mem_fun(*this, &Window_RelationshipsOverview::on_table_moved));
 
       sigc::connection the_connection = table_group->signal_show_context().connect( sigc::bind(
-        sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_show_context),
+        sigc::mem_fun(*this, &Window_RelationshipsOverview::on_table_show_context),
         table_group) );
       m_list_table_connections.push_back(the_connection);
 
@@ -201,7 +206,7 @@ void Dialog_RelationshipsOverview::draw_tables()
   }
 }
 
-void Dialog_RelationshipsOverview::draw_lines()
+void Window_RelationshipsOverview::draw_lines()
 {
   //Remove all current items:
   while(m_group_lines->get_n_children() > 0)
@@ -316,26 +321,18 @@ void Dialog_RelationshipsOverview::draw_lines()
   }
 }
 
-void Dialog_RelationshipsOverview::load_from_document()
+void Window_RelationshipsOverview::load_from_document()
 {
   draw_tables();
   draw_lines();
 }
 
-void Dialog_RelationshipsOverview::on_response(int /* id */)
-{
-  if(m_modified && get_document())
-    get_document()->set_modified();
-
-  hide();
-}
-
-void Dialog_RelationshipsOverview::on_menu_file_print()
+void Window_RelationshipsOverview::on_menu_file_print()
 {
   print_or_preview(Gtk::PRINT_OPERATION_ACTION_PRINT_DIALOG);
 }
 
-void Dialog_RelationshipsOverview::on_menu_file_page_setup()
+void Window_RelationshipsOverview::on_menu_file_page_setup()
 {
   //Show the page setup dialog, asking it to start with the existing settings:
   Glib::RefPtr<Gtk::PageSetup> new_page_setup =
@@ -346,7 +343,7 @@ void Dialog_RelationshipsOverview::on_menu_file_page_setup()
   m_refPageSetup = new_page_setup;
 }
 
-void Dialog_RelationshipsOverview::on_menu_view_showgrid(const Glib::VariantBase& /* parameter */)
+void Window_RelationshipsOverview::on_menu_view_showgrid(const Glib::VariantBase& /* parameter */)
 {
   bool showgrid = false;
   m_action_showgrid->get_state(showgrid);
@@ -366,11 +363,11 @@ void Dialog_RelationshipsOverview::on_menu_view_showgrid(const Glib::VariantBase
 }
 
 //TODO: Is this used?
-void Dialog_RelationshipsOverview::on_menu_file_save()
+void Window_RelationshipsOverview::on_menu_file_save()
 {
 }
 
-void Dialog_RelationshipsOverview::print_or_preview(Gtk::PrintOperationAction print_action)
+void Window_RelationshipsOverview::print_or_preview(Gtk::PrintOperationAction print_action)
 {
   //Create a new PrintOperation with our PageSetup and PrintSettings:
   //(We use our derived PrintOperation class)
@@ -396,7 +393,7 @@ void Dialog_RelationshipsOverview::print_or_preview(Gtk::PrintOperationAction pr
   }
 }
 
-Glib::RefPtr<CanvasGroupDbTable> Dialog_RelationshipsOverview::get_table_group(const Glib::ustring& table_name)
+Glib::RefPtr<CanvasGroupDbTable> Window_RelationshipsOverview::get_table_group(const Glib::ustring& table_name)
 {
   const int count = m_group_tables->get_n_children();
   for(int i = 0; i < count; ++i)
@@ -413,7 +410,7 @@ Glib::RefPtr<CanvasGroupDbTable> Dialog_RelationshipsOverview::get_table_group(c
   return Glib::RefPtr<CanvasGroupDbTable>();
 }
 
-void Dialog_RelationshipsOverview::on_table_moved(const Glib::RefPtr<CanvasItemMovable>& item, double /* x_offset */, double /* y_offset */)
+void Window_RelationshipsOverview::on_table_moved(const Glib::RefPtr<CanvasItemMovable>& item, double /* x_offset */, double /* y_offset */)
 {
   Glib::RefPtr<CanvasGroupDbTable> table = 
     Glib::RefPtr<CanvasGroupDbTable>::cast_dynamic(item);
@@ -436,7 +433,7 @@ void Dialog_RelationshipsOverview::on_table_moved(const Glib::RefPtr<CanvasItemM
   draw_lines();
 }
 
-void Dialog_RelationshipsOverview::on_table_show_context(guint button, guint32 activate_time, Glib::RefPtr<CanvasGroupDbTable> table)
+void Window_RelationshipsOverview::on_table_show_context(guint button, guint32 activate_time, Glib::RefPtr<CanvasGroupDbTable> table)
 {
   if(m_action_edit_fields)
   {
@@ -444,18 +441,18 @@ void Dialog_RelationshipsOverview::on_table_show_context(guint button, guint32 a
     // and connect a new one, with the correct table as a bound parameter:
     m_connection_edit_fields.disconnect();
     m_connection_edit_fields = m_action_edit_fields->signal_activate().connect(
-      sigc::bind( sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_context_menu_edit_fields), table ));
+      sigc::bind( sigc::mem_fun(*this, &Window_RelationshipsOverview::on_context_menu_edit_fields), table ));
 
     m_connection_edit_relationships.disconnect();
     m_connection_edit_relationships = m_action_edit_relationships->signal_activate().connect(
-      sigc::bind( sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_context_menu_edit_relationships), table ));
+      sigc::bind( sigc::mem_fun(*this, &Window_RelationshipsOverview::on_context_menu_edit_relationships), table ));
   }
 
   if(m_context_menu)
     m_context_menu->popup(button, activate_time);
 }
 
-void Dialog_RelationshipsOverview::setup_context_menu()
+void Window_RelationshipsOverview::setup_context_menu()
 {
   Glib::RefPtr<Gio::SimpleActionGroup> action_group = Gio::SimpleActionGroup::create();
 
@@ -476,7 +473,7 @@ void Dialog_RelationshipsOverview::setup_context_menu()
   m_context_menu->attach_to_widget(*this);
 }
 
-void Dialog_RelationshipsOverview::on_context_menu_edit_fields(const Glib::VariantBase& /* parameter */, Glib::RefPtr<CanvasGroupDbTable> table)
+void Window_RelationshipsOverview::on_context_menu_edit_fields(const Glib::VariantBase& /* parameter */, Glib::RefPtr<CanvasGroupDbTable> table)
 {
   AppWindow* pApp = AppWindow::get_appwindow();
   if(pApp && table)
@@ -487,7 +484,7 @@ void Dialog_RelationshipsOverview::on_context_menu_edit_fields(const Glib::Varia
   }
 }
 
-void Dialog_RelationshipsOverview::on_context_menu_edit_relationships(const Glib::VariantBase& /* parameter */, Glib::RefPtr<CanvasGroupDbTable> table)
+void Window_RelationshipsOverview::on_context_menu_edit_relationships(const Glib::VariantBase& /* parameter */, Glib::RefPtr<CanvasGroupDbTable> table)
 {
   AppWindow* pApp = AppWindow::get_appwindow();
   if(pApp && table)
@@ -499,7 +496,7 @@ void Dialog_RelationshipsOverview::on_context_menu_edit_relationships(const Glib
 }
 
 
-void Dialog_RelationshipsOverview::on_scroll_value_changed()
+void Window_RelationshipsOverview::on_scroll_value_changed()
 {
   if(!m_scrolledwindow_canvas)
     return;
@@ -524,6 +521,14 @@ void Dialog_RelationshipsOverview::on_scroll_value_changed()
   {
     m_canvas.set_bounds(0, 0, width, height);
   }
+}
+
+void Window_RelationshipsOverview::on_button_close()
+{
+  if(m_modified && get_document())
+    get_document()->set_modified();
+
+  hide();
 }
 
 } //namespace Glom

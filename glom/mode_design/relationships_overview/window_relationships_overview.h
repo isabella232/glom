@@ -18,8 +18,8 @@
  * Boston, MA 02110-1301 USA.
  */
 
-#ifndef GLOM_DIALOG_RELATIONSHIPS_OVERVIEW
-#define GLOM_DIALOG_RELATIONSHIPS_OVERVIEW
+#ifndef GLOM_WINDOW_RELATIONSHIPS_OVERVIEW
+#define GLOM_WINDOW_RELATIONSHIPS_OVERVIEW
 
 #include <libglom/document/view.h>
 #include "glom/utility_widgets/canvas/canvas_editable.h"
@@ -40,16 +40,16 @@
 namespace Glom
 {
  
-class Dialog_RelationshipsOverview
- : public Gtk::Dialog,
+class Window_RelationshipsOverview
+ : public Gtk::Window,
    public View_Composite_Glom
 {
 public:
   static const char* glade_id;
   static const bool glade_developer;
 
-  Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_RelationshipsOverview();
+  Window_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
+  virtual ~Window_RelationshipsOverview();
   
   virtual void load_from_document(); //overridden.
 
@@ -61,7 +61,7 @@ private:
   void setup_context_menu();
   void update_relationships(TableView* table_from);
   void print_or_preview(Gtk::PrintOperationAction print_action);
-  void on_response(int id);
+  void on_button_close();
 
   void on_menu_file_print();
   void on_menu_file_page_setup();
@@ -109,4 +109,4 @@ private:
 
 } //namespace Glom
 
-#endif //GLOM_DIALOG_RELATIONSHIPS_OVERVIEW
+#endif //GLOM_WINDOW_RELATIONSHIPS_OVERVIEW

@@ -21,7 +21,6 @@
     <file preprocess="xml-stripblanks">data/ui/developer/dialog_new_group.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/dialog_new_library_script.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/dialog_notebook.glade</file>
-    <file preprocess="xml-stripblanks">data/ui/developer/dialog_relationships_overview.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/dialog_script_library.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/dialog_sort_fields.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/dialog_translation_copy.glade</file>
@@ -36,6 +35,7 @@
     <file preprocess="xml-stripblanks">data/ui/developer/window_groups.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/window_imageobject.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/window_print_layout_edit.glade</file>
+    <file preprocess="xml-stripblanks">data/ui/developer/window_relationships_overview.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/window_report_layout.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/window_text_format.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/window_textobject.glade</file>
