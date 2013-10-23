@@ -113,7 +113,6 @@ glom/mode_design/report_layout/dialog_layout_report.cc
 glom/mode_design/print_layouts/box_print_layouts.cc
 glom/mode_design/print_layouts/print_layout_toolbar.cc
 glom/mode_design/print_layouts/window_print_layout_edit.cc
-glom/mode_design/relationships_overview/dialog_relationships_overview.cc
 glom/mode_design/script_library/dialog_new_script.cc
 glom/mode_design/script_library/dialog_script_library.cc
 glom/mode_design/users/dialog_groups_list.cc
@@ -178,7 +177,6 @@ data/ui/developer/dialog_layout_field_properties.glade
 data/ui/developer/dialog_new_group.glade
 data/ui/developer/dialog_new_library_script.glade
 data/ui/developer/dialog_notebook.glade
-data/ui/developer/dialog_relationships_overview.glade
 data/ui/developer/dialog_script_library.glade
 data/ui/developer/dialog_sort_fields.glade
 data/ui/developer/dialog_translation_copy.glade
@@ -195,6 +193,7 @@ data/ui/developer/window_groups.glade
 data/ui/developer/window_imageobject.glade
 data/ui/developer/window_print_layout_edit.glade
 data/ui/developer/box_print_layouts.glade
+data/ui/developer/window_relationships_overview.glade
 data/ui/developer/window_report_layout.glade
 data/ui/developer/box_reports.glade
 data/ui/developer/window_text_format.glade
