@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.0 on Fri Oct 25 10:12:32 2013 -->
 <interface>
-  <requires lib="gtk+" version="3.6"/>
+  <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkDialog" id="dialog_import_csv_progress">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
@@ -21,10 +22,10 @@
             <child>
               <object class="GtkButton" id="import_csv_progress_cancel_button">
                 <property name="label">gtk-cancel</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -36,10 +37,10 @@
             <child>
               <object class="GtkButton" id="import_csv_progress_ok_button">
                 <property name="label">gtk-ok</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -58,10 +59,10 @@
         </child>
         <child>
           <object class="GtkBox" id="vbox3">
-            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkLabel" id="label5">
@@ -80,6 +81,7 @@
               <object class="GtkProgressBar" id="import_csv_progress_progress_bar">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">True</property>
                 <property name="pulse_step">0.10000000149</property>
               </object>
               <packing>
@@ -92,11 +94,15 @@
               <object class="GtkScrolledWindow" id="scrolledwindow5">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
                 <property name="shadow_type">in</property>
                 <child>
                   <object class="GtkTextView" id="import_csv_progress_textview">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                     <property name="editable">False</property>
                     <property name="wrap_mode">word-char</property>
                   </object>

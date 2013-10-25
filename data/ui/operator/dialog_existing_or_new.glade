@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.0 on Fri Oct 25 10:07:14 2013 -->
 <interface>
-  <requires lib="gtk+" version="3.6"/>
+  <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkDialog" id="dialog_existing_or_new">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
@@ -22,10 +23,10 @@
             <child>
               <object class="GtkButton" id="helpbutton1">
                 <property name="label">gtk-help</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -37,11 +38,11 @@
             <child>
               <object class="GtkButton" id="cancelbutton1">
                 <property name="label">gtk-quit</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -53,10 +54,10 @@
             <child>
               <object class="GtkButton" id="existing_or_new_button_select">
                 <property name="label" translatable="yes">_Select</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
               </object>
               <packing>
@@ -75,7 +76,6 @@
         </child>
         <child>
           <object class="GtkBox" id="hbox8">
-            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="border_width">6</property>
@@ -86,7 +86,7 @@
                 <property name="xalign">0</property>
                 <property name="yalign">0</property>
                 <property name="stock">gtk-dialog-question</property>
-                <property name="icon-size">6</property>
+                <property name="icon_size">6</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -96,16 +96,16 @@
             </child>
             <child>
               <object class="GtkBox" id="vbox4">
-                <property name="orientation">vertical</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="existing_or_new_label">
                     <property name="can_focus">True</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
-                    <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;Open or create a Document&lt;/span&gt;</property>
+                    <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;Open or Create a Document&lt;/span&gt;</property>
                     <property name="use_markup">True</property>
                     <property name="wrap">True</property>
                     <property name="selectable">True</property>

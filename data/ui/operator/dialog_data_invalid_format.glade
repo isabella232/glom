@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.0 on Fri Oct 25 10:06:26 2013 -->
 <interface>
-  <requires lib="gtk+" version="3.6"/>
+  <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkDialog" id="dialog_data_invalid_format">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
@@ -19,11 +20,11 @@
             <child>
               <object class="GtkButton" id="button1">
                 <property name="label">gtk-help</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -35,11 +36,11 @@
             <child>
               <object class="GtkButton" id="button_revert">
                 <property name="label">gtk-revert-to-saved</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -51,12 +52,12 @@
             <child>
               <object class="GtkButton" id="button4">
                 <property name="label">gtk-ok</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="has_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -75,7 +76,6 @@
         </child>
         <child>
           <object class="GtkBox" id="hbox11">
-            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="border_width">6</property>
@@ -87,7 +87,7 @@
                 <property name="xalign">0</property>
                 <property name="yalign">0</property>
                 <property name="stock">gtk-info</property>
-                <property name="icon-size">6</property>
+                <property name="icon_size">6</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -97,16 +97,16 @@
             </child>
             <child>
               <object class="GtkBox" id="vbox18">
-                <property name="orientation">vertical</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkLabel" id="label46">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
-                    <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;Invalid format&lt;/span&gt;
+                    <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;Invalid Format&lt;/span&gt;
 
 The data in the field was not recognized. Please try to correct the data or revert to the previous value. Here is an example of correctly-formatted data for this field.
 </property>
