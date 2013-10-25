@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Fri Oct 25 09:39:42 2013 -->
+<!-- Generated with glade 3.16.0 on Fri Oct 25 11:03:17 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkDialog" id="dialog_field_summary">
@@ -73,7 +73,7 @@
                   <object class="GtkBox" id="hbox72">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="spacing">6</property>
+                    <property name="spacing">12</property>
                     <child>
                       <object class="GtkLabel" id="label176">
                         <property name="visible">True</property>
@@ -123,7 +123,7 @@
                   <object class="GtkBox" id="hbox73">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="spacing">6</property>
+                    <property name="spacing">12</property>
                     <child>
                       <object class="GtkLabel" id="label178">
                         <property name="visible">True</property>

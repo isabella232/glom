@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Fri Oct 25 10:17:59 2013 -->
+<!-- Generated with glade 3.16.0 on Fri Oct 25 10:54:36 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.8 -->
   <object class="GtkAdjustment" id="adjustment_column_line_width">
@@ -23,14 +23,14 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">6</property>
+        <property name="spacing">12</property>
         <child>
           <object class="GtkBox" id="hbox9">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <property name="vexpand">False</property>
-            <property name="spacing">6</property>
+            <property name="spacing">12</property>
             <child>
               <object class="GtkBox" id="hbox_table_widgets">
                 <property name="visible">True</property>
@@ -73,7 +73,7 @@
               <object class="GtkBox" id="hbox_related_table_widgets">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="spacing">6</property>
+                <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label263">
                     <property name="visible">True</property>
@@ -183,8 +183,8 @@
                     <property name="can_focus">False</property>
                     <property name="hexpand">True</property>
                     <property name="vexpand">True</property>
-                    <property name="row_spacing">6</property>
-                    <property name="column_spacing">6</property>
+                    <property name="row_spacing">12</property>
+                    <property name="column_spacing">12</property>
                     <child>
                       <object class="GtkScrolledWindow" id="scrolledwindow3">
                         <property name="visible">True</property>
@@ -1068,7 +1068,7 @@
                   <object class="GtkBox" id="hbox44">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="spacing">6</property>
+                    <property name="spacing">12</property>
                     <child>
                       <object class="GtkLabel" id="label26">
                         <property name="visible">True</property>
@@ -1115,7 +1115,7 @@
           <object class="GtkBox" id="hbox_rows_count">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="spacing">6</property>
+            <property name="spacing">12</property>
             <child>
               <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
@@ -1197,7 +1197,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="row_spacing">6</property>
-                        <property name="column_spacing">6</property>
+                        <property name="column_spacing">12</property>
                         <child>
                           <object class="GtkLabel" id="label3">
                             <property name="visible">True</property>

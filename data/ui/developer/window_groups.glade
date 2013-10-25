@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.0 on Fri Oct 25 10:50:30 2013 -->
 <interface>
-  <requires lib="gtk+" version="3.6"/>
+  <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkDialog" id="window_groups">
     <property name="height_request">400</property>
     <property name="can_focus">False</property>
@@ -20,11 +21,11 @@
             <child>
               <object class="GtkButton" id="button_help">
                 <property name="label">gtk-help</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -36,11 +37,11 @@
             <child>
               <object class="GtkButton" id="button_close">
                 <property name="label">gtk-close</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -59,17 +60,16 @@
         </child>
         <child>
           <object class="GtkBox" id="vbox40">
-            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkBox" id="hbox35">
-                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="spacing">6</property>
+                <property name="spacing">12</property>
                 <child>
                   <object class="GtkFrame" id="frame10">
                     <property name="visible">True</property>
@@ -83,9 +83,9 @@
                         <property name="top_padding">6</property>
                         <child>
                           <object class="GtkBox" id="vbox44">
-                            <property name="orientation">vertical</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkScrolledWindow" id="scrolledwindow12">
@@ -110,12 +110,10 @@
                             </child>
                             <child>
                               <object class="GtkBox" id="hbox36">
-                                <property name="orientation">horizontal</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <child>
                                   <object class="GtkButtonBox" id="hbuttonbox26">
-                                    <property name="orientation">horizontal</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="spacing">6</property>
@@ -129,7 +127,6 @@
                                 </child>
                                 <child>
                                   <object class="GtkButtonBox" id="hbuttonbox27">
-                                    <property name="orientation">horizontal</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="spacing">6</property>
@@ -137,11 +134,11 @@
                                     <child>
                                       <object class="GtkButton" id="button_group_delete">
                                         <property name="label">gtk-delete</property>
+                                        <property name="use_action_appearance">False</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="can_default">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="use_action_appearance">False</property>
                                         <property name="use_stock">True</property>
                                       </object>
                                       <packing>
@@ -153,11 +150,11 @@
                                     <child>
                                       <object class="GtkButton" id="button_group_new">
                                         <property name="label">gtk-new</property>
+                                        <property name="use_action_appearance">False</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="can_default">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="use_action_appearance">False</property>
                                         <property name="use_stock">True</property>
                                       </object>
                                       <packing>
@@ -168,11 +165,11 @@
                                     </child>
                                     <child>
                                       <object class="GtkButton" id="button_group_users">
+                                        <property name="use_action_appearance">False</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="can_default">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="use_action_appearance">False</property>
                                         <child>
                                           <object class="GtkAlignment" id="alignment30">
                                             <property name="visible">True</property>
@@ -181,7 +178,6 @@
                                             <property name="yscale">0</property>
                                             <child>
                                               <object class="GtkBox" id="hbox37">
-                                                <property name="orientation">horizontal</property>
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="spacing">2</property>
@@ -267,9 +263,9 @@
                         <property name="top_padding">6</property>
                         <child>
                           <object class="GtkBox" id="vbox41">
-                            <property name="orientation">vertical</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkScrolledWindow" id="scrolledwindow11">
