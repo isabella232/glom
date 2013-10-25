@@ -22,7 +22,7 @@
 #include <glom/appwindow.h>
 #include <glom/dialog_existing_or_new.h>
 #include <glom/mode_design/print_layouts/box_print_layouts.h>
-#include <glom/mode_design/relationships_overview/dialog_relationships_overview.h>
+#include <glom/mode_design/relationships_overview/window_relationships_overview.h>
 #include <glom/mode_design/dialog_relationships.h>
 #include <glom/mode_design/report_layout/dialog_layout_report.h>
 #include <glom/box_reports.h>
@@ -136,7 +136,7 @@ int main(int argc, char *argv[])
 
   //Developer mode UI:
   instantiate_widget<Box_Print_Layouts>();
-  instantiate_widget<Dialog_RelationshipsOverview>();
+  instantiate_widget<Window_RelationshipsOverview>();
   instantiate_widget<Dialog_Relationships>();
   instantiate_widget<Dialog_Layout_Report>();
   instantiate_widget<Box_Reports>();
