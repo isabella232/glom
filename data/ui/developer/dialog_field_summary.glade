@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.4 on Wed Oct 23 11:03:42 2013 -->
+<!-- Generated with glade 3.16.0 on Fri Oct 25 09:39:42 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkDialog" id="dialog_field_summary">
@@ -64,120 +64,96 @@
             <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
-              <object class="GtkFrame" id="frame20">
+              <object class="GtkBox" id="vbox77">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label_xalign">0</property>
-                <property name="shadow_type">none</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">6</property>
                 <child>
-                  <object class="GtkAlignment" id="alignment53">
+                  <object class="GtkBox" id="hbox72">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="top_padding">6</property>
-                    <property name="left_padding">12</property>
+                    <property name="spacing">6</property>
                     <child>
-                      <object class="GtkBox" id="vbox77">
+                      <object class="GtkLabel" id="label176">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="orientation">vertical</property>
-                        <property name="spacing">6</property>
-                        <child>
-                          <object class="GtkBox" id="hbox72">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="spacing">6</property>
-                            <child>
-                              <object class="GtkLabel" id="label176">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Field:</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="label_field">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="button_field">
-                                <property name="label" translatable="yes">Select</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">False</property>
-                                <property name="use_underline">True</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="pack_type">end</property>
-                                <property name="position">2</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkBox" id="hbox73">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="spacing">6</property>
-                            <child>
-                              <object class="GtkLabel" id="label178">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Summary Type:</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkComboBox" id="combobox_summarytype">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                              </object>
-                              <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
-                                <property name="pack_type">end</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
+                        <property name="label" translatable="yes">Field:</property>
                       </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label_field">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="button_field">
+                        <property name="label" translatable="yes">Select</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="pack_type">end</property>
+                        <property name="position">2</property>
+                      </packing>
                     </child>
                   </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
-                <child type="label">
-                  <object class="GtkLabel" id="label180">
+                <child>
+                  <object class="GtkBox" id="hbox73">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Summary Field&lt;/b&gt;</property>
-                    <property name="use_markup">True</property>
+                    <property name="spacing">6</property>
+                    <child>
+                      <object class="GtkLabel" id="label178">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Summary Type:</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox" id="combobox_summarytype">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="pack_type">end</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
                 </child>
               </object>
               <packing>
