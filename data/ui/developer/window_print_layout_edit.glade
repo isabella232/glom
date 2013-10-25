@@ -8,11 +8,12 @@
       <section>
         <item>
           <attribute name='label' translatable='yes'>Page Set_up</attribute>
-          <attribute name='action'>printlayout.pagesetup</attribute>
+          <attribute name='action'>win.pagesetup</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>Print Pre_view</attribute>
-          <attribute name='action'>printlayout.printpreview</attribute>
+          <attribute name='action'>win.print-preview</attribute>
+          <attribute name='accel'>&lt;Shift&gt;&lt;Primary&gt;p</attribute>
         </item>
       </section>
     </submenu>
@@ -21,29 +22,29 @@
       <section>
         <item>
           <attribute name='label' translatable='yes'>Cu_t</attribute>
-          <attribute name='action'>printlayout.cut</attribute>
+          <attribute name='action'>win.cut</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>_Copy</attribute>
-          <attribute name='action'>printlayout.copy</attribute>
+          <attribute name='action'>win.copy</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>_Paste</attribute>
-          <attribute name='action'>printlayout.paste</attribute>
+          <attribute name='action'>win.paste</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>_Delete</attribute>
-          <attribute name='action'>printlayout.delete</attribute>
+          <attribute name='action'>win.delete</attribute>
         </item>
       </section>
       <section>
         <item>
           <attribute name='label' translatable='yes'>Select _All</attribute>
-          <attribute name='action'>printlayout.select-all</attribute>
+          <attribute name='action'>win.select-all</attribute>
         </item>
         <item>
           <attribute name='label' translatable='yes'>_Unselect All</attribute>
-          <attribute name='action'>printlayout.unselect-all</attribute>
+          <attribute name='action'>win.unselect-all</attribute>
         </item>
       </section>
     </submenu>

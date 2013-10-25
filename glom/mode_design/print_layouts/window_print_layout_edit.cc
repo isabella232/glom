@@ -196,29 +196,28 @@ void Window_PrintLayout_Edit::init_menu()
 {
   Glib::RefPtr<Gio::SimpleActionGroup> action_group = Gio::SimpleActionGroup::create();
 
-  action_group->add_action("page-setup",
+  add_action("pagesetup",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_file_page_setup));
-  action_group->add_action("print-preview",
+  add_action("print-preview",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_file_print_preview) );
 
-  //TODO: Use the regular add_action() for the standard menu items, using the win. prefix in the .glade file,
-  //when we can get that to work:
-  m_action_edit_cut = action_group->add_action("cut",
+  //We use the regular add_action() for the standard menu items, using the win. prefix in the .glade file:
+  m_action_edit_cut = add_action("cut",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_cut) );
 
-  m_action_edit_copy = action_group->add_action("copy",
+  m_action_edit_copy = add_action("copy",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_copy) );
   
-  m_action_edit_paste = action_group->add_action("paste", 
+  m_action_edit_paste = add_action("paste", 
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_paste) );
   m_action_edit_paste->set_enabled(false); //This is enabled when something is copied or cut.
 
-  m_action_edit_delete = action_group->add_action("delete",
+  m_action_edit_delete = add_action("delete",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_delete) );
 
-  action_group->add_action("select-all",
+  add_action("select-all",
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_selectall) ); //TODO: Gtk::AccelKey("<control>A"), //TODO: Suggest this as part of the stock item in GTK+?
-  action_group->add_action("unselect-all", //TODO: Propose a new stock item for GTK+.
+  add_action("unselect-all", //TODO: Propose a new stock item for GTK+.
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_edit_unselectall) );
 
   action_group->add_action("insert-field",
@@ -271,181 +270,9 @@ void Window_PrintLayout_Edit::init_menu()
 
   insert_action_group("printlayout", action_group);
 
-  static const char* ui_description =
-    "<interface>"
-    "  <menu id='Menubar'>"
-    "    <submenu>"
-    "      <attribute name='label' translatable='yes'>_File</attribute>"
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Page Set_up</attribute>"
-    "          <attribute name='action'>printlayout.page-setup</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Print Pre_view</attribute>"
-    "          <attribute name='action'>printlayout.print-preview</attribute>"
-    "        </item>"
-    "      </section>"
-    "    </submenu>"
-    "    <submenu>"
-    "      <attribute name='label' translatable='yes'>_Edit</attribute>"
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Cu_t</attribute>"
-    "          <attribute name='action'>printlayout.cut</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Copy</attribute>"
-    "          <attribute name='action'>printlayout.copy</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Paste</attribute>"
-    "          <attribute name='action'>printlayout.paste</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Delete</attribute>"
-    "          <attribute name='action'>printlayout.delete</attribute>"
-    "        </item>"
-    "      </section>"
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Select _All</attribute>"
-    "          <attribute name='action'>printlayout.select-all</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>_Unselect All</attribute>"
-    "          <attribute name='action'>printlayout.unselect-all</attribute>"
-    "        </item>"
-    "      </section>"
-    "    </submenu>"
-    "    <submenu>"
-    "      <attribute name='label' translatable='yes'>_Insert</attribute>"
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Insert _Field</attribute>"
-    "          <attribute name='action'>printlayout.insert-field</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Insert _Text</attribute>"
-    "          <attribute name='action'>printlayout.insert-text</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Insert _Image</attribute>"
-    "          <attribute name='action'>printlayout.insert-image</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Insert _Related Records</attribute>"
-    "          <attribute name='action'>printlayout.insert-related-records</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Insert _Horizontal Line</attribute>"
-    "          <attribute name='action'>printlayout.insert-horizontal-line</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Insert _Vertical Line</attribute>"
-    "          <attribute name='action'>printlayout.insert-vertical-line</attribute>"
-    "        </item>"
-    "      </section>"
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Create _Standard</attribute>"
-    "          <attribute name='action'>printlayout.create-standard</attribute>"
-    "        </item>"
-    "      </section>"
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Add Page</attribute>"
-    "          <attribute name='action'>printlayout.add-page</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Delete Page</attribute>"
-    "          <attribute name='action'>printlayout.delete-page</attribute>"
-    "        </item>"
-    "      </section>"
-    "    </submenu>"
-    "    <submenu>"
-    "      <attribute name='label' translatable='yes'>_Align</attribute>"
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Align _Top</attribute>"
-    "          <attribute name='action'>printlayout.align-top</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Align _Bottom</attribute>"
-    "          <attribute name='action'>printlayout.align-bottom</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Align _Left</attribute>"
-    "          <attribute name='action'>printlayout.align-left</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Align _Right</attribute>"
-    "          <attribute name='action'>printlayout.align-right</attribute>"
-    "        </item>"
-    "      </section>"
-    "    </submenu>"
-    "    <submenu>"
-    "      <attribute name='label' translatable='yes'>_View</attribute>"
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Show _Grid</attribute>"
-    "          <attribute name='action'>printlayout.show-grid</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Show _Rules</attribute>"
-    "          <attribute name='action'>printlayout.show-rules</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Show _Outlines</attribute>"
-    "          <attribute name='action'>printlayout.show-outlines</attribute>"
-    "        </item>"
-    "      </section>"
-    "      <section>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Fit Page _Width</attribute>"
-    "          <attribute name='action'>printlayout.zoom</attribute>"
-    "          <attribute name='target' type='i'>0</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Zoom 200%</attribute>"
-    "          <attribute name='action'>printlayout.zoom</attribute>"
-    "          <attribute name='target' type='i'>200</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Zoom 100%</attribute>"
-    "          <attribute name='action'>printlayout.zoom</attribute>"
-    "          <attribute name='target' type='i'>100</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Zoom 50%</attribute>"
-    "          <attribute name='action'>printlayout.zoom</attribute>"
-    "          <attribute name='target' type='i'>50</attribute>"
-    "        </item>"
-    "        <item>"
-    "          <attribute name='label' translatable='yes'>Zoom 25%</attribute>"
-    "          <attribute name='action'>printlayout.zoom</attribute>"
-    "          <attribute name='target' type='i'>25</attribute>"
-    "        </item>"
-    "      </section>"
-    "    </submenu>"
-    "  </menu>"
-    "</interface>";
-
-  //Add menu:
-  Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create();
-
-  try
-  {
-    builder->add_from_string(ui_description);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
-  }
-
   //Get the menu:
   Glib::RefPtr<Glib::Object> object =
-    builder->get_object("Menubar");
+    m_builder->get_object("Menubar");
   Glib::RefPtr<Gio::Menu> gmenu =
     Glib::RefPtr<Gio::Menu>::cast_dynamic(object);
   if(!gmenu)
