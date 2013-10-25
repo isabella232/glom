@@ -10,7 +10,6 @@
     <file preprocess="xml-stripblanks">data/ui/developer/dialog_choose_relationship.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/dialog_choose_user.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/dialog_database_preferences.glade</file>
-    <file preprocess="xml-stripblanks">data/ui/developer/dialog_error_create_database.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/dialog_fieldslist.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/dialog_field_summary.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/dialog_flowtable.glade</file>

@@ -1747,12 +1747,13 @@ bool AppWindow::recreate_database_from_backup(const Glib::ustring& backup_uri, b
   {
     std::cerr << G_STRFUNC << ": Gnome::Gda::Connection::create_database(" << db_name << ") failed: " << ex.what() << std::endl;
 
-    //Tell the user:
-    Gtk::Dialog* dialog = 0;
-    Utils::get_glade_widget_with_warning("glom_developer.glade", "dialog_error_create_database", dialog);
-    dialog->set_transient_for(*this);
-    Glom::Utils::dialog_run_with_help(dialog, "dialog_error_create_database");
-    delete dialog;
+
+    const Glib::ustring message = _("Glom could not create the new database. Maybe you do not have the necessary access rights. Please contact your system administrator.");
+    Gtk::MessageDialog dialog(Utils::bold_message(_("Database Creation Failed")), true, Gtk::MESSAGE_ERROR );
+    dialog.set_secondary_text(message);
+    dialog.set_transient_for(*this);
+
+    dialog.run();
 
     return false;
   }

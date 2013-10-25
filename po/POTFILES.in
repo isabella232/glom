@@ -166,7 +166,6 @@ data/ui/developer/dialog_choose_field.glade
 data/ui/developer/dialog_choose_relationship.glade
 data/ui/developer/dialog_choose_user.glade
 data/ui/developer/dialog_database_preferences.glade
-data/ui/developer/dialog_error_create_database.glade
 data/ui/developer/dialog_fieldslist.glade
 data/ui/developer/dialog_field_summary.glade
 data/ui/developer/dialog_flowtable.glade
