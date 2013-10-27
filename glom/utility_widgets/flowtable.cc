@@ -110,7 +110,8 @@ void FlowTable::delete_and_forget_hbox(Gtk::Box* hbox)
   }
   else
   {
-    std::cerr << G_STRFUNC << ": hbox=" << hbox << " has no parent. Not removing from SpreadTableDnd" << std::endl;
+    //TODO: Fix this leak.
+    //std::cerr << G_STRFUNC << ": hbox=" << hbox << " has no parent. Not removing from SpreadTableDnd" << std::endl;
   }
 
   //Delete and forget it:
