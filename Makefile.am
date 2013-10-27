@@ -140,6 +140,7 @@ EXTRA_DIST += \
 	data/ui/developer/window_button_script.glade \
 	data/ui/developer/window_data_layout_export.glade \
 	data/ui/developer/window_data_layout.glade \
+	data/ui/developer/window_default_formatting.glade \
 	data/ui/developer/window_design.glade \
 	data/ui/developer/window_field_calculation.glade \
 	data/ui/developer/window_field_definition_edit.glade \

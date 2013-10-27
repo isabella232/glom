@@ -31,6 +31,8 @@ namespace Glom
 {
 
 Box_DB_Table_Definition::Box_DB_Table_Definition()
+: m_dialog_field_definition(0),
+  m_dialog_default_formatting(0)
 {
   init();
 }
@@ -45,19 +47,28 @@ void Box_DB_Table_Definition::init()
 {
   //m_strHint = _("Click [Edit] to edit the field definition in more detail.\nUse the Mode menu to see Data or perform a Find.");
 
-  Utils::get_glade_widget_derived_with_warning(m_pDialog);
+  Utils::get_glade_widget_derived_with_warning(m_dialog_field_definition);
+  add_view(m_dialog_field_definition); //Give it access to the document.
 
-  add_view(m_pDialog); //Give it access to the document.
+  Utils::get_glade_widget_derived_with_warning(m_dialog_default_formatting);
+  add_view(m_dialog_default_formatting);
+  m_dialog_default_formatting->signal_apply().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_field_definition_apply));
+
 
   pack_start(m_AddDel);
   m_colName = m_AddDel.add_column(_("Name"));
   m_AddDel.prevent_duplicates(m_colName); //Don't allow adding of fields that already exist.
-  m_AddDel.set_prevent_duplicates_warning(_("This field already exists. Please choose a different field name"));
+  m_AddDel.set_prevent_duplicates_warning(_("This field already exists. Please choose a different field name."));
 
   m_colTitle = m_AddDel.add_column(_("Title"));
 
   m_colType = m_AddDel.add_column(_("Type"), AddDelColumnInfo::STYLE_Choices);
   m_AddDel.set_column_width(m_colType, 100); //TODO: Auto-size columns.
+
+
+  //Setup the buttons:
+  m_AddDel.set_edit_button_label(_("_Field Definition"));
+  m_AddDel.set_extra_button_label(_("_Default Formatting"));
 
   //Set Type choices:
 
@@ -79,17 +90,24 @@ void Box_DB_Table_Definition::init()
   m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_adddel_delete));
   m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_adddel_changed));
   m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_adddel_edit));
+  m_AddDel.signal_user_requested_extra().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_adddel_extra));
 
   //React to changes in the field properties:
-  m_pDialog->signal_apply().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_Properties_apply));
+  m_dialog_field_definition->signal_apply().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_field_definition_apply));
 }
 
 Box_DB_Table_Definition::~Box_DB_Table_Definition()
 {
-  if(m_pDialog)
+  if(m_dialog_field_definition)
   {
-    remove_view(m_pDialog);
-    delete m_pDialog;
+    remove_view(m_dialog_field_definition);
+    delete m_dialog_field_definition;
+  }
+
+  if(m_dialog_default_formatting)
+  {
+    remove_view(m_dialog_default_formatting);
+    delete m_dialog_default_formatting;
   }
 }
 
@@ -395,15 +413,31 @@ void Box_DB_Table_Definition::on_adddel_edit(const Gtk::TreeModel::iterator& row
   sharedptr<const Field> constfield = get_field_definition(row);
   m_Field_BeingEdited = constfield;
 
-  m_pDialog->set_field(m_Field_BeingEdited, m_table_name);
+  m_dialog_field_definition->set_field(m_Field_BeingEdited, m_table_name);
 
-  //m_pDialog->set_modified(false); //Disable [Apply] at start.
+  //m_dialog_field_definition->set_modified(false); //Disable [Apply] at start.
 
   Gtk::Window* parent_window = get_app_window();
   if(parent_window)
-    m_pDialog->set_transient_for(*parent_window);
+    m_dialog_field_definition->set_transient_for(*parent_window);
 
-  m_pDialog->show();
+  m_dialog_field_definition->show();
+}
+
+void Box_DB_Table_Definition::on_adddel_extra(const Gtk::TreeModel::iterator& row)
+{
+  sharedptr<const Field> constfield = get_field_definition(row);
+  m_Field_BeingEdited = constfield;
+
+  m_dialog_default_formatting->set_field(m_Field_BeingEdited, m_table_name);
+
+  //m_dialog_field_definition->set_modified(false); //Disable [Apply] at start.
+
+  Gtk::Window* parent_window = get_app_window();
+  if(parent_window)
+    m_dialog_default_formatting->set_transient_for(*parent_window);
+
+  m_dialog_default_formatting->show();
 }
 
 sharedptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeModel::iterator& row)
@@ -482,9 +516,9 @@ sharedptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeMo
   return fieldResult;
 }
 
-void Box_DB_Table_Definition::on_Properties_apply()
+void Box_DB_Table_Definition::on_field_definition_apply()
 {
-  sharedptr<Field> field_New = m_pDialog->get_field();
+  sharedptr<Field> field_New = m_dialog_field_definition->get_field();
 
   if(*m_Field_BeingEdited != *field_New)
   {
@@ -499,7 +533,27 @@ void Box_DB_Table_Definition::on_Properties_apply()
     fill_from_database();
   }
 
-  m_pDialog->hide();
+  m_dialog_field_definition->hide();
+}
+
+void Box_DB_Table_Definition::on_default_formatting_apply()
+{
+  sharedptr<Field> field_New = m_dialog_default_formatting->get_field();
+
+  if(*m_Field_BeingEdited != *field_New)
+  {
+    const bool bcontinue = check_field_change(m_Field_BeingEdited, field_New);
+    if(bcontinue)
+    {
+      change_definition(m_Field_BeingEdited, field_New);
+      m_Field_BeingEdited = field_New;
+    }
+
+    //Update the list:
+    fill_from_database();
+  }
+
+  m_dialog_default_formatting->hide();
 }
 
 sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<const Field>& fieldOld, const sharedptr<const Field>& field)

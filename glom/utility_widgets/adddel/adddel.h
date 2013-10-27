@@ -199,6 +199,13 @@ public:
   typedef sigc::signal<void, const Gtk::TreeModel::iterator&> type_signal_user_requested_edit;
   type_signal_user_requested_edit signal_user_requested_edit();
 
+  //TODO: Add this to the menu?
+  /** This signal is emitted when the user presses the "extra" button.
+   * This sends the row number.
+   */
+  typedef sigc::signal<void, const Gtk::TreeModel::iterator&> type_signal_user_requested_extra;
+  type_signal_user_requested_extra signal_user_requested_extra();
+
   typedef sigc::signal<void> type_signal_user_requested_add;
   type_signal_user_requested_add signal_user_requested_add();
 
@@ -322,6 +329,7 @@ private:
   type_signal_user_changed m_signal_user_changed;
   type_signal_user_requested_delete m_signal_user_requested_delete;
   type_signal_user_requested_edit m_signal_user_requested_edit;
+  type_signal_user_requested_extra m_signal_user_requested_extra;
   type_signal_user_requested_add m_signal_user_requested_add;
   type_signal_user_activated m_signal_user_activated;
   type_signal_user_reordered_columns m_signal_user_reordered_columns;

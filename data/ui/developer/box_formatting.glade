@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Fri Oct 25 11:09:31 2013 -->
+<!-- Generated with glade 3.15.4 on Sun Oct 27 15:01:29 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.6 -->
   <object class="GtkWindow" id="window_formatting">
@@ -148,7 +148,7 @@
               <object class="GtkLabel" id="label10">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">&lt;b&gt;Numeric Formatting&lt;/b&gt;</property>
+                <property name="label" translatable="yes">Numeric Formatting</property>
                 <property name="use_markup">True</property>
               </object>
               <packing>
@@ -396,7 +396,7 @@
               <object class="GtkLabel" id="label5">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">&lt;b&gt;Text Formatting&lt;/b&gt;</property>
+                <property name="label" translatable="yes">Text Formatting</property>
                 <property name="use_markup">True</property>
               </object>
               <packing>
@@ -669,9 +669,6 @@
                                 <child>
                                   <placeholder/>
                                 </child>
-                                <child>
-                                  <placeholder/>
-                                </child>
                               </object>
                             </child>
                           </object>
@@ -796,7 +793,7 @@
               <object class="GtkLabel" id="label9">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">&lt;b&gt;Choices&lt;/b&gt;</property>
+                <property name="label" translatable="yes">Choices</property>
                 <property name="use_markup">True</property>
               </object>
               <packing>

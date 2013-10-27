@@ -21,8 +21,9 @@
 #ifndef GLOM_MODE_DESIGN_BOX_DB_TABLE_DEFINITION_H
 #define GLOM_MODE_DESIGN_BOX_DB_TABLE_DEFINITION_H
 
-#include "../../box_db_table.h"
-#include "dialog_fielddefinition.h"
+#include <glom/box_db_table.h>
+#include <glom/mode_design/fields/dialog_fielddefinition.h>
+#include <glom/mode_design/fields/dialog_defaultformatting.h>
 
 namespace Glom
 {
@@ -53,8 +54,10 @@ private:
   void on_adddel_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
   void on_adddel_changed(const Gtk::TreeModel::iterator& row, guint col);
   void on_adddel_edit(const Gtk::TreeModel::iterator& row);
+  void on_adddel_extra(const Gtk::TreeModel::iterator& row);
 
-  void on_Properties_apply();
+  void on_field_definition_apply();
+  void on_default_formatting_apply();
 
   bool check_field_change(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field_new);
 
@@ -62,7 +65,10 @@ private:
 
   guint m_colName, m_colTitle, m_colType, m_colUnique, m_colPrimaryKey;
 
-  Dialog_FieldDefinition* m_pDialog;
+  Dialog_FieldDefinition* m_dialog_field_definition;
+
+  Dialog_DefaultFormatting* m_dialog_default_formatting;
+
   sharedptr<const Field> m_Field_BeingEdited; //TODO_FieldShared
   type_vec_fields m_vecFields;
 };

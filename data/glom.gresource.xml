@@ -28,6 +28,7 @@
     <file preprocess="xml-stripblanks">data/ui/developer/window_button_script.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/window_data_layout_export.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/window_data_layout.glade</file>
+    <file preprocess="xml-stripblanks">data/ui/developer/window_default_formatting.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/window_design.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/window_field_calculation.glade</file>
     <file preprocess="xml-stripblanks">data/ui/developer/window_field_definition_edit.glade</file>

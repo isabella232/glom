@@ -298,6 +298,8 @@ glom_source_files +=							\
 	glom/mode_design/fields/box_db_table_definition.h		\
 	glom/mode_design/fields/combo_fieldtype.cc			\
 	glom/mode_design/fields/combo_fieldtype.h			\
+	glom/mode_design/fields/dialog_defaultformatting.cc		\
+	glom/mode_design/fields/dialog_defaultformatting.h		\
 	glom/mode_design/fields/dialog_fieldcalculation.cc		\
 	glom/mode_design/fields/dialog_fieldcalculation.h		\
 	glom/mode_design/fields/dialog_fielddefinition.cc		\

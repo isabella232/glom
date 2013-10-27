@@ -36,9 +36,7 @@ const bool Dialog_FieldDefinition::glade_developer(true);
 
 Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Properties(cobject, builder),
-  m_pDataWidget_DefaultValueSimple(0),
-  m_box_formatting_placeholder(0),
-  m_box_formatting(0)
+  m_pDataWidget_DefaultValueSimple(0)
 {
   builder->get_widget_derived("combobox_type", m_pCombo_Type);
 
@@ -84,31 +82,10 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
   //Make sure that the correct Type Details are showing:
   on_combo_type_changed();
 
-  //Formatting:
-  //Get the place to put the Formatting stuff:
-  builder->get_widget("box_formatting_placeholder", m_box_formatting_placeholder);
-
-  //Get the formatting stuff:
-  Utils::get_glade_child_widget_derived_with_warning(m_box_formatting);
-
-  if(m_box_formatting) ////Unlikely to fail and it already warns on stderr.
-    m_box_formatting_placeholder->pack_start(*m_box_formatting);
-
-  add_view(m_box_formatting);
-
 
   on_foreach_connect(*this);
   on_foreach_connect(*m_pBox_DefaultValueSimple);
   on_foreach_connect(*m_pBox_ValueTab);
-
-  if(m_box_formatting)
-  {
-    on_foreach_connect(*m_box_formatting);
-
-    //Plus an extra signal for the related extra show-also fields:
-    m_box_formatting->signal_modified().connect(
-     sigc::mem_fun(*this, &Dialog_FieldDefinition::on_anything_changed));
-  }
 
   Dialog_Properties::set_modified(false);
 
@@ -117,7 +94,6 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
 
 Dialog_FieldDefinition::~Dialog_FieldDefinition()
 {
-  remove_view(m_box_formatting);
 }
 
 void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, const Glib::ustring& table_name)
@@ -215,9 +191,6 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
 
   m_pEntry_Title->set_text(item_get_title(field));
 
-  //Formatting:
-  m_box_formatting->set_formatting_for_field(field->m_default_formatting, m_table_name, field);
-
   set_blocked(false);
 
   enforce_constraints();
@@ -274,9 +247,6 @@ sharedptr<Field> Dialog_FieldDefinition::get_field() const
   field->set_primary_key(m_pCheck_PrimaryKey->get_active());
 
   field->set_title(m_pEntry_Title->get_text(), AppWindow::get_current_locale());
-
-  //Formatting:
-  m_box_formatting->get_formatting(field->m_default_formatting);
 
   return field;
 }

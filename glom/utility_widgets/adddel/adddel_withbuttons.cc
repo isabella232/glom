@@ -62,7 +62,9 @@ void AddDel_WithButtons::init()
   m_Button_Add.signal_clicked().connect(sigc::mem_fun(*this, &AddDel_WithButtons::on_button_add));
   m_Button_Del.signal_clicked().connect(sigc::mem_fun(*this, &AddDel_WithButtons::on_button_del));
   m_Button_Edit.signal_clicked().connect(sigc::mem_fun(*this, &AddDel_WithButtons::on_button_edit));
+  m_Button_Extra.signal_clicked().connect(sigc::mem_fun(*this, &AddDel_WithButtons::on_button_extra));
 
+  m_Button_Extra.hide();
 }
 
 AddDel_WithButtons::~AddDel_WithButtons()
@@ -94,6 +96,22 @@ void AddDel_WithButtons::on_button_del()
 void AddDel_WithButtons::on_button_edit()
 {
   on_MenuPopup_activate_Edit();
+}
+
+void AddDel_WithButtons::on_button_extra()
+{
+  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_TreeView.get_selection();
+  if(!refSelection)
+    return;
+
+  Gtk::TreeModel::iterator iter = refSelection->get_selected();
+  if(!iter)
+    return;
+   
+  if(get_is_placeholder_row(iter))
+    return;
+
+  signal_user_requested_extra()(iter);
 }
 
 void AddDel_WithButtons::set_allow_add(bool val)
@@ -128,6 +146,7 @@ void AddDel_WithButtons::set_allow_user_actions(bool bVal)
     m_ButtonBox.remove(m_Button_Add);
     m_ButtonBox.remove(m_Button_Del);
     m_ButtonBox.remove(m_Button_Edit);
+    m_ButtonBox.remove(m_Button_Extra);
   }
 
   //Recreate popup menu with correct items:
@@ -136,18 +155,55 @@ void AddDel_WithButtons::set_allow_user_actions(bool bVal)
 
 void AddDel_WithButtons::setup_buttons()
 {
-  //Put buttons below sheet:
-  //m_ButtonBox.remove(m_Button_Add);
-  //m_ButtonBox.remove(m_Button_Del);
-  //m_ButtonBox.remove(m_Button_Edit);
+  if(!get_allow_user_actions())
+    return;
 
-  if(get_allow_user_actions())
-  {
-    m_ButtonBox.pack_end(m_Button_Add, Gtk::PACK_SHRINK);
-    m_ButtonBox.pack_end(m_Button_Del, Gtk::PACK_SHRINK);
-    m_ButtonBox.pack_end(m_Button_Edit, Gtk::PACK_SHRINK);
-  }
+  m_ButtonBox.pack_end(m_Button_Add, Gtk::PACK_SHRINK);
+  m_Button_Add.show();
+
+  m_ButtonBox.pack_end(m_Button_Del, Gtk::PACK_SHRINK);
+  m_Button_Del.show();
+
+  m_ButtonBox.pack_end(m_Button_Edit, Gtk::PACK_SHRINK);
+  m_Button_Edit.show();
+
+  m_ButtonBox.pack_end(m_Button_Extra, Gtk::PACK_SHRINK);
+  if(!m_label_extra.empty())
+    m_Button_Extra.show();
+  else
+    m_Button_Extra.hide();
 }
+
+void AddDel_WithButtons::set_extra_button_label(const Glib::ustring& label)
+{
+  m_label_extra = label;
+  m_Button_Extra.set_label(m_label_extra);
+  m_Button_Extra.set_use_underline();
+
+  if(!m_label_extra.empty())
+    m_Button_Extra.show();
+  else
+    m_Button_Extra.hide();
+}
+
+void AddDel_WithButtons::set_edit_button_label(const Glib::ustring& label)
+{
+  m_Button_Edit.set_label(label);
+  m_Button_Edit.set_use_underline();
+}
+
+//We override this so we can avoid showing an empty Extra button:
+void AddDel_WithButtons::show_all_vfunc()
+{
+  //Call the base class:
+  Gtk::Box::show_all_vfunc();
+
+  if(!m_label_extra.empty())
+    m_Button_Extra.show();
+  else
+    m_Button_Extra.hide();
+}
+
 
 } //namespace Glom
 

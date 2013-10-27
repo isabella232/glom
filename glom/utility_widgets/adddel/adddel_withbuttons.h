@@ -38,6 +38,18 @@ public:
   virtual void set_allow_delete(bool val = true); //override
   virtual void set_allow_user_actions(bool bVal = true); //override
 
+  /**
+   * @param label The button label text, including the mnemonic underline.
+   */
+  void set_edit_button_label(const Glib::ustring& label);
+
+  /** Set the label of the extra button, if any.
+   * If there is no label text (the default) then the button will not be shown.
+   *
+   * @para label The button label text, including the mnemonic underline.
+   */
+  void set_extra_button_label(const Glib::ustring& label);
+
 private:
   void init();
   void setup_buttons();
@@ -45,12 +57,18 @@ private:
   void on_button_add();
   void on_button_del();
   void on_button_edit();
+  void on_button_extra();
+
+  virtual void show_all_vfunc();
 
   //member widgets:
   Gtk::ButtonBox m_ButtonBox;
   Gtk::Button m_Button_Add;
   Gtk::Button m_Button_Del;
   Gtk::Button m_Button_Edit;
+  Gtk::Button m_Button_Extra;
+
+  Glib::ustring m_label_extra;
 };
 
 } //namespace Glom

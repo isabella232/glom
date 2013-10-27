@@ -1295,6 +1295,11 @@ AddDel::type_signal_user_requested_edit AddDel::signal_user_requested_edit()
   return m_signal_user_requested_edit;
 }
 
+AddDel::type_signal_user_requested_edit AddDel::signal_user_requested_extra()
+{
+  return m_signal_user_requested_extra;
+}
+
 AddDel::type_signal_user_requested_add AddDel::signal_user_requested_add()
 {
   return m_signal_user_requested_add;
@@ -1637,6 +1642,5 @@ bool AddDel::row_has_duplicates(const Gtk::TreeModel::iterator& iter) const
 
   return false;
 }
-
 
 } //namespace Glom
