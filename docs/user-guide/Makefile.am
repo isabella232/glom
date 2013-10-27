@@ -1,10 +1,11 @@
-AUTOMAKE_OPTIONS = -Wno-portability
-
 @YELP_HELP_RULES@
-dist-hook: doc-dist-hook
 
 HELP_ID = glom
-HELP_EXTRA = legal.xml 
+
+HELP_FILES = \
+	index.docbook \
+	legal.xml
+
 HELP_MEDIA = \
 	figures/glom_data_details.png \
 	figures/glom_design_layout_details.png \
