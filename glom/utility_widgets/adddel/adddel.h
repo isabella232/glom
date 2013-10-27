@@ -65,8 +65,9 @@ public:
   bool m_prevent_duplicates;
 };
 
-//For adding/deleting/selecting multi-columned lists of items.
-//This was also an abstraction layer against the strangeness of GtkSheet, though it now uses Gtk::TreeView instead.
+/** For adding/deleting/selecting multi-columned lists of items,
+ * allowing the user to add a new item by just entering data in an empty row at the end.
+ */
 class AddDel : public Gtk::Box
 {
 public:
@@ -218,7 +219,18 @@ public:
    */
   Gtk::TreeModel::iterator get_last_row() const;
 
+
 protected:
+  void setup_menu(Gtk::Widget* widget);
+
+  guint get_count_hidden_system_columns();
+
+  void on_MenuPopup_activate_Edit();
+  void on_MenuPopup_activate_Delete();
+
+private:
+
+private:
   void init();
 
   /** Get an iterator to the blank row in which the user should add data for the new row.
@@ -226,7 +238,6 @@ protected:
    */
   Gtk::TreeModel::iterator add_item_placeholder(); //Return index of new row.
 
-  void setup_menu(Gtk::Widget* widget);
   Glib::ustring treeview_get_key(const Gtk::TreeModel::iterator& row);
 
   ///Add a blank row, or return the existing blank row if there already is one.
@@ -245,9 +256,6 @@ protected:
 
   bool on_button_press_event_Popup(GdkEventButton* event);
 
-  void on_MenuPopup_activate_Edit();
-  void on_MenuPopup_activate_Delete();
-
   void on_treeview_button_press_event(GdkEventButton* event);
 
   /** Set the menu to popup when the user right-clicks on the column titles.
@@ -265,7 +273,6 @@ protected:
   bool get_ignore_treeview_signals() const;
 
   bool get_view_column_index(guint model_column_index, guint& view_column_index);
-  guint get_count_hidden_system_columns();
 
   //The column_id is extra information that we can use later to discover what the column shows, even when columns have been reordered.
   guint treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, const Gtk::TreeModelColumnBase& model_column, const Glib::ustring& column_id);
@@ -278,7 +285,10 @@ protected:
   //Member widgets:
   Gtk::ScrolledWindow m_ScrolledWindow;
 
+protected:
   Gtk::TreeView m_TreeView;
+
+private:
   Gtk::TreeModel::ColumnRecord m_ColumnRecord;
   Glib::RefPtr<Gtk::ListStore> m_refListStore;
   guint m_col_key; //The index of the hidden model column.
@@ -299,7 +309,10 @@ protected:
   Glib::RefPtr<Gio::SimpleActionGroup> m_refActionGroup;
   Glib::RefPtr<Gio::SimpleAction> m_refContextEdit, m_refContextDelete;
 
+protected:
   bool m_auto_add;
+
+private:
   bool m_allow_add;
   bool m_allow_delete;
   Glib::ustring m_prevent_duplicates_warning;

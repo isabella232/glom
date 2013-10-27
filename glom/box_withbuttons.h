@@ -61,13 +61,12 @@ public:
   sigc::signal<void, Glib::ustring> signal_selected; //When an item is selected.
   sigc::signal<void> signal_cancelled; //When the cancel button is clicked.
 
-  //Signal handlers:
-  virtual void on_Button_Cancel();
-
   virtual Gtk::Widget* get_default_button();
 
 
 private:
+  //Signal handlers:
+  void on_Button_Cancel();
 
   //virtual void hint_set(const Glib::ustring& strText);
 
