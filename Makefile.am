@@ -132,7 +132,6 @@ EXTRA_DIST += \
 	data/ui/developer/dialog_new_group.glade \
 	data/ui/developer/dialog_new_library_script.glade \
 	data/ui/developer/dialog_notebook.glade \
-	data/ui/developer/dialog_relationships_overview.glade \
 	data/ui/developer/dialog_script_library.glade \
 	data/ui/developer/dialog_sort_fields.glade \
 	data/ui/developer/dialog_translation_copy.glade \
@@ -148,6 +147,7 @@ EXTRA_DIST += \
 	data/ui/developer/window_groups.glade \
 	data/ui/developer/window_imageobject.glade \
 	data/ui/developer/window_print_layout_edit.glade \
+	data/ui/developer/window_relationships_overview.glade \
 	data/ui/developer/box_print_layouts.glade \
 	data/ui/developer/window_report_layout.glade \
 	data/ui/developer/box_reports.glade \
