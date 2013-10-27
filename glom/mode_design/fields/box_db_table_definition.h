@@ -49,12 +49,12 @@ private:
   bool field_has_non_unique_values(const sharedptr<const Field>& field);
 
   //Signal handlers:
-  virtual void on_adddel_add(const Gtk::TreeModel::iterator& row);
-  virtual void on_adddel_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
-  virtual void on_adddel_changed(const Gtk::TreeModel::iterator& row, guint col);
-  virtual void on_adddel_edit(const Gtk::TreeModel::iterator& row);
+  void on_adddel_add(const Gtk::TreeModel::iterator& row);
+  void on_adddel_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
+  void on_adddel_changed(const Gtk::TreeModel::iterator& row, guint col);
+  void on_adddel_edit(const Gtk::TreeModel::iterator& row);
 
-  virtual void on_Properties_apply();
+  void on_Properties_apply();
 
   bool check_field_change(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field_new);
 
