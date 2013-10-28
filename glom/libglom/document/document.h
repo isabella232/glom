@@ -252,8 +252,8 @@ public:
   void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform, const type_list_layout_groups& groups);
 
   /**
-   * @para The layout_name, such as "details", "list".
-   * @para parent_table_name The name of the table on whose layout the layout appears.
+   * @param The layout_name, such as "details", "list".
+   * @param parent_table_name The name of the table on whose layout the layout appears.
    * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal".
    */
   type_list_layout_groups get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform = Glib::ustring()) const;

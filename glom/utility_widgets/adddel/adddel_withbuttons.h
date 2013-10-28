@@ -46,7 +46,7 @@ public:
   /** Set the label of the extra button, if any.
    * If there is no label text (the default) then the button will not be shown.
    *
-   * @para label The button label text, including the mnemonic underline.
+   * @param label The button label text, including the mnemonic underline.
    */
   void set_extra_button_label(const Glib::ustring& label);
 
