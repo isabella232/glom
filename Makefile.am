@@ -231,7 +231,7 @@ appdata_files = $(appdata_in_files:.xml.in=.xml)
 appdatadir = $(datadir)/appdata
 dist_appdata_DATA = $(appdata_files)
 
-EXTRA_DIST = $(appdata_in_files)
+EXTRA_DIST += $(appdata_in_files)
 
 @INTLTOOL_XML_RULE@
 

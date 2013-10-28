@@ -65,7 +65,7 @@ glom_libglom_libglom_@GLOM_ABI_VERSION@_la_LIBADD = $(libglom_all_libs)
 
 
 # Generate the GResource source file for the xslt files:
-libglom_resource_file = glom/libglom/data/libglom.gresource.xml
+libglom_resource_file = $(top_srcdir)/glom/libglom/data/libglom.gresource.xml
 BUILT_SOURCES = glom/libglom/data/libglom-resources.c
 glom/libglom/data/libglom-resources.c: $(libglom_resource_file) $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies $(libglom_resource_file))
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate-source $(libglom_resource_file)

@@ -30,7 +30,7 @@ glom_glom_CPPFLAGS = $(glom_includes) $(GLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_
 
 # Generate the GResource source file for .glade and icons files:
 # TODO: Do not use all .glade files in the client-only build.
-glom_resource_file = data/glom.gresource.xml
+glom_resource_file = $(top_srcdir)/data/glom.gresource.xml
 BUILT_SOURCES += data/glom-resources.c
 data/glom-resources.c: $(glom_resource_file) $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies $(glom_resource_file))
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate-source $(glom_resource_file)
