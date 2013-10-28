@@ -1,3 +1,37 @@
+1.25.3 (unstable):
+
+* Make menu item accelerators work again.
+  (Murray Cumming)
+* Field Definition: Move Default formatting into a separate window.
+  (Murray Cumming)
+* Find (broken after the port to GAction):
+  - Really stop when cancelling after none found.
+  -  Show only the found records.
+  - Update the menu item state.
+  (Murray Cumming)
+* Adjust dialog widget spacing to be more GNOME HIG-compliant.
+  (Murray Cumming)
+* Rearrange some dialogs to make them less tall, to (almost)
+  fit in small screens.
+  (Murray Cumming)
+* Replace (deprecated) GtkTable with GtkGrid.
+  (Murray Cumming)
+* Replace our custom GtkNotebook with GtkStack.
+  (Murray Cumming)
+
+Build:
+* Bundle .glade files, (most) icons, and example files into the Glom
+  executable using GResource, instead of installing them.
+  (Murray Cumming)
+* Bundle the XSLT file into the libglom library instead of installing
+  (Murray Cumming)
+* Port from gnome-doc-utils to yelp-tool.
+  (Murray Cumming)
+* Fixes for clang compiler and scan-build analyzer warnings.
+  (Murray Cumming)
+* AppData file: Actually use translations.
+  (Murray Cumming)
+
 1.25.2 (unstable):
 
 Build:
