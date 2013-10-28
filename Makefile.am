@@ -226,9 +226,12 @@ endif
 
 
 # The AppData file:
-appdata_files = glom.appdata.xml
+appdata_in_files = glom.appdata.xml.in
+appdata_files = $(appdata_in_files:.xml.in=.xml)
 appdatadir = $(datadir)/appdata
 dist_appdata_DATA = $(appdata_files)
+
+EXTRA_DIST = $(appdata_in_files)
 
 @INTLTOOL_XML_RULE@
 
