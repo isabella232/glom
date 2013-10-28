@@ -32,8 +32,7 @@ ACLOCAL_AMFLAGS  = -I macros ${ACLOCAL_FLAGS}
 
 # Make warnings always fatal at distcheck time, and disable execution
 # of tools that change files not installed by the package itself
-DISTCHECK_CONFIGURE_FLAGS = --enable-warnings=fatal \
---disable-scrollkeeper --disable-update-mime-database
+DISTCHECK_CONFIGURE_FLAGS = --enable-warnings=fatal --disable-update-mime-database
 
 if ENABLE_DOCUMENTATION
 doc_subdirs = docs/libglom_reference docs/pyglom_reference
