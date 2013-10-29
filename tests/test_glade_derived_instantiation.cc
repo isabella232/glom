@@ -87,7 +87,7 @@ bool instantiate_widget()
   Glom::Utils::get_glade_widget_derived_with_warning(widget);
   if(!widget)
   {
-    std::cerr << "Test: Failed to instantiate widget of type: " << typeid(T_Widget).name() << std::endl;
+    std::cerr << G_STRFUNC << ": Test: Failed to instantiate widget of type: " << typeid(T_Widget).name() << std::endl;
     exit(EXIT_FAILURE); //Make sure that our test case fails.
     return false;
   }
@@ -102,10 +102,10 @@ bool instantiate_widget()
   if( (allocation.get_height() > GLOM_MAX_WINDOW_HEIGHT) ||
     (allocation.get_width() > GLOM_MAX_WINDOW_WIDTH))
   {
-    std::cerr << "Test: The window/widget is too big: " << T_Widget::glade_id << std::endl;
-    std::cerr << "  height=" << allocation.get_height() << std::endl; 
-    std::cerr << "  width=" << allocation.get_width() << std::endl;
-    std::cerr << "  (Ignored, though it should be fixed.)" << std::endl; 
+    std::cerr << G_STRFUNC << ": Test: The window/widget is too big: " << T_Widget::glade_id << std::endl;
+    std::cerr << G_STRFUNC << ":   height=" << allocation.get_height() << std::endl; 
+    std::cerr << G_STRFUNC << ":   width=" << allocation.get_width() << std::endl;
+    std::cerr << G_STRFUNC << ":   (Ignored, though it should be fixed.)" << std::endl; 
     //TODO: Uncomment this when all the windows are small enough: exit(EXIT_FAILURE); //Make sure that our test case fails.
   }
   

@@ -264,7 +264,7 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
     } else if(value_type == G_TYPE_UINT) {
         ret = boost::python::object(g_value_get_uint(boxed));
     } else {
-      std::cerr << "Glom: G_VALUE_TYPE() returned unknown type: " << value_type << std::endl;
+      std::cerr << G_STRFUNC << ": Glom: G_VALUE_TYPE() returned unknown type: " << value_type << std::endl;
     }
 
     return ret;

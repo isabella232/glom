@@ -285,7 +285,7 @@ void Dialog_Database_Preferences::on_button_test_script()
 
   if(!error_message.empty())
   {
-    std::cerr << "Python Error: " << error_message << std::endl;
+    std::cerr << G_STRFUNC << ": Python Error: " << error_message << std::endl;
   }
 }
 

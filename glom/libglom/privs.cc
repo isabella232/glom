@@ -319,7 +319,7 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
   Glib::RefPtr<Gnome::Gda::Connection> connection = get_connection();
   if(!connection)
   {
-    std::cerr << ": Could not get a connection." << std::endl;
+    std::cerr << G_STRFUNC << ": : Could not get a connection." << std::endl;
     return result;
   }
 

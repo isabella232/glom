@@ -66,13 +66,13 @@ Gnome::Gda::Value get_value_for_image()
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "Failed: file_get_contents() failed: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Failed: file_get_contents() failed: " << ex.what() << std::endl;
     return Gnome::Gda::Value(); //Something went wrong. It does not exist.
   }
 
   if(data.empty())
   {
-    std::cerr << "Failed: The data read from the file was empty. filepath=" << filename << std::endl;
+    std::cerr << G_STRFUNC << ": Failed: The data read from the file was empty. filepath=" << filename << std::endl;
     return Gnome::Gda::Value();
   }
 

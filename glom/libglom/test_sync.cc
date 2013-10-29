@@ -38,7 +38,7 @@ main(int argc, char* argv[])
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "Exception caught: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Exception caught: " << ex.what() << std::endl;
   }
 
   return 0;

@@ -39,7 +39,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
-    std::cerr << "Recreation failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Recreation failed." << std::endl;
     return false;
   }
   
@@ -53,7 +53,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   const Glom::sharedptr<const Glom::Field> key_field = document.get_field(table_name, "contact_id");
   if(!key_field)
   {
-    std::cerr << "Failure: Could not get key field." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Could not get key field." << std::endl;
     return false;
   }
 
@@ -69,7 +69,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   const int rows_affected = Glom::DbUtils::query_execute(builder_set);
   if(rows_affected == -1)
   {
-    std::cerr << "Failure: UPDATE failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: UPDATE failed." << std::endl;
     return false;
   }
 
@@ -87,14 +87,14 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     Glom::DbUtils::query_execute_select(builder_get);
   if(!test_model_expected_size(data_model, 1, 1))
   {
-    std::cerr << "Failure: Unexpected data model size for main query." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Unexpected data model size for main query." << std::endl;
     return false;
   }
 
   const int count = Glom::DbUtils::count_rows_returned_by(builder_get);
   if(count != 1 )
   {
-    std::cerr << "Failure: The COUNT query returned an unexpected value: " << count << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The COUNT query returned an unexpected value: " << count << std::endl;
     return false;
   }
   
@@ -103,7 +103,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   if( (value_read_type != GDA_TYPE_BINARY) &&
     (value_read_type != GDA_TYPE_BLOB))
   {
-    std::cerr << "Failure: The value read was not of the expected type: " << g_type_name( value_read.get_value_type() ) << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The value read was not of the expected type: " << g_type_name( value_read.get_value_type() ) << std::endl;
     return false;
   }
 
@@ -118,7 +118,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     const bool read_all = gda_blob_op_read_all(const_cast<GdaBlobOp*>(blob->op), const_cast<GdaBlob*>(blob));
     if(!read_all)
     {
-      std::cerr << "Failure: gda_blob_op_read_all() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Failure: gda_blob_op_read_all() failed." << std::endl;
       return false;
     }
 
@@ -128,19 +128,19 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   const GdaBinary* binary_set = gda_value_get_binary(value_set.gobj());
   if(!binary_set)
   {
-    std::cerr << "Failure: The value read's data was null." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The value read's data was null." << std::endl;
     return false;
   }
 
   if(binary_set->binary_length != binary_read->binary_length)
   {
-    std::cerr << "Failure: The value read's data length was not equal to that of the value set." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The value read's data length was not equal to that of the value set." << std::endl;
     return false;
   }
 
   if(memcmp(binary_set->data, binary_read->data, binary_set->binary_length) != 0)
   {
-    std::cerr << "Failure: The value read was not equal to the value set." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The value read was not equal to the value set." << std::endl;
     return false;
   }
 

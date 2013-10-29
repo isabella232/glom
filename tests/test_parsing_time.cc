@@ -17,7 +17,7 @@ int main()
     Glom::Conversions::parse_time(time_text_input, success);
   if(!success)
   {
-    std::cerr << "Failed: parse_time() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failed: parse_time() failed." << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -27,7 +27,7 @@ int main()
 
   if(!success)
   {
-    std::cerr << "Failed: parse_value() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failed: parse_value() failed." << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -36,13 +36,13 @@ int main()
 
   if(parsed_time.hour != 13)
   {
-    std::cerr << "Failed: The parsed hour was " <<  parsed_time.hour << " instead of 13" << std::endl;
+    std::cerr << G_STRFUNC << ": Failed: The parsed hour was " <<  parsed_time.hour << " instead of 13" << std::endl;
     return EXIT_FAILURE; //Failed.
   }
 
   if(parsed_time.minute != 0)
   {
-    std::cerr << "Failed: The parsed minute was " <<  parsed_time.minute << " instead of 0" << std::endl;
+    std::cerr << G_STRFUNC << ": Failed: The parsed minute was " <<  parsed_time.minute << " instead of 0" << std::endl;
     return EXIT_FAILURE;
   }
 

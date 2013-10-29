@@ -257,13 +257,13 @@ void Dialog_GroupsList::on_button_group_new()
 
   if(group_name.empty())
   {
-    std::cerr << ": group_name is empty" << std::endl;
+    std::cerr << G_STRFUNC << ": : group_name is empty" << std::endl;
     return;
   }
 
   if(!DbUtils::add_group(get_document(), group_name))
   {
-    std::cerr << ": DbUtils::add_group() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": : DbUtils::add_group() failed." << std::endl;
   }
 
   fill_group_list();

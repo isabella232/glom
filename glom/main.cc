@@ -415,7 +415,7 @@ main(int argc, char* argv[])
   int errcode = WSAStartup(MAKEWORD(2, 0), &data);
   if(errcode != 0)
   {
-    std::cerr << "Failed to initialize WinSock: " << errcode << std::endl;
+    std::cerr << G_STRFUNC << ": Failed to initialize WinSock: " << errcode << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -475,7 +475,7 @@ main(int argc, char* argv[])
     //https://bugzilla.gnome.org/show_bug.cgi?id=619445
     //This should tell us what the problem is:
     std::cerr << G_STRFUNC << ": exception from std::locale::global(std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
   }
 
   Glom::libglom_init(); //Also initializes python.
@@ -555,12 +555,12 @@ main(int argc, char* argv[])
   catch(const Glib::Exception& ex)
   {
     //If this happens then comment out the try/catch, and let the debugger show the call stack.
-    std::cerr << "Glom: exception: \n  " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Glom: exception: \n  " << ex.what() << std::endl;
   }
   catch(const std::exception& ex)
   {
     //If this happens then comment out the try/catch, and let the debugger show the call stack.
-    std::cerr << "Glom: exception: \n  " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Glom: exception: \n  " << ex.what() << std::endl;
   }
 
   Glom::libglom_deinit();

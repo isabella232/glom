@@ -91,7 +91,7 @@ static Glib::ustring get_traceback()
 
   if(!traceback)
   {
-    std::cerr << "traceback = 0" << std::endl;
+    std::cerr << G_STRFUNC << ": traceback = 0" << std::endl;
   }
 
   PyErr_NormalizeException(&type, &value, &traceback);
@@ -118,7 +118,7 @@ static Glib::ustring get_traceback()
 
 static void ShowTrace()
 {
-    std::cerr << "Glom: Python Error:" << std::endl << get_traceback() << std::endl;
+    std::cerr << G_STRFUNC << ": Glom: Python Error:" << std::endl << get_traceback() << std::endl;
 
 }
 
@@ -134,13 +134,13 @@ static boost::python::object import_module(const char* name)
   }
   catch(const boost::python::error_already_set& ex)
   {
-    std::cerr << "boost::python::import() failed while importing module: "<< name << std::endl;
+    std::cerr << G_STRFUNC << ": boost::python::import() failed while importing module: "<< name << std::endl;
     ShowTrace();
   }
 
   if(module_glom == boost::python::object())
   {
-    std::cerr << "Glom: A python import of a module failed: " << name << std::endl;
+    std::cerr << G_STRFUNC << ": Glom: A python import of a module failed: " << name << std::endl;
   }
 
   return module_glom;
@@ -273,7 +273,7 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   }
   catch(const boost::python::error_already_set& ex)
   {
-    std::cerr << "Glom: boost::python::eval() threw boost::python_error_already_set." << std::endl;
+    std::cerr << G_STRFUNC << ": Glom: boost::python::eval() threw boost::python_error_already_set." << std::endl;
     HandlePythonError();
   }
   */
@@ -344,9 +344,9 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   }
   catch(const boost::python::error_already_set& ex)
   {
-    std::cerr << "Glom: Exception caught from pFunc(objRecord). func_name=" << std::endl << func_name << std::endl;
+    std::cerr << G_STRFUNC << ": Glom: Exception caught from pFunc(objRecord). func_name=" << std::endl << func_name << std::endl;
     error_message = get_traceback();
-    //std::cerr << "  traceback=" << error_message << std::endl;
+    //std::cerr << G_STRFUNC << ":   traceback=" << error_message << std::endl;
   }
 
   if(!(pyResultCpp.ptr()))
@@ -496,7 +496,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
       }
       catch(const boost::python::error_already_set& ex)
       {
-        std::cerr << "Glom: Exception caught from boost::python::extract() while converting result to a const char*." << std::endl;
+        std::cerr << G_STRFUNC << ": Glom: Exception caught from boost::python::extract() while converting result to a const char*." << std::endl;
         ShowTrace();
         return valueResult;
       }

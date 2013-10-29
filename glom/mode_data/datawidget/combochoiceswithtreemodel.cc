@@ -364,7 +364,7 @@ void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell
         pDerived->property_pixbuf() = pixbuf;
       }
       else
-        std::cerr << "Field::sql(): glom_type is TYPE_IMAGE but gda type is not VALUE_TYPE_BINARY" << std::endl;
+        std::cerr << G_STRFUNC << ": Field::sql(): glom_type is TYPE_IMAGE but gda type is not VALUE_TYPE_BINARY" << std::endl;
 
       break;
     }

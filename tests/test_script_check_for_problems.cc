@@ -30,7 +30,7 @@ int main()
 
   if(!Glom::Utils::script_check_for_pygtk2(script))
   {
-    std::cerr << "script_check_for_pygtk2() failed unexpectedly." << std::endl;
+    std::cerr << G_STRFUNC << ": script_check_for_pygtk2() failed unexpectedly." << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -39,7 +39,7 @@ int main()
 
   if(!Glom::Utils::script_check_for_pygtk2(script))
   {
-    std::cerr << "script_check_for_pygtk2() failed unexpectedly." << std::endl;
+    std::cerr << G_STRFUNC << ": script_check_for_pygtk2() failed unexpectedly." << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -50,7 +50,7 @@ int main()
 
   if(Glom::Utils::script_check_for_pygtk2(script))
   {
-    std::cerr << "script_check_for_pygtk2() succeeded unexpectedly." << std::endl;
+    std::cerr << G_STRFUNC << ": script_check_for_pygtk2() succeeded unexpectedly." << std::endl;
     return EXIT_FAILURE;
   }
 

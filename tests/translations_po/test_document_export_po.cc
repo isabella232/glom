@@ -52,7 +52,7 @@ static bool check_po_file(const std::string& filepath)
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "Exception caught: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Exception caught: " << ex.what() << std::endl;
   }
 
   if(return_status != EXIT_SUCCESS)
@@ -96,14 +96,14 @@ int main()
 
   if(!test)
   {
-    std::cerr << "Document::load() failed with failure_code=" << failure_code << std::endl;
+    std::cerr << G_STRFUNC << ": Document::load() failed with failure_code=" << failure_code << std::endl;
     return EXIT_FAILURE;
   }
 
   const Glib::ustring po_file_uri = Glom::Utils::get_temp_file_uri("glom_export.po");
   if(po_file_uri.empty())
   {
-    std::cerr << "Could not generate a temporary file URI=" << std::endl;
+    std::cerr << G_STRFUNC << ": Could not generate a temporary file URI=" << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -114,7 +114,7 @@ int main()
     Glom::write_translations_to_po_file(&document, po_file_uri, locale);
   if(!success)
   {
-    std::cerr << "Glom::write_translations_to_po_file() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Glom::write_translations_to_po_file() failed." << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -138,7 +138,7 @@ int main()
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "Failed: file_get_contents() failed: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Failed: file_get_contents() failed: " << ex.what() << std::endl;
     return EXIT_FAILURE;
   }
 

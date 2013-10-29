@@ -129,19 +129,19 @@ void get_glade_widget_with_warning(const std::string& filename, const Glib::ustr
   }
   catch(const Gtk::BuilderError& ex)
   {
-    std::cerr << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
   }
   catch(const Glib::MarkupError& ex)
   {
-    std::cerr << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
   }
   catch(const Glib::FileError& ex)
   {
-    std::cerr << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
   }
   catch(const Gio::ResourceError& ex)
   {
-    std::cerr << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
   }
 
   if(refXml)

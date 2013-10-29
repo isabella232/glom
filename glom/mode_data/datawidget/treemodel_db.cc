@@ -254,7 +254,7 @@ DbTreeModel::DbTreeModel(const FoundSet& found_set, const type_vec_const_layout_
       {
         const sharedptr<const LayoutItem_Field> layout_item = *iter;
         if(layout_item)
-          std::cerr << "  field: " << layout_item->get_name() << std::endl;
+          std::cerr << G_STRFUNC << ":   field: " << layout_item->get_name() << std::endl;
       }
       
       return;
@@ -351,7 +351,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       m_data_model_columns_count = m_columns_count;
 
       std::cerr << G_STRFUNC << ": error executing SQL. SQL query: " << std::endl;
-      std::cerr << "  " << Utils::sqlbuilder_get_full_query(sql_query) << std::endl;
+      std::cerr << G_STRFUNC << ":   " << Utils::sqlbuilder_get_full_query(sql_query) << std::endl;
       ConnectionPool::handle_error_cerr_only();
       return false; //No records were found.
     }

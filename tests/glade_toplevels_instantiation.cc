@@ -38,8 +38,8 @@ static bool attempt_instantiation(const std::string& filepath, const xmlpp::Elem
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "Exception from Gtk::Builder::create_from_file() with id=" << id << " from file " << filepath << std::endl;
-    std::cerr << "  Error: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Exception from Gtk::Builder::create_from_file() with id=" << id << " from file " << filepath << std::endl;
+    std::cerr << G_STRFUNC << ":   Error: " << ex.what() << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -60,7 +60,7 @@ static bool attempt_instantiation(const std::string& filepath, const xmlpp::Elem
   else
   {
     //We try to avoid using non-window top-level widgets in Glom.
-    std::cerr << "Non-window top-level object in Glade file (unexpected by Glom): id=" << id << " from file " << filepath << std::endl;
+    std::cerr << G_STRFUNC << ": Non-window top-level object in Glade file (unexpected by Glom): id=" << id << " from file " << filepath << std::endl;
 
     //But let's try this anyway:
     Glib::RefPtr<Glib::Object> object = builder->get_object(id);
@@ -70,7 +70,7 @@ static bool attempt_instantiation(const std::string& filepath, const xmlpp::Elem
 
   if(!widget)
   {
-    std::cerr << "Failed to instantiate object with id=" << id << " from file " << filepath << std::endl;
+    std::cerr << G_STRFUNC << ": Failed to instantiate object with id=" << id << " from file " << filepath << std::endl;
     return false;
   }
 
@@ -78,7 +78,7 @@ static bool attempt_instantiation(const std::string& filepath, const xmlpp::Elem
   //because applications generally want to separate instantiation from showing.
   if(widget->get_visible())
   {
-     std::cerr << "Top-level window is visible by default (unwanted by Glom): id=" << id << " from file " << filepath << std::endl;
+     std::cerr << G_STRFUNC << ": Top-level window is visible by default (unwanted by Glom): id=" << id << " from file " << filepath << std::endl;
      return false;
   }
 
@@ -99,7 +99,7 @@ int main(int argc, char* argv[])
     filepath = argv[1]; //Allow the user to specify a different XML file to parse.
   else
   {
-    std::cerr << "Usage: glade_toplevels_instantiation filepath" << std::endl;
+    std::cerr << G_STRFUNC << ": Usage: glade_toplevels_instantiation filepath" << std::endl;
     return EXIT_FAILURE;
   }
 

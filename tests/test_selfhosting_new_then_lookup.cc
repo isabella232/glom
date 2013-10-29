@@ -71,7 +71,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
-    std::cerr << "Recreation failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Recreation failed." << std::endl;
     return false;
   }
   
@@ -79,7 +79,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   Glom::sharedptr<const Glom::Field> primary_key_field = document.get_field_primary_key(table_name);
   if(!primary_key_field)
   {
-    std::cerr << "Failure: primary_key_field is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: primary_key_field is empty." << std::endl;
     return false;
   }
 
@@ -88,25 +88,25 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   const Glom::Document::type_list_lookups lookups = document.get_lookup_fields(table_name, "product_id");
   if(lookups.size() != 3)
   {
-    std::cerr << "Failure: Unexpected number of lookups: " << lookups.size() << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Unexpected number of lookups: " << lookups.size() << std::endl;
     return false;
   }
 
   if(!contains_field(lookups, table_name, "product_price"))
   {
-    std::cerr << "Failure: Expected lookup field not found." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Expected lookup field not found." << std::endl;
     return false;
   }
 
   if(!contains_field(lookups, table_name, "product_name"))
   {
-    std::cerr << "Failure: Expected lookup field not found." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Expected lookup field not found." << std::endl;
     return false;
   }
 
   if(!contains_field(lookups, table_name, "vat_percentage"))
   {
-    std::cerr << "Failure: Expected lookup field not found." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Expected lookup field not found." << std::endl;
     return false;
   }
 
@@ -116,62 +116,62 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     get_lookup_field(lookups, table_name, field_name, relationship);
   if(!layout_field)
   {
-    std::cerr << "Failure: The lookup field is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The lookup field is empty." << std::endl;
     return false;
   }
  
   if(!relationship)
   {
-    std::cerr << "Failure: The lookup relationship is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The lookup relationship is empty." << std::endl;
     return false;
   }
 
   if(relationship->get_to_table() != "products")
   {
-    std::cerr << "Failure: The relationship's to table is unexpected." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The relationship's to table is unexpected." << std::endl;
     return false;
   }
 
   if(layout_field->get_table_used(table_name) != table_name)
   {
-    std::cerr << "Failure: The lookup field's table is unexpected" << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The lookup field's table is unexpected" << std::endl;
     return false;
   }
 
   if(layout_field->get_name() != field_name)
   {
-    std::cerr << "Failure: The lookup field's name is unexpected." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The lookup field's name is unexpected." << std::endl;
     return false;
   }
 
   const Glom::sharedptr<const Glom::Field> field = layout_field->get_full_field_details();
   if(!field)
   {
-    std::cerr << "Failure: The lookup item's field is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The lookup item's field is empty." << std::endl;
     return false;
   }
 
   if(field->get_name() != field_name)
   {
-    std::cerr << "Failure: The lookup item's field name is unexpected." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The lookup item's field name is unexpected." << std::endl;
     return false;
   }
 
   if(!field->get_is_lookup())
   {
-    std::cerr << "Failure: The lookup item's field is not a lookup." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The lookup item's field is not a lookup." << std::endl;
     return false;
   }
 
   if(field->get_lookup_field() != "price")
   {
-    std::cerr << "Failure: The lookup item's field's name is unexpected." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The lookup item's field's name is unexpected." << std::endl;
     return false;
   }
 
   if(relationship != field->get_lookup_relationship())
   {
-    std::cerr << "Failure: The lookup item's field's relationship is not expected." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The lookup item's field's relationship is not expected." << std::endl;
     return false;
   }
 
@@ -183,16 +183,16 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   if(!test_check_numeric_value_type(hosting_mode, value))
   {
-    std::cerr << "Failure: The value has an unexpected type: " << 
+    std::cerr << G_STRFUNC << ": Failure: The value has an unexpected type: " << 
       g_type_name(value.get_value_type()) << std::endl;
     return false;
   }
 
   if(Glom::Conversions::get_double_for_gda_value_numeric(value) != 3.5f)
   {
-    std::cerr << "Failure: The value has an unexpected value: " << value.to_string() << " instead of 3.5" << std::endl;
-    std::cerr << "    value as string: " << value.to_string() << std::endl;
-    std::cerr << "    value GType: " << g_type_name(value.get_value_type()) << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The value has an unexpected value: " << value.to_string() << " instead of 3.5" << std::endl;
+    std::cerr << G_STRFUNC << ":     value as string: " << value.to_string() << std::endl;
+    std::cerr << G_STRFUNC << ":     value GType: " << g_type_name(value.get_value_type()) << std::endl;
     return false;
   }
 

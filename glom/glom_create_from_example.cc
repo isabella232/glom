@@ -240,7 +240,7 @@ int main(int argc, char* argv[])
     //https://bugzilla.gnome.org/show_bug.cgi?id=619445
     //This should tell us what the problem is:
     std::cerr << G_STRFUNC << ": exception from std::locale::global(std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
   }
 
   
@@ -292,7 +292,7 @@ int main(int argc, char* argv[])
     if(!file->query_exists())
     {
       std::cerr << _("Glom: The file does not exist.") << std::endl;
-      std::cerr << "uri: " << input_uri << std::endl;
+      std::cerr << G_STRFUNC << ": uri: " << input_uri << std::endl;
 
       std::cerr << std::endl << context.get_help() << std::endl;
       return EXIT_FAILURE;
@@ -312,7 +312,7 @@ int main(int argc, char* argv[])
   
   if(input_uri.empty())
   {
-    std::cerr << "Please specify a glom example file." << std::endl;
+    std::cerr << G_STRFUNC << ": Please specify a glom example file." << std::endl;
     std::cerr << std::endl << context.get_help() << std::endl;
     return EXIT_FAILURE;
   }
@@ -321,7 +321,7 @@ int main(int argc, char* argv[])
   //Check the output directory path: 
   if(group.m_arg_filepath_dir_output.empty())
   {
-    std::cerr << "Please specify an output directory path." << std::endl;
+    std::cerr << G_STRFUNC << ": Please specify an output directory path." << std::endl;
     std::cerr << std::endl << context.get_help() << std::endl;
     return EXIT_FAILURE;
   }
@@ -333,7 +333,7 @@ int main(int argc, char* argv[])
     if(!file->query_exists())
     {
       std::cerr << _("Glom: The output directory does not exist.") << std::endl;
-      std::cerr << "uri: " << group.m_arg_filepath_dir_output << std::endl;
+      std::cerr << G_STRFUNC << ": uri: " << group.m_arg_filepath_dir_output << std::endl;
 
       std::cerr << std::endl << context.get_help() << std::endl;
       return EXIT_FAILURE;
@@ -351,7 +351,7 @@ int main(int argc, char* argv[])
   //Check the output name path: 
   if(group.m_arg_filepath_name_output.empty())
   {
-    std::cerr << "Please specify an output name." << std::endl;
+    std::cerr << G_STRFUNC << ": Please specify an output name." << std::endl;
     std::cerr << std::endl << context.get_help() << std::endl;
     return EXIT_FAILURE;
   }
@@ -366,7 +366,7 @@ int main(int argc, char* argv[])
 
   if(!test)
   {
-    std::cerr << "Document::load() failed with failure_code=" << failure_code << std::endl;
+    std::cerr << G_STRFUNC << ": Document::load() failed with failure_code=" << failure_code << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -392,7 +392,7 @@ int main(int argc, char* argv[])
     Glib::RefPtr<Gio::File> file = Gio::File::create_for_commandline_arg(uri);
     if(file->query_exists())
     {
-      std::cerr << "The output path already exists: " << filepath_dir << std::endl;
+      std::cerr << G_STRFUNC << ": The output path already exists: " << filepath_dir << std::endl;
       return EXIT_FAILURE;
     }
   }
@@ -459,7 +459,7 @@ int main(int argc, char* argv[])
 
 #ifdef G_OS_WIN32
     const char* password = "";
-    std::cerr << "Error: getpass() is not implemented in the Windows build. The connection will fail." << std::endl;
+    std::cerr << G_STRFUNC << ": Error: getpass() is not implemented in the Windows build. The connection will fail." << std::endl;
 #else
     const char* password = ::getpass(prompt.c_str());
 #endif
@@ -506,7 +506,7 @@ int main(int argc, char* argv[])
   const Glom::ConnectionPool::StartupErrors started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
   if(started != Glom::ConnectionPool::Backend::STARTUPERROR_NONE)
   {
-    std::cerr << "connection_pool->startup(): result=" << started << std::endl;
+    std::cerr << G_STRFUNC << ": connection_pool->startup(): result=" << started << std::endl;
     cleanup();
   }
   g_assert(started == Glom::ConnectionPool::Backend::STARTUPERROR_NONE);

@@ -733,7 +733,7 @@ void Dialog_Import_CSV::on_parser_file_read_error(const Glib::ustring& error_mes
   }
   catch(const Glib::ConvertError& ex)
   {
-    std::cerr << "Glib::filename_from_uri() failed: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << "Glib::filename_from_uri() failed: " << ex.what() << std::endl;
 
     show_error_dialog(_("Could Not Open file"),
       Glib::ustring::compose(_("The file at \"%1\" could not be opened: %2"), filename, error_message) );

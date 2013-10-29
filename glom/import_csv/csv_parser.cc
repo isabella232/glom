@@ -570,7 +570,7 @@ void CsvParser::on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result,
   }
   catch(const Glib::Exception& ex)
   {
-    std::cerr << "Failed to fetch display name of uri " << source->get_uri() << ": " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << "Failed to fetch display name of uri " << source->get_uri() << ": " << ex.what() << std::endl;
   }
 }
 

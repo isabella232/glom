@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
     //https://bugzilla.gnome.org/show_bug.cgi?id=619445
     //This should tell us what the problem is:
     std::cerr << G_STRFUNC << ": exception from std::locale::global(std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
   }
   
 
@@ -160,7 +160,7 @@ int main(int argc, char* argv[])
   if(!file_input->query_exists())
   {
     std::cerr << _("Glom: The file does not exist.") << std::endl;
-    std::cerr << "uri: " << input_uri << std::endl;
+    std::cerr << G_STRFUNC << ": uri: " << input_uri << std::endl;
 
     std::cerr << std::endl << context.get_help() << std::endl;
     return EXIT_FAILURE;
@@ -190,7 +190,7 @@ int main(int argc, char* argv[])
   if(file_output->query_exists())
   {
     std::cerr << _("Glom: The output file aready exists.") << std::endl;
-    std::cerr << "uri: " << ouput_uri << std::endl;
+    std::cerr << G_STRFUNC << ": uri: " << ouput_uri << std::endl;
 
     std::cerr << std::endl << context.get_help() << std::endl;
     return EXIT_FAILURE;
@@ -207,7 +207,7 @@ int main(int argc, char* argv[])
 
   if(!test)
   {
-    std::cerr << "Document::load() failed with failure_code=" << failure_code << std::endl;
+    std::cerr << G_STRFUNC << ": Document::load() failed with failure_code=" << failure_code << std::endl;
     return EXIT_FAILURE;
   }
 

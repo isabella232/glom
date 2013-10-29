@@ -197,7 +197,7 @@ int Application::on_command_line(const Glib::RefPtr<Gio::ApplicationCommandLine>
     if(!file->query_exists())
     {
       std::cerr << _("Glom: The file does not exist.") << std::endl;
-      std::cerr << "uri: " << input_uri << std::endl;
+      std::cerr << G_STRFUNC << ": uri: " << input_uri << std::endl;
 
       std::cerr << std::endl << context.get_help() << std::endl;
       return EXIT_FAILURE;

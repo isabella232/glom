@@ -41,7 +41,7 @@ bool check_value_is_an_image(const Gnome::Gda::Value& value)
   }
   catch(const Gdk::PixbufError& ex)
   {
-    std::cerr << "PixbufLoader::create failed: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": PixbufLoader::create failed: " << ex.what() << std::endl;
     return false;
   }
 
@@ -55,7 +55,7 @@ bool check_value_is_an_image(const Gnome::Gda::Value& value)
   }
   catch(const Glib::Exception& ex)
   {
-    std::cerr << "PixbufLoader::write() failed: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": PixbufLoader::write() failed: " << ex.what() << std::endl;
     return false;
   }
 

@@ -131,7 +131,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
     if(temp_conn)
       std::cout << "  (Connection succeeds, but not to the specific database,  database=" << database << std::endl;
     else
-      std::cerr << "  (Could not connect even to the default database, database=" << database  << std::endl;
+      std::cerr << G_STRFUNC << ":   (Could not connect even to the default database, database=" << database  << std::endl;
 #endif
 
     throw ExceptionConnection(temp_conn ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER);
@@ -373,8 +373,8 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "Exception: " << ex.what() << std::endl;
-    std::cerr << "Reverting the transaction." << std::endl;
+    std::cerr << G_STRFUNC << ": Exception: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Reverting the transaction." << std::endl;
     
     try
     {
@@ -382,7 +382,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
     }
     catch(const Glib::Error& ex)
     {
-      std::cerr << "Could not rollback the transaction: Exception: " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << ": Could not rollback the transaction: Exception: " << ex.what() << std::endl;
     }
   }
   
@@ -654,7 +654,7 @@ bool Postgres::save_backup(const SlotProgress& slot_progress, const Glib::ustrin
 
   if(!result)
   {
-    std::cerr << "Error while attempting to call pg_dump." << std::endl;
+    std::cerr << G_STRFUNC << ": Error while attempting to call pg_dump." << std::endl;
   }
 
   return result;
@@ -738,7 +738,7 @@ bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::stri
 
   if(!result)
   {
-    std::cerr << "Error while attempting to call pg_restore." << std::endl;
+    std::cerr << G_STRFUNC << ": Error while attempting to call pg_restore." << std::endl;
   }
 
   return result;
@@ -896,7 +896,7 @@ bool Postgres::create_text_file(const std::string& file_uri, const std::string& 
     const Gio::Error& ex = *error.get();
 #endif
     // If the operation was not successful, print the error and abort
-    std::cerr << "ConnectionPool::create_text_file(): exception while creating file." << std::endl
+    std::cerr << G_STRFUNC << ": ConnectionPool::create_text_file(): exception while creating file." << std::endl
       << "  file uri:" << file_uri << std::endl
       << "  error:" << ex.what() << std::endl;
     return false; // print_error(ex, output_uri_string);
@@ -924,7 +924,7 @@ bool Postgres::create_text_file(const std::string& file_uri, const std::string& 
     Gio::Error& ex = *error.get();
 #endif
     // If the operation was not successful, print the error and abort
-    std::cerr << "ConnectionPool::create_text_file(): exception while writing to file." << std::endl
+    std::cerr << G_STRFUNC << ": ConnectionPool::create_text_file(): exception while writing to file." << std::endl
       << "  file uri:" << file_uri << std::endl
       << "  error:" << ex.what() << std::endl;
     return false; //print_error(ex, output_uri_string);
@@ -932,7 +932,7 @@ bool Postgres::create_text_file(const std::string& file_uri, const std::string& 
 
   if(bytes_written != (gssize)contents_size)
   {
-    std::cerr << "ConnectionPool::create_text_file(): not all bytes written when writing to file." << std::endl
+    std::cerr << G_STRFUNC << ": ConnectionPool::create_text_file(): not all bytes written when writing to file." << std::endl
       << "  file uri:" << file_uri << std::endl;
     return false;
   }

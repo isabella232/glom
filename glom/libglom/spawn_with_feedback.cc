@@ -134,7 +134,7 @@ private:
       }
       catch(const Glib::Exception& ex)
       {
-        std::cerr << "Glom::Spawn::Impl::SpawnInfo::on_io: Error while reading from pipe: " << ex.what() << std::endl;
+        std::cerr << G_STRFUNC << ": Glom::Spawn::Impl::SpawnInfo::on_io: Error while reading from pipe: " << ex.what() << std::endl;
         return false;
       }
 

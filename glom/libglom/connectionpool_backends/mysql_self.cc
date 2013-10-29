@@ -136,7 +136,7 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
 
   if(initial_username.empty())
   {
-    std::cerr << "MySQLSelfHosted::initialize(). Username was empty while attempting to create self-hosting database" << std::endl;
+    std::cerr << G_STRFUNC << ": MySQLSelfHosted::initialize(). Username was empty while attempting to create self-hosting database" << std::endl;
     return INITERROR_OTHER;
   }
 
@@ -154,7 +154,7 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
   const bool dbdir_created = create_directory_filepath(dbdir);
   if(!dbdir_created)
   {
-    std::cerr << "Couldn't create directory: " << dbdir << std::endl;
+    std::cerr << G_STRFUNC << ": Couldn't create directory: " << dbdir << std::endl;
 
     return INITERROR_COULD_NOT_CREATE_DIRECTORY;
   }
@@ -166,7 +166,7 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
   const std::string dbdir_data = get_self_hosting_data_path(true /* create */);
   if(dbdir_data.empty())
   {
-    std::cerr << "Couldn't create the data directory: " << dbdir << std::endl;
+    std::cerr << G_STRFUNC << ": Couldn't create the data directory: " << dbdir << std::endl;
 
     return INITERROR_COULD_NOT_CREATE_DIRECTORY;
   }
@@ -189,7 +189,7 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
   const bool result = Glom::Spawn::execute_command_line_and_wait(command_initdb, slot_progress);
   if(!result)
   {
-    std::cerr << "Error while attempting to create self-hosting MySQL database." << std::endl;
+    std::cerr << G_STRFUNC << ": Error while attempting to create self-hosting MySQL database." << std::endl;
   }
   else
   {
@@ -211,14 +211,14 @@ Backend::InitErrors MySQLSelfHosted::initialize(const SlotProgress& slot_progres
     //and we cannot take the risk of leaving the database with a default password.
     if(startup(slot_progress, false) != STARTUPERROR_NONE)
     {
-      std::cerr << "Error while attempting to create self-hosting MySQL database, while starting for the first time, to set the initial username and password." << std::endl;
+      std::cerr << G_STRFUNC << ": Error while attempting to create self-hosting MySQL database, while starting for the first time, to set the initial username and password." << std::endl;
       return INITERROR_OTHER;
     }
     else
     {
       if(!cleanup(slot_progress))
       {
-        std::cerr << "Error while attempting to create self-hosting MySQL database, while shutting down, after setting the initial username and password." << std::endl;
+        std::cerr << G_STRFUNC << ": Error while attempting to create self-hosting MySQL database, while shutting down, after setting the initial username and password." << std::endl;
         return INITERROR_OTHER;
       }
     }
@@ -395,7 +395,7 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
 
     if(!result)
     {
-      std::cerr << "Error while attempting to start self-hosting MySQL database, when setting the initial password." << std::endl;
+      std::cerr << G_STRFUNC << ": Error while attempting to start self-hosting MySQL database, when setting the initial password." << std::endl;
       return STARTUPERROR_FAILED_UNKNOWN_REASON;
     }
 
@@ -539,7 +539,7 @@ bool MySQLSelfHosted::cleanup(const SlotProgress& slot_progress)
 
   if(!result)
   {
-    std::cerr << "Error while attempting to stop self-hosting of the MySQL database. Trying again."  << std::endl;
+    std::cerr << G_STRFUNC << ": Error while attempting to stop self-hosting of the MySQL database. Trying again."  << std::endl;
     
     //Show open connections for debugging:
     try
@@ -556,7 +556,7 @@ bool MySQLSelfHosted::cleanup(const SlotProgress& slot_progress)
     const bool result = Glom::Spawn::execute_command_line_and_wait(command_mysql_stop, slot_progress);
     if(!result)
     {
-      std::cerr << "Error while attempting (for a second time) to stop self-hosting of the database."  << std::endl;
+      std::cerr << G_STRFUNC << ": Error while attempting (for a second time) to stop self-hosting of the database."  << std::endl;
       return false;
     }
   }
@@ -667,7 +667,7 @@ unsigned int MySQLSelfHosted::discover_first_free_port(unsigned int start_port, 
   if(fd == -1)
   {
 #ifdef G_OS_WIN32
-    std::cerr << "Create socket: " << WSAGetLastError() << std::endl;
+    std::cerr << G_STRFUNC << ": Create socket: " << WSAGetLastError() << std::endl;
 #else
     perror("Create socket");
 #endif //G_OS_WIN32

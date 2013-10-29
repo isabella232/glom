@@ -60,7 +60,7 @@ int main()
 
   if(!test)
   {
-    std::cerr << "Document::load() failed with failure_code=" << failure_code << std::endl;
+    std::cerr << G_STRFUNC << ": Document::load() failed with failure_code=" << failure_code << std::endl;
     return EXIT_FAILURE;
   }
 

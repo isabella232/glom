@@ -39,7 +39,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
-    std::cerr << "Recreation failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Recreation failed." << std::endl;
     return false;
   }
   
@@ -48,14 +48,14 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   Glom::sharedptr<const Glom::Field> field = document.get_field(table_name, field_name_original);
   if(!field)
   {
-    std::cerr << "Failure: Could not get field." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Could not get field." << std::endl;
     return false;
   }
 
   Glom::sharedptr<Glom::Field> field_new = Glom::glom_sharedptr_clone(field);
   if(!field_new)
   {
-    std::cerr << "Failure: field_new is null." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: field_new is null." << std::endl;
     return false;
   }
   field_new->set_glom_type(Glom::Field::TYPE_TEXT);
@@ -63,7 +63,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
   if(!connection_pool)
   {
-    std::cerr << "Failure: connection_pool is null." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: connection_pool is null." << std::endl;
     return false;
   }
 
@@ -75,13 +75,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     const bool test = connection_pool->change_column(table_name, field, field_new);
     if(!test)
     {
-      std::cerr << "Failure: change_column() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Failure: change_column() failed." << std::endl;
       return false;
     }
   }
   catch(const Glib::Error& ex)
   { 
-    std::cerr << "Failure: change_column() threw an exception: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: change_column() threw an exception: " << ex.what() << std::endl;
     return false;
   }
 
@@ -93,13 +93,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     const bool test = connection_pool->change_column(table_name, field, field_new);
     if(!test)
     {
-      std::cerr << "Failure: change_column() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Failure: change_column() failed." << std::endl;
       return false;
     }
   }
   catch(const Glib::Error& ex)
   { 
-    std::cerr << "Failure: change_column() threw an exception: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: change_column() threw an exception: " << ex.what() << std::endl;
     return false;
   }
 
@@ -111,13 +111,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     const bool test = connection_pool->change_column(table_name, field, field_new);
     if(!test)
     {
-      std::cerr << "Failure: change_column() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Failure: change_column() failed." << std::endl;
       return false;
     }
   }
   catch(const Glib::Error& ex)
   { 
-    std::cerr << "Failure: change_column() threw an exception: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: change_column() threw an exception: " << ex.what() << std::endl;
     return false;
   }
 
@@ -129,13 +129,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     const bool test = connection_pool->change_column(table_name, field, field_new);
     if(!test)
     {
-      std::cerr << "Failure: change_column() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Failure: change_column() failed." << std::endl;
       return false;
     }
   }
   catch(const Glib::Error& ex)
   { 
-    std::cerr << "Failure: change_column() threw an exception: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: change_column() threw an exception: " << ex.what() << std::endl;
     return false;
   }
 
@@ -147,7 +147,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   const double value_next_as_double = Glom::Conversions::get_double_for_gda_value_numeric(value_next);
   if(value_next_as_double != 0)
   {
-    std::cerr << "Failure: The next auto-increment value is not 0 as expected. Instead it is: " << value_next_as_double << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The next auto-increment value is not 0 as expected. Instead it is: " << value_next_as_double << std::endl;
     return false;
   }
 
@@ -170,13 +170,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     const bool test = connection_pool->add_column(table_name, field);
     if(!test)
     {
-      std::cerr << "Failure: add_column() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Failure: add_column() failed." << std::endl;
       return false;
     }
   }
   catch(const Glib::Error& ex)
   { 
-    std::cerr << "Failure: add_column() threw an exception: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: add_column() threw an exception: " << ex.what() << std::endl;
     return false;
   }
   

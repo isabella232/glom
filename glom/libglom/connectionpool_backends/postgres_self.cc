@@ -156,7 +156,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
 
   if(initial_username.empty())
   {
-    std::cerr << "PostgresSelfHosted::initialize(). Username was empty while attempting to create self-hosting database" << std::endl;
+    std::cerr << G_STRFUNC << ": PostgresSelfHosted::initialize(). Username was empty while attempting to create self-hosting database" << std::endl;
     return INITERROR_OTHER;
   }
 
@@ -174,7 +174,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   const bool dbdir_created = create_directory_filepath(dbdir);
   if(!dbdir_created)
   {
-    std::cerr << "Couldn't create directory: " << dbdir << std::endl;
+    std::cerr << G_STRFUNC << ": Couldn't create directory: " << dbdir << std::endl;
 
     return INITERROR_COULD_NOT_CREATE_DIRECTORY;
   }
@@ -183,7 +183,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   const std::string dbdir_config = get_self_hosting_config_path(true /* create */);
   if(dbdir_config.empty())
   {
-    std::cerr << "Couldn't create the config directory: " << dbdir << std::endl;
+    std::cerr << G_STRFUNC << ": Couldn't create the config directory: " << dbdir << std::endl;
 
     return INITERROR_COULD_NOT_CREATE_DIRECTORY;
   }
@@ -195,7 +195,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   const std::string dbdir_data = get_self_hosting_data_path(true /* create */);
   if(dbdir_data.empty())
   {
-    std::cerr << "Couldn't create the data directory: " << dbdir << std::endl;
+    std::cerr << G_STRFUNC << ": Couldn't create the data directory: " << dbdir << std::endl;
 
     return INITERROR_COULD_NOT_CREATE_DIRECTORY;
   }
@@ -217,7 +217,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   const bool result = Glom::Spawn::execute_command_line_and_wait(command_initdb, slot_progress);
   if(!result)
   {
-    std::cerr << "Error while attempting to create self-hosting database." << std::endl;
+    std::cerr << G_STRFUNC << ": Error while attempting to create self-hosting database." << std::endl;
   }
 
   const int temp_pwfile_removed = g_remove(temp_pwfile.c_str()); //Of course, we don't want this to stay around. It would be a security risk.
@@ -237,7 +237,7 @@ Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgres
   const bool spawn_result = Glom::Spawn::execute_command_line_and_wait(command, slot_progress, output);
   if(!spawn_result)
   {
-    std::cerr << "Error while attempting to discover the pg_ctl version." << std::endl;
+    std::cerr << G_STRFUNC << ": Error while attempting to discover the pg_ctl version." << std::endl;
     return result;
   }
 
@@ -253,7 +253,7 @@ Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgres
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "Glom: Glib::Regex::create() failed: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Glom: Glib::Regex::create() failed: " << ex.what() << std::endl;
     return result;
   }
 
@@ -295,7 +295,7 @@ float PostgresSelfHosted::get_postgresql_utils_version_as_number(const SlotProgr
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "Glom: Glib::Regex::create() failed: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Glom: Glib::Regex::create() failed: " << ex.what() << std::endl;
     return result;
   }
 
@@ -375,7 +375,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
     }
     else
     {
-      std::cerr << "ConnectionPool::create_self_hosting(): The data sub-directory could not be found." << dbdir_data_uri << std::endl;
+      std::cerr << G_STRFUNC << ": ConnectionPool::create_self_hosting(): The data sub-directory could not be found." << dbdir_data_uri << std::endl;
       return STARTUPERROR_FAILED_NO_DATA;
     }
   }
@@ -429,7 +429,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
   const bool result = Glom::Spawn::execute_command_line_and_wait_until_second_command_returns_success(command_postgres_start, command_check_postgres_has_started, slot_progress, second_command_success_text);
   if(!result)
   {
-    std::cerr << "Error while attempting to self-host a database." << std::endl;
+    std::cerr << G_STRFUNC << ": Error while attempting to self-host a database." << std::endl;
     return STARTUPERROR_FAILED_UNKNOWN_REASON;
   }
 
@@ -506,7 +506,7 @@ bool PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
   const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, slot_progress);
   if(!result)
   {
-    std::cerr << "Error while attempting to stop self-hosting of the database. Trying again."  << std::endl;
+    std::cerr << G_STRFUNC << ": Error while attempting to stop self-hosting of the database. Trying again."  << std::endl;
     
     //Show open connections for debugging:
     try
@@ -523,7 +523,7 @@ bool PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
     const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, slot_progress);
     if(!result)
     {
-      std::cerr << "Error while attempting (for a second time) to stop self-hosting of the database."  << std::endl;
+      std::cerr << G_STRFUNC << ": Error while attempting (for a second time) to stop self-hosting of the database."  << std::endl;
       return false;
     }
   }
@@ -650,7 +650,7 @@ unsigned int PostgresSelfHosted::discover_first_free_port(unsigned int start_por
   if(fd == -1)
   {
 #ifdef G_OS_WIN32
-    std::cerr << "Create socket: " << WSAGetLastError() << std::endl;
+    std::cerr << G_STRFUNC << ": Create socket: " << WSAGetLastError() << std::endl;
 #else
     perror("Create socket");
 #endif //G_OS_WIN32

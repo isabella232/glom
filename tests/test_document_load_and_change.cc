@@ -42,7 +42,7 @@ static bool field_is_on_a_layout(Glom::Document& document, const Glib::ustring& 
       const Glom::sharedptr<Glom::LayoutGroup> group = *iter;
       if(group->has_field(layout_table_name, table_name, field_name))
       {
-        //std::cerr << "Failure: The field is still used on a layout for table: " << layout_table_name << std::endl;
+        //std::cerr << G_STRFUNC << ": Failure: The field is still used on a layout for table: " << layout_table_name << std::endl;
         return true;
       }
     }
@@ -91,7 +91,7 @@ int main()
 
   if(!test)
   {
-    std::cerr << "Document::load() failed with failure_code=" << failure_code << std::endl;
+    std::cerr << G_STRFUNC << ": Document::load() failed with failure_code=" << failure_code << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -107,14 +107,14 @@ int main()
   //Check that the original field name is not known to the document:
   if(document.get_field(table_name, field_name_original))
   {
-    std::cerr << "Failure: The document should have forgotten about the original field name." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The document should have forgotten about the original field name." << std::endl;
     return false;
   }
 
   //Check that the new field name is known to the document:
   if(!(document.get_field(table_name, field_name_new)))
   {
-    std::cerr << "Failure: The document does not know about the new field name." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The document does not know about the new field name." << std::endl;
     return false;
   }
 
@@ -122,20 +122,20 @@ int main()
   Glom::sharedptr<const Glom::Relationship> relationship = document.get_relationship("invoice_lines", "products");
   if(!relationship)
   {
-    std::cerr << "Failure: The relationship could not be found in the document." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The relationship could not be found in the document." << std::endl;
     return false;
   }
 
   if(relationship->get_to_field() == field_name_original)
   {
-    std::cerr << "Failure: The relationship still uses the original field name." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The relationship still uses the original field name." << std::endl;
     return false;
   }
 
   //Check that the original field name is no longer used on a layout:
   if(field_is_on_a_layout(document, table_name, field_name_original))
   {
-    std::cerr << "Failure: The original field name is still used on a layout." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The original field name is still used on a layout." << std::endl;
     return false;
   }
 
@@ -148,13 +148,13 @@ int main()
       relationship_name_original, relationship_name_new);
     if(document.get_relationship(table_name, relationship_name_original))
     {
-      std::cerr << "Failure: The original relationship name still exists." << std::endl;
+      std::cerr << G_STRFUNC << ": Failure: The original relationship name still exists." << std::endl;
       return false;
     }
 
     if(!document.get_relationship(table_name, relationship_name_new))
     {
-      std::cerr << "Failure: The new relationship name does not exist." << std::endl;
+      std::cerr << G_STRFUNC << ": Failure: The new relationship name does not exist." << std::endl;
       return false;
     }
 
@@ -164,7 +164,7 @@ int main()
     g_assert(field_on_layout);
     if(field_on_layout->get_relationship_name() != relationship_name_new)
     {
-      std::cerr << "Failure: A layout item does not use the new relationship name as expected." << std::endl;
+      std::cerr << G_STRFUNC << ": Failure: A layout item does not use the new relationship name as expected." << std::endl;
       return false;
     }
   }
@@ -173,7 +173,7 @@ int main()
   document.remove_field("publisher", "publisher_id");
   if(field_is_on_a_layout(document, "publisher", "publisher_id"))
   {
-    std::cerr << "Failure: The removed field name is still used on a layout." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The removed field name is still used on a layout." << std::endl;
     return false;
   }
   
@@ -182,7 +182,7 @@ int main()
   relationship = document.get_relationship("invoice_lines", "products");
   if(relationship)
   {
-    std::cerr << "Failure: The removed relationship still exists." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The removed relationship still exists." << std::endl;
     return false;
   }
   
@@ -191,27 +191,27 @@ int main()
   document.change_table_name("invoice_lines", table_renamed);
   if(document.get_table("invoice_lines"))
   {
-    std::cerr << "Failure: The renamed table still exists." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The renamed table still exists." << std::endl;
     return false;
   }
   
   relationship = document.get_relationship("invoices", "invoice_lines");
   if(!relationship)
   {
-    std::cerr << "Failure: The expected relationship does not exist." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The expected relationship does not exist." << std::endl;
     return false;
   }
 
   if(relationship->get_to_table() != table_renamed)
   {
-    std::cerr << "Failure: The relationship's to_table does have been renamed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The relationship's to_table does have been renamed." << std::endl;
     return false;
   }
   
   document.remove_table("products");
   if(document.get_table("products"))
   {
-    std::cerr << "Failure: The removed table still exists." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The removed table still exists." << std::endl;
     return false;
   }
 
@@ -221,7 +221,7 @@ int main()
     document.get_print_layout("contacts", "contact_details");
   if(!print_layout)
   {
-    std::cerr << "Failure: Could not get an expected print layout." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Could not get an expected print layout." << std::endl;
     return false;
   }
   
@@ -230,7 +230,7 @@ int main()
     document.get_print_layout("contacts", "contact_details");
   if(print_layout)
   {
-    std::cerr << "Failure: The removed print layotu still exists." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The removed print layotu still exists." << std::endl;
     return false;
   }
   

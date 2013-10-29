@@ -49,7 +49,7 @@ Glib::ustring Conversions::format_time(const tm& tm_data)
   catch(const std::runtime_error& ex)
   {
     std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
     return Glib::ustring();
   } 
 }
@@ -74,7 +74,7 @@ Glib::ustring Conversions::format_date(const tm& tm_data)
   catch(const std::runtime_error& ex)
   {
     std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
     return Glib::ustring();
   }
 }
@@ -228,7 +228,7 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
   catch(const std::runtime_error& ex)
   {
     std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
   }
 
   //std::cout << "debug: " << G_STRFUNC << ": returning: " << text << std::endl;
@@ -300,7 +300,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
   catch(const std::runtime_error& ex)
   {
     std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
     return Glib::ustring();
   }
 }
@@ -490,7 +490,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     catch(const std::runtime_error& ex)
     {
       std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
-      std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+      std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
     }      
 
     //std::cout << "debug: " << G_STRFUNC << ": number=" << number << ", text=" << text << std::endl;
@@ -549,7 +549,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
   catch(const std::runtime_error& ex)
   {
     std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
   } 
   
   //Put a NULL in the database for empty dates, times, and numerics, because 0 would be an actual value.
@@ -651,7 +651,7 @@ tm Conversions::parse_date(const Glib::ustring& text, bool& success)
   catch(const std::runtime_error& ex)
   {
     std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
     
     tm the_c_time;
     memset(&the_c_time, 0, sizeof(the_c_time));
@@ -786,7 +786,7 @@ tm Conversions::parse_time(const Glib::ustring& text, bool& success)
   catch(const std::runtime_error& ex)
   {
     std::cerr << G_STRFUNC << ": exception from std::locale(\"\")): " << ex.what() << std::endl;
-    std::cerr << "  This can happen if the locale is not properly installed or configured." << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
   } 
   
   if(success)

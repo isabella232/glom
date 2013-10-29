@@ -212,7 +212,7 @@ bool Document::read_from_disk(int& failure_code)
   catch(const Gio::Error& ex)
   {
     std::cerr << G_STRFUNC << ": Error: " << ex.what() << std::endl;
-    std::cerr << " with m_file_uri=" << m_file_uri << std::endl;
+    std::cerr << G_STRFUNC << ":  with m_file_uri=" << m_file_uri << std::endl;
 
 
     if(ex.code() == Gio::Error::NOT_FOUND)
@@ -302,7 +302,7 @@ bool Document::write_to_disk()
           if(parent->query_file_type() != Gio::FILE_TYPE_DIRECTORY)
           {
             std::cerr << G_STRFUNC << ": This part of the URI is not a directory: " << parent->get_uri() <<  std::endl;
-            std::cerr << "  using m_file_uri = " << m_file_uri << std::endl;
+            std::cerr << G_STRFUNC << ":   using m_file_uri = " << m_file_uri << std::endl;
             return false;
           } 
         }

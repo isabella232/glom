@@ -54,7 +54,7 @@ static bool check_get_extra_rows(const Glib::ustring& quote_char)
     Glom::DbUtils::query_execute_select(builder);
   if(!test_model_expected_size(data_model, 2, 0)) //No rows should be returned because the match value was stupid, if escaped properly.
   {
-    std::cerr << "Failure: Unexpected data model size for query, with quote_char=" << quote_char << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Unexpected data model size for query, with quote_char=" << quote_char << std::endl;
     return false;
   }
 
@@ -87,13 +87,13 @@ static bool check_drop_table(const Glib::ustring& quote_char)
     Glom::DbUtils::query_execute_select(builder);
   if(!test_model_expected_size(data_model, 2, 0)) //No rows should be returned because the match value was stupid, if escaped properly.
   {
-    std::cerr << "Failure: Unexpected data model size for query, with quote_char=" << quote_char << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Unexpected data model size for query, with quote_char=" << quote_char << std::endl;
     return false;
   }
 
   if(!test_table_exists("songs", document))
   {
-    std::cerr << "Failure: The table may have been dropped." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The table may have been dropped." << std::endl;
     return false;
   }
 
@@ -147,7 +147,7 @@ static bool check_avoid_quotes_and_drop_table_with_false_value_type()
   //We should not get this far, but if we do, tell us more about what happened:
   if(!test_table_exists("songs", document))
   {
-    std::cerr << "Failure: The table may have been dropped." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The table may have been dropped." << std::endl;
     return false;
   }
 
@@ -188,13 +188,13 @@ static bool check_avoid_quotes_and_drop_table_with_false_field_type()
     = Glom::DbUtils::query_execute_select(builder);
   if(!test_model_expected_size(data_model, 2, 0)) //No rows should be returned because the match value was stupid, if escaped properly.
   {
-    std::cerr << "Failure: Unexpected data model size for query." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Unexpected data model size for query." << std::endl;
     return false;
   }
 
   if(!test_table_exists("songs", document))
   {
-    std::cerr << "Failure: The table may have been dropped." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The table may have been dropped." << std::endl;
     return false;
   }
 
@@ -207,43 +207,43 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     test_create_and_selfhost_from_example("example_music_collection.glom", document, hosting_mode);
   if(!recreated)
   {
-    std::cerr << "Recreation failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Recreation failed." << std::endl;
     return false;
   }
 
   if(!check_get_extra_rows("\""))
   {
-    std::cerr << "Failure: check_get_extra_rows() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: check_get_extra_rows() failed." << std::endl;
     return false;
   }
   
   if(!check_get_extra_rows("'"))
   {
-    std::cerr << "Failure: check_get_extra_rows() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: check_get_extra_rows() failed." << std::endl;
     return false;
   }
 
   if(!check_drop_table("\""))
   {
-    std::cerr << "Failure: check_drop_table() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: check_drop_table() failed." << std::endl;
     return false;
   }
   
   if(!check_drop_table("'"))
   {
-    std::cerr << "Failure: check_drop_table() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: check_drop_table() failed." << std::endl;
     return false;
   }
 
   if(!check_avoid_quotes_and_drop_table_with_false_value_type())
   {
-    std::cerr << "Failure: check_avoid_quotes_and_drop_table_with_false_value_type() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: check_avoid_quotes_and_drop_table_with_false_value_type() failed." << std::endl;
     return false;
   }
 
   if(!check_avoid_quotes_and_drop_table_with_false_field_type())
   {
-    std::cerr << "Failure: check_avoid_quotes_and_drop_table_with_false_field_type() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: check_avoid_quotes_and_drop_table_with_false_field_type() failed." << std::endl;
     return false;
   }
 

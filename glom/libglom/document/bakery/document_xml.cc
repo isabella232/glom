@@ -63,7 +63,7 @@ bool Document_XML::load_after(int& failure_code)
 #ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
   catch(const std::exception& ex)
   {
-    std::cerr << "XML Parser error: \n" << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": XML Parser error: \n" << ex.what() << std::endl;
 
     return false; //Failed.
   }

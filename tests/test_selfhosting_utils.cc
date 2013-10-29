@@ -162,7 +162,7 @@ bool test_selfhost(Glom::Document& document, const Glib::ustring& user, const Gl
   const Glom::ConnectionPool::StartupErrors started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
   if(started != Glom::ConnectionPool::Backend::STARTUPERROR_NONE)
   {
-    std::cerr << "connection_pool->startup(): result=" << started << std::endl;
+    std::cerr << G_STRFUNC << ": connection_pool->startup(): result=" << started << std::endl;
     test_selfhosting_cleanup();
     return false;
   }
@@ -224,7 +224,7 @@ bool test_create_and_selfhost_new_empty(Glom::Document& document, Glom::Document
   
   if(!check_directory_exists())
   {
-    std::cerr << "Failure: The data directory does not exist after calling initialize()." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The data directory does not exist after calling initialize()." << std::endl;
     return false;
   }
 
@@ -248,7 +248,7 @@ bool test_create_and_selfhost_new_database(Glom::Document& document, Glom::Docum
   const Glib::ustring db_name = Glom::DbUtils::get_unused_database_name(database_name);
   if(db_name.empty())
   {
-    std::cerr << "DbUtils::get_unused_database_name) failed." << std::endl;
+    std::cerr << G_STRFUNC << ": DbUtils::get_unused_database_name) failed." << std::endl;
     return false;
   }
 
@@ -257,7 +257,7 @@ bool test_create_and_selfhost_new_database(Glom::Document& document, Glom::Docum
     "test title", sigc::ptr_fun(&on_db_creation_progress));
   if(!created)
   {
-    std::cerr << "DbUtils::create_database() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": DbUtils::create_database() failed." << std::endl;
     return false;
   }
   
@@ -368,19 +368,19 @@ bool test_model_expected_size(const Glib::RefPtr<const Gnome::Gda::DataModel>& d
 {
   if(!data_model)
   {
-    std::cerr << "Failure: data_model was null" << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: data_model was null" << std::endl;
     return false;
   }
 
   if(data_model->get_n_columns() != (int)columns_count)
   {
-    std::cerr << "Failure: get_n_columns() returned an unexpected value. Expected: " << columns_count << ", Actual: " << data_model->get_n_columns() << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: get_n_columns() returned an unexpected value. Expected: " << columns_count << ", Actual: " << data_model->get_n_columns() << std::endl;
     return false;
   }
 
   if(data_model->get_n_rows() != (int)rows_count)
   {
-    std::cerr << "Failure: get_n_rows() returned an unexpected value. Expected: " << rows_count << ", Actual: " << data_model->get_n_rows() << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: get_n_rows() returned an unexpected value. Expected: " << rows_count << ", Actual: " << data_model->get_n_rows() << std::endl;
     return false;
   }
 
@@ -409,7 +409,7 @@ bool test_table_exists(const Glib::ustring& table_name, const Glom::Document& do
     Glom::DbUtils::query_execute_select(builder);
   if(!data_model || !(data_model->get_n_columns()))
   {
-    std::cerr << "Failure: table does not exist: " << table_name << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: table does not exist: " << table_name << std::endl;
     return false;
   }
 
@@ -445,7 +445,7 @@ static bool test_example_musiccollection_data_related(const Glom::Document* docu
   const Glom::sharedptr<Glom::Relationship> relationship = document->get_relationship("albums", "artist");
   if(!relationship)
   {
-    std::cerr << "Failure: The relationship could not be found." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The relationship could not be found." << std::endl;
     return false;
   }
   layoutitem = Glom::sharedptr<Glom::LayoutItem_Field>::create();
@@ -465,7 +465,7 @@ static bool test_example_musiccollection_data_related(const Glom::Document* docu
     Glom::DbUtils::query_execute_select(builder);
   if(!test_model_expected_size(data_model, 3, 1))
   {
-    std::cerr << "Failure: Unexpected data model size with query: " << 
+    std::cerr << G_STRFUNC << ": Failure: Unexpected data model size with query: " << 
       Glom::Utils::sqlbuilder_get_full_query(builder) << std::endl;
     return false;
   }
@@ -533,20 +533,20 @@ static bool test_hosting_mode(const SlotTest& slot, Glom::Document::HostingMode 
   {
     if(!slot(hosting_mode))
     {
-      std::cerr << "Failed with " << name << std::endl;
+      std::cerr << G_STRFUNC << ": Failed with " << name << std::endl;
       test_selfhosting_cleanup();
       return false;
     }
   }
   catch(const std::exception& ex)
   {
-    std::cerr << "Failed with " << name << " with exception: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Failed with " << name << " with exception: " << ex.what() << std::endl;
     test_selfhosting_cleanup();
     return false;
   }
   catch(...)
   {
-    std::cerr << "Failed with " << name << " with unknown exception: " << std::endl;
+    std::cerr << G_STRFUNC << ": Failed with " << name << " with unknown exception: " << std::endl;
     test_selfhosting_cleanup();
     return false;
   }

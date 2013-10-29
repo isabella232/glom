@@ -69,7 +69,7 @@ void LayoutWidgetUtils::on_menu_delete_activate()
   if(!parent)
   {
     // Should never happen!
-    std::cerr << "LayoutWidgetUtils is no Gtk::Widget" << std::endl;
+    std::cerr << G_STRFUNC << ": LayoutWidgetUtils is no Gtk::Widget" << std::endl;
     return;
   }
 

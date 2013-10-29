@@ -910,7 +910,7 @@ void Document::set_table_fields(const Glib::ustring& table_name, const type_vec_
   {
     if(vecFields.empty())
     {
-      std::cerr << ": vecFields is empty: table_name=" << table_name << std::endl;
+      std::cerr << G_STRFUNC << ": : vecFields is empty: table_name=" << table_name << std::endl;
     }
 
     const sharedptr<DocumentTableInfo> info = get_table_info_with_add(table_name);

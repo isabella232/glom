@@ -1785,7 +1785,7 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
   {
     std::cerr << G_STRFUNC << ":  ConnectionError: " << error.what() << std::endl;
     const Glib::ustring full_query = stmt->to_sql(params);
-    std::cerr << "  full_query: " << full_query << std::endl;
+    std::cerr << G_STRFUNC << ":   full_query: " << full_query << std::endl;
     return false;
   }
   
@@ -1827,21 +1827,21 @@ bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
   {
     std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
     const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
-    std::cerr << "  full_query: " << full_query << std::endl;
+    std::cerr << G_STRFUNC << ":   full_query: " << full_query << std::endl;
     return false;
   }
   catch(const Gnome::Gda::ServerProviderError& ex)
   {
     std::cerr << G_STRFUNC << ": code=" << ex.code() << "message=" << ex.what() << std::endl;
     const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
-    std::cerr << "  full_query: " << full_query << std::endl;
+    std::cerr << G_STRFUNC << ":   full_query: " << full_query << std::endl;
     return false;
   }
   catch(const Gnome::Gda::SqlError& ex) //TODO: Make sure that statement_execute_non_select_builder() is documented as throwing this.
   {
     std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
     const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
-    std::cerr << "  full_query: " << full_query << std::endl;
+    std::cerr << G_STRFUNC << ":   full_query: " << full_query << std::endl;
     return false;
   }
   catch(const Glib::Error& ex)
@@ -1986,7 +1986,7 @@ int count_rows_returned_by(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& sql
   if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
   {
     const Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
-    //This showed me that this contains a gint64: std::cerr << "DEBUG: value type=" << G_VALUE_TYPE_NAME(value.gobj()) << std::endl;
+    //This showed me that this contains a gint64: std::cerr << G_STRFUNC << ": DEBUG: value type=" << G_VALUE_TYPE_NAME(value.gobj()) << std::endl;
     //For sqlite, this is an integer
     if(value.get_value_type() == G_TYPE_INT64) //With the PostgreSQL backend.
       result = (int)value.get_int64();

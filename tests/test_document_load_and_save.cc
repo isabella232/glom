@@ -55,14 +55,14 @@ static bool validate_glom_file(const Glib::ustring& uri, const std::string& dtd_
   }
   catch(const xmlpp::validity_error& ex)
   {
-    std::cerr << "Exception caught while validating file: " << ex.what() << std::endl;
-    std::cerr << "  uri: " << uri << std::endl;
+    std::cerr << G_STRFUNC << ": Exception caught while validating file: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ":   uri: " << uri << std::endl;
     return false;
   }
   catch(const xmlpp::parse_error& ex)
   {
-    std::cerr << "Exception caught while validating file: " << ex.what() << std::endl;
-    std::cerr << "  uri: " << uri << std::endl;
+    std::cerr << G_STRFUNC << ": Exception caught while validating file: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ":   uri: " << uri << std::endl;
     return false;
   }
 
@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
 
   if(argc <= 2 )
   {
-    std::cerr << "Usage: test_document_load_and_save filepath dtd_filepath" << std::endl;
+    std::cerr << G_STRFUNC << ": Usage: test_document_load_and_save filepath dtd_filepath" << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -99,7 +99,7 @@ int main(int argc, char* argv[])
 
   if(!loaded)
   {
-    std::cerr << "Document::load() failed with failure_code=" << failure_code << std::endl;
+    std::cerr << G_STRFUNC << ": Document::load() failed with failure_code=" << failure_code << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -112,7 +112,7 @@ int main(int argc, char* argv[])
   const bool saved = document.save();
   if(!saved)
   {
-    std::cerr << "Document::save() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Document::save() failed." << std::endl;
     return EXIT_FAILURE;
   }
 

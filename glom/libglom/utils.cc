@@ -1199,13 +1199,13 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_update_with_where_clause(
 
   if(!field || field->get_name().empty())
   {
-    std::cerr << "field was null or its name was empty." << std::endl;
+    std::cerr << G_STRFUNC << ": field was null or its name was empty." << std::endl;
     return builder;
   }
 
   if(table_name.empty())
   {
-    std::cerr << "table_name was empty." << std::endl;
+    std::cerr << G_STRFUNC << ": table_name was empty." << std::endl;
     return builder;
   }
 

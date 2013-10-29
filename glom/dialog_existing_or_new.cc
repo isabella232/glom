@@ -297,7 +297,7 @@ bool Dialog_ExistingOrNew::list_examples()
   }
   catch(const Glib::Exception& ex)
   {
-    std::cerr << "Could not enumerate examples. Error=" << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Could not enumerate examples. Error=" << ex.what() << std::endl;
   }
 
   return false;
@@ -683,7 +683,7 @@ Glib::ustring Dialog_ExistingOrNew::get_title_from_example(const std::string& re
   }
   catch(const Glib::Exception& exception)
   {
-    std::cerr << "Could not enumerate files in examples directory: " << exception.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Could not enumerate files in examples directory: " << exception.what() << std::endl;
 
     m_current_buffer.reset();
   }
@@ -726,7 +726,7 @@ void Dialog_ExistingOrNew::append_example(const Glib::ustring& title, const std:
   }
   catch(const Glib::Exception& ex)
   {
-    std::cerr << "Could not read example: " << resource_name << ": " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Could not read example: " << resource_name << ": " << ex.what() << std::endl;
   }
 }
 #endif /* !GLOM_ENABLE_CLIENT_ONLY */

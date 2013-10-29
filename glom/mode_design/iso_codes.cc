@@ -91,7 +91,7 @@ type_list_currencies get_list_of_currency_symbols()
 #ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
     catch(const std::exception& ex)
     {
-      std::cerr << "Exception while parsing iso codes (currencies): " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << ": Exception while parsing iso codes (currencies): " << ex.what() << std::endl;
     }
 #endif // LIBXMLCPP_EXCEPTIONS_ENABLED
   }
@@ -200,7 +200,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
 #ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
     catch(const std::exception& ex)
     {
-      std::cerr << "Exception while parsing iso codes (locales): " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << ": Exception while parsing iso codes (locales): " << ex.what() << std::endl;
     }
 #endif // LIBXMLCPP_EXCEPTIONS_ENABLED
 
@@ -254,7 +254,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
 #ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
     catch(const std::exception& ex)
     {
-      std::cerr << "Exception while parsing iso codes (locales): " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << ": Exception while parsing iso codes (locales): " << ex.what() << std::endl;
     }
 #endif // LIBXMLCPP_EXCEPTIONS_ENABLED
 

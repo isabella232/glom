@@ -31,14 +31,14 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
-    std::cerr << "Recreation failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Recreation failed." << std::endl;
     return false;
   }
   
   const Glom::Privs::type_vec_strings groups = Glom::Privs::get_database_groups();
   if(groups.empty())
   {
-    std::cerr << "Failure: groups was empty." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: groups was empty." << std::endl;
     return false;
   }
 
@@ -47,7 +47,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     const Glib::ustring group_name = *iter;
     if(group_name.empty())
     {
-      std::cerr << "Failure: group_name was empty." << std::endl;
+      std::cerr << G_STRFUNC << ": Failure: group_name was empty." << std::endl;
       return false;
     }
 
@@ -57,7 +57,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
       const Glib::ustring user_name = *iter;
       if(user_name.empty())
       {
-        std::cerr << "Failure: user_name was empty." << std::endl;
+        std::cerr << G_STRFUNC << ": Failure: user_name was empty." << std::endl;
         return false;
       }
 
@@ -76,7 +76,7 @@ int main()
   
   if(!test(Glom::Document::HOSTING_MODE_POSTGRES_SELF))
   {
-    std::cerr << "Failed with PostgreSQL" << std::endl;
+    std::cerr << G_STRFUNC << ": Failed with PostgreSQL" << std::endl;
     test_selfhosting_cleanup();
     return EXIT_FAILURE;
   }
@@ -84,7 +84,7 @@ int main()
   /* SQLite does not have this feature:
   if(!test(Glom::Document::HOSTING_MODE_SQLITE))
   {
-    std::cerr << "Failed with SQLite" << std::endl;
+    std::cerr << G_STRFUNC << ": Failed with SQLite" << std::endl;
     test_selfhosting_cleanup();
     return EXIT_FAILURE;
   }

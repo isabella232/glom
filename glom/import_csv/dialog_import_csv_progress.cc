@@ -79,7 +79,7 @@ void Dialog_Import_CSV_Progress::import(Dialog_Import_CSV& data_source)
     }
     catch(const Glib::ConvertError& ex)
     {
-      std::cerr << "Glib::filename_from_uri() failed: " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << ": Glib::filename_from_uri() failed: " << ex.what() << std::endl;
     }
 
     m_progress_bar->set_text(Glib::ustring::compose(_("Parsing CSV file %1"), filename));

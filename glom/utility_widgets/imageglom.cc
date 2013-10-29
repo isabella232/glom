@@ -574,7 +574,7 @@ static void make_file_read_only(const Glib::ustring& uri)
   
   if(!file_info)
   {
-    std::cerr << ": file_info is null" << std::endl;
+    std::cerr << G_STRFUNC << ": : file_info is null" << std::endl;
     return;
   }
   
@@ -601,7 +601,7 @@ Glib::ustring ImageGlom::save_to_temp_file(bool show_progress)
   Glib::ustring uri = Utils::get_temp_file_uri("glom_image");
   if(uri.empty())
   {
-    std::cerr << ": uri is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": : uri is empty." << std::endl;
   }
   
   bool saved = false;

@@ -56,7 +56,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
     //and only the caller knows if this failure might be expected,
     //for instance when checking for an unused database name.
     //std::cerr << G_STRFUNC << ": The db file does not exist at path: " << db_file->get_uri() << std::endl;
-    //std::cerr << "  as filepath: " << db_file->get_path() << std::endl;
+    //std::cerr << G_STRFUNC << ":   as filepath: " << db_file->get_path() << std::endl;
   }
   else
   {

@@ -39,7 +39,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     test_create_and_selfhost_from_example("example_smallbusiness.glom", document, hosting_mode);
   if(!recreated)
   {
-    std::cerr << "Recreation failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Recreation failed." << std::endl;
     return false;
   }
   
@@ -49,7 +49,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     get_field_on_layout(document, table_name, table_name, "product_id");
   if(!field_with_choice)
   {
-    std::cerr << "Failure: Could not get the field with choice from the layout." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: Could not get the field with choice from the layout." << std::endl;
     return false;
   }
 
@@ -57,7 +57,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     Glom::Utils::get_choice_values_all(&document, field_with_choice);
   if(values_with_second.size() != 3)
   {
-    std::cerr << "Failure: There were an unexpected number of choices." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: There were an unexpected number of choices." << std::endl;
     return false;
   }
   
@@ -65,7 +65,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     = *(values_with_second.begin());
   if(pair_values.second.size() != 1)
   {
-    std::cerr << "Failure: There were an unexpected number of field values in each choice." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: There were an unexpected number of field values in each choice." << std::endl;
     return false;
   }
 

@@ -122,7 +122,7 @@ static void on_gettextpo_xerror2 (int severity, po_message_t /* message1 */, con
 #else //HAVE_GETTEXTPO_XERROR
 static void on_gettextpo_error(int status, int errnum, const char * /* format */, ...)
 {
-  std::cerr << "gettext error (old libgettext-po API): status=" << status << ", errnum=" << errnum << std::endl;
+  std::cerr << G_STRFUNC << ": gettext error (old libgettext-po API): status=" << status << ", errnum=" << errnum << std::endl;
 }
 #endif //HAVE_GETTEXTPO_XERROR
 

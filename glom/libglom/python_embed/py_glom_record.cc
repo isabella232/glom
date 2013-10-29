@@ -66,7 +66,7 @@ boost::python::object PyGlomRecord::get_connection()
   {
     if(!_PyGObject_API)
     {
-      std::cerr << "pyggobject does not seem to be initialized properly." << std::endl;
+      std::cerr << G_STRFUNC << ": pyggobject does not seem to be initialized properly." << std::endl;
       return result;
     }
 
@@ -130,7 +130,7 @@ void PyGlomRecord::setitem(const boost::python::object& key, const boost::python
 {
   if(m_read_only)
   {
-    std::cerr << "PyGlomRecord::setitem(): Failed to set a value because the record object is read-only."<< std::endl;
+    std::cerr << G_STRFUNC << ": PyGlomRecord::setitem(): Failed to set a value because the record object is read-only."<< std::endl;
     return;
   }
   //Get the specified field name (and details) and value:

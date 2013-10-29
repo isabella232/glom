@@ -687,7 +687,7 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
     }
     else
     {
-      std::cerr << "Could not parse the document that was retrieved over the network: failure_code=" << failure_code << std::endl;
+      std::cerr << G_STRFUNC << ": Could not parse the document that was retrieved over the network: failure_code=" << failure_code << std::endl;
     }
 
     g_free(document_contents);
@@ -1123,7 +1123,7 @@ bool AppWindow::on_document_load()
 
     if(!error_message.empty())
     {
-      std::cerr << "Python Error: " << error_message << std::endl;
+      std::cerr << G_STRFUNC << ": Python Error: " << error_message << std::endl;
     }
   }
 
@@ -1653,7 +1653,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
     //}
     //catch(const std::exception& ex)
     //{
-    //  std::cerr << "AppWindow::recreate_database_from_example(): exception: " << ex.what() << std::endl;
+    //  std::cerr << G_STRFUNC << ": AppWindow::recreate_database_from_example(): exception: " << ex.what() << std::endl;
       //HandleError(ex);
     //}
 

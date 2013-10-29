@@ -40,22 +40,22 @@ static bool test_add_group(const Glom::Document& document, const Glib::ustring& 
 {
   if(!Glom::DbUtils::add_group(&document, group))
   {
-    std::cerr << "DbUtils::add_group() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": DbUtils::add_group() failed." << std::endl;
     return false;
   }
 
   const Glom::Privs::type_vec_strings group_list = Glom::Privs::get_database_groups();
   if(!contains(group_list, group))
   {
-    std::cerr << "Privs::get_database_groups() does not contain the expected group." << std::endl;
-    std::cerr << "  group: " << group << std::endl;
+    std::cerr << G_STRFUNC << ": Privs::get_database_groups() does not contain the expected group." << std::endl;
+    std::cerr << G_STRFUNC << ":   group: " << group << std::endl;
     return false;
   }
 
   const Glom::Privs::type_vec_strings user_list = Glom::Privs::get_database_users(group);
   if(!user_list.empty())
   {
-    std::cerr << "The user list is not empty as expected.." << std::endl;
+    std::cerr << G_STRFUNC << ": The user list is not empty as expected.." << std::endl;
     return false;
   }
 
@@ -67,7 +67,7 @@ static bool test_add_user(const Glom::Document& document, const Glib::ustring& u
   //Add an operator user, adding it to the group:
   if(!Glom::DbUtils::add_user(&document, user, "somepassword", group))
   {
-    std::cerr << "DbUtils::add_user() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": DbUtils::add_user() failed." << std::endl;
     test_selfhosting_cleanup();
     return false;
   }
@@ -75,9 +75,9 @@ static bool test_add_user(const Glom::Document& document, const Glib::ustring& u
   const Glom::Privs::type_vec_strings user_list = Glom::Privs::get_database_users(group);
   if(!contains(user_list, user))
   {
-    std::cerr << "Privs::get_database_users() does not contain the expected user:" << std::endl;
-    std::cerr << "  group: " << group << std::endl;
-    std::cerr << "  user: " << user << std::endl;
+    std::cerr << G_STRFUNC << ": Privs::get_database_users() does not contain the expected user:" << std::endl;
+    std::cerr << G_STRFUNC << ":   group: " << group << std::endl;
+    std::cerr << G_STRFUNC << ":   user: " << user << std::endl;
     return false;
   }
 
@@ -95,7 +95,7 @@ static bool change_privileges(const Glib::ustring& group_name, const Glib::ustri
   privs_new.m_delete = del;
   if(!Glom::Privs::set_table_privileges(group_name, table_name, privs_new, false))
   {
-    std::cerr << "Privs::set_table_privileges() failed for group=" << group_name << ", table_name=" << table_name << std::endl;
+    std::cerr << G_STRFUNC << ": Privs::set_table_privileges() failed for group=" << group_name << ", table_name=" << table_name << std::endl;
     return false;
   }
 
@@ -105,7 +105,7 @@ static bool change_privileges(const Glib::ustring& group_name, const Glib::ustri
     (privs_changed.m_create != privs_new.m_create) ||
     (privs_changed.m_delete != privs_new.m_delete) )
   {
-    std::cerr << "Changing and re-reading privileges failed for group=" << group_name << ", table_name=" << table_name << std::endl;
+    std::cerr << G_STRFUNC << ": Changing and re-reading privileges failed for group=" << group_name << ", table_name=" << table_name << std::endl;
     return false;
   }
 
@@ -126,7 +126,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   Glom::Document document;
     if(!(test_create_and_selfhost_new_database(document, hosting_mode, "test_db")))
   {
-    std::cerr << "test_create_and_selfhost_new_database() failed" << std::endl;
+    std::cerr << G_STRFUNC << ": test_create_and_selfhost_new_database() failed" << std::endl;
     return false;
   }
 
@@ -150,7 +150,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   {
     if(!Glom::DbUtils::create_table_with_default_fields(&document, *iter))
     {
-      std::cerr << "Failure: create_table_with_default_fields() failed." << std::endl;
+      std::cerr << G_STRFUNC << ": Failure: create_table_with_default_fields() failed." << std::endl;
       return false;
     }
   }
@@ -168,13 +168,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   const Glom::Privs::type_vec_strings group_list_original = Glom::Privs::get_database_groups();
   if(group_list_original.empty())
   {
-    std::cerr << "Privs::get_database_groups() returned an empty list." << std::endl;
+    std::cerr << G_STRFUNC << ": Privs::get_database_groups() returned an empty list." << std::endl;
     return false;
   }
 
   if(!contains(group_list_original, GLOM_STANDARD_GROUP_NAME_DEVELOPER))
   {
-    std::cerr << "Privs::get_database_groups() does not contain the developers group." << std::endl;
+    std::cerr << G_STRFUNC << ": Privs::get_database_groups() does not contain the developers group." << std::endl;
     return false;
   }
 
@@ -225,13 +225,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
         const Glom::Privileges privs = Glom::Privs::get_table_privileges(group_name, table_name);
         if(!privs.m_view)
         {
-          std::cerr << "Privs::get_table_privileges() returned an unexpected view privilege for group=" << group_name << ", table_name=" << table_name << std::endl;
+          std::cerr << G_STRFUNC << ": Privs::get_table_privileges() returned an unexpected view privilege for group=" << group_name << ", table_name=" << table_name << std::endl;
           return false;
         }
 
         if(!privs.m_edit)
         {
-          std::cerr << "Privs::get_table_privileges() returned an unexpected edit privilege for group=" << group_name << ", table_name=" << table_name << std::endl;
+          std::cerr << G_STRFUNC << ": Privs::get_table_privileges() returned an unexpected edit privilege for group=" << group_name << ", table_name=" << table_name << std::endl;
           return false;
         }
 
@@ -239,13 +239,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
         /*
         if(privs.m_create)
         {
-          std::cerr << "Privs::get_table_privileges() returned an unexpected create privilege for group=" << group_name << ", table_name=" << table_name << std::endl;
+          std::cerr << G_STRFUNC << ": Privs::get_table_privileges() returned an unexpected create privilege for group=" << group_name << ", table_name=" << table_name << std::endl;
           return false;
         }
 
         if(privs.m_delete)
         {
-          std::cerr << "Privs::get_table_privileges() returned an unexpected delete privilege for group=" << group_name << ", table_name=" << table_name << std::endl;
+          std::cerr << G_STRFUNC << ": Privs::get_table_privileges() returned an unexpected delete privilege for group=" << group_name << ", table_name=" << table_name << std::endl;
           return false;
         }
         */
@@ -256,13 +256,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
       if(!Glom::DbUtils::remove_user_from_group(username, group_name))
       {
-        std::cerr << "DbUtils::remove_user() failed for user=" << username << ", group=" << group_name << std::endl;
+        std::cerr << G_STRFUNC << ": DbUtils::remove_user() failed for user=" << username << ", group=" << group_name << std::endl;
         return false;
       }
 
       if(!Glom::DbUtils::remove_user(username))
       {
-        std::cerr << "DbUtils::remove_user() failed for user=" << username << std::endl;
+        std::cerr << G_STRFUNC << ": DbUtils::remove_user() failed for user=" << username << std::endl;
         return false;
       }
 

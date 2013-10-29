@@ -83,7 +83,7 @@ sharedptr<LayoutItem_Line> Dialog_Line::get_line() const
 
   if(!result)
   {
-    std::cerr << ": result is null" << std::endl;
+    std::cerr << G_STRFUNC << ": : result is null" << std::endl;
     return result;
   }
 

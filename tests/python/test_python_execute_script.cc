@@ -93,18 +93,18 @@ int main()
   }
   catch(const std::exception& ex)
   {
-    std::cerr << "Exception: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Exception: " << ex.what() << std::endl;
     return EXIT_FAILURE;
   }
   catch(const boost::python::error_already_set& ex)
   {
-    std::cerr << "Exception: boost::python::error_already_set" << std::endl;
+    std::cerr << G_STRFUNC << ": Exception: boost::python::error_already_set" << std::endl;
     return EXIT_FAILURE;
   }
 
   if(!error_message.empty())
   {
-    std::cerr << "Python Error: " << error_message << std::endl;
+    std::cerr << G_STRFUNC << ": Python Error: " << error_message << std::endl;
   }
 
   g_assert(error_message.empty());

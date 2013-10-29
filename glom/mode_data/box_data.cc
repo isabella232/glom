@@ -374,7 +374,7 @@ void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& l
     error_message);
   if(!error_message.empty())
   {
-    std::cerr << "Python Error: " << error_message << std::endl;
+    std::cerr << G_STRFUNC << ": Python Error: " << error_message << std::endl;
   }
 }
 

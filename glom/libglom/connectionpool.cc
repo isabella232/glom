@@ -484,7 +484,7 @@ bool ConnectionPool::convert_backup(const SlotProgress& slot_progress, const std
     //and a warning will only be useful later when get_meta_store_data() fails when used in get_table_names_from_database().
     if(!m_fake_connection)
     {
-      std::cerr << "ConnectionPool::connect(): update_meta_store_table_names() failed: " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << ": ConnectionPool::connect(): update_meta_store_table_names() failed: " << ex.what() << std::endl;
     }
   }
 

@@ -33,13 +33,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     test_create_and_selfhost_from_example("example_music_collection.glom", document, hosting_mode);
   if(!recreated)
   {
-    std::cerr << "Recreation failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Recreation failed." << std::endl;
     return false;
   }
   
   if(!test_example_musiccollection_data(&document))
   {
-    std::cerr << "test_example_musiccollection_data() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": test_example_musiccollection_data() failed." << std::endl;
     return false;
   }
 

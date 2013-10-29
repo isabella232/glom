@@ -61,7 +61,7 @@ int main()
 
   if(!test)
   {
-    std::cerr << "Document::load() failed with failure_code=" << failure_code << std::endl;
+    std::cerr << G_STRFUNC << ": Document::load() failed with failure_code=" << failure_code << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -75,7 +75,7 @@ int main()
     connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
   if(started != Glom::ConnectionPool::Backend::STARTUPERROR_NONE)
   {
-    std::cerr << "connection_pool->startup(): result=" << started << std::endl;
+    std::cerr << G_STRFUNC << ": connection_pool->startup(): result=" << started << std::endl;
   }
   g_assert(started == Glom::ConnectionPool::Backend::STARTUPERROR_NONE);
 
@@ -107,12 +107,12 @@ int main()
   }
   catch(const std::exception& ex)
   {
-    std::cerr << "Exception: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Exception: " << ex.what() << std::endl;
     return EXIT_FAILURE;
   }
   catch(const boost::python::error_already_set& ex)
   {
-    std::cerr << "Exception: boost::python::error_already_set" << std::endl;
+    std::cerr << G_STRFUNC << ": Exception: boost::python::error_already_set" << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -121,7 +121,7 @@ int main()
   //Check that there was no python error:
   if(!error_message.empty())
   {
-    std::cerr << "Python error: " << error_message << std::endl;
+    std::cerr << G_STRFUNC << ": Python error: " << error_message << std::endl;
     return EXIT_FAILURE;
   }
 

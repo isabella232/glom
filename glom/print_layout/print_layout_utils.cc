@@ -437,7 +437,7 @@ void do_print_layout(const sharedptr<const PrintLayout>& print_layout, const Fou
   catch(const Gtk::PrintError& ex)
   {
     //See documentation for exact Gtk::PrintError error codes.
-    std::cerr << "An error occurred while trying to run a print operation:"
+    std::cerr << G_STRFUNC << ": An error occurred while trying to run a print operation:"
         << ex.what() << std::endl;
   }
 }

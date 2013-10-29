@@ -262,7 +262,7 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_pixbuf_for_gda_value(const Gnome::Gda::Valu
       catch(const Gdk::PixbufError& ex)
       {
         refPixbufLoader.reset();
-        std::cerr << "PixbufLoader::create failed: " << ex.what() << std::endl;
+        std::cerr << G_STRFUNC << ": PixbufLoader::create failed: " << ex.what() << std::endl;
       }
 
       if(refPixbufLoader)

@@ -706,7 +706,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
               size_t pos = field_text.find_first_of(newline_to_find);
               if(pos != std::string::npos)
               {
-                std::cerr << "export: binary data field text contains an unexpected newline: " << field_text << std::endl;
+                std::cerr << G_STRFUNC << ": export: binary data field text contains an unexpected newline: " << field_text << std::endl;
                 continue;
               }
 
@@ -714,7 +714,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
               pos = field_text.find_first_of(quote_to_find);
               if(pos != std::string::npos)
               {
-                std::cerr << "export: binary data field text contains an unexpected quote: " << field_text << std::endl;
+                std::cerr << G_STRFUNC << ": export: binary data field text contains an unexpected quote: " << field_text << std::endl;
                 continue;
               }
             }

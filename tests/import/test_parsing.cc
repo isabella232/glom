@@ -59,7 +59,7 @@ bool check_tokens(const std::string& regex)
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "Glib::Regex::create() failed: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Glib::Regex::create() failed: " << ex.what() << std::endl;
     return false;
   }
 
