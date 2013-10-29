@@ -156,6 +156,16 @@ EXTRA_DIST += \
 	data/ui/developer/window_translations.glade \
 	data/ui/developer/window_users.glade
 
+example_files = \
+	examples/example_film_manager.glom \
+	examples/example_lesson_planner.glom \
+	examples/example_music_collection.glom \
+	examples/example_project_manager.glom \
+	examples/example_smallbusiness.glom
+dist_noinst_DATA += \
+	$(example_files) \
+	examples/README
+
 # Get the base filenames only, without the extension: 
 example_files_names ?= $(patsubst %.glom,%,$(notdir $(example_files)))
 
