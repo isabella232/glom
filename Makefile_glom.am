@@ -33,13 +33,13 @@ glom_glom_CPPFLAGS = $(glom_includes) $(GLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_
 glom_resource_file = $(srcdir)/data/glom.gresource.xml
 BUILT_SOURCES += data/glom-resources.c
 data/glom-resources.c: $(glom_resource_file) $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir) --generate-dependencies $(glom_resource_file))
-	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate-source $(glom_resource_file)
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --internal --target=$@ --sourcedir=$(srcdir) --generate-source $(glom_resource_file)
 
 # Generate the GResource source file for example .glom files:
 glom_examples_resource_file = $(srcdir)/examples/glom-examples.gresource.xml
 BUILT_SOURCES += examples/glom-examples-resources.c
 examples/glom-examples-resources.c: $(glom_examples_resource_file) $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir) --generate-dependencies $(glom_examples_resource_file))
-	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate-source $(glom_examples_resource_file)
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --internal --target=$@ --sourcedir=$(srcdir) --generate-source $(glom_examples_resource_file)
 
 EXTRA_DIST += \
 	$(glom_resource_file) \
