@@ -677,7 +677,7 @@ void DbAddDel::construct_specified_columns()
   m_TreeView.set_model(m_refListStore); // clear old model from treeview
 
   //Remove all View columns:
-  m_TreeView.remove_all_columns();
+  treeview_delete_all_columns();
 
 
   //Add new View Colums:
@@ -2084,7 +2084,7 @@ void DbAddDel::set_open_button_title(const Glib::ustring& title)
 
 void DbAddDel::show_hint_model()
 {
-  m_TreeView.remove_all_columns();
+  treeview_delete_all_columns();
   m_treeviewcolumn_button = 0; //When we removed the view columns, this was deleted because it's manage()ed.
 
   m_model_hint = Gtk::ListStore::create(m_columns_hint);
@@ -2469,5 +2469,14 @@ void DbAddDel::on_selection_changed(bool selection)
   
   m_signal_record_selection_changed.emit();
 }
+
+void DbAddDel::treeview_delete_all_columns()
+{
+  Utils::treeview_delete_all_columns(&m_TreeView);
+
+  //Reset this too, because we must have just deleted it:
+  m_treeviewcolumn_button = 0;
+}
+
 
 } //namespace Glom
