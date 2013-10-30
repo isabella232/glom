@@ -59,8 +59,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkBox" id="vbox_mode">
-                        <property name="orientation">vertical</property>
+                      <object class="GtkStack" id="stack_mode">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>

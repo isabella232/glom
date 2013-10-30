@@ -136,6 +136,9 @@ protected:
   virtual void prepare_layout_dialog(Dialog_Layout* dialog); // override.
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+
+ virtual void show_all_vfunc(); //override.
+
   sharedptr<Field> m_field_primary_key;
   Gnome::Gda::Value m_primary_key_value;
 
@@ -146,6 +149,7 @@ protected:
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   LayoutToolbar m_Dragbar;
+  bool m_show_toolbar;
 #endif
 
   Gtk::ButtonBox m_hbox_buttons;

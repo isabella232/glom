@@ -41,6 +41,7 @@ namespace Glom
 
 Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 : m_hbox_content(Gtk::ORIENTATION_HORIZONTAL, Utils::DEFAULT_SPACING_SMALL),
+  m_show_toolbar(false),
   m_hbox_buttons(Gtk::ORIENTATION_HORIZONTAL),
   m_Button_New(_("_Add"), true),
   m_Button_Del(_("_Delete"), true),
@@ -94,7 +95,6 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_FlowTable.signal_field_edited().connect( sigc::mem_fun(*this,  &Box_Data_Details::on_flowtable_field_edited) );
   m_FlowTable.signal_field_choices_changed().connect( sigc::mem_fun(*this,  &Box_Data_Details::on_flowtable_field_choices_changed) );
   m_FlowTable.signal_field_open_details_requested().connect( sigc::mem_fun(*this,  &Box_Data_Details::on_flowtable_field_open_details_requested) );
-  show_all();
 
   m_FlowTable.signal_related_record_changed().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_related_record_changed) );
 
@@ -144,6 +144,8 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   pack_start(m_hbox_buttons, Gtk::PACK_SHRINK);
 
   m_ignore_signals = false;
+
+  show_all_children();
 }
 
 Box_Data_Details::~Box_Data_Details()
@@ -971,6 +973,9 @@ void Box_Data_Details::prepare_layout_dialog(Dialog_Layout* dialog)
 
 void Box_Data_Details::show_layout_toolbar(bool show)
 {
+  //Remember this so we can use it in the show_all() vfunc.
+  m_show_toolbar = show;
+
   if(show)
     m_Dragbar.show();
   else
@@ -987,6 +992,15 @@ void Box_Data_Details::do_new_record()
 void Box_Data_Details::set_enable_drag_and_drop(bool enabled)
 {
   m_FlowTable.set_enable_drag_and_drop(enabled);
+}
+
+void Box_Data_Details::show_all_vfunc()
+{
+  //Call the base class:
+  Box_Data::show_all_vfunc();
+
+  //Hide some stuff:
+  show_layout_toolbar(m_show_toolbar);
 }
 
 } //namespace Glom

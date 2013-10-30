@@ -265,7 +265,7 @@ private:
   Gtk::Label m_Label_FoundCount;
   Gtk::Button m_Button_FindAll;
 
-  PlaceHolder* m_pBox_Mode; //Contains e.g. design mode notebook.
+  Gtk::Stack* m_stack_mode; //Contains e.g. data or find mode notebook.
 
   //Navigation:
   Box_Tables* m_pBox_Tables;

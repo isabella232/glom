@@ -77,7 +77,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_pLabel_Table_FindMode(0),
   m_Box_RecordsCount(Gtk::ORIENTATION_HORIZONTAL, Utils::DEFAULT_SPACING_SMALL),
   m_Button_FindAll(_("Find All")),
-  m_pBox_Mode(0),
+  m_stack_mode(0),
   m_pBox_Tables(0),
   m_pDialog_Tables(0),
   m_pBox_QuickFind(0),
@@ -145,7 +145,14 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_Button_FindAll.signal_clicked().connect(
     sigc::mem_fun(*this, &Frame_Glom::on_button_find_all) );
 
-  builder->get_widget_derived("vbox_mode", m_pBox_Mode);
+  builder->get_widget("stack_mode", m_stack_mode);
+  if(m_stack_mode)
+  {
+    m_stack_mode->add(m_Notebook_Data, "data");
+    m_stack_mode->add(m_Notebook_Find, "find");
+    m_stack_mode->set_visible_child(m_Notebook_Data);
+    m_Notebook_Data.set_enable_layout_drag_and_drop(false);
+  }
 
   m_Mode = MODE_None;
   m_Mode_Previous = MODE_None;
@@ -258,28 +265,7 @@ void Frame_Glom::on_box_tables_selected(const Glib::ustring& strName)
 
 void Frame_Glom::set_mode_widget(Gtk::Widget& widget)
 {
-  //Remove current contents.
-  //I wish that there was a better way to do this:
-  //Trying to remove all of them leads to warnings,
-  //and I don't see a way to get a list of children.
-
-  AppWindow* pApp = dynamic_cast<AppWindow*>(get_app_window());
-  if(!pApp)
-    return;
-
-  Notebook_Glom* notebook_current = dynamic_cast<Notebook_Glom*>(m_pBox_Mode->get_child());
-  if(notebook_current == &widget)
-  {
-    return; //No change necessary.
-  }
-
-  if(notebook_current)
-  {
-    m_pBox_Mode->remove();
-  }
-
-  m_pBox_Mode->add(widget);
-  widget.show();
+  m_stack_mode->set_visible_child(widget);
 }
 
 bool Frame_Glom::set_mode(enumModes mode)
@@ -1019,7 +1005,7 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
 
 void Frame_Glom::on_menu_file_print()
 {
- Notebook_Glom* notebook_current = dynamic_cast<Notebook_Glom*>(m_pBox_Mode->get_child());
+ Notebook_Glom* notebook_current = dynamic_cast<Notebook_Glom*>(m_stack_mode->get_visible_child());
  if(notebook_current)
    notebook_current->do_menu_file_print();
 }
@@ -1692,7 +1678,7 @@ void Frame_Glom::on_menu_developer_layout()
   if(m_table_name.empty())
     return;
 
-  Notebook_Glom* notebook_current = dynamic_cast<Notebook_Glom*>(m_pBox_Mode->get_child());
+  Notebook_Glom* notebook_current = dynamic_cast<Notebook_Glom*>(m_stack_mode->get_visible_child());
   if(notebook_current)
     notebook_current->do_menu_developer_layout();
 }
