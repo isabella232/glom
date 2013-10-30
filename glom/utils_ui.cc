@@ -546,4 +546,45 @@ bool Utils::script_check_for_pygtk2_with_warning(const Glib::ustring& script, Gt
   return true;
 }
 
+void Utils::treeview_delete_all_columns(Gtk::TreeView* treeview)
+{
+  if(!treeview)
+    return;
+
+  //We use this instead of just Gtk::TreeView::remove_all_columns()
+  //because that deletes columns as a side-effect of unreferencing them,
+  //and that behaviour might be fixed in gtkmm sometime,
+  //and whether they should be deleted by that would depend on whether we used Gtk::manage().
+  //Deleting them explicitly is safer and clearer. murrayc.
+
+  //Remove all View columns:
+  typedef std::vector<Gtk::TreeView::Column*> type_vec_columns;
+  type_vec_columns vecViewColumns (treeview->get_columns());
+
+  for (type_vec_columns::iterator iter (vecViewColumns.begin ()), columns_end (vecViewColumns.end ());
+    iter != columns_end;
+    ++iter)
+  {
+    Gtk::TreeView::Column* pViewColumn (*iter);
+    if(!pViewColumn)
+      continue;
+
+    GtkTreeViewColumn* weak_ptr = 0;
+    g_object_add_weak_pointer (G_OBJECT (pViewColumn->gobj()), (gpointer*)&weak_ptr);
+
+    //Keep the object alive, instead of letting gtk_tree_view_remove_column() delete it by reducing its reference to 0,
+    //so we can explicitly delete it.
+    //This feels safer, considering some strange crashes I've seen when using Gtk::TreeView::remove_all_columns(),
+    //though that might have been just because we didn't reset m_treeviewcolumn_button. murrayc.
+    pViewColumn->reference();
+    treeview->remove_column(*pViewColumn);
+    delete pViewColumn; //This should cause it to be removed.
+
+    if(weak_ptr)
+    {
+      std::cerr << G_STRFUNC << ": The GtkTreeViewColumn was not destroyed as expected." << std::endl;
+    }
+  }
+}
+
 } //namespace Glom

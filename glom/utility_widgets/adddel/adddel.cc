@@ -611,7 +611,7 @@ void AddDel::construct_specified_columns()
   m_TreeView.set_model(m_refListStore);
 
   //Remove all View columns:
-  m_TreeView.remove_all_columns();
+  Utils::treeview_delete_all_columns(&m_TreeView);
 
   //Add new View Colums:
   int model_column_index = 0;
