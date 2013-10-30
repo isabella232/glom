@@ -1668,7 +1668,7 @@ Orientation=portrait
       </field>
     </fields>
     <relationships>
-      <relationship name="products" key="product_id" other_table="products" other_key="product_id">
+      <relationship name="products" key="product_id" other_table="products" other_key="product_id" title="Products">
         <trans_set>
           <trans loc="de" val="Produkten"/>
         </trans_set>
