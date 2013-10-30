@@ -23,6 +23,7 @@
 
 #include "config.h"
 #include <gtkmm/dialog.h>
+#include <gtkmm/treeview.h>
 #include <libglom/data_structure/field.h>
 #include <libglom/data_structure/numeric_format.h>
 
@@ -102,6 +103,8 @@ std::string get_icon_path(const Glib::ustring& filename);
  * a warning dialog if necessary.
  */
 bool script_check_for_pygtk2_with_warning(const Glib::ustring& script, Gtk::Window* parent_window);
+
+void treeview_delete_all_columns(Gtk::TreeView* treeview);
 
 } //namespace Utils
 

@@ -432,6 +432,8 @@ protected:
 
 private:
 
+  void treeview_delete_all_columns();
+
   bool m_find_mode;
   bool m_allow_only_one_related_record;
 
