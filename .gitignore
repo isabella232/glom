@@ -57,4 +57,6 @@ Makefile.in
 /examples/glom-examples-resources.c
 /glom/libglom/data/libglom-resources.c
 
+*.stamp
+
 /glom-?.*.tar.*
