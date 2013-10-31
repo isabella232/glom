@@ -7,6 +7,7 @@
     <trans loc="en_GB" val="Lesson Planner"/>
     <trans loc="es" val="Planificador de lecciones"/>
     <trans loc="fr" val="Planificateur de leçons"/>
+    <trans loc="hu" val="Lecketervező"/>
     <trans loc="id" val="Perencana Pelajaran"/>
     <trans loc="lv" val="Stundu plānotājs"/>
     <trans loc="pt_BR" val="Planejador de lição"/>
@@ -97,6 +98,7 @@
           <trans loc="en_GB" val="Product Name"/>
           <trans loc="es" val="Nombre del producto"/>
           <trans loc="fr" val="Nom du produit"/>
+          <trans loc="hu" val="Termék neve"/>
           <trans loc="id" val="Nama Produk"/>
           <trans loc="lv" val="Produkta nosaukums"/>
           <trans loc="pt_BR" val="Nome do produto"/>
@@ -114,6 +116,7 @@
           <trans loc="en_GB" val="Product Id"/>
           <trans loc="es" val="ID del producto"/>
           <trans loc="fr" val="ID du produit"/>
+          <trans loc="hu" val="Termék azonosító"/>
           <trans loc="id" val="Id Produk"/>
           <trans loc="lv" val="Produkta ID"/>
           <trans loc="pt_BR" val="Id de produto"/>
@@ -131,6 +134,7 @@
           <trans loc="en_GB" val="Product Price"/>
           <trans loc="es" val="Precio del producto"/>
           <trans loc="fr" val="Prix du produit"/>
+          <trans loc="hu" val="Termék ára"/>
           <trans loc="id" val="Harga Produk"/>
           <trans loc="lv" val="Produkta cena"/>
           <trans loc="pt_BR" val="Preço do produto"/>
@@ -148,6 +152,7 @@
           <trans loc="en_GB" val="Invoice ID"/>
           <trans loc="es" val="ID de la factura"/>
           <trans loc="fr" val="ID de la facture"/>
+          <trans loc="hu" val="Számla azonosító"/>
           <trans loc="id" val="ID Invoice"/>
           <trans loc="lv" val="Pavadzīmes ID"/>
           <trans loc="pt_BR" val="ID de fatura"/>
@@ -165,6 +170,7 @@
           <trans loc="en_GB" val="Number Of"/>
           <trans loc="es" val="Número de"/>
           <trans loc="fr" val="Nombre de"/>
+          <trans loc="hu" val="Ezek száma:"/>
           <trans loc="id" val="Banyaknya"/>
           <trans loc="lv" val="Skaits"/>
           <trans loc="pt_BR" val="Número de"/>
@@ -183,6 +189,7 @@
           <trans loc="en_GB" val="Total Price"/>
           <trans loc="es" val="Precio total"/>
           <trans loc="fr" val="Prix total"/>
+          <trans loc="hu" val="Teljes ár"/>
           <trans loc="id" val="Harga Total"/>
           <trans loc="lv" val="Kopējā cena"/>
           <trans loc="pt_BR" val="Preço total"/>
@@ -200,6 +207,7 @@
           <trans loc="en_GB" val="VAT Percentage"/>
           <trans loc="es" val="% IVA"/>
           <trans loc="fr" val="Taux de TVA"/>
+          <trans loc="hu" val="ÁFA százalék"/>
           <trans loc="id" val="Persentase Pajak"/>
           <trans loc="lv" val="PVN likme"/>
           <trans loc="pt_BR" val="Porcentagem de imposto"/>
@@ -218,6 +226,7 @@
           <trans loc="en_GB" val="Total VAT"/>
           <trans loc="es" val="IVA total"/>
           <trans loc="fr" val="Total TVA"/>
+          <trans loc="hu" val="Teljes ÁFA"/>
           <trans loc="id" val="Pajak Total"/>
           <trans loc="lv" val="PVN kopā"/>
           <trans loc="pt_BR" val="Imposto total"/>
@@ -347,6 +356,7 @@
       <trans loc="en_GB" val="Lessons"/>
       <trans loc="es" val="Lecciones"/>
       <trans loc="fr" val="Leçons"/>
+      <trans loc="hu" val="Leckék"/>
       <trans loc="id" val="Pelajaran"/>
       <trans loc="lv" val="Stundas"/>
       <trans loc="pt_BR" val="Lições"/>
@@ -364,6 +374,7 @@
           <trans loc="en_GB" val="Lesson ID"/>
           <trans loc="es" val="ID de la lección"/>
           <trans loc="fr" val="ID de la leçon"/>
+          <trans loc="hu" val="Lecke azonosító"/>
           <trans loc="id" val="ID Pelajaran"/>
           <trans loc="lv" val="Stundas ID"/>
           <trans loc="pt_BR" val="ID de lição"/>
@@ -381,6 +392,7 @@
           <trans loc="en_GB" val="Description"/>
           <trans loc="es" val="Descripción"/>
           <trans loc="fr" val="Description"/>
+          <trans loc="hu" val="Leírás"/>
           <trans loc="id" val="Deskripsi"/>
           <trans loc="lv" val="Apraksts"/>
           <trans loc="pt_BR" val="Descrição"/>
@@ -398,6 +410,7 @@
           <trans loc="en_GB" val="Comments"/>
           <trans loc="es" val="Comentarios"/>
           <trans loc="fr" val="Commentaires"/>
+          <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
           <trans loc="lv" val="Komentāri"/>
           <trans loc="pt_BR" val="Comentários"/>
@@ -425,6 +438,7 @@
           <trans loc="en_GB" val="Subject ID"/>
           <trans loc="es" val="ID del asunto"/>
           <trans loc="fr" val="ID du sujet"/>
+          <trans loc="hu" val="Tárgy azonosító"/>
           <trans loc="id" val="ID Perihal"/>
           <trans loc="lv" val="Priekšmeta ID"/>
           <trans loc="pt_BR" val="ID de assunto"/>
@@ -452,6 +466,7 @@
           <trans loc="en_GB" val="Teacher ID"/>
           <trans loc="es" val="ID del profesor"/>
           <trans loc="fr" val="ID du professeur"/>
+          <trans loc="hu" val="Tanár azonosító"/>
           <trans loc="id" val="ID Pengajar"/>
           <trans loc="lv" val="Skolotāja ID"/>
           <trans loc="pt_BR" val="ID de professor"/>
@@ -469,6 +484,7 @@
           <trans loc="en_GB" val="Date"/>
           <trans loc="es" val="Fecha"/>
           <trans loc="fr" val="Date"/>
+          <trans loc="hu" val="Dátum"/>
           <trans loc="id" val="Tanggal"/>
           <trans loc="lv" val="Datums"/>
           <trans loc="pt_BR" val="Data"/>
@@ -486,6 +502,7 @@
           <trans loc="en_GB" val="Start Time"/>
           <trans loc="es" val="Fecha de inicio"/>
           <trans loc="fr" val="Heure de début "/>
+          <trans loc="hu" val="Kezdési idő"/>
           <trans loc="id" val="Waktu Awal"/>
           <trans loc="lv" val="Sākuma laiks"/>
           <trans loc="pt_BR" val="Hora de início"/>
@@ -503,6 +520,7 @@
           <trans loc="en_GB" val="Hours"/>
           <trans loc="es" val="Horas"/>
           <trans loc="fr" val="Heures"/>
+          <trans loc="hu" val="Óra"/>
           <trans loc="id" val="Jam"/>
           <trans loc="lv" val="Stundas"/>
           <trans loc="pt_BR" val="Horas"/>
@@ -530,6 +548,7 @@
           <trans loc="en_GB" val="Room ID"/>
           <trans loc="es" val="ID del aula"/>
           <trans loc="fr" val="ID de la salle"/>
+          <trans loc="hu" val="Szoba azonosító"/>
           <trans loc="id" val="ID Ruang"/>
           <trans loc="lv" val="Telpas ID"/>
           <trans loc="pt_BR" val="ID de sala"/>
@@ -548,6 +567,7 @@
           <trans loc="en_GB" val="Subject"/>
           <trans loc="es" val="Asunto"/>
           <trans loc="fr" val="Sujet"/>
+          <trans loc="hu" val="Tárgy"/>
           <trans loc="id" val="Perihal"/>
           <trans loc="lv" val="Priekšmets"/>
           <trans loc="pt_BR" val="Assunto"/>
@@ -564,6 +584,7 @@
           <trans loc="en_GB" val="Teacher"/>
           <trans loc="es" val="Profesor"/>
           <trans loc="fr" val="Professeur"/>
+          <trans loc="hu" val="Tanár"/>
           <trans loc="id" val="Pengajar"/>
           <trans loc="lv" val="Skolotājs"/>
           <trans loc="pt_BR" val="Professor"/>
@@ -580,6 +601,7 @@
           <trans loc="en_GB" val="Room"/>
           <trans loc="es" val="Aula"/>
           <trans loc="fr" val="Salle"/>
+          <trans loc="hu" val="Szoba"/>
           <trans loc="id" val="Ruang"/>
           <trans loc="lv" val="Telpa"/>
           <trans loc="pt_BR" val="Sala"/>
@@ -627,6 +649,7 @@
               <trans loc="en_GB" val="Overview"/>
               <trans loc="es" val="Visión general"/>
               <trans loc="fr" val="Résumé"/>
+              <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
               <trans loc="lv" val="Pārskats"/>
               <trans loc="pt_BR" val="Visão geral"/>
@@ -655,6 +678,7 @@
               <trans loc="en_GB" val="Details"/>
               <trans loc="es" val="Detalles"/>
               <trans loc="fr" val="Détails"/>
+              <trans loc="hu" val="Részletek"/>
               <trans loc="id" val="Rincian"/>
               <trans loc="lv" val="Sīkāka informācija"/>
               <trans loc="pt_BR" val="Detalhes"/>
@@ -670,6 +694,7 @@
                 <trans loc="en_GB" val="Subject"/>
                 <trans loc="es" val="Asunto"/>
                 <trans loc="fr" val="Sujet"/>
+                <trans loc="hu" val="Tárgy"/>
                 <trans loc="id" val="Perihal"/>
                 <trans loc="lv" val="Priekšmets"/>
                 <trans loc="pt_BR" val="Assunto"/>
@@ -692,6 +717,7 @@
                 <trans loc="en_GB" val="Room"/>
                 <trans loc="es" val="Aula"/>
                 <trans loc="fr" val="Salle"/>
+                <trans loc="hu" val="Szoba"/>
                 <trans loc="id" val="Ruang"/>
                 <trans loc="lv" val="Telpa"/>
                 <trans loc="pt_BR" val="Sala"/>
@@ -714,6 +740,7 @@
                 <trans loc="en_GB" val="Teacher"/>
                 <trans loc="es" val="Profesor"/>
                 <trans loc="fr" val="Professeur"/>
+                <trans loc="hu" val="Tanár"/>
                 <trans loc="id" val="Pengajar"/>
                 <trans loc="lv" val="Skolotājs"/>
                 <trans loc="pt_BR" val="Professor"/>
@@ -785,6 +812,7 @@
       <trans loc="en_GB" val="Rooms"/>
       <trans loc="es" val="Aulas"/>
       <trans loc="fr" val="Salles"/>
+      <trans loc="hu" val="Szobák"/>
       <trans loc="id" val="Ruang"/>
       <trans loc="lv" val="Telpas"/>
       <trans loc="pt_BR" val="Salas"/>
@@ -802,6 +830,7 @@
           <trans loc="en_GB" val="Room ID"/>
           <trans loc="es" val="ID del aula"/>
           <trans loc="fr" val="ID de la salle"/>
+          <trans loc="hu" val="Szoba azonosító"/>
           <trans loc="id" val="ID Ruang"/>
           <trans loc="lv" val="Telpas ID"/>
           <trans loc="pt_BR" val="ID de sala"/>
@@ -819,6 +848,7 @@
           <trans loc="en_GB" val="Description"/>
           <trans loc="es" val="Descripción"/>
           <trans loc="fr" val="Description"/>
+          <trans loc="hu" val="Leírás"/>
           <trans loc="id" val="Deskripsi"/>
           <trans loc="lv" val="Apraksts"/>
           <trans loc="pt_BR" val="Descrição"/>
@@ -836,6 +866,7 @@
           <trans loc="en_GB" val="Comments"/>
           <trans loc="es" val="Comentarios"/>
           <trans loc="fr" val="Commentaires"/>
+          <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
           <trans loc="lv" val="Komentāri"/>
           <trans loc="pt_BR" val="Comentário"/>
@@ -853,6 +884,7 @@
           <trans loc="en_GB" val="Floor"/>
           <trans loc="es" val="Planta"/>
           <trans loc="fr" val="Étage"/>
+          <trans loc="hu" val="Emelet"/>
           <trans loc="id" val="Lantai"/>
           <trans loc="lv" val="Stāvs"/>
           <trans loc="pt_BR" val="Piso"/>
@@ -872,6 +904,7 @@
                 <trans loc="en_GB" val="Main Building"/>
                 <trans loc="es" val="Edificio principal"/>
                 <trans loc="fr" val="Bâtiment principal"/>
+                <trans loc="hu" val="Főépület"/>
                 <trans loc="id" val="Bangunan Utama"/>
                 <trans loc="lv" val="Galvenā ēka"/>
                 <trans loc="pt_BR" val="Prédio principal"/>
@@ -888,6 +921,7 @@
                 <trans loc="en_GB" val="Science Block"/>
                 <trans loc="es" val="Bloque de ciencias"/>
                 <trans loc="fr" val="Bâtiment pour la science"/>
+                <trans loc="hu" val="Tudományos blokk"/>
                 <trans loc="id" val="Blok Sains"/>
                 <trans loc="lv" val="Dabaszinātņu korpuss"/>
                 <trans loc="pt_BR" val="Bloco de ciência"/>
@@ -904,6 +938,7 @@
                 <trans loc="en_GB" val="Sports Hall"/>
                 <trans loc="es" val="Pabellón de deportes"/>
                 <trans loc="fr" val="Hall des sports"/>
+                <trans loc="hu" val="Sportcsarnok"/>
                 <trans loc="id" val="Gedung Olah Raga"/>
                 <trans loc="lv" val="Sporta zāle"/>
                 <trans loc="pt_BR" val="Pavilhão desportivo"/>
@@ -921,6 +956,7 @@
           <trans loc="en_GB" val="Building"/>
           <trans loc="es" val="Edificio"/>
           <trans loc="fr" val="Bâtiment"/>
+          <trans loc="hu" val="Épület"/>
           <trans loc="id" val="Bangunan"/>
           <trans loc="lv" val="Ēka"/>
           <trans loc="pt_BR" val="Prédio"/>
@@ -960,6 +996,7 @@
               <trans loc="en_GB" val="Overview"/>
               <trans loc="es" val="Visión general"/>
               <trans loc="fr" val="Résumé"/>
+              <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
               <trans loc="lv" val="Pārskats"/>
               <trans loc="pt_BR" val="Visão geral"/>
@@ -982,6 +1019,7 @@
               <trans loc="en_GB" val="Details"/>
               <trans loc="es" val="Detalles"/>
               <trans loc="fr" val="Détails"/>
+              <trans loc="hu" val="Részletek"/>
               <trans loc="id" val="Rincian"/>
               <trans loc="lv" val="Sīkāka informācija"/>
               <trans loc="pt_BR" val="Detalhes"/>
@@ -1069,6 +1107,7 @@
       <trans loc="en_GB" val="Subjects"/>
       <trans loc="es" val="Materias"/>
       <trans loc="fr" val="Sujets"/>
+      <trans loc="hu" val="Tárgyak"/>
       <trans loc="id" val="Subjek"/>
       <trans loc="lv" val="Priekšmeti"/>
       <trans loc="pt_BR" val="Assuntos"/>
@@ -1086,6 +1125,7 @@
           <trans loc="en_GB" val="Subject ID"/>
           <trans loc="es" val="ID de materia"/>
           <trans loc="fr" val="ID du sujet"/>
+          <trans loc="hu" val="Tárgy azonosító"/>
           <trans loc="id" val="ID Perihal"/>
           <trans loc="lv" val="Priekšmeta ID"/>
           <trans loc="pt_BR" val="ID de assunto"/>
@@ -1103,6 +1143,7 @@
           <trans loc="en_GB" val="Name"/>
           <trans loc="es" val="Nombre"/>
           <trans loc="fr" val="Nom"/>
+          <trans loc="hu" val="Név"/>
           <trans loc="id" val="Nama"/>
           <trans loc="lv" val="Nosaukums"/>
           <trans loc="pt_BR" val="Nome"/>
@@ -1120,6 +1161,7 @@
           <trans loc="en_GB" val="Comments"/>
           <trans loc="es" val="Comentarios"/>
           <trans loc="fr" val="Commentaires"/>
+          <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
           <trans loc="lv" val="Komentāri"/>
           <trans loc="pt_BR" val="Comentários"/>
@@ -1138,6 +1180,7 @@
           <trans loc="en_GB" val="Lessons"/>
           <trans loc="es" val="Lecciones"/>
           <trans loc="fr" val="Leçons"/>
+          <trans loc="hu" val="Leckék"/>
           <trans loc="id" val="Pelajaran"/>
           <trans loc="lv" val="Mācību stundas"/>
           <trans loc="pt_BR" val="Lições"/>
@@ -1173,6 +1216,7 @@
               <trans loc="en_GB" val="Overview"/>
               <trans loc="es" val="Visión general"/>
               <trans loc="fr" val="Résumé"/>
+              <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
               <trans loc="lv" val="Pārskats"/>
               <trans loc="pt_BR" val="Visão gerall"/>
@@ -1195,6 +1239,7 @@
               <trans loc="en_GB" val="Details"/>
               <trans loc="es" val="Detalles"/>
               <trans loc="fr" val="Détails"/>
+              <trans loc="hu" val="Részletek"/>
               <trans loc="id" val="Rincian"/>
               <trans loc="lv" val="Sīkāka informācija"/>
               <trans loc="pt_BR" val="Detalhes"/>
@@ -1218,6 +1263,7 @@
                     <trans loc="en_GB" val="Teacher Name"/>
                     <trans loc="es" val="Nombre del profesor"/>
                     <trans loc="fr" val="Nom du professeur"/>
+                    <trans loc="hu" val="Tanár neve"/>
                     <trans loc="id" val="Nama Pengajar"/>
                     <trans loc="lv" val="Skolotāja vārds"/>
                     <trans loc="pt_BR" val="Nome do professor"/>
@@ -1425,6 +1471,7 @@
       <trans loc="en_GB" val="Teachers"/>
       <trans loc="es" val="Profesores"/>
       <trans loc="fr" val="Professeurs"/>
+      <trans loc="hu" val="Tanárok"/>
       <trans loc="id" val="Pengajar"/>
       <trans loc="lv" val="Skolotāji"/>
       <trans loc="pt_BR" val="Professores"/>
@@ -1442,6 +1489,7 @@
           <trans loc="en_GB" val="Teacher ID"/>
           <trans loc="es" val="ID del profesor"/>
           <trans loc="fr" val="ID du professeur"/>
+          <trans loc="hu" val="Tanár azonosító"/>
           <trans loc="id" val="ID Pengajar"/>
           <trans loc="lv" val="Skolotāja ID"/>
           <trans loc="pt_BR" val="ID de professor"/>
@@ -1459,6 +1507,7 @@
           <trans loc="en_GB" val="Given Name"/>
           <trans loc="es" val="Nombre"/>
           <trans loc="fr" val="Prénom"/>
+          <trans loc="hu" val="Utónév"/>
           <trans loc="id" val="Nama Depan"/>
           <trans loc="lv" val="Vārds"/>
           <trans loc="pt_BR" val="Primeiro nome"/>
@@ -1476,6 +1525,7 @@
           <trans loc="en_GB" val="Middle Name"/>
           <trans loc="es" val="Primer apellido"/>
           <trans loc="fr" val="Nom intermédiaire"/>
+          <trans loc="hu" val="Középső név"/>
           <trans loc="id" val="Nama Tengah"/>
           <trans loc="lv" val="Otrais vārds"/>
           <trans loc="pt_BR" val="Nome do meio"/>
@@ -1493,6 +1543,7 @@
           <trans loc="en_GB" val="Surname"/>
           <trans loc="es" val="Segundo apellido"/>
           <trans loc="fr" val="Nom"/>
+          <trans loc="hu" val="Vezetéknév"/>
           <trans loc="id" val="Nama Belakang"/>
           <trans loc="lv" val="Uzvārds"/>
           <trans loc="pt_BR" val="Último nome"/>
@@ -1512,6 +1563,7 @@
                 <trans loc="en_GB" val="Mr."/>
                 <trans loc="es" val="Sr."/>
                 <trans loc="fr" val="M."/>
+                <trans loc="hu" val="Mr"/>
                 <trans loc="id" val="Tuan"/>
                 <trans loc="pt_BR" val="Sr"/>
                 <trans loc="sl" val="g."/>
@@ -1527,6 +1579,7 @@
                 <trans loc="en_GB" val="Mrs."/>
                 <trans loc="es" val="Srta."/>
                 <trans loc="fr" val="Mme"/>
+                <trans loc="hu" val="Mrs"/>
                 <trans loc="id" val="Ny"/>
                 <trans loc="pt_BR" val="Sra"/>
                 <trans loc="sl" val="ga."/>
@@ -1542,6 +1595,7 @@
                 <trans loc="en_GB" val="Ms."/>
                 <trans loc="es" val="Sra."/>
                 <trans loc="fr" val="Mme"/>
+                <trans loc="hu" val="Ms"/>
                 <trans loc="id" val="Nona"/>
                 <trans loc="pt_BR" val="Srta"/>
                 <trans loc="sl" val="ga."/>
@@ -1557,6 +1611,7 @@
                 <trans loc="en_GB" val="Miss"/>
                 <trans loc="es" val="Señorita"/>
                 <trans loc="fr" val="Mlle"/>
+                <trans loc="hu" val="Miss"/>
                 <trans loc="id" val="Nona"/>
                 <trans loc="pt_BR" val="Senhorita"/>
                 <trans loc="sl" val="gdč."/>
@@ -1572,6 +1627,7 @@
                 <trans loc="en_GB" val="Dr."/>
                 <trans loc="es" val="Dr"/>
                 <trans loc="fr" val="Dr"/>
+                <trans loc="hu" val="Dr"/>
                 <trans loc="id" val="Dr"/>
                 <trans loc="lv" val="Dr."/>
                 <trans loc="pt_BR" val="Dr"/>
@@ -1588,6 +1644,7 @@
                 <trans loc="en_GB" val="Prof."/>
                 <trans loc="es" val="Prof"/>
                 <trans loc="fr" val="Pr"/>
+                <trans loc="hu" val="Prof"/>
                 <trans loc="id" val="Prof"/>
                 <trans loc="lv" val="Prof."/>
                 <trans loc="pt_BR" val="Prof"/>
@@ -1605,6 +1662,7 @@
           <trans loc="en_GB" val="Title"/>
           <trans loc="es" val="Título"/>
           <trans loc="fr" val="Titre"/>
+          <trans loc="hu" val="Megszólítás"/>
           <trans loc="id" val="Gelar"/>
           <trans loc="lv" val="Uzruna"/>
           <trans loc="pt_BR" val="Título"/>
@@ -1622,6 +1680,7 @@
           <trans loc="en_GB" val="Street"/>
           <trans loc="es" val="Calle"/>
           <trans loc="fr" val="Rue"/>
+          <trans loc="hu" val="Utca"/>
           <trans loc="id" val="Jalan"/>
           <trans loc="lv" val="Iela"/>
           <trans loc="pt_BR" val="Rua"/>
@@ -1639,6 +1698,7 @@
           <trans loc="en_GB" val="Town"/>
           <trans loc="es" val="Ciudad"/>
           <trans loc="fr" val="Ville"/>
+          <trans loc="hu" val="Település"/>
           <trans loc="id" val="Kota"/>
           <trans loc="lv" val="Pilsēta"/>
           <trans loc="pt_BR" val="Cidade"/>
@@ -1656,6 +1716,7 @@
           <trans loc="en_GB" val="County"/>
           <trans loc="es" val="Estado"/>
           <trans loc="fr" val="État"/>
+          <trans loc="hu" val="Állam"/>
           <trans loc="id" val="Negara Bagian"/>
           <trans loc="lv" val="Novads"/>
           <trans loc="pt_BR" val="Estado"/>
@@ -1673,6 +1734,7 @@
           <trans loc="en_GB" val="Country"/>
           <trans loc="es" val="País"/>
           <trans loc="fr" val="Pays"/>
+          <trans loc="hu" val="Ország"/>
           <trans loc="id" val="Negara"/>
           <trans loc="lv" val="Valsts"/>
           <trans loc="pt_BR" val="País"/>
@@ -1690,6 +1752,7 @@
           <trans loc="en_GB" val="Postcode"/>
           <trans loc="es" val="Código postal"/>
           <trans loc="fr" val="Code postal"/>
+          <trans loc="hu" val="Irányítószám"/>
           <trans loc="id" val="Kode Pos"/>
           <trans loc="lv" val="Pasta indekss"/>
           <trans loc="pt_BR" val="CEP"/>
@@ -1707,6 +1770,7 @@
           <trans loc="en_GB" val="Date of Birth"/>
           <trans loc="es" val="Fecha de nacimiento"/>
           <trans loc="fr" val="Date de naissance"/>
+          <trans loc="hu" val="Születési dátum"/>
           <trans loc="id" val="Tanggal Lahir"/>
           <trans loc="lv" val="Dzimšanas datums"/>
           <trans loc="pt_BR" val="Data de nascimento"/>
@@ -1724,6 +1788,7 @@
           <trans loc="en_GB" val="Comments"/>
           <trans loc="es" val="Comentarios"/>
           <trans loc="fr" val="Commentaires"/>
+          <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
           <trans loc="lv" val="Komentāri"/>
           <trans loc="pt_BR" val="Comentários"/>
@@ -1742,6 +1807,7 @@
           <trans loc="en_GB" val="Full Name"/>
           <trans loc="es" val="Nombre completo"/>
           <trans loc="fr" val="Nom complet"/>
+          <trans loc="hu" val="Teljes név"/>
           <trans loc="id" val="Nama Lengkap"/>
           <trans loc="lv" val="Pilns vārds"/>
           <trans loc="pt_BR" val="Nome completo"/>
@@ -1759,6 +1825,7 @@
           <trans loc="en_GB" val="Picture"/>
           <trans loc="es" val="Foto"/>
           <trans loc="fr" val="Image"/>
+          <trans loc="hu" val="Kép"/>
           <trans loc="id" val="Gambar"/>
           <trans loc="lv" val="Attēls"/>
           <trans loc="pt_BR" val="Foto"/>
@@ -1776,6 +1843,7 @@
           <trans loc="en_GB" val="Email Address"/>
           <trans loc="es" val="Dirección de correo-e"/>
           <trans loc="fr" val="Adresse électronique"/>
+          <trans loc="hu" val="E-mail cím"/>
           <trans loc="id" val="Alamat Surel"/>
           <trans loc="lv" val="E-pasta adrese"/>
           <trans loc="pt_BR" val="Endereço de e-mail"/>
@@ -1793,6 +1861,7 @@
           <trans loc="en_GB" val="Web Site"/>
           <trans loc="es" val="Página web"/>
           <trans loc="fr" val="Site Web"/>
+          <trans loc="hu" val="Weboldal"/>
           <trans loc="id" val="Situs Web"/>
           <trans loc="lv" val="Tīmekļa vietne"/>
           <trans loc="pt_BR" val="Página da web"/>
@@ -1810,6 +1879,7 @@
           <trans loc="en_GB" val="Home Telephone"/>
           <trans loc="es" val="Teléfono de casa"/>
           <trans loc="fr" val="Téléphone domicile"/>
+          <trans loc="hu" val="Otthoni telefon"/>
           <trans loc="id" val="Nomor Telepon Rumah"/>
           <trans loc="lv" val="Mājas telefons"/>
           <trans loc="pt_BR" val="Telefone residencial"/>
@@ -1827,6 +1897,7 @@
           <trans loc="en_GB" val="Work Telephone"/>
           <trans loc="es" val="Teléfono del trabajo"/>
           <trans loc="fr" val="Téléphone travail"/>
+          <trans loc="hu" val="Munkahelyi telefon"/>
           <trans loc="id" val="Nomor Telepon Kantor"/>
           <trans loc="lv" val="Darba telefons"/>
           <trans loc="pt_BR" val="Telefone de trabalho"/>
@@ -1844,6 +1915,7 @@
           <trans loc="en_GB" val="Mobile Telephone"/>
           <trans loc="es" val="Móvil"/>
           <trans loc="fr" val="Téléphone portable"/>
+          <trans loc="hu" val="Mobiltelefon"/>
           <trans loc="id" val="Nomor Telepon Seluler"/>
           <trans loc="lv" val="Mobilais telefons"/>
           <trans loc="pt_BR" val="Telefone celular"/>
@@ -1861,6 +1933,7 @@
           <trans loc="en_GB" val="Fax"/>
           <trans loc="es" val="Fax"/>
           <trans loc="fr" val="Fax"/>
+          <trans loc="hu" val="Fax"/>
           <trans loc="id" val="Faks"/>
           <trans loc="lv" val="Fakss"/>
           <trans loc="pt_BR" val="Fax"/>
@@ -1879,6 +1952,7 @@
           <trans loc="en_GB" val="Lessons"/>
           <trans loc="es" val="Lecciones"/>
           <trans loc="fr" val="Leçons"/>
+          <trans loc="hu" val="Leckék"/>
           <trans loc="id" val="Pelajaran"/>
           <trans loc="lv" val="Stundas"/>
           <trans loc="pt_BR" val="Lições"/>
@@ -1965,6 +2039,7 @@
               <trans loc="en_GB" val="Overview"/>
               <trans loc="es" val="Visión general"/>
               <trans loc="fr" val="Résumé"/>
+              <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
               <trans loc="lv" val="Pārskats"/>
               <trans loc="pt_BR" val="Visão gerall"/>
@@ -1987,6 +2062,7 @@
               <trans loc="en_GB" val="Details"/>
               <trans loc="es" val="Detalles"/>
               <trans loc="fr" val="Détails"/>
+              <trans loc="hu" val="Részletek"/>
               <trans loc="id" val="Rincian"/>
               <trans loc="lv" val="Sīkāka informācija"/>
               <trans loc="pt_BR" val="Detalhes"/>
@@ -2132,6 +2208,7 @@
                     <trans loc="en_GB" val="Subject Name"/>
                     <trans loc="es" val="Nombre de la materia"/>
                     <trans loc="fr" val="Nom du sujet"/>
+                    <trans loc="hu" val="Tárgy neve"/>
                     <trans loc="id" val="Nama Subjek"/>
                     <trans loc="lv" val="Priekšmeta nosaukums"/>
                     <trans loc="pt_BR" val="Nome do assunto"/>
@@ -2183,6 +2260,7 @@
           <trans loc="en_GB" val="Contacts By Country"/>
           <trans loc="es" val="Contactos por país"/>
           <trans loc="fr" val="Contacts par pays"/>
+          <trans loc="hu" val="Partnerek ország szerint"/>
           <trans loc="id" val="Kontak Menurut Negara"/>
           <trans loc="lv" val="Kontakti pēc valsts"/>
           <trans loc="pt_BR" val="Contatos por país"/>
@@ -2218,6 +2296,7 @@
           <trans loc="en_GB" val="By Country, By Town"/>
           <trans loc="es" val="Por país, por ciudad"/>
           <trans loc="fr" val="Par pays, par ville"/>
+          <trans loc="hu" val="Ország szerint, település szerint"/>
           <trans loc="id" val="Menurut Negara, Menurut Kota"/>
           <trans loc="lv" val="Pēc valsts, pēc pilsētas"/>
           <trans loc="pt_BR" val="Por país, por cidade"/>
