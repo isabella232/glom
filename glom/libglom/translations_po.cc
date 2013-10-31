@@ -38,6 +38,7 @@
 "msgid \"\"\n" \
 "msgstr \"\"\n" \
 "\"Project-Id-Version: %1\\n\"\n" \
+"\"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?\\n\"\n" \
 "\"product=glom&keywords=I18N+L10N&component=general\\n\"\n" \
 "\"PO-Revision-Date: %2\\n\"\n" \
 "\"Last-Translator: Someone <someone@someone.com>\\n\"\n" \
