@@ -139,6 +139,46 @@ Glib::ustring get_po_context_for_item(const sharedptr<const TranslatableItem>& i
   if(!hint.empty())
     result += ". " + hint;
 
+  // Split this across lines, as most translation tools seem to do,
+  // (See --width=number here, for instance: http://www.gnu.org/software/gettext/manual/html_node/msggrep-Invocation.html )
+  // so that we can see real changes via git diff.
+  const guint MAX_WIDTH = 76;
+  const guint MAX_WIDTH_FIRST = 69; //MAX_WIDTH - strlen("msgctxt");
+  if(result.size() <= MAX_WIDTH_FIRST)
+    return result;
+
+  const char* CHAR_SPACE = " ";
+
+  Glib::ustring remaining = result;
+  result.clear();
+  while(!remaining.empty())
+  {
+    if(result.empty())
+      result = "\"\n\"";
+    else
+      result += "\"\n\"";
+
+    //result += ("line-max=" + Glib::ustring::format(max));
+    if(remaining.size() <= MAX_WIDTH)
+    {
+      result += remaining;
+      remaining.clear();
+    }
+    else
+    {
+      //Break after a space, if any:
+      Glib::ustring part;
+      const Glib::ustring::size_type pos = remaining.find_last_of(CHAR_SPACE, MAX_WIDTH);
+      if(pos == Glib::ustring::npos)
+        part = remaining.substr(0, MAX_WIDTH);
+      else
+        part = remaining.substr(0, pos + 1); //Include the space.
+
+      result += part;
+      remaining = remaining.substr(part.size());
+    }
+  }
+  
   return result;
 }
 

@@ -1,22 +1,13 @@
-# Indonesian translation for glom.
-# Copyright (C) 2012 glom's COPYRIGHT HOLDER
-# This file is distributed under the same license as the glom package.
-# Andika Triwidada <andika@gmail.com>, 2012.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: glom master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Project-Id-Version: Project Manager Example\n"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"PO-Revision-Date: 2012-10-20 16:46+0700\n"
-"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
-"Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
+"PO-Revision-Date: 2013-10-31 11:23+0100\n"
+"Last-Translator: Someone <someone@someone.com>\n"
+"Language-Team:  <someone@someone.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: id\n"
-"POT-Creation-Date: \n"
-"X-Generator: Poedit 1.5.4\n"
 
 msgctxt "Database Title"
 msgid "Project Manager Example"
@@ -324,3 +315,4 @@ msgstr "Ringkasan"
 msgctxt "Layout Group (details). Parent table: teams"
 msgid "Details"
 msgstr "Rincian"
+

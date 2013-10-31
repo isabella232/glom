@@ -1,22 +1,13 @@
-# Brazilian Portuguese translation of glom.
-# Copyright (C) 2004 Free Software Foundation, Inc.
-# This file is distributed under the same license as the glom package.
-# Rafael Ferreira <rafael.f.f1@gmail.com>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: Small Business Example\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-01-13 18:36-0300\n"
-"Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
-"Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
-"Language: pt_BR\n"
+"PO-Revision-Date: 2013-10-31 11:23+0100\n"
+"Last-Translator: Someone <someone@someone.com>\n"
+"Language-Team:  <someone@someone.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.5.4\n"
 
 msgctxt "Database Title"
 msgid "Small Business Example"
@@ -295,6 +286,10 @@ msgctxt "Field (total_price_vat). Parent table: invoice_lines"
 msgid "Total VAT"
 msgstr "Imposto total"
 
+msgctxt "Relationship (products). Parent table: invoice_lines"
+msgid "Products"
+msgstr ""
+
 msgctxt "Table (invoices)"
 msgid "Invoices"
 msgstr "Fatura"
@@ -467,3 +462,4 @@ msgstr "Nome"
 msgctxt "Layout Group (address). Parent table: staff, Parent Group: details"
 msgid "Address"
 msgstr "Endereço"
+
