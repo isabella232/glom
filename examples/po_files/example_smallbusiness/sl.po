@@ -1,14 +1,25 @@
+#'glom/examples/po_files/example_smallbusiness
+# Slovenian translation for glom smallbusiness example.
+# Copyright (C) 2012 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+#
+# Matej Urbančič <mateju@svn.gnome.org>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Small Business Example\n"
+"Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?\n"
-"product=glom&keywords=I18N+L10N&component=general\n"
-"PO-Revision-Date: 2013-10-31 12:25+0100\n"
-"Last-Translator: Someone <someone@someone.com>\n"
-"Language-Team:  <someone@someone.com>\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2013-11-02 11:50+0100\n"
+"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
+"Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
+"Language: sl_SI\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 1.5.4\n"
 
 msgctxt "Database Title"
 msgid "Small Business Example"
@@ -289,7 +300,7 @@ msgstr "Skupni DDV"
 
 msgctxt "Relationship (products). Parent table: invoice_lines"
 msgid "Products"
-msgstr ""
+msgstr "Izdelki"
 
 msgctxt "Table (invoices)"
 msgid "Invoices"
@@ -463,4 +474,3 @@ msgstr "Ime"
 msgctxt "Layout Group (address). Parent table: staff, Parent Group: details"
 msgid "Address"
 msgstr "Naslov"
-
