@@ -1,3 +1,14 @@
+1.24.2 (stable):
+
+* Avoid some crashes when switching between Data or Find mode,
+  or when navigating around generally.
+  (Murray Cumming)
+* Fixes for clang compiler and scan-build analyzer warnings.
+  (This should make sharing over the network work again.)
+  (Murray Cumming)
+* Small Business examples: Correct a Relationship title.
+  (Murray Cumming)
+
 1.24.1 (stable):
 
 * Startup: Do not crash when reporting check problems.
