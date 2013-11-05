@@ -45,12 +45,4 @@ FoundSet& FoundSet::operator=(const FoundSet& src)
   return *this;
 }
 
-bool FoundSet::operator==(const FoundSet& src) const
-{
-  return (m_table_name == src.m_table_name)
-      && (m_extra_join == src.m_extra_join)
-      /* TODO: && (m_where_clause == src.m_where_clause) */
-      && (m_sort_clause == src.m_sort_clause);
-}
-
 } //namespace Glom

@@ -41,8 +41,12 @@ public:
   FoundSet(const FoundSet& src);
   FoundSet& operator=(const FoundSet& src);
 
+private:
+  //We cannot implement this without a way to compare GdaSqlExpr instances,
+  //but luckily we don't need to compare FoundSet instances anyway.
   bool operator==(const FoundSet& src) const;
 
+public:
   Glib::ustring m_table_name;
   sharedptr<const Relationship> m_extra_join; // Only used for doubly-related related records (portals), in which case the WHERE clause is also slightly different.
   Gnome::Gda::SqlExpr m_where_clause;
