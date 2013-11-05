@@ -50,7 +50,7 @@ LayoutItem* LayoutItem_Text::clone() const
 bool LayoutItem_Text::operator==(const LayoutItem_Text& src) const
 {
   bool result = LayoutItem_WithFormatting::operator==(src) && 
-                (*m_text == *(src.m_text)); //TODO: Compare the underlying item, not the smartpointer?
+                (*m_text == *(src.m_text));
 
   return result;
 }
