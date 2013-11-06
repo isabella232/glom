@@ -32,7 +32,6 @@ void cleanup()
 {
   try
   {
-    //TODO: Catch exceptions:
     Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
     file->remove(); //This should be OK because it is a file, not a directory.
   }
