@@ -1234,32 +1234,40 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_update_with_where_clause(
 
 bool Utils::delete_directory(const Glib::RefPtr<Gio::File>& directory)
 {
-  if(!(directory->query_exists()))
-    return true;
-
-  //(Recursively) Delete any child files and directories,
-  //so we can delete this directory.
-  Glib::RefPtr<Gio::FileEnumerator> enumerator = directory->enumerate_children();
-
-  Glib::RefPtr<Gio::FileInfo> info = enumerator->next_file();
-  while(info)
+  try
   {
-    Glib::RefPtr<Gio::File> child = directory->get_child(info->get_name());
-    bool removed_child = false;
-    if(child->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
-      removed_child = delete_directory(child);
-    else
-      removed_child = child->remove();
+    if(!(directory->query_exists()))
+      return true;
 
-    if(!removed_child)
-       return false;
+    //(Recursively) Delete any child files and directories,
+    //so we can delete this directory.
+    Glib::RefPtr<Gio::FileEnumerator> enumerator = directory->enumerate_children();
 
-    info = enumerator->next_file();
+    Glib::RefPtr<Gio::FileInfo> info = enumerator->next_file();
+    while(info)
+    {
+      Glib::RefPtr<Gio::File> child = directory->get_child(info->get_name());
+      bool removed_child = false;
+      if(child->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
+        removed_child = delete_directory(child);
+      else
+        removed_child = child->remove();
+
+      if(!removed_child)
+         return false;
+
+      info = enumerator->next_file();
+    }
+
+    //Delete the actual directory:
+    if(!directory->remove())
+      return false;
   }
-
-  //Delete the actual directory:
-  if(!directory->remove())
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": Exception from Gio::File: " << ex.what() << std::endl;
     return false;
+  }
 
   return true;
 }
@@ -1268,6 +1276,29 @@ bool Utils::delete_directory(const std::string& uri)
 {
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
   return delete_directory(file);
+}
+
+bool Utils::delete_file(const std::string& uri)
+{
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+  if(file->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
+  {
+    std::cerr << G_STRFUNC << ": The file is a directory." << std::endl;
+    return false;
+  }
+
+  try
+  {
+    if(!file->remove())
+      return false;
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": Exception from Gio::File: " << ex.what() << std::endl;
+    return false;
+  }
+
+  return true;
 }
 
 /** For instance, to find the first file in the directory with a .glom extension.

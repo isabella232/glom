@@ -154,7 +154,7 @@ int main()
   //Check that the .po file is valid:
   check_po_file(po_file_path);
 
-  //TODO: Remove po_file_uri
+  Glom::Utils::delete_file(po_file_uri);
 
   Glom::libglom_deinit();
 

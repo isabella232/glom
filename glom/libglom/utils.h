@@ -187,8 +187,14 @@ bool delete_directory(const Glib::RefPtr<Gio::File>& directory);
 
 /** Delete a directory, if it exists, and its contents.
  * Unlike g_file_delete(), this does not fail if the directory is not empty.
+ * See also delete_file().
  */
 bool delete_directory(const std::string& uri);
+
+/** Delete a file, if it exists.
+ * See also delete_directory().
+ */
+bool delete_file(const std::string& uri);
 
 /** For instance, to find the first file in the directory with a .glom extension.
  */
