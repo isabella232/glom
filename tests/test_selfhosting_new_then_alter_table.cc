@@ -77,12 +77,9 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   if(!result)
     return false;
 
-  /* TODO: Uncomment this when this libgda bug is fixed:
-   * https://bugzilla.gnome.org/show_bug.cgi?id=663608
   result = do_test(hosting_mode, table_name + "with\"quote", new_table_name + "with\"quote");
   if(!result)
     return false;
-  */
 
   return result;
 }
