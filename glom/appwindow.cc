@@ -2073,75 +2073,51 @@ void AppWindow::on_menu_file_save_as_example()
     //Enforce the file extension:
     file_uri = document->get_file_uri_with_extension(file_uri);
 
-    bool bUseThisFileUri = true;
-    //We previously checked whether the file existed,
-    //but The FileChooser checks that already,
-    //so Bakery doesn't bother checking anymore,
-    //and our old test always set bUseThisFileUri to true anyway. murryac.
-    //TODO: So remove this bool. murrayc.
+    //Prevent saving while we modify the document:
+    document->set_allow_autosave(false);
 
-    //Save to this filepath:
-    if(bUseThisFileUri)
+    document->set_file_uri(file_uri, true); //true = enforce file extension
+    document->set_is_example_file();
+
+    //Save all data from all tables into the document:
+    Document::type_listTableInfo list_table_info = document->get_tables();
+    for(Document::type_listTableInfo::const_iterator iter = list_table_info.begin(); iter != list_table_info.end(); ++iter)
     {
-      //Prevent saving while we modify the document:
-      document->set_allow_autosave(false);
+      const Glib::ustring table_name = (*iter)->get_name();
 
-      document->set_file_uri(file_uri, true); //true = enforce file extension
-      document->set_is_example_file();
+      //const type_vec_fields vec_fields = document->get_table_fields(table_name);
 
-      //Save all data from all tables into the document:
-      Document::type_listTableInfo list_table_info = document->get_tables();
-      for(Document::type_listTableInfo::const_iterator iter = list_table_info.begin(); iter != list_table_info.end(); ++iter)
-      {
-        const Glib::ustring table_name = (*iter)->get_name();
+      //export_data_to_*() needs a type_list_layout_groups;
+      Document::type_list_layout_groups sequence = document->get_data_layout_groups_default("list", table_name, "" /* layout_platform */);
 
-        //const type_vec_fields vec_fields = document->get_table_fields(table_name);
+      //std::cout << "debug: table_name=" << table_name << std::endl;
 
-        //export_data_to_*() needs a type_list_layout_groups;
-        Document::type_list_layout_groups sequence = document->get_data_layout_groups_default("list", table_name, "" /* layout_platform */);
+      Document::type_example_rows example_rows;
+      FoundSet found_set;
+      found_set.m_table_name = table_name;
+      m_pFrame->export_data_to_vector(example_rows, found_set, sequence);
+      //std::cout << "  debug after row_text=" << row_text << std::endl;
 
-        //std::cout << "debug: table_name=" << table_name << std::endl;
+      document->set_table_example_data(table_name, example_rows);
+    }
 
-        Document::type_example_rows example_rows;
-        FoundSet found_set;
-        found_set.m_table_name = table_name;
-        m_pFrame->export_data_to_vector(example_rows, found_set, sequence);
-        //std::cout << "  debug after row_text=" << row_text << std::endl;
+    const bool bTest = document->save();
+    document->set_is_example_file(false);
+    document->set_is_backup_file(false);
+    document->set_file_uri(file_uriOld);
+    document->set_allow_autosave(true);
 
-        document->set_table_example_data(table_name, example_rows);
-      }
-
-      const bool bTest = document->save();
-      document->set_is_example_file(false);
-      document->set_is_backup_file(false);
-      document->set_file_uri(file_uriOld);
-      document->set_allow_autosave(true);
-
-      if(!bTest)
-      {
-        ui_warning(_("Save failed."), _("There was an error while saving the example file."));
-      }
-      else
-      {
-        //Disable Save and SaveAs menu items:
-        after_successful_save();
-      }
-
-      update_window_title();
-
-
-      //Close if this save was a result of a File|Close or File|Exit:.
-      //if(bTest && m_bCloseAfterSave) //Don't close if the save failed.
-      //{
-      //  on_menu_file_close(); //This could be the second time, but now there are no unsaved changes.
-      //}
+    if(!bTest)
+    {
+      ui_warning(_("Save failed."), _("There was an error while saving the example file."));
     }
     else
     {
-      //Let the user choose a different file path,
-      //because he decided not to overwrite the 1st one.
-      on_menu_file_save_as_example(); //recursive.
+      //Disable Save and SaveAs menu items:
+      after_successful_save();
     }
+
+    update_window_title();
   }
   else
   {
