@@ -14,12 +14,14 @@ namespace Glom
 bool glom_python_module_is_available()
 {
   const gchar* name = "glom_" GLOM_ABI_VERSION_UNDERLINED;
-  PyObject* module_glom = PyImport_ImportModule((char*)name); //TODO: unref this?
+  PyObject* module_glom = PyImport_ImportModule((char*)name);
 
   if(!module_glom)
   {
-    g_warning("Glom: A python import of %s failed.\n", name);
+    std::cerr << "Glom: A python import of " << name << " failed." << std::endl;
   }
+
+  Py_XDECREF(module_glom);
 
   return module_glom != 0;
 }
@@ -29,12 +31,14 @@ bool gda_python_module_is_available()
   //Python code usually uses "from gi.repository import Gda" so that 
   //the code may use Gda. rather than gi.repository.Gda in the code.
   const gchar* name = "gi.repository.Gda"; 
-  PyObject* module_glom = PyImport_ImportModule((char*)name); //TODO: unref this?
+  PyObject* module_glom = PyImport_ImportModule((char*)name);
 
   if(!module_glom)
   {
-    g_warning("Glom: A python import of %s failed.\n", name);
+    std::cerr << "Glom: A python import of " << name << " failed." << std::endl;
   }
+
+  Py_XDECREF(module_glom);
 
   return module_glom != 0;
 }
