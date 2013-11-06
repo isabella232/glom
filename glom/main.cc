@@ -495,11 +495,6 @@ main(int argc, char* argv[])
     Glib::RefPtr<Glom::Application> application = 
       Glom::Application::create();
 
-    //Call gtk_init() too, because earlier (< 3.9.17) versions
-    //of gtkmm do not do this in the default Gtk::Application constructor.
-    //TODO: Remove this when we can depend on a newer gtkmm:
-    gtk_init(0, 0);
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     Gsv::init();
     Goocanvas::init();
