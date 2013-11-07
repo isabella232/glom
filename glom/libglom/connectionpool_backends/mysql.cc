@@ -86,7 +86,7 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQL::attempt_connect(const Glib::ustring&
   //const Glib::ustring& actual_database = (!database.empty()) ? database : default_database;;
   const Glib::ustring cnc_string_main = "HOST=" + DbUtils::gda_cnc_string_encode(m_host)
    + ";PORT=" + DbUtils::gda_cnc_string_encode(port)
-   + ";PROTOCOL=TCP"; //PROTOCOL is in libgda >= 5.1.2. See https://bugzilla.gnome.org/show_bug.cgi?id=691069#c2
+   + ";PROTOCOL=TCP"; //PROTOCOL is in libgda >= 5.1.2.
   const Glib::ustring cnc_string = cnc_string_main +";DB_NAME=" + DbUtils::gda_cnc_string_encode(database);
 
   Glib::RefPtr<Gnome::Gda::Connection> connection;
