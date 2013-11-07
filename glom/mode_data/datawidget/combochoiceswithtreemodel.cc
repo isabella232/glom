@@ -391,8 +391,7 @@ void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell
         if(!fg_color.empty())
           pDerived->property_foreground() = fg_color;
         else
-          //TODO: Remove this when this GTK+ bug is fixed: https://bugzilla.gnome.org/show_bug.cgi?id=667415
-          g_object_set(pDerived->gobj(), "foreground", (const char*)0, (gpointer)0);
+          pDerived->property_foreground().reset_value();
       }
 
       break;
