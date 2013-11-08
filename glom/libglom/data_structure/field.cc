@@ -249,8 +249,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnom
     provider->get_data_handler_g_type(connection, gda_type);
   if(datahandler)
   {
-    //Note that this does seems to add the needed quotes too, for instance around strings,
-    //though that is not clearly documented. See bug http://bugzilla.gnome.org/show_bug.cgi?id=572220
+    //This is documented as adding the necessary quotes.
     return datahandler->get_sql_from_value(value);
   }
   else
@@ -330,14 +329,9 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_t
     //Correction for text representations of image (binary) data:
     //Avoid arbitrary newlines in this text.
     //See libgda bug: https://bugzilla.gnome.org/show_bug.cgi?id=597390
+    //though that libgda behaviour will not be changed.
     result = Utils::string_replace(result, "\n", "\\012");
-
-    //Avoid arbitrary newlines in this text.
-    //See libgda bug: https://bugzilla.gnome.org/show_bug.cgi?id=597390
     result = Utils::string_replace(result, "\r", "\\015");
-
-    //Escape any quotes in this text:
-    //See libgda bug: https://bugzilla.gnome.org/show_bug.cgi?id=597390
     return Utils::string_replace(result, "\"", "\\042");
   }
   
