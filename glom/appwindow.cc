@@ -63,6 +63,11 @@
 namespace Glom
 {
 
+static const Glib::ustring ACTION_GROUP_NAME_REPORTS = "reports-list";
+static const Glib::ustring ACTION_GROUP_NAME_TABLES = "tables-list";
+static const Glib::ustring ACTION_GROUP_NAME_PRINT_LAYOUTS = "print-layouts-list";
+
+
 //static const int GLOM_RESPONSE_BROWSE_NETWORK = 1;
 
 // Global application variable
@@ -1858,7 +1863,7 @@ void AppWindow::fill_menu_tables()
 
   if(m_refNavTablesActionGroup)
   {
-    //TODO? remove_action_group(m_refNavTablesActionGroup);
+    remove_action_group(ACTION_GROUP_NAME_TABLES);
     m_refNavTablesActionGroup.reset();
   }
 
@@ -1880,8 +1885,6 @@ void AppWindow::fill_menu_tables()
     menu->remove(0);
   }
 
-  const Glib::ustring action_group_name = "tables-list";
-
   Document* document = dynamic_cast<Document*>(get_document());
   const Document::type_listTableInfo tables = document->get_tables();
   for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
@@ -1892,7 +1895,7 @@ void AppWindow::fill_menu_tables()
       const Glib::ustring title = Utils::string_escape_underscores(item_get_title_or_name(table_info));
       const Glib::ustring action_name = table_info->get_name();
   
-      menu->append(title, action_group_name + "." + action_name);
+      menu->append(title, ACTION_GROUP_NAME_TABLES + "." + action_name);
 
       Glib::RefPtr<Gio::SimpleAction> action = m_refNavTablesActionGroup->add_action(action_name,
         sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_box_tables_selected), table_info->get_name()) );
@@ -1900,7 +1903,7 @@ void AppWindow::fill_menu_tables()
     }
   }
 
-  insert_action_group(action_group_name, m_refNavTablesActionGroup);
+  insert_action_group(ACTION_GROUP_NAME_TABLES, m_refNavTablesActionGroup);
 }
 
 void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
@@ -1924,11 +1927,9 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
     menu->remove(0);
   }
 
-  const Glib::ustring action_group_name = "reports-list";
-
   if(m_refNavReportsActionGroup)
   {
-    //TODO? m_builder_menu->remove_action_group(m_refNavReportsActionGroup);
+    remove_action_group(ACTION_GROUP_NAME_REPORTS);
     m_refNavReportsActionGroup.reset();
   }
 
@@ -1947,7 +1948,7 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
         const Glib::ustring title = Utils::string_escape_underscores(item_get_title_or_name(report));
         const Glib::ustring action_name = report_name;
   
-        menu->append(title, action_group_name + "." + report_name);
+        menu->append(title, ACTION_GROUP_NAME_REPORTS + "." + report_name);
 
         Glib::RefPtr<Gio::SimpleAction> action = m_refNavReportsActionGroup->add_action(action_name,
           sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_report_selected), report->get_name()) );
@@ -1956,7 +1957,7 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
     }
   }
 
-  insert_action_group(action_group_name, m_refNavReportsActionGroup);
+  insert_action_group(ACTION_GROUP_NAME_REPORTS, m_refNavReportsActionGroup);
 }
 
 void AppWindow::enable_menu_print_layouts_details(bool enable)
@@ -2004,12 +2005,9 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
     menu->remove(0);
   }
 
-  const Glib::ustring action_group_name = "print-layouts-list";
-
   if(m_refNavPrintLayoutsActionGroup)
   {
-    //TODO: See   //TODO: See https://bugzilla.gnome.org/show_bug.cgi?id=708150 about adding this API:
-    //m_builder_menu->remove_action_group(m_refNavPrintLayoutsActionGroup);
+    remove_action_group(ACTION_GROUP_NAME_PRINT_LAYOUTS);
     m_refNavPrintLayoutsActionGroup.reset();
   }
 
@@ -2032,7 +2030,7 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
         const Glib::ustring title = Utils::string_escape_underscores(item_get_title(print_layout));
         const Glib::ustring action_name = name;
 
-        menu->append(title, action_group_name + "." + action_name);
+        menu->append(title, ACTION_GROUP_NAME_PRINT_LAYOUTS + "." + action_name);
 
         Glib::RefPtr<Gio::SimpleAction> action = m_refNavPrintLayoutsActionGroup->add_action(action_name,
           sigc::bind( sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_print_layout_selected), name) );
@@ -2043,7 +2041,7 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
   }
 #endif
 
-  insert_action_group(action_group_name, m_refNavPrintLayoutsActionGroup);
+  insert_action_group(ACTION_GROUP_NAME_PRINT_LAYOUTS, m_refNavPrintLayoutsActionGroup);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
