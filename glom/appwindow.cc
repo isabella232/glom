@@ -2925,7 +2925,7 @@ void AppWindow::on_menu_edit_copy_activate()
     return;
   }
 
-  //GtkTextView does not implement GtkTextView.
+  //GtkTextView does not implement GtkEditable.
   //See GTK+ bug: https://bugzilla.gnome.org/show_bug.cgi?id=667008
   Gtk::TextView* textview = dynamic_cast<Gtk::TextView*>(widget);
   if(textview)
@@ -2951,7 +2951,7 @@ void AppWindow::on_menu_edit_cut_activate()
     return;
   }
 
-  //GtkTextView does not implement GtkTextView.
+  //GtkTextView does not implement GtkEditable.
   //See GTK+ bug: https://bugzilla.gnome.org/show_bug.cgi?id=667008
   Gtk::TextView* textview = dynamic_cast<Gtk::TextView*>(widget);
   if(textview)
@@ -2977,7 +2977,7 @@ void AppWindow::on_menu_edit_paste_activate()
     return;
   }
 
-  //GtkTextView does not implement GtkTextView.
+  //GtkTextView does not implement GtkEditable.
   //See GTK+ bug: https://bugzilla.gnome.org/show_bug.cgi?id=667008
   Gtk::TextView* textview = dynamic_cast<Gtk::TextView*>(widget);
   if(textview)
