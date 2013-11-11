@@ -982,11 +982,14 @@ bool Frame_Glom::attempt_toggle_shared(bool shared)
 
     ShowProgressMessage startup_message(_("Starting Database Server"));
     connectionpool->set_network_shared(sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress), shared);
-    ConnectionPool::StartupErrors started = connectionpool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
+    const ConnectionPool::StartupErrors started =
+      connectionpool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
     if(started != ConnectionPool::Backend::STARTUPERROR_NONE)
     {
+      //TODO: Output more exact details of the error message.
+      //TODO: Recover somehow?
       std::cerr << G_STRFUNC << ": startup() failed." << std::endl;
-      //TODO: Tell the user.
+      return false;
     }
 
     connectionpool->set_ready_to_connect();
@@ -2093,6 +2096,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   if(started != ConnectionPool::Backend::STARTUPERROR_NONE)
   {
     std::cerr << G_STRFUNC << ": startup() failed." << std::endl;
+    //TODO: Output more exact details of the error message.
     return false;
   }
 
@@ -2253,6 +2257,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
   {
     std::cerr << G_STRFUNC << ": startup() failed." << std::endl;
     return false;
+    //TODO: Output more exact details of the error message.
   }
 
   AppWindow* app = dynamic_cast<AppWindow*>(get_app_window());
