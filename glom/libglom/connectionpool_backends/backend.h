@@ -82,6 +82,8 @@ public:
     STARTUPERROR_NONE, /*< The database is ready for use. */
     STARTUPERROR_FAILED_NO_DATA, /*< There is no data for the database. */
     STARTUPERROR_FAILED_NO_DATA_HAS_BACKUP_DATA, /*< There is no data for the database, but there is a backup file instead. */
+    STARTUPERROR_FAILED_NO_MAIN_DIRECTORY, /*< The main directory (containing data and config directories) could not be found. */
+    STARTUPERROR_FAILED_NO_PORT_AVAILABLE, /*< There was no network port available in the normal range of ports. */
     STARTUPERROR_FAILED_UNKNOWN_REASON /*< Something else failed. */
   };
 

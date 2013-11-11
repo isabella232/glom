@@ -305,9 +305,8 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
 
   if(!(file_exists_uri(dbdir_uri)))
   {
-    //TODO: Use a return enum or exception so we can tell the user about this:
     std::cerr << G_STRFUNC << ": The data directory could not be found: " << dbdir_uri << std::endl;
-    return STARTUPERROR_FAILED_UNKNOWN_REASON;
+    return STARTUPERROR_FAILED_NO_MAIN_DIRECTORY;
   }
 
   const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
@@ -339,9 +338,8 @@ Backend::StartupErrors MySQLSelfHosted::startup(const SlotProgress& slot_progres
   //std::cout << "debug: " << G_STRFUNC << ":() : debug: Available port for self-hosting: " << available_port << std::endl;
   if(available_port == 0)
   {
-    //TODO: Use a return enum or exception so we can tell the user about this:
     std::cerr << G_STRFUNC << ": No port was available between " << PORT_MYSQL_SELF_HOSTED_START << " and " << PORT_MYSQL_SELF_HOSTED_END << std::endl;
-    return STARTUPERROR_FAILED_UNKNOWN_REASON;
+    return STARTUPERROR_FAILED_NO_PORT_AVAILABLE;
   }
 
   //TODO: Performance:
