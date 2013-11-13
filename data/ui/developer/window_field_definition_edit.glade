@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.15.4 on Wed Oct 23 11:20:54 2013 -->
+<!-- Generated with glade 3.16.0 on Wed Nov 13 11:08:31 2013 -->
 <interface>
   <!-- interface-requires gtk+ 3.6 -->
   <!-- interface-requires gtksourceview 0.0 -->
@@ -249,6 +249,8 @@
                               <object class="GtkBox" id="hbox_default_value_simple">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="hexpand">True</property>
+                                <property name="vexpand">False</property>
                                 <property name="spacing">12</property>
                                 <child>
                                   <placeholder/>
@@ -258,7 +260,7 @@
                                 </child>
                               </object>
                               <packing>
-                                <property name="expand">False</property>
+                                <property name="expand">True</property>
                                 <property name="fill">False</property>
                                 <property name="position">0</property>
                               </packing>
@@ -270,13 +272,14 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="hexpand">True</property>
                                 <property name="use_underline">True</property>
                                 <property name="xalign">0</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
-                                <property name="fill">False</property>
+                                <property name="fill">True</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
@@ -284,6 +287,8 @@
                               <object class="GtkGrid" id="table_lookup">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="hexpand">True</property>
+                                <property name="vexpand">False</property>
                                 <property name="row_spacing">6</property>
                                 <property name="column_spacing">12</property>
                                 <child>
@@ -354,7 +359,7 @@
                               </object>
                               <packing>
                                 <property name="expand">False</property>
-                                <property name="fill">False</property>
+                                <property name="fill">True</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -385,12 +390,16 @@
                   <object class="GtkFrame" id="frame38">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                     <property name="label_xalign">0</property>
                     <property name="shadow_type">none</property>
                     <child>
                       <object class="GtkAlignment" id="alignment_calculate">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
                         <property name="top_padding">6</property>
                         <property name="left_padding">12</property>
                         <child>
@@ -454,6 +463,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
                         <property name="use_underline">True</property>
                         <property name="xalign">0</property>
                         <property name="draw_indicator">True</property>
