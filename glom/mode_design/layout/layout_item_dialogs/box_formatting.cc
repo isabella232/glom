@@ -99,10 +99,10 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   builder->get_widget("checkbutton_color_background", m_checkbox_format_text_color_background);
 
   //Set the adjustment details, to avoid a useless 0-to-0 range and a 0 incremenet.
-  //We don't do this the Glade file because GtkBuilder wouldn't find the
+  //We don't do this in the Glade file because GtkBuilder wouldn't find the
   //associated adjustment object unless we specified it explictly:
   //See http://bugzilla.gnome.org/show_bug.cgi?id=575714
-  m_spinbutton_format_text_multiline_height->set_range(0, 100);
+  m_spinbutton_format_text_multiline_height->set_range(1, 10000);
   m_spinbutton_format_text_multiline_height->set_increments(1, 10);
   m_spinbutton_format_text_multiline_height->set_value(3); //A sensible default.
 
