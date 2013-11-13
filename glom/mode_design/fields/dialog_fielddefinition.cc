@@ -144,7 +144,10 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
 
   Gtk::Label* pLabel = m_pDataWidget_DefaultValueSimple->get_label();
   if(!pLabel->get_text().empty())
-    m_pBox_DefaultValueSimple->pack_start(*pLabel);
+  {
+    pLabel->set_valign(Gtk::ALIGN_START); //Because the widget might be multiline.
+    m_pBox_DefaultValueSimple->pack_start(*pLabel, Gtk::PACK_SHRINK);
+  }
 
   m_pBox_DefaultValueSimple->pack_end(*m_pDataWidget_DefaultValueSimple, Gtk::PACK_EXPAND_WIDGET);
   m_pDataWidget_DefaultValueSimple->set_value(default_value);

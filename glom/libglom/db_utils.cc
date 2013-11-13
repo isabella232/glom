@@ -929,11 +929,10 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
 
 
         //Get the default value:
-        /* libgda does not return this correctly yet. TODO: check bug http://bugzilla.gnome.org/show_bug.cgi?id=143576
-        const Gnome::Gda::Value value_defaultvalue = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_DEFAULTVALUE, row);
-        if(value_defaultG_VALUE_TYPE(value.gobj()) ==  G_TYPE_STRING)
+        const Gnome::Gda::Value value_defaultvalue =
+          data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_DEFAULTVALUE, row);
+        if(value_defaultvalue.get_value_type() ==  G_TYPE_STRING)
           field_info->set_default_value(value_defaultvalue);
-        */
 
         //Get whether it can be null:
         const Gnome::Gda::Value value_notnull = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NOTNULL, row);
