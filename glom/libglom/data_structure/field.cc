@@ -591,7 +591,7 @@ bool Field::field_info_from_database_is_equal(const Glib::RefPtr<const Gnome::Gd
 
   temp->set_auto_increment( field->get_auto_increment() ); //Don't compare this, because the data is incorrect when libgda reads it from the database.
 
-  Gnome::Gda::Value value = field->get_default_value();
+  const Gnome::Gda::Value value = field->get_default_value();
   temp->set_default_value(value); //Don't compare this, because the data is incorrect when libgda reads it from the database.
 
   //TODO_gda: temp->set_primary_key( field->get_primary_key() ); //Don't compare this, because the data is incorrect when libgda reads it from the database.

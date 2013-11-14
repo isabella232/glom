@@ -608,7 +608,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
           <trans loc="sr@latin" val="Adresa el. pošte"/>
         </trans_set>
       </field>
-      <field name="website" type="Text" title="Web Site">
+      <field name="website" default_value="http://" type="Text" title="Web Site">
         <formatting/>
         <trans_set>
           <trans loc="cs" val="Webové stránky"/>

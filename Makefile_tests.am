@@ -37,6 +37,7 @@ check_PROGRAMS =						\
 	tests/test_selfhosting_new_empty_change_sysprefs \
 	tests/test_selfhosting_new_empty_then_users \
 	tests/test_selfhosting_new_from_example \
+	tests/test_selfhosting_new_from_example_defaultvalues \
 	tests/test_selfhosting_new_from_example_float \
 	tests/test_selfhosting_new_from_example_operator \
 	tests/test_selfhosting_new_from_example_strangepath \
@@ -77,6 +78,7 @@ TESTS =	tests/test_document_load	\
 	tests/test_selfhosting_new_empty_change_sysprefs \
 	tests/test_selfhosting_new_empty_then_users \
 	tests/test_selfhosting_new_from_example \
+	tests/test_selfhosting_new_from_example_defaultvalues \
 	tests/test_selfhosting_new_from_example_float \
 	tests/test_selfhosting_new_from_example_operator \
 	tests/test_selfhosting_new_from_example_in_locales.sh \
@@ -262,6 +264,10 @@ tests_test_selfhosting_new_empty_then_users_CPPFLAGS = $(tests_cppflags)
 tests_test_selfhosting_new_from_example_SOURCES = tests/test_selfhosting_new_from_example.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_from_example_LDADD = $(tests_ldadd)
 tests_test_selfhosting_new_from_example_CPPFLAGS = $(tests_cppflags)
+
+tests_test_selfhosting_new_from_example_defaultvalues_SOURCES = tests/test_selfhosting_new_from_example_defaultvalues.cc $(sources_test_selfhosting_utils)
+tests_test_selfhosting_new_from_example_defaultvalues_LDADD = $(tests_ldadd)
+tests_test_selfhosting_new_from_example_defaultvalues_CPPFLAGS = $(tests_cppflags)
 
 tests_test_selfhosting_new_from_example_float_SOURCES = tests/test_selfhosting_new_from_example_float.cc $(sources_test_selfhosting_utils)
 tests_test_selfhosting_new_from_example_float_LDADD = $(tests_ldadd)
