@@ -1607,8 +1607,11 @@ void Frame_Glom::on_menu_developer_relationships_overview()
     Utils::get_glade_widget_derived_with_warning(m_window_relationships_overview);
     add_view(m_window_relationships_overview);
 
-    m_window_relationships_overview->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
-    add_window_to_app(m_window_relationships_overview);
+    if(m_window_relationships_overview)
+    {
+      m_window_relationships_overview->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
+      add_window_to_app(m_window_relationships_overview);
+    }
   }
 
   if(m_window_relationships_overview)
