@@ -51,7 +51,7 @@ Dialog_DefaultFormatting::Dialog_DefaultFormatting(BaseObjectType* cobject, cons
 
   if(m_box_formatting)
   {
-    on_foreach_connect(*m_box_formatting);
+    on_foreach_connect(m_box_formatting);
 
     //Plus an extra signal for the related extra show-also fields:
     m_box_formatting->signal_modified().connect(

@@ -93,9 +93,9 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
   on_combo_type_changed();
 
 
-  on_foreach_connect(*this);
-  on_foreach_connect(*m_pBox_DefaultValueSimple);
-  on_foreach_connect(*m_pBox_ValueTab);
+  on_foreach_connect(this);
+  on_foreach_connect(m_pBox_DefaultValueSimple);
+  on_foreach_connect(m_pBox_ValueTab);
 
   Dialog_Properties::set_modified(false);
 
@@ -150,7 +150,7 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
   if(!m_pDataWidget_DefaultValueSimple->get_data_child_widget())
     std::cerr << G_STRFUNC << ": The DataWidget did not create a child widget." << std::endl;
 
-  on_foreach_connect(*m_pDataWidget_DefaultValueSimple);
+  on_foreach_connect(m_pDataWidget_DefaultValueSimple);
 
   Gtk::Label* pLabel = m_pDataWidget_DefaultValueSimple->get_label();
   if(!pLabel->get_text().empty())

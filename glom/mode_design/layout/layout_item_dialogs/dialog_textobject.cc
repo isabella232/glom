@@ -42,7 +42,7 @@ Dialog_TextObject::Dialog_TextObject(BaseObjectType* cobject, const Glib::RefPtr
   builder->get_widget("entry_title",  m_entry_title);
   builder->get_widget("textview_text",  m_text_view);
 
-  //on_foreach_connect(*this);
+  //on_foreach_connect(this);
 
   //Dialog_Properties::set_modified(false);
 

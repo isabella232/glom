@@ -22,6 +22,7 @@
 #include "dialog_properties.h"
 #include <gtkmm/togglebutton.h>
 #include <gtkmm/textview.h>
+#include <iostream>
 
 namespace Glom
 {
@@ -71,37 +72,43 @@ void Dialog_Properties::add(Gtk::Widget& /*widget */)
   //on_foreach_connect(widget);
 }
 
-void Dialog_Properties::widget_connect_changed_signal(Gtk::Widget& widget)
+void Dialog_Properties::widget_connect_changed_signal(Gtk::Widget* widget)
 {
-  Gtk::ComboBox* pCombo = dynamic_cast<Gtk::ComboBox*>(&widget);
+  if(!widget)
+  {
+    std::cerr << G_STRFUNC << ": widget is null." << std::endl;
+    return;
+  }
+
+  Gtk::ComboBox* pCombo = dynamic_cast<Gtk::ComboBox*>(widget);
   if(pCombo) //If it is actually a Combo:
   {
     pCombo->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Properties::on_anything_changed));
   }
   else
   {
-    Gtk::Entry* pEntry = dynamic_cast<Gtk::Entry*>(&widget);
+    Gtk::Entry* pEntry = dynamic_cast<Gtk::Entry*>(widget);
     if(pEntry) //If it is actually an Entry:
     {
       pEntry->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Properties::on_anything_changed));
     }
     else
     {
-      Gtk::ToggleButton* pToggleButton = dynamic_cast<Gtk::ToggleButton*>(&widget);
+      Gtk::ToggleButton* pToggleButton = dynamic_cast<Gtk::ToggleButton*>(widget);
       if(pToggleButton)
       {
         pToggleButton->signal_toggled().connect( sigc::mem_fun(*this, &Dialog_Properties::on_anything_changed) );
       }
       else
       {
-        Gtk::TextView* pTextView = dynamic_cast<Gtk::TextView*>(&widget);
+        Gtk::TextView* pTextView = dynamic_cast<Gtk::TextView*>(widget);
         if(pTextView)
         {
           pTextView->get_buffer()->signal_changed().connect( sigc::mem_fun(*this, &Dialog_Properties::on_anything_changed) );
         }
         else
         {
-          AddDel* pAddDel = dynamic_cast<AddDel*>(&widget);
+          AddDel* pAddDel = dynamic_cast<AddDel*>(widget);
           if(pAddDel)
           {
             pAddDel->signal_user_changed().connect( sigc::mem_fun(*this, &Dialog_Properties::on_adddel_user_changed) );
@@ -129,12 +136,18 @@ void Dialog_Properties::on_anything_changed()
   }
 }
 
-void Dialog_Properties::on_foreach_connect(Gtk::Widget& widget)
+void Dialog_Properties::on_foreach_connect(Gtk::Widget* widget)
 {
+  if(!widget)
+  {
+    std::cerr << G_STRFUNC << ": widget is null." << std::endl;
+    return;
+  }
+
   widget_connect_changed_signal(widget); //Connect the appropriate signal
 
   //Recurse through children:
-  Gtk::Container* pContainer = dynamic_cast<Gtk::Container*>(&widget);
+  Gtk::Container* pContainer = dynamic_cast<Gtk::Container*>(widget);
   if(pContainer)
   {
     pContainer->foreach( sigc::mem_fun(*this, &Dialog_Properties::on_foreach_connect)); //recursive
