@@ -51,9 +51,11 @@ void Box_DB_Table_Definition::init()
   add_view(m_dialog_field_definition); //Give it access to the document.
 
   Utils::get_glade_widget_derived_with_warning(m_dialog_default_formatting);
-  add_view(m_dialog_default_formatting);
-  m_dialog_default_formatting->signal_apply().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_field_definition_apply));
-
+  if(m_dialog_default_formatting)
+  {
+    add_view(m_dialog_default_formatting);
+    m_dialog_default_formatting->signal_apply().connect(sigc::mem_fun(*this, &Box_DB_Table_Definition::on_field_definition_apply));
+  }
 
   pack_start(m_AddDel);
   m_colName = m_AddDel.add_column(_("Name"));

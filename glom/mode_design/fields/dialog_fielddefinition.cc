@@ -65,13 +65,23 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
   builder->get_widget("button_edit_calculation",  m_pButton_EditCalculation);
 
   //Connect signals:
+  if(m_pCombo_Type)
   m_pCombo_Type->signal_changed().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_combo_type_changed) );
-  m_pCombo_LookupRelationship->signal_changed().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_combo_lookup_relationship_changed) );
-  m_pCheck_Lookup->signal_toggled().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_check_lookup_toggled) );
 
-  m_pRadio_Calculate->signal_toggled().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_radio_calculate_toggled) );
-  m_pRadio_UserEntry->signal_toggled().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_radio_userentry_toggled) );
-  m_pButton_EditCalculation->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_button_edit_calculation) );
+  if(m_pCombo_LookupRelationship)
+    m_pCombo_LookupRelationship->signal_changed().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_combo_lookup_relationship_changed) );
+
+  if(m_pCheck_Lookup)
+    m_pCheck_Lookup->signal_toggled().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_check_lookup_toggled) );
+
+  if(m_pRadio_Calculate)
+    m_pRadio_Calculate->signal_toggled().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_radio_calculate_toggled) );
+
+  if(m_pRadio_UserEntry)
+    m_pRadio_UserEntry->signal_toggled().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_radio_userentry_toggled) );
+
+  if(m_pButton_EditCalculation)
+    m_pButton_EditCalculation->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_button_edit_calculation) );
 
   //TODO:
   //Connect every widget to on_anything_changed():
