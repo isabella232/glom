@@ -71,10 +71,6 @@ Dialog_ChooseID::~Dialog_ChooseID()
 {
   remove_view(&m_box_find);
   remove_view(&m_box_select);
-  
-  //Work around this bug (apparently in GTK+):
-  //https://bugzilla.gnome.org/show_bug.cgi?id=660347
-  m_alignment_parent->remove();
 }
 
 void Dialog_ChooseID::setup()
