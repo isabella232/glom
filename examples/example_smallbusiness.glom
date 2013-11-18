@@ -1765,6 +1765,7 @@ Orientation=portrait
       <relationship name="products" key="product_id" other_table="products" other_key="product_id" title="Products">
         <trans_set>
           <trans loc="de" val="Produkten"/>
+          <trans loc="hu" val="Termékek"/>
           <trans loc="pt_BR" val="Produtos"/>
           <trans loc="sl" val="Izdelki"/>
         </trans_set>
