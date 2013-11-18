@@ -45,7 +45,7 @@ Dialog_FieldCalculation::Dialog_FieldCalculation(BaseObjectType* cobject, const 
   builder->get_widget("label_triggered_by", m_label_triggered_by);
 
   m_button_test->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_FieldCalculation::on_button_test) );
-  //on_foreach_connect(this);
+  //connect_each_widget(this);
 
   if(m_text_view)
   {

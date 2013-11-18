@@ -69,7 +69,7 @@ void Dialog_Properties::add(Gtk::Widget& /*widget */)
 {
   //TODO: Remove this method?
   //Connect the widgets signals:
-  //on_foreach_connect(widget);
+  //connect_each_widget(widget);
 }
 
 void Dialog_Properties::widget_connect_changed_signal(Gtk::Widget* widget)
@@ -136,7 +136,7 @@ void Dialog_Properties::on_anything_changed()
   }
 }
 
-void Dialog_Properties::on_foreach_connect(Gtk::Widget* widget)
+void Dialog_Properties::connect_each_widget(Gtk::Widget* widget)
 {
   if(!widget)
   {
@@ -144,10 +144,15 @@ void Dialog_Properties::on_foreach_connect(Gtk::Widget* widget)
     return;
   }
 
-  widget_connect_changed_signal(widget); //Connect the appropriate signal
+  on_foreach_connect(*widget);
+}
+
+void Dialog_Properties::on_foreach_connect(Gtk::Widget& widget)
+{
+  widget_connect_changed_signal(&widget); //Connect the appropriate signal
 
   //Recurse through children:
-  Gtk::Container* pContainer = dynamic_cast<Gtk::Container*>(widget);
+  Gtk::Container* pContainer = dynamic_cast<Gtk::Container*>(&widget);
   if(pContainer)
   {
     pContainer->foreach( sigc::mem_fun(*this, &Dialog_Properties::on_foreach_connect)); //recursive

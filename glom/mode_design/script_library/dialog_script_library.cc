@@ -53,7 +53,7 @@ Dialog_ScriptLibrary::Dialog_ScriptLibrary(BaseObjectType* cobject, const Glib::
   m_button_add->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_ScriptLibrary::on_button_add) );
   m_button_remove->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_ScriptLibrary::on_button_remove) );
   m_combobox_name->signal_changed().connect( sigc::mem_fun(*this, &Dialog_ScriptLibrary::on_combo_name_changed) );
-  //on_foreach_connect(this);
+  //connect_each_widget(this);
 
   //Dialog_Properties::set_modified(false);
 

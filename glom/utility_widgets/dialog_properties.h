@@ -56,9 +56,13 @@ protected:
   /// Disable/enable other controls when a control is selected.
   virtual void enforce_constraints();
 
-  void on_foreach_connect(Gtk::Widget* widget);
+  /** Handle the relevant signal for each of the widget's child widgets,
+   * calling set_modified(true) in the signal handler.
+   */
+  void connect_each_widget(Gtk::Widget* widget);
 
 private:
+  void on_foreach_connect(Gtk::Widget& widget);
   void widget_connect_changed_signal(Gtk::Widget* widget);
 
 protected:

@@ -47,7 +47,7 @@ Dialog_ButtonScript::Dialog_ButtonScript(BaseObjectType* cobject, const Glib::Re
 
   // Set a monospace font
   m_text_view_script->override_font(Pango::FontDescription("Monospace"));
-  //on_foreach_connect(this);
+  //connect_each_widget(this);
 
   //Dialog_Properties::set_modified(false);
 

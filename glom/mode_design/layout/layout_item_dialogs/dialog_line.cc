@@ -40,7 +40,7 @@ Dialog_Line::Dialog_Line(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
   builder->get_widget("spinbutton_line_width",  m_spinbutton_line_width);
   builder->get_widget("colorbutton",  m_colorbutton);
 
-  //on_foreach_connect(this);
+  //connect_each_widget(this);
 
   //Dialog_Properties::set_modified(false);
 
