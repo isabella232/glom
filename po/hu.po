@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: Glom HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-10 11:25+0000\n"
-"PO-Revision-Date: 2013-10-13 13:28+0200\n"
+"POT-Creation-Date: 2013-11-04 10:25+0000\n"
+"PO-Revision-Date: 2013-11-18 16:49+0100\n"
 "Last-Translator: Balázs Úr <urbalazs at gmail dot com>\n"
 "Language-Team: Hungarian <gnome@gnome.hu>\n"
 "Language: hu\n"
@@ -21,14 +21,14 @@ msgstr ""
 "X-Generator: Lokalize 1.2\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: ../glom/application.cc:138 ../glom/glom_create_from_example.cc:259
+#: ../glom/application.cc:157 ../glom/glom_create_from_example.cc:259
 #: ../glom/glom_export_po.cc:112 ../glom/glom_export_po_all.cc:100
 #: ../glom/glom_import_po_all.cc:101 ../glom/glom_test_connection.cc:148
 msgid "Error while parsing command-line options: "
 msgstr "Hiba a parancssori kapcsolók feldolgozása közben: "
 
 #. TODO: How can we just print them out?
-#: ../glom/application.cc:139 ../glom/glom_create_from_example.cc:260
+#: ../glom/application.cc:158 ../glom/glom_create_from_example.cc:260
 #: ../glom/glom_export_po.cc:113 ../glom/glom_export_po_all.cc:101
 #: ../glom/glom_import_po_all.cc:102 ../glom/glom_test_connection.cc:108
 msgid "Use --help to see a list of available command-line options."
@@ -36,45 +36,45 @@ msgstr ""
 "A --help segítségével megjelenítheti az elérhető parancssori kapcsolók "
 "listáját."
 
-#: ../glom/application.cc:180 ../glom/glom_create_from_example.cc:294
+#: ../glom/application.cc:199 ../glom/glom_create_from_example.cc:294
 #: ../glom/glom_export_po.cc:162
 msgid "Glom: The file does not exist."
 msgstr "Glom: A fájl nem létezik."
 
-#: ../glom/application.cc:190 ../glom/glom_create_from_example.cc:304
+#: ../glom/application.cc:209 ../glom/glom_create_from_example.cc:304
 #: ../glom/glom_export_po.cc:172
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: A fájl útvonala egy könyvtár, nem pedig fájl."
 
-#: ../glom/appwindow.cc:165
+#: ../glom/appwindow.cc:170
 msgid "Glom: Generating Encryption Certificates"
 msgstr "Glom: Titkosítási tanúsítványok előállítása"
 
-#: ../glom/appwindow.cc:166
+#: ../glom/appwindow.cc:171
 msgid ""
 "Please wait while Glom prepares your system for publishing over the network."
 msgstr ""
 "Kérem várjon, amíg a Glom előkészíti a rendszerét a hálózaton keresztüli "
 "közzétételre."
 
-#: ../glom/appwindow.cc:454
+#: ../glom/appwindow.cc:460
 msgid "A Database GUI"
 msgstr "Egy adatbázis GUI"
 
-#: ../glom/appwindow.cc:456
+#: ../glom/appwindow.cc:462
 msgid "© 2000-2011 Murray Cumming, Openismus GmbH"
 msgstr "© Murray Cumming, Openismus GmbH, 2000-2011."
 
 #. TODO: Put this in the generic bakery code.
-#: ../glom/appwindow.cc:549 ../glom/appwindow.cc:558
+#: ../glom/appwindow.cc:572 ../glom/appwindow.cc:581
 msgid "Open Failed"
 msgstr "A megnyitás sikertelen"
 
-#: ../glom/appwindow.cc:550
+#: ../glom/appwindow.cc:573
 msgid "The document could not be found."
 msgstr "A dokumentum nem található."
 
-#: ../glom/appwindow.cc:559
+#: ../glom/appwindow.cc:582
 msgid ""
 "The document could not be opened because it was created or modified by a "
 "newer version of Glom."
@@ -84,13 +84,13 @@ msgstr ""
 
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
 #. Warn the user, and let him try again:
-#: ../glom/appwindow.cc:609 ../glom/frame_glom.cc:2053
-#: ../glom/frame_glom.cc:2124
+#: ../glom/appwindow.cc:638 ../glom/frame_glom.cc:2145
+#: ../glom/frame_glom.cc:2216
 msgid "Connection Failed"
 msgstr "A kapcsolódás meghiúsult"
 
-#: ../glom/appwindow.cc:609 ../glom/frame_glom.cc:2053
-#: ../glom/frame_glom.cc:2124
+#: ../glom/appwindow.cc:638 ../glom/frame_glom.cc:2145
+#: ../glom/frame_glom.cc:2216
 msgid ""
 "Glom could not connect to the database server. Maybe you entered an "
 "incorrect user name or password, or maybe the postgres database server is "
@@ -100,7 +100,7 @@ msgstr ""
 "hogy hibásan adta meg a felhasználónevet, vagy a jelszót, illetve "
 "előfordulhat, hogy a postgres adatbázis-kiszolgáló nem fut."
 
-#: ../glom/appwindow.cc:777
+#: ../glom/appwindow.cc:806
 msgid ""
 "The file cannot be opened because this version of Glom does not support self-"
 "hosting of databases."
@@ -108,7 +108,7 @@ msgstr ""
 "A fájl nem nyitható meg, mert a Glom ezen verziója nem támogatja az "
 "adatbázisok önálló kiszolgálását."
 
-#: ../glom/appwindow.cc:782 ../glom/appwindow.cc:791
+#: ../glom/appwindow.cc:811 ../glom/appwindow.cc:820
 msgid ""
 "The file cannot be opened because this version of Glom does not support "
 "PostgreSQL databases."
@@ -116,7 +116,7 @@ msgstr ""
 "A fájl nem nyitható meg, mert a Glom ezen verziója nem támogatja a "
 "PostgreSQL adatbázisokat."
 
-#: ../glom/appwindow.cc:799
+#: ../glom/appwindow.cc:828
 msgid ""
 "The file cannot be opened because this version of Glom does not support "
 "SQLite databases."
@@ -125,15 +125,15 @@ msgstr ""
 "adatbázisokat."
 
 #. Warn the user.
-#: ../glom/appwindow.cc:817
+#: ../glom/appwindow.cc:846
 msgid "File Uses Unsupported Database Backend"
 msgstr "A fájl nem támogatott adatbázis háttérprogramot használ"
 
-#: ../glom/appwindow.cc:880
+#: ../glom/appwindow.cc:909
 msgid "Creating From Example File"
 msgstr "Létrehozás példafájlból"
 
-#: ../glom/appwindow.cc:881
+#: ../glom/appwindow.cc:910
 msgid ""
 "To use this example file you must save an editable copy of the file. A new "
 "database will also be created on the server."
@@ -141,11 +141,11 @@ msgstr ""
 "A példafájl használatához először egy szerkeszthető másolatot kell "
 "elmentenie a fájlról. Egy új adatbázis is létre lesz hozva a kiszolgálón."
 
-#: ../glom/appwindow.cc:885
+#: ../glom/appwindow.cc:914
 msgid "Creating From Backup File"
 msgstr "Létrehozás biztonsági mentés fájlból"
 
-#: ../glom/appwindow.cc:886
+#: ../glom/appwindow.cc:915
 msgid ""
 "To use this backup file you must save an editable copy of the file. A new "
 "database will also be created on the server."
@@ -154,11 +154,11 @@ msgstr ""
 "kell elmentenie a fájlról. Egy új adatbázis is létre lesz hozva a "
 "kiszolgálón."
 
-#: ../glom/appwindow.cc:947
+#: ../glom/appwindow.cc:976
 msgid "Opening Read-Only File."
 msgstr "Csak olvasható fájl megnyitása."
 
-#: ../glom/appwindow.cc:948
+#: ../glom/appwindow.cc:977
 msgid ""
 "This file is read only, so you will not be able to enter Developer mode to "
 "make design changes."
@@ -166,41 +166,41 @@ msgstr ""
 "Ez a fájl csak olvasható, ezért nem válthat át fejlesztő módra és nem "
 "módosíthatja azt."
 
-#: ../glom/appwindow.cc:950 ../glom/appwindow.cc:2141
-#: ../glom/appwindow.cc:2418 ../glom/appwindow.cc:2455
-#: ../glom/appwindow.cc:2833 ../glom/base_db_table_data.cc:393
+#: ../glom/appwindow.cc:979 ../glom/appwindow.cc:2177
+#: ../glom/appwindow.cc:2454 ../glom/appwindow.cc:2491
+#: ../glom/appwindow.cc:2869 ../glom/base_db_table_data.cc:393
 #: ../glom/box_withbuttons.cc:36 ../glom/box_withbuttons.cc:50
-#: ../glom/box_withbuttons.cc:64 ../glom/dialog_existing_or_new.cc:833
-#: ../glom/filechooser_export.cc:39 ../glom/frame_glom.cc:511
-#: ../glom/frame_glom.cc:735 ../glom/frame_glom.cc:814
-#: ../glom/frame_glom.cc:920 ../glom/utils_ui.cc:481
+#: ../glom/box_withbuttons.cc:64 ../glom/dialog_existing_or_new.cc:831
+#: ../glom/filechooser_export.cc:39 ../glom/frame_glom.cc:513
+#: ../glom/frame_glom.cc:737 ../glom/frame_glom.cc:824
+#: ../glom/frame_glom.cc:930 ../glom/utils_ui.cc:481
 #: ../glom/onlineglom_strings.cc:40 ../glom/bakery/dialog_offersave.cc:56
 #: ../glom/main.cc:267 ../glom/main.cc:323
-#: ../glom/mode_design/fields/box_db_table_definition.cc:273
-#: ../glom/mode_design/fields/box_db_table_definition.cc:324
+#: ../glom/mode_design/fields/box_db_table_definition.cc:291
+#: ../glom/mode_design/fields/box_db_table_definition.cc:342
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:41
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:227
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1012
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1056
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:841
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:885
 #: ../glom/mode_design/script_library/dialog_script_library.cc:131
 #: ../glom/navigation/box_tables.cc:401
-#: ../glom/mode_design/translation/window_translations.cc:341
-#: ../glom/mode_design/translation/window_translations.cc:380
+#: ../glom/mode_design/translation/window_translations.cc:362
+#: ../glom/mode_design/translation/window_translations.cc:401
 #: ../glom/utility_widgets/imageglom.cc:687
 #: ../glom/utility_widgets/imageglom.cc:774
 msgid "_Cancel"
 msgstr "_Mégse"
 
-#: ../glom/appwindow.cc:951
+#: ../glom/appwindow.cc:980
 msgid "Continue without Developer Mode"
 msgstr "Folytatás fejlesztő mód nélkül"
 
 #. The connection to the server is OK, but the database is not there yet.
-#: ../glom/appwindow.cc:1010
+#: ../glom/appwindow.cc:1039
 msgid "Database Not Found On Server"
 msgstr "Az adatbázis nem található a kiszolgálón"
 
-#: ../glom/appwindow.cc:1010
+#: ../glom/appwindow.cc:1039
 msgid ""
 "The database could not be found on the server. Please consult your system "
 "administrator."
@@ -210,37 +210,56 @@ msgstr ""
 
 #. std::cerr might show some hints, but we don't want to confront the user with them:
 #. TODO: Actually complain about specific stuff such as missing data, because the user might really play with the file system.
-#: ../glom/appwindow.cc:1020
+#: ../glom/appwindow.cc:1049
 msgid "Problem Loading Document"
 msgstr "Hiba a dokumentum betöltése közben"
 
-#: ../glom/appwindow.cc:1020
+#: ../glom/appwindow.cc:1049
 msgid "Glom could not load the document."
 msgstr "A Glom nem tudta betölteni a dokumentumot."
 
-#: ../glom/appwindow.cc:1453
+#: ../glom/appwindow.cc:1488
 msgid "Creating Glom database from example file."
 msgstr "Glom adatbázis létrehozása példafájlból."
 
-#: ../glom/appwindow.cc:1632
+#: ../glom/appwindow.cc:1667
 msgid "Creating Glom database from backup file."
 msgstr "Glom adatbázis létrehozása biztonsági mentés fájlból."
 
+#: ../glom/appwindow.cc:1751
+#| msgid ""
+#| "<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
+#| "\n"
+#| "Glom could not create the new database. Maybe you do not have the "
+#| "necessary access rights. Please contact your system administrator."
+msgid ""
+"Glom could not create the new database. Maybe you do not have the necessary "
+"access rights. Please contact your system administrator."
+msgstr ""
+"A Glom nem tudta létrehozni az új adatbázist. Előfordulhat, hogy nem "
+"rendelkezik a szükséges hozzáférési jogokkal. Kérem lépjen kapcsolatba a "
+"rendszergazdával."
+
+#: ../glom/appwindow.cc:1752
+#| msgid "Database Field"
+msgid "Database Creation Failed"
+msgstr "Adatbázis létrehozás sikertelen"
+
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/appwindow.cc:2086 ../glom/bakery/appwindow_withdoc.cc:241
+#: ../glom/appwindow.cc:2122 ../glom/bakery/appwindow_withdoc.cc:241
 #: ../glom/bakery/appwindow_withdoc.cc:292
 msgid "Save failed."
 msgstr "A mentés meghiúsult."
 
-#: ../glom/appwindow.cc:2086
+#: ../glom/appwindow.cc:2122
 msgid "There was an error while saving the example file."
 msgstr "Hiba történt a példafájl mentése közben."
 
-#: ../glom/appwindow.cc:2127 ../glom/appwindow.cc:2132
+#: ../glom/appwindow.cc:2163 ../glom/appwindow.cc:2168
 msgid "Save Document"
 msgstr "Dokumentum mentése"
 
-#: ../glom/appwindow.cc:2142 ../glom/appwindow.cc:2419
+#: ../glom/appwindow.cc:2178 ../glom/appwindow.cc:2455
 #: ../glom/bakery/dialog_offersave.cc:57
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:42
 #: ../glom/utility_widgets/imageglom.cc:688
@@ -248,11 +267,11 @@ msgid "_Save"
 msgstr "M_entés"
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2219
+#: ../glom/appwindow.cc:2255
 msgid "Read-only File."
 msgstr "Csak olvasható fájl."
 
-#: ../glom/appwindow.cc:2219
+#: ../glom/appwindow.cc:2255
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -261,11 +280,11 @@ msgstr ""
 "jogai."
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2233
+#: ../glom/appwindow.cc:2269
 msgid "Read-only Directory."
 msgstr "Csak olvasható könyvtár."
 
-#: ../glom/appwindow.cc:2233
+#: ../glom/appwindow.cc:2269
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -273,19 +292,19 @@ msgstr ""
 "Nem hozhat létre fájlokat ebben a könyvtárban, mivel nincsenek megfelelő "
 "hozzáférési jogai."
 
-#: ../glom/appwindow.cc:2250
+#: ../glom/appwindow.cc:2286
 msgid "Database Title missing"
 msgstr "Az adatbázis címe hiányzik"
 
-#: ../glom/appwindow.cc:2250
+#: ../glom/appwindow.cc:2286
 msgid "You must specify a title for the new database."
 msgstr "Meg kell adnia az új adatbázis címét."
 
-#: ../glom/appwindow.cc:2284 ../glom/frame_glom.cc:1812
+#: ../glom/appwindow.cc:2320 ../glom/frame_glom.cc:1898
 msgid "Directory Already Exists"
 msgstr "A könyvtár már létezik"
 
-#: ../glom/appwindow.cc:2284 ../glom/frame_glom.cc:1813
+#: ../glom/appwindow.cc:2320 ../glom/frame_glom.cc:1899
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
@@ -295,65 +314,66 @@ msgstr ""
 "könyvtár. Adjon meg másik fájlnevet egy új könyvtár használatához."
 
 #. This actually creates the directory:
-#: ../glom/appwindow.cc:2417
+#: ../glom/appwindow.cc:2453
 msgid "Save Backup"
 msgstr "Biztonsági másolat mentése"
 
-#: ../glom/appwindow.cc:2433
+#: ../glom/appwindow.cc:2469
 msgid "Exporting backup"
 msgstr "Biztonsági mentés exportálása"
 
-#: ../glom/appwindow.cc:2439
+#: ../glom/appwindow.cc:2475
 msgid "Export Backup failed."
 msgstr "A biztonsági mentés exportálása nem sikerült."
 
-#: ../glom/appwindow.cc:2439
+#: ../glom/appwindow.cc:2475
 msgid "There was an error while exporting the backup."
 msgstr "Hiba történt a biztonsági mentés exportálása közben."
 
-#: ../glom/appwindow.cc:2445
+#: ../glom/appwindow.cc:2481
 msgid "Choose a backup file"
 msgstr "Válasszon biztonsági mentés fájlt"
 
-#: ../glom/appwindow.cc:2450
+#: ../glom/appwindow.cc:2486
 msgid ".tar.gz Backup files"
 msgstr ".tar.gz Biztonsági mentés fájlok"
 
-#: ../glom/appwindow.cc:2456
+#: ../glom/appwindow.cc:2492
 msgid "Restore"
 msgstr "Visszaállítás"
 
-#: ../glom/appwindow.cc:2481
+#: ../glom/appwindow.cc:2517
 msgid "Restoring backup"
 msgstr "Biztonsági mentés visszaállítása"
 
-#: ../glom/appwindow.cc:2488
+#: ../glom/appwindow.cc:2524
 msgid "Restore Backup failed."
 msgstr "A biztonsági mentés visszaállítása nem sikerült."
 
-#: ../glom/appwindow.cc:2488
+#: ../glom/appwindow.cc:2524
 msgid "There was an error while restoring the backup."
 msgstr "Hiba történt a biztonsági mentés visszaállítása közben."
 
-#: ../glom/appwindow.cc:2598
+#: ../glom/appwindow.cc:2634
 msgid " (read-only)"
 msgstr " (csak olvasható)"
 
-#: ../glom/appwindow.cc:2646 ../ui/operator/window_main.glade.h:2
+#: ../glom/appwindow.cc:2682 ../data/ui/operator/window_main.glade.h:2
 msgid "Processing"
 msgstr "Feldolgozás"
 
-#: ../glom/appwindow.cc:2832
+#: ../glom/appwindow.cc:2868
 msgid "Open Document"
 msgstr "Dokumentum megnyitása"
 
 #. Add a button for related record navigation:
-#: ../glom/appwindow.cc:2834 ../glom/dialog_existing_or_new.cc:834
-#: ../glom/frame_glom.cc:736 ../glom/onlineglom_strings.cc:32
+#: ../glom/appwindow.cc:2870 ../glom/dialog_existing_or_new.cc:832
+#: ../glom/frame_glom.cc:738 ../glom/onlineglom_strings.cc:32
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:34
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:44
 #: ../glom/mode_data/datawidget/datawidget.cc:222
 #: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:32
+#: ../data/ui/operator/window_main.glade.h:5
 msgid "_Open"
 msgstr "_Megnyitás"
 
@@ -418,7 +438,7 @@ msgstr ""
 msgid "Delete record"
 msgstr "Rekord törlése"
 
-#: ../glom/base_db_table_data.cc:394 ../glom/mode_data/box_data_details.cc:46
+#: ../glom/base_db_table_data.cc:394 ../glom/mode_data/box_data_details.cc:47
 #: ../glom/mode_design/users/dialog_groups_list.cc:85
 #: ../glom/print_layout/canvas_print_layout.cc:294
 #: ../glom/utility_widgets/adddel/adddel.cc:251
@@ -428,6 +448,7 @@ msgstr "Rekord törlése"
 #: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:31
 #: ../glom/utility_widgets/layoutwidgetutils.cc:59
 #: ../glom/utility_widgets/notebooklabelglom.cc:125
+#: ../data/ui/developer/window_print_layout_edit.glade.h:8
 msgid "_Delete"
 msgstr "_Törlés"
 
@@ -437,8 +458,8 @@ msgstr "_Törlés"
 #. Append the View columns:
 #: ../glom/box_reports.cc:96
 #: ../glom/mode_design/box_db_table_relationships.cc:45
-#: ../glom/mode_design/fields/box_db_table_definition.cc:53
-#: ../glom/mode_design/layout/dialog_choose_field.cc:57
+#: ../glom/mode_design/fields/box_db_table_definition.cc:59
+#: ../glom/mode_design/layout/dialog_choose_field.cc:60
 #: ../glom/mode_design/layout/dialog_choose_relationship.cc:55
 #: ../glom/mode_design/layout/dialog_layout_details.cc:103
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.cc:53
@@ -458,8 +479,8 @@ msgstr ""
 #. Title column:
 #: ../glom/box_reports.cc:100
 #: ../glom/mode_design/box_db_table_relationships.cc:49
-#: ../glom/mode_design/fields/box_db_table_definition.cc:57
-#: ../glom/mode_design/layout/dialog_choose_field.cc:58
+#: ../glom/mode_design/fields/box_db_table_definition.cc:63
+#: ../glom/mode_design/layout/dialog_choose_field.cc:61
 #: ../glom/mode_design/layout/dialog_layout_details.cc:116
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc:50
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:99
@@ -478,7 +499,7 @@ msgid "Rename Report"
 msgstr "Jelentés átnevezése"
 
 #. namespace Glom
-#: ../glom.desktop.in.in.h:1 ../ui/operator/window_main.glade.h:1
+#: ../glom.desktop.in.in.h:1 ../data/ui/operator/window_main.glade.h:1
 msgid "Glom"
 msgstr "Glom"
 
@@ -490,45 +511,45 @@ msgstr "Egy felhasználóbarát adatbázis-környezet."
 msgid "Not yet created."
 msgstr "Még nincs létrehozva."
 
-#: ../glom/dialog_existing_or_new.cc:49
+#: ../glom/dialog_existing_or_new.cc:50
 msgid "No recently used documents available."
 msgstr "A nemrég használt dokumentumok nem érhetők el."
 
-#: ../glom/dialog_existing_or_new.cc:50
+#: ../glom/dialog_existing_or_new.cc:51
 msgid "No sessions found on the local network."
 msgstr "Nem találhatók munkamenetek a helyi hálózaton."
 
-#: ../glom/dialog_existing_or_new.cc:53
+#: ../glom/dialog_existing_or_new.cc:54
 msgid "No templates available."
 msgstr "Nem érhetők el sablonok."
 
-#: ../glom/dialog_existing_or_new.cc:121
+#: ../glom/dialog_existing_or_new.cc:122
 msgid "Open a Document"
 msgstr "Dokumentum megnyitása"
 
-#: ../glom/dialog_existing_or_new.cc:140
+#: ../glom/dialog_existing_or_new.cc:141
 #: ../glom/utility_widgets/imageglom.cc:958
 msgid "Select File"
 msgstr "Fájl kiválasztása"
 
-#: ../glom/dialog_existing_or_new.cc:144
+#: ../glom/dialog_existing_or_new.cc:145
 msgid "Local Network"
 msgstr "Helyi hálózat"
 
-#: ../glom/dialog_existing_or_new.cc:148
+#: ../glom/dialog_existing_or_new.cc:149
 msgid "Recently Opened"
 msgstr "Legutóbb megnyitott"
 
-#: ../glom/dialog_existing_or_new.cc:221
+#: ../glom/dialog_existing_or_new.cc:222
 msgid "New Empty Document"
 msgstr "Új üres dokumentum"
 
-#: ../glom/dialog_existing_or_new.cc:224
+#: ../glom/dialog_existing_or_new.cc:225
 msgid "New From Template"
 msgstr "Új létrehozása sablonból"
 
 #. Translator hint: This is <Service Name> on <Host> (via Network Interface such as eth0).
-#: ../glom/dialog_existing_or_new.cc:750
+#: ../glom/dialog_existing_or_new.cc:748
 #, c-format
 msgid "%s on %s (via %s)"
 msgstr "%s ezen: %s (%s által)"
@@ -541,7 +562,7 @@ msgstr "Exportálás fájlba"
 msgid "Define Data _Format"
 msgstr "Adat_formátum definiálása"
 
-#: ../glom/filechooser_export.cc:40
+#: ../glom/filechooser_export.cc:40 ../data/ui/operator/window_main.glade.h:7
 msgid "_Export"
 msgstr "E_xportálás"
 
@@ -553,39 +574,40 @@ msgstr "Összes keresése"
 msgid "No Table Selected"
 msgstr "Nincs tábla kiválasztva"
 
-#: ../glom/frame_glom.cc:111 ../ui/operator/dialog_find_id.glade.h:4
+#: ../glom/frame_glom.cc:111 ../data/ui/operator/dialog_find_id.glade.h:4
 msgid "Quick _search:"
 msgstr "Gyors _keresés:"
 
 #: ../glom/frame_glom.cc:122 ../glom/mode_data/box_data.cc:42
 #: ../glom/mode_data/datawidget/datawidget.cc:232
+#: ../data/ui/operator/window_main.glade.h:18
 msgid "_Find"
 msgstr "Ke_resés"
 
-#: ../glom/frame_glom.cc:136
+#: ../glom/frame_glom.cc:137
 msgid "Records:"
 msgstr "Rekordok: "
 
-#: ../glom/frame_glom.cc:139
+#: ../glom/frame_glom.cc:140
 msgid "Found:"
 msgstr "Találatok:"
 
 #. TODO: Obviously this document should have been deleted when the database-creation was cancelled.
 #. Note that "canceled" is the correct US spelling.
-#: ../glom/frame_glom.cc:322
+#: ../glom/frame_glom.cc:321
 msgid "No table"
 msgstr "Nincs tábla"
 
-#: ../glom/frame_glom.cc:322
+#: ../glom/frame_glom.cc:321
 msgid "This database has no tables yet."
 msgstr "Az adatbázisban még nincsenek táblák."
 
 #. TODO: Obviously this could be possible but it would require a network protocol and some work:
-#: ../glom/frame_glom.cc:493
+#: ../glom/frame_glom.cc:495
 msgid "Developer mode not available."
 msgstr "A fejlesztő mód nem érhető el."
 
-#: ../glom/frame_glom.cc:494
+#: ../glom/frame_glom.cc:496
 msgid ""
 "Developer mode is not available because the file was opened over the network "
 "from a running Glom. Only the original file may be edited."
@@ -593,11 +615,11 @@ msgstr ""
 "A fejlesztő mód nem érhető el, mert a fájl a hálózaton futó Glom programból "
 "lett megnyitva. Csak az eredeti fájlt lehet szerkeszteni."
 
-#: ../glom/frame_glom.cc:500
+#: ../glom/frame_glom.cc:502
 msgid "Developer mode not available"
 msgstr "A fejlesztő mód nem érhető el"
 
-#: ../glom/frame_glom.cc:501
+#: ../glom/frame_glom.cc:503
 msgid ""
 "Developer mode is not available. Check that you have sufficient database "
 "access rights and that the glom file is not read-only."
@@ -605,11 +627,11 @@ msgstr ""
 "A fejlesztő mód nem érhető el. Kérem ellenőrizze, hogy rendelkezik-e a "
 "szükséges adatbázis-elérési jogokkal, és hogy a glom fájl írható-e."
 
-#: ../glom/frame_glom.cc:508
+#: ../glom/frame_glom.cc:510
 msgid "Saving in new document format"
 msgstr "Mentés új dokumentumformátumban"
 
-#: ../glom/frame_glom.cc:509
+#: ../glom/frame_glom.cc:511
 msgid ""
 "The document was created by an earlier version of the application. Making "
 "changes to the document will mean that the document cannot be opened by some "
@@ -618,15 +640,15 @@ msgstr ""
 "A dokumentum az alkalmazás korábbi verziójával készült. A dokumentum "
 "módosítás után az alkalmazás korábbi verziójával nem lesz megnyitható."
 
-#: ../glom/frame_glom.cc:512
+#: ../glom/frame_glom.cc:514
 msgid "Continue"
 msgstr "Folytatás"
 
-#: ../glom/frame_glom.cc:548
+#: ../glom/frame_glom.cc:550
 msgid "Export Not Allowed."
 msgstr "Az exportálás nem engedélyezett."
 
-#: ../glom/frame_glom.cc:548
+#: ../glom/frame_glom.cc:550
 msgid ""
 "You do not have permission to view the data in this table, so you may not "
 "export the data."
@@ -634,117 +656,118 @@ msgstr ""
 "Nem rendelkezik az ebben a táblában levő adatok megtekintéséhez szükséges "
 "elérési joggal, ezért nem exportálhatja az adatokat."
 
-#: ../glom/frame_glom.cc:579
+#: ../glom/frame_glom.cc:581
 msgid "Could Not Create File."
 msgstr "A fájl létrehozása nem sikerült."
 
-#: ../glom/frame_glom.cc:579
+#: ../glom/frame_glom.cc:581
 msgid "Glom could not create the specified file."
 msgstr "A Glom nem tudta létrehozni a megadott fájlt."
 
-#: ../glom/frame_glom.cc:730
+#: ../glom/frame_glom.cc:732
 msgid "No Table"
 msgstr "Nincs tábla"
 
-#: ../glom/frame_glom.cc:730
+#: ../glom/frame_glom.cc:732
 msgid "There is no table in to which data could be imported."
 msgstr "Nincs olyan tábla, amelybe adatokat lehetne importálni."
 
-#: ../glom/frame_glom.cc:734
+#: ../glom/frame_glom.cc:736
 msgid "Open CSV Document"
 msgstr "CSV dokumentum megnyitása"
 
-#: ../glom/frame_glom.cc:738
+#: ../glom/frame_glom.cc:740
 msgid "CSV files"
 msgstr "CSV fájlok"
 
-#: ../glom/frame_glom.cc:742
+#: ../glom/frame_glom.cc:744
 msgid "All files"
 msgstr "Minden fájl"
 
-#: ../glom/frame_glom.cc:811
+#: ../glom/frame_glom.cc:821
 msgid "Share on the network"
 msgstr "Megosztás a hálózaton"
 
-#: ../glom/frame_glom.cc:812
+#: ../glom/frame_glom.cc:822
 msgid "This will allow other users on the network to use this database."
 msgstr ""
 "Ez lehetővé fogja tenni az adatbázis használatát a hálózat más "
 "felhasználóinak."
 
-#: ../glom/frame_glom.cc:815
+#: ../glom/frame_glom.cc:825
 msgid "_Share"
 msgstr "_Megosztás"
 
 #. TODO: Warn about connected users if possible.
-#: ../glom/frame_glom.cc:917
+#: ../glom/frame_glom.cc:927
 msgid "Stop sharing on the network"
 msgstr "Megosztás leállítása a hálózaton"
 
-#: ../glom/frame_glom.cc:918
+#: ../glom/frame_glom.cc:928
 msgid "This will prevent other users on the network from using this database."
 msgstr ""
 "Ez meg fogja akadályozni az adatbázis használatát a hálózat más "
 "felhasználóinak."
 
-#: ../glom/frame_glom.cc:921
+#: ../glom/frame_glom.cc:931
 msgid "_Stop Sharing"
 msgstr "Megosztás _leállítása"
 
-#: ../glom/frame_glom.cc:970 ../glom/frame_glom.cc:2110
+#: ../glom/frame_glom.cc:980 ../glom/frame_glom.cc:2202
 msgid "Stopping Database Server"
 msgstr "Adatbázis-kiszolgáló leállítása"
 
 #. Do startup, such as starting the self-hosting database server
-#: ../glom/frame_glom.cc:973 ../glom/frame_glom.cc:1998
-#: ../glom/frame_glom.cc:2156
+#: ../glom/frame_glom.cc:983 ../glom/frame_glom.cc:2090
+#: ../glom/frame_glom.cc:2248
 msgid "Starting Database Server"
 msgstr "Adatbázis-kiszolgáló indítása"
 
-#: ../glom/frame_glom.cc:1130
+#: ../glom/frame_glom.cc:1142
 msgid "Table Exists Already"
 msgstr "A tábla már létezik"
 
-#: ../glom/frame_glom.cc:1130
+#: ../glom/frame_glom.cc:1142
 msgid ""
 "A table with this name already exists in the database. Please choose a "
 "different table name."
 msgstr ""
 "Már létezik ilyen nevű tábla az adatbázisban. Válasszon másik táblanevet."
 
-#: ../glom/frame_glom.cc:1134
+#: ../glom/frame_glom.cc:1146
 msgid "Relationship Exists Already"
 msgstr "A kapcsolat már létezik"
 
-#: ../glom/frame_glom.cc:1134
+#: ../glom/frame_glom.cc:1146
 msgid ""
 "A relationship with this name already exists for this table. Please choose a "
 "different relationship name."
 msgstr ""
 "Már létezik ilyen nevű kapcsolat a táblához. Válasszon másik kapcsolatnevet."
 
-#: ../glom/frame_glom.cc:1138
+#: ../glom/frame_glom.cc:1150
 msgid "More information needed"
 msgstr "További információk szükségesek"
 
-#: ../glom/frame_glom.cc:1138
+#: ../glom/frame_glom.cc:1150
 msgid "You must specify a field, a table name, and a relationship name."
 msgstr "Meg kell adnia egy mezőt, egy táblanevet és egy kapcsolatnevet."
 
-#: ../glom/frame_glom.cc:1192
+#: ../glom/frame_glom.cc:1204
 msgid "Related Table Created"
 msgstr "A kapcsolódó tábla létrejött"
 
-#: ../glom/frame_glom.cc:1192
+#: ../glom/frame_glom.cc:1204
 msgid "The new related table has been created."
 msgstr "Az új kapcsolódó tábla létrejött."
 
 #. namespace Glom
-#: ../glom/frame_glom.cc:1221 ../ui/operator/box_navigation_tables.glade.h:1
+#: ../glom/frame_glom.cc:1233
+#: ../data/ui/operator/box_navigation_tables.glade.h:1
 msgid "Edit Tables"
 msgstr "Táblák szerkesztése"
 
-#: ../glom/frame_glom.cc:1316
+#: ../glom/frame_glom.cc:1330
 msgid ""
 "You have not entered any find criteria. Try entering information in the "
 "fields."
@@ -752,45 +775,45 @@ msgstr ""
 "Nem adott meg semmilyen keresési feltételt. Adja meg az információkat a "
 "mezőkben."
 
-#: ../glom/frame_glom.cc:1318
+#: ../glom/frame_glom.cc:1332
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:108
 msgid "No Find Criteria"
 msgstr "Nincs keresési feltétel"
 
-#: ../glom/frame_glom.cc:1670 ../glom/onlineglom_strings.cc:33
-#: ../ui/developer/box_reports.glade.h:1
+#: ../glom/frame_glom.cc:1704 ../glom/onlineglom_strings.cc:33
+#: ../data/ui/developer/box_reports.glade.h:1
 msgid "Reports"
 msgstr "Jelentések"
 
-#: ../glom/frame_glom.cc:1701 ../ui/developer/box_print_layouts.glade.h:1
+#: ../glom/frame_glom.cc:1747 ../data/ui/developer/box_print_layouts.glade.h:1
 msgid "Print Layouts"
 msgstr "Nyomtatási elrendezések"
 
-#: ../glom/frame_glom.cc:1817
+#: ../glom/frame_glom.cc:1903
 msgid "Could Not Create Directory"
 msgstr "A könyvtár nem hozható létre"
 
-#: ../glom/frame_glom.cc:1818
+#: ../glom/frame_glom.cc:1904
 msgid ""
 "There was an error when attempting to create the directory for the new "
 "database files."
 msgstr ""
 "Hiba történt az új adatbázisfájlok könyvtárának létrehozási kísérlete közben."
 
-#: ../glom/frame_glom.cc:1822
+#: ../glom/frame_glom.cc:1908
 msgid "Could Not Start Database Server"
 msgstr "Nem indítható el az adatbázis-kiszolgáló"
 
-#: ../glom/frame_glom.cc:1823
+#: ../glom/frame_glom.cc:1909
 msgid "There was an error when attempting to start the database server."
 msgstr "Hiba történt az adatbázis kiszolgáló indítási kísérlete közben."
 
-#: ../glom/frame_glom.cc:1930
+#: ../glom/frame_glom.cc:2022
 msgid "Initializing Database Data"
 msgstr "Adatbázis adatok előkészítése"
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2470
+#: ../glom/frame_glom.cc:2575
 msgid "All"
 msgstr "Mind"
 
@@ -822,11 +845,11 @@ msgstr "Jelentés befejezve"
 msgid "The report will now be opened in your web browser."
 msgstr "A jelentés a webböngészőben fog megnyílni."
 
-#: ../glom/utils_ui.cc:540
+#: ../glom/utils_ui.cc:532
 msgid "Script Uses PyGTK 2"
 msgstr "PyGTK 2-t használó parancsfájl"
 
-#: ../glom/utils_ui.cc:541
+#: ../glom/utils_ui.cc:533
 msgid ""
 "Glom cannot run this script because it uses pygtk 2, but Glom uses GTK+ 3, "
 "and attempting to use pygtk 2 would cause Glom to crash."
@@ -851,9 +874,9 @@ msgstr "Vissza a listához"
 #. Translators: This is a noun. It is a notebook tab title.
 #. Details column:
 #: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1429
-#: ../glom/mode_data/notebook_data.cc:67
+#: ../glom/mode_data/notebook_data.cc:42
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:215
-#: ../glom/mode_find/notebook_find.cc:39
+#: ../glom/mode_find/notebook_find.cc:38
 msgid "Details"
 msgstr "Részletek"
 
@@ -873,7 +896,8 @@ msgstr "Adja meg a felhasználónevét és jelszavát."
 msgid "Username"
 msgstr "Felhasználónév"
 
-#: ../glom/onlineglom_strings.cc:38 ../ui/operator/dialog_connection.glade.h:4
+#: ../glom/onlineglom_strings.cc:38
+#: ../data/ui/operator/dialog_connection.glade.h:4
 msgid "Password"
 msgstr "Jelszó"
 
@@ -1263,7 +1287,7 @@ msgstr "Naptár portál"
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:229
 #: ../glom/libglom/data_structure/translatable_item.cc:230
 #: ../glom/mode_design/dialog_database_preferences.cc:62
-#: ../ui/developer/window_field_definition_edit.glade.h:8
+#: ../data/ui/developer/window_field_definition_edit.glade.h:8
 msgid "Field"
 msgstr "Mező"
 
@@ -1292,7 +1316,7 @@ msgstr "Meghatározatlan tábla"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:79
-#: ../ui/developer/dialog_field_summary.glade.h:1
+#: ../data/ui/developer/dialog_field_summary.glade.h:1
 msgid "Field Summary"
 msgstr "Összegző mező"
 
@@ -1314,19 +1338,19 @@ msgstr "Darabszám"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc:56
-#: ../ui/developer/window_report_layout.glade.h:12
+#: ../data/ui/developer/window_report_layout.glade.h:12
 msgid "Footer"
 msgstr "Lábléc"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.cc:103
-#: ../ui/developer/dialog_group_by.glade.h:1
+#: ../data/ui/developer/dialog_group_by.glade.h:1
 msgid "Group By"
 msgstr "Csoportosítás"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc:56
-#: ../ui/developer/window_report_layout.glade.h:9
+#: ../data/ui/developer/window_report_layout.glade.h:9
 msgid "Header"
 msgstr "Fejléc"
 
@@ -1390,7 +1414,7 @@ msgid "Database Title"
 msgstr "Adatbázis címe"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:260
-#: ../glom/mode_design/translation/window_translations.cc:216
+#: ../glom/mode_design/translation/window_translations.cc:237
 msgid "Unknown"
 msgstr "Ismeretlen"
 
@@ -1452,7 +1476,7 @@ msgid "The necessary applications to install the package could not be found."
 msgstr "A csomag telepítéséhez szükséges alkalmazások nem találhatók."
 
 #. Show only debug output
-#: ../glom/libglom/translations_po.cc:69
+#: ../glom/libglom/translations_po.cc:70
 msgid "Gettext-Warning: "
 msgstr "Gettext figyelmeztetés: "
 
@@ -1472,8 +1496,8 @@ msgstr "Megjegyzések"
 #. Translators: This is a noun. It is the title of a report.
 #. Add Pages:
 #. Translators: This is a noun. It is a notebook tab title.
-#: ../glom/libglom/report_builder.cc:771 ../glom/mode_data/notebook_data.cc:63
-#: ../glom/mode_find/notebook_find.cc:32
+#: ../glom/libglom/report_builder.cc:771 ../glom/mode_data/notebook_data.cc:39
+#: ../glom/mode_find/notebook_find.cc:33
 msgid "List"
 msgstr "Lista"
 
@@ -1906,12 +1930,15 @@ msgstr ""
 #: ../glom/utility_widgets/adddel/adddel.cc:250
 #: ../glom/mode_data/db_adddel/db_adddel.cc:228
 #: ../glom/mode_data/db_adddel/db_adddel.cc:260
-#: ../ui/developer/window_field_definition_edit.glade.h:13
+#: ../data/ui/operator/window_main.glade.h:13
+#: ../data/ui/developer/window_field_definition_edit.glade.h:13
+#: ../data/ui/developer/window_print_layout_edit.glade.h:4
 msgid "_Edit"
 msgstr "_Szerkesztés"
 
 #: ../glom/mode_data/box_data_calendar_related.cc:528
 #: ../glom/mode_data/db_adddel/db_adddel.cc:264
+#: ../data/ui/operator/window_main.glade.h:28
 msgid "_Layout"
 msgstr "_Elrendezés"
 
@@ -1930,7 +1957,7 @@ msgstr ""
 msgid "No primary key value"
 msgstr "Nincs elsődleges kulcsérték"
 
-#: ../glom/mode_data/box_data_details.cc:45
+#: ../glom/mode_data/box_data_details.cc:46
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:32
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:42
 #: ../glom/mode_data/db_adddel/db_adddel.cc:261
@@ -1938,19 +1965,19 @@ msgstr "Nincs elsődleges kulcsérték"
 msgid "_Add"
 msgstr "_Hozzáadás"
 
-#: ../glom/mode_data/box_data_details.cc:47
+#: ../glom/mode_data/box_data_details.cc:48
 msgid "_First"
 msgstr "_Első"
 
-#: ../glom/mode_data/box_data_details.cc:48
+#: ../glom/mode_data/box_data_details.cc:49
 msgid "_Back"
 msgstr "_Vissza"
 
-#: ../glom/mode_data/box_data_details.cc:49
+#: ../glom/mode_data/box_data_details.cc:50
 msgid "_Forward"
 msgstr "_Előre"
 
-#: ../glom/mode_data/box_data_details.cc:50
+#: ../glom/mode_data/box_data_details.cc:51
 msgid "_Last"
 msgstr "_Utolsó"
 
@@ -1978,11 +2005,11 @@ msgstr "A lista következő rekordjának megtekintése."
 msgid "View the last record in the list."
 msgstr "A lista utolsó rekordjának megtekintése."
 
-#: ../glom/mode_data/box_data_details.cc:416
+#: ../glom/mode_data/box_data_details.cc:418
 msgid "Layout Contains No Fields"
 msgstr "A elrendezés nem tartalmaz mezőket"
 
-#: ../glom/mode_data/box_data_details.cc:416
+#: ../glom/mode_data/box_data_details.cc:418
 msgid ""
 "There are no fields on the layout, so there is no way to enter data in a new "
 "record."
@@ -1991,20 +2018,20 @@ msgstr ""
 "rekordba."
 
 #. Tell user that a primary key is needed to delete a record:
-#: ../glom/mode_data/box_data_details.cc:443
+#: ../glom/mode_data/box_data_details.cc:445
 msgid "No primary key value."
 msgstr "Nincs elsődleges kulcsérték."
 
-#: ../glom/mode_data/box_data_details.cc:444
+#: ../glom/mode_data/box_data_details.cc:446
 msgid "This record cannot be deleted because there is no primary key."
 msgstr "Ez a rekord nem törölhető, mivel nincs megadva elsődleges kulcs."
 
 #. Warn user that they can't choose their own primary key:
-#: ../glom/mode_data/box_data_details.cc:853
+#: ../glom/mode_data/box_data_details.cc:855
 msgid "Primary key auto increments"
 msgstr "Az elsődleges kulcs automatikus növekménye"
 
-#: ../glom/mode_data/box_data_details.cc:854
+#: ../glom/mode_data/box_data_details.cc:856
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
@@ -2056,7 +2083,7 @@ msgstr "Új gomb"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
 #: ../glom/mode_data/flowtablewithfields.cc:1202
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:556
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:385
 msgid "text"
 msgstr "szöveg"
 
@@ -2075,7 +2102,7 @@ msgid "Delete whole group?"
 msgstr "A teljes csoport törlése?"
 
 #. Translators: This is a title, not an action.
-#: ../glom/mode_data/notebook_data.cc:73
+#: ../glom/mode_data/notebook_data.cc:47
 msgid "List Or Details View"
 msgstr "Lista vagy részletes nézet"
 
@@ -2095,7 +2122,7 @@ msgid "To Field"
 msgstr "Cél mező"
 
 #: ../glom/mode_design/box_db_table_relationships.cc:55
-#: ../ui/developer/dialog_layout_field_properties.glade.h:3
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:3
 msgid "Allow Editing"
 msgstr "Szerkesztés engedélyezése"
 
@@ -2113,8 +2140,8 @@ msgid "Next Value"
 msgstr "Következő érték"
 
 #: ../glom/mode_design/dialog_design.cc:53
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:741
-#: ../ui/developer/window_design.glade.h:3
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:570
+#: ../data/ui/developer/window_design.glade.h:3
 msgid "None selected"
 msgstr "Nincs kiválasztva"
 
@@ -2151,21 +2178,33 @@ msgid "Please enter a password for this user."
 msgstr "Adja meg a felhasználó jelszavát."
 
 #. Don't allow adding of fields that already exist.
-#: ../glom/mode_design/fields/box_db_table_definition.cc:55
-#: ../glom/mode_design/fields/box_db_table_definition.cc:338
-msgid "This field already exists. Please choose a different field name"
-msgstr "Ez a mező már létezik. Kérem válasszon másik mezőnevet"
+#: ../glom/mode_design/fields/box_db_table_definition.cc:61
+#| msgid "This field already exists. Please choose a different field name"
+msgid "This field already exists. Please choose a different field name."
+msgstr "Ez a mező már létezik. Kérem válasszon másik mezőnevet."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:59
+#: ../glom/mode_design/fields/box_db_table_definition.cc:65
 msgid "Type"
 msgstr "Típus"
 
+#. TODO: Auto-size columns.
+#. Setup the buttons:
+#: ../glom/mode_design/fields/box_db_table_definition.cc:70
+#| msgid "Field Definition"
+msgid "_Field Definition"
+msgstr "_Mező definíciója"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:71
+#| msgid "Default Formatting"
+msgid "_Default Formatting"
+msgstr "_Alapértelmezett formázás"
+
 #. TODO: Only show this when there are > 100 records?
-#: ../glom/mode_design/fields/box_db_table_definition.cc:268
+#: ../glom/mode_design/fields/box_db_table_definition.cc:286
 msgid "Recalculation Required"
 msgstr "Újraszámítás szükséges"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:269
+#: ../glom/mode_design/fields/box_db_table_definition.cc:287
 msgid ""
 "You have changed the calculation used by this field so Glom must recalculate "
 "the value in all records. If the table contains many records then this could "
@@ -2175,15 +2214,15 @@ msgstr ""
 "számítania az értéket minden rekordhoz. Ha a tábla sok rekordot tartalmaz, "
 "ez hosszabb ideig tarthat."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:274
+#: ../glom/mode_design/fields/box_db_table_definition.cc:292
 msgid "Recalculate"
 msgstr "Újraszámítás"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:283
+#: ../glom/mode_design/fields/box_db_table_definition.cc:301
 msgid "Invalid database structure"
 msgstr "Érvénytelen adatbázis-szerkezet"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:284
+#: ../glom/mode_design/fields/box_db_table_definition.cc:302
 msgid ""
 "This database field was created or edited outside of Glom. It has a data "
 "type that is not supported by Glom. Your system administrator may be able to "
@@ -2193,11 +2232,11 @@ msgstr ""
 "adattípust használ, amelyet a Glom nem támogat. Kérje a rendszergazda "
 "segítségét."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:292
+#: ../glom/mode_design/fields/box_db_table_definition.cc:310
 msgid "Primary key required"
 msgstr "Elsődleges kulcs szükséges"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:293
+#: ../glom/mode_design/fields/box_db_table_definition.cc:311
 msgid ""
 "You may not unset the primary key because the table must have a primary key. "
 "You may set another field as the primary key instead."
@@ -2206,11 +2245,11 @@ msgstr ""
 "elsődleges kulcsának. Beállíthat helyette egy másik mezőt elsődleges "
 "kulcsként."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:305
+#: ../glom/mode_design/fields/box_db_table_definition.cc:323
 msgid "Field contains empty values."
 msgstr "A mező üres értékeket tartalmaz."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:305
+#: ../glom/mode_design/fields/box_db_table_definition.cc:323
 msgid ""
 "The field may not yet be used as a primary key because it contains empty "
 "values."
@@ -2218,11 +2257,11 @@ msgstr ""
 "A mező még nem használható elsődleges kulcsként, mivel üres értékeket "
 "tartalmaz."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:314
+#: ../glom/mode_design/fields/box_db_table_definition.cc:332
 msgid "Field contains non-unique values."
 msgstr "A mező nem egyedi értékeket tartalmaz."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:314
+#: ../glom/mode_design/fields/box_db_table_definition.cc:332
 msgid ""
 "The field may not yet be used as a primary key because it contains values "
 "that are not unique."
@@ -2231,11 +2270,11 @@ msgstr ""
 "tartalmaz."
 
 #. Ask the user to confirm this major change:
-#: ../glom/mode_design/fields/box_db_table_definition.cc:319
+#: ../glom/mode_design/fields/box_db_table_definition.cc:337
 msgid "Change primary key"
 msgstr "Elsődleges kulcs megváltoztatása"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:320
+#: ../glom/mode_design/fields/box_db_table_definition.cc:338
 msgid ""
 "Are you sure that you wish to set this field as the primary key, instead of "
 "the existing primary key?"
@@ -2243,14 +2282,18 @@ msgstr ""
 "Biztosan szeretné ezt a mezőt elsődleges kulcsként beállítani a létező "
 "elsődleges kulcs helyett?"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:325
+#: ../glom/mode_design/fields/box_db_table_definition.cc:343
 msgid "Change Primary Key"
 msgstr "Elsődleges kulcs megváltoztatása"
 
 #. Warn the user and refuse to make the change:
-#: ../glom/mode_design/fields/box_db_table_definition.cc:337
+#: ../glom/mode_design/fields/box_db_table_definition.cc:355
 msgid "Field Name Already Exists"
 msgstr "A mezőnév már létezik"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:356
+msgid "This field already exists. Please choose a different field name"
+msgstr "Ez a mező már létezik. Kérem válasszon másik mezőnevet"
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:103
 msgid "Calculation Error"
@@ -2286,7 +2329,7 @@ msgstr ""
 "A számítás ezzel a hibával hiúsult meg:\n"
 "%s"
 
-#: ../glom/mode_design/fields/dialog_fielddefinition.cc:159
+#: ../glom/mode_design/fields/dialog_fielddefinition.cc:137
 msgid "Default Value"
 msgstr "Alapértelmezett érték"
 
@@ -2308,8 +2351,8 @@ msgstr " Ezen keresztül: %1::%2"
 msgid " Via: %1"
 msgstr " Ezen keresztül: %1"
 
-#: ../glom/mode_design/layout/dialog_layout_calendar_related.cc:239
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:294
+#: ../glom/mode_design/layout/dialog_layout_calendar_related.cc:249
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:313
 msgid "None: No visible tables are specified by the fields."
 msgstr "Nincs: A mezők nem adnak meg látható táblákat."
 
@@ -2338,7 +2381,7 @@ msgid "group"
 msgstr "csoport"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:959
-#: ../ui/developer/dialog_notebook.glade.h:1
+#: ../data/ui/developer/dialog_notebook.glade.h:1
 msgid "Notebook Tabs"
 msgstr "Jegyzettömb lapok"
 
@@ -2367,11 +2410,11 @@ msgstr "(Jegyzettömb)"
 msgid "Fields"
 msgstr "Mezők"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:406
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:425
 msgid "Invalid Relationship"
 msgstr "Érvénytelen kapcsolat"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:407
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:426
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship does not specify a field in the related table."
@@ -2379,11 +2422,11 @@ msgstr ""
 "A kapcsolat nem használható kapcsolódó rekordok megjelenítésére, mert a "
 "kapcsolat nem adja meg a mezőt a kapcsolt táblában."
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:413
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:432
 msgid "Relationship Uses a Related Primary Key"
 msgstr "A kapcsolat kapcsolt elsődleges kulcsot használ"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:414
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:433
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship uses a primary key field in the related table, which must "
@@ -2395,11 +2438,11 @@ msgstr ""
 "egyedi értéket kell tartalmaznia. Ez akadályozza meg a kapcsolatot a "
 "többszörös kapcsolt rekord megadásától."
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:420
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:439
 msgid "Relationship Uses a Related Unique Field"
 msgstr "A kapcsolat kapcsolt egyedi mezőt használ"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:421
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:440
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship uses a unique-values field in the related table. This would "
@@ -2456,14 +2499,14 @@ msgstr ""
 "%1"
 
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:32
-#: ../ui/developer/dialog_fieldslist.glade.h:2
-#: ../ui/developer/dialog_group_by.glade.h:3
-#: ../ui/developer/window_data_layout.glade.h:23
+#: ../data/ui/developer/dialog_fieldslist.glade.h:2
+#: ../data/ui/developer/dialog_group_by.glade.h:3
+#: ../data/ui/developer/window_data_layout.glade.h:23
 msgid "Formatting"
 msgstr "Formázás"
 
 #. Give it access to the document.
-#: ../glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc:161
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc:163
 msgid "Group By - Secondary Fields"
 msgstr "Csoportosítás - Másodlagos mezők"
 
@@ -2557,11 +2600,11 @@ msgid "Drag this to the layout to add a new related records portal."
 msgstr "Húzza ezt az elrendezésre új kapcsolódó rekordok hozzáadásához."
 
 #. Ask for confirmation:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1009
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:838
 msgid "Create Standard Layout"
 msgstr "Szabványos elrendezés létrehozása"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1010
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:839
 msgid ""
 "This is an experimental feature. It will remove all items from the print "
 "layout and then try to create a layout similar to the layout of the detail "
@@ -2571,17 +2614,17 @@ msgstr ""
 "elrendezésről, majd ezután megpróbál egy olyan elrendezést létrehozni, amely "
 "hasonló a részletes nézet elrendezéséhez."
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1013
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:842
 #: ../glom/mode_design/users/dialog_groups_list.cc:82
 msgid "Create"
 msgstr "Létrehozás"
 
 #. Ask the user to confirm:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1053
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:882
 msgid "Remove page"
 msgstr "Oldal eltávolítása"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1054
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:883
 msgid ""
 "Are you sure that you wish to remove the last page and any items on that "
 "page?"
@@ -2589,7 +2632,7 @@ msgstr ""
 "Biztosan el szeretné távolítani az utolsó oldalt és az azon lévő összes "
 "elemet?"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1057
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:886
 msgid "Remove Page"
 msgstr "Oldal eltávolítása"
 
@@ -2755,24 +2798,24 @@ msgid "Item"
 msgstr "Elem"
 
 #. Show the file-chooser dialog, to select an output .po file:
-#: ../glom/mode_design/translation/window_translations.cc:331
-#: ../glom/mode_design/translation/window_translations.cc:371
+#: ../glom/mode_design/translation/window_translations.cc:352
+#: ../glom/mode_design/translation/window_translations.cc:392
 msgid "Choose .po File Name"
 msgstr "Válasszon .po fájlnevet"
 
-#: ../glom/mode_design/translation/window_translations.cc:337
-#: ../glom/mode_design/translation/window_translations.cc:376
+#: ../glom/mode_design/translation/window_translations.cc:358
+#: ../glom/mode_design/translation/window_translations.cc:397
 msgid "Po files"
 msgstr "Po fájlok"
 
-#: ../glom/mode_design/translation/window_translations.cc:342
-#: ../ui/developer/window_translations.glade.h:7
+#: ../glom/mode_design/translation/window_translations.cc:363
+#: ../data/ui/developer/window_translations.glade.h:7
 msgid "Export"
 msgstr "Exportálás"
 
 #. Note to translators: "Import" here is an action verb - it's a button.
-#: ../glom/mode_design/translation/window_translations.cc:383
-#: ../ui/developer/window_translations.glade.h:6
+#: ../glom/mode_design/translation/window_translations.cc:404
+#: ../data/ui/developer/window_translations.glade.h:6
 msgid "Import"
 msgstr "Importálás"
 
@@ -2819,6 +2862,7 @@ msgstr ""
 "egy azonosító választásával ehhez a mezőhöz."
 
 #: ../glom/mode_data/datawidget/datawidget.cc:237
+#: ../data/ui/operator/window_main.glade.h:4
 msgid "_New"
 msgstr "Ú_j"
 
@@ -2860,9 +2904,9 @@ msgstr ""
 
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:90
 #: ../glom/utility_widgets/imageglom.cc:775
-#: ../ui/developer/dialog_choose_relationship.glade.h:2
-#: ../ui/developer/dialog_field_summary.glade.h:3
-#: ../ui/developer/dialog_group_by.glade.h:4
+#: ../data/ui/developer/dialog_choose_relationship.glade.h:2
+#: ../data/ui/developer/dialog_field_summary.glade.h:3
+#: ../data/ui/developer/dialog_group_by.glade.h:4
 msgid "Select"
 msgstr "Kiválasztás"
 
@@ -2905,8 +2949,8 @@ msgstr ""
 "név bármilyen karaktert tartalmazhat."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:105
-#: ../ui/developer/window_field_definition_edit.glade.h:4
-#: ../ui/developer/window_report_layout.glade.h:7
+#: ../data/ui/developer/window_field_definition_edit.glade.h:4
+#: ../data/ui/developer/window_report_layout.glade.h:7
 msgid "_Title:"
 msgstr "_Cím:"
 
@@ -2989,24 +3033,27 @@ msgid "Choose Image"
 msgstr "Válasszon képet"
 
 #: ../glom/utility_widgets/imageglom.cc:956
-#| msgid "Open Failed"
 msgid "_Open File"
 msgstr "Fájl _megnyitása"
 
 #: ../glom/utility_widgets/imageglom.cc:957
-#| msgid "Open With"
 msgid "Open File With"
 msgstr "Fájl megnyitása ezzel"
 
 #: ../glom/utility_widgets/imageglom.cc:959
+#: ../data/ui/operator/window_main.glade.h:15
+#: ../data/ui/developer/window_print_layout_edit.glade.h:6
 msgid "_Copy"
 msgstr "Má_solás"
 
 #: ../glom/utility_widgets/imageglom.cc:960
+#: ../data/ui/operator/window_main.glade.h:16
+#: ../data/ui/developer/window_print_layout_edit.glade.h:7
 msgid "_Paste"
 msgstr "_Beillesztés"
 
 #: ../glom/utility_widgets/imageglom.cc:961
+#: ../data/ui/operator/window_main.glade.h:17
 msgid "_Clear"
 msgstr "_Törlés"
 
@@ -3035,12 +3082,12 @@ msgid "Field Layout Properties"
 msgstr "Mezőelrendezés beállításai"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:121
-#: ../ui/developer/window_data_layout.glade.h:19
+#: ../data/ui/developer/window_data_layout.glade.h:19
 msgid "Add Related Records"
 msgstr "Kapcsolódó rekordok hozzáadása"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:122
-#: ../ui/developer/window_data_layout.glade.h:17
+#: ../data/ui/developer/window_data_layout.glade.h:17
 msgid "Add Notebook"
 msgstr "Jegyzettömb hozzáadása"
 
@@ -3049,17 +3096,16 @@ msgid "Add Group"
 msgstr "Csoport hozzáadása"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:124
-#: ../ui/developer/window_data_layout.glade.h:13
+#: ../data/ui/developer/window_data_layout.glade.h:13
 msgid "Add Button"
 msgstr "Gomb hozzáadása"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:125
-#: ../ui/developer/window_data_layout.glade.h:10
+#: ../data/ui/developer/window_data_layout.glade.h:10
 msgid "Add Text"
 msgstr "Szöveg hozzáadása"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:126
-#| msgid "_Delete"
 msgid "Delete"
 msgstr "Törlés"
 
@@ -3075,15 +3121,15 @@ msgstr "Törli az egész „%1” jegyzettömböt?"
 msgid "Delete whole notebook?"
 msgstr "Törli az egész jegyzettömböt?"
 
-#: ../ui/operator/box_navigation_tables.glade.h:2
+#: ../data/ui/operator/box_navigation_tables.glade.h:2
 msgid "_Show hidden tables"
 msgstr "_Rejtett táblák megjelenítése"
 
-#: ../ui/operator/dialog_choose_date.glade.h:1
+#: ../data/ui/operator/dialog_choose_date.glade.h:1
 msgid "Choose Date"
 msgstr "Válasszon dátumot"
 
-#: ../ui/operator/dialog_choose_date.glade.h:2
+#: ../data/ui/operator/dialog_choose_date.glade.h:2
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Choose Date</span>\n"
 "\n"
@@ -3093,49 +3139,55 @@ msgstr ""
 "\n"
 "Kérem válassza ki azt a dátumot, amelyet a mezőbe szeretne írni."
 
-#: ../ui/operator/dialog_connection.glade.h:1
+#: ../data/ui/operator/dialog_connection.glade.h:1
 msgid "Connect to Server"
 msgstr "Kapcsolódás kiszolgálóhoz"
 
-#: ../ui/operator/dialog_connection.glade.h:2
+#: ../data/ui/operator/dialog_connection.glade.h:2
 msgid "Please enter the connection details for your database server."
 msgstr "Adja meg az adatbázis-kiszolgáló kapcsolatának részleteit."
 
-#: ../ui/operator/dialog_connection.glade.h:3
+#: ../data/ui/operator/dialog_connection.glade.h:3
 msgid "Host"
 msgstr "Gép"
 
-#: ../ui/operator/dialog_connection.glade.h:5
-#: ../ui/developer/dialog_choose_user.glade.h:5
-#: ../ui/developer/dialog_user.glade.h:1
+#: ../data/ui/operator/dialog_connection.glade.h:5
+#: ../data/ui/developer/dialog_choose_user.glade.h:5
+#: ../data/ui/developer/dialog_user.glade.h:1
 msgid "User"
 msgstr "Felhasználó"
 
-#: ../ui/operator/dialog_connection.glade.h:6
+#: ../data/ui/operator/dialog_connection.glade.h:6
 msgid "_Host:"
 msgstr "_Gép:"
 
-#: ../ui/operator/dialog_connection.glade.h:7
+#: ../data/ui/operator/dialog_connection.glade.h:7
 msgid "Database:"
 msgstr "Adatbázis:"
 
-#: ../ui/operator/dialog_connection.glade.h:8
-#: ../ui/developer/dialog_initial_password.glade.h:3
+#: ../data/ui/operator/dialog_connection.glade.h:8
+#: ../data/ui/developer/dialog_initial_password.glade.h:3
 msgid "_User:"
 msgstr "_Felhasználó:"
 
-#: ../ui/operator/dialog_connection.glade.h:9
-#: ../ui/developer/dialog_initial_password.glade.h:4
+#: ../data/ui/operator/dialog_connection.glade.h:9
+#: ../data/ui/developer/dialog_initial_password.glade.h:4
 msgid "_Password:"
 msgstr "_Jelszó:"
 
-#: ../ui/operator/dialog_connection.glade.h:10
+#: ../data/ui/operator/dialog_connection.glade.h:10
 msgid "Database"
 msgstr "Adatbázis"
 
-#: ../ui/operator/dialog_data_invalid_format.glade.h:1
+#: ../data/ui/operator/dialog_data_invalid_format.glade.h:1
+#| msgid ""
+#| "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
+#| "\n"
+#| "The data in the field was not recognized. Please try to correct the data "
+#| "or revert to the previous value. Here is an example of correctly-"
+#| "formatted data for this field.\n"
 msgid ""
-"<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
+"<span weight=\"bold\" size=\"larger\">Invalid Format</span>\n"
 "\n"
 "The data in the field was not recognized. Please try to correct the data or "
 "revert to the previous value. Here is an example of correctly-formatted data "
@@ -3147,121 +3199,265 @@ msgstr ""
 "állítsa vissza az eredeti értéket. Íme egy példa az adatok helyes "
 "formátumára ebben a mezőben.\n"
 
-#: ../ui/operator/dialog_data_invalid_format.glade.h:5
+#: ../data/ui/operator/dialog_data_invalid_format.glade.h:5
 msgid "example data format"
 msgstr "példa adatformátum"
 
-#: ../ui/operator/dialog_existing_or_new.glade.h:1
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:1
 msgid "Welcome to Glom"
 msgstr "Üdvözöljük az Glomban"
 
-#: ../ui/operator/dialog_existing_or_new.glade.h:2
-#: ../ui/developer/dialog_choose_field.glade.h:2
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:2
+#: ../data/ui/developer/dialog_choose_field.glade.h:2
 msgid "_Select"
 msgstr "_Kijelölés"
 
-#: ../ui/operator/dialog_existing_or_new.glade.h:3
-msgid "<span weight=\"bold\" size=\"larger\">Open or create a Document</span>"
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:3
+#| msgid ""
+#| "<span weight=\"bold\" size=\"larger\">Open or create a Document</span>"
+msgid "<span weight=\"bold\" size=\"larger\">Open or Create a Document</span>"
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Dokumentum megnyitása vagy "
 "létrehozása</span>"
 
-#: ../ui/operator/dialog_existing_or_new.glade.h:4
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:4
 msgid "Open or create Document"
 msgstr "Dokumentum megnyitása vagy létrehozása"
 
-#: ../ui/operator/dialog_existing_or_new.glade.h:5
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:5
 msgid "Open Existing Document"
 msgstr "Létező dokumentum megnyitása"
 
-#: ../ui/operator/dialog_existing_or_new.glade.h:6
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:6
 msgid "Create New Document"
 msgstr "Új dokumentum létrehozása"
 
-#: ../ui/operator/dialog_find_id.glade.h:1
-#: ../ui/operator/dialog_new_record.glade.h:1
+#: ../data/ui/operator/dialog_find_id.glade.h:1
 msgid "Find Related Record"
 msgstr "Kapcsolódó rekordok keresése"
 
-#: ../ui/operator/dialog_find_id.glade.h:2
-#: ../ui/operator/dialog_new_record.glade.h:2
-#: ../ui/developer/window_data_layout_export.glade.h:2
-#: ../ui/developer/window_data_layout.glade.h:2
-#: ../ui/developer/window_design.glade.h:2
-#: ../ui/developer/window_report_layout.glade.h:2
+#: ../data/ui/operator/dialog_find_id.glade.h:2
+#: ../data/ui/operator/dialog_new_record.glade.h:2
+#: ../data/ui/developer/window_data_layout_export.glade.h:2
+#: ../data/ui/developer/window_data_layout.glade.h:2
+#: ../data/ui/developer/window_design.glade.h:2
+#: ../data/ui/developer/window_report_layout.glade.h:2
 msgid "<b>Table:</b>"
 msgstr "<b>Tábla:</b>"
 
-#: ../ui/operator/dialog_find_id.glade.h:3
-#: ../ui/operator/dialog_new_record.glade.h:3
+#: ../data/ui/operator/dialog_find_id.glade.h:3
+#: ../data/ui/operator/dialog_new_record.glade.h:3
 msgid "table_name"
 msgstr "tábla_név"
 
-#: ../ui/operator/dialog_image_load_progress.glade.h:1
+#: ../data/ui/operator/dialog_new_record.glade.h:1
+#| msgid "Related Records"
+msgid "New Related Record"
+msgstr "Új kapcsolódó rekord"
+
+#: ../data/ui/operator/dialog_image_load_progress.glade.h:1
 msgid "Loading image"
 msgstr "Kép betöltése"
 
-#: ../ui/operator/dialog_image_save_progress.glade.h:1
+#: ../data/ui/operator/dialog_image_save_progress.glade.h:1
 msgid "Saving Image"
 msgstr "Kép mentése"
 
-#: ../ui/operator/dialog_import_csv.glade.h:1
+#: ../data/ui/operator/dialog_import_csv.glade.h:1
 msgid "bla.blub - Import from CSV"
 msgstr "bla.blub - Importálás CSV-ből"
 
-#: ../ui/operator/dialog_import_csv.glade.h:2
+#: ../data/ui/operator/dialog_import_csv.glade.h:2
+#: ../data/ui/operator/window_main.glade.h:8
 msgid "I_mport"
 msgstr "_Importálás"
 
-#: ../ui/operator/dialog_import_csv.glade.h:3
-#: ../ui/developer/box_formatting.glade.h:20
+#: ../data/ui/operator/dialog_import_csv.glade.h:3
+#: ../data/ui/developer/box_formatting.glade.h:23
 msgid "label"
 msgstr "címke"
 
-#: ../ui/operator/dialog_import_csv.glade.h:4
+#: ../data/ui/operator/dialog_import_csv.glade.h:4
 msgid "_First line as title"
 msgstr "_Első sor mint cím"
 
-#: ../ui/operator/dialog_import_csv.glade.h:5
+#: ../data/ui/operator/dialog_import_csv.glade.h:5
 msgid "_Encoding:"
 msgstr "_Kódolás:"
 
-#: ../ui/operator/dialog_import_csv.glade.h:6
+#: ../data/ui/operator/dialog_import_csv.glade.h:6
 msgid "Import Into _Table:"
 msgstr "Importálás ebbe a _táblába:"
 
-#: ../ui/operator/dialog_import_csv.glade.h:7
+#: ../data/ui/operator/dialog_import_csv.glade.h:7
 msgid "Encoding detected as: UTF-8"
 msgstr "Kódolás felismerve mint: UTF-8"
 
 #. Import is a noun here. This is the title for a window showing options for an import operation.
-#: ../ui/operator/dialog_import_csv.glade.h:9
+#: ../data/ui/operator/dialog_import_csv.glade.h:9
 msgid "<b>Import Options</b>"
 msgstr "<b>Importálási beállítások</b>"
 
-#: ../ui/operator/dialog_import_csv.glade.h:10
+#: ../data/ui/operator/dialog_import_csv.glade.h:10
 msgid "_Number of sample rows:"
 msgstr "_Mintasorok száma:"
 
 #. Import is a noun here. This is the title for a list of fields to import.
-#: ../ui/operator/dialog_import_csv.glade.h:12
+#: ../data/ui/operator/dialog_import_csv.glade.h:12
 msgid "<b>Import Fields</b>"
 msgstr "<b>Mezők importálása</b>"
 
 #. This is a status message for a progress dialog. It says that importing is currently happenning.
-#: ../ui/operator/dialog_import_csv_progress.glade.h:2
+#: ../data/ui/operator/dialog_import_csv_progress.glade.h:2
 msgid "Importing Data"
 msgstr "Adatok importálása"
 
-#: ../ui/operator/dialog_import_csv_progress.glade.h:3
+#: ../data/ui/operator/dialog_import_csv_progress.glade.h:3
 msgid "Please wait while your data is imported."
 msgstr "Kérem várjon, amíg az adatait importáljuk."
 
-#: ../ui/developer/dialog_add_related_table.glade.h:1
+#: ../data/ui/operator/window_main.glade.h:3
+#: ../data/ui/developer/window_print_layout_edit.glade.h:1
+#: ../data/ui/developer/window_relationships_overview.glade.h:1
+msgid "_File"
+msgstr "_Fájl"
+
+#: ../data/ui/operator/window_main.glade.h:6
+msgid "_Save as Example"
+msgstr "_Mentés példaként"
+
+#: ../data/ui/operator/window_main.glade.h:9
+msgid "S_hared on Network"
+msgstr "Meg_osztva a hálózaton"
+
+#: ../data/ui/operator/window_main.glade.h:10
+#: ../data/ui/developer/window_relationships_overview.glade.h:3
+msgid "_Print"
+msgstr "_Nyomtatás"
+
+#: ../data/ui/operator/window_main.glade.h:11
+msgid "_Edit Print Layouts"
+msgstr "_Nyomtatási elrendezések szerkesztése"
+
+#: ../data/ui/operator/window_main.glade.h:12
+msgid "_Close"
+msgstr "_Bezárás"
+
+#: ../data/ui/operator/window_main.glade.h:14
+#: ../data/ui/developer/window_print_layout_edit.glade.h:5
+msgid "Cu_t"
+msgstr "_Kivágás"
+
+#: ../data/ui/operator/window_main.glade.h:19
+msgid "_Tables"
+msgstr "_Táblák"
+
+#: ../data/ui/operator/window_main.glade.h:20
+msgid "_Edit Tables"
+msgstr "Táblák _szerkesztése"
+
+#: ../data/ui/operator/window_main.glade.h:21
+msgid "R_eports"
+msgstr "_Jelentések"
+
+#: ../data/ui/operator/window_main.glade.h:22
+msgid "_Edit Reports"
+msgstr "Jelentések sze_rkesztése"
+
+#: ../data/ui/operator/window_main.glade.h:23
+#| msgctxt "Developer menu title"
+#| msgid "_Developer"
+msgid "_Developer"
+msgstr "_Fejlesztő"
+
+#: ../data/ui/operator/window_main.glade.h:24
+#| msgid "Operator"
+msgid "_Operator"
+msgstr "_Operátor"
+
+#: ../data/ui/operator/window_main.glade.h:25
+msgid "_Fields"
+msgstr "_Mezők"
+
+#: ../data/ui/operator/window_main.glade.h:26
+#| msgid "Relationships"
+msgid "_Relationships"
+msgstr "_Kapcsolatok"
+
+#: ../data/ui/operator/window_main.glade.h:27
+msgid "Relationships _Overview"
+msgstr "Kapcsolatok átt_ekintése"
+
+#: ../data/ui/operator/window_main.glade.h:29
+msgid "_Print Layouts"
+msgstr "Nyomtatási _elrendezések"
+
+#: ../data/ui/operator/window_main.glade.h:30
+msgid "_Reports"
+msgstr "_Jelentések"
+
+#: ../data/ui/operator/window_main.glade.h:31
+msgid "_Database Preferences"
+msgstr "Adat_bázis tulajdonságok"
+
+#: ../data/ui/operator/window_main.glade.h:32
+msgid "_Users"
+msgstr "_Felhasználók"
+
+#: ../data/ui/operator/window_main.glade.h:33
+msgid "Script _Library"
+msgstr "Parancsfájl-_könyvtár"
+
+#: ../data/ui/operator/window_main.glade.h:34
+msgid "_Translations"
+msgstr "_Fordítások"
+
+#: ../data/ui/operator/window_main.glade.h:35
+msgid "Test Tra_nslation"
+msgstr "For_dítás tesztelése"
+
+#: ../data/ui/operator/window_main.glade.h:36
+#| msgid "_Active Platform"
+msgid "Active Platform"
+msgstr "Aktív platform"
+
+#: ../data/ui/operator/window_main.glade.h:37
+msgid "_Normal"
+msgstr "_Normál"
+
+#: ../data/ui/operator/window_main.glade.h:38
+msgid "_Maemo"
+msgstr "_Maemo"
+
+#: ../data/ui/operator/window_main.glade.h:39
+msgid "_Drag and Drop Layout"
+msgstr "_Fogd és vidd elrendezés"
+
+#: ../data/ui/operator/window_main.glade.h:40
+msgid "_Export Backup"
+msgstr "Biztonsági mentés _exportálása"
+
+#: ../data/ui/operator/window_main.glade.h:41
+msgid "_Restore Backup"
+msgstr "Biztonsági mentés _visszaállítása"
+
+#: ../data/ui/operator/window_main.glade.h:42
+msgid "_Help"
+msgstr "_Súgó"
+
+#: ../data/ui/operator/window_main.glade.h:43
+msgid "_About"
+msgstr "_Névjegy"
+
+#: ../data/ui/operator/window_main.glade.h:44
+msgid "_Contents"
+msgstr "_Tartalom"
+
+#: ../data/ui/developer/dialog_add_related_table.glade.h:1
 msgid "Add Related Table"
 msgstr "Kapcsolódó tábla hozzáadása"
 
-#: ../ui/developer/dialog_add_related_table.glade.h:2
+#: ../data/ui/developer/dialog_add_related_table.glade.h:2
 msgid ""
 "This will add a new table and add a relationship that refers to the new  "
 "table, as a convenient alternative to doing this in separate steps.\n"
@@ -3276,23 +3472,23 @@ msgstr ""
 "egy kapcsolatot vegyen fel."
 
 #. Translators: FROM as in SQL's FROM
-#: ../ui/developer/dialog_add_related_table.glade.h:6
+#: ../data/ui/developer/dialog_add_related_table.glade.h:6
 msgid "From field:"
 msgstr "Kiinduló mező:"
 
-#: ../ui/developer/dialog_add_related_table.glade.h:7
+#: ../data/ui/developer/dialog_add_related_table.glade.h:7
 msgid "Name of new related table:"
 msgstr "Az új kapcsolódó tábla neve:"
 
-#: ../ui/developer/dialog_add_related_table.glade.h:8
+#: ../data/ui/developer/dialog_add_related_table.glade.h:8
 msgid "Name of new relationship:"
 msgstr "Az új kapcsolat neve:"
 
-#: ../ui/developer/dialog_change_language.glade.h:1
+#: ../data/ui/developer/dialog_change_language.glade.h:1
 msgid "Test Translation"
 msgstr "Fordítás tesztelése"
 
-#: ../ui/developer/dialog_change_language.glade.h:2
+#: ../data/ui/developer/dialog_change_language.glade.h:2
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Test Translation</span>\n"
 "\n"
@@ -3314,39 +3510,35 @@ msgstr ""
 "párbeszédablakok, csak akkor jelennek meg lefordítva, ha a programot futtató "
 "számítógép is az adott nyelvre van állítva."
 
-#: ../ui/developer/dialog_change_language.glade.h:7
+#: ../data/ui/developer/dialog_change_language.glade.h:7
 msgid "Locale:"
 msgstr "Területi beállítás:"
 
-#: ../ui/developer/dialog_choose_field.glade.h:1
+#: ../data/ui/developer/dialog_choose_field.glade.h:1
 msgid "Select Field"
 msgstr "Mező kiválasztása"
 
-#: ../ui/developer/dialog_choose_field.glade.h:3
+#: ../data/ui/developer/dialog_choose_field.glade.h:3
 msgid "Show _Related Relationships"
 msgstr "_Kapcsolódó kapcsolatok megjelenítése"
 
-#: ../ui/developer/dialog_choose_field.glade.h:4
+#: ../data/ui/developer/dialog_choose_field.glade.h:4
 msgid "_Table:"
 msgstr "_Tábla:"
 
-#: ../ui/developer/dialog_choose_relationship.glade.h:1
+#: ../data/ui/developer/dialog_choose_relationship.glade.h:1
 msgid "Select Relationship"
 msgstr "Kapcsolat kiválasztása"
 
-#: ../ui/developer/dialog_choose_relationship.glade.h:3
+#: ../data/ui/developer/dialog_choose_relationship.glade.h:3
 msgid "Table:"
 msgstr "Tábla:"
 
-#: ../ui/developer/dialog_choose_relationship.glade.h:4
-msgid "<b>Select Relationship</b>"
-msgstr "<b>Kapcsolat kiválasztása</b>"
-
-#: ../ui/developer/dialog_choose_user.glade.h:1
+#: ../data/ui/developer/dialog_choose_user.glade.h:1
 msgid "Choose User"
 msgstr "Válasszon felhasználót"
 
-#: ../ui/developer/dialog_choose_user.glade.h:2
+#: ../data/ui/developer/dialog_choose_user.glade.h:2
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Add User To Group</span>\n"
 "\n"
@@ -3357,147 +3549,126 @@ msgstr ""
 "\n"
 "Melyik felhasználót kívánja hozzáadni ehhez a csoporthoz?"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:1
+#: ../data/ui/developer/dialog_database_preferences.glade.h:1
 msgid "Database Preferences"
 msgstr "Adatbázis tulajdonságok"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:2
+#: ../data/ui/developer/dialog_database_preferences.glade.h:2
 msgid "System Name:"
 msgstr "Rendszernév:"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:3
+#: ../data/ui/developer/dialog_database_preferences.glade.h:3
 msgid "Name:"
 msgstr "Név:"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:4
+#: ../data/ui/developer/dialog_database_preferences.glade.h:4
 msgid "Country:"
 msgstr "Ország:"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:5
+#: ../data/ui/developer/dialog_database_preferences.glade.h:5
 msgid "Zip/Postal Code:"
 msgstr "Irányítószám:"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:6
+#: ../data/ui/developer/dialog_database_preferences.glade.h:6
 msgid "State/County:"
 msgstr "Állam/Megye:"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:7
+#: ../data/ui/developer/dialog_database_preferences.glade.h:7
 msgid "Town:"
 msgstr "Település:"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:8
+#: ../data/ui/developer/dialog_database_preferences.glade.h:8
 msgid "Street (Line 2):"
 msgstr "Utca (2. sor):"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:9
+#: ../data/ui/developer/dialog_database_preferences.glade.h:9
 msgid "Street:"
 msgstr "Utca:"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:10
+#: ../data/ui/developer/dialog_database_preferences.glade.h:10
 msgid "<b>Address</b>"
 msgstr "<b>Cím</b>"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:11
+#: ../data/ui/developer/dialog_database_preferences.glade.h:11
 msgid "Organisation"
 msgstr "Szervezet"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:12
+#: ../data/ui/developer/dialog_database_preferences.glade.h:12
 msgid "Logo"
 msgstr "Logó"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:13
+#: ../data/ui/developer/dialog_database_preferences.glade.h:13
 msgid "Auto-increment values"
 msgstr "Automatikusan növelt értékek"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:14
+#: ../data/ui/developer/dialog_database_preferences.glade.h:14
 msgid ""
 "When the database is opened the python function implemented here will run."
 msgstr ""
 "Amikor az adatbázis meg van nyitva, a megvalósított python függvény itt "
 "kerül futtatásra."
 
-#: ../ui/developer/dialog_database_preferences.glade.h:15
-#: ../ui/developer/window_button_script.glade.h:4
-#: ../ui/developer/window_field_calculation.glade.h:3
+#: ../data/ui/developer/dialog_database_preferences.glade.h:15
+#: ../data/ui/developer/window_button_script.glade.h:4
+#: ../data/ui/developer/window_field_calculation.glade.h:3
 msgid "Test"
 msgstr "Teszt"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:16
+#: ../data/ui/developer/dialog_database_preferences.glade.h:16
 msgid "Startup Script"
 msgstr "Indítási parancsfájl"
 
-#: ../ui/developer/dialog_error_create_database.glade.h:1
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
-"\n"
-"Glom could not create the new database. Maybe you do not have the necessary "
-"access rights. Please contact your system administrator."
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Adatbázis létrehozás sikertelen</"
-"span>\n"
-"\n"
-"A Glom nem tudta létrehozni az új adatbázist. Előfordulhat, hogy nem "
-"rendelkezik a szükséges hozzáférési jogokkal. Kérem lépjen kapcsolatba a "
-"rendszergazdával."
-
-#: ../ui/developer/dialog_fieldslist.glade.h:1
-#: ../ui/developer/dialog_sort_fields.glade.h:2
+#: ../data/ui/developer/dialog_fieldslist.glade.h:1
+#: ../data/ui/developer/dialog_sort_fields.glade.h:2
 msgid "Table: "
 msgstr "Tábla: "
 
-#: ../ui/developer/dialog_fieldslist.glade.h:3
-#: ../ui/developer/window_data_layout.glade.h:24
+#: ../data/ui/developer/dialog_fieldslist.glade.h:3
+#: ../data/ui/developer/window_data_layout.glade.h:24
 msgid "<b>Fields</b>"
 msgstr "<b>Mezők</b>"
 
-#: ../ui/developer/dialog_field_summary.glade.h:2
-#: ../ui/developer/dialog_group_by.glade.h:2
-#: ../ui/developer/box_formatting.glade.h:22
+#: ../data/ui/developer/dialog_field_summary.glade.h:2
+#: ../data/ui/developer/dialog_group_by.glade.h:2
+#: ../data/ui/developer/box_formatting.glade.h:21
 msgid "Field:"
 msgstr "Mező:"
 
-#: ../ui/developer/dialog_field_summary.glade.h:4
+#: ../data/ui/developer/dialog_field_summary.glade.h:4
 msgid "Summary Type:"
 msgstr "Összegzés típusa:"
 
-#: ../ui/developer/dialog_field_summary.glade.h:5
-msgid "<b>Summary Field</b>"
-msgstr "<b>Összegző mező</b>"
-
-#: ../ui/developer/dialog_flowtable.glade.h:1
+#: ../data/ui/developer/dialog_flowtable.glade.h:1
 msgid "Group Properties"
 msgstr "Csoport tulajdonságai"
 
-#: ../ui/developer/dialog_flowtable.glade.h:2
+#: ../data/ui/developer/dialog_flowtable.glade.h:2
 msgid "Columns:"
 msgstr "Oszlopok:"
 
-#: ../ui/developer/dialog_flowtable.glade.h:3
-#: ../ui/developer/window_print_layout_edit.glade.h:4
+#: ../data/ui/developer/dialog_flowtable.glade.h:3
+#: ../data/ui/developer/window_print_layout_edit.glade.h:42
 msgid "Title:"
 msgstr "Cím:"
 
-#: ../ui/developer/dialog_group_by.glade.h:5
+#: ../data/ui/developer/dialog_group_by.glade.h:5
 msgid "Sort Fields:"
 msgstr "Mezők rendezése:"
 
-#: ../ui/developer/dialog_group_by.glade.h:6
+#: ../data/ui/developer/dialog_group_by.glade.h:6
 msgid "Secondary Fields:"
 msgstr "Másodlagos mezők:"
 
-#: ../ui/developer/dialog_group_by.glade.h:7
-msgid "Border Width (ems)"
-msgstr "Szegély vastagsága (ems)"
+#: ../data/ui/developer/dialog_group_by.glade.h:7
+#| msgid "Border Width (ems)"
+msgid "Border Width (ems):"
+msgstr "Szegély vastagsága (ems):"
 
-#: ../ui/developer/dialog_group_by.glade.h:8
-msgid "<b>Group By</b>"
-msgstr "<b>Csoportosítás</b>"
-
-#: ../ui/developer/dialog_initial_password.glade.h:1
+#: ../data/ui/developer/dialog_initial_password.glade.h:1
 msgid "Database User"
 msgstr "Adatbázis felhasználó"
 
-#: ../ui/developer/dialog_initial_password.glade.h:2
+#: ../data/ui/developer/dialog_initial_password.glade.h:2
 msgid ""
 "Please enter the initial connection details for your database. You may add "
 "additional users later. Remember to keep this password secret because it "
@@ -3508,67 +3679,67 @@ msgstr ""
 "kell tartani, mivel lehetővé teszi az adatainak elérését a hálózat más "
 "számítógépeiről."
 
-#: ../ui/developer/dialog_initial_password.glade.h:5
+#: ../data/ui/developer/dialog_initial_password.glade.h:5
 msgid "_Confirm Password:"
 msgstr "Jelszó _megerősítése:"
 
-#: ../ui/developer/dialog_initial_password.glade.h:6
-#: ../ui/developer/dialog_new_group.glade.h:2
-#: ../ui/developer/dialog_new_library_script.glade.h:2
+#: ../data/ui/developer/dialog_initial_password.glade.h:6
+#: ../data/ui/developer/dialog_new_group.glade.h:2
+#: ../data/ui/developer/dialog_new_library_script.glade.h:2
 msgid "C_reate"
 msgstr "_Létrehozás"
 
-#: ../ui/developer/dialog_line.glade.h:1
-#: ../ui/developer/window_textobject.glade.h:1
+#: ../data/ui/developer/dialog_line.glade.h:1
+#: ../data/ui/developer/window_textobject.glade.h:1
 msgid "Text Object"
 msgstr "Szövegobjektum"
 
-#: ../ui/developer/dialog_line.glade.h:2
+#: ../data/ui/developer/dialog_line.glade.h:2
 msgid "Line Width:"
 msgstr "Sorszélesség:"
 
-#: ../ui/developer/dialog_line.glade.h:3
+#: ../data/ui/developer/dialog_line.glade.h:3
 msgid "Color:"
 msgstr "Szín:"
 
-#: ../ui/developer/dialog_layout_field_properties.glade.h:1
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:1
 msgid "Field Layout"
 msgstr "Mezőelrendezés"
 
-#: ../ui/developer/dialog_layout_field_properties.glade.h:2
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:2
 msgid "<b>Field:</b>"
 msgstr "<b>Mező:</b>"
 
-#: ../ui/developer/dialog_layout_field_properties.glade.h:4
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:4
 msgid "Use default field title: "
 msgstr "Alapértelmezett mezőcím használata: "
 
-#: ../ui/developer/dialog_layout_field_properties.glade.h:5
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:5
 msgid "Use custom title:"
 msgstr "Egyéni cím használata:"
 
-#: ../ui/developer/dialog_layout_field_properties.glade.h:6
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:6
 msgid "<b>Title</b>"
 msgstr "<b>Cím</b>"
 
-#: ../ui/developer/dialog_layout_field_properties.glade.h:7
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:7
 msgid "Use default formatting"
 msgstr "Alapértelmezett formázás használata"
 
-#: ../ui/developer/dialog_layout_field_properties.glade.h:8
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:8
 msgid "Use custom formatting"
 msgstr "Egyéni formázás használata"
 
-#: ../ui/developer/dialog_layout_field_properties.glade.h:9
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:9
 msgid "<b>Formatting</b>"
 msgstr "<b>Formázás</b>"
 
-#: ../ui/developer/dialog_new_group.glade.h:1
-#: ../ui/developer/dialog_new_library_script.glade.h:1
+#: ../data/ui/developer/dialog_new_group.glade.h:1
+#: ../data/ui/developer/dialog_new_library_script.glade.h:1
 msgid "Create Group"
 msgstr "Csoport létrehozása"
 
-#: ../ui/developer/dialog_new_group.glade.h:3
+#: ../data/ui/developer/dialog_new_group.glade.h:3
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Create Group</span>\n"
 "\n"
@@ -3578,11 +3749,11 @@ msgstr ""
 "\n"
 "Mi legyen a csoport neve?"
 
-#: ../ui/developer/dialog_new_group.glade.h:6
+#: ../data/ui/developer/dialog_new_group.glade.h:6
 msgid "Group name:"
 msgstr "Csoportnév:"
 
-#: ../ui/developer/dialog_new_library_script.glade.h:3
+#: ../data/ui/developer/dialog_new_library_script.glade.h:3
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Add Module</span>\n"
 "\n"
@@ -3592,23 +3763,19 @@ msgstr ""
 "\n"
 "Mi legyen a modul neve?"
 
-#: ../ui/developer/dialog_new_library_script.glade.h:6
+#: ../data/ui/developer/dialog_new_library_script.glade.h:6
 msgid "Script name:"
 msgstr "Parancsfájl neve:"
 
-#: ../ui/developer/dialog_notebook.glade.h:2
+#: ../data/ui/developer/dialog_notebook.glade.h:2
 msgid "<b>Notebook Tabs</b>"
 msgstr "<b>Jegyzettömb lapok</b>"
 
-#: ../ui/developer/dialog_relationships_overview.glade.h:1
-msgid "Relationships Overview"
-msgstr "Kapcsolatok áttekintése"
-
-#: ../ui/developer/dialog_script_library.glade.h:1
+#: ../data/ui/developer/dialog_script_library.glade.h:1
 msgid "Script Library"
 msgstr "Parancsfájl-könyvtár"
 
-#: ../ui/developer/dialog_script_library.glade.h:2
+#: ../data/ui/developer/dialog_script_library.glade.h:2
 msgid ""
 "These modules will be available to your button scripts and field "
 "calculations via the python import keyword."
@@ -3616,29 +3783,29 @@ msgstr ""
 "Ezek a modulok elérhetők lesznek az egyéni gomb-parancsfájlok és "
 "mezőszámítások számára a Python import kulcsszava segítségével."
 
-#: ../ui/developer/dialog_script_library.glade.h:3
+#: ../data/ui/developer/dialog_script_library.glade.h:3
 msgid "Module name:"
 msgstr "Modulnév:"
 
 #. Translators: This is the verb. It is for checking that a Python script works.
-#: ../ui/developer/dialog_script_library.glade.h:5
+#: ../data/ui/developer/dialog_script_library.glade.h:5
 msgid "_Check"
 msgstr "_Ellenőrzés"
 
-#: ../ui/developer/dialog_sort_fields.glade.h:1
+#: ../data/ui/developer/dialog_sort_fields.glade.h:1
 msgid "Group By - Sort Fields"
 msgstr "Csoportosítás - Mezők rendezése"
 
-#: ../ui/developer/dialog_sort_fields.glade.h:3
+#: ../data/ui/developer/dialog_sort_fields.glade.h:3
 msgid "<b>Sort Fields</b>"
 msgstr "<b>Mezők rendezése</b>"
 
-#: ../ui/developer/dialog_translation_copy.glade.h:1
-#: ../ui/developer/dialog_translation_identify_original.glade.h:1
+#: ../data/ui/developer/dialog_translation_copy.glade.h:1
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:1
 msgid "Identify Original"
 msgstr "Eredeti azonosítása"
 
-#: ../ui/developer/dialog_translation_copy.glade.h:2
+#: ../data/ui/developer/dialog_translation_copy.glade.h:2
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Copy Translation</span>\n"
 "\n"
@@ -3650,12 +3817,12 @@ msgstr ""
 "Melyik nyelv fordításait szeretné átmásolni, és a jelenlegi fordítás "
 "alapjául használni?"
 
-#: ../ui/developer/dialog_translation_copy.glade.h:5
-#: ../ui/developer/dialog_translation_identify_original.glade.h:7
+#: ../data/ui/developer/dialog_translation_copy.glade.h:5
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:7
 msgid "Language:"
 msgstr "Nyelv:"
 
-#: ../ui/developer/dialog_translation_identify_original.glade.h:2
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:2
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Identify Original</span>\n"
 "\n"
@@ -3665,77 +3832,73 @@ msgstr ""
 "\n"
 "Az eredeti szöveg nyelve jelenleg a következő:"
 
-#: ../ui/developer/dialog_translation_identify_original.glade.h:5
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:5
 msgid "<b>English</b>"
 msgstr "<b>Angol</b>"
 
-#: ../ui/developer/dialog_translation_identify_original.glade.h:6
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:6
 msgid ""
 "If the text is not actually in this language, please choose the correct "
 "language."
 msgstr ""
 "Ha a szöveg nem ezen a nyelven van, akkor válassza ki a helyes nyelvet."
 
-#: ../ui/developer/dialog_user.glade.h:2
+#: ../data/ui/developer/dialog_user.glade.h:2
 msgid "Group:"
 msgstr "Csoport:"
 
-#: ../ui/developer/dialog_user.glade.h:3
+#: ../data/ui/developer/dialog_user.glade.h:3
 msgid "Password:"
 msgstr "Jelszó:"
 
-#: ../ui/developer/dialog_user.glade.h:4
+#: ../data/ui/developer/dialog_user.glade.h:4
 msgid "Confirm Password:"
 msgstr "Jelszó megerősítése:"
 
-#: ../ui/developer/dialog_user.glade.h:5
+#: ../data/ui/developer/dialog_user.glade.h:5
 msgid "User:"
 msgstr "Felhasználó:"
 
-#: ../ui/developer/dialog_user.glade.h:6
-msgid "<b>User</b>"
-msgstr "<b>Felhasználó</b>"
-
-#: ../ui/developer/window_button_script.glade.h:1
+#: ../data/ui/developer/window_button_script.glade.h:1
 msgid "Button Script"
 msgstr "Gomb parancsfájl"
 
-#: ../ui/developer/window_button_script.glade.h:2
-#: ../ui/developer/window_data_layout.glade.h:6
-#: ../ui/developer/window_imageobject.glade.h:2
-#: ../ui/developer/window_textobject.glade.h:2
+#: ../data/ui/developer/window_button_script.glade.h:2
+#: ../data/ui/developer/window_data_layout.glade.h:6
+#: ../data/ui/developer/window_imageobject.glade.h:2
+#: ../data/ui/developer/window_textobject.glade.h:2
 msgid "<b>Title:</b>"
 msgstr "<b>Cím:</b>"
 
-#: ../ui/developer/window_button_script.glade.h:3
+#: ../data/ui/developer/window_button_script.glade.h:3
 msgid ""
 "When the button is clicked it will run the python function which you "
 "implement here."
 msgstr ""
 "A gombra kattintáskor az itt megvalósított python függvény kerül futtatásra."
 
-#: ../ui/developer/window_data_layout_export.glade.h:1
+#: ../data/ui/developer/window_data_layout_export.glade.h:1
 msgid "Export Format"
 msgstr "Exportálási formátum"
 
-#: ../ui/developer/window_data_layout.glade.h:1
+#: ../data/ui/developer/window_data_layout.glade.h:1
 msgid "Layout"
 msgstr "Elrendezés"
 
-#: ../ui/developer/window_data_layout.glade.h:3
-#: ../ui/developer/window_report_layout.glade.h:3
+#: ../data/ui/developer/window_data_layout.glade.h:3
+#: ../data/ui/developer/window_report_layout.glade.h:3
 msgid "table name"
 msgstr "táblanév"
 
-#: ../ui/developer/window_data_layout.glade.h:4
+#: ../data/ui/developer/window_data_layout.glade.h:4
 msgid "<b>Relationship:</b>"
 msgstr "<b>Kapcsolat:</b>"
 
-#: ../ui/developer/window_data_layout.glade.h:5
+#: ../data/ui/developer/window_data_layout.glade.h:5
 msgid "Show child relationships"
 msgstr "Gyermekkapcsolatok megjelenítése"
 
-#: ../ui/developer/window_data_layout.glade.h:7
+#: ../data/ui/developer/window_data_layout.glade.h:7
 msgid ""
 "Add a layout item that shows the data from a field in the record, and allows "
 "the user to edit that value."
@@ -3743,11 +3906,11 @@ msgstr ""
 "A rekord egy mezőjének adatait megjelenítő és az érték szerkesztését a "
 "felhasználó számára lehetővé tevő elrendezéselem hozzáadása."
 
-#: ../ui/developer/window_data_layout.glade.h:8
+#: ../data/ui/developer/window_data_layout.glade.h:8
 msgid "Add Field"
 msgstr "Mező hozzáadása"
 
-#: ../ui/developer/window_data_layout.glade.h:9
+#: ../data/ui/developer/window_data_layout.glade.h:9
 msgid ""
 "Add text to a layout, such as an explanation or a warning. The text will be "
 "the same for every record viewed."
@@ -3755,7 +3918,7 @@ msgstr ""
 "Szöveg, például magyarázat vagy figyelmeztetés hozzáadása az elrendezéshez. "
 "A szöveg minden megjelenített rekord esetén ugyanaz lesz."
 
-#: ../ui/developer/window_data_layout.glade.h:11
+#: ../data/ui/developer/window_data_layout.glade.h:11
 msgid ""
 "Add an image to the layout, such as a logo. The image will be the same for "
 "every record viewed. To show an image field from a record, to show different "
@@ -3765,7 +3928,7 @@ msgstr ""
 "rekord esetén ugyanaz lesz. Egy rekord képmezőjének megjelenítéséhez vagy "
 "minden mezőhöz másik kép megjelenítéséhez használja a mező elrendezéselemet."
 
-#: ../ui/developer/window_data_layout.glade.h:12
+#: ../data/ui/developer/window_data_layout.glade.h:12
 msgid ""
 "Add a button. Edit the button to define the script that will be run when the "
 "button is clicked."
@@ -3773,7 +3936,7 @@ msgstr ""
 "Gomb hozzáadása. A gomb szerkesztésével meghatározhatja a gombra "
 "kattintáskor lefutó parancsfájlt."
 
-#: ../ui/developer/window_data_layout.glade.h:14
+#: ../data/ui/developer/window_data_layout.glade.h:14
 msgid ""
 "Add a group which can contain other layout items. Use this to group items "
 "together, such as fields."
@@ -3781,11 +3944,11 @@ msgstr ""
 "Más elrendezéselemeket tartalmazó csoport felvétele. Ennek segítségével "
 "elemeket, például mezőket csoportosíthat."
 
-#: ../ui/developer/window_data_layout.glade.h:15
+#: ../data/ui/developer/window_data_layout.glade.h:15
 msgid "Add _Group"
 msgstr "_Csoport hozzáadása"
 
-#: ../ui/developer/window_data_layout.glade.h:16
+#: ../data/ui/developer/window_data_layout.glade.h:16
 msgid ""
 "Add a tabbed notebook. Each page of the notebook may contain several other "
 "layout items, but only one page will be visible at one time."
@@ -3793,7 +3956,7 @@ msgstr ""
 "Jegyzettömb hozzáadása. A jegyzettömb minden oldala több más "
 "elrendezéselemet tartalmazhat, de egyszerre csak egy oldal lesz látható."
 
-#: ../ui/developer/window_data_layout.glade.h:18
+#: ../data/ui/developer/window_data_layout.glade.h:18
 msgid ""
 "Add a related records portal. This is a list of records in a related table. "
 "Remember to edit this layout item to specify the relationship to use, and "
@@ -3803,7 +3966,7 @@ msgstr ""
 "listája. Ne feledje szerkeszteni ezt az elrendezéselemet a használandó "
 "kapcsolat és a kapcsolódó táblából megjelenítendő mezők megadása érdekében."
 
-#: ../ui/developer/window_data_layout.glade.h:20
+#: ../data/ui/developer/window_data_layout.glade.h:20
 msgid ""
 "Add a related records calendar portal. This is a calendar showing records "
 "from a related table. Remember to edit this layout item to specify the "
@@ -3814,11 +3977,11 @@ msgstr ""
 "elrendezéselemet a használandó kapcsolat és a kapcsolódó táblából "
 "megjelenítendő mezők megadása érdekében."
 
-#: ../ui/developer/window_data_layout.glade.h:21
+#: ../data/ui/developer/window_data_layout.glade.h:21
 msgid "Add Related Calendar"
 msgstr "Kapcsolódó naptár hozzáadása"
 
-#: ../ui/developer/window_data_layout.glade.h:22
+#: ../data/ui/developer/window_data_layout.glade.h:22
 msgid ""
 "Remove the item from the layout. If you remove a field layout item, it will "
 "not remove the field from the table itself. It just will not be seen on the "
@@ -3828,7 +3991,7 @@ msgstr ""
 "nem távolítja el a mezőt magából a táblából, ehelyett egyszerűen csak "
 "elrejti."
 
-#: ../ui/developer/window_data_layout.glade.h:25
+#: ../data/ui/developer/window_data_layout.glade.h:25
 msgid ""
 "Clicking the row button takes the user to the table specified by this "
 "relationship:"
@@ -3836,135 +3999,134 @@ msgstr ""
 "A sor gombra kattintva a felhasználó ezen kapcsolat által megadott táblába "
 "kerül át:"
 
-#: ../ui/developer/window_data_layout.glade.h:26
+#: ../data/ui/developer/window_data_layout.glade.h:26
 msgid "Automatic:"
 msgstr "Automatikus:"
 
-#: ../ui/developer/window_data_layout.glade.h:27
+#: ../data/ui/developer/window_data_layout.glade.h:27
 msgid "None"
 msgstr "Nincs"
 
-#: ../ui/developer/window_data_layout.glade.h:28
+#: ../data/ui/developer/window_data_layout.glade.h:28
 msgid "<b>Navigation</b>"
 msgstr "<b>Navigáció</b>"
 
-#: ../ui/developer/window_data_layout.glade.h:29
+#: ../data/ui/developer/window_data_layout.glade.h:29
 msgid "Date Field:"
 msgstr "Dátum mező:"
 
-#: ../ui/developer/window_data_layout.glade.h:30
+#: ../data/ui/developer/window_data_layout.glade.h:30
 msgid "<b>Dates</b>"
 msgstr "<b>Dátumok</b>"
 
-#: ../ui/developer/window_data_layout.glade.h:31
+#: ../data/ui/developer/window_data_layout.glade.h:31
 msgid "Minimum number of rows:"
 msgstr "A sorok legkisebb száma:"
 
-#: ../ui/developer/window_data_layout.glade.h:32
+#: ../data/ui/developer/window_data_layout.glade.h:32
 msgid "Show at least this many rows."
 msgstr "Legalább ennyi sor megjelenítése."
 
-#: ../ui/developer/window_data_layout.glade.h:33
+#: ../data/ui/developer/window_data_layout.glade.h:33
 msgid "Maximum number of rows:"
 msgstr "A sorok legnagyobb száma:"
 
-#: ../ui/developer/window_data_layout.glade.h:34
+#: ../data/ui/developer/window_data_layout.glade.h:34
 msgid "Show no more than this many rows."
 msgstr "Legfeljebb ennyi sor megjelenítése."
 
-#: ../ui/developer/window_data_layout.glade.h:35
+#: ../data/ui/developer/window_data_layout.glade.h:35
 msgid "Row Line Width:"
 msgstr "Sor sorszélessége:"
 
-#: ../ui/developer/window_data_layout.glade.h:36
+#: ../data/ui/developer/window_data_layout.glade.h:36
 msgid "Column Line Width:"
 msgstr "Oszlop sorszélessége:"
 
-#: ../ui/developer/window_data_layout.glade.h:37
-#| msgid "Line Color:\n"
+#: ../data/ui/developer/window_data_layout.glade.h:37
 msgid "Line Color:"
 msgstr "Sor színe:"
 
-#: ../ui/developer/window_data_layout.glade.h:38
+#: ../data/ui/developer/window_data_layout.glade.h:38
 msgid "<b>Lines</b>"
 msgstr "<b>Sorok</b>"
 
-#: ../ui/developer/window_design.glade.h:1
+#: ../data/ui/developer/window_default_formatting.glade.h:1
+msgid "Default Formatting"
+msgstr "Alapértelmezett formázás"
+
+#: ../data/ui/developer/window_design.glade.h:1
 msgid "Field Definitions"
 msgstr "Meződefiníciók"
 
-#: ../ui/developer/window_field_calculation.glade.h:1
+#: ../data/ui/developer/window_field_calculation.glade.h:1
 msgid "Field Calculation"
 msgstr "Mező számítás"
 
-#: ../ui/developer/window_field_calculation.glade.h:2
+#: ../data/ui/developer/window_field_calculation.glade.h:2
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
 msgstr ""
 "A mező értéke az itt implementált python függvény visszatérési értéke lesz."
 
-#: ../ui/developer/window_field_calculation.glade.h:4
+#: ../data/ui/developer/window_field_calculation.glade.h:4
 msgid "Triggered by:"
 msgstr "Kiváltotta:"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:1
+#: ../data/ui/developer/window_field_definition_edit.glade.h:1
 msgid "Field Definition"
 msgstr "Mező definíciója"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:2
+#: ../data/ui/developer/window_field_definition_edit.glade.h:2
 msgid "_Name:"
 msgstr "_Név:"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:3
+#: ../data/ui/developer/window_field_definition_edit.glade.h:3
 msgid "Typ_e:"
 msgstr "_Típus:"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:5
+#: ../data/ui/developer/window_field_definition_edit.glade.h:5
 msgid "_Primary Key"
 msgstr "Első_dleges kulcs"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:6
+#: ../data/ui/developer/window_field_definition_edit.glade.h:6
 msgid "_Unique"
 msgstr "_Egyedi"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:7
+#: ../data/ui/developer/window_field_definition_edit.glade.h:7
 msgid "_Auto-increment"
 msgstr "_Automatikus növelés"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:9
+#: ../data/ui/developer/window_field_definition_edit.glade.h:9
 msgid "_Lookup value when a field changes."
 msgstr "É_rték kikeresése egy mező megváltozásakor."
 
-#: ../ui/developer/window_field_definition_edit.glade.h:10
+#: ../data/ui/developer/window_field_definition_edit.glade.h:10
 msgid "_Relationship:"
 msgstr "_Kapcsolat:"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:11
+#: ../data/ui/developer/window_field_definition_edit.glade.h:11
 msgid "_Field:"
 msgstr "_Mező:"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:12
+#: ../data/ui/developer/window_field_definition_edit.glade.h:12
 msgid "_User Entry"
 msgstr "_Felhasználói bejegyzés"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:14
+#: ../data/ui/developer/window_field_definition_edit.glade.h:14
 msgid "_Calculate Value"
 msgstr "Érték ki_számítása"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:15
+#: ../data/ui/developer/window_field_definition_edit.glade.h:15
 msgid "Value"
 msgstr "Érték"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:16
-msgid "Default Formatting"
-msgstr "Alapértelmezett formázás"
-
-#: ../ui/developer/box_formatting.glade.h:1
+#: ../data/ui/developer/box_formatting.glade.h:1
 msgid "Use 1000s separator"
 msgstr "Ezres elválasztó használata"
 
-#: ../ui/developer/box_formatting.glade.h:2
+#: ../data/ui/developer/box_formatting.glade.h:2
 msgid ""
 "If this is not selected then a thousands separator will not be used, even if "
 "your locale would normally use one. If it is selected then a thousands "
@@ -3975,19 +4137,21 @@ msgstr ""
 "van, akkor az ezres elválasztó csak abban az esetben lesz használva, ha azt "
 "a területi beállítása is előírja."
 
-#: ../ui/developer/box_formatting.glade.h:3
-msgid "Decimal Places"
-msgstr "Tizedesjegyek"
+#: ../data/ui/developer/box_formatting.glade.h:3
+#| msgid "Decimal Places"
+msgid "Decimal Places:"
+msgstr "Tizedesjegyek:"
 
-#: ../ui/developer/box_formatting.glade.h:4
-msgid "Currency Symbol"
-msgstr "Pénznem szimbólum"
+#: ../data/ui/developer/box_formatting.glade.h:4
+#| msgid "Currency Symbol"
+msgid "Currency Symbol:"
+msgstr "Pénznem szimbólum:"
 
-#: ../ui/developer/box_formatting.glade.h:5
+#: ../data/ui/developer/box_formatting.glade.h:5
 msgid "Alternative Color for Negative Values"
 msgstr "Alternatív szín a negatív értékekhez"
 
-#: ../ui/developer/box_formatting.glade.h:6
+#: ../data/ui/developer/box_formatting.glade.h:6
 msgid ""
 "Click this check box to use a different foreground color to display negative "
 "values."
@@ -3995,19 +4159,20 @@ msgstr ""
 "Kattintson erre a jelölőnégyzetre a nagatív értékek eltérő előtérszínnel "
 "történő megjelenítéséhez."
 
-#: ../ui/developer/box_formatting.glade.h:7
-msgid "<b>Numeric Formatting</b>"
-msgstr "<b>Számformázás</b>"
+#: ../data/ui/developer/box_formatting.glade.h:7
+#| msgid "<b>Numeric Formatting</b>"
+msgid "Numeric Formatting"
+msgstr "Számformázás"
 
-#: ../ui/developer/box_formatting.glade.h:8
+#: ../data/ui/developer/box_formatting.glade.h:8
 msgid "Horizontal Alignment:"
 msgstr "Vízszintes igazítás:"
 
-#: ../ui/developer/box_formatting.glade.h:9
+#: ../data/ui/developer/box_formatting.glade.h:9
 msgid "Multi-line"
 msgstr "Többsoros"
 
-#: ../ui/developer/box_formatting.glade.h:10
+#: ../data/ui/developer/box_formatting.glade.h:10
 msgid ""
 "If this is selected then the field value will be shown in a multi-line box "
 "with a scrollbar."
@@ -4015,58 +4180,63 @@ msgstr ""
 "Ha ez engedélyezett, akkor a mező értéke egy több soros, görgetősávos "
 "mezőben jelenik meg."
 
-#: ../ui/developer/box_formatting.glade.h:11
+#: ../data/ui/developer/box_formatting.glade.h:11
 msgid "Height (lines)"
 msgstr "Magasság (sor)"
 
-#: ../ui/developer/box_formatting.glade.h:12
+#: ../data/ui/developer/box_formatting.glade.h:12
 msgid "Font:"
 msgstr "Betűkészlet:"
 
-#: ../ui/developer/box_formatting.glade.h:13
+#: ../data/ui/developer/box_formatting.glade.h:13
 msgid "Click this check box to use a non-standard font."
 msgstr ""
 "Kattintson erre a jelölőnégyzetre nem szabványos betűkészlet használatához."
 
-#: ../ui/developer/box_formatting.glade.h:14
+#: ../data/ui/developer/box_formatting.glade.h:14
 msgid "Foreground Color:"
 msgstr "Előtérszín:"
 
-#: ../ui/developer/box_formatting.glade.h:15
+#: ../data/ui/developer/box_formatting.glade.h:15
 msgid "Click this check box to use a non-standard foreground color."
 msgstr ""
 "Kattintson erre a jelölőnégyzetre nem szabványos előtérszín használatához."
 
-#: ../ui/developer/box_formatting.glade.h:16
+#: ../data/ui/developer/box_formatting.glade.h:16
 msgid "Background Color:"
 msgstr "Háttérszín:"
 
-#: ../ui/developer/box_formatting.glade.h:17
+#: ../data/ui/developer/box_formatting.glade.h:17
 msgid "Click this check box to use a non-standard background color."
 msgstr ""
 "Kattintson erre a jelölőnégyzetre nem szabványos háttérszín használatához."
 
-#: ../ui/developer/box_formatting.glade.h:18
-msgid "<b>Text Formatting</b>"
-msgstr "<b>Szövegformázás</b>"
+#: ../data/ui/developer/box_formatting.glade.h:18
+#| msgid "Text Format"
+msgid "Text Formatting"
+msgstr "Szövegformázás"
 
-#: ../ui/developer/box_formatting.glade.h:19
+#: ../data/ui/developer/box_formatting.glade.h:19
 msgid "No Choices"
 msgstr "Nincsenek lehetőségek"
 
-#: ../ui/developer/box_formatting.glade.h:21
+#: ../data/ui/developer/box_formatting.glade.h:20
 msgid "Relationship:"
 msgstr "Kapcsolat:"
 
-#: ../ui/developer/box_formatting.glade.h:23
+#: ../data/ui/developer/box_formatting.glade.h:22
 msgid "Also show:"
 msgstr "Jelenjen még meg:"
 
-#: ../ui/developer/box_formatting.glade.h:24
+#: ../data/ui/developer/box_formatting.glade.h:24
+msgid "Sort Order:"
+msgstr "Rendezési sorrend:"
+
+#: ../data/ui/developer/box_formatting.glade.h:25
 msgid "Show all records"
 msgstr "Minden rekord megjelenítése"
 
-#: ../ui/developer/box_formatting.glade.h:25
+#: ../data/ui/developer/box_formatting.glade.h:26
 msgid ""
 "If this option is selected then the choices will list values from all "
 "records in the related table. If this option is not selected then the "
@@ -4076,92 +4246,230 @@ msgstr ""
 "rekordjából listázzák az értékeket. Ha ez az opció nincs kiválasztva, a "
 "lehetőségek csak a kapcsolt rekordból listázzák az értékeket."
 
-#: ../ui/developer/box_formatting.glade.h:26
-msgid "Sort Order:"
-msgstr "Rendezési sorrend:"
-
-#: ../ui/developer/box_formatting.glade.h:27
+#: ../data/ui/developer/box_formatting.glade.h:27
 msgid "Choices From Related Records"
 msgstr "Választás a kapcsolódó rekordokból"
 
-#: ../ui/developer/box_formatting.glade.h:28
+#: ../data/ui/developer/box_formatting.glade.h:28
 msgid "Custom Choice List"
 msgstr "Egyéni választási lista"
 
-#: ../ui/developer/box_formatting.glade.h:29
+#: ../data/ui/developer/box_formatting.glade.h:29
 msgid "Restrict data to these choices"
 msgstr "Érték korlátozása ezekre a lehetőségekre"
 
-#: ../ui/developer/box_formatting.glade.h:30
+#: ../data/ui/developer/box_formatting.glade.h:30
 msgid "Display as radio buttons"
 msgstr "Megjelenítés választógombokként"
 
-#: ../ui/developer/box_formatting.glade.h:31
-msgid "<b>Choices</b>"
-msgstr "<b>Lehetőségek</b>"
+#: ../data/ui/developer/box_formatting.glade.h:31
+#| msgid "No Choices"
+msgid "Choices"
+msgstr "Lehetőségek"
 
-#: ../ui/developer/window_groups.glade.h:1
+#: ../data/ui/developer/window_groups.glade.h:1
 msgid "Groups"
 msgstr "Csoportok"
 
-#: ../ui/developer/window_groups.glade.h:2
-#: ../ui/developer/window_users.glade.h:1
+#: ../data/ui/developer/window_groups.glade.h:2
+#: ../data/ui/developer/window_users.glade.h:1
 msgid "Users"
 msgstr "Felhasználók"
 
-#: ../ui/developer/window_groups.glade.h:3
+#: ../data/ui/developer/window_groups.glade.h:3
 msgid "<b>Groups</b>"
 msgstr "<b>Csoportok</b>"
 
-#: ../ui/developer/window_groups.glade.h:4
+#: ../data/ui/developer/window_groups.glade.h:4
 msgid "<b>Tables</b>"
 msgstr "<b>Táblák</b>"
 
-#: ../ui/developer/window_imageobject.glade.h:1
+#: ../data/ui/developer/window_imageobject.glade.h:1
 msgid "Image Object"
 msgstr "Képobjektum"
 
-#: ../ui/developer/window_imageobject.glade.h:3
+#: ../data/ui/developer/window_imageobject.glade.h:3
 msgid "<b>Image:</b>"
 msgstr "<b>Kép:</b>"
 
-#: ../ui/developer/window_print_layout_edit.glade.h:1
+#: ../data/ui/developer/window_print_layout_edit.glade.h:2
+msgid "Page Set_up"
+msgstr "_Oldalbeállítás"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:3
+msgid "Print Pre_view"
+msgstr "Nyomtatási _kép"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:9
+msgid "Select _All"
+msgstr "Ö_sszes kijelölése"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:10
+#| msgid "Unselect All"
+msgid "_Unselect All"
+msgstr "_Kijelölés megszüntetése"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:11
+msgid "_Insert"
+msgstr "_Beszúrás"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:12
+msgid "Insert _Field"
+msgstr "_Mező beszúrása"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:13
+msgid "Insert _Text"
+msgstr "S_zöveg beszúrása"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:14
+msgid "Insert _Image"
+msgstr "_Kép beszúrása"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:15
+msgid "Insert _Related Records"
+msgstr "Kap_csolódó rekordok beszúrása"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:16
+msgid "Insert _Horizontal Line"
+msgstr "_Vízszintes vonal beszúrása"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:17
+msgid "Insert _Vertical Line"
+msgstr "_Függőleges vonal beszúrása"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:18
+#| msgid "Create Standard Layout"
+msgid "Create _Standard"
+msgstr "_Szabvány létrehozása"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:19
+#| msgid "_Add Page"
+msgid "Add Page"
+msgstr "Oldal hozzáadása"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:20
+#| msgid "_Delete Page"
+msgid "Delete Page"
+msgstr "Oldal törlése"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:21
+msgid "_Align"
+msgstr "_Igazítás"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:22
+msgid "Align _Top"
+msgstr "Igazítás _fentre"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:23
+msgid "Align _Bottom"
+msgstr "Igazítás _lentre"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:24
+msgid "Align _Left"
+msgstr "Igazítás _balra"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:25
+msgid "Align _Right"
+msgstr "Igazítás _jobbra"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:26
+#: ../data/ui/developer/window_relationships_overview.glade.h:4
+msgid "_View"
+msgstr "_Nézet"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:27
+#: ../data/ui/developer/window_relationships_overview.glade.h:5
+msgid "Show _Grid"
+msgstr "_Rács megjelenítése"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:28
+#| msgid "Show Rules"
+msgid "Show _Rules"
+msgstr "_Szabályok megjelenítése"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:29
+#| msgid "Show Outlines"
+msgid "Show _Outlines"
+msgstr "_Körvonalak megjelenítése"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:30
+msgid "Fit Page _Width"
+msgstr "Igazítás az _oldal szélességéhez"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:32
+#, no-c-format
+msgid "Zoom 200%"
+msgstr "Nagyítás: 200%"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:34
+#, no-c-format
+#| msgid "Zoom 200%"
+msgid "Zoom 100%"
+msgstr "Nagyítás: 100%"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:36
+#, no-c-format
+msgid "Zoom 50%"
+msgstr "Nagyítás: 50%"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:38
+#, no-c-format
+msgid "Zoom 25%"
+msgstr "Nagyítás: 25%"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:39
 msgid "Print Layout Editor"
 msgstr "Nyomtatási elrendezés szerkesztő"
 
-#: ../ui/developer/window_print_layout_edit.glade.h:2
+#: ../data/ui/developer/window_print_layout_edit.glade.h:40
 msgid "<b>Table Name</b>"
 msgstr "<b>Táblanév</b>"
 
-#: ../ui/developer/window_print_layout_edit.glade.h:3
+#: ../data/ui/developer/window_print_layout_edit.glade.h:41
 msgid "Layout name:"
 msgstr "Elrendezésnév:"
 
-#: ../ui/developer/window_print_layout_edit.glade.h:5
+#: ../data/ui/developer/window_print_layout_edit.glade.h:43
 msgid "X:"
 msgstr "X:"
 
-#: ../ui/developer/window_print_layout_edit.glade.h:6
+#: ../data/ui/developer/window_print_layout_edit.glade.h:44
 msgid "Y:"
 msgstr "Y:"
 
-#: ../ui/developer/window_print_layout_edit.glade.h:7
+#: ../data/ui/developer/window_print_layout_edit.glade.h:45
 msgid "Width:"
 msgstr "Szélesség:"
 
-#: ../ui/developer/window_print_layout_edit.glade.h:8
+#: ../data/ui/developer/window_print_layout_edit.glade.h:46
 msgid "Height:"
 msgstr "Magasság:"
 
-#: ../ui/developer/window_report_layout.glade.h:1
+#: ../data/ui/developer/window_relationships_overview.glade.h:2
+msgid "Page _Setup"
+msgstr "_Oldalbeállítás"
+
+#: ../data/ui/developer/window_relationships_overview.glade.h:6
+msgid "Edit _Fields"
+msgstr "_Mezők szerkesztése"
+
+#: ../data/ui/developer/window_relationships_overview.glade.h:7
+msgid "Edit _Relationships"
+msgstr "_Kapcsolatok szerkesztése"
+
+#: ../data/ui/developer/window_relationships_overview.glade.h:8
+msgid "Relationships Overview"
+msgstr "Kapcsolatok áttekintése"
+
+#: ../data/ui/developer/window_report_layout.glade.h:1
 msgid "Report Layout"
 msgstr "Jelentés elrendezése"
 
-#: ../ui/developer/window_report_layout.glade.h:4
+#: ../data/ui/developer/window_report_layout.glade.h:4
 msgid "_Show table title"
 msgstr "_Tábla címének megjelenítése"
 
-#: ../ui/developer/window_report_layout.glade.h:5
+#: ../data/ui/developer/window_report_layout.glade.h:5
 msgid ""
 "When this is checked the table's title will be shown at the top of the "
 "report in addition to the report title."
@@ -4169,56 +4477,56 @@ msgstr ""
 "Amikor ez ki van választva, a tábla címe a jelentés tetején lesz "
 "megjelenítve a jelentés címe mellett."
 
-#: ../ui/developer/window_report_layout.glade.h:6
+#: ../data/ui/developer/window_report_layout.glade.h:6
 msgid "_Report name:"
 msgstr "J_elentésnév:"
 
-#: ../ui/developer/window_report_layout.glade.h:8
+#: ../data/ui/developer/window_report_layout.glade.h:8
 msgid "<b>Available Parts</b>"
 msgstr "<b>Elérhető részek</b>"
 
 #. Translators: The Main part of the report (not the footer or header)
-#: ../ui/developer/window_report_layout.glade.h:11
+#: ../data/ui/developer/window_report_layout.glade.h:11
 msgid "Main"
 msgstr "Fő"
 
-#: ../ui/developer/window_report_layout.glade.h:13
+#: ../data/ui/developer/window_report_layout.glade.h:13
 msgid "<b>Parts</b>"
 msgstr "<b>Részek</b>"
 
-#: ../ui/developer/window_text_format.glade.h:1
+#: ../data/ui/developer/window_text_format.glade.h:1
 msgid "Text Format"
 msgstr "Szövegformátum"
 
-#: ../ui/developer/window_textobject.glade.h:3
+#: ../data/ui/developer/window_textobject.glade.h:3
 msgid "<b>Text:</b>"
 msgstr "<b>Szöveg:</b>"
 
-#: ../ui/developer/window_translations.glade.h:1
+#: ../data/ui/developer/window_translations.glade.h:1
 msgid "Translations"
 msgstr "Fordítások"
 
-#: ../ui/developer/window_translations.glade.h:2
+#: ../data/ui/developer/window_translations.glade.h:2
 msgid "<b>Source Language:</b>"
 msgstr "<b>Forrásnyelv:</b>"
 
-#: ../ui/developer/window_translations.glade.h:3
+#: ../data/ui/developer/window_translations.glade.h:3
 msgid "English"
 msgstr "Angol"
 
-#: ../ui/developer/window_translations.glade.h:4
+#: ../data/ui/developer/window_translations.glade.h:4
 msgid "Identify Source"
 msgstr "Forrás azonosítása"
 
-#: ../ui/developer/window_translations.glade.h:5
+#: ../data/ui/developer/window_translations.glade.h:5
 msgid "<b>Target Language:</b>"
 msgstr "<b>Célnyelv:</b>"
 
-#: ../ui/developer/window_translations.glade.h:8
+#: ../data/ui/developer/window_translations.glade.h:8
 msgid "Copy From Existing Translation"
 msgstr "Másolás meglévő fordításból"
 
-#: ../ui/developer/window_translations.glade.h:9
+#: ../data/ui/developer/window_translations.glade.h:9
 msgid ""
 "Start a translation for this target locale by copying the strings from "
 "another target locale."
@@ -4226,57 +4534,40 @@ msgstr ""
 "Fordítás kezdése ehhez a cél nyelvhez a szövegek másolásával egy másik "
 "fordításból."
 
-#: ../ui/developer/window_translations.glade.h:10
-msgid "<b>Translations</b>"
-msgstr "<b>Fordítások</b>"
-
-#: ../ui/developer/window_users.glade.h:2
+#: ../data/ui/developer/window_users.glade.h:2
 msgid "<b>Group:</b>"
 msgstr "<b>Csoport:</b>"
 
-#: ../ui/developer/window_users.glade.h:3
+#: ../data/ui/developer/window_users.glade.h:3
 msgid "<b>Users</b>"
 msgstr "<b>Felhasználók</b>"
 
-#~ msgid "_File"
-#~ msgstr "_Fájl"
+#~ msgid "<b>Select Relationship</b>"
+#~ msgstr "<b>Kapcsolat kiválasztása</b>"
+
+#~ msgid "<b>Summary Field</b>"
+#~ msgstr "<b>Összegző mező</b>"
+
+#~ msgid "<b>Group By</b>"
+#~ msgstr "<b>Csoportosítás</b>"
+
+#~ msgid "<b>User</b>"
+#~ msgstr "<b>Felhasználó</b>"
+
+#~ msgid "<b>Text Formatting</b>"
+#~ msgstr "<b>Szövegformázás</b>"
+
+#~ msgid "<b>Choices</b>"
+#~ msgstr "<b>Lehetőségek</b>"
+
+#~ msgid "<b>Translations</b>"
+#~ msgstr "<b>Fordítások</b>"
 
 #~ msgid "_Recent Files"
 #~ msgstr "Le_gutóbbi fájlok"
 
-#~ msgid "_Save as Example"
-#~ msgstr "_Mentés példaként"
-
-#~ msgid "S_hared on Network"
-#~ msgstr "Meg_osztva a hálózaton"
-
-#~ msgid "_Print"
-#~ msgstr "_Nyomtatás"
-
 #~ msgid "_Standard"
 #~ msgstr "S_zabványos"
-
-#~ msgid "_Edit Print Layouts"
-#~ msgstr "_Nyomtatási elrendezések szerkesztése"
-
-#~ msgid "_Close"
-#~ msgstr "_Bezárás"
-
-#~ msgid "_Tables"
-#~ msgstr "_Táblák"
-
-#~ msgid "_Edit Tables"
-#~ msgstr "Táblák _szerkesztése"
-
-#~ msgid "_Reports"
-#~ msgstr "_Jelentések"
-
-#~ msgid "_Edit Reports"
-#~ msgstr "Jelentések sze_rkesztése"
-
-#~ msgctxt "Developer menu title"
-#~ msgid "_Developer"
-#~ msgstr "_Fejlesztő"
 
 #~ msgid "_Developer Mode"
 #~ msgstr "_Fejlesztő mód"
@@ -4284,75 +4575,21 @@ msgstr "<b>Felhasználók</b>"
 #~ msgid "_Operator Mode"
 #~ msgstr "_Operátor mód"
 
-#~ msgid "_Database Preferences"
-#~ msgstr "Adat_bázis tulajdonságok"
-
-#~ msgid "_Fields"
-#~ msgstr "_Mezők"
-
-#~ msgid "Relationships _Overview"
-#~ msgstr "Kapcsolatok átt_ekintése"
-
 #~ msgid "_Relationships for this Table"
 #~ msgstr "A tábla ka_pcsolatai"
-
-#~ msgid "_Users"
-#~ msgstr "_Felhasználók"
-
-#~ msgid "_Print Layouts"
-#~ msgstr "Nyomtatási _elrendezések"
-
-#~ msgid "R_eports"
-#~ msgstr "_Jelentések"
-
-#~ msgid "Script _Library"
-#~ msgstr "Parancsfájl-_könyvtár"
-
-#~ msgid "Test Tra_nslation"
-#~ msgstr "For_dítás tesztelése"
-
-#~ msgid "_Translations"
-#~ msgstr "_Fordítások"
-
-#~ msgid "_Active Platform"
-#~ msgstr "_Aktív platform"
-
-#~ msgid "_Normal"
-#~ msgstr "_Normál"
 
 #~ msgid "The layout to use for normal desktop environments."
 #~ msgstr "A normál asztali környezetekhez használt elrendezés."
 
-#~ msgid "_Maemo"
-#~ msgstr "_Maemo"
-
 #~ msgid "The layout to use for Maemo devices."
 #~ msgstr "A Maemo eszközökhöz használt elrendezés."
-
-#~ msgid "_Export Backup"
-#~ msgstr "Biztonsági mentés _exportálása"
-
-#~ msgid "_Restore Backup"
-#~ msgstr "Biztonsági mentés _visszaállítása"
-
-#~ msgid "_Drag and Drop Layout"
-#~ msgstr "_Fogd és vidd elrendezés"
 
 #~ msgctxt "Help menu title"
 #~ msgid "_Help"
 #~ msgstr "_Súgó"
 
-#~ msgid "_Help"
-#~ msgstr "_Súgó"
-
-#~ msgid "_About"
-#~ msgstr "_Névjegy"
-
 #~ msgid "About the application"
 #~ msgstr "Az alkalmazás névjegye"
-
-#~ msgid "_Contents"
-#~ msgstr "_Tartalom"
 
 #~ msgid "Help with the application"
 #~ msgstr "Az alkalmazás súgója"
@@ -4367,107 +4604,17 @@ msgstr "<b>Felhasználók</b>"
 #~ msgid "Save _As"
 #~ msgstr "Men_tés másként"
 
-#~ msgid "Cu_t"
-#~ msgstr "_Kivágás"
-
-#~ msgid "Page Set_up"
-#~ msgstr "_Oldalbeállítás"
-
-#~ msgid "Print Pre_view"
-#~ msgstr "Nyomtatási _kép"
-
-#~ msgid "Select _All"
-#~ msgstr "Ö_sszes kijelölése"
-
-#~ msgid "Unselect All"
-#~ msgstr "Kijelölés megszüntetése"
-
-#~ msgid "_Insert"
-#~ msgstr "_Beszúrás"
-
-#~ msgid "Insert _Field"
-#~ msgstr "_Mező beszúrása"
-
-#~ msgid "Insert _Text"
-#~ msgstr "S_zöveg beszúrása"
-
-#~ msgid "Insert _Image"
-#~ msgstr "_Kép beszúrása"
-
-#~ msgid "Insert _Related Records"
-#~ msgstr "Kap_csolódó rekordok beszúrása"
-
-#~ msgid "Insert _Horizontal Line"
-#~ msgstr "_Vízszintes vonal beszúrása"
-
-#~ msgid "Insert _Vertical Line"
-#~ msgstr "_Függőleges vonal beszúrása"
-
 #~ msgid "_Create Standard Layout"
 #~ msgstr "Sz_abványos elrendezés létrehozása"
-
-#~ msgid "_Add Page"
-#~ msgstr "_Oldal hozzáadása"
-
-#~ msgid "_Delete Page"
-#~ msgstr "Ol_dal törlése"
-
-#~ msgid "_Align"
-#~ msgstr "_Igazítás"
-
-#~ msgid "Align _Top"
-#~ msgstr "Igazítás _fentre"
-
-#~ msgid "Align _Bottom"
-#~ msgstr "Igazítás _lentre"
-
-#~ msgid "Align _Left"
-#~ msgstr "Igazítás _balra"
-
-#~ msgid "Align _Right"
-#~ msgstr "Igazítás _jobbra"
-
-#~ msgid "_View"
-#~ msgstr "_Nézet"
 
 #~ msgid "Show Grid"
 #~ msgstr "Rács megjelenítése"
 
-#~ msgid "Show Rules"
-#~ msgstr "Szabályok megjelenítése"
-
-#~ msgid "Show Outlines"
-#~ msgstr "Körvonalak megjelenítése"
-
-#~ msgid "Fit Page _Width"
-#~ msgstr "Igazítás az _oldal szélességéhez"
-
-#~ msgid "Zoom 200%"
-#~ msgstr "Nagyítás: 200%"
-
 #~ msgid "_Normal Size"
 #~ msgstr "_Normál méret"
 
-#~ msgid "Zoom 50%"
-#~ msgstr "Nagyítás: 50%"
-
-#~ msgid "Zoom 25%"
-#~ msgstr "Nagyítás: 25%"
-
 #~ msgid "Insert"
 #~ msgstr "Beszúrás"
-
-#~ msgid "Page _Setup"
-#~ msgstr "_Oldalbeállítás"
-
-#~ msgid "Show _Grid"
-#~ msgstr "_Rács megjelenítése"
-
-#~ msgid "Edit _Fields"
-#~ msgstr "_Mezők szerkesztése"
-
-#~ msgid "Edit _Relationships"
-#~ msgstr "_Kapcsolatok szerkesztése"
 
 #~ msgid "Choose File"
 #~ msgstr "Válasszon fájlt"
@@ -4519,9 +4666,6 @@ msgstr "<b>Felhasználók</b>"
 
 #~ msgid "Find"
 #~ msgstr "Keresés"
-
-#~ msgid "Operator"
-#~ msgstr "Operátor"
 
 #~ msgid "Developer"
 #~ msgstr "Fejlesztő"
@@ -4619,9 +4763,6 @@ msgstr "<b>Felhasználók</b>"
 
 #~ msgid "%X"
 #~ msgstr "%X"
-
-#~ msgid "Relationships"
-#~ msgstr "Kapcsolatok"
 
 #~ msgid "You may not specify more than one field as the primary key."
 #~ msgstr "Nem adhat meg egynél több mezőt elsődleges kulcsként."
