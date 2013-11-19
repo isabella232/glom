@@ -1868,7 +1868,7 @@ void layout_item_fill_field_details(const Document* document, const Glib::ustrin
   layout_item->set_full_field_details( document->get_field(table_name, layout_item->get_name()) );
 }
 
-bool layout_field_should_have_navigation(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_item, const Document* document, sharedptr<Relationship>& field_used_in_relationship_to_one)
+bool layout_field_should_have_navigation(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_item, const Document* document, sharedptr<const Relationship>& field_used_in_relationship_to_one)
 {
   //Initialize output parameter:
   field_used_in_relationship_to_one = sharedptr<Relationship>();

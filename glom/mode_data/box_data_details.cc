@@ -653,7 +653,7 @@ void Box_Data_Details::on_flowtable_field_open_details_requested(const sharedptr
   //unconst_field->set_full_field_details(
   //  document->get_field(field->get_table_used(table_name), field->get_name()) ); //Otherwise get_primary_key() returns false always.
       
-  sharedptr<Relationship> field_used_in_relationship_to_one;
+  sharedptr<const Relationship> field_used_in_relationship_to_one;
   const bool has_open_button = 
     DbUtils::layout_field_should_have_navigation(m_table_name, layout_field, get_document(), 
     field_used_in_relationship_to_one);

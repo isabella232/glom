@@ -186,7 +186,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     field->set_full_field_details(
       document->get_field(field->get_table_used(table_name), field->get_name()) ); //Otherwise get_primary_key() returns false always.
 
-    sharedptr<Relationship> field_used_in_relationship_to_one;
+    sharedptr<const Relationship> field_used_in_relationship_to_one;
     const bool add_open_button = 
        DbUtils::layout_field_should_have_navigation(table_name, field, document, 
          field_used_in_relationship_to_one);

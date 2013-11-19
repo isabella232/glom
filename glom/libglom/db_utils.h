@@ -156,7 +156,7 @@ void layout_item_fill_field_details(const Document* document, const Glib::ustrin
  * @param layout_item A field on a layout. This must have full field details.
  * @param field_used_in_relationship_to_one A relationship, if the field identifies a single record, so a Find button would also make sense, to choose the ID, in editing mode.
  */
-bool layout_field_should_have_navigation(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_item, const Document* document, sharedptr<Relationship>& field_used_in_relationship_to_one);
+bool layout_field_should_have_navigation(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_item, const Document* document, sharedptr<const Relationship>& field_used_in_relationship_to_one);
 
 /** Discover a database name that is not yet used.
  * This assumes that all other connection details are correctly set.

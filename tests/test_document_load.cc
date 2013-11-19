@@ -85,7 +85,7 @@ static bool needs_navigation(Glom::Document& document, const Glib::ustring& tabl
   layout_item->set_full_field_details(
     document.get_field(table_name, field_name));
 
-  Glom::sharedptr<Glom::Relationship> field_used_in_relationship_to_one;
+  Glom::sharedptr<const Glom::Relationship> field_used_in_relationship_to_one;
   return Glom::DbUtils::layout_field_should_have_navigation(table_name, 
     layout_item, &document, field_used_in_relationship_to_one);
 }
