@@ -31,9 +31,17 @@ static Glib::ustring create_file_from_buffer(const char* input, guint input_size
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
 
   gssize result = 0;
-  //TODO: Catch exception.
-  result = file->append_to()->write(input, input_size);
-  g_return_val_if_fail(-1 < result, "");
+ 
+  try
+  {
+    result = file->append_to()->write(input, input_size);
+    g_return_val_if_fail(-1 < result, "");
+  }
+  catch(const Gio::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": Gio::File::write() failed: " << ex.what() << std::endl;
+    return false;
+  }
 
   return file_uri;
 }
@@ -99,9 +107,16 @@ bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signa
 
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
 
-  //TODO: Catch exception.
-  const bool removed = file->remove();
-  g_assert(removed);
+  try
+  {
+    const bool removed = file->remove();
+    g_assert(removed);
+  }
+  catch(const Gio::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": Gio::File::remove() failed: " << ex.what() << std::endl;
+    return false;
+  }
 
   return finished_parsing;
 }
