@@ -22,7 +22,7 @@
 
 #include "canvas_image_movable.h"
 #include <goocanvasmm/canvas.h>
-#include <glom/utils_ui.h> //For Utils::image_scale_keeping_ratio().
+#include <glom/utils_ui.h> //For UiUtils::image_scale_keeping_ratio().
 #include <gtkmm/icontheme.h>
 #include <iostream>
 
@@ -186,7 +186,7 @@ void CanvasImageMovable::scale_to_size()
 
   if(width_pixels && height_pixels)
   {
-    Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::image_scale_keeping_ratio(m_pixbuf, (int)height_pixels, (int)width_pixels);
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf = UiUtils::image_scale_keeping_ratio(m_pixbuf, (int)height_pixels, (int)width_pixels);
     property_pixbuf() = pixbuf;
   }
 

@@ -96,10 +96,10 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
     if(m_portal)
       title = item_get_title(m_portal);
 
-    m_Label.set_markup(Utils::bold_message(title));
+    m_Label.set_markup(UiUtils::bold_message(title));
     m_Label.show();
 
-    m_Alignment.set_padding(Utils::DEFAULT_SPACING_SMALL /* top */, 0, Utils::DEFAULT_SPACING_LARGE /* left */, 0);
+    m_Alignment.set_padding(UiUtils::DEFAULT_SPACING_SMALL /* top */, 0, UiUtils::DEFAULT_SPACING_LARGE /* left */, 0);
   }
   else
   {

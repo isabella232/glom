@@ -33,7 +33,7 @@ DbAddDel_WithButtons::DbAddDel_WithButtons()
   m_Button_Add(_("_Add"), true)
 {
   m_ButtonBox.set_layout(Gtk::BUTTONBOX_END);
-  m_ButtonBox.set_spacing(Utils::DEFAULT_SPACING_SMALL);
+  m_ButtonBox.set_spacing(UiUtils::DEFAULT_SPACING_SMALL);
 
   setup_buttons();
   pack_start(m_ButtonBox, Gtk::PACK_SHRINK);

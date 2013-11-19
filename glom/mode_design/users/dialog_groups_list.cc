@@ -215,7 +215,7 @@ void Dialog_GroupsList::on_button_group_delete()
       if(!group.empty())
       {
         //TODO: Prevent deletion of standard groups
-        Gtk::MessageDialog dialog(Utils::bold_message(_("Delete Group")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
+        Gtk::MessageDialog dialog(UiUtils::bold_message(_("Delete Group")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
         dialog.set_secondary_text(_("Are your sure that you wish to delete this group?"));
         dialog.set_transient_for(*this);
 
@@ -246,7 +246,7 @@ void Dialog_GroupsList::on_button_group_new()
     return;
     
   dialog->set_transient_for(*this);
-  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
 
   const Glib::ustring group_name = dialog->m_entry_name->get_text();
 
@@ -293,7 +293,7 @@ void Dialog_GroupsList::on_button_group_users()
       dialog->fill_list();
       dialog->set_group(group_name);
 
-      Glom::Utils::dialog_run_with_help(dialog);
+      Glom::UiUtils::dialog_run_with_help(dialog);
 
       remove_view(dialog);
       delete dialog;

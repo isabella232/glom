@@ -356,11 +356,11 @@ void ComboChoicesWithTreeModel::set_cell_for_field_value(Gtk::CellRenderer* cell
       Gtk::CellRendererPixbuf* pDerived = dynamic_cast<Gtk::CellRendererPixbuf*>(cell);
       if(pDerived)
       {
-        const Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::get_pixbuf_for_gda_value(value);
+        const Glib::RefPtr<Gdk::Pixbuf> pixbuf = UiUtils::get_pixbuf_for_gda_value(value);
 
         //Scale it down to a sensible size.
         //TODO: if(pixbuf)
-        //  pixbuf = Utils::image_scale_keeping_ratio(pixbuf,  get_fixed_cell_height(), pixbuf->get_width());
+        //  pixbuf = UiUtils::image_scale_keeping_ratio(pixbuf,  get_fixed_cell_height(), pixbuf->get_width());
         pDerived->property_pixbuf() = pixbuf;
       }
       else

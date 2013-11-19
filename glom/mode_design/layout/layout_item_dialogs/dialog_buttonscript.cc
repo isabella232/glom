@@ -105,7 +105,7 @@ void Dialog_ButtonScript::get_script(const sharedptr<LayoutItem_Button>& script)
 void Dialog_ButtonScript::on_button_test_script()
 {
   const Glib::ustring calculation = m_text_view_script->get_buffer()->get_text();
-  if(!Utils::script_check_for_pygtk2_with_warning(calculation, this))
+  if(!UiUtils::script_check_for_pygtk2_with_warning(calculation, this))
     return;
 
   type_map_fields field_values;
@@ -137,7 +137,7 @@ void Dialog_ButtonScript::on_button_test_script()
     error_message);
     
   if(!error_message.empty())
-    Utils::show_ok_dialog(_("Calculation failed"), Glib::ustring::compose(_("The calculation failed with this error:\n%1"), error_message), *this, Gtk::MESSAGE_ERROR);
+    UiUtils::show_ok_dialog(_("Calculation failed"), Glib::ustring::compose(_("The calculation failed with this error:\n%1"), error_message), *this, Gtk::MESSAGE_ERROR);
 }
 
 } //namespace Glom

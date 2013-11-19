@@ -29,7 +29,7 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/dialog_invalid_data.h>
 #include <glom/appwindow.h>
-#include <glom/utils_ui.h> //For Utils::image_scale_keeping_ratio().
+#include <glom/utils_ui.h> //For UiUtils::image_scale_keeping_ratio().
 #include <glom/mode_data/datawidget/cellcreation.h>
 #include <glibmm/main.h>
 #include <giomm/menu.h>
@@ -65,7 +65,7 @@ DbAddDel::DbAddDel()
   set_prevent_user_signals();
   set_ignore_treeview_signals(true);
 
-  set_spacing(Utils::DEFAULT_SPACING_SMALL);
+  set_spacing(UiUtils::DEFAULT_SPACING_SMALL);
 
   //Start with a useful default TreeModel:
   //set_columns_count(1);
@@ -1727,7 +1727,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
       //TODO: Choose a width based on the first 100 values.
       if(layout_item_field)
       {
-       column_width = Utils::get_suitable_field_width_for_widget(*this, layout_item_field, true /* or_title */, true /* for treeview */);
+       column_width = UiUtils::get_suitable_field_width_for_widget(*this, layout_item_field, true /* or_title */, true /* for treeview */);
        column_width = column_width + 8; //Some extra for the GtkTreeView's padding.
        //std::cout << "DEBUG: column_width=" << column_width << std::endl;
       }
@@ -1935,11 +1935,11 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
           Gtk::CellRendererPixbuf* pDerived = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
           if(pDerived)
           {
-            Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::get_pixbuf_for_gda_value(value);
+            Glib::RefPtr<Gdk::Pixbuf> pixbuf = UiUtils::get_pixbuf_for_gda_value(value);
 
             //Scale it down to a sensible size.
             if(pixbuf)
-              pixbuf = Utils::image_scale_keeping_ratio(pixbuf,  get_fixed_cell_height(), pixbuf->get_width());
+              pixbuf = UiUtils::image_scale_keeping_ratio(pixbuf,  get_fixed_cell_height(), pixbuf->get_width());
 
             pDerived->property_pixbuf() = pixbuf;
           }
@@ -2281,7 +2281,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
   if(m_allow_only_one_related_record && (get_count() > 0))
   {
     //Tell user that they can't do that:
-    Gtk::MessageDialog dialog(Utils::bold_message(_("Extra Related Records Not Possible")), true, Gtk::MESSAGE_WARNING);
+    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Extra Related Records Not Possible")), true, Gtk::MESSAGE_WARNING);
     dialog.set_secondary_text(_("You attempted to add a new related record, but there can only be one related record, because the relationship uses a unique key.")),
     dialog.set_transient_for(*AppWindow::get_appwindow());
     dialog.run();
@@ -2447,7 +2447,7 @@ void DbAddDel::on_selection_changed(bool selection)
 
 void DbAddDel::treeview_delete_all_columns()
 {
-  Utils::treeview_delete_all_columns(&m_TreeView);
+  UiUtils::treeview_delete_all_columns(&m_TreeView);
 
   //Reset this too, because we must have just deleted it:
   m_treeviewcolumn_button = 0;

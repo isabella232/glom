@@ -166,7 +166,7 @@ void FlowTableWithFields::add_layout_group(const sharedptr<LayoutGroup>& group, 
     if(!group_title.empty())
     {
       Gtk::Label* label = Gtk::manage( new Gtk::Label ); //TODO: This is maybe leaked, according to valgrind, though it should be managed by GtkFrame.
-      label->set_markup( Utils::bold_message(group_title) );
+      label->set_markup( UiUtils::bold_message(group_title) );
       label->show();
       frame->set_label_widget(*label);
     }
@@ -185,11 +185,11 @@ void FlowTableWithFields::add_layout_group(const sharedptr<LayoutGroup>& group, 
       //std::cout << "title= " << group_title << ", with_indent=" << with_indent << std::endl;
       if(with_indent) 
       {
-        alignment->set_padding(Glom::Utils::DEFAULT_SPACING_SMALL, 0, Glom::Utils::DEFAULT_SPACING_SMALL + BASE_INDENT, 0);
+        alignment->set_padding(Glom::UiUtils::DEFAULT_SPACING_SMALL, 0, Glom::UiUtils::DEFAULT_SPACING_SMALL + BASE_INDENT, 0);
       }
       else
       {
-        alignment->set_padding(Glom::Utils::DEFAULT_SPACING_SMALL, 0, BASE_INDENT, 0);
+        alignment->set_padding(Glom::UiUtils::DEFAULT_SPACING_SMALL, 0, BASE_INDENT, 0);
       }
     }
 
@@ -377,7 +377,7 @@ void FlowTableWithFields::add_layout_notebook(const sharedptr<LayoutItem_Noteboo
       {
         //Add a Related Records list for this portal:
         Box_Data_List_Related* portal_box = create_related(portal, false /* no label, because it's in the tab instead. */);
-        //portal_box->set_border_width(Glom::Utils::DEFAULT_SPACING_SMALL); It has "padding" around the Alignment instead.
+        //portal_box->set_border_width(Glom::UiUtils::DEFAULT_SPACING_SMALL); It has "padding" around the Alignment instead.
         portal_box->show();
         notebook_widget->append_page(*portal_box, *tab_label);
 
@@ -407,9 +407,9 @@ void FlowTableWithFields::add_layout_notebook(const sharedptr<LayoutItem_Noteboo
         event_box->show();
         //This doesn't work (probably because we haven't implmented it in our custom container),
         //so we put the flowtable in an alignment and give that a border instead.
-        //flow_table->set_border_width(Glom::Utils::DEFAULT_SPACING_SMALL); //Put some space between the page child and the page edges.
+        //flow_table->set_border_width(Glom::UiUtils::DEFAULT_SPACING_SMALL); //Put some space between the page child and the page edges.
         Gtk::Alignment* alignment = Gtk::manage(new Gtk::Alignment());
-        alignment->set_border_width(Glom::Utils::DEFAULT_SPACING_SMALL);
+        alignment->set_border_width(Glom::UiUtils::DEFAULT_SPACING_SMALL);
         alignment->add(*event_box);
         alignment->show();
 
@@ -470,7 +470,7 @@ void FlowTableWithFields::add_group(const Glib::ustring& group_name, const Glib:
     Gtk::Alignment* alignment = Gtk::manage( new Gtk::Alignment );
 
     if(!group_title.empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
-      alignment->set_padding(Utils::DEFAULT_SPACING_SMALL, 0, Utils::DEFAULT_SPACING_SMALL, 0);
+      alignment->set_padding(UiUtils::DEFAULT_SPACING_SMALL, 0, UiUtils::DEFAULT_SPACING_SMALL, 0);
 
     alignment->show();
     frame->add(*alignment);

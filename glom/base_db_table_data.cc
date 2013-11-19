@@ -254,7 +254,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
     //Warn the user:
     //TODO: Make the field insensitive until it can receive data, so people never see this dialog.
     const Glib::ustring message = _("Data may not be entered into this related field, because the related record does not yet exist, and the relationship does not allow automatic creation of new related records.");
-    Gtk::MessageDialog dialog(Utils::bold_message(_("Related Record Does Not Exist")), true);
+    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Related Record Does Not Exist")), true);
     dialog.set_secondary_text(message);
     dialog.set_transient_for(*AppWindow::get_appwindow());
     dialog.run();
@@ -275,7 +275,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
       //TODO: Make the field insensitive until it can receive data, so people never see this dialog.
       const Glib::ustring message = _("Data may not be entered into this related field, because the related record does not yet exist, and the key in the related record is auto-generated and therefore can not be created with the key value in this record.");
 
-      Gtk::MessageDialog dialog(Utils::bold_message(_("Related Record Cannot Be Created")), true);
+      Gtk::MessageDialog dialog(UiUtils::bold_message(_("Related Record Cannot Be Created")), true);
       //TODO: This is a very complex error message:
       dialog.set_secondary_text(message);
       dialog.set_transient_for(*AppWindow::get_appwindow());
@@ -387,7 +387,7 @@ bool Base_DB_Table_Data::confirm_delete_record()
 {
   //Ask the user for confirmation:
   const Glib::ustring message = _("Are you sure that you would like to delete this record? The data in this record will then be permanently lost.");
-  Gtk::MessageDialog dialog(Utils::bold_message(_("Delete record")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Delete record")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
   dialog.set_secondary_text(message);
   dialog.set_transient_for(*AppWindow::get_appwindow());
   dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);

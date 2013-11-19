@@ -97,7 +97,7 @@ namespace Glom
 {
 
 // Run dialog and response on Help if appropriate.
-int Utils::dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id)
+int UiUtils::dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id)
 {
   int result = dialog->run();
   
@@ -117,7 +117,7 @@ int Utils::dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id)
  * Launch a help browser with the glom help and load the given id if given
  * If the help cannot be found an error dialog will be shown
  */
-void Utils::show_help(const Glib::ustring& id)
+void UiUtils::show_help(const Glib::ustring& id)
 {
   GError* err = 0;
   const gchar* pId;
@@ -162,7 +162,7 @@ void Utils::show_help(const Glib::ustring& id)
   }
 }
 
-void Utils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window* parent, Gtk::MessageType message_type)
+void UiUtils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window* parent, Gtk::MessageType message_type)
 {
   Gtk::MessageDialog dialog("<b>" + title + "</b>", true /* markup */, message_type, Gtk::BUTTONS_OK);
   dialog.set_secondary_text(message);
@@ -172,7 +172,7 @@ void Utils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& mess
   dialog.run();
 }
 
-void Utils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type)
+void UiUtils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type)
 {
   show_ok_dialog(title, message, &parent, message_type);
 }
@@ -190,7 +190,7 @@ static void on_window_hide(Glib::RefPtr<Glib::MainLoop> main_loop, sigc::connect
 
 } //anonymous namespace.
 
-void Utils::show_window_until_hide(Gtk::Window* window)
+void UiUtils::show_window_until_hide(Gtk::Window* window)
 {
   if(!window)
     return;
@@ -209,13 +209,13 @@ void Utils::show_window_until_hide(Gtk::Window* window)
   main_loop->run(); //Run and block until it is stopped by the hide signal handler.
 }
 
-Glib::ustring Utils::bold_message(const Glib::ustring& message)
+Glib::ustring UiUtils::bold_message(const Glib::ustring& message)
 {
   return "<b>" + message + "</b>";
 }
 
 
-Glib::RefPtr<Gdk::Pixbuf> Utils::get_pixbuf_for_gda_value(const Gnome::Gda::Value& value)
+Glib::RefPtr<Gdk::Pixbuf> UiUtils::get_pixbuf_for_gda_value(const Gnome::Gda::Value& value)
 {
   Glib::RefPtr<Gdk::Pixbuf> result;
 
@@ -291,6 +291,8 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_pixbuf_for_gda_value(const Gnome::Gda::Valu
   return result;
 }
 
+namespace {
+
 static int get_width_for_text(Gtk::Widget& widget, const Glib::ustring& text)
 {
   //Get the width required for this string in the current font:
@@ -306,7 +308,9 @@ static int get_width_for_text(Gtk::Widget& widget, const Glib::ustring& text)
   return result;
 }
 
-int Utils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const sharedptr<const LayoutItem_Field>& field_layout, bool or_title, bool for_treeview)
+} //anonymous namespace
+
+int UiUtils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const sharedptr<const LayoutItem_Field>& field_layout, bool or_title, bool for_treeview)
 {
   int result = 150; //Suitable default.
 
@@ -373,7 +377,7 @@ int Utils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const shared
 }
 
 
-std::string Utils::get_filepath_with_extension(const std::string& filepath, const std::string& extension)
+std::string UiUtils::get_filepath_with_extension(const std::string& filepath, const std::string& extension)
 {
   std::string result = filepath;
 
@@ -402,7 +406,7 @@ std::string Utils::get_filepath_with_extension(const std::string& filepath, cons
 
 
 //static:
-Glib::RefPtr<Gdk::Pixbuf> Utils::image_scale_keeping_ratio(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, int target_height, int target_width)
+Glib::RefPtr<Gdk::Pixbuf> UiUtils::image_scale_keeping_ratio(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, int target_height, int target_width)
 {
   if( (target_height == 0) || (target_width == 0) )
     return Glib::RefPtr<Gdk::Pixbuf>(); //This shouldn't happen anyway.
@@ -470,11 +474,11 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::image_scale_keeping_ratio(const Glib::RefPtr<Gd
   return pixbuf->scale_simple(target_width, target_height, Gdk::INTERP_NEAREST);
 }
 
-bool Utils::show_warning_no_records_found(Gtk::Window& transient_for)
+bool UiUtils::show_warning_no_records_found(Gtk::Window& transient_for)
 {
   const Glib::ustring message = _("Your find criteria did not match any records in the table.");
 
-  Gtk::MessageDialog dialog(Utils::bold_message(_("No Records Found")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE);
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("No Records Found")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE);
   dialog.set_secondary_text(message);
   dialog.set_transient_for(transient_for);
 
@@ -486,7 +490,7 @@ bool Utils::show_warning_no_records_found(Gtk::Window& transient_for)
 }
 
 
-void Utils::show_report_in_browser(const std::string& filepath, Gtk::Window* parent_window)
+void UiUtils::show_report_in_browser(const std::string& filepath, Gtk::Window* parent_window)
 {
   //Give the user a clue, in case the web browser opens in the background, for instance in a new tab:
   if(parent_window)
@@ -520,16 +524,16 @@ void Utils::show_report_in_browser(const std::string& filepath, Gtk::Window* par
 #endif //G_OS_WIN32
 }
 
-std::string Utils::get_icon_path(const Glib::ustring& filename)
+std::string UiUtils::get_icon_path(const Glib::ustring& filename)
 {
   return  "/org/gnome/glom/data/icons/" + filename;
 }
 
-bool Utils::script_check_for_pygtk2_with_warning(const Glib::ustring& script, Gtk::Window* parent_window)
+bool UiUtils::script_check_for_pygtk2_with_warning(const Glib::ustring& script, Gtk::Window* parent_window)
 {
   if(!Utils::script_check_for_pygtk2(script))
   {
-    Utils::show_ok_dialog(_("Script Uses PyGTK 2"),
+    UiUtils::show_ok_dialog(_("Script Uses PyGTK 2"),
       _("Glom cannot run this script because it uses pygtk 2, but Glom uses GTK+ 3, and attempting to use pygtk 2 would cause Glom to crash."), parent_window, Gtk::MESSAGE_ERROR);
     return false;
   }
@@ -537,7 +541,7 @@ bool Utils::script_check_for_pygtk2_with_warning(const Glib::ustring& script, Gt
   return true;
 }
 
-void Utils::treeview_delete_all_columns(Gtk::TreeView* treeview)
+void UiUtils::treeview_delete_all_columns(Gtk::TreeView* treeview)
 {
   if(!treeview)
     return;

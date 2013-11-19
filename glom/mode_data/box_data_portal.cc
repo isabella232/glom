@@ -45,7 +45,7 @@ Box_Data_Portal::Box_Data_Portal()
   m_Label.show();
 
   //The AddDel or Calendar is added to this:
-  m_Alignment.set_padding(Utils::DEFAULT_SPACING_SMALL /* top */, 0, Utils::DEFAULT_SPACING_LARGE /* left */, 0);
+  m_Alignment.set_padding(UiUtils::DEFAULT_SPACING_SMALL /* top */, 0, UiUtils::DEFAULT_SPACING_LARGE /* left */, 0);
   m_Alignment.show();
 
   add(m_Frame);

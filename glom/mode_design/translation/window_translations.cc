@@ -161,7 +161,7 @@ void Window_Translations::on_button_identify()
   add_view(dialog);
   dialog->load_from_document(); //Doesn't seem to happen otherwise.
   dialog->set_transient_for(*this);
-  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
 
   if(response == Gtk::RESPONSE_OK)
@@ -300,7 +300,7 @@ void Window_Translations::on_button_copy_translation()
     return;
 
   dialog->set_transient_for(*this);
-  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
 
   if(response == Gtk::RESPONSE_OK)

@@ -98,7 +98,7 @@ void Dialog_ScriptLibrary::on_button_add()
     return;
     
   dialog->set_transient_for(*this);
-  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
   if(response != Gtk::RESPONSE_OK)
     return;
@@ -126,7 +126,7 @@ void Dialog_ScriptLibrary::on_button_remove()
   if(!document)
     return;
 
-  Gtk::MessageDialog dialog(Utils::bold_message(_("Remove library script")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE );
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Remove library script")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE );
   dialog.set_secondary_text(_("Do you really want to delete this script? This data can not be recovered"));
   dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("_Remove"), Gtk::RESPONSE_OK);

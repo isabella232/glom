@@ -373,7 +373,7 @@ void Dialog_FieldDefinition::on_button_edit_calculation()
   m_Field->set_calculation( m_pTextView_Calculation->get_buffer()->get_text() );
   dialog->set_field(m_Field, m_table_name);
   //TODO: dialog.set_transient_for(*get_app_window());
-  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
   if(response == Gtk::RESPONSE_OK)
   {
     m_pTextView_Calculation->get_buffer()->set_text( dialog->get_field()->get_calculation() );

@@ -570,7 +570,7 @@ sharedptr<LayoutItem_Button> Dialog_Layout_Details::offer_button_script_edit(con
 
   dialog->set_script(button, m_table_name);
   dialog->set_transient_for(*this);
-  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
   if(response == Gtk::RESPONSE_OK)
   {
@@ -1131,7 +1131,7 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
           is_group = true;
 
           //Make group names bold:
-          markup = Utils::bold_message( layout_item->get_name() );
+          markup = UiUtils::bold_message( layout_item->get_name() );
         }
         else
         {

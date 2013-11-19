@@ -113,7 +113,7 @@ void Dialog_FieldCalculation::on_button_test()
   if(!check_for_return_statement(calculation))
     return;
 
-  if(!Utils::script_check_for_pygtk2_with_warning(calculation, this))
+  if(!UiUtils::script_check_for_pygtk2_with_warning(calculation, this))
     return;
 
   type_map_fields field_values;
@@ -145,9 +145,9 @@ void Dialog_FieldCalculation::on_button_test()
     error_message);
 
   if(error_message.empty())
-    Utils::show_ok_dialog(_("Calculation result"), Glib::ustring::compose(_("The result of the calculation is:\n%1"), value.to_string()), *this, Gtk::MESSAGE_INFO);
+    UiUtils::show_ok_dialog(_("Calculation result"), Glib::ustring::compose(_("The result of the calculation is:\n%1"), value.to_string()), *this, Gtk::MESSAGE_INFO);
   else
-    Utils::show_ok_dialog( _("Calculation failed"), Glib::ustring::compose(_("The calculation failed with this error:\n%s"), error_message), *this, Gtk::MESSAGE_ERROR);
+    UiUtils::show_ok_dialog( _("Calculation failed"), Glib::ustring::compose(_("The calculation failed with this error:\n%s"), error_message), *this, Gtk::MESSAGE_ERROR);
 
   //Show what fields would trigger the recalculation:
   sharedptr<Field> temp = sharedptr<Field>::create();

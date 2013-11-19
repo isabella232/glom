@@ -34,8 +34,7 @@
 namespace Glom
 {
 
-//TODO: Rename this to UiUtils
-namespace Utils
+namespace UiUtils
 {
 
 enum DefaultSpacings
@@ -106,7 +105,7 @@ bool script_check_for_pygtk2_with_warning(const Glib::ustring& script, Gtk::Wind
 
 void treeview_delete_all_columns(Gtk::TreeView* treeview);
 
-} //namespace Utils
+} //namespace UiUtils
 
 } //namespace Glom
 

@@ -40,7 +40,7 @@ namespace Glom
 {
 
 Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
-: m_hbox_content(Gtk::ORIENTATION_HORIZONTAL, Utils::DEFAULT_SPACING_SMALL),
+: m_hbox_content(Gtk::ORIENTATION_HORIZONTAL, UiUtils::DEFAULT_SPACING_SMALL),
   m_show_toolbar(false),
   m_hbox_buttons(Gtk::ORIENTATION_HORIZONTAL),
   m_Button_New(_("_Add"), true),
@@ -58,19 +58,19 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_layout_name = "details";
 
   m_hbox_buttons.set_layout(Gtk::BUTTONBOX_END);
-  m_hbox_buttons.set_spacing(Utils::DEFAULT_SPACING_SMALL);
+  m_hbox_buttons.set_spacing(UiUtils::DEFAULT_SPACING_SMALL);
 
   add_view(&m_FlowTable); //Allow this to access the document too.
 
   m_FlowTable.set_lines(1); //Sub-groups will have multiple columns (by default, there is one sub-group, with 2 columns).
 
-  m_FlowTable.set_horizontal_spacing(Utils::DEFAULT_SPACING_SMALL); //The default anyway.
-  m_FlowTable.set_vertical_spacing(Utils::DEFAULT_SPACING_SMALL); //The default anyway.
+  m_FlowTable.set_horizontal_spacing(UiUtils::DEFAULT_SPACING_SMALL); //The default anyway.
+  m_FlowTable.set_vertical_spacing(UiUtils::DEFAULT_SPACING_SMALL); //The default anyway.
 
   //m_strHint = _("When you change the data in a field the database is updated immediately.\n Click [New] to add a new record.\n Leave automatic ID fields empty - they will be filled for you.");
 
 
-  //m_ScrolledWindow.set_border_width(Utils::DEFAULT_SPACING_SMALL);
+  //m_ScrolledWindow.set_border_width(UiUtils::DEFAULT_SPACING_SMALL);
 
   // Allow vertical scrolling, but never scroll horizontally:
   m_ScrolledWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC);
@@ -415,7 +415,7 @@ void Box_Data_Details::on_button_new()
     {
       Gtk::Window* parent_window = get_app_window();
       if(parent_window)
-        Utils::show_ok_dialog(_("Layout Contains No Fields"), _("There are no fields on the layout, so there is no way to enter data in a new record."), *parent_window, Gtk::MESSAGE_ERROR);
+        UiUtils::show_ok_dialog(_("Layout Contains No Fields"), _("There are no fields on the layout, so there is no way to enter data in a new record."), *parent_window, Gtk::MESSAGE_ERROR);
     }
 
     return;
@@ -442,7 +442,7 @@ void Box_Data_Details::on_button_del()
   if( Conversions::value_is_empty(get_primary_key_value_selected()) )
   {
     //Tell user that a primary key is needed to delete a record:
-    Gtk::MessageDialog dialog(Utils::bold_message(_("No primary key value.")), true);
+    Gtk::MessageDialog dialog(UiUtils::bold_message(_("No primary key value.")), true);
     dialog.set_secondary_text(_("This record cannot be deleted because there is no primary key."));
     dialog.set_transient_for(*get_app_window());
     dialog.run();
@@ -852,7 +852,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
       if(strFieldName == m_field_primary_key->get_name()) //If edited field is the primary key.
       {
         //Warn user that they can't choose their own primary key:
-        Gtk::MessageDialog dialog(Utils::bold_message(_("Primary key auto increments")), true);
+        Gtk::MessageDialog dialog(UiUtils::bold_message(_("Primary key auto increments")), true);
         dialog.set_secondary_text(_("The primary key is auto-incremented.\n You may not enter your own primary key value."));
         dialog.set_transient_for(*get_app_window());
         dialog.run();

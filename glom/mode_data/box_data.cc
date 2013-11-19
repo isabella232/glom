@@ -188,7 +188,7 @@ bool Box_Data::confirm_discard_unstored_data() const
   {
     const Glib::ustring message = _("This data cannot be stored in the database because you have not provided a primary key.\nDo you really want to discard this data?");
     //Ask user to confirm loss of data:
-    Gtk::MessageDialog dialog(Utils::bold_message(_("No primary key value")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL );
+    Gtk::MessageDialog dialog(UiUtils::bold_message(_("No primary key value")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL );
     dialog.set_secondary_text(message);
     //TODO: It needs a const. I wonder if it should. murrayc. dialog.set_transient_for(*get_app_window());
     const int iButton = dialog.run();
@@ -352,7 +352,7 @@ Glib::ustring Box_Data::get_layout_name() const
 void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key_value)
 {
   const Glib::ustring script = layout_item->get_script();
-  if(!Utils::script_check_for_pygtk2_with_warning(script, get_app_window()))
+  if(!UiUtils::script_check_for_pygtk2_with_warning(script, get_app_window()))
     return;
 
   const sharedptr<Field> field_primary_key = get_field_primary_key();

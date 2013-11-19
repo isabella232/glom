@@ -422,21 +422,21 @@ void Dialog_Layout_List_Related::on_combo_relationship_changed()
   bool relationship_invalid = false;
   if(!to_key_field)
   {
-    Utils::show_ok_dialog(_("Invalid Relationship"),
+    UiUtils::show_ok_dialog(_("Invalid Relationship"),
       _("The relationship may not be used to show related records because the relationship does not specify a field in the related table."),
      *this, Gtk::MESSAGE_ERROR);
     relationship_invalid = true;
   }
   else if(to_key_field->get_primary_key())
   {
-    Utils::show_ok_dialog(_("Relationship Uses a Related Primary Key"),
+    UiUtils::show_ok_dialog(_("Relationship Uses a Related Primary Key"),
       _("The relationship may not be used to show related records because the relationship uses a primary key field in the related table, which must contain unique values. This would prevent the relationship from specifying multiple related records."),
      *this, Gtk::MESSAGE_ERROR);
     relationship_invalid = true;
   }
   else if(to_key_field->get_unique_key())
   {
-    Utils::show_ok_dialog(_("Relationship Uses a Related Unique Field"),
+    UiUtils::show_ok_dialog(_("Relationship Uses a Related Unique Field"),
       _("The relationship may not be used to show related records because the relationship uses a unique-values field in the related table. This would prevent the relationship from specifying multiple related records."),
      *this, Gtk::MESSAGE_ERROR);
     relationship_invalid = true;

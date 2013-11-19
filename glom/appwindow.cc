@@ -172,7 +172,7 @@ void AppWindow::on_connection_avahi_begin()
   delete m_avahi_progress_dialog;
   m_avahi_progress_dialog = 0;
 
-  m_avahi_progress_dialog = new Gtk::MessageDialog(Utils::bold_message(_("Glom: Generating Encryption Certificates")), true, Gtk::MESSAGE_INFO);
+  m_avahi_progress_dialog = new Gtk::MessageDialog(UiUtils::bold_message(_("Glom: Generating Encryption Certificates")), true, Gtk::MESSAGE_INFO);
   m_avahi_progress_dialog->set_secondary_text(_("Please wait while Glom prepares your system for publishing over the network."));
   m_avahi_progress_dialog->set_transient_for(*this);
   m_avahi_progress_dialog->show();
@@ -471,10 +471,10 @@ void AppWindow::on_menu_help_about()
     
     //For some reason this use of the resource:// syntax does not work:
     const char* about_icon_name = "48x48/glom.png";
-    //const Glib::ustring glom_icon_path = "resource://" + Utils::get_icon_path(about_icon_name);
+    //const Glib::ustring glom_icon_path = "resource://" + UiUtils::get_icon_path(about_icon_name);
     //Glib::RefPtr<Gdk::Pixbuf> logo = Gdk::Pixbuf::create_from_file(glom_icon_path);
 
-    const Glib::ustring glom_icon_path = Utils::get_icon_path(about_icon_name);
+    const Glib::ustring glom_icon_path = UiUtils::get_icon_path(about_icon_name);
 
     //TODO: Use this, instead of the C API, when we can depend on gtkmm 3.12, with a try/catch:
     //Glib::RefPtr<Gdk::Pixbuf> logo = Gdk::Pixbuf::create_from_resource(glom_icon_path);
@@ -613,7 +613,7 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
     dialog_connection->set_transient_for(*this);
     dialog_connection->set_connect_to_browsed();
     dialog_connection->set_database_name(service_name);
-    const int response = Glom::Utils::dialog_run_with_help(dialog_connection);
+    const int response = Glom::UiUtils::dialog_run_with_help(dialog_connection);
     dialog_connection->hide();
     if(response != Gtk::RESPONSE_OK)
       keep_trying = false;
@@ -640,7 +640,7 @@ void AppWindow::open_browsed_document(const EpcServiceInfo* server, const Glib::
         {
           //std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
 
-          Utils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *this, Gtk::MESSAGE_ERROR); //TODO: Add help button.
+          UiUtils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *this, Gtk::MESSAGE_ERROR); //TODO: Add help button.
         }
       }
       else
@@ -978,7 +978,7 @@ bool AppWindow::on_document_load()
     const AppState::userlevels userlevel = pDocument->get_userlevel(reason);
     if( (userlevel == AppState::USERLEVEL_OPERATOR) && (reason == Document::USER_LEVEL_REASON_FILE_READ_ONLY) )
     {
-      Gtk::MessageDialog dialog(Utils::bold_message(_("Opening Read-Only File.")), true,  Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE);
+      Gtk::MessageDialog dialog(UiUtils::bold_message(_("Opening Read-Only File.")), true,  Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE);
       dialog.set_secondary_text(_("This file is read only, so you will not be able to enter Developer mode to make design changes."));
       dialog.set_transient_for(*this);
       dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
@@ -1303,7 +1303,7 @@ bool AppWindow::offer_new_or_existing()
   bool ask_again = true;
   while(ask_again)
   {
-    const int response_id = Utils::dialog_run_with_help(dialog_raw);
+    const int response_id = UiUtils::dialog_run_with_help(dialog_raw);
     dialog->hide();
 
     if(response_id == Gtk::RESPONSE_ACCEPT)
@@ -1473,7 +1473,7 @@ void AppWindow::set_mode_find()
 
 void AppWindow::on_menu_help_contents()
 {
-  Glom::Utils::show_help();
+  Glom::UiUtils::show_help();
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -1754,7 +1754,7 @@ bool AppWindow::recreate_database_from_backup(const Glib::ustring& backup_uri, b
 
 
     const Glib::ustring message = _("Glom could not create the new database. Maybe you do not have the necessary access rights. Please contact your system administrator.");
-    Gtk::MessageDialog dialog(Utils::bold_message(_("Database Creation Failed")), true, Gtk::MESSAGE_ERROR );
+    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Database Creation Failed")), true, Gtk::MESSAGE_ERROR );
     dialog.set_secondary_text(message);
     dialog.set_transient_for(*this);
 
@@ -2351,7 +2351,7 @@ void AppWindow::on_menu_developer_changelanguage()
     return;
     
   dialog->set_transient_for(*this);
-  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
 
   if(response == Gtk::RESPONSE_OK)

@@ -158,7 +158,7 @@ void Dialog_UsersList::on_button_user_delete()
         const Glib::ustring user = row[m_model_columns_users.m_col_name];
         if(!user.empty())
         {
-          Gtk::MessageDialog dialog(Utils::bold_message(_("Delete User")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
+          Gtk::MessageDialog dialog(UiUtils::bold_message(_("Delete User")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
           dialog.set_secondary_text(_("Are your sure that you wish to delete this user?"));
           dialog.set_transient_for(*this);
 
@@ -184,7 +184,7 @@ void Dialog_UsersList::on_button_user_add()
   const Privs::type_vec_strings users = Privs::get_database_users();
   if(users.empty())
   {
-    Utils::show_ok_dialog(_("Error Retrieving the List of Users"),
+    UiUtils::show_ok_dialog(_("Error Retrieving the List of Users"),
       _("Glom could not get the list of users from the database server. You probably do not have enough permissions. You should be a superuser."), *this, Gtk::MESSAGE_ERROR);
     return;
   }
@@ -198,7 +198,7 @@ void Dialog_UsersList::on_button_user_add()
 
   dialog->set_user_list(users);
 
-  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
 
   const Glib::ustring user = dialog->get_user();
 
@@ -245,7 +245,7 @@ void Dialog_UsersList::on_button_user_new()
   bool keep_trying = true;
   while(keep_trying)
   {
-    response = Glom::Utils::dialog_run_with_help(dialog);
+    response = Glom::UiUtils::dialog_run_with_help(dialog);
 
     //Check the password is acceptable:
     if(response == Gtk::RESPONSE_OK)
@@ -309,7 +309,7 @@ void Dialog_UsersList::on_button_user_edit()
       bool keep_trying = true;
       while(keep_trying)
       {
-        response = Glom::Utils::dialog_run_with_help(dialog);
+        response = Glom::UiUtils::dialog_run_with_help(dialog);
 
         //Check the password is acceptable:
         if(response == Gtk::RESPONSE_OK)
@@ -411,7 +411,7 @@ bool Dialog_UsersList::warn_about_empty_standard_group()
   {
     if(m_model_users->children().size() == 1)
     {
-      Gtk::MessageDialog dialog(Utils::bold_message(_("Developer group may not be empty.")), true, Gtk::MESSAGE_WARNING);
+      Gtk::MessageDialog dialog(UiUtils::bold_message(_("Developer group may not be empty.")), true, Gtk::MESSAGE_WARNING);
       dialog.set_secondary_text(_("The developer group must contain at least one user."));
       dialog.set_transient_for(*this);
       dialog.run();

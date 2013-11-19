@@ -119,7 +119,7 @@ void Base_DB::handle_error(const Glib::Exception& ex)
 {
   std::cerr << G_STRFUNC << ": Internal Error (Base_DB::handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
 
-  Gtk::MessageDialog dialog(Utils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
   dialog.set_secondary_text(ex.what());
   //TODO: dialog.set_transient_for(*get_appwindow());
   dialog.run();
@@ -129,7 +129,7 @@ void Base_DB::handle_error(const std::exception& ex)
 {
   std::cerr << G_STRFUNC << ": Internal Error (Base_DB::handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
 
-  Gtk::MessageDialog dialog(Utils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
   dialog.set_secondary_text(ex.what());
   //TODO: dialog.set_transient_for(*get_appwindow());
 
@@ -268,7 +268,7 @@ sharedptr<Field> Base_DB::change_column(const Glib::ustring& table_name, const s
   catch(const Glib::Error& ex)
   {
     handle_error(ex);
-//    Gtk::MessageDialog window(*parent_window, Utils::bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+//    Gtk::MessageDialog window(*parent_window, UiUtils::bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
 //    window.run();
     return sharedptr<Field>();
   }
@@ -296,7 +296,7 @@ bool Base_DB::change_columns(const Glib::ustring& table_name, const type_vec_con
   catch(const Glib::Error& ex)
   {
     handle_error(ex);
-//    Gtk::MessageDialog window(*parent_window, Utils::bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+//    Gtk::MessageDialog window(*parent_window, UiUtils::bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
 //    window.run();
     return false;
   }
@@ -464,7 +464,7 @@ sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_
     dialog->set_transient_for(*transient_for);
 
   dialog->set_textobject(start_textobject, Glib::ustring(), show_title);
-  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
   if(response == Gtk::RESPONSE_OK)
   {
@@ -490,7 +490,7 @@ sharedptr<LayoutItem_Image> Base_DB::offer_imageobject(const sharedptr<LayoutIte
     dialog->set_transient_for(*transient_for);
 
   dialog->set_imageobject(start_imageobject, Glib::ustring(), show_title);
-  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
   if(response == Gtk::RESPONSE_OK)
   {
@@ -517,7 +517,7 @@ sharedptr<LayoutItem_Notebook> Base_DB::offer_notebook(const sharedptr<LayoutIte
 
   dialog->set_notebook(start_notebook);
   //dialog->set_transient_for(*this);
-  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
   if(response == Gtk::RESPONSE_OK)
   {

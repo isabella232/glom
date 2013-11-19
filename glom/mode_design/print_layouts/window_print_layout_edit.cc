@@ -579,7 +579,7 @@ void Window_PrintLayout_Edit::update_table_title()
   if(m_label_table_name)
   {
     m_label_table_name->set_markup(
-      Utils::bold_message(table_label));
+      UiUtils::bold_message(table_label));
   }
 }
 
@@ -835,7 +835,7 @@ void Window_PrintLayout_Edit::on_menu_insert_line_vertical()
 void Window_PrintLayout_Edit::on_menu_insert_create_standard()
 {
   //Ask for confirmation:
-  Gtk::MessageDialog dialog(Utils::bold_message(_("Create Standard Layout")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Create Standard Layout")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
   dialog.set_secondary_text(_("This is an experimental feature. It will remove all items from the print layout and then try to create a layout similar to the layout of the detail view."));
   dialog.set_transient_for(*this);
   dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);
@@ -879,7 +879,7 @@ void Window_PrintLayout_Edit::on_menu_insert_delete_page()
     return;
 
   //Ask the user to confirm:
-  Gtk::MessageDialog dialog(Utils::bold_message(_("Remove page")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Remove page")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
   dialog.set_secondary_text(_("Are you sure that you wish to remove the last page and any items on that page?"));
   dialog.set_transient_for(*this);
   dialog.add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);

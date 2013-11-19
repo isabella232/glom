@@ -197,7 +197,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     if(with_extra_widgets)
     {
       hbox_parent = Gtk::manage( new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL) ); //We put the child (and any extra stuff) in this:
-      hbox_parent->set_spacing(Utils::DEFAULT_SPACING_SMALL);
+      hbox_parent->set_spacing(UiUtils::DEFAULT_SPACING_SMALL);
 
       hbox_parent->pack_start(*m_child);
       hbox_parent->show();
@@ -367,7 +367,7 @@ void DataWidget::set_child_size_by_field(const sharedptr<const LayoutItem_Field>
 
 int DataWidget::get_suitable_width(const sharedptr<const LayoutItem_Field>& field_layout)
 {
-  return Utils::get_suitable_field_width_for_widget(*this, field_layout);
+  return UiUtils::get_suitable_field_width_for_widget(*this, field_layout);
 }
 
 void DataWidget::set_viewable(bool viewable)
@@ -640,7 +640,7 @@ void DataWidget::on_button_choose_date()
       dialog->set_transient_for(*parent);
     dialog->set_date_chosen(get_value());
 
-    const int response = Glom::Utils::dialog_run_with_help(dialog);
+    const int response = Glom::UiUtils::dialog_run_with_help(dialog);
     dialog->hide();
     if(response == Gtk::RESPONSE_OK)
     {

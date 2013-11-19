@@ -100,7 +100,7 @@ void AddDel::init()
   set_prevent_user_signals();
   set_ignore_treeview_signals();
 
-  set_spacing(Utils::DEFAULT_SPACING_SMALL);
+  set_spacing(UiUtils::DEFAULT_SPACING_SMALL);
 
   m_bAllowUserActions = true;
 
@@ -159,7 +159,7 @@ void AddDel::warn_about_duplicate()
   else
     message = m_prevent_duplicates_warning; //Something more specific and helpful.
 
-  Gtk::MessageDialog dialog(Utils::bold_message(_("Duplicate")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK);
+  Gtk::MessageDialog dialog(UiUtils::bold_message(_("Duplicate")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK);
   dialog.set_secondary_text(message);
 
   //TODO: dialog.set_transient_for(get_parent_window());
@@ -593,7 +593,7 @@ void AddDel::construct_specified_columns()
   m_TreeView.set_model(m_refListStore);
 
   //Remove all View columns:
-  Utils::treeview_delete_all_columns(&m_TreeView);
+  UiUtils::treeview_delete_all_columns(&m_TreeView);
 
   //Add new View Colums:
   int model_column_index = 0;

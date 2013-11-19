@@ -252,7 +252,7 @@ void Dialog_Import_CSV::clear()
   // TODO: Do we explicitely need to cancel async operations?
   // TODO: Disconnect idle handlers
   m_sample_model.reset();
-  Utils::treeview_delete_all_columns(m_sample_view);
+  UiUtils::treeview_delete_all_columns(m_sample_view);
   m_sample_view->set_model(m_sample_model);
   m_field_model.reset();
   m_field_model_sorted.reset();
@@ -271,7 +271,7 @@ void Dialog_Import_CSV::clear()
 
 void Dialog_Import_CSV::show_error_dialog(const Glib::ustring&, const Glib::ustring& secondary)
 {
-  Utils::show_ok_dialog(_("Error Importing CSV File"),
+  UiUtils::show_ok_dialog(_("Error Importing CSV File"),
      secondary, *this, Gtk::MESSAGE_ERROR);
 }
 
@@ -433,7 +433,7 @@ void Dialog_Import_CSV::begin_parse()
   // Clear sample preview since we reparse everything, perhaps with
   // another encoding.
   m_sample_model.reset();
-  Utils::treeview_delete_all_columns(m_sample_view);
+  UiUtils::treeview_delete_all_columns(m_sample_view);
   m_sample_view->set_model(m_sample_model); // Empty model
   m_parser->clear();
 
@@ -450,7 +450,7 @@ void Dialog_Import_CSV::on_parser_encoding_error()
   m_parser->clear();
   // Clear sample preview (TODO: Let it visible, and only remove when reparsing?)
   m_sample_model.reset();
-  Utils::treeview_delete_all_columns(m_sample_view);
+  UiUtils::treeview_delete_all_columns(m_sample_view);
   m_sample_view->set_model(m_sample_model); // Empty model
 
   // Don't allow the import button to be pressed when an error occured. This

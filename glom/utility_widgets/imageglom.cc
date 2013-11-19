@@ -418,7 +418,7 @@ void ImageGlom::show_image_data()
     if(use_gdkpixbuf)
     {
       //Try to use GdkPixbuf's loader:
-      m_pixbuf_original = Utils::get_pixbuf_for_gda_value(m_original_data);
+      m_pixbuf_original = UiUtils::get_pixbuf_for_gda_value(m_original_data);
     }
     else
     {
@@ -464,7 +464,7 @@ Glib::RefPtr<Gdk::Pixbuf> ImageGlom::get_scaled_image()
   {
     if(true) //allocation_height > 10 || allocation_width > 10)
     {
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = Utils::image_scale_keeping_ratio(pixbuf, allocation_height, allocation_width);
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = UiUtils::image_scale_keeping_ratio(pixbuf, allocation_height, allocation_width);
       
       //Don't set a new pixbuf if the dimensions have not changed:
       Glib::RefPtr<Gdk::Pixbuf> pixbuf_in_image;

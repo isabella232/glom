@@ -285,7 +285,7 @@ bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& f
     if(field_new->get_calculation() != field_old->get_calculation())
     {
       //TODO: Only show this when there are > 100 records?
-      Gtk::MessageDialog dialog(Utils::bold_message(_("Recalculation Required")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+      Gtk::MessageDialog dialog(UiUtils::bold_message(_("Recalculation Required")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
       dialog.set_secondary_text(_("You have changed the calculation used by this field so Glom must recalculate the value in all records. If the table contains many records then this could take a long time."));
       if(parent_window)
         dialog.set_transient_for(*parent_window);
@@ -300,7 +300,7 @@ bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& f
   //Refuse to edit field definitions that were not created by glom:
   if(field_old->get_glom_type() == Field::TYPE_INVALID)
   {
-    Utils::show_ok_dialog(_("Invalid database structure"),
+    UiUtils::show_ok_dialog(_("Invalid database structure"),
       _("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."), parent_window, Gtk::MESSAGE_ERROR);
 
     return false;
@@ -309,7 +309,7 @@ bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& f
   //Refuse to have no primary key set:
   if(field_old->get_primary_key() && !field_new->get_primary_key()) //Was the primary key column unchecked?
   {
-    Utils::show_ok_dialog(_("Primary key required"), 
+    UiUtils::show_ok_dialog(_("Primary key required"), 
       _("You may not unset the primary key because the table must have a primary key. You may set another field as the primary key instead."), parent_window, Gtk::MESSAGE_ERROR);
 
       return false;
@@ -322,7 +322,7 @@ bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& f
     //Check for nulls:
     if(field_has_null_values(field_old)) //Use the fieldOld because we only use the name, and we want to check the _existing_ field:
     {
-      Utils::show_ok_dialog(_("Field contains empty values."), _("The field may not yet be used as a primary key because it contains empty values."), parent_window, Gtk::MESSAGE_ERROR);
+      UiUtils::show_ok_dialog(_("Field contains empty values."), _("The field may not yet be used as a primary key because it contains empty values."), parent_window, Gtk::MESSAGE_ERROR);
 
       //TODO: Offer to fill it in with generated ID numbers? That could give strange results if the existing values are human-readable.
       return false;
@@ -331,12 +331,12 @@ bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& f
     //Check that the values are unique:
     if(field_has_non_unique_values(field_old)) //Use the fieldOld because we only use the name, and we want to check the _existing_ field:
     {
-      Utils::show_ok_dialog(_("Field contains non-unique values."), _("The field may not yet be used as a primary key because it contains values that are not unique."), parent_window, Gtk::MESSAGE_ERROR);
+      UiUtils::show_ok_dialog(_("Field contains non-unique values."), _("The field may not yet be used as a primary key because it contains values that are not unique."), parent_window, Gtk::MESSAGE_ERROR);
       return false;
     }
 
     //Ask the user to confirm this major change:
-    Gtk::MessageDialog dialog(Utils::bold_message(_("Change primary key")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+    Gtk::MessageDialog dialog(UiUtils::bold_message(_("Change primary key")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
     dialog.set_secondary_text(_("Are you sure that you wish to set this field as the primary key, instead of the existing primary key?"));
     if(parent_window)
       dialog.set_transient_for(*parent_window);
@@ -354,7 +354,7 @@ bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& f
     std::cout << "get_field_exists_in_database(" << m_table_name << ", " << field_new->get_name() << ") returned true" << std::endl;
 
     //Warn the user and refuse to make the change:
-    Utils::show_ok_dialog(_("Field Name Already Exists"), 
+    UiUtils::show_ok_dialog(_("Field Name Already Exists"), 
       _("This field already exists. Please choose a different field name"), parent_window, Gtk::MESSAGE_ERROR);
 
     return false;

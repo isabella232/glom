@@ -204,7 +204,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
     if(image)
     {
       Glib::RefPtr<CanvasImageMovable> canvas_item = CanvasImageMovable::create();
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::get_pixbuf_for_gda_value(image->m_image);
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf = UiUtils::get_pixbuf_for_gda_value(image->m_image);
       if(pixbuf)
         canvas_item->set_image(pixbuf);
       else
@@ -490,7 +490,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
       double height = 0;
       canvas_item->get_width_height(width, height);
 
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::get_pixbuf_for_gda_value(value);
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf = UiUtils::get_pixbuf_for_gda_value(value);
       if(pixbuf)
         canvas_item->set_image(pixbuf);
       else

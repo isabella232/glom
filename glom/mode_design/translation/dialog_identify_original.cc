@@ -52,7 +52,7 @@ void Dialog_IdentifyOriginal::load_from_document()
   std::cout << "Dialog_IdentifyOriginal::load_from_document" << std::endl;
 
   if(m_label_original )
-    m_label_original->set_markup( Utils::bold_message( IsoCodes::get_locale_name( get_document()->get_translation_original_locale()) ) );
+    m_label_original->set_markup( UiUtils::bold_message( IsoCodes::get_locale_name( get_document()->get_translation_original_locale()) ) );
 
   m_combo_locale->set_selected_locale(AppWindow::get_current_locale());
 

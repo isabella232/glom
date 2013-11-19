@@ -572,7 +572,7 @@ void Box_Formatting::on_button_choices_extra()
   if(!m_dialog_choices_extra_fields)
     return;
 
-  const int response = Glom::Utils::dialog_run_with_help(m_dialog_choices_extra_fields);
+  const int response = Glom::UiUtils::dialog_run_with_help(m_dialog_choices_extra_fields);
   m_dialog_choices_extra_fields->hide();
   if(response == Gtk::RESPONSE_OK && m_dialog_choices_extra_fields->get_modified())
   {
@@ -591,7 +591,7 @@ void Box_Formatting::on_button_choices_sortby()
   if(!m_dialog_choices_sortby)
     return;
 
-  const int response = Glom::Utils::dialog_run_with_help(m_dialog_choices_sortby);
+  const int response = Glom::UiUtils::dialog_run_with_help(m_dialog_choices_sortby);
   m_dialog_choices_sortby->hide();
   if(response == Gtk::RESPONSE_OK && m_dialog_choices_sortby->get_modified())
   {

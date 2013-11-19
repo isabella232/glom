@@ -29,7 +29,7 @@ namespace Glom
 
 FileChooser_Export::FileChooser_Export()
 : Gtk::FileChooserDialog(_("Export to File"), Gtk::FILE_CHOOSER_ACTION_SAVE),
-  m_extra_widget(Gtk::ORIENTATION_HORIZONTAL, Utils::DEFAULT_SPACING_SMALL),
+  m_extra_widget(Gtk::ORIENTATION_HORIZONTAL, UiUtils::DEFAULT_SPACING_SMALL),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_button_format(_("Define Data _Format"), true /* use mnenomic */),
   m_pDialogLayout(0),

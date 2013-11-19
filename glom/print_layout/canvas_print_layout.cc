@@ -342,7 +342,7 @@ sharedptr<LayoutItem_Portal> Canvas_PrintLayout::offer_related_records(const sha
   if(parent)
     dialog->set_transient_for(*parent);
 
-  Utils::show_window_until_hide(dialog);
+  UiUtils::show_window_until_hide(dialog);
 
   result = dialog->get_portal_layout();
 
@@ -366,7 +366,7 @@ sharedptr<LayoutItem_Line> Canvas_PrintLayout::offer_line(const sharedptr<Layout
     
   dialog->set_line(line);
 
-  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  const int response = Glom::UiUtils::dialog_run_with_help(dialog);
   dialog->hide();
   if(response == Gtk::RESPONSE_OK)
   {
@@ -1008,7 +1008,7 @@ void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanva
     if(!canvas_image)
       return;
 
-    Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::get_pixbuf_for_gda_value(value);
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf = UiUtils::get_pixbuf_for_gda_value(value);
     canvas_image->property_pixbuf() = pixbuf;
   }
   else //text, numbers, date, time, boolean:

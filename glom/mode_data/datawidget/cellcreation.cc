@@ -133,7 +133,7 @@ Gtk::CellRenderer* create_cell(const sharedptr<const LayoutItem>& layout_item, c
     {
       Gtk::CellRendererPixbuf* pixbuf_renderer = Gtk::manage( new Gtk::CellRendererPixbuf() );
 
-      const Glib::RefPtr<const Gdk::Pixbuf> pixbuf = Utils::get_pixbuf_for_gda_value(item_image->m_image);
+      const Glib::RefPtr<const Gdk::Pixbuf> pixbuf = UiUtils::get_pixbuf_for_gda_value(item_image->m_image);
       if(pixbuf)
         pixbuf_renderer->set_property("pixbuf", pixbuf);
       else

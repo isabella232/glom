@@ -779,7 +779,7 @@ void handle_error(const Glib::Exception& ex)
   std::cerr << G_STRFUNC << ": Internal Error (handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
 
   //TODO_Moved:
-  //Gtk::MessageDialog dialog(Utils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
+  //Gtk::MessageDialog dialog(UiUtils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
   //dialog.set_secondary_text(ex.what());
   //TODO: dialog.set_transient_for(*get_appwindow());
   //dialog.run();
@@ -790,7 +790,7 @@ void handle_error(const std::exception& ex)
   std::cerr << G_STRFUNC << ": Internal Error (handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
 
  //TODO_Moved:
-  //Gtk::MessageDialog dialog(Utils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
+  //Gtk::MessageDialog dialog(UiUtils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
   //dialog.set_secondary_text(ex.what());
   //TODO: dialog.set_transient_for(*get_appwindow());
   //dialog.run();
@@ -1340,7 +1340,7 @@ bool add_column(const Glib::ustring& table_name, const sharedptr<const Field>& f
   catch(const Glib::Error& ex)
   {
     handle_error(ex);
-//    Gtk::MessageDialog window(*parent_window, Utils::bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+//    Gtk::MessageDialog window(*parent_window, UiUtils::bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
 //    window.run();
     return false;
   }
@@ -1359,7 +1359,7 @@ bool drop_column(const Glib::ustring& table_name, const Glib::ustring& field_nam
   catch(const Glib::Error& ex)
   {
     handle_error(ex);
-//    Gtk::MessageDialog window(*parent_window, Utils::bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+//    Gtk::MessageDialog window(*parent_window, UiUtils::bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
 //    window.run();
     return false;
   }
