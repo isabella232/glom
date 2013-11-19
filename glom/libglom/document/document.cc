@@ -94,7 +94,7 @@ static const char GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_LINE_COLOR[] = "column_
 static const char GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_COLUMN_LINE_WIDTH[] = "row_line_width";
 static const char GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_LINE_COLOR[] = "line_color";
 static const char GLOM_ATTRIBUTE_PORTAL_CALENDAR_DATE_FIELD[] = "date_field";
-static const char GLOM_NODE_DATA_LAYOUT_ITEM[] = "data_layout_item"; //A field.
+static const char GLOM_NODE_DATA_LAYOUT_ITEM_FIELD[] = "data_layout_item"; //A field.
 static const char GLOM_NODE_LAYOUT_ITEM_CUSTOM_TITLE[] = "title_custom";
 static const char GLOM_NODE_TABLE_TITLE_SINGULAR[] = "title_singular"; //such as "Customer" instead of "Customers".
 static const char GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE_USE[] = "use_custom";
@@ -2156,7 +2156,7 @@ void Document::load_after_sort_by(const xmlpp::Element* node, const Glib::ustrin
   if(!node)
     return;
 
-  xmlpp::Node::NodeList listNodes = node->get_children(GLOM_NODE_DATA_LAYOUT_ITEM);
+  xmlpp::Node::NodeList listNodes = node->get_children(GLOM_NODE_DATA_LAYOUT_ITEM_FIELD);
   for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
   {
     const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
@@ -2203,7 +2203,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
     const xmlpp::Element* element = dynamic_cast<const xmlpp::Element*>(*iter);
     if(element)
     {
-      if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM) //TODO: Rename this to GLOM_NODE_DATA_LAYOUT_ITEM_FIELD
+      if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELD)
       {
         sharedptr<LayoutItem_Field> item = sharedptr<LayoutItem_Field>::create();
         //item.set_full_field_details_empty();
@@ -3272,7 +3272,7 @@ void Document::save_before_sort_by(xmlpp::Element* node, const LayoutItem_GroupB
   {
     sharedptr<const LayoutItem_Field> field = iter->first;
 
-    xmlpp::Element* nodeChild = node->add_child(GLOM_NODE_DATA_LAYOUT_ITEM);
+    xmlpp::Element* nodeChild = node->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_FIELD);
     save_before_layout_item_field(nodeChild, field);
 
     XmlUtils::set_node_attribute_value_as_bool(nodeChild, GLOM_ATTRIBUTE_SORT_ASCENDING, iter->second);
@@ -3478,7 +3478,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
         sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
         if(field) //If it is a field
         {
-          nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_ITEM);
+          nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_ITEM_FIELD);
           save_before_layout_item_field(nodeItem, field);
         }
         else
