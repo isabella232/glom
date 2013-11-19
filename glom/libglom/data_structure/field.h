@@ -232,6 +232,8 @@ private:
 
   static void init_map();
 
+  GType get_gda_data_type_with_fallback(const Gnome::Gda::Value& value);
+
   //The glom type to be used for the gda type:
   typedef std::map<GType, glom_field_type> type_map_gda_type_to_glom_type;
   static type_map_gda_type_to_glom_type m_map_gda_type_to_glom_type;

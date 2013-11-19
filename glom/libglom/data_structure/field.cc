@@ -176,28 +176,31 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
   if(cur_type == G_TYPE_NONE)
     set_glom_type( get_glom_type_for_gda_type(fieldinfo->get_g_type()) );
 
-  Gnome::Gda::Value value = get_default_value();
+  const Gnome::Gda::Value value = get_default_value();
   if(!value.is_null())
   {
     // Check that the default value is consistent with the field's type
-    // TODO: Basically copied from set_default_value(). Maybe this check should
-    // be moved into an extra function.
-    GType cur_type = get_gda_type_for_glom_type(get_glom_type());
-    const FieldTypes* pFieldTypes = get_field_types();
-
-    // Take into account that value might be one of the fallback types
-    if(pFieldTypes)
-    {
-      while(cur_type != value.get_value_type() && cur_type != G_TYPE_NONE)
-        cur_type = pFieldTypes->get_fallback_type_for_gdavaluetype(cur_type);
-    }
-
-    if(!value.is_null() && value.get_value_type() != cur_type)
+    if(!value.is_null() && value.get_value_type() != get_gda_data_type_with_fallback(value))
     {
       std::cerr << G_STRFUNC << ": New field's default value type (" << g_type_name(value.get_value_type()) << " does not match field type (" << g_type_name(get_gda_type_for_glom_type(get_glom_type())) << "). Resetting default value." << std::endl;
       m_field_info->set_default_value(Gnome::Gda::Value());
     }
   }
+}
+
+GType Field::get_gda_data_type_with_fallback(const Gnome::Gda::Value& value)
+{
+  GType cur_type = get_gda_type_for_glom_type(get_glom_type());
+  const FieldTypes* pFieldTypes = get_field_types();
+
+  // Take into account that value might be one of the fallback types
+  if(pFieldTypes)
+  {
+    while(cur_type != value.get_value_type() && cur_type != G_TYPE_NONE)
+      cur_type = pFieldTypes->get_fallback_type_for_gdavaluetype(cur_type);
+  }
+
+  return cur_type;
 }
 
 sharedptr<Relationship> Field::get_lookup_relationship() const
@@ -523,21 +526,7 @@ void Field::set_default_value(const Gnome::Gda::Value& value)
   // TODO: Allow setting a NULL default value when glom type is invalid?
 
   // Verify that the value matches the type of the field.
-  GType cur_type = get_gda_type_for_glom_type(get_glom_type());
-  const FieldTypes* pFieldTypes = 0;
-
-  ConnectionPool* pConnectionPool = ConnectionPool::get_instance();
-  if(pConnectionPool)
-    pFieldTypes = pConnectionPool->get_field_types();
-
-  // Take into account that value might be one of the fallback types
-  if(pFieldTypes)
-  {
-    while(cur_type != value.get_value_type() && cur_type != G_TYPE_NONE)
-      cur_type = pFieldTypes->get_fallback_type_for_gdavaluetype(cur_type);
-  }
-
-  if(value.is_null() || value.get_value_type() == cur_type)
+  if(value.is_null() || value.get_value_type() == get_gda_data_type_with_fallback(value))
     m_field_info->set_default_value(value);
   else
     std::cerr << G_STRFUNC << ": Cannot set incompatible default value: Default value has type " << g_type_name(value.get_value_type()) << ", but field has type " << g_type_name(get_gda_type_for_glom_type(get_glom_type())) << std::endl;
