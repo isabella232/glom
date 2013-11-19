@@ -252,7 +252,7 @@ int main()
   g_assert( document.get_table_title_singular_original("scenes") == "Scene" );
   
   g_assert( document.get_table_title("scenes", locale_de) == "Szenen" );
-  g_assert( document.get_table_title_singular("scenes", locale_de) == "Szene" ); //TODO: Make sure this is translated correctly.
+  g_assert( document.get_table_title_singular("scenes", locale_de) == "Szene" );
 
   //Check a field:
   Glom::sharedptr<const Glom::Field> field = document.get_field("contacts", "contact_id");

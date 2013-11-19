@@ -147,9 +147,6 @@ void remove_auto_increment(const Glib::ustring& table_name, const Glib::ustring&
 void layout_item_fill_field_details(const Document* document, const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item);
 
 
-//TODO: It would be nice to use sharedptr<const Relationship>& instead of sharedptr<Relationship>&,
-//but it does not seem possible to pass a sharedptr<const Relationship> for a sharedptr<const Relationship>&.
-
 /** Decides whether a field should have an Open button next to it,
  * allowing the user to navigate to a related record.
  *

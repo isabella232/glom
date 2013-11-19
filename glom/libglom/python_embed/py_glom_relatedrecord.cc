@@ -68,7 +68,6 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
   const Glib::ustring related_table = m_relationship->get_to_table();
 
   //Check whether the field exists in the table.
-  //TODO_Performance: Do this without the useless Field information?
   sharedptr<const Field> field = m_document->get_field(m_relationship->get_to_table(), field_name);
   if(!field)
   {
@@ -155,7 +154,6 @@ boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& 
   const Glib::ustring related_table = m_relationship->get_to_table();
 
   //Check whether the field exists in the table.
-  //TODO_Performance: Do this without the useless Field information?
   sharedptr<Field> field = m_document->get_field(m_relationship->get_to_table(), field_name);
   if(!field)
   {
