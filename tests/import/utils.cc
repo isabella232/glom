@@ -40,7 +40,7 @@ static Glib::ustring create_file_from_buffer(const char* input, guint input_size
   catch(const Gio::Error& ex)
   {
     std::cerr << G_STRFUNC << ": Gio::File::write() failed: " << ex.what() << std::endl;
-    return false;
+    return std::string();
   }
 
   return file_uri;
