@@ -49,6 +49,19 @@ TableInfo& TableInfo::operator=(const TableInfo& src)
   return *this;
 }
 
+bool TableInfo::operator==(const TableInfo& src) const
+{
+  return TranslatableItem::operator==(src) &&
+    HasTitleSingular::operator==(src) && 
+    (m_hidden == src.m_hidden) &&
+    (m_default == src.m_default);
+}
+
+bool TableInfo::operator!=(const TableInfo& src) const
+{
+  return !operator==(src);
+}
+
 bool TableInfo::get_hidden() const
 {
   return m_hidden;

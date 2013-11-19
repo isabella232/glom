@@ -36,6 +36,9 @@ public:
   TableInfo(const TableInfo& src);
   TableInfo& operator=(const TableInfo& src);
 
+  bool operator==(const TableInfo& src) const;
+  bool operator!=(const TableInfo& src) const;
+
   /** Returns true if this table should not be shown in the list of tables when in operator mode.
    */
   bool get_hidden() const;

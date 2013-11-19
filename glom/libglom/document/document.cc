@@ -1304,9 +1304,12 @@ void Document::set_tables(const type_listTableInfo& tables)
     if(iterfind != tables.end())
     {
       sharedptr<TableInfo> infoFound = *iterfind;
-      *info = *infoFound; //TODO: Check that it has really changed, to avoid calling set_modified() unnecessarily?
+      if(infoFound && (*infoFound != *info))
+      {
+        *info = *infoFound;
 
-      something_changed = true;
+        something_changed = true;
+      }
     }
   }
 
