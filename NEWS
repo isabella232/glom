@@ -1,3 +1,16 @@
+1.25.4 (unstable):
+
+* Fix a crash when switching between Data and Find mode.
+  (Murray Cumming)
+* Fix some widget expansion in the UI.
+  (Murray Cumming)
+* Formatting: Do not allow a 0 line-height for multiline text.
+  (Murray Cumming)
+* Added some more tests.
+  (Murray Cumming
+* Some code cleanup.
+  (Murray Cumming)
+
 1.25.3 (unstable):
 
 * Make menu item accelerators work again.
