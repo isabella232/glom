@@ -261,7 +261,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
 
         nodeGroupBy->set_attribute("group_field", field_group_by->get_title_or_name(m_locale));
         nodeGroupBy->set_attribute("group_value",
-          Conversions::get_text_for_gda_value(field_group_by->get_glom_type(), group_value, field_group_by->get_formatting_used().m_numeric_format) );
+          Conversions::get_text_for_gda_value(field_group_by->get_glom_type(), group_value, m_locale, field_group_by->get_formatting_used().m_numeric_format) );
 
         //TODO: Use a SQL parameter instead of using sql().
         Gnome::Gda::SqlExpr where_clause =
@@ -510,14 +510,14 @@ bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
      nodeField->set_attribute("image_uri", Utils::create_local_image_uri(value));
   else
   {
-    Glib::ustring text_value = Conversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
+    Glib::ustring text_value = Conversions::get_text_for_gda_value(field_type, value, m_locale, field->get_formatting_used().m_numeric_format);
 
     //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:
     if(text_value.empty() && sharedptr<const LayoutItem_FieldSummary>::cast_dynamic(field) && (field_type == Field::TYPE_NUMERIC))
     {
       //Use get_text_for_gda_value() instead of "0" so we get the correct numerical formatting:
       const Gnome::Gda::Value value = Conversions::parse_value(0);
-      text_value = Conversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
+      text_value = Conversions::get_text_for_gda_value(field_type, value, m_locale, field->get_formatting_used().m_numeric_format);
     }
 
     nodeField->set_attribute("value", text_value);

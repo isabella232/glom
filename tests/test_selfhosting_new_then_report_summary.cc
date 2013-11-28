@@ -48,7 +48,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   Glom::FoundSet found_set; //TODO: Test a where clause.
   found_set.m_table_name = "invoices";
 
-  const Glib::ustring locale = "";  /* original locale */
+  const Glib::ustring locale = "en_US.UTF-8"; //Instead of just "" (current locale) so we know what numeric representations to expect and check for.
   Glom::ReportBuilder report_builder(locale);
   report_builder.set_document(&document);
   const Glib::ustring html = 

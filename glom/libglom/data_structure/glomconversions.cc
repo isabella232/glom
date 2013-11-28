@@ -339,6 +339,11 @@ double Conversions::get_double_for_gda_value_numeric(const Gnome::Gda::Value& va
   return numeric.get_double();
 }
 
+Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const Glib::ustring& locale, const NumericFormat& numeric_format, bool iso_format)
+{
+  return get_text_for_gda_value(glom_type, value, std::locale(locale.c_str()), numeric_format, iso_format);
+}
+
 Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const std::locale& locale, const NumericFormat& numeric_format, bool iso_format)
 {
   if(value.is_null()) //The type can be null for any of the actual field types.
