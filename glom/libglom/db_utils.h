@@ -214,7 +214,12 @@ bool remove_user_from_group(const Glib::ustring& user, const Glib::ustring& grou
 
 /** Get the value of the @a source_field from the @a relationship, using the @a key_value.
  */
-Gnome::Gda::Value get_lookup_value(const Document* document, const Glib::ustring& table_name, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value & key_value);
+Gnome::Gda::Value get_lookup_value(const Document* document, const Glib::ustring& table_name, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& source_field, const Gnome::Gda::Value& key_value);
+
+typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
+
+//TODO: Performance: This is massively inefficient:
+type_map_fields get_record_field_values(const Document* document, const Glib::ustring& table_name, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value);
   
 /** Allow a fake connection, so sqlbuilder_get_full_query() can work.
  */

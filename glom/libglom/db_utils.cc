@@ -2287,6 +2287,86 @@ Gnome::Gda::Value get_lookup_value(const Document* document, const Glib::ustring
   return result;
 }
 
+type_map_fields get_record_field_values(const Document* document, const Glib::ustring& table_name, const sharedptr<const Field>& primary_key, const Gnome::Gda::Value& primary_key_value)
+{
+  type_map_fields field_values;
+
+  if(!document)
+  {
+    std::cerr << G_STRFUNC << ": document is NULL." << std::endl;
+    return field_values;
+  }
+
+  //TODO: Cache the list of all fields, as well as caching (m_Fields) the list of all visible fields:
+  const Document::type_vec_fields fields = document->get_table_fields(table_name);
+
+  //TODO: This seems silly. We should just have a build_sql_select() that can take this container:
+  typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
+  type_vecLayoutFields fieldsToGet;
+  for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  {
+    const sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+    layout_item->set_full_field_details(*iter);
+
+    fieldsToGet.push_back(layout_item);
+  }
+
+  if(!Conversions::value_is_empty(primary_key_value))
+  {
+    //sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
+
+    Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_key(table_name, fieldsToGet, primary_key, primary_key_value);
+
+    Glib::RefPtr<const Gnome::Gda::DataModel> data_model;
+    try
+    {
+      data_model = DbUtils::query_execute_select(query);
+    }
+    catch(const Glib::Exception& ex)
+    {
+      std::cerr << G_STRFUNC << ": Exception while executing SQL: " << query << std::endl;
+      handle_error(ex);
+      return field_values;
+    }
+
+    if(data_model && data_model->get_n_rows())
+    {
+      int col_index = 0;
+      for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+      {
+        //There should be only 1 row. Well, there could be more but we will ignore them.
+        sharedptr<const Field> field = *iter;
+        Gnome::Gda::Value value = data_model->get_value_at(col_index, 0);
+        //Never give a NULL-type value to the python calculation for types that don't use them:
+        //to prevent errors:
+        if(value.is_null())
+          value = Conversions::get_empty_value(field->get_glom_type());
+
+        field_values[field->get_name()] = value;
+        ++col_index;
+      }
+    }
+    else
+    {
+      //Maybe the record does not exist yet
+      //(Maybe we need the field values so we can calculate default values for some fields when creating the record.)
+      //So we create appropriate empty values below.
+    }
+  }
+
+  if(field_values.empty()) //Maybe there was no primary key, or maybe the record is not yet in the database.
+  {
+    //Create appropriate empty values:
+    for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    {
+      sharedptr<const Field> field = *iter;
+      field_values[field->get_name()] = Conversions::get_empty_value(field->get_glom_type());
+    }
+  }
+
+  return field_values;
+}
+
 } //namespace DbUtils
 
 } //namespace Glom
