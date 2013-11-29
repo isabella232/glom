@@ -344,6 +344,7 @@ check_PROGRAMS += \
 	tests/python/test_python_execute_func_date \
 	tests/python/test_python_execute_func_change_result_type \
 	tests/python/test_python_execute_func_with_record \
+	tests/python/test_python_execute_func_with_record_field_types \
 	tests/python/test_python_execute_script \
 	tests/test_iso_codes
 #	glom/mode_data/test_flowtablewithfields
@@ -356,6 +357,7 @@ TESTS += \
 	tests/python/test_python_execute_func_date \
 	tests/python/test_python_execute_func_change_result_type \
 	tests/python/test_python_execute_func_with_record \
+	tests/python/test_python_execute_func_with_record_field_types \
 	tests/python/test_python_execute_script \
 	tests/test_iso_codes
 
@@ -430,6 +432,12 @@ tests_python_test_python_execute_func_with_record_SOURCES = tests/python/test_py
   glom/python_embed/glom_python.cc
 tests_python_test_python_execute_func_with_record_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(boost_python_libs)
 tests_python_test_python_execute_func_with_record_CPPFLAGS = $(tests_cppflags) $(tests_cppflags_ui)
+
+tests_python_test_python_execute_func_with_record_field_types_SOURCES = tests/python/test_python_execute_func_with_record_field_types.cc \
+  glom/python_embed/glom_python.cc \
+  $(sources_test_selfhosting_utils)
+tests_python_test_python_execute_func_with_record_field_types_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(boost_python_libs)
+tests_python_test_python_execute_func_with_record_field_types_CPPFLAGS = $(tests_cppflags) $(tests_cppflags_ui)
 
 tests_python_test_python_execute_script_SOURCES = tests/python/test_python_execute_script.cc \
   glom/python_embed/glom_python.cc
