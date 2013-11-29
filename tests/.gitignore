@@ -24,6 +24,7 @@
 /test_selfhosting_new_empty_change_sysprefs
 /test_selfhosting_new_empty_then_users
 /test_selfhosting_new_from_example
+/test_selfhosting_new_from_example_defaultvalues
 /test_selfhosting_new_from_example_float
 /test_selfhosting_new_from_example_operator
 /test_selfhosting_new_then_alter_table

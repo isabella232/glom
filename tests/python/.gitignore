@@ -2,6 +2,7 @@
 /test_python_execute_func
 /test_python_execute_func_bad_syntax
 /test_python_execute_func_change_result_type
+/test_python_execute_func_with_record_field_types
 /test_python_execute_func_date
 /test_python_execute_func_with_record
 /test_python_execute_script
