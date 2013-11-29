@@ -168,7 +168,7 @@ bool gda_python_module_is_available()
 }
 
 static boost::python::object glom_python_call(Field::glom_field_type result_type,
-  Document* pDocument,
+  const Document* pDocument,
   const Glib::ustring& func_impl,
   Glib::ustring& error_message,
   const boost::python::object& param1,
@@ -369,7 +369,7 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
 
 void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
   const type_map_fields& field_values,
-  Document* pDocument,
+  const Document* pDocument,
   const Glib::ustring& table_name,
   const sharedptr<const Field>& key_field,
   const Gnome::Gda::Value& key_field_value,
@@ -409,7 +409,7 @@ void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type,
   const Glib::ustring& func_impl,
   const type_map_fields& field_values,
-  Document* pDocument,
+  const Document* pDocument,
   const Glib::ustring& table_name,
   const sharedptr<const Field>& key_field,
   const Gnome::Gda::Value& key_field_value,

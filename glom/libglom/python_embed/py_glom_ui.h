@@ -23,7 +23,6 @@
 
 #include <boost/python.hpp>
 
-#include <libglom/document/document.h>
 #include <libglom/data_structure/field.h>
 #include <libglom/python_embed/py_glom_ui_callbacks.h>
 #include <glibmm/ustring.h>

@@ -38,7 +38,7 @@ public:
   PyGlomRelatedRecord();
   ~PyGlomRelatedRecord();
 
-  void set_relationship(const sharedptr<const Relationship>& relationship, const Gnome::Gda::Value& from_key_value, Document* document);
+  void set_relationship(const sharedptr<const Relationship>& relationship, const Gnome::Gda::Value& from_key_value, const Document* document);
 
   boost::python::object sum(const std::string& field_name) const;
   boost::python::object count(const std::string& field_name) const;
@@ -58,7 +58,7 @@ private:
 
   //PyObject* m_fields_dict; //Dictionary (map) of field names (string) to field values (Gnome::Gda::Value).
   //PyGlomRecord* m_record_parent;
-  Document* m_document;
+  const Document* m_document;
 
   sharedptr<const Relationship> m_relationship;
   Gnome::Gda::Value m_from_key_value;
