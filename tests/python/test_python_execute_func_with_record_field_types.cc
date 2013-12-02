@@ -30,18 +30,17 @@
 #include <boost/python.hpp>
 #include <iostream>
 
-template <typename FieldType>
-static Gnome::Gda::Value get_field_result(const Glom::Document& document,
+static bool get_field_result(const Glom::Document& document,
   const Glib::RefPtr<Gnome::Gda::Connection>& gda_connection,
   const Glib::ustring& table_name,
   const Glom::sharedptr<const Glom::Field>& primary_key_field,
   const Gnome::Gda::Value& primary_key_value,
   const Glom::type_map_fields field_values,
-  const Glib::ustring& field_name, const FieldType& expected_value)
+  const Glib::ustring& field_name, const Gnome::Gda::Value& expected_value)
 {
   const Glib::ustring calculation = "return record[\"" + field_name + "\"]";
 
-  const GType expected_value_gtype = Gnome::Gda::Value(expected_value).get_value_type();
+  const GType expected_value_gtype = expected_value.get_value_type();
 
   //Execute a python function:
   Gnome::Gda::Value value;
@@ -59,12 +58,12 @@ static Gnome::Gda::Value get_field_result(const Glom::Document& document,
   catch(const std::exception& ex)
   {
     std::cerr << G_STRFUNC << ": Exception: " << ex.what() << std::endl;
-    return value;
+    return false;
   }
   catch(const boost::python::error_already_set& ex)
   {
     std::cerr << G_STRFUNC << ": Exception: boost::python::error_already_set" << std::endl;
-    return value;
+    return false;
   }
 
   //std::cout << "type=" << g_type_name(value.get_value_type()) << std::endl;
@@ -73,10 +72,24 @@ static Gnome::Gda::Value get_field_result(const Glom::Document& document,
   if(!error_message.empty())
   {
     std::cerr << G_STRFUNC << ": Python error: " << error_message << std::endl;
-    return value;
+    return false;
   }
 
-  return value;
+  //Check that the return value is of the expected type:
+  if(value.get_value_type() != expected_value_gtype)
+  {
+    std::cerr << G_STRFUNC << ": Unexpected value type: " << g_type_name( value.get_value_type()) << " instead of " << g_type_name(expected_value_gtype) << std::endl;
+    return false;
+  }
+
+  //Check that the return value is of the expected value:
+  if(value != expected_value)
+  {
+    std::cerr << G_STRFUNC << ": Unexpected value: " << value.to_string() << " instead of " << expected_value.to_string() << std::endl;
+    return false;
+  }
+
+  return true;
 }
 
 static bool test(Glom::Document::HostingMode hosting_mode)
@@ -123,50 +136,19 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   // Text:
-  {
-    //Check that the python function returns the expected field values for the record:
-    const Glib::ustring expected_value = "Widget";
-    const Gnome::Gda::Value value = get_field_result(document, gda_connection,
+  if(!get_field_result(document, gda_connection,
       table_name, primary_key_field, primary_key_value, field_values,
-      "name", expected_value);
-
-    //Check that the return value is of the expected type:
-    if(value.get_value_type() != G_TYPE_STRING)
-    {
-      std::cerr << G_STRFUNC << ": Unexpected value type: " << g_type_name( value.get_value_type()) << " instead of " << g_type_name(G_TYPE_STRING) << std::endl;
-      return false;
-    }
-
-    //Check that the return value is of the expected value:
-    if(value.get_string() != expected_value)
-    {
-      std::cerr << G_STRFUNC << ": Unexpected value: " << value.to_string() << " instead of " << expected_value << std::endl;
-      return false;
-    }
+      "name", Gnome::Gda::Value("Widget")))
+  {
+    return false;
   }
 
   // Numeric:
-  {
-    //Check that the python function returns the expected field values for the record:
-    const double expected_value = (double)3.50f;
-    const Gnome::Gda::Value value = get_field_result(document, gda_connection,
+  if(!get_field_result(document, gda_connection,
       table_name, primary_key_field, primary_key_value, field_values,
-      "price", expected_value);
-
-    //Check that the return value is of the expected type:
-    if(value.get_value_type() != GDA_TYPE_NUMERIC)
-    {
-      std::cerr << G_STRFUNC << ": Unexpected value type: " << g_type_name( value.get_value_type()) << " instead of " << g_type_name(GDA_TYPE_NUMERIC) << std::endl;
-      return false;
-    }
-
-    //Check that the return value is of the expected value:
-    const double value_double = Glom::Conversions::get_double_for_gda_value_numeric(value);
-    if(value_double != expected_value)
-    {
-      std::cerr << G_STRFUNC << ": Unexpected value: " << value_double << " instead of " << expected_value << std::endl;
-      return false;
-    }
+      "price", Glom::Conversions::parse_value((double)3.50f)))
+  {
+    return false;
   }
 
   test_selfhosting_cleanup();
