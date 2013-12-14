@@ -58,8 +58,8 @@ AS_IF([test "x$PYTHON_LIBS" = x],
   _MM_PYTHON_SYSCONFIG([[get_config_var('LIBS')]], [PYTHON_LIBS=$mm_val])
   set X
 dnl On Windows the library is in libs/, not in lib/, so check there as well:
-  _MM_PYTHON_SYSCONFIG([[EXEC_PREFIX]], [set "[$]@" "$mm_val/lib" "$mm_val/libs" "$mm_val/lib64" "$mm_val/lib/i386-linux-gnu"])
-  _MM_PYTHON_SYSCONFIG([[PREFIX]],      [set "[$]@" "$mm_val/lib" "$mm_val/libs" "$mm_val/lib64" "$mm_val/lib/i386-linux-gnu"])
+  _MM_PYTHON_SYSCONFIG([[EXEC_PREFIX]], [set "[$]@" "$mm_val/lib" "$mm_val/libs" "$mm_val/lib64" "$mm_val/lib/i386-linux-gnu" "$mm_val/lib/x86_64-linux-gnu"])
+  _MM_PYTHON_SYSCONFIG([[PREFIX]],      [set "[$]@" "$mm_val/lib" "$mm_val/libs" "$mm_val/lib64" "$mm_val/lib/i386-linux-gnu" "$mm_val/lib/x86_64-linux-gnu"])
   _MM_PYTHON_SYSCONFIG([[get_python_lib(True, True)]],  [set "[$]@" "$mm_val/config" "$mm_val"])
   _MM_PYTHON_SYSCONFIG([[get_python_lib(False, True)]], [set "[$]@" "$mm_val/config" "$mm_val"])
   shift
