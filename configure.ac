@@ -233,6 +233,11 @@ AC_ARG_WITH([postgres-utils],
 AS_IF([test "x$glom_host_win32" != xyes && test "x$glom_enable_client_only" != xyes],
       [AS_CASE([$POSTGRES_UTILS_PATH], [""|no|yes],
 [
+  # For instance, this is in libpq-dev in Ubuntu:
+  AC_CHECK_PROG([PG_CONFIG], [pg_config], [yes], [no])
+  AS_IF([test "$PG_CONFIG" = no],
+    [AC_MSG_ERROR([The PostgreSQL pg_config utility was not found. Glom needs this to find the other PostgreSQL utilities.])])
+
   POSTGRES_UTILS_PATH=`pg_config --bindir 2>&AS_MESSAGE_LOG_FD`
   AS_IF(["$POSTGRES_UTILS_PATH/pg_ctl" --version >/dev/null 2>&AS_MESSAGE_LOG_FD],,
         [AC_MSG_ERROR([[
