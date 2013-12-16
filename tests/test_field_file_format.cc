@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2011 Openismus GmbH
+ * Copyright (C) 2013 Openismus GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,53 +18,56 @@
  * Boston, MA 02110-1301 USA.
  */
 
-#include "tests/test_utils.h"
-#include "tests/test_utils_images.h"
-#include <libglom/init.h>
-#include <libglom/data_structure/field.h>
+#include <glom/libglom/init.h>
+#include <glom/libglom/xml_utils.h>
+#include <glom/libglom/data_structure/glomconversions.h>
 #include <iostream>
+#include <cstdlib>
 
-static void test_text_field()
+static bool test_value(Glom::Field::glom_field_type field_type, const Gnome::Gda::Value& value)
 {
-  Glom::sharedptr<Glom::Field> field = Glom::sharedptr<Glom::Field>::create();
-  field->set_glom_type(Glom::Field::TYPE_TEXT);
+  const Glib::ustring str = Glom::Field::to_file_format(value, field_type);
 
-  const Gnome::Gda::Value value_original("text with \" double quote and ' single quote");
-  const Glib::ustring str = field->to_file_format(value_original);
-  g_assert(!str.empty());
+  bool success = false;
+  const Gnome::Gda::Value value_retrieved = Glom::Field::from_file_format(
+    str, field_type, success);
+  if(!success)
+  {
+    std::cerr << G_STRFUNC << ": from_file_format() failed with str=" << str << std::endl;
+    return false;
+  }
 
-  bool converted = false;
-  const Gnome::Gda::Value value = field->from_file_format(str, converted);
-  g_assert(converted);
-  g_assert(value == value_original);
-}
+  if(value != value_retrieved)
+  {
+    std::cerr << G_STRFUNC << ": Got value=" << value_retrieved.to_string() << ", instead of value=" << value.to_string() << std::endl;
+    std::cerr << "  value_retrieved type=" << g_type_name(value_retrieved.get_value_type()) << ", value type=" << g_type_name(value.get_value_type()) << std::endl;
+    return false;
+  }
 
-static void test_image_field()
-{
-  Glom::sharedptr<Glom::Field> field = Glom::sharedptr<Glom::Field>::create();
-  field->set_glom_type(Glom::Field::TYPE_IMAGE);
-
-  //TODO: Test an image too:
-  const Gnome::Gda::Value value_original = get_value_for_image();
-  g_assert(check_value_is_an_image(value_original));
-
-  const Glib::ustring str = field->to_file_format(value_original);
-  g_assert(!str.empty());
-
-  bool converted = false;
-  const Gnome::Gda::Value value = field->from_file_format(str, converted);
-  g_assert(converted);
-  g_assert(value == value_original);
-
-  g_assert(check_value_is_an_image(value));
+  return true;
 }
 
 int main()
 {
   Glom::libglom_init();
 
-  test_text_field();
-  test_image_field();
+  const Glib::ustring str = " Some value or other with a quote \" and leading space."; //Just to be awkward.
+  if(!test_value(Glom::Field::TYPE_TEXT, Gnome::Gda::Value(str)))
+    return EXIT_FAILURE;
+
+  const Glib::Date date(11, Glib::Date::MAY, 1973);
+  if(!test_value(Glom::Field::TYPE_DATE, Gnome::Gda::Value(date)))
+    return EXIT_FAILURE;
+
+  Gnome::Gda::Time time = {10, 20, 30, 0, 0};
+  if(!test_value(Glom::Field::TYPE_TIME, Gnome::Gda::Value(time)))
+    return EXIT_FAILURE;
+
+  if(!test_value(Glom::Field::TYPE_NUMERIC, Glom::Conversions::parse_value((double)3.91f)))
+    return EXIT_FAILURE;
+
+
+  //TODO: Image.
 
   Glom::libglom_deinit();
 
