@@ -9,6 +9,7 @@
 /import/test_signals
 /translations_po/test_document_export_po
 /translations_po/test_document_import_po
+/test_conversions
 /test_document_autosave
 /test_document_load
 /test_document_load_and_change
@@ -40,6 +41,8 @@
 /test_selfhosting_sqlinjection
 /test_selfhosting_new_from_example_strangepath
 /test_selfhosting_new_then_change_columns
+/test_xml_utils
+
 
 coverage/
 

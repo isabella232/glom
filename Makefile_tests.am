@@ -52,6 +52,8 @@ check_PROGRAMS =						\
 	tests/test_selfhosting_new_then_change_columns \
 	tests/test_selfhosting_non_numeric_primary_keys \
 	tests/test_selfhosting_sqlinjection \
+	tests/test_conversions \
+	tests/test_xml_utils \
 	tests/import/test_parsing \
 	tests/import/test_signals \
 	tests/translations_po/test_document_export_po \
@@ -94,6 +96,8 @@ TESTS =	tests/test_document_load	\
 	tests/test_selfhosting_new_then_change_columns \
 	tests/test_selfhosting_non_numeric_primary_keys \
 	tests/test_selfhosting_sqlinjection \
+	tests/test_conversions \
+	tests/test_xml_utils \
 	tests/import/test_parsing \
 	tests/import/test_signals \
 	tests/translations_po/test_document_export_po \
@@ -181,6 +185,14 @@ tests_test_parsing_time_CPPFLAGS = $(tests_cppflags)
 tests_test_signal_reemit_SOURCES = tests/test_signal_reemit.cc
 tests_test_signal_reemit_LDADD = $(LIBGLOM_LIBS)
 tests_test_signal_reemit_CPPFLAGS = $(tests_cppflags)
+
+tests_test_conversions_SOURCES = tests/test_conversions.cc
+tests_test_conversions_LDADD = $(tests_ldadd)
+tests_test_conversions_CPPFLAGS = $(tests_cppflags)
+
+tests_test_xml_utils_SOURCES = tests/test_xml_utils.cc
+tests_test_xml_utils_LDADD = $(tests_ldadd)
+tests_test_xml_utils_CPPFLAGS = $(tests_cppflags)
 
 tests_python_test_load_python_library_SOURCES = tests/python/test_load_python_library.cc
 tests_python_test_load_python_library_LDADD = $(LIBGLOM_LIBS) $(DL_LIB)
