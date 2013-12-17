@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2013 Murray Cumming <murrayc@murrayc.com> -->
 <application>
-  <id type="desktop">org.gnome.glom.desktop</id>
+  <id type="desktop">glom.desktop</id>
   <licence>CC0</licence>
   <description>
     <p>
