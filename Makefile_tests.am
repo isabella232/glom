@@ -99,6 +99,7 @@ TESTS =	tests/test_document_load	\
 	tests/test_selfhosting_sqlinjection \
 	tests/test_conversions \
 	tests/test_field_file_format \
+	tests/test_field_file_format_in_locales.sh \
 	tests/test_xml_utils \
 	tests/import/test_parsing \
 	tests/import/test_signals \
@@ -114,7 +115,8 @@ dist_noinst_SCRIPTS = tests/test_dtd_file_validation.sh \
 	tests/test_glade_toplevels_instantiation.sh \
 	tests/test_glom_date_in_locales.sh.in \
 	tests/test_selfhosting_new_from_example_in_locales.sh \
-	tests/test_document_load_and_save_all.sh
+	tests/test_document_load_and_save_all.sh \
+	tests/test_field_file_format_in_locales.sh
 
 #TESTS_ENVIRONMENT=which valgrind && valgrind --tool=memcheck --leak-check=full --leak-resolution=high --trace-children=yes --num-callers=30
 
@@ -379,14 +381,15 @@ TESTS += \
 	tests/python/test_python_execute_script \
 	tests/test_iso_codes
 
-# Note that test_glom_date_in_locales.sh requires us to have certain locales 
+# Note that the *_in_locales.sh tests require us to have certain locales 
 # installed and configured.
-# Also note: This is only in the UI tests because it use the glom executable,
-# and GtkApplication will not let us handle the command-line argument 
-# before initializing GTK+. See the comments in the code.
 
 # Some continuous-integration systems won't have an X server,
 # so they will want to disable these in configure.
+#
+# These are only in the UI tests because it use the glom executable,
+# and GtkApplication will not let us handle the command-line argument 
+# before initializing GTK+. See the comments in the code.
 if GLOM_ENABLE_UI_TESTS
 TESTS += \
 	tests/test_glade_toplevels_instantiation.sh \

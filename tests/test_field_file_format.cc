@@ -49,6 +49,24 @@ static bool test_value(Glom::Field::glom_field_type field_type, const Gnome::Gda
 
 int main()
 {
+  // Set the locale for any streams to the user's current locale,
+  // We should not rely on the default locale of
+  // any streams (we should always do an explicit imbue()),
+  // but this is maybe a good default in case we forget.
+  try
+  {
+    std::locale::global(std::locale(""));
+  }
+  catch(const std::runtime_error& ex)
+  {
+    //This has been known to throw an exception at least once:
+    //https://bugzilla.gnome.org/show_bug.cgi?id=619445
+    //This should tell us what the problem is:
+    std::cerr << G_STRFUNC << ": exception from std::locale::global(std::locale(\"\")): " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ":   This can happen if the locale is not properly installed or configured." << std::endl;
+  }
+
+
   Glom::libglom_init();
 
   const Glib::ustring str = " Some value or other with a quote \" and leading space."; //Just to be awkward.
