@@ -1,3 +1,12 @@
+1.25.5 (unstable):
+
+* Check that we have the pg_config utility.
+  (Murray Cumming)
+* Add some tests.
+  (Murray Cumming)
+* Slight improvements to the libglom API.
+  (Murray Cumming)
+
 1.25.4 (unstable):
 
 * Fix a crash when switching between Data and Find mode.
