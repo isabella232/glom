@@ -49,6 +49,10 @@ static bool test_value(Glom::Field::glom_field_type field_type, const Gnome::Gda
 
 int main()
 {
+  // We use the current locale, because this is called by an *_in_locales.sh
+  // script to check that this works in all locales.
+  // See, for instance, libgda bug https://bugzilla.gnome.org/show_bug.cgi?id=720594
+  //
   // Set the locale for any streams to the user's current locale,
   // We should not rely on the default locale of
   // any streams (we should always do an explicit imbue()),
