@@ -466,9 +466,9 @@ public:
   
   /**
    * @param backup_uri: The URI of a .tar.gz backup file.
-   * @result The URI of the restored .glom file.
+   * @result The contents of the .glom file from the .tar.gz file.
    */
-  static Glib::ustring restore_backup_file(const Glib::ustring& backup_uri, const SlotProgress& slot_progress);
+  static Glib::ustring extract_backup_file(const Glib::ustring& backup_uri, const SlotProgress& slot_progress);
   
 
 protected:
@@ -529,6 +529,25 @@ private:
   type_list_translatables get_translatable_layout_items(const Glib::ustring& table_name, const Glib::ustring& hint);
   type_list_translatables get_translatable_report_items(const Glib::ustring& table_name, const Glib::ustring& report_name, const Glib::ustring& hint);
   type_list_translatables get_translatable_print_layout_items(const Glib::ustring& table_name, const Glib::ustring& print_layout_name, const Glib::ustring& hint);
+
+  /* For use when making save_backup_file() async.
+  class FileReadWriteToArchiveData
+  {
+    FileReadWriteToArchiveData()
+    : a(0)
+    {}
+
+    Glib::RefPtr<Gio::File> file;
+    Glib::RefPtr<Gio::FileInputStream> stream;
+
+    struct archive* a;
+    
+  private:
+    //Prevent copying:
+    FileReadWriteToArchiveData(const FileReadWriteToArchiveData& src);
+    FileReadWriteToArchiveData operator=(const FileReadWriteToArchiveData& src);
+  };
+  */
 
   AppState m_app_state;
   type_signal_userlevel_changed m_signal_userlevel_changed;

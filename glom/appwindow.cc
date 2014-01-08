@@ -2489,19 +2489,17 @@ bool AppWindow::do_restore_backup(const Glib::ustring& backup_uri)
     return false;
     
   ShowProgressMessage progress_message(_("Restoring backup"));
-  const Glib::ustring restored_file = Glom::Document::restore_backup_file(
+  const Glib::ustring backup_file_contents = Glom::Document::extract_backup_file(
     backup_uri,
     sigc::mem_fun(*this, &AppWindow::on_connection_convert_backup_progress));
 
-  if(restored_file.empty())
+  if(backup_file_contents.empty())
   {
-    ui_warning(_("Restore Backup failed."), _("There was an error while restoring the backup."));
+    ui_warning(_("Restore Backup failed."), _("There was an error while extracting the backup."));
     return false;
   }
-  
-  open_document(restored_file);
 
-  return true;
+  return open_document_from_data((const guchar*)backup_file_contents.c_str(), backup_file_contents.bytes());
 }
 
 void AppWindow::on_menu_developer_enable_layout_drag_and_drop()

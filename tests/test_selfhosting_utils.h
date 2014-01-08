@@ -64,7 +64,15 @@ bool test_create_and_selfhost_from_test_example(const std::string& example_filen
  * @param hosting_mode Either HOSTING_MODE_POSTGRES_SELF or HOSTING_MODE_SQLITE
  * @param subdirectory_path: An additional directory path to use under the temporary directory that will be used to save the file.
  */
-bool test_create_and_selfhost_from_uri(const Glib::ustring& file_uri, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path = std::string());
+bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path = std::string());
+
+/** Create a .glom file from an existing .glom example file with database data, and start a PostgreSQL server if necessary.
+ *
+ * @param file_uri The full URI of the example .glom file.
+ * @param hosting_mode Either HOSTING_MODE_POSTGRES_SELF or HOSTING_MODE_SQLITE
+ * @param subdirectory_path: An additional directory path to use under the temporary directory that will be used to save the file.
+ */
+bool test_create_and_selfhost_from_data(const Glib::ustring& example_file_contents, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path = std::string());
 
 /** Start self-hosting of a .glom document.
  * @param document The document must already be saved to a file.

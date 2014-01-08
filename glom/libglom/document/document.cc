@@ -43,6 +43,10 @@
 
 #include <libglom/connectionpool.h>
 
+//libarchive:
+#include <archive.h>
+#include <archive_entry.h>
+
 #include <glibmm/i18n.h>
 //#include <libglom/libglom_config.h> //To get GLOM_DTD_INSTALL_DIR - dependent on configure prefix.
 #include <algorithm> //For std::find_if().
@@ -1684,6 +1688,7 @@ void Document::set_table_title(const Glib::ustring& table_name, const Glib::ustr
   }
 }
 
+//TODO: Avoid doing this all in one go, because that leaves all the data in memory at once.
 void Document::set_table_example_data(const Glib::ustring& table_name, const type_example_rows& rows)
 {
   if(!table_name.empty())
@@ -1697,6 +1702,7 @@ void Document::set_table_example_data(const Glib::ustring& table_name, const typ
   }
 }
 
+//TODO: Avoid doing this all in one go, because that leaves all the data in memory at once.
 Document::type_example_rows Document::get_table_example_data(const Glib::ustring& table_name) const
 {
   const sharedptr<const DocumentTableInfo> doctableinfo = get_table_info(table_name);
@@ -2792,6 +2798,8 @@ bool Document::load_after(int& failure_code)
 
           // Load Example Rows after fields have been loaded, because they
           // need the fields to be able to associate a value to a named field.
+          // TODO: Allow this to be loaded progressively from disk later,
+          // instead of storing in it all in memory?
           const xmlpp::Element* nodeExampleRows = XmlUtils::get_node_child_named(nodeTable, GLOM_NODE_EXAMPLE_ROWS);
           if(nodeExampleRows)
           {
@@ -4817,14 +4825,84 @@ bool Document::load(int& failure_code)
   return GlomBakery::Document_XML::load(failure_code);
 }
 
+namespace { //anonymous namespace
+
+static void handle_archive_error(archive* a)
+{
+  std::cerr << "  " << archive_error_string(a) << std::endl;
+}
+
+// We use this to make sure that the C object is always released.
+template <typename T_Object>
+class ScopedArchivePtr
+{
+public:
+  typedef int (*T_ReleaseFunc)(T_Object*);
+
+  ScopedArchivePtr(T_Object* ptr, T_ReleaseFunc release_func)
+  : ptr_(ptr),
+    release_func_(release_func)
+  {}
+
+  ~ScopedArchivePtr() 
+  {
+    if(!release_func_)
+      return;
+
+    const int r = (*release_func_)(ptr_);
+    if(r != ARCHIVE_OK)
+    {
+      std::cerr << G_STRFUNC << ": The release_func failed." << std::endl;
+      handle_archive_error(ptr_);
+    }
+  }
+
+private:
+  T_Object* ptr_;
+  T_ReleaseFunc release_func_;
+
+  ScopedArchivePtr(const ScopedArchivePtr<T_Object>&);
+  ScopedArchivePtr<T_Object>& operator=(const ScopedArchivePtr<T_Object>&);
+};
+
+//The same as ScopedArchivePtr but with a different release function signature.
+template <typename T_Object>
+class ScopedArchiveEntryPtr
+{
+public:
+  typedef void (*T_ReleaseFunc)(T_Object*);
+
+  ScopedArchiveEntryPtr(T_Object* ptr, T_ReleaseFunc release_func)
+  : ptr_(ptr),
+    release_func_(release_func)
+  {}
+
+  ~ScopedArchiveEntryPtr() 
+  {
+    if(release_func_)
+      (*release_func_)(ptr_);
+  }
+
+private:
+  T_Object* ptr_;
+  T_ReleaseFunc release_func_;
+
+  ScopedArchiveEntryPtr(const ScopedArchivePtr<T_Object>&);
+  ScopedArchiveEntryPtr<T_Object>& operator=(const ScopedArchivePtr<T_Object>&);
+
+};
+
+} ////anonymous namespace
+
+//TODO: Make this async, using File::read_async() and IOStream::read_async().
 Glib::ustring Document::save_backup_file(const Glib::ustring& uri, const SlotProgress& slot_progress)
 {
   //Save a copy of the .glom document,
   //with the same name as the directory:
   //For instance <path>/chosendirectory/chosendirectory.glom
   const std::string path_dir = Glib::filename_from_uri(uri);
-  const std::string basename = Glib::path_get_basename(path_dir);
-  const std::string& filepath_document = Glib::build_filename(path_dir, basename + ".glom");
+  const std::string basename_dir = Glib::path_get_basename(path_dir);
+  const std::string& filepath_document = Glib::build_filename(path_dir, basename_dir + ".glom");
   const Glib::ustring uri_document = Glib::filename_to_uri(filepath_document);
 
   const Glib::ustring fileuri_old = get_file_uri();
@@ -4855,103 +4933,214 @@ Glib::ustring Document::save_backup_file(const Glib::ustring& uri, const SlotPro
   }
 
   //Compress the backup in a .tar.gz, so it is slightly more safe from changes:
-  const std::string path_tar = Glib::find_program_in_path("tar");
-  if(path_tar.empty())
+
+  const Glib::RefPtr<const Gio::File> gio_file = Gio::File::create_for_path(path_dir);
+  const std::string dir_basename = gio_file->get_basename();
+  const Glib::RefPtr<const Gio::File> gio_file_parent = gio_file->get_parent();
+  const std::string parent_dir = gio_file_parent->get_path();
+  if(parent_dir.empty() || dir_basename.empty())
   {
-    std::cerr << G_STRFUNC << ": The tar executable could not be found." << std::endl;
+    std::cerr << G_STRFUNC << "parent_dir or basename are empty." << std::endl;
     return Glib::ustring();
   }
-  else
+
+  const std::string tarball_path = path_dir + ".tar.gz";
+
+
+
+  //TODO: Use read_async() when this calling method is async.
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri_document);
+  Glib::RefPtr<Gio::FileInputStream> stream;
+  try
   {
-    Glib::RefPtr<const Gio::File> gio_file = Gio::File::create_for_path(path_dir);
-    const std::string basename = gio_file->get_basename();
-    Glib::RefPtr<const Gio::File> gio_file_parent = gio_file->get_parent();
-    const std::string parent_dir = gio_file_parent->get_path();
-    if(parent_dir.empty() || basename.empty())
+    stream = file->read();
+
+    // Query size of the file, so that we can show progress:
+    //TODO: stream->query_info_async(sigc::mem_fun(*this, &DialogImageLoadProgress::on_query_info), G_FILE_ATTRIBUTE_STANDARD_SIZE);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": Gio::File::read() failed: " << ex.what() << std::endl;
+    return Glib::ustring();
+  }
+
+  struct archive* a = archive_write_new();
+  ScopedArchivePtr<archive> scoped(a, &archive_write_free); //Make sure it is always released.
+
+  if(archive_write_add_filter_gzip(a) != ARCHIVE_OK)
+  {
+    std::cerr << G_STRFUNC << ": libarchive does not support tar." << std::endl;
+    handle_archive_error(a);
+    return Glib::ustring();
+  }
+
+  if(archive_write_set_format_pax_restricted(a) != ARCHIVE_OK)
+  {
+    std::cerr << G_STRFUNC << ": libarchive does not support pax_restricted." << std::endl;
+    handle_archive_error(a);
+    return Glib::ustring();
+  }
+
+  if(archive_write_set_bytes_per_block(a, 4096) != ARCHIVE_OK)
+  {
+    std::cerr << G_STRFUNC << ": libarchive: cannot set bytes per block." << std::endl;
+    handle_archive_error(a);
+    return Glib::ustring();
+  }
+
+  if(archive_write_open_filename(a, tarball_path.c_str()) != ARCHIVE_OK)
+  {
+    std::cerr << G_STRFUNC << ": Could not open a new archive file for writing." << std::endl;
+    handle_archive_error(a);
+    return Glib::ustring();
+  }
+
+  struct stat st;
+  stat(filepath_document.c_str(), &st);
+
+  struct archive_entry* entry = archive_entry_new();
+  ScopedArchiveEntryPtr<archive_entry> scoped_entry(entry, &archive_entry_free); //Make sure it is always released.
+
+  archive_entry_copy_stat(entry, &st); //This has no return value.
+
+  const std::string basename = Glib::path_get_basename(filepath_document);
+  archive_entry_set_pathname(entry, basename.c_str()); //This has no return value.
+
+  if(archive_write_header(a, entry) != ARCHIVE_OK)
+  {
+    std::cerr << G_STRFUNC << ": Could not write archive header." << std::endl;
+    handle_archive_error(a);
+    return Glib::ustring();
+  }
+
+
+  //TODO: Use read_async() when this calling method is async.
+  try
+  {
+    // Query size of the file, so that we can show progress:
+    //TODO: stream->query_info_async(sigc::mem_fun(*this, &DialogImageLoadProgress::on_query_info), G_FILE_ATTRIBUTE_STANDARD_SIZE);
+  
+    const guint BYTES_TO_PROCESS = 256;
+    guint buffer[BYTES_TO_PROCESS] = {0, }; // For each chunk.
+    bool bContinue = true;
+    while(bContinue)
     {
-      std::cerr << G_STRFUNC << "parent_dir or basename are empty." << std::endl;
-      return Glib::ustring();
-    }
-    else
-    {
-      const std::string tarball_path = path_dir + ".tar.gz";
-      //TODO: Find some way to do this without using the command-line,
-      //which feels fragile:
-      const std::string command_tar = Glib::shell_quote(path_tar) +
-        " --force-local --no-wildcards" + //Avoid side-effects of special characters.
-        " --remove-files" +
-        " -czf"
-        " " + Glib::shell_quote(tarball_path) +
-        " --directory " + Glib::shell_quote(parent_dir) + //This must be right before the mention of the file name:
-        " " + Glib::shell_quote(basename);
-
-      //std::cout << "DEBUG: command_tar=" << command_tar << std::endl;
-
-      const bool tarred = Glom::Spawn::execute_command_line_and_wait(command_tar,
-        slot_progress);
-
-      if(!tarred)
+      const gssize bytes_read = stream->read(buffer, BYTES_TO_PROCESS);
+      if(bytes_read == 0)
+        bContinue = false; //stop because we reached the end.
+      else
       {
-        std::cerr << G_STRFUNC << "tar failed with command:" << command_tar << std::endl;
-        return Glib::ustring();
+        // Add the data to the archive:
+        ssize_t check = archive_write_data(a, buffer, bytes_read);
+        if(check != bytes_read)
+        {
+          std::cerr << G_STRFUNC << ": archive_write_data() wrote an unexpected number of bytes. " << std::endl;
+          handle_archive_error(a);
+          return Glib::ustring();
+        }
       }
-      
-      return Glib::filename_to_uri(tarball_path);
     }
   }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": stream read() failed: " << ex.what() << std::endl;
+    return Glib::ustring();
+  }
+
+  //TODO? archive_write_finish_entry(entry);
+
+  if(archive_write_close(a))
+  {
+    std::cerr << G_STRFUNC << ": Could not close archive." << std::endl;
+    handle_archive_error(a);
+    return Glib::ustring();
+  }
+
+  return Glib::filename_to_uri(tarball_path);
 }
 
-Glib::ustring Document::restore_backup_file(const Glib::ustring& backup_uri, const SlotProgress& slot_progress)
+Glib::ustring Document::extract_backup_file(const Glib::ustring& backup_uri, const SlotProgress& slot_progress)
 {
   // We cannot use an uri here, because we cannot untar remote files.
   const std::string filename_tarball = Glib::filename_from_uri(backup_uri);
 
-  const std::string path_tar = Glib::find_program_in_path("tar");
-  if(path_tar.empty())
+  struct archive* a = archive_read_new();
+  ScopedArchivePtr<archive> scoped(a, &archive_read_free); //Make sure it is always released.
+
+  if(archive_read_support_filter_gzip(a) != ARCHIVE_OK)
   {
-    std::cerr << G_STRFUNC << ": The tar executable could not be found." << std::endl;
+    std::cerr << G_STRFUNC << ": libarchive apparently does not support gzip." << std::endl;
+    handle_archive_error(a);
     return Glib::ustring();
   }
 
-  //Create a temporary directory into which we will untar the tarball:
-  const std::string path_tmp = Utils::get_temp_directory_path(
-    Glib::path_get_basename(filename_tarball) + "_extracted");
-
-  //Untar into the tmp directory:
-  //TODO: Find some way to do this without using the command-line,
-  //which feels fragile:
-  const std::string command_tar = Glib::shell_quote(path_tar) +
-    " --force-local --no-wildcards" + //Avoid side-effects of special characters.
-    " -xzf"
-    " " + Glib::shell_quote(filename_tarball) +
-    " --directory " + Glib::shell_quote(path_tmp);
-
-  //std::cout << "DEBUG: command_tar=" << command_tar << std::endl;
-
-  const bool untarred = Glom::Spawn::execute_command_line_and_wait(command_tar,
-    slot_progress);
-  if(!untarred)
+  if(archive_read_support_format_all(a) != ARCHIVE_OK)
   {
-    std::cerr << G_STRFUNC << ": tar failed with command:" << command_tar << std::endl;
+    std::cerr << G_STRFUNC << ": libarchive apparently does not support standard formats." << std::endl;
+    handle_archive_error(a);
+    return Glib::ustring();
+  }
+  //archive_read_support_compression_all(a);
+
+  if(archive_read_open_filename(a, filename_tarball.c_str(), 10240) != ARCHIVE_OK) //TODO
+  {
+    std::cerr << G_STRFUNC << ": could not read filename from archive." << std::endl;
+    handle_archive_error(a);
     return Glib::ustring();
   }
 
-  //Open the .glom file that is in the tmp directory:
-  const Glib::ustring uri_tmp = Glib::filename_to_uri(path_tmp);
-  const Glib::ustring untarred_uri = Utils::get_directory_child_with_suffix(uri_tmp, ".glom", true /* recurse */);
-  if(untarred_uri.empty())
+  slot_progress();
+
+  //We expect just one file:
+  struct archive_entry* entry = 0;
+  if(archive_read_next_header(a, &entry) != ARCHIVE_OK)
   {
-    std::cerr << G_STRFUNC << ": There was an error while restoring the backup. The .glom file could not be found.";
+    std::cerr << G_STRFUNC << ": Could not read next archive entry." << std::endl;
+    handle_archive_error(a);
+    return Glib::ustring();
+  }
+  
+  //const char *name = archive_entry_pathname(entry);
+  //std::cout << "debug: name=" << name << std::endl;
+
+  slot_progress();
+
+  Glib::ustring contents;
+
+  //Read the whole file in one go,
+  //We'd have to keep it all in memory anyway as we concatentated it,
+  //if we did it in chunks.
+  //TODO: Backup files will, of course, often have large amounts of (example) data.
+  //So we should, elsewhere, make it possible to load that data progressively,
+  //maybe discarding it during a first read, and adapt this code to that new API.
+  slot_progress();
+
+  const size_t size = archive_entry_size(entry);
+  const Glib::ScopedPtr<char> buf ((char*) g_malloc(size + 1));
+
+  const ssize_t r = archive_read_data(a, buf.get(), size);
+    
+  if((r == ARCHIVE_FATAL) || (r == ARCHIVE_WARN) ||
+    (r == ARCHIVE_RETRY)) //0 or a number of bytes read are the signs of success.
+  {
+      std::cerr << G_STRFUNC << ": Error while reading data from archive entry. r=" << r << std::endl;
+      handle_archive_error(a);
+      return Glib::ustring();
+  }
+
+  try
+  {
+    //For std::string, size is number of characters. For ustring it would be number of characters.
+    contents += std::string(buf.get(), r);
+  }
+  catch(const std::exception& ex)
+  {
+    std::cerr << G_STRFUNC << ": std::exception error while concatenating archive data: "
+      << ex.what() << std::endl;
     return Glib::ustring();
   }
 
-  //Delete the temporary untarred directory:
-  //Actually, we just leave this here, where the system will clean it up anyway,
-  //because open_document() starts a new process,
-  //so we don't know when we can safely delete the files.
-  //Utils::delete_directory(uri_tmp);
-
-  return untarred_uri;
+  return contents;
 }
 
 

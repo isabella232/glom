@@ -322,6 +322,27 @@ bool test_create_and_selfhost_from_test_example(const std::string& example_filen
   return test_create_and_selfhost_from_example_full_path(path, document, hosting_mode);
 }
 
+static bool after_load(Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
+{
+  if(!document.get_is_example_file() && !document.get_is_backup_file())
+  {
+    std::cerr << G_STRFUNC << ": The document is not an example or a backup." << std::endl;
+    return false;
+  }
+
+  if(!test_create_and_selfhost_new_empty(document, hosting_mode, subdirectory_path))
+  {
+    std::cerr << G_STRFUNC << ": test_create_and_selfhost_new_empty() failed." << std::endl;
+    return false;
+  }
+
+  const bool recreated = Glom::DbUtils::recreate_database_from_document(&document, sigc::ptr_fun(&on_recreate_progress) );
+  if(!recreated)
+    test_selfhosting_cleanup();
+
+  return recreated;
+}
+
 bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
 {
   if( (hosting_mode != Glom::Document::HOSTING_MODE_POSTGRES_SELF) &&
@@ -345,25 +366,32 @@ bool test_create_and_selfhost_from_uri(const Glib::ustring& example_file_uri, Gl
     return false;
   }
 
-  if(!document.get_is_example_file() && !document.get_is_backup_file())
-  {
-    std::cerr << G_STRFUNC << ": The document is not an example or a backup. uri=" << example_file_uri << std::endl;
-    return false;
-  }
-
-  if(!test_create_and_selfhost_new_empty(document, hosting_mode, subdirectory_path))
-  {
-    std::cerr << G_STRFUNC << ": test_create_and_selfhost_new_empty() failed. uri=" << example_file_uri << std::endl;
-    return false;
-  }
-
-  const bool recreated = Glom::DbUtils::recreate_database_from_document(&document, sigc::ptr_fun(&on_recreate_progress) );
-  if(!recreated)
-    test_selfhosting_cleanup();
-
-  return recreated;
+  return after_load(document, hosting_mode, subdirectory_path);
 }
 
+bool test_create_and_selfhost_from_data(const Glib::ustring& example_file_contents, Glom::Document& document, Glom::Document::HostingMode hosting_mode, const std::string& subdirectory_path)
+{
+  if( (hosting_mode != Glom::Document::HOSTING_MODE_POSTGRES_SELF) &&
+    (hosting_mode != Glom::Document::HOSTING_MODE_MYSQL_SELF) &&
+    (hosting_mode != Glom::Document::HOSTING_MODE_SQLITE) )
+  {
+    std::cerr << G_STRFUNC << ": This test function does not support the specified hosting_mode: " << hosting_mode << std::endl;
+    return false;
+  }
+
+  document.set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
+
+  int failure_code = 0;
+  const bool test = document.load_from_data((const guchar*)example_file_contents.c_str(), example_file_contents.size(), failure_code);
+
+  if(!test)
+  {
+    std::cerr << G_STRFUNC << ": Document::load_from_data() failed with failure_code=" << failure_code << std::endl;
+    return false;
+  }
+
+  return after_load(document, hosting_mode, subdirectory_path);
+}
 bool test_model_expected_size(const Glib::RefPtr<const Gnome::Gda::DataModel>& data_model, guint columns_count, guint rows_count)
 {
   if(!data_model)
