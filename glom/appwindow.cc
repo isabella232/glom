@@ -587,7 +587,7 @@ void AppWindow::ui_warning_load_failed(int failure_code)
       _("The document could not be opened because it was created or modified by a newer version of Glom."));
   }
   else
-    ui_warning_load_failed();
+    GlomBakery::AppWindow_WithDoc::ui_warning_load_failed();
 }
 
 
