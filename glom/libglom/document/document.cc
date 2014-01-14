@@ -38,8 +38,6 @@
 #include <giomm/file.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/convert.h>
-#include <glibmm/shell.h>
-//#include <libglom/busy_cursor.h>
 
 #include <libglom/connectionpool.h>
 

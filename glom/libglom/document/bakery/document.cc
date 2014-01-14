@@ -141,7 +141,18 @@ bool Document::load_from_data(const guchar* data, std::size_t length, int& failu
   //Initialize the output parameter:
   failure_code = 0;
 
-  m_strContents = Glib::ustring((char*)data, length);
+  //We use the std::string constructor, because that takes the number
+  //of bytes, rather than the ustring constructor, which takes the number
+  //of characters.
+  try
+  {
+    m_strContents = std::string((char*)data, length);
+  }
+  catch(const std::exception& ex)
+  {
+    std::cerr << G_STRFUNC << ": Exception instantiating std::string: " << ex.what() << std::endl;
+    return false;
+  }
 
   const bool bTest = load_after(failure_code); //may be overridden.
   if(bTest)
