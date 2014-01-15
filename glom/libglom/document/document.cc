@@ -4890,6 +4890,88 @@ private:
 
 };
 
+/** A utility to add an archive entry to an archive.
+ * @param a The libarchive archive, ready for writing.
+ * @param parent_dir_path The parent (could be several levels up) that the file's path (in the archive) should be relative to.
+ * @param filepath The path of the existing file on the file system.
+ */
+bool add_file_to_archive(archive* a, const std::string& parent_dir_path, const std::string& filepath)
+{
+//TODO: Use read_async() when this calling method is async.
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(filepath);
+  Glib::RefPtr<Gio::FileInputStream> stream;
+  try
+  {
+    stream = file->read();
+
+    // Query size of the file, so that we can show progress:
+    //TODO: stream->query_info_async(sigc::mem_fun(*this, &DialogImageLoadProgress::on_query_info), G_FILE_ATTRIBUTE_STANDARD_SIZE);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": Gio::File::read() failed: " << ex.what() << std::endl;
+    std::cerr << "  : with path: " << filepath << std::endl;
+    return false;
+  }
+
+  struct stat st;
+  stat(filepath.c_str(), &st);
+
+  struct archive_entry* entry = archive_entry_new();
+  ScopedArchiveEntryPtr<archive_entry> scoped_entry(entry, &archive_entry_free); //Make sure it is always released.
+
+  archive_entry_copy_stat(entry, &st); //This has no return value.
+
+  Glib::RefPtr<Gio::File> file_parent = Gio::File::create_for_path(parent_dir_path);
+  const std::string path = file_parent->get_relative_path(file);
+  archive_entry_set_pathname(entry, path.c_str()); //This has no return value.
+
+  if(archive_write_header(a, entry) != ARCHIVE_OK)
+  {
+    std::cerr << G_STRFUNC << ": Could not write archive header." << std::endl;
+    handle_archive_error(a);
+    return false;
+  }
+
+  //TODO: Use read_async() when this calling method is async.
+  try
+  {
+    // Query size of the file, so that we can show progress:
+    //TODO: stream->query_info_async(sigc::mem_fun(*this, &DialogImageLoadProgress::on_query_info), G_FILE_ATTRIBUTE_STANDARD_SIZE);
+  
+    const guint BYTES_TO_PROCESS = 256;
+    guint buffer[BYTES_TO_PROCESS] = {0, }; // For each chunk.
+    bool bContinue = true;
+    while(bContinue)
+    {
+      const gssize bytes_read = stream->read(buffer, BYTES_TO_PROCESS);
+      if(bytes_read == 0)
+        bContinue = false; //stop because we reached the end.
+      else
+      {
+        // Add the data to the archive:
+        ssize_t check = archive_write_data(a, buffer, bytes_read);
+        if(check != bytes_read)
+        {
+          std::cerr << G_STRFUNC << ": archive_write_data() wrote an unexpected number of bytes. " << std::endl;
+          handle_archive_error(a);
+          return false;
+        }
+      }
+    }
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": stream read() failed: " << ex.what() << std::endl;
+    std::cerr << "  : with path: " << filepath << std::endl;
+    return false;
+  }
+
+  //TODO? archive_write_finish_entry(entry);
+
+  return true;
+}
+
 } ////anonymous namespace
 
 //TODO: Make this async, using File::read_async() and IOStream::read_async().
@@ -4931,36 +5013,7 @@ Glib::ustring Document::save_backup_file(const Glib::ustring& uri, const SlotPro
   }
 
   //Compress the backup in a .tar.gz, so it is slightly more safe from changes:
-
-  const Glib::RefPtr<const Gio::File> gio_file = Gio::File::create_for_path(path_dir);
-  const std::string dir_basename = gio_file->get_basename();
-  const Glib::RefPtr<const Gio::File> gio_file_parent = gio_file->get_parent();
-  const std::string parent_dir = gio_file_parent->get_path();
-  if(parent_dir.empty() || dir_basename.empty())
-  {
-    std::cerr << G_STRFUNC << "parent_dir or basename are empty." << std::endl;
-    return Glib::ustring();
-  }
-
   const std::string tarball_path = path_dir + ".tar.gz";
-
-
-
-  //TODO: Use read_async() when this calling method is async.
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri_document);
-  Glib::RefPtr<Gio::FileInputStream> stream;
-  try
-  {
-    stream = file->read();
-
-    // Query size of the file, so that we can show progress:
-    //TODO: stream->query_info_async(sigc::mem_fun(*this, &DialogImageLoadProgress::on_query_info), G_FILE_ATTRIBUTE_STANDARD_SIZE);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": Gio::File::read() failed: " << ex.what() << std::endl;
-    return Glib::ustring();
-  }
 
   struct archive* a = archive_write_new();
   ScopedArchivePtr<archive> scoped(a, &archive_write_free); //Make sure it is always released.
@@ -4993,59 +5046,13 @@ Glib::ustring Document::save_backup_file(const Glib::ustring& uri, const SlotPro
     return Glib::ustring();
   }
 
-  struct stat st;
-  stat(filepath_document.c_str(), &st);
-
-  struct archive_entry* entry = archive_entry_new();
-  ScopedArchiveEntryPtr<archive_entry> scoped_entry(entry, &archive_entry_free); //Make sure it is always released.
-
-  archive_entry_copy_stat(entry, &st); //This has no return value.
-
-  const std::string basename = Glib::path_get_basename(filepath_document);
-  archive_entry_set_pathname(entry, basename.c_str()); //This has no return value.
-
-  if(archive_write_header(a, entry) != ARCHIVE_OK)
-  {
-    std::cerr << G_STRFUNC << ": Could not write archive header." << std::endl;
-    handle_archive_error(a);
+  if(!add_file_to_archive(a, path_dir, filepath_document))
     return Glib::ustring();
-  }
 
-
-  //TODO: Use read_async() when this calling method is async.
-  try
-  {
-    // Query size of the file, so that we can show progress:
-    //TODO: stream->query_info_async(sigc::mem_fun(*this, &DialogImageLoadProgress::on_query_info), G_FILE_ATTRIBUTE_STANDARD_SIZE);
-  
-    const guint BYTES_TO_PROCESS = 256;
-    guint buffer[BYTES_TO_PROCESS] = {0, }; // For each chunk.
-    bool bContinue = true;
-    while(bContinue)
-    {
-      const gssize bytes_read = stream->read(buffer, BYTES_TO_PROCESS);
-      if(bytes_read == 0)
-        bContinue = false; //stop because we reached the end.
-      else
-      {
-        // Add the data to the archive:
-        ssize_t check = archive_write_data(a, buffer, bytes_read);
-        if(check != bytes_read)
-        {
-          std::cerr << G_STRFUNC << ": archive_write_data() wrote an unexpected number of bytes. " << std::endl;
-          handle_archive_error(a);
-          return Glib::ustring();
-        }
-      }
-    }
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << G_STRFUNC << ": stream read() failed: " << ex.what() << std::endl;
+  //TODO: Avoid copy/pasting of this sub-path:
+  const std::string backup_data_path = Glib::build_filename(path_dir, "glom_postgres_data", "backup");
+  if(!add_file_to_archive(a, path_dir, backup_data_path))
     return Glib::ustring();
-  }
-
-  //TODO? archive_write_finish_entry(entry);
 
   if(archive_write_close(a))
   {
