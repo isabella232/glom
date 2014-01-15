@@ -6,15 +6,15 @@
 # Antonio Ognio <gnrfan@gnrfan.org>, 2004.
 # Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004, 2006.
 # Jorge González <jorgegonz@svn.gnome.org>, 2005, 2006, 2007, 2008, 2009, 2010.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2009, 2010, 2011, 2012, 2013.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2009, 2010, 2011, 2012, 2013, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-11-18 16:02+0000\n"
-"PO-Revision-Date: 2013-11-20 13:40+0100\n"
+"POT-Creation-Date: 2014-01-14 20:27+0000\n"
+"PO-Revision-Date: 2014-01-15 10:16+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -169,12 +169,12 @@ msgstr ""
 
 #: ../glom/appwindow.cc:984 ../glom/appwindow.cc:2151
 #: ../glom/appwindow.cc:2428 ../glom/appwindow.cc:2465
-#: ../glom/appwindow.cc:2843 ../glom/base_db_table_data.cc:393
+#: ../glom/appwindow.cc:2841 ../glom/base_db_table_data.cc:393
 #: ../glom/box_withbuttons.cc:36 ../glom/box_withbuttons.cc:50
 #: ../glom/box_withbuttons.cc:64 ../glom/dialog_existing_or_new.cc:831
 #: ../glom/filechooser_export.cc:39 ../glom/frame_glom.cc:513
 #: ../glom/frame_glom.cc:737 ../glom/frame_glom.cc:824
-#: ../glom/frame_glom.cc:930 ../glom/utils_ui.cc:481
+#: ../glom/frame_glom.cc:930 ../glom/utils_ui.cc:485
 #: ../glom/onlineglom_strings.cc:40 ../glom/bakery/dialog_offersave.cc:56
 #: ../glom/main.cc:267 ../glom/main.cc:323
 #: ../glom/mode_design/fields/box_db_table_definition.cc:293
@@ -228,11 +228,6 @@ msgid "Creating Glom database from backup file."
 msgstr "Creando base de datos Glom desde un archivo de respaldo."
 
 #: ../glom/appwindow.cc:1756
-#| msgid ""
-#| "<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
-#| "\n"
-#| "Glom could not create the new database. Maybe you do not have the "
-#| "necessary access rights. Please contact your system administrator."
 msgid ""
 "Glom could not create the new database. Maybe you do not have the necessary "
 "access rights. Please contact your system administrator."
@@ -241,7 +236,6 @@ msgstr ""
 "acceso necesarios. Contacte con el administrador de su sistema."
 
 #: ../glom/appwindow.cc:1757
-#| msgid "Database Field"
 msgid "Database Creation Failed"
 msgstr "Falló la creación de la base de datos"
 
@@ -352,23 +346,24 @@ msgid "Restore Backup failed."
 msgstr "Falló al restaurar el respaldo."
 
 #: ../glom/appwindow.cc:2498
-msgid "There was an error while restoring the backup."
-msgstr "Ocurrió un error al restaurar el respaldo."
+#| msgid "There was an error while exporting the backup."
+msgid "There was an error while extracting the backup."
+msgstr "Hubo un error al extraer el respaldo."
 
-#: ../glom/appwindow.cc:2608
+#: ../glom/appwindow.cc:2606
 msgid " (read-only)"
 msgstr " (sólo-lectura)"
 
-#: ../glom/appwindow.cc:2656 ../data/ui/operator/window_main.glade.h:2
+#: ../glom/appwindow.cc:2654 ../data/ui/operator/window_main.glade.h:2
 msgid "Processing"
 msgstr "Procesando"
 
-#: ../glom/appwindow.cc:2842
+#: ../glom/appwindow.cc:2840
 msgid "Open Document"
 msgstr "Abrir documento"
 
 #. Add a button for related record navigation:
-#: ../glom/appwindow.cc:2844 ../glom/dialog_existing_or_new.cc:832
+#: ../glom/appwindow.cc:2842 ../glom/dialog_existing_or_new.cc:832
 #: ../glom/frame_glom.cc:738 ../glom/onlineglom_strings.cc:32
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:34
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:44
@@ -382,11 +377,11 @@ msgstr "_Abrir"
 msgid "Internal error"
 msgstr "Error interno"
 
-#: ../glom/base_db.cc:1455
+#: ../glom/base_db.cc:1385
 msgid "Value Is Not Unique"
 msgstr "El valor no es único"
 
-#: ../glom/base_db.cc:1455
+#: ../glom/base_db.cc:1385
 msgid ""
 "The field's value must be unique, but a record with this value already "
 "exists."
@@ -829,33 +824,33 @@ msgstr "No hay archivo de ayuda disponible"
 msgid "Could not display help: %1"
 msgstr "No se pudo mostrar la ayuda: %1"
 
-#: ../glom/utils_ui.cc:475
+#: ../glom/utils_ui.cc:479
 msgid "Your find criteria did not match any records in the table."
 msgstr ""
 "El criterio de búsqueda introducido no coincide con ningún registro de la "
 "tabla."
 
-#: ../glom/utils_ui.cc:477
+#: ../glom/utils_ui.cc:481
 msgid "No Records Found"
 msgstr "No se encontró ningún registro"
 
-#: ../glom/utils_ui.cc:482
+#: ../glom/utils_ui.cc:486
 msgid "New Find"
 msgstr "Nueva búsqueda"
 
-#: ../glom/utils_ui.cc:493
+#: ../glom/utils_ui.cc:497
 msgid "Report Finished"
 msgstr "Informe finalizado"
 
-#: ../glom/utils_ui.cc:493
+#: ../glom/utils_ui.cc:497
 msgid "The report will now be opened in your web browser."
 msgstr "El informe se abrirá ahora en su navegador web."
 
-#: ../glom/utils_ui.cc:532
+#: ../glom/utils_ui.cc:536
 msgid "Script Uses PyGTK 2"
 msgstr "El script usa PyGTK 2"
 
-#: ../glom/utils_ui.cc:533
+#: ../glom/utils_ui.cc:537
 msgid ""
 "Glom cannot run this script because it uses pygtk 2, but Glom uses GTK+ 3, "
 "and attempting to use pygtk 2 would cause Glom to crash."
@@ -878,7 +873,7 @@ msgstr "Volver a la lista"
 
 #. Translators: This is a noun. It is a notebook tab title.
 #. Details column:
-#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1429
+#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1436
 #: ../glom/mode_data/notebook_data.cc:42
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:215
 #: ../glom/mode_find/notebook_find.cc:38
@@ -1180,20 +1175,20 @@ msgid "Vietnamese"
 msgstr "Vietnamita"
 
 #. Translators: This means an unknown or unnacceptable value type in a database.
-#: ../glom/libglom/data_structure/field.cc:674
+#: ../glom/libglom/data_structure/field.cc:663
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:151
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:159
 msgid "Invalid"
 msgstr "No válido"
 
 #. Translators: This means a numeric value type in a database.
-#: ../glom/libglom/data_structure/field.cc:677
+#: ../glom/libglom/data_structure/field.cc:666
 msgid "Number"
 msgstr "Número"
 
 #. Translators: This means a text/string value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/field.cc:680
+#: ../glom/libglom/data_structure/field.cc:669
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:73
 #: ../glom/libglom/data_structure/translatable_item.cc:258
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1159
@@ -1202,23 +1197,23 @@ msgid "Text"
 msgstr "Texto"
 
 #. Translators: This means a time value type in a database.
-#: ../glom/libglom/data_structure/field.cc:683
+#: ../glom/libglom/data_structure/field.cc:672
 msgid "Time"
 msgstr "Hora"
 
 #. Translators: This means a time value type in a database.
-#: ../glom/libglom/data_structure/field.cc:686
+#: ../glom/libglom/data_structure/field.cc:675
 msgid "Date"
 msgstr "Fecha"
 
 #. Translators: This means a true/false value type in a database.
-#: ../glom/libglom/data_structure/field.cc:689
+#: ../glom/libglom/data_structure/field.cc:678
 msgid "Boolean"
 msgstr "Booleano"
 
 #. Translators: This means a picture value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/field.cc:692
+#: ../glom/libglom/data_structure/field.cc:681
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:70
 #: ../glom/libglom/data_structure/translatable_item.cc:252
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1166
@@ -1421,48 +1416,48 @@ msgstr "Título de la base de datos"
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: ../glom/libglom/document/document.cc:516
-#: ../glom/libglom/document/document.cc:534
+#: ../glom/libglom/document/document.cc:520
+#: ../glom/libglom/document/document.cc:538
 msgid "System Preferences"
 msgstr "Preferencias del sistema"
 
-#: ../glom/libglom/document/document.cc:547
+#: ../glom/libglom/document/document.cc:551
 msgid "System Name"
 msgstr "Nombre del sistema"
 
-#: ../glom/libglom/document/document.cc:553
+#: ../glom/libglom/document/document.cc:557
 msgid "Organisation Name"
 msgstr "Nombre de la organización"
 
-#: ../glom/libglom/document/document.cc:559
+#: ../glom/libglom/document/document.cc:563
 msgid "Organisation Logo"
 msgstr "Logotipo de la organización"
 
-#: ../glom/libglom/document/document.cc:565
+#: ../glom/libglom/document/document.cc:569
 msgid "Street"
 msgstr "Calle"
 
-#: ../glom/libglom/document/document.cc:571
+#: ../glom/libglom/document/document.cc:575
 msgid "Street (line 2)"
 msgstr "Calle (línea 2)"
 
-#: ../glom/libglom/document/document.cc:577
+#: ../glom/libglom/document/document.cc:581
 msgid "City"
 msgstr "Ciudad"
 
-#: ../glom/libglom/document/document.cc:583
+#: ../glom/libglom/document/document.cc:587
 msgid "State"
 msgstr "Estado"
 
-#: ../glom/libglom/document/document.cc:589
+#: ../glom/libglom/document/document.cc:593
 msgid "Country"
 msgstr "País"
 
-#: ../glom/libglom/document/document.cc:595
+#: ../glom/libglom/document/document.cc:599
 msgid "Zip Code"
 msgstr "Código postal"
 
-#: ../glom/libglom/document/document.cc:1423
+#: ../glom/libglom/document/document.cc:1430
 msgid "Overview"
 msgstr "Visión general"
 
@@ -1485,16 +1480,16 @@ msgstr ""
 msgid "Gettext-Warning: "
 msgstr "Alerta de gettext"
 
-#: ../glom/libglom/db_utils.cc:513
+#: ../glom/libglom/db_utils.cc:514
 msgid "System: Auto Increments"
 msgstr "Sistema: autoincrementos"
 
-#: ../glom/libglom/db_utils.cc:1185
+#: ../glom/libglom/db_utils.cc:1186
 #: ../glom/mode_design/users/dialog_groups_list.cc:70
 msgid "Description"
 msgstr "Descripción"
 
-#: ../glom/libglom/db_utils.cc:1192
+#: ../glom/libglom/db_utils.cc:1193
 msgid "Comments"
 msgstr "Comentarios"
 
@@ -2184,7 +2179,6 @@ msgstr "Introduzca una contraseña para este usuario."
 
 #. Don't allow adding of fields that already exist.
 #: ../glom/mode_design/fields/box_db_table_definition.cc:63
-#| msgid "This field already exists. Please choose a different field name"
 msgid "This field already exists. Please choose a different field name."
 msgstr "Este campo ya existe. Elija un nombre de campo diferente."
 
@@ -2195,12 +2189,10 @@ msgstr "Tipo"
 #. TODO: Auto-size columns.
 #. Setup the buttons:
 #: ../glom/mode_design/fields/box_db_table_definition.cc:72
-#| msgid "Field Definition"
 msgid "_Field Definition"
 msgstr "De_finición del campo"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:73
-#| msgid "Default Formatting"
 msgid "_Default Formatting"
 msgstr "_Formato predeterminado"
 
@@ -3190,12 +3182,6 @@ msgid "Database"
 msgstr "Base de datos"
 
 #: ../data/ui/operator/dialog_data_invalid_format.glade.h:1
-#| msgid ""
-#| "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
-#| "\n"
-#| "The data in the field was not recognized. Please try to correct the data "
-#| "or revert to the previous value. Here is an example of correctly-"
-#| "formatted data for this field.\n"
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid Format</span>\n"
 "\n"
@@ -3223,8 +3209,6 @@ msgid "_Select"
 msgstr "_Seleccionar"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:3
-#| msgid ""
-#| "<span weight=\"bold\" size=\"larger\">Open or create a Document</span>"
 msgid "<span weight=\"bold\" size=\"larger\">Open or Create a Document</span>"
 msgstr "<span weight='bold' size='larger'>Abrir o crear un documento</span>"
 
@@ -3259,7 +3243,6 @@ msgid "table_name"
 msgstr "nombre_de_la_tabla"
 
 #: ../data/ui/operator/dialog_new_record.glade.h:1
-#| msgid "Related Records"
 msgid "New Related Record"
 msgstr "Nuevo registro relacionado"
 
@@ -3373,14 +3356,10 @@ msgid "_Edit Reports"
 msgstr "_Editar informes"
 
 #: ../data/ui/operator/window_main.glade.h:23
-#| msgctxt "Developer menu title"
-#| msgid "_Developer"
 msgid "_Developer"
 msgstr "_Desarrollador"
 
 #: ../data/ui/operator/window_main.glade.h:24
-#| msgctxt "Mode"
-#| msgid "Operator"
 msgid "_Operator"
 msgstr "_Operador"
 
@@ -3389,7 +3368,6 @@ msgid "_Fields"
 msgstr "_Campos"
 
 #: ../data/ui/operator/window_main.glade.h:26
-#| msgid "Relationships"
 msgid "_Relationships"
 msgstr "_Relaciones"
 
@@ -3426,7 +3404,6 @@ msgid "Test Tra_nslation"
 msgstr "Comprobar la trad_ucción"
 
 #: ../data/ui/operator/window_main.glade.h:36
-#| msgid "_Active Platform"
 msgid "Active Platform"
 msgstr "Plataforma activa"
 
@@ -3669,7 +3646,6 @@ msgid "Secondary Fields:"
 msgstr "Campos secundarios:"
 
 #: ../data/ui/developer/dialog_group_by.glade.h:7
-#| msgid "Border Width (ems)"
 msgid "Border Width (ems):"
 msgstr "Anchura del borde (ems):"
 
@@ -4150,12 +4126,10 @@ msgstr ""
 "configuración regional los usa normalmente."
 
 #: ../data/ui/developer/box_formatting.glade.h:3
-#| msgid "Decimal Places"
 msgid "Decimal Places:"
 msgstr "Lugares para los decimales:"
 
 #: ../data/ui/developer/box_formatting.glade.h:4
-#| msgid "Currency Symbol"
 msgid "Currency Symbol:"
 msgstr "Símbolo de divisa:"
 
@@ -4172,7 +4146,6 @@ msgstr ""
 "diferente para mostrar valores negativos."
 
 #: ../data/ui/developer/box_formatting.glade.h:7
-#| msgid "<b>Numeric Formatting</b>"
 msgid "Numeric Formatting"
 msgstr "Formato numérico"
 
@@ -4227,7 +4200,6 @@ msgstr ""
 "estándar."
 
 #: ../data/ui/developer/box_formatting.glade.h:18
-#| msgid "Text Format"
 msgid "Text Formatting"
 msgstr "Formateado del texto"
 
@@ -4278,7 +4250,6 @@ msgid "Display as radio buttons"
 msgstr "Mostrar como botones de radio"
 
 #: ../data/ui/developer/box_formatting.glade.h:31
-#| msgid "No Choices"
 msgid "Choices"
 msgstr "Opciones"
 
@@ -4320,7 +4291,6 @@ msgid "Select _All"
 msgstr "Seleccionar todo"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:10
-#| msgid "Unselect All"
 msgid "_Unselect All"
 msgstr "_Deseleccionar todo"
 
@@ -4353,17 +4323,14 @@ msgid "Insert _Vertical Line"
 msgstr "Insertar línea _vertical"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:18
-#| msgid "Create Standard Layout"
 msgid "Create _Standard"
 msgstr "Crear _estándar"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:19
-#| msgid "_Add Page"
 msgid "Add Page"
 msgstr "Añadir página"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:20
-#| msgid "_Delete Page"
 msgid "Delete Page"
 msgstr "Eliminar página"
 
@@ -4398,12 +4365,10 @@ msgid "Show _Grid"
 msgstr "Mostrar r_ejilla"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:28
-#| msgid "Show Rules"
 msgid "Show _Rules"
 msgstr "Mostrar _reglas"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:29
-#| msgid "Show Outlines"
 msgid "Show _Outlines"
 msgstr "Mostrar _esquemas"
 
@@ -4418,7 +4383,6 @@ msgstr "Ampliación 200%"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:34
 #, no-c-format
-#| msgid "Zoom 200%"
 msgid "Zoom 100%"
 msgstr "Ampliación 100%"
 
@@ -4556,6 +4520,9 @@ msgstr "<b>Grupo</b>"
 #: ../data/ui/developer/window_users.glade.h:3
 msgid "<b>Users</b>"
 msgstr "<b>Usuarios</b>"
+
+#~ msgid "There was an error while restoring the backup."
+#~ msgstr "Ocurrió un error al restaurar el respaldo."
 
 #~ msgid "<b>Select Relationship</b>"
 #~ msgstr "<b>Seleccionar relación</b>"
