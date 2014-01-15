@@ -1769,6 +1769,8 @@ bool AppWindow::recreate_database_from_backup(const Glib::ustring& backup_uri, b
   pulse_progress_message();
   bool test = DbUtils::add_standard_groups(pDocument);
   if(!test)
+  {
+    std::cerr << G_STRFUNC << ": DbUtils::add_standard_groups(): failed." << std::endl;
     return false;
 
   //Add any extra groups from the example file:
