@@ -1667,6 +1667,7 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
   return true; //All tables created successfully.
 }
 
+//TODO: Remove duplication with recreate_database_from_example().
 bool AppWindow::recreate_database_from_backup(const Glib::ustring& backup_uri, bool& user_cancelled)
 {
   ShowProgressMessage progress_message(_("Creating Glom database from backup file."));
@@ -1772,12 +1773,7 @@ bool AppWindow::recreate_database_from_backup(const Glib::ustring& backup_uri, b
   {
     std::cerr << G_STRFUNC << ": DbUtils::add_standard_groups(): failed." << std::endl;
     return false;
-
-  //Add any extra groups from the example file:
-  pulse_progress_message();
-  test = DbUtils::add_groups_from_document(pDocument);
-  if(!test)
-    return false;
+  }
 
   //m_pFrame->add_standard_tables(); //Add internal, hidden, tables.
 
@@ -1801,22 +1797,35 @@ bool AppWindow::recreate_database_from_backup(const Glib::ustring& backup_uri, b
     }
   }
 
+  std::cout << G_STRFUNC << ": debug 6" << std::endl;
+
   if(original_dir_path.empty())
   {
     std::cerr << G_STRFUNC << ": original_dir_path is empty." << std::endl;
     return false;
   }
 
+  std::cout << G_STRFUNC << ": debug b1" << std::endl;
+
   //Restore the database from the backup:
   //std::cout << "DEBUG: original_dir_path=" << original_dir_path << std::endl;
   const bool restored = connection_pool->convert_backup(
     sigc::mem_fun(*this, &AppWindow::on_connection_convert_backup_progress), original_dir_path);
+
+  std::cout << G_STRFUNC << ": debug b2: result=" << restored << std::endl;
 
   if(!restored)
   {
     std::cerr << G_STRFUNC << ": Restore failed." << std::endl;
     return false;
   }
+
+  //TODO: Is this necessary?
+  //Add any extra groups from the example file:
+  pulse_progress_message();
+  test = DbUtils::add_groups_from_document(pDocument);
+  if(!test)
+    return false;
 
   return true; //Restore successfully.
 }
