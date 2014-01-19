@@ -7,15 +7,15 @@
 # Petr Kovar <pknbe@volny.cz>, 2009.
 # Pavel Mlčoch <pavkamlc@centrum.cz>, 2009.
 # Lucas Lommer <llommer@svn.gnome.org>, 2009.
-# Marek Černocký <marek@manet.cz>, 2009, 2010, 2011, 2012, 2013.
+# Marek Černocký <marek@manet.cz>, 2009, 2010, 2011, 2012, 2013, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-11-18 16:02+0000\n"
-"PO-Revision-Date: 2013-12-24 16:12+0100\n"
+"POT-Creation-Date: 2014-01-14 20:27+0000\n"
+"PO-Revision-Date: 2014-01-19 16:15+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -166,12 +166,12 @@ msgstr ""
 
 #: ../glom/appwindow.cc:984 ../glom/appwindow.cc:2151
 #: ../glom/appwindow.cc:2428 ../glom/appwindow.cc:2465
-#: ../glom/appwindow.cc:2843 ../glom/base_db_table_data.cc:393
+#: ../glom/appwindow.cc:2841 ../glom/base_db_table_data.cc:393
 #: ../glom/box_withbuttons.cc:36 ../glom/box_withbuttons.cc:50
 #: ../glom/box_withbuttons.cc:64 ../glom/dialog_existing_or_new.cc:831
 #: ../glom/filechooser_export.cc:39 ../glom/frame_glom.cc:513
 #: ../glom/frame_glom.cc:737 ../glom/frame_glom.cc:824
-#: ../glom/frame_glom.cc:930 ../glom/utils_ui.cc:481
+#: ../glom/frame_glom.cc:930 ../glom/utils_ui.cc:485
 #: ../glom/onlineglom_strings.cc:40 ../glom/bakery/dialog_offersave.cc:56
 #: ../glom/main.cc:267 ../glom/main.cc:323
 #: ../glom/mode_design/fields/box_db_table_definition.cc:293
@@ -342,23 +342,23 @@ msgid "Restore Backup failed."
 msgstr "Obnovení ze zálohy selhalo."
 
 #: ../glom/appwindow.cc:2498
-msgid "There was an error while restoring the backup."
-msgstr "Vyskytla se chyba během obnovy ze zálohy."
+msgid "There was an error while extracting the backup."
+msgstr "Vyskytla se chyba během rozbalování zálohy."
 
-#: ../glom/appwindow.cc:2608
+#: ../glom/appwindow.cc:2606
 msgid " (read-only)"
 msgstr " (pouze čtení)"
 
-#: ../glom/appwindow.cc:2656 ../data/ui/operator/window_main.glade.h:2
+#: ../glom/appwindow.cc:2654 ../data/ui/operator/window_main.glade.h:2
 msgid "Processing"
 msgstr "Zpracování"
 
-#: ../glom/appwindow.cc:2842
+#: ../glom/appwindow.cc:2840
 msgid "Open Document"
 msgstr "Otevřít dokument"
 
 #. Add a button for related record navigation:
-#: ../glom/appwindow.cc:2844 ../glom/dialog_existing_or_new.cc:832
+#: ../glom/appwindow.cc:2842 ../glom/dialog_existing_or_new.cc:832
 #: ../glom/frame_glom.cc:738 ../glom/onlineglom_strings.cc:32
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:34
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:44
@@ -372,11 +372,11 @@ msgstr "_Otevřít"
 msgid "Internal error"
 msgstr "Interní chyba"
 
-#: ../glom/base_db.cc:1455
+#: ../glom/base_db.cc:1385
 msgid "Value Is Not Unique"
 msgstr "Hodnota není unikátní"
 
-#: ../glom/base_db.cc:1455
+#: ../glom/base_db.cc:1385
 msgid ""
 "The field's value must be unique, but a record with this value already "
 "exists."
@@ -812,31 +812,31 @@ msgstr "Soubor nápovědy není dostupný"
 msgid "Could not display help: %1"
 msgstr "Nelze zobrazit nápovědu: %1"
 
-#: ../glom/utils_ui.cc:475
+#: ../glom/utils_ui.cc:479
 msgid "Your find criteria did not match any records in the table."
 msgstr "Vaše kritéria hledání neodpovídaly žádným záznamům v tabulce."
 
-#: ../glom/utils_ui.cc:477
+#: ../glom/utils_ui.cc:481
 msgid "No Records Found"
 msgstr "Nenalezeny žádné záznamy"
 
-#: ../glom/utils_ui.cc:482
+#: ../glom/utils_ui.cc:486
 msgid "New Find"
 msgstr "Nové hledání"
 
-#: ../glom/utils_ui.cc:493
+#: ../glom/utils_ui.cc:497
 msgid "Report Finished"
 msgstr "Sestava dokončena"
 
-#: ../glom/utils_ui.cc:493
+#: ../glom/utils_ui.cc:497
 msgid "The report will now be opened in your web browser."
 msgstr "Report bude nyní otevřen ve vašem prohlížeči WWW."
 
-#: ../glom/utils_ui.cc:532
+#: ../glom/utils_ui.cc:536
 msgid "Script Uses PyGTK 2"
 msgstr "Skript používá PyGTK 2"
 
-#: ../glom/utils_ui.cc:533
+#: ../glom/utils_ui.cc:537
 msgid ""
 "Glom cannot run this script because it uses pygtk 2, but Glom uses GTK+ 3, "
 "and attempting to use pygtk 2 would cause Glom to crash."
@@ -859,7 +859,7 @@ msgstr "Zpět na seznam"
 
 #. Translators: This is a noun. It is a notebook tab title.
 #. Details column:
-#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1429
+#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1436
 #: ../glom/mode_data/notebook_data.cc:42
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:215
 #: ../glom/mode_find/notebook_find.cc:38
@@ -1161,20 +1161,20 @@ msgid "Vietnamese"
 msgstr "Vietnamské"
 
 #. Translators: This means an unknown or unnacceptable value type in a database.
-#: ../glom/libglom/data_structure/field.cc:674
+#: ../glom/libglom/data_structure/field.cc:663
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:151
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:159
 msgid "Invalid"
 msgstr "Neplatné"
 
 #. Translators: This means a numeric value type in a database.
-#: ../glom/libglom/data_structure/field.cc:677
+#: ../glom/libglom/data_structure/field.cc:666
 msgid "Number"
 msgstr "Číslo"
 
 #. Translators: This means a text/string value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/field.cc:680
+#: ../glom/libglom/data_structure/field.cc:669
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:73
 #: ../glom/libglom/data_structure/translatable_item.cc:258
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1159
@@ -1183,23 +1183,23 @@ msgid "Text"
 msgstr "Text"
 
 #. Translators: This means a time value type in a database.
-#: ../glom/libglom/data_structure/field.cc:683
+#: ../glom/libglom/data_structure/field.cc:672
 msgid "Time"
 msgstr "Čas"
 
 #. Translators: This means a time value type in a database.
-#: ../glom/libglom/data_structure/field.cc:686
+#: ../glom/libglom/data_structure/field.cc:675
 msgid "Date"
 msgstr "Datum"
 
 #. Translators: This means a true/false value type in a database.
-#: ../glom/libglom/data_structure/field.cc:689
+#: ../glom/libglom/data_structure/field.cc:678
 msgid "Boolean"
 msgstr "Booleovská hodnota"
 
 #. Translators: This means a picture value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/field.cc:692
+#: ../glom/libglom/data_structure/field.cc:681
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:70
 #: ../glom/libglom/data_structure/translatable_item.cc:252
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1166
@@ -1401,48 +1401,48 @@ msgstr "Název databáze"
 msgid "Unknown"
 msgstr "Neznámé"
 
-#: ../glom/libglom/document/document.cc:516
-#: ../glom/libglom/document/document.cc:534
+#: ../glom/libglom/document/document.cc:520
+#: ../glom/libglom/document/document.cc:538
 msgid "System Preferences"
 msgstr "Nastavení systému"
 
-#: ../glom/libglom/document/document.cc:547
+#: ../glom/libglom/document/document.cc:551
 msgid "System Name"
 msgstr "Název systému"
 
-#: ../glom/libglom/document/document.cc:553
+#: ../glom/libglom/document/document.cc:557
 msgid "Organisation Name"
 msgstr "Název organizace"
 
-#: ../glom/libglom/document/document.cc:559
+#: ../glom/libglom/document/document.cc:563
 msgid "Organisation Logo"
 msgstr "Logo organizace"
 
-#: ../glom/libglom/document/document.cc:565
+#: ../glom/libglom/document/document.cc:569
 msgid "Street"
 msgstr "Ulice"
 
-#: ../glom/libglom/document/document.cc:571
+#: ../glom/libglom/document/document.cc:575
 msgid "Street (line 2)"
 msgstr "Ulice (řádek 2)"
 
-#: ../glom/libglom/document/document.cc:577
+#: ../glom/libglom/document/document.cc:581
 msgid "City"
 msgstr "Město"
 
-#: ../glom/libglom/document/document.cc:583
+#: ../glom/libglom/document/document.cc:587
 msgid "State"
 msgstr "Stát"
 
-#: ../glom/libglom/document/document.cc:589
+#: ../glom/libglom/document/document.cc:593
 msgid "Country"
 msgstr "Země"
 
-#: ../glom/libglom/document/document.cc:595
+#: ../glom/libglom/document/document.cc:599
 msgid "Zip Code"
 msgstr "Směrovací číslo"
 
-#: ../glom/libglom/document/document.cc:1423
+#: ../glom/libglom/document/document.cc:1430
 msgid "Overview"
 msgstr "Přehled"
 
@@ -1463,16 +1463,16 @@ msgstr "Aplikace důležité pro instalaci balíčku nebyly nalezeny."
 msgid "Gettext-Warning: "
 msgstr "Gettext-varování: "
 
-#: ../glom/libglom/db_utils.cc:513
+#: ../glom/libglom/db_utils.cc:514
 msgid "System: Auto Increments"
 msgstr "Systém: Automatické zvyšování"
 
-#: ../glom/libglom/db_utils.cc:1185
+#: ../glom/libglom/db_utils.cc:1186
 #: ../glom/mode_design/users/dialog_groups_list.cc:70
 msgid "Description"
 msgstr "Popis"
 
-#: ../glom/libglom/db_utils.cc:1192
+#: ../glom/libglom/db_utils.cc:1193
 msgid "Comments"
 msgstr "Komentáře"
 
