@@ -1,3 +1,12 @@
+1.25.6 (unstable):
+
+* Backup/Restore: Use libarchive instead of calling the tar shell command.
+  This should be slightly more robust and safe, though we were already
+  correctly escaping and quoting the shell commands.
+  (Murray Cumming)
+* Avoid an infinite loop when document loading fails.
+  (Murray Cumming)
+
 1.25.5 (unstable):
 
 * Check that we have the pg_config utility.
