@@ -464,11 +464,14 @@ public:
    */
   Glib::ustring save_backup_file(const Glib::ustring& uri, const SlotProgress& slot_progress);
   
-  /**
+  /** Extract the .glom file and backup data from a .tar.gz archive.
+   * The backup data must be stored temporarily on disk because pg_restore requires a file on disk.
+   *
    * @param backup_uri: The URI of a .tar.gz backup file.
+   * @param backup_path This will be set to the path of a temporary file for use with pg_restore.
    * @result The contents of the .glom file from the .tar.gz file.
    */
-  static Glib::ustring extract_backup_file(const Glib::ustring& backup_uri, const SlotProgress& slot_progress);
+  static Glib::ustring extract_backup_file(const Glib::ustring& backup_uri, std::string& backup_path, const SlotProgress& slot_progress);
   
 
 protected:

@@ -195,7 +195,7 @@ protected:
    * The database (server) should already have the necessary groups and users.
    * See save_backup().
    */
-  virtual bool convert_backup(const SlotProgress& slot_progress, const std::string& base_directory_uri, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name) = 0;
+  virtual bool convert_backup(const SlotProgress& slot_progress, const std::string& backup_data_file_path, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name) = 0;
 
 protected:
   std::string m_database_directory_uri;

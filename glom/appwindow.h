@@ -260,7 +260,7 @@ private:
   Document* on_connection_pool_get_document();
 
   bool recreate_database_from_example(bool& user_cancelled); //return indicates success.
-  bool recreate_database_from_backup(const Glib::ustring& backup_uri, bool& user_cancelled); //return indicates success.
+  bool recreate_database_from_backup(const std::string& backup_data_file_path, bool& user_cancelled); //return indicates success.
   void on_recreate_database_progress();
 
   void stop_self_hosting_of_document_database();
@@ -348,6 +348,9 @@ private:
   //we already asked for them when getting the document over the network,
   //so we can use them again when connecting directly to the database:
   Glib::ustring m_temp_username, m_temp_password;
+
+  //This is set temporarily while restoring a backup.
+  std::string m_backup_data_filepath;
 
   bool m_show_sql_debug;
 

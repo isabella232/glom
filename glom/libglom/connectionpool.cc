@@ -455,19 +455,11 @@ bool ConnectionPool::save_backup(const SlotProgress& slot_progress, const std::s
   return result;
 }
 
-bool ConnectionPool::convert_backup(const SlotProgress& slot_progress, const std::string& path_dir)
+bool ConnectionPool::convert_backup(const SlotProgress& slot_progress, const std::string& backup_data_file_path)
 {
   g_assert(m_backend.get());
 
-  //TODO_MySQL:
-  //TODO: Avoid this copy/paste of the directory name:
-  std::string path_dir_to_use = path_dir;
-  if(!path_dir_to_use.empty())
-  {
-    path_dir_to_use = Glib::build_filename(path_dir, "glom_postgres_data");
-  }
-
-  const bool result = m_backend->convert_backup(slot_progress, path_dir_to_use, m_user, m_password, m_database);
+  const bool result = m_backend->convert_backup(slot_progress, backup_data_file_path, m_user, m_password, m_database);
   if(!result)
     return false;
 

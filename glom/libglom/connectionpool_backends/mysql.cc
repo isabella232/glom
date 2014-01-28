@@ -595,7 +595,7 @@ bool MySQL::save_backup(const SlotProgress& slot_progress, const Glib::ustring& 
   return result;
 }
 
-bool MySQL::convert_backup(const SlotProgress& slot_progress, const std::string& base_directory, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& /* database_name */)
+bool MySQL::convert_backup(const SlotProgress& slot_progress, const std::string& backup_data_file_path, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& /* database_name */)
 {
 /* TODO:
   if(m_network_shared && !running)
@@ -631,10 +631,9 @@ bool MySQL::convert_backup(const SlotProgress& slot_progress, const std::string&
   }
 
   //Make sure the path exists:
-  const std::string path_backup = get_self_hosting_backup_path(base_directory);
-  if(path_backup.empty() || !file_exists_filepath(path_backup))
+  if(backup_data_file_path.empty() || !file_exists_filepath(backup_data_file_path))
   {
-    std::cerr << G_STRFUNC << ": Backup file not found: " << path_backup << std::endl;
+    std::cerr << G_STRFUNC << ": Backup file not found: " << backup_data_file_path << std::endl;
     return false;
   }
 

@@ -49,7 +49,7 @@ public:
    */
   virtual bool save_backup(const SlotProgress& slot_progress, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name);
 
-  virtual bool convert_backup(const SlotProgress& slot_progress, const std::string& base_directory, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name);
+  virtual bool convert_backup(const SlotProgress& slot_progress, const std::string& backup_data_file_path, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name);
 
   /** Return the quoted path to the specified PostgreSQL utility.
    */
@@ -82,6 +82,7 @@ protected:
    */
   std::string get_self_hosting_data_path(bool create = false);
 
+  //TODO: Remove this?
   /** Get the path to the backup file, regardless of whether it exists.
    * @param base_directory Where to find the backup file, under a normal Glom directory structure.
    * If @a base_directory is empty then it uses get_database_directory_uri().

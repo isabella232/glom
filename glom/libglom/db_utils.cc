@@ -2202,6 +2202,10 @@ bool add_group(const Document* document, const Glib::ustring& group, bool superu
   }
 
   //Let them edit the autoincrements too:
+  //Do not fail if the autoincrements table does not yet exist, because this can happen during restoring of a backup.
+  if(std::find(table_list.begin(), table_list.end(), GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME) == table_list.end())
+    return true;
+    
   if(!Privs::set_table_privileges(group, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME, priv))
   {
     std::cerr << G_STRFUNC << "Privs::set_table_privileges() failed." << std::endl;
@@ -2210,6 +2214,7 @@ bool add_group(const Document* document, const Glib::ustring& group, bool superu
 
   return true;
 }
+
 
 bool remove_user(const Glib::ustring& user)
 {

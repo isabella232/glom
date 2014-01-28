@@ -62,11 +62,13 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   
   //Create a new document from the backup:
   {
-    const Glib::ustring backup_file_contents = 
+    std::string backup_data_file_path;
+    const Glib::ustring backup_glom_file_contents = 
       Glom::Document::extract_backup_file(
         backup_uri_tarball,
+        backup_data_file_path,
         sigc::ptr_fun(&on_backup_progress));
-    if(backup_file_contents.empty())
+    if(backup_glom_file_contents.empty())
     {
       std::cerr << G_STRFUNC << ": Extraction from the backup file failed." << std::endl;
       return false;
@@ -76,7 +78,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     //std::cout << "debug: recreated_uri=" << recreated_uri << std::endl;
     Glom::Document document;
     const bool recreated = 
-      test_create_and_selfhost_from_data(backup_file_contents, document, hosting_mode);
+      test_create_and_selfhost_from_data(backup_glom_file_contents, document, hosting_mode);
     if(!recreated)
     {
       std::cerr << G_STRFUNC << ": Recreation from the backup failed." << std::endl;

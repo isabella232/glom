@@ -660,7 +660,7 @@ bool Postgres::save_backup(const SlotProgress& slot_progress, const Glib::ustrin
   return result;
 }
 
-bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::string& base_directory, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name)
+bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::string& backup_data_file_path, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name)
 {
 /* TODO:
   if(m_network_shared && !running)
@@ -696,10 +696,9 @@ bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::stri
   }
 
   //Make sure the path exists:
-  const std::string path_backup = get_self_hosting_backup_path(base_directory);
-  if(path_backup.empty() || !file_exists_filepath(path_backup))
+  if(backup_data_file_path.empty() || !file_exists_filepath(backup_data_file_path))
   {
-    std::cerr << G_STRFUNC << ": Backup file not found: " << path_backup << std::endl;
+    std::cerr << G_STRFUNC << ": Backup file not found: " << backup_data_file_path << std::endl;
     return false;
   }
 
@@ -720,9 +719,9 @@ bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::stri
     " --host=" + Glib::shell_quote(m_host) +
     " --port=" + port_as_string(m_port) +
     " --username=" + Glib::shell_quote(username) +
-    " " + path_backup;
+    " " + backup_data_file_path;
 
-  std::cout << "DEBUG: command_restore=" << command_restore << std::endl;
+  std::cout << G_STRFUNC << "DEBUG: command_restore=" << command_restore << std::endl;
 
   //TODO: Put the password in .pgpass
 

@@ -179,10 +179,10 @@ public:
   /** Use a backup of the database in a tarball to create tables and data in an existing empty database.
    * The database (server) should already have the necessary groups and users.
    *
-   * @param path_dir The top-level directory for the backup file, using the normal directory structure.
+   * @param path_dir The path to the database-server-specific backup file.
    * See save_backup().
    */
-  bool convert_backup(const SlotProgress& slot_progress, const std::string& path_dir);
+  bool convert_backup(const SlotProgress& slot_progress, const std::string& backup_data_file_path);
 
   void set_user(const Glib::ustring& value);
   void set_password(const Glib::ustring& value);

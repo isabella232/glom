@@ -412,7 +412,7 @@ bool Sqlite::save_backup(const SlotProgress& /* slot_progress */, const Glib::us
   return false;
 }
 
-bool Sqlite::convert_backup(const SlotProgress& /* slot_progress */, const std::string& /* base_directory */, const Glib::ustring& /* username */, const Glib::ustring& /* password */, const Glib::ustring& /* database_name */)
+bool Sqlite::convert_backup(const SlotProgress& /* slot_progress */, const std::string& /* backup_data_file_path */, const Glib::ustring& /* username */, const Glib::ustring& /* password */, const Glib::ustring& /* database_name */)
 {
   //TODO:
   std::cerr << G_STRFUNC << ": Not implemented.";

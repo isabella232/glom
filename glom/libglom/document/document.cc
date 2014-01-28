@@ -37,6 +37,7 @@
 #include <libglom/translations_po.h>
 #include <giomm/file.h>
 #include <glibmm/miscutils.h>
+#include <glibmm/fileutils.h>
 #include <glibmm/convert.h>
 
 #include <libglom/connectionpool.h>
@@ -5064,8 +5065,44 @@ Glib::ustring Document::save_backup_file(const Glib::ustring& uri, const SlotPro
   return Glib::filename_to_uri(tarball_path);
 }
 
-Glib::ustring Document::extract_backup_file(const Glib::ustring& backup_uri, const SlotProgress& slot_progress)
+namespace { //anonymous namespace
+
+void read_archive_entry_file_contents(archive* a, archive_entry* entry, std::string& file_contents)
 {
+  file_contents.clear();
+
+  const size_t size = archive_entry_size(entry);
+  const Glib::ScopedPtr<char> buf ((char*) g_malloc(size + 1));
+
+  const ssize_t r = archive_read_data(a, buf.get(), size);
+    
+  if((r == ARCHIVE_FATAL) || (r == ARCHIVE_WARN) ||
+    (r == ARCHIVE_RETRY)) //0 or a number of bytes read are the signs of success.
+  {
+      std::cerr << G_STRFUNC << ": Error while reading data from archive entry. r=" << r << std::endl;
+      handle_archive_error(a);
+      return;
+  }
+
+  try
+  {
+    //For std::string, size is number of characters. For ustring it would be number of characters.
+    file_contents += std::string(buf.get(), r);
+  }
+  catch(const std::exception& ex)
+  {
+    std::cerr << G_STRFUNC << ": std::exception error while concatenating archive data: "
+      << ex.what() << std::endl;
+    return;
+  }
+}
+
+} //anonymous namespaces
+
+Glib::ustring Document::extract_backup_file(const Glib::ustring& backup_uri, std::string& backup_path, const SlotProgress& slot_progress)
+{
+  backup_path.clear();
+
   // We cannot use an uri here, because we cannot untar remote files.
   const std::string filename_tarball = Glib::filename_from_uri(backup_uri);
 
@@ -5096,15 +5133,7 @@ Glib::ustring Document::extract_backup_file(const Glib::ustring& backup_uri, con
 
   slot_progress();
 
-  //We expect just one file:
-  struct archive_entry* entry = 0;
-  if(archive_read_next_header(a, &entry) != ARCHIVE_OK)
-  {
-    std::cerr << G_STRFUNC << ": Could not read next archive entry." << std::endl;
-    handle_archive_error(a);
-    return Glib::ustring();
-  }
-  
+
   //const char *name = archive_entry_pathname(entry);
   //std::cout << "debug: name=" << name << std::endl;
 
@@ -5115,37 +5144,43 @@ Glib::ustring Document::extract_backup_file(const Glib::ustring& backup_uri, con
   //Read the whole file in one go,
   //We'd have to keep it all in memory anyway as we concatentated it,
   //if we did it in chunks.
-  //TODO: Backup files will, of course, often have large amounts of (example) data.
-  //So we should, elsewhere, make it possible to load that data progressively,
-  //maybe discarding it during a first read, and adapt this code to that new API.
   slot_progress();
 
-  const size_t size = archive_entry_size(entry);
-  const Glib::ScopedPtr<char> buf ((char*) g_malloc(size + 1));
 
-  const ssize_t r = archive_read_data(a, buf.get(), size);
-    
-  if((r == ARCHIVE_FATAL) || (r == ARCHIVE_WARN) ||
-    (r == ARCHIVE_RETRY)) //0 or a number of bytes read are the signs of success.
+
+  std::string contents_glom_file;
+
+  struct archive_entry* entry = 0;
+  while(archive_read_next_header(a, &entry) == ARCHIVE_OK)
   {
-      std::cerr << G_STRFUNC << ": Error while reading data from archive entry. r=" << r << std::endl;
-      handle_archive_error(a);
-      return Glib::ustring();
+    const char* pathname = archive_entry_pathname(entry);
+    if(!pathname)
+      continue;
+
+    const std::string basename = Glib::path_get_basename(pathname);
+    //std::cout << G_STRFUNC << ": debug: basename=" << basename << std::endl;
+
+    bool is_glom_file = false;
+    const std::string without_suffix = Glom::Utils::string_remove_suffix(basename, ".glom");
+    if(without_suffix != basename)
+      is_glom_file = true;
+
+    if(is_glom_file)
+    {
+      read_archive_entry_file_contents(a, entry, contents_glom_file);
+    }
+    else if(basename == "backup")
+    {
+      std::string contents_backup_file;
+      read_archive_entry_file_contents(a, entry, contents_backup_file);
+
+      backup_path = Utils::get_temp_file_path("glom_backup");
+      Glib::file_set_contents(backup_path, contents_backup_file);
+      //std::cout << "debug: backup data path: " << backup_path << std::endl;
+    }
   }
 
-  try
-  {
-    //For std::string, size is number of characters. For ustring it would be number of characters.
-    contents += std::string(buf.get(), r);
-  }
-  catch(const std::exception& ex)
-  {
-    std::cerr << G_STRFUNC << ": std::exception error while concatenating archive data: "
-      << ex.what() << std::endl;
-    return Glib::ustring();
-  }
-
-  return contents;
+  return contents_glom_file;
 }
 
 

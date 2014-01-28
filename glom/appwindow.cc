@@ -893,6 +893,9 @@ bool AppWindow::on_document_load()
     const bool is_example = pDocument->get_is_example_file();
     const bool is_backup = pDocument->get_is_backup_file();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+    //Note that the URI will be empty if we are loading from data,
+    //such as when loading a backup.
     const std::string original_uri = pDocument->get_file_uri();
 
     if(is_example || is_backup)
@@ -1070,7 +1073,10 @@ bool AppWindow::on_document_load()
         if(is_example)
           test = recreate_database_from_example(user_cancelled);
         else
-          test = recreate_database_from_backup(original_uri, user_cancelled);
+        {
+          test = recreate_database_from_backup(m_backup_data_filepath, user_cancelled);
+          m_backup_data_filepath.clear();
+        }
 
         if(!test)
         {
@@ -1668,8 +1674,14 @@ bool AppWindow::recreate_database_from_example(bool& user_cancelled)
 }
 
 //TODO: Remove duplication with recreate_database_from_example().
-bool AppWindow::recreate_database_from_backup(const Glib::ustring& backup_uri, bool& user_cancelled)
+bool AppWindow::recreate_database_from_backup(const std::string& backup_data_file_path, bool& user_cancelled)
 {
+  if(backup_data_file_path.empty())
+  {
+    std::cerr << G_STRFUNC << ": backup_data_file_path is empty." << std::endl;
+    return false;
+  }
+
   ShowProgressMessage progress_message(_("Creating Glom database from backup file."));
 
   //Create a database, based on the information in the current document:
@@ -1777,55 +1789,23 @@ bool AppWindow::recreate_database_from_backup(const Glib::ustring& backup_uri, b
 
   //m_pFrame->add_standard_tables(); //Add internal, hidden, tables.
 
-  //Restore the backup into the database:
-  std::string original_dir_path;
-
-  Glib::RefPtr<Gio::File> gio_file = Gio::File::create_for_uri(backup_uri);
-  if(gio_file)
-  {
-    Glib::RefPtr<Gio::File> parent = gio_file->get_parent();
-    if(parent)
-    {
-      try
-      {
-        original_dir_path = Glib::filename_from_uri(parent->get_uri());
-      }
-      catch(const Glib::Error& ex)
-      {
-        std::cerr << G_STRFUNC << ": Glib::filename_from_uri() failed: " << ex.what() << std::endl;
-      }
-    }
-  }
-
-  std::cout << G_STRFUNC << ": debug 6" << std::endl;
-
-  if(original_dir_path.empty())
-  {
-    std::cerr << G_STRFUNC << ": original_dir_path is empty." << std::endl;
+  //Add any extra groups from the example file.
+  //The backup file refers to these,
+  //so the restore will fail if they are not present.
+  pulse_progress_message();
+  test = DbUtils::add_groups_from_document(pDocument);
+  if(!test)
     return false;
-  }
 
-  std::cout << G_STRFUNC << ": debug b1" << std::endl;
-
-  //Restore the database from the backup:
-  //std::cout << "DEBUG: original_dir_path=" << original_dir_path << std::endl;
+  //Restore the backup into the database:
   const bool restored = connection_pool->convert_backup(
-    sigc::mem_fun(*this, &AppWindow::on_connection_convert_backup_progress), original_dir_path);
-
-  std::cout << G_STRFUNC << ": debug b2: result=" << restored << std::endl;
+    sigc::mem_fun(*this, &AppWindow::on_connection_convert_backup_progress), backup_data_file_path);
 
   if(!restored)
   {
     std::cerr << G_STRFUNC << ": Restore failed." << std::endl;
     return false;
   }
-
-  //TODO: Is this necessary?
-  //Add any extra groups from the example file:
-  pulse_progress_message();
-  test = DbUtils::add_groups_from_document(pDocument);
-  if(!test)
-    return false;
 
   return true; //Restore successfully.
 }
@@ -2500,17 +2480,17 @@ bool AppWindow::do_restore_backup(const Glib::ustring& backup_uri)
     return false;
     
   ShowProgressMessage progress_message(_("Restoring backup"));
-  const Glib::ustring backup_file_contents = Glom::Document::extract_backup_file(
-    backup_uri,
+  const Glib::ustring backup_glom_file_contents = Glom::Document::extract_backup_file(
+    backup_uri, m_backup_data_filepath,
     sigc::mem_fun(*this, &AppWindow::on_connection_convert_backup_progress));
 
-  if(backup_file_contents.empty())
+  if(backup_glom_file_contents.empty() || m_backup_data_filepath.empty())
   {
     ui_warning(_("Restore Backup failed."), _("There was an error while extracting the backup."));
     return false;
   }
 
-  return open_document_from_data((const guchar*)backup_file_contents.c_str(), backup_file_contents.bytes());
+  return open_document_from_data((const guchar*)backup_glom_file_contents.c_str(), backup_glom_file_contents.bytes());
 }
 
 void AppWindow::on_menu_developer_enable_layout_drag_and_drop()
