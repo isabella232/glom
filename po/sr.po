@@ -1,14 +1,14 @@
 # Serbian translation for glom.
 # Copyright (C) 2013 glom's COPYRIGHT HOLDER
 # This file is distributed under the same license as the glom package.
-# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2013.
+# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2013—2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glom&k"
 "eywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-10 11:25+0000\n"
-"PO-Revision-Date: 2013-10-16 20:49+0200\n"
+"POT-Creation-Date: 2014-01-14 20:27+0000\n"
+"PO-Revision-Date: 2014-01-31 10:25+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -19,57 +19,57 @@ msgstr ""
 "n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
 
-#: ../glom/application.cc:138 ../glom/glom_create_from_example.cc:259
+#: ../glom/application.cc:157 ../glom/glom_create_from_example.cc:259
 #: ../glom/glom_export_po.cc:112 ../glom/glom_export_po_all.cc:100
 #: ../glom/glom_import_po_all.cc:101 ../glom/glom_test_connection.cc:148
 msgid "Error while parsing command-line options: "
 msgstr "Грешка приликом обраде могућности линије наредби: "
 
 #. TODO: How can we just print them out?
-#: ../glom/application.cc:139 ../glom/glom_create_from_example.cc:260
+#: ../glom/application.cc:158 ../glom/glom_create_from_example.cc:260
 #: ../glom/glom_export_po.cc:113 ../glom/glom_export_po_all.cc:101
 #: ../glom/glom_import_po_all.cc:102 ../glom/glom_test_connection.cc:108
 msgid "Use --help to see a list of available command-line options."
 msgstr ""
 "Користите „--help“ да видите списак доступних могућности линије наредби."
 
-#: ../glom/application.cc:180 ../glom/glom_create_from_example.cc:294
+#: ../glom/application.cc:199 ../glom/glom_create_from_example.cc:294
 #: ../glom/glom_export_po.cc:162
 msgid "Glom: The file does not exist."
 msgstr "Глом: Датотека не постоји."
 
-#: ../glom/application.cc:190 ../glom/glom_create_from_example.cc:304
+#: ../glom/application.cc:209 ../glom/glom_create_from_example.cc:304
 #: ../glom/glom_export_po.cc:172
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Глом: Путања датотеке је директоријум а не датотека."
 
-#: ../glom/appwindow.cc:165
+#: ../glom/appwindow.cc:175
 msgid "Glom: Generating Encryption Certificates"
 msgstr "Глом: Стварам уверења шифровања"
 
-#: ../glom/appwindow.cc:166
+#: ../glom/appwindow.cc:176
 msgid ""
 "Please wait while Glom prepares your system for publishing over the network."
 msgstr "Сачекајте док Глом не припреми ваш систем за објављивање на мрежи."
 
-#: ../glom/appwindow.cc:454
+#: ../glom/appwindow.cc:465
 msgid "A Database GUI"
 msgstr "ГКС базе података"
 
-#: ../glom/appwindow.cc:456
+#: ../glom/appwindow.cc:467
 msgid "© 2000-2011 Murray Cumming, Openismus GmbH"
 msgstr "© 2000-2011 Murray Cumming, Openismus GmbH"
 
 #. TODO: Put this in the generic bakery code.
-#: ../glom/appwindow.cc:549 ../glom/appwindow.cc:558
+#: ../glom/appwindow.cc:577 ../glom/appwindow.cc:586
 msgid "Open Failed"
 msgstr "Није успело отварање"
 
-#: ../glom/appwindow.cc:550
+#: ../glom/appwindow.cc:578
 msgid "The document could not be found."
 msgstr "Не могу да пронађем документ."
 
-#: ../glom/appwindow.cc:559
+#: ../glom/appwindow.cc:587
 msgid ""
 "The document could not be opened because it was created or modified by a "
 "newer version of Glom."
@@ -79,13 +79,13 @@ msgstr ""
 
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
 #. Warn the user, and let him try again:
-#: ../glom/appwindow.cc:609 ../glom/frame_glom.cc:2053
-#: ../glom/frame_glom.cc:2124
+#: ../glom/appwindow.cc:643 ../glom/frame_glom.cc:2152
+#: ../glom/frame_glom.cc:2223
 msgid "Connection Failed"
 msgstr "Није успело повезивање"
 
-#: ../glom/appwindow.cc:609 ../glom/frame_glom.cc:2053
-#: ../glom/frame_glom.cc:2124
+#: ../glom/appwindow.cc:643 ../glom/frame_glom.cc:2152
+#: ../glom/frame_glom.cc:2223
 msgid ""
 "Glom could not connect to the database server. Maybe you entered an "
 "incorrect user name or password, or maybe the postgres database server is "
@@ -95,15 +95,15 @@ msgstr ""
 "неисправно корисничко име или лозинку, или можда није покренут постгрес "
 "сервер базе података."
 
-#: ../glom/appwindow.cc:777
+#: ../glom/appwindow.cc:811
 msgid ""
 "The file cannot be opened because this version of Glom does not support self-"
 "hosting of databases."
 msgstr ""
-"Датотека не може бити отворена зато што ово издање Глома не подржава "
-"само-удомљавање база података."
+"Датотека не може бити отворена зато што ово издање Глома не подржава само-"
+"удомљавање база података."
 
-#: ../glom/appwindow.cc:782 ../glom/appwindow.cc:791
+#: ../glom/appwindow.cc:816 ../glom/appwindow.cc:825
 msgid ""
 "The file cannot be opened because this version of Glom does not support "
 "PostgreSQL databases."
@@ -111,7 +111,7 @@ msgstr ""
 "Датотека не може бити отворена зато што ово издање Глома не подржава "
 "ПостгреСКуЛ базе података."
 
-#: ../glom/appwindow.cc:799
+#: ../glom/appwindow.cc:833
 msgid ""
 "The file cannot be opened because this version of Glom does not support "
 "SQLite databases."
@@ -120,15 +120,15 @@ msgstr ""
 "базе података."
 
 #. Warn the user.
-#: ../glom/appwindow.cc:817
+#: ../glom/appwindow.cc:851
 msgid "File Uses Unsupported Database Backend"
 msgstr "Датотека користи неподржаног позадинца базе података"
 
-#: ../glom/appwindow.cc:880
+#: ../glom/appwindow.cc:914
 msgid "Creating From Example File"
 msgstr "Стварам из датотеке примера"
 
-#: ../glom/appwindow.cc:881
+#: ../glom/appwindow.cc:915
 msgid ""
 "To use this example file you must save an editable copy of the file. A new "
 "database will also be created on the server."
@@ -136,11 +136,11 @@ msgstr ""
 "Да користите ову датотеку примера морате да сачувате уредљив умножак "
 "датотеке. Нова база података ће такође бити направљена на серверу."
 
-#: ../glom/appwindow.cc:885
+#: ../glom/appwindow.cc:919
 msgid "Creating From Backup File"
 msgstr "Стварам из датотеке резерве"
 
-#: ../glom/appwindow.cc:886
+#: ../glom/appwindow.cc:920
 msgid ""
 "To use this backup file you must save an editable copy of the file. A new "
 "database will also be created on the server."
@@ -148,11 +148,11 @@ msgstr ""
 "Да користите ову датотеку резерве морате да сачувате уредљив умножак "
 "датотеке. Нова база података ће такође бити направљена на серверу."
 
-#: ../glom/appwindow.cc:947
+#: ../glom/appwindow.cc:981
 msgid "Opening Read-Only File."
 msgstr "Отварам датотеку само за читање."
 
-#: ../glom/appwindow.cc:948
+#: ../glom/appwindow.cc:982
 msgid ""
 "This file is read only, so you will not be able to enter Developer mode to "
 "make design changes."
@@ -160,42 +160,41 @@ msgstr ""
 "Ова датотека је само за читање, тако да нећете бити у могућности да "
 "покренете развојни режим да унесете измене у дизајну."
 
-#: ../glom/appwindow.cc:950 ../glom/appwindow.cc:2141
-#: ../glom/appwindow.cc:2418 ../glom/appwindow.cc:2455
-#: ../glom/appwindow.cc:2833 ../glom/base_db_table_data.cc:393
+#: ../glom/appwindow.cc:984 ../glom/appwindow.cc:2151
+#: ../glom/appwindow.cc:2428 ../glom/appwindow.cc:2465
+#: ../glom/appwindow.cc:2841 ../glom/base_db_table_data.cc:393
 #: ../glom/box_withbuttons.cc:36 ../glom/box_withbuttons.cc:50
-#: ../glom/box_withbuttons.cc:64 ../glom/dialog_existing_or_new.cc:833
-#: ../glom/filechooser_export.cc:39 ../glom/frame_glom.cc:511
-#: ../glom/frame_glom.cc:735 ../glom/frame_glom.cc:814
-#: ../glom/frame_glom.cc:920 ../glom/utils_ui.cc:481
+#: ../glom/box_withbuttons.cc:64 ../glom/dialog_existing_or_new.cc:831
+#: ../glom/filechooser_export.cc:39 ../glom/frame_glom.cc:513
+#: ../glom/frame_glom.cc:737 ../glom/frame_glom.cc:824
+#: ../glom/frame_glom.cc:930 ../glom/utils_ui.cc:485
 #: ../glom/onlineglom_strings.cc:40 ../glom/bakery/dialog_offersave.cc:56
 #: ../glom/main.cc:267 ../glom/main.cc:323
-#: ../glom/mode_design/fields/box_db_table_definition.cc:273
-#: ../glom/mode_design/fields/box_db_table_definition.cc:324
+#: ../glom/mode_design/fields/box_db_table_definition.cc:293
+#: ../glom/mode_design/fields/box_db_table_definition.cc:344
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:41
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:227
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1012
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1056
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:841
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:885
 #: ../glom/mode_design/script_library/dialog_script_library.cc:131
 #: ../glom/navigation/box_tables.cc:401
-#: ../glom/mode_design/translation/window_translations.cc:341
-#: ../glom/mode_design/translation/window_translations.cc:380
+#: ../glom/mode_design/translation/window_translations.cc:362
+#: ../glom/mode_design/translation/window_translations.cc:401
 #: ../glom/utility_widgets/imageglom.cc:687
 #: ../glom/utility_widgets/imageglom.cc:774
-#| msgid "Cancel"
 msgid "_Cancel"
 msgstr "_Откажи"
 
-#: ../glom/appwindow.cc:951
+#: ../glom/appwindow.cc:985
 msgid "Continue without Developer Mode"
 msgstr "Настави без развојног режима"
 
 #. The connection to the server is OK, but the database is not there yet.
-#: ../glom/appwindow.cc:1010
+#: ../glom/appwindow.cc:1044
 msgid "Database Not Found On Server"
 msgstr "База података није пронађена на серверу"
 
-#: ../glom/appwindow.cc:1010
+#: ../glom/appwindow.cc:1044
 msgid ""
 "The database could not be found on the server. Please consult your system "
 "administrator."
@@ -205,37 +204,55 @@ msgstr ""
 
 #. std::cerr might show some hints, but we don't want to confront the user with them:
 #. TODO: Actually complain about specific stuff such as missing data, because the user might really play with the file system.
-#: ../glom/appwindow.cc:1020
+#: ../glom/appwindow.cc:1054
 msgid "Problem Loading Document"
 msgstr "Грешка учитавања документа"
 
-#: ../glom/appwindow.cc:1020
+#: ../glom/appwindow.cc:1054
 msgid "Glom could not load the document."
 msgstr "Глом не може да учита документ."
 
-#: ../glom/appwindow.cc:1453
+#: ../glom/appwindow.cc:1493
 msgid "Creating Glom database from example file."
 msgstr "Стварам Гломову базу податка из датотеке примера."
 
-#: ../glom/appwindow.cc:1632
+#: ../glom/appwindow.cc:1672
 msgid "Creating Glom database from backup file."
 msgstr "Стварам Гломову базу податка из датотеке резерве."
 
+#: ../glom/appwindow.cc:1756
+#| msgid ""
+#| "<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
+#| "\n"
+#| "Glom could not create the new database. Maybe you do not have the "
+#| "necessary access rights. Please contact your system administrator."
+msgid ""
+"Glom could not create the new database. Maybe you do not have the necessary "
+"access rights. Please contact your system administrator."
+msgstr ""
+"Глом не може да направи нову базу података. Можда немате потребна овлашћења "
+"за приступ. Молим обратите се администратору система."
+
+#: ../glom/appwindow.cc:1757
+#| msgid "Database Field"
+msgid "Database Creation Failed"
+msgstr "Није успело стварање базе података"
+
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/appwindow.cc:2086 ../glom/bakery/appwindow_withdoc.cc:241
+#: ../glom/appwindow.cc:2110 ../glom/bakery/appwindow_withdoc.cc:241
 #: ../glom/bakery/appwindow_withdoc.cc:292
 msgid "Save failed."
 msgstr "Није успело чување."
 
-#: ../glom/appwindow.cc:2086
+#: ../glom/appwindow.cc:2110
 msgid "There was an error while saving the example file."
 msgstr "Дошло је до грешке приликом чувања датотеке примера."
 
-#: ../glom/appwindow.cc:2127 ../glom/appwindow.cc:2132
+#: ../glom/appwindow.cc:2137 ../glom/appwindow.cc:2142
 msgid "Save Document"
 msgstr "Сачувајте документ"
 
-#: ../glom/appwindow.cc:2142 ../glom/appwindow.cc:2419
+#: ../glom/appwindow.cc:2152 ../glom/appwindow.cc:2429
 #: ../glom/bakery/dialog_offersave.cc:57
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:42
 #: ../glom/utility_widgets/imageglom.cc:688
@@ -243,11 +260,11 @@ msgid "_Save"
 msgstr "_Сачувај"
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2219
+#: ../glom/appwindow.cc:2229
 msgid "Read-only File."
 msgstr "Датотека само за читање."
 
-#: ../glom/appwindow.cc:2219
+#: ../glom/appwindow.cc:2229
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -256,11 +273,11 @@ msgstr ""
 "приступа."
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2233
+#: ../glom/appwindow.cc:2243
 msgid "Read-only Directory."
 msgstr "Директоријум само за читање."
 
-#: ../glom/appwindow.cc:2233
+#: ../glom/appwindow.cc:2243
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -268,19 +285,19 @@ msgstr ""
 "Не можете да направите датотеку у овом директоријуму, зато што немате "
 "довољна права приступа."
 
-#: ../glom/appwindow.cc:2250
+#: ../glom/appwindow.cc:2260
 msgid "Database Title missing"
 msgstr "Недостаје наслов базе података"
 
-#: ../glom/appwindow.cc:2250
+#: ../glom/appwindow.cc:2260
 msgid "You must specify a title for the new database."
 msgstr "Морате да наведете наслов за нову базу података."
 
-#: ../glom/appwindow.cc:2284 ../glom/frame_glom.cc:1812
+#: ../glom/appwindow.cc:2294 ../glom/frame_glom.cc:1904
 msgid "Directory Already Exists"
 msgstr "Директоријум већ постоји"
 
-#: ../glom/appwindow.cc:2284 ../glom/frame_glom.cc:1813
+#: ../glom/appwindow.cc:2294 ../glom/frame_glom.cc:1905
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
@@ -291,66 +308,67 @@ msgstr ""
 "назив датотеке да користи нови директоријум."
 
 #. This actually creates the directory:
-#: ../glom/appwindow.cc:2417
+#: ../glom/appwindow.cc:2427
 msgid "Save Backup"
 msgstr "Сачувај резерву"
 
-#: ../glom/appwindow.cc:2433
+#: ../glom/appwindow.cc:2443
 msgid "Exporting backup"
 msgstr "Извозим резерву"
 
-#: ../glom/appwindow.cc:2439
+#: ../glom/appwindow.cc:2449
 msgid "Export Backup failed."
 msgstr "Извоз резерве није успео."
 
-#: ../glom/appwindow.cc:2439
+#: ../glom/appwindow.cc:2449
 msgid "There was an error while exporting the backup."
 msgstr "Дошло је до грешке приликом извоза резерве."
 
-#: ../glom/appwindow.cc:2445
+#: ../glom/appwindow.cc:2455
 msgid "Choose a backup file"
 msgstr "Изаберите датотеку резерве"
 
-#: ../glom/appwindow.cc:2450
+#: ../glom/appwindow.cc:2460
 msgid ".tar.gz Backup files"
 msgstr "„.tar.gz“ датотеке резерве"
 
-#: ../glom/appwindow.cc:2456
+#: ../glom/appwindow.cc:2466
 msgid "Restore"
 msgstr "Поврати"
 
-#: ../glom/appwindow.cc:2481
+#: ../glom/appwindow.cc:2491
 msgid "Restoring backup"
 msgstr "Враћам резерву"
 
-#: ../glom/appwindow.cc:2488
+#: ../glom/appwindow.cc:2498
 msgid "Restore Backup failed."
 msgstr "Враћање резерве није успело."
 
-#: ../glom/appwindow.cc:2488
-msgid "There was an error while restoring the backup."
-msgstr "Дошло је до грешке приликом враћања резерве."
+#: ../glom/appwindow.cc:2498
+#| msgid "There was an error while exporting the backup."
+msgid "There was an error while extracting the backup."
+msgstr "Дошло је до грешке приликом извлачења резерве."
 
-#: ../glom/appwindow.cc:2598
+#: ../glom/appwindow.cc:2606
 msgid " (read-only)"
 msgstr " (само за читање)"
 
-#: ../glom/appwindow.cc:2646 ../ui/operator/window_main.glade.h:2
+#: ../glom/appwindow.cc:2654 ../data/ui/operator/window_main.glade.h:2
 msgid "Processing"
 msgstr "Обрађујем"
 
-#: ../glom/appwindow.cc:2832
+#: ../glom/appwindow.cc:2840
 msgid "Open Document"
 msgstr "Отвори документ"
 
 #. Add a button for related record navigation:
-#: ../glom/appwindow.cc:2834 ../glom/dialog_existing_or_new.cc:834
-#: ../glom/frame_glom.cc:736 ../glom/onlineglom_strings.cc:32
+#: ../glom/appwindow.cc:2842 ../glom/dialog_existing_or_new.cc:832
+#: ../glom/frame_glom.cc:738 ../glom/onlineglom_strings.cc:32
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:34
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:44
 #: ../glom/mode_data/datawidget/datawidget.cc:222
 #: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:32
-#| msgid "Open"
+#: ../data/ui/operator/window_main.glade.h:5
 msgid "_Open"
 msgstr "_Отвори"
 
@@ -358,11 +376,11 @@ msgstr "_Отвори"
 msgid "Internal error"
 msgstr "Унутрашња грешка"
 
-#: ../glom/base_db.cc:1455
+#: ../glom/base_db.cc:1385
 msgid "Value Is Not Unique"
 msgstr "Вредност није јединствена"
 
-#: ../glom/base_db.cc:1455
+#: ../glom/base_db.cc:1385
 msgid ""
 "The field's value must be unique, but a record with this value already "
 "exists."
@@ -414,7 +432,7 @@ msgstr ""
 msgid "Delete record"
 msgstr "Обриши запис"
 
-#: ../glom/base_db_table_data.cc:394 ../glom/mode_data/box_data_details.cc:46
+#: ../glom/base_db_table_data.cc:394 ../glom/mode_data/box_data_details.cc:47
 #: ../glom/mode_design/users/dialog_groups_list.cc:85
 #: ../glom/print_layout/canvas_print_layout.cc:294
 #: ../glom/utility_widgets/adddel/adddel.cc:251
@@ -424,7 +442,7 @@ msgstr "Обриши запис"
 #: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:31
 #: ../glom/utility_widgets/layoutwidgetutils.cc:59
 #: ../glom/utility_widgets/notebooklabelglom.cc:125
-#| msgid "Delete"
+#: ../data/ui/developer/window_print_layout_edit.glade.h:8
 msgid "_Delete"
 msgstr "_Обриши"
 
@@ -434,8 +452,8 @@ msgstr "_Обриши"
 #. Append the View columns:
 #: ../glom/box_reports.cc:96
 #: ../glom/mode_design/box_db_table_relationships.cc:45
-#: ../glom/mode_design/fields/box_db_table_definition.cc:53
-#: ../glom/mode_design/layout/dialog_choose_field.cc:57
+#: ../glom/mode_design/fields/box_db_table_definition.cc:61
+#: ../glom/mode_design/layout/dialog_choose_field.cc:60
 #: ../glom/mode_design/layout/dialog_choose_relationship.cc:55
 #: ../glom/mode_design/layout/dialog_layout_details.cc:103
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.cc:53
@@ -454,8 +472,8 @@ msgstr "Овај извештај већ постоји. Изаберите не
 #. Title column:
 #: ../glom/box_reports.cc:100
 #: ../glom/mode_design/box_db_table_relationships.cc:49
-#: ../glom/mode_design/fields/box_db_table_definition.cc:57
-#: ../glom/mode_design/layout/dialog_choose_field.cc:58
+#: ../glom/mode_design/fields/box_db_table_definition.cc:65
+#: ../glom/mode_design/layout/dialog_choose_field.cc:61
 #: ../glom/mode_design/layout/dialog_layout_details.cc:116
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc:50
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:99
@@ -474,7 +492,7 @@ msgid "Rename Report"
 msgstr "Преименуј извештај"
 
 #. namespace Glom
-#: ../glom.desktop.in.in.h:1 ../ui/operator/window_main.glade.h:1
+#: ../glom.desktop.in.in.h:1 ../data/ui/operator/window_main.glade.h:1
 msgid "Glom"
 msgstr "Глом"
 
@@ -486,45 +504,45 @@ msgstr "Кориснику наклоњено окружење базе пода
 msgid "Not yet created."
 msgstr "Још увек није створено."
 
-#: ../glom/dialog_existing_or_new.cc:49
+#: ../glom/dialog_existing_or_new.cc:50
 msgid "No recently used documents available."
 msgstr "Нема доступних недавно коришћених докумената."
 
-#: ../glom/dialog_existing_or_new.cc:50
+#: ../glom/dialog_existing_or_new.cc:51
 msgid "No sessions found on the local network."
 msgstr "Нису пронађене сесије на месној мрежи."
 
-#: ../glom/dialog_existing_or_new.cc:53
+#: ../glom/dialog_existing_or_new.cc:54
 msgid "No templates available."
 msgstr "Нема доступних шаблона."
 
-#: ../glom/dialog_existing_or_new.cc:121
+#: ../glom/dialog_existing_or_new.cc:122
 msgid "Open a Document"
 msgstr "Отворите документ"
 
-#: ../glom/dialog_existing_or_new.cc:140
+#: ../glom/dialog_existing_or_new.cc:141
 #: ../glom/utility_widgets/imageglom.cc:958
 msgid "Select File"
 msgstr "Изабери датотеку"
 
-#: ../glom/dialog_existing_or_new.cc:144
+#: ../glom/dialog_existing_or_new.cc:145
 msgid "Local Network"
 msgstr "Месна мрежа"
 
-#: ../glom/dialog_existing_or_new.cc:148
+#: ../glom/dialog_existing_or_new.cc:149
 msgid "Recently Opened"
 msgstr "Недавно отворени"
 
-#: ../glom/dialog_existing_or_new.cc:221
+#: ../glom/dialog_existing_or_new.cc:222
 msgid "New Empty Document"
 msgstr "Нови празан документ"
 
-#: ../glom/dialog_existing_or_new.cc:224
+#: ../glom/dialog_existing_or_new.cc:225
 msgid "New From Template"
 msgstr "Ново из шаблона"
 
 #. Translator hint: This is <Service Name> on <Host> (via Network Interface such as eth0).
-#: ../glom/dialog_existing_or_new.cc:750
+#: ../glom/dialog_existing_or_new.cc:748
 #, c-format
 msgid "%s on %s (via %s)"
 msgstr "%s на %s (путем %s)"
@@ -537,7 +555,7 @@ msgstr "Извезите у датотеку"
 msgid "Define Data _Format"
 msgstr "Одреди _облик података"
 
-#: ../glom/filechooser_export.cc:40
+#: ../glom/filechooser_export.cc:40 ../data/ui/operator/window_main.glade.h:7
 msgid "_Export"
 msgstr "_Извези"
 
@@ -549,39 +567,40 @@ msgstr "Пронађи све"
 msgid "No Table Selected"
 msgstr "Није изабрана табела"
 
-#: ../glom/frame_glom.cc:111 ../ui/operator/dialog_find_id.glade.h:4
+#: ../glom/frame_glom.cc:111 ../data/ui/operator/dialog_find_id.glade.h:4
 msgid "Quick _search:"
 msgstr "Брза _претрага:"
 
 #: ../glom/frame_glom.cc:122 ../glom/mode_data/box_data.cc:42
 #: ../glom/mode_data/datawidget/datawidget.cc:232
+#: ../data/ui/operator/window_main.glade.h:18
 msgid "_Find"
 msgstr "_Нађи"
 
-#: ../glom/frame_glom.cc:136
+#: ../glom/frame_glom.cc:137
 msgid "Records:"
 msgstr "Записи:"
 
-#: ../glom/frame_glom.cc:139
+#: ../glom/frame_glom.cc:140
 msgid "Found:"
 msgstr "Нађох:"
 
 #. TODO: Obviously this document should have been deleted when the database-creation was cancelled.
 #. Note that "canceled" is the correct US spelling.
-#: ../glom/frame_glom.cc:322
+#: ../glom/frame_glom.cc:321
 msgid "No table"
 msgstr "Нема табеле"
 
-#: ../glom/frame_glom.cc:322
+#: ../glom/frame_glom.cc:321
 msgid "This database has no tables yet."
 msgstr "Ова база података још увек нема табеле."
 
 #. TODO: Obviously this could be possible but it would require a network protocol and some work:
-#: ../glom/frame_glom.cc:493
+#: ../glom/frame_glom.cc:495
 msgid "Developer mode not available."
 msgstr "Развојни режим није доступан."
 
-#: ../glom/frame_glom.cc:494
+#: ../glom/frame_glom.cc:496
 msgid ""
 "Developer mode is not available because the file was opened over the network "
 "from a running Glom. Only the original file may be edited."
@@ -589,11 +608,11 @@ msgstr ""
 "Развојни режим није доступан зато што је датотека отворена преко мреже из "
 "покренутог Глома. Само изворна датотека може бити уређивана."
 
-#: ../glom/frame_glom.cc:500
+#: ../glom/frame_glom.cc:502
 msgid "Developer mode not available"
 msgstr "Развојни режим није доступан"
 
-#: ../glom/frame_glom.cc:501
+#: ../glom/frame_glom.cc:503
 msgid ""
 "Developer mode is not available. Check that you have sufficient database "
 "access rights and that the glom file is not read-only."
@@ -601,11 +620,11 @@ msgstr ""
 "Развојни режим није доступан. Проверите да ли имате довољна права за приступ "
 "бази података и да датотека глома није само за читање."
 
-#: ../glom/frame_glom.cc:508
+#: ../glom/frame_glom.cc:510
 msgid "Saving in new document format"
 msgstr "Чувам у новом облику документа"
 
-#: ../glom/frame_glom.cc:509
+#: ../glom/frame_glom.cc:511
 msgid ""
 "The document was created by an earlier version of the application. Making "
 "changes to the document will mean that the document cannot be opened by some "
@@ -614,15 +633,15 @@ msgstr ""
 "Документ је направљен ранијим издањем програма. Уношење измена у документ ће "
 "значити да документ неће моћи да се отвори неким ранијим издањима програма."
 
-#: ../glom/frame_glom.cc:512
+#: ../glom/frame_glom.cc:514
 msgid "Continue"
 msgstr "Настави"
 
-#: ../glom/frame_glom.cc:548
+#: ../glom/frame_glom.cc:550
 msgid "Export Not Allowed."
 msgstr "Извоз није допуштен."
 
-#: ../glom/frame_glom.cc:548
+#: ../glom/frame_glom.cc:550
 msgid ""
 "You do not have permission to view the data in this table, so you may not "
 "export the data."
@@ -630,75 +649,75 @@ msgstr ""
 "Немате овлашћења да видите податке у овој табели, тако да не можете да "
 "извезете податке."
 
-#: ../glom/frame_glom.cc:579
+#: ../glom/frame_glom.cc:581
 msgid "Could Not Create File."
 msgstr "Не могу да направим датотеку."
 
-#: ../glom/frame_glom.cc:579
+#: ../glom/frame_glom.cc:581
 msgid "Glom could not create the specified file."
 msgstr "Глом не може да направи наведену датотеку."
 
-#: ../glom/frame_glom.cc:730
+#: ../glom/frame_glom.cc:732
 msgid "No Table"
 msgstr "Нема табеле"
 
-#: ../glom/frame_glom.cc:730
+#: ../glom/frame_glom.cc:732
 msgid "There is no table in to which data could be imported."
 msgstr "Не постоји табела у којој би подаци могли да буду увезени."
 
-#: ../glom/frame_glom.cc:734
+#: ../glom/frame_glom.cc:736
 msgid "Open CSV Document"
 msgstr "Отвори ЦСВ документ"
 
-#: ../glom/frame_glom.cc:738
+#: ../glom/frame_glom.cc:740
 msgid "CSV files"
 msgstr "ЦСВ датотеке"
 
-#: ../glom/frame_glom.cc:742
+#: ../glom/frame_glom.cc:744
 msgid "All files"
 msgstr "Све датотеке"
 
-#: ../glom/frame_glom.cc:811
+#: ../glom/frame_glom.cc:821
 msgid "Share on the network"
 msgstr "Дели на мрежи"
 
-#: ../glom/frame_glom.cc:812
+#: ../glom/frame_glom.cc:822
 msgid "This will allow other users on the network to use this database."
 msgstr ""
 "Ово ће омогућити другим корисницима на мрежи да користе ову базу података."
 
-#: ../glom/frame_glom.cc:815
+#: ../glom/frame_glom.cc:825
 msgid "_Share"
 msgstr "_Дели"
 
 #. TODO: Warn about connected users if possible.
-#: ../glom/frame_glom.cc:917
+#: ../glom/frame_glom.cc:927
 msgid "Stop sharing on the network"
 msgstr "Заустави дељење на мрежи"
 
-#: ../glom/frame_glom.cc:918
+#: ../glom/frame_glom.cc:928
 msgid "This will prevent other users on the network from using this database."
 msgstr "Ово ће спречити друге кориснике на мрежи да користе ову базу података."
 
-#: ../glom/frame_glom.cc:921
+#: ../glom/frame_glom.cc:931
 msgid "_Stop Sharing"
 msgstr "_Заустави дељење"
 
-#: ../glom/frame_glom.cc:970 ../glom/frame_glom.cc:2110
+#: ../glom/frame_glom.cc:980 ../glom/frame_glom.cc:2209
 msgid "Stopping Database Server"
 msgstr "Заустављам сервер базе података"
 
 #. Do startup, such as starting the self-hosting database server
-#: ../glom/frame_glom.cc:973 ../glom/frame_glom.cc:1998
-#: ../glom/frame_glom.cc:2156
+#: ../glom/frame_glom.cc:983 ../glom/frame_glom.cc:2096
+#: ../glom/frame_glom.cc:2255
 msgid "Starting Database Server"
 msgstr "Покрећем сервер базе података"
 
-#: ../glom/frame_glom.cc:1130
+#: ../glom/frame_glom.cc:1145
 msgid "Table Exists Already"
 msgstr "Табела већ постоји"
 
-#: ../glom/frame_glom.cc:1130
+#: ../glom/frame_glom.cc:1145
 msgid ""
 "A table with this name already exists in the database. Please choose a "
 "different table name."
@@ -706,11 +725,11 @@ msgstr ""
 "Табела са овим називом већ постоји у бази података. Молим изаберите други "
 "назив за табелу."
 
-#: ../glom/frame_glom.cc:1134
+#: ../glom/frame_glom.cc:1149
 msgid "Relationship Exists Already"
 msgstr "Међуоднос већ постоји"
 
-#: ../glom/frame_glom.cc:1134
+#: ../glom/frame_glom.cc:1149
 msgid ""
 "A relationship with this name already exists for this table. Please choose a "
 "different relationship name."
@@ -718,53 +737,54 @@ msgstr ""
 "Међуоднос са овим називом већ постоји за ову табелу. Молим изаберите други "
 "назив за међуоднос."
 
-#: ../glom/frame_glom.cc:1138
+#: ../glom/frame_glom.cc:1153
 msgid "More information needed"
 msgstr "Потребно је још података"
 
-#: ../glom/frame_glom.cc:1138
+#: ../glom/frame_glom.cc:1153
 msgid "You must specify a field, a table name, and a relationship name."
 msgstr "Морате да наведете поље, назив табеле и назив међуодноса."
 
-#: ../glom/frame_glom.cc:1192
+#: ../glom/frame_glom.cc:1207
 msgid "Related Table Created"
 msgstr "Односна табела је направљена"
 
-#: ../glom/frame_glom.cc:1192
+#: ../glom/frame_glom.cc:1207
 msgid "The new related table has been created."
 msgstr "Нова односна табела је направљена."
 
 #. namespace Glom
-#: ../glom/frame_glom.cc:1221 ../ui/operator/box_navigation_tables.glade.h:1
+#: ../glom/frame_glom.cc:1236
+#: ../data/ui/operator/box_navigation_tables.glade.h:1
 msgid "Edit Tables"
 msgstr "Уреди табеле"
 
-#: ../glom/frame_glom.cc:1316
+#: ../glom/frame_glom.cc:1333
 msgid ""
 "You have not entered any find criteria. Try entering information in the "
 "fields."
 msgstr ""
 "Нисте унели никакво мерило претраге. Покушајте да унесете податке у поља."
 
-#: ../glom/frame_glom.cc:1318
-#: ../glom/mode_data/datawidget/dialog_choose_id.cc:108
+#: ../glom/frame_glom.cc:1335
+#: ../glom/mode_data/datawidget/dialog_choose_id.cc:104
 msgid "No Find Criteria"
 msgstr "Нема мерила претраге"
 
-#: ../glom/frame_glom.cc:1670 ../glom/onlineglom_strings.cc:33
-#: ../ui/developer/box_reports.glade.h:1
+#: ../glom/frame_glom.cc:1710 ../glom/onlineglom_strings.cc:33
+#: ../data/ui/developer/box_reports.glade.h:1
 msgid "Reports"
 msgstr "Извештаји"
 
-#: ../glom/frame_glom.cc:1701 ../ui/developer/box_print_layouts.glade.h:1
+#: ../glom/frame_glom.cc:1753 ../data/ui/developer/box_print_layouts.glade.h:1
 msgid "Print Layouts"
 msgstr "Штампај распоред"
 
-#: ../glom/frame_glom.cc:1817
+#: ../glom/frame_glom.cc:1909
 msgid "Could Not Create Directory"
 msgstr "Не могу да направим директоријум"
 
-#: ../glom/frame_glom.cc:1818
+#: ../glom/frame_glom.cc:1910
 msgid ""
 "There was an error when attempting to create the directory for the new "
 "database files."
@@ -772,20 +792,20 @@ msgstr ""
 "Дошло је до грешке при покушају стварања директоријума за нове датотеке базе "
 "података."
 
-#: ../glom/frame_glom.cc:1822
+#: ../glom/frame_glom.cc:1914
 msgid "Could Not Start Database Server"
 msgstr "Не могу да покренем сервер базе података"
 
-#: ../glom/frame_glom.cc:1823
+#: ../glom/frame_glom.cc:1915
 msgid "There was an error when attempting to start the database server."
 msgstr "Дошло је до грешке при покушају покретања сервера базе података."
 
-#: ../glom/frame_glom.cc:1930
+#: ../glom/frame_glom.cc:2028
 msgid "Initializing Database Data"
 msgstr "Покрећем податке базе података"
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2470
+#: ../glom/frame_glom.cc:2583
 msgid "All"
 msgstr "Све"
 
@@ -797,31 +817,31 @@ msgstr "Није доступна датотека помоћи"
 msgid "Could not display help: %1"
 msgstr "Не могу да прикажем помоћ: %1"
 
-#: ../glom/utils_ui.cc:475
+#: ../glom/utils_ui.cc:479
 msgid "Your find criteria did not match any records in the table."
 msgstr "Ваше мерило претраге не одговара ниједном запису у табели."
 
-#: ../glom/utils_ui.cc:477
+#: ../glom/utils_ui.cc:481
 msgid "No Records Found"
 msgstr "Нисам пронашао записе"
 
-#: ../glom/utils_ui.cc:482
+#: ../glom/utils_ui.cc:486
 msgid "New Find"
 msgstr "Ново тражење"
 
-#: ../glom/utils_ui.cc:493
+#: ../glom/utils_ui.cc:497
 msgid "Report Finished"
 msgstr "Извештај је завршен"
 
-#: ../glom/utils_ui.cc:493
+#: ../glom/utils_ui.cc:497
 msgid "The report will now be opened in your web browser."
 msgstr "Извештај ће сада бити отворен у вашем веб прегледнику."
 
-#: ../glom/utils_ui.cc:540
+#: ../glom/utils_ui.cc:536
 msgid "Script Uses PyGTK 2"
 msgstr "Скрипта користи ПиГТК 2"
 
-#: ../glom/utils_ui.cc:541
+#: ../glom/utils_ui.cc:537
 msgid ""
 "Glom cannot run this script because it uses pygtk 2, but Glom uses GTK+ 3, "
 "and attempting to use pygtk 2 would cause Glom to crash."
@@ -844,10 +864,10 @@ msgstr "Назад на списак"
 
 #. Translators: This is a noun. It is a notebook tab title.
 #. Details column:
-#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1429
-#: ../glom/mode_data/notebook_data.cc:67
+#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1436
+#: ../glom/mode_data/notebook_data.cc:42
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:215
-#: ../glom/mode_find/notebook_find.cc:39
+#: ../glom/mode_find/notebook_find.cc:38
 msgid "Details"
 msgstr "Подаци"
 
@@ -867,7 +887,8 @@ msgstr "Унесите корисничко име и лозинку."
 msgid "Username"
 msgstr "Корисничко име"
 
-#: ../glom/onlineglom_strings.cc:38 ../ui/operator/dialog_connection.glade.h:4
+#: ../glom/onlineglom_strings.cc:38
+#: ../data/ui/operator/dialog_connection.glade.h:4
 msgid "Password"
 msgstr "Лозинка"
 
@@ -891,13 +912,11 @@ msgstr ""
 
 #. / Translators: This is the title of a button used to register a new user.
 #: ../glom/onlineglom_strings.cc:45
-#| msgid "Western"
 msgid "Register"
 msgstr "Отвори налог"
 
 #. / Translators: This is the title of a button used to reset a user's password.
 #: ../glom/onlineglom_strings.cc:48
-#| msgid "Password"
 msgid "Forgot Password"
 msgstr "Заборави лозинку"
 
@@ -1147,20 +1166,20 @@ msgid "Vietnamese"
 msgstr "вијетнамски"
 
 #. Translators: This means an unknown or unnacceptable value type in a database.
-#: ../glom/libglom/data_structure/field.cc:680
+#: ../glom/libglom/data_structure/field.cc:663
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:151
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:159
 msgid "Invalid"
 msgstr "Неисправно"
 
 #. Translators: This means a numeric value type in a database.
-#: ../glom/libglom/data_structure/field.cc:683
+#: ../glom/libglom/data_structure/field.cc:666
 msgid "Number"
 msgstr "Број"
 
 #. Translators: This means a text/string value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/field.cc:686
+#: ../glom/libglom/data_structure/field.cc:669
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:73
 #: ../glom/libglom/data_structure/translatable_item.cc:258
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1159
@@ -1169,23 +1188,23 @@ msgid "Text"
 msgstr "Текст"
 
 #. Translators: This means a time value type in a database.
-#: ../glom/libglom/data_structure/field.cc:689
+#: ../glom/libglom/data_structure/field.cc:672
 msgid "Time"
 msgstr "Време"
 
 #. Translators: This means a time value type in a database.
-#: ../glom/libglom/data_structure/field.cc:692
+#: ../glom/libglom/data_structure/field.cc:675
 msgid "Date"
 msgstr "Датум"
 
 #. Translators: This means a true/false value type in a database.
-#: ../glom/libglom/data_structure/field.cc:695
+#: ../glom/libglom/data_structure/field.cc:678
 msgid "Boolean"
 msgstr "Логичка вредност"
 
 #. Translators: This means a picture value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/field.cc:698
+#: ../glom/libglom/data_structure/field.cc:681
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:70
 #: ../glom/libglom/data_structure/translatable_item.cc:252
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1166
@@ -1258,7 +1277,7 @@ msgstr "Портал календара"
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:229
 #: ../glom/libglom/data_structure/translatable_item.cc:230
 #: ../glom/mode_design/dialog_database_preferences.cc:62
-#: ../ui/developer/window_field_definition_edit.glade.h:8
+#: ../data/ui/developer/window_field_definition_edit.glade.h:8
 msgid "Field"
 msgstr "Поље"
 
@@ -1287,7 +1306,7 @@ msgstr "Неодређена табела"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:79
-#: ../ui/developer/dialog_field_summary.glade.h:1
+#: ../data/ui/developer/dialog_field_summary.glade.h:1
 msgid "Field Summary"
 msgstr "Сажетак поља"
 
@@ -1309,19 +1328,19 @@ msgstr "Укупност"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc:56
-#: ../ui/developer/window_report_layout.glade.h:12
+#: ../data/ui/developer/window_report_layout.glade.h:12
 msgid "Footer"
 msgstr "Подножје"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.cc:103
-#: ../ui/developer/dialog_group_by.glade.h:1
+#: ../data/ui/developer/dialog_group_by.glade.h:1
 msgid "Group By"
 msgstr "Групиши према"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc:56
-#: ../ui/developer/window_report_layout.glade.h:9
+#: ../data/ui/developer/window_report_layout.glade.h:9
 msgid "Header"
 msgstr "Заглавље"
 
@@ -1385,52 +1404,52 @@ msgid "Database Title"
 msgstr "Назив базе података"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:260
-#: ../glom/mode_design/translation/window_translations.cc:216
+#: ../glom/mode_design/translation/window_translations.cc:237
 msgid "Unknown"
 msgstr "Непознато"
 
-#: ../glom/libglom/document/document.cc:516
-#: ../glom/libglom/document/document.cc:534
+#: ../glom/libglom/document/document.cc:520
+#: ../glom/libglom/document/document.cc:538
 msgid "System Preferences"
 msgstr "Поставке система"
 
-#: ../glom/libglom/document/document.cc:547
+#: ../glom/libglom/document/document.cc:551
 msgid "System Name"
 msgstr "Назив система"
 
-#: ../glom/libglom/document/document.cc:553
+#: ../glom/libglom/document/document.cc:557
 msgid "Organisation Name"
 msgstr "Назив удружења"
 
-#: ../glom/libglom/document/document.cc:559
+#: ../glom/libglom/document/document.cc:563
 msgid "Organisation Logo"
 msgstr "Логотип удружења"
 
-#: ../glom/libglom/document/document.cc:565
+#: ../glom/libglom/document/document.cc:569
 msgid "Street"
 msgstr "Улица"
 
-#: ../glom/libglom/document/document.cc:571
+#: ../glom/libglom/document/document.cc:575
 msgid "Street (line 2)"
 msgstr "Улица (ред 2)"
 
-#: ../glom/libglom/document/document.cc:577
+#: ../glom/libglom/document/document.cc:581
 msgid "City"
 msgstr "Град"
 
-#: ../glom/libglom/document/document.cc:583
+#: ../glom/libglom/document/document.cc:587
 msgid "State"
 msgstr "Република"
 
-#: ../glom/libglom/document/document.cc:589
+#: ../glom/libglom/document/document.cc:593
 msgid "Country"
 msgstr "Држава"
 
-#: ../glom/libglom/document/document.cc:595
+#: ../glom/libglom/document/document.cc:599
 msgid "Zip Code"
 msgstr "Поштански број"
 
-#: ../glom/libglom/document/document.cc:1423
+#: ../glom/libglom/document/document.cc:1430
 msgid "Overview"
 msgstr "Преглед"
 
@@ -1447,11 +1466,11 @@ msgid "The necessary applications to install the package could not be found."
 msgstr "Потребан програм за инсталирање пакета не може бити пронађен."
 
 #. Show only debug output
-#: ../glom/libglom/translations_po.cc:69
+#: ../glom/libglom/translations_po.cc:70
 msgid "Gettext-Warning: "
 msgstr "Упозорење Геттекста: "
 
-#: ../glom/libglom/db_utils.cc:513
+#: ../glom/libglom/db_utils.cc:514
 msgid "System: Auto Increments"
 msgstr "Систем: Самостално повећање"
 
@@ -1467,8 +1486,8 @@ msgstr "Напомене"
 #. Translators: This is a noun. It is the title of a report.
 #. Add Pages:
 #. Translators: This is a noun. It is a notebook tab title.
-#: ../glom/libglom/report_builder.cc:771 ../glom/mode_data/notebook_data.cc:63
-#: ../glom/mode_find/notebook_find.cc:32
+#: ../glom/libglom/report_builder.cc:771 ../glom/mode_data/notebook_data.cc:39
+#: ../glom/mode_find/notebook_find.cc:33
 msgid "List"
 msgstr "Списак"
 
@@ -1699,7 +1718,7 @@ msgstr "Радим као администратор"
 #. Unlike for PostgreSQL, this warning is only shown if MySQL was specified in the build.
 #. Show message to the user about the broken installation:
 #: ../glom/main.cc:265 ../glom/main.cc:283 ../glom/main.cc:321
-#: ../glom/main.cc:334 ../glom/main.cc:522
+#: ../glom/main.cc:334 ../glom/main.cc:517
 msgid "Incomplete Glom Installation"
 msgstr "Непотпуна инсталација Глома"
 
@@ -1833,7 +1852,7 @@ msgid "gi.repository.Gda Python Module Not Installed"
 msgstr "Питонов „gi.repository.Gda“ модул није инстлиран"
 
 #. The Postgres provider was not found, so warn the user:
-#: ../glom/main.cc:517
+#: ../glom/main.cc:512
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda "
 "provider is not available on your system. This provider is needed to access "
@@ -1896,12 +1915,15 @@ msgstr ""
 #: ../glom/utility_widgets/adddel/adddel.cc:250
 #: ../glom/mode_data/db_adddel/db_adddel.cc:228
 #: ../glom/mode_data/db_adddel/db_adddel.cc:260
-#: ../ui/developer/window_field_definition_edit.glade.h:13
+#: ../data/ui/operator/window_main.glade.h:13
+#: ../data/ui/developer/window_field_definition_edit.glade.h:13
+#: ../data/ui/developer/window_print_layout_edit.glade.h:4
 msgid "_Edit"
 msgstr "_Уреди"
 
 #: ../glom/mode_data/box_data_calendar_related.cc:528
 #: ../glom/mode_data/db_adddel/db_adddel.cc:264
+#: ../data/ui/operator/window_main.glade.h:28
 msgid "_Layout"
 msgstr "_Распоред"
 
@@ -1920,28 +1942,27 @@ msgstr ""
 msgid "No primary key value"
 msgstr "Нема вредности примарног кључа"
 
-#: ../glom/mode_data/box_data_details.cc:45
+#: ../glom/mode_data/box_data_details.cc:46
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:32
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:42
 #: ../glom/mode_data/db_adddel/db_adddel.cc:261
 #: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:33
-#| msgid "_Add Page"
 msgid "_Add"
 msgstr "_Додај"
 
-#: ../glom/mode_data/box_data_details.cc:47
+#: ../glom/mode_data/box_data_details.cc:48
 msgid "_First"
 msgstr "_Први"
 
-#: ../glom/mode_data/box_data_details.cc:48
+#: ../glom/mode_data/box_data_details.cc:49
 msgid "_Back"
 msgstr "_Назад"
 
-#: ../glom/mode_data/box_data_details.cc:49
+#: ../glom/mode_data/box_data_details.cc:50
 msgid "_Forward"
 msgstr "_Напред"
 
-#: ../glom/mode_data/box_data_details.cc:50
+#: ../glom/mode_data/box_data_details.cc:51
 msgid "_Last"
 msgstr "_Последњи"
 
@@ -1969,11 +1990,11 @@ msgstr "Погледајте следећи запис на списку."
 msgid "View the last record in the list."
 msgstr "Погледајте последњи запис на списку."
 
-#: ../glom/mode_data/box_data_details.cc:416
+#: ../glom/mode_data/box_data_details.cc:418
 msgid "Layout Contains No Fields"
 msgstr "Распоред не садржи поља"
 
-#: ../glom/mode_data/box_data_details.cc:416
+#: ../glom/mode_data/box_data_details.cc:418
 msgid ""
 "There are no fields on the layout, so there is no way to enter data in a new "
 "record."
@@ -1982,20 +2003,20 @@ msgstr ""
 "запис."
 
 #. Tell user that a primary key is needed to delete a record:
-#: ../glom/mode_data/box_data_details.cc:443
+#: ../glom/mode_data/box_data_details.cc:445
 msgid "No primary key value."
 msgstr "Нема вредности примарног кључа."
 
-#: ../glom/mode_data/box_data_details.cc:444
+#: ../glom/mode_data/box_data_details.cc:446
 msgid "This record cannot be deleted because there is no primary key."
 msgstr "Овај запис не може бити обрисан зато што нема примарног кључа."
 
 #. Warn user that they can't choose their own primary key:
-#: ../glom/mode_data/box_data_details.cc:853
+#: ../glom/mode_data/box_data_details.cc:855
 msgid "Primary key auto increments"
 msgstr "Само повећање примарног кључа"
 
-#: ../glom/mode_data/box_data_details.cc:854
+#: ../glom/mode_data/box_data_details.cc:856
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
@@ -2047,7 +2068,7 @@ msgstr "Ново дугме"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
 #: ../glom/mode_data/flowtablewithfields.cc:1202
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:556
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:385
 msgid "text"
 msgstr "текст"
 
@@ -2066,7 +2087,7 @@ msgid "Delete whole group?"
 msgstr "Да обришем читаву групу?"
 
 #. Translators: This is a title, not an action.
-#: ../glom/mode_data/notebook_data.cc:73
+#: ../glom/mode_data/notebook_data.cc:47
 msgid "List Or Details View"
 msgstr "Списак или преглед појединости"
 
@@ -2086,7 +2107,7 @@ msgid "To Field"
 msgstr "У поље"
 
 #: ../glom/mode_design/box_db_table_relationships.cc:55
-#: ../ui/developer/dialog_layout_field_properties.glade.h:3
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:3
 msgid "Allow Editing"
 msgstr "Допусти уређивање"
 
@@ -2104,8 +2125,8 @@ msgid "Next Value"
 msgstr "Следећа вредност"
 
 #: ../glom/mode_design/dialog_design.cc:53
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:741
-#: ../ui/developer/window_design.glade.h:3
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:570
+#: ../data/ui/developer/window_design.glade.h:3
 msgid "None selected"
 msgstr "Ништа није изабрано"
 
@@ -2142,21 +2163,33 @@ msgid "Please enter a password for this user."
 msgstr "Молим унесите лозинку за овог корисника."
 
 #. Don't allow adding of fields that already exist.
-#: ../glom/mode_design/fields/box_db_table_definition.cc:55
-#: ../glom/mode_design/fields/box_db_table_definition.cc:338
-msgid "This field already exists. Please choose a different field name"
-msgstr "Ово поље већ постоји. Изаберите неки други назив за поље"
+#: ../glom/mode_design/fields/box_db_table_definition.cc:63
+#| msgid "This field already exists. Please choose a different field name"
+msgid "This field already exists. Please choose a different field name."
+msgstr "Ово поље већ постоји. Изаберите неки други назив поља."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:59
+#: ../glom/mode_design/fields/box_db_table_definition.cc:67
 msgid "Type"
 msgstr "Врста"
 
+#. TODO: Auto-size columns.
+#. Setup the buttons:
+#: ../glom/mode_design/fields/box_db_table_definition.cc:72
+#| msgid "Field Definition"
+msgid "_Field Definition"
+msgstr "_Одредница поља"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:73
+#| msgid "Default Formatting"
+msgid "_Default Formatting"
+msgstr "_Основно обликовање"
+
 #. TODO: Only show this when there are > 100 records?
-#: ../glom/mode_design/fields/box_db_table_definition.cc:268
+#: ../glom/mode_design/fields/box_db_table_definition.cc:288
 msgid "Recalculation Required"
 msgstr "Потребно је поновно израчунавање"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:269
+#: ../glom/mode_design/fields/box_db_table_definition.cc:289
 msgid ""
 "You have changed the calculation used by this field so Glom must recalculate "
 "the value in all records. If the table contains many records then this could "
@@ -2166,15 +2199,15 @@ msgstr ""
 "израчуна вредност у свим записима. Ако табела садржи много записа онда ово "
 "може да потраје мало."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:274
+#: ../glom/mode_design/fields/box_db_table_definition.cc:294
 msgid "Recalculate"
 msgstr "Поново израчунај"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:283
+#: ../glom/mode_design/fields/box_db_table_definition.cc:303
 msgid "Invalid database structure"
 msgstr "Неисправна структура базе података"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:284
+#: ../glom/mode_design/fields/box_db_table_definition.cc:304
 msgid ""
 "This database field was created or edited outside of Glom. It has a data "
 "type that is not supported by Glom. Your system administrator may be able to "
@@ -2184,11 +2217,11 @@ msgstr ""
 "података која није подржана Гломом. Можда ће администратор система моћи да "
 "исправи ово."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:292
+#: ../glom/mode_design/fields/box_db_table_definition.cc:312
 msgid "Primary key required"
 msgstr "Потребан је примарни кључ"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:293
+#: ../glom/mode_design/fields/box_db_table_definition.cc:313
 msgid ""
 "You may not unset the primary key because the table must have a primary key. "
 "You may set another field as the primary key instead."
@@ -2196,11 +2229,11 @@ msgstr ""
 "Не можете да одзначите примарни кључ зато што табела мора да га има. Уместо "
 "тога можете да поставите друго поље као примарни кључ."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:305
+#: ../glom/mode_design/fields/box_db_table_definition.cc:325
 msgid "Field contains empty values."
 msgstr "Поље садржи празне вредности."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:305
+#: ../glom/mode_design/fields/box_db_table_definition.cc:325
 msgid ""
 "The field may not yet be used as a primary key because it contains empty "
 "values."
@@ -2208,11 +2241,11 @@ msgstr ""
 "Поље још увек не може бити коришћено као примарни кључ зато што садржи "
 "празне вредности."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:314
+#: ../glom/mode_design/fields/box_db_table_definition.cc:334
 msgid "Field contains non-unique values."
 msgstr "Поље садржи нејединствене вредности."
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:314
+#: ../glom/mode_design/fields/box_db_table_definition.cc:334
 msgid ""
 "The field may not yet be used as a primary key because it contains values "
 "that are not unique."
@@ -2221,11 +2254,11 @@ msgstr ""
 "вредности које нису јединствене."
 
 #. Ask the user to confirm this major change:
-#: ../glom/mode_design/fields/box_db_table_definition.cc:319
+#: ../glom/mode_design/fields/box_db_table_definition.cc:339
 msgid "Change primary key"
 msgstr "Измени примарни кључ"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:320
+#: ../glom/mode_design/fields/box_db_table_definition.cc:340
 msgid ""
 "Are you sure that you wish to set this field as the primary key, instead of "
 "the existing primary key?"
@@ -2233,14 +2266,18 @@ msgstr ""
 "Да ли сте сигурни да желите да поставите ово поље као примарни кључ, уместо "
 "постојећег примарног кључа?"
 
-#: ../glom/mode_design/fields/box_db_table_definition.cc:325
+#: ../glom/mode_design/fields/box_db_table_definition.cc:345
 msgid "Change Primary Key"
 msgstr "Измени примарни кључ"
 
 #. Warn the user and refuse to make the change:
-#: ../glom/mode_design/fields/box_db_table_definition.cc:337
+#: ../glom/mode_design/fields/box_db_table_definition.cc:357
 msgid "Field Name Already Exists"
 msgstr "Назив поља већ постоји"
+
+#: ../glom/mode_design/fields/box_db_table_definition.cc:358
+msgid "This field already exists. Please choose a different field name"
+msgstr "Ово поље већ постоји. Изаберите неки други назив за поље"
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:103
 msgid "Calculation Error"
@@ -2276,7 +2313,7 @@ msgstr ""
 "Прарачун није успео уз ову грешку:\n"
 "%s"
 
-#: ../glom/mode_design/fields/dialog_fielddefinition.cc:159
+#: ../glom/mode_design/fields/dialog_fielddefinition.cc:147
 msgid "Default Value"
 msgstr "Основна вредност"
 
@@ -2298,8 +2335,8 @@ msgstr " Путем: %1::%2"
 msgid " Via: %1"
 msgstr " Путем: %1"
 
-#: ../glom/mode_design/layout/dialog_layout_calendar_related.cc:239
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:294
+#: ../glom/mode_design/layout/dialog_layout_calendar_related.cc:249
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:313
 msgid "None: No visible tables are specified by the fields."
 msgstr "Ништа: Видљиве табеле нису наведене пољима."
 
@@ -2328,7 +2365,7 @@ msgid "group"
 msgstr "група"
 
 #: ../glom/mode_design/layout/dialog_layout_details.cc:959
-#: ../ui/developer/dialog_notebook.glade.h:1
+#: ../data/ui/developer/dialog_notebook.glade.h:1
 msgid "Notebook Tabs"
 msgstr "Језичци бележнице"
 
@@ -2357,11 +2394,11 @@ msgstr "(Бележница)"
 msgid "Fields"
 msgstr "Поља"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:406
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:425
 msgid "Invalid Relationship"
 msgstr "Неисправан међуоднос"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:407
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:426
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship does not specify a field in the related table."
@@ -2369,11 +2406,11 @@ msgstr ""
 "Међуоднос не може бити коришћен за приказ односних записа зато што међуоднос "
 "не наводи поље у односној табели."
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:413
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:432
 msgid "Relationship Uses a Related Primary Key"
 msgstr "Међуоднос користи односни примарни ључ"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:414
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:433
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship uses a primary key field in the related table, which must "
@@ -2385,11 +2422,11 @@ msgstr ""
 "јединствене вредности. Ово ће спречити међуоднос да не наведе вишеструко "
 "односне записе."
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:420
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:439
 msgid "Relationship Uses a Related Unique Field"
 msgstr "Међуоднос користи односно јединствено поље"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:421
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:440
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship uses a unique-values field in the related table. This would "
@@ -2446,14 +2483,14 @@ msgstr ""
 "%1"
 
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:32
-#: ../ui/developer/dialog_fieldslist.glade.h:2
-#: ../ui/developer/dialog_group_by.glade.h:3
-#: ../ui/developer/window_data_layout.glade.h:23
+#: ../data/ui/developer/dialog_fieldslist.glade.h:2
+#: ../data/ui/developer/dialog_group_by.glade.h:3
+#: ../data/ui/developer/window_data_layout.glade.h:23
 msgid "Formatting"
 msgstr "Обликовање"
 
 #. Give it access to the document.
-#: ../glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc:161
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc:163
 msgid "Group By - Secondary Fields"
 msgstr "Групиши према — секундарним пољима"
 
@@ -2547,11 +2584,11 @@ msgid "Drag this to the layout to add a new related records portal."
 msgstr "Превуците ово у распоред да додате нови портал односних записа."
 
 #. Ask for confirmation:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1009
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:838
 msgid "Create Standard Layout"
 msgstr "Направи уобичајени распоред"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1010
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:839
 msgid ""
 "This is an experimental feature. It will remove all items from the print "
 "layout and then try to create a layout similar to the layout of the detail "
@@ -2560,17 +2597,17 @@ msgstr ""
 "Ово је пробна функција. Уклониће све ставке из распореда штампања и затим ће "
 "покушати да направи распоред сличан распореду детаљног прегледа."
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1013
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:842
 #: ../glom/mode_design/users/dialog_groups_list.cc:82
 msgid "Create"
 msgstr "Направи"
 
 #. Ask the user to confirm:
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1053
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:882
 msgid "Remove page"
 msgstr "Уклони страницу"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1054
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:883
 msgid ""
 "Are you sure that you wish to remove the last page and any items on that "
 "page?"
@@ -2578,7 +2615,7 @@ msgstr ""
 "Да ли сте сигурни да желите да уклоните последњу страницу и све ставке на "
 "њој?"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:1057
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:886
 msgid "Remove Page"
 msgstr "Уклони страницу"
 
@@ -2594,7 +2631,6 @@ msgstr ""
 "опорављени"
 
 #: ../glom/mode_design/script_library/dialog_script_library.cc:132
-#| msgid "Remove page"
 msgid "_Remove"
 msgstr "_Уклони"
 
@@ -2745,24 +2781,24 @@ msgid "Item"
 msgstr "Ставка"
 
 #. Show the file-chooser dialog, to select an output .po file:
-#: ../glom/mode_design/translation/window_translations.cc:331
-#: ../glom/mode_design/translation/window_translations.cc:371
+#: ../glom/mode_design/translation/window_translations.cc:352
+#: ../glom/mode_design/translation/window_translations.cc:392
 msgid "Choose .po File Name"
 msgstr "Изабери назив .по датотеке"
 
-#: ../glom/mode_design/translation/window_translations.cc:337
-#: ../glom/mode_design/translation/window_translations.cc:376
+#: ../glom/mode_design/translation/window_translations.cc:358
+#: ../glom/mode_design/translation/window_translations.cc:397
 msgid "Po files"
 msgstr "По датотеке"
 
-#: ../glom/mode_design/translation/window_translations.cc:342
-#: ../ui/developer/window_translations.glade.h:7
+#: ../glom/mode_design/translation/window_translations.cc:363
+#: ../data/ui/developer/window_translations.glade.h:7
 msgid "Export"
 msgstr "Извези"
 
 #. Note to translators: "Import" here is an action verb - it's a button.
-#: ../glom/mode_design/translation/window_translations.cc:383
-#: ../ui/developer/window_translations.glade.h:6
+#: ../glom/mode_design/translation/window_translations.cc:404
+#: ../data/ui/developer/window_translations.glade.h:6
 msgid "Import"
 msgstr "Увези"
 
@@ -2776,7 +2812,7 @@ msgid "Duplicate"
 msgstr "Удвостручи"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:477
+#: ../glom/mode_data/datawidget/combochoiceswithtreemodel.cc:476
 msgid "Example"
 msgstr "Пример"
 
@@ -2809,6 +2845,7 @@ msgstr ""
 "за ово поље."
 
 #: ../glom/mode_data/datawidget/datawidget.cc:237
+#: ../data/ui/operator/window_main.glade.h:4
 msgid "_New"
 msgstr "_Нови"
 
@@ -2846,15 +2883,15 @@ msgstr ""
 "Покушали сте да додате нови односни запис, али може да постоји само један "
 "односни запис, зато што међуодноси користе јединствени кључ."
 
-#: ../glom/mode_data/datawidget/dialog_choose_id.cc:90
+#: ../glom/mode_data/datawidget/dialog_choose_id.cc:86
 #: ../glom/utility_widgets/imageglom.cc:775
-#: ../ui/developer/dialog_choose_relationship.glade.h:2
-#: ../ui/developer/dialog_field_summary.glade.h:3
-#: ../ui/developer/dialog_group_by.glade.h:4
+#: ../data/ui/developer/dialog_choose_relationship.glade.h:2
+#: ../data/ui/developer/dialog_field_summary.glade.h:3
+#: ../data/ui/developer/dialog_group_by.glade.h:4
 msgid "Select"
 msgstr "Изабери"
 
-#: ../glom/mode_data/datawidget/dialog_choose_id.cc:107
+#: ../glom/mode_data/datawidget/dialog_choose_id.cc:103
 msgid "You have not entered any quick find criteria."
 msgstr "Нисте унели ниједно мерило брзе претраге."
 
@@ -2893,8 +2930,8 @@ msgstr ""
 "знак."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:105
-#: ../ui/developer/window_field_definition_edit.glade.h:4
-#: ../ui/developer/window_report_layout.glade.h:7
+#: ../data/ui/developer/window_field_definition_edit.glade.h:4
+#: ../data/ui/developer/window_report_layout.glade.h:7
 msgid "_Title:"
 msgstr "_Назив:"
 
@@ -2976,24 +3013,27 @@ msgid "Choose Image"
 msgstr "Изабери слику"
 
 #: ../glom/utility_widgets/imageglom.cc:956
-#| msgid "Open Failed"
 msgid "_Open File"
 msgstr "_Отвори датотеку"
 
 #: ../glom/utility_widgets/imageglom.cc:957
-#| msgid "Open With"
 msgid "Open File With"
 msgstr "Отворите датотеку програмом"
 
 #: ../glom/utility_widgets/imageglom.cc:959
+#: ../data/ui/operator/window_main.glade.h:15
+#: ../data/ui/developer/window_print_layout_edit.glade.h:6
 msgid "_Copy"
 msgstr "_Умножи"
 
 #: ../glom/utility_widgets/imageglom.cc:960
+#: ../data/ui/operator/window_main.glade.h:16
+#: ../data/ui/developer/window_print_layout_edit.glade.h:7
 msgid "_Paste"
 msgstr "У_баци"
 
 #: ../glom/utility_widgets/imageglom.cc:961
+#: ../data/ui/operator/window_main.glade.h:17
 msgid "_Clear"
 msgstr "_Очисти"
 
@@ -3022,12 +3062,12 @@ msgid "Field Layout Properties"
 msgstr "Својства распореда поља"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:121
-#: ../ui/developer/window_data_layout.glade.h:19
+#: ../data/ui/developer/window_data_layout.glade.h:19
 msgid "Add Related Records"
 msgstr "Додај односне снимке"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:122
-#: ../ui/developer/window_data_layout.glade.h:17
+#: ../data/ui/developer/window_data_layout.glade.h:17
 msgid "Add Notebook"
 msgstr "Додај бележницу"
 
@@ -3036,12 +3076,12 @@ msgid "Add Group"
 msgstr "Додај групу"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:124
-#: ../ui/developer/window_data_layout.glade.h:13
+#: ../data/ui/developer/window_data_layout.glade.h:13
 msgid "Add Button"
 msgstr "Додај дугме"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:125
-#: ../ui/developer/window_data_layout.glade.h:10
+#: ../data/ui/developer/window_data_layout.glade.h:10
 msgid "Add Text"
 msgstr "Додај текст"
 
@@ -3061,15 +3101,15 @@ msgstr "Да обришем читаву бележницу „%1“?"
 msgid "Delete whole notebook?"
 msgstr "Да обришем читаву бележницу?"
 
-#: ../ui/operator/box_navigation_tables.glade.h:2
+#: ../data/ui/operator/box_navigation_tables.glade.h:2
 msgid "_Show hidden tables"
 msgstr "_Прикажи скривене табеле"
 
-#: ../ui/operator/dialog_choose_date.glade.h:1
+#: ../data/ui/operator/dialog_choose_date.glade.h:1
 msgid "Choose Date"
 msgstr "Изабери датум"
 
-#: ../ui/operator/dialog_choose_date.glade.h:2
+#: ../data/ui/operator/dialog_choose_date.glade.h:2
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Choose Date</span>\n"
 "\n"
@@ -3079,49 +3119,55 @@ msgstr ""
 "\n"
 "молим изаберите датум за унос у ово поље."
 
-#: ../ui/operator/dialog_connection.glade.h:1
+#: ../data/ui/operator/dialog_connection.glade.h:1
 msgid "Connect to Server"
 msgstr "Повежи се на сервер"
 
-#: ../ui/operator/dialog_connection.glade.h:2
+#: ../data/ui/operator/dialog_connection.glade.h:2
 msgid "Please enter the connection details for your database server."
 msgstr "Молим унесите податке везе за сервер ваше базе података."
 
-#: ../ui/operator/dialog_connection.glade.h:3
+#: ../data/ui/operator/dialog_connection.glade.h:3
 msgid "Host"
 msgstr "Домаћин"
 
-#: ../ui/operator/dialog_connection.glade.h:5
-#: ../ui/developer/dialog_choose_user.glade.h:5
-#: ../ui/developer/dialog_user.glade.h:1
+#: ../data/ui/operator/dialog_connection.glade.h:5
+#: ../data/ui/developer/dialog_choose_user.glade.h:5
+#: ../data/ui/developer/dialog_user.glade.h:1
 msgid "User"
 msgstr "Корисник"
 
-#: ../ui/operator/dialog_connection.glade.h:6
+#: ../data/ui/operator/dialog_connection.glade.h:6
 msgid "_Host:"
 msgstr "_Рачунар:"
 
-#: ../ui/operator/dialog_connection.glade.h:7
+#: ../data/ui/operator/dialog_connection.glade.h:7
 msgid "Database:"
 msgstr "База података:"
 
-#: ../ui/operator/dialog_connection.glade.h:8
-#: ../ui/developer/dialog_initial_password.glade.h:3
+#: ../data/ui/operator/dialog_connection.glade.h:8
+#: ../data/ui/developer/dialog_initial_password.glade.h:3
 msgid "_User:"
 msgstr "_Корисник:"
 
-#: ../ui/operator/dialog_connection.glade.h:9
-#: ../ui/developer/dialog_initial_password.glade.h:4
+#: ../data/ui/operator/dialog_connection.glade.h:9
+#: ../data/ui/developer/dialog_initial_password.glade.h:4
 msgid "_Password:"
 msgstr "_Лозинка:"
 
-#: ../ui/operator/dialog_connection.glade.h:10
+#: ../data/ui/operator/dialog_connection.glade.h:10
 msgid "Database"
 msgstr "База података"
 
-#: ../ui/operator/dialog_data_invalid_format.glade.h:1
+#: ../data/ui/operator/dialog_data_invalid_format.glade.h:1
+#| msgid ""
+#| "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
+#| "\n"
+#| "The data in the field was not recognized. Please try to correct the data "
+#| "or revert to the previous value. Here is an example of correctly-"
+#| "formatted data for this field.\n"
 msgid ""
-"<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
+"<span weight=\"bold\" size=\"larger\">Invalid Format</span>\n"
 "\n"
 "The data in the field was not recognized. Please try to correct the data or "
 "revert to the previous value. Here is an example of correctly-formatted data "
@@ -3133,120 +3179,281 @@ msgstr ""
 "вратите претходну вредност. Ово је пример исправно обликованих података за "
 "ово поље.\n"
 
-#: ../ui/operator/dialog_data_invalid_format.glade.h:5
+#: ../data/ui/operator/dialog_data_invalid_format.glade.h:5
 msgid "example data format"
 msgstr "пример облика података"
 
-#: ../ui/operator/dialog_existing_or_new.glade.h:1
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:1
 msgid "Welcome to Glom"
 msgstr "Добродошли у Глом"
 
-#: ../ui/operator/dialog_existing_or_new.glade.h:2
-#: ../ui/developer/dialog_choose_field.glade.h:2
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:2
+#: ../data/ui/developer/dialog_choose_field.glade.h:2
 msgid "_Select"
 msgstr "_Изабери"
 
-#: ../ui/operator/dialog_existing_or_new.glade.h:3
-msgid "<span weight=\"bold\" size=\"larger\">Open or create a Document</span>"
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:3
+#| msgid ""
+#| "<span weight=\"bold\" size=\"larger\">Open or create a Document</span>"
+msgid "<span weight=\"bold\" size=\"larger\">Open or Create a Document</span>"
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Отворите или направите документ</span>"
 
-#: ../ui/operator/dialog_existing_or_new.glade.h:4
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:4
 msgid "Open or create Document"
 msgstr "Отвори или направи документ"
 
-#: ../ui/operator/dialog_existing_or_new.glade.h:5
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:5
 msgid "Open Existing Document"
 msgstr "Отвори постојећи документ"
 
-#: ../ui/operator/dialog_existing_or_new.glade.h:6
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:6
 msgid "Create New Document"
 msgstr "Прави нови документ"
 
-#: ../ui/operator/dialog_find_id.glade.h:1
-#: ../ui/operator/dialog_new_record.glade.h:1
+#: ../data/ui/operator/dialog_find_id.glade.h:1
 msgid "Find Related Record"
 msgstr "Нађи односне снимке"
 
-#: ../ui/operator/dialog_find_id.glade.h:2
-#: ../ui/operator/dialog_new_record.glade.h:2
-#: ../ui/developer/window_data_layout_export.glade.h:2
-#: ../ui/developer/window_data_layout.glade.h:2
-#: ../ui/developer/window_design.glade.h:2
-#: ../ui/developer/window_report_layout.glade.h:2
+#: ../data/ui/operator/dialog_find_id.glade.h:2
+#: ../data/ui/operator/dialog_new_record.glade.h:2
+#: ../data/ui/developer/window_data_layout_export.glade.h:2
+#: ../data/ui/developer/window_data_layout.glade.h:2
+#: ../data/ui/developer/window_design.glade.h:2
+#: ../data/ui/developer/window_report_layout.glade.h:2
 msgid "<b>Table:</b>"
 msgstr "<b>Табела:</b>"
 
-#: ../ui/operator/dialog_find_id.glade.h:3
-#: ../ui/operator/dialog_new_record.glade.h:3
+#: ../data/ui/operator/dialog_find_id.glade.h:3
+#: ../data/ui/operator/dialog_new_record.glade.h:3
 msgid "table_name"
 msgstr "назив_табеле"
 
-#: ../ui/operator/dialog_image_load_progress.glade.h:1
+#: ../data/ui/operator/dialog_new_record.glade.h:1
+#| msgid "Related Records"
+msgid "New Related Record"
+msgstr "Нови односни снимак"
+
+#: ../data/ui/operator/dialog_image_load_progress.glade.h:1
 msgid "Loading image"
 msgstr "Учитавам слику"
 
-#: ../ui/operator/dialog_image_save_progress.glade.h:1
+#: ../data/ui/operator/dialog_image_save_progress.glade.h:1
 msgid "Saving Image"
 msgstr "Чувам слику"
 
-#: ../ui/operator/dialog_import_csv.glade.h:1
+#: ../data/ui/operator/dialog_import_csv.glade.h:1
 msgid "bla.blub - Import from CSV"
 msgstr "bla.blub — Увези из ЦСВ-а"
 
-#: ../ui/operator/dialog_import_csv.glade.h:2
+#: ../data/ui/operator/dialog_import_csv.glade.h:2
+#: ../data/ui/operator/window_main.glade.h:8
 msgid "I_mport"
 msgstr "_Увези"
 
-#: ../ui/operator/dialog_import_csv.glade.h:3
-#: ../ui/developer/box_formatting.glade.h:20
+#: ../data/ui/operator/dialog_import_csv.glade.h:3
+#: ../data/ui/developer/box_formatting.glade.h:23
 msgid "label"
 msgstr "натпис"
 
-#: ../ui/operator/dialog_import_csv.glade.h:4
+#: ../data/ui/operator/dialog_import_csv.glade.h:4
 msgid "_First line as title"
 msgstr "_Први ред као назив"
 
-#: ../ui/operator/dialog_import_csv.glade.h:5
+#: ../data/ui/operator/dialog_import_csv.glade.h:5
 msgid "_Encoding:"
 msgstr "_Кодирање:"
 
-#: ../ui/operator/dialog_import_csv.glade.h:6
+#: ../data/ui/operator/dialog_import_csv.glade.h:6
 msgid "Import Into _Table:"
 msgstr "Увези у _табелу:"
 
-#: ../ui/operator/dialog_import_csv.glade.h:7
+#: ../data/ui/operator/dialog_import_csv.glade.h:7
 msgid "Encoding detected as: UTF-8"
 msgstr "Кодирање је откривено као: УТФ-8"
 
 #. Import is a noun here. This is the title for a window showing options for an import operation.
-#: ../ui/operator/dialog_import_csv.glade.h:9
+#: ../data/ui/operator/dialog_import_csv.glade.h:9
 msgid "<b>Import Options</b>"
 msgstr "<b>Опције увоза</b>"
 
-#: ../ui/operator/dialog_import_csv.glade.h:10
+#: ../data/ui/operator/dialog_import_csv.glade.h:10
 msgid "_Number of sample rows:"
 msgstr "_Број редова узорка:"
 
 #. Import is a noun here. This is the title for a list of fields to import.
-#: ../ui/operator/dialog_import_csv.glade.h:12
+#: ../data/ui/operator/dialog_import_csv.glade.h:12
 msgid "<b>Import Fields</b>"
 msgstr "<b>Увоз поља</b>"
 
 #. This is a status message for a progress dialog. It says that importing is currently happenning.
-#: ../ui/operator/dialog_import_csv_progress.glade.h:2
+#: ../data/ui/operator/dialog_import_csv_progress.glade.h:2
 msgid "Importing Data"
 msgstr "Увозим податке"
 
-#: ../ui/operator/dialog_import_csv_progress.glade.h:3
+#: ../data/ui/operator/dialog_import_csv_progress.glade.h:3
 msgid "Please wait while your data is imported."
 msgstr "Молим сачекајте док се не увезу ваши подаци."
 
-#: ../ui/developer/dialog_add_related_table.glade.h:1
+#: ../data/ui/operator/window_main.glade.h:3
+#: ../data/ui/developer/window_print_layout_edit.glade.h:1
+#: ../data/ui/developer/window_relationships_overview.glade.h:1
+#| msgid "_Open File"
+msgid "_File"
+msgstr "_Датотека"
+
+#: ../data/ui/operator/window_main.glade.h:6
+#| msgid "Example"
+msgid "_Save as Example"
+msgstr "_Сачувај као пример"
+
+#: ../data/ui/operator/window_main.glade.h:9
+#| msgid "Share on the network"
+msgid "S_hared on Network"
+msgstr "_Дељено на мрежи"
+
+#: ../data/ui/operator/window_main.glade.h:10
+#: ../data/ui/developer/window_relationships_overview.glade.h:3
+msgid "_Print"
+msgstr "_Штампај"
+
+#: ../data/ui/operator/window_main.glade.h:11
+#| msgid "Print Layouts"
+msgid "_Edit Print Layouts"
+msgstr "_Уреди распореде штампања"
+
+#: ../data/ui/operator/window_main.glade.h:12
+msgid "_Close"
+msgstr "_Затвори"
+
+#: ../data/ui/operator/window_main.glade.h:14
+#: ../data/ui/developer/window_print_layout_edit.glade.h:5
+msgid "Cu_t"
+msgstr "_Исеци"
+
+#: ../data/ui/operator/window_main.glade.h:19
+#| msgid "_Table:"
+msgid "_Tables"
+msgstr "_Табеле"
+
+#: ../data/ui/operator/window_main.glade.h:20
+#| msgid "Edit Tables"
+msgid "_Edit Tables"
+msgstr "_Уреди табеле"
+
+#: ../data/ui/operator/window_main.glade.h:21
+#| msgid "Reports"
+msgid "R_eports"
+msgstr "_Извештаји"
+
+#: ../data/ui/operator/window_main.glade.h:22
+#| msgid "Reports"
+msgid "_Edit Reports"
+msgstr "_Уреди извештаје"
+
+#: ../data/ui/operator/window_main.glade.h:23
+msgid "_Developer"
+msgstr "_Програмер"
+
+#: ../data/ui/operator/window_main.glade.h:24
+msgid "_Operator"
+msgstr "_Оператер"
+
+#: ../data/ui/operator/window_main.glade.h:25
+#| msgid "Fields"
+msgid "_Fields"
+msgstr "_Поља"
+
+#: ../data/ui/operator/window_main.glade.h:26
+#| msgid "_Relationship:"
+msgid "_Relationships"
+msgstr "_Међуоднос"
+
+#: ../data/ui/operator/window_main.glade.h:27
+#| msgid "Relationships Overview"
+msgid "Relationships _Overview"
+msgstr "_Преглед међуодноса"
+
+#: ../data/ui/operator/window_main.glade.h:29
+#| msgid "Print Layouts"
+msgid "_Print Layouts"
+msgstr "_Штампај распоред"
+
+#: ../data/ui/operator/window_main.glade.h:30
+#| msgid "Reports"
+msgid "_Reports"
+msgstr "_Извештаји"
+
+#: ../data/ui/operator/window_main.glade.h:31
+#| msgid "Database Preferences"
+msgid "_Database Preferences"
+msgstr "_Поставке базе података"
+
+#: ../data/ui/operator/window_main.glade.h:32
+#| msgid "Users"
+msgid "_Users"
+msgstr "_Корисници"
+
+#: ../data/ui/operator/window_main.glade.h:33
+#| msgid "Script Library"
+msgid "Script _Library"
+msgstr "Библиотека _списа"
+
+#: ../data/ui/operator/window_main.glade.h:34
+#| msgid "Translations"
+msgid "_Translations"
+msgstr "_Преводи"
+
+#: ../data/ui/operator/window_main.glade.h:35
+#| msgid "Test Translation"
+msgid "Test Tra_nslation"
+msgstr "Испробај _превод"
+
+#: ../data/ui/operator/window_main.glade.h:36
+msgid "Active Platform"
+msgstr "Радна платформа"
+
+#: ../data/ui/operator/window_main.glade.h:37
+msgid "_Normal"
+msgstr "_Обична"
+
+#: ../data/ui/operator/window_main.glade.h:38
+msgid "_Maemo"
+msgstr "_Маемо"
+
+#: ../data/ui/operator/window_main.glade.h:39
+#| msgid "Create Standard Layout"
+msgid "_Drag and Drop Layout"
+msgstr "_Превуци и убаци распоред"
+
+#: ../data/ui/operator/window_main.glade.h:40
+#| msgid "Exporting backup"
+msgid "_Export Backup"
+msgstr "_Извези резерву"
+
+#: ../data/ui/operator/window_main.glade.h:41
+#| msgid "Restoring backup"
+msgid "_Restore Backup"
+msgstr "_Поврати резерву"
+
+#: ../data/ui/operator/window_main.glade.h:42
+msgid "_Help"
+msgstr "По_моћ"
+
+#: ../data/ui/operator/window_main.glade.h:43
+msgid "_About"
+msgstr "_О програму"
+
+#: ../data/ui/operator/window_main.glade.h:44
+#| msgid "Comments"
+msgid "_Contents"
+msgstr "_Садржај"
+
+#: ../data/ui/developer/dialog_add_related_table.glade.h:1
 msgid "Add Related Table"
 msgstr "Додај односну табелу"
 
-#: ../ui/developer/dialog_add_related_table.glade.h:2
+#: ../data/ui/developer/dialog_add_related_table.glade.h:2
 msgid ""
 "This will add a new table and add a relationship that refers to the new  "
 "table, as a convenient alternative to doing this in separate steps.\n"
@@ -3261,23 +3468,23 @@ msgstr ""
 "додате међуоднос."
 
 #. Translators: FROM as in SQL's FROM
-#: ../ui/developer/dialog_add_related_table.glade.h:6
+#: ../data/ui/developer/dialog_add_related_table.glade.h:6
 msgid "From field:"
 msgstr "Из поља:"
 
-#: ../ui/developer/dialog_add_related_table.glade.h:7
+#: ../data/ui/developer/dialog_add_related_table.glade.h:7
 msgid "Name of new related table:"
 msgstr "Назив нове односне табеле:"
 
-#: ../ui/developer/dialog_add_related_table.glade.h:8
+#: ../data/ui/developer/dialog_add_related_table.glade.h:8
 msgid "Name of new relationship:"
 msgstr "Назив новог међуодноса:"
 
-#: ../ui/developer/dialog_change_language.glade.h:1
+#: ../data/ui/developer/dialog_change_language.glade.h:1
 msgid "Test Translation"
 msgstr "Испробај превод"
 
-#: ../ui/developer/dialog_change_language.glade.h:2
+#: ../data/ui/developer/dialog_change_language.glade.h:2
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Test Translation</span>\n"
 "\n"
@@ -3299,39 +3506,35 @@ msgstr ""
 "изборници и прозорчићи, бити преведени једино када покренете Глома на "
 "рачунару који користи тај језик."
 
-#: ../ui/developer/dialog_change_language.glade.h:7
+#: ../data/ui/developer/dialog_change_language.glade.h:7
 msgid "Locale:"
 msgstr "Језик:"
 
-#: ../ui/developer/dialog_choose_field.glade.h:1
+#: ../data/ui/developer/dialog_choose_field.glade.h:1
 msgid "Select Field"
 msgstr "Изабери поље"
 
-#: ../ui/developer/dialog_choose_field.glade.h:3
+#: ../data/ui/developer/dialog_choose_field.glade.h:3
 msgid "Show _Related Relationships"
 msgstr "Прикажи _односне међуодносе"
 
-#: ../ui/developer/dialog_choose_field.glade.h:4
+#: ../data/ui/developer/dialog_choose_field.glade.h:4
 msgid "_Table:"
 msgstr "_Табела:"
 
-#: ../ui/developer/dialog_choose_relationship.glade.h:1
+#: ../data/ui/developer/dialog_choose_relationship.glade.h:1
 msgid "Select Relationship"
 msgstr "Изабери међуоднос"
 
-#: ../ui/developer/dialog_choose_relationship.glade.h:3
+#: ../data/ui/developer/dialog_choose_relationship.glade.h:3
 msgid "Table:"
 msgstr "Табела:"
 
-#: ../ui/developer/dialog_choose_relationship.glade.h:4
-msgid "<b>Select Relationship</b>"
-msgstr "<b>Изабери међуоднос</b>"
-
-#: ../ui/developer/dialog_choose_user.glade.h:1
+#: ../data/ui/developer/dialog_choose_user.glade.h:1
 msgid "Choose User"
 msgstr "Изабери корисника"
 
-#: ../ui/developer/dialog_choose_user.glade.h:2
+#: ../data/ui/developer/dialog_choose_user.glade.h:2
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Add User To Group</span>\n"
 "\n"
@@ -3341,146 +3544,126 @@ msgstr ""
 "\n"
 "Који корисник треба да буде додат у ову групу?"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:1
+#: ../data/ui/developer/dialog_database_preferences.glade.h:1
 msgid "Database Preferences"
 msgstr "Поставке базе података"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:2
+#: ../data/ui/developer/dialog_database_preferences.glade.h:2
 msgid "System Name:"
 msgstr "Назив система:"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:3
+#: ../data/ui/developer/dialog_database_preferences.glade.h:3
 msgid "Name:"
 msgstr "Назив:"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:4
+#: ../data/ui/developer/dialog_database_preferences.glade.h:4
 msgid "Country:"
 msgstr "Држава:"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:5
+#: ../data/ui/developer/dialog_database_preferences.glade.h:5
 msgid "Zip/Postal Code:"
 msgstr "Поштански број:"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:6
+#: ../data/ui/developer/dialog_database_preferences.glade.h:6
 msgid "State/County:"
 msgstr "Република/Округ:"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:7
+#: ../data/ui/developer/dialog_database_preferences.glade.h:7
 msgid "Town:"
 msgstr "Град:"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:8
+#: ../data/ui/developer/dialog_database_preferences.glade.h:8
 msgid "Street (Line 2):"
 msgstr "Улица (ред 2):"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:9
+#: ../data/ui/developer/dialog_database_preferences.glade.h:9
 msgid "Street:"
 msgstr "Улица:"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:10
+#: ../data/ui/developer/dialog_database_preferences.glade.h:10
 msgid "<b>Address</b>"
 msgstr "<b>Адреса</b>"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:11
+#: ../data/ui/developer/dialog_database_preferences.glade.h:11
 msgid "Organisation"
 msgstr "Удружење"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:12
+#: ../data/ui/developer/dialog_database_preferences.glade.h:12
 msgid "Logo"
 msgstr "Логотип"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:13
+#: ../data/ui/developer/dialog_database_preferences.glade.h:13
 msgid "Auto-increment values"
 msgstr "Сам повећај вредности"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:14
+#: ../data/ui/developer/dialog_database_preferences.glade.h:14
 msgid ""
 "When the database is opened the python function implemented here will run."
 msgstr ""
 "Када се отвори база података биће покренута питонова функција која је овде "
 "примењена."
 
-#: ../ui/developer/dialog_database_preferences.glade.h:15
-#: ../ui/developer/window_button_script.glade.h:4
-#: ../ui/developer/window_field_calculation.glade.h:3
+#: ../data/ui/developer/dialog_database_preferences.glade.h:15
+#: ../data/ui/developer/window_button_script.glade.h:4
+#: ../data/ui/developer/window_field_calculation.glade.h:3
 msgid "Test"
 msgstr "Испробај"
 
-#: ../ui/developer/dialog_database_preferences.glade.h:16
+#: ../data/ui/developer/dialog_database_preferences.glade.h:16
 msgid "Startup Script"
 msgstr "Скрипта покретања"
 
-#: ../ui/developer/dialog_error_create_database.glade.h:1
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Database creation failed</span>\n"
-"\n"
-"Glom could not create the new database. Maybe you do not have the necessary "
-"access rights. Please contact your system administrator."
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Стварање базе података није успело</"
-"span>\n"
-"\n"
-"Глом не може да направи нову базу података. Можда немате потребна овлашћења "
-"за приступ. Молим обратите се администратору система."
-
-#: ../ui/developer/dialog_fieldslist.glade.h:1
-#: ../ui/developer/dialog_sort_fields.glade.h:2
+#: ../data/ui/developer/dialog_fieldslist.glade.h:1
+#: ../data/ui/developer/dialog_sort_fields.glade.h:2
 msgid "Table: "
 msgstr "Табела: "
 
-#: ../ui/developer/dialog_fieldslist.glade.h:3
-#: ../ui/developer/window_data_layout.glade.h:24
+#: ../data/ui/developer/dialog_fieldslist.glade.h:3
+#: ../data/ui/developer/window_data_layout.glade.h:24
 msgid "<b>Fields</b>"
 msgstr "<b>Поља</b>"
 
-#: ../ui/developer/dialog_field_summary.glade.h:2
-#: ../ui/developer/dialog_group_by.glade.h:2
-#: ../ui/developer/box_formatting.glade.h:22
+#: ../data/ui/developer/dialog_field_summary.glade.h:2
+#: ../data/ui/developer/dialog_group_by.glade.h:2
+#: ../data/ui/developer/box_formatting.glade.h:21
 msgid "Field:"
 msgstr "Поље:"
 
-#: ../ui/developer/dialog_field_summary.glade.h:4
+#: ../data/ui/developer/dialog_field_summary.glade.h:4
 msgid "Summary Type:"
 msgstr "Врста сажетка:"
 
-#: ../ui/developer/dialog_field_summary.glade.h:5
-msgid "<b>Summary Field</b>"
-msgstr "<b>Поље сажетка</b>"
-
-#: ../ui/developer/dialog_flowtable.glade.h:1
+#: ../data/ui/developer/dialog_flowtable.glade.h:1
 msgid "Group Properties"
 msgstr "Својства групе"
 
-#: ../ui/developer/dialog_flowtable.glade.h:2
+#: ../data/ui/developer/dialog_flowtable.glade.h:2
 msgid "Columns:"
 msgstr "Колоне:"
 
-#: ../ui/developer/dialog_flowtable.glade.h:3
-#: ../ui/developer/window_print_layout_edit.glade.h:4
+#: ../data/ui/developer/dialog_flowtable.glade.h:3
+#: ../data/ui/developer/window_print_layout_edit.glade.h:42
 msgid "Title:"
 msgstr "Назив:"
 
-#: ../ui/developer/dialog_group_by.glade.h:5
+#: ../data/ui/developer/dialog_group_by.glade.h:5
 msgid "Sort Fields:"
 msgstr "Поља ређања:"
 
-#: ../ui/developer/dialog_group_by.glade.h:6
+#: ../data/ui/developer/dialog_group_by.glade.h:6
 msgid "Secondary Fields:"
 msgstr "Споредна поља:"
 
-#: ../ui/developer/dialog_group_by.glade.h:7
-msgid "Border Width (ems)"
-msgstr "Ширина ивице (емс)"
+#: ../data/ui/developer/dialog_group_by.glade.h:7
+#| msgid "Border Width (ems)"
+msgid "Border Width (ems):"
+msgstr "Ширина ивице (емс):"
 
-#: ../ui/developer/dialog_group_by.glade.h:8
-msgid "<b>Group By</b>"
-msgstr "<b>Групиши према</b>"
-
-#: ../ui/developer/dialog_initial_password.glade.h:1
+#: ../data/ui/developer/dialog_initial_password.glade.h:1
 msgid "Database User"
 msgstr "Корисник базе података"
 
-#: ../ui/developer/dialog_initial_password.glade.h:2
+#: ../data/ui/developer/dialog_initial_password.glade.h:2
 msgid ""
 "Please enter the initial connection details for your database. You may add "
 "additional users later. Remember to keep this password secret because it "
@@ -3490,67 +3673,67 @@ msgstr ""
 "накнадне кориснике касније. Не заборавите да држите ову лозинку у тајности "
 "јер она омогућава приступ вашим подацима са других рачунара на мрежи."
 
-#: ../ui/developer/dialog_initial_password.glade.h:5
+#: ../data/ui/developer/dialog_initial_password.glade.h:5
 msgid "_Confirm Password:"
 msgstr "_Потврди лозинку:"
 
-#: ../ui/developer/dialog_initial_password.glade.h:6
-#: ../ui/developer/dialog_new_group.glade.h:2
-#: ../ui/developer/dialog_new_library_script.glade.h:2
+#: ../data/ui/developer/dialog_initial_password.glade.h:6
+#: ../data/ui/developer/dialog_new_group.glade.h:2
+#: ../data/ui/developer/dialog_new_library_script.glade.h:2
 msgid "C_reate"
 msgstr "_Направи"
 
-#: ../ui/developer/dialog_line.glade.h:1
-#: ../ui/developer/window_textobject.glade.h:1
+#: ../data/ui/developer/dialog_line.glade.h:1
+#: ../data/ui/developer/window_textobject.glade.h:1
 msgid "Text Object"
 msgstr "Текстуални објекат"
 
-#: ../ui/developer/dialog_line.glade.h:2
+#: ../data/ui/developer/dialog_line.glade.h:2
 msgid "Line Width:"
 msgstr "Ширина линије:"
 
-#: ../ui/developer/dialog_line.glade.h:3
+#: ../data/ui/developer/dialog_line.glade.h:3
 msgid "Color:"
 msgstr "Боја:"
 
-#: ../ui/developer/dialog_layout_field_properties.glade.h:1
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:1
 msgid "Field Layout"
 msgstr "Распоред поља"
 
-#: ../ui/developer/dialog_layout_field_properties.glade.h:2
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:2
 msgid "<b>Field:</b>"
 msgstr "<b>Поље:</b>"
 
-#: ../ui/developer/dialog_layout_field_properties.glade.h:4
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:4
 msgid "Use default field title: "
 msgstr "Користи основни назив поља: "
 
-#: ../ui/developer/dialog_layout_field_properties.glade.h:5
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:5
 msgid "Use custom title:"
 msgstr "Користи произвољан назив:"
 
-#: ../ui/developer/dialog_layout_field_properties.glade.h:6
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:6
 msgid "<b>Title</b>"
 msgstr "<b>Наслов</b>"
 
-#: ../ui/developer/dialog_layout_field_properties.glade.h:7
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:7
 msgid "Use default formatting"
 msgstr "Користи основно обликовање"
 
-#: ../ui/developer/dialog_layout_field_properties.glade.h:8
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:8
 msgid "Use custom formatting"
 msgstr "Користи произвољно обликовање"
 
-#: ../ui/developer/dialog_layout_field_properties.glade.h:9
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:9
 msgid "<b>Formatting</b>"
 msgstr "<b>Обликовање</b>"
 
-#: ../ui/developer/dialog_new_group.glade.h:1
-#: ../ui/developer/dialog_new_library_script.glade.h:1
+#: ../data/ui/developer/dialog_new_group.glade.h:1
+#: ../data/ui/developer/dialog_new_library_script.glade.h:1
 msgid "Create Group"
 msgstr "Направи групу"
 
-#: ../ui/developer/dialog_new_group.glade.h:3
+#: ../data/ui/developer/dialog_new_group.glade.h:3
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Create Group</span>\n"
 "\n"
@@ -3560,11 +3743,11 @@ msgstr ""
 "\n"
 "Који назив треба да има ова група?"
 
-#: ../ui/developer/dialog_new_group.glade.h:6
+#: ../data/ui/developer/dialog_new_group.glade.h:6
 msgid "Group name:"
 msgstr "Назив групе:"
 
-#: ../ui/developer/dialog_new_library_script.glade.h:3
+#: ../data/ui/developer/dialog_new_library_script.glade.h:3
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Add Module</span>\n"
 "\n"
@@ -3574,23 +3757,19 @@ msgstr ""
 "\n"
 "Који назив треба да има овај модул?"
 
-#: ../ui/developer/dialog_new_library_script.glade.h:6
+#: ../data/ui/developer/dialog_new_library_script.glade.h:6
 msgid "Script name:"
 msgstr "Назив скрипте:"
 
-#: ../ui/developer/dialog_notebook.glade.h:2
+#: ../data/ui/developer/dialog_notebook.glade.h:2
 msgid "<b>Notebook Tabs</b>"
 msgstr "<b>Језичци бележнице</b>"
 
-#: ../ui/developer/dialog_relationships_overview.glade.h:1
-msgid "Relationships Overview"
-msgstr "Преглед међуодноса"
-
-#: ../ui/developer/dialog_script_library.glade.h:1
+#: ../data/ui/developer/dialog_script_library.glade.h:1
 msgid "Script Library"
 msgstr "Библиотека скрипте"
 
-#: ../ui/developer/dialog_script_library.glade.h:2
+#: ../data/ui/developer/dialog_script_library.glade.h:2
 msgid ""
 "These modules will be available to your button scripts and field "
 "calculations via the python import keyword."
@@ -3598,29 +3777,29 @@ msgstr ""
 "Ови модули ће бити доступни вашим скриптама дугмади и прорачунима поља путем "
 "кључне речи питоновог увоза."
 
-#: ../ui/developer/dialog_script_library.glade.h:3
+#: ../data/ui/developer/dialog_script_library.glade.h:3
 msgid "Module name:"
 msgstr "Назив модула:"
 
 #. Translators: This is the verb. It is for checking that a Python script works.
-#: ../ui/developer/dialog_script_library.glade.h:5
+#: ../data/ui/developer/dialog_script_library.glade.h:5
 msgid "_Check"
 msgstr "_Провери"
 
-#: ../ui/developer/dialog_sort_fields.glade.h:1
+#: ../data/ui/developer/dialog_sort_fields.glade.h:1
 msgid "Group By - Sort Fields"
 msgstr "Групиши према — пољима ређања"
 
-#: ../ui/developer/dialog_sort_fields.glade.h:3
+#: ../data/ui/developer/dialog_sort_fields.glade.h:3
 msgid "<b>Sort Fields</b>"
 msgstr "<b>Поља ређања</b>"
 
-#: ../ui/developer/dialog_translation_copy.glade.h:1
-#: ../ui/developer/dialog_translation_identify_original.glade.h:1
+#: ../data/ui/developer/dialog_translation_copy.glade.h:1
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:1
 msgid "Identify Original"
 msgstr "Препознај оригинал"
 
-#: ../ui/developer/dialog_translation_copy.glade.h:2
+#: ../data/ui/developer/dialog_translation_copy.glade.h:2
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Copy Translation</span>\n"
 "\n"
@@ -3632,12 +3811,12 @@ msgstr ""
 "Из ког језика желите да умножите преводе да их користите као почетак текућег "
 "превода?"
 
-#: ../ui/developer/dialog_translation_copy.glade.h:5
-#: ../ui/developer/dialog_translation_identify_original.glade.h:7
+#: ../data/ui/developer/dialog_translation_copy.glade.h:5
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:7
 msgid "Language:"
 msgstr "Језик:"
 
-#: ../ui/developer/dialog_translation_identify_original.glade.h:2
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:2
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Identify Original</span>\n"
 "\n"
@@ -3647,49 +3826,45 @@ msgstr ""
 "\n"
 "Језик изворног текста је тренутно препознат као:"
 
-#: ../ui/developer/dialog_translation_identify_original.glade.h:5
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:5
 msgid "<b>English</b>"
 msgstr "<b>Енглески</b>"
 
-#: ../ui/developer/dialog_translation_identify_original.glade.h:6
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:6
 msgid ""
 "If the text is not actually in this language, please choose the correct "
 "language."
 msgstr ""
 "Ако текст заправо није на том језику, молим изаберите одговарајући језик."
 
-#: ../ui/developer/dialog_user.glade.h:2
+#: ../data/ui/developer/dialog_user.glade.h:2
 msgid "Group:"
 msgstr "Група:"
 
-#: ../ui/developer/dialog_user.glade.h:3
+#: ../data/ui/developer/dialog_user.glade.h:3
 msgid "Password:"
 msgstr "Лозинка:"
 
-#: ../ui/developer/dialog_user.glade.h:4
+#: ../data/ui/developer/dialog_user.glade.h:4
 msgid "Confirm Password:"
 msgstr "Потврди лозинку:"
 
-#: ../ui/developer/dialog_user.glade.h:5
+#: ../data/ui/developer/dialog_user.glade.h:5
 msgid "User:"
 msgstr "Корисник:"
 
-#: ../ui/developer/dialog_user.glade.h:6
-msgid "<b>User</b>"
-msgstr "<b>Корисник</b>"
-
-#: ../ui/developer/window_button_script.glade.h:1
+#: ../data/ui/developer/window_button_script.glade.h:1
 msgid "Button Script"
 msgstr "Скрипта дугмета"
 
-#: ../ui/developer/window_button_script.glade.h:2
-#: ../ui/developer/window_data_layout.glade.h:6
-#: ../ui/developer/window_imageobject.glade.h:2
-#: ../ui/developer/window_textobject.glade.h:2
+#: ../data/ui/developer/window_button_script.glade.h:2
+#: ../data/ui/developer/window_data_layout.glade.h:6
+#: ../data/ui/developer/window_imageobject.glade.h:2
+#: ../data/ui/developer/window_textobject.glade.h:2
 msgid "<b>Title:</b>"
 msgstr "<b>Наслов:</b>"
 
-#: ../ui/developer/window_button_script.glade.h:3
+#: ../data/ui/developer/window_button_script.glade.h:3
 msgid ""
 "When the button is clicked it will run the python function which you "
 "implement here."
@@ -3697,28 +3872,28 @@ msgstr ""
 "Када кликнете на дугме оно ће покренути питонову функцију коју сте овде "
 "применили."
 
-#: ../ui/developer/window_data_layout_export.glade.h:1
+#: ../data/ui/developer/window_data_layout_export.glade.h:1
 msgid "Export Format"
 msgstr "Облик извоза"
 
-#: ../ui/developer/window_data_layout.glade.h:1
+#: ../data/ui/developer/window_data_layout.glade.h:1
 msgid "Layout"
 msgstr "Распоред"
 
-#: ../ui/developer/window_data_layout.glade.h:3
-#: ../ui/developer/window_report_layout.glade.h:3
+#: ../data/ui/developer/window_data_layout.glade.h:3
+#: ../data/ui/developer/window_report_layout.glade.h:3
 msgid "table name"
 msgstr "назив табеле"
 
-#: ../ui/developer/window_data_layout.glade.h:4
+#: ../data/ui/developer/window_data_layout.glade.h:4
 msgid "<b>Relationship:</b>"
 msgstr "<b>Међуодноси</b>"
 
-#: ../ui/developer/window_data_layout.glade.h:5
+#: ../data/ui/developer/window_data_layout.glade.h:5
 msgid "Show child relationships"
 msgstr "Прикажи проистекле међуодносе"
 
-#: ../ui/developer/window_data_layout.glade.h:7
+#: ../data/ui/developer/window_data_layout.glade.h:7
 msgid ""
 "Add a layout item that shows the data from a field in the record, and allows "
 "the user to edit that value."
@@ -3726,11 +3901,11 @@ msgstr ""
 "Додајте ставку распореда која приказује податке из поља у запису, и која "
 "омогућава кориснику да измени ту вредност."
 
-#: ../ui/developer/window_data_layout.glade.h:8
+#: ../data/ui/developer/window_data_layout.glade.h:8
 msgid "Add Field"
 msgstr "Додај поље"
 
-#: ../ui/developer/window_data_layout.glade.h:9
+#: ../data/ui/developer/window_data_layout.glade.h:9
 msgid ""
 "Add text to a layout, such as an explanation or a warning. The text will be "
 "the same for every record viewed."
@@ -3738,7 +3913,7 @@ msgstr ""
 "Додајте текст у распоред, као што је неко објашњење или упозорење. Текст ће "
 "бити исти за сваки прегледани запис."
 
-#: ../ui/developer/window_data_layout.glade.h:11
+#: ../data/ui/developer/window_data_layout.glade.h:11
 msgid ""
 "Add an image to the layout, such as a logo. The image will be the same for "
 "every record viewed. To show an image field from a record, to show different "
@@ -3748,7 +3923,7 @@ msgstr ""
 "прегледани запис. Да прикажете поље слике из записа, да прикажете другачије "
 "слике за свако поље, користите ставку распореда поља."
 
-#: ../ui/developer/window_data_layout.glade.h:12
+#: ../data/ui/developer/window_data_layout.glade.h:12
 msgid ""
 "Add a button. Edit the button to define the script that will be run when the "
 "button is clicked."
@@ -3756,7 +3931,7 @@ msgstr ""
 "Додајте дугме. Измените дугме да одредите скрипту која ће бити покренута "
 "када кликнете на дугме."
 
-#: ../ui/developer/window_data_layout.glade.h:14
+#: ../data/ui/developer/window_data_layout.glade.h:14
 msgid ""
 "Add a group which can contain other layout items. Use this to group items "
 "together, such as fields."
@@ -3764,11 +3939,11 @@ msgstr ""
 "Додајте групу која може да садржи друге ставке распореда. Користите ово да "
 "групишете ставке заједно, као што су поља."
 
-#: ../ui/developer/window_data_layout.glade.h:15
+#: ../data/ui/developer/window_data_layout.glade.h:15
 msgid "Add _Group"
 msgstr "Додај _групу"
 
-#: ../ui/developer/window_data_layout.glade.h:16
+#: ../data/ui/developer/window_data_layout.glade.h:16
 msgid ""
 "Add a tabbed notebook. Each page of the notebook may contain several other "
 "layout items, but only one page will be visible at one time."
@@ -3777,7 +3952,7 @@ msgstr ""
 "неколико других ставки распореда, али само једна страница ће бити видљива у "
 "једном тренутку."
 
-#: ../ui/developer/window_data_layout.glade.h:18
+#: ../data/ui/developer/window_data_layout.glade.h:18
 msgid ""
 "Add a related records portal. This is a list of records in a related table. "
 "Remember to edit this layout item to specify the relationship to use, and "
@@ -3787,7 +3962,7 @@ msgstr ""
 "заборавите да уредите ставку овог распореда да наведете међуоднос за "
 "коришћење, и поља за показивање из односне табеле."
 
-#: ../ui/developer/window_data_layout.glade.h:20
+#: ../data/ui/developer/window_data_layout.glade.h:20
 msgid ""
 "Add a related records calendar portal. This is a calendar showing records "
 "from a related table. Remember to edit this layout item to specify the "
@@ -3797,11 +3972,11 @@ msgstr ""
 "записе из односне табеле. Не заборавите да уредите ставку овог распореда да "
 "наведете међуоднос за коришћење, и поља за показивање из односне табеле."
 
-#: ../ui/developer/window_data_layout.glade.h:21
+#: ../data/ui/developer/window_data_layout.glade.h:21
 msgid "Add Related Calendar"
 msgstr "Додај односни календар"
 
-#: ../ui/developer/window_data_layout.glade.h:22
+#: ../data/ui/developer/window_data_layout.glade.h:22
 msgid ""
 "Remove the item from the layout. If you remove a field layout item, it will "
 "not remove the field from the table itself. It just will not be seen on the "
@@ -3810,75 +3985,78 @@ msgstr ""
 "Уклоните ставку из распореда. Ако уклоните ставку распореда поља, то неће "
 "уклонити поље из саме табеле. Једноставно неће бити видљива на распореду."
 
-#: ../ui/developer/window_data_layout.glade.h:25
+#: ../data/ui/developer/window_data_layout.glade.h:25
 msgid ""
 "Clicking the row button takes the user to the table specified by this "
 "relationship:"
 msgstr ""
 "Клик на дугме реда пребацује корисника на табелу наведену овим међуодносом:"
 
-#: ../ui/developer/window_data_layout.glade.h:26
+#: ../data/ui/developer/window_data_layout.glade.h:26
 msgid "Automatic:"
 msgstr "Самостално:"
 
-#: ../ui/developer/window_data_layout.glade.h:27
+#: ../data/ui/developer/window_data_layout.glade.h:27
 msgid "None"
 msgstr "Ништа"
 
-#: ../ui/developer/window_data_layout.glade.h:28
+#: ../data/ui/developer/window_data_layout.glade.h:28
 msgid "<b>Navigation</b>"
 msgstr "<b>Кретање</b>"
 
-#: ../ui/developer/window_data_layout.glade.h:29
+#: ../data/ui/developer/window_data_layout.glade.h:29
 msgid "Date Field:"
 msgstr "Поље датума:"
 
-#: ../ui/developer/window_data_layout.glade.h:30
+#: ../data/ui/developer/window_data_layout.glade.h:30
 msgid "<b>Dates</b>"
 msgstr "<b>Датуми</b>"
 
-#: ../ui/developer/window_data_layout.glade.h:31
+#: ../data/ui/developer/window_data_layout.glade.h:31
 msgid "Minimum number of rows:"
 msgstr "Најмањи број редова:"
 
-#: ../ui/developer/window_data_layout.glade.h:32
+#: ../data/ui/developer/window_data_layout.glade.h:32
 msgid "Show at least this many rows."
 msgstr "Прикажите барем оволико редова."
 
-#: ../ui/developer/window_data_layout.glade.h:33
+#: ../data/ui/developer/window_data_layout.glade.h:33
 msgid "Maximum number of rows:"
 msgstr "Највећи број редова:"
 
-#: ../ui/developer/window_data_layout.glade.h:34
+#: ../data/ui/developer/window_data_layout.glade.h:34
 msgid "Show no more than this many rows."
 msgstr "Немојте приказати више од оволико редова."
 
-#: ../ui/developer/window_data_layout.glade.h:35
+#: ../data/ui/developer/window_data_layout.glade.h:35
 msgid "Row Line Width:"
 msgstr "Ширина линије реда:"
 
-#: ../ui/developer/window_data_layout.glade.h:36
+#: ../data/ui/developer/window_data_layout.glade.h:36
 msgid "Column Line Width:"
 msgstr "Ширина линије колоне:"
 
-#: ../ui/developer/window_data_layout.glade.h:37
-#| msgid "Line Color:\n"
+#: ../data/ui/developer/window_data_layout.glade.h:37
 msgid "Line Color:"
 msgstr "Боја линије:"
 
-#: ../ui/developer/window_data_layout.glade.h:38
+#: ../data/ui/developer/window_data_layout.glade.h:38
 msgid "<b>Lines</b>"
 msgstr "<b>Линије</b>"
 
-#: ../ui/developer/window_design.glade.h:1
+#: ../data/ui/developer/window_default_formatting.glade.h:1
+msgid "Default Formatting"
+msgstr "Основно обликовање"
+
+#: ../data/ui/developer/window_design.glade.h:1
 msgid "Field Definitions"
 msgstr "Одреднице поља"
 
-#: ../ui/developer/window_field_calculation.glade.h:1
+#: ../data/ui/developer/window_field_calculation.glade.h:1
 msgid "Field Calculation"
 msgstr "Прорачун поља"
 
-#: ../ui/developer/window_field_calculation.glade.h:2
+#: ../data/ui/developer/window_field_calculation.glade.h:2
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
@@ -3886,67 +4064,63 @@ msgstr ""
 "Вредност поља ће бити повратна вредност питонове функције, коју овде "
 "примењујете."
 
-#: ../ui/developer/window_field_calculation.glade.h:4
+#: ../data/ui/developer/window_field_calculation.glade.h:4
 msgid "Triggered by:"
 msgstr "Окинуто помоћу:"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:1
+#: ../data/ui/developer/window_field_definition_edit.glade.h:1
 msgid "Field Definition"
 msgstr "Одредница поља"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:2
+#: ../data/ui/developer/window_field_definition_edit.glade.h:2
 msgid "_Name:"
 msgstr "_Назив:"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:3
+#: ../data/ui/developer/window_field_definition_edit.glade.h:3
 msgid "Typ_e:"
 msgstr "_Врста:"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:5
+#: ../data/ui/developer/window_field_definition_edit.glade.h:5
 msgid "_Primary Key"
 msgstr "_Примарни кључ"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:6
+#: ../data/ui/developer/window_field_definition_edit.glade.h:6
 msgid "_Unique"
 msgstr "_Јединствено"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:7
+#: ../data/ui/developer/window_field_definition_edit.glade.h:7
 msgid "_Auto-increment"
 msgstr "_Сам повећај"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:9
+#: ../data/ui/developer/window_field_definition_edit.glade.h:9
 msgid "_Lookup value when a field changes."
 msgstr "_Потражи вредност када се измени поље."
 
-#: ../ui/developer/window_field_definition_edit.glade.h:10
+#: ../data/ui/developer/window_field_definition_edit.glade.h:10
 msgid "_Relationship:"
 msgstr "_Међуоднос:"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:11
+#: ../data/ui/developer/window_field_definition_edit.glade.h:11
 msgid "_Field:"
 msgstr "_Поље:"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:12
+#: ../data/ui/developer/window_field_definition_edit.glade.h:12
 msgid "_User Entry"
 msgstr "_Користи унос"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:14
+#: ../data/ui/developer/window_field_definition_edit.glade.h:14
 msgid "_Calculate Value"
 msgstr "_Израчунај вредност"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:15
+#: ../data/ui/developer/window_field_definition_edit.glade.h:15
 msgid "Value"
 msgstr "Вредност"
 
-#: ../ui/developer/window_field_definition_edit.glade.h:16
-msgid "Default Formatting"
-msgstr "Основно обликовање"
-
-#: ../ui/developer/box_formatting.glade.h:1
+#: ../data/ui/developer/box_formatting.glade.h:1
 msgid "Use 1000s separator"
 msgstr "Користи раздвојник за 1000"
 
-#: ../ui/developer/box_formatting.glade.h:2
+#: ../data/ui/developer/box_formatting.glade.h:2
 msgid ""
 "If this is not selected then a thousands separator will not be used, even if "
 "your locale would normally use one. If it is selected then a thousands "
@@ -3956,19 +4130,21 @@ msgstr ""
 "би га ваш језик користио. Ако је ово изабрано онда ће раздвојник хиљада бити "
 "коришћен само ако га ваш језик користи."
 
-#: ../ui/developer/box_formatting.glade.h:3
-msgid "Decimal Places"
-msgstr "Децимална места"
+#: ../data/ui/developer/box_formatting.glade.h:3
+#| msgid "Decimal Places"
+msgid "Decimal Places:"
+msgstr "Децимална места:"
 
-#: ../ui/developer/box_formatting.glade.h:4
-msgid "Currency Symbol"
-msgstr "Симболи валута"
+#: ../data/ui/developer/box_formatting.glade.h:4
+#| msgid "Currency Symbol"
+msgid "Currency Symbol:"
+msgstr "Симбол валуте:"
 
-#: ../ui/developer/box_formatting.glade.h:5
+#: ../data/ui/developer/box_formatting.glade.h:5
 msgid "Alternative Color for Negative Values"
 msgstr "Изборна боја за негативне вредности"
 
-#: ../ui/developer/box_formatting.glade.h:6
+#: ../data/ui/developer/box_formatting.glade.h:6
 msgid ""
 "Click this check box to use a different foreground color to display negative "
 "values."
@@ -3976,19 +4152,20 @@ msgstr ""
 "Кликните на ову кућицу за избор да користите другачију боју исцртавања за "
 "приказ негативних вредности."
 
-#: ../ui/developer/box_formatting.glade.h:7
-msgid "<b>Numeric Formatting</b>"
-msgstr "<b>Обликовање бројева</b>"
+#: ../data/ui/developer/box_formatting.glade.h:7
+#| msgid "<b>Numeric Formatting</b>"
+msgid "Numeric Formatting"
+msgstr "Обликовање бројева"
 
-#: ../ui/developer/box_formatting.glade.h:8
+#: ../data/ui/developer/box_formatting.glade.h:8
 msgid "Horizontal Alignment:"
 msgstr "Водоравно поравнање:"
 
-#: ../ui/developer/box_formatting.glade.h:9
+#: ../data/ui/developer/box_formatting.glade.h:9
 msgid "Multi-line"
 msgstr "Вишелинијско"
 
-#: ../ui/developer/box_formatting.glade.h:10
+#: ../data/ui/developer/box_formatting.glade.h:10
 msgid ""
 "If this is selected then the field value will be shown in a multi-line box "
 "with a scrollbar."
@@ -3996,57 +4173,62 @@ msgstr ""
 "Ако је ово изабрано онда ће вредност поља бити приказана у вишелинијском "
 "пољу са клизачем."
 
-#: ../ui/developer/box_formatting.glade.h:11
+#: ../data/ui/developer/box_formatting.glade.h:11
 msgid "Height (lines)"
 msgstr "Висина (линија)"
 
-#: ../ui/developer/box_formatting.glade.h:12
+#: ../data/ui/developer/box_formatting.glade.h:12
 msgid "Font:"
 msgstr "Слова:"
 
-#: ../ui/developer/box_formatting.glade.h:13
+#: ../data/ui/developer/box_formatting.glade.h:13
 msgid "Click this check box to use a non-standard font."
 msgstr "Кликните на ову кућицу за избор да користите неуобичајени словни лик."
 
-#: ../ui/developer/box_formatting.glade.h:14
+#: ../data/ui/developer/box_formatting.glade.h:14
 msgid "Foreground Color:"
 msgstr "Боја исцртавања:"
 
-#: ../ui/developer/box_formatting.glade.h:15
+#: ../data/ui/developer/box_formatting.glade.h:15
 msgid "Click this check box to use a non-standard foreground color."
 msgstr ""
 "Кликните на ову кућицу за избор да користите неуобичајену боју исцртавања."
 
-#: ../ui/developer/box_formatting.glade.h:16
+#: ../data/ui/developer/box_formatting.glade.h:16
 msgid "Background Color:"
 msgstr "Боја позадине:"
 
-#: ../ui/developer/box_formatting.glade.h:17
+#: ../data/ui/developer/box_formatting.glade.h:17
 msgid "Click this check box to use a non-standard background color."
 msgstr ""
 "Кликните на ову кућицу за избор да користите неуобичајену боју позадине."
 
-#: ../ui/developer/box_formatting.glade.h:18
-msgid "<b>Text Formatting</b>"
-msgstr "<b>Обликовање текста</b>"
+#: ../data/ui/developer/box_formatting.glade.h:18
+#| msgid "Text Format"
+msgid "Text Formatting"
+msgstr "Обликовање текста"
 
-#: ../ui/developer/box_formatting.glade.h:19
+#: ../data/ui/developer/box_formatting.glade.h:19
 msgid "No Choices"
 msgstr "Без избора"
 
-#: ../ui/developer/box_formatting.glade.h:21
+#: ../data/ui/developer/box_formatting.glade.h:20
 msgid "Relationship:"
 msgstr "Међуоднос:"
 
-#: ../ui/developer/box_formatting.glade.h:23
+#: ../data/ui/developer/box_formatting.glade.h:22
 msgid "Also show:"
 msgstr "Прикажи такође:"
 
-#: ../ui/developer/box_formatting.glade.h:24
+#: ../data/ui/developer/box_formatting.glade.h:24
+msgid "Sort Order:"
+msgstr "Редослед ређања:"
+
+#: ../data/ui/developer/box_formatting.glade.h:25
 msgid "Show all records"
 msgstr "Прикажи све записе"
 
-#: ../ui/developer/box_formatting.glade.h:25
+#: ../data/ui/developer/box_formatting.glade.h:26
 msgid ""
 "If this option is selected then the choices will list values from all "
 "records in the related table. If this option is not selected then the "
@@ -4056,92 +4238,238 @@ msgstr ""
 "записа у односној табели. Ако не изаберете ову могућност онда ће избори "
 "исписивати вредности само из односних записа."
 
-#: ../ui/developer/box_formatting.glade.h:26
-msgid "Sort Order:"
-msgstr "Редослед ређања:"
-
-#: ../ui/developer/box_formatting.glade.h:27
+#: ../data/ui/developer/box_formatting.glade.h:27
 msgid "Choices From Related Records"
 msgstr "Избори из односних записа"
 
-#: ../ui/developer/box_formatting.glade.h:28
+#: ../data/ui/developer/box_formatting.glade.h:28
 msgid "Custom Choice List"
 msgstr "Списак произвољних избора"
 
-#: ../ui/developer/box_formatting.glade.h:29
+#: ../data/ui/developer/box_formatting.glade.h:29
 msgid "Restrict data to these choices"
 msgstr "Ограничи податке на ове изборе"
 
-#: ../ui/developer/box_formatting.glade.h:30
+#: ../data/ui/developer/box_formatting.glade.h:30
 msgid "Display as radio buttons"
 msgstr "Прикажи као радио дугмад"
 
-#: ../ui/developer/box_formatting.glade.h:31
-msgid "<b>Choices</b>"
-msgstr "<b>Избори</b>"
+#: ../data/ui/developer/box_formatting.glade.h:31
+#| msgid "No Choices"
+msgid "Choices"
+msgstr "Избори"
 
-#: ../ui/developer/window_groups.glade.h:1
+#: ../data/ui/developer/window_groups.glade.h:1
 msgid "Groups"
 msgstr "Групе"
 
-#: ../ui/developer/window_groups.glade.h:2
-#: ../ui/developer/window_users.glade.h:1
+#: ../data/ui/developer/window_groups.glade.h:2
+#: ../data/ui/developer/window_users.glade.h:1
 msgid "Users"
 msgstr "Корисници"
 
-#: ../ui/developer/window_groups.glade.h:3
+#: ../data/ui/developer/window_groups.glade.h:3
 msgid "<b>Groups</b>"
 msgstr "<b>Групе</b>"
 
-#: ../ui/developer/window_groups.glade.h:4
+#: ../data/ui/developer/window_groups.glade.h:4
 msgid "<b>Tables</b>"
 msgstr "<b>Табеле</b>"
 
-#: ../ui/developer/window_imageobject.glade.h:1
+#: ../data/ui/developer/window_imageobject.glade.h:1
 msgid "Image Object"
 msgstr "Предмет слике"
 
-#: ../ui/developer/window_imageobject.glade.h:3
+#: ../data/ui/developer/window_imageobject.glade.h:3
 msgid "<b>Image:</b>"
 msgstr "<b>Слика:</b>"
 
-#: ../ui/developer/window_print_layout_edit.glade.h:1
+#: ../data/ui/developer/window_print_layout_edit.glade.h:2
+msgid "Page Set_up"
+msgstr "Поде_шавање странице"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:3
+msgid "Print Pre_view"
+msgstr "Пре_глед пред штампу"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:9
+#| msgid "Select File"
+msgid "Select _All"
+msgstr "_Изабери све"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:10
+#| msgid "_Select"
+msgid "_Unselect All"
+msgstr "_Поништи изабрано"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:11
+msgid "_Insert"
+msgstr "_Уметни"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:12
+#| msgid "Target Field"
+msgid "Insert _Field"
+msgstr "Уметни _поље"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:13
+#| msgid "New Text"
+msgid "Insert _Text"
+msgstr "Уметни _текст"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:14
+#| msgid "Choose Image"
+msgid "Insert _Image"
+msgstr "Уметни _слику"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:15
+#| msgid "Related Records"
+msgid "Insert _Related Records"
+msgstr "Уметни _односне записе"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:16
+#| msgid "Horizontal Line"
+msgid "Insert _Horizontal Line"
+msgstr "Уметни _водоравни ред"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:17
+#| msgid "Vertical Line"
+msgid "Insert _Vertical Line"
+msgstr "Уметни _усправни ред"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:18
+#| msgid "Create Standard Layout"
+msgid "Create _Standard"
+msgstr "Направи _стандард"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:19
+#| msgid "Add Text"
+msgid "Add Page"
+msgstr "Додај страницу"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:20
+#| msgid "Delete Table"
+msgid "Delete Page"
+msgstr "Обриши страницу"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:21
+msgid "_Align"
+msgstr "_Поравнај"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:22
+msgid "Align _Top"
+msgstr "Поравнај _горе"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:23
+msgid "Align _Bottom"
+msgstr "Поравнај _доле"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:24
+msgid "Align _Left"
+msgstr "Поравнај ле_во"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:25
+msgid "Align _Right"
+msgstr "Поравнај де_сно"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:26
+#: ../data/ui/developer/window_relationships_overview.glade.h:4
+#| msgid "View"
+msgid "_View"
+msgstr "_Преглед"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:27
+#: ../data/ui/developer/window_relationships_overview.glade.h:5
+msgid "Show _Grid"
+msgstr "Прикажи _мрежу"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:28
+msgid "Show _Rules"
+msgstr "Прикажи _правила"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:29
+msgid "Show _Outlines"
+msgstr "Прикажи _контуре"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:30
+#| msgid "Line Width:"
+msgid "Fit Page _Width"
+msgstr "Испуни ширину _странице"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:32
+#, no-c-format
+msgid "Zoom 200%"
+msgstr "Увећај на 200%"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:34
+#, no-c-format
+msgid "Zoom 100%"
+msgstr "Увећај на 100%"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:36
+#, no-c-format
+msgid "Zoom 50%"
+msgstr "Увећај на 50%"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:38
+#, no-c-format
+msgid "Zoom 25%"
+msgstr "Увећај на 25%"
+
+#: ../data/ui/developer/window_print_layout_edit.glade.h:39
 msgid "Print Layout Editor"
 msgstr "Уређивач распореда штампања"
 
-#: ../ui/developer/window_print_layout_edit.glade.h:2
+#: ../data/ui/developer/window_print_layout_edit.glade.h:40
 msgid "<b>Table Name</b>"
 msgstr "<b>Назив табеле</b>"
 
-#: ../ui/developer/window_print_layout_edit.glade.h:3
+#: ../data/ui/developer/window_print_layout_edit.glade.h:41
 msgid "Layout name:"
 msgstr "Назив распореда:"
 
-#: ../ui/developer/window_print_layout_edit.glade.h:5
+#: ../data/ui/developer/window_print_layout_edit.glade.h:43
 msgid "X:"
 msgstr "Водоравно:"
 
-#: ../ui/developer/window_print_layout_edit.glade.h:6
+#: ../data/ui/developer/window_print_layout_edit.glade.h:44
 msgid "Y:"
 msgstr "Усправно:"
 
-#: ../ui/developer/window_print_layout_edit.glade.h:7
+#: ../data/ui/developer/window_print_layout_edit.glade.h:45
 msgid "Width:"
 msgstr "Ширина:"
 
-#: ../ui/developer/window_print_layout_edit.glade.h:8
+#: ../data/ui/developer/window_print_layout_edit.glade.h:46
 msgid "Height:"
 msgstr "Висина:"
 
-#: ../ui/developer/window_report_layout.glade.h:1
+#: ../data/ui/developer/window_relationships_overview.glade.h:2
+msgid "Page _Setup"
+msgstr "Подешавање _странице"
+
+#: ../data/ui/developer/window_relationships_overview.glade.h:6
+#| msgid "Extra Fields"
+msgid "Edit _Fields"
+msgstr "Уреди _поља"
+
+#: ../data/ui/developer/window_relationships_overview.glade.h:7
+#| msgid "_Relationship:"
+msgid "Edit _Relationships"
+msgstr "Уреди _међуодносе"
+
+#: ../data/ui/developer/window_relationships_overview.glade.h:8
+msgid "Relationships Overview"
+msgstr "Преглед међуодноса"
+
+#: ../data/ui/developer/window_report_layout.glade.h:1
 msgid "Report Layout"
 msgstr "Распоред извештаја"
 
-#: ../ui/developer/window_report_layout.glade.h:4
+#: ../data/ui/developer/window_report_layout.glade.h:4
 msgid "_Show table title"
 msgstr "_Прикажи наслов табеле"
 
-#: ../ui/developer/window_report_layout.glade.h:5
+#: ../data/ui/developer/window_report_layout.glade.h:5
 msgid ""
 "When this is checked the table's title will be shown at the top of the "
 "report in addition to the report title."
@@ -4149,56 +4477,56 @@ msgstr ""
 "Када је ово изабрано наслов табеле ће бити приказан на врх извештаја као "
 "додатак наслову извештаја."
 
-#: ../ui/developer/window_report_layout.glade.h:6
+#: ../data/ui/developer/window_report_layout.glade.h:6
 msgid "_Report name:"
 msgstr "_Назив извештаја:"
 
-#: ../ui/developer/window_report_layout.glade.h:8
+#: ../data/ui/developer/window_report_layout.glade.h:8
 msgid "<b>Available Parts</b>"
 msgstr "<b>Доступни делови</b>"
 
 #. Translators: The Main part of the report (not the footer or header)
-#: ../ui/developer/window_report_layout.glade.h:11
+#: ../data/ui/developer/window_report_layout.glade.h:11
 msgid "Main"
 msgstr "Главно"
 
-#: ../ui/developer/window_report_layout.glade.h:13
+#: ../data/ui/developer/window_report_layout.glade.h:13
 msgid "<b>Parts</b>"
 msgstr "<b>Делови</b>"
 
-#: ../ui/developer/window_text_format.glade.h:1
+#: ../data/ui/developer/window_text_format.glade.h:1
 msgid "Text Format"
 msgstr "Облик текста"
 
-#: ../ui/developer/window_textobject.glade.h:3
+#: ../data/ui/developer/window_textobject.glade.h:3
 msgid "<b>Text:</b>"
 msgstr "<b>Текст:</b>"
 
-#: ../ui/developer/window_translations.glade.h:1
+#: ../data/ui/developer/window_translations.glade.h:1
 msgid "Translations"
 msgstr "Преводи"
 
-#: ../ui/developer/window_translations.glade.h:2
+#: ../data/ui/developer/window_translations.glade.h:2
 msgid "<b>Source Language:</b>"
 msgstr "<b>Изворни језик:</b>"
 
-#: ../ui/developer/window_translations.glade.h:3
+#: ../data/ui/developer/window_translations.glade.h:3
 msgid "English"
 msgstr "енглески"
 
-#: ../ui/developer/window_translations.glade.h:4
+#: ../data/ui/developer/window_translations.glade.h:4
 msgid "Identify Source"
 msgstr "Препознај извор"
 
-#: ../ui/developer/window_translations.glade.h:5
+#: ../data/ui/developer/window_translations.glade.h:5
 msgid "<b>Target Language:</b>"
 msgstr "<b>Циљни језик:</b>"
 
-#: ../ui/developer/window_translations.glade.h:8
+#: ../data/ui/developer/window_translations.glade.h:8
 msgid "Copy From Existing Translation"
 msgstr "Умножи из постојећег превода"
 
-#: ../ui/developer/window_translations.glade.h:9
+#: ../data/ui/developer/window_translations.glade.h:9
 msgid ""
 "Start a translation for this target locale by copying the strings from "
 "another target locale."
@@ -4206,14 +4534,34 @@ msgstr ""
 "Започните превођење за овај циљни језик тако што ћете умножити ниске из "
 "другог циљног језика."
 
-#: ../ui/developer/window_translations.glade.h:10
-msgid "<b>Translations</b>"
-msgstr "<b>Преводи</b>"
-
-#: ../ui/developer/window_users.glade.h:2
+#: ../data/ui/developer/window_users.glade.h:2
 msgid "<b>Group:</b>"
 msgstr "<b>Група:</b>"
 
-#: ../ui/developer/window_users.glade.h:3
+#: ../data/ui/developer/window_users.glade.h:3
 msgid "<b>Users</b>"
 msgstr "<b>Корисници</b>"
+
+#~ msgid "There was an error while restoring the backup."
+#~ msgstr "Дошло је до грешке приликом враћања резерве."
+
+#~ msgid "<b>Select Relationship</b>"
+#~ msgstr "<b>Изабери међуоднос</b>"
+
+#~ msgid "<b>Summary Field</b>"
+#~ msgstr "<b>Поље сажетка</b>"
+
+#~ msgid "<b>Group By</b>"
+#~ msgstr "<b>Групиши према</b>"
+
+#~ msgid "<b>User</b>"
+#~ msgstr "<b>Корисник</b>"
+
+#~ msgid "<b>Text Formatting</b>"
+#~ msgstr "<b>Обликовање текста</b>"
+
+#~ msgid "<b>Choices</b>"
+#~ msgstr "<b>Избори</b>"
+
+#~ msgid "<b>Translations</b>"
+#~ msgstr "<b>Преводи</b>"
