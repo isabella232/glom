@@ -1,14 +1,14 @@
 # Serbian translation for glom.
 # Copyright (C) 2013 glom's COPYRIGHT HOLDER
 # This file is distributed under the same license as the glom package.
-# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2013.
+# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2013—2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glom&k"
 "eywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-01-25 09:15+0000\n"
-"PO-Revision-Date: 2013-02-20 20:08+0200\n"
+"POT-Creation-Date: 2014-02-03 19:17+0000\n"
+"PO-Revision-Date: 2014-02-03 22:05+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -43,208 +43,208 @@ msgstr "Глом: Датотека не постоји."
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Глом: Путања датотеке је директоријум а не датотека."
 
-#: ../glom/appwindow.cc:148
+#: ../glom/appwindow.cc:150
 msgid "Glom: Generating Encryption Certificates"
 msgstr "Глом: Стварам уверења шифровања"
 
-#: ../glom/appwindow.cc:149
+#: ../glom/appwindow.cc:151
 msgid ""
 "Please wait while Glom prepares your system for publishing over the network."
 msgstr "Сачекајте док Глом не припреми ваш систем за објављивање на мрежи."
 
-#: ../glom/appwindow.cc:266 ../glom/bakery/appwindow_withdoc_gtk.cc:228
+#: ../glom/appwindow.cc:268 ../glom/bakery/appwindow_withdoc_gtk.cc:228
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:198
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:58
 msgid "_File"
 msgstr "_Датотека"
 
-#: ../glom/appwindow.cc:267 ../glom/bakery/appwindow_withdoc_gtk.cc:229
+#: ../glom/appwindow.cc:269 ../glom/bakery/appwindow_withdoc_gtk.cc:229
 msgid "_Recent Files"
 msgstr "_Скорашње датотеке"
 
-#: ../glom/appwindow.cc:275
+#: ../glom/appwindow.cc:277
 msgid "_Save as Example"
 msgstr "_Сачувај као пример"
 
-#: ../glom/appwindow.cc:282 ../glom/filechooser_export.cc:41
+#: ../glom/appwindow.cc:284 ../glom/filechooser_export.cc:41
 msgid "_Export"
 msgstr "_Извези"
 
-#: ../glom/appwindow.cc:286 ../ui/operator/dialog_import_csv.glade.h:2
+#: ../glom/appwindow.cc:288 ../ui/operator/dialog_import_csv.glade.h:2
 msgid "I_mport"
 msgstr "_Увези"
 
-#: ../glom/appwindow.cc:291
+#: ../glom/appwindow.cc:293
 msgid "S_hared on Network"
 msgstr "_Дељено на мрежи"
 
-#: ../glom/appwindow.cc:305
+#: ../glom/appwindow.cc:307
 msgid "_Standard"
 msgstr "_Стандард"
 
-#: ../glom/appwindow.cc:309
+#: ../glom/appwindow.cc:311
 msgid "_Edit Print Layouts"
 msgstr "_Уреди распореде штампања"
 
 #. "Tables" menu:
-#: ../glom/appwindow.cc:367
+#: ../glom/appwindow.cc:369
 msgid "_Tables"
 msgstr "_Табеле"
 
-#: ../glom/appwindow.cc:377
+#: ../glom/appwindow.cc:379
 msgid "_Edit Tables"
 msgstr "_Уреди табеле"
 
 #. "Reports" menu:
-#: ../glom/appwindow.cc:391
+#: ../glom/appwindow.cc:393
 msgid "_Reports"
 msgstr "_Извештаји"
 
-#: ../glom/appwindow.cc:394
+#: ../glom/appwindow.cc:396
 msgid "_Edit Reports"
 msgstr "_Уреди извештаје"
 
 #. We remember this action, so that it can be explicitly activated later.
-#: ../glom/appwindow.cc:402 ../glom/frame_glom.cc:124
+#: ../glom/appwindow.cc:404 ../glom/frame_glom.cc:124
 msgid "_Find"
 msgstr "_Нађи"
 
-#: ../glom/appwindow.cc:408
+#: ../glom/appwindow.cc:410
 msgctxt "Developer menu title"
 msgid "_Developer"
 msgstr "_Програмер"
 
-#: ../glom/appwindow.cc:414
+#: ../glom/appwindow.cc:416
 msgid "_Developer Mode"
 msgstr "_Развојни режим"
 
-#: ../glom/appwindow.cc:418
+#: ../glom/appwindow.cc:420
 msgid "_Operator Mode"
 msgstr "_Управљачки режим"
 
-#: ../glom/appwindow.cc:423
+#: ../glom/appwindow.cc:425
 msgid "_Database Preferences"
 msgstr "_Поставке базе података"
 
-#: ../glom/appwindow.cc:428
+#: ../glom/appwindow.cc:430
 msgid "_Fields"
 msgstr "_Поља"
 
-#: ../glom/appwindow.cc:433
+#: ../glom/appwindow.cc:435
 msgid "Relationships _Overview"
 msgstr "_Преглед међуодноса"
 
-#: ../glom/appwindow.cc:438
+#: ../glom/appwindow.cc:440
 msgid "_Relationships for this Table"
 msgstr "_Међуодноси за ову табелу"
 
-#: ../glom/appwindow.cc:443
+#: ../glom/appwindow.cc:445
 msgid "_Users"
 msgstr "_Корисници"
 
-#: ../glom/appwindow.cc:447
+#: ../glom/appwindow.cc:449
 msgid "_Print Layouts"
 msgstr "_Штампај распоред"
 
-#: ../glom/appwindow.cc:452
+#: ../glom/appwindow.cc:454
 msgid "R_eports"
 msgstr "_Извештаји"
 
-#: ../glom/appwindow.cc:457
+#: ../glom/appwindow.cc:459
 msgid "Script _Library"
 msgstr "Библиотека _скрипте"
 
-#: ../glom/appwindow.cc:462
+#: ../glom/appwindow.cc:464
 msgid "_Layout"
 msgstr "_Распоред"
 
-#: ../glom/appwindow.cc:467
+#: ../glom/appwindow.cc:469
 msgid "Test Tra_nslation"
 msgstr "Испробај _превод"
 
-#: ../glom/appwindow.cc:471
+#: ../glom/appwindow.cc:473
 msgid "_Translations"
 msgstr "_Преводи"
 
 #. "Active Platform" menu:
-#: ../glom/appwindow.cc:477
+#: ../glom/appwindow.cc:479
 msgid "_Active Platform"
 msgstr "_Радна платформа"
 
-#: ../glom/appwindow.cc:483
+#: ../glom/appwindow.cc:485
 msgid "_Normal"
 msgstr "_Обично"
 
-#: ../glom/appwindow.cc:483
+#: ../glom/appwindow.cc:485
 msgid "The layout to use for normal desktop environments."
 msgstr "Распоред за коришћење са обичним окружењима радне површи."
 
-#: ../glom/appwindow.cc:488
+#: ../glom/appwindow.cc:490
 msgid "_Maemo"
 msgstr "_Маемо"
 
-#: ../glom/appwindow.cc:488
+#: ../glom/appwindow.cc:490
 msgid "The layout to use for Maemo devices."
 msgstr "Распоред за коришћење са Маемо уређајима."
 
-#: ../glom/appwindow.cc:493
+#: ../glom/appwindow.cc:495
 msgid "_Export Backup"
 msgstr "_Извези резерву"
 
-#: ../glom/appwindow.cc:497
+#: ../glom/appwindow.cc:499
 msgid "_Restore Backup"
 msgstr "_Поврати резерву"
 
 #. TODO: Think of a better name for this menu item,
 #. though it mostly only exists because it is not quite ready to be on by default:
 #. Note to translators: Drag and Drop is part of the name, not a verb or action:
-#: ../glom/appwindow.cc:504
+#: ../glom/appwindow.cc:506
 msgid "_Drag and Drop Layout"
 msgstr "_Распоред превлачења и пуштања"
 
-#: ../glom/appwindow.cc:512
+#: ../glom/appwindow.cc:514
 msgctxt "Help menu title"
 msgid "_Help"
 msgstr "По_моћ"
 
-#: ../glom/appwindow.cc:516
+#: ../glom/appwindow.cc:518
 msgid "_Help"
 msgstr "По_моћ"
 
-#: ../glom/appwindow.cc:519
+#: ../glom/appwindow.cc:521
 msgid "_About"
 msgstr "_О програму"
 
-#: ../glom/appwindow.cc:519
+#: ../glom/appwindow.cc:521
 msgid "About the application"
 msgstr "О програму"
 
-#: ../glom/appwindow.cc:522
+#: ../glom/appwindow.cc:524
 msgid "_Contents"
 msgstr "_Садржај"
 
-#: ../glom/appwindow.cc:522
+#: ../glom/appwindow.cc:524
 msgid "Help with the application"
 msgstr "Упутство за коришћење програма"
 
-#: ../glom/appwindow.cc:627
+#: ../glom/appwindow.cc:629
 msgid "A Database GUI"
 msgstr "ГКС базе података"
 
-#: ../glom/appwindow.cc:629
+#: ../glom/appwindow.cc:631
 msgid "© 2000-2011 Murray Cumming, Openismus GmbH"
 msgstr "© 2000-2011 Murray Cumming, Openismus GmbH"
 
 #. TODO: Put this in the generic bakery code.
-#: ../glom/appwindow.cc:713 ../glom/appwindow.cc:722
+#: ../glom/appwindow.cc:715 ../glom/appwindow.cc:724
 msgid "Open Failed"
 msgstr "Није успело отварање"
 
-#: ../glom/appwindow.cc:714
+#: ../glom/appwindow.cc:716
 msgid "The document could not be found."
 msgstr "Не могу да пронађем документ."
 
-#: ../glom/appwindow.cc:723
+#: ../glom/appwindow.cc:725
 msgid ""
 "The document could not be opened because it was created or modified by a "
 "newer version of Glom."
@@ -254,13 +254,13 @@ msgstr ""
 
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
 #. Warn the user, and let him try again:
-#: ../glom/appwindow.cc:773 ../glom/frame_glom.cc:2075
-#: ../glom/frame_glom.cc:2146
+#: ../glom/appwindow.cc:781 ../glom/frame_glom.cc:2126
+#: ../glom/frame_glom.cc:2197
 msgid "Connection Failed"
 msgstr "Није успело повезивање"
 
-#: ../glom/appwindow.cc:773 ../glom/frame_glom.cc:2075
-#: ../glom/frame_glom.cc:2146
+#: ../glom/appwindow.cc:781 ../glom/frame_glom.cc:2126
+#: ../glom/frame_glom.cc:2197
 msgid ""
 "Glom could not connect to the database server. Maybe you entered an "
 "incorrect user name or password, or maybe the postgres database server is "
@@ -270,7 +270,7 @@ msgstr ""
 "неисправно корисничко име или лозинку, или можда није покренут постгрес "
 "сервер базе података."
 
-#: ../glom/appwindow.cc:942
+#: ../glom/appwindow.cc:950
 msgid ""
 "The file cannot be opened because this version of Glom does not support self-"
 "hosting of databases."
@@ -278,7 +278,7 @@ msgstr ""
 "Датотека не може бити отворена зато што ово издање Глома не подржава само-"
 "удомљавање база података."
 
-#: ../glom/appwindow.cc:947 ../glom/appwindow.cc:956
+#: ../glom/appwindow.cc:955 ../glom/appwindow.cc:964
 msgid ""
 "The file cannot be opened because this version of Glom does not support "
 "PostgreSQL databases."
@@ -286,7 +286,7 @@ msgstr ""
 "Датотека не може бити отворена зато што ово издање Глома не подржава "
 "ПостгреСКуЛ базе података."
 
-#: ../glom/appwindow.cc:964
+#: ../glom/appwindow.cc:972
 msgid ""
 "The file cannot be opened because this version of Glom does not support "
 "SQLite databases."
@@ -295,15 +295,15 @@ msgstr ""
 "базе података."
 
 #. Warn the user.
-#: ../glom/appwindow.cc:982
+#: ../glom/appwindow.cc:990
 msgid "File Uses Unsupported Database Backend"
 msgstr "Датотека користи неподржаног позадинца базе података"
 
-#: ../glom/appwindow.cc:1045
+#: ../glom/appwindow.cc:1053
 msgid "Creating From Example File"
 msgstr "Стварам из датотеке примера"
 
-#: ../glom/appwindow.cc:1046
+#: ../glom/appwindow.cc:1054
 msgid ""
 "To use this example file you must save an editable copy of the file. A new "
 "database will also be created on the server."
@@ -311,11 +311,11 @@ msgstr ""
 "Да користите ову датотеку примера морате да сачувате уредљив умножак "
 "датотеке. Нова база података ће такође бити направљена на серверу."
 
-#: ../glom/appwindow.cc:1050
+#: ../glom/appwindow.cc:1058
 msgid "Creating From Backup File"
 msgstr "Стварам из датотеке резерве"
 
-#: ../glom/appwindow.cc:1051
+#: ../glom/appwindow.cc:1059
 msgid ""
 "To use this backup file you must save an editable copy of the file. A new "
 "database will also be created on the server."
@@ -323,11 +323,11 @@ msgstr ""
 "Да користите ову датотеку резерве морате да сачувате уредљив умножак "
 "датотеке. Нова база података ће такође бити направљена на серверу."
 
-#: ../glom/appwindow.cc:1112
+#: ../glom/appwindow.cc:1120
 msgid "Opening Read-Only File."
 msgstr "Отварам датотеку само за читање."
 
-#: ../glom/appwindow.cc:1113
+#: ../glom/appwindow.cc:1121
 msgid ""
 "This file is read only, so you will not be able to enter Developer mode to "
 "make design changes."
@@ -335,16 +335,16 @@ msgstr ""
 "Ова датотека је само за читање, тако да нећете бити у могућности да "
 "покренете развојни режим да унесете измене у дизајну."
 
-#: ../glom/appwindow.cc:1116
+#: ../glom/appwindow.cc:1124
 msgid "Continue without Developer Mode"
 msgstr "Настави без развојног режима"
 
 #. The connection to the server is OK, but the database is not there yet.
-#: ../glom/appwindow.cc:1175
+#: ../glom/appwindow.cc:1183
 msgid "Database Not Found On Server"
 msgstr "База података није пронађена на серверу"
 
-#: ../glom/appwindow.cc:1175
+#: ../glom/appwindow.cc:1183
 msgid ""
 "The database could not be found on the server. Please consult your system "
 "administrator."
@@ -354,43 +354,43 @@ msgstr ""
 
 #. std::cerr might show some hints, but we don't want to confront the user with them:
 #. TODO: Actually complain about specific stuff such as missing data, because the user might really play with the file system.
-#: ../glom/appwindow.cc:1185
+#: ../glom/appwindow.cc:1193
 msgid "Problem Loading Document"
 msgstr "Грешка учитавања документа"
 
-#: ../glom/appwindow.cc:1185
+#: ../glom/appwindow.cc:1193
 msgid "Glom could not load the document."
 msgstr "Глом не може да учита документ."
 
-#: ../glom/appwindow.cc:1620
+#: ../glom/appwindow.cc:1628
 msgid "Creating Glom database from example file."
 msgstr "Стварам Гломову базу податка из датотеке примера."
 
-#: ../glom/appwindow.cc:1799
+#: ../glom/appwindow.cc:1807
 msgid "Creating Glom database from backup file."
 msgstr "Стварам Гломову базу податка из датотеке резерве."
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/appwindow.cc:2275 ../glom/bakery/appwindow_withdoc.cc:237
-#: ../glom/bakery/appwindow_withdoc.cc:288
+#: ../glom/appwindow.cc:2283 ../glom/bakery/appwindow_withdoc.cc:241
+#: ../glom/bakery/appwindow_withdoc.cc:292
 msgid "Save failed."
 msgstr "Није успело чување."
 
-#: ../glom/appwindow.cc:2275
+#: ../glom/appwindow.cc:2283
 msgid "There was an error while saving the example file."
 msgstr "Дошло је до грешке приликом чувања датотеке примера."
 
-#: ../glom/appwindow.cc:2316 ../glom/appwindow.cc:2321
+#: ../glom/appwindow.cc:2324 ../glom/appwindow.cc:2329
 #: ../glom/bakery/appwindow_withdoc_gtk.cc:425
 msgid "Save Document"
 msgstr "Сачувај документ"
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2408 ../glom/bakery/appwindow_withdoc_gtk.cc:473
+#: ../glom/appwindow.cc:2416 ../glom/bakery/appwindow_withdoc_gtk.cc:473
 msgid "Read-only File."
 msgstr "Датотека само за читање."
 
-#: ../glom/appwindow.cc:2408 ../glom/bakery/appwindow_withdoc_gtk.cc:473
+#: ../glom/appwindow.cc:2416 ../glom/bakery/appwindow_withdoc_gtk.cc:473
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -399,11 +399,11 @@ msgstr ""
 "приступа."
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2422 ../glom/bakery/appwindow_withdoc_gtk.cc:487
+#: ../glom/appwindow.cc:2430 ../glom/bakery/appwindow_withdoc_gtk.cc:487
 msgid "Read-only Directory."
 msgstr "Директоријум само за читање."
 
-#: ../glom/appwindow.cc:2422 ../glom/bakery/appwindow_withdoc_gtk.cc:487
+#: ../glom/appwindow.cc:2430 ../glom/bakery/appwindow_withdoc_gtk.cc:487
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -411,19 +411,19 @@ msgstr ""
 "Не можете да направите датотеку у овом директоријуму, зато што немате "
 "довољна права приступа."
 
-#: ../glom/appwindow.cc:2439
+#: ../glom/appwindow.cc:2447
 msgid "Database Title missing"
 msgstr "Недостаје наслов базе података"
 
-#: ../glom/appwindow.cc:2439
+#: ../glom/appwindow.cc:2447
 msgid "You must specify a title for the new database."
 msgstr "Морате да наведете наслов за нову базу података."
 
-#: ../glom/appwindow.cc:2473 ../glom/frame_glom.cc:1834
+#: ../glom/appwindow.cc:2481 ../glom/frame_glom.cc:1879
 msgid "Directory Already Exists"
 msgstr "Директоријум већ постоји"
 
-#: ../glom/appwindow.cc:2473 ../glom/frame_glom.cc:1835
+#: ../glom/appwindow.cc:2481 ../glom/frame_glom.cc:1880
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
@@ -434,51 +434,51 @@ msgstr ""
 "назив датотеке да користи нови директоријум."
 
 #. This actually creates the directory:
-#: ../glom/appwindow.cc:2612
+#: ../glom/appwindow.cc:2620
 msgid "Save Backup"
 msgstr "Сачувај резерву"
 
-#: ../glom/appwindow.cc:2628
+#: ../glom/appwindow.cc:2636
 msgid "Exporting backup"
 msgstr "Извозим резерву"
 
-#: ../glom/appwindow.cc:2634
+#: ../glom/appwindow.cc:2642
 msgid "Export Backup failed."
 msgstr "Извоз резерве није успео."
 
-#: ../glom/appwindow.cc:2634
+#: ../glom/appwindow.cc:2642
 msgid "There was an error while exporting the backup."
 msgstr "Дошло је до грешке приликом извоза резерве."
 
-#: ../glom/appwindow.cc:2640
+#: ../glom/appwindow.cc:2648
 msgid "Choose a backup file"
 msgstr "Изаберите датотеку резерве"
 
-#: ../glom/appwindow.cc:2645
+#: ../glom/appwindow.cc:2653
 msgid ".tar.gz Backup files"
 msgstr "„.tar.gz“ датотеке резерве"
 
-#: ../glom/appwindow.cc:2651
+#: ../glom/appwindow.cc:2659
 msgid "Restore"
 msgstr "Поврати"
 
-#: ../glom/appwindow.cc:2676
+#: ../glom/appwindow.cc:2684
 msgid "Restoring backup"
 msgstr "Враћам резерву"
 
-#: ../glom/appwindow.cc:2683
+#: ../glom/appwindow.cc:2691
 msgid "Restore Backup failed."
 msgstr "Враћање резерве није успело."
 
-#: ../glom/appwindow.cc:2683
+#: ../glom/appwindow.cc:2691
 msgid "There was an error while restoring the backup."
 msgstr "Дошло је до грешке приликом враћања резерве."
 
-#: ../glom/appwindow.cc:2780 ../glom/bakery/appwindow_withdoc_gtk.cc:346
+#: ../glom/appwindow.cc:2788 ../glom/bakery/appwindow_withdoc_gtk.cc:346
 msgid " (read-only)"
 msgstr " (само за читање)"
 
-#: ../glom/appwindow.cc:2828 ../ui/operator/window_main.glade.h:2
+#: ../glom/appwindow.cc:2836 ../ui/operator/window_main.glade.h:2
 msgid "Processing"
 msgstr "Обрађујем"
 
@@ -549,7 +549,7 @@ msgstr "Обриши запис"
 #: ../glom/box_reports.cc:96
 #: ../glom/mode_design/box_db_table_relationships.cc:45
 #: ../glom/mode_design/fields/box_db_table_definition.cc:54
-#: ../glom/mode_design/layout/dialog_choose_field.cc:57
+#: ../glom/mode_design/layout/dialog_choose_field.cc:60
 #: ../glom/mode_design/layout/dialog_choose_relationship.cc:55
 #: ../glom/mode_design/layout/dialog_layout_details.cc:103
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.cc:53
@@ -569,7 +569,7 @@ msgstr "Овај извештај већ постоји. Изаберите не
 #: ../glom/box_reports.cc:100
 #: ../glom/mode_design/box_db_table_relationships.cc:49
 #: ../glom/mode_design/fields/box_db_table_definition.cc:58
-#: ../glom/mode_design/layout/dialog_choose_field.cc:58
+#: ../glom/mode_design/layout/dialog_choose_field.cc:61
 #: ../glom/mode_design/layout/dialog_layout_details.cc:116
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc:50
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:100
@@ -612,32 +612,32 @@ msgstr "Нису пронађене сесије на месној мрежи."
 msgid "No templates available."
 msgstr "Нема доступних шаблона."
 
-#: ../glom/dialog_existing_or_new.cc:112
+#: ../glom/dialog_existing_or_new.cc:122
 msgid "Open a Document"
 msgstr "Отворите документ"
 
-#: ../glom/dialog_existing_or_new.cc:131
+#: ../glom/dialog_existing_or_new.cc:141
 msgid "Select File"
 msgstr "Изабери датотеку"
 
-#: ../glom/dialog_existing_or_new.cc:135
+#: ../glom/dialog_existing_or_new.cc:145
 msgid "Local Network"
 msgstr "Месна мрежа"
 
-#: ../glom/dialog_existing_or_new.cc:139
+#: ../glom/dialog_existing_or_new.cc:149
 msgid "Recently Opened"
 msgstr "Недавно отворени"
 
-#: ../glom/dialog_existing_or_new.cc:213
+#: ../glom/dialog_existing_or_new.cc:223
 msgid "New Empty Document"
 msgstr "Нови празан документ"
 
-#: ../glom/dialog_existing_or_new.cc:216
+#: ../glom/dialog_existing_or_new.cc:226
 msgid "New From Template"
 msgstr "Ново из шаблона"
 
 #. Translator hint: This is <Service Name> on <Host> (via Network Interface such as eth0).
-#: ../glom/dialog_existing_or_new.cc:742
+#: ../glom/dialog_existing_or_new.cc:752
 #, c-format
 msgid "%s on %s (via %s)"
 msgstr "%s на %s (путем %s)"
@@ -662,30 +662,30 @@ msgstr "Није изабрана табела"
 msgid "Quick _search:"
 msgstr "Брза _претрага:"
 
-#: ../glom/frame_glom.cc:138
+#: ../glom/frame_glom.cc:139
 msgid "Records:"
 msgstr "Записи:"
 
-#: ../glom/frame_glom.cc:141
+#: ../glom/frame_glom.cc:142
 msgid "Found:"
 msgstr "Нађох:"
 
 #. TODO: Obviously this document should have been deleted when the database-creation was cancelled.
 #. Note that "canceled" is the correct US spelling.
-#: ../glom/frame_glom.cc:326
+#: ../glom/frame_glom.cc:327
 msgid "No table"
 msgstr "Нема табеле"
 
-#: ../glom/frame_glom.cc:326
+#: ../glom/frame_glom.cc:327
 msgid "This database has no tables yet."
 msgstr "Ова база података још увек нема табеле."
 
 #. TODO: Obviously this could be possible but it would require a network protocol and some work:
-#: ../glom/frame_glom.cc:498
+#: ../glom/frame_glom.cc:502
 msgid "Developer mode not available."
 msgstr "Развојни режим није доступан."
 
-#: ../glom/frame_glom.cc:499
+#: ../glom/frame_glom.cc:503
 msgid ""
 "Developer mode is not available because the file was opened over the network "
 "from a running Glom. Only the original file may be edited."
@@ -693,11 +693,11 @@ msgstr ""
 "Развојни режим није доступан зато што је датотека отворена преко мреже из "
 "покренутог Глома. Само изворна датотека може бити уређивана."
 
-#: ../glom/frame_glom.cc:505
+#: ../glom/frame_glom.cc:509
 msgid "Developer mode not available"
 msgstr "Развојни режим није доступан"
 
-#: ../glom/frame_glom.cc:506
+#: ../glom/frame_glom.cc:510
 msgid ""
 "Developer mode is not available. Check that you have sufficient database "
 "access rights and that the glom file is not read-only."
@@ -705,11 +705,11 @@ msgstr ""
 "Развојни режим није доступан. Проверите да ли имате довољна права за приступ "
 "бази података и да датотека глома није само за читање."
 
-#: ../glom/frame_glom.cc:513
+#: ../glom/frame_glom.cc:517
 msgid "Saving in new document format"
 msgstr "Чувам у новом облику документа"
 
-#: ../glom/frame_glom.cc:514
+#: ../glom/frame_glom.cc:518
 msgid ""
 "The document was created by an earlier version of the application. Making "
 "changes to the document will mean that the document cannot be opened by some "
@@ -718,15 +718,15 @@ msgstr ""
 "Документ је направљен ранијим издањем програма. Уношење измена у документ ће "
 "значити да документ неће моћи да се отвори неким ранијим издањима програма."
 
-#: ../glom/frame_glom.cc:517
+#: ../glom/frame_glom.cc:521
 msgid "Continue"
 msgstr "Настави"
 
-#: ../glom/frame_glom.cc:566
+#: ../glom/frame_glom.cc:570
 msgid "Export Not Allowed."
 msgstr "Извоз није допуштен."
 
-#: ../glom/frame_glom.cc:566
+#: ../glom/frame_glom.cc:570
 msgid ""
 "You do not have permission to view the data in this table, so you may not "
 "export the data."
@@ -734,75 +734,75 @@ msgstr ""
 "Немате овлашћења да видите податке у овој табели, тако да не можете да "
 "извезете податке."
 
-#: ../glom/frame_glom.cc:597
+#: ../glom/frame_glom.cc:601
 msgid "Could Not Create File."
 msgstr "Не могу да направим датотеку."
 
-#: ../glom/frame_glom.cc:597
+#: ../glom/frame_glom.cc:601
 msgid "Glom could not create the specified file."
 msgstr "Глом не може да направи наведену датотеку."
 
-#: ../glom/frame_glom.cc:748
+#: ../glom/frame_glom.cc:752
 msgid "No Table"
 msgstr "Нема табеле"
 
-#: ../glom/frame_glom.cc:748
+#: ../glom/frame_glom.cc:752
 msgid "There is no table in to which data could be imported."
 msgstr "Не постоји табела у којој би подаци могли да буду увезени."
 
-#: ../glom/frame_glom.cc:752
+#: ../glom/frame_glom.cc:756
 msgid "Open CSV Document"
 msgstr "Отвори ЦСВ документ"
 
-#: ../glom/frame_glom.cc:756
+#: ../glom/frame_glom.cc:760
 msgid "CSV files"
 msgstr "ЦСВ датотеке"
 
-#: ../glom/frame_glom.cc:760
+#: ../glom/frame_glom.cc:764
 msgid "All files"
 msgstr "Све датотеке"
 
-#: ../glom/frame_glom.cc:835
+#: ../glom/frame_glom.cc:847
 msgid "Share on the network"
 msgstr "Дели на мрежи"
 
-#: ../glom/frame_glom.cc:836
+#: ../glom/frame_glom.cc:848
 msgid "This will allow other users on the network to use this database."
 msgstr ""
 "Ово ће омогућити другим корисницима на мрежи да користе ову базу података."
 
-#: ../glom/frame_glom.cc:839
+#: ../glom/frame_glom.cc:851
 msgid "_Share"
 msgstr "_Дели"
 
 #. TODO: Warn about connected users if possible.
-#: ../glom/frame_glom.cc:941
+#: ../glom/frame_glom.cc:953
 msgid "Stop sharing on the network"
 msgstr "Заустави дељење на мрежи"
 
-#: ../glom/frame_glom.cc:942
+#: ../glom/frame_glom.cc:954
 msgid "This will prevent other users on the network from using this database."
 msgstr "Ово ће спречити друге кориснике на мрежи да користе ову базу података."
 
-#: ../glom/frame_glom.cc:945
+#: ../glom/frame_glom.cc:957
 msgid "_Stop Sharing"
 msgstr "_Заустави дељење"
 
-#: ../glom/frame_glom.cc:994 ../glom/frame_glom.cc:2132
+#: ../glom/frame_glom.cc:1006 ../glom/frame_glom.cc:2183
 msgid "Stopping Database Server"
 msgstr "Заустављам сервер базе података"
 
 #. Do startup, such as starting the self-hosting database server
-#: ../glom/frame_glom.cc:997 ../glom/frame_glom.cc:2020
-#: ../glom/frame_glom.cc:2178
+#: ../glom/frame_glom.cc:1009 ../glom/frame_glom.cc:2071
+#: ../glom/frame_glom.cc:2229
 msgid "Starting Database Server"
 msgstr "Покрећем сервер базе података"
 
-#: ../glom/frame_glom.cc:1152
+#: ../glom/frame_glom.cc:1164
 msgid "Table Exists Already"
 msgstr "Табела већ постоји"
 
-#: ../glom/frame_glom.cc:1152
+#: ../glom/frame_glom.cc:1164
 msgid ""
 "A table with this name already exists in the database. Please choose a "
 "different table name."
@@ -810,11 +810,11 @@ msgstr ""
 "Табела са овим називом већ постоји у бази података. Молим изаберите други "
 "назив за табелу."
 
-#: ../glom/frame_glom.cc:1156
+#: ../glom/frame_glom.cc:1168
 msgid "Relationship Exists Already"
 msgstr "Међуоднос већ постоји"
 
-#: ../glom/frame_glom.cc:1156
+#: ../glom/frame_glom.cc:1168
 msgid ""
 "A relationship with this name already exists for this table. Please choose a "
 "different relationship name."
@@ -822,53 +822,53 @@ msgstr ""
 "Међуоднос са овим називом већ постоји за ову табелу. Молим изаберите други "
 "назив за међуоднос."
 
-#: ../glom/frame_glom.cc:1160
+#: ../glom/frame_glom.cc:1172
 msgid "More information needed"
 msgstr "Потребно је још података"
 
-#: ../glom/frame_glom.cc:1160
+#: ../glom/frame_glom.cc:1172
 msgid "You must specify a field, a table name, and a relationship name."
 msgstr "Морате да наведете поље, назив табеле и назив међуодноса."
 
-#: ../glom/frame_glom.cc:1214
+#: ../glom/frame_glom.cc:1226
 msgid "Related Table Created"
 msgstr "Односна табела је направљена"
 
-#: ../glom/frame_glom.cc:1214
+#: ../glom/frame_glom.cc:1226
 msgid "The new related table has been created."
 msgstr "Нова односна табела је направљена."
 
 #. namespace Glom
-#: ../glom/frame_glom.cc:1243 ../ui/operator/box_navigation_tables.glade.h:1
+#: ../glom/frame_glom.cc:1255 ../ui/operator/box_navigation_tables.glade.h:1
 msgid "Edit Tables"
 msgstr "Уреди табеле"
 
-#: ../glom/frame_glom.cc:1338
+#: ../glom/frame_glom.cc:1350
 msgid ""
 "You have not entered any find criteria. Try entering information in the "
 "fields."
 msgstr ""
 "Нисте унели никакво мерило претраге. Покушајте да унесете податке у поља."
 
-#: ../glom/frame_glom.cc:1340
+#: ../glom/frame_glom.cc:1352
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:108
 msgid "No Find Criteria"
 msgstr "Нема мерила претраге"
 
-#: ../glom/frame_glom.cc:1692 ../glom/onlineglom_strings.cc:33
+#: ../glom/frame_glom.cc:1716 ../glom/onlineglom_strings.cc:33
 #: ../ui/developer/box_reports.glade.h:1
 msgid "Reports"
 msgstr "Извештаји"
 
-#: ../glom/frame_glom.cc:1723 ../ui/developer/box_print_layouts.glade.h:1
+#: ../glom/frame_glom.cc:1759 ../ui/developer/box_print_layouts.glade.h:1
 msgid "Print Layouts"
 msgstr "Штампај распоред"
 
-#: ../glom/frame_glom.cc:1839
+#: ../glom/frame_glom.cc:1884
 msgid "Could Not Create Directory"
 msgstr "Не могу да направим директоријум"
 
-#: ../glom/frame_glom.cc:1840
+#: ../glom/frame_glom.cc:1885
 msgid ""
 "There was an error when attempting to create the directory for the new "
 "database files."
@@ -876,20 +876,20 @@ msgstr ""
 "Дошло је до грешке при покушају стварања директоријума за нове датотеке базе "
 "података."
 
-#: ../glom/frame_glom.cc:1844
+#: ../glom/frame_glom.cc:1889
 msgid "Could Not Start Database Server"
 msgstr "Не могу да покренем сервер базе података"
 
-#: ../glom/frame_glom.cc:1845
+#: ../glom/frame_glom.cc:1890
 msgid "There was an error when attempting to start the database server."
 msgstr "Дошло је до грешке при покушају покретања сервера базе података."
 
-#: ../glom/frame_glom.cc:1952
+#: ../glom/frame_glom.cc:2003
 msgid "Initializing Database Data"
 msgstr "Покрећем податке базе података"
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2492
+#: ../glom/frame_glom.cc:2555
 msgid "All"
 msgstr "Све"
 
@@ -948,7 +948,7 @@ msgstr "Назад на списак"
 
 #. Translators: This is a noun. It is a notebook tab title.
 #. Details column:
-#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1373
+#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1429
 #: ../glom/mode_data/notebook_data.cc:67
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:215
 #: ../glom/mode_find/notebook_find.cc:39
@@ -968,7 +968,6 @@ msgid "Login"
 msgstr "Пријави ме"
 
 #: ../glom/onlineglom_strings.cc:36
-#| msgid "Enter the PostgreSQL username and password."
 msgid "Enter the username and password."
 msgstr "Унесите корисничко име и лозинку."
 
@@ -1002,6 +1001,18 @@ msgstr ""
 "услужен путем ХТТПС-а, који је потребан за безбедно пријављивање. Обратите "
 "се администратору система."
 
+#. / Translators: This is the title of a button used to register a new user.
+#: ../glom/onlineglom_strings.cc:45
+#| msgid "Western"
+msgid "Register"
+msgstr "Региструј"
+
+#. / Translators: This is the title of a button used to reset a user's password.
+#: ../glom/onlineglom_strings.cc:48
+#| msgid "Password"
+msgid "Forgot Password"
+msgstr "Заборави лозинку"
+
 #: ../glom/bakery/appwindow_withdoc_gtk.cc:284
 #: ../ui/developer/window_field_definition_edit.glade.h:13
 msgid "_Edit"
@@ -1011,18 +1022,18 @@ msgstr "_Уреди"
 msgid "Open Document"
 msgstr "Отвори документ"
 
-#: ../glom/bakery/appwindow_withdoc.cc:237
-#: ../glom/bakery/appwindow_withdoc.cc:288
+#: ../glom/bakery/appwindow_withdoc.cc:241
+#: ../glom/bakery/appwindow_withdoc.cc:292
 msgid ""
 "There was an error while saving the file. Your changes have not been saved."
 msgstr ""
 "Дошло је до грешке за време чувања датотеке. Ваше измене нису сачуване."
 
-#: ../glom/bakery/appwindow_withdoc.cc:493
+#: ../glom/bakery/appwindow_withdoc.cc:497
 msgid "Open Failed."
 msgstr "Отварање није успело."
 
-#: ../glom/bakery/appwindow_withdoc.cc:493
+#: ../glom/bakery/appwindow_withdoc.cc:497
 msgid "The document could not be opened."
 msgstr "Документ не може бити отворен."
 
@@ -1030,7 +1041,9 @@ msgstr "Документ не може бити отворен."
 msgid "This document has unsaved changes. Would you like to save the document?"
 msgstr "Овај документ има несачуваних измена. Да ли желите да га сачувате?"
 
-#: ../glom/bakery/dialog_offersave.cc:35
+#. TODO: Can we use filename_display_basename() with a URI?
+#. No, almost certainly not. murrayc.
+#: ../glom/bakery/dialog_offersave.cc:38
 msgid ""
 "Document:\n"
 "%1"
@@ -1038,11 +1051,11 @@ msgstr ""
 "Документ:\n"
 "%1"
 
-#: ../glom/bakery/dialog_offersave.cc:47
+#: ../glom/bakery/dialog_offersave.cc:50
 msgid "Close without Saving"
 msgstr "Затвори без чувања"
 
-#: ../glom/bakery/dialog_offersave.cc:53
+#: ../glom/bakery/dialog_offersave.cc:56
 msgid "Discard"
 msgstr "Одбаци"
 
@@ -1335,8 +1348,8 @@ msgid ""
 "translator. Please file a bug - see http://www.glom.org"
 msgstr ""
 "ГРЕШКА: "
-"„провера_исправности_текста_представљања_датума_користи_4_цифре_за_годину"
-"()“: Провера исправности није успела: Изгледа да Глом не користи 4 цифре за "
+"„провера_исправности_текста_представљања_датума_користи_4_цифре_за_годину()“: "
+"Провера исправности није успела: Изгледа да Глом не користи 4 цифре за "
 "приказ године у тексту представљања датума, у овом локалитету. Пребацујем се "
 "на задато „дд/мм/гггг“ мада ово може бити неисправно за ваш локалитет. На "
 "ово би преводиоци требали да обрате пажњу. Молим попуните извештај о грешци "
@@ -1384,20 +1397,12 @@ msgstr "Бележница"
 msgid "Placeholder"
 msgstr "Местодржач"
 
-#. TODO: "Portal" probably shouldn't appear in the UI.
-#. We should use "Related Records instead.
-#. Translators: This is the name of a UI element (a layout part name).
-#. It means a list of related records.
-#: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:88
-msgid "Portal"
-msgstr "Портал"
-
 #. TODO: This prevents "" as a real title.
 #. parent table - not relevant
 #. TODO: This prevents "" as a real title.
 #. Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
-#: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:424
-#: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:433
+#: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:414
+#: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:423
 #: ../glom/mode_data/box_data_portal.cc:116
 #: ../glom/mode_data/box_data_portal.cc:128
 msgid "Undefined Table"
@@ -1503,52 +1508,52 @@ msgid "Database Title"
 msgstr "Назив базе података"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:260
-#: ../glom/mode_design/translation/window_translations.cc:217
+#: ../glom/mode_design/translation/window_translations.cc:238
 msgid "Unknown"
 msgstr "Непознато"
 
-#: ../glom/libglom/document/document.cc:520
-#: ../glom/libglom/document/document.cc:538
+#: ../glom/libglom/document/document.cc:516
+#: ../glom/libglom/document/document.cc:534
 msgid "System Preferences"
 msgstr "Поставке система"
 
-#: ../glom/libglom/document/document.cc:551
+#: ../glom/libglom/document/document.cc:547
 msgid "System Name"
 msgstr "Назив система"
 
-#: ../glom/libglom/document/document.cc:557
+#: ../glom/libglom/document/document.cc:553
 msgid "Organisation Name"
 msgstr "Назив удружења"
 
-#: ../glom/libglom/document/document.cc:563
+#: ../glom/libglom/document/document.cc:559
 msgid "Organisation Logo"
 msgstr "Логотип удружења"
 
-#: ../glom/libglom/document/document.cc:569
+#: ../glom/libglom/document/document.cc:565
 msgid "Street"
 msgstr "Улица"
 
-#: ../glom/libglom/document/document.cc:575
+#: ../glom/libglom/document/document.cc:571
 msgid "Street (line 2)"
 msgstr "Улица (ред 2)"
 
-#: ../glom/libglom/document/document.cc:581
+#: ../glom/libglom/document/document.cc:577
 msgid "City"
 msgstr "Град"
 
-#: ../glom/libglom/document/document.cc:587
+#: ../glom/libglom/document/document.cc:583
 msgid "State"
 msgstr "Република"
 
-#: ../glom/libglom/document/document.cc:593
+#: ../glom/libglom/document/document.cc:589
 msgid "Country"
 msgstr "Држава"
 
-#: ../glom/libglom/document/document.cc:599
+#: ../glom/libglom/document/document.cc:595
 msgid "Zip Code"
 msgstr "Поштански број"
 
-#: ../glom/libglom/document/document.cc:1367
+#: ../glom/libglom/document/document.cc:1423
 msgid "Overview"
 msgstr "Преглед"
 
@@ -1641,7 +1646,6 @@ msgid "The username for the PostgreSQL server."
 msgstr "Корисничко име ПостгреСКуЛ сервера."
 
 #: ../glom/glom_create_from_example.cc:121 ../glom/glom_test_connection.cc:100
-#| msgid "Install PostgreSQL"
 msgid "Use MySQL instead of PostgreSQL."
 msgstr "Користи МајСКуЛ уместо ПостгреСКуЛ-а."
 
@@ -1654,7 +1658,6 @@ msgid "Glom: The output path is not a directory."
 msgstr "Глом: Излазна путања није директоријум."
 
 #: ../glom/glom_create_from_example.cc:458
-#| msgid "Please enter the PostgreSQL server's password for the user %1: "
 msgid "Please enter the database server's password for the user %1: "
 msgstr "Молим унесите лозинку сервера базе података за корисника %1: "
 
@@ -1788,7 +1791,7 @@ msgstr "Грешка: Не могу да се повежем на наведен
 msgid "Successful connection."
 msgstr "Повезивање је успело."
 
-#: ../glom/main.cc:197
+#: ../glom/main.cc:199
 msgid ""
 "You seem to be running Glom as a user with administrator privileges. Glom "
 "may not be run with such privileges for security reasons.\n"
@@ -1799,7 +1802,7 @@ msgstr ""
 "Молим пријавите се на систем као обичан корисник."
 
 #. Warn the user:
-#: ../glom/main.cc:211
+#: ../glom/main.cc:213
 msgid ""
 "You seem to be running Glom as root. Glom may not be run as root.\n"
 "Please login to your system as a normal user."
@@ -1808,25 +1811,24 @@ msgstr ""
 "администратор.\n"
 "Молим пријавите се на систем као обичан корисник."
 
-#: ../glom/main.cc:217
+#: ../glom/main.cc:222
 msgid "Running As Root"
 msgstr "Радим као администратор"
 
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
-#. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Unlike for PostgreSQL, this warning is only shown if MySQL was specified in the build.
 #. Show message to the user about the broken installation:
-#: ../glom/main.cc:260 ../glom/main.cc:273 ../glom/main.cc:311
-#: ../glom/main.cc:324 ../glom/main.cc:485
+#: ../glom/main.cc:265 ../glom/main.cc:283 ../glom/main.cc:321
+#: ../glom/main.cc:334 ../glom/main.cc:518
 msgid "Incomplete Glom Installation"
 msgstr "Непотпуна инсталација Глома"
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:261
+#: ../glom/main.cc:266
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -1840,13 +1842,12 @@ msgstr ""
 "\n"
 "Сада можете да инсталирате ПостгреСКуЛ да довршите инсталацију Глома."
 
-#: ../glom/main.cc:263
+#: ../glom/main.cc:268
 msgid "Install PostgreSQL"
 msgstr "Инсталирај ПостгреСКуЛ"
 
-#. use_markup
-#. modal
-#: ../glom/main.cc:274
+#. Show message to the user about the broken installation:
+#: ../glom/main.cc:278
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -1864,7 +1865,7 @@ msgstr ""
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:312
+#: ../glom/main.cc:322
 msgid ""
 "Your installation of Glom is not complete, because MySQL is not available on "
 "your system. MySQL is needed for self-hosting of some Glom databases.\n"
@@ -1876,13 +1877,13 @@ msgstr ""
 "\n"
 "Сада можете да инсталирате МајСКуЛ да довршите инсталацију Глома."
 
-#: ../glom/main.cc:314
+#: ../glom/main.cc:324
 msgid "Install MySQL"
 msgstr "Инсталирај МајСКуЛ"
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:325
+#: ../glom/main.cc:335
 msgid ""
 "Your installation of Glom is not complete, because MySQL is not available on "
 "your system. MySQL is needed for self-hosting of some Glom databases.\n"
@@ -1898,7 +1899,7 @@ msgstr ""
 "да би могла бити исправљена."
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:341
+#: ../glom/main.cc:351
 msgid ""
 "Your installation of Glom is not complete, because the Glom Python module is "
 "not available on your system.\n"
@@ -1912,12 +1913,12 @@ msgstr ""
 "Молим пријавите ову грешку вашем продавцу, или администратору вашег система "
 "да би могла бити исправљена."
 
-#: ../glom/main.cc:343
+#: ../glom/main.cc:356
 msgid "Glom Python Module Not Installed"
 msgstr "Гломов модул Питона није инстлиран"
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:356
+#: ../glom/main.cc:369
 msgid ""
 "Your installation of Glom is not complete, because the gi.repository Python "
 "module is not available on your system.\n"
@@ -1931,12 +1932,12 @@ msgstr ""
 "Молим пријавите ову грешку вашем продавцу, или администратору вашег система "
 "да би могла бити исправљена."
 
-#: ../glom/main.cc:358
+#: ../glom/main.cc:374
 msgid "gi.repository Python Module Not Installed"
 msgstr "Питонов „gi.repository“ модул није инсталиран"
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:371
+#: ../glom/main.cc:387
 msgid ""
 "Your installation of Glom is not complete, because the gi.repository.Gda "
 "python module is not available on your system.\n"
@@ -1950,12 +1951,12 @@ msgstr ""
 "Молим пријавите ову грешку вашем продавцу, или администратору вашег система "
 "да би могла бити исправљена."
 
-#: ../glom/main.cc:373
+#: ../glom/main.cc:392
 msgid "gi.repository.Gda Python Module Not Installed"
 msgstr "Питонов „gi.repository.Gda“ модул није инстлиран"
 
 #. The Postgres provider was not found, so warn the user:
-#: ../glom/main.cc:483
+#: ../glom/main.cc:513
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda "
 "provider is not available on your system. This provider is needed to access "
@@ -2366,7 +2367,7 @@ msgstr ""
 "Прарачун није успео уз ову грешку:\n"
 "%s"
 
-#: ../glom/mode_design/fields/dialog_fielddefinition.cc:159
+#: ../glom/mode_design/fields/dialog_fielddefinition.cc:161
 msgid "Default Value"
 msgstr "Основна вредност"
 
@@ -2388,8 +2389,8 @@ msgstr " Путем: %1::%2"
 msgid " Via: %1"
 msgstr " Путем: %1"
 
-#: ../glom/mode_design/layout/dialog_layout_calendar_related.cc:239
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:294
+#: ../glom/mode_design/layout/dialog_layout_calendar_related.cc:249
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:313
 msgid "None: No visible tables are specified by the fields."
 msgstr "Ништа: Видљиве табеле нису наведене пољима."
 
@@ -2447,11 +2448,11 @@ msgstr "(Бележница)"
 msgid "Fields"
 msgstr "Поља"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:406
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:425
 msgid "Invalid Relationship"
 msgstr "Неисправан међуоднос"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:407
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:426
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship does not specify a field in the related table."
@@ -2459,11 +2460,11 @@ msgstr ""
 "Међуоднос не може бити коришћен за приказ односних записа зато што међуоднос "
 "не наводи поље у односној табели."
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:413
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:432
 msgid "Relationship Uses a Related Primary Key"
 msgstr "Међуоднос користи односни примарни ључ"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:414
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:433
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship uses a primary key field in the related table, which must "
@@ -2475,11 +2476,11 @@ msgstr ""
 "јединствене вредности. Ово ће спречити међуоднос да не наведе вишеструко "
 "односне записе."
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:420
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:439
 msgid "Relationship Uses a Related Unique Field"
 msgstr "Међуоднос користи односно јединствено поље"
 
-#: ../glom/mode_design/layout/dialog_layout_list_related.cc:421
+#: ../glom/mode_design/layout/dialog_layout_list_related.cc:440
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship uses a unique-values field in the related table. This would "
@@ -2543,7 +2544,7 @@ msgid "Formatting"
 msgstr "Обликовање"
 
 #. Give it access to the document.
-#: ../glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc:161
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc:163
 msgid "Group By - Secondary Fields"
 msgstr "Групиши према — секундарним пољима"
 
@@ -2958,23 +2959,23 @@ msgid "Item"
 msgstr "Ставка"
 
 #. Show the file-chooser dialog, to select an output .po file:
-#: ../glom/mode_design/translation/window_translations.cc:332
-#: ../glom/mode_design/translation/window_translations.cc:372
+#: ../glom/mode_design/translation/window_translations.cc:353
+#: ../glom/mode_design/translation/window_translations.cc:393
 msgid "Choose .po File Name"
 msgstr "Изабери назив .по датотеке"
 
-#: ../glom/mode_design/translation/window_translations.cc:338
-#: ../glom/mode_design/translation/window_translations.cc:377
+#: ../glom/mode_design/translation/window_translations.cc:359
+#: ../glom/mode_design/translation/window_translations.cc:398
 msgid "Po files"
 msgstr "По датотеке"
 
-#: ../glom/mode_design/translation/window_translations.cc:343
+#: ../glom/mode_design/translation/window_translations.cc:364
 #: ../ui/developer/window_translations.glade.h:7
 msgid "Export"
 msgstr "Извези"
 
 #. Note to translators: "Import" here is an action verb - it's a button.
-#: ../glom/mode_design/translation/window_translations.cc:384
+#: ../glom/mode_design/translation/window_translations.cc:405
 #: ../ui/developer/window_translations.glade.h:6
 msgid "Import"
 msgstr "Увези"
@@ -3056,7 +3057,7 @@ msgstr ""
 "односни запис, зато што међуодноси користе јединствени кључ."
 
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:90
-#: ../glom/utility_widgets/imageglom.cc:774
+#: ../glom/utility_widgets/imageglom.cc:772
 #: ../ui/developer/dialog_choose_relationship.glade.h:4
 #: ../ui/developer/dialog_field_summary.glade.h:3
 #: ../ui/developer/dialog_group_by.glade.h:3
@@ -3172,23 +3173,23 @@ msgstr ""
 "Направите базу података на спољном серверу МајСКуЛ базе података, који ће "
 "бити наведен у следећем кораку."
 
-#: ../glom/utility_widgets/imageglom.cc:659
+#: ../glom/utility_widgets/imageglom.cc:657
 msgid "Images"
 msgstr "Слике"
 
-#: ../glom/utility_widgets/imageglom.cc:680
+#: ../glom/utility_widgets/imageglom.cc:678
 msgid "Save Image"
 msgstr "Сачувај слику"
 
-#: ../glom/utility_widgets/imageglom.cc:767
+#: ../glom/utility_widgets/imageglom.cc:765
 msgid "Choose Image"
 msgstr "Изабери слику"
 
-#: ../glom/utility_widgets/imageglom.cc:929
+#: ../glom/utility_widgets/imageglom.cc:927
 msgid "Open With"
 msgstr "Отвори помоћу"
 
-#: ../glom/utility_widgets/imageglom.cc:931
+#: ../glom/utility_widgets/imageglom.cc:929
 msgid "Choose File"
 msgstr "Изабери датотеку"
 
@@ -4400,3 +4401,6 @@ msgstr "<b>Група:</b>"
 #: ../ui/developer/window_users.glade.h:3
 msgid "<b>Users</b>"
 msgstr "<b>Корисници</b>"
+
+#~ msgid "Portal"
+#~ msgstr "Портал"
