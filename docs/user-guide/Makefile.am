@@ -25,4 +25,4 @@ HELP_MEDIA = \
 	figures/glom_design_reports_group_by.png \
 	figures/glom_report_result.png
 
-HELP_LINGUAS = cs de en_GB es fr oc sl sv
+HELP_LINGUAS = cs de el en_GB es fr oc sl sv

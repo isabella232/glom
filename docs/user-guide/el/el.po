@@ -1,0 +1,2250 @@
+# Greek translation for glom.
+# Copyright (C) 2014 glom's COPYRIGHT HOLDER
+# This file is distributed under the same license as the glom package.
+# Dimitris Spingos <dmtrs32@gmail.com>, 2014.
+# Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>, 2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: glom master\n"
+"POT-Creation-Date: 2014-02-18 06:59+0000\n"
+"PO-Revision-Date: 2014-02-18 09:35+0300\n"
+"Last-Translator: Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>\n"
+"Language-Team: team@lists.gnome.gr\n"
+"Language: el\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.0\n"
+
+#. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
+msgctxt "_"
+msgid "translator-credits"
+msgstr ""
+"Ελληνική μεταφραστική ομάδα του GNOME\n"
+" Δημήτρης Σπίγγος <dmtrs32@gmail.com>\n"
+"Για περισσότερα δείτε: http://gnome.gr"
+
+#. (itstool) path: imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:181
+msgctxt "_"
+msgid ""
+"external ref='figures/start_open.png' md5='adac27f11f2324c3da2349f72d554994'"
+msgstr ""
+"external ref='figures/start_open.png' md5='adac27f11f2324c3da2349f72d554994'"
+
+#. (itstool) path: imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:195
+msgctxt "_"
+msgid ""
+"external ref='figures/start_create.png' "
+"md5='f1e4c22fd6811e4ba908e290e76f0474'"
+msgstr ""
+"external ref='figures/start_create.png' "
+"md5='f1e4c22fd6811e4ba908e290e76f0474'"
+
+#. (itstool) path: imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:226
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_tables.png' md5='a61ac5516314b38c6c7a3f3fd534427f'"
+msgstr ""
+"external ref='figures/glom_tables.png' md5='a61ac5516314b38c6c7a3f3fd534427f'"
+
+#. (itstool) path: imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:252
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_data_list.png' "
+"md5='3b7469ee1de77081b435db5ac2d48953'"
+msgstr ""
+"external ref='figures/glom_data_list.png' "
+"md5='3b7469ee1de77081b435db5ac2d48953'"
+
+#. (itstool) path: imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:275
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_data_details.png' "
+"md5='455bde435350fd53401213dff235bfb3'"
+msgstr ""
+"external ref='figures/glom_data_details.png' "
+"md5='455bde435350fd53401213dff235bfb3'"
+
+#. (itstool) path: imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:305
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_report_result.png' "
+"md5='2b752779eb0ed68724d094f6e1fef699'"
+msgstr ""
+"external ref='figures/glom_report_result.png' "
+"md5='2b752779eb0ed68724d094f6e1fef699'"
+
+#. (itstool) path: imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:343
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_fields.png' "
+"md5='39a13053db33b9c45bc1f61a0f31a199'"
+msgstr ""
+"external ref='figures/glom_design_fields.png' "
+"md5='39a13053db33b9c45bc1f61a0f31a199'"
+
+#. (itstool) path: imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:393
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_layout_list.png' "
+"md5='213888ef5cd3037b2fa61155b4fe5136'"
+msgstr ""
+"external ref='figures/glom_design_layout_list.png' "
+"md5='213888ef5cd3037b2fa61155b4fe5136'"
+
+#. (itstool) path: imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:412
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_layout_details.png' "
+"md5='6f1d78f90d6ec0ea338014d2ac697a90'"
+msgstr ""
+"external ref='figures/glom_design_layout_details.png' "
+"md5='6f1d78f90d6ec0ea338014d2ac697a90'"
+
+#. (itstool) path: imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:458
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_translations.png' "
+"md5='92b8e4905d0b85ef7f7d248420942a97'"
+msgstr ""
+"external ref='figures/glom_design_translations.png' "
+"md5='92b8e4905d0b85ef7f7d248420942a97'"
+
+#. (itstool) path: imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:485
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_reports.png' "
+"md5='697eb7cc6baebae8b374e474b4fa0899'"
+msgstr ""
+"external ref='figures/glom_design_reports.png' "
+"md5='697eb7cc6baebae8b374e474b4fa0899'"
+
+#. (itstool) path: imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:517
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_reports_details.png' "
+"md5='00ac05c3515a4db2175a47047ec3b98e'"
+msgstr ""
+"external ref='figures/glom_design_reports_details.png' "
+"md5='00ac05c3515a4db2175a47047ec3b98e'"
+
+#. (itstool) path: imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:534
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_reports_group_by.png' "
+"md5='21168c2a89f9febf6905a59c24a3d6de'"
+msgstr ""
+"external ref='figures/glom_design_reports_group_by.png' "
+"md5='21168c2a89f9febf6905a59c24a3d6de'"
+
+#. (itstool) path: imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:550
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_reports_vertical_group.png' "
+"md5='001b3021da2dc0de68358b0b41215afb'"
+msgstr ""
+"external ref='figures/glom_design_reports_vertical_group.png' "
+"md5='001b3021da2dc0de68358b0b41215afb'"
+
+#. (itstool) path: imagedata
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/index.docbook:766
+msgctxt "_"
+msgid ""
+"external ref='figures/glom_design_fields_dialog_calculated.png' "
+"md5='21b9fc570ff40883d1d283d960e45767'"
+msgstr ""
+"external ref='figures/glom_design_fields_dialog_calculated.png' "
+"md5='21b9fc570ff40883d1d283d960e45767'"
+
+#. (itstool) path: articleinfo/title
+#: C/index.docbook:28
+msgid "Glom User Guide V0.2"
+msgstr "Οδηγός χρήστη Glom V0.2"
+
+#. (itstool) path: articleinfo/subtitle
+#: C/index.docbook:29
+msgid "for Glom v1.6"
+msgstr "για το Glom v1.6"
+
+#. (itstool) path: articleinfo/copyright
+#: C/index.docbook:31
+msgid "<year>2004</year> <holder>Murray Cumming</holder>"
+msgstr "<year>2004</year> <holder>Murray Cumming</holder>"
+
+#. (itstool) path: publisher/publishername
+#: C/index.docbook:47
+msgid "Glom Development Team"
+msgstr "Ομάδα ανάπτυξης Glom"
+
+#. (itstool) path: legalnotice/para
+#: C/index.docbook:2
+msgid ""
+"Permission is granted to copy, distribute and/or modify this document under "
+"the terms of the GNU Free Documentation License (GFDL), Version 1.1 or any "
+"later version published by the Free Software Foundation with no Invariant "
+"Sections, no Front-Cover Texts, and no Back-Cover Texts. You can find a copy "
+"of the GFDL at this <ulink type=\"help\" url=\"ghelp:fdl\">link</ulink> or "
+"in the file COPYING-DOCS distributed with this manual."
+msgstr ""
+"Δίνεται άδεια για αντιγραφή, διανομή και/ή τροποποίηση του εγγράφου υπό τους "
+"όρους της Ελεύθερης Άδειας Τεκμηρίωσης GNU (GFDL), Έκδοση 1.1 ή "
+"μεταγενέστερη εκδιδόμενη από το Ίδρυμα Ελεύθερου Λογισμικού χωρίς Σταθερά "
+"Εδάφια, χωρίς Εξώφυλλα Κειμένου, και χωρίς Οπισθόφυλλα Κειμένου. Μπορείτε να "
+"βρείτε ένα αντίγραφο της GFDL σε αυτόν τον <ulink type=\"help\" url=\"ghelp:"
+"fdl\">σύνδεσμο</ulink> ή στο αρχείο COPYING-DOCS που διανεμήθηκε με αυτόν "
+"τον οδηγό."
+
+#. (itstool) path: legalnotice/para
+#: C/index.docbook:12 C/legal.xml:12
+msgid ""
+"This manual is part of a collection of GNOME manuals distributed under the "
+"GFDL. If you want to distribute this manual separately from the collection, "
+"you can do so by adding a copy of the license to the manual, as described in "
+"section 6 of the license."
+msgstr ""
+"Αυτή η τεκμηρίωση είναι μέρος της συλλογής τεκμηρίωσης του GNOME όπως "
+"διανέμεται υπό τους όρους της GFDL. Εάν επιθυμείτε να διανείμετε αυτή την "
+"τεκμηρίωση ξεχωριστά από την συλλογή, μπορείτε να το κάνετε εάν η τεκμηρίωση "
+"συνοδεύεται από αντίγραφο της άδειας (GFDL) όπως περιγράφεται στον τομέα 6 "
+"της άδειας."
+
+#. (itstool) path: legalnotice/para
+#: C/index.docbook:19 C/legal.xml:19
+msgid ""
+"Many of the names used by companies to distinguish their products and "
+"services are claimed as trademarks. Where those names appear in any GNOME "
+"documentation, and the members of the GNOME Documentation Project are made "
+"aware of those trademarks, then the names are in capital letters or initial "
+"capital letters."
+msgstr ""
+"Πολλά από τα ονόματα που χρησιμοποιούνται από επιχειρήσεις για να διακρίνουν "
+"τα προϊόντα τους και τις υπηρεσίες αξιώνονται ως εμπορικά σήματα. Όπου "
+"εμφανίζονται αυτά τα ονόματα σε κάποια τεκμηρίωση του GNOME, και τα μέλη του "
+"έργου τεκμηρίωσης του GNOME γνωρίζουν για αυτά τα εμπορικά σήματα, τότε τα "
+"ονόματα είναι με κεφαλαία γράμματα ή με αρχικά κεφαλαία γράμματα."
+
+#. (itstool) path: listitem/para
+#: C/index.docbook:35 C/legal.xml:35
+msgid ""
+"DOCUMENT IS PROVIDED ON AN \"AS IS\" BASIS, WITHOUT WARRANTY OF ANY KIND, "
+"EITHER EXPRESSED OR IMPLIED, INCLUDING, WITHOUT LIMITATION, WARRANTIES THAT "
+"THE DOCUMENT OR MODIFIED VERSION OF THE DOCUMENT IS FREE OF DEFECTS "
+"MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE OR NON-INFRINGING. THE ENTIRE "
+"RISK AS TO THE QUALITY, ACCURACY, AND PERFORMANCE OF THE DOCUMENT OR "
+"MODIFIED VERSION OF THE DOCUMENT IS WITH YOU. SHOULD ANY DOCUMENT OR "
+"MODIFIED VERSION PROVE DEFECTIVE IN ANY RESPECT, YOU (NOT THE INITIAL "
+"WRITER, AUTHOR OR ANY CONTRIBUTOR) ASSUME THE COST OF ANY NECESSARY "
+"SERVICING, REPAIR OR CORRECTION. THIS DISCLAIMER OF WARRANTY CONSTITUTES AN "
+"ESSENTIAL PART OF THIS LICENSE. NO USE OF ANY DOCUMENT OR MODIFIED VERSION "
+"OF THE DOCUMENT IS AUTHORIZED HEREUNDER EXCEPT UNDER THIS DISCLAIMER; AND"
+msgstr ""
+"Η ΤΕΚΜΗΡΙΩΣΗ ΑΥΤΗ ΠΑΡΕΧΕΤΑΙ \"ΩΣ ΕΧΕΙ\", ΧΩΡΙΣ ΚΑΜΙΑ ΕΓΓΥΗΣΗ ΚΑΝΕΝΟΣ ΕΙΔΟΥΣ, "
+"ΕΚΦΡΑΣΜΕΝΗ 'Η ΝΟΟΥΜΕΝΗ, ΠΕΡΙΛΑΜΒΑΝΟΜΕΝΩΝ, ΧΩΡΙΣ ΠΕΡΙΟΡΙΣΜΟ, ΕΓΓΥΗΣΕΩΝ ΟΤΙ ΤΟ "
+"ΕΓΓΡΑΦΟ 'Η ΠΑΡΑΛΛΑΓΕΣ ΤΟΥ ΕΓΓΡΑΦΟΥ ΕΙΝΑΙ ΕΛΕΥΘΕΡΑ ΚΑΘΕ ΕΛΑΤΤΩΜΑΤΟΣ, "
+"ΕΜΠΟΡΕΥΣΙΜΑ, ΚΑΤΑΛΛΗΛΑ ΓΙΑ ΕΝΑ ΣΥΓΚΕΚΡΙΜΕΝΟ ΣΚΟΠΟ, Η ΜΗ-ΠΑΡΑΒΑΙΝΟΝΤΑ. Η "
+"ΕΥΘΥΝΗ ΓΙΑ ΤΗΝ ΠΟΙΟΤΗΤΑ, ΑΚΡΙΒΕΙΑ, ΚΑΙ ΑΠΟΔΟΣΗ ΤΟΥ ΕΓΓΡΑΦΟΥ ΕΙΝΑΙ "
+"ΑΠΟΚΛΕΙΣΤΙΚΑ ΔΙΚΗ ΣΑΣ. ΑΝ ΟΠΟΙΟΔΗΠΟΤΕ ΕΓΓΡΑΦΟ Η ΠΑΡΑΛΛΑΓΗ ΤΟΥΑΠΟΔΕΙΚΤΟΥΝ "
+"ΕΛΑΤΤΩΜΑΤΙΚΑ ΜΕ ΟΠΟΙΟΔΗΠΟΤΕ ΤΡΟΠΟ, ΕΣΕΙΣ (ΚΑΙ ΟΧΙ Ο ΑΡΧΙΚΟΣ ΣΥΓΓΡΑΦΕΑΣ 'Η "
+"ΟΠΟΙΟΣΔΗΠΟΤΕ ΣΥΜΒΑΛΛΟΝΤΑΣ) ΑΝΑΛΑΜΒΑΝΕΤΕ ΤΟ ΚΟΣΤΟΣ ΟΠΟΙΑΣΔΗΠΟΤΕ ΑΝΑΓΚΑΙΑΣ "
+"ΥΠΗΡΕΣΙΑΣ, ΕΠΙΣΚΕΥΗΣ 'Η ΔΙΟΡΘΩΣΗΣ. Η ΑΠΑΛΛΑΓΗ ΕΥΘΥΝΗΣ ΠΟΥ ΣΥΝΟΔΕΥΕΙ ΑΥΤΗ ΤΗΝ "
+"ΤΕΚΜΗΡΙΩΣΗ ΕΙΝΑΙ ΑΝΑΠΟΣΠΑΣΤΟ ΚΟΜΜΑΤΙ ΑΥΤΗΣ. ΚΑΜΙΑ ΧΡΗΣΗ ΤΗΣ ΤΕΚΜΗΡΙΩΣΗΣ Ή "
+"ΠΑΡΑΛΛΑΓΩΝ ΑΥΤΗΣ ΔΕΝ ΕΠΙΤΡΕΠΕΤΑΙ ΠΑΡΑ ΜΟΝΟ ΕΑΝ ΣΥΝΟΔΕΥΕΤΑΙ ΑΠΟ ΤΗΝ ΑΠΑΛΛΑΓΗ "
+"ΕΥΘΥΝΗΣ· ΚΑΙ"
+
+#. (itstool) path: listitem/para
+#: C/index.docbook:55 C/legal.xml:55
+msgid ""
+"UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL THEORY, WHETHER IN TORT (INCLUDING "
+"NEGLIGENCE), CONTRACT, OR OTHERWISE, SHALL THE AUTHOR, INITIAL WRITER, ANY "
+"CONTRIBUTOR, OR ANY DISTRIBUTOR OF THE DOCUMENT OR MODIFIED VERSION OF THE "
+"DOCUMENT, OR ANY SUPPLIER OF ANY OF SUCH PARTIES, BE LIABLE TO ANY PERSON "
+"FOR ANY DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES OF "
+"ANY CHARACTER INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF GOODWILL, "
+"WORK STOPPAGE, COMPUTER FAILURE OR MALFUNCTION, OR ANY AND ALL OTHER DAMAGES "
+"OR LOSSES ARISING OUT OF OR RELATING TO USE OF THE DOCUMENT AND MODIFIED "
+"VERSIONS OF THE DOCUMENT, EVEN IF SUCH PARTY SHALL HAVE BEEN INFORMED OF THE "
+"POSSIBILITY OF SUCH DAMAGES."
+msgstr ""
+"ΚΑΙ ΣΕ ΚΑΜΙΑ ΠΕΡΙΠΤΩΣΗ ΚΑΙ ΣΕ ΚΑΜΙΑ ΝΟΜΟΛΟΓΙΑ ΑΣΤΙΚΟΥ ΑΔΙΚΗΜΑΤΟΣ "
+"(ΠΕΡΙΛΑΜΒΑΝΟΜΕΝΗΣ ΕΚΕΙΝΟΥ ΤΗΣ ΑΜΕΛΕΙΑΣ), ΣΥΜΒΟΛΑΙΟΥ Ή ΑΛΛΟΥ, Ο ΣΥΝΤΑΚΤΗΣ, Ο "
+"ΑΡΧΙΚΟΣ ΣΥΓΓΡΑΦΕΑΣ, ΟΠΟΙΟΣΔΗΠΟΤΕ ΣΥΝΕΡΓΑΤΗΣ Ή ΟΠΟΙΟΣΔΗΠΟΤΕ ΔΙΑΝΟΜΕΑΣ ΤΟΥ "
+"ΕΓΓΡΑΦΟΥ Ή ΤΡΟΠΟΠΟΙΗΜΕΝΗΣ ΕΚΔΟΣΗΣ ΤΟΥ ΕΓΓΡΑΦΟΥ, Ή ΟΠΟΙΣΔΗΠΟΤΕ ΠΡΟΜΗΘΕΥΤΗΣ "
+"ΟΠΟΙΟΥΔΗΠΟΤΕ ΕΚ ΤΩΝ ΑΝΩΤΕΡΩ ΠΡΟΣΩΠΩΝ ΕΙΝΑΙ ΥΠΕΥΘΥΝΟΣ ΕΝΑΝΤΙ ΟΙΟΥΔΗΠΟΤΕ "
+"ΠΡΟΣΩΠΟΥ ΓΙΑ ΟΠΟΙΑΔΗΠΟΤΕ ΑΜΕΣΗ, ΕΜΜΕΣΗ, ΙΔΙΑΙΤΗΕΡΗ, ΑΤΥΧΗ Ή ΣΥΝΕΠΑΓΟΜΕΝΗ "
+"ΒΛΑΒΗ ΟΙΟΥΔΗΠΟΤΕ ΧΑΡΑΚΤΗΡΑ ΣΥΜΠΕΡΙΛΑΜΒΑΝΟΜΕΝΩΝ, ΧΩΡΙΣ ΠΕΡΙΟΡΙΣΜΟΥΣ, ΒΛΑΒΕΣ "
+"ΕΞΑΙΤΙΑΣ ΑΠΩΛΕΙΑΣ ΠΕΛΑΤΕΙΑΣ, ΣΤΑΣΗ ΕΡΓΑΣΙΑΣ, ΑΣΤΟΧΙΑ Ή ΚΑΚΗ ΛΕΙΤΟΥΡΓΙΑ "
+"ΥΠΟΛΟΓΙΣΤΗ, Ή ΟΠΟΙΑΔΗΠΟΤΕ ΚΑΙ ΚΑΘΕ ΑΛΛΗ ΒΛΑΒΗ Ή ΑΠΩΛΕΙΑ ΠΟΥ ΘΑ ΕΓΕΙΡΕΙ Ή "
+"ΣΧΕΤΙΖΕΤΑΙ ΜΕ ΤΗΝ ΧΡΗΣΗ ΤΟΥ ΕΓΓΡΑΦΟΥ ΚΑΙ ΟΠΟΙΑΣΔΗΠΟΤΕ ΤΡΟΠΟΠΟΙΗΜΕΝΗΣ ΕΚΔΟΣΗΣ "
+"ΤΟΥ ΕΓΓΡΑΦΟΥ, ΑΚΟΜΗ ΚΑΙ ΑΝ ΚΑΠΟΙΟ ΑΠΟ ΑΥΤΑ ΤΑ ΠΡΟΣΩΠΑ ΕΙΝΑΙ ΕΝΗΜΕΡΟ ΓΙΑ ΤΗΝ "
+"ΠΙΘΑΝΟΤΗΤΑ ΠΡΟΚΛΗΣΗΣ ΤΕΤΟΙΩΝ ΒΛΑΒΩΝ."
+
+#. (itstool) path: legalnotice/para
+#: C/index.docbook:28 C/legal.xml:28
+msgid ""
+"DOCUMENT AND MODIFIED VERSIONS OF THE DOCUMENT ARE PROVIDED UNDER THE TERMS "
+"OF THE GNU FREE DOCUMENTATION LICENSE WITH THE FURTHER UNDERSTANDING THAT: "
+"<_:orderedlist-1/>"
+msgstr ""
+"TΟ ΕΓΓΡΑΦΟ ΚΑΙ ΟΙ ΤΡΟΠΟΙΗΜΕΝΕΣ ΕΚΔΟΣΕΙΣ ΤΟΥ ΠΑΡΕΧΟΝΤΑΙ ΥΠΟ ΤΟΥΣ ΟΡΟΥΣ ΤΗΣ "
+"ΕΛΕΥΘΕΡΗΣ ΑΔΕΙΑΣ ΤΕΚΜΗΡΙΩΣΗΣ GNU ΜΕ ΤΙΣ ΕΠΙΠΛΕΟΝ ΓΝΩΣΤΟΠΟΙΗΣΕΙΣ: <_:"
+"orderedlist-1/>"
+
+#. (itstool) path: authorgroup/author
+#: C/index.docbook:56
+msgid ""
+"<firstname>Murray</firstname> <surname>Cumming</surname> <affiliation> "
+"<orgname>Glom Development Team</orgname> <address> <email>murrayc@murrayc."
+"com</email> </address> </affiliation>"
+msgstr ""
+"<firstname>Murray</firstname> <surname>Cumming</surname> <affiliation> "
+"<orgname>Ομάδα ανάπτυξης Glom</orgname><address><email>murrayc@murrayc.com</"
+"email> </address> </affiliation>"
+
+#. (itstool) path: revdescription/para
+#: C/index.docbook:99 C/index.docbook:100
+msgid "Murray Cumming"
+msgstr "Murray Cumming"
+
+#. (itstool) path: revhistory/revision
+#: C/index.docbook:95
+msgid ""
+"<revnumber>Glom 1.6</revnumber> <date>20 June 2004</date> <_:"
+"revdescription-1/>"
+msgstr ""
+"<revnumber>Glom 1.6</revnumber> <date>20 June 2004</date> <_:"
+"revdescription-1/>"
+
+#. (itstool) path: articleinfo/releaseinfo
+#: C/index.docbook:105
+msgid "This manual describes version 1.6 of Glom"
+msgstr "Αυτή η τεκμηρίωση καλύπτει την έκδοση 1.6 του Glom"
+
+#. (itstool) path: legalnotice/title
+#: C/index.docbook:108
+msgid "Feedback"
+msgstr "Aνάδραση"
+
+#. (itstool) path: legalnotice/para
+#: C/index.docbook:109
+msgid ""
+"To report a bug or make a suggestion regarding the Glom or this manual can "
+"be submitted to the <ulink url=\"http://bugzilla.gnome.org\" type=\"http"
+"\">GNOME Bugzilla </ulink>, under the Glom product. Please search bugzilla "
+"before submitting your bug to ensure that yours hasn't already been reported."
+msgstr ""
+"Για να αναφέρετε ένα σφάλμα ή να κάνετε μια πρόταση που αφορά το Glom ή αυτό "
+"το εγχειρίδιο μπορείτε να την υποβάλετε στο <ulink url=\"http://bugzilla."
+"gnome.org\" type=\"http\">GNOME Bugzilla </ulink> και στο προϊόν Glom. "
+"Παρακαλούμε αναζητήστε στο bugzilla πριν να υποβάλετε το σφάλμα σας για να "
+"βεβαιωθείτε ότι δεν έχει ήδη αναφερθεί."
+
+#. (itstool) path: abstract/para
+#: C/index.docbook:119
+msgid "User manual for Glom."
+msgstr "Εγχειρίδιο χρήστη του Glom."
+
+#. (itstool) path: article/indexterm
+#: C/index.docbook:123
+msgid "<primary>MY-GNOME-APP</primary>"
+msgstr "<primary>MY-GNOME-APP</primary>"
+
+#. (itstool) path: article/indexterm
+#: C/index.docbook:126
+msgid "<primary>mygnomeapp</primary>"
+msgstr "<primary>mygnomeapp</primary>"
+
+#. (itstool) path: sect1/title
+#: C/index.docbook:135
+msgid "Introduction"
+msgstr "Εισαγωγή"
+
+#. (itstool) path: sect1/para
+#: C/index.docbook:136
+msgid "Glom allows you to design and use database systems."
+msgstr ""
+"Το Glom σας επιτρέπει να σχεδιάσετε και να χρησιμοποιήσετε τα συστήματα "
+"βάσης δεδομένων."
+
+#. (itstool) path: sect1/title
+#: C/index.docbook:150
+msgid "Getting Started"
+msgstr "Ξεκινώντας"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:153
+msgid "Starting Glom"
+msgstr "Ξεκινώντας το Glom"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:154
+msgid "You can start <application>Glom</application> in the following ways:"
+msgstr ""
+"Μπορείτε να ξεκινήσετε το <application>Glom</application> με τους εξής "
+"τρόπους:"
+
+#. (itstool) path: varlistentry/term
+#: C/index.docbook:158
+msgid "<guimenu>Applications</guimenu> menu"
+msgstr "Μενού <guimenu>Εφαρμογές</guimenu>"
+
+#. (itstool) path: listitem/para
+#: C/index.docbook:160
+msgid ""
+"Choose <menuchoice> <guisubmenu>Office</guisubmenu> <guimenuitem>Glom</"
+"guimenuitem> </menuchoice>."
+msgstr ""
+"Επιλέξτε <menuchoice> <guisubmenu>Γραφείο</guisubmenu> <guimenuitem>Glom</"
+"guimenuitem> </menuchoice>."
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:171
+msgid "When You Start Glom"
+msgstr "Όταν ξεκινάτε το Glom"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:172
+msgid ""
+"When you start <application>Glom</application>, the following window is "
+"displayed. You may open an existing Glom file or create a new one, possibly "
+"basing a new Glom file on one of the examples."
+msgstr ""
+"Όταν ξεκινάτε το <application>Glom</application>, εμφανίζεται το παρακάτω "
+"παράθυρο. Μπορείτε να ανοίξετε ένα υπάρχον αρχείο Glom ή να δημιουργήσετε "
+"ένα νέο, πιθανόν με βάση ένα νέο αρχείο Glom σε ένα από τα παραδείγματα."
+
+#. (itstool) path: figure/title
+#: C/index.docbook:177
+msgid "Glom Start Up Window, Opening an Existing File"
+msgstr "Το παράθυρο έναρξης του Glom, για το άνοιγμα ενός υπάρχοντος αρχείου"
+
+#. (itstool) path: screenshot/mediaobject
+#: C/index.docbook:179
+msgid ""
+"<imageobject><imagedata fileref=\"figures/start_open.png\" format=\"PNG\"/> "
+"</imageobject> <textobject> <phrase>Shows Glom main window used to open an "
+"existing Glom file.</phrase> </textobject>"
+msgstr ""
+"<imageobject><imagedata fileref=\"figures/start_open.png\" format=\"PNG\"/></"
+"imageobject><textobject><phrase>Εμφάνιση του κυρίως παραθύρου Glom που "
+"χρησιμοποιείται για να ανοίξει ένα υπάρχον αρχείο Glom.</phrase> </"
+"textobject>"
+
+#. (itstool) path: figure/title
+#: C/index.docbook:191
+msgid "Glom Start Up Window, Creating a New File"
+msgstr "Το παράθυρο έναρξης του Glom, για τη δημιουργία ενός νέου αρχείου"
+
+#. (itstool) path: screenshot/mediaobject
+#: C/index.docbook:193
+msgid ""
+"<imageobject><imagedata fileref=\"figures/start_create.png\" format=\"PNG\"/"
+"> </imageobject> <textobject> <phrase>Shows Glom main window used to create "
+"a new Glom file.</phrase> </textobject>"
+msgstr ""
+"<imageobject><imagedata fileref=\"figures/start_create.png\" format=\"PNG\"/"
+"></imageobject><textobject><phrase>Εμφάνιση του κυρίως παραθύρου του Glom "
+"που χρησιμοποιείται για τη δημιουργία ενός νέου αρχείου Glom.</phrase> </"
+"textobject>"
+
+#. (itstool) path: sect1/title
+#: C/index.docbook:212
+msgid "Using Glom as an Operator"
+msgstr "Χρήση του Glom ως χειριστής"
+
+#. (itstool) path: sect1/para
+#: C/index.docbook:213
+msgid ""
+"To open an existing Glom document, either open that document from the File "
+"Manager, or choose Glom from the Applications menu, and then choose the "
+"document when asked. Glom will ask you for a user name and password to "
+"access the database. Your administrator will provide your user name and "
+"password."
+msgstr ""
+"Για να ανοίξετε ένα υπάρχον έγγραφο Glom, είτε ανοίξτε αυτό το έγγραφο από "
+"τον διαχειριστή αρχείων, ή επιλέξτε Glom από το μενού εφαρμογών και έπειτα "
+"επιλέξτε το έγγραφο όταν σας ζητηθεί. Το Glom θα σας ζητήσει ένα όνομα "
+"χρήστη και έναν κωδικό πρόσβασης για να προσπελάσει τη βάση δεδομένων. Ο "
+"διαχειριστής σας θα παράσχει το όνομα χρήστη και τον κωδικό πρόσβασης."
+
+#. (itstool) path: sect1/para
+#: C/index.docbook:215
+msgid ""
+"When you open an existing document, Glom will be in <literal>Operator</"
+"literal> <literal>user level</literal>. This user level allows you to find "
+"and edit records, but does not allow you to change the fundamental structure "
+"of the database."
+msgstr ""
+"Όταν ανοίγετε ένα υπάρχον έγγραφο, το Glom θα είναι στο <literal>Επίπεδο "
+"χρήστη</literal> <literal>Χειριστής</literal>. Αυτό το επίπεδο χρήστη σας "
+"επιτρέπει να βρείτε και να επεξεργαστείτε εγγραφές, αλλά δεν σας επιτρέπει "
+"να αλλάξετε τη βασική δομή της βάσης δεδομένων."
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:218
+msgid "Navigation"
+msgstr "Περιήγηση"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:219
+msgid ""
+"Each database has several tables. To look at a different table, choose "
+"<literal>Tables</literal> from the <literal>Navigate</literal> menu. Then "
+"double-click on the table, or select it and click the <literal>Open</"
+"literal> button."
+msgstr ""
+"Κάθε βάση δεδομένων έχει πολλούς πίνακες. Για να δείτε έναν διαφορετικό "
+"πίνακα, επιλέξτε το <literal>πίνακες</literal> από το μενού "
+"<literal>περιήγηση</literal>. Έπειτα διπλοπατήστε στον πίνακα, ή επιλέξτε "
+"τον και πατήστε το πλήκτρο <literal>Άνοιγμα</literal>."
+
+#. (itstool) path: figure/title
+#: C/index.docbook:222
+msgid "Navigating to a Table"
+msgstr "Περιήγηση ενός πίνακα"
+
+#. (itstool) path: screenshot/mediaobject
+#: C/index.docbook:224
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_tables.png\" format=\"PNG\"/> "
+"</imageobject> <textobject> <phrase>Navigating to a Table.</phrase> </"
+"textobject>"
+msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_tables.png\" format=\"PNG\"/> "
+"</imageobject> <textobject> <phrase>Περιήγηση ενός πίνακα.</phrase></"
+"textobject>"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:238
+msgid "Viewing and Entering Data"
+msgstr "Προβολή και εισαγωγή δεδομένων"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:239
+msgid ""
+"When in <literal>Data Mode</literal>, you can view or enter information in "
+"either the <literal>List</literal> or <literal>Details</literal> view."
+msgstr ""
+"Αν είσαστε στην <literal>κατάσταση δεδομένων</literal>, μπορείτε να "
+"προβάλετε ή να εισάγετε πληροφορίες ή στην προβολή <literal>Κατάλογος</"
+"literal> ή στην προβολή <literal>Λεπτομέρειες</literal>."
+
+#. (itstool) path: sect3/title
+#. (itstool) path: figure/title
+#: C/index.docbook:242 C/index.docbook:248
+msgid "The List View"
+msgstr "Η προβολή καταλόγου"
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:243
+msgid ""
+"The List view shows many records at once and usually shows only the most "
+"important fields."
+msgstr ""
+"Η προβολή καταλόγου εμφανίζει πολλές εγγραφές μονομιάς και συνήθως εμφανίζει "
+"μόνο τα πιο σημαντικά πεδία."
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:244 C/index.docbook:267
+msgid ""
+"When you enter data into a field it will be saved into the database "
+"immediately after you finish editing the field. If it is a date or time "
+"field then the data format will be checked for you."
+msgstr ""
+"Όταν εισάγετε δεδομένα σε ένα πεδίο θα αποθηκευτούν στη βάση δεδομένων "
+"αμέσως αφού τελειώσετε την επεξεργασία του πεδίου. Αν είναι ένα πεδίο "
+"ημερομηνίας ή χρόνου τότε η μορφή δεδομένων θα ελεγχθεί για σας."
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:245
+msgid ""
+"To create a new record just click the <literal>New</literal> button, or "
+"start typing into a field in the last empty row. A new record row will be "
+"created with blank fields for you to fill in."
+msgstr ""
+"Για να δημιουργήσετε μια νέα εγγραφή πατήστε απλά το πλήκτρο <literal>νέο</"
+"literal>, ή ξεκινήστε την πληκτρολόγηση σε ένα πεδίο στην τελευταία κενή "
+"γραμμή. Μια νέα εγγραφή γραμμής θα δημιουργηθεί με κενά πεδία για να τα "
+"συμπληρώσετε."
+
+#. (itstool) path: screenshot/mediaobject
+#: C/index.docbook:250
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_data_list.png\" format=\"PNG"
+"\"/> </imageobject> <textobject> <phrase>The List View.</phrase> </"
+"textobject>"
+msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_data_list.png\" format=\"PNG"
+"\"/> </imageobject> <textobject> <phrase> Η προβολή καταλόγου.</phrase> </"
+"textobject>"
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:261
+msgid ""
+"To sort the records just click on a column header. For instance, you could "
+"might click on a date column to list invoices in order of their date, and "
+"click again to list them in reverse order."
+msgstr ""
+"Για να ταξινομήσετε τις εγγραφές απλά πατήστε σε μια κεφαλίδα στήλης. Για "
+"παράδειγμα, μπορείτε ίσως να πατήσετε σε μια στήλη δεδομένων για να "
+"καταχωρίσετε τιμολόγια ανάλογα με την ημερομηνία τους και να πατήσετε ξανά "
+"για να τα καταχωρίσετε με αντίστροφη σειρά."
+
+#. (itstool) path: sect3/title
+#. (itstool) path: figure/title
+#: C/index.docbook:265 C/index.docbook:271
+msgid "The Details View"
+msgstr "Η προβολή λεπτομερειών"
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:266
+msgid ""
+"The details view shows only one record and usually shows all the fields "
+"arranged suitably."
+msgstr ""
+"Η προβολή λεπτομερειών εμφανίζει μόνο μια εγγραφή και συνήθως εμφανίζει όλα "
+"τα πεδία τακτοποιημένα κατάλληλα."
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:268
+msgid ""
+"To create a new record just click the <literal>New</literal> button. A new "
+"record will be created with blank fields for you to fill in."
+msgstr ""
+"Για να δημιουργήσετε μια νέα εγγραφή πατήστε απλά το πλήκτρο <literal>νέο</"
+"literal>. Μια νέα εγγραφή θα δημιουργηθεί με κενά πεδία για να τα "
+"συμπληρώσετε."
+
+#. (itstool) path: screenshot/mediaobject
+#: C/index.docbook:273
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_data_details.png\" format="
+"\"PNG\"/> </imageobject> <textobject> <phrase>The Details View.</phrase> </"
+"textobject>"
+msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_data_details.png\" format="
+"\"PNG\"/> </imageobject> <textobject> <phrase>Η προβολή λεπτομερειών.</"
+"phrase> </textobject>"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:289
+msgid "Finding Data"
+msgstr "Εύρεση δεδομένων"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:290
+msgid ""
+"Choose <literal>Find Mode</literal> from the Mode menu. The fields in the "
+"List and Details views will now be empty, and a Find button will appear at "
+"the bottom of the window."
+msgstr ""
+"Επιλέξτε <literal>Κατάσταση εύρεσης</literal> από το μενού καταστάσεων. Τα "
+"πεδία στις προβολές καταλόγου και λεπτομερειών θα είναι τώρα κενά και ένα "
+"πλήκτρο εύρεσης θα εμφανιστεί στο τέλος του παραθύρου."
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:291
+msgid ""
+"Enter information, or part of the information, into a field to find records "
+"with that information in that field. For instance, enter Jim into a name "
+"field to find records with \"Jim\" or \"Jimmy\" in the name."
+msgstr ""
+"Εισάγετε τις πληροφορίες, ή μέρος των πληροφοριών, σε ένα πεδίο για να "
+"βρείτε τις εγγραφές με αυτές τις πληροφορίες σε αυτό το πεδίο. Για "
+"παράδειγμα, εισάγετε Νίκο σε ένα πεδίο ονόματος για να βρείτε εγγραφές με το "
+"όνομα \"Νίκο\" ή \"Νίκος\" στο όνομα."
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:292
+msgid ""
+"When you press the <literal>Find</literal> button, Glom will search for "
+"records and then display them. If only one record is found then it will show "
+"you that record in the Details view. If several records are found then it "
+"will show you those records in the List view."
+msgstr ""
+"Όταν πατάτε το πλήκτρο <literal>Εύρεση</literal>, το Glom θα ψάξει για "
+"εγγραφές και έπειτα θα τις εμφανίσει. Αν βρεθεί μόνο μια εγγραφή, τότε θα "
+"σας εμφανίσει αυτήν την εγγραφή στην προβολή λεπτομερειών. Αν βρεθούν πολλές "
+"εγγραφές, τότε θα σας εμφανίσει αυτές τις εγγραφές στην προβολή καταλόγου."
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:297
+msgid "Printing Reports"
+msgstr "Εκτύπωση αναφορών"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:298
+msgid ""
+"If your database developer has defined some reports for a table then you "
+"will seem them listed in the <literal>Reports</literal> menu. Just choose "
+"the report from the menu to create the report. If you have previously "
+"performed a search then the report will contain only the currently-found "
+"data. Otherwise it will contain all data in the current report. Remember "
+"that each table has its own reports so you may need to switch to the "
+"relevant table to use a particular report."
+msgstr ""
+"Αν ο προγραμματιστής της βάσης δεδομένων έχει ορίσει κάποιες αναφορές για "
+"έναν πίνακα, τότε θα τις δείτε καταχωρισμένες στο μενού <literal>Αναφορές</"
+"literal>. Επιλέξτε απλά την αναφορά από το μενού για να δημιουργήσετε την "
+"αναφορά. Αν έχετε προηγουμένως εκτελέσει μια αναζήτηση, τότε η αναφορά θα "
+"περιέχει μόνο τα προς το παρόν ευρεθέντα δεδομένα. Αλλιώς θα περιέχει όλα τα "
+"δεδομένα στην τρέχουσα αναφορά. Να θυμάστε ότι κάθε πίνακας έχει τις δικές "
+"του αναφορές, έτσι ίσως χρειαστείτε να μεταβείτε στον κατάλληλο πίνακα για "
+"να χρησιμοποιήσετε την συγκεκριμένη αναφορά."
+
+#. (itstool) path: figure/title
+#: C/index.docbook:301
+msgid "A report"
+msgstr "Αναφορά"
+
+#. (itstool) path: screenshot/mediaobject
+#: C/index.docbook:303
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_report_result.png\" format="
+"\"PNG\"/> </imageobject> <textobject> <phrase>A report.</phrase> </"
+"textobject>"
+msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_report_result.png\" format="
+"\"PNG\"/> </imageobject> <textobject> <phrase>Αναφορά.</phrase> </textobject>"
+
+#. (itstool) path: sect1/title
+#: C/index.docbook:320
+msgid "Using Glom as a Developer"
+msgstr "Χρησιμοποιώντας το Glom ως δημιουργός"
+
+#. (itstool) path: sect1/para
+#: C/index.docbook:321
+msgid ""
+"When you create a new document, Glom will be in the <literal>Developer</"
+"literal> <literal>user level</literal>. You can also change to the Developer "
+"user level after opening an existing document, with the <literal>User Level</"
+"literal> menu. Glom will only allow this if the administrator has allowed it."
+msgstr ""
+"Όταν δημιουργείτε ένα νέο έγγραφο, το Glom θα είναι στο <literal>Επίπεδο "
+"χρήστη</literal> <literal>Δημιουργός</literal>. Μπορείτε επίσης να αλλάξετε "
+"το επίπεδο χρήστη δημιουργού μετά το άνοιγμα ενός υπάρχοντος εγγράφου, με το "
+"μενού <literal>Επίπεδο χρήστη</literal>. Το Glom θα το επιτρέψει αυτό μόνο "
+"αν ο διαχειριστής το έχει επιτρέψει."
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:324
+msgid "Adding Tables"
+msgstr "Προσθήκη πινάκων"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:325
+msgid ""
+"You can see the list of existing tables by choosing <literal>Tables</"
+"literal> from the <literal>Navigate</literal> menu. You will also see this "
+"window after connecting to a database server, after creating a new document. "
+"To create a new table, click the <literal>Add</literal> button and enter the "
+"name for the new table. Glom will suggest a human-readable title for this "
+"table. <literal>Operators</literal> will see this title instead of the "
+"actual table name. You can also mark a tables as <literal>hidden</literal> "
+"from Operators. For instance, Operators should see \"Invoice Lines\" as "
+"related records from the \"Invoices\" table, but they should never be able "
+"to navigate directly to the \"Invoice Lines\" table."
+msgstr ""
+"Μπορείτε να δείτε τον κατάλογο των υπαρχόντων πινάκων επιλέγοντας "
+"<literal>Πίνακες</literal> από το μενού <literal>Περιήγηση</literal>. Θα "
+"δείτε επίσης αυτό το παράθυρο μετά τη σύνδεση με έναν διακομιστή βάσης "
+"δεδομένων, αφού έχετε δημιουργήσει ένα νέο έγγραφο. Για να δημιουργήσετε "
+"έναν νέο πίνακα, πατήστε το πλήκτρο <literal>Προσθήκη</literal> και εισάγετε "
+"το όνομα για τον νέο πίνακα. Το Glom θα προτείνει έναν τίτλο για αυτόν τον "
+"πίνακα. Οι <literal>Χειριστές</literal> θα δουν αυτόν τον τίτλο αντί για το "
+"πραγματικό όνομα του πίνακα. Μπορείτε επίσης να σημειώσετε έναν πίνακα ως "
+"<literal>κρυφό</literal> για τους χειριστές. Για παράδειγμα, οι χειριστές "
+"πρέπει να δουν τις \"Γραμμές τιμολογίου\" ως σχετικές εγγραφές από τον "
+"πίνακα \"Τιμολόγια\", αλλά δεν πρέπει ποτέ να μπορούν να περιηγηθούν άμεσα "
+"στον πίνακα \"Γραμμές πίνακα\"."
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:327
+msgid ""
+"You can also specify one table as the <literal>default table</literal>. This "
+"table will be shown whenever an operator opens an existing document, without "
+"asking him to select a table from the list."
+msgstr ""
+"Μπορείτε επίσης να ορίσετε έναν πίνακα ως <literal>προεπιλεγμένο πίνακα</"
+"literal>. Αυτός ο πίνακας θα εμφανίζεται όποτε ένας χειριστής ανοίγει ένα "
+"υπάρχον έγγραφο, χωρίς να του ζητιέται να επιλέξει έναν πίνακα από τον "
+"κατάλογο."
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:328
+msgid "You can also use this window to rename an existing table."
+msgstr ""
+"Μπορείτε επίσης να χρησιμοποιήσετε αυτό το παράθυρο για να μετονομάσετε τον "
+"υπάρχοντα πίνακα."
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:329
+msgid "Click the <literal>Open</literal> button to look at the selected table."
+msgstr ""
+"Πατήστε το πλήκτρο <literal>άνοιγμα</literal> για να δείτε τον επιλεγμένο "
+"πίνακα."
+
+#. (itstool) path: sect2/title
+#. (itstool) path: figure/title
+#: C/index.docbook:333 C/index.docbook:339
+msgid "Editing Fields"
+msgstr "Επεξεργασία πεδίων"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:334
+msgid ""
+"Choose <literal>Fields</literal> from the <literal>Developer</literal> menu. "
+"This shows the list of fields in the table. New tables automatically have a "
+"primary key field, but you can change this field if necessary."
+msgstr ""
+"Επιλέξτε <literal>Πεδία</literal> από το μενού <literal>Δημιουργός</"
+"literal>. Αυτό εμφανίζει έναν κατάλογο πεδίων στον πίνακα. Οι νέοι πίνακες "
+"έχουν αυτόματα ένα πεδίο πρωτογενούς κλειδιού, αλλά μπορείτε να αλλάξετε "
+"αυτό το πεδίο αν χρειάζεται."
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:335
+msgid ""
+"Click the <literal>Add</literal> button to add a new field, then enter the "
+"name of the new field. Glom will guess an appropriate human-readable title "
+"for this field, but you can edit this. <literal>Operators</literal> will see "
+"this title instead of the actual field name."
+msgstr ""
+"Πατήστε το πλήκτρο <literal>Προσθήκη</literal> για να προσθέσετε ένα νέο "
+"πεδίο, έπειτα εισάγετε το όνομα του νέου πεδίου. Το Glom θα βρει ένα "
+"κατάλληλο τίτλο για αυτό το πεδίο, αλλά μπορείτε να το επεξεργαστείτε. Οι "
+"<literal>Χειριστές</literal> θα δουν αυτόν τον τίτλο αντί για το πραγματικό "
+"όνομα του πεδίου."
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:336
+msgid ""
+"To specify more field details, select the field and click the "
+"<literal>Details</literal> button."
+msgstr ""
+"Για να ορίσετε περισσότερες λεπτομέρειες πεδίου, επιλέξτε το πεδίο και "
+"πατήστε το πλήκτρο <literal>Λεπτομέρειες</literal>."
+
+#. (itstool) path: screenshot/mediaobject
+#: C/index.docbook:341
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_design_fields.png\" format="
+"\"PNG\"/> </imageobject> <textobject> <phrase>Editing the table's fields.</"
+"phrase> </textobject>"
+msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_design_fields.png\" format="
+"\"PNG\"/> </imageobject> <textobject> <phrase>Επεξεργασία των πεδίων πίνακα."
+"</phrase> </textobject>"
+
+#. (itstool) path: sect3/title
+#: C/index.docbook:354
+msgid "Primary Keys"
+msgstr "Πρωτεύοντα κλειδιά"
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:355
+msgid ""
+"Each table must have one, and only one, <literal>Primary Key</literal>. The "
+"value in this field will be unique, meaning that each value in this field "
+"will appear in only one record in the table. For instance, each record in a "
+"\"Customers\" table would have a \"Customer ID\". This value will be used to "
+"refer to that customer from other tables, such as \"Projects\" and \"Invoices"
+"\" records. See the <link linkend=\"sec-developer-relationships\">Creating "
+"Relationships</link> section to see how you can relate tables together."
+msgstr ""
+"Κάθε πίνακας πρέπει να έχει ένα και μόνο ένα <literal>πρωτεύον κλειδί</"
+"literal>. Η τιμή σε αυτό το πεδίο θα είναι μοναδική, που σημαίνει ότι κάθε "
+"τιμή σε αυτό το πεδίο θα εμφανίσει μόνο μια εγγραφή στον πίνακα. Για "
+"παράδειγμα, κάθε εγγραφή σε έναν πίνακα \"Πελάτες\" θα έχει ένα "
+"\"αναγνωριστικό πελάτη\". Αυτή η τιμή θα χρησιμοποιηθεί για να αναφέρετε σε "
+"αυτόν τον πελάτη από άλλους πίνακες, όπως \"Έργα\" και \"Τιμολόγια\". Δείτε "
+"την ενότητα <link linkend=\"sec-developer-relationships\">Δημιουργία "
+"σχέσεων</link> για να δείτε πώς μπορείτε να συσχετίσετε πίνακες μαζί."
+
+#. (itstool) path: sect3/title
+#: C/index.docbook:359
+msgid "Field Types"
+msgstr "Τύποι πεδίων"
+
+#. (itstool) path: listitem/simpara
+#: C/index.docbook:362
+msgid "Number"
+msgstr "Αριθμός"
+
+#. (itstool) path: listitem/simpara
+#: C/index.docbook:363
+msgid "Text"
+msgstr "Κείμενο"
+
+#. (itstool) path: listitem/simpara
+#: C/index.docbook:364
+msgid "Date"
+msgstr "Ημερομηνία"
+
+#. (itstool) path: listitem/simpara
+#: C/index.docbook:365
+msgid "Time"
+msgstr "Χρόνος"
+
+#. (itstool) path: listitem/simpara
+#: C/index.docbook:366
+msgid "Boolean - either true or false"
+msgstr "Τιμή Μπουλ - ή αληθής ή ψευδής"
+
+#. (itstool) path: listitem/simpara
+#: C/index.docbook:367
+msgid "Image"
+msgstr "Εικόνα"
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:360
+msgid "Glom offers a few simple field types: <_:orderedlist-1/>"
+msgstr "Το Glom προσφέρει λίγους απλούς τύπους πεδίων: <_:orderedlist-1/>"
+
+#. (itstool) path: sect3/title
+#: C/index.docbook:373
+msgid "Calculated Fields"
+msgstr "Υπολογιζόμενα πεδία"
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:374
+msgid ""
+"Field values can be calculated in terms of other fields, using the Python "
+"programming language. This calculation should be the implementation of a "
+"python function, which should return a value. The return value will be used "
+"as the value of the field. This value will be recalculated every time one of "
+"the source fields changes. TODO: This only works for default values at the "
+"moment, and you can not use field values in the calculation yet."
+msgstr ""
+"Οι τιμές πεδίου μπορεί να υπολογιστούν ως προς άλλα πεδία, χρησιμοποιώντας "
+"τη γλώσσα προγραμματισμού Python. Αυτός ο υπολογισμός πρέπει να είναι "
+"εφαρμογή μιας συνάρτησης python, που πρέπει να επιστρέψει μια τιμή. Η "
+"επιστρεφόμενη τιμή θα χρησιμοποιηθεί ως η τιμή του πεδίου. Αυτή η τιμή θα "
+"επανυπολογίζεται κάθε φορά που τα πεδία της πηγής αλλάζουν. ΝΑ ΓΙΝΕΙ: Αυτό "
+"δουλεύει μόνο για προεπιλεγμένες τιμές προς το παρόν και δεν μπορείτε να "
+"χρησιμοποιήσετε τιμές πεδίων στον υπολογισμό ακόμα."
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:375
+msgid ""
+"You can also use calculations to specify a default value for fields, by "
+"selecting the <literal>Default Value</literal> tab in the <literal>Field "
+"Details</literal> window, clicking on the <literal>Calculate Value</literal> "
+"check box, and then entering a Python calculation. You can test this "
+"calculation in the <literal>Edit</literal> window."
+msgstr ""
+"Μπορείτε επίσης να χρησιμοποιήσετε υπολογισμούς για να ορίσετε μια "
+"προεπιλεγμένη τιμή για πεδία, επιλέγοντας την καρτέλα <literal>Προεπιλεγμένη "
+"τιμή</literal> στο παράθυρο <literal>Λεπτομέρειες πεδίου</literal>, πατώντας "
+"στο πλαίσιο ελέγχου <literal>Υπολογισμός τιμής</literal> και εισάγοντας "
+"έπειτα έναν υπολογισμό Python. Μπορείτε να ελέγξετε αυτόν τον υπολογισμό στο "
+"παράθυρο <literal>Επεξεργασία</literal>."
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:381
+msgid "Arranging Layouts"
+msgstr "Διευθέτηση διατάξεων"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:382
+msgid ""
+"Each table has <literal>List</literal> and <literal>Details</literal> views, "
+"and by default these show all fields in the table, in order of creation. You "
+"can edit the layout by choosing <literal>Layout</literal> from the "
+"<literal>Developer</literal> menu."
+msgstr ""
+"Κάθε πίνακας έχει προβολές <literal>Καταλόγου</literal> και "
+"<literal>Λεπτομερειών</literal>· από προεπιλογή αυτές εμφανίζουν όλα τα "
+"πεδία στον πίνακα, με σειρά δημιουργίας. Μπορείτε να επεξεργαστείτε τη "
+"διάταξη επιλέγοντας <literal>Διάταξη</literal> από το μενού "
+"<literal>Δημιουργός</literal>."
+
+#. (itstool) path: sect3/title
+#: C/index.docbook:385
+msgid "Arranging the List View"
+msgstr "Διευθέτηση της προβολής καταλόγου"
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:386
+msgid ""
+"For the <literal>List</literal> view, you can specify the sequence of field "
+"columns, and whether some fields are hidden."
+msgstr ""
+"Για την προβολή <literal>Κατάλογος</literal>, μπορείτε να ορίσετε την "
+"αλληλουχία των στηλών πεδίου και αν κάποια πεδία είναι κρυφά."
+
+#. (itstool) path: figure/title
+#: C/index.docbook:389
+msgid "Editing the List Layout"
+msgstr "Επεξεργασία της διάταξης καταλόγου"
+
+#. (itstool) path: screenshot/mediaobject
+#: C/index.docbook:391
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_design_layout_list.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Editing the list layout."
+"</phrase> </textobject>"
+msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_design_layout_list.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Επεξεργασία της "
+"διάταξης καταλόγου.</phrase> </textobject>"
+
+#. (itstool) path: sect3/title
+#: C/index.docbook:404
+msgid "Arranging the Details View"
+msgstr "Διευθέτηση της προβολής λεπτομερειών"
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:405
+msgid ""
+"For the <literal>Details</literal> view, you can create groups of fields, "
+"and give these groups titles. You can then place fields in these groups and "
+"specify the sequence fo fields in these groups. You can also specify the "
+"sequence of these groups. For instance, in a \"Contacts\" table, you might "
+"create a \"Name\" group, and place the \"title\", \"first_name\" and "
+"\"last_name\" fields in that group. You might have other groups for the "
+"\"Address\" fields."
+msgstr ""
+"Για την προβολή <literal>Λεπτομέρειες</literal>, μπορείτε να δημιουργήσετε "
+"ομάδες πεδίων και να δώσετε σε αυτές τις ομάδες τίτλους. Μπορείτε έπειτα να "
+"βάλετε πεδία σε αυτές τις ομάδες και να ορίσετε την αλληλουχία για τα πεδία "
+"σε αυτές τις ομάδες. Μπορείτε επίσης να ορίσετε την αλληλουχία αυτών των "
+"ομάδων. Για παράδειγμα, σε έναν πίνακα \"Επαφές\", μπορείτε να δημιουργήσετε "
+"μια ομάδα \"Όνομα\" και να βάλετε πεδία \"τίτλος\", \"όνομα\" \"επώνυμο\" σε "
+"αυτήν την ομάδα. Μπορείτε να έχετε άλλες ομάδες για τα πεδία \"Διεύθυνση\"."
+
+#. (itstool) path: figure/title
+#: C/index.docbook:408
+msgid "Editing the details Layout"
+msgstr "Επεξεργασία της διάταξης λεπτομερειών"
+
+#. (itstool) path: screenshot/mediaobject
+#: C/index.docbook:410
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_design_layout_details.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Editing the Details "
+"Layout.</phrase> </textobject>"
+msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_design_layout_details.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Επεξεργασία της "
+"διάταξης λεπτομερειών.</phrase> </textobject>"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:425
+msgid "Creating Relationships"
+msgstr "Δημιουργία σχέσεων"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:426
+msgid ""
+"Tables in the Database are often related together. For instance, an "
+"\"Invoices\" table might have a \"Customer ID\" field. A value in this field "
+"would specify a record in the \"Customers\" table with the same value. Glom "
+"can show extra information, such as the customer name, from that related "
+"record. Or it can show a list of several related records - for instance, "
+"several related \"Invoice Lines\" that are related to a record in the "
+"\"Invoice\" record."
+msgstr ""
+"Πίνακες στη βάση δεδομένων συσχετίζονται συχνά μαζί. Για παράδειγμα, ένας "
+"πίνακας \"Τιμολόγια\" μπορεί να έχει ένα πεδίο \"Αναγνωριστικό πελάτη\". Μια "
+"τιμή σε αυτό το πεδίο μπορεί να ορίσει μια εγγραφή στον πίνακα \"Πελάτες\" "
+"με την ίδια τιμή. Το Glom μπορεί να εμφανίσει πρόσθετες πληροφορίες, όπως το "
+"όνομα πελάτη, από αυτήν τη συσχετισμένη εγγραφή. Ή μπορεί να εμφανίσει έναν "
+"κατάλογο πολλών συσχετισμένων εγγραφών - για παράδειγμα, αρκετές "
+"συσχετισμένες \"Γραμμές τιμολογίων\" που σχετίζονται με μια εγγραφή στην "
+"εγγραφή \"Τιμολόγιο\"."
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:427
+msgid ""
+"To create relationships, choose <literal>Relationships</literal> from the "
+"<literal>Developer</literal> menu. This will show the list of existing "
+"relationships. Click the <literal>Add</literal> button to create a new "
+"relationship, and enter a name for it. You should then choose a field in the "
+"current table, and a field in another table to which it should be related. "
+"This relationship will find any records in the other table for which the "
+"values in both fields are equal."
+msgstr ""
+"Για να δημιουργήσετε σχέσεις, επιλέξτε <literal>Σχέσεις</literal> από το "
+"μενού <literal>Δημιουργός</literal>. Αυτό θα εμφανίσει τον κατάλογο των "
+"υπαρχουσών σχέσεων. Πατήστε το πλήκτρο <literal>Προσθήκη</literal> για να "
+"δημιουργήσετε μια νέα σχέση και εισάγετε ένα όνομα για αυτήν. Θα πρέπει "
+"έπειτα να επιλέξετε ένα πεδίο στον τρέχοντα πίνακα και ένα πεδίο σε έναν "
+"άλλον πίνακα που πρέπει να συσχετιστεί. Αυτή η σχέση θα βρει οποιεσδήποτε "
+"εγγραφές στον άλλον πίνακα για τον οποίον οι τιμές και στα δύο πεδία είναι "
+"ίσες."
+
+#. (itstool) path: listitem/simpara
+#: C/index.docbook:432
+msgid "To show a related field on the List or Details view."
+msgstr ""
+"Εμφάνιση ενός συσχετισμένου πεδίου στην προβολή καταλόγου ή λεπτομερειών."
+
+#. (itstool) path: listitem/simpara
+#: C/index.docbook:433
+msgid "To show a list of related records on the Details view."
+msgstr ""
+"Για να εμφανίσετε έναν κατάλογο των συσχετισμένων εγγραφών στην προβολή "
+"λεπτομερειών."
+
+#. (itstool) path: listitem/simpara
+#: C/index.docbook:434
+msgid ""
+"To lookup a value from a field in a related record. For instance, to copy "
+"the current price of a \"Product\" into the \"Price\" field of an \"Invoice "
+"Line\" record."
+msgstr ""
+"Για να αναζητήσετε μια τιμή από ένα πεδίο σε μια συσχετισμένη εγγραφή. Για "
+"παράδειγμα, για να αντιγράψετε την τρέχουσα τιμή ενός \"Προϊόντος\" στο "
+"πεδίο \"Τιμή\" μιας εγγραφής \"Γραμμής τιμολογίου\"."
+
+#. (itstool) path: listitem/simpara
+#: C/index.docbook:435
+msgid "To calculate a field value."
+msgstr "Υπολογισμός τιμής πεδίου."
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:429
+msgid ""
+"You can use the relationship in the following places. <_:orderedlist-1/>"
+msgstr ""
+"Μπορείτε να χρησιμοποιήσετε τη σχέση στις ακόλουθες θέσεις. <_:orderedlist-1/"
+">"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:441
+msgid "Users Administration"
+msgstr "Διαχείριση χρηστών"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:442
+msgid ""
+"To define the <literal>Operators</literal> who can use your database, and to "
+"specify what access they have to the various tables, choose <literal>Users</"
+"literal> from the <literal>Developer</literal> menu."
+msgstr ""
+"Για να ορίσετε τους <literal>Χειριστές</literal> που μπορούν να "
+"χρησιμοποιήσουν τη βάση δεδομένων σας και να ορίσετε ποια πρόσβαση έχουν "
+"στους ποικίλους πίνακες, επιλέξτε <literal>Χρήστες</literal> από το μενού "
+"<literal>Χειριστές</literal>."
+
+#. (itstool) path: sect2/title
+#. (itstool) path: figure/title
+#: C/index.docbook:447 C/index.docbook:454
+msgid "Translations"
+msgstr "Μεταφράσεις"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:448
+msgid ""
+"Glom's user interface (and this document) is translated into several "
+"languages, as you should see already if you are using your computer with a "
+"non-English user interface. In addition, Glom automatically shows and "
+"understands numbers and dates according to the current user's local "
+"conventions. For instance, a user in the USA might enter a price as 1.99 and "
+"a date as 1/13/2008, but a German user of the same database will later see "
+"that as 1,99 and 13.1.2008."
+msgstr ""
+"Η διεπαφή χρήστη του Glom (και αυτό το έγγραφο) είναι μεταφρασμένα σε "
+"αρκετές γλώσσες, όπως μπορείτε να δείτε ήδη αν χρησιμοποιείτε τον υπολογιστή "
+"σας με μια διεπαφή χρήστη μη αγγλική. Επιπλέον, το Glom εμφανίζει αυτόματα "
+"και καταλαβαίνει αριθμούς και ημερομηνίες σύμφωνα με τις τρέχουσες τοπικές "
+"συμβάσεις του χρήστη. Για παράδειγμα, ένας χρήστης στις ΗΠΑ μπορεί να "
+"εισάγει μια τιμή ως 1.99 και μια ημερομηνία ως 1/13/2008, αλλά ένας Γερμανός "
+"για την ίδια βάση δεδομένων θα τις δει αργότερα ως 1,99 και 13.1.2008."
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:449
+msgid ""
+"However, the Glom system that you create also contains text that must be "
+"translated if it will be used by people who speak different languages. For "
+"instance, you must provide translations for the titles of your tables, "
+"fields, and reports. All of these text items can be seen in a list when you "
+"choose <literal>Translations</literal> from the <literal>Developer</literal> "
+"menu. In this window you can specify the language that you used for the "
+"original text, and enter translations for each text item for additional "
+"languages. When the Glom system is opened by a user of that language then "
+"these text items will be shown in the user interface."
+msgstr ""
+"Όμως, το σύστημα Glom που δημιουργείτε περιέχει επίσης κείμενο που πρέπει να "
+"μεταφραστεί αν θα χρησιμοποιηθεί από άτομα που μιλούν διαφορετικές γλώσσες. "
+"Για παράδειγμα, πρέπει να δώσετε μεταφράσεις για τους τίτλους των πινάκων, "
+"των πεδίων και των αναφορών. Όλα αυτά τα στοιχεία κειμένου μπορείτε να τα "
+"δείτε σε έναν κατάλογο όταν επιλέξετε <literal>Μεταφράσεις</literal> από το "
+"μενού <literal>Δημιουργός</literal>. Σε αυτό το παράθυρο μπορείτε να ορίσετε "
+"τη γλώσσα που χρησιμοποιήσατε για το αρχικό κείμενο και να εισάγετε "
+"μεταφράσεις για κάθε στοιχείο κειμένου για πρόσθετες γλώσσες. Όταν το "
+"σύστημα Glom ανοίγεται από έναν χρήστη αυτής της γλώσσας, τότε θα "
+"εμφανιστούν αυτά τα στοιχεία κειμένου στην διεπαφή χρήστη."
+
+#. (itstool) path: screenshot/mediaobject
+#: C/index.docbook:456
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_design_translations.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Translations.</phrase> "
+"</textobject>"
+msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_design_translations.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Μεταφράσεις.</phrase> </"
+"textobject>"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:467
+msgid ""
+"Experienced translators may be more familiar with the .po file format, or "
+"you might wish to use the many tools that work with the .po file format. By "
+"using the <literal>Export</literal> button you can create a .po file to use "
+"in a separate tool or to send to a translator. You can then import the "
+"resulting translation by using the <literal>Import</literal> button."
+msgstr ""
+"Οι έμπειροι μεταφραστές μπορεί να είναι πιο εξοικειωμένοι με τη μορφή "
+"αρχείων .po, ή μπορεί να θέλετε να χρησιμοποιήσετε τα πολλά εργαλεία που "
+"δουλεύουν με τη μορφή αρχείων .po. Χρησιμοποιώντας το πλήκτρο "
+"<literal>Εξαγωγή</literal> μπορείτε να δημιουργήσετε ένα αρχείο .po για να "
+"το χρησιμοποιήσετε σε ένα ξεχωριστό εργαλείο ή να το στείλετε σε έναν "
+"μεταφραστή. Μπορείτε έπειτα να εισάγετε την τελική μετάφραση χρησιμοποιώντας "
+"το πλήκτρο <literal>εισαγωγή</literal>."
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:472
+msgid "Defining Reports"
+msgstr "Ορισμός αναφορών"
+
+#. (itstool) path: sect3/title
+#: C/index.docbook:475
+msgid "Adding or Editing Reports"
+msgstr "Προσθήκη ή επεξεργασία αναφορών"
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:477
+msgid ""
+"Glom can produce reports to show specific fields for sets of records, sorted "
+"and grouped. For instance, a shop might need a report listing all products "
+"sold in one month, grouped by product type, and sorted by price inside each "
+"group. Each table has its own reports, which are available to the operator "
+"from the <literal>Reports</literal> menu."
+msgstr ""
+"Το Glom μπορεί να παράξει αναφορές για να εμφανίσει συγκεκριμένα πεδία για "
+"σύνολα εγγραφών, ταξινομημένα και ομαδοποιημένα. Για παράδειγμα, ένα "
+"κατάστημα μπορεί να χρειάζεται μια αναφορά καταγραφής όλων των προϊόντων που "
+"πουλήθηκαν σε έναν μήνα, ομαδοποιημένη κατά είδος προϊόντος και ταξινομημένο "
+"κατά τιμή μέσα σε κάθε ομάδα. Κάθε πίνακας έχει τις δικές του αναφορές, που "
+"είναι διαθέσιμες στον χειριστή από το μενού <literal>Αναφορές</literal>."
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:479
+msgid ""
+"To define a report, or to change the definition of an existing report, "
+"choose <literal>Reports</literal> from the <literal>Developer</literal> menu."
+msgstr ""
+"Για να ορίσετε μια αναφορά, ή να αλλάξετε τον ορισμό μιας υπάρχουσας "
+"αναφοράς, επιλέξτε <literal>Αναφορές</literal> από το μενού "
+"<literal>Δημιουργός</literal>."
+
+#. (itstool) path: figure/title
+#: C/index.docbook:481
+msgid "Creating or Editing Reports"
+msgstr "Δημιουργία ή επεξεργασία αναφορών"
+
+#. (itstool) path: screenshot/mediaobject
+#: C/index.docbook:483
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_design_reports.png\" format="
+"\"PNG\"/> </imageobject> <textobject> <phrase>Creating or editing reports.</"
+"phrase> </textobject>"
+msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_design_reports.png\" format="
+"\"PNG\"/> </imageobject> <textobject> <phrase>Δημιουργία ή επεξεργασία "
+"αναφορών.</phrase> </textobject>"
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:494
+msgid ""
+"Notice that each report has an ID as well as a human-readable name. This "
+"allows your report to have a translated title when used on a computer that "
+"uses a different language."
+msgstr ""
+"Σημειώστε ότι κάθε αναφορά έχει ένα αναγνωριστικό καθώς και ένα όνομα. Αυτό "
+"επιτρέπει στην αναφορά σας να έχει έναν μεταφρασμένο τίτλο όταν "
+"χρησιμοποιείται σε έναν υπολογιστή που χρησιμοποιεί διαφορετική γλώσσα."
+
+#. (itstool) path: sect3/title
+#. (itstool) path: figure/title
+#: C/index.docbook:499 C/index.docbook:513
+msgid "Editing a Report"
+msgstr "Επεξεργασία αναφοράς"
+
+#. (itstool) path: listitem/simpara
+#: C/index.docbook:503
+msgid "The Header, which appears at the start of the report"
+msgstr "Η κεφαλίδα, που εμφανίζεται στην αρχή της αναφοράς"
+
+#. (itstool) path: listitem/simpara
+#: C/index.docbook:504
+msgid ""
+"The Main area, in which the records and summary lines are shown, with the "
+"actual data from the database."
+msgstr ""
+"Η κυρίως περιοχή, στην οποία εμφανίζονται οι γραμμές εγγραφών και περίληψης, "
+"με τα ενεργά δεδομένα από τη βάση δεδομένων."
+
+#. (itstool) path: listitem/simpara
+#: C/index.docbook:505
+msgid "The Footer, which appears at the end of the report."
+msgstr "Το υποσέλιδο, που εμφανίζεται στο τέλος της αναφοράς."
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:501
+msgid "A Glom report has three areas: <_:orderedlist-1/>"
+msgstr "Μια αναφορά Glom έχει τρεις περιοχές: <_:orderedlist-1/>"
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:509
+msgid ""
+"Inside an area, such as the Main part, you may add report <literal>Parts</"
+"literal>, such as fields, text, or images. These will usually appear in a "
+"row on the printed report, with one row for each record. In the simple case, "
+"this will look much like Glom's list view. You can add parts to your report "
+"by selecting them from the <literal>Available Parts</literal> list and then "
+"clicking the <literal>Add</literal> button. The part will then be added to "
+"the <literal>Parts</literal> list, in the selected area."
+msgstr ""
+"Μέσα σε μια περιοχή, όπως το κυρίως μέρος, μπορείτε να προσθέσετε "
+"<literal>Μέρη</literal>, όπως πεδία, κείμενο ή εικόνες. Αυτά θα εμφανιστούν "
+"συνήθως σε μια γραμμή στην τυπωμένη αναφορά, με μια γραμμή για κάθε εγγραφή. "
+"Στην απλή περίπτωση, αυτό θα μοιάζει πολύ με την προβολή καταλόγου του Glom. "
+"Μπορείτε να προσθέσετε μέρη στην αναφορά σας επιλέγοντας τα από τον κατάλογο "
+"<literal>Διαθέσιμα μέρη</literal> και πατώντας έπειτα το πλήκτρο "
+"<literal>Προσθήκη</literal>. Το μέρος θα προστεθεί τότε στον κατάλογο "
+"<literal>Μέρη</literal>, στην επιλεγμένη περιοχή."
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:510
+msgid ""
+"To specify details for the parts, such as the text or image to display, or "
+"to choose the field to display, select the part in the <literal>Parts</"
+"literal> list and click the <literal>Edit</literal> button. You may also "
+"specify field formatting by clicking the <literal>Formatting</literal> "
+"button, just as you would when defining a details or list layout."
+msgstr ""
+"Για να ορίσετε λεπτομέρειες για τα μέρη, όπως το κείμενο ή την εικόνα που θα "
+"εμφανιστεί, ή για να επιλέξετε το πεδίο που θα εμφανιστεί, επιλέξτε το μέρος "
+"στον κατάλογο <literal>Μέρη</literal> και πατήστε το πλήκτρο "
+"<literal>Επεξεργασία</literal>. Μπορείτε επίσης να ορίσετε τη μορφοποίηση "
+"πεδίου πατώντας το πλήκτρο <literal>Μορφοποίηση</literal>, ακριβώς όπως θα "
+"κάνατε κατά τον ορισμό διάταξης λεπτομερειών ή καταλόγου."
+
+#. (itstool) path: screenshot/mediaobject
+#: C/index.docbook:515
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_design_reports_details.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Editing a report.</"
+"phrase> </textobject>"
+msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_design_reports_details.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Επεξεργασία αναφοράς.</"
+"phrase> </textobject>"
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:526
+msgid ""
+"Some parts may contain other parts and have extra properties to control how "
+"they present their child parts. For instance, the <literal>Group By</"
+"literal> part groups records together by a field. For instance, a products "
+"report might group a list of products by product type. You can even add a "
+"second sub-grouping inside the main <literal>Group By</literal> part, by "
+"selecting your top-level <literal>Group By</literal> part in the "
+"<literal>Parts</literal> list while adding a new <literal>Group By</literal> "
+"part from the <literal>Available Parts</literal> list. For instance, you "
+"might group your products by manufacturer, inside each product type group."
+msgstr ""
+"Κάποια μέρη μπορεί να περιέχουν άλλα μέρη και να έχουν πρόσθετες ιδιότητες "
+"για να ελέγξουν πώς παρουσιάζονται τα θυγατρικά τους μέρη. Για παράδειγμα, "
+"το μέρος <literal>Ομαδοποίηση κατά</literal> ομαδοποιεί εγγραφές μαζί κατά "
+"πεδίο. Για παράδειγμα, μια αναφορά προϊόντων μπορεί να ομαδοποιεί έναν "
+"κατάλογο προϊόντων κατά τύπο προϊόντος. Μπορείτε ακόμα να προσθέσετε μια "
+"δεύτερη υποομαδοποίηση μέσα στο κυρίως μέρος <literal>Ομαδοποίηση κατά</"
+"literal>, επιλέγοντας το μέρος ανωτάτου επιπέδου <literal>Ομαδοποίηση κατά</"
+"literal> στον κατάλογο <literal>Μέρη</literal>, ενώ προσθέτετε ένα νέο μέρος "
+"<literal>Ομαδοποίηση κατά</literal> από τον κατάλογο <literal>Διαθέσιμα "
+"μέρη</literal>. Για παράδειγμα, μπορείτε να ομαδοποιήσετε τα προϊόντα σας "
+"κατά κατασκευαστή, μέσα σε κάθε ομάδα είδους προϊόντος."
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:527
+msgid ""
+"To specify the field by which the records should be grouped, select your "
+"<literal>Group By</literal> part in the <literal>Parts</literal> list and "
+"click the <literal>Edit</literal> button. You can then choose the field by "
+"which the records should be grouped, and select the fields by which these "
+"records should be sorted within the group. You may also specify some "
+"additional fields to be displayed in the group's title row. For instance, "
+"you might want to group products by a manufacturer ID, but also show the "
+"manufacturer name."
+msgstr ""
+"Για να ορίσετε το πεδίο κατά το οποίο πρέπει να ομαδοποιηθούν οι εγγραφές, "
+"επιλέξτε το μέρος σας <literal>Ομαδοποίηση κατά</literal> στον κατάλογο "
+"<literal>Μέρη</literal> και πατήστε το πλήκτρο <literal>Επεξεργασία</"
+"literal>. Μπορείτε έπειτα να επιλέξετε το πεδίο κατά το οποίο πρέπει να "
+"ομαδοποιηθούν οι εγγραφές και επιλέξτε τα πεδία κατά τα οποία πρέπει να "
+"ταξινομηθούν αυτές οι εγγραφές μέσα στην ομάδα. Μπορείτε επίσης να ορίσετε "
+"κάποια πρόσθετα πεδία να εμφανίζονται στην γραμμή τίτλου της ομάδας. Για "
+"παράδειγμα, μπορεί να θέλετε να ομαδοποιήσετε προϊόντα κατά αναγνωριστικό "
+"κατασκευαστή, αλλά να εμφανίσετε επίσης το όνομα του κατασκευαστή."
+
+#. (itstool) path: figure/title
+#: C/index.docbook:530
+msgid "Editing a Group By Part"
+msgstr "Επεξεργασία μιας ομάδας κατά μέρος"
+
+#. (itstool) path: screenshot/mediaobject
+#: C/index.docbook:532
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_design_reports_group_by.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Editing a report.</"
+"phrase> </textobject>"
+msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_design_reports_group_by.png\" "
+"format=\"PNG\"/> </imageobject> <textobject> <phrase>Επεξεργασία αναφοράς.</"
+"phrase> </textobject>"
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:543
+msgid ""
+"The <literal>Vertical Group</literal> part may contain other items. For "
+"instance, it allows you to arrange fields below each other instead of just "
+"one after the other in the horizontal row. This is useful for grouping "
+"related fields such as address lines, or just to squeeze more information "
+"into the records's row on the report."
+msgstr ""
+"Το μέρος <literal>Κάθετη ομάδα</literal> μπορεί να περιέχει άλλα στοιχεία. "
+"Για παράδειγμα, σας επιτρέπει να ταξινομήσετε πεδία κάτω από κάθε άλλο αντί "
+"απλώς ένα μετά το άλλο στην οριζόντια γραμμή. Αυτό είναι χρήσιμο για "
+"ομαδοποίηση συσχετισμένων πεδίων όπως γραμμές διεύθυνσης, ή απλά για να "
+"στριμώξετε περισσότερες πληροφορίες στη γραμμή εγγραφής για την αναφορά."
+
+#. (itstool) path: figure/title
+#: C/index.docbook:546
+msgid "A Report with Vertical Groups"
+msgstr "Μια αναφορά με κάθετες ομάδες"
+
+#. (itstool) path: screenshot/mediaobject
+#: C/index.docbook:548
+msgid ""
+"<imageobject><imagedata fileref=\"figures/glom_design_reports_vertical_group."
+"png\" format=\"PNG\"/> </imageobject> <textobject> <phrase>A Report with "
+"Vertical Groups.</phrase> </textobject>"
+msgstr ""
+"<imageobject><imagedata fileref=\"figures/glom_design_reports_vertical_group."
+"png\" format=\"PNG\"/> </imageobject> <textobject> <phrase>Μια αναφορά με "
+"κάθετες ομάδες.</phrase> </textobject>"
+
+#. (itstool) path: sect3/para
+#: C/index.docbook:559
+msgid ""
+"When you have finished, click the <literal>Close</literal> button to save "
+"the report's definition. Your report can then be chosen from the "
+"<literal>Reports</literal> menu. See the <link linkend=\"glom-operator-"
+"printing-reports\">Printing Reports</link> section for more details."
+msgstr ""
+"Όταν έχετε τελειώσει, πατήστε το πλήκτρο <literal>Κλείσιμο</literal> για να "
+"αποθηκεύσετε τον ορισμό αναφοράς. Η αναφορά σας μπορεί τότε να επιλεγεί από "
+"το μενού <literal>Αναφορές</literal>. Δείτε την ενότητα <link linkend=\"glom-"
+"operator-printing-reports\">Εκτύπωση αναφορών</link> για περισσότερες "
+"λεπτομέρειες."
+
+#. (itstool) path: sect1/title
+#: C/index.docbook:573
+msgid "Dialogs"
+msgstr "Διάλογοι"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:576
+msgid "Dialog: Initial dialog"
+msgstr "Διάλογος: Αρχικός διάλογος"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:577
+msgid ""
+"This dialog allows the user to choose an existing document or create a new "
+"document. Existing documents may be selecting from the list of recently "
+"opened documents or by select a file with the file chooser dialog. Documents "
+"can also be opened via the network if other users are running Glom on the "
+"local network. Finally, a new document can be created either by opening a "
+"template file which already contains some initial tables and records, or by "
+"creating an empty document."
+msgstr ""
+"Αυτός ο διάλογος επιτρέπει στον χρήστη να επιλέξει ένα υπάρχον έγγραφο ή να "
+"δημιουργήσει ένα νέο έγγραφο. Τα υπάρχοντα έγγραφα μπορούν να επιλεγούν από "
+"τον κατάλογο των πρόσφατα ανοιγμένων εγγράφων ή επιλέγοντας ένα αρχείο με "
+"τον διάλογο επιλογής αρχείου. Τα έγγραφα μπορούν επίσης να ανοιχτούν μέσα "
+"από το δίκτυο αν άλλοι χρήστες εκτελούν το Glom στο τοπικό δίκτυο. Τελικά, "
+"ένα νέο έγγραφο μπορεί να δημιουργηθεί είτε ανοίγοντας ένα αρχείο προτύπου "
+"που περιέχει ήδη κάποιους αρχικούς πίνακες και εγγραφές, είτε δημιουργώντας "
+"ένα κενό έγγραφο."
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:581
+msgid "Dialog: New database"
+msgstr "Διάλογος: Νέα βάση δεδομένων"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:586
+msgid "Dialog: Create database"
+msgstr "Διάλογος: Δημιουργία βάσης δεδομένων"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:591
+msgid "Dialog: Connection"
+msgstr "Διάλογος: Σύνδεση"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:592
+msgid ""
+"This dialog requests a user name and password for connection to a database "
+"server. This is usually not the same username and password combination with "
+"which you log in to your system. All Glom systems require a database server "
+"on which the actual data will be stored. If the database server is not "
+"running on your local computer (\"localhost\"), then you must also provide "
+"its network hostname, such as \"glomserver.openismus.com\", though your "
+"hostname will be different."
+msgstr ""
+"Αυτός ο διάλογος ζητά ένα όνομα χρήστη και κωδικό πρόσβασης για σύνδεση με "
+"έναν διακομιστή βάσης δεδομένων. Αυτό συνήθως δεν είναι το ίδιο με τον "
+"συνδυασμό ονόματος χρήστη και κωδικού πρόσβασης με τον οποίον συνδέεστε στο "
+"σύστημά σας. Όλα τα συστήματα Glom απαιτούν έναν διακομιστή βάσης δεδομένων "
+"στον οποίον τα ενεργά δεδομένα θα αποθηκευτούν. Αν ο διακομιστής της βάσης "
+"δεδομένων δεν τρέχει στον τοπικό σας υπολογιστή (\"τοπικός οικοδεσπότης\"), "
+"τότε πρέπει επίσης να δώσετε το όνομα οικοδεσπότη του δικτύου του, όπως "
+"\"glomserver.openismus.com\", αν και το όνομα του οικοδεσπότη σας θα είναι "
+"διαφορετικό."
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:593
+msgid "Your system administrator can provide these database login details."
+msgstr ""
+"Ο διαχειριστής του συστήματός σας μπορεί να σας παράσχει αυτές τις "
+"λεπτομέρειες σύνδεσης της βάσης δεδομένων."
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:594
+msgid ""
+"If you are the system administrator, see Glom's <ulink url=\"http://www.glom."
+"org/wiki/index.php?title=Initial_Postgres_Configuration\" type=\"http"
+"\">Postgres Configuration</ulink> web page for help with installing and "
+"configuring a database server."
+msgstr ""
+"Αν είσαστε ο διαχειριστής του συστήματος δείτε την ιστοσελίδα του Glom "
+"<ulink url=\"http://www.glom.org/wiki/index.php?"
+"title=Initial_Postgres_Configuration\" type=\"http\">Διαμόρφωση Postgres</"
+"ulink> για βοήθεια με την εγκατάσταση και διαμόρφωση ενός διακομιστή βάσης "
+"δεδομένων."
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:598
+msgid "Dialog: Connection Error"
+msgstr "Διάλογος: Σφάλμα σύνδεσης"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:599
+msgid ""
+"This dialog is shown when Glom could not connect to the specified database "
+"server. Either the database server is not running at the specified hostname, "
+"or the user name and password were not accepted by the database server. See "
+"the <link linkend=\"dialog_connection\">Connection Dialog</link> section for "
+"more details."
+msgstr ""
+"Αυτός ο διάλογος εμφανίζεται όταν το Glom δεν μπόρεσε να συνδεθεί με τον "
+"συγκεκριμένο διακομιστή βάσης δεδομένων. Είτε ο διακομιστής της βάσης "
+"δεδομένων δεν εκτελείται στο συγκεκριμένο όνομα οικοδεσπότη, είτε το όνομα "
+"χρήστη και ο κωδικός πρόσβασης δεν έγιναν αποδεκτοί από τον διακομιστή της "
+"βάσης δεδομένων. Δείτε την ενότητα <link linkend=\"dialog_connection"
+"\">Διάλογος σύνδεσης</link> για περισσότερες λεπτομέρειες."
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:605
+msgid "Dialog: Database preferences"
+msgstr "Διάλογος: Προτιμήσεις βάσης δεδομένων"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:610
+msgid "Dialog: Change language"
+msgstr "Διάλογος: Αλλαγή γλώσσας"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:615
+msgid "Window: Textobject"
+msgstr "Παράθυρο: Αντικείμενο κειμένου"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:620
+msgid "Window: Imageobject"
+msgstr "Παράθυρο: Αντικείμενο εικόνας"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:625
+msgid "Dialog: Notebook"
+msgstr "Διάλογος: Σημειωματάριο"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:630
+msgid "Dialog: Data invalid format"
+msgstr "Διάλογος: Μορφή άκυρων δεδομένων"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:635
+msgid "Dialog: Relationship overview"
+msgstr "Διάλογος: Επισκόπηση σχέσης"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:640
+msgid "Window: Groups"
+msgstr "Παράθυρο: Ομάδες"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:645
+msgid "Dialog: Group by sort fields"
+msgstr "Διάλογος: Ομαδοποίηση κατά ταξινόμηση πεδίων"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:650
+msgid "Dialog: Group by secondary fields"
+msgstr "Διάλογος: Ομαδοποίηση κατά δευτερεύοντα πεδία"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:655
+msgid "Window: Button script"
+msgstr "Παράθυρο: Σενάριο πλήκτρου"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:660
+msgid "Window: Field calculation"
+msgstr "Παράθυρο: Υπολογισμός πεδίου"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:665
+msgid "Dialog: New group"
+msgstr "Διάλογος: Νέα ομάδα"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:670
+msgid "Dialog: Choose user"
+msgstr "Διάλογος: Επιλογή χρήστη"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:675
+msgid "Dialog: User"
+msgstr "Διάλογος: Χρήστης"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:680
+msgid "Dialog: Translation identify original"
+msgstr "Διάλογος: Αρχικό αναγνωριστικό μετάφρασης"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:685
+msgid "Dialog: Translation copy"
+msgstr "Διάλογος: Αντίγραφο μετάφρασης"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:690
+msgid "Dialog: Choose Date"
+msgstr "Διάλογος: Επιλογή ημερομηνίας"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:695
+msgid "Dialog: Import Into Table"
+msgstr "Διάλογος: Εισαγωγή σε πίνακα"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:696
+msgid ""
+"This dialog allows the user to import a CSV (comma separated value) file "
+"into the current database table. It shows the first few rows of the file to "
+"import and allows the user to select the target field in the database for "
+"each column in the CSV file. For auto-incremented primary keys, the primary "
+"key field cannot be used as a target field, but otherwise one column must be "
+"imported into the primary key field."
+msgstr ""
+"Αυτός ο διάλογος επιτρέπει στον χρήστη να εισάγει ένα CSV αρχείο (που οι "
+"τιμές χωρίζονται με κόμματα) στον τρέχοντα πίνακα βάσης δεδομένων. Εμφανίζει "
+"τις πρώτες λίγες γραμμές του αρχείου για εισαγωγή και επιτρέπει στον χρήστη "
+"να επιλέξει το πεδίο του στόχου στη βάση δεδομένων για κάθε στήλη στο αρχείο "
+"CSV. Για αυτόματα αυξανόμενα πρωτεύοντα κλειδιά, το πρωτογενές πεδίο "
+"κλειδιού δεν μπορεί να χρησιμοποιηθεί ως πεδίο στόχου, αλλά αλλιώς μια στήλη "
+"πρέπει να εισαχθεί στο πρωτεύον πεδίο κλειδιού."
+
+#. (itstool) path: sect1/title
+#: C/index.docbook:719
+msgid "About Glom"
+msgstr "Περί του Glom"
+
+#. (itstool) path: sect1/para
+#: C/index.docbook:720
+msgid ""
+"Glom is maintained by Glom and GNOME community volunteers. To find more "
+"information about Glom, please visit the <ulink url=\"http://www.glom.org/\" "
+"type=\"http\">Glom Web site</ulink>."
+msgstr ""
+"Το Glom συντηρείται από εθελοντές των κοινοτήτων Glom και GNOME. Για να "
+"βρείτε περισσότερες πληροφορίες για το Glom, παρακαλούμε επισκεφτείτε τον "
+"<ulink url=\"http://www.glom.org/\" type=\"http\">ιστότοπο Glom</ulink>."
+
+#. (itstool) path: sect1/para
+#: C/index.docbook:725
+msgid ""
+"To report a bug or make a suggestion regarding this application or this "
+"manual, you can submit them using <ulink url=\"http://bugzilla.gnome.org\" "
+"type=\"help\">bugzilla</ulink>."
+msgstr ""
+"Για να αναφέρετε ένα σφάλμα ή να κάνετε μία πρόταση σχετικά με την εφαρμογή "
+"ή το εγχειρίδιο, μπορείτε να τα υποβάλετε χρησιμοποιώντας το <ulink url="
+"\"http://bugzilla.gnome.org\" type=\"help\">bugzilla</ulink>."
+
+#. (itstool) path: sect1/para
+#: C/index.docbook:731
+msgid ""
+"Another excellent source of information are the Glom <ulink url=\"http://www."
+"glom.org\" type=\"http\">mailing lists</ulink>."
+msgstr ""
+"Μια άλλη εξαίρετη πηγή πληροφοριών είναι οι <ulink url=\"http://www.glom.org"
+"\" type=\"http\">κατάλογοι αλληλογραφίας</ulink> του Glom."
+
+#. (itstool) path: sect1/para
+#: C/index.docbook:736
+msgid ""
+"This program is distributed under the terms of the GNU General Public "
+"license as published by the Free Software Foundation; either version 2 of "
+"the License, or (at your option) any later version. A copy of this license "
+"can be found at this <ulink url=\"ghelp:gpl\" type=\"help\">link</ulink>, or "
+"in the file COPYING included with the source code of this program."
+msgstr ""
+"Αυτό το πρόγραμμα διανέμεται υπό τους όρους της Γενικής Άδειας Δημόσιας "
+"Χρήσης GNU (GPL), όπως αυτή έχει δημοσιευτεί από το Ίδρυμα Ελεύθερου "
+"Λογισμικού (FSS) — είτε της έκδοσης 2 της ‘Αδειας, είτε (κατ' επιλογήν σας) "
+"οποιασδήποτε μεταγενέστερης έκδοσης. Αντίγραφο της άδειας είναι διαθέσιμο "
+"στον ακόλουθο <ulink url=\"ghelp:gpl\" type=\"help\">σύνδεσμο</ulink>, ή στο "
+"αρχείο COPYING που διανέμεται μαζί με τον πηγαίο κώδικα αυτού του "
+"προγράμματος."
+
+#. (itstool) path: appendix/title
+#: C/index.docbook:745
+msgid "Concepts"
+msgstr "Έννοιες"
+
+#. (itstool) path: listitem/simpara
+#: C/index.docbook:748
+msgid ""
+"<literal>Database</literal>: Each Glom document allows access to one "
+"database."
+msgstr ""
+"<literal>Βάση δεδομένων</literal>: Κάθε έγγραφο Glom επιτρέπει την πρόσβαση "
+"σε μια βάση δεδομένων."
+
+#. (itstool) path: listitem/simpara
+#: C/index.docbook:749
+msgid ""
+"<literal>Table</literal>: Each database contains several tables, such as "
+"\"Customers\" and \"Invoices\" tables."
+msgstr ""
+"<literal>Πίνακας</literal>: Κάθε βάση δεδομένων περιέχει πολλούς πίνακες, "
+"όπως \"Πελάτες\" και \"Τιμολόγια\"."
+
+#. (itstool) path: listitem/simpara
+#: C/index.docbook:750
+msgid ""
+"<literal>Field</literal>: Each table has several fields, such as \"Customer "
+"ID\", \"First Name\", and \"Date of Birth\" fields. In other documents and "
+"applications, fields are sometimes called \"Columns\""
+msgstr ""
+"<literal>Πεδίο</literal>: Κάθε πίνακας έχει πολλά πεδία, όπως "
+"\"Αναγνωριστικό πελάτη\", \"Όνομα\" και \"Ημερομηνία γέννησης\". Σε άλλα "
+"έγγραφα και εφαρμογές, τα πεδία μερικές φορές λέγονται \"Στήλες\""
+
+#. (itstool) path: listitem/simpara
+#: C/index.docbook:751
+msgid ""
+"<literal>Records</literal>: Each table contains several records, each of "
+"which has values for each of the fields. For instance, the \"Customers\" "
+"table will have a record for each customer. In other documents and "
+"applications, records are sometimes called <literal>Rows</literal>."
+msgstr ""
+"<literal>Εγγραφές</literal>: Κάθε πίνακας περιέχει πολλές εγγραφές, που "
+"καθεμιά τους έχει τιμές για κάθε πεδίο. Για παράδειγμα, ο πίνακας \"Πελάτες"
+"\" θα έχει μια εγγραφή για κάθε πελάτη. Σε άλλα έγγραφα και εφαρμογές, οι "
+"εγγραφές μερικές φορές λέγονται <literal>Γραμμές</literal>."
+
+#. (itstool) path: listitem/simpara
+#: C/index.docbook:752
+msgid ""
+"<literal>Relationships</literal>: Each table might be related to other "
+"tables, via fields in both tables. For instance, a \"Customers\" table could "
+"have a relationship to the \"Invoices\" table, so that people could see all "
+"the invoices for that customer. Only developers need to understand this "
+"concept. In other documents and applications, relationships are sometimes "
+"called \"Joins\"."
+msgstr ""
+"<literal>Σχέσεις</literal>: Κάθε πίνακας μπορεί να συσχετιστεί με άλλους "
+"πίνακες, μέσα από πεδία και στους δύο πίνακες. Για παράδειγμα, ένας πίνακας "
+"\"Πελάτες\" μπορεί να έχει μια σχέση με τον πίνακα \"Τιμολόγια\", έτσι ώστε "
+"τα άτομα να μπορούν να δουν όλα τα τιμολόγια για αυτόν τον πελάτη. Μόνο οι "
+"προγραμματιστές χρειάζεται να καταλαβαίνουν αυτήν την έννοια. Σε άλλα "
+"έγγραφα και εφαρμογές, οι σχέσεις μερικές φορές λέγονται \"Σύνδεσμοι\"."
+
+#. (itstool) path: appendix/para
+#: C/index.docbook:746
+msgid ""
+"Glom is easy to use, but you must understand the following basic concepts. "
+"<_:orderedlist-1/>"
+msgstr ""
+"Το Glom είναι εύχρηστο, αλλά πρέπει να καταλάβετε τις ακόλουθες βασικές "
+"έννοιες. <_:orderedlist-1/>"
+
+#. (itstool) path: appendix/title
+#: C/index.docbook:758
+msgid "Calculated fields and button scripts"
+msgstr "Υπολογιζόμενα πεδία και σενάρια πλήκτρων"
+
+#. (itstool) path: appendix/para
+#: C/index.docbook:759
+msgid ""
+"Calculated fields and button scripts use the Python programming language. "
+"The calculation or script is the implementation of a function whose "
+"signature is provided for you."
+msgstr ""
+"Τα υπολογιζόμενα πεδία και τα σενάρια πλήκτρων χρησιμοποιούν την "
+"προγραμματιστική γλώσσα Python. Ο υπολογισμός ή σενάριο είναι η υλοποίηση "
+"της συνάρτησης της οποίας η υπογραφή παρέχεται για σας."
+
+#. (itstool) path: figure/title
+#: C/index.docbook:762
+msgid "Editing the definition of a calculated field"
+msgstr "Επεξεργασία του ορισμού ενός υπολογιζόμενου πεδίου"
+
+#. (itstool) path: screenshot/mediaobject
+#: C/index.docbook:764
+msgid ""
+"<imageobject><imagedata fileref=\"figures/"
+"glom_design_fields_dialog_calculated.png\" format=\"PNG\"/> </imageobject> "
+"<textobject> <phrase>Editing the definition of a calculated field.</phrase> "
+"</textobject>"
+msgstr ""
+"<imageobject><imagedata fileref=\"figures/"
+"glom_design_fields_dialog_calculated.png\" format=\"PNG\"/> </imageobject> "
+"<textobject> <phrase>Επεξεργασία του ορισμού υπολογιζόμενου πεδίου.</phrase> "
+"</textobject>"
+
+#. (itstool) path: sect1/title
+#: C/index.docbook:776
+msgid "Field values"
+msgstr "Τιμές πεδίου"
+
+#. (itstool) path: para/programlisting
+#: C/index.docbook:777
+#, no-wrap
+msgid "record[\"name_first\"]"
+msgstr "record[\"name_first\"]"
+
+#. (itstool) path: sect1/para
+#: C/index.docbook:777
+msgid ""
+"For instance, <_:programlisting-1/> is the value of the name_first field in "
+"the current record."
+msgstr ""
+"Για παράδειγμα, <_:programlisting-1/> είναι η τιμή του πεδίου name_first "
+"στην τρέχουσα εγγραφή."
+
+#. (itstool) path: sect1/title
+#: C/index.docbook:781
+msgid "Related Records"
+msgstr "Σχετικές εγγραφές"
+
+#. (itstool) path: para/programlisting
+#: C/index.docbook:782
+#, no-wrap
+msgid "record.related[\"location\"]"
+msgstr "record.related[\"location\"]"
+
+#. (itstool) path: sect1/para
+#: C/index.docbook:782
+msgid ""
+"For instance, <_:programlisting-1/> provides the related records for the "
+"current record."
+msgstr ""
+"Για παράδειγμα, το <_:programlisting-1/> παρέχει τις σχετικές εγγραφές για "
+"την τρέχουσα εγγραφή."
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:785
+msgid "Single related records"
+msgstr "Εγγραφές μοναδικά συσχετισμένες"
+
+#. (itstool) path: para/programlisting
+#: C/index.docbook:786
+#, no-wrap
+msgid "record.related[\"location\"][\"name\"]"
+msgstr "record.related[\"location\"][\"name\"]"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:786
+msgid ""
+"For relationships that specify a single record, you can get the value of a "
+"field in that record. For instance, <_:programlisting-1/> is the value of "
+"the name field in the table indicated by the location relationship (often "
+"called location::name)."
+msgstr ""
+"Για σχέσεις που ορίζουν μια μοναδική εγγραφή, μπορείτε να πάρετε την τιμή "
+"ενός πεδίου σε αυτήν την εγγραφή. Για παράδειγμα, το <_:programlisting-1/> "
+"είναι η τιμή του πεδίου ονόματος στον πίνακα που δείχνεται από τη σχέση "
+"θέσης (συχνά λέγεται location::name)."
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:790
+msgid "Multiple related records"
+msgstr "Πολλαπλές συσχετισμένες εγγραφές"
+
+#. (itstool) path: para/programlisting
+#: C/index.docbook:791
+#, no-wrap
+msgid "record.related[\"invoice_lines\"].sum(\"total_price\")"
+msgstr "record.related[\"invoice_lines\"].sum(\"total_price\")"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:791
+msgid ""
+"For relationships that specify multiple records, you can use the aggregate "
+"functions (sum, count, average) to get overall values. For instance, <_:"
+"programlisting-1/>."
+msgstr ""
+"Για σχέσεις που ορίζουν πολλαπλές εγγραφές, μπορείτε να χρησιμοποιήσετε τις "
+"συναρτήσεις σύνοψης (sum, count, average) για να πάρετε τις συνολικές τιμές. "
+"Για παράδειγμα, <_:programlisting-1/>."
+
+#. (itstool) path: sect1/title
+#: C/index.docbook:797
+msgid "Testing for empty values"
+msgstr "Έλεγχος για κενές τιμές"
+
+#. (itstool) path: sect1/para
+#: C/index.docbook:798
+msgid "How you test for empty values depends on the type of field:"
+msgstr "Το πώς ελέγχετε κενές τιμές εξαρτάται από τον τύπο του πεδίου:"
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:803
+msgid "Non-text fields"
+msgstr "Πεδία μη κειμένου"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:804
+msgid ""
+"Non-text fields may be empty, indicating that the user has not entered any "
+"value in the field. For instance, Glom does not assume that an empty value "
+"in a numeric field should mean 0."
+msgstr ""
+"Τα πεδία μη κειμένου μπορεί να είναι κενά, δείχνοντας ότι ο χρήστης δεν έχει "
+"εισάγει καμία τιμή στο πεδίο. Για παράδειγμα, το Glom δεν θεωρεί ότι μια "
+"κενή τιμή σε ένα αριθμητικό πεδίο πρέπει να σημαίνει 0."
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:805
+msgid ""
+"You can test whether a field is empty by using Python's None. For instance:"
+msgstr ""
+"Μπορείτε να ελέγξετε αν ένα πεδίο είναι κενό χρησιμοποιώντας το None του "
+"Python. Για παράδειγμα:"
+
+#. (itstool) path: para/programlisting
+#: C/index.docbook:807
+#, no-wrap
+msgid ""
+"\n"
+"  if(record[\"contact_id\"] == None):\n"
+"    return \"No Contact\"\n"
+"  else:\n"
+"    return record.related[\"contacts\"][\"name_full\"]\n"
+"  "
+msgstr ""
+"\n"
+"  if(record[\"contact_id\"] == None):\n"
+"    return \"No Contact\"\n"
+"  else:\n"
+"    return record.related[\"contacts\"][\"name_full\"]\n"
+"  "
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:814
+msgid ""
+"You might also test whether there are any related records. For instance:"
+msgstr ""
+"Μπορείτε επίσης να ελέγξετε αν υπάρχουν συσχετισμένες εγγραφές. Για "
+"παράδειγμα:"
+
+#. (itstool) path: para/programlisting
+#: C/index.docbook:816
+#, no-wrap
+msgid ""
+"\n"
+"  if(record.related[\"contacts\"] == None):\n"
+"    return \"No Contact\"\n"
+"  else:\n"
+"    return record.related[\"contacts\"][\"name_full\"]\n"
+"  "
+msgstr ""
+"\n"
+"  if(record.related[\"contacts\"] == None):\n"
+"    return \"No Contact\"\n"
+"  else:\n"
+"    return record.related[\"contacts\"][\"name_full\"]\n"
+"  "
+
+#. (itstool) path: sect2/title
+#: C/index.docbook:826
+msgid "Text fields"
+msgstr "Πεδία κειμένου"
+
+#. (itstool) path: sect2/para
+#: C/index.docbook:827
+msgid ""
+"For text fields, you should check for zero-length strings. It is not "
+"possible in Glom to distinguish between zero-length strings and the absence "
+"of any string, because there is no advantage to doing so. For instance:"
+msgstr ""
+"Για πεδία κειμένου, θα πρέπει να ελέγξετε για συμβολοσειρές μηδενικού "
+"μήκους. Δεν είναι δυνατό στο Glom να διακρίνετε μεταξύ συμβολοσειρών "
+"μηδενικού μήκους και της απουσίας οποιασδήποτε συμβολοσειράς, επειδή δεν "
+"υπάρχει κανένα πλεονέκτημα να το κάνετε. Για παράδειγμα:"
+
+#. (itstool) path: para/programlisting
+#: C/index.docbook:829
+#, no-wrap
+msgid ""
+"\n"
+"  if(record[\"name_full\"] == \"\"):\n"
+"    return \"No Name\"\n"
+"  else:\n"
+"    return record[\"name_full\"]\n"
+"  "
+msgstr ""
+"\n"
+"  if(record[\"name_full\"] == \"\"):\n"
+"    return \"No Name\"\n"
+"  else:\n"
+"    return record[\"name_full\"]\n"
+"  "
+
+#. (itstool) path: sect1/title
+#: C/index.docbook:841
+msgid "Using the full pygda API"
+msgstr "Χρήση του πλήρους API pygda"
+
+#. (itstool) path: sect1/para
+#: C/index.docbook:842
+msgid ""
+"pygda is a python API for the libgda API. The record's <literal>connection</"
+"literal> attribute provides a gda.connection that can be used to access the "
+"current database directly. This allows you to run any SQL query, for "
+"instance to read data from the database with a SELECT, or to change values "
+"in the database with an UPDATE. Note that the connection is already open so "
+"you can avoid the difficult work of specifying the connection details."
+msgstr ""
+"pygda είναι μια API Python για το API libgda. Το γνώρισμα <literal>σύνδεση</"
+"literal> της εγγραφής παρέχει μια gda.connection που μπορεί να "
+"χρησιμοποιηθεί για πρόσβαση της τρέχουσας βάσης δεδομένων άμεσα. Αυτό "
+"επιτρέπει να τρέξετε οποιοδήποτε ερώτημα SQL, για παράδειγμα να διαβάσετε "
+"δεδομένα από τη βάση δεδομένων με ένα SELECT, ή να αλλάξετε τιμές στη βάση "
+"δεδομένων με ένα UPDATE. Σημειώστε ότι η σύνδεση είναι ήδη ανοικτή, έτσι "
+"μπορείτε να αποφύγετε τη δύσκολη εργασία ορισμού των λεπτομερειών της "
+"σύνδεσης."
+
+#. (itstool) path: sect1/para
+#: C/index.docbook:843
+msgid ""
+"The record's <literal>table_name</literal> attribute also provides the name "
+"of the current table."
+msgstr ""
+"Το γνώρισμα <literal>table_name</literal> της εγγραφής παρέχει επίσης το "
+"όνομα του τρέχοντος πίνακα."
+
+#. (itstool) path: sect1/para
+#: C/index.docbook:844
+msgid ""
+"This example reads all data from the current table and prints the values to "
+"the terminal:"
+msgstr ""
+"Αυτό το παράδειγμα διαβάζει όλα τα δεδομένα από τον τρέχοντα πίνακα και "
+"εμφανίζει τις τιμές στο τερματικό:"
+
+#. (itstool) path: para/programlisting
+#: C/index.docbook:846
+#, no-wrap
+msgid ""
+"\n"
+"# Use the current database's connection \n"
+"# to get all the data for the current table.\n"
+"#\n"
+"# record.connection is an already-open gda.connection object,\n"
+"# saving us the bother of opening the connection,\n"
+"# or even knowing the name of the database.\n"
+"\n"
+"query = \"SELECT * FROM %s\" % record.table_name\n"
+"data_model = gda.gda_execute_select_command(record.connection, query)\n"
+"\n"
+"rows = data_model.get_n_rows()\n"
+"columns = data_model.get_n_columns()\n"
+"print \"    Number of columns: \", columns\n"
+"\n"
+"for i in range(columns):\n"
+"    print \"      column \", i;\n"
+"    print \"        name=\", data_model.get_column_title(i)\n"
+"\n"
+"    # Find out whether it's the primary key:\n"
+"    field = data_model.describe_column(i)\n"
+"    if field.get_primary_key():\n"
+"        print \"        (primary key)\"\n"
+"\n"
+"    print \"\\n\";\n"
+"     \n"
+"print \"    Number of rows: \", rows\n"
+"\n"
+"for row_index in range(rows):\n"
+"    print \"      row \", row_index;\n"
+"\n"
+"    for col_index in range(columns):\n"
+"        print \"        value=\", data_model.get_value_at(col_index, row_index).get()\n"
+"\n"
+"    print \"\\n\";\n"
+"  "
+msgstr ""
+"\n"
+"# Χρησιμοποιήστε την σύνδεση της τρέχουσας βάσης δεδομένων\n"
+"# για να πάρετε όλα τα δεδομένα για τον τρέχοντα πίνακα.\n"
+"#\n"
+"# record.connection είναι ένα ήδη ανοικτό αντικείμενο gda.connection,\n"
+"# που μας γλυτώνει από το άνοιγμα της σύνδεσης,\n"
+"# ή ακόμα τη γνώση του ονόματος της βάσης δεδομένων.\n"
+"\n"
+"query = \"SELECT * FROM %s\" % record.table_name\n"
+"data_model = gda.gda_execute_select_command(record.connection, query)\n"
+"\n"
+"rows = data_model.get_n_rows()\n"
+"columns = data_model.get_n_columns()\n"
+"print \"    Number of columns: \", columns\n"
+"\n"
+"for i in range(columns):\n"
+"    print \"      column \", i;\n"
+"    print \"        name=\", data_model.get_column_title(i)\n"
+"\n"
+"    # Εύρεση αν είναι ένα πρωτεύον κλειδί:\n"
+"    field = data_model.describe_column(i)\n"
+"    if field.get_primary_key():\n"
+"        print \"        (primary key)\"\n"
+"\n"
+"    print \"\\n\";\n"
+"     \n"
+"print \"    Number of rows: \", rows\n"
+"\n"
+"for row_index in range(rows):\n"
+"    print \"      row \", row_index;\n"
+"\n"
+"    for col_index in range(columns):\n"
+"        print \"        value=\", data_model.get_value_at(col_index, row_index).get()\n"
+"\n"
+"    print \"\\n\";\n"
+"  "
+
+#. (itstool) path: para/ulink
+#: C/legal.xml:9
+msgid "link"
+msgstr "σύνδεσμος"
+
+#. (itstool) path: legalnotice/para
+#: C/legal.xml:2
+msgid ""
+"Permission is granted to copy, distribute and/or modify this document under "
+"the terms of the GNU Free Documentation License (GFDL), Version 1.1 or any "
+"later version published by the Free Software Foundation with no Invariant "
+"Sections, no Front-Cover Texts, and no Back-Cover Texts. You can find a copy "
+"of the GFDL at this <_:ulink-1/> or in the file COPYING-DOCS distributed "
+"with this manual."
+msgstr ""
+"Δίνεται άδεια για αντιγραφή, διανομή και/ή τροποποίηση του εγγράφου υπό τους "
+"όρους της Ελεύθερης άδειας τεκμηρίωσης GNU (GFDL), έκδοση 1.1 ή "
+"μεταγενέστερη εκδιδόμενη από το Ίδρυμα ελεύθερου λογισμικού χωρίς "
+"αμετάβλητες ενότητες, χωρίς εξώφυλλα κειμένου, και χωρίς οπισθόφυλλα "
+"κειμένου. Μπορείτε να βρείτε ένα αντίγραφο της GFDL στο <_:ulink-1/> ή στο "
+"αρχείο COPYING-DOCS που διανεμήθηκε με αυτόν τον οδηγό."
