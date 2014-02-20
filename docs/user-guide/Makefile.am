@@ -25,4 +25,4 @@ DOC_FIGURES = \
 	figures/glom_design_reports_group_by.png \
 	figures/glom_report_result.png
 
-DOC_LINGUAS = cs de en_GB es fr sl sv
+DOC_LINGUAS = cs de el en_GB es fr sl sv
