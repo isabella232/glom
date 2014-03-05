@@ -172,6 +172,12 @@ msgctxt ""
 msgid "Actor"
 msgstr "Schauspieler"
 
+msgctxt ""
+"Custom Title. Parent table: characters, Parent Group: main, Parent Group: "
+"details"
+msgid "Actor's Name"
+msgstr "Name des Schauspielers"
+
 msgctxt "Custom Title. Parent table: characters"
 msgid "Actor's Contact ID"
 msgstr "Kontaktkennung des Schauspielers"
