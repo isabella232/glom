@@ -1597,7 +1597,7 @@ Orientation=portrait
         <field_lookup relationship="products" field="name"/>
         <formatting/>
         <trans_set>
-          <trans loc="cs" val="Název produktu"/>
+          <trans loc="cs" val="Název výrobku"/>
           <trans loc="de" val="Produktbezeichnung"/>
           <trans loc="el" val="Όνομα προϊόντος"/>
           <trans loc="en_GB" val="Product Name"/>
@@ -1626,7 +1626,7 @@ Orientation=portrait
           </choices_related_extra_layout>
         </formatting>
         <trans_set>
-          <trans loc="cs" val="ID produktu"/>
+          <trans loc="cs" val="ID výrobku"/>
           <trans loc="de" val="Produktkennung"/>
           <trans loc="el" val="Αναγνωριστικό προϊόντος"/>
           <trans loc="en_GB" val="Product Id"/>
@@ -1646,7 +1646,7 @@ Orientation=portrait
         <field_lookup relationship="products" field="price"/>
         <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
         <trans_set>
-          <trans loc="cs" val="Cena produktu"/>
+          <trans loc="cs" val="Cena výrobku"/>
           <trans loc="de" val="Produktpreis"/>
           <trans loc="el" val="Τιμή προϊόντος"/>
           <trans loc="en_GB" val="Product Price"/>
@@ -1764,11 +1764,14 @@ Orientation=portrait
     <relationships>
       <relationship name="products" key="product_id" other_table="products" other_key="product_id" title="Products">
         <trans_set>
+          <trans loc="cs" val="Výrobky"/>
           <trans loc="de" val="Produkten"/>
           <trans loc="es" val="Productos"/>
           <trans loc="hu" val="Termékek"/>
           <trans loc="pt_BR" val="Produtos"/>
           <trans loc="sl" val="Izdelki"/>
+          <trans loc="sr" val="Производи"/>
+          <trans loc="sr@latin" val="Proizvodi"/>
         </trans_set>
       </relationship>
     </relationships>
@@ -2244,7 +2247,7 @@ Orientation=portrait
       </example_row>
     </example_rows>
     <trans_set>
-      <trans loc="cs" val="Produkty"/>
+      <trans loc="cs" val="Výrobky"/>
       <trans loc="de" val="Produkte"/>
       <trans loc="el" val="Προϊόντα"/>
       <trans loc="en_GB" val="Products"/>
@@ -2263,7 +2266,7 @@ Orientation=portrait
       <field name="product_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Product ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
         <trans_set>
-          <trans loc="cs" val="ID produktu"/>
+          <trans loc="cs" val="ID výrobku"/>
           <trans loc="de" val="Produktkennung"/>
           <trans loc="el" val="Αναγνωριστικό προϊόντος"/>
           <trans loc="en_GB" val="Product ID"/>

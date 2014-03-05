@@ -2804,6 +2804,7 @@ Orientation=portrait
               <text title="Contacts">
                 <trans_set>
                   <trans loc="cs" val="Kontakty"/>
+                  <trans loc="de" val="Kontakte"/>
                   <trans loc="el" val="Επαφές"/>
                   <trans loc="es" val="Contactos"/>
                   <trans loc="hu" val="Partnerek"/>
@@ -2821,6 +2822,7 @@ Orientation=portrait
               <text title="Overview">
                 <trans_set>
                   <trans loc="cs" val="Přehled"/>
+                  <trans loc="de" val="Übersicht"/>
                   <trans loc="el" val="Επισκόπηση"/>
                   <trans loc="es" val="Vista general"/>
                   <trans loc="hu" val="Áttekintés"/>
@@ -2838,6 +2840,7 @@ Orientation=portrait
               <text title="Contact ID:">
                 <trans_set>
                   <trans loc="cs" val="ID kontaktu:"/>
+                  <trans loc="de" val="Kontakt-ID:"/>
                   <trans loc="el" val="Αναγνωριστικό επαφής:"/>
                   <trans loc="es" val="ID de contacto:"/>
                   <trans loc="hu" val="Partner azonosító:"/>
@@ -2859,6 +2862,7 @@ Orientation=portrait
               <text title="Full Name:">
                 <trans_set>
                   <trans loc="cs" val="Celé jméno:"/>
+                  <trans loc="de" val="Vollständiger Name:"/>
                   <trans loc="el" val="Πλήρες όνομα:"/>
                   <trans loc="es" val="Nombre completo:"/>
                   <trans loc="hu" val="Teljes név:"/>
@@ -2880,6 +2884,7 @@ Orientation=portrait
               <text title="Details">
                 <trans_set>
                   <trans loc="cs" val="Podrobnosti"/>
+                  <trans loc="de" val="Details"/>
                   <trans loc="el" val="Λεπτομέρειες"/>
                   <trans loc="es" val="Detalles"/>
                   <trans loc="hu" val="Részletek"/>
@@ -2897,6 +2902,7 @@ Orientation=portrait
               <text title="Name">
                 <trans_set>
                   <trans loc="cs" val="Jméno"/>
+                  <trans loc="de" val="Name"/>
                   <trans loc="el" val="Όνομα"/>
                   <trans loc="es" val="Nombre"/>
                   <trans loc="hu" val="Név"/>
@@ -2914,6 +2920,7 @@ Orientation=portrait
               <text title="Title:">
                 <trans_set>
                   <trans loc="cs" val="Titul:"/>
+                  <trans loc="de" val="Titel:"/>
                   <trans loc="el" val="Τίτλος:"/>
                   <trans loc="es" val="Título:"/>
                   <trans loc="hu" val="Megszólítás:"/>
@@ -2935,6 +2942,7 @@ Orientation=portrait
               <text title="First Name:">
                 <trans_set>
                   <trans loc="cs" val="Křestní jméno:"/>
+                  <trans loc="de" val="Vorname:"/>
                   <trans loc="el" val="Όνομα:"/>
                   <trans loc="es" val="Nombre:"/>
                   <trans loc="hu" val="Utónév:"/>
@@ -2956,6 +2964,7 @@ Orientation=portrait
               <text title="Second Name:">
                 <trans_set>
                   <trans loc="cs" val="Druhé jméno:"/>
+                  <trans loc="de" val="Zweitname:"/>
                   <trans loc="el" val="Δεύτερο όνομα:"/>
                   <trans loc="es" val="Segundo nombre:"/>
                   <trans loc="hu" val="Második név:"/>
@@ -2977,6 +2986,7 @@ Orientation=portrait
               <text title="Last Name:">
                 <trans_set>
                   <trans loc="cs" val="Příjmení:"/>
+                  <trans loc="de" val="Nachname:"/>
                   <trans loc="el" val="Επώνυμο:"/>
                   <trans loc="es" val="Apellido:"/>
                   <trans loc="hu" val="Vezetéknév:"/>
@@ -2998,6 +3008,7 @@ Orientation=portrait
               <text title="Company">
                 <trans_set>
                   <trans loc="cs" val="Společnost"/>
+                  <trans loc="de" val="Firma"/>
                   <trans loc="el" val="Εταιρία"/>
                   <trans loc="es" val="Empresa"/>
                   <trans loc="hu" val="Társaság"/>
@@ -3015,6 +3026,7 @@ Orientation=portrait
               <text title="Company ID:">
                 <trans_set>
                   <trans loc="cs" val="ID společnosti:"/>
+                  <trans loc="de" val="Firmen-ID:"/>
                   <trans loc="el" val="Αναγνωριστικό εταιρίας:"/>
                   <trans loc="es" val="ID de la compañía:"/>
                   <trans loc="hu" val="Társaság azonosító:"/>
@@ -3036,6 +3048,7 @@ Orientation=portrait
               <text title="Name:">
                 <trans_set>
                   <trans loc="cs" val="Název:"/>
+                  <trans loc="de" val="Name:"/>
                   <trans loc="el" val="Όνομα:"/>
                   <trans loc="es" val="Nombre:"/>
                   <trans loc="hu" val="Név:"/>
@@ -3057,6 +3070,7 @@ Orientation=portrait
               <text title="Address">
                 <trans_set>
                   <trans loc="cs" val="Adresa"/>
+                  <trans loc="de" val="Adresse"/>
                   <trans loc="el" val="Διεύθυνση"/>
                   <trans loc="es" val="Dirección"/>
                   <trans loc="hu" val="Cím"/>
@@ -3074,6 +3088,7 @@ Orientation=portrait
               <text title="Street (line 1):">
                 <trans_set>
                   <trans loc="cs" val="Ulice (1. řádek):"/>
+                  <trans loc="de" val="Straße (Zeile 1):"/>
                   <trans loc="el" val="Οδός (γραμμή 1):"/>
                   <trans loc="es" val="Calle (línea 1):"/>
                   <trans loc="hu" val="Utca (1. sor):"/>
@@ -3095,6 +3110,7 @@ Orientation=portrait
               <text title="Street (line 2):">
                 <trans_set>
                   <trans loc="cs" val="Ulice (2. řádek):"/>
+                  <trans loc="de" val="Straße (Zeile 2):"/>
                   <trans loc="el" val="Οδός (γραμμή 2):"/>
                   <trans loc="es" val="Calle (línea 2):"/>
                   <trans loc="hu" val="Utca (2. sor):"/>
@@ -3116,6 +3132,7 @@ Orientation=portrait
               <text title="Town:">
                 <trans_set>
                   <trans loc="cs" val="Město:"/>
+                  <trans loc="de" val="Stadt:"/>
                   <trans loc="el" val="Πόλη:"/>
                   <trans loc="es" val="Ciudad:"/>
                   <trans loc="hu" val="Település:"/>
@@ -3137,6 +3154,7 @@ Orientation=portrait
               <text title="State:">
                 <trans_set>
                   <trans loc="cs" val="Stát:"/>
+                  <trans loc="de" val="Bundesland:"/>
                   <trans loc="el" val="Πολιτεία:"/>
                   <trans loc="es" val="Estado:"/>
                   <trans loc="hu" val="Állam:"/>
@@ -3158,6 +3176,7 @@ Orientation=portrait
               <text title="Country:">
                 <trans_set>
                   <trans loc="cs" val="Země:"/>
+                  <trans loc="de" val="Land:"/>
                   <trans loc="el" val="Χώρα:"/>
                   <trans loc="es" val="País:"/>
                   <trans loc="hu" val="Ország:"/>
@@ -3179,6 +3198,7 @@ Orientation=portrait
               <text title="Postcode:">
                 <trans_set>
                   <trans loc="cs" val="PSČ:"/>
+                  <trans loc="de" val="Postleitzahl:"/>
                   <trans loc="el" val="Ταχ. κώδικας:"/>
                   <trans loc="es" val="Código postal:"/>
                   <trans loc="hu" val="Irányítószám:"/>
@@ -3200,6 +3220,7 @@ Orientation=portrait
               <text title="Telephone">
                 <trans_set>
                   <trans loc="cs" val="Telefon"/>
+                  <trans loc="de" val="Telefon"/>
                   <trans loc="el" val="Τηλέφωνο"/>
                   <trans loc="es" val="Teléfono"/>
                   <trans loc="hu" val="Telefon"/>
@@ -3217,6 +3238,7 @@ Orientation=portrait
               <text title="Work Telephone:">
                 <trans_set>
                   <trans loc="cs" val="Pracovní telefon:"/>
+                  <trans loc="de" val="Telefon (geschäftlich):"/>
                   <trans loc="el" val="Τηλέφωνο εργασίας:"/>
                   <trans loc="es" val="Teléfono del trabajo:"/>
                   <trans loc="hu" val="Munkahelyi telefon:"/>
@@ -3238,6 +3260,7 @@ Orientation=portrait
               <text title="Mobile Telephone:">
                 <trans_set>
                   <trans loc="cs" val="Mobilní telefon:"/>
+                  <trans loc="de" val="Telefon (mobil):"/>
                   <trans loc="el" val="Κινητό τηλέφωνο:"/>
                   <trans loc="es" val="Teléfono móvil:"/>
                   <trans loc="hu" val="Mobiltelefon:"/>
@@ -3259,6 +3282,7 @@ Orientation=portrait
               <text title="Home Telephone:">
                 <trans_set>
                   <trans loc="cs" val="Domácí telefon:"/>
+                  <trans loc="de" val="Telefon (privat):"/>
                   <trans loc="el" val="Τηλέφωνο οικίας:"/>
                   <trans loc="es" val="Teléfono particular:"/>
                   <trans loc="hu" val="Otthoni telefon:"/>
@@ -3280,6 +3304,7 @@ Orientation=portrait
               <text title="Fax:">
                 <trans_set>
                   <trans loc="cs" val="Fax:"/>
+                  <trans loc="de" val="Fax:"/>
                   <trans loc="el" val="Φαξ:"/>
                   <trans loc="es" val="Fax:"/>
                   <trans loc="hu" val="Fax:"/>
@@ -3404,6 +3429,7 @@ Orientation=portrait
               <text title="Email:">
                 <trans_set>
                   <trans loc="cs" val="E-mail:"/>
+                  <trans loc="de" val="E-Mail:"/>
                   <trans loc="el" val="Ηλεκτρονική διεύθυνση:"/>
                   <trans loc="es" val="Correo-e:"/>
                   <trans loc="hu" val="E-mail:"/>
@@ -3425,6 +3451,7 @@ Orientation=portrait
               <text title="Web Site:">
                 <trans_set>
                   <trans loc="cs" val="Webové stránky:"/>
+                  <trans loc="de" val="Webseite:"/>
                   <trans loc="el" val="Ιστότοπος:"/>
                   <trans loc="es" val="Sitio web:"/>
                   <trans loc="hu" val="Weboldal:"/>
@@ -3446,6 +3473,7 @@ Orientation=portrait
               <text title="Date Of Birth:">
                 <trans_set>
                   <trans loc="cs" val="Datum narození:"/>
+                  <trans loc="de" val="Geburtstag:"/>
                   <trans loc="el" val="Ημερομηνία γέννησης:"/>
                   <trans loc="es" val="Fecha de nacimiento:"/>
                   <trans loc="hu" val="Születési dátum:"/>
@@ -3467,6 +3495,7 @@ Orientation=portrait
               <text title="Picture:">
                 <trans_set>
                   <trans loc="cs" val="Obrázek:"/>
+                  <trans loc="de" val="Bild:"/>
                   <trans loc="el" val="Εικόνα:"/>
                   <trans loc="es" val="Imagen:"/>
                   <trans loc="hu" val="Kép:"/>
@@ -3488,6 +3517,7 @@ Orientation=portrait
               <text title="Comments:">
                 <trans_set>
                   <trans loc="cs" val="Poznámky:"/>
+                  <trans loc="de" val="Notizen:"/>
                   <trans loc="el" val="Σχόλια:"/>
                   <trans loc="es" val="Comentarios:"/>
                   <trans loc="hu" val="Megjegyzések:"/>
