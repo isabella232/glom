@@ -87,7 +87,8 @@ void Box_Data_ManyRecords::print_layout()
     Document* document = get_document();
     sharedptr<Report> report_temp = ReportBuilder::create_standard_list_report(document, m_table_name);
 
-    ReportBuilder report_builder(AppWindow::get_current_locale());
+    //TODO: Find a way to get a full locale name from the simplified locale name from AppWindow::get_current_locale():
+    ReportBuilder report_builder(std::locale("") /* the user's current locale */);
     report_builder.set_document(document);
     const std::string filepath = 
       report_builder.report_build_and_save(m_found_set, report_temp);

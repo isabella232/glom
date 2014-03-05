@@ -35,7 +35,6 @@ namespace Conversions
   ///Get text for display to the user.
   Glib::ustring get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const NumericFormat& numeric_format = NumericFormat());
   Glib::ustring get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const std::locale& locale, const NumericFormat& numeric_format = NumericFormat(), bool iso_format = false);
-  Glib::ustring get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const Glib::ustring& locale, const NumericFormat& numeric_format = NumericFormat(), bool iso_format = false);
 
   //This is easier than using the GdaNumeric API,
   //which normally involves text-to-number parsing.

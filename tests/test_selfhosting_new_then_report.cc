@@ -43,7 +43,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   Glom::FoundSet found_set; //TODO: Test a where clause.
   found_set.m_table_name = "albums";
 
-  const Glib::ustring locale = "en_US.UTF-8"; //Instead of just "" (current locale) so we get the same results each time.
+  const std::locale locale("en_US.UTF-8"); //Instead of just "" (current locale) so we get the same results each time.
   Glom::ReportBuilder report_builder(locale);
   report_builder.set_document(&document);
   const Glib::ustring html = 

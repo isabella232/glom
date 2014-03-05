@@ -31,10 +31,11 @@
 namespace Glom
 {
 
-ReportBuilder::ReportBuilder(const Glib::ustring& locale)
+ReportBuilder::ReportBuilder(const std::locale& locale)
 : m_document(0),
   m_locale(locale)
 {
+  m_locale_id = Utils::locale_simplify(locale.name());
 }
 
 ReportBuilder::~ReportBuilder()
@@ -259,7 +260,7 @@ bool ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
         xmlpp::Element* nodeGroupBy = parent_node.add_child(group_by->get_report_part_id());
         XmlUtils::set_node_attribute_value_as_decimal_double(nodeGroupBy, "border_width", group_by->get_border_width());
 
-        nodeGroupBy->set_attribute("group_field", field_group_by->get_title_or_name(m_locale));
+        nodeGroupBy->set_attribute("group_field", field_group_by->get_title_or_name(m_locale_id));
         nodeGroupBy->set_attribute("group_value",
           Conversions::get_text_for_gda_value(field_group_by->get_glom_type(), group_value, m_locale, field_group_by->get_formatting_used().m_numeric_format) );
 
@@ -361,7 +362,7 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
         nodeFieldHeading->set_attribute("field_type", "numeric"); //TODO: More sophisticated formatting.
 
       nodeFieldHeading->set_attribute("name", layout_item->get_name()); //Not really necessary, but maybe useful.
-      nodeFieldHeading->set_attribute("title", layout_item->get_title_or_name(m_locale));
+      nodeFieldHeading->set_attribute("title", layout_item->get_title_or_name(m_locale_id));
     }
 
     //Get list of fields to get from the database.
@@ -503,7 +504,7 @@ bool ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
     value = datamodel->get_value_at(colField, row); //TODO: Catch exceptions.
   }
 
-  nodeField->set_attribute("title", field->get_title_or_name(m_locale)); //Not always used, but useful.
+  nodeField->set_attribute("title", field->get_title_or_name(m_locale_id)); //Not always used, but useful.
 
   //Handle the value:
   if(field_type == Field::TYPE_IMAGE)
@@ -532,7 +533,7 @@ bool ReportBuilder::report_build_records_text(const FoundSet& /* found_set */, x
 {
   //Text object:
   xmlpp::Element* nodeField = nodeParent.add_child(textobject->get_report_part_id()); //We reuse this node type for text objects.
-  nodeField->set_attribute("value", textobject->get_text(m_locale));
+  nodeField->set_attribute("value", textobject->get_text(m_locale_id));
 
   if(vertical)
     nodeField->set_attribute("vertical", "true");
@@ -663,7 +664,7 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const share
     nodeRoot = pDocument->create_root_node("report_print");
   }
 
-  Glib::ustring table_title = get_document()->get_table_title(found_set.m_table_name, m_locale);
+  Glib::ustring table_title = get_document()->get_table_title(found_set.m_table_name, m_locale_id);
   if(table_title.empty())
     table_title = found_set.m_table_name;
 
@@ -676,7 +677,7 @@ Glib::ustring ReportBuilder::report_build(const FoundSet& found_set, const share
   xmlpp::Element* nodeParent = nodeRoot;
 
 
-  nodeRoot->set_attribute("title", report->get_title_or_name(m_locale));
+  nodeRoot->set_attribute("title", report->get_title_or_name(m_locale_id));
 
   type_vecLayoutItems itemsToGet_TopLevel;
 
