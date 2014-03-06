@@ -1,3 +1,8 @@
+1.26.0 (stable):
+
+* Reports: Fix a crash introduced in 1.25.4.
+  (Murray Cumming)
+
 1.25.6 (unstable):
 
 * Backup/Restore: Use libarchive instead of calling the tar shell command.
