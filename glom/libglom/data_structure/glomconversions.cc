@@ -88,6 +88,11 @@ static inline const char* glom_get_locale_date_format()
 {
   if(!c_locale_date_format)
   {
+    //TODO: Find some way to get the %x translation that's appropriate for the value of LC_NUMERIC in the locale,
+    //because this just assumes that the main locale name will be correct,
+    //so this can fail, for instance, if gettext() is looking for the translation for en_US.UTF-8
+    //but LC_NUMERIC is set to en_GB.UTF-8 (which uses 2 digits when using %x).
+
     /* TRANSLATORS: Please only translate this string if you know that strftime() 
      * shows only 2 year digits when using format "x". We want to always display 
      * 4 year digits. For instance, en_GB should translate it to "%d/%m/%Y". 
@@ -182,7 +187,8 @@ bool Conversions::sanity_check_date_text_representation_uses_4_digit_years(bool 
     //Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
     std::cerr << _("ERROR: sanity_check_date_text_representation_uses_4_digit_year(): Sanity check failed: Glom does not seem to use 4 digits to display years in a date's text representation, in this locale. Defaulting to dd/mm/yyyy though this might be incorrect for your locale. This needs attention from a translator. Please file a bug - see http://www.glom.org") << std::endl;
 
-    //std::cout << "  Unexpected date text: " << date_text << std::endl;
+    std::cout << "  Unexpected date text: " << date_text << std::endl;
+    std::cout << "  Current locale: " << std::locale("").name() << std::endl;
 
     //Do not depend on translators to do what we ask.
     //Default to a common format, though this would be incorrect in some 
