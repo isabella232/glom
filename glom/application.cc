@@ -95,6 +95,9 @@ void Application::on_startup()
   //TODO: Remove this if there is ever an easier way to make 'accel's from the .glade file just work.
   //See https://bugzilla.gnome.org/show_bug.cgi?id=708905
 
+  //TODO: Use set_accels_for_action() instead? The documentation is not helpful.
+  //See https://bugzilla.gnome.org/show_bug.cgi?id=721367#c5
+
   //From window_main.glade:
   add_accelerator("<Primary>n", "file.new");
   add_accelerator("<Primary>o", "file.open");
