@@ -247,6 +247,10 @@ AX_BOOST_BASE
 # See http://www.gnu.org/software/autoconf-archive/ax_boost_python.html
 AX_BOOST_PYTHON
 
+# Check that ax_boost_python.m4 found something.
+# It also defines HAVE_BOOST_PYTHON, but only as a C define for 
+AS_IF([test -z "$BOOST_PYTHON_LIB"],
+  [AC_MSG_ERROR([Cannot find the Boost::Python library.])])
 
 AC_ARG_ENABLE([update-mime-database],
               [AS_HELP_STRING([--disable-update-mime-database],
