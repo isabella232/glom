@@ -53,7 +53,6 @@ check_PROGRAMS =						\
 	tests/test_selfhosting_non_numeric_primary_keys \
 	tests/test_selfhosting_sqlinjection \
 	tests/test_conversions \
-	tests/test_field_file_format \
 	tests/test_xml_utils \
 	tests/import/test_parsing \
 	tests/import/test_signals \
@@ -68,6 +67,7 @@ TESTS =	tests/test_document_load	\
 	tests/test_document_change	\
 	tests/test_document_autosave	\
 	tests/test_field_file_format \
+	tests/test_field_file_format_in_locales.sh \
 	tests/test_parsing_time	\
 	tests/test_signal_reemit \
 	tests/test_dtd_file_validation.sh \
@@ -98,8 +98,6 @@ TESTS =	tests/test_document_load	\
 	tests/test_selfhosting_non_numeric_primary_keys \
 	tests/test_selfhosting_sqlinjection \
 	tests/test_conversions \
-	tests/test_field_file_format \
-	tests/test_field_file_format_in_locales.sh \
 	tests/test_xml_utils \
 	tests/import/test_parsing \
 	tests/import/test_signals \
@@ -193,10 +191,6 @@ tests_test_signal_reemit_CPPFLAGS = $(tests_cppflags)
 tests_test_conversions_SOURCES = tests/test_conversions.cc
 tests_test_conversions_LDADD = $(tests_ldadd)
 tests_test_conversions_CPPFLAGS = $(tests_cppflags)
-
-tests_test_field_file_format_SOURCES = tests/test_field_file_format.cc
-tests_test_field_file_format_LDADD = $(tests_ldadd)
-tests_test_field_file_format_CPPFLAGS = $(tests_cppflags)
 
 tests_test_xml_utils_SOURCES = tests/test_xml_utils.cc
 tests_test_xml_utils_LDADD = $(tests_ldadd)
