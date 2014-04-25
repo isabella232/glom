@@ -67,7 +67,7 @@ int main()
   if(!test_value(Glom::Field::TYPE_TIME, Gnome::Gda::Value(time)))
     return EXIT_FAILURE;
 
-  if(!test_value(Glom::Field::TYPE_NUMERIC, Glom::Conversions::parse_value((double)3.50f)))
+  if(!test_value(Glom::Field::TYPE_NUMERIC, Glom::Conversions::parse_value((double)3.50l)))
     return EXIT_FAILURE;
 
 

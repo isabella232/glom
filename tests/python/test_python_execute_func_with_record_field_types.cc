@@ -146,7 +146,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   // Numeric:
   if(!get_field_result(document, gda_connection,
       table_name, primary_key_field, primary_key_value, field_values,
-      "price", Glom::Conversions::parse_value((double)3.50f)))
+      "price", Glom::Conversions::parse_value((double)3.50l)))
   {
     return false;
   }
