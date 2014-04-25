@@ -28,6 +28,9 @@ bool glom_python_module_is_available()
 
 bool gda_python_module_is_available()
 {
+  //TODO: How can we requests a specific version to avoid confusion
+  //between the parallel-installed Gda-5.0 and Gda-6.0 APIs?
+
   //Python code usually uses "from gi.repository import Gda" so that 
   //the code may use Gda. rather than gi.repository.Gda in the code.
   const gchar* name = "gi.repository.Gda"; 

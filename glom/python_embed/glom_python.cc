@@ -162,6 +162,8 @@ bool gir_python_module_is_available()
 
 bool gda_python_module_is_available()
 {
+  //TODO: How can we requests a specific version to avoid confusion
+  //between the parallel-installed Gda-5.0 and Gda-6.0 APIs?
   const char* name = "gi.repository.Gda";
   const boost::python::object module_glom = import_module(name);
   return module_glom != boost::python::object();
@@ -205,6 +207,8 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   else
     func_signature = func_name + "(record, ui)";
 
+  //TODO: How can we requests a specific version to avoid confusion
+  //between the parallel-installed Gda-5.0 and Gda-6.0 APIs?
   func_def = "def " + func_signature + ":\n  import glom_" GLOM_ABI_VERSION_UNDERLINED "\n  from gi.repository import Gda\n" + func_def;
 
   //We did this in main(): Py_Initialize();
@@ -257,6 +261,8 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   }
 
   //TODO: Is this necessary?
+  //TODO: How can we requests a specific version to avoid confusion
+  //between the parallel-installed Gda-5.0 and Gda-6.0 APIs?
   boost::python::object module_gda = import_module("gi.repository.Gda");
   if(module_gda == boost::python::object())
   {
