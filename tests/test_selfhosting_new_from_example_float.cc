@@ -50,7 +50,7 @@ static bool test(Glom::Document::HostingMode hosting_mode)
   }
 
   //Check that some data is as expected:
-  const Gnome::Gda::Value pk_value(2.0f);
+  const Gnome::Gda::Value pk_value = Gnome::Gda::Value::create_as_double(2.0l);
   const Gnome::Gda::SqlExpr where_clause = 
     Glom::Utils::build_simple_where_expression(table_name, primary_key_field, pk_value);
   
