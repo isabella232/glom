@@ -83,7 +83,7 @@ int main()
     return EXIT_FAILURE;
   */
 
-  if(!test_numeric_value((double)3.50f))
+  if(!test_numeric_value((double)3.50l))
     return EXIT_FAILURE;
 
 
