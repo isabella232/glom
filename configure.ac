@@ -211,12 +211,12 @@ AC_LANG([C])
 MM_ARG_ENABLE_WARNINGS([GLOM_WFLAGS],
                        [-Wall],
                        [-Wall -Wextra -Wno-missing-field-initializers -DGSEAL_ENABLE],
-                       [G GDK GDK_PIXBUF CAIRO PANGO GTK])
+                       [G GDK GDK_PIXBUF CAIRO PANGO GTK GDA])
 AC_LANG([C++])
 MM_ARG_ENABLE_WARNINGS([GLOM_WXXFLAGS],
                        [-Wall],
                        [-Wall -Wextra -Wno-missing-field-initializers -DGSEAL_ENABLE],
-                       [G GDK GDK_PIXBUF GTK GLIBMM GDKMM CAIROMM PANGOMM GTKMM SIGCXX])
+                       [G GDK GDK_PIXBUF GTK GDA GLIBMM GDKMM CAIROMM PANGOMM GTKMM SIGCXX LIBGDAMM])
 
 AC_CHECK_FUNCS([strptime])
 
