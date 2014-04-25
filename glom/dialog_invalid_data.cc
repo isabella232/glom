@@ -80,7 +80,8 @@ void Dialog_InvalidData::set_example_data(Field::glom_field_type glom_type)
     }
     case(Field::TYPE_NUMERIC):
     {
-      Gnome::Gda::Value gda_value(12345678.91);
+      Gnome::Gda::Value gda_value;
+      gda_value.set_double(12345678.91L);
       example_text = Conversions::get_text_for_gda_value(glom_type, gda_value);
       break;
     }
