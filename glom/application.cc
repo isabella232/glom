@@ -96,14 +96,14 @@ void Application::on_startup()
   //See https://bugzilla.gnome.org/show_bug.cgi?id=708905
 
   //From window_main.glade:
-  set_accel_for_action("file.new", "<Primary>n");
-  set_accel_for_action("file.open", "<Primary>o");
-  set_accel_for_action("win.close", "<Primary>w");
-  set_accel_for_action("win.print", "<Primary>p"); //Not in the main window, but in the Relationships Overview window, and maybe others.
-  set_accel_for_action("win.print-preview", "<Shift><Primary>p"); //Not in the main window, but in the Print Layout window, and maybe others.
-  set_accel_for_action("edit.copy", "<Primary>c");
-  set_accel_for_action("edit.paste", "<Primary>v");
-  set_accel_for_action("edit.find", "<Primary>f");
+  add_accelerator("<Primary>n", "file.new");
+  add_accelerator("<Primary>o", "file.open");
+  add_accelerator("<Primary>w", "win.close");
+  add_accelerator("<Primary>p", "win.print"); //Not in the main window, but in the Relationships Overview window, and maybe others.
+  add_accelerator("<Shift><Primary>p", "win.print-preview"); //Not in the main window, but in the Print Layout window, and maybe others.
+  add_accelerator("<Primary>c", "edit.copy");
+  add_accelerator("<Primary>v", "edit.paste");
+  add_accelerator("<Primary>f", "edit.find");
 }
 
 void Application::on_open(const Gio::Application::type_vec_files& files,
