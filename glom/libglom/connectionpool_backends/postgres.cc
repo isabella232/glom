@@ -169,7 +169,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
 
   try
   {
-    connection->begin_transaction(TRANSACTION_NAME, Gnome::Gda::TRANSACTION_ISOLATION_UNKNOWN); // TODO: What does the transaction isolation do?
+    connection->begin_transaction(TRANSACTION_NAME, Gnome::Gda::TRANSACTION_ISOLATION_SERVER_DEFAULT); // TODO: What does the transaction isolation do?
   }
   catch(const Glib::Error& ex)
   {
