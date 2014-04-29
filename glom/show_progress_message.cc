@@ -33,19 +33,19 @@ ShowProgressMessage::ShowProgressMessage(const Glib::ustring& message)
 {
   g_return_if_fail(m_app);
   m_app->set_progress_message(message);
-};
+}
 
 ShowProgressMessage::~ShowProgressMessage()
 {
   g_return_if_fail(m_app);
   m_app->clear_progress_message();
-};
+}
 
 void ShowProgressMessage::pulse()
 {
   g_return_if_fail(m_app);
   m_app->set_progress_message(m_message);
-};
+}
 
 } //namespace Glom
 
