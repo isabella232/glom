@@ -47,7 +47,7 @@ static const int NEW_PAGE = 1;
 namespace
 {
 
-const char NETWORK_DUMMY_TEXT[] = N_("No sessions found on the local network.");
+const char* NETWORK_DUMMY_TEXT = N_("No sessions found on the local network.");
 
 
 //TODO_Performance: A DomParser or XmlReader might be faster, or even a regex.
