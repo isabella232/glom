@@ -47,12 +47,8 @@ static const int NEW_PAGE = 1;
 namespace
 {
 
-const char RECENT_DUMMY_TEXT[] = N_("No recently used documents available.");
 const char NETWORK_DUMMY_TEXT[] = N_("No sessions found on the local network.");
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-const char TEMPLATE_DUMMY_TEXT[] = N_("No templates available.");
-#endif
 
 //TODO_Performance: A DomParser or XmlReader might be faster, or even a regex.
 /// Reads the title of an example from the first few characters of the XML.
@@ -187,7 +183,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 
   const Gtk::TreeNodeChildren& children = m_iter_existing_recent->children();
   if(children.begin() == children.end())
-    m_iter_existing_recent_dummy = create_dummy_item_existing(m_iter_existing_recent, _(RECENT_DUMMY_TEXT));
+    m_iter_existing_recent_dummy = create_dummy_item_existing(m_iter_existing_recent, _("No recently used documents available."));
 
 #ifndef G_OS_WIN32
   // Will be removed when items are added:
@@ -234,7 +230,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   m_new_view->set_headers_visible(false);
   m_new_view->signal_row_activated().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_row_activated));
 
-  m_iter_new_template_dummy = create_dummy_item_new(m_iter_new_template, _(TEMPLATE_DUMMY_TEXT));
+  m_iter_new_template_dummy = create_dummy_item_new(m_iter_new_template, "No templates available.");
 
   Glib::RefPtr<Gtk::TreeView::Selection> new_view_selection = m_new_view->get_selection();
   new_view_selection->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_selection_changed));
