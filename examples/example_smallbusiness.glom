@@ -1768,6 +1768,7 @@ Orientation=portrait
           <trans loc="de" val="Produkten"/>
           <trans loc="es" val="Productos"/>
           <trans loc="hu" val="Termékek"/>
+          <trans loc="id" val="Produk"/>
           <trans loc="pt_BR" val="Produtos"/>
           <trans loc="sl" val="Izdelki"/>
           <trans loc="sr" val="Производи"/>
