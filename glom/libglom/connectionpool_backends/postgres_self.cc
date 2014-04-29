@@ -34,7 +34,6 @@
 #include <glibmm/shell.h>
 #include <glibmm/i18n.h>
 
-#include <libglom/gst-package.h>
 #include <sstream> //For stringstream
 #include <iostream>
 

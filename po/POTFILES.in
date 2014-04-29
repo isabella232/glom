@@ -53,7 +53,6 @@ glom/libglom/document/bakery/document_xml.cc
 glom/libglom/document/bakery/view/viewbase.cc
 glom/libglom/document/bakery/view/view.cc
 glom/libglom/document/bakery/view/view_composite.cc
-glom/libglom/gst-package.c
 glom/libglom/spawn_with_feedback.cc
 glom/libglom/translations_po.cc
 glom/libglom/utils.cc
