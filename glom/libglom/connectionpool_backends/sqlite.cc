@@ -331,7 +331,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
 
   try
   {
-    connection->begin_transaction(TRANSACTION_NAME, Gnome::Gda::TRANSACTION_ISOLATION_SERVER_DEFAULT);
+    connection->begin_transaction(TRANSACTION_NAME, Gnome::Gda::TRANSACTION_ISOLATION_UNKNOWN);
   }
   catch(const Glib::Error& ex)
   {
