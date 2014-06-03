@@ -265,7 +265,7 @@ private:
   Box_Data_List_Related* create_related(const sharedptr<LayoutItem_Portal>& portal, bool show_title = true);
   Box_Data_Calendar_Related* create_related_calendar(const sharedptr<LayoutItem_CalendarPortal>& portal, bool show_title = true);
 
-  Gtk::Alignment* m_placeholder;
+  Gtk::Bin* m_placeholder;
 
   Glib::ustring m_table_name;
   bool m_find_mode;

@@ -53,7 +53,7 @@ private:
   void setup();
 
   Gtk::Label* m_label_table_name;
-  Gtk::Alignment* m_alignment_parent;
+  Gtk::Bin* m_alignment_parent;
 
   Glib::ustring m_table_name;
   Glib::ustring m_layout_platform;

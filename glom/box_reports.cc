@@ -44,7 +44,7 @@ Box_Reports::Box_Reports(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
   builder->get_widget("button_cancel", pButtonCancel);
   set_button_cancel(*pButtonCancel);
 
-  Gtk::Alignment* pAligmentPlaceholder = 0;
+  Gtk::Bin* pAligmentPlaceholder = 0;
   builder->get_widget("alignment_placeholder_adddel", pAligmentPlaceholder);
   pAligmentPlaceholder->add(m_AddDel);
 
