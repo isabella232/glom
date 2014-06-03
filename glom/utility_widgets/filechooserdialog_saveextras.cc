@@ -83,15 +83,12 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   frame_label->show();
   frame->set_label_widget(*frame_label);
   frame->set_shadow_type(Gtk::SHADOW_NONE);
-
-  Gtk::Alignment* alignment = Gtk::manage(new Gtk::Alignment());
-  alignment->set_padding(UiUtils::DEFAULT_SPACING_SMALL, 0, UiUtils::DEFAULT_SPACING_LARGE, 0); //Add padding at the top and left.
-  alignment->show();
-  frame->add(*alignment);
   frame->show();
 
   Gtk::Box* vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, UiUtils::DEFAULT_SPACING_SMALL));
-  alignment->add(*vbox);
+  vbox->set_margin_start(UiUtils::DEFAULT_SPACING_LARGE);
+  vbox->set_margin_top(UiUtils::DEFAULT_SPACING_SMALL);
+  frame->add(*vbox);
   vbox->show();
 
   vbox->pack_start(m_label_extra_message); /* For instance, an extra hint when saving from an example, saying that a new file must be saved. */

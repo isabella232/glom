@@ -41,7 +41,6 @@
 #include "box_data_calendar_related.h"
 #include <glom/mode_design/layout/treestore_layout.h> //Forthe enum.
 #include <gtkmm/checkbutton.h>
-#include <gtkmm/alignment.h>
 #include <gtkmm/sizegroup.h>
 #include <gtkmm/eventbox.h>
 #include <gtkmm/box.h>

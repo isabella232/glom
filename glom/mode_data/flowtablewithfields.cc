@@ -174,28 +174,6 @@ void FlowTableWithFields::add_layout_group(const sharedptr<LayoutGroup>& group, 
     frame->set_shadow_type(Gtk::SHADOW_NONE); //HIG-style
     frame->show();
 
-    Gtk::Alignment* alignment = Gtk::manage( new Gtk::Alignment ); //TODO_leak: This is possibly leaked, according to valgrind.
-
-    if(!group_title.empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
-    {
-      //Add some indenting just to avoid the out-denting caused by this GtkFrame bug:
-      //https://bugzilla.gnome.org/show_bug.cgi?id=644199
-      const int BASE_INDENT = 3;
-      
-      //std::cout << "title= " << group_title << ", with_indent=" << with_indent << std::endl;
-      if(with_indent) 
-      {
-        alignment->set_padding(Glom::UiUtils::DEFAULT_SPACING_SMALL, 0, Glom::UiUtils::DEFAULT_SPACING_SMALL + BASE_INDENT, 0);
-      }
-      else
-      {
-        alignment->set_padding(Glom::UiUtils::DEFAULT_SPACING_SMALL, 0, BASE_INDENT, 0);
-      }
-    }
-
-    alignment->show();
-    frame->add(*alignment);
-
     FlowTableWithFields* flow_table = Gtk::manage( new FlowTableWithFields() );
     flow_table->set_find_mode(m_find_mode);
     add_view(flow_table); //Allow these sub-flowtables to access the document too.
@@ -217,7 +195,27 @@ void FlowTableWithFields::add_layout_group(const sharedptr<LayoutGroup>& group, 
 #endif
     event_box->show();
 
-    alignment->add(*event_box);
+    frame->add(*event_box);
+
+    if(!group_title.empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
+    {
+      //Add some indenting just to avoid the out-denting caused by this GtkFrame bug:
+      //https://bugzilla.gnome.org/show_bug.cgi?id=644199
+      const int BASE_INDENT = 3;
+      
+      //std::cout << "title= " << group_title << ", with_indent=" << with_indent << std::endl;
+      event_box->set_margin_top(Glom::UiUtils::DEFAULT_SPACING_SMALL);
+
+      if(with_indent) 
+      {
+        event_box->set_margin_start(Glom::UiUtils::DEFAULT_SPACING_SMALL + BASE_INDENT);
+      }
+      else
+      {
+        event_box->set_margin_start(BASE_INDENT);
+      }
+    }
+
 
     LayoutGroup::type_list_items items = group->get_items();
     for(LayoutGroup::type_list_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
@@ -377,7 +375,7 @@ void FlowTableWithFields::add_layout_notebook(const sharedptr<LayoutItem_Noteboo
       {
         //Add a Related Records list for this portal:
         Box_Data_List_Related* portal_box = create_related(portal, false /* no label, because it's in the tab instead. */);
-        //portal_box->set_border_width(Glom::UiUtils::DEFAULT_SPACING_SMALL); It has "padding" around the Alignment instead.
+        //portal_box->set_border_width(Glom::UiUtils::DEFAULT_SPACING_SMALL); It has margins around the frame's child widget instead.
         portal_box->show();
         notebook_widget->append_page(*portal_box, *tab_label);
 
@@ -407,6 +405,7 @@ void FlowTableWithFields::add_layout_notebook(const sharedptr<LayoutItem_Noteboo
         event_box->show();
         //This doesn't work (probably because we haven't implmented it in our custom container),
         //so we put the flowtable in an alignment and give that a border instead.
+        //TODO: Make it work (with margins) so we can remove the deprecate Gtk::Alignment.
         //flow_table->set_border_width(Glom::UiUtils::DEFAULT_SPACING_SMALL); //Put some space between the page child and the page edges.
         Gtk::Alignment* alignment = Gtk::manage(new Gtk::Alignment());
         alignment->set_border_width(Glom::UiUtils::DEFAULT_SPACING_SMALL);
@@ -447,59 +446,6 @@ void FlowTableWithFields::add_layout_notebook(const sharedptr<LayoutItem_Noteboo
   //add_view(button); //So it can get the document.
   add_widgets(*notebook_widget, true /* expand */);
 }
-
-/*
-void FlowTableWithFields::add_group(const Glib::ustring& group_name, const Glib::ustring& group_title, const type_map_field_sequence& fields)
-{
-  if(true)//!fields.empty() && !group_name.empty())
-  {
-    Gtk::Frame* frame = Gtk::manage( new Gtk::Frame );
-
-    if(!group_title.empty())
-    {
-      Gtk::Label* label = Gtk::manage( new Gtk::Label );
-      label->set_text("<b>" + group_title + "") );
-      label->set_use_markup();
-      label->show();
-      frame->set_label_widget(*label);
-    }
-
-    frame->set_shadow_type(Gtk::SHADOW_NONE); //HIG-style
-    frame->show();
-
-    Gtk::Alignment* alignment = Gtk::manage( new Gtk::Alignment );
-
-    if(!group_title.empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
-      alignment->set_padding(UiUtils::DEFAULT_SPACING_SMALL, 0, UiUtils::DEFAULT_SPACING_SMALL, 0);
-
-    alignment->show();
-    frame->add(*alignment);
-
-    FlowTableWithFields* flow_table = Gtk::manage( new FlowTableWithFields() );
-
-    flow_table->set_line(1);
-    flow_table->set_horizontal_spacing(get_column_padding());
-    flow_table->set_row_padding(get_row_padding());
-    flow_table->show();
-    alignment->add(*flow_table);
-
-    for(type_map_field_sequence::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
-    {
-      //Gtk::Entry* debug = Gtk::manage(new Gtk::Entry() );
-      //flow_table->add(*debug);
-      //debug->show();
-      flow_table->add_field(*iter);
-    }
-
-    add_widgets(*frame);
-
-    m_sub_flow_tables.push_back(flow_table);
-
-    //Connect signal:
-    flow_table->signal_field_edited().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_edited) );
-  }
-}
-*/
 
 void FlowTableWithFields::add_field(const sharedptr<LayoutItem_Field>& layoutitem_field, const Glib::ustring& table_name)
 {
@@ -607,19 +553,16 @@ void FlowTableWithFields::add_button(const sharedptr<LayoutItem_Button>& layouti
 void FlowTableWithFields::add_textobject(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name)
 {
   //Add the widget:
+  const Glib::ustring text = layoutitem_text->get_text(AppWindow::get_current_locale());
+  DataWidgetChildren::Label* label = Gtk::manage(new DataWidgetChildren::Label(text));
+  label->set_layout_item(layoutitem_text, table_name);
 
   const Formatting::HorizontalAlignment alignment =
     layoutitem_text->get_formatting_used_horizontal_alignment();
   const Gtk::Align x_align = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::ALIGN_START : Gtk::ALIGN_END);
-  Gtk::Alignment* alignment_label = Gtk::manage(new Gtk::Alignment());
-  alignment_label->set(x_align, Gtk::ALIGN_CENTER);
-  alignment_label->show();
-
-  const Glib::ustring text = layoutitem_text->get_text(AppWindow::get_current_locale());
-  DataWidgetChildren::Label* label = Gtk::manage(new DataWidgetChildren::Label(text));
-  label->set_layout_item(layoutitem_text, table_name);
+  label->set_halign(x_align);
+  label->set_valign(Gtk::ALIGN_CENTER);
   label->show();
-  alignment_label->add(*label);
 
   apply_formatting(*label, layoutitem_text);
 
@@ -628,21 +571,18 @@ void FlowTableWithFields::add_textobject(const sharedptr<LayoutItem_Text>& layou
   const Glib::ustring title = item_get_title(layoutitem_text);
   if(title.empty())
   {
-    add_widgets(*alignment_label, true /* expand */);
+    add_widgets(*label, true /* expand */);
   }
   else
   {
-    Gtk::Alignment* alignment_title = Gtk::manage(new Gtk::Alignment());
-    alignment_title->set(Gtk::ALIGN_END, Gtk::ALIGN_CENTER);
-    alignment_title->show();
-
     DataWidgetChildren::Label* title_label = Gtk::manage(new DataWidgetChildren::Label(title, 0, 0, false));
     title_label->set_layout_item(layoutitem_text, table_name);
+    title_label->set_halign(Gtk::ALIGN_END);
+    title_label->set_valign(Gtk::ALIGN_CENTER);
     title_label->show();
-    alignment_title->add(*title_label);
     add_layoutwidgetbase(title_label);
 
-    add_widgets(*alignment_title, *alignment_label, true /* expand */);
+    add_widgets(*title_label, *label, true /* expand */);
   }
 }
 
@@ -666,14 +606,11 @@ void FlowTableWithFields::add_imageobject(const sharedptr<LayoutItem_Image>& lay
   }
   else
   {
-    Gtk::Alignment* alignment_title = Gtk::manage(new Gtk::Alignment());
-    alignment_title->set(Gtk::ALIGN_END, Gtk::ALIGN_CENTER);
-    alignment_title->show();
-
     Gtk::Label* title_label = Gtk::manage(new Gtk::Label(title));
+    title_label->set_halign(Gtk::ALIGN_END);
+    title_label->set_valign(Gtk::ALIGN_CENTER);
     title_label->show();
-    alignment_title->add(*title_label);
-    add_widgets(*alignment_title, *image, true /* expand */);
+    add_widgets(*title_label, *image, true /* expand */);
   }
 }
 
