@@ -86,7 +86,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     pFieldWidget = checkbutton;
 
     m_label.set_label(title);
-    m_label.set_alignment(0);
+    m_label.set_halign(Gtk::ALIGN_START);
     m_label.show();
   }
   else if(glom_type == Field::TYPE_IMAGE)
@@ -103,13 +103,13 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     pFieldWidget = image;
 
     m_label.set_label(title);
-    m_label.set_alignment(0);
+    m_label.set_halign(Gtk::ALIGN_START);
     m_label.show();
   }
   else
   {
     m_label.set_label(title);
-    m_label.set_alignment(0);
+    m_label.set_halign(Gtk::ALIGN_START);
     m_label.show();
 
     //Use a Combo if there is a drop-down of choices (A "value list"), else an Entry:

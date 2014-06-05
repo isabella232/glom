@@ -575,7 +575,7 @@ void FlowTableWithFields::add_textobject(const sharedptr<LayoutItem_Text>& layou
   }
   else
   {
-    DataWidgetChildren::Label* title_label = Gtk::manage(new DataWidgetChildren::Label(title, 0, 0, false));
+    DataWidgetChildren::Label* title_label = Gtk::manage(new DataWidgetChildren::Label(title, Gtk::ALIGN_START, Gtk::ALIGN_START, false));
     title_label->set_layout_item(layoutitem_text, table_name);
     title_label->set_halign(Gtk::ALIGN_END);
     title_label->set_valign(Gtk::ALIGN_CENTER);

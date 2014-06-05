@@ -77,8 +77,8 @@ void Entry::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib
   if(layout_field)
     alignment = layout_field->get_formatting_used_horizontal_alignment(true /* for details view */);
 
-  const float x_align = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
-  set_alignment(x_align);
+  const Gtk::Align x_align = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::ALIGN_START : Gtk::ALIGN_END);
+  set_halign(x_align);
 }
 
 void Entry::set_glom_type(Field::glom_field_type glom_type)

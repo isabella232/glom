@@ -44,7 +44,7 @@ Label::Label(const Glib::ustring& label, bool mnemonic)
   init();
 }
 
-Label::Label(const Glib::ustring& label, float xalign, float yalign, bool mnemonic)
+Label::Label(const Glib::ustring& label, Gtk::Align xalign, Gtk::Align yalign, bool mnemonic)
 : m_label(label, xalign, yalign, mnemonic)
 {
   init();

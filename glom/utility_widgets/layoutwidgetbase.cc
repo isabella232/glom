@@ -116,10 +116,8 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
   //Horizontal alignment:
   const Formatting::HorizontalAlignment alignment =
     layout_item->get_formatting_used_horizontal_alignment(true /* for details view */);
-  const float x_align = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
-  Gtk::Misc* misc = dynamic_cast<Gtk::Misc*>(widget_to_change);
-  if(misc)
-    misc->set_alignment(x_align);
+  const Gtk::Align x_align = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::ALIGN_START : Gtk::ALIGN_END);
+  widget_to_change->set_halign(x_align);
     
   //Set justification on labels:
   //Assume that people want left/right justification of multi-line text if they chose 

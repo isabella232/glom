@@ -43,7 +43,7 @@ class Label
 public:
   Label();
   explicit Label(const Glib::ustring& label, bool mnemonic = false);
-  explicit Label(const Glib::ustring& label, float xalign, float yalign, bool mnemonic = false);
+  explicit Label(const Glib::ustring& label, Gtk::Align xalign, Gtk::Align yalign, bool mnemonic = false);
   virtual ~Label();
   
   Gtk::Label* get_label();
