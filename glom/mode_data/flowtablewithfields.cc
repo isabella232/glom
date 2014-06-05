@@ -403,16 +403,16 @@ void FlowTableWithFields::add_layout_notebook(const sharedptr<LayoutItem_Noteboo
                                                                        &FlowTableWithFields::on_button_press_event));
 #endif
         event_box->show();
-        //This doesn't work (probably because we haven't implmented it in our custom container),
-        //so we put the flowtable in an alignment and give that a border instead.
-        //TODO: Make it work (with margins) so we can remove the deprecate Gtk::Alignment.
-        //flow_table->set_border_width(Glom::UiUtils::DEFAULT_SPACING_SMALL); //Put some space between the page child and the page edges.
-        Gtk::Alignment* alignment = Gtk::manage(new Gtk::Alignment());
-        alignment->set_border_width(Glom::UiUtils::DEFAULT_SPACING_SMALL);
-        alignment->add(*event_box);
-        alignment->show();
 
-        notebook_widget->append_page(*alignment, *tab_label);
+        //Put some space between the page child and the page edges.
+        //This doesn't work (probably because we haven't implemented it in our custom container),
+        //so we use GtkWidget margins instead. TODO: What's the difference.
+        event_box->set_margin_start(Glom::UiUtils::DEFAULT_SPACING_SMALL);
+        event_box->set_margin_end(Glom::UiUtils::DEFAULT_SPACING_SMALL);
+        event_box->set_margin_top(Glom::UiUtils::DEFAULT_SPACING_SMALL);
+        event_box->set_margin_bottom(Glom::UiUtils::DEFAULT_SPACING_SMALL);
+
+        notebook_widget->append_page(*event_box, *tab_label);
 
         //Add child items:
         LayoutGroup::type_list_items items = group->get_items();
