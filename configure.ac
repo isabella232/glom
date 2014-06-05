@@ -206,13 +206,18 @@ MM_INIT_MODULE([libglom-1.26])
 # so we can dist them to avoid a tarball-build dependency.
 MM_CONFIG_DOCTOOL_DIR([docs/libglom_reference])
 
+
 # Evaluate the --enable-warnings=level option.
-# We use  -Wno-long-long because the Python headers use long long (at least in Python 2.7).
+
+# We don't use -pedantic with the C sources, to avoid these warnings in eggmarshalers.c:
+# "ISO C forbids conversion of object pointer to function pointer type"
 AC_LANG([C])
 MM_ARG_ENABLE_WARNINGS([GLOM_WFLAGS],
                        [-Wall],
-                       [-pedantic -Wall -Wextra -Wformat-security -Wno-missing-field-initializers -DGSEAL_ENABLE],
+                       [-Wall -Wextra -Wformat-security -Wno-missing-field-initializers -DGSEAL_ENABLE],
                        [G GDK GDK_PIXBUF CAIRO PANGO GTK GDA])
+
+# We use  -Wno-long-long because the Python headers use long long (at least in Python 2.7).
 AC_LANG([C++])
 MM_ARG_ENABLE_WARNINGS([GLOM_WXXFLAGS],
                        [-Wall],
