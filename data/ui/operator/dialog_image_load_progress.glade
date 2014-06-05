@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.1 -->
 <interface>
   <requires lib="gtk+" version="3.6"/>
   <object class="GtkDialog" id="dialog_image_load_progress">
@@ -22,10 +23,10 @@
             <child>
               <object class="GtkButton" id="button2">
                 <property name="label">gtk-cancel</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -43,16 +44,9 @@
           </packing>
         </child>
         <child>
-          <object class="GtkAlignment" id="alignment1">
+          <object class="GtkProgressBar" id="progress_bar">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="border_width">6</property>
-            <child>
-              <object class="GtkProgressBar" id="progress_bar">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-            </child>
           </object>
           <packing>
             <property name="expand">False</property>
