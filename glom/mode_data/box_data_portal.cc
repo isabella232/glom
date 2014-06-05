@@ -37,17 +37,14 @@ Box_Data_Portal::Box_Data_Portal()
 {
   //m_Frame.set_label_widget(m_Label_Related);
   m_Frame.set_shadow_type(Gtk::SHADOW_NONE);
-
-  m_Frame.add(m_Alignment);
   m_Frame.show();
 
   m_Frame.set_label_widget(m_Label);
   m_Label.show();
 
   //The AddDel or Calendar is added to this:
-  m_Alignment.set_padding(UiUtils::DEFAULT_SPACING_SMALL /* top */, 0, UiUtils::DEFAULT_SPACING_LARGE /* left */, 0);
-  m_Alignment.show();
-
+  //They must use child.set_margin_start(UiUtils::DEFAULT_SPACING_LARGE) and
+  //child.set_margin_top(UiUtils::DEFAULT_SPACING_SMALL);
   add(m_Frame);
 
   m_layout_name = "list_portal"; //Replaced by derived classes.

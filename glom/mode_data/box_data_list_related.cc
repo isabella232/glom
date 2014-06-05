@@ -35,11 +35,11 @@ namespace Glom
 
 Box_Data_List_Related::Box_Data_List_Related()
 {
-  m_Alignment.add(m_AddDel);
+  m_Frame.add(m_AddDel);
   add_view(&m_AddDel); //Give it access to the document.
   m_AddDel.show();
   m_AddDel.set_height_rows(6, 6);
-  m_Alignment.show();
+  m_Frame.show();
 
   //Connect signals:
   m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Data_List_Related::on_adddel_user_requested_edit));
@@ -102,7 +102,9 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
     if(!(m_Frame.get_label_widget()))
       m_Frame.set_label_widget(m_Label);
 
-    m_Alignment.set_padding(UiUtils::DEFAULT_SPACING_SMALL /* top */, 0, UiUtils::DEFAULT_SPACING_LARGE /* left */, 0);
+    m_AddDel.set_margin_start(UiUtils::DEFAULT_SPACING_LARGE);
+    m_AddDel.set_margin_top(UiUtils::DEFAULT_SPACING_SMALL);
+
   }
   else
   {
@@ -111,7 +113,9 @@ bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, b
     if(m_Frame.get_label_widget())
       m_Frame.unset_label(); //Otherwise the allocation is calculated wrong due to GtkFrame bug: https://bugzilla.gnome.org/show_bug.cgi?id=662915
 
-    m_Alignment.set_padding(0.0f, 0.0f, 0.0f, 0.0f); //The box itself has padding of 6.
+    //The box itself has padding of 6:
+    m_AddDel.set_margin_start(0);
+    m_AddDel.set_margin_top(0);
   }
 
   if(m_portal)

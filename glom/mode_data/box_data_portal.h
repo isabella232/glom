@@ -25,7 +25,6 @@
 
 #include "box_data_manyrecords.h"
 #include <glom/utility_widgets/layoutwidgetbase.h>
-#include <gtkmm/alignment.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/label.h>
 
@@ -121,7 +120,6 @@ protected:
   Glib::ustring get_title_singular(const Glib::ustring& locale) const;  
   
   Gtk::Frame m_Frame;
-  Gtk::Alignment m_Alignment;
   Gtk::Label m_Label;
 
   sharedptr<LayoutItem_Portal> m_portal;

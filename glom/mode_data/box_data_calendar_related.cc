@@ -38,7 +38,9 @@ Box_Data_Calendar_Related::Box_Data_Calendar_Related()
 {
   set_size_request(400, -1); //An arbitrary default.
 
-  m_Alignment.add(m_calendar);
+  m_Frame.add(m_calendar);
+  m_calendar.set_margin_start(UiUtils::DEFAULT_SPACING_LARGE);
+  m_calendar.set_margin_top(UiUtils::DEFAULT_SPACING_SMALL);   
   m_calendar.show();
 
   //m_calendar.set_show_details();
@@ -99,14 +101,17 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
     m_Label.set_markup(UiUtils::bold_message(title));
     m_Label.show();
 
-    m_Alignment.set_padding(UiUtils::DEFAULT_SPACING_SMALL /* top */, 0, UiUtils::DEFAULT_SPACING_LARGE /* left */, 0);
+    m_calendar.set_margin_start(UiUtils::DEFAULT_SPACING_LARGE);
+    m_calendar.set_margin_top(UiUtils::DEFAULT_SPACING_SMALL);
   }
   else
   {
     m_Label.set_markup(Glib::ustring());
     m_Label.hide();
 
-    m_Alignment.set_padding(0, 0, 0, 0); //The box itself has padding of 6.
+    //The box itself has padding of 6.
+    m_calendar.set_margin_start(0);
+    m_calendar.set_margin_top(0);
   }
 
   if(m_portal)
