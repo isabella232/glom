@@ -44,9 +44,9 @@ Box_Reports::Box_Reports(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
   builder->get_widget("button_cancel", pButtonCancel);
   set_button_cancel(*pButtonCancel);
 
-  Gtk::Bin* pAligmentPlaceholder = 0;
-  builder->get_widget("alignment_placeholder_adddel", pAligmentPlaceholder);
-  pAligmentPlaceholder->add(m_AddDel);
+  Gtk::Box* pAddDelParent = 0;
+  builder->get_widget("vbox_adddel_parent", pAddDelParent);
+  pAddDelParent->pack_start(m_AddDel);
 
   m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Reports::on_adddel_Add));
   m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Reports::on_adddel_Delete));

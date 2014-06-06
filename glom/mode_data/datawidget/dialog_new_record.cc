@@ -35,17 +35,17 @@ const bool Dialog_NewRecord::glade_developer(false);
 
 Dialog_NewRecord::Dialog_NewRecord()
 : m_label_table_name(0),
-  m_alignment_parent(0)
+  m_vbox_parent(0)
 {
 }
 
 Dialog_NewRecord::Dialog_NewRecord(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_label_table_name(0),
-  m_alignment_parent(0)
+  m_vbox_parent(0)
 {
   builder->get_widget("label_table_name", m_label_table_name);
-  builder->get_widget("alignment_parent", m_alignment_parent);
+  builder->get_widget("vbox_parent", m_vbox_parent);
 
   setup();
 }
@@ -58,7 +58,7 @@ Dialog_NewRecord::~Dialog_NewRecord()
 void Dialog_NewRecord::setup()
 {
   m_box_details.show_layout_toolbar(false);
-  m_alignment_parent->add(m_box_details);
+  m_vbox_parent->pack_start(m_box_details);
 
   //Fill composite view:
   add_view(&m_box_details);

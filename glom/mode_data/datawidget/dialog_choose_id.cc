@@ -38,7 +38,7 @@ Dialog_ChooseID::Dialog_ChooseID()
   m_pBox_QuickFind(0),
   m_pEntry_QuickFind(0),
   m_pButton_QuickFind(0),
-  m_alignment_parent(0),
+  m_vbox_parent(0),
   m_document(0),
   m_stage(STAGE_INVALID)
 {
@@ -50,12 +50,12 @@ Dialog_ChooseID::Dialog_ChooseID(BaseObjectType* cobject, const Glib::RefPtr<Gtk
   m_pBox_QuickFind(0),
   m_pEntry_QuickFind(0),
   m_pButton_QuickFind(0),
-  m_alignment_parent(0),
+  m_vbox_parent(0),
   m_document(0),
   m_stage(STAGE_INVALID)
 {
   builder->get_widget("label_table_name", m_label_table_name);
-  builder->get_widget("alignment_parent", m_alignment_parent);
+  builder->get_widget("vbox_parent", m_vbox_parent);
 
   builder->get_widget("hbox_quickfind", m_pBox_QuickFind);
   builder->get_widget("entry_quickfind", m_pEntry_QuickFind);
@@ -148,21 +148,21 @@ void Dialog_ChooseID::on_box_select_selected(const Gnome::Gda::Value& primary_ke
 
 void Dialog_ChooseID::update_ui_for_stage()
 {
-  m_alignment_parent->remove();
+  UiUtils::container_remove_all(*m_vbox_parent);
 
   if(m_stage == STAGE_FIND)
   {
     m_pBox_QuickFind->show();
 
     m_box_find.show();
-    m_alignment_parent->add(m_box_find);
+    m_vbox_parent->pack_start(m_box_find);
   }
   else if(m_stage == STAGE_SELECT)
   {
     m_pBox_QuickFind->hide();
 
     m_box_select.show();
-    m_alignment_parent->add(m_box_select);
+    m_vbox_parent->pack_start(m_box_select);
   }
 }
 

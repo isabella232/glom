@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.0 on Fri Oct 25 11:02:11 2013 -->
+<!-- Generated with glade 3.18.1 -->
 <interface>
-  <!-- interface-requires gtk+ 3.6 -->
+  <requires lib="gtk+" version="3.6"/>
   <object class="GtkDialog" id="dialog_group_by">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
@@ -99,49 +99,10 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="button_formatting_group_by">
+                        <property name="label" translatable="yes">Formatting</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <child>
-                          <object class="GtkAlignment" id="alignment84">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="xscale">0</property>
-                            <property name="yscale">0</property>
-                            <child>
-                              <object class="GtkBox" id="hbox108">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="spacing">2</property>
-                                <child>
-                                  <object class="GtkImage" id="image45">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="stock">gtk-edit</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkLabel" id="label235">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">Formatting</property>
-                                    <property name="use_underline">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -152,49 +113,10 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="button_select_group_by">
+                        <property name="label" translatable="yes">Select</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <child>
-                          <object class="GtkAlignment" id="alignment54">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="xscale">0</property>
-                            <property name="yscale">0</property>
-                            <child>
-                              <object class="GtkBox" id="hbox75">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="spacing">2</property>
-                                <child>
-                                  <object class="GtkImage" id="image29">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="stock">gtk-edit</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkLabel" id="label183">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">Select</property>
-                                    <property name="use_underline">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>

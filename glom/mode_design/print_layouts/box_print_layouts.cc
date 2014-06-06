@@ -43,9 +43,9 @@ Box_Print_Layouts::Box_Print_Layouts(BaseObjectType* cobject, const Glib::RefPtr
   builder->get_widget("button_cancel", pButtonCancel);
   set_button_cancel(*pButtonCancel);
 
-  Gtk::Bin* pAligmentPlaceholder = 0;
-  builder->get_widget("alignment_placeholder_adddel", pAligmentPlaceholder);
-  pAligmentPlaceholder->add(m_AddDel);
+  Gtk::Box* pAddDelParent = 0;
+  builder->get_widget("vbox_adddel_parent", pAddDelParent);
+  pAddDelParent->pack_start(m_AddDel);
 
   m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Print_Layouts::on_adddel_user_added));
   m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Print_Layouts::on_adddel_user_requested_delete));

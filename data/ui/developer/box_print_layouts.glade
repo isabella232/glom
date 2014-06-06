@@ -1,44 +1,37 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.1 -->
 <interface>
   <requires lib="gtk+" version="3.6"/>
-  <!-- interface-naming-policy toplevel-contextual -->
-
   <object class="GtkWindow" id="window_print_layouts">
+    <property name="can_focus">False</property>
     <property name="border_width">12</property>
     <property name="title" translatable="yes">Print Layouts</property>
     <child>
       <object class="GtkBox" id="box_print_layouts">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <property name="spacing">18</property>
         <child>
-          <object class="GtkBox" id="vbox71">
-            <property name="orientation">vertical</property>
+          <object class="GtkBox" id="vbox_adddel_parent">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
-              <object class="GtkAlignment" id="alignment_placeholder_adddel">
-                <property name="visible">True</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="position">0</property>
-                <property name="expand">True</property>
-              </packing>
+              <placeholder/>
             </child>
           </object>
           <packing>
-            <property name="position">0</property>
             <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkButtonBox" id="hbuttonbox33">
-            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="button_cancel">

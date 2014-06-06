@@ -69,7 +69,7 @@ private:
   Gtk::Box* m_pBox_QuickFind; //Only show this when in Find mode.
   Gtk::Entry* m_pEntry_QuickFind;
   Gtk::Button* m_pButton_QuickFind;
-  Gtk::Bin* m_alignment_parent;
+  Gtk::Box* m_vbox_parent;
 
   Glib::ustring m_table_name;
   Glib::ustring m_layout_platform;

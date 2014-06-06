@@ -49,9 +49,9 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   // Set a name for the AddDel TreeView, so it can be accessed by LDTP
   m_AddDel.set_treeview_accessible_name("Tables");
 
-  Gtk::Bin* pAligmentPlaceholder = 0;
-  builder->get_widget("alignment_placeholder_adddel", pAligmentPlaceholder);
-  pAligmentPlaceholder->add(m_AddDel);
+  Gtk::Box* pAddDelParent = 0;
+  builder->get_widget("vbox_adddel_parent", pAddDelParent);
+  pAddDelParent->pack_start(m_AddDel);
 
   builder->get_widget("checkbutton_show_hidden", m_pCheckButtonShowHidden);
   m_pCheckButtonShowHidden->signal_toggled().connect(sigc::mem_fun(*this, &Box_Tables::on_show_hidden_toggled));
