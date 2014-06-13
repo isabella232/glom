@@ -556,7 +556,7 @@ http://www.flickr.com/photos/mape_s/350700095/</value>
         <trans_set>
           <trans loc="cs" val="Celé jméno"/>
           <trans loc="de" val="Vollständiger Name"/>
-          <trans loc="el" val="Πλήρες Όνομα"/>
+          <trans loc="el" val="Πλήρες όνομα"/>
           <trans loc="en_GB" val="Full Name"/>
           <trans loc="es" val="Nombre completo"/>
           <trans loc="fr" val="Nom complet"/>
@@ -1766,6 +1766,7 @@ Orientation=portrait
         <trans_set>
           <trans loc="cs" val="Výrobky"/>
           <trans loc="de" val="Produkten"/>
+          <trans loc="el" val="Προϊόντα"/>
           <trans loc="es" val="Productos"/>
           <trans loc="hu" val="Termékek"/>
           <trans loc="id" val="Produk"/>
@@ -2797,7 +2798,7 @@ Orientation=portrait
         <trans_set>
           <trans loc="cs" val="Datum narození"/>
           <trans loc="de" val="Geburtsdatum"/>
-          <trans loc="el" val="Ημερομηνία Γέννησης"/>
+          <trans loc="el" val="Ημερομηνία γέννησης"/>
           <trans loc="en_GB" val="Date Of Birth"/>
           <trans loc="es" val="Fecha de nacimiento"/>
           <trans loc="fr" val="Date de naissance"/>

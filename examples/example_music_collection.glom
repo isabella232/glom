@@ -838,7 +838,7 @@
           <trans loc="sr@latin" val="Albumi"/>
           <trans loc="zh_CN" val="专辑"/>
         </trans_set>
-       <title_singular title="Album"/>
+        <title_singular title="Album"/>
       </relationship>
     </relationships>
     <data_layouts>
