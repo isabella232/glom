@@ -267,7 +267,6 @@
           <trans loc="sr@latin" val="Pesme"/>
           <trans loc="zh_CN" val="歌曲"/>
         </trans_set>
-        <title_singular title="Song"/>
       </relationship>
     </relationships>
     <data_layouts>
@@ -640,7 +639,6 @@
           <trans loc="sr@latin" val="Albumi"/>
           <trans loc="zh_CN" val="专辑"/>
         </trans_set>
-        <title_singular title="Album"/>
       </relationship>
     </relationships>
     <data_layouts>
@@ -838,7 +836,6 @@
           <trans loc="sr@latin" val="Albumi"/>
           <trans loc="zh_CN" val="专辑"/>
         </trans_set>
-        <title_singular title="Album"/>
       </relationship>
     </relationships>
     <data_layouts>
@@ -1331,7 +1328,6 @@
           <trans loc="sr@latin" val="Album"/>
           <trans loc="zh_CN" val="专辑"/>
         </trans_set>
-        <title_singular title="Album"/>
       </relationship>
     </relationships>
     <data_layouts>
