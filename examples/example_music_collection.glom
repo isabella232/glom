@@ -76,6 +76,7 @@
       <trans loc="sr@latin" val="Albumi"/>
       <trans loc="zh_CN" val="专辑"/>
     </trans_set>
+    <title_singular title="Album"/>
     <fields>
       <field name="album_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Album ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -266,6 +267,7 @@
           <trans loc="sr@latin" val="Pesme"/>
           <trans loc="zh_CN" val="歌曲"/>
         </trans_set>
+        <title_singular title="Song"/>
       </relationship>
     </relationships>
     <data_layouts>
@@ -541,6 +543,7 @@
       <trans loc="sr@latin" val="Izvođači"/>
       <trans loc="zh_CN" val="艺人"/>
     </trans_set>
+    <title_singular title="Artist"/>
     <fields>
       <field name="artist_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Artist ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -637,6 +640,7 @@
           <trans loc="sr@latin" val="Albumi"/>
           <trans loc="zh_CN" val="专辑"/>
         </trans_set>
+        <title_singular title="Album"/>
       </relationship>
     </relationships>
     <data_layouts>
@@ -756,6 +760,7 @@
       <trans loc="sr@latin" val="Izdavači"/>
       <trans loc="zh_CN" val="发行商"/>
     </trans_set>
+    <title_singular title="Publisher"/>
     <fields>
       <field name="publishers_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Publisher ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -833,6 +838,7 @@
           <trans loc="sr@latin" val="Albumi"/>
           <trans loc="zh_CN" val="专辑"/>
         </trans_set>
+       <title_singular title="Album"/>
       </relationship>
     </relationships>
     <data_layouts>
@@ -1228,6 +1234,7 @@
       <trans loc="sr@latin" val="Pesme"/>
       <trans loc="zh_CN" val="歌曲"/>
     </trans_set>
+    <title_singular title="Song"/>
     <fields>
       <field name="song_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Song ID">
         <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -1324,6 +1331,7 @@
           <trans loc="sr@latin" val="Album"/>
           <trans loc="zh_CN" val="专辑"/>
         </trans_set>
+        <title_singular title="Album"/>
       </relationship>
     </relationships>
     <data_layouts>
