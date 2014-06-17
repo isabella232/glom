@@ -2228,7 +2228,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
     }
     catch(const Glib::Exception& ex)
     {
-      handle_error(ex);
+      handle_error(ex, get_app_window());
 
       //Replace with correct values.
       if(primary_key_field)
@@ -2240,7 +2240,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
     }
     catch(const std::exception& ex)
     {
-      handle_error(ex);
+      handle_error(ex, get_app_window());
 
       //Replace with correct values.
       if(primary_key_field)
@@ -2451,6 +2451,17 @@ void DbAddDel::treeview_delete_all_columns()
 
   //Reset this too, because we must have just deleted it:
   m_treeviewcolumn_button = 0;
+}
+
+const Gtk::Window* DbAddDel::get_app_window() const
+{
+  DbAddDel* nonconst = const_cast<DbAddDel*>(this);
+  return nonconst->get_app_window();
+}
+  
+Gtk::Window* DbAddDel::get_app_window()
+{
+  return dynamic_cast<Gtk::Window*>(get_toplevel());
 }
 
 

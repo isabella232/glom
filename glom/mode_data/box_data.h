@@ -127,6 +127,9 @@ protected:
   virtual void prepare_layout_dialog(Dialog_Layout* dialog) = 0;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+  void handle_error(const Glib::Exception& ex);
+  void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.
+
   Gtk::Button m_Button_Find; //only used by _Find sub-classes. Should be MI.
   Gtk::Label m_Label_FindStatus;
 

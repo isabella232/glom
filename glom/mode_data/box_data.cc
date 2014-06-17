@@ -378,4 +378,14 @@ void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& l
   }
 }
 
+void Box_Data::handle_error(const Glib::Exception& ex)
+{
+  Base_DB::handle_error(ex, get_app_window());
+}
+
+void Box_Data::handle_error(const std::exception& ex)
+{
+  Base_DB::handle_error(ex, get_app_window());
+}
+
 } //namespace Glom

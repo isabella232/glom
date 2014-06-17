@@ -50,7 +50,15 @@ Gtk::Window* Box_DB_Table::get_app_window()
   return dynamic_cast<Gtk::Window*>(get_toplevel());
 }
 
+void Box_DB_Table::handle_error(const Glib::Exception& ex)
+{
+  Base_DB::handle_error(ex, get_app_window());
+}
 
+void Box_DB_Table::handle_error(const std::exception& ex)
+{
+  Base_DB::handle_error(ex, get_app_window());
+}
 
 } //namespace Glom
 

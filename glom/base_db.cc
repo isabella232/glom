@@ -115,23 +115,28 @@ sharedptr<SharedConnection> Base_DB::connect_to_server(Gtk::Window* parent_windo
   return ConnectionPool::get_and_connect();
 }
 
-void Base_DB::handle_error(const Glib::Exception& ex)
+void Base_DB::handle_error(const Glib::Exception& ex, Gtk::Window* parent)
 {
   std::cerr << G_STRFUNC << ": Internal Error (Base_DB::handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
 
   Gtk::MessageDialog dialog(UiUtils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
   dialog.set_secondary_text(ex.what());
-  //TODO: dialog.set_transient_for(*get_appwindow());
+
+  if(parent)
+    dialog.set_transient_for(*parent);
+
   dialog.run();
 }
 
-void Base_DB::handle_error(const std::exception& ex)
+void Base_DB::handle_error(const std::exception& ex, Gtk::Window* parent)
 {
   std::cerr << G_STRFUNC << ": Internal Error (Base_DB::handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
 
   Gtk::MessageDialog dialog(UiUtils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
   dialog.set_secondary_text(ex.what());
-  //TODO: dialog.set_transient_for(*get_appwindow());
+
+  if(parent)
+    dialog.set_transient_for(*parent);
 
   dialog.run();
 }
@@ -256,7 +261,7 @@ namespace
   }
 }
 
-sharedptr<Field> Base_DB::change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, Gtk::Window* /* parent_window */) const
+sharedptr<Field> Base_DB::change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, Gtk::Window* parent_window) const
 {
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   sharedptr<Field> result = check_field_change_constraints(field_old, field);
@@ -267,16 +272,14 @@ sharedptr<Field> Base_DB::change_column(const Glib::ustring& table_name, const s
   }
   catch(const Glib::Error& ex)
   {
-    handle_error(ex);
-//    Gtk::MessageDialog window(*parent_window, UiUtils::bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
-//    window.run();
+    handle_error(ex, parent_window);
     return sharedptr<Field>();
   }
 
   return result;
 }
 
-bool Base_DB::change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, type_vec_fields& fields, Gtk::Window* /* parent_window */) const
+bool Base_DB::change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, type_vec_fields& fields, Gtk::Window*  parent_window) const
 {
   g_assert(old_fields.size() == fields.size());
 
@@ -295,7 +298,7 @@ bool Base_DB::change_columns(const Glib::ustring& table_name, const type_vec_con
   }
   catch(const Glib::Error& ex)
   {
-    handle_error(ex);
+    handle_error(ex, parent_window);
 //    Gtk::MessageDialog window(*parent_window, UiUtils::bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
 //    window.run();
     return false;
@@ -970,7 +973,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& field_in_re
   return set_field_value_in_database(field_in_record, Gtk::TreeModel::iterator(), field_value, use_current_calculations, parent_window);
 }
 
-bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations, Gtk::Window* /* parent_window */)
+bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations, Gtk::Window* parent_window)
 {
   Document* document = get_document();
   g_assert(document);
@@ -1011,12 +1014,12 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
     }
     catch(const Glib::Exception& ex)
     {
-      handle_error(ex);
+      handle_error(ex, parent_window);
       return false;
     }
     catch(const std::exception& ex)
     {
-      handle_error(ex);
+      handle_error(ex, parent_window);
       return false;
     }
 

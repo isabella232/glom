@@ -302,8 +302,8 @@ protected:
   bool disable_user(const Glib::ustring& user);
 
 
-  static void handle_error(const Glib::Exception& ex);
-  static void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.
+  static void handle_error(const Glib::Exception& ex, Gtk::Window* parent);
+  static void handle_error(const std::exception& ex, Gtk::Window* parent); //TODO_port: This is probably useless now.
   static bool handle_error();
 
 protected:

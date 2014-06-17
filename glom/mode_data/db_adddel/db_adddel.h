@@ -434,6 +434,9 @@ private:
 
   void treeview_delete_all_columns();
 
+  Gtk::Window* get_app_window();
+  const Gtk::Window* get_app_window() const;
+
   bool m_find_mode;
   bool m_allow_only_one_related_record;
 
