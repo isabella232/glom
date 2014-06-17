@@ -56,7 +56,7 @@ Dialog_FieldLayout::Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefP
 
   //Get the formatting stuff:
   Utils::get_glade_child_widget_derived_with_warning(m_box_formatting);
-  if(m_box_formatting)
+  if(m_box_formatting && m_box_formatting_placeholder)
   {
     m_box_formatting_placeholder->pack_start(*m_box_formatting);
     add_view(m_box_formatting);
