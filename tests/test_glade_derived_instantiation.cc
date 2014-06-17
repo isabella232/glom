@@ -96,6 +96,17 @@ bool instantiate_widget()
   //Note that this is not testing all .glade files, or all windows (some not using glade),
   //and doesn't even reliably check all uses of .glade files,
   //but hopefully it will catch some problems:
+
+  //GTK+ complains if the a Gtk::Dialog has no transient parent.
+  Gtk::Window* parent_window = 0;
+  Gtk::Dialog* dialog = dynamic_cast<Gtk::Dialog*>(widget);
+  if(dialog)
+  {
+    parent_window = new Gtk::Window();
+    dialog->set_transient_for(*parent_window);
+    parent_window->show();
+  }
+   
   widget->show();
   const Gtk::Allocation allocation = widget->get_allocation();
  
@@ -110,6 +121,10 @@ bool instantiate_widget()
   }
   
   delete widget;
+
+  if(parent_window)
+    delete parent_window;
+
   return true;
 }
 
