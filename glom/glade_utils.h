@@ -23,6 +23,7 @@
 
 #include <iostream> // For std::cerr
 #include <gtkmm/builder.h>
+#include <gtkmm/box.h>
 #include <gtkmm/window.h>
 #include <giomm/file.h>
 #include <glibmm/miscutils.h>
@@ -46,7 +47,7 @@ inline std::string get_glade_resource_path(const std::string& filename)
  * such as a GtkSpinButton's GtkAdjustment.
  */
 template<class T_Widget>
-void helper_get_glade_widget_derived_with_warning(const std::string& filename, const Glib::ustring& id, T_Widget*& widget, bool load_all)
+Glib::RefPtr<Gtk::Builder> helper_get_glade_widget_derived_with_warning(const std::string& filename, const Glib::ustring& id, T_Widget*& widget, bool load_all)
 {
   Glib::RefPtr<Gtk::Builder> refXml;
 
@@ -79,16 +80,20 @@ void helper_get_glade_widget_derived_with_warning(const std::string& filename, c
   {
     refXml->get_widget_derived(id, widget);
   }
+
+  return refXml;
 }
 
 /** This should be used with classes that have a static glade_id member.
  * This loads only the widget's own object, as specified by its ID.
+ *
+ * You must keep the returned RefPtr<Gtk::Builder> until you have added
+ * this widget to a container that will own it. Otherwise the widget
+ * will be deleted immediately.
  */
 template<class T_Widget>
-void get_glade_child_widget_derived_with_warning(T_Widget*& widget)
+Glib::RefPtr<Gtk::Builder> get_glade_child_widget_derived_with_warning(T_Widget*& widget)
 {
-  widget = 0;
-
   // Check the path to the installed .glade file:
   // The id is the same as the filename, in a developer/operator sub-directory:
   // TODO: Should we use build_filename()?
@@ -96,7 +101,21 @@ void get_glade_child_widget_derived_with_warning(T_Widget*& widget)
       (T_Widget::glade_developer ? "developer" : "operator"),
       std::string(T_Widget::glade_id) + ".glade"); 
   
-  helper_get_glade_widget_derived_with_warning(filename, T_Widget::glade_id, widget, false /* load just this */);
+  return helper_get_glade_widget_derived_with_warning(filename, T_Widget::glade_id, widget, false /* load just this */);
+}
+
+/** This should be used with classes that have a static glade_id member.
+ * This loads only the widget's own object, as specified by its ID,
+ * and adds it to the parent box, which will then own it.
+ */
+template<class T_Widget>
+void box_pack_start_glade_child_widget_derived_with_warning(Gtk::Box* parent_box, T_Widget*& widget)
+{
+  Glib::RefPtr<Gtk::Builder> builder = get_glade_child_widget_derived_with_warning(widget);
+  widget = 0;
+
+  if(widget)
+    parent_box->pack_start(*widget);
 }
 
 /** This should be used with classes that have a static glade_id member.
