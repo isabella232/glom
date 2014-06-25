@@ -33,9 +33,7 @@ Dialog_Formatting::Dialog_Formatting()
   set_border_width(6);
 
   //Get the formatting stuff:
-  Utils::get_glade_child_widget_derived_with_warning(m_box_formatting);
-
-  get_content_area()->pack_start(*m_box_formatting, Gtk::PACK_EXPAND_WIDGET);
+  Utils::box_pack_start_glade_child_widget_derived_with_warning(get_content_area(), m_box_formatting);
   add_view(m_box_formatting);
 
   add_button(_("_Cancel"), Gtk::RESPONSE_CANCEL);

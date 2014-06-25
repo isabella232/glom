@@ -55,12 +55,8 @@ Dialog_FieldLayout::Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefP
   builder->get_widget("box_formatting_placeholder", m_box_formatting_placeholder);
 
   //Get the formatting stuff:
-  Utils::get_glade_child_widget_derived_with_warning(m_box_formatting);
-  if(m_box_formatting && m_box_formatting_placeholder)
-  {
-    m_box_formatting_placeholder->pack_start(*m_box_formatting);
-    add_view(m_box_formatting);
-  }
+  Utils::box_pack_start_glade_child_widget_derived_with_warning(m_box_formatting_placeholder, m_box_formatting);
+  add_view(m_box_formatting);
 
   m_radiobutton_custom_formatting->signal_toggled().connect(sigc::mem_fun(*this, &Dialog_FieldLayout::on_radiobutton_custom_formatting));
 
