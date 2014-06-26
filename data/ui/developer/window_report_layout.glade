@@ -188,7 +188,7 @@
                   <object class="GtkScrolledWindow" id="scrolledwindow16">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="margin_left">12</property>
+                    <property name="margin_start">12</property>
                     <property name="shadow_type">in</property>
                     <child>
                       <object class="GtkTreeView" id="treeview_available_parts">
@@ -262,7 +262,7 @@
                   <object class="GtkBox" id="vbox68">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="margin_left">12</property>
+                    <property name="margin_start">12</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
