@@ -99,6 +99,9 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
 
   Dialog_Properties::set_modified(false);
 
+  //This is mostly just to exercise some widgets during simple tests:
+  enforce_constraints();
+
   show_all_children();
 }
 

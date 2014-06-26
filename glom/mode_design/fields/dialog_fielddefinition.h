@@ -79,14 +79,14 @@ private:
   Gtk::Box* m_pBox_ValueTab;
 
   Gtk::RadioButton* m_pRadio_UserEntry;
-  Gtk::Bin* m_pAlignment_UserEntry;
+  Gtk::Box* m_pAlignment_UserEntry;
   Gtk::CheckButton* m_pCheck_Lookup;
   Gtk::Widget* m_pTable_Lookup; //So we can make it insensitive.
   ComboBox_Relationship* m_pCombo_LookupRelationship;
   Gtk::ComboBoxText* m_pCombo_LookupField;
 
   Gtk::RadioButton* m_pRadio_Calculate;
-  Gtk::Bin* m_pAlignment_Calculate;
+  Gtk::Box* m_pAlignment_Calculate;
   Gsv::View* m_pTextView_Calculation;
   Gtk::Button* m_pButton_EditCalculation;
 
