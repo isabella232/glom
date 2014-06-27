@@ -168,7 +168,6 @@
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
-            <property name="label_xalign">0</property>
             <property name="shadow_type">none</property>
             <child>
               <object class="GtkGrid" id="table11">
@@ -854,7 +853,6 @@
           <object class="GtkFrame" id="frame_related_table_navigation">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label_xalign">0</property>
             <property name="shadow_type">none</property>
             <child>
               <object class="GtkBox" id="vbox105">
@@ -990,7 +988,7 @@
               </object>
             </child>
             <child type="label">
-              <object class="GtkLabel" id="frame_navigation">
+              <object class="GtkLabel" id="label_navigation">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">&lt;b&gt;Navigation&lt;/b&gt;</property>
@@ -1038,7 +1036,6 @@
           <object class="GtkFrame" id="frame_calendar">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label_xalign">0</property>
             <property name="shadow_type">none</property>
             <child>
               <object class="GtkBox" id="hbox44">
@@ -1156,7 +1153,6 @@
           <object class="GtkFrame" id="frame_lines">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label_xalign">0</property>
             <property name="shadow_type">none</property>
             <child>
               <object class="GtkBox" id="hbox2">
