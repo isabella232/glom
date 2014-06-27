@@ -208,7 +208,7 @@
                   <object class="GtkFrame" id="frame39">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label_xalign">0</property>
+                    
                     <property name="shadow_type">none</property>
                     <child>
                       <object class="GtkBox" id="alignment_userentry">
@@ -349,7 +349,7 @@
                     <property name="can_focus">False</property>
                     <property name="hexpand">True</property>
                     <property name="vexpand">True</property>
-                    <property name="label_xalign">0</property>
+                    
                     <property name="shadow_type">none</property>
                     <child>
                       <object class="GtkBox" id="alignment_calculate">
