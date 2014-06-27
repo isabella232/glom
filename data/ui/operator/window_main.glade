@@ -101,8 +101,8 @@
                       <object class="GtkLabel" id="label_message">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="yalign">0</property>
+                        <property name="halign">start</property>
+                        <property name="valign">start</property>
                         <property name="label" translatable="yes">Processing</property>
                         <property name="use_markup">True</property>
                       </object>

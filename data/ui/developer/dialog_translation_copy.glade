@@ -81,8 +81,8 @@
               <object class="GtkImage" id="image38">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="xalign">0</property>
-                <property name="yalign">0</property>
+                <property name="halign">start</property>
+                <property name="valign">start</property>
                 <property name="stock">gtk-dialog-question</property>
                 <property name="icon_size">6</property>
               </object>
@@ -102,8 +102,8 @@
                   <object class="GtkLabel" id="label222">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="xalign">0</property>
-                    <property name="yalign">0</property>
+                    <property name="halign">start</property>
+                    <property name="valign">start</property>
                     <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;Copy Translation&lt;/span&gt;
 
 From what language would you like to copy the translations to use as the start of the current translation?</property>

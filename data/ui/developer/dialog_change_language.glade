@@ -79,8 +79,8 @@
               <object class="GtkImage" id="image34">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="xalign">0</property>
-                <property name="yalign">0</property>
+                <property name="halign">start</property>
+                <property name="valign">start</property>
                 <property name="stock">gtk-dialog-question</property>
                 <property name="icon_size">6</property>
               </object>
@@ -100,8 +100,8 @@
                   <object class="GtkLabel" id="label220">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="xalign">0</property>
-                    <property name="yalign">0</property>
+                    <property name="halign">start</property>
+                    <property name="valign">start</property>
                     <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;Test Translation&lt;/span&gt;
 
 Choose a language to use temporarily to test the translations. These translations are normally used automatically when the application is started on a computer that uses the language.

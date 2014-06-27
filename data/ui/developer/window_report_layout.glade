@@ -65,7 +65,7 @@
                 <property name="receives_default">False</property>
                 <property name="tooltip_text" translatable="yes">When this is checked the table's title will be shown at the top of the report in addition to the report title.</property>
                 <property name="use_underline">True</property>
-                <property name="xalign">0.5</property>
+                <property name="halign">center</property>
                 <property name="draw_indicator">True</property>
               </object>
               <packing>

@@ -33,7 +33,7 @@
                     <property name="receives_default">False</property>
                     <property name="tooltip_text" translatable="yes">If this is not selected then a thousands separator will not be used, even if your locale would normally use one. If it is selected then a thousands separator will be used only if your locale normally uses one.</property>
                     <property name="use_underline">True</property>
-                    <property name="xalign">0</property>
+                    <property name="halign">start</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -55,7 +55,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="use_underline">True</property>
-                        <property name="xalign">0</property>
+                        <property name="halign">start</property>
                         <property name="draw_indicator">True</property>
                       </object>
                       <packing>
@@ -91,7 +91,7 @@
                       <object class="GtkLabel" id="label108">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
+                        <property name="halign">start</property>
                         <property name="label" translatable="yes">Currency Symbol:</property>
                       </object>
                       <packing>
@@ -133,7 +133,7 @@
                     <property name="receives_default">False</property>
                     <property name="tooltip_text" translatable="yes">Click this check box to use a different foreground color to display negative values.</property>
                     <property name="use_underline">True</property>
-                    <property name="xalign">0</property>
+                    <property name="halign">start</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -171,7 +171,7 @@
                       <object class="GtkLabel" id="label_format_text_horizontal_alignment">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
+                        <property name="halign">start</property>
                         <property name="label" translatable="yes">Horizontal Alignment:</property>
                       </object>
                       <packing>
@@ -207,7 +207,7 @@
                     <property name="receives_default">False</property>
                     <property name="tooltip_text" translatable="yes">If this is selected then the field value will be shown in a multi-line box with a scrollbar.</property>
                     <property name="use_underline">True</property>
-                    <property name="xalign">0</property>
+                    <property name="halign">start</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -225,7 +225,7 @@
                       <object class="GtkLabel" id="label_format_text_multiline">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
+                        <property name="halign">start</property>
                         <property name="label" translatable="yes">Height (lines)</property>
                       </object>
                       <packing>
@@ -268,7 +268,7 @@
                         <property name="receives_default">False</property>
                         <property name="tooltip_text" translatable="yes">Click this check box to use a non-standard font.</property>
                         <property name="use_underline">True</property>
-                        <property name="xalign">0</property>
+                        <property name="halign">start</property>
                         <property name="draw_indicator">True</property>
                       </object>
                       <packing>
@@ -313,7 +313,7 @@
                         <property name="receives_default">False</property>
                         <property name="tooltip_text" translatable="yes">Click this check box to use a non-standard foreground color.</property>
                         <property name="use_underline">True</property>
-                        <property name="xalign">0</property>
+                        <property name="halign">start</property>
                         <property name="draw_indicator">True</property>
                       </object>
                       <packing>
@@ -357,7 +357,7 @@
                         <property name="receives_default">False</property>
                         <property name="tooltip_text" translatable="yes">Click this check box to use a non-standard background color.</property>
                         <property name="use_underline">True</property>
-                        <property name="xalign">0</property>
+                        <property name="halign">start</property>
                         <property name="draw_indicator">True</property>
                       </object>
                       <packing>
@@ -436,7 +436,7 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
-                            <property name="xalign">0.5</property>
+                            <property name="halign">center</property>
                             <property name="active">True</property>
                             <property name="draw_indicator">True</property>
                           </object>
@@ -466,7 +466,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="hexpand">False</property>
-                                <property name="xalign">1</property>
+                                <property name="halign">end</property>
                                 <property name="label" translatable="yes">Relationship:</property>
                                 <property name="justify">right</property>
                                 <property name="single_line_mode">True</property>
@@ -492,7 +492,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="hexpand">False</property>
-                                <property name="xalign">1</property>
+                                <property name="halign">end</property>
                                 <property name="label" translatable="yes">Field:</property>
                                 <property name="justify">right</property>
                                 <property name="single_line_mode">True</property>
@@ -517,7 +517,7 @@
                               <object class="GtkLabel" id="label120">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="xalign">1</property>
+                                <property name="halign">end</property>
                                 <property name="label" translatable="yes">Also show:</property>
                                 <property name="justify">right</property>
                                 <property name="single_line_mode">True</property>
@@ -538,7 +538,7 @@
                                   <object class="GtkLabel" id="label_choices_related_extra_fields">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
+                                    <property name="halign">start</property>
                                     <property name="label" translatable="yes">label</property>
                                   </object>
                                   <packing>
@@ -578,7 +578,7 @@
                                   <object class="GtkLabel" id="label_choices_related_sortby">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
+                                    <property name="halign">start</property>
                                     <property name="label" translatable="yes">label</property>
                                   </object>
                                   <packing>
@@ -612,7 +612,7 @@
                               <object class="GtkLabel" id="label1">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="xalign">1</property>
+                                <property name="halign">end</property>
                                 <property name="label" translatable="yes">Sort Order:</property>
                                 <property name="justify">right</property>
                                 <property name="single_line_mode">True</property>
@@ -634,7 +634,7 @@
                                 <property name="tooltip_markup" translatable="yes">If this option is selected then the choices will list values from all records in the related table. If this option is not selected then the choices will list values only from related records.</property>
                                 <property name="tooltip_text" translatable="yes">If this option is selected then the choices will list values from all records in the related table. If this option is not selected then the choices will list values only from related records.</property>
                                 <property name="hexpand">True</property>
-                                <property name="xalign">0</property>
+                                <property name="halign">start</property>
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
@@ -653,7 +653,7 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
-                            <property name="xalign">0.5</property>
+                            <property name="halign">center</property>
                             <property name="draw_indicator">True</property>
                             <property name="group">radiobutton_choices_no</property>
                           </object>
@@ -694,7 +694,7 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
-                            <property name="xalign">0.5</property>
+                            <property name="halign">center</property>
                             <property name="draw_indicator">True</property>
                             <property name="group">radiobutton_choices_no</property>
                           </object>
@@ -726,7 +726,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="use_underline">True</property>
-                        <property name="xalign">0</property>
+                        <property name="halign">start</property>
                         <property name="draw_indicator">True</property>
                       </object>
                       <packing>
@@ -743,7 +743,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="use_underline">True</property>
-                        <property name="xalign">0</property>
+                        <property name="halign">start</property>
                         <property name="draw_indicator">True</property>
                       </object>
                       <packing>

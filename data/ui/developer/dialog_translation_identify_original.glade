@@ -78,8 +78,8 @@
               <object class="GtkImage" id="image38">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="xalign">0</property>
-                <property name="yalign">0</property>
+                <property name="halign">start</property>
+                <property name="valign">start</property>
                 <property name="stock">gtk-dialog-question</property>
                 <property name="icon_size">6</property>
               </object>
@@ -99,8 +99,8 @@
                   <object class="GtkLabel" id="label222">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="xalign">0</property>
-                    <property name="yalign">0</property>
+                    <property name="halign">start</property>
+                    <property name="valign">start</property>
                     <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;Identify Original&lt;/span&gt;
 
 The language of the original text is currently identified as:</property>
@@ -118,7 +118,7 @@ The language of the original text is currently identified as:</property>
                   <object class="GtkLabel" id="label_original">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
+                    <property name="halign">start</property>
                     <property name="label" translatable="yes">&lt;b&gt;English&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </object>
@@ -132,7 +132,7 @@ The language of the original text is currently identified as:</property>
                   <object class="GtkLabel" id="label225">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
+                    <property name="halign">start</property>
                     <property name="label" translatable="yes">If the text is not actually in this language, please choose the correct language.</property>
                     <property name="wrap">True</property>
                   </object>

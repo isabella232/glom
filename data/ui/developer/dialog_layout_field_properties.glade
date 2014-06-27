@@ -93,7 +93,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
-                        <property name="xalign">0</property>
+                        <property name="halign">start</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -117,7 +117,7 @@
                     <property name="receives_default">False</property>
                     <property name="halign">start</property>
                     <property name="use_underline">True</property>
-                    <property name="xalign">0</property>
+                    <property name="halign">start</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -153,7 +153,7 @@
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="use_underline">True</property>
-                                <property name="xalign">0</property>
+                                <property name="halign">start</property>
                                 <property name="active">True</property>
                                 <property name="draw_indicator">True</property>
                               </object>
@@ -194,7 +194,7 @@
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="use_underline">True</property>
-                                <property name="xalign">0</property>
+                                <property name="halign">start</property>
                                 <property name="draw_indicator">True</property>
                                 <property name="group">radiobutton_use_title_default</property>
                               </object>
@@ -273,7 +273,7 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
-                            <property name="xalign">0</property>
+                            <property name="halign">start</property>
                             <property name="active">True</property>
                             <property name="draw_indicator">True</property>
                           </object>
@@ -291,7 +291,7 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
-                            <property name="xalign">0</property>
+                            <property name="halign">start</property>
                             <property name="draw_indicator">True</property>
                             <property name="group">radiobutton_use_default</property>
                           </object>

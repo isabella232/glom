@@ -92,8 +92,8 @@
                   <object class="GtkImage" id="image1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
-                    <property name="yalign">0</property>
+                    <property name="halign">start</property>
+                    <property name="valign">start</property>
                     <property name="stock">gtk-dialog-question</property>
                     <property name="icon_size">6</property>
                   </object>
@@ -112,8 +112,8 @@
                       <object class="GtkLabel" id="label3">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="xalign">0</property>
-                        <property name="yalign">0</property>
+                        <property name="halign">start</property>
+                        <property name="valign">start</property>
                         <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;Add Module&lt;/span&gt;
 
 What name should this module have?</property>
@@ -151,7 +151,7 @@ What name should this module have?</property>
                   <object class="GtkLabel" id="Group Name1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
+                    <property name="halign">start</property>
                     <property name="label" translatable="yes">Script name:</property>
                   </object>
                   <packing>

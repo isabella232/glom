@@ -87,8 +87,8 @@
               <object class="GtkLabel" id="connection_note">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="xalign">0</property>
-                <property name="yalign">0</property>
+                <property name="halign">start</property>
+                <property name="valign">start</property>
                 <property name="label" translatable="yes">Please enter the connection details for your database server.</property>
                 <property name="use_markup">True</property>
                 <property name="wrap">True</property>
@@ -169,7 +169,7 @@
                   <object class="GtkLabel" id="label64">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
+                    <property name="halign">start</property>
                     <property name="label" translatable="yes">_Host:</property>
                     <property name="use_underline">True</property>
                     <property name="justify">right</property>
@@ -189,7 +189,7 @@
                   <object class="GtkLabel" id="label68">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
+                    <property name="halign">start</property>
                     <property name="label" translatable="yes">Database:</property>
                     <property name="justify">right</property>
                   </object>
@@ -204,7 +204,7 @@
                   <object class="GtkLabel" id="label65">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
+                    <property name="halign">start</property>
                     <property name="label" translatable="yes">_User:</property>
                     <property name="use_underline">True</property>
                     <property name="justify">right</property>
@@ -224,7 +224,7 @@
                   <object class="GtkLabel" id="label66">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
+                    <property name="halign">start</property>
                     <property name="label" translatable="yes">_Password:</property>
                     <property name="use_underline">True</property>
                     <property name="justify">right</property>
@@ -245,7 +245,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="hexpand">True</property>
-                    <property name="xalign">0</property>
+                    <property name="halign">start</property>
                     <property name="selectable">True</property>
                     <child internal-child="accessible">
                       <object class="AtkObject" id="label_database-atkobject">

@@ -71,7 +71,6 @@
                         <property name="can_focus">False</property>
                         <property name="halign">end</property>
                         <property name="valign">center</property>
-                        <property name="xalign">0</property>
                         <property name="label" translatable="yes">Typ_e:</property>
                         <property name="use_underline">True</property>
                         <property name="mnemonic_widget">combobox_type</property>
@@ -87,7 +86,6 @@
                         <property name="can_focus">False</property>
                         <property name="halign">end</property>
                         <property name="valign">center</property>
-                        <property name="xalign">0</property>
                         <property name="label" translatable="yes">_Title:</property>
                         <property name="use_underline">True</property>
                         <property name="justify">right</property>
@@ -104,7 +102,6 @@
                         <property name="can_focus">False</property>
                         <property name="halign">end</property>
                         <property name="valign">center</property>
-                        <property name="xalign">0</property>
                         <property name="label" translatable="yes">_Name:</property>
                         <property name="use_underline">True</property>
                         <property name="justify">right</property>
@@ -137,7 +134,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="use_underline">True</property>
-                        <property name="xalign">0</property>
+                        <property name="halign">start</property>
                         <property name="draw_indicator">True</property>
                       </object>
                       <packing>
@@ -154,7 +151,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="use_underline">True</property>
-                        <property name="xalign">0</property>
+                        <property name="halign">start</property>
                         <property name="draw_indicator">True</property>
                       </object>
                       <packing>
@@ -171,7 +168,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="use_underline">True</property>
-                        <property name="xalign">0</property>
+                        <property name="halign">start</property>
                         <property name="draw_indicator">True</property>
                       </object>
                       <packing>
@@ -250,7 +247,7 @@
                             <property name="receives_default">False</property>
                             <property name="hexpand">True</property>
                             <property name="use_underline">True</property>
-                            <property name="xalign">0</property>
+                            <property name="halign">start</property>
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
@@ -293,7 +290,7 @@
                               <object class="GtkLabel" id="label53">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="xalign">0</property>
+                                <property name="halign">start</property>
                                 <property name="label" translatable="yes">_Relationship:</property>
                                 <property name="use_underline">True</property>
                                 <property name="justify">right</property>
@@ -308,7 +305,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="halign">end</property>
-                                <property name="xalign">0</property>
+                                <property name="halign">start</property>
                                 <property name="label" translatable="yes">_Field:</property>
                                 <property name="use_underline">True</property>
                                 <property name="justify">right</property>
@@ -335,7 +332,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="use_underline">True</property>
-                        <property name="xalign">0</property>
+                        <property name="halign">start</property>
                         <property name="draw_indicator">True</property>
                       </object>
                     </child>
@@ -416,7 +413,7 @@
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
                         <property name="use_underline">True</property>
-                        <property name="xalign">0</property>
+                        <property name="halign">start</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">radiobutton_userentry</property>
                       </object>

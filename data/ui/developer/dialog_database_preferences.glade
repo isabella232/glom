@@ -133,7 +133,7 @@
                           <object class="GtkLabel" id="label138">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
+                            <property name="halign">start</property>
                             <property name="label" translatable="yes">Name:</property>
                           </object>
                           <packing>
@@ -244,7 +244,7 @@
                               <object class="GtkLabel" id="label144">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="xalign">0</property>
+                                <property name="halign">start</property>
                                 <property name="label" translatable="yes">Country:</property>
                               </object>
                               <packing>
@@ -256,7 +256,7 @@
                               <object class="GtkLabel" id="label143">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="xalign">0</property>
+                                <property name="halign">start</property>
                                 <property name="label" translatable="yes">Zip/Postal Code:</property>
                               </object>
                               <packing>
@@ -268,7 +268,7 @@
                               <object class="GtkLabel" id="label142">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="xalign">0</property>
+                                <property name="halign">start</property>
                                 <property name="label" translatable="yes">State/County:</property>
                               </object>
                               <packing>
@@ -280,7 +280,7 @@
                               <object class="GtkLabel" id="label141">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="xalign">0</property>
+                                <property name="halign">start</property>
                                 <property name="label" translatable="yes">Town:</property>
                               </object>
                               <packing>
@@ -292,7 +292,7 @@
                               <object class="GtkLabel" id="label140">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="xalign">0</property>
+                                <property name="halign">start</property>
                                 <property name="label" translatable="yes">Street (Line 2):</property>
                               </object>
                               <packing>
@@ -304,7 +304,7 @@
                               <object class="GtkLabel" id="label139">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="xalign">0</property>
+                                <property name="halign">start</property>
                                 <property name="label" translatable="yes">Street:</property>
                               </object>
                               <packing>
@@ -494,7 +494,7 @@
                       <object class="GtkLabel" id="label54">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
+                        <property name="halign">start</property>
                         <property name="label" translatable="yes">When the database is opened the python function implemented here will run.</property>
                         <property name="wrap">True</property>
                       </object>
@@ -508,7 +508,7 @@
                       <object class="GtkLabel" id="label55">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
+                        <property name="halign">start</property>
                         <property name="label">import glom
 
 &lt;b&gt;def on_startup(ui):&lt;/b&gt;</property>

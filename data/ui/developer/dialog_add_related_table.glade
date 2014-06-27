@@ -70,8 +70,8 @@
               <object class="GtkLabel" id="label259">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="xalign">0</property>
-                <property name="yalign">0</property>
+                <property name="halign">start</property>
+                <property name="valign">start</property>
                 <property name="label" translatable="yes">This will add a new table and add a relationship that refers to the new  table, as a convenient alternative to doing this in separate steps.
 
 If a suitable related table already exists then you should instead cancel and just add a relationship.</property>
@@ -144,7 +144,7 @@ If a suitable related table already exists then you should instead cancel and ju
                   <object class="GtkLabel" id="label247">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
+                    <property name="halign">start</property>
                     <property name="label" translatable="yes">Name of new related table:</property>
                   </object>
                   <packing>
@@ -168,7 +168,7 @@ If a suitable related table already exists then you should instead cancel and ju
                   <object class="GtkLabel" id="label251">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
+                    <property name="halign">start</property>
                     <property name="label" translatable="yes">Name of new relationship:</property>
                   </object>
                   <packing>
