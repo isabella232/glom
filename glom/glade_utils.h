@@ -111,8 +111,8 @@ Glib::RefPtr<Gtk::Builder> get_glade_child_widget_derived_with_warning(T_Widget*
 template<class T_Widget>
 void box_pack_start_glade_child_widget_derived_with_warning(Gtk::Box* parent_box, T_Widget*& widget)
 {
-  Glib::RefPtr<Gtk::Builder> builder = get_glade_child_widget_derived_with_warning(widget);
   widget = 0;
+  Glib::RefPtr<Gtk::Builder> builder = get_glade_child_widget_derived_with_warning(widget);
 
   if(widget)
     parent_box->pack_start(*widget);
