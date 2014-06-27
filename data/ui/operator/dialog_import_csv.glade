@@ -124,6 +124,7 @@
                   <object class="GtkBox" id="hbox1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="spacing">6</property>
                     <child>
                       <object class="GtkGrid" id="table1">
                         <property name="visible">True</property>
@@ -136,8 +137,8 @@
                           <object class="GtkLabel" id="import_csv_target_table">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="hexpand">True</property>
                             <property name="halign">start</property>
+                            <property name="hexpand">True</property>
                             <property name="label" translatable="yes">label</property>
                           </object>
                           <packing>
@@ -222,7 +223,6 @@
                         <property name="can_focus">False</property>
                         <property name="halign">start</property>
                         <property name="valign">start</property>
-                        <property name="xpad">10</property>
                         <property name="label" translatable="yes">Encoding detected as: UTF-8</property>
                         <property name="wrap">True</property>
                       </object>
@@ -351,9 +351,9 @@
               <object class="GtkLabel" id="import_csv_advice_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="halign">start</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
-                <property name="halign">start</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -365,9 +365,9 @@
               <object class="GtkLabel" id="import_csv_error_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="halign">start</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
-                <property name="halign">start</property>
                 <property name="label">label</property>
               </object>
               <packing>
