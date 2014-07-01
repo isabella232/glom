@@ -22,7 +22,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="helpbutton1">
-                <property name="label">_Help</property>
+                <property name="label" translatable="yes">_Help</property>
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -38,7 +38,7 @@
             </child>
             <child>
               <object class="GtkButton" id="okbutton5">
-                <property name="label">_OK</property>
+                <property name="label" translatable="yes">_OK</property>
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -111,7 +111,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="button_add">
-                    <property name="label">_Add</property>
+                    <property name="label" translatable="yes">_Add</property>
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -126,7 +126,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="button_remove">
-                    <property name="label">_Remove</property>
+                    <property name="label" translatable="yes">_Remove</property>
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>

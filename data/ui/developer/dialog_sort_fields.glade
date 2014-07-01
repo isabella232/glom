@@ -19,7 +19,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="helpbutton6">
-                <property name="label">_Help</property>
+                <property name="label" translatable="yes">_Help</property>
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -35,7 +35,7 @@
             </child>
             <child>
               <object class="GtkButton" id="cancelbutton7">
-                <property name="label">_Cancel</property>
+                <property name="label" translatable="yes">_Cancel</property>
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -51,7 +51,7 @@
             </child>
             <child>
               <object class="GtkButton" id="button_close">
-                <property name="label">_OK</property>
+                <property name="label" translatable="yes">_OK</property>
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -161,7 +161,7 @@
                             <property name="layout_style">start</property>
                             <child>
                               <object class="GtkButton" id="button_field_up">
-                                <property name="label">_Up</property>
+                                <property name="label" translatable="yes">_Up</property>
                                 <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -177,7 +177,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="button_field_down">
-                                <property name="label">_Down</property>
+                                <property name="label" translatable="yes">_Down</property>
                                 <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -206,7 +206,7 @@
                             <property name="layout_style">end</property>
                             <child>
                               <object class="GtkButton" id="button_field_delete">
-                                <property name="label">_Delete</property>
+                                <property name="label" translatable="yes">_Delete</property>
                                 <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -222,7 +222,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="button_field_add">
-                                <property name="label">_Add</property>
+                                <property name="label" translatable="yes">_Add</property>
                                 <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -238,7 +238,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="button_field_edit">
-                                <property name="label">_Edit</property>
+                                <property name="label" translatable="yes">_Edit</property>
                                 <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>

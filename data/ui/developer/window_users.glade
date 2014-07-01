@@ -21,7 +21,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="button_help">
-                <property name="label">_Help</property>
+                <property name="label" translatable="yes">_Help</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -36,7 +36,7 @@
             </child>
             <child>
               <object class="GtkButton" id="button_close">
-                <property name="label">_Close</property>
+                <property name="label" translatable="yes">_Close</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -169,7 +169,7 @@
                             <property name="layout_style">end</property>
                             <child>
                               <object class="GtkButton" id="button_new">
-                                <property name="label">_New</property>
+                                <property name="label" translatable="yes">_New</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
@@ -184,7 +184,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="button_delete">
-                                <property name="label">_Delete</property>
+                                <property name="label" translatable="yes">_Delete</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
@@ -199,7 +199,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="button_add">
-                                <property name="label">_Add</property>
+                                <property name="label" translatable="yes">_Add</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
@@ -214,7 +214,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="button_remove">
-                                <property name="label">_Remove</property>
+                                <property name="label" translatable="yes">_Remove</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
@@ -229,7 +229,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="button_edit">
-                                <property name="label">_Edit</property>
+                                <property name="label" translatable="yes">_Edit</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
