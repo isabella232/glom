@@ -22,13 +22,13 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="helpbutton1">
-                <property name="label">gtk-help</property>
+                <property name="label">_Help</property>
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_stock">True</property>
+                <property name="use_underline">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -38,13 +38,13 @@
             </child>
             <child>
               <object class="GtkButton" id="okbutton5">
-                <property name="label">gtk-ok</property>
+                <property name="label">_OK</property>
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_stock">True</property>
+                <property name="use_underline">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -111,12 +111,12 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="button_add">
-                    <property name="label">gtk-add</property>
+                    <property name="label">_Add</property>
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">False</property>
-                    <property name="use_stock">True</property>
+                    <property name="use_underline">True</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -126,12 +126,12 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="button_remove">
-                    <property name="label">gtk-remove</property>
+                    <property name="label">_Remove</property>
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">False</property>
-                    <property name="use_stock">True</property>
+                    <property name="use_underline">True</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>

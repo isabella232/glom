@@ -233,7 +233,7 @@
                                   <object class="GtkImage" id="image2">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="stock">gtk-add</property>
+                                    <property name="stock">_Add</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -290,7 +290,7 @@
                                   <object class="GtkImage" id="image43">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="stock">gtk-add</property>
+                                    <property name="stock">_Add</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -347,7 +347,7 @@
                                   <object class="GtkImage" id="image47">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="stock">gtk-add</property>
+                                    <property name="stock">_Add</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -404,7 +404,7 @@
                                   <object class="GtkImage" id="image42">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="stock">gtk-add</property>
+                                    <property name="stock">_Add</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -461,7 +461,7 @@
                                   <object class="GtkImage" id="image8">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="stock">gtk-add</property>
+                                    <property name="stock">_Add</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -517,7 +517,7 @@
                                   <object class="GtkImage" id="image46">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="stock">gtk-add</property>
+                                    <property name="stock">_Add</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -574,7 +574,7 @@
                                   <object class="GtkImage" id="image19">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="stock">gtk-add</property>
+                                    <property name="stock">_Add</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -631,7 +631,7 @@
                                   <object class="GtkImage" id="image1">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="stock">gtk-add</property>
+                                    <property name="stock">_Add</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -684,13 +684,13 @@
                         <property name="layout_style">start</property>
                         <child>
                           <object class="GtkButton" id="button_up">
-                            <property name="label">gtk-go-up</property>
+                            <property name="label">_Up</property>
                             <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
                             <property name="receives_default">False</property>
-                            <property name="use_stock">True</property>
+                            <property name="use_underline">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -700,13 +700,13 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="button_down">
-                            <property name="label">gtk-go-down</property>
+                            <property name="label">_Down</property>
                             <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
                             <property name="receives_default">False</property>
-                            <property name="use_stock">True</property>
+                            <property name="use_underline">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -729,14 +729,14 @@
                         <property name="layout_style">end</property>
                         <child>
                           <object class="GtkButton" id="button_field_delete">
-                            <property name="label">gtk-delete</property>
+                            <property name="label">_Delete</property>
                             <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
                             <property name="receives_default">False</property>
                             <property name="tooltip_text" translatable="yes">Remove the item from the layout. If you remove a field layout item, it will not remove the field from the table itself. It just will not be seen on the layout.</property>
-                            <property name="use_stock">True</property>
+                            <property name="use_underline">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -766,7 +766,7 @@
                                       <object class="GtkImage" id="image28">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="stock">gtk-edit</property>
+                                        <property name="stock">_Edit</property>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>
@@ -800,13 +800,13 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="button_edit">
-                            <property name="label">gtk-edit</property>
+                            <property name="label">_Edit</property>
                             <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
                             <property name="receives_default">False</property>
-                            <property name="use_stock">True</property>
+                            <property name="use_underline">True</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1010,13 +1010,13 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="button_close">
-                <property name="label">gtk-close</property>
+                <property name="label">_Close</property>
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_stock">True</property>
+                <property name="use_underline">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
