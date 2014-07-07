@@ -1,3 +1,16 @@
+1.27.1 (unstable):
+
+* Avoid use of deprecated gtkmm/GTK+ API in Glade files.
+  For instance, GtkAlignment, and stock items.
+  (Murray Cumming, Piotr Drąg)
+* Adapt to recent Gtk::Builder child-widget ref-counting fixes in gtkmm.
+  (Murray Cumming)
+* Avoid new GTK+ warnings about dialogs without transient parent windows.
+  (Murray Cumming)
+* Application: Use non-deprecated gtkmm/GTK+ accelerators API.
+  (Murray Cumming)
+
+
 1.26.0 (stable):
 
 * Reports: Fix a crash introduced in 1.25.4.
