@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: glom\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-01-14 20:27+0000\n"
-"PO-Revision-Date: 2014-01-19 16:15+0100\n"
+"POT-Creation-Date: 2014-07-01 17:52+0000\n"
+"PO-Revision-Date: 2014-07-10 23:32+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -25,25 +25,25 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Gtranslator 2.91.6\n"
 
-#: ../glom/application.cc:157 ../glom/glom_create_from_example.cc:259
+#: ../glom/application.cc:160 ../glom/glom_create_from_example.cc:259
 #: ../glom/glom_export_po.cc:112 ../glom/glom_export_po_all.cc:100
 #: ../glom/glom_import_po_all.cc:101 ../glom/glom_test_connection.cc:148
 msgid "Error while parsing command-line options: "
 msgstr "Chyba při analýze parametrů příkazové řádky: "
 
 #. TODO: How can we just print them out?
-#: ../glom/application.cc:158 ../glom/glom_create_from_example.cc:260
+#: ../glom/application.cc:161 ../glom/glom_create_from_example.cc:260
 #: ../glom/glom_export_po.cc:113 ../glom/glom_export_po_all.cc:101
 #: ../glom/glom_import_po_all.cc:102 ../glom/glom_test_connection.cc:108
 msgid "Use --help to see a list of available command-line options."
 msgstr "Použijte --help pro zobrazení dostupných voleb příkazové řádky."
 
-#: ../glom/application.cc:199 ../glom/glom_create_from_example.cc:294
+#: ../glom/application.cc:202 ../glom/glom_create_from_example.cc:294
 #: ../glom/glom_export_po.cc:162
 msgid "Glom: The file does not exist."
 msgstr "Glom: Soubor neexistuje."
 
-#: ../glom/application.cc:209 ../glom/glom_create_from_example.cc:304
+#: ../glom/application.cc:212 ../glom/glom_create_from_example.cc:304
 #: ../glom/glom_export_po.cc:172
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: Cesta k souboru je složkou namísto souborem."
@@ -84,13 +84,13 @@ msgstr ""
 
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
 #. Warn the user, and let him try again:
-#: ../glom/appwindow.cc:643 ../glom/frame_glom.cc:2152
-#: ../glom/frame_glom.cc:2223
+#: ../glom/appwindow.cc:643 ../glom/frame_glom.cc:2155
+#: ../glom/frame_glom.cc:2226
 msgid "Connection Failed"
 msgstr "Připojení selhalo"
 
-#: ../glom/appwindow.cc:643 ../glom/frame_glom.cc:2152
-#: ../glom/frame_glom.cc:2223
+#: ../glom/appwindow.cc:643 ../glom/frame_glom.cc:2155
+#: ../glom/frame_glom.cc:2226
 msgid ""
 "Glom could not connect to the database server. Maybe you entered an "
 "incorrect user name or password, or maybe the postgres database server is "
@@ -128,11 +128,11 @@ msgstr ""
 msgid "File Uses Unsupported Database Backend"
 msgstr "Soubor používá nepodporovaný databázový server"
 
-#: ../glom/appwindow.cc:914
+#: ../glom/appwindow.cc:917
 msgid "Creating From Example File"
 msgstr "Vytvoření ze vzorového souboru"
 
-#: ../glom/appwindow.cc:915
+#: ../glom/appwindow.cc:918
 msgid ""
 "To use this example file you must save an editable copy of the file. A new "
 "database will also be created on the server."
@@ -140,11 +140,11 @@ msgstr ""
 "Pro použití tohoto vzorového souboru musíte uložit jeho zapisovatelnou "
 "kopii. Na serveru bude také vytvořena nová databáze."
 
-#: ../glom/appwindow.cc:919
+#: ../glom/appwindow.cc:922
 msgid "Creating From Backup File"
 msgstr "Vytvoření ze záložního souboru"
 
-#: ../glom/appwindow.cc:920
+#: ../glom/appwindow.cc:923
 msgid ""
 "To use this backup file you must save an editable copy of the file. A new "
 "database will also be created on the server."
@@ -152,11 +152,11 @@ msgstr ""
 "Abyste mohli použít tento záložní soubor, musíte uložit upravitelnou kopii "
 "souboru. Na serveru bude rovněž vytvořena nová databáze."
 
-#: ../glom/appwindow.cc:981
+#: ../glom/appwindow.cc:984
 msgid "Opening Read-Only File."
 msgstr "Otevírá se soubor jen pro čtení."
 
-#: ../glom/appwindow.cc:982
+#: ../glom/appwindow.cc:985
 msgid ""
 "This file is read only, so you will not be able to enter Developer mode to "
 "make design changes."
@@ -164,11 +164,11 @@ msgstr ""
 "Tento soubor je jen pro čtení, takže nebudete moci přejít do vývojářského "
 "režimu a měnit návrh."
 
-#: ../glom/appwindow.cc:984 ../glom/appwindow.cc:2151
-#: ../glom/appwindow.cc:2428 ../glom/appwindow.cc:2465
-#: ../glom/appwindow.cc:2841 ../glom/base_db_table_data.cc:393
+#: ../glom/appwindow.cc:987 ../glom/appwindow.cc:2142
+#: ../glom/appwindow.cc:2419 ../glom/appwindow.cc:2456
+#: ../glom/appwindow.cc:2832 ../glom/base_db_table_data.cc:393
 #: ../glom/box_withbuttons.cc:36 ../glom/box_withbuttons.cc:50
-#: ../glom/box_withbuttons.cc:64 ../glom/dialog_existing_or_new.cc:831
+#: ../glom/box_withbuttons.cc:64 ../glom/dialog_existing_or_new.cc:827
 #: ../glom/filechooser_export.cc:39 ../glom/frame_glom.cc:513
 #: ../glom/frame_glom.cc:737 ../glom/frame_glom.cc:824
 #: ../glom/frame_glom.cc:930 ../glom/utils_ui.cc:485
@@ -176,7 +176,7 @@ msgstr ""
 #: ../glom/main.cc:267 ../glom/main.cc:323
 #: ../glom/mode_design/fields/box_db_table_definition.cc:293
 #: ../glom/mode_design/fields/box_db_table_definition.cc:344
-#: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:41
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:39
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:227
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:841
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:885
@@ -186,19 +186,53 @@ msgstr ""
 #: ../glom/mode_design/translation/window_translations.cc:401
 #: ../glom/utility_widgets/imageglom.cc:687
 #: ../glom/utility_widgets/imageglom.cc:774
+#: ../data/ui/operator/dialog_choose_date.glade.h:3
+#: ../data/ui/operator/dialog_connection.glade.h:3
+#: ../data/ui/operator/dialog_find_id.glade.h:2
+#: ../data/ui/operator/dialog_image_load_progress.glade.h:2
+#: ../data/ui/operator/dialog_image_save_progress.glade.h:2
+#: ../data/ui/operator/dialog_import_csv.glade.h:2
+#: ../data/ui/operator/dialog_import_csv_progress.glade.h:3
+#: ../data/ui/developer/dialog_add_related_table.glade.h:2
+#: ../data/ui/developer/dialog_change_language.glade.h:3
+#: ../data/ui/developer/dialog_choose_field.glade.h:2
+#: ../data/ui/developer/dialog_choose_relationship.glade.h:2
+#: ../data/ui/developer/dialog_choose_user.glade.h:3
+#: ../data/ui/developer/dialog_database_preferences.glade.h:3
+#: ../data/ui/developer/dialog_fieldslist.glade.h:2
+#: ../data/ui/developer/dialog_field_summary.glade.h:2
+#: ../data/ui/developer/dialog_flowtable.glade.h:2
+#: ../data/ui/developer/dialog_group_by.glade.h:2
+#: ../data/ui/developer/dialog_initial_password.glade.h:3
+#: ../data/ui/developer/dialog_line.glade.h:3
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:2
+#: ../data/ui/developer/dialog_new_group.glade.h:3
+#: ../data/ui/developer/dialog_new_library_script.glade.h:3
+#: ../data/ui/developer/dialog_notebook.glade.h:3
+#: ../data/ui/developer/dialog_sort_fields.glade.h:3
+#: ../data/ui/developer/dialog_translation_copy.glade.h:3
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:3
+#: ../data/ui/developer/dialog_user.glade.h:3
+#: ../data/ui/developer/window_button_script.glade.h:3
+#: ../data/ui/developer/window_default_formatting.glade.h:2
+#: ../data/ui/developer/window_field_calculation.glade.h:3
+#: ../data/ui/developer/window_field_definition_edit.glade.h:16
+#: ../data/ui/developer/window_imageobject.glade.h:3
+#: ../data/ui/developer/window_textobject.glade.h:3
+#: ../data/ui/developer/window_translations.glade.h:10
 msgid "_Cancel"
 msgstr "_Zrušit"
 
-#: ../glom/appwindow.cc:985
+#: ../glom/appwindow.cc:988
 msgid "Continue without Developer Mode"
 msgstr "Pokračovat bez vývojářského režimu"
 
 #. The connection to the server is OK, but the database is not there yet.
-#: ../glom/appwindow.cc:1044
+#: ../glom/appwindow.cc:1047
 msgid "Database Not Found On Server"
 msgstr "Na serveru nebyla databáze nalezena"
 
-#: ../glom/appwindow.cc:1044
+#: ../glom/appwindow.cc:1047
 msgid ""
 "The database could not be found on the server. Please consult your system "
 "administrator."
@@ -208,23 +242,23 @@ msgstr ""
 
 #. std::cerr might show some hints, but we don't want to confront the user with them:
 #. TODO: Actually complain about specific stuff such as missing data, because the user might really play with the file system.
-#: ../glom/appwindow.cc:1054
+#: ../glom/appwindow.cc:1057
 msgid "Problem Loading Document"
 msgstr "Problém s načítáním dokumentu"
 
-#: ../glom/appwindow.cc:1054
+#: ../glom/appwindow.cc:1057
 msgid "Glom could not load the document."
 msgstr "Glom nemohl načíst dokument."
 
-#: ../glom/appwindow.cc:1493
+#: ../glom/appwindow.cc:1499
 msgid "Creating Glom database from example file."
 msgstr "Ze vzorového souboru se vytváří databáze Glom"
 
-#: ../glom/appwindow.cc:1672
+#: ../glom/appwindow.cc:1685
 msgid "Creating Glom database from backup file."
 msgstr "Vytvoření databáze Glom ze záložního souboru."
 
-#: ../glom/appwindow.cc:1756
+#: ../glom/appwindow.cc:1769
 msgid ""
 "Glom could not create the new database. Maybe you do not have the necessary "
 "access rights. Please contact your system administrator."
@@ -232,37 +266,39 @@ msgstr ""
 "Glom nemohl vytvořit novou databázi. Možná nemáte potřebná oprávnění. "
 "Kontaktujte prosím svého správce systému."
 
-#: ../glom/appwindow.cc:1757
+#: ../glom/appwindow.cc:1770
 msgid "Database Creation Failed"
 msgstr "Vytvoření databáze selhalo"
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/appwindow.cc:2110 ../glom/bakery/appwindow_withdoc.cc:241
+#: ../glom/appwindow.cc:2101 ../glom/bakery/appwindow_withdoc.cc:241
 #: ../glom/bakery/appwindow_withdoc.cc:292
 msgid "Save failed."
 msgstr "Ukládání selhalo."
 
-#: ../glom/appwindow.cc:2110
+#: ../glom/appwindow.cc:2101
 msgid "There was an error while saving the example file."
 msgstr "Vyskytla se chyba během ukládání ukázkového souboru."
 
-#: ../glom/appwindow.cc:2137 ../glom/appwindow.cc:2142
+#: ../glom/appwindow.cc:2128 ../glom/appwindow.cc:2133
 msgid "Save Document"
 msgstr "Uložit dokument"
 
-#: ../glom/appwindow.cc:2152 ../glom/appwindow.cc:2429
+#: ../glom/appwindow.cc:2143 ../glom/appwindow.cc:2420
 #: ../glom/bakery/dialog_offersave.cc:57
-#: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:42
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:40
 #: ../glom/utility_widgets/imageglom.cc:688
+#: ../data/ui/developer/window_default_formatting.glade.h:3
+#: ../data/ui/developer/window_field_definition_edit.glade.h:17
 msgid "_Save"
 msgstr "_Uložit"
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2229
+#: ../glom/appwindow.cc:2220
 msgid "Read-only File."
 msgstr "Soubor pouze pro čtení."
 
-#: ../glom/appwindow.cc:2229
+#: ../glom/appwindow.cc:2220
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -270,11 +306,11 @@ msgstr ""
 "Nemůžete přepsat existující soubor, protože nemáte potřebná přístupová práva."
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2243
+#: ../glom/appwindow.cc:2234
 msgid "Read-only Directory."
 msgstr "Adresář pouze pro čtení."
 
-#: ../glom/appwindow.cc:2243
+#: ../glom/appwindow.cc:2234
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -282,19 +318,19 @@ msgstr ""
 "V tomto adresáři nemůžete soubor vytvořit, protože nemáte potřebná "
 "přístupová práva."
 
-#: ../glom/appwindow.cc:2260
+#: ../glom/appwindow.cc:2251
 msgid "Database Title missing"
 msgstr "Chybí nadpis databáze"
 
-#: ../glom/appwindow.cc:2260
+#: ../glom/appwindow.cc:2251
 msgid "You must specify a title for the new database."
 msgstr "Musíte zadat název pro novou databázi."
 
-#: ../glom/appwindow.cc:2294 ../glom/frame_glom.cc:1904
+#: ../glom/appwindow.cc:2285 ../glom/frame_glom.cc:1907
 msgid "Directory Already Exists"
 msgstr "Adresář již existuje"
 
-#: ../glom/appwindow.cc:2294 ../glom/frame_glom.cc:1905
+#: ../glom/appwindow.cc:2285 ../glom/frame_glom.cc:1908
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
@@ -305,60 +341,60 @@ msgstr ""
 "vytvoření nového adresáře."
 
 #. This actually creates the directory:
-#: ../glom/appwindow.cc:2427
+#: ../glom/appwindow.cc:2418
 msgid "Save Backup"
 msgstr "Uložit zálohu"
 
-#: ../glom/appwindow.cc:2443
+#: ../glom/appwindow.cc:2434
 msgid "Exporting backup"
 msgstr "Exportuje se záloha"
 
-#: ../glom/appwindow.cc:2449
+#: ../glom/appwindow.cc:2440
 msgid "Export Backup failed."
 msgstr "Export zálohy selhal."
 
-#: ../glom/appwindow.cc:2449
+#: ../glom/appwindow.cc:2440
 msgid "There was an error while exporting the backup."
 msgstr "Vyskytla se chyba během exportu zálohy."
 
-#: ../glom/appwindow.cc:2455
+#: ../glom/appwindow.cc:2446
 msgid "Choose a backup file"
 msgstr "Volba záložního souboru"
 
-#: ../glom/appwindow.cc:2460
+#: ../glom/appwindow.cc:2451
 msgid ".tar.gz Backup files"
 msgstr "Záložní soubory .tar.gz"
 
-#: ../glom/appwindow.cc:2466
+#: ../glom/appwindow.cc:2457
 msgid "Restore"
 msgstr "Obnovit"
 
-#: ../glom/appwindow.cc:2491
+#: ../glom/appwindow.cc:2482
 msgid "Restoring backup"
 msgstr "Obnovuje se ze zálohy"
 
-#: ../glom/appwindow.cc:2498
+#: ../glom/appwindow.cc:2489
 msgid "Restore Backup failed."
 msgstr "Obnovení ze zálohy selhalo."
 
-#: ../glom/appwindow.cc:2498
+#: ../glom/appwindow.cc:2489
 msgid "There was an error while extracting the backup."
 msgstr "Vyskytla se chyba během rozbalování zálohy."
 
-#: ../glom/appwindow.cc:2606
+#: ../glom/appwindow.cc:2597
 msgid " (read-only)"
 msgstr " (pouze čtení)"
 
-#: ../glom/appwindow.cc:2654 ../data/ui/operator/window_main.glade.h:2
+#: ../glom/appwindow.cc:2645 ../data/ui/operator/window_main.glade.h:2
 msgid "Processing"
 msgstr "Zpracování"
 
-#: ../glom/appwindow.cc:2840
+#: ../glom/appwindow.cc:2831
 msgid "Open Document"
 msgstr "Otevřít dokument"
 
 #. Add a button for related record navigation:
-#: ../glom/appwindow.cc:2842 ../glom/dialog_existing_or_new.cc:832
+#: ../glom/appwindow.cc:2833 ../glom/dialog_existing_or_new.cc:828
 #: ../glom/frame_glom.cc:738 ../glom/onlineglom_strings.cc:32
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:34
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:44
@@ -368,15 +404,15 @@ msgstr "Otevřít dokument"
 msgid "_Open"
 msgstr "_Otevřít"
 
-#: ../glom/base_db.cc:122 ../glom/base_db.cc:132
+#: ../glom/base_db.cc:122 ../glom/base_db.cc:135
 msgid "Internal error"
 msgstr "Interní chyba"
 
-#: ../glom/base_db.cc:1385
+#: ../glom/base_db.cc:1388
 msgid "Value Is Not Unique"
 msgstr "Hodnota není unikátní"
 
-#: ../glom/base_db.cc:1385
+#: ../glom/base_db.cc:1388
 msgid ""
 "The field's value must be unique, but a record with this value already "
 "exists."
@@ -438,7 +474,15 @@ msgstr "Odstranit záznam"
 #: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:31
 #: ../glom/utility_widgets/layoutwidgetutils.cc:59
 #: ../glom/utility_widgets/notebooklabelglom.cc:125
+#: ../data/ui/developer/dialog_fieldslist.glade.h:7
+#: ../data/ui/developer/dialog_notebook.glade.h:7
+#: ../data/ui/developer/dialog_sort_fields.glade.h:8
+#: ../data/ui/developer/window_data_layout_export.glade.h:6
+#: ../data/ui/developer/window_data_layout.glade.h:25
+#: ../data/ui/developer/window_groups.glade.h:4
 #: ../data/ui/developer/window_print_layout_edit.glade.h:8
+#: ../data/ui/developer/window_report_layout.glade.h:18
+#: ../data/ui/developer/window_users.glade.h:6
 msgid "_Delete"
 msgstr "O_dstranit"
 
@@ -474,7 +518,7 @@ msgstr "Tato sestava již existuje. Zvolte prosím jiný název sestavy"
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc:50
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:99
 #: ../glom/navigation/box_tables.cc:136
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:109
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:108
 msgid "Title"
 msgstr "Nadpis"
 
@@ -501,44 +545,40 @@ msgid "Not yet created."
 msgstr "Ještě nevytvořeno."
 
 #: ../glom/dialog_existing_or_new.cc:50
-msgid "No recently used documents available."
-msgstr "Nejsou k dispozici nedávno použité dokumenty."
-
-#: ../glom/dialog_existing_or_new.cc:51
 msgid "No sessions found on the local network."
 msgstr "Žádná sezení nebyla v místní síti nalezena."
 
-#: ../glom/dialog_existing_or_new.cc:54
-msgid "No templates available."
-msgstr "Žádná šablona není dostupná."
-
-#: ../glom/dialog_existing_or_new.cc:122
+#: ../glom/dialog_existing_or_new.cc:118
 msgid "Open a Document"
 msgstr "Otevřít dokument"
 
-#: ../glom/dialog_existing_or_new.cc:141
+#: ../glom/dialog_existing_or_new.cc:137
 #: ../glom/utility_widgets/imageglom.cc:958
 msgid "Select File"
 msgstr "Vybrat soubor"
 
-#: ../glom/dialog_existing_or_new.cc:145
+#: ../glom/dialog_existing_or_new.cc:141
 msgid "Local Network"
 msgstr "Místní síť"
 
-#: ../glom/dialog_existing_or_new.cc:149
+#: ../glom/dialog_existing_or_new.cc:145
 msgid "Recently Opened"
 msgstr "Naposledy otevřené"
 
-#: ../glom/dialog_existing_or_new.cc:222
+#: ../glom/dialog_existing_or_new.cc:186
+msgid "No recently used documents available."
+msgstr "Nejsou k dispozici nedávno použité dokumenty."
+
+#: ../glom/dialog_existing_or_new.cc:218
 msgid "New Empty Document"
 msgstr "Nový prázdný dokument"
 
-#: ../glom/dialog_existing_or_new.cc:225
+#: ../glom/dialog_existing_or_new.cc:221
 msgid "New From Template"
 msgstr "Nový ze šablony"
 
 #. Translator hint: This is <Service Name> on <Host> (via Network Interface such as eth0).
-#: ../glom/dialog_existing_or_new.cc:748
+#: ../glom/dialog_existing_or_new.cc:744
 #, c-format
 msgid "%s on %s (via %s)"
 msgstr "%s v %s (pomocí %s)"
@@ -563,12 +603,13 @@ msgstr "Hledat všude"
 msgid "No Table Selected"
 msgstr "Není vybrána žádná tabulka"
 
-#: ../glom/frame_glom.cc:111 ../data/ui/operator/dialog_find_id.glade.h:4
+#: ../glom/frame_glom.cc:111 ../data/ui/operator/dialog_find_id.glade.h:5
 msgid "Quick _search:"
 msgstr "Rychlé _hledání:"
 
 #: ../glom/frame_glom.cc:122 ../glom/mode_data/box_data.cc:42
 #: ../glom/mode_data/datawidget/datawidget.cc:232
+#: ../data/ui/operator/dialog_find_id.glade.h:6
 #: ../data/ui/operator/window_main.glade.h:18
 msgid "_Find"
 msgstr "_Hledat"
@@ -700,13 +741,13 @@ msgstr "Tímto zabráníte ostatním uživatelům na síti v používání této
 msgid "_Stop Sharing"
 msgstr "_Zastavit sdílení"
 
-#: ../glom/frame_glom.cc:980 ../glom/frame_glom.cc:2209
+#: ../glom/frame_glom.cc:980 ../glom/frame_glom.cc:2212
 msgid "Stopping Database Server"
 msgstr "Zastavuje se databázový server"
 
 #. Do startup, such as starting the self-hosting database server
-#: ../glom/frame_glom.cc:983 ../glom/frame_glom.cc:2096
-#: ../glom/frame_glom.cc:2255
+#: ../glom/frame_glom.cc:983 ../glom/frame_glom.cc:2099
+#: ../glom/frame_glom.cc:2258
 msgid "Starting Database Server"
 msgstr "Startuje se databázový server"
 
@@ -751,56 +792,56 @@ msgid "The new related table has been created."
 msgstr "Nová související tabulka byla vytvořena."
 
 #. namespace Glom
-#: ../glom/frame_glom.cc:1236
+#: ../glom/frame_glom.cc:1237
 #: ../data/ui/operator/box_navigation_tables.glade.h:1
 msgid "Edit Tables"
 msgstr "Upravit tabulky"
 
-#: ../glom/frame_glom.cc:1333
+#: ../glom/frame_glom.cc:1334
 msgid ""
 "You have not entered any find criteria. Try entering information in the "
 "fields."
 msgstr "Nezadali jste žádná kritéria hledání. Zkuste do polí zadat informace."
 
-#: ../glom/frame_glom.cc:1335
+#: ../glom/frame_glom.cc:1336
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:104
 msgid "No Find Criteria"
 msgstr "Žádná kritéria hledání"
 
-#: ../glom/frame_glom.cc:1710 ../glom/onlineglom_strings.cc:33
+#: ../glom/frame_glom.cc:1712 ../glom/onlineglom_strings.cc:33
 #: ../data/ui/developer/box_reports.glade.h:1
 msgid "Reports"
 msgstr "Sestavy"
 
-#: ../glom/frame_glom.cc:1753 ../data/ui/developer/box_print_layouts.glade.h:1
+#: ../glom/frame_glom.cc:1756 ../data/ui/developer/box_print_layouts.glade.h:1
 msgid "Print Layouts"
 msgstr "Rozvržení tisku"
 
-#: ../glom/frame_glom.cc:1909
+#: ../glom/frame_glom.cc:1912
 msgid "Could Not Create Directory"
 msgstr "Nelze vytvořit adresář"
 
-#: ../glom/frame_glom.cc:1910
+#: ../glom/frame_glom.cc:1913
 msgid ""
 "There was an error when attempting to create the directory for the new "
 "database files."
 msgstr ""
 "Vyskytla se chyba při pokusu o vytvoření adresáře pro soubory nové databáze."
 
-#: ../glom/frame_glom.cc:1914
+#: ../glom/frame_glom.cc:1917
 msgid "Could Not Start Database Server"
 msgstr "Nelze spustit databázový server"
 
-#: ../glom/frame_glom.cc:1915
+#: ../glom/frame_glom.cc:1918
 msgid "There was an error when attempting to start the database server."
 msgstr "Vyskytla se chyba při pokusu o spuštění databázového serveru."
 
-#: ../glom/frame_glom.cc:2028
+#: ../glom/frame_glom.cc:2031
 msgid "Initializing Database Data"
 msgstr "Inicializují se databázová data"
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2583
+#: ../glom/frame_glom.cc:2587
 msgid "All"
 msgstr "Vše"
 
@@ -859,7 +900,7 @@ msgstr "Zpět na seznam"
 
 #. Translators: This is a noun. It is a notebook tab title.
 #. Details column:
-#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1436
+#: ../glom/onlineglom_strings.cc:31 ../glom/libglom/document/document.cc:1435
 #: ../glom/mode_data/notebook_data.cc:42
 #: ../glom/mode_design/report_layout/dialog_layout_report.cc:215
 #: ../glom/mode_find/notebook_find.cc:38
@@ -883,7 +924,7 @@ msgid "Username"
 msgstr "Jméno uživatele"
 
 #: ../glom/onlineglom_strings.cc:38
-#: ../data/ui/operator/dialog_connection.glade.h:4
+#: ../data/ui/operator/dialog_connection.glade.h:7
 msgid "Password"
 msgstr "Heslo"
 
@@ -1208,6 +1249,10 @@ msgstr "Booleovská hodnota"
 msgid "Image"
 msgstr "Obrázek"
 
+#. TODO: Find some way to get the %x translation that's appropriate for the value of LC_NUMERIC in the locale,
+#. because this just assumes that the main locale name will be correct,
+#. so this can fail, for instance, if gettext() is looking for the translation for en_US.UTF-8
+#. but LC_NUMERIC is set to en_GB.UTF-8 (which uses 2 digits when using %x).
 #. TRANSLATORS: Please only translate this string if you know that strftime()
 #. * shows only 2 year digits when using format "x". We want to always display
 #. * 4 year digits. For instance, en_GB should translate it to "%d/%m/%Y".
@@ -1215,13 +1260,13 @@ msgstr "Obrázek"
 #. * and default to %d/%m/%Y" if it detects a problem, but that might not be
 #. * correct for your locale.
 #. * Thanks.
-#: ../glom/libglom/data_structure/glomconversions.cc:99
+#: ../glom/libglom/data_structure/glomconversions.cc:104
 #, no-c-format
 msgid "%x"
 msgstr "%x"
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
-#: ../glom/libglom/data_structure/glomconversions.cc:147
+#: ../glom/libglom/data_structure/glomconversions.cc:152
 msgid ""
 "ERROR: sanity_check_date_parsing(): Sanity check failed: Glom could not "
 "parse a date's text representation that it generated itself, in this locale."
@@ -1230,7 +1275,7 @@ msgstr ""
 "rozpoznat textový formát data. Proto jej sestavil sám v tomto prostředí."
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
-#: ../glom/libglom/data_structure/glomconversions.cc:183
+#: ../glom/libglom/data_structure/glomconversions.cc:188
 msgid ""
 "ERROR: sanity_check_date_text_representation_uses_4_digit_year(): Sanity "
 "check failed: Glom does not seem to use 4 digits to display years in a "
@@ -1292,8 +1337,8 @@ msgstr "Umísťovač"
 #. Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
 #: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:414
 #: ../glom/libglom/data_structure/layout/layoutitem_portal.cc:423
-#: ../glom/mode_data/box_data_portal.cc:116
-#: ../glom/mode_data/box_data_portal.cc:128
+#: ../glom/mode_data/box_data_portal.cc:113
+#: ../glom/mode_data/box_data_portal.cc:125
 msgid "Undefined Table"
 msgstr "Neznámá tabulka"
 
@@ -1321,7 +1366,7 @@ msgstr "Počet"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc:56
-#: ../data/ui/developer/window_report_layout.glade.h:12
+#: ../data/ui/developer/window_report_layout.glade.h:13
 msgid "Footer"
 msgstr "Patička"
 
@@ -1333,7 +1378,7 @@ msgstr "Seskupit podle"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc:56
-#: ../data/ui/developer/window_report_layout.glade.h:9
+#: ../data/ui/developer/window_report_layout.glade.h:10
 msgid "Header"
 msgstr "Hlavička"
 
@@ -1401,62 +1446,54 @@ msgstr "Název databáze"
 msgid "Unknown"
 msgstr "Neznámé"
 
-#: ../glom/libglom/document/document.cc:520
-#: ../glom/libglom/document/document.cc:538
+#: ../glom/libglom/document/document.cc:519
+#: ../glom/libglom/document/document.cc:537
 msgid "System Preferences"
 msgstr "Nastavení systému"
 
-#: ../glom/libglom/document/document.cc:551
+#: ../glom/libglom/document/document.cc:550
 msgid "System Name"
 msgstr "Název systému"
 
-#: ../glom/libglom/document/document.cc:557
+#: ../glom/libglom/document/document.cc:556
 msgid "Organisation Name"
 msgstr "Název organizace"
 
-#: ../glom/libglom/document/document.cc:563
+#: ../glom/libglom/document/document.cc:562
 msgid "Organisation Logo"
 msgstr "Logo organizace"
 
-#: ../glom/libglom/document/document.cc:569
+#: ../glom/libglom/document/document.cc:568
 msgid "Street"
 msgstr "Ulice"
 
-#: ../glom/libglom/document/document.cc:575
+#: ../glom/libglom/document/document.cc:574
 msgid "Street (line 2)"
 msgstr "Ulice (řádek 2)"
 
-#: ../glom/libglom/document/document.cc:581
+#: ../glom/libglom/document/document.cc:580
 msgid "City"
 msgstr "Město"
 
-#: ../glom/libglom/document/document.cc:587
+#: ../glom/libglom/document/document.cc:586
 msgid "State"
 msgstr "Stát"
 
-#: ../glom/libglom/document/document.cc:593
+#: ../glom/libglom/document/document.cc:592
 msgid "Country"
 msgstr "Země"
 
-#: ../glom/libglom/document/document.cc:599
+#: ../glom/libglom/document/document.cc:598
 msgid "Zip Code"
 msgstr "Směrovací číslo"
 
-#: ../glom/libglom/document/document.cc:1430
+#: ../glom/libglom/document/document.cc:1429
 msgid "Overview"
 msgstr "Přehled"
 
-#: ../glom/libglom/document/bakery/document.cc:413
+#: ../glom/libglom/document/bakery/document.cc:424
 msgid "Untitled"
 msgstr "Nepojmenovaný"
-
-#: ../glom/libglom/gst-package.c:56
-msgid "Could not install package"
-msgstr "Nelze nainstalovat balíček"
-
-#: ../glom/libglom/gst-package.c:74
-msgid "The necessary applications to install the package could not be found."
-msgstr "Aplikace důležité pro instalaci balíčku nebyly nalezeny."
 
 #. Show only debug output
 #: ../glom/libglom/translations_po.cc:70
@@ -1479,7 +1516,7 @@ msgstr "Komentáře"
 #. Translators: This is a noun. It is the title of a report.
 #. Add Pages:
 #. Translators: This is a noun. It is a notebook tab title.
-#: ../glom/libglom/report_builder.cc:771 ../glom/mode_data/notebook_data.cc:39
+#: ../glom/libglom/report_builder.cc:772 ../glom/mode_data/notebook_data.cc:39
 #: ../glom/mode_find/notebook_find.cc:33
 msgid "List"
 msgstr "Seznam"
@@ -1897,19 +1934,26 @@ msgstr ""
 msgid "Show the generated SQL queries on stdout, for debugging."
 msgstr "Zobrazit vygenerované SQL dotazy na standardním výstupu, pro ladění."
 
-#: ../glom/mode_data/box_data_calendar_related.cc:527
+#: ../glom/mode_data/box_data_calendar_related.cc:532
 #: ../glom/mode_design/users/dialog_groups_list.cc:79
 #: ../glom/print_layout/canvas_print_layout.cc:292
 #: ../glom/utility_widgets/adddel/adddel.cc:250
 #: ../glom/mode_data/db_adddel/db_adddel.cc:228
 #: ../glom/mode_data/db_adddel/db_adddel.cc:260
 #: ../data/ui/operator/window_main.glade.h:13
+#: ../data/ui/developer/dialog_fieldslist.glade.h:10
+#: ../data/ui/developer/dialog_group_by.glade.h:8
+#: ../data/ui/developer/dialog_sort_fields.glade.h:10
+#: ../data/ui/developer/window_data_layout_export.glade.h:7
+#: ../data/ui/developer/window_data_layout.glade.h:28
 #: ../data/ui/developer/window_field_definition_edit.glade.h:13
 #: ../data/ui/developer/window_print_layout_edit.glade.h:4
+#: ../data/ui/developer/window_report_layout.glade.h:16
+#: ../data/ui/developer/window_users.glade.h:9
 msgid "_Edit"
 msgstr "_Upravit"
 
-#: ../glom/mode_data/box_data_calendar_related.cc:528
+#: ../glom/mode_data/box_data_calendar_related.cc:533
 #: ../glom/mode_data/db_adddel/db_adddel.cc:264
 #: ../data/ui/operator/window_main.glade.h:28
 msgid "_Layout"
@@ -1934,6 +1978,14 @@ msgstr "Žádná hodnota primárního klíče"
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:42
 #: ../glom/mode_data/db_adddel/db_adddel.cc:261
 #: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:33
+#: ../data/ui/developer/dialog_choose_user.glade.h:4
+#: ../data/ui/developer/dialog_fieldslist.glade.h:8
+#: ../data/ui/developer/dialog_notebook.glade.h:8
+#: ../data/ui/developer/dialog_script_library.glade.h:6
+#: ../data/ui/developer/dialog_sort_fields.glade.h:9
+#: ../data/ui/developer/window_data_layout_export.glade.h:5
+#: ../data/ui/developer/window_report_layout.glade.h:9
+#: ../data/ui/developer/window_users.glade.h:7
 msgid "_Add"
 msgstr "Přid_at"
 
@@ -2010,11 +2062,11 @@ msgstr ""
 "Primární klíč je automaticky inkrementován.\n"
 " Nemůžete zadat vaši vlastní hodnotu primárního klíče."
 
-#: ../glom/mode_data/box_data_portal.cc:337
+#: ../glom/mode_data/box_data_portal.cc:334
 msgid "No Corresponding Record Exists"
 msgstr "Neexistují žádné odpovídající záznamy"
 
-#: ../glom/mode_data/box_data_portal.cc:337
+#: ../glom/mode_data/box_data_portal.cc:334
 msgid ""
 "No record with this value exists. Therefore navigation to the related record "
 "is not possible."
@@ -2022,53 +2074,53 @@ msgstr ""
 "Neexistují záznamy s touto hodnotou a proto není možný přechod na "
 "související záznam."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1167
+#: ../glom/mode_data/flowtablewithfields.cc:1104
 #: ../glom/utility_widgets/notebooklabelglom.cc:77
 #: ../glom/utility_widgets/notebooklabelglom.cc:124
 msgid "New Group"
 msgstr "Nová skupina"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1173
+#: ../glom/mode_data/flowtablewithfields.cc:1110
 #: ../glom/mode_design/layout/dialog_layout_details.cc:736
 msgid "notebook"
 msgstr "poznámkový blok"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1179
+#: ../glom/mode_data/flowtablewithfields.cc:1116
 msgid "tab1"
 msgstr "tab1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1182
+#: ../glom/mode_data/flowtablewithfields.cc:1119
 msgid "Tab One"
 msgstr "Záložka"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1195
+#: ../glom/mode_data/flowtablewithfields.cc:1132
 msgid "button"
 msgstr "tlačítko"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1196
+#: ../glom/mode_data/flowtablewithfields.cc:1133
 #: ../glom/mode_design/layout/dialog_layout_details.cc:662
 msgid "New Button"
 msgstr "Nové tlačítko"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1202
+#: ../glom/mode_data/flowtablewithfields.cc:1139
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:385
 msgid "text"
 msgstr "text"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1203
+#: ../glom/mode_data/flowtablewithfields.cc:1140
 msgid "New Text"
 msgstr "Nový text"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1356
+#: ../glom/mode_data/flowtablewithfields.cc:1293
 msgid "Delete whole group \"%1\"?"
 msgstr "Odstranit celou skupinu „%1“?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1362
+#: ../glom/mode_data/flowtablewithfields.cc:1299
 msgid "Delete whole group?"
 msgstr "Odstranit celou skupinu?"
 
@@ -2093,7 +2145,7 @@ msgid "To Field"
 msgstr "Do pole"
 
 #: ../glom/mode_design/box_db_table_relationships.cc:55
-#: ../data/ui/developer/dialog_layout_field_properties.glade.h:3
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:5
 msgid "Allow Editing"
 msgstr "Povolit úpravy"
 
@@ -2294,7 +2346,7 @@ msgstr ""
 "Výpočet selhal s touto chybou:\n"
 "%s"
 
-#: ../glom/mode_design/fields/dialog_fielddefinition.cc:147
+#: ../glom/mode_design/fields/dialog_fielddefinition.cc:150
 msgid "Default Value"
 msgstr "Výchozí hodnota"
 
@@ -2463,9 +2515,9 @@ msgstr ""
 "%1"
 
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:32
-#: ../data/ui/developer/dialog_fieldslist.glade.h:2
-#: ../data/ui/developer/dialog_group_by.glade.h:3
-#: ../data/ui/developer/window_data_layout.glade.h:23
+#: ../data/ui/developer/dialog_fieldslist.glade.h:9
+#: ../data/ui/developer/dialog_group_by.glade.h:5
+#: ../data/ui/developer/window_data_layout.glade.h:27
 msgid "Formatting"
 msgstr "Formátování"
 
@@ -2609,6 +2661,8 @@ msgid ""
 msgstr "Opravdu chcete smazat tento skript? Tato data nemohou být vráceny zpět"
 
 #: ../glom/mode_design/script_library/dialog_script_library.cc:132
+#: ../data/ui/developer/dialog_script_library.glade.h:7
+#: ../data/ui/developer/window_users.glade.h:8
 msgid "_Remove"
 msgstr "Odst_ranit"
 
@@ -2741,6 +2795,7 @@ msgid "Choose Field"
 msgstr "Zvolte pole"
 
 #: ../glom/print_layout/canvas_print_layout.cc:293
+#: ../data/ui/developer/window_report_layout.glade.h:17
 msgid "_Formatting"
 msgstr "_Formátování"
 
@@ -2824,6 +2879,8 @@ msgstr ""
 
 #: ../glom/mode_data/datawidget/datawidget.cc:237
 #: ../data/ui/operator/window_main.glade.h:4
+#: ../data/ui/developer/window_groups.glade.h:5
+#: ../data/ui/developer/window_users.glade.h:5
 msgid "_New"
 msgstr "_Nový"
 
@@ -2864,9 +2921,8 @@ msgstr ""
 
 #: ../glom/mode_data/datawidget/dialog_choose_id.cc:86
 #: ../glom/utility_widgets/imageglom.cc:775
-#: ../data/ui/developer/dialog_choose_relationship.glade.h:2
-#: ../data/ui/developer/dialog_field_summary.glade.h:3
-#: ../data/ui/developer/dialog_group_by.glade.h:4
+#: ../data/ui/developer/dialog_field_summary.glade.h:5
+#: ../data/ui/developer/dialog_group_by.glade.h:6
 msgid "Select"
 msgstr "Vybrat"
 
@@ -2894,12 +2950,12 @@ msgstr "Chyba při ukládání"
 msgid "Error saving image"
 msgstr "Chyba při ukládání obrázku"
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:82
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:83
 msgid "New Database"
 msgstr "Nová databáze"
 
 #. For instance, an extra hint when saving from an example, saying that a new file must be saved.
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:99
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:97
 msgid ""
 "Please choose a human-readable title for the new database. You can change "
 "this later in the database properties. It may contain any characters."
@@ -2907,20 +2963,20 @@ msgstr ""
 "Prosím zadejte uživateli srozumitelný název databáze. Ten můžete později "
 "změnit ve vlastnostech databáze. Nadpis může obsahovat libovolné znaky."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:105
-#: ../data/ui/developer/window_field_definition_edit.glade.h:4
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:104
+#: ../data/ui/developer/window_field_definition_edit.glade.h:3
 #: ../data/ui/developer/window_report_layout.glade.h:7
 msgid "_Title:"
 msgstr "_Nadpis:"
 
 #. Use titles that show the distinction between PostgreSQL and the alternatives:
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:120
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:119
 msgid ""
 "Create PostgreSQL database in its own folder, to be hosted by this computer."
 msgstr ""
 "Vytvořit databázi PostgreSQL ve vlastní složce, pro provoz na tomto počítači."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:121
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:120
 msgid ""
 "Create database on an external PostgreSQL database server, to be specified "
 "in the next step."
@@ -2928,11 +2984,11 @@ msgstr ""
 "Vytvořit databázi na vzdáleném databázovém serveru PostgreSQL, který určíte "
 "v dalším kroku."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:123
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:122
 msgid "Create database in its own folder, to be hosted by this computer."
 msgstr "Vytvořit databázi ve vlastní složce, pro provoz na tomto počítači."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:124
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:123
 msgid ""
 "Create database on an external database server, to be specified in the next "
 "step."
@@ -2940,13 +2996,13 @@ msgstr ""
 "Vytvořit databázi na vzdáleném databázovém serveru, který určíte v dalším "
 "kroku."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:141
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:140
 msgid ""
 "Create SQLite database in its own folder, to be hosted by this computer."
 msgstr ""
 "Vytvořit databázi SQLite ve vlastní složce, pro provoz na tomto počítači."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:142
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:141
 msgid ""
 "SQLite does not support authentication or remote access but is suitable for "
 "embedded devices."
@@ -2954,19 +3010,19 @@ msgstr ""
 "SQLite nepodporuje ověřování a vzdálený přístup, ale je vhodná pro různá "
 "samostatná zařízení."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:149
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:148
 msgid "Create MySQL database in its own folder, to be hosted by this computer."
 msgstr ""
 "Vytvořit databázi MySQL ve vlastní složce, pro provoz na tomto počítači."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:150
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:156
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:149
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:155
 msgid "MySQL support in Glom is experimental and unlikely to work properly."
 msgstr ""
 "Podpora MySQL je v aplikaci Glom zatím experimentální a nemusí pracovat "
 "zcela korektně."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:155
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:154
 msgid ""
 "Create database on an external MySQL database server, to be specified in the "
 "next step."
@@ -2983,6 +3039,7 @@ msgid "Save Image"
 msgstr "Uložení obrázku"
 
 #: ../glom/utility_widgets/imageglom.cc:768
+#: ../data/ui/developer/dialog_database_preferences.glade.h:15
 msgid "Choose Image"
 msgstr "Zvolte obrázek"
 
@@ -3046,6 +3103,7 @@ msgid "Add Notebook"
 msgstr "Přidat záložku"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:123
+#: ../data/ui/developer/window_data_layout.glade.h:15
 msgid "Add Group"
 msgstr "Přidat skupinu"
 
@@ -3055,7 +3113,7 @@ msgid "Add Button"
 msgstr "Přidat tlačítko"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:125
-#: ../data/ui/developer/window_data_layout.glade.h:10
+#: ../data/ui/developer/window_data_layout.glade.h:9
 msgid "Add Text"
 msgstr "Přidat text"
 
@@ -3079,11 +3137,79 @@ msgstr "Smazat celý poznámkový blok?"
 msgid "_Show hidden tables"
 msgstr "Zobrazovat _skryté tabulky"
 
+#: ../data/ui/operator/box_navigation_tables.glade.h:3
+#: ../data/ui/operator/dialog_new_record.glade.h:2
+#: ../data/ui/operator/window_main.glade.h:12
+#: ../data/ui/developer/window_data_layout_export.glade.h:8
+#: ../data/ui/developer/window_data_layout.glade.h:34
+#: ../data/ui/developer/window_design.glade.h:4
+#: ../data/ui/developer/window_groups.glade.h:3
+#: ../data/ui/developer/window_print_layout_edit.glade.h:47
+#: ../data/ui/developer/box_print_layouts.glade.h:2
+#: ../data/ui/developer/window_relationships_overview.glade.h:9
+#: ../data/ui/developer/window_report_layout.glade.h:20
+#: ../data/ui/developer/box_reports.glade.h:2
+#: ../data/ui/developer/window_text_format.glade.h:2
+#: ../data/ui/developer/window_users.glade.h:3
+msgid "_Close"
+msgstr "_Zavřít"
+
 #: ../data/ui/operator/dialog_choose_date.glade.h:1
 msgid "Choose Date"
 msgstr "Výběr data"
 
 #: ../data/ui/operator/dialog_choose_date.glade.h:2
+#: ../data/ui/operator/dialog_connection.glade.h:2
+#: ../data/ui/operator/dialog_data_invalid_format.glade.h:1
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:2
+#: ../data/ui/operator/dialog_import_csv.glade.h:4
+#: ../data/ui/operator/window_main.glade.h:42
+#: ../data/ui/developer/dialog_change_language.glade.h:2
+#: ../data/ui/developer/dialog_choose_user.glade.h:2
+#: ../data/ui/developer/dialog_database_preferences.glade.h:2
+#: ../data/ui/developer/dialog_fieldslist.glade.h:1
+#: ../data/ui/developer/dialog_initial_password.glade.h:2
+#: ../data/ui/developer/dialog_line.glade.h:2
+#: ../data/ui/developer/dialog_new_group.glade.h:2
+#: ../data/ui/developer/dialog_new_library_script.glade.h:2
+#: ../data/ui/developer/dialog_notebook.glade.h:2
+#: ../data/ui/developer/dialog_script_library.glade.h:2
+#: ../data/ui/developer/dialog_sort_fields.glade.h:2
+#: ../data/ui/developer/dialog_translation_copy.glade.h:2
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:2
+#: ../data/ui/developer/dialog_user.glade.h:2
+#: ../data/ui/developer/window_button_script.glade.h:2
+#: ../data/ui/developer/window_field_calculation.glade.h:2
+#: ../data/ui/developer/window_groups.glade.h:2
+#: ../data/ui/developer/window_imageobject.glade.h:2
+#: ../data/ui/developer/window_textobject.glade.h:2
+#: ../data/ui/developer/window_users.glade.h:2
+msgid "_Help"
+msgstr "Nápo_věda"
+
+#: ../data/ui/operator/dialog_choose_date.glade.h:4
+#: ../data/ui/operator/dialog_data_invalid_format.glade.h:3
+#: ../data/ui/operator/dialog_import_csv_progress.glade.h:4
+#: ../data/ui/developer/dialog_database_preferences.glade.h:4
+#: ../data/ui/developer/dialog_fieldslist.glade.h:3
+#: ../data/ui/developer/dialog_field_summary.glade.h:3
+#: ../data/ui/developer/dialog_flowtable.glade.h:3
+#: ../data/ui/developer/dialog_group_by.glade.h:3
+#: ../data/ui/developer/dialog_line.glade.h:4
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:3
+#: ../data/ui/developer/dialog_notebook.glade.h:4
+#: ../data/ui/developer/dialog_script_library.glade.h:3
+#: ../data/ui/developer/dialog_sort_fields.glade.h:4
+#: ../data/ui/developer/dialog_user.glade.h:4
+#: ../data/ui/developer/window_button_script.glade.h:4
+#: ../data/ui/developer/window_field_calculation.glade.h:4
+#: ../data/ui/developer/window_imageobject.glade.h:4
+#: ../data/ui/developer/window_textobject.glade.h:4
+#: ../data/ui/developer/window_translations.glade.h:11
+msgid "_OK"
+msgstr "_Budiž"
+
+#: ../data/ui/operator/dialog_choose_date.glade.h:5
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Choose Date</span>\n"
 "\n"
@@ -3097,43 +3223,51 @@ msgstr ""
 msgid "Connect to Server"
 msgstr "Připojit k serveru"
 
-#: ../data/ui/operator/dialog_connection.glade.h:2
+#: ../data/ui/operator/dialog_connection.glade.h:4
+msgid "C_onnect"
+msgstr "Přip_ojit"
+
+#: ../data/ui/operator/dialog_connection.glade.h:5
 msgid "Please enter the connection details for your database server."
 msgstr "Zadejte prosím podrobnosti o připojení k vašemu databázovému serveru."
 
-#: ../data/ui/operator/dialog_connection.glade.h:3
+#: ../data/ui/operator/dialog_connection.glade.h:6
 msgid "Host"
 msgstr "Hostitel"
 
-#: ../data/ui/operator/dialog_connection.glade.h:5
-#: ../data/ui/developer/dialog_choose_user.glade.h:5
+#: ../data/ui/operator/dialog_connection.glade.h:8
+#: ../data/ui/developer/dialog_choose_user.glade.h:8
 #: ../data/ui/developer/dialog_user.glade.h:1
 msgid "User"
 msgstr "Uživatel"
 
-#: ../data/ui/operator/dialog_connection.glade.h:6
+#: ../data/ui/operator/dialog_connection.glade.h:9
 msgid "_Host:"
 msgstr "P_očítač:"
 
-#: ../data/ui/operator/dialog_connection.glade.h:7
+#: ../data/ui/operator/dialog_connection.glade.h:10
 msgid "Database:"
 msgstr "Databáze:"
 
-#: ../data/ui/operator/dialog_connection.glade.h:8
-#: ../data/ui/developer/dialog_initial_password.glade.h:3
+#: ../data/ui/operator/dialog_connection.glade.h:11
+#: ../data/ui/developer/dialog_initial_password.glade.h:6
 msgid "_User:"
 msgstr "_Uživatel:"
 
-#: ../data/ui/operator/dialog_connection.glade.h:9
-#: ../data/ui/developer/dialog_initial_password.glade.h:4
+#: ../data/ui/operator/dialog_connection.glade.h:12
+#: ../data/ui/developer/dialog_initial_password.glade.h:7
 msgid "_Password:"
 msgstr "_Heslo:"
 
-#: ../data/ui/operator/dialog_connection.glade.h:10
+#: ../data/ui/operator/dialog_connection.glade.h:13
 msgid "Database"
 msgstr "Databáze"
 
-#: ../data/ui/operator/dialog_data_invalid_format.glade.h:1
+#: ../data/ui/operator/dialog_data_invalid_format.glade.h:2
+msgid "_Revert"
+msgstr "V_rátit"
+
+#: ../data/ui/operator/dialog_data_invalid_format.glade.h:4
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid Format</span>\n"
 "\n"
@@ -3146,7 +3280,7 @@ msgstr ""
 "Data v poli nebyla rozpoznána. Zkuste prosím opravit data nebo se vrátit k "
 "předchozí hodnotě. Zde je příklad správně formátovaných dat pro toto pole.\n"
 
-#: ../data/ui/operator/dialog_data_invalid_format.glade.h:5
+#: ../data/ui/operator/dialog_data_invalid_format.glade.h:8
 msgid "example data format"
 msgstr "ukázkový formát data"
 
@@ -3154,25 +3288,30 @@ msgstr "ukázkový formát data"
 msgid "Welcome to Glom"
 msgstr "Vítejte v aplikaci Glom"
 
-#: ../data/ui/operator/dialog_existing_or_new.glade.h:2
-#: ../data/ui/developer/dialog_choose_field.glade.h:2
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:3
+msgid "_Quit"
+msgstr "U_končit"
+
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:4
+#: ../data/ui/developer/dialog_choose_field.glade.h:3
+#: ../data/ui/developer/dialog_choose_relationship.glade.h:3
 msgid "_Select"
 msgstr "_Vybrat"
 
-#: ../data/ui/operator/dialog_existing_or_new.glade.h:3
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:5
 msgid "<span weight=\"bold\" size=\"larger\">Open or Create a Document</span>"
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Otevře nebo vytvoří dokument</span>"
 
-#: ../data/ui/operator/dialog_existing_or_new.glade.h:4
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:6
 msgid "Open or create Document"
 msgstr "Otevřít nebo vytvořit dokument"
 
-#: ../data/ui/operator/dialog_existing_or_new.glade.h:5
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:7
 msgid "Open Existing Document"
 msgstr "0tevřít existující dokument"
 
-#: ../data/ui/operator/dialog_existing_or_new.glade.h:6
+#: ../data/ui/operator/dialog_existing_or_new.glade.h:8
 msgid "Create New Document"
 msgstr "Vytvořit nový dokument"
 
@@ -3180,8 +3319,8 @@ msgstr "Vytvořit nový dokument"
 msgid "Find Related Record"
 msgstr "Hledat související záznam"
 
-#: ../data/ui/operator/dialog_find_id.glade.h:2
-#: ../data/ui/operator/dialog_new_record.glade.h:2
+#: ../data/ui/operator/dialog_find_id.glade.h:3
+#: ../data/ui/operator/dialog_new_record.glade.h:3
 #: ../data/ui/developer/window_data_layout_export.glade.h:2
 #: ../data/ui/developer/window_data_layout.glade.h:2
 #: ../data/ui/developer/window_design.glade.h:2
@@ -3189,8 +3328,8 @@ msgstr "Hledat související záznam"
 msgid "<b>Table:</b>"
 msgstr "<b>Tabulka:</b>"
 
-#: ../data/ui/operator/dialog_find_id.glade.h:3
-#: ../data/ui/operator/dialog_new_record.glade.h:3
+#: ../data/ui/operator/dialog_find_id.glade.h:4
+#: ../data/ui/operator/dialog_new_record.glade.h:4
 msgid "table_name"
 msgstr "název_tabulky"
 
@@ -3210,43 +3349,47 @@ msgstr "Ukládá se obrázek"
 msgid "bla.blub - Import from CSV"
 msgstr "bla.blub - Import z CSV"
 
-#: ../data/ui/operator/dialog_import_csv.glade.h:2
+#: ../data/ui/operator/dialog_import_csv.glade.h:3
 #: ../data/ui/operator/window_main.glade.h:8
 msgid "I_mport"
 msgstr "I_mport"
 
-#: ../data/ui/operator/dialog_import_csv.glade.h:3
+#: ../data/ui/operator/dialog_import_csv.glade.h:5
 #: ../data/ui/developer/box_formatting.glade.h:23
 msgid "label"
 msgstr "nadpis"
 
-#: ../data/ui/operator/dialog_import_csv.glade.h:4
+#: ../data/ui/operator/dialog_import_csv.glade.h:6
 msgid "_First line as title"
 msgstr "_Použít první řádek jako nadpis"
 
-#: ../data/ui/operator/dialog_import_csv.glade.h:5
+#: ../data/ui/operator/dialog_import_csv.glade.h:7
 msgid "_Encoding:"
 msgstr "_Kódování:"
 
-#: ../data/ui/operator/dialog_import_csv.glade.h:6
+#: ../data/ui/operator/dialog_import_csv.glade.h:8
 msgid "Import Into _Table:"
 msgstr "Import do _tabulky:"
 
-#: ../data/ui/operator/dialog_import_csv.glade.h:7
+#: ../data/ui/operator/dialog_import_csv.glade.h:9
 msgid "Encoding detected as: UTF-8"
 msgstr "Kódování detekováno jako: UTF-8"
 
 #. Import is a noun here. This is the title for a window showing options for an import operation.
-#: ../data/ui/operator/dialog_import_csv.glade.h:9
+#: ../data/ui/operator/dialog_import_csv.glade.h:11
 msgid "<b>Import Options</b>"
 msgstr "<b>Volby importu</b>"
 
-#: ../data/ui/operator/dialog_import_csv.glade.h:10
+#: ../data/ui/operator/dialog_import_csv.glade.h:12
 msgid "_Number of sample rows:"
 msgstr "P_očet vzorových řádků:"
 
+#: ../data/ui/operator/dialog_import_csv.glade.h:13
+msgid "0"
+msgstr "0"
+
 #. Import is a noun here. This is the title for a list of fields to import.
-#: ../data/ui/operator/dialog_import_csv.glade.h:12
+#: ../data/ui/operator/dialog_import_csv.glade.h:15
 msgid "<b>Import Fields</b>"
 msgstr "<b>Importovaná pole</b>"
 
@@ -3255,7 +3398,7 @@ msgstr "<b>Importovaná pole</b>"
 msgid "Importing Data"
 msgstr "Import dat"
 
-#: ../data/ui/operator/dialog_import_csv_progress.glade.h:3
+#: ../data/ui/operator/dialog_import_csv_progress.glade.h:5
 msgid "Please wait while your data is imported."
 msgstr "Čekejte prosím, než se vaše data naimportují."
 
@@ -3281,10 +3424,6 @@ msgstr "_Tisk"
 #: ../data/ui/operator/window_main.glade.h:11
 msgid "_Edit Print Layouts"
 msgstr "_Upravit rozvržení tisku"
-
-#: ../data/ui/operator/window_main.glade.h:12
-msgid "_Close"
-msgstr "_Zavřít"
 
 #: ../data/ui/operator/window_main.glade.h:14
 #: ../data/ui/developer/window_print_layout_edit.glade.h:5
@@ -3379,10 +3518,6 @@ msgstr "_Exportovat zálohu"
 msgid "_Restore Backup"
 msgstr "O_bnovit ze zálohy"
 
-#: ../data/ui/operator/window_main.glade.h:42
-msgid "_Help"
-msgstr "Nápo_věda"
-
 #: ../data/ui/operator/window_main.glade.h:43
 msgid "_About"
 msgstr "O _aplikaci"
@@ -3395,7 +3530,11 @@ msgstr "O_bsah"
 msgid "Add Related Table"
 msgstr "Přidat související tabulku"
 
-#: ../data/ui/developer/dialog_add_related_table.glade.h:2
+#: ../data/ui/developer/dialog_add_related_table.glade.h:3
+msgid "C_reate Table"
+msgstr "Vy_tvořit tabulku"
+
+#: ../data/ui/developer/dialog_add_related_table.glade.h:4
 msgid ""
 "This will add a new table and add a relationship that refers to the new  "
 "table, as a convenient alternative to doing this in separate steps.\n"
@@ -3410,15 +3549,19 @@ msgstr ""
 "přidat jen vztah."
 
 #. Translators: FROM as in SQL's FROM
-#: ../data/ui/developer/dialog_add_related_table.glade.h:6
+#: ../data/ui/developer/dialog_add_related_table.glade.h:8
 msgid "From field:"
 msgstr "Od pole:"
 
-#: ../data/ui/developer/dialog_add_related_table.glade.h:7
+#: ../data/ui/developer/dialog_add_related_table.glade.h:9
+msgid "_Edit Fields"
+msgstr "Upravit pol_e"
+
+#: ../data/ui/developer/dialog_add_related_table.glade.h:10
 msgid "Name of new related table:"
 msgstr "Název nové související tabulky:"
 
-#: ../data/ui/developer/dialog_add_related_table.glade.h:8
+#: ../data/ui/developer/dialog_add_related_table.glade.h:11
 msgid "Name of new relationship:"
 msgstr "Název nového vztahu:"
 
@@ -3426,7 +3569,11 @@ msgstr "Název nového vztahu:"
 msgid "Test Translation"
 msgstr "Testování překladu"
 
-#: ../data/ui/developer/dialog_change_language.glade.h:2
+#: ../data/ui/developer/dialog_change_language.glade.h:4
+msgid "Change Language"
+msgstr "Změna jazyka"
+
+#: ../data/ui/developer/dialog_change_language.glade.h:5
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Test Translation</span>\n"
 "\n"
@@ -3448,7 +3595,7 @@ msgstr ""
 "nabídky a dialogová okna, bývají přeloženy pouze pokud Glom spustíte na "
 "počítači který tento jazyk používá."
 
-#: ../data/ui/developer/dialog_change_language.glade.h:7
+#: ../data/ui/developer/dialog_change_language.glade.h:10
 msgid "Locale:"
 msgstr "Umístění:"
 
@@ -3456,11 +3603,11 @@ msgstr "Umístění:"
 msgid "Select Field"
 msgstr "Zvolte pole"
 
-#: ../data/ui/developer/dialog_choose_field.glade.h:3
+#: ../data/ui/developer/dialog_choose_field.glade.h:4
 msgid "Show _Related Relationships"
 msgstr "Zob_razit související vztahy"
 
-#: ../data/ui/developer/dialog_choose_field.glade.h:4
+#: ../data/ui/developer/dialog_choose_field.glade.h:5
 msgid "_Table:"
 msgstr "_Tabulka:"
 
@@ -3468,7 +3615,7 @@ msgstr "_Tabulka:"
 msgid "Select Relationship"
 msgstr "Výběr vztahu"
 
-#: ../data/ui/developer/dialog_choose_relationship.glade.h:3
+#: ../data/ui/developer/dialog_choose_relationship.glade.h:4
 msgid "Table:"
 msgstr "Tabulka:"
 
@@ -3476,7 +3623,7 @@ msgstr "Tabulka:"
 msgid "Choose User"
 msgstr "Výběr uživatele"
 
-#: ../data/ui/developer/dialog_choose_user.glade.h:2
+#: ../data/ui/developer/dialog_choose_user.glade.h:5
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Add User To Group</span>\n"
 "\n"
@@ -3490,88 +3637,106 @@ msgstr ""
 msgid "Database Preferences"
 msgstr "Nastavení databáze"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:2
+#: ../data/ui/developer/dialog_database_preferences.glade.h:5
 msgid "System Name:"
 msgstr "Název systému:"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:3
+#: ../data/ui/developer/dialog_database_preferences.glade.h:6
 msgid "Name:"
 msgstr "Název:"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:4
+#: ../data/ui/developer/dialog_database_preferences.glade.h:7
 msgid "Country:"
 msgstr "Země:"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:5
+#: ../data/ui/developer/dialog_database_preferences.glade.h:8
 msgid "Zip/Postal Code:"
 msgstr "PSČ:"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:6
+#: ../data/ui/developer/dialog_database_preferences.glade.h:9
 msgid "State/County:"
 msgstr "Stát/Země:"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:7
+#: ../data/ui/developer/dialog_database_preferences.glade.h:10
 msgid "Town:"
 msgstr "Město:"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:8
+#: ../data/ui/developer/dialog_database_preferences.glade.h:11
 msgid "Street (Line 2):"
 msgstr "Ulice (řádek 2):"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:9
+#: ../data/ui/developer/dialog_database_preferences.glade.h:12
 msgid "Street:"
 msgstr "Ulice:"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:10
+#: ../data/ui/developer/dialog_database_preferences.glade.h:13
 msgid "<b>Address</b>"
 msgstr "<b>Adresa</b>"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:11
+#: ../data/ui/developer/dialog_database_preferences.glade.h:14
 msgid "Organisation"
 msgstr "Organizace"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:12
+#: ../data/ui/developer/dialog_database_preferences.glade.h:16
 msgid "Logo"
 msgstr "Logo"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:13
+#: ../data/ui/developer/dialog_database_preferences.glade.h:17
 msgid "Auto-increment values"
 msgstr "Automaticky navyšované hodnoty"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:14
+#: ../data/ui/developer/dialog_database_preferences.glade.h:18
 msgid ""
 "When the database is opened the python function implemented here will run."
 msgstr ""
 "Po otevření databáze bude spuštěna funkce v jazyce python, kterou zde "
 "implementujete."
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:15
-#: ../data/ui/developer/window_button_script.glade.h:4
-#: ../data/ui/developer/window_field_calculation.glade.h:3
+#: ../data/ui/developer/dialog_database_preferences.glade.h:19
+#: ../data/ui/developer/window_button_script.glade.h:7
+#: ../data/ui/developer/window_field_calculation.glade.h:6
 msgid "Test"
 msgstr "Test"
 
-#: ../data/ui/developer/dialog_database_preferences.glade.h:16
+#: ../data/ui/developer/dialog_database_preferences.glade.h:20
 msgid "Startup Script"
 msgstr "Spouštěcí skript"
 
-#: ../data/ui/developer/dialog_fieldslist.glade.h:1
-#: ../data/ui/developer/dialog_sort_fields.glade.h:2
+#: ../data/ui/developer/dialog_fieldslist.glade.h:4
+#: ../data/ui/developer/dialog_sort_fields.glade.h:5
 msgid "Table: "
 msgstr "Tabulka: "
 
-#: ../data/ui/developer/dialog_fieldslist.glade.h:3
+#: ../data/ui/developer/dialog_fieldslist.glade.h:5
+#: ../data/ui/developer/dialog_notebook.glade.h:5
+#: ../data/ui/developer/dialog_sort_fields.glade.h:6
+#: ../data/ui/developer/window_data_layout_export.glade.h:3
+#: ../data/ui/developer/window_data_layout.glade.h:23
+#: ../data/ui/developer/window_report_layout.glade.h:14
+msgid "_Up"
+msgstr "_Víš"
+
+#: ../data/ui/developer/dialog_fieldslist.glade.h:6
+#: ../data/ui/developer/dialog_notebook.glade.h:6
+#: ../data/ui/developer/dialog_sort_fields.glade.h:7
+#: ../data/ui/developer/window_data_layout_export.glade.h:4
 #: ../data/ui/developer/window_data_layout.glade.h:24
+#: ../data/ui/developer/window_report_layout.glade.h:15
+msgid "_Down"
+msgstr "_Níž"
+
+#: ../data/ui/developer/dialog_fieldslist.glade.h:11
+#: ../data/ui/developer/window_data_layout.glade.h:29
 msgid "<b>Fields</b>"
 msgstr "<b>Pole</b>"
 
-#: ../data/ui/developer/dialog_field_summary.glade.h:2
-#: ../data/ui/developer/dialog_group_by.glade.h:2
+#: ../data/ui/developer/dialog_field_summary.glade.h:4
+#: ../data/ui/developer/dialog_group_by.glade.h:4
 #: ../data/ui/developer/box_formatting.glade.h:21
 msgid "Field:"
 msgstr "Pole:"
 
-#: ../data/ui/developer/dialog_field_summary.glade.h:4
+#: ../data/ui/developer/dialog_field_summary.glade.h:6
 msgid "Summary Type:"
 msgstr "Typ souhrnu:"
 
@@ -3579,24 +3744,24 @@ msgstr "Typ souhrnu:"
 msgid "Group Properties"
 msgstr "Vlastnosti skupiny"
 
-#: ../data/ui/developer/dialog_flowtable.glade.h:2
+#: ../data/ui/developer/dialog_flowtable.glade.h:4
 msgid "Columns:"
 msgstr "Počet sloupců:"
 
-#: ../data/ui/developer/dialog_flowtable.glade.h:3
+#: ../data/ui/developer/dialog_flowtable.glade.h:5
 #: ../data/ui/developer/window_print_layout_edit.glade.h:42
 msgid "Title:"
 msgstr "Nadpis:"
 
-#: ../data/ui/developer/dialog_group_by.glade.h:5
+#: ../data/ui/developer/dialog_group_by.glade.h:7
 msgid "Sort Fields:"
 msgstr "Seřadit pole:"
 
-#: ../data/ui/developer/dialog_group_by.glade.h:6
+#: ../data/ui/developer/dialog_group_by.glade.h:9
 msgid "Secondary Fields:"
 msgstr "Sekundární pole:"
 
-#: ../data/ui/developer/dialog_group_by.glade.h:7
+#: ../data/ui/developer/dialog_group_by.glade.h:10
 msgid "Border Width (ems):"
 msgstr "Šířka rámečku (ems):"
 
@@ -3604,7 +3769,13 @@ msgstr "Šířka rámečku (ems):"
 msgid "Database User"
 msgstr "Databázový uživatel"
 
-#: ../data/ui/developer/dialog_initial_password.glade.h:2
+#: ../data/ui/developer/dialog_initial_password.glade.h:4
+#: ../data/ui/developer/dialog_new_group.glade.h:4
+#: ../data/ui/developer/dialog_new_library_script.glade.h:4
+msgid "C_reate"
+msgstr "_Vytvořit"
+
+#: ../data/ui/developer/dialog_initial_password.glade.h:5
 msgid ""
 "Please enter the initial connection details for your database. You may add "
 "additional users later. Remember to keep this password secret because it "
@@ -3614,26 +3785,20 @@ msgstr ""
 "uživatele můžete přidat později. Nezapomeňte uchovat heslo utajené, protože "
 "umožňuje přístup k vašim datům z dalších počítačů v síti."
 
-#: ../data/ui/developer/dialog_initial_password.glade.h:5
+#: ../data/ui/developer/dialog_initial_password.glade.h:8
 msgid "_Confirm Password:"
 msgstr "_Potvrďte heslo:"
-
-#: ../data/ui/developer/dialog_initial_password.glade.h:6
-#: ../data/ui/developer/dialog_new_group.glade.h:2
-#: ../data/ui/developer/dialog_new_library_script.glade.h:2
-msgid "C_reate"
-msgstr "_Vytvořit"
 
 #: ../data/ui/developer/dialog_line.glade.h:1
 #: ../data/ui/developer/window_textobject.glade.h:1
 msgid "Text Object"
 msgstr "Textový objekt"
 
-#: ../data/ui/developer/dialog_line.glade.h:2
+#: ../data/ui/developer/dialog_line.glade.h:5
 msgid "Line Width:"
 msgstr "Tloušťka čáry:"
 
-#: ../data/ui/developer/dialog_line.glade.h:3
+#: ../data/ui/developer/dialog_line.glade.h:6
 msgid "Color:"
 msgstr "Barva:"
 
@@ -3641,31 +3806,31 @@ msgstr "Barva:"
 msgid "Field Layout"
 msgstr "Rozložení polí"
 
-#: ../data/ui/developer/dialog_layout_field_properties.glade.h:2
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:4
 msgid "<b>Field:</b>"
 msgstr "<b>Pole:</b>"
 
-#: ../data/ui/developer/dialog_layout_field_properties.glade.h:4
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:6
 msgid "Use default field title: "
 msgstr "Použít výchozí nadpis pole: "
 
-#: ../data/ui/developer/dialog_layout_field_properties.glade.h:5
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:7
 msgid "Use custom title:"
 msgstr "Použít vlastní nadpis:"
 
-#: ../data/ui/developer/dialog_layout_field_properties.glade.h:6
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:8
 msgid "<b>Title</b>"
 msgstr "<b>Nadpis</b>"
 
-#: ../data/ui/developer/dialog_layout_field_properties.glade.h:7
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:9
 msgid "Use default formatting"
 msgstr "Použít výchozí formátování"
 
-#: ../data/ui/developer/dialog_layout_field_properties.glade.h:8
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:10
 msgid "Use custom formatting"
 msgstr "Použít vlastní formátování"
 
-#: ../data/ui/developer/dialog_layout_field_properties.glade.h:9
+#: ../data/ui/developer/dialog_layout_field_properties.glade.h:11
 msgid "<b>Formatting</b>"
 msgstr "<b>Formátování</b>"
 
@@ -3674,7 +3839,7 @@ msgstr "<b>Formátování</b>"
 msgid "Create Group"
 msgstr "Vytvořit skupinu"
 
-#: ../data/ui/developer/dialog_new_group.glade.h:3
+#: ../data/ui/developer/dialog_new_group.glade.h:5
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Create Group</span>\n"
 "\n"
@@ -3684,11 +3849,11 @@ msgstr ""
 "\n"
 "Jaký má skupina mít název?"
 
-#: ../data/ui/developer/dialog_new_group.glade.h:6
+#: ../data/ui/developer/dialog_new_group.glade.h:8
 msgid "Group name:"
 msgstr "Název skupiny:"
 
-#: ../data/ui/developer/dialog_new_library_script.glade.h:3
+#: ../data/ui/developer/dialog_new_library_script.glade.h:5
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Add Module</span>\n"
 "\n"
@@ -3698,11 +3863,11 @@ msgstr ""
 "\n"
 "Jaký má mít rozšíření název?"
 
-#: ../data/ui/developer/dialog_new_library_script.glade.h:6
+#: ../data/ui/developer/dialog_new_library_script.glade.h:8
 msgid "Script name:"
 msgstr "Název skriptu:"
 
-#: ../data/ui/developer/dialog_notebook.glade.h:2
+#: ../data/ui/developer/dialog_notebook.glade.h:9
 msgid "<b>Notebook Tabs</b>"
 msgstr "<b>Karty poznámek</b>"
 
@@ -3710,7 +3875,7 @@ msgstr "<b>Karty poznámek</b>"
 msgid "Script Library"
 msgstr "K_nihovna skriptů"
 
-#: ../data/ui/developer/dialog_script_library.glade.h:2
+#: ../data/ui/developer/dialog_script_library.glade.h:4
 msgid ""
 "These modules will be available to your button scripts and field "
 "calculations via the python import keyword."
@@ -3718,12 +3883,12 @@ msgstr ""
 "Tyto moduly budou zpřístupněny vašim skriptům pro tlačítka a výpočty pole "
 "pomocí klíčového slova pythonu import."
 
-#: ../data/ui/developer/dialog_script_library.glade.h:3
+#: ../data/ui/developer/dialog_script_library.glade.h:5
 msgid "Module name:"
 msgstr "Název modulu:"
 
 #. Translators: This is the verb. It is for checking that a Python script works.
-#: ../data/ui/developer/dialog_script_library.glade.h:5
+#: ../data/ui/developer/dialog_script_library.glade.h:9
 msgid "_Check"
 msgstr "Z_kontrolovat"
 
@@ -3731,7 +3896,7 @@ msgstr "Z_kontrolovat"
 msgid "Group By - Sort Fields"
 msgstr "Seskupovat podle - třídících polí"
 
-#: ../data/ui/developer/dialog_sort_fields.glade.h:3
+#: ../data/ui/developer/dialog_sort_fields.glade.h:11
 msgid "<b>Sort Fields</b>"
 msgstr "<b>Seřadit pole</b>"
 
@@ -3740,7 +3905,11 @@ msgstr "<b>Seřadit pole</b>"
 msgid "Identify Original"
 msgstr "Vyberte originál"
 
-#: ../data/ui/developer/dialog_translation_copy.glade.h:2
+#: ../data/ui/developer/dialog_translation_copy.glade.h:4
+msgid "Copy Translation"
+msgstr "Kopírování překladu"
+
+#: ../data/ui/developer/dialog_translation_copy.glade.h:5
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Copy Translation</span>\n"
 "\n"
@@ -3751,12 +3920,12 @@ msgstr ""
 "\n"
 "Ze kterého jazyka chcete kopírovat překlad jako začátek tohoto překladu?"
 
-#: ../data/ui/developer/dialog_translation_copy.glade.h:5
-#: ../data/ui/developer/dialog_translation_identify_original.glade.h:7
+#: ../data/ui/developer/dialog_translation_copy.glade.h:8
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:9
 msgid "Language:"
 msgstr "Jazyk:"
 
-#: ../data/ui/developer/dialog_translation_identify_original.glade.h:2
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:4
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Identify Original</span>\n"
 "\n"
@@ -3766,29 +3935,29 @@ msgstr ""
 "\n"
 "Jazyk originálního textu je momentálně popsán jako:"
 
-#: ../data/ui/developer/dialog_translation_identify_original.glade.h:5
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:7
 msgid "<b>English</b>"
 msgstr "<b>Angličtina</b>"
 
-#: ../data/ui/developer/dialog_translation_identify_original.glade.h:6
+#: ../data/ui/developer/dialog_translation_identify_original.glade.h:8
 msgid ""
 "If the text is not actually in this language, please choose the correct "
 "language."
 msgstr "Jestli text není právě v tomto jazyce, prosím vyberte správný jazyk."
 
-#: ../data/ui/developer/dialog_user.glade.h:2
+#: ../data/ui/developer/dialog_user.glade.h:5
 msgid "Group:"
 msgstr "Skupina:"
 
-#: ../data/ui/developer/dialog_user.glade.h:3
+#: ../data/ui/developer/dialog_user.glade.h:6
 msgid "Password:"
 msgstr "Heslo:"
 
-#: ../data/ui/developer/dialog_user.glade.h:4
+#: ../data/ui/developer/dialog_user.glade.h:7
 msgid "Confirm Password:"
 msgstr "Potvrzení hesla:"
 
-#: ../data/ui/developer/dialog_user.glade.h:5
+#: ../data/ui/developer/dialog_user.glade.h:8
 msgid "User:"
 msgstr "Uživatel:"
 
@@ -3796,14 +3965,14 @@ msgstr "Uživatel:"
 msgid "Button Script"
 msgstr "Skript tlačítka"
 
-#: ../data/ui/developer/window_button_script.glade.h:2
+#: ../data/ui/developer/window_button_script.glade.h:5
 #: ../data/ui/developer/window_data_layout.glade.h:6
-#: ../data/ui/developer/window_imageobject.glade.h:2
-#: ../data/ui/developer/window_textobject.glade.h:2
+#: ../data/ui/developer/window_imageobject.glade.h:5
+#: ../data/ui/developer/window_textobject.glade.h:5
 msgid "<b>Title:</b>"
 msgstr "<b>Nadpis:</b>"
 
-#: ../data/ui/developer/window_button_script.glade.h:3
+#: ../data/ui/developer/window_button_script.glade.h:6
 msgid ""
 "When the button is clicked it will run the python function which you "
 "implement here."
@@ -3833,6 +4002,10 @@ msgid "Show child relationships"
 msgstr "Zobrazit zděděné vztahy"
 
 #: ../data/ui/developer/window_data_layout.glade.h:7
+msgid "Add Field"
+msgstr "Přidat pole"
+
+#: ../data/ui/developer/window_data_layout.glade.h:8
 msgid ""
 "Add a layout item that shows the data from a field in the record, and allows "
 "the user to edit that value."
@@ -3840,11 +4013,7 @@ msgstr ""
 "Přidat položku sestavy, která zobrazí data z pole v záznamu, a umožní "
 "uživateli upravovat hodnotu."
 
-#: ../data/ui/developer/window_data_layout.glade.h:8
-msgid "Add Field"
-msgstr "Přidat pole"
-
-#: ../data/ui/developer/window_data_layout.glade.h:9
+#: ../data/ui/developer/window_data_layout.glade.h:10
 msgid ""
 "Add text to a layout, such as an explanation or a warning. The text will be "
 "the same for every record viewed."
@@ -3853,6 +4022,10 @@ msgstr ""
 "stejný pro všechny zobrazené záznamy."
 
 #: ../data/ui/developer/window_data_layout.glade.h:11
+msgid "Add Image"
+msgstr "Přidat obrázek"
+
+#: ../data/ui/developer/window_data_layout.glade.h:12
 msgid ""
 "Add an image to the layout, such as a logo. The image will be the same for "
 "every record viewed. To show an image field from a record, to show different "
@@ -3862,7 +4035,7 @@ msgstr ""
 "stejný. Pro zobrazení obrázku pole ze záznamu, tedy různého obrázku pro "
 "každé pole, použijte položku sestavy pole."
 
-#: ../data/ui/developer/window_data_layout.glade.h:12
+#: ../data/ui/developer/window_data_layout.glade.h:14
 msgid ""
 "Add a button. Edit the button to define the script that will be run when the "
 "button is clicked."
@@ -3870,7 +4043,7 @@ msgstr ""
 "Přidá tlačítko. Upravením tlačítka lze definovat skript, který bude proveden "
 "při stisku tlačítka."
 
-#: ../data/ui/developer/window_data_layout.glade.h:14
+#: ../data/ui/developer/window_data_layout.glade.h:16
 msgid ""
 "Add a group which can contain other layout items. Use this to group items "
 "together, such as fields."
@@ -3878,11 +4051,7 @@ msgstr ""
 "Přidá skupinu, která může obsahovat další položky sestavy. Používá se pro "
 "seskupování polí dohromady."
 
-#: ../data/ui/developer/window_data_layout.glade.h:15
-msgid "Add _Group"
-msgstr "Přidat _skupinu"
-
-#: ../data/ui/developer/window_data_layout.glade.h:16
+#: ../data/ui/developer/window_data_layout.glade.h:18
 msgid ""
 "Add a tabbed notebook. Each page of the notebook may contain several other "
 "layout items, but only one page will be visible at one time."
@@ -3891,7 +4060,7 @@ msgstr ""
 "obsahovat několik různých vrstev položek, ale v jednom okamžiku může být "
 "viditelná pouze jedna stránka."
 
-#: ../data/ui/developer/window_data_layout.glade.h:18
+#: ../data/ui/developer/window_data_layout.glade.h:20
 msgid ""
 "Add a related records portal. This is a list of records in a related table. "
 "Remember to edit this layout item to specify the relationship to use, and "
@@ -3901,7 +4070,11 @@ msgstr ""
 "tabulce. Nezapomeňte upravit tuto položku sestavy pro určení použitého "
 "vztahu a zobrazovaných polí ze související tabulky."
 
-#: ../data/ui/developer/window_data_layout.glade.h:20
+#: ../data/ui/developer/window_data_layout.glade.h:21
+msgid "Add Related Calendar"
+msgstr "Přidat související kalendář"
+
+#: ../data/ui/developer/window_data_layout.glade.h:22
 msgid ""
 "Add a related records calendar portal. This is a calendar showing records "
 "from a related table. Remember to edit this layout item to specify the "
@@ -3911,11 +4084,7 @@ msgstr ""
 "záznamy z odkazované tabulky. Nezapomeňte upravit tuto položku sestavy pro "
 "určení použitého vztahu a zobrazených polí z odkazované tabulky."
 
-#: ../data/ui/developer/window_data_layout.glade.h:21
-msgid "Add Related Calendar"
-msgstr "Přidat související kalendář"
-
-#: ../data/ui/developer/window_data_layout.glade.h:22
+#: ../data/ui/developer/window_data_layout.glade.h:26
 msgid ""
 "Remove the item from the layout. If you remove a field layout item, it will "
 "not remove the field from the table itself. It just will not be seen on the "
@@ -3924,7 +4093,7 @@ msgstr ""
 "Odebere pole z této sestavy. Odebráním pole ze sestavy jej neodstraníte ze "
 "samotné tabulky nebude odebrána. Jen nebude v sestavě vidět."
 
-#: ../data/ui/developer/window_data_layout.glade.h:25
+#: ../data/ui/developer/window_data_layout.glade.h:30
 msgid ""
 "Clicking the row button takes the user to the table specified by this "
 "relationship:"
@@ -3932,55 +4101,59 @@ msgstr ""
 "Kliknutím na tlačítko řádku přenese uživatele do tabulky určené tímto "
 "vztahem:"
 
-#: ../data/ui/developer/window_data_layout.glade.h:26
+#: ../data/ui/developer/window_data_layout.glade.h:31
 msgid "Automatic:"
 msgstr "Automatické:"
 
-#: ../data/ui/developer/window_data_layout.glade.h:27
+#: ../data/ui/developer/window_data_layout.glade.h:32
 msgid "None"
 msgstr "Nic"
 
-#: ../data/ui/developer/window_data_layout.glade.h:28
+#: ../data/ui/developer/window_data_layout.glade.h:33
 msgid "<b>Navigation</b>"
 msgstr "<b>Navigace</b>"
 
-#: ../data/ui/developer/window_data_layout.glade.h:29
+#: ../data/ui/developer/window_data_layout.glade.h:35
 msgid "Date Field:"
 msgstr "Pole s datem:"
 
-#: ../data/ui/developer/window_data_layout.glade.h:30
+#: ../data/ui/developer/window_data_layout.glade.h:36
 msgid "<b>Dates</b>"
 msgstr "<b>Data</b>"
 
-#: ../data/ui/developer/window_data_layout.glade.h:31
+#: ../data/ui/developer/window_data_layout.glade.h:37
 msgid "Minimum number of rows:"
 msgstr "Minimální počet řádků:"
 
-#: ../data/ui/developer/window_data_layout.glade.h:32
+#: ../data/ui/developer/window_data_layout.glade.h:38
 msgid "Show at least this many rows."
 msgstr "Zobrazit nejméně tento počet řádků."
 
-#: ../data/ui/developer/window_data_layout.glade.h:33
+#: ../data/ui/developer/window_data_layout.glade.h:39
 msgid "Maximum number of rows:"
 msgstr "Maximální počet řádků:"
 
-#: ../data/ui/developer/window_data_layout.glade.h:34
+#: ../data/ui/developer/window_data_layout.glade.h:40
 msgid "Show no more than this many rows."
 msgstr "Nezobrazovat větší než tento počet řádků."
 
-#: ../data/ui/developer/window_data_layout.glade.h:35
+#: ../data/ui/developer/window_data_layout.glade.h:41
 msgid "Row Line Width:"
 msgstr "Tloušťka čáry mezi řádky:"
 
-#: ../data/ui/developer/window_data_layout.glade.h:36
+#: ../data/ui/developer/window_data_layout.glade.h:42
+msgid "0.000"
+msgstr "0.000"
+
+#: ../data/ui/developer/window_data_layout.glade.h:43
 msgid "Column Line Width:"
 msgstr "Tloušťka čáry mezi sloupci:"
 
-#: ../data/ui/developer/window_data_layout.glade.h:37
+#: ../data/ui/developer/window_data_layout.glade.h:44
 msgid "Line Color:"
 msgstr "Barva čáry:"
 
-#: ../data/ui/developer/window_data_layout.glade.h:38
+#: ../data/ui/developer/window_data_layout.glade.h:45
 msgid "<b>Lines</b>"
 msgstr "<b>Čáry</b>"
 
@@ -3996,7 +4169,7 @@ msgstr "Definice pole"
 msgid "Field Calculation"
 msgstr "Výpočet pole"
 
-#: ../data/ui/developer/window_field_calculation.glade.h:2
+#: ../data/ui/developer/window_field_calculation.glade.h:5
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
@@ -4004,7 +4177,7 @@ msgstr ""
 "Hodnota tohoto pole bude návratová hodnota funkce v pythonu, kterou zde "
 "implementujete."
 
-#: ../data/ui/developer/window_field_calculation.glade.h:4
+#: ../data/ui/developer/window_field_calculation.glade.h:7
 msgid "Triggered by:"
 msgstr "Spuštěno:"
 
@@ -4013,12 +4186,12 @@ msgid "Field Definition"
 msgstr "Definice pole"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:2
-msgid "_Name:"
-msgstr "_Název:"
-
-#: ../data/ui/developer/window_field_definition_edit.glade.h:3
 msgid "Typ_e:"
 msgstr "_Typ:"
+
+#: ../data/ui/developer/window_field_definition_edit.glade.h:4
+msgid "_Name:"
+msgstr "_Název:"
 
 #: ../data/ui/developer/window_field_definition_edit.glade.h:5
 msgid "_Primary Key"
@@ -4156,14 +4329,18 @@ msgid "Also show:"
 msgstr "Také zobrazit:"
 
 #: ../data/ui/developer/box_formatting.glade.h:24
+msgid "Edit"
+msgstr "Upravit"
+
+#: ../data/ui/developer/box_formatting.glade.h:25
 msgid "Sort Order:"
 msgstr "Seřadit pole:"
 
-#: ../data/ui/developer/box_formatting.glade.h:25
+#: ../data/ui/developer/box_formatting.glade.h:26
 msgid "Show all records"
 msgstr "Zobrazit všechny záznamy"
 
-#: ../data/ui/developer/box_formatting.glade.h:26
+#: ../data/ui/developer/box_formatting.glade.h:27
 msgid ""
 "If this option is selected then the choices will list values from all "
 "records in the related table. If this option is not selected then the "
@@ -4173,23 +4350,23 @@ msgstr ""
 "záznamů v odpovídající tabulce. Pokud tato volba není vybrána, pak budou "
 "výběry uvádět hodnoty jen z odpovídajících záznamů."
 
-#: ../data/ui/developer/box_formatting.glade.h:27
+#: ../data/ui/developer/box_formatting.glade.h:28
 msgid "Choices From Related Records"
 msgstr "Možnosti ze souvisejících záznamů"
 
-#: ../data/ui/developer/box_formatting.glade.h:28
+#: ../data/ui/developer/box_formatting.glade.h:29
 msgid "Custom Choice List"
 msgstr "Vlastní seznam možností"
 
-#: ../data/ui/developer/box_formatting.glade.h:29
+#: ../data/ui/developer/box_formatting.glade.h:30
 msgid "Restrict data to these choices"
 msgstr "Omezit data na tyto možnosti"
 
-#: ../data/ui/developer/box_formatting.glade.h:30
+#: ../data/ui/developer/box_formatting.glade.h:31
 msgid "Display as radio buttons"
 msgstr "Zobrazit jako skupinové přepínače"
 
-#: ../data/ui/developer/box_formatting.glade.h:31
+#: ../data/ui/developer/box_formatting.glade.h:32
 msgid "Choices"
 msgstr "Možnosti"
 
@@ -4197,16 +4374,16 @@ msgstr "Možnosti"
 msgid "Groups"
 msgstr "Skupiny"
 
-#: ../data/ui/developer/window_groups.glade.h:2
+#: ../data/ui/developer/window_groups.glade.h:6
 #: ../data/ui/developer/window_users.glade.h:1
 msgid "Users"
 msgstr "Uživatelé"
 
-#: ../data/ui/developer/window_groups.glade.h:3
+#: ../data/ui/developer/window_groups.glade.h:7
 msgid "<b>Groups</b>"
 msgstr "<b>Skupiny</b>"
 
-#: ../data/ui/developer/window_groups.glade.h:4
+#: ../data/ui/developer/window_groups.glade.h:8
 msgid "<b>Tables</b>"
 msgstr "<b>Tabulky</b>"
 
@@ -4214,9 +4391,13 @@ msgstr "<b>Tabulky</b>"
 msgid "Image Object"
 msgstr "Objekt obrázku"
 
-#: ../data/ui/developer/window_imageobject.glade.h:3
+#: ../data/ui/developer/window_imageobject.glade.h:6
 msgid "<b>Image:</b>"
 msgstr "<b>Obrázek:</b>"
+
+#: ../data/ui/developer/window_imageobject.glade.h:7
+msgid "C_hoose Image"
+msgstr "Zvo_lit obrázek"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:2
 msgid "Page Set_up"
@@ -4405,11 +4586,11 @@ msgid "<b>Available Parts</b>"
 msgstr "<b>Dostupné součásti</b>"
 
 #. Translators: The Main part of the report (not the footer or header)
-#: ../data/ui/developer/window_report_layout.glade.h:11
+#: ../data/ui/developer/window_report_layout.glade.h:12
 msgid "Main"
 msgstr "Hlavní"
 
-#: ../data/ui/developer/window_report_layout.glade.h:13
+#: ../data/ui/developer/window_report_layout.glade.h:19
 msgid "<b>Parts</b>"
 msgstr "<b>Součásti</b>"
 
@@ -4417,7 +4598,7 @@ msgstr "<b>Součásti</b>"
 msgid "Text Format"
 msgstr "Formát textu"
 
-#: ../data/ui/developer/window_textobject.glade.h:3
+#: ../data/ui/developer/window_textobject.glade.h:6
 msgid "<b>Text:</b>"
 msgstr "<b>Text:</b>"
 
@@ -4453,10 +4634,10 @@ msgstr ""
 "Začněte překlad tohoto cílového jazyka nakopírováním řetězců z jiného "
 "cílového jazyka."
 
-#: ../data/ui/developer/window_users.glade.h:2
+#: ../data/ui/developer/window_users.glade.h:4
 msgid "<b>Group:</b>"
 msgstr "<b>Skupina:</b>"
 
-#: ../data/ui/developer/window_users.glade.h:3
+#: ../data/ui/developer/window_users.glade.h:10
 msgid "<b>Users</b>"
 msgstr "<b>Uživatelé</b>"
