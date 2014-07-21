@@ -1,0 +1,191 @@
+# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: Music Collection\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?\n"
+"PO-Revision-Date: 2014-07-17 22:26+0200\n"
+"Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
+"Language-Team: Basque <Basque <librezale@librezale.org>>\n"
+"Language: eu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"product=glom&keywords=I18N+L10N&component=general\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 1.5\n"
+
+msgctxt "Database Title"
+msgid "Music Collection"
+msgstr "Musika bilduma"
+
+msgctxt "Table (albums)"
+msgid "Albums"
+msgstr "Albumak"
+
+msgctxt "Field (album_id). Parent table: albums"
+msgid "Album ID"
+msgstr "Albumaren IDa"
+
+msgctxt "Field (comments). Parent table: albums"
+msgid "Comments"
+msgstr "Iruzkinak"
+
+msgctxt "Field (name). Parent table: albums"
+msgid "Name"
+msgstr "Izena"
+
+msgctxt "Field (artist_id). Parent table: albums"
+msgid "Artist ID"
+msgstr "Artistaren IDa"
+
+msgctxt "Field (publisher_id). Parent table: albums"
+msgid "Publisher ID"
+msgstr "Argitaratzailearen IDa"
+
+msgctxt "Field (year). Parent table: albums"
+msgid "Year"
+msgstr "Urtea"
+
+msgctxt "Relationship (artist). Parent table: albums"
+msgid "Artist"
+msgstr "Artista"
+
+msgctxt "Relationship (publisher). Parent table: albums"
+msgid "Publisher"
+msgstr "Argitaratzailea"
+
+msgctxt "Relationship (songs). Parent table: albums"
+msgid "Songs"
+msgstr "Abestiak"
+
+msgctxt "Report (albums_by_artist). Parent table: albums"
+msgid "Albums By Artist"
+msgstr "Albumak artistaren arabera"
+
+msgctxt "Custom Title. Parent table: albums, Parent Report: albums_by_artist"
+msgid "Artist Name"
+msgstr "Artistaren izena"
+
+msgctxt "Layout Group (overview). Parent table: albums"
+msgid "Overview"
+msgstr "Orokorra"
+
+msgctxt "Layout Group (details). Parent table: albums"
+msgid "Details"
+msgstr "Xehetasunak"
+
+msgctxt "Layout Group (artist). Parent table: albums, Parent Group: details"
+msgid "Artist"
+msgstr "Artista"
+
+msgctxt "Layout Group (publisher). Parent table: albums, Parent Group: details"
+msgid "Publisher"
+msgstr "Argitaratzailea"
+
+msgctxt "Custom Title. Parent table: albums"
+msgid "Artist Name"
+msgstr "Artistaren izena"
+
+msgctxt "Custom Title. Parent table: albums"
+msgid "Publisher Name"
+msgstr "Argitaratzearen izena"
+
+msgctxt "Table (artists)"
+msgid "Artists"
+msgstr "Artistak"
+
+msgctxt "Field (artist_id). Parent table: artists"
+msgid "Artist ID"
+msgstr "Artistaren IDa"
+
+msgctxt "Field (description). Parent table: artists"
+msgid "Description"
+msgstr "Azalpena"
+
+msgctxt "Field (comments). Parent table: artists"
+msgid "Comments"
+msgstr "Iruzkinak"
+
+msgctxt "Field (name). Parent table: artists"
+msgid "Name"
+msgstr "Izena"
+
+msgctxt "Relationship (albums). Parent table: artists"
+msgid "Albums"
+msgstr "Albumak"
+
+msgctxt "Layout Group (overview). Parent table: artists"
+msgid "Overview"
+msgstr "Orokorra"
+
+msgctxt "Layout Group (details). Parent table: artists"
+msgid "Details"
+msgstr "Xehetasunak"
+
+msgctxt "Table (publishers)"
+msgid "Publishers"
+msgstr "Argitaratzaileak"
+
+msgctxt "Field (publishers_id). Parent table: publishers"
+msgid "Publisher ID"
+msgstr "Argitaratzailearen IDa"
+
+msgctxt "Field (comments). Parent table: publishers"
+msgid "Comments"
+msgstr "Iruzkinak"
+
+msgctxt "Field (name). Parent table: publishers"
+msgid "Name"
+msgstr "Izena"
+
+msgctxt "Relationship (albums). Parent table: publishers"
+msgid "Albums"
+msgstr "Albumak"
+
+msgctxt "Layout Group (overview). Parent table: publishers"
+msgid "Overview"
+msgstr "Orokorra"
+
+msgctxt "Layout Group (details). Parent table: publishers"
+msgid "Details"
+msgstr "Xehetasunak"
+
+msgctxt "Table (songs)"
+msgid "Songs"
+msgstr "Abestiak"
+
+msgctxt "Field (song_id). Parent table: songs"
+msgid "Song ID"
+msgstr "Abestiaren IDa"
+
+msgctxt "Field (comments). Parent table: songs"
+msgid "Comments"
+msgstr "Iruzkinak"
+
+msgctxt "Field (album_id). Parent table: songs"
+msgid "Album ID"
+msgstr "Albumaren IDa"
+
+msgctxt "Field (name). Parent table: songs"
+msgid "Name"
+msgstr "Izena"
+
+msgctxt "Relationship (album). Parent table: songs"
+msgid "Album"
+msgstr "Albuma"
+
+msgctxt "Layout Group (overview). Parent table: songs"
+msgid "Overview"
+msgstr "Orokorra"
+
+msgctxt "Layout Group (details). Parent table: songs"
+msgid "Details"
+msgstr "Xehetasunak"
+
+msgctxt "Layout Group (album). Parent table: songs, Parent Group: details"
+msgid "Album"
+msgstr "Albuma"
+
+msgctxt "Layout Group (artist). Parent table: songs, Parent Group: details"
+msgid "Album Artist"
+msgstr "Albumaren artista"
