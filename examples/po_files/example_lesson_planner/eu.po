@@ -1,0 +1,355 @@
+# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: Lesson Planner\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?\n"
+"PO-Revision-Date: 2014-07-19 21:50+0200\n"
+"Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
+"Language-Team: Basque <Basque <librezale@librezale.org>>\n"
+"Language: eu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"product=glom&keywords=I18N+L10N&component=general\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 1.5\n"
+
+msgctxt "Database Title"
+msgid "Lesson Planner"
+msgstr "Gaien plangintza"
+
+msgctxt "Field (product_name). Parent table: invoice_lines"
+msgid "Product Name"
+msgstr "Produktuaren izena"
+
+msgctxt "Field (product_id). Parent table: invoice_lines"
+msgid "Product Id"
+msgstr "Produktuaren IDa"
+
+msgctxt "Field (product_price). Parent table: invoice_lines"
+msgid "Product Price"
+msgstr "Produktuaren prezioa"
+
+msgctxt "Field (invoice_id). Parent table: invoice_lines"
+msgid "Invoice ID"
+msgstr "Fakturaren IDa"
+
+msgctxt "Field (count). Parent table: invoice_lines"
+msgid "Number Of"
+msgstr "Kopurua:"
+
+msgctxt "Field (total_price). Parent table: invoice_lines"
+msgid "Total Price"
+msgstr "Guztirako prezioa"
+
+msgctxt "Field (vat_percentage). Parent table: invoice_lines"
+msgid "VAT Percentage"
+msgstr "BEZ ehunekoa"
+
+msgctxt "Field (total_price_vat). Parent table: invoice_lines"
+msgid "Total VAT"
+msgstr "Guztira BEZ"
+
+msgctxt "Table (lessons)"
+msgid "Lessons"
+msgstr "Gaiak"
+
+msgctxt "Field (lesson_id). Parent table: lessons"
+msgid "Lesson ID"
+msgstr "Gaiaren IDa"
+
+msgctxt "Field (description). Parent table: lessons"
+msgid "Description"
+msgstr "Azalpena"
+
+msgctxt "Field (comments). Parent table: lessons"
+msgid "Comments"
+msgstr "Iruzkinak"
+
+msgctxt "Field (subject_id). Parent table: lessons"
+msgid "Subject ID"
+msgstr "Gaiaren IDa"
+
+msgctxt "Field (teacher_id). Parent table: lessons"
+msgid "Teacher ID"
+msgstr "Irakaslearen IDa"
+
+msgctxt "Field (date). Parent table: lessons"
+msgid "Date"
+msgstr "Data"
+
+msgctxt "Field (time_start). Parent table: lessons"
+msgid "Start Time"
+msgstr "Hasierako ordua"
+
+msgctxt "Field (hours). Parent table: lessons"
+msgid "Hours"
+msgstr "Orduak"
+
+msgctxt "Field (room_id). Parent table: lessons"
+msgid "Room ID"
+msgstr "Gelaren IDa"
+
+msgctxt "Relationship (subject). Parent table: lessons"
+msgid "Subject"
+msgstr "Gaia"
+
+msgctxt "Relationship (teacher). Parent table: lessons"
+msgid "Teacher"
+msgstr "Irakaslea"
+
+msgctxt "Relationship (room). Parent table: lessons"
+msgid "Room"
+msgstr "Gela"
+
+msgctxt "Layout Group (overview). Parent table: lessons"
+msgid "Overview"
+msgstr "Orokorra"
+
+msgctxt "Layout Group (details). Parent table: lessons"
+msgid "Details"
+msgstr "Xehetasunak"
+
+msgctxt "Layout Group (subject). Parent table: lessons, Parent Group: details"
+msgid "Subject"
+msgstr "Gaia"
+
+msgctxt "Layout Group (room). Parent table: lessons, Parent Group: details"
+msgid "Room"
+msgstr "Gela"
+
+msgctxt "Layout Group (teacher). Parent table: lessons, Parent Group: details"
+msgid "Teacher"
+msgstr "Irakaslea"
+
+msgctxt "Table (rooms)"
+msgid "Rooms"
+msgstr "Gelak"
+
+msgctxt "Field (room_id). Parent table: rooms"
+msgid "Room ID"
+msgstr "Gelaren IDa"
+
+msgctxt "Field (description). Parent table: rooms"
+msgid "Description"
+msgstr "Azalpena"
+
+msgctxt "Field (comments). Parent table: rooms"
+msgid "Comments"
+msgstr "Iruzkinak"
+
+msgctxt "Field (floor). Parent table: rooms"
+msgid "Floor"
+msgstr "Solairua"
+
+msgctxt "Field (building). Parent table: rooms"
+msgid "Building"
+msgstr "Eraikuntza"
+
+msgctxt "Field Choice. Parent table: rooms, Parent Field: building"
+msgid "Main Building"
+msgstr "Eraikuntza nagusia"
+
+msgctxt "Field Choice. Parent table: rooms, Parent Field: building"
+msgid "Science Block"
+msgstr "Zientziaren blokea"
+
+msgctxt "Field Choice. Parent table: rooms, Parent Field: building"
+msgid "Sports Hall"
+msgstr "Kirolen aretoa"
+
+msgctxt "Layout Group (overview). Parent table: rooms"
+msgid "Overview"
+msgstr "Orokorra"
+
+msgctxt "Layout Group (details). Parent table: rooms"
+msgid "Details"
+msgstr "Xehetasunak"
+
+msgctxt "Table (subjects)"
+msgid "Subjects"
+msgstr "Gaiak"
+
+msgctxt "Field (subject_id). Parent table: subjects"
+msgid "Subject ID"
+msgstr "Gaiaren IDa"
+
+msgctxt "Field (name). Parent table: subjects"
+msgid "Name"
+msgstr "Izena"
+
+msgctxt "Field (comments). Parent table: subjects"
+msgid "Comments"
+msgstr "Iruzkinak"
+
+msgctxt "Relationship (lessons). Parent table: subjects"
+msgid "Lessons"
+msgstr "Gaiak"
+
+msgctxt "Layout Group (overview). Parent table: subjects"
+msgid "Overview"
+msgstr "Orokorra"
+
+msgctxt "Layout Group (details). Parent table: subjects"
+msgid "Details"
+msgstr "Xehetasunak"
+
+msgctxt "Custom Title. Parent table: subjects, Parent Group: details"
+msgid "Teacher Name"
+msgstr "Irakaslearen izena"
+
+msgctxt "Table (teachers)"
+msgid "Teachers"
+msgstr "Irakasleak"
+
+msgctxt "Field (teacher_id). Parent table: teachers"
+msgid "Teacher ID"
+msgstr "Irakaslearen IDa"
+
+msgctxt "Field (name_first). Parent table: teachers"
+msgid "First Name"
+msgstr "Izena"
+
+msgctxt "Field (name_middle). Parent table: teachers"
+msgid "Middle Name"
+msgstr "Bigarren izena"
+
+msgctxt "Field (name_last). Parent table: teachers"
+msgid "Last Name"
+msgstr "Abizena"
+
+msgctxt "Field (name_title). Parent table: teachers"
+msgid "Title"
+msgstr "Titulua"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Mr"
+msgstr "Jauna"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Mrs"
+msgstr "Andrea"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Ms"
+msgstr "Andereño"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Miss"
+msgstr "Andereño"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr"
+
+msgctxt "Field Choice. Parent table: teachers, Parent Field: name_title"
+msgid "Prof"
+msgstr "Lanb"
+
+msgctxt "Field (address_street). Parent table: teachers"
+msgid "Street"
+msgstr "Kalea"
+
+msgctxt "Field (address_town). Parent table: teachers"
+msgid "Town"
+msgstr "Herria"
+
+msgctxt "Field (address_state). Parent table: teachers"
+msgid "State"
+msgstr "Herrialdea"
+
+msgctxt "Field (address_country). Parent table: teachers"
+msgid "Country"
+msgstr "Estatua"
+
+msgctxt "Field (address_postcode). Parent table: teachers"
+msgid "Postcode"
+msgstr "Posta-kodea"
+
+msgctxt "Field (date_of_birth). Parent table: teachers"
+msgid "Date of Birth"
+msgstr "Jaiotze-data"
+
+msgctxt "Field (comments). Parent table: teachers"
+msgid "Comments"
+msgstr "Iruzkinak"
+
+msgctxt "Field (name_full). Parent table: teachers"
+msgid "Full Name"
+msgstr "Izen-abizenak"
+
+msgctxt "Field (picture). Parent table: teachers"
+msgid "Picture"
+msgstr "Argazkia"
+
+msgctxt "Field (email). Parent table: teachers"
+msgid "Email Address"
+msgstr "Helbide elektronikoa"
+
+msgctxt "Field (website). Parent table: teachers"
+msgid "Web Site"
+msgstr "Webgunea"
+
+msgctxt "Field (tel_home). Parent table: teachers"
+msgid "Home Telephone"
+msgstr "Etxeko telefonoa"
+
+msgctxt "Field (tel_work). Parent table: teachers"
+msgid "Work Telephone"
+msgstr "Laneko telefonoa"
+
+msgctxt "Field (tel_mobile). Parent table: teachers"
+msgid "Mobile Telephone"
+msgstr "Mugikorra"
+
+msgctxt "Field (tel_fax). Parent table: teachers"
+msgid "Fax"
+msgstr "Faxa"
+
+msgctxt "Relationship (lessons). Parent table: teachers"
+msgid "Lessons"
+msgstr "Gaiak"
+
+msgctxt "Report (by_country). Parent table: teachers"
+msgid "Contacts By Country"
+msgstr "Kontaktuak herrialdearen arabera"
+
+msgctxt "Report (by_country_by_town). Parent table: teachers"
+msgid "By Country, By Town"
+msgstr "Herrialdearen arabera, herriaren arabera"
+
+msgctxt "Layout Group (overview). Parent table: teachers"
+msgid "Overview"
+msgstr "Orokorra"
+
+msgctxt "Layout Group (details). Parent table: teachers"
+msgid "Details"
+msgstr "Xehetasunak"
+
+msgctxt ""
+"Layout Group (name). Parent table: teachers, Parent Group: details, Parent "
+"Group: notebook"
+msgid "Name"
+msgstr "Izena"
+
+msgctxt ""
+"Layout Group (address). Parent table: teachers, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Address"
+msgstr "Helbidea"
+
+msgctxt ""
+"Layout Group (telephone). Parent table: teachers, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Telephone"
+msgstr "Telefonoa"
+
+msgctxt ""
+"Layout Group (other). Parent table: teachers, Parent Group: details, Parent "
+"Group: notebook"
+msgid "Other"
+msgstr "Bestelakoa"
+
+msgctxt "Custom Title. Parent table: teachers, Parent Group: details"
+msgid "Subject Name"
+msgstr "Gaiaren izena"
