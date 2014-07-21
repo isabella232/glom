@@ -156,7 +156,6 @@
                   <object class="GtkViewport" id="viewport1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="resize_mode">queue</property>
                     <child>
                       <object class="GtkSourceView" id="textview_calculation">
                         <property name="visible">True</property>
