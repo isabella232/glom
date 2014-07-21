@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-21 10:06+0200\n"
-"PO-Revision-Date: 2014-07-21 10:09+0200\n"
+"PO-Revision-Date: 2014-07-21 10:25+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
 "Language-Team: Basque <librezale@librezale.org>\n"
 "Language: eu\n"
@@ -813,7 +813,7 @@ msgstr "Txostenak"
 
 #: ../glom/frame_glom.cc:1756 ../data/ui/developer/box_print_layouts.glade.h:1
 msgid "Print Layouts"
-msgstr "Inprimatu diseinuak"
+msgstr "Inprimatze-diseinuak"
 
 #: ../glom/frame_glom.cc:1912
 msgid "Could Not Create Directory"
@@ -1409,7 +1409,7 @@ msgstr "Diseinuaren elementua"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:238
 msgid "Print Layout"
-msgstr "Inprimatu diseinua"
+msgstr "Inprimatze-diseinua"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:240
 msgid "Report"
@@ -1998,15 +1998,15 @@ msgstr "_Gehitu"
 
 #: ../glom/mode_data/box_data_details.cc:48
 msgid "_First"
-msgstr "A_urrenekoa"
+msgstr "_Lehena"
 
 #: ../glom/mode_data/box_data_details.cc:49
 msgid "_Back"
-msgstr "_Itzuli"
+msgstr "A_tzera"
 
 #: ../glom/mode_data/box_data_details.cc:50
 msgid "_Forward"
-msgstr ""
+msgstr "A_urrera"
 
 #: ../glom/mode_data/box_data_details.cc:51
 msgid "_Last"
@@ -2455,7 +2455,6 @@ msgid "Relationship Uses a Related Primary Key"
 msgstr "Erlazioak erlazionatutako lehen mailako gako bat darabil"
 
 #: ../glom/mode_design/layout/dialog_layout_list_related.cc:433
-#, fuzzy
 msgid ""
 "The relationship may not be used to show related records because the "
 "relationship uses a primary key field in the related table, which must "
@@ -2557,15 +2556,13 @@ msgid "This item already exists. Please choose a different item name"
 msgstr "Elementu hau badago lehendik ere. Aukeratu elementuaren beste izen bat"
 
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:225
-#, fuzzy
 msgid "Are you sure that you want to rename this print layout?"
-msgstr "Ziur zaude inprimakiaren diseinu hau izenez aldatzea nahi duzula?"
+msgstr "Ziur zaude inprimatze-diseinu hau izenez aldatzea nahi duzula?"
 
 #. TODO: Show old and new names?
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:226
-#, fuzzy
 msgid "<b>Rename Print Layout</b>"
-msgstr "<b>Aldatu inprimakiaren izena</b>"
+msgstr "<b>Aldatu inprimatze-diseinuaren izena</b>"
 
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:228
 #: ../glom/navigation/box_tables.cc:402
@@ -2678,9 +2675,8 @@ msgstr "Script hau kentzea nahi duzu? Datu hau ezingo da berreskuratu"
 #: ../glom/mode_design/script_library/dialog_script_library.cc:132
 #: ../data/ui/developer/dialog_script_library.glade.h:7
 #: ../data/ui/developer/window_users.glade.h:8
-#, fuzzy
 msgid "_Remove"
-msgstr "Kendu orria"
+msgstr "_Kendu"
 
 #: ../glom/mode_design/users/dialog_groups_list.cc:76
 msgid "View"
@@ -2899,7 +2895,7 @@ msgstr ""
 #: ../data/ui/developer/window_groups.glade.h:5
 #: ../data/ui/developer/window_users.glade.h:5
 msgid "_New"
-msgstr ""
+msgstr "_Berria"
 
 #: ../glom/mode_data/datawidget/datawidget.cc:238
 msgid ""
@@ -3063,31 +3059,29 @@ msgid "Choose Image"
 msgstr "Aukeratu irudia"
 
 #: ../glom/utility_widgets/imageglom.cc:956
-#, fuzzy
 msgid "_Open File"
-msgstr "Huts egin du irekitzean"
+msgstr "_Ireki fitxategia"
 
 #: ../glom/utility_widgets/imageglom.cc:957
-#, fuzzy
 msgid "Open File With"
-msgstr "Ireki honekin"
+msgstr "Ireki fitxategia honekin"
 
 #: ../glom/utility_widgets/imageglom.cc:959
 #: ../data/ui/operator/window_main.glade.h:15
 #: ../data/ui/developer/window_print_layout_edit.glade.h:6
 msgid "_Copy"
-msgstr ""
+msgstr "_Kopiatu"
 
 #: ../glom/utility_widgets/imageglom.cc:960
 #: ../data/ui/operator/window_main.glade.h:16
 #: ../data/ui/developer/window_print_layout_edit.glade.h:7
 msgid "_Paste"
-msgstr ""
+msgstr "_Itsatsi"
 
 #: ../glom/utility_widgets/imageglom.cc:961
 #: ../data/ui/operator/window_main.glade.h:17
 msgid "_Clear"
-msgstr ""
+msgstr "_Garbitu"
 
 #: ../glom/utility_widgets/layouttoolbar.cc:32
 msgid "Containers"
@@ -3173,7 +3167,7 @@ msgstr "_Erakutsi/Ezkutatu taulak"
 #: ../data/ui/developer/window_text_format.glade.h:2
 #: ../data/ui/developer/window_users.glade.h:3
 msgid "_Close"
-msgstr ""
+msgstr "It_xi"
 
 #: ../data/ui/operator/dialog_choose_date.glade.h:1
 msgid "Choose Date"
@@ -3228,7 +3222,7 @@ msgstr "_Laguntza"
 #: ../data/ui/developer/window_textobject.glade.h:4
 #: ../data/ui/developer/window_translations.glade.h:11
 msgid "_OK"
-msgstr ""
+msgstr "_Ados"
 
 #: ../data/ui/operator/dialog_choose_date.glade.h:5
 msgid ""
@@ -3246,7 +3240,7 @@ msgstr "Konektatu zerbitzariarekin"
 
 #: ../data/ui/operator/dialog_connection.glade.h:4
 msgid "C_onnect"
-msgstr ""
+msgstr "_Konektatu"
 
 #: ../data/ui/operator/dialog_connection.glade.h:5
 msgid "Please enter the connection details for your database server."
@@ -3286,10 +3280,9 @@ msgstr "Datu-basea"
 
 #: ../data/ui/operator/dialog_data_invalid_format.glade.h:2
 msgid "_Revert"
-msgstr ""
+msgstr "_Leheneratu"
 
 #: ../data/ui/operator/dialog_data_invalid_format.glade.h:4
-#, fuzzy
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid Format</span>\n"
 "\n"
@@ -3312,7 +3305,7 @@ msgstr "Ongi etorri Glom-era"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:3
 msgid "_Quit"
-msgstr ""
+msgstr "I_rten"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:4
 #: ../data/ui/developer/dialog_choose_field.glade.h:3
@@ -3321,7 +3314,6 @@ msgid "_Select"
 msgstr "_Hautatu"
 
 #: ../data/ui/operator/dialog_existing_or_new.glade.h:5
-#, fuzzy
 msgid "<span weight=\"bold\" size=\"larger\">Open or Create a Document</span>"
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Ireki edo sortu dokumentua</span>"
@@ -3357,9 +3349,8 @@ msgid "table_name"
 msgstr "taula_izena"
 
 #: ../data/ui/operator/dialog_new_record.glade.h:1
-#, fuzzy
 msgid "New Related Record"
-msgstr "Erlazionatutako erregistroak"
+msgstr "Erlazionatutako erregistro berria"
 
 #: ../data/ui/operator/dialog_image_load_progress.glade.h:1
 msgid "Loading image"
@@ -3410,7 +3401,7 @@ msgstr "Lagin-errenkaden _kopurua:"
 
 #: ../data/ui/operator/dialog_import_csv.glade.h:13
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #. Import is a noun here. This is the title for a list of fields to import.
 #: ../data/ui/operator/dialog_import_csv.glade.h:15
@@ -3442,19 +3433,17 @@ msgstr "_Partekatu sarean"
 
 #: ../data/ui/operator/window_main.glade.h:10
 #: ../data/ui/developer/window_relationships_overview.glade.h:3
-#, fuzzy
 msgid "_Print"
-msgstr "_Inprimatu diseinuak"
+msgstr "_Inprimatu"
 
 #: ../data/ui/operator/window_main.glade.h:11
-#, fuzzy
 msgid "_Edit Print Layouts"
-msgstr "_Editatu inprimakiak"
+msgstr "_Editatu inprimatze-diseinuak"
 
 #: ../data/ui/operator/window_main.glade.h:14
 #: ../data/ui/developer/window_print_layout_edit.glade.h:5
 msgid "Cu_t"
-msgstr ""
+msgstr "_Ebaki"
 
 #: ../data/ui/operator/window_main.glade.h:19
 msgid "_Tables"
@@ -3473,23 +3462,20 @@ msgid "_Edit Reports"
 msgstr "_Editatu txostenak"
 
 #: ../data/ui/operator/window_main.glade.h:23
-#, fuzzy
 msgid "_Developer"
 msgstr "_Garatzailea"
 
 #: ../data/ui/operator/window_main.glade.h:24
-#, fuzzy
 msgid "_Operator"
-msgstr "_Eragiketaren modua"
+msgstr "_Eragilea"
 
 #: ../data/ui/operator/window_main.glade.h:25
 msgid "_Fields"
 msgstr "_Eremuak"
 
 #: ../data/ui/operator/window_main.glade.h:26
-#, fuzzy
 msgid "_Relationships"
-msgstr "E_rlazioa:"
+msgstr "E_rlazioak"
 
 #: ../data/ui/operator/window_main.glade.h:27
 msgid "Relationships _Overview"
@@ -3497,7 +3483,7 @@ msgstr "Erlazioen ikuspegi _orokorra"
 
 #: ../data/ui/operator/window_main.glade.h:29
 msgid "_Print Layouts"
-msgstr "_Inprimatu diseinuak"
+msgstr "_Inprimatze-diseinuak"
 
 #: ../data/ui/operator/window_main.glade.h:30
 msgid "_Reports"
@@ -3524,9 +3510,8 @@ msgid "Test Tra_nslation"
 msgstr "Probatu _itzulpena"
 
 #: ../data/ui/operator/window_main.glade.h:36
-#, fuzzy
 msgid "Active Platform"
-msgstr "Plataforma _aktiboa"
+msgstr "Plataforma aktiboa"
 
 #: ../data/ui/operator/window_main.glade.h:37
 msgid "_Normal"
@@ -3561,9 +3546,8 @@ msgid "Add Related Table"
 msgstr "Gehitu erlazionatutako taula"
 
 #: ../data/ui/developer/dialog_add_related_table.glade.h:3
-#, fuzzy
 msgid "C_reate Table"
-msgstr "Ezabatu taula"
+msgstr "_Sortu taula"
 
 #: ../data/ui/developer/dialog_add_related_table.glade.h:4
 msgid ""
@@ -3585,7 +3569,6 @@ msgid "From field:"
 msgstr "Eremutik:"
 
 #: ../data/ui/developer/dialog_add_related_table.glade.h:9
-#, fuzzy
 msgid "_Edit Fields"
 msgstr "_Editatu eremuak"
 
@@ -3602,9 +3585,8 @@ msgid "Test Translation"
 msgstr "Probatu itzulpena"
 
 #: ../data/ui/developer/dialog_change_language.glade.h:4
-#, fuzzy
 msgid "Change Language"
-msgstr "Hizkuntza:"
+msgstr "Aldatu hizkuntza"
 
 #: ../data/ui/developer/dialog_change_language.glade.h:5
 msgid ""
@@ -3747,7 +3729,7 @@ msgstr "Taula: "
 #: ../data/ui/developer/window_data_layout.glade.h:23
 #: ../data/ui/developer/window_report_layout.glade.h:14
 msgid "_Up"
-msgstr ""
+msgstr "_Gora"
 
 #: ../data/ui/developer/dialog_fieldslist.glade.h:6
 #: ../data/ui/developer/dialog_notebook.glade.h:6
@@ -3756,7 +3738,7 @@ msgstr ""
 #: ../data/ui/developer/window_data_layout.glade.h:24
 #: ../data/ui/developer/window_report_layout.glade.h:15
 msgid "_Down"
-msgstr ""
+msgstr "_Behera"
 
 #: ../data/ui/developer/dialog_fieldslist.glade.h:11
 #: ../data/ui/developer/window_data_layout.glade.h:29
@@ -3795,9 +3777,8 @@ msgid "Secondary Fields:"
 msgstr "Bigarren mailako eremuak:"
 
 #: ../data/ui/developer/dialog_group_by.glade.h:10
-#, fuzzy
 msgid "Border Width (ems):"
-msgstr "Ertzaren zabalera (ems)"
+msgstr "Ertzaren zabalera (ems):"
 
 #: ../data/ui/developer/dialog_initial_password.glade.h:1
 msgid "Database User"
@@ -3866,9 +3847,8 @@ msgid "Use custom formatting"
 msgstr "Erabili formatu pertsonalizatua"
 
 #: ../data/ui/developer/dialog_layout_field_properties.glade.h:11
-#, fuzzy
 msgid "<b>Formatting</b>"
-msgstr "<b>Formatua ematen</b>"
+msgstr "<b>Formatua</b>"
 
 #: ../data/ui/developer/dialog_new_group.glade.h:1
 #: ../data/ui/developer/dialog_new_library_script.glade.h:1
@@ -3942,9 +3922,8 @@ msgid "Identify Original"
 msgstr "Identifikatu jatorrikoa"
 
 #: ../data/ui/developer/dialog_translation_copy.glade.h:4
-#, fuzzy
 msgid "Copy Translation"
-msgstr "Itzulpena"
+msgstr "Kopiatu itzulpena"
 
 #: ../data/ui/developer/dialog_translation_copy.glade.h:5
 msgid ""
@@ -4059,9 +4038,8 @@ msgstr ""
 "erregistro bakoitzean berdina izango da."
 
 #: ../data/ui/developer/window_data_layout.glade.h:11
-#, fuzzy
 msgid "Add Image"
-msgstr "_Gehitu orria"
+msgstr "Gehitu irudia"
 
 #: ../data/ui/developer/window_data_layout.glade.h:12
 msgid ""
@@ -4184,16 +4162,15 @@ msgstr "Errenkadaren lerro-zabalera:"
 
 #: ../data/ui/developer/window_data_layout.glade.h:42
 msgid "0.000"
-msgstr ""
+msgstr "0.000"
 
 #: ../data/ui/developer/window_data_layout.glade.h:43
 msgid "Column Line Width:"
 msgstr "Zutabearen lerro-zabalera:"
 
 #: ../data/ui/developer/window_data_layout.glade.h:44
-#, fuzzy
 msgid "Line Color:"
-msgstr "Marren kolorea:\n"
+msgstr "Lerroaren kolorea:"
 
 #: ../data/ui/developer/window_data_layout.glade.h:45
 msgid "<b>Lines</b>"
@@ -4286,14 +4263,12 @@ msgstr ""
 "erabiliko da soilik zure lokalak bat erabiltzen badu."
 
 #: ../data/ui/developer/box_formatting.glade.h:3
-#, fuzzy
 msgid "Decimal Places:"
-msgstr "Hamartar-kopurua"
+msgstr "Dezimalen kopurua:"
 
 #: ../data/ui/developer/box_formatting.glade.h:4
-#, fuzzy
 msgid "Currency Symbol:"
-msgstr "Moneta-ikurra"
+msgstr "Moneta-ikurra:"
 
 #: ../data/ui/developer/box_formatting.glade.h:5
 msgid "Alternative Color for Negative Values"
@@ -4308,9 +4283,8 @@ msgstr ""
 "planoaren bestelako kolore bat erabiltzeko."
 
 #: ../data/ui/developer/box_formatting.glade.h:7
-#, fuzzy
 msgid "Numeric Formatting"
-msgstr "<b>Zenbakizkoen formatua</b>"
+msgstr "Zenbakizkoen formatua"
 
 #: ../data/ui/developer/box_formatting.glade.h:8
 msgid "Horizontal Alignment:"
@@ -4361,9 +4335,8 @@ msgstr ""
 "erabiltzeko."
 
 #: ../data/ui/developer/box_formatting.glade.h:18
-#, fuzzy
 msgid "Text Formatting"
-msgstr "Testuaren formatua"
+msgstr "Testu-formatua"
 
 #: ../data/ui/developer/box_formatting.glade.h:19
 msgid "No Choices"
@@ -4390,28 +4363,24 @@ msgid "Show all records"
 msgstr "Erakutsi erregistro guztiak"
 
 #: ../data/ui/developer/box_formatting.glade.h:27
-#, fuzzy
 msgid ""
 "If this option is selected then the choices will list values from all "
 "records in the related table. If this option is not selected then the "
 "choices will list values only from related records."
 msgstr ""
-"Aukera hau hautatzen bada, aukerak balioak zerrendatuko ditu erregistro "
-"guztietatik erlazionatutako taulan. Aukera hau ez bada hautatzen, aukerak "
-"soilik erlazionatutako erregistroetako balioak zerrendatuko ditu."
+"Aukera hau hautatzen bada, aukerek balioak zerrendatuko dituzte erregistro "
+"guztietatik erlazionatutako taulan. Aukera hau ez bada hautatzen, aukerek "
+"soilik erlazionatutako erregistroetako balioak zerrendatuko dituzte."
 
 #: ../data/ui/developer/box_formatting.glade.h:28
-#, fuzzy
 msgid "Choices From Related Records"
 msgstr "Aukerak erlazionatutako erregistroetatik"
 
 #: ../data/ui/developer/box_formatting.glade.h:29
-#, fuzzy
 msgid "Custom Choice List"
-msgstr "Pertsonalizatu aukeren zerrenda"
+msgstr "Aukera pertsonalizatuen zerrenda"
 
 #: ../data/ui/developer/box_formatting.glade.h:30
-#, fuzzy
 msgid "Restrict data to these choices"
 msgstr "Murriztu datuak aukera hauetara"
 
@@ -4420,9 +4389,8 @@ msgid "Display as radio buttons"
 msgstr "Bistaratu irrati-botoi gisa"
 
 #: ../data/ui/developer/box_formatting.glade.h:32
-#, fuzzy
 msgid "Choices"
-msgstr "Aukerarik ez"
+msgstr "Aukerak"
 
 #: ../data/ui/developer/window_groups.glade.h:1
 msgid "Groups"
@@ -4450,28 +4418,25 @@ msgid "<b>Image:</b>"
 msgstr "<b>Irudia</b>"
 
 #: ../data/ui/developer/window_imageobject.glade.h:7
-#, fuzzy
 msgid "C_hoose Image"
-msgstr "Aukeratu irudia"
+msgstr "Aukeratu _irudia"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:2
-#, fuzzy
 msgid "Page Set_up"
 msgstr "Orriaren _konfigurazioa"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:3
+#, fuzzy
 msgid "Print Pre_view"
-msgstr ""
+msgstr "Inprimatzearen _aurrebista"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:9
-#, fuzzy
 msgid "Select _All"
-msgstr "Desautatu guztiak"
+msgstr "Hautatu _denak"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:10
-#, fuzzy
 msgid "_Unselect All"
-msgstr "Desautatu guztiak"
+msgstr "D_esautatu denak"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:11
 msgid "_Insert"
@@ -4502,19 +4467,16 @@ msgid "Insert _Vertical Line"
 msgstr "Txertatu marra _bertikala"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:18
-#, fuzzy
 msgid "Create _Standard"
-msgstr "Sortu diseinu arrunta"
+msgstr "Sortu _arrunta"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:19
-#, fuzzy
 msgid "Add Page"
-msgstr "_Gehitu orria"
+msgstr "Gehitu orria"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:20
-#, fuzzy
 msgid "Delete Page"
-msgstr "_Ezabatu orria"
+msgstr "Ezabatu orria"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:21
 msgid "_Align"
@@ -4547,14 +4509,12 @@ msgid "Show _Grid"
 msgstr "Erakutsi _sareta"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:28
-#, fuzzy
 msgid "Show _Rules"
-msgstr "Erakutsi erregelak"
+msgstr "Erakutsi e_rregelak"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:29
-#, fuzzy
 msgid "Show _Outlines"
-msgstr "Erakutsi eskemak"
+msgstr "Erakutsi e_skemak"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:30
 msgid "Fit Page _Width"
@@ -4566,9 +4526,9 @@ msgid "Zoom 200%"
 msgstr "Zooma %200"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:34
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Zoom 100%"
-msgstr "Zooma %200"
+msgstr "Zooma %100"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:36
 #, no-c-format
@@ -4582,7 +4542,7 @@ msgstr "Zooma %25"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:39
 msgid "Print Layout Editor"
-msgstr "Inprimakiaren editorea"
+msgstr "Inprimatze-diseinuaren editorea"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:40
 msgid "<b>Table Name</b>"
