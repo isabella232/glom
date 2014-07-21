@@ -1,0 +1,322 @@
+# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: Project Manager Example\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?\n"
+"PO-Revision-Date: 2014-07-17 22:32+0200\n"
+"Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
+"Language-Team: Basque <Basque <librezale@librezale.org>>\n"
+"Language: eu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"product=glom&keywords=I18N+L10N&component=general\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 1.5\n"
+
+msgctxt "Database Title"
+msgid "Project Manager Example"
+msgstr "Proiektuen kudeatzailearen adibidea"
+
+msgctxt "Table (contacts)"
+msgid "Contacts"
+msgstr "Kontaktuak"
+
+msgctxt "Field (contact_id). Parent table: contacts"
+msgid "Contact ID"
+msgstr "Kontaktuaren IDa"
+
+msgctxt "Field (name_first). Parent table: contacts"
+msgid "First Name"
+msgstr "Izena"
+
+msgctxt "Field (name_middle). Parent table: contacts"
+msgid "Middle Name"
+msgstr "Bigarren izena"
+
+msgctxt "Field (name_last). Parent table: contacts"
+msgid "Last Name"
+msgstr "Abizena"
+
+msgctxt "Field (name_title). Parent table: contacts"
+msgid "Title"
+msgstr "Titulua"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mr"
+msgstr "Jauna"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Mrs"
+msgstr "Andrea"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Ms"
+msgstr "Andereño"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Miss"
+msgstr "Andereño"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Dr"
+msgstr "Dr"
+
+msgctxt "Field Choice. Parent table: contacts, Parent Field: name_title"
+msgid "Prof"
+msgstr "Lanb"
+
+msgctxt "Field (address_street). Parent table: contacts"
+msgid "Street"
+msgstr "Kalea"
+
+msgctxt "Field (address_town). Parent table: contacts"
+msgid "Town"
+msgstr "Herria"
+
+msgctxt "Field (address_state). Parent table: contacts"
+msgid "State"
+msgstr "Herrialdea"
+
+msgctxt "Field (address_country). Parent table: contacts"
+msgid "Country"
+msgstr "Estatua"
+
+msgctxt "Field (address_postcode). Parent table: contacts"
+msgid "Postcode"
+msgstr "Posta-kodea"
+
+msgctxt "Field (date_of_birth). Parent table: contacts"
+msgid "Date of Birth"
+msgstr "Jaiotze-data"
+
+msgctxt "Field (comments). Parent table: contacts"
+msgid "Comments"
+msgstr "Iruzkinak"
+
+msgctxt "Field (name_full). Parent table: contacts"
+msgid "Full Name"
+msgstr "Izen osoa"
+
+msgctxt "Field (picture). Parent table: contacts"
+msgid "Picture"
+msgstr "Irudia"
+
+msgctxt "Field (email). Parent table: contacts"
+msgid "Email Address"
+msgstr "Helbide elektronikoa"
+
+msgctxt "Field (website). Parent table: contacts"
+msgid "Web Site"
+msgstr "Webgunea"
+
+msgctxt "Field (tel_home). Parent table: contacts"
+msgid "Home Telephone"
+msgstr "Etxeko telefonoa"
+
+msgctxt "Field (tel_work). Parent table: contacts"
+msgid "Work Telephone"
+msgstr "Laneko telefonoa"
+
+msgctxt "Field (tel_mobile). Parent table: contacts"
+msgid "Mobile Telephone"
+msgstr "Mugikorra"
+
+msgctxt "Field (tel_fax). Parent table: contacts"
+msgid "Fax"
+msgstr "Faxa"
+
+msgctxt "Relationship (team_members). Parent table: contacts"
+msgid "Team Membership"
+msgstr "Taldeko kidea"
+
+msgctxt "Report (by_country). Parent table: contacts"
+msgid "Contacts By Country"
+msgstr "Kontaktuak herrialdearen arabera"
+
+msgctxt "Report (by_country_by_town). Parent table: contacts"
+msgid "By Country, By Town"
+msgstr "Herrialdearen arabera, herriaren arabera"
+
+msgctxt "Layout Group (overview). Parent table: contacts"
+msgid "Overview"
+msgstr "Orokorra"
+
+msgctxt ""
+"Layout Group (notebook). Parent table: contacts, Parent Group: details"
+msgid "(Notebook)"
+msgstr "(Koadernoa)"
+
+msgctxt ""
+"Layout Group (telephone). Parent table: contacts, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Telephone"
+msgstr "Telefonoa"
+
+msgctxt ""
+"Layout Group (address). Parent table: contacts, Parent Group: details, "
+"Parent Group: notebook"
+msgid "Address"
+msgstr "Helbidea"
+
+msgctxt ""
+"Layout Group (name). Parent table: contacts, Parent Group: details, Parent "
+"Group: notebook"
+msgid "Name"
+msgstr "Izena"
+
+msgctxt "Table (projects)"
+msgid "Projects"
+msgstr "Proiektuak"
+
+msgctxt "Field (project_id). Parent table: projects"
+msgid "Project ID"
+msgstr "Proiektuaren IDa"
+
+msgctxt "Field (description). Parent table: projects"
+msgid "Description"
+msgstr "Azalpena"
+
+msgctxt "Field (comments). Parent table: projects"
+msgid "Comments"
+msgstr "Iruzkinak"
+
+msgctxt "Field (name). Parent table: projects"
+msgid "Name"
+msgstr "Izena"
+
+msgctxt "Relationship (teams). Parent table: projects"
+msgid "Teams"
+msgstr "Taldeak"
+
+msgctxt "Layout Group (overview). Parent table: projects"
+msgid "Overview"
+msgstr "Orokorra"
+
+msgctxt "Layout Group (details). Parent table: projects"
+msgid "Details"
+msgstr "Xehetasunak"
+
+msgctxt "Table (project_teams)"
+msgid "Project Teams"
+msgstr "Proiektuko taldeak"
+
+msgctxt "Field (project_team_id). Parent table: project_teams"
+msgid "Project Team ID"
+msgstr "Proiektuko taldearen IDa"
+
+msgctxt "Field (comments). Parent table: project_teams"
+msgid "Comments"
+msgstr "Iruzkinak"
+
+msgctxt "Field (team_id). Parent table: project_teams"
+msgid "Team ID"
+msgstr "Taldearen IDa"
+
+msgctxt "Field (project_id). Parent table: project_teams"
+msgid "Project ID"
+msgstr "Proiektuaren IDa"
+
+msgctxt "Relationship (team). Parent table: project_teams"
+msgid "Team"
+msgstr "Taldea"
+
+msgctxt "Relationship (project). Parent table: project_teams"
+msgid "Project"
+msgstr "Proiektua"
+
+msgctxt "Layout Group (overview). Parent table: project_teams"
+msgid "Overview"
+msgstr "Orokorra"
+
+msgctxt "Layout Group (details). Parent table: project_teams"
+msgid "Details"
+msgstr "Xehetasunak"
+
+msgctxt "Custom Title. Parent table: project_teams"
+msgid "Team Name"
+msgstr "Taldearen izena"
+
+msgctxt "Custom Title. Parent table: project_teams"
+msgid "Project Name"
+msgstr "Proiektuaren izena"
+
+msgctxt "Table (team_members)"
+msgid "Team Members"
+msgstr "Taldekideak"
+
+msgctxt "Field (team_members_id). Parent table: team_members"
+msgid "team_members ID"
+msgstr "Taldekidearen IDa"
+
+msgctxt "Field (description). Parent table: team_members"
+msgid "Description"
+msgstr "Azalpena"
+
+msgctxt "Field (comments). Parent table: team_members"
+msgid "Comments"
+msgstr "Iruzkinak"
+
+msgctxt "Field (contact_id). Parent table: team_members"
+msgid "Contact ID"
+msgstr "Kontaktuaren IDa"
+
+msgctxt "Field (team_id). Parent table: team_members"
+msgid "Team ID"
+msgstr "Taldearen IDa"
+
+msgctxt "Field (role). Parent table: team_members"
+msgid "Role"
+msgstr "Zeregina"
+
+msgctxt "Relationship (contacts). Parent table: team_members"
+msgid "Contacts"
+msgstr "Kontaktuak"
+
+msgctxt "Relationship (team). Parent table: team_members"
+msgid "Team"
+msgstr "Taldea"
+
+msgctxt "Layout Group (overview). Parent table: team_members"
+msgid "Overview"
+msgstr "Orokorra"
+
+msgctxt "Layout Group (details). Parent table: team_members"
+msgid "Details"
+msgstr "Xehetasunak"
+
+msgctxt "Table (teams)"
+msgid "Teams"
+msgstr "Taldeak"
+
+msgctxt "Field (team_id). Parent table: teams"
+msgid "Team ID"
+msgstr "Taldearen IDa"
+
+msgctxt "Field (description). Parent table: teams"
+msgid "Description"
+msgstr "Azalpena"
+
+msgctxt "Field (comments). Parent table: teams"
+msgid "Comments"
+msgstr "Iruzkinak"
+
+msgctxt "Field (name). Parent table: teams"
+msgid "Name"
+msgstr "Izena"
+
+msgctxt "Relationship (members). Parent table: teams"
+msgid "Members"
+msgstr "Kideak"
+
+msgctxt "Relationship (projects). Parent table: teams"
+msgid "Projects"
+msgstr "Proiektuak"
+
+msgctxt "Layout Group (overview). Parent table: teams"
+msgid "Overview"
+msgstr "Orokorra"
+
+msgctxt "Layout Group (details). Parent table: teams"
+msgid "Details"
+msgstr "Xehetasunak"
