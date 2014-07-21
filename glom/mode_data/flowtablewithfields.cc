@@ -461,14 +461,24 @@ void FlowTableWithFields::add_field(const sharedptr<LayoutItem_Field>& layoutite
   info.m_second->show_all();
 
   //Add a label, if one is necessary:
+  //We put it inside a box so that halign works as we want.
+  //See https://mail.gnome.org/archives/gtk-devel-list/2014-July/msg00005.html
+
   Gtk::Label* label = info.m_second->get_label();
-  info.m_first = label;
   if(label && !label->get_text().empty())
   {
-    label->set_property("xalign", 0.0); //Equivalent to Gtk::ALIGN_START, but we can't use that here.
-    label->set_property("yalign", 0.5); //Equivalent ot Gtk::ALIGN_CENTER, but we can't use that here.;
+    Gtk::Box* boxLabel = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+    boxLabel->show();
+    boxLabel->pack_start(*label);
+    info.m_first = boxLabel;
 
+    label->set_halign(Gtk::ALIGN_START);
+    label->set_valign(Gtk::ALIGN_CENTER);
     label->show();
+  }
+  else
+  {
+    info.m_first = 0;
   }
 
   //info.m_group = layoutitem_field.m_group;
@@ -477,16 +487,17 @@ void FlowTableWithFields::add_field(const sharedptr<LayoutItem_Field>& layoutite
   if( (layoutitem_field->get_glom_type() == Field::TYPE_TEXT) && layoutitem_field->get_formatting_used().get_text_format_multiline())
   {
     if(label)
-      label->set_property("yalign", 0.0); //Equivalent to Gtk::ALIGN_START. Center is neater next to entries, but center is silly next to multi-line text boxes.
+      label->set_valign(Gtk::ALIGN_START); //Center is neater next to entries, but center is silly next to multi-line text boxes.
   }
   else if(layoutitem_field->get_glom_type() == Field::TYPE_IMAGE)
   {
     if(label)
-      label->set_property("yalign", 0.0); //Equivalent to Gtk::ALIGN_START. Center is neater next to entries, but center is silly next to large images.
+      label->set_valign(Gtk::ALIGN_START); //Center is neater next to entries, but center is silly next to large images.
   }
 
   Gtk::EventBox* eventbox = Gtk::manage(new Gtk::EventBox());
   eventbox->add(*info.m_first);
+  eventbox->set_halign(Gtk::ALIGN_START);
   info.m_first_eventbox = eventbox; //Remember it so we can retrieve the column number later from FlowTable.
   eventbox->set_visible_window(false);
   eventbox->set_events(Gdk::ALL_EVENTS_MASK);
@@ -1176,12 +1187,12 @@ void FlowTableWithFields::apply_size_groups_to_labels(const type_vec_sizegroups&
   for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
   {
     Info info = *iter;
-    Gtk::Label* label = info.m_first;
+    Gtk::Widget* widget = info.m_first;
     Glib::RefPtr<Gtk::SizeGroup> previous_size_group = info.m_first_in_sizegroup;
-    if(!label || !previous_size_group)
+    if(!widget || !previous_size_group)
       continue;
 
-    previous_size_group->remove_widget(*label);
+    previous_size_group->remove_widget(*widget);
     info.m_first_in_sizegroup.reset();
   }
 
@@ -1193,7 +1204,7 @@ void FlowTableWithFields::apply_size_groups_to_labels(const type_vec_sizegroups&
   for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
   {
     Info info = *iter;
-    Gtk::Label* label = info.m_first;
+    Gtk::Widget* label = info.m_first;
     if(!label)
       continue;
 

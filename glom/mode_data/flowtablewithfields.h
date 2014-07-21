@@ -226,7 +226,7 @@ private:
 
     sharedptr<const LayoutItem_Field> m_field; //Store the field information so we know the title, ID, and type.
 
-    Gtk::Label* m_first;
+    Gtk::Widget* m_first;
     Gtk::EventBox* m_first_eventbox; //The label is often inside an eventbox.
     Glib::RefPtr<Gtk::SizeGroup> m_first_in_sizegroup; //Just to avoid a warning when removing a widget not in a group.
 
