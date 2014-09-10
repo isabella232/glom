@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-05-01 05:52+0000\n"
-"PO-Revision-Date: 2014-05-01 20:37+0100\n"
+"POT-Creation-Date: 2014-09-10 05:57+0000\n"
+"PO-Revision-Date: 2014-09-10 19:30+0100\n"
 "Last-Translator: Benjamin Steinwender <b@stbe.at>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de_DE\n"
@@ -26,16 +26,16 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.6.4\n"
+"X-Generator: Poedit 1.6.9\n"
 
-#: ../glom/application.cc:160 ../glom/glom_create_from_example.cc:259
+#: ../glom/application.cc:157 ../glom/glom_create_from_example.cc:259
 #: ../glom/glom_export_po.cc:112 ../glom/glom_export_po_all.cc:100
 #: ../glom/glom_import_po_all.cc:101 ../glom/glom_test_connection.cc:148
 msgid "Error while parsing command-line options: "
 msgstr "Fehler beim Einlesen der Befehlszeilenoptionen: "
 
 #. TODO: How can we just print them out?
-#: ../glom/application.cc:161 ../glom/glom_create_from_example.cc:260
+#: ../glom/application.cc:158 ../glom/glom_create_from_example.cc:260
 #: ../glom/glom_export_po.cc:113 ../glom/glom_export_po_all.cc:101
 #: ../glom/glom_import_po_all.cc:102 ../glom/glom_test_connection.cc:108
 msgid "Use --help to see a list of available command-line options."
@@ -43,12 +43,12 @@ msgstr ""
 "Benutzen Sie --help, um eine Liste der verfügbaren Befehlszeilenoptionen zu "
 "erhalten."
 
-#: ../glom/application.cc:202 ../glom/glom_create_from_example.cc:294
+#: ../glom/application.cc:199 ../glom/glom_create_from_example.cc:294
 #: ../glom/glom_export_po.cc:162
 msgid "Glom: The file does not exist."
 msgstr "Glom: Die Datei existiert nicht."
 
-#: ../glom/application.cc:212 ../glom/glom_create_from_example.cc:304
+#: ../glom/application.cc:209 ../glom/glom_create_from_example.cc:304
 #: ../glom/glom_export_po.cc:172
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: Der Dateipfad ist ein Ordner und keine Datei."
@@ -178,7 +178,7 @@ msgstr ""
 #: ../glom/appwindow.cc:2419 ../glom/appwindow.cc:2456
 #: ../glom/appwindow.cc:2832 ../glom/base_db_table_data.cc:393
 #: ../glom/box_withbuttons.cc:36 ../glom/box_withbuttons.cc:50
-#: ../glom/box_withbuttons.cc:64 ../glom/dialog_existing_or_new.cc:827
+#: ../glom/box_withbuttons.cc:64 ../glom/dialog_existing_or_new.cc:831
 #: ../glom/filechooser_export.cc:39 ../glom/frame_glom.cc:513
 #: ../glom/frame_glom.cc:737 ../glom/frame_glom.cc:824
 #: ../glom/frame_glom.cc:930 ../glom/utils_ui.cc:485
@@ -197,7 +197,7 @@ msgstr ""
 #: ../glom/utility_widgets/imageglom.cc:687
 #: ../glom/utility_widgets/imageglom.cc:774
 msgid "_Cancel"
-msgstr "A_bbrechen"
+msgstr "_Abbrechen"
 
 #: ../glom/appwindow.cc:988
 msgid "Continue without Developer Mode"
@@ -239,13 +239,13 @@ msgid ""
 "Glom could not create the new database. Maybe you do not have the necessary "
 "access rights. Please contact your system administrator."
 msgstr ""
-"Glom konnte die neue Datenbank nicht anlegen. Eventuell haben Sie nicht die "
-"notwendigen Zugriffsrechte. Bitte setzen Sie sich mit Ihrem "
-"Systemadministrator in Verbindung."
+"Glom konnte keine neue Datenbank erstellen. Eventuell haben Sie nicht die "
+"notwendigen Zugriffsrechte. Bitte setzen Sie sich mit Ihrem Systemverwalter "
+"in Verbindung."
 
 #: ../glom/appwindow.cc:1770
 msgid "Database Creation Failed"
-msgstr "Anlegen der Datenbank schlug fehl"
+msgstr "Erstellen der Datenbank schlug fehl"
 
 #. The save failed. Tell the user and don't do anything else:
 #: ../glom/appwindow.cc:2101 ../glom/bakery/appwindow_withdoc.cc:241
@@ -355,7 +355,7 @@ msgstr "Wiederherstellen der Sicherheitskopie schlug fehl."
 
 #: ../glom/appwindow.cc:2489
 msgid "There was an error while extracting the backup."
-msgstr "Beim Extrahieren der Sicherheitskopie ist ein Fehler aufgetreten."
+msgstr "Beim Auspacken der Sicherheitskopie ist ein Fehler aufgetreten."
 
 #: ../glom/appwindow.cc:2597
 msgid " (read-only)"
@@ -370,7 +370,7 @@ msgid "Open Document"
 msgstr "Dokument öffnen"
 
 #. Add a button for related record navigation:
-#: ../glom/appwindow.cc:2833 ../glom/dialog_existing_or_new.cc:828
+#: ../glom/appwindow.cc:2833 ../glom/dialog_existing_or_new.cc:832
 #: ../glom/frame_glom.cc:738 ../glom/onlineglom_strings.cc:32
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:34
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:44
@@ -454,7 +454,7 @@ msgstr "Datensatz löschen"
 #: ../glom/utility_widgets/notebooklabelglom.cc:125
 #: ../data/ui/developer/window_print_layout_edit.glade.h:8
 msgid "_Delete"
-msgstr "Löschen"
+msgstr "_Löschen"
 
 #. Append the View columns:
 #. Use set_cell_data_func() to give more control over the cell attributes depending on the row:
@@ -517,40 +517,44 @@ msgid "Not yet created."
 msgstr "Noch nicht fertiggestellt."
 
 #: ../glom/dialog_existing_or_new.cc:50
+msgid "No recently used documents available."
+msgstr "Keine zuletzt benutzten Dokumente vorhanden."
+
+#: ../glom/dialog_existing_or_new.cc:51
 msgid "No sessions found on the local network."
 msgstr "Es wurden keine Sitzungen im lokalen Netzwerk gefunden."
 
-#: ../glom/dialog_existing_or_new.cc:118
+#: ../glom/dialog_existing_or_new.cc:54
+msgid "No templates available."
+msgstr "Keine Vorlagen vorhanden."
+
+#: ../glom/dialog_existing_or_new.cc:122
 msgid "Open a Document"
 msgstr "Ein Dokument öffnen"
 
-#: ../glom/dialog_existing_or_new.cc:137
+#: ../glom/dialog_existing_or_new.cc:141
 #: ../glom/utility_widgets/imageglom.cc:958
 msgid "Select File"
 msgstr "Datei auswählen"
 
-#: ../glom/dialog_existing_or_new.cc:141
+#: ../glom/dialog_existing_or_new.cc:145
 msgid "Local Network"
 msgstr "Lokales Netzwerk"
 
-#: ../glom/dialog_existing_or_new.cc:145
+#: ../glom/dialog_existing_or_new.cc:149
 msgid "Recently Opened"
 msgstr "Zuletzt geöffnet"
 
-#: ../glom/dialog_existing_or_new.cc:186
-msgid "No recently used documents available."
-msgstr "Keine zuletzt benutzten Dokumente vorhanden."
-
-#: ../glom/dialog_existing_or_new.cc:218
+#: ../glom/dialog_existing_or_new.cc:222
 msgid "New Empty Document"
 msgstr "Neues leeres Dokument"
 
-#: ../glom/dialog_existing_or_new.cc:221
+#: ../glom/dialog_existing_or_new.cc:225
 msgid "New From Template"
 msgstr "Neu aus Vorlage"
 
 #. Translator hint: This is <Service Name> on <Host> (via Network Interface such as eth0).
-#: ../glom/dialog_existing_or_new.cc:744
+#: ../glom/dialog_existing_or_new.cc:748
 #, c-format
 msgid "%s on %s (via %s)"
 msgstr "%s auf %s (per %s)"
@@ -1486,6 +1490,16 @@ msgstr "Überblick"
 #: ../glom/libglom/document/bakery/document.cc:424
 msgid "Untitled"
 msgstr "Unbenannt"
+
+#: ../glom/libglom/gst-package.c:56
+msgid "Could not install package"
+msgstr "Paket konnte nicht installiert werden"
+
+#: ../glom/libglom/gst-package.c:74
+msgid "The necessary applications to install the package could not be found."
+msgstr ""
+"Die benötigten Anwendungen zum Installieren des Pakets konnten nicht "
+"gefunden werden."
 
 #. Show only debug output
 #: ../glom/libglom/translations_po.cc:70
@@ -3089,7 +3103,7 @@ msgstr "_Einfügen"
 #: ../glom/utility_widgets/imageglom.cc:961
 #: ../data/ui/operator/window_main.glade.h:17
 msgid "_Clear"
-msgstr "_Leeren"
+msgstr "_Löschen"
 
 #: ../glom/utility_widgets/layouttoolbar.cc:32
 msgid "Containers"
@@ -3282,7 +3296,7 @@ msgstr "Tabellen_name"
 
 #: ../data/ui/operator/dialog_new_record.glade.h:1
 msgid "New Related Record"
-msgstr "neuer Bezugsdatensatz"
+msgstr "Neuer Bezugsdatensatz"
 
 #: ../data/ui/operator/dialog_image_load_progress.glade.h:1
 msgid "Loading image"
@@ -3407,7 +3421,7 @@ msgstr "_Felder"
 
 #: ../data/ui/operator/window_main.glade.h:26
 msgid "_Relationships"
-msgstr "Be_ziehungen"
+msgstr "_Beziehungen"
 
 #: ../data/ui/operator/window_main.glade.h:27
 msgid "Relationships _Overview"
@@ -4189,7 +4203,7 @@ msgstr ""
 
 #: ../data/ui/developer/box_formatting.glade.h:7
 msgid "Numeric Formatting"
-msgstr "Zahlenformatierung"
+msgstr "Zahlenformat"
 
 #: ../data/ui/developer/box_formatting.glade.h:8
 msgid "Horizontal Alignment:"
@@ -4243,7 +4257,7 @@ msgstr ""
 
 #: ../data/ui/developer/box_formatting.glade.h:18
 msgid "Text Formatting"
-msgstr "Textformatierung"
+msgstr "Textformat"
 
 #: ../data/ui/developer/box_formatting.glade.h:19
 msgid "No Choices"
@@ -4322,7 +4336,7 @@ msgstr "<b>Bild:</b>"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:2
 msgid "Page Set_up"
-msgstr "Seite _einrichten"
+msgstr "Seite einric_hten"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:3
 msgid "Print Pre_view"
@@ -4330,11 +4344,11 @@ msgstr "Druck_vorschau"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:9
 msgid "Select _All"
-msgstr "Alles au_swählen"
+msgstr "_Alle auswählen"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:10
 msgid "_Unselect All"
-msgstr "Alle a_bwählen"
+msgstr "Alle _abwählen"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:11
 msgid "_Insert"
@@ -4365,10 +4379,8 @@ msgid "Insert _Vertical Line"
 msgstr "_Vertikale Linie einfügen"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:18
-#, fuzzy
-#| msgid "Create Standard Layout"
 msgid "Create _Standard"
-msgstr "Standard-Layout erstellen"
+msgstr "_Vorgabe erstellen"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:19
 msgid "Add Page"
@@ -4596,18 +4608,6 @@ msgstr "<b>Benutzer</b>"
 #~ msgid "There was an error while restoring the backup."
 #~ msgstr ""
 #~ "Beim Wiederherstellen der Sicherheitskopie ist ein Fehler aufgetreten."
-
-#~ msgid "No templates available."
-#~ msgstr "Keine Vorlagen vorhanden."
-
-#~ msgid "Could not install package"
-#~ msgstr "Paket konnte nicht installiert werden"
-
-#~ msgid ""
-#~ "The necessary applications to install the package could not be found."
-#~ msgstr ""
-#~ "Die benötigten Anwendungen zum Installieren des Pakets konnten nicht "
-#~ "gefunden werden."
 
 #~ msgid "_Create Standard Layout"
 #~ msgstr "_Standard-Layout erstellen"
