@@ -6,6 +6,7 @@
     <trans loc="el" val="Υπεύθυνος κινηματογράφου Openismus"/>
     <trans loc="en_GB" val="Openismus Film Manager"/>
     <trans loc="es" val="Gestor de películas Openismus"/>
+    <trans loc="eu" val="Openismus filmen kudeatzailea"/>
     <trans loc="fr" val="Gestionnaire de films Openismus"/>
     <trans loc="hu" val="Openismus filmkezelő"/>
     <trans loc="id" val="Manajer Film Openismus"/>
@@ -23,6 +24,7 @@
       <trans loc="el" val="Στέγαση"/>
       <trans loc="en_GB" val="Accommodation"/>
       <trans loc="es" val="Alojamiento"/>
+      <trans loc="eu" val="Eserlekua"/>
       <trans loc="fr" val="Logement"/>
       <trans loc="hu" val="Szállás"/>
       <trans loc="id" val="Akomodasi"/>
@@ -40,6 +42,7 @@
           <trans loc="el" val="Αναγνωριστικό στέγασης"/>
           <trans loc="en_GB" val="Accommodation ID"/>
           <trans loc="es" val="ID de alojamiento"/>
+          <trans loc="eu" val="Eserlekuaren IDa"/>
           <trans loc="fr" val="ID du logement"/>
           <trans loc="hu" val="Szállás azonosító"/>
           <trans loc="id" val="ID Akomodasi"/>
@@ -58,6 +61,7 @@
           <trans loc="en_GB" val="Description"/>
           <trans loc="eo" val="Priskribo"/>
           <trans loc="es" val="Descripción"/>
+          <trans loc="eu" val="Azalpena"/>
           <trans loc="fr" val="Description"/>
           <trans loc="hu" val="Leírás"/>
           <trans loc="id" val="Deskripsi"/>
@@ -76,6 +80,7 @@
           <trans loc="en_GB" val="Comments"/>
           <trans loc="eo" val="Komentoj"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="eu" val="Iruzkinak"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
@@ -94,6 +99,7 @@
           <trans loc="en_GB" val="Street"/>
           <trans loc="eo" val="Strato"/>
           <trans loc="es" val="Calle"/>
+          <trans loc="eu" val="Kalea"/>
           <trans loc="fr" val="Rue"/>
           <trans loc="hu" val="Utca"/>
           <trans loc="id" val="Jalan"/>
@@ -112,6 +118,7 @@
           <trans loc="en_GB" val="Town"/>
           <trans loc="eo" val="Urbo"/>
           <trans loc="es" val="Ciudad"/>
+          <trans loc="eu" val="Herria"/>
           <trans loc="fr" val="Ville"/>
           <trans loc="hu" val="Település"/>
           <trans loc="id" val="Kota"/>
@@ -129,6 +136,7 @@
           <trans loc="el" val="Νομός"/>
           <trans loc="en_GB" val="County"/>
           <trans loc="es" val="Condado"/>
+          <trans loc="eu" val="Herrialdea"/>
           <trans loc="fr" val="Comté"/>
           <trans loc="hu" val="Megye"/>
           <trans loc="id" val="County"/>
@@ -147,6 +155,7 @@
           <trans loc="en_GB" val="Country"/>
           <trans loc="eo" val="Lando"/>
           <trans loc="es" val="País"/>
+          <trans loc="eu" val="Estatua"/>
           <trans loc="fr" val="Pays"/>
           <trans loc="hu" val="Ország"/>
           <trans loc="id" val="Negara"/>
@@ -164,6 +173,7 @@
           <trans loc="el" val="Ταχ. κώδικας"/>
           <trans loc="en_GB" val="Postcode"/>
           <trans loc="es" val="Código postal"/>
+          <trans loc="eu" val="Posta-kodea"/>
           <trans loc="fr" val="Code postal"/>
           <trans loc="hu" val="Irányítószám"/>
           <trans loc="id" val="Kode Pos"/>
@@ -182,6 +192,7 @@
           <trans loc="en_GB" val="Contact ID"/>
           <trans loc="eo" val="Kontakto-ID"/>
           <trans loc="es" val="ID del contacto"/>
+          <trans loc="eu" val="Kontaktuaren IDa"/>
           <trans loc="fr" val="ID du contact"/>
           <trans loc="hu" val="Partner azonosító"/>
           <trans loc="id" val="ID Kontak"/>
@@ -200,6 +211,7 @@
           <trans loc="en_GB" val="Name"/>
           <trans loc="eo" val="Nomo"/>
           <trans loc="es" val="Nombre"/>
+          <trans loc="eu" val="Izena"/>
           <trans loc="fr" val="Nom"/>
           <trans loc="hu" val="Név"/>
           <trans loc="id" val="Nama"/>
@@ -219,6 +231,7 @@
           <trans loc="en_GB" val="Contacts"/>
           <trans loc="eo" val="Kontaktoj"/>
           <trans loc="es" val="Contactos"/>
+          <trans loc="eu" val="Kontaktuak"/>
           <trans loc="fr" val="Contacts"/>
           <trans loc="hu" val="Partnerek"/>
           <trans loc="id" val="Kontak"/>
@@ -240,6 +253,7 @@
               <trans loc="en_GB" val="Overview"/>
               <trans loc="eo" val="Superrigardo"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="eu" val="Orokorra"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
@@ -374,6 +388,7 @@
       <trans loc="en_GB" val="Cars"/>
       <trans loc="eo" val="Aŭtoj"/>
       <trans loc="es" val="Coches"/>
+      <trans loc="eu" val="Autoak"/>
       <trans loc="fr" val="Voitures"/>
       <trans loc="hu" val="Autók"/>
       <trans loc="id" val="Mobil"/>
@@ -393,6 +408,7 @@
           <trans loc="en_GB" val="Car ID"/>
           <trans loc="eo" val="Aŭto-ID"/>
           <trans loc="es" val="ID del coche"/>
+          <trans loc="eu" val="Autoaren IDa"/>
           <trans loc="fr" val="ID de la voiture"/>
           <trans loc="hu" val="Autó azonosító"/>
           <trans loc="id" val="ID Mobil"/>
@@ -411,6 +427,7 @@
           <trans loc="en_GB" val="Manufacturer"/>
           <trans loc="eo" val="Produktinto"/>
           <trans loc="es" val="Fabricante"/>
+          <trans loc="eu" val="Fabrikatzailea"/>
           <trans loc="fr" val="Concessionnaire"/>
           <trans loc="hu" val="Gyártó"/>
           <trans loc="id" val="Pabrikan"/>
@@ -429,6 +446,7 @@
           <trans loc="en_GB" val="Model"/>
           <trans loc="eo" val="Modelo"/>
           <trans loc="es" val="Modelo"/>
+          <trans loc="eu" val="Modeloa"/>
           <trans loc="fr" val="Modèle"/>
           <trans loc="hu" val="Modell"/>
           <trans loc="id" val="Model"/>
@@ -446,6 +464,7 @@
           <trans loc="el" val="Εγγραφή"/>
           <trans loc="en_GB" val="Registration"/>
           <trans loc="es" val="Registro"/>
+          <trans loc="eu" val="Harpidetza"/>
           <trans loc="fr" val="Immatriculation"/>
           <trans loc="hu" val="Regisztráció"/>
           <trans loc="id" val="Pendaftaran"/>
@@ -464,6 +483,7 @@
           <trans loc="en_GB" val="Description"/>
           <trans loc="eo" val="Priskribo"/>
           <trans loc="es" val="Descripción"/>
+          <trans loc="eu" val="Azalpena"/>
           <trans loc="fr" val="Description"/>
           <trans loc="hu" val="Leírás"/>
           <trans loc="id" val="Deskripsi"/>
@@ -482,6 +502,7 @@
           <trans loc="en_GB" val="Comment"/>
           <trans loc="eo" val="Komento"/>
           <trans loc="es" val="Comentario"/>
+          <trans loc="eu" val="Iruzkina"/>
           <trans loc="fr" val="Commentaire "/>
           <trans loc="hu" val="Megjegyzés"/>
           <trans loc="id" val="Komentar"/>
@@ -504,6 +525,7 @@
               <trans loc="en_GB" val="Overview"/>
               <trans loc="eo" val="Superrigardo"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="eu" val="Orokorra"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
@@ -527,6 +549,7 @@
               <trans loc="en_GB" val="Details"/>
               <trans loc="eo" val="Detaloj"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="eu" val="Xehetasunak"/>
               <trans loc="fr" val="Détails"/>
               <trans loc="hu" val="Részletek"/>
               <trans loc="id" val="Rincian"/>
@@ -616,6 +639,7 @@
       <trans loc="en_GB" val="Characters"/>
       <trans loc="eo" val="Signoj"/>
       <trans loc="es" val="Caracteres"/>
+      <trans loc="eu" val="Pertsonaiak"/>
       <trans loc="fr" val="Personnages"/>
       <trans loc="hu" val="Karakterek"/>
       <trans loc="id" val="Karakter"/>
@@ -634,6 +658,7 @@
           <trans loc="el" val="Αναγνωριστικό πρωταγωνιστών"/>
           <trans loc="en_GB" val="Cast ID"/>
           <trans loc="es" val="ID de reparto"/>
+          <trans loc="eu" val="Antzezleen IDa"/>
           <trans loc="fr" val="ID des acteurs"/>
           <trans loc="hu" val="Szerep azonosító"/>
           <trans loc="id" val="ID Cast"/>
@@ -651,6 +676,7 @@
           <trans loc="el" val="Χαρακτήρας"/>
           <trans loc="en_GB" val="Character"/>
           <trans loc="es" val="Caracter"/>
+          <trans loc="eu" val="Pertsonaia"/>
           <trans loc="fr" val="Personnage"/>
           <trans loc="hu" val="Karakter"/>
           <trans loc="id" val="Karakter"/>
@@ -669,6 +695,7 @@
           <trans loc="en_GB" val="Comments"/>
           <trans loc="eo" val="Komentoj"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="eu" val="Iruzkinak"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
@@ -697,6 +724,7 @@
           <trans loc="en_GB" val="Contact ID"/>
           <trans loc="eo" val="Kontakto-ID"/>
           <trans loc="es" val="ID del contacto"/>
+          <trans loc="eu" val="Kontaktuaren IDa"/>
           <trans loc="fr" val="ID du contact"/>
           <trans loc="hu" val="Partner azonosító"/>
           <trans loc="id" val="ID Kontak"/>
@@ -715,6 +743,7 @@
           <trans loc="en_GB" val="Main Part"/>
           <trans loc="eo" val="Ĉefa parto"/>
           <trans loc="es" val="Parte principal"/>
+          <trans loc="eu" val="Zati nagusia"/>
           <trans loc="fr" val="Personnage principal"/>
           <trans loc="hu" val="Fő rész"/>
           <trans loc="id" val="Bagian Utama"/>
@@ -734,6 +763,7 @@
           <trans loc="en_GB" val="Actor"/>
           <trans loc="eo" val="Aktoro"/>
           <trans loc="es" val="Actor"/>
+          <trans loc="eu" val="Aktorea"/>
           <trans loc="fr" val="Acteur"/>
           <trans loc="hu" val="Színész"/>
           <trans loc="id" val="Aktor"/>
@@ -750,6 +780,7 @@
           <trans loc="el" val="Σκηνές"/>
           <trans loc="en_GB" val="Scenes"/>
           <trans loc="es" val="Escenas"/>
+          <trans loc="eu" val="Eszenak"/>
           <trans loc="fr" val="Scènes"/>
           <trans loc="hu" val="Jelenetek"/>
           <trans loc="id" val="Scene"/>
@@ -772,6 +803,7 @@
                 <trans loc="en_GB" val="Overview"/>
                 <trans loc="eo" val="Superrigardo"/>
                 <trans loc="es" val="Visión general"/>
+                <trans loc="eu" val="Orokorra"/>
                 <trans loc="fr" val="Résumé"/>
                 <trans loc="hu" val="Áttekintés"/>
                 <trans loc="id" val="Ringkasan"/>
@@ -798,6 +830,7 @@
                 <trans loc="en_GB" val="Details"/>
                 <trans loc="eo" val="Detaloj"/>
                 <trans loc="es" val="Detalles"/>
+                <trans loc="eu" val="Xehetasunak"/>
                 <trans loc="fr" val="Détails"/>
                 <trans loc="hu" val="Részletek"/>
                 <trans loc="id" val="Rincian"/>
@@ -910,6 +943,7 @@
                   <trans loc="el" val="Αναγνωριστικό επικοινωνίας ηθοποιού"/>
                   <trans loc="en_GB" val="Actor's Contact ID"/>
                   <trans loc="es" val="ID de contacto de actor"/>
+                  <trans loc="eu" val="Aktorearen kontaktuaren IDa"/>
                   <trans loc="fr" val="ID du contact de l'acteur"/>
                   <trans loc="hu" val="Színész partner azonosítója"/>
                   <trans loc="id" val="ID Kontak Aktor"/>
@@ -929,6 +963,7 @@
                   <trans loc="el" val="Όνομα ηθοποιού"/>
                   <trans loc="en_GB" val="Actor's Name"/>
                   <trans loc="es" val="Nombre del actor"/>
+                  <trans loc="eu" val="Aktorearen izena"/>
                   <trans loc="fr" val="Nom de l'acteur"/>
                   <trans loc="hu" val="Színész neve"/>
                   <trans loc="id" val="Nama Aktor"/>
@@ -959,6 +994,7 @@
               <trans loc="en_GB" val="Overview"/>
               <trans loc="eo" val="Superrigardo"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="eu" val="Orokorra"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
@@ -982,6 +1018,7 @@
               <trans loc="en_GB" val="Details"/>
               <trans loc="eo" val="Detaloj"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="eu" val="Xehetasunak"/>
               <trans loc="fr" val="Détails"/>
               <trans loc="hu" val="Részletek"/>
               <trans loc="id" val="Rincian"/>
@@ -1001,6 +1038,7 @@
                 <trans loc="en_GB" val="Actor"/>
                 <trans loc="eo" val="Aktoro"/>
                 <trans loc="es" val="Actor"/>
+                <trans loc="eu" val="Aktorea"/>
                 <trans loc="fr" val="Acteur"/>
                 <trans loc="hu" val="Színész"/>
                 <trans loc="id" val="Aktor"/>
@@ -1020,6 +1058,7 @@
                     <trans loc="el" val="Όνομα ηθοποιού"/>
                     <trans loc="en_GB" val="Actor's Name"/>
                     <trans loc="es" val="Nombre del actor"/>
+                    <trans loc="eu" val="Aktorearen izena"/>
                     <trans loc="fr" val="Nom de l'acteur"/>
                     <trans loc="hu" val="Színész neve"/>
                     <trans loc="id" val="Nama Aktor"/>
@@ -1078,6 +1117,7 @@
                   <trans loc="en_GB" val="Actor"/>
                   <trans loc="eo" val="Aktoro"/>
                   <trans loc="es" val="Actor"/>
+                  <trans loc="eu" val="Aktorea"/>
                   <trans loc="fr" val="Acteur"/>
                   <trans loc="hu" val="Színész"/>
                   <trans loc="id" val="Aktor"/>
@@ -1128,6 +1168,7 @@
                     <trans loc="en_GB" val="Actor"/>
                     <trans loc="eo" val="Aktoro"/>
                     <trans loc="es" val="Actor"/>
+                    <trans loc="eu" val="Aktorea"/>
                     <trans loc="fr" val="Acteur"/>
                     <trans loc="hu" val="Színész"/>
                     <trans loc="id" val="Aktor"/>
@@ -1151,6 +1192,7 @@
                       <trans loc="el" val="Αντιπρόσωπος"/>
                       <trans loc="en_GB" val="Agent"/>
                       <trans loc="es" val="Agente"/>
+                      <trans loc="eu" val="Agentea"/>
                       <trans loc="fr" val="Imprésario"/>
                       <trans loc="hu" val="Ügynök"/>
                       <trans loc="id" val="Agen"/>
@@ -1175,6 +1217,7 @@
           <trans loc="el" val="Λίστα πρωταγωνιστών"/>
           <trans loc="en_GB" val="Cast List"/>
           <trans loc="es" val="Reparto"/>
+          <trans loc="eu" val="Antzezleen zerrenda"/>
           <trans loc="fr" val="Liste des acteurs"/>
           <trans loc="hu" val="Szereplők"/>
           <trans loc="id" val="Daftar Cast"/>
@@ -1244,6 +1287,7 @@
       <trans loc="el" val="Εταιρίες"/>
       <trans loc="en_GB" val="Companies"/>
       <trans loc="es" val="Compañías"/>
+      <trans loc="eu" val="Enpresak"/>
       <trans loc="fr" val="Sociétés"/>
       <trans loc="hu" val="Társaságok"/>
       <trans loc="id" val="Perusahaan"/>
@@ -1262,6 +1306,7 @@
           <trans loc="el" val="Αναγνωριστικό εταιρίας"/>
           <trans loc="en_GB" val="Company ID"/>
           <trans loc="es" val="ID de la compañía"/>
+          <trans loc="eu" val="Enpresaren IDa"/>
           <trans loc="fr" val="ID de la société"/>
           <trans loc="hu" val="Társaság azonosító"/>
           <trans loc="id" val="ID Perusahaan"/>
@@ -1280,6 +1325,7 @@
           <trans loc="en_GB" val="Name"/>
           <trans loc="eo" val="Nomo"/>
           <trans loc="es" val="Nombre"/>
+          <trans loc="eu" val="Izena"/>
           <trans loc="fr" val="Nom"/>
           <trans loc="hu" val="Név"/>
           <trans loc="id" val="Nama"/>
@@ -1298,6 +1344,7 @@
           <trans loc="en_GB" val="Comments"/>
           <trans loc="eo" val="Komentoj"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="eu" val="Iruzkinak"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
@@ -1316,6 +1363,7 @@
           <trans loc="en_GB" val="Description"/>
           <trans loc="eo" val="Priskribo"/>
           <trans loc="es" val="Descripción"/>
+          <trans loc="eu" val="Azalpena"/>
           <trans loc="fr" val="Description"/>
           <trans loc="hu" val="Leírás"/>
           <trans loc="id" val="Deskripsi"/>
@@ -1334,6 +1382,7 @@
           <trans loc="en_GB" val="Logo"/>
           <trans loc="eo" val="Emblemo"/>
           <trans loc="es" val="Logo"/>
+          <trans loc="eu" val="Logotipoa"/>
           <trans loc="fr" val="Logo"/>
           <trans loc="hu" val="Logó"/>
           <trans loc="id" val="Logo"/>
@@ -1352,6 +1401,7 @@
           <trans loc="en_GB" val="Web Site"/>
           <trans loc="eo" val="Retejo"/>
           <trans loc="es" val="Página web"/>
+          <trans loc="eu" val="Webgunea"/>
           <trans loc="fr" val="Site Web"/>
           <trans loc="hu" val="Weboldal"/>
           <trans loc="id" val="Situs Web"/>
@@ -1370,6 +1420,7 @@
           <trans loc="el" val="Προσωπικό"/>
           <trans loc="en_GB" val="Staff"/>
           <trans loc="es" val="Personal"/>
+          <trans loc="eu" val="Langileak"/>
           <trans loc="fr" val="Personnel"/>
           <trans loc="hu" val="Személyzet"/>
           <trans loc="id" val="Staf"/>
@@ -1391,6 +1442,7 @@
               <trans loc="en_GB" val="Overview"/>
               <trans loc="eo" val="Superrigardo"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="eu" val="Orokorra"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
@@ -1414,6 +1466,7 @@
               <trans loc="en_GB" val="Details"/>
               <trans loc="eo" val="Detaloj"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="eu" val="Xehetasunak"/>
               <trans loc="fr" val="Détails"/>
               <trans loc="hu" val="Részletek"/>
               <trans loc="id" val="Rincian"/>
@@ -1722,6 +1775,7 @@
       <trans loc="en_GB" val="Contacts"/>
       <trans loc="eo" val="Kontaktoj"/>
       <trans loc="es" val="Contactos"/>
+      <trans loc="eu" val="Kontaktuak"/>
       <trans loc="fr" val="Contacts"/>
       <trans loc="hu" val="Partnerek"/>
       <trans loc="id" val="Kontak"/>
@@ -1741,6 +1795,7 @@
           <trans loc="en_GB" val="Contact ID"/>
           <trans loc="eo" val="Kontakto-ID"/>
           <trans loc="es" val="ID del contacto"/>
+          <trans loc="eu" val="Kontaktuaren IDa"/>
           <trans loc="fr" val="ID du contact"/>
           <trans loc="hu" val="Partner azonosító"/>
           <trans loc="id" val="ID Kontak"/>
@@ -1759,6 +1814,7 @@
           <trans loc="en_GB" val="First Name"/>
           <trans loc="eo" val="Unua persona nomo"/>
           <trans loc="es" val="Nombre"/>
+          <trans loc="eu" val="Izena"/>
           <trans loc="fr" val="Prénom"/>
           <trans loc="hu" val="Utónév"/>
           <trans loc="id" val="Nama Depan"/>
@@ -1777,6 +1833,7 @@
           <trans loc="en_GB" val="Second Name"/>
           <trans loc="eo" val="Dua persona nomo"/>
           <trans loc="es" val="Primer apellido"/>
+          <trans loc="eu" val="Bigarren izena"/>
           <trans loc="fr" val="Deuxième nom"/>
           <trans loc="hu" val="Második név"/>
           <trans loc="id" val="Nama Kedua"/>
@@ -1795,6 +1852,7 @@
           <trans loc="en_GB" val="Last Name"/>
           <trans loc="eo" val="Familia nomo"/>
           <trans loc="es" val="Segundo apellido"/>
+          <trans loc="eu" val="Abizena"/>
           <trans loc="fr" val="Nom"/>
           <trans loc="hu" val="Vezetéknév"/>
           <trans loc="id" val="Nama Belakang"/>
@@ -1815,6 +1873,7 @@
                 <trans loc="en_GB" val="Mr"/>
                 <trans loc="eo" val="S-ro"/>
                 <trans loc="es" val="Sr."/>
+                <trans loc="eu" val="Jauna"/>
                 <trans loc="fr" val="M."/>
                 <trans loc="hu" val="Mr"/>
                 <trans loc="id" val="Tn"/>
@@ -1831,6 +1890,7 @@
                 <trans loc="el" val="Κα"/>
                 <trans loc="en_GB" val="Ms"/>
                 <trans loc="es" val="Sra."/>
+                <trans loc="eu" val="Andereño"/>
                 <trans loc="fr" val="Mme"/>
                 <trans loc="hu" val="Ms"/>
                 <trans loc="id" val="Nn"/>
@@ -1848,6 +1908,7 @@
                 <trans loc="en_GB" val="Mrs"/>
                 <trans loc="eo" val="S-ino"/>
                 <trans loc="es" val="Srta."/>
+                <trans loc="eu" val="Andrea"/>
                 <trans loc="fr" val="Mme"/>
                 <trans loc="hu" val="Mrs"/>
                 <trans loc="id" val="Ny"/>
@@ -1864,6 +1925,7 @@
                 <trans loc="el" val="Δις"/>
                 <trans loc="en_GB" val="Miss"/>
                 <trans loc="es" val="Señorita"/>
+                <trans loc="eu" val="Andereño"/>
                 <trans loc="fr" val="Mlle"/>
                 <trans loc="hu" val="Miss"/>
                 <trans loc="id" val="Nona"/>
@@ -1881,6 +1943,7 @@
                 <trans loc="en_GB" val="Dr"/>
                 <trans loc="eo" val="D-ro"/>
                 <trans loc="es" val="Dr"/>
+                <trans loc="eu" val="Dr"/>
                 <trans loc="fr" val="Dr"/>
                 <trans loc="hu" val="Dr"/>
                 <trans loc="id" val="Dr"/>
@@ -1897,6 +1960,7 @@
                 <trans loc="el" val="Καθ"/>
                 <trans loc="en_GB" val="Prof"/>
                 <trans loc="es" val="Prof"/>
+                <trans loc="eu" val="Lanb"/>
                 <trans loc="fr" val="Pr"/>
                 <trans loc="hu" val="Prof"/>
                 <trans loc="id" val="Prof"/>
@@ -1915,6 +1979,7 @@
           <trans loc="en_GB" val="Title"/>
           <trans loc="eo" val="Titolo"/>
           <trans loc="es" val="Título"/>
+          <trans loc="eu" val="Titulua"/>
           <trans loc="fr" val="Titre"/>
           <trans loc="hu" val="Megszólítás"/>
           <trans loc="id" val="Gelar"/>
@@ -1932,6 +1997,7 @@
           <trans loc="el" val="Οδός (γραμμή 2)"/>
           <trans loc="en_GB" val="Street (line 2)"/>
           <trans loc="es" val="Calle (línea 2)"/>
+          <trans loc="eu" val="Kalea (2. lerroa)"/>
           <trans loc="fr" val="Rue (2e ligne)"/>
           <trans loc="hu" val="Utca (2. sor)"/>
           <trans loc="id" val="Jalan (baris 2)"/>
@@ -1950,6 +2016,7 @@
           <trans loc="en_GB" val="Town"/>
           <trans loc="eo" val="Urbo"/>
           <trans loc="es" val="Ciudad"/>
+          <trans loc="eu" val="Herria"/>
           <trans loc="fr" val="Ville"/>
           <trans loc="hu" val="Település"/>
           <trans loc="id" val="Kota"/>
@@ -1968,6 +2035,7 @@
           <trans loc="en_GB" val="State"/>
           <trans loc="eo" val="Ŝtato"/>
           <trans loc="es" val="Estado"/>
+          <trans loc="eu" val="Herrialdea"/>
           <trans loc="fr" val="État"/>
           <trans loc="hu" val="Állam"/>
           <trans loc="id" val="Negara Bagian"/>
@@ -1988,6 +2056,7 @@
                 <trans loc="en_GB" val="Germany"/>
                 <trans loc="eo" val="Germanujo"/>
                 <trans loc="es" val="Alemania"/>
+                <trans loc="eu" val="Alemania"/>
                 <trans loc="fr" val="Allemagne"/>
                 <trans loc="hu" val="Németország"/>
                 <trans loc="id" val="Jerman"/>
@@ -2005,6 +2074,7 @@
                 <trans loc="en_GB" val="United Kingdom"/>
                 <trans loc="eo" val="Unuiĝinta Reĝlando"/>
                 <trans loc="es" val="Reino unido"/>
+                <trans loc="eu" val="Erresuma Batua"/>
                 <trans loc="fr" val="Royaume-Uni"/>
                 <trans loc="hu" val="Egyesült Királyság"/>
                 <trans loc="id" val="Britania Raya"/>
@@ -2022,6 +2092,7 @@
                 <trans loc="en_GB" val="USA"/>
                 <trans loc="eo" val="Usono"/>
                 <trans loc="es" val="EE.UU."/>
+                <trans loc="eu" val="AEB"/>
                 <trans loc="fr" val="USA"/>
                 <trans loc="hu" val="USA"/>
                 <trans loc="id" val="AS"/>
@@ -2039,6 +2110,7 @@
                 <trans loc="en_GB" val="France"/>
                 <trans loc="eo" val="Francujo"/>
                 <trans loc="es" val="Francia"/>
+                <trans loc="eu" val="Frantzia"/>
                 <trans loc="fr" val="France"/>
                 <trans loc="hu" val="Franciaország"/>
                 <trans loc="id" val="Prancis"/>
@@ -2056,6 +2128,7 @@
                 <trans loc="en_GB" val="Spain"/>
                 <trans loc="eo" val="Hispanujo"/>
                 <trans loc="es" val="España"/>
+                <trans loc="eu" val="Espainia"/>
                 <trans loc="fr" val="Espagne"/>
                 <trans loc="hu" val="Spanyolország"/>
                 <trans loc="id" val="Spanyol"/>
@@ -2074,6 +2147,7 @@
           <trans loc="en_GB" val="Country"/>
           <trans loc="eo" val="Lando"/>
           <trans loc="es" val="País"/>
+          <trans loc="eu" val="Estatua"/>
           <trans loc="fr" val="Pays"/>
           <trans loc="hu" val="Ország"/>
           <trans loc="id" val="Negara"/>
@@ -2091,6 +2165,7 @@
           <trans loc="el" val="Ταχ. κώδικας"/>
           <trans loc="en_GB" val="Postcode"/>
           <trans loc="es" val="Código postal"/>
+          <trans loc="eu" val="Posta-kodea"/>
           <trans loc="fr" val="Code postal"/>
           <trans loc="hu" val="Irányítószám"/>
           <trans loc="id" val="Kode Pos"/>
@@ -2109,6 +2184,7 @@
           <trans loc="en_GB" val="Date Of Birth"/>
           <trans loc="eo" val="Naskiĝtago"/>
           <trans loc="es" val="Fecha de nacimiento"/>
+          <trans loc="eu" val="Jaiotze-data"/>
           <trans loc="fr" val="Date de naissance"/>
           <trans loc="hu" val="Születési dátum"/>
           <trans loc="id" val="Tanggal Lahir"/>
@@ -2127,6 +2203,7 @@
           <trans loc="en_GB" val="Comments"/>
           <trans loc="eo" val="Komentoj"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="eu" val="Iruzkinak"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
@@ -2146,6 +2223,7 @@
           <trans loc="en_GB" val="Full Name"/>
           <trans loc="eo" val="Tuta nomo"/>
           <trans loc="es" val="Nombre completo"/>
+          <trans loc="eu" val="Izen-abizenak"/>
           <trans loc="fr" val="Nom complet"/>
           <trans loc="hu" val="Teljes név"/>
           <trans loc="id" val="Nama Lengkap"/>
@@ -2173,6 +2251,7 @@
           <trans loc="el" val="Αναγνωριστικό εταιρίας"/>
           <trans loc="en_GB" val="Company ID"/>
           <trans loc="es" val="ID de la compañía"/>
+          <trans loc="eu" val="Enpresaren IDa"/>
           <trans loc="fr" val="ID de la compagnie"/>
           <trans loc="hu" val="Társaság azonosító"/>
           <trans loc="id" val="ID Perusahaan"/>
@@ -2191,6 +2270,7 @@
           <trans loc="en_GB" val="Picture"/>
           <trans loc="eo" val="Bildo"/>
           <trans loc="es" val="Foto"/>
+          <trans loc="eu" val="Argazkia"/>
           <trans loc="fr" val="Image"/>
           <trans loc="hu" val="Kép"/>
           <trans loc="id" val="Gambar"/>
@@ -2209,6 +2289,7 @@
           <trans loc="en_GB" val="Home Telephone"/>
           <trans loc="eo" val="Hejma telefono"/>
           <trans loc="es" val="Teléfono de casa"/>
+          <trans loc="eu" val="Etxeko telefonoa"/>
           <trans loc="fr" val="Téléphone domicile"/>
           <trans loc="hu" val="Otthoni telefon"/>
           <trans loc="id" val="Nomor Telepon Rumah"/>
@@ -2227,6 +2308,7 @@
           <trans loc="en_GB" val="Mobile Telephone"/>
           <trans loc="eo" val="Poŝtelefono"/>
           <trans loc="es" val="Móvil"/>
+          <trans loc="eu" val="Mugikorra"/>
           <trans loc="fr" val="Téléphone portable"/>
           <trans loc="hu" val="Mobiltelefon"/>
           <trans loc="id" val="Nomor Telepon Seluler"/>
@@ -2245,6 +2327,7 @@
           <trans loc="en_GB" val="Fax"/>
           <trans loc="eo" val="Faksilo"/>
           <trans loc="es" val="Fax"/>
+          <trans loc="eu" val="Faxa"/>
           <trans loc="fr" val="Fax"/>
           <trans loc="hu" val="Fax"/>
           <trans loc="id" val="Faks"/>
@@ -2263,6 +2346,7 @@
           <trans loc="en_GB" val="Work Telephone"/>
           <trans loc="eo" val="Laboreja telefono"/>
           <trans loc="es" val="Teléfono del trabajo"/>
+          <trans loc="eu" val="Laneko telefonoa"/>
           <trans loc="fr" val="Téléphone travail"/>
           <trans loc="hu" val="Munkahelyi telefon"/>
           <trans loc="id" val="Nomor Telepon Kantor"/>
@@ -2281,6 +2365,7 @@
           <trans loc="en_GB" val="Email"/>
           <trans loc="eo" val="Retpoŝtadreso"/>
           <trans loc="es" val="Correo-e"/>
+          <trans loc="eu" val="Helb. el."/>
           <trans loc="fr" val="Adresse électronique"/>
           <trans loc="hu" val="E-mail"/>
           <trans loc="id" val="Surel"/>
@@ -2298,6 +2383,7 @@
           <trans loc="el" val="Οδός (γραμμή 1)"/>
           <trans loc="en_GB" val="Street (line 1)"/>
           <trans loc="es" val="Calle (línea 1)"/>
+          <trans loc="eu" val="Kalea (1. lerroa)"/>
           <trans loc="fr" val="Rue (ligne 1)"/>
           <trans loc="hu" val="Utca (1. sor)"/>
           <trans loc="id" val="Jalan (baris 1)"/>
@@ -2316,6 +2402,7 @@
           <trans loc="en_GB" val="Web Site"/>
           <trans loc="eo" val="Retejo"/>
           <trans loc="es" val="Página web"/>
+          <trans loc="eu" val="Webgunea"/>
           <trans loc="fr" val="Site Web"/>
           <trans loc="hu" val="Weboldal"/>
           <trans loc="id" val="Situs Web"/>
@@ -2343,6 +2430,7 @@
           <trans loc="el" val="Αναγνωριστικό αντιπροσώπου"/>
           <trans loc="en_GB" val="Agent ID"/>
           <trans loc="es" val="ID de agente"/>
+          <trans loc="eu" val="Agentearen IDa"/>
           <trans loc="fr" val="ID de l'agent"/>
           <trans loc="hu" val="Ügynök azonosító"/>
           <trans loc="id" val="ID Agen"/>
@@ -2360,6 +2448,7 @@
           <trans loc="el" val="Όνομα σκηνής"/>
           <trans loc="en_GB" val="Stagename"/>
           <trans loc="es" val="Nombre artístico"/>
+          <trans loc="eu" val="Antzezlekua"/>
           <trans loc="fr" val="Nom de scène"/>
           <trans loc="hu" val="Színpadi név"/>
           <trans loc="id" val="Nama Panggung"/>
@@ -2378,6 +2467,7 @@
           <trans loc="el" val="Εταιρία"/>
           <trans loc="en_GB" val="Company"/>
           <trans loc="es" val="Compañía"/>
+          <trans loc="eu" val="Enpresa"/>
           <trans loc="fr" val="Société"/>
           <trans loc="hu" val="Társaság"/>
           <trans loc="id" val="Perusahaan"/>
@@ -2394,6 +2484,7 @@
           <trans loc="el" val="Αντιπρόσωπος"/>
           <trans loc="en_GB" val="Agent"/>
           <trans loc="es" val="Agente"/>
+          <trans loc="eu" val="Agentea"/>
           <trans loc="fr" val="Agent"/>
           <trans loc="hu" val="Ügynök"/>
           <trans loc="id" val="Agen"/>
@@ -2410,6 +2501,7 @@
           <trans loc="el" val="Προσωπικό"/>
           <trans loc="en_GB" val="Crew"/>
           <trans loc="es" val="Personal"/>
+          <trans loc="eu" val="Taldea"/>
           <trans loc="fr" val="Équipe"/>
           <trans loc="hu" val="Személyzet"/>
           <trans loc="id" val="Kru"/>
@@ -2426,6 +2518,7 @@
           <trans loc="el" val="Πρωταγωνιστές"/>
           <trans loc="en_GB" val="Cast"/>
           <trans loc="es" val="Reparto"/>
+          <trans loc="eu" val="Antzezleak"/>
           <trans loc="fr" val="Acteurs"/>
           <trans loc="hu" val="Szerep"/>
           <trans loc="id" val="Cast"/>
@@ -2447,6 +2540,7 @@
               <trans loc="en_GB" val="Overview"/>
               <trans loc="eo" val="Superrigardo"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="eu" val="Orokorra"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
@@ -2470,6 +2564,7 @@
               <trans loc="en_GB" val="Details"/>
               <trans loc="eo" val="Detaloj"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="eu" val="Xehetasunak"/>
               <trans loc="fr" val="Détails"/>
               <trans loc="hu" val="Részletek"/>
               <trans loc="id" val="Rincian"/>
@@ -2676,6 +2771,7 @@
                   <trans loc="el" val="Όνομα εταιρίας"/>
                   <trans loc="en_GB" val="Company Name"/>
                   <trans loc="es" val="Nombre de la compañía"/>
+                  <trans loc="eu" val="Enpresaren izena"/>
                   <trans loc="fr" val="Nom de la société"/>
                   <trans loc="hu" val="Társaság neve"/>
                   <trans loc="id" val="Nama Perusahaan"/>
@@ -2715,6 +2811,7 @@
           <trans loc="el" val="Επαφές κατά χώρα"/>
           <trans loc="en_GB" val="Contacts By Country"/>
           <trans loc="es" val="Contactos por país"/>
+          <trans loc="eu" val="Kontaktuak herrialdearen arabera"/>
           <trans loc="fr" val="Contacts par pays"/>
           <trans loc="gl" val="Contactos por país"/>
           <trans loc="hu" val="Partnerek ország szerint"/>
@@ -2773,6 +2870,7 @@
           <trans loc="el" val="Κατά χώρα, Κατά πόλη"/>
           <trans loc="en_GB" val="By Country, By Town"/>
           <trans loc="es" val="Por país, por ciudad"/>
+          <trans loc="eu" val="Herrialdearen arabera, herriaren arabera"/>
           <trans loc="fr" val="Par pays, par ville"/>
           <trans loc="gl" val="Por país, por cidade"/>
           <trans loc="hu" val="Ország szerint, település szerint"/>
@@ -2807,6 +2905,7 @@ Orientation=portrait
                   <trans loc="de" val="Kontakte"/>
                   <trans loc="el" val="Επαφές"/>
                   <trans loc="es" val="Contactos"/>
+                  <trans loc="eu" val="Kontaktuak"/>
                   <trans loc="hu" val="Partnerek"/>
                   <trans loc="id" val="Kontak"/>
                   <trans loc="pt_BR" val="Contatos"/>
@@ -2825,6 +2924,7 @@ Orientation=portrait
                   <trans loc="de" val="Übersicht"/>
                   <trans loc="el" val="Επισκόπηση"/>
                   <trans loc="es" val="Vista general"/>
+                  <trans loc="eu" val="Orokorra"/>
                   <trans loc="hu" val="Áttekintés"/>
                   <trans loc="id" val="Ringkasan"/>
                   <trans loc="pt_BR" val="Visão geral"/>
@@ -2843,6 +2943,7 @@ Orientation=portrait
                   <trans loc="de" val="Kontakt-ID:"/>
                   <trans loc="el" val="Αναγνωριστικό επαφής:"/>
                   <trans loc="es" val="ID de contacto:"/>
+                  <trans loc="eu" val="Kontaktuaren IDa:"/>
                   <trans loc="hu" val="Partner azonosító:"/>
                   <trans loc="id" val="ID Kontak:"/>
                   <trans loc="pt_BR" val="ID do contato:"/>
@@ -2865,6 +2966,7 @@ Orientation=portrait
                   <trans loc="de" val="Vollständiger Name:"/>
                   <trans loc="el" val="Πλήρες όνομα:"/>
                   <trans loc="es" val="Nombre completo:"/>
+                  <trans loc="eu" val="Izen-abizenak:"/>
                   <trans loc="hu" val="Teljes név:"/>
                   <trans loc="id" val="Nama Lengkap:"/>
                   <trans loc="pt_BR" val="Nome completo:"/>
@@ -2887,6 +2989,7 @@ Orientation=portrait
                   <trans loc="de" val="Details"/>
                   <trans loc="el" val="Λεπτομέρειες"/>
                   <trans loc="es" val="Detalles"/>
+                  <trans loc="eu" val="Xehetasunak"/>
                   <trans loc="hu" val="Részletek"/>
                   <trans loc="id" val="Rincian"/>
                   <trans loc="pt_BR" val="Detalhes"/>
@@ -2905,6 +3008,7 @@ Orientation=portrait
                   <trans loc="de" val="Name"/>
                   <trans loc="el" val="Όνομα"/>
                   <trans loc="es" val="Nombre"/>
+                  <trans loc="eu" val="Izena"/>
                   <trans loc="hu" val="Név"/>
                   <trans loc="id" val="Nama"/>
                   <trans loc="pt_BR" val="Nome"/>
@@ -2923,6 +3027,7 @@ Orientation=portrait
                   <trans loc="de" val="Titel:"/>
                   <trans loc="el" val="Τίτλος:"/>
                   <trans loc="es" val="Título:"/>
+                  <trans loc="eu" val="Kargua:"/>
                   <trans loc="hu" val="Megszólítás:"/>
                   <trans loc="id" val="Judul:"/>
                   <trans loc="pt_BR" val="Título:"/>
@@ -2945,6 +3050,7 @@ Orientation=portrait
                   <trans loc="de" val="Vorname:"/>
                   <trans loc="el" val="Όνομα:"/>
                   <trans loc="es" val="Nombre:"/>
+                  <trans loc="eu" val="Izena:"/>
                   <trans loc="hu" val="Utónév:"/>
                   <trans loc="id" val="Nama Depan:"/>
                   <trans loc="pt_BR" val="Primeiro nome:"/>
@@ -2967,6 +3073,7 @@ Orientation=portrait
                   <trans loc="de" val="Zweitname:"/>
                   <trans loc="el" val="Δεύτερο όνομα:"/>
                   <trans loc="es" val="Segundo nombre:"/>
+                  <trans loc="eu" val="Bigarren izena:"/>
                   <trans loc="hu" val="Második név:"/>
                   <trans loc="id" val="Nama Kedua:"/>
                   <trans loc="pt_BR" val="Segundo meio:"/>
@@ -2989,6 +3096,7 @@ Orientation=portrait
                   <trans loc="de" val="Nachname:"/>
                   <trans loc="el" val="Επώνυμο:"/>
                   <trans loc="es" val="Apellido:"/>
+                  <trans loc="eu" val="Abizena:"/>
                   <trans loc="hu" val="Vezetéknév:"/>
                   <trans loc="id" val="Nama Belakang:"/>
                   <trans loc="pt_BR" val="Último nome:"/>
@@ -3011,6 +3119,7 @@ Orientation=portrait
                   <trans loc="de" val="Firma"/>
                   <trans loc="el" val="Εταιρία"/>
                   <trans loc="es" val="Empresa"/>
+                  <trans loc="eu" val="Enpresa"/>
                   <trans loc="hu" val="Társaság"/>
                   <trans loc="id" val="Perusahaan"/>
                   <trans loc="pt_BR" val="Empresa"/>
@@ -3029,6 +3138,7 @@ Orientation=portrait
                   <trans loc="de" val="Firmen-ID:"/>
                   <trans loc="el" val="Αναγνωριστικό εταιρίας:"/>
                   <trans loc="es" val="ID de la compañía:"/>
+                  <trans loc="eu" val="Enpresaren IDa:"/>
                   <trans loc="hu" val="Társaság azonosító:"/>
                   <trans loc="id" val="ID Perusahaan"/>
                   <trans loc="pt_BR" val="ID de empresa:"/>
@@ -3051,6 +3161,7 @@ Orientation=portrait
                   <trans loc="de" val="Name:"/>
                   <trans loc="el" val="Όνομα:"/>
                   <trans loc="es" val="Nombre:"/>
+                  <trans loc="eu" val="Izena:"/>
                   <trans loc="hu" val="Név:"/>
                   <trans loc="id" val="Nama:"/>
                   <trans loc="pt_BR" val="Nome:"/>
@@ -3073,6 +3184,7 @@ Orientation=portrait
                   <trans loc="de" val="Adresse"/>
                   <trans loc="el" val="Διεύθυνση"/>
                   <trans loc="es" val="Dirección"/>
+                  <trans loc="eu" val="Helbidea"/>
                   <trans loc="hu" val="Cím"/>
                   <trans loc="id" val="Alamat"/>
                   <trans loc="pt_BR" val="Endereço"/>
@@ -3091,6 +3203,7 @@ Orientation=portrait
                   <trans loc="de" val="Straße (Zeile 1):"/>
                   <trans loc="el" val="Οδός (γραμμή 1):"/>
                   <trans loc="es" val="Calle (línea 1):"/>
+                  <trans loc="eu" val="Kalea (1. lerroa):"/>
                   <trans loc="hu" val="Utca (1. sor):"/>
                   <trans loc="id" val="Jalan (baris 1):"/>
                   <trans loc="pt_BR" val="Rua (linha 1):"/>
@@ -3113,6 +3226,7 @@ Orientation=portrait
                   <trans loc="de" val="Straße (Zeile 2):"/>
                   <trans loc="el" val="Οδός (γραμμή 2):"/>
                   <trans loc="es" val="Calle (línea 2):"/>
+                  <trans loc="eu" val="Kalea (2. lerroa):"/>
                   <trans loc="hu" val="Utca (2. sor):"/>
                   <trans loc="id" val="Jalan (baris 2):"/>
                   <trans loc="pt_BR" val="Rua (linha 2):"/>
@@ -3135,6 +3249,7 @@ Orientation=portrait
                   <trans loc="de" val="Stadt:"/>
                   <trans loc="el" val="Πόλη:"/>
                   <trans loc="es" val="Ciudad:"/>
+                  <trans loc="eu" val="Herria:"/>
                   <trans loc="hu" val="Település:"/>
                   <trans loc="id" val="Kota:"/>
                   <trans loc="pt_BR" val="Cidade:"/>
@@ -3157,6 +3272,7 @@ Orientation=portrait
                   <trans loc="de" val="Bundesland:"/>
                   <trans loc="el" val="Πολιτεία:"/>
                   <trans loc="es" val="Estado:"/>
+                  <trans loc="eu" val="Herrialdea:"/>
                   <trans loc="hu" val="Állam:"/>
                   <trans loc="id" val="Negara Bagian:"/>
                   <trans loc="pt_BR" val="Estado:"/>
@@ -3179,6 +3295,7 @@ Orientation=portrait
                   <trans loc="de" val="Land:"/>
                   <trans loc="el" val="Χώρα:"/>
                   <trans loc="es" val="País:"/>
+                  <trans loc="eu" val="Estatua:"/>
                   <trans loc="hu" val="Ország:"/>
                   <trans loc="id" val="Negara:"/>
                   <trans loc="pt_BR" val="País:"/>
@@ -3201,6 +3318,7 @@ Orientation=portrait
                   <trans loc="de" val="Postleitzahl:"/>
                   <trans loc="el" val="Ταχ. κώδικας:"/>
                   <trans loc="es" val="Código postal:"/>
+                  <trans loc="eu" val="Posta-kodea:"/>
                   <trans loc="hu" val="Irányítószám:"/>
                   <trans loc="id" val="Kode Pos:"/>
                   <trans loc="pt_BR" val="CEP:"/>
@@ -3223,6 +3341,7 @@ Orientation=portrait
                   <trans loc="de" val="Telefon"/>
                   <trans loc="el" val="Τηλέφωνο"/>
                   <trans loc="es" val="Teléfono"/>
+                  <trans loc="eu" val="Telefonoa"/>
                   <trans loc="hu" val="Telefon"/>
                   <trans loc="id" val="Telepon"/>
                   <trans loc="pt_BR" val="Telefone"/>
@@ -3241,6 +3360,7 @@ Orientation=portrait
                   <trans loc="de" val="Telefon (geschäftlich):"/>
                   <trans loc="el" val="Τηλέφωνο εργασίας:"/>
                   <trans loc="es" val="Teléfono del trabajo:"/>
+                  <trans loc="eu" val="Laneko telefonoa:"/>
                   <trans loc="hu" val="Munkahelyi telefon:"/>
                   <trans loc="id" val="Nomor Telepon Kantor:"/>
                   <trans loc="pt_BR" val="Telefone comercial:"/>
@@ -3263,6 +3383,7 @@ Orientation=portrait
                   <trans loc="de" val="Telefon (mobil):"/>
                   <trans loc="el" val="Κινητό τηλέφωνο:"/>
                   <trans loc="es" val="Teléfono móvil:"/>
+                  <trans loc="eu" val="Mugikorra:"/>
                   <trans loc="hu" val="Mobiltelefon:"/>
                   <trans loc="id" val="Nomor Telepon Seluler:"/>
                   <trans loc="pt_BR" val="Telefone celular:"/>
@@ -3285,6 +3406,7 @@ Orientation=portrait
                   <trans loc="de" val="Telefon (privat):"/>
                   <trans loc="el" val="Τηλέφωνο οικίας:"/>
                   <trans loc="es" val="Teléfono particular:"/>
+                  <trans loc="eu" val="Etxeko telefonoa:"/>
                   <trans loc="hu" val="Otthoni telefon:"/>
                   <trans loc="id" val="Nomor Telepon Rumah:"/>
                   <trans loc="pt_BR" val="Telefone residencial:"/>
@@ -3307,6 +3429,7 @@ Orientation=portrait
                   <trans loc="de" val="Fax:"/>
                   <trans loc="el" val="Φαξ:"/>
                   <trans loc="es" val="Fax:"/>
+                  <trans loc="eu" val="Faxa:"/>
                   <trans loc="hu" val="Fax:"/>
                   <trans loc="id" val="Faks:"/>
                   <trans loc="pt_BR" val="Fax:"/>
@@ -3328,6 +3451,7 @@ Orientation=portrait
                   <trans loc="cs" val="Agent"/>
                   <trans loc="el" val="Αντιπρόσωπος"/>
                   <trans loc="es" val="Agente"/>
+                  <trans loc="eu" val="Agentea"/>
                   <trans loc="hu" val="Ügynök"/>
                   <trans loc="id" val="Agen"/>
                   <trans loc="pt_BR" val="Agente"/>
@@ -3345,6 +3469,7 @@ Orientation=portrait
                   <trans loc="cs" val="ID agenta:"/>
                   <trans loc="el" val="Αναγνωριστικό αντιπροσώπου:"/>
                   <trans loc="es" val="ID de agente:"/>
+                  <trans loc="eu" val="Agentearen IDa:"/>
                   <trans loc="hu" val="Ügynök azonosító:"/>
                   <trans loc="id" val="ID Agen:"/>
                   <trans loc="pt_BR" val="ID de agente:"/>
@@ -3376,6 +3501,7 @@ Orientation=portrait
                   <trans loc="cs" val="Štáb"/>
                   <trans loc="el" val="Προσωπικό"/>
                   <trans loc="es" val="Equipo"/>
+                  <trans loc="eu" val="Taldea"/>
                   <trans loc="hu" val="Személyzet"/>
                   <trans loc="id" val="Kru"/>
                   <trans loc="pt_BR" val="Equipe"/>
@@ -3402,6 +3528,7 @@ Orientation=portrait
                   <trans loc="cs" val="Obsazení"/>
                   <trans loc="el" val="Πρωταγωνιστές"/>
                   <trans loc="es" val="Escena"/>
+                  <trans loc="eu" val="Antzezleak"/>
                   <trans loc="hu" val="Szerep"/>
                   <trans loc="id" val="Cast"/>
                   <trans loc="pt_BR" val="Elenco"/>
@@ -3432,6 +3559,7 @@ Orientation=portrait
                   <trans loc="de" val="E-Mail:"/>
                   <trans loc="el" val="Ηλεκτρονική διεύθυνση:"/>
                   <trans loc="es" val="Correo-e:"/>
+                  <trans loc="eu" val="Helb. el.:"/>
                   <trans loc="hu" val="E-mail:"/>
                   <trans loc="id" val="Surel:"/>
                   <trans loc="pt_BR" val="E-mail:"/>
@@ -3454,6 +3582,7 @@ Orientation=portrait
                   <trans loc="de" val="Webseite:"/>
                   <trans loc="el" val="Ιστότοπος:"/>
                   <trans loc="es" val="Sitio web:"/>
+                  <trans loc="eu" val="Webgunea:"/>
                   <trans loc="hu" val="Weboldal:"/>
                   <trans loc="id" val="Situs Web:"/>
                   <trans loc="pt_BR" val="Página web:"/>
@@ -3476,6 +3605,7 @@ Orientation=portrait
                   <trans loc="de" val="Geburtstag:"/>
                   <trans loc="el" val="Ημερομηνία γέννησης:"/>
                   <trans loc="es" val="Fecha de nacimiento:"/>
+                  <trans loc="eu" val="Jaiotze-data:"/>
                   <trans loc="hu" val="Születési dátum:"/>
                   <trans loc="id" val="Tanggal Lahir"/>
                   <trans loc="pt_BR" val="Data de nascimento:"/>
@@ -3498,6 +3628,7 @@ Orientation=portrait
                   <trans loc="de" val="Bild:"/>
                   <trans loc="el" val="Εικόνα:"/>
                   <trans loc="es" val="Imagen:"/>
+                  <trans loc="eu" val="Argazkia:"/>
                   <trans loc="hu" val="Kép:"/>
                   <trans loc="id" val="Gambar:"/>
                   <trans loc="pt_BR" val="Imagem:"/>
@@ -3520,6 +3651,7 @@ Orientation=portrait
                   <trans loc="de" val="Notizen:"/>
                   <trans loc="el" val="Σχόλια:"/>
                   <trans loc="es" val="Comentarios:"/>
+                  <trans loc="eu" val="Iruzkinak:"/>
                   <trans loc="hu" val="Megjegyzések:"/>
                   <trans loc="id" val="Komentar:"/>
                   <trans loc="pt_BR" val="Comentários:"/>
@@ -3542,6 +3674,7 @@ Orientation=portrait
           <trans loc="de" val="Kontakt Details"/>
           <trans loc="el" val="Λεπτομέρειες επικοινωνίας"/>
           <trans loc="es" val="Detalles del contacto"/>
+          <trans loc="eu" val="Kontaktuaren xehetasunak"/>
           <trans loc="hu" val="Partner részletei"/>
           <trans loc="id" val="Detail Kontak"/>
           <trans loc="pt_BR" val="Detalhes do contato"/>
@@ -3585,6 +3718,7 @@ Orientation=portrait
       <trans loc="el" val="Ενδυμασία"/>
       <trans loc="en_GB" val="Costume"/>
       <trans loc="es" val="Vestuario"/>
+      <trans loc="eu" val="Jantzia"/>
       <trans loc="fr" val="Costume"/>
       <trans loc="hu" val="Jelmez"/>
       <trans loc="id" val="Kostum"/>
@@ -3602,6 +3736,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό ενδυμασίας"/>
           <trans loc="en_GB" val="Costume ID"/>
           <trans loc="es" val="ID de vestuario"/>
+          <trans loc="eu" val="Jantziaren IDa"/>
           <trans loc="fr" val="ID du costume"/>
           <trans loc="hu" val="Jelmez azonosító"/>
           <trans loc="id" val="ID Kostum"/>
@@ -3620,6 +3755,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Description"/>
           <trans loc="eo" val="Priskribo"/>
           <trans loc="es" val="Descripción"/>
+          <trans loc="eu" val="Azalpena"/>
           <trans loc="fr" val="Description"/>
           <trans loc="hu" val="Leírás"/>
           <trans loc="id" val="Deskripsi"/>
@@ -3637,6 +3773,7 @@ Orientation=portrait
           <trans loc="el" val="Σχόλια"/>
           <trans loc="en_GB" val="Comments"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="eu" val="Iruzkinak"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
@@ -3655,6 +3792,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Name"/>
           <trans loc="eo" val="Nomo"/>
           <trans loc="es" val="Nombre"/>
+          <trans loc="eu" val="Izena"/>
           <trans loc="fr" val="Nom"/>
           <trans loc="hu" val="Név"/>
           <trans loc="id" val="Nama"/>
@@ -3692,6 +3830,7 @@ Orientation=portrait
               <trans loc="en_GB" val="Overview"/>
               <trans loc="eo" val="Superrigardo"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="eu" val="Orokorra"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
@@ -3715,6 +3854,7 @@ Orientation=portrait
               <trans loc="en_GB" val="Details"/>
               <trans loc="eo" val="Detaloj"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="eu" val="Xehetasunak"/>
               <trans loc="fr" val="Détails"/>
               <trans loc="hu" val="Részletek"/>
               <trans loc="id" val="Rincian"/>
@@ -3759,6 +3899,7 @@ Orientation=portrait
       <trans loc="el" val="Προσωπικό"/>
       <trans loc="en_GB" val="Crew"/>
       <trans loc="es" val="Personal"/>
+      <trans loc="eu" val="Taldea"/>
       <trans loc="fr" val="Équipe"/>
       <trans loc="hu" val="Személyzet"/>
       <trans loc="id" val="Kru"/>
@@ -3776,6 +3917,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό προσωπικού"/>
           <trans loc="en_GB" val="Crew ID"/>
           <trans loc="es" val="ID de personal"/>
+          <trans loc="eu" val="Taldearen IDa"/>
           <trans loc="fr" val="ID de l'équipe"/>
           <trans loc="hu" val="Személyzet azonosító"/>
           <trans loc="id" val="ID Kru"/>
@@ -3794,6 +3936,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Description"/>
           <trans loc="eo" val="Priskribo"/>
           <trans loc="es" val="Descripción"/>
+          <trans loc="eu" val="Azalpena"/>
           <trans loc="fr" val="Description"/>
           <trans loc="hu" val="Leírás"/>
           <trans loc="id" val="Deskripsi"/>
@@ -3812,6 +3955,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Comments"/>
           <trans loc="eo" val="Komentoj"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="eu" val="Azalpena"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
@@ -3839,6 +3983,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό τμήματος"/>
           <trans loc="en_GB" val="Department ID"/>
           <trans loc="es" val="ID de departamento"/>
+          <trans loc="eu" val="Sailaren IDa"/>
           <trans loc="fr" val="ID du service"/>
           <trans loc="hu" val="Részleg azonosító"/>
           <trans loc="id" val="ID Departemen"/>
@@ -3867,6 +4012,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Contact ID"/>
           <trans loc="eo" val="Kontakto-ID"/>
           <trans loc="es" val="ID del contacto"/>
+          <trans loc="eu" val="Kontaktuaren IDa"/>
           <trans loc="fr" val="ID du contact"/>
           <trans loc="hu" val="Partner azonosító"/>
           <trans loc="id" val="ID Kontak"/>
@@ -3886,6 +4032,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Contacts"/>
           <trans loc="eo" val="Kontaktoj"/>
           <trans loc="es" val="Contactos"/>
+          <trans loc="eu" val="Kontaktuak"/>
           <trans loc="fr" val="Contacts"/>
           <trans loc="hu" val="Partnerek"/>
           <trans loc="id" val="Kontak"/>
@@ -3902,6 +4049,7 @@ Orientation=portrait
           <trans loc="el" val="Τμήματα"/>
           <trans loc="en_GB" val="Departments"/>
           <trans loc="es" val="Departmentos"/>
+          <trans loc="eu" val="Sailak"/>
           <trans loc="fr" val="Services"/>
           <trans loc="hu" val="Részlegek"/>
           <trans loc="id" val="Departemen"/>
@@ -3918,6 +4066,7 @@ Orientation=portrait
           <trans loc="el" val="Σκηνές"/>
           <trans loc="en_GB" val="Scenes"/>
           <trans loc="es" val="Escenas"/>
+          <trans loc="eu" val="Eszenak"/>
           <trans loc="fr" val="Scènes"/>
           <trans loc="hu" val="Jelenetek"/>
           <trans loc="id" val="Scene"/>
@@ -3939,6 +4088,7 @@ Orientation=portrait
               <trans loc="en_GB" val="Overview"/>
               <trans loc="eo" val="Superrigardo"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="eu" val="Orokorra"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
@@ -3965,6 +4115,7 @@ Orientation=portrait
                 <trans loc="el" val="Τμήμα"/>
                 <trans loc="en_GB" val="Department"/>
                 <trans loc="es" val="Departmento"/>
+                <trans loc="eu" val="Saila"/>
                 <trans loc="fr" val="Service"/>
                 <trans loc="hu" val="Részleg"/>
                 <trans loc="id" val="Departemen"/>
@@ -3988,6 +4139,7 @@ Orientation=portrait
                 <trans loc="en_GB" val="Contact"/>
                 <trans loc="eo" val="Kontakto"/>
                 <trans loc="es" val="Contacto"/>
+                <trans loc="eu" val="Kontaktua"/>
                 <trans loc="fr" val="Contact"/>
                 <trans loc="hu" val="Partner"/>
                 <trans loc="id" val="Kontak"/>
@@ -4098,6 +4250,7 @@ Orientation=portrait
                   <trans loc="el" val="Όνομα τμήματος"/>
                   <trans loc="en_GB" val="Department Name"/>
                   <trans loc="es" val="Nombre del departamento"/>
+                  <trans loc="eu" val="Sailaren izena"/>
                   <trans loc="fr" val="Nom du service"/>
                   <trans loc="hu" val="Részleg neve"/>
                   <trans loc="id" val="Nama Departemen"/>
@@ -4126,6 +4279,7 @@ Orientation=portrait
                     <trans loc="el" val="Όνομα τμήματος"/>
                     <trans loc="en_GB" val="Department Name"/>
                     <trans loc="es" val="Nombre del departamento"/>
+                    <trans loc="eu" val="Sailaren izena"/>
                     <trans loc="fr" val="Nom du service"/>
                     <trans loc="hu" val="Részleg neve"/>
                     <trans loc="id" val="Nama Departemen"/>
@@ -4186,6 +4340,7 @@ Orientation=portrait
           <trans loc="el" val="Λίστα προσωπικού"/>
           <trans loc="en_GB" val="Crew List"/>
           <trans loc="es" val="Lista de personal"/>
+          <trans loc="eu" val="Taldearen zerrenda"/>
           <trans loc="fr" val="Liste de l'équipe"/>
           <trans loc="hu" val="Személyzet lista"/>
           <trans loc="id" val="Daftar Kru"/>
@@ -4206,6 +4361,7 @@ Orientation=portrait
       <trans loc="el" val="Διανομές"/>
       <trans loc="en_GB" val="Deliveries"/>
       <trans loc="es" val="Entregas"/>
+      <trans loc="eu" val="Bidalketak"/>
       <trans loc="fr" val="Livraisons"/>
       <trans loc="hu" val="Kézbesítések"/>
       <trans loc="id" val="Pengiriman"/>
@@ -4224,6 +4380,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό διανομής"/>
           <trans loc="en_GB" val="Delivery ID"/>
           <trans loc="es" val="ID de entrega"/>
+          <trans loc="eu" val="Bidalketaren IDa"/>
           <trans loc="fr" val="ID de la livraison"/>
           <trans loc="hu" val="Kézbesítés azonosító"/>
           <trans loc="id" val="ID Pengiriman"/>
@@ -4241,6 +4398,7 @@ Orientation=portrait
           <trans loc="el" val="Ημερομηνία άφιξης"/>
           <trans loc="en_GB" val="Arrival Date"/>
           <trans loc="es" val="Fecha de llegada"/>
+          <trans loc="eu" val="Iritsiera-data"/>
           <trans loc="fr" val="Date d'arrivée"/>
           <trans loc="hu" val="Érkezési dátum"/>
           <trans loc="id" val="Tanggal Kedatangan"/>
@@ -4268,6 +4426,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό επαφής"/>
           <trans loc="en_GB" val="Contact ID"/>
           <trans loc="es" val="ID del contacto"/>
+          <trans loc="eu" val="Kontaktuaren IDa"/>
           <trans loc="fr" val="ID du contact"/>
           <trans loc="hu" val="Partner azonosító"/>
           <trans loc="id" val="ID Kontak"/>
@@ -4295,6 +4454,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό επαφής"/>
           <trans loc="en_GB" val="Contact ID"/>
           <trans loc="es" val="ID del contacto"/>
+          <trans loc="eu" val="Kontaktuaren IDa"/>
           <trans loc="fr" val="ID du contact"/>
           <trans loc="hu" val="Partner azonosító"/>
           <trans loc="id" val="ID Kontak"/>
@@ -4312,6 +4472,7 @@ Orientation=portrait
           <trans loc="el" val="Ώρα άφιξης"/>
           <trans loc="en_GB" val="Arrival Time"/>
           <trans loc="es" val="Hora de llegada"/>
+          <trans loc="eu" val="Iritsiera-ordua"/>
           <trans loc="fr" val="Heure d'arrivée"/>
           <trans loc="hu" val="Érkezési idő"/>
           <trans loc="id" val="Waktu Kedatangan"/>
@@ -4329,6 +4490,7 @@ Orientation=portrait
           <trans loc="el" val="Τοποθεσία άφιξης"/>
           <trans loc="en_GB" val="Arrival Place"/>
           <trans loc="es" val="Lugar de llegada"/>
+          <trans loc="eu" val="Iritsiera-lekua"/>
           <trans loc="fr" val="Lieu d'arrivée"/>
           <trans loc="hu" val="Érkezési hely"/>
           <trans loc="id" val="Tempat Kedatangan"/>
@@ -4346,6 +4508,7 @@ Orientation=portrait
           <trans loc="el" val="Ώρα αναχώρησης"/>
           <trans loc="en_GB" val="Departure Time"/>
           <trans loc="es" val="Hora de salida"/>
+          <trans loc="eu" val="Bidalketa-ordua"/>
           <trans loc="fr" val="Heure de départ"/>
           <trans loc="hu" val="Indulási idő"/>
           <trans loc="id" val="Waktu Keberangkatan"/>
@@ -4363,6 +4526,7 @@ Orientation=portrait
           <trans loc="el" val="Ημερομηνία αναχώρησης"/>
           <trans loc="en_GB" val="Departure Date"/>
           <trans loc="es" val="Fecha de salida"/>
+          <trans loc="eu" val="Bidalketa-data"/>
           <trans loc="fr" val="Date de départ"/>
           <trans loc="hu" val="Indulási dátum"/>
           <trans loc="id" val="Tanggal Keberangkatan"/>
@@ -4380,6 +4544,7 @@ Orientation=portrait
           <trans loc="el" val="Τοποθεσία αναχώρησης"/>
           <trans loc="en_GB" val="Departure Place"/>
           <trans loc="es" val="Lugar de salida"/>
+          <trans loc="eu" val="Bidalketa-lekua"/>
           <trans loc="fr" val="Lieu de départ"/>
           <trans loc="hu" val="Indulási hely"/>
           <trans loc="id" val="Tempat Keberangkatan"/>
@@ -4398,6 +4563,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Comments"/>
           <trans loc="eo" val="Komentoj"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="eu" val="Iruzkinak"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
@@ -4416,6 +4582,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Description"/>
           <trans loc="eo" val="Priskribo"/>
           <trans loc="es" val="Descripción"/>
+          <trans loc="eu" val="Azalpena"/>
           <trans loc="fr" val="Description"/>
           <trans loc="hu" val="Leírás"/>
           <trans loc="id" val="Deskripsi"/>
@@ -4434,6 +4601,7 @@ Orientation=portrait
           <trans loc="el" val="Επικοινωνία αναχώρησης"/>
           <trans loc="en_GB" val="Departure Contact"/>
           <trans loc="es" val="Contacto de salida"/>
+          <trans loc="eu" val="Bidalketaren kontaktua"/>
           <trans loc="fr" val="Contact au départ"/>
           <trans loc="hu" val="Indulási partner"/>
           <trans loc="id" val="Kontak Keberangkatan"/>
@@ -4450,6 +4618,7 @@ Orientation=portrait
           <trans loc="el" val="Επικοινωνία άφιξης"/>
           <trans loc="en_GB" val="Arrival Contact"/>
           <trans loc="es" val="Contacto de llegada"/>
+          <trans loc="eu" val="Iritsieraren kontaktua"/>
           <trans loc="fr" val="Contact à l'arrivée"/>
           <trans loc="hu" val="Érkezési partner"/>
           <trans loc="id" val="Kontak Kedatangan"/>
@@ -4478,6 +4647,7 @@ Orientation=portrait
                   <trans loc="el" val="Όνομα αναχώρησης"/>
                   <trans loc="en_GB" val="Departure Name"/>
                   <trans loc="es" val="Nombre de salida"/>
+                  <trans loc="eu" val="Bidalketaren izena"/>
                   <trans loc="fr" val="Nom du départ"/>
                   <trans loc="hu" val="Indulási név"/>
                   <trans loc="id" val="Nama Keberangkatan"/>
@@ -4503,6 +4673,7 @@ Orientation=portrait
                   <trans loc="el" val="Όνομα άφιξης"/>
                   <trans loc="en_GB" val="Arrival Name"/>
                   <trans loc="es" val="Nombre de llegada"/>
+                  <trans loc="eu" val="Iritsieraren izena"/>
                   <trans loc="fr" val="Nom de l'arrivée"/>
                   <trans loc="hu" val="Érkezési név"/>
                   <trans loc="id" val="Nama Kedatangan"/>
@@ -4533,6 +4704,7 @@ Orientation=portrait
               <trans loc="en_GB" val="Overview"/>
               <trans loc="eo" val="Superrigardo"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="eu" val="Orokorra"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
@@ -4670,6 +4842,7 @@ Orientation=portrait
       <trans loc="el" val="Τμήματα"/>
       <trans loc="en_GB" val="Departments"/>
       <trans loc="es" val="Departmentos"/>
+      <trans loc="eu" val="Sailak"/>
       <trans loc="fr" val="Services"/>
       <trans loc="hu" val="Részlegek"/>
       <trans loc="id" val="Departemen"/>
@@ -4688,6 +4861,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό τμήματος"/>
           <trans loc="en_GB" val="Department ID"/>
           <trans loc="es" val="ID de departamento"/>
+          <trans loc="eu" val="Sailaren IDa"/>
           <trans loc="fr" val="ID du service"/>
           <trans loc="hu" val="Részleg azonosító"/>
           <trans loc="id" val="ID Departemen"/>
@@ -4706,6 +4880,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Name"/>
           <trans loc="eo" val="Nomo"/>
           <trans loc="es" val="Nombre"/>
+          <trans loc="eu" val="Izena"/>
           <trans loc="fr" val="Nom"/>
           <trans loc="hu" val="Név"/>
           <trans loc="id" val="Nama"/>
@@ -4724,6 +4899,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Comments"/>
           <trans loc="eo" val="Komentoj"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="eu" val="Iruzkinak"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
@@ -4742,6 +4918,7 @@ Orientation=portrait
           <trans loc="el" val="Προσωπικό τμήματος"/>
           <trans loc="en_GB" val="Department Crew"/>
           <trans loc="es" val="Personal del departamento"/>
+          <trans loc="eu" val="Saileko taldea"/>
           <trans loc="fr" val="Équipe du service"/>
           <trans loc="hu" val="Részleg személyzet"/>
           <trans loc="id" val="Kru Departemen"/>
@@ -4763,6 +4940,7 @@ Orientation=portrait
               <trans loc="en_GB" val="Overview"/>
               <trans loc="eo" val="Superrigardo"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="eu" val="Orokorra"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
@@ -4846,6 +5024,7 @@ Orientation=portrait
       <trans loc="el" val="Εξοπλισμός"/>
       <trans loc="en_GB" val="Equipment"/>
       <trans loc="es" val="Equipamiento"/>
+      <trans loc="eu" val="Ekipamendua"/>
       <trans loc="fr" val="Équipement"/>
       <trans loc="hu" val="Felszerelés"/>
       <trans loc="id" val="Peralatan"/>
@@ -4863,6 +5042,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό εξοπλισμού"/>
           <trans loc="en_GB" val="Equipment ID"/>
           <trans loc="es" val="ID de equipamiento"/>
+          <trans loc="eu" val="Ekipamenduaren IDa"/>
           <trans loc="fr" val="ID de l'équipement"/>
           <trans loc="hu" val="Felszerelés azonosító"/>
           <trans loc="id" val="ID Peralatan"/>
@@ -4881,6 +5061,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Description"/>
           <trans loc="eo" val="Priskribo"/>
           <trans loc="es" val="Descripción"/>
+          <trans loc="eu" val="Azalpena"/>
           <trans loc="fr" val="Description"/>
           <trans loc="hu" val="Leírás"/>
           <trans loc="id" val="Deskripsi"/>
@@ -4899,6 +5080,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Comments"/>
           <trans loc="eo" val="Komentoj"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="eu" val="Iruzkinak"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
@@ -4917,6 +5099,7 @@ Orientation=portrait
           <trans loc="el" val="Σκηνές"/>
           <trans loc="en_GB" val="Scenes"/>
           <trans loc="es" val="Escenas"/>
+          <trans loc="eu" val="Eszenak"/>
           <trans loc="fr" val="Scènes"/>
           <trans loc="hu" val="Jelenetek"/>
           <trans loc="id" val="Scene"/>
@@ -4938,6 +5121,7 @@ Orientation=portrait
               <trans loc="en_GB" val="Overview"/>
               <trans loc="eo" val="Superrigardo"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="eu" val="Orokorra"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
@@ -4958,6 +5142,7 @@ Orientation=portrait
               <trans loc="en_GB" val="Details"/>
               <trans loc="eo" val="Detaloj"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="eu" val="Xehetasunak"/>
               <trans loc="fr" val="Détails"/>
               <trans loc="hu" val="Részletek"/>
               <trans loc="id" val="Rincian"/>
@@ -5023,6 +5208,7 @@ Orientation=portrait
       <trans loc="el" val="Ταξίδια"/>
       <trans loc="en_GB" val="Journeys"/>
       <trans loc="es" val="Viajes"/>
+      <trans loc="eu" val="Egunkariak"/>
       <trans loc="fr" val="Trajets"/>
       <trans loc="hu" val="Utazások"/>
       <trans loc="id" val="Perjalanan"/>
@@ -5041,6 +5227,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό ταξιδιού"/>
           <trans loc="en_GB" val="Journey ID"/>
           <trans loc="es" val="ID de viajes"/>
+          <trans loc="eu" val="Egunkariaren IDa"/>
           <trans loc="fr" val="ID du trajet"/>
           <trans loc="hu" val="Utazás azonosító"/>
           <trans loc="id" val="ID Perjalanan"/>
@@ -5059,6 +5246,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Comment"/>
           <trans loc="eo" val="Komento"/>
           <trans loc="es" val="Comentario"/>
+          <trans loc="eu" val="Iruzkina"/>
           <trans loc="fr" val="Commentaire "/>
           <trans loc="hu" val="Megjegyzés"/>
           <trans loc="id" val="Komentar"/>
@@ -5077,6 +5265,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Description"/>
           <trans loc="eo" val="Priskribo"/>
           <trans loc="es" val="Descripción"/>
+          <trans loc="eu" val="Azalpena"/>
           <trans loc="fr" val="Description"/>
           <trans loc="hu" val="Leírás"/>
           <trans loc="id" val="Deskripsi"/>
@@ -5094,6 +5283,7 @@ Orientation=portrait
           <trans loc="el" val="Ημερομηνία άφιξης"/>
           <trans loc="en_GB" val="Arrival Date"/>
           <trans loc="es" val="Fecha de llegada"/>
+          <trans loc="eu" val="Iritsiera-data"/>
           <trans loc="fr" val="Date d'arrivée"/>
           <trans loc="hu" val="Érkezési dátum"/>
           <trans loc="id" val="Tanggal Kedatangan"/>
@@ -5111,6 +5301,7 @@ Orientation=portrait
           <trans loc="el" val="Ώρα άφιξης"/>
           <trans loc="en_GB" val="Arrival Time"/>
           <trans loc="es" val="Hora de llegada"/>
+          <trans loc="eu" val="Iritsiera-ordua"/>
           <trans loc="fr" val="Heure d'arrivée"/>
           <trans loc="hu" val="Érkezési idő"/>
           <trans loc="id" val="Waktu Kedatangan"/>
@@ -5128,6 +5319,7 @@ Orientation=portrait
           <trans loc="el" val="Τοποθεσία άφιξης"/>
           <trans loc="en_GB" val="Arrival Place"/>
           <trans loc="es" val="Lugar de llegada"/>
+          <trans loc="eu" val="Iritsiera-lekua"/>
           <trans loc="fr" val="Lieu d'arrivée"/>
           <trans loc="hu" val="Érkezési hely"/>
           <trans loc="id" val="Tempat Kedatangan"/>
@@ -5145,6 +5337,7 @@ Orientation=portrait
           <trans loc="el" val="Ημερομηνία αναχώρησης"/>
           <trans loc="en_GB" val="Departure Date"/>
           <trans loc="es" val="Fecha de salida"/>
+          <trans loc="eu" val="Bidalketa-data"/>
           <trans loc="fr" val="Date du départ"/>
           <trans loc="hu" val="Indulási dátum"/>
           <trans loc="id" val="Tanggal Keberangkatan"/>
@@ -5162,6 +5355,7 @@ Orientation=portrait
           <trans loc="el" val="Ώρα αναχώρησης"/>
           <trans loc="en_GB" val="Departure Time"/>
           <trans loc="es" val="Hora de salida"/>
+          <trans loc="eu" val="Bidalketa-ordua"/>
           <trans loc="fr" val="Heure du départ"/>
           <trans loc="hu" val="Indulási idő"/>
           <trans loc="id" val="Waktu Keberangkatan"/>
@@ -5179,6 +5373,7 @@ Orientation=portrait
           <trans loc="el" val="Τοποθεσία αναχώρησης"/>
           <trans loc="en_GB" val="Departure Place"/>
           <trans loc="es" val="Lugar de salida"/>
+          <trans loc="eu" val="Bidalketa-lekua"/>
           <trans loc="fr" val="Lieu de départ"/>
           <trans loc="hu" val="Indulási hely"/>
           <trans loc="id" val="Tempat Keberangkatan"/>
@@ -5206,6 +5401,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό επαφής"/>
           <trans loc="en_GB" val="Contact ID"/>
           <trans loc="es" val="ID del contacto"/>
+          <trans loc="eu" val="Kontaktuaren IDa"/>
           <trans loc="fr" val="ID du contact"/>
           <trans loc="hu" val="Partner azonosító"/>
           <trans loc="id" val="ID Kontak"/>
@@ -5225,6 +5421,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Contacts"/>
           <trans loc="eo" val="Kontaktoj"/>
           <trans loc="es" val="Contactos"/>
+          <trans loc="eu" val="Kontaktuak"/>
           <trans loc="fr" val="Contacts"/>
           <trans loc="hu" val="Partnerek"/>
           <trans loc="id" val="Kontak"/>
@@ -5273,6 +5470,7 @@ Orientation=portrait
               <trans loc="en_GB" val="Overview"/>
               <trans loc="eo" val="Superrigardo"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="eu" val="Orokorra"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
@@ -5297,6 +5495,7 @@ Orientation=portrait
                 <trans loc="en_GB" val="Person"/>
                 <trans loc="eo" val="Persono"/>
                 <trans loc="es" val="Persona"/>
+                <trans loc="eu" val="Pertsona"/>
                 <trans loc="fr" val="Personne"/>
                 <trans loc="hu" val="Személy"/>
                 <trans loc="id" val="Orang"/>
@@ -5343,6 +5542,7 @@ Orientation=portrait
                 <trans loc="el" val="Άφιξη"/>
                 <trans loc="en_GB" val="Arrival"/>
                 <trans loc="es" val="Llegada"/>
+                <trans loc="eu" val="Iritsiera"/>
                 <trans loc="fr" val="Arrivée"/>
                 <trans loc="hu" val="Érkezés"/>
                 <trans loc="id" val="Kedatangan"/>
@@ -5406,6 +5606,7 @@ Orientation=portrait
       <trans loc="el" val="Τοποθεσίες"/>
       <trans loc="en_GB" val="Locations"/>
       <trans loc="es" val="Ubicaciones"/>
+      <trans loc="eu" val="Kokalekuak"/>
       <trans loc="fr" val="Emplacements"/>
       <trans loc="hu" val="Helyek"/>
       <trans loc="id" val="Lokasi"/>
@@ -5423,6 +5624,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό τοποθεσίας"/>
           <trans loc="en_GB" val="Location ID"/>
           <trans loc="es" val="ID de ubicación"/>
+          <trans loc="eu" val="Kokalekuaren IDa"/>
           <trans loc="fr" val="ID de l'emplacement"/>
           <trans loc="hu" val="Hely azonosító"/>
           <trans loc="id" val="ID Lokasi"/>
@@ -5441,6 +5643,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Name"/>
           <trans loc="eo" val="Nomo"/>
           <trans loc="es" val="Nombre"/>
+          <trans loc="eu" val="Izena"/>
           <trans loc="fr" val="Nom"/>
           <trans loc="hu" val="Név"/>
           <trans loc="id" val="Nama"/>
@@ -5459,6 +5662,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Street"/>
           <trans loc="eo" val="Strato"/>
           <trans loc="es" val="Calle"/>
+          <trans loc="eu" val="Kalea"/>
           <trans loc="fr" val="Rue"/>
           <trans loc="hu" val="Utca"/>
           <trans loc="id" val="Jalan"/>
@@ -5477,6 +5681,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Town"/>
           <trans loc="eo" val="Urbo"/>
           <trans loc="es" val="Ciudad"/>
+          <trans loc="eu" val="Herria"/>
           <trans loc="fr" val="Ville"/>
           <trans loc="hu" val="Település"/>
           <trans loc="id" val="Kota"/>
@@ -5494,6 +5699,7 @@ Orientation=portrait
           <trans loc="el" val="Νομός"/>
           <trans loc="en_GB" val="County"/>
           <trans loc="es" val="Condado"/>
+          <trans loc="eu" val="Herrialdea"/>
           <trans loc="fr" val="Comté"/>
           <trans loc="hu" val="Megye"/>
           <trans loc="id" val="County"/>
@@ -5512,6 +5718,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Country"/>
           <trans loc="eo" val="Lando"/>
           <trans loc="es" val="País"/>
+          <trans loc="eu" val="Estatua"/>
           <trans loc="fr" val="Pays"/>
           <trans loc="hu" val="Ország"/>
           <trans loc="id" val="Negara"/>
@@ -5529,6 +5736,7 @@ Orientation=portrait
           <trans loc="el" val="Ταχ. κώδικας"/>
           <trans loc="en_GB" val="Postcode"/>
           <trans loc="es" val="Código postal"/>
+          <trans loc="eu" val="Posta-kodea"/>
           <trans loc="fr" val="Code postal"/>
           <trans loc="hu" val="Irányítószám"/>
           <trans loc="id" val="Kode Pos"/>
@@ -5547,6 +5755,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Comments"/>
           <trans loc="eo" val="Komentoj"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="eu" val="Iruzkinak"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
@@ -5574,6 +5783,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό επαφής"/>
           <trans loc="en_GB" val="Contact ID"/>
           <trans loc="es" val="ID del contacto"/>
+          <trans loc="eu" val="Kontaktuaren IDa"/>
           <trans loc="fr" val="ID du contact"/>
           <trans loc="hu" val="Partner azonosító"/>
           <trans loc="id" val="ID Kontak"/>
@@ -5591,6 +5801,7 @@ Orientation=portrait
           <trans loc="el" val="Ενοικίαση"/>
           <trans loc="en_GB" val="Rent"/>
           <trans loc="es" val="Renta"/>
+          <trans loc="eu" val="Alokairua"/>
           <trans loc="fr" val="Location"/>
           <trans loc="hu" val="Bérlés"/>
           <trans loc="id" val="Sewa"/>
@@ -5609,6 +5820,7 @@ Orientation=portrait
           <trans loc="el" val="Σκηνές"/>
           <trans loc="en_GB" val="Scenes"/>
           <trans loc="es" val="Escenas"/>
+          <trans loc="eu" val="Eszenak"/>
           <trans loc="fr" val="Scènes"/>
           <trans loc="hu" val="Jelenetek"/>
           <trans loc="id" val="Scene"/>
@@ -5626,6 +5838,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Contacts"/>
           <trans loc="eo" val="Kontaktoj"/>
           <trans loc="es" val="Contactos"/>
+          <trans loc="eu" val="Kontaktuak"/>
           <trans loc="fr" val="Contacts"/>
           <trans loc="hu" val="Partnerek"/>
           <trans loc="id" val="Kontak"/>
@@ -5646,6 +5859,7 @@ Orientation=portrait
               <trans loc="el" val="Επισκόπηση"/>
               <trans loc="en_GB" val="Overview"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="eu" val="Orokorra"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
@@ -5809,6 +6023,7 @@ Orientation=portrait
       <trans loc="el" val="Βοηθήματα"/>
       <trans loc="en_GB" val="Props"/>
       <trans loc="es" val="Accesorios"/>
+      <trans loc="eu" val="Osagarriak"/>
       <trans loc="fr" val="Propriétés"/>
       <trans loc="hu" val="Kellékek"/>
       <trans loc="id" val="Prop"/>
@@ -5826,6 +6041,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό βοηθήματος"/>
           <trans loc="en_GB" val="Prop ID"/>
           <trans loc="es" val="ID de accesorio"/>
+          <trans loc="eu" val="Osagarriaren IDa"/>
           <trans loc="fr" val="ID de la propriété"/>
           <trans loc="hu" val="Kellék azonosító"/>
           <trans loc="id" val="ID Prop"/>
@@ -5843,6 +6059,7 @@ Orientation=portrait
           <trans loc="el" val="Περιγραφή"/>
           <trans loc="en_GB" val="Description"/>
           <trans loc="es" val="Descripción"/>
+          <trans loc="eu" val="Azalpena"/>
           <trans loc="fr" val="Description"/>
           <trans loc="hu" val="Leírás"/>
           <trans loc="id" val="Deskripsi"/>
@@ -5861,6 +6078,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Comments"/>
           <trans loc="eo" val="Komentoj"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="eu" val="Iruzkinak"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
@@ -5879,6 +6097,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Name"/>
           <trans loc="eo" val="Nomo"/>
           <trans loc="es" val="Nombre"/>
+          <trans loc="eu" val="Izena"/>
           <trans loc="fr" val="Nom"/>
           <trans loc="hu" val="Név"/>
           <trans loc="id" val="Nama"/>
@@ -5916,6 +6135,7 @@ Orientation=portrait
               <trans loc="en_GB" val="Overview"/>
               <trans loc="eo" val="Superrigardo"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="eu" val="Orokorra"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
@@ -5939,6 +6159,7 @@ Orientation=portrait
               <trans loc="en_GB" val="Details"/>
               <trans loc="eo" val="Detaloj"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="eu" val="Xehetasunak"/>
               <trans loc="fr" val="Détails"/>
               <trans loc="hu" val="Részletek"/>
               <trans loc="id" val="Rincian"/>
@@ -6005,6 +6226,7 @@ Orientation=portrait
       <trans loc="el" val="Πρωταγωνιστές σκηνής"/>
       <trans loc="en_GB" val="Scene Cast"/>
       <trans loc="es" val="Reparto de la escena"/>
+      <trans loc="eu" val="Eszenaren antzezleak"/>
       <trans loc="fr" val="Acteurs de la scène"/>
       <trans loc="hu" val="Jelenet szerep"/>
       <trans loc="id" val="Cast Scene"/>
@@ -6022,6 +6244,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό πρωταγωνιστών σκηνής"/>
           <trans loc="en_GB" val="Scene Cast ID"/>
           <trans loc="es" val="ID de reparto de escena"/>
+          <trans loc="eu" val="Eszenaren antzezlearen IDa"/>
           <trans loc="fr" val="ID des acteurs de la scène"/>
           <trans loc="hu" val="Jelenet szerep azonosító"/>
           <trans loc="id" val="ID Cast Scene"/>
@@ -6039,6 +6262,7 @@ Orientation=portrait
           <trans loc="el" val="Σχόλια"/>
           <trans loc="en_GB" val="Comments"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="eu" val="Iruzkinak"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
@@ -6066,6 +6290,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό πρωταγωνιστών"/>
           <trans loc="en_GB" val="Cast ID"/>
           <trans loc="es" val="ID de reparto"/>
+          <trans loc="eu" val="Antzezlearen IDa"/>
           <trans loc="fr" val="ID des acteurs"/>
           <trans loc="hu" val="Szerep azonosító"/>
           <trans loc="id" val="ID Cast"/>
@@ -6083,6 +6308,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό σκηνής"/>
           <trans loc="en_GB" val="Scene ID"/>
           <trans loc="es" val="ID de la escena"/>
+          <trans loc="eu" val="Eszenaren IDa"/>
           <trans loc="fr" val="ID de la scène"/>
           <trans loc="hu" val="Jelenet azonosító"/>
           <trans loc="id" val="ID Scene"/>
@@ -6101,6 +6327,7 @@ Orientation=portrait
           <trans loc="el" val="Πρωταγωνιστές"/>
           <trans loc="en_GB" val="Cast"/>
           <trans loc="es" val="Reparto"/>
+          <trans loc="eu" val="Antzezleak"/>
           <trans loc="fr" val="Acteurs"/>
           <trans loc="hu" val="Szerep"/>
           <trans loc="id" val="Cast"/>
@@ -6146,6 +6373,7 @@ Orientation=portrait
                 <trans loc="en_GB" val="Overview"/>
                 <trans loc="eo" val="Superrigardo"/>
                 <trans loc="es" val="Visión general"/>
+                <trans loc="eu" val="Orokorra"/>
                 <trans loc="fr" val="Résumé"/>
                 <trans loc="hu" val="Áttekintés"/>
                 <trans loc="id" val="Ringkasan"/>
@@ -6166,6 +6394,7 @@ Orientation=portrait
                 <trans loc="en_GB" val="Details"/>
                 <trans loc="eo" val="Detaloj"/>
                 <trans loc="es" val="Detalles"/>
+                <trans loc="eu" val="Xehetasunak"/>
                 <trans loc="fr" val="Détails"/>
                 <trans loc="hu" val="Részletek"/>
                 <trans loc="id" val="Rincian"/>
@@ -6224,6 +6453,7 @@ Orientation=portrait
       <trans loc="el" val="Ενδυμασία σκηνής"/>
       <trans loc="en_GB" val="Scene Costume"/>
       <trans loc="es" val="Vestuario de la escena"/>
+      <trans loc="eu" val="Eszenaren jantzia"/>
       <trans loc="fr" val="Costume de la scène"/>
       <trans loc="hu" val="Jelenet jelmez"/>
       <trans loc="id" val="Kostum Scene"/>
@@ -6241,6 +6471,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό ενδυμασίας σκηνής"/>
           <trans loc="en_GB" val="Scene Costume ID"/>
           <trans loc="es" val="ID de vestuario de escena"/>
+          <trans loc="eu" val="Eszenaren jantziaren IDa"/>
           <trans loc="fr" val="ID du costume de la scène"/>
           <trans loc="hu" val="Jelenet jelmez azonosító"/>
           <trans loc="id" val="ID Kostum Scene"/>
@@ -6259,6 +6490,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Comments"/>
           <trans loc="eo" val="Komentoj"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="eu" val="Iruzkinak"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
@@ -6276,6 +6508,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό σκηνής"/>
           <trans loc="en_GB" val="Scene Id"/>
           <trans loc="es" val="ID de la escena"/>
+          <trans loc="eu" val="Eszenaren IDa"/>
           <trans loc="fr" val="ID de la scène"/>
           <trans loc="hu" val="Jelenet azonosító"/>
           <trans loc="id" val="ID Scene"/>
@@ -6303,6 +6536,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό ενδυμασίας"/>
           <trans loc="en_GB" val="Costume ID"/>
           <trans loc="es" val="ID de vestuario"/>
+          <trans loc="eu" val="Jantziaren IDa"/>
           <trans loc="fr" val="ID du costume"/>
           <trans loc="hu" val="Jelmez azonosító"/>
           <trans loc="id" val="ID Kostum"/>
@@ -6321,6 +6555,7 @@ Orientation=portrait
           <trans loc="el" val="Ενδυμασία"/>
           <trans loc="en_GB" val="Costume"/>
           <trans loc="es" val="Vestuario"/>
+          <trans loc="eu" val="Jantzia"/>
           <trans loc="fr" val="Costume"/>
           <trans loc="hu" val="Jelmez"/>
           <trans loc="id" val="Kostum"/>
@@ -6357,6 +6592,7 @@ Orientation=portrait
               <trans loc="en_GB" val="Overview"/>
               <trans loc="eo" val="Superrigardo"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="eu" val="Orokorra"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
@@ -6377,6 +6613,7 @@ Orientation=portrait
               <trans loc="en_GB" val="Details"/>
               <trans loc="eo" val="Detaloj"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="eu" val="Xehetasunak"/>
               <trans loc="fr" val="Détails"/>
               <trans loc="hu" val="Részletek"/>
               <trans loc="id" val="Rincian"/>
@@ -6402,6 +6639,7 @@ Orientation=portrait
                   <trans loc="el" val="Όνομα ενδυμασίας"/>
                   <trans loc="en_GB" val="Costume Name"/>
                   <trans loc="es" val="Nombre del vestuario"/>
+                  <trans loc="eu" val="Jantziaren izena"/>
                   <trans loc="fr" val="Nom du costume"/>
                   <trans loc="hu" val="Jelmez neve"/>
                   <trans loc="id" val="Nama Kostum"/>
@@ -6435,6 +6673,7 @@ Orientation=portrait
       <trans loc="el" val="Προσωπικό σκηνής"/>
       <trans loc="en_GB" val="Scene Crew"/>
       <trans loc="es" val="Personal de la escena"/>
+      <trans loc="eu" val="Eszenaren taldea"/>
       <trans loc="fr" val="Acteurs de la scène"/>
       <trans loc="hu" val="Jelenet személyzet"/>
       <trans loc="id" val="Kru Scene"/>
@@ -6452,6 +6691,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό προσωπικού σκηνής"/>
           <trans loc="en_GB" val="Scene Crew ID"/>
           <trans loc="es" val="ID de personal de escena"/>
+          <trans loc="eu" val="Eszenaren taldearen IDa"/>
           <trans loc="fr" val="ID des acteurs de la scène"/>
           <trans loc="hu" val="Jelenet személyzet azonosító"/>
           <trans loc="id" val="ID Kru Scene"/>
@@ -6469,6 +6709,7 @@ Orientation=portrait
           <trans loc="el" val="Σχόλια"/>
           <trans loc="en_GB" val="Comments"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="eu" val="Iruzkinak"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
@@ -6496,6 +6737,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό σκηνής"/>
           <trans loc="en_GB" val="Scene ID"/>
           <trans loc="es" val="ID de la escena"/>
+          <trans loc="eu" val="Eszenaren IDa"/>
           <trans loc="fr" val="ID de la scène"/>
           <trans loc="hu" val="Jelenet azonosító"/>
           <trans loc="id" val="ID Scene"/>
@@ -6523,6 +6765,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό τμήματος"/>
           <trans loc="en_GB" val="Department ID"/>
           <trans loc="es" val="ID de departamento"/>
+          <trans loc="eu" val="Sailaren IDa"/>
           <trans loc="fr" val="ID du service"/>
           <trans loc="hu" val="Részleg azonosító"/>
           <trans loc="id" val="ID Departemen"/>
@@ -6541,6 +6784,7 @@ Orientation=portrait
           <trans loc="el" val="Τμήμα"/>
           <trans loc="en_GB" val="Department"/>
           <trans loc="es" val="Departmento"/>
+          <trans loc="eu" val="Saila"/>
           <trans loc="fr" val="Service"/>
           <trans loc="hu" val="Részleg"/>
           <trans loc="id" val="Departemen"/>
@@ -6557,6 +6801,7 @@ Orientation=portrait
           <trans loc="el" val="Σκηνές"/>
           <trans loc="en_GB" val="Scenes"/>
           <trans loc="es" val="Escenas"/>
+          <trans loc="eu" val="Eszenak"/>
           <trans loc="fr" val="Scènes"/>
           <trans loc="hu" val="Jelenetek"/>
           <trans loc="id" val="Scene"/>
@@ -6579,6 +6824,7 @@ Orientation=portrait
                 <trans loc="en_GB" val="Overview"/>
                 <trans loc="eo" val="Superrigardo"/>
                 <trans loc="es" val="Visión general"/>
+                <trans loc="eu" val="Orokorra"/>
                 <trans loc="fr" val="Résumé"/>
                 <trans loc="hu" val="Áttekintés"/>
                 <trans loc="id" val="Ringkasan"/>
@@ -6599,6 +6845,7 @@ Orientation=portrait
                 <trans loc="en_GB" val="Details"/>
                 <trans loc="eo" val="Detaloj"/>
                 <trans loc="es" val="Detalles"/>
+                <trans loc="eu" val="Xehetasunak"/>
                 <trans loc="fr" val="Détails"/>
                 <trans loc="hu" val="Részletek"/>
                 <trans loc="id" val="Rincian"/>
@@ -6675,6 +6922,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό εξοπλισμού σκηνής"/>
           <trans loc="en_GB" val="Scene Equipment ID"/>
           <trans loc="es" val="ID de equipamiento de escena"/>
+          <trans loc="eu" val="Eszenako ekipamenduaren IDa"/>
           <trans loc="fr" val="Id de l'équipement de la scène"/>
           <trans loc="hu" val="Jelenet felszerelés azonosító"/>
           <trans loc="id" val="ID Peralatan Scene"/>
@@ -6693,6 +6941,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Comments"/>
           <trans loc="eo" val="Komentoj"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="eu" val="Iruzkinak"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
@@ -6720,6 +6969,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό εξοπλισμού"/>
           <trans loc="en_GB" val="Equipment ID"/>
           <trans loc="es" val="ID de equipamiento"/>
+          <trans loc="eu" val="Ekipamenduaren IDa"/>
           <trans loc="fr" val="ID de l'équipement"/>
           <trans loc="hu" val="Felszerelés azonosító"/>
           <trans loc="id" val="ID Peralatan"/>
@@ -6737,6 +6987,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό σκηνής"/>
           <trans loc="en_GB" val="Scene ID"/>
           <trans loc="es" val="ID de la escena"/>
+          <trans loc="eu" val="Eszenaren IDa"/>
           <trans loc="fr" val="ID de la scène"/>
           <trans loc="hu" val="Jelenet azonosító"/>
           <trans loc="id" val="ID Scene"/>
@@ -6780,6 +7031,7 @@ Orientation=portrait
               <trans loc="en_GB" val="Overview"/>
               <trans loc="eo" val="Superrigardo"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="eu" val="Orokorra"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
@@ -6800,6 +7052,7 @@ Orientation=portrait
               <trans loc="en_GB" val="Details"/>
               <trans loc="eo" val="Detaloj"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="eu" val="Xehetasunak"/>
               <trans loc="fr" val="Détails"/>
               <trans loc="hu" val="Részletek"/>
               <trans loc="id" val="Rincian"/>
@@ -6832,6 +7085,7 @@ Orientation=portrait
       <trans loc="el" val="Πρόσθετα σκηνής"/>
       <trans loc="en_GB" val="Scene Extras"/>
       <trans loc="es" val="Extras de la escena"/>
+      <trans loc="eu" val="Eszena gehigarriak"/>
       <trans loc="fr" val="Suppléments de la scène"/>
       <trans loc="hu" val="Jelenet extrák"/>
       <trans loc="id" val="Ekstra Scene"/>
@@ -6849,6 +7103,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό πρόσθετων σκηνής"/>
           <trans loc="en_GB" val="Scene Extras ID"/>
           <trans loc="es" val="ID de extras de escena"/>
+          <trans loc="eu" val="Eszena gehigarriaren IDa"/>
           <trans loc="fr" val="ID des suppléments de la scène"/>
           <trans loc="hu" val="Jelenet extrák azonosító"/>
           <trans loc="id" val="ID Ekstra Scene"/>
@@ -6867,6 +7122,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Description"/>
           <trans loc="eo" val="Priskribo"/>
           <trans loc="es" val="Descripción"/>
+          <trans loc="eu" val="Azalpena"/>
           <trans loc="fr" val="Description"/>
           <trans loc="hu" val="Leírás"/>
           <trans loc="id" val="Deskripsi"/>
@@ -6885,6 +7141,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Comments"/>
           <trans loc="eo" val="Komenta literĉeno"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="eu" val="Iruzkinak"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
@@ -6902,6 +7159,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό σκηνής"/>
           <trans loc="en_GB" val="Scene ID"/>
           <trans loc="es" val="ID de la escena"/>
+          <trans loc="eu" val="Eszenaren IDa"/>
           <trans loc="fr" val="ID de la scène"/>
           <trans loc="hu" val="Jelenet azonosító"/>
           <trans loc="id" val="ID Scene"/>
@@ -6929,6 +7187,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό επαφής"/>
           <trans loc="en_GB" val="Contact ID"/>
           <trans loc="es" val="ID del contacto"/>
+          <trans loc="eu" val="Kontaktuaren IDa"/>
           <trans loc="fr" val="ID du contact"/>
           <trans loc="hu" val="Partner azonosító"/>
           <trans loc="id" val="ID Kontak"/>
@@ -6948,6 +7207,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Contact"/>
           <trans loc="eo" val="Kontakto"/>
           <trans loc="es" val="Contacto"/>
+          <trans loc="eu" val="Kontaktua"/>
           <trans loc="fr" val="Contact"/>
           <trans loc="hu" val="Partner"/>
           <trans loc="id" val="Kontak"/>
@@ -7048,6 +7308,7 @@ Orientation=portrait
       <trans loc="el" val="Καλλωπισμός σκηνής"/>
       <trans loc="en_GB" val="Scene Makeup"/>
       <trans loc="es" val="Maquillaje de la escena"/>
+      <trans loc="eu" val="Eszenaren makillajea"/>
       <trans loc="fr" val="Maquillage de la scène"/>
       <trans loc="hu" val="Jelenet smink"/>
       <trans loc="id" val="Makeup Scene"/>
@@ -7065,6 +7326,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό καλλωπισμού σκηνής"/>
           <trans loc="en_GB" val="Scene Makeup ID"/>
           <trans loc="es" val="ID de maquillaje de escena"/>
+          <trans loc="eu" val="Eszenaren makillajearen IDa"/>
           <trans loc="fr" val="ID du maquillage de la scène"/>
           <trans loc="hu" val="Jelenet smink azonosító"/>
           <trans loc="id" val="ID Makeup Scene"/>
@@ -7083,6 +7345,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Description"/>
           <trans loc="eo" val="Priskribo"/>
           <trans loc="es" val="Descripción"/>
+          <trans loc="eu" val="Azalpena"/>
           <trans loc="fr" val="Description"/>
           <trans loc="hu" val="Leírás"/>
           <trans loc="id" val="Deskripsi"/>
@@ -7101,6 +7364,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Comments"/>
           <trans loc="eo" val="Komentoj"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="eu" val="Iruzkinak"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
@@ -7118,6 +7382,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό σκηνής"/>
           <trans loc="en_GB" val="Scene ID"/>
           <trans loc="es" val="ID de la escena"/>
+          <trans loc="eu" val="Eszenaren IDa"/>
           <trans loc="fr" val="ID de la scène"/>
           <trans loc="hu" val="Jelenet azonosító"/>
           <trans loc="id" val="ID Scene"/>
@@ -7158,6 +7423,7 @@ Orientation=portrait
               <trans loc="en_GB" val="Overview"/>
               <trans loc="eo" val="Superrigardo"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="eu" val="Orokorra"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
@@ -7177,6 +7443,7 @@ Orientation=portrait
               <trans loc="el" val="Λεπτομέρειες"/>
               <trans loc="en_GB" val="Details"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="eu" val="Xehetasunak"/>
               <trans loc="fr" val="Détails"/>
               <trans loc="hu" val="Részletek"/>
               <trans loc="id" val="Rincian"/>
@@ -7228,6 +7495,7 @@ Orientation=portrait
       <trans loc="el" val="Βοηθήματα σκηνής"/>
       <trans loc="en_GB" val="Scene Props"/>
       <trans loc="es" val="Accesorios de la escena"/>
+      <trans loc="eu" val="Eszenaren osagarriak"/>
       <trans loc="fr" val="Propriétés de la scène"/>
       <trans loc="hu" val="Jelenet kellékek"/>
       <trans loc="id" val="Prop Scene"/>
@@ -7245,6 +7513,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό βοηθήματος σκηνής"/>
           <trans loc="en_GB" val="Scene Prop ID"/>
           <trans loc="es" val="ID de accesorio de escena"/>
+          <trans loc="eu" val="Eszenaren osagarriaren IDa"/>
           <trans loc="fr" val="ID de la propriété de la scène"/>
           <trans loc="hu" val="Jelenet kellék azonosító"/>
           <trans loc="id" val="ID Prop Scene"/>
@@ -7262,6 +7531,7 @@ Orientation=portrait
           <trans loc="el" val="Σχόλια"/>
           <trans loc="en_GB" val="Comments"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="eu" val="Iruzkinak"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
@@ -7279,6 +7549,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό σκηνής"/>
           <trans loc="en_GB" val="Scene ID"/>
           <trans loc="es" val="ID de escena"/>
+          <trans loc="eu" val="Eszenaren IDa"/>
           <trans loc="fr" val="Id de la scène"/>
           <trans loc="hu" val="Jelenet azonosító"/>
           <trans loc="id" val="ID Scene"/>
@@ -7306,6 +7577,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό βοηθήματος"/>
           <trans loc="en_GB" val="Prop ID"/>
           <trans loc="es" val="ID de accesorio"/>
+          <trans loc="eu" val="Osagarriaren IDa"/>
           <trans loc="fr" val="ID de la propriété"/>
           <trans loc="hu" val="Kellék azonosító"/>
           <trans loc="id" val="ID Prop"/>
@@ -7323,6 +7595,7 @@ Orientation=portrait
           <trans loc="el" val="Βοηθήματα"/>
           <trans loc="en_GB" val="Props"/>
           <trans loc="es" val="Accesorios"/>
+          <trans loc="eu" val="Osagarriak"/>
           <trans loc="fr" val="Propriétés"/>
           <trans loc="hu" val="Kellékek"/>
           <trans loc="id" val="Prop"/>
@@ -7359,6 +7632,7 @@ Orientation=portrait
               <trans loc="en_GB" val="Overview"/>
               <trans loc="eo" val="Superrigardo"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="eu" val="Orokorra"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
@@ -7379,6 +7653,7 @@ Orientation=portrait
               <trans loc="en_GB" val="Details"/>
               <trans loc="eo" val="Detaloj"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="eu" val="Xehetasunak"/>
               <trans loc="fr" val="Détails"/>
               <trans loc="hu" val="Részletek"/>
               <trans loc="id" val="Rincian"/>
@@ -7439,6 +7714,7 @@ Orientation=portrait
       <trans loc="el" val="Σκηνές"/>
       <trans loc="en_GB" val="Scenes"/>
       <trans loc="es" val="Escenas"/>
+      <trans loc="eu" val="Eszenak"/>
       <trans loc="fr" val="Scènes"/>
       <trans loc="hu" val="Jelenetek"/>
       <trans loc="id" val="Scene"/>
@@ -7461,6 +7737,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό σκηνής"/>
           <trans loc="en_GB" val="Scene ID"/>
           <trans loc="es" val="ID de la escena"/>
+          <trans loc="eu" val="Eszenaren IDa"/>
           <trans loc="fr" val="ID de la scène"/>
           <trans loc="hu" val="Jelenet azonosító"/>
           <trans loc="id" val="ID Scene"/>
@@ -7479,6 +7756,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Comments"/>
           <trans loc="eo" val="Komentoj"/>
           <trans loc="es" val="Comentarios"/>
+          <trans loc="eu" val="Iruzkinak"/>
           <trans loc="fr" val="Commentaires"/>
           <trans loc="hu" val="Megjegyzések"/>
           <trans loc="id" val="Komentar"/>
@@ -7496,6 +7774,7 @@ Orientation=portrait
           <trans loc="el" val="Περιγραφή"/>
           <trans loc="en_GB" val="Description"/>
           <trans loc="es" val="Descripción"/>
+          <trans loc="eu" val="Azalpena"/>
           <trans loc="fr" val="Description"/>
           <trans loc="hu" val="Leírás"/>
           <trans loc="id" val="Deskripsi"/>
@@ -7523,6 +7802,7 @@ Orientation=portrait
           <trans loc="el" val="Αναγνωριστικό τοποθεσίας"/>
           <trans loc="en_GB" val="Location ID"/>
           <trans loc="es" val="ID de ubicación"/>
+          <trans loc="eu" val="Kokalekuaren IDa"/>
           <trans loc="fr" val="ID de l'emplacement"/>
           <trans loc="hu" val="Hely azonosító"/>
           <trans loc="id" val="ID Lokasi"/>
@@ -7541,6 +7821,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Date"/>
           <trans loc="eo" val="Dato"/>
           <trans loc="es" val="Fecha"/>
+          <trans loc="eu" val="Data"/>
           <trans loc="fr" val="Date"/>
           <trans loc="hu" val="Dátum"/>
           <trans loc="id" val="Tanggal"/>
@@ -7559,6 +7840,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Time"/>
           <trans loc="eo" val="Horo"/>
           <trans loc="es" val="Hora"/>
+          <trans loc="eu" val="Ordua"/>
           <trans loc="fr" val="Heure"/>
           <trans loc="hu" val="Idő"/>
           <trans loc="id" val="Waktu"/>
@@ -7576,6 +7858,7 @@ Orientation=portrait
           <trans loc="el" val="Διακοπή (λεπτά)"/>
           <trans loc="en_GB" val="Stop (minutes)"/>
           <trans loc="es" val="Detener (minutos)"/>
+          <trans loc="eu" val="Gelditu (minutu)"/>
           <trans loc="fr" val="Arrêt (minutes)"/>
           <trans loc="hu" val="Megállás (perc)"/>
           <trans loc="id" val="Berhenti (menit)"/>
@@ -7596,6 +7879,7 @@ Orientation=portrait
                 <trans loc="en_GB" val="Day"/>
                 <trans loc="eo" val="Tago"/>
                 <trans loc="es" val="Día"/>
+                <trans loc="eu" val="Eguna"/>
                 <trans loc="fr" val="Jour"/>
                 <trans loc="hu" val="Nappal"/>
                 <trans loc="id" val="Siang"/>
@@ -7613,6 +7897,7 @@ Orientation=portrait
                 <trans loc="en_GB" val="Night"/>
                 <trans loc="eo" val="Nokto"/>
                 <trans loc="es" val="Noche"/>
+                <trans loc="eu" val="Gaua"/>
                 <trans loc="fr" val="Nuit"/>
                 <trans loc="hu" val="Éjszaka"/>
                 <trans loc="id" val="Malam"/>
@@ -7630,6 +7915,7 @@ Orientation=portrait
                 <trans loc="en_GB" val="Morning"/>
                 <trans loc="eo" val="Mateno"/>
                 <trans loc="es" val="Mañana"/>
+                <trans loc="eu" val="Goiza"/>
                 <trans loc="fr" val="Matin"/>
                 <trans loc="hu" val="Reggel"/>
                 <trans loc="id" val="Pagi"/>
@@ -7647,6 +7933,7 @@ Orientation=portrait
                 <trans loc="en_GB" val="Evening"/>
                 <trans loc="eo" val="Vespero"/>
                 <trans loc="es" val="Noche"/>
+                <trans loc="eu" val="Arratsaldea"/>
                 <trans loc="fr" val="Soir"/>
                 <trans loc="hu" val="Este"/>
                 <trans loc="id" val="Sore"/>
@@ -7662,6 +7949,7 @@ Orientation=portrait
                 <trans loc="el" val="Αυγή"/>
                 <trans loc="en_GB" val="Dawn"/>
                 <trans loc="es" val="Amanecer"/>
+                <trans loc="eu" val="Egunsentia"/>
                 <trans loc="fr" val="Aube"/>
                 <trans loc="hu" val="Hajnal"/>
                 <trans loc="id" val="Fajar"/>
@@ -7680,6 +7968,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Day/Night"/>
           <trans loc="eo" val="Tago/Nokto"/>
           <trans loc="es" val="Día/Noche"/>
+          <trans loc="eu" val="Eguna/Gaua"/>
           <trans loc="fr" val="Jour/nuit"/>
           <trans loc="hu" val="Nappal/Éjszaka"/>
           <trans loc="id" val="Siang/Malam"/>
@@ -7730,6 +8019,7 @@ Orientation=portrait
           <trans loc="el" val="Εσωτερικό/Εξωτερικό"/>
           <trans loc="en_GB" val="Interior/Exterior"/>
           <trans loc="es" val="Interior/Exterior"/>
+          <trans loc="eu" val="Barruan/Kanpoan"/>
           <trans loc="fr" val="Intérieur/extérieur"/>
           <trans loc="hu" val="Belső/Külső"/>
           <trans loc="id" val="Interior/Eksterior"/>
@@ -7748,6 +8038,7 @@ Orientation=portrait
           <trans loc="en_GB" val="Name"/>
           <trans loc="eo" val="Nomo"/>
           <trans loc="es" val="Nombre"/>
+          <trans loc="eu" val="Izena"/>
           <trans loc="fr" val="Nom"/>
           <trans loc="hu" val="Név"/>
           <trans loc="id" val="Nama"/>
@@ -7770,6 +8061,7 @@ else:
           <trans loc="el" val="Σκηνή"/>
           <trans loc="en_GB" val="Scene"/>
           <trans loc="es" val="Escena"/>
+          <trans loc="eu" val="Eszena"/>
           <trans loc="fr" val="Scène"/>
           <trans loc="hu" val="Jelenet"/>
           <trans loc="id" val="Scene"/>
@@ -7788,6 +8080,7 @@ else:
           <trans loc="en_GB" val="Pages"/>
           <trans loc="eo" val="Paĝoj"/>
           <trans loc="es" val="Páginas"/>
+          <trans loc="eu" val="Orriak"/>
           <trans loc="fr" val="Pages"/>
           <trans loc="hu" val="Oldalak"/>
           <trans loc="id" val="Halaman"/>
@@ -7805,6 +8098,7 @@ else:
           <trans loc="el" val="Σενάριο ημέρας"/>
           <trans loc="en_GB" val="Script Day"/>
           <trans loc="es" val="Guión del día"/>
+          <trans loc="eu" val="Eguneko gidoia"/>
           <trans loc="fr" val="Jour du scénario"/>
           <trans loc="hu" val="Kézirat nap"/>
           <trans loc="id" val="Hari Skrip"/>
@@ -7824,6 +8118,7 @@ else:
           <trans loc="en_GB" val="Locations"/>
           <trans loc="eo" val="Lokoj"/>
           <trans loc="es" val="Ubicaciones"/>
+          <trans loc="eu" val="Kokalekuak"/>
           <trans loc="fr" val="Emplacements"/>
           <trans loc="hu" val="Helyek"/>
           <trans loc="id" val="Lokasi"/>
@@ -7840,6 +8135,7 @@ else:
           <trans loc="el" val="Επιπλέον προσωπικό"/>
           <trans loc="en_GB" val="Additional Crew"/>
           <trans loc="es" val="Personal adicional"/>
+          <trans loc="eu" val="Talde gehigarria"/>
           <trans loc="fr" val="Équipe supplémentaires"/>
           <trans loc="hu" val="További személyzet"/>
           <trans loc="id" val="Kru Tambahan"/>
@@ -7856,6 +8152,7 @@ else:
           <trans loc="el" val="Πρωταγωνιστές"/>
           <trans loc="en_GB" val="Cast"/>
           <trans loc="es" val="Reparto"/>
+          <trans loc="eu" val="Antzezleak"/>
           <trans loc="fr" val="Acteurs"/>
           <trans loc="hu" val="Szerep"/>
           <trans loc="id" val="Cast"/>
@@ -7872,6 +8169,7 @@ else:
           <trans loc="el" val="Πρόσθετος εξοπλισμός"/>
           <trans loc="en_GB" val="Additional Equipment"/>
           <trans loc="es" val="Equipamiento adicional"/>
+          <trans loc="eu" val="Ekipamendu gehigarria"/>
           <trans loc="fr" val="Équipement supplémentaire"/>
           <trans loc="hu" val="További felszerelés"/>
           <trans loc="id" val="Peralatan Tambahan"/>
@@ -7888,6 +8186,7 @@ else:
           <trans loc="el" val="Πρόσθετα"/>
           <trans loc="en_GB" val="Extras"/>
           <trans loc="es" val="Extras"/>
+          <trans loc="eu" val="Gehigarriak"/>
           <trans loc="fr" val="Suppléments"/>
           <trans loc="hu" val="Extrák"/>
           <trans loc="id" val="Ekstra"/>
@@ -7903,6 +8202,7 @@ else:
           <trans loc="el" val="Βοηθήματα"/>
           <trans loc="en_GB" val="Props"/>
           <trans loc="es" val="Accesorios"/>
+          <trans loc="eu" val="Osagarriak"/>
           <trans loc="fr" val="Propriétés"/>
           <trans loc="hu" val="Kellékek"/>
           <trans loc="id" val="Prop"/>
@@ -7919,6 +8219,7 @@ else:
           <trans loc="el" val="Ενδυμασία"/>
           <trans loc="en_GB" val="Costume"/>
           <trans loc="es" val="Vestuario"/>
+          <trans loc="eu" val="Jantzia"/>
           <trans loc="fr" val="Costume"/>
           <trans loc="hu" val="Jelmez"/>
           <trans loc="id" val="Kostum"/>
@@ -7935,6 +8236,7 @@ else:
           <trans loc="el" val="Πρόσθετος καλλωπισμός"/>
           <trans loc="en_GB" val="Additional Makeup"/>
           <trans loc="es" val="Maquillaje adicional"/>
+          <trans loc="eu" val="Makillaje gehigarria"/>
           <trans loc="fr" val="Maquillage supplémentaire"/>
           <trans loc="hu" val="További smink"/>
           <trans loc="id" val="Makeup Tambahan"/>
@@ -7956,6 +8258,7 @@ else:
               <trans loc="en_GB" val="Overview"/>
               <trans loc="eo" val="Superrigardo"/>
               <trans loc="es" val="Visión general"/>
+              <trans loc="eu" val="Orokorra"/>
               <trans loc="fr" val="Résumé"/>
               <trans loc="hu" val="Áttekintés"/>
               <trans loc="id" val="Ringkasan"/>
@@ -7985,6 +8288,7 @@ else:
               <trans loc="en_GB" val="Details"/>
               <trans loc="eo" val="Detaloj"/>
               <trans loc="es" val="Detalles"/>
+              <trans loc="eu" val="Xehetasunak"/>
               <trans loc="fr" val="Détails"/>
               <trans loc="hu" val="Részletek"/>
               <trans loc="id" val="Rincian"/>
@@ -8002,6 +8306,7 @@ else:
                   <trans loc="cs" val="Když je název prázdný, použije se název místa."/>
                   <trans loc="el" val="Θα χρησιμοποιηθεί το όνομα της τοποθεσίας αν το όνομα είναι κενό."/>
                   <trans loc="es" val="El nombre de la ubicación que se usará si el nombre está vacío."/>
+                  <trans loc="eu" val="Kokalekuaren izena erabiliko da izena hutsik egonez gero."/>
                   <trans loc="hu" val="A hely neve lesz használva, ha a név üres."/>
                   <trans loc="id" val="Nama lokasi akan dipakai bila nama ini kosong."/>
                   <trans loc="pt_BR" val="O nome da localização vai ser usada se o nome estiver vazio."/>
@@ -8019,6 +8324,7 @@ else:
                 <trans loc="el" val="Σενάριο"/>
                 <trans loc="en_GB" val="Scenario"/>
                 <trans loc="es" val="Escenario"/>
+                <trans loc="eu" val="Agertokia"/>
                 <trans loc="fr" val="Scénario"/>
                 <trans loc="hu" val="Forgatókönyv"/>
                 <trans loc="id" val="Skenario"/>
@@ -8051,6 +8357,7 @@ else:
                 <trans loc="en_GB" val="Location"/>
                 <trans loc="eo" val="Loko"/>
                 <trans loc="es" val="Ubicación"/>
+                <trans loc="eu" val="Kokalekua"/>
                 <trans loc="fr" val="Emplacement"/>
                 <trans loc="hu" val="Hely"/>
                 <trans loc="id" val="Lokasi"/>
@@ -8073,6 +8380,7 @@ else:
                     <trans loc="el" val="Όνομα επαφής"/>
                     <trans loc="en_GB" val="Contact Name"/>
                     <trans loc="es" val="Nombre del contacto"/>
+                    <trans loc="eu" val="Kontaktuaren izena"/>
                     <trans loc="fr" val="Nom du contact"/>
                     <trans loc="hu" val="Partner neve"/>
                     <trans loc="id" val="Nama Kontak"/>
