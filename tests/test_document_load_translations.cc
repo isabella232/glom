@@ -242,7 +242,7 @@ int main()
   }
 
   const std::vector<Glib::ustring> locales = document.get_translation_available_locales();
-  g_assert(locales.size() == 15);
+  g_assert(locales.size() == 16);
   g_assert(contains(locales, "de"));
 
   const std::vector<Glib::ustring> table_names = document.get_table_names();
