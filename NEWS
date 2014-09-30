@@ -1,3 +1,11 @@
+1.28.0 (stable):
+
+* Glade UI files:
+  - Remove deprecated GtkContainer:resize-mode property.
+  - FlowTableWithFields: Replace use of deprecated xalign and valign.
+  - Replace stock properties with icon-name properties.
+
+
 1.27.1 (unstable):
 
 * Avoid use of deprecated gtkmm/GTK+ API in Glade files.
