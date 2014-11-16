@@ -26,6 +26,7 @@
 
 #include <glibmm/i18n.h>
 #include <giomm/contenttype.h>
+#include <giomm/resource.h>
 #include <gtkmm/recentmanager.h>
 #include <gtkmm/filechooserdialog.h>
 #include <glibmm/miscutils.h>
@@ -263,18 +264,9 @@ bool Dialog_ExistingOrNew::list_examples()
 
   try
   {
-    //TODO: Add to glibmm? const type_vec_strings examples = Gio::Resource::enumerate_children(examples_dir);
-    GError* gerror = 0;
-    char** cexamples = g_resources_enumerate_children(examples_dir, G_RESOURCE_LOOKUP_FLAGS_NONE, &gerror);
-    if(gerror)
-    {
-      Glib::Error::throw_exception(gerror);
-    }
-
     typedef std::vector<Glib::ustring> type_vec_strings;
-    const type_vec_strings examples = 
-      Glib::ArrayHandler<Glib::ustring>::array_to_vector(cexamples, Glib::OWNERSHIP_DEEP);
-
+    const type_vec_strings examples = Gio::Resource::enumerate_children_global(examples_dir);
+    
     bool example_found = false;
     for(type_vec_strings::const_iterator iter = examples.begin(); iter != examples.end(); ++iter)
     {
