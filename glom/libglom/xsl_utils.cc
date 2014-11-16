@@ -24,6 +24,7 @@
 #include <libglom/connectionpool.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <libglom/utils.h>
 #include <libxml++/libxml++.h>
 #include <libxslt/transform.h>
 //#include <libexslt/exslt.h> //For exsltRegisterAll().
@@ -47,7 +48,7 @@ namespace
   static std::string get_xslt_filepath(const std::string& xsl_file)
   {
     const std::string resource_path = "/org/gnome/glom/libglom/data/xslt/" + xsl_file;
-    if(!g_resources_get_info(resource_path.c_str(), G_RESOURCE_LOOKUP_FLAGS_NONE, 0, 0, 0))
+    if(!Glom::Utils::get_resource_exists(resource_path))
     {
       std::cerr << G_STRFUNC << ": xslt resource not found: " << resource_path << std::endl;
     }

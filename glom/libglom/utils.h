@@ -248,6 +248,13 @@ Glib::ustring get_temp_directory_uri(const std::string& prefix = std::string());
  */
 bool script_check_for_pygtk2(const Glib::ustring& script);
 
+/** 
+ * This is simpler than catching the exception from Gio::Resource::get_info_global().
+ *
+ * @returns true if the GResource exists.
+ */
+bool get_resource_exists(const std::string& resource_path);
+
 } //namespace Utils
 
 } //namespace Glom
