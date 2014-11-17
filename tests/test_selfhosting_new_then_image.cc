@@ -134,7 +134,10 @@ static bool test(Glom::Document::HostingMode hosting_mode)
 
   if(binary_set->binary_length != binary_read->binary_length)
   {
-    std::cerr << G_STRFUNC << ": Failure: The value read's data length was not equal to that of the value set." << std::endl;
+    std::cerr << G_STRFUNC << ": Failure: The value read's data length ("
+      << binary_read->binary_length <<
+      ") was not equal to that of the value set ("
+      << binary_set->binary_length << ")" << std::endl;
     return false;
   }
 
