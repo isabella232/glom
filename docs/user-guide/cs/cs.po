@@ -286,11 +286,11 @@ msgid ""
 "aware of those trademarks, then the names are in capital letters or initial "
 "capital letters."
 msgstr ""
-"Mnoho názvů používaných firmami ke zviditelnění produktů nebo služeb jsou "
-"ochranné známky. Na místech, kde jsou tyto názvy v dokumentaci užity a "
+"Mnoho názvů použitých firmami k zviditelnění produktů nebo služeb jsou "
+"ochranné známky. Na místech, kde jsou tyto názvy v dokumentaci použity a "
 "členové Dokumentačního projektu GNOME jsou si vědomi skutečnosti, že se "
-"jedná o ochrannou známku, je takový název psán velkými písmeny celý nebo s "
-"velkým písmenem na začátku."
+"jedná o ochrannou známku, je takovýto název psán velkými písmeny celý nebo "
+"s velkým písmenem na začátku."
 
 #. (itstool) path: listitem/para
 #: C/index.docbook:35 C/legal.xml:35
