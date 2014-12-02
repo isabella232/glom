@@ -2047,70 +2047,77 @@ void AppWindow::on_menu_file_save_as_example()
   ui_bring_to_front();
 
   //Show the save dialog:
+  bool bTest = false;
   Document* document = dynamic_cast<Document*>(get_document());
-  const Glib::ustring& file_uriOld = document->get_file_uri();
+  if(!document) {
+    std::cerr << G_STRFUNC << ": document was null." << std::endl;
+  } else {
+    const Glib::ustring& file_uriOld = document->get_file_uri();
 
-  m_ui_save_extra_showextras = false;
-  m_ui_save_extra_title.clear();
-  m_ui_save_extra_message.clear();
-  m_ui_save_extra_newdb_title.clear();
-  m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT;
+    m_ui_save_extra_showextras = false;
+    m_ui_save_extra_title.clear();
+    m_ui_save_extra_message.clear();
+    m_ui_save_extra_newdb_title.clear();
+    m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT;
 
-  Glib::ustring file_uri = ui_file_select_save(file_uriOld); //Also asks for overwrite confirmation.
-  if(!file_uri.empty())
-  {
-    //Enforce the file extension:
-    file_uri = document->get_file_uri_with_extension(file_uri);
-
-    //Prevent saving while we modify the document:
-    document->set_allow_autosave(false);
-
-    document->set_file_uri(file_uri, true); //true = enforce file extension
-    document->set_is_example_file();
-
-    //Save all data from all tables into the document:
-    Document::type_listTableInfo list_table_info = document->get_tables();
-    for(Document::type_listTableInfo::const_iterator iter = list_table_info.begin(); iter != list_table_info.end(); ++iter)
+    Glib::ustring file_uri = ui_file_select_save(file_uriOld); //Also asks for overwrite confirmation.
+    if(!file_uri.empty())
     {
-      const Glib::ustring table_name = (*iter)->get_name();
+      //Enforce the file extension:
+      file_uri = document->get_file_uri_with_extension(file_uri);
 
-      //const type_vec_fields vec_fields = document->get_table_fields(table_name);
+      //Prevent saving while we modify the document:
+      document->set_allow_autosave(false);
 
-      //export_data_to_*() needs a type_list_layout_groups;
-      Document::type_list_layout_groups sequence = document->get_data_layout_groups_default("list", table_name, "" /* layout_platform */);
+      document->set_file_uri(file_uri, true); //true = enforce file extension
+      document->set_is_example_file();
 
-      //std::cout << "debug: table_name=" << table_name << std::endl;
+      //Save all data from all tables into the document:
+      Document::type_listTableInfo list_table_info = document->get_tables();
+      for(Document::type_listTableInfo::const_iterator iter = list_table_info.begin(); iter != list_table_info.end(); ++iter)
+      {
+        const Glib::ustring table_name = (*iter)->get_name();
 
-      Document::type_example_rows example_rows;
-      FoundSet found_set;
-      found_set.m_table_name = table_name;
-      m_pFrame->export_data_to_vector(example_rows, found_set, sequence);
-      //std::cout << "  debug after row_text=" << row_text << std::endl;
+        //const type_vec_fields vec_fields = document->get_table_fields(table_name);
 
-      document->set_table_example_data(table_name, example_rows);
-    }
+        //export_data_to_*() needs a type_list_layout_groups;
+        Document::type_list_layout_groups sequence = document->get_data_layout_groups_default("list", table_name, "" /* layout_platform */);
 
-    const bool bTest = document->save();
-    document->set_is_example_file(false);
-    document->set_is_backup_file(false);
-    document->set_file_uri(file_uriOld);
-    document->set_allow_autosave(true);
+        //std::cout << "debug: table_name=" << table_name << std::endl;
 
-    if(!bTest)
-    {
-      ui_warning(_("Save failed."), _("There was an error while saving the example file."));
+        Document::type_example_rows example_rows;
+        FoundSet found_set;
+        found_set.m_table_name = table_name;
+        m_pFrame->export_data_to_vector(example_rows, found_set, sequence);
+        //std::cout << "  debug after row_text=" << row_text << std::endl;
+
+        document->set_table_example_data(table_name, example_rows);
+      }
+
+      bTest = document->save();
+      document->set_is_example_file(false);
+      document->set_is_backup_file(false);
+      document->set_file_uri(file_uriOld);
+      document->set_allow_autosave(true);
+
+      if(bTest)
+      {
+        //Disable Save and SaveAs menu items:
+        after_successful_save();
+      }
+
+      update_window_title();
     }
     else
     {
-      //Disable Save and SaveAs menu items:
-      after_successful_save();
+      cancel_close_or_exit();
+      return;
     }
-
-    update_window_title();
   }
-  else
+
+  if(!bTest)
   {
-    cancel_close_or_exit();
+    ui_warning(_("Save failed."), _("There was an error while saving the example file."));
   }
 }
 
