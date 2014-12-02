@@ -9,18 +9,19 @@ namespace Glom
 BusyCursor::type_map_cursors BusyCursor::m_map_cursors;
 
 BusyCursor::BusyCursor(Gtk::Window& window, Gdk::CursorType cursor_type)
-: m_Cursor( Gdk::Cursor::create(cursor_type) ),
+: m_Cursor( Gdk::Cursor::create(window.get_display(), cursor_type) ),
   m_pWindow(&window) //If this is a nested cursor then remember the previously-set cursor, so we can restore it.
 {
   init();
 }
 
 BusyCursor::BusyCursor(Gtk::Window* window, Gdk::CursorType cursor_type)
-: m_Cursor( Gdk::Cursor::create(cursor_type) ),
-  m_pWindow(window) //If this is a nested cursor then remember the previously-set cursor, so we can restore it.
+:  m_pWindow(window) //If this is a nested cursor then remember the previously-set cursor, so we can restore it.
 {
-  if(m_pWindow)
+  if(m_pWindow) {
+    m_Cursor = Gdk::Cursor::create(m_pWindow->get_display(), cursor_type);
     init();
+  }
 }
 
 void BusyCursor::init()
