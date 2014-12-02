@@ -701,13 +701,13 @@ void AddDel::construct_specified_columns()
   model_column_index = 0;
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
-     Gtk::TreeModelColumnBase* pModelColumn = *iter;
+    Gtk::TreeModelColumnBase* pModelColumn = *iter;
 
-     if(model_column_index < (int)m_ColumnTypes.size())
-     {
-       AddDelColumnInfo::enumStyles style = m_ColumnTypes[model_column_index].m_style;
-       switch(style)
-       {
+    if(model_column_index < (int)m_ColumnTypes.size())
+    {
+      AddDelColumnInfo::enumStyles style = m_ColumnTypes[model_column_index].m_style;
+      switch(style)
+      {
         //Cast it to the derived type, so we can delete it properly.
         //This is necessary because TreeModelColumnBase's destructor is not virtual.
         case(AddDelColumnInfo::STYLE_Boolean):
@@ -728,9 +728,9 @@ void AddDel::construct_specified_columns()
           delete pModelColumnDerived;
           break;
         }
-
-        *iter = 0;
       }
+
+      *iter = 0;
     }
     else
     {
