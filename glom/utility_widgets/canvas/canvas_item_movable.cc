@@ -32,6 +32,17 @@
 #include <gdkmm/cursor.h>
 #include <iostream>
 
+namespace {
+
+static Glib::RefPtr<Gdk::Cursor> create_drag_cursor(GdkEventAny* event, Gdk::CursorType cursor_type)
+{
+  Glib::RefPtr<Gdk::Window> window = Glib::wrap(event->window, true);
+  Glib::RefPtr<Gdk::Display> display = window->get_display();
+  return Gdk::Cursor::create(display, cursor_type);
+}
+
+} //anonymous namespace
+
 namespace Glom
 {
 
@@ -61,7 +72,6 @@ CanvasItemMovable::~CanvasItemMovable()
 {
 }
 
-
 bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event)
 {
   //std::cout << G_STRFUNC << ": DEBUG" << std::endl;
@@ -87,7 +97,10 @@ bool CanvasItemMovable::on_button_press_event(const Glib::RefPtr<Goocanvas::Item
       Goocanvas::Canvas* canvas = get_parent_canvas_widget();
       if(canvas)
       {
-        canvas->pointer_grab(item, Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_RELEASE_MASK, m_drag_cursor, event->time);
+        canvas->pointer_grab(item,
+          Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_RELEASE_MASK,
+          create_drag_cursor((GdkEventAny*)event, m_drag_cursor_type),
+          event->time);
       }
 
       m_dragging = true;
@@ -234,9 +247,9 @@ bool CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::It
   return true;
 }
 
-bool CanvasItemMovable::on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* /* event */)
+bool CanvasItemMovable::on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* event)
 {
-  set_cursor(m_drag_cursor);
+  set_cursor(create_drag_cursor((GdkEventAny*)event, m_drag_cursor_type));
 
   return false; //We didn't fully handle this event - let other signal handlers (even for other items) handle it too.
 }
@@ -264,14 +277,9 @@ CanvasItemMovable::type_signal_selected CanvasItemMovable::signal_selected()
   return m_signal_selected;
 }
 
-void CanvasItemMovable::set_drag_cursor(const Glib::RefPtr<Gdk::Cursor>& cursor)
+void CanvasItemMovable::set_drag_cursor(Gdk::CursorType cursor_type)
 {
-  m_drag_cursor = cursor;
-}
-
-void CanvasItemMovable::set_drag_cursor(Gdk::CursorType cursor)
-{
-  m_drag_cursor = Gdk::Cursor::create(cursor);
+  m_drag_cursor_type = cursor_type;
 }
 
 void CanvasItemMovable::set_cursor(const Glib::RefPtr<Gdk::Cursor>& cursor)

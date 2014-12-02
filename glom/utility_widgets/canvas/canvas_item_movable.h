@@ -57,8 +57,7 @@ public:
    */
   virtual void set_width_height(double width, double height) = 0;
 
-  void set_drag_cursor(Gdk::CursorType cursor);
-  void set_drag_cursor(const Glib::RefPtr<Gdk::Cursor>& cursor);
+  void set_drag_cursor(Gdk::CursorType cursor_type);
 
   /** For instance,
    *
@@ -149,7 +148,7 @@ private:
   double m_drag_start_cursor_x, m_drag_start_cursor_y;
   double m_drag_start_position_x, m_drag_start_position_y;
   double m_drag_latest_position_x, m_drag_latest_position_y; //To discover how much the latest motion_event has moved the item.
-  Glib::RefPtr<Gdk::Cursor> m_drag_cursor;
+  Gdk::CursorType m_drag_cursor_type;
 
 protected:
   Glib::RefPtr<const CanvasGroupGrid> m_grid;
