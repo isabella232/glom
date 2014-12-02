@@ -595,7 +595,6 @@ Glib::RefPtr<Gnome::Gda::Connection> MySQLSelfHosted::connect(const Glib::ustrin
   if(!get_self_hosting_active())
   {
     throw ExceptionConnection(ExceptionConnection::FAILURE_NO_BACKEND); //TODO: But there is a backend. It's just not ready.
-    return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 
   Glib::RefPtr<Gnome::Gda::Connection> result;

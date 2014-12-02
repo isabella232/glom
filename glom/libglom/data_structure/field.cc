@@ -260,8 +260,6 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnom
     std::cerr << G_STRFUNC << ": The DataHandler was null." << std::endl;
     return Glib::ustring();
   }
-
-  return Glib::ustring();
 }
 
 #define GLOM_QUOTE_FOR_FILE_FORMAT "\""

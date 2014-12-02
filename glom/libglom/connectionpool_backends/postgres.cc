@@ -135,7 +135,6 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
 #endif
 
     throw ExceptionConnection(temp_conn ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER);
-    return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 
   if(data_model && data_model->get_n_rows() && data_model->get_n_columns())

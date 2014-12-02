@@ -467,8 +467,6 @@ bool Document::get_read_only() const
       return read_only;
     }
   }
-
-  return m_bReadOnly;
 }
 
 void Document::set_read_only(bool bVal)

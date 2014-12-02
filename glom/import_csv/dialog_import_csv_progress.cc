@@ -298,8 +298,6 @@ void Dialog_Import_CSV_Progress::set_primary_key_value(const Gtk::TreeModel::ite
 Gnome::Gda::Value Dialog_Import_CSV_Progress::get_primary_key_value(const Gtk::TreeModel::iterator& /* row */) const
 {
   throw std::logic_error("Dialog_Import_CSV_Progress::get_primary_key_value() called");
-
-  return Gnome::Gda::Value();
 }
 
 } //namespace Glom

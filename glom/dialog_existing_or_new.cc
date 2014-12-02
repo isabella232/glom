@@ -408,8 +408,6 @@ Glib::ustring Dialog_ExistingOrNew::get_uri() const
   {
     throw std::logic_error("Dialog_ExistingOrNew::get_uri: action is neither NEW_FROM_TEMPLATE nor OPEN_URI");
   }
-
-  return Glib::ustring();
 }
 
 #ifndef G_OS_WIN32
@@ -435,8 +433,6 @@ Glib::ustring Dialog_ExistingOrNew::get_service_name() const
     return (*iter)[m_existing_columns.m_col_service_name];
   else
     throw std::logic_error("Dialog_ExistingOrNew::get_service_name: action is not OPEN_REMOTE");
-
-  return Glib::ustring();
 }
 #endif
 
