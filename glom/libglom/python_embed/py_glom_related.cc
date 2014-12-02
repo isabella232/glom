@@ -66,11 +66,6 @@ boost::python::object PyGlomRelated::getitem(const boost::python::object& cppite
         PyGlomRelated::type_map_relationships::const_iterator iterFind = m_map_relationships.find(key);
         if(iterFind != m_map_relationships.end())
         {
-          //Return a new RelatedRecord:
-          PyGlomRelatedRecord* pyRelatedRecord = new PyGlomRelatedRecord();
-
-          //Fill it.
-
           //Get the value of the from_key in the parent record.
           sharedptr<Relationship> relationship = iterFind->second;
           const Glib::ustring from_key = relationship->get_from_field();
@@ -89,6 +84,8 @@ boost::python::object PyGlomRelated::getitem(const boost::python::object& cppite
               sharedptr<const Field> from_key_field = record->m_document->get_field(record->m_table_name, from_key);
               if(from_key_field)
               {
+                //Return a new RelatedRecord:
+                PyGlomRelatedRecord* pyRelatedRecord = new PyGlomRelatedRecord();
                 pyRelatedRecord->set_relationship(iterFind->second, from_key_value, record->m_document);
 
                 //Store it in the cache:
