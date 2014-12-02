@@ -82,6 +82,7 @@ LayoutItem::LayoutItem(const LayoutItem& src)
 
 LayoutItem::~LayoutItem()
 {
+  delete m_positions;
 }
 
 LayoutItem& LayoutItem::operator=(const LayoutItem& src)
