@@ -116,7 +116,7 @@ bool LayoutItem::operator==(const LayoutItem& src) const
     //compare them:
     equal = equal && (*m_positions == *(src.m_positions));
   }
-  else if(!m_positions && !m_positions)
+  else if(!m_positions && !src.m_positions)
   {
     //no change.
   }
