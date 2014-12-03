@@ -249,7 +249,6 @@ void AppWindow_WithDoc::on_menu_file_saveas()
     //{
     //  on_menu_file_close(); //This could be the second time, but now there are no unsaved changes.
     //}
-    }
   }
   else
   {
