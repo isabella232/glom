@@ -704,15 +704,28 @@ bool ConnectionPool::set_network_shared(const SlotProgress& slot_progress, bool 
     return false;
 }
 
-bool ConnectionPool::add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field) throw()
+bool ConnectionPool::connect_nothrow()
 {
-  sharedptr<SharedConnection> conn;
   if(!m_refGdaConnection)
   {
-    conn = connect();
+    try
+    {
+      connect();
+    }
+    catch (const Glib::Error& ex)
+    {
+      std::cerr << G_STRFUNC << ": connect() failed: " << ex.what() << std::endl;
+      return false;
+    }
   }
 
-  if(!m_refGdaConnection)
+  return (m_refGdaConnection != 0);
+}
+
+//TODO: Why do we use throw() here and on change_columns()?
+bool ConnectionPool::add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field) throw()
+{
+  if(!connect_nothrow())
     return false;
 
   try
@@ -731,13 +744,7 @@ bool ConnectionPool::add_column(const Glib::ustring& table_name, const sharedptr
 
 bool ConnectionPool::drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name) throw()
 {
-  sharedptr<SharedConnection> conn;
-  if(!m_refGdaConnection)
-  {
-    conn = connect();
-  }
-
-  if(!m_refGdaConnection)
+  if(!connect_nothrow())
     return false;
 
   try
@@ -764,13 +771,7 @@ bool ConnectionPool::change_column(const Glib::ustring& table_name, const shared
 
 bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) throw()
 {
-  sharedptr<SharedConnection> conn;
-  if(!m_refGdaConnection)
-  {
-    conn = connect();
-  }
-
-  if(!m_refGdaConnection)
+  if(!connect_nothrow())
     return false;
 
   const bool result = m_backend->change_columns(m_refGdaConnection, table_name, old_fields, new_fields);
