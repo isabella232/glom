@@ -93,17 +93,19 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
         for(LayoutGroup::type_list_const_items::const_iterator iterExtra = extra_fields.begin();
           iterExtra != extra_fields.end(); ++iterExtra)
         {
-          const sharedptr<const LayoutItem> item = *iterExtra;
-          const sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
-          if(item_field && (iterValues != extra_values.end()))
-          {
-            const Gnome::Gda::Value value = *iterValues; //TODO: Use a vector instead?
-            const Glib::ustring value_second = Conversions::get_text_for_gda_value(item_field->get_glom_type(), value, item_field->get_formatting_used().m_numeric_format);
+          if(iterValues != extra_values.end()) {
+            const sharedptr<const LayoutItem> item = *iterExtra;
+            const sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
+            if(item_field)
+            {
+              const Gnome::Gda::Value value = *iterValues; //TODO: Use a vector instead?
+              const Glib::ustring value_second = Conversions::get_text_for_gda_value(item_field->get_glom_type(), value, item_field->get_formatting_used().m_numeric_format);
 
-            title += " - " + value_second; //TODO: Find a better way to join them?
+              title += " - " + value_second; //TODO: Find a better way to join them?
+            }
+
+            ++iterValues;
           }
-
-          ++iterValues;
         }
       }
 
