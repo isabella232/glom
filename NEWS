@@ -1,3 +1,15 @@
+1.29.1 (stable):
+
+* Use libgda-6.0 instead of libgda-5.0, though image fields are currently not
+  working.
+  (Murray Cumming)
+* Fix the build with the latest gtkmm.
+  (Murray Cumming)
+* Fix several warnings from the Coverity scan.
+  (Murray Cumming)
+* Use the new Gio::Resource API from glibmm instead of the C API.
+  (Murray Cumming)
+
 1.28.0 (stable):
 
 * Glade UI files:

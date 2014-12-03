@@ -303,6 +303,8 @@ public:
   static bool handle_error_cerr_only();
 
 private:
+  bool connect_nothrow();
+
   void on_sharedconnection_finished();
 
   /** We call this when we know that the current connection will no longer work,
