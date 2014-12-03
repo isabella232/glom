@@ -415,8 +415,6 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
         guint colField = 0;
         for(type_vecLayoutItems::const_iterator iter = items.begin(); iter != items.end(); ++iter)
         {
-          xmlpp::Element* nodeField = 0;
-
           sharedptr<LayoutItem> item = *iter;
           sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
           if(field)
@@ -451,9 +449,6 @@ bool ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
               }
             }
           }
-
-          if(nodeField)
-            nodeField->set_attribute("name", item->get_name()); //Not really necessary, but maybe useful.
         }
       }
 
