@@ -160,7 +160,6 @@ protected:
   Gtk::Button m_Button_Nav_Next;
   Gtk::Button m_Button_Nav_Last;
 
-  guint m_ColumnName, m_ColumnValue;
   bool m_bDoNotRefreshRelated; //Stops us from refreshing related records in response to an addition of a related record.
   bool m_ignore_signals;
 

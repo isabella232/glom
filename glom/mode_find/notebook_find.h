@@ -52,8 +52,6 @@ private:
   Box_Data_List_Find m_Box_List;
   
   Box_Data_Details_Find m_Box_Details;
-
-  guint m_iPage_Details, m_iPage_List;
 };
 
 } //namespace Glom
