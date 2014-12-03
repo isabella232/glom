@@ -213,7 +213,11 @@ int main(int argc, char* argv[])
       std::cerr << Glib::ustring::compose(_("Po file import failed for locale: %1"), locale_id) << std::endl;
       return EXIT_FAILURE;
     }
-    document.save();
+
+    if(!document.save()) {
+      std::cerr << Glib::ustring::compose(_("Po file import failed during document saving for locale: %1"), locale_id) << std::endl;
+      return EXIT_FAILURE;
+    }
 
     std::cout << Glib::ustring::compose(_("Po file imported for locale: %1 for file %2"), locale_id, input_uri) << std::endl;
   }
