@@ -218,11 +218,11 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
 
         //Update related fields, if this field is used in the relationship:
         refresh_related_fields(field_in_record, row, field_value);
-
-        //TODO: Put the inserted row into result, somehow? murrayc
-
-        return true; //success
       }
+
+      //TODO: Put the inserted row into result, somehow? murrayc
+
+      return true; //success
     }
   }
   else
