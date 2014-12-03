@@ -228,38 +228,27 @@ void AppWindow_WithDoc::on_menu_file_saveas()
     //Enforce the file extension:
     file_uri = m_pDocument->get_file_uri_with_extension(file_uri);
 
-    bool bUseThisFileUri = true;
+    m_pDocument->set_file_uri(file_uri, true); //true = enforce file extension
+    const bool bTest = m_pDocument->save();
 
-    //Save to this filepath:
-    if(bUseThisFileUri)
+    if(!bTest)
     {
-      m_pDocument->set_file_uri(file_uri, true); //true = enforce file extension
-      const bool bTest = m_pDocument->save();
-
-      if(!bTest)
-      {
-        ui_warning(_("Save failed."), _("There was an error while saving the file. Your changes have not been saved."));
-      }
-      else
-      {
-        //Disable Save and SaveAs menu items:
-        after_successful_save();
-      }
-
-      update_window_title();
-
-
-      //Close if this save was a result of a File|Close or File|Exit:.
-      //if(bTest && m_bCloseAfterSave) //Don't close if the save failed.
-      //{
-      //  on_menu_file_close(); //This could be the second time, but now there are no unsaved changes.
-      //}
+      ui_warning(_("Save failed."), _("There was an error while saving the file. Your changes have not been saved."));
     }
     else
     {
-      //Let the user choose a different file path,
-      //because he decided not to overwrite the 1st one.
-      offer_saveas(); //recursive.
+      //Disable Save and SaveAs menu items:
+      after_successful_save();
+    }
+
+    update_window_title();
+
+
+    //Close if this save was a result of a File|Close or File|Exit:.
+    //if(bTest && m_bCloseAfterSave) //Don't close if the save failed.
+    //{
+    //  on_menu_file_close(); //This could be the second time, but now there are no unsaved changes.
+    //}
     }
   }
   else
