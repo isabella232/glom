@@ -242,7 +242,7 @@ Glib::ustring TranslatableItem::get_translatable_type_name(enumTranslatableItemT
     return _("Table");
   else if(item_type == TRANSLATABLE_TYPE_LAYOUT_ITEM)
     return _("Layout Group");
-  else if(item_type == TRANSLATABLE_TYPE_CUSTOM_TITLE)
+  else if(item_type == TRANSLATABLE_TYPE_FIELD_TITLE)
     return _("Field Title");
   else if(item_type == TRANSLATABLE_TYPE_BUTTON)
     return _("Button");
