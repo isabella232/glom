@@ -35,6 +35,7 @@ namespace Glom
 {
 
 PyGlomRelatedRecord::PyGlomRelatedRecord()
+: m_document(0)
 {
 }
 
@@ -66,6 +67,13 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
   }
 
   const Glib::ustring related_table = m_relationship->get_to_table();
+
+  if(!m_document)
+  {
+    std::cerr << G_STRFUNC << ": m_document is null. field: " << field_name << ", table:" << m_relationship->get_to_table() << std::endl;
+    PyErr_SetString(PyExc_IndexError, "m_document is null");
+    return boost::python::object();
+  }
 
   //Check whether the field exists in the table.
   sharedptr<const Field> field = m_document->get_field(m_relationship->get_to_table(), field_name);
@@ -152,6 +160,13 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
 boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& field_name, const std::string& aggregate) const
 {
   const Glib::ustring related_table = m_relationship->get_to_table();
+
+  if(!m_document)
+  {
+    std::cerr << G_STRFUNC << ": m_document is null. field: " << field_name << ", table:" << related_table << std::endl;
+    PyErr_SetString(PyExc_RuntimeError, "m_document is null");
+    return boost::python::object();
+  }
 
   //Check whether the field exists in the table.
   sharedptr<Field> field = m_document->get_field(m_relationship->get_to_table(), field_name);
