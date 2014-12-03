@@ -71,7 +71,6 @@ private:
   Gtk::Entry* m_pEntry_Name;
   Combo_FieldType* m_pCombo_Type;
   Gtk::CheckButton* m_pCheck_Unique;
-  Gtk::CheckButton* m_pCheck_NotNull;
   Gtk::Box* m_pBox_DefaultValueSimple;
   Gtk::CheckButton* m_pCheck_PrimaryKey;
   Gtk::CheckButton* m_pCheck_AutoIncrement;
@@ -93,9 +92,6 @@ private:
   Gtk::Entry* m_pEntry_Title;
 
   DataWidget* m_pDataWidget_DefaultValueSimple;
-
-  Gtk::Box* m_box_formatting_placeholder;
-  Box_Formatting* m_box_formatting;
 
   sharedptr<Field> m_Field;
   Glib::ustring m_table_name;
