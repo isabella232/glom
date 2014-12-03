@@ -232,6 +232,8 @@ void Dialog_Database_Preferences::save_to_document()
   m_system_prefs.m_org_logo = m_image->get_value();
 
   Document* document = get_document();
+  if(!document)
+     return;
 
   //Make sure that set_database_preferences() can work.
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
@@ -241,8 +243,6 @@ void Dialog_Database_Preferences::save_to_document()
 
   //The script is not part of "database preferences" in the database data,
   //because it does not seem to be part of simple personalisation.
-  if(!document)
-     return;
   const Glib::ustring script = m_text_view_script->get_buffer()->get_text();
   document->set_startup_script(script);
 }
