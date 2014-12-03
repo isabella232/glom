@@ -516,7 +516,7 @@ void Box_Formatting::enforce_constraints()
     else
     {
       m_checkbox_format_text_multiline->show();
-      m_label_format_text_multiline_height->hide();
+      m_label_format_text_multiline_height->show();
       m_spinbutton_format_text_multiline_height->show();
     }
 
