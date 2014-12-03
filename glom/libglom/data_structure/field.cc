@@ -324,8 +324,7 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_t
     if(!str)
       return Glib::ustring();
 
-    Glib::ustring result = (str) ? 
-      Glib::ustring(Glib::ScopedPtr<char>(str).get()) : Glib::ustring();
+    Glib::ustring result = Glib::ustring(Glib::ScopedPtr<char>(str).get());
 
     //Correction for text representations of image (binary) data:
     //Avoid arbitrary newlines in this text.
