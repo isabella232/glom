@@ -206,8 +206,6 @@ Glib::ustring TranslatableItem::get_translatable_type_name_nontranslated(enumTra
     return "Table";
   else if(item_type == TRANSLATABLE_TYPE_LAYOUT_ITEM)
     return "Layout Group";
-  else if(item_type == TRANSLATABLE_TYPE_CUSTOM_TITLE)
-    return "Field Title";
   else if(item_type == TRANSLATABLE_TYPE_BUTTON)
     return "Button";
   else if(item_type == TRANSLATABLE_TYPE_TEXTOBJECT)
