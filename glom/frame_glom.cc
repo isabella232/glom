@@ -2267,6 +2267,12 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
   }
 
   AppWindow* app = dynamic_cast<AppWindow*>(get_app_window());
+  if(!app)
+  {
+    std::cerr << G_STRFUNC << ": app is null." << std::endl;
+    return false;
+  }
+
   app->clear_progress_message();
 
   //Only ask for the password if we are shared on the network, or we are using a centrally hosted server.

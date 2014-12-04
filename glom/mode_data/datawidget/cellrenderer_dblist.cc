@@ -103,20 +103,22 @@ void CellRendererDbList::repack_cells_fixed(Gtk::CellLayout* combobox)
   {
     //Get the default column, created by set_text_column():
     Gtk::CellRendererText* cell = dynamic_cast<Gtk::CellRendererText*>(combobox->get_first_cell());
+    if (cell)
+    {
+      //Unpack and repack it with expand=false instead of expand=true:
+      //We don't expand the first column, so we can align the other columns.
+      cell->reference();
+      combobox->clear();
+      combobox->pack_start(*cell, false);
+      cell->unreference();
 
-    //Unpack and repack it with expand=false instead of expand=true:
-    //We don't expand the first column, so we can align the other columns.
-    cell->reference();
-    combobox->clear();
-    combobox->pack_start(*cell, false);
-    cell->unreference();
+      //Make the renderer render the column:
+      combobox->add_attribute(*cell, "text", get_fixed_model_text_column());
 
-    //Make the renderer render the column:
-    combobox->add_attribute(*cell, "text", get_fixed_model_text_column());
+      cell->property_xalign() = 0.0f;
 
-    cell->property_xalign() = 0.0f;
-
-    m_repacked_first_cell = true; //Avoid doing this again.
+      m_repacked_first_cell = true; //Avoid doing this again.
+    }
   }
 
   //Add extra cells:

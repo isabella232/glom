@@ -1385,6 +1385,12 @@ void AppWindow::existing_or_new_new()
 
   //Check that the document was given a location:
   Document* document = dynamic_cast<Document*>(get_document());
+  if(!document)
+  {
+    std::cerr << G_STRFUNC << ": document is null." << std::endl;
+    return;
+  }
+
   if(!document->get_file_uri().empty())
   {
     //Get details from the extended save dialog:
@@ -1877,6 +1883,12 @@ void AppWindow::fill_menu_tables()
   }
 
   Document* document = dynamic_cast<Document*>(get_document());
+  if(!document)
+  {
+    std::cerr << G_STRFUNC << ": document is null." << std::endl;
+    return;
+  }
+
   const Document::type_listTableInfo tables = document->get_tables();
   for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
@@ -1927,6 +1939,12 @@ void AppWindow::fill_menu_reports(const Glib::ustring& table_name)
   m_refNavReportsActionGroup = Gio::SimpleActionGroup::create();
 
   Document* document = dynamic_cast<Document*>(get_document());
+  if(!document)
+  {
+    std::cerr << G_STRFUNC << ": document is null." << std::endl;
+    return;
+  }
+
   const std::vector<Glib::ustring> reports = document->get_report_names(table_name);
   for(std::vector<Glib::ustring>::const_iterator iter = reports.begin(); iter != reports.end(); ++iter)
   {
@@ -2005,6 +2023,12 @@ void AppWindow::fill_menu_print_layouts(const Glib::ustring& table_name)
   m_refNavPrintLayoutsActionGroup = Gio::SimpleActionGroup::create();
 
   Document* document = dynamic_cast<Document*>(get_document());
+  if(!document)
+  {
+    std::cerr << G_STRFUNC << ": document is null." << std::endl;
+    return;
+  }
+
   const std::vector<Glib::ustring> tables = document->get_print_layout_names(table_name);
 
   // TODO_clientonly: Should this be available in client only mode? We need to
