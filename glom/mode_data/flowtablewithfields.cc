@@ -496,7 +496,9 @@ void FlowTableWithFields::add_field(const sharedptr<LayoutItem_Field>& layoutite
   }
 
   Gtk::EventBox* eventbox = Gtk::manage(new Gtk::EventBox());
-  eventbox->add(*info.m_first);
+  if(info.m_first)
+      eventbox->add(*info.m_first);
+
   eventbox->set_halign(Gtk::ALIGN_START);
   info.m_first_eventbox = eventbox; //Remember it so we can retrieve the column number later from FlowTable.
   eventbox->set_visible_window(false);
