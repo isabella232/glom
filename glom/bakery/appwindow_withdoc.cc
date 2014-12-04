@@ -103,72 +103,67 @@ bool AppWindow_WithDoc::open_document_from_data(const guchar* data, std::size_t 
 
 bool AppWindow_WithDoc::open_document(const Glib::ustring& file_uri)
 {
+  //Open it:
+
+  //Load it into a new instance unless the current document is just a default new.
+  if(!(get_document()->get_is_new())) //if it's not new.
   {
-    //Open it:
+    //New instance:
+    new_instance(file_uri);
+    return true;
+  }
 
-    //Load it into a new instance unless the current document is just a default new.
-    if(!(get_document()->get_is_new())) //if it's not new.
-    {
-      //New instance:
-      new_instance(file_uri);
-      return true;
-    }
+  AppWindow_WithDoc* pApp = this; //Replace the default new document in this instance.
 
-    AppWindow_WithDoc* pApp = this; //Replace the default new document in this instance.
+  //Open it.
+  pApp->m_pDocument->set_file_uri(file_uri);
+  int failure_code = 0;
+  const bool bTest = pApp->m_pDocument->load(failure_code);
 
-    //Open it.
-    pApp->m_pDocument->set_file_uri(file_uri);
-    int failure_code = 0;
-    const bool bTest = pApp->m_pDocument->load(failure_code);
-
-    bool bOpenFailed = false;
-    bool bShowError = false;
-    if(!bTest) //if open failed.
-    {
-      bOpenFailed = true;
-      bShowError = true;
-    }
+  bool bOpenFailed = false;
+  bool bShowError = false;
+  if(!bTest) //if open failed.
+  {
+    bOpenFailed = true;
+    bShowError = true;
+  }
+  else
+  {
+    //if open succeeded then let the App respond:
+    const bool test = pApp->on_document_load();
+    if(!test)
+      bOpenFailed = true; //The application didn't like something about the just-loaded document.
     else
     {
-      //if open succeeded then let the App respond:
-      const bool test = pApp->on_document_load();
-      if(!test)
-        bOpenFailed = true; //The application didn't like something about the just-loaded document.
-      else
-      {
-        pApp->update_window_title();
-        set_document_modified(false); //disables menu and toolbar Save items.
+      pApp->update_window_title();
+      set_document_modified(false); //disables menu and toolbar Save items.
 
-        //Update document history list:
-        //(Getting the file URI again, in case it has changed while being opened,
-        //for instance if it was a template file that was saved as a real file.)
-        if(pApp->m_pDocument)
-          document_history_add(file_uri);
-
-        return true; //success.
-      }
+      //Update document history list:
+      //(Getting the file URI again, in case it has changed while being opened,
+      //for instance if it was a template file that was saved as a real file.)
+      if(pApp->m_pDocument)
+        document_history_add(file_uri);
     }
+  }
 
-    if(bOpenFailed)
-    {
-      if(bShowError)
-        ui_warning_load_failed(failure_code);
+  if(bOpenFailed)
+  {
+    if(bShowError)
+      ui_warning_load_failed(failure_code);
 
-      //Make sure that non-existant files are removed from the history list:
-      if(failure_code == Document::LOAD_FAILURE_CODE_NOT_FOUND)
-        document_history_remove(file_uri);
+    //Make sure that non-existant files are removed from the history list:
+    if(failure_code == Document::LOAD_FAILURE_CODE_NOT_FOUND)
+      document_history_remove(file_uri);
 
-      //re-initialize document.
-      delete pApp->m_pDocument;
-      pApp->m_pDocument = 0;
-      pApp->init_create_document();
+    //re-initialize document.
+    delete pApp->m_pDocument;
+    pApp->m_pDocument = 0;
+    pApp->init_create_document();
 
-      return false; //failed.
-    }
+    return false; //failed.
+  }
 
-  } //if already open.
-
-  return false; //failed.
+  return true; //success.
 }
 
 void AppWindow_WithDoc::on_menu_file_open()
