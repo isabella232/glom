@@ -266,9 +266,14 @@ sharedptr<Field> Base_DB::change_column(const Glib::ustring& table_name, const s
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   sharedptr<Field> result = check_field_change_constraints(field_old, field);
 
+  //TODO: change_column() doesn't throw any exception.
   try
   {
-    connection_pool->change_column(table_name, field_old, result);
+    if(!connection_pool->change_column(table_name, field_old, result))
+    {
+      std::cerr << G_STRFUNC << ": change_column() failed." << std::endl;
+      return sharedptr<Field>();
+    }
   }
   catch(const Glib::Error& ex)
   {

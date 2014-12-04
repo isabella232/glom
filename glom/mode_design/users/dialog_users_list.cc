@@ -266,7 +266,11 @@ void Dialog_UsersList::on_button_user_new()
   if(response != Gtk::RESPONSE_OK)
     return;
 
-  DbUtils::add_user(get_document(), user, password, m_combo_group->get_active_text() /* group */);
+  if(!DbUtils::add_user(get_document(), user, password, m_combo_group->get_active_text() /* group */))
+  {
+    std::cerr << G_STRFUNC << ": add_user() failed." << std::endl;
+  }
+
   fill_list();
 }
 
