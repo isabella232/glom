@@ -52,6 +52,7 @@ CanvasItemMovable::CanvasItemMovable()
   m_drag_start_cursor_x(0.0), m_drag_start_cursor_y(0.0),
   m_drag_start_position_x(0.0), m_drag_start_position_y(0.0),
   m_drag_latest_position_x(0.0), m_drag_latest_position_y(0.0),
+  m_drag_cursor_type(Gdk::FLEUR), //arbitrary default
   m_grid(0),
   m_allow_vertical_movement(true), m_allow_horizontal_movement(true),
   m_selected(false),
