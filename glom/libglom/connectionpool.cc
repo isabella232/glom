@@ -326,14 +326,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
     }
     else
     {
-      try
-      {
-        m_refGdaConnection = m_backend->connect(m_database, get_user(), get_password(), m_fake_connection);
-      }
-      catch(const Glib::Error& ex)
-      {
-        throw ex;
-      }
+      m_refGdaConnection = m_backend->connect(m_database, get_user(), get_password(), m_fake_connection);
 
       {
         //Allow get_meta_store_data() to succeed:
