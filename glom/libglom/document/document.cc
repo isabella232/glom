@@ -4916,7 +4916,12 @@ bool add_file_to_archive(archive* a, const std::string& parent_dir_path, const s
   }
 
   struct stat st;
-  stat(filepath.c_str(), &st);
+  if(stat(filepath.c_str(), &st) < 0)
+  {
+    std::cerr << G_STRFUNC << ": stat() failed." << std::endl;
+    std::cerr << "  : with path: " << filepath << std::endl;
+    return false;
+  }
 
   struct archive_entry* entry = archive_entry_new();
   ScopedArchiveEntryPtr<archive_entry> scoped_entry(entry, &archive_entry_free); //Make sure it is always released.
