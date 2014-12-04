@@ -86,8 +86,6 @@ bool AppWindow_WithDoc::open_document_from_data(const guchar* data, std::size_t 
     {
       update_window_title();
       set_document_modified(false); //disables menu and toolbar Save items.
-
-      return true; //success.
     }
   }
 
