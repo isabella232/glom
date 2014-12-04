@@ -564,7 +564,11 @@ bool Postgres::save_password_to_pgpass(const Glib::ustring username, const Glib:
   catch(const Glib::Error& ex)
   {
     std::cerr << G_STRFUNC << ": exception from Glib::filename_from_uri(): " << ex.what() << std::endl;
-    g_rename(filepath_previous.c_str(), filepath_pgpass.c_str());
+    if(g_rename(filepath_previous.c_str(), filepath_pgpass.c_str()) != 0)
+    {
+      std::cerr << G_STRFUNC << "Could not rename file back again from=" << filepath_previous << ", to=" << filepath_pgpass << std::endl;
+    }
+
     return false;
   }
 
@@ -572,7 +576,11 @@ bool Postgres::save_password_to_pgpass(const Glib::ustring username, const Glib:
   if(!result)
   {
     std::cerr << G_STRFUNC << ": create_text_file() failed." << std::endl;
-    g_rename(filepath_previous.c_str(), filepath_pgpass.c_str());
+    if(g_rename(filepath_previous.c_str(), filepath_pgpass.c_str()) != 0)
+    {
+      std::cerr << G_STRFUNC << "Could not rename file back again from=" << filepath_previous << ", to=" << filepath_pgpass << std::endl;
+    }
+
     return false;
   }
 
@@ -648,7 +656,10 @@ bool Postgres::save_backup(const SlotProgress& slot_progress, const Glib::ustrin
   //      because another application might try to edit it in the meantime.
   if(!pgpass_backup.empty())
   {
-    g_rename(pgpass_backup.c_str(), pgpass_original.c_str());
+    if(g_rename(pgpass_backup.c_str(), pgpass_original.c_str()) != 0)
+    {
+      std::cerr << G_STRFUNC << "Could not rename file back again from=" << pgpass_backup << ", to=" << pgpass_original << std::endl;
+    }
   }
 
   if(!result)
@@ -731,7 +742,10 @@ bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::stri
   //      because another application might try to edit it in the meantime.
   if(!pgpass_backup.empty())
   {
-    g_rename(pgpass_backup.c_str(), pgpass_original.c_str());
+    if(g_rename(pgpass_backup.c_str(), pgpass_original.c_str()) != 0)
+    {
+      std::cerr << G_STRFUNC << "Could not rename file back again from=" << pgpass_backup << ", to=" << pgpass_original << std::endl;
+    }
   }
 
   if(!result)
