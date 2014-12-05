@@ -45,7 +45,9 @@ Dialog_Import_CSV_Progress::Dialog_Import_CSV_Progress(BaseObjectType* cobject, 
   builder->get_widget("import_csv_progress_textview", m_text_view);
 
   if(!m_progress_bar || !m_text_view)
-    throw std::runtime_error("Missing widgets from glade file for Dialog_Import_CSV_Progress");
+  {
+    std::cerr << G_STRFUNC << "Missing widgets from glade file for Dialog_Import_CSV_Progress" << std::endl;
+  }
 }
 
 bool Dialog_Import_CSV_Progress::init_db_details(const Glib::ustring& table_name)

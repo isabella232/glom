@@ -46,7 +46,9 @@ DialogImageSaveProgress::DialogImageSaveProgress(BaseObjectType* cobject, const 
   builder->get_widget("progress_bar", m_progress_bar);
 
   if(!m_progress_bar)
-    throw std::runtime_error("Missing widgets from glade file for DialogImageSaveProgress");
+  {
+    std::cerr << G_STRFUNC << ": Missing widgets from glade file for DialogImageSaveProgress" << std::endl;
+  }
 }
 
 DialogImageSaveProgress::~DialogImageSaveProgress()

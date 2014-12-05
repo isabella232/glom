@@ -23,6 +23,7 @@
 #include <gtkmm/messagedialog.h>
 #include <glibmm/main.h>
 #include <glibmm/i18n.h>
+#include <iostream>
 
 namespace
 {
@@ -44,7 +45,9 @@ DialogImageLoadProgress::DialogImageLoadProgress(BaseObjectType* cobject, const 
   builder->get_widget("progress_bar", m_progress_bar);
 
   if(!m_progress_bar)
-    throw std::runtime_error("Missing widgets from glade file for DialogImageLoadProgress");
+  {
+    std::cerr << G_STRFUNC << ": Missing widgets from glade file for DialogImageLoadProgress" << std::endl;
+  }
 }
 
 DialogImageLoadProgress::~DialogImageLoadProgress()

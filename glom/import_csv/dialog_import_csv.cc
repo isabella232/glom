@@ -82,7 +82,9 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   builder->get_widget("import_csv_error_label", m_error_label);
 
   if(!m_sample_view || !m_encoding_combo || !m_target_table || !m_encoding_info || !m_first_line_as_title || !m_sample_rows || !m_error_label)
-    throw std::runtime_error("Missing widgets from glade file for Dialog_Import_CSV");
+  {
+    std::cerr << G_STRFUNC << ": Missing widgets from glade file for Dialog_Import_CSV" << std::endl;
+  }
 
   //Set the adjustment details, to avoid a useless 0-to-0 range and a 0 incremenet.
   //We don't do this the Glade file because GtkBuilder wouldn't find the
