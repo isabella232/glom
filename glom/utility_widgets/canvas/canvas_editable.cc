@@ -139,18 +139,6 @@ void CanvasEditable::remove_all_items(const Glib::RefPtr<Goocanvas::Group>& grou
 }
 
 
-//static:
-Glib::RefPtr<Goocanvas::Item> CanvasEditable::get_parent_container_or_self(const Glib::RefPtr<Goocanvas::Item>& item)
-{
-  return item;
-
-  Glib::RefPtr<Goocanvas::Item> result = item;
-  while(result && !result->is_container())
-    result = result->get_parent();
-
-  return result;
-}
-
 void CanvasEditable::add_vertical_rule(double x)
 {
   m_grid->add_vertical_rule(x);

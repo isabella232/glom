@@ -103,8 +103,6 @@ private:
   
   void on_item_selected(const Glib::RefPtr<CanvasItemMovable>& item, bool group_select);
 
-  static Glib::RefPtr<Goocanvas::Item> get_parent_container_or_self(const Glib::RefPtr<Goocanvas::Item>& item);
-
   bool m_dragging;
   double m_drag_x, m_drag_y;
 
