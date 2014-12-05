@@ -78,11 +78,12 @@ void evaluate_function_implementation(const Glib::ustring& func_impl)
           PyObject* pyStr = PyUnicode_AsEncodedString(pyStringObject, "utf-8", "Error ~");
           const char* pchResult = PyBytes_AS_STRING(pyStr);
           if(pchResult)
+          {
             g_warning("result is %s", pchResult);
+            Py_DECREF(pyStr);
+          }
           else
             g_warning("pchResult is null");
-
-          Py_DECREF(pyStr);
         }
         else
           g_warning("PyString_Check returned false");

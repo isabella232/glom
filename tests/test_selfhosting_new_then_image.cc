@@ -125,6 +125,12 @@ static bool test(Glom::Document::HostingMode hosting_mode)
     binary_read = &(blob->data);
   }
 
+  if(!binary_read)
+  {
+    std::cerr << G_STRFUNC << ": Failure: The value read's data was null." << std::endl;
+    return false;
+  }
+
   const GdaBinary* binary_set = gda_value_get_binary(value_set.gobj());
   if(!binary_set)
   {
