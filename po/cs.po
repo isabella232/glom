@@ -538,7 +538,7 @@ msgstr "Glom"
 
 #: ../glom.desktop.in.in.h:2
 msgid "A user-friendly database environment."
-msgstr "Prostředí uživatelsky přívětivé databáze."
+msgstr "Uživatelsky přívětivé prostředí pro práci s databázemi."
 
 #: ../glom/dialog_connection.cc:205
 msgid "Not yet created."
