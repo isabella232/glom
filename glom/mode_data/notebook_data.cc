@@ -84,6 +84,10 @@ Notebook_Data::Notebook_Data()
 
 Notebook_Data::~Notebook_Data()
 {
+  //This is a workaround to prevent our Glom::Frame_Glom::on_notebook_data_switch_page
+  //mDestructorStarted = true;
+  remove_all_pages_without_signalling();
+
   remove_view(&m_Box_List);
   remove_view(&m_Box_Details);
 }

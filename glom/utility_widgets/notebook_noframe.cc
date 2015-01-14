@@ -44,8 +44,9 @@ NotebookNoFrame::NotebookNoFrame()
 
   //Let the StackSwitcher switch the Stack:
   m_box_tabs.set_stack(m_box_pages);
-  m_box_pages.property_visible_child().signal_changed().connect(
-    sigc::mem_fun(*this, &NotebookNoFrame::on_visible_child_changed));
+  m_connection_visible_child_changed =
+    m_box_pages.property_visible_child().signal_changed().connect(
+      sigc::mem_fun(*this, &NotebookNoFrame::on_visible_child_changed));
 
   //m_box_tabs.set_spacing(UiUtils::DEFAULT_SPACING_SMALL);
 
@@ -83,6 +84,19 @@ void NotebookNoFrame::append_page(Widget& child, const Glib::ustring& name, cons
 {
   m_box_pages.add(child, name, tab_label);
 }
+
+void NotebookNoFrame::remove_all_pages_without_signalling() {
+  //Prevent Glom::NotebookNoFrame::on_visible_child_changed() from being called,
+  //which then tries to call get_parent() on, for instance, the parent
+  //Frame_Glom container widget, for which GTK_IS_WIDGET can fail if the
+  //Notebook_NoFrame is being removed during Frame_Glom destruction.
+  //This shouldn't be necessary and wasn't necessary with earlier GTK+ or gtkmm
+  //versions.
+  m_connection_visible_child_changed.disconnect();
+
+  UiUtils::container_remove_all(m_box_pages);
+}
+
 
 std::vector<Gtk::Widget*> NotebookNoFrame::get_page_children()
 {
