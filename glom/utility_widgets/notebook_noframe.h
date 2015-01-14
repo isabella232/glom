@@ -41,6 +41,11 @@ public:
 
   void append_page(Widget& child, const Glib::ustring& name, const Glib::ustring& tab_label);
 
+  /** This allows a workaround for GTK_IS_WIDGET(parent) failing sometimes
+   * during destruction. See the comment in the code.
+   */
+  void remove_all_pages_without_signalling();
+
   Gtk::Widget* get_visible_child();
   Glib::ustring get_visible_child_name() const;
   void set_visible_child(const Glib::ustring& name);
@@ -62,6 +67,7 @@ private:
   Gtk::Box m_box_action_left, m_box_action_right;
 
   type_signal_switch_page m_signal_switch_page;
+  sigc::connection m_connection_visible_child_changed;
 };
 
 } //namespace Glom
