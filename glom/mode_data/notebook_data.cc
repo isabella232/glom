@@ -84,8 +84,8 @@ Notebook_Data::Notebook_Data()
 
 Notebook_Data::~Notebook_Data()
 {
-  //This is a workaround to prevent our Glom::Frame_Glom::on_notebook_data_switch_page
-  //mDestructorStarted = true;
+  //This is a workaround to prevent our Glom::Frame_Glom::on_notebook_data_switch_page()
+  //signal handler from being called, which leads to a crash.
   remove_all_pages_without_signalling();
 
   remove_view(&m_Box_List);
