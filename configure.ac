@@ -406,5 +406,6 @@ AC_CONFIG_FILES([Makefile
                  win32/glom.iss])
 
 AC_CONFIG_FILES([tests/test_glom_date_in_locales.sh], [chmod u+x tests/test_glom_date_in_locales.sh])
+AC_CONFIG_FILES([tests/test_glom_date_in_locales_lc_time.sh], [chmod u+x tests/test_glom_date_in_locales_lc_time.sh])
 
 AC_OUTPUT
