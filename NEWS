@@ -1,4 +1,14 @@
-1.29.1 (stable):
+1.29.2 (unstable):
+
+* Use the LC_TIME environment variable to get translated date formats.
+  (Murray Cumming) Bug #742968
+* Avoid a crash during shutdown.
+  (Murray Cumming) Bug #741851
+* Fix remaining warnings from the Coverity scan.
+  (Murray Cumming)
+
+
+1.29.1 (unstable):
 
 * Use libgda-6.0 instead of libgda-5.0, though image fields are currently not
   working.
@@ -9,6 +19,7 @@
   (Murray Cumming)
 * Use the new Gio::Resource API from glibmm instead of the C API.
   (Murray Cumming)
+
 
 1.28.0 (stable):
 
