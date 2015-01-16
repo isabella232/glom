@@ -1,0 +1,41 @@
+#/bin/sh -e
+
+# This test checks that dates are presented and interpreted correctly,
+# even when the LC_TIME's locale would need to use a translation of the "%x" date
+# format from .po file, but the main locale doesn't need a translation of the "%x"
+# date format.
+#
+# For instance, LANG="en_US.UTF-8" (uses "%x", giving 4 digit years),
+# with LC_TIME="es_ES.UTF-8" (should not use "%x", because it gives 2 digit years).
+#
+# This test requires these locales to be installed and configured.
+# That might be a problem on some systems, so feel free to use a patch to edit this file or disable it altogether.
+#
+# These are chosen based on problems found previously,
+# and the ones with good translations shown here: http://l10n.gnome.org/module/glom/
+# TODO: Get a list from po/*.po ?
+#
+# On debian/Ubuntu do this: 
+#  sudo apt-get install language-pack-de language-pack-es language-pack-fi language-pack-fr language-pack-hu language-pack-it language-pack-pt language-pack-sl language-pack-da language-pack-cs language-pack-nb language-pack-sv
+#
+# These are apparently not available on Fedora:  "da_DK.UTF-8" "cs_CZ.UTF-8" "nb_NO.UTF-8" "sv_SE.UTF-8"
+
+function test_date {
+  lang="$1"
+  lc_time="$2"       
+
+  echo testing with LANG="$lang" and LC_TIME="$lc_time"
+  export LANG="$lang"
+
+  # We don't set LANGUAGE because that seems to affect, for instance, printf(),
+  # ignoring LC_TIME. Maybe we need to handle that too.
+  #  export LANGUAGE="$lang"
+  export LC_TIME="$lc_time"
+
+  @abs_top_builddir@/glom/glom --debug-date-check || exit 1
+}
+
+test_date "en_US.UTF-8" "en_GB.UTF-8"
+test_date "en_US.UTF-8" "es_ES.UTF-8"
+
+
