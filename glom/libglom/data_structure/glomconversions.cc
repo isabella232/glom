@@ -88,10 +88,39 @@ static inline const char* glom_get_locale_date_format()
 {
   if(!c_locale_date_format)
   {
-    //TODO: Find some way to get the %x translation that's appropriate for the value of LC_NUMERIC in the locale,
-    //because this just assumes that the main locale name will be correct,
-    //so this can fail, for instance, if gettext() is looking for the translation for en_US.UTF-8
-    //but LC_NUMERIC is set to en_GB.UTF-8 (which uses 2 digits when using %x).
+    //Get the current LC_TIME value:
+    //We copy the string because setlocale() probably returns the same array
+    //each time.
+    //Even when the LC_TIME environment variable is not set, we still seem
+    //to get a useful value here, based on LC_ALL, for instance.
+    char* lc_time = setlocale(LC_TIME, NULL);
+    if(lc_time)
+      lc_time = g_strdup(lc_time);
+
+    std::cout << "DEBUG: LC_TIME: " << lc_time << std::endl;
+
+    char* old_lc_messages = 0;
+    bool changed_lc_messages = false;
+
+    if(lc_time)
+    {
+      //We call setlocale() so we get the %x translation that's appropriate for the
+      //value of LC_TIME's locale,
+      //Otherwise _() would fail if, for instance, gettext() just looked for the
+      //translation for en_US.UTF-8, but LC_NUMERIC was set to en_GB.UTF-8
+      //(which uses 2 digits when using %x).
+
+      //Get the current LC_MESSAGES value:
+      old_lc_messages = g_strdup(setlocale(LC_MESSAGES, NULL));
+      if(old_lc_messages)
+        old_lc_messages = g_strdup(old_lc_messages);
+
+      //Change LC_MESSAGES to change how gettext works():
+      if(g_strcmp0(lc_time, old_lc_messages) != 0) {
+        setlocale(LC_MESSAGES, lc_time);
+        changed_lc_messages = true;
+      }
+    }
 
     /* TRANSLATORS: Please only translate this string if you know that strftime() 
      * shows only 2 year digits when using format "x". We want to always display 
@@ -102,6 +131,16 @@ static inline const char* glom_get_locale_date_format()
      * Thanks.
      * xgettext:no-c-format */
     c_locale_date_format = _("%x");
+
+
+    if(changed_lc_messages)
+    {
+      //Change LC_MESSAGES back:
+      setlocale(LC_MESSAGES, old_lc_messages);
+    }
+
+    g_free(old_lc_messages);
+    g_free(lc_time);
   }
 
   //std::cout << G_STRFUNC << ": c_locale_date_format=" << c_locale_date_format << std::endl;
