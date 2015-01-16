@@ -27,8 +27,10 @@ function test_date {
   echo testing with LANG="$lang" and LC_TIME="$lc_time"
   export LANG="$lang"
 
-  # We don't set LANGUAGE because that seems to affect, for instance, printf(),
-  # ignoring LC_TIME. Maybe we need to handle that too.
+  # We don't set LANGUAGE because that seems to affect what setlocale() returns
+  # for LC_TIME (so we can't get the translated "%x"),
+  # though LC_TIME still affects printf(),
+  # Maybe we need to handle that too.
   #  export LANGUAGE="$lang"
   export LC_TIME="$lc_time"
 
