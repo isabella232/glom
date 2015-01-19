@@ -89,6 +89,17 @@ static inline const char* glom_get_locale_date_format()
   if(!c_locale_date_format)
   {
     //Get the current LC_TIME value:
+
+    //Unset LANGUAGE because it affects what setlocale(LC_TIME, NULL) returns,
+    //though it doesn't affect what, for instance, printf() uses. So unsetting
+    //it lets us get the correct LC_TIME locale.
+    const char* ENV_LANGUAGE = "LANGUAGE";
+    char* language = getenv(ENV_LANGUAGE);
+    if(language)
+      language = g_strdup(language);
+
+    setenv(ENV_LANGUAGE, "", 1 /* replace */);
+
     //We copy the string because setlocale() probably returns the same array
     //each time.
     //Even when the LC_TIME environment variable is not set, we still seem
@@ -139,8 +150,14 @@ static inline const char* glom_get_locale_date_format()
       setlocale(LC_MESSAGES, old_lc_messages);
     }
 
+    //Restore this:
+    if(language) { //setenv() can't take NULL for this.
+      setenv(ENV_LANGUAGE, language, 1 /* replace */);
+   }
+
     g_free(old_lc_messages);
     g_free(lc_time);
+    g_free(language);
   }
 
   //std::cout << G_STRFUNC << ": c_locale_date_format=" << c_locale_date_format << std::endl;

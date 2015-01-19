@@ -26,18 +26,26 @@ function test_date {
 
   echo testing with LANG="$lang" and LC_TIME="$lc_time"
   export LANG="$lang"
+  export LC_TIME="$lc_time"
 
-  # We don't set LANGUAGE because that seems to affect what setlocale() returns
-  # for LC_TIME (so we can't get the translated "%x"),
-  # though LC_TIME still affects printf(),
-  # Maybe we need to handle that too.
-  #  export LANGUAGE="$lang"
+  @abs_top_builddir@/glom/glom --debug-date-check || exit 1
+}
+
+function test_date_with_language {
+  lang="$1"
+  lc_time="$2"       
+
+  echo testing with LANG="$lang" and LC_TIME="$lc_time"
+  export LANG="$lang"
+  export LANGUAGE="$lang"
   export LC_TIME="$lc_time"
 
   @abs_top_builddir@/glom/glom --debug-date-check || exit 1
 }
 
 test_date "en_US.UTF-8" "en_GB.UTF-8"
+test_date_with_language "en_US.UTF-8" "en_GB.UTF-8"
 test_date "en_US.UTF-8" "es_ES.UTF-8"
+test_date_with_language "en_US.UTF-8" "es_ES.UTF-8"
 
 
