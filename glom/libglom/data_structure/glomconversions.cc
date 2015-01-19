@@ -97,7 +97,7 @@ static inline const char* glom_get_locale_date_format()
     if(lc_time)
       lc_time = g_strdup(lc_time);
 
-    std::cout << "DEBUG: LC_TIME: " << lc_time << std::endl;
+    //std::cout << "DEBUG: LC_TIME: " << lc_time << std::endl;
 
     char* old_lc_messages = 0;
     bool changed_lc_messages = false;
