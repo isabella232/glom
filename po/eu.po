@@ -1,13 +1,17 @@
+# Basque translation for glom
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2014.
+# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2014, 2015.
+# Edurne Labaka <elabaka@uzei.com>, 2015.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-21 10:06+0200\n"
-"PO-Revision-Date: 2014-07-21 10:25+0200\n"
+"Project-Id-Version: glom master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glom&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-02-07 16:10+0100\n"
+"PO-Revision-Date: 2015-02-07 16:11+0100\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
 "Language-Team: Basque <librezale@librezale.org>\n"
 "Language: eu\n"
@@ -158,11 +162,11 @@ msgstr ""
 "Fitxategi hau irakurtzeko soilik denez, ezingo zara Garatzailearen moduan "
 "sartu diseinuaren aldaketak egiteko."
 
-#: ../glom/appwindow.cc:987 ../glom/appwindow.cc:2142
-#: ../glom/appwindow.cc:2419 ../glom/appwindow.cc:2456
-#: ../glom/appwindow.cc:2832 ../glom/base_db_table_data.cc:393
+#: ../glom/appwindow.cc:987 ../glom/appwindow.cc:2173
+#: ../glom/appwindow.cc:2450 ../glom/appwindow.cc:2487
+#: ../glom/appwindow.cc:2863 ../glom/base_db_table_data.cc:393
 #: ../glom/box_withbuttons.cc:36 ../glom/box_withbuttons.cc:50
-#: ../glom/box_withbuttons.cc:64 ../glom/dialog_existing_or_new.cc:827
+#: ../glom/box_withbuttons.cc:64 ../glom/dialog_existing_or_new.cc:807
 #: ../glom/filechooser_export.cc:39 ../glom/frame_glom.cc:513
 #: ../glom/frame_glom.cc:737 ../glom/frame_glom.cc:824
 #: ../glom/frame_glom.cc:930 ../glom/utils_ui.cc:485
@@ -244,15 +248,15 @@ msgstr "Arazoa dokumentua kargatzean"
 msgid "Glom could not load the document."
 msgstr "Glom-ek ezin izan du dokumentua kargatu."
 
-#: ../glom/appwindow.cc:1499
+#: ../glom/appwindow.cc:1505
 msgid "Creating Glom database from example file."
 msgstr "Glom-en datu-basea adibidearen fitxategitik sortzen."
 
-#: ../glom/appwindow.cc:1685
+#: ../glom/appwindow.cc:1691
 msgid "Creating Glom database from backup file."
 msgstr "Glom-en datu-basea babeskopiaren fitxategitik sortzen."
 
-#: ../glom/appwindow.cc:1769
+#: ../glom/appwindow.cc:1775
 msgid ""
 "Glom could not create the new database. Maybe you do not have the necessary "
 "access rights. Please contact your system administrator."
@@ -260,25 +264,25 @@ msgstr ""
 "Glom-ek ezin izan du datu-base berria sortu. Agian, ez daukazu sarbidetzeko "
 "nahikoa baimenik. Jar zaitez sistemaren administratzailearekin harremanetan."
 
-#: ../glom/appwindow.cc:1770
+#: ../glom/appwindow.cc:1776
 msgid "Database Creation Failed"
 msgstr "Huts egin du datu-basea sortzean"
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/appwindow.cc:2101 ../glom/bakery/appwindow_withdoc.cc:241
-#: ../glom/bakery/appwindow_withdoc.cc:292
+#: ../glom/appwindow.cc:2144 ../glom/bakery/appwindow_withdoc.cc:229
+#: ../glom/bakery/appwindow_withdoc.cc:273
 msgid "Save failed."
 msgstr "Huts egin du gordetzean."
 
-#: ../glom/appwindow.cc:2101
+#: ../glom/appwindow.cc:2144
 msgid "There was an error while saving the example file."
 msgstr "Errorea gertatu da adibidearen fitxategia gordetzean."
 
-#: ../glom/appwindow.cc:2128 ../glom/appwindow.cc:2133
+#: ../glom/appwindow.cc:2159 ../glom/appwindow.cc:2164
 msgid "Save Document"
 msgstr "Gorde dokumentua"
 
-#: ../glom/appwindow.cc:2143 ../glom/appwindow.cc:2420
+#: ../glom/appwindow.cc:2174 ../glom/appwindow.cc:2451
 #: ../glom/bakery/dialog_offersave.cc:57
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:40
 #: ../glom/utility_widgets/imageglom.cc:688
@@ -288,11 +292,11 @@ msgid "_Save"
 msgstr "_Gorde"
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2220
+#: ../glom/appwindow.cc:2251
 msgid "Read-only File."
 msgstr "Fitxategia irakurtzeko soilik."
 
-#: ../glom/appwindow.cc:2220
+#: ../glom/appwindow.cc:2251
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -301,11 +305,11 @@ msgstr ""
 "nahikoa baimen."
 
 #. Warn the user:
-#: ../glom/appwindow.cc:2234
+#: ../glom/appwindow.cc:2265
 msgid "Read-only Directory."
 msgstr "Direktorioa irakurtzeko soilik."
 
-#: ../glom/appwindow.cc:2234
+#: ../glom/appwindow.cc:2265
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -313,19 +317,19 @@ msgstr ""
 "Ezingo duzu fitxategirik sortu direktorio honetan, ez baitituzu atzitzeko "
 "nahikoa baimen."
 
-#: ../glom/appwindow.cc:2251
+#: ../glom/appwindow.cc:2282
 msgid "Database Title missing"
 msgstr "Datu-basearen titulua falta da"
 
-#: ../glom/appwindow.cc:2251
+#: ../glom/appwindow.cc:2282
 msgid "You must specify a title for the new database."
 msgstr "Datu-base berriaren titulua eman behar duzu."
 
-#: ../glom/appwindow.cc:2285 ../glom/frame_glom.cc:1907
+#: ../glom/appwindow.cc:2316 ../glom/frame_glom.cc:1907
 msgid "Directory Already Exists"
 msgstr "Direktorioa badago lehendik ere"
 
-#: ../glom/appwindow.cc:2285 ../glom/frame_glom.cc:1908
+#: ../glom/appwindow.cc:2316 ../glom/frame_glom.cc:1908
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
@@ -336,60 +340,60 @@ msgstr ""
 "erabiltzeko."
 
 #. This actually creates the directory:
-#: ../glom/appwindow.cc:2418
+#: ../glom/appwindow.cc:2449
 msgid "Save Backup"
 msgstr "Gorde babeskopia"
 
-#: ../glom/appwindow.cc:2434
+#: ../glom/appwindow.cc:2465
 msgid "Exporting backup"
 msgstr "Esportatu babeskopia"
 
-#: ../glom/appwindow.cc:2440
+#: ../glom/appwindow.cc:2471
 msgid "Export Backup failed."
 msgstr "Huts egin du babeskopia esportatzean."
 
-#: ../glom/appwindow.cc:2440
+#: ../glom/appwindow.cc:2471
 msgid "There was an error while exporting the backup."
 msgstr "Errorea gertatu da babeskopia esportatzean."
 
-#: ../glom/appwindow.cc:2446
+#: ../glom/appwindow.cc:2477
 msgid "Choose a backup file"
 msgstr "Aukeratu babeskopiaren fitxategia"
 
-#: ../glom/appwindow.cc:2451
+#: ../glom/appwindow.cc:2482
 msgid ".tar.gz Backup files"
 msgstr ".tar.gz babeskopien fitxategiak"
 
-#: ../glom/appwindow.cc:2457
+#: ../glom/appwindow.cc:2488
 msgid "Restore"
 msgstr "Leheneratu"
 
-#: ../glom/appwindow.cc:2482
+#: ../glom/appwindow.cc:2513
 msgid "Restoring backup"
 msgstr "Leheneratu babeskopia"
 
-#: ../glom/appwindow.cc:2489
+#: ../glom/appwindow.cc:2520
 msgid "Restore Backup failed."
 msgstr "Huts egin du babeskopia leheneratzean."
 
-#: ../glom/appwindow.cc:2489
+#: ../glom/appwindow.cc:2520
 msgid "There was an error while extracting the backup."
 msgstr "Errorea gertatu da babeskopia erauztean."
 
-#: ../glom/appwindow.cc:2597
+#: ../glom/appwindow.cc:2628
 msgid " (read-only)"
 msgstr " (irakurtzeko soilik)"
 
-#: ../glom/appwindow.cc:2645 ../data/ui/operator/window_main.glade.h:2
+#: ../glom/appwindow.cc:2676 ../data/ui/operator/window_main.glade.h:2
 msgid "Processing"
 msgstr "Prozesatzen"
 
-#: ../glom/appwindow.cc:2831
+#: ../glom/appwindow.cc:2862
 msgid "Open Document"
 msgstr "Ireki dokumentua"
 
 #. Add a button for related record navigation:
-#: ../glom/appwindow.cc:2833 ../glom/dialog_existing_or_new.cc:828
+#: ../glom/appwindow.cc:2864 ../glom/dialog_existing_or_new.cc:808
 #: ../glom/frame_glom.cc:738 ../glom/onlineglom_strings.cc:32
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:34
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:44
@@ -403,11 +407,11 @@ msgstr "_Ireki"
 msgid "Internal error"
 msgstr "Barneko errorea"
 
-#: ../glom/base_db.cc:1388
+#: ../glom/base_db.cc:1393
 msgid "Value Is Not Unique"
 msgstr "Balioa ez da esklusiboa"
 
-#: ../glom/base_db.cc:1388
+#: ../glom/base_db.cc:1393
 msgid ""
 "The field's value must be unique, but a record with this value already "
 "exists."
@@ -455,7 +459,7 @@ msgid ""
 "record will then be permanently lost."
 msgstr ""
 "Ziur zaude erregistro hau ezabatzea nahi duzula? Erregistroaren datuak "
-"betirako galduko dira."
+"betiko galduko dira."
 
 #: ../glom/base_db_table_data.cc:390
 msgid "Delete record"
@@ -467,7 +471,7 @@ msgstr "Ezabatu erregistroa"
 #: ../glom/utility_widgets/adddel/adddel.cc:251
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:33
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:43
-#: ../glom/mode_data/db_adddel/db_adddel.cc:262
+#: ../glom/mode_data/db_adddel/db_adddel.cc:261
 #: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:31
 #: ../glom/utility_widgets/layoutwidgetutils.cc:59
 #: ../glom/utility_widgets/notebooklabelglom.cc:125
@@ -542,41 +546,41 @@ msgstr "Datu-baseen erabil errazeko ingurumena."
 msgid "Not yet created."
 msgstr "Ez da oraindik sortu."
 
-#: ../glom/dialog_existing_or_new.cc:50
+#: ../glom/dialog_existing_or_new.cc:51
 msgid "No sessions found on the local network."
 msgstr "Ez da saiorik aurkitu sare lokalean."
 
-#: ../glom/dialog_existing_or_new.cc:118
+#: ../glom/dialog_existing_or_new.cc:119
 msgid "Open a Document"
 msgstr "Ireki dokumentua"
 
-#: ../glom/dialog_existing_or_new.cc:137
+#: ../glom/dialog_existing_or_new.cc:138
 #: ../glom/utility_widgets/imageglom.cc:958
 msgid "Select File"
 msgstr "Hautatu fitxategia"
 
-#: ../glom/dialog_existing_or_new.cc:141
+#: ../glom/dialog_existing_or_new.cc:142
 msgid "Local Network"
 msgstr "Sare lokala"
 
-#: ../glom/dialog_existing_or_new.cc:145
+#: ../glom/dialog_existing_or_new.cc:146
 msgid "Recently Opened"
 msgstr "Azken aldian irekitakoak"
 
-#: ../glom/dialog_existing_or_new.cc:186
+#: ../glom/dialog_existing_or_new.cc:187
 msgid "No recently used documents available."
 msgstr "Ez daude azken aldian erabilitako dokumentuak eskuragarri."
 
-#: ../glom/dialog_existing_or_new.cc:218
+#: ../glom/dialog_existing_or_new.cc:219
 msgid "New Empty Document"
 msgstr "Dokumentu huts berria"
 
-#: ../glom/dialog_existing_or_new.cc:221
+#: ../glom/dialog_existing_or_new.cc:222
 msgid "New From Template"
 msgstr "Berria (txantiloitik)"
 
 #. Translator hint: This is <Service Name> on <Host> (via Network Interface such as eth0).
-#: ../glom/dialog_existing_or_new.cc:744
+#: ../glom/dialog_existing_or_new.cc:724
 #, c-format
 msgid "%s on %s (via %s)"
 msgstr "%2$s(e)ko %1$s ('%3$s' bidez)"
@@ -839,7 +843,7 @@ msgid "Initializing Database Data"
 msgstr "Datu-basearen datuak hasieratzen"
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2587
+#: ../glom/frame_glom.cc:2593
 msgid "All"
 msgstr "Denak"
 
@@ -956,18 +960,18 @@ msgstr "Harpidetu"
 msgid "Forgot Password"
 msgstr "Pasahitza ahaztuta"
 
-#: ../glom/bakery/appwindow_withdoc.cc:241
-#: ../glom/bakery/appwindow_withdoc.cc:292
+#: ../glom/bakery/appwindow_withdoc.cc:229
+#: ../glom/bakery/appwindow_withdoc.cc:273
 msgid ""
 "There was an error while saving the file. Your changes have not been saved."
 msgstr ""
 "Errorea gertatu da fitxategia gordetzean. Egindako aldaketak ez dira gorde."
 
-#: ../glom/bakery/appwindow_withdoc.cc:497
+#: ../glom/bakery/appwindow_withdoc.cc:478
 msgid "Open Failed."
 msgstr "Huts egin du irekitzean."
 
-#: ../glom/bakery/appwindow_withdoc.cc:497
+#: ../glom/bakery/appwindow_withdoc.cc:478
 msgid "The document could not be opened."
 msgstr "Dokumentua ezin izan da ireki."
 
@@ -994,7 +998,7 @@ msgstr "Itxi gorde gabe"
 msgid "Discard"
 msgstr "Baztertu"
 
-#: ../glom/import_csv/dialog_import_csv.cc:99
+#: ../glom/import_csv/dialog_import_csv.cc:101
 msgid "Auto Detect"
 msgstr "Autodetektatu"
 
@@ -1005,7 +1009,7 @@ msgstr "Autodetektatu"
 #. Get the ISO (not current locale) text representation:
 #. ignored
 #. iso_format
-#: ../glom/import_csv/dialog_import_csv.cc:154
+#: ../glom/import_csv/dialog_import_csv.cc:156
 msgid ""
 "Note that the source file should contain numbers and dates in international "
 "ISO format. For instance, 22nd November 2008 should be %1."
@@ -1014,36 +1018,36 @@ msgstr ""
 "formatuan edukiko dituztela. Adibidez, 2008.eko azaroaren 22a hau litzateke: "
 "%1."
 
-#: ../glom/import_csv/dialog_import_csv.cc:183
+#: ../glom/import_csv/dialog_import_csv.cc:185
 msgid "No Document Available"
 msgstr "Ez dago dokumenturik eskuragarri"
 
-#: ../glom/import_csv/dialog_import_csv.cc:183
+#: ../glom/import_csv/dialog_import_csv.cc:185
 msgid "You need to open a document to import the data into a table."
 msgstr "Dokumentu bat ireki behar duzu datuak taula batera inportatzeko."
 
-#: ../glom/import_csv/dialog_import_csv.cc:194
+#: ../glom/import_csv/dialog_import_csv.cc:196
 msgid "Import From CSV File"
 msgstr "Inportatu CSV fitxategitik"
 
-#: ../glom/import_csv/dialog_import_csv.cc:199
-#: ../glom/import_csv/dialog_import_csv.cc:576
+#: ../glom/import_csv/dialog_import_csv.cc:201
+#: ../glom/import_csv/dialog_import_csv.cc:578
 msgid "<None>"
 msgstr "<Bat ere ez>"
 
-#: ../glom/import_csv/dialog_import_csv.cc:274
+#: ../glom/import_csv/dialog_import_csv.cc:276
 msgid "Error Importing CSV File"
 msgstr "Errorea CSV fitxategitik inportatzean"
 
-#: ../glom/import_csv/dialog_import_csv.cc:428
+#: ../glom/import_csv/dialog_import_csv.cc:430
 msgid "Encoding detected as: %1"
 msgstr "Atzemandako kodeketa: %1"
 
-#: ../glom/import_csv/dialog_import_csv.cc:467
+#: ../glom/import_csv/dialog_import_csv.cc:469
 msgid "Encoding detection failed. Please manually choose one from the box."
 msgstr "Huts egin du kodeketa detektatzean. Aukeratu bat eskuz koadrotik."
 
-#: ../glom/import_csv/dialog_import_csv.cc:471
+#: ../glom/import_csv/dialog_import_csv.cc:473
 msgid ""
 "The file contains data not in the specified encoding. Please choose another "
 "one, or try \"Auto Detect\"."
@@ -1053,24 +1057,24 @@ msgstr ""
 
 #. Translators: This is the name of a UI element (a layout part name).
 #. This is a straight line, not a database row.
-#: ../glom/import_csv/dialog_import_csv.cc:513
+#: ../glom/import_csv/dialog_import_csv.cc:515
 #: ../glom/libglom/data_structure/layout/layoutitem_line.cc:91
 msgid "Line"
 msgstr "Marra"
 
-#: ../glom/import_csv/dialog_import_csv.cc:556
+#: ../glom/import_csv/dialog_import_csv.cc:558
 msgid "Target Field"
 msgstr "Helburuaren eremua"
 
-#: ../glom/import_csv/dialog_import_csv.cc:601
+#: ../glom/import_csv/dialog_import_csv.cc:603
 msgid "<Import Failure>"
 msgstr "<Huts egin du inportatzean>"
 
-#: ../glom/import_csv/dialog_import_csv.cc:611
+#: ../glom/import_csv/dialog_import_csv.cc:613
 msgid "<Picture>"
 msgstr "<Argazkia>"
 
-#: ../glom/import_csv/dialog_import_csv.cc:710
+#: ../glom/import_csv/dialog_import_csv.cc:712
 msgid ""
 "One column needs to be assigned the table's primary key (<b>%1</b>) as "
 "target field before importing"
@@ -1078,27 +1082,27 @@ msgstr ""
 "Zutabe batek taularen lehen mailako gakoa (<b>%1</b>) helburuaren eremu gisa "
 "esleitzea behar du inportatu aurretik."
 
-#: ../glom/import_csv/dialog_import_csv.cc:738
+#: ../glom/import_csv/dialog_import_csv.cc:740
 msgid "Could Not Open file"
 msgstr "Ezin izan da fitxategia ireki"
 
-#: ../glom/import_csv/dialog_import_csv.cc:739
+#: ../glom/import_csv/dialog_import_csv.cc:741
 msgid "The file at \"%1\" could not be opened: %2"
 msgstr "Ezin izan da '%s'(e)ko fitxategia ireki: %2"
 
-#: ../glom/import_csv/dialog_import_csv.cc:745
+#: ../glom/import_csv/dialog_import_csv.cc:747
 msgid "Import From CSV File: %1"
 msgstr "Inportatu CSV fitxategitik: %1"
 
-#: ../glom/import_csv/dialog_import_csv_progress.cc:85
+#: ../glom/import_csv/dialog_import_csv_progress.cc:87
 msgid "Parsing CSV file %1"
 msgstr "CSV fitxategia analizatzen: %1"
 
-#: ../glom/import_csv/dialog_import_csv_progress.cc:175
+#: ../glom/import_csv/dialog_import_csv_progress.cc:177
 msgid "Import complete\n"
 msgstr "Inportatzea osatu da\n"
 
-#: ../glom/import_csv/dialog_import_csv_progress.cc:204
+#: ../glom/import_csv/dialog_import_csv_progress.cc:206
 msgid ""
 "Warning: Importing row %1: The value for field %2 must be unique, but is "
 "already in use. The value will not be imported.\n"
@@ -1106,7 +1110,7 @@ msgstr ""
 "Abisua: %1 errenkada inportatzen. '%2' eremuaren balioa esklusiboa izan "
 "behar du, baina jadanik erabilita dago. Balioa ez da inportatuko.\n"
 
-#: ../glom/import_csv/dialog_import_csv_progress.cc:213
+#: ../glom/import_csv/dialog_import_csv_progress.cc:215
 msgid ""
 "Warning: Importing row %1: The value for field %2, \"%3\" could not be "
 "converted to the field's type. The value will not be imported.\n"
@@ -1114,7 +1118,7 @@ msgstr ""
 "Abisua: %1 errenkada inportatzen '%2' eremuaren balioa (%3) ezin izan da "
 "eremuaren motara bihurtu. Balioa ez da inportatuko.\n"
 
-#: ../glom/import_csv/dialog_import_csv_progress.cc:238
+#: ../glom/import_csv/dialog_import_csv_progress.cc:240
 msgid ""
 "Error importing row %1: Cannot import the row because the primary key is "
 "empty.\n"
@@ -1189,11 +1193,11 @@ msgstr "Turkiarra"
 
 #: ../glom/import_csv/file_encodings.cc:112
 msgid "Nordic"
-msgstr "Eskandinabiarra"
+msgstr "Eskandinaviarra"
 
 #: ../glom/import_csv/file_encodings.cc:114
 msgid "Celtic"
-msgstr "Zeltiarra"
+msgstr "Zelta"
 
 #: ../glom/import_csv/file_encodings.cc:116
 msgid "Romanian"
@@ -1204,57 +1208,53 @@ msgid "Vietnamese"
 msgstr "Vietnamdarra"
 
 #. Translators: This means an unknown or unnacceptable value type in a database.
-#: ../glom/libglom/data_structure/field.cc:663
+#: ../glom/libglom/data_structure/field.cc:660
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:151
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:159
 msgid "Invalid"
 msgstr "Baliogabea"
 
 #. Translators: This means a numeric value type in a database.
-#: ../glom/libglom/data_structure/field.cc:666
+#: ../glom/libglom/data_structure/field.cc:663
 msgid "Number"
 msgstr "Zenbakia"
 
 #. Translators: This means a text/string value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/field.cc:669
+#: ../glom/libglom/data_structure/field.cc:666
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:73
-#: ../glom/libglom/data_structure/translatable_item.cc:258
+#: ../glom/libglom/data_structure/translatable_item.cc:254
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1159
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:35
 msgid "Text"
 msgstr "Testua"
 
 #. Translators: This means a time value type in a database.
-#: ../glom/libglom/data_structure/field.cc:672
+#: ../glom/libglom/data_structure/field.cc:669
 msgid "Time"
 msgstr "Ordua"
 
 #. Translators: This means a time value type in a database.
-#: ../glom/libglom/data_structure/field.cc:675
+#: ../glom/libglom/data_structure/field.cc:672
 msgid "Date"
 msgstr "Data"
 
 #. Translators: This means a true/false value type in a database.
-#: ../glom/libglom/data_structure/field.cc:678
+#: ../glom/libglom/data_structure/field.cc:675
 msgid "Boolean"
 msgstr "Boolearra"
 
 #. Translators: This means a picture value type in a database.
 #. Translators: This is the name of a UI element (a layout part name).
-#: ../glom/libglom/data_structure/field.cc:681
+#: ../glom/libglom/data_structure/field.cc:678
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:70
-#: ../glom/libglom/data_structure/translatable_item.cc:252
+#: ../glom/libglom/data_structure/translatable_item.cc:248
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1166
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
 #: ../glom/utility_widgets/layouttoolbar.cc:46
 msgid "Image"
 msgstr "Irudia"
 
-#. TODO: Find some way to get the %x translation that's appropriate for the value of LC_NUMERIC in the locale,
-#. because this just assumes that the main locale name will be correct,
-#. so this can fail, for instance, if gettext() is looking for the translation for en_US.UTF-8
-#. but LC_NUMERIC is set to en_GB.UTF-8 (which uses 2 digits when using %x).
 #. TRANSLATORS: Please only translate this string if you know that strftime()
 #. * shows only 2 year digits when using format "x". We want to always display
 #. * 4 year digits. For instance, en_GB should translate it to "%d/%m/%Y".
@@ -1262,23 +1262,23 @@ msgstr "Irudia"
 #. * and default to %d/%m/%Y" if it detects a problem, but that might not be
 #. * correct for your locale.
 #. * Thanks.
-#: ../glom/libglom/data_structure/glomconversions.cc:104
+#: ../glom/libglom/data_structure/glomconversions.cc:144
 #, no-c-format
 msgid "%x"
-msgstr ""
+msgstr "%x"
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
-#: ../glom/libglom/data_structure/glomconversions.cc:152
+#: ../glom/libglom/data_structure/glomconversions.cc:208
 msgid ""
 "ERROR: sanity_check_date_parsing(): Sanity check failed: Glom could not "
 "parse a date's text representation that it generated itself, in this locale."
 msgstr ""
-"ERROREA: sanity_check_date_parsing(). Osotasunaren egiaztaketak huts egin "
-"du. Glom-ek ezin izan du berak sortutako dataren lokala honetako testu-"
-"adierazpena analizatu."
+"ERROREA: sanity_check_date_parsing(). Osotasunaren egiaztapenak huts egin "
+"du. Glom-ek ezin izan du berak sortutako dataren eskualde-ezarpen honetako "
+"testu-adierazpena analizatu."
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
-#: ../glom/libglom/data_structure/glomconversions.cc:188
+#: ../glom/libglom/data_structure/glomconversions.cc:244
 msgid ""
 "ERROR: sanity_check_date_text_representation_uses_4_digit_year(): Sanity "
 "check failed: Glom does not seem to use 4 digits to display years in a "
@@ -1287,11 +1287,11 @@ msgid ""
 "translator. Please file a bug - see http://www.glom.org"
 msgstr ""
 "ERROREA: sanity_check_date_text_representation_uses_4_digit_year(). "
-"Osotasunaren egiaztaketak huts egin du. Badirudi Glom-ek ez duela 4 digitu "
-"erabiltzen urtea bistaratzeko dataren lokala honetako testu-adierazpenean. "
-"Lehenetsia 'yyyy/mm/dd' da, nahiz eta okerrekoa izan zure lokalerako. Honek "
-"itzultzailearen arreta eskatzen du. Mesedez, eman akatsaren berri, ikus - "
-"http://www.glom.org"
+"Osotasunaren egiaztapenak huts egin du. Badirudi Glom-ek ez dituela 4 digitu "
+"erabiltzen urtea bistaratzeko dataren eskualde-ezarpen honetako testu-"
+"adierazpenean. Lehenetsia 'yyyy/mm/dd' da, nahiz eta okerrekoa izan zure "
+"lokalerako. Honek itzultzailearen arreta eskatzen du. Mesedez, eman "
+"akatsaren berri, ikus - http://www.glom.org"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutgroup.cc:422
@@ -1303,7 +1303,7 @@ msgstr "Taldea"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:68
-#: ../glom/libglom/data_structure/translatable_item.cc:248
+#: ../glom/libglom/data_structure/translatable_item.cc:244
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1152
 #: ../glom/utility_widgets/layouttoolbar.cc:42
 msgid "Button"
@@ -1316,7 +1316,7 @@ msgstr "Egutegiaren ataria"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:229
-#: ../glom/libglom/data_structure/translatable_item.cc:230
+#: ../glom/libglom/data_structure/translatable_item.cc:228
 #: ../glom/mode_design/dialog_database_preferences.cc:62
 #: ../data/ui/developer/window_field_definition_edit.glade.h:8
 msgid "Field"
@@ -1395,28 +1395,28 @@ msgstr "Laburpena"
 msgid "Vertical Group"
 msgstr "Talde bertikala"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:232
+#: ../glom/libglom/data_structure/translatable_item.cc:230
 msgid "Custom Title"
 msgstr "Pertsonalizatu izenburua"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:234
+#: ../glom/libglom/data_structure/translatable_item.cc:232
 msgid "Relationship"
 msgstr "Erlazioa"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:236
+#: ../glom/libglom/data_structure/translatable_item.cc:234
 msgid "Layout Item"
 msgstr "Diseinuaren elementua"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:238
+#: ../glom/libglom/data_structure/translatable_item.cc:236
 msgid "Print Layout"
 msgstr "Inprimatze-diseinua"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:240
+#: ../glom/libglom/data_structure/translatable_item.cc:238
 msgid "Report"
 msgstr "Txostena"
 
 #. Tables:
-#: ../glom/libglom/data_structure/translatable_item.cc:242
+#: ../glom/libglom/data_structure/translatable_item.cc:240
 #: ../glom/mode_design/box_db_table_relationships.cc:53
 #: ../glom/mode_design/dialog_database_preferences.cc:61
 #: ../glom/mode_design/users/dialog_groups_list.cc:73
@@ -1424,27 +1424,23 @@ msgstr "Txostena"
 msgid "Table"
 msgstr "Taula"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:244
+#: ../glom/libglom/data_structure/translatable_item.cc:242
 msgid "Layout Group"
 msgstr "Diseinuaren taldea"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:246
-msgid "Field Title"
-msgstr "Eremuaren izenburua"
-
-#: ../glom/libglom/data_structure/translatable_item.cc:250
 msgid "Text Item"
 msgstr "Testuaren elementua"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:254
+#: ../glom/libglom/data_structure/translatable_item.cc:250
 msgid "Field Choice"
 msgstr "Eremuaren aukera"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:256
+#: ../glom/libglom/data_structure/translatable_item.cc:252
 msgid "Database Title"
 msgstr "Datu-basearen izenburua"
 
-#: ../glom/libglom/data_structure/translatable_item.cc:260
+#: ../glom/libglom/data_structure/translatable_item.cc:256
 #: ../glom/mode_design/translation/window_translations.cc:237
 msgid "Unknown"
 msgstr "Ezezaguna"
@@ -1519,7 +1515,7 @@ msgstr "Iruzkinak"
 #. Translators: This is a noun. It is the title of a report.
 #. Add Pages:
 #. Translators: This is a noun. It is a notebook tab title.
-#: ../glom/libglom/report_builder.cc:772 ../glom/mode_data/notebook_data.cc:39
+#: ../glom/libglom/report_builder.cc:767 ../glom/mode_data/notebook_data.cc:39
 #: ../glom/mode_find/notebook_find.cc:33
 msgid "List"
 msgstr "Zerrenda"
@@ -1601,11 +1597,12 @@ msgstr ""
 msgid ""
 "The locale whose translations should be written to the .po file, such as "
 "de_DE."
-msgstr "Lokalea itzulpenak .po fitxategian idazteko, eu_ES adibidez."
+msgstr "Itzulpenak .po fitxategian idazteko eskualde-ezarpena, eu_ES adibidez."
 
 #: ../glom/glom_export_po.cc:67
 msgid "Generate a .pot template file instead of a .po file for a locale."
-msgstr "Sortu .pot txantiloia .po fitxategiaren ordez lokala batentzako."
+msgstr ""
+"Sortu .pot txantiloia .po fitxategiaren ordez eskualde-ezarpen batentzako."
 
 #: ../glom/glom_export_po.cc:142 ../glom/glom_export_po_all.cc:130
 #: ../glom/glom_import_po_all.cc:131
@@ -1682,11 +1679,17 @@ msgstr "Glom: po fitxategien direktorioaren bide-izena ez da direktorioa."
 
 #: ../glom/glom_import_po_all.cc:213
 msgid "Po file import failed for locale: %1"
-msgstr "Huts egin du po fitxategia lokala honentzako inportatzean: %1"
+msgstr ""
+"Huts egin du po fitxategia eskualde-ezarpen honentzako inportatzean: %1"
 
 #: ../glom/glom_import_po_all.cc:218
+msgid "Po file import failed during document saving for locale: %1"
+msgstr ""
+"Huts egin du PO fitxategia inportatzean lokalaren dokumentua gordetzean: %1"
+
+#: ../glom/glom_import_po_all.cc:222
 msgid "Po file imported for locale: %1 for file %2"
-msgstr "Po fitxategia inportatuta: '%1' lokala; '%2' fitxategia"
+msgstr "Po fitxategia inportatuta: '%1' eskualde-ezarpena; '%2' fitxategia"
 
 #: ../glom/glom_test_connection.cc:77
 msgid "The hostname of the PostgreSQL server, such as localhost."
@@ -1909,7 +1912,8 @@ msgstr "glom komando-lerroaren aukera gehigarriak"
 #: ../glom/main_local_options.cc:52
 msgid "Show how Glom outputs a date in this locale, then stop."
 msgstr ""
-"Erakutsi Glom-ek data nola bistaratzen duen lokala honetan, gero gelditu."
+"Erakutsi Glom-ek data nola bistaratzen duen eskualde-ezarpen honetan, gero "
+"gelditu."
 
 #: ../glom/main_remote_options.cc:31
 msgid "Main Glom options"
@@ -1925,7 +1929,7 @@ msgstr "Fitxategi-izena"
 
 #: ../glom/main_remote_options.cc:44
 msgid "Whether the filename is a .tar.gz backup to be restored."
-msgstr "Fitxategi-izena lehenratuko den babeskopiaren .tar.gz den edo ez."
+msgstr "Fitxategi-izena leheneratuko den babeskopiaren .tar.gz den edo ez."
 
 #: ../glom/main_remote_options.cc:49
 msgid ""
@@ -1945,8 +1949,8 @@ msgstr ""
 #: ../glom/mode_design/users/dialog_groups_list.cc:79
 #: ../glom/print_layout/canvas_print_layout.cc:292
 #: ../glom/utility_widgets/adddel/adddel.cc:250
-#: ../glom/mode_data/db_adddel/db_adddel.cc:228
-#: ../glom/mode_data/db_adddel/db_adddel.cc:260
+#: ../glom/mode_data/db_adddel/db_adddel.cc:227
+#: ../glom/mode_data/db_adddel/db_adddel.cc:259
 #: ../data/ui/operator/window_main.glade.h:13
 #: ../data/ui/developer/dialog_fieldslist.glade.h:10
 #: ../data/ui/developer/dialog_group_by.glade.h:8
@@ -1961,7 +1965,7 @@ msgid "_Edit"
 msgstr "_Editatu"
 
 #: ../glom/mode_data/box_data_calendar_related.cc:533
-#: ../glom/mode_data/db_adddel/db_adddel.cc:264
+#: ../glom/mode_data/db_adddel/db_adddel.cc:263
 #: ../data/ui/operator/window_main.glade.h:28
 msgid "_Layout"
 msgstr "_Diseinua"
@@ -1983,7 +1987,7 @@ msgstr "Lehen mailako gakoak ez dauka baliorik"
 #: ../glom/mode_data/box_data_details.cc:46
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:32
 #: ../glom/utility_widgets/adddel/adddel_withbuttons.cc:42
-#: ../glom/mode_data/db_adddel/db_adddel.cc:261
+#: ../glom/mode_data/db_adddel/db_adddel.cc:260
 #: ../glom/mode_data/db_adddel/db_adddel_withbuttons.cc:33
 #: ../data/ui/developer/dialog_choose_user.glade.h:4
 #: ../data/ui/developer/dialog_fieldslist.glade.h:8
@@ -2082,53 +2086,53 @@ msgstr ""
 "Ez dago balio hau duen erregistrorik. Ondorioz, ezinezkoa da erlazionatutako "
 "erregistrora joatea."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1115
+#: ../glom/mode_data/flowtablewithfields.cc:1117
 #: ../glom/utility_widgets/notebooklabelglom.cc:77
 #: ../glom/utility_widgets/notebooklabelglom.cc:124
 msgid "New Group"
 msgstr "Talde berria"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1121
+#: ../glom/mode_data/flowtablewithfields.cc:1123
 #: ../glom/mode_design/layout/dialog_layout_details.cc:736
 msgid "notebook"
 msgstr "koadernoa"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1127
+#: ../glom/mode_data/flowtablewithfields.cc:1129
 msgid "tab1"
 msgstr "fitxa1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1130
+#: ../glom/mode_data/flowtablewithfields.cc:1132
 msgid "Tab One"
 msgstr "Fitxa bat"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1143
+#: ../glom/mode_data/flowtablewithfields.cc:1145
 msgid "button"
 msgstr "botoia"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1144
+#: ../glom/mode_data/flowtablewithfields.cc:1146
 #: ../glom/mode_design/layout/dialog_layout_details.cc:662
 msgid "New Button"
 msgstr "Botoi berria"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1150
+#: ../glom/mode_data/flowtablewithfields.cc:1152
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:385
 msgid "text"
 msgstr "testua"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1151
+#: ../glom/mode_data/flowtablewithfields.cc:1153
 msgid "New Text"
 msgstr "Testu berria"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1304
+#: ../glom/mode_data/flowtablewithfields.cc:1306
 msgid "Delete whole group \"%1\"?"
 msgstr "Ezabatu '%1' talde osoa?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1310
+#: ../glom/mode_data/flowtablewithfields.cc:1312
 msgid "Delete whole group?"
 msgstr "Ezabatu talde osoa?"
 
@@ -2722,11 +2726,11 @@ msgstr ""
 "eskuratu. Agian, ez dauzkazu nahikoa baimen. Supererabiltzailea izan beharko "
 "zenuke."
 
-#: ../glom/mode_design/users/dialog_users_list.cc:414
+#: ../glom/mode_design/users/dialog_users_list.cc:418
 msgid "Developer group may not be empty."
 msgstr "Garatzaileen taldea ezin da hutsik egon."
 
-#: ../glom/mode_design/users/dialog_users_list.cc:415
+#: ../glom/mode_design/users/dialog_users_list.cc:419
 msgid "The developer group must contain at least one user."
 msgstr "Garatzaileen taldeak gutxienez erabiltzaile bat eduki behar du."
 
@@ -2910,21 +2914,21 @@ msgid "Table Content"
 msgstr "Taularen edukia"
 
 #. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
-#: ../glom/mode_data/db_adddel/db_adddel.cc:539
+#: ../glom/mode_data/db_adddel/db_adddel.cc:538
 msgid "ExampleEg"
 msgstr "AdibideaEg"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2067
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2066
 msgid "Right-click to layout, to specify the related fields."
 msgstr ""
 "Egin klik eskuineko botoiarekin diseinuan erlazionatutako eremuak zehazteko."
 
 #. Tell user that they can't do that:
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2284
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2283
 msgid "Extra Related Records Not Possible"
 msgstr "Erlazionatutako erregistro gehigarriak ez dira posible"
 
-#: ../glom/mode_data/db_adddel/db_adddel.cc:2285
+#: ../glom/mode_data/db_adddel/db_adddel.cc:2284
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
@@ -2944,23 +2948,23 @@ msgstr "Hautatu"
 msgid "You have not entered any quick find criteria."
 msgstr "Ez duzu bilaketaren irizpiderik sartu."
 
-#: ../glom/utility_widgets/dialog_image_load_progress.cc:105
+#: ../glom/utility_widgets/dialog_image_load_progress.cc:108
 msgid "Not enough memory available to load the image"
 msgstr "Ez dago nahikoa memoria erabilgarri irudia kargatzeko."
 
-#: ../glom/utility_widgets/dialog_image_load_progress.cc:157
+#: ../glom/utility_widgets/dialog_image_load_progress.cc:160
 msgid "Error loading %1"
 msgstr "Errorea '%1' kargatzean"
 
-#: ../glom/utility_widgets/dialog_image_load_progress.cc:158
+#: ../glom/utility_widgets/dialog_image_load_progress.cc:161
 msgid "Error loading image"
 msgstr "Errorea irudia kargatzean"
 
-#: ../glom/utility_widgets/dialog_image_save_progress.cc:135
+#: ../glom/utility_widgets/dialog_image_save_progress.cc:137
 msgid "Error Saving"
 msgstr "Errorea gordetzean"
 
-#: ../glom/utility_widgets/dialog_image_save_progress.cc:136
+#: ../glom/utility_widgets/dialog_image_save_progress.cc:138
 msgid "Error saving image"
 msgstr "Errorea irudia gordetzean"
 
@@ -3612,7 +3616,7 @@ msgstr ""
 
 #: ../data/ui/developer/dialog_change_language.glade.h:10
 msgid "Locale:"
-msgstr "Lokala:"
+msgstr "Eskualde-ezarpena:"
 
 #: ../data/ui/developer/dialog_choose_field.glade.h:1
 msgid "Select Field"
@@ -3919,7 +3923,7 @@ msgstr "<b>Ordenatu eremuak</b>"
 #: ../data/ui/developer/dialog_translation_copy.glade.h:1
 #: ../data/ui/developer/dialog_translation_identify_original.glade.h:1
 msgid "Identify Original"
-msgstr "Identifikatu jatorrikoa"
+msgstr "Identifikatu jatorrizkoa"
 
 #: ../data/ui/developer/dialog_translation_copy.glade.h:4
 msgid "Copy Translation"
@@ -4259,8 +4263,8 @@ msgid ""
 "separator will be used only if your locale normally uses one."
 msgstr ""
 "Hau ez bada hautatzen, ez da milakoen bereizlea erabiliko, nahiz eta zure "
-"lokalak bat erabiltzen duen. Hau hautatzen bada, milakoen bereizle bat "
-"erabiliko da soilik zure lokalak bat erabiltzen badu."
+"eskualde-ezarpenak bat erabiltzen duen. Hau hautatzen bada, milakoen "
+"bereizle bat erabiliko da soilik zure eskualde-ezarpenak bat erabiltzen badu."
 
 #: ../data/ui/developer/box_formatting.glade.h:3
 msgid "Decimal Places:"
@@ -4426,7 +4430,6 @@ msgid "Page Set_up"
 msgstr "Orriaren _konfigurazioa"
 
 #: ../data/ui/developer/window_print_layout_edit.glade.h:3
-#, fuzzy
 msgid "Print Pre_view"
 msgstr "Inprimatzearen _aurrebista"
 
@@ -4654,8 +4657,8 @@ msgid ""
 "Start a translation for this target locale by copying the strings from "
 "another target locale."
 msgstr ""
-"Hasi helburuko lokala honentzako itzulpena beste helburuko lokala batetik "
-"kateak kopiatuz."
+"Hasi helburuko eskualde-ezarpen honentzako itzulpena beste helburuko "
+"eskualde-ezarpen batetik kateak kopiatuz."
 
 #: ../data/ui/developer/window_users.glade.h:4
 msgid "<b>Group:</b>"
@@ -4664,6 +4667,23 @@ msgstr "<b>Taldea:</b>"
 #: ../data/ui/developer/window_users.glade.h:10
 msgid "<b>Users</b>"
 msgstr "<b>Erabiltzaileak</b>"
+
+#~ msgid "No templates available."
+#~ msgstr "Ez dago txantiloirik eskuragarri."
+
+#~ msgid "Field Title"
+#~ msgstr "Eremuaren izenburua"
+
+#~ msgid "Could not install package"
+#~ msgstr "Ezin izan da paketea instalatu"
+
+#~ msgid ""
+#~ "The necessary applications to install the package could not be found."
+#~ msgstr ""
+#~ "Ezin izan dira paketea instalatzeko behar diren aplikazioak aurkitu."
+
+#~ msgid "Add _Group"
+#~ msgstr "Gehitu _taldea"
 
 #~ msgid "_Recent Files"
 #~ msgstr "_Azken fitxategiak"
@@ -4696,17 +4716,6 @@ msgstr "<b>Erabiltzaileak</b>"
 #~ msgid "There was an error while restoring the backup."
 #~ msgstr "Errorea gertatu da babeskopia leheneratzean."
 
-#~ msgid "No templates available."
-#~ msgstr "Ez dago txantiloirik eskuragarri."
-
-#~ msgid "Could not install package"
-#~ msgstr "Ezin izan da paketea instalatu"
-
-#~ msgid ""
-#~ "The necessary applications to install the package could not be found."
-#~ msgstr ""
-#~ "Ezin izan dira paketea instalatzeko behar diren aplikazioak aurkitu."
-
 #~ msgid "_Create Standard Layout"
 #~ msgstr "_Sortu diseinu arrunta"
 
@@ -4730,9 +4739,6 @@ msgstr "<b>Erabiltzaileak</b>"
 
 #~ msgid "<b>User</b>"
 #~ msgstr "<b>Erabiltzailea</b>"
-
-#~ msgid "Add _Group"
-#~ msgstr "Gehitu _taldea"
 
 #~ msgid "<b>Text Formatting</b>"
 #~ msgstr "<b>Testuaren formatua</b>"
