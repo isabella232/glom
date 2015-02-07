@@ -1,4 +1,10 @@
-# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2014.
+# Basque translation for evolution-mapi
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2014, 2015.
+# Edurne Labaka <elabaka@uzei.com>, 2015.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Openismus Film Manager\n"
@@ -1360,4 +1366,3 @@ msgctxt ""
 "Group: notebook"
 msgid "Actor's Name"
 msgstr "Aktorearen izena"
-
