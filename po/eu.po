@@ -1,13 +1,17 @@
+# Basque translation for glom
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2014.
+# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2014, 2015.
+# Edurne Labaka <elabaka@uzei.com>, 2015.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-21 10:26+0200\n"
-"PO-Revision-Date: 2014-07-21 10:25+0200\n"
+"Project-Id-Version: glom glom-1-26\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glom&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-02-07 16:08+0100\n"
+"PO-Revision-Date: 2015-01-29 16:32+0100\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
 "Language-Team: Basque <librezale@librezale.org>\n"
 "Language: eu\n"
@@ -15,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Poedit 1.6.10\n"
 
 #: ../glom/application.cc:157 ../glom/glom_create_from_example.cc:259
 #: ../glom/glom_export_po.cc:112 ../glom/glom_export_po_all.cc:100
@@ -419,7 +423,7 @@ msgid ""
 "record will then be permanently lost."
 msgstr ""
 "Ziur zaude erregistro hau ezabatzea nahi duzula? Erregistroaren datuak "
-"betirako galduko dira."
+"betiko galduko dira."
 
 #: ../glom/base_db_table_data.cc:390
 msgid "Delete record"
@@ -1148,11 +1152,11 @@ msgstr "Turkiarra"
 
 #: ../glom/import_csv/file_encodings.cc:112
 msgid "Nordic"
-msgstr "Eskandinabiarra"
+msgstr "Eskandinaviarra"
 
 #: ../glom/import_csv/file_encodings.cc:114
 msgid "Celtic"
-msgstr "Zeltiarra"
+msgstr "Zelta"
 
 #: ../glom/import_csv/file_encodings.cc:116
 msgid "Romanian"
@@ -1224,7 +1228,7 @@ msgstr "Irudia"
 #: ../glom/libglom/data_structure/glomconversions.cc:104
 #, no-c-format
 msgid "%x"
-msgstr ""
+msgstr "%x"
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
 #: ../glom/libglom/data_structure/glomconversions.cc:152
@@ -1232,9 +1236,9 @@ msgid ""
 "ERROR: sanity_check_date_parsing(): Sanity check failed: Glom could not "
 "parse a date's text representation that it generated itself, in this locale."
 msgstr ""
-"ERROREA: sanity_check_date_parsing(). Osotasunaren egiaztaketak huts egin "
-"du. Glom-ek ezin izan du berak sortutako dataren lokala honetako testu-"
-"adierazpena analizatu."
+"ERROREA: sanity_check_date_parsing(). Osotasunaren egiaztapenak huts egin "
+"du. Glom-ek ezin izan du berak sortutako dataren eskualde-ezarpen honetako "
+"testu-adierazpena analizatu."
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
 #: ../glom/libglom/data_structure/glomconversions.cc:188
@@ -1246,11 +1250,11 @@ msgid ""
 "translator. Please file a bug - see http://www.glom.org"
 msgstr ""
 "ERROREA: sanity_check_date_text_representation_uses_4_digit_year(). "
-"Osotasunaren egiaztaketak huts egin du. Badirudi Glom-ek ez duela 4 digitu "
-"erabiltzen urtea bistaratzeko dataren lokala honetako testu-adierazpenean. "
-"Lehenetsia 'yyyy/mm/dd' da, nahiz eta okerrekoa izan zure lokalerako. Honek "
-"itzultzailearen arreta eskatzen du. Mesedez, eman akatsaren berri, ikus - "
-"http://www.glom.org"
+"Osotasunaren egiaztapenak huts egin du. Badirudi Glom-ek ez dituela 4 digitu "
+"erabiltzen urtea bistaratzeko dataren eskualde-ezarpen honetako testu-"
+"adierazpenean. Lehenetsia 'yyyy/mm/dd' da, nahiz eta okerrekoa izan zure "
+"lokalerako. Honek itzultzailearen arreta eskatzen du. Mesedez, eman "
+"akatsaren berri, ikus - http://www.glom.org"
 
 #. Translators: This is the name of a UI element (a layout part name).
 #: ../glom/libglom/data_structure/layout/layoutgroup.cc:422
@@ -1568,11 +1572,12 @@ msgstr ""
 msgid ""
 "The locale whose translations should be written to the .po file, such as "
 "de_DE."
-msgstr "Lokalea itzulpenak .po fitxategian idazteko, eu_ES adibidez."
+msgstr "Itzulpenak .po fitxategian idazteko eskualde-ezarpena, eu_ES adibidez."
 
 #: ../glom/glom_export_po.cc:67
 msgid "Generate a .pot template file instead of a .po file for a locale."
-msgstr "Sortu .pot txantiloia .po fitxategiaren ordez lokala batentzako."
+msgstr ""
+"Sortu .pot txantiloia .po fitxategiaren ordez eskualde-ezarpen batentzako."
 
 #: ../glom/glom_export_po.cc:142 ../glom/glom_export_po_all.cc:130
 #: ../glom/glom_import_po_all.cc:131
@@ -1649,11 +1654,12 @@ msgstr "Glom: po fitxategien direktorioaren bide-izena ez da direktorioa."
 
 #: ../glom/glom_import_po_all.cc:213
 msgid "Po file import failed for locale: %1"
-msgstr "Huts egin du po fitxategia lokala honentzako inportatzean: %1"
+msgstr ""
+"Huts egin du po fitxategia eskualde-ezarpen honentzako inportatzean: %1"
 
 #: ../glom/glom_import_po_all.cc:218
 msgid "Po file imported for locale: %1 for file %2"
-msgstr "Po fitxategia inportatuta: '%1' lokala; '%2' fitxategia"
+msgstr "Po fitxategia inportatuta: '%1' eskualde-ezarpena; '%2' fitxategia"
 
 #: ../glom/glom_test_connection.cc:77
 msgid "The hostname of the PostgreSQL server, such as localhost."
@@ -1876,7 +1882,8 @@ msgstr "glom komando-lerroaren aukera gehigarriak"
 #: ../glom/main_local_options.cc:52
 msgid "Show how Glom outputs a date in this locale, then stop."
 msgstr ""
-"Erakutsi Glom-ek data nola bistaratzen duen lokala honetan, gero gelditu."
+"Erakutsi Glom-ek data nola bistaratzen duen eskualde-ezarpen honetan, gero "
+"gelditu."
 
 #: ../glom/main_remote_options.cc:31
 msgid "Main Glom options"
@@ -1892,7 +1899,7 @@ msgstr "Fitxategi-izena"
 
 #: ../glom/main_remote_options.cc:44
 msgid "Whether the filename is a .tar.gz backup to be restored."
-msgstr "Fitxategi-izena lehenratuko den babeskopiaren .tar.gz den edo ez."
+msgstr "Fitxategi-izena leheneratuko den babeskopiaren .tar.gz den edo ez."
 
 #: ../glom/main_remote_options.cc:49
 msgid ""
@@ -3469,7 +3476,7 @@ msgstr ""
 
 #: ../data/ui/developer/dialog_change_language.glade.h:7
 msgid "Locale:"
-msgstr "Lokala:"
+msgstr "Eskualde-ezarpena:"
 
 #: ../data/ui/developer/dialog_choose_field.glade.h:1
 msgid "Select Field"
@@ -3758,7 +3765,7 @@ msgstr "<b>Ordenatu eremuak</b>"
 #: ../data/ui/developer/dialog_translation_copy.glade.h:1
 #: ../data/ui/developer/dialog_translation_identify_original.glade.h:1
 msgid "Identify Original"
-msgstr "Identifikatu jatorrikoa"
+msgstr "Identifikatu jatorrizkoa"
 
 #: ../data/ui/developer/dialog_translation_copy.glade.h:2
 msgid ""
@@ -4090,8 +4097,8 @@ msgid ""
 "separator will be used only if your locale normally uses one."
 msgstr ""
 "Hau ez bada hautatzen, ez da milakoen bereizlea erabiliko, nahiz eta zure "
-"lokalak bat erabiltzen duen. Hau hautatzen bada, milakoen bereizle bat "
-"erabiliko da soilik zure lokalak bat erabiltzen badu."
+"eskualde-ezarpenak bat erabiltzen duen. Hau hautatzen bada, milakoen "
+"bereizle bat erabiliko da soilik zure eskualde-ezarpenak bat erabiltzen badu."
 
 #: ../data/ui/developer/box_formatting.glade.h:3
 msgid "Decimal Places:"
@@ -4476,8 +4483,8 @@ msgid ""
 "Start a translation for this target locale by copying the strings from "
 "another target locale."
 msgstr ""
-"Hasi helburuko lokala honentzako itzulpena beste helburuko lokala batetik "
-"kateak kopiatuz."
+"Hasi helburuko eskualde-ezarpen honentzako itzulpena beste helburuko "
+"eskualde-ezarpen batetik kateak kopiatuz."
 
 #: ../data/ui/developer/window_users.glade.h:2
 msgid "<b>Group:</b>"
