@@ -1,4 +1,10 @@
-# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2014.
+# Basque translation for example_smallbusiness
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2014, 2015.
+# Edurne Labaka <elabaka@uzei.com>, 2015.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Small Business Example\n"
@@ -467,4 +473,3 @@ msgstr "Izena"
 msgctxt "Layout Group (address). Parent table: staff, Parent Group: details"
 msgid "Address"
 msgstr "Helbidea"
-
