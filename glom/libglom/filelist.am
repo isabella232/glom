@@ -106,8 +106,6 @@ libglom_sources =							\
 	glom/libglom/db_utils.h						\
 	glom/libglom/glom_postgres.cc					\
 	glom/libglom/glom_postgres.h					\
-	glom/libglom/gst-package.c					\
-	glom/libglom/gst-package.h					\
 	glom/libglom/init.cc						\
 	glom/libglom/privs.cc						\
 	glom/libglom/privs.h						\
