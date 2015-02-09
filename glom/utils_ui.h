@@ -105,6 +105,8 @@ bool script_check_for_pygtk2_with_warning(const Glib::ustring& script, Gtk::Wind
 
 void treeview_delete_all_columns(Gtk::TreeView* treeview);
 
+void container_remove_all(Gtk::Container& container);
+
 } //namespace UiUtils
 
 } //namespace Glom

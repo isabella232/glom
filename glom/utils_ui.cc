@@ -582,4 +582,17 @@ void UiUtils::treeview_delete_all_columns(Gtk::TreeView* treeview)
   }
 }
 
+void UiUtils::container_remove_all(Gtk::Container& container)
+{
+  //Remove all (usally just one) widgets from m_vbox_parent:
+  //Gtk::Bin::remove() is easier but after GtkAlignment was deprecated, there is no suitable widget.
+  const std::vector<Gtk::Widget*> children = container.get_children();
+  for(std::vector<Gtk::Widget*>::const_iterator iter = children.begin(); iter != children.end(); ++iter)
+  {
+    Gtk::Widget* child = *iter;
+    if(child)
+      container.remove(*(*iter));
+  }
+}
+
 } //namespace Glom
