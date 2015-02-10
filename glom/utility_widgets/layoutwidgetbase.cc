@@ -23,6 +23,7 @@
 #include <glom/appwindow.h>
 #include <glom/mode_data/datawidget/textview.h>
 #include <glom/mode_data/datawidget/label.h>
+#include <glom/utils_ui.h>
 #include <iostream>
 
 namespace Glom
@@ -158,42 +159,33 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
   const Glib::ustring font_desc = formatting.get_text_format_font();
   if(!font_desc.empty())
   {
-    widget_to_change->override_font( Pango::FontDescription(font_desc) );
+    UiUtils::load_font_into_css_provider(*widget_to_change, font_desc);
   }
 
   
   const Glib::ustring fg = formatting.get_text_format_color_foreground();
   if(!fg.empty())
   {
-    // "text" is the text color. (Works for GtkEntry and GtkTextView, 
-    // for which override_color() doesn't seem to have any effect.
-    widget_to_change->override_color(Gdk::RGBA(fg));
-    
-    // This works for GtkLabel, for which override_color() does not.
-    widget_to_change->override_color(Gdk::RGBA(fg));
+    UiUtils::load_color_into_css_provider(*widget_to_change, fg);
   }
-
 
   const Glib::ustring bg = formatting.get_text_format_color_background();
   if(!bg.empty())
   {
     if(!labelglom && !button)
     {
-      // "base" is the background color for GtkEntry. "bg" seems to change the border:
-      widget_to_change->override_background_color(Gdk::RGBA(bg));
+      UiUtils::load_background_color_into_css_provider(*widget_to_change, bg);
     }
     //According to the gtk_widget_override_background_color() documentation, 
     //a GtkLabel can only have a background color by, for instance, placing it 
     //in a GtkEventBox. Luckily Label is actually derived from EventBox.
     else if(labelglom)
     {
-      //label->override_background_color(Gdk::RGBA("bg"));
-      labelglom->override_background_color(Gdk::RGBA(bg));
+      UiUtils::load_background_color_into_css_provider(*labelglom, bg);
     }
     else if(button)
     {
-      //button->override_background_color(Gdk::RGBA("bg"));
-      button->override_background_color(Gdk::RGBA(bg));
+      UiUtils::load_background_color_into_css_provider(*button, bg);
     }
   }
 }

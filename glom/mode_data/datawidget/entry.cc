@@ -24,6 +24,7 @@
 #include <glom/dialog_invalid_data.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/appwindow.h>
+#include <glom/utils_ui.h>
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream
 
@@ -160,9 +161,13 @@ void Entry::set_value(const Gnome::Gda::Value& value)
     const Glib::ustring fg_color = 
     layout_item->get_formatting_used().get_text_format_color_foreground_to_use(value);
     if(!fg_color.empty())
-      override_color(Gdk::RGBA(fg_color));
+    {
+      UiUtils::load_color_into_css_provider(*this, fg_color);
+    }
     else
-      unset_color();
+    {
+      //TOOD: unset_color();
+    }
   }
 }
 

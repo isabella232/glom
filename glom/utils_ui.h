@@ -24,6 +24,7 @@
 #include "config.h"
 #include <gtkmm/dialog.h>
 #include <gtkmm/treeview.h>
+#include <gtkmm/cssprovider.h>
 #include <libglom/data_structure/field.h>
 #include <libglom/data_structure/numeric_format.h>
 
@@ -106,6 +107,10 @@ bool script_check_for_pygtk2_with_warning(const Glib::ustring& script, Gtk::Wind
 void treeview_delete_all_columns(Gtk::TreeView* treeview);
 
 void container_remove_all(Gtk::Container& container);
+
+void load_font_into_css_provider(Gtk::Widget& widget, const Glib::ustring& font);
+void load_color_into_css_provider(Gtk::Widget& widget, const Glib::ustring& color);
+void load_background_color_into_css_provider(Gtk::Widget& widget, const Glib::ustring& color);
 
 } //namespace UiUtils
 
