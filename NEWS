@@ -1,3 +1,10 @@
+1.26.1 (stable):
+
+* Use the LC_TIME environment variable to get translated date formats.
+  (Murray Cumming) Bug #742968
+* Avoid a crash during shutdown.
+  (Murray Cumming) Bug #741851
+
 1.26.0 (stable):
 
 * Reports: Fix a crash introduced in 1.25.4.
