@@ -1,4 +1,7 @@
-1.29.1 (stable):
+1.28.1 (stable):
+This release seems to have been a mess - confused with unstable 1.29.1.
+These uses of new API should never have been in a stable release. murrayc.
+Please try to just use 1.30 instead.
 
 * Use libgda-6.0 instead of libgda-5.0, though image fields are currently not
   working.
