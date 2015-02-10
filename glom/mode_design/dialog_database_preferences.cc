@@ -24,6 +24,7 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/db_utils.h>
 #include <glom/bakery/busy_cursor.h>
+#include <glom/utils_ui.h>
 #include <gtksourceviewmm/languagemanager.h>
 #include <glibmm/i18n.h>
 
@@ -82,7 +83,7 @@ Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject
     sigc::mem_fun(*this, &Dialog_Database_Preferences::on_button_test_script) );
 
   // Set a monospace font
-  m_text_view_script->override_font(Pango::FontDescription("Monospace"));
+  UiUtils::load_font_into_css_provider(*m_text_view_script, "Monospace");
 
   //Dialog_Properties::set_modified(false);
 
