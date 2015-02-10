@@ -23,6 +23,7 @@
 #include <glom/python_embed/glom_python.h>
 #include <glom/utils_ui.h>
 #include <glom/appwindow.h>
+#include <glom/utils_ui.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <gtksourceviewmm/languagemanager.h>
 
@@ -46,7 +47,7 @@ Dialog_ButtonScript::Dialog_ButtonScript(BaseObjectType* cobject, const Glib::Re
   m_button_test_script->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_ButtonScript::on_button_test_script) );
 
   // Set a monospace font
-  m_text_view_script->override_font(Pango::FontDescription("Monospace"));
+  UiUtils::load_font_into_css_provider(*m_text_view_script, "Monospace");
   //connect_each_widget(this);
 
   //Dialog_Properties::set_modified(false);

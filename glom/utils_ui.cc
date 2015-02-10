@@ -60,6 +60,36 @@
 namespace
 {
 
+static void on_css_parsing_error(const Glib::RefPtr<const Gtk::CssSection>& section, const Glib::Error& error)
+{
+  std::cerr << G_STRFUNC << ": Parsing error: " << error.what() << std::endl;
+
+  if(section)
+  {
+    std::cerr << " URI = " << section->get_file()->get_uri() << std::endl;
+    std::cerr << " start_line = " << section->get_start_line()+1
+      << ", end_line = " << section->get_end_line()+1 << std::endl;
+    std::cerr << " start_position = " << section->get_start_position()
+      << ", end_position = " << section->get_end_position() << std::endl;
+  }
+}
+
+static Glib::RefPtr<Gtk::CssProvider> create_css_provider(Gtk::Widget& widget)
+{
+  // Add a StyleProvider so we can change the color, background color, and font.
+  // This was easier before Gtk::Widget::override_color() was deprecated.
+  Glib::RefPtr<Gtk::CssProvider> css_provider = Gtk::CssProvider::create();
+
+  Glib::RefPtr<Gtk::StyleContext> refStyleContext = widget.get_style_context();
+  if(refStyleContext)
+    refStyleContext->add_provider(css_provider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+  css_provider->signal_parsing_error().connect(
+    sigc::ptr_fun(&on_css_parsing_error));
+
+  return css_provider;
+}
+
 // Basically copied from libgnome (gnome-help.c, Copyright (C) 2001 Sid Vicious
 // Copyright (C) 2001 Jonathan Blandford <jrb@alum.mit.edu>), but C++ified
 std::string locate_help_file(const std::string& path, const std::string& doc_name)
@@ -592,6 +622,79 @@ void UiUtils::container_remove_all(Gtk::Container& container)
     Gtk::Widget* child = *iter;
     if(child)
       container.remove(*(*iter));
+  }
+}
+
+void UiUtils::load_font_into_css_provider(Gtk::Widget& widget, const Glib::ustring& font)
+{
+  Glib::RefPtr<Gtk::CssProvider> css_provider = create_css_provider(widget);
+
+  try
+  {
+    css_provider->load_from_data("* { font: " + font + "; }");
+  }
+  catch(const Gtk::CssProviderError& ex)
+  {
+    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed: "
+      << ex.what() << std::endl;
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed: "
+      << ex.what() << std::endl;
+  }
+}
+
+void UiUtils::load_color_into_css_provider(Gtk::Widget& widget, const Glib::ustring& color)
+{
+  Glib::RefPtr<Gtk::CssProvider> css_provider = create_css_provider(widget);
+
+  try
+  {
+    css_provider->load_from_data("* { color: " + color + "; }");
+  }
+  catch(const Gtk::CssProviderError& ex)
+  {
+    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed: "
+      << ex.what() << std::endl;
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed: "
+      << ex.what() << std::endl;
+  }
+}
+
+void UiUtils::load_background_color_into_css_provider(Gtk::Widget& widget, const Glib::ustring& color)
+{
+  Glib::RefPtr<Gtk::CssProvider> css_provider = create_css_provider(widget);
+
+  try
+  {
+    css_provider->load_from_data(
+      "* { background-color: " + color + "; }"
+      );
+/*
+      "GtkTextView {\n"
+      "  background-color: " + color + "; }\n"
+      "GtkTextView:backdrop {\n"
+      "  background-color: " + color + "; }\n"
+      "GtkTextView.view:selected {\n"
+      "  background-color: " + color + "; }\n"
+      "GtkTextView.view:insensitive {\n"
+      "  background-color: " + color + "; }"
+*/
+
+  }
+  catch(const Gtk::CssProviderError& ex)
+  {
+    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed: "
+      << ex.what() << std::endl;
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": Gtk::CssProvider::load_from_data() failed: "
+      << ex.what() << std::endl;
   }
 }
 
