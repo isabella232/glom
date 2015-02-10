@@ -157,7 +157,7 @@ AS_IF([test "x$glom_enable_postgresql" = xyes],
 
 
 # Libraries used by libglom:
-REQUIRED_LIBGLOM_LIBS='giomm-2.4 >= 2.43.1 libxml++-2.6 >= 2.23.1 libxslt >= 1.1.10 pygobject-3.0 >= 2.29.0 libgdamm-6.0 >= 5.99.1 libgda-6.0 >= 5.2.1 libgda-postgres-6.0 libgda-postgres-6.0 libgda-mysql-6.0 libarchive >= 3.0'
+REQUIRED_LIBGLOM_LIBS='giomm-2.4 >= 2.43.1 libxml++-2.6 >= 2.23.1 libxslt >= 1.1.10 pygobject-3.0 >= 2.29.0 libgdamm-5.0 >= 4.99.8 libgda-5.0 >= 5.2.1 libgda-postgres-5.0 libgda-postgres-5.0 libgda-mysql-5.0 libarchive >= 3.0'
 
 AS_IF([test "x$glom_host_win32" != xyes],
       [REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS libepc-1.0 >= 0.4.0"])
@@ -175,7 +175,7 @@ AS_IF([test "x$glom_enable_client_only" != xyes],
       [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS gtksourceviewmm-3.0 >= 3.0.0"])
 
 AS_IF([test "x$glom_enable_sqlite" = xyes],
-      [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS libgda-sqlite-6.0"])
+      [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS libgda-sqlite-5.0"])
 
 #TODO: Remove this check, because we checked again later anyway,
 #because we add REQUIRED_LIBGLOM_LIBS to REQUIRED_GLOM_LIBS?
