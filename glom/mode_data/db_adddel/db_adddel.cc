@@ -81,6 +81,7 @@ DbAddDel::DbAddDel()
   m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   m_ScrolledWindow.set_shadow_type(Gtk::SHADOW_IN);
   m_TreeView.set_fixed_height_mode(); //This allows some optimizations.
+  m_TreeView.set_rules_hint();
   m_ScrolledWindow.add(m_TreeView);
   pack_start(m_ScrolledWindow);
 
