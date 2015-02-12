@@ -26,7 +26,6 @@
 #include <libglom/data_structure/glomconversions.h>
 
 #include <giomm/file.h>
-#include <giomm/resource.h>
 #include <glibmm/convert.h>
 #include <glibmm/fileutils.h>
 #include <glibmm/miscutils.h>
@@ -1568,19 +1567,6 @@ bool Utils::script_check_for_pygtk2(const Glib::ustring& script)
     return false;
 
   return true;
-}
-
-bool Utils::get_resource_exists(const std::string& resource_path)
-{
-  try
-  {
-     Gio::Resource::get_info_global(resource_path);
-     return true;
-  }
-  catch (const Gio::ResourceError&)
-  {
-     return false;
-  }
 }
 
 } //namespace Glom

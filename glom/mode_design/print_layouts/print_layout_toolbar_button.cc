@@ -20,7 +20,6 @@
  
 #include "print_layout_toolbar_button.h"
 #include <glom/utils_ui.h>
-#include <libglom/utils.h>
 #include <gtkmm/toolpalette.h>
 #include <iostream>
 
@@ -34,7 +33,7 @@ PrintLayoutToolbarButton::PrintLayoutToolbarButton(const std::string& icon_name,
   Gtk::Image* image = Gtk::manage (new Gtk::Image());
 
   const std::string resource_path = UiUtils::get_icon_path(icon_name);
-  if(!Utils::get_resource_exists(resource_path))
+  if(!g_resources_get_info(resource_path.c_str(), G_RESOURCE_LOOKUP_FLAGS_NONE, 0, 0, 0))
   {
     std::cerr << G_STRFUNC << ": icon resource not found: " << resource_path << std::endl;
   }
