@@ -264,7 +264,7 @@ bool Dialog_ExistingOrNew::list_examples()
 
   try
   {
-    typedef std::vector<std::string> type_vec_strings;
+    typedef std::vector<Glib::ustring> type_vec_strings;
     const type_vec_strings examples = Gio::Resource::enumerate_children_global(examples_dir);
     
     bool example_found = false;
