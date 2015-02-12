@@ -645,9 +645,17 @@ Glib::ustring Dialog_ExistingOrNew::get_title_from_example(const std::string& re
 {
   try
   {
-    Glib::RefPtr<Gio::InputStream> stream =
-      Gio::Resource::open_stream_global(resource_name);
+    GError* gerror = 0;
+    GInputStream* cstream =
+      g_resources_open_stream(resource_name.c_str(),
+        G_RESOURCE_LOOKUP_FLAGS_NONE, &gerror);
+    if(gerror)
+    {
+      Glib::Error::throw_exception(gerror);
+    }
     
+    Glib::RefPtr<Gio::InputStream> stream = Glib::wrap(cstream);
+
     //TODO: Really do this asynchronously?
     m_current_buffer.reset(new buffer);
     const int bytes_read = stream->read(m_current_buffer->buf, buffer::SIZE);
