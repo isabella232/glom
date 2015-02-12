@@ -1572,7 +1572,15 @@ bool Utils::script_check_for_pygtk2(const Glib::ustring& script)
 
 bool Utils::get_resource_exists(const std::string& resource_path)
 {
-  return Gio::Resource::get_file_exists_global_nothrow(resource_path);
+  try
+  {
+     Gio::Resource::get_info_global(resource_path);
+     return true;
+  }
+  catch (const Gio::ResourceError&)
+  {
+     return false;
+  }
 }
 
 } //namespace Glom
