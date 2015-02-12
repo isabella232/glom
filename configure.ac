@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([Glom],[1.28.1],[http://bugzilla.gnome.org/enter_bug.cgi?product=Glom],[glom])
+AC_INIT([Glom],[1.28.3],[http://bugzilla.gnome.org/enter_bug.cgi?product=Glom],[glom])
 AC_PREREQ(2.63)
 
 AC_CONFIG_SRCDIR([glom/main.cc])
