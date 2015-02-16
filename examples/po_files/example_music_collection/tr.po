@@ -1,0 +1,198 @@
+# Turkish translation for music_collection.
+# Copyright (C) 2015 music_collection's COPYRIGHT HOLDER
+# This file is distributed under the same license as the music_collection package.
+#
+# Necdet Yücel <necdetyucel@gmail.com>, 2015.
+# Muhammet Kara <muhammetk@gmail.com>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: music_collection master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?\n"
+"POT-Creation-Date: 2015-01-12 14:11+0000\n"
+"PO-Revision-Date: 2015-02-16 16:24+0200\n"
+"Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
+"Language-Team: Turkish <gnome-turk@gnome.org>\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Gtranslator 2.91.6\n"
+"X-POOTLE-MTIME: 1423960409.000000\n"
+
+msgctxt "Database Title"
+msgid "Music Collection"
+msgstr "Müzik Koleksiyonu"
+
+msgctxt "Table (albums)"
+msgid "Albums"
+msgstr "Albümler"
+
+msgctxt "Field (album_id). Parent table: albums"
+msgid "Album ID"
+msgstr "Albüm Kimliği"
+
+msgctxt "Field (comments). Parent table: albums"
+msgid "Comments"
+msgstr "Yorumlar"
+
+msgctxt "Field (name). Parent table: albums"
+msgid "Name"
+msgstr "İsim"
+
+msgctxt "Field (artist_id). Parent table: albums"
+msgid "Artist ID"
+msgstr "Sanatçı Bilgisi"
+
+msgctxt "Field (publisher_id). Parent table: albums"
+msgid "Publisher ID"
+msgstr "Yayıncı Kimliği"
+
+msgctxt "Field (year). Parent table: albums"
+msgid "Year"
+msgstr "Yıl"
+
+msgctxt "Relationship (artist). Parent table: albums"
+msgid "Artist"
+msgstr "Sanatçı"
+
+msgctxt "Relationship (publisher). Parent table: albums"
+msgid "Publisher"
+msgstr "Yayıncı"
+
+msgctxt "Relationship (songs). Parent table: albums"
+msgid "Songs"
+msgstr "Şarkılar"
+
+msgctxt "Report (albums_by_artist). Parent table: albums"
+msgid "Albums By Artist"
+msgstr "Sanatçılara göre Albümler"
+
+msgctxt "Custom Title. Parent table: albums, Parent Report: albums_by_artist"
+msgid "Artist Name"
+msgstr "Sanatçı İsmi"
+
+msgctxt "Layout Group (overview). Parent table: albums"
+msgid "Overview"
+msgstr "Genel Görünüm"
+
+msgctxt "Layout Group (details). Parent table: albums"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Layout Group (artist). Parent table: albums, Parent Group: details"
+msgid "Artist"
+msgstr "Sanatçı"
+
+msgctxt "Layout Group (publisher). Parent table: albums, Parent Group: details"
+msgid "Publisher"
+msgstr "Yayımlayan"
+
+msgctxt "Custom Title. Parent table: albums"
+msgid "Artist Name"
+msgstr "Sanatçı Adı"
+
+msgctxt "Custom Title. Parent table: albums"
+msgid "Publisher Name"
+msgstr "Yayıncı Adı"
+
+msgctxt "Table (artists)"
+msgid "Artists"
+msgstr "Sanatçılar"
+
+msgctxt "Field (artist_id). Parent table: artists"
+msgid "Artist ID"
+msgstr "Sanatçı Bilgisi"
+
+msgctxt "Field (description). Parent table: artists"
+msgid "Description"
+msgstr "Açıklama"
+
+msgctxt "Field (comments). Parent table: artists"
+msgid "Comments"
+msgstr "Yorumlar"
+
+msgctxt "Field (name). Parent table: artists"
+msgid "Name"
+msgstr "İsim"
+
+msgctxt "Relationship (albums). Parent table: artists"
+msgid "Albums"
+msgstr "Albümler"
+
+msgctxt "Layout Group (overview). Parent table: artists"
+msgid "Overview"
+msgstr "Genel Görünüm"
+
+msgctxt "Layout Group (details). Parent table: artists"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Table (publishers)"
+msgid "Publishers"
+msgstr "Yayımlayan"
+
+msgctxt "Field (publishers_id). Parent table: publishers"
+msgid "Publisher ID"
+msgstr "Yayıncı Kimliği"
+
+msgctxt "Field (comments). Parent table: publishers"
+msgid "Comments"
+msgstr "Yorumlar"
+
+msgctxt "Field (name). Parent table: publishers"
+msgid "Name"
+msgstr "İsim"
+
+msgctxt "Relationship (albums). Parent table: publishers"
+msgid "Albums"
+msgstr "Albümler"
+
+msgctxt "Layout Group (overview). Parent table: publishers"
+msgid "Overview"
+msgstr "Genel Görünüm"
+
+msgctxt "Layout Group (details). Parent table: publishers"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Table (songs)"
+msgid "Songs"
+msgstr "Şarkılar"
+
+msgctxt "Field (song_id). Parent table: songs"
+msgid "Song ID"
+msgstr "Şarkı Bilgisi"
+
+msgctxt "Field (comments). Parent table: songs"
+msgid "Comments"
+msgstr "Yorumlar"
+
+msgctxt "Field (album_id). Parent table: songs"
+msgid "Album ID"
+msgstr "Albüm Bilgisi"
+
+msgctxt "Field (name). Parent table: songs"
+msgid "Name"
+msgstr "İsim"
+
+msgctxt "Relationship (album). Parent table: songs"
+msgid "Album"
+msgstr "Albüm"
+
+msgctxt "Layout Group (overview). Parent table: songs"
+msgid "Overview"
+msgstr "Genel Görünüm"
+
+msgctxt "Layout Group (details). Parent table: songs"
+msgid "Details"
+msgstr "Ayrıntılar"
+
+msgctxt "Layout Group (album). Parent table: songs, Parent Group: details"
+msgid "Album"
+msgstr "Albüm"
+
+msgctxt "Layout Group (artist). Parent table: songs, Parent Group: details"
+msgid "Album Artist"
+msgstr "Albüm Sanatçısı"
