@@ -29,7 +29,7 @@
 namespace Glom
 {
 
-/** This class just derives from Gtk::ComboBoxText and provides a constuctor suitable for libglade's get_widget_derived() template.
+/** This class just derives from Gtk::ComboBoxText and provides a constructor suitable for libglade's get_widget_derived() template.
  * so we can use its set_first_active() method.
  */
 class Combo_TextGlade : public Gtk::ComboBoxText
