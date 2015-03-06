@@ -114,20 +114,36 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
     return;
 
   //Horizontal alignment:
+  //See http://www.murrayc.com/permalink/2015/03/02/gtk-aligning-justification-in-text-widgets/
+  //TODO: We can't do any text alignment/justification on GtkEntry widgets, so use a GtkTextView there when necessary?
   const Formatting::HorizontalAlignment alignment =
     layout_item->get_formatting_used_horizontal_alignment(true /* for details view */);
-  const Gtk::Align x_align = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::ALIGN_START : Gtk::ALIGN_END);
-  widget_to_change->set_halign(x_align);
-    
-  //Set justification on labels:
+  Gtk::Label* label = dynamic_cast<Gtk::Label*>(widget_to_change);
+  if(label)
+  {
+    const Gtk::Align x_align = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::ALIGN_START : Gtk::ALIGN_END);
+    label->set_xalign(x_align);
+  }
+
+  //Set justification on labels and text views:
   //Assume that people want left/right justification of multi-line text if they chose 
   //left/right alignment of the text itself.
   {
-    Gtk::Label* label = dynamic_cast<Gtk::Label*>(widget_to_change);
+    const Gtk::Justification justification = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::JUSTIFY_LEFT : Gtk::JUSTIFY_RIGHT);
+
     if(label)
-    {    
-      const Gtk::Justification justification = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::JUSTIFY_LEFT : Gtk::JUSTIFY_RIGHT);
+    {
+      //Note that this does nothing for single lines of text.
+      //We use set_halign() too to get the effect even for single lines of text.
       label->set_justify(justification);
+    } else {
+      Gtk::TextView* textview = dynamic_cast<Gtk::TextView*>(widget_to_change);
+      if (textview)
+      {
+        //Note that, unlike Gtk::Label::set_justify(), this does have an effect
+        //even for single lines of text.
+        textview->set_justification(justification);
+      }
     }
   }
 
