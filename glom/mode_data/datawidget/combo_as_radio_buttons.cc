@@ -49,7 +49,7 @@ ComboAsRadioButtons::ComboAsRadioButtons()
 void ComboAsRadioButtons::init()
 {
   //if(m_glom_type == Field::TYPE_NUMERIC)
-   // get_entry()->set_halign(Gtk::ALIGN_END); //Align numbers to the right.
+   // get_entry()->set_alignment(1.0); //Align numbers to the right.
 }
 
 void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_second& list_values)

@@ -52,7 +52,7 @@ ComboGlom::ComboGlom(bool has_entry)
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   //if(m_glom_type == Field::TYPE_NUMERIC)
-   // get_entry()->set_halign(Gtk::ALIGN_END); //Align numbers to the right.
+   // get_entry()->set_alignment(1.0); //Align numbers to the right.
 
   //Let the combo be big enough:
   set_popup_fixed_width(false);
