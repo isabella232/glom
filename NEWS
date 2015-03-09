@@ -1,3 +1,12 @@
+1.28.4 (stable):
+
+* Details: Let entry widgets expand to fill space,
+  fixing a regression from 1.27.2.
+  (Murray Cumming)
+* Details: Make text alignment work again,
+  fixing a regression from 1.27.2
+  (Murray Cumming)
+
 1.28.3 (stable):
 
 * Use the LC_TIME environment variable to get translated date formats.
