@@ -125,11 +125,28 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
   //Assume that people want left/right justification of multi-line text if they chose 
   //left/right alignment of the text itself.
   {
+    const Gtk::Justification justification = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::JUSTIFY_LEFT : Gtk::JUSTIFY_RIGHT);
     Gtk::Label* label = dynamic_cast<Gtk::Label*>(widget_to_change);
     if(label)
     {    
-      const Gtk::Justification justification = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::JUSTIFY_LEFT : Gtk::JUSTIFY_RIGHT);
       label->set_justify(justification);
+      //set_xalign() too (instead of deprecated Misc::set_alignment) is better, but isn't available until GTK+/gtkmm 3.16.
+    } else {
+      Gtk::TextView* textview = dynamic_cast<Gtk::TextView*>(widget_to_change);
+      if(textview)
+      {
+        //Note that, unlike Gtk::Label::set_justify(), this does have an effect
+        //even for single lines of text.
+        //See http://www.murrayc.com/permalink/2015/03/02/gtk-aligning-justification-in-text-widgets/
+        textview->set_justification(justification);
+      } else {
+        Gtk::Entry* entry = dynamic_cast<Gtk::Entry*>(widget_to_change);
+        if(entry)
+        {
+          //See http://www.murrayc.com/permalink/2015/03/02/gtk-aligning-justification-in-text-widgets/
+          entry->set_alignment(x_align);
+        }
+      }
     }
   }
 
