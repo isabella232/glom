@@ -119,7 +119,9 @@ private:
 
   virtual AppWindow* get_appwindow() const;
 
+  /// Set the minimum widget size, depending on the type of fields.
   void set_child_size_by_field(const sharedptr<const LayoutItem_Field>& field);
+
   int get_suitable_width(const sharedptr<const LayoutItem_Field>& field_layout);
 
   /** Show a dialog with a Find so that the user can choose an ID value to indicate the related record.
