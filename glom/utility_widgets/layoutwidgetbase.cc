@@ -134,11 +134,11 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
     if(label)
     {
       //Note that this does nothing for single lines of text.
-      //We use set_halign() too to get the effect even for single lines of text.
+      //We use set_xalign() above to get the effect even for single lines of text.
       label->set_justify(justification);
     } else {
       Gtk::TextView* textview = dynamic_cast<Gtk::TextView*>(widget_to_change);
-      if (textview)
+      if(textview)
       {
         //Note that, unlike Gtk::Label::set_justify(), this does have an effect
         //even for single lines of text.
