@@ -139,7 +139,15 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
       {
         //Note that, unlike Gtk::Label::set_justify(), this does have an effect
         //even for single lines of text.
+        //See http://www.murrayc.com/permalink/2015/03/02/gtk-aligning-justification-in-text-widgets/
         textview->set_justification(justification);
+      } else {
+        Gtk::Entry* entry = dynamic_cast<Gtk::Entry*>(widget_to_change);
+        if(entry)
+        {
+          //See http://www.murrayc.com/permalink/2015/03/02/gtk-aligning-justification-in-text-widgets/
+          entry->set_alignment(x_align);
+        }
       }
     }
   }
