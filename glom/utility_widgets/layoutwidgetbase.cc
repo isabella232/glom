@@ -113,29 +113,26 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
   if(!layout_item)
     return;
 
-  //Horizontal alignment:
-  //See http://www.murrayc.com/permalink/2015/03/02/gtk-aligning-justification-in-text-widgets/
-  //TODO: We can't do any text alignment/justification on GtkEntry widgets, so use a GtkTextView there when necessary?
-  const Formatting::HorizontalAlignment alignment =
-    layout_item->get_formatting_used_horizontal_alignment(true /* for details view */);
-  Gtk::Label* label = dynamic_cast<Gtk::Label*>(widget_to_change);
-  if(label)
-  {
-    const Gtk::Align x_align = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::ALIGN_START : Gtk::ALIGN_END);
-    label->set_xalign(x_align);
-  }
-
   //Set justification on labels and text views:
   //Assume that people want left/right justification of multi-line text if they chose 
   //left/right alignment of the text itself.
   {
-    const Gtk::Justification justification = (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::JUSTIFY_LEFT : Gtk::JUSTIFY_RIGHT);
+    const Formatting::HorizontalAlignment alignment =
+     layout_item->get_formatting_used_horizontal_alignment(true /* for details view */);
+    const Gtk::Justification justification =
+      (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::JUSTIFY_LEFT : Gtk::JUSTIFY_RIGHT);
+    const Gtk::Align x_align =
+      (alignment == Formatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::ALIGN_START : Gtk::ALIGN_END);
 
+    Gtk::Label* label = dynamic_cast<Gtk::Label*>(widget_to_change);
     if(label)
     {
-      //Note that this does nothing for single lines of text.
-      //We use set_xalign() above to get the effect even for single lines of text.
+      //Note that set_justify() does nothing for single lines of text,
+      //and doesn't align the block of text itself,
+      //so we use set_xalign() to get the effect even for single lines of text.
+      //See http://www.murrayc.com/permalink/2015/03/02/gtk-aligning-justification-in-text-widgets/
       label->set_justify(justification);
+      label->set_xalign(x_align);
     } else {
       Gtk::TextView* textview = dynamic_cast<Gtk::TextView*>(widget_to_change);
       if(textview)
