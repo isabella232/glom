@@ -1,0 +1,195 @@
+# Bosnian translation for bosnianuniversetranslation
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the bosnianuniversetranslation package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: bosnianuniversetranslation\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-01-29 01:48+0000\n"
+"PO-Revision-Date: 2013-11-01 22:00+0000\n"
+"Last-Translator: Amina Đulabić <adulabic1@etf.unsa.ba>\n"
+"Language-Team: Bosnian <bs@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2015-03-14 16:00+0000\n"
+"X-Generator: Launchpad (build 17389)\n"
+
+msgctxt "Database Title"
+msgid "Music Collection"
+msgstr "Muzička kolekcija"
+
+msgctxt "Table (albums)"
+msgid "Albums"
+msgstr "Albumi"
+
+msgctxt "Field (album_id). Parent table: albums"
+msgid "Album ID"
+msgstr "Album ID"
+
+msgctxt "Field (comments). Parent table: albums"
+msgid "Comments"
+msgstr "Komentari"
+
+msgctxt "Field (name). Parent table: albums"
+msgid "Name"
+msgstr "Ime"
+
+msgctxt "Field (artist_id). Parent table: albums"
+msgid "Artist ID"
+msgstr "Izvođač ID"
+
+msgctxt "Field (publisher_id). Parent table: albums"
+msgid "Publisher ID"
+msgstr "Izdavač ID"
+
+msgctxt "Field (year). Parent table: albums"
+msgid "Year"
+msgstr "Godina"
+
+msgctxt "Relationship (artist). Parent table: albums"
+msgid "Artist"
+msgstr "Izvođač"
+
+msgctxt "Relationship (publisher). Parent table: albums"
+msgid "Publisher"
+msgstr "Izdavač"
+
+msgctxt "Relationship (songs). Parent table: albums"
+msgid "Songs"
+msgstr "Pjesme"
+
+msgctxt "Report (albums_by_artist). Parent table: albums"
+msgid "Albums By Artist"
+msgstr "Albumi Od Izvođača"
+
+msgctxt "Custom Title. Parent table: albums, Parent Report: albums_by_artist"
+msgid "Artist Name"
+msgstr "Ime izvođača"
+
+msgctxt "Layout Group (overview). Parent table: albums"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: albums"
+msgid "Details"
+msgstr "Detalji"
+
+msgctxt "Layout Group (artist). Parent table: albums, Parent Group: details"
+msgid "Artist"
+msgstr "Izvođač"
+
+msgctxt ""
+"Layout Group (publisher). Parent table: albums, Parent Group: details"
+msgid "Publisher"
+msgstr "Izdavač"
+
+msgctxt "Custom Title. Parent table: albums"
+msgid "Artist Name"
+msgstr "Ime izvođača"
+
+msgctxt "Custom Title. Parent table: albums"
+msgid "Publisher Name"
+msgstr "Ime izdavača"
+
+msgctxt "Table (artists)"
+msgid "Artists"
+msgstr "Izvođači"
+
+msgctxt "Field (artist_id). Parent table: artists"
+msgid "Artist ID"
+msgstr "Izvođač ID"
+
+msgctxt "Field (description). Parent table: artists"
+msgid "Description"
+msgstr "Opis"
+
+msgctxt "Field (comments). Parent table: artists"
+msgid "Comments"
+msgstr "Komentari"
+
+msgctxt "Field (name). Parent table: artists"
+msgid "Name"
+msgstr "Naziv"
+
+msgctxt "Relationship (albums). Parent table: artists"
+msgid "Albums"
+msgstr "Albumi"
+
+msgctxt "Layout Group (overview). Parent table: artists"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: artists"
+msgid "Details"
+msgstr "Detalji"
+
+msgctxt "Table (publishers)"
+msgid "Publishers"
+msgstr "Izdavači"
+
+msgctxt "Field (publishers_id). Parent table: publishers"
+msgid "Publisher ID"
+msgstr "Izdavač ID"
+
+msgctxt "Field (comments). Parent table: publishers"
+msgid "Comments"
+msgstr "Komentari"
+
+msgctxt "Field (name). Parent table: publishers"
+msgid "Name"
+msgstr "Naziv"
+
+msgctxt "Relationship (albums). Parent table: publishers"
+msgid "Albums"
+msgstr "Albumi"
+
+msgctxt "Layout Group (overview). Parent table: publishers"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: publishers"
+msgid "Details"
+msgstr "Detalji"
+
+msgctxt "Table (songs)"
+msgid "Songs"
+msgstr "Pjesme"
+
+msgctxt "Field (song_id). Parent table: songs"
+msgid "Song ID"
+msgstr "Pjesma ID"
+
+msgctxt "Field (comments). Parent table: songs"
+msgid "Comments"
+msgstr "Komentari"
+
+msgctxt "Field (album_id). Parent table: songs"
+msgid "Album ID"
+msgstr "Album ID"
+
+msgctxt "Field (name). Parent table: songs"
+msgid "Name"
+msgstr "Naziv"
+
+msgctxt "Relationship (album). Parent table: songs"
+msgid "Album"
+msgstr "Album"
+
+msgctxt "Layout Group (overview). Parent table: songs"
+msgid "Overview"
+msgstr "Pregled"
+
+msgctxt "Layout Group (details). Parent table: songs"
+msgid "Details"
+msgstr "Detalji"
+
+msgctxt "Layout Group (album). Parent table: songs, Parent Group: details"
+msgid "Album"
+msgstr "Album"
+
+msgctxt "Layout Group (artist). Parent table: songs, Parent Group: details"
+msgid "Album Artist"
+msgstr "Izvođač albuma"
