@@ -37,7 +37,7 @@ LT_INIT([disable-static win32-dll])
 # Used for the install directories for headers.  The same number is used in
 # the library name, which must be kept in sync, but variables can't be used
 # with that.
-AC_SUBST([GLOM_ABI_VERSION], [1.26])
+AC_SUBST([GLOM_ABI_VERSION], [1.30])
 AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION], ["$GLOM_ABI_VERSION"],
 		   [Define to the Glom ABI version string.])
 

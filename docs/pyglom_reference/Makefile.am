@@ -6,7 +6,7 @@
 # html:
 #	pydoc -w $(top_builddir)/glom/python_embed/python_module/.libs/
 #	mkdir html
-#	mv glom_1_26.html html/index.html
+#	mv glom_1_30.html html/index.html
 
 book_name = pyglom_$(GLOM_ABI_VERSION_UNDERLINED)
 
