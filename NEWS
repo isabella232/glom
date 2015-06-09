@@ -1,3 +1,9 @@
+1.29.4 (unstable):
+
+* Use libgda-5 again instead of libgda-6.
+  Because libgda-6 is not quite ready and not likely to be stable soon enough.
+  (Murray Cumming)
+
 1.29.3 (unstable):
 
 * Details: Let entry widgets expand to fill space,
