@@ -379,7 +379,7 @@ bool test_create_and_selfhost_from_data(const Glib::ustring& example_file_conten
     return false;
   }
 
-  const bool recreated = Glom::DbUtils::recreate_database_from_document(&document, &on_recreate_progress );
+  document.set_allow_autosave(false); //To simplify things and to not depend implicitly on autosave.
 
   int failure_code = 0;
   const bool test = document.load_from_data((const guchar*)example_file_contents.c_str(), example_file_contents.bytes(), failure_code);
